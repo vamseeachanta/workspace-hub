@@ -1,0 +1,86 @@
+{
+  "schema_version": 1,
+  "recorded_at": "2026-09-12T12:42:00.564736+00:00",
+  "scope": "bounded read-only workflow recon; planning artifacts only",
+  "head": "48464eef05c47cb63f856b7b9be2221c16ba62ca",
+  "plan": "docs/plans/2026-09-12-issue-3615-shared-risk-workflow.html",
+  "plan_sha256": "96af8145098aa4873bd10b49447dc36729d18f371a7db2ee97570d6424d5e96c",
+  "source_digests": {
+    "scripts/governance/evidence_threshold_eligibility.py": "8e40ea38277dbf42a8b8979df3efd494a14aace00b6564c9a414e1e24b1ffcf7",
+    "tests/governance/test_evidence_threshold_eligibility.py": "0b7e69f71c703ea0ee9e923e761b0984024fd4da249147793ed8e8e488567106",
+    "docs/governance/2026-06-28-evidence-threshold-approval-policy.md": "3fc44906ae2407c3fefe55845d7497f798429a82a7207621db58bf78796f1499",
+    "docs/governance/evidence-threshold/README.md": "dae6df4cb55438b10bf45fb12bdddd28ae40076daf106faaed4dfd3d11e1fb76",
+    ".claude/settings.json": "6571611e896cfeee56ef9e0fd53476984cdfa96b2fa9d5565ab35cbe442683b8",
+    ".claude/hooks/plan-approval-gate.sh": "eb5bc1bb6f7da36161240629f08a49ac6858164efc02a6163abed2c1bb3bf113",
+    ".claude/hooks/cross-review-gate.sh": "c82d156fbef4802b0335384e20a2ab33199409882b24a412fa3bb0ec804a7708",
+    "scripts/enforcement/require-plan-approval.sh": "39b0e1ca76ba1a749af3d2d16bca34fdf9fe2cc4781cfe9d8e233c837f6ad46e",
+    "scripts/workflow/plan_approval_gate_check.py": "a8f1b8c2793a1410607b6d653da87250827fdb0cdc8fabbb917cc9656b08a4b7",
+    ".github/workflows/enforcement-gate.yml": "06b342b09b83dbf4cfff9b02d11786f5633bdc34018934d42d0693265360f818",
+    "config/agents/SHARED_SOUL.md": "e81d7fc9222f29fb53bbde94e245999d5a7d6366d106f736b1e198b942c222af"
+  },
+  "observations": {
+    "effective_hooks_path": ".claude/hooks",
+    "effective_pre_commit_exists": false,
+    "effective_pre_push_exists": false,
+    "existing_classify": {
+      "docs/standards/HARD-STOP-POLICY.md": "docs-typo-index",
+      ".claude/hooks/plan-approval-gate.sh": "gate-self-modification",
+      "scripts/workflow/plan_approval_gate_check.py": "unknown"
+    },
+    "owner_label_path_trigger": {
+      "src/example.py": true,
+      "scripts/enforcement/example.sh": false,
+      ".claude/hooks/example.sh": false,
+      "docs/plans/example.html": false,
+      "tests/test_example.py": false
+    },
+    "baseline_test_main_receipt": {
+      "command": "uv run --no-project --with pytest python -B -m pytest -q -p no:cacheprovider tests/governance/test_evidence_threshold_eligibility.py",
+      "result": "24 passed",
+      "provenance": "main session supplied result; not rerun by drafting lane"
+    },
+    "drafting_lane_test_attempt": {
+      "command": "uv run --no-project python -B -m pytest tests/governance/test_evidence_threshold_eligibility.py -q -p no:cacheprovider",
+      "result": "No module named pytest",
+      "disposition": "environment unavailable, not regression failure"
+    },
+    "drive_search_main_receipt": {
+      "query": "agent workflow data ownership",
+      "indexes": 6,
+      "matches": 0,
+      "coverage_gaps": 5,
+      "interpretation": "partial coverage"
+    }
+  },
+  "boundaries": [
+    "No active hook execution",
+    "No model calls by drafting lane",
+    "No implementation or provider configuration edits",
+    "No remote labels/comments/publication",
+    "Historical metric eligibility is not task authorization",
+    "Remote activation and fleet coverage unverified"
+  ],
+  "plan_validation": {
+    "relative_links_missing": [],
+    "html_parser": "stdlib HTMLParser completed",
+    "expected_session_artifacts": [
+      "docs\\plans\\2026-09-12-issue-3615-shared-risk-workflow.html",
+      "docs\\reports\\2026-09-12-shared-risk-workflow-evidence.json"
+    ],
+    "existing_autostash": "preserved"
+  },
+  "same_provider_review": {
+    "finding": "Pure CLI cannot authenticate supplied approval/access provenance",
+    "disposition": "Conditional candidates only; unverified/missing authority; external ingress deferred; no verified outputs"
+  },
+  "review_revision": {
+    "B2": "workflow sole normative key; observation/locator/evidence integrity outside key",
+    "B3": "workflow_receipt.py sole production canonicalizer; schema x-conformance literal vectors",
+    "B5": "six fields closed enums/reason codes",
+    "B6": "explicit skill-path loading only, no implicit activation",
+    "B7": "resource predecessor; independent partial checkpoint vs full gated acceptance",
+    "M1": "exact pytest/importlib/jsonschema commands",
+    "M3": "unknown/unverified refuses reuse; typed N/A only schema-permitted",
+    "M5": "Stage A defined; existing360lines; operation logic new workflow_decision.py; bounded directskillchecks"
+  }
+}

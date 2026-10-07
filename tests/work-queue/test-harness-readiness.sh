@@ -274,18 +274,12 @@ T9() {
 }
 T9
 
-# ── T10: pre-commit missing legal entry → R-PRECOMMIT FAIL ───────────────────
+# ── T10: pre-commit configuration presence, without an identifier gate ───────
 T10() {
-  if ! grep -q "check_r_precommit\|R-PRECOMMIT" "${READINESS_SCRIPT}" 2>/dev/null; then
-    echo "  SKIP  T10: R-PRECOMMIT not yet implemented"
-    return
-  fi
+  local ws ws_parent output
   ws=$(mk_ws)
-  # R-PRECOMMIT checks ${WORKSPACE_HUB}/../${repo}; place assetutilities as a sibling
-  local ws_parent
   ws_parent=$(dirname "$ws")
   mkdir -p "${ws_parent}/assetutilities"
-  # pre-commit config present but no legal scan entry
   cat > "${ws_parent}/assetutilities/.pre-commit-config.yaml" << 'EOF'
 repos:
   - repo: local
@@ -295,13 +289,30 @@ repos:
         entry: black
         language: python
 EOF
-  local output
-  output=$(PATH="${ws}/bin:${PATH}" WORKSPACE_HUB="${ws}" bash "${READINESS_SCRIPT}" 2>&1 || true)
-  rm -rf "${ws_parent}/assetutilities"
-  if echo "$output" | grep -q "R-PRECOMMIT.*FAIL\|FAIL.*R-PRECOMMIT"; then
-    ok "T10: R-PRECOMMIT FAIL on missing legal-sanity-scan entry"
+  # Execute only the pure R-PRECOMMIT check against the isolated fixture.
+  # Never launch live readiness checks, plugin discovery, or report writers.
+  precommit_fixture_check() (
+    WORKSPACE_HUB="$ws"
+    HARNESS_CONFIG="${ws}/scripts/readiness/harness-config.yaml"
+    _hc_list() { printf '%s\n' assetutilities; }
+    log_pass() { printf 'PASS %s\n' "$*"; }
+    log_fail() { printf 'FAIL %s\n' "$*"; }
+    eval "$(sed -n '/^check_r_precommit() {/,/^} ; check_r_precommit/p' \
+      "$READINESS_SCRIPT" | sed '$s/} ; check_r_precommit.*$/}/')"
+    check_r_precommit
+  )
+  output=$(precommit_fixture_check)
+  if [[ "$output" == PASS* && "$output" != *FAIL* ]]; then
+    ok "T10: R-PRECOMMIT accepts config without retired identifier scanner"
   else
-    fail "T10: expected R-PRECOMMIT FAIL — got: $(echo "$output" | grep -i precommit | head -2)"
+    fail "T10: expected config-only PASS — got: $output"
+  fi
+  rm -f "${ws_parent}/assetutilities/.pre-commit-config.yaml"
+  output=$(precommit_fixture_check)
+  if [[ "$output" == FAIL* && "$output" == *'.pre-commit-config.yaml missing'* ]]; then
+    ok "T10: R-PRECOMMIT still fails for missing config"
+  else
+    fail "T10: expected missing-config FAIL — got: $output"
   fi
   rm_ws "$ws"
 }
@@ -491,21 +502,21 @@ T13() {
 }
 T13
 
-# ── T14: Stale acma-ansys05 report (>25h) → DEGRADED ────────────────────────
+# ── T14: Stale ace-win-1 report (>25h) → DEGRADED ───────────────────────────
 T14() {
   if [[ ! -f "${COMPARE_SCRIPT}" ]]; then
     echo "  SKIP  T14: compare-harness-state.sh not yet implemented"
     return
   fi
   ws=$(mk_ws)
-  local stale_report="${ws}/.claude/state/harness-readiness-acma-ansys05.yaml"
+  local stale_report="${ws}/.claude/state/harness-readiness-ace-win-1.yaml"
   # Write a report timestamped 30 hours ago
   local stale_ts
   stale_ts=$(date -u -d "30 hours ago" +%Y-%m-%dT%H:%M:%SZ 2>/dev/null || \
     date -u -v-30H +%Y-%m-%dT%H:%M:%SZ 2>/dev/null || echo "2026-03-07T00:00:00Z")
   cat > "${stale_report}" << EOF
 schema_version: 1
-host: acma-ansys05
+host: ace-win-1
 generated_at: "${stale_ts}"
 overall: pass
 pass_count: 5
@@ -516,7 +527,7 @@ EOF
   output=$(WORKSPACE_HUB="${ws}" HARNESS_CONFIG="${HARNESS_CONFIG}" \
     bash "${COMPARE_SCRIPT}" 2>&1 || true)
   if echo "$output" | grep -qi "degraded\|stale"; then
-    ok "T14: compare-harness-state.sh flags stale acma-ansys05 report as DEGRADED"
+    ok "T14: compare-harness-state.sh flags stale ace-win-1 report as DEGRADED"
   else
     fail "T14: expected DEGRADED for stale report — got: $(echo "$output" | head -3)"
   fi

@@ -12,7 +12,7 @@ metadata:
 
 **NEXT ACTIONS (in order):**
 1. **~Aug 18: return check-in** — QR4775 (IndiGo-op) + QR713; OTP dance via
-   achantav@gmail.com; ask IndiGo/HYD counter for QR4775 seats; QR713 seats already locked
+   owner.personal@example.com; ask IndiGo/HYD counter for QR4775 seats; QR713 seats already locked
    23A(window=Devakrishna)/23B/23C ✓; MPC app declaration on landing at IAH.
 2. Optional during trip: submit 3 Global Entry apps at ttp.dhs.gov ($240 total, Devakrishna
    free) → if conditionally approved, Enrollment on Arrival at IAH on Aug 19.
@@ -22,7 +22,7 @@ metadata:
 Printer: Epson ET-2800 — `lp -d EPSON_ET_2800_Series -P <pages> -o print-color-mode=monochrome`.
 Paper backups of e-arrival QRs + e-tickets printed 2026-07-19.
 
-**TRIP (booked, PNR 78ANCY, Qatar Airways, in achantav@gmail.com):**
+**TRIP (booked, PNR 78ANCY, Qatar Airways, in owner.personal@example.com):**
 Out: IAH→DOH QR714 Sun 19 Jul 2026 18:15 → DOH→HYD QR500, **arrive Hyderabad Tue 21 Jul
 02:00 IST**. Return: HYD→DOH QR4775 Wed 19 Aug 04:30 → DOH→IAH QR713, arrive 19 Aug 15:55.
 Ticket names verified vs passports incl. Sabitha DEEPTHIMAHANTI ✓. Devakrishna 6-month
@@ -38,19 +38,19 @@ online ("collect at airport desk" — doc verification); arrive 3 h early at IAH
 check-in. No free window trio existed on either outbound leg (checked both maps).
 AVML meals ✓ outbound. ⚠️ Devakrishna row has "wheelchair till aircraft ramp" special
 request (verify intended / remove via Special request).
-✅ Uber Reserve BOOKED (2026-07-19, achantav@gmail.com Uber acct): UberXL, RGIA "Uber
+✅ Uber Reserve BOOKED (2026-07-19, owner.personal@example.com Uber acct): UberXL, RGIA "Uber
 Pickup Point at D1/D2 Zone" → Secunderabad Railway Station Rd, Tue Jul 21, flight-linked
 to QR500 (driver ready on landing, 35 min free wait), ₹2288.41 on new Visa ••1832 (old
 ••3473 expired — replaced in Uber app; web can't add cards; Reserve won't take cash).
 Train: 5:00 AM from Secunderabad. Backup: on-demand Uber at D1/D2 with cash. OTP dance: retrievePnr →
-email OTP to achantav@gmail.com (5-min validity, sessions expire fast).
+email OTP to owner.personal@example.com (5-min validity, sessions expire fast).
 ✅ H2O roaming (India IS on H2O/AT&T roaming list; Qatar too): topped up 2026-07-18 —
 (713)306-9029 $20, (832)206-9821 $10 (both were $0 = would have silently failed; balances
 verified posted; posting lags ~10 min). Autopay renews (713) plan $100 on 08/16 mid-trip ✓.
 iPhone landing recipe: Data Roaming ON, power-cycle, auto→manual network Airtel (not Jio),
 Voice&Data=LTE, Wi-Fi Calling must be enabled while still in US. ✅ User confirmed all
 toggles done on BOTH phones pre-departure (2026-07-19). H2O acct = 2 lines, login
-via achantav@gmail.com. All docs in `achantas-data/_travel/2026/`:
+via owner.personal@example.com. All docs in `achantas-data/_travel/2026/`:
 `2026-07_india_ticket_{va,sd,da}.pdf` + `2026-07_india_earrival_{va,sd,da}.pdf`
 (uncommitted — NTFS-FUSE porcelain-git trap). Cards must be ON PHONES before departure.
 

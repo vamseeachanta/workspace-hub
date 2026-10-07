@@ -1,4 +1,4 @@
-# Plan for #3525: Investigate safe remote Claude job dispatch to ACMA-WS014
+# Plan for #3525: Investigate safe remote Claude job dispatch to ace-win-2
 
 > **Status:** completed
 > **Complexity:** T2
@@ -15,12 +15,12 @@
 
 ### Existing repo code and operating contracts
 
-- `config/workstations/registry.yaml` identifies `ACMA-WS014` as the `ace-win-2` alias, records Windows, `ssh: null`, Claude/Codex/Gemini availability, and `telegram_hermes.dispatch_enabled: false`. The discovery will treat that registry state as local policy evidence, not as proof of an Anthropic product capability.
+- `config/workstations/registry.yaml` identifies `ace-win-2` as a canonical role alias, records Windows, `ssh: null`, Claude/Codex/Gemini availability, and `telegram_hermes.dispatch_enabled: false`. The discovery will treat that registry state as local policy evidence, not as proof of an Anthropic product capability.
 - `docs/ops/telegram-hermes-multimachine-control-plane.md` keeps Windows hosts desktop/status-only and requires a separately approved dispatch plan before unattended work. The discovery will preserve that fail-closed posture.
 - `docs/ops/windows-macos-dispatch-parity.md` documents a coordinator-routed, outbound pull-worker architecture with leases and no inbound per-host bot. The discovery will use it as the smallest existing workspace fallback precedent, while independently testing whether an official Anthropic feature supersedes it.
 - `config/scheduled-tasks/schedule-tasks.yaml` and `.claude/rules/scheduler-mutation-safety.md` establish that scheduler registry evidence does not authorize live Windows Task Scheduler mutation. The discovery will inspect documentation and source only; it will not enumerate or change live scheduled tasks.
 - `docs/plans/2026-06-18-issue-3207-agy-headless-dispatch.md` records a prior headless-dispatch design and its risks around unattended permission bypass, argv limits, live quota use, and isolated working directories. The discovery will treat these as threat-model inputs, not as a reusable Claude solution.
-- `docs/plans/2026-05-20-issue-2756-licensed-win-1-solver-status-lane-baseline.md` records the prior decision to keep a licensed Windows host manual/status-only until Windows dispatch parity is proven. The discovery will test whether current supported Anthropic capabilities change that conclusion for ACMA-WS014.
+- `docs/plans/2026-05-20-issue-2756-licensed-win-1-solver-status-lane-baseline.md` records the prior decision to keep a licensed Windows host manual/status-only until Windows dispatch parity is proven. The discovery will test whether current supported Anthropic capabilities change that conclusion for ace-win-2.
 
 ### Standards
 
@@ -54,7 +54,7 @@ No wiki content will be changed or used as authority. Official Anthropic sources
 
 - Official Anthropic documentation now describes Remote Control/Trusted Devices, Desktop scheduled tasks, Dispatch, and Channels, but no reviewed repo artifact currently establishes whether those features satisfy the full request or permit cross-individual-account delegation.
 - No current official-source matrix in the repo distinguishes Claude Desktop, Claude Code, Claude web, Team, Enterprise, and API automation for this use case.
-- No current report separates verified facts, local observations, assumptions, and unsupported inferences for ACMA-WS014.
+- No current report separates verified facts, local observations, assumptions, and unsupported inferences for ace-win-2.
 - No evidence-backed decision currently ranks an official Anthropic feature against the existing pull-worker fallback.
 - No bounded implementation/operations estimate currently covers OS isolation, queue authentication, concurrency, spend controls, logs, and wake handling.
 
@@ -63,14 +63,14 @@ No wiki content will be changed or used as authority. Official Anthropic sources
 **Issue status** (verified 2026-07-14 via `gh issue view 3525`):
 
 ```text
-#3525 — OPEN — [WRK] Investigate safe remote Claude job dispatch to ACMA-WS014
+#3525 — OPEN — [WRK] Investigate safe remote Claude job dispatch to ace-win-2
 labels: cat:ai-orchestration, lane:claude, priority:medium, status:needs-plan, wrk-item
 ```
 
 **Machine registry facts** (curated from `sed -n '256,288p' config/workstations/registry.yaml`, verified 2026-07-14; dotted names preserve YAML nesting):
 
 ```text
-hostname_aliases: [licensed-win-2, acma-ws014]
+hostname_aliases: [licensed-win-2, ace-win-2]
 os: windows
 ssh: null
 capabilities.agent_clis: [claude, codex, gemini]
@@ -219,7 +219,7 @@ No scheduler, account, authentication, registry, firewall, OS-user, repository c
 | `test_report_rejects_credential_sharing` | Unsafe auth shortcuts will not be recommended | The pinned `data-rejected-practice` set will cover password, session-cookie, raw-OAuth, and personal-key sharing |
 | `test_fallback_controls_are_complete` | The fallback will cover the full safety envelope | The pinned `data-control` set will cover isolation, least privilege, authenticated queue, allowlists, logs, concurrency, spend, failure quarantine, and wake handling |
 | `test_report_contains_no_secret_material` | Report will contain no token/key/cookie values or local auth paths | Secret-pattern and forbidden-path scan will pass |
-| `test_local_observations_are_host_bound_and_scrubbed` | Observations will be host-bound or explicitly blocked without raw diagnostics | `data-lane-status` will be valid; completed status will require `ACMA-WS014`, alias/canonical-host note, allowlisted command names, and scrubbed summaries |
+| `test_local_observations_are_host_bound_and_scrubbed` | Observations will be host-bound or explicitly blocked without raw diagnostics | `data-lane-status` will be valid; completed status will require `ace-win-2`, alias/canonical-host note, allowlisted command names, and scrubbed summaries |
 | `test_report_contains_no_client_identifier_markers` | Public artifact will remain de-identified by construction | Proper nouns will be limited to the issue-approved machine alias and official vendor/product names; no person, colleague, client, project, or repository names will appear |
 | `test_options_include_size_and_burden` | Each viable option will include bounded implementation and operations estimates | Size, assumptions, confidence, and recurring burden will be present |
 
@@ -276,7 +276,7 @@ Revisions made through r2:
 ## Risks and Open Questions
 
 - **Risk — discovery becomes configuration:** even harmless-looking UI navigation can trigger sign-in, pairing, updates, or settings writes. The approved run will use only the exact command allowlist above and will perform no UI navigation.
-- **Risk — wrong execution host:** registry evidence is not proof that observations ran on ACMA-WS014. The local lane will fail closed unless the hostname attestation matches, and the report appendix will record that attestation.
+- **Risk — wrong execution host:** registry evidence is not proof that observations ran on ace-win-2. The local lane will fail closed unless the hostname attestation matches, and the report appendix will record that attestation.
 - **Risk — auth leakage:** CLI diagnostics can reveal account identifiers or paths. Commands and captured excerpts will be allowlisted; raw output will be summarized and scrubbed before entering the public report.
 - **Risk — private PII map unavailable:** the strict private-map scanner cannot run on this host without provisioning configuration, which is outside discovery scope. The report will minimize inputs to official public sources plus allowlisted local fields, will pass the staged legal scan, and will receive an explicit no-client-identifier artifact review before completion.
 - **Risk — absence-of-documentation inference:** failure to find an official feature will not prove that it does not exist. The report will say “not documented in sources checked” and list the exact source coverage.
@@ -284,13 +284,13 @@ Revisions made through r2:
 - **Risk — feature-name conflation:** Remote Control, Trusted Devices, Dispatch, Channels, cloud web, and Desktop scheduled tasks have different execution and identity boundaries. The report will evaluate them as separate rows before considering a combined workflow.
 - **Risk — service-account category error:** Claude Platform WIF/API service accounts and a Team/Enterprise owner identity will not be treated as non-human Remote Control credentials unless an official source explicitly connects those surfaces.
 - **Risk — account ambiguity:** the colleague's exact subscription/workspace type is unknown. The report will compare account classes without inspecting either person's account and will state which conclusion depends on Team/Enterprise confirmation.
-- **Risk — local policy conflict:** an Anthropic capability may exist while workspace policy still keeps ACMA-WS014 non-dispatchable. The recommendation will require both vendor support and local safety gates.
+- **Risk — local policy conflict:** an Anthropic capability may exist while workspace policy still keeps ace-win-2 non-dispatchable. The recommendation will require both vendor support and local safety gates.
 - **Risk — overbuilding fallback:** the workspace already has a no-SSH pull-worker precedent. The report will prefer that smallest reviewed substrate over a new inbound daemon if no official feature fits.
 - **Open — commercial confirmation:** if public official docs do not resolve Team/Enterprise delegation or service-account behavior, the report will identify an Anthropic sales/support confirmation as a blocker rather than infer support.
 
 ## Explicit Non-Goals
 
-- The issue will not register, pair, enroll, authenticate, or remotely control ACMA-WS014.
+- The issue will not register, pair, enroll, authenticate, or remotely control ace-win-2.
 - The issue will not inspect or copy authentication material.
 - The issue will not create an OS account, scheduled task, service, queue, webhook, tunnel, firewall rule, wake timer, or spending control.
 - The issue will not test-dispatch a job or consume paid model/API usage.

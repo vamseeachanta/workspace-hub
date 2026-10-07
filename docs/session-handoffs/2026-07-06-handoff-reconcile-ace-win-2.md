@@ -1,5 +1,5 @@
 ---
-machine: ace-win-2 (ACMA-WS014)
+machine: ace-win-2 (ace-win-2)
 session: machine equivalence reconcile
 date: 2026-07-06
 external_actions: git pushes only
@@ -33,7 +33,7 @@ external_actions: git pushes only
 - `bash scripts/legal/legal-sanity-scan.sh --diff-only` passed before equality-sidecar commit.
 
 ## Remaining Expected Gaps
-- `llm-wiki-acma` still has 6 pre-existing dirty paths and 3 parked stashes. Previous note still applies: do not blindly apply `stash@{0}`; it was reported to reintroduce CRLF corruption and delete `README.md`.
+- `llm-wiki-<client>` still has 6 pre-existing dirty paths and 3 parked stashes. Previous note still applies: do not blindly apply `stash@{0}`; it was reported to reintroduce CRLF corruption and delete `README.md`.
 - `ace-win-2` solver row remains below baseline because the Windows solver probe reports `present` rather than `licensed`; this is operator-only follow-up.
 - `ace-win-2` Hermes provider rows remain divergent because local Hermes memory/skill/runtime surfaces are absent.
 - `memory_freshness` remains missing evidence because the owner-gated memory bridge heartbeat is absent; bridge commit is owner-gated to dev-primary.

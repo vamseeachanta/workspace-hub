@@ -1,0 +1,45 @@
+{
+  "merged_revision": "80da6e09b649707ef7bdb09c9d112f1650bf3d6a",
+  "cli_exit": 0,
+  "dll_version": "11.6c",
+  "summary": {
+    "workflow": "orcaflex_run_batch",
+    "total_cases": 1,
+    "completed": 1,
+    "failed": 0,
+    "workers": 1,
+    "host_cpu_count": 32,
+    "mock": false,
+    "analysis_type": "both",
+    "save_sim": true,
+    "wall_seconds_total": 1.905,
+    "parallel_speedup": 0.215,
+    "started_at_utc": "2026-09-10T02:08:13.866314+00:00",
+    "finished_at_utc": "2026-09-10T02:08:15.771503+00:00"
+  },
+  "verdict": {
+    "artifacts": [
+      "results/cases.csv",
+      "results/batch_summary.json"
+    ],
+    "host_kind": "licensed",
+    "issues": [],
+    "refused": false,
+    "solver_available": true,
+    "solver_identity": "OrcaFlex",
+    "verdict": "PASS",
+    "workflow": "orcaflex_run_batch"
+  },
+  "simulation_state": "4",
+  "sample_count": 4,
+  "finite": true,
+  "tension_min": 40.3575439453125,
+  "tension_max": 44.8665771484375,
+  "worker_thread_policy": "existing executor default; one process only",
+  "context": "local interactive Windows; isolated merged source; existing solver environment; no production queue",
+  "hashes": {
+    "native.yml": "194094c84d4404ab84c608bae909f1d1809ed4b4834d1facc7e950acbad810dd",
+    "input.yml": "ebf291b0cddc013d8cd400b8edaf78b3397c9fb34cc8b191eb0dead02a09072a",
+    "batch_runs\\sims\\case_0_native.sim": "2bfd22751b3367b39c702ff1a4755e789b157d0839d9f209e9af4dc030e95e07"
+  }
+}

@@ -18,7 +18,7 @@ No `/mnt/elements` source data or `_from_elements/` staging folders were deleted
 | 5 | `lng-a-62092-sesa` | `/mnt/ace/lng-a/62092_sesa` | `/mnt/ace/lng-a/62092_sesa/_from_elements` | 418 | 1,465,267,463 | 0 | 0 | 0 | PASS |
 | 6 | `lng-a-university` | `/mnt/ace/lng-a/training` | `/mnt/ace/lng-a/training/_from_elements` | 564 | 11,060,962,662 | 0 | 0 | 0 | PASS |
 | 7 | `lng-a-codes-specs` | `/mnt/ace/lng-a/codes` | `/mnt/ace/lng-a/codes/_from_elements/codes-lng-a` | 35,197 | 26,411,658,490 | 0 | 0 | 0 | PASS |
-| 8 | `mkt-a-31522-woodfibre` | `/mnt/ace/mkt-a/31522-woodfibre-lng` | `/mnt/ace/mkt-a/31522-woodfibre-lng/_from_elements` | 5,364 | 1,879,405,139,855 | 0 | 0 | 0 | PASS |
+| 8 | `mkt-a-31522-lng-terminal-a` | `/mnt/ace/mkt-a/31522-lng-terminal-a` | `/mnt/ace/mkt-a/31522-lng-terminal-a/_from_elements` | 5,364 | 1,879,405,139,855 | 0 | 0 | 0 | PASS |
 
 ## Verification artifacts
 

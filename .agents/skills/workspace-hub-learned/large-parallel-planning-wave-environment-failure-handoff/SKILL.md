@@ -12,13 +12,13 @@ tags: [planning, overnight, parallel, github, handoff, environment-failure]
 Use when:
 - running a large (4-10 lane) planning-only wave to move GitHub issues toward `status:plan-review`
 - multiple workers finish with strong planning evidence, but local writes or GitHub mutations fail
-- Codex quota exhaustion forces provider failover mid-wave
+- Claude quota exhaustion forces provider failover mid-wave
 - you need to exit without losing which issues are substantively ready vs still incomplete
 
 ## Trigger pattern
 
 Typical signals:
-- Codex lanes exit with `You've hit your limit · resets 2pm (America/Chicago)`
+- Claude lanes exit with `You've hit your limit · resets 2pm (America/Chicago)`
 - fallback Codex lanes hit sandbox/runtime failures like `bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted`
 - safe-path writes fail (`apply_patch` / local file creation)
 - GitHub issue comments / labels / branch creation are cancelled
@@ -83,7 +83,7 @@ Next-session interpretation:
 
 ## Provider-failover rule
 
-When Codex quota is exhausted in a large planning wave:
+When Claude quota is exhausted in a large planning wave:
 - relaunch only the affected lanes with Codex or another provider in the same isolated worktrees
 - do **not** restart the whole wave
 - if the failover provider then also fails at the environment layer, stop broad escalation

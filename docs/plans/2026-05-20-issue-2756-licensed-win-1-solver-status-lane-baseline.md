@@ -30,7 +30,7 @@ From `config/workstations/registry.yaml`:
 - Machine key: `licensed-win-1`
 - OS: `windows`
 - Role: `simulation-license-host`
-- Workspace root: `D:\workspace-hub`
+- Workspace root: `<workspace-root>\workspace-hub`
 - SSH: `null`
 - Capabilities: `claude`, `codex`, `gemini`; `bash`; `orcaflex`, `ansys`, `git`
 - Storage local: `D:\`
@@ -43,7 +43,7 @@ From `docs/ops/2026-05-04-multimachine-baseline-inventory.md`:
 
 - `licensed-win-1` is a licensed solver host.
 - It should run OrcaWave/OrcaFlex/ANSYS through Windows Task Scheduler + Git-backed queue after bootstrap.
-- Windows solver workspace is `D:\workspace-hub`; Linux should not mount/mutate Windows solver workspaces.
+- Windows solver workspace is `<workspace-root>\workspace-hub`; Linux should not mount/mutate Windows solver workspaces.
 
 From `docs/ops/telegram-hermes-multimachine-control-plane.md`:
 

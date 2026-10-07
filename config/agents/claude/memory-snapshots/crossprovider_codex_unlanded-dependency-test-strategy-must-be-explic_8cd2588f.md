@@ -8,6 +8,6 @@ metadata:
   tags: [testing, dependency-management, plan-discipline]
 ---
 
-Several Ballymore-conversion plans depend on unlanded APIs (#601/#602) without declaring whether tests xfail, skip, mock, or enforce land-order until dependencies materialize. This ambiguity cascades to CI behavior and blocks clear validation timing. Plans with test dependencies on unlanded issues must explicitly specify strategy and CI gating.
+Several gom-tieback-a-conversion plans depend on unlanded APIs (#601/#602) without declaring whether tests xfail, skip, mock, or enforce land-order until dependencies materialize. This ambiguity cascades to CI behavior and blocks clear validation timing. Plans with test dependencies on unlanded issues must explicitly specify strategy and CI gating.
 
 *(Distilled from codex sessions by bridge-providers-to-dream; the Claude dream consolidates and prunes these.)*

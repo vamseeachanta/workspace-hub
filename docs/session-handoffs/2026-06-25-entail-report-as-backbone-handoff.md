@@ -45,7 +45,7 @@ Repo: `/mnt/local-analysis/workspace-hub`. Working-tree change:
 
 The building-block report pattern already exists in **exactly one** module —
 `digitalmodel/src/digitalmodel/hydrodynamics/diffraction/` (`report_builders_header/_hydrostatics/_responses.py` + `report_data_models.py` + `report_generator.py`).
-**31 other report generators** in digitalmodel are snowflakes (ansys, cathodic_protection, fatigue, structural/parametric, marine_ops/installation/suitability, asset_integrity/ffs, naval_architecture/b1528_sirocco_*, …). Deckhand deliverables are hand-authored HTML.
+**31 other report generators** in digitalmodel are snowflakes (ansys, cathodic_protection, fatigue, structural/parametric, marine_ops/installation/suitability, asset_integrity/ffs, naval_architecture/proj_a_vessel_s_*, …). Deckhand deliverables are hand-authored HTML.
 → Promote the diffraction pattern to a shared `digitalmodel.reporting` library; that is issue A, the keystone.
 
 ## Resume here (suggested order)

@@ -2,12 +2,12 @@
 name: seo-optimizer
 description: SEO optimization toolkit with scoring, keyword research, and technical
   SEO auditing. Use for improving search rankings, content optimization, and technical
-  SEO fixes. Based on alirezarezvani/Codex-skills.
+  SEO fixes. Based on alirezarezvani/claude-skills.
 type: reference
 version: 1.0.0
 category: business
 last_updated: 2026-01-19
-source: https://github.com/alirezarezvani/Codex-skills
+source: https://github.com/alirezarezvani/claude-skills
 related_skills:
 - content-strategy
 - competitive-analysis
@@ -50,7 +50,7 @@ This skill provides comprehensive SEO optimization capabilities including conten
 
 ## Version History
 
-- **1.0.0** (2026-01-19): Initial release adapted from alirezarezvani/Codex-skills
+- **1.0.0** (2026-01-19): Initial release adapted from alirezarezvani/claude-skills
 
 ## Sub-Skills
 

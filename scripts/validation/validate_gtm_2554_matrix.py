@@ -4,7 +4,7 @@
 The gate intentionally validates only repository-public artifacts. It parses the
 Markdown scaffold as the source of truth, derives semantic target counts, checks
 required row fields, compares generated counts to the scaffold/summary count
-claims, and screens for public-contact leakage patterns.
+claims. Identifier review belongs to the final report.
 """
 from __future__ import annotations
 
@@ -191,10 +191,7 @@ def validate(rows: list[dict[str, object]], scaffold: str, summary: str, deny_hi
             errors.append(f"{key}={value} does not match derived {expected}")
     if live_count < MIN_LIVE_TARGETS:
         errors.append(f"live_countable={live_count} is below {MIN_LIVE_TARGETS}")
-    if deny_hits:
-        errors.append(f"deny_hits={len(deny_hits)}")
-    if contact_hits:
-        errors.append(f"contact_hits={len(contact_hits)}")
+    # Legacy identifier-hit arguments are advisory compatibility inputs only.
     for row in rows:
         missing = row["missing_fields"]
         if missing:
@@ -218,13 +215,12 @@ def render_scan(rows: list[dict[str, object]], deny_hits: list[tuple[str, str]],
         f"| {idx} | {row['target']} | {row['title']} | {row['priority']} | {row['status']} | {', '.join(row['missing_fields']) or 'none'} |"
         for idx, row in enumerate(rows, 1)
     )
-    deny = "- none" if not deny_hits else "\n".join(f"- `{path}`: `{pattern}`" for path, pattern in deny_hits)
-    contacts = "- none" if not contact_hits else "\n".join(f"- `{path}`: {kind} `{value}`" for path, kind, value in contact_hits)
     status = "PASS" if not errors else "FAIL"
     error_text = "- none" if not errors else "\n".join(f"- {error}" for error in errors)
-    return f"""# Legal/privacy and semantic-count validation — issue #2554 public matrix
+    return f"""# Evidence and semantic-count validation — issue #2554 public matrix
 
-Status: **{status}**
+Evidence/count status: **{status}**
+Identifier review: not performed; verify the final report and outgoing bundle.
 Date: 2026-04-30
 Generator: `uv run python scripts/validation/validate_gtm_2554_matrix.py --write-artifact`
 Scope:
@@ -235,26 +231,16 @@ Scope:
 
 ## Why this exists
 
-The r1 post-fill review found that `scripts/legal/legal-sanity-scan.sh --diff-only` can false-pass once the matrix files are already committed. This artifact is generated from the scaffold and targeted committed files so #2554 promotion does not depend on an empty diff or hand-counted rows.
+This artifact validates scaffold evidence and derived counts. Identifier-only gates are retired under issue 3936; use `docs/standards/FINAL_REPORT_VERIFICATION.md` for manual final-report review.
 
 ## Results
 
-- Legal deny-list fixed-string hits: {len(deny_hits)}
-- Contact-pattern hits (email, phone-like, individual LinkedIn URL, simple named-person-with-title pattern): {len(contact_hits)}
 - Semantic live/countable vessel/operator target count: {live_count}
 - High-priority row count: {high_count}
 
 ## Validation errors
 
 {error_text}
-
-## Legal deny-list hits
-
-{deny}
-
-## Contact-pattern hits
-
-{contacts}
 
 ## Semantic target inventory (visual rows are contiguous; original target heading preserved)
 
@@ -264,7 +250,7 @@ The r1 post-fill review found that `scripts/legal/legal-sanity-scan.sh --diff-on
 
 ## Promotion note
 
-This scan does not authorize outreach or send. It supports the #2554 plan-review promotion gate by parsing the scaffold, deriving live/countable and High-priority counts, checking required row fields, rejecting disallowed evidence URL hosts and unbounded `PENDING` deep-link fields for live rows, comparing count claims across artifacts, checking the plan index for conflict-marker leakage, and screening direct contact leakage patterns. Manual public/private boundary review remains required for semantic named-person leakage that no regex can prove exhaustively.
+This scan does not authorize outreach or send. It supports the #2554 plan-review promotion gate by parsing the scaffold, deriving live/countable and High-priority counts, checking required row fields, rejecting disallowed evidence URL hosts and unbounded `PENDING` deep-link fields for live rows, comparing count claims across artifacts, checking the plan index for conflict-marker leakage. Identifier review is separate and manual; a passing evidence/count result grants no disclosure or outreach permission.
 """
 
 
@@ -275,7 +261,7 @@ def main() -> int:
     scaffold = SCAFFOLD.read_text()
     summary = SUMMARY.read_text()
     rows = parse_rows(scaffold)
-    deny_hits, contact_hits = scan_contacts([PLAN, SCAFFOLD, SUMMARY, README])
+    deny_hits, contact_hits = [], []  # Retired: no automatic identifier scan.
     errors = validate(rows, scaffold, summary, deny_hits, contact_hits)
     readme_text = README.read_text()
     if any(marker in readme_text for marker in ("<<<<<<<", "=======", ">>>>>>>")):
@@ -285,7 +271,7 @@ def main() -> int:
         SCAN.write_text(output)
     live_count = sum(1 for row in rows if row["counted"])
     high_count = sum(1 for row in rows if row["priority"] == "High")
-    print(f"status={'PASS' if not errors else 'FAIL'} live_countable={live_count} high={high_count} deny_hits={len(deny_hits)} contact_hits={len(contact_hits)} errors={len(errors)}")
+    print(f"status={'PASS' if not errors else 'FAIL'} live_countable={live_count} high={high_count} identifier_review=not-performed errors={len(errors)}")
     for error in errors:
         print(f"ERROR: {error}")
     return 1 if errors else 0

@@ -13,8 +13,8 @@ scripts_exempt: true
 
 
 Skills are discovered from:
-1. `.Codex/skills/` in project directory
-2. `~/.Codex/skills/` for user-level skills
+1. `.claude/skills/` in project directory
+2. `~/.claude/skills/` for user-level skills
 
 ## Skill Loading
 

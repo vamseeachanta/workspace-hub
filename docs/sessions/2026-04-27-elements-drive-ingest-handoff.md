@@ -30,12 +30,12 @@
 | `qgis`                           | **NEEDS CLARIFICATION** — billable client (which #?) or `digitalmodel/tools/qgis/` if reusable     |
 | `Riser Toolbox`                  | `digitalmodel/references/riser-toolbox/`                                                           |
 | `Suction Pile Sizing`            | `digitalmodel/references/suction-pile-sizing/`                                                     |
-| `Woodfibre`                      | `client-c/<NNNN>-woodfibre-lng/` — **NEEDS PROJECT NUMBER**                                 |
+| `LNG terminal A`                      | `client-c/<NNNN>-lng-terminal-a/` — **NEEDS PROJECT NUMBER**                                 |
 
 ## Open questions — ask the user up front
 
 1. `qgis`: client project (which client + 4-digit code) OR general workflow?
-2. `Woodfibre`: 4-digit AceEngineer project code?
+2. `LNG terminal A`: 4-digit AceEngineer project code?
 3. `casa_grande_77017`: confirm `achantas-data/assethold/casa-grande-77017/` target, or relocate under a new top-level `/mnt/ace/assets/` bucket?
 4. Staging pattern: per-destination `_from_elements_2026-04-27/` subdir, OR single top-level mirror at `/mnt/ace/_inbox/elements_2026-04-27/` that we triage?
 5. Should `client-c/` be renamed to fit #1544's repo-name convention, or formally exempted as a category bucket?

@@ -19,7 +19,7 @@ def test_extract_document_links_from_html():
         <a href="/docs/report.pdf">Report</a>
         <a href="https://example.com/data.xlsx">Data</a>
         <a href="/page.html">Page</a>
-        <a href="mailto:test@test.com">Email</a>
+        <a href="mailto:test@example.com">Email</a>
     </body></html>
     """
     links = extract_document_links(html, base_url="https://example.com")

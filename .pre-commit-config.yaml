@@ -4,7 +4,7 @@
 # Test: echo "bad message" | pre-commit run commitizen --hook-stage commit-msg
 
 # Auto-wire both stages so `pre-commit install` enables the commit-msg hooks
-# (the #3169 client-PII commit-message guard depends on this).
+# (commitizen still validates conventional commit messages).
 default_install_hook_types: [pre-commit, commit-msg]
 
 repos:
@@ -37,31 +37,6 @@ repos:
         # Flip to '--enforce' once trusted. The script self-scopes; pass staged files.
         files: '^((scripts|config)/.*\.(sh|py|ya?ml|json|md)|\.github/workflows/.*\.ya?ml|\.(claude|agents)/(skills|agent-library)/.*\.(md|sh|py|ya?ml|json))$'
         exclude: '^(config/agents/model-registry\.yaml$|scripts/review/results/)'
-      - id: email-fixture-redaction-check
-        name: email fixture redaction check
-        entry: python scripts/email/fixture-redaction-check.py
-        language: system
-        files: '^tests/fixtures/email/.*\.(ya?ml|txt|md)$'
-      - id: legal-client-pii
-        name: no client identifiers in tracked files (#3095/#3099)
-        # Blocks staged files that contain a client identifier. Reads a PRIVATE
-        # local map (config/agents/.client-codename-map.local.yaml); degrades-open
-        # if absent. The #3099 CI gate is the strict backstop. Bypass: LEGAL_PII_ALLOW=1.
-        entry: uv run python scripts/legal/check-client-pii.py --staged
-        language: system
-        pass_filenames: false
-        always_run: true
-      - id: legal-client-pii-commit-msg
-        name: no client identifiers in the commit message (#3095/#3169)
-        # Blocks a commit whose MESSAGE contains a client identifier (the
-        # file-content guard above does not see commit messages). Reads the same
-        # PRIVATE local map; degrades-open if absent (parity with --staged). The
-        # value is never printed. Bypass: LEGAL_PII_ALLOW=1.
-        # pre-commit appends the commit-message file path → it becomes the value
-        # of the trailing --message-file argument.
-        entry: uv run python scripts/legal/check-client-pii.py --source "commit message" --message-file
-        language: system
-        stages: [commit-msg]
 
   - repo: https://github.com/gitleaks/gitleaks
     rev: v8.21.2

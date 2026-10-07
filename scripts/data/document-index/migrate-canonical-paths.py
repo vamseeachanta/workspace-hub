@@ -22,7 +22,8 @@ DEFAULT_TARGETS = (
     "data/document-index/coverage-audit.yaml",
     "data/document-index/llm-wiki-external-source-priority-queue.yaml",
     "data/document-index/summary-extraction-plan.yaml",
-    "data/document-index/cross-drive-dedup-report.json",
+    # C20/S01: the cross-drive de-duplication report is a local, git-ignored
+    # working file; it is no longer a tracked target.
 )
 
 RETENTION_WARNING = (

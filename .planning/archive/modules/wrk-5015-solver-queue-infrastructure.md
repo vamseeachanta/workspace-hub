@@ -1,13 +1,13 @@
 # WRK-5015 — Solver Queue Infrastructure Plan
 
-**Issue:** GH-1503 | **Machine:** acma-ansys05 (licensed-win-1)
+**Issue:** GH-1503 | **Machine:** ace-win-1 (licensed-win-1)
 **Approved by:** vamseeachanta (2026-03-30)
 
 ---
 
 ## Context
 
-This machine (`acma-ansys05`) holds an OrcFxAPI 11.6c licence. The goal is to automate
+This machine (`ace-win-1`) holds an OrcFxAPI 11.6c licence. The goal is to automate
 job processing so that `dev-primary` can push solver jobs via git and have them
 auto-executed here every 30 minutes without manual logins.
 
@@ -89,7 +89,7 @@ Entry point:  python process-queue.py [--repo-root PATH] [--dry-run]
 
 ```powershell
 # Must be run as Administrator
-$RepoRoot = "D:\workspace-hub"
+$RepoRoot = "<workspace-root>\workspace-hub"
 $PythonExe = (& uv python find)
 $ScriptPath = "$RepoRoot\scripts\solver\process-queue.py"
 $Action = New-ScheduledTaskAction -Execute $PythonExe -Argument $ScriptPath -WorkingDirectory $RepoRoot
@@ -140,7 +140,7 @@ echo "Job submitted: ${JOBID}"
 Run the full issue verification block from PowerShell (as Administrator):
 
 ```powershell
-cd D:\workspace-hub
+cd <workspace-root>\workspace-hub
 git pull origin main
 python --version
 python -c "import OrcFxAPI; print(f'OrcFxAPI DLL: {OrcFxAPI.DLLVersion()}')"

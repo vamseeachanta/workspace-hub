@@ -107,15 +107,15 @@ BUCKETS = [
     },
     {
         "order": 8,
-        "bucket": "mkt-a-31522-woodfibre",
+        "bucket": "mkt-a-31522-lng-terminal-a",
         "repo_bucket": "mkt-a",
-        "parent": "/mnt/ace/mkt-a/31522-woodfibre-lng",
-        "stage": "/mnt/ace/mkt-a/31522-woodfibre-lng/_from_elements",
+        "parent": "/mnt/ace/mkt-a/31522-lng-terminal-a",
+        "stage": "/mnt/ace/mkt-a/31522-lng-terminal-a/_from_elements",
         "wiki": "lng-projects",
         "content_type": "lng-project",
         "extract_priority": "metadata-only",
-        "summary": "Woodfibre LNG project corpus for AceEngineer project 31522; very large corpus, metadata-first with curated extraction later.",
-        "tags": ["elements-ingest", "lng", "woodfibre", "mkt-a", "project-31522"],
+        "summary": "LNG terminal A project corpus for AceEngineer project 31522; very large corpus, metadata-first with curated extraction later.",
+        "tags": ["elements-ingest", "lng", "lng-terminal-a", "mkt-a", "project-31522"],
     },
 ]
 
@@ -366,7 +366,7 @@ def main() -> int:
         "",
         f"Extractable high/medium-priority candidates written to `{cand_tsv.relative_to(ROOT)}`: {len(candidates):,} records.",
         "",
-        "Recommended first pass: suction pile sizing, riser toolbox, QGIS, then SESA/Woodfibre selected LNG project files.",
+        "Recommended first pass: suction pile sizing, riser toolbox, QGIS, then SESA/LNG terminal A selected LNG project files.",
     ])
     report.write_text("\n".join(lines) + "\n", encoding="utf-8")
 

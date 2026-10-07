@@ -10,7 +10,7 @@ Fresh GitHub verification showed both preserved issue branches were merged to `m
 
 | PR | State | Merged at | Merge commit | Head branch | Head OID |
 |---:|---|---|---|---|---|
-| #2583 | MERGED | 2026-05-02T11:23:56Z | `65129e2b855d4ebc86fa5f1a9c32bbf3ff1a5b53` | `codex/issue-2544-woodfibre-pointer-v2` | `ec1a3d728cb30325156876515bf3c3f5fe83ac26` |
+| #2583 | MERGED | 2026-05-02T11:23:56Z | `65129e2b855d4ebc86fa5f1a9c32bbf3ff1a5b53` | `codex/issue-2544-lng-terminal-a-pointer-v2` | `ec1a3d728cb30325156876515bf3c3f5fe83ac26` |
 | #2584 | MERGED | 2026-05-02T11:24:10Z | `dcc315e8cd674984e7654ecb9771e2590ce2df68` | `codex/issue-2567-standards-rudder-v2` | `781510448bdcd8dbece10bcefe18cdf6fe8aeda3` |
 
 ## Removed contained worktrees / branches
@@ -20,7 +20,7 @@ After Git recovered from earlier status/diff hangs, the following local branches
 | Branch | Head prefix | `origin/main..branch` | Result |
 |---|---:|---:|---|
 | `integration/main-2544-2567` | `641d96dac4fb` | 0 | worktree removed; branch deleted |
-| `codex/issue-2544-woodfibre-pointer-v2` | `ec1a3d728cb3` | 0 | worktree removed; branch deleted |
+| `codex/issue-2544-lng-terminal-a-pointer-v2` | `ec1a3d728cb3` | 0 | worktree removed; branch deleted |
 | `codex/issue-2567-standards-rudder-v2` | `781510448bdc` | 0 | worktree removed; branch deleted |
 
 Removed worktrees:

@@ -22,7 +22,7 @@ export POSTGRES_PASSWORD=$(openssl rand -hex 32)
 docker compose up -d
 
 # Access UI at http://localhost:8000
-# Default: admin@windmill.dev / changeme
+# Default: the upstream default admin email / changeme
 ```
 
 ### 2. Basic Python Script

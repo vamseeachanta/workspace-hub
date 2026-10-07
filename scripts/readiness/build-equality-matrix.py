@@ -362,6 +362,36 @@ def harness_checkup_verdict(report: dict) -> str:
     hc = report.get("dimensions", {}).get("harness_checkup")
     if not isinstance(hc, dict) or not isinstance(hc.get("audited_at"), str):
         return "MISSING-EVIDENCE"
+    sok = hc.get("settings_parse_ok")
+    install = hc.get("install_method")
+    if not isinstance(sok, bool) or not isinstance(install, str) or not install:
+        return "MISSING-EVIDENCE"
+    dup = hc.get("duplicate_installs")
+    bad = hc.get("broken_agents")
+    if (sok is False
+            or (isinstance(dup, int) and not isinstance(dup, bool) and dup > 0)
+            or (isinstance(bad, int) and not isinstance(bad, bool) and bad > 0)):
+        return "CHECKUP-BROKEN"
+    us = hc.get("unused_skills")
+    up = hc.get("unused_plugins")
+    if (hc.get("version_current") is False
+            or hc.get("auto_mode_default") is False
+            or (isinstance(us, int) and not isinstance(us, bool) and us > CHECKUP_CLUTTER_SKILLS)
+            or (isinstance(up, int) and not isinstance(up, bool) and up > 0)):
+        return "CHECKUP-DRIFTED"
+    return "CHECKUP-OK"
+
+
+# ── publish-health verdict (#3502) — is the equivalence publish landing, fast? ──
+PUBLISH_SLOW_S = 60.0
+PUBLISH_STALE_H = 26.0
+
+
+def publish_health_verdict(report: dict, now: datetime | None = None) -> str:
+    """Grade the most recent equivalence-state publish, failing closed on bad evidence."""
+    ph = report.get("dimensions", {}).get("publish_health")
+    if not isinstance(ph, dict):
+        return "MISSING-EVIDENCE"
     stamp = ph.get("last_publish_at")
     if (not isinstance(stamp, str) or
             not re.fullmatch(r"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})", stamp)):
@@ -512,6 +542,8 @@ def verdict_for(dim: str, machine: str, reports: dict, baselines: dict,
         return skill_link_health_verdict(rep)
     if dim == "harness_checkup":            # /doctor hygiene — per-box facts (currency/settings/mode)
         return harness_checkup_verdict(rep)
+    if dim == "publish_health":             # equivalence publish landing/speed — per-box facts
+        return publish_health_verdict(rep)
     if dim in COLD_DIMS:
         return cold_verdict(dim, rep, baselines.get(machine), probed_repos)
     # Stale peers are EXCLUDED from the uniform value list so a stale report can never
@@ -541,7 +573,8 @@ def load_reports() -> dict[str, dict]:
 
 BASE_DISPLAY_DIMS = ["compute", "data_access", "solvers", "harness", "python_cmd", "skills",
                      "kanban", "memory", "behavior", "scheduler", "session_curation",
-                     "skill_currency", "memory_freshness", "skill_link_health", "harness_checkup"]
+                     "skill_currency", "memory_freshness", "skill_link_health", "harness_checkup",
+                     "publish_health"]
 DISPLAY_DIMS = BASE_DISPLAY_DIMS + provider_rows()
 
 # ── render grouping (#2801 collapsible-rows enhancement) ─────────────────────
@@ -565,6 +598,8 @@ GROUPS = [
     ("memory-freshness", "Memory freshness — memory surfaces refreshed recently", ["memory_freshness"]),
     ("skill-links", "Skill-link health — shared skills propagated to ecosystem repos", ["skill_link_health"]),
     ("harness-checkup", "Harness checkup — /doctor hygiene per box (version · settings · mode)", ["harness_checkup"]),
+    ("publish-health", "Publish health — equivalence fingerprint publish landing fast on every box",
+        ["publish_health"]),
 ]
 
 # Worst-of severity for the collapsed group rollup. Higher = more operator attention.
@@ -572,14 +607,14 @@ GROUPS = [
 # all-good group collapses to a single green "OK" so a clean box reads at a glance.
 ROLLUP_SEVERITY = {
     "BELOW-BASELINE": 6, "DIVERGES": 6, "CURATED-EXPIRED": 6, "SKILLS-DRIFTED": 6, "MEMORY-EXPIRED": 6,
-    "CHECKUP-BROKEN": 6,
+    "CHECKUP-BROKEN": 6, "PUBLISH-GATED": 6,
     "MISSING-BASELINE": 5, "NO-MAJORITY": 5, "CURATED-STALE": 5, "SKILLS-INDEX-STALE": 5, "MEMORY-STALE": 5,
-    "SKILL-LINKS-DRIFTED": 5, "CHECKUP-DRIFTED": 5,
+    "SKILL-LINKS-DRIFTED": 5, "CHECKUP-DRIFTED": 5, "PUBLISH-STALE": 5,
     "MISSING-EVIDENCE": 4, "PENDING": 4,
     "STALE-CHECKOUT": 3,
     "EXPECTED-DIFF": 1, "EXPECTED-DIVERGENCE": 1, "UNREACHABLE": 1, "ABSENT": 1,
     "CONFORMS": 0, "EQUAL": 0, "PARITY": 0, "CURATED-FRESH": 0, "SKILLS-CURRENT": 0, "MEMORY-FRESH": 0,
-    "SKILL-LINKS-OK": 0, "CHECKUP-OK": 0,
+    "SKILL-LINKS-OK": 0, "CHECKUP-OK": 0, "PUBLISH-OK": 0,
 }
 
 
@@ -598,7 +633,7 @@ def rollup_verdict(verdicts: list[str]) -> tuple[str, str]:
 #    .claude/skills/workspace-hub/ecosystem-equivalence-reconcile/SKILL.md + reconcile-ecosystem.sh
 OK_VERDICTS = {"CONFORMS", "EQUAL", "PARITY", "EXPECTED-DIFF", "EXPECTED-DIVERGENCE",
                "UNREACHABLE", "ABSENT", "CURATED-FRESH", "SKILLS-CURRENT", "MEMORY-FRESH",
-               "SKILL-LINKS-OK", "CHECKUP-OK"}
+               "SKILL-LINKS-OK", "CHECKUP-OK", "PUBLISH-OK"}
 
 
 def remediate(dim: str, verdict: str) -> tuple[str, str, bool] | None:
@@ -668,6 +703,13 @@ def remediate(dim: str, verdict: str) -> tuple[str, str, bool] | None:
         return ("harness hygiene drift — behind the latest release, auto mode isn't the default, or "
                 "unused skills/plugins have accumulated; run /doctor (claude update; set auto default; "
                 "prune unused extensions)", "this box", False)
+    if verdict == "PUBLISH-GATED":
+        return ("last equivalence publish failed or took gate-length time (>60s) — the #3500 "
+                "pre-push RUN_ALL deadlock signature; check the pre-push hook and publish bypass",
+                "this box", False)
+    if verdict == "PUBLISH-STALE":
+        return ("no equivalence publish in >26h — run equivalence-sentinel.sh and inspect its cron logs",
+                "this box", False)
     return ("investigate this cell's report", "operator", False)
 
 

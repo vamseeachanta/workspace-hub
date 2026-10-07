@@ -18,7 +18,7 @@ Reconcile this box → fleet-commit all repos (no lost work) → push machine eq
 | deckhand | 28 | **−25 rebased clean** | ✅ |
 | deckhand-sandbox | 27 + 6 prior commits | clean | ✅ (`feat/marketing-cta-polish`) |
 | llm-wiki | 5 | **−187 rebased clean** | ✅ |
-| llm-wiki-baez | 7 | up to date | ✅ |
+| llm-wiki-client-g | 7 | up to date | ✅ |
 | llm-wiki-family | 2 | +1 ff | ✅ |
 | llm-wiki-packs | 4 | up to date | ✅ |
 | sabithaandkrishnaestates | — | rebased +1 | ✅ (pushed unpushed commit) |

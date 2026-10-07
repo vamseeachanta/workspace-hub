@@ -43,7 +43,7 @@ fresh agent that did not read the local code would attempt redundant work.
 1. Extract concept_type + water_depth + production_rate correlations from `SubseaProject` records
 2. Build decision tree: `(water_depth, reservoir_size, distance_to_infra)` → predicted concept type
 3. Generate concept selection probability matrix by water depth band
-4. Validate against 6 case studies: Solveig, Sverdrup, Mad Dog, Appomattox, Perdido, Whale
+4. Validate against 6 case studies: Solveig, Sverdrup, Mad Dog, Appomattox, GoM spar A, Whale
 5. Wire into `concept_selection.py` as an empirical weighting factor
 
 **Target files named in issue:**
@@ -91,13 +91,13 @@ Decision tree logic (lines 358–443 of benchmarks.py):
 ### Case studies available locally
 
 **In `test_benchmarks.py` `CASE_STUDY_RECORDS` fixture (15 GoM fields):**
-Perdido (Spar, 2438m), Mars (TLP, 896m), Atlantis (Semi, 2150m), Thunder Horse
+GoM spar A (Spar, 2438m), Mars (TLP, 896m), Atlantis (Semi, 2150m), Thunder Horse
 (Semi, 1844m), Mad Dog (Spar, 1311m), Appomattox (Semi, 2195m), Whale (Semi,
 1372m), Stones (FPSO, 2900m), Lucius (Spar, 2164m), Ursa (TLP, 1158m),
 Na Kika (Semi, 1920m), Holstein (Spar, 1325m), Shenzi (TLP, 1311m),
 Constitution (Spar, 1524m), Great White (Spar, 2438m)
 
-**Issue-specified cases present locally:** Mad Dog ✅, Appomattox ✅, Perdido ✅, Whale ✅  
+**Issue-specified cases present locally:** Mad Dog ✅, Appomattox ✅, GoM spar A ✅, Whale ✅  
 **Issue-specified cases MISSING:** Solveig ✗, Sverdrup ✗  
 (These are Norwegian shelf fields; no public water depth / reservoir data is
 encoded in the repo. The implementation uses GoM analogues instead.)
@@ -212,7 +212,7 @@ git -C digitalmodel log --oneline --grep="2053"
    - concept_selection_with_benchmarks() — wired into concept_selection.py
    
    Tests: 26 tests in test_concept_probability.py + 21 in test_benchmarks.py.
-   Case studies: 15 GoM fields (Mad Dog, Appomattox, Perdido, Whale included).
+   Case studies: 15 GoM fields (Mad Dog, Appomattox, GoM spar A, Whale included).
    Solveig and Sverdrup omitted — no authoritative public reservoir data.
    ```
 

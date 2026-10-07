@@ -73,6 +73,12 @@ python scripts/gtm/job-market-scanner.py --keywords "OrcaFlex engineer,mooring e
 
 ## Output Files
 
+Every output file is passed through the identifier gate's redactor
+(`scripts/legal/public_redaction.py`) at the end of each run, so client and
+vendor names on the deny list are abstracted before anything is committed to
+this public repository (owner decision S01, 2026-09-27). No private host
+setting is needed to run the scan.
+
 | File | Purpose | Git-tracked? |
 |------|---------|-------------|
 | `dashboard.md` | Summary dashboard (auto-generated) | ✅ |

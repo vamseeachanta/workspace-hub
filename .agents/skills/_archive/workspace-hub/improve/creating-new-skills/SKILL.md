@@ -11,8 +11,8 @@ scripts_exempt: true
 
 ## Creating New Skills
 
-1. Search `.Codex/skills/**/*.md` for existing coverage
-2. If no match, create at `.Codex/skills/<category>/<subcategory>/<name>/SKILL.md`
+1. Search `.claude/skills/**/*.md` for existing coverage
+2. If no match, create at `.claude/skills/<category>/<subcategory>/<name>/SKILL.md`
 3. Follow existing SKILL.md template (YAML frontmatter + markdown sections)
 4. Mark as `auto_generated: true` in frontmatter
 5. Log in changelog with source pattern evidence
@@ -37,6 +37,6 @@ scripts_exempt: true
 
 ## Archiving Skills
 
-1. Move from `.Codex/skills/<category>/` to `.Codex/skills/_archive/<category>/`
+1. Move from `.claude/skills/<category>/` to `.claude/skills/_archive/<category>/`
 2. Add archive metadata: `archive_date`, `reason`, `original_path`
 3. Update any cross-references in other skills

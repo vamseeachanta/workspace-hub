@@ -17,7 +17,7 @@ Actionable enforcement of the AI Review Routing Policy (`docs/standards/AI_REVIE
 
 | Provider | Role | Scope |
 |----------|------|-------|
-| **Codex** | Default orchestrator | Task framing, planning, routing, repo-facing workflow |
+| **Claude Code** | Default orchestrator | Task framing, planning, routing, repo-facing workflow |
 | **Codex** | Default coding worker & adversarial reviewer | Bounded implementation, test writing, refactors, diff review |
 | **Gemini** | Default adversarial reviewer | Architecture review, large-context research, plan & code review |
 
@@ -26,14 +26,14 @@ Actionable enforcement of the AI Review Routing Policy (`docs/standards/AI_REVIE
 All plan-stage and code/artifact-stage work gets reviewed by ALL three agents unless the user explicitly scopes down.
 
 ### Plan review
-1. Codex frames the plan
+1. Claude frames the plan
 2. Codex reviews for implementation feasibility
 3. Gemini reviews for architecture and scope
 
 ### Code review
 1. Implementation agent produces the diff
 2. Two other agents review independently
-3. Codex synthesizes the combined review result
+3. Claude synthesizes the combined review result
 
 ## Reviewer Stance (mandatory)
 
@@ -63,7 +63,7 @@ A narrower review is allowed ONLY when:
 ## Enforcement
 
 - The pre-push review gate (`scripts/enforcement/require-review-on-push.sh`) checks for review markers
-- Cross-review hook: `.Codex/hooks/cross-review-gate.sh`
+- Cross-review hook: `.claude/hooks/cross-review-gate.sh`
 - Compliance tracked by: `scripts/enforcement/compliance-dashboard.sh`
 
 ## When to invoke this skill

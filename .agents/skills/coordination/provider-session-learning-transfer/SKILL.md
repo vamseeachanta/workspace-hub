@@ -12,7 +12,7 @@ Use when the user asks to assess recent AI-provider sessions and push the learni
 ## When to use
 - "Assess recent/unassessed sessions"
 - "Transfer learnings to the repo ecosystem"
-- "Update issue notes before a dedicated Codex/Codex/Gemini session"
+- "Update issue notes before a dedicated Claude/Codex/Gemini session"
 - "Review provider activity since the last audit/report"
 
 ## Core idea
@@ -40,7 +40,7 @@ Capture the prior `generated_at` timestamp. This is the boundary for "unassessed
 
 ### 2. Inventory provider log coverage
 Check for `session_*.jsonl` under:
-- `logs/orchestrator/Codex/`
+- `logs/orchestrator/claude/`
 - `logs/orchestrator/codex/`
 - `logs/orchestrator/hermes/`
 - `logs/orchestrator/gemini/`
@@ -61,7 +61,7 @@ Recommended output:
 - records_after_prior_audit
 - sessions_after_prior_audit
 
-Important: this is the best quick test for whether Codex/Gemini/Codex/Hermes actually contributed anything new since the last audit.
+Important: this is the best quick test for whether Codex/Gemini/Claude/Hermes actually contributed anything new since the last audit.
 
 Implementation note:
 - Prefer the audit JSON if it actually exposes top-level delta blocks such as `recent_activity_since_previous_audit`.

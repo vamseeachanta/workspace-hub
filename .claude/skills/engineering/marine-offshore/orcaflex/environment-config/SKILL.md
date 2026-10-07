@@ -132,7 +132,7 @@ def configure_multi_directional_waves(
 - DNV-RP-C205: Environmental Conditions and Loads
 - API RP 2MET: Metocean
 - OrcaFlex: Environment Data
-- Source: `src/digitalmodel/modules/fea_model/environment_components.py`
+- Source: `src/digitalmodel/solvers/fea_model/environment_components.py`
 
 ## Sub-Skills
 

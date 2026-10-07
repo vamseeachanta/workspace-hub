@@ -1,4 +1,4 @@
-# Plan for #2604: fix(digitalmodel): loosen test_packaged_b1528_yaml_declared_as_package_data substring assertion
+# Plan for #2604: fix(digitalmodel): loosen test_packaged_proj_a_yaml_declared_as_package_data substring assertion
 
 > **Status:** draft
 > **Complexity:** T1
@@ -11,7 +11,7 @@
 ## Resource Intelligence Summary
 
 ### Existing repo code
-- Found: `digitalmodel/tests/naval_architecture/test_b1528_proj-a_yaw_moment.py` line 109-111 — failing test reads `pyproject.toml` and asserts a single-line literal substring.
+- Found: `digitalmodel/tests/naval_architecture/test_proj-a_yaw_moment.py` line 109-111 — failing test reads `pyproject.toml` and asserts a single-line literal substring.
 - Found: `digitalmodel/pyproject.toml` line 219-220 — `[tool.setuptools.package-data]` declares `digitalmodel = ["subsea/cross_sections/fixtures/*.yml", "naval_architecture/data/*.yml"]` (two entries on one line).
 - Found: `digitalmodel/tests/naval_architecture/test_rudder_stock_torque_sweep.py::test_packaged_yaml_in_built_distribution_preserves_existing_package_data` (line 180-220) — verifies the **wheel manifest** actually contains `digitalmodel/naval_architecture/data/*.yml` plus `subsea/cross_sections/fixtures/*.yml` after `python -m build --wheel`. This is the durable behavioral check; #2604's failing test is redundant declaration-level validation.
 - Found: `digitalmodel/tests/subsea/cross_sections/test_fixtures.py::test_fixture_package_data_available_after_install_metadata` (line 97-99) — uses `importlib.resources.files(...).iterdir()` against the installed package; another behavioral cross-check.
@@ -37,16 +37,16 @@ No relevant wiki pages — this is a test-quality fix.
 - `#2604` — OPEN — title matches; labels: `priority:low`; severity called Low in body.
 
 **File existence** (verified via Read tool 2026-05-02):
-- EXISTS: `digitalmodel/tests/naval_architecture/test_b1528_proj-a_yaw_moment.py`
+- EXISTS: `digitalmodel/tests/naval_architecture/test_proj-a_yaw_moment.py`
 - EXISTS: `digitalmodel/pyproject.toml`
 - EXISTS: `digitalmodel/tests/naval_architecture/test_rudder_stock_torque_sweep.py`
 - EXISTS: `digitalmodel/tests/subsea/cross_sections/test_fixtures.py`
 
 **Line excerpts**
 
-`digitalmodel/tests/naval_architecture/test_b1528_proj-a_yaw_moment.py` lines 109-111:
+`digitalmodel/tests/naval_architecture/test_proj-a_yaw_moment.py` lines 109-111:
 ```python
-def test_packaged_b1528_yaml_declared_as_package_data():
+def test_packaged_proj_a_yaml_declared_as_package_data():
     pyproject = Path("pyproject.toml").read_text(encoding="utf-8")
     assert 'digitalmodel = ["naval_architecture/data/*.yml"]' in pyproject
 ```
@@ -69,8 +69,8 @@ Source count: 5 (issue body, failing test file, pyproject.toml, sibling test #1 
 
 | Artifact | Path |
 |---|---|
-| This plan | docs/plans/2026-05-02-issue-2604-loosen-b1528-package-data-test.md |
-| Test (modify) | `digitalmodel/tests/naval_architecture/test_b1528_proj-a_yaw_moment.py` |
+| This plan | docs/plans/2026-05-02-issue-2604-loosen-proj-a-package-data-test.md |
+| Test (modify) | `digitalmodel/tests/naval_architecture/test_proj-a_yaw_moment.py` |
 | Implementation | none — test-only change |
 | Plan review (single-author) | scripts/review/results/2026-05-02-plan-2604-claude.md |
 
@@ -78,7 +78,7 @@ Source count: 5 (issue body, failing test file, pyproject.toml, sibling test #1 
 
 ## Deliverable
 
-`test_packaged_b1528_yaml_declared_as_package_data` will pass against the current `pyproject.toml` by parsing TOML and asserting array membership of `naval_architecture/data/*.yml`, instead of matching a single-line literal that breaks whenever a second glob is added.
+`test_packaged_proj_a_yaml_declared_as_package_data` will pass against the current `pyproject.toml` by parsing TOML and asserting array membership of `naval_architecture/data/*.yml`, instead of matching a single-line literal that breaks whenever a second glob is added.
 
 ---
 
@@ -99,7 +99,7 @@ assert "naval_architecture/data/*.yml" in package_data
 
 | Action | Path | Reason |
 |---|---|---|
-| Modify | `digitalmodel/tests/naval_architecture/test_b1528_proj-a_yaw_moment.py` | Replace literal-substring assertion (line 109-111) with `tomllib.loads(...)` + array-membership check |
+| Modify | `digitalmodel/tests/naval_architecture/test_proj-a_yaw_moment.py` | Replace literal-substring assertion (line 109-111) with `tomllib.loads(...)` + array-membership check |
 
 No change to `pyproject.toml`. No new dependency (`tomllib` is Python 3.11+ stdlib; `requires-python = ">=3.11"`).
 
@@ -111,7 +111,7 @@ Existing test transitions from RED → GREEN. No new test cases needed; the fix 
 
 | Test name | Pre-fix | Post-fix |
 |---|---|---|
-| `test_packaged_b1528_yaml_declared_as_package_data` | FAIL — literal substring `digitalmodel = ["naval_architecture/data/*.yml"]` not in current pyproject (which has 2 entries on one line) | PASS — parses TOML, asserts `"naval_architecture/data/*.yml" in package-data["digitalmodel"]` |
+| `test_packaged_proj_a_yaml_declared_as_package_data` | FAIL — literal substring `digitalmodel = ["naval_architecture/data/*.yml"]` not in current pyproject (which has 2 entries on one line) | PASS — parses TOML, asserts `"naval_architecture/data/*.yml" in package-data["digitalmodel"]` |
 
 Adjacent tests that should remain GREEN (cross-checks, not modified):
 - `test_packaged_yaml_in_built_distribution_preserves_existing_package_data` (rudder_stock_torque_sweep.py) — wheel-manifest level
@@ -121,7 +121,7 @@ Adjacent tests that should remain GREEN (cross-checks, not modified):
 
 ## Acceptance Criteria
 
-- [ ] `uv run pytest digitalmodel/tests/naval_architecture/test_b1528_proj-a_yaw_moment.py::test_packaged_b1528_yaml_declared_as_package_data -v` passes against current `pyproject.toml`.
+- [ ] `uv run pytest digitalmodel/tests/naval_architecture/test_proj-a_yaw_moment.py::test_packaged_proj_a_yaml_declared_as_package_data -v` passes against current `pyproject.toml`.
 - [ ] Same test still passes if `pyproject.toml` `package-data` is collapsed to a single-entry layout (`digitalmodel = ["naval_architecture/data/*.yml"]`) — forward-compat.
 - [ ] Same test still fails (correctly) if `naval_architecture/data/*.yml` is removed from `package-data["digitalmodel"]` — negative-case correctness.
 - [ ] `uv run pytest digitalmodel/tests/naval_architecture/ -v` regression-clean.
@@ -146,7 +146,7 @@ Single-author rationale: T1 packaging-test fix; cross-AI review optional per pro
 - **Risk (low):** `tomllib` parse path requires Python 3.11+. Mitigated — `digitalmodel/pyproject.toml` declares `requires-python = ">=3.11"`; verified `tomllib` is importable on host Python 3.13.12.
 - **Risk (very low):** Test relies on `Path("pyproject.toml")` resolving from cwd. Pytest runs with `testpaths = ["tests"]` and cwd typically at repo root; pre-existing behavior, not changed by this fix.
 - **Risk (negligible):** A typo in the dotted-key path (`tool.setuptools.package-data.digitalmodel`) would cause `KeyError`. Mitigated by emitting an explicit assertion message and the structure being stable.
-- **Open:** Should the fix also assert `"subsea/cross_sections/fixtures/*.yml" in package_data` for symmetry? This would couple the b1528 test to subsea fixtures — out of scope; the rudder_stock wheel-manifest test already covers it. Recommend NO.
+- **Open:** Should the fix also assert `"subsea/cross_sections/fixtures/*.yml" in package_data` for symmetry? This would couple the proj-a test to subsea fixtures — out of scope; the rudder_stock wheel-manifest test already covers it. Recommend NO.
 - **Open:** Should we additionally tighten `digitalmodel/tests/naval_architecture/test_rudder_stock_torque_sweep.py` or `test_fixtures.py` while in the area? They use behavioral checks (importlib.resources, wheel manifest) and are not affected by literal-string drift. Recommend NO — out of scope.
 
 ---

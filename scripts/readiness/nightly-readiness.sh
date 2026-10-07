@@ -68,26 +68,32 @@ check_r1() {
 # ─────────────────────────────────────────────────────────────────────────────
 check_r5() {
   local total=0
+  local missing=()
+  # CLAUDE.md removed 2026-08-01 (harness surface retired; AGENTS.md is canonical).
   local candidates=(
-    "${WORKSPACE_HUB}/CLAUDE.md"
+    "${WORKSPACE_HUB}/AGENTS.md"
     "${WORKSPACE_HUB}/.claude/rules/coding-style.md"
-    "${WORKSPACE_HUB}/.claude/rules/git-workflow.md"
-    "${WORKSPACE_HUB}/.claude/rules/legal-compliance.md"
     "${WORKSPACE_HUB}/.claude/rules/patterns.md"
-    "${WORKSPACE_HUB}/.claude/rules/security.md"
-    "${WORKSPACE_HUB}/.claude/rules/testing.md"
   )
   for f in "${candidates[@]}"; do
-    [[ -f "$f" ]] || continue
+    # A missing candidate must FAIL, never be skipped: silently summing fewer files
+    # makes a deleted file score GREENER than a large one. Four rules files were
+    # deleted in 2fb3bdc7c and R5 kept reporting PASS while summing 3 of 7 (#3744).
+    if [[ ! -f "$f" ]]; then
+      missing+=("${f#"${WORKSPACE_HUB}/"}")
+      continue
+    fi
     local sz
     sz=$(wc -c < "$f" 2>/dev/null || echo 0)
     total=$((total + sz))
   done
   local kb=$(( total / 1024 ))
-  if [[ "$total" -le 16384 ]]; then
-    log_pass "R5: context budget ${kb}KB / 16KB"
+  if (( ${#missing[@]} > 0 )); then
+    log_fail "R5: ${#missing[@]} budgeted context file(s) missing: ${missing[*]} — update the candidate list or restore them"
+  elif [[ "$total" -le 16384 ]]; then
+    log_pass "R5: context budget ${kb}KB / 16KB (${#candidates[@]} files)"
   else
-    log_fail "R5: context budget ${kb}KB exceeds 16KB — trim rules or CLAUDE.md"
+    log_fail "R5: context budget ${kb}KB exceeds 16KB — trim rules or AGENTS.md"
   fi
 } ; check_r5 || true
 
@@ -227,7 +233,7 @@ check_r_model_drift() {
 } ; check_r_model_drift || true
 
 # ─────────────────────────────────────────────────────────────────────────────
-# R-XPROV: CODEX.md + GEMINI.md contain legal + TDD mandates
+# R-XPROV: CODEX.md + GEMINI.md contain TDD mandates
 # ─────────────────────────────────────────────────────────────────────────────
 check_r_xprov() {
   local xprov_ok=1
@@ -239,13 +245,11 @@ check_r_xprov() {
   for fname in CODEX.md GEMINI.md; do
     local fpath="${xprov_map[$fname]}"
     [[ -f "$fpath" ]] || continue  # absent files are skipped, not failed
-    grep -qi "legal\|legal-compliance\|legal_compliance" "$fpath" 2>/dev/null \
-      || { missing+=("${fname}:legal"); xprov_ok=0; }
     grep -qi "TDD\|test.driven\|testing" "$fpath" 2>/dev/null \
       || { missing+=("${fname}:TDD"); xprov_ok=0; }
   done
   if [[ "$xprov_ok" -eq 1 ]]; then
-    log_pass "R-XPROV: CODEX.md/GEMINI.md contain legal+TDD mandates"
+    log_pass "R-XPROV: CODEX.md/GEMINI.md contain TDD mandates"
   else
     log_fail "R-XPROV: missing mandates: ${missing[*]}"
   fi
@@ -613,8 +617,7 @@ check_r_uv() {
 } ; check_r_uv || true
 
 # ─────────────────────────────────────────────────────────────────────────────
-# R-PRECOMMIT: .pre-commit-config.yaml present + legal-sanity-scan.sh entry
-#              in each tier-1 repo; file must be executable
+# R-PRECOMMIT: .pre-commit-config.yaml present in each available tier-1 repo
 # ─────────────────────────────────────────────────────────────────────────────
 check_r_precommit() {
   [[ -f "${HARNESS_CONFIG}" ]] || { log_pass "R-PRECOMMIT: harness-config.yaml absent — skip"; return; }
@@ -628,13 +631,10 @@ check_r_precommit() {
       issues_local+=("${repo}:.pre-commit-config.yaml missing")
       continue
     fi
-    if ! grep -q "legal-sanity-scan" "$pc" 2>/dev/null; then
-      issues_local+=("${repo}:legal-sanity-scan.sh entry missing")
-    fi
   done < <(_hc_list "tier1_repos")
 
   if [[ ${#issues_local[@]} -eq 0 ]]; then
-    log_pass "R-PRECOMMIT: all tier-1 repos have .pre-commit-config.yaml with legal scan"
+    log_pass "R-PRECOMMIT: available tier-1 repos have .pre-commit-config.yaml"
   else
     log_fail "R-PRECOMMIT: ${issues_local[*]}"
   fi

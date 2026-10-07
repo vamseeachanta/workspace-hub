@@ -1,5 +1,5 @@
 ---
-name: exclude-wiki-Codex-md-from-harness-line-limit-hook
+name: exclude-wiki-claude-md-from-harness-line-limit-hook
 description: Fix false-positive pre-commit failures where workspace-hub's AGENTS.md line-limit hook blocks edits to auto-generated wiki schema files under knowledge/wikis/.
 version: 1.0.0
 author: Hermes Agent
@@ -20,10 +20,10 @@ Typical symptom:
 
 ## Root cause
 
-In `.Codex/hooks/check-Codex-md-limits.sh`, the staged-file filter matches all `AGENTS.md` paths:
+In `.claude/hooks/check-claude-md-limits.sh`, the staged-file filter matches all `CLAUDE.md` paths:
 
 ```bash
-HARNESS_PATTERN='(^|/)?(Codex|MEMORY|AGENTS|GEMINI)\.md$'
+HARNESS_PATTERN='(^|/)?(CLAUDE|MEMORY|AGENTS|GEMINI)\.md$'
 STAGED=$(git diff --cached --name-only --diff-filter=ACMR 2>/dev/null | grep -E "$HARNESS_PATTERN" || true)
 ```
 
@@ -31,7 +31,7 @@ That unintentionally includes `knowledge/wikis/**/AGENTS.md`.
 
 ## Minimal safe fix
 
-Exclude wiki-generated Codex files from the staged-file set:
+Exclude wiki-generated CLAUDE files from the staged-file set:
 
 ```bash
 STAGED=$(git diff --cached --name-only --diff-filter=ACMR 2>/dev/null | grep -E "$HARNESS_PATTERN" | grep -v '^knowledge/wikis/' || true)
@@ -48,9 +48,9 @@ Do NOT apply this as a blanket exemption for unrelated `AGENTS.md` files elsewhe
 
 ## Recommended workflow
 
-1. Confirm the blocked files are only wiki Codex files.
+1. Confirm the blocked files are only wiki CLAUDE files.
 2. Check what is already staged with `git diff --cached --name-only`.
-3. Patch `.Codex/hooks/check-Codex-md-limits.sh` with the exclusion above.
+3. Patch `.claude/hooks/check-claude-md-limits.sh` with the exclusion above.
 4. Commit carefully:
    - if the wiki files are already staged from the failed attempt, the hook-fix commit may also include those files unless you unstage them first
    - if you want two separate commits, run `git restore --staged <wiki-files>` before committing the hook fix

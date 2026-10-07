@@ -31,16 +31,16 @@ tags: []
 
 ```bash
 # Full evaluation of all skills
-uv run .Codex/skills/development/skill-eval/scripts/eval-skills.py
+uv run .claude/skills/development/skill-eval/scripts/eval-skills.py
 
 # JSON output
-uv run .Codex/skills/development/skill-eval/scripts/eval-skills.py --format json
+uv run .claude/skills/development/skill-eval/scripts/eval-skills.py --format json
 
 # Single skill
-uv run .Codex/skills/development/skill-eval/scripts/eval-skills.py --skill testing-tdd-london
+uv run .claude/skills/development/skill-eval/scripts/eval-skills.py --skill testing-tdd-london
 
 # Only critical issues
-uv run .Codex/skills/development/skill-eval/scripts/eval-skills.py --severity critical
+uv run .claude/skills/development/skill-eval/scripts/eval-skills.py --severity critical
 ```
 
 ## When to Use
@@ -85,7 +85,7 @@ Reports include:
 ### Full Evaluation
 
 ```bash
-uv run .Codex/skills/development/skill-eval/scripts/eval-skills.py
+uv run .claude/skills/development/skill-eval/scripts/eval-skills.py
 ```
 
 Output:
@@ -106,7 +106,7 @@ SUMMARY
 ### JSON for CI/CD
 
 ```bash
-uv run .Codex/skills/development/skill-eval/scripts/eval-skills.py \
+uv run .claude/skills/development/skill-eval/scripts/eval-skills.py \
   --format json --severity critical \
   --output reports/skill-eval.json
 ```
@@ -114,13 +114,13 @@ uv run .Codex/skills/development/skill-eval/scripts/eval-skills.py \
 ### Filter by Category
 
 ```bash
-uv run .Codex/skills/development/skill-eval/scripts/eval-skills.py --category development
+uv run .claude/skills/development/skill-eval/scripts/eval-skills.py --category development
 ```
 
 ### Summary Only
 
 ```bash
-uv run .Codex/skills/development/skill-eval/scripts/eval-skills.py --summary-only
+uv run .claude/skills/development/skill-eval/scripts/eval-skills.py --summary-only
 ```
 
 ## Audit Scripts
@@ -144,11 +144,11 @@ When asked to review the entire skill ecosystem and create a housekeeping GitHub
 
 1. Run the evaluator summary for the whole ecosystem:
    ```bash
-   uv run .Codex/skills/development/skill-eval/scripts/eval-skills.py --summary-only
+   uv run .claude/skills/development/skill-eval/scripts/eval-skills.py --summary-only
    ```
 2. Check cross-agent visibility/parity before claiming ecosystem health:
    ```bash
-   find -L .Codex/skills -name SKILL.md -not -path '*/_archive/*' | wc -l
+   find -L .claude/skills -name SKILL.md -not -path '*/_archive/*' | wc -l
    find -L .codex/skills -name SKILL.md -not -path '*/_archive/*' | wc -l
    find -L .gemini/skills -name SKILL.md -not -path '*/_archive/*' | wc -l
    test -L .codex/skills && echo codex_symlink_ok || echo codex_symlink_bad

@@ -120,7 +120,7 @@ export POSTGRES_PASSWORD=$(openssl rand -hex 32)
 docker compose up -d
 
 # Access UI at http://localhost:8000
-# Default credentials: admin@windmill.dev / changeme
+# Default credentials: the upstream default admin email / changeme
 ```
 
 **Option 2: Kubernetes with Helm**

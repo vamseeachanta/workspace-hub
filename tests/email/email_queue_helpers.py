@@ -15,15 +15,15 @@ def write_accounts(path: Path):
             {
                 "accounts": {
                     "ace": {
-                        "email": "vamsee.achanta@aceengineer.com",
+                        "email": "owner@example.com",
                         "enabled": True,
                     },
                     "personal": {
-                        "email": "achantav@gmail.com",
+                        "email": "owner.personal@example.com",
                         "enabled": True,
                     },
                     "skestates": {
-                        "email": "skestatesinc@gmail.com",
+                        "email": "skestates@example.com",
                         "enabled": True,
                         "attention_channel": "Telegram: Family - Finance",
                         "attention_method": "starred",

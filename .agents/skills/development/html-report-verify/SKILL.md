@@ -2,7 +2,7 @@
 name: html-report-verify
 description: >
   Visual + structural verification of HTML benchmark/validation reports using the
-  Codex-in-Chrome extension. Opens the report in a browser, takes screenshots,
+  Claude-in-Chrome extension. Opens the report in a browser, takes screenshots,
   checks key DOM elements, and produces a PASS/FAIL verdict. Generic by default;
   module-specific check lists extend the base set.
 type: reference

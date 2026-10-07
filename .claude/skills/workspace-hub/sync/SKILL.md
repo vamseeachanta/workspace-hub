@@ -35,11 +35,13 @@ tags: []
 
 ## Execution Protocol
 
-**CRITICAL**: This skill exists because git sync is the #1 activity (68+ sessions) and the #1 source of friction. Follow this protocol exactly.
 ### Phase 1: Discovery (read .gitmodules, NOT .gitignore)
 
 ```bash
 WORKSPACE_ROOT="/d/workspace-hub"
+# Co-author trailer identity — override per provider (e.g. AGENT_NAME="Codex" PROVIDER_DOMAIN="openai.com")
+AGENT_NAME="${AGENT_NAME:-AI agent}"
+PROVIDER_DOMAIN="${PROVIDER_DOMAIN:-localhost}"
 cd "$WORKSPACE_ROOT"
 
 # Get submodule list from .gitmodules (NEVER parse .gitignore)
@@ -81,7 +83,7 @@ if ! git diff --quiet HEAD 2>/dev/null; then
     git add -A
     git commit -m "chore: sync updates
 
-Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>"
+Co-authored-by: ${AGENT_NAME} <noreply@${PROVIDER_DOMAIN}>"
 fi
 ```
 ### Phase 5: Push
@@ -101,7 +103,7 @@ git add $(git submodule status | awk '{print $2}')
 if ! git diff --cached --quiet; then
     git commit -m "chore: sync submodule pointers
 
-Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>"
+Co-authored-by: ${AGENT_NAME} <noreply@${PROVIDER_DOMAIN}>"
     git push origin main
 fi
 ```
@@ -205,26 +207,7 @@ Do not remove the gitlink blindly if the path still has a valid `.gitmodules` en
 - NEVER skip repos silently — report every repo's status
 - NEVER use `git add -A` without first running `git status`
 
-## Iron Law
-
-> No sync shall be reported as successful without completing Phase 7 verification and confirming all four success criteria pass — ever.
-
-## Rationalization Defense
-
-| Excuse | Reality |
-|--------|---------|
-| "All the pushes succeeded so it's done" | Push success does not equal sync success. Detached HEADs, dirty repos, and pointer mismatches are invisible without verification. |
-| "Verification is redundant — I watched each step succeed" | Individual step success does not guarantee end-state correctness. Verification checks the final state, not the steps. |
-| "I'll skip verification because the user is waiting" | A false-positive "sync complete" causes harder-to-debug failures later. The 10 seconds verification takes prevents hours of debugging. |
-| "Only one repo changed, no need for full verification" | Submodule pointers and cross-repo state can break from a single repo change. Always verify all four criteria. |
-
-## Red Flags
-
-These phrases signal you are about to violate the Iron Law:
-- "sync looks good" (without running `git submodule status`)
-- "all repos pulled successfully, we're done"
-- "skipping verification to save time"
-- "probably fine — no errors were reported"
+Report a sync as successful only after Phase 7 confirms all four success criteria: per-step push success does not reveal detached HEADs, dirty repos, or submodule-pointer mismatches, and a single changed repo can break cross-repo state.
 
 ## Sub-Skills
 

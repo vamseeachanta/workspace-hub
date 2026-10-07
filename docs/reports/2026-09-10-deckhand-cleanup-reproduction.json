@@ -1,0 +1,22 @@
+{
+  "source_revision": "ea24989c521dcab30ba5428cc5c8f791d273ed36",
+  "source_files": [
+    "src/deckhand/licensed_run_agent_runtime.py",
+    "src/deckhand/licensed_run_agent.py"
+  ],
+  "method": "pinned source with fake process, OS and filesystem operations",
+  "result": {
+    "returncode": 124,
+    "stdout": "",
+    "stderr": "run exceeded max_wall_seconds=1; process tree killed",
+    "timed_out": true
+  },
+  "kill_attempts": [
+    "taskkill denied"
+  ],
+  "fake_process_still_unreaped": true,
+  "seat_lock_removed": true,
+  "actual_solver_or_cleanup_processes_spawned": 0,
+  "runtime_filesystem_mutations": 0,
+  "native_verification": false
+}

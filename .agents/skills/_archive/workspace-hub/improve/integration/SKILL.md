@@ -12,7 +12,7 @@ scripts_exempt: true
 ## Integration
 
 
-- **Consumes** `/reflect` output from `.Codex/state/patterns/`
+- **Consumes** `/reflect` output from `.claude/state/patterns/`
 - **Consumes** `/insights` output from session reports
 - **Complements** session hooks (`capture-corrections.sh` produces signals)
 - **Does NOT duplicate**: `/reflect` analyzes git history, `/improve` acts on signals

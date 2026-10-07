@@ -58,13 +58,13 @@ Map what already exists before planning new work:
 
 ```
 Solver queue:     scripts/solver/, queue/pending/, queue/completed/, queue/failed/
-Skills:           find .Codex/skills -path '*KEYWORD*' -type f
-Agents:           find . -path '*.Codex/agents/KEYWORD*' -type d
+Skills:           find .claude/skills -path '*KEYWORD*' -type f
+Agents:           find . -path '*.claude/agents/KEYWORD*' -type d
 Source modules:   find . -path '*src/*KEYWORD*' -type f
 Scripts:          find . -path '*scripts/*KEYWORD*' -type f
 Examples:         find . -path '*examples/*KEYWORD*' -type f
 Docs/domains:     find . -path '*docs/domains/KEYWORD*' -type f
-Lessons learned:  find . -path '*.Codex/memory/*KEYWORD*'
+Lessons learned:  find . -path '*.claude/memory/*KEYWORD*'
 Knowledge:        find . -path '*knowledge/seeds/*KEYWORD*'
 Config:           search_files for KEYWORD in *.yaml files
 ```
@@ -116,10 +116,10 @@ Read the domain skills and memory files — they contain hard-won API knowledge:
 
 ```bash
 # List domain skills
-find .Codex/skills -path '*DOMAIN*' -name SKILL.md
+find .claude/skills -path '*DOMAIN*' -name SKILL.md
 
 # Read lessons learned (often has API gotchas, unit conversions, shape conventions)
-cat .Codex/memory/DOMAIN-lessons.md
+cat .claude/memory/DOMAIN-lessons.md
 ```
 
 These files prevent re-discovering known pitfalls (e.g., OrcaWave frequencies are Hz descending, not rad/s ascending).
@@ -435,7 +435,7 @@ After subagents return, always:
 
 ## Post-Recon: No-Hermes Licensed Machine Execution
 
-When the licensed machine has agent CLIs (Codex, Codex, Gemini) but NOT Hermes:
+When the licensed machine has agent CLIs (Claude Code, Codex, Gemini) but NOT Hermes:
 
 ### Key differences from Hermes-based execution
 - Use `python` not `uv run` (Windows machines typically lack uv)
@@ -445,7 +445,7 @@ When the licensed machine has agent CLIs (Codex, Codex, Gemini) but NOT Hermes:
 - The prompts file in the repo IS the skill equivalent
 
 ### Recommended 3-terminal pattern on licensed machine
-- Terminal 1 (Codex): run prompts sequentially — this is the executor
+- Terminal 1 (Claude Code): run prompts sequentially — this is the executor
 - Terminal 2 (Codex): verification after each prompt completes — read-only
 - Terminal 3 (Gemini): adversarial review after all prompts complete — read-only
 

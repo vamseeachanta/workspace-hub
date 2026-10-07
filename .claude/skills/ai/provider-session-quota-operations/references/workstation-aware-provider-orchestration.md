@@ -20,6 +20,9 @@ related_skills:
 
 # Workstation-Aware Provider Orchestration
 
+Current authority: implementation follows the originating task request or established standing authority after proportionate planning, TDD and adversarial review; no separate plan approval, approval label or local marker is required. Planning-only limits, unresolved domain decisions and action-specific authorization for publication, deployment, access changes, destructive actions and outreach remain binding. Historical approval records stay intact and must not be fabricated or self-labeled.
+
+
 Use this skill when the user wants Hermes to coordinate AI provider/model usage across multiple machines or workstations, especially when provider quota/credits are time-sensitive and work must still respect GitHub plan/approval gates.
 
 ## Class of task
@@ -50,7 +53,7 @@ Design or operate a central AI workflow control plane that combines provider quo
 1. **Open or update a GitHub issue first**
    - Use `gh-work-planning` and `github-issues`.
    - Capture the objective, workstation priority, provider urgency, and hard gates.
-   - Do not launch implementation until `status:plan-approved` is present unless the task is planning/review-only.
+   - Launch implementation only within verified task authority and reviewed scope; honor planning/review-only requests.
 
 2. **Refresh provider telemetry**
    ```bash
@@ -250,7 +253,7 @@ Use this when a control-plane workstation reboots or a context handoff indicates
    - If a worker must be restarted, use repo-owned prompt/script artifacts rather than `/tmp` prompts whenever they exist.
 
 3. **Set off future work last**
-   - Launch only plan-approved implementation lanes, or planning/review-only lanes for unapproved issues.
+   - Launch reviewed implementation within task authority, or planning/review-only lanes where scope or domain prerequisites remain unresolved.
    - Keep ace-linux-1 as GitHub mutation/control plane and ace-linux-2 as overflow worker unless auth/readiness proves otherwise.
    - Persist reusable launch prompts and scripts inside the repo ecosystem, preferably under `docs/plans/machine-prompts/<date>/...` and `scripts/operations/agent-execution/`, then validate (`bash -n`, `--help`, dry-run) before committing.
    - Record final reconciliation with issue links, commit SHAs, validation results, remaining sessions, and blockers.

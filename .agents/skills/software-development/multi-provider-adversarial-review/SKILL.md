@@ -191,7 +191,7 @@ Alternatively, for short prompts, embed code content directly in the `$(cat)` he
 3. **Gemini capacity limits** — `gemini-3.1-pro-preview` can hit 429 MODEL_CAPACITY_EXHAUSTED errors. Gemini CLI retries automatically but may take longer. Allow extra timeout.
    - In large parallel review waves, Gemini may fail repeatedly and never produce a usable verdict.
    - Treat that as **missing provider evidence**, not as approval or as a silent pass.
-   - Continue with Codex (and any existing Codex/Hermes evidence), but post a GitHub comment explicitly noting that Gemini re-review was blocked by provider capacity exhaustion.
+   - Continue with Codex (and any existing Claude/Hermes evidence), but post a GitHub comment explicitly noting that Gemini re-review was blocked by provider capacity exhaustion.
    - Do not mark the plan fully cross-reviewed if the Gemini artifact is only a 429/capacity log with no substantive verdict.
    - If the remaining provider returns `MAJOR`, keep the issue in `status:plan-review` and proceed with revision work instead of waiting indefinitely for Gemini capacity to recover.
 
@@ -240,7 +240,7 @@ Alternatively, for short prompts, embed code content directly in the `$(cat)` he
 Treat missing Codex/Gemini artifacts as pending cross-review even when GitHub labels suggest a more advanced state.
 
 19. **Provider CLI warnings can be non-fatal; distinguish startup noise from failed review output** — In live plan-review runs on 2026-04-14:
-- Codex emitted a startup warning about a missing `.Codex/skills/skills` symlink.
+- Codex emitted a startup warning about a missing `.claude/skills/skills` symlink.
 - Gemini emitted agent-loading warnings about `.gemini/agents/*.md` containing unsupported `permissionMode` keys.
 Despite these warnings, both CLIs still produced valid review content. Do not treat these warnings alone as review failure. Confirm success by reading the tee'd output file and checking for a complete verdict/findings block before deciding whether to retry.
 
@@ -257,7 +257,7 @@ Then post a concise GitHub issue comment summarizing verdicts, shared blockers, 
 - treat the plan review wave as incomplete unless repo policy explicitly allows reduced-provider review for that run
 This avoids ambiguous "pending" review state, preserves evidence for governance audits, and makes it clear the blocker was provider availability rather than missing execution.
 
-22. **Codex CLI review can fail silently or exhaust turns** — `Codex -p` may time out with an empty tee file, or exit with `Error: Reached max turns` before producing a usable verdict. Treat both as failed dispatches, not review evidence. Retry with a compact prompt that lists exact files, known review state, required output format, and owner-decision questions; increase `--max-turns` enough for the review. Save only the successful substantive output as the canonical Codex artifact.
+22. **Claude CLI review can fail silently or exhaust turns** — `claude -p` may time out with an empty tee file, or exit with `Error: Reached max turns` before producing a usable verdict. Treat both as failed dispatches, not review evidence. Retry with a compact prompt that lists exact files, known review state, required output format, and owner-decision questions; increase `--max-turns` enough for the review. Save only the successful substantive output as the canonical Claude artifact.
 
 23. **GTM numeric claims need source-file calculation, not prose review** — For brochure/outreach plan reviews, force at least one lane to compute headline numbers from source JSON/report files. A 2026-04-29 review caught a `108 cases` caption that should have been `156` by summing the matrix; text-only reviewers had missed it. Mark each number as either verified-now or render-time recompute-required.
 
@@ -303,7 +303,7 @@ Add Gemini when ANY apply:
 - [ ] Research-heavy task (synthesizing external sources)
 - [ ] Ambiguous requirements (third interpretation reduces risk)
 - [ ] High-stakes delivery (production, security, data integrity)
-- [ ] Context saturation (Codex's context is full)
+- [ ] Context saturation (Claude's context is full)
 
 Skip Gemini for: routine implementation, standard refactors, test additions, docs-only changes.
 

@@ -23,7 +23,7 @@ Scripts that print warnings but exit 0 are NOT enforcement. Real enforcement mus
 
 1. **Find all enforcement scripts**: `ls scripts/enforcement/`
 2. **Find all git hooks**: `ls .git/hooks/ | grep -v sample`
-3. **Find all Codex hooks**: `ls .Codex/hooks/` + check `.Codex/settings.json`
+3. **Find all Claude hooks**: `ls .claude/hooks/` + check `.claude/settings.json`
 4. **Read each script**: Does it exit 0 (advisory) or exit 1 (blocking)?
 5. **Check default mode**: What happens when no env vars are set?
 6. **Check hook chain**: Is the enforcement script actually called by the hooks?
@@ -37,8 +37,8 @@ Scripts that print warnings but exit 0 are NOT enforcement. Real enforcement mus
 # Map what exists
 ls scripts/enforcement/
 ls .git/hooks/ | grep -v sample
-ls .Codex/hooks/
-cat .Codex/settings.json | grep -A5 hooks
+ls .claude/hooks/
+cat .claude/settings.json | grep -A5 hooks
 ```
 
 ### Step 2: Identify the gap
@@ -74,8 +74,8 @@ The audit often reveals compliance is much lower than assumed. Document the real
 ### Bypass mechanisms already exist
 Existing scripts support env var bypass (`SKIP_REVIEW_GATE=1`, `GIT_PRE_PUSH_SKIP=1`). Don't remove them — they're safety valves. Log every bypass attempt instead.
 
-### Codex hooks and git hooks are different enforcement levels
-Codex PreToolUse hooks only intercept specific tool calls (Write, Edit, Bash). They don't intercept direct git commit/push. Git hooks (.git/hooks/) catch everything. Both are needed.
+### Claude hooks and git hooks are different enforcement levels
+Claude PreToolUse hooks only intercept specific tool calls (Write, Edit, Bash). They don't intercept direct git commit/push. Git hooks (.git/hooks/) catch everything. Both are needed.
 
 ### Don't go strict on everything at once
 Sudden strict mode breaks workflows. Use the upgrade shell script for gradual rollout. Start with the easiest gate to satisfy (plan approval), then escalate.

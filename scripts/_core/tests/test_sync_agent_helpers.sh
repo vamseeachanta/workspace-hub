@@ -340,6 +340,80 @@ EOF
     rm -rf "$tmpdir"
 }
 
+run_private_host_alias_resolution_test() {
+    # workspace-hub is PUBLIC, so real OS hostnames were removed from
+    # registry.yaml's hostname_aliases. That field was load-bearing: with no
+    # explicit MACHINE, resolve_machine_roots matches socket.gethostname()
+    # against it, and the nightly cron invokes this script without one.
+    #
+    # Losing the match takes the unknown-host branch, which GUESSES a workspace,
+    # prints a WARN and exits 0 — and harness-update.sh pipes this script through
+    # `grep -i hermes`, discarding the warning. Silent degradation on a nightly
+    # path, indistinguishable from success.
+    #
+    # Asserts BOTH directions, because only proving the fix works would leave a
+    # test that passes even if the fallback never fired at all.
+    local tmpdir ws_root home_root real_host out
+    tmpdir="$(mktemp -d)"
+    trap 'rm -rf "$tmpdir"' RETURN
+    ws_root="$tmpdir/ws"
+    home_root="$tmpdir/home"
+    real_host="$(hostname -s | tr '[:upper:]' '[:lower:]')"
+
+    make_workspace "$ws_root"
+    mkdir -p "$home_root/.hermes" "$home_root/.config/workspace-hub"
+
+    # Registry keyed ONLY by a role id — no alias matching this box.
+    mkdir -p "$ws_root/config/workstations"
+    cat > "$ws_root/config/workstations/registry.yaml" <<EOF
+machines:
+  test-role-1:
+    hostname: test-role-1
+    hostname_aliases: []
+    workspace_root: $ws_root
+    tier1_repo_root: $tmpdir
+EOF
+    # Keyed to the role too, so the divergence guard is not what fires.
+    cat > "$ws_root/scripts/readiness/harness-config.yaml" <<EOF
+workstations:
+  test-role-1:
+    ws_hub_path: $ws_root
+EOF
+
+    out="$(HOME="$home_root" bash "$ws_root/scripts/_core/sync-agent-configs.sh" 2>&1 || true)"
+    if grep -q "unknown machine for hostname" <<<"$out"; then
+        pass "private_host_alias: unresolvable host falls back (the failure being fixed)"
+    else
+        fail "private_host_alias: expected the fallback WARN with no alias present"
+    fi
+
+    cat > "$home_root/.config/workspace-hub/machine-identity.yaml" <<EOF
+machine: "test-role-1"
+public_host: "test-role-1"
+expected_hostname: "$real_host"
+EOF
+
+    out="$(HOME="$home_root" bash "$ws_root/scripts/_core/sync-agent-configs.sh" 2>&1 || true)"
+    if grep -q "unknown machine for hostname" <<<"$out"; then
+        fail "machine_identity: identity file did not resolve the OS hostname to its role"
+    else
+        pass "machine_identity: identity file resolves the OS hostname to its role"
+    fi
+
+    # A file copied to the WRONG box must fail loud, never fall through — a bad
+    # identity file silently minting the wrong machine is worse than none.
+    cat > "$home_root/.config/workspace-hub/machine-identity.yaml" <<EOF
+machine: "test-role-1"
+expected_hostname: "some-other-box"
+EOF
+    out="$(HOME="$home_root" bash "$ws_root/scripts/_core/sync-agent-configs.sh" 2>&1 || true)"
+    if grep -q "refusing a copied identity file" <<<"$out"; then
+        pass "machine_identity: a foreign identity file is refused, not silently used"
+    else
+        fail "machine_identity: foreign identity file was not refused"
+    fi
+}
+
 echo "=== test_sync_agent_helpers.sh ==="
 run_hermes_placeholder_and_terminal_test
 run_invalid_json_create_test
@@ -348,6 +422,7 @@ run_invalid_yaml_create_test
 run_invalid_json_update_cleanup_test
 run_python3_fallback_to_uv_test
 run_dry_run_claude_memory_missing_target_count_test
+run_private_host_alias_resolution_test
 
 echo ""
 echo "Results: ${PASS} PASS, ${FAIL} FAIL"

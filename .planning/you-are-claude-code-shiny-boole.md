@@ -103,7 +103,7 @@ Operator asked for the next 6 safest Claude-capacity execution candidates from t
 
 - **URL:** https://github.com/vamseeachanta/workspace-hub/issues/2544
 - **Labels:** `priority:medium, cat:data-pipeline, domain:marine, domain:knowledge-management, status:plan-approved`
-- **Plan:** `docs/plans/2026-04-28-issue-2544-elements-woodfibre-scout-plan.md` (body status `plan-review`).
+- **Plan:** `docs/plans/2026-04-28-issue-2544-elements-lng-terminal-a-scout-plan.md` (body status `plan-review`).
 - **Marker:** ❌ missing.
 - **Latest author comment (2026-04-29):** "remains `status:plan-review` pending …".
 - **Recommendation:** same comment-only treatment as #2541. Bundle the comment for #2541 + #2544 into a single operator question if they were both labelled in the same overnight pass.

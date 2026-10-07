@@ -33,7 +33,7 @@ Systematic workflow for evaluating an external open-source repo (best-practice g
 
 Naive approach: skim README, cherry-pick one or two ideas. This misses the structured knowledge.
 Learned the hard way: we planned to BUILD /powerup and /insights from scratch (#1760) before
-discovering they were NATIVE Codex commands — a fact buried in the external repo's docs
+discovering they were NATIVE Claude Code commands — a fact buried in the external repo's docs
 that only surfaced through systematic file-by-file reading.
 
 ## 5-Phase Workflow
@@ -52,8 +52,8 @@ search_files(pattern="*", target="files", path="/tmp/<repo>")
 
 **Why full inventory matters:** READMEs are marketing. The real knowledge is in:
 - Best-practice markdown files (not linked from README)
-- Implementation examples (.Codex/agents/, .Codex/commands/, .Codex/skills/)
-- Config files (.Codex/settings.json, .mcp.json, .codex/)
+- Implementation examples (.claude/agents/, .claude/commands/, .claude/skills/)
+- Config files (.claude/settings.json, .mcp.json, .codex/)
 - Tips/videos directories (curated expert knowledge)
 - Reports/analysis directories (comparative studies)
 
@@ -118,7 +118,7 @@ they are NATIVE interactive lessons, not custom scripts. The distinction between
 files, not the summary.
 
 ### Frontmatter Is the API Contract
-For Codex repos specifically, the frontmatter fields in agents/commands/skills
+For Claude Code repos specifically, the frontmatter fields in agents/commands/skills
 are the most actionable content. A single field like `context: fork` or
 `paths: "*.dat,*.yml"` can fundamentally change how a skill behaves. Catalog
 ALL frontmatter fields you find — they are the "API" of the extension system.

@@ -47,7 +47,7 @@ scripts_exempt: true
 ## Consolidation
 
 
-- [ ] Agent directories consolidated to `.Codex/agents/`
+- [ ] Agent directories consolidated to `.claude/agents/`
 - [ ] Prototypes moved to `examples/prototypes/`
 - [ ] Test outputs moved to `tests/outputs/`
 - [ ] Benchmark test fixtures moved to `tests/fixtures/`

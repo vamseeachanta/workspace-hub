@@ -1,19 +1,19 @@
 ---
-name: Codex-delegated-issue-tree-expansion
-description: Use Codex subagents for read-only gap analysis to expand an umbrella GitHub issue into a layered tree of focused child issues, then create the issues locally and update the issue map/docs.
+name: claude-delegated-issue-tree-expansion
+description: Use Claude subagents for read-only gap analysis to expand an umbrella GitHub issue into a layered tree of focused child issues, then create the issues locally and update the issue map/docs.
 version: 1.0.0
 ---
 
-# Codex-delegated issue-tree expansion
+# Claude-delegated issue-tree expansion
 
 Use when:
 - the user wants "future GH issues" or a roadmap expanded into child issues
 - there is already an umbrella issue and a growing issue tree
-- you want parallel reasoning from Codex, but repo writes must remain in the main session
+- you want parallel reasoning from Claude, but repo writes must remain in the main session
 
 ## Why this pattern works
 
-`delegate_task` subagents are good at read-only analysis and decomposition, but they should not be trusted for repo writes. Have Codex teams analyze different lanes in parallel, then create issues/doc updates yourself in the main session.
+`delegate_task` subagents are good at read-only analysis and decomposition, but they should not be trusted for repo writes. Have Claude teams analyze different lanes in parallel, then create issues/doc updates yourself in the main session.
 
 This worked well for expanding the weekly ecosystem execution/intelligence review initiative into multiple layers:
 - umbrella issue
@@ -32,8 +32,8 @@ This worked well for expanding the weekly ecosystem execution/intelligence revie
   - intelligence accessibility / knowledge systems
   - automation / reporting / governance
 
-2. Delegate read-only analysis to Codex in parallel
-- Use `delegate_task` with `acp_command='Codex'` and `toolsets=['terminal','file']`.
+2. Delegate read-only analysis to Claude in parallel
+- Use `delegate_task` with `acp_command='claude'` and `toolsets=['terminal','file']`.
 - Ask each subagent for:
   - 3-5 non-duplicate child issues
   - title
@@ -87,7 +87,7 @@ Example subagent framing:
 
 ## Recommended lane structure
 
-For broad ecosystem initiatives, use three Codex lanes in parallel:
+For broad ecosystem initiatives, use three Claude lanes in parallel:
 1. machine readiness / execution routing
 2. intelligence accessibility / freshness / discoverability
 3. automation / reporting / governance

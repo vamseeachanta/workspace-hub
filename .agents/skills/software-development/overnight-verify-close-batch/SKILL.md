@@ -4,7 +4,7 @@ description: Build overnight parallel batches that close stale-open GitHub issue
 version: 1.0.0
 author: Hermes Agent
 category: software-development
-tags: [overnight, github, issue-triage, verify-close, worktrees, Codex]
+tags: [overnight, github, issue-triage, verify-close, worktrees, claude]
 ---
 
 # Overnight Verify-Close Batch

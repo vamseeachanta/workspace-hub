@@ -230,8 +230,8 @@ class TestDynamicHostname:
     def test_computer_field_override(self, mod):
         """Explicit computer parameter overrides hostname detection."""
         changes = [{"provider": "claude", "old": "2.1.72", "new": "2.1.74"}]
-        content = mod.generate_wrk_content("WRK-9999", changes, computer="acma-ansys05")
-        assert "computer: acma-ansys05" in content
+        content = mod.generate_wrk_content("WRK-9999", changes, computer="ace-win-1")
+        assert "computer: ace-win-1" in content
 
 
 # ── 6. Dry-run ──────────────────────────────────────────────────────

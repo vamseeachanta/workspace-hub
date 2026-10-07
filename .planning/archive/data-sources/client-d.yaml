@@ -583,15 +583,15 @@ calc_examples:
     detailed engineering calculations for drilling riser tensioner design per
     ISO 13624-1 and API RP 16Q requirements.
   files:
-  - path: /mnt/ace/docs/disciplines/drilling/projects/0145_fdas_tensioner_cart_design_fe/01_scope/0145 FDAS Tensioner Cart Design FE/CAL/0145-CAL-0001-01 (Engineering).xlsx
+  - path: /mnt/ace/docs/disciplines/drilling/projects/0145_fdas_tensioner_cart_design_fe/01_scope/0145 FDAS Tensioner Cart Design FE/CAL/<document-number> (Engineering).xlsx
     description: FDAS tensioner cart engineering calculations — structural load and fatigue analysis
     type: xlsx
     host: dev-primary
-  - path: /mnt/ace/docs/disciplines/drilling/projects/0145_fdas_tensioner_cart_design_fe/01_scope/0145 FDAS Tensioner Cart Design FE/CAL/0145-CAL-0004-01 SEMI Key Dimensions.xlsx
+  - path: /mnt/ace/docs/disciplines/drilling/projects/0145_fdas_tensioner_cart_design_fe/01_scope/0145 FDAS Tensioner Cart Design FE/CAL/<document-number> SEMI Key Dimensions.xlsx
     description: SEMI key dimensions — tensioner cart geometry and interface dimensions
     type: xlsx
     host: dev-primary
-  - path: /mnt/ace/docs/disciplines/drilling/projects/0145_fdas_tensioner_cart_design_fe/01_scope/0145 FDAS Tensioner Cart Design FE/CAL/0145-CAL-0005-01 FDAS Work Scopes.xlsx
+  - path: /mnt/ace/docs/disciplines/drilling/projects/0145_fdas_tensioner_cart_design_fe/01_scope/0145 FDAS Tensioner Cart Design FE/CAL/<document-number> FDAS Work Scopes.xlsx
     description: FDAS work scopes — tensioner cart design phases and analysis scope definition
     type: xlsx
     host: dev-primary
@@ -607,7 +607,7 @@ gaps: []
 orcaflex_models:
 
 - project: s-lay-pipeline-installation
-  path: /mnt/remote/dev-secondary/dde/Orcaflex/611 Mecor S Lay Installation
+  path: /mnt/remote/dev-secondary/dde/Orcaflex/611 the pipelay client S Lay Installation
   description: >
     S-lay pipelay installation analysis model library for two pipeline projects.
     BigFoot1 (170 files) and Quetzal (436 files) contain vessel-specific S-lay
@@ -621,13 +621,13 @@ orcaflex_models:
   portability: direct
   subprojects:
     - name: BigFoot1
-      path: /mnt/remote/dev-secondary/dde/Orcaflex/611 Mecor S Lay Installation/BigFoot1/Latest
+      path: /mnt/remote/dev-secondary/dde/Orcaflex/611 the pipelay client S Lay Installation/BigFoot1/Latest
       description: S-lay configuration — Abandonment & Recovery, Pull-in, weight matching
     - name: Quetzal
-      path: /mnt/remote/dev-secondary/dde/Orcaflex/611 Mecor S Lay Installation/Quetzal
+      path: /mnt/remote/dev-secondary/dde/Orcaflex/611 the pipelay client S Lay Installation/Quetzal
       description: Quetzal pipeline S-lay — multiple water depths and load cases
     - name: Reference
-      path: /mnt/remote/dev-secondary/dde/Orcaflex/611 Mecor S Lay Installation/Reference
+      path: /mnt/remote/dev-secondary/dde/Orcaflex/611 the pipelay client S Lay Installation/Reference
       description: Reference base model — 3 files, clean starting point
 
 - project: sewol-salvage-marine-ops

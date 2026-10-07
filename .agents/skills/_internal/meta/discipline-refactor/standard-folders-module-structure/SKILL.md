@@ -21,7 +21,7 @@ scripts_exempt: true
 | `specs/` | `specs/modules/<discipline>/` | `specs/modules/data/` |
 | `data/` | `data/modules/<discipline>/` | `data/modules/ingestion/` |
 | `logs/` | `logs/modules/<discipline>/` | `logs/modules/api/` |
-| `.Codex/skills/` | `.Codex/skills/<discipline>/` | `.Codex/skills/data/` |
+| `.claude/skills/` | `.claude/skills/<discipline>/` | `.claude/skills/data/` |
 
 
 ## Exceptions (Keep Flat)
@@ -31,7 +31,7 @@ scripts_exempt: true
 |--------|--------|
 | `specs/templates/` | Shared templates |
 | `docs/assets/` | Shared images/files |
-| `.Codex/state/` | Runtime state |
+| `.claude/state/` | Runtime state |
 | `scripts/` | Build/deploy scripts |
 | `config/` | Configuration files |
 

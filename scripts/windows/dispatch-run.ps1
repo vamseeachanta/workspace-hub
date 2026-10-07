@@ -37,7 +37,19 @@ param(
     [string]$WorkDir = "",
     [ValidateSet('bash','cmd','powershell')]
     [string]$Shell = 'bash',
-    [int]$Tail = 50
+    [int]$Tail = 50,
+
+    # workspace-hub#3740 slice 4b: ties a job to the issue it is doing work for,
+    # as `owner/repo#123`. Carried through into status.json and echoed back by
+    # `status`/`list`, so a later session can join a finished job to its issue.
+    #
+    # Deliberately NOT written as a dispatch record here. This script stays a job
+    # runner with no git or Python dependency; the caller that owns the record
+    # reads `-Action status` and writes it. That split matters for the
+    # finished-but-crashed-before-write case: the runner is the only thing that
+    # still knows the real exit code, so it must remain answerable even when the
+    # record writer died.
+    [string]$IssueRef = ""
 )
 
 $ErrorActionPreference = 'Stop'
@@ -128,11 +140,11 @@ call :stampdone %RC%
 exit /b %RC%
 
 :stamp
-> "$statusF" echo {"job_id":"$JobId","state":"%~1","shell":"$Shell","work_dir":"$($WorkDir -replace '\\','\\')","started_at":"%DATE% %TIME%","exit_code":null}
+> "$statusF" echo {"job_id":"$JobId","issue_ref":"$IssueRef","state":"%~1","shell":"$Shell","work_dir":"$($WorkDir -replace '\\','\\')","started_at":"%DATE% %TIME%","exit_code":null}
 exit /b 0
 
 :stampdone
-> "$statusF" echo {"job_id":"$JobId","state":"finished","shell":"$Shell","work_dir":"$($WorkDir -replace '\\','\\')","finished_at":"%DATE% %TIME%","exit_code":%~1}
+> "$statusF" echo {"job_id":"$JobId","issue_ref":"$IssueRef","state":"finished","shell":"$Shell","work_dir":"$($WorkDir -replace '\\','\\')","finished_at":"%DATE% %TIME%","exit_code":%~1}
 exit /b 0
 "@
     $runnerFile = Join-Path $dir 'run.cmd'
@@ -206,6 +218,11 @@ if ($Action -eq 'status') {
 
     Emit ([ordered]@{
         ok = $true; action='status'; job_id=$JobId
+        # Read back from status.json, not from the -IssueRef parameter: `status`
+        # is normally called from a LATER session that never passed one. Echoing
+        # the parameter would return an empty string for every real query, which
+        # would read as "this job has no issue" rather than "you didn't ask".
+        issue_ref = if ($st -and ($st.PSObject.Properties.Name -contains 'issue_ref')) { $st.issue_ref } else { $null }
         state = if ($st -and ($st.PSObject.Properties.Name -contains 'state')) { $st.state } else { 'unknown' }
         exit_code = if ($st -and ($st.PSObject.Properties.Name -contains 'exit_code')) { $st.exit_code } else { $null }
         task_state = $tState; task_last_result = $tResult
@@ -237,6 +254,9 @@ if ($Action -eq 'list') {
             $st = Read-Status $d.Name
             $jobs += [ordered]@{
                 job_id = $d.Name
+                # Lets a reconciler ask "which jobs belong to issues?" in one
+                # call instead of N status queries.
+                issue_ref = if ($st -and ($st.PSObject.Properties.Name -contains 'issue_ref')) { $st.issue_ref } else { $null }
                 state = if ($st) { $st.state } else { 'unknown' }
                 exit_code = if ($st -and ($st.PSObject.Properties.Name -contains 'exit_code')) { $st.exit_code } else { $null }
             }

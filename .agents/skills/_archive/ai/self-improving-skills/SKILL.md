@@ -12,7 +12,7 @@ After substantial work, offer to capture it. When existing skills are wrong, fix
 When you finish a task that involved 5+ tool calls, overcame a tricky error, or discovered a non-trivial workflow:
 
 1. **Offer** to save the approach as a skill: "This workflow could be saved as a reusable skill. Want me to create one?"
-2. If yes, use `skill-creator` to create it in `.Codex/skills/`
+2. If yes, use `skill-creator` to create it in `.claude/skills/`
 3. Focus on the **procedural knowledge** — exact steps, commands, pitfalls — not a narrative of what happened
 
 ## During Skill Use

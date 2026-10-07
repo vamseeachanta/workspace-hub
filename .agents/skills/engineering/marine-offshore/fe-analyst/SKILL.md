@@ -1,6 +1,6 @@
 ---
 name: fe-analyst
-version: 1.0.0
+version: 1.1.0
 category: engineering
 description: "Finite Element Analysis Analyst \u2014 slender structure FEA for marine\
   \ and offshore systems"
@@ -19,7 +19,7 @@ tags:
 - dnv
 - api
 created: 2026-02-17
-author: Codex
+author: Claude
 type: skill
 trigger: manual
 auto_execute: false
@@ -53,18 +53,18 @@ scripts_exempt: true
 
 ---
 
-## Sub-Skills
+## Method references
 
-- [1. FEA Fundamentals for Slender Structures](1-fea-fundamentals-for-slender-structures/SKILL.md)
-- [What to Document (+2)](what-to-document/SKILL.md)
-- [What to Document (+1)](what-to-document/SKILL.md)
-- [BC Types in OrcaFlex (+2)](bc-types-in-orcaflex/SKILL.md)
-- [OrcaFlex Discretization (+3)](orcaflex-discretization/SKILL.md)
-- [What to Document](what-to-document/SKILL.md)
-- [Environmental Load Summary (+1)](environmental-load-summary/SKILL.md)
-- [Static Analysis (+3)](static-analysis/SKILL.md)
-- [Key Results to Extract and Plot (+1)](key-results-to-extract-and-plot/SKILL.md)
-- [DNV-OS-F101 Pipeline Code Checks (+2)](dnv-os-f101-pipeline-code-checks/SKILL.md)
-- [Plot Types Per Section](plot-types-per-section/SKILL.md)
-- [12. Standards Reference](12-standards-reference/SKILL.md)
-- [13. Common FEA Mistakes and Remedies](13-common-fea-mistakes-and-remedies/SKILL.md)
+These archived methods preserve the existing analysis sequence. Check applicability against the owning project's current qualified inputs, standards and accepted workflow; archive content is not current approval or readiness evidence. For the complete task-to-report route, use [engineering context retrieval](../../../workspace-hub/agent-teams/orchestrator-routing/references/engineering-context.md).
+
+- [1. FEA Fundamentals for Slender Structures](../../../_archive/engineering/marine-offshore/fe-analyst/1-fea-fundamentals-for-slender-structures/SKILL.md)
+- [What to Document](../../../_archive/engineering/marine-offshore/fe-analyst/what-to-document/SKILL.md)
+- [BC Types in OrcaFlex](../../../_archive/engineering/marine-offshore/fe-analyst/bc-types-in-orcaflex/SKILL.md)
+- [OrcaFlex Discretization](../../../_archive/engineering/marine-offshore/fe-analyst/orcaflex-discretization/SKILL.md)
+- [Environmental Load Summary](../../../_archive/engineering/marine-offshore/fe-analyst/environmental-load-summary/SKILL.md)
+- [Static Analysis](../../../_archive/engineering/marine-offshore/fe-analyst/static-analysis/SKILL.md)
+- [Key Results to Extract and Plot](../../../_archive/engineering/marine-offshore/fe-analyst/key-results-to-extract-and-plot/SKILL.md)
+- [DNV-OS-F101 Pipeline Code Checks](../../../_archive/engineering/marine-offshore/fe-analyst/dnv-os-f101-pipeline-code-checks/SKILL.md)
+- [Plot Types Per Section](../../../_archive/engineering/marine-offshore/fe-analyst/plot-types-per-section/SKILL.md)
+- [12. Standards Reference](../../../_archive/engineering/marine-offshore/fe-analyst/12-standards-reference/SKILL.md)
+- [13. Common FEA Mistakes and Remedies](../../../_archive/engineering/marine-offshore/fe-analyst/13-common-fea-mistakes-and-remedies/SKILL.md)

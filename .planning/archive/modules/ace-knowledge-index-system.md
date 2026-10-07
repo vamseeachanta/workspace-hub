@@ -234,7 +234,7 @@ kb.stats()
 client_patterns:
   - pattern: '(?i)\b(shell|bp|ecopetrol|chevron|anadarko|eni|repsol|murphy|grupo.?r)\b'
     replacement: 'CLIENT'
-  - pattern: '(?i)\b(prelude|macondo|perdido|stones|marlin|boreas|carcara|piklis)\b'
+  - pattern: '(?i)\b(prelude|GoM well A|GoM spar A|stones|marlin|boreas|carcara|piklis)\b'
     replacement: 'FIELD'
   - pattern: '(?i)\b(cosl|disys|sta|tjg|fdas|tvo|bopt|rii|wcot|kbr)\b'
     replacement: 'CONTRACTOR'

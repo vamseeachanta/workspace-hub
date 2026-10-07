@@ -1,14 +1,14 @@
 # Licensed-Win-1 Session 3 — Execution Prompts
 
 Generated: 2026-04-04
-Machine: licensed-win-1 (Windows, D:\workspace-hub)
+Machine: licensed-win-1 (Windows, <workspace-root>\workspace-hub)
 Available: Claude Code CLI, Codex CLI, Gemini CLI, Python, Git Bash, OrcFxAPI
 NOT available: Hermes, uv
 
 ## Prerequisites (run once before any prompt)
 
 ```powershell
-cd D:\workspace-hub
+cd <workspace-root>\workspace-hub
 git pull origin main
 cd digitalmodel
 git pull origin main
@@ -32,7 +32,7 @@ Issue: #1789
 
 ```
 You are an engineering automation agent on licensed-win-1 (Windows).
-Workspace: D:\workspace-hub. Use python (not uv run). OrcFxAPI is available.
+Workspace: <workspace-root>\workspace-hub. Use python (not uv run). OrcFxAPI is available.
 
 TASK: Generate the hemisphere.owr fixture that failed previously because
 HemisphereAndLid0814.gdf was not found.
@@ -190,7 +190,7 @@ STEP 5: Commit, push, comment
     gh issue close 1789
 
   If hemisphere FAILED (step 2b), instead do:
-    gh issue comment 1789 --body "Hemisphere fixture STILL BLOCKED. HemisphereAndLid0814.gdf not found on this machine. Searched D:\ and C:\Program Files\Orcina\. The mesh file may need to be sourced from the original WAMIT validation distribution."
+    gh issue comment 1789 --body "Hemisphere fixture STILL BLOCKED. HemisphereAndLid0814.gdf not found on this machine. Searched the D: drive and C:\Program Files\Orcina\. The mesh file may need to be sourced from the original WAMIT validation distribution."
 ```
 
 ---
@@ -203,7 +203,7 @@ Issue: #1597
 
 ```
 You are an engineering automation agent on licensed-win-1 (Windows).
-Workspace: D:\workspace-hub. Use python (not uv run). OrcFxAPI is available.
+Workspace: <workspace-root>\workspace-hub. Use python (not uv run). OrcFxAPI is available.
 
 TASK: Copy the existing L02 OC4 Semi-sub .owr and generate its xlsx sidecar.
 The .owr already exists at:
@@ -334,13 +334,13 @@ Issue: #1652
 
 ```
 You are an engineering automation agent on licensed-win-1 (Windows).
-Workspace: D:\workspace-hub. Use python (not uv run). OrcFxAPI is available.
+Workspace: <workspace-root>\workspace-hub. Use python (not uv run). OrcFxAPI is available.
 
 TASK: Run the dev-primary pipeline on licensed-win-1, then prove the output
 can be loaded into a real OrcaFlex model. This validates end-to-end correctness.
 
 STEP 1: Pull latest
-    cd D:\workspace-hub
+    cd <workspace-root>\workspace-hub
     git pull origin main
     cd digitalmodel
     git pull origin main
@@ -481,12 +481,12 @@ Dependencies: PROMPT 2 must complete first (L02 fixture committed).
 
 ```
 You are an engineering automation agent on licensed-win-1 (Windows).
-Workspace: D:\workspace-hub. Use python (not uv run). OrcFxAPI is available.
+Workspace: <workspace-root>\workspace-hub. Use python (not uv run). OrcFxAPI is available.
 
 TASK: Run the xlsx-vs-owr validation on the new L02 OC4 Semi-sub fixture.
 
 STEP 1: Pull latest (to get L02 fixture from PROMPT 2)
-    cd D:\workspace-hub
+    cd <workspace-root>\workspace-hub
     git pull origin main
     cd digitalmodel
     git pull origin main
@@ -581,7 +581,7 @@ STEP 3: Comment on #1597
 
 ### Terminal 1 (Claude Code) — run sequentially:
 ```powershell
-cd D:\workspace-hub
+cd <workspace-root>\workspace-hub
 git pull origin main
 cd digitalmodel && git pull origin main && cd ..
 
@@ -600,7 +600,7 @@ claude -p "Read docs/plans/licensed-win-1-session-3-prompts.md, execute PROMPT 4
 
 ### Terminal 2 (Codex or Gemini) — post-verification:
 ```powershell
-cd D:\workspace-hub
+cd <workspace-root>\workspace-hub
 git pull origin main
 cd digitalmodel && git pull origin main && cd ..
 

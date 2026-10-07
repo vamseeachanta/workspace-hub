@@ -9,6 +9,10 @@ metadata:
     tags: [Coding-Agent, Claude, Anthropic, Code-Review, Refactoring, PTY, Automation]
     related_skills: [codex, hermes-agent, opencode]
 ---
+## Implementation authority
+
+The task request or standing authority authorizes implementation, including substantial work; no separate user plan approval, approval label or local marker is required. Complete planning, TDD and adversarial review, and resolve required domain decisions and blocking findings. Honor explicit planning-only requests. Consequential actions outside existing authority require matching explicit authorization. Implementation authority alone does not authorize publication, deployment, access changes or destructive actions; verify action/destination authority and reuse it when already provided. Preserve owner-controlled approval history without self-labeling.
+
 
 # Claude Code — Hermes Orchestration Guide
 
@@ -464,8 +468,8 @@ When asked to create or modify database migrations:
 | `#` | Quick add to CLAUDE.md memory (e.g., `# Use 2-space indentation`) |
 | `/` | Slash commands |
 
-### Pro Tip: "ultrathink"
-Use the keyword "ultrathink" in your prompt for maximum reasoning effort on a specific turn. This triggers the deepest thinking mode regardless of the current `/effort` setting.
+### Reasoning depth
+Set reasoning depth with `/effort` (or `CLAUDE_CODE_EFFORT_LEVEL`), not with prompt keywords. On Claude Opus 5.5 thinking is always on and effort is the only control; its default is `medium`, so raise it for a hard turn and lower it for routine work.
 
 ## PR Review Pattern
 
@@ -698,7 +702,7 @@ Use `/context` in interactive mode to see a colored grid of context usage. Key t
 |----------|--------|
 | `ANTHROPIC_API_KEY` | API key for authentication (alternative to OAuth) |
 | `CLAUDE_CODE_EFFORT_LEVEL` | Default effort: `low`, `medium`, `high`, `max`, or `auto` |
-| `MAX_THINKING_TOKENS` | Cap thinking tokens (set to `0` to disable thinking entirely) |
+| `MAX_THINKING_TOKENS` | Cap thinking tokens on models that take a thinking budget. It does not disable thinking on Claude Opus 5.5, where thinking is always on — use the effort level instead |
 | `MAX_MCP_OUTPUT_TOKENS` | Cap output from MCP servers (default varies; set e.g., `50000`) |
 | `CLAUDE_CODE_NO_FLICKER=1` | Enable alt-screen rendering to eliminate terminal flicker |
 | `CLAUDE_CODE_SUBPROCESS_ENV_SCRUB` | Strip credentials from sub-processes for security |
@@ -734,7 +738,7 @@ Use `/context` in interactive mode to see a colored grid of context usage. Key t
 11. **Claude may use `python` instead of `python3`** — on systems without a `python` symlink, Claude's bash commands will fail on first try but it self-corrects.
 12. **Interactive Claude can fail immediately with API 500 errors even when tmux launch, auth, and prompt wiring are correct** — if the TUI shows `API Error: 500 ... Internal server error` before any real work starts, treat it as an upstream Claude service failure, not a tmux/orchestration bug. Practical response order: (a) retry once in a fresh tmux session, optionally with a shorter prompt or different model, (b) if the 500 persists, stop burning cycles and fall back to a non-Claude path (main-agent execution, approval-safe prep artifacts, or deferred retry later). Do not assume repeated `Enter`/re-pasting the same prompt will fix it.
 13. **Malformed project `.claude/settings.json` can prevent Claude from entering the TUI at all; bypass with `--setting-sources user` when needed** — if launch shows `Settings Error ... Invalid or malformed JSON` and offers `1. Exit and fix manually / 2. Continue without these settings`, your automated prompt paste can fall through to the underlying shell after Claude exits, causing the pasted task text to execute as bash commands. Robust recovery pattern: relaunch with `claude --setting-sources user ...` (or otherwise exclude project/local settings), then pass the task as the initial Claude prompt argument instead of pasting multiline text after startup. This avoids both the malformed-settings blocker and accidental shell execution of the prompt.
-14. **For plan-review issues, interactive Claude should be used for approval-safe execution prep only, not implementation** — when an issue is not yet `status:plan-approved`, a useful fallback is to launch Claude with a constrained prompt that only prepares execution packets, prompt files, inventory manifests, or GitHub prep comments under safe paths like `tmp/` and `docs/reports/`. This preserves momentum without violating the approval gate.
+14. **For reviewed issues, interactive Claude may implement within task/standing authority.** A plan-review label does not require a separate human approval wait. Constrain execution to preparation when the user requests planning only or required domain decisions/blocking findings remain; state those boundaries in the prompt. Consequential actions outside authority require explicit authorization.
 15. **Session resumption requires same directory** — `--continue` finds the most recent session for the current working directory.
 16. **Trust dialog only appears once per directory** — first-time only, then cached.
 17. **Background tmux sessions persist** — always clean up with `tmux kill-session -t <name>` when done.

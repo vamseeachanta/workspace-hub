@@ -56,7 +56,7 @@ Each item is binary CLEAR / FLAG. A FLAG blocks the bundle from outbound use unt
 ### F. Cross-document consistency
 
 - [ ] "AceEngineer" capitalization is consistent across all client-facing pages (no "aceEngineer" / "ACE Engineer" mid-sentence drift).
-- [ ] Demo case-counts in email templates match the live demo pages exactly (Adv-C catch: "Demo 5 = 81 tests" not "300 cases"; "992 + Ballymore worked example" not "1,292 parametric cases").
+- [ ] Demo case-counts in email templates match the live demo pages exactly (Adv-C catch: "Demo 5 = 81 tests" not "300 cases"; "992 + GoM tieback A worked example" not "1,292 parametric cases").
 - [ ] Outreach hub demo grid count matches the bundle README "Live URLs" count matches the sitemap (Adv-A catch: bundle had 5/6/12 mismatch pre-fix).
 
 ## Sign-off log

@@ -60,5 +60,5 @@ def test_readme_and_runbook_document_two_machine_sequence():
     readme = (REPO_ROOT / "scripts" / "windows" / "README.md").read_text()
     runbook = RUNBOOK.read_text()
     assert "rdp-microphone.ps1" in readme
-    for token in ("WS014", "RDS02", "Remote Audio", "Win+H", "rollback"):
+    for token in ("ace-win-2", "ace-win-1", "Remote Audio", "Win+H", "rollback"):
         assert token.lower() in runbook.lower()

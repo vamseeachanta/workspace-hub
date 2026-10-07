@@ -70,7 +70,7 @@ Scope items 2, 3, 4 (partial), and 5 are implemented and tested. The core engine
 
 - **Probability matrix**: `concept_probability_matrix()` converts band counts to normalised fractions. Sums to 1.0 per band. Empty bands return `{}`.
 - **Decision tree**: `predict_concept_type()` is a rule-based predictor (not ML). Uses empirical probabilities as prior, adjusts for reservoir size (small <50 MMbbl boosts tieback, large >200 MMbbl penalises) and distance-to-infra (<15 km boosts tieback, >60 km penalises).
-- **Case validation**: `validate_against_cases()` runs predictions against a case study list and returns accuracy metrics. 15 GoM fields in test fixtures. 4 of the 6 issue-specified cases (Mad Dog, Appomattox, Perdido, Whale) are covered via `CASE_STUDY_RECORDS`.
+- **Case validation**: `validate_against_cases()` runs predictions against a case study list and returns accuracy metrics. 15 GoM fields in test fixtures. 4 of the 6 issue-specified cases (Mad Dog, Appomattox, GoM spar A, Whale) are covered via `CASE_STUDY_RECORDS`.
 - **Integration**: `concept_selection()` accepts optional `empirical_weights` dict. Alpha blend at 0.3 empirical, 0.7 analytical. Backward compatible (None = no change). `concept_selection_with_benchmarks()` is a convenience wrapper that does the full pipeline.
 
 ### 3.2 What's NOT Done (1 of 5 scope items + 1 data gap)

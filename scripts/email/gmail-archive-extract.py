@@ -27,23 +27,36 @@ ROUTING_FILE = SCRIPTS_DIR / "email-routing.yaml"
 OAUTH_ENV = os.path.expanduser("~/.gmail-mcp/oauth-env.json")
 ACE_BASE = Path("/mnt/ace")
 
-# Legal deny list — check multiple locations
-DENY_PATH = None
-for p in [
-    Path("/mnt/ace/.ace-knowledge/.legal-deny-list.yaml"),
-    Path("/mnt/local-analysis/workspace-hub/.legal-deny-list.yaml"),
-]:
-    if p.exists():
-        DENY_PATH = p
-        break
-if DENY_PATH is None:
-    DENY_PATH = Path("/dev/null")
-
 # ============================================================
 # CONFIG
 # ============================================================
+def _private_overlay():
+    """Owner-private lists (C19): scripts/lib/private_overlay.py.
+
+    Absent file -> {} (public rules and placeholder addresses only); malformed
+    file -> PrivateOverlayError.
+    """
+    repo_root = str(SCRIPTS_DIR.parents[1])
+    if repo_root not in sys.path:
+        sys.path.insert(0, repo_root)
+    from scripts.lib import private_overlay
+    return private_overlay
+
+
 def load_routing():
-    """Simple YAML parser — no external deps needed."""
+    """Simple YAML parser — no external deps needed.
+
+    Public rules come from email-routing.yaml; owner-private rules (client
+    domains, which reveal an engagement) come from the private overlay's
+    email.routing_rules and take precedence.
+    """
+    rules = _load_public_routing()
+    po = _private_overlay()
+    rules.update(po.get_mapping(po.load(), "email.routing_rules"))
+    return rules
+
+
+def _load_public_routing():
     rules = {}
     if not ROUTING_FILE.exists():
         return rules
@@ -69,10 +82,16 @@ def load_oauth():
         return json.load(f)
 
 ACCOUNTS = {
-    "ace":       {"email": "vamsee.achanta@aceengineer.com",  "token": "~/.gmail-ace/credentials.json"},
-    "personal":  {"email": "achantav@gmail.com",               "token": "~/.gmail-personal/credentials.json"},
-    "skestates": {"email": "skestatesinc@gmail.com",           "token": "~/.gmail-skestates/credentials.json"},
+    "ace":       {"email": "owner@example.com",               "token": "~/.gmail-ace/credentials.json"},
+    "personal":  {"email": "owner.personal@example.com",       "token": "~/.gmail-personal/credentials.json"},
+    "skestates": {"email": "skestates@example.com",            "token": "~/.gmail-skestates/credentials.json"},
 }
+# Real mailbox addresses are private (C15/C19); the placeholders above are
+# display-only and are replaced from the overlay's email.mailboxes when present.
+for _alias, _address in _private_overlay().get_mapping(
+        _private_overlay().load(), "email.mailboxes").items():
+    if _alias in ACCOUNTS:
+        ACCOUNTS[_alias]["email"] = _address
 
 # ============================================================
 # AUTH
@@ -205,30 +224,6 @@ def parse_spreadsheet(xlsx_path, sheet_dir):
     return csv_paths
 
 # ============================================================
-# LEGAL SCAN
-# ============================================================
-def legal_scan(text, deny_path):
-    if not DENY_PATH.exists() or str(DENY_PATH) == "/dev/null":
-        return []
-    try:
-        import yaml
-        with open(DENY_PATH) as f:
-            deny = yaml.safe_load(f)
-    except:
-        return []
-    
-    matches = []
-    text_lower = text.lower()
-    for item in deny.get("client_references", []):
-        pattern = item["pattern"]
-        cs = item.get("case_sensitive", False)
-        search = text if cs else text_lower
-        search_pat = pattern if cs else pattern.lower()
-        if search_pat in search:
-            matches.append((pattern, item.get("description", "")))
-    return matches
-
-# ============================================================
 # REPO HELPERS
 # ============================================================
 def git_commit(repo_path, msg):
@@ -242,9 +237,28 @@ def git_commit(repo_path, msg):
 # ============================================================
 # MAIN
 # ============================================================
+def overlay_gate(args):
+    """Fail closed when the private overlay is absent (C19).
+
+    Without the overlay, a private client's sender falls through to the public
+    default route, so archiving would file the message in the wrong repository
+    and --delete would then remove it from Gmail. Only a --dry-run without
+    --delete (read-only) may proceed, with a one-line warning. Exits 2 otherwise;
+    the message names no path and no value.
+    """
+    po = _private_overlay()
+    if args.dry_run and not args.delete:
+        po.warn_if_absent("routing (dry run)")
+        return
+    try:
+        po.require_present("archive mail to a repository or delete it from Gmail"
+                           " (a --dry-run without --delete may run)")
+    except po.PrivateOverlayAbsent as exc:
+        print(f"gmail-archive-extract: {exc}", file=sys.stderr)
+        raise SystemExit(2)
+
+
 def main():
-    import yaml
-    
     parser = argparse.ArgumentParser(description="Extract Gmail messages to repos")
     parser.add_argument("--account", required=True, choices=list(ACCOUNTS.keys()))
     parser.add_argument("--query", default="in:inbox -in:trash", help="Gmail search query")
@@ -252,9 +266,12 @@ def main():
     parser.add_argument("--delete", action="store_true", help="Delete from Gmail after archive")
     parser.add_argument("--dry-run", action="store_true", help="Show plan without saving")
     parser.add_argument("--no-sheets", action="store_true", help="Skip spreadsheet parsing")
-    parser.add_argument("--force", action="store_true", help="Proceed through legal violations")
+    parser.add_argument("--force", action="store_true", help="Deprecated compatibility flag; ignored (identifier gate retired)")
     args = parser.parse_args()
-    
+    if args.force:
+        print("--force is ignored; identifier gate retired; routing/access checks remain", file=sys.stderr)
+    overlay_gate(args)
+
     # Load config
     routing = load_routing()
     token = refresh_token(args.account)
@@ -278,7 +295,6 @@ def main():
         "spreadsheets": 0,
         "csv_files": 0,
         "deleted": 0,
-        "legal_blocked": 0,
         "review_flagged": 0,
         "errors": 0,
         "repo_commits": Counter(),  # repo -> commits
@@ -322,12 +338,13 @@ def main():
                 target_repo = parts[0]
                 target_path = ACE_BASE / target_repo / "/".join(parts[1:])
             
-            # Create target directories
-            target_path.mkdir(parents=True, exist_ok=True)
+            # Create target directories (a dry run writes nothing)
             att_dir = target_path.parent / "attachments" if target_path.name != "attachments" else target_path
             sheet_dir = target_path.parent / "spreadsheets" if target_path.name != "spreadsheets" else target_path
-            att_dir.mkdir(exist_ok=True)
-            sheet_dir.mkdir(exist_ok=True)
+            if not args.dry_run:
+                target_path.mkdir(parents=True, exist_ok=True)
+                att_dir.mkdir(exist_ok=True)
+                sheet_dir.mkdir(exist_ok=True)
             
             # Extract body
             body = extract_text_body(detail.get("payload", {}))
@@ -340,7 +357,8 @@ def main():
             # Download attachments
             if atts:
                 att_subdir = att_dir / clean_name(subject[:60])
-                att_subdir.mkdir(exist_ok=True)
+                if not args.dry_run:
+                    att_subdir.mkdir(exist_ok=True)
                 for att in atts:
                     try:
                         att_data = gmail_get_attachment(token, msg_stub["id"], att["attachmentId"])
@@ -362,14 +380,6 @@ def main():
                                 stats["csv_files"] += len(parsed)
                     except Exception as e:
                         print(f"    ⚠️ attachment error: {att['filename'][:40]}")
-            
-            # Legal scan
-            full_text = subject + " " + body
-            violations = legal_scan(full_text, DENY_PATH)
-            if violations and not args.force:
-                print(f"  [{i+1}] BLOCKED: {subject[:60]} — {[v[0] for v in violations[:3]]}")
-                stats["legal_blocked"] += 1
-                continue
             
             # Build markdown
             lines = [f"# {subject}", ""]
@@ -444,7 +454,7 @@ def main():
     print(f"\n{'='*70}")
     print(f"  COMMITTING TO REPOS")
     print(f"{'='*70}")
-    for repo_path, info in pending_commits.items():
+    for repo_path, info in (pending_commits.items() if not args.dry_run else ()):
         repo_dir = Path(repo_path)
         msg = f"extract: {args.account} email — {info['count']} messages from {args.query[:50]}"
         result = git_commit(repo_dir, msg)
@@ -460,8 +470,6 @@ def main():
         print(f"  → {repo:30s} {count}")
     if stats["review_flagged"]:
         print(f"  → {'REVIEW flagged':30s} {stats['review_flagged']}")
-    if stats["legal_blocked"]:
-        print(f"  → {'BLOCKED (legal)':30s} {stats['legal_blocked']}")
     print(f"  Attachments:       {stats['attachments']}")
     print(f"  CSV sheets parsed: {stats['csv_files']}")
     print(f"  Deleted:           {stats['deleted']}")

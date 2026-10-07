@@ -13,7 +13,7 @@ review: pending
 
 ## Context
 
-gmsh 4.15.0 is installed at `D:\software\gmsh\gmsh-4.15.0-Windows64\gmsh.exe` with 21 tutorials (.geo + Python), examples (api, boolean, post_processing, simple_geo, struct), and full Python/C/C++ API bindings. The workspace-hub needs a dedicated gmsh skill for consistent mesh generation workflows, particularly for hydrodynamic BEM analysis (AQWA, OrcaWave, Nemoh).
+gmsh 4.15.0 is installed at `<tools-root>\gmsh\gmsh-4.15.0-Windows64\gmsh.exe` with 21 tutorials (.geo + Python), examples (api, boolean, post_processing, simple_geo, struct), and full Python/C/C++ API bindings. The workspace-hub needs a dedicated gmsh skill for consistent mesh generation workflows, particularly for hydrodynamic BEM analysis (AQWA, OrcaWave, Nemoh).
 
 **Existing content audit:**
 - `.claude/skills/data/scientific/cad-mesh-generation/SKILL.md` (1074 lines) — covers gmsh basics (panel mesh, volume mesh, quality, GDF/CDB export) but mixed with FreeCAD content
@@ -113,7 +113,7 @@ Condensed reference doc containing:
 
 4. **Marine/BEM focus** — Since this workspace's primary use case is hydrodynamic analysis, emphasize surface meshing for BEM solvers over volume meshing for FEA.
 
-5. **Executable path** — Reference `D:\software\gmsh\gmsh-4.15.0-Windows64\gmsh.exe` for CLI examples; note cross-platform path handling.
+5. **Executable path** — Reference `<tools-root>\gmsh\gmsh-4.15.0-Windows64\gmsh.exe` for CLI examples; note cross-platform path handling.
 
 ## Files Modified
 

@@ -1,5 +1,5 @@
 fixture_id: letstok-01-fatigue-analysis
-sender: contact@letstok.example.com
+sender: letstok@example.com
 subject: Web form submission for fatigue analysis
 body: >
   Letstok can provide fatigue analysis and engineering analysis support for

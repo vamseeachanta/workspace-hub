@@ -147,4 +147,4 @@ git push origin main
 4. **PDF extraction can fail on scanned docs** — use OCR fallback if text extraction returns empty
 5. **Corporate XLSX files may have merged cells** — use `openpyxl` carefully
 6. **Always save before parsing** — don't rely on in-memory data for long operations
-7. **Legal scan before committing attachments** — run `legal-sanity-scan.sh` on any extracted text
+7. **Final report review** — verify the outgoing document and extracted-text attachments per `docs/standards/FINAL_REPORT_VERIFICATION.md`; retain independent secret checks.

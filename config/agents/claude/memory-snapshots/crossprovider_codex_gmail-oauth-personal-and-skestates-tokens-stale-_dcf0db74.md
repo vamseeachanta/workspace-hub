@@ -8,6 +8,6 @@ metadata:
   tags: [environment, gmail, authentication]
 ---
 
-Workspace Gmail tokens for `personal` and `skestates` accounts fail token refresh with HTTP 400. Only `vamsee.achanta@aceengineer.com` (ace account) is live for Gmail API calls. Any CLI/MCP Gmail work must target ace or re-authorize the others.
+Workspace Gmail tokens for `personal` and `skestates` accounts fail token refresh with HTTP 400. Only `owner@example.com` (ace account) is live for Gmail API calls. Any CLI/MCP Gmail work must target ace or re-authorize the others.
 
 *(Distilled from codex sessions by bridge-providers-to-dream; the Claude dream consolidates and prunes these.)*

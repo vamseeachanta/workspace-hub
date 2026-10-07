@@ -6,7 +6,7 @@ from tests.helpers.stale_reference_docs import scan_stale_reference_hits
 
 STRICT_FILES = [
     "AGENTS.md",
-    "CLAUDE.md",
+    # CLAUDE.md retired 2026-08-01 — AGENTS.md is canonical.
     "GEMINI.md",
     "README.md",
     ".planning/templates/route-c-generic.md",

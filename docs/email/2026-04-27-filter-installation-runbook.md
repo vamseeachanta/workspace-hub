@@ -1,7 +1,7 @@
 # Gmail Filter Installation Runbook — 2026-04-27
 
 > **Purpose:** One-time inbox sweep that does not depend on automation. Repeatable across all 3 accounts (ace, personal, skestates).
-> **Provenance:** Sample analysis of 50 inbox threads on `vamsee.achanta@aceengineer.com`, 2026-04-27. Filter rules below cover ~76% of sampled volume.
+> **Provenance:** Sample analysis of 50 inbox threads on `owner@example.com`, 2026-04-27. Filter rules below cover ~76% of sampled volume.
 > **Companion:** `docs/email/WORKFLOW.md` (queue model, GitHub [#2017](https://github.com/vamseeachanta/workspace-hub/issues/2017)).
 > **Bulk import (recommended):** `docs/email/gmail-filters-2026-04-27.xml` — one-shot Gmail Settings → Filters → "Import filters" instead of entering 7 rules manually. Read the preflight comments in the XML before importing.
 
@@ -25,47 +25,47 @@ Filters give an immediate ~76% noise reduction with zero infra and survive the e
 **Label:** `AutoNoise` (existing)
 **Has the words (Gmail "From" field):**
 ```
-from:(lowes@e.lowes.com OR email@e.godaddy.com OR zmail@zmail.zillow.com OR marketing@supermicro.com OR estore-support@supermicro.com OR eagle@indianeagle.com OR newsletter@mailing.milesandmore.com OR costcoauto@mail.costcoauto.com OR homedepotcustomercare@mg.homedepot.com OR info@c.davidweekleyhomes.com OR service@info.remitly.com)
+from:(sender-01@example.com OR sender-02@example.com OR sender-03@example.com OR sender-04@example.com OR sender-05@example.com OR sender-06@example.com OR sender-07@example.com OR sender-08@example.com OR sender-09@example.com OR sender-10@example.com OR sender-11@example.com)
 ```
 Actions: Skip Inbox, Apply `AutoNoise`, Mark as read.
 
 ### Group 2 — Newsletters / weekly reads
 **Label:** `AutoNoise`
 ```
-from:(sahil@sahilbloom.com OR turiya@mail.beehiiv.com OR info@realpython.com OR jason@pyquantnews.com OR welcome@openrouter.ai OR noreply@email.openai.com OR no-reply@kaggle.com OR nasem@nationalacademies.org OR newsletter@sparkforautism.org)
+from:(sender-12@example.com OR sender-13@example.com OR sender-14@example.com OR sender-15@example.com OR sender-16@example.com OR noreply@email.openai.com OR no-reply@kaggle.com OR sender-17@example.com OR sender-18@example.com)
 ```
 Actions: Skip Inbox, Apply `AutoNoise`, Mark as read.
 
 ### Group 3 — Industry feeds (real signal, just not inbox-worthy)
 **Label:** `O&G Industry` (existing)
 ```
-from:(update@maritimereporter.com OR registrar@api.org)
+from:(sender-19@example.com OR sender-20@example.com)
 ```
 Actions: Skip Inbox, Apply `O&G Industry`. (Leave unread so weekly skim is easy.)
 
 ### Group 4 — CRE listings (extraction target per [#2017](https://github.com/vamseeachanta/workspace-hub/issues/2017))
 **Label:** `CRE` (existing)
 ```
-from:(rorik@sethequities.com OR IanIppolito@therealestatecrowdfundingreview.com)
+from:(sender-21@example.com OR sender-22@example.com)
 ```
 Actions: Skip Inbox, Apply `CRE`. Once [#2024](https://github.com/vamseeachanta/workspace-hub/issues/2024) ships, the extraction pipeline will read from this label and write structured data to `assethold/data/`.
 
 ### Group 5 — Trello bot from deleted account
 **Label:** `AutoNoise`
 ```
-from:do-not-reply@trello.com subject:"deleted account"
+from:sender-23@example.com subject:"deleted account"
 ```
 Actions: Skip Inbox, Apply `AutoNoise`, Mark as read, **Delete it** (Trello cannot stop sending these — the account is gone). One-time bulk-delete the existing matches; filter handles future ones.
 
 ### Group 6 — Dependabot review-requests for worldenergydata
 **New label:** `gh-dependabot` (create first)
 ```
-from:notifications@github.com to:worldenergydata@noreply.github.com
+from:sender-24@example.com to:worldenergydata@example.com
 ```
 Actions: Skip Inbox, Apply `gh-dependabot`. Batch-review under [#2433](https://github.com/vamseeachanta/workspace-hub/issues/2433) (worldenergydata main CI) instead of inbox-by-inbox.
 
 ### Group 7 — Closed/stale GitHub threads (one-time cleanup, no filter)
-- Bulk archive threads where `from:notifications@github.com` AND last activity older than 30 days AND no @mention of you.
+- Bulk archive threads where `from:sender-24@example.com` AND last activity older than 30 days AND no @mention of you.
 - This is a one-shot sweep, not a recurring filter — the inbox-noise generator was the lack of filter routing on Group 6, not stale state.
 
 ## Verification checklist

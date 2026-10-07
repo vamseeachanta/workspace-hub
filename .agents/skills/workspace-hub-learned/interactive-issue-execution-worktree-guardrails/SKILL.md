@@ -1,8 +1,8 @@
 ---
 name: interactive-issue-execution-worktree-guardrails
-description: Execute approved GitHub issues in isolated worktrees with interactive Codex/Codex runs, while containing agent drift and salvaging progress when provider/runtime problems occur.
+description: Execute approved GitHub issues in isolated worktrees with interactive Claude Code/Codex runs, while containing agent drift and salvaging progress when provider/runtime problems occur.
 triggers:
-  - User asks to implement GitHub issue work via tmux or interactive Codex
+  - User asks to implement GitHub issue work via tmux or interactive Claude Code
   - Multiple provider lanes are being run in parallel across issue clusters
   - Main checkout is dirty, behind remote, or otherwise unsafe for direct execution
   - Autonomous agent drift or provider quota failures threaten a run
@@ -10,7 +10,7 @@ triggers:
 
 # Interactive issue execution worktree guardrails
 
-Use this for approved issue execution waves in `workspace-hub`-style repos when the user wants tmux/interactive Codex and/or parallel provider dispatch.
+Use this for approved issue execution waves in `workspace-hub`-style repos when the user wants tmux/interactive Claude Code and/or parallel provider dispatch.
 
 ## Core pattern
 1. Start from a clean isolation boundary.
@@ -25,14 +25,14 @@ Use this for approved issue execution waves in `workspace-hub`-style repos when 
    - list owned paths and forbidden paths explicitly
    - require final validation, commit, push, issue comment, and close when complete
 4. Launch the provider in an isolated lane.
-   - Codex: use tmux + interactive `Codex --dangerously-skip-permissions` when explicitly approved by the user
+   - Claude Code: use tmux + interactive `claude --dangerously-skip-permissions` when explicitly approved by the user
    - Codex: use autonomous `codex exec --dangerously-bypass-approvals-and-sandbox` for bounded doc/report/readiness tasks
    - Gemini: treat as opportunistic; expect quota failures and have fallback lanes ready
 5. Monitor and intervene early.
    - capture pane / inspect status frequently
    - if the agent touches forbidden files, revert those files externally immediately and restate scope in the session
 6. Salvage instead of restarting from zero.
-   - if Codex stalls or drifts repeatedly, switch to deterministic local generation (`execute_code`, focused scripts, or another provider) to finish the bounded deliverable
+   - if Claude stalls or drifts repeatedly, switch to deterministic local generation (`execute_code`, focused scripts, or another provider) to finish the bounded deliverable
    - preserve useful artifacts, remove temporary prompt files, then validate and land
 7. Rebase before push.
    - multiple parallel lanes move `main`; expect `fetch` + `rebase origin/main` before pushing
@@ -52,7 +52,7 @@ Include these sections explicitly:
 
 ## Known failure modes and mitigations
 
-### 1) Codex drifts into unrelated files
+### 1) Claude Code drifts into unrelated files
 Observed recurring hazard: `scripts/testing/coverage-results.json` was repeatedly modified during unrelated issue work.
 
 Mitigation:
@@ -69,7 +69,7 @@ Observed:
 
 Mitigation:
 - do not block the whole wave on one provider
-- keep a fallback Codex or Codex lane ready for planning/readiness/doc generation
+- keep a fallback Claude or Codex lane ready for planning/readiness/doc generation
 - comment on the issue if a provider-specific run fails so the execution trail remains visible
 
 ### 3) Worktree hook / pre-push environment drift
@@ -80,15 +80,15 @@ Mitigation:
 - if the failure is clearly unrelated and the user has authorized aggressive execution, `--no-verify` may be acceptable for low-risk doc/report changes
 - document that choice in the issue comment
 
-### 3b) Plan-approved worktree still blocks late commits for ignored `.Codex/*` runtime paths
+### 3b) Plan-approved worktree still blocks late commits for ignored `.claude/*` runtime paths
 Observed in `feat/ecosystem-sync` execution:
 - `.planning/plan-approved/<issue>.md` existed locally and was committed
 - normal code/test commits passed
-- a later commit that added `.Codex/cron/...` and `.Codex/state/...` files required `git add -f` because those paths were ignored
+- a later commit that added `.claude/cron/...` and `.claude/state/...` files required `git add -f` because those paths were ignored
 - the subsequent commit was blocked by the plan gate with `NO APPROVAL` despite the existing marker
 
 Mitigation:
-- before starting work that must land files under ignored/runtime directories (especially `.Codex/cron/`, `.Codex/state/`, other force-added paths), probe repo policy early rather than discovering it at the final commit
+- before starting work that must land files under ignored/runtime directories (especially `.claude/cron/`, `.claude/state/`, other force-added paths), probe repo policy early rather than discovering it at the final commit
 - explicitly check both:
   - whether `.gitignore` ignores the intended deliverable path
   - whether the local enforcement hooks treat those paths as implementation requiring a different approval route
@@ -122,7 +122,7 @@ Observed in deterministic weekly audit work:
 - carry-forward sections can silently omit unchanged lower-confidence findings unless explicitly reconciled into the markdown/report totals
 
 Mitigation:
-- derive a stable audit scope from repo-relative semantics when possible (for example `.Codex/skills`) rather than absolute worktree paths
+- derive a stable audit scope from repo-relative semantics when possible (for example `.claude/skills`) rather than absolute worktree paths
 - define finding identity from semantic fields that should survive normal location churn (classification + canonical names), not from volatile path lists
 - detect path/canonical-name/classification changes in delta comparison so scope changes are surfaced as changed findings
 - ensure carry-forward markdown/report sections reconcile with summary counts, including unchanged non-high-confidence findings that remain active
@@ -143,21 +143,21 @@ Mitigation:
 - if PR CI remains red for unrelated repo debt, grep the matrix logs for the original signatures and record evidence that those signatures are gone across all relevant jobs
 - only declare the issue materially complete when the approved failure signatures are removed or intentionally converted into tracked skips, even if unrelated checks still fail
 
-### 8) Background `Codex -p` worktree runs can implement successfully but still be blocked from validation/commenting by repo-local allowlists
+### 8) Background `claude -p` worktree runs can implement successfully but still be blocked from validation/commenting by repo-local allowlists
 Observed in worldenergydata cost-wave execution (#335/#338/#337):
-- delegated/subagent launch was not reliable for the parallel wave, so execution switched to direct background `Codex -p` runs in isolated worktrees
-- Codex finished the code changes, but the repo-local `.Codex/settings.json` allowlist blocked commands like `uv run`, `python -m pytest`, `pytest`, and `gh issue comment`
+- delegated/subagent launch was not reliable for the parallel wave, so execution switched to direct background `claude -p` runs in isolated worktrees
+- Claude finished the code changes, but the repo-local `.claude/settings.json` allowlist blocked commands like `uv run`, `python -m pytest`, `pytest`, and `gh issue comment`
 - the worker logs asked for approval to run those commands even though the implementation itself had completed
 - closeout still succeeded by running validation and GitHub comments centrally from Hermes after inspecting the worktree diff and worker log
 
 Mitigation:
-- for parallel worktree waves, treat background `Codex -p` as an implementation engine, not necessarily the authority for final validation or GitHub reporting
+- for parallel worktree waves, treat background `claude -p` as an implementation engine, not necessarily the authority for final validation or GitHub reporting
 - after each worker exits, inspect three things before trusting the run:
   - `git status --short` / changed files in the worktree
   - the worker log for any approval-blocked commands
   - targeted tests run centrally from Hermes in the same worktree
 - if the worker was blocked on `pytest`, `uv run`, or `gh`, do not rerun the whole agent immediately; keep the produced diff, validate it centrally, then commit/push/comment from Hermes
-- post an issue note when execution ownership changes (for example: delegated worker timed out, switching to direct background Codex; worker could not comment, so closeout was posted centrally)
+- post an issue note when execution ownership changes (for example: delegated worker timed out, switching to direct background Claude; worker could not comment, so closeout was posted centrally)
 - verify pre-existing regression blockers explicitly instead of treating them as worker failures; in this run a planned regression target referenced a module absent on current main, so the right outcome was: document blocker, prove it is pre-existing, and keep the issue-scoped patch bounded
 - if this allowlist pattern is expected in a repo, prefer a two-layer plan from the start:
   - worker owns code/test-writing inside the isolated worktree

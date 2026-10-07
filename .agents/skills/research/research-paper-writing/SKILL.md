@@ -203,7 +203,7 @@ Search queries:
 
 **Recommended**: Install **Exa MCP** for real-time academic search:
 ```bash
-Codex mcp add exa -- npx -y mcp-remote "https://mcp.exa.ai/mcp"
+claude mcp add exa -- npx -y mcp-remote "https://mcp.exa.ai/mcp"
 ```
 
 ### Step 1.3: Verify Every Citation

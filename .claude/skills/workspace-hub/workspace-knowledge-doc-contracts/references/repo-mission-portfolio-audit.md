@@ -16,6 +16,9 @@ tags: [portfolio, mission, repo-audit, llm-wiki, governance, planning]
 
 # Repo Mission Portfolio Audit
 
+Current authority: implementation follows the originating task request or established standing authority after proportionate planning, TDD and adversarial review; no separate plan approval, approval label or local marker is required. Planning-only limits, unresolved domain decisions and action-specific authorization for publication, deployment, access changes, destructive actions and outreach remain binding. Historical approval records stay intact and must not be fabricated or self-labeled.
+
+
 Use when the user wants a portfolio-wide understanding of what each repo is for, what should be revised first, or how future GitHub issue creation should incorporate repo mission and LLM-wiki value.
 
 ## Inputs to gather
@@ -102,7 +105,7 @@ Use this when the user accepts the audit recommendation and asks to "execute the
    - Tier-1/Tier-2/Tier-3 starting inventory from `docs/BUSINESS_BRAIN.md`
    - deliverables for a canonical portfolio mission artifact, classification, source evidence, routing rules, and overlap/conflict notes
    - related links to the umbrella/structure/routing issues already found
-   - explicit planning-gate language: issue -> resource intel -> plan -> adversarial review -> plan-review -> user approval -> plan-approved -> implementation
+   - explicit planning-gate language: issue -> resource intel -> plan -> adversarial review -> verify task authority -> implementation
 4. Immediately draft the repo-tracked plan under `docs/plans/YYYY-MM-DD-issue-NNN-<slug>.md` and update `docs/plans/README.md` if the repo uses that index.
 5. Commit and push the draft plan/index update, then comment on:
    - the new portfolio issue with plan path + commit + current gate state

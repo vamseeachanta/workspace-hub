@@ -8,7 +8,7 @@ description: 'Clean code enforcement for workspace-hub Python repos: file/functi
 type: reference
 invocation: /clean-code
 applies-to:
-- Codex
+- claude
 - codex
 - gemini
 capabilities: []

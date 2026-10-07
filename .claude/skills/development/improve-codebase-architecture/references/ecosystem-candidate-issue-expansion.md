@@ -1,5 +1,8 @@
 # Ecosystem Architecture Candidate → Planning Issue Expansion
 
+Current authority: implementation follows the originating task request or established standing authority after proportionate planning, TDD and adversarial review; no separate plan approval, approval label or local marker is required. Planning-only limits, unresolved domain decisions and action-specific authorization for publication, deployment, access changes, destructive actions and outreach remain binding. Historical approval records stay intact and must not be fabricated or self-labeled.
+
+
 Use when an architecture review produces multiple candidates and the user asks to process "all" candidates "one by one".
 
 ## Pattern
@@ -13,7 +16,7 @@ Use when an architecture review produces multiple candidates and the user asks t
 4. Audit label taxonomy before issue creation and reuse existing labels. For workspace-hub style plan-gated work, default intake state is `status:needs-plan`.
 5. Create issues one by one with `--body-file`; avoid inline multiline shell bodies.
 6. After each issue, verify title/URL/labels/state with `gh issue view`.
-7. If a parent issue exists, add a single sequencing comment listing all child issues in recommended execution/planning order and explicitly stating that implementation is blocked until each issue reaches `status:plan-approved` by user approval.
+7. If a parent issue exists, add a single sequencing comment listing all child issues in recommended execution/planning order and stating the reviewed scope, task authority, dependencies and blocking domain decisions for each implementation unit; approval labels are optional historical records.
 8. Save a restart-safe temp index such as `/tmp/architecture-deepening-issues-<timestamp>.tsv` containing issue number, title, and URL.
 
 ## Body shape

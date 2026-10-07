@@ -23,7 +23,7 @@ scripts_exempt: true
   "contactPoint": {
     "@type": "ContactPoint",
     "contactType": "customer service",
-    "email": "contact@aceengineer.com"
+    "email": "info@example.com"
   }
 }
 ```

@@ -23,7 +23,7 @@ only verified, task-scoped reconciliation artifacts after the legal scan passes.
 
 ## Required startup
 
-1. Locate the live checkout (historically `D:\ws\workspace-hub`) and enter it.
+1. Locate the live checkout (historically `<workspace-root>\workspace-hub`) and enter it.
 2. Read `config/agents/codex/MEMORY.runtime.md` and the complete skill files:
    - `.claude/skills/workspace-hub/ecosystem-equivalence-reconcile/SKILL.md`
    - `.claude/skills/workspace-hub/session-curation/SKILL.md`

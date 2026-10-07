@@ -45,7 +45,7 @@ Private or metadata-only examples: client reports/data/decks/workbooks, project 
 
 Use this sub-pattern when an approved plan promotes a large or sensitive corpus (external-drive archives, standards libraries, training decks, client/project files) into LLM-wiki pages without copying raw data:
 
-1. **Gate first**: confirm explicit plan approval (`status:plan-approved` or a local approval marker) before writing wiki pages.
+1. **Gate first**: verify task/standing authority, current reviewed scope and resolved blockers before writing wiki pages. Separate plan approval, labels and local markers are not prerequisites; source rights remain required.
 2. **RED test first**: add focused tests that initially fail for expected page existence and boundary fields: `extraction_policy`, `raw_copy_allowed: false`, `ocr_allowed: false` where applicable, source-of-record absolute paths, and index/log updates.
 3. **Create pointer/shell pages, not extraction dumps**:
    - standards/spec libraries use `extraction_policy: metadata-only`; no clauses, copied standards text, or detailed licensed titles.

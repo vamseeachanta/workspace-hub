@@ -13,9 +13,18 @@
 #   scripts/sync/sync-ecosystem.sh [--mode full|pull|status] [--root <dir>] [-m "<msg>"] [--dry-run]
 #
 # Modes:
-#   full   (default) per repo: git add -u -> commit if staged -> fetch --prune -> pull --ff-only -> push
+#   full   (default) per repo: fetch --prune -> freshness guard -> git add -u ->
+#                          commit if staged -> pull --ff-only -> push
 #   pull             per repo: fetch --prune -> pull --ff-only            (no commit, no push)
 #   status           per repo: fetch --prune -> report branch/ahead/behind/dirty (read-only)
+#
+# Policy controls (auto-sync policy 2026-09-22):
+#   SYNC_SKIP_REPOS  comma-separated repo dirnames the automation must never
+#                    write to on this machine (e.g. workspace-hub on ace-linux-1,
+#                    which syncs via its dedicated machine/<host> branch).
+#   Freshness guard  in full mode the script fetches BEFORE committing and skips
+#                    any repo whose branch is behind its upstream, so a stale
+#                    checkout can never grow a divergence that blocks fast-forward.
 #
 # Root resolution order: --root  >  $WS_ECOSYSTEM_ROOT  >  auto-detect (sibling vs nested).
 #
@@ -84,6 +93,13 @@ for d in "$ROOT"/*/; do
   echo "=== $repo ==="
   branch="$(git -C "$d" rev-parse --abbrev-ref HEAD 2>/dev/null || echo '?')"
 
+  # Opt-out: repos the automation must never write to on this machine.
+  case ",${SYNC_SKIP_REPOS:-}," in
+    *,"$repo",*)
+      echo "  skipped (SYNC_SKIP_REPOS)"
+      n_ok=$((n_ok+1)); continue ;;
+  esac
+
   if [ "$MODE" = "status" ]; then
     git -C "$d" fetch --prune origin >/dev/null 2>&1 || true
     dirty="clean"; [ -n "$(git -C "$d" status --porcelain 2>/dev/null)" ] && dirty="dirty"
@@ -101,6 +117,14 @@ for d in "$ROOT"/*/; do
   fi
 
   result="ok"
+  # Freshness guard (auto-sync policy 2026-09-22): fetch BEFORE committing;
+  # never commit onto a branch that is behind its upstream.
+  git -C "$d" fetch --prune origin >/dev/null 2>&1 || true
+  behind="$(git -C "$d" rev-list --count "HEAD..@{u}" 2>/dev/null || echo 0)"
+  if [ "$MODE" = "full" ] && [ "${behind:-0}" -gt 0 ] 2>/dev/null; then
+    echo "  skipped: $branch is $behind behind origin (freshness guard)"
+    n_warn=$((n_warn+1)); continue
+  fi
   if [ "$MODE" = "full" ]; then
     git -C "$d" add -u 2>/dev/null || true
     if ! git -C "$d" diff --cached --quiet 2>/dev/null; then
@@ -108,7 +132,6 @@ for d in "$ROOT"/*/; do
     fi
   fi
 
-  git -C "$d" fetch --prune origin >/dev/null 2>&1 || true
   if ! git -C "$d" pull --ff-only >/dev/null 2>&1; then
     echo "  pull skipped (diverged/no-ff)"
     [ "$result" = "ok" ] && result="warn-pull"

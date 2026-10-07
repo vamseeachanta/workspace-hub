@@ -143,7 +143,7 @@ the stash; current files are the source of truth, not the snapshots.
 `pnpm install`. No active pnpm processes. → Disposed.
 
 **`.Trash-1000/`** — single 147-byte stale `.trashinfo` from 2026-05-07
-referencing a Windows path (`D:\workspace-hub\digitalmodel\docs\charts\...`)
+referencing a Windows path (`<workspace-root>\workspace-hub\digitalmodel\docs\charts\...`)
 that doesn't exist on this Linux volume. No active file manager handle.
 File manager recreates on next "Move to Trash" operation. → Disposed.
 

@@ -17,7 +17,7 @@
 | Repo | State |
 |---|---|
 | workspace-hub | main, tracks origin; **behind-origin and modified equality state/report files are EXPECTED steady-state residue** — 5 machines continuously rebuild the shared matrix; the new 4-hourly repository-sync cron owns catch-up |
-| digitalmodel, deckhand, deckhand-licensed-runs-queue | untouched this session (clean per the Jul 22 reconcile report; one guard-approved squash-merged branch deletion each in digitalmodel/llm-wiki-acma remains available via `reconcile-ecosystem.sh --apply`, not run) |
+| digitalmodel, deckhand, deckhand-licensed-runs-queue | untouched this session (clean per the Jul 22 reconcile report; one guard-approved squash-merged branch deletion each in digitalmodel/llm-wiki-mkt-a remains available via `reconcile-ecosystem.sh --apply`, not run) |
 
 ## No-external-action status
 
