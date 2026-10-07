@@ -75,4 +75,11 @@ DISPOSITION_CONTRACT = {
         "systemd-user-transaction-unattestable",
         {"scripts/install/setup-tmux-autosave-timer.sh"},
     ),
+    # workspace-hub#3786 — bundle-integrity sentinel installer enables systemd
+    # user timers from a shell script; same unattestable class, tracked by #3792.
+    "bundle-integrity-sentinel": (
+        3792,
+        "systemd-user-transaction-unattestable",
+        {"scripts/monitoring/bundle-sentinel-install/install.sh"},
+    ),
 }
