@@ -47,14 +47,35 @@ elif (( rc != 0 )); then
 fi
 echo "collect: ok"
 
-# 3. Commit only the generated files, only if they changed.
-git add -- "${OUT}" "${MD}"
-if git diff --cached --quiet -- "${OUT}" "${MD}"; then
+# 2b. Safety net for #3944: the daily dated-snapshot writer on this VM
+#     (docs/reports/fleet-snapshots/YYYY-MM-DD.json) is not version-controlled
+#     and does not run the labeller, so its files can carry physical host
+#     names. Relabel any committed snapshot that needs it with the same
+#     fail-closed labeller and private map. A snapshot the labeller refuses
+#     (exit 2) is left untouched and reported without naming a host.
+SNAP_DIR="docs/reports/fleet-snapshots"
+SNAPS=()
+for snap in "${SNAP_DIR}"/*.json; do
+    [[ -f "${snap}" ]] || continue
+    src=0
+    python3 scripts/fleet/fleet_snapshot_labels.py --check "${snap}" >/dev/null 2>&1 || src=$?
+    if (( src == 1 )) && python3 scripts/fleet/fleet_snapshot_labels.py "${snap}" >/dev/null 2>&1; then
+        echo "labels: relabelled $(basename "${snap}")"
+        SNAPS+=("${snap}")
+    elif (( src != 0 )); then
+        echo "labels: refused on $(basename "${snap}") (exit ${src}); left untouched" >&2
+    fi
+done
+
+# 3. Commit only the generated files (and any relabelled snapshot), only if they changed.
+FILES=("${OUT}" "${MD}" "${SNAPS[@]}")
+git add -- "${FILES[@]}"
+if git diff --cached --quiet -- "${FILES[@]}"; then
     echo "commit: no change"
     exit 0
 fi
 # Author = the VM's own git identity (the one the daily fleet snapshot uses).
-git commit --quiet -m "chore(fleet): AI account usage ${STAMP} [skip ci]" -- "${OUT}" "${MD}"
+git commit --quiet -m "chore(fleet): AI account usage ${STAMP} [skip ci]" -- "${FILES[@]}"
 echo "commit: $(git rev-parse --short HEAD)"
 
 [[ "${FLEET_NO_PUSH:-0}" == "1" ]] && { echo "push: skipped (FLEET_NO_PUSH)"; exit 0; }
