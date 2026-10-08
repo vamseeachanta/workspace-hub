@@ -1,6 +1,6 @@
 # Provider utilization weekly report
 
-Generated: 2026-10-08T13:21:11.207031Z
+Generated: 2026-10-08T17:21:10.949425Z
 Current week: 2026-W41
 Total monthly spend tracked: $260.0/mo
 
