@@ -26,6 +26,7 @@ import os
 import re
 import subprocess
 import sys
+import tempfile
 from pathlib import Path
 
 DEFAULT_MAX_BYTES = 400_000
@@ -97,15 +98,18 @@ def build(args: argparse.Namespace) -> int:
 
     packet_bytes = packet.encode("utf-8")
     manifest = {"schema": SCHEMA, "created": created, "git_head": head, "digest_domain": "raw-bytes",
-                "packet_bytes": size, "packet_sha256": hashlib.sha256(packet_bytes).hexdigest(), "files": entries}
-    # Stage both outputs, then publish, so a failed write never leaves a packet beside a stale manifest.
+                "packet_path": str(out_path), "packet_bytes": size,
+                "packet_sha256": hashlib.sha256(packet_bytes).hexdigest(), "files": entries}
+    # Stage both outputs in exclusively created, uniquely named temp files, then publish.
+    # The manifest goes last and pins the packet digest, so a half-published pair fails `verify`.
     staged = []
     try:
         for dest, data in ((out_path, packet_bytes),
                            (manifest_path, (json.dumps(manifest, indent=2) + "\n").encode("utf-8"))):
-            tmp = dest.with_name(dest.name + ".tmp-review-packet")
-            tmp.write_bytes(data)
-            staged.append((tmp, dest))
+            fd, tmp_name = tempfile.mkstemp(dir=dest.parent, prefix=f".{dest.name}.", suffix=".staging")
+            with os.fdopen(fd, "wb") as fh:
+                fh.write(data)
+            staged.append((Path(tmp_name), dest))
         for tmp, dest in staged:
             os.replace(tmp, dest)
     finally:
@@ -125,9 +129,18 @@ def verify(args: argparse.Namespace) -> int:
     if not isinstance(manifest, dict) or manifest.get("schema") != SCHEMA or not isinstance(files, list) or not files:
         return _fail(1, f"manifest is not a non-empty {SCHEMA} manifest")
     paths = [f.get("path") for f in files if isinstance(f, dict)]
-    if len(paths) != len(files) or len(set(paths)) != len(paths) or not all(
-            isinstance(f.get("sha256"), str) and re.fullmatch(r"[0-9a-f]{64}", f["sha256"]) for f in files):
-        return _fail(1, "manifest entries need unique paths and 64-hex sha256 digests")
+    if (len(paths) != len(files) or not all(isinstance(p, str) and p for p in paths)
+            or len(set(paths)) != len(paths) or not all(
+                isinstance(f.get("sha256"), str) and re.fullmatch(r"[0-9a-f]{64}", f["sha256"]) for f in files)):
+        return _fail(1, "manifest entries need unique string paths and 64-hex sha256 digests")
+    packet_state = "not-recorded"
+    if manifest.get("packet_sha256"):
+        pp = Path(str(manifest.get("packet_path") or ""))
+        if not pp.is_file():
+            packet_state = "missing"
+        else:
+            packet_state = ("match" if hashlib.sha256(pp.read_bytes()).hexdigest() == manifest["packet_sha256"]
+                            else "mismatch")
     root = Path.cwd().resolve()
     changed, missing = [], []
     for f in files:
@@ -140,8 +153,9 @@ def verify(args: argparse.Namespace) -> int:
             missing.append(f["path"])
         elif hashlib.sha256(p.read_bytes()).hexdigest() != f["sha256"]:
             changed.append(f["path"])
-    status = "changed" if changed or missing else "unchanged"
-    print(json.dumps({"status": status, "changed": changed, "missing": missing, "files": len(files)}))
+    status = "changed" if changed or missing or packet_state in ("missing", "mismatch") else "unchanged"
+    print(json.dumps({"status": status, "changed": changed, "missing": missing, "packet": packet_state,
+                      "files": len(files)}))
     return 3 if status == "changed" else 0
 
 

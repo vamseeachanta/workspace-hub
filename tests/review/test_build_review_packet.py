@@ -132,6 +132,28 @@ def test_manifest_binds_packet_digest(tmp_path):
     assert m["packet_sha256"] == hashlib.sha256((tmp_path / "p.md").read_bytes()).hexdigest()
 
 
+def test_staging_never_touches_inputs_with_the_temp_suffix(tmp_path):
+    make(tmp_path, "a.md.tmp-review-packet", b"reviewed input\n")
+    r = run("build", "--out", "a.md", "--manifest", "m.json", "a.md.tmp-review-packet", cwd=tmp_path)
+    assert r.returncode == 0, r.stderr
+    assert (tmp_path / "a.md.tmp-review-packet").read_bytes() == b"reviewed input\n"
+
+
+def test_verify_detects_packet_replaced_after_build(tmp_path):
+    make(tmp_path, "a.txt", b"x\n")
+    assert run("build", "--out", "p.md", "--manifest", "m.json", "a.txt", cwd=tmp_path).returncode == 0
+    (tmp_path / "p.md").write_text("a different packet\n", encoding="utf-8")
+    r = run("verify", "--manifest", "m.json", cwd=tmp_path)
+    assert r.returncode == 3 and json.loads(r.stdout)["packet"] == "mismatch"
+
+
+def test_verify_rejects_non_string_paths(tmp_path):
+    (tmp_path / "m.json").write_text(json.dumps({"schema": "review-packet/1", "files": [
+        {"path": ["a"], "sha256": "0" * 64}]}), encoding="utf-8")
+    r = run("verify", "--manifest", "m.json", cwd=tmp_path)
+    assert r.returncode == 1 and "Traceback" not in r.stderr
+
+
 def test_path_outside_root_is_refused(tmp_path):
     root = tmp_path / "root"
     root.mkdir()

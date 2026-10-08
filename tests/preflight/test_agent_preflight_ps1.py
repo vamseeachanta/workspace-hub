@@ -118,6 +118,13 @@ def test_probe_output_echoing_a_token_is_redacted(host, tmp_path):
     assert "[REDACTED]" in receipt["clis"]["codex"]["version"]
 
 
+def test_env_derived_paths_are_redacted_in_fields_and_findings(host, tmp_path):
+    token = "ghp_ENVpathSECRET0123456789"
+    r, receipt = run(host, tmp_path, {"CLAUDE_CODE_GIT_BASH_PATH": "C:\\x\\" + token, "AGENT_PYTHON": "C:\\y\\" + token + "\\python.exe"})
+    assert token not in json.dumps(receipt)
+    assert "PYTHON_SELECTED_MISSING" in ids(receipt)
+
+
 def _fake_gh(tmp_path, status_exit, api_exit):
     d = tmp_path / "fakegh"
     d.mkdir(exist_ok=True)

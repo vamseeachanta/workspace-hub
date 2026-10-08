@@ -35,14 +35,20 @@ param(
 $ErrorActionPreference = 'Stop'
 $findings = New-Object System.Collections.Generic.List[object]
 function Add-Finding([string]$Id, [string]$Severity, [string]$Message) {
-    $findings.Add([ordered]@{ id = $Id; severity = $Severity; message = $Message })
+    # Messages embed paths and probe text that can come from the environment.
+    $findings.Add([ordered]@{ id = $Id; severity = $Severity; message = (Protect-Text $Message) })
+}
+
+function Hide-Secrets([string]$Text) {
+    if ($null -eq $Text) { return $null }
+    return ($Text -replace '(?i)(gh[pousr]_[A-Za-z0-9]{8,}|github_pat_[A-Za-z0-9_]{8,}|sk-[A-Za-z0-9_\-]{8,}|xox[abpr]-[A-Za-z0-9\-]{8,}|AKIA[0-9A-Z]{12,}|eyJ[A-Za-z0-9_\-]{10,}\.[A-Za-z0-9_\-\.]+)', '[REDACTED]')
 }
 
 function Protect-Text([string]$Text) {
     # Recorded strings come from external programs; strip anything token-shaped and cap the length.
-    if ($null -eq $Text) { return $null }
-    $t = $Text -replace '(?i)\b(gh[pousr]_[A-Za-z0-9]{8,}|github_pat_[A-Za-z0-9_]{8,}|sk-[A-Za-z0-9_\-]{8,}|xox[abpr]-[A-Za-z0-9\-]{8,}|AKIA[0-9A-Z]{12,}|eyJ[A-Za-z0-9_\-]{10,}\.[A-Za-z0-9_\-\.]+)', '[REDACTED]'
-    if ($t.Length -gt 200) { $t = $t.Substring(0, 200) }
+    # The serialized receipt is filtered again as a whole (paths and env-derived fields included).
+    $t = Hide-Secrets $Text
+    if ($t -and $t.Length -gt 400) { $t = $t.Substring(0, 400) }
     return $t
 }
 
@@ -230,12 +236,15 @@ if ($ghPath) {
     # Outputs are deliberately not recorded.
     $api = Invoke-Probe $ghPath @('api', 'user', '-q', '.login')
     $gh.auth_ok = $api.ok
-    $gh.auth_status_ok = (Invoke-Probe $ghPath @('auth', 'status')).ok
+    $status = Invoke-Probe $ghPath @('auth', 'status')
+    $gh.auth_status_ok = $(if ($status.failure) { $null } else { $status.ok })
     if ($api.failure) {
         $gh.auth_ok = $null
         Add-Finding 'GH_PROBE_FAILED' 'warn' "gh api user could not be completed ($($api.failure)); authentication is not established"
     } elseif (-not $gh.auth_ok) {
         Add-Finding 'GH_NOT_AUTHENTICATED' 'warn' 'gh api user failed; issue/PR reads will 401 (or the network is unreachable)'
+    } elseif ($status.failure) {
+        Add-Finding 'GH_STATUS_PROBE_FAILED' 'info' "gh auth status could not be completed ($($status.failure)); the active account works"
     } elseif (-not $gh.auth_status_ok) {
         Add-Finding 'GH_STALE_STORED_ACCOUNT' 'info' "the active gh account works, but another stored account is invalid, so 'gh auth status' exits 1; do not read that exit code as unauthenticated"
     }
@@ -269,7 +278,7 @@ $receipt = [ordered]@{
     clis = $clis
     findings = $findings.ToArray()   # @($list) inside an [ordered] literal throws "Argument types do not match"
 }
-$json = $receipt | ConvertTo-Json -Depth 6
+$json = Hide-Secrets ($receipt | ConvertTo-Json -Depth 6)
 if ($OutFile) {
     [System.IO.File]::WriteAllText($OutFile, $json + "`n", (New-Object System.Text.UTF8Encoding($false)))
     $errs = @($findings | Where-Object { $_.severity -eq 'error' }).Count
