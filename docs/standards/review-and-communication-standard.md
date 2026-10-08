@@ -47,7 +47,7 @@ Harness, skill and rule files stay Markdown. Their human-facing approval package
 | Type | Required content and behaviour |
 |---|---|
 | Report | P3 format, document status and revision, engineering evidence and a commentable review copy. |
-| Decision board | Cards containing the question, options, sources, consequences, recommendation and note field. The recommended option has a dashed outline and textual label. Save exports JSON; Load restores it. |
+| Decision board | Cards containing the question, options, sources, consequences, recommendation and note field. The recommended option has a dashed outline and textual label. Save writes `<board>.json` beside the board HTML (Downloads only as a fallback, moved beside the page by the agent); Load restores it. |
 | Human-review pack | Evidence screenshots beside physical expectations or limits, a check table, missing evidence, review focus, preparer recommendation and reviewer decision. |
 | Peer or client review copy | Stand-alone offline HTML, audience-permitted content, comment layer and a visible how-to banner. |
 
