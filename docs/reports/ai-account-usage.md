@@ -1,6 +1,6 @@
 # AI account usage (fleet)
 
-Generated 2026-10-07T23:13:27+00:00 by fleet-collector collect_account_usage_fleet. Percentages are USED; headroom = 100 - weekly used. Source of truth: `config/ai-tools/account-usage-latest.json`.
+Generated 2026-10-08T00:14:02+00:00 by fleet-collector collect_account_usage_fleet. Percentages are USED; headroom = 100 - weekly used. Source of truth: `config/ai-tools/account-usage-latest.json`.
 
 ## Recommendation
 
@@ -20,8 +20,8 @@ Generated 2026-10-07T23:13:27+00:00 by fleet-collector collect_account_usage_fle
 
 | host | reachable | claude | codex | note |
 |---|---|---|---|---|
-| ace-linux-1 | yes | claude-owner | codex-owner | claude: access token expired; a Claude Code session on this host will refresh it |
-| ace-linux-2 | yes | claude-owner | codex-owner | claude: access token expired; a Claude Code session on this host will refresh it |
+| ace-linux-1 | no | claude-owner | codex-owner | exit 255 |
+| ace-linux-2 | no | claude-owner | codex-owner | exit 255 |
 | gpu-claw | yes | claude-owner | codex-owner | claude: credentials file has no accessToken |
 | ace-win-2 | yes | claude-professional | codex-professional |  |
 | ace-win-1 | yes | claude-professional | codex-professional |  |
@@ -29,7 +29,6 @@ Generated 2026-10-07T23:13:27+00:00 by fleet-collector collect_account_usage_fle
 
 ## Warnings
 
-- ace-linux-2: codex sample's weekly window reset at 2026-08-21T11:50:27+00:00; ignored
 - gpu-claw: codex sample's weekly window reset at 2026-09-19T11:46:38+00:00; ignored
 - ace-win-2: claude fingerprint 78d7e174f2d1 differs from claude-professional (c0c130b8018b)
 - ace-win-2: codex fingerprint 78d7e174f2d1 differs from codex-professional (c0c130b8018b)
