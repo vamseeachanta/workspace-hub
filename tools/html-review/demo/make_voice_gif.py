@@ -326,6 +326,9 @@ SAVE_STUB_JS = """
         queryPermission: async () => "granted",
         requestPermission: async () => "granted",
         getFileHandle: async (n, o) => {
+            // The folder holds this page, so the page's folder check passes.
+            if (n === decodeURIComponent(location.pathname.split("/").pop()))
+                return { getFile: async () => ({ text: async () => document.documentElement.outerHTML }) };
             if (!(o && o.create))
                 throw new DOMException("not found", "NotFoundError");
             return { createWritable: async () => ({

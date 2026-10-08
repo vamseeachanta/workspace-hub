@@ -26,6 +26,16 @@ global.NodeFilter={SHOW_TEXT:4,FILTER_REJECT:2,FILTER_ACCEPT:1};
 const storage=new Map();
 global.localStorage={getItem:k=>storage.get(k)||null,setItem(k,v){storage.set(k,v)}};
 global.indexedDB={open:()=>{throw Error('unavailable')}};
+global.location={pathname:'/reports/review.html'};
+// In-memory folder: files maps name -> text. The page itself must be present for the folder to be accepted.
+const makeDir=(name,files,perm)=>{files=files||{};const writes=[];return {name,files,writes,
+  queryPermission:async()=>perm||'granted',requestPermission:async()=>perm||'granted',
+  getFileHandle:async(n,o)=>{if(!(n in files)){if(!(o&&o.create))throw Object.assign(Error('none'),{name:'NotFoundError'});files[n]=''}
+    return {getFile:async()=>({text:async()=>files[n]}),createWritable:async()=>({write:async t=>{writes.push(n);files[n]=t},close:async()=>{}})}}}};
+const PAGE_TEXT='<html>const VERSION="__VERSION__";</html>';
+const useStoredDir=dir=>{global.indexedDB={open:()=>{const r={};setTimeout(()=>{r.result={transaction:()=>{const tx={objectStore:()=>({get:()=>({result:dir}),put:()=>({})})};setTimeout(()=>tx.oncomplete&&tx.oncomplete(),0);return tx}};r.onsuccess&&r.onsuccess()},0);return r}}};
+// Any attempt to build a download link fails the test.
+document.createElement=t=>{throw Error('createElement('+t+') during Save: no download path may exist')};
 """
         initial = "storage.set('__KEY__'," + json.dumps(stored) + ");\n" if stored is not None else ""
         initial += "".join(f"storage.set({json.dumps(k)},{json.dumps(v)});\n" for k, v in (extra or {}).items())
@@ -125,22 +135,112 @@ assert.equal(test.get().length,0);
 assert.match(nodes.get('#rv-status').textContent,/2 comments.*older/);
 """, extra={"__KEY__|older": older})
 
-    def test_save_falls_back_to_download_when_folder_holds_other_revision(self):
+    def test_layer_has_no_download_path(self):
+        source = TOOL.read_text(encoding="utf-8")
+        layer = re.search(r'LAYER = r"""(.*?)"""', source, re.S)[1]
+        for banned in (r"\.download\b", r"createObjectURL", r"new Blob", r"(?i)downloads"):
+            self.assertIsNone(re.search(banned, layer), f"review layer still contains {banned}")
+
+    def test_save_writes_beside_page(self):
         self.run_js("""
 test.set([{id:'one',quote:'q',comment:'keep',at:'a'}]);
-const wrong={page:'__PAGE__',report_version:'older',comments:[]};
-let written=false;
-const dir={name:'d',queryPermission:async()=>'granted',getFileHandle:async(n,o)=>{if(o&&o.create){written=true;return {createWritable:async()=>({write:async()=>{},close:async()=>{}})}}return {getFile:async()=>({text:async()=>JSON.stringify(wrong)})}}};
+const dir=makeDir('reports',{'review.html':PAGE_TEXT});
 global.window={showDirectoryPicker:async()=>dir};
-global.indexedDB={open:()=>{const r={};setTimeout(()=>{r.result={transaction:()=>{const tx={objectStore:()=>({get:()=>({result:dir}),put:()=>({})})};setTimeout(()=>tx.oncomplete&&tx.oncomplete(),0);return tx}};r.onsuccess&&r.onsuccess()},0);return r}};
-let clicked=false;
-global.URL={createObjectURL:()=>'blob:x'};global.Blob=class{};
-document.createElement=()=>({click(){clicked=true},remove(){}});document.body.append=()=>{};
 await nodes.get('#rv-save').events.click();
-assert.equal(written,false);
-assert.equal(clicked,true);
-assert.match(nodes.get('#rv-status').textContent,/different report revision/i);
+assert.deepEqual(dir.writes,['__EXPORT__.json']);
+assert.equal(JSON.parse(dir.files['__EXPORT__.json']).comments[0].comment,'keep');
+assert.match(nodes.get('#rv-status').textContent,/Saved 1 comment/);
+""")
+
+    def test_save_refuses_folder_without_the_page(self):
+        self.run_js("""
+test.set([{id:'one',quote:'q',comment:'keep',at:'a'}]);
+const dir=makeDir('Downloads',{});
+global.window={showDirectoryPicker:async()=>dir};
+await nodes.get('#rv-save').events.click();
+assert.deepEqual(dir.writes,[]);
+assert.match(nodes.get('#rv-status').textContent,/does not hold this page.*Nothing was saved/);
 assert.equal(test.get()[0].comment,'keep');
+""")
+
+    def test_save_refuses_folder_with_other_revision_of_the_page(self):
+        self.run_js("""
+test.set([{id:'one',quote:'q',comment:'keep',at:'a'}]);
+const dir=makeDir('old',{'review.html':'<html>const VERSION="older";</html>'});
+global.window={showDirectoryPicker:async()=>dir};
+await nodes.get('#rv-save').events.click();
+assert.deepEqual(dir.writes,[]);
+assert.match(nodes.get('#rv-status').textContent,/Nothing was saved/);
+""")
+
+    def test_save_without_file_system_access_keeps_comments_in_tab(self):
+        self.run_js("""
+test.set([{id:'one',quote:'q',comment:'keep',at:'a'}]);
+global.window={};
+await nodes.get('#rv-save').events.click();
+assert.match(nodes.get('#rv-status').textContent,/Nothing was saved.*kept in this tab/);
+assert.equal(test.get()[0].comment,'keep');
+""")
+
+    def test_save_with_refused_permission_keeps_comments_in_tab(self):
+        self.run_js("""
+test.set([{id:'one',quote:'q',comment:'keep',at:'a'}]);
+const dir=makeDir('reports',{'review.html':PAGE_TEXT},'denied');
+useStoredDir(dir);
+let picked=false;global.window={showDirectoryPicker:async()=>{picked=true;return dir}};
+await nodes.get('#rv-save').events.click();
+assert.equal(picked,false);
+assert.deepEqual(dir.writes,[]);
+assert.match(nodes.get('#rv-status').textContent,/permission.*Nothing was saved.*kept in this tab/i);
+""")
+
+    def test_cancelled_picker_saves_nothing(self):
+        self.run_js("""
+test.set([{id:'one',quote:'q',comment:'keep',at:'a'}]);
+global.window={showDirectoryPicker:async()=>{throw Object.assign(Error('cancel'),{name:'AbortError'})}};
+await nodes.get('#rv-save').events.click();
+assert.match(nodes.get('#rv-status').textContent,/Nothing was saved/);
+""")
+
+    def test_save_writes_revision_sibling_when_folder_holds_other_revision(self):
+        self.run_js("""
+test.set([{id:'one',quote:'q',comment:'keep',at:'a'}]);
+const wrong=JSON.stringify({page:'__PAGE__',report_version:'older',comments:[{id:'x',quote:'q',comment:'theirs',at:'a'}]});
+const dir=makeDir('reports',{'review.html':PAGE_TEXT,'__EXPORT__.json':wrong});
+useStoredDir(dir);
+global.window={showDirectoryPicker:async()=>dir};
+await nodes.get('#rv-save').events.click();
+assert.equal(dir.files['__EXPORT__.json'],wrong);
+const alt=Object.keys(dir.files).find(n=>n!=='__EXPORT__.json'&&n.endsWith('.json'));
+assert.equal(alt,'__EXPORT__-__VERSION__'.slice(0,'__EXPORT__-'.length+12)+'.json');
+assert.equal(JSON.parse(dir.files[alt]).comments[0].comment,'keep');
+assert.match(nodes.get('#rv-status').textContent,/different report revision.*left unchanged.*saved/i);
+assert.equal(test.get()[0].comment,'keep');
+// A second Save merges from and rewrites the same sibling, still leaving the other revision untouched.
+await nodes.get('#rv-save').events.click();
+assert.equal(dir.files['__EXPORT__.json'],wrong);
+assert.deepEqual(dir.writes,[alt,alt]);
+""")
+
+    def test_open_loads_comments_saved_beside_page(self):
+        self.run_js("""
+await new Promise(r=>setTimeout(r,20));
+assert.equal(test.get().length,1);
+assert.equal(test.get()[0].comment,'saved earlier');
+assert.match(nodes.get('#rv-status').textContent,/Loaded 1 saved comment/);
+""", pre="""
+const saved=JSON.stringify({page:'__PAGE__',report_version:'__VERSION__',comments:[{id:'s',quote:'q',comment:'saved earlier',at:'a'}]});
+useStoredDir(makeDir('reports',{'review.html':PAGE_TEXT,'__EXPORT__.json':saved}));
+""")
+
+    def test_open_without_permission_does_not_prompt(self):
+        self.run_js("""
+await new Promise(r=>setTimeout(r,20));
+assert.equal(test.get().length,0);
+assert.equal(asked,false);
+""", pre="""
+let asked=false;const d=makeDir('reports',{'review.html':PAGE_TEXT},'prompt');d.requestPermission=async()=>{asked=true;return 'granted'};
+useStoredDir(d);
 """)
 
     def test_imported_deletion_keeps_locally_edited_comment(self):
@@ -201,25 +301,37 @@ test.set([{id:'one',quote:'q',comment:'old',at:'a'}]);
 nodes.get('#rv-list').events.input({target:{dataset:{i:'0'},value:'edited here'}});
 const del={page:'__PAGE__',report_version:'__VERSION__',comments:[],deleted_ids:['one']};
 await test.mergeFrom({getFileHandle:async()=>({getFile:async()=>({text:async()=>JSON.stringify(del)})})});
-global.window={showDirectoryPicker:async()=>({name:'empty',getFileHandle:async()=>{throw Object.assign(Error('none'),{name:'NotFoundError'})}})};
+global.window={showDirectoryPicker:async()=>makeDir('empty',{'review.html':PAGE_TEXT})};
 await nodes.get('#rv-change').events.click();
+assert.match(nodes.get('#rv-status').textContent,/Folder set to empty/);
 assert.doesNotMatch(nodes.get('#rv-status').textContent,/edited here/);
 """)
 
-    def test_save_falls_back_to_download_when_folder_export_is_malformed(self):
+    def test_save_writes_revision_sibling_when_folder_export_is_malformed(self):
         self.run_js("""
 test.set([{id:'one',quote:'q',comment:'keep',at:'a'}]);
-let written=false;
-const dir={name:'d',queryPermission:async()=>'granted',getFileHandle:async(n,o)=>{if(o&&o.create){written=true;return {createWritable:async()=>({write:async()=>{},close:async()=>{}})}}return {getFile:async()=>({text:async()=>'{not json'})}}};
+const dir=makeDir('reports',{'review.html':PAGE_TEXT,'__EXPORT__.json':'{not json'});
+useStoredDir(dir);
 global.window={showDirectoryPicker:async()=>dir};
-global.indexedDB={open:()=>{const r={};setTimeout(()=>{r.result={transaction:()=>{const tx={objectStore:()=>({get:()=>({result:dir}),put:()=>({})})};setTimeout(()=>tx.oncomplete&&tx.oncomplete(),0);return tx}};r.onsuccess&&r.onsuccess()},0);return r}};
-let clicked=false;
-global.URL={createObjectURL:()=>'blob:x'};global.Blob=class{};
-document.createElement=()=>({click(){clicked=true},remove(){}});document.body.append=()=>{};
 await nodes.get('#rv-save').events.click();
-assert.equal(written,false);
-assert.equal(clicked,true);
-assert.match(nodes.get('#rv-status').textContent,/could not be merged/i);
+assert.equal(dir.files['__EXPORT__.json'],'{not json');
+assert.equal(dir.writes.length,1);
+assert.notEqual(dir.writes[0],'__EXPORT__.json');
+assert.equal(JSON.parse(dir.files[dir.writes[0]]).comments[0].comment,'keep');
+assert.match(nodes.get('#rv-status').textContent,/could not be merged.*left unchanged/i);
+""")
+
+    def test_save_stops_when_sibling_is_also_unreadable(self):
+        self.run_js("""
+test.set([{id:'one',quote:'q',comment:'keep',at:'a'}]);
+const alt='__EXPORT__-'+'__VERSION__'.slice(0,12)+'.json';
+const dir=makeDir('reports',{'review.html':PAGE_TEXT,'__EXPORT__.json':'{not json',[alt]:'{also bad'});
+useStoredDir(dir);
+global.window={showDirectoryPicker:async()=>dir};
+await nodes.get('#rv-save').events.click();
+assert.deepEqual(dir.writes,[]);
+assert.equal(dir.files[alt],'{also bad');
+assert.match(nodes.get('#rv-status').textContent,/Nothing was saved/);
 """)
 
     def test_committed_demo_matches_current_generator(self):

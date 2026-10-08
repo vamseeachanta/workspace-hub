@@ -91,7 +91,7 @@ mark.rv-hl{background:#FBE7A8;padding:0 1px}
 (function(){
   const KEY="example-report-comments-v1";
   const $=s=>document.querySelector(s);
-  const PAGE="example-report.html", VERSION="07bf2eaab4d3 2026-09-29T13:55Z", FOLDER="tools\\html-review\\demo";
+  const PAGE="example-report.html", VERSION="a0327d36b659 2026-10-08T12:40Z", FOLDER="tools\\html-review\\demo";
   let items=[], deleted=new Set();
   const identity=c=>c.id||("legacy:"+JSON.stringify([c.quote,c.at]));
   function checked(data){
@@ -158,46 +158,80 @@ mark.rv-hl{background:#FBE7A8;padding:0 1px}
   $("#rv-list").addEventListener("click",e=>{ if(e.target.dataset.del!==undefined){ deleted.add(identity(items[+e.target.dataset.del]));items.splice(+e.target.dataset.del,1); persist(); render(); } });
   const NAME="example-report-comments.json";
   const payload=()=>JSON.stringify({...record(),report_folder:"tools\\html-review\\demo",exported_at:new Date().toISOString()},null,2);
-  // Save into the REPORT'S OWN FOLDER. Browsers cannot write beside a page silently, so the first Save asks for
-  // that folder once (the dialog opens there by id); the folder handle is kept in IndexedDB and later Saves write
-  // The export file is written there directly. Comments already in that file are merged in first.
-  // is lost if this browser's storage was cleared. Browsers without the File System Access API fall back to Downloads.
+  // Save writes BESIDE THIS PAGE, in the folder that holds it, and nowhere else (never as a download). Browsers cannot
+  // write beside a page silently, so the first Save asks for that folder once; the folder must contain this page's
+  // own file (SELF, same revision) or it is refused. The handle is kept in IndexedDB per page location (several
+  // copies of a page in different folders each keep their own folder) and later Saves write straight to it.
+  // When the folder cannot be written, nothing is saved, the comments stay in the tab and the status line says why.
+  const ALT=NAME.replace(/\.json$/,"")+"-"+VERSION.slice(0,12)+".json";
+  const SELF=(()=>{try{return decodeURIComponent(location.pathname.split("/").pop()||"")}catch(e){return ""}})();
+  const DIRKEY=KEY+"|"+location.pathname;
+  const NOTHING=" Nothing was saved; the comments are kept in this tab. Save again, or use Copy to send them.";
+  const fail=(name,message)=>Object.assign(Error(message),{name});
+  const plural=n=>`${n} comment${n===1?"":"s"}`;
   const idb=(mode,fn)=>new Promise((res,rej)=>{const r=indexedDB.open("rv-folders",1);r.onupgradeneeded=()=>r.result.createObjectStore("h");r.onsuccess=()=>{try{const tx=r.result.transaction("h",mode);const q=fn(tx.objectStore("h"));tx.oncomplete=()=>res(q&&q.result);tx.onerror=()=>rej(tx.error);tx.onabort=()=>rej(tx.error)}catch(e){rej(e)}};r.onerror=()=>rej(r.error)});
-  const getDir=async()=>{try{return await idb("readonly",s=>s.get(KEY))}catch(e){return null}};
-  const putDir=async d=>{try{await idb("readwrite",s=>s.put(d,KEY))}catch(e){}};
-  async function mergeFrom(dir){
-    kept=0;let fh;try{fh=await dir.getFileHandle(NAME)}catch(e){if(e.name==="NotFoundError")return 0;throw e}
+  const getDir=async()=>{try{return await idb("readonly",s=>s.get(DIRKEY))}catch(e){return null}};
+  const putDir=async d=>{try{await idb("readwrite",s=>d?s.put(d,DIRKEY):s.delete(DIRKEY))}catch(e){}};
+  async function mergeFrom(dir,name=NAME){
+    kept=0;let fh;try{fh=await dir.getFileHandle(name)}catch(e){if(e.name==="NotFoundError")return 0;throw e}
     const n=merge(JSON.parse(await (await fh.getFile()).text()));
     persist();render();highlight();return n;
   }
-  async function folder(ask){
-    let dir=await getDir();
-    if(dir && (await dir.queryPermission({mode:"readwrite"}))!=="granted" && (await dir.requestPermission({mode:"readwrite"}))!=="granted") dir=null;
-    if(!dir && ask){ dir=await window.showDirectoryPicker({id:"rv-report-folder",mode:"readwrite"}); await putDir(dir); }
-    return dir;
+  // The chosen folder must hold this page: a file named like this page whose text carries this revision.
+  async function holdsPage(dir){
+    if(!SELF) throw fail("WrongFolder","This page's file name cannot be read from its address, so the folder cannot be checked. Open the page file itself.");
+    let fh;try{fh=await dir.getFileHandle(SELF)}catch(e){if(["NotFoundError","TypeMismatchError"].includes(e.name))throw fail("WrongFolder",`The folder ${dir.name} does not hold this page (${SELF}). Choose the folder that holds it.`);throw e}
+    if(!(await (await fh.getFile()).text()).includes(VERSION)) throw fail("WrongFolder",`The ${SELF} in folder ${dir.name} is a different revision of this page. Choose the folder that holds this one.`);
   }
-  $("#rv-save").addEventListener("click",async()=>{
-    let note="";
-    if (window.showDirectoryPicker) {
-      try {
-        const dir=await folder(true);
-        let merged;
-        // Any failure to read or merge the folder's existing export (other revision, malformed JSON, invalid records)
-        // leaves that file unchanged and falls back to a download; only permission and write failures stop Save.
-        try{merged=await mergeFrom(dir)}catch(e){if(["AbortError","SecurityError","NotAllowedError"].includes(e.name))throw e;e.fromMerge=true;throw e}
-        const w=await (await dir.getFileHandle(NAME,{create:true})).createWritable(); await w.write(payload()); await w.close();
-        $("#rv-status").textContent=`Saved ${items.length} comments to ${dir.name}/${NAME}`+(merged?` (${merged} earlier comments merged in).`:".")+keptNote();
-        $("#rv-folder").textContent=`Saving to: ${dir.name}/${NAME}`; return;
-      } catch(e) {
-        if(e.fromMerge) note=e.name==="RevisionMismatch"?`The folder's ${NAME} belongs to a different report revision and was left unchanged. `:`The folder's ${NAME} could not be merged (${e.message}) and was left unchanged. `;
-        else if(!["AbortError","SecurityError","NotAllowedError"].includes(e.name)){ $("#rv-status").textContent="Save stopped: "+e.message+" Choose another folder or use Copy.";return; }
-      }
+  // Which export file in dir takes the comments. NAME normally; when NAME belongs to another revision or cannot be
+  // read or merged it is never written, and ALT (NAME stem + this revision) in the same folder is used instead.
+  async function target(dir){
+    const access=e=>["AbortError","SecurityError","NotAllowedError"].includes(e.name);
+    try{return {name:NAME,merged:await mergeFrom(dir,NAME),note:""}}
+    catch(e){
+      if(access(e)) throw e;
+      const note=e.name==="RevisionMismatch"?`The folder's ${NAME} belongs to a different report revision and was left unchanged; `:`The folder's ${NAME} could not be merged (${e.message}) and was left unchanged; `;
+      try{return {name:ALT,merged:await mergeFrom(dir,ALT),note}}
+      catch(e2){if(access(e2))throw e2;throw fail("Unmergeable",note+`${ALT} beside it could not be merged either (${e2.message}) and was left unchanged.`)}
     }
-    const a=document.createElement("a"); a.href=URL.createObjectURL(new Blob([payload()],{type:"application/json"})); a.download=NAME; document.body.append(a); a.click(); a.remove();
-    $("#rv-status").textContent=note+`Download requested for ${NAME} (${items.length} comments). Check the browser download location and confirm the file exists.`;
+  }
+  async function folder(){
+    let dir=await getDir();
+    if(dir){
+      if((await dir.queryPermission({mode:"readwrite"}))!=="granted"&&(await dir.requestPermission({mode:"readwrite"}))!=="granted") throw fail("PermissionRefused",`Permission to write to folder ${dir.name} was refused (use Folder… to choose it again).`);
+      try{await holdsPage(dir);return dir}catch(e){if(e.name!=="WrongFolder")throw e;await putDir(null)}
+    }
+    dir=await window.showDirectoryPicker({id:"rv-report-folder",mode:"readwrite"});
+    await holdsPage(dir);await putDir(dir);return dir;
+  }
+  const why=e=>e.name==="AbortError"?"No folder was chosen.":["NotAllowedError","SecurityError"].includes(e.name)?`The browser refused access to the folder (${e.message}).`:["WrongFolder","PermissionRefused","Unmergeable"].includes(e.name)?e.message:`Save stopped: ${e.message}.`;
+  const noApi="This browser cannot write files beside the page (no File System Access API); open the page from disk in Edge or Chrome.";
+  $("#rv-save").addEventListener("click",async()=>{
+    if(!window.showDirectoryPicker){$("#rv-status").textContent=noApi+NOTHING;return}
+    try{
+      const dir=await folder();
+      const t=await target(dir);
+      const w=await (await dir.getFileHandle(t.name,{create:true})).createWritable(); await w.write(payload()); await w.close();
+      $("#rv-status").textContent=(t.note?t.note+`saved ${plural(items.length)} to ${dir.name}/${t.name} instead`:`Saved ${plural(items.length)} to ${dir.name}/${t.name}`)+(t.merged?` (${t.merged} earlier merged in).`:".")+keptNote();
+      $("#rv-folder").textContent=`Saving to: ${dir.name}/${t.name}`;
+    }catch(e){$("#rv-status").textContent=why(e)+NOTHING}
   });
-  $("#rv-change").addEventListener("click",async()=>{ try{ const dir=await window.showDirectoryPicker({id:"rv-report-folder",mode:"readwrite"}); const n=await mergeFrom(dir); await putDir(dir); $("#rv-folder").textContent=`Saving to: ${dir.name}/${NAME}`; $("#rv-status").textContent=(n?`Loaded ${n} saved comments from ${dir.name}.`:`Folder set to ${dir.name}.`)+keptNote(); }catch(e){$("#rv-status").textContent="Folder change stopped: "+e.message} });
-  getDir().then(d=>{ $("#rv-folder").textContent=d?`Saving to: ${d.name}/${NAME}`:`First Save asks for the report folder: ${FOLDER}`; });
+  $("#rv-change").addEventListener("click",async()=>{
+    if(!window.showDirectoryPicker){$("#rv-status").textContent=noApi;return}
+    try{ const dir=await window.showDirectoryPicker({id:"rv-report-folder",mode:"readwrite"}); await holdsPage(dir); const t=await target(dir); await putDir(dir); $("#rv-folder").textContent=`Saving to: ${dir.name}/${t.name}`; $("#rv-status").textContent=(t.note?t.note+`comments will be saved to ${t.name}. `:"")+(t.merged?`Loaded ${t.merged} saved comment${t.merged===1?"":"s"} from ${dir.name}/${t.name}.`:`Folder set to ${dir.name}.`)+keptNote(); }catch(e){$("#rv-status").textContent="Folder change stopped: "+why(e)}
+  });
+  // On open: when the remembered folder is still writable without asking, load the comments saved beside the page.
+  (async()=>{
+    const d=await getDir();
+    $("#rv-folder").textContent=d?`Saving to: ${d.name}/${NAME}`:`First Save asks for the folder that holds this page: ${FOLDER}`;
+    if(!d) return;
+    try{
+      if((await d.queryPermission({mode:"readwrite"}))!=="granted") return;
+      await holdsPage(d); const t=await target(d);
+      $("#rv-folder").textContent=`Saving to: ${d.name}/${t.name}`;
+      if(t.merged||t.note) $("#rv-status").textContent=(notes.length?notes.join(" ")+" ":"")+(t.note?t.note+`comments will be saved to ${t.name}. `:"")+`Loaded ${t.merged} saved comment${t.merged===1?"":"s"} from ${d.name}/${t.name}.`+keptNote();
+    }catch(e){}
+  })();
   $("#rv-copy").addEventListener("click",async()=>{
     const text=payload();
     try { await navigator.clipboard.writeText(text); $("#rv-status").textContent=`Copied ${items.length} comments; paste them into your reply email.`; }
