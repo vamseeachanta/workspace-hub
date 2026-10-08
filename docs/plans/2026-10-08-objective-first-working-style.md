@@ -55,12 +55,13 @@ Each phase is itself written as an objective, so it can be run in the new style.
 ### Phase 0 — Land ws014 and freeze (day 1)
 
 **Outcome:** GitHub reflects all real work; nothing new piles onto the old process during the switch.
-- On ws014: commit the 239 dirty files to `wip/ws014-2026-10-08` and push. Then `git pull --rebase` main. Don't discard anything.
+- On each host: run `scripts/readiness/reconcile-ecosystem.sh` (Windows: `scripts\windows\reconcile-ecosystem.ps1`) in report mode, then `--apply` for the AUTO-SAFE subset (ff-only pulls, guard-gated cleanup). Preserve dirty work on a **local** branch `wip/<host>-2026-10-08` instead of stashing. Don't discard anything.
+- workspace-hub is **public**: push a WIP branch only after a secrets/client-data review; otherwise move that content to a private repo.
 - Triage that branch: real work → issues/PRs; scratch → `_archive/`.
 - Move root clutter (`issue-*-impl.diff`, `*-review.md`, `draft_*`, `final_*`, `sendready_*`, `gmail_*`, `issue2_*`, `nohup.out`, empty `Defines`/`Planning`) to `_archive/2026-10-root-cleanup/`. Personal email drafts belong in a private repo, not the public hub.
 - Freeze: no new skills, hooks, or standards until Phase 4.
 
-**Done when:** fleet snapshot shows ws014 0 behind / ~0 dirty, and the hub root holds only project files.
+**Done when:** fleet snapshot shows every reachable host (ace-linux-1, ace-linux-2, acma-ws014, acma-hou-rds02) 0 behind / ~0 dirty, and the hub root holds only project files.
 
 ### Phase 1 — Model refresh and instruction plumbing (week 1)
 
