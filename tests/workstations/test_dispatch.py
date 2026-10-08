@@ -243,14 +243,14 @@ class TestScoringLogic:
         assert "gpu" not in caps_no_gpu
         assert "nvidia-t400" not in caps_no_gpu
 
-        # Dispatch with requires=[gpu] should select dev-secondary (SSH-reachable)
+        # Dispatch with requires=[gpu] should select the dedicated GPU executor.
         result = best_machine(
             registry,
             required={"gpu"},
             this_host="nonexistent-host",
             prefer="",
         )
-        assert result == "dev-secondary"
+        assert result == "gpu-claw"
 
     def test_no_match_returns_empty(self, registry: dict) -> None:
         """An unsatisfiable requirement yields no candidates.

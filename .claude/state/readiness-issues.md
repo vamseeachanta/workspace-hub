@@ -1,9 +1,10 @@
-# Readiness Issues — 2026-08-01T02:01:27
+# Readiness Issues — 2026-10-08T07:10:58
 
-Nightly readiness: 3 failed, 21 passed
+Nightly readiness: 4 failed, 20 passed
 
 ## Warnings
+- R-CODEX: MAX_TEAMMATES mismatch — CODEX.md= settings.json=5
+- R-XPROV: missing mandates: CODEX.md:TDD
 - R-PLUGINS: claude CLI not found
-- R-PRECOMMIT: assetutilities:legal-sanity-scan.sh entry missing
 - R-TELEGRAM-HERMES: readiness failed — run scripts/readiness/telegram-hermes-readiness.sh
 

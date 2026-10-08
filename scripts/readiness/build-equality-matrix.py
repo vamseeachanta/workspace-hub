@@ -424,6 +424,23 @@ def publish_health_verdict(report: dict, now: datetime | None = None) -> str:
     return "PUBLISH-OK"
 
 
+def task_dispatch_verdict(report: dict) -> str:
+    td = report.get("dimensions", {}).get("task_dispatch")
+    if not isinstance(td, dict):
+        return "MISSING-EVIDENCE"
+    ready = td.get("ready_routes")
+    total = td.get("total_routes")
+    if (
+        isinstance(ready, bool) or not isinstance(ready, int)
+        or isinstance(total, bool) or not isinstance(total, int)
+        or total <= 0
+    ):
+        return "MISSING-EVIDENCE"
+    if td.get("status") == "ready" and ready == total:
+        return "TASK-DISPATCH-READY"
+    return "TASK-DISPATCH-NOT-READY"
+
+
 # ── value extraction for uniform dims ────────────────────────────────────────
 def extract_value(dim: str, report: dict):
     d = report.get("dimensions", {})
@@ -544,6 +561,8 @@ def verdict_for(dim: str, machine: str, reports: dict, baselines: dict,
         return harness_checkup_verdict(rep)
     if dim == "publish_health":             # equivalence publish landing/speed — per-box facts
         return publish_health_verdict(rep)
+    if dim == "task_dispatch":              # provider-neutral directed dispatch routes (#3968)
+        return task_dispatch_verdict(rep)
     if dim in COLD_DIMS:
         return cold_verdict(dim, rep, baselines.get(machine), probed_repos)
     # Stale peers are EXCLUDED from the uniform value list so a stale report can never
@@ -574,7 +593,7 @@ def load_reports() -> dict[str, dict]:
 BASE_DISPLAY_DIMS = ["compute", "data_access", "solvers", "harness", "python_cmd", "skills",
                      "kanban", "memory", "behavior", "scheduler", "session_curation",
                      "skill_currency", "memory_freshness", "skill_link_health", "harness_checkup",
-                     "publish_health"]
+                     "publish_health", "task_dispatch"]
 DISPLAY_DIMS = BASE_DISPLAY_DIMS + provider_rows()
 
 # ── render grouping (#2801 collapsible-rows enhancement) ─────────────────────
@@ -600,6 +619,7 @@ GROUPS = [
     ("harness-checkup", "Harness checkup — /doctor hygiene per box (version · settings · mode)", ["harness_checkup"]),
     ("publish-health", "Publish health — equivalence fingerprint publish landing fast on every box",
         ["publish_health"]),
+    ("task-dispatch", "Task dispatch — provider-neutral directed routes", ["task_dispatch"]),
 ]
 
 # Worst-of severity for the collapsed group rollup. Higher = more operator attention.
@@ -608,6 +628,7 @@ GROUPS = [
 ROLLUP_SEVERITY = {
     "BELOW-BASELINE": 6, "DIVERGES": 6, "CURATED-EXPIRED": 6, "SKILLS-DRIFTED": 6, "MEMORY-EXPIRED": 6,
     "CHECKUP-BROKEN": 6, "PUBLISH-GATED": 6,
+    "TASK-DISPATCH-NOT-READY": 6,
     "MISSING-BASELINE": 5, "NO-MAJORITY": 5, "CURATED-STALE": 5, "SKILLS-INDEX-STALE": 5, "MEMORY-STALE": 5,
     "SKILL-LINKS-DRIFTED": 5, "CHECKUP-DRIFTED": 5, "PUBLISH-STALE": 5,
     "MISSING-EVIDENCE": 4, "PENDING": 4,
@@ -615,6 +636,7 @@ ROLLUP_SEVERITY = {
     "EXPECTED-DIFF": 1, "EXPECTED-DIVERGENCE": 1, "UNREACHABLE": 1, "ABSENT": 1,
     "CONFORMS": 0, "EQUAL": 0, "PARITY": 0, "CURATED-FRESH": 0, "SKILLS-CURRENT": 0, "MEMORY-FRESH": 0,
     "SKILL-LINKS-OK": 0, "CHECKUP-OK": 0, "PUBLISH-OK": 0,
+    "TASK-DISPATCH-READY": 0,
 }
 
 
@@ -633,7 +655,7 @@ def rollup_verdict(verdicts: list[str]) -> tuple[str, str]:
 #    .claude/skills/workspace-hub/ecosystem-equivalence-reconcile/SKILL.md + reconcile-ecosystem.sh
 OK_VERDICTS = {"CONFORMS", "EQUAL", "PARITY", "EXPECTED-DIFF", "EXPECTED-DIVERGENCE",
                "UNREACHABLE", "ABSENT", "CURATED-FRESH", "SKILLS-CURRENT", "MEMORY-FRESH",
-               "SKILL-LINKS-OK", "CHECKUP-OK", "PUBLISH-OK"}
+               "SKILL-LINKS-OK", "CHECKUP-OK", "PUBLISH-OK", "TASK-DISPATCH-READY"}
 
 
 def remediate(dim: str, verdict: str) -> tuple[str, str, bool] | None:
@@ -710,6 +732,9 @@ def remediate(dim: str, verdict: str) -> tuple[str, str, bool] | None:
     if verdict == "PUBLISH-STALE":
         return ("no equivalence publish in >26h — run equivalence-sentinel.sh and inspect its cron logs",
                 "this box", False)
+    if verdict == "TASK-DISPATCH-NOT-READY":
+        return ("one or more directed task-dispatch routes is missing, stale, blocked, or failed — "
+                "refresh route evidence for the 5-machine dispatch roster", "operator", False)
     return ("investigate this cell's report", "operator", False)
 
 

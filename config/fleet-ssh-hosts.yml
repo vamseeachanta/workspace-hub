@@ -1,11 +1,13 @@
-# fleet-ssh-hosts.yml — SSH-reachable fleet machines for credential/config fan-out
+# fleet-ssh-hosts.yml — SSH scope for HF credential/config fan-out
 #
 # Names are ~/.ssh/config aliases (user + identity resolved there, never here).
 # `fallbacks` lists alternate aliases tried in order when the primary is
 # unreachable (e.g. tailnet route when LAN is down).
-# Windows boxes have NO remote-exec channel (heartbeat-only) — they are listed
-# under `manual_hosts` so scripts can print on-box instructions instead of
-# silently skipping them.
+# This is NOT the task-dispatch roster. Task dispatch is declared once in
+# config/workstations/registry.yaml under machines.*.task_dispatch; tests validate
+# these aliases against that registry without widening the HF token fan-out scope.
+# Windows boxes are intentionally manual for this token path even when they are
+# task-dispatch-capable through their scheduled-task channel.
 #
 # Consumers: scripts/fleet/populate-hf-token.sh (wh#3598 hf-token equality row)
 

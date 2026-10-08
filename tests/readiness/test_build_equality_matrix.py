@@ -926,3 +926,38 @@ def test_hc_verdict_via_dispatch():
     roster = {"m": {"status": "active"}}
     reports = {"m": _hc(unused_skills=16)}
     assert bem.verdict_for("harness_checkup", "m", reports, {}, roster, TIER1) == "CHECKUP-DRIFTED"
+
+
+# ── task-dispatch route readiness (#3968) ───────────────────────────────────
+def _task_dispatch(status="ready", ready=20, total=20):
+    return {
+        "status": status,
+        "ready_routes": ready,
+        "total_routes": total,
+        "blocked_routes": [],
+        "stale_routes": [],
+        "missing_routes": [],
+    }
+
+
+def test_task_dispatch_clean_verdict_ready():
+    assert bem.task_dispatch_verdict(_report("m", task_dispatch=_task_dispatch())) == "TASK-DISPATCH-READY"
+
+
+def test_task_dispatch_missing_or_partial_evidence_fails_closed():
+    assert bem.task_dispatch_verdict(_report("m")) == "MISSING-EVIDENCE"
+    assert bem.task_dispatch_verdict(_report("m", task_dispatch=_task_dispatch(ready=19))) == "TASK-DISPATCH-NOT-READY"
+    assert bem.task_dispatch_verdict(_report("m", task_dispatch=_task_dispatch(status="blocked"))) == "TASK-DISPATCH-NOT-READY"
+
+
+def test_task_dispatch_registered_in_matrix():
+    assert "task_dispatch" in bem.BASE_DISPLAY_DIMS
+    assert any("task_dispatch" in dims for _, _, dims in bem.GROUPS)
+    assert "TASK-DISPATCH-READY" in bem.OK_VERDICTS
+    assert bem.ROLLUP_SEVERITY["TASK-DISPATCH-NOT-READY"] == 6
+
+
+def test_task_dispatch_verdict_via_dispatch():
+    roster = {"m": {"status": "active"}}
+    reports = {"m": _report("m", task_dispatch=_task_dispatch(ready=19))}
+    assert bem.verdict_for("task_dispatch", "m", reports, {}, roster, TIER1) == "TASK-DISPATCH-NOT-READY"
