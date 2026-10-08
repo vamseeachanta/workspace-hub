@@ -4,42 +4,96 @@
   "title": "Client team summary",
   "description": "Facts for the daily client team summary (workspace-hub#3967). Every item carries a source.",
   "type": "object",
-  "required": ["client", "as_of", "learn_or_solve", "priorities", "issues"],
+  "required": [
+    "client",
+    "as_of",
+    "learn_or_solve",
+    "priorities",
+    "issues"
+  ],
   "additionalProperties": false,
   "$defs": {
-    "source": {"type": "string", "minLength": 1, "description": "Wiki-relative path or URL backing the item."},
-    "text": {"type": "string", "minLength": 1},
+    "source": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Wiki-relative path or URL backing the item."
+    },
+    "text": {
+      "type": "string",
+      "minLength": 1
+    },
     "area": {
       "type": "array",
       "items": {
         "type": "object",
-        "required": ["text", "source"],
+        "required": [
+          "text",
+          "source"
+        ],
         "additionalProperties": false,
         "properties": {
-          "text": {"$ref": "#/$defs/text"},
-          "source": {"$ref": "#/$defs/source"}
+          "text": {
+            "$ref": "#/$defs/text"
+          },
+          "source": {
+            "$ref": "#/$defs/source"
+          }
         }
       }
     }
   },
   "properties": {
-    "client": {"$ref": "#/$defs/text"},
-    "as_of": {"type": "string", "format": "date"},
-    "wiki_revision": {"type": "string"},
-    "learn_or_solve": {"$ref": "#/$defs/text"},
+    "client": {
+      "$ref": "#/$defs/text"
+    },
+    "as_of": {
+      "type": "string",
+      "format": "date"
+    },
+    "wiki_revision": {
+      "type": "string"
+    },
+    "learn_or_solve": {
+      "$ref": "#/$defs/text"
+    },
     "priorities": {
       "type": "array",
       "maxItems": 3,
       "items": {
         "type": "object",
-        "required": ["title", "owner", "next_action", "due", "source"],
+        "required": [
+          "title",
+          "owner",
+          "next_action",
+          "due",
+          "source"
+        ],
         "additionalProperties": false,
         "properties": {
-          "title": {"$ref": "#/$defs/text"},
-          "owner": {"$ref": "#/$defs/text"},
-          "next_action": {"$ref": "#/$defs/text"},
-          "due": {"type": "string", "format": "date"},
-          "source": {"$ref": "#/$defs/source"}
+          "title": {
+            "$ref": "#/$defs/text"
+          },
+          "owner": {
+            "$ref": "#/$defs/text"
+          },
+          "next_action": {
+            "$ref": "#/$defs/text"
+          },
+          "due": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "const": "TBD"
+              }
+            ],
+            "description": "ISO date, or TBD when the wiki records no date."
+          },
+          "source": {
+            "$ref": "#/$defs/source"
+          }
         }
       }
     },
@@ -47,14 +101,35 @@
       "type": "array",
       "items": {
         "type": "object",
-        "required": ["title", "status", "owner", "next_action", "source"],
+        "required": [
+          "title",
+          "status",
+          "owner",
+          "next_action",
+          "source"
+        ],
         "additionalProperties": false,
         "properties": {
-          "title": {"$ref": "#/$defs/text"},
-          "status": {"enum": ["open", "investigating", "awaiting-review", "resolved"]},
-          "owner": {"$ref": "#/$defs/text"},
-          "next_action": {"$ref": "#/$defs/text"},
-          "source": {"$ref": "#/$defs/source"}
+          "title": {
+            "$ref": "#/$defs/text"
+          },
+          "status": {
+            "enum": [
+              "open",
+              "investigating",
+              "awaiting-review",
+              "resolved"
+            ]
+          },
+          "owner": {
+            "$ref": "#/$defs/text"
+          },
+          "next_action": {
+            "$ref": "#/$defs/text"
+          },
+          "source": {
+            "$ref": "#/$defs/source"
+          }
         }
       }
     },
@@ -62,12 +137,23 @@
       "type": "array",
       "items": {
         "type": "object",
-        "required": ["date", "text", "source"],
+        "required": [
+          "date",
+          "text",
+          "source"
+        ],
         "additionalProperties": false,
         "properties": {
-          "date": {"type": "string", "format": "date"},
-          "text": {"$ref": "#/$defs/text"},
-          "source": {"$ref": "#/$defs/source"}
+          "date": {
+            "type": "string",
+            "format": "date"
+          },
+          "text": {
+            "$ref": "#/$defs/text"
+          },
+          "source": {
+            "$ref": "#/$defs/source"
+          }
         }
       }
     },
@@ -75,12 +161,22 @@
       "type": "array",
       "items": {
         "type": "object",
-        "required": ["text", "owner", "source"],
+        "required": [
+          "text",
+          "owner",
+          "source"
+        ],
         "additionalProperties": false,
         "properties": {
-          "text": {"$ref": "#/$defs/text"},
-          "owner": {"$ref": "#/$defs/text"},
-          "source": {"$ref": "#/$defs/source"}
+          "text": {
+            "$ref": "#/$defs/text"
+          },
+          "owner": {
+            "$ref": "#/$defs/text"
+          },
+          "source": {
+            "$ref": "#/$defs/source"
+          }
         }
       }
     },
@@ -88,23 +184,44 @@
       "type": "object",
       "additionalProperties": false,
       "properties": {
-        "marketing": {"$ref": "#/$defs/area"},
-        "technical": {"$ref": "#/$defs/area"},
-        "data": {"$ref": "#/$defs/area"},
-        "projects": {"$ref": "#/$defs/area"}
+        "marketing": {
+          "$ref": "#/$defs/area"
+        },
+        "technical": {
+          "$ref": "#/$defs/area"
+        },
+        "data": {
+          "$ref": "#/$defs/area"
+        },
+        "projects": {
+          "$ref": "#/$defs/area"
+        }
       }
     },
     "deliverables": {
       "type": "array",
       "items": {
         "type": "object",
-        "required": ["name", "version", "status", "source"],
+        "required": [
+          "name",
+          "version",
+          "status",
+          "source"
+        ],
         "additionalProperties": false,
         "properties": {
-          "name": {"$ref": "#/$defs/text"},
-          "version": {"$ref": "#/$defs/text"},
-          "status": {"$ref": "#/$defs/text"},
-          "source": {"$ref": "#/$defs/source"}
+          "name": {
+            "$ref": "#/$defs/text"
+          },
+          "version": {
+            "$ref": "#/$defs/text"
+          },
+          "status": {
+            "$ref": "#/$defs/text"
+          },
+          "source": {
+            "$ref": "#/$defs/source"
+          }
         }
       }
     }

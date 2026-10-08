@@ -85,3 +85,12 @@ def test_pdf_renders(tmp_path, data):
     build.build(FIXTURE, out)
     assert out.read_bytes()[:5] == b"%PDF-"
     assert out.stat().st_size > 5_000
+
+
+def test_due_may_be_tbd_but_not_free_text(data):
+    ok = copy.deepcopy(data)
+    ok["priorities"][0]["due"] = "TBD"
+    assert build.validate(ok) == []
+    bad = copy.deepcopy(data)
+    bad["priorities"][0]["due"] = "soon"
+    assert any("due" in e for e in build.validate(bad))
