@@ -45,6 +45,43 @@
         "provider_route": "claude",
         "risks": "(no risks section captured)",
         "tests": "(no TDD section)",
+        "title": "workflow: lessons from the Windows agent-session review (2026-10) \u2014 continuation, progress health, review packets, preflight"
+      },
+      "lane": "planning_feedstock",
+      "machine_blocker": "no_provider_capable_workstation",
+      "machine_ready": false,
+      "machine_role": null,
+      "machine_route": null,
+      "number": 3973,
+      "pipeline_lane": "C",
+      "plan": null,
+      "provider_route": "claude",
+      "review_clean": false,
+      "routing_reason": "strategy/workflow/architecture language",
+      "title": "workflow: lessons from the Windows agent-session review (2026-10) \u2014 continuation, progress health, review packets, preflight",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3973",
+      "warnings": []
+    },
+    {
+      "approval_blockers": [
+        "missing status:plan-review label",
+        "no canonical plan file",
+        "review evidence not clean",
+        "static dashboard: real approval requires provider-kanban-server.py"
+      ],
+      "approval_marker": null,
+      "approval_ready": false,
+      "hover": {
+        "labels": [
+          "gate:completeness",
+          "gate:completeness-v2"
+        ],
+        "machine_readiness": "blocked:no_provider_capable_workstation",
+        "machine_route": "(none ready)",
+        "plan_summary": "(no plan file found)",
+        "provider_route": "claude",
+        "risks": "(no risks section captured)",
+        "tests": "(no TDD section)",
         "title": "fix(fleet): provider-neutral task-dispatch readiness for every machine (retire telegram_hermes keying)"
       },
       "lane": "planning_feedstock",
@@ -7713,53 +7750,51 @@
       "title": "EPIC: family phone-media extraction & archive ecosystem",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3589",
       "warnings": []
-    },
-    {
-      "approval_blockers": [
-        "missing status:plan-review label",
-        "no canonical plan file",
-        "review evidence not clean",
-        "static dashboard: real approval requires provider-kanban-server.py"
-      ],
-      "approval_marker": null,
-      "approval_ready": false,
-      "hover": {
-        "labels": [
-          "priority:low",
-          "cat:operations",
-          "machine:dev-primary",
-          "domain:family"
-        ],
-        "machine_readiness": "blocked:no_provider_capable_workstation",
-        "machine_route": "(none ready)",
-        "plan_summary": "(no plan file found)",
-        "provider_route": "claude",
-        "risks": "(no risks section captured)",
-        "tests": "(no TDD section)",
-        "title": "phone-media: evaluate self-hosted family photo browser (Immich / PhotoPrism)"
-      },
-      "lane": "planning_feedstock",
-      "machine_blocker": "no_provider_capable_workstation",
-      "machine_ready": false,
-      "machine_role": null,
-      "machine_route": null,
-      "number": 3588,
-      "pipeline_lane": "C",
-      "plan": null,
-      "provider_route": "claude",
-      "review_clean": false,
-      "routing_reason": "default long-context routing",
-      "title": "phone-media: evaluate self-hosted family photo browser (Immich / PhotoPrism)",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3588",
-      "warnings": []
     }
   ],
-  "generated_at": "2026-10-08T17:21:15Z",
+  "generated_at": "2026-10-08T21:21:13Z",
   "lanes": {
     "blocked": [],
     "execution_ready": [],
     "plan_review": [],
     "planning_feedstock": [
+      {
+        "approval_blockers": [
+          "missing status:plan-review label",
+          "no canonical plan file",
+          "review evidence not clean",
+          "static dashboard: real approval requires provider-kanban-server.py"
+        ],
+        "approval_marker": null,
+        "approval_ready": false,
+        "hover": {
+          "labels": [
+            "gate:completeness",
+            "gate:completeness-v2"
+          ],
+          "machine_readiness": "blocked:no_provider_capable_workstation",
+          "machine_route": "(none ready)",
+          "plan_summary": "(no plan file found)",
+          "provider_route": "claude",
+          "risks": "(no risks section captured)",
+          "tests": "(no TDD section)",
+          "title": "workflow: lessons from the Windows agent-session review (2026-10) \u2014 continuation, progress health, review packets, preflight"
+        },
+        "lane": "planning_feedstock",
+        "machine_blocker": "no_provider_capable_workstation",
+        "machine_ready": false,
+        "machine_role": null,
+        "machine_route": null,
+        "number": 3973,
+        "pipeline_lane": "C",
+        "plan": null,
+        "provider_route": "claude",
+        "review_clean": false,
+        "routing_reason": "strategy/workflow/architecture language",
+        "title": "workflow: lessons from the Windows agent-session review (2026-10) \u2014 continuation, progress health, review packets, preflight",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3973",
+        "warnings": []
+      },
       {
         "approval_blockers": [
           "missing status:plan-review label",
@@ -15448,45 +15483,6 @@
         "title": "EPIC: family phone-media extraction & archive ecosystem",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/3589",
         "warnings": []
-      },
-      {
-        "approval_blockers": [
-          "missing status:plan-review label",
-          "no canonical plan file",
-          "review evidence not clean",
-          "static dashboard: real approval requires provider-kanban-server.py"
-        ],
-        "approval_marker": null,
-        "approval_ready": false,
-        "hover": {
-          "labels": [
-            "priority:low",
-            "cat:operations",
-            "machine:dev-primary",
-            "domain:family"
-          ],
-          "machine_readiness": "blocked:no_provider_capable_workstation",
-          "machine_route": "(none ready)",
-          "plan_summary": "(no plan file found)",
-          "provider_route": "claude",
-          "risks": "(no risks section captured)",
-          "tests": "(no TDD section)",
-          "title": "phone-media: evaluate self-hosted family photo browser (Immich / PhotoPrism)"
-        },
-        "lane": "planning_feedstock",
-        "machine_blocker": "no_provider_capable_workstation",
-        "machine_ready": false,
-        "machine_role": null,
-        "machine_route": null,
-        "number": 3588,
-        "pipeline_lane": "C",
-        "plan": null,
-        "provider_route": "claude",
-        "review_clean": false,
-        "routing_reason": "default long-context routing",
-        "title": "phone-media: evaluate self-hosted family photo browser (Immich / PhotoPrism)",
-        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3588",
-        "warnings": []
       }
     ],
     "qa_closeout": [],
@@ -15497,9 +15493,9 @@
     "agy",
     "claude"
   ],
-  "scorecard_generated_at": "2026-10-08T17:21:11.049865Z",
+  "scorecard_generated_at": "2026-10-08T21:21:09.982895Z",
   "served_localhost": false,
-  "utilization_generated_at": "2026-10-08T17:21:10.949425Z",
+  "utilization_generated_at": "2026-10-08T21:21:09.885137Z",
   "warning_summary": {
     "approved_no_marker": 5,
     "approved_no_plan": 1,

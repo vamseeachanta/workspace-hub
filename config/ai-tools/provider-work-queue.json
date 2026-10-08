@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-10-08T17:21:13.396372Z",
+  "generated_at": "2026-10-08T21:21:11.831414Z",
   "current_week": "2026-W41",
-  "scorecard_generated_at": "2026-10-08T17:21:11.049865Z",
+  "scorecard_generated_at": "2026-10-08T21:21:09.982895Z",
   "recommended_provider_order": [
     "codex",
     "agy",
@@ -2855,27 +2855,6 @@
           ]
         },
         {
-          "number": 3588,
-          "title": "phone-media: evaluate self-hosted family photo browser (Immich / PhotoPrism)",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3588",
-          "labels": [
-            "priority:low",
-            "cat:operations",
-            "machine:dev-primary",
-            "domain:family"
-          ],
-          "updatedAt": "2026-07-31T08:33:47Z",
-          "execution_ready": false,
-          "priority_rank": 3,
-          "suggested_provider": "claude",
-          "routing_reason": "default long-context routing",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "general"
-          ]
-        },
-        {
           "number": 3595,
           "title": "ace-win-2 on-box: schema-5 equality re-collect verification + hermes home init + revive licensed-runs queue heartbeat (#3592 follow-up)",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3595",
@@ -3944,7 +3923,7 @@
           "labels": [
             "status:needs-plan"
           ],
-          "updatedAt": "2026-10-08T12:50:56Z",
+          "updatedAt": "2026-10-08T19:36:23Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -4178,6 +4157,27 @@
           "provider_priority": "high",
           "provider_status": "underused",
           "work_type": [
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 3973,
+          "title": "workflow: lessons from the Windows agent-session review (2026-10) \u2014 continuation, progress health, review packets, preflight",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3973",
+          "labels": [
+            "gate:completeness",
+            "gate:completeness-v2"
+          ],
+          "updatedAt": "2026-10-08T20:45:31Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
             "implementation",
             "strategy"
           ]
