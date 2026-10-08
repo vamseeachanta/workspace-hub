@@ -1373,3 +1373,24 @@ tasks:
       never pushes direct, never merges. Snapshot is refreshed only after PRs open.
       Skill: .claude/skills/business-marketing/deckhand-api-presence-sync/SKILL.md.
       Refs aceengineer-strategy#94 (locked messaging), teamresumes#19.
+
+  - id: team-summary-refresh-fdas
+    label: Daily client team summary refresh — fdas (#3967)
+    schedule: "30 5 * * *"
+    machines: [dev-primary, ace-linux-1]
+    roles: [control-plane]
+    requires: [bash, python3, uv, git, gh, codex]
+    prefer: dev-primary
+    command: >-
+      PATH=$HOME/.local/bin:$HOME/bin:$PATH;
+      cd $WORKSPACE_HUB &&
+      bash scripts/reports/team-summary-refresh.sh fdas
+      >> $WORKSPACE_HUB/logs/reports/team-summary-fdas-$(date +\%Y\%m\%d).log 2>&1
+    log: logs/reports/team-summary-fdas-*.log
+    is_claude_task: false
+    description: >-
+      Daily 05:30 local. Codex updates llm-wiki-fdas reports/team-summary/summary.yml
+      from wiki changes since the last summary; the generator re-renders the one
+      canonical team-summary.pdf only when facts changed and pushes to main (owner
+      standing authority, #3967). No-op when the wiki has not changed. Publication
+      to the client's stable link (ChatGPT Site) runs on the Site's own schedule.

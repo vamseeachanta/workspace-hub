@@ -94,3 +94,14 @@ def test_due_may_be_tbd_but_not_free_text(data):
     bad = copy.deepcopy(data)
     bad["priorities"][0]["due"] = "soon"
     assert any("due" in e for e in build.validate(bad))
+
+
+def test_missing_sources_lists_only_absent_wiki_paths(tmp_path, data):
+    (tmp_path / "reports").mkdir()
+    (tmp_path / "reports" / "README.md").write_text("x")
+    withurl = copy.deepcopy(data)
+    withurl["deliverables"][0]["source"] = "https://example.com/doc"
+    missing = build.missing_sources(withurl, tmp_path)
+    assert "reports/README.md" not in missing
+    assert "https://example.com/doc" not in missing
+    assert "projects/example/requests.md" in missing

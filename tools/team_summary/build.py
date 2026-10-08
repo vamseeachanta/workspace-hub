@@ -6,7 +6,7 @@ history of that PDF is the change history.
 
 Usage:
     uv run python tools/team_summary/build.py --data <summary.yml> --out <team-summary.pdf>
-        [--html <path>] [--wiki-root <client wiki checkout>]
+        [--html <path>] [--wiki-root <client wiki checkout>] [--check-sources]
 """
 
 from __future__ import annotations
@@ -304,9 +304,23 @@ def wiki_revision(wiki_root: Path) -> str | None:
         return None
 
 
+def missing_sources(data: dict, wiki_root: Path) -> list[str]:
+    """Wiki-relative sources that do not exist under wiki_root (URLs are skipped)."""
+    return [
+        src for src in collect_sources(data)
+        if "://" not in src and not (wiki_root / src).exists()
+    ]
+
+
 def build(data_path: Path, pdf_path: Path, html_path: Path | None = None,
-          wiki_root: Path | None = None) -> Path:
+          wiki_root: Path | None = None, check_sources: bool = False) -> Path:
     data = load(data_path)
+    if check_sources:
+        if wiki_root is None:
+            raise SystemExit("--check-sources needs --wiki-root")
+        missing = missing_sources(data, wiki_root)
+        if missing:
+            raise SystemExit("Sources not found in the wiki:\n  " + "\n  ".join(missing))
     if wiki_root is not None:
         rev = wiki_revision(wiki_root)
         if rev:
@@ -333,8 +347,10 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--out", required=True, type=Path)
     ap.add_argument("--html", type=Path)
     ap.add_argument("--wiki-root", type=Path)
+    ap.add_argument("--check-sources", action="store_true",
+                    help="fail when a wiki-relative source does not exist under --wiki-root")
     args = ap.parse_args(argv)
-    pdf = build(args.data, args.out, args.html, args.wiki_root)
+    pdf = build(args.data, args.out, args.html, args.wiki_root, args.check_sources)
     print(f"OK: {pdf}")
     return 0
 
