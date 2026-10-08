@@ -1,0 +1,18 @@
+# Canonical labels present in every non-archived vamseeachanta repo (name, color, description).
+# Applied by scripts/operations/sync-canonical-labels.sh. Routing values must match
+# .claude/memory/kanban/routing-rules.yaml (providers, lane: = codex|claude only per #3029).
+decision:client	d93f0b	Human decision: client-facing (deliverables, client wikis, outreach)
+decision:architecture	5319e7	Human decision: design/standards/data-model/method choice
+decision:ecosystem	1d76db	Human decision: repo/agent harness (guardrails, settings, CI, contracts)
+decision:throughput	0e8a16	Human decision: unblock flow (merge, dispatch, quota, cleanup)
+ai:claude	c5def5	Provider override (highest precedence): Claude
+ai:codex	c5def5	Provider override (highest precedence): Codex
+ai:hermes	c5def5	Provider override (highest precedence): Hermes (codex pool)
+ai:agy	c5def5	Provider override (explicit only, never auto-routed): Agy
+lane:claude	bfd4f2	Plan-time provider preference: Claude
+lane:codex	bfd4f2	Plan-time provider preference: Codex
+dispatch:ready	fbca04	Dispatch: ready for an agent to pick up
+dispatch:active	f9d0c4	Dispatch: claimed and in progress
+dispatch:done	cccccc	Dispatch: agent work finished; awaiting owner merge/close
+dispatch:blocked	b60205	Dispatch: blocked; needs a human or upstream fix
+needs:cross-review	e99695	Needs a second-provider review before merge

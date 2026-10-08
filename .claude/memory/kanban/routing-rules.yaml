@@ -30,6 +30,7 @@ label_axes:
     "lane:":    "one implementing provider; a second opinion is `needs:cross-review`"
     "agent:":   "one agent owns the work item"
     "ai:":      "the human/dispatch provider override — highest precedence, so two would contradict"
+    "decision:": "one human-decision category (client|architecture|ecosystem|throughput); config/github/canonical-labels.tsv"
   multi:
     "domain:":  "work genuinely spans domains — 74 open issues legitimately do"
     "cat:":     "categories overlap by design"
