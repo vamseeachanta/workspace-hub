@@ -21,6 +21,7 @@ python tools/html-review/make_review_copy.py SRC.html OUT-review.html STORAGE_KE
    - The JSON is always written beside the page, in the folder that holds it, never to Downloads.
    - The first save asks once for a folder. Choose the folder that holds the review page. The page checks that the folder contains the page itself (same file name and revision) and refuses any other folder.
    - Later saves write `<page stem>.json` there directly, merging comments already in that file. The folder is remembered per page location, so copies of the page in different folders each save beside themselves.
+   - `<page stem>.json` always holds the latest save. Every save also writes a timestamped copy, `<page stem>-<UTC yyyymmddThhmmssZ>.json`, in the same folder, so earlier saves are kept (owner decision D03, 2026-10-08). The owning repository commits the copy the agent acts on.
    - On opening, if the browser still has write permission for that folder, comments saved beside the page are loaded and merged.
    - **Folder…** changes the folder (with the same check).
    - If the folder cannot be written (no File System Access API, permission refused, dialog cancelled, wrong folder), nothing is saved. The comments stay in the tab and in browser storage, and the status line says why, including the browser's error name and message.

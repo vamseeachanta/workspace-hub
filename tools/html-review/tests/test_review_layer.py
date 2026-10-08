@@ -11,6 +11,7 @@ Run: python -m pytest tools/html-review/tests -q
 import functools
 import http.server
 import json
+import re
 import subprocess
 import sys
 import threading
@@ -123,7 +124,11 @@ def test_save_writes_beside_page_and_reloads(server, browser):
     page.click("#rv-save")
     page.wait_for_function("document.querySelector('#rv-status').textContent.startsWith('Saved')")
     assert page.evaluate("window.__rvActive") is True, "picker called without transient user activation"
-    saved = json.loads(read_folder(page, "page-folder")[EXPORT])
+    files = read_folder(page, "page-folder")
+    saved = json.loads(files[EXPORT])
+    # Owner decision D03 (2026-10-08): every save also leaves a UTC-timestamped copy beside the latest.
+    copies = [n for n in files if re.fullmatch(re.escape(EXPORT[:-5]) + r"-\d{8}T\d{6}Z\.json", n)]
+    assert len(copies) == 1 and files[copies[0]] == files[EXPORT], files
     assert saved["page"] == "example-report.html"
     assert saved["report_version"]
     assert saved["comments"][0]["comment"].endswith("Also give the units.")
@@ -179,8 +184,10 @@ def test_other_revision_export_is_left_unchanged(server, browser):
     page.wait_for_function("/different report revision/.test(document.querySelector('#rv-status').textContent)")
     files = read_folder(page, "page-folder")
     assert files[EXPORT] == other
-    siblings = [n for n in files if n != EXPORT]
+    siblings = [n for n in files if n != EXPORT and not re.search(r"-\d{8}T\d{6}Z\.json$", n)]
     assert len(siblings) == 1 and siblings[0].startswith("example-report-review-"), files
+    copies = [n for n in files if re.fullmatch(re.escape(siblings[0][:-5]) + r"-\d{8}T\d{6}Z\.json", n)]
+    assert len(copies) == 1 and files[copies[0]] == files[siblings[0]], files
     assert json.loads(files[siblings[0]])["comments"][0]["comment"].endswith("Also give the units.")
     assert siblings[0] in page.inner_text("#rv-status")
     assert not page.downloads, page.downloads
