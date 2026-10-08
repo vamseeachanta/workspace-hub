@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-10-07T21:21:12.020355Z",
+  "generated_at": "2026-10-08T01:21:20.159352Z",
   "current_week": "2026-W41",
-  "scorecard_generated_at": "2026-10-07T21:21:09.682357Z",
+  "scorecard_generated_at": "2026-10-08T01:21:18.316931Z",
   "recommended_provider_order": [
     "codex",
     "agy",
@@ -12,7 +12,7 @@
       "provider": "claude",
       "routing_priority": "high",
       "execution_ready_count": 5,
-      "total_candidates": 179,
+      "total_candidates": 180,
       "top_issues": [
         {
           "number": 3816,
@@ -3986,7 +3986,7 @@
           "labels": [
             "status:needs-plan"
           ],
-          "updatedAt": "2026-10-06T15:44:54Z",
+          "updatedAt": "2026-10-08T00:14:30Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -4161,6 +4161,27 @@
             "implementation",
             "strategy"
           ]
+        },
+        {
+          "number": 3964,
+          "title": "chore: consolidate and update Claude Code and Codex CLI on ace-linux-1",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3964",
+          "labels": [
+            "gate:completeness",
+            "gate:completeness-v2"
+          ],
+          "updatedAt": "2026-10-08T01:05:48Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
         }
       ]
     },
@@ -4168,7 +4189,7 @@
       "provider": "codex",
       "routing_priority": "highest",
       "execution_ready_count": 3,
-      "total_candidates": 19,
+      "total_candidates": 18,
       "top_issues": [
         {
           "number": 3740,
@@ -4290,27 +4311,6 @@
           ]
         },
         {
-          "number": 3585,
-          "title": "phone-media: EXIF-date organizer + cross-phone dedupe",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3585",
-          "labels": [
-            "priority:medium",
-            "cat:data",
-            "machine:dev-primary",
-            "domain:family"
-          ],
-          "updatedAt": "2026-07-31T08:33:42Z",
-          "execution_ready": false,
-          "priority_rank": 2,
-          "suggested_provider": "codex",
-          "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
-          "provider_status": "underused",
-          "work_type": [
-            "implementation"
-          ]
-        },
-        {
           "number": 3696,
           "title": "chore(machines): 6 unpushed commits stranded in secondary working copies on ace-linux-2 (incl. one clone with no remote)",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3696",
@@ -4351,6 +4351,28 @@
           "provider_priority": "highest",
           "provider_status": "underused",
           "work_type": [
+            "implementation"
+          ]
+        },
+        {
+          "number": 3842,
+          "title": "refactor(fatigue): consolidate seven rainflow counting paths onto one",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3842",
+          "labels": [
+            "priority:medium",
+            "cat:engineering",
+            "domain:marine",
+            "lane:claude"
+          ],
+          "updatedAt": "2026-09-11T20:21:01Z",
+          "execution_ready": false,
+          "priority_rank": 2,
+          "suggested_provider": "codex",
+          "routing_reason": "implementation/test/fix language",
+          "provider_priority": "highest",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
             "implementation"
           ]
         }
@@ -4472,27 +4494,6 @@
           "provider_status": "underused",
           "work_type": [
             "research",
-            "implementation"
-          ]
-        },
-        {
-          "number": 3585,
-          "title": "phone-media: EXIF-date organizer + cross-phone dedupe",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3585",
-          "labels": [
-            "priority:medium",
-            "cat:data",
-            "machine:dev-primary",
-            "domain:family"
-          ],
-          "updatedAt": "2026-07-31T08:33:42Z",
-          "execution_ready": false,
-          "priority_rank": 2,
-          "suggested_provider": "codex",
-          "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
-          "provider_status": "underused",
-          "work_type": [
             "implementation"
           ]
         },

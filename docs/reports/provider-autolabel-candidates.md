@@ -1,6 +1,6 @@
 # Provider autolabel candidates
 
-Generated: 2026-10-07T21:21:12.134142Z
+Generated: 2026-10-08T01:21:20.269505Z
 Apply mode: False
 Threshold: 0.9
 
@@ -16,10 +16,10 @@ Threshold: 0.9
 | #3702 bug(equality): equality-matrix-cron writes generated artifacts into the tracked tree, creating a self-sustaining STALE-CHECKOUT deadlock | agent:claude | 0.75 | no | execution-ready, strong-claude-language-match, provider-high-priority |
 | #3788 bug(dispatch): reconcile.py reads an open-only label snapshot, so every CLOSED issue reports false LABEL-MISSING | agent:codex | 0.60 | no | priority-labeled, strong-codex-language-match, provider-highest-priority |
 | #3821 bug(equality): restore collector idempotency and macOS atomic-publish test portability | agent:codex | 0.60 | no | priority-labeled, strong-codex-language-match, provider-highest-priority |
-| #3585 phone-media: EXIF-date organizer + cross-phone dedupe | agent:codex | 0.60 | no | priority-labeled, strong-codex-language-match, provider-highest-priority |
 | #3696 chore(machines): 6 unpushed commits stranded in secondary working copies on ace-linux-2 (incl. one clone with no remote) | agent:codex | 0.60 | no | priority-labeled, strong-codex-language-match, provider-highest-priority |
 | #3792 feat(scheduler): no transaction attestation exists for systemd-user surfaces, so they can only ever declare missing_transaction | agent:codex | 0.60 | no | priority-labeled, strong-codex-language-match, provider-highest-priority |
 | #3819 feat(harness): unified ecosystem doctor with stable probe schema | agent:agy | 0.60 | no | priority-labeled, strong-agy-language-match, provider-highest-priority |
+| #3842 refactor(fatigue): consolidate seven rainflow counting paths onto one | agent:codex | 0.60 | no | priority-labeled, strong-codex-language-match, provider-highest-priority |
 | #3596 Compliance alert: W30 — 18% (critical) | agent:claude | 0.55 | no | priority-labeled, strong-claude-language-match, provider-high-priority |
 | #3693 Compliance alert: W31 — 0% (critical) | agent:claude | 0.55 | no | priority-labeled, strong-claude-language-match, provider-high-priority |
 | #3794 Compliance alert: W32 — 66% (medium) | agent:claude | 0.55 | no | priority-labeled, strong-claude-language-match, provider-high-priority |

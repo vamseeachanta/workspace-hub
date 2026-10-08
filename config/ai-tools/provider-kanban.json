@@ -36,6 +36,43 @@
       "approval_ready": false,
       "hover": {
         "labels": [
+          "gate:completeness",
+          "gate:completeness-v2"
+        ],
+        "machine_readiness": "blocked:no_provider_capable_workstation",
+        "machine_route": "(none ready)",
+        "plan_summary": "(no plan file found)",
+        "provider_route": "claude",
+        "risks": "(no risks section captured)",
+        "tests": "(no TDD section)",
+        "title": "chore: consolidate and update Claude Code and Codex CLI on ace-linux-1"
+      },
+      "lane": "planning_feedstock",
+      "machine_blocker": "no_provider_capable_workstation",
+      "machine_ready": false,
+      "machine_role": null,
+      "machine_route": null,
+      "number": 3964,
+      "pipeline_lane": "C",
+      "plan": null,
+      "provider_route": "claude",
+      "review_clean": false,
+      "routing_reason": "strategy/workflow/architecture language",
+      "title": "chore: consolidate and update Claude Code and Codex CLI on ace-linux-1",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3964",
+      "warnings": []
+    },
+    {
+      "approval_blockers": [
+        "missing status:plan-review label",
+        "no canonical plan file",
+        "review evidence not clean",
+        "static dashboard: real approval requires provider-kanban-server.py"
+      ],
+      "approval_marker": null,
+      "approval_ready": false,
+      "hover": {
+        "labels": [
           "priority:medium",
           "cat:harness",
           "dispatch:ready",
@@ -7719,53 +7756,51 @@
       "title": "phone-media: off-site backup capacity plan + periodic rclone check cron",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3586",
       "warnings": []
-    },
-    {
-      "approval_blockers": [
-        "missing status:plan-review label",
-        "no canonical plan file",
-        "review evidence not clean",
-        "static dashboard: real approval requires provider-kanban-server.py"
-      ],
-      "approval_marker": null,
-      "approval_ready": false,
-      "hover": {
-        "labels": [
-          "priority:medium",
-          "cat:data",
-          "machine:dev-primary",
-          "domain:family"
-        ],
-        "machine_readiness": "blocked:no_provider_capable_workstation",
-        "machine_route": "(none ready)",
-        "plan_summary": "(no plan file found)",
-        "provider_route": "codex",
-        "risks": "(no risks section captured)",
-        "tests": "(no TDD section)",
-        "title": "phone-media: EXIF-date organizer + cross-phone dedupe"
-      },
-      "lane": "planning_feedstock",
-      "machine_blocker": "no_provider_capable_workstation",
-      "machine_ready": false,
-      "machine_role": null,
-      "machine_route": null,
-      "number": 3585,
-      "pipeline_lane": "C",
-      "plan": null,
-      "provider_route": "codex",
-      "review_clean": false,
-      "routing_reason": "implementation/test/fix language",
-      "title": "phone-media: EXIF-date organizer + cross-phone dedupe",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3585",
-      "warnings": []
     }
   ],
-  "generated_at": "2026-10-07T21:21:14Z",
+  "generated_at": "2026-10-08T01:21:21Z",
   "lanes": {
     "blocked": [],
     "execution_ready": [],
     "plan_review": [],
     "planning_feedstock": [
+      {
+        "approval_blockers": [
+          "missing status:plan-review label",
+          "no canonical plan file",
+          "review evidence not clean",
+          "static dashboard: real approval requires provider-kanban-server.py"
+        ],
+        "approval_marker": null,
+        "approval_ready": false,
+        "hover": {
+          "labels": [
+            "gate:completeness",
+            "gate:completeness-v2"
+          ],
+          "machine_readiness": "blocked:no_provider_capable_workstation",
+          "machine_route": "(none ready)",
+          "plan_summary": "(no plan file found)",
+          "provider_route": "claude",
+          "risks": "(no risks section captured)",
+          "tests": "(no TDD section)",
+          "title": "chore: consolidate and update Claude Code and Codex CLI on ace-linux-1"
+        },
+        "lane": "planning_feedstock",
+        "machine_blocker": "no_provider_capable_workstation",
+        "machine_ready": false,
+        "machine_role": null,
+        "machine_route": null,
+        "number": 3964,
+        "pipeline_lane": "C",
+        "plan": null,
+        "provider_route": "claude",
+        "review_clean": false,
+        "routing_reason": "strategy/workflow/architecture language",
+        "title": "chore: consolidate and update Claude Code and Codex CLI on ace-linux-1",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3964",
+        "warnings": []
+      },
       {
         "approval_blockers": [
           "missing status:plan-review label",
@@ -15460,45 +15495,6 @@
         "title": "phone-media: off-site backup capacity plan + periodic rclone check cron",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/3586",
         "warnings": []
-      },
-      {
-        "approval_blockers": [
-          "missing status:plan-review label",
-          "no canonical plan file",
-          "review evidence not clean",
-          "static dashboard: real approval requires provider-kanban-server.py"
-        ],
-        "approval_marker": null,
-        "approval_ready": false,
-        "hover": {
-          "labels": [
-            "priority:medium",
-            "cat:data",
-            "machine:dev-primary",
-            "domain:family"
-          ],
-          "machine_readiness": "blocked:no_provider_capable_workstation",
-          "machine_route": "(none ready)",
-          "plan_summary": "(no plan file found)",
-          "provider_route": "codex",
-          "risks": "(no risks section captured)",
-          "tests": "(no TDD section)",
-          "title": "phone-media: EXIF-date organizer + cross-phone dedupe"
-        },
-        "lane": "planning_feedstock",
-        "machine_blocker": "no_provider_capable_workstation",
-        "machine_ready": false,
-        "machine_role": null,
-        "machine_route": null,
-        "number": 3585,
-        "pipeline_lane": "C",
-        "plan": null,
-        "provider_route": "codex",
-        "review_clean": false,
-        "routing_reason": "implementation/test/fix language",
-        "title": "phone-media: EXIF-date organizer + cross-phone dedupe",
-        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3585",
-        "warnings": []
       }
     ],
     "qa_closeout": [],
@@ -15509,9 +15505,9 @@
     "agy",
     "claude"
   ],
-  "scorecard_generated_at": "2026-10-07T21:21:09.682357Z",
+  "scorecard_generated_at": "2026-10-08T01:21:18.316931Z",
   "served_localhost": false,
-  "utilization_generated_at": "2026-10-07T21:21:09.582574Z",
+  "utilization_generated_at": "2026-10-08T01:21:18.213758Z",
   "warning_summary": {
     "approved_no_marker": 5,
     "approved_no_plan": 1,

@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-07T21:21:12.134142Z",
+  "generated_at": "2026-10-08T01:21:20.269505Z",
   "apply_mode": false,
   "threshold": 0.9,
   "eligible_count": 5,
@@ -338,35 +338,6 @@
       "eligible": false
     },
     {
-      "number": 3585,
-      "title": "phone-media: EXIF-date organizer + cross-phone dedupe",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3585",
-      "labels": [
-        "priority:medium",
-        "cat:data",
-        "machine:dev-primary",
-        "domain:family"
-      ],
-      "updatedAt": "2026-07-31T08:33:42Z",
-      "execution_ready": false,
-      "priority_rank": 2,
-      "suggested_provider": "codex",
-      "routing_reason": "implementation/test/fix language",
-      "provider_priority": "highest",
-      "provider_status": "underused",
-      "work_type": [
-        "implementation"
-      ],
-      "target_label": "agent:codex",
-      "confidence": 0.6,
-      "confidence_reasons": [
-        "priority-labeled",
-        "strong-codex-language-match",
-        "provider-highest-priority"
-      ],
-      "eligible": false
-    },
-    {
       "number": 3696,
       "title": "chore(machines): 6 unpushed commits stranded in secondary working copies on ace-linux-2 (incl. one clone with no remote)",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3696",
@@ -454,6 +425,36 @@
       "confidence_reasons": [
         "priority-labeled",
         "strong-agy-language-match",
+        "provider-highest-priority"
+      ],
+      "eligible": false
+    },
+    {
+      "number": 3842,
+      "title": "refactor(fatigue): consolidate seven rainflow counting paths onto one",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3842",
+      "labels": [
+        "priority:medium",
+        "cat:engineering",
+        "domain:marine",
+        "lane:claude"
+      ],
+      "updatedAt": "2026-09-11T20:21:01Z",
+      "execution_ready": false,
+      "priority_rank": 2,
+      "suggested_provider": "codex",
+      "routing_reason": "implementation/test/fix language",
+      "provider_priority": "highest",
+      "provider_status": "underused",
+      "work_type": [
+        "research",
+        "implementation"
+      ],
+      "target_label": "agent:codex",
+      "confidence": 0.6,
+      "confidence_reasons": [
+        "priority-labeled",
+        "strong-codex-language-match",
         "provider-highest-priority"
       ],
       "eligible": false
