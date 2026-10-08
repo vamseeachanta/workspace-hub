@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-10-08T09:21:17.146700Z",
+  "generated_at": "2026-10-08T13:21:13.475763Z",
   "current_week": "2026-W41",
-  "scorecard_generated_at": "2026-10-08T09:21:15.013937Z",
+  "scorecard_generated_at": "2026-10-08T13:21:11.305946Z",
   "recommended_provider_order": [
     "codex",
     "agy",
@@ -589,7 +589,7 @@
             "priority:critical",
             "compliance-alert"
           ],
-          "updatedAt": "2026-10-07T11:45:06Z",
+          "updatedAt": "2026-10-08T11:45:07Z",
           "execution_ready": false,
           "priority_rank": 0,
           "suggested_provider": "claude",
@@ -1232,27 +1232,6 @@
             "research",
             "implementation",
             "strategy"
-          ]
-        },
-        {
-          "number": 3586,
-          "title": "phone-media: off-site backup capacity plan + periodic rclone check cron",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3586",
-          "labels": [
-            "priority:medium",
-            "cat:operations",
-            "machine:dev-primary",
-            "domain:family"
-          ],
-          "updatedAt": "2026-07-31T08:33:44Z",
-          "execution_ready": false,
-          "priority_rank": 2,
-          "suggested_provider": "claude",
-          "routing_reason": "default long-context routing",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "general"
           ]
         },
         {
@@ -2876,27 +2855,6 @@
           ]
         },
         {
-          "number": 3587,
-          "title": "phone-media: choose the ongoing incremental sync lane",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3587",
-          "labels": [
-            "priority:low",
-            "cat:operations",
-            "machine:dev-primary",
-            "domain:family"
-          ],
-          "updatedAt": "2026-07-31T08:33:45Z",
-          "execution_ready": false,
-          "priority_rank": 3,
-          "suggested_provider": "claude",
-          "routing_reason": "default long-context routing",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "general"
-          ]
-        },
-        {
           "number": 3588,
           "title": "phone-media: evaluate self-hosted family photo browser (Immich / PhotoPrism)",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3588",
@@ -3986,7 +3944,7 @@
           "labels": [
             "status:needs-plan"
           ],
-          "updatedAt": "2026-10-08T00:14:30Z",
+          "updatedAt": "2026-10-08T12:50:56Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -4170,7 +4128,7 @@
             "gate:completeness",
             "gate:completeness-v2"
           ],
-          "updatedAt": "2026-10-08T01:05:48Z",
+          "updatedAt": "2026-10-08T12:33:06Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -4179,6 +4137,47 @@
           "provider_status": "underused",
           "work_type": [
             "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 3967,
+          "title": "feat(reports): one-command daily client team summary PDF (schema + template + generator)",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3967",
+          "labels": [
+            "gate:completeness",
+            "gate:completeness-v2"
+          ],
+          "updatedAt": "2026-10-08T12:29:51Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 3968,
+          "title": "fix(fleet): provider-neutral task-dispatch readiness for every machine (retire telegram_hermes keying)",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3968",
+          "labels": [
+            "gate:completeness",
+            "gate:completeness-v2"
+          ],
+          "updatedAt": "2026-10-08T11:56:59Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
             "implementation",
             "strategy"
           ]
