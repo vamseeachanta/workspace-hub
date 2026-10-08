@@ -90,11 +90,6 @@ fi
 if [ -d ".claude/skills" ]; then
     echo "📚 Skills: Commit recorded for pattern learning"
 fi
-
-# Propagate compliance changes (if in workspace-hub)
-if [ -f "scripts/compliance/auto_propagate.sh" ]; then
-    ./scripts/compliance/auto_propagate.sh --quiet 2>/dev/null || true
-fi
 HOOK_EOF
 
         chmod +x "$hook_path"

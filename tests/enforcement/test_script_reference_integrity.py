@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import re
-from pathlib import Path
+from pathlib import Path, PurePath, PureWindowsPath
 
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
@@ -38,8 +38,11 @@ PATH_RE = re.compile(
 INVOKER_RE = re.compile(
     r"(^|[\s;&|(])("
     r"bash|sh|zsh|python|python3|node|uv|timeout|exec|source|\.|"
-    r"FilePath|command|run|windows_script|script|path"
+    r"FilePath|command|run|windows_script|script"
     r")([\s:=]|$)"
+    # `path` only as a key or assignment: a bare `for path in ...` word list
+    # iterates strings (often test fixtures) and invokes nothing.
+    r"|(^|[\s;&|(])path[:=]"
 )
 
 ROOT_PREFIXES = (
@@ -59,13 +62,13 @@ DEFERRED_MISSING_REFERENCES = {
         "config/scheduled-tasks/schedule-tasks.yaml",
         106,
         "scripts/deckhand/licensed-run-ops.py",
-    ): "unresolved external deckhand-ops checkout after cd /mnt/local-analysis/deckhand-ops",
-    (
-        "scripts/operations/compliance/propagate_all_skills.sh",
-        96,
-        "./scripts/compliance/auto_propagate.sh",
-    ): "needs decision; no auto_propagate.sh basename exists in this repo",
+    ): "external: resolves inside the deckhand checkout (cd .../deckhand-ops), not this repo",
 }
+
+
+def _reference_key(rel_source: PurePath, line_number: int, raw_path: str) -> tuple[str, int, str]:
+    # POSIX form so deferral keys match on Windows, where str() yields backslashes.
+    return (rel_source.as_posix(), line_number, raw_path)
 
 
 def _strip_inline_comment(line: str) -> str:
@@ -141,14 +144,36 @@ def test_static_script_invocations_reference_existing_files() -> None:
                     continue
                 examined += 1
                 if not resolved.exists():
-                    key = (str(rel_source), line_number, match.group("path"))
+                    key = _reference_key(rel_source, line_number, match.group("path"))
                     if key in DEFERRED_MISSING_REFERENCES:
                         continue
                     swallowed = "yes" if _is_swallowed(candidate_line) else "no"
                     broken.append(
-                        f"{rel_source}:{line_number}: {match.group('path')} "
+                        f"{key[0]}:{line_number}: {match.group('path')} "
                         f"(swallowed={swallowed})"
                     )
 
     assert examined > 0
     assert not broken, "Broken script references:\n" + "\n".join(broken)
+
+
+def test_reference_key_uses_posix_separators() -> None:
+    # Windows yields backslash relative paths; the deferral keys are POSIX.
+    key = _reference_key(
+        PureWindowsPath("config", "scheduled-tasks", "schedule-tasks.yaml"),
+        106,
+        "scripts/deckhand/licensed-run-ops.py",
+    )
+    assert key in DEFERRED_MISSING_REFERENCES
+
+
+def test_for_loop_variable_named_path_is_not_an_invocation() -> None:
+    # A shell word list iterated by a variable called `path` (a test fixture in
+    # scripts/maintenance/tests/test_return_to_main_guard.sh) executes nothing.
+    assert not _looks_like_invocation('for path in "a.md" "scripts/fleet/some-tool.sh"; do')
+
+
+def test_path_key_still_counts_as_invocation() -> None:
+    assert _looks_like_invocation("path: scripts/x.sh")
+    assert _looks_like_invocation("  - path: scripts/x.sh")
+    assert _looks_like_invocation('    path="scripts/x.sh"')
