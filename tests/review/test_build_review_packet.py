@@ -91,6 +91,47 @@ def test_fence_is_longer_than_any_backtick_run_in_content(tmp_path):
     assert "\n`````" in packet  # 5-backtick fence wraps content containing a 4-backtick run
 
 
+def test_line_numbers_match_editor_lines_with_form_feed(tmp_path):
+    make(tmp_path, "a.txt", b"one\x0ctwo\nthree\n")  # str.splitlines() would split at \x0c
+    assert run("build", "--out", "p.md", "--manifest", "m.json", "a.txt", cwd=tmp_path).returncode == 0
+    packet = (tmp_path / "p.md").read_text(encoding="utf-8")
+    assert "   2 | three" in packet and "2 lines" in packet
+
+
+def test_verify_refuses_tampered_manifest_path_outside_root(tmp_path):
+    root = tmp_path / "root"
+    root.mkdir()
+    make(tmp_path, "outside.txt", b"x\n")
+    digest = hashlib.sha256(b"x\n").hexdigest()
+    (root / "m.json").write_text(json.dumps({"schema": "review-packet/1", "files": [{"path": "../outside.txt", "sha256": digest, "bytes": 2}]}),
+                                 encoding="utf-8")
+    r = run("verify", "--manifest", "m.json", cwd=root)
+    assert r.returncode == 1 and "outside" in r.stderr.lower()
+
+
+def test_verify_rejects_empty_or_malformed_manifest(tmp_path):
+    for body in ({}, {"schema": "review-packet/1", "files": []},
+                 {"schema": "review-packet/1", "files": [{"path": "a.txt", "sha256": "nothex"}]}):
+        (tmp_path / "m.json").write_text(json.dumps(body), encoding="utf-8")
+        r = run("verify", "--manifest", "m.json", cwd=tmp_path)
+        assert r.returncode == 1, body
+
+
+def test_outputs_may_not_overwrite_inputs_or_each_other(tmp_path):
+    make(tmp_path, "a.py", b"keep\n")
+    r = run("build", "--out", "a.py", "--manifest", "m.json", "a.py", cwd=tmp_path)
+    assert r.returncode == 1 and (tmp_path / "a.py").read_bytes() == b"keep\n"
+    r = run("build", "--out", "same.md", "--manifest", "same.md", "a.py", cwd=tmp_path)
+    assert r.returncode == 1 and not (tmp_path / "same.md").exists()
+
+
+def test_manifest_binds_packet_digest(tmp_path):
+    make(tmp_path, "a.txt", b"x\n")
+    assert run("build", "--out", "p.md", "--manifest", "m.json", "a.txt", cwd=tmp_path).returncode == 0
+    m = json.loads((tmp_path / "m.json").read_text(encoding="utf-8"))
+    assert m["packet_sha256"] == hashlib.sha256((tmp_path / "p.md").read_bytes()).hexdigest()
+
+
 def test_path_outside_root_is_refused(tmp_path):
     root = tmp_path / "root"
     root.mkdir()

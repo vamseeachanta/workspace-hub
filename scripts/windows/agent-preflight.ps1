@@ -38,10 +38,28 @@ function Add-Finding([string]$Id, [string]$Severity, [string]$Message) {
     $findings.Add([ordered]@{ id = $Id; severity = $Severity; message = $Message })
 }
 
+function Protect-Text([string]$Text) {
+    # Recorded strings come from external programs; strip anything token-shaped and cap the length.
+    if ($null -eq $Text) { return $null }
+    $t = $Text -replace '(?i)\b(gh[pousr]_[A-Za-z0-9]{8,}|github_pat_[A-Za-z0-9_]{8,}|sk-[A-Za-z0-9_\-]{8,}|xox[abpr]-[A-Za-z0-9\-]{8,}|AKIA[0-9A-Z]{12,}|eyJ[A-Za-z0-9_\-]{10,}\.[A-Za-z0-9_\-\.]+)', '[REDACTED]'
+    if ($t.Length -gt 200) { $t = $t.Substring(0, 200) }
+    return $t
+}
+
+function Stop-Tree($Proc) {
+    # Kill the whole tree (a .cmd shim's node child would otherwise outlive it).
+    # Kill($true) needs .NET Core 3+ (pwsh 7); Windows PowerShell 5.1 falls back to taskkill.
+    try { $Proc.Kill($true) } catch { try { & taskkill.exe /T /F /PID $Proc.Id 2>&1 | Out-Null } catch { } }
+}
+
 function Invoke-Probe([string]$Exe, [string[]]$ArgList) {
-    # Hidden, captured, time-limited. Returns @{ ok; exit; out } — never throws.
-    $result = [ordered]@{ ok = $false; exit = $null; out = $null }
-    if (-not $Exe) { return $result }
+    # Hidden, captured, bounded by one deadline covering both exit and stream collection
+    # (a detached child can hold the pipes open after the parent exits).
+    # Returns @{ ok; exit; out; failure } where failure is $null, 'launch' or 'timeout'. Never throws.
+    # ArgList must be fixed literal arguments: quoting covers spaces and quotes, not every CRT edge case.
+    $result = [ordered]@{ ok = $false; exit = $null; out = $null; failure = $null }
+    if (-not $Exe) { $result.failure = 'launch'; return $result }
+    $p = $null
     try {
         $psi = New-Object System.Diagnostics.ProcessStartInfo
         $psi.FileName = $Exe
@@ -50,20 +68,27 @@ function Invoke-Probe([string]$Exe, [string[]]$ArgList) {
         $psi.CreateNoWindow = $true
         $psi.RedirectStandardOutput = $true
         $psi.RedirectStandardError = $true
-        $p = [System.Diagnostics.Process]::Start($psi)
+        try { $p = [System.Diagnostics.Process]::Start($psi) } catch { $result.failure = 'launch'; return $result }
+        $deadline = [DateTime]::UtcNow.AddSeconds($TimeoutSec)
         $outTask = $p.StandardOutput.ReadToEndAsync()
         $errTask = $p.StandardError.ReadToEndAsync()
-        if (-not $p.WaitForExit($TimeoutSec * 1000)) {
-            try { $p.Kill() } catch { }
-            $result.out = 'timeout'
+        $exited = $p.WaitForExit($TimeoutSec * 1000)
+        $left = [int][Math]::Max(0, ($deadline - [DateTime]::UtcNow).TotalMilliseconds)
+        $drained = $exited -and [System.Threading.Tasks.Task]::WaitAll(@($outTask, $errTask), $left)
+        if (-not $drained) {
+            Stop-Tree $p
+            $result.failure = 'timeout'
             return $result
         }
         $text = ($outTask.Result + "`n" + $errTask.Result).Trim()
         $result.exit = $p.ExitCode
         $result.ok = ($p.ExitCode -eq 0)
-        $result.out = ($text -split "`r?`n" | Select-Object -First 1)
+        $first = ($text -split "`r?`n" | Select-Object -First 1)
+        $result.out = $(if ($first) { Protect-Text $first } else { $null })
     } catch {
-        $result.out = $_.Exception.Message
+        $result.failure = 'launch'
+    } finally {
+        if ($p) { $p.Dispose() }
     }
     return $result
 }
@@ -80,7 +105,8 @@ function Test-StoreStub([string]$Path) {
 }
 
 # --- python -----------------------------------------------------------------
-$pathPython = Get-AppPath 'python'
+$pathCandidates = @(Get-Command python -CommandType Application -All -ErrorAction SilentlyContinue | ForEach-Object Source)
+$pathPython = if ($pathCandidates.Count) { $pathCandidates[0] } else { $null }
 $pathIsStub = Test-StoreStub $pathPython
 if ($pathIsStub) {
     Add-Finding 'PYTHON_STORE_STUB' 'warn' "bare 'python' on PATH resolves to the Microsoft Store alias ($pathPython); name an interpreter explicitly"
@@ -88,7 +114,10 @@ if ($pathIsStub) {
 $selected = $null
 $selectedSource = $null
 if ($Python) { $selected = $Python; $selectedSource = 'parameter-or-AGENT_PYTHON' }
-elseif ($pathPython -and -not $pathIsStub) { $selected = $pathPython; $selectedSource = 'PATH' }
+else {
+    $firstReal = $pathCandidates | Where-Object { -not (Test-StoreStub $_) } | Select-Object -First 1
+    if ($firstReal) { $selected = $firstReal; $selectedSource = 'PATH (first non-alias)' }
+}
 
 $py = [ordered]@{
     path_python = $pathPython
@@ -99,12 +128,14 @@ $py = [ordered]@{
     venv_cfg_present = $null
     version = $null
     preferred_encoding = $null
-    pythonutf8_env = $env:PYTHONUTF8
+    pythonutf8_env = Protect-Text $env:PYTHONUTF8
 }
 if (-not $selected) {
     Add-Finding 'NO_USABLE_PYTHON' 'error' 'no interpreter selected and PATH python is missing or the Store alias; pass -Python or set AGENT_PYTHON'
 } elseif (-not (Test-Path -LiteralPath $selected -PathType Leaf)) {
     Add-Finding 'PYTHON_SELECTED_MISSING' 'error' "selected interpreter does not exist: $selected"
+} elseif (Test-StoreStub $selected) {
+    Add-Finding 'PYTHON_SELECTED_IS_STORE_STUB' 'error' "selected interpreter is the Microsoft Store alias: $selected"
 } else {
     $py.selected_exists = $true
     $scriptsDir = Split-Path -Parent $selected
@@ -123,8 +154,11 @@ if (-not $selected) {
         if ($py.preferred_encoding -and $py.preferred_encoding -notmatch '(?i)utf-?8' -and $env:PYTHONUTF8 -ne '1') {
             Add-Finding 'PYTHON_ENCODING_NOT_UTF8' 'warn' "python default encoding is $($py.preferred_encoding); set PYTHONUTF8=1 or pass encoding='utf-8' when reading and writing files"
         }
-    } elseif (-not $v.ok) {
-        Add-Finding 'PYTHON_NOT_RUNNABLE' 'error' "selected interpreter did not run: $($v.out)"
+    } elseif ($v.ok) {
+        Add-Finding 'PYTHON_PROBE_EMPTY' 'error' 'selected interpreter exited 0 but printed no version; it is not a working python'
+    } else {
+        $why = $(if ($v.failure) { $v.failure } else { "exit $($v.exit)" })
+        Add-Finding 'PYTHON_NOT_RUNNABLE' 'error' "selected interpreter did not run ($why)"
     }
 }
 
@@ -194,9 +228,13 @@ if ($ghPath) {
     # `gh auth status` exits 1 when ANY stored account is invalid, even while the active
     # one (e.g. GH_TOKEN) works, so an authenticated API call decides auth_ok.
     # Outputs are deliberately not recorded.
-    $gh.auth_ok = (Invoke-Probe $ghPath @('api', 'user', '-q', '.login')).ok
+    $api = Invoke-Probe $ghPath @('api', 'user', '-q', '.login')
+    $gh.auth_ok = $api.ok
     $gh.auth_status_ok = (Invoke-Probe $ghPath @('auth', 'status')).ok
-    if (-not $gh.auth_ok) {
+    if ($api.failure) {
+        $gh.auth_ok = $null
+        Add-Finding 'GH_PROBE_FAILED' 'warn' "gh api user could not be completed ($($api.failure)); authentication is not established"
+    } elseif (-not $gh.auth_ok) {
         Add-Finding 'GH_NOT_AUTHENTICATED' 'warn' 'gh api user failed; issue/PR reads will 401 (or the network is unreachable)'
     } elseif (-not $gh.auth_status_ok) {
         Add-Finding 'GH_STALE_STORED_ACCOUNT' 'info' "the active gh account works, but another stored account is invalid, so 'gh auth status' exits 1; do not read that exit code as unauthenticated"
@@ -208,17 +246,20 @@ if ($ghPath) {
 # --- agent CLIs ---------------------------------------------------------------
 $clis = [ordered]@{}
 foreach ($name in 'claude', 'codex') {
-    $p = Get-Command $name -ErrorAction SilentlyContinue | Select-Object -First 1
-    $clis[$name] = [ordered]@{ path = $(if ($p) { $p.Source } else { $null }); version = $null }
-    if ($p -and $p.CommandType -eq 'Application') {
-        $clis[$name].version = (Invoke-Probe $p.Source @('--version')).out
+    # Application only: npm drops a .ps1 shim beside the .cmd, and the shim must not hide it.
+    $p = Get-AppPath $name
+    $clis[$name] = [ordered]@{ path = $p; version = $null; probe_failure = $null }
+    if ($p) {
+        $r = Invoke-Probe $p @('--version')
+        $clis[$name].version = $r.out
+        $clis[$name].probe_failure = $r.failure
     }
 }
 
 $receipt = [ordered]@{
     schema = 'agent-preflight/1'
     generated_at = (Get-Date).ToUniversalTime().ToString('o')
-    host_label = $env:AGENT_HOST_LABEL
+    host_label = Protect-Text $env:AGENT_HOST_LABEL
     powershell_version = $PSVersionTable.PSVersion.ToString()
     python = $py
     encoding = $encoding

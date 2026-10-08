@@ -22,6 +22,7 @@ import argparse
 import datetime as dt
 import hashlib
 import json
+import os
 import re
 import subprocess
 import sys
@@ -51,6 +52,12 @@ def _fence(text: str) -> str:
 
 def build(args: argparse.Namespace) -> int:
     root = Path.cwd().resolve()
+    out_path, manifest_path = Path(args.out).resolve(), Path(args.manifest).resolve()
+    inputs = {(root / p).resolve() for p in args.paths}
+    if out_path == manifest_path:
+        return _fail(1, "--out and --manifest must be different files")
+    if out_path in inputs or manifest_path in inputs:
+        return _fail(1, "an output path is also a reviewed input; refusing to overwrite it")
     entries, sections = [], []
     for raw_path in args.paths:
         p = (root / raw_path).resolve()
@@ -67,7 +74,11 @@ def build(args: argparse.Namespace) -> int:
             return _fail(1, f"{raw_path}: not UTF-8 text; binary files are not inlined")
         digest = hashlib.sha256(data).hexdigest()
         entries.append({"path": rel, "sha256": digest, "bytes": len(data)})
-        lines = text.splitlines()
+        # Split on \n only: str.splitlines() also splits at form feed and Unicode line separators,
+        # which would make packet line numbers disagree with editors and `path:line`.
+        lines = [ln[:-1] if ln.endswith("\r") else ln for ln in text.split("\n")]
+        if lines and lines[-1] == "":
+            lines.pop()
         width = max(4, len(str(len(lines))))
         body = "\n".join(f"{i:>{width}} | {line}" for i, line in enumerate(lines, 1))
         fence = _fence(text)
@@ -84,10 +95,23 @@ def build(args: argparse.Namespace) -> int:
     if size > args.max_bytes:
         return _fail(2, f"packet is {size} bytes, over the {args.max_bytes}-byte budget; split the review instead of truncating")
 
+    packet_bytes = packet.encode("utf-8")
     manifest = {"schema": SCHEMA, "created": created, "git_head": head, "digest_domain": "raw-bytes",
-                "packet_bytes": size, "files": entries}
-    Path(args.out).write_text(packet, encoding="utf-8", newline="\n")
-    Path(args.manifest).write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
+                "packet_bytes": size, "packet_sha256": hashlib.sha256(packet_bytes).hexdigest(), "files": entries}
+    # Stage both outputs, then publish, so a failed write never leaves a packet beside a stale manifest.
+    staged = []
+    try:
+        for dest, data in ((out_path, packet_bytes),
+                           (manifest_path, (json.dumps(manifest, indent=2) + "\n").encode("utf-8"))):
+            tmp = dest.with_name(dest.name + ".tmp-review-packet")
+            tmp.write_bytes(data)
+            staged.append((tmp, dest))
+        for tmp, dest in staged:
+            os.replace(tmp, dest)
+    finally:
+        for tmp, _ in staged:
+            if tmp.exists():
+                tmp.unlink()
     print(json.dumps({"packet": args.out, "bytes": size, "files": len(entries)}))
     return 0
 
@@ -97,16 +121,27 @@ def verify(args: argparse.Namespace) -> int:
         manifest = json.loads(Path(args.manifest).read_text(encoding="utf-8"))
     except (OSError, ValueError) as exc:
         return _fail(1, f"cannot read manifest: {exc}")
+    files = manifest.get("files") if isinstance(manifest, dict) else None
+    if not isinstance(manifest, dict) or manifest.get("schema") != SCHEMA or not isinstance(files, list) or not files:
+        return _fail(1, f"manifest is not a non-empty {SCHEMA} manifest")
+    paths = [f.get("path") for f in files if isinstance(f, dict)]
+    if len(paths) != len(files) or len(set(paths)) != len(paths) or not all(
+            isinstance(f.get("sha256"), str) and re.fullmatch(r"[0-9a-f]{64}", f["sha256"]) for f in files):
+        return _fail(1, "manifest entries need unique paths and 64-hex sha256 digests")
     root = Path.cwd().resolve()
     changed, missing = [], []
-    for f in manifest.get("files", []):
-        p = root / f["path"]
+    for f in files:
+        p = (root / f["path"]).resolve()
+        try:
+            p.relative_to(root)
+        except ValueError:
+            return _fail(1, f"manifest path {f['path']!r} is outside the packet root {root}")
         if not p.is_file():
             missing.append(f["path"])
         elif hashlib.sha256(p.read_bytes()).hexdigest() != f["sha256"]:
             changed.append(f["path"])
     status = "changed" if changed or missing else "unchanged"
-    print(json.dumps({"status": status, "changed": changed, "missing": missing, "files": len(manifest.get("files", []))}))
+    print(json.dumps({"status": status, "changed": changed, "missing": missing, "files": len(files)}))
     return 3 if status == "changed" else 0
 
 
