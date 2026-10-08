@@ -57,3 +57,19 @@ peer agents' work (`[Self-Approval]`, "Merge Without Review"), from launching `c
 
 Start with the owner-action table above. Do not re-triage the backlog; the classification
 (merge-ready / finish / close / owner-decision) is recorded in this session's PR comments and here.
+
+## Update 2026-10-08
+
+Landed after the first draft of this handoff: digitalmodel-data #35 (per-case results moved to
+`/mnt/ace` with a SHA-256 manifest, mirrored on ace-linux-2), #38 (W5 rerun on current digitalmodel), #53
+(#33 stack-length gap closed at 19.686 m from the archived decks); llm-wiki-fdas #87, #91, #92, #94, #93;
+llm-wiki-acma #398, #399. Parallel sessions merged workspace-hub #3786, aceengineer-admin #54,
+digitalmodel #2102 and #2116, and worldenergydata #1147, which superseded #1146 (closed; dependabot rebases
+requested).
+
+The remaining items are cards on the owner's all-sessions decision board (2026-10-08) and wait for it:
+A03 (#2280 review), A04 (study PRs dm #2289/#2290/#2291 + data #46/#44/#47), A05 (record the ace-linux-2
+mirror; a ready patch is in this session's scratchpad as `a05/a05-mirror-manifest.patch`; open a backup
+issue), T06 (marine-equipment pages to a draft PR), E09 (llm-wiki housekeeping). Most depend on the E01
+settings change. llm-wiki-acma #409 fails only checks that also fail on main (hostname violations from #416,
+workbook tests fixed by #418) and is ready once the owner accepts that reading.
