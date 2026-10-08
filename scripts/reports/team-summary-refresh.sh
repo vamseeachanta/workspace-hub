@@ -48,14 +48,36 @@ echo "$changes"
 prompt="$(sed -e "s|{{CLIENT}}|$CLIENT|g" -e "s|{{TODAY}}|$TODAY|g" "$HUB/tools/team_summary/refresh-prompt.md")"
 prompt="${prompt/\{\{CHANGES\}\}/$changes}"
 
-case "$AGENT" in
-  codex)
-    codex exec -s workspace-write --skip-git-repo-check -C "$WORK/wiki" "$prompt" ;;
-  claude)
-    claude -p "$prompt" --permission-mode acceptEdits --allowedTools "Read,Grep,Glob,Edit,Bash(git log:*),Bash(git show:*)" ;;
-  *)
-    echo "[team-summary] FAIL: unknown TEAM_SUMMARY_AGENT=$AGENT"; exit 1 ;;
-esac
+run_agent() {
+  local p="$1"
+  case "$AGENT" in
+    codex)
+      codex exec -s workspace-write --skip-git-repo-check -C "$WORK/wiki" "$p" ;;
+    claude)
+      claude -p "$p" --permission-mode acceptEdits --allowedTools "Read,Grep,Glob,Edit,Bash(git log:*),Bash(git show:*)" ;;
+    *)
+      echo "[team-summary] FAIL: unknown TEAM_SUMMARY_AGENT=$AGENT"; exit 1 ;;
+  esac
+}
+check() {
+  uv run --project "$HUB" --group dev python "$HUB/tools/team_summary/build.py" \
+    --data "$DIR/summary.yml" --wiki-root . --check-sources --check-only
+}
+
+run_agent "$prompt"
+if ! problems="$(check 2>&1)"; then
+  echo "[team-summary] validation failed; one retry with the errors:"
+  echo "$problems"
+  run_agent "$prompt
+
+The previous edit of $DIR/summary.yml failed validation. Fix exactly these problems and change nothing else:
+$problems"
+  if ! problems="$(check 2>&1)"; then
+    echo "[team-summary] FAIL: still invalid after retry; nothing committed:"
+    echo "$problems"
+    exit 1
+  fi
+fi
 
 touched="$(git status --porcelain | awk '{print $2}' | sort -u)"
 if [[ -z "$touched" ]]; then

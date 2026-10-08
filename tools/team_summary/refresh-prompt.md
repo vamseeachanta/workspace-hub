@@ -8,7 +8,8 @@ other file. Do not commit; the calling script commits.
    - Set `as_of` to {{TODAY}}.
    - `priorities`: at most 3, each with owner, next action and due date (ISO date or `TBD`).
    - `issues`: status is one of open, investigating, awaiting-review, resolved. A resolved issue stays
-     one refresh with status `resolved`, then is removed.
+     one refresh with status `resolved` (keep its owner; next_action names where the resolution is
+     recorded), then is removed. Every item keeps all fields the schema requires.
    - `decisions`: add new dated decisions; keep the most recent 5.
    - `blockers`, `areas`, `deliverables`: current state only; drop items the wiki shows are finished.
 3. Every item's `source` must be a path that exists in this wiki at HEAD. Prefer the primary record

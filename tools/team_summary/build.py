@@ -344,12 +344,26 @@ def build(data_path: Path, pdf_path: Path, html_path: Path | None = None,
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("--data", required=True, type=Path)
-    ap.add_argument("--out", required=True, type=Path)
+    ap.add_argument("--out", type=Path)
+    ap.add_argument("--check-only", action="store_true",
+                    help="validate schema (and sources with --check-sources); do not render")
     ap.add_argument("--html", type=Path)
     ap.add_argument("--wiki-root", type=Path)
     ap.add_argument("--check-sources", action="store_true",
                     help="fail when a wiki-relative source does not exist under --wiki-root")
     args = ap.parse_args(argv)
+    if args.check_only:
+        data = load(args.data)
+        problems = validate(data)
+        if args.check_sources and args.wiki_root is not None:
+            problems += [f"source not found: {s}" for s in missing_sources(data, args.wiki_root)]
+        if problems:
+            print("\n".join(problems))
+            return 1
+        print("OK: valid")
+        return 0
+    if args.out is None:
+        ap.error("--out is required unless --check-only")
     pdf = build(args.data, args.out, args.html, args.wiki_root, args.check_sources)
     print(f"OK: {pdf}")
     return 0
