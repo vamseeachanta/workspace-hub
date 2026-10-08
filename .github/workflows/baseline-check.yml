@@ -69,6 +69,13 @@ jobs:
         run: |
           uv run python -m pytest tests/ci_smoke/ -v --tb=short
 
+      # Script-reference integrity (#3806): every scripts/, .claude/hooks/ and
+      # .githooks/ path invoked from scripts, hooks, workflows and scheduled-task
+      # config must exist in the tree. Stdlib-only; no PYTHONPATH needed.
+      - name: Run script-reference integrity check
+        run: |
+          uv run python -m pytest tests/enforcement/test_script_reference_integrity.py -v --tb=short
+
       - name: Generate test summary
         if: always()
         run: |
