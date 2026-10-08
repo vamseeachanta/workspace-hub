@@ -1,15 +1,17 @@
 """Add a select-to-comment review layer to any local HTML page (report or decision board).
 
 Select text -> "Comment" -> type the edit. Comments live in localStorage; "Save comments" writes
-<export>.json beside the page, in the folder that holds it (chosen once through the File System Access
-API, checked to contain this page, then remembered per page location; earlier saved comments are merged
-in), with the report file name and version, so the review is self-contained beside the report.
-Comments are never written to Downloads: when the folder cannot be written, nothing is saved, the
-comments stay in the tab and the status line says why. An export of another revision beside the page is
-left unchanged and the comments go to <export>-<revision>.json in the same folder. The source page is
-unchanged.
+<page stem>.json beside the page (review-r2.html -> review-r2.json), in the folder that holds it
+(chosen once through the File System Access API, checked to contain this page, then remembered per page
+location; earlier saved comments are merged in), with the report file name and version, so the review
+is self-contained beside the report. Comments are never written to Downloads: when the folder cannot be
+written, nothing is saved, the comments stay in the tab and the status line says why. An export of
+another revision beside the page is left unchanged and the comments go to <page stem>-<sha12>.json in
+the same folder. Within a review round a save overwrites the JSON; a new round is a new page (-rN) and
+so a new JSON. The source page is unchanged.
 Usage:
-  python make_review_copy.py SRC OUT KEY EXPORT   # any page
+  python make_review_copy.py SRC OUT KEY [EXPORT]   # any page
+EXPORT is accepted for compatibility and ignored: the JSON file name is derived from the page name.
 """
 import hashlib
 import json
@@ -20,14 +22,13 @@ from pathlib import Path
 
 HERE = Path(__file__).parent
 args = sys.argv[1:]
-if len(args) < 4:
-    sys.exit("usage: make_review_copy.py SRC OUT KEY EXPORT")
+if not 3 <= len(args) <= 4:
+    sys.exit("usage: make_review_copy.py SRC OUT KEY [EXPORT]  (EXPORT is ignored; the JSON is named after the page)")
 SRC = Path(args[0])
 OUT = Path(args[1])
 if SRC.resolve() == OUT.resolve():
     sys.exit("Source and review output must be different files.")
 KEY = args[2]
-EXPORT = args[3]
 
 LAYER = r"""
 <style id="rv-style">
@@ -131,15 +132,18 @@ mark.rv-hl{background:#FBE7A8;padding:0 1px}
   $("#rv-add").addEventListener("click",()=>{ const txt=$("#rv-text").value.trim(); if(!pending||!txt) return; items.push({...pending,id:crypto.randomUUID(),comment:txt,at:new Date().toISOString()}); persist(); render(); highlight(); $("#rv-edit").style.display="none"; pending=null; $("#rv-status").textContent="Comment added. Save comments when done."; });
   $("#rv-list").addEventListener("input",e=>{ if(e.target.dataset.i!==undefined){ const c=items[+e.target.dataset.i]; c.comment=e.target.value; c.edited_at=new Date().toISOString(); persist(); } });
   $("#rv-list").addEventListener("click",e=>{ if(e.target.dataset.del!==undefined){ deleted.add(identity(items[+e.target.dataset.del]));items.splice(+e.target.dataset.del,1); persist(); render(); } });
-  const NAME="__EXPORT__.json";
   const payload=()=>JSON.stringify({...record(),report_folder:"__FOLDER__",exported_at:new Date().toISOString()},null,2);
   // Save writes BESIDE THIS PAGE, in the folder that holds it, and nowhere else (never as a download). Browsers cannot
   // write beside a page silently, so the first Save asks for that folder once; the folder must contain this page's
   // own file (SELF, same revision) or it is refused. The handle is kept in IndexedDB per page location (several
   // copies of a page in different folders each keep their own folder) and later Saves write straight to it.
   // When the folder cannot be written, nothing is saved, the comments stay in the tab and the status line says why.
-  const ALT=NAME.replace(/\.json$/,"")+"-"+VERSION.slice(0,12)+".json";
+  // The JSON is named after the page (<page stem>.json); a save overwrites it within a review round, and a new round
+  // is a new page (-rN) and so a new JSON.
   const SELF=(()=>{try{return decodeURIComponent(location.pathname.split("/").pop()||"")}catch(e){return ""}})();
+  const STEM=SELF.replace(/\.[^.]*$/,"")||"comments";
+  const NAME=STEM+".json";
+  const ALT=STEM+"-"+VERSION.slice(0,12)+".json";
   const DIRKEY=KEY+"|"+location.pathname;
   const NOTHING=" Nothing was saved; the comments are kept in this tab. Save again, or use Copy to send them.";
   const fail=(name,message)=>Object.assign(Error(message),{name});
@@ -147,6 +151,9 @@ mark.rv-hl{background:#FBE7A8;padding:0 1px}
   const idb=(mode,fn)=>new Promise((res,rej)=>{const r=indexedDB.open("rv-folders",1);r.onupgradeneeded=()=>r.result.createObjectStore("h");r.onsuccess=()=>{try{const tx=r.result.transaction("h",mode);const q=fn(tx.objectStore("h"));tx.oncomplete=()=>res(q&&q.result);tx.onerror=()=>rej(tx.error);tx.onabort=()=>rej(tx.error)}catch(e){rej(e)}};r.onerror=()=>rej(r.error)});
   const getDir=async()=>{try{return await idb("readonly",s=>s.get(DIRKEY))}catch(e){return null}};
   const putDir=async d=>{try{await idb("readwrite",s=>d?s.put(d,DIRKEY):s.delete(DIRKEY))}catch(e){}};
+  // The remembered folder handle, read from IndexedDB at page load (below), so a Save click needs no await before
+  // the picker or the permission request.
+  let stored=null;
   async function mergeFrom(dir,name=NAME){
     kept=0;let fh;try{fh=await dir.getFileHandle(name)}catch(e){if(e.name==="NotFoundError")return 0;throw e}
     const n=merge(JSON.parse(await (await fh.getFile()).text()));
@@ -159,7 +166,7 @@ mark.rv-hl{background:#FBE7A8;padding:0 1px}
     if(!(await (await fh.getFile()).text()).includes(VERSION)) throw fail("WrongFolder",`The ${SELF} in folder ${dir.name} is a different revision of this page. Choose the folder that holds this one.`);
   }
   // Which export file in dir takes the comments. NAME normally; when NAME belongs to another revision or cannot be
-  // read or merged it is never written, and ALT (NAME stem + this revision) in the same folder is used instead.
+  // read or merged it is never written, and ALT (page stem + this revision) in the same folder is used instead.
   async function target(dir){
     const access=e=>["AbortError","SecurityError","NotAllowedError"].includes(e.name);
     try{return {name:NAME,merged:await mergeFrom(dir,NAME),note:""}}
@@ -170,34 +177,42 @@ mark.rv-hl{background:#FBE7A8;padding:0 1px}
       catch(e2){if(access(e2))throw e2;throw fail("Unmergeable",note+`${ALT} beside it could not be merged either (${e2.message}) and was left unchanged.`)}
     }
   }
-  async function folder(){
-    let dir=await getDir();
-    if(dir){
-      if((await dir.queryPermission({mode:"readwrite"}))!=="granted"&&(await dir.requestPermission({mode:"readwrite"}))!=="granted") throw fail("PermissionRefused",`Permission to write to folder ${dir.name} was refused (use Folder… to choose it again).`);
-      try{await holdsPage(dir);return dir}catch(e){if(e.name!=="WrongFolder")throw e;await putDir(null)}
-    }
-    dir=await window.showDirectoryPicker({id:"rv-report-folder",mode:"readwrite"});
-    await holdsPage(dir);await putDir(dir);return dir;
-  }
-  const why=e=>e.name==="AbortError"?"No folder was chosen.":["NotAllowedError","SecurityError"].includes(e.name)?`The browser refused access to the folder (${e.message}).`:["WrongFolder","PermissionRefused","Unmergeable"].includes(e.name)?e.message:`Save stopped: ${e.message}.`;
+  const detail=e=>`${e&&e.name}: ${e&&e.message}`;
+  const why=e=>e.name==="AbortError"?`No folder was chosen (${detail(e)}).`:["NotAllowedError","SecurityError"].includes(e.name)?`The browser refused access to the folder (${detail(e)}).`:["WrongFolder","PermissionRefused","Unmergeable"].includes(e.name)?e.message:`Save stopped (${detail(e)}).`;
   const noApi="This browser cannot write files beside the page (no File System Access API); open the page from disk in Edge or Chrome.";
-  $("#rv-save").addEventListener("click",async()=>{
+  const pick=()=>{try{return window.showDirectoryPicker({id:"rv-report-folder",mode:"readwrite"})}catch(e){return Promise.reject(e)}};
+  // The click handler is synchronous up to the picker or permission request: no await may precede them, because
+  // transient user activation can be lost across awaits and the browser then refuses the dialog.
+  $("#rv-save").addEventListener("click",()=>{
     if(!window.showDirectoryPicker){$("#rv-status").textContent=noApi+NOTHING;return}
+    const dir=stored;
+    let first;
+    if(dir){try{first=dir.requestPermission({mode:"readwrite"})}catch(e){first=Promise.reject(e)}}
+    else first=pick();
+    return save(dir,first);
+  });
+  async function save(dir,first){
     try{
-      const dir=await folder();
+      if(dir){
+        if((await first)!=="granted") throw fail("PermissionRefused",`Permission to write to folder ${dir.name} was refused (use Folder… to choose it again).`);
+        try{await holdsPage(dir)}catch(e){if(e.name!=="WrongFolder")throw e;stored=null;await putDir(null);throw fail("WrongFolder",e.message+" The remembered folder was forgotten; Save again to choose the folder.")}
+      }else{
+        dir=await first;await holdsPage(dir);stored=dir;await putDir(dir);
+      }
       const t=await target(dir);
       const w=await (await dir.getFileHandle(t.name,{create:true})).createWritable(); await w.write(payload()); await w.close();
       $("#rv-status").textContent=(t.note?t.note+`saved ${plural(items.length)} to ${dir.name}/${t.name} instead`:`Saved ${plural(items.length)} to ${dir.name}/${t.name}`)+(t.merged?` (${t.merged} earlier merged in).`:".")+keptNote();
       $("#rv-folder").textContent=`Saving to: ${dir.name}/${t.name}`;
     }catch(e){$("#rv-status").textContent=why(e)+NOTHING}
-  });
-  $("#rv-change").addEventListener("click",async()=>{
+  }
+  $("#rv-change").addEventListener("click",()=>{
     if(!window.showDirectoryPicker){$("#rv-status").textContent=noApi;return}
-    try{ const dir=await window.showDirectoryPicker({id:"rv-report-folder",mode:"readwrite"}); await holdsPage(dir); const t=await target(dir); await putDir(dir); $("#rv-folder").textContent=`Saving to: ${dir.name}/${t.name}`; $("#rv-status").textContent=(t.note?t.note+`comments will be saved to ${t.name}. `:"")+(t.merged?`Loaded ${t.merged} saved comment${t.merged===1?"":"s"} from ${dir.name}/${t.name}.`:`Folder set to ${dir.name}.`)+keptNote(); }catch(e){$("#rv-status").textContent="Folder change stopped: "+why(e)}
+    const first=pick();
+    return (async()=>{try{ const dir=await first; await holdsPage(dir); const t=await target(dir); stored=dir; await putDir(dir); $("#rv-folder").textContent=`Saving to: ${dir.name}/${t.name}`; $("#rv-status").textContent=(t.note?t.note+`comments will be saved to ${t.name}. `:"")+(t.merged?`Loaded ${t.merged} saved comment${t.merged===1?"":"s"} from ${dir.name}/${t.name}.`:`Folder set to ${dir.name}.`)+keptNote(); }catch(e){$("#rv-status").textContent="Folder change stopped: "+why(e)}})();
   });
-  // On open: when the remembered folder is still writable without asking, load the comments saved beside the page.
-  (async()=>{
-    const d=await getDir();
+  // On open: read the remembered folder; when it is still writable without asking, load the comments saved beside the page.
+  getDir().then(async d=>{
+    if(d&&!stored) stored=d;
     $("#rv-folder").textContent=d?`Saving to: ${d.name}/${NAME}`:`First Save asks for the folder that holds this page: ${FOLDER}`;
     if(!d) return;
     try{
@@ -206,7 +221,7 @@ mark.rv-hl{background:#FBE7A8;padding:0 1px}
       $("#rv-folder").textContent=`Saving to: ${d.name}/${t.name}`;
       if(t.merged||t.note) $("#rv-status").textContent=(notes.length?notes.join(" ")+" ":"")+(t.note?t.note+`comments will be saved to ${t.name}. `:"")+`Loaded ${t.merged} saved comment${t.merged===1?"":"s"} from ${d.name}/${t.name}.`+keptNote();
     }catch(e){}
-  })();
+  });
   $("#rv-copy").addEventListener("click",async()=>{
     const text=payload();
     try { await navigator.clipboard.writeText(text); $("#rv-status").textContent=`Copied ${items.length} comments; paste them into your reply email.`; }
@@ -223,7 +238,7 @@ if "</body>" not in html:          # an artifact-style page (no skeleton): wrap 
     html = ('<!doctype html><html><head><meta charset="utf-8">'
             '<meta name="viewport" content="width=device-width,initial-scale=1"></head><body>\n' + html + "\n</body></html>")
 VERSION = hashlib.sha256(SRC.read_bytes()).hexdigest()[:12] + " " + datetime.fromtimestamp(SRC.stat().st_mtime, timezone.utc).strftime("%Y-%m-%dT%H:%MZ")
-parameters = {"__KEY__": KEY, "__EXPORT__": EXPORT, "__PAGE__": SRC.name,
+parameters = {"__KEY__": KEY, "__PAGE__": SRC.name,
               "__VERSION__": VERSION, "__FOLDER__": str(OUT.parent)}
 def encode_parameter(match):
     value = parameters[match[1]] + (match[2] or "")

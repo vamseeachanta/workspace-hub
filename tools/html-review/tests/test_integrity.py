@@ -27,6 +27,7 @@ const storage=new Map();
 global.localStorage={getItem:k=>storage.get(k)||null,setItem(k,v){storage.set(k,v)}};
 global.indexedDB={open:()=>{throw Error('unavailable')}};
 global.location={pathname:'/reports/review.html'};
+const settle=()=>new Promise(r=>setTimeout(r,20));
 // In-memory folder: files maps name -> text. The page itself must be present for the folder to be accepted.
 const makeDir=(name,files,perm)=>{files=files||{};const writes=[];return {name,files,writes,
   queryPermission:async()=>perm||'granted',requestPermission:async()=>perm||'granted',
@@ -147,8 +148,8 @@ test.set([{id:'one',quote:'q',comment:'keep',at:'a'}]);
 const dir=makeDir('reports',{'review.html':PAGE_TEXT});
 global.window={showDirectoryPicker:async()=>dir};
 await nodes.get('#rv-save').events.click();
-assert.deepEqual(dir.writes,['__EXPORT__.json']);
-assert.equal(JSON.parse(dir.files['__EXPORT__.json']).comments[0].comment,'keep');
+assert.deepEqual(dir.writes,['review.json']);
+assert.equal(JSON.parse(dir.files['review.json']).comments[0].comment,'keep');
 assert.match(nodes.get('#rv-status').textContent,/Saved 1 comment/);
 """)
 
@@ -184,42 +185,76 @@ assert.equal(test.get()[0].comment,'keep');
 
     def test_save_with_refused_permission_keeps_comments_in_tab(self):
         self.run_js("""
+await settle();
 test.set([{id:'one',quote:'q',comment:'keep',at:'a'}]);
-const dir=makeDir('reports',{'review.html':PAGE_TEXT},'denied');
-useStoredDir(dir);
 let picked=false;global.window={showDirectoryPicker:async()=>{picked=true;return dir}};
 await nodes.get('#rv-save').events.click();
 assert.equal(picked,false);
 assert.deepEqual(dir.writes,[]);
 assert.match(nodes.get('#rv-status').textContent,/permission.*Nothing was saved.*kept in this tab/i);
-""")
+""", pre="const dir=makeDir('reports',{'review.html':PAGE_TEXT},'denied');useStoredDir(dir);")
 
     def test_cancelled_picker_saves_nothing(self):
         self.run_js("""
 test.set([{id:'one',quote:'q',comment:'keep',at:'a'}]);
 global.window={showDirectoryPicker:async()=>{throw Object.assign(Error('cancel'),{name:'AbortError'})}};
 await nodes.get('#rv-save').events.click();
-assert.match(nodes.get('#rv-status').textContent,/Nothing was saved/);
+assert.match(nodes.get('#rv-status').textContent,/AbortError: cancel.*Nothing was saved/);
+""")
+
+    def test_failure_status_shows_error_name_and_message(self):
+        self.run_js("""
+test.set([{id:'one',quote:'q',comment:'keep',at:'a'}]);
+global.window={showDirectoryPicker:async()=>{throw Object.assign(Error('Must be handling a user gesture'),{name:'SecurityError'})}};
+await nodes.get('#rv-save').events.click();
+assert.match(nodes.get('#rv-status').textContent,/SecurityError: Must be handling a user gesture.*Nothing was saved/);
+""")
+
+    def test_picker_is_called_before_any_await_when_no_folder_is_stored(self):
+        # Transient user activation can be lost across awaits; the picker must be the click's first async step.
+        self.run_js("""
+await settle();
+let inClick=false,calledInClick=null;
+global.window={showDirectoryPicker:()=>{calledInClick=inClick;return new Promise(()=>{})}};
+inClick=true;nodes.get('#rv-save').events.click();inClick=false;
+assert.equal(calledInClick,true,'showDirectoryPicker was not called synchronously from the click');
+""")
+
+    def test_permission_is_requested_before_any_await_when_folder_is_stored(self):
+        self.run_js("""
+await settle();
+inClick=true;nodes.get('#rv-save').events.click();inClick=false;
+assert.equal(requestedInClick,true,'requestPermission was not called synchronously from the click');
+await settle();
+assert.deepEqual(dir.writes,['review.json']);
+""", pre="""
+let inClick=false,requestedInClick=null;
+const dir=makeDir('reports',{'review.html':PAGE_TEXT},'prompt');
+dir.requestPermission=async()=>{if(requestedInClick===null)requestedInClick=inClick;return 'granted'};
+useStoredDir(dir);
+global.window={showDirectoryPicker:async()=>{throw Error('picker must not open when a folder is stored')}};
 """)
 
     def test_save_writes_revision_sibling_when_folder_holds_other_revision(self):
         self.run_js("""
+await settle();
 test.set([{id:'one',quote:'q',comment:'keep',at:'a'}]);
-const wrong=JSON.stringify({page:'__PAGE__',report_version:'older',comments:[{id:'x',quote:'q',comment:'theirs',at:'a'}]});
-const dir=makeDir('reports',{'review.html':PAGE_TEXT,'__EXPORT__.json':wrong});
-useStoredDir(dir);
 global.window={showDirectoryPicker:async()=>dir};
 await nodes.get('#rv-save').events.click();
-assert.equal(dir.files['__EXPORT__.json'],wrong);
-const alt=Object.keys(dir.files).find(n=>n!=='__EXPORT__.json'&&n.endsWith('.json'));
-assert.equal(alt,'__EXPORT__-__VERSION__'.slice(0,'__EXPORT__-'.length+12)+'.json');
+assert.equal(dir.files['review.json'],wrong);
+const alt=Object.keys(dir.files).find(n=>n!=='review.json'&&n.endsWith('.json'));
+assert.equal(alt,'review-__VERSION__'.slice(0,'review-'.length+12)+'.json');
 assert.equal(JSON.parse(dir.files[alt]).comments[0].comment,'keep');
 assert.match(nodes.get('#rv-status').textContent,/different report revision.*left unchanged.*saved/i);
 assert.equal(test.get()[0].comment,'keep');
 // A second Save merges from and rewrites the same sibling, still leaving the other revision untouched.
 await nodes.get('#rv-save').events.click();
-assert.equal(dir.files['__EXPORT__.json'],wrong);
+assert.equal(dir.files['review.json'],wrong);
 assert.deepEqual(dir.writes,[alt,alt]);
+""", pre="""
+const wrong=JSON.stringify({page:'__PAGE__',report_version:'older',comments:[{id:'x',quote:'q',comment:'theirs',at:'a'}]});
+const dir=makeDir('reports',{'review.html':PAGE_TEXT,'review.json':wrong});
+useStoredDir(dir);
 """)
 
     def test_open_loads_comments_saved_beside_page(self):
@@ -230,7 +265,7 @@ assert.equal(test.get()[0].comment,'saved earlier');
 assert.match(nodes.get('#rv-status').textContent,/Loaded 1 saved comment/);
 """, pre="""
 const saved=JSON.stringify({page:'__PAGE__',report_version:'__VERSION__',comments:[{id:'s',quote:'q',comment:'saved earlier',at:'a'}]});
-useStoredDir(makeDir('reports',{'review.html':PAGE_TEXT,'__EXPORT__.json':saved}));
+useStoredDir(makeDir('reports',{'review.html':PAGE_TEXT,'review.json':saved}));
 """)
 
     def test_open_without_permission_does_not_prompt(self):
@@ -310,13 +345,12 @@ assert.doesNotMatch(nodes.get('#rv-status').textContent,/edited here/);
     def test_save_writes_revision_sibling_when_folder_export_is_malformed(self):
         self.run_js("""
 test.set([{id:'one',quote:'q',comment:'keep',at:'a'}]);
-const dir=makeDir('reports',{'review.html':PAGE_TEXT,'__EXPORT__.json':'{not json'});
-useStoredDir(dir);
+const dir=makeDir('reports',{'review.html':PAGE_TEXT,'review.json':'{not json'});
 global.window={showDirectoryPicker:async()=>dir};
 await nodes.get('#rv-save').events.click();
-assert.equal(dir.files['__EXPORT__.json'],'{not json');
+assert.equal(dir.files['review.json'],'{not json');
 assert.equal(dir.writes.length,1);
-assert.notEqual(dir.writes[0],'__EXPORT__.json');
+assert.notEqual(dir.writes[0],'review.json');
 assert.equal(JSON.parse(dir.files[dir.writes[0]]).comments[0].comment,'keep');
 assert.match(nodes.get('#rv-status').textContent,/could not be merged.*left unchanged/i);
 """)
@@ -324,9 +358,8 @@ assert.match(nodes.get('#rv-status').textContent,/could not be merged.*left unch
     def test_save_stops_when_sibling_is_also_unreadable(self):
         self.run_js("""
 test.set([{id:'one',quote:'q',comment:'keep',at:'a'}]);
-const alt='__EXPORT__-'+'__VERSION__'.slice(0,12)+'.json';
-const dir=makeDir('reports',{'review.html':PAGE_TEXT,'__EXPORT__.json':'{not json',[alt]:'{also bad'});
-useStoredDir(dir);
+const alt='review-'+'__VERSION__'.slice(0,12)+'.json';
+const dir=makeDir('reports',{'review.html':PAGE_TEXT,'review.json':'{not json',[alt]:'{also bad'});
 global.window={showDirectoryPicker:async()=>dir};
 await nodes.get('#rv-save').events.click();
 assert.deepEqual(dir.writes,[]);
@@ -350,6 +383,19 @@ assert.match(nodes.get('#rv-status').textContent,/Nothing was saved/);
             source.write_text('<body>Original</body>', encoding='utf-8')
             subprocess.run([sys.executable, str(TOOL), str(source), str(output), 'k', 'comments'], check=True, capture_output=True)
             self.assertIn('<noscript>', output.read_text(encoding='utf-8'))
+
+    def test_export_name_is_optional_and_not_used_for_the_file_name(self):
+        # The saved JSON is named after the page (<page stem>.json); EXPORT_NAME is accepted for compatibility only.
+        with tempfile.TemporaryDirectory() as directory:
+            source = Path(directory) / 'report.html'
+            source.write_text('<body>Original</body>', encoding='utf-8')
+            three = Path(directory) / 'three.html'
+            r = subprocess.run([sys.executable, str(TOOL), str(source), str(three), 'k'], capture_output=True, text=True)
+            self.assertEqual(r.returncode, 0, r.stderr)
+            four = Path(directory) / 'four.html'
+            r = subprocess.run([sys.executable, str(TOOL), str(source), str(four), 'k', 'zzz-legacy-export'], capture_output=True, text=True)
+            self.assertEqual(r.returncode, 0, r.stderr)
+            self.assertNotIn('zzz-legacy-export', four.read_text(encoding='utf-8'))
 
     def test_generator_rejects_source_overwrite(self):
         with tempfile.TemporaryDirectory() as directory:

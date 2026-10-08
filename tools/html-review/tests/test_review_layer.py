@@ -22,13 +22,14 @@ HERE = Path(__file__).resolve().parent
 TOOL = HERE.parent / "make_review_copy.py"
 SAMPLE = HERE.parent / "demo" / "example-report.html"
 PAGE_NAME = "example-report-review.html"
-EXPORT = "test-comments.json"
+EXPORT = "example-report-review.json"  # named after the page: <page stem>.json
 
 playwright = pytest.importorskip("playwright.sync_api")
 
 # Stub picker: returns an OPFS sub-folder named by window.__rvPick. setup() copies this page into it.
 PICKER_JS = """
 window.showDirectoryPicker = async () => {
+  window.__rvActive = navigator.userActivation.isActive;  // transient activation when the picker is called
   const root = await navigator.storage.getDirectory();
   return root.getDirectoryHandle(window.__rvPick || "page-folder", {create: true});
 };
@@ -121,6 +122,7 @@ def test_save_writes_beside_page_and_reloads(server, browser):
     add_comment(page)
     page.click("#rv-save")
     page.wait_for_function("document.querySelector('#rv-status').textContent.startsWith('Saved')")
+    assert page.evaluate("window.__rvActive") is True, "picker called without transient user activation"
     saved = json.loads(read_folder(page, "page-folder")[EXPORT])
     assert saved["page"] == "example-report.html"
     assert saved["report_version"]
@@ -178,7 +180,7 @@ def test_other_revision_export_is_left_unchanged(server, browser):
     files = read_folder(page, "page-folder")
     assert files[EXPORT] == other
     siblings = [n for n in files if n != EXPORT]
-    assert len(siblings) == 1 and siblings[0].startswith("test-comments-"), files
+    assert len(siblings) == 1 and siblings[0].startswith("example-report-review-"), files
     assert json.loads(files[siblings[0]])["comments"][0]["comment"].endswith("Also give the units.")
     assert siblings[0] in page.inner_text("#rv-status")
     assert not page.downloads, page.downloads
