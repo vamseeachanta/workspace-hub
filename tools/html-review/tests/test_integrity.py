@@ -148,9 +148,35 @@ test.set([{id:'one',quote:'q',comment:'keep',at:'a'}]);
 const dir=makeDir('reports',{'review.html':PAGE_TEXT});
 global.window={showDirectoryPicker:async()=>dir};
 await nodes.get('#rv-save').events.click();
-assert.deepEqual(dir.writes,['review.json']);
+assert.equal(dir.writes[0],'review.json');
+assert.equal(dir.writes.length,2);
+assert.match(dir.writes[1],/^review-\\d{8}T\\d{6}Z\\.json$/);
 assert.equal(JSON.parse(dir.files['review.json']).comments[0].comment,'keep');
+assert.equal(dir.files[dir.writes[1]],dir.files['review.json']);
 assert.match(nodes.get('#rv-status').textContent,/Saved 1 comment/);
+""")
+
+    def test_every_save_keeps_a_utc_timestamped_copy(self):
+        # Owner decision D03 (2026-10-08): <page>.json is the latest; every save also leaves
+        # <page>-<UTC yyyymmddThhmmssZ>.json beside it, and earlier copies are never rewritten.
+        self.run_js("""
+test.set([{id:'one',quote:'q',comment:'first',at:'a'}]);
+const dir=makeDir('reports',{'review.html':PAGE_TEXT});
+global.window={showDirectoryPicker:async()=>dir};
+await nodes.get('#rv-save').events.click();
+assert.deepEqual(dir.writes,['review.json','review-20261008T213005Z.json']);
+NOW='2026-10-08T22:01:59.987Z';
+nodes.get('#rv-list').events.input({target:{dataset:{i:'0'},value:'second'}});
+await nodes.get('#rv-save').events.click();
+assert.deepEqual(dir.writes,['review.json','review-20261008T213005Z.json','review.json','review-20261008T220159Z.json']);
+assert.equal(JSON.parse(dir.files['review-20261008T213005Z.json']).comments[0].comment,'first');
+assert.equal(JSON.parse(dir.files['review-20261008T220159Z.json']).comments[0].comment,'second');
+assert.equal(dir.files['review.json'],dir.files['review-20261008T220159Z.json']);
+assert.match(nodes.get('#rv-status').textContent,/review-20261008T220159Z\\.json/);
+""", pre="""
+let NOW='2026-10-08T21:30:05.123Z';
+const RealDate=Date;
+global.Date=class extends RealDate{constructor(...a){super(...(a.length?a:[NOW]))}static now(){return new RealDate(NOW).getTime()}};
 """)
 
     def test_save_refuses_folder_without_the_page(self):
@@ -226,7 +252,8 @@ await settle();
 inClick=true;nodes.get('#rv-save').events.click();inClick=false;
 assert.equal(requestedInClick,true,'requestPermission was not called synchronously from the click');
 await settle();
-assert.deepEqual(dir.writes,['review.json']);
+assert.equal(dir.writes[0],'review.json');
+assert.match(dir.writes[1],/^review-\\d{8}T\\d{6}Z\\.json$/);
 """, pre="""
 let inClick=false,requestedInClick=null;
 const dir=makeDir('reports',{'review.html':PAGE_TEXT},'prompt');
@@ -242,15 +269,17 @@ test.set([{id:'one',quote:'q',comment:'keep',at:'a'}]);
 global.window={showDirectoryPicker:async()=>dir};
 await nodes.get('#rv-save').events.click();
 assert.equal(dir.files['review.json'],wrong);
-const alt=Object.keys(dir.files).find(n=>n!=='review.json'&&n.endsWith('.json'));
-assert.equal(alt,'review-__VERSION__'.slice(0,'review-'.length+12)+'.json');
+const alt='review-__VERSION__'.slice(0,'review-'.length+12)+'.json';
+assert.equal(dir.writes[0],alt);
+assert.match(dir.writes[1],new RegExp('^'+alt.replace('.json','')+'-\\\\d{8}T\\\\d{6}Z\\\\.json$'));
 assert.equal(JSON.parse(dir.files[alt]).comments[0].comment,'keep');
 assert.match(nodes.get('#rv-status').textContent,/different report revision.*left unchanged.*saved/i);
 assert.equal(test.get()[0].comment,'keep');
 // A second Save merges from and rewrites the same sibling, still leaving the other revision untouched.
 await nodes.get('#rv-save').events.click();
 assert.equal(dir.files['review.json'],wrong);
-assert.deepEqual(dir.writes,[alt,alt]);
+assert.deepEqual(dir.writes.filter(n=>!/-\\d{8}T\\d{6}Z\\.json$/.test(n)),[alt,alt]);
+assert.equal(dir.writes.length,4);
 """, pre="""
 const wrong=JSON.stringify({page:'__PAGE__',report_version:'older',comments:[{id:'x',quote:'q',comment:'theirs',at:'a'}]});
 const dir=makeDir('reports',{'review.html':PAGE_TEXT,'review.json':wrong});
@@ -349,8 +378,10 @@ const dir=makeDir('reports',{'review.html':PAGE_TEXT,'review.json':'{not json'})
 global.window={showDirectoryPicker:async()=>dir};
 await nodes.get('#rv-save').events.click();
 assert.equal(dir.files['review.json'],'{not json');
-assert.equal(dir.writes.length,1);
+assert.equal(dir.writes.length,2);
 assert.notEqual(dir.writes[0],'review.json');
+assert.equal(dir.writes[1],dir.writes[0].replace(/\\.json$/,'')+dir.writes[1].slice(-22));
+assert.match(dir.writes[1],/-\\d{8}T\\d{6}Z\\.json$/);
 assert.equal(JSON.parse(dir.files[dir.writes[0]]).comments[0].comment,'keep');
 assert.match(nodes.get('#rv-status').textContent,/could not be merged.*left unchanged/i);
 """)

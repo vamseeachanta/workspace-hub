@@ -35,8 +35,11 @@ recommendations").
    Saves write straight to it. On opening, the page loads decisions already saved
    beside it. There is no Downloads fallback: a browser that cannot write to the folder
    gets a plain message and the entries stay in the tab. Save history (owner decision
-   2026-10-08): a save overwrites the JSON within a round; a new round is a new page
-   (`-rN`) and so a new JSON, and earlier rounds' files stay beside their pages. If a
+   D03, 2026-10-08): `<board>.json` always holds the latest save, and every save also
+   writes a timestamped copy `<board>-<UTC yyyymmddThhmmssZ>.json` in the same folder,
+   so earlier saves are kept rather than overwritten. The owning repository commits the
+   copy the agent acts on. A new round is still a new page (`-rN`) and so a new JSON,
+   and earlier rounds' files stay beside their pages. If a
    browser cannot save, the agent may recover the entries from the browser's local storage
    and write the JSON beside the page itself, recording that it did so. Owner instructions 2026-10-08: "we should save the json files in same location
    as the html"; "no to downloads.. write up to save it to the same html location(s) ...

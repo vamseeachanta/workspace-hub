@@ -7,8 +7,9 @@ location; earlier saved comments are merged in), with the report file name and v
 is self-contained beside the report. Comments are never written to Downloads: when the folder cannot be
 written, nothing is saved, the comments stay in the tab and the status line says why. An export of
 another revision beside the page is left unchanged and the comments go to <page stem>-<sha12>.json in
-the same folder. Within a review round a save overwrites the JSON; a new round is a new page (-rN) and
-so a new JSON. The source page is unchanged.
+the same folder. The named JSON always holds the latest save; every save also writes a timestamped copy
+(<name>-<UTC yyyymmddThhmmssZ>.json) beside it; only a second save within the same UTC second
+rewrites a copy (owner decision D03, 2026-10-08). A new round is a new page (-rN) and so a new JSON. The source page is unchanged.
 Usage:
   python make_review_copy.py SRC OUT KEY [EXPORT]   # any page
 EXPORT is accepted for compatibility and ignored: the JSON file name is derived from the page name.
@@ -138,8 +139,10 @@ mark.rv-hl{background:#FBE7A8;padding:0 1px}
   // own file (SELF, same revision) or it is refused. The handle is kept in IndexedDB per page location (several
   // copies of a page in different folders each keep their own folder) and later Saves write straight to it.
   // When the folder cannot be written, nothing is saved, the comments stay in the tab and the status line says why.
-  // The JSON is named after the page (<page stem>.json); a save overwrites it within a review round, and a new round
-  // is a new page (-rN) and so a new JSON.
+  // The JSON is named after the page (<page stem>.json) and always holds the latest save; every save also writes a
+  // timestamped copy <page stem>-<UTC yyyymmddThhmmssZ>.json beside it (owner decision D03, 2026-10-08), so the
+  // history of saves stays in the folder. A new round is a new page (-rN) and so a new JSON.
+  const stamp=()=>new Date().toISOString().replace(/[-:]/g,"").replace(/\.\d+Z$/,"Z");
   const SELF=(()=>{try{return decodeURIComponent(location.pathname.split("/").pop()||"")}catch(e){return ""}})();
   const STEM=SELF.replace(/\.[^.]*$/,"")||"comments";
   const NAME=STEM+".json";
@@ -200,8 +203,11 @@ mark.rv-hl{background:#FBE7A8;padding:0 1px}
         dir=await first;await holdsPage(dir);stored=dir;await putDir(dir);
       }
       const t=await target(dir);
-      const w=await (await dir.getFileHandle(t.name,{create:true})).createWritable(); await w.write(payload()); await w.close();
-      $("#rv-status").textContent=(t.note?t.note+`saved ${plural(items.length)} to ${dir.name}/${t.name} instead`:`Saved ${plural(items.length)} to ${dir.name}/${t.name}`)+(t.merged?` (${t.merged} earlier merged in).`:".")+keptNote();
+      const text=payload();
+      const w=await (await dir.getFileHandle(t.name,{create:true})).createWritable(); await w.write(text); await w.close();
+      const copy=t.name.replace(/\.json$/,"-"+stamp()+".json");
+      const h=await (await dir.getFileHandle(copy,{create:true})).createWritable(); await h.write(text); await h.close();
+      $("#rv-status").textContent=(t.note?t.note+`saved ${plural(items.length)} to ${dir.name}/${t.name} instead`:`Saved ${plural(items.length)} to ${dir.name}/${t.name}`)+(t.merged?` (${t.merged} earlier merged in)`:"")+`; this save is also kept as ${copy}.`+keptNote();
       $("#rv-folder").textContent=`Saving to: ${dir.name}/${t.name}`;
     }catch(e){$("#rv-status").textContent=why(e)+NOTHING}
   }
