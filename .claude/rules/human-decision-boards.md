@@ -34,9 +34,11 @@ recommendations").
    itself and refuses any other folder; the folder handle is kept in IndexedDB and later
    Saves write straight to it. On opening, the page loads decisions already saved
    beside it. There is no Downloads fallback: a browser that cannot write to the folder
-   gets a plain message and the entries stay in the tab. Whether repeated saves keep a
-   history is an open repo-ecosystem decision; until it is made, a save overwrites the
-   JSON. Owner instructions 2026-10-08: "we should save the json files in same location
+   gets a plain message and the entries stay in the tab. Save history (owner decision
+   2026-10-08): a save overwrites the JSON within a round; a new round is a new page
+   (`-rN`) and so a new JSON, and earlier rounds' files stay beside their pages. If a
+   browser cannot save, the agent may recover the entries from the browser's local storage
+   and write the JSON beside the page itself, recording that it did so. Owner instructions 2026-10-08: "we should save the json files in same location
    as the html"; "no to downloads.. write up to save it to the same html location(s) ...
    keep this consistent across repo ecosystem".
 4. **Open the page and tell the owner to reload it** after cards are added. A stale tab
