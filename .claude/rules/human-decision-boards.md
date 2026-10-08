@@ -24,15 +24,21 @@ recommendations").
    Reference implementation: a `cards.py` that writes `snapshot/items/<ID>.json`, and a
    `make.py` that derives the page from the riser board template and builds the
    `-local.html` copy. Start a new round folder rather than editing a decided board.
-3. **Save writes the decisions JSON beside the board HTML**, as `<board>.json` in the
-   board folder; Load restores it. Downloads is only a fallback, for a browser that
-   cannot write to folders; the agent then moves that file beside the page before
-   reading it. Reference template: the shared `build_local.py` decision-board builder.
-   Its first Save asks once for the board folder through the File System Access API
-   (`showDirectoryPicker`), keeps the folder handle in IndexedDB, and later Saves write
-   straight to it, as `tools/html-review` does for report comments. Whether repeated
-   saves keep a history is an open repo-ecosystem decision; until it is made, a save
-   overwrites `<board>.json` (owner instruction 2026-10-08).
+3. **Save writes the JSON beside the HTML, never to Downloads.** This applies to every
+   interactive HTML page across the repo ecosystem: decision boards, report comment
+   copies and document review pages. The JSON is named after the page (`<page>.json`, or
+   `<page> decisions.json`) and is written into the folder that holds the page, in every
+   location the page is placed (for example the local output folder and the company
+   share). The first Save asks once for that folder through the File System Access API
+   (`showDirectoryPicker`); the page checks that the chosen folder contains the page
+   itself and refuses any other folder; the folder handle is kept in IndexedDB and later
+   Saves write straight to it. On opening, the page loads decisions already saved
+   beside it. There is no Downloads fallback: a browser that cannot write to the folder
+   gets a plain message and the entries stay in the tab. Whether repeated saves keep a
+   history is an open repo-ecosystem decision; until it is made, a save overwrites the
+   JSON. Owner instructions 2026-10-08: "we should save the json files in same location
+   as the html"; "no to downloads.. write up to save it to the same html location(s) ...
+   keep this consistent across repo ecosystem".
 4. **Open the page and tell the owner to reload it** after cards are added. A stale tab
    once exported a file that lacked the new cards.
 5. **Read the saved JSON before acting.** Report every choice that differs from the

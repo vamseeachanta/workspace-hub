@@ -47,7 +47,7 @@ Harness, skill and rule files stay Markdown. Their human-facing approval package
 | Type | Required content and behaviour |
 |---|---|
 | Report | P3 format, document status and revision, engineering evidence and a commentable review copy. |
-| Decision board | Cards containing the question, options, sources, consequences, recommendation and note field. The recommended option has a dashed outline and textual label. Save writes `<board>.json` beside the board HTML (Downloads only as a fallback, moved beside the page by the agent); Load restores it. |
+| Decision board | Cards containing the question, options, sources, consequences, recommendation and note field. The recommended option has a dashed outline and textual label. Save writes `<board>.json` beside the board HTML, never to Downloads; the page loads it again on opening. |
 | Human-review pack | Evidence screenshots beside physical expectations or limits, a check table, missing evidence, review focus, preparer recommendation and reviewer decision. |
 | Peer or client review copy | Stand-alone offline HTML, audience-permitted content, comment layer and a visible how-to banner. |
 
@@ -60,7 +60,7 @@ Recommendations, default selections and plausibility verdicts do not establish o
 ## 3.3 The review loop
 
 1. The owner opens the local copy, selects text or a section, adds comments, saves JSON and says “review.”
-2. The agent checks the report folder first, then Downloads for fallback exports. The newest applicable JSON is identified against the report identity, revision and export metadata; file modification time alone does not establish applicability.
+2. The agent reads the JSON beside the page, in each location the page was placed. The newest applicable JSON is identified against the report identity, revision and export metadata; file modification time alone does not establish applicability.
 3. Each comment is listed with its section and quoted passage. Decision-board deviations from recommendations and all instructional notes are identified.
 4. Each comment receives a disposition: incorporated, deferred with reason, or requiring a decision. Authorized edits proceed; changes to engineering meaning or scope require matching authority.
 5. The report and review copy are regenerated and re-verified. The response records the change or remaining decision for every comment.
@@ -80,7 +80,7 @@ Stand-alone peer copies inline required libraries and assets, use no external sc
 
 - Open the saved file from disk in Edge or Chrome; preview panes can block scripts.
 - Select text, add a comment and save.
-- Choose the report folder when prompted; browser refusal triggers a download fallback.
+- Choose the folder that holds this page when prompted; the comments are saved there, never to Downloads. A browser that cannot write to the folder keeps the comments in the tab.
 - Return the JSON and reload a revised page before continuing.
 
 The generic tutorials `demo/how-to-comment.gif` and `demo/how-to-comment-voice.gif` support the banner. Voice typing uses Win+H where available; the illustrated voice toolbar is not evidence of native-dialog testing.
@@ -89,7 +89,7 @@ Browser storage is a convenience cache. Durable review evidence is the saved, ve
 
 ## 3.5 Location and privacy
 
-Pages, supporting evidence and round-specific comments belong in the target report’s authorized location. Downloads is a transfer fallback; an applicable export is preserved beside the report after identity and content checks.
+Pages, supporting evidence and round-specific comments belong in the target report’s authorized location. Saved JSON is written beside the page itself; Downloads is not used (owner instruction 2026-10-08).
 
 Public `workspace-hub` contains generic standards, reusable tools and synthetic demonstrations. Public content contains no client names, job numbers, private quotations or client-derived results. Renaming a private report does not make it publishable.
 
@@ -107,7 +107,7 @@ Verification covers the actual delivered edition:
 - Smoke-test selection, comment creation and editing, Save, Load and JSON read-back against the correct revision.
 - Check offline operation, narrow-screen and print behaviour where applicable, and confirm public examples contain no private content.
 
-A skipped browser test is not a pass. The supplied test description establishes download-fallback coverage, not native folder-permission or voice-input verification. Missing verification is reported before handover.
+A skipped browser test is not a pass. A stubbed folder picker establishes the save, read-back and wrong-folder logic, not native folder-permission or voice-input verification. Missing verification is reported before handover.
 
 # 4. Standard B: Report format
 
@@ -153,7 +153,7 @@ Example:
 - Post implementation summaries on the associated issue without equating CI success with engineering acceptance.
 - Render issue references inline as links, such as [#3920](https://github.com/vamseeachanta/workspace-hub/issues/3920).
 
-Example: “The review copy preserves section context in exported comments. Download-fallback testing passed; native folder saving remains unverified. [#3920](https://github.com/vamseeachanta/workspace-hub/issues/3920) tracks the remaining check.”
+Example: “The review copy preserves section context in exported comments. Saving beside the page passed with a stubbed folder picker; the native permission prompt remains unverified. [#3920](https://github.com/vamseeachanta/workspace-hub/issues/3920) tracks the remaining check.”
 
 ## 5.3 Commit messages
 
@@ -221,7 +221,7 @@ Rollback will restore prior pointers and tool versions while preserving review r
 |---|---|---|
 | S01 | Authority split | P2 for report format plus this one complementary standard; the session-communication draft is merged into Section 5.1 |
 | S02 | HTML coverage | All listed review artifacts; Markdown sources preserved |
-| S03 | Comment destination | Report folder, with the download fallback |
+| S03 | Comment destination | Report folder; the download fallback is withdrawn (owner instruction 2026-10-08) |
 | S04 | Review tool | The canonical `tools/html-review` injector |
 | S05 | Emphasis | Restrained, optional bold |
 | S06 | Unresolved realism | Human-review pack plus an explicit report limitation |
