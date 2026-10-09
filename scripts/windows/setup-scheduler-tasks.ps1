@@ -12,7 +12,7 @@
 #   \Claude\EqualityReport             - rendered from config/scheduled-tasks/schedule-tasks.yaml
 #   \Claude\SessionCuration            - rendered from config/scheduled-tasks/schedule-tasks.yaml
 #   \Claude\EcosystemReconcile         - daily report-first reconcile (no unattended apply)
-#   \Claude\RepoHygieneAutoSafe        - daily report-first repo hygiene with SAFE-only apply
+#   \Claude\RepoHygieneAutoSafe        - YAML-rendered report-only repo hygiene, if assigned to this host
 #   \Claude\EquivalenceSentinel        - YAML-backed six-hour drift sentinel
 
 [CmdletBinding()]

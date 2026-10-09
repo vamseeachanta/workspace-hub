@@ -77,7 +77,7 @@ not convert a `migration-required` row into compliance.
 | 04:25 daily | hermes-claude-bridge | Hermes → Claude repo-memory bridge; staggered on ace-linux-1 and invoked as `bridge-hermes-claude.sh --commit` | `logs/orchestrator/memory-bridge/hermes-claude-*.log` |
 | 05:00 daily | claude-memory-backup | rsync memory to dev-secondary | `/tmp/claude-memory-backup.log` |
 | 05:35 daily | repo-ecosystem-hygiene | Read-only repo ecosystem hygiene audit; writes ignored local Markdown/JSON state | `logs/quality/repo-ecosystem-hygiene-*.log` |
-| 05:40 daily | repo-hygiene-auto-safe | Report-first workstation hygiene, then SAFE-only apply | `logs/quality/repo-hygiene-auto-safe-*.log` |
+| 05:40 daily | repo-hygiene-auto-safe | Report-only workstation hygiene plus repo sync cleanup audit | `logs/quality/repo-hygiene-auto-safe-*.log` |
 | 05:45 daily | cron-health | Scheduled-task log freshness/error scan | `logs/quality/cron-health-*.log` |
 | 05:57 daily | email-queue-attention-notify | PII-safe email attention route notification writer | `logs/email/queue-attention-notify-*.log` |
 | 06:00 daily | daily-today | Daily productivity summary | `logs/daily/cron.log` |
@@ -129,7 +129,7 @@ collector + matrix run.
 | 04:30 Mon | equality-report | Machine-equality self-report plus matrix build; commits/pushes equality state | `logs/quality/equality-*.log` |
 | Every 6h at :47 | session-curation | Refresh session, skill-currency, memory, and skill-link evidence | `logs/monitoring/session-curation-*.log` |
 | 05:15 daily | ecosystem-reconcile | Report-only ecosystem and machine-equivalence reconciliation plan | `logs/quality/reconcile-*.log` |
-| 05:40 daily | repo-hygiene-auto-safe | Report-first workstation hygiene, then SAFE-only apply | `logs/quality/repo-hygiene-auto-safe-*.log` |
+| 05:40 daily | repo-hygiene-auto-safe | Report-only workstation hygiene plus repo sync cleanup audit | `logs/quality/repo-hygiene-auto-safe-*.log` |
 
 ## Skills Curation v2 Contract
 

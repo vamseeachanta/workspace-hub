@@ -389,19 +389,15 @@ def test_repo_hygiene_auto_safe_task_contract(tasks):
     ids = [t["id"] for t in tasks]
     assert ids.index("repo-ecosystem-hygiene") < ids.index("repo-hygiene-auto-safe") < ids.index("cron-health")
     assert task["schedule"] == "40 5 * * *"
-    assert set(task["machines"]) >= {
-        "ace-linux-1",
-        "ace-linux-2",
-        "ace-win-1",
-        "ace-win-2",
-        "gpu-claw",
-    }
-    assert task["requires"] == ["bash", "git", "timeout"]
+    assert task["machines"] == ["ace-linux-1"]
+    assert task["requires"] == ["bash", "python3", "git", "timeout"]
     assert task["log"] == "logs/quality/repo-hygiene-auto-safe-*.log"
     assert task["stale_after_hours"] == 23
     assert "repo-hygiene-auto-safe.sh" in task["command"]
+    assert "--apply" not in task["command"]
     assert "logs/quality/repo-hygiene-auto-safe-$(date +\\%Y\\%m\\%d).log" in task["command"]
-    assert "report-first" in task["description"].lower()
+    assert "report-only" in task["description"].lower()
+    assert "manual --apply" in task["description"].lower()
     assert "codex-" in task["description"]
 
 

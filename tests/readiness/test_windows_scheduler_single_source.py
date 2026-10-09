@@ -72,7 +72,9 @@ def test_windows_reconcile_and_curation_sources_are_declared():
 
     hygiene = _task("repo-hygiene-auto-safe")
     assert hygiene["schedule"] == "40 5 * * *"
-    assert set(hygiene["machines"]) >= {"ace-win-1", "ace-win-2"}
+    assert hygiene["machines"] == ["ace-linux-1"]
+    assert "report-only" in hygiene["description"].lower()
+    assert "--apply" not in hygiene["command"]
     assert "repo-hygiene-auto-safe.sh" in hygiene["command"]
 
 

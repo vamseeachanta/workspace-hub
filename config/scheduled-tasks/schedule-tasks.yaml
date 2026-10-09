@@ -872,11 +872,11 @@ tasks:
       one-line evidence record for cron-health.
 
   - id: repo-hygiene-auto-safe
-    label: Repo hygiene auto-safe pass
+    label: Repo hygiene report-only pass
     schedule: "40 5 * * *"
-    machines: [ace-linux-1, ace-linux-2, ace-win-1, ace-win-2, gpu-claw]
-    roles: [control-plane, comms-dispatch, sim-worker]
-    requires: [bash, git, timeout]
+    machines: [ace-linux-1]
+    roles: [control-plane]
+    requires: [bash, python3, git, timeout]
     command: >-
       PATH=$HOME/.local/bin:$HOME/.npm-global/bin:$PATH;
       cd $WORKSPACE_HUB &&
@@ -886,9 +886,10 @@ tasks:
     stale_after_hours: 23
     is_claude_task: false
     description: >-
-      Daily 05:40 UTC report-first per-host repo hygiene pass. Runs
-      workstation-hygiene in report mode, then runs the same classifier with
-      --apply so only SAFE duplicate clones and linked worktrees are removed.
+      Daily 05:40 UTC report-only per-host repo hygiene pass on owner-named
+      hosts, starting with ace-linux-1. Runs workstation-hygiene in report mode
+      and repo_sync_cleanup_audit.py --root. Manual --apply is available for a
+      later owner-named host action; the scheduled command does not pass --apply.
       The classifier preserves dirty, LOCKED, IN-USE, and codex-* job worktrees,
       and preserves the _codex-jobs tree.
 
