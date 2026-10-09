@@ -4,5 +4,5 @@ Description=Workspace Hub local pull request CI
 [Service]
 Type=oneshot
 WorkingDirectory=%h/ws/workspace-hub
-ExecStart=%h/ws/workspace-hub/scripts/ci/local-ci/local-ci.py --config %h/ws/workspace-hub/scripts/ci/local-ci/repos.yaml
+ExecStart=/usr/bin/env python3 %h/ws/workspace-hub/scripts/ci/local-ci/local-ci.py --config %h/ws/workspace-hub/scripts/ci/local-ci/repos.yaml
 Environment=UV_CACHE_DIR=%h/.cache/uv

@@ -1,6 +1,6 @@
 # Local CI Owner Install
 
-This runner is for private repositories whose GitHub Actions checks cannot run while the billing lock is active. It runs as an unprivileged `ghrunner` user on `ace-linux-1`, posts commit statuses, and leaves installation under owner control.
+This runner is for private repositories whose GitHub Actions checks cannot run while the billing lock is active. It runs as an unprivileged `ghrunner` user on the Linux CI host, posts commit statuses, and leaves installation under owner control.
 
 ## One-Time Owner Steps
 
@@ -8,6 +8,7 @@ This runner is for private repositories whose GitHub Actions checks cannot run w
 
 ```bash
 sudo adduser --disabled-password ghrunner
+sudo loginctl enable-linger ghrunner
 ```
 
 2. Create a fine-grained GitHub token for `vamseeachanta` with access only to:
@@ -25,6 +26,8 @@ Grant repository permissions:
 - Contents: read
 - Pull requests: read
 
+Metadata read is implicit. Set `LOCAL_CI_COMMENT=1` only after granting pull requests write for PR comment updates.
+
 3. Authenticate `gh` as `ghrunner`:
 
 ```bash
@@ -34,11 +37,14 @@ gh auth login --with-token
 
 Paste the fine-grained token on stdin when prompted.
 
-4. Ensure the configured repositories already exist as normal checkouts for `ghrunner`. The runner creates only throwaway `git worktree` directories from those checkouts; it does not clone repositories:
+4. Ensure the configured repositories already exist as normal checkouts for `ghrunner`. The runner creates only throwaway `git worktree` directories from those checkouts; it does not clone repositories during a run. The `ghrunner` account needs its own `~/ws/workspace-hub` checkout plus one `~/ws/vamseeachanta/<repo>` checkout for each `repos.yaml` entry:
 
 ```bash
 mkdir -p ~/ws/vamseeachanta
-# Place existing checkouts at ~/ws/vamseeachanta/<repo>, or edit repos.yaml path entries.
+gh repo clone vamseeachanta/workspace-hub ~/ws/workspace-hub
+for repo in llm-wiki-acma deckhand achantas-data llm-wiki-fdas aceengineer-admin llm-wiki-baez; do
+  gh repo clone "vamseeachanta/${repo}" "${HOME}/ws/vamseeachanta/${repo}"
+done
 ```
 
 5. Run the owner check script:
@@ -50,12 +56,16 @@ mkdir -p ~/ws/vamseeachanta
 6. To install the timer manually, copy the unit files into the user systemd directory and enable them:
 
 ```bash
-mkdir -p ~/.config/systemd/user
-cp ~/ws/workspace-hub/scripts/ci/local-ci/local-ci.service ~/.config/systemd/user/
-cp ~/ws/workspace-hub/scripts/ci/local-ci/local-ci.timer ~/.config/systemd/user/
-systemctl --user daemon-reload
-systemctl --user enable --now local-ci.timer
+sudo machinectl shell ghrunner@ /bin/bash -lc '
+  mkdir -p ~/.config/systemd/user
+  cp ~/ws/workspace-hub/scripts/ci/local-ci/local-ci.service ~/.config/systemd/user/
+  cp ~/ws/workspace-hub/scripts/ci/local-ci/local-ci.timer ~/.config/systemd/user/
+  systemctl --user daemon-reload
+  systemctl --user enable --now local-ci.timer
+'
 ```
+
+If `machinectl` is unavailable, run the `systemctl --user` commands with `XDG_RUNTIME_DIR=/run/user/$(id -u ghrunner)` in the `ghrunner` session.
 
 The PR does not perform these steps, register runners, install cron, or change repository settings.
 
@@ -65,4 +75,8 @@ The PR does not perform these steps, register runners, install cron, or change r
 ~/ws/workspace-hub/scripts/ci/local-ci/local-ci.py --config ~/ws/workspace-hub/scripts/ci/local-ci/repos.yaml
 ```
 
-By default, the last 50 log lines are posted in an updated PR comment. Set `LOCAL_CI_GIST=1` only after adding an approved gist transport.
+Logs are written under the configured state directory. PR comments are skipped by default; set `LOCAL_CI_COMMENT=1` only after granting pull requests write. Set `LOCAL_CI_GIST=1` only after adding an approved gist transport.
+
+## Security Note
+
+PR code runs as the unprivileged `ghrunner` account with a fresh job `HOME`. Keep `repos.yaml` limited to owner and agent repositories, and keep the token permissions minimal.
