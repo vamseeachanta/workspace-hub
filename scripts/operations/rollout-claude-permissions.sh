@@ -46,11 +46,13 @@ new=$(jq --argjson c "$canon" '
   })' "$s") || { echo "  FAIL: $s is not valid JSON"; exit 1; }
 before=$(jq -c '[(.permissions.allow//[]|length),(.permissions.deny//[]|length)]' "$s")
 after=$(printf '%s' "$new" | jq -c '[(.permissions.allow|length),(.permissions.deny|length)]')
+before_permissions=$(jq -cS '.permissions // {}' "$s")
+after_permissions=$(printf '%s' "$new" | jq -cS '.permissions')
 echo "  host=$(hostname) canonical=$(git -C "$hub" rev-parse --short FETCH_HEAD) ref=$ref allow/deny before=$before after=$after"
 printf '%s' "$new" | jq -r --slurpfile o "$s" '.permissions.allow - ($o[0].permissions.allow//[]) | .[] | "    + allow " + .'
 printf '%s' "$new" | jq -r --slurpfile o "$s" '.permissions.deny - ($o[0].permissions.deny//[]) | length | "    + deny rules added: \(.)"'
 if [ "$apply" = 1 ]; then
-  if [ "$before" = "$after" ]; then echo "  already current"; exit 0; fi
+  if [ "$before_permissions" = "$after_permissions" ]; then echo "  already current"; exit 0; fi
   b="$s.bak-$(date -u +%Y%m%dT%H%M%SZ)"; cp "$s" "$b"
   printf '%s\n' "$new" > "$s.tmp" && jq empty "$s.tmp" && mv "$s.tmp" "$s" && echo "  APPLIED (backup $b)"
 else
