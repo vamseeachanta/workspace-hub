@@ -323,8 +323,9 @@ resolved_dispositions:
     members: [scripts/cron/cron_apply.py, scripts/cron/setup-cron.sh, scripts/setup/new-machine-setup.sh]
     resolved_on: "2026-07-12"
     pull_request: 3492
-    # Re-affirmed 2026-09-26 (#3904, owner-authorised): a comment in
-    # schedule-tasks.yaml changed, which moves the governed input digest. No
-    # task, command, schedule or machine binding changed, so the #3475
-    # disposition still holds. Digest computed from git index blobs on Linux.
+    # Re-affirmed 2026-10-09 (#3969, owner-authorised): the
+    # team-summary-refresh catalog task was added to schedule-tasks.yaml,
+    # moving the governed input digest without changing the cron mutator
+    # implementation or the exact scheduler identity model covered by #3475.
+    # Digest computed from git index blobs on Linux.
     source_digest: de32a7ffcc3e7bcdb260f45ccfb080dc34300a7c6bfdb52fc496761b7765d5f1
