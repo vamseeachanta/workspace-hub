@@ -26,9 +26,15 @@ with log.open("a", encoding="utf-8") as fh:
     fh.write(json.dumps(args) + "\\n")
 
 key = " ".join(args)
+for candidate in (key, " ".join(args[:5]), " ".join(args[:3]), "default"):
+    if candidate in responses and isinstance(responses[candidate], dict) and "__rc__" in responses[candidate]:
+        sys.stderr.write(responses[candidate].get("stderr", ""))
+        raise SystemExit(int(responses[candidate]["__rc__"]))
 if args[:2] == ["issue", "comment"]:
     print("https://github.com/vamseeachanta/workspace-hub/issues/4001#issuecomment-1")
 elif args[:2] == ["issue", "edit"]:
+    print("")
+elif args[:2] == ["issue", "close"]:
     print("")
 else:
     for candidate in (key, " ".join(args[:5]), " ".join(args[:3]), "default"):
@@ -44,7 +50,7 @@ else:
     return fake, log
 
 
-def _run(tmp_path, args, responses):
+def _run(tmp_path, args, responses, *, check=True):
     fake, log = _write_fake_gh(tmp_path, responses)
     env = os.environ.copy()
     env["PATH"] = f"{tmp_path}{os.pathsep}{env['PATH']}"
@@ -54,7 +60,7 @@ def _run(tmp_path, args, responses):
         env=env,
         text=True,
         capture_output=True,
-        check=True,
+        check=check,
     )
     calls = []
     if log.exists():
@@ -172,10 +178,32 @@ def test_import_apply_comments_and_flips_labels(tmp_path):
     _, calls = _run(tmp_path, ["import", "--decisions", str(decisions), "--apply"], responses)
 
     assert ["issue", "comment", "4001", "--repo", "vamseeachanta/workspace-hub", "--body", "Owner decision workspace-hub-issue-4001: approve (+ owner note)"] in calls
-    assert ["issue", "edit", "4001", "--repo", "vamseeachanta/workspace-hub", "--remove-label", "decision:ecosystem"] in calls
-    assert ["issue", "edit", "4001", "--repo", "vamseeachanta/workspace-hub", "--remove-label", "dispatch:blocked"] in calls
-    assert ["issue", "edit", "4001", "--repo", "vamseeachanta/workspace-hub", "--add-label", "dispatch:ready"] in calls
-    assert calls.index(["issue", "edit", "4001", "--repo", "vamseeachanta/workspace-hub", "--add-label", "dispatch:ready"]) < calls.index(["issue", "comment", "4001", "--repo", "vamseeachanta/workspace-hub", "--body", "Owner decision workspace-hub-issue-4001: approve (+ owner note)"])
+    assert [
+        "issue",
+        "edit",
+        "4001",
+        "--repo",
+        "vamseeachanta/workspace-hub",
+        "--add-label",
+        "dispatch:ready",
+        "--remove-label",
+        "decision:ecosystem",
+        "--remove-label",
+        "dispatch:blocked",
+    ] in calls
+    assert calls.index([
+        "issue",
+        "edit",
+        "4001",
+        "--repo",
+        "vamseeachanta/workspace-hub",
+        "--add-label",
+        "dispatch:ready",
+        "--remove-label",
+        "decision:ecosystem",
+        "--remove-label",
+        "dispatch:blocked",
+    ]) < calls.index(["issue", "comment", "4001", "--repo", "vamseeachanta/workspace-hub", "--body", "Owner decision workspace-hub-issue-4001: approve (+ owner note)"])
 
 
 def test_import_exported_decision_round_trips_and_defer_stays_blocked(tmp_path):
@@ -204,8 +232,19 @@ def test_import_exported_decision_round_trips_and_defer_stays_blocked(tmp_path):
 
     _, calls = _run(tmp_path, ["import", "--decisions", str(decisions), "--apply"], responses)
 
-    assert ["issue", "edit", "4001", "--repo", "vamseeachanta/workspace-hub", "--remove-label", "dispatch:ready"] in calls
-    assert ["issue", "edit", "4001", "--repo", "vamseeachanta/workspace-hub", "--add-label", "dispatch:blocked"] in calls
+    assert [
+        "issue",
+        "edit",
+        "4001",
+        "--repo",
+        "vamseeachanta/workspace-hub",
+        "--add-label",
+        "dispatch:blocked",
+        "--remove-label",
+        "decision:ecosystem",
+        "--remove-label",
+        "dispatch:ready",
+    ] in calls
 
 
 def test_import_apply_is_idempotent_by_decision_id(tmp_path):

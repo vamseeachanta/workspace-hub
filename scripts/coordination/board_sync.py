@@ -17,6 +17,19 @@ from typing import Any
 
 
 BOARD_FILES = ("cards.json", "decisions.json", "goals.json", "sessions.json", "subgoals.json")
+CANONICAL_REPOS = frozenset(
+    {
+        "vamseeachanta/workspace-hub",
+        "vamseeachanta/digitalmodel",
+        "vamseeachanta/deckhand",
+    }
+)
+ANSWER_TARGET_LABELS = {
+    "approve": "dispatch:ready",
+    "defer": "dispatch:blocked",
+    "drop": "dispatch:done",
+}
+TARGET_LABELS = frozenset(ANSWER_TARGET_LABELS.values())
 DEFAULT_OPTIONS = [
     {"id": "approve", "label": "Proceed", "dispatch_label": "dispatch:ready"},
     {"id": "defer", "label": "Keep blocked", "dispatch_label": "dispatch:blocked"},
@@ -245,11 +258,21 @@ def decision_answer(decision: dict[str, Any]) -> str | None:
 
 
 def target_label(decision: dict[str, Any], answer: str) -> str:
+    normalized_answer = answer.strip().lower()
+    if normalized_answer not in ANSWER_TARGET_LABELS:
+        raise ValueError(f"invalid answer {answer!r}; expected one of: approve, defer, drop")
+    required_label = ANSWER_TARGET_LABELS[normalized_answer]
     for key in ("label", "target_label", "dispatch_label", "implied_label"):
         if decision.get(key):
-            return str(decision[key])
-    implied = {"approve": "dispatch:ready", "defer": "dispatch:blocked", "drop": "dispatch:done"}
-    return implied.get(answer.lower(), "dispatch:ready")
+            label = str(decision[key])
+            if label not in TARGET_LABELS:
+                raise ValueError(f"target label {label!r} is not allowed")
+            if label != required_label:
+                raise ValueError(
+                    f"answer {normalized_answer!r} does not match required label {required_label}; got {label}"
+                )
+            return label
+    return required_label
 
 
 def decision_repo_issue(decision: dict[str, Any], cards: dict[str, dict[str, Any]]) -> tuple[str, int]:
@@ -258,7 +281,10 @@ def decision_repo_issue(decision: dict[str, Any], cards: dict[str, dict[str, Any
     issue = decision.get("issue") or decision.get("number") or card.get("issue")
     if not repo or not issue:
         raise ValueError(f"decision lacks repo/issue: {decision}")
-    return str(repo), int(issue)
+    repo = str(repo)
+    if repo not in CANONICAL_REPOS:
+        raise ValueError(f"repo is not canonical: {repo}")
+    return repo, int(issue)
 
 
 def already_written(repo: str, issue: int, decision_key: str) -> tuple[bool, list[str]]:
@@ -278,6 +304,7 @@ def import_decisions(path: Path, apply: bool) -> None:
         answer = decision_answer(decision)
         if not answer:
             continue
+        answer = answer.strip().lower()
         repo, issue = decision_repo_issue(decision, cards)
         label = target_label(decision, answer)
         note = str(decision.get("note") or "").strip()
@@ -289,11 +316,14 @@ def import_decisions(path: Path, apply: bool) -> None:
         if seen:
             print(f"SKIP {repo}#{issue}: Owner decision {key} already written")
             continue
+        edit_args = ["issue", "edit", str(issue), "--repo", repo, "--add-label", label]
         for name in label_names:
-            if name.startswith(("decision:", "dispatch:")):
-                gh(["issue", "edit", str(issue), "--repo", repo, "--remove-label", name])
-        gh(["issue", "edit", str(issue), "--repo", repo, "--add-label", label])
+            if name.startswith(("decision:", "dispatch:")) and name != label:
+                edit_args.extend(["--remove-label", name])
+        gh(edit_args)
         comment_url = gh(["issue", "comment", str(issue), "--repo", repo, "--body", body])
+        if answer == "drop":
+            gh(["issue", "close", str(issue), "--repo", repo])
         print(f"WROTE {repo}#{issue}: {comment_url}")
 
 
@@ -311,10 +341,17 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
 
 def main(argv: list[str] | None = None) -> int:
     args = parse_args(argv or sys.argv[1:])
-    if args.command == "export":
-        export_board(args.repos, args.out_dir)
-    else:
-        import_decisions(args.decisions, args.apply)
+    try:
+        if args.command == "export":
+            for repo in args.repos:
+                if repo not in CANONICAL_REPOS:
+                    raise ValueError(f"repo is not canonical: {repo}")
+            export_board(args.repos, args.out_dir)
+        else:
+            import_decisions(args.decisions, args.apply)
+    except ValueError as exc:
+        print(f"ERROR: {exc}", file=sys.stderr)
+        return 1
     return 0
 
 
