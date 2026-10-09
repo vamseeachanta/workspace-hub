@@ -29,7 +29,7 @@
       "work_type": [
         "implementation"
       ],
-      "target_label": "agent:codex",
+      "target_label": "ai:codex",
       "confidence": 0.95,
       "confidence_reasons": [
         "execution-ready",
@@ -62,7 +62,7 @@
         "research",
         "implementation"
       ],
-      "target_label": "agent:codex",
+      "target_label": "ai:codex",
       "confidence": 0.95,
       "confidence_reasons": [
         "execution-ready",
@@ -96,7 +96,7 @@
         "research",
         "implementation"
       ],
-      "target_label": "agent:codex",
+      "target_label": "ai:codex",
       "confidence": 0.95,
       "confidence_reasons": [
         "execution-ready",
@@ -132,7 +132,7 @@
         "implementation",
         "strategy"
       ],
-      "target_label": "agent:claude",
+      "target_label": "ai:claude",
       "confidence": 0.9,
       "confidence_reasons": [
         "execution-ready",
@@ -169,7 +169,7 @@
         "implementation",
         "strategy"
       ],
-      "target_label": "agent:claude",
+      "target_label": "ai:claude",
       "confidence": 0.9,
       "confidence_reasons": [
         "execution-ready",
@@ -205,7 +205,7 @@
         "implementation",
         "strategy"
       ],
-      "target_label": "agent:claude",
+      "target_label": "ai:claude",
       "confidence": 0.9,
       "confidence_reasons": [
         "execution-ready",
@@ -240,7 +240,7 @@
         "implementation",
         "strategy"
       ],
-      "target_label": "agent:claude",
+      "target_label": "ai:claude",
       "confidence": 0.9,
       "confidence_reasons": [
         "execution-ready",
@@ -276,7 +276,7 @@
         "implementation",
         "strategy"
       ],
-      "target_label": "agent:claude",
+      "target_label": "ai:claude",
       "confidence": 0.9,
       "confidence_reasons": [
         "execution-ready",
@@ -312,7 +312,7 @@
         "implementation",
         "strategy"
       ],
-      "target_label": "agent:claude",
+      "target_label": "ai:claude",
       "confidence": 0.9,
       "confidence_reasons": [
         "execution-ready",
@@ -349,7 +349,7 @@
         "implementation",
         "strategy"
       ],
-      "target_label": "agent:claude",
+      "target_label": "ai:claude",
       "confidence": 0.9,
       "confidence_reasons": [
         "execution-ready",
@@ -386,7 +386,7 @@
         "implementation",
         "strategy"
       ],
-      "target_label": "agent:claude",
+      "target_label": "ai:claude",
       "confidence": 0.9,
       "confidence_reasons": [
         "execution-ready",
@@ -420,7 +420,7 @@
         "research",
         "implementation"
       ],
-      "target_label": "agent:codex",
+      "target_label": "ai:codex",
       "confidence": 0.8,
       "confidence_reasons": [
         "execution-ready",
@@ -453,7 +453,7 @@
         "research",
         "implementation"
       ],
-      "target_label": "agent:codex",
+      "target_label": "ai:codex",
       "confidence": 0.8,
       "confidence_reasons": [
         "execution-ready",
@@ -485,7 +485,7 @@
         "research",
         "implementation"
       ],
-      "target_label": "agent:codex",
+      "target_label": "ai:codex",
       "confidence": 0.8,
       "confidence_reasons": [
         "execution-ready",
@@ -515,7 +515,7 @@
         "research",
         "implementation"
       ],
-      "target_label": "agent:codex",
+      "target_label": "ai:codex",
       "confidence": 0.8,
       "confidence_reasons": [
         "execution-ready",
@@ -547,7 +547,7 @@
         "research",
         "implementation"
       ],
-      "target_label": "agent:codex",
+      "target_label": "ai:codex",
       "confidence": 0.6,
       "confidence_reasons": [
         "priority-labeled",
@@ -575,7 +575,7 @@
       "work_type": [
         "research"
       ],
-      "target_label": "agent:agy",
+      "target_label": "ai:agy",
       "confidence": 0.45,
       "confidence_reasons": [
         "strong-agy-language-match",

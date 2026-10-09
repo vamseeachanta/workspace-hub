@@ -3,9 +3,9 @@
 Overnight/overnight-batch issues run in the hermes_batch context, where claude
 is forbidden. The planner must:
   - never DEFAULT an overnight issue to claude (downgrade to the context primary),
-  - HARD-ERROR on an explicit `agent:claude` label for an overnight issue,
+  - HARD-ERROR on an explicit `ai:claude` label for an overnight issue,
   - keep `--dry-run` usable (its synthetic set must not contain a now-erroring
-    agent:claude+overnight issue).
+    ai:claude+overnight issue).
 """
 from __future__ import annotations
 
@@ -39,24 +39,28 @@ def test_overnight_no_claude_default():
     assert agent == "codex"
 
 
-def test_overnight_explicit_agent_claude_errors():
+def test_overnight_explicit_ai_claude_errors():
     with pytest.raises(ValueError):
-        resolve_agent(_issue(["overnight", "agent:claude"]))
+        resolve_agent(_issue(["overnight", "ai:claude"]))
 
 
-def test_overnight_explicit_codex_ok():
-    assert resolve_agent(_issue(["overnight", "agent:codex"])) == "codex"
+def test_overnight_explicit_ai_codex_ok():
+    assert resolve_agent(_issue(["overnight", "ai:codex"])) == "codex"
+
+
+def test_overnight_legacy_agent_gemini_maps_to_agy():
+    assert resolve_agent(_issue(["overnight", "agent:gemini"])) == "agy"
 
 
 def test_overnight_multilabel_prefers_allowed_over_error():
     # review r3-F4: claude + codex both explicit under the ceiling -> pick codex,
     # do NOT hard-error just because claude was listed first.
-    assert resolve_agent(_issue(["overnight", "agent:claude", "agent:codex"])) == "codex"
+    assert resolve_agent(_issue(["overnight", "ai:claude", "ai:codex"])) == "codex"
 
 
 def test_non_overnight_issue_not_ceilinged():
     # Outside the overnight context the ceiling does not apply.
-    assert resolve_agent(_issue(["agent:claude"])) == "claude"
+    assert resolve_agent(_issue(["ai:claude"])) == "claude"
 
 
 def test_dry_run_synthetic_set_has_no_claude_overnight_issue():
