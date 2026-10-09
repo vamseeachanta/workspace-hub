@@ -12,6 +12,8 @@ from pathlib import Path
 
 import yaml
 
+from label_queue import gh_query_label_queue, issue_to_work_item
+
 
 def parse_wrk_frontmatter(path):
     """Extract YAML frontmatter from a WRK markdown file."""
@@ -178,51 +180,117 @@ def rank_wrks(wrk_dir, track_mapping, scoring_weights,
 
     ranked = []
     for wrk_id, wrk in all_wrks.items():
-        cat = wrk.get("category", "uncategorised")
-        track = wrk.get("track") or classify_track(cat, track_mapping)
-
-        # Choose scoring method
-        has_chain = bool(wrk.get("blocked_by")) or bool(wrk.get("deferred_to"))
-        if has_chain:
-            base = score_wsjf(wrk, scoring_weights)
-            method = "wsjf"
-        else:
-            base = score_rice(wrk, scoring_weights)
-            method = "rice"
-
-        enablement = calculate_enablement(wrk_id, all_wrks)
-        final = apply_bonuses(
-            base=base,
-            wrk=wrk,
-            critical_ids=critical_ids,
-            enablement_count=enablement,
-            track_balance=balance,
-            track=track,
-            weights=scoring_weights,
-        )
-
-        ranked.append({
-            "id": wrk_id,
-            "track": track,
-            "strategic_score": round(final, 1),
-            "score_breakdown": {
-                "base": base,
-                "roadmap": scoring_weights["roadmap_bonus"]
-                if wrk_id in critical_ids else 0,
-                "enablement": min(
-                    enablement * scoring_weights["enablement_bonus_per_dep"],
-                    scoring_weights["enablement_bonus_cap"],
-                ),
-                "track_penalty": round(
-                    -(balance.get(track, {}).get("delta", 0)
-                      * scoring_weights["track_penalty_coefficient"]), 1
-                ) if balance.get(track, {}).get("delta", 0) > 0 else 0,
-            },
-            "scoring_method": method,
-        })
+        ranked.append(rank_wrk_item(
+            wrk_id, wrk, all_wrks, track_mapping,
+            scoring_weights, balance, critical_ids,
+        ))
 
     ranked.sort(key=lambda x: x["strategic_score"], reverse=True)
     return ranked
+
+
+def rank_wrk_item(wrk_id, wrk, all_wrks, track_mapping,
+                  scoring_weights, balance, critical_ids):
+    cat = wrk.get("category", "uncategorised")
+    track = wrk.get("track") or classify_track(cat, track_mapping)
+    has_chain = bool(wrk.get("blocked_by")) or bool(wrk.get("deferred_to"))
+    if has_chain:
+        base = score_wsjf(wrk, scoring_weights)
+        method = "wsjf"
+    else:
+        base = score_rice(wrk, scoring_weights)
+        method = "rice"
+    enablement = calculate_enablement(wrk_id, all_wrks)
+    final = apply_bonuses(
+        base=base, wrk=wrk, critical_ids=critical_ids,
+        enablement_count=enablement, track_balance=balance,
+        track=track, weights=scoring_weights,
+    )
+    delta = balance.get(track, {}).get("delta", 0)
+    return {
+        "id": wrk_id,
+        "track": track,
+        "strategic_score": round(final, 1),
+        "score_breakdown": {
+            "base": base,
+            "roadmap": scoring_weights["roadmap_bonus"]
+            if wrk_id in critical_ids else 0,
+            "enablement": min(
+                enablement * scoring_weights["enablement_bonus_per_dep"],
+                scoring_weights["enablement_bonus_cap"],
+            ),
+            "track_penalty": round(
+                -(delta * scoring_weights["track_penalty_coefficient"]), 1
+            ) if delta > 0 else 0,
+        },
+        "scoring_method": method,
+    }
+
+
+def rank_issues(issues, track_mapping, scoring_weights):
+    """Score GitHub issues from the label queue."""
+    items = {
+        item["id"]: item
+        for item in (issue_to_work_item(issue) for issue in issues)
+    }
+    if not items:
+        return []
+
+    track_counts = {}
+    for item in items.values():
+        track = item.get("track") or classify_track(
+            item.get("category", "uncategorised"),
+            track_mapping,
+        )
+        track_counts[track] = track_counts.get(track, 0) + 1
+
+    balance = calculate_track_balance(track_counts, scoring_weights["track_targets"])
+    critical_ids = scoring_weights.get("roadmap_critical_ids", [])
+
+    ranked = [
+        rank_issue_item(item_id, item, track_mapping, scoring_weights,
+                        balance, critical_ids)
+        for item_id, item in items.items()
+    ]
+
+    ranked.sort(key=lambda x: x["strategic_score"], reverse=True)
+    return ranked
+
+
+def rank_issue_item(item_id, item, track_mapping, scoring_weights,
+                    balance, critical_ids):
+    track = item.get("track") or classify_track(
+        item.get("category", "uncategorised"),
+        track_mapping,
+    )
+    base = score_rice(item, scoring_weights)
+    final = apply_bonuses(
+        base=base,
+        wrk=item,
+        critical_ids=critical_ids,
+        enablement_count=0,
+        track_balance=balance,
+        track=track,
+        weights=scoring_weights,
+    )
+    delta = balance.get(track, {}).get("delta", 0)
+    return {
+        "id": item_id,
+        "title": item.get("title", ""),
+        "track": track,
+        "strategic_score": round(final, 1),
+        "score_breakdown": {
+            "base": base,
+            "roadmap": scoring_weights["roadmap_bonus"]
+            if item_id in critical_ids else 0,
+            "enablement": 0,
+            "track_penalty": round(
+                -(delta * scoring_weights["track_penalty_coefficient"]), 1
+            ) if delta > 0 else 0,
+        },
+        "scoring_method": "rice",
+        "source": "github-labels",
+    }
 
 
 def build_output(ranked, track_balance, top_n=None):
@@ -275,7 +343,7 @@ def main():
     )
     parser.add_argument(
         "--dir", type=str, default=None,
-        help="WRK directory (default: .claude/work-queue/pending/)",
+        help="Legacy WRK directory. Omit to read GitHub labels.",
     )
     args = parser.parse_args()
 
@@ -287,20 +355,26 @@ def main():
     with open(config_dir / "scoring-weights.yaml") as f:
         scoring_weights = yaml.safe_load(f)
 
-    wrk_dir = Path(args.dir) if args.dir else (
-        repo_root / ".claude" / "work-queue" / "pending"
-    )
-
-    ranked = rank_wrks(wrk_dir, track_mapping, scoring_weights)
-
-    # Build track balance for output
-    all_wrks = {}
-    for p in sorted(wrk_dir.glob("WRK-*.md")):
-        fm = parse_wrk_frontmatter(p)
-        if fm and "id" in fm:
-            cat = fm.get("category", "uncategorised")
-            t = fm.get("track") or classify_track(cat, track_mapping)
-            all_wrks[t] = all_wrks.get(t, 0) + 1
+    if args.dir:
+        wrk_dir = Path(args.dir)
+        ranked = rank_wrks(wrk_dir, track_mapping, scoring_weights)
+        all_wrks = {}
+        for p in sorted(wrk_dir.glob("WRK-*.md")):
+            fm = parse_wrk_frontmatter(p)
+            if fm and "id" in fm:
+                cat = fm.get("category", "uncategorised")
+                t = fm.get("track") or classify_track(cat, track_mapping)
+                all_wrks[t] = all_wrks.get(t, 0) + 1
+    else:
+        issues = gh_query_label_queue()
+        ranked = rank_issues(issues, track_mapping, scoring_weights)
+        all_wrks = {}
+        for item in (issue_to_work_item(issue) for issue in issues):
+            track = item.get("track") or classify_track(
+                item.get("category", "uncategorised"),
+                track_mapping,
+            )
+            all_wrks[track] = all_wrks.get(track, 0) + 1
 
     balance = calculate_track_balance(
         all_wrks, scoring_weights["track_targets"]

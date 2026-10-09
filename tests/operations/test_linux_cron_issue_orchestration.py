@@ -90,8 +90,7 @@ def test_needs_plan_and_plan_review_are_report_only(tmp_path: Path) -> None:
     assert {action["mode"] for action in actions} == {"planning_candidate", "review_candidate"}
 
 
-def test_implementation_requires_plan_approved_and_marker(tmp_path: Path) -> None:
-    (tmp_path / "402.md").write_text("approved", encoding="utf-8")
+def test_implementation_requires_plan_approved_label_only(tmp_path: Path) -> None:
     issues = [
         _issue(401, ["machine:dev-primary", "ai:codex", "status:plan-approved"]),
         _issue(402, ["machine:dev-primary", "ai:codex", "status:plan-approved"]),
@@ -100,10 +99,9 @@ def test_implementation_requires_plan_approved_and_marker(tmp_path: Path) -> Non
     actions = module.plan_tick(issues, host_machine_label="machine:dev-primary", plan_marker_dir=tmp_path, readiness={"status": "pass"})
 
     by_issue = {action["issue"]: action for action in actions}
-    assert by_issue[401]["decision"] == "blocked"
-    assert by_issue[401]["reason"] == "missing local plan approval marker"
+    assert by_issue[401]["decision"] == "awaiting_lease"
     assert by_issue[402]["decision"] == "awaiting_lease"
-    assert by_issue[402]["execute_provider"] is False
+    assert all(action["execute_provider"] is False for action in actions)
 
 
 def test_remote_ref_lease_is_required_before_execution(tmp_path: Path) -> None:
@@ -480,7 +478,8 @@ def test_documentation_preserves_safe_cron_contract() -> None:
 
     required_phrases = [
         "status:needs-plan` and `status:plan-review` are report-only",
-        "status:plan-approved` plus `.planning/plan-approved/<issue>.md`",
+        "status:plan-approved`",
+        "Retired local `.planning/plan-approved/<issue>.md` files are historical evidence only",
         "refs/heads/dispatch/leases/<issue>-<mode>",
         "flock",
         "clean disposable per-issue worktree",
