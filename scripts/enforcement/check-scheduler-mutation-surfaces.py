@@ -71,7 +71,7 @@ PRIMITIVE_PATTERNS = {
     "systemd-user-enable-disable": (
         rb"\b(?:run_systemctl|systemctl[ \t]+--user)[ \t]+(?:enable|disable)\b",  # scheduler-mutation-forensic
     ),  # scheduler-mutation-forensic
-    "windows-task-set": (rb"\bSet-ScheduledTask\b",),  # scheduler-mutation-forensic
+    "windows-task-set": (rb"\b(?:Set|Disable|Enable)-ScheduledTask\b",),  # scheduler-mutation-forensic
     "windows-task-unregister-register": (
         rb"\b(?:Register|Unregister)-ScheduledTask\b",  # scheduler-mutation-forensic
     ),  # scheduler-mutation-forensic
