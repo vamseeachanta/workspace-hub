@@ -70,6 +70,11 @@ def test_windows_reconcile_and_curation_sources_are_declared():
     assert curation["schedule"] == "47 */6 * * *"
     assert set(curation["machines"]) >= {"ace-win-1", "ace-win-2"}
 
+    hygiene = _task("repo-hygiene-auto-safe")
+    assert hygiene["schedule"] == "40 5 * * *"
+    assert set(hygiene["machines"]) >= {"ace-win-1", "ace-win-2"}
+    assert "repo-hygiene-auto-safe.sh" in hygiene["command"]
+
 
 def test_equivalence_sentinel_windows_source_is_exact_and_repo_relative():
     sentinel = _task("equivalence-sentinel")

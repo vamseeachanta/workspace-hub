@@ -871,6 +871,27 @@ tasks:
       Markdown/JSON state under .claude/state/repo-ecosystem-hygiene/ and a
       one-line evidence record for cron-health.
 
+  - id: repo-hygiene-auto-safe
+    label: Repo hygiene auto-safe pass
+    schedule: "40 5 * * *"
+    machines: [ace-linux-1, ace-linux-2, ace-win-1, ace-win-2, gpu-claw]
+    roles: [control-plane, comms-dispatch, sim-worker]
+    requires: [bash, git, timeout]
+    command: >-
+      PATH=$HOME/.local/bin:$HOME/.npm-global/bin:$PATH;
+      cd $WORKSPACE_HUB &&
+      bash scripts/cron/repo-hygiene-auto-safe.sh
+      >> $WORKSPACE_HUB/logs/quality/repo-hygiene-auto-safe-$(date +\%Y\%m\%d).log 2>&1
+    log: logs/quality/repo-hygiene-auto-safe-*.log
+    stale_after_hours: 23
+    is_claude_task: false
+    description: >-
+      Daily 05:40 UTC report-first per-host repo hygiene pass. Runs
+      workstation-hygiene in report mode, then runs the same classifier with
+      --apply so only SAFE duplicate clones and linked worktrees are removed.
+      The classifier preserves dirty, LOCKED, IN-USE, and codex-* job worktrees,
+      and preserves the _codex-jobs tree.
+
   - id: cron-health
     label: Cron health check
     schedule: "45 5 * * *"

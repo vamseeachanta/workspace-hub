@@ -12,6 +12,7 @@
 #   \Claude\EqualityReport             - rendered from config/scheduled-tasks/schedule-tasks.yaml
 #   \Claude\SessionCuration            - rendered from config/scheduled-tasks/schedule-tasks.yaml
 #   \Claude\EcosystemReconcile         - daily report-first reconcile (no unattended apply)
+#   \Claude\RepoHygieneAutoSafe        - daily report-first repo hygiene with SAFE-only apply
 #   \Claude\EquivalenceSentinel        - YAML-backed six-hour drift sentinel
 
 [CmdletBinding()]
@@ -276,7 +277,7 @@ Write-Host "=============================================="
 Write-Host ""
 
 if ($Remove) {
-    $names = @('EqualityReport', 'SessionCuration', 'EcosystemReconcile', 'EquivalenceSentinel')
+    $names = @('EqualityReport', 'SessionCuration', 'EcosystemReconcile', 'RepoHygieneAutoSafe', 'EquivalenceSentinel')
     if (-not $EquivalenceOnly) { $names = @('ContextManagementDaily', 'WorkstationVersionCheck', 'NightlyReadiness', 'RepoSync', 'MemoryBridgeSync', 'HarnessUpdate') + $names }
     foreach ($name in $names) { Register-ClaudeTask -Name $name -Description 'remove' -ScriptPath '.' -DailyAt '00:00' }
     Write-Host ""; Write-Host "Done."
@@ -292,6 +293,7 @@ $currentMachine = Get-CurrentMachineLabel
 $equalityTask = Get-EqualityReportTask
 $curationTask = Get-ConfiguredTask -TaskId "session-curation"
 $reconcileTask = Get-ConfiguredTask -TaskId "ecosystem-reconcile"
+$hygieneTask = Get-ConfiguredTask -TaskId "repo-hygiene-auto-safe"
 $sentinelTask = Get-ConfiguredTask -TaskId "equivalence-sentinel"
 $sentinelScript = $null
 if ($sentinelTask.Machines -contains $currentMachine) {
@@ -368,6 +370,14 @@ if ($reconcileTask.Machines -contains $currentMachine) {
         -TaskArguments "-Machine $currentMachine" `
         -CronSchedule $reconcileTask.Schedule `
         -PowerShell
+}
+
+if ($hygieneTask.Machines -contains $currentMachine) {
+    Register-ClaudeTask `
+        -Name "RepoHygieneAutoSafe" `
+        -Description $hygieneTask.Description `
+        -ScriptPath "scripts/cron/repo-hygiene-auto-safe.sh" `
+        -CronSchedule $hygieneTask.Schedule
 }
 
 if ($sentinelTask.Machines -contains $currentMachine) {

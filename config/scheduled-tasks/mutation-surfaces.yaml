@@ -323,8 +323,8 @@ resolved_dispositions:
     members: [scripts/cron/cron_apply.py, scripts/cron/setup-cron.sh, scripts/setup/new-machine-setup.sh]
     resolved_on: "2026-07-12"
     pull_request: 3492
-    # Re-affirmed 2026-09-26 (#3904, owner-authorised): a comment in
-    # schedule-tasks.yaml changed, which moves the governed input digest. No
-    # task, command, schedule or machine binding changed, so the #3475
-    # disposition still holds. Digest computed from git index blobs on Linux.
-    source_digest: fcfd80cb822b96dcf573fea42674daf35786c58fedbe860256e17acabb473dae
+    # Re-affirmed 2026-10-09 (#3992/#4003, owner-authorised): schedule-tasks.yaml
+    # adds the report-first repo-hygiene-auto-safe task and preserves the
+    # existing transactional scheduler mutation disposition. Digest computed
+    # from git index blobs on Linux.
+    source_digest: 5f0cebd40c273c52c67fb61e81aa6603c703d7c065f17e04e5fbd004e1868162

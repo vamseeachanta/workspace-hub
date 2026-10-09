@@ -34,6 +34,27 @@ done
 CACHE_STATUS_IGNORE_RE='^\?\? (.*/)?(__pycache__|\.pytest_cache|\.ruff_cache|\.mypy_cache)/$'
 size_of() { [ "$SIZES" = 1 ] && du -sh "$1" 2>/dev/null | cut -f1 || echo "-"; }
 
+canonical_path() {
+  if command -v realpath >/dev/null; then
+    realpath -m "$1" 2>/dev/null && return
+  fi
+  (cd "$(dirname "$1")" 2>/dev/null && printf '%s/%s\n' "$(pwd -P)" "$(basename "$1")") || printf '%s\n' "$1"
+}
+
+protected_codex_job_path() {
+  local d="$1" cd home_ws
+  cd="$(canonical_path "$d")"
+  home_ws="$(canonical_path "$HOME/ws")"
+  case "$cd" in
+    "$home_ws/_wt/codex-"*|"$home_ws/_codex-jobs"|"$home_ws/_codex-jobs/"*) return 0 ;;
+  esac
+  case "$d" in
+    "$HOME/ws/_wt/codex-"*|"$HOME/ws/_codex-jobs"|"$HOME/ws/_codex-jobs/"*) return 0 ;;
+    */_wt/codex-*|*/_codex-jobs|*/_codex-jobs/*) return 0 ;;
+  esac
+  return 1
+}
+
 # Prints "IN USE" if a process has its working directory inside $1 (Linux /proc only).
 in_use() {
   local p
@@ -64,6 +85,7 @@ commit_is_published_or_merged() {
 # Prints "SAFE" or a reason it is not safe.
 assess() {
   local d="$1" mode="${2:-head}" dirty head branch ref_branch ref_commit
+  protected_codex_job_path "$d" && { echo "PROTECTED: codex job path is report-only"; return; }
   in_use "$d" && { echo "IN USE: a running process has its cwd here"; return; }
   dirty=$(git -C "$d" status --porcelain 2>/dev/null | grep -Ev "$CACHE_STATUS_IGNORE_RE" | head -3)
   [ -n "$dirty" ] && { echo "DIRTY: $(echo "$dirty" | tr '\n' ' ')"; return; }
@@ -94,12 +116,17 @@ echo "== Duplicate clones (same origin as another checkout under $ROOT)"
 declare -A first
 for d in "$ROOT"/*/; do
   d="${d%/}"; [ -d "$d/.git" ] || continue          # worktrees have a .git file, clones a dir
+  protected_codex_job_path "$d" && continue
   url=$(git -C "$d" remote get-url origin 2>/dev/null) || continue
   name=$(basename "${url%.git}")
   if [ "$(basename "$d")" = "$name" ]; then first[$url]="$d"; fi
 done
 for d in "$ROOT"/*/; do
   d="${d%/}"; [ -d "$d/.git" ] || continue
+  if protected_codex_job_path "$d"; then
+    printf '%-8s %-60s %s\n' "$(size_of "$d")" "$d" "PROTECTED: codex job path is report-only"
+    continue
+  fi
   url=$(git -C "$d" remote get-url origin 2>/dev/null) || continue
   [ "${first[$url]:-}" = "" ] || [ "${first[$url]}" = "$d" ] && continue
   if [ "$(git -C "$d" worktree list --porcelain 2>/dev/null | grep -c '^worktree ')" -gt 1 ]; then
@@ -130,7 +157,6 @@ for repo in "$ROOT"/*/; do
       git -C "$repo" worktree remove --force "$wt" && echo "  removed"
     fi
   done
-  [ "$APPLY" = 1 ] && git -C "$repo" worktree prune
 done
 
 echo "== Caches"

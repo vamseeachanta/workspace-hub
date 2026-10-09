@@ -101,6 +101,25 @@ test_cache_like_filename_is_dirty() {
   assert_contains "$out" "DIRTY: ?? customer__pycache__results.csv" "reports cache-like filename dirty"
 }
 
+test_codex_job_paths_are_report_only_even_when_safe() {
+  run_test "codex job worktrees and job root are report-only"
+  local root out
+  root="$(make_workspace)"
+  mkdir -p "$root/_wt" "$root/_codex-jobs"
+  git clone -q "$root/demo.git" "$root/_wt/codex-job-safe"
+  git -C "$root/_wt/codex-job-safe" checkout -q main
+  git clone -q "$root/demo.git" "$root/_codex-jobs/job-safe"
+  git -C "$root/_codex-jobs/job-safe" checkout -q main
+
+  out="$(run_hygiene_apply "$root/_wt")"
+  assert_contains "$out" "PROTECTED: codex job path is report-only" "reports codex job protection"
+  [[ -d "$root/_wt/codex-job-safe/.git" ]] && pass "apply preserves safe codex worktree path" || fail "apply preserves safe codex worktree path"
+
+  out="$(run_hygiene_apply "$root/_codex-jobs")"
+  assert_contains "$out" "PROTECTED: codex job path is report-only" "reports codex job root protection"
+  [[ -d "$root/_codex-jobs/job-safe/.git" ]] && pass "apply preserves safe codex job root path" || fail "apply preserves safe codex job root path"
+}
+
 if [[ ! -f "$SCRIPT_UNDER_TEST" ]]; then
   echo "ERROR: workstation-hygiene.sh not found at $SCRIPT_UNDER_TEST" >&2
   exit 1
@@ -111,6 +130,7 @@ test_unpushed_side_branch_blocks_clone_safe
 test_linked_worktree_blocks_clone_rm_rf
 test_failed_fetch_is_unverified
 test_cache_like_filename_is_dirty
+test_codex_job_paths_are_report_only_even_when_safe
 
 echo ""
 echo "=================================="
