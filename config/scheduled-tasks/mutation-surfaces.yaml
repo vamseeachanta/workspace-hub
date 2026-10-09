@@ -279,6 +279,36 @@ surfaces:
         transaction: *missing_transaction
         attestations: []
 
+  - path: scripts/operations/pause-memory-publishers.sh
+    kind: direct-owner
+    disposition_group: x02-memory-publisher-pausers
+    operations:
+      - id: pause-current-user-crontab-lines
+        primitive: crontab-replace
+        target_kind: current-user-cron
+        scheduler_identity: local-current-user-crontab-memory-publishers
+        execution_host_binding: physical-local
+        destructive: true
+        authority_branches:
+          - {id: x02-marker-targets, mechanism: command-substring, config_source: scripts/operations/pause-memory-publishers.sh, destructive: true, strength: substring}
+        transaction: *missing_transaction
+        attestations: []
+
+  - path: scripts/operations/pause-memory-publishers.ps1
+    kind: direct-owner
+    disposition_group: x02-memory-publisher-pausers
+    operations:
+      - id: disable-memory-bridge-sync
+        primitive: windows-task-set
+        target_kind: windows-current-user-task
+        scheduler_identity: local-windows-task-scheduler-memory-bridge-sync
+        execution_host_binding: physical-local
+        destructive: true
+        authority_branches:
+          - {id: fixed-task-name, mechanism: unknown, config_source: scripts/operations/pause-memory-publishers.ps1, destructive: true, strength: unknown}
+        transaction: *missing_transaction
+        attestations: []
+
 disposition_groups:
   - group_id: legacy-crontab-writers
     issue: {repository: vamseeachanta/workspace-hub, number: 3476}
@@ -317,6 +347,10 @@ disposition_groups:
     issue: {repository: vamseeachanta/workspace-hub, number: 3792}
     members: [scripts/monitoring/bundle-sentinel-install/install.sh]
     defect_class: systemd-user-transaction-unattestable
+  - group_id: x02-memory-publisher-pausers
+    issue: {repository: vamseeachanta/workspace-hub, number: 3982}
+    members: [scripts/operations/pause-memory-publishers.sh, scripts/operations/pause-memory-publishers.ps1]
+    defect_class: owner-runnable-pause-script-without-reference-transaction
 
 resolved_dispositions:
   - issue: 3475

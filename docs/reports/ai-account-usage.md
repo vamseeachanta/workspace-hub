@@ -1,26 +1,26 @@
 # AI account usage (fleet)
 
-Generated 2026-10-09T20:13:31+00:00 by fleet-collector collect_account_usage_fleet. Percentages are USED; headroom = 100 - weekly used. Source of truth: `config/ai-tools/account-usage-latest.json`.
+Generated 2026-10-09T22:13:30+00:00 by fleet-collector collect_account_usage_fleet. Percentages are USED; headroom = 100 - weekly used. Source of truth: `config/ai-tools/account-usage-latest.json`.
 
 ## Recommendation
 
-- **claude**: `claude-professional` (77.0% weekly headroom) on ace-win-1, ace-win-2 -- within 15 pts of claude-owner: stay on whichever host you are on
-- **codex**: `codex-professional` (96.0% weekly headroom) on ace-win-1, ace-win-2
+- **claude**: `claude-professional` (73.0% weekly headroom) on ace-win-1, ace-win-2
+- **codex**: `codex-professional` (95.0% weekly headroom) on ace-win-1, ace-win-2
 
 ## Accounts
 
 | account | provider | holder | 5h used | week used | headroom | resets | sampled on | source |
 |---|---|---|---|---|---|---|---|---|
-| claude-owner | claude | owner | 10% | 32% | 68% | 2026-10-10T14:00:00.119537+00:00 | ace-linux-1 | oauth-api |
-| claude-professional | claude | colleague | 8% | 23% | 77% | 2026-10-10T07:59:59.516063+00:00 | ace-win-1 | oauth-api |
-| codex-owner | codex | owner |  | 30% | 70% | 2026-10-14T04:04:15+00:00 | fleet-collector | app-server-live |
-| codex-professional | codex | colleague |  | 4% | 96% | 2026-10-14T14:37:23+00:00 | ace-win-1 | app-server-live |
+| claude-owner | claude | owner |  |  |  |  |  | unavailable |
+| claude-professional | claude | colleague | 23% | 27% | 73% | 2026-10-10T08:00:00.021380+00:00 | ace-win-1 | oauth-api |
+| codex-owner | codex | owner |  | 31% | 69% | 2026-10-14T04:04:15+00:00 | fleet-collector | app-server-live |
+| codex-professional | codex | colleague |  | 5% | 95% | 2026-10-14T14:37:24+00:00 | ace-win-1 | app-server-live |
 
 ## Hosts
 
 | host | reachable | claude | codex | note |
 |---|---|---|---|---|
-| ace-linux-1 | yes | claude-owner | codex-owner |  |
+| ace-linux-1 | yes | claude-owner | codex-owner | claude: access token expired; a Claude Code session on this host will refresh it |
 | ace-linux-2 | yes | claude-owner | codex-owner | claude: access token expired; a Claude Code session on this host will refresh it |
 | gpu-claw | yes | claude-owner | codex-owner | claude: credentials file has no accessToken |
 | ace-win-2 | yes | claude-professional | codex-professional |  |
