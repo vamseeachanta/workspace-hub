@@ -28,7 +28,7 @@ label_axes:
     "status:":  "a position in a state machine — an issue cannot be in two at once"
     "machine:": "one execution host; `multi` is the value for work that spans several"
     "lane:":    "one implementing provider; a second opinion is `needs:cross-review`"
-    "agent:":   "one agent owns the work item"
+    "agent:":   "DEPRECATED read-only alias for ai:<provider> during one-release migration; do not write new labels on this axis"
     "ai:":      "the human/dispatch provider override — highest precedence, so two would contradict"
   multi:
     "domain:":  "work genuinely spans domains — 74 open issues legitimately do"
@@ -211,7 +211,7 @@ wip_caps:
     licensed-win-2: 2
   per_provider:
     claude: 4
-    gemini: 1
+    agy: 1
     # codex + hermes governed by budget_pools.codex_pool.max_concurrent
   overflow: queue   # exceeding a cap -> card stays dispatch:ready in queue, never auto-spawned
 

@@ -39,7 +39,7 @@ Class of task: quota-aware Codex lane orchestration that converts available Code
 2. Select useful lanes, not synthetic burn
    - Prefer `provider-work-queue.json -> provider_queues.codex.top_issues`.
    - Favor open issues with verified task/standing authority, current reviewed scope and no unresolved blockers for bounded implementation/test/refactor/documentation work; approval labels are history, not prerequisites.
-   - Respect existing `agent:*` labels and avoid issues already `dispatch:active` unless recovering a known stalled lane.
+   - Respect existing `ai:*` labels and legacy `agent:*` aliases; avoid issues already `status:working` unless recovering a known stalled lane.
    - When the user asks for ecosystem-aware or ambition-aware burn planning, combine the generated queue with live per-repo issue scans and recent-session/history signals; use `references/workspace-ecosystem-lane-selection.md` for the lane-selection checklist and avoid-list.
    - For repeated judge/checklist prompts after terminal-but-incomplete runs, use `references/checklist-crosswalk-generator-pattern.md` to write fresh crosswalk evidence instead of relaunching or only restating blockers.
    - Keep about 3-5 concurrent Codex lanes; top up periodically rather than launching too many at once.
@@ -62,7 +62,7 @@ Class of task: quota-aware Codex lane orchestration that converts available Code
 4. Coordinate GitHub
    - Add labels when safe:
      ```bash
-     gh issue edit NNNN --add-label agent:codex,dispatch:active
+     gh issue edit NNNN --add-label ai:codex,status:working
      ```
    - Post an execution-start comment naming the branch/worktree and validation intent.
 

@@ -48,8 +48,8 @@ def _init_clean_repo_with_remote(path: Path, remote_path: Path) -> None:
 def test_queue_selects_by_canonical_machine_label(tmp_path: Path) -> None:
     (tmp_path / "101.md").write_text("approved", encoding="utf-8")
     issues = [
-        _issue(101, ["machine:dev-primary", "agent:codex", "status:plan-approved"]),
-        _issue(102, ["machine:dev-secondary", "agent:codex", "status:plan-approved"]),
+        _issue(101, ["machine:dev-primary", "ai:codex", "status:plan-approved"]),
+        _issue(102, ["machine:dev-secondary", "ai:codex", "status:plan-approved"]),
     ]
 
     actions = module.plan_tick(issues, host_machine_label="machine:dev-primary", plan_marker_dir=tmp_path, readiness={"status": "pass"})
@@ -60,10 +60,10 @@ def test_queue_selects_by_canonical_machine_label(tmp_path: Path) -> None:
 
 def test_exactly_one_machine_and_agent_required(tmp_path: Path) -> None:
     issues = [
-        _issue(201, ["agent:codex", "status:plan-approved"]),
-        _issue(202, ["machine:dev-primary", "machine:dev-secondary", "agent:codex", "status:plan-approved"]),
+        _issue(201, ["ai:codex", "status:plan-approved"]),
+        _issue(202, ["machine:dev-primary", "machine:dev-secondary", "ai:codex", "status:plan-approved"]),
         _issue(203, ["machine:dev-primary", "status:plan-approved"]),
-        _issue(204, ["machine:dev-primary", "agent:codex", "agent:claude", "status:plan-approved"]),
+        _issue(204, ["machine:dev-primary", "ai:codex", "ai:claude", "status:plan-approved"]),
     ]
 
     actions = module.plan_tick(issues, host_machine_label="machine:dev-primary", plan_marker_dir=tmp_path, readiness={"status": "pass"})
@@ -72,15 +72,15 @@ def test_exactly_one_machine_and_agent_required(tmp_path: Path) -> None:
     assert by_issue[201]["decision"] == "blocked"
     assert by_issue[201]["reason"] == "expected exactly one machine label"
     assert by_issue[202]["decision"] == "blocked"
-    assert by_issue[203]["reason"] == "expected exactly one agent label"
+    assert by_issue[203]["reason"] == "expected exactly one ai provider label"
     assert by_issue[204]["decision"] == "blocked"
     assert all(action["execute_provider"] is False for action in actions)
 
 
 def test_needs_plan_and_plan_review_are_report_only(tmp_path: Path) -> None:
     issues = [
-        _issue(301, ["machine:dev-primary", "agent:codex", "status:needs-plan"]),
-        _issue(302, ["machine:dev-primary", "agent:codex", "status:plan-review"]),
+        _issue(301, ["machine:dev-primary", "ai:codex", "status:needs-plan"]),
+        _issue(302, ["machine:dev-primary", "ai:codex", "status:plan-review"]),
     ]
 
     actions = module.plan_tick(issues, host_machine_label="machine:dev-primary", plan_marker_dir=tmp_path, readiness={"status": "pass"})
@@ -93,8 +93,8 @@ def test_needs_plan_and_plan_review_are_report_only(tmp_path: Path) -> None:
 def test_implementation_requires_plan_approved_and_marker(tmp_path: Path) -> None:
     (tmp_path / "402.md").write_text("approved", encoding="utf-8")
     issues = [
-        _issue(401, ["machine:dev-primary", "agent:codex", "status:plan-approved"]),
-        _issue(402, ["machine:dev-primary", "agent:codex", "status:plan-approved"]),
+        _issue(401, ["machine:dev-primary", "ai:codex", "status:plan-approved"]),
+        _issue(402, ["machine:dev-primary", "ai:codex", "status:plan-approved"]),
     ]
 
     actions = module.plan_tick(issues, host_machine_label="machine:dev-primary", plan_marker_dir=tmp_path, readiness={"status": "pass"})
@@ -108,7 +108,7 @@ def test_implementation_requires_plan_approved_and_marker(tmp_path: Path) -> Non
 
 def test_remote_ref_lease_is_required_before_execution(tmp_path: Path) -> None:
     (tmp_path / "501.md").write_text("approved", encoding="utf-8")
-    issue = _issue(501, ["machine:dev-primary", "agent:codex", "status:plan-approved"])
+    issue = _issue(501, ["machine:dev-primary", "ai:codex", "status:plan-approved"])
 
     without_lease = module.plan_tick([issue], host_machine_label="machine:dev-primary", plan_marker_dir=tmp_path, readiness={"status": "pass"}, lease_acquired=False)
     with_lease = module.plan_tick([issue], host_machine_label="machine:dev-primary", plan_marker_dir=tmp_path, readiness={"status": "pass"}, lease_acquired=True, worktree_clean=True)
@@ -120,9 +120,27 @@ def test_remote_ref_lease_is_required_before_execution(tmp_path: Path) -> None:
     assert with_lease[0]["execute_provider"] is True
 
 
+def test_legacy_agent_label_is_read_only_alias(tmp_path: Path) -> None:
+    (tmp_path / "502.md").write_text("approved", encoding="utf-8")
+    issue = _issue(502, ["machine:dev-primary", "agent:gemini", "status:plan-approved"])
+
+    actions = module.plan_tick(
+        [issue],
+        host_machine_label="machine:dev-primary",
+        plan_marker_dir=tmp_path,
+        readiness={"status": "pass"},
+        lease_acquired=True,
+        worktree_clean=True,
+    )
+
+    assert actions[0]["decision"] == "ready_to_execute"
+    assert actions[0]["provider"] == "agy"
+    assert actions[0]["provider_label"] == "agent:gemini"
+
+
 def test_dirty_readiness_blocks_worker(tmp_path: Path) -> None:
     (tmp_path / "601.md").write_text("approved", encoding="utf-8")
-    issue = _issue(601, ["machine:dev-primary", "agent:codex", "status:plan-approved"])
+    issue = _issue(601, ["machine:dev-primary", "ai:codex", "status:plan-approved"])
 
     actions = module.plan_tick([issue], host_machine_label="machine:dev-primary", plan_marker_dir=tmp_path, readiness={"status": "fail", "failures": ["dirty workspace"]}, lease_acquired=True)
 

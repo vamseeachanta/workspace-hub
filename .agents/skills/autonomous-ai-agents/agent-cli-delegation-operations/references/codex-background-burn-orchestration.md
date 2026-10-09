@@ -47,7 +47,7 @@ Class of task: quota-aware Codex lane orchestration that converts available Code
 2. Select useful lanes, not synthetic burn
    - Prefer `provider-work-queue.json -> provider_queues.codex.top_issues`.
    - Favor open issues with verified task/standing authority and current reviewed bounded implementation/test/refactor/documentation scope; labels are historical metadata.
-   - Respect existing `agent:*` labels and avoid issues already `status:working` unless recovering a known stalled lane.
+   - Respect existing `ai:*` labels and legacy `agent:*` aliases; avoid issues already `status:working` unless recovering a known stalled lane.
    - Keep about 3-5 concurrent Codex lanes; top up periodically rather than launching too many at once.
 
 3. Isolate each lane
@@ -65,7 +65,7 @@ Class of task: quota-aware Codex lane orchestration that converts available Code
 4. Coordinate GitHub
    - Add labels when safe:
      ```bash
-     gh issue edit NNNN --add-label agent:codex,status:working
+     gh issue edit NNNN --add-label ai:codex,status:working
      ```
    - Post an execution-start comment naming the branch/worktree and validation intent.
 
