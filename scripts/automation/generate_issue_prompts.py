@@ -8,7 +8,7 @@ its `cat:` and `domain:` labels, extracts paths and test commands from the
 issue's plan file if it exists, and writes a fully-populated prompt file.
 
 Usage:
-    uv run scripts/automation/generate_issue_prompts.py                   # all approved agent:claude issues
+    uv run scripts/automation/generate_issue_prompts.py                   # all approved ai:claude issues
     uv run scripts/automation/generate_issue_prompts.py --issue 1234      # single issue
     uv run scripts/automation/generate_issue_prompts.py --label "cat:bugfix"  # custom label filter
     uv run scripts/automation/generate_issue_prompts.py --dry-run         # preview to stdout
@@ -766,8 +766,8 @@ def main() -> None:
         description="Generate Claude-ready prompt files from approved GitHub issues.",
     )
     parser.add_argument("--issue", "-i", type=int, help="Generate for a single issue number")
-    parser.add_argument("--label", "-l", default="agent:claude",
-                        help="Label filter for issue queries (default: agent:claude)")
+    parser.add_argument("--label", "-l", default="ai:claude",
+                        help="Label filter for issue queries (default: ai:claude)")
     parser.add_argument("--status-label", default="",
                         help="Additional status label to require (e.g. status:plan-approved)")
     parser.add_argument("--dry-run", "-n", action="store_true",

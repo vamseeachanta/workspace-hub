@@ -161,6 +161,27 @@ def test_a_label_with_no_record_is_reported_never_adopted(tmp_path, trapped):
     assert [f.issue for f in orphans] == [OTHER]
 
 
+def test_a_marker_label_with_no_record_is_reported_as_legacy_not_drift(tmp_path, trapped):
+    """The status-label migration creates dispatch labels before run records exist."""
+    report = RC.reconcile(
+        tmp_path,
+        {OTHER: {"dispatch:ready", "dispatch:legacy-migrated", "machine:m"}},
+        now=_clock(),
+    )
+    assert report.outcomes == [], "a legacy label must not produce a record-backed item"
+    assert report.of_kind(RC.ORPHAN_LABEL) == []
+    legacy = report.of_kind(RC.LEGACY_LABEL)
+    assert [f.issue for f in legacy] == [OTHER]
+    assert "pre-migration" in legacy[0].detail
+
+
+def test_a_recordless_dispatch_label_without_the_marker_is_still_reported(tmp_path, trapped):
+    report = RC.reconcile(tmp_path, {OTHER: {"dispatch:ready", "machine:m"}},
+                          now=_clock())
+    assert [f.issue for f in report.of_kind(RC.ORPHAN_LABEL)] == [OTHER]
+    assert report.of_kind(RC.LEGACY_LABEL) == []
+
+
 def test_reconciling_label_only_input_leaves_the_records_directory_untouched(tmp_path):
     """Stronger than 'no state was inferred': nothing was written at all."""
     before = sorted(p.name for p in tmp_path.iterdir())
@@ -787,6 +808,23 @@ def test_every_lifecycle_state_has_a_style_to_be_created_with():
     labels = [name for name, _, _ in RC.label_specs()]
     assert labels == [RC.LABEL_FOR_STATE[s] for s in R.STATES]
     assert set(labels) == set(ALL_STATE_LABELS)
+
+
+def test_canonical_label_tsv_dispatch_rows_match_reconcile_source_of_truth():
+    """The fleet sync TSV must not redefine the dispatch lifecycle vocabulary."""
+    root = Path(__file__).resolve().parents[2]
+    rows = {}
+    for line in (root / "config/github/canonical-labels.tsv").read_text(
+        encoding="utf-8"
+    ).splitlines():
+        if not line or line.startswith("#"):
+            continue
+        name, colour, description = line.split("\t")
+        if name.startswith("dispatch:"):
+            rows[name] = (colour, description)
+
+    expected = {name: (colour, description) for name, colour, description in RC.label_specs()}
+    assert rows == expected
 
 
 def test_creating_a_label_that_already_exists_is_a_no_op(monkeypatch):

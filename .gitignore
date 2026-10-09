@@ -78,6 +78,7 @@ scripts/testing/benchmark-results/
 # Temporary and cache files
 .cache/
 .pytest_cache/
+config/agents/claude/memory-snapshots/
 .coverage
 htmlcov/
 .tox/

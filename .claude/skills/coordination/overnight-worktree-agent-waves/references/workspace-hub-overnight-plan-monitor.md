@@ -182,7 +182,7 @@ When the batch is an implementation/closeout batch rather than a pure plan-revie
    - After a reboot, Hermes background process state may be gone and the worker log/central summary may be empty or missing even though the implementation commit landed on `origin/main`.
    - If a claimed or discovered commit is already on the intended remote and contains exactly the owned paths, treat this as a **closeout-only reconciliation**, not a rerun trigger.
    - Re-run the prompt's read-only validation block against the committed files and check residual owned-path diffs only for the scoped paths.
-   - If validation passes but the issue is still open or still labeled `status:plan-approved`, write the missing central summary artifact, post a closeout comment, close the issue as completed, and move the label to `status:done`.
+   - If validation passes but the issue is still open or still labeled `status:plan-approved`, write the missing central summary artifact, post a closeout comment, close the issue as completed, and move the label to `dispatch:done`.
    - This closeout can be safe even while unrelated interactive agents are active in the repo, provided you do not mutate git state and only touch the external results artifact plus GitHub issue state.
 
 6. **Write an aggregate verification report**

@@ -12,7 +12,7 @@ Use this reference when an implementation is already committed and verified but 
 2. **Verify issue state after closure**
    - Confirm the issue is `CLOSED`.
    - Confirm the last/recent comment contains the closeout evidence.
-   - Move stale workflow labels such as `status:plan-approved` to a terminal label such as `status:done` when the repo label set supports it.
+   - Move stale workflow labels such as `status:plan-approved` to a terminal label such as `dispatch:done` when the repo label set supports it.
 
 3. **Handle GitHub remote ref-lock races safely**
    - A push can emit a remote rejection like `cannot lock ref ... is at <new_sha> but expected <old_sha>` even when the remote actually accepted the commit.

@@ -46,24 +46,6 @@ the design marks as owner-only.
    runtime drift status.
 ```
 
-## Claude permission rules (owner-run)
-
-Agents cannot change permission settings on any machine, locally or over SSH; the
-classifier refuses it as self-modification. The owner makes two moves:
-
-1. Edit the canonical `config/agents/claude/settings.json` on main: rules belong under
-   `permissions.allow` / `permissions.deny` (a top-level `deny` key is not read by Claude Code).
-2. Roll it out from one machine with
-   `scripts/operations/rollout-claude-permissions.sh [--apply] <alias>:<hub path> ...`
-   (`local:<hub path>` for the current machine). It fetches origin, reads the canonical file
-   without touching the checkout, and sets each machine's allow and deny lists to the union
-   of its own rules and the canonical ones, with a timestamped backup. Default is a dry run;
-   `--ref <branch>` previews an unmerged change. Agents may run the dry run.
-
-`scripts/_core/sync-agent-configs.sh` is not used for this: its jq merge replaces whole
-arrays (dropping machine-specific rules) and it deploys whatever the local checkout holds,
-which is stale or diverged on several hosts.
-
 ## What not to expect
 
 - The permission rules that let agents merge through `merge-when-clean.sh` or run `codex exec`
