@@ -31,7 +31,7 @@ Every 60-90 minutes:
 2. Check process liveness from PID/session files.
 3. Inspect logs for completion, blockers, or repeated sandbox/stdin stalls.
 4. Verify each completed lane with git status, recent commits, pushed branch/main ancestry, and GitHub comments/labels.
-5. Top up only from the vetted autonomous backlog; avoid launching duplicate work on an issue already `agent:codex` or `status:working` unless explicitly recovering it.
+5. Top up only from the vetted autonomous backlog; avoid launching duplicate work on an issue already `agent:codex` or `dispatch:active` unless explicitly recovering it.
 
 ## Supplemental audit when launch evidence is incomplete
 

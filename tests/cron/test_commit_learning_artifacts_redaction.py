@@ -103,12 +103,21 @@ def _install_fake_gh_and_git(tmp_path: Path, env: dict[str, str]) -> None:
     fake_git.write_text(
         "#!/usr/bin/env bash\n"
         "if [[ \"$1\" == -C && \"$3\" == pull && \"$4\" == --rebase ]]; then exit 0; fi\n"
-        "if [[ \"$1\" == -C && \"$3\" == push ]]; then exit 0; fi\n"
-        "if [[ \"$1\" == push ]]; then exit 0; fi\n"
+        "if [[ \"$1\" == -C && \"$3\" == push ]]; then [[ -n \"${FAKE_GIT_PUSH_MARKER:-}\" ]] && touch \"$FAKE_GIT_PUSH_MARKER\"; exit 0; fi\n"
+        "if [[ \"$1\" == push ]]; then [[ -n \"${FAKE_GIT_PUSH_MARKER:-}\" ]] && touch \"$FAKE_GIT_PUSH_MARKER\"; exit 0; fi\n"
         "exec " + real_git + " \"$@\"\n",
         encoding="utf-8",
     )
     fake_git.chmod(0o755)
+    env["PATH"] = f"{fake_bin}:{env['PATH']}"
+
+
+def _prepend_failing_rsync(tmp_path: Path, env: dict[str, str]) -> None:
+    fake_bin = tmp_path / "failing-rsync-bin"
+    fake_bin.mkdir(exist_ok=True)
+    fake_rsync = fake_bin / "rsync"
+    fake_rsync.write_text("#!/usr/bin/env bash\nexit 23\n", encoding="utf-8")
+    fake_rsync.chmod(0o755)
     env["PATH"] = f"{fake_bin}:{env['PATH']}"
 
 
@@ -263,6 +272,90 @@ def test_private_snapshot_second_run_with_fewer_local_files_deletes_nothing(tmp_
     host_root = private_repo / "hosts/ace-linux-1/config/agents/claude/memory-snapshots"
     assert (host_root / "keep.md").exists()
     assert (host_root / "drop-locally.md").exists()
+
+
+@pytest.mark.skipif(_bash() is None, reason="no POSIX bash")
+def test_private_snapshot_rsync_failure_does_not_commit_or_push(tmp_path):
+    repo, env = _setup(tmp_path, None)
+    subprocess.run(["git", "update-ref", "refs/remotes/origin/main", "HEAD"],
+                   cwd=repo, check=True, env=env)
+    _install_fake_gh_and_git(tmp_path, env)
+    _prepend_failing_rsync(tmp_path, env)
+    private_repo = tmp_path / "private-memory"
+    _init_private_repo(private_repo, env)
+    env["CLAUDE_MEMORY_SNAPSHOT_REPO"] = "local/private"
+    env["CLAUDE_MEMORY_SNAPSHOT_PRIVATE_CLONE"] = str(private_repo)
+    env["CLAUDE_MEMORY_SNAPSHOT_HOST"] = "ace-linux-1"
+    push_marker = tmp_path / "push-called"
+    env["FAKE_GIT_PUSH_MARKER"] = str(push_marker)
+
+    before_head = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=private_repo, env=env, text=True).strip()
+    mem = Path(env["HOME"]) / ".claude/projects/-mnt-local-analysis-workspace-hub/memory"
+    (mem / "new.md").write_text("new\n", encoding="utf-8")
+
+    r = subprocess.run([_bash(), "scripts/cron/commit-learning-artifacts.sh"],
+                       cwd=repo, env=env, capture_output=True, text=True)
+    after_head = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=private_repo, env=env, text=True).strip()
+
+    assert r.returncode != 0
+    assert before_head == after_head
+    assert not push_marker.exists()
+    assert not (private_repo / "hosts/ace-linux-1/config/agents/claude/memory-snapshots/new.md").exists()
+
+
+@pytest.mark.skipif(_bash() is None, reason="no POSIX bash")
+def test_private_snapshot_invalid_host_does_not_commit_or_push(tmp_path):
+    repo, env = _setup(tmp_path, None)
+    subprocess.run(["git", "update-ref", "refs/remotes/origin/main", "HEAD"],
+                   cwd=repo, check=True, env=env)
+    _install_fake_gh_and_git(tmp_path, env)
+    private_repo = tmp_path / "private-memory"
+    _init_private_repo(private_repo, env)
+    env["CLAUDE_MEMORY_SNAPSHOT_REPO"] = "local/private"
+    env["CLAUDE_MEMORY_SNAPSHOT_PRIVATE_CLONE"] = str(private_repo)
+    env["CLAUDE_MEMORY_SNAPSHOT_HOST"] = "!"
+    push_marker = tmp_path / "push-called"
+    env["FAKE_GIT_PUSH_MARKER"] = str(push_marker)
+
+    before_head = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=private_repo, env=env, text=True).strip()
+    mem = Path(env["HOME"]) / ".claude/projects/-mnt-local-analysis-workspace-hub/memory"
+    (mem / "new.md").write_text("new\n", encoding="utf-8")
+
+    r = subprocess.run([_bash(), "scripts/cron/commit-learning-artifacts.sh"],
+                       cwd=repo, env=env, capture_output=True, text=True)
+    after_head = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=private_repo, env=env, text=True).strip()
+
+    assert r.returncode != 0
+    assert before_head == after_head
+    assert not push_marker.exists()
+    hosts_root = private_repo / "hosts"
+    assert not hosts_root.exists() or not any(hosts_root.glob("*"))
+
+
+@pytest.mark.skipif(_bash() is None, reason="no POSIX bash")
+def test_private_snapshot_invalid_public_ref_does_not_commit_or_push(tmp_path):
+    repo, env = _setup(tmp_path, None)
+    _install_fake_gh_and_git(tmp_path, env)
+    private_repo = tmp_path / "private-memory"
+    _init_private_repo(private_repo, env)
+    env["CLAUDE_MEMORY_SNAPSHOT_REPO"] = "local/private"
+    env["CLAUDE_MEMORY_SNAPSHOT_PRIVATE_CLONE"] = str(private_repo)
+    env["CLAUDE_MEMORY_SNAPSHOT_HOST"] = "ace-linux-1"
+    env["CLAUDE_MEMORY_SNAPSHOT_PUBLIC_REF"] = "refs/heads/does-not-exist"
+    push_marker = tmp_path / "push-called"
+    env["FAKE_GIT_PUSH_MARKER"] = str(push_marker)
+
+    before_head = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=private_repo, env=env, text=True).strip()
+    mem = Path(env["HOME"]) / ".claude/projects/-mnt-local-analysis-workspace-hub/memory"
+    (mem / "new.md").write_text("new\n", encoding="utf-8")
+
+    r = subprocess.run([_bash(), "scripts/cron/commit-learning-artifacts.sh"],
+                       cwd=repo, env=env, capture_output=True, text=True)
+    after_head = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=private_repo, env=env, text=True).strip()
+
+    assert r.returncode != 0
+    assert before_head == after_head
+    assert not push_marker.exists()
 
 
 @pytest.mark.skipif(_bash() is None, reason="no POSIX bash")
