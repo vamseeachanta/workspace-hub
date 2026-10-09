@@ -1,0 +1,142 @@
+name: Public Surface Guard
+
+on:
+  pull_request:
+    branches:
+      - main
+    types: [opened, synchronize, reopened]
+  workflow_call:
+    inputs:
+      guard_ref:
+        description: workspace-hub ref containing the guard script
+        required: false
+        type: string
+        default: main
+      client_registry_path:
+        description: Optional path to a provisioned client-codename registry
+        required: false
+        type: string
+        default: ""
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  blocking-public-surface:
+    name: Blocking IP, Hostname, and Secret Guard
+    if: github.event.repository.private == false
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout target repository
+        uses: actions/checkout@v4
+        with:
+          path: target
+          fetch-depth: 0
+
+      - name: Checkout guard implementation
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ github.repository_owner }}/workspace-hub
+          ref: ${{ inputs.guard_ref || github.sha }}
+          path: guard
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
+        with:
+          enable-cache: true
+
+      - name: Scan PR added lines
+        working-directory: target
+        run: |
+          BASE_REF="origin/${{ github.base_ref || 'main' }}"
+          HEAD_REF="HEAD"
+          uv run --project ../guard python ../guard/scripts/enforcement/check-public-surface.py \
+            --base-ref "$BASE_REF" \
+            --head-ref "$HEAD_REF" \
+            --allowlist ../guard/config/public-surface-allowlist.yml \
+            --host-denylist ../guard/config/public-surface-host-denylist.txt
+
+  warn-client-identifiers:
+    name: Warn-Only Client Identifier Guard
+    if: github.event.repository.private == false
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    continue-on-error: true
+    steps:
+      - name: Checkout target repository
+        uses: actions/checkout@v4
+        with:
+          path: target
+          fetch-depth: 0
+
+      - name: Checkout guard implementation
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ github.repository_owner }}/workspace-hub
+          ref: ${{ inputs.guard_ref || github.sha }}
+          path: guard
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
+        with:
+          enable-cache: true
+
+      - name: Build warning comment
+        id: identifiers
+        continue-on-error: true
+        working-directory: target
+        run: |
+          REGISTRY="${{ inputs.client_registry_path }}"
+          if [[ -z "$REGISTRY" ]]; then
+            REGISTRY="../guard/config/client-wikis.yml"
+          fi
+          BASE_REF="origin/${{ github.base_ref || 'main' }}"
+          HEAD_REF="HEAD"
+          uv run --project ../guard python ../guard/scripts/enforcement/check-public-surface.py \
+            --mode identifiers \
+            --base-ref "$BASE_REF" \
+            --head-ref "$HEAD_REF" \
+            --allowlist ../guard/config/public-surface-allowlist.yml \
+            --client-registry "$REGISTRY" \
+            --markdown-output ../identifier-warning.md
+          if [[ -s ../identifier-warning.md ]]; then
+            echo "has_findings=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "has_findings=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Post or update warning comment
+        if: steps.identifiers.outputs.has_findings == 'true' && github.event_name == 'pull_request'
+        continue-on-error: true
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const marker = '<!-- public-surface-identifier-warning -->';
+            const body = `${marker}\n${fs.readFileSync('identifier-warning.md', 'utf8')}`;
+            const {owner, repo} = context.repo;
+            const issue_number = context.payload.pull_request.number;
+            const comments = await github.paginate(github.rest.issues.listComments, {
+              owner,
+              repo,
+              issue_number,
+              per_page: 100,
+            });
+            const existing = comments.find((comment) => comment.body && comment.body.includes(marker));
+            if (existing) {
+              await github.rest.issues.updateComment({owner, repo, comment_id: existing.id, body});
+            } else {
+              await github.rest.issues.createComment({owner, repo, issue_number, body});
+            }
