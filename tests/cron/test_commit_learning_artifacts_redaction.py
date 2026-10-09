@@ -51,6 +51,26 @@ def test_no_raw_copy_of_host_state_into_the_public_tree():
     assert "self-check" in text
 
 
+def test_public_memory_and_state_paths_are_not_git_added_by_publishers():
+    scripts = [
+        SCRIPT,
+        ROOT / "scripts" / "_core" / "sync-agent-configs.sh",
+    ]
+    forbidden = (
+        "config/agents/hermes/memories",
+        "config/agents/claude/memory-snapshots",
+        "config/agents/codex/state-snapshots",
+        "config/agents/gemini/state-snapshots",
+        ".claude/state/cross-agent-memory.yaml",
+    )
+    for script in scripts:
+        for line in script.read_text(encoding="utf-8").splitlines():
+            stripped = line.strip()
+            if not stripped.startswith("git add"):
+                continue
+            assert not any(path in stripped for path in forbidden), f"{script}: {stripped}"
+
+
 def _setup(tmp_path: Path, deny: Path | None):
     repo = tmp_path / "repo"
     for rel in NEEDED:
@@ -102,7 +122,7 @@ def _install_fake_gh_and_git(tmp_path: Path, env: dict[str, str]) -> None:
     fake_git = fake_bin / "git"
     fake_git.write_text(
         "#!/usr/bin/env bash\n"
-        "if [[ \"$1\" == -C && \"$3\" == pull && \"$4\" == --rebase ]]; then exit 0; fi\n"
+        "if [[ \"$1\" == -C && \"$3\" == pull && \"$4\" == --ff-only ]]; then exit 0; fi\n"
         "if [[ \"$1\" == -C && \"$3\" == push ]]; then exit 0; fi\n"
         "if [[ \"$1\" == push ]]; then exit 0; fi\n"
         "exec " + real_git + " \"$@\"\n",
@@ -137,14 +157,12 @@ def test_run_redacts_host_copies_and_skips_name_bearing_files(tmp_path):
                        cwd=repo, env=env, capture_output=True, text=True)
     assert r.returncode == 0, r.stdout + r.stderr
     hist = repo / "config/agents/codex/state-snapshots/history.jsonl"
-    assert hist.exists()
-    assert SYNTH not in hist.read_text(encoding="utf-8").lower()
-    assert '"clean"' in hist.read_text(encoding="utf-8")
+    assert not hist.exists()
     snaps = repo / "config/agents/claude/memory-snapshots"
     assert not snaps.exists()
     private_snaps = private_repo / "config/agents/claude/memory-snapshots"
     assert not private_snaps.exists()
-    assert "Would update private Claude memory snapshots" in r.stdout
+    assert "Would update private agent memory snapshots" in r.stdout
     assert SYNTH not in (r.stdout + r.stderr).lower()
 
 
@@ -223,7 +241,8 @@ def test_run_proceeds_on_a_host_without_the_private_list(tmp_path):
     r = subprocess.run([_bash(), "scripts/cron/commit-learning-artifacts.sh", "--dry-run"],
                        cwd=repo, env=env, capture_output=True, text=True)
     assert r.returncode == 0, r.stdout + r.stderr
-    assert (repo / "config/agents/codex/state-snapshots/history.jsonl").exists()
+    assert not (repo / "config/agents/codex/state-snapshots/history.jsonl").exists()
+    assert "Would update private agent memory snapshots" in r.stdout
 
 
 @pytest.mark.skipif(_bash() is None, reason="no POSIX bash")
@@ -234,6 +253,64 @@ def test_run_fails_closed_when_a_named_private_list_is_missing(tmp_path):
     assert r.returncode != 0
     assert not (repo / "config/agents/codex/state-snapshots/history.jsonl").exists()
     assert not (repo / "config/agents/claude/memory-snapshots").exists()
+
+
+@pytest.mark.skipif(_bash() is None, reason="no POSIX bash")
+def test_memory_and_state_paths_are_never_staged_in_public_repo(tmp_path):
+    repo, env = _setup(tmp_path, None)
+    subprocess.run(["git", "update-ref", "refs/remotes/origin/main", "HEAD"],
+                   cwd=repo, check=True, env=env)
+    _install_fake_gh_and_git(tmp_path, env)
+    private_repo = tmp_path / "private-memory"
+    _init_private_repo(private_repo, env)
+    env["CLAUDE_MEMORY_SNAPSHOT_REPO"] = "local/private"
+    env["CLAUDE_MEMORY_SNAPSHOT_PRIVATE_CLONE"] = str(private_repo)
+    env["CLAUDE_MEMORY_SNAPSHOT_HOST"] = "ace-linux-1"
+
+    (Path(env["HOME"]) / ".hermes/memories").mkdir(parents=True)
+    (Path(env["HOME"]) / ".hermes/memories/MEMORY.md").write_text("hermes\n", encoding="utf-8")
+    (Path(env["HOME"]) / ".gemini").mkdir(parents=True)
+    (Path(env["HOME"]) / ".gemini/state.json").write_text("{}\n", encoding="utf-8")
+    (repo / ".claude/state").mkdir(parents=True)
+    (repo / ".claude/state/cross-agent-memory.yaml").write_text("entries: []\n", encoding="utf-8")
+
+    r = subprocess.run([_bash(), "scripts/cron/commit-learning-artifacts.sh"],
+                       cwd=repo, env=env, capture_output=True, text=True)
+    assert r.returncode == 0, r.stdout + r.stderr
+
+    public_names = subprocess.run(["git", "status", "--short"],
+                                  cwd=repo, env=env, capture_output=True, text=True, check=True).stdout
+    forbidden = (
+        "config/agents/hermes/memories",
+        "config/agents/claude/memory-snapshots",
+        "config/agents/codex/state-snapshots",
+        "config/agents/gemini/state-snapshots",
+        ".claude/state/cross-agent-memory.yaml",
+    )
+    assert not any(path in public_names for path in forbidden)
+    host_root = private_repo / "hosts/ace-linux-1"
+    assert (host_root / "config/agents/hermes/memories/MEMORY.md.snapshot").exists()
+    assert (host_root / "config/agents/codex/state-snapshots/history.jsonl").exists()
+    assert (host_root / "config/agents/gemini/state-snapshots/state.json").exists()
+    assert (host_root / ".claude/state/cross-agent-memory.yaml").exists()
+
+
+@pytest.mark.skipif(_bash() is None, reason="no POSIX bash")
+def test_private_snapshot_host_folder_must_be_role_slug(tmp_path):
+    repo, env = _setup(tmp_path, None)
+    _install_fake_gh_and_git(tmp_path, env)
+    private_repo = tmp_path / "private-memory"
+    _init_private_repo(private_repo, env)
+    env["CLAUDE_MEMORY_SNAPSHOT_REPO"] = "local/private"
+    env["CLAUDE_MEMORY_SNAPSHOT_PRIVATE_CLONE"] = str(private_repo)
+    env["CLAUDE_MEMORY_SNAPSHOT_HOST"] = "physical-hostname"
+
+    r = subprocess.run([_bash(), "scripts/cron/commit-learning-artifacts.sh"],
+                       cwd=repo, env=env, capture_output=True, text=True)
+
+    assert r.returncode != 0
+    assert "approved role slug" in r.stderr
+    assert not (private_repo / "hosts/physical-hostname").exists()
 
 
 @pytest.mark.skipif(_bash() is None, reason="no POSIX bash")

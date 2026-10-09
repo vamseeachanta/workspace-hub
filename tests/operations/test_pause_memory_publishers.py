@@ -60,6 +60,22 @@ def test_pause_cron_check_is_non_mutating(tmp_path: Path):
     assert "#PAUSED-X02" not in state.read_text(encoding="utf-8")
 
 
+def test_pause_cron_check_reports_already_paused_lines(tmp_path: Path):
+    fake, state = _write_fake_crontab(
+        tmp_path,
+        "#PAUSED-X02 0 2 * * * bash scripts/cron/comprehensive-learning-nightly.sh\n"
+        "#PAUSED-X02 25 4 * * * bash scripts/memory/bridge-hermes-claude.sh --commit\n",
+    )
+
+    result = _run(tmp_path, fake, "--check")
+
+    assert result.returncode == 0
+    assert "already paused: scripts/cron/comprehensive-learning-nightly.sh" in result.stdout
+    assert "already paused: scripts/memory/bridge-hermes-claude.sh" in result.stdout
+    assert "would pause" not in result.stdout
+    assert state.read_text(encoding="utf-8").count("#PAUSED-X02") == 2
+
+
 def test_pause_cron_apply_backs_up_and_comments_targets(tmp_path: Path):
     fake, state = _write_fake_crontab(
         tmp_path,
@@ -90,6 +106,9 @@ def test_pause_cron_undo_removes_marker(tmp_path: Path):
     result = _run(tmp_path, fake, "--undo")
 
     assert result.returncode == 0, result.stderr
+    backup = tmp_path / "crontab.bak-20261009-134400"
+    assert backup.exists()
+    assert "#PAUSED-X02" in backup.read_text(encoding="utf-8")
     updated = state.read_text(encoding="utf-8")
     assert "#PAUSED-X02" not in updated
     assert "bridge-hermes-claude.sh --commit" in updated

@@ -53,7 +53,10 @@ case "$mode" in
     --check)
         matches=0
         for target in "${TARGETS[@]}"; do
-            if grep -F "$target" "$current" >/dev/null 2>&1; then
+            if grep -F "${MARKER}" "$current" | grep -F "$target" >/dev/null 2>&1; then
+                matches=$((matches + 1))
+                echo "already paused: $target"
+            elif grep -F "$target" "$current" >/dev/null 2>&1; then
                 matches=$((matches + 1))
                 echo "would pause: $target"
             else
@@ -71,9 +74,11 @@ case "$mode" in
         echo "backup: $BACKUP_PATH"
         ;;
     --undo)
+        cp "$current" "$BACKUP_PATH"
         while IFS= read -r line || [[ -n "$line" ]]; do
             transform_undo "$line"
         done < "$current" > "$updated"
         run_crontab - < "$updated"
+        echo "backup: $BACKUP_PATH"
         ;;
 esac

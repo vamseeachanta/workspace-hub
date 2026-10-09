@@ -159,6 +159,7 @@ def test_bridge_writes_private_per_host_folder(tmp_path: Path):
         **os_environ_minimal(home),
         "MEMORY_PRIVATE_REPO_DIR": str(private),
         "MEMORY_PRIVATE_ALLOW_LOCAL_TEST": "1",
+        "MEMORY_PRIVATE_TEST_HARNESS": "1",
         "MEMORY_BRIDGE_HOST_SLUG": "ace-linux-2",
     }
 
@@ -170,6 +171,24 @@ def test_bridge_writes_private_per_host_folder(tmp_path: Path):
     assert (private / "hosts" / "ace-linux-2" / "readback" / "codex.md").exists()
     assert (private / "hosts" / "ace-linux-2" / "readback" / "gemini.md").exists()
     assert not (private / ".claude" / "memory").exists()
+
+
+def test_local_private_bypass_requires_test_harness(tmp_path: Path):
+    private = tmp_path / "private"
+    private.mkdir()
+    _git(private, "init", "-q")
+    home = tmp_path / "home"
+    env = {
+        **os_environ_minimal(home),
+        "MEMORY_PRIVATE_REPO_DIR": str(private),
+        "MEMORY_PRIVATE_ALLOW_LOCAL_TEST": "1",
+        "MEMORY_BRIDGE_HOST_SLUG": "ace-linux-2",
+    }
+
+    result = subprocess.run(["bash", str(BRIDGE)], capture_output=True, text=True, env=env)
+
+    assert result.returncode != 0
+    assert "only valid under the test harness" in result.stderr
 
 
 def os_environ_minimal(home: Path) -> dict[str, str]:

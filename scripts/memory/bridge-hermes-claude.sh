@@ -36,6 +36,7 @@ COMMIT_MODE="${1:-}"
 PRIVATE_REPO="${MEMORY_PRIVATE_REPO_DIR:-${HOME}/claude-memory-snapshots}"
 PRIVATE_REPO_SLUG="vamseeachanta/claude-memory-snapshots"
 ALLOW_LOCAL_TEST="${MEMORY_PRIVATE_ALLOW_LOCAL_TEST:-}"
+TEST_HARNESS="${MEMORY_PRIVATE_TEST_HARNESS:-}"
 HOST_SLUG="${MEMORY_BRIDGE_HOST_SLUG:-}"
 
 approved_host_slug() {
@@ -69,7 +70,19 @@ require_private_memory_repo() {
         echo "[bridge] private memory repo is required and was not found: ${PRIVATE_REPO}" >&2
         return 1
     fi
-    if [[ "${ALLOW_LOCAL_TEST}" != "1" ]]; then
+    if [[ "${ALLOW_LOCAL_TEST}" == "1" && "${TEST_HARNESS}" != "1" ]]; then
+        echo "[bridge] MEMORY_PRIVATE_ALLOW_LOCAL_TEST is only valid under the test harness" >&2
+        return 1
+    fi
+    if [[ "${ALLOW_LOCAL_TEST}" == "1" ]]; then
+        case "${PRIVATE_REPO}" in
+            /tmp/*) ;;
+            *)
+                echo "[bridge] local test private repo must be under /tmp" >&2
+                return 1
+                ;;
+        esac
+    else
         local remote_url
         remote_url="$(git -C "${PRIVATE_REPO}" config --get remote.origin.url || true)"
         case "${remote_url}" in
