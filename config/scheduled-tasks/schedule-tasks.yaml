@@ -854,9 +854,9 @@ tasks:
 
   - id: coordinator-dispatch-loop
     label: Coordinator label dispatch loop preview (#4000)
-    schedule: "manual"
+    schedule: "0 0 31 2 *"
     install: manual-registration-only
-    machines: [dev-primary, ace-linux-1]
+    machines: [dev-primary]
     roles: [control-plane]
     requires: [bash, python3, uv, git, gh]
     prefer: dev-primary
