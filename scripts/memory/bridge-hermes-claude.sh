@@ -1,13 +1,8 @@
 #!/usr/bin/env bash
-# bridge-hermes-claude.sh — Refresh repo-tracked memory outputs (.claude/memory/)
+# bridge-hermes-claude.sh — Refresh private cross-provider memory snapshots.
 #
-# Architecture: Memory travels with the repository via git.
-#   On Linux (ace-linux-1): Hermes writes memory → ~/.hermes/memories/ → this
-#     script extracts canonical facts → .claude/memory/ → git commit + push
-#   On Windows (licensed-win-1, Git Bash): No Hermes — this script still
-#     refreshes context.md, snapshots Claude auto-memory, and mirrors topic
-#     files → git commit + push.  Hermes-specific steps are skipped gracefully.
-#   Any machine doing git pull gets the same context automatically.
+# Architecture: private memory snapshots travel through
+# vamseeachanta/claude-memory-snapshots, under hosts/<role-slug>/.
 #
 # Usage:
 #   bash scripts/memory/bridge-hermes-claude.sh           # dry-run (no commit)
@@ -22,10 +17,9 @@
 
 set -euo pipefail
 
-REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || echo ".")"
-MEMORY_DIR="${REPO_ROOT}/.claude/memory"
-TEMPLATE_DIR="${MEMORY_DIR}/templates"
-TOPICS_DIR="${MEMORY_DIR}/topics"
+REPO_ROOT="${BRIDGE_REPO_ROOT:-$(git rev-parse --show-toplevel 2>/dev/null || echo ".")}"
+PUBLIC_MEMORY_DIR="${REPO_ROOT}/.claude/memory"
+TEMPLATE_DIR="${PUBLIC_MEMORY_DIR}/templates"
 HERMES_MEM_DIR="${HOME}/.hermes/memories"
 # Resolve Claude auto-memory across workspace moves. Deriving the slug inline from
 # the CURRENT repo path silently broke when the ecosystem moved to /mnt/ace/ws:
@@ -39,11 +33,77 @@ source "${REPO_ROOT}/scripts/memory/resolve-auto-memory.sh"
 CLAUDE_MEM_DIR="$(resolve_claude_memory_dir "${REPO_ROOT}" "${HOME}")" || CLAUDE_MEM_DIR=""
 TIMESTAMP="$(date +%Y-%m-%d)"
 COMMIT_MODE="${1:-}"
+PRIVATE_REPO="${MEMORY_PRIVATE_REPO_DIR:-${HOME}/claude-memory-snapshots}"
+PRIVATE_REPO_SLUG="vamseeachanta/claude-memory-snapshots"
+ALLOW_LOCAL_TEST="${MEMORY_PRIVATE_ALLOW_LOCAL_TEST:-}"
+HOST_SLUG="${MEMORY_BRIDGE_HOST_SLUG:-}"
+
+approved_host_slug() {
+    case "$1" in
+        ace-win-1|ace-win-2|ace-linux-1|ace-linux-2|gpu-claw|spark) return 0 ;;
+        *) return 1 ;;
+    esac
+}
+
+detect_host_slug() {
+    if [[ -n "${HOST_SLUG}" ]]; then
+        approved_host_slug "${HOST_SLUG}" || {
+            echo "[bridge] unsupported MEMORY_BRIDGE_HOST_SLUG: ${HOST_SLUG}" >&2
+            return 1
+        }
+        return 0
+    fi
+    local short
+    short="$(hostname -s 2>/dev/null | tr '[:upper:]' '[:lower:]' || true)"
+    if approved_host_slug "${short}"; then
+        HOST_SLUG="${short}"
+        return 0
+    fi
+    echo "[bridge] cannot derive approved role slug; set MEMORY_BRIDGE_HOST_SLUG" >&2
+    return 1
+}
+
+require_private_memory_repo() {
+    detect_host_slug || return 1
+    if [[ ! -d "${PRIVATE_REPO}/.git" ]]; then
+        echo "[bridge] private memory repo is required and was not found: ${PRIVATE_REPO}" >&2
+        return 1
+    fi
+    if [[ "${ALLOW_LOCAL_TEST}" != "1" ]]; then
+        local remote_url
+        remote_url="$(git -C "${PRIVATE_REPO}" config --get remote.origin.url || true)"
+        case "${remote_url}" in
+            git@github.com:vamseeachanta/claude-memory-snapshots.git|\
+https://github.com/vamseeachanta/claude-memory-snapshots.git|\
+https://github.com/vamseeachanta/claude-memory-snapshots) ;;
+            *)
+                echo "[bridge] private memory repo origin must be ${PRIVATE_REPO_SLUG}" >&2
+                return 1
+                ;;
+        esac
+        if ! command -v gh >/dev/null 2>&1; then
+            echo "[bridge] gh is required to verify private repo visibility" >&2
+            return 1
+        fi
+        local visibility
+        visibility="$(gh repo view "${PRIVATE_REPO_SLUG}" --json visibility --jq .visibility 2>/dev/null || true)"
+        if [[ "${visibility}" != "PRIVATE" ]]; then
+            echo "[bridge] ${PRIVATE_REPO_SLUG} visibility is not verified PRIVATE" >&2
+            return 1
+        fi
+    fi
+}
+
+require_private_memory_repo
+HOST_ROOT="${PRIVATE_REPO}/hosts/${HOST_SLUG}"
+MEMORY_DIR="${HOST_ROOT}/memory"
+TOPICS_DIR="${MEMORY_DIR}/topics"
+READBACK_DIR="${HOST_ROOT}/readback"
 
 # Colours
 GREEN='\033[0;32m'; YELLOW='\033[1;33m'; NC='\033[0m'
 
-mkdir -p "${MEMORY_DIR}" "${TOPICS_DIR}"
+mkdir -p "${MEMORY_DIR}" "${TOPICS_DIR}" "${READBACK_DIR}"
 
 echo "[bridge] Starting memory bridge — ${TIMESTAMP}"
 
@@ -136,34 +196,27 @@ fi
 cat > "${MEMORY_DIR}/context.md" << 'CONTEXT_EOF'
 # Cross-Machine Context
 
-> Git-tracked. Travels with the repo. Managed by scripts/memory/bridge-hermes-claude.sh
-> Source of truth for environment conventions on every machine that clones workspace-hub.
+> Private snapshot. Managed by scripts/memory/bridge-hermes-claude.sh.
+> Source of truth for environment conventions in the private memory archive.
 
 ## Machines
 
 | Machine | OS | Hermes | Python cmd | Workspace root |
 |---------|----|--------|------------|----------------|
-| ace-linux-1 | Linux | YES | `uv run` | `/mnt/local-analysis/workspace-hub` |
-| licensed-win-1 | Windows | NO | `python` | `<workspace-root>\workspace-hub` |
+| ace-linux-1 | Linux | YES | `uv run` | role-local workspace-hub checkout |
+| ace-win-1 | Windows | NO | `python` | role-local workspace-hub checkout |
 
 ## Python Command Rule
 
 - **Linux**: ALWAYS `uv run` — never bare `python3` or `pip`
-- **Windows**: Use `python` — uv is NOT installed on licensed-win-1
+- **Windows**: Use `python` unless the role-local environment has `uv`
 
 ## Workspace Layout (Linux)
 
-- `/mnt/local-analysis/workspace-hub/` — the real git repo mount (harness / control-plane)
-- `~/workspace-hub` — **sparse overlay** on ace-linux-1; writes may fail silently
-  - If a write via tool fails: write to `/tmp/` first, then `mv` via terminal to the real mount
-- **Tier-1 repos live as SIBLINGS at `/mnt/local-analysis/<repo>` — NOT nested under workspace-hub.**
+- The role-local workspace-hub checkout is the harness/control-plane repository.
+- **Tier-1 repos live as SIBLINGS of workspace-hub — NOT nested under workspace-hub.**
   `workspace-hub` is the harness/control-plane, not a parent for tier-1 checkouts. Each is a
   separate git repo; commit from inside it, never from the workspace-hub root.
-  - `/mnt/local-analysis/digitalmodel/` — separate git repo (vamseeachanta/digitalmodel.git)
-  - `/mnt/local-analysis/worldenergydata/` — separate git repo
-  - `/mnt/local-analysis/assetutilities/` — separate git repo
-  - `/mnt/local-analysis/assethold/` — separate git repo
-  - `/mnt/local-analysis/aceengineer-strategy/` — private GTM strategy repo (sibling, not nested)
 
 ## Windows Path Conventions
 
@@ -173,20 +226,20 @@ cat > "${MEMORY_DIR}/context.md" << 'CONTEXT_EOF'
 
 ## Memory Sync Model
 
-Memory travels with the repo via git. No Hermes needed on Windows.
+Memory snapshots travel through the private claude-memory-snapshots repository. No Hermes is needed on Windows.
 
-1. **Hermes (ace-linux-1)**: Writes authoritative facts to `~/.hermes/memories/`
+1. **Hermes on control-plane Linux**: Writes authoritative facts to `~/.hermes/memories/`
 2. **Bridge script** (`scripts/memory/bridge-hermes-claude.sh`): Reads Hermes memory
    (if present), injects it into `agents.md` via template, regenerates `context.md`,
-   snapshots Claude auto-memory, mirrors topic files, commits and pushes.
-   Runs on both Linux (cron) and Windows (Task Scheduler).
-3. **Windows (licensed-win-1)**: Runs the same bridge script via Task Scheduler.
+   snapshots Claude auto-memory, mirrors topic files, and writes to
+   `hosts/<role-slug>/memory/` in the private repository.
+3. **Windows role hosts**: Run the same bridge script via Task Scheduler.
    Hermes steps are skipped (no Hermes on Windows); context.md, auto-memory
-   snapshot, and topic mirrors are refreshed and pushed back to repo.
+   snapshot, and topic mirrors are refreshed in the private repository.
 4. **Return enrichment**: New lessons learned on any machine go into `KNOWLEDGE.md`
-   or topic files, committed and pushed. Next `git pull` on any machine picks them up.
+   or topic files in the private repository.
 
-Git IS the sync mechanism.
+Private Git is the sync mechanism. The public workspace-hub repository is not a memory snapshot sink.
 
 ## Legal Compliance
 
@@ -224,7 +277,7 @@ else
 fi
 
 # ---------------------------------------------------------------------------
-# 6. Mirror Claude auto-memory topic files → .claude/memory/topics/
+# 6. Mirror Claude auto-memory topic files → private host topics/
 #    Includes only non-sensitive feedback/preference files
 # ---------------------------------------------------------------------------
 MIRROR_PATTERNS=("feedback_*.md" "working-style.md" "ai-orchestration.md"
@@ -247,14 +300,14 @@ if [[ -d "${CLAUDE_MEM_DIR}" ]]; then
             MIRRORED=$((MIRRORED + 1))
         done
     done
-    echo "[bridge] Mirrored ${MIRRORED} topic files to .claude/memory/topics/"
+    echo "[bridge] Mirrored ${MIRRORED} topic files to hosts/${HOST_SLUG}/memory/topics/"
 fi
 
 # ---------------------------------------------------------------------------
 # 7. Report
 # ---------------------------------------------------------------------------
 echo ""
-echo -e "${GREEN}[bridge] Files updated:${NC}"
+echo -e "${GREEN}[bridge] Private files updated for ${HOST_SLUG}:${NC}"
 for file in agents.md context.md claude-auto-memory.md; do
     fp="${MEMORY_DIR}/${file}"
     [[ -f "${fp}" ]] && printf "  ✅ %-30s (%d lines)\n" "${file}" "$(wc -l < "${fp}")"
@@ -264,89 +317,37 @@ echo ""
 
 # ---------------------------------------------------------------------------
 # 7b. Cross-provider read-back slices (#2841 Phase A, gap 1/2)
-#   Source = the git-tracked .claude/memory/ snapshot (machine-invariant — F1), so
-#   the committed Codex slice is identical across machines. The Codex slice is
-#   regenerated + committed ONLY on the single designated machine to avoid the
-#   cross-machine churn race; the Hermes local sink is written on every machine
-#   (local-only, NOT committed).
+#   Source = the private host snapshot under claude-memory-snapshots. The bridge
+#   writes provider read-back slices into the private host folder. Public
+#   config/agents/*/MEMORY.runtime.md files are retained as reviewed redacted
+#   subsets and are updated only through normal public repo review.
 # ---------------------------------------------------------------------------
 CURATE="${REPO_ROOT}/scripts/memory/curate_readback_slice.py"
-HOSTNAME_SHORT=$(hostname -s 2>/dev/null | tr '[:upper:]' '[:lower:]' || echo unknown)
-SLICE_OWNER=false
-[[ "${HOSTNAME_SHORT}" == "ace-linux-1" || "${HOSTNAME_SHORT}" == "dev-primary" ]] && SLICE_OWNER=true
 if [[ -f "${CURATE}" ]]; then
     if command -v uv >/dev/null 2>&1 && uv run --no-project python -c "print(1)" >/dev/null 2>&1; then
         RBPY=(uv run --no-project python)
     else
         RBPY=(python3)
     fi
-    # Topics INDEX (#3189) — regenerate on every machine; deterministic (no timestamp),
-    # lives under .claude/memory/topics/ so the existing `git add .claude/memory/` commits it.
+    # Topics INDEX (#3189) — regenerate inside the private host snapshot.
     _idx="${REPO_ROOT}/scripts/memory/build_topics_index.py"
     if [[ -f "${_idx}" ]]; then
         if "${RBPY[@]}" "${_idx}" --topics-dir "${TOPICS_DIR}" >/dev/null 2>&1; then
-            echo "  ✅ .claude/memory/topics/INDEX.md (topics index)"
+            echo "  ✅ hosts/${HOST_SLUG}/memory/topics/INDEX.md (topics index)"
         else
             echo "  ⚠️  WARN: topics INDEX generation failed — previous kept"
         fi
     fi
-    # F1: write to a temp file and mv ONLY on success — a failed emit must never
-    # clobber the existing slice to 0 bytes (`> file` truncates before python runs).
-    # Hermes local sink (every machine; not committed)
-    if [[ -d "${HOME}/.hermes/memories" ]]; then
-        _tmp_h=$(mktemp)
-        if "${RBPY[@]}" "${CURATE}" --target hermes --source-dir "${REPO_ROOT}/.claude/memory" > "${_tmp_h}"; then
-            mv "${_tmp_h}" "${HOME}/.hermes/memories/cross-provider.md"
-            echo "  ✅ ~/.hermes/memories/cross-provider.md (Hermes read-back slice)"
+    for target in hermes codex gemini; do
+        _tmp_slice=$(mktemp)
+        if "${RBPY[@]}" "${CURATE}" --target "${target}" --source-dir "${MEMORY_DIR}" > "${_tmp_slice}"; then
+            mv "${_tmp_slice}" "${READBACK_DIR}/${target}.md"
+            echo "  ✅ hosts/${HOST_SLUG}/readback/${target}.md"
         else
-            rm -f "${_tmp_h}"
-            echo "  ⚠️  WARN: Hermes read-back slice emit failed — previous kept"
+            rm -f "${_tmp_slice}"
+            echo "  ⚠️  WARN: ${target} read-back slice emit failed — previous kept"
         fi
-    fi
-    # Codex slice (repo-tracked) — single designated machine only (F1)
-    if [[ "${SLICE_OWNER}" == true ]]; then
-        _tmp_c=$(mktemp)
-        if "${RBPY[@]}" "${CURATE}" --target codex --source-dir "${REPO_ROOT}/.claude/memory" > "${_tmp_c}"; then
-            mv "${_tmp_c}" "${REPO_ROOT}/config/agents/codex/MEMORY.runtime.md"
-            echo "  ✅ config/agents/codex/MEMORY.runtime.md (Codex read-back slice)"
-        else
-            rm -f "${_tmp_c}"
-            echo "  ⚠️  WARN: Codex read-back slice emit failed — previous kept (not clobbered)"
-        fi
-        # Gemini slice (#3189) — repo-tracked, same temp-then-mv + slice-owner gating as Codex
-        _tmp_g=$(mktemp)
-        if "${RBPY[@]}" "${CURATE}" --target gemini --source-dir "${REPO_ROOT}/.claude/memory" > "${_tmp_g}"; then
-            mv "${_tmp_g}" "${REPO_ROOT}/config/agents/gemini/MEMORY.runtime.md"
-            echo "  ✅ config/agents/gemini/MEMORY.runtime.md (Gemini read-back slice)"
-        else
-            rm -f "${_tmp_g}"
-            echo "  ⚠️  WARN: Gemini read-back slice emit failed — previous kept (not clobbered)"
-        fi
-    fi
-fi
-echo ""
-
-# ---------------------------------------------------------------------------
-# 7c. Emit Hermes-pattern CANDIDATES (#3253, epic #3248) — review-gated.
-#   Writes ONLY .claude/state/candidates/hermes-pattern-candidates.md (status: candidate);
-#   never a canonical surface. Promotion stays the HUMAN owner-review gate (same as #3252).
-#   Self-contained launcher (HPY) — does NOT reference RBPY, which is scoped only inside the §7b
-#   read-back guard and would be UNBOUND here (under `set -u` an unbound expansion aborts the shell
-#   BEFORE the `||` guard runs). Rule-4 guarded: HPY is assigned on both if/else branches before
-#   use, and the call is `|| echo …(soft)`-guarded, so no path through §7c can abort the bridge.
-# ---------------------------------------------------------------------------
-EXTRACT="${REPO_ROOT}/scripts/memory/extract_hermes_patterns.py"
-if [[ -f "${EXTRACT}" ]]; then
-    if command -v uv >/dev/null 2>&1 && uv run --no-project python -c "print(1)" >/dev/null 2>&1; then
-        HPY=(uv run --no-project python)
-    else
-        HPY=(python3)
-    fi
-    if "${HPY[@]}" "${EXTRACT}" >/dev/null 2>&1; then
-        echo "  ✅ .claude/state/candidates/hermes-pattern-candidates.md (Hermes pattern candidates)"
-    else
-        echo "  ⚠️  WARN: hermes-pattern candidate emit failed (soft)" >&2
-    fi
+    done
 fi
 echo ""
 
@@ -354,13 +355,10 @@ echo ""
 # 8. Commit (only if --commit flag and changes exist)
 # ---------------------------------------------------------------------------
 if [[ "${COMMIT_MODE}" == "--commit" ]]; then
-    # #3384: commit path extracted to a unit-tested helper. It fixes the self-stash bug (the old
-    # inline block stashed its own staged changes before committing → committed nothing for ~6 weeks),
-    # writes the daily machine-independent liveness heartbeat, and does a bounded non-FF push retry.
-    # The whole commit is owner-gated inside the helper (avoids cross-machine snapshot thrash).
+    # Private-only commit path. Fails closed when the private repository is unavailable.
     # shellcheck source=scripts/memory/bridge-commit.sh
     source "${REPO_ROOT}/scripts/memory/bridge-commit.sh"
-    bridge_commit_and_push "${REPO_ROOT}" "${SLICE_OWNER}" "${TIMESTAMP}"
+    bridge_private_commit_and_push "${PRIVATE_REPO}" "${HOST_SLUG}" "${TIMESTAMP}"
 else
-    echo -e "${YELLOW}[bridge] Dry-run complete. Add --commit to commit and push.${NC}"
+    echo -e "${YELLOW}[bridge] Dry-run complete. Add --commit to commit and push the private repo.${NC}"
 fi
