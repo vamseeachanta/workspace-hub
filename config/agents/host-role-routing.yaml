@@ -1,0 +1,112 @@
+# host-role-routing.yaml — which host runs which kind of work under the
+# coordinator protocol (rewire L3, workspace-hub#4000; RFC #3997).
+#
+# Read by: the coordinator (docs/standards/COORDINATOR_PROTOCOL.md) and, once
+# built, its dispatch loop. Host ids are the keys of
+# config/workstations/registry.yaml (hostnames and addresses live there, or in
+# the private tier; this file must not carry IPs or client names).
+#
+# This file routes AI lanes. Licensed solver work keeps its own deterministic
+# path: .claude/memory/kanban/routing-rules.yaml (capability, licence
+# attestation, shared-tenancy wip caps) and scripts/dispatch/. Nothing here
+# widens that path or puts a model in it.
+#
+# Fields
+#   role          coordinator | lane-runner | tool-runner | overflow | portable | inactive
+#   ai_lanes      which providers may run AI lanes here (claude, codex); [] = none
+#   max_local_lanes  cap on concurrent AI lanes started by the coordinator on this host
+#   accounts      same-accounts | separate-accounts — whether the host's AI CLIs
+#                 are signed in to the coordinator's AI accounts
+#   dispatch      how the coordinator gets work onto the host
+#   notes         one-line reason
+
+version: 1
+updated: 2026-10-09
+
+coordinator:
+  primary: ace-win-2          # ws014: admin/document coordinator host
+  resume_on: [dev-primary]    # state lives in issues + labels; any of these can resume
+  rule: >-
+    Exactly one coordinator session drives an objective at a time. It owns
+    integration, push, labels and issue closeout. If the primary is offline,
+    any resume_on host picks up from labels alone.
+
+hosts:
+  dev-primary:                # ace-linux-1
+    role: lane-runner
+    ai_lanes: [codex, claude]
+    max_local_lanes: 6
+    accounts: same-accounts
+    dispatch: "Codex lane runner: ~/ws/_codex-jobs picks lane:codex + dispatch:ready; Claude lanes as subagents or worktree sessions"
+    notes: "Primary Codex lane host and heavy builder; bulk output to /mnt/ace"
+
+  dev-secondary:              # ace-linux-2
+    role: lane-runner
+    ai_lanes: [codex, claude]
+    max_local_lanes: 4
+    accounts: same-accounts
+    dispatch: "ssh + worktree lane; Codex lanes when dev-primary is saturated"
+    notes: "Second Linux lane host; also comms-dispatch and sim-worker roles"
+
+  ace-win-2:                  # ws014
+    role: coordinator
+    ai_lanes: [claude, codex]
+    max_local_lanes: 2
+    accounts: same-accounts
+    dispatch: "local subagents only; a third concurrent local lane is refused and routed to dev-primary/dev-secondary"
+    notes: >-
+      16 GB RAM with little free; coordinator/admin and document work. It is
+      also a licensed-solver host: its licensed work stays on the deterministic
+      dispatch path, and AI lanes never drive a licensed tool.
+
+  ace-win-1:                  # licensed host, other AI accounts
+    role: tool-runner
+    ai_lanes: []
+    max_local_lanes: 0
+    accounts: separate-accounts
+    dispatch: "deterministic licensed dispatch only (routing-rules.yaml, scheduled-task path)"
+    notes: >-
+      Runs on separate AI accounts and is shared with other users. The
+      coordinator never starts AI lanes here. Work that needs an AI session on
+      this host is routed through the owner, or written as an objective that
+      the host's own session picks up; results come back as issue comments/PRs.
+
+  gpu-claw:
+    role: tool-runner
+    ai_lanes: []
+    max_local_lanes: 0
+    accounts: separate-accounts
+    dispatch: "deterministic CFD/sim jobs from dev-primary (sim-worker)"
+    notes: "Compute node; jobs are scripts, not model sessions"
+
+  macbook-portable:
+    role: portable
+    ai_lanes: [claude]
+    max_local_lanes: 1
+    accounts: same-accounts
+    dispatch: "owner-driven only; can steer or resume the coordinator while travelling"
+    notes: "Not a lane farm"
+
+  gali-linux-compute-1:
+    role: inactive
+    ai_lanes: []
+    max_local_lanes: 0
+    accounts: separate-accounts
+    dispatch: "none until access is registered"
+    notes: "Access method TBD in registry.yaml"
+
+cloud:
+  role: overflow
+  ai_lanes: [claude]
+  dispatch: "cloud Claude sessions for read-only or worktree lanes when hosts are at cap; no client data, no licensed work"
+
+routing_rules:
+  - "lane:codex + dispatch:ready -> dev-primary Codex lane runner (dev-secondary if dev-primary is at cap)"
+  - "lane:claude -> coordinator subagents first; worktree builder lanes on dev-primary/dev-secondary when the coordinator host is at max_local_lanes"
+  - "licensed solver work -> routing-rules.yaml deterministic path only; never an AI lane"
+  - "work needing a separate-accounts host's own AI session -> board card (decision:*) or an objective that host's session picks up; never cross-account dispatch"
+  - "client-data lanes stay on hosts and repos allowed by agent-data-handling-contract.md; never cloud overflow"
+
+stall_rule:
+  condition: "dispatch:active for more than 48 h with no issue comment"
+  action: "coordinator raises a decision:* board card on the issue (L4)"
