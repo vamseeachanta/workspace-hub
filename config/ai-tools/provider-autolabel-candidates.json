@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-09T13:21:20.890414Z",
+  "generated_at": "2026-10-09T17:21:23.010286Z",
   "apply_mode": false,
   "threshold": 0.9,
   "eligible_count": 5,
@@ -22,52 +22,19 @@
       "priority_rank": 1,
       "suggested_provider": "codex",
       "routing_reason": "implementation/test/fix language",
-      "provider_priority": "highest",
-      "provider_status": "underused",
+      "provider_priority": "high",
+      "provider_status": "needs_cleanup",
       "work_type": [
         "research",
         "implementation"
       ],
-      "target_label": "agent:codex",
-      "confidence": 0.95,
+      "target_label": "ai:codex",
+      "confidence": 0.9,
       "confidence_reasons": [
         "execution-ready",
         "priority-labeled",
         "strong-codex-language-match",
-        "provider-highest-priority"
-      ],
-      "eligible": true
-    },
-    {
-      "number": 3839,
-      "title": "fix(digitalmodel/fatigue): two of four rainflow paths understate stress range, understating damage",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3839",
-      "labels": [
-        "priority:high",
-        "cat:engineering",
-        "domain:marine",
-        "status:plan-approved",
-        "gate:completeness",
-        "lane:claude"
-      ],
-      "updatedAt": "2026-09-11T20:21:08Z",
-      "execution_ready": true,
-      "priority_rank": 1,
-      "suggested_provider": "codex",
-      "routing_reason": "implementation/test/fix language",
-      "provider_priority": "highest",
-      "provider_status": "underused",
-      "work_type": [
-        "research",
-        "implementation"
-      ],
-      "target_label": "agent:codex",
-      "confidence": 0.95,
-      "confidence_reasons": [
-        "execution-ready",
-        "priority-labeled",
-        "strong-codex-language-match",
-        "provider-highest-priority"
+        "provider-high-priority"
       ],
       "eligible": true
     },
@@ -97,7 +64,7 @@
         "implementation",
         "strategy"
       ],
-      "target_label": "agent:claude",
+      "target_label": "ai:claude",
       "confidence": 0.9,
       "confidence_reasons": [
         "execution-ready",
@@ -131,12 +98,45 @@
         "implementation",
         "strategy"
       ],
-      "target_label": "agent:claude",
+      "target_label": "ai:claude",
       "confidence": 0.9,
       "confidence_reasons": [
         "execution-ready",
         "priority-labeled",
         "strong-claude-language-match",
+        "provider-high-priority"
+      ],
+      "eligible": true
+    },
+    {
+      "number": 3839,
+      "title": "fix(digitalmodel/fatigue): two of four rainflow paths understate stress range, understating damage",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3839",
+      "labels": [
+        "priority:high",
+        "cat:engineering",
+        "domain:marine",
+        "status:plan-approved",
+        "gate:completeness",
+        "lane:claude"
+      ],
+      "updatedAt": "2026-09-11T20:21:08Z",
+      "execution_ready": true,
+      "priority_rank": 1,
+      "suggested_provider": "codex",
+      "routing_reason": "implementation/test/fix language",
+      "provider_priority": "high",
+      "provider_status": "needs_cleanup",
+      "work_type": [
+        "research",
+        "implementation"
+      ],
+      "target_label": "ai:codex",
+      "confidence": 0.9,
+      "confidence_reasons": [
+        "execution-ready",
+        "priority-labeled",
+        "strong-codex-language-match",
         "provider-high-priority"
       ],
       "eligible": true
@@ -165,7 +165,7 @@
         "implementation",
         "strategy"
       ],
-      "target_label": "agent:claude",
+      "target_label": "ai:claude",
       "confidence": 0.9,
       "confidence_reasons": [
         "execution-ready",
@@ -174,69 +174,6 @@
         "provider-high-priority"
       ],
       "eligible": true
-    },
-    {
-      "number": 3787,
-      "title": "pytest pays a large fixed startup tax before any test runs \u2014 38s git call, 59MB DB query on collect-only, 487 hidden test files",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3787",
-      "labels": [
-        "bug",
-        "status:plan-approved",
-        "gate:completeness",
-        "lane:claude"
-      ],
-      "updatedAt": "2026-08-03T07:03:39Z",
-      "execution_ready": true,
-      "priority_rank": 4,
-      "suggested_provider": "codex",
-      "routing_reason": "implementation/test/fix language",
-      "provider_priority": "highest",
-      "provider_status": "underused",
-      "work_type": [
-        "research",
-        "implementation"
-      ],
-      "target_label": "agent:codex",
-      "confidence": 0.8,
-      "confidence_reasons": [
-        "execution-ready",
-        "strong-codex-language-match",
-        "provider-highest-priority"
-      ],
-      "eligible": false
-    },
-    {
-      "number": 3592,
-      "title": "equality matrix: reclassify harness/scheduler/memory rows \u2014 uniform vote mis-grades per-role differences + Windows placeholder data poisons majority",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3592",
-      "labels": [
-        "cat:harness",
-        "domain:workstations",
-        "machine:dev-primary",
-        "status:plan-approved",
-        "gate:completeness",
-        "lane:claude"
-      ],
-      "updatedAt": "2026-08-01T06:14:03Z",
-      "execution_ready": true,
-      "priority_rank": 4,
-      "suggested_provider": "claude",
-      "routing_reason": "strategy/workflow/architecture language",
-      "provider_priority": "high",
-      "provider_status": "underused",
-      "work_type": [
-        "research",
-        "implementation",
-        "strategy"
-      ],
-      "target_label": "agent:claude",
-      "confidence": 0.75,
-      "confidence_reasons": [
-        "execution-ready",
-        "strong-claude-language-match",
-        "provider-high-priority"
-      ],
-      "eligible": false
     },
     {
       "number": 3702,
@@ -263,7 +200,7 @@
         "implementation",
         "strategy"
       ],
-      "target_label": "agent:claude",
+      "target_label": "ai:claude",
       "confidence": 0.75,
       "confidence_reasons": [
         "execution-ready",
@@ -273,127 +210,32 @@
       "eligible": false
     },
     {
-      "number": 3788,
-      "title": "bug(dispatch): reconcile.py reads an open-only label snapshot, so every CLOSED issue reports false LABEL-MISSING",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3788",
+      "number": 3787,
+      "title": "pytest pays a large fixed startup tax before any test runs \u2014 38s git call, 59MB DB query on collect-only, 487 hidden test files",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3787",
       "labels": [
         "bug",
-        "priority:high",
-        "cat:operations",
-        "machine:dev-primary",
-        "status:needs-plan",
-        "domain:routing"
+        "status:plan-approved",
+        "gate:completeness",
+        "lane:claude"
       ],
-      "updatedAt": "2026-09-26T22:10:49Z",
-      "execution_ready": false,
-      "priority_rank": 1,
+      "updatedAt": "2026-08-03T07:03:39Z",
+      "execution_ready": true,
+      "priority_rank": 4,
       "suggested_provider": "codex",
       "routing_reason": "implementation/test/fix language",
-      "provider_priority": "highest",
-      "provider_status": "underused",
+      "provider_priority": "high",
+      "provider_status": "needs_cleanup",
       "work_type": [
         "research",
         "implementation"
       ],
-      "target_label": "agent:codex",
-      "confidence": 0.6,
+      "target_label": "ai:codex",
+      "confidence": 0.75,
       "confidence_reasons": [
-        "priority-labeled",
+        "execution-ready",
         "strong-codex-language-match",
-        "provider-highest-priority"
-      ],
-      "eligible": false
-    },
-    {
-      "number": 3821,
-      "title": "bug(equality): restore collector idempotency and macOS atomic-publish test portability",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3821",
-      "labels": [
-        "bug",
-        "priority:high",
-        "cat:harness",
-        "domain:testing",
-        "machine:multi",
-        "status:needs-plan",
-        "lane:codex"
-      ],
-      "updatedAt": "2026-09-03T18:01:25Z",
-      "execution_ready": false,
-      "priority_rank": 1,
-      "suggested_provider": "codex",
-      "routing_reason": "implementation/test/fix language",
-      "provider_priority": "highest",
-      "provider_status": "underused",
-      "work_type": [
-        "research",
-        "implementation"
-      ],
-      "target_label": "agent:codex",
-      "confidence": 0.6,
-      "confidence_reasons": [
-        "priority-labeled",
-        "strong-codex-language-match",
-        "provider-highest-priority"
-      ],
-      "eligible": false
-    },
-    {
-      "number": 3696,
-      "title": "chore(machines): 6 unpushed commits stranded in secondary working copies on ace-linux-2 (incl. one clone with no remote)",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3696",
-      "labels": [
-        "priority:medium",
-        "cat:operations",
-        "domain:workstations",
-        "machine:dev-primary"
-      ],
-      "updatedAt": "2026-07-31T08:33:56Z",
-      "execution_ready": false,
-      "priority_rank": 2,
-      "suggested_provider": "codex",
-      "routing_reason": "implementation/test/fix language",
-      "provider_priority": "highest",
-      "provider_status": "underused",
-      "work_type": [
-        "research",
-        "implementation"
-      ],
-      "target_label": "agent:codex",
-      "confidence": 0.6,
-      "confidence_reasons": [
-        "priority-labeled",
-        "strong-codex-language-match",
-        "provider-highest-priority"
-      ],
-      "eligible": false
-    },
-    {
-      "number": 3792,
-      "title": "feat(scheduler): no transaction attestation exists for systemd-user surfaces, so they can only ever declare missing_transaction",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3792",
-      "labels": [
-        "enhancement",
-        "priority:medium",
-        "cat:harness",
-        "domain:workstations",
-        "status:needs-plan"
-      ],
-      "updatedAt": "2026-08-03T08:17:43Z",
-      "execution_ready": false,
-      "priority_rank": 2,
-      "suggested_provider": "codex",
-      "routing_reason": "implementation/test/fix language",
-      "provider_priority": "highest",
-      "provider_status": "underused",
-      "work_type": [
-        "implementation"
-      ],
-      "target_label": "agent:codex",
-      "confidence": 0.6,
-      "confidence_reasons": [
-        "priority-labeled",
-        "strong-codex-language-match",
-        "provider-highest-priority"
+        "provider-high-priority"
       ],
       "eligible": false
     },
@@ -420,74 +262,12 @@
       "work_type": [
         "research"
       ],
-      "target_label": "agent:agy",
+      "target_label": "ai:agy",
       "confidence": 0.6,
       "confidence_reasons": [
         "priority-labeled",
         "strong-agy-language-match",
         "provider-highest-priority"
-      ],
-      "eligible": false
-    },
-    {
-      "number": 3842,
-      "title": "refactor(fatigue): consolidate seven rainflow counting paths onto one",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3842",
-      "labels": [
-        "priority:medium",
-        "cat:engineering",
-        "domain:marine",
-        "lane:claude"
-      ],
-      "updatedAt": "2026-09-11T20:21:01Z",
-      "execution_ready": false,
-      "priority_rank": 2,
-      "suggested_provider": "codex",
-      "routing_reason": "implementation/test/fix language",
-      "provider_priority": "highest",
-      "provider_status": "underused",
-      "work_type": [
-        "research",
-        "implementation"
-      ],
-      "target_label": "agent:codex",
-      "confidence": 0.6,
-      "confidence_reasons": [
-        "priority-labeled",
-        "strong-codex-language-match",
-        "provider-highest-priority"
-      ],
-      "eligible": false
-    },
-    {
-      "number": 3596,
-      "title": "Compliance alert: W30 \u2014 18% (critical)",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3596",
-      "labels": [
-        "cat:operations",
-        "priority:critical",
-        "machine:dev-primary",
-        "compliance-alert",
-        "domain:harness"
-      ],
-      "updatedAt": "2026-07-31T08:33:49Z",
-      "execution_ready": false,
-      "priority_rank": 0,
-      "suggested_provider": "claude",
-      "routing_reason": "strategy/workflow/architecture language",
-      "provider_priority": "high",
-      "provider_status": "underused",
-      "work_type": [
-        "research",
-        "implementation",
-        "strategy"
-      ],
-      "target_label": "agent:claude",
-      "confidence": 0.55,
-      "confidence_reasons": [
-        "priority-labeled",
-        "strong-claude-language-match",
-        "provider-high-priority"
       ],
       "eligible": false
     },
@@ -514,7 +294,7 @@
         "implementation",
         "strategy"
       ],
-      "target_label": "agent:claude",
+      "target_label": "ai:claude",
       "confidence": 0.55,
       "confidence_reasons": [
         "priority-labeled",
@@ -544,11 +324,224 @@
         "implementation",
         "strategy"
       ],
-      "target_label": "agent:claude",
+      "target_label": "ai:claude",
       "confidence": 0.55,
       "confidence_reasons": [
         "priority-labeled",
         "strong-claude-language-match",
+        "provider-high-priority"
+      ],
+      "eligible": false
+    },
+    {
+      "number": 3808,
+      "title": "Compliance alert: W33 \u2014 0% (critical)",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3808",
+      "labels": [
+        "priority:critical",
+        "compliance-alert"
+      ],
+      "updatedAt": "2026-08-16T11:45:06Z",
+      "execution_ready": false,
+      "priority_rank": 0,
+      "suggested_provider": "claude",
+      "routing_reason": "strategy/workflow/architecture language",
+      "provider_priority": "high",
+      "provider_status": "underused",
+      "work_type": [
+        "research",
+        "implementation",
+        "strategy"
+      ],
+      "target_label": "ai:claude",
+      "confidence": 0.55,
+      "confidence_reasons": [
+        "priority-labeled",
+        "strong-claude-language-match",
+        "provider-high-priority"
+      ],
+      "eligible": false
+    },
+    {
+      "number": 3809,
+      "title": "Compliance alert: W34 \u2014 0% (critical)",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3809",
+      "labels": [
+        "priority:critical",
+        "compliance-alert"
+      ],
+      "updatedAt": "2026-08-23T11:45:05Z",
+      "execution_ready": false,
+      "priority_rank": 0,
+      "suggested_provider": "claude",
+      "routing_reason": "strategy/workflow/architecture language",
+      "provider_priority": "high",
+      "provider_status": "underused",
+      "work_type": [
+        "research",
+        "implementation",
+        "strategy"
+      ],
+      "target_label": "ai:claude",
+      "confidence": 0.55,
+      "confidence_reasons": [
+        "priority-labeled",
+        "strong-claude-language-match",
+        "provider-high-priority"
+      ],
+      "eligible": false
+    },
+    {
+      "number": 3788,
+      "title": "bug(dispatch): reconcile.py reads an open-only label snapshot, so every CLOSED issue reports false LABEL-MISSING",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3788",
+      "labels": [
+        "bug",
+        "priority:high",
+        "cat:operations",
+        "machine:dev-primary",
+        "status:needs-plan",
+        "domain:routing"
+      ],
+      "updatedAt": "2026-09-26T22:10:49Z",
+      "execution_ready": false,
+      "priority_rank": 1,
+      "suggested_provider": "codex",
+      "routing_reason": "implementation/test/fix language",
+      "provider_priority": "high",
+      "provider_status": "needs_cleanup",
+      "work_type": [
+        "research",
+        "implementation"
+      ],
+      "target_label": "ai:codex",
+      "confidence": 0.55,
+      "confidence_reasons": [
+        "priority-labeled",
+        "strong-codex-language-match",
+        "provider-high-priority"
+      ],
+      "eligible": false
+    },
+    {
+      "number": 3821,
+      "title": "bug(equality): restore collector idempotency and macOS atomic-publish test portability",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3821",
+      "labels": [
+        "bug",
+        "priority:high",
+        "cat:harness",
+        "domain:testing",
+        "machine:multi",
+        "status:needs-plan",
+        "lane:codex"
+      ],
+      "updatedAt": "2026-09-03T18:01:25Z",
+      "execution_ready": false,
+      "priority_rank": 1,
+      "suggested_provider": "codex",
+      "routing_reason": "implementation/test/fix language",
+      "provider_priority": "high",
+      "provider_status": "needs_cleanup",
+      "work_type": [
+        "research",
+        "implementation"
+      ],
+      "target_label": "ai:codex",
+      "confidence": 0.55,
+      "confidence_reasons": [
+        "priority-labeled",
+        "strong-codex-language-match",
+        "provider-high-priority"
+      ],
+      "eligible": false
+    },
+    {
+      "number": 3696,
+      "title": "chore(machines): 6 unpushed commits stranded in secondary working copies on ace-linux-2 (incl. one clone with no remote)",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3696",
+      "labels": [
+        "priority:medium",
+        "cat:operations",
+        "domain:workstations",
+        "machine:dev-primary"
+      ],
+      "updatedAt": "2026-07-31T08:33:56Z",
+      "execution_ready": false,
+      "priority_rank": 2,
+      "suggested_provider": "codex",
+      "routing_reason": "implementation/test/fix language",
+      "provider_priority": "high",
+      "provider_status": "needs_cleanup",
+      "work_type": [
+        "research",
+        "implementation"
+      ],
+      "target_label": "ai:codex",
+      "confidence": 0.55,
+      "confidence_reasons": [
+        "priority-labeled",
+        "strong-codex-language-match",
+        "provider-high-priority"
+      ],
+      "eligible": false
+    },
+    {
+      "number": 3792,
+      "title": "feat(scheduler): no transaction attestation exists for systemd-user surfaces, so they can only ever declare missing_transaction",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3792",
+      "labels": [
+        "enhancement",
+        "priority:medium",
+        "cat:harness",
+        "domain:workstations",
+        "status:needs-plan"
+      ],
+      "updatedAt": "2026-08-03T08:17:43Z",
+      "execution_ready": false,
+      "priority_rank": 2,
+      "suggested_provider": "codex",
+      "routing_reason": "implementation/test/fix language",
+      "provider_priority": "high",
+      "provider_status": "needs_cleanup",
+      "work_type": [
+        "implementation"
+      ],
+      "target_label": "ai:codex",
+      "confidence": 0.55,
+      "confidence_reasons": [
+        "priority-labeled",
+        "strong-codex-language-match",
+        "provider-high-priority"
+      ],
+      "eligible": false
+    },
+    {
+      "number": 3842,
+      "title": "refactor(fatigue): consolidate seven rainflow counting paths onto one",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3842",
+      "labels": [
+        "priority:medium",
+        "cat:engineering",
+        "domain:marine",
+        "lane:claude"
+      ],
+      "updatedAt": "2026-09-11T20:21:01Z",
+      "execution_ready": false,
+      "priority_rank": 2,
+      "suggested_provider": "codex",
+      "routing_reason": "implementation/test/fix language",
+      "provider_priority": "high",
+      "provider_status": "needs_cleanup",
+      "work_type": [
+        "research",
+        "implementation"
+      ],
+      "target_label": "ai:codex",
+      "confidence": 0.55,
+      "confidence_reasons": [
+        "priority-labeled",
+        "strong-codex-language-match",
         "provider-high-priority"
       ],
       "eligible": false
@@ -572,7 +565,7 @@
       "work_type": [
         "research"
       ],
-      "target_label": "agent:agy",
+      "target_label": "ai:agy",
       "confidence": 0.45,
       "confidence_reasons": [
         "strong-agy-language-match",

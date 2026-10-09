@@ -1,16 +1,16 @@
 {
-  "generated_at": "2026-10-09T13:21:18.269255Z",
+  "generated_at": "2026-10-09T17:21:20.425980Z",
   "current_week": "2026-W41",
   "inputs": {
     "utilization_path": "/mnt/ace/ws/workspace-hub/config/ai-tools/provider-utilization-weekly.json",
     "audit_path": "/mnt/ace/ws/workspace-hub/analysis/provider-session-ecosystem-audit.json",
-    "utilization_generated_at": "2026-10-09T13:21:18.127661Z",
-    "audit_generated_at": "2026-10-05T09:15:05Z"
+    "utilization_generated_at": "2026-10-09T17:21:20.244767Z",
+    "audit_generated_at": "2026-08-03T09:15:08Z"
   },
   "recommended_provider_order": [
-    "codex",
     "agy",
-    "claude"
+    "claude",
+    "codex"
   ],
   "recommendations": [
     {
@@ -22,10 +22,10 @@
       "quota_source": "unavailable",
       "sessions_current_week": 7,
       "post_records_current_week": 8,
-      "audit_post_records": 123527,
-      "missing_repo_reads": 9479,
-      "python3_per_1k_records": 9.09,
-      "migration_debt_per_1k_records": 13.96,
+      "audit_post_records": 123411,
+      "missing_repo_reads": 9480,
+      "python3_per_1k_records": 9.1,
+      "migration_debt_per_1k_records": 13.97,
       "top_migration_hint": "legacy_work_queue_transition",
       "top_tools": [
         {
@@ -57,16 +57,16 @@
     },
     {
       "provider": "codex",
-      "status": "underused",
-      "priority": "highest",
-      "reported_utilization_pct": 0.0,
+      "status": "needs_cleanup",
+      "priority": "high",
+      "reported_utilization_pct": 26.0,
       "quota_basis": "quota",
-      "quota_source": "history.jsonl-estimate",
+      "quota_source": "app-server-live",
       "sessions_current_week": 33,
       "post_records_current_week": 1382,
-      "audit_post_records": 208011,
-      "missing_repo_reads": 1709,
-      "python3_per_1k_records": 13.6,
+      "audit_post_records": 206929,
+      "missing_repo_reads": 1705,
+      "python3_per_1k_records": 13.67,
       "migration_debt_per_1k_records": 0.05,
       "top_migration_hint": "llm_wiki_spinout_path_drift",
       "top_tools": [
@@ -140,7 +140,7 @@
     }
   ],
   "summary": {
-    "highest_priority_provider": "codex",
-    "highest_priority_reason": "Route bounded implementation/test/refactor issues to Codex immediately."
+    "highest_priority_provider": "agy",
+    "highest_priority_reason": "Batch 5-6 related research/recon tasks into agy sessions."
   }
 }
