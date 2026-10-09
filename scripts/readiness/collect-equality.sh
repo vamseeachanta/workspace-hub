@@ -425,6 +425,36 @@ PY
 ) || true
 fi
 
+# ── task_dispatch (#3968): provider-neutral directed dispatch route readiness.
+# Route evidence is read from local state only; the collector never SSHes or
+# touches live hosts. Missing/stale/blocked route evidence fails closed in the
+# matrix consumer.
+td_status="not-ready"; td_ready=0; td_total=0; td_blocked="[]"; td_stale="[]"; td_missing="[]"
+if [[ "${#PYTHON_CMD[@]}" -gt 0 ]]; then
+  td_json="$("${PYTHON_CMD[@]}" - "$WS" <<'PY' 2>/dev/null || true
+import json
+import sys
+from pathlib import Path
+
+ws = Path(sys.argv[1])
+sys.path.insert(0, str(ws / "src"))
+from workspace_hub.workstations import task_dispatch
+
+registry = task_dispatch.load_registry(ws / "config" / "workstations" / "registry.yaml")
+evidence = task_dispatch.load_route_evidence_dir(ws / ".claude" / "state" / "task-dispatch")
+print(json.dumps(task_dispatch.task_dispatch_summary(registry, evidence)))
+PY
+)"
+  if [[ -n "$td_json" ]] && have jq; then
+    td_status=$(printf '%s' "$td_json" | jq -r '.status // "not-ready"' 2>/dev/null || echo not-ready)
+    td_ready=$(printf '%s' "$td_json" | jq -r '.ready_routes // 0' 2>/dev/null || echo 0)
+    td_total=$(printf '%s' "$td_json" | jq -r '.total_routes // 0' 2>/dev/null || echo 0)
+    td_blocked=$(printf '%s' "$td_json" | jq -c '.blocked_routes // []' 2>/dev/null || echo '[]')
+    td_stale=$(printf '%s' "$td_json" | jq -c '.stale_routes // []' 2>/dev/null || echo '[]')
+    td_missing=$(printf '%s' "$td_json" | jq -c '.missing_routes // []' 2>/dev/null || echo '[]')
+  fi
+fi
+
 # ── emit (generated_at + headroom + mtime + job_count + checkout_sha are EXCLUDED from the
 #          hash; dirty + behind_main + origin_ref_age_h ARE hashed — A1/BC5: exclude the pure
 #          churn (sha) ONLY, so every freshness-state field stays live in the committed report
@@ -508,6 +538,13 @@ ${provider_harness_yaml}
     last_publish_at: "$(yesc "$ph_ts")"
     last_publish_duration_s: ${ph_dur}
     last_publish_rc: ${ph_rc}
+  task_dispatch:
+    status: "$(yesc "$td_status")"
+    ready_routes: ${td_ready}
+    total_routes: ${td_total}
+    blocked_routes: ${td_blocked}
+    stale_routes: ${td_stale}
+    missing_routes: ${td_missing}
 YAML
 FULL="generated_at: \"${RUN_TS}\""$'\n'"${BODY}"
 

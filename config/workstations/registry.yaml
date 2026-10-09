@@ -18,8 +18,15 @@ machines:
       managed: true
     ssh: ace-linux-1
     tailscale_ip: 10.1.0.1
+    task_dispatch:
+      enabled: true
+      ssh_alias: ace-linux-1
+      providers: [claude, codex]
+      shell: bash
+      scheduled_task_path: null
+      evidence_freshness_hours: 24
     capabilities:
-      agent_clis: [claude, gemini]
+      agent_clis: [claude, codex, gemini]
       languages: [python3, bash]
       tools: [uv, git, gh, npm, hermes, timeout]
       gpu: false
@@ -184,8 +191,15 @@ machines:
       managed: true
     ssh: ace-linux-2
     tailscale_ip: 10.1.0.2
+    task_dispatch:
+      enabled: true
+      ssh_alias: ace-linux-2
+      providers: [claude, codex]
+      shell: bash
+      scheduled_task_path: null
+      evidence_freshness_hours: 24
     capabilities:
-      agent_clis: [claude]
+      agent_clis: [claude, codex]
       languages: [python3, bash]
       tools: [blender, openfoam, freecad, gmsh, paraview, calculix, meshio, capytaine, tmux, uv, git, gh, hermes]
       gpu: nvidia-t400
@@ -241,9 +255,16 @@ machines:
     # in this file: peer hosts carry synthetic 10.1.0.x values rather than their
     # real tailnet addresses. A wrong address would be worse than none.
     tailscale_ip: null
+    task_dispatch:
+      enabled: true
+      ssh_alias: ace-win-1
+      providers: [claude, codex]
+      shell: git-bash
+      scheduled_task_path: '\AceEngineer\TaskDispatch'
+      evidence_freshness_hours: 24
     capabilities:
       agent_clis: [claude, codex, gemini]
-      languages: [bash]  # git-bash / MINGW64
+      languages: [bash, python3]  # git-bash / MINGW64
       tools: [orcaflex, ansys, git, uv]
       gpu: false
     storage:
@@ -293,9 +314,16 @@ machines:
       managed: true
     ssh: null
     tailscale_ip: null
+    task_dispatch:
+      enabled: true
+      ssh_alias: ace-win-2
+      providers: [claude, codex]
+      shell: git-bash
+      scheduled_task_path: '\AceEngineer\TaskDispatch'
+      evidence_freshness_hours: 24
     capabilities:
       agent_clis: [claude, codex, gemini]
-      languages: [bash]
+      languages: [bash, python3]
       tools: [orcaflex, ansys, git, uv]
       gpu: false
     repos:
@@ -331,8 +359,15 @@ machines:
       roles: [sim-worker]
       managed: true
     ssh: gpu-claw
+    task_dispatch:
+      enabled: true
+      ssh_alias: gpu-claw
+      providers: [claude, codex]
+      shell: bash
+      scheduled_task_path: null
+      evidence_freshness_hours: 24
     capabilities:
-      agent_clis: [claude]
+      agent_clis: [claude, codex]
       languages: [python3, bash]
       tools: [git, gh, npm]                        # uv NOT installed yet — onboarding step
       gpu: nvidia-rtx3090-x2

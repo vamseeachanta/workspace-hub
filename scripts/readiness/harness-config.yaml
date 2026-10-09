@@ -45,7 +45,7 @@ hook_blocking_patterns:
 workstations:
   dev-primary:
     ws_hub_path: /mnt/local-analysis/workspace-hub
-    ssh_target: null
+    ssh_target: ace-linux-1
     report_path: .claude/state/harness-readiness-dev-primary.yaml
     # #2801 equality baseline (cold-dim conformance — declared, not voted)
     role: high-context-linux-execution
@@ -125,7 +125,7 @@ workstations:
     scheduler_baseline: {repo_sync: required, parity_review: not-required}
   ace-win-2:
     ws_hub_path: 'D:\workspace-hub'
-    ssh_target: null
+    ssh_target: ace-win-2
     linux_reachable: false
     report_path: .claude/state/harness-readiness-ace-win-2.yaml
     notes: "Scout-only (recon + verification); bug fixes OK, NO feature dev (OS-equivalent dev lives on the Linux boxes). Licensed Windows host — primary role: document ingestion, email, marketing & admin. Windows/Git Bash; Windows Task Scheduler writes report to shared mount."
