@@ -9,13 +9,14 @@ VERDICT=""
 REVIEWER_PROVIDER=""
 AUTHOR_PROVIDER=""
 REPO=""
-TARGET_URL=""
+SHA=""
+EVIDENCE_URL=""
 
 usage() {
   cat <<'USAGE'
 Usage: post_review_status.sh --pr <number-or-url> --verdict <verdict> \
-  --reviewer-provider <provider> --author-provider <provider> [--repo owner/name] \
-  [--target-url <url>] [--post]
+  --reviewer-provider <provider> --sha <reviewed-sha> --evidence-url <url> \
+  [--author-provider <provider>] [--repo owner/name] [--post]
 
 Posts the review/cross-provider commit status on a PR head SHA.
 Dry-run is the default. Use --post to call the GitHub statuses API.
@@ -27,6 +28,8 @@ Status mapping:
   pending: PENDING, RUNNING, IN_PROGRESS, UNAVAILABLE, UNKNOWN
 
 The script refuses to post success when reviewer-provider matches author-provider.
+Providers are restricted to claude, codex, and gemini. The author provider is
+derived from the PR branch prefix and every commit's Co-Authored-By trailers.
 USAGE
 }
 
@@ -41,6 +44,98 @@ normalize_token() {
 
 normalize_provider() {
   printf '%s' "$1" | tr '[:upper:]' '[:lower:]'
+}
+
+validate_provider() {
+  case "$1" in
+    claude|codex|gemini)
+      ;;
+    *)
+      die "unsupported provider: $1"
+      ;;
+  esac
+}
+
+provider_from_branch() {
+  case "$1" in
+    claude/*)
+      printf 'claude'
+      ;;
+    codex/*)
+      printf 'codex'
+      ;;
+    gemini/*)
+      printf 'gemini'
+      ;;
+    *)
+      die "could not derive author provider from PR branch prefix: $1"
+      ;;
+  esac
+}
+
+providers_from_commit_body() {
+  local body provider found=()
+  body="$1"
+
+  for provider in claude codex gemini; do
+    if printf '%s\n' "$body" | grep -Eiq '^Co-Authored-By: .*'"$provider"; then
+      found+=("$provider")
+    fi
+  done
+
+  if [[ "${#found[@]}" -gt 0 ]]; then
+    printf '%s\n' "${found[@]}"
+  fi
+}
+
+derive_author_provider() {
+  local pr_json branch branch_provider commit_count encoded oid body providers provider
+  pr_json="$1"
+
+  branch="$(jq -r '.headRefName // ""' <<<"$pr_json")"
+  [[ -n "$branch" && "$branch" != "null" ]] || die "could not resolve PR branch name"
+  branch_provider="$(provider_from_branch "$branch")"
+
+  commit_count="$(jq '.commits | length' <<<"$pr_json")"
+  [[ "$commit_count" -gt 0 ]] || die "could not resolve PR commits"
+
+  while IFS= read -r encoded; do
+    oid="$(printf '%s' "$encoded" | base64 -d | jq -r '.oid // "unknown"')"
+    body="$(printf '%s' "$encoded" | base64 -d | jq -r '.messageBody // ""')"
+    mapfile -t providers < <(providers_from_commit_body "$body")
+
+    if [[ "${#providers[@]}" -ne 1 ]]; then
+      die "could not derive exactly one provider from Co-Authored-By trailers on commit ${oid}"
+    fi
+
+    provider="${providers[0]}"
+    if [[ "$provider" != "$branch_provider" ]]; then
+      die "mixed author providers: branch=${branch_provider} commit=${oid} trailer=${provider}"
+    fi
+  done < <(jq -r '.commits[] | @base64' <<<"$pr_json")
+
+  printf '%s' "$branch_provider"
+}
+
+validate_evidence_url() {
+  local pr_json evidence_url reviewer_provider comment_body
+  pr_json="$1"
+  evidence_url="$2"
+  reviewer_provider="$3"
+
+  comment_body="$(jq -r --arg url "$evidence_url" '
+    [.comments[]? | select(.url == $url) | .body][0] // ""
+  ' <<<"$pr_json")"
+
+  [[ -n "$comment_body" ]] || die "--evidence-url must point at a comment on the same PR"
+
+  if ! grep -Eiq "(^|[^[:alpha:]])${reviewer_provider}[[:space:]-]+review([^[:alpha:]]|$)" <<<"$comment_body"; then
+    die "--evidence-url comment does not identify reviewer provider: ${reviewer_provider}"
+  fi
+
+  if ! grep -Eiq 'verdict[[:space:]]*:' <<<"$comment_body"; then
+    die "--evidence-url comment does not contain a verdict line"
+  fi
 }
 
 status_from_verdict() {
@@ -81,12 +176,16 @@ while [[ $# -gt 0 ]]; do
       AUTHOR_PROVIDER="${2:-}"
       shift 2
       ;;
+    --sha)
+      SHA="${2:-}"
+      shift 2
+      ;;
     --repo)
       REPO="${2:-}"
       shift 2
       ;;
-    --target-url)
-      TARGET_URL="${2:-}"
+    --evidence-url)
+      EVIDENCE_URL="${2:-}"
       shift 2
       ;;
     --post)
@@ -110,30 +209,51 @@ done
 [[ -n "$PR" ]] || die "--pr is required"
 [[ -n "$VERDICT" ]] || die "--verdict is required"
 [[ -n "$REVIEWER_PROVIDER" ]] || die "--reviewer-provider is required"
-[[ -n "$AUTHOR_PROVIDER" ]] || die "--author-provider is required"
+[[ -n "$SHA" ]] || die "--sha is required"
+[[ -n "$EVIDENCE_URL" ]] || die "--evidence-url is required"
 
 command -v gh >/dev/null 2>&1 || die "gh CLI not found"
+command -v jq >/dev/null 2>&1 || die "jq not found"
 
 STATE="$(status_from_verdict "$VERDICT")"
 REVIEWER_PROVIDER="$(normalize_provider "$REVIEWER_PROVIDER")"
-AUTHOR_PROVIDER="$(normalize_provider "$AUTHOR_PROVIDER")"
+validate_provider "$REVIEWER_PROVIDER"
 
-if [[ "$STATE" == "success" && "$REVIEWER_PROVIDER" == "$AUTHOR_PROVIDER" ]]; then
-  echo "ERROR: refusing success for same-provider review: reviewer-provider=${REVIEWER_PROVIDER} author-provider=${AUTHOR_PROVIDER}" >&2
-  exit 2
+if [[ -n "$AUTHOR_PROVIDER" ]]; then
+  AUTHOR_PROVIDER="$(normalize_provider "$AUTHOR_PROVIDER")"
+  validate_provider "$AUTHOR_PROVIDER"
 fi
 
 if [[ -z "$REPO" ]]; then
   REPO="$(gh repo view --json nameWithOwner --jq '.nameWithOwner')"
 fi
 
-HEAD_SHA="$(gh pr view "$PR" --repo "$REPO" --json headRefOid --jq '.headRefOid')"
+PR_JSON="$(gh pr view "$PR" --repo "$REPO" --json headRefOid,headRefName,commits,comments)"
+HEAD_SHA="$(jq -r '.headRefOid // ""' <<<"$PR_JSON")"
 [[ -n "$HEAD_SHA" && "$HEAD_SHA" != "null" ]] || die "could not resolve PR head SHA for ${PR}"
+
+if [[ "$SHA" != "$HEAD_SHA" ]]; then
+  die "--sha ${SHA} does not match current PR head ${HEAD_SHA}"
+fi
+
+DERIVED_AUTHOR_PROVIDER="$(derive_author_provider "$PR_JSON")"
+
+if [[ -n "$AUTHOR_PROVIDER" && "$AUTHOR_PROVIDER" != "$DERIVED_AUTHOR_PROVIDER" ]]; then
+  die "--author-provider ${AUTHOR_PROVIDER} does not match derived PR author provider ${DERIVED_AUTHOR_PROVIDER}"
+fi
+
+AUTHOR_PROVIDER="$DERIVED_AUTHOR_PROVIDER"
+validate_evidence_url "$PR_JSON" "$EVIDENCE_URL" "$REVIEWER_PROVIDER"
+
+if [[ "$STATE" == "success" && "$REVIEWER_PROVIDER" == "$AUTHOR_PROVIDER" ]]; then
+  echo "ERROR: refusing success for same-provider review: reviewer-provider=${REVIEWER_PROVIDER} author-provider=${AUTHOR_PROVIDER}" >&2
+  exit 2
+fi
 
 DESCRIPTION="${DESCRIPTION_PREFIX}: ${REVIEWER_PROVIDER} verdict ${VERDICT}"
 
 if [[ "$DRY_RUN" -eq 1 ]]; then
-  echo "dry-run: would post ${CONTEXT} state=${STATE} repo=${REPO} sha=${HEAD_SHA} reviewer-provider=${REVIEWER_PROVIDER} author-provider=${AUTHOR_PROVIDER}"
+  echo "dry-run: would post ${CONTEXT} state=${STATE} repo=${REPO} sha=${HEAD_SHA} reviewer-provider=${REVIEWER_PROVIDER} author-provider=${AUTHOR_PROVIDER} target_url=${EVIDENCE_URL}"
   exit 0
 fi
 
@@ -142,11 +262,8 @@ api_args=(
   -f "state=${STATE}"
   -f "context=${CONTEXT}"
   -f "description=${DESCRIPTION}"
+  -f "target_url=${EVIDENCE_URL}"
 )
-
-if [[ -n "$TARGET_URL" ]]; then
-  api_args+=(-f "target_url=${TARGET_URL}")
-fi
 
 gh api "${api_args[@]}" >/dev/null
 
