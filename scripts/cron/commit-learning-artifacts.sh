@@ -66,6 +66,142 @@ redact_copy() {
 pii_snapshot_copy() { redact_copy "$1" "$2"; }
 fail_closed() { log "ERROR: redacting copy failed -- nothing committed (C20)"; exit 1; }
 
+CLAUDE_MEMORY_SNAPSHOT_REPO="${CLAUDE_MEMORY_SNAPSHOT_REPO:-vamseeachanta/claude-memory-snapshots}"
+CLAUDE_MEMORY_SNAPSHOT_PRIVATE_CLONE="${CLAUDE_MEMORY_SNAPSHOT_PRIVATE_CLONE:-${HOME}/.local/share/claude-memory-snapshots}"
+CLAUDE_PRIVATE_SNAPSHOT_READY=false
+CLAUDE_PRIVATE_SNAPSHOT_STAGED=false
+CLAUDE_PRIVATE_SNAPSHOT_DRY_RUN_LOGGED=false
+CLAUDE_PRIVATE_STAGE=""
+
+cleanup_claude_private_stage() {
+  if [[ -n "$CLAUDE_PRIVATE_STAGE" && -d "$CLAUDE_PRIVATE_STAGE" ]]; then
+    rm -rf "$CLAUDE_PRIVATE_STAGE"
+  fi
+}
+trap cleanup_claude_private_stage EXIT
+
+normalize_github_repo_url() {
+  local value="$1"
+  value="${value#git@github.com:}"
+  value="${value#https://github.com/}"
+  value="${value#http://github.com/}"
+  value="${value%.git}"
+  printf '%s\n' "$value"
+}
+
+resolve_path_for_guard() {
+  "${PY_RUN[@]}" -c 'from pathlib import Path; import sys; print(Path(sys.argv[1]).expanduser().resolve(strict=False))' "$1"
+}
+
+verify_claude_private_snapshot_visibility() {
+  local visibility
+  visibility="$(gh repo view "$CLAUDE_MEMORY_SNAPSHOT_REPO" --json isPrivate --jq .isPrivate)"
+  if [[ "$visibility" != "true" ]]; then
+    log "ERROR: Claude memory snapshot repo is not private: $CLAUDE_MEMORY_SNAPSHOT_REPO"
+    return 1
+  fi
+}
+
+verify_claude_private_snapshot_target_path() {
+  local clone_real hub_real
+  clone_real="$(readlink -f "$CLAUDE_MEMORY_SNAPSHOT_PRIVATE_CLONE" 2>/dev/null || true)"
+  if [[ -z "$clone_real" ]]; then
+    clone_real="$(resolve_path_for_guard "$CLAUDE_MEMORY_SNAPSHOT_PRIVATE_CLONE")"
+  fi
+  hub_real="$(readlink -f "$WORKSPACE_HUB" 2>/dev/null || true)"
+  if [[ -z "$hub_real" ]]; then
+    hub_real="$(resolve_path_for_guard "$WORKSPACE_HUB")"
+  fi
+  case "$clone_real" in
+    "$hub_real"|"$hub_real"/*)
+      log "ERROR: Claude memory snapshot clone must be outside the public checkout"
+      return 1
+      ;;
+  esac
+}
+
+verify_claude_private_snapshot_repo() {
+  local origin expected
+  expected="$(normalize_github_repo_url "$CLAUDE_MEMORY_SNAPSHOT_REPO")"
+  verify_claude_private_snapshot_visibility || return 1
+  verify_claude_private_snapshot_target_path || return 1
+  origin="$(git -C "$CLAUDE_MEMORY_SNAPSHOT_PRIVATE_CLONE" remote get-url origin 2>/dev/null || true)"
+  if [[ "$(normalize_github_repo_url "$origin")" != "$expected" ]]; then
+    log "ERROR: Claude memory snapshot clone has unexpected origin: ${origin:-<none>}"
+    return 1
+  fi
+}
+
+prepare_claude_private_snapshot_repo() {
+  if [[ "$CLAUDE_PRIVATE_SNAPSHOT_READY" == "true" ]]; then
+    return 0
+  fi
+  verify_claude_private_snapshot_visibility || return 1
+  verify_claude_private_snapshot_target_path || return 1
+  if [[ ! -d "$CLAUDE_MEMORY_SNAPSHOT_PRIVATE_CLONE/.git" ]]; then
+    mkdir -p "$(dirname "$CLAUDE_MEMORY_SNAPSHOT_PRIVATE_CLONE")"
+    gh repo clone "$CLAUDE_MEMORY_SNAPSHOT_REPO" "$CLAUDE_MEMORY_SNAPSHOT_PRIVATE_CLONE" -- --quiet
+  fi
+  verify_claude_private_snapshot_repo || return 1
+  if ! $DRY_RUN && git -C "$CLAUDE_MEMORY_SNAPSHOT_PRIVATE_CLONE" remote get-url origin >/dev/null 2>&1; then
+    git -C "$CLAUDE_MEMORY_SNAPSHOT_PRIVATE_CLONE" pull --ff-only --quiet
+  fi
+  mkdir -p "$CLAUDE_MEMORY_SNAPSHOT_PRIVATE_CLONE/config/agents/claude/memory-snapshots"
+  CLAUDE_PRIVATE_SNAPSHOT_READY=true
+}
+
+stage_claude_private_snapshot_file() {
+  local src="$1" name="$2"
+  [[ -f "$src" ]] || return 0
+  if $DRY_RUN; then
+    if [[ "$CLAUDE_PRIVATE_SNAPSHOT_DRY_RUN_LOGGED" != "true" ]]; then
+      log "[dry-run] Would update private Claude memory snapshots in $CLAUDE_MEMORY_SNAPSHOT_REPO"
+      CLAUDE_PRIVATE_SNAPSHOT_DRY_RUN_LOGGED=true
+    fi
+    return 0
+  fi
+  if [[ -z "$CLAUDE_PRIVATE_STAGE" ]]; then
+    CLAUDE_PRIVATE_STAGE="$(mktemp -d)"
+  fi
+  mkdir -p "$CLAUDE_PRIVATE_STAGE"
+  cp "$src" "$CLAUDE_PRIVATE_STAGE/$name"
+  CLAUDE_PRIVATE_SNAPSHOT_STAGED=true
+}
+
+copy_claude_private_memory_dir() {
+  local src="$1" prefix="${2:-}"
+  [[ -d "$src" ]] || return 0
+  local f base
+  for f in "$src"/*.md; do
+    [[ -f "$f" ]] || continue
+    base="$(basename "$f")"
+    stage_claude_private_snapshot_file "$f" "${prefix}${base}" || return 1
+  done
+}
+
+copy_claude_private_file() {
+  local src="$1" name="$2"
+  stage_claude_private_snapshot_file "$src" "$name"
+}
+
+finalize_claude_private_snapshot_repo() {
+  [[ "$CLAUDE_PRIVATE_SNAPSHOT_STAGED" == "true" ]] || return 0
+  prepare_claude_private_snapshot_repo || return 1
+  (
+    cd "$CLAUDE_MEMORY_SNAPSHOT_PRIVATE_CLONE"
+    rsync -a --delete "$CLAUDE_PRIVATE_STAGE/" config/agents/claude/memory-snapshots/
+    find config/agents/claude/memory-snapshots -type f -print0 | sort -z | xargs -0 -r sha256sum > SNAPSHOT_MANIFEST.sha256
+    git add SNAPSHOT_MANIFEST.sha256 config/agents/claude/memory-snapshots
+    if git diff --cached --quiet; then
+      log "Claude private memory snapshots already up to date"
+      return 0
+    fi
+    git commit -m "chore: refresh Claude memory snapshots" -- \
+      SNAPSHOT_MANIFEST.sha256 config/agents/claude/memory-snapshots
+    git push
+  )
+}
+
 # ── Snapshot agent memories ───────────────────────────────────────────
 log "Snapshotting agent memories..."
 
@@ -75,20 +211,19 @@ if [[ -f "${HOME}/.hermes/memories/MEMORY.md" ]]; then
   redact_copy "${HOME}/.hermes/memories/USER.md" config/agents/hermes/memories/USER.md.snapshot || fail_closed
 fi
 
-# Claude Code project memory (#1779) — PII-filtered snapshot (#3073).
-# project_*.md (engagement-specific) is NEVER copied to the public repo; the
-# helper also self-heals any already-present project_*.md. See the helper header.
+# Claude Code project memory (#1779) — private snapshot repo only.
+# Owner decision E07: Claude memory snapshots are not written to this public
+# checkout. They are copied to the private snapshot repository above; the public
+# repo keeps only the live .claude/memory bridge surface.
 CLAUDE_MEM="${HOME}/.claude/projects/-mnt-local-analysis-workspace-hub/memory"
 if [[ -d "$CLAUDE_MEM" ]]; then
-  _wh_root="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
-  # shellcheck source=scripts/cron/lib/pii-safe-memory-snapshot.sh
-  source "$_wh_root/scripts/cron/lib/pii-safe-memory-snapshot.sh"
-  pii_safe_snapshot "$CLAUDE_MEM" config/agents/claude/memory-snapshots "$_wh_root/.legal-deny-list.yaml" || fail_closed
+  copy_claude_private_memory_dir "$CLAUDE_MEM" || fail_closed
 fi
 CLAUDE_MEM_WED="${HOME}/.claude/projects/-mnt-local-analysis-workspace-hub-worldenergydata/memory"
 if [[ -d "$CLAUDE_MEM_WED" ]]; then
-  redact_copy "$CLAUDE_MEM_WED/MEMORY.md" config/agents/claude/memory-snapshots/worldenergydata-MEMORY.md || fail_closed
+  copy_claude_private_file "$CLAUDE_MEM_WED/MEMORY.md" worldenergydata-MEMORY.md || fail_closed
 fi
+finalize_claude_private_snapshot_repo || fail_closed
 
 # Codex state (#1781). history.jsonl is raw prompt history: it is published
 # only in redacted form (C20).
@@ -126,7 +261,7 @@ if [[ -f "$PII_MAP" && -f "$PII_REDACTOR" ]]; then
     .claude/state/corrections .claude/state/patterns .claude/state/reflect-history \
     .claude/state/cc-insights .claude/state/candidates .claude/state/graduation .claude/state/trends \
     .claude/state/session-signals .claude/state/skill-eval-results \
-    config/agents/claude/memory-snapshots config/agents/codex/state-snapshots \
+    config/agents/codex/state-snapshots \
     config/agents/gemini/state-snapshots 2>&1 || log "WARNING: client redaction had errors"
 else
   log "WARNING: PII codename map not found ($PII_MAP) — skipping optional client codename redaction"
@@ -182,7 +317,7 @@ done
 # and serve no purpose in the repo. (#1985)
 
 # Agent memory snapshots (#1777, #1779, #1781)
-for snap_dir in config/agents/hermes/memories config/agents/claude/memory-snapshots config/agents/codex/state-snapshots config/agents/gemini/state-snapshots; do
+for snap_dir in config/agents/hermes/memories config/agents/codex/state-snapshots config/agents/gemini/state-snapshots; do
   if [[ -d "$snap_dir" ]]; then
     git add "$snap_dir/" 2>/dev/null && ((staged++)) || true
   fi

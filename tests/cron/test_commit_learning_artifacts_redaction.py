@@ -89,6 +89,10 @@ def test_run_redacts_host_copies_and_skips_name_bearing_files(tmp_path):
     deny = tmp_path / "deny.txt"
     deny.write_text(f"{SYNTH}\n", encoding="utf-8")
     repo, env = _setup(tmp_path, deny)
+    private_repo = tmp_path / "private-memory"
+    private_repo.mkdir()
+    subprocess.run(["git", "init", "-q"], cwd=private_repo, check=True, env=env)
+    env["CLAUDE_MEMORY_SNAPSHOT_PRIVATE_CLONE"] = str(private_repo)
     r = subprocess.run([_bash(), "scripts/cron/commit-learning-artifacts.sh", "--dry-run"],
                        cwd=repo, env=env, capture_output=True, text=True)
     assert r.returncode == 0, r.stdout + r.stderr
@@ -97,11 +101,78 @@ def test_run_redacts_host_copies_and_skips_name_bearing_files(tmp_path):
     assert SYNTH not in hist.read_text(encoding="utf-8").lower()
     assert '"clean"' in hist.read_text(encoding="utf-8")
     snaps = repo / "config/agents/claude/memory-snapshots"
-    names = [p.name for p in snaps.iterdir()] if snaps.exists() else []
-    assert not any(SYNTH in n.lower() for n in names)
-    for p in snaps.glob("*.md") if snaps.exists() else []:
-        assert SYNTH not in p.read_text(encoding="utf-8").lower()
+    assert not snaps.exists()
+    private_snaps = private_repo / "config/agents/claude/memory-snapshots"
+    assert not private_snaps.exists()
+    assert "Would update private Claude memory snapshots" in r.stdout
     assert SYNTH not in (r.stdout + r.stderr).lower()
+
+
+@pytest.mark.skipif(_bash() is None, reason="no POSIX bash")
+def test_run_rejects_wrong_private_snapshot_remote(tmp_path):
+    repo, env = _setup(tmp_path, None)
+    wrong_remote = tmp_path / "wrong.git"
+    subprocess.run(["git", "init", "--bare", "-q", str(wrong_remote)], check=True, env=env)
+    seed = tmp_path / "wrong-seed"
+    subprocess.run(["git", "clone", "-q", str(wrong_remote), str(seed)], check=True, env=env)
+    (seed / "README.md").write_text("seed\n", encoding="utf-8")
+    subprocess.run(["git", "-c", "user.email=t@example.com", "-c", "user.name=t", "add", "README.md"],
+                   cwd=seed, check=True, env=env)
+    subprocess.run(["git", "-c", "user.email=t@example.com", "-c", "user.name=t", "commit", "-qm", "seed"],
+                   cwd=seed, check=True, env=env)
+    subprocess.run(["git", "push", "-q", "origin", "HEAD:main"], cwd=seed, check=True, env=env)
+    private_repo = tmp_path / "private-memory"
+    subprocess.run(["git", "clone", "-q", "--branch", "main", str(wrong_remote), str(private_repo)],
+                   check=True, env=env)
+    (seed / "pulled-before-verify.txt").write_text("must not be pulled\n", encoding="utf-8")
+    subprocess.run(["git", "-c", "user.email=t@example.com", "-c", "user.name=t", "add",
+                    "pulled-before-verify.txt"], cwd=seed, check=True, env=env)
+    subprocess.run(["git", "-c", "user.email=t@example.com", "-c", "user.name=t", "commit", "-qm",
+                    "add marker"], cwd=seed, check=True, env=env)
+    subprocess.run(["git", "push", "-q", "origin", "HEAD:main"], cwd=seed, check=True, env=env)
+    fake_bin = tmp_path / "bin"
+    fake_bin.mkdir()
+    fake_gh = fake_bin / "gh"
+    fake_gh.write_text(
+        "#!/usr/bin/env bash\n"
+        "if [[ \"$1\" == repo && \"$2\" == view ]]; then echo true; exit 0; fi\n"
+        "exit 1\n",
+        encoding="utf-8",
+    )
+    fake_gh.chmod(0o755)
+    env["PATH"] = f"{fake_bin}:{env['PATH']}"
+    env["CLAUDE_MEMORY_SNAPSHOT_PRIVATE_CLONE"] = str(private_repo)
+    r = subprocess.run([_bash(), "scripts/cron/commit-learning-artifacts.sh"],
+                       cwd=repo, env=env, capture_output=True, text=True)
+    assert r.returncode != 0
+    assert "unexpected origin" in r.stdout
+    assert not (private_repo / "pulled-before-verify.txt").exists()
+    assert not (repo / "config/agents/claude/memory-snapshots").exists()
+
+
+@pytest.mark.skipif(_bash() is None, reason="no POSIX bash")
+def test_run_rejects_private_snapshot_clone_inside_public_checkout_before_clone(tmp_path):
+    repo, env = _setup(tmp_path, None)
+    fake_bin = tmp_path / "bin"
+    fake_bin.mkdir()
+    fake_gh = fake_bin / "gh"
+    fake_gh.write_text(
+        "#!/usr/bin/env bash\n"
+        "if [[ \"$1\" == repo && \"$2\" == view ]]; then echo true; exit 0; fi\n"
+        "if [[ \"$1\" == repo && \"$2\" == clone ]]; then mkdir -p \"$4\"; exit 0; fi\n"
+        "exit 1\n",
+        encoding="utf-8",
+    )
+    fake_gh.chmod(0o755)
+    env["PATH"] = f"{fake_bin}:{env['PATH']}"
+    inside_public = repo / "private-memory"
+    env["CLAUDE_MEMORY_SNAPSHOT_PRIVATE_CLONE"] = str(inside_public)
+    r = subprocess.run([_bash(), "scripts/cron/commit-learning-artifacts.sh"],
+                       cwd=repo, env=env, capture_output=True, text=True)
+    assert r.returncode != 0
+    assert "outside the public checkout" in r.stdout
+    assert not inside_public.exists()
+    assert not (repo / "config/agents/claude/memory-snapshots").exists()
 
 
 @pytest.mark.skipif(_bash() is None, reason="no POSIX bash")
