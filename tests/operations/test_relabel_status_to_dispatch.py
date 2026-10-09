@@ -54,14 +54,17 @@ fi
 if [[ "$1 $2" == "issue list" ]]; then
   repo=""
   label=""
+  state=""
   while [[ $# -gt 0 ]]; do
     case "$1" in
       --repo) repo="$2"; shift 2 ;;
+      --state) state="$2"; shift 2 ;;
       --label) label="$2"; shift 2 ;;
       *) shift ;;
     esac
   done
-  if [[ "$repo:$label" == "owner/alpha:status:done" ]]; then
+  if [[ "$repo:$label:$state" == "owner/alpha:status:done:open" ||
+        "$repo:$label:$state" == "owner/alpha:status:done:all" ]]; then
     printf '%s\\n' '1'
   fi
   exit 0
@@ -69,14 +72,17 @@ fi
 if [[ "$1 $2" == "pr list" ]]; then
   repo=""
   label=""
+  state=""
   while [[ $# -gt 0 ]]; do
     case "$1" in
       --repo) repo="$2"; shift 2 ;;
+      --state) state="$2"; shift 2 ;;
       --label) label="$2"; shift 2 ;;
       *) shift ;;
     esac
   done
-  if [[ "$repo:$label" == "owner/alpha:status:closed" ]]; then
+  if [[ "$repo:$label:$state" == "owner/alpha:status:closed:open" ||
+        "$repo:$label:$state" == "owner/alpha:status:closed:all" ]]; then
     printf '%s\\n' '2'
   fi
   exit 0
@@ -145,13 +151,14 @@ def test_apply_relabels_issues_and_prs_across_non_archived_repos(tmp_path: Path)
     calls = (tmp_path / "gh.calls").read_text(encoding="utf-8")
     assert (
         "issue edit 1 --repo owner/alpha --remove-label status:done "
-        "--add-label dispatch:done"
+        "--add-label dispatch:done --add-label dispatch:legacy-migrated"
     ) in calls
     assert (
         "pr edit 2 --repo owner/alpha --remove-label status:closed "
-        "--add-label dispatch:done"
+        "--add-label dispatch:done --add-label dispatch:legacy-migrated"
     ) in calls
     assert "label create dispatch:done --repo owner/alpha" in calls
+    assert "label create dispatch:legacy-migrated --repo owner/alpha" in calls
 
 
 def test_apply_deletes_retired_labels_only_after_issue_and_pr_counts_are_zero(tmp_path: Path) -> None:
@@ -162,6 +169,119 @@ def test_apply_deletes_retired_labels_only_after_issue_and_pr_counts_are_zero(tm
     assert "label delete status:done --repo owner/alpha --yes" not in calls
     assert "label delete status:closed --repo owner/alpha --yes" not in calls
     assert "label delete status:implemented --repo owner/alpha --yes" in calls
+
+
+def test_apply_never_relabels_closed_items(tmp_path: Path) -> None:
+    gh = tmp_path / "gh"
+    log = tmp_path / "gh.calls"
+    gh.write_text(
+        """#!/usr/bin/env bash
+set -euo pipefail
+printf '%s\\n' "$*" >> "${FAKE_GH_LOG}"
+if [[ "$1 $2" == "repo list" ]]; then
+  printf '%s\\n' 'owner/alpha'
+  exit 0
+fi
+if [[ "$1 $2" == "label list" ]]; then
+  printf '%s\\n' 'status:done'
+  printf '%s\\n' 'dispatch:done'
+  printf '%s\\n' 'dispatch:legacy-migrated'
+  exit 0
+fi
+if [[ "$1 $2" == "issue list" ]]; then
+  state=""
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      --state) state="$2"; shift 2 ;;
+      *) shift ;;
+    esac
+  done
+  if [[ "$state" == "all" ]]; then
+    printf '%s\\n' '7'
+  fi
+  exit 0
+fi
+if [[ "$1 $2" == "pr list" ]]; then
+  exit 0
+fi
+if [[ "$1 $2" == "issue edit" || "$1 $2" == "label delete" ]]; then
+  exit 0
+fi
+exit 0
+""",
+        encoding="utf-8",
+    )
+    gh.chmod(0o755)
+    env = {**os.environ, "GH_BIN": str(gh), "FAKE_GH_LOG": str(log)}
+
+    result = subprocess.run(
+        ["bash", str(SCRIPT), "--owner", "owner", "--apply"],
+        check=False,
+        capture_output=True,
+        text=True,
+        env=env,
+    )
+
+    assert result.returncode == 0, result.stderr
+    calls = log.read_text(encoding="utf-8")
+    assert "issue edit 7 --repo owner/alpha" not in calls
+
+
+def test_closed_label_use_prevents_retired_label_deletion(tmp_path: Path) -> None:
+    gh = tmp_path / "gh"
+    log = tmp_path / "gh.calls"
+    gh.write_text(
+        """#!/usr/bin/env bash
+set -euo pipefail
+printf '%s\\n' "$*" >> "${FAKE_GH_LOG}"
+if [[ "$1 $2" == "repo list" ]]; then
+  printf '%s\\n' 'owner/alpha'
+  exit 0
+fi
+if [[ "$1 $2" == "label list" ]]; then
+  printf '%s\\n' 'status:done'
+  printf '%s\\n' 'dispatch:done'
+  printf '%s\\n' 'dispatch:legacy-migrated'
+  exit 0
+fi
+if [[ "$1 $2" == "issue list" ]]; then
+  state=""
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      --state) state="$2"; shift 2 ;;
+      *) shift ;;
+    esac
+  done
+  if [[ "$state" == "all" ]]; then
+    printf '%s\\n' '7'
+  fi
+  exit 0
+fi
+if [[ "$1 $2" == "pr list" ]]; then
+  exit 0
+fi
+if [[ "$1 $2" == "label delete" ]]; then
+  exit 0
+fi
+exit 0
+""",
+        encoding="utf-8",
+    )
+    gh.chmod(0o755)
+    env = {**os.environ, "GH_BIN": str(gh), "FAKE_GH_LOG": str(log)}
+
+    result = subprocess.run(
+        ["bash", str(SCRIPT), "--owner", "owner", "--apply"],
+        check=False,
+        capture_output=True,
+        text=True,
+        env=env,
+    )
+
+    assert result.returncode == 0, result.stderr
+    calls = log.read_text(encoding="utf-8")
+    assert "label delete status:done --repo owner/alpha --yes" not in calls
+    assert "Keep status:done in owner/alpha" in result.stdout
 
 
 def test_missing_repo_labels_are_skipped_without_issue_or_pr_probe(tmp_path: Path) -> None:
@@ -335,6 +455,9 @@ exit 0
 
     assert result.returncode == 0, result.stderr
     calls = log.read_text(encoding="utf-8")
-    assert "issue edit 1 --repo owner/alpha --remove-label status:pending\n" in calls
+    assert (
+        "issue edit 1 --repo owner/alpha --remove-label status:pending "
+        "--add-label dispatch:legacy-migrated"
+    ) in calls
     assert "--add-label dispatch:ready" not in calls
     assert "--remove-label dispatch:done" not in calls

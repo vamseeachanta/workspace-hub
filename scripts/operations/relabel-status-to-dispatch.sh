@@ -53,6 +53,7 @@ STATUS_LABELS=(
   "status:in-progress"
   "status:pending"
 )
+LEGACY_MARKER_LABEL="dispatch:legacy-migrated"
 
 dispatch_for_status() {
   case "$1" in
@@ -68,6 +69,7 @@ dispatch_color() {
     dispatch:done) printf '%s\n' "0e8a16" ;;
     dispatch:active) printf '%s\n' "fbca04" ;;
     dispatch:ready) printf '%s\n' "1d76db" ;;
+    dispatch:legacy-migrated) printf '%s\n' "ededed" ;;
     *) echo "no color mapping for $1" >&2; exit 2 ;;
   esac
 }
@@ -77,6 +79,7 @@ dispatch_description() {
     dispatch:done) printf '%s\n' "Dispatch lane completed or closed" ;;
     dispatch:active) printf '%s\n' "Dispatch lane is active" ;;
     dispatch:ready) printf '%s\n' "Dispatch lane is ready" ;;
+    dispatch:legacy-migrated) printf '%s\n' "Dispatch label migrated before run records existed" ;;
     *) echo "no description mapping for $1" >&2; exit 2 ;;
   esac
 }
@@ -140,9 +143,10 @@ repo_list() {
 issue_items() {
   local repo="$1"
   local label="$2"
+  local state="${3:-open}"
   run_gh_capture issue list \
     --repo "$repo" \
-    --state all \
+    --state "$state" \
     --label "$label" \
     --limit 1000 \
     --json number,labels \
@@ -151,9 +155,10 @@ issue_items() {
 pr_items() {
   local repo="$1"
   local label="$2"
+  local state="${3:-open}"
   run_gh_capture pr list \
     --repo "$repo" \
-    --state all \
+    --state "$state" \
     --label "$label" \
     --limit 1000 \
     --json number,labels \
@@ -197,11 +202,11 @@ has_any_issue_or_pr() {
   local label="$2"
   local issues
   local prs
-  if ! issues="$(issue_items "$repo" "$label")"; then
+  if ! issues="$(issue_items "$repo" "$label" all)"; then
     return 2
   fi
   [ -n "$(head -n 1 <<<"$issues")" ] && return 0
-  if ! prs="$(pr_items "$repo" "$label")"; then
+  if ! prs="$(pr_items "$repo" "$label" all)"; then
     return 2
   fi
   [ -n "$(head -n 1 <<<"$prs")" ] && return 0
@@ -247,6 +252,7 @@ edit_item_labels() {
   local final_label
   local final_rank
   local has_final=0
+  local has_marker=0
   local label
   local rank
   local args
@@ -261,6 +267,10 @@ edit_item_labels() {
       has_final=1
       continue
     fi
+    if [ "$label" = "$LEGACY_MARKER_LABEL" ]; then
+      has_marker=1
+      continue
+    fi
     rank="$(dispatch_rank "$label")"
     if [ "$rank" -gt 0 ] && [ "$rank" -lt "$final_rank" ]; then
       args+=(--remove-label "$label")
@@ -269,6 +279,9 @@ edit_item_labels() {
 
   if [ "$has_final" -eq 0 ]; then
     args+=(--add-label "$final_label")
+  fi
+  if [ "$has_marker" -eq 0 ]; then
+    args+=(--add-label "$LEGACY_MARKER_LABEL")
   fi
 
   run_or_print "${args[@]}"
@@ -320,6 +333,9 @@ while IFS= read -r repo; do
       break
     fi
   done
+  if [ "$REPO_FAILED" -eq 0 ] && ! ensure_dispatch_label "$repo" "$LEGACY_MARKER_LABEL"; then
+    record_repo_failure
+  fi
 
   if [ "$REPO_FAILED" -eq 1 ]; then
     echo "Skip $repo: GitHub API failure while ensuring dispatch labels." >&2
@@ -328,7 +344,7 @@ while IFS= read -r repo; do
 
   for status_label in "${existing_status_labels[@]}"; do
     dispatch_label="$(dispatch_for_status "$status_label")"
-    if ! issues="$(issue_items "$repo" "$status_label")"; then
+    if ! issues="$(issue_items "$repo" "$status_label" open)"; then
       record_repo_failure
       break
     fi
@@ -347,7 +363,7 @@ while IFS= read -r repo; do
       break
     fi
 
-    if ! prs="$(pr_items "$repo" "$status_label")"; then
+    if ! prs="$(pr_items "$repo" "$status_label" open)"; then
       record_repo_failure
       break
     fi
@@ -375,7 +391,7 @@ while IFS= read -r repo; do
       has_any_rc=$?
     fi
     if [ "$has_any_rc" -eq 0 ]; then
-      echo "Keep $status_label in $repo: still used by at least one issue or PR."
+      echo "Keep $status_label in $repo: still used by at least one open or closed issue or PR."
     elif [ "$has_any_rc" -eq 2 ]; then
       record_repo_failure
       echo "Skip label deletion for $repo: GitHub API failure while checking label use." >&2
