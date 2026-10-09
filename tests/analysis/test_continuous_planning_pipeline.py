@@ -52,7 +52,7 @@ def marker(root: Path, number: int, text: str | None = None) -> Path:
 
 
 def clean_reviews(root: Path, number: int, sha: str | None = None) -> None:
-    for provider in ("claude", "codex", "gemini"):
+    for provider in ("claude", "codex", "agy"):
         review(root, number, provider, "MINOR", sha=sha)
     review(root, number, "disagreement", "MAJOR", text="summary files must be ignored")
 
@@ -95,7 +95,7 @@ def test_plan_review_with_clean_reviews_and_canonical_comment_is_lane_a(tmp_path
     clean_reviews(tmp_path, 103, sha=sha)
     comments = [
         {
-            "body": f"Plan path: docs/plans/2026-04-26-issue-103-sample.md\nPlan-SHA256: {sha}\nReview artifacts: scripts/review/results/2026-04-26-plan-103-claude.md, scripts/review/results/2026-04-26-plan-103-codex.md, scripts/review/results/2026-04-26-plan-103-gemini.md\nVerdicts: claude MINOR, codex MINOR, gemini MINOR\nChoices: Approve / Revise / Hold\nExecution remains unauthorized until approval marker creation.",
+            "body": f"Plan path: docs/plans/2026-04-26-issue-103-sample.md\nPlan-SHA256: {sha}\nReview artifacts: scripts/review/results/2026-04-26-plan-103-claude.md, scripts/review/results/2026-04-26-plan-103-codex.md, scripts/review/results/2026-04-26-plan-103-agy.md\nVerdicts: claude MINOR, codex MINOR, agy MINOR\nChoices: Approve / Revise / Hold\nExecution remains unauthorized until approval marker creation.",
         }
     ]
 
@@ -111,7 +111,7 @@ def test_missing_and_empty_and_major_reviews_are_not_clean(tmp_path: Path) -> No
     sha = module.sha256_file(plan_path)
     review(tmp_path, 104, "claude", "MINOR", sha=sha)
     review(tmp_path, 104, "codex", "MAJOR", sha=sha)
-    write(tmp_path / "scripts" / "review" / "results" / "2026-04-26-plan-104-gemini.md", "")
+    write(tmp_path / "scripts" / "review" / "results" / "2026-04-26-plan-104-agy.md", "")
 
     snapshot = classify(tmp_path, [issue(104, ["status:plan-review"])])
 
@@ -140,7 +140,7 @@ def test_plan_sha_parser_prefers_canonical_header_over_reviewed_header(tmp_path:
     plan_path = plan(tmp_path, 115)
     plan_sha = module.sha256_file(plan_path)
     old_sha = "a" * 64
-    for provider in ("claude", "codex", "gemini"):
+    for provider in ("claude", "codex", "agy"):
         write(
             tmp_path / "scripts" / "review" / "results" / f"2026-04-26-plan-115-{provider}.md",
             f"Reviewed-Plan-SHA256: {old_sha}\nPlan-SHA256: {plan_sha}\nVerdict: MINOR\n",
