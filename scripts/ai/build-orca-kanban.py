@@ -17,8 +17,7 @@ Outputs:
     docs/dashboards/YYYY-MM-DD-orca-kanban.html     — self-contained HTML
 
 Lane assignment rules (mirrors tier1 kanban):
-    - status:plan-approved + has approval marker  -> Ready / Plan Approved
-    - status:plan-approved without marker         -> Approved Label Drift
+    - status:plan-approved                        -> Ready / Plan Approved
     - status:plan-review                          -> Plan Review / Needs Approval
     - status:working                              -> In Progress / Status Working
     - status:blocked                              -> Blocked / Waiting
@@ -49,7 +48,6 @@ LANES = [
     "Ready / Plan Approved",
     "Plan Review / Needs Approval",
     "In Progress / Status Working",
-    "Approved Label Drift",
     "Triage Needed (no status label)",
     "Blocked / Waiting",
     "Done",
@@ -108,17 +106,13 @@ def collect_issues() -> list[dict]:
     return out
 
 
-def has_approval_marker(num: int) -> bool:
-    return (WORKSPACE_HUB / ".planning" / "plan-approved" / f"{num}.md").exists()
-
-
 def assign_lane(issue: dict) -> str:
     if issue["state"] == "CLOSED":
         return "Done"
     s = issue["_status"]
     labels = set(issue["_labels"])
     if s == "status:plan-approved":
-        return "Ready / Plan Approved" if has_approval_marker(issue["number"]) else "Approved Label Drift"
+        return "Ready / Plan Approved"
     if s == "status:plan-review":
         return "Plan Review / Needs Approval"
     if s == "status:working":
@@ -217,7 +211,7 @@ def build_data(issues: list[dict]) -> dict:
             "Three-pass gh issue list (orcaflex-title, orcawave-title, body-marine) "
             "deduped by issue number. Body-only matches kept only if domain:marine / "
             "cat:engineering label or marine keyword in title. Lane assigned from "
-            "status:* label + .planning/plan-approved/<n>.md marker presence. "
+            "status:* labels; retired local plan-approved markers are ignored. "
             "CLOSED issues whose title names a code module are spot-checked against "
             f"{DIGITALMODEL_ROOT}/src/ to catch revert/never-landed cases."
         ),
@@ -240,7 +234,6 @@ def identify_way_forward(by_lane: dict) -> dict:
     for board, code in (("OrcaWave", "OW"), ("OrcaFlex", "OF")):
         ready = sorted(by_lane["Ready / Plan Approved"][code], key=rank)
         review = sorted(by_lane["Plan Review / Needs Approval"][code], key=rank)
-        drift = sorted(by_lane["Approved Label Drift"][code], key=rank)
         triage = sorted(by_lane["Triage Needed (no status label)"][code], key=rank)
         # Ripe = high-priority triage-needed; medium-priority if no high
         high_triage = [c for c in triage if c["priority"] == "priority:high"]
@@ -248,7 +241,6 @@ def identify_way_forward(by_lane: dict) -> dict:
         out[board] = {
             "ready_to_execute": ready[:5],
             "needs_user_approval": review[:5],
-            "needs_marker_repair": drift[:5],
             "ripe_for_promotion": ripe,
         }
     return out
@@ -358,7 +350,6 @@ def render_way(picks: dict) -> str:
     out = []
     for label, key in (("Ready to execute", "ready_to_execute"),
                        ("Needs user approval (status:plan-review)", "needs_user_approval"),
-                       ("Needs marker repair (label drift) — UNBLOCKS HERMES /goal", "needs_marker_repair"),
                        ("Ripe for promotion from Triage (high-priority untriaged)", "ripe_for_promotion")):
         items = picks[key]
         if not items:

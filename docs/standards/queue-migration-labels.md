@@ -34,6 +34,13 @@ Table 1. Queue state is carried by issue labels, not local markdown queue files.
 | `scripts/cron/update_portfolio_signals.py` L2 counts | Counted recent local WRK archive files. | Local archive count is retired and reports zero; provider signals continue independently. |
 | `scripts/cron/comprehensive-learning-nightly.sh` release-scan auto-commit | Staged new `.claude/work-queue` files. | Stages release-scan state only; no local queue files. |
 | `.planning/plan-approved/*` as queue/approval trigger | Local marker files were treated as execution readiness by older gates. | Readiness is represented by GitHub labels and task authority; new files under `.planning/` are blocked by `scripts/enforcement/check-retired-queue-paths.py` except archived historical records. |
+| `scripts/ai/provider-dispatch-loop.py` | Required both `status:plan-approved` and an `approval_marker` field. | Uses `status:plan-approved`; retired markers are ignored. |
+| `scripts/telegram_dispatch/policy.py` | Blocked implementation dispatch without `.planning/plan-approved/<issue>.md`. | Uses `status:plan-approved` plus readiness and lease checks. |
+| `scripts/operations/linux-cron-issue-orchestrator.py` | Required `--plan-marker-dir` marker files. | Keeps `--plan-marker-dir` as ignored compatibility input; dispatch readiness is label-based. |
+| `scripts/ai/approve-provider-plan.py` | Wrote quarantine markers and promoted them into `.planning/plan-approved/`. | Posts the approval comment, transitions GitHub labels, refreshes queue data, and writes no approval marker. |
+| `.github/workflows/enforcement-gate.yml` marker-label-parity job | Validated newly added approval markers against GitHub labels. | Removed because new marker files are rejected by the retired-path guard. |
+| `scripts/ai/build-orca-kanban.py` | Split `status:plan-approved` issues into ready vs marker-drift lanes. | Treats `status:plan-approved` as ready; local markers are ignored. |
+| `scripts/data/document-index/phase-f-gap-wrk-generator.py` | Wrote generated local WRK files under `.claude/work-queue/pending/`. | Non-dry-run local writes fail closed; `--dry-run` previews GitHub issue candidates. |
 
 Table 2. Local queue readers either read labels now or are retired.
 
@@ -52,3 +59,8 @@ Table 3. Migration preserves historical files and moves live routing to labels.
 New files under `.claude/work-queue/` or `.planning/` are rejected unless they
 land under an archive directory. This keeps historical content readable without
 reintroducing local queues.
+
+The bulk migration/archive script for moving existing live local records into
+`_archive/2026-10-legacy-queue/` is deferred from this part-1 PR. Until that
+script lands, historical files stay in place and active tooling must ignore
+them.

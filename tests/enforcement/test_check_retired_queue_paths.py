@@ -38,6 +38,18 @@ def test_allows_archive_under_retired_paths():
     assert mod.violations(rows) == []
 
 
+def test_blocks_renamed_file_into_retired_path():
+    mod = _load()
+    rows = [("R100", ".planning/plan-approved/3999.md")]
+    assert mod.violations(rows) == [".planning/plan-approved/3999.md"]
+
+
+def test_blocks_archive_name_outside_exact_archive_prefix():
+    mod = _load()
+    rows = [("A", ".planning/plan-approved/archive/3999.md")]
+    assert mod.violations(rows) == [".planning/plan-approved/archive/3999.md"]
+
+
 def test_ignores_existing_modified_historical_files():
     mod = _load()
     rows = [("M", ".claude/work-queue/INDEX.md")]

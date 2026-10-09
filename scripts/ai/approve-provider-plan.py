@@ -6,13 +6,10 @@ then performs an idempotent, audited approval transaction:
   1. acquire per-issue lock (.planning/approval-transactions/<N>.lock)
   2. re-fetch live issue state under the lock
   3. write pending transaction journal
-  4. write quarantine marker (NOT under plan-approved/)
-  5. gh issue comment --body-file <prepared>
-  6. gh issue edit --remove-label status:plan-review --add-label status:plan-approved
-  7. refresh provider work queue
-  8. verify live labels, comment idempotency, regenerated queue
-  9. atomically promote quarantine marker to .planning/plan-approved/<N>.md
- 10. final marker verification
+  4. gh issue comment --body-file <prepared>
+  5. gh issue edit --remove-label status:plan-review --add-label status:plan-approved
+  6. refresh provider work queue
+  7. verify live labels and comment idempotency
 
 Agents/cron may only --mode dry-run. Real mode requires explicit user identity,
 approval source, and either a confirmation token from the local approval server
@@ -38,7 +35,6 @@ from typing import Any, Callable
 
 WORKSPACE_HUB = Path(__file__).resolve().parents[2]
 APPROVAL_TX_DIR = WORKSPACE_HUB / ".planning" / "approval-transactions"
-APPROVED_DIR = WORKSPACE_HUB / ".planning" / "plan-approved"
 PLANS_DIR = WORKSPACE_HUB / "docs" / "plans"
 REVIEW_RESULTS_DIR = WORKSPACE_HUB / "scripts" / "review" / "results"
 DEFAULT_PROVIDERS = ("claude", "codex", "agy")
@@ -71,8 +67,6 @@ class TxState:
     phase: str = "preflight"
     comment_body_path: str | None = None
     comment_url: str | None = None
-    marker_pending_path: str | None = None
-    marker_final_path: str | None = None
     error: str | None = None
     completed_at: str | None = None
     artifacts: dict[str, str] = field(default_factory=dict)
@@ -299,40 +293,12 @@ def build_comment_body(state: TxState, plan_path: Path, review_artifacts: dict[s
                 f"{p} {d['verdict']}" for p, d in sorted(review_artifacts.items())
             ),
             "",
-            "Choices: Approve / Revise / Hold — this comment records Approve.",
-            "Execution remains unauthorized until approval marker creation in "
-            ".planning/plan-approved/.",
-            "",
-            f"Approval marker (atomic promotion target): .planning/plan-approved/{state.issue_number}.md",
+            "Choices: Approve / Revise / Hold - this comment records Approve.",
+            "Execution readiness is carried by GitHub labels and comments; "
+            "local .planning/plan-approved markers are retired.",
         ]
     )
     return "\n".join(lines) + "\n"
-
-
-def build_marker_text(state: TxState) -> str:
-    return (
-        f"# Plan Approval Marker: Issue #{state.issue_number}\n\n"
-        f"Approved by: {state.user_identity}\n"
-        f"Approval source: {state.approval_source}\n"
-        f"Approved at: {state.started_at}\n"
-        f"Transaction id: {state.txid}\n"
-        f"Idempotency key: {state.idempotency_key}\n"
-        f"Plan: {state.plan_path}\n"
-        f"Plan-SHA256: {state.plan_sha256}\n"
-        f"Review artifacts:\n"
-        + "\n".join(f"- {p}" for p in state.review_artifacts)
-        + "\n"
-        f"\nVerification: comment posted at {state.comment_url}; labels transitioned "
-        f"({REVIEW_LABEL} → {APPROVE_LABEL}); provider queue refreshed.\n"
-    )
-
-
-def write_quarantine_marker(state: TxState, *, tx_dir: Path | None = None) -> Path:
-    tx_dir = tx_dir or APPROVAL_TX_DIR
-    tx_dir.mkdir(parents=True, exist_ok=True)
-    path = tx_dir / f"{state.issue_number}-{state.txid}.marker.pending.md"
-    path.write_text(build_marker_text(state), encoding="utf-8")
-    return path
 
 
 def gh_comment_with_body_file(
@@ -393,36 +359,6 @@ def verify_post_mutation(
     return not problems, problems
 
 
-def promote_marker(state: TxState, *, approved_dir: Path | None = None) -> Path:
-    approved_dir = approved_dir or APPROVED_DIR
-    """Atomically promote a quarantine marker to .planning/plan-approved/<N>.md.
-
-    The plan requires this to happen only AFTER verification succeeds. Promotion
-    is os.replace-atomic; no intermediate state where both copies exist.
-    """
-    assert approved_dir is not None
-    approved_dir.mkdir(parents=True, exist_ok=True)
-    pending_rel = state.marker_pending_path
-    if pending_rel is None:
-        pending = None
-    elif Path(pending_rel).is_absolute():
-        pending = Path(pending_rel)
-    else:
-        pending = WORKSPACE_HUB / pending_rel
-    if pending is None or not pending.exists():
-        raise ApprovalError(
-            f"quarantine marker missing for tx {state.txid}; cannot promote"
-        )
-    final = approved_dir / f"{state.issue_number}.md"
-    os.replace(pending, final)
-    try:
-        state.marker_final_path = str(final.relative_to(WORKSPACE_HUB))
-    except ValueError:
-        state.marker_final_path = str(final)
-    state.marker_pending_path = None
-    return final
-
-
 def execute_transaction(
     issue_number: int,
     *,
@@ -434,14 +370,12 @@ def execute_transaction(
     runner: Callable[..., Any] | None = None,
     is_tty: bool | None = None,
     tx_dir: Path | None = None,
-    approved_dir: Path | None = None,
 ) -> dict[str, Any]:
     tx_dir = tx_dir or APPROVAL_TX_DIR
-    approved_dir = approved_dir or APPROVED_DIR
     """Run the full approval pipeline. Returns the final journal JSON.
 
-    On any failure after the first mutation, the journal records the phase reached
-    and the quarantine marker is preserved. Re-invoke with --resume <txid>.
+    On any failure after the first mutation, the journal records the phase reached.
+    Re-invoke with --resume <txid>.
     """
     require_explicit_user_intent(mode, user_identity, approval_source, confirmation_token, is_tty=is_tty)
 
@@ -503,12 +437,10 @@ def execute_transaction(
             return {
                 **asdict(state),
                 "preview_comment_body": preview_body,
-                "preview_marker_text": build_marker_text(state),
                 "planned_mutations": [
                     f"gh issue comment {issue_number} --body-file <prepared>",
                     f"gh issue edit {issue_number} --remove-label {REVIEW_LABEL} --add-label {APPROVE_LABEL}",
                     f"refresh provider-work-queue",
-                    f"promote quarantine marker to .planning/plan-approved/{issue_number}.md",
                 ],
             }
 
@@ -519,8 +451,8 @@ def execute_transaction(
         # Phase ordering (each later phase implies all earlier are done):
         phase_order = [
             "preflight", "journal_written", "comment_prepared",
-            "quarantine_written", "comment_posted", "labels_transitioned",
-            "queue_refreshed", "verified", "promoted", "complete",
+            "comment_posted", "labels_transitioned",
+            "queue_refreshed", "verified", "complete",
         ]
 
         def at_least(phase: str) -> bool:
@@ -542,15 +474,6 @@ def execute_transaction(
             except ValueError:
                 state.comment_body_path = str(body_path)
             state.phase = "comment_prepared"
-            write_journal(state, tx_dir=tx_dir)
-
-        if not at_least("quarantine_written"):
-            marker_pending = write_quarantine_marker(state, tx_dir=tx_dir)
-            try:
-                state.marker_pending_path = str(marker_pending.relative_to(WORKSPACE_HUB))
-            except ValueError:
-                state.marker_pending_path = str(marker_pending)
-            state.phase = "quarantine_written"
             write_journal(state, tx_dir=tx_dir)
 
         if not at_least("comment_posted"):
@@ -595,14 +518,9 @@ def execute_transaction(
                 write_journal(state, tx_dir=tx_dir)
                 raise ApprovalError(
                     f"post-mutation verification failed: {problems}; "
-                    f"quarantine marker preserved at {state.marker_pending_path}"
+                    f"transaction journal preserved for --resume {state.txid}"
                 )
             state.phase = "verified"
-            write_journal(state, tx_dir=tx_dir)
-
-        if not at_least("promoted"):
-            promote_marker(state, approved_dir=approved_dir)
-            state.phase = "promoted"
             write_journal(state, tx_dir=tx_dir)
 
         state.phase = "complete"

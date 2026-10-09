@@ -2,7 +2,7 @@
 """Read-only continuous planning pipeline lane report.
 
 Classifies open issues into approval, execution, active-dispatch, QA, and
-planning feedstock lanes using GitHub issue JSON plus local plan/review/marker
+planning feedstock lanes using GitHub issue JSON plus local plan/review
 and optional dispatch-ledger evidence.
 """
 from __future__ import annotations
@@ -35,7 +35,7 @@ HANDOFF_FIELDS = (
     "pr/branch",
     "dispatch id",
     "plan sha",
-    "approval marker",
+    "approval evidence",
     "changed files",
     "tests/ci",
     "artifacts",
@@ -177,37 +177,16 @@ def review_summary(
 
 
 def discover_markers(root: Path) -> tuple[dict[int, Path], list[str]]:
-    markers: dict[int, Path] = {}
-    out_of_scope: list[str] = []
-    for path in sorted((root / ".planning" / "plan-approved").glob("*.md")):
-        if path.stem.isdigit():
-            markers[int(path.stem)] = path
-        else:
-            out_of_scope.append(path.name)
-    return markers, out_of_scope
+    """Retired compatibility hook.
+
+    Local approval markers are no longer queue inputs. Return an empty marker set
+    even if historical files exist so classification stays label-driven.
+    """
+    return {}, []
 
 
 def marker_quality(path: Path | None, root: Path | None = None) -> tuple[str | None, list[str]]:
-    if path is None or not path.exists():
-        return None, ["approved_no_marker"]
-    text = path.read_text(encoding="utf-8").lower()
-    warnings: list[str] = []
-    if "self-approved" in text or "auto-approved" in text or "worker session" in text:
-        warnings.append("self_approved_marker")
-    if root is not None:
-        try:
-            age_s = datetime.now().timestamp() - path.stat().st_mtime
-            rel = path.relative_to(root)
-            in_repo = subprocess.run(["git", "-C", str(root), "rev-parse", "--git-dir"], capture_output=True, text=True, timeout=5)
-            if in_repo.returncode == 0 and age_s < 120:
-                history = subprocess.run(["git", "-C", str(root), "log", "--oneline", "-1", "--", str(rel)], capture_output=True, text=True, timeout=10)
-                if history.returncode == 0 and not history.stdout.strip():
-                    warnings.append("uncommitted_marker")
-        except (OSError, ValueError, subprocess.TimeoutExpired):
-            pass
-    has_binding = "issue:" in text and "plan:" in text and "approved by:" in text
-    quality = "revision-bound" if has_binding and "approval source" in text else "minimal"
-    return quality, warnings
+    return None, []
 
 
 def parse_time(value: Any) -> datetime | None:
@@ -277,7 +256,7 @@ def has_canonical_approval_comment(issue: dict[str, Any], plan_path: Path | None
         return False, ["comment_check_failed"]
     if not comments:
         return False, ["approval_comment_ambiguous"]
-    required = ["approve", "revise", "hold", "execution remains unauthorized", "approval marker"]
+    required = ["approve", "revise", "hold", "labels and comments"]
     plan_name = plan_path.name if plan_path else ""
     for comment in comments:
         body = str(comment.get("body", "")).lower()
@@ -344,10 +323,8 @@ def classify_issue(
             number, plan_path, reviews, required_providers, allow_legacy_review_artifacts
         )
         warnings.extend(review_warnings)
-    quality, marker_warnings = marker_quality(markers.get(number), root=root)
-    marker_exists = markers.get(number) is not None
-    if "status:plan-approved" in labels:
-        warnings.extend(marker_warnings)
+    quality, marker_warnings = marker_quality(None, root=root)
+    marker_exists = False
 
     substate: str | None = None
     lane = "C"
@@ -369,7 +346,7 @@ def classify_issue(
     elif issue_state(issue) != "OPEN":
         lane = "closed"
         primary_action = "ignore_closed"
-    elif "status:plan-approved" in labels and plan_path and marker_exists and review_clean and not marker_warnings:
+    elif "status:plan-approved" in labels and plan_path and review_clean:
         lane = "B"
         primary_action = "dispatch_implementation"
     elif "status:plan-review" in labels and plan_path and review_clean:
@@ -404,7 +381,7 @@ def classify_issue(
         "plan": plan_rel,
         "review_clean": review_clean,
         "review_evidence": review_evidence,
-        "approval_marker": str(markers[number].relative_to(root)) if marker_exists else None,
+        "approval_marker": None,
         "marker_quality": quality,
         "dispatch_state": dispatch.get(number),
         "priority_rank": priority_rank(issue),
@@ -544,7 +521,7 @@ def render_markdown(snapshot: dict[str, Any]) -> str:
     limit = int(snapshot.get("thresholds", {}).get("max_new_implementation_prs_per_night", 3))
     ready_items = snapshot["lanes"]["B"]
     for entry in ready_items[:limit]:
-        lines.append(f"- #{entry['number']} {entry['title']} — execution-ready with marker `{entry.get('approval_marker')}`")
+        lines.append(f"- #{entry['number']} {entry['title']} — execution-ready by label")
     if len(ready_items) > limit:
         lines.append(f"- Additional Lane B candidates exist but new implementation dispatch is limited to {limit} per night.")
     if not ready_items:

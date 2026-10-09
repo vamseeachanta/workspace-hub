@@ -281,7 +281,7 @@ class TestParityCheck:
             "",
             "| Lane | Ready | Label |",
             "|------|-------|-------|",
-            f"| **AGY** | {gemini} | `lane:agy` |",
+            f"| **AGY** | {agy} | `lane:agy` |",
             f"| **CLAUDE** | {claude} | `lane:claude` |",
             f"| **CODEX** | {codex} | `lane:codex` |",
         ]
