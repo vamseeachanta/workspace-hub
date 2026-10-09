@@ -11,11 +11,18 @@ assert spec.loader is not None
 spec.loader.exec_module(module)
 
 
-def test_suggested_provider_prefers_existing_agent_label() -> None:
+def test_suggested_provider_prefers_existing_ai_label() -> None:
+    issue = {"title": "Fix tests", "body": "", "labels": [{"name": "ai:agy"}]}
+    provider, reason = module.suggested_provider(issue)
+    assert provider == "agy"
+    assert "existing" in reason
+
+
+def test_suggested_provider_accepts_legacy_agent_gemini_alias() -> None:
     issue = {"title": "Fix tests", "body": "", "labels": [{"name": "agent:gemini"}]}
     provider, reason = module.suggested_provider(issue)
-    assert provider == "gemini"
-    assert "existing" in reason
+    assert provider == "agy"
+    assert "legacy" in reason
 
 
 def test_suggested_provider_routes_fixes_to_codex() -> None:
@@ -29,11 +36,11 @@ def test_build_queue_prefers_execution_ready_items_first() -> None:
     scorecard = {
         "current_week": "2026-W16",
         "generated_at": "2026-04-13T00:00:00Z",
-        "recommended_provider_order": ["codex", "gemini", "claude"],
+        "recommended_provider_order": ["codex", "agy", "claude"],
         "recommendations": [
             {"provider": "claude", "priority": "high", "status": "underused"},
             {"provider": "codex", "priority": "highest", "status": "underused"},
-            {"provider": "gemini", "priority": "highest", "status": "underused"},
+            {"provider": "agy", "priority": "highest", "status": "underused"},
         ],
     }
     issues = [
@@ -66,7 +73,7 @@ def test_render_markdown_mentions_execution_ready() -> None:
     queue = {
         "generated_at": "2026-04-13T00:00:00Z",
         "current_week": "2026-W16",
-        "recommended_provider_order": ["gemini", "codex", "claude"],
+        "recommended_provider_order": ["agy", "codex", "claude"],
         "provider_queues": {
             provider: {
                 "routing_priority": "highest",
@@ -91,7 +98,7 @@ def test_render_markdown_mentions_execution_ready() -> None:
                     }
                 ],
             }
-            for provider in ("claude", "codex", "gemini")
+            for provider in ("claude", "codex", "agy")
         },
     }
 
@@ -104,11 +111,11 @@ def _scorecard():
     return {
         "current_week": "2026-W20",
         "generated_at": "2026-05-12T00:00:00Z",
-        "recommended_provider_order": ["gemini", "codex", "claude"],
+        "recommended_provider_order": ["agy", "codex", "claude"],
         "recommendations": [
             {"provider": "claude", "priority": "high", "status": "underused"},
             {"provider": "codex", "priority": "highest", "status": "underused"},
-            {"provider": "gemini", "priority": "highest", "status": "underused"},
+            {"provider": "agy", "priority": "highest", "status": "underused"},
         ],
     }
 
@@ -146,7 +153,7 @@ def test_provider_work_queue_emits_full_candidates_and_top_issues() -> None:
 
 
 def test_provider_work_queue_report_says_plan_approved_only() -> None:
-    """Per #2665: report wording must NOT imply agent:* labels grant execution-ready.
+    """Per #2665: report wording must NOT imply provider labels grant execution-ready.
     """
     fixture = (
         Path(__file__).resolve().parents[1]
@@ -156,7 +163,7 @@ def test_provider_work_queue_report_says_plan_approved_only() -> None:
         / "issues.json"
     )
     issues = json.loads(fixture.read_text(encoding="utf-8"))
-    # Add an issue with agent:codex but NO status:plan-approved
+    # Add an issue with ai:codex but NO status:plan-approved
     issues = list(issues) + [
         {
             "number": 9999,
@@ -165,7 +172,7 @@ def test_provider_work_queue_report_says_plan_approved_only() -> None:
             "state": "OPEN",
             "body": "no approval yet",
             "updatedAt": "2026-05-12T12:00:00Z",
-            "labels": [{"name": "agent:codex"}, {"name": "priority:medium"}],
+            "labels": [{"name": "ai:codex"}, {"name": "priority:medium"}],
             "comments": [],
         }
     ]
@@ -175,11 +182,11 @@ def test_provider_work_queue_report_says_plan_approved_only() -> None:
     # The wording must say execution-ready requires status:plan-approved
     # and must NOT include the misleading "or an explicit agent label" clause.
     assert "status:plan-approved" in md
-    assert "or an explicit agent label" not in md, (
-        "execution-ready wording must not imply agent:* grants approval"
+    assert "or an explicit provider label" not in md, (
+        "execution-ready wording must not imply provider labels grant approval"
     )
 
-    # The agent:codex-only issue must classify as execution_ready=False.
+    # The ai:codex-only issue must classify as execution_ready=False.
     codex_items = queue["provider_queues"]["codex"]["full_candidates"]
     agent_only = next(item for item in codex_items if item["number"] == 9999)
     assert agent_only["execution_ready"] is False

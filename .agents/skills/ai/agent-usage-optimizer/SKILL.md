@@ -29,25 +29,25 @@ Current authority: implementation follows the originating task request or establ
 
 ## Agent Routing via GitHub Labels (Preferred Method)
 
-Deterministic agent routing using `agent:` labels on GitHub issues — no separate queue file needed:
+Deterministic agent routing using `ai:` labels on GitHub issues — no separate queue file needed. Legacy `agent:*` labels are read-only aliases during the migration window; do not add new `agent:*` labels.
 
 ```bash
 # Route tasks to agents via labels
-gh issue edit <issue-number> --add-label "agent:gemini"
-gh issue edit <issue-number> --add-label "agent:claude"
-gh issue edit <issue-number> --add-label "agent:codex"
+gh issue edit <issue-number> --add-label "ai:agy"
+gh issue edit <issue-number> --add-label "ai:claude"
+gh issue edit <issue-number> --add-label "ai:codex"
 ```
 
 View agent queues:
 ```bash
-gh issue list --label "agent:gemini,priority:high"
-gh issue list --label "agent:claude,priority:high"
-gh issue list --label "agent:codex,priority:high"
+gh issue list --label "ai:agy,priority:high"
+gh issue list --label "ai:claude,priority:high"
+gh issue list --label "ai:codex,priority:high"
 ```
 
 Reassign tasks:
 ```bash
-gh issue edit <issue-number> --remove-label "agent:gemini" --add-label "agent:claude"
+gh issue edit <issue-number> --remove-label "ai:agy" --add-label "ai:claude"
 ```
 
 ## Gemini Batched Session Pattern (Maximize $20/mo Quota)
@@ -210,7 +210,7 @@ When the user asks for a practical plan to stop wasting weekly provider credits,
 ## Conservative auto-labeling rule
 
 Auto-labeling should remain conservative. The current reusable pattern is:
-- only consider issues with no existing `agent:*` label
+- only consider issues with no existing `ai:*` label
 - only label high-confidence candidates
 - prefer execution-ready issues (`status:plan-approved`) first
 - require strong provider-specific routing reasons, not just generic keyword matches
@@ -270,7 +270,7 @@ This should regenerate:
 3. Read the provider work queue for live issue routing
 - `provider-work-queue.json` combines the scorecard with live `gh issue list` data
 - prefer `status:plan-approved` issues first
-- respect existing `agent:*` labels as authoritative when present
+- respect existing `ai:*` labels as authoritative when present
 - treat the generated per-provider issue lists as the primary dispatch surface
 
 ## Confidence-weighted auto-labeling rule
@@ -288,7 +288,7 @@ uv run --no-project python scripts/ai/provider-autolabel.py --apply --limit 3
 ```
 
 Recommended guardrails:
-- never touch issues that already have an `agent:*` label
+- never touch issues that already have an `ai:*` label
 - require high confidence (>= 0.90 worked well in practice)
 - prefer issues that are already `status:plan-approved`
 - require a strong routing reason, not a weak heuristic match
@@ -351,7 +351,7 @@ When the repo already has provider session exports and a provider audit, do not 
      - `config/ai-tools/provider-work-queue.json`
      - `docs/reports/provider-work-queue.md`
    - Group issues by recommended provider
-   - Respect existing `agent:*` labels first
+   - Respect existing `ai:*` labels first
    - Only use heuristics when no explicit agent label exists
    - Sort execution-ready items first (`status:plan-approved` or explicit agent ownership)
 
@@ -373,14 +373,14 @@ When the repo already has provider session exports and a provider audit, do not 
 
 ## Safe mutation rule for GitHub labels
 
-Do NOT mass-apply `agent:` labels just because the scorecard exists.
+Do NOT mass-apply `ai:` labels just because the scorecard exists.
 
 Preferred sequence:
 1. generate utilization artifacts
 2. generate routing scorecard
 3. generate provider work queue
 4. manually inspect the top routed issues per provider
-5. only then apply `agent:` labels to the clearest cases
+5. only then apply `ai:` labels to the clearest cases
 
 Reason:
 - routing heuristics are useful earlier than they are trustworthy for broad backlog mutation

@@ -33,8 +33,8 @@ For tasks that touch the local filesystem (cataloging, indexing, running scripts
 ### Pattern: Filesystem Triage + Parallel Subagents
 
 ```python
-# Step 1: List all gemini-assigned open issues
-gh issue list --label "agent:gemini" --state open --json number,title,labels
+# Step 1: List all Agy/Gemini-assigned open issues
+gh issue list --label "ai:agy" --state open --json number,title,labels
 
 # Step 2: Categorize by priority and batch (HIGH/MED/LOW)
 
@@ -159,7 +159,7 @@ Do NOT push to remote after commits.
 
 ## Nightly Cron Automation (IMPLEMENTED — #1961)
 
-A nightly cron job auto-processes `agent:gemini` issues. No manual batching needed for triage-level work.
+A nightly cron job auto-processes `ai:agy` issues. No manual batching needed for triage-level work.
 
 ### Scripts
 - `scripts/cron/gemini-nightly-batch.py` — Python processor (queries issues, classifies, processes/queues)
