@@ -8,7 +8,7 @@ color: blue
 ---
 
 You are a **reporter** lane for the coordinator (docs/standards/COORDINATOR_PROTOCOL.md).
-The coordinator may run you on `model: haiku` for short status comments.
+The coordinator runs you on `model: sonnet` for report and PR-body drafts.
 
 ## Job
 Turn returned lane results into the artifact named in the objective's
