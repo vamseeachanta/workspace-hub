@@ -117,25 +117,56 @@ derive_author_provider() {
   printf '%s' "$branch_provider"
 }
 
+head_committed_date() {
+  local pr_json head_sha committed_date
+  pr_json="$1"
+  head_sha="$2"
+
+  committed_date="$(jq -r --arg sha "$head_sha" '
+    ([.commits[]? | select(.oid == $sha) | .committedDate][0]
+      // [.commits[]? | .committedDate][-1]
+      // "")
+  ' <<<"$pr_json")"
+  [[ -n "$committed_date" && "$committed_date" != "null" ]] || die "could not resolve PR head committedDate"
+  printf '%s' "$committed_date"
+}
+
 validate_evidence_url() {
-  local pr_json evidence_url reviewer_provider comment_body
+  local pr_json evidence_url reviewer_provider expected_state head_date comment_json comment_body
+  local comment_created_at verdict_re evidence_verdict evidence_state
   pr_json="$1"
   evidence_url="$2"
   reviewer_provider="$3"
+  expected_state="$4"
+  head_date="$5"
 
-  comment_body="$(jq -r --arg url "$evidence_url" '
-    [.comments[]? | select(.url == $url) | .body][0] // ""
+  comment_json="$(jq -c --arg url "$evidence_url" '
+    [.comments[]? | select(.url == $url)][0] // {}
   ' <<<"$pr_json")"
+  comment_body="$(jq -r '.body // ""' <<<"$comment_json")"
+  comment_created_at="$(jq -r '.createdAt // ""' <<<"$comment_json")"
 
   [[ -n "$comment_body" ]] || die "--evidence-url must point at a comment on the same PR"
+  [[ -n "$comment_created_at" && "$comment_created_at" != "null" ]] || die "--evidence-url comment is missing createdAt"
+  [[ "$comment_created_at" > "$head_date" ]] || die "--evidence-url evidence comment is not later than head commit"
 
   if ! grep -Eiq "(^|[^[:alpha:]])${reviewer_provider}[[:space:]-]+review([^[:alpha:]]|$)" <<<"$comment_body"; then
     die "--evidence-url comment does not identify reviewer provider: ${reviewer_provider}"
   fi
 
-  if ! grep -Eiq 'verdict[[:space:]]*:' <<<"$comment_body"; then
-    die "--evidence-url comment does not contain a verdict line"
+  verdict_re='verdict[[:space:]]*:[[:space:]]*[*_`]*([[:alnum:]_-]+)'
+  shopt -s nocasematch
+  if [[ "$comment_body" =~ $verdict_re ]]; then
+    evidence_verdict="${BASH_REMATCH[1]}"
+  else
+    shopt -u nocasematch
+    die "--evidence-url comment does not contain a verdict token"
   fi
+  shopt -u nocasematch
+
+  evidence_state="$(status_from_verdict "$evidence_verdict")"
+  [[ "$evidence_state" == "$expected_state" ]] \
+    || die "--evidence-url verdict state ${evidence_state} does not match --verdict state ${expected_state}"
 }
 
 status_from_verdict() {
@@ -243,7 +274,8 @@ if [[ -n "$AUTHOR_PROVIDER" && "$AUTHOR_PROVIDER" != "$DERIVED_AUTHOR_PROVIDER" 
 fi
 
 AUTHOR_PROVIDER="$DERIVED_AUTHOR_PROVIDER"
-validate_evidence_url "$PR_JSON" "$EVIDENCE_URL" "$REVIEWER_PROVIDER"
+HEAD_COMMITTED_DATE="$(head_committed_date "$PR_JSON" "$HEAD_SHA")"
+validate_evidence_url "$PR_JSON" "$EVIDENCE_URL" "$REVIEWER_PROVIDER" "$STATE" "$HEAD_COMMITTED_DATE"
 
 if [[ "$STATE" == "success" && "$REVIEWER_PROVIDER" == "$AUTHOR_PROVIDER" ]]; then
   echo "ERROR: refusing success for same-provider review: reviewer-provider=${REVIEWER_PROVIDER} author-provider=${AUTHOR_PROVIDER}" >&2

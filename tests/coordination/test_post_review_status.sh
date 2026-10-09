@@ -45,13 +45,15 @@ if [[ "$1 $2" == "pr view" ]]; then
     --arg head "${FAKE_HEAD_SHA:-abc123def456}" \
     --arg branch "${FAKE_BRANCH:-codex/l5-review-status}" \
     --arg commit_body "${FAKE_COMMIT_BODY:-Co-Authored-By: Codex <codex@example.invalid>}" \
+    --arg committed_date "${FAKE_COMMITTED_DATE:-2026-10-09T12:00:00Z}" \
     --arg comment_url "${FAKE_COMMENT_URL:-https://github.com/vamseeachanta/workspace-hub/pull/17#issuecomment-1}" \
     --arg comment_body "${FAKE_COMMENT_BODY:-## Claude review -- verdict: APPROVED}" \
+    --arg comment_created_at "${FAKE_COMMENT_CREATED_AT:-2026-10-09T12:01:00Z}" \
     '{
       headRefOid: $head,
       headRefName: $branch,
-      commits: [{oid: "c1", messageBody: $commit_body}],
-      comments: [{url: $comment_url, author: {login: "reviewer"}, body: $comment_body}]
+      commits: [{oid: $head, committedDate: $committed_date, messageBody: $commit_body}],
+      comments: [{url: $comment_url, author: {login: "reviewer"}, body: $comment_body, createdAt: $comment_created_at}]
     }'
   exit 0
 fi
@@ -232,6 +234,39 @@ make_fake_gh
   assert_contains "T13 missing commit provider message" "Co-Authored-By trailers" "$out"
   log=$(cat "$GH_LOG")
   assert_not_contains "T13 missing commit provider does not post" "statuses" "$log"
+}
+
+# T14: evidence comment verdict must map to the same status state as --verdict.
+{
+  : >"$GH_LOG"
+  ec=0
+  out=$(FAKE_COMMENT_BODY="## Claude review -- verdict: MAJOR" run_script --post --pr 17 --verdict APPROVE --reviewer-provider claude --author-provider codex --sha abc123def456 --evidence-url https://github.com/vamseeachanta/workspace-hub/pull/17#issuecomment-1) || ec=$?
+  assert_exit "T14 evidence verdict mismatch exits 1" 1 "$ec"
+  assert_contains "T14 evidence verdict mismatch message" "does not match --verdict state" "$out"
+  log=$(cat "$GH_LOG")
+  assert_not_contains "T14 evidence verdict mismatch does not post" "statuses" "$log"
+}
+
+# T15: evidence comment must be newer than the current head commit.
+{
+  : >"$GH_LOG"
+  ec=0
+  out=$(FAKE_COMMENT_CREATED_AT="2026-10-09T11:59:59Z" run_script --post --pr 17 --verdict APPROVE --reviewer-provider claude --author-provider codex --sha abc123def456 --evidence-url https://github.com/vamseeachanta/workspace-hub/pull/17#issuecomment-1) || ec=$?
+  assert_exit "T15 stale evidence exits 1" 1 "$ec"
+  assert_contains "T15 stale evidence message" "evidence comment is not later than head commit" "$out"
+  log=$(cat "$GH_LOG")
+  assert_not_contains "T15 stale evidence does not post" "statuses" "$log"
+}
+
+# T16: missing verdict token in the evidence comment is refused.
+{
+  : >"$GH_LOG"
+  ec=0
+  out=$(FAKE_COMMENT_BODY="## Claude review -- APPROVED" run_script --post --pr 17 --verdict APPROVE --reviewer-provider claude --author-provider codex --sha abc123def456 --evidence-url https://github.com/vamseeachanta/workspace-hub/pull/17#issuecomment-1) || ec=$?
+  assert_exit "T16 missing evidence verdict exits 1" 1 "$ec"
+  assert_contains "T16 missing evidence verdict message" "does not contain a verdict token" "$out"
+  log=$(cat "$GH_LOG")
+  assert_not_contains "T16 missing evidence verdict does not post" "statuses" "$log"
 }
 
 if [[ "$FAIL" -gt 0 ]]; then
