@@ -19,7 +19,7 @@ Targets from #4005: skills about 400, agents = role set + named specialists, eve
 ## 2. Usage evidence
 
 - **No reliable skill-usage log exists.** `.claude/state/skill-invocations/` and `skill-usage-report/` stopped on 2026-06-15 (Hermes logs).
-- Claude transcripts were scanned on ace-linux-1 (879 files, retained back to 2026-09-23), ace-linux-2 and ws014.
+- Claude transcripts were scanned on ace-linux-1 (879 files, retained back to 2026-09-23), ace-linux-2 and ace-win-2.
   - Explicit Skill-tool calls to hub skills: one (`reconcile-ecosystem`). Everything else was built-in or plugin skills.
   - `SKILL.md` paths read in sessions: 111 distinct hub skills on ace-linux-1. Most reads were the old gate chain: `issue-planning-mode` 2,203, `pre-completion-cleanup-audit` 1,856, `work-queue` 324, `shared-risk-workflow` 279, `resource-intelligence` 208, `work-queue-workflow` 178, `workflow-gatepass` 152.
 - Codex sessions mention about 5,600 skills per skill path. That is the skill catalogue Codex loads into every session, not real use. It shows what the catalogue costs, but it cannot be used to rank skills.
