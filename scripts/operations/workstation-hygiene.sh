@@ -11,10 +11,11 @@
 #
 # SAFE = no tracked changes, no untracked files except caches (__pycache__, .pytest_cache,
 # .ruff_cache, .mypy_cache), no stashes of its own (clones), and HEAD contained in an origin ref
-# or equal to the head of a merged PR (squash merge, branch deleted). --apply removes worktrees
-# only under --root; those elsewhere (for example app task folders) stay report-only. A worktree
-# with a running process inside it (Linux) is IN USE and never removed; long jobs should also
-# `git worktree lock --reason <job>` so LOCKED protects them on every platform.
+# or equal to the head of a merged PR (squash merge, branch deleted). Removing a SAFE clone also
+# removes its gitignored files. --apply removes worktrees only under --root; those elsewhere (for
+# example app task folders) stay report-only. A worktree with a running process inside it (Linux)
+# is IN USE and never removed; long jobs should also `git worktree lock --reason <job>` so LOCKED
+# protects them on every platform.
 # Exit 0 always in report mode; non-zero only on usage errors.
 set -uo pipefail
 
@@ -26,7 +27,7 @@ while [ $# -gt 0 ]; do
     --sizes) SIZES=1; shift ;;
     --apply) APPLY=1; shift ;;
     --caches) CACHES=1; shift ;;
-    -h|--help) sed -n '2,16p' "$0"; exit 0 ;;
+    -h|--help) sed -n '2,18p' "$0"; exit 0 ;;
     *) echo "unknown arg: $1" >&2; exit 2 ;;
   esac
 done
@@ -70,6 +71,12 @@ assess() {
   git -C "$d" fetch -q --prune origin || { echo "UNVERIFIED: fetch failed"; return; }
 
   if [ "$mode" = "all-branches" ]; then
+    head=$(git -C "$d" rev-parse HEAD)
+    branch=$(git -C "$d" symbolic-ref -q --short HEAD)
+    if ! commit_is_published_or_merged "$d" "$branch" "$head"; then
+      echo "UNPUSHED: HEAD $head"
+      return
+    fi
     while read -r ref_branch ref_commit; do
       [ -n "$ref_branch" ] || continue
       if ! commit_is_published_or_merged "$d" "$ref_branch" "$ref_commit"; then

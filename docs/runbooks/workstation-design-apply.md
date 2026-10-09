@@ -32,8 +32,9 @@ the design marks as owner-only.
    and cache sizes.
 4. If free space is below ~10 % of the drive, or any SAFE duplicate clone exists, run it again
    with `--apply` (add `--caches` if npm/uv/pip caches exceed a few GB). --apply only removes
-   SAFE items under the root. Never delete DIRTY, UNPUSHED or LOCKED items, and never touch
-   folders owned by a running app (Codex app task folders stay report-only).
+   SAFE items under the root. Removing a SAFE duplicate clone also removes its gitignored files.
+   Never delete DIRTY, UNPUSHED or LOCKED items, and never touch folders owned by a running app
+   (Codex app task folders stay report-only).
 5. Look for bulky regenerable output tracked in Git or staged in open PRs (per-case solver
    results, hundreds of MB). Do not move it yourself; list it for the owner with size and repo.
 6. List live peer Claude sessions on this machine and tell them which items you are taking.

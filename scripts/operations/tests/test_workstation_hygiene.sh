@@ -101,6 +101,25 @@ test_cache_like_filename_is_dirty() {
   assert_contains "$out" "DIRTY: ?? customer__pycache__results.csv" "reports cache-like filename dirty"
 }
 
+test_detached_unpushed_head_blocks_clone_safe() {
+  run_test "detached HEAD with unpushed commit blocks duplicate clone SAFE"
+  local root out
+  root="$(make_workspace)"
+  git -C "$root/demo-copy" checkout -q --detach
+  git_quiet -C "$root/demo-copy" commit --allow-empty -m "detached local commit" >/dev/null
+
+  out="$(run_hygiene "$root")"
+  assert_contains "$out" "UNPUSHED: HEAD" "reports detached unpushed HEAD"
+  assert_not_contains "$out" "$root/demo-copy SAFE" "does not report detached duplicate clone SAFE"
+
+  out="$(run_hygiene_apply "$root")"
+  if [[ -d "$root/demo-copy/.git" ]]; then
+    pass "apply preserves duplicate clone with detached unpushed HEAD"
+  else
+    fail "apply preserves duplicate clone with detached unpushed HEAD"
+  fi
+}
+
 if [[ ! -f "$SCRIPT_UNDER_TEST" ]]; then
   echo "ERROR: workstation-hygiene.sh not found at $SCRIPT_UNDER_TEST" >&2
   exit 1
@@ -111,6 +130,7 @@ test_unpushed_side_branch_blocks_clone_safe
 test_linked_worktree_blocks_clone_rm_rf
 test_failed_fetch_is_unverified
 test_cache_like_filename_is_dirty
+test_detached_unpushed_head_blocks_clone_safe
 
 echo ""
 echo "=================================="
