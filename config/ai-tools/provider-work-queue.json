@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-10-09T09:21:15.365423Z",
+  "generated_at": "2026-10-09T13:21:20.686141Z",
   "current_week": "2026-W41",
-  "scorecard_generated_at": "2026-10-09T09:21:13.165991Z",
+  "scorecard_generated_at": "2026-10-09T13:21:18.269255Z",
   "recommended_provider_order": [
     "codex",
     "agy",
@@ -589,7 +589,7 @@
             "priority:critical",
             "compliance-alert"
           ],
-          "updatedAt": "2026-10-08T11:45:07Z",
+          "updatedAt": "2026-10-09T11:45:08Z",
           "execution_ready": false,
           "priority_rank": 0,
           "suggested_provider": "claude",
@@ -1233,28 +1233,6 @@
           "work_type": [
             "research",
             "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 3589,
-          "title": "EPIC: family phone-media extraction & archive ecosystem",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3589",
-          "labels": [
-            "priority:medium",
-            "cat:data",
-            "machine:multi",
-            "epic",
-            "domain:family"
-          ],
-          "updatedAt": "2026-07-31T08:35:37Z",
-          "execution_ready": false,
-          "priority_rank": 2,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
             "strategy"
           ]
         },
@@ -2189,7 +2167,7 @@
             "domain:harness",
             "epic"
           ],
-          "updatedAt": "2026-07-31T08:36:59Z",
+          "updatedAt": "2026-10-09T12:18:57Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -4168,6 +4146,26 @@
           "provider_status": "underused",
           "work_type": [
             "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 3985,
+          "title": "ecosystem-sync.sh pushes directly to main, contrary to the AGENTS.md PR-path rule (#3957)",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3985",
+          "labels": [
+            "gate:completeness",
+            "gate:completeness-v2"
+          ],
+          "updatedAt": "2026-10-09T12:25:44Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
             "implementation",
             "strategy"
           ]

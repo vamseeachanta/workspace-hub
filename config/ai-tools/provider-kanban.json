@@ -45,6 +45,43 @@
         "provider_route": "claude",
         "risks": "(no risks section captured)",
         "tests": "(no TDD section)",
+        "title": "ecosystem-sync.sh pushes directly to main, contrary to the AGENTS.md PR-path rule (#3957)"
+      },
+      "lane": "planning_feedstock",
+      "machine_blocker": "no_provider_capable_workstation",
+      "machine_ready": false,
+      "machine_role": null,
+      "machine_route": null,
+      "number": 3985,
+      "pipeline_lane": "C",
+      "plan": null,
+      "provider_route": "claude",
+      "review_clean": false,
+      "routing_reason": "strategy/workflow/architecture language",
+      "title": "ecosystem-sync.sh pushes directly to main, contrary to the AGENTS.md PR-path rule (#3957)",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3985",
+      "warnings": []
+    },
+    {
+      "approval_blockers": [
+        "missing status:plan-review label",
+        "no canonical plan file",
+        "review evidence not clean",
+        "static dashboard: real approval requires provider-kanban-server.py"
+      ],
+      "approval_marker": null,
+      "approval_ready": false,
+      "hover": {
+        "labels": [
+          "gate:completeness",
+          "gate:completeness-v2"
+        ],
+        "machine_readiness": "blocked:no_provider_capable_workstation",
+        "machine_route": "(none ready)",
+        "plan_summary": "(no plan file found)",
+        "provider_route": "claude",
+        "risks": "(no risks section captured)",
+        "tests": "(no TDD section)",
         "title": "workflow: lessons from the Windows agent-session review (2026-10) \u2014 continuation, progress health, review packets, preflight"
       },
       "lane": "planning_feedstock",
@@ -7718,54 +7755,51 @@
         "major_review",
         "missing_review"
       ]
-    },
-    {
-      "approval_blockers": [
-        "missing status:plan-review label",
-        "no canonical plan file",
-        "review evidence not clean",
-        "static dashboard: real approval requires provider-kanban-server.py"
-      ],
-      "approval_marker": null,
-      "approval_ready": false,
-      "hover": {
-        "labels": [
-          "priority:medium",
-          "cat:data",
-          "machine:multi",
-          "epic",
-          "domain:family"
-        ],
-        "machine_readiness": "blocked:no_provider_capable_workstation",
-        "machine_route": "(none ready)",
-        "plan_summary": "(no plan file found)",
-        "provider_route": "claude",
-        "risks": "(no risks section captured)",
-        "tests": "(no TDD section)",
-        "title": "EPIC: family phone-media extraction & archive ecosystem"
-      },
-      "lane": "planning_feedstock",
-      "machine_blocker": "no_provider_capable_workstation",
-      "machine_ready": false,
-      "machine_role": null,
-      "machine_route": null,
-      "number": 3589,
-      "pipeline_lane": "C",
-      "plan": null,
-      "provider_route": "claude",
-      "review_clean": false,
-      "routing_reason": "strategy/workflow/architecture language",
-      "title": "EPIC: family phone-media extraction & archive ecosystem",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3589",
-      "warnings": []
     }
   ],
-  "generated_at": "2026-10-09T09:21:17Z",
+  "generated_at": "2026-10-09T13:21:22Z",
   "lanes": {
     "blocked": [],
     "execution_ready": [],
     "plan_review": [],
     "planning_feedstock": [
+      {
+        "approval_blockers": [
+          "missing status:plan-review label",
+          "no canonical plan file",
+          "review evidence not clean",
+          "static dashboard: real approval requires provider-kanban-server.py"
+        ],
+        "approval_marker": null,
+        "approval_ready": false,
+        "hover": {
+          "labels": [
+            "gate:completeness",
+            "gate:completeness-v2"
+          ],
+          "machine_readiness": "blocked:no_provider_capable_workstation",
+          "machine_route": "(none ready)",
+          "plan_summary": "(no plan file found)",
+          "provider_route": "claude",
+          "risks": "(no risks section captured)",
+          "tests": "(no TDD section)",
+          "title": "ecosystem-sync.sh pushes directly to main, contrary to the AGENTS.md PR-path rule (#3957)"
+        },
+        "lane": "planning_feedstock",
+        "machine_blocker": "no_provider_capable_workstation",
+        "machine_ready": false,
+        "machine_role": null,
+        "machine_route": null,
+        "number": 3985,
+        "pipeline_lane": "C",
+        "plan": null,
+        "provider_route": "claude",
+        "review_clean": false,
+        "routing_reason": "strategy/workflow/architecture language",
+        "title": "ecosystem-sync.sh pushes directly to main, contrary to the AGENTS.md PR-path rule (#3957)",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3985",
+        "warnings": []
+      },
       {
         "approval_blockers": [
           "missing status:plan-review label",
@@ -15459,46 +15493,6 @@
           "major_review",
           "missing_review"
         ]
-      },
-      {
-        "approval_blockers": [
-          "missing status:plan-review label",
-          "no canonical plan file",
-          "review evidence not clean",
-          "static dashboard: real approval requires provider-kanban-server.py"
-        ],
-        "approval_marker": null,
-        "approval_ready": false,
-        "hover": {
-          "labels": [
-            "priority:medium",
-            "cat:data",
-            "machine:multi",
-            "epic",
-            "domain:family"
-          ],
-          "machine_readiness": "blocked:no_provider_capable_workstation",
-          "machine_route": "(none ready)",
-          "plan_summary": "(no plan file found)",
-          "provider_route": "claude",
-          "risks": "(no risks section captured)",
-          "tests": "(no TDD section)",
-          "title": "EPIC: family phone-media extraction & archive ecosystem"
-        },
-        "lane": "planning_feedstock",
-        "machine_blocker": "no_provider_capable_workstation",
-        "machine_ready": false,
-        "machine_role": null,
-        "machine_route": null,
-        "number": 3589,
-        "pipeline_lane": "C",
-        "plan": null,
-        "provider_route": "claude",
-        "review_clean": false,
-        "routing_reason": "strategy/workflow/architecture language",
-        "title": "EPIC: family phone-media extraction & archive ecosystem",
-        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3589",
-        "warnings": []
       }
     ],
     "qa_closeout": [],
@@ -15509,9 +15503,9 @@
     "agy",
     "claude"
   ],
-  "scorecard_generated_at": "2026-10-09T09:21:13.165991Z",
+  "scorecard_generated_at": "2026-10-09T13:21:18.269255Z",
   "served_localhost": false,
-  "utilization_generated_at": "2026-10-09T09:21:13.005908Z",
+  "utilization_generated_at": "2026-10-09T13:21:18.127661Z",
   "warning_summary": {
     "approved_no_marker": 5,
     "approved_no_plan": 1,
