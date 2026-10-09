@@ -204,6 +204,32 @@ PY
     return 1
 }
 
+verify_private_repo_visibility() {
+    local repo="$1"
+    local visibility
+    if ! command -v gh >/dev/null 2>&1; then
+        return 1
+    fi
+    visibility="$(gh repo view "$repo" --json visibility --jq .visibility 2>/dev/null || true)"
+    [[ "$visibility" == "PRIVATE" ]]
+}
+
+resolve_claude_memory_private_snapshot_source() {
+    local clone="$1"
+    local legacy_source host_source
+    legacy_source="$clone/legacy/config/agents/claude/memory-snapshots"
+    if [[ -d "$legacy_source" ]]; then
+        printf '%s\n' "$legacy_source"
+        return 0
+    fi
+    host_source="$(find "$clone/hosts" -mindepth 5 -maxdepth 5 -type d -path '*/config/agents/claude/memory-snapshots' 2>/dev/null | sort | head -n 1)"
+    if [[ -n "$host_source" ]]; then
+        printf '%s\n' "$host_source"
+        return 0
+    fi
+    return 1
+}
+
 sanitize_codex_managed_keys() {
     local source_file="$1"
     local output_file="$2"
@@ -1343,11 +1369,18 @@ else
 fi
 
 # Claude Code project memory (#1779)
-CLAUDE_MEM_SNAP="$WS_HUB/config/agents/claude/memory-snapshots"
+CLAUDE_MEMORY_SNAPSHOT_REPO="${CLAUDE_MEMORY_SNAPSHOT_REPO:-vamseeachanta/claude-memory-snapshots}"
+CLAUDE_MEMORY_SNAPSHOT_PRIVATE_CLONE="${CLAUDE_MEMORY_SNAPSHOT_PRIVATE_CLONE:-${HOME}/.local/share/claude-memory-snapshots}"
+CLAUDE_MEM_SNAP=""
+if [[ -d "$CLAUDE_MEMORY_SNAPSHOT_PRIVATE_CLONE/.git" ]] && verify_private_repo_visibility "$CLAUDE_MEMORY_SNAPSHOT_REPO"; then
+    CLAUDE_MEM_SNAP="$(resolve_claude_memory_private_snapshot_source "$CLAUDE_MEMORY_SNAPSHOT_PRIVATE_CLONE" || true)"
+else
+    echo "[WARN] Claude project memory private snapshot repo is unreachable or not PRIVATE; skipping restore" >&2
+fi
 # Derive the encoded project path from WS_HUB
 WS_HUB_ENCODED="$(echo "$WS_HUB" | sed 's|^/||; s|/|-|g')"
 CLAUDE_MEM_TARGET="$HOME/.claude/projects/-${WS_HUB_ENCODED}/memory"
-if [[ -d "$CLAUDE_MEM_SNAP" && -d "$HOME/.claude" ]]; then
+if [[ -n "$CLAUDE_MEM_SNAP" && -d "$CLAUDE_MEM_SNAP" && -d "$HOME/.claude" ]]; then
     if [[ -d "$CLAUDE_MEM_TARGET" ]]; then
         EXISTING_COUNT=$(find "$CLAUDE_MEM_TARGET" -maxdepth 1 -type f -name '*.md' | wc -l)
     else
@@ -1374,7 +1407,7 @@ if [[ -d "$CLAUDE_MEM_SNAP" && -d "$HOME/.claude" ]]; then
         log_skip "Claude project memory (already has $EXISTING_COUNT files)"
     fi
 else
-    log_skip "Claude project memory (claude not installed or no snapshots)"
+    log_skip "Claude project memory (claude not installed or private snapshots unavailable)"
 fi
 
 # Codex state (#1781)
