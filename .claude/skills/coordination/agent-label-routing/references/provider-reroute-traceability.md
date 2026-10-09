@@ -1,6 +1,6 @@
 # Provider Reroute Traceability Pattern
 
-Use this when a GitHub issue has already been routed to an `agent:` lane, but the selected provider cannot complete the work in the current execution environment or quota state.
+Use this when a GitHub issue has already been routed to an `ai:` lane, but the selected provider cannot complete the work in the current execution environment or quota state. Legacy `agent:*` labels are read-only aliases during the migration window; do not add new `agent:*` labels.
 
 ## Goal
 
@@ -41,7 +41,7 @@ Keep the work moving without losing auditability. A reroute should leave enough 
 3. **Change only routing labels**
 
    ```bash
-   gh issue edit <n> --remove-label "agent:codex" --add-label "agent:claude"
+   gh issue edit <n> --remove-label "ai:codex" --add-label "ai:claude"
    ```
 
    Do not add or remove `status:*` labels unless the workflow gate changed. Rerouting provider ownership is not plan approval and not closeout.

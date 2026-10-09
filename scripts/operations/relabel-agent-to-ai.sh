@@ -34,10 +34,18 @@ done
 
 ai_label_for_agent() {
   case "$1" in
+    agent:claude) printf '%s\n' "ai:claude" ;;
+    agent:codex) printf '%s\n' "ai:codex" ;;
     agent:gemini) printf '%s\n' "ai:agy" ;;
-    agent:*) printf 'ai:%s\n' "${1#agent:}" ;;
+    agent:hermes) printf '%s\n' "ai:hermes" ;;
+    agent:agy) printf '%s\n' "ai:agy" ;;
     *) return 1 ;;
   esac
+}
+
+repo_has_target_label() {
+  local label="$1"
+  grep -Fxq "$label" <<<"$REPO_LABELS"
 }
 
 agent_labels_from_item() {
@@ -73,12 +81,21 @@ process_item() {
   local encoded="$3"
   local number
   number="$(item_number_from_item "$encoded")"
+  number="${number%$'\r'}"
 
   local agent_label ai_label
   while IFS= read -r agent_label; do
+    agent_label="${agent_label%$'\r'}"
     [[ -n "$agent_label" ]] || continue
-    ai_label="$(ai_label_for_agent "$agent_label")"
+    if ! ai_label="$(ai_label_for_agent "$agent_label")"; then
+      echo "SKIP ${kind} ${repo}#${number}: unsupported legacy label ${agent_label}"
+      continue
+    fi
     if [[ "$APPLY" == true ]]; then
+      if ! repo_has_target_label "$ai_label"; then
+        echo "SKIP ${kind} ${repo}#${number}: target label ${ai_label} missing in repo"
+        continue
+      fi
       echo "APPLY ${kind} ${repo}#${number}: add ${ai_label} remove ${agent_label}"
       gh "$kind" edit "$number" --repo "$repo" --add-label "$ai_label" --remove-label "$agent_label"
     else
@@ -89,6 +106,13 @@ process_item() {
 
 while IFS= read -r repo; do
   [[ -n "$repo" ]] || continue
+  REPO_LABELS=""
+  if [[ "$APPLY" == true ]]; then
+    if ! REPO_LABELS="$(gh label list --repo "$repo" --limit 1000 --json name --jq '.[].name')"; then
+      echo "SKIP ${repo}: unable to list labels" >&2
+      continue
+    fi
+  fi
   while IFS= read -r encoded; do
     [[ -n "$encoded" ]] || continue
     process_item issue "$repo" "$encoded"
