@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import os
+import shutil
 import subprocess
 from pathlib import Path
 
@@ -23,6 +24,9 @@ case "$*" in
     ;;
   "pr list --repo vamseeachanta/workspace-hub --state all --limit 10000 --json number,labels --jq .[] | @base64")
     printf '%s\\n' 'eyJudW1iZXIiOjIwMiwibGFiZWxzIjpbeyJuYW1lIjoiYWdlbnQ6Y29kZXgifV19'
+    ;;
+  "label list --repo vamseeachanta/workspace-hub --limit 1000 --json name --jq .[].name")
+    printf '%s\\n' 'ai:agy' 'ai:codex'
     ;;
   *)
     exit 99
@@ -52,6 +56,50 @@ esac
     assert "DRY-RUN issue vamseeachanta/workspace-hub#101: add ai:agy remove agent:gemini" in completed.stdout
     assert "DRY-RUN pr vamseeachanta/workspace-hub#202: add ai:codex remove agent:codex" in completed.stdout
     assert "edit" not in call_log.read_text(encoding="utf-8")
+
+
+def test_relabel_agent_to_ai_exits_before_gh_when_python_missing(tmp_path: Path) -> None:
+    fake_gh = tmp_path / "gh"
+    fake_gh.write_text(
+        """#!/usr/bin/env bash
+set -euo pipefail
+printf '%s\\n' "$*" >> "$GH_CALL_LOG"
+exit 99
+""",
+        encoding="utf-8",
+    )
+    fake_gh.chmod(0o755)
+
+    minimal_path = tmp_path / "bin"
+    minimal_path.mkdir()
+    bash_path = shutil.which("bash")
+    assert bash_path is not None
+    (minimal_path / "bash").symlink_to(bash_path)
+
+    for tool in ("cat", "chmod", "env", "printf", "test", "true"):
+        tool_path = shutil.which(tool)
+        if tool_path is not None:
+            (minimal_path / tool).symlink_to(tool_path)
+
+    call_log = tmp_path / "calls.log"
+    env = {
+        "PATH": f"{tmp_path}:{minimal_path}",
+        "GH_CALL_LOG": str(call_log),
+    }
+
+    completed = subprocess.run(
+        ["bash", str(SCRIPT)],
+        cwd=REPO_ROOT,
+        env=env,
+        check=False,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        text=True,
+    )
+
+    assert completed.returncode == 2
+    assert "python3 or python is required" in completed.stderr
+    assert not call_log.exists()
 
 
 def test_relabel_agent_to_ai_apply_edits_issues_and_prs(tmp_path: Path) -> None:
@@ -122,6 +170,9 @@ case "$*" in
     ;;
   "pr list --repo vamseeachanta/workspace-hub --state all --limit 10000 --json number,labels --jq .[] | @base64")
     ;;
+  "label list --repo vamseeachanta/workspace-hub --limit 1000 --json name --jq .[].name")
+    printf '%s\\n' 'ai:agy'
+    ;;
   *)
     exit 99
     ;;
@@ -130,7 +181,7 @@ esac
         encoding="utf-8",
     )
     fake_gh.chmod(0o755)
-    fake_python = tmp_path / "python"
+    fake_python = tmp_path / "python3"
     fake_python.write_text(
         """#!/usr/bin/env bash
 script=$(cat)
@@ -179,6 +230,8 @@ case "$*" in
     ;;
   "pr list --repo vamseeachanta/workspace-hub --state all --limit 10000 --json number,labels --jq .[] | @base64")
     ;;
+  "label list --repo vamseeachanta/workspace-hub --limit 1000 --json name --jq .[].name")
+    ;;
   *)
     exit 99
     ;;
@@ -209,6 +262,54 @@ esac
     assert "add ai:any" not in completed.stdout
     assert "add ai:other" not in completed.stdout
     assert "edit" not in call_log.read_text(encoding="utf-8")
+
+
+def test_relabel_agent_to_ai_dry_run_reports_missing_target_labels(tmp_path: Path) -> None:
+    fake_gh = tmp_path / "gh"
+    fake_gh.write_text(
+        """#!/usr/bin/env bash
+set -euo pipefail
+printf '%s\\n' "$*" >> "$GH_CALL_LOG"
+case "$*" in
+  "repo list vamseeachanta --no-archived --limit 10000 --json nameWithOwner --jq .[].nameWithOwner")
+    printf '%s\\n' 'vamseeachanta/workspace-hub'
+    ;;
+  "label list --repo vamseeachanta/workspace-hub --limit 1000 --json name --jq .[].name")
+    printf '%s\\n' 'ai:claude'
+    ;;
+  "issue list --repo vamseeachanta/workspace-hub --state all --limit 10000 --json number,labels --jq .[] | @base64")
+    printf '%s\\n' 'eyJudW1iZXIiOjEwMSwibGFiZWxzIjpbeyJuYW1lIjoiYWdlbnQ6Y29kZXgifV19'
+    ;;
+  "pr list --repo vamseeachanta/workspace-hub --state all --limit 10000 --json number,labels --jq .[] | @base64")
+    ;;
+  *)
+    exit 99
+    ;;
+esac
+""",
+        encoding="utf-8",
+    )
+    fake_gh.chmod(0o755)
+    call_log = tmp_path / "calls.log"
+    env = os.environ | {
+        "PATH": f"{tmp_path}:{os.environ['PATH']}",
+        "GH_CALL_LOG": str(call_log),
+    }
+
+    completed = subprocess.run(
+        ["bash", str(SCRIPT)],
+        cwd=REPO_ROOT,
+        env=env,
+        check=False,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        text=True,
+    )
+
+    assert completed.returncode != 0
+    assert "SKIP issue vamseeachanta/workspace-hub#101: target label ai:codex missing in repo" in completed.stdout
+    assert "Summary: repos OK=0 skipped=1 failed=0" in completed.stdout
+    assert "issue edit" not in call_log.read_text(encoding="utf-8")
 
 
 def test_relabel_agent_to_ai_apply_skips_missing_target_labels(tmp_path: Path) -> None:
@@ -358,6 +459,62 @@ esac
 
     assert completed.returncode != 0
     assert "FAIL vamseeachanta/repo-a: unable to list issues" in completed.stderr
+    assert "Summary: repos OK=0 skipped=0 failed=1" in completed.stdout
+    log = call_log.read_text(encoding="utf-8")
+    assert "issue edit" not in log
+    assert "pr list --repo vamseeachanta/repo-a" not in log
+
+
+def test_relabel_agent_to_ai_helper_failure_marks_repo_failed(tmp_path: Path) -> None:
+    fake_gh = tmp_path / "gh"
+    fake_gh.write_text(
+        """#!/usr/bin/env bash
+set -euo pipefail
+printf '%s\\n' "$*" >> "$GH_CALL_LOG"
+case "$*" in
+  "repo list vamseeachanta --no-archived --limit 10000 --json nameWithOwner --jq .[].nameWithOwner")
+    printf '%s\\n' 'vamseeachanta/repo-a'
+    ;;
+  "label list --repo vamseeachanta/repo-a --limit 1000 --json name --jq .[].name")
+    printf '%s\\n' 'ai:codex'
+    ;;
+  "issue list --repo vamseeachanta/repo-a --state all --limit 10000 --json number,labels --jq .[] | @base64")
+    printf '%s\\n' 'eyJudW1iZXIiOjEwMSwibGFiZWxzIjpbeyJuYW1lIjoiYWdlbnQ6Y29kZXgifV19'
+    ;;
+  *)
+    exit 99
+    ;;
+esac
+""",
+        encoding="utf-8",
+    )
+    fake_gh.chmod(0o755)
+    fake_python = tmp_path / "python3"
+    fake_python.write_text(
+        """#!/usr/bin/env bash
+exit 42
+""",
+        encoding="utf-8",
+    )
+    fake_python.chmod(0o755)
+    call_log = tmp_path / "calls.log"
+    env = os.environ | {
+        "PATH": f"{tmp_path}:{os.environ['PATH']}",
+        "GH_CALL_LOG": str(call_log),
+    }
+
+    completed = subprocess.run(
+        ["bash", str(SCRIPT), "--apply"],
+        cwd=REPO_ROOT,
+        env=env,
+        check=False,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        text=True,
+    )
+
+    assert completed.returncode != 0
+    assert "FAIL issue vamseeachanta/repo-a: unable to parse item number" in completed.stderr
     assert "Summary: repos OK=0 skipped=0 failed=1" in completed.stdout
     log = call_log.read_text(encoding="utf-8")
     assert "issue edit" not in log

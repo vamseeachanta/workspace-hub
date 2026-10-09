@@ -12,6 +12,9 @@ Dry-run by default. With --apply, add ai:<provider> and remove agent:<provider>
 on every issue and PR across the owner's non-archived repositories.
 agent:gemini maps to ai:agy.
 
+Repos missing a target ai:<provider> label are stopped before any edit. Dry-run
+also reports missing target labels.
+
 The script is idempotent: a re-run resumes where an earlier partial sweep
 stopped because migrated items no longer carry agent:<provider> labels.
 USAGE
@@ -35,6 +38,15 @@ while [[ $# -gt 0 ]]; do
   shift
 done
 
+if command -v python3 >/dev/null 2>&1; then
+  PY="$(command -v python3)"
+elif command -v python >/dev/null 2>&1; then
+  PY="$(command -v python)"
+else
+  echo "FAIL: python3 or python is required to parse gh JSON output" >&2
+  exit 2
+fi
+
 ai_label_for_agent() {
   case "$1" in
     agent:claude) printf '%s\n' "ai:claude" ;;
@@ -53,7 +65,7 @@ repo_has_target_label() {
 
 agent_labels_from_item() {
   local encoded="$1"
-  ENCODED_ITEM="$encoded" python - <<'PY'
+  ENCODED_ITEM="$encoded" "$PY" - <<'PY'
 import base64
 import json
 import os
@@ -68,7 +80,7 @@ PY
 
 item_number_from_item() {
   local encoded="$1"
-  ENCODED_ITEM="$encoded" python - <<'PY'
+  ENCODED_ITEM="$encoded" "$PY" - <<'PY'
 import base64
 import json
 import os
@@ -83,10 +95,19 @@ process_item() {
   local repo="$2"
   local encoded="$3"
   local number
-  number="$(item_number_from_item "$encoded")"
+  if ! number="$(item_number_from_item "$encoded")"; then
+    echo "FAIL ${kind} ${repo}: unable to parse item number" >&2
+    return 30
+  fi
   number="${number%$'\r'}"
 
   local agent_label ai_label
+  local agent_labels
+  if ! agent_labels="$(agent_labels_from_item "$encoded")"; then
+    echo "FAIL ${kind} ${repo}#${number}: unable to parse labels" >&2
+    return 31
+  fi
+
   while IFS= read -r agent_label; do
     agent_label="${agent_label%$'\r'}"
     [[ -n "$agent_label" ]] || continue
@@ -94,11 +115,11 @@ process_item() {
       echo "SKIP ${kind} ${repo}#${number}: unsupported legacy label ${agent_label}"
       continue
     fi
+    if ! repo_has_target_label "$ai_label"; then
+      echo "SKIP ${kind} ${repo}#${number}: target label ${ai_label} missing in repo"
+      return 10
+    fi
     if [[ "$APPLY" == true ]]; then
-      if ! repo_has_target_label "$ai_label"; then
-        echo "SKIP ${kind} ${repo}#${number}: target label ${ai_label} missing in repo"
-        return 10
-      fi
       echo "APPLY ${kind} ${repo}#${number}: add ${ai_label} remove ${agent_label}"
       if ! gh "$kind" edit "$number" --repo "$repo" --add-label "$ai_label" --remove-label "$agent_label"; then
         echo "FAIL ${kind} ${repo}#${number}: edit failed" >&2
@@ -107,7 +128,7 @@ process_item() {
     else
       echo "DRY-RUN ${kind} ${repo}#${number}: add ${ai_label} remove ${agent_label}"
     fi
-  done < <(agent_labels_from_item "$encoded")
+  done <<<"$agent_labels"
 }
 
 process_encoded_items() {
@@ -140,14 +161,12 @@ while IFS= read -r repo; do
   [[ -n "$repo" ]] || continue
   repo_status="ok"
   REPO_LABELS=""
-  if [[ "$APPLY" == true ]]; then
-    if ! REPO_LABELS="$(gh label list --repo "$repo" --limit 1000 --json name --jq '.[].name')"; then
-      echo "FAIL ${repo}: unable to list labels" >&2
-      REPOS_FAILED=$((REPOS_FAILED + 1))
-      continue
-    fi
-    REPO_LABELS="${REPO_LABELS//$'\r'/}"
+  if ! REPO_LABELS="$(gh label list --repo "$repo" --limit 1000 --json name --jq '.[].name')"; then
+    echo "FAIL ${repo}: unable to list labels" >&2
+    REPOS_FAILED=$((REPOS_FAILED + 1))
+    continue
   fi
+  REPO_LABELS="${REPO_LABELS//$'\r'/}"
 
   if ! ISSUE_ITEMS="$(gh issue list --repo "$repo" --state all --limit 10000 --json number,labels --jq '.[] | @base64')"; then
     echo "FAIL ${repo}: unable to list issues" >&2
