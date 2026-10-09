@@ -225,7 +225,7 @@ def _legacy_brief(number: int, title: str, state: str, body: str) -> IssueBrief:
         ),
         out_of_scope="Changing historical issue content or reopening the issue.",
         return_format="Lane contracts for coordinator review.",
-        risk_tier="B",
+        risk_tier="A",
     )
 
 
@@ -255,7 +255,7 @@ def _partial_brief(
 
 def _risk_tier_from_text(text: str) -> str:
     match = re.search(r"\b(?:risk\s+tier|tier)\s*[:\-]?\s*([ABC])\b", text, re.I)
-    return match.group(1).upper() if match else "B"
+    return match.group(1).upper() if match else "A"
 
 
 def _canonical_label(raw: str) -> str | None:

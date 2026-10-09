@@ -21,7 +21,7 @@ You are the explorer role for objective-first work.
 - Config: `config/`, `.claude/`, `CLAUDE.md`
 - Docs: `docs/`, `docs/maps/`, `docs/reports/`
 - Scripts: `scripts/` (productivity, cron, coordination, analysis)
-- Data: `data/document-index/`, `.planning/`
+- Data: `data/document-index/`
 
 ## Rules
 - Read-only. Do not edit files, labels, branches, or issues.

@@ -2,7 +2,7 @@
 name: builder
 description: "Implement an assigned objective lane with TDD in an isolated worktree or explicitly owned path set."
 model: sonnet
-tools: Read, Glob, Grep, Edit, MultiEdit, Write
+tools: Read, Glob, Grep, Edit, MultiEdit, Write, Bash
 color: green
 memory: project
 ---

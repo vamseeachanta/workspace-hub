@@ -11,4 +11,4 @@ canonical_repos:
 sync_mode: active-via-helper
 notes:
   - "This manifest enrolls the objective issue template in the canonical-repo sync surface."
-  - "Run scripts/coordination/sync_objective_template.py from a checkout that has write access to sibling repos."
+  - "Run scripts/coordination/sync_objective_template.py to preview; pass --apply to write eligible clean default-branch sibling repos."

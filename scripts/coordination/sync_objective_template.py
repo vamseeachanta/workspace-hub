@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import argparse
 import shutil
+import subprocess
 from pathlib import Path
 
 import yaml
@@ -25,7 +26,9 @@ def planned_targets(manifest: dict, workspace_root: Path) -> list[Path]:
     return targets
 
 
-def sync_templates(manifest_path: Path, workspace_root: Path, dry_run: bool) -> list[str]:
+def sync_templates(
+    manifest_path: Path, workspace_root: Path, apply: bool = False
+) -> list[str]:
     manifest = load_manifest(manifest_path)
     source = REPO_ROOT / manifest["source"]
     actions: list[str] = []
@@ -37,8 +40,12 @@ def sync_templates(manifest_path: Path, workspace_root: Path, dry_run: bool) -> 
         if target.resolve() == source.resolve():
             actions.append(f"already-current {target}")
             continue
-        if dry_run:
+        if not apply:
             actions.append(f"would-copy {source} -> {target}")
+            continue
+        blocker = _apply_blocker(repo_root)
+        if blocker:
+            actions.append(blocker)
             continue
         target.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(source, target)
@@ -54,14 +61,59 @@ def _is_git_repo(path: Path) -> bool:
     return (path / ".git").exists() or (path / ".git").is_file()
 
 
+def _apply_blocker(repo_root: Path) -> str | None:
+    if _git(repo_root, "status", "--porcelain").stdout.strip():
+        return f"skip-dirty {repo_root}"
+    current_branch = _git(repo_root, "branch", "--show-current").stdout.strip()
+    default_branch = _default_branch(repo_root)
+    if current_branch != default_branch:
+        return (
+            f"skip-non-default-branch {repo_root} "
+            f"{current_branch} default={default_branch}"
+        )
+    return None
+
+
+def _default_branch(repo_root: Path) -> str:
+    result = _git(
+        repo_root,
+        "symbolic-ref",
+        "--quiet",
+        "--short",
+        "refs/remotes/origin/HEAD",
+        check=False,
+    )
+    if result.returncode == 0 and result.stdout.strip():
+        return result.stdout.strip().removeprefix("origin/")
+    result = _git(repo_root, "config", "--get", "init.defaultBranch", check=False)
+    if result.returncode == 0 and result.stdout.strip():
+        return result.stdout.strip()
+    return "main"
+
+
+def _git(
+    repo_root: Path, *args: str, check: bool = True
+) -> subprocess.CompletedProcess[str]:
+    return subprocess.run(
+        ["git", *args],
+        cwd=repo_root,
+        check=check,
+        capture_output=True,
+        text=True,
+        timeout=30,
+    )
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--manifest", type=Path, default=DEFAULT_MANIFEST)
     parser.add_argument("--workspace-root", type=Path, default=REPO_ROOT.parent)
-    parser.add_argument("--dry-run", action="store_true")
+    mode = parser.add_mutually_exclusive_group()
+    mode.add_argument("--dry-run", action="store_true", help="Preview mode (default).")
+    mode.add_argument("--apply", action="store_true", help="Write eligible target repos.")
     args = parser.parse_args(argv)
 
-    for action in sync_templates(args.manifest, args.workspace_root, args.dry_run):
+    for action in sync_templates(args.manifest, args.workspace_root, apply=args.apply):
         print(action)
     return 0
 

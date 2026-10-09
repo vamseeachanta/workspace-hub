@@ -75,6 +75,30 @@ def test_standard_role_agents_exist_with_alias_models() -> None:
         assert "gpt-" not in meta["model"]
 
 
+def test_builder_agent_can_run_tdd_validators() -> None:
+    path = REPO_ROOT / ".claude" / "agents" / "builder.md"
+    text = path.read_text(encoding="utf-8")
+    meta = yaml.safe_load(text.split("---", 2)[1])
+
+    assert "Bash" in {tool.strip() for tool in meta["tools"].split(",")}
+
+
+def test_readonly_bash_agents_explicitly_forbid_writes() -> None:
+    for role in ("scout", "gap-checker", "verifier"):
+        path = REPO_ROOT / ".claude" / "agents" / f"{role}.md"
+        text = path.read_text(encoding="utf-8")
+
+        assert "no writes" in text.lower()
+
+
+def test_explorer_key_locations_do_not_include_planning_dir() -> None:
+    text = (REPO_ROOT / ".claude" / "agents" / "explorer.md").read_text(
+        encoding="utf-8"
+    )
+
+    assert ".planning/" not in text
+
+
 def test_extract_objective_brief_from_issue_form_markdown() -> None:
     body = """### Outcome
 
@@ -175,7 +199,7 @@ def test_legacy_closed_issue_without_objective_fields_gets_dry_run_brief() -> No
 
     assert brief.outcome == "Preserve launch preference and session closeout"
     assert "Legacy issue lacks Objective template fields" in brief.done_when
-    assert brief.risk_tier == "B"
+    assert brief.risk_tier == "A"
 
 
 def test_partial_objective_issue_body_gets_dry_run_brief() -> None:
@@ -192,3 +216,12 @@ def test_partial_objective_issue_body_gets_dry_run_brief() -> None:
     assert "template live" in brief.done_when
     assert "partial Objective brief" in brief.constraints_must_not
     assert brief.risk_tier == "B"
+
+
+def test_partial_objective_without_tier_defaults_to_a() -> None:
+    body = """**Done when:** template live in workspace-hub and synced.
+"""
+
+    brief = extract_objective_brief(3998, "Rewire L1: objective intake", "OPEN", body)
+
+    assert brief.risk_tier == "A"
