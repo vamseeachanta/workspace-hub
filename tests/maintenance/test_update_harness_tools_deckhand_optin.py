@@ -61,6 +61,7 @@ def _fake_toolchain(tmp_path: Path) -> dict[str, str]:
     )
     return {
         "env": env,
+        "tool_log": str(tool_log),
         "installer_log": str(installer_log),
         "health_log": str(health_log),
     }
@@ -84,6 +85,7 @@ def test_deckhand_inactive_skips_patch_steps_with_zero_exit(tmp_path: Path) -> N
 
     assert result.returncode == 0, result.stdout + result.stderr
     assert "skipped (deckhand inactive)" in result.stdout
+    assert "hermes update" not in Path(ctx["tool_log"]).read_text(encoding="utf-8")
     assert not Path(ctx["installer_log"]).exists()
     assert not Path(ctx["health_log"]).exists()
 
@@ -95,6 +97,7 @@ def test_deckhand_opt_in_runs_patch_and_health_steps(tmp_path: Path) -> None:
     result = _run_update(env)
 
     assert result.returncode == 0, result.stdout + result.stderr
+    assert "hermes update" in Path(ctx["tool_log"]).read_text(encoding="utf-8")
     assert Path(ctx["installer_log"]).read_text(encoding="utf-8").splitlines() == [
         "--apply",
         "",
@@ -129,6 +132,7 @@ def test_running_gateway_runs_patch_and_health_steps(tmp_path: Path) -> None:
             sleeper.kill()
 
     assert result.returncode == 0, result.stdout + result.stderr
+    assert "hermes update" in Path(ctx["tool_log"]).read_text(encoding="utf-8")
     assert Path(ctx["installer_log"]).read_text(encoding="utf-8").splitlines() == [
         "--apply",
         "",

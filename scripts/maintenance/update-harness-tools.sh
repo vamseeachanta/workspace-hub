@@ -17,7 +17,9 @@
 #   update..."), which silently wipes any locally-applied Hermes enforcement
 #   patches from ~/.hermes/hermes-agent. Deckhand is not assumed live merely
 #   because its checkout/installer exists: re-apply and patch-health run only
-#   when DECKHAND_PATCHES=1 or a Hermes gateway process is detected.
+#   when DECKHAND_PATCHES=1 or a Hermes gateway process is detected. The Hermes
+#   update itself is skipped while deckhand is inactive so unattended runs do not
+#   wipe patches before the guarded re-apply step.
 
 set -uo pipefail
 
@@ -114,6 +116,39 @@ deckhand_is_active() {
     return 0
   fi
   return 1
+}
+
+run_hermes_update() {
+  echo
+  echo "==> hermes: hermes update"
+  NAMES+=("hermes")
+
+  if ! deckhand_is_active; then
+    echo "    SKIP: skipped (deckhand inactive)"
+    STATUS+=("skipped (deckhand inactive)")
+    return
+  fi
+
+  echo "    deckhand active: $DECKHAND_ACTIVE_REASON"
+
+  if ! command -v hermes >/dev/null 2>&1; then
+    echo "    SKIP: 'hermes' not found on PATH"
+    STATUS+=("skipped (missing)")
+    return
+  fi
+
+  if (( DRY_RUN )); then
+    echo "    (dry-run, not executed)"
+    STATUS+=("dry-run")
+    return
+  fi
+
+  if hermes update; then
+    STATUS+=("ok")
+  else
+    echo "    FAILED (exit $?)"
+    STATUS+=("FAILED")
+  fi
 }
 
 # Re-apply the deckhand Hermes enforcement patches after `hermes update`.
@@ -213,7 +248,7 @@ run_deckhand_health_check() {
 echo "Harness update — $(date '+%Y-%m-%d %H:%M:%S')"
 (( DRY_RUN )) && echo "(dry-run mode)"
 
-run_step hermes hermes update
+run_hermes_update
 reapply_hermes_patches   # deckhand#63 — re-apply patches wiped by `hermes update`
 run_deckhand_health_check # deckhand#162 — verify only when deckhand is active.
 run_step claude claude update
