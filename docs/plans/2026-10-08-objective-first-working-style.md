@@ -35,7 +35,7 @@
 | Step-driven, serial gate chain on every item | Issue → Resource Intel → Plan → Adversarial Review → TDD → Cross-review → Close (`AGENTS.md`, `docs/work-queue-workflow.md`) |
 | Review loops instead of review-of-returns | 345 files in `scripts/review/results/`, rounds up to `codex-r4`, 3-provider fan-out |
 | Stale model routing | `config/agents/model-registry.yaml` pins `claude-opus-4-8[1m]` / `claude-sonnet-4-6`; `.codex/config.toml` says `gpt-5.5` vs registry `gpt-5.6-sol`; Gemini "retired" but still a default reviewer; 100+ hardcoded old IDs across repos |
-| Claude sessions in libraries see almost no rules | No `CLAUDE.md` anywhere; library `.claude/CLAUDE.md` stubs (7–8 lines) point to a root file that doesn't exist |
+| Claude sessions in libraries may see almost no rules | Library `.claude/CLAUDE.md` stubs (7–8 lines) point to a root adapter that no longer exists; the hub retired repo `CLAUDE.md` on 2026-08-01 in favour of native `AGENTS.md` discovery plus the `workspace-soul.md` runtime link (`.claude/rules/coding-style.md`), and that migration is staged per host |
 | Too much surface per session | 3,132 skills (incl. gaming/leisure), 166 commands, 39 agents (33 `gsd-*`), 21 hooks, 377-line `settings.json` |
 | Work tracked in many places | GitHub issues + `.claude/work-queue/` + `.planning/` (STATE.md stuck at 2026-04-21) + 676 `docs/plans/` + loose `issue-*-impl.diff` / `draft_*` / `gmail_*` at repo root |
 | Shared lock lives in a private repo | `../llm-wiki/scripts/coordination/claim.py` must be reachable or shared work blocks |
@@ -73,11 +73,12 @@ Each phase is itself written as an objective, so it can be run in the new style.
   - Prefer aliases (`opus`, `sonnet`, `haiku`) in agent frontmatter so the next release needs no edits.
 - Fix Codex drift: one source for the Codex model (`registry` reads live `~/.codex/config.toml`, or vice versa).
 - Remove Gemini from default review routing (`config/ai-tools/provider-routing-policy.yaml`, `AI_REVIEW_ROUTING_POLICY.md`, `GEMINI.md`) to match #3573.
-- Add a root `CLAUDE.md` (≤20 lines, passes `check-claude-md-limits.sh`) that imports `@AGENTS.md`. Point each library's `.claude/CLAUDE.md` at `@../workspace-hub/AGENTS.md` or ship a real adapter via `generate_agent_adapters.sh`.
+- Finish the staged Claude runtime migration rather than adding files: run `scripts/agents/claude_runtime_state.py` on each host and move every host to NATIVE_VERIFIED (`~/.claude/rules/workspace-soul.md` symlink, `AGENTS.md` discovery verified). Then remove the dangling "root CLAUDE.md (adapter)" pointer from the library stubs.
+  - **Correction (2026-10-08):** the first version of this plan said to add a root `CLAUDE.md`. That contradicts the 2026-08-01 retirement in `.claude/rules/coding-style.md` and is withdrawn; the migration above replaces it.
 - Replace hardcoded `/mnt/github/workspace-hub` and `/d/workspace-hub` in library hook commands with an env var (e.g. `$WORKSPACE_HUB`), set per machine in `registry.yaml`.
 - Sweep old model IDs (`claude-sonnet-4.5`, `gpt-4`, `gpt-4.1`, `o3`) — script-first, agents for edge cases.
 
-**Done when:** a fresh `claude` session opened in digitalmodel can state the hub rules; `grep` finds no pinned 4.x IDs outside `_archive/` and audit history.
+**Done when:** `claude_runtime_state.py` reports NATIVE_VERIFIED on every reachable host, `check-soul-deployment-drift.sh` exits 0, and a fresh `claude` session opened in digitalmodel can state the hub rules; `grep` finds no pinned 4.x IDs outside `_archive/` and audit history.
 
 ### Phase 2 — Introduce the objective brief and coordinator protocol (week 1–2)
 
