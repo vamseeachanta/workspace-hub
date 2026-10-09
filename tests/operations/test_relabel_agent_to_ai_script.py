@@ -55,25 +55,48 @@ def _calls(tmp_path: Path) -> str:
     return (tmp_path / "calls.log").read_text(encoding="utf-8")
 
 
-def _common_cases(*, labels: str = "", open_issues: str = "", open_prs: str = "") -> list[tuple[str, str]]:
-    return [
+def _common_cases(
+    *,
+    repo: str = REPO,
+    labels: str = "",
+    open_issues: str = "",
+    open_prs: str = "",
+    closed_issues: str | None = None,
+    closed_prs: str | None = None,
+) -> list[tuple[str, str]]:
+    cases = [
         (
             "repo list vamseeachanta --no-archived --limit 10000 --json nameWithOwner --jq .[].nameWithOwner",
-            f"    printf '%s\\n' '{REPO}'",
+            f"    printf '%s\\n' '{repo}'",
         ),
         (
-            f"label list --repo {REPO} --limit 1000 --json name --jq .[].name",
+            f"label list --repo {repo} --limit 1000 --json name --jq .[].name",
             labels or "    :",
         ),
         (
-            f"issue list --repo {REPO} --state open --limit 10000 --json number,labels --jq .[] | @base64",
+            f"issue list --repo {repo} --state open --limit 10000 --json number,labels --jq .[] | @base64",
             open_issues or "    :",
         ),
         (
-            f"pr list --repo {REPO} --state open --limit 10000 --json number,labels --jq .[] | @base64",
+            f"pr list --repo {repo} --state open --limit 10000 --json number,labels --jq .[] | @base64",
             open_prs or "    :",
         ),
     ]
+    if closed_issues is not None:
+        cases.append(
+            (
+                f"issue list --repo {repo} --state closed --limit 10000 --json number,labels --jq .[] | @base64",
+                closed_issues or "    :",
+            )
+        )
+    if closed_prs is not None:
+        cases.append(
+            (
+                f"pr list --repo {repo} --state closed --limit 10000 --json number,labels --jq .[] | @base64",
+                closed_prs or "    :",
+            )
+        )
+    return cases
 
 
 def test_apply_open_codex_without_lane_adds_lane_codex(tmp_path: Path) -> None:
@@ -116,6 +139,31 @@ def test_apply_open_existing_lane_wins_and_only_agent_label_is_removed(tmp_path:
     log = _calls(tmp_path)
     assert f"issue edit 101 --repo {REPO} --remove-label agent:codex" in log
     assert "--add-label" not in log
+
+
+def test_apply_open_dual_agent_without_lane_adds_one_preferred_lane(tmp_path: Path) -> None:
+    _fake_gh(
+        tmp_path,
+        [
+            *_common_cases(
+                labels="    printf '%s\\n' 'lane:claude' 'lane:codex'",
+                open_issues=f"    printf '%s\\n' '{_item(101, ['agent:codex', 'agent:claude'])}'",
+            ),
+            (f"issue edit 101 --repo {REPO} --add-label lane:claude --remove-label agent:claude", "    :"),
+            (f"issue edit 101 --repo {REPO} --remove-label agent:codex", "    :"),
+        ],
+    )
+
+    completed = _run(tmp_path, "--apply")
+
+    assert completed.returncode == 0, completed.stderr
+    assert f"CONFLICT issue {REPO}#101: multiple agent labels; provider preference claude selects lane:claude" in completed.stdout
+    assert f"APPLY issue {REPO}#101: add lane:claude remove agent:claude" in completed.stdout
+    assert f"CONFLICT issue {REPO}#101: existing lane label lane:claude wins; remove agent:codex" in completed.stdout
+    log = _calls(tmp_path)
+    assert f"issue edit 101 --repo {REPO} --add-label lane:claude --remove-label agent:claude" in log
+    assert f"issue edit 101 --repo {REPO} --remove-label agent:codex" in log
+    assert "--add-label lane:codex" not in log
 
 
 def test_apply_open_agy_removes_agent_label_and_reports_unmapped(tmp_path: Path) -> None:
@@ -293,3 +341,151 @@ def test_exits_before_gh_when_python_missing(tmp_path: Path) -> None:
     assert completed.returncode == 2
     assert "python3 or python is required" in completed.stderr
     assert not (tmp_path / "calls.log").exists()
+
+
+def test_apply_fails_when_label_list_fails(tmp_path: Path) -> None:
+    repo_a = "vamseeachanta/repo-a"
+    repo_b = "vamseeachanta/repo-b"
+    _fake_gh(
+        tmp_path,
+        [
+            (
+                "repo list vamseeachanta --no-archived --limit 10000 --json nameWithOwner --jq .[].nameWithOwner",
+                f"    printf '%s\\n' '{repo_a}' '{repo_b}'",
+            ),
+            (f"label list --repo {repo_a} --limit 1000 --json name --jq .[].name", "    echo 'HTTP 502' >&2\n    exit 1"),
+            (f"label list --repo {repo_b} --limit 1000 --json name --jq .[].name", "    printf '%s\\n' 'lane:codex'"),
+            (
+                f"issue list --repo {repo_b} --state open --limit 10000 --json number,labels --jq .[] | @base64",
+                f"    printf '%s\\n' '{_item(201, ['agent:codex'])}'",
+            ),
+            (f"pr list --repo {repo_b} --state open --limit 10000 --json number,labels --jq .[] | @base64", "    :"),
+            (f"issue edit 201 --repo {repo_b} --add-label lane:codex --remove-label agent:codex", "    :"),
+        ],
+    )
+
+    completed = _run(tmp_path, "--apply")
+
+    assert completed.returncode != 0
+    assert f"FAIL {repo_a}: unable to list labels" in completed.stderr
+    assert f"APPLY issue {repo_b}#201: add lane:codex remove agent:codex" in completed.stdout
+    assert "Summary: repos OK=1 skipped=0 failed=1" in completed.stdout
+
+
+def test_issue_list_failure_blocks_repo_edits(tmp_path: Path) -> None:
+    _fake_gh(
+        tmp_path,
+        [
+            *_common_cases(
+                labels="    printf '%s\\n' 'lane:codex'",
+                open_issues="    echo 'issue list failed' >&2\n    exit 1",
+            ),
+        ],
+    )
+
+    completed = _run(tmp_path, "--apply")
+
+    assert completed.returncode != 0
+    assert f"FAIL {REPO}: unable to list issues" in completed.stderr
+    assert "Summary: repos OK=0 skipped=0 failed=1" in completed.stdout
+    log = _calls(tmp_path)
+    assert "issue edit" not in log
+    assert f"pr list --repo {REPO}" not in log
+
+
+def test_helper_failure_marks_repo_failed(tmp_path: Path) -> None:
+    _fake_gh(
+        tmp_path,
+        [
+            *_common_cases(
+                labels="    printf '%s\\n' 'lane:codex'",
+                open_issues=f"    printf '%s\\n' '{_item(101, ['agent:codex'])}'",
+            ),
+        ],
+    )
+    fake_python = tmp_path / "python3"
+    fake_python.write_text(
+        """#!/usr/bin/env bash
+exit 42
+""",
+        encoding="utf-8",
+    )
+    fake_python.chmod(0o755)
+
+    completed = _run(tmp_path, "--apply")
+
+    assert completed.returncode != 0
+    assert f"FAIL issue {REPO}: unable to parse item number" in completed.stderr
+    assert "Summary: repos OK=0 skipped=0 failed=1" in completed.stdout
+    assert "issue edit" not in _calls(tmp_path)
+
+
+def test_edit_failure_continues_to_next_repo(tmp_path: Path) -> None:
+    repo_a = "vamseeachanta/repo-a"
+    repo_b = "vamseeachanta/repo-b"
+    _fake_gh(
+        tmp_path,
+        [
+            (
+                "repo list vamseeachanta --no-archived --limit 10000 --json nameWithOwner --jq .[].nameWithOwner",
+                f"    printf '%s\\n' '{repo_a}' '{repo_b}'",
+            ),
+            *_common_cases(
+                repo=repo_a,
+                labels="    printf '%s\\n' 'lane:codex'",
+                open_issues=f"    printf '%s\\n' '{_item(101, ['agent:codex'])}'",
+            )[1:],
+            *_common_cases(
+                repo=repo_b,
+                labels="    printf '%s\\n' 'lane:claude'",
+                open_issues=f"    printf '%s\\n' '{_item(201, ['agent:claude'])}'",
+            )[1:],
+            (
+                f"issue edit 101 --repo {repo_a} --add-label lane:codex --remove-label agent:codex",
+                "    echo 'edit failed' >&2\n    exit 1",
+            ),
+            (f"issue edit 201 --repo {repo_b} --add-label lane:claude --remove-label agent:claude", "    :"),
+        ],
+    )
+
+    completed = _run(tmp_path, "--apply")
+
+    assert completed.returncode != 0
+    assert f"FAIL issue {repo_a}#101: edit failed" in completed.stderr
+    assert f"APPLY issue {repo_b}#201: add lane:claude remove agent:claude" in completed.stdout
+    assert "Summary: repos OK=1 skipped=0 failed=1" in completed.stdout
+
+
+def test_conflict_remove_edit_failure_marks_repo_failed(tmp_path: Path) -> None:
+    _fake_gh(
+        tmp_path,
+        [
+            *_common_cases(
+                labels="    printf '%s\\n' 'lane:claude'",
+                open_issues=f"    printf '%s\\n' '{_item(101, ['agent:codex', 'lane:claude'])}'",
+            ),
+            (f"issue edit 101 --repo {REPO} --remove-label agent:codex", "    echo 'edit failed' >&2\n    exit 1"),
+        ],
+    )
+
+    completed = _run(tmp_path, "--apply")
+
+    assert completed.returncode != 0
+    assert f"FAIL issue {REPO}#101: edit failed" in completed.stderr
+    assert "Summary: repos OK=0 skipped=0 failed=1" in completed.stdout
+
+
+def test_unmapped_remove_edit_failure_marks_repo_failed(tmp_path: Path) -> None:
+    _fake_gh(
+        tmp_path,
+        [
+            *_common_cases(open_issues=f"    printf '%s\\n' '{_item(101, ['agent:agy'])}'"),
+            (f"issue edit 101 --repo {REPO} --remove-label agent:agy", "    echo 'edit failed' >&2\n    exit 1"),
+        ],
+    )
+
+    completed = _run(tmp_path, "--apply")
+
+    assert completed.returncode != 0
+    assert f"FAIL issue {REPO}#101: edit failed" in completed.stderr
+    assert "Summary: repos OK=0 skipped=0 failed=1" in completed.stdout

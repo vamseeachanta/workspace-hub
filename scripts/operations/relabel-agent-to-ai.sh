@@ -17,12 +17,13 @@ Owner decision F01 = lane_soft (saved round-4 board, 2026-10-09):
   Other open agent:* labels are removed and reported with no lane added.
   Open items never receive ai:* labels.
 - Closed issues and PRs: only with --include-closed, agent:<x> -> ai:<x> for
-  history, with agent:gemini -> ai:agy.
+  history, with agent:gemini -> ai:agy. Run --include-closed as a second pass
+  after the open-item lane sweep when closed history should be migrated.
 
-Repos missing a target lane:* or ai:* label are stopped before any edit for that
-repo. Dry-run also reports missing target labels. The script is idempotent: a
-re-run resumes where an earlier partial sweep stopped because migrated items no
-longer carry agent:<provider> labels.
+The script pre-checks target lane:* and ai:* labels per repo before any edit in
+that repo. Dry-run also reports missing target labels. The script is idempotent:
+a re-run resumes where an earlier partial sweep stopped because migrated items
+no longer carry agent:<provider> labels.
 USAGE
 }
 
@@ -59,6 +60,18 @@ else
   exit 2
 fi
 
+if [[ -f .claude/memory/kanban/routing-rules.yaml ]]; then
+  DEFAULT_PROVIDER="$(
+    awk '
+      /^defaults:/ { in_defaults = 1; next }
+      in_defaults && /^[^[:space:]]/ { exit }
+      in_defaults && $1 == "provider:" { print $2; exit }
+    ' .claude/memory/kanban/routing-rules.yaml
+  )"
+else
+  DEFAULT_PROVIDER=""
+fi
+
 open_lane_for_agent() {
   case "$1" in
     agent:claude) printf '%s\n' "lane:claude" ;;
@@ -79,6 +92,48 @@ closed_ai_label_for_agent() {
 repo_has_target_label() {
   local label="$1"
   grep -Fxq "$label" <<<"$REPO_LABELS"
+}
+
+preferred_open_lane_for_agent_labels() {
+  local agent_labels="$1"
+  local agent_label lane_label
+  local selected_agent=""
+  local selected_lane=""
+
+  while IFS= read -r agent_label; do
+    agent_label="${agent_label%$'\r'}"
+    [[ -n "$agent_label" ]] || continue
+    if ! lane_label="$(open_lane_for_agent "$agent_label")"; then
+      continue
+    fi
+    if [[ "$agent_label" == "agent:${DEFAULT_PROVIDER}" ]]; then
+      printf '%s\t%s\n' "$agent_label" "$lane_label"
+      return 0
+    fi
+    if [[ -z "$selected_agent" || "$agent_label" == "agent:claude" ]]; then
+      selected_agent="$agent_label"
+      selected_lane="$lane_label"
+    fi
+  done <<<"$agent_labels"
+
+  [[ -n "$selected_agent" ]] || return 1
+  printf '%s\t%s\n' "$selected_agent" "$selected_lane"
+}
+
+count_open_lane_candidates() {
+  local agent_labels="$1"
+  local agent_label lane_label
+  local count=0
+
+  while IFS= read -r agent_label; do
+    agent_label="${agent_label%$'\r'}"
+    [[ -n "$agent_label" ]] || continue
+    if lane_label="$(open_lane_for_agent "$agent_label")"; then
+      count=$((count + 1))
+    fi
+  done <<<"$agent_labels"
+
+  printf '%s\n' "$count"
 }
 
 agent_labels_from_item() {
@@ -163,7 +218,7 @@ process_open_item() {
   fi
   number="${number%$'\r'}"
 
-  local agent_label ai_label
+  local agent_label target_label
   local agent_labels
   if ! agent_labels="$(agent_labels_from_item "$encoded")"; then
     echo "FAIL ${kind} ${repo}#${number}: unable to parse labels" >&2
@@ -177,6 +232,18 @@ process_open_item() {
   existing_lane="$(printf '%s\n' "$lane_labels" | sed -n '1p')"
   existing_lane="${existing_lane%$'\r'}"
 
+  local selected_agent_label selected_lane_label selected_pair lane_candidate_count
+  selected_agent_label=""
+  selected_lane_label=""
+  if selected_pair="$(preferred_open_lane_for_agent_labels "$agent_labels")"; then
+    selected_agent_label="${selected_pair%%$'\t'*}"
+    selected_lane_label="${selected_pair#*$'\t'}"
+  fi
+  lane_candidate_count="$(count_open_lane_candidates "$agent_labels")"
+  if [[ -z "$existing_lane" && "$lane_candidate_count" -gt 1 && -n "$selected_lane_label" ]]; then
+    echo "CONFLICT ${kind} ${repo}#${number}: multiple agent labels; provider preference ${DEFAULT_PROVIDER:-none} selects ${selected_lane_label}"
+  fi
+
   while IFS= read -r agent_label; do
     agent_label="${agent_label%$'\r'}"
     [[ -n "$agent_label" ]] || continue
@@ -185,21 +252,27 @@ process_open_item() {
         "CONFLICT ${kind} ${repo}#${number}: existing lane label ${existing_lane} wins; remove ${agent_label}" || return 20
       continue
     fi
-    if ! ai_label="$(open_lane_for_agent "$agent_label")"; then
+    if ! target_label="$(open_lane_for_agent "$agent_label")"; then
       remove_open_agent_label "$kind" "$repo" "$number" "$agent_label" \
         "UNMAPPED ${kind} ${repo}#${number}: remove ${agent_label}; no lane added for open item" || return 20
       continue
     fi
-    if ! repo_has_target_label "$ai_label"; then
-      echo "SKIP ${kind} ${repo}#${number}: target label ${ai_label} missing in repo"
+    if [[ "$agent_label" != "$selected_agent_label" ]]; then
+      remove_open_agent_label "$kind" "$repo" "$number" "$agent_label" \
+        "CONFLICT ${kind} ${repo}#${number}: existing lane label ${selected_lane_label} wins; remove ${agent_label}" || return 20
+      continue
+    fi
+    if ! repo_has_target_label "$target_label"; then
+      echo "SKIP ${kind} ${repo}#${number}: target label ${target_label} missing in repo"
       return 10
     fi
     if [[ "$APPLY" == true ]]; then
-      echo "APPLY ${kind} ${repo}#${number}: add ${ai_label} remove ${agent_label}"
-      edit_item "$kind" "$repo" "$number" "$ai_label" "$agent_label" || return 20
+      echo "APPLY ${kind} ${repo}#${number}: add ${target_label} remove ${agent_label}"
+      edit_item "$kind" "$repo" "$number" "$target_label" "$agent_label" || return 20
     else
-      echo "DRY-RUN ${kind} ${repo}#${number}: add ${ai_label} remove ${agent_label}"
+      echo "DRY-RUN ${kind} ${repo}#${number}: add ${target_label} remove ${agent_label}"
     fi
+    existing_lane="$target_label"
   done <<<"$agent_labels"
 }
 
@@ -214,7 +287,7 @@ process_closed_item() {
   fi
   number="${number%$'\r'}"
 
-  local agent_label ai_label
+  local agent_label target_label
   local agent_labels
   if ! agent_labels="$(agent_labels_from_item "$encoded")"; then
     echo "FAIL ${kind} ${repo}#${number}: unable to parse labels" >&2
@@ -224,21 +297,70 @@ process_closed_item() {
   while IFS= read -r agent_label; do
     agent_label="${agent_label%$'\r'}"
     [[ -n "$agent_label" ]] || continue
-    if ! ai_label="$(closed_ai_label_for_agent "$agent_label")"; then
+    if ! target_label="$(closed_ai_label_for_agent "$agent_label")"; then
       echo "SKIP ${kind} ${repo}#${number}: unsupported legacy label ${agent_label}"
       continue
     fi
-    if ! repo_has_target_label "$ai_label"; then
-      echo "SKIP ${kind} ${repo}#${number}: target label ${ai_label} missing in repo"
+    if ! repo_has_target_label "$target_label"; then
+      echo "SKIP ${kind} ${repo}#${number}: target label ${target_label} missing in repo"
       return 10
     fi
     if [[ "$APPLY" == true ]]; then
-      echo "APPLY ${kind} ${repo}#${number}: add ${ai_label} remove ${agent_label}"
-      edit_item "$kind" "$repo" "$number" "$ai_label" "$agent_label" || return 20
+      echo "APPLY ${kind} ${repo}#${number}: add ${target_label} remove ${agent_label}"
+      edit_item "$kind" "$repo" "$number" "$target_label" "$agent_label" || return 20
     else
-      echo "DRY-RUN ${kind} ${repo}#${number}: add ${ai_label} remove ${agent_label}"
+      echo "DRY-RUN ${kind} ${repo}#${number}: add ${target_label} remove ${agent_label}"
     fi
   done <<<"$agent_labels"
+}
+
+precheck_target_labels() {
+  local kind="$1"
+  local repo="$2"
+  local state="$3"
+  local items="$4"
+  local encoded number agent_labels lane_labels existing_lane selected_pair target_label agent_label
+
+  while IFS= read -r encoded; do
+    [[ -n "$encoded" ]] || continue
+    if ! number="$(item_number_from_item "$encoded")"; then
+      echo "FAIL ${kind} ${repo}: unable to parse item number" >&2
+      return 30
+    fi
+    number="${number%$'\r'}"
+    if ! agent_labels="$(agent_labels_from_item "$encoded")"; then
+      echo "FAIL ${kind} ${repo}#${number}: unable to parse labels" >&2
+      return 31
+    fi
+    if [[ "$state" == "open" ]]; then
+      if ! lane_labels="$(lane_labels_from_item "$encoded")"; then
+        echo "FAIL ${kind} ${repo}#${number}: unable to parse lane labels" >&2
+        return 31
+      fi
+      existing_lane="$(printf '%s\n' "$lane_labels" | sed -n '1p')"
+      existing_lane="${existing_lane%$'\r'}"
+      [[ -z "$existing_lane" ]] || continue
+      if selected_pair="$(preferred_open_lane_for_agent_labels "$agent_labels")"; then
+        target_label="${selected_pair#*$'\t'}"
+        if ! repo_has_target_label "$target_label"; then
+          echo "SKIP ${kind} ${repo}#${number}: target label ${target_label} missing in repo"
+          return 10
+        fi
+      fi
+    else
+      while IFS= read -r agent_label; do
+        agent_label="${agent_label%$'\r'}"
+        [[ -n "$agent_label" ]] || continue
+        if ! target_label="$(closed_ai_label_for_agent "$agent_label")"; then
+          continue
+        fi
+        if ! repo_has_target_label "$target_label"; then
+          echo "SKIP ${kind} ${repo}#${number}: target label ${target_label} missing in repo"
+          return 10
+        fi
+      done <<<"$agent_labels"
+    fi
+  done <<<"$items"
 }
 
 process_encoded_items() {
@@ -293,6 +415,55 @@ while IFS= read -r repo; do
     REPOS_FAILED=$((REPOS_FAILED + 1))
     continue
   fi
+  if ! PR_ITEMS="$(gh pr list --repo "$repo" --state open --limit 10000 --json number,labels --jq '.[] | @base64')"; then
+    echo "FAIL ${repo}: unable to list prs" >&2
+    REPOS_FAILED=$((REPOS_FAILED + 1))
+    continue
+  fi
+  CLOSED_ISSUE_ITEMS=""
+  CLOSED_PR_ITEMS=""
+  if [[ "$INCLUDE_CLOSED" == true ]]; then
+    if ! CLOSED_ISSUE_ITEMS="$(gh issue list --repo "$repo" --state closed --limit 10000 --json number,labels --jq '.[] | @base64')"; then
+      echo "FAIL ${repo}: unable to list closed issues" >&2
+      REPOS_FAILED=$((REPOS_FAILED + 1))
+      continue
+    fi
+    if ! CLOSED_PR_ITEMS="$(gh pr list --repo "$repo" --state closed --limit 10000 --json number,labels --jq '.[] | @base64')"; then
+      echo "FAIL ${repo}: unable to list closed prs" >&2
+      REPOS_FAILED=$((REPOS_FAILED + 1))
+      continue
+    fi
+  fi
+
+  for precheck_args in \
+    "issue open ISSUE_ITEMS" \
+    "pr open PR_ITEMS" \
+    "issue closed CLOSED_ISSUE_ITEMS" \
+    "pr closed CLOSED_PR_ITEMS"
+  do
+    read -r precheck_kind precheck_state precheck_var <<<"$precheck_args"
+    if [[ "$precheck_state" == "closed" && "$INCLUDE_CLOSED" != true ]]; then
+      continue
+    fi
+    if precheck_target_labels "$precheck_kind" "$repo" "$precheck_state" "${!precheck_var}"; then
+      :
+    else
+      result=$?
+      case "$result" in
+        10) repo_status="skipped" ;;
+        *) repo_status="failed" ;;
+      esac
+      break
+    fi
+  done
+  if [[ "$repo_status" != "ok" ]]; then
+    case "$repo_status" in
+      skipped) REPOS_SKIPPED=$((REPOS_SKIPPED + 1)) ;;
+      failed) REPOS_FAILED=$((REPOS_FAILED + 1)) ;;
+    esac
+    continue
+  fi
+
   if process_encoded_items issue "$repo" open "$ISSUE_ITEMS"; then
     :
   else
@@ -304,10 +475,7 @@ while IFS= read -r repo; do
   fi
 
   if [[ "$repo_status" == "ok" ]]; then
-    if ! PR_ITEMS="$(gh pr list --repo "$repo" --state open --limit 10000 --json number,labels --jq '.[] | @base64')"; then
-      echo "FAIL ${repo}: unable to list prs" >&2
-      repo_status="failed"
-    elif process_encoded_items pr "$repo" open "$PR_ITEMS"; then
+    if process_encoded_items pr "$repo" open "$PR_ITEMS"; then
       :
     else
       result=$?
@@ -319,10 +487,7 @@ while IFS= read -r repo; do
   fi
 
   if [[ "$INCLUDE_CLOSED" == true && "$repo_status" == "ok" ]]; then
-    if ! ISSUE_ITEMS="$(gh issue list --repo "$repo" --state closed --limit 10000 --json number,labels --jq '.[] | @base64')"; then
-      echo "FAIL ${repo}: unable to list closed issues" >&2
-      repo_status="failed"
-    elif process_encoded_items issue "$repo" closed "$ISSUE_ITEMS"; then
+    if process_encoded_items issue "$repo" closed "$CLOSED_ISSUE_ITEMS"; then
       :
     else
       result=$?
@@ -334,10 +499,7 @@ while IFS= read -r repo; do
   fi
 
   if [[ "$INCLUDE_CLOSED" == true && "$repo_status" == "ok" ]]; then
-    if ! PR_ITEMS="$(gh pr list --repo "$repo" --state closed --limit 10000 --json number,labels --jq '.[] | @base64')"; then
-      echo "FAIL ${repo}: unable to list closed prs" >&2
-      repo_status="failed"
-    elif process_encoded_items pr "$repo" closed "$PR_ITEMS"; then
+    if process_encoded_items pr "$repo" closed "$CLOSED_PR_ITEMS"; then
       :
     else
       result=$?
