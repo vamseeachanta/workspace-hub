@@ -15,6 +15,7 @@ SCORECARD_PATH = WORKSPACE_HUB / "config" / "ai-tools" / "provider-routing-score
 DEFAULT_JSON_OUT = WORKSPACE_HUB / "config" / "ai-tools" / "provider-work-queue.json"
 DEFAULT_MD_OUT = WORKSPACE_HUB / "docs" / "reports" / "provider-work-queue.md"
 PROVIDERS = ("claude", "codex", "agy")
+LEGACY_PROVIDER_ALIASES = {"gemini": "agy"}
 
 RESEARCH_TERMS = {
     "research", "audit", "triage", "recon", "reconnaissance", "scan", "inventory",
@@ -53,10 +54,21 @@ def issue_text(issue: dict[str, Any]) -> str:
     return text
 
 
-def existing_agent(issue: dict[str, Any]) -> str | None:
+def _canonical_provider(provider: str) -> str:
+    return LEGACY_PROVIDER_ALIASES.get(provider, provider)
+
+
+def existing_provider_label(issue: dict[str, Any]) -> tuple[str, str] | None:
+    for label in label_names(issue):
+        if label.startswith("ai:"):
+            provider = _canonical_provider(label.split(":", 1)[1])
+            if provider in PROVIDERS:
+                return provider, "existing ai label"
     for label in label_names(issue):
         if label.startswith("agent:"):
-            return label.split(":", 1)[1]
+            provider = _canonical_provider(label.split(":", 1)[1])
+            if provider in PROVIDERS:
+                return provider, "legacy agent alias"
     return None
 
 
@@ -78,9 +90,10 @@ def priority_rank(issue: dict[str, Any]) -> int:
 
 
 def suggested_provider(issue: dict[str, Any]) -> tuple[str, str]:
-    current = existing_agent(issue)
-    if current in PROVIDERS:
-        return current, f"existing {current} agent label"
+    current = existing_provider_label(issue)
+    if current:
+        provider, source = current
+        return provider, f"{source}: {provider}"
 
     text = issue_text(issue)
     labels = " ".join(label_names(issue)).lower()
@@ -104,7 +117,10 @@ def issue_summary(issue: dict[str, Any], scorecard: dict[str, Any]) -> dict[str,
     provider, reason = suggested_provider(issue)
     labels = label_names(issue)
     execution_ready = has_plan_approved(issue)
-    provider_meta = next(item for item in scorecard["recommendations"] if item["provider"] == provider)
+    provider_meta = next(
+        item for item in scorecard["recommendations"]
+        if _canonical_provider(item["provider"]) == provider
+    )
     title = str(issue.get("title", ""))
     body = str(issue.get("body", ""))
 
@@ -155,7 +171,10 @@ def build_queue(scorecard: dict[str, Any], issues: list[dict[str, Any]]) -> dict
         items = grouped.get(provider, [])
         provider_queues[provider] = {
             "provider": provider,
-            "routing_priority": next(x for x in scorecard["recommendations"] if x["provider"] == provider)["priority"],
+            "routing_priority": next(
+                x for x in scorecard["recommendations"]
+                if _canonical_provider(x["provider"]) == provider
+            )["priority"],
             "execution_ready_count": sum(1 for item in items if item["execution_ready"]),
             "total_candidates": len(items),
             "top_issues": items[:8],
@@ -170,7 +189,10 @@ def build_queue(scorecard: dict[str, Any], issues: list[dict[str, Any]]) -> dict
         "generated_at": now,
         "current_week": scorecard["current_week"],
         "scorecard_generated_at": scorecard["generated_at"],
-        "recommended_provider_order": scorecard["recommended_provider_order"],
+        "recommended_provider_order": [
+            _canonical_provider(provider)
+            for provider in scorecard["recommended_provider_order"]
+        ],
         "provider_queues": provider_queues,
     }
 
@@ -183,7 +205,7 @@ def render_markdown(queue: dict[str, Any]) -> str:
         f"Current week: {queue['current_week']}",
         f"Recommended provider order: {', '.join(queue['recommended_provider_order'])}",
         "",
-        "Execution-ready means the issue already carries `status:plan-approved`. agent:* labels are routing hints only and do not grant execution approval.",
+        "Execution-ready means the issue already carries `status:plan-approved`. ai:* labels are routing hints only and do not grant execution approval. Legacy agent:* labels are read-only aliases for this release.",
         "",
     ]
     for provider in PROVIDERS:

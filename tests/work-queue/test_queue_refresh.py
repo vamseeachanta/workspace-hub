@@ -43,31 +43,36 @@ def _make_issue(number: int, title: str, labels: list[str]) -> dict:
 
 
 SAMPLE_ISSUES = {
+    "ai:agy,priority:high": json.dumps([
+        _make_issue(1769, "Phase B summarization — 394K docs", ["ai:agy", "priority:high"]),
+    ]),
     "agent:gemini,priority:high": json.dumps([
         _make_issue(1823, "Map 825 hydro functions to standards", ["agent:gemini", "priority:high", "cat:standards"]),
-        _make_issue(1769, "Phase B summarization — 394K docs", ["agent:gemini", "priority:high"]),
     ]),
-    "agent:gemini,priority:medium": json.dumps([
-        _make_issue(1822, "Close 13 pipeline standards gaps", ["agent:gemini", "priority:medium"]),
+    "ai:agy,priority:medium": json.dumps([
+        _make_issue(1822, "Close 13 pipeline standards gaps", ["ai:agy", "priority:medium"]),
     ]),
+    "ai:agy,priority:low": json.dumps([]),
     "agent:gemini,priority:low": json.dumps([]),
-    "agent:claude,priority:high": json.dumps([
-        _make_issue(1857, "Rolling 1-week agent work queue", ["agent:claude", "priority:high"]),
-        _make_issue(1839, "Workflow hard-stops", ["agent:claude", "priority:high"]),
-        _make_issue(1811, "Promote SN curve POC v2", ["agent:claude", "priority:high"]),
+    "ai:claude,priority:high": json.dumps([
+        _make_issue(1857, "Rolling 1-week agent work queue", ["ai:claude", "priority:high"]),
+        _make_issue(1839, "Workflow hard-stops", ["ai:claude", "priority:high"]),
+        _make_issue(1811, "Promote SN curve POC v2", ["ai:claude", "priority:high"]),
     ]),
     "agent:claude,priority:medium": json.dumps([
         _make_issue(1853, "Complete curves_of_form.py", ["agent:claude", "priority:medium"]),
     ]),
+    "ai:claude,priority:medium": json.dumps([]),
+    "ai:claude,priority:low": json.dumps([]),
     "agent:claude,priority:low": json.dumps([]),
-    "agent:codex,priority:high": json.dumps([
-        _make_issue(1824, "Uplift test coverage 2.95% → 20%", ["agent:codex", "priority:high"]),
+    "ai:codex,priority:high": json.dumps([
+        _make_issue(1824, "Uplift test coverage 2.95% → 20%", ["ai:codex", "priority:high"]),
     ]),
-    "agent:codex,priority:medium": json.dumps([
-        _make_issue(1830, "Review solver queue bugs", ["agent:codex", "priority:medium"]),
+    "ai:codex,priority:medium": json.dumps([
+        _make_issue(1830, "Review solver queue bugs", ["ai:codex", "priority:medium"]),
     ]),
-    "agent:codex,priority:low": json.dumps([
-        _make_issue(1748, "Convert agents to SKILL.md", ["agent:codex", "priority:low"]),
+    "ai:codex,priority:low": json.dumps([
+        _make_issue(1748, "Convert agents to SKILL.md", ["ai:codex", "priority:low"]),
     ]),
 }
 
@@ -76,7 +81,7 @@ def mock_subprocess_run(cmd, **kwargs):
     """Mock gh issue list calls, returning canned JSON."""
     cmd_str = " ".join(cmd) if isinstance(cmd, list) else cmd
 
-    # Match --label "agent:X,priority:Y" patterns
+    # Match --label "ai:X,priority:Y" and legacy "agent:X,priority:Y" patterns
     for label_combo, data in SAMPLE_ISSUES.items():
         if label_combo in cmd_str:
             return subprocess.CompletedProcess(
@@ -118,8 +123,8 @@ class TestQueueMarkdownStructure:
         assert "## Queue Summary" in queue_output
         assert "| Agent" in queue_output
 
-    def test_has_gemini_section(self, queue_output: str):
-        assert "## Gemini Queue" in queue_output
+    def test_has_agy_section(self, queue_output: str):
+        assert "## Agy Queue" in queue_output
 
     def test_has_claude_section(self, queue_output: str):
         assert "## Claude Queue" in queue_output
@@ -141,7 +146,7 @@ class TestQueueMarkdownStructure:
 class TestDeterministicOrdering:
     """Issues must be sorted by issue number ascending within each priority."""
 
-    def test_gemini_high_sorted(self, queue_output: str):
+    def test_agy_high_sorted(self, queue_output: str):
         # #1769 should appear before #1823 (ascending by issue number)
         pos_1769 = queue_output.index("#1769")
         pos_1823 = queue_output.index("#1823")
@@ -161,12 +166,12 @@ class TestDeterministicOrdering:
 class TestCountAccuracy:
     """Summary table counts must match actual issue counts."""
 
-    def test_gemini_count(self, queue_output: str):
+    def test_agy_count(self, queue_output: str):
         # 2 high + 1 medium + 0 low = 3
-        assert "| **GEMINI**" in queue_output
-        # Find the Gemini row and check total is 3
+        assert "| **AGY**" in queue_output
+        # Find the Agy row and check total is 3
         for line in queue_output.splitlines():
-            if "**GEMINI**" in line:
+            if "**AGY**" in line:
                 assert "3" in line
                 break
 
@@ -191,15 +196,15 @@ class TestCountAccuracy:
 class TestPrioritySections:
     """Each agent section should have High/Medium/Low sub-sections."""
 
-    def test_gemini_has_high_priority(self, queue_output: str):
-        # Between Gemini header and Claude header, "High" should appear
-        gemini_start = queue_output.index("## Gemini Queue")
+    def test_agy_has_high_priority(self, queue_output: str):
+        # Between Agy header and Claude header, "High" should appear
+        gemini_start = queue_output.index("## Agy Queue")
         claude_start = queue_output.index("## Claude Queue")
         gemini_section = queue_output[gemini_start:claude_start]
         assert "### High" in gemini_section
 
-    def test_gemini_has_medium_priority(self, queue_output: str):
-        gemini_start = queue_output.index("## Gemini Queue")
+    def test_agy_has_medium_priority(self, queue_output: str):
+        gemini_start = queue_output.index("## Agy Queue")
         claude_start = queue_output.index("## Claude Queue")
         gemini_section = queue_output[gemini_start:claude_start]
         assert "### Medium" in gemini_section
@@ -295,7 +300,7 @@ class TestParityCheck:
             sys.path.pop(0)
         self.tmp_path = tmp_path
 
-    def _write_summary_table(self, gemini: int, claude: int, codex: int) -> Path:
+    def _write_summary_table(self, agy: int, claude: int, codex: int) -> Path:
         p = self.tmp_path / "agent-work-queue.md"
         lines = [
             "# Agent Work Queue",
@@ -304,7 +309,7 @@ class TestParityCheck:
             "",
             "| Agent | High | Medium | Low | Total |",
             "|-------|------|--------|-----|-------|",
-            f"| **GEMINI** | {gemini} | 0 | 0 | {gemini} |",
+            f"| **AGY** | {agy} | 0 | 0 | {agy} |",
             f"| **CLAUDE** | {claude} | 0 | 0 | {claude} |",
             f"| **CODEX** | {codex} | 0 | 0 | {codex} |",
         ]
@@ -316,9 +321,9 @@ class TestParityCheck:
 
         def mock_query(labels):
             counts = {
-                "agent:gemini,priority:high": 2,
-                "agent:claude,priority:high": 3,
-                "agent:codex,priority:high": 1,
+                "ai:agy,priority:high": 2,
+                "ai:claude,priority:high": 3,
+                "ai:codex,priority:high": 1,
             }
             n = counts.get(labels, 0)
             return [{"number": i, "title": f"Issue {i}", "labels": []} for i in range(n)]
@@ -332,9 +337,9 @@ class TestParityCheck:
         def mock_query(labels):
             # Claude has 5 live issues instead of 3
             counts = {
-                "agent:gemini,priority:high": 2,
-                "agent:claude,priority:high": 5,
-                "agent:codex,priority:high": 1,
+                "ai:agy,priority:high": 2,
+                "ai:claude,priority:high": 5,
+                "ai:codex,priority:high": 1,
             }
             n = counts.get(labels, 0)
             return [{"number": i, "title": f"Issue {i}", "labels": []} for i in range(n)]
