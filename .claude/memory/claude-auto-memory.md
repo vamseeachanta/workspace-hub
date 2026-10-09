@@ -1,7 +1,7 @@
 # Claude Code Auto-Memory Snapshot
 
 > Git-tracked snapshot of Claude Code's auto-generated MEMORY.md index.
-> Last captured: 2026-10-08
+> Last captured: 2026-10-09
 > Source: /home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/MEMORY.md
 
 - [crossprovider_gemini_multi-provider-capability-assessment-strategy_d00b3dad](crossprovider_gemini_multi-provider-capability-assessment-strategy_d00b3dad.md)
@@ -110,3 +110,4 @@
 - [crossprovider_gemini_bootstrap-environment-path-verification-pattern_652ad2fc](crossprovider_gemini_bootstrap-environment-path-verification-pattern_652ad2fc.md)
 - [crossprovider_gemini_optional-input-handling-contract-for-analysis-to_11b683bb](crossprovider_gemini_optional-input-handling-contract-for-analysis-to_11b683bb.md)
 - [crossprovider_gemini_ecosystem-mission-document-strategy-with-deferre_b88e8d34](crossprovider_gemini_ecosystem-mission-document-strategy-with-deferre_b88e8d34.md)
+- [project_mx720_cnh_watcher_stuck_timer](project_mx720_cnh_watcher_stuck_timer.md) — worldenergydata #720 nightly watcher stuck 88+ nights, can't self-disable
