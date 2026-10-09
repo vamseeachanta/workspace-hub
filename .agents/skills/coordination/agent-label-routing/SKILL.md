@@ -1,6 +1,6 @@
 ---
 name: agent-label-routing
-description: Deterministic multi-agent task assignment via GitHub labels — classify, label, and generate queue views from `agent:` labels instead of manual queue files
+description: Deterministic multi-agent task assignment via GitHub labels — classify, label, and generate queue views from `ai:` labels instead of manual queue files
 version: 1.0.0
 category: coordination
 type: skill
@@ -18,25 +18,24 @@ scripts:
 
 # Agent Label Routing
 
-Deterministic agent task assignment using GitHub `agent:` labels. Labels ARE the queue — separate markdown files are just filtered views.
+Deterministic agent task assignment using GitHub `ai:` labels. Labels ARE the queue — separate markdown files are just filtered views. Legacy `agent:*` labels are read-only aliases during the migration window; do not add new `agent:*` labels.
 
 ## Label Schema
 
 | Label | Color | Role |
 |-------|-------|------|
-| `agent:gemini` | F5A623 | Research, prep, large-doc ingestion, standards mapping |
-| `agent:claude` | DA552F | Heavy coding, architecture, orchestration, complex TDD |
-| `agent:codex` | 3182CE | Bounded implementation, test writing, review, refactoring |
-| `agent:any` | 8E54E9 | No strong preference — whichever agent has capacity |
+| `ai:agy` | F5A623 | Research, prep, large-doc ingestion, standards mapping |
+| `ai:claude` | DA552F | Heavy coding, architecture, orchestration, complex TDD |
+| `ai:codex` | 3182CE | Bounded implementation, test writing, review, refactoring |
+| _unset_ | 8E54E9 | No strong preference — whichever agent has capacity |
 
 ## Workflow
 
 ### Step 1: Create Labels (if missing)
 ```bash
-gh label create "agent:gemini" --color "F5A623" --description "Research, prep, large-doc ingestion"
-gh label create "agent:claude" --color "DA552F" --description "Heavy coding, architecture, orchestration"
-gh label create "agent:codex" --color "3182CE" --description "Bounded implementation, tests, review"
-gh label create "agent:any" --color "8E54E9" --description "No strong preference"
+gh label create "ai:agy" --color "F5A623" --description "Research, prep, large-doc ingestion"
+gh label create "ai:claude" --color "DA552F" --description "Heavy coding, architecture, orchestration"
+gh label create "ai:codex" --color "3182CE" --description "Bounded implementation, tests, review"
 ```
 
 ### Step 2: Classify Issues
@@ -70,7 +69,7 @@ Never use sequential `gh issue edit` — it is SLOW and hits rate limits.
 ```bash
 GEMINI=(1863 1862 1860 ... 68 issues)
 for n in "${GEMINI[@]}"; do
-  gh issue edit "$n" --add-label "agent:gemini" 2>/dev/null &
+  gh issue edit "$n" --add-label "ai:agy" 2>/dev/null &
 done
 wait  # blocks until all complete, then move to next agent
 ```
@@ -82,9 +81,9 @@ Same approach — background all `gh issue edit` calls for one agent, `wait`, th
 ### Step 4: Generate Queue View
 ```bash
 # Query live from GitHub — never manually maintain
-gh issue list -L 100 --label "agent:gemini,priority:high" --json number,title
-gh issue list -L 100 --label "agent:claude,priority:high" --json number,title
-gh issue list -L 100 --label "agent:codex,priority:high" --json number,title
+gh issue list -L 100 --label "ai:agy,priority:high" --json number,title
+gh issue list -L 100 --label "ai:claude,priority:high" --json number,title
+gh issue list -L 100 --label "ai:codex,priority:high" --json number,title
 ```
 
 ### Step 5: Refresh Script
@@ -93,7 +92,7 @@ gh issue list -L 100 --label "agent:codex,priority:high" --json number,title
 ## How to Reassign
 ```bash
 # Move issue from Gemini to Codex
-gh issue edit 1234 --remove-label "agent:gemini" --add-label "agent:codex"
+gh issue edit 1234 --remove-label "ai:agy" --add-label "ai:codex"
 ```
 
 ## Gemini Batch Execution Pattern
@@ -130,7 +129,7 @@ TASK 2-5: same pattern...
 - Free providers (`h-nemotron`, `h-qwen`) timeout after 5 min — too short for 5+ task batches. Gemini via OpenRouter takes ~2 min per session of 5 tasks.
 
 ## Output Artifacts
-- GitHub issues with `agent:` labels applied
+- GitHub issues with `ai:` labels applied
 - `notes/agent-work-queue.md` (auto-generated view)
 - `docs/plans/overnight-prompts-YYYY-MM-DD.md` (weekly overnight plan)
 - `scripts/refresh-agent-work-queue.sh` (cron-ready refresh script)

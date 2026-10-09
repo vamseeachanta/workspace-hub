@@ -18,6 +18,15 @@
 8. **Use the CLEAN-only merge helper.** An authorized agent-run merge must use `scripts/operations/merge-when-clean.sh --merge` for the specific PR. Do not replace the helper with a hand-count of checks or a direct `gh pr merge` call.
 9. **Validate the actual landed tree before closeout.** After remote MERGED verification, run `git fetch origin main`, resolve the actual landed `origin/main` commit, and rerun the changed-domain generated-artifact checks against that tree before commenting complete or closing the issue. Synthetic merge commits and the pre-merge working tree are not landed-tree evidence.
 
+## Direct-main exemptions
+
+The default path remains branch -> PR -> merge. These registered automation
+exceptions may push to `main` only within the bounded write surfaces named here:
+
+- `.claude/cron/ecosystem-sync.sh`: may write `.claude/state/ecosystem-sync/last-sync.yaml` and `docs/sync-reports/` after a successful ecosystem sync run. The exemption exists so the scheduled sync can publish its digest and state without a human PR for each run.
+- `scripts/fleet/account-usage-cron.sh`: may write `config/ai-tools/account-usage-latest.json` and `docs/reports/ai-account-usage.md` after a successful fleet account-usage collection. The exemption exists so hourly generated account-usage evidence can stay current without burning CI minutes or requiring an operator to merge routine telemetry.
+- `scripts/client_llm_wiki/bootstrap_git.py`: may push exactly the first root commit to a newly registered client-wiki repository's `refs/heads/main` through the descriptor-bound bootstrap transport. The exemption exists because an empty client-wiki repository has no prior branch to PR against; it does not authorize later commits or arbitrary workspace-hub main writes.
+
 **Do NOT apply when:** the user runs the merge themselves (pasting output back) — then the agent's job is only step 6 verification.
 
 **Related:** [`model-routing.md`](model-routing.md) (corollary 4), [`completeness-before-close.md`](completeness-before-close.md). Memory: `feedback_agent_can_verify_but_not_self_merge_pr`, `feedback_dependabot_merge_no_rebase_trust_clean`. Issue: workspace-hub#3390 item 4 (owner adopted option b, 2026-07-06).
