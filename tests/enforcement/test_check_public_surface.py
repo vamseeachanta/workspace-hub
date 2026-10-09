@@ -12,10 +12,7 @@ def run_checker(tmp_path: Path, diff: str, *args: str) -> subprocess.CompletedPr
     diff_path = tmp_path / "change.diff"
     diff_path.write_text(textwrap.dedent(diff).lstrip(), encoding="utf-8")
     allowlist_path = tmp_path / "empty-allowlist.yml"
-    allowlist_path.write_text(
-        "host_ips: []\nhostnames: []\nsecrets: []\nidentifiers: []\n",
-        encoding="utf-8",
-    )
+    allowlist_path.write_text("allowlist: []\n", encoding="utf-8")
     return subprocess.run(
         [
             "python",
@@ -54,23 +51,37 @@ def test_blocks_tailnet_and_private_ips_but_allows_documentation_ranges(tmp_path
     assert "203.0.113.9" not in result.stdout
 
 
-def test_allowlist_suppresses_exact_value(tmp_path: Path) -> None:
+def test_allowlist_is_path_scoped(tmp_path: Path) -> None:
     allowlist = tmp_path / "allowlist.yml"
-    allowlist.write_text("host_ips:\n  - 10.20.30.40\n", encoding="utf-8")
+    allowlist.write_text(
+        """
+        allowlist:
+          - path: allowed.md
+            kind: host-ip
+            pattern: 10\\.20\\.30\\.40
+        """,
+        encoding="utf-8",
+    )
     result = run_checker(
         tmp_path,
         """
-        diff --git a/sample.txt b/sample.txt
-        --- a/sample.txt
-        +++ b/sample.txt
-        @@ -0,0 +1 @@
+        diff --git a/allowed.md b/allowed.md
+        --- a/allowed.md
+        +++ b/allowed.md
+        @@ -0,0 +1,4 @@
         +allowed endpoint 10.20.30.40
+        diff --git a/blocked.md b/blocked.md
+        --- a/blocked.md
+        +++ b/blocked.md
+        @@ -0,0 +1 @@
+        +blocked endpoint 10.20.30.40
         """,
         "--allowlist",
         str(allowlist),
     )
-    assert result.returncode == 0
-    assert result.stdout == ""
+    assert result.returncode == 1
+    assert "allowed.md" not in result.stdout
+    assert "blocked.md:1: host-ip" in result.stdout
 
 
 def test_blocks_denylisted_physical_hostname_but_allows_role_slug(tmp_path: Path) -> None:
@@ -97,6 +108,7 @@ def test_blocks_denylisted_physical_hostname_but_allows_role_slug(tmp_path: Path
 
 def test_blocks_secret_shapes_and_masks_values(tmp_path: Path) -> None:
     github_token = "ghp_" + "abcdefghijklmnopqrstuvwxyz0123456789"
+    github_pat = "github_pat_" + "A" * 22 + "_" + "B" * 59
     aws_key = "AKIA" + "IOSFODNN7EXAMPLE"
     private_key_header = "-----BEGIN " + "OPENSSH PRIVATE KEY-----"
     result = run_checker(
@@ -105,8 +117,9 @@ def test_blocks_secret_shapes_and_masks_values(tmp_path: Path) -> None:
         diff --git a/secrets.txt b/secrets.txt
         --- a/secrets.txt
         +++ b/secrets.txt
-        @@ -0,0 +1,3 @@
+        @@ -0,0 +1,4 @@
         +github token {github_token}
+        +github fine-grained token {github_pat}
         +aws key {aws_key}
         +{private_key_header}
         """,
@@ -115,9 +128,30 @@ def test_blocks_secret_shapes_and_masks_values(tmp_path: Path) -> None:
     assert "secrets.txt:1: github-token" in result.stdout
     assert github_token not in result.stdout
     assert "ghp_****6789" in result.stdout
+    assert "secrets.txt:2: github-token" in result.stdout
+    assert github_pat not in result.stdout
     assert aws_key not in result.stdout
     assert "AKIA****MPLE" in result.stdout
     assert "private-key" in result.stdout
+
+
+def test_blocks_tailscale_magicdns_and_ipv6(tmp_path: Path) -> None:
+    result = run_checker(
+        tmp_path,
+        """
+        diff --git a/network.md b/network.md
+        --- a/network.md
+        +++ b/network.md
+        @@ -0,0 +1,3 @@
+        +ssh host.tailabc123.ts.net
+        +ssh host.tailABCDEF.ts.net
+        +connect fd7a:115c:a1e0::1234
+        """,
+    )
+    assert result.returncode == 1
+    assert "network.md:1: tailscale-magicdns" in result.stdout
+    assert "network.md:2: tailscale-magicdns" in result.stdout
+    assert "network.md:3: host-ip" in result.stdout
 
 
 def test_scans_only_added_lines(tmp_path: Path) -> None:
@@ -138,7 +172,7 @@ def test_scans_only_added_lines(tmp_path: Path) -> None:
     assert result.stdout == ""
 
 
-def test_identifier_mode_writes_masked_markdown_and_exits_zero(tmp_path: Path) -> None:
+def test_identifier_mode_writes_kind_and_length_only_markdown(tmp_path: Path) -> None:
     registry = tmp_path / "registry.yml"
     registry.write_text(
         """
@@ -171,13 +205,51 @@ def test_identifier_mode_writes_masked_markdown_and_exits_zero(tmp_path: Path) -
     )
     assert result.returncode == 0
     body = output.read_text(encoding="utf-8")
-    assert "report.md:1" in body
-    assert "report.md:2" in body
-    assert "client-a" in body
+    assert "| Kind | Length |" in body
+    assert "| client-identifier | 18 |" in body
+    assert "| client-identifier | 7 |" in body
+    assert "report.md" not in body
+    assert "client-a" not in body
     assert "Alpha Offshore LLC" not in body
     assert "AO-7788" not in body
-    assert "Al**** LLC" in body
-    assert "AO***88" in body
+    assert "Al**** LLC" not in body
+    assert "AO***88" not in body
+
+
+def test_identifier_json_output_omits_masked_values_and_codenames(tmp_path: Path) -> None:
+    registry = tmp_path / "registry.yml"
+    registry.write_text(
+        """
+        wikis:
+          - short: client-alpha
+            codename: client-a
+            identifiers:
+              - Alpha Offshore LLC
+        """,
+        encoding="utf-8",
+    )
+    result = run_checker(
+        tmp_path,
+        """
+        diff --git a/report.md b/report.md
+        --- a/report.md
+        +++ b/report.md
+        @@ -0,0 +1 @@
+        +Prepared for Alpha Offshore LLC.
+        """,
+        "--mode",
+        "identifiers",
+        "--client-registry",
+        str(registry),
+        "--format",
+        "json",
+    )
+    assert result.returncode == 0
+    payload = json.loads(result.stdout)
+    assert payload["findings"] == [{"kind": "client-identifier", "length": 18}]
+    assert "Alpha Offshore LLC" not in result.stdout
+    assert "client-a" not in result.stdout
+    assert "Al**** LLC" not in result.stdout
 
 
 def test_json_output_masks_values(tmp_path: Path) -> None:
@@ -235,10 +307,7 @@ def test_git_diff_runs_against_current_working_directory(tmp_path: Path) -> None
     subprocess.run(["git", "commit", "-qm", "add leak"], cwd=repo, check=True)
 
     allowlist = tmp_path / "empty-allowlist.yml"
-    allowlist.write_text(
-        "host_ips: []\nhostnames: []\nsecrets: []\nidentifiers: []\n",
-        encoding="utf-8",
-    )
+    allowlist.write_text("allowlist: []\n", encoding="utf-8")
     result = subprocess.run(
         [
             "python",

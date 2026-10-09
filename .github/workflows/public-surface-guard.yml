@@ -95,6 +95,7 @@ jobs:
 
       - name: Build warning comment
         id: identifiers
+        continue-on-error: true
         working-directory: target
         run: |
           REGISTRY="${{ inputs.client_registry_path }}"
@@ -118,6 +119,7 @@ jobs:
 
       - name: Post or update warning comment
         if: steps.identifiers.outputs.has_findings == 'true' && github.event_name == 'pull_request'
+        continue-on-error: true
         uses: actions/github-script@v7
         with:
           script: |

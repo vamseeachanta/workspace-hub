@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import fnmatch
 import ipaddress
 import json
 import os
@@ -26,6 +27,7 @@ BLOCKED_NETWORKS = [
     ("host-ip", ipaddress.ip_network("10.0.0.0/8")),
     ("host-ip", ipaddress.ip_network("172.16.0.0/12")),
     ("host-ip", ipaddress.ip_network("192.168.0.0/16")),
+    ("host-ip", ipaddress.ip_network("fd7a:115c:a1e0::/48")),
 ]
 DOCUMENTATION_NETWORKS = [
     ipaddress.ip_network("192.0.2.0/24"),
@@ -33,10 +35,15 @@ DOCUMENTATION_NETWORKS = [
     ipaddress.ip_network("203.0.113.0/24"),
 ]
 IP_RE = re.compile(r"\b(?:\d{1,3}\.){3}\d{1,3}\b")
+IPV6_RE = re.compile(
+    r"(?<![0-9A-Fa-f:])(?:[0-9A-Fa-f]{0,4}:){2,7}[0-9A-Fa-f]{0,4}(?![0-9A-Fa-f:])"
+)
+TAILSCALE_MAGICDNS_RE = re.compile(r"\b[A-Za-z0-9-]+\.tail[0-9A-Fa-f]+\.ts\.net\b")
 
 SECRET_PATTERNS = [
     ("private-key", re.compile(r"-----BEGIN [A-Z0-9 ]*PRIVATE KEY-----")),
     ("github-token", re.compile(r"\bgh[pousr]_[A-Za-z0-9_]{20,}\b")),
+    ("github-token", re.compile(r"\bgithub_pat_[A-Za-z0-9_]{20,}\b")),
     ("anthropic-key", re.compile(r"\bsk-ant-[A-Za-z0-9_-]{20,}\b")),
     ("openai-key", re.compile(r"\bsk-(?!ant-)(?:proj-)?[A-Za-z0-9_-]{20,}\b")),
     ("aws-access-key", re.compile(r"\b(?:A3T[A-Z0-9]|AKIA|ASIA)[A-Z0-9]{16}\b")),
@@ -58,7 +65,15 @@ class Finding:
     line: int
     kind: str
     masked: str
+    length: int
     codename: str | None = None
+
+
+@dataclass(frozen=True)
+class AllowRule:
+    path: str
+    kind: str
+    pattern: re.Pattern[str]
 
 
 def load_yaml(path: Path) -> dict:
@@ -69,12 +84,28 @@ def load_yaml(path: Path) -> dict:
     return data if isinstance(data, dict) else {}
 
 
-def load_allowlist(path: Path) -> dict[str, set[str]]:
+def load_allowlist(path: Path) -> list[AllowRule]:
     data = load_yaml(path)
-    return {
-        key: {str(value) for value in data.get(key, []) or []}
-        for key in ("host_ips", "hostnames", "secrets", "identifiers")
-    }
+    rules: list[AllowRule] = []
+    for entry in data.get("allowlist", []) or []:
+        if not isinstance(entry, dict):
+            continue
+        path_glob = str(entry.get("path") or "").strip()
+        kind = str(entry.get("kind") or "").strip()
+        pattern_text = str(entry.get("pattern") or "").strip()
+        if not path_glob or not kind or not pattern_text:
+            continue
+        rules.append(AllowRule(path_glob, kind, re.compile(pattern_text)))
+    return rules
+
+
+def is_allowed(rules: list[AllowRule], path: str, kind: str, value: str) -> bool:
+    return any(
+        rule.kind == kind
+        and fnmatch.fnmatchcase(path, rule.path)
+        and rule.pattern.fullmatch(value)
+        for rule in rules
+    )
 
 
 def load_host_patterns(path: Path) -> list[re.Pattern[str]]:
@@ -139,46 +170,50 @@ def parse_added_lines(diff: str) -> list[AddedLine]:
     return lines
 
 
-def ip_findings(line: AddedLine, allowlist: dict[str, set[str]]) -> Iterable[Finding]:
-    for match in IP_RE.finditer(line.text):
+def ip_findings(line: AddedLine, allowlist: list[AllowRule]) -> Iterable[Finding]:
+    for match in [*IP_RE.finditer(line.text), *IPV6_RE.finditer(line.text)]:
         value = match.group(0)
         try:
             address = ipaddress.ip_address(value)
         except ValueError:
             continue
-        if value in allowlist["host_ips"]:
-            continue
         if any(address in network for network in DOCUMENTATION_NETWORKS):
             continue
-        if any(address in network for _, network in BLOCKED_NETWORKS):
-            yield Finding(line.path, line.line, "host-ip", mask_value(value))
+        for kind, network in BLOCKED_NETWORKS:
+            if address in network and not is_allowed(allowlist, line.path, kind, value):
+                yield Finding(line.path, line.line, kind, mask_value(value), len(value))
 
 
 def hostname_findings(
     line: AddedLine,
     patterns: list[re.Pattern[str]],
-    allowlist: dict[str, set[str]],
+    allowlist: list[AllowRule],
 ) -> Iterable[Finding]:
     for pattern in patterns:
         for match in pattern.finditer(line.text):
             value = match.group(0)
-            if value in allowlist["hostnames"]:
+            if is_allowed(allowlist, line.path, "physical-hostname", value):
                 continue
-            yield Finding(line.path, line.line, "physical-hostname", mask_value(value))
+            yield Finding(line.path, line.line, "physical-hostname", mask_value(value), len(value))
+    for match in TAILSCALE_MAGICDNS_RE.finditer(line.text):
+        value = match.group(0)
+        if is_allowed(allowlist, line.path, "tailscale-magicdns", value):
+            continue
+        yield Finding(line.path, line.line, "tailscale-magicdns", mask_value(value), len(value))
 
 
-def secret_findings(line: AddedLine, allowlist: dict[str, set[str]]) -> Iterable[Finding]:
+def secret_findings(line: AddedLine, allowlist: list[AllowRule]) -> Iterable[Finding]:
     for kind, pattern in SECRET_PATTERNS:
         for match in pattern.finditer(line.text):
             value = match.group(0)
-            if value in allowlist["secrets"]:
+            if is_allowed(allowlist, line.path, kind, value):
                 continue
-            yield Finding(line.path, line.line, kind, mask_value(value))
+            yield Finding(line.path, line.line, kind, mask_value(value), len(value))
 
 
 def blocking_findings(
     lines: Iterable[AddedLine],
-    allowlist: dict[str, set[str]],
+    allowlist: list[AllowRule],
     host_patterns: list[re.Pattern[str]],
 ) -> list[Finding]:
     findings: list[Finding] = []
@@ -215,18 +250,25 @@ def identifier_entries(registry_path: Path) -> list[tuple[str, str]]:
 def identifier_findings(
     lines: Iterable[AddedLine],
     registry_path: Path,
-    allowlist: dict[str, set[str]],
+    allowlist: list[AllowRule],
 ) -> list[Finding]:
     entries = identifier_entries(registry_path)
     findings: list[Finding] = []
     for line in lines:
         lower = line.text.casefold()
         for ident, codename in entries:
-            if ident in allowlist["identifiers"]:
+            if is_allowed(allowlist, line.path, "client-identifier", ident):
                 continue
             if ident.casefold() in lower:
                 findings.append(
-                    Finding(line.path, line.line, "client-identifier", mask_value(ident), codename)
+                    Finding(
+                        line.path,
+                        line.line,
+                        "client-identifier",
+                        mask_value(ident),
+                        len(ident),
+                        codename,
+                    )
                 )
     return findings
 
@@ -236,20 +278,18 @@ def write_markdown(path: Path, findings: list[Finding]) -> None:
         path.write_text("", encoding="utf-8")
         return
     rows = [
-        "| Location | Probable identifier | Suggested codename |",
-        "|---|---:|---|",
+        "| Kind | Length |",
+        "|---|---:|",
     ]
     for finding in findings:
-        rows.append(
-            f"| `{finding.path}:{finding.line}` | `{finding.masked}` | `{finding.codename or ''}` |"
-        )
+        rows.append(f"| {finding.kind} | {finding.length} |")
     path.write_text(
         "\n".join(
             [
                 "### Public surface identifier warning",
                 "",
                 "O13 warn-only client-identifier check found probable client identifiers in added lines.",
-                "The identifier is masked here; review the PR diff and replace it with the suggested codename when publication authority is not established.",
+                "Review the PR diff and replace identifiers with approved codenames when publication authority is not established.",
                 "",
                 *rows,
                 "",
@@ -261,11 +301,19 @@ def write_markdown(path: Path, findings: list[Finding]) -> None:
 
 def emit(findings: list[Finding], fmt: str) -> None:
     if fmt == "json":
-        print(json.dumps({"findings": [asdict(finding) for finding in findings]}, indent=2))
+        payload = []
+        for finding in findings:
+            if finding.codename:
+                payload.append({"kind": finding.kind, "length": finding.length})
+            else:
+                payload.append(asdict(finding))
+        print(json.dumps({"findings": payload}, indent=2))
         return
     for finding in findings:
-        suffix = f" codename={finding.codename}" if finding.codename else ""
-        print(f"{finding.path}:{finding.line}: {finding.kind}: {finding.masked}{suffix}")
+        if finding.codename:
+            print(f"{finding.path}:{finding.line}: {finding.kind}: length={finding.length}")
+        else:
+            print(f"{finding.path}:{finding.line}: {finding.kind}: {finding.masked}")
 
 
 def build_parser() -> argparse.ArgumentParser:
