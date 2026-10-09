@@ -17,11 +17,12 @@ residue remained. The same day, one riser PR proposed committing 7,300 per-case 
    `git -C <canonical checkout> worktree add <root>/wt-<repo>-<topic> -b <branch> origin/main`.
    Where a sandbox makes `.git` read-only, a clone into the job's temporary directory is the
    fallback, and it is deleted once its branch is pushed. Never leave a clone at the workspace
-   root.
+   root. A long-running job locks its worktree (`git worktree lock --reason <job>`) and unlocks
+   it when done, so cleanup never removes a worktree in use.
 2. **Remove what is on origin.** After a PR merges, follow [`merge-cleanup.md`](merge-cleanup.md).
    At session close, and whenever free space drops below about 10 % of the drive, run
    `scripts/operations/workstation-hygiene.sh` (report only). It lists duplicate clones,
-   linked worktrees and caches, and marks each SAFE, DIRTY or UNPUSHED. `--apply` removes only
+   linked worktrees and caches, and marks each SAFE, DIRTY, UNPUSHED, LOCKED or IN USE (a process running inside it, Linux). `--apply` removes only
    SAFE items; `--apply --caches` also prunes npm, uv and pip caches. DIRTY and UNPUSHED items
    are reported to the owner, never deleted.
 3. **Bulky regenerable output does not go into Git.** Per-case solver results and similar

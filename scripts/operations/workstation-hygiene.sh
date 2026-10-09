@@ -12,7 +12,9 @@
 # SAFE = no tracked changes, no untracked files except caches (__pycache__, .pytest_cache,
 # .ruff_cache, .mypy_cache), no stashes of its own (clones), and HEAD contained in an origin ref
 # or equal to the head of a merged PR (squash merge, branch deleted). --apply removes worktrees
-# only under --root; those elsewhere (for example app task folders) stay report-only.
+# only under --root; those elsewhere (for example app task folders) stay report-only. A worktree
+# with a running process inside it (Linux) is IN USE and never removed; long jobs should also
+# `git worktree lock --reason <job>` so LOCKED protects them on every platform.
 # Exit 0 always in report mode; non-zero only on usage errors.
 set -uo pipefail
 
@@ -32,9 +34,20 @@ done
 CACHE_RE='(__pycache__|\.pytest_cache|\.ruff_cache|\.mypy_cache)'
 size_of() { [ "$SIZES" = 1 ] && du -sh "$1" 2>/dev/null | cut -f1 || echo "-"; }
 
+# Prints "IN USE" if a process has its working directory inside $1 (Linux /proc only).
+in_use() {
+  local p
+  [ -d /proc/self/cwd ] || return 1
+  for p in /proc/[0-9]*/cwd; do
+    case "$(readlink "$p" 2>/dev/null)" in "$1"|"$1"/*) return 0 ;; esac
+  done
+  return 1
+}
+
 # Prints "SAFE" or a reason it is not safe.
 assess() {
   local d="$1" dirty head branch url merged
+  in_use "$d" && { echo "IN USE: a running process has its cwd here"; return; }
   dirty=$(git -C "$d" status --porcelain 2>/dev/null | grep -Ev "$CACHE_RE" | head -3)
   [ -n "$dirty" ] && { echo "DIRTY: $(echo "$dirty" | tr '\n' ' ')"; return; }
   git -C "$d" fetch -q --prune origin 2>/dev/null
