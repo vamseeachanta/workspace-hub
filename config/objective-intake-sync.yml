@@ -1,0 +1,14 @@
+version: 1
+source: .github/ISSUE_TEMPLATE/objective.yml
+destination: .github/ISSUE_TEMPLATE/objective.yml
+canonical_repos:
+  - workspace-hub
+  - digitalmodel
+  - assetutilities
+  - worldenergydata
+  - raw-to-knowledge-playbook
+  - aceengineer-agents
+sync_mode: active-via-helper
+notes:
+  - "This manifest enrolls the objective issue template in the canonical-repo sync surface."
+  - "Run scripts/coordination/sync_objective_template.py from a checkout that has write access to sibling repos."
