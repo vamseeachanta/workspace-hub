@@ -38,7 +38,7 @@ Document explicitly:
 - what was and was not externally performed during exit: commits, pushes, GitHub comments, issue labels, closures, emails/messages
 - remaining active task disposition, including which item should resume first and which are pending
 - next-session first checks, especially live issue label revalidation and any approval-marker/test-baseline gaps
-- that the next session must reconcile approval-vs-review drift before implementation or further advancement
+- that the next session will verify task authority and current review/domain blockers; approval-history drift alone will not block authorized implementation
 
 When the user says “document and prepare to exit,” provide a concise exit report that names the durable handoff location, pushed/unpushed state, dirty-state exceptions, no-external-action confirmation unless approved, and the next actions. Do not silently commit/push/close during exit unless the user explicitly asks for that transaction.
 

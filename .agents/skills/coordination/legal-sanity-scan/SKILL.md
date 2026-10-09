@@ -155,7 +155,7 @@ cleaned = phase_d_data_sources.sanitize_text(raw_text, deny_patterns)
    (added 2026-04-07). These raw JSONL dumps record agent tool-call output
    that legitimately contains client filenames (e.g. in GitHub issue close
    comments). The legal gate for this data is git remote access control,
-   not pattern scanning. If you see Lakach/other client names in learning pipeline
+   not pattern scanning. If you see mx-gas-field-a/other client names in learning pipeline
    commit failures, this exclusion should resolve it.
 7. **GitHub issue bodies are public** — deny-list patterns contain the actual names
    but issue text must NOT. Alias all identifiable names in issues/PRs with generic

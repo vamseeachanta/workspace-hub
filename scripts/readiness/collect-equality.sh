@@ -54,6 +54,11 @@ if [[ -z "$MACHINE" ]]; then
       MACHINE="$HOST";;
   esac
 fi
+# A machine may have a private or policy-sensitive OS hostname while using a public
+# fleet identity. The Windows wrapper (collect-equality.ps1) exports EQ_PUBLIC_HOST as
+# the validated --machine label so tracked equality evidence never serializes the
+# private hostname. Without it, the OS hostname is used as before.
+PUBLIC_HOST="${EQ_PUBLIC_HOST:-$HOST}"
 have() { command -v "$1" >/dev/null 2>&1; }
 PYTHON_CMD=()
 if ! source "${SCRIPT_DIR}/../lib/python-resolver.sh" 2>/dev/null; then
@@ -139,7 +144,7 @@ for _ubin in "${HOME:-}/.npm-global/bin" "${HOME:-}/.local/bin"; do
 done
 export PATH
 readiness_file="harness-readiness-${MACHINE}.yaml"
-[[ -f "${STATE_DIR}/${readiness_file}" ]] || readiness_file="harness-readiness-${HOST}.yaml"
+[[ -f "${STATE_DIR}/${readiness_file}" ]] || readiness_file="harness-readiness-${PUBLIC_HOST}.yaml"
 readiness_overall="missing"
 [[ -f "${STATE_DIR}/${readiness_file}" ]] && \
   readiness_overall=$(awk -F': ' '/^overall:/{print $2; exit}' "${STATE_DIR}/${readiness_file}" 2>/dev/null)
@@ -427,7 +432,7 @@ fi
 read -r -d '' BODY <<YAML || true
 schema_version: 4
 machine: "$(yesc "$MACHINE")"
-host: "$(yesc "$HOST")"
+host: "$(yesc "$PUBLIC_HOST")"
 os: ${OS}
 status: active
 provenance:

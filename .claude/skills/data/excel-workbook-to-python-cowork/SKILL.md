@@ -1,6 +1,6 @@
 ---
 name: excel-workbook-to-python-cowork
-description: Convert engineering Excel workbooks to Python code using Claude Desktop cowork on Windows. Benchmarked superior output with 24 vs 7 functions and 81 vs 53 tests for Ballymore jumper.
+description: Convert engineering Excel workbooks to Python code using Claude Desktop cowork on Windows. Benchmarked superior output with 24 vs 7 functions and 81 vs 53 tests for GoM tieback A jumper.
 trigger: User asks to convert an Excel workbook to Python code, or references workbook conversion tasks
 effort: medium
 ---
@@ -9,7 +9,7 @@ effort: medium
 
 ## Why Windows Cowork Outperforms Linux Headless
 
-From Ballymore jumper benchmark (#471) comparing both approaches on same workbook:
+From GoM tieback A jumper benchmark (#471) comparing both approaches on same workbook:
 
 - Windows - 24 functions, 81 passing tests, 27-section OrcaFlex breakdown
 - Linux - 7 functions, 53 passing tests, basic section counts only
@@ -93,6 +93,6 @@ The full pipeline flows from spec yaml through JumperConfig to run jumper analys
 
 ## References
 
-- Ballymore MF-PLET converter achieved 1007 lines with 24 functions and 81 tests plus 27 OrcaFlex sections
+- GoM tieback A MF-PLET converter achieved 1007 lines with 24 functions and 81 tests plus 27 OrcaFlex sections
 - Go No-Go logic implements 12 DNV-compliant criteria with 21 tests producing MARGINAL decision
 - Pipeline supports both MF-PLET and PLET-PLEM jumper configurations from single code path

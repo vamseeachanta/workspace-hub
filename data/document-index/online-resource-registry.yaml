@@ -1,9 +1,9 @@
-generated: '2026-04-02T04:28:12'
-total_entries: 250
+generated: '2026-09-30T18:45:41'
+total_entries: 251
 summary:
   by_type:
     tool: 98
-    github_repo: 56
+    github_repo: 58
     data_api: 31
     paper: 32
     tutorial: 15
@@ -16,9 +16,9 @@ summary:
     structural: 30
     oil_and_gas: 29
     hydrodynamics: 28
-    marine: 28
+    marine: 29
     data_science: 19
-    general: 16
+    general: 17
     pipeline: 13
     cfd: 13
     cad: 10
@@ -31,8 +31,29 @@ summary:
   by_download_status:
     not_started: 221
     downloaded: 18
-    reference_only: 10
+    reference_only: 11
+    dead_link: 1
 entries:
+- id: cabledyn_inha
+  url: https://github.com/SMI-Lab-Inha/CableDyn
+  name: CableDyn (Inha finite-element mooring and power cable solver)
+  type: github_repo
+  domain: marine
+  local_backup_path: ''
+  download_status: reference_only
+  last_checked: '2026-09-30'
+  relevance_score: 5
+  source_catalog: https://github.com/vamseeachanta/workspace-hub/issues/3931
+  notes: >-
+    Apache-2.0; first public release v0.1.0 published 2026-09-30 (CITATION.cff dates it 2026-10-01).
+    Finite-element statics/dynamics for moorings and bending-sensitive dynamic power cables.
+    Standalone, C interface and Python tooling; Python runs require a solver executable.
+    OpenFAST CompMooring=5 requires the CableDyn-patched build, not stock OpenFAST.
+    Upstream validation claims reviewed; no local installation, execution or qualification.
+    Documentation snapshot 42024a23c2758db057f08a66d1f4c2d8a4f98fdd differs from the
+    v0.1.0 release commit 1ae79e64afa16f960da4d4a75055e3545f1e6e94.
+    Canonical notes (private; access required): llm-wiki:wikis/marine-engineering/wiki/sources/cabledyn.md.
+    Reviewed notes (private, merged in llm-wiki#925): https://github.com/vamseeachanta/llm-wiki/blob/8c66c586491f722cd27fa2d1b708b351008ca49c/wikis/marine-engineering/wiki/sources/cabledyn.md
 - id: awesome_mcp_servers
   url: https://github.com/punkpeye/awesome-mcp-servers
   name: Awesome MCP Servers (Community GitHub Catalog)

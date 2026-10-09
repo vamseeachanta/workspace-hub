@@ -48,7 +48,7 @@ fi
 # 2. Windows-specific: set WORKSPACE_HUB env var hint
 # ---------------------------------------------------------------------------
 if [[ "${OS}" == "windows" ]]; then
-    WIN_ROOT="$(cygpath -w "${REPO_ROOT}" 2>/dev/null || echo "D:\\workspace-hub")"
+    WIN_ROOT="$(cygpath -w "${REPO_ROOT}" 2>/dev/null || echo "${REPO_ROOT}")"
     echo ""
     echo -e "${CYAN}Windows detected — additional steps:${NC}"
     echo ""

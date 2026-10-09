@@ -236,8 +236,24 @@ process_file() {
         return 0
     fi
 
-    # Safety: skip this script itself (contains stale IDs as mapping constants)
-    if [[ "$(realpath "$file")" == "$(realpath "${BASH_SOURCE[0]}")" ]]; then
+    # Safety: skip EVERY copy of this script, not only the one being executed.
+    #
+    # The realpath comparison this replaces compared absolute paths, so it protected the
+    # running copy and nothing else. But this script walks submodules and sibling
+    # worktrees, where the very same file exists at a DIFFERENT absolute path -- so the
+    # guard did not fire and the script rewrote its own mapping table in every other
+    # checkout, replacing each 'old|new' pair with 'new|new'.
+    #
+    # Measured on ace-linux-1 2026-07-30: 10 of 10 workspace-hub worktrees carried an
+    # identically corrupted copy (md5 bdd8c245... vs committed 9186a585...), four of them
+    # dirty from nothing else. Every mapping in those copies is an identity no-op, so the
+    # script still exits 0 while detecting no drift at all -- a silent no-op that reads
+    # exactly like a fleet with no stale model IDs.
+    #
+    # Match on basename: any file named like this script is skipped regardless of which
+    # checkout it lives in. Deliberately erring wide -- a false skip loses one file's
+    # rewrite, a false miss destroys the mapping table.
+    if [[ "$(basename "$file")" == "$(basename "${BASH_SOURCE[0]}")" ]]; then
         return 0
     fi
 

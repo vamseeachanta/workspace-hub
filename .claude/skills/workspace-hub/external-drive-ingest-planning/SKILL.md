@@ -9,7 +9,7 @@ triggers:
   - User asks to ingest, consolidate, copy, or organize an external drive into /mnt/ace or another long-lived data mount
   - External NTFS/USB drive data must be copied while preserving source provenance
   - A data migration needs destination mapping, manifests, dedupe, and GitHub issue tracking before file operations
-  - Source folders need mapping into repo-aligned buckets and execution must be gated by planning approval
+  - Source folders need mapping into repo-aligned buckets and execution must preserve reviewed scope and source rights within task authority
 related_skills:
   - diagnose-and-mount-dirty-ntfs-drives
   - diagnose-dirty-ntfs-mount-errors
@@ -17,6 +17,10 @@ related_skills:
   - gh-work-planning
   - issue-planning-mode
 ---
+## Implementation authority
+
+The task request or standing authority authorizes implementation, including substantial work; no separate user plan approval, approval label or local marker is required. Complete planning, TDD and adversarial review, and resolve required domain decisions and blocking findings. Honor explicit planning-only requests. Consequential actions outside existing authority require matching explicit authorization. Implementation authority alone does not authorize publication, deployment, access changes or destructive actions; verify action/destination authority and reuse it when already provided. Preserve owner-controlled approval history without self-labeling.
+
 
 # External Drive Ingest Planning
 
@@ -34,7 +38,7 @@ A drive or mounted folder contains legacy/project/reference data that must be ma
 4. **Stage first, merge later.** Copy into `_from_<source-label>/` staging folders; dedupe-merge into the parent only as a second reviewed phase.
 5. **Manifest before copy.** Capture source file/size inventory and bounded checksums before rsync.
 6. **Cross-link prior art.** Existing layout/dedupe/inventory issues are part of resource intelligence, not optional context.
-7. **No self-approval.** For plan-gated repos, create issues/plans/reviews and stop at `status:plan-review` until the user approves.
+7. **Task authority.** Create issues/plans/reviews and implement within task/standing authority once review and required domain decisions are resolved. No separate approval label or marker is required; preserve source-rights and destination boundaries.
 
 ## Step-by-step workflow
 
@@ -147,7 +151,7 @@ rsync -aHAXn --info=progress2 --stats \
   /mnt/ace/<repo>/<domain>/_from_<source-label>/
 ```
 
-Final copy only after dry-run review and plan approval:
+Final copy only after dry-run review, source/destination rights checks and task authority are established:
 
 ```bash
 rsync -aHAX --info=progress2 --stats \
@@ -188,10 +192,10 @@ Each destination bucket should record provenance:
 If the repo enforces planning:
 
 ```text
-Issue → Resource Intel → Plan → Adversarial Review → status:plan-review → USER APPROVES → status:plan-approved → Execute
+Issue → Resource Intel → Plan → Adversarial Review → verify task/standing authority and rights → Execute
 ```
 
-Do not mount/copy/rsync as implementation until the approved plan gate is satisfied if the task has been scoped as execution work. Discovery commands like `lsblk` are fine; source mutation and destination writes are not.
+Mount/copy/rsync implementation may proceed within task authority after reviewed scope and source/destination rights are established. Keep source-preservation decisions and consequential actions outside scope separately authorized; discovery never grants mutation rights.
 
 ## Pitfalls
 
@@ -215,5 +219,5 @@ Before finalizing issue creation or handoff, verify:
 - source-to-destination map reflects user decisions
 - labels actually exist or issue creation avoids invalid labels
 - created issue URLs, labels, and body cross-links are correct
-- no rsync/mount mutation occurred before approval
-- `Elements` or other source drive remains read-only / untouched until the plan is approved
+- no rsync/mount mutation occurred outside established task authority and source-preservation decisions
+- `Elements` or other source drive remains read-only / untouched unless the user explicitly authorizes source mutation

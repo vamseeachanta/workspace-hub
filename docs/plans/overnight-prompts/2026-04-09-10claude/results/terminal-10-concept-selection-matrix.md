@@ -111,7 +111,7 @@ _DEPTH_THRESHOLDS = ((0.0, 300.0), (300.0, 800.0), (800.0, 1500.0), (1500.0, inf
 | 1 | Extract concept_type + water_depth + production_rate correlations | NOT STARTED | `SubseaProject` lacks `production_rate`/`capacity_bopd` field. No correlation extraction function exists. |
 | 2 | Build decision tree: (water_depth, reservoir_size, distance_to_infra) -> concept type | NOT STARTED | No `concept_decision_tree()` function. Need simple rule-based tree (not ML — dataset too small). |
 | 3 | Generate probability matrix by depth band | NOT STARTED | `concept_benchmark_bands()` returns raw counts but no percentage conversion. Need `concept_probability_matrix()`. |
-| 4 | Validate against 6 case studies | NOT STARTED | Only 4 of 6 fields (Mad Dog, Appomattox, Perdido, Whale) are in GoM dataset. Solveig and Sverdrup are Norwegian NCS fields not in current data. |
+| 4 | Validate against 6 case studies | NOT STARTED | Only 4 of 6 fields (Mad Dog, Appomattox, GoM spar A, Whale) are in GoM dataset. Solveig and Sverdrup are Norwegian NCS fields not in current data. |
 | 5 | Wire into concept_selection.py as empirical weighting factor | NOT STARTED | `concept_selection()` uses hardcoded weights. Need an `empirical_weight` parameter or a `blend_empirical_scores()` integration. |
 
 ### 2.2 Exact File Paths That Should Change
@@ -301,7 +301,7 @@ class TestCaseStudyValidation:
         return {
             "Mad Dog":      {"depth": 1480, "actual": "Semi"},
             "Appomattox":   {"depth": 2250, "actual": "Semi"},
-            "Perdido":      {"depth": 2438, "actual": "Spar"},
+            "GoM spar A":      {"depth": 2438, "actual": "Spar"},
             "Whale":        {"depth": 2100, "actual": "Spar"},
             # Norwegian fields — require expanded dataset:
             # "Solveig":    {"depth": 350,  "actual": "Subsea Tieback"},
@@ -324,8 +324,8 @@ class TestCaseStudyValidation:
         )
         assert result == cs["actual"] or cs["actual"] in result
 
-    def test_perdido_prediction(self, projects, case_studies):
-        cs = case_studies["Perdido"]
+    def test_gom_spar_a_prediction(self, projects, case_studies):
+        cs = case_studies["GoM spar A"]
         result = concept_decision_tree(
             water_depth=cs["depth"], reservoir_size_mmbbl=100,
             distance_to_infra_km=80, projects=projects,
@@ -394,7 +394,7 @@ projects = load_projects([
     {'name': 'T', 'water_depth_m': 1844, 'concept_type': 'Semi'},
     {'name': 'R', 'water_depth_m': 896, 'concept_type': 'TLP'},
 ])
-# Perdido-like query -> should predict Spar
+# gom-spar-a-like query -> should predict Spar
 result = concept_decision_tree(
     water_depth=2400, reservoir_size_mmbbl=100,
     distance_to_infra_km=80, projects=projects,
@@ -502,7 +502,7 @@ You are implementing GitHub issue #2053: feat(field-dev): concept selection prob
 
 ### Step 4: Validate against case studies
 - Tests: TestCaseStudyValidation class
-- 4 GoM fields testable now: Mad Dog, Appomattox, Perdido, Whale
+- 4 GoM fields testable now: Mad Dog, Appomattox, GoM spar A, Whale
 - 2 Norwegian fields: Solveig, Sverdrup -> pytest.skip("Norwegian dataset not available")
 - Each test creates a realistic query and asserts prediction matches actual host type
 

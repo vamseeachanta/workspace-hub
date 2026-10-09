@@ -20,7 +20,7 @@ Review an email and create GitHub issues for all live projects it affects.
 - Discovered GitHub issue tools in this Codex session.
 - Attempted Outlook tool discovery; no Outlook message tools were exposed in this Codex session.
 - Searched for local email exports under `Downloads`, `Desktop`, `Documents`, and `C:/ws`.
-  - Only unrelated local email artifact found: `C:/Users/vamseea/Desktop/OrcaFlex/license_instructions/OrcaFlex Licence Installation (Floating Licence).msg` from 2024-10-22.
+  - Only unrelated local email artifact found: `C:/Users/<user>/Desktop/OrcaFlex/license_instructions/OrcaFlex Licence Installation (Floating Licence).msg` from 2024-10-22.
 - Checked recent session handoffs for active conflicts. No active issue-creation wave for this email-intake task was found.
 
 ## What did not happen
@@ -46,7 +46,7 @@ Use the memory slice and recent issue state before creating anything new:
   - `deckhand-licensed-runs-queue`
   - `digitalmodel`
   - `llm-wiki`
-  - `llm-wiki-acma`
+  - `llm-wiki-<client>`
   - `raw-to-knowledge-playbook`
   - `workspace-hub`
   - `worldenergydata`

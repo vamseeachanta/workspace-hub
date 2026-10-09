@@ -1,7 +1,11 @@
 # Hermes Kanban — ecosystem source-of-truth
 
-This directory is the cross-machine, git-tracked source-of-truth for every
-Hermes kanban board across the repo ecosystem. The Hermes runtime (`~/.hermes/kanban.db`)
+This directory holds the Hermes kanban boards across the repo ecosystem.
+Since owner decision S01 (2026-09-27) the generated boards under `boards/` are
+local files, git-ignored and never published: run
+`uv run python scripts/kanban/reconcile.py` on the machine to build them from
+GitHub issues and `manifest.yaml`. Only `boards/ecosystem.yaml` (authored) is
+tracked. The Hermes runtime (`~/.hermes/kanban.db`)
 is per-machine local; this directory replays into it deterministically.
 
 ## Layout

@@ -35,7 +35,7 @@ This inverts the standing guidance ("ace-win-1 broken, dispatch to ace-win-2"). 
 `scripts/deckhand/licensed-run-dispatch.py --dry-run` denies at two independent fail-closed gates:
 
 ```
---scope acma --workflow orcaflex-l2-attestation      → gates 1-5: DENIED -> only license-gated workflows use this lane
+--scope mkt-a --workflow orcaflex-l2-attestation      → gates 1-5: DENIED -> only license-gated workflows use this lane
 --scope ecosystem --workflow orcaflex-strength-post  → gates 1-5: DENIED -> scope 'ecosystem' has no workdir
 ```
 

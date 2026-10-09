@@ -84,7 +84,7 @@ src/worldenergydata/vessel_fleet/
 │       ├── allseas.py              # Pioneering Spirit, Solitaire (pipelay + heavy-lift)
 │       ├── client-d_vessels.py       # Castorone, S7000 (pipelay + crane)
 │       ├── subsea7.py              # Seven Borealis, Seven Vega (pipelay + SURF)
-│       ├── mcdermott.py            # Amazon, DLV 2000 (derrick lay + pipelay)
+│       ├── installation-contractor.py            # Amazon, DLV 2000 (derrick lay + pipelay)
 │       ├── boskalis.py             # Boka Vanguard, Fjord (heavy transport + crane)
 │       ├── deme.py                 # Orion, Apollo (wind installation)
 │       ├── van_oord.py             # Aeolus, Boreas (wind installation)
@@ -222,7 +222,7 @@ tests/modules/vessel_fleet/
 | Allseas | 4+ | Pipelay, heavy-lift (Pioneering Spirit: 48,000t lift) | allseas.com/equipment |
 | client-d | 17 | Pipelay, crane, FPSO install (spec PDFs available) | client-d.com/fleet-and-yards |
 | Subsea7 | 10+ | Pipelay, SURF, flex-lay | subsea7.com/our-fleet |
-| McDermott | 5+ | Derrick lay, pipelay (Amazon, DLV 2000) | mcdermott.com/fleet |
+| an installation contractor | 5+ | Derrick lay, pipelay (Amazon, DLV 2000) | installation-contractor.com/fleet |
 | Boskalis | 15+ | Heavy transport, crane, cable-lay | boskalis.com/fleet |
 | DEME | 6+ | Wind installation, dredging (Orion: 3,000t) | deme-group.com/fleet |
 | Van Oord | 5+ | Wind installation (Aeolus, Boreas) | vanoord.com/fleet |
@@ -497,7 +497,7 @@ Week 5: Phase 6 (fusion, dedup, quality) + BSEE bridge
 | Onshore/Land rigs | 0 | ~500+ | Contractors (Nabors, P-UTI, H&P, ADES) |
 | Platform rigs | 0 | ~30 | Nabors MODS, others |
 | Crane vessels | 0 | ~15 | Heerema, client-d, others |
-| Pipelay vessels | 0 | ~20 | Allseas, client-d, Subsea7, McDermott |
+| Pipelay vessels | 0 | ~20 | Allseas, client-d, Subsea7, an installation contractor |
 | Heavy-lift/transport | 0 | ~10 | Allseas, Boskalis, OHT |
 | Wind installation | 0 | ~15 | DEME, Van Oord, Cadeler |
 | **Total** | **16** | **~900+** | |

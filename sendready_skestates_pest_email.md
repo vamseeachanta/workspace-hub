@@ -1,7 +1,7 @@
 Subject: RE: FD30150 | Pest/Exteriors
 
-To: KEVIN STRAIGHT <KSTRAIGHT@dollartree.com>
-From: skestatesinc@gmail.com
+To: KEVIN STRAIGHT <[email removed]>
+From: owner.realestate@example.com
 
 Hi Kevin,
 
@@ -33,4 +33,4 @@ Thank you,
 Vamsee Achanta
 VP of Operations
 +1 713-306-9029
-skestatesinc@gmail.com
+owner.realestate@example.com

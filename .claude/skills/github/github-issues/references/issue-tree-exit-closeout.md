@@ -1,5 +1,8 @@
 # Issue Tree Exit Closeout
 
+Current authority: implementation follows the originating task request or established standing authority after proportionate planning, TDD and adversarial review; no separate plan approval, approval label or local marker is required. Planning-only limits, unresolved domain decisions and action-specific authorization for publication, deployment, access changes, destructive actions and outreach remain binding. Historical approval records stay intact and must not be fabricated or self-labeled.
+
+
 Use when ending a session after creating, planning, reviewing, approving, implementing, or partially closing a linked GitHub issue tree.
 
 ## Trigger
@@ -14,7 +17,7 @@ Produce a transactional status that separates finished work from restart points:
    - umbrella / parent issue state;
    - each child issue state;
    - gate label, especially `status:plan-review` vs `status:plan-approved`;
-   - whether implementation is blocked pending user approval.
+   - whether task scope, blocking review findings or required domain decisions prevent implementation.
 2. Evidence:
    - issue URLs grounded by `gh issue view` during the session;
    - plan/report/handoff artifact paths;

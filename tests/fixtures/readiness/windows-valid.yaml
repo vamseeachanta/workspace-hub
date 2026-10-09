@@ -5,7 +5,7 @@ machine:
   user: vamsee
   os: windows
   role: simulation-license-host
-  workspace_root: 'D:\\workspace-hub'
+  workspace_root: 'C:\\workspace-hub'
 collected_at: "2026-04-11T04:58:00.1234567+00:00"
 source_writer:
   name: windows-readiness-writer
@@ -28,7 +28,7 @@ checks:
     status: pass
     summary: Workspace root exists and is writable.
     evidence:
-      path: 'D:\\workspace-hub'
+      path: 'C:\\workspace-hub'
   - id: ai-cli
     name: AI CLI availability
     status: pass

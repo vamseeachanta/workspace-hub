@@ -220,7 +220,7 @@
             <td>HTML deliverables and any POC response report must include a manifest section.</td>
           </tr>
           <tr>
-            <td><code>reports/B1528/issue-2760/report-layer-manifest.json</code></td>
+            <td><code>reports/proj-a/issue-2760/report-layer-manifest.json</code></td>
             <td>Existing report-layer example includes input source IDs, execution tool, raw/final output paths, citation manifest, generated manifest, privacy class, and publishability decision.</td>
             <td>Use this as the schema model for chatbot answer provenance.</td>
           </tr>
@@ -248,7 +248,7 @@
           <tr><td><code>artifact_class</code></td><td><code>private-mkt-a-plan-review-html</code></td></tr>
           <tr><td><code>privacy_classification</code></td><td><code>client-private</code></td></tr>
           <tr><td><code>publishability_decision</code></td><td><code>not public; mkt-a private repo only unless sanitized review + ledger approval occurs</code></td></tr>
-          <tr><td><code>source_ids</code></td><td><code>ISSUE-2</code>, <code>README</code>, <code>DATA-CYCLE</code>, <code>CLIENT-WORKFLOW</code>, <code>REPORTS-README</code>, <code>B1528-ISSUE-2760-MANIFEST</code>, <code>REDACTION-POSTURE</code></td></tr>
+          <tr><td><code>source_ids</code></td><td><code>ISSUE-2</code>, <code>README</code>, <code>DATA-CYCLE</code>, <code>CLIENT-WORKFLOW</code>, <code>REPORTS-README</code>, <code>proj-a-ISSUE-2760-MANIFEST</code>, <code>REDACTION-POSTURE</code></td></tr>
           <tr><td><code>repo_revision</code></td><td><code>3fb41023d1d777dcb7b405cc16830eb665de241b</code></td></tr>
           <tr><td><code>execution_tool</code></td><td><code>Hermes Agent plan + browser render verification + adversarial review subagents</code></td></tr>
           <tr><td><code>compute_environment</code></td><td><code>Windows host via Hermes terminal/browser tools; local artifact generated under C:/workspace-hub</code></td></tr>
@@ -384,7 +384,7 @@
       <div class="timeline">
         <div class="step"><div class="card"><h3>Confirm scope and artifact inventory</h3><ul><li>Create <code>reports/teams-bot/issue-2/</code> or equivalent local staging path for HTML artifacts if approved.</li><li>Define artifact names: <code>teams-bot-research.html</code>, <code>teams-permissions-checklist.html</code>, <code>poc-architecture.html</code>, <code>poc-validation-report.html</code>.</li><li>Record issue URL, repo URL, and privacy classification in each artifact header.</li></ul></div></div>
         <div class="step"><div class="card"><h3>Map available knowledge and data residency</h3><ul><li>Inventory <code>sources/</code>, <code>pages/</code>, <code>projects/</code>, <code>reports/</code>, and ledgers.</li><li>Classify which content is eligible for bot retrieval: private repo curated pages, report manifests, citation JSON, HTML reports, and approved extracted derivatives.</li><li>Explicitly exclude raw project data unless a separate permission gate approves it.</li></ul></div></div>
-        <div class="step"><div class="card"><h3>Design retrieval and answer provenance contract</h3><ul><li>Define an answer schema: question, answer, source citations, confidence, private/public classification, retrieved files, manifest path, follow-up suggestions, refusal/escalation notes, and user authorization basis.</li><li>Reuse the report-layer manifest model from <code>reports/B1528/issue-2760/</code>.</li><li>Specify how generated answer HTML should cite evidence and expose links for review.</li></ul></div></div>
+        <div class="step"><div class="card"><h3>Design retrieval and answer provenance contract</h3><ul><li>Define an answer schema: question, answer, source citations, confidence, private/public classification, retrieved files, manifest path, follow-up suggestions, refusal/escalation notes, and user authorization basis.</li><li>Reuse the report-layer manifest model from <code>reports/proj-a/issue-2760/</code>.</li><li>Specify how generated answer HTML should cite evidence and expose links for review.</li></ul></div></div>
         <div class="step"><div class="card"><h3>Research Teams/Azure integration choices</h3><ul><li>Compare Bot Framework, Teams app + messaging extension, Graph/webhook bridge, and incoming webhook/workflow-only POC. Also research existing Hermes Gateway/Teams/Graph support, profile configuration, skills/tools, memory posture, retrieval/indexing options, and locked-down toolset design.</li><li>For each option, document hosting, auth, tenant admin requirements, Graph permissions, operational complexity, auditability, and data-leakage risk.</li><li>Generate the comparison as a single HTML decision matrix.</li></ul></div></div>
         <div class="step"><div class="card"><h3>Review organization Teams settings and permission path</h3><ul><li>Check whether custom Teams apps are allowed, whether sideloading is disabled/enabled, and whether org app catalog publishing is available.</li><li>Check app permission policies, app setup policies, bot installation policies, and whether external/custom apps require admin approval.</li><li>Identify Azure app registration owner, Graph permission approver, Teams admin owner, repo/content owner, and hosting/network owner.</li></ul></div></div>
         <div class="step"><div class="card"><h3>Draft the POC architecture</h3><ul><li>Recommended default: Teams Bot Framework bot → Hermes API/gateway endpoint → dedicated Hermes profile → read-only retrieval over approved mkt-a knowledge pack → cited Teams answer.</li><li>Define secrets: bot app ID/secret, tenant ID, Graph credentials if needed, Hermes provider key, repo token/read-only deploy key.</li><li>Define rollback: uninstall Teams app, disable bot endpoint, revoke app secret, remove Graph subscription, disable Hermes profile/cron/webhook.</li></ul></div></div>
@@ -500,7 +500,7 @@
 Implementation status: blocked until user/admin approval</pre>
     </section>
 
-    <p class="footer">Generated by Hermes Agent. Revised after adversarial review found MAJOR Teams/security/provenance gaps. Verification inputs: GitHub issue #2, repo metadata, root tree, README/DATA-CYCLE/CLIENT-WORKFLOW/REDACTION-POSTURE, reports/sources/pages READMEs, and B1528 report manifests.</p>
+    <p class="footer">Generated by Hermes Agent. Revised after adversarial review found MAJOR Teams/security/provenance gaps. Verification inputs: GitHub issue #2, repo metadata, root tree, README/DATA-CYCLE/CLIENT-WORKFLOW/REDACTION-POSTURE, reports/sources/pages READMEs, and proj-a report manifests.</p>
   </main>
 </body>
 </html>

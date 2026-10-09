@@ -8,6 +8,6 @@ metadata:
   tags: [gmail, authentication, automation, operations]
 ---
 
-Cron-based Gmail digest job (scripts/email/gmail-digest.py) shows consistent AUTH_FAILED with HTTP 400 token refresh errors on secondary accounts (achantav@gmail.com, skestatesinc@gmail.com) while primary account (vamsee.achanta@aceengineer.com) works. Secondary accounts may require periodic manual OAuth re-authentication or fresh token generation.
+Cron-based Gmail digest job (scripts/email/gmail-digest.py) shows consistent AUTH_FAILED with HTTP 400 token refresh errors on secondary accounts (owner.personal@example.com, skestates@example.com) while primary account (owner@example.com) works. Secondary accounts may require periodic manual OAuth re-authentication or fresh token generation.
 
 *(Distilled from hermes sessions by bridge-providers-to-dream; the Claude dream consolidates and prunes these.)*

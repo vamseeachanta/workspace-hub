@@ -32,7 +32,7 @@
 - `docs/plans/2026-04-26-issue-2378-marine-wiki-chunked-index.md` — sibling chunked-index plan for marine-engineering wiki (different domain; informs paginated-index pattern but not engineering-wiki content gaps).
 - `docs/plans/2026-04-26-issue-2363-wiki-refs-reverse-lookup.md` — sibling reverse-lookup plan (informs ref tracing).
 - `docs/plans/2026-04-20-issue-2392-wiki-coverage-gap-detector.md` — directly related; #2392 is the future automated coverage-gap detector this manual audit prefigures.
-- Issue #2540 — Elements overnight wave epic; out of scope for engineering-wiki content (focused on `/mnt/ace/lng-a/*` and `/mnt/ace/mkt-a/31522-woodfibre-lng/*` corpora destined for `marine-engineering`/`maritime-law` wikis, not `engineering`). No write-path overlap with this audit.
+- Issue #2540 — Elements overnight wave epic; out of scope for engineering-wiki content (focused on `/mnt/ace/lng-a/*` and `/mnt/ace/mkt-a/31522-lng-terminal-a/*` corpora destined for `marine-engineering`/`maritime-law` wikis, not `engineering`). No write-path overlap with this audit.
 - Issue #2368 — `feat(knowledge): generate faceted portal pages for large LLM-wiki domains`, OPEN; this audit's prioritized backfill list will feed #2368 portal-page selection downstream.
 - Issue #2373 — `feat(knowledge): execute Batch Pack 4 for non-mkt-a standards summary promotion`, OPEN; some priority entries from this audit (DNV-OS-F101, API RP 17-series, ISO 19900) may align with Batch Pack 4 scope.
 - Issue #2392 — `feat(knowledge): wiki coverage-gap detector`, OPEN; produces `scripts/knowledge/detect_wiki_gaps.py` and per-domain `docs/reports/wiki-coverage-gaps/<domain>.yaml`. This audit is the manual precursor that proves the detector's eventual output shape.

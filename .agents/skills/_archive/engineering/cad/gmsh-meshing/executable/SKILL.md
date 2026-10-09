@@ -14,7 +14,7 @@ scripts_exempt: true
 
 | Platform | Path |
 |----------|------|
-| Windows (local) | `D:\software\gmsh\gmsh-4.15.0-Windows64\gmsh.exe` |
+| Windows (local) | `<tools-root>\gmsh\gmsh-4.15.0-Windows64\gmsh.exe` |
 | Linux/macOS | `gmsh` (install via package manager or `pip install gmsh`) |
 | Python module | `pip install gmsh` (provides `import gmsh`) |
 

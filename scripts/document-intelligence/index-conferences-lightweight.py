@@ -235,7 +235,7 @@ def build_manifest(
         "generated": datetime.now(timezone.utc).isoformat(),
         "run_start": run_start.isoformat(),
         "dry_run": dry_run,
-        "jsonl_path": str(OUTPUT_JSONL),
+        "jsonl_path": OUTPUT_JSONL.relative_to(REPO_ROOT).as_posix(),
         "conf_root": str(CONF_ROOT),
         "totals": {
             "records_before": total_before,

@@ -33,7 +33,7 @@ Not applicable for plan drafting — this issue defines the routing contract tha
 ### Documents consulted
 
 - **`docs/session-handoffs/2026-05-20-handoff-digitalmodel-616-ocimf-to-llm-wiki.md`** — operational precedent. OCIMF MEG3/MEG4 routing matrix: public methodology pages → `llm-wiki`; proj-a-specific calc results → `llm-wiki-mkt-a`. Cited by #2778 body as the speculated `llm-wiki-proj-a` source that #2778 explicitly *corrects* (one sibling per client, not per project).
-- **`docs/session-handoffs/2026-05-22-issue-2760-proj-a-pass-h-exit.md`** — confirms B1528 proj-a is a project under client mkt-a, and the OCIMF workbook is at `/mnt/ace/mkt-a-codes/OCIMF/OCIMF Coef.xlsx`. Validates the project-as-folder pattern with a live example.
+- **`docs/session-handoffs/2026-05-22-issue-2760-proj-a-pass-h-exit.md`** — confirms proj-a is a project under client mkt-a, and the OCIMF workbook is at `/mnt/ace/mkt-a-codes/OCIMF/OCIMF Coef.xlsx`. Validates the project-as-folder pattern with a live example.
 - **`docs/plans/_template-issue-plan.md`** — plan template requiring `client:` field is the modification target.
 - **#2778 issue body** (the issue itself) — convention locked by user 2026-05-22; 4 open questions; 6 acceptance criteria.
 - **#2744 epic body** — first client-sibling pilot. Currently references `mkt-a-llm-wiki` (prefix) in the body text, but the live repo `vamseeachanta/llm-wiki-mkt-a` exists in suffix form (created 2026-05-18, registered `bootstrapped`). #2778 body's first AC ("rename before repo creation") is OBE; plan handles this explicitly.

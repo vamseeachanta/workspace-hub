@@ -15,11 +15,11 @@
    - If no match: name the gap to the user; do NOT silently invoke
    - If match exists but entry is on this week's SKIPPED list: surface and ask whether to override or defer
 
-3. **Check the gate**: `/goal` invocation requires `status:plan-approved` per `feedback_never_offer_to_self_label_plan_approved`. Verify the label is set BEFORE invoking. Never self-approve.
+3. **Check task authority**: `/goal` invocation must be within the originating task request or standing authorization. No separate plan approval or `status:plan-approved` label is required. Preserve catalog, weekly-picklist and routing checks; never manufacture user approval.
 
 4. **Check runner allocation**: if the weekly picklist names a specific runner (claude / codex / hermes / gemini) and the current session is a *different* runner, surface the mismatch before proceeding (`feedback_multi_agent_commit_serialization`).
 
-4.5. **Brain/hands delegation check** (added per design doc D7): if the catalog entry is `[execution-heavy]` or `[bidirectional]` AND the proposed work has reached planning-complete state (plan exists, `status:plan-approved` is set), surface the option of delegating execution to Hermes (which routes to Claude Code or Codex per cost/quota) instead of running Claude main session end-to-end. The three quota pools (Anthropic Max base, Anthropic Max overage, OpenAI) are consumed *additively*; brain-only invocation wastes layers 3a/3b.
+4.5. **Brain/hands delegation check** (added per design doc D7): if the catalog entry is `[execution-heavy]` or `[bidirectional]` AND the proposed work has reached planning-complete state (plan exists, task scope is authorized), surface the option of delegating execution to Hermes (which routes to Claude Code or Codex per cost/quota) instead of running Claude main session end-to-end. The three quota pools (Anthropic Max base, Anthropic Max overage, OpenAI) are consumed *additively*; brain-only invocation wastes layers 3a/3b.
 
 5. **After** invocation completes, post a comment on the catalog issue noting which entry was used and any catalog-vs-reality divergence — feeds the next refresh.
 

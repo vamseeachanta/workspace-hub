@@ -26,6 +26,17 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts\windows\reconcile-ec
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts\windows\equality-report.ps1                # refresh this box's column
 ```
 
+## Agent session preflight (`agent-preflight.ps1`)
+
+Writes a JSON capability receipt at the start of an agent session ([#3973](https://github.com/vamseeachanta/workspace-hub/issues/3973)), so sessions stop rediscovering the same faults: the Microsoft Store `python` alias, venvs without `pyvenv.cfg`, cp1252 default encoding, WSL bash shadowing Git Bash (Git Bash is located from `git.exe`, so per-user installs are found), `core.longpaths`, and gh authentication. Authentication is checked with `gh api user`, because `gh auth status` exits 1 whenever any stored account is invalid. Child processes run hidden with a timeout, and secret values are never written, only their presence.
+
+```
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts\windows\agent-preflight.ps1 -OutFile $env:TEMP\agent-preflight.json
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts\windows\agent-preflight.ps1 -Python D:\ws\digitalmodel\.venv\Scripts\python.exe -Strict
+```
+
+Findings carry `error`, `warn` or `info` severity; `-Strict` exits 1 on any error. Tests: `tests/preflight/test_agent_preflight_ps1.py`.
+
 ## Durable job dispatch (`dispatch-run.ps1`)
 
 **Windows OpenSSH kills the whole descendant process tree when the SSH session closes.**
@@ -165,6 +176,6 @@ current canonical checkout after merge.
 
 ## Deprecated
 
-- `git_all_repos.ps1` — legacy, hardcodes `C:\Users\vamseea\github` + `daily_routine.bat`;
+- `git_all_repos.ps1` — legacy, hardcodes `%USERPROFILE%\github` + `daily_routine.bat`;
   superseded by `scripts/sync/sync-ecosystem.ps1`. Kept only until any scheduled task referencing
   it is repointed.

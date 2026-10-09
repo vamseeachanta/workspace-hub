@@ -19,7 +19,7 @@
     .\rdp-microphone.ps1 -Role Client -TargetHost ace-win-1
 
 .EXAMPLE
-    .\rdp-microphone.ps1 -Role Client -ClientType Mstsc -ConfigurationSource C:\Users\me\Desktop\ace-win-1.rdp -RdpFile C:\Users\me\Desktop\ace-win-1.rdp -Repair
+    .\rdp-microphone.ps1 -Role Client -ClientType Mstsc -ConfigurationSource $env:USERPROFILE\Desktop\ace-win-1.rdp -RdpFile $env:USERPROFILE\Desktop\ace-win-1.rdp -Repair
 
 .EXAMPLE
     .\rdp-microphone.ps1 -Role Client -TargetHost ace-win-1 -Repair -ResetConsent -StateDirectory C:\Temp\RdpMicState

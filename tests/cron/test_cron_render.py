@@ -206,16 +206,16 @@ def test_build_context_exposes_registry_os_for_scheduler_routing():
             "/mnt/local-analysis/workspace-hub/logs/quality/cron-wrapper.log",
         ),
         (
-            r"D:\workspace-hub",
+            r"C:\workspace-hub",
             "full",
-            r"D:\workspace-hub/logs/quality/cron-wrapper.log",
+            r"C:\workspace-hub/logs/quality/cron-wrapper.log",
         ),
         (
-            r"\\server\share\workspace-hub",
+            r"\\server\share\workspace-hub",  # identifier-gate: example
             "full",
-            r"\\server\share\workspace-hub/logs/quality/cron-wrapper.log",
+            r"\\server\share\workspace-hub/logs/quality/cron-wrapper.log",  # identifier-gate: example
         ),
-        (r"D:\workspace-hub", "contribute", "/tmp/workspace-hub-cron.log"),
+        (r"C:\workspace-hub", "contribute", "/tmp/workspace-hub-cron.log"),
     ],
 )
 def test_render_logs_follow_target_scheduler_path_contract(

@@ -351,46 +351,14 @@ def _parse_args(argv: list[str]) -> argparse.Namespace:
 
 
 def main(argv: list[str] | None = None) -> int:
-    args = _parse_args(argv or sys.argv[1:])
-    if not args.enabled:
-        print("[plan-approval-gate] SKIP: PLAN_APPROVAL_GATE_ENABLED is not set.")
-        print("[plan-approval-gate] Admin prereq: make Plan Approval Check required and protect "
-              "status:plan-approved label before retiring the old marker gate.")
-        return 0
-    if not args.repo or not args.pr:
-        print("[plan-approval-gate] DENY: repo or PR number unavailable; fail-closed.", file=sys.stderr)
-        return 1
-    if not args.admin_prereqs_confirmed:
-        print("[plan-approval-gate] DENY: admin prereqs are not confirmed; make Plan Approval Check "
-              "required and protect status:plan-approved before enabling.", file=sys.stderr)
-        return 1
-    try:
-        return _run_enabled(args)
-    except Exception as exc:  # pragma: no cover - exercised in live CI failures
-        print(f"[plan-approval-gate] DENY: unverifiable gate context ({exc}); fail-closed.", file=sys.stderr)
-        return 1
+    """Retired entry point; historical label-validation helpers remain available."""
+    print("[plan-approval-gate] RETIRED: task authority replaces separate plan approval (#3943).")
+    return 0
 
 
 def _run_enabled(args: argparse.Namespace) -> int:
-    owners = parse_owners(args.owners)
-    owner_types = {owner: fetch_actor_type(owner) for owner in owners}
-    owner_decision = validate_owner_types(owner_types)
-    if not owner_decision.allowed:
-        print(f"[plan-approval-gate] DENY: {owner_decision.reason}", file=sys.stderr)
-        return 1
-    context = load_pr_context(args.repo, args.pr)
-    if not needs_plan_approval_paths(context.touched_paths):
-        print("[plan-approval-gate] SKIP: no implementation changes requiring plan approval.")
-        return 0
-    issues = resolve_linked_issues(context.branch_name)
-    approvals = {
-        issue: load_issue_approval(args.repo, issue, owners, owner_types, context.head_sha, context.base_sha)
-        for issue in issues
-    }
-    decision = evaluate_plan_approval(context, approvals, owners,
-                                      require_separate_approver=args.require_separate_approver)
-    print(f"[plan-approval-gate] {'ALLOW' if decision.allowed else 'DENY'}: {decision.reason}")
-    return 0 if decision.allowed else 1
+    """Compatibility entry point; does not authenticate or grant task authority."""
+    return main([])
 
 
 if __name__ == "__main__":

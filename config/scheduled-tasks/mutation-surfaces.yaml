@@ -264,6 +264,21 @@ surfaces:
         transaction: *missing_transaction
         attestations: [systemd-user-enable-disable-v1]
 
+  - path: scripts/monitoring/bundle-sentinel-install/install.sh
+    kind: direct-owner
+    disposition_group: bundle-integrity-sentinel
+    operations:
+      - id: install:systemd-enable
+        primitive: systemd-user-enable-disable
+        target_kind: systemd-user
+        scheduler_identity: local-user-systemd-bundle-verify-sentinel
+        execution_host_binding: physical-local
+        destructive: true
+        authority_branches:
+          - {id: literal-unit-names, mechanism: unknown, config_source: scripts/monitoring/bundle-sentinel-install/install.sh, destructive: true, strength: unknown}
+        transaction: *missing_transaction
+        attestations: []
+
 disposition_groups:
   - group_id: legacy-crontab-writers
     issue: {repository: vamseeachanta/workspace-hub, number: 3476}
@@ -294,10 +309,22 @@ disposition_groups:
     issue: {repository: vamseeachanta/workspace-hub, number: 3792}
     members: [scripts/install/setup-tmux-autosave-timer.sh]
     defect_class: systemd-user-transaction-unattestable
+  # One-shot shell installer for the bundle-integrity sentinel timers (#3786).
+  # Same defect class as the tmux group: a shell installer that enables systemd
+  # user timers has no attestation shape, so it is pinned migration-required
+  # under the #3792 attestation gap rather than declared compliant.
+  - group_id: bundle-integrity-sentinel
+    issue: {repository: vamseeachanta/workspace-hub, number: 3792}
+    members: [scripts/monitoring/bundle-sentinel-install/install.sh]
+    defect_class: systemd-user-transaction-unattestable
 
 resolved_dispositions:
   - issue: 3475
     members: [scripts/cron/cron_apply.py, scripts/cron/setup-cron.sh, scripts/setup/new-machine-setup.sh]
     resolved_on: "2026-07-12"
     pull_request: 3492
-    source_digest: 3b1ea09ab38e37dd7d09e0245f12d92126d393a0e02af5e24498195be708e31e
+    # Re-affirmed 2026-09-26 (#3904, owner-authorised): a comment in
+    # schedule-tasks.yaml changed, which moves the governed input digest. No
+    # task, command, schedule or machine binding changed, so the #3475
+    # disposition still holds. Digest computed from git index blobs on Linux.
+    source_digest: fcfd80cb822b96dcf573fea42674daf35786c58fedbe860256e17acabb473dae

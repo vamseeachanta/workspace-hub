@@ -230,14 +230,14 @@ available_documents:
   source: ace_project
   summary: null
   relevance: medium
-- path: /mnt/ace/docs/disciplines/drilling/projects/3824_bp_macondo_containment_riser_analysis/05_reports/3824
-    - BP Macondo Containment Riser Analysis/Component Data/PIP/12 - Anodes/Galvotec
+- path: /mnt/ace/docs/disciplines/drilling/projects/3824_bp_gom_well_a_containment_riser_analysis/05_reports/3824
+    - BP GoM well A Containment Riser Analysis/Component Data/PIP/12 - Anodes/Galvotec
     Anodes.pdf
   source: ace_project
   summary: null
   relevance: medium
-- path: /mnt/ace/docs/disciplines/drilling/projects/3824_bp_macondo_containment_riser_analysis/05_reports/3824
-    - BP Macondo Containment Riser Analysis/Component Data/PIP/2 - Aircan/SBM Aircan/anodes/Anode
+- path: /mnt/ace/docs/disciplines/drilling/projects/3824_bp_gom_well_a_containment_riser_analysis/05_reports/3824
+    - BP GoM well A Containment Riser Analysis/Component Data/PIP/2 - Aircan/SBM Aircan/anodes/Anode
     Layout on AirCan_P1.pdf
   source: ace_project
   summary: null

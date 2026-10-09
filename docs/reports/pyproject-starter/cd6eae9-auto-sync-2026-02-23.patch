@@ -1,5 +1,5 @@
 From cd6eae9af6aa05af5a598341275a9f766a98bbfb Mon Sep 17 00:00:00 2001
-From: Vamsee Achanta <achantav@gmail.com>
+From: Vamsee Achanta <owner.personal@example.com>
 Date: Mon, 23 Feb 2026 23:38:10 -0600
 Subject: [PATCH] chore(sync): auto-sync 2026-02-23
 
@@ -15591,7 +15591,7 @@ index 4691944..0000000
 -      
 -      Closes: [TASK_REFERENCE]
 -      
--      Co-authored-by: AssetUtilities Hub <hub@assetutilities.org>
+-      Co-authored-by: AssetUtilities Hub <hub@example.org>
 -    </commit_message_format>
 -    
 -    <enhanced_metadata>
@@ -35963,7 +35963,7 @@ index de05a12..0000000
 -# Custom variables
 -custom_variables:
 -  organization: "Your Organization"
--  contact_email: "developer@yourorg.com"
+-  contact_email: "developer@example.org"
 -  project_type: "web_application"  # web_application, mobile_app, api_service, data_pipeline
 -
 -# Performance settings
@@ -36293,7 +36293,7 @@ index de05a12..0000000
 -# .agent-os/organization-standards.yaml
 -organization:
 -  name: "Your Organization"
--  contact: "devops@yourorg.com"
+-  contact: "devops@example.org"
 -  
 -standards:
 -  spec_templates:
@@ -38046,7 +38046,7 @@ index bd91f49..0000000
 -version = "0.0.2"
 -description = "Python Package Cookiecutter Code"
 -readme = "README.md"
--authors = [{ name = "Vamsee Achanta", email = "vamsee.achanta@aceengineer.com" }]
+-authors = [{ name = "Vamsee Achanta", email = "owner@example.com" }]
 -license = { file = "LICENSE" }
 -classifiers = [
 -    "License :: OSI Approved :: MIT License",

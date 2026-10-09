@@ -8,6 +8,6 @@ metadata:
   tags: [svg-geometry, visual-testing, unit-tests]
 ---
 
-Subtle bugs in coordinate transforms (e.g., hardcoded offsets in rotation calculations) are invisible to code review. B1528: schematic force line rotated with `setSvgRotation(..., -angle + 50)` causing vector to point 11° off-axis. Render-critical geometry requires unit tests asserting expected vs actual endpoints.
+Subtle bugs in coordinate transforms (e.g., hardcoded offsets in rotation calculations) are invisible to code review. proj-a: schematic force line rotated with `setSvgRotation(..., -angle + 50)` causing vector to point 11° off-axis. Render-critical geometry requires unit tests asserting expected vs actual endpoints.
 
 *(Distilled from hermes sessions by bridge-providers-to-dream; the Claude dream consolidates and prunes these.)*

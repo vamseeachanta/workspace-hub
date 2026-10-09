@@ -50,7 +50,7 @@ Pruned 4 merged branches + 1 stale linked worktree (`workspace-hub-2817-plan-app
 No emails, no external posts. All GitHub writes were the 5 PRs above + comments on [#2920](https://github.com/vamseeachanta/workspace-hub/issues/2920)/#2919.
 
 ## Next steps (USER)
-1. **Windows**: on licensed-win-1 and -2, Administrator PowerShell → `cd D:\workspace-hub; git pull; powershell -ExecutionPolicy Bypass -File scripts\windows\setup-scheduler-tasks.ps1 -WhatIf` (also the PS-syntax check), then without `-WhatIf` to install; `Start-ScheduledTask -TaskName 'HarnessUpdate' -TaskPath '\Claude\'` to smoke-test.
+1. **Windows**: on licensed-win-1 and -2, Administrator PowerShell → `cd <workspace-root>\workspace-hub; git pull; powershell -ExecutionPolicy Bypass -File scripts\windows\setup-scheduler-tasks.ps1 -WhatIf` (also the PS-syntax check), then without `-WhatIf` to install; `Start-ScheduledTask -TaskName 'HarnessUpdate' -TaskPath '\Claude\'` to smoke-test.
 2. **Decide** on the two leftover workspace-hub branches (`codex/ace-linux-2-...`, `backup/pre-rebase-...`) — keep or delete.
 3. **First broad `repo-housekeeping --apply`** across the other 12 repos is parked: their only ahead-branches are 10–11 month abandoned archives (correctly skipped by guards), so no urgency. When ready, start conservative: `repo-housekeeping.sh --no-pr --no-clean-dirs --apply`.
 

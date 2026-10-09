@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # ABOUTME: Phase D — Generate per-repo data-source YAML specs from enhancement plan (WRK-309)
-# ABOUTME: Legal-gated; sanitizes paths before writing to specs/data-sources/<repo>.yaml
+# ABOUTME: Sanitizes paths before writing to specs/data-sources/<repo>.yaml
 
 """
 Usage:
@@ -11,7 +11,6 @@ import argparse
 import json
 import logging
 import re
-import subprocess
 import sys
 from collections import defaultdict
 from datetime import datetime
@@ -30,7 +29,6 @@ logger = logging.getLogger(__name__)
 SCRIPT_DIR = Path(__file__).resolve().parent
 HUB_ROOT = SCRIPT_DIR.parents[2]
 DEFAULT_CONFIG = SCRIPT_DIR / "config.yaml"
-LEGAL_SCAN = HUB_ROOT / "scripts" / "legal" / "legal-sanity-scan.sh"
 
 TIER_1_REPOS = ["digitalmodel", "worldenergydata", "assethold"]
 TIER_2_REPOS = ["lng_a", "OGManufacturing", "client_d", "client_b", "mkt_a"]
@@ -212,34 +210,16 @@ def write_repo_yaml(
     )
 
 
-def run_legal_scan(target: Path) -> bool:
-    """Run legal-sanity-scan.sh on directory or file."""
-    if not LEGAL_SCAN.exists():
-        logger.warning("Legal scan script not found: %s", LEGAL_SCAN)
-        return True
-    try:
-        result = subprocess.run(
-            ["bash", str(LEGAL_SCAN), str(target)],
-            capture_output=True, text=True, timeout=120,
-        )
-        if result.returncode != 0:
-            logger.error("Legal scan FAILED:\n%s", result.stdout or result.stderr)
-            return False
-        logger.info("Legal scan passed")
-        return True
-    except (subprocess.TimeoutExpired, OSError) as exc:
-        logger.error("Legal scan error: %s", exc)
-        return False
-
-
 def main() -> int:
     parser = argparse.ArgumentParser(
         description="Phase D: Per-repo data-source specs (WRK-309)"
     )
     parser.add_argument("--config", type=Path, default=DEFAULT_CONFIG)
     parser.add_argument("--repo", help="Process only this repo")
-    parser.add_argument("--skip-legal", action="store_true", help="Skip legal scan (dev only)")
+    parser.add_argument("--skip-legal", action="store_true", help="Deprecated compatibility flag; ignored (scanner retired)")
     args = parser.parse_args()
+    if args.skip_legal:
+        logger.warning("--skip-legal is ignored; the scanner is retired")
 
     cfg = load_config(args.config)
     plan_path = HUB_ROOT / cfg["output"]["enhancement_plan"]
@@ -269,11 +249,6 @@ def main() -> int:
             continue
         write_repo_yaml(output_dir, repo, items, deny_patterns)
         written += 1
-
-    if not args.skip_legal and written > 0:
-        if not run_legal_scan(output_dir):
-            logger.error("Legal scan failed. Fix violations before proceeding.")
-            return 1
 
     logger.info("Phase D complete: %d repo specs written", written)
     return 0

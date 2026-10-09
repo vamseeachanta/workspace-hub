@@ -83,7 +83,7 @@ setup_test_repo() {
     mkdir -p "$repo_dir"
     cd "$repo_dir"
     git init -q
-    git config user.email "test@test.com"
+    git config user.email "test@example.com"
     git config user.name "Test"
     # Create required directories
     mkdir -p scripts/review/results

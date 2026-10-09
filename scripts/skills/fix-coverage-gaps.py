@@ -22,11 +22,6 @@ import yaml
 # Skills with direct script matches — path relative to .claude/skills/
 FIXES = [
     {
-        "skill": "_core/context-management/legal-sanity/SKILL.md",
-        "match": "workspace-hub/legal-sanity",
-        "scripts": ["scripts/legal/legal-sanity-scan.sh"],
-    },
-    {
         "skill": "workspace-hub/repo-sync/SKILL.md",
         "scripts": ["scripts/coordination/repo_sync_batch.sh"],
     },
@@ -74,10 +69,6 @@ FIXES = [
     {
         "skill": "workspace-hub/plan-mode/SKILL.md",
         "scripts": ["scripts/agents/plan.sh"],
-    },
-    {
-        "skill": "coordination/workflows/legal-sanity-review/SKILL.md",
-        "scripts": ["scripts/legal/legal-sanity-scan.sh"],
     },
     {
         "skill": "_core/context-management/data-validation-reporter/SKILL.md",

@@ -10,7 +10,7 @@ Classify ~15,000 PDF/DOC/DOCX files from 4 riser engineering project archives us
 
 | Project | Size | Literature Files |
 |---------|------|-----------------|
-| 2100-blk31-slor-design | 53G | 12,362 |
+| 2100-wa-block-a-slor-design | 53G | 12,362 |
 | 3824-containment-riser | 30G | 2,579 |
 | 3836-hp1-riser | 7.4G | 167 |
 | 3837-cdp2-fsr | 3.7G | 341 |

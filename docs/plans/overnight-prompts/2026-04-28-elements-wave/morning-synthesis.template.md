@@ -17,7 +17,7 @@ For each stream, read the result summary and confirm the artifacts exist on disk
 | sesa-lng | [#2541](https://github.com/vamseeachanta/workspace-hub/issues/2541) | `docs/plans/overnight-prompts/2026-04-28-elements-wave/results/terminal-1-sesa.md` | `docs/plans/2026-04-28-issue-2541-elements-sesa-curated-extraction-plan.md` | `.planning/intel/elements-overnight-wave/sesa-*` | YES / NO |
 | lng-a-university | [#2542](https://github.com/vamseeachanta/workspace-hub/issues/2542) | `docs/plans/overnight-prompts/2026-04-28-elements-wave/results/terminal-2-lng-a-university.md` | `docs/plans/2026-04-28-issue-2542-elements-lng-a-university-training-plan.md` | `.planning/intel/elements-overnight-wave/lng-a-university-*` | YES / NO |
 | lng-a-codes | [#2543](https://github.com/vamseeachanta/workspace-hub/issues/2543) | `docs/plans/overnight-prompts/2026-04-28-elements-wave/results/terminal-3-lng-a-codes.md` | `docs/plans/2026-04-28-issue-2543-elements-lng-a-codes-standards-plan.md` | `.planning/intel/elements-overnight-wave/lng-a-codes-*` | YES / NO |
-| woodfibre-lng | [#2544](https://github.com/vamseeachanta/workspace-hub/issues/2544) | `docs/plans/overnight-prompts/2026-04-28-elements-wave/results/terminal-4-woodfibre.md` | `docs/plans/2026-04-28-issue-2544-elements-woodfibre-scout-plan.md` | `.planning/intel/elements-overnight-wave/woodfibre-*` | YES / NO |
+| LNG terminal A | [#2544](https://github.com/vamseeachanta/workspace-hub/issues/2544) | `docs/plans/overnight-prompts/2026-04-28-elements-wave/results/terminal-4-lng-terminal-a.md` | `docs/plans/2026-04-28-issue-2544-elements-lng-terminal-a-scout-plan.md` | `.planning/intel/elements-overnight-wave/lng-terminal-a-*` | YES / NO |
 
 ### Per-stream evidence
 
@@ -56,14 +56,14 @@ Each stream advances to one of: `approval-candidate`, `needs-rereview`, `blocked
 | sesa-lng | <APPROVE / MINOR / MAJOR> | <verdict> | <verdict> | <one-line> | approval-candidate / needs-rereview / blocked / redo |
 | lng-a-university | <verdict> | <verdict> | <verdict> | <one-line> | <recommendation> |
 | lng-a-codes | <verdict> | <verdict> | <verdict> | <one-line> | <recommendation> |
-| woodfibre-lng | <verdict> | <verdict> | <verdict> | <one-line> | <recommendation> |
+| LNG terminal A | <verdict> | <verdict> | <verdict> | <one-line> | <recommendation> |
 
 Hardening criteria checklist (must be satisfied before any `approval-candidate`):
 
 - [ ] No persisted full-text dump in `.planning/`, `docs/`, or git
 - [ ] Standards-namespace contract honored ([#2471](https://github.com/vamseeachanta/workspace-hub/issues/2471) frontmatter, [#2482](https://github.com/vamseeachanta/workspace-hub/issues/2482) deny-list)
-- [ ] Confidentiality / clearance gates explicit where applicable (SESA, Woodfibre)
-- [ ] `lng-projects` index/log contention noted if both SESA and Woodfibre are on the candidate list
+- [ ] Confidentiality / clearance gates explicit where applicable (SESA, LNG terminal A)
+- [ ] `lng-projects` index/log contention noted if both SESA and LNG terminal A are on the candidate list
 - [ ] No `status:plan-approved` label currently applied to any child issue
 
 ---
@@ -86,7 +86,7 @@ Recommend the *single* next bounded action and order any candidate sequencing:
 
 1. **First action:** <e.g., user-approve a bounded subset of streams X+Y for execution>
 2. **Sequencing:** <e.g., #2543 first (independent), #2542 second, #2541 third (with clearance), #2544 last (pointer-only)>
-3. **Sequential vs parallel:** <flag any shared-write contention, e.g., `lng-projects` index/log between SESA and Woodfibre>
+3. **Sequential vs parallel:** <flag any shared-write contention, e.g., `lng-projects` index/log between SESA and LNG terminal A>
 4. **Cleanup gate:** [#2534](https://github.com/vamseeachanta/workspace-hub/issues/2534) retention remains blocked until 2026-05-28; do NOT bundle cleanup with extraction approval.
 
 ---

@@ -27,7 +27,7 @@ All staged buckets passed path+size comparison: 0 missing files, 0 size mismatch
 | `digitalmodel-qgis` | `/mnt/ace/digitalmodel/tools/qgis/_from_elements` | 3 | 398,492,107 | PASS |
 | `digitalmodel-riser-toolbox` | `/mnt/ace/digitalmodel/references/riser-toolbox/_from_elements` | 8 | 510,241,677 | PASS |
 | `digitalmodel-suction-pile-sizing` | `/mnt/ace/digitalmodel/references/suction-pile-sizing/_from_elements` | 4 | 235,464 | PASS |
-| `mkt-a-31522-woodfibre` | `/mnt/ace/mkt-a/31522-woodfibre-lng/_from_elements` | 5,364 | 1,879,405,139,855 | PASS |
+| `mkt-a-31522-lng-terminal-a` | `/mnt/ace/mkt-a/31522-lng-terminal-a/_from_elements` | 5,364 | 1,879,405,139,855 | PASS |
 
 ## Rsync log check
 
@@ -44,7 +44,7 @@ MOVE-LOG files exist for each staged destination parent:
 - `/mnt/ace/digitalmodel/tools/qgis/MOVE-LOG.md`
 - `/mnt/ace/digitalmodel/references/riser-toolbox/MOVE-LOG.md`
 - `/mnt/ace/digitalmodel/references/suction-pile-sizing/MOVE-LOG.md`
-- `/mnt/ace/mkt-a/31522-woodfibre-lng/MOVE-LOG.md`
+- `/mnt/ace/mkt-a/31522-lng-terminal-a/MOVE-LOG.md`
 
 ## Next step
 

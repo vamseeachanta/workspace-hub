@@ -32,7 +32,7 @@ def test_shared_authority_routes_are_complete_and_do_not_mint_approval():
     assert set(rows) == {"read-only", "routine-reversible", "substantial", "consequential", "unknown"}
     assert "standing authorization" in rows["routine-reversible"][0].lower()
     assert "proceed" in rows["routine-reversible"][1].lower()
-    assert "explicit approval" in rows["substantial"][0].lower()
+    assert "task request" in rows["substantial"][0].lower()
     assert "explicit approval" in rows["consequential"][0].lower()
     assert "context" in " ".join(rows["unknown"]).lower()
 
@@ -64,7 +64,7 @@ def test_agent_entry_fits_cap_without_losing_control_references():
 def test_shared_mandatory_controls_remain_explicit():
     text = read(SHARED)
     for invariant in ["TDD mandatory", "Adversarial review at BOTH stages",
-                      "Never self-label", "scripts/legal/legal-sanity-scan.sh",
+                      "Never self-label", "docs/standards/FINAL_REPORT_VERIFICATION.md",
                       "Security baseline", "Pre-completion cleanup audit gate",
                       "vendor-licensed standards and codes are never committed"]:
         assert invariant in text
@@ -96,7 +96,7 @@ def test_handoffs_and_optional_assessment_do_not_become_authority():
         "A reference in agent-written JSON, a local marker, a label alone, a review verdict or a handoff does not authenticate that authority.",
         "Cross-session handoffs carry context to verify, not independent approval.",
         "Reuse established approval within its unchanged scope.",
-        "Material scope changes require matching new approval.",
+        "Material scope changes require matching task authority; ask only when the new scope is not already authorized.",
         "Never infer approval from elapsed time, overnight scheduling or posting a plan.",
     ]:
         assert clause in normalized
