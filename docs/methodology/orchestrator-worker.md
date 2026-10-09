@@ -196,8 +196,8 @@ GitHub issues serve as the work distribution mechanism:
 
 ```bash
 # Issues labeled for specific agents
-gh issue create --title "feat: mooring schema" --label "agent:codex,phase:2"
-gh issue create --title "feat: riser validation" --label "agent:claude,phase:2"
+gh issue create --title "feat: mooring schema" --label "ai:codex,phase:2"
+gh issue create --title "feat: riser validation" --label "ai:claude,phase:2"
 
 # Each agent picks up issues matching its labels
 # Cross-review happens on the resulting PRs
