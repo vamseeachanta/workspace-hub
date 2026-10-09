@@ -40,6 +40,7 @@ def _fixture(tmp_path: Path, curated_nodes, full_entries, *, tree=None):
 
 def _wire(mod, skills, kg, gi, full, monkeypatch):
     monkeypatch.setattr(mod, "SKILLS_DIR", skills)
+    monkeypatch.setattr(mod, "EXTERNAL_ARCHIVE_DIR", skills.parent / "_archive")
     monkeypatch.setattr(mod, "KNOWLEDGE_GRAPH", kg)
     monkeypatch.setattr(mod, "GRAPH_INDEX", gi)
     monkeypatch.setattr(mod, "FULL_INDEX", full)
@@ -95,6 +96,23 @@ def test_a_archived_family_resolves(tmp_path, monkeypatch):
     fails: list[str] = []
     mod.check_a_coherence(fails)
     assert fails == []  # found in tree despite absent from full index
+
+
+def test_a_external_archive_resolves(tmp_path, monkeypatch):
+    mod = _load()
+    skills, kg, gi, full = _fixture(
+        tmp_path, ["repo/retired-skill"], [{"id": "fam/other"}],
+        tree={"fam/other": "x"})
+    _skill(
+        tmp_path / ".claude" / "_archive" / "wave" / ".claude" / "skills",
+        "old/family/retired-skill",
+        "x",
+    )
+    _wire(mod, skills, kg, gi, full, monkeypatch)
+    monkeypatch.setattr(mod, "KNOWN_STALE_CURATED", set())
+    fails: list[str] = []
+    mod.check_a_coherence(fails)
+    assert fails == []
 
 
 def test_a_known_stale_allowlisted(tmp_path, monkeypatch):
