@@ -1,0 +1,15 @@
+# Public-surface guard allowlist.
+# Values here are exact forensic/test values that may appear in enforcement
+# tests or documentation. Production exceptions should be narrow and reviewed.
+host_ips:
+  - 10.0.0.0
+  - 10.20.30.40
+  - 100.64.1.2
+  - 100.64.9.9
+  - 100.64.0.0
+  - 172.16.0.0
+  - 192.168.0.0
+hostnames:
+  - DESKTOP-ABC1234
+secrets: []
+identifiers: []
