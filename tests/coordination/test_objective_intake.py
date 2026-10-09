@@ -60,7 +60,7 @@ def test_standard_role_agents_exist_with_alias_models() -> None:
         "builder": "sonnet",
         "gap-checker": "sonnet",
         "explorer": "sonnet",
-        "reporter": "haiku",
+        "reporter": "sonnet",
         "verifier": "opus",
     }
 
