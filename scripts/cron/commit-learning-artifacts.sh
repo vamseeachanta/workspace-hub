@@ -168,7 +168,7 @@ resolve_claude_private_snapshot_host() {
   host="${host##[-.]}"
   host="${host%%[-.]}"
   if [[ -z "$host" ]]; then
-    log "ERROR: could not resolve a safe Claude private snapshot host folder"
+    log "ERROR: could not resolve a safe Claude private snapshot host folder" >&2
     return 1
   fi
   printf '%s\n' "$host"
@@ -176,36 +176,73 @@ resolve_claude_private_snapshot_host() {
 
 sync_origin_main_claude_snapshots_to_private_legacy() {
   local legacy_root verify_file tmp_public tmp_private tmp_missing public_count public_unique private_unique covered_count missing_count date_stamp
+  local tmp_tree tmp_names
   legacy_root="$CLAUDE_MEMORY_SNAPSHOT_PRIVATE_CLONE/legacy"
   tmp_public="$(mktemp)"
   tmp_private="$(mktemp)"
   tmp_missing="$(mktemp)"
+  tmp_tree="$(mktemp)"
+  tmp_names="$(mktemp)"
   date_stamp="$(date +%Y-%m-%d)"
   verify_file="$CLAUDE_MEMORY_SNAPSHOT_PRIVATE_CLONE/VERIFY-${date_stamp}.txt"
 
-  git -C "$WORKSPACE_HUB" ls-tree -rz "$CLAUDE_MEMORY_SNAPSHOT_PUBLIC_REF" config/agents/claude/memory-snapshots \
-    | while IFS=$'\t' read -r -d '' meta path; do
+  if ! git -C "$WORKSPACE_HUB" rev-parse --verify "$CLAUDE_MEMORY_SNAPSHOT_PUBLIC_REF^{tree}" >/dev/null 2>&1; then
+    log "ERROR: Claude memory snapshot public ref is invalid: $CLAUDE_MEMORY_SNAPSHOT_PUBLIC_REF"
+    rm -f "$tmp_public" "$tmp_private" "$tmp_missing" "$tmp_tree" "$tmp_names"
+    return 1
+  fi
+  if ! git -C "$WORKSPACE_HUB" ls-tree -rz "$CLAUDE_MEMORY_SNAPSHOT_PUBLIC_REF" config/agents/claude/memory-snapshots > "$tmp_tree"; then
+    log "ERROR: failed to enumerate public Claude memory snapshot blobs"
+    rm -f "$tmp_public" "$tmp_private" "$tmp_missing" "$tmp_tree" "$tmp_names"
+    return 1
+  fi
+  if ! while IFS=$'\t' read -r -d '' meta path; do
         set -- $meta
         printf '%s\n' "$3"
-      done | sort -u > "$tmp_public"
-
-  public_count="$(git -C "$WORKSPACE_HUB" ls-tree -r --name-only "$CLAUDE_MEMORY_SNAPSHOT_PUBLIC_REF" config/agents/claude/memory-snapshots | wc -l | tr -d ' ')"
-  public_unique="$(wc -l < "$tmp_public" | tr -d ' ')"
-
-  mkdir -p "$legacy_root"
-  if [[ "$public_count" != "0" ]]; then
-    git -C "$WORKSPACE_HUB" archive "$CLAUDE_MEMORY_SNAPSHOT_PUBLIC_REF" config/agents/claude/memory-snapshots | tar -x -C "$legacy_root"
+      done < "$tmp_tree" | sort -u > "$tmp_public"; then
+    log "ERROR: failed to derive public Claude memory snapshot blob hashes"
+    rm -f "$tmp_public" "$tmp_private" "$tmp_missing" "$tmp_tree" "$tmp_names"
+    return 1
   fi
 
-  (
+  if ! git -C "$WORKSPACE_HUB" ls-tree -r --name-only "$CLAUDE_MEMORY_SNAPSHOT_PUBLIC_REF" config/agents/claude/memory-snapshots > "$tmp_names"; then
+    log "ERROR: failed to enumerate public Claude memory snapshot names"
+    rm -f "$tmp_public" "$tmp_private" "$tmp_missing" "$tmp_tree" "$tmp_names"
+    return 1
+  fi
+  public_count="$(wc -l < "$tmp_names" | tr -d ' ')"
+  public_unique="$(wc -l < "$tmp_public" | tr -d ' ')"
+
+  if ! mkdir -p "$legacy_root"; then
+    log "ERROR: failed to create legacy Claude private snapshot root"
+    rm -f "$tmp_public" "$tmp_private" "$tmp_missing" "$tmp_tree" "$tmp_names"
+    return 1
+  fi
+  if [[ "$public_count" != "0" ]]; then
+    if ! git -C "$WORKSPACE_HUB" archive "$CLAUDE_MEMORY_SNAPSHOT_PUBLIC_REF" config/agents/claude/memory-snapshots | tar -x -C "$legacy_root"; then
+      log "ERROR: failed to archive public Claude memory snapshots into private legacy root"
+      rm -f "$tmp_public" "$tmp_private" "$tmp_missing" "$tmp_tree" "$tmp_names"
+      return 1
+    fi
+  fi
+
+  if ! (
     cd "$CLAUDE_MEMORY_SNAPSHOT_PRIVATE_CLONE"
     find . -path ./.git -prune -o -type f -print0 \
       | sort -z \
       | xargs -0 -r git hash-object \
       | sort -u
-  ) > "$tmp_private"
+  ) > "$tmp_private"; then
+    log "ERROR: failed to enumerate private Claude memory snapshot blobs"
+    rm -f "$tmp_public" "$tmp_private" "$tmp_missing" "$tmp_tree" "$tmp_names"
+    return 1
+  fi
   private_unique="$(wc -l < "$tmp_private" | tr -d ' ')"
-  comm -23 "$tmp_public" "$tmp_private" > "$tmp_missing"
+  if ! comm -23 "$tmp_public" "$tmp_private" > "$tmp_missing"; then
+    log "ERROR: failed to compare public and private Claude memory snapshot blobs"
+    rm -f "$tmp_public" "$tmp_private" "$tmp_missing" "$tmp_tree" "$tmp_names"
+    return 1
+  fi
   missing_count="$(wc -l < "$tmp_missing" | tr -d ' ')"
   covered_count="$(( public_unique - missing_count ))"
 
@@ -222,9 +259,13 @@ sync_origin_main_claude_snapshots_to_private_legacy() {
       printf 'missing_public_blob_hashes_sha1:\n'
       sed 's/^/- /' "$tmp_missing"
     fi
-  } > "$verify_file"
+  } > "$verify_file" || {
+    log "ERROR: failed to write Claude private snapshot verification file"
+    rm -f "$tmp_public" "$tmp_private" "$tmp_missing" "$tmp_tree" "$tmp_names"
+    return 1
+  }
 
-  rm -f "$tmp_public" "$tmp_private" "$tmp_missing"
+  rm -f "$tmp_public" "$tmp_private" "$tmp_missing" "$tmp_tree" "$tmp_names"
 
   if [[ "$missing_count" != "0" ]]; then
     log "ERROR: private Claude memory snapshots missing $missing_count public origin/main blob(s)"
@@ -271,16 +312,40 @@ finalize_claude_private_snapshot_repo() {
   [[ "$CLAUDE_PRIVATE_SNAPSHOT_STAGED" == "true" ]] || return 0
   prepare_claude_private_snapshot_repo || return 1
   (
-    cd "$CLAUDE_MEMORY_SNAPSHOT_PRIVATE_CLONE"
-    host="$(resolve_claude_private_snapshot_host)"
+    if ! cd "$CLAUDE_MEMORY_SNAPSHOT_PRIVATE_CLONE"; then
+      log "ERROR: failed to enter Claude private memory snapshot clone"
+      return 1
+    fi
+    if ! host="$(resolve_claude_private_snapshot_host)"; then
+      log "ERROR: failed to resolve Claude private snapshot host"
+      return 1
+    fi
     host_dir="hosts/$host/config/agents/claude/memory-snapshots"
-    mkdir -p "$host_dir"
-    rsync -a "$CLAUDE_PRIVATE_STAGE/" "$host_dir/"
-    sync_origin_main_claude_snapshots_to_private_legacy
-    find hosts legacy -type f -print0 2>/dev/null | sort -z | xargs -0 -r sha256sum > SNAPSHOT_MANIFEST.sha256
-    git add SNAPSHOT_MANIFEST.sha256 hosts VERIFY-*.txt
+    if ! mkdir -p "$host_dir"; then
+      log "ERROR: failed to create Claude private snapshot host directory"
+      return 1
+    fi
+    if ! rsync -a "$CLAUDE_PRIVATE_STAGE/" "$host_dir/"; then
+      log "ERROR: failed to copy Claude private memory snapshots"
+      return 1
+    fi
+    if ! sync_origin_main_claude_snapshots_to_private_legacy; then
+      log "ERROR: failed to verify legacy Claude private memory snapshots"
+      return 1
+    fi
+    if ! find hosts legacy -type f -print0 2>/dev/null | sort -z | xargs -0 -r sha256sum > SNAPSHOT_MANIFEST.sha256; then
+      log "ERROR: failed to write Claude private snapshot manifest"
+      return 1
+    fi
+    if ! git add SNAPSHOT_MANIFEST.sha256 hosts VERIFY-*.txt; then
+      log "ERROR: failed to stage Claude private memory snapshots"
+      return 1
+    fi
     if find legacy -type f -print -quit 2>/dev/null | grep -q .; then
-      git add legacy
+      if ! git add legacy; then
+        log "ERROR: failed to stage legacy Claude private memory snapshots"
+        return 1
+      fi
     fi
     if git diff --cached --quiet; then
       log "Claude private memory snapshots already up to date"
@@ -290,9 +355,10 @@ finalize_claude_private_snapshot_repo() {
     if find legacy -type f -print -quit 2>/dev/null | grep -q .; then
       commit_paths+=(legacy)
     fi
-    commit_output="$(git commit -m "chore: refresh Claude memory snapshots" -- "${commit_paths[@]}" 2>&1)"
-    commit_status=$?
-    if [[ $commit_status -ne 0 ]]; then
+    if commit_output="$(git commit -m "chore: refresh Claude memory snapshots" -- "${commit_paths[@]}" 2>&1)"; then
+      :
+    else
+      commit_status=$?
       if grep -qi "nothing to commit" <<<"$commit_output"; then
         log "Claude private memory snapshots already up to date"
         return 0
@@ -301,7 +367,10 @@ finalize_claude_private_snapshot_repo() {
       log "ERROR: failed to commit Claude private memory snapshots"
       return "$commit_status"
     fi
-    git push
+    if ! git push; then
+      log "ERROR: failed to push Claude private memory snapshots"
+      return 1
+    fi
   )
 }
 
