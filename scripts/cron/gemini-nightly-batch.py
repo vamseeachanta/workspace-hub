@@ -1,5 +1,5 @@
 #!/home/vamsee/.hermes/claude-code/.venv/bin/python
-# ABOUTME: Nightly Gemini batch processor — auto-processes agent:gemini labeled issues.
+# ABOUTME: Nightly agy/Gemini batch processor — auto-processes ai:agy labeled issues.
 # ABOUTME: Queries open issues, clusters by scope, dispatches via local subagents or Hermes router.
 # Issue: #1961
 #
@@ -67,23 +67,29 @@ def run_cmd(cmd: str, check: bool = True, capture: bool = True) -> subprocess.Co
 
 
 def fetch_gemini_issues() -> list[dict]:
-    """Fetch all open issues labeled agent:gemini."""
-    cmd = (
-        'gh issue list --label "agent:gemini" --state open '
-        '--json number,title,labels,body,createdAt --limit 50'
-    )
-    result = run_cmd(cmd)
-    if result.returncode != 0:
-        log("Failed to fetch issues from GitHub", "ERROR")
-        return []
+    """Fetch open issues labeled ai:agy plus read-only legacy aliases."""
+    labels = ["ai:agy", "agent:agy", "agent:gemini"]
+    by_number: dict[int, dict] = {}
+    for label in labels:
+        cmd = (
+            f'gh issue list --label "{label}" --state open '
+            '--json number,title,labels,body,createdAt --limit 50'
+        )
+        result = run_cmd(cmd)
+        if result.returncode != 0:
+            log(f"Failed to fetch issues for {label} from GitHub", "ERROR")
+            continue
 
-    try:
-        issues = json.loads(result.stdout)
-    except json.JSONDecodeError:
-        log(f"Failed to parse issue JSON: {result.stdout[:200]}", "ERROR")
-        return []
+        try:
+            issues = json.loads(result.stdout)
+        except json.JSONDecodeError:
+            log(f"Failed to parse issue JSON for {label}: {result.stdout[:200]}", "ERROR")
+            continue
+        for issue in issues:
+            by_number[int(issue["number"])] = issue
 
-    log(f"Found {len(issues)} open agent:gemini issues")
+    issues = [by_number[number] for number in sorted(by_number)]
+    log(f"Found {len(issues)} open ai:agy issues including legacy aliases")
     return issues
 
 
@@ -175,7 +181,7 @@ def process_local_issue(issue: dict, dry_run: bool = False) -> dict:
     else:
         triage_comment += (
             "- General triage — review issue scope and assign to appropriate agent\n"
-            "- If implementation-ready, re-label with agent:claude or agent:codex\n"
+            "- If implementation-ready, re-label with ai:claude or ai:codex\n"
         )
 
     # Post comment
@@ -256,7 +262,7 @@ def main() -> None:
     # Fetch and classify issues
     issues = fetch_gemini_issues()
     if not issues:
-        log("No open agent:gemini issues found. Nothing to do.")
+        log("No open ai:agy issues found. Nothing to do.")
         write_report([], args.dry_run)
         return
 

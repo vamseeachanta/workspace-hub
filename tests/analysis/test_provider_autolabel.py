@@ -23,7 +23,20 @@ def test_compute_confidence_high_for_execution_ready_codex_fix() -> None:
     assert "strong-codex-language-match" in reasons
 
 
-def test_compute_confidence_zero_when_agent_label_exists() -> None:
+def test_compute_confidence_zero_when_ai_label_exists() -> None:
+    issue = {
+        "execution_ready": True,
+        "priority_rank": 1,
+        "routing_reason": "strategy/workflow/architecture language",
+        "provider_priority": "high",
+        "labels": ["ai:claude"],
+    }
+    confidence, reasons = module.compute_confidence("claude", issue)
+    assert confidence == 0.0
+    assert "provider-label-exists" in reasons
+
+
+def test_compute_confidence_zero_when_legacy_agent_label_exists() -> None:
     issue = {
         "execution_ready": True,
         "priority_rank": 1,
@@ -33,7 +46,7 @@ def test_compute_confidence_zero_when_agent_label_exists() -> None:
     }
     confidence, reasons = module.compute_confidence("claude", issue)
     assert confidence == 0.0
-    assert "agent-label-exists" in reasons
+    assert "provider-label-exists" in reasons
 
 
 def test_collect_candidates_marks_only_high_confidence_items_eligible() -> None:
@@ -41,10 +54,11 @@ def test_collect_candidates_marks_only_high_confidence_items_eligible() -> None:
         "provider_queues": {
             "claude": {"top_issues": [{"number": 1, "title": "epic: strategy", "labels": [], "execution_ready": True, "priority_rank": 1, "routing_reason": "strategy/workflow/architecture language", "provider_priority": "high"}]},
             "codex": {"top_issues": [{"number": 2, "title": "fix: implementation", "labels": [], "execution_ready": True, "priority_rank": 1, "routing_reason": "implementation/test/fix language", "provider_priority": "highest"}]},
-            "gemini": {"top_issues": [{"number": 3, "title": "audit: research", "labels": [], "execution_ready": False, "priority_rank": 2, "routing_reason": "research/triage/audit language", "provider_priority": "highest"}]},
+            "agy": {"top_issues": [{"number": 3, "title": "audit: research", "labels": [], "execution_ready": False, "priority_rank": 2, "routing_reason": "research/triage/audit language", "provider_priority": "highest"}]},
         }
     }
     candidates = module.collect_candidates(work_queue)
+    assert all(item["target_label"].startswith("ai:") for item in candidates)
     eligible_numbers = {item["number"] for item in candidates if item["eligible"]}
     assert 1 in eligible_numbers
     assert 2 in eligible_numbers

@@ -12,10 +12,11 @@ Usage:
   uv run scripts/ai/overnight-batch-planner.py --output-file plan.json
 
 Label conventions:
-  agent:claude   — route to Claude
-  agent:codex    — route to Codex CLI
-  agent:agy      — route to agy (Antigravity, Gemini-backed; agent:gemini is a deprecated alias)
-  agent:hermes   — route to Hermes
+  ai:claude      — route to Claude
+  ai:codex       — route to Codex CLI
+  ai:agy         — route to agy (Antigravity, Gemini-backed)
+  ai:hermes      — route to Hermes
+  agent:*        — deprecated read-only alias for one release
   overnight      — mark issue for overnight execution
   overnight-batch — same as overnight
 
@@ -53,10 +54,14 @@ NUM_TERMINALS = 3
 # Label → agent mapping
 # ---------------------------------------------------------------------------
 LABEL_AGENT_MAP: dict[str, str] = {
+    "ai:claude":     "claude",
+    "ai:codex":      "codex",
+    "ai:agy":        "agy",
+    "ai:hermes":     "hermes",
     "agent:claude":  "claude",
     "agent:codex":   "codex",
     "agent:agy":     "agy",
-    "agent:gemini":  "agy",   # DEPRECATED alias — dual-read during #3573 migration window
+    "agent:gemini":  "agy",   # DEPRECATED alias — dual-read during migration window
     "agent:hermes":  "hermes",
 }
 
@@ -157,45 +162,45 @@ def _synthetic_issues() -> list[dict]:
         {
             "number": 1801,
             "title": "Generate skills inventory report from all sub-repos",
-            "labels": [{"name": "agent:hermes"}, {"name": "overnight"}, {"name": "docs"}],
+            "labels": [{"name": "ai:hermes"}, {"name": "overnight"}, {"name": "docs"}],
             "body": "Walk all .claude/skills directories and produce a consolidated Markdown report.",
             "assignees": [],
         },
         {
             "number": 1823,
             "title": "Refactor authentication module with full test coverage",
-            # agent:codex (not claude): overnight issues run under the hermes_batch
-            # cost ceiling, which forbids claude (#3205); an agent:claude overnight
+            # ai:codex (not claude): overnight issues run under the hermes_batch
+            # cost ceiling, which forbids claude (#3205); an ai:claude overnight
             # issue is now a hard error, so the demo fixture uses codex.
-            "labels": [{"name": "agent:codex"}, {"name": "overnight"}, {"name": "refactor"}],
+            "labels": [{"name": "ai:codex"}, {"name": "overnight"}, {"name": "refactor"}],
             "body": "Rewrite auth.py to use JWT; add pytest suite with >=90% coverage.",
             "assignees": [],
         },
         {
             "number": 1834,
             "title": "Cross-review all open PRs against coding standards",
-            "labels": [{"name": "agent:codex"}, {"name": "overnight"}, {"name": "review"}],
+            "labels": [{"name": "ai:codex"}, {"name": "overnight"}, {"name": "review"}],
             "body": "Run Codex cross-review gate on PRs #45 #46 #47 and output verdict JSON.",
             "assignees": [],
         },
         {
             "number": 1845,
             "title": "Analyze worldenergydata CSV exports and produce trend report",
-            "labels": [{"name": "agent:gemini"}, {"name": "overnight"}, {"name": "data-analysis"}],
+            "labels": [{"name": "ai:agy"}, {"name": "overnight"}, {"name": "data-analysis"}],
             "body": "Load the 2026 CSV exports, run trend analysis, export charts + summary PDF.",
             "assignees": [],
         },
         {
             "number": 1852,
             "title": "Update all README files with latest API changes",
-            "labels": [{"name": "agent:hermes"}, {"name": "overnight"}, {"name": "docs"}],
+            "labels": [{"name": "ai:hermes"}, {"name": "overnight"}, {"name": "docs"}],
             "body": "Scan each sub-repo README and patch it to reflect the new v3 API surface.",
             "assignees": [],
         },
         {
             "number": 1855,
             "title": "Write integration tests for the new routing gate",
-            "labels": [{"name": "agent:codex"}, {"name": "overnight"}, {"name": "testing"}],
+            "labels": [{"name": "ai:codex"}, {"name": "overnight"}, {"name": "testing"}],
             "body": "Add pytest integration tests for review_routing_gate.py covering all trigger paths.",
             "assignees": [],
         },
@@ -209,8 +214,8 @@ def _synthetic_issues() -> list[dict]:
 def _enforce_overnight_ceiling(agent: str, was_explicit: bool) -> str:
     """Apply the hermes_batch cost ceiling to an overnight issue's agent (#3205).
 
-    - allowed agent: returned unchanged.
-    - forbidden via explicit `agent:<x>` label: HARD ERROR (surface the conflict,
+    - allowed provider: returned unchanged.
+    - forbidden via explicit `ai:<x>` label: HARD ERROR (surface the conflict,
       don't silently downgrade).
     - forbidden via heuristic/default: downgrade to the context primary.
     """
@@ -221,7 +226,7 @@ def _enforce_overnight_ceiling(agent: str, was_explicit: bool) -> str:
         raise ValueError(
             f"overnight issue explicitly requests agent '{agent}', forbidden by the "
             f"'{OVERNIGHT_CONTEXT}' cost ceiling (forbidden: {sorted(forbid)}). "
-            f"Relabel the issue (e.g. agent:codex) or run it outside the overnight context."
+            f"Relabel the issue (e.g. ai:codex) or run it outside the overnight context."
         )
     chain = routing_resolver.context_chain(OVERNIGHT_CONTEXT)
     if not chain:  # pathological: context forbids its entire chain
