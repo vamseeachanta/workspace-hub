@@ -29,6 +29,8 @@ DIRECT = {
     "scripts/solver/setup-scheduler.ps1",
     "scripts/install/setup-tmux-autosave-timer.sh",
     "scripts/monitoring/bundle-sentinel-install/install.sh",
+    "scripts/operations/pause-memory-publishers.sh",
+    "scripts/operations/pause-memory-publishers.ps1",
 }
 TRANSITIVE = {
     "scripts/cron/setup-cron.sh",
@@ -322,5 +324,5 @@ def test_dedicated_disposition_coordinates_are_exact():
     assert groups == {
             "legacy-crontab-writers": 3476, "kanban-dual-backend": 3477, "windows-task-writers": 3478,
         "harness-update": 3479, "tmux-session-persistence": 3792,
-        "bundle-integrity-sentinel": 3792,
+        "bundle-integrity-sentinel": 3792, "x02-memory-publisher-pausers": 3982,
     }
