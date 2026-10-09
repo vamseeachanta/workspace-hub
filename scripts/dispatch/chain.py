@@ -114,6 +114,8 @@ STAGE_MARKER = {
     "executing": "dispatch:active",
     "executed": "dispatch:done",
 }
+LEGACY_MARKER_LABEL = "dispatch:legacy-migrated"
+DISPATCH_STATE_LABELS = frozenset(STAGE_MARKER.values())
 
 #: The dispatch RECORD state (records.py `STATES`) that corresponds to each
 #: label-borne stage. The label is a projection of the record; the record is the
@@ -200,6 +202,31 @@ def stage_of(issue: dict) -> str:
         if STAGE_MARKER[stage] in labels:
             furthest = stage
     return furthest
+
+
+def issue_key(issue: dict) -> str | None:
+    """Stable issue identity when the caller has one."""
+    value = issue.get("issue")
+    if isinstance(value, str) and value:
+        return value
+    repo = issue.get("repo")
+    number = issue.get("number")
+    if isinstance(repo, str) and number is not None:
+        return f"{repo}#{number}"
+    return None
+
+
+def is_legacy_migrated(issue: dict, recorded_issues: set[str] | None = None) -> bool:
+    """Marker-bearing dispatch labels created before run records existed."""
+    labels = set(issue.get("labels") or [])
+    if LEGACY_MARKER_LABEL not in labels:
+        return False
+    if not (labels & DISPATCH_STATE_LABELS):
+        return False
+    key = issue_key(issue)
+    if key is not None and recorded_issues is not None:
+        return key not in recorded_issues
+    return True
 
 
 def states_evidenced_by(record: dict) -> set[str]:
@@ -371,7 +398,8 @@ def outcome_report(consulted: list[dict] | None) -> dict:
 
 
 def chain_report(issues: list[dict], vocabulary: set[str],
-                 observed: set[str] | None = None) -> dict:
+                 observed: set[str] | None = None,
+                 recorded_issues: set[str] | None = None) -> dict:
     """Population per stage, plus the breaks. Pure: no IO.
 
     `observed` is the set of record states proven to have been reached (see
@@ -379,8 +407,15 @@ def chain_report(issues: list[dict], vocabulary: set[str],
     reported as such rather than as an empty set — "we looked and found nothing"
     and "we never looked" are different findings and must not print the same.
     """
+    legacy_indexes = {
+        idx for idx, iss in enumerate(issues)
+        if is_legacy_migrated(iss, recorded_issues)
+    }
+    legacy = [iss for idx, iss in enumerate(issues) if idx in legacy_indexes]
+    active_issues = [iss for idx, iss in enumerate(issues) if idx not in legacy_indexes]
+
     counts = {s: 0 for s in STAGES}
-    for iss in issues:
+    for iss in active_issues:
         counts[stage_of(iss)] += 1
 
     stages = {}
@@ -450,6 +485,7 @@ def chain_report(issues: list[dict], vocabulary: set[str],
 
     return {"stages": stages, "breaks": breaks, "unproven": unproven,
             "wall": wall, "stall": stall, "total": len(issues),
+            "legacy": legacy,
             "records_consulted": observed is not None}
 
 
@@ -532,6 +568,7 @@ def fetch(repo: str) -> tuple[list[dict], set[str]]:
     raw = gh(["gh", "issue", "list", "--repo", repo, "--state", "open",
               "--limit", "2000", "--json", "number,labels,state"])
     issues = [{"number": i["number"], "state": i.get("state"),
+               "repo": repo, "issue": f"{repo}#{i['number']}",
                "labels": [l["name"] for l in i.get("labels") or []]} for i in raw]
     vocab = {l["name"] for l in gh(["gh", "label", "list", "--repo", repo,
                                     "--limit", "400", "--json", "name"])}
@@ -576,12 +613,14 @@ def main() -> int:
     # they cannot disagree about which files were legible.
     consulted = read_records(args.records) if args.records else None
     observed = observed_in(consulted) if consulted is not None else None
+    recorded_issues = ({r.get("issue") for r in consulted if isinstance(r.get("issue"), str)}
+                       if consulted is not None else None)
     outcomes = outcome_report(consulted)
 
     out = {}
     for repo in ([args.repo] if args.repo else list(DEFAULT_REPOS)):
         issues, vocab = fetch(repo)
-        out[repo] = chain_report(issues, vocab, observed)
+        out[repo] = chain_report(issues, vocab, observed, recorded_issues)
 
     if args.json:
         print(json.dumps({"repos": out, "outcomes": outcomes}, indent=2))
@@ -611,6 +650,9 @@ def main() -> int:
             print(f"  \033[1;33mSTALL: {st['count']} issue(s) at '{st['stage']}' — "
                   f"'{st['next_stage']}' has a label that nothing has ever "
                   f"entered ({st['evidence']})\033[0m")
+        if rep["legacy"]:
+            print(f"  \033[2mLEGACY: {len(rep['legacy'])} marker-migrated issue(s) "
+                  "excluded from stage counts; pre-dispatch-record labels.\033[0m")
         for b in rep["breaks"]:
             print(f"  \033[31mBREAK\033[0m {b['stage']}: {b['detail']}")
         for u in rep["unproven"]:

@@ -1,0 +1,1033 @@
+skill_path,family,claude_session_mentions_16d,proposal,reason
+_core/bash/bash-cli-framework,_core,0,retire-now,generic bash patterns (fragments); current models do this unaided
+_core/bash/bash-cli-framework/1-always-use-set-e,_core,0,retire-now,generic bash patterns (fragments); current models do this unaided
+_core/bash/bash-cli-framework/1-color-definitions,_core,0,retire-now,generic bash patterns (fragments); current models do this unaided
+_core/bash/bash-cli-framework/5-error-handling,_core,0,retire-now,generic bash patterns (fragments); current models do this unaided
+_core/bash/bash-script-framework,_core,0,retire-now,generic bash patterns (fragments); current models do this unaided
+_core/bash/bash-script-framework/best-practices,_core,0,retire-now,generic bash patterns (fragments); current models do this unaided
+_core/bash/bash-script-framework/example-1-create-new-cli-tool,_core,0,retire-now,generic bash patterns (fragments); current models do this unaided
+_core/bash/complexity-scorer,_core,0,retire-now,generic bash patterns (fragments); current models do this unaided
+_core/bash/complexity-scorer/1-keyword-based-scoring,_core,0,retire-now,generic bash patterns (fragments); current models do this unaided
+_core/bash/complexity-scorer/3-context-aware-scoring,_core,0,retire-now,generic bash patterns (fragments); current models do this unaided
+_core/bash/complexity-scorer/5-confidence-scoring,_core,0,retire-now,generic bash patterns (fragments); current models do this unaided
+_core/bash/complexity-scorer/best-practices,_core,0,retire-now,generic bash patterns (fragments); current models do this unaided
+_core/bash/cross-platform-compat,_core,0,retire-now,generic bash patterns (fragments); current models do this unaided
+_core/bash/git-sync-manager,_core,0,retire-now,generic bash patterns (fragments); current models do this unaided
+_core/bash/git-sync-manager/1-always-check-before-operating,_core,0,retire-now,generic bash patterns (fragments); current models do this unaided
+_core/bash/git-sync-manager/1-repository-discovery-from-gitignore,_core,0,retire-now,generic bash patterns (fragments); current models do this unaided
+_core/bash/git-sync-manager/2-multi-phase-sync-pattern,_core,0,retire-now,generic bash patterns (fragments); current models do this unaided
+_core/bash/git-sync-manager/3-repository-status-check,_core,0,retire-now,generic bash patterns (fragments); current models do this unaided
+_core/bash/git-sync-manager/5-safe-branch-operations,_core,0,retire-now,generic bash patterns (fragments); current models do this unaided
+_core/bash/interactive-menu-builder,_core,0,retire-now,generic bash patterns (fragments); current models do this unaided
+_core/bash/interactive-menu-builder/1-basic-menu-structure,_core,0,retire-now,generic bash patterns (fragments); current models do this unaided
+_core/bash/interactive-menu-builder/1-consistent-navigation,_core,0,retire-now,generic bash patterns (fragments); current models do this unaided
+_core/bash/interactive-menu-builder/2-multi-level-menu-system,_core,0,retire-now,generic bash patterns (fragments); current models do this unaided
+_core/bash/interactive-menu-builder/3-table-display,_core,0,retire-now,generic bash patterns (fragments); current models do this unaided
+_core/bash/interactive-menu-builder/5-confirmation-dialogs,_core,0,retire-now,generic bash patterns (fragments); current models do this unaided
+_core/bash/json-config-loader,_core,0,retire-now,generic bash patterns (fragments); current models do this unaided
+_core/bash/json-config-loader/1-always-provide-defaults,_core,0,retire-now,generic bash patterns (fragments); current models do this unaided
+_core/bash/json-config-loader/1-keyvalue-configuration-parsing,_core,0,retire-now,generic bash patterns (fragments); current models do this unaided
+_core/bash/json-config-loader/3-json-report-generation,_core,0,retire-now,generic bash patterns (fragments); current models do this unaided
+_core/bash/json-config-loader/4-multi-section-ini-parsing,_core,0,retire-now,generic bash patterns (fragments); current models do this unaided
+_core/bash/json-config-loader/5-environment-variable-configuration,_core,0,retire-now,generic bash patterns (fragments); current models do this unaided
+_core/bash/json-config-loader/6-yaml-configuration-via-yq,_core,0,retire-now,generic bash patterns (fragments); current models do this unaided
+_core/bash/parallel-batch-executor,_core,0,retire-now,generic bash patterns (fragments); current models do this unaided
+_core/bash/parallel-batch-executor/1-always-set-a-default,_core,0,retire-now,generic bash patterns (fragments); current models do this unaided
+_core/bash/parallel-batch-executor/1-basic-parallel-execution-with-xargs,_core,0,retire-now,generic bash patterns (fragments); current models do this unaided
+_core/bash/parallel-batch-executor/4-progress-tracking,_core,0,retire-now,generic bash patterns (fragments); current models do this unaided
+_core/bash/state-directory-manager,_core,0,retire-now,generic bash patterns (fragments); current models do this unaided
+_core/bash/state-directory-manager/1-xdg-base-directory-standard,_core,0,retire-now,generic bash patterns (fragments); current models do this unaided
+_core/bash/state-directory-manager/4-state-file-operations,_core,0,retire-now,generic bash patterns (fragments); current models do this unaided
+_core/bash/state-directory-manager/5-cache-management,_core,0,retire-now,generic bash patterns (fragments); current models do this unaided
+_core/bash/state-directory-manager/best-practices,_core,0,retire-now,generic bash patterns (fragments); current models do this unaided
+_core/bash/usage-tracker,_core,0,retire-now,generic bash patterns (fragments); current models do this unaided
+_core/bash/usage-tracker/1-basic-usage-logging,_core,0,retire-now,generic bash patterns (fragments); current models do this unaided
+_core/bash/usage-tracker/3-usage-summary-reports,_core,0,retire-now,generic bash patterns (fragments); current models do this unaided
+_core/bash/usage-tracker/5-trend-analysis,_core,0,retire-now,generic bash patterns (fragments); current models do this unaided
+_core/bash/usage-tracker/best-practices,_core,0,retire-now,generic bash patterns (fragments); current models do this unaided
+_core/context-management,_core,0,keep,infrastructure / owner workflow
+_core/context-management/learning-from-past-work,_core,0,keep,infrastructure / owner workflow
+_core/context-management/quick-reference,_core,0,keep,infrastructure / owner workflow
+_core/context-management/response-format-rules,_core,0,keep,infrastructure / owner workflow
+_core/context-management/size-limits-mandatory,_core,0,keep,infrastructure / owner workflow
+_core/context-management/validatecontextsh,_core,0,keep,infrastructure / owner workflow
+_core/context-management/windows-task-scheduler,_core,0,keep,infrastructure / owner workflow
+_internal/builders/skill-creator,_internal,8,retire-now,"template fragments / generic authoring notes, not working skills"
+_internal/builders/skill-creator/1-clear-triggering,_internal,0,retire-now,"template fragments / generic authoring notes, not working skills"
+_internal/builders/skill-creator/3-multi-stage-workflow-architecture,_internal,0,retire-now,"template fragments / generic authoring notes, not working skills"
+_internal/builders/skill-creator/advanced-usage,_internal,0,retire-now,"template fragments / generic authoring notes, not working skills"
+_internal/builders/skill-creator/bad-conceptual-only,_internal,0,retire-now,"template fragments / generic authoring notes, not working skills"
+_internal/builders/skill-creator/best-practices,_internal,0,retire-now,"template fragments / generic authoring notes, not working skills"
+_internal/builders/skill-creator/canonical-reference,_internal,0,retire-now,"template fragments / generic authoring notes, not working skills"
+_internal/builders/skill-creator/common-errors,_internal,0,retire-now,"template fragments / generic authoring notes, not working skills"
+_internal/builders/skill-creator/configuration-options,_internal,0,retire-now,"template fragments / generic authoring notes, not working skills"
+_internal/builders/skill-creator/content-quality,_internal,0,retire-now,"template fragments / generic authoring notes, not working skills"
+_internal/builders/skill-creator/creative-skill-template,_internal,0,retire-now,"template fragments / generic authoring notes, not working skills"
+_internal/builders/skill-creator/detailed-instructions,_internal,0,retire-now,"template fragments / generic authoring notes, not working skills"
+_internal/builders/skill-creator/error-handling,_internal,0,retire-now,"template fragments / generic authoring notes, not working skills"
+_internal/builders/skill-creator/example-1-scenario-name,_internal,0,retire-now,"template fragments / generic authoring notes, not working skills"
+_internal/builders/skill-creator/examples,_internal,0,retire-now,"template fragments / generic authoring notes, not working skills"
+_internal/builders/skill-creator/execution-checklist,_internal,0,retire-now,"template fragments / generic authoring notes, not working skills"
+_internal/builders/skill-creator/file-structure,_internal,0,retire-now,"template fragments / generic authoring notes, not working skills"
+_internal/builders/skill-creator/good-actionable,_internal,0,retire-now,"template fragments / generic authoring notes, not working skills"
+_internal/builders/skill-creator/inspiration-examples,_internal,0,retire-now,"template fragments / generic authoring notes, not working skills"
+_internal/builders/skill-creator/installation,_internal,0,retire-now,"template fragments / generic authoring notes, not working skills"
+_internal/builders/skill-creator/instructions,_internal,0,retire-now,"template fragments / generic authoring notes, not working skills"
+_internal/builders/skill-creator/metrics,_internal,0,retire-now,"template fragments / generic authoring notes, not working skills"
+_internal/builders/skill-creator/official-plugin-reference,_internal,0,retire-now,"template fragments / generic authoring notes, not working skills"
+_internal/builders/skill-creator/operation-1,_internal,0,retire-now,"template fragments / generic authoring notes, not working skills"
+_internal/builders/skill-creator/phase-1-name,_internal,0,retire-now,"template fragments / generic authoring notes, not working skills"
+_internal/builders/skill-creator/principle-1-name,_internal,0,retire-now,"template fragments / generic authoring notes, not working skills"
+_internal/builders/skill-creator/process-skill-template,_internal,0,retire-now,"template fragments / generic authoring notes, not working skills"
+_internal/builders/skill-creator/quality-checklist,_internal,0,retire-now,"template fragments / generic authoring notes, not working skills"
+_internal/builders/skill-creator/scenario,_internal,0,retire-now,"template fragments / generic authoring notes, not working skills"
+_internal/builders/skill-creator/skill-discovery,_internal,0,retire-now,"template fragments / generic authoring notes, not working skills"
+_internal/builders/skill-creator/step-1-define-the-skill-scope,_internal,0,retire-now,"template fragments / generic authoring notes, not working skills"
+_internal/builders/skill-creator/step-1-name,_internal,0,retire-now,"template fragments / generic authoring notes, not working skills"
+_internal/builders/skill-creator/style-1-name,_internal,0,retire-now,"template fragments / generic authoring notes, not working skills"
+_internal/builders/skill-creator/task-category-1,_internal,0,retire-now,"template fragments / generic authoring notes, not working skills"
+_internal/builders/skill-creator/technical-implementation,_internal,0,retire-now,"template fragments / generic authoring notes, not working skills"
+_internal/builders/skill-creator/technical-skill-template,_internal,0,retire-now,"template fragments / generic authoring notes, not working skills"
+_internal/builders/skill-creator/template-name,_internal,0,retire-now,"template fragments / generic authoring notes, not working skills"
+_internal/builders/skill-creator/versioning,_internal,0,retire-now,"template fragments / generic authoring notes, not working skills"
+_internal/builders/web-artifacts-builder,_internal,0,retire-now,"template fragments / generic authoring notes, not working skills"
+_internal/builders/web-artifacts-builder/1-interactive-dashboard,_internal,0,retire-now,"template fragments / generic authoring notes, not working skills"
+_internal/builders/web-artifacts-builder/basic-template,_internal,0,retire-now,"template fragments / generic authoring notes, not working skills"
+_internal/builders/web-artifacts-builder/common-cdn-libraries,_internal,0,retire-now,"template fragments / generic authoring notes, not working skills"
+_internal/builders/web-artifacts-builder/error-handling,_internal,0,retire-now,"template fragments / generic authoring notes, not working skills"
+_internal/builders/web-artifacts-builder/execution-checklist,_internal,0,retire-now,"template fragments / generic authoring notes, not working skills"
+_internal/builders/web-artifacts-builder/file-naming,_internal,0,retire-now,"template fragments / generic authoring notes, not working skills"
+_internal/builders/web-artifacts-builder/metrics,_internal,0,retire-now,"template fragments / generic authoring notes, not working skills"
+_internal/builders/web-artifacts-builder/performance,_internal,0,retire-now,"template fragments / generic authoring notes, not working skills"
+_internal/builders/web-artifacts-builder/self-contained-architecture,_internal,0,retire-now,"template fragments / generic authoring notes, not working skills"
+_internal/documentation/mermaid-conventions,_internal,0,retire-now,"template fragments / generic authoring notes, not working skills"
+_internal/documentation/mkdocs,_internal,0,retire-now,"template fragments / generic authoring notes, not working skills"
+_internal/documentation/mkdocs/1-documentation-structure,_internal,0,retire-now,"template fragments / generic authoring notes, not working skills"
+_internal/documentation/mkdocs/1-project-initialization,_internal,0,retire-now,"template fragments / generic authoring notes, not working skills"
+_internal/documentation/mkdocs/3-abbreviations,_internal,0,retire-now,"template fragments / generic authoring notes, not working skills"
+_internal/documentation/mkdocs/3-navigation-structure,_internal,0,retire-now,"template fragments / generic authoring notes, not working skills"
+_internal/documentation/mkdocs/6-code-blocks-with-features,_internal,0,retire-now,"template fragments / generic authoring notes, not working skills"
+_internal/documentation/mkdocs/7-mermaid-diagrams,_internal,0,retire-now,"template fragments / generic authoring notes, not working skills"
+_internal/documentation/mkdocs/8-plugin-configuration,_internal,0,retire-now,"template fragments / generic authoring notes, not working skills"
+_internal/documentation/mkdocs/basic-code-block,_internal,0,retire-now,"template fragments / generic authoring notes, not working skills"
+_internal/documentation/mkdocs/class-diagram,_internal,0,retire-now,"template fragments / generic authoring notes, not working skills"
+_internal/documentation/mkdocs/code-annotations,_internal,0,retire-now,"template fragments / generic authoring notes, not working skills"
+_internal/documentation/mkdocs/collapsible-admonitions,_internal,0,retire-now,"template fragments / generic authoring notes, not working skills"
+_internal/documentation/mkdocs/common-issues,_internal,0,retire-now,"template fragments / generic authoring notes, not working skills"
+_internal/documentation/mkdocs/danger,_internal,0,retire-now,"template fragments / generic authoring notes, not working skills"
+_internal/documentation/mkdocs/entity-relationship,_internal,0,retire-now,"template fragments / generic authoring notes, not working skills"
+_internal/documentation/mkdocs/example,_internal,0,retire-now,"template fragments / generic authoring notes, not working skills"
+_internal/documentation/mkdocs/examples,_internal,0,retire-now,"template fragments / generic authoring notes, not working skills"
+_internal/documentation/mkdocs/flowchart,_internal,0,retire-now,"template fragments / generic authoring notes, not working skills"
+_internal/documentation/mkdocs/info,_internal,0,retire-now,"template fragments / generic authoring notes, not working skills"
+_internal/documentation/mkdocs/integration-with-python-package,_internal,0,retire-now,"template fragments / generic authoring notes, not working skills"
+_internal/documentation/mkdocs/line-highlighting,_internal,0,retire-now,"template fragments / generic authoring notes, not working skills"
+_internal/documentation/mkdocs/line-number-start,_internal,0,retire-now,"template fragments / generic authoring notes, not working skills"
+_internal/documentation/mkdocs/line-numbers,_internal,0,retire-now,"template fragments / generic authoring notes, not working skills"
+_internal/documentation/mkdocs/note,_internal,0,retire-now,"template fragments / generic authoring notes, not working skills"
+_internal/documentation/mkdocs/question,_internal,0,retire-now,"template fragments / generic authoring notes, not working skills"
+_internal/documentation/mkdocs/quote,_internal,0,retire-now,"template fragments / generic authoring notes, not working skills"
+_internal/documentation/mkdocs/related-resources,_internal,0,retire-now,"template fragments / generic authoring notes, not working skills"
+_internal/documentation/mkdocs/section-2,_internal,0,retire-now,"template fragments / generic authoring notes, not working skills"
+_internal/documentation/mkdocs/sequence-diagram,_internal,0,retire-now,"template fragments / generic authoring notes, not working skills"
+_internal/documentation/mkdocs/state-diagram,_internal,0,retire-now,"template fragments / generic authoring notes, not working skills"
+_internal/documentation/mkdocs/subsection-11,_internal,0,retire-now,"template fragments / generic authoring notes, not working skills"
+_internal/documentation/mkdocs/success,_internal,0,retire-now,"template fragments / generic authoring notes, not working skills"
+_internal/documentation/mkdocs/tabbed-code-blocks,_internal,0,retire-now,"template fragments / generic authoring notes, not working skills"
+_internal/documentation/mkdocs/tip,_internal,0,retire-now,"template fragments / generic authoring notes, not working skills"
+_internal/documentation/mkdocs/warning,_internal,0,retire-now,"template fragments / generic authoring notes, not working skills"
+_internal/documentation/mkdocs/with-title,_internal,0,retire-now,"template fragments / generic authoring notes, not working skills"
+_internal/guidelines/communication-voice,_internal,0,keep,infrastructure / owner workflow
+_internal/meta/discipline-refactor,_internal,0,retire-now,"template fragments / generic authoring notes, not working skills"
+_internal/meta/discipline-refactor/core-principles,_internal,0,retire-now,"template fragments / generic authoring notes, not working skills"
+_internal/meta/discipline-refactor/how-to-identify-disciplines,_internal,0,retire-now,"template fragments / generic authoring notes, not working skills"
+_internal/meta/discipline-refactor/orchestration-architecture,_internal,0,retire-now,"template fragments / generic authoring notes, not working skills"
+_internal/meta/discipline-refactor/phase-1-analysis,_internal,0,retire-now,"template fragments / generic authoring notes, not working skills"
+_internal/meta/discipline-refactor/phase-2-planning,_internal,0,retire-now,"template fragments / generic authoring notes, not working skills"
+_internal/meta/discipline-refactor/phase-3-execution,_internal,0,retire-now,"template fragments / generic authoring notes, not working skills"
+_internal/meta/discipline-refactor/phase-4-validation,_internal,0,retire-now,"template fragments / generic authoring notes, not working skills"
+_internal/meta/discipline-refactor/python-package,_internal,0,retire-now,"template fragments / generic authoring notes, not working skills"
+_internal/meta/discipline-refactor/rollback,_internal,0,retire-now,"template fragments / generic authoring notes, not working skills"
+_internal/meta/discipline-refactor/standard-folders-module-structure,_internal,0,retire-now,"template fragments / generic authoring notes, not working skills"
+_internal/meta/discipline-refactor/target-repository-structure,_internal,0,retire-now,"template fragments / generic authoring notes, not working skills"
+_internal/meta/discipline-refactor/verification-checklist,_internal,0,retire-now,"template fragments / generic authoring notes, not working skills"
+_internal/meta/hidden-folder-audit,_internal,0,retire-now,"template fragments / generic authoring notes, not working skills"
+_internal/meta/hidden-folder-audit/best-practices,_internal,0,retire-now,"template fragments / generic authoring notes, not working skills"
+_internal/meta/hidden-folder-audit/common-hidden-folders-reference,_internal,0,retire-now,"template fragments / generic authoring notes, not working skills"
+_internal/meta/hidden-folder-audit/migrate-agent-os-to-claude,_internal,0,retire-now,"template fragments / generic authoring notes, not working skills"
+_internal/meta/hidden-folder-audit/pre-audit,_internal,0,retire-now,"template fragments / generic authoring notes, not working skills"
+_internal/meta/hidden-folder-audit/specsarchive,_internal,0,retire-now,"template fragments / generic authoring notes, not working skills"
+_internal/meta/hidden-folder-audit/step-1-inventory-all-hidden-folders,_internal,0,retire-now,"template fragments / generic authoring notes, not working skills"
+_internal/meta/hidden-folder-audit/verify-hidden-folder-state,_internal,0,retire-now,"template fragments / generic authoring notes, not working skills"
+_internal/meta/hidden-folder-audit/version-metadata,_internal,0,retire-now,"template fragments / generic authoring notes, not working skills"
+_internal/meta/module-based-refactor,_internal,0,retire-now,"template fragments / generic authoring notes, not working skills"
+_internal/meta/repo-cleanup,_internal,0,retire-now,"template fragments / generic authoring notes, not working skills"
+_internal/meta/repo-cleanup/1-build-artifacts,_internal,0,retire-now,"template fragments / generic authoring notes, not working skills"
+_internal/meta/repo-cleanup/agent-directories,_internal,0,retire-now,"template fragments / generic authoring notes, not working skills"
+_internal/meta/repo-cleanup/best-practices,_internal,0,retire-now,"template fragments / generic authoring notes, not working skills"
+_internal/meta/repo-cleanup/common-hidden-folders,_internal,0,retire-now,"template fragments / generic authoring notes, not working skills"
+_internal/meta/repo-cleanup/conflict-resolution-patterns,_internal,0,retire-now,"template fragments / generic authoring notes, not working skills"
+_internal/meta/repo-cleanup/folders-to-delete-confirmed-safe,_internal,0,retire-now,"template fragments / generic authoring notes, not working skills"
+_internal/meta/repo-cleanup/for-tracked-files-use-git-rm,_internal,0,retire-now,"template fragments / generic authoring notes, not working skills"
+_internal/meta/repo-cleanup/gitignore-updates,_internal,0,retire-now,"template fragments / generic authoring notes, not working skills"
+_internal/meta/repo-cleanup/list-untracked-files,_internal,0,retire-now,"template fragments / generic authoring notes, not working skills"
+_internal/meta/repo-cleanup/pre-cleanup,_internal,0,retire-now,"template fragments / generic authoring notes, not working skills"
+_internal/meta/repo-cleanup/progress-tracking-commands,_internal,0,retire-now,"template fragments / generic authoring notes, not working skills"
+_internal/meta/repo-cleanup/references-to-remove,_internal,0,retire-now,"template fragments / generic authoring notes, not working skills"
+_internal/meta/repo-cleanup/structure-section-updates,_internal,0,retire-now,"template fragments / generic authoring notes, not working skills"
+_internal/meta/repo-cleanup/version-metadata,_internal,0,retire-now,"template fragments / generic authoring notes, not working skills"
+_internal/workflows/brainstorming,_internal,0,keep,infrastructure / owner workflow
+_internal/workflows/brainstorming/best-practices,_internal,0,keep,infrastructure / owner workflow
+_internal/workflows/brainstorming/error-handling,_internal,0,keep,infrastructure / owner workflow
+_internal/workflows/brainstorming/metrics,_internal,0,keep,infrastructure / owner workflow
+_internal/workflows/legal-sanity-review,_internal,0,keep,infrastructure / owner workflow
+ai/agent-usage-optimizer,ai,0,keep,infrastructure / owner workflow
+ai/durable-provider-throughput-dispatch,ai,0,keep,infrastructure / owner workflow
+ai/gemini-batch-execution,ai,0,retire-now,prompting tips / retired provider
+ai/hermes-model-switching,ai,0,keep,infrastructure / owner workflow
+ai/inventory-readiness-provider-dispatch,ai,0,keep,infrastructure / owner workflow
+ai/optimization/model-selection,ai,0,retire-now,prompting tips / retired provider
+ai/optimization/usage-optimization,ai,0,retire-now,prompting tips / retired provider
+ai/prompting/agenta,ai,0,retire-now,prompting tips / retired provider
+ai/prompting/ai-prompting,ai,0,retire-now,prompting tips / retired provider
+ai/prompting/dspy,ai,6,retire-now,prompting tips / retired provider
+ai/prompting/langchain,ai,0,retire-now,prompting tips / retired provider
+ai/prompting/pandasai,ai,0,retire-now,prompting tips / retired provider
+ai/prompting/prompt-engineering,ai,2,retire-now,prompting tips / retired provider
+ai/provider-session-quota-operations,ai,0,keep,infrastructure / owner workflow
+ai/provider-utilization-scorecard,ai,0,keep,infrastructure / owner workflow
+apple/apple-notes,apple,0,retire-now,off-topic family
+apple/apple-reminders,apple,0,retire-now,off-topic family
+apple/findmy,apple,0,retire-now,off-topic family
+apple/imessage,apple,0,retire-now,off-topic family
+apple/macos-computer-use,apple,0,retire-now,off-topic family
+autonomous-ai-agents/agent-cli-delegation-operations,autonomous-ai-agents,0,retire-now,off-topic family
+autonomous-ai-agents/claude-code,autonomous-ai-agents,0,retire-now,off-topic family
+autonomous-ai-agents/claude-plugin-update-id-scope,autonomous-ai-agents,0,retire-now,off-topic family
+autonomous-ai-agents/claude-print-stall-salvage,autonomous-ai-agents,0,retire-now,off-topic family
+autonomous-ai-agents/codex,autonomous-ai-agents,0,retire-now,off-topic family
+autonomous-ai-agents/codex-background-burn-orchestration,autonomous-ai-agents,0,retire-now,off-topic family
+autonomous-ai-agents/codex-background-stdin-close,autonomous-ai-agents,0,retire-now,off-topic family
+autonomous-ai-agents/hermes-agent,autonomous-ai-agents,0,retire-now,off-topic family
+autonomous-ai-agents/opencode,autonomous-ai-agents,0,retire-now,off-topic family
+business-finance/corporate-tax-strategic-planning,business-finance,0,keep,domain or infrastructure
+business-marketing/deckhand-api-presence-sync,business-marketing,0,retire-now,off-topic family
+business-marketing/weekly-gtm-productivity-steering,business-marketing,0,retire-now,off-topic family
+business/admin/expense-tracking,business,0,keep,infrastructure / owner workflow
+business/admin/invoice-automation,business,0,keep,infrastructure / owner workflow
+business/admin/modular-architecture-documentation,business,0,keep,infrastructure / owner workflow
+business/admin/product-documentation,business,0,keep,infrastructure / owner workflow
+business/admin/quantification-metrics,business,0,keep,infrastructure / owner workflow
+business/admin/tax-preparation,business,0,keep,infrastructure / owner workflow
+business/admin/technology-stack-modernization,business,0,keep,infrastructure / owner workflow
+business/c-corp-tax-consultant,business,0,keep,infrastructure / owner workflow
+business/client-demo/engineering-chatbot,business,0,keep,infrastructure / owner workflow
+business/communication/brand-guidelines,business,0,retire-now,"generic business template, off the working set"
+business/communication/calendly-api,business,0,retire-now,"generic business template, off the working set"
+business/communication/communication,business,0,retire-now,"generic business template, off the working set"
+business/communication/doc-coauthoring,business,0,retire-now,"generic business template, off the working set"
+business/communication/internal-comms,business,0,retire-now,"generic business template, off the working set"
+business/communication/miro-api,business,0,retire-now,"generic business template, off the working set"
+business/communication/slack-api,business,0,retire-now,"generic business template, off the working set"
+business/communication/slack-gif-creator,business,0,retire-now,"generic business template, off the working set"
+business/communication/teams-api,business,0,retire-now,"generic business template, off the working set"
+business/content-design/aceengineer-website-update,business,0,retire-now,"generic business template, off the working set"
+business/content-design/algorithmic-art,business,0,retire-now,"generic business template, off the working set"
+business/content-design/canvas-design,business,0,retire-now,"generic business template, off the working set"
+business/content-design/frontend-design,business,0,retire-now,"generic business template, off the working set"
+business/content-design/theme-factory,business,0,retire-now,"generic business template, off the working set"
+business/customer-support/customer-research,business,0,retire-now,"generic business template, off the working set"
+business/customer-support/escalation,business,0,retire-now,"generic business template, off the working set"
+business/customer-support/knowledge-management,business,0,retire-now,"generic business template, off the working set"
+business/customer-support/response-drafting,business,0,retire-now,"generic business template, off the working set"
+business/customer-support/ticket-triage,business,0,retire-now,"generic business template, off the working set"
+business/enterprise-search/knowledge-synthesis,business,0,retire-now,"generic business template, off the working set"
+business/enterprise-search/search-strategy,business,0,retire-now,"generic business template, off the working set"
+business/enterprise-search/source-management,business,0,retire-now,"generic business template, off the working set"
+business/finance/audit-support,business,0,keep,infrastructure / owner workflow
+business/finance/close-management,business,0,keep,infrastructure / owner workflow
+business/finance/financial-statements,business,0,keep,infrastructure / owner workflow
+business/finance/journal-entry-prep,business,0,keep,infrastructure / owner workflow
+business/finance/reconciliation,business,0,keep,infrastructure / owner workflow
+business/finance/variance-analysis,business,0,keep,infrastructure / owner workflow
+business/gtm-parametric-demo-reports,business,0,keep,infrastructure / owner workflow
+business/job-posting-fit-analysis,business,0,keep,infrastructure / owner workflow
+business/legal/canned-responses,business,0,keep,infrastructure / owner workflow
+business/legal/compliance,business,0,keep,infrastructure / owner workflow
+business/legal/contract-review,business,0,keep,infrastructure / owner workflow
+business/legal/legal-risk-assessment,business,0,keep,infrastructure / owner workflow
+business/legal/meeting-briefing,business,0,keep,infrastructure / owner workflow
+business/legal/nda-triage,business,0,keep,infrastructure / owner workflow
+business/marketing/brand-voice,business,0,retire-now,"generic business template, off the working set"
+business/marketing/campaign-planning,business,0,retire-now,"generic business template, off the working set"
+business/marketing/competitive-analysis,business,0,retire-now,"generic business template, off the working set"
+business/marketing/content-strategy,business,0,retire-now,"generic business template, off the working set"
+business/marketing/lead-generation,business,0,retire-now,"generic business template, off the working set"
+business/marketing/performance-analytics,business,0,retire-now,"generic business template, off the working set"
+business/marketing/seo-optimizer,business,0,retire-now,"generic business template, off the working set"
+business/marketing/social-media,business,0,retire-now,"generic business template, off the working set"
+business/product/competitive-analysis,business,0,retire-now,"generic business template, off the working set"
+business/product/feature-spec,business,0,retire-now,"generic business template, off the working set"
+business/product/metrics-tracking,business,0,retire-now,"generic business template, off the working set"
+business/product/product-roadmap,business,0,retire-now,"generic business template, off the working set"
+business/product/stakeholder-comms,business,0,retire-now,"generic business template, off the working set"
+business/product/user-research-synthesis,business,0,retire-now,"generic business template, off the working set"
+business/productivity/memory-management,business,0,retire-now,"generic business template, off the working set"
+business/productivity/notion-api,business,0,retire-now,"generic business template, off the working set"
+business/productivity/obsidian,business,0,retire-now,"generic business template, off the working set"
+business/productivity/task-management,business,0,retire-now,"generic business template, off the working set"
+business/productivity/time-tracking,business,0,retire-now,"generic business template, off the working set"
+business/productivity/today,business,0,retire-now,"generic business template, off the working set"
+business/productivity/todoist-api,business,0,retire-now,"generic business template, off the working set"
+business/productivity/trello-api,business,0,retire-now,"generic business template, off the working set"
+business/sales/account-research,business,0,keep,infrastructure / owner workflow
+business/sales/call-prep,business,0,keep,infrastructure / owner workflow
+business/sales/competitive-intelligence,business,0,keep,infrastructure / owner workflow
+business/sales/create-an-asset,business,0,keep,infrastructure / owner workflow
+business/sales/daily-briefing,business,0,keep,infrastructure / owner workflow
+business/sales/draft-outreach,business,0,keep,infrastructure / owner workflow
+business/tax-e-filing-research,business,0,keep,infrastructure / owner workflow
+business_admin/taxact-business-c-corp-filing-packet,business_admin,0,keep,domain or infrastructure
+coordination/ace-linux-1-control-surface,coordination,0,keep,infrastructure / owner workflow
+coordination/aceengineer-website-copy-alignment,coordination,0,keep,infrastructure / owner workflow
+coordination/agent-label-routing,coordination,0,keep,infrastructure / owner workflow
+coordination/agent-memory-bridge,coordination,0,keep,infrastructure / owner workflow
+coordination/agent-work-adversarial-review,coordination,0,retire-after-rollout,old gate-chain process skill; replaced by /objective + coordinator (retire when the chain leaves AGENTS.md)
+coordination/artifact-verification,coordination,0,keep,infrastructure / owner workflow
+coordination/claude-delegated-issue-tree-expansion,coordination,0,keep,infrastructure / owner workflow
+coordination/claude-worker-patch-loop,coordination,0,keep,infrastructure / owner workflow
+coordination/client-llm-wiki-factory,coordination,42,keep,infrastructure / owner workflow
+coordination/closed-issue-plan-refile-loop,coordination,0,retire-after-rollout,old gate-chain process skill; replaced by /objective + coordinator (retire when the chain leaves AGENTS.md)
+coordination/comprehensive-learning-wrapper,coordination,2,keep,infrastructure / owner workflow
+coordination/context-compaction-handoff,coordination,0,keep,infrastructure / owner workflow
+coordination/continuous-planning-pipeline,coordination,0,retire-after-rollout,old gate-chain process skill; replaced by /objective + coordinator (retire when the chain leaves AGENTS.md)
+coordination/cross-agent-skill-audit,coordination,8,keep,infrastructure / owner workflow
+coordination/cross-review-policy,coordination,0,retire-after-rollout,old gate-chain process skill; replaced by /objective + coordinator (retire when the chain leaves AGENTS.md)
+coordination/delegate-task-4-lane-workaround,coordination,0,retire-after-rollout,old gate-chain process skill; replaced by /objective + coordinator (retire when the chain leaves AGENTS.md)
+coordination/enforcement-audit-and-upgrade,coordination,0,retire-after-rollout,old gate-chain process skill; replaced by /objective + coordinator (retire when the chain leaves AGENTS.md)
+coordination/engineering-issue-workflow,coordination,136,retire-after-rollout,old gate-chain process skill; replaced by /objective + coordinator (retire when the chain leaves AGENTS.md)
+coordination/flywheel-closeout,coordination,16,retire-after-rollout,old gate-chain process skill; replaced by /objective + coordinator (retire when the chain leaves AGENTS.md)
+coordination/gh-work-planning,coordination,0,retire-after-rollout,old gate-chain process skill; replaced by /objective + coordinator (retire when the chain leaves AGENTS.md)
+coordination/gh-work-planning-checklist,coordination,0,retire-after-rollout,old gate-chain process skill; replaced by /objective + coordinator (retire when the chain leaves AGENTS.md)
+coordination/github-label-approval-reconciliation,coordination,0,retire-after-rollout,old gate-chain process skill; replaced by /objective + coordinator (retire when the chain leaves AGENTS.md)
+coordination/gtm-cross-review-readiness,coordination,0,retire-after-rollout,old gate-chain process skill; replaced by /objective + coordinator (retire when the chain leaves AGENTS.md)
+coordination/hermes-workflow-audit,coordination,0,keep,infrastructure / owner workflow
+coordination/issue-planning-mode,coordination,2203,retire-after-rollout,old gate-chain process skill; replaced by /objective + coordinator (retire when the chain leaves AGENTS.md)
+coordination/knowledge-source-recon,coordination,2,keep,infrastructure / owner workflow
+coordination/legal-sanity-scan,coordination,0,keep,infrastructure / owner workflow
+coordination/licensed-machine-prompt-orchestration,coordination,0,keep,infrastructure / owner workflow
+coordination/llm-wiki-roadmap-integration,coordination,0,keep,infrastructure / owner workflow
+coordination/memory-bridge-commit-fallbacks,coordination,0,keep,infrastructure / owner workflow
+coordination/memory-bridge-operation,coordination,0,keep,infrastructure / owner workflow
+coordination/multi-tool-architecture-assessment,coordination,0,keep,infrastructure / owner workflow
+coordination/next-wave-handoff-bundle,coordination,2,retire-after-rollout,old gate-chain process skill; replaced by /objective + coordinator (retire when the chain leaves AGENTS.md)
+coordination/oss-wiki-development-arc,coordination,0,keep,infrastructure / owner workflow
+coordination/overnight-worktree-agent-waves,coordination,0,retire-after-rollout,old gate-chain process skill; replaced by /objective + coordinator (retire when the chain leaves AGENTS.md)
+coordination/parallel-plan-drafting-worktrees,coordination,0,retire-after-rollout,old gate-chain process skill; replaced by /objective + coordinator (retire when the chain leaves AGENTS.md)
+coordination/periodic-skill-ecosystem-housekeeping-audit,coordination,0,keep,infrastructure / owner workflow
+coordination/plan-automation-contracts,coordination,0,retire-after-rollout,old gate-chain process skill; replaced by /objective + coordinator (retire when the chain leaves AGENTS.md)
+coordination/plan-exit-governance-drift-handoff,coordination,0,retire-after-rollout,old gate-chain process skill; replaced by /objective + coordinator (retire when the chain leaves AGENTS.md)
+coordination/plan-gated-overnight-queue-partition,coordination,0,retire-after-rollout,old gate-chain process skill; replaced by /objective + coordinator (retire when the chain leaves AGENTS.md)
+coordination/plan-rerun-state-revalidation,coordination,0,retire-after-rollout,old gate-chain process skill; replaced by /objective + coordinator (retire when the chain leaves AGENTS.md)
+coordination/plan-review-approval-shortlist-audit,coordination,0,retire-after-rollout,old gate-chain process skill; replaced by /objective + coordinator (retire when the chain leaves AGENTS.md)
+coordination/plan-review-queue-governance-cleanup,coordination,0,retire-after-rollout,old gate-chain process skill; replaced by /objective + coordinator (retire when the chain leaves AGENTS.md)
+coordination/pre-completion-cleanup-audit,coordination,1856,keep,AGENTS.md closeout step still names it; revisit when the old chain is removed
+coordination/provider-session-ecosystem-audit,coordination,2,keep,infrastructure / owner workflow
+coordination/provider-session-learning-transfer,coordination,24,keep,infrastructure / owner workflow
+coordination/roadmap-anchor-issue-governance,coordination,0,keep,infrastructure / owner workflow
+coordination/roadmap-issue-reopen-retarget-balance,coordination,0,keep,infrastructure / owner workflow
+coordination/roadmap-to-github-issue-wave,coordination,0,retire-after-rollout,old gate-chain process skill; replaced by /objective + coordinator (retire when the chain leaves AGENTS.md)
+coordination/session-corpus-audit,coordination,2,keep,infrastructure / owner workflow
+coordination/session-start-routine,coordination,0,keep,infrastructure / owner workflow
+coordination/shared-risk-workflow,coordination,279,retire-after-rollout,old gate-chain process skill; replaced by /objective + coordinator (retire when the chain leaves AGENTS.md)
+coordination/skill-chain-context-optimization,coordination,0,keep,infrastructure / owner workflow
+coordination/skill-ecosystem-curation,coordination,2,keep,infrastructure / owner workflow
+coordination/stage-prompt-drift-guard,coordination,0,retire-after-rollout,old gate-chain process skill; replaced by /objective + coordinator (retire when the chain leaves AGENTS.md)
+coordination/subagent-sandbox-limitations,coordination,0,keep,infrastructure / owner workflow
+coordination/worker-discovery-protocol,coordination,0,keep,infrastructure / owner workflow
+coordination/workflow-compliance-audit,coordination,34,retire-after-rollout,old gate-chain process skill; replaced by /objective + coordinator (retire when the chain leaves AGENTS.md)
+coordination/workflow-governance-assessment,coordination,0,keep,infrastructure / owner workflow
+coordination/workstation-aware-provider-orchestration,coordination,0,keep,infrastructure / owner workflow
+corporate-tax-form-fill,corporate-tax-form-fill,0,keep,domain or infrastructure
+creative/architecture-diagram,creative,0,retire-now,off-topic family
+creative/ascii-art,creative,0,retire-now,off-topic family
+creative/ascii-video,creative,0,retire-now,off-topic family
+creative/baoyu-article-illustrator,creative,0,retire-now,off-topic family
+creative/baoyu-comic,creative,0,retire-now,off-topic family
+creative/baoyu-infographic,creative,0,retire-now,off-topic family
+creative/claude-design,creative,0,retire-now,off-topic family
+creative/comfyui,creative,0,retire-now,off-topic family
+creative/creative-ideation,creative,0,retire-now,off-topic family
+creative/design-md,creative,0,retire-now,off-topic family
+creative/excalidraw,creative,0,retire-now,off-topic family
+creative/humanizer,creative,0,retire-now,off-topic family
+creative/manim-video,creative,0,retire-now,off-topic family
+creative/p5js,creative,0,retire-now,off-topic family
+creative/pixel-art,creative,0,retire-now,off-topic family
+creative/popular-web-designs,creative,0,retire-now,off-topic family
+creative/pretext,creative,0,retire-now,off-topic family
+creative/sketch,creative,0,retire-now,off-topic family
+creative/songwriting-and-ai-music,creative,0,retire-now,off-topic family
+creative/touchdesigner-mcp,creative,0,retire-now,off-topic family
+data-science/jupyter-live-kernel,data-science,0,keep,domain or infrastructure
+data/analysis/autoviz,data,0,keep,domain or infrastructure
+data/analysis/bsee-sodir-extraction,data,0,keep,domain or infrastructure
+data/analysis/dash,data,0,keep,domain or infrastructure
+data/analysis/data-analysis,data,0,keep,domain or infrastructure
+data/analysis/data-management,data,0,keep,domain or infrastructure
+data/analysis/excel-translation,data,0,keep,domain or infrastructure
+data/analysis/great-tables,data,0,keep,domain or infrastructure
+data/analysis/polars,data,0,keep,domain or infrastructure
+data/analysis/streamlit,data,0,keep,domain or infrastructure
+data/analysis/sweetviz,data,0,keep,domain or infrastructure
+data/analysis/ydata-profiling,data,0,keep,domain or infrastructure
+data/analytics/data-context-extractor,data,0,keep,domain or infrastructure
+data/analytics/data-exploration,data,0,keep,domain or infrastructure
+data/analytics/data-validation,data,0,keep,domain or infrastructure
+data/analytics/data-visualization,data,0,keep,domain or infrastructure
+data/analytics/interactive-dashboard-builder,data,0,keep,domain or infrastructure
+data/analytics/sql-queries,data,0,keep,domain or infrastructure
+data/analytics/statistical-analysis,data,0,keep,domain or infrastructure
+data/calculation-report,data,8,keep,domain or infrastructure
+data/dark-intelligence-workflow,data,0,keep,domain or infrastructure
+data/doc-intelligence-promotion,data,0,keep,domain or infrastructure
+data/doc-research-download,data,0,keep,domain or infrastructure
+data/document-index-pipeline,data,0,keep,domain or infrastructure
+data/documents/document-inventory,data,0,keep,domain or infrastructure
+data/documents/document-rag-pipeline,data,0,keep,domain or infrastructure
+data/documents/docx,data,0,keep,domain or infrastructure
+data/documents/knowledge-base-builder,data,0,keep,domain or infrastructure
+data/documents/md-to-pdf,data,0,keep,domain or infrastructure
+data/documents/pdf,data,0,keep,domain or infrastructure
+data/documents/pdf/large-reader,data,0,keep,domain or infrastructure
+data/documents/pdf/pdftotext-poppler,data,0,keep,domain or infrastructure
+data/documents/pdf/text-extractor,data,0,keep,domain or infrastructure
+data/documents/pdf/text-extractor/readability-classification,data,0,keep,domain or infrastructure
+data/documents/pdf/utilities,data,0,keep,domain or infrastructure
+data/documents/pptx,data,0,keep,domain or infrastructure
+data/documents/rag-system-builder,data,8,keep,domain or infrastructure
+data/documents/semantic-search-setup,data,0,keep,domain or infrastructure
+data/documents/xlsx,data,0,keep,domain or infrastructure
+data/drive-file-search,data,0,keep,domain or infrastructure
+data/ecosystem-data-sources,data,0,keep,domain or infrastructure
+data/energy/api12-drilling-analyzer,data,0,keep,domain or infrastructure
+data/energy/bsee-data-extractor,data,28,keep,domain or infrastructure
+data/energy/economic-sensitivity-analyzer,data,0,keep,domain or infrastructure
+data/energy/energy-data-visualizer,data,0,keep,domain or infrastructure
+data/energy/fdas-economics,data,0,keep,domain or infrastructure
+data/energy/field-analyzer,data,0,keep,domain or infrastructure
+data/energy/hse-risk-analyzer,data,0,keep,domain or infrastructure
+data/energy/marine-safety-incidents,data,0,keep,domain or infrastructure
+data/energy/metocean,data,0,keep,domain or infrastructure
+data/energy/metocean/data-fetcher,data,0,keep,domain or infrastructure
+data/energy/metocean/statistics,data,0,keep,domain or infrastructure
+data/energy/metocean/visualizer,data,0,keep,domain or infrastructure
+data/energy/npv-analyzer,data,20,keep,domain or infrastructure
+data/energy/production-forecaster,data,20,keep,domain or infrastructure
+data/energy/sodir-data-extractor,data,0,keep,domain or infrastructure
+data/energy/web-scraper-energy,data,0,keep,domain or infrastructure
+data/energy/well-production-dashboard,data,0,keep,domain or infrastructure
+data/engineering/orcaflex-enrichment,data,0,keep,domain or infrastructure
+data/excel-workbook-to-python-cowork,data,0,keep,domain or infrastructure
+data/excel-workbook-to-python-v2,data,0,keep,domain or infrastructure
+data/hf-dataset-publishing,data,0,keep,domain or infrastructure
+data/knowledge-pipeline,data,0,keep,domain or infrastructure
+data/matlab-dark-port,data,0,keep,domain or infrastructure
+data/office/docx-templates,data,0,keep,domain or infrastructure
+data/office/office-docs,data,0,keep,domain or infrastructure
+data/office/openpyxl,data,0,keep,domain or infrastructure
+data/office/pypdf,data,0,keep,domain or infrastructure
+data/office/python-docx,data,0,keep,domain or infrastructure
+data/office/python-pptx,data,0,keep,domain or infrastructure
+data/office/xlsx-to-python,data,2,keep,domain or infrastructure
+data/research-and-literature-gathering,data,0,keep,domain or infrastructure
+data/research-literature,data,0,keep,domain or infrastructure
+data/scientific/api-integration,data,0,keep,domain or infrastructure
+data/scientific/cad-mesh-generation,data,0,keep,domain or infrastructure
+data/scientific/numpy-numerical-analysis,data,0,keep,domain or infrastructure
+data/scientific/pandas-data-processing,data,0,keep,domain or infrastructure
+data/scientific/python-scientific-computing,data,0,keep,domain or infrastructure
+data/scientific/yaml-configuration,data,0,keep,domain or infrastructure
+data/visualization/chartjs,data,0,keep,domain or infrastructure
+data/visualization/d3js,data,0,keep,domain or infrastructure
+data/visualization/echarts,data,0,keep,domain or infrastructure
+data/visualization/highcharts,data,0,keep,domain or infrastructure
+data/visualization/plotly,data,2,keep,domain or infrastructure
+data/visualization/plotly-visualization,data,0,keep,domain or infrastructure
+data/worldenergydata-source-readiness,data,0,keep,domain or infrastructure
+development/adversarial-review-rerun-prompt-refresh,development,0,retire-after-rollout,old gate-chain process skill; replaced by /objective + coordinator (retire when the chain leaves AGENTS.md)
+development/artifact-commit-verification,development,0,keep,infrastructure / owner workflow
+development/automation/automation,development,0,keep,infrastructure / owner workflow
+development/ci-test-debugging-gotchas,development,0,keep,infrastructure / owner workflow
+development/code-reviewer,development,0,keep,infrastructure / owner workflow
+development/data-pipeline-processor,development,0,keep,infrastructure / owner workflow
+development/devtools/pyproject-toml,development,0,keep,infrastructure / owner workflow
+development/devtools/uv-package-manager,development,0,keep,infrastructure / owner workflow
+development/diagnose,development,0,keep,infrastructure / owner workflow
+development/doc-audit-and-close-workflow,development,0,keep,infrastructure / owner workflow
+development/docs-stale-reference-guardrails,development,0,keep,infrastructure / owner workflow
+development/documentation/documentation,development,0,keep,infrastructure / owner workflow
+development/documentation/docusaurus,development,0,retire-now,"generic doc-tool wrapper, unused"
+development/documentation/gitbook,development,0,retire-now,"generic doc-tool wrapper, unused"
+development/documentation/marp,development,0,retire-now,"generic doc-tool wrapper, unused"
+development/documentation/pandoc,development,0,keep,infrastructure / owner workflow
+development/documentation/sphinx,development,0,retire-now,"generic doc-tool wrapper, unused"
+development/elite-frontend-ux,development,0,keep,infrastructure / owner workflow
+development/engineering-report-generator,development,0,keep,infrastructure / owner workflow
+development/gh-issue-creation-full-repo-and-batch-setup,development,0,keep,infrastructure / owner workflow
+development/git-worktree-workflow,development,0,keep,infrastructure / owner workflow
+development/github/code-review,development,14,keep,infrastructure / owner workflow
+development/github/issue-tracker,development,0,keep,infrastructure / owner workflow
+development/github/modes,development,0,retire-now,claude-flow swarm leftover
+development/github/multi-repo,development,0,retire-now,claude-flow swarm leftover
+development/github/pr-manager,development,0,keep,infrastructure / owner workflow
+development/github/project-board,development,0,retire-now,claude-flow swarm leftover
+development/github/release-manager,development,0,retire-now,claude-flow swarm leftover
+development/github/release-swarm,development,0,retire-now,claude-flow swarm leftover
+development/github/repo-architect,development,0,retire-now,claude-flow swarm leftover
+development/github/swarm-issue,development,0,retire-now,claude-flow swarm leftover
+development/github/swarm-pr,development,0,retire-now,claude-flow swarm leftover
+development/github/sync,development,0,retire-now,claude-flow swarm leftover
+development/github/workflow,development,0,retire-now,claude-flow swarm leftover
+development/gitignore-scaffold,development,0,keep,infrastructure / owner workflow
+development/html-report-verify,development,0,keep,infrastructure / owner workflow
+development/improve-codebase-architecture,development,0,keep,infrastructure / owner workflow
+development/investigative-issue-workdown,development,0,keep,infrastructure / owner workflow
+development/issue-tree-decomposition,development,0,keep,infrastructure / owner workflow
+development/mcp-builder,development,0,keep,infrastructure / owner workflow
+development/parallel-file-processor,development,0,keep,infrastructure / owner workflow
+development/pipefail-grep-q-sigpipe-guard,development,0,keep,infrastructure / owner workflow
+development/planning/planning-code-goal,development,4,retire-after-rollout,old gate-chain process skill; replaced by /objective + coordinator (retire when the chain leaves AGENTS.md)
+development/planning/planning-goal,development,4,retire-after-rollout,old gate-chain process skill; replaced by /objective + coordinator (retire when the chain leaves AGENTS.md)
+development/planning/writing-plans,development,10,keep,infrastructure / owner workflow
+development/plugin-management/cowork-plugin-customizer,development,0,keep,infrastructure / owner workflow
+development/report-claim-discipline,development,0,keep,infrastructure / owner workflow
+development/semantic-taxonomy-reporting-consistency,development,0,keep,infrastructure / owner workflow
+development/shell-script-hardening-patterns,development,0,keep,infrastructure / owner workflow
+development/shell-tdd,development,0,keep,infrastructure / owner workflow
+development/skill-eval,development,46,keep,infrastructure / owner workflow
+development/sparc/sparc-architecture,development,0,retire-now,SPARC methodology superseded by objective flow
+development/sparc/sparc-pseudocode,development,0,retire-now,SPARC methodology superseded by objective flow
+development/sparc/sparc-refinement,development,0,retire-now,SPARC methodology superseded by objective flow
+development/sparc/sparc-specification,development,0,retire-now,SPARC methodology superseded by objective flow
+development/subagent-driven,development,0,keep,infrastructure / owner workflow
+development/systematic-debugging,development,6,keep,infrastructure / owner workflow
+development/targeted-artifact-commit-verification,development,0,keep,infrastructure / owner workflow
+development/tdd,development,0,keep,infrastructure / owner workflow
+development/tdd-obra,development,0,keep,infrastructure / owner workflow
+development/test-fixer,development,0,keep,infrastructure / owner workflow
+development/test-suit-repair-pattern,development,0,keep,infrastructure / owner workflow
+development/testing/pytest-fixture-generator,development,0,keep,infrastructure / owner workflow
+development/testing/testing-production,development,0,keep,infrastructure / owner workflow
+development/testing/testing-tdd-london,development,0,keep,infrastructure / owner workflow
+development/tools/devtools,development,0,keep,infrastructure / owner workflow
+development/verification-loop,development,0,keep,infrastructure / owner workflow
+development/webapp-testing,development,0,keep,infrastructure / owner workflow
+development/workflows/python-project-template,development,0,keep,infrastructure / owner workflow
+development/workflows/reporting-workflow,development,0,keep,infrastructure / owner workflow
+development/yaml-workflow-executor,development,0,keep,infrastructure / owner workflow
+development/zoom-out,development,0,keep,infrastructure / owner workflow
+devops/agent-learnings-portability,devops,0,keep,domain or infrastructure
+devops/hermes-ecosystem-integration,devops,0,keep,domain or infrastructure
+devops/hermes-kanban-readability,devops,0,keep,domain or infrastructure
+devops/hermes-local-configuration,devops,0,keep,domain or infrastructure
+devops/hermes-windows-setup,devops,0,keep,domain or infrastructure
+devops/kanban-orchestrator,devops,0,keep,domain or infrastructure
+devops/slim-git-history,devops,0,keep,domain or infrastructure
+devops/webhook-subscriptions,devops,0,keep,domain or infrastructure
+devtools/hermes-config-audit-gotchas,devtools,0,keep,domain or infrastructure
+digitalmodel/blender-worktree-test-hardening,digitalmodel,0,keep,domain or infrastructure
+digitalmodel/code-explorer,digitalmodel,0,keep,domain or infrastructure
+digitalmodel/digitalmodel-orcawave-orcaflex-proof-workflows,digitalmodel,0,keep,domain or infrastructure
+digitalmodel/digitalmodel-worktree-test-execution-with-shared-venv,digitalmodel,0,keep,domain or infrastructure
+digitalmodel/library-evaluation-integration,digitalmodel,0,keep,domain or infrastructure
+digitalmodel/module-lookup,digitalmodel,14,keep,domain or infrastructure
+digitalmodel/naval-architect-expert,digitalmodel,0,keep,domain or infrastructure
+digitalmodel/orcaflex-reporting-fixture-proof-pattern,digitalmodel,0,keep,domain or infrastructure
+email/_archived/gmail-data-extraction,email,0,retire-now,already marked archived
+email/_archived/gmail-email-to-repo-extraction,email,0,retire-now,already marked archived
+email/_archived/gmail-extract-and-clean,email,0,retire-now,already marked archived
+email/_archived/gmail-extract-archive,email,0,retire-now,already marked archived
+email/_archived/gmail-touchbase,email,0,retire-now,already marked archived
+email/_archived/gmail-unsubscribe,email,0,retire-now,already marked archived
+email/contact-manager,email,0,keep,domain or infrastructure
+email/gmail-attachment-to-document,email,0,keep,domain or infrastructure
+email/gmail-data-extraction,email,0,keep,domain or infrastructure
+email/gmail-extract-and-act,email,0,keep,domain or infrastructure
+email/gmail-headless-oauth,email,0,keep,domain or infrastructure
+email/gmail-multi-account,email,0,keep,domain or infrastructure
+email/gmail-operations,email,4,keep,domain or infrastructure
+email/gmail-outreach,email,0,keep,domain or infrastructure
+email/gmail-triage,email,0,keep,domain or infrastructure
+email/himalaya,email,0,keep,domain or infrastructure
+engineering/asset-integrity/fitness-for-service,engineering,0,keep,domain or infrastructure
+engineering/cad/blender,engineering,0,keep,domain or infrastructure
+engineering/cad/cad-engineering,engineering,0,keep,domain or infrastructure
+engineering/cad/freecad-automation,engineering,0,keep,domain or infrastructure
+engineering/cad/gmsh-meshing,engineering,2,keep,domain or infrastructure
+engineering/cad/pyvista-3d,engineering,0,keep,domain or infrastructure
+engineering/cad/solidworks-to-blender-pipeline,engineering,0,keep,domain or infrastructure
+engineering/cfd/openfoam,engineering,0,keep,domain or infrastructure
+engineering/cfd/openfoam/analysis,engineering,0,keep,domain or infrastructure
+engineering/doc-extraction,engineering,0,keep,domain or infrastructure
+engineering/doc-extraction/cp,engineering,0,keep,domain or infrastructure
+engineering/doc-extraction/drilling-riser,engineering,0,keep,domain or infrastructure
+engineering/doc-extraction/naval-architecture,engineering,0,keep,domain or infrastructure
+engineering/drilling,engineering,8,keep,domain or infrastructure
+engineering/drilling/drillbotics,engineering,0,keep,domain or infrastructure
+engineering/engineering-domain-reconnaissance,engineering,0,keep,domain or infrastructure
+engineering/financial-analysis,engineering,8,keep,domain or infrastructure
+engineering/gis/gis-informed-workflow,engineering,0,keep,domain or infrastructure
+engineering/gis/google-earth-engine,engineering,0,keep,domain or infrastructure
+engineering/gis/python-gis-ecosystem,engineering,0,keep,domain or infrastructure
+engineering/gis/qgis,engineering,0,keep,domain or infrastructure
+engineering/marine-offshore/aqwa,engineering,0,keep,domain or infrastructure
+engineering/marine-offshore/aqwa/batch-execution,engineering,0,keep,domain or infrastructure
+engineering/marine-offshore/aqwa/input,engineering,0,keep,domain or infrastructure
+engineering/marine-offshore/aqwa/output,engineering,0,keep,domain or infrastructure
+engineering/marine-offshore/aqwa/reference,engineering,0,keep,domain or infrastructure
+engineering/marine-offshore/bemrosetta,engineering,0,keep,domain or infrastructure
+engineering/marine-offshore/catenary-riser,engineering,0,keep,domain or infrastructure
+engineering/marine-offshore/cathodic-protection,engineering,8,keep,domain or infrastructure
+engineering/marine-offshore/diffraction-analysis,engineering,0,keep,domain or infrastructure
+engineering/marine-offshore/fatigue-analysis,engineering,0,keep,domain or infrastructure
+engineering/marine-offshore/fe-analyst,engineering,0,keep,domain or infrastructure
+engineering/marine-offshore/hydrodynamic-analysis,engineering,0,keep,domain or infrastructure
+engineering/marine-offshore/hydrodynamics,engineering,0,keep,domain or infrastructure
+engineering/marine-offshore/marine-offshore-engineering,engineering,0,keep,domain or infrastructure
+engineering/marine-offshore/marine-safety,engineering,0,keep,domain or infrastructure
+engineering/marine-offshore/mesh-utilities,engineering,0,keep,domain or infrastructure
+engineering/marine-offshore/mooring-analysis,engineering,0,keep,domain or infrastructure
+engineering/marine-offshore/mooring-design,engineering,0,keep,domain or infrastructure
+engineering/marine-offshore/naval-architecture,engineering,0,keep,domain or infrastructure
+engineering/marine-offshore/orcaflex,engineering,0,keep,domain or infrastructure
+engineering/marine-offshore/orcaflex/batch-manager,engineering,0,keep,domain or infrastructure
+engineering/marine-offshore/orcaflex/code-check,engineering,0,keep,domain or infrastructure
+engineering/marine-offshore/orcaflex/environment-config,engineering,0,keep,domain or infrastructure
+engineering/marine-offshore/orcaflex/extreme-analysis,engineering,0,keep,domain or infrastructure
+engineering/marine-offshore/orcaflex/file-conversion,engineering,0,keep,domain or infrastructure
+engineering/marine-offshore/orcaflex/installation-analysis,engineering,0,keep,domain or infrastructure
+engineering/marine-offshore/orcaflex/jumper-analysis,engineering,0,keep,domain or infrastructure
+engineering/marine-offshore/orcaflex/line-wizard,engineering,0,keep,domain or infrastructure
+engineering/marine-offshore/orcaflex/modal-analysis,engineering,0,keep,domain or infrastructure
+engineering/marine-offshore/orcaflex/model-generator,engineering,0,keep,domain or infrastructure
+engineering/marine-offshore/orcaflex/model-sanitization,engineering,0,keep,domain or infrastructure
+engineering/marine-offshore/orcaflex/modeling,engineering,0,keep,domain or infrastructure
+engineering/marine-offshore/orcaflex/monolithic-to-modular,engineering,0,keep,domain or infrastructure
+engineering/marine-offshore/orcaflex/mooring-iteration,engineering,0,keep,domain or infrastructure
+engineering/marine-offshore/orcaflex/operability,engineering,0,keep,domain or infrastructure
+engineering/marine-offshore/orcaflex/post-processing,engineering,0,keep,domain or infrastructure
+engineering/marine-offshore/orcaflex/rao-import,engineering,0,keep,domain or infrastructure
+engineering/marine-offshore/orcaflex/results-comparison,engineering,0,keep,domain or infrastructure
+engineering/marine-offshore/orcaflex/spec-audit,engineering,0,keep,domain or infrastructure
+engineering/marine-offshore/orcaflex/specialist,engineering,0,keep,domain or infrastructure
+engineering/marine-offshore/orcaflex/static-debug,engineering,0,keep,domain or infrastructure
+engineering/marine-offshore/orcaflex/vessel-setup,engineering,0,keep,domain or infrastructure
+engineering/marine-offshore/orcaflex/visualization,engineering,0,keep,domain or infrastructure
+engineering/marine-offshore/orcaflex/yaml-gotchas,engineering,0,keep,domain or infrastructure
+engineering/marine-offshore/orcawave,engineering,0,keep,domain or infrastructure
+engineering/marine-offshore/orcawave/analysis,engineering,0,keep,domain or infrastructure
+engineering/marine-offshore/orcawave/aqwa-benchmark,engineering,0,keep,domain or infrastructure
+engineering/marine-offshore/orcawave/damping-sweep,engineering,0,keep,domain or infrastructure
+engineering/marine-offshore/orcawave/mesh-generation,engineering,0,keep,domain or infrastructure
+engineering/marine-offshore/orcawave/multi-body,engineering,0,keep,domain or infrastructure
+engineering/marine-offshore/orcawave/qtf-analysis,engineering,0,keep,domain or infrastructure
+engineering/marine-offshore/orcawave/to-orcaflex,engineering,0,keep,domain or infrastructure
+engineering/marine-offshore/production-engineering,engineering,0,keep,domain or infrastructure
+engineering/marine-offshore/risk-assessment,engineering,8,keep,domain or infrastructure
+engineering/marine-offshore/ship-dynamics-6dof,engineering,0,keep,domain or infrastructure
+engineering/marine-offshore/signal-analysis,engineering,0,keep,domain or infrastructure
+engineering/marine-offshore/solver-benchmark,engineering,0,keep,domain or infrastructure
+engineering/marine-offshore/structural-analysis,engineering,0,keep,domain or infrastructure
+engineering/marine-offshore/viv-analysis,engineering,0,keep,domain or infrastructure
+engineering/marine-offshore/wave-theory,engineering,0,keep,domain or infrastructure
+engineering/maritime-legal,engineering,0,keep,domain or infrastructure
+engineering/oil-and-gas,engineering,8,keep,domain or infrastructure
+engineering/standards/api,engineering,0,keep,domain or infrastructure
+engineering/standards/astm,engineering,0,keep,domain or infrastructure
+engineering/standards/dnv,engineering,0,keep,domain or infrastructure
+engineering/standards/iso,engineering,0,keep,domain or infrastructure
+engineering/standards/norsok,engineering,0,keep,domain or infrastructure
+engineering/units,engineering,0,keep,domain or infrastructure
+extract-learnings-to-issues,extract-learnings-to-issues,0,keep,domain or infrastructure
+field-dev-code-recon,field-dev-code-recon,0,keep,domain or infrastructure
+finance/c-corp-rd-tax-strategy,finance,0,keep,domain or infrastructure
+finance/tax-consultant-nnn-property,finance,0,keep,domain or infrastructure
+finance/tax-filing-strategy-and-packets,finance,0,keep,domain or infrastructure
+gaming/minecraft-modpack-server,gaming,0,retire-now,off-topic family
+gaming/pokemon-player,gaming,0,retire-now,off-topic family
+github/codebase-inspection,github,0,keep,domain or infrastructure
+github/domain-gap-to-issue-roadmap,github,0,keep,domain or infrastructure
+github/engineering-solver-domain-recon,github,0,keep,domain or infrastructure
+github/external-repo-adoption-recon,github,0,keep,domain or infrastructure
+github/github-auth,github,6,keep,domain or infrastructure
+github/github-comment-body-file-safety,github,0,keep,domain or infrastructure
+github/github-interaction-limits-hardening,github,0,keep,domain or infrastructure
+github/github-issue-automation-evidence-fields,github,0,keep,domain or infrastructure
+github/github-issue-closeout-race-safe,github,2,retire-after-rollout,old gate-chain process skill; replaced by /objective + coordinator (retire when the chain leaves AGENTS.md)
+github/github-issue-label-audit-and-command-bundles,github,0,keep,domain or infrastructure
+github/github-issue-label-existence-audit,github,0,keep,domain or infrastructure
+github/github-issue-lifecycle-operations,github,4,keep,domain or infrastructure
+github/github-issues,github,0,keep,domain or infrastructure
+github/github-pr-workflow,github,8,keep,domain or infrastructure
+github/github-repo-management,github,0,keep,domain or infrastructure
+github/github-roadmap-anchor-reuse,github,0,keep,domain or infrastructure
+github/github-visual-planning-issues,github,0,retire-after-rollout,old gate-chain process skill; replaced by /objective + coordinator (retire when the chain leaves AGENTS.md)
+github/issue-portfolio-triage,github,0,keep,domain or infrastructure
+github/repo-architecture-analysis,github,0,keep,domain or infrastructure
+leisure/find-nearby,leisure,0,retire-now,off-topic family
+marketing/bd-pipeline-review,marketing,0,retire-now,off-topic family
+marketing/capability-collateral,marketing,0,retire-now,off-topic family
+marketing/content-calendar,marketing,0,retire-now,off-topic family
+marketing/linkedin-funnel-ops,marketing,0,retire-now,off-topic family
+marketing/linkedin-post-to-gtm-ingestion,marketing,0,retire-now,off-topic family
+marketing/marketing-campaign-plan,marketing,0,retire-now,off-topic family
+marketing/targeted-outreach-sequence,marketing,0,retire-now,off-topic family
+mcp/mcporter,mcp,0,keep,domain or infrastructure
+mcp/native-mcp,mcp,0,keep,domain or infrastructure
+media/gif-search,media,0,retire-now,off-topic family
+media/heartmula,media,0,retire-now,off-topic family
+media/songsee,media,0,retire-now,off-topic family
+media/spotify,media,0,retire-now,off-topic family
+media/youtube-content,media,0,retire-now,off-topic family
+memory/hermes-memory-bridge,memory,0,keep,domain or infrastructure
+memory/memory-bridge-operations,memory,0,keep,domain or infrastructure
+memory/recall,memory,2,keep,domain or infrastructure
+mlops/cloud/modal,mlops,0,retire-now,off-topic family
+mlops/evaluation/lm-evaluation-harness,mlops,0,retire-now,off-topic family
+mlops/evaluation/weights-and-biases,mlops,0,retire-now,off-topic family
+mlops/huggingface-hub,mlops,0,retire-now,off-topic family
+mlops/inference/gguf,mlops,0,retire-now,off-topic family
+mlops/inference/guidance,mlops,0,retire-now,off-topic family
+mlops/inference/llama-cpp,mlops,0,retire-now,off-topic family
+mlops/inference/obliteratus,mlops,0,retire-now,off-topic family
+mlops/inference/outlines,mlops,0,retire-now,off-topic family
+mlops/inference/vllm,mlops,0,retire-now,off-topic family
+mlops/models/audiocraft,mlops,0,retire-now,off-topic family
+mlops/models/clip,mlops,0,retire-now,off-topic family
+mlops/models/segment-anything,mlops,0,retire-now,off-topic family
+mlops/models/stable-diffusion,mlops,0,retire-now,off-topic family
+mlops/models/whisper,mlops,0,retire-now,off-topic family
+mlops/training/axolotl,mlops,0,retire-now,off-topic family
+mlops/training/grpo-rl-training,mlops,0,retire-now,off-topic family
+mlops/training/peft,mlops,0,retire-now,off-topic family
+mlops/training/pytorch-fsdp,mlops,0,retire-now,off-topic family
+mlops/training/trl-fine-tuning,mlops,0,retire-now,off-topic family
+mlops/training/unsloth,mlops,0,retire-now,off-topic family
+operations/automation/activepieces,operations,0,keep,domain or infrastructure
+operations/automation/airflow,operations,0,keep,domain or infrastructure
+operations/automation/cron-job-management,operations,0,keep,domain or infrastructure
+operations/automation/github-actions,operations,0,keep,domain or infrastructure
+operations/automation/n8n,operations,0,keep,domain or infrastructure
+operations/automation/windmill,operations,0,keep,domain or infrastructure
+operations/devops/hardware-assessment,operations,0,keep,domain or infrastructure
+operations/devops/perf-tuning,operations,0,keep,domain or infrastructure
+operations/devtools/ai-tool-assessment,operations,0,keep,domain or infrastructure
+operations/devtools/background-service-manager,operations,0,keep,domain or infrastructure
+operations/devtools/cli-productivity,operations,0,keep,domain or infrastructure
+operations/devtools/docker,operations,0,keep,domain or infrastructure
+operations/devtools/git-advanced,operations,0,keep,domain or infrastructure
+operations/devtools/raycast-alfred,operations,0,keep,domain or infrastructure
+operations/devtools/vscode-extensions,operations,0,keep,domain or infrastructure
+operations/mnt-analysis-cleanup,operations,2,keep,domain or infrastructure
+operations/telegram-hermes-bot,operations,16,keep,domain or infrastructure
+productivity/airtable,productivity,0,retire-now,generic third-party tool wrapper
+productivity/google-workspace,productivity,0,retire-now,generic third-party tool wrapper
+productivity/grill-me,productivity,0,retire-now,generic third-party tool wrapper
+productivity/handoff,productivity,0,keep,infrastructure / owner workflow
+productivity/linear,productivity,0,retire-now,generic third-party tool wrapper
+productivity/maps,productivity,0,retire-now,generic third-party tool wrapper
+productivity/nano-pdf,productivity,0,retire-now,generic third-party tool wrapper
+productivity/notion,productivity,0,retire-now,generic third-party tool wrapper
+productivity/ocr-and-documents,productivity,0,keep,infrastructure / owner workflow
+productivity/powerpoint,productivity,0,keep,infrastructure / owner workflow
+productivity/teams-meeting-pipeline,productivity,0,retire-now,generic third-party tool wrapper
+red-teaming/godmode,red-teaming,0,retire-now,off-topic family
+research/arxiv,research,0,keep,infrastructure / owner workflow
+research/blogwatcher,research,0,retire-now,off-topic
+research/gtm-job-market-scan,research,0,keep,infrastructure / owner workflow
+research/llm-wiki,research,0,keep,infrastructure / owner workflow
+research/llm-wiki-audit-feedback-loop,research,0,keep,infrastructure / owner workflow
+research/llm-wiki-cadence-governance,research,0,keep,infrastructure / owner workflow
+research/llm-wiki-page-shape-contract,research,0,keep,infrastructure / owner workflow
+research/llm-wiki-public-private-routing,research,6,keep,infrastructure / owner workflow
+research/llm-wiki-source-extraction-coverage,research,0,keep,infrastructure / owner workflow
+research/llm-wiki-weekly-freshness,research,0,keep,infrastructure / owner workflow
+research/ml-paper-writing,research,0,retire-now,off-topic
+research/polymarket,research,0,retire-now,off-topic
+research/public-knowledge-graph-governance,research,0,keep,infrastructure / owner workflow
+research/research-paper-writing,research,0,retire-now,off-topic
+research/wiki-context,research,0,keep,infrastructure / owner workflow
+science/bio-research/clinical-trial-protocol,science,0,retire-now,off-topic family
+science/bio-research/instrument-data-allotrope,science,0,retire-now,off-topic family
+science/bio-research/nextflow-pipelines,science,0,retire-now,off-topic family
+science/bio-research/scientific-problem-selection,science,0,retire-now,off-topic family
+science/bio-research/scvi-tools,science,0,retire-now,off-topic family
+science/bio-research/single-cell-rna-qc,science,0,retire-now,off-topic family
+smart-home/openhue,smart-home,0,retire-now,off-topic family
+social-media/xitter,social-media,0,retire-now,off-topic family
+social-media/xurl,social-media,0,retire-now,off-topic family
+software-development/absolute-path-review-dispatch-guard,software-development,0,retire-now,"Hermes/provider-specific workaround, superseded"
+software-development/absolute-path-review-prompt-dispatch,software-development,0,retire-after-rollout,old gate-chain process skill; replaced by /objective + coordinator (retire when the chain leaves AGENTS.md)
+software-development/adversarial-review-prompt-refresh-guard,software-development,0,retire-after-rollout,old gate-chain process skill; replaced by /objective + coordinator (retire when the chain leaves AGENTS.md)
+software-development/approval-stage-plan-hygiene,software-development,0,retire-after-rollout,old gate-chain process skill; replaced by /objective + coordinator (retire when the chain leaves AGENTS.md)
+software-development/approval-stage-plan-review-sweep,software-development,2,retire-after-rollout,old gate-chain process skill; replaced by /objective + coordinator (retire when the chain leaves AGENTS.md)
+software-development/artifact-inline-no-tools-plan-review,software-development,0,retire-after-rollout,old gate-chain process skill; replaced by /objective + coordinator (retire when the chain leaves AGENTS.md)
+software-development/artifact-inline-plan-rereview,software-development,0,retire-after-rollout,old gate-chain process skill; replaced by /objective + coordinator (retire when the chain leaves AGENTS.md)
+software-development/bulk-docstring-addition,software-development,0,retire-now,"Hermes/provider-specific workaround, superseded"
+software-development/compact-no-tools-plan-review-recovery,software-development,0,retire-after-rollout,old gate-chain process skill; replaced by /objective + coordinator (retire when the chain leaves AGENTS.md)
+software-development/debugging-hermes-tui-commands,software-development,0,retire-now,"Hermes/provider-specific workaround, superseded"
+software-development/gemini-review-capacity-recovery,software-development,0,retire-now,"Hermes/provider-specific workaround, superseded"
+software-development/gh-work-execution,software-development,0,retire-after-rollout,old gate-chain process skill; replaced by /objective + coordinator (retire when the chain leaves AGENTS.md)
+software-development/gh-work-execution-checklist,software-development,0,retire-after-rollout,old gate-chain process skill; replaced by /objective + coordinator (retire when the chain leaves AGENTS.md)
+software-development/gsd-operational-audit,software-development,0,retire-after-rollout,old gate-chain process skill; replaced by /objective + coordinator (retire when the chain leaves AGENTS.md)
+software-development/hermes-agent-skill-authoring,software-development,0,retire-now,"Hermes/provider-specific workaround, superseded"
+software-development/multi-machine-ai-readiness-and-issue-triage,software-development,0,retire-now,"Hermes/provider-specific workaround, superseded"
+software-development/multi-provider-adversarial-review,software-development,20,retire-after-rollout,old gate-chain process skill; replaced by /objective + coordinator (retire when the chain leaves AGENTS.md)
+software-development/node-inspect-debugger,software-development,0,keep,infrastructure / owner workflow
+software-development/overnight-parallel-agent-prompts,software-development,0,retire-after-rollout,old gate-chain process skill; replaced by /objective + coordinator (retire when the chain leaves AGENTS.md)
+software-development/overnight-verify-close-batch,software-development,0,retire-after-rollout,old gate-chain process skill; replaced by /objective + coordinator (retire when the chain leaves AGENTS.md)
+software-development/parallel-approved-issue-worktrees,software-development,0,retire-now,"Hermes/provider-specific workaround, superseded"
+software-development/plan,software-development,0,retire-now,"Hermes/provider-specific workaround, superseded"
+software-development/plan-rerun-review-state-sync,software-development,0,retire-after-rollout,old gate-chain process skill; replaced by /objective + coordinator (retire when the chain leaves AGENTS.md)
+software-development/plan-resubmit-wave-prompts,software-development,0,retire-after-rollout,old gate-chain process skill; replaced by /objective + coordinator (retire when the chain leaves AGENTS.md)
+software-development/plan-review-adversarial-hardening,software-development,0,retire-after-rollout,old gate-chain process skill; replaced by /objective + coordinator (retire when the chain leaves AGENTS.md)
+software-development/provider-review-prompt-path-guard,software-development,0,retire-after-rollout,old gate-chain process skill; replaced by /objective + coordinator (retire when the chain leaves AGENTS.md)
+software-development/python-debugpy,software-development,0,keep,infrastructure / owner workflow
+software-development/re-review-local-plan-artifact-grounding,software-development,0,retire-after-rollout,old gate-chain process skill; replaced by /objective + coordinator (retire when the chain leaves AGENTS.md)
+software-development/requesting-code-review,software-development,0,keep,infrastructure / owner workflow
+software-development/single-terminal-gh-issue-prompts,software-development,0,retire-now,"Hermes/provider-specific workaround, superseded"
+software-development/skeleton-test-coverage-uplift,software-development,0,retire-now,"Hermes/provider-specific workaround, superseded"
+software-development/spike,software-development,0,keep,infrastructure / owner workflow
+software-development/subagent-driven-development,software-development,0,keep,infrastructure / owner workflow
+software-development/test-driven-development,software-development,0,keep,infrastructure / owner workflow
+software-development/workspace-hub-batch-issue-execution,software-development,0,retire-after-rollout,old gate-chain process skill; replaced by /objective + coordinator (retire when the chain leaves AGENTS.md)
+test-dummy-validation/dummy-backfill-test,test-dummy-validation,2,retire-now,off-topic family
+travel/booking-timeline,travel,0,retire-now,off-topic family
+travel/cost-estimation,travel,0,retire-now,off-topic family
+travel/itinerary-design,travel,0,retire-now,off-topic family
+travel/lodging-selection,travel,0,retire-now,off-topic family
+travel/risk-and-redundancy,travel,0,retire-now,off-topic family
+travel/transport-and-passes,travel,0,retire-now,off-topic family
+travel/trip-planner,travel,0,retire-now,off-topic family
+travel/visual-review-board,travel,0,retire-now,off-topic family
+workspace-hub-learned/artifact-inline-local-plan-rereview,workspace-hub-learned,0,retire-after-rollout,old gate-chain process
+workspace-hub-learned/artifact-inline-plan-review-for-local-draft-revisions,workspace-hub-learned,0,retire-after-rollout,old gate-chain process
+workspace-hub-learned/avoid-empty-review-artifact-evidence-in-plan-redrafts,workspace-hub-learned,0,retire-after-rollout,old gate-chain process
+workspace-hub-learned/background-claude-worktree-absolute-path-launch,workspace-hub-learned,0,retire-now,"auto-learned session note, unused in retained sessions"
+workspace-hub-learned/blocked-branch-preserve-tag-cleanup,workspace-hub-learned,0,retire-now,"auto-learned session note, unused in retained sessions"
+workspace-hub-learned/bounded-post-smoke-ci-hardening-plan,workspace-hub-learned,0,retire-after-rollout,old gate-chain process
+workspace-hub-learned/canonical-doc-contract-plan-hardening,workspace-hub-learned,0,retire-after-rollout,old gate-chain process
+workspace-hub-learned/claude-quota-failover-to-codex-for-overnight-plan-lanes,workspace-hub-learned,0,retire-after-rollout,old gate-chain process
+workspace-hub-learned/closure-first-overnight-batch,workspace-hub-learned,0,retire-after-rollout,old gate-chain process
+workspace-hub-learned/codex-skill-loader-broken-symlink-recovery,workspace-hub-learned,0,retire-now,"auto-learned session note, unused in retained sessions"
+workspace-hub-learned/credential-scanner-safe-skill-authoring,workspace-hub-learned,0,retire-now,"auto-learned session note, unused in retained sessions"
+workspace-hub-learned/diagnose-stale-pycache-import-mismatch,workspace-hub-learned,0,retire-now,"auto-learned session note, unused in retained sessions"
+workspace-hub-learned/dirty-main-narrow-fix-promotion-with-stash-recovery,workspace-hub-learned,0,retire-now,"auto-learned session note, unused in retained sessions"
+workspace-hub-learned/documentation-contract-plan-hardening,workspace-hub-learned,0,retire-after-rollout,old gate-chain process
+workspace-hub-learned/full-branch-cleanup-and-worktree-hygiene,workspace-hub-learned,2,keep,infrastructure / owner workflow
+workspace-hub-learned/git-operation-serialization-preflight,workspace-hub-learned,0,retire-now,"auto-learned session note, unused in retained sessions"
+workspace-hub-learned/github-actions-cross-platform-validation-gotchas,workspace-hub-learned,0,retire-now,"auto-learned session note, unused in retained sessions"
+workspace-hub-learned/github-actions-trigger-and-shell-gotchas,workspace-hub-learned,0,retire-now,"auto-learned session note, unused in retained sessions"
+workspace-hub-learned/gtm-demo-validation-and-preview-gif-workflow,workspace-hub-learned,0,retire-now,"auto-learned session note, unused in retained sessions"
+workspace-hub-learned/gtm-demo-validation-cache-regression-repair,workspace-hub-learned,0,retire-now,"auto-learned session note, unused in retained sessions"
+workspace-hub-learned/gtm-demo-workflow-gif-generation,workspace-hub-learned,0,retire-now,"auto-learned session note, unused in retained sessions"
+workspace-hub-learned/gtm-prospect-pipeline-phased-execution,workspace-hub-learned,0,retire-now,"auto-learned session note, unused in retained sessions"
+workspace-hub-learned/gtm-signal-to-engineering-artifact-conversion,workspace-hub-learned,0,retire-now,"auto-learned session note, unused in retained sessions"
+workspace-hub-learned/gtm-signals-to-engineering-artifacts,workspace-hub-learned,0,retire-now,"auto-learned session note, unused in retained sessions"
+workspace-hub-learned/gtm-site-readiness-audit-local-vs-production,workspace-hub-learned,0,retire-now,"auto-learned session note, unused in retained sessions"
+workspace-hub-learned/gtm-workflow-gif-generation,workspace-hub-learned,0,retire-now,"auto-learned session note, unused in retained sessions"
+workspace-hub-learned/interactive-issue-execution-worktree-guardrails,workspace-hub-learned,0,retire-now,"auto-learned session note, unused in retained sessions"
+workspace-hub-learned/iterative-plan-hardening-with-adversarial-waves,workspace-hub-learned,0,retire-after-rollout,old gate-chain process
+workspace-hub-learned/iterative-plan-redraft-semantic-guardrails,workspace-hub-learned,0,retire-after-rollout,old gate-chain process
+workspace-hub-learned/large-lint-gate-restoration-wave,workspace-hub-learned,0,retire-after-rollout,old gate-chain process
+workspace-hub-learned/large-parallel-planning-wave-environment-failure-handoff,workspace-hub-learned,0,retire-after-rollout,old gate-chain process
+workspace-hub-learned/live-state-aware-overnight-implementation-prompts,workspace-hub-learned,0,retire-after-rollout,old gate-chain process
+workspace-hub-learned/live-writer-branch-cleanup-guard,workspace-hub-learned,0,retire-now,"auto-learned session note, unused in retained sessions"
+workspace-hub-learned/llm-wiki-ecosystem-gap-to-issues,workspace-hub-learned,0,retire-now,"auto-learned session note, unused in retained sessions"
+workspace-hub-learned/orcawave-orcaflex-semantic-proof-wave-closeout,workspace-hub-learned,0,retire-after-rollout,old gate-chain process
+workspace-hub-learned/overnight-plan-artifact-placement-drift-reconciliation,workspace-hub-learned,0,retire-after-rollout,old gate-chain process
+workspace-hub-learned/overnight-plan-wave-artifact-drift-reconciliation,workspace-hub-learned,0,retire-after-rollout,old gate-chain process
+workspace-hub-learned/overnight-planning-noop-run-salvage,workspace-hub-learned,0,retire-after-rollout,old gate-chain process
+workspace-hub-learned/overnight-pre-plan-review-wave-artifact-drift,workspace-hub-learned,0,retire-after-rollout,old gate-chain process
+workspace-hub-learned/overnight-verify-close-and-blocker-conversion,workspace-hub-learned,2,retire-after-rollout,old gate-chain process skill; replaced by /objective + coordinator (retire when the chain leaves AGENTS.md)
+workspace-hub-learned/overnight-wave-pack-worktree-isolation,workspace-hub-learned,0,retire-after-rollout,old gate-chain process
+workspace-hub-learned/overnight-worktree-claude-noop-recovery,workspace-hub-learned,0,retire-after-rollout,old gate-chain process
+workspace-hub-learned/overnight-worktree-uv-warmup-and-log-path-guardrails,workspace-hub-learned,0,retire-after-rollout,old gate-chain process
+workspace-hub-learned/overnight-worktree-verification-fallback,workspace-hub-learned,0,retire-after-rollout,old gate-chain process
+workspace-hub-learned/parallel-llm-wiki-gap-to-issues,workspace-hub-learned,0,retire-now,"auto-learned session note, unused in retained sessions"
+workspace-hub-learned/plan-draft-review-artifact-truthfulness-and-issue-body-alignment,workspace-hub-learned,0,retire-after-rollout,old gate-chain process
+workspace-hub-learned/plan-governance-vs-execution-boundary-for-adversarial-review,workspace-hub-learned,0,retire-after-rollout,old gate-chain process
+workspace-hub-learned/plan-review-artifact-authority-and-approval-drift,workspace-hub-learned,0,retire-after-rollout,old gate-chain process
+workspace-hub-learned/plan-review-fanout-runner-drift-recovery,workspace-hub-learned,0,retire-after-rollout,old gate-chain process
+workspace-hub-learned/plan-review-handoff-verification,workspace-hub-learned,0,retire-after-rollout,old gate-chain process
+workspace-hub-learned/plan-review-prompt-refresh-after-plan-edits,workspace-hub-learned,0,retire-after-rollout,old gate-chain process
+workspace-hub-learned/plan-review-rerun-cli-drift-and-git-contention,workspace-hub-learned,0,retire-after-rollout,old gate-chain process
+workspace-hub-learned/planning-lane-cross-review-permission-fallback,workspace-hub-learned,0,retire-after-rollout,old gate-chain process
+workspace-hub-learned/post-smoke-ci-plan-boundary-hardening,workspace-hub-learned,0,retire-after-rollout,old gate-chain process
+workspace-hub-learned/preserved-plan-refile-with-attested-review-wave,workspace-hub-learned,0,retire-after-rollout,old gate-chain process
+workspace-hub-learned/provider-audit-bootstrap-and-path-classification,workspace-hub-learned,0,retire-now,"auto-learned session note, unused in retained sessions"
+workspace-hub-learned/repair-legacy-llm-wiki-frontmatter-dates,workspace-hub-learned,0,retire-now,"auto-learned session note, unused in retained sessions"
+workspace-hub-learned/repo-sync-deleted-remote-branch-and-unrelated-history-recovery,workspace-hub-learned,0,retire-now,"auto-learned session note, unused in retained sessions"
+workspace-hub-learned/session-start-dirty-state-triage-with-background-agents,workspace-hub-learned,0,retire-now,"auto-learned session note, unused in retained sessions"
+workspace-hub-learned/skill-dedup-collision-reconciliation-with-content-security-scan,workspace-hub-learned,0,retire-now,"auto-learned session note, unused in retained sessions"
+workspace-hub-learned/split-plan-governance-vs-substance,workspace-hub-learned,0,retire-after-rollout,old gate-chain process
+workspace-hub-learned/static-site-brand-identity-migration-tdd,workspace-hub-learned,0,retire-now,"auto-learned session note, unused in retained sessions"
+workspace-hub-learned/static-site-build-artifact-plan-review,workspace-hub-learned,0,retire-after-rollout,old gate-chain process
+workspace-hub-learned/subagent-write-verification,workspace-hub-learned,0,retire-now,"auto-learned session note, unused in retained sessions"
+workspace-hub-learned/ten-agent-pre-plan-review-wave,workspace-hub-learned,0,retire-after-rollout,old gate-chain process
+workspace-hub-learned/user-approved-plan-state-sync,workspace-hub-learned,0,retire-after-rollout,old gate-chain process
+workspace-hub-learned/wed-field-hub-drilldown-pages,workspace-hub-learned,0,retire-now,"auto-learned session note, unused in retained sessions"
+workspace-hub-learned/workspace-hub-mission-contract-first-packet,workspace-hub-learned,0,retire-now,"auto-learned session note, unused in retained sessions"
+workspace-hub-learned/workspace-hub-sync-concurrent-writer-blocks,workspace-hub-learned,0,retire-now,"auto-learned session note, unused in retained sessions"
+workspace-hub-learned/workspace-hub-sync-root-churn-catchup,workspace-hub-learned,0,retire-now,"auto-learned session note, unused in retained sessions"
+workspace-hub/agent-teams,workspace-hub,0,keep,infrastructure / owner workflow
+workspace-hub/agent-teams/orchestrator-routing,workspace-hub,0,keep,infrastructure / owner workflow
+workspace-hub/cc-best-practice-adoption,workspace-hub,0,keep,infrastructure / owner workflow
+workspace-hub/clean-code,workspace-hub,0,keep,infrastructure / owner workflow
+workspace-hub/clean-worktree-integration-from-dirty-main,workspace-hub,0,keep,infrastructure / owner workflow
+workspace-hub/comprehensive-learning,workspace-hub,78,keep,infrastructure / owner workflow
+workspace-hub/digitalmodel-orcawave-orcaflex-workflow,workspace-hub,0,retire-after-rollout,old gate-chain process skill; replaced by /objective + coordinator (retire when the chain leaves AGENTS.md)
+workspace-hub/domain-knowledge-sweep,workspace-hub,0,keep,infrastructure / owner workflow
+workspace-hub/ecosystem-equivalence-reconcile,workspace-hub,0,keep,infrastructure / owner workflow
+workspace-hub/ecosystem-terminology,workspace-hub,26,keep,infrastructure / owner workflow
+workspace-hub/equivalence-publish-health,workspace-hub,0,keep,infrastructure / owner workflow
+workspace-hub/exclude-wiki-claude-md-from-harness-line-limit-hook,workspace-hub,0,keep,infrastructure / owner workflow
+workspace-hub/external-drive-ingest-planning,workspace-hub,0,retire-after-rollout,old gate-chain process skill; replaced by /objective + coordinator (retire when the chain leaves AGENTS.md)
+workspace-hub/improve,workspace-hub,22,keep,infrastructure / owner workflow
+workspace-hub/interactive-claude-to-file-based-fallback,workspace-hub,0,keep,infrastructure / owner workflow
+workspace-hub/learned-git-worktree-hook-path-and-real-hook-shape-review,workspace-hub,0,keep,infrastructure / owner workflow
+workspace-hub/learned/adversarial-code-review-and-fix,workspace-hub,0,retire-after-rollout,old gate-chain process skill; replaced by /objective + coordinator (retire when the chain leaves AGENTS.md)
+workspace-hub/learned/adversarial-code-review-for-committed-diffs,workspace-hub,0,retire-after-rollout,old gate-chain process skill; replaced by /objective + coordinator (retire when the chain leaves AGENTS.md)
+workspace-hub/learned/adversarial-code-review-tdd,workspace-hub,0,retire-after-rollout,old gate-chain process skill; replaced by /objective + coordinator (retire when the chain leaves AGENTS.md)
+workspace-hub/learned/adversarial-test-review-for-sparse-data,workspace-hub,0,retire-after-rollout,old gate-chain process skill; replaced by /objective + coordinator (retire when the chain leaves AGENTS.md)
+workspace-hub/learned/agent-team-orchestration-for-issue-execution,workspace-hub,0,retire-now,"auto-learned near-duplicate session note, unused in retained sessions"
+workspace-hub/learned/agent-team-prompt-generation,workspace-hub,0,retire-now,"auto-learned near-duplicate session note, unused in retained sessions"
+workspace-hub/learned/awk-range-pattern-edge-case-debugging,workspace-hub,0,retire-now,"auto-learned near-duplicate session note, unused in retained sessions"
+workspace-hub/learned/bash-pipefail-grep-error-handling,workspace-hub,0,retire-now,"auto-learned near-duplicate session note, unused in retained sessions"
+workspace-hub/learned/batch-regex-fix-import-syntax,workspace-hub,0,retire-now,"auto-learned near-duplicate session note, unused in retained sessions"
+workspace-hub/learned/batch-syntax-fix-pattern,workspace-hub,0,retire-now,"auto-learned near-duplicate session note, unused in retained sessions"
+workspace-hub/learned/batch-syntax-fix-regex-iteration,workspace-hub,0,retire-now,"auto-learned near-duplicate session note, unused in retained sessions"
+workspace-hub/learned/batch-syntax-fix-with-regex-line-based-fallback,workspace-hub,0,retire-now,"auto-learned near-duplicate session note, unused in retained sessions"
+workspace-hub/learned/batch-syntax-repair-from-injection-errors,workspace-hub,0,retire-now,"auto-learned near-duplicate session note, unused in retained sessions"
+workspace-hub/learned/blocker-reporting-outcome-validation,workspace-hub,0,retire-now,"auto-learned near-duplicate session note, unused in retained sessions"
+workspace-hub/learned/boundary-policy-classification-by-role,workspace-hub,0,retire-now,"auto-learned near-duplicate session note, unused in retained sessions"
+workspace-hub/learned/bridge-brokerage-market-data-apis,workspace-hub,0,retire-now,"auto-learned near-duplicate session note, unused in retained sessions"
+workspace-hub/learned/c-corp-form-1120-reconciliation,workspace-hub,0,retire-now,"auto-learned near-duplicate session note, unused in retained sessions"
+workspace-hub/learned/cash-basis-corporate-tax-reconciliation,workspace-hub,0,retire-now,"auto-learned near-duplicate session note, unused in retained sessions"
+workspace-hub/learned/cash-basis-tax-reconciliation-workflow,workspace-hub,0,retire-now,"auto-learned near-duplicate session note, unused in retained sessions"
+workspace-hub/learned/corporate-tax-filing-reconciliation,workspace-hub,0,retire-now,"auto-learned near-duplicate session note, unused in retained sessions"
+workspace-hub/learned/corporate-tax-filing-reconciliation-and-decision,workspace-hub,0,retire-now,"auto-learned near-duplicate session note, unused in retained sessions"
+workspace-hub/learned/debug-toml-section-scoping-errors,workspace-hub,0,retire-now,"auto-learned near-duplicate session note, unused in retained sessions"
+workspace-hub/learned/diagnose-and-mount-dirty-ntfs-drives,workspace-hub,0,retire-now,"auto-learned near-duplicate session note, unused in retained sessions"
+workspace-hub/learned/diagnose-dirty-ntfs-mount-errors,workspace-hub,0,retire-now,"auto-learned near-duplicate session note, unused in retained sessions"
+workspace-hub/learned/diagnose-shebang-venv-import-errors,workspace-hub,0,retire-now,"auto-learned near-duplicate session note, unused in retained sessions"
+workspace-hub/learned/diagnose-shebang-venv-mismatch,workspace-hub,0,retire-now,"auto-learned near-duplicate session note, unused in retained sessions"
+workspace-hub/learned/diagnose-shebang-virtualenv-import-errors,workspace-hub,0,retire-now,"auto-learned near-duplicate session note, unused in retained sessions"
+workspace-hub/learned/diagnose-symlink-shebang-persistence,workspace-hub,0,retire-now,"auto-learned near-duplicate session note, unused in retained sessions"
+workspace-hub/learned/diagnose-venv-shebang-conflicts,workspace-hub,0,retire-now,"auto-learned near-duplicate session note, unused in retained sessions"
+workspace-hub/learned/diagnose-venv-shebang-import-errors,workspace-hub,0,retire-now,"auto-learned near-duplicate session note, unused in retained sessions"
+workspace-hub/learned/diagnose-venv-shebang-mismatch,workspace-hub,0,retire-now,"auto-learned near-duplicate session note, unused in retained sessions"
+workspace-hub/learned/espp-stock-sale-entry-freetaxusa,workspace-hub,0,retire-now,"auto-learned near-duplicate session note, unused in retained sessions"
+workspace-hub/learned/evaluate-local-commits-via-cherry-pick-dry-run,workspace-hub,0,retire-now,"auto-learned near-duplicate session note, unused in retained sessions"
+workspace-hub/learned/export-tax-summary-with-year-comparison,workspace-hub,0,retire-now,"auto-learned near-duplicate session note, unused in retained sessions"
+workspace-hub/learned/extract-and-archive-tax-summary-data,workspace-hub,0,retire-now,"auto-learned near-duplicate session note, unused in retained sessions"
+workspace-hub/learned/extract-skills-from-claude-code-sessions,workspace-hub,0,retire-now,"auto-learned near-duplicate session note, unused in retained sessions"
+workspace-hub/learned/extract-skills-from-hermes-sessions,workspace-hub,0,retire-now,"auto-learned near-duplicate session note, unused in retained sessions"
+workspace-hub/learned/financial-data-export-workflow,workspace-hub,0,retire-now,"auto-learned near-duplicate session note, unused in retained sessions"
+workspace-hub/learned/financial-site-bypass-workflow,workspace-hub,0,retire-now,"auto-learned near-duplicate session note, unused in retained sessions"
+workspace-hub/learned/fix-symlink-shebang-persistence,workspace-hub,0,retire-now,"auto-learned near-duplicate session note, unused in retained sessions"
+workspace-hub/learned/form-1120-cash-basis-filing,workspace-hub,0,retire-now,"auto-learned near-duplicate session note, unused in retained sessions"
+workspace-hub/learned/form-1120-cash-basis-reconciliation,workspace-hub,0,retire-now,"auto-learned near-duplicate session note, unused in retained sessions"
+workspace-hub/learned/form-1120-preparation-from-expense-sheet,workspace-hub,0,retire-now,"auto-learned near-duplicate session note, unused in retained sessions"
+workspace-hub/learned/freetaxusa-eefile-navigation-pattern,workspace-hub,0,retire-now,"auto-learned near-duplicate session note, unused in retained sessions"
+workspace-hub/learned/freetaxusa-efiling-workflow,workspace-hub,0,retire-now,"auto-learned near-duplicate session note, unused in retained sessions"
+workspace-hub/learned/freetaxusa-form-entry-recovery,workspace-hub,0,retire-now,"auto-learned near-duplicate session note, unused in retained sessions"
+workspace-hub/learned/freetaxusa-tax-form-navigation-credits,workspace-hub,0,retire-now,"auto-learned near-duplicate session note, unused in retained sessions"
+workspace-hub/learned/freetaxusa-upsell-and-payment-navigation,workspace-hub,0,retire-now,"auto-learned near-duplicate session note, unused in retained sessions"
+workspace-hub/learned/git-blob-size-filter-cleanup,workspace-hub,0,retire-now,"auto-learned near-duplicate session note, unused in retained sessions"
+workspace-hub/learned/git-large-file-staging-conflict-recovery,workspace-hub,0,retire-now,"auto-learned near-duplicate session note, unused in retained sessions"
+workspace-hub/learned/git-stale-lock-recovery,workspace-hub,0,retire-now,"auto-learned near-duplicate session note, unused in retained sessions"
+workspace-hub/learned/git-worktree-cleanup-and-branch-hygiene,workspace-hub,0,retire-now,"auto-learned near-duplicate session note, unused in retained sessions"
+workspace-hub/learned/git-worktree-cleanup-and-branch-reconciliation,workspace-hub,0,retire-now,"auto-learned near-duplicate session note, unused in retained sessions"
+workspace-hub/learned/git-worktree-cleanup-at-scale,workspace-hub,0,retire-now,"auto-learned near-duplicate session note, unused in retained sessions"
+workspace-hub/learned/github-issue-structure-for-personal-finance-tracking,workspace-hub,0,retire-now,"auto-learned near-duplicate session note, unused in retained sessions"
+workspace-hub/learned/gsd-adversarial-review-pattern,workspace-hub,0,retire-after-rollout,old gate-chain process skill; replaced by /objective + coordinator (retire when the chain leaves AGENTS.md)
+workspace-hub/learned/handle-blocked-financial-sites-data-export,workspace-hub,0,retire-now,"auto-learned near-duplicate session note, unused in retained sessions"
+workspace-hub/learned/handle-blocked-financial-sites-workaround,workspace-hub,0,retire-now,"auto-learned near-duplicate session note, unused in retained sessions"
+workspace-hub/learned/handle-browser-automation-financial-site-blocks,workspace-hub,0,retire-now,"auto-learned near-duplicate session note, unused in retained sessions"
+workspace-hub/learned/handle-freetaxusa-session-timeouts,workspace-hub,0,retire-now,"auto-learned near-duplicate session note, unused in retained sessions"
+workspace-hub/learned/handle-pdf-download-popups-in-automation,workspace-hub,0,retire-now,"auto-learned near-duplicate session note, unused in retained sessions"
+workspace-hub/learned/handle-popup-blocked-pdf-downloads,workspace-hub,0,retire-now,"auto-learned near-duplicate session note, unused in retained sessions"
+workspace-hub/learned/handle-session-overlay-blocking,workspace-hub,0,retire-now,"auto-learned near-duplicate session note, unused in retained sessions"
+workspace-hub/learned/label-driven-prompt-generation-architecture,workspace-hub,0,retire-now,"auto-learned near-duplicate session note, unused in retained sessions"
+workspace-hub/learned/large-scale-branch-hygiene,workspace-hub,0,retire-now,"auto-learned near-duplicate session note, unused in retained sessions"
+workspace-hub/learned/metadata-only-inventory-sweep,workspace-hub,0,retire-now,"auto-learned near-duplicate session note, unused in retained sessions"
+workspace-hub/learned/metadata-only-wiki-sweep-workflow,workspace-hub,0,retire-now,"auto-learned near-duplicate session note, unused in retained sessions"
+workspace-hub/learned/multi-file-tax-prep-orchestration,workspace-hub,0,retire-now,"auto-learned near-duplicate session note, unused in retained sessions"
+workspace-hub/learned/multi-file-tax-reconciliation-workflow,workspace-hub,0,retire-now,"auto-learned near-duplicate session note, unused in retained sessions"
+workspace-hub/learned/multi-format-csv-detection-and-deduplication,workspace-hub,0,retire-now,"auto-learned near-duplicate session note, unused in retained sessions"
+workspace-hub/learned/multi-format-csv-parser-with-deduplication,workspace-hub,0,retire-now,"auto-learned near-duplicate session note, unused in retained sessions"
+workspace-hub/learned/multi-format-transaction-parser,workspace-hub,0,retire-now,"auto-learned near-duplicate session note, unused in retained sessions"
+workspace-hub/learned/multi-layer-stale-state-debugging,workspace-hub,0,retire-now,"auto-learned near-duplicate session note, unused in retained sessions"
+workspace-hub/learned/multi-repo-branch-hygiene-at-scale,workspace-hub,0,retire-now,"auto-learned near-duplicate session note, unused in retained sessions"
+workspace-hub/learned/multi-repo-git-recovery,workspace-hub,0,retire-now,"auto-learned near-duplicate session note, unused in retained sessions"
+workspace-hub/learned/multi-repo-pull-with-untracked-conflict-recovery,workspace-hub,0,retire-now,"auto-learned near-duplicate session note, unused in retained sessions"
+workspace-hub/learned/multi-repo-stale-lock-recovery,workspace-hub,0,retire-now,"auto-learned near-duplicate session note, unused in retained sessions"
+workspace-hub/learned/multi-repo-sync-diagnosis-and-repair,workspace-hub,0,retire-now,"auto-learned near-duplicate session note, unused in retained sessions"
+workspace-hub/learned/multi-repo-sync-diagnosis-repair,workspace-hub,0,retire-now,"auto-learned near-duplicate session note, unused in retained sessions"
+workspace-hub/learned/multi-role-agent-contract-review-pipeline,workspace-hub,0,retire-now,"auto-learned near-duplicate session note, unused in retained sessions"
+workspace-hub/learned/multi-source-tax-document-reconciliation,workspace-hub,0,retire-now,"auto-learned near-duplicate session note, unused in retained sessions"
+workspace-hub/learned/multi-year-tax-filing-verification-workflow,workspace-hub,0,retire-now,"auto-learned near-duplicate session note, unused in retained sessions"
+workspace-hub/learned/nested-git-repo-stash-safety,workspace-hub,0,retire-now,"auto-learned near-duplicate session note, unused in retained sessions"
+workspace-hub/learned/parallel-array-alignment-pattern,workspace-hub,0,retire-now,"auto-learned near-duplicate session note, unused in retained sessions"
+workspace-hub/learned/plan-gated-issue-implementation,workspace-hub,0,retire-after-rollout,old gate-chain process skill; replaced by /objective + coordinator (retire when the chain leaves AGENTS.md)
+workspace-hub/learned/plan-gated-issue-validation-workflow,workspace-hub,0,retire-after-rollout,old gate-chain process skill; replaced by /objective + coordinator (retire when the chain leaves AGENTS.md)
+workspace-hub/learned/portable-baseline-config-pattern,workspace-hub,0,retire-now,"auto-learned near-duplicate session note, unused in retained sessions"
+workspace-hub/learned/portable-baseline-configuration-pattern,workspace-hub,0,retire-now,"auto-learned near-duplicate session note, unused in retained sessions"
+workspace-hub/learned/portable-baseline-pattern-extraction,workspace-hub,0,retire-now,"auto-learned near-duplicate session note, unused in retained sessions"
+workspace-hub/learned/portable-baseline-pattern-implementation,workspace-hub,0,retire-now,"auto-learned near-duplicate session note, unused in retained sessions"
+workspace-hub/learned/portable-config-baseline-pattern,workspace-hub,0,retire-now,"auto-learned near-duplicate session note, unused in retained sessions"
+workspace-hub/learned/portable-pattern-verification-workflow,workspace-hub,0,retire-now,"auto-learned near-duplicate session note, unused in retained sessions"
+workspace-hub/learned/python-import-path-debugging,workspace-hub,0,retire-now,"auto-learned near-duplicate session note, unused in retained sessions"
+workspace-hub/learned/python-import-path-mismatch-debugging,workspace-hub,0,retire-now,"auto-learned near-duplicate session note, unused in retained sessions"
+workspace-hub/learned/read-only-pre-implementation-audit,workspace-hub,0,retire-now,"auto-learned near-duplicate session note, unused in retained sessions"
+workspace-hub/learned/recover-from-corrupted-git-state,workspace-hub,0,retire-now,"auto-learned near-duplicate session note, unused in retained sessions"
+workspace-hub/learned/recover-from-stale-git-locks,workspace-hub,0,retire-now,"auto-learned near-duplicate session note, unused in retained sessions"
+workspace-hub/learned/repo-separation-for-sensitive-data,workspace-hub,0,retire-now,"auto-learned near-duplicate session note, unused in retained sessions"
+workspace-hub/learned/staged-issue-tree-creation-with-deduplication,workspace-hub,0,retire-now,"auto-learned near-duplicate session note, unused in retained sessions"
+workspace-hub/learned/tax-filing-payment-method-navigation,workspace-hub,0,retire-now,"auto-learned near-duplicate session note, unused in retained sessions"
+workspace-hub/learned/tax-filing-session-setup-with-github-traceability,workspace-hub,0,retire-now,"auto-learned near-duplicate session note, unused in retained sessions"
+workspace-hub/learned/tax-filing-session-setup-with-github-tracking,workspace-hub,0,retire-now,"auto-learned near-duplicate session note, unused in retained sessions"
+workspace-hub/learned/tax-form-currency-field-handling,workspace-hub,0,retire-now,"auto-learned near-duplicate session note, unused in retained sessions"
+workspace-hub/learned/tax-form-navigation-verification,workspace-hub,0,retire-now,"auto-learned near-duplicate session note, unused in retained sessions"
+workspace-hub/learned/tax-pdf-download-workaround,workspace-hub,0,retire-now,"auto-learned near-duplicate session note, unused in retained sessions"
+workspace-hub/learned/tax-return-data-capture-and-archival,workspace-hub,0,retire-now,"auto-learned near-duplicate session note, unused in retained sessions"
+workspace-hub/learned/tax-software-duplicate-adjustment-debugging,workspace-hub,0,retire-now,"auto-learned near-duplicate session note, unused in retained sessions"
+workspace-hub/learned/taxact-browser-automation-patterns,workspace-hub,0,retire-now,"auto-learned near-duplicate session note, unused in retained sessions"
+workspace-hub/learned/tdd-verification-and-adversarial-review,workspace-hub,0,retire-after-rollout,old gate-chain process skill; replaced by /objective + coordinator (retire when the chain leaves AGENTS.md)
+workspace-hub/learned/test-driven-hook-debugging,workspace-hub,0,retire-now,"auto-learned near-duplicate session note, unused in retained sessions"
+workspace-hub/learned/toml-section-scoping-config-debug,workspace-hub,0,retire-now,"auto-learned near-duplicate session note, unused in retained sessions"
+workspace-hub/learned/toml-section-scoping-debug,workspace-hub,0,retire-now,"auto-learned near-duplicate session note, unused in retained sessions"
+workspace-hub/learned/wave-based-parallel-plan-execution,workspace-hub,0,retire-after-rollout,old gate-chain process skill; replaced by /objective + coordinator (retire when the chain leaves AGENTS.md)
+workspace-hub/learned/work-around-merge-conflicts-in-test-execution,workspace-hub,0,retire-now,"auto-learned near-duplicate session note, unused in retained sessions"
+workspace-hub/mixed-ops-vs-repo-fix-plan-boundary,workspace-hub,0,retire-after-rollout,old gate-chain process skill; replaced by /objective + coordinator (retire when the chain leaves AGENTS.md)
+workspace-hub/orcawave-orcaflex-readiness-audit,workspace-hub,0,retire-after-rollout,old gate-chain process skill; replaced by /objective + coordinator (retire when the chain leaves AGENTS.md)
+workspace-hub/plan-gated-issue-execution-wave,workspace-hub,0,retire-after-rollout,old gate-chain process skill; replaced by /objective + coordinator (retire when the chain leaves AGENTS.md)
+workspace-hub/playwright,workspace-hub,0,keep,infrastructure / owner workflow
+workspace-hub/provider-session-ecosystem-audit-and-exporters,workspace-hub,0,keep,infrastructure / owner workflow
+workspace-hub/remote-desktop,workspace-hub,0,keep,infrastructure / owner workflow
+workspace-hub/repo-ecosystem-hygiene,workspace-hub,2,keep,infrastructure / owner workflow
+workspace-hub/repo-mission-portfolio-audit,workspace-hub,0,keep,infrastructure / owner workflow
+workspace-hub/repo-portfolio-steering,workspace-hub,0,keep,infrastructure / owner workflow
+workspace-hub/repo-structure,workspace-hub,2,keep,infrastructure / owner workflow
+workspace-hub/repo-sync,workspace-hub,49,keep,infrastructure / owner workflow
+workspace-hub/session-corpus-audit,workspace-hub,2,keep,infrastructure / owner workflow
+workspace-hub/session-curation,workspace-hub,0,keep,infrastructure / owner workflow
+workspace-hub/sync,workspace-hub,0,keep,infrastructure / owner workflow
+workspace-hub/tier1-indexing-scorecard-and-freshness-audit,workspace-hub,0,keep,infrastructure / owner workflow
+workspace-hub/verify-claude-run-commit-vs-working-tree-before-closing,workspace-hub,0,keep,infrastructure / owner workflow
+workspace-hub/workspace-hub-overnight-plan-monitor,workspace-hub,0,retire-after-rollout,old gate-chain process skill; replaced by /objective + coordinator (retire when the chain leaves AGENTS.md)
+workspace-hub/workspace-knowledge-doc-contracts,workspace-hub,0,keep,infrastructure / owner workflow
+workspace-hub/worktree-branch-sync-hygiene,workspace-hub,0,keep,infrastructure / owner workflow
+workspace-hub/worktree-pre-push-bypass-for-tier1-checks,workspace-hub,0,keep,infrastructure / owner workflow

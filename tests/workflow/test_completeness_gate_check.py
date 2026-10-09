@@ -116,7 +116,7 @@ def test_autoapply_covers_new_and_resumed_work_without_backlog_sweep():
     assert "types: [opened, labeled]" in text
     condition = text.split("    if: >-", 1)[1].split("    steps:", 1)[0]
     assert "github.event.action == 'opened'" in condition
-    for status in ("status:plan-review", "status:in-progress", "status:plan-approved"):
+    for status in ("status:plan-review", "dispatch:active", "status:plan-approved"):
         assert status in condition
     assert "issues: write" in text
     assert "gate:completeness-v2" in text
