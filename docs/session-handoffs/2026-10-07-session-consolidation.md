@@ -97,10 +97,12 @@ Permission rollout (owner-run 2026-10-09, verified read-only afterwards on all f
 Each host holds `~/.claude/settings.json.bak-20261009T2020..Z` from the apply. Running Claude sessions load
 the new rules only after a restart.
 
-Ownership after this session: the fleet PM session (ws-11) holds dispatch and the Codex queue; the
-decision-board session (ws-0e) holds the owner boards, including the Linux hub inventory (F04), the
-digitalmodel-data #35 mirror record (patch handed over), digitalmodel #2280, the study PRs and the
-marine-equipment pages. Nothing remains with this session.
+Ownership after this session (owner decision O01): the fleet PM session ws-11 (on the Windows
+workstation) is the single coordinator. It holds the owner decision board, the PM merge gate and dispatch
+decisions, including the Linux hub inventory (F04), the digitalmodel-data #35 mirror record (patch handed
+over), digitalmodel #2280, the study PRs and the marine-equipment pages. ws-0e is the Codex execution lane:
+it launches Codex jobs on ace-linux-1 and runs no boards. The RDS02 PM loop is status-only. Nothing remains
+with this session.
 
 Lessons recorded in rules rather than here: worktrees not clones, bulk output to `/mnt/ace` with a
 manifest and a second copy, decisions on HTML boards, permission changes are owner-only and are made in
