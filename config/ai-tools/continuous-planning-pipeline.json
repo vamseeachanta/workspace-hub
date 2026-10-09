@@ -1903,7 +1903,7 @@
         "enhancement",
         "priority:medium",
         "cat:documentation",
-        "agent:codex",
+        "ai:codex",
         "status:plan-approved"
       ],
       "lane": "C",
@@ -1965,7 +1965,7 @@
         "priority:medium",
         "cat:harness",
         "machine:licensed-win-1",
-        "agent:claude",
+        "ai:claude",
         "status:plan-approved"
       ],
       "lane": "C",
@@ -2023,7 +2023,7 @@
         "priority:medium",
         "cat:ai-orchestration",
         "cat:harness",
-        "agent:claude"
+        "ai:claude"
       ],
       "lane": "C",
       "marker_quality": null,
@@ -3822,7 +3822,7 @@
         "priority:medium",
         "cat:harness",
         "domain:session",
-        "agent:claude"
+        "ai:claude"
       ],
       "lane": "C",
       "marker_quality": null,
@@ -3855,7 +3855,7 @@
         "priority:medium",
         "cat:harness",
         "domain:session",
-        "agent:claude"
+        "ai:claude"
       ],
       "lane": "C",
       "marker_quality": null,
@@ -9353,7 +9353,7 @@
           "enhancement",
           "priority:medium",
           "cat:documentation",
-          "agent:codex",
+          "ai:codex",
           "status:plan-approved"
         ],
         "lane": "C",
@@ -9415,7 +9415,7 @@
           "priority:medium",
           "cat:harness",
           "machine:licensed-win-1",
-          "agent:claude",
+          "ai:claude",
           "status:plan-approved"
         ],
         "lane": "C",
@@ -9473,7 +9473,7 @@
           "priority:medium",
           "cat:ai-orchestration",
           "cat:harness",
-          "agent:claude"
+          "ai:claude"
         ],
         "lane": "C",
         "marker_quality": null,
@@ -11272,7 +11272,7 @@
           "priority:medium",
           "cat:harness",
           "domain:session",
-          "agent:claude"
+          "ai:claude"
         ],
         "lane": "C",
         "marker_quality": null,
@@ -11305,7 +11305,7 @@
           "priority:medium",
           "cat:harness",
           "domain:session",
-          "agent:claude"
+          "ai:claude"
         ],
         "lane": "C",
         "marker_quality": null,

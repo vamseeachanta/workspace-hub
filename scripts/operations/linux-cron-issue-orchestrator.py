@@ -72,7 +72,18 @@ def _machine_labels(labels: list[str]) -> list[str]:
     return [label for label in labels if label.startswith("machine:")]
 
 
-def _agent_labels(labels: list[str]) -> list[str]:
+LEGACY_PROVIDER_ALIASES = {"gemini": "agy"}
+
+
+def _canonical_provider(label: str) -> str:
+    provider = label.split(":", 1)[1]
+    return LEGACY_PROVIDER_ALIASES.get(provider, provider)
+
+
+def _provider_labels(labels: list[str]) -> list[str]:
+    canonical = [label for label in labels if label.startswith("ai:")]
+    if canonical:
+        return canonical
     return [label for label in labels if label.startswith("agent:")]
 
 
@@ -153,17 +164,20 @@ def plan_tick(
     for issue in sorted(issues, key=_priority_key):
         labels = _label_names(issue)
         machine_labels = _machine_labels(labels)
-        agent_labels = _agent_labels(labels)
+        provider_labels = _provider_labels(labels)
 
         if len(machine_labels) != 1:
             actions.append(_blocked(issue, labels, "expected exactly one machine label"))
             continue
         if machine_labels[0] != host_machine_label:
             continue
-        if len(agent_labels) != 1:
-            actions.append(_blocked(issue, labels, "expected exactly one agent label"))
+        if len(provider_labels) != 1:
+            actions.append(_blocked(issue, labels, "expected exactly one ai provider label"))
             continue
-        actions.append(_eligible_status_action(issue, labels, marker_dir, lease_acquired, worktree_clean))
+        action = _eligible_status_action(issue, labels, marker_dir, lease_acquired, worktree_clean)
+        action["provider_label"] = provider_labels[0]
+        action["provider"] = _canonical_provider(provider_labels[0])
+        actions.append(action)
     return actions
 
 

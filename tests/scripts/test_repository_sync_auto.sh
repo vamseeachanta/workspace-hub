@@ -355,6 +355,85 @@ _after_head=$(cd "$_hub" && git rev-parse HEAD)
     || _fail "behavioral: workspace-hub diverged tree was not preserved/reported"
 rm -rf "$_td"
 
+# T39: behavioral — workspace-hub refuses to sync a non-default branch
+_td=$(mktemp -d)
+_seed="$_td/seed"
+_hub="$_td/hub"
+git init -q --bare "$_td/origin.git" 2>/dev/null
+git init -q -b main "$_seed" 2>/dev/null
+(cd "$_seed" && git config user.email "t@t" && git config user.name "T" \
+    && echo "one" > tracked.txt && git add tracked.txt && git commit -q -m "init" \
+    && git remote add origin "$_td/origin.git" && git push -q -u origin main) 2>/dev/null
+git clone -q -b main "$_td/origin.git" "$_hub" 2>/dev/null
+(cd "$_hub" && git checkout -q -b feature/sync-test) 2>/dev/null
+_before_branch=$(cd "$_hub" && git branch --show-current)
+_before_head=$(cd "$_hub" && git rev-parse HEAD)
+(cd "$_seed" && echo "remote advance" >> tracked.txt && git add tracked.txt \
+    && git commit -q -m "remote advance" && git push -q origin main) 2>/dev/null
+_out=$(WORKSPACE_ROOT="$_hub" NC="" GREEN="" RED="" YELLOW="" BLUE="" CYAN="" BOLD="" bash -c '
+    source "'"$AUTO_HELPER"'" 2>/dev/null
+    _auto_sync_hub "2026-01-01" "false"
+' 2>&1)
+_rc=$?
+_after_branch=$(cd "$_hub" && git branch --show-current)
+_after_head=$(cd "$_hub" && git rev-parse HEAD)
+([ "$_rc" -ne 0 ] && [ "$_before_branch" = "$_after_branch" ] \
+    && [ "$_before_head" = "$_after_head" ] \
+    && echo "$_out" | grep -qi "default branch") \
+    && _pass "behavioral: workspace-hub non-default branch is refused" \
+    || _fail "behavioral: workspace-hub non-default branch was not refused"
+rm -rf "$_td"
+
+# T40: behavioral — workspace-hub untracked files do not block fast-forward sync
+_td=$(mktemp -d)
+_seed="$_td/seed"
+_hub="$_td/hub"
+git init -q --bare "$_td/origin.git" 2>/dev/null
+git init -q -b main "$_seed" 2>/dev/null
+(cd "$_seed" && git config user.email "t@t" && git config user.name "T" \
+    && echo "one" > tracked.txt && git add tracked.txt && git commit -q -m "init" \
+    && git remote add origin "$_td/origin.git" && git push -q -u origin main) 2>/dev/null
+git clone -q -b main "$_td/origin.git" "$_hub" 2>/dev/null
+echo "local scratch" > "$_hub/local.log"
+(cd "$_seed" && echo "two" >> tracked.txt && git add tracked.txt \
+    && git commit -q -m "remote advance" && git push -q origin main) 2>/dev/null
+(WORKSPACE_ROOT="$_hub"; NC="" GREEN="" RED="" YELLOW="" BLUE="" CYAN="" BOLD="";
+ source "$AUTO_HELPER" 2>/dev/null; _auto_sync_hub "2026-01-01" "false") >/dev/null 2>&1
+_rc=$?
+_head=$(cd "$_hub" && git rev-parse HEAD)
+_remote=$(cd "$_hub" && git rev-parse origin/main)
+([ "$_rc" -eq 0 ] && [ "$_head" = "$_remote" ] && [ -e "$_hub/local.log" ] \
+    && grep -q "two" "$_hub/tracked.txt") \
+    && _pass "behavioral: workspace-hub ignores untracked files during dirty check" \
+    || _fail "behavioral: workspace-hub untracked file blocked fast-forward"
+rm -rf "$_td"
+
+# T41: behavioral — repeated workspace-hub stops route to notify.sh
+_td=$(mktemp -d)
+_hub="$_td/hub"
+git init -q -b main "$_hub" 2>/dev/null
+(cd "$_hub" && git config user.email "t@t" && git config user.name "T" \
+    && echo "one" > tracked.txt && git add tracked.txt && git commit -q -m "init" \
+    && mkdir -p scripts && cat > scripts/notify.sh <<'EOS'
+#!/usr/bin/env bash
+printf '%s|%s|%s|%s\n' "$1" "$2" "$3" "${4:-}" >> "$NOTIFY_LOG"
+EOS
+    chmod +x scripts/notify.sh) 2>/dev/null
+echo "local dirty" >> "$_hub/tracked.txt"
+_notify_log="$_td/notify.log"
+_state_file="$_td/hub-stop-count"
+for _i in 1 2; do
+    (export NOTIFY_LOG="$_notify_log"
+     WORKSPACE_ROOT="$_hub" HUB_SYNC_STOP_ALERT_THRESHOLD=2 \
+        HUB_SYNC_STOP_STATE_FILE="$_state_file" NC="" GREEN="" RED="" YELLOW="" BLUE="" CYAN="" BOLD="";
+     source "$AUTO_HELPER" 2>/dev/null; _auto_sync_hub "2026-01-01" "false") >/dev/null 2>&1 || true
+done
+([ "$(wc -l < "$_notify_log" 2>/dev/null || echo 0)" -eq 1 ] \
+    && grep -q 'cron|repository-sync-hub|fail|' "$_notify_log") \
+    && _pass "behavioral: repeated workspace-hub stops notify" \
+    || _fail "behavioral: repeated workspace-hub stops did not notify"
+rm -rf "$_td"
+
 echo ""
 echo "Results: PASS=$PASS  FAIL=$FAIL"
 [ "$FAIL" -eq 0 ]

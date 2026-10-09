@@ -60,7 +60,53 @@ _quick_status_dirty() {
 }
 
 _hub_tree_dirty() {
-    [ -n "$(git status --porcelain)" ]
+    [ -n "$(git -c status.showUntrackedFiles=no status --porcelain --untracked-files=no)" ]
+}
+
+_hub_sync_stop_state_file() {
+    if [ -n "${HUB_SYNC_STOP_STATE_FILE:-}" ]; then
+        printf '%s\n' "$HUB_SYNC_STOP_STATE_FILE"
+        return 0
+    fi
+    local git_dir
+    git_dir="$(_git_dir)" || return 1
+    printf '%s\n' "$git_dir/hub-sync-stop-count"
+}
+
+_notify_hub_sync_stop() {
+    local count="$1" reason="$2" notify_sh details
+    notify_sh="$WORKSPACE_ROOT/scripts/notify.sh"
+    [ -x "$notify_sh" ] || return 0
+    details="workspace-hub auto-sync stopped ${count} consecutive run(s): ${reason}"
+    bash "$notify_sh" "cron" "repository-sync-hub" "fail" "$details" >/dev/null 2>&1 || true
+}
+
+_record_hub_sync_stop() {
+    local reason="$1" state_file count threshold
+    state_file="$(_hub_sync_stop_state_file 2>/dev/null || true)"
+    [ -n "$state_file" ] || return 0
+    mkdir -p "$(dirname "$state_file")" 2>/dev/null || true
+    count="$(cat "$state_file" 2>/dev/null || printf '0')"
+    case "$count" in
+        ''|*[!0-9]*) count=0 ;;
+    esac
+    count=$((count + 1))
+    printf '%s\n' "$count" > "$state_file" 2>/dev/null || true
+    threshold="${HUB_SYNC_STOP_ALERT_THRESHOLD:-3}"
+    case "$threshold" in
+        ''|*[!0-9]*) threshold=3 ;;
+    esac
+    if [ "$count" -ge "$threshold" ]; then
+        _notify_hub_sync_stop "$count" "$reason"
+    fi
+}
+
+_record_hub_sync_success() {
+    local state_file
+    state_file="$(_hub_sync_stop_state_file 2>/dev/null || true)"
+    [ -n "$state_file" ] || return 0
+    mkdir -p "$(dirname "$state_file")" 2>/dev/null || true
+    printf '0\n' > "$state_file" 2>/dev/null || true
 }
 
 _bounded_status_probe() {
@@ -190,27 +236,40 @@ _auto_sync_hub() {
 
     # Do not remove locks automatically; a lock may indicate an active Git/Claude writer.
     if _has_git_lock; then
-        echo -e "${YELLOW}⚠ workspace-hub: git lock or in-progress merge/rebase detected, stopping before fetch${NC}"; return 1
+        echo -e "${YELLOW}⚠ workspace-hub: git lock or in-progress merge/rebase detected, stopping before fetch${NC}"
+        _record_hub_sync_stop "git lock or in-progress operation"
+        return 1
+    fi
+
+    local default_branch current_branch
+    default_branch="$(_default_branch)"
+    current_branch="$(git branch --show-current 2>/dev/null || true)"
+    if [ "$current_branch" != "$default_branch" ]; then
+        echo -e "${RED}✗ workspace-hub: current branch '${current_branch:-detached}' is not default branch '$default_branch'; stopping before fetch${NC}"
+        _record_hub_sync_stop "current branch is not default branch"
+        return 1
     fi
 
     if _hub_tree_dirty; then
         echo -e "${RED}✗ workspace-hub: dirty tree detected; stopping without fetch, commit, merge, or push${NC}"
+        _record_hub_sync_stop "dirty tracked tree"
         return 1
     fi
 
-    local default_branch
-    default_branch="$(_default_branch)"
     if ! git fetch origin --prune >/dev/null 2>&1; then
         echo -e "${RED}✗ workspace-hub: fetch --prune failed${NC}"
+        _record_hub_sync_stop "fetch failed"
         return 1
     fi
 
     if git merge --ff-only "origin/$default_branch" >/dev/null 2>&1; then
         echo -e "${GREEN}✓ workspace-hub: fast-forwarded from origin/$default_branch${NC}"
+        _record_hub_sync_success
         return 0
     fi
 
     echo -e "${RED}✗ workspace-hub: not fast-forwardable from origin/$default_branch; resolve manually${NC}"
+    _record_hub_sync_stop "not fast-forwardable"
     return 1
 }
 

@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Owner Decisions 2026-10-07</title>
+<style>
+:root{--bg:#fbfaf7;--fg:#1d1d1b;--mut:#6b6a66;--card:#fff;--line:#e3e1db;--acc:#1f5f8b;--rec:#e9f3ea;--recfg:#245c2c;--pick:#e6eff7}
+@media (prefers-color-scheme:dark){:root{--bg:#161616;--fg:#e9e7e2;--mut:#a3a19b;--card:#1f1f1f;--line:#333;--acc:#7fb4dc;--rec:#1d2e20;--recfg:#9fd3a6;--pick:#1b2a36}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.5 system-ui,Segoe UI,sans-serif}
+main{max-width:980px;margin:0 auto;padding:24px 16px 120px}
+h1{font-size:1.5rem;margin:0 0 4px}
+h2{font-size:1.05rem;margin:28px 0 8px;color:var(--acc)}
+.sub{color:var(--mut);margin:0 0 16px}
+.d{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:12px 14px;margin:10px 0}
+.d.done{border-left:4px solid var(--acc)}
+.q{font-weight:600}
+.ctx{color:var(--mut);font-size:.9rem;margin:2px 0 8px}
+.opts{display:flex;flex-wrap:wrap;gap:6px}
+.opts label{border:1px solid var(--line);border-radius:6px;padding:4px 10px;cursor:pointer;font-size:.9rem}
+.opts input{margin-right:6px}
+.opts label.rec{background:var(--rec);color:var(--recfg)}
+.opts label.sel{outline:2px solid var(--acc);background:var(--pick);color:var(--fg)}
+textarea{width:100%;margin-top:8px;min-height:34px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--fg);font:inherit;padding:6px}
+.bar{position:fixed;left:0;right:0;bottom:0;background:var(--card);border-top:1px solid var(--line);padding:10px 16px;display:flex;gap:10px;align-items:center;justify-content:center;flex-wrap:wrap}
+button{background:var(--acc);color:#fff;border:0;border-radius:6px;padding:8px 14px;font:inherit;cursor:pointer}
+button.sec{background:transparent;color:var(--acc);border:1px solid var(--acc)}
+#count{color:var(--mut)}
+pre{white-space:pre-wrap;background:var(--card);border:1px solid var(--line);border-radius:8px;padding:10px;font-size:.85rem}
+.legend{font-size:.85rem;color:var(--mut)}
+.legend span{background:var(--rec);color:var(--recfg);padding:1px 6px;border-radius:4px}
+</style>
+</head>
+<body>
+<main>
+<h1>Owner decisions: 2026-10-07 session</h1>
+<p class="sub">Each row is one decision only the owner can make. Pick an option, add a note if needed, then <b>Copy decisions</b> and paste into the Claude session. Selections are saved in this browser only.</p>
+<p class="legend"><span>Green</span> = recommendation. Context comes from the 2026-10-07 subagent reviews; see <code>docs/session-handoffs/2026-10-07-session-consolidation.md</code>.</p>
+<div id="list"></div>
+<h2>Decision to request</h2>
+<p>Return the copied block to the session. Claude acts only on rows with a selection; unselected rows stay pending in the handoff.</p>
+<pre id="out" hidden></pre>
+</main>
+<div class="bar"><span id="count"></span><button id="copy">Copy decisions</button><button class="sec" id="recall">Accept all recommendations</button><button class="sec" id="clear">Clear</button></div>
+<script>
+const D=[
+["Merges and verification",[
+["ws3960","workspace-hub #3960: session handoff + this page","Docs only, hand-checked for identifiers.",["Merge","Hold"],0],
+["s282","aceengineer-strategy #282: CP growth plan Rev 01","M1-M7 resolved; checks green. Must be a merge commit (cites 7d6eed9).",["Merge (merge commit)","Re-review first","Hold"],0],
+["w1146","worldenergydata #1146 + dependabot #1133/#1135/#1136","#1146 fixes a test still expecting the retired root agent doc; main CI red until it lands.",["Merge #1146, then dependabot","Hold"],0],
+["dm2280","digitalmodel #2280: BRep experiment (rejects arc-length candidate)","Codex-authored; needs a second-provider review. Agent review+merge was blocked as self-approval.",["Owner reviews and merges","Claude reviews, owner merges","Close"],1],
+["f87","llm-wiki-fdas #87: client Space setup rules","Claude PASS + Codex PASS (round 3). Needs the record (draft: scratchpad rec87.md) and the verified label.",["Post record, label, merge","Hold"],0],
+["f91","llm-wiki-fdas #91: Home offline lookup test receipt","Receipt records its FAILs honestly; earlier plan reviews were MAJOR, mostly answered.",["Fresh review, then merge","Hold"],0],
+["f92","llm-wiki-fdas #92 then #94: ANPG evidence + Revision 4","71 files; tests reported passing but not re-run this session. #94 stacks on #92.",["Re-run tests, review, merge both","Hold"],0],
+["f93","llm-wiki-fdas #93: partial revisions status record","Records current state; does not close issue 88.",["Review and merge","Hold until reviewer responds"],0],
+["a398","llm-wiki-acma #398: CFD campaign record","Five-file conflict with #415 (retention learnings) on the host-snapshot files.",["Keep #415's retention record, merge rest","Keep #398's record","Hold"],0],
+["a399","llm-wiki-acma #399: workflow review + human-review pack","PR body says merge only on owner instruction.",["Merge","Hold","Close"],1],
+["a409","llm-wiki-acma #409: page metadata + link lint","Link CI fails on 3,834 existing OCR image targets the owner asked to keep.",["Allowlist the OCR targets","Make link check warn-only for OCR","Hold"],0]]],
+["Engineering studies (public digitalmodel + private data)",[
+["ffs","FFS preliminary pressure study: dm #2289 + data #46","CI green; engineering qualification false. dm #2289 contains internal host labels to scrub first.",["Scrub, merge as preliminary","Hold until qualified"],0],
+["plate","Ship plate buckling diagnostics: dm #2290 + data #44","Codenamed; preliminary.",["Merge as preliminary","Hold"],0],
+["cpdocs","CP inline review docs: dm #2291 + data #47","Docs only, clean.",["Merge","Hold"],0],
+["slim","digitalmodel #2146: archive 2.56 GB to /mnt/ace","Conflicting, six failing checks, stale.",["Regenerate against main","Close"],0],
+["ansys","digitalmodel #2114: ANSYS acceptance + padeye evidence","+80k lines, conflicting; held on the #2094 load-distribution proposal.",["Keep holding for #2094","Close"],0],
+["ghs","digitalmodel #2102: GHS Windows containment","Conflicting draft; native acceptance pending.",["Continue","Park (close, keep branch)"],1],
+["aqwa","digitalmodel #2116: AQWA structural submodel workflow","Body asks for a scoped plan + owner approval.",["Approve scope, finish","Hold"],1],
+["allow","digitalmodel #2257: `capacity` renamed `allowable` (no unit suffix)","Unit varies per check and sits in a separate `unit` field.",["Keep `allowable`","Split field per unit"],0],
+["sdb","digitalmodel-data #33: 0.040 m stack-length gap","Settling it needs a read of the archived source deck on ace-linux-1 (agent read was blocked).",["Allow agent to read the archive deck","Leave as recorded gap"],0]]],
+["Knowledge base and tooling",[
+["w942","llm-wiki #942: source-backed report viewer prototype","Reviews raised no blockers.",["Deploy","Hold"],1],
+["w947","llm-wiki #947: four-bullet client topic review guidance","Review blocked: sending the private diff to Claude/Codex/Gemini needs authorization.",["Authorize cross-provider review","Owner reviews","Close"],0],
+["h3786","workspace-hub #3786: fleet cleanup tooling","Seven open Codex P1s on deletion safety; blocked on mutation-surface registration (#3789).",["Close and archive","Fix P1s and land"],0],
+["adm54","aceengineer-admin #54: native deployment readiness","+432k lines, stale since Sep 18.",["Close","Revive"],0],
+["hob4","hobbies #4 (public): June autonomous-agent fixes","Blocked on review.",["Close","Review"],0],
+["tr31","teamresumes #31 (public repo): CV + cover letter","Diff matches a deny-list employer name; personal material in a public repo.",["Make repo private, then merge","Publish as is","Close"],0],
+["pages","llm-wiki Pages workflow failing (404)","Pages not enabled; fails on every run since June.",["Disable the workflow","Enable Pages"],0]]],
+["Policy and workstation",[
+["merge","Agent merges","Classifier blocks agent self-merges; rule merge-authorization.md allows per-PR authorized merges via merge-when-clean.sh.",["Add allow rule for merge-when-clean.sh --merge","Keep manual merges"],0],
+["codex","Agents launching `codex exec`","Blocked as 'Create Unsafe Agents', so Codex delegation falls back to Claude.",["Allow codex exec for agents","Keep blocked"],0],
+["hist","Two physical hostnames in workspace-hub history (fe4ca98)","Tip relabelled by #3959; history rewrite would disrupt every clone.",["Accept history as is","Rewrite history"],0],
+["marine","wt-wiki-marine-equipment: six uncommitted wiki pages","Branch never pushed; real work.",["Push branch + open draft PR","Discard"],0],
+["backup","/mnt/ace single copy of riser W4 results","Pending agent report on backup status.",["Mirror to a second location","Accept single copy"],0],
+["codexdirs","Codex app task folders (~28 GB)","Safe once Codex tasks are closed and work is pushed.",["Agent cleans pushed/merged folders","I clean manually"],0],
+["clones","Codex using full clones","Root cause of today's disk-full.",["Add rule: Codex uses worktrees, deletes after merge","No change"],0]]]
+];
+const KEY="owner-decisions-2026-10-07";let S={};try{S=JSON.parse(localStorage.getItem(KEY)||"{}")}catch(e){}
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
+const list=document.getElementById("list");
+function render(){list.innerHTML="";let n=0,t=0;
+for(const [sec,rows] of D){const h=document.createElement("h2");h.textContent=sec;list.appendChild(h);
+for(const [id,q,ctx,opts,rec] of rows){t++;const s=S[id]||{};if(s.pick!=null)n++;
+const d=document.createElement("div");d.className="d"+(s.pick!=null?" done":"");
+d.innerHTML=`<div class="q">${q}</div><div class="ctx">${ctx}</div><div class="opts">${opts.map((o,i)=>`<label class="${i===rec?"rec":""} ${s.pick===i?"sel":""}"><input type="radio" name="${id}" ${s.pick===i?"checked":""} data-i="${i}">${o}</label>`).join("")}</div><textarea placeholder="Note (optional)">${s.note||""}</textarea>`;
+d.querySelectorAll("input").forEach(r=>r.onchange=()=>{S[id]={...S[id],pick:+r.dataset.i};save();render()});
+d.querySelector("textarea").oninput=e=>{S[id]={...S[id],note:e.target.value};save()};
+list.appendChild(d)}}
+document.getElementById("count").textContent=`${n}/${t} decided`}
+function text(){const L=["Owner decisions 2026-10-07:"];
+for(const [,rows] of D)for(const [id,q,,opts] of rows){const s=S[id];if(!s||s.pick==null)continue;L.push(`- ${q}: ${opts[s.pick]}${s.note?" — "+s.note:""}`)}
+return L.join("\n")}
+document.getElementById("copy").onclick=async()=>{const t=text(),o=document.getElementById("out");o.hidden=false;o.textContent=t;try{await navigator.clipboard.writeText(t);document.getElementById("copy").textContent="Copied"}catch(e){document.getElementById("copy").textContent="Select text below"}setTimeout(()=>document.getElementById("copy").textContent="Copy decisions",2000)};
+document.getElementById("recall").onclick=()=>{for(const [,rows] of D)for(const [id,,,,rec] of rows)if(!S[id]||S[id].pick==null)S[id]={...S[id],pick:rec};save();render()};
+document.getElementById("clear").onclick=()=>{S={};save();render();document.getElementById("out").hidden=true};
+render();
+</script>
+</body>
+</html>
