@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-10-09T01:21:17.766081Z",
+  "generated_at": "2026-10-09T05:21:18.497253Z",
   "current_week": "2026-W41",
-  "scorecard_generated_at": "2026-10-09T01:21:15.555200Z",
+  "scorecard_generated_at": "2026-10-09T05:21:16.283334Z",
   "recommended_provider_order": [
     "codex",
     "agy",
@@ -12,7 +12,7 @@
       "provider": "claude",
       "routing_priority": "high",
       "execution_ready_count": 5,
-      "total_candidates": 180,
+      "total_candidates": 179,
       "top_issues": [
         {
           "number": 3816,
@@ -907,9 +907,10 @@
             "cat:tooling",
             "domain:repo-cleanup",
             "machine:dev-primary",
-            "status:plan-review"
+            "dispatch:ready",
+            "decision:ecosystem"
           ],
-          "updatedAt": "2026-09-26T22:10:45Z",
+          "updatedAt": "2026-10-09T02:34:27Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -1114,9 +1115,10 @@
             "priority:high",
             "cat:operations",
             "machine:dev-primary",
-            "status:plan-review"
+            "dispatch:ready",
+            "decision:ecosystem"
           ],
-          "updatedAt": "2026-09-26T17:52:31Z",
+          "updatedAt": "2026-10-09T02:34:22Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -3751,9 +3753,10 @@
           "title": "Harden shell test selectors against undefined-helper false greens",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3876",
           "labels": [
-            "status:plan-review"
+            "dispatch:ready",
+            "decision:ecosystem"
           ],
-          "updatedAt": "2026-09-30T13:07:35Z",
+          "updatedAt": "2026-10-09T02:34:14Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -3821,25 +3824,6 @@
           ]
         },
         {
-          "number": 3886,
-          "title": "og-standards: add a rename/remap mode \u2014 renamed library files leave stale catalog, inventory DB and document-index paths",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3886",
-          "labels": [
-            "status:plan-review"
-          ],
-          "updatedAt": "2026-09-30T13:07:32Z",
-          "execution_ready": false,
-          "priority_rank": 4,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation"
-          ]
-        },
-        {
           "number": 3892,
           "title": "feat(engineering): standard human-review pack \u2014 evidence screenshots vs physical expectation before any result is accepted",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3892",
@@ -3862,9 +3846,10 @@
           "title": "[Epic] Solver-neutral simulation study workflow: spec \u2192 triage \u2192 dispatch \u2192 monitor \u2192 reduce \u2192 human review \u2192 issue",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3894",
           "labels": [
-            "status:plan-review"
+            "dispatch:ready",
+            "decision:ecosystem"
           ],
-          "updatedAt": "2026-09-25T18:23:44Z",
+          "updatedAt": "2026-10-09T02:34:18Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -3882,11 +3867,12 @@
           "title": "bug(review): agy lane silently drops plans above ~30 KB on Windows (argv limit), recorded as provider outage",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3896",
           "labels": [
-            "status:plan-review",
+            "dispatch:ready",
             "gate:completeness",
-            "gate:completeness-v2"
+            "gate:completeness-v2",
+            "decision:ecosystem"
           ],
-          "updatedAt": "2026-10-07T13:06:48Z",
+          "updatedAt": "2026-10-09T02:34:06Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -3976,11 +3962,12 @@
           "title": "fix: wiki frontmatter validation silently skips arbitrarily named worktrees",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3932",
           "labels": [
-            "status:plan-review",
+            "dispatch:ready",
             "gate:completeness",
-            "gate:completeness-v2"
+            "gate:completeness-v2",
+            "decision:ecosystem"
           ],
-          "updatedAt": "2026-10-07T13:06:56Z",
+          "updatedAt": "2026-10-09T02:34:02Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -3997,8 +3984,10 @@
           "number": 3936,
           "title": "Retire legal-sanity-scan and move identifier verification to final reports",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3936",
-          "labels": [],
-          "updatedAt": "2026-10-07T19:15:02Z",
+          "labels": [
+            "decision:ecosystem"
+          ],
+          "updatedAt": "2026-10-09T02:45:05Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -4126,9 +4115,10 @@
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3967",
           "labels": [
             "gate:completeness",
-            "gate:completeness-v2"
+            "gate:completeness-v2",
+            "decision:client"
           ],
-          "updatedAt": "2026-10-08T15:02:13Z",
+          "updatedAt": "2026-10-09T02:45:21Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -4188,7 +4178,7 @@
       "provider": "codex",
       "routing_priority": "highest",
       "execution_ready_count": 3,
-      "total_candidates": 18,
+      "total_candidates": 19,
       "top_issues": [
         {
           "number": 3740,
@@ -4704,6 +4694,26 @@
           ]
         },
         {
+          "number": 3886,
+          "title": "og-standards: add a rename/remap mode \u2014 renamed library files leave stale catalog, inventory DB and document-index paths",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3886",
+          "labels": [
+            "dispatch:ready",
+            "decision:ecosystem"
+          ],
+          "updatedAt": "2026-10-09T02:34:09Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "codex",
+          "routing_reason": "implementation/test/fix language",
+          "provider_priority": "highest",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation"
+          ]
+        },
+        {
           "number": 3933,
           "title": "fix: legal scanner duplicate resolver allows empty-path false PASS",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3933",
@@ -4742,9 +4752,12 @@
           "title": "Fleet dated-snapshot writer bypasses the fail-closed hostname labeler (public leak)",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3944",
           "labels": [
-            "bug"
+            "bug",
+            "dispatch:ready",
+            "lane:codex",
+            "decision:ecosystem"
           ],
-          "updatedAt": "2026-10-07T12:48:44Z",
+          "updatedAt": "2026-10-09T02:34:35Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "codex",

@@ -111,7 +111,8 @@
       "hover": {
         "labels": [
           "gate:completeness",
-          "gate:completeness-v2"
+          "gate:completeness-v2",
+          "decision:client"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -293,7 +294,10 @@
       "approval_ready": false,
       "hover": {
         "labels": [
-          "bug"
+          "bug",
+          "dispatch:ready",
+          "lane:codex",
+          "decision:ecosystem"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -467,7 +471,9 @@
       "approval_marker": null,
       "approval_ready": false,
       "hover": {
-        "labels": [],
+        "labels": [
+          "decision:ecosystem"
+        ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
         "plan_summary": "(no plan file found)",
@@ -561,17 +567,19 @@
     },
     {
       "approval_blockers": [
+        "missing status:plan-review label",
         "no canonical plan file",
-        "reviews not clean: missing_review",
+        "review evidence not clean",
         "static dashboard: real approval requires provider-kanban-server.py"
       ],
       "approval_marker": null,
       "approval_ready": false,
       "hover": {
         "labels": [
-          "status:plan-review",
+          "dispatch:ready",
           "gate:completeness",
-          "gate:completeness-v2"
+          "gate:completeness-v2",
+          "decision:ecosystem"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -594,9 +602,7 @@
       "routing_reason": "strategy/workflow/architecture language",
       "title": "fix: wiki frontmatter validation silently skips arbitrarily named worktrees",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3932",
-      "warnings": [
-        "missing_review"
-      ]
+      "warnings": []
     },
     {
       "approval_blockers": [
@@ -777,17 +783,19 @@
     },
     {
       "approval_blockers": [
+        "missing status:plan-review label",
         "no canonical plan file",
-        "reviews not clean: missing_review",
+        "review evidence not clean",
         "static dashboard: real approval requires provider-kanban-server.py"
       ],
       "approval_marker": null,
       "approval_ready": false,
       "hover": {
         "labels": [
-          "status:plan-review",
+          "dispatch:ready",
           "gate:completeness",
-          "gate:completeness-v2"
+          "gate:completeness-v2",
+          "decision:ecosystem"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -810,21 +818,21 @@
       "routing_reason": "strategy/workflow/architecture language",
       "title": "bug(review): agy lane silently drops plans above ~30 KB on Windows (argv limit), recorded as provider outage",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3896",
-      "warnings": [
-        "missing_review"
-      ]
+      "warnings": []
     },
     {
       "approval_blockers": [
+        "missing status:plan-review label",
         "no canonical plan file",
-        "reviews not clean: missing_review",
+        "review evidence not clean",
         "static dashboard: real approval requires provider-kanban-server.py"
       ],
       "approval_marker": null,
       "approval_ready": false,
       "hover": {
         "labels": [
-          "status:plan-review"
+          "dispatch:ready",
+          "decision:ecosystem"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -847,9 +855,7 @@
       "routing_reason": "strategy/workflow/architecture language",
       "title": "[Epic] Solver-neutral simulation study workflow: spec \u2192 triage \u2192 dispatch \u2192 monitor \u2192 reduce \u2192 human review \u2192 issue",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3894",
-      "warnings": [
-        "missing_review"
-      ]
+      "warnings": []
     },
     {
       "approval_blockers": [
@@ -887,20 +893,22 @@
     },
     {
       "approval_blockers": [
+        "missing status:plan-review label",
         "no canonical plan file",
-        "reviews not clean: missing_review",
+        "review evidence not clean",
         "static dashboard: real approval requires provider-kanban-server.py"
       ],
       "approval_marker": null,
       "approval_ready": false,
       "hover": {
         "labels": [
-          "status:plan-review"
+          "dispatch:ready",
+          "decision:ecosystem"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
         "plan_summary": "(no plan file found)",
-        "provider_route": "claude",
+        "provider_route": "codex",
         "risks": "(no risks section captured)",
         "tests": "(no TDD section)",
         "title": "og-standards: add a rename/remap mode \u2014 renamed library files leave stale catalog, inventory DB and document-index paths"
@@ -913,14 +921,12 @@
       "number": 3886,
       "pipeline_lane": "C",
       "plan": null,
-      "provider_route": "claude",
+      "provider_route": "codex",
       "review_clean": false,
-      "routing_reason": "strategy/workflow/architecture language",
+      "routing_reason": "implementation/test/fix language",
       "title": "og-standards: add a rename/remap mode \u2014 renamed library files leave stale catalog, inventory DB and document-index paths",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3886",
-      "warnings": [
-        "missing_review"
-      ]
+      "warnings": []
     },
     {
       "approval_blockers": [
@@ -1063,15 +1069,17 @@
     },
     {
       "approval_blockers": [
+        "missing status:plan-review label",
         "no canonical plan file",
-        "reviews not clean: missing_review",
+        "review evidence not clean",
         "static dashboard: real approval requires provider-kanban-server.py"
       ],
       "approval_marker": null,
       "approval_ready": false,
       "hover": {
         "labels": [
-          "status:plan-review"
+          "dispatch:ready",
+          "decision:ecosystem"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -1094,9 +1102,7 @@
       "routing_reason": "strategy/workflow/architecture language",
       "title": "Harden shell test selectors against undefined-helper false greens",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3876",
-      "warnings": [
-        "missing_review"
-      ]
+      "warnings": []
     },
     {
       "approval_blockers": [
@@ -3274,6 +3280,7 @@
     },
     {
       "approval_blockers": [
+        "missing status:plan-review label",
         "reviews not clean: missing_review",
         "static dashboard: real approval requires provider-kanban-server.py"
       ],
@@ -3284,7 +3291,8 @@
           "priority:high",
           "cat:operations",
           "machine:dev-primary",
-          "status:plan-review"
+          "dispatch:ready",
+          "decision:ecosystem"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -4590,8 +4598,9 @@
     },
     {
       "approval_blockers": [
+        "missing status:plan-review label",
         "no canonical plan file",
-        "reviews not clean: missing_review",
+        "review evidence not clean",
         "static dashboard: real approval requires provider-kanban-server.py"
       ],
       "approval_marker": null,
@@ -4602,7 +4611,8 @@
           "cat:tooling",
           "domain:repo-cleanup",
           "machine:dev-primary",
-          "status:plan-review"
+          "dispatch:ready",
+          "decision:ecosystem"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -4625,9 +4635,7 @@
       "routing_reason": "strategy/workflow/architecture language",
       "title": "chore(repo): reconcile llm-wiki-mkt-a \u2192 llm-wiki-mkt-a rename across 62 files (2 scripts + 2 configs are live)",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3694",
-      "warnings": [
-        "missing_review"
-      ]
+      "warnings": []
     },
     {
       "approval_blockers": [
@@ -7752,7 +7760,7 @@
       "warnings": []
     }
   ],
-  "generated_at": "2026-10-09T01:21:19Z",
+  "generated_at": "2026-10-09T05:21:20Z",
   "lanes": {
     "blocked": [],
     "execution_ready": [],
@@ -7844,7 +7852,8 @@
         "hover": {
           "labels": [
             "gate:completeness",
-            "gate:completeness-v2"
+            "gate:completeness-v2",
+            "decision:client"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -8026,7 +8035,10 @@
         "approval_ready": false,
         "hover": {
           "labels": [
-            "bug"
+            "bug",
+            "dispatch:ready",
+            "lane:codex",
+            "decision:ecosystem"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -8200,7 +8212,9 @@
         "approval_marker": null,
         "approval_ready": false,
         "hover": {
-          "labels": [],
+          "labels": [
+            "decision:ecosystem"
+          ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
           "plan_summary": "(no plan file found)",
@@ -8294,17 +8308,19 @@
       },
       {
         "approval_blockers": [
+          "missing status:plan-review label",
           "no canonical plan file",
-          "reviews not clean: missing_review",
+          "review evidence not clean",
           "static dashboard: real approval requires provider-kanban-server.py"
         ],
         "approval_marker": null,
         "approval_ready": false,
         "hover": {
           "labels": [
-            "status:plan-review",
+            "dispatch:ready",
             "gate:completeness",
-            "gate:completeness-v2"
+            "gate:completeness-v2",
+            "decision:ecosystem"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -8327,9 +8343,7 @@
         "routing_reason": "strategy/workflow/architecture language",
         "title": "fix: wiki frontmatter validation silently skips arbitrarily named worktrees",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/3932",
-        "warnings": [
-          "missing_review"
-        ]
+        "warnings": []
       },
       {
         "approval_blockers": [
@@ -8510,17 +8524,19 @@
       },
       {
         "approval_blockers": [
+          "missing status:plan-review label",
           "no canonical plan file",
-          "reviews not clean: missing_review",
+          "review evidence not clean",
           "static dashboard: real approval requires provider-kanban-server.py"
         ],
         "approval_marker": null,
         "approval_ready": false,
         "hover": {
           "labels": [
-            "status:plan-review",
+            "dispatch:ready",
             "gate:completeness",
-            "gate:completeness-v2"
+            "gate:completeness-v2",
+            "decision:ecosystem"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -8543,21 +8559,21 @@
         "routing_reason": "strategy/workflow/architecture language",
         "title": "bug(review): agy lane silently drops plans above ~30 KB on Windows (argv limit), recorded as provider outage",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/3896",
-        "warnings": [
-          "missing_review"
-        ]
+        "warnings": []
       },
       {
         "approval_blockers": [
+          "missing status:plan-review label",
           "no canonical plan file",
-          "reviews not clean: missing_review",
+          "review evidence not clean",
           "static dashboard: real approval requires provider-kanban-server.py"
         ],
         "approval_marker": null,
         "approval_ready": false,
         "hover": {
           "labels": [
-            "status:plan-review"
+            "dispatch:ready",
+            "decision:ecosystem"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -8580,9 +8596,7 @@
         "routing_reason": "strategy/workflow/architecture language",
         "title": "[Epic] Solver-neutral simulation study workflow: spec \u2192 triage \u2192 dispatch \u2192 monitor \u2192 reduce \u2192 human review \u2192 issue",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/3894",
-        "warnings": [
-          "missing_review"
-        ]
+        "warnings": []
       },
       {
         "approval_blockers": [
@@ -8620,20 +8634,22 @@
       },
       {
         "approval_blockers": [
+          "missing status:plan-review label",
           "no canonical plan file",
-          "reviews not clean: missing_review",
+          "review evidence not clean",
           "static dashboard: real approval requires provider-kanban-server.py"
         ],
         "approval_marker": null,
         "approval_ready": false,
         "hover": {
           "labels": [
-            "status:plan-review"
+            "dispatch:ready",
+            "decision:ecosystem"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
           "plan_summary": "(no plan file found)",
-          "provider_route": "claude",
+          "provider_route": "codex",
           "risks": "(no risks section captured)",
           "tests": "(no TDD section)",
           "title": "og-standards: add a rename/remap mode \u2014 renamed library files leave stale catalog, inventory DB and document-index paths"
@@ -8646,14 +8662,12 @@
         "number": 3886,
         "pipeline_lane": "C",
         "plan": null,
-        "provider_route": "claude",
+        "provider_route": "codex",
         "review_clean": false,
-        "routing_reason": "strategy/workflow/architecture language",
+        "routing_reason": "implementation/test/fix language",
         "title": "og-standards: add a rename/remap mode \u2014 renamed library files leave stale catalog, inventory DB and document-index paths",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/3886",
-        "warnings": [
-          "missing_review"
-        ]
+        "warnings": []
       },
       {
         "approval_blockers": [
@@ -8796,15 +8810,17 @@
       },
       {
         "approval_blockers": [
+          "missing status:plan-review label",
           "no canonical plan file",
-          "reviews not clean: missing_review",
+          "review evidence not clean",
           "static dashboard: real approval requires provider-kanban-server.py"
         ],
         "approval_marker": null,
         "approval_ready": false,
         "hover": {
           "labels": [
-            "status:plan-review"
+            "dispatch:ready",
+            "decision:ecosystem"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -8827,9 +8843,7 @@
         "routing_reason": "strategy/workflow/architecture language",
         "title": "Harden shell test selectors against undefined-helper false greens",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/3876",
-        "warnings": [
-          "missing_review"
-        ]
+        "warnings": []
       },
       {
         "approval_blockers": [
@@ -11007,6 +11021,7 @@
       },
       {
         "approval_blockers": [
+          "missing status:plan-review label",
           "reviews not clean: missing_review",
           "static dashboard: real approval requires provider-kanban-server.py"
         ],
@@ -11017,7 +11032,8 @@
             "priority:high",
             "cat:operations",
             "machine:dev-primary",
-            "status:plan-review"
+            "dispatch:ready",
+            "decision:ecosystem"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -12323,8 +12339,9 @@
       },
       {
         "approval_blockers": [
+          "missing status:plan-review label",
           "no canonical plan file",
-          "reviews not clean: missing_review",
+          "review evidence not clean",
           "static dashboard: real approval requires provider-kanban-server.py"
         ],
         "approval_marker": null,
@@ -12335,7 +12352,8 @@
             "cat:tooling",
             "domain:repo-cleanup",
             "machine:dev-primary",
-            "status:plan-review"
+            "dispatch:ready",
+            "decision:ecosystem"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -12358,9 +12376,7 @@
         "routing_reason": "strategy/workflow/architecture language",
         "title": "chore(repo): reconcile llm-wiki-mkt-a \u2192 llm-wiki-mkt-a rename across 62 files (2 scripts + 2 configs are live)",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/3694",
-        "warnings": [
-          "missing_review"
-        ]
+        "warnings": []
       },
       {
         "approval_blockers": [
@@ -15493,16 +15509,16 @@
     "agy",
     "claude"
   ],
-  "scorecard_generated_at": "2026-10-09T01:21:15.555200Z",
+  "scorecard_generated_at": "2026-10-09T05:21:16.283334Z",
   "served_localhost": false,
-  "utilization_generated_at": "2026-10-09T01:21:15.454205Z",
+  "utilization_generated_at": "2026-10-09T05:21:16.123135Z",
   "warning_summary": {
     "approved_no_marker": 5,
     "approved_no_plan": 1,
     "legacy_review_no_sha": 4,
     "major_review": 3,
     "marker_without_open_approved_issue": 186,
-    "missing_review": 35,
+    "missing_review": 29,
     "unavailable_review": 1
   }
 }
