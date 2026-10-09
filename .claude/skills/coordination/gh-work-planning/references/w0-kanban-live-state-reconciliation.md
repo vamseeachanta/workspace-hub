@@ -5,8 +5,8 @@ Use after generating repo/domain Kanban boards or 5-hour swarm recommendations, 
 ## Session signal
 
 A generated board/recommendation packet mixed several states:
-- `status:working` issues with landed commits still open
-- `status:working` issues where the last worker found a no-code/dependency blocker
+- `dispatch:active` issues with landed commits still open
+- `dispatch:active` issues where the last worker found a no-code/dependency blocker
 - a closed issue still appearing in a plan-review/live-drift queue
 
 Launching directly from the board would have duplicated work and wasted provider quota.

@@ -23,7 +23,7 @@ jobs:
     if: >-
       github.event.action == 'opened' ||
       github.event.label.name == 'status:plan-review' ||
-      github.event.label.name == 'status:in-progress' ||
+      github.event.label.name == 'dispatch:active' ||
       github.event.label.name == 'status:plan-approved'
     steps:
       - name: Add gate:completeness (idempotent)
