@@ -19,6 +19,9 @@ related_skills:
 
 # Inventory Readiness Provider Dispatch
 
+Current authority: the originating task request or established standing authority authorizes implementation after proportionate planning, TDD and adversarial review; no separate user plan approval, approval label or local marker is required. Honor explicit planning-only limits, unresolved domain decisions and blocking findings. Consequential actions require matching action/destination authority: implementation authority alone does not authorize publication, deployment, access changes, destructive actions or outreach. Reuse existing authorization and preserve owner-controlled approval history without self-labeling.
+
+
 Use this when the user wants to optimize Codex/Codex/Gemini usage around a staged GitHub work pipeline, especially:
 
 `raw data -> inventory -> llm-wiki -> calculation code -> parametric outputs -> website/GTM`
@@ -40,7 +43,7 @@ The Markdown report should be generated from YAML, not hand-authored as the sour
 
 All packages surfaced by the matrix must follow:
 
-`plan -> adversarial plan review -> user approval -> implementation -> adversarial implementation review -> closeout`
+`plan -> adversarial plan review -> verify task authority -> implementation -> adversarial implementation review -> closeout`
 
 Do not execute downstream issue candidates just because they appear in the matrix. Keep them as references/candidates/dependencies unless explicitly approved for execution.
 

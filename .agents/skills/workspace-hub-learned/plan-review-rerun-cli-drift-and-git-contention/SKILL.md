@@ -5,6 +5,10 @@ version: 1.0.0
 category: workspace-hub-learned
 tags: [planning, adversarial-review, codex, gemini, governance, git-contention]
 ---
+## Implementation authority
+
+The task request or standing authority authorizes implementation, including substantial work; no separate user plan approval, approval label or local marker is required. Complete planning, TDD and adversarial review, and resolve required domain decisions and blocking findings. Honor explicit planning-only requests. Consequential actions outside existing authority require matching explicit authorization. Implementation authority alone does not authorize publication, deployment, access changes or destructive actions; verify action/destination authority and reuse it when already provided. Preserve owner-controlled approval history without self-labeling.
+
 
 # Plan Review Rerun: CLI Drift + Governance Hygiene + Git Contention
 
@@ -22,7 +26,7 @@ Use this when hardening a `status:plan-review` issue through repeated adversaria
 1. Revalidate live state before editing.
    - `gh issue view <issue> --json labels,state,comments,url`
    - Read the plan header, `## Adversarial Review Summary`, and `docs/plans/README.md` row.
-   - Check local approval marker only after live labels: `.planning/plan-approved/<issue>.md`.
+   - Inspect current task/standing authority, plan revision and blocking findings. Existing approval markers are history, not implementation prerequisites; preserve them without fabricating or deleting approval evidence.
 
 2. Treat provider wrapper failure as a tool problem, not review signal.
    - Current Codex CLI may reject `codex exec --no-interactive` with rc=2.

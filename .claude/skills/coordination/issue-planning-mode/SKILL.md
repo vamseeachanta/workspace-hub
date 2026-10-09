@@ -9,6 +9,11 @@ related_skills:
   - engineering-issue-workflow
 ---
 
+## Implementation authority
+
+The task request or standing authority authorizes implementation, including substantial work; no separate user plan approval, approval label or local marker is required. Complete planning, TDD and adversarial review, and resolve required domain decisions and blocking findings. Honor explicit planning-only requests. Consequential actions outside existing authority require matching explicit authorization. Implementation authority alone does not authorize publication, deployment, access changes or destructive actions; verify action/destination authority and reuse it when already provided.
+
+
 # Issue Planning Mode — Mandatory for ALL Issues
 
 **ALL agents** (Claude, Codex, Gemini, Hermes) MUST follow this workflow for every GitHub issue.
@@ -20,13 +25,13 @@ Full onboarding guide with step-by-step details: `docs/plans/README.md`
 
 ```
 Issue → Resource Intel → Draft Plan → Adversarial Review → Post to GH
-  → Label status:plan-review → USER APPROVES → Label status:plan-approved
+  → Record reviewed scope and task authority → Implement after required domain decisions are resolved
   → Implement (TDD) → Cross-review → Completeness gate (#2798) → Close
 ```
 
 > **Completeness gate before close (#2798):** compute a test-/evidence-based completeness score (`scripts/workflow/completeness_score.py`), persist it (kanban `--metadata` + issue-body ```completeness {json}``` stamp), render `docs/reports/<date>-<issue>-completeness.html`, and require the owner-only `status:completeness-verified` label (≥ class threshold) before `gh issue close`. The server-side gate (`.github/workflows/completeness-gate.yml`) reopens issues closed without it. See the rule `.claude/rules/completeness-before-close.md`.
 
-Canonical execution method: non-trivial work must be classified up front as `single-lane`, `parallel-readonly`, or `parallel-worktree` per `docs/standards/PARALLEL_FIRST_EXECUTION.md`. Resource intelligence, plan review, and validation may run in parallel; implementation still requires user approval and TDD before any write-capable lane starts.
+Canonical execution method: non-trivial work must be classified up front as `single-lane`, `parallel-readonly`, or `parallel-worktree` per `docs/standards/PARALLEL_FIRST_EXECUTION.md`. Resource intelligence, plan review, and validation may run in parallel; implementation requires task authority, review, resolved domain decisions and TDD before any write-capable lane starts.
 
 ## Steps
 
@@ -92,7 +97,7 @@ For repo/data location contract plans, also run the checks in `references/repo-l
 
 For per-machine repo placement plans, also apply `references/per-machine-repo-placement-outcome-contract.md`: the first machine issue in a sequence must leave a reusable pattern for consistent tier-1 repo folder structure, primary/reference checkout decisions, and repo harness/file ecosystem handling through one repo-tracked authority rather than creating machine-specific duplicate conventions.
 
-For plans being revised after a source/provenance ambiguity is resolved, especially when licensed or private off-repo material is involved, apply `references/source-provenance-plan-revision.md`: patch the canonical plan narrowly, state the source/license boundary, add fail-closed citation/leakage tests, run focused re-review, and stop at user approval rather than self-approving.
+For plans being revised after a source/provenance ambiguity is resolved, especially when licensed or private off-repo material is involved, apply `references/source-provenance-plan-revision.md`: patch the canonical plan narrowly, state the source/license boundary, add fail-closed citation/leakage tests, run focused re-review, and implement within verified task scope without manufacturing approval.
 
 Update the index table in `docs/plans/README.md` with a new row.
 
@@ -109,9 +114,9 @@ Required shape:
 
 Session-specific examples and checklists: `references/layered-architecture-issue-planning.md`.
 
-For GitHub issue portfolios that must flow from data layer → execution layer → result/output layer, use `references/data-execution-results-kanban.md`: inventory issues by architectural lane, create a repo-tracked Kanban/report artifact, delegate read-only planning/review waves by provider strengths, verify delegate claims in the orchestrator checkout, and stop at an explicit approval checkpoint before implementation.
+For GitHub issue portfolios that must flow from data layer → execution layer → result/output layer, use `references/data-execution-results-kanban.md`: inventory issues by architectural lane, create a repo-tracked Kanban/report artifact, delegate read-only planning/review waves by provider strengths, verify delegate claims in the orchestrator checkout, and proceed within the task request after plan review.
 
-For sequential issue-tree planning where downstream plans depend on revised upstream architecture/boundary plans, use `references/focused-reqa-before-downstream-planning.md`: run focused re-QA against the exact revised local upstream artifacts before drafting downstream issues, post concise GitHub comments for MAJOR results with `--body-file`, keep labels conservative, and block downstream drafting until upstream MAJOR findings are patched or explicitly waived.
+For sequential issue-tree planning where downstream plans depend on revised upstream architecture/boundary plans, run focused re-QA against the exact revised local upstream artifacts before drafting downstream issues, post concise GitHub comments for MAJOR results with `--body-file`, keep labels conservative, and block downstream drafting until upstream MAJOR findings are patched or explicitly waived.
 
 Execution discipline for delegated agents:
 - If using Claude/Codex/Gemini in parallel worktrees, explicitly anchor the repo/worktree path in the prompt/context and verify the plan file was written in the intended checkout. Do not assume the child agent stayed in the requested worktree.
@@ -165,7 +170,7 @@ Rationale: user feedback 2026-04-17 on #2323 — "Make all the reviews adversari
    gh issue edit NNN --remove-label "status:needs-plan" --add-label "status:plan-review"
    ```
    Adjust the removed lower-status label if the issue uses a different earlier gate label.
-4. **STOP** — do NOT implement. Wait for user approval.
+4. Continue reviewed implementation within task authority; stop only for a required domain decision, blocking finding or explicit planning-only scope.
 
 Operational pitfall: do not update `docs/plans/README.md` to `plan-review` and stop there. The live GitHub label must also be reconciled, but only after pushed artifact evidence exists.
 

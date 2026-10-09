@@ -161,8 +161,8 @@ When the user is not present:
 |---|---|
 | draft | Plan file exists locally but has not yet completed adversarial review |
 | adversarial-reviewed | Frontier-model review passed; ready to post for user review |
-| plan-review | Posted to GitHub; waiting for user approval |
-| plan-approved | User approved; ready for implementation or batch execution |
+| plan-review | Posted to GitHub for plan review; not an implementation-permission gate |
+| plan-approved | Historical owner-recorded approval; not required for authorized implementation |
 | superseded | Replaced by a newer version of the plan |
 | completed | Issue implemented and closed |
 

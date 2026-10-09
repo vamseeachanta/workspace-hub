@@ -1,3 +1,6 @@
+
+
+Current authority: the originating task request or established standing authority authorizes implementation after proportionate planning, TDD and adversarial review; no separate user plan approval, approval label or local marker is required. Honor explicit planning-only limits, unresolved domain decisions and blocking findings. Consequential actions require matching action/destination authority: implementation authority alone does not authorize publication, deployment, access changes, destructive actions or outreach. Reuse existing authorization and preserve owner-controlled approval history without self-labeling.
 # Interactive review-thread mode
 
 Use this when a GitHub issue is intentionally serving as the discussion surface before a plan can be finalized.
@@ -14,7 +17,7 @@ Use this when a GitHub issue is intentionally serving as the discussion surface 
 2. **Current state** — open/closed, labels, parent/source issue if relevant.
 3. **Known decisions** — concise bullets only, grounded in existing issue comments.
 4. **Next comment prompts** — grouped in the order the user should respond.
-5. **Gate status** — state plainly that implementation remains blocked until the plan is drafted, reviewed, and approved.
+5. **Gate status** — honor the requested interactive planning/review scope. State that subsequent implementation requires reviewed scope and task authority, not separate plan approval.
 
 ## Operational pitfall
 

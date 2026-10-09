@@ -24,6 +24,12 @@ tags:
 
 # Agent Usage Optimizer
 
+Current authority: the originating task request or established standing authority authorizes implementation after proportionate planning, TDD and adversarial review; no separate user plan approval, approval label or local marker is required. Honor explicit planning-only limits, unresolved domain decisions and blocking findings. Consequential actions require matching action/destination authority: implementation authority alone does not authorize publication, deployment, access changes, destructive actions or outreach. Reuse existing authorization and preserve owner-controlled approval history without self-labeling.
+
+
+Current authority: implementation follows the originating task request or established standing authority after proportionate planning, TDD and adversarial review; no separate plan approval, approval label or local marker is required. Planning-only limits, unresolved domain decisions and action-specific authorization for publication, deployment, access changes, destructive actions and outreach remain binding. Historical approval records stay intact and must not be fabricated or self-labeled.
+
+
 ## Agent Routing via GitHub Labels (Preferred Method)
 
 Deterministic agent routing using `agent:` labels on GitHub issues — no separate queue file needed:
@@ -199,6 +205,10 @@ bash scripts/cron/provider-utilization-refresh.sh
 3. Read the provider work queue to see issue candidates by provider.
 4. Review the autolabel candidate report.
 5. Only then consider applying labels.
+
+For active weekly credit burn-down, use the Kanban approval control-plane pattern in `references/kanban-approval-control-plane.md`: keep planning/feedstock, plan-review, execution-ready, running/leased, and QA/closeout lanes; expose hover summaries for approval candidates; make any "Approve Plan" button perform a real auditable approval transaction rather than a UI-only state change; and run Claude/Codex through controlled queue-feeder + lease/heartbeat loops instead of open-ended "find useful work" prompts.
+
+When the user asks for a practical plan to stop wasting weekly provider credits, do not answer with a generic quota lecture. Produce an operating plan that creates/uses a durable queue, preserves hard approval gates, and defines fallback burn lanes: approved implementation first; if insufficient, plan-review hardening, issue planning, recon, adversarial review, QA/closeout, and telemetry improvement. Treat utilization as a pacing target, not permission to exceed task authority or bypass TDD, review or closeout controls.
 
 ## Conservative auto-labeling rule
 

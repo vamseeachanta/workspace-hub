@@ -10,6 +10,11 @@ metadata:
     related_skills: [codex, hermes-agent, opencode]
 ---
 
+## Implementation authority
+
+The task request or standing authority authorizes implementation, including substantial work; no separate user plan approval, approval label or local marker is required. Complete planning, TDD and adversarial review, and resolve required domain decisions and blocking findings. Honor explicit planning-only requests. Consequential actions outside existing authority require matching explicit authorization. Implementation authority alone does not authorize publication, deployment, access changes or destructive actions; verify action/destination authority and reuse it when already provided.
+
+
 # Codex — Hermes Orchestration Guide
 
 Delegate coding tasks to [Codex](https://code.Codex.com/docs/en/cli-reference) (Anthropic's autonomous coding agent CLI) via the Hermes terminal. Codex v2.x can read files, write code, run shell commands, spawn subagents, and manage git workflows autonomously.

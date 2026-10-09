@@ -7,6 +7,9 @@ author: Hermes Agent
 
 # Plan-Gated Issue Execution Wave
 
+Current authority: the originating task request or established standing authority authorizes implementation after proportionate planning, TDD and adversarial review; no separate user plan approval, approval label or local marker is required. Honor explicit planning-only limits, unresolved domain decisions and blocking findings. Consequential actions require matching action/destination authority: implementation authority alone does not authorize publication, deployment, access changes, destructive actions or outreach. Reuse existing authorization and preserve owner-controlled approval history without self-labeling.
+
+
 Use when:
 - working in `workspace-hub` or a similar repo with strict plan gates
 - a parent architecture issue must be decomposed into child issues
@@ -19,7 +22,7 @@ Use when:
 2. For each not-yet-approved issue, generate a self-contained planning prompt file under `docs/plans/`.
 3. Launch Codex in a background subprocess using the prompt file and monitor it via process polling/watch patterns.
 4. When plan-review artifacts land, move issues to `status:plan-review` only.
-5. After explicit user approval, convert the issue to `status:plan-approved`, create `.planning/plan-approved/<issue>.md`, and commit that marker before any implementation run.
+5. Verify originating task authority, reviewed scope and blocking domain decisions; no approval label or local marker is required for implementation.
 6. Generate a separate implementation prompt with strict owned paths and forbidden paths.
 7. Launch implementation in a subprocess and monitor completion.
 8. Review the output, verify git/GitHub state, and handle residual cleanup or sandbox-blocked follow-ups.
@@ -42,7 +45,7 @@ Codex -p --permission-mode plan --no-session-persistence --output-format text "$
 
 For each issue in the architecture chain:
 - read the approved parent/sibling artifacts first
-- keep the prompt planning-only unless the issue is already approved for execution
+- honor an explicitly planning-only task; otherwise implement reviewed scope within task authority
 - tell Codex to produce:
   - plan file in `docs/plans/`
   - review artifacts in `scripts/review/results/`
@@ -59,7 +62,7 @@ Recommended architecture order used successfully:
 7. retrieval contract
 8. conformance checks
 
-## Approval transition pattern
+## Weekly picklist / catalog-gated wave pattern
 
 When the user wants to execute an approved plan:
 1. switch GitHub label from `status:plan-review` to `status:plan-approved`
@@ -67,12 +70,21 @@ When the user wants to execute an approved plan:
 3. commit the marker by itself with a small commit message
 4. only then launch implementation Codex prompt
 
-Example commit:
+1. the catalog entry exists in the durable catalog issue body;
+2. the latest/current weekly picklist explicitly allocates that exact entry to this runner/provider;
+3. a fresh Phase 0 preflight passes after the allocation comment, including worker-collision and git-cleanliness checks.
 
-```bash
-git add .planning/plan-approved/2104.md
-git commit -m "chore(planning): approve issue #2104 for execution"
-```
+If the picklist is missing, post a governance-clean issue comment allocating the entry or documenting the hard stop, preferably via `gh issue comment --body-file` to avoid shell-quoting drift. After posting allocation, re-read the latest issue comment and rerun Phase 0; the allocation comment is not permission to skip collision checks.
+
+See `references/2026-05-23-deepening-sweep-picklist-gate.md` for the session-specific pattern.
+
+## Scope-authorized implementation transition
+
+Verify the originating task or standing authority covers the current plan scope.
+Complete adversarial plan review and resolve blocking findings/domain decisions.
+Use isolated worktrees and claimed paths, then launch the TDD implementation prompt.
+Approval labels/markers are historical records, never required or self-created
+to make a worker run. Publication, deployment and merges retain specific authority.
 
 ## Implementation prompt design
 
@@ -134,7 +146,7 @@ Good example:
 
 ## Hook false-positive lesson
 
-Workspace hooks may incorrectly treat all `AGENTS.md` files as harness adapter files.
+Workspace hooks may incorrectly treat all `CLAUDE.md` files as harness adapter files.
 
 Observed false positive:
 - `.Codex/hooks/check-Codex-md-limits.sh` enforced a 20-line limit on `knowledge/wikis/*/AGENTS.md`

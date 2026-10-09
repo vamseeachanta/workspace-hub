@@ -7,6 +7,9 @@ tags: [overnight, github, worktrees, backlog-reduction, blocker-conversion, work
 
 # Closure-first overnight batch
 
+Current authority: the originating task request or established standing authority authorizes implementation after proportionate planning, TDD and adversarial review; no separate user plan approval, approval label or local marker is required. Honor explicit planning-only limits, unresolved domain decisions and blocking findings. Consequential actions require matching action/destination authority: implementation authority alone does not authorize publication, deployment, access changes, destructive actions or outreach. Reuse existing authorization and preserve owner-controlled approval history without self-labeling.
+
+
 Use this when a repo has many open `status:plan-approved` issues, but live state may be stale and only some lanes are truly ready for implementation.
 
 ## When to use
@@ -72,7 +75,7 @@ Reserve one lane for a real approved implementation issue.
 
 Requirements:
 - clean isolated worktree from `origin/main`
-- local `.planning/plan-approved/<issue>.md` marker committed in that worktree before starting
+- verified task/standing authority, current reviewed scope and resolved blockers before starting; approval labels and local markers are not prerequisites
 - explicit owned/read-only/forbidden paths
 - narrow TDD-first scope
 

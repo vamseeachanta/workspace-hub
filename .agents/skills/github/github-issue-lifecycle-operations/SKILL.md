@@ -8,6 +8,9 @@ tags: [github, issues, planning, closeout]
 
 # Github Issue Lifecycle Operations
 
+Current authority: the originating task request or established standing authority authorizes implementation after proportionate planning, TDD and adversarial review; no separate user plan approval, approval label or local marker is required. Honor explicit planning-only limits, unresolved domain decisions and blocking findings. Consequential actions require matching action/destination authority: implementation authority alone does not authorize publication, deployment, access changes, destructive actions or outreach. Reuse existing authorization and preserve owner-controlled approval history without self-labeling.
+
+
 ## When to Use
 Use for GitHub issue intake, decomposition, planning, execution handoff, label/evidence automation, roadmap reuse, closeout, or cross-issue waves.
 
@@ -16,7 +19,12 @@ Use for GitHub issue intake, decomposition, planning, execution handoff, label/e
 2. Prefer durable umbrella/roadmap anchors over duplicate replacement epics.
 3. Put command-heavy bodies in files to avoid shell quoting and command substitution hazards.
 4. Maintain explicit evidence fields and closeout comments before state transitions.
-5. Use checklist skills as support material, not separate discovery targets.
+5. If `gh issue comment` / `gh issue edit` fails because GitHub core API rate limit is exhausted, do not treat evidence posting as complete. Check `gh api rate_limit --jq '.resources.core'`, wait until the reset time or use an approved alternate channel, then retry and verify the comment URL/body with `gh issue view` before final closeout.
+6. If a docs-only planning commit is blocked by branch protection / required PR rules, publish the exact planning commit on a short-lived `plan/issue-<N>-...` branch, open a PR, and post the issue's final plan-review comment with the PR/branch evidence instead of treating direct-main push failure as completion.
+6. Use checklist skills as support material, not separate discovery targets.
+7. For user-approved batches, reconcile labels with explicit issue-number `gh issue view` loops and body-file comments; do not rely on broad comma-separated `gh issue list --search` queries for final proof. See `../../coordination/github-label-approval-reconciliation/SKILL.md`.
+8. If `gh issue create` is blocked by current repo credentials after a safe single attempt, do not lose the decomposition. Preserve the proposed issue set as a repo-local issue packet plus a rerunnable `gh issue create --body-file ...` script, then report the access gap plainly without inventing issue URLs. See `references/issue-creation-denied-packet-fallback.md`.
+9. For W0/Kanban reconciliation, classify stale WIP into closeable-landed, landed-but-externally-blocked, no-code dependency-blocked, or closed-label-drift before launching any new swarm; verify landed commits against `origin/main`, post evidence via body files, fix labels, and write a scoped report without sweeping unrelated generated dirt. See `../../coordination/gh-work-planning/references/w0-kanban-live-state-reconciliation.md`.
 
 ## Consolidated Session Learnings
 
@@ -31,7 +39,8 @@ The `references/` directory contains archived narrow skills absorbed during the 
 ### `gh-work-execution`
 
 - Former skill demoted to `references/gh-work-execution.md`.
-- Preserved insight: Canonical GitHub issue execution route after plan approval — strengthened resource intelligence, TDD-first implementation, targeted validation, adversarial review, delegation controls for Codex agent teams, GitHub progress posting, future-issue capture, and commit/push with closeout discipline.
+- Preserved insight: Canonical GitHub issue execution route within task authority after review — strengthened resource intelligence, TDD-first implementation, targeted validation, adversarial review, delegation controls for Claude agent teams, GitHub progress posting, future-issue capture, and commit/push with closeout discipline.
+- Repo-structure/CI readiness addendum: use `../../workspace-hub/repo-structure/SKILL.md` for bounded Phase 1 structure-normalization issues that need verified task scope, TDD contract/checker/wiring, generated-root exceptions, CI/pre-commit enforcement, generated-churn cleanup, and transactional closeout.
 
 ### `gh-work-execution-checklist`
 
@@ -116,7 +125,7 @@ The `references/` directory contains archived narrow skills absorbed during the 
 ### `preserved-plan-refile-with-attested-review-wave`
 
 - Former skill demoted to `references/preserved-plan-refile-with-attested-review-wave.md`.
-- Preserved insight: Reopen a previously closed GitHub issue with a preserved local plan, rewrite it into a conservative draft, and drive iterative attested adversarial review waves until it is truly approval-ready.
+- Preserved insight: Reopen a previously closed GitHub issue with a preserved local plan, rewrite it into a conservative draft, and drive iterative attested adversarial review waves until blocking findings are resolved and it is ready for implementation within task/standing authority.
 
 ### `single-terminal-gh-issue-prompts`
 

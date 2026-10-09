@@ -12,6 +12,9 @@ version: 1.0.0
 
 # Workflow Compliance Audit
 
+Current authority: the originating task request or established standing authority authorizes implementation after proportionate planning, TDD and adversarial review; no separate user plan approval, approval label or local marker is required. Honor explicit planning-only limits, unresolved domain decisions and blocking findings. Consequential actions require matching action/destination authority: implementation authority alone does not authorize publication, deployment, access changes, destructive actions or outreach. Reuse existing authorization and preserve owner-controlled approval history without self-labeling.
+
+
 Audit whether agents are following established workflows (plan review, cross-review, TDD, document intelligence) by examining git history, review artifacts, session data, and intelligence pipelines.
 
 ## What Gets Audited
@@ -19,7 +22,7 @@ Audit whether agents are following established workflows (plan review, cross-rev
 | Area | What to Check | Evidence Sources |
 |------|-------------|------------------|
 | **Cross-Review** | Are engineering commits getting reviewed? | `scripts/review/results/`, git log |
-| **Plan Review** | Are plans written and approved before implementation? | Issue comments, `.planning/` files |
+| **Plan Review** | Are proportionate plans reviewed and task authority verified before implementation? | Issue comments, `.planning/` files |
 | **TDD Compliance** | Are tests written before implementation? | Commit order, test file timestamps |
 | **Doc Intelligence** | Is the document index healthy and current? | `data/document-index/index.jsonl`, `standards-transfer-ledger.yaml` |
 | **Resource Intelligence** | Is the resource maturity tracker being updated? | `data/document-index/resource-intelligence-maturity.yaml` |

@@ -8,6 +8,9 @@ related_skills: [multi-machine-ai-readiness-and-issue-triage, writing-plans, iss
 
 # Overnight Parallel Agent Prompts
 
+Current authority: the originating task request or established standing authority authorizes implementation after proportionate planning, TDD and adversarial review; no separate user plan approval, approval label or local marker is required. Honor explicit planning-only limits, unresolved domain decisions and blocking findings. Consequential actions require matching action/destination authority: implementation authority alone does not authorize publication, deployment, access changes, destructive actions or outreach. Reuse existing authorization and preserve owner-controlled approval history without self-labeling.
+
+
 ## When to Use
 
 - User has 3-5 terminals open and wants maximum overnight productivity
@@ -42,7 +45,7 @@ When the user asks for the “next N issues that can be directly executed in Cod
 
 Required live checks:
 1. Verify the issue is still **open**.
-2. Verify the issue still has the required gate label (for example `status:plan-approved`) if the repo policy requires it.
+2. Verify current task scope, reviewed plan and resolved blockers; approval labels and local markers are not prerequisites.
 3. Verify any local approval marker still exists (for example `.planning/plan-approved/<issue>.md`) when local hooks enforce marker-based gating.
 4. Verify the relevant repo/worktree is not already in a conflicting dirty state.
 5. Verify required local repos/data paths actually exist now.
@@ -279,5 +282,5 @@ Add a table mapping every issue to its terminal for quick morning triage:
 - **Stage 3 synthesis pack is worth standardizing**: after execution packs finish, create a Codex-only synthesis wave that writes exactly one artifact per terminal: (1) morning operator runbook, (2) unified draft `gh` command pack, (3) follow-up issue/refinement drafts, (4) priority/closure matrix, and (5) next-wave self-contained prompts. This adds cross-issue awareness that single-issue packs miss (for example, shared-file contention like multiple issues targeting the same oversized module) and produces a concrete morning operating kit.
 - **Stage 3 should be synthesis-first, not more per-issue analysis**: After a large stage-2 execution-pack batch finishes, the highest-value continuation is usually a 4-5 Codex synthesis wave with one unique artifact per terminal: (1) morning operator runbook across all issues, (2) unified draft `gh` command pack, (3) follow-up / split-issue draft pack for refinement-heavy items, (4) priority / closure matrix, and (5) next-wave self-contained Codex prompts. This cross-issue synthesis catches shared-file contention (for example multiple issues targeting the same oversized module), surfaces morning execution order, and turns many per-issue packs into one operator-ready control plane.
 - **Execution packs can become stale the same night**: In parallel overnight runs, a stage-1 or stage-2 dossier may be overtaken by commits from another terminal before anyone reads it. Build every later-stage prompt to re-check file line counts, exports, commit state, and label state before trusting prior findings. We observed same-day drift where `benchmarks.py` size, `__init__.py` exports, and even issue completion status changed between stages.
-- **After assessment waves, move implementation work into fresh worktrees rather than the dirty parent checkout.** Best pattern: create one clean worktree per implementation issue from `origin/main`, do any required plan-approval-marker / label updates in a separate clean workspace checkout first, then reset the implementation worktree to the updated remote before launch. For nested repos (for example `digitalmodel`), create the worktree from the nested repo itself, not from the parent workspace repo.
+- **After assessment waves, move implementation work into fresh worktrees rather than the dirty parent checkout.** Best pattern: create one clean worktree per implementation issue from `origin/main`, verify task authority and reconcile factual issue/review state in the control checkout first, then reset the implementation worktree to the updated remote before launch. For nested repos (for example `digitalmodel`), create the worktree from the nested repo itself, not from the parent workspace repo.
 - **If an unattended Codex implementation run stalls with no log output, inspect the repo before killing it.** We observed a failure mode where Codex correctly edited the target files, left a stale `.git/index.lock`, emitted an empty log, and never reached its own commit step. Recovery pattern: (1) inspect `git status` and target-file diffs, (2) verify whether the intended implementation is already present, (3) kill the stuck Codex process, (4) remove the stale `index.lock`, (5) run the verification tests manually, and then (6) commit/push/comment/close yourself if the code is sound.

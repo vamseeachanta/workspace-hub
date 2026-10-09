@@ -12,6 +12,9 @@ related_skills:
 
 # Plan Rerun State Revalidation
 
+Current authority: the originating task request or established standing authority authorizes implementation after proportionate planning, TDD and adversarial review; no separate user plan approval, approval label or local marker is required. Honor explicit planning-only limits, unresolved domain decisions and blocking findings. Consequential actions require matching action/destination authority: implementation authority alone does not authorize publication, deployment, access changes, destructive actions or outreach. Reuse existing authorization and preserve owner-controlled approval history without self-labeling.
+
+
 Use when resuming a plan-hardening loop from a handoff, or before launching a fresh adversarial rerun after prior review waves.
 
 ## Why this exists
@@ -87,8 +90,8 @@ When a handoff is already committed/pushed but the worktree is still dirty, do n
 - If GitHub, plan header, and `docs/plans/README.md` now agree on `status:plan-review`, and the only approval drift is a locally deleted stale `.planning/plan-approved/<issue>.md`, the next logical step is a narrow governance-sync commit.
 - That commit should include only the issue's governance/review-sync surfaces: stale marker deletion, plan header/review-summary updates, plan-index row update, canonical review result artifacts, and any raw review logs/prompts that those artifacts cite and that the repo convention tracks.
 - Avoid bundling unrelated dirty files from other issues, provider scorecards, or session-state churn unless the user explicitly asks for a broader cleanup commit.
-- After the narrow sync commit is pushed, post or verify a GitHub comment that states the issue is in `status:plan-review`, stale approval was intentionally removed, and user approval is still required before `status:plan-approved` or implementation.
-- Do not recreate an approval marker or start implementation merely because reviews converged to MINOR/APPROVE; explicit user approval is still the approval gate.
+- After the narrow sync commit is pushed, post or verify a GitHub comment that states the issue is in `status:plan-review`, stale approval was intentionally removed, and owner approval labels remain historical; implementation follows task authority after review/domain blockers resolve.
+- Do not recreate approval markers or infer task authority from review verdicts. Verify originating task scope and review/domain prerequisites; no separate plan approval is required.
 
 ## Anti-patterns
 

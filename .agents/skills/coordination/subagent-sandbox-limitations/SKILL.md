@@ -6,6 +6,14 @@ description: Critical limitations of delegate_task subagents — sandbox isolati
 
 # Subagent Sandbox Limitations
 
+Current authority: the originating task request or established standing authority authorizes implementation after proportionate planning, TDD and adversarial review; no separate user plan approval, approval label or local marker is required. Honor explicit planning-only limits, unresolved domain decisions and blocking findings. Consequential actions require matching action/destination authority: implementation authority alone does not authorize publication, deployment, access changes, destructive actions or outreach. Reuse existing authorization and preserve owner-controlled approval history without self-labeling.
+
+
+## Current task authority
+
+The originating task request or established standing authority authorizes implementation within scope, including substantial work, after proportionate planning, TDD and adversarial review. No separate plan approval, approval label or local marker is required. Honor planning-only requests and unresolved domain decisions. Publication, deployment, access changes, destructive actions and outreach retain their action-specific authority. Preserve historical approval records; do not self-label owner approval.
+
+
 ## Critical: Subagents CANNOT write to repos
 
 delegate_task subagents run in **isolated sandboxes**. This means:
@@ -16,6 +24,12 @@ delegate_task subagents run in **isolated sandboxes**. This means:
 - **terminal writes to /tmp are preserved** — but only until the next sandbox lifecycle
 
 This was discovered during overnight batch execution on 2026-04-06 when multiple delegate_task calls appeared to complete but produced zero repo changes.
+
+## Gated issue-batch recon pattern
+
+When the user asks to “tackle all of them with subagents” but implementation is blocked by missing live issues, missing task authority or blocking review/domain decisions, or a repo `git`/`gh` scope guard, use subagents for **parallel read-only recon** only. Split by independent issue/domain lanes, ask each subagent for implementation-ready findings and TDD-first test lists, then write one synthesis artifact from the main session. Do not describe this as implementation complete; report the exact remaining gate.
+
+See `references/gated-issue-batch-parallel-recon.md` for the artifact shape and prompt pattern.
 
 ## When to use delegate_task
 

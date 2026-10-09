@@ -11,10 +11,14 @@ version: 1.2.0
 
 # Engineering Issue Workflow
 
+## Implementation authority
+
+The task request or standing authority authorizes implementation, including substantial work; no separate user plan approval, approval label or local marker is required. Complete planning, TDD and adversarial review, and resolve required domain decisions and blocking findings. Honor explicit planning-only requests. Consequential actions outside existing authority require matching explicit authorization. Implementation authority alone does not authorize publication, deployment, access changes or destructive actions; verify action/destination authority and reuse it when already provided.
+
 **MANDATORY** for all engineering-critical issues.
 
 > **Planning Steps delegated to `issue-planning-mode` skill.**
-> Steps 1-5 of this workflow (Triage → Resource Intelligence → Plan → Adversarial Review → User Approval)
+> Steps 1-5 of this workflow (Triage → Resource Intelligence → Plan → Adversarial Review → Task authority)
 > are now fully defined in `.claude/skills/coordination/issue-planning-mode/SKILL.md`.
 > Load that skill for all planning work. This skill picks up at STEP 6 (Implement).
 
@@ -34,7 +38,7 @@ STEP 1: Triage              — classify issue, announce  \
 STEP 2: Resource Intel      — search all knowledge sources, map artifact locations  | issue-planning-mode
 STEP 3: Draft Plan          — pseudocode, file map, tests, acceptance criteria      |
 STEP 4: Adversarial Review  — Claude + Codex + Gemini review the plan              |
-STEP 5: ◆ HARD STOP ◆       — post to GitHub, label, wait for user approval        /
+STEP 5: ◆ HARD STOP ◆       — post to GitHub, label, resolve blocking decisions/reviews and continue within task authority        /
 STEP 6: Implement           — TDD: tests first, then code
 STEP 7: Cross-Review        — Codex + Gemini review implementation vs approved plan
 STEP 8: Close               — commit, push, close issue with summary
@@ -45,7 +49,7 @@ STEP 8: Close               — commit, push, close issue with summary
 On first contact with an engineering issue:
 1. Read the **full issue body** — scope, acceptance criteria, references
 2. Classify complexity:
-   - **T1** (trivial): single-line fix, config, typo → brief plan, still requires approval
+   - **T1** (trivial): single-line fix, config, typo → brief reviewed plan within task authority
    - **T2** (standard): new module, multiple file changes, tests needed → full workflow
    - **T3** (complex): multi-module, architecture change, standards implementation → full workflow + subagents
 3. Identify what **standards, modules, test fixtures, and documents** are relevant
@@ -121,26 +125,15 @@ One sentence: what will be built or changed.
 ### Complexity: T1 | T2 | T3
 ```
 
-### STEP 4: ◆ HARD STOP — USER APPROVAL REQUIRED ◆
+### STEP 4: Reviewed execution checkpoint
 
-**STOP. Do NOT write any code. Do NOT create any files. Do NOT run any tests.**
+The task request or standing authority authorizes implementation, including substantial work; no separate user plan approval, approval label or local marker is required. Complete planning, TDD and adversarial review, and resolve required domain decisions and blocking findings. Honor explicit planning-only requests. Implementation authority alone does not authorize publication, deployment, access changes or destructive actions; verify action/destination authority and reuse it when already provided.
 
-Wait for the user to respond with one of:
-- **APPROVE** / **GO** / **YES** → continue to Step 5
-- **REVISE** / **CHANGE** → user provides feedback, re-do Step 3
-- **REJECT** → ask what approach the user prefers
-
-**If the user says "just do it" or "go ahead" WITHOUT seeing the plan:**
-Present the plan first. Then wait. The approval must come AFTER seeing the plan.
-
-For **overnight/batch sessions** (user not present):
-- Write the plan as a **GitHub issue comment** before implementing
-- Implementation starts only after the plan comment is posted
-- User reviews results the next morning
+Record scope and review evidence on the issue, then continue authorized implementation. Stop only for an unresolved domain decision, blocking finding, explicit planning-only limit or consequential action outside authority.
 
 ### STEP 5: Implement (TDD)
 
-After user approval:
+After reviewed scope and task authority are established:
 
 1. **Tests FIRST** — write the test file, run it, confirm it FAILS
 2. **Implement** — minimum code to make tests pass
@@ -175,7 +168,7 @@ After implementation passes all tests:
 Issues WITHOUT engineering-critical labels:
 - **Do NOT skip planning.** `issue-planning-mode` applies to ALL issues going forward.
 - Run the same planning sequence: Issue Intake → Resource Intelligence → Draft Plan → Adversarial Review → User Approval
-- After approval, implementation may use a lighter execution workflow if the issue is not engineering-critical
+- After review, authorized implementation may use a lighter execution workflow if the issue is not engineering-critical
 - **TDD is still mandatory** — tests before implementation, always
 - Implement → review as appropriate → commit → close
 
@@ -191,13 +184,13 @@ When planning or executing engineering-calculation issues, especially in `digita
 
 **What happened:** 120+ engineering commits in 14 days, 542 commits since Mar 24, only 1 review artifact. The existing enforcement scripts (cross-review gate, review router, pre-push hook) all default to WARNING mode. Nobody blocked anything.
 
-**How to avoid:** This skill is the new baseline. The plan must be presented BEFORE implementation. The user must approve. If you're unsure whether an issue is engineering-critical, ASK — don't assume.
+**How to avoid:** This skill is the new baseline. The plan must be presented BEFORE implementation. No separate user plan approval is required. If you're unsure whether an issue is engineering-critical, ASK — don't assume.
 
 ### User Says "Just Implement It"
 
 **What happened:** User tells the agent to skip planning and go straight to code. Agent complies, producing code without context.
 
-**How to handle:** Show a brief plan first. The user can still approve quickly, but they must SEE the plan. "Here's what I'll do: [3 lines]. OK?" is sufficient.
+**How to handle:** Record a brief plan and review it, then implement within task authority; honor any explicit planning-only request.
 
 ### Thinking Work Is "Too Trivial" for a Plan
 
@@ -265,7 +258,7 @@ This skill is Option 1 of a 3-phase enforcement approach:
 
 **Option 3: Claude Code hooks (LAYER IF OPTION 1 FAIL AFTER 2 weeks)**
 - SessionStart hook in `.claude/settings.json` detects engineering issues and injects workflow
-- PreToolUse hook blocks Write/Edit/Agent if no `.planning/plan-approved/${ISSUE_NUM}.md` exists
+- The retired plan-approval hook does not require a local marker; validate task scope, domain decisions and review findings instead.
 - Cannot be bypassed without hooks disabled
 
 **Escalation triggers (check after 2 weeks):**

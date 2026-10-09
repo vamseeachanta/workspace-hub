@@ -8,6 +8,9 @@ tags: [overnight, worktrees, agents, verification]
 
 # Overnight Worktree Agent Waves
 
+Current authority: the originating task request or established standing authority authorizes implementation after proportionate planning, TDD and adversarial review; no separate user plan approval, approval label or local marker is required. Honor explicit planning-only limits, unresolved domain decisions and blocking findings. Consequential actions require matching action/destination authority: implementation authority alone does not authorize publication, deployment, access changes, destructive actions or outreach. Reuse existing authorization and preserve owner-controlled approval history without self-labeling.
+
+
 ## When to Use
 Use when launching, monitoring, salvaging, or verifying overnight/background Codex/Codex/Hermes lanes across isolated worktrees.
 
@@ -167,7 +170,7 @@ The `references/` directory contains archived narrow skills absorbed during the 
 ### `plan-gated-overnight-queue-partition`
 
 - Former skill demoted to `references/plan-gated-overnight-queue-partition.md`.
-- Preserved insight: Partition a plan-gated GitHub queue before launching overnight work so ineligible pre-approval issues are routed to planning/review lanes and only approved issues are used for merge-capable execution.
+- Preserved insight: Partition a plan-gated GitHub queue before launching overnight work so review-blocked or out-of-scope issues are routed to planning and scope-authorized issues proceed to implementation; merging retains action-specific authority.
 
 ### `verify-Codex-run-commit-vs-working-tree-before-closing`
 

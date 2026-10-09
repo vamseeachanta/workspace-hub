@@ -16,6 +16,11 @@ related_skills:
 tags: [planning, github, issue-workflow, hard-stop, adversarial-review, tdd]
 ---
 
+## Implementation authority
+
+The task request or standing authority authorizes implementation, including substantial work; no separate user plan approval, approval label or local marker is required. Complete planning, TDD and adversarial review, and resolve required domain decisions and blocking findings. Honor explicit planning-only requests. Consequential actions outside existing authority require matching explicit authorization. Implementation authority alone does not authorize publication, deployment, access changes or destructive actions; verify action/destination authority and reuse it when already provided.
+
+
 # GH Work Planning
 
 This is the canonical planning route for GitHub issue work.
@@ -155,7 +160,7 @@ STEP 1: Issue Intake          — read, classify, announce
 STEP 2: Resource Intelligence — search all knowledge sources, map artifact locations, identify gaps and follow-ups
 STEP 3: Draft the Plan        — pseudocode, file map, tests, acceptance criteria, follow-up issues
 STEP 4: Adversarial Review    — Claude + Codex + Gemini review the plan
-STEP 5: Hard Stop             — post to GitHub, label, wait for user approval
+STEP 5: Execution checkpoint — record reviewed scope and continue within task authority
 ```
 
 ## STEP 1 — Issue intake
@@ -828,7 +833,7 @@ Before waiting:
 5. Post or include the Step 4 synthesis summary if not already present in the final plan comment
 6. Add `status:plan-review`
 7. Remove any stale status labels that conflict with plan-review state
-8. Stop and wait for explicit user approval
+8. Continue reviewed implementation within task authority; honor planning-only scope and unresolved decisions
 
 ## Final GitHub plan comment should include
 
@@ -871,7 +876,7 @@ If the user requests revision:
 3. re-run Step 4 if the revision is material
 4. re-post the updated final plan
 5. keep the issue in `status:plan-review`
-6. wait again for explicit approval
+6. continue within task authority after review and required domain decisions
 
 ## Reject flow
 
@@ -888,7 +893,7 @@ If the user pauses or holds the plan:
 1. post a GitHub note that execution is not authorized yet
 2. preserve the current plan artifact
 3. keep labels consistent with not-approved state
-4. do not start execution until explicit approval arrives later
+4. when the user requests planning only, preserve that boundary; a task request including implementation needs no separate plan approval
 
 ## Batch-readiness rule
 
@@ -1028,7 +1033,7 @@ Valid approval outcomes:
 
 ## Required gate
 
-No implementation starts until the issue is explicitly approved and labeled `status:plan-approved`.
+Reviewed implementation proceeds within task authority without separate approval, label or marker; honor planning-only requests and unresolved domain decisions.
 
 ## Pre-labeled approved issue recovery rule
 

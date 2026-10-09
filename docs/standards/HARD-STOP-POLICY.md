@@ -1,5 +1,9 @@
 # Hard-Stop Policy — Mandatory User Review Gates
 
+## Implementation authority
+
+The task request or standing authority authorizes implementation, including substantial work; no separate user plan approval, approval label or local marker is required. Complete planning, TDD and adversarial review, and resolve required domain decisions and blocking findings. Honor explicit planning-only requests. Consequential actions outside existing authority require matching explicit authorization. Implementation authority alone does not authorize publication, deployment, access changes or destructive actions; verify action/destination authority and reuse it when already provided.
+
 > Issue: #1839 | Date: 2026-04-05
 > Status: ACTIVE — all agents must follow this policy
 
@@ -34,10 +38,10 @@ Engineering-critical issues MUST pass through these gates in order:
 2. PLAN WRITTEN
    Agent writes a plan: what will be built, what files change, what tests
 
-3. ◆ HARD STOP: USER REVIEWS PLAN ◆
-   Agent presents the plan to the user and WAITS.
-   User says: APPROVE, REVISE, or REJECT.
-   Agent does NOT write implementation code until the user approves.
+3. ADVERSARIAL PLAN REVIEW AND SCOPE CHECK
+   Resolve blocking review findings and required domain decisions.
+   The task request authorizes implementation; no separate plan approval is required.
+   Honor planning-only scope and separately authorize consequential actions outside task authority.
 
 4. IMPLEMENTATION
    Agent implements the approved plan. TDD where applicable.
@@ -81,8 +85,8 @@ A plan can be:
 ## Enforcement
 
 ### For Interactive Sessions (user present)
-- Agent MUST use the `clarify` tool to present the plan and wait for approval
-- If the user says "just do it" or "go ahead" without seeing a plan, the agent writes the plan first, THEN asks
+- Agent records the reviewed plan and continues within task authority; ask only for a necessary domain decision or action outside scope
+- If the user requests implementation, the agent writes and reviews the plan, then continues within that task authority without a separate approval request
 
 ### For Overnight/Batch Sessions (user absent)
 - Plan must be written as a GitHub issue comment BEFORE implementation
@@ -92,7 +96,7 @@ A plan can be:
 
 ### For Quick Wins (< 15 minutes)
 - Plan can be a brief chat message: "I'll do X by changing Y, test with Z"
-- User approval can be implicit ("yes", "go", "do it") AFTER seeing the plan
+- Task/standing authority covers bounded implementation after planning/review; no separate approval is required
 - Cross-review can be waived for trivial changes (docs, config, formatting)
 
 ## Non-Critical Issues

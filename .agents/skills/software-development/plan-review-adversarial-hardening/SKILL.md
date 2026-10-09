@@ -8,6 +8,9 @@ tags: [plan-review, adversarial-review, github, workflow]
 
 # Plan Review Adversarial Hardening
 
+Current authority: the originating task request or established standing authority authorizes implementation after proportionate planning, TDD and adversarial review; no separate user plan approval, approval label or local marker is required. Honor explicit planning-only limits, unresolved domain decisions and blocking findings. Consequential actions require matching action/destination authority: implementation authority alone does not authorize publication, deployment, access changes, destructive actions or outreach. Reuse existing authorization and preserve owner-controlled approval history without self-labeling.
+
+
 ## When to Use
 Use when a GitHub plan, implementation plan, or review artifact must survive adversarial review across Codex/Gemini/Codex/Hermes; when reviewer prompts become stale; when artifacts must be inlined because tools cannot read paths; or when plan approval/governance state drifts.
 
@@ -17,7 +20,7 @@ Use when a GitHub plan, implementation plan, or review artifact must survive adv
 3. Separate governance/state findings from substantive plan blockers.
 4. Refresh prompts after every material plan edit; never rerun reviewers against stale prompt files.
 5. Preserve empty/no-tools review evidence explicitly so later agents know whether the run failed, found nothing, or lacked access.
-6. If provider fanout returns only `UNAVAILABLE` artifacts, do not call that a review pass. Keep the issue in `status:plan-review` only as a blocked holding state, add a governance artifact/comment that names the provider/tooling failures, and state that implementation remains blocked pending user approval or a later review retry.
+6. If provider fanout returns only `UNAVAILABLE` artifacts, do not call that a review pass. Keep the issue in `status:plan-review` only as a blocked holding state, add a governance artifact/comment that names the provider/tooling failures, and state that affected implementation remains blocked pending valid review or an explicitly authorized review-policy exception, not a fresh plan-approval ceremony.
 7. Before approval, reconcile plan body, issue state, review artifacts, and attestation comments. The plan/index/comment must not imply no-MAJOR review evidence exists when it does not.
 8. When local git/status/commit operations hang because provider review processes spawned stuck `git status`/hook work, use narrow process inspection and, if necessary, GitHub API commits for docs-only plan artifacts; then verify remote content via API before posting issue comments.
 9. When resuming a `status:plan-review` audit from a handoff, read the latest preserved provider artifacts first, patch the plan against exact MAJOR findings, then explicitly keep approval blocked until a fresh post-patch review returns no MAJORs or the user grants a named waiver. Local plan edits alone are not approval evidence.
@@ -142,7 +145,7 @@ The `references/` directory contains archived narrow skills absorbed during the 
 ### `provider-unavailable-plan-review-holding-pattern`
 
 - Session reference: `references/provider-unavailable-plan-review-holding-pattern.md`.
-- Preserved insight: When all providers return `UNAVAILABLE`, `status:plan-review` may be used only as a blocked human-review holding state; publish a truthful governance artifact/comment and keep implementation blocked until user approval or review retry.
+- Preserved insight: When all providers return `UNAVAILABLE`, `status:plan-review` may be used only as a blocked human-review holding state; publish a truthful governance artifact/comment and keep affected implementation blocked until a valid review or an explicitly authorized review-policy exception resolves that blocker; do not add separate plan approval.
 
 ### `plan-review-handoff-verification`
 
@@ -197,7 +200,7 @@ The `references/` directory contains archived narrow skills absorbed during the 
 ### `user-approved-plan-state-sync`
 
 - Former skill demoted to `references/user-approved-plan-state-sync.md`.
-- Preserved insight: Reconcile GitHub and local repo state when a plan has been user-approved, including direct approval messages that require creating the local marker and moving the issue to status:plan-approved.
+- Preserved insight: Reconcile GitHub and local repo state when a plan has been user-approved, preserving optional owner-requested approval history; current task authority authorizes reviewed implementation without a marker prerequisite.
 
 ### `static-site-build-artifact-plan-review`
 

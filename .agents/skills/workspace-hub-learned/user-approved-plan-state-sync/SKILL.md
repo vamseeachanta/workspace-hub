@@ -1,6 +1,6 @@
 ---
 name: user-approved-plan-state-sync
-description: Reconcile GitHub and local repo state when a plan has been user-approved, including direct approval messages that require creating the local marker and moving the issue to status:plan-approved.
+description: Reconcile GitHub and local repo state when a plan has been user-approved, preserving historical owner approval records without making them implementation prerequisites.
 version: 1.0.0
 author: Hermes Agent
 category: workspace-hub-learned
@@ -8,6 +8,9 @@ tags: [github, planning, governance, approval-state, drift-cleanup]
 ---
 
 # User-Approved Plan State Sync
+
+Current authority: the originating task request or established standing authority authorizes implementation after proportionate planning, TDD and adversarial review; no separate user plan approval, approval label or local marker is required. Honor explicit planning-only limits, unresolved domain decisions and blocking findings. Consequential actions require matching action/destination authority: implementation authority alone does not authorize publication, deployment, access changes, destructive actions or outreach. Reuse existing authorization and preserve owner-controlled approval history without self-labeling.
+
 
 Use when a plan has been user-approved and GitHub/local planning surfaces need to be synchronized. This includes both cases where the GitHub issue already reflects approval (`status:plan-approved`) and cases where the user has just explicitly approved the issue and asks to create the approval marker / move the label.
 

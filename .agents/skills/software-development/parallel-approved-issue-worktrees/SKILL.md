@@ -4,7 +4,7 @@ description: Launch approved GitHub issue implementation in parallel using isola
 version: 1.0.0
 author: Hermes Agent
 category: software-development
-tags: [parallel-execution, git-worktree, Codex, github-issues, plan-approved, zero-contention]
+tags: [parallel-execution, git-worktree, claude-code, github-issues, plan-approved, zero-contention]
 related_skills:
   - gh-work-execution
   - overnight-parallel-agent-prompts
@@ -12,6 +12,9 @@ related_skills:
 ---
 
 # Parallel Approved Issue Worktrees
+
+Current authority: the originating task request or established standing authority authorizes implementation after proportionate planning, TDD and adversarial review; no separate user plan approval, approval label or local marker is required. Honor explicit planning-only limits, unresolved domain decisions and blocking findings. Consequential actions require matching action/destination authority: implementation authority alone does not authorize publication, deployment, access changes, destructive actions or outreach. Reuse existing authorization and preserve owner-controlled approval history without self-labeling.
+
 
 Use this when:
 - multiple GitHub issues are already `status:plan-approved`
@@ -69,24 +72,11 @@ Corrupt-worktree fallback learned in live use:
   2. Remove the broken target directory: `rm -rf <path>`.
   3. Delete the leftover branch if it only came from the failed worktree attempt: `git branch -D <branch>`.
   4. If repeated `git worktree add` is slow/risky in a very large repo, use an isolated shared clone instead: `git clone --shared --branch main <repo-url> <path>`.
-  5. In the clone, create/commit the local `.planning/plan-approved/<issue>.md` marker before launching the worker.
+  5. In the clone, verify task scope, current reviewed artifacts, resolved blockers and owned-path isolation before launching the worker; no approval marker is required.
 - Treat the shared clone as equivalent isolation for a single issue lane: still use absolute prompt/log paths, a dedicated branch before push, and the same owned/read-only/forbidden path contract.
 
-### 3. Add local plan-approved markers inside each worktree
-If local hooks enforce `.planning/plan-approved/<issue>.md`, create and commit the marker in the exact worktree that will perform writes.
-
-Example:
-```bash
-mkdir -p .planning/plan-approved
-printf 'Issue #335 plan approved via GitHub label by user on YYYY-MM-DD.\n' > .planning/plan-approved/335.md
-git add .planning/plan-approved/335.md
-git commit -m "chore(planning): approve issue #335 for execution"
-```
-
-Why:
-- GitHub `status:plan-approved` alone may not satisfy local hooks
-- the marker must exist in the same checkout that writes files
-- committing it avoids freshness/self-approval gate failures mid-run
+### 3. Verify execution authority inside each worktree
+Verify the originating task scope or standing authority, current reviewed plan, resolved blocking findings/domain decisions and isolated ownership. Separate plan approval, historical labels and local markers are not implementation prerequisites. Do not fabricate approval records to satisfy a stale local consumer; reconcile the consumer with current policy. Consequential actions still require action-specific authority.
 
 ### 4. Post GitHub execution-start comments
 For each stream, post a concise comment describing:

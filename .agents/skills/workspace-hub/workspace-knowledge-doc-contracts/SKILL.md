@@ -8,6 +8,9 @@ tags: [knowledge, documentation, llm-wiki, contracts]
 
 # Workspace Knowledge Doc Contracts
 
+Current authority: the originating task request or established standing authority authorizes implementation after proportionate planning, TDD and adversarial review; no separate user plan approval, approval label or local marker is required. Honor explicit planning-only limits, unresolved domain decisions and blocking findings. Consequential actions require matching action/destination authority: implementation authority alone does not authorize publication, deployment, access changes, destructive actions or outreach. Reuse existing authorization and preserve owner-controlled approval history without self-labeling.
+
+
 ## When to Use
 Use when building/repairing LLM-wiki knowledge, aligning repo mission contracts, auditing stale documentation references, extracting learnings into issues, or turning domain gaps into issue roadmaps.
 
@@ -22,7 +25,7 @@ Use when building/repairing LLM-wiki knowledge, aligning repo mission contracts,
 
 Use this sub-pattern when an approved plan promotes a large or sensitive corpus (external-drive archives, standards libraries, training decks, client/project files) into LLM-wiki pages without copying raw data:
 
-1. **Gate first**: confirm explicit plan approval (`status:plan-approved` or a local approval marker) before writing wiki pages.
+1. **Gate first**: verify task/standing authority, current reviewed scope and resolved blockers before writing wiki pages. Separate plan approval, labels and local markers are not prerequisites; source rights remain required.
 2. **RED test first**: add focused tests that initially fail for expected page existence and boundary fields: `extraction_policy`, `raw_copy_allowed: false`, `ocr_allowed: false` where applicable, source-of-record absolute paths, and index/log updates.
 3. **Create pointer/shell pages, not extraction dumps**:
    - standards/spec libraries use `extraction_policy: metadata-only`; no clauses, copied standards text, or detailed licensed titles.
@@ -102,7 +105,7 @@ The `references/` directory contains archived narrow skills absorbed during the 
 ### `exclude-wiki-Codex-md-from-harness-line-limit-hook`
 
 - Former skill demoted to `references/exclude-wiki-Codex-md-from-harness-line-limit-hook.md`.
-- Preserved insight: Fix false-positive pre-commit failures where workspace-hub's AGENTS.md line-limit hook blocks edits to auto-generated wiki schema files under knowledge/wikis/.
+- Preserved insight: Fix false-positive pre-commit failures where workspace-hub's CLAUDE.md line-limit hook blocks edits to auto-generated wiki schema files under knowledge/wikis/.
 
 ### `memory-bridge-commit-fallbacks`
 

@@ -10,12 +10,15 @@ tags:
 - planning
 - github
 - worktrees
-- Codex
+- claude-code
 - parallel
 - governance
 ---
 
 # Parallel plan drafting with worktrees
+
+Current authority: the originating task request or established standing authority authorizes implementation after proportionate planning, TDD and adversarial review; no separate user plan approval, approval label or local marker is required. Honor explicit planning-only limits, unresolved domain decisions and blocking findings. Consequential actions require matching action/destination authority: implementation authority alone does not authorize publication, deployment, access changes, destructive actions or outreach. Reuse existing authorization and preserve owner-controlled approval history without self-labeling.
+
 
 Use this when multiple new follow-up issues need canonical plan drafts at the same time, but implementation is blocked by the planning gate.
 
@@ -124,7 +127,7 @@ This makes recovery easy if context ends before the background lanes finish.
 ## Governance rules
 
 - Planning lanes draft plan artifacts only.
-- Do not implement any fix while the issue is still only a follow-up needing approval.
+- Honor explicitly planning-only scope; implement a follow-up only after reviewed scope and task authority are established, without separate plan approval.
 - Do not add or change `status:*` labels from the planning lane unless the user explicitly asked.
 - Avoid shared-file contention by forbidding edits to `docs/plans/README.md` during parallel drafting; reconcile index updates centrally afterward.
 - Use `gh issue comment --body-file` for all progress comments.
