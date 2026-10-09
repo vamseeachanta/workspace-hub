@@ -171,6 +171,21 @@ jobs:
           python3 scripts/workflow/plan_approval_gate_check.py
           echo "Separate plan approval retired; task authority and other controls remain." >> "$GITHUB_STEP_SUMMARY"
 
+  retired-queue-paths:
+    name: Retired Queue Path Check
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Reject new local queue files
+        run: |
+          python3 scripts/enforcement/check-retired-queue-paths.py \
+            --base-ref origin/${{ github.base_ref }} \
+            --head-ref HEAD
+
   marker-label-parity:
     name: Marker-Label Parity Check
     # Reverse-direction plan-approval gate: if a PR adds/modifies any

@@ -9,7 +9,7 @@ Phases:
 Usage:
     uv run --no-project python scripts/memory/compact-memory.py \\
         --memory-root ~/.claude/projects/.../memory/ \\
-        [--work-queue-root .claude/work-queue] \\
+        [--work-queue-root RETIRED] \\
         [--dry-run] [--force] [--check-commands] [--check-paths]
 
 # keep marker scope
@@ -35,7 +35,6 @@ from typing import NamedTuple
 MEMORY_MD_LIMIT = 180       # lines; trigger compaction
 TOPIC_FILE_LIMIT = 140      # lines; trigger compaction
 AGE_EVICTION_DAYS = 90
-DONE_WRK_DAYS = 30
 COMMAND_SPOT_CHECK_N = 3
 COMMAND_TIMEOUT_S = 5
 
@@ -69,12 +68,12 @@ def _find_paths_in_line(line: str) -> list[str]:
 
 
 def _is_done_wrk(wrk_id: str, work_queue_root: Path) -> bool:
-    """Return True if wrk_id has status: done in any archive file."""
-    pattern = f"{wrk_id}.md"
-    for md in work_queue_root.rglob(pattern):
-        text = md.read_text(encoding="utf-8", errors="replace")
-        if re.search(r"^status:\s*done", text, re.MULTILINE):
-            return True
+    """Legacy .claude/work-queue lookup is retired.
+
+    The active queue state lives on GitHub labels. Memory compaction no longer
+    treats local WRK markdown as authoritative evidence that a memory bullet is
+    stale. The parameters remain to keep old cron invocations non-breaking.
+    """
     return False
 
 
@@ -383,7 +382,7 @@ def main() -> int:
     parser.add_argument(
         "--work-queue-root",
         default=None,
-        help="Path to .claude/work-queue (for done-WRK lookup)",
+        help="Retired compatibility option; local WRK files are not queue truth.",
     )
     parser.add_argument("--dry-run", action="store_true", help="Print audit, write nothing")
     parser.add_argument("--force", action="store_true", help="Skip trigger check")
@@ -405,19 +404,11 @@ def main() -> int:
         print(f"ERROR: memory root does not exist: {memory_root}", file=sys.stderr)
         return 1
 
-    # Resolve work-queue root
+    # Retired compatibility: local work-queue files are not queue truth.
     if args.work_queue_root:
         wq_root = Path(args.work_queue_root).expanduser()
     else:
-        # Heuristic: look for .claude/work-queue relative to memory_root parents
-        wq_root = None
-        for parent in memory_root.parents:
-            candidate = parent / ".claude" / "work-queue"
-            if candidate.exists():
-                wq_root = candidate
-                break
-        if wq_root is None:
-            wq_root = memory_root.parent  # fallback: no WRK lookups will match
+        wq_root = memory_root.parent
     assert wq_root is not None  # mypy: narrowed above
 
     # Check triggers (skip if --force or --dry-run forces a run)

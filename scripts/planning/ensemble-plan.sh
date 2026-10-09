@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# ensemble-plan.sh [--dry-run] [--skip-ensemble] <WRK-NNN>
+# ensemble-plan.sh retired legacy WRK planner
 # Launches 9 planning agents in parallel (3xClaude, 3xCodex, 3xGemini) and
 # synthesises their outputs into a single de-biased plan.
 #
@@ -9,6 +9,9 @@
 #   2  bad arguments / WRK not found
 #   3  skipped (plan_ensemble already true or --skip-ensemble passed)
 set -euo pipefail
+
+echo "ensemble-plan.sh retired: plan from GitHub issues and docs/plans, not local WRK files."
+exit 0
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 WS_HUB="$(cd "${SCRIPT_DIR}/../.." && pwd)"

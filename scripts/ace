@@ -10,8 +10,8 @@
 #   we  [args]                         worldenergydata — python3 -m worldenergydata [args]
 #   au  [args]                         assetutilities — python3 -m assetutilities [args]
 #   docs query [--domain D] [--repo R] document index queries via query-docs.sh
-#   wrk list                           list pending WRK items
-#   wrk show WRK-NNN                   show a specific WRK item
+#   wrk list                           list dispatch:ready GitHub issues
+#   wrk show N                         show a specific GitHub issue
 #   help                               show all commands with descriptions
 #
 # Examples:
@@ -19,7 +19,7 @@
 #   ace we bsee --help
 #   ace au --help
 #   ace wrk list
-#   ace wrk show WRK-326
+#   ace wrk show 3999
 #   ace docs query --domain structural
 #   ace docs query --repo worldenergydata --keyword "fatigue"
 #   ace help
@@ -31,8 +31,8 @@ set -euo pipefail
 # ---------------------------------------------------------------------------
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 HUB_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
-WORK_QUEUE_PENDING="$HUB_ROOT/.claude/work-queue/pending"
 QUERY_DOCS="$SCRIPT_DIR/readiness/query-docs.sh"
+REPO_SLUG="vamseeachanta/workspace-hub"
 
 # Source paths for submodule packages (used when packages are not pip-installed)
 DM_SRC="$HUB_ROOT/digitalmodel/src"
@@ -54,8 +54,8 @@ Subcommands:
   we  [subcommand] [args]     worldenergydata Typer CLI
   au  [--help|<config.yaml>]  assetutilities YAML engine
   docs query [opts]           document index queries
-  wrk list                    list pending WRK items
-  wrk show WRK-NNN            display a WRK item
+  wrk list                    list dispatch:ready GitHub issues
+  wrk show N                  display a GitHub issue
   help                        show full help
 
 Run 'ace help' for full usage with examples.
@@ -101,11 +101,11 @@ SUBCOMMANDS
         ace docs query --help
 
   wrk list
-      List all pending WRK items from .claude/work-queue/pending/.
+      List open GitHub issues carrying dispatch:ready.
 
-  wrk show WRK-NNN
-      Display the content of a specific WRK item file.
-      Example: ace wrk show WRK-326
+  wrk show N
+      Display a specific GitHub issue.
+      Example: ace wrk show 3999
 
   help
       Show this help message.
@@ -208,6 +208,21 @@ cmd_dm() {
 # Subcommand: we
 # ---------------------------------------------------------------------------
 cmd_we() {
+    for arg in "$@"; do
+        if [ "$arg" = "--help" ] || [ "$arg" = "-h" ]; then
+            cat <<'EOF'
+ace we — worldenergydata engineering data CLI
+
+Usage:
+  ace we [subcommand] [args]
+  ace we --help
+
+Routes to the worldenergydata Python module when it is installed or available
+in the workspace checkout.
+EOF
+            exit 0
+        fi
+    done
     require_python_module "worldenergydata"
     PYTHONPATH="$(build_pythonpath)" exec uv run --no-project python -m worldenergydata "$@"
 }
@@ -285,36 +300,26 @@ cmd_wrk() {
 
     case "$wrk_sub" in
         list)
-            if [ ! -d "$WORK_QUEUE_PENDING" ]; then
-                die "Work queue directory not found: $WORK_QUEUE_PENDING"
-            fi
-            local count=0
-            for f in "$WORK_QUEUE_PENDING"/WRK-*.md; do
-                [ -f "$f" ] || continue
-                echo "$(basename "$f" .md)"
-                count=$((count + 1))
-            done
-            if [ "$count" -eq 0 ]; then
-                echo "(no pending WRK items)"
-            fi
+            gh -R "$REPO_SLUG" issue list \
+                --state open \
+                --label dispatch:ready \
+                --json number,title,labels \
+                --jq '.[] | "#\(.number) \(.title)"'
             ;;
         show)
-            local wrk_id="${1:-}"
-            if [ -z "$wrk_id" ]; then
-                die "wrk show requires a WRK ID. Example: ace wrk show WRK-326"
+            local issue_id="${1:-}"
+            if [ -z "$issue_id" ]; then
+                die "wrk show requires a GitHub issue number. Example: ace wrk show 3999"
             fi
-            # Accept both "WRK-326" and "326"
-            if [[ "$wrk_id" =~ ^[0-9]+$ ]]; then
-                wrk_id="WRK-$wrk_id"
+            if [[ "$issue_id" =~ ^#?[0-9]+$ ]]; then
+                issue_id="${issue_id#\#}"
+            else
+                die "wrk show accepts GitHub issue numbers only; legacy WRK files are retired"
             fi
-            local wrk_file="$WORK_QUEUE_PENDING/${wrk_id}.md"
-            if [ ! -f "$wrk_file" ]; then
-                die "WRK item not found: $wrk_id (looked in $WORK_QUEUE_PENDING)"
-            fi
-            cat "$wrk_file"
+            gh -R "$REPO_SLUG" issue view "$issue_id"
             ;;
         "")
-            die "wrk requires a subcommand. Available: list, show WRK-NNN"
+            die "wrk requires a subcommand. Available: list, show N"
             ;;
         *)
             die "Unknown wrk subcommand '$wrk_sub'. Available: list, show"

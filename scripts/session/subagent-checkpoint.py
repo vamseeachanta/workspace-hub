@@ -43,9 +43,8 @@ def collect_wrk_summaries(
     """
     Build per-WRK summary dicts for all active WRK IDs.
 
-    Searches both pending/ and working/ subdirectories.
+    Local WRK queue lookup is retired; GitHub labels are queue truth.
     """
-    queue_dir = workspace / ".claude" / "work-queue"
     summaries: list[dict[str, Any]] = []
 
     for wrk_id in active_wrk_ids:
@@ -53,35 +52,13 @@ def collect_wrk_summaries(
         if not wrk_id:
             continue
 
-        wrk_file: Path | None = None
-        for sub in ("pending", "working"):
-            candidate = queue_dir / sub / f"{wrk_id}.md"
-            if candidate.exists():
-                wrk_file = candidate
-                break
-
-        if wrk_file is None:
-            summaries.append(
-                {
-                    "id": wrk_id,
-                    "found": False,
-                    "session_state": {},
-                    "status": "unknown",
-                    "title": "",
-                }
-            )
-            continue
-
-        fm = read_frontmatter(wrk_file)
         summaries.append(
             {
                 "id": wrk_id,
-                "found": True,
-                "file": str(wrk_file),
-                "status": fm.get("status", "unknown"),
-                "title": fm.get("title", ""),
-                "percent_complete": fm.get("percent_complete", 0),
-                "session_state": fm.get("session_state", {}),
+                "found": False,
+                "session_state": {},
+                "status": "retired-local-queue",
+                "title": "",
             }
         )
 

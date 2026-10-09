@@ -74,12 +74,11 @@ echo "--- Release notes scan $(date +%Y-%m-%dT%H:%M:%S) ---"
 bash scripts/automation/nightly-release-scan.sh || \
   echo "WARNING: release notes scan failed — see above"
 
-# Auto-commit any WRK items created by the release scan (best-effort — must not abort nightly)
-if ! git diff --quiet .claude/work-queue/ config/ai-tools/release-scan-state.yaml 2>/dev/null; then
+# Auto-commit release scan state only; local WRK queue writes are retired.
+if ! git diff --quiet config/ai-tools/release-scan-state.yaml 2>/dev/null; then
   {
     # Stage release-scan files, then use git-safe for commit/push (#1548)
-    find .claude/work-queue/pending/ -name 'WRK-*.md' -mmin -2 -exec git add {} +
-    git add config/ai-tools/release-scan-state.yaml .claude/work-queue/INDEX.md
+    git add config/ai-tools/release-scan-state.yaml
     git_safe_commit "chore(release-scan): nightly scan — $(date +%Y-%m-%d)"
     git_safe_push
   } || echo "WARNING: release-scan auto-commit/push failed — changes remain local"
