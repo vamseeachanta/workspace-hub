@@ -155,7 +155,7 @@ Primary artifacts:
 
 The task exits 0 after a completed audit even when repo findings are `WARN` or `ERROR`; execution failures emit the `repo-ecosystem-hygiene execution_failed` marker so `cron-health` can catch broken automation separately from expected drift.
 
-The `repo-hygiene-auto-safe` task is the automatic per-host pass. It runs `scripts/cron/repo-hygiene-auto-safe.sh`, which first captures a report from `scripts/operations/workstation-hygiene.sh` and then runs that same classifier with `--apply`. The classifier removes only `SAFE` duplicate clones or linked worktrees, and reports without removing dirty, `LOCKED`, `IN USE`, `~/ws/_wt/codex-*`, or `~/ws/_codex-jobs` paths. This repository change registers the task only; installing or refreshing live cron or Windows Task Scheduler remains a separate operator action.
+The `repo-hygiene-auto-safe` task is the automatic per-host report pass. It runs `scripts/cron/repo-hygiene-auto-safe.sh`, which captures a report from `scripts/operations/workstation-hygiene.sh` and a repo sync cleanup audit without passing `--apply`. Manual `--apply` remains available only for an operator run on a host the owner names; unattended scheduling is report-only and does not remove duplicate clones or linked worktrees. This repository change registers the task only; installing or refreshing live cron or Windows Task Scheduler remains a separate operator action.
 
 ## Comprehensive Learning Sub-Steps (02:00)
 

@@ -324,6 +324,6 @@ resolved_dispositions:
     resolved_on: "2026-07-12"
     pull_request: 3492
     # Provisional 2026-10-09 digest for #3992/#4003 after adding the
-    # report-only repo-hygiene-auto-safe task. Owner to confirm digest
-    # re-affirmation at merge. Digest computed from git index blobs on Linux.
+    # report-only repo-hygiene-auto-safe task; owner approval: board card
+    # O17 (2026-10-09T16:55Z). Digest computed from git index blobs on Linux.
     source_digest: 0546f87c70e9e3de955002674184211fcf3de7adf8546fdbc11771b25db3f72e
