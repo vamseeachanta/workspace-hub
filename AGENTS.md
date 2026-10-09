@@ -2,7 +2,7 @@
 > Shared identity and authority: config/agents/SHARED_SOUL.md; provider runtimes inherit this contract.
 ## Retrieval and planning
 - Consult docs/ and existing code; track meaningful work with GitHub issues and proportionate plans.
-- Authority routing: docs/standards/HARD-STOP-POLICY.md and config/agents/SHARED_SOUL.md; guide: docs/plans/README.md.
+- Authority routing: docs/standards/HARD-STOP-POLICY.md and config/agents/SHARED_SOUL.md; guide: docs/plans/README.md; readiness: docs/standards/MODEL_RELEASE_READINESS_CONTRACT.md and docs/standards/MODEL_RELEASE_UPGRADE_PLAYBOOK.md.
 ## Required controls
 - The user's task request authorizes implementation within scope; no separate plan approval is required, including substantial work.
 - Verify standing authorization or task scope; consequential actions require explicit authorization for the action and destination.
@@ -15,6 +15,5 @@
 - Isolate disjoint write lanes per docs/standards/SUBAGENT_CONTEXT_ISOLATION.md; verify outputs and serialize integration/commit/push/closeout.
 - Use uv run for Python. Commit/push within authorization; use isolated worktrees for parallel work.
 - Git path to main: branch → PR → merge per .claude/rules/merge-authorization.md. Never push to or rewrite main except the registered exemptions in .claude/rules/merge-authorization.md; --force-with-lease only on your own PR branch or the dedicated CAS state refs (equivalence-state, dispatch-leader-state); never bypass hooks (--no-verify, core.hooksPath) except an explicitly user-authorized recovery documented in the repo-sync skill.
-- Readiness: docs/standards/MODEL_RELEASE_READINESS_CONTRACT.md and docs/standards/MODEL_RELEASE_UPGRADE_PLAYBOOK.md.
 ## Data and closeout
 - Follow docs/architecture/agent-data-handling-contract.md before discovering, saving or using data; keep secrets out of code; verify results and run the pre-completion cleanup audit before closeout.
