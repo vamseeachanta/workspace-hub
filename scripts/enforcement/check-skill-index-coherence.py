@@ -36,6 +36,7 @@ import yaml
 
 REPO = Path(__file__).resolve().parents[2]
 SKILLS_DIR = REPO / ".claude" / "skills"
+EXTERNAL_ARCHIVE_DIR = REPO / ".claude" / "_archive"
 FULL_INDEX = REPO / "config" / "agents" / "skill-index-full.yaml"
 KNOWLEDGE_GRAPH = REPO / ".planning" / "skills" / "skills-knowledge-graph.yaml"
 GRAPH_INDEX = REPO / "config" / "agents" / "skill-graph-index.yaml"
@@ -88,8 +89,17 @@ def _curated_ids() -> set[str]:
 
 
 def _tree_basenames() -> set[str]:
-    # every skill dir name under .claude/skills, INCLUDING archived `_*` families
-    return {p.parent.name for p in SKILLS_DIR.rglob("SKILL.md")}
+    # Every skill dir name under .claude/skills, INCLUDING archived `_*` families.
+    # L8 archives retired skills outside the active loader root, under
+    # .claude/_archive/<wave>/.claude/skills, so preserved-but-retired skills still
+    # satisfy historical graph references without being discoverable as active skills.
+    basenames = {p.parent.name for p in SKILLS_DIR.rglob("SKILL.md")}
+    if EXTERNAL_ARCHIVE_DIR.is_dir():
+        basenames.update(
+            p.parent.name
+            for p in EXTERNAL_ARCHIVE_DIR.glob("*/.claude/skills/**/SKILL.md")
+        )
+    return basenames
 
 
 def check_a_coherence(failures: list[str]) -> None:
