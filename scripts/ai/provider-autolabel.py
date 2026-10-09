@@ -19,14 +19,18 @@ DEFAULT_JSON_OUT = WORKSPACE_HUB / "config" / "ai-tools" / "provider-autolabel-c
 DEFAULT_MD_OUT = WORKSPACE_HUB / "docs" / "reports" / "provider-autolabel-candidates.md"
 CONFIDENCE_THRESHOLD = 0.90
 PROVIDERS = ("claude", "codex", "agy")
+LEGACY_PROVIDER_ALIASES = {"gemini": "agy"}
 
 
 def load_json(path: Path) -> dict[str, Any]:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
-def has_agent_label(issue: dict[str, Any]) -> bool:
-    return any(label.startswith("agent:") for label in issue.get("labels", []))
+def has_provider_label(issue: dict[str, Any]) -> bool:
+    return any(
+        label.startswith("ai:") or label.startswith("agent:")
+        for label in issue.get("labels", [])
+    )
 
 
 def compute_confidence(provider: str, issue: dict[str, Any]) -> tuple[float, list[str]]:
@@ -63,9 +67,9 @@ def compute_confidence(provider: str, issue: dict[str, Any]) -> tuple[float, lis
         score += 0.05
         reasons.append("provider-high-priority")
 
-    if has_agent_label(issue):
+    if has_provider_label(issue):
         score = 0.0
-        reasons.append("agent-label-exists")
+        reasons.append("provider-label-exists")
 
     return round(min(score, 1.0), 2), reasons
 
@@ -75,12 +79,12 @@ def collect_candidates(work_queue: dict[str, Any]) -> list[dict[str, Any]]:
     for provider in PROVIDERS:
         for issue in work_queue["provider_queues"][provider]["top_issues"]:
             confidence, reasons = compute_confidence(provider, issue)
-            if has_agent_label(issue):
+            if has_provider_label(issue):
                 continue
             candidates.append(
                 {
                     **issue,
-                    "target_label": f"agent:{provider}",
+                    "target_label": f"ai:{LEGACY_PROVIDER_ALIASES.get(provider, provider)}",
                     "confidence": confidence,
                     "confidence_reasons": reasons,
                     "eligible": confidence >= CONFIDENCE_THRESHOLD,
