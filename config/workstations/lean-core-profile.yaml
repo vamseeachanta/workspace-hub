@@ -1,0 +1,201 @@
+schema_version: 1
+profile_id: windows-reviewed-source-baseline-20261004
+membership_machine: dev-primary
+budget_bytes: 3000000000
+authority_note: Selection derives from existing registry required membership; recipes
+  do not enroll machines or grant access/publication rights.
+harness_authorities:
+- config/workstations/registry.yaml
+- config/workstations/harness-roles.yaml
+- config/workstations/harness-state-classes.yaml
+- config/skills/profiles/foundation.yaml
+- scripts/readiness/provider_harness_parity.py
+- scripts/readiness/build-equality-matrix.py
+qualification: source contract only; actual loader, provider behavior, task environments,
+  owner-data and roles require existing readiness evidence
+named_fixture_policy: exact required hub docs files are bounded inputs from existing
+  owning Git objects; do not expand docs/plans or docs/reports wholesale
+repositories:
+  workspace-hub:
+    revision: 292eeda9211f4e3b3fdc53eb70d9e0fad50f9601
+    origin_url_sha256: 5da6e788ff5f4efe53797539373a93363f07116c39e4ea14f6266a439561e712
+    clone_policy: new_destination
+    include_directories:
+    - src
+    - config
+    - scripts
+    - schemas
+    - pylib
+    - docs/maps
+    - docs/registry
+    - docs/standards
+    - docs/architecture
+    - docs/guides
+    - .agents
+    - .codex
+    - .claude
+    - .github
+    - tests/workstations
+    required_paths:
+    - AGENTS.md
+    - config/agents/SHARED_SOUL.md
+    - docs/architecture/agent-data-handling-contract.md
+    - config/workstations/registry.yaml
+    - config/workstations/harness-roles.yaml
+    - config/workstations/harness-state-classes.yaml
+    - config/skills/profiles/foundation.yaml
+    - docs/plans/README.md
+    - docs/reports/ace-linux-1-tier1-checkout-normalization.html
+    - .claude/skills/coordination/pre-completion-cleanup-audit/SKILL.md
+    - .claude/skills/coordination/issue-planning-mode/SKILL.md
+    - .claude/skills/coordination/cross-review-policy/SKILL.md
+    - .agents/skills/coordination/pre-completion-cleanup-audit/SKILL.md
+    - .agents/skills/coordination/issue-planning-mode/SKILL.md
+    - .agents/skills/coordination/cross-review-policy/SKILL.md
+    required_digests:
+      AGENTS.md: 918ff7b9215a5a4a518ca76b8719740a7c1f61983cd38142f421eb114c66ca5f
+      config/agents/SHARED_SOUL.md: db99cf3676fa325cc6e68496e9fcc3874e20d9a139033bcffd63a13b7c40544d
+      docs/architecture/agent-data-handling-contract.md: 43405bcf416b0b2a52580a19abb8534f0083a3af49b8714d0915613404d6a305
+      config/workstations/registry.yaml: a72c34785ea50e285cda09b8c72bdccb89a957ca5d974c7bcafcb420c4f603b4
+      config/workstations/harness-roles.yaml: b1d9a00d7f69e16b90a3990955a630199a4f964a4bedd48695a51acece528e3e
+      config/workstations/harness-state-classes.yaml: 7a7596dd2222220642f90ee46f99631371000e5fa82fda9fe49b3cf794771938
+      config/skills/profiles/foundation.yaml: b04f240a103bf00ceff1e907aa6bd3b9996b10b27bfa907b46eccfc28469d29a
+      docs/plans/README.md: a08aa895bbe13f2b86405ae443f270290da81c04ae6b64dd367402cf12e798c5
+      docs/reports/ace-linux-1-tier1-checkout-normalization.html: 8fedf28d24de55fa08c50567f03183c8d7139190ecfd14a8507f68dc61679aa2
+      .claude/skills/coordination/pre-completion-cleanup-audit/SKILL.md: 9e2105bd5175c9d8ae9af783754d327d8f5e1636b1e3a83ac1e0fce79a74c6e4
+      .claude/skills/coordination/issue-planning-mode/SKILL.md: de9453aa4ae59792f10c0a5ceee9f3a3a5f758ecc0b0ffbd366b303ac2f0b9ea
+      .claude/skills/coordination/cross-review-policy/SKILL.md: 211ff3397b39f4721f35ad0df30c001c8492094eea2f94efa6c80f993d19cd48
+      .agents/skills/coordination/pre-completion-cleanup-audit/SKILL.md: 9e2105bd5175c9d8ae9af783754d327d8f5e1636b1e3a83ac1e0fce79a74c6e4
+      .agents/skills/coordination/issue-planning-mode/SKILL.md: 859a3aa064fcab96c31e5245dc8bc5c2bcfc9ced73c2bd7dcbe6aa03b4052f71
+      .agents/skills/coordination/cross-review-policy/SKILL.md: 211ff3397b39f4721f35ad0df30c001c8492094eea2f94efa6c80f993d19cd48
+  digitalmodel:
+    revision: bf638ed1f6ad0b3fba12f0e6caf8eb4f5f004dd4
+    origin_url_sha256: 05ade09afb335e9493900a7ab9b7c7d9329dcb7b5272e5575c659e7c83b422b8
+    clone_policy: sanitized_existing_only
+    include_directories:
+    - src
+    - config
+    - scripts
+    - docs/maps
+    - docs/registry
+    - docs/standards
+    - .codex
+    - .claude
+    - .github
+    - tests/unit
+    - tests/contracts
+    - tests/process_diagrams
+    required_paths:
+    - AGENTS.md
+    - src/digitalmodel/__init__.py
+    - src/digitalmodel/specialized/finance/stock_analysis/finance_components_get_data.py
+    - tests/process_diagrams/test_tags.py
+    - tests/process_diagrams/test_geometry.py
+    required_digests:
+      AGENTS.md: 02396fdc0b0ea33acf07ba06e76fd2d7d2aeba8c2d3f61a4b5c1da242018c0dd
+      src/digitalmodel/__init__.py: c7bb6f5c2cdf1b91ff776419fc394f11b70ab575ba5c7a800e4413d241451f1b
+      src/digitalmodel/specialized/finance/stock_analysis/finance_components_get_data.py: 6f5bd5842d9c5f385f97faeb4bc755b2f6b680cd0b843fd5de597d924d03f480
+      tests/process_diagrams/test_tags.py: c324cfca6914609a8616d92f58dd6380c70fe47512a7830636e16b6db006098f
+      tests/process_diagrams/test_geometry.py: dd5d678956436928eb651e4c85c2d11592a24a54104e71cef6a4604157757323
+  assetutilities:
+    revision: 2e8a4baac39736a7298edf3cfd74daa7b92792e9
+    origin_url_sha256: bf5d977bf34f991061e4330a7bce53ed6b11453f378b8425533951c802fb545c
+    clone_policy: new_destination
+    include_directories:
+    - src
+    - config
+    - scripts
+    - docs/maps
+    - docs/registry
+    - docs/standards
+    - .codex
+    - .claude
+    - .github
+    - tests/unit
+    - tests/hygiene
+    - tests/docs
+    required_paths:
+    - AGENTS.md
+    - src/assetutilities/__init__.py
+    - tests/test_math_helpers.py
+    required_digests:
+      AGENTS.md: fbf0f2b24c63087b664bf62483e880117c29d2e6559cbc08cfa6a61b7ec43ab4
+      src/assetutilities/__init__.py: 782d2db1fe5f2ce464369660cf00400df061bc31071191310ab47e4766836ccb
+      tests/test_math_helpers.py: 1a99443b3740650c174fd83c509a63a7ac6a0360da9e39955b0964c47af8bd40
+  worldenergydata:
+    revision: 6e646033beefdcea071d3a1b9f78a09362ab939d
+    origin_url_sha256: 183e250c572381503290c092f0f7efd4f7f38b5b076de507377225fb399d384f
+    clone_policy: new_destination
+    include_directories:
+    - src
+    - config
+    - scripts
+    - docs/registry
+    - docs/standards
+    - docs/guides
+    - .codex
+    - .claude
+    - .github
+    - tests/unit
+    - packages/worldenergydata-core/src
+    required_paths:
+    - AGENTS.md
+    - src/worldenergydata/__init__.py
+    - packages/worldenergydata-core/pyproject.toml
+    - packages/worldenergydata-core/src/worldenergydata/common/units.py
+    - tests/unit/common/test_units.py
+    - tests/unit/field_development/test_risk_classifiers.py
+    required_digests:
+      AGENTS.md: 88fecbc5b007bc2c9fc8bcb0a502adb799c52e302d9fd30d8b4ffbc344afe43a
+      src/worldenergydata/__init__.py: 6673443f242f95037acae2e039292bd520127e2e287390f3c2d6d2395d0b62f8
+      packages/worldenergydata-core/pyproject.toml: d4d08ced0bbd3f5b1596a4fe921b289a92bf8932dd9c90e967fa370c694a9469
+      packages/worldenergydata-core/src/worldenergydata/common/units.py: 4ae5b8cbae8a60feaf2762df85349207dbb3be7fca6d419987185ce3497710b9
+      tests/unit/common/test_units.py: 662f1a1ca48452bec016e708f8dbc607b28f916807e1a1f3b9b186e8ddddb12a
+      tests/unit/field_development/test_risk_classifiers.py: bd30113190be2ebb4556e3830c63e6fca1d0f116217c902807166182d7026304
+  llm-wiki:
+    revision: 872c387f114ba247be33b2cfbb8259f0d7c088a6
+    origin_url_sha256: a7069e3a8e287c266588db81c98b078906637ec1b64af717f20cfa8ebda8c5b3
+    clone_policy: new_destination
+    include_directories:
+    - scripts
+    - .codex
+    - .claude
+    - .github
+    - tests
+    - data/source-title-aliases
+    required_paths:
+    - llms.txt
+    - data/data-source-catalog.yml
+    - data/domain-database-index.yml
+    - scripts/coordination/claim.py
+    required_digests:
+      llms.txt: fb601e4c2d31191175d90e078fe4849bc0b108d76965a6f145a5cc34748be744
+      data/data-source-catalog.yml: bca9ced51a68ee430605016f6c6f4a3ebe003e1b4bf8d69eca4377c37650fe0e
+      data/domain-database-index.yml: 0e3250283bb1c44fd1264b80c89cc05eb7ee1294f1fa74bc1c245547f790f59a
+      scripts/coordination/claim.py: 9bc50f158a16301d35a88497e948352fed7422934c5edc512d559679f9248ef0
+  assethold:
+    revision: 0e734cc7f406bd8b72a9a68672d027277437eaf9
+    origin_url_sha256: 41fcf41af0c4c3bcd7bed44c26f968364388ce10c2ad04445e697cb0d24f9307
+    clone_policy: new_destination
+    include_directories:
+    - src
+    - config
+    - scripts
+    - docs/registry
+    - docs/standards
+    - docs/guides
+    - docs/technical
+    - .codex
+    - .claude
+    - .github
+    - tests/unit
+    - tests/portfolio
+    - tests/options
+    required_paths:
+    - AGENTS.md
+    - src/assethold/__init__.py
+    - tests/unit/test_cache_ohlcv_ttl.py
+    required_digests:
+      AGENTS.md: 1a5ad513965ae001f581aadc671c42745dced8b4230ec7e396065f10f892daa1
+      src/assethold/__init__.py: e115d9acef9708d12d441567eb2d5b32dda6d93b288696a25639bef0a0a84193
+      tests/unit/test_cache_ohlcv_ttl.py: 19f83c584a4873dc22edfee27f3c43524e2945a35002a8e06264e7edf7748384
