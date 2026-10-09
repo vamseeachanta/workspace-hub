@@ -204,6 +204,68 @@ PY
     return 1
 }
 
+verify_private_repo_visibility() {
+    local repo="$1"
+    local visibility
+    if ! command -v gh >/dev/null 2>&1; then
+        return 1
+    fi
+    visibility="$(gh repo view "$repo" --json visibility --jq .visibility 2>/dev/null || true)"
+    [[ "$visibility" == "PRIVATE" ]]
+}
+
+normalize_github_repo_url() {
+    local value="$1"
+    value="${value#git@github.com:}"
+    value="${value#https://github.com/}"
+    value="${value#http://github.com/}"
+    value="${value%.git}"
+    printf '%s\n' "$value"
+}
+
+verify_private_repo_clone_origin() {
+    local clone="$1"
+    local repo="$2"
+    local origin expected
+    [[ -d "$clone/.git" ]] || return 1
+    expected="$(normalize_github_repo_url "$repo")"
+    origin="$(git -C "$clone" remote get-url origin 2>/dev/null || true)"
+    [[ -n "$origin" ]] && [[ "$(normalize_github_repo_url "$origin")" == "$expected" ]]
+}
+
+resolve_claude_memory_snapshot_host_name() {
+    local configured host
+    configured="${CLAUDE_MEMORY_SNAPSHOT_HOST:-}"
+    if [[ -z "$configured" ]]; then
+        configured="$(resolve_machine_roots | cut -f1)"
+    fi
+    host="$(printf '%s' "$configured" | tr '[:upper:]' '[:lower:]' | tr -c 'a-z0-9._-' '-')"
+    host="${host##[-.]}"
+    host="${host%%[-.]}"
+    [[ -n "$host" ]] || return 1
+    printf '%s\n' "$host"
+}
+
+resolve_claude_memory_private_snapshot_source() {
+    local clone="$1"
+    local legacy_source host host_source
+    legacy_source="$clone/legacy/config/agents/claude/memory-snapshots"
+    if host="$(resolve_claude_memory_snapshot_host_name 2>/dev/null)"; then
+        host_source="$clone/hosts/$host/config/agents/claude/memory-snapshots"
+    else
+        host_source=""
+    fi
+    if [[ -n "$host_source" && -d "$host_source" ]]; then
+        printf '%s\n' "$host_source"
+        return 0
+    fi
+    if [[ -d "$legacy_source" ]]; then
+        printf '%s\n' "$legacy_source"
+        return 0
+    fi
+    return 1
+}
+
 sanitize_codex_managed_keys() {
     local source_file="$1"
     local output_file="$2"
@@ -1343,11 +1405,18 @@ else
 fi
 
 # Claude Code project memory (#1779)
-CLAUDE_MEM_SNAP="$WS_HUB/config/agents/claude/memory-snapshots"
+CLAUDE_MEMORY_SNAPSHOT_REPO="${CLAUDE_MEMORY_SNAPSHOT_REPO:-vamseeachanta/claude-memory-snapshots}"
+CLAUDE_MEMORY_SNAPSHOT_PRIVATE_CLONE="${CLAUDE_MEMORY_SNAPSHOT_PRIVATE_CLONE:-${HOME}/.local/share/claude-memory-snapshots}"
+CLAUDE_MEM_SNAP=""
+if verify_private_repo_clone_origin "$CLAUDE_MEMORY_SNAPSHOT_PRIVATE_CLONE" "$CLAUDE_MEMORY_SNAPSHOT_REPO" && verify_private_repo_visibility "$CLAUDE_MEMORY_SNAPSHOT_REPO"; then
+    CLAUDE_MEM_SNAP="$(resolve_claude_memory_private_snapshot_source "$CLAUDE_MEMORY_SNAPSHOT_PRIVATE_CLONE" || true)"
+else
+    echo "[WARN] Claude project memory private snapshot repo is unreachable, origin-mismatched, or not PRIVATE; skipping restore" >&2
+fi
 # Derive the encoded project path from WS_HUB
 WS_HUB_ENCODED="$(echo "$WS_HUB" | sed 's|^/||; s|/|-|g')"
 CLAUDE_MEM_TARGET="$HOME/.claude/projects/-${WS_HUB_ENCODED}/memory"
-if [[ -d "$CLAUDE_MEM_SNAP" && -d "$HOME/.claude" ]]; then
+if [[ -n "$CLAUDE_MEM_SNAP" && -d "$CLAUDE_MEM_SNAP" && -d "$HOME/.claude" ]]; then
     if [[ -d "$CLAUDE_MEM_TARGET" ]]; then
         EXISTING_COUNT=$(find "$CLAUDE_MEM_TARGET" -maxdepth 1 -type f -name '*.md' | wc -l)
     else
@@ -1374,7 +1443,7 @@ if [[ -d "$CLAUDE_MEM_SNAP" && -d "$HOME/.claude" ]]; then
         log_skip "Claude project memory (already has $EXISTING_COUNT files)"
     fi
 else
-    log_skip "Claude project memory (claude not installed or no snapshots)"
+    log_skip "Claude project memory (claude not installed or private snapshots unavailable)"
 fi
 
 # Codex state (#1781)

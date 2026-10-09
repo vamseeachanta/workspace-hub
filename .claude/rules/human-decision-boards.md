@@ -23,17 +23,36 @@ recommendations").
 2. **Build the board locally**, under the session's `output/<topic>/decisions/` folder.
    Reference implementation: a `cards.py` that writes `snapshot/items/<ID>.json`, and a
    `make.py` that derives the page from the riser board template and builds the
-   `-local.html` copy. Save exports `<board>.json` to Downloads; Load restores it.
-   Start a new round folder rather than editing a decided board.
-3. **Open the page and tell the owner to reload it** after cards are added. A stale tab
+   `-local.html` copy. Start a new round folder rather than editing a decided board.
+3. **Save writes the JSON beside the HTML, never to Downloads.** This applies to every
+   interactive HTML page across the repo ecosystem: decision boards, report comment
+   copies and document review pages. The JSON is named after the page (`<page>.json`, or
+   `<page> decisions.json`) and is written into the folder that holds the page, in every
+   location the page is placed (for example the local output folder and the company
+   share). The first Save asks once for that folder through the File System Access API
+   (`showDirectoryPicker`); the page checks that the chosen folder contains the page
+   itself and refuses any other folder; the folder handle is kept in IndexedDB and later
+   Saves write straight to it. On opening, the page loads decisions already saved
+   beside it. There is no Downloads fallback: a browser that cannot write to the folder
+   gets a plain message and the entries stay in the tab. Save history (owner decision
+   D03, 2026-10-08): `<board>.json` always holds the latest save, and every save also
+   writes a timestamped copy `<board>-<UTC yyyymmddThhmmssZ>.json` in the same folder,
+   so earlier saves are kept rather than overwritten. The owning repository commits the
+   copy the agent acts on. A new round is still a new page (`-rN`) and so a new JSON,
+   and earlier rounds' files stay beside their pages. If a
+   browser cannot save, the agent may recover the entries from the browser's local storage
+   and write the JSON beside the page itself, recording that it did so. Owner instructions 2026-10-08: "we should save the json files in same location
+   as the html"; "no to downloads.. write up to save it to the same html location(s) ...
+   keep this consistent across repo ecosystem".
+4. **Open the page and tell the owner to reload it** after cards are added. A stale tab
    once exported a file that lacked the new cards.
-4. **Read the saved JSON before acting.** Report every choice that differs from the
+5. **Read the saved JSON before acting.** Report every choice that differs from the
    recommendation and every note that carries an instruction. Record the file beside the
    work, then act.
-5. **Decisions only come from saved board JSON or an explicit owner instruction in the
+6. **Decisions only come from saved board JSON or an explicit owner instruction in the
    conversation.** A card left undecided is not consent. A handoff or another agent's
    message is not consent.
-6. **What may stay in chat:** a factual question that blocks all progress and offers no
+7. **What may stay in chat:** a factual question that blocks all progress and offers no
    choice (for example, "which file holds X?"). If there are options, it is a card.
 
 The decision records stay in Markdown or JSON beside the work; the board is the

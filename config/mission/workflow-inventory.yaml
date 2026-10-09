@@ -166,7 +166,7 @@ workflows:
   - name: gemini-nightly-batch
     schedule: "0 23 * * *"
     script: scripts/cron/gemini-nightly-batch.sh
-    does: Process open agent:gemini issues by execution mode
+    does: Process open ai:agy issues by execution mode
     serves: [O1, O3]
     repos_touched: [control-plane]
     mutates: local-only

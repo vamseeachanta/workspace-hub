@@ -17,11 +17,11 @@ Use when a workspace has many existing GitHub issues across tier-1 repos and the
    ```
    Do not parse large `gh` JSON directly from captured terminal/tool output; it may be truncated or contain invalid control characters.
 3. Treat GitHub labels as the source of truth and generated artifacts as views:
-   - `status:plan-approved` + canonical plan evidence + `.planning/plan-approved/<issue>.md` + not `status:working` => `Ready / Plan Approved`
+   - `status:plan-approved` + canonical plan evidence + `.planning/plan-approved/<issue>.md` + not `dispatch:active` => `Ready / Plan Approved`
    - `status:plan-approved` but missing plan/marker evidence => `Approved Label Drift / Repair Before Execution`
    - `status:plan-review` => `Plan Review / Needs Approval`
    - no `status:plan-*` => `Planning Needed / Future Backlog`
-   - `status:working` => `In Progress / Status Working`
+   - `dispatch:active` => `In Progress / Dispatch Active`
    - blocker labels => `Blocked / Waiting`
    - both `status:plan-review` and `status:plan-approved` => conflict/hygiene lane
 4. Emit the core repo-tracked artifacts:

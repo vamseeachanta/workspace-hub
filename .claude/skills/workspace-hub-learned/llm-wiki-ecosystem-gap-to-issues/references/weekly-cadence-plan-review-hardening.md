@@ -26,7 +26,7 @@ The issue wave contains multiple related plan artifacts for freshness, manifests
    - recommended execution order
    - cross-issue binding constraints
 4. Commit and push the patched plans plus synthesis report before posting issue comments. Use the pushed commit hash in every GitHub comment.
-5. Post a compact comment to each issue, then move labels from `status:pending` to `status:plan-review`.
+5. Post a compact comment to each issue, then move labels from `dispatch:ready` to `status:plan-review`.
 6. Verify live issue labels and latest comment URLs before surfacing approvals to the user.
 
 ## Durable hardening themes from the 2026-05-15 wave

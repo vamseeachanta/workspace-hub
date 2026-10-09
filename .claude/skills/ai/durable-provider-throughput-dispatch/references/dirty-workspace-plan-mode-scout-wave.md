@@ -1,10 +1,10 @@
 # Dirty Workspace Plan-Mode Scout Wave
 
-Use this pattern when the user wants available Claude capacity converted into useful work, but the control repo has substantial dirty/untracked state or multiple issues already show `status:working`.
+Use this pattern when the user wants available Claude capacity converted into useful work, but the control repo has substantial dirty/untracked state or multiple issues already show `dispatch:active`.
 
 ## Session Signal
 
-A Claude-capacity wave was attempted from Telegram with ~40% Claude weekly capacity left and ~36 hours to reset. The control repo was dirty and several plan-approved issues had active `status:working` labels.
+A Claude-capacity wave was attempted from Telegram with ~40% Claude weekly capacity left and ~36 hours to reset. The control repo was dirty and several plan-approved issues had active `dispatch:active` labels.
 
 Initial attempt: create multiple isolated worktrees and prompt files. The orchestration command timed out while `git worktree add` was still running. It left directories whose `.git` files pointed to missing `.git/worktrees/*` metadata, so `git -C <worktree> status` failed with `fatal: not a git repository`.
 

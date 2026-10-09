@@ -103,6 +103,27 @@ def test_dispatch_ready_is_queued():
     assert C.stage_of({"labels": ["machine:dev-primary", "dispatch:ready"]}) == "queued"
 
 
+def test_marker_migrated_recordless_issue_is_legacy_not_queued():
+    issue = {
+        "number": 99,
+        "labels": ["machine:dev-primary", "dispatch:ready", "dispatch:legacy-migrated"],
+    }
+    rep = C.chain_report([issue], FULL_VOCAB | {"dispatch:legacy-migrated"},
+                         observed=set(), recorded_issues=set())
+    assert rep["stages"]["queued"]["count"] == 0
+    assert rep["legacy"] == [{
+        "number": 99,
+        "labels": ["machine:dev-primary", "dispatch:ready", "dispatch:legacy-migrated"],
+    }]
+
+
+def test_unmarked_recordless_dispatch_issue_still_counts_in_stage():
+    issue = {"number": 100, "labels": ["machine:dev-primary", "dispatch:ready"]}
+    rep = C.chain_report([issue], FULL_VOCAB, observed=set(), recorded_issues=set())
+    assert rep["stages"]["queued"]["count"] == 1
+    assert rep["legacy"] == []
+
+
 def test_furthest_stage_wins():
     """An issue carrying several markers is at its FURTHEST point, not its first.
 

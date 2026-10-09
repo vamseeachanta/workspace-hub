@@ -273,6 +273,9 @@ SAVE_STUB_JS = """
         queryPermission: async () => "granted",
         requestPermission: async () => "granted",
         getFileHandle: async (n, o) => {
+            // The folder holds this page, so the page's folder check passes.
+            if (n === decodeURIComponent(location.pathname.split("/").pop()))
+                return { getFile: async () => ({ text: async () => document.documentElement.outerHTML }) };
             if (!(o && o.create))
                 throw new DOMException("not found", "NotFoundError");
             return { createWritable: async () => ({
@@ -625,8 +628,8 @@ def record_save_and_cards(recorder):
             "file and reloaded next time.", 35,
         ),
         (
-            "If the browser refuses the folder (Downloads, Desktop), "
-            "the file downloads instead; send it back, or use Copy "
+            "Choose the folder that holds the report; any other "
+            "folder is refused. If saving is not possible, use Copy "
             "and paste into your reply.", 29,
         ),
         ("Folder... changes where comments are saved", 29),
