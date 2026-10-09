@@ -172,3 +172,169 @@ def test_missing_repo_labels_are_skipped_without_issue_or_pr_probe(tmp_path: Pat
     assert "issue list --repo owner/beta" not in calls
     assert "pr list --repo owner/beta" not in calls
     assert "label delete status:implemented --repo owner/beta --yes" not in calls
+
+
+def test_apply_fails_closed_on_github_api_errors_without_deleting_labels(tmp_path: Path) -> None:
+    gh = tmp_path / "gh"
+    log = tmp_path / "gh.calls"
+    gh.write_text(
+        """#!/usr/bin/env bash
+set -euo pipefail
+printf '%s\\n' "$*" >> "${FAKE_GH_LOG}"
+if [[ "$1 $2" == "repo list" ]]; then
+  printf '%s\\n' 'owner/alpha'
+  exit 0
+fi
+if [[ "$1 $2" == "label list" ]]; then
+  printf '%s\\n' 'status:done'
+  exit 0
+fi
+if [[ "$1 $2" == "label create" ]]; then
+  exit 0
+fi
+if [[ "$1 $2" == "issue list" ]]; then
+  printf '%s\\n' 'HTTP 502: bad gateway' >&2
+  exit 1
+fi
+if [[ "$1 $2" == "pr list" ]]; then
+  exit 0
+fi
+if [[ "$1 $2" == "label delete" ]]; then
+  exit 0
+fi
+exit 0
+""",
+        encoding="utf-8",
+    )
+    gh.chmod(0o755)
+    env = {**os.environ, "GH_BIN": str(gh), "FAKE_GH_LOG": str(log)}
+
+    result = subprocess.run(
+        ["bash", str(SCRIPT), "--owner", "owner", "--apply"],
+        check=False,
+        capture_output=True,
+        text=True,
+        env=env,
+    )
+
+    assert result.returncode != 0
+    assert "HTTP 502: bad gateway" in result.stderr
+    calls = log.read_text(encoding="utf-8")
+    assert "label delete" not in calls
+
+
+def test_apply_replaces_less_advanced_dispatch_label_with_status_target(tmp_path: Path) -> None:
+    gh = tmp_path / "gh"
+    log = tmp_path / "gh.calls"
+    gh.write_text(
+        """#!/usr/bin/env bash
+set -euo pipefail
+printf '%s\\n' "$*" >> "${FAKE_GH_LOG}"
+if [[ "$1 $2" == "repo list" ]]; then
+  printf '%s\\n' 'owner/alpha'
+  exit 0
+fi
+if [[ "$1 $2" == "label list" ]]; then
+  printf '%s\\n' 'status:done'
+  printf '%s\\n' 'dispatch:ready'
+  printf '%s\\n' 'dispatch:done'
+  exit 0
+fi
+if [[ "$1 $2" == "issue list" ]]; then
+  label=""
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      --label) label="$2"; shift 2 ;;
+      *) shift ;;
+    esac
+  done
+  if [[ "$label" == "status:done" ]]; then
+    printf '%s\\t%s\\n' '1' 'dispatch:ready'
+  fi
+  exit 0
+fi
+if [[ "$1 $2" == "pr list" ]]; then
+  exit 0
+fi
+if [[ "$1 $2" == "issue edit" || "$1 $2" == "label delete" ]]; then
+  exit 0
+fi
+exit 0
+""",
+        encoding="utf-8",
+    )
+    gh.chmod(0o755)
+    env = {**os.environ, "GH_BIN": str(gh), "FAKE_GH_LOG": str(log)}
+
+    result = subprocess.run(
+        ["bash", str(SCRIPT), "--owner", "owner", "--apply"],
+        check=False,
+        capture_output=True,
+        text=True,
+        env=env,
+    )
+
+    assert result.returncode == 0, result.stderr
+    calls = log.read_text(encoding="utf-8")
+    assert (
+        "issue edit 1 --repo owner/alpha --remove-label status:done "
+        "--remove-label dispatch:ready --add-label dispatch:done"
+    ) in calls
+
+
+def test_apply_keeps_more_advanced_dispatch_label_when_status_is_less_advanced(tmp_path: Path) -> None:
+    gh = tmp_path / "gh"
+    log = tmp_path / "gh.calls"
+    gh.write_text(
+        """#!/usr/bin/env bash
+set -euo pipefail
+printf '%s\\n' "$*" >> "${FAKE_GH_LOG}"
+if [[ "$1 $2" == "repo list" ]]; then
+  printf '%s\\n' 'owner/alpha'
+  exit 0
+fi
+if [[ "$1 $2" == "label list" ]]; then
+  printf '%s\\n' 'status:pending'
+  printf '%s\\n' 'dispatch:ready'
+  printf '%s\\n' 'dispatch:done'
+  exit 0
+fi
+if [[ "$1 $2" == "issue list" ]]; then
+  label=""
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      --label) label="$2"; shift 2 ;;
+      *) shift ;;
+    esac
+  done
+  if [[ "$label" == "status:pending" ]]; then
+    printf '%s\\t%s\\n' '1' 'dispatch:done'
+  fi
+  exit 0
+fi
+if [[ "$1 $2" == "pr list" ]]; then
+  exit 0
+fi
+if [[ "$1 $2" == "issue edit" || "$1 $2" == "label delete" ]]; then
+  exit 0
+fi
+exit 0
+""",
+        encoding="utf-8",
+    )
+    gh.chmod(0o755)
+    env = {**os.environ, "GH_BIN": str(gh), "FAKE_GH_LOG": str(log)}
+
+    result = subprocess.run(
+        ["bash", str(SCRIPT), "--owner", "owner", "--apply"],
+        check=False,
+        capture_output=True,
+        text=True,
+        env=env,
+    )
+
+    assert result.returncode == 0, result.stderr
+    calls = log.read_text(encoding="utf-8")
+    assert "issue edit 1 --repo owner/alpha --remove-label status:pending\n" in calls
+    assert "--add-label dispatch:ready" not in calls
+    assert "--remove-label dispatch:done" not in calls
