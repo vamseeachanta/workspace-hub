@@ -11,8 +11,8 @@ ai:hermes	c5def5	Provider override (highest precedence): Hermes (codex pool)
 ai:agy	c5def5	Provider override (explicit only, never auto-routed): Agy
 lane:claude	bfd4f2	Plan-time provider preference: Claude
 lane:codex	bfd4f2	Plan-time provider preference: Codex
-dispatch:ready	fbca04	Dispatch: ready for an agent to pick up
-dispatch:active	f9d0c4	Dispatch: claimed and in progress
-dispatch:done	cccccc	Dispatch: agent work finished; awaiting owner merge/close
-dispatch:blocked	b60205	Dispatch: blocked; needs a human or upstream fix
+dispatch:ready	0e8a16	Claimable: no host holds it and no run is in flight
+dispatch:active	fbca04	A host holds a live claim; heartbeat still within the record's own ttl
+dispatch:done	1d76db	Ran to completion and wrote a terminal record. NOT a claim that it succeeded
+dispatch:blocked	b60205	Attempts exhausted; quarantined rather than requeued into a loop nobody watches
 needs:cross-review	e99695	Needs a second-provider review before merge

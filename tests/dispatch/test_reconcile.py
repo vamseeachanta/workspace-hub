@@ -789,6 +789,23 @@ def test_every_lifecycle_state_has_a_style_to_be_created_with():
     assert set(labels) == set(ALL_STATE_LABELS)
 
 
+def test_canonical_label_tsv_dispatch_rows_match_reconcile_source_of_truth():
+    """The fleet sync TSV must not redefine the dispatch lifecycle vocabulary."""
+    root = Path(__file__).resolve().parents[2]
+    rows = {}
+    for line in (root / "config/github/canonical-labels.tsv").read_text(
+        encoding="utf-8"
+    ).splitlines():
+        if not line or line.startswith("#"):
+            continue
+        name, colour, description = line.split("\t")
+        if name.startswith("dispatch:"):
+            rows[name] = (colour, description)
+
+    expected = {name: (colour, description) for name, colour, description in RC.label_specs()}
+    assert rows == expected
+
+
 def test_creating_a_label_that_already_exists_is_a_no_op(monkeypatch):
     """Re-running must be safe, and must not report work it did not do."""
     monkeypatch.setenv(FLAG, "1")
