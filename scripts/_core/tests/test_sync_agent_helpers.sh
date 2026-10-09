@@ -414,6 +414,85 @@ EOF
     fi
 }
 
+run_claude_memory_restores_from_private_clone_test() {
+    local tmpdir ws_root home_root private_clone fake_bin output target
+    tmpdir="$(mktemp -d)"
+    trap 'rm -rf "$tmpdir"' RETURN
+    ws_root="$tmpdir/ws"
+    home_root="$tmpdir/home"
+    private_clone="$tmpdir/private-memory"
+
+    make_workspace "$ws_root"
+    mkdir -p "$home_root/.claude" "$private_clone/.git" "$private_clone/legacy/config/agents/claude/memory-snapshots"
+    cat > "$private_clone/legacy/config/agents/claude/memory-snapshots/context.md" <<'EOF'
+# context
+EOF
+
+    fake_bin="$tmpdir/bin"
+    mkdir -p "$fake_bin"
+    cat > "$fake_bin/gh" <<'EOF'
+#!/usr/bin/env bash
+if [[ "$1" == repo && "$2" == view ]]; then
+  echo PRIVATE
+  exit 0
+fi
+exit 1
+EOF
+    chmod +x "$fake_bin/gh"
+
+    output="$(HOME="$home_root" PATH="$fake_bin:$PATH" CLAUDE_MEMORY_SNAPSHOT_REPO="local/private" CLAUDE_MEMORY_SNAPSHOT_PRIVATE_CLONE="$private_clone" bash "$ws_root/scripts/_core/sync-agent-configs.sh" 2>&1)" || {
+        fail "claude_memory_private_restore command completed"
+        return
+    }
+    target="$home_root/.claude/projects/-$(printf '%s' "$ws_root" | sed 's|^/||; s|/|-|g')/memory/context.md"
+    if [[ -f "$target" ]] && grep -q "restored" <<<"$output"; then
+        pass "claude_memory_private_restore restores from PRIVATE clone"
+    else
+        fail "claude_memory_private_restore did not restore from private clone"
+    fi
+}
+
+run_claude_memory_never_restores_from_public_path_test() {
+    local tmpdir ws_root home_root private_clone fake_bin output target
+    tmpdir="$(mktemp -d)"
+    trap 'rm -rf "$tmpdir"' RETURN
+    ws_root="$tmpdir/ws"
+    home_root="$tmpdir/home"
+    private_clone="$tmpdir/private-memory"
+
+    make_workspace "$ws_root"
+    mkdir -p "$home_root/.claude" "$ws_root/config/agents/claude/memory-snapshots" "$private_clone/.git" "$private_clone/legacy/config/agents/claude/memory-snapshots"
+    cat > "$ws_root/config/agents/claude/memory-snapshots/public.md" <<'EOF'
+# public
+EOF
+    cat > "$private_clone/legacy/config/agents/claude/memory-snapshots/private.md" <<'EOF'
+# private
+EOF
+
+    fake_bin="$tmpdir/bin"
+    mkdir -p "$fake_bin"
+    cat > "$fake_bin/gh" <<'EOF'
+#!/usr/bin/env bash
+if [[ "$1" == repo && "$2" == view ]]; then
+  echo PUBLIC
+  exit 0
+fi
+exit 1
+EOF
+    chmod +x "$fake_bin/gh"
+
+    output="$(HOME="$home_root" PATH="$fake_bin:$PATH" CLAUDE_MEMORY_SNAPSHOT_REPO="local/private" CLAUDE_MEMORY_SNAPSHOT_PRIVATE_CLONE="$private_clone" bash "$ws_root/scripts/_core/sync-agent-configs.sh" 2>&1)" || {
+        fail "claude_memory_public_fallback command completed"
+        return
+    }
+    target="$home_root/.claude/projects/-$(printf '%s' "$ws_root" | sed 's|^/||; s|/|-|g')/memory"
+    if [[ ! -f "$target/public.md" ]] && grep -q "skipping restore" <<<"$output"; then
+        pass "claude_memory_public_fallback refuses public-path restore"
+    else
+        fail "claude_memory_public_fallback restored from a public path"
+    fi
+}
+
 echo "=== test_sync_agent_helpers.sh ==="
 run_hermes_placeholder_and_terminal_test
 run_invalid_json_create_test
@@ -423,6 +502,8 @@ run_invalid_json_update_cleanup_test
 run_python3_fallback_to_uv_test
 run_dry_run_claude_memory_missing_target_count_test
 run_private_host_alias_resolution_test
+run_claude_memory_restores_from_private_clone_test
+run_claude_memory_never_restores_from_public_path_test
 
 echo ""
 echo "Results: ${PASS} PASS, ${FAIL} FAIL"
