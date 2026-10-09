@@ -73,6 +73,7 @@ Beyond the SHARED_SOUL.md Hard Gates, Codex sessions additionally enforce:
 2. **Workflow lifecycle skills are mandatory**: `.claude/skills/workspace-hub/work-queue-workflow/SKILL.md` + `.claude/skills/workspace-hub/workflow-gatepass/SKILL.md` for WRK-mode work.
 3. **Coding style guardrails**: max 400 lines/file, max 50 lines/function, snake_case Python, camelCase JS — see `.claude/rules/coding-style.md`.
 4. **Git workflow**: conventional commits, branch prefixes (`feature/`, `bugfix/`, `chore/`). Merges are governed by [`.claude/rules/merge-authorization.md`](../../../.claude/rules/merge-authorization.md) and [`merge-cleanup.md`](../../../.claude/rules/merge-cleanup.md).
+5. **Worktrees, not clones**: start a task with `git worktree add` from the canonical checkout; never make a full second clone at the workspace root. Remove the worktree and local branch once the PR merges. Bulky solver output goes to `/mnt/ace` with a manifest, not into Git. See [`.claude/rules/workstation-hygiene.md`](../../../.claude/rules/workstation-hygiene.md) (2026-10-07: eight full clones filled a 475 GB drive).
 
 ## Runtime Link Maintenance
 
