@@ -67,11 +67,10 @@ snapshot_state() {
     printf 'timestamp_utc=%s\n' "$(timestamp)"
   } > "${dest}/metadata.env"
 
-  run_systemctl show "$UNIT_NAME" > "${dest}/timer.show" 2>&1 || true
+  run_systemctl show -p UnitFileState,ActiveState,NextElapseUSecRealtime "$UNIT_NAME" > "${dest}/timer.show" 2>&1 || true
   run_systemctl status "$UNIT_NAME" --no-pager > "${dest}/timer.status" 2>&1 || true
   run_systemctl is-enabled "$UNIT_NAME" > "${dest}/timer.is-enabled" 2>&1 || true
   run_systemctl is-active "$UNIT_NAME" > "${dest}/timer.is-active" 2>&1 || true
-  run_systemctl list-timers "$UNIT_NAME" --all --no-pager > "${dest}/timer.list-timers" 2>&1 || true
 
   local unit_dir="${HOME}/.config/systemd/user"
   for name in "$UNIT_NAME" "$SERVICE_NAME"; do
@@ -81,26 +80,29 @@ snapshot_state() {
   done
 }
 
-state_fingerprint() {
-  local snapshot="$1"
-  {
-    printf 'timer.show\0'
-    cat "${snapshot}/timer.show"
-    printf '\0timer.is-enabled\0'
-    cat "${snapshot}/timer.is-enabled"
-    printf '\0timer.is-active\0'
-    cat "${snapshot}/timer.is-active"
-    printf '\0timer.list-timers\0'
-    cat "${snapshot}/timer.list-timers"
-  } | sha256sum | awk '{print $1}'
+read_timer_state() {
+  run_systemctl show -p UnitFileState,ActiveState,NextElapseUSecRealtime "$UNIT_NAME"
+}
+
+state_value() {
+  local key="$1"
+  awk -F= -v key="$key" '$1 == key {print $2; found=1} END {if (!found) exit 1}'
+}
+
+state_summary() {
+  local state="$1" unit_state active_state
+  unit_state="$(printf '%s\n' "$state" | state_value UnitFileState || true)"
+  active_state="$(printf '%s\n' "$state" | state_value ActiveState || true)"
+  printf 'UnitFileState=%s ActiveState=%s' "${unit_state:-missing}" "${active_state:-missing}"
 }
 
 verify_disabled() {
-  local enabled active
-  enabled="$(run_systemctl is-enabled "$UNIT_NAME" 2>/dev/null || true)"
-  active="$(run_systemctl is-active "$UNIT_NAME" 2>/dev/null || true)"
-  [ "$enabled" = "disabled" ] || [ "$enabled" = "static" ] || [ "$enabled" = "not-found" ] || return 1
-  [ "$active" = "inactive" ] || [ "$active" = "failed" ] || [ "$active" = "unknown" ] || return 1
+  local state enabled active
+  state="$(read_timer_state 2>/dev/null || true)"
+  enabled="$(printf '%s\n' "$state" | state_value UnitFileState || true)"
+  active="$(printf '%s\n' "$state" | state_value ActiveState || true)"
+  [ "$enabled" = "disabled" ] || return 1
+  [ "$active" = "inactive" ] || return 1
 }
 
 with_lock() {
@@ -113,9 +115,10 @@ with_lock() {
   flock 9
 
   snapshot_state "$baseline"
-  before="$(state_fingerprint "$baseline")"
+  before="$(cat "${baseline}/timer.show")"
   log "baseline: $baseline"
   log "backup: $baseline"
+  log "current-state: $(state_summary "$before")"
 
   if [ "$MODE" = "check" ]; then
     log "no mutation requested"
@@ -126,7 +129,7 @@ with_lock() {
   local cas_snapshot
   cas_snapshot="${STATE_ROOT}/${UNIT_NAME}.${stamp}.cas"
   snapshot_state "$cas_snapshot"
-  after="$(state_fingerprint "$cas_snapshot")"
+  after="$(cat "${cas_snapshot}/timer.show")"
   if [ "$before" != "$after" ]; then
     warn "ERROR: timer state changed between baseline and apply; refusing mutation"
     warn "baseline: $baseline"
@@ -138,7 +141,10 @@ with_lock() {
   snapshot_state "$verify"
 
   if ! verify_disabled; then
+    local rollback_state
+    rollback_state="$(read_timer_state 2>/dev/null || true)"
     warn "ERROR: post-state is not disabled/inactive; attempting rollback"
+    warn "rollback pre-state: $(state_summary "$rollback_state")"
     run_systemctl enable --now "$UNIT_NAME" || true
     warn "rollback command: systemctl --user enable --now ${UNIT_NAME}"
     exit 4
