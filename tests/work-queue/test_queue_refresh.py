@@ -129,7 +129,7 @@ class TestQueueMarkdownStructure:
 class TestDeterministicOrdering:
     """Issues must be sorted by issue number ascending within each priority."""
 
-    def test_gemini_high_sorted(self, queue_output: str):
+    def test_agy_high_sorted(self, queue_output: str):
         # #1769 should appear before #1823 (ascending by issue number)
         pos_1769 = queue_output.index("#1769")
         pos_1823 = queue_output.index("#1823")
@@ -272,7 +272,7 @@ class TestParityCheck:
             sys.path.pop(0)
         self.tmp_path = tmp_path
 
-    def _write_summary_table(self, gemini: int, claude: int, codex: int) -> Path:
+    def _write_summary_table(self, agy: int, claude: int, codex: int) -> Path:
         p = self.tmp_path / "agent-work-queue.md"
         lines = [
             "# Agent Work Queue",

@@ -668,11 +668,11 @@ skills:
   name: aceengineer-website-copy-alignment
   when_to_use: aceengineer-website-copy-alignment Verify proposed copy changes to vamseeachanta/aceengineer-website against canonical sources in workspace-hub (llm-wiki, live site, strategy repo) before shipping. Produces a GitHub issue on the site repo documenting the check with a Match / Drift / Gap verdict. coordination
   when_to_use_source: backfill
-- description: Deterministic multi-agent task assignment via GitHub labels — classify, label, and generate queue views from `agent:` labels instead of manual queue files
+- description: Deterministic multi-agent task assignment via GitHub labels — classify, label, and generate queue views from `ai:` labels instead of manual queue files
   family: coordination
   id: coordination/agent-label-routing
   name: agent-label-routing
-  when_to_use: agent-label-routing Deterministic multi-agent task assignment via GitHub labels — classify, label, and generate queue views from `agent:` labels instead of manual queue files coordination
+  when_to_use: agent-label-routing Deterministic multi-agent task assignment via GitHub labels — classify, label, and generate queue views from `ai:` labels instead of manual queue files coordination
   when_to_use_source: backfill
 - description: Bidirectional sync between Hermes memory and Claude Code auto-memory, with licensed machine bootstrap. Use when context parity across agents is needed.
   family: coordination

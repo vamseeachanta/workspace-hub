@@ -37,12 +37,14 @@ LANES = [
         "name": "Claude",
         "label": "lane:claude",
         "key": "CLAUDE",
+        "provider": "claude",
         "role": "Implementation / Architecture / Orchestration",
     },
     {
         "name": "Codex",
         "label": "lane:codex",
         "key": "CODEX",
+        "provider": "codex",
         "role": "Tests / Bounded Implementation / Review",
     },
 ]
@@ -68,6 +70,26 @@ def gh_query_issues(labels: str) -> list[dict]:
         print(f"Warning: gh query failed for {labels}: {result.stderr}", file=sys.stderr)
         return []
     return json.loads(result.stdout) if result.stdout.strip() else []
+
+
+def _dedupe_issues(issues: list[dict]) -> list[dict]:
+    by_number: dict[int, dict] = {}
+    for issue in issues:
+        by_number[int(issue["number"])] = issue
+    return list(by_number.values())
+
+
+def query_provider_priority(
+    agent: dict,
+    priority: str,
+    query_fn: callable,
+) -> list[dict]:
+    """Query canonical ai:<provider> plus read-only legacy agent:* aliases."""
+    labels_to_query = [agent["label"], *PROVIDER_LABEL_ALIASES.get(agent["provider"], [])]
+    issues: list[dict] = []
+    for provider_label in labels_to_query:
+        issues.extend(query_fn(f"{provider_label},priority:{priority}"))
+    return _dedupe_issues(issues)
 
 
 def _sort_issues(issues: list[dict]) -> list[dict]:
