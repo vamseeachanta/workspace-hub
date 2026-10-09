@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-10-08T21:21:11.831414Z",
+  "generated_at": "2026-10-09T01:21:17.766081Z",
   "current_week": "2026-W41",
-  "scorecard_generated_at": "2026-10-08T21:21:09.982895Z",
+  "scorecard_generated_at": "2026-10-09T01:21:15.555200Z",
   "recommended_provider_order": [
     "codex",
     "agy",
@@ -3923,7 +3923,7 @@
           "labels": [
             "status:needs-plan"
           ],
-          "updatedAt": "2026-10-08T19:36:23Z",
+          "updatedAt": "2026-10-08T23:14:43Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -4169,7 +4169,7 @@
             "gate:completeness",
             "gate:completeness-v2"
           ],
-          "updatedAt": "2026-10-08T20:45:31Z",
+          "updatedAt": "2026-10-08T23:14:47Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
