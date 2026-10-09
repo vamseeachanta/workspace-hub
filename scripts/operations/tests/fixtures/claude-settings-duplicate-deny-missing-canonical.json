@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [],
+    "deny": [
+      "Bash(existing-canonical-deny:*)",
+      "Bash(existing-canonical-deny:*)"
+    ]
+  }
+}
