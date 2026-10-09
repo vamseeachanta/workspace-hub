@@ -327,4 +327,4 @@ resolved_dispositions:
     # schedule-tasks.yaml changed, which moves the governed input digest. No
     # task, command, schedule or machine binding changed, so the #3475
     # disposition still holds. Digest computed from git index blobs on Linux.
-    source_digest: fcfd80cb822b96dcf573fea42674daf35786c58fedbe860256e17acabb473dae
+    source_digest: de32a7ffcc3e7bcdb260f45ccfb080dc34300a7c6bfdb52fc496761b7765d5f1
