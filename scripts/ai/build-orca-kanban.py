@@ -20,7 +20,7 @@ Lane assignment rules (mirrors tier1 kanban):
     - status:plan-approved + has approval marker  -> Ready / Plan Approved
     - status:plan-approved without marker         -> Approved Label Drift
     - status:plan-review                          -> Plan Review / Needs Approval
-    - status:working                              -> In Progress / Status Working
+    - dispatch:active                            -> In Progress / Dispatch Active
     - status:blocked                              -> Blocked / Waiting
     - state CLOSED                                -> Done (with completion note)
     - state OPEN, no status:* label               -> Triage Needed (un-labeled)
@@ -48,7 +48,7 @@ HTML_PATH = WORKSPACE_HUB / "docs" / "dashboards" / f"{TODAY}-orca-kanban.html"
 LANES = [
     "Ready / Plan Approved",
     "Plan Review / Needs Approval",
-    "In Progress / Status Working",
+    "In Progress / Dispatch Active",
     "Approved Label Drift",
     "Triage Needed (no status label)",
     "Blocked / Waiting",
@@ -103,6 +103,7 @@ def collect_issues() -> list[dict]:
         issue["_domain"] = domain
         issue["_labels"] = labels
         issue["_status"] = next((l for l in labels if l.startswith("status:")), None)
+        issue["_dispatch"] = next((l for l in labels if l.startswith("dispatch:")), None)
         issue["_priority"] = next((l for l in labels if l.startswith("priority:")), None)
         out.append(issue)
     return out
@@ -117,12 +118,12 @@ def assign_lane(issue: dict) -> str:
         return "Done"
     s = issue["_status"]
     labels = set(issue["_labels"])
+    if issue.get("_dispatch") == "dispatch:active":
+        return "In Progress / Dispatch Active"
     if s == "status:plan-approved":
         return "Ready / Plan Approved" if has_approval_marker(issue["number"]) else "Approved Label Drift"
     if s == "status:plan-review":
         return "Plan Review / Needs Approval"
-    if s == "status:working":
-        return "In Progress / Status Working"
     if s == "status:blocked" or "blocked" in labels:
         return "Blocked / Waiting"
     return "Triage Needed (no status label)"

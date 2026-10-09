@@ -78,6 +78,7 @@ import records  # noqa: E402
 import route  # noqa: E402
 
 DISPATCH_PREFIX = "dispatch:"
+LEGACY_MARKER_LABEL = "dispatch:legacy-migrated"
 
 
 def label_for(state: str) -> str:
@@ -157,6 +158,7 @@ DRIFT = "label-record-drift"
 LABEL_MISSING = "label-missing"
 LABEL_AMBIGUOUS = "label-ambiguous"
 ORPHAN_LABEL = "label-without-record"
+LEGACY_LABEL = "legacy-pre-migration"
 STALE_ACTIVE = "stale-active"
 QUARANTINED = "quarantined"
 CLOCK_SKEW = "clock-skew"
@@ -168,6 +170,7 @@ FINDING_KINDS = (
     (LABEL_MISSING, "record exists, issue carries no dispatch: label at all"),
     (LABEL_AMBIGUOUS, "two dispatch: labels — state would depend on API order"),
     (ORPHAN_LABEL, "label with no record — REPORTED, never adopted as state"),
+    (LEGACY_LABEL, "marker says this label predates dispatch run records"),
     (STALE_ACTIVE, "heartbeat past its own ttl — returned to ready"),
     (QUARANTINED, "attempts exhausted — stopped at blocked instead of looping"),
     (CLOCK_SKEW, "heartbeat ahead of this host's clock — held, not expired"),
@@ -340,8 +343,7 @@ def reconcile_issue(record: dict, labels=(), now=None) -> Outcome:
 
     # Sorted, because GitHub's label order is not stable and a message that
     # varies with it is as unhelpful as the ambiguity it describes.
-    present = tuple(sorted(
-        lab for lab in (labels or ()) if lab.startswith(DISPATCH_PREFIX)))
+    present = tuple(sorted(lab for lab in (labels or ()) if lab in STATE_LABELS))
 
     add = () if intended in present else (intended,)
     remove = tuple(lab for lab in present if lab != intended)
@@ -404,13 +406,21 @@ def reconcile(records_root, labels_by_issue=None, now=None) -> Report:
     # — 867 issues already carry `dispatch:ready`, so adopting them would look
     # like instant progress. It would also invent 867 runs that never happened.
     for issue in sorted(set(labels_by_issue) - seen):
-        present = sorted(lab for lab in labels_by_issue[issue]
-                         if lab.startswith(DISPATCH_PREFIX))
+        labels = set(labels_by_issue[issue])
+        present = sorted(lab for lab in labels if lab.startswith(DISPATCH_PREFIX)
+                         and lab != LEGACY_MARKER_LABEL)
         if present:
-            findings.append(Finding(
-                ORPHAN_LABEL, issue,
-                f"carries {', '.join(present)} with no record — NOT inferred "
-                f"backwards; a claim has to come from a run"))
+            if LEGACY_MARKER_LABEL in labels:
+                findings.append(Finding(
+                    LEGACY_LABEL, issue,
+                    f"carries {', '.join(present)} plus {LEGACY_MARKER_LABEL} "
+                    f"with no record — legacy (pre-migration), excluded from "
+                    f"drift and never inferred backwards"))
+            else:
+                findings.append(Finding(
+                    ORPHAN_LABEL, issue,
+                    f"carries {', '.join(present)} with no record — NOT inferred "
+                    f"backwards; a claim has to come from a run"))
 
     return Report(outcomes=outcomes, findings=findings, records_root=root)
 
@@ -659,8 +669,8 @@ def format_label_creation(result: dict) -> str:
 
 #: Classes whose individual lines are always printed. `in-sync` is a count only —
 #: it is the one class where the detail carries no information.
-DETAILED = (DRIFT, LABEL_AMBIGUOUS, ORPHAN_LABEL, STALE_ACTIVE, QUARANTINED,
-            CLOCK_SKEW, LABEL_MISSING, UNREADABLE)
+DETAILED = (DRIFT, LABEL_AMBIGUOUS, ORPHAN_LABEL, LEGACY_LABEL, STALE_ACTIVE,
+            QUARANTINED, CLOCK_SKEW, LABEL_MISSING, UNREADABLE)
 
 
 def format_report(report: Report, armed: bool = False) -> str:
