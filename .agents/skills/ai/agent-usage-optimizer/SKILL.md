@@ -29,7 +29,7 @@ Current authority: implementation follows the originating task request or establ
 
 ## Agent Routing via GitHub Labels (Preferred Method)
 
-Deterministic agent routing using `ai:` labels on GitHub issues — no separate queue file needed. Legacy `ai:*` labels are read-only aliases during the migration window; do not add new `ai:*` labels:
+Deterministic agent routing using `ai:` labels on GitHub issues — no separate queue file needed. Legacy `agent:*` labels are read-only aliases during the migration window; do not add new `agent:*` labels.
 
 ```bash
 # Route tasks to agents via labels
@@ -40,9 +40,9 @@ gh issue edit <issue-number> --add-label "ai:codex"
 
 View agent queues:
 ```bash
-gh issue list --label "agent:gemini,priority:high"
-gh issue list --label "agent:claude,priority:high"
-gh issue list --label "agent:codex,priority:high"
+gh issue list --label "ai:agy,priority:high"
+gh issue list --label "ai:claude,priority:high"
+gh issue list --label "ai:codex,priority:high"
 ```
 
 Reassign tasks:
