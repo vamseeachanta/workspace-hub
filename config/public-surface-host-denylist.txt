@@ -1,0 +1,6 @@
+# Regex patterns for physical hostnames that must not enter public repos.
+# Role slugs such as ace-win-1 and ace-linux-1 are intentionally not matched.
+DESKTOP-[A-Z0-9]{7,}
+LAPTOP-[A-Z0-9]{7,}
+WIN-[A-Z0-9]{6,}
+MACBOOK-[A-Za-z0-9-]{3,}

@@ -323,10 +323,9 @@ resolved_dispositions:
     members: [scripts/cron/cron_apply.py, scripts/cron/setup-cron.sh, scripts/setup/new-machine-setup.sh]
     resolved_on: "2026-07-12"
     pull_request: 3492
-    # Re-affirmed 2026-10-09 (#3969 / #3967, owner card X08): the
-    # team-summary-refresh catalog task was added to schedule-tasks.yaml,
-    # moving the governed input digest without changing the cron mutator
-    # implementation or the exact scheduler identity model covered by #3475.
-    # Includes the prior 2026-10-08 owner board card E03 description-only
-    # schedule-tasks.yaml change. Digest computed from git index blobs on Linux.
-    source_digest: 0d04e3e535cb60954ac474dc1a8497f63b83c03d4ff39b74a8dd23d72e19e86b
+    # Re-affirmed 2026-10-09 (board card X08): schedule-tasks.yaml carries
+    # the team-summary refresh registration and current main scheduler entries.
+    # The #3475 disposition still holds because the generated identity inventory
+    # is regenerated from the same governed catalog, registry and state-class
+    # inputs. Digest computed from git index blobs on Linux.
+    source_digest: bb1e465597811c0e3e82b80c4ab7bc0400324864208b0c31d4c5f2c1366b35a1
