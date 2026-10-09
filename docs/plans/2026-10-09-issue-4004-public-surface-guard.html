@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Issue 4004 Public Surface Guard Plan</title>
+</head>
+<body>
+  <h1>Issue 4004 Public Surface Guard Plan</h1>
+  <p><a href="https://github.com/vamseeachanta/workspace-hub/issues/4004">Issue 4004</a> will add a reusable public-repository guard for pull-request added lines.</p>
+  <h2>Scope</h2>
+  <p>The change will add <code>scripts/enforcement/check-public-surface.py</code>, a reusable GitHub Actions workflow, tests, and a one-line adoption snippet. The blocking mode will fail on newly added host IPs, denylisted physical hostnames, secret-shaped strings, and private keys. The identifier mode will remain warn-only and will prepare one masked PR comment when a provisioned client-codename registry contains matches.</p>
+  <h2>Controls</h2>
+  <p>The scanner will read only added diff lines. Documentation IP ranges and explicit allowlist entries will be excluded from blocking results. Findings will report <code>file:line</code>, match class, and masked value. The identifier job will not echo full identifiers and will not fail the build.</p>
+  <h2>Verification</h2>
+  <p>Tests will cover each blocking class, allowlist behavior, masking, diff-only behavior, and warn-only identifier comment generation. CI wiring will call the same script entry point used by the tests.</p>
+  <h2>Review</h2>
+  <p>An adversarial implementation review will be run before closeout. O13 recorded by the PM will be noted in the draft PR body for owner confirmation at merge.</p>
+</body>
+</html>

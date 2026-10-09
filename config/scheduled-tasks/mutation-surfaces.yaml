@@ -323,9 +323,9 @@ resolved_dispositions:
     members: [scripts/cron/cron_apply.py, scripts/cron/setup-cron.sh, scripts/setup/new-machine-setup.sh]
     resolved_on: "2026-07-12"
     pull_request: 3492
-    # Re-affirmed 2026-10-08 (owner board card E03): a description in
-    # schedule-tasks.yaml changed for the agent:* -> ai:* label migration, which
-    # moves the governed input digest. No task, command, schedule or machine
-    # binding changed, so the #3475 disposition still holds. Digest computed
-    # from git index blobs on Linux.
-    source_digest: 923afc737c51855a4b530f7af0e5bed167ab51be251835257aa0b9588dac284b
+    # Re-affirmed 2026-10-09 (board cards E03 and F06): schedule-tasks.yaml
+    # description text changed for the agent:* -> ai:* label migration and the
+    # workspace-hub no-commit, fast-forward-only sync behavior. No task,
+    # command, schedule or machine binding changed, so the #3475 disposition
+    # still holds. Digest computed from git index blobs on Linux.
+    source_digest: a892a354f37e117e70ab24771399b21490748c983c7b14457c82d7e4547de9b6
