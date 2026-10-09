@@ -11,7 +11,7 @@ For each scoped repo and approved issue, collect:
 2. No conflicting `status:plan-review` label.
 3. Canonical plan file under `docs/plans/`, matched by issue number.
 4. Approval marker under `.planning/plan-approved/<issue>.md`.
-5. Whether the issue is already `status:working`.
+5. Whether the issue is already `dispatch:active`.
 6. Local repo branch and `git status --short` count to identify dirty-clone risk.
 
 ## Reusable collection sketch
@@ -32,10 +32,10 @@ Then run a filesystem pass in each local clone to match issue numbers against:
 - `.planning/plan-approved/<N>.md`
 
 ## Classification
-- **Executable candidate:** live approved, plan file exists, approval marker exists, no conflict, not `status:working`, and a clean issue-specific worktree can be assigned.
+- **Executable candidate:** live approved, plan file exists, approval marker exists, no conflict, not `dispatch:active`, and a clean issue-specific worktree can be assigned.
 - **Governance drift:** live approved but missing plan file and/or approval marker.
 - **Label conflict:** both `status:plan-approved` and `status:plan-review`; audit evidence before changing labels.
-- **Implementation-state audit needed:** approved and `status:working`; inspect PRs, branches, planned files on main, comments, and CI before launching more work.
+- **Implementation-state audit needed:** approved and `dispatch:active`; inspect PRs, branches, planned files on main, comments, and CI before launching more work.
 - **Dirty clone risk:** local repo has uncommitted/untracked state; do not launch workers in that clone directly.
 
 ## Report expectations

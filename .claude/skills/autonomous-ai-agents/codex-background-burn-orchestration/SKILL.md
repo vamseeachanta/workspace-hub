@@ -153,7 +153,7 @@ Before reporting that a lane landed or a burn wave is complete/incomplete:
 - check `git -C <worktree> log --oneline -3`
 - verify pushed branch or main ancestry
 - verify GitHub comment/closure state
-- remove any temporary `status:working` label from closed or explicitly blocked issues that are no longer actively running
+- remove any temporary `dispatch:active` label from closed or explicitly blocked issues that are no longer actively running
 - when the user supplies a judge/checklist-style continuation, use `references/autonomous-burn-launch-closeout.md` to emit evidence artifacts and a checklist crosswalk instead of self-marking boxes or merely restating blockers; if the checklist says “work on unchecked items” but provides no new bundle IDs or override decisions, refresh live/process/git/GitHub evidence, write `checklist-crosswalk-evidence-*` artifacts, set `new_launches_this_turn=0`, and stop on explicit user/governance input rather than inventing a continuation lane
 
 Report "running" or "blocked" rather than claiming completion when the process is only launched. For partial bundles, close only issues with landed/verified scope and leave blockers open with an evidence comment naming the missing prerequisite or approval gap.

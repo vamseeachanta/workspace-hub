@@ -14,12 +14,12 @@
 | Hooks (`.claude/settings.json`) | 28 wired entries, 26 unique scripts | 10 | 16 | RFC's "21" predates recent additions |
 | Commands (`.claude/commands/`) | 166 | 67 (review later) | 99 | `gsd/` 81 + `sparc/` 18 go with their agents |
 
-Targets from #4005: skills about 400, agents = role set + named specialists, every hook has a keep/drop reason. The keep list lands at 434 skills, or 374 if the marine duplicate decision (section 7) goes to `aceengineer-agents`.
+Targets from #4005: skills about 400, agents = role set + named specialists, every hook has a keep/drop reason. The keep list lands at 434 skills, or 374 if the marine duplicate decision (section 7) goes to `aceengineer/aceengineer-agents`.
 
 ## 2. Usage evidence
 
 - **No reliable skill-usage log exists.** `.claude/state/skill-invocations/` and `skill-usage-report/` stopped on 2026-06-15 (Hermes logs).
-- Claude transcripts were scanned on ace-linux-1 (879 files, retained back to 2026-09-23), ace-linux-2 and ws014.
+- Claude transcripts were scanned on ace-linux-1 (879 files, retained back to 2026-09-23), ace-linux-2 and ace-win-2.
   - Explicit Skill-tool calls to hub skills: one (`reconcile-ecosystem`). Everything else was built-in or plugin skills.
   - `SKILL.md` paths read in sessions: 111 distinct hub skills on ace-linux-1. Most reads were the old gate chain: `issue-planning-mode` 2,203, `pre-completion-cleanup-audit` 1,856, `work-queue` 324, `shared-risk-workflow` 279, `resource-intelligence` 208, `work-queue-workflow` 178, `workflow-gatepass` 152.
 - Codex sessions mention about 5,600 skills per skill path. That is the skill catalogue Codex loads into every session, not real use. It shows what the catalogue costs, but it cannot be used to rank skills.
@@ -75,8 +75,8 @@ One manual override: `coordination/pre-completion-cleanup-audit` is kept, becaus
 
 | Duplicate set | Size | Proposal |
 |---|---:|---|
-| hub `engineering/marine-offshore/*` and `aceengineer-agents` `plugins/ace-marine-dynamics` | 60 of 60 hub marine skills share a basename | **owner decision** (section 7) |
-| `raw-to-knowledge-playbook` skills and `aceengineer-agents` `plugins/ace-knowledge` | 14 of 14 | keep `aceengineer-agents` as the source; playbook links to it |
+| hub `engineering/marine-offshore/*` and `aceengineer/aceengineer-agents` `plugins/ace-marine-dynamics/skills/` | 60 of 60 hub marine skills share a basename (overlap is by name only; content not yet compared) | **owner decision** (section 7) |
+| `raw-to-knowledge-playbook` skills and `aceengineer/aceengineer-agents` `plugins/ace-knowledge` | 14 of 14 | keep `aceengineer/aceengineer-agents` as the source; playbook links to it |
 | Same basename twice inside the hub's active tree (e.g. `naval-architecture`, `session-corpus-audit`, `sync`, `gmail-data-extraction`) | 12 | resolved by the moves: one copy kept |
 | Near-duplicate auto-learned notes (e.g. 7 `diagnose-*-venv-shebang-*`, 6 `portable-baseline-*`) | about 100 | retired with the learned family |
 
@@ -138,7 +138,9 @@ Keep 10, retire 16. Deny lists live in `permissions.deny` (owner-only, `config/a
 ## 7. Decision to request (one board card, `decision:ecosystem`)
 
 **Approve the keep list:** skills keep 434 / retire 598 (496 now, 102 after rollout), agents keep 8 / retire 36, hooks keep 10 / retire 16. Also choose the single source for the 60 duplicated marine skills:
-- (A) **recommended:** `aceengineer-agents` `ace-marine-dynamics`. The hub copies retire, and the hub keep list drops to 374.
-- (B) the hub `engineering/marine-offshore`. The plugin copies retire in `aceengineer-agents`.
+- (A) **recommended:** `aceengineer/aceengineer-agents` `plugins/ace-marine-dynamics/skills/`. The hub copies retire, and the hub keep list drops to 374.
+- (B) the hub `engineering/marine-offshore`. The plugin copies retire in `aceengineer/aceengineer-agents`.
+
+The 60-skill overlap is by name only. Under either option, `l8-prune-w1` content-diffs each pair first: identical, archive the hub copy and leave a pointer; different, open a PR on the org repo (`aceengineer/aceengineer-agents`) first, then archive the hub copy.
 
 Side note for L7 (#4004), not part of this prune: 42 auto-learned notes on personal tax and finance workflows sit in the public hub. They are retired here, but their history is public. Decide whether they also go to the private repo.

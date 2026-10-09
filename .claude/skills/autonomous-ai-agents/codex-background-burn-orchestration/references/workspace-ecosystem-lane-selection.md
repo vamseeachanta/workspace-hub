@@ -11,7 +11,7 @@ Use this reference when the user asks to burn Codex quota across a workspace-hub
 
 2. Live issue state
    - Prefer plan-approved, open GitHub issues.
-   - Respect explicit `agent:*` labels and existing `status:working` state.
+   - Respect explicit `agent:*` labels and existing `dispatch:active` state.
    - For large repos, avoid huge `gh issue list` payloads that can truncate; query per repo and/or by label.
    - `gh issue list --json` does not expose a `repository` field; when scanning multiple repos, add the repo name externally in the loop.
 

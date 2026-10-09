@@ -323,9 +323,9 @@ resolved_dispositions:
     members: [scripts/cron/cron_apply.py, scripts/cron/setup-cron.sh, scripts/setup/new-machine-setup.sh]
     resolved_on: "2026-07-12"
     pull_request: 3492
-    # Re-affirmed 2026-10-09 (#4000): coordinator-dispatch-loop collapsed its
-    # duplicate logical machine binding from dev-primary + ace-linux-1 to
-    # dev-primary only and uses a validator-compatible dormant cron expression.
-    # The task remains manual-registration-only and the #3475 disposition still
-    # holds. Digest computed from git index blobs on Linux.
-    source_digest: 0cfee225feee019bd58b10487aaff72fa7f7f7b21085e3fdd214d34ac296d6c6
+    # Re-affirmed 2026-10-09 (board cards E03 and F06): schedule-tasks.yaml
+    # description text changed for the agent:* -> ai:* label migration and the
+    # workspace-hub no-commit, fast-forward-only sync behavior. No task,
+    # command, schedule or machine binding changed, so the #3475 disposition
+    # still holds. Digest computed from git index blobs on Linux.
+    source_digest: 53949d91b4bff3413880d6d13c2f00704bcd90a9eceb32c779cc90f99f5e25aa

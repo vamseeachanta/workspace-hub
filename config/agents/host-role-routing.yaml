@@ -24,7 +24,7 @@ version: 1
 updated: 2026-10-09
 
 coordinator:
-  primary: ace-win-2          # ws014: admin/document coordinator host
+  primary: ace-win-2          # admin/document coordinator host
   resume_on: [dev-primary]    # state lives in issues + labels; any of these can resume
   rule: >-
     Exactly one coordinator session drives an objective at a time. It owns
@@ -38,7 +38,7 @@ hosts:
     max_local_lanes: 6
     accounts: same-accounts
     dispatch: "Codex lane runner: ~/ws/_codex-jobs picks lane:codex + dispatch:ready; Claude lanes as subagents or worktree sessions"
-    notes: "Primary Codex lane host and heavy builder; bulk output to /mnt/ace"
+    notes: "Primary Codex lane host and heavy builder; bulk output to the knowledge share (${ACE_SHARE_ROOT}; registry storage.knowledge)"
 
   dev-secondary:              # ace-linux-2
     role: lane-runner
@@ -48,7 +48,7 @@ hosts:
     dispatch: "ssh + worktree lane; Codex lanes when dev-primary is saturated"
     notes: "Second Linux lane host; also comms-dispatch and sim-worker roles"
 
-  ace-win-2:                  # ws014
+  ace-win-2:                  # coordinator host
     role: coordinator
     ai_lanes: [claude, codex]
     max_local_lanes: 2
@@ -101,8 +101,9 @@ cloud:
   dispatch: "cloud Claude sessions for read-only or worktree lanes when hosts are at cap; no client data, no licensed work"
 
 routing_rules:
-  - "lane:codex + dispatch:ready -> dev-primary Codex lane runner (dev-secondary if dev-primary is at cap)"
-  - "lane:claude -> coordinator subagents first; worktree builder lanes on dev-primary/dev-secondary when the coordinator host is at max_local_lanes"
+  - "provider precedence (scripts/dispatch/route.py resolve_provider): ai: > routing-rule provider > lane: > default; ai:claude + lane:codex runs as Claude"
+  - "lane:codex (no ai: override) + dispatch:ready -> dev-primary Codex lane runner (dev-secondary if dev-primary is at cap)"
+  - "lane:claude, or ai:claude on any lane -> coordinator subagents first; worktree builder lanes on dev-primary/dev-secondary when the coordinator host is at max_local_lanes"
   - "licensed solver work -> routing-rules.yaml deterministic path only; never an AI lane"
   - "work needing a separate-accounts host's own AI session -> board card (decision:*) or an objective that host's session picks up; never cross-account dispatch"
   - "client-data lanes stay on hosts and repos allowed by agent-data-handling-contract.md; never cloud overflow"

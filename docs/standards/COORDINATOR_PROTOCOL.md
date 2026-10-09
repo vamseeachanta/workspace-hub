@@ -13,7 +13,7 @@ comes back, integrates, and writes only real decisions to the owner.
 | Input | Source | Owner of the source |
 |---|---|---|
 | Objective brief (Outcome, Done when, Constraints / must not, Out of scope, Return format, Risk tier) | issue written from the objective template | L1, #3998 / #3989 (`.github/ISSUE_TEMPLATE/objective.*`, `/objective <issue#>`) |
-| Queue state | labels `lane:{claude,codex}` x `dispatch:{ready,active,blocked,done}`, plus `decision:*` when the owner is needed | L2, #3999 |
+| Queue state | labels `ai:{claude,codex}` (dispatch-time override) and `lane:{claude,codex}` (plan-time preference) x `dispatch:{ready,active,blocked,done}`, plus `decision:*` when the owner is needed | L2, #3999 |
 | Where work may run | [config/agents/host-role-routing.yaml](../../config/agents/host-role-routing.yaml) | this standard |
 | Licensed solver routing | `.claude/memory/kanban/routing-rules.yaml` (deterministic, unchanged) | dispatch |
 
@@ -46,8 +46,9 @@ For each objective the coordinator:
 
 1. **Pick.** Take open issues with `dispatch:ready`, ordered by priority, then age. Skip any with a `decision:*` label.
 2. **Classify.** Choose `single-lane`, `parallel-readonly` or `parallel-worktree` per PARALLEL_FIRST_EXECUTION.md, and the risk tier from the brief.
-3. **Route.** For each lane, choose provider and host from `host-role-routing.yaml`:
-   `lane:codex` goes to the Codex lane runner on Linux; `lane:claude` runs as role subagents on the coordinator host, or as worktree builder lanes on a Linux host when the coordinator host is at its cap.
+3. **Route.** For each lane, resolve the provider first, then the host from `host-role-routing.yaml`.
+   Provider precedence follows the merged routing contract (`scripts/dispatch/route.py` `resolve_provider`, `tests/dispatch/test_route_lane.py`): `ai:` > routing-rule provider > `lane:` > default. An `ai:` label always wins, so `ai:claude` + `lane:codex` runs as Claude.
+   A Codex-resolved lane goes to the Codex lane runner on Linux; a Claude-resolved lane runs as role subagents on the coordinator host, or as worktree builder lanes on a Linux host when the coordinator host is at its cap.
 4. **Contract.** Write a lane contract per write-capable lane (issue, worktree path, branch, owned / read-only / forbidden paths, validator commands, return path). Post the contracts as one issue comment.
 5. **Start.** Flip `dispatch:ready -> dispatch:active`. Launch all independent lanes in one batch.
 6. **Steer.** The owner talks only to the coordinator ("shift emphasis to X", "drop lane Y", "show what's back"). Lanes return results, not narration.
@@ -61,7 +62,7 @@ The table lives in [config/agents/host-role-routing.yaml](../../config/agents/ho
 
 | Host (registry id) | Role | AI lanes | Local lane cap |
 |---|---|---|---|
-| ace-win-2 (ws014) | coordinator / admin and documents | claude, codex | 2 |
+| ace-win-2 | coordinator / admin and documents | claude, codex | 2 |
 | dev-primary (ace-linux-1) | Codex lanes, heavy builders, coordinator resume | codex, claude | 6 |
 | dev-secondary (ace-linux-2) | second lane host | codex, claude | 4 |
 | ace-win-1 | licensed tool runner, separate AI accounts | none from the coordinator | 0 |
@@ -70,7 +71,7 @@ The table lives in [config/agents/host-role-routing.yaml](../../config/agents/ho
 
 Rules:
 
-- **ws014 cap.** At most 2 concurrent local AI lanes on ace-win-2. A third is refused and routed to a Linux host.
+- **Coordinator-host cap.** At most 2 concurrent local AI lanes on ace-win-2. A third is refused and routed to a Linux host.
 - **Licensed hosts are tool runners.** They run deterministic scripts through the existing licensed dispatch path. No model sits in the licensed chain, and AI lanes never drive a licensed tool.
 - **Separate accounts.** A host signed in to other AI accounts (ace-win-1) is not a lane target. Work that needs an AI session there goes through the owner, or is written as an objective that the host's own session picks up. Results come back as issue comments or PRs. The coordinator never drives another account's session.
 - **Client data** stays on the hosts and repos the client-data contract allows; it never goes to cloud overflow.
