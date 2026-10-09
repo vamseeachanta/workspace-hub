@@ -120,18 +120,23 @@ def working_tree_counts(repo: Path) -> tuple[int, int]:
     return tracked_missing, modified
 
 
-def nested_full_clones(path: Path) -> list[Path]:
+def nested_repo_classification(path: Path) -> tuple[list[Path], list[Path]]:
     nested: list[Path] = []
+    linked_worktrees: list[Path] = []
     for git_dir in path.rglob(".git"):
         if is_known_cache_path(path, git_dir):
             continue
         if git_dir.parent == path:
             continue
-        if git_dir.is_file() and is_submodule_gitfile(path, git_dir):
-            continue
+        if git_dir.is_file():
+            if is_submodule_gitfile(path, git_dir):
+                continue
+            if is_linked_worktree_gitfile(path, git_dir):
+                linked_worktrees.append(git_dir.parent)
+                continue
         if git_dir.is_dir() or git_dir.is_file():
             nested.append(git_dir.parent)
-    return sorted(nested)
+    return sorted(nested), sorted(linked_worktrees)
 
 
 def is_known_cache_path(parent: Path, candidate: Path) -> bool:
@@ -143,19 +148,48 @@ def is_known_cache_path(parent: Path, candidate: Path) -> bool:
     return resolved == cache_root or cache_root in resolved.parents
 
 
-def is_submodule_gitfile(parent: Path, git_file: Path) -> bool:
+def gitfile_target(git_file: Path) -> Path | None:
     prefix = "gitdir:"
     try:
         content = git_file.read_text().strip()
     except OSError:
-        return False
+        return None
     if not content.startswith(prefix):
-        return False
+        return None
     target = Path(content.removeprefix(prefix).strip())
     if not target.is_absolute():
         target = (git_file.parent / target).resolve()
+    return target.resolve()
+
+
+def path_is_or_is_under(path: Path, root: Path) -> bool:
+    return path == root or root in path.parents
+
+
+def is_submodule_gitfile(parent: Path, git_file: Path) -> bool:
+    target = gitfile_target(git_file)
+    if target is None:
+        return False
     parent_modules = (parent / ".git" / "modules").resolve()
-    return target == parent_modules or parent_modules in target.parents
+    return path_is_or_is_under(target, parent_modules)
+
+
+def is_linked_worktree_gitfile(parent: Path, git_file: Path) -> bool:
+    target = gitfile_target(git_file)
+    if target is None:
+        return False
+    parent_worktrees = (parent / ".git" / "worktrees").resolve()
+    return path_is_or_is_under(target, parent_worktrees)
+
+
+def row_status(findings: list[dict[str, str]]) -> str:
+    if any(item["severity"] == "ERROR" for item in findings):
+        return "ERROR"
+    if any(item["severity"] == "WARN" for item in findings):
+        return "WARN"
+    if findings:
+        return "INFO"
+    return "OK"
 
 
 def audit_path(path: Path | str, *, public_parent: bool = False) -> dict[str, Any]:
@@ -173,7 +207,7 @@ def audit_path(path: Path | str, *, public_parent: bool = False) -> dict[str, An
     unique_count = unique_commit_count(repo, base_ref)
     same_name_remotes = same_name_remote_branches(repo, branch)
     tracked_missing, modified = working_tree_counts(repo)
-    nested = nested_full_clones(repo)
+    nested, linked_worktrees = nested_repo_classification(repo)
 
     if base_ref and unique_count is None:
         findings.append(finding("UNRELATED-HISTORY", "WARN", f"HEAD has no common ancestor with {base_ref}"))
@@ -186,15 +220,17 @@ def audit_path(path: Path | str, *, public_parent: bool = False) -> dict[str, An
         findings.append(finding("TRACKED-MISSING", "WARN", f"{tracked_missing} tracked files are missing"))
     if modified:
         findings.append(finding("MODIFIED", "WARN", f"{modified} tracked files are modified"))
+    for linked in linked_worktrees:
+        findings.append(finding("LINKED-WORKTREE", "INFO", f"linked Git worktree: {linked.relative_to(repo)}"))
     for nested_repo in nested:
         message = "nested full clone inside worktree"
         if public_parent:
-            message = f"private repo inside public worktree: {nested_repo.relative_to(repo)}"
+            message = f"nested repo inside public worktree (check visibility): {nested_repo.relative_to(repo)}"
         findings.append(finding("PRIVACY-NESTED-CLONE", "WARN", message))
 
     return {
         "path": str(repo),
-        "status": "WARN" if findings else "OK",
+        "status": row_status(findings),
         "branch": branch,
         "default_ref": base_ref,
         "unique_commit_count": unique_count,

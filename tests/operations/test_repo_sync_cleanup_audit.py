@@ -203,7 +203,7 @@ def test_nested_full_clone_inside_public_worktree_is_privacy_risk(tmp_path: Path
     assert row["nested_clone_count"] == 1
     assert any(
         finding["code"] == "PRIVACY-NESTED-CLONE"
-        and "private repo inside public worktree" in finding["message"]
+        and "nested repo inside public worktree (check visibility)" in finding["message"]
         for finding in row["findings"]
     )
 
@@ -265,3 +265,21 @@ def test_submodule_gitfile_inside_public_worktree_is_not_privacy_risk(tmp_path: 
 
     assert row["nested_clone_count"] == 0
     assert "PRIVACY-NESTED-CLONE" not in finding_codes(row)
+
+
+def test_linked_worktree_gitfile_is_info_not_nested_privacy_risk(tmp_path: Path) -> None:
+    parent = tmp_path / "public-parent-linked-worktree"
+    init_repo(parent)
+    linked = parent / "linked"
+    run_git(parent, "worktree", "add", "-b", "linked-branch", str(linked))
+
+    row = audit_one(parent, public_parent=True)
+
+    assert row["nested_clone_count"] == 0
+    assert "PRIVACY-NESTED-CLONE" not in finding_codes(row)
+    assert any(
+        finding["code"] == "LINKED-WORKTREE"
+        and finding["severity"] == "INFO"
+        and finding["message"] == "linked Git worktree: linked"
+        for finding in row["findings"]
+    )
