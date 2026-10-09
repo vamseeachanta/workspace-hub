@@ -59,6 +59,10 @@ _quick_status_dirty() {
     [ -n "$(git -c status.showUntrackedFiles=no status --porcelain --untracked-files=no)" ]
 }
 
+_hub_tree_dirty() {
+    [ -n "$(git status --porcelain)" ]
+}
+
 _bounded_status_probe() {
     # Probe status without letting huge worktrees stall the whole sync cycle.
     if command -v timeout >/dev/null 2>&1; then
@@ -180,43 +184,34 @@ _auto_sync_hub() {
     cd "$WORKSPACE_ROOT" || return 1
 
     if [ "$dry_run" = "true" ]; then
-        echo -e "${BLUE}[dry-run] workspace-hub: would git add -A, commit, pull, push${NC}"
+        echo -e "${BLUE}[dry-run] workspace-hub: would require clean tree, fetch --prune, merge --ff-only origin/default${NC}"
         return 0
     fi
 
     # Do not remove locks automatically; a lock may indicate an active Git/Claude writer.
     if _has_git_lock; then
-        echo -e "${YELLOW}⚠ workspace-hub: git lock or in-progress merge/rebase detected, skipping commit/push${NC}"; return 1
+        echo -e "${YELLOW}⚠ workspace-hub: git lock or in-progress merge/rebase detected, stopping before fetch${NC}"; return 1
     fi
 
-    if _quick_status_dirty; then
-        _create_recovery_backup "workspace-hub" "$date_str" || true
-        git add -u 2>/dev/null
+    if _hub_tree_dirty; then
+        echo -e "${RED}✗ workspace-hub: dirty tree detected; stopping without fetch, commit, merge, or push${NC}"
+        return 1
     fi
 
-    if [ -z "$(git -c status.showUntrackedFiles=no status --porcelain --untracked-files=no)" ]; then
-        echo -e "${YELLOW}⊘ workspace-hub: no tracked changes to commit${NC}"
-    else
-        local commit_err
-        if commit_err=$(git commit -m "chore(sync): auto-sync $date_str" 2>&1); then
-            echo -e "${GREEN}✓ workspace-hub: committed${NC}"
-        else
-            echo -e "${RED}✗ workspace-hub: commit failed — $commit_err${NC}"; return 1
-        fi
+    local default_branch
+    default_branch="$(_default_branch)"
+    if ! git fetch origin --prune >/dev/null 2>&1; then
+        echo -e "${RED}✗ workspace-hub: fetch --prune failed${NC}"
+        return 1
     fi
 
-    if ! _safe_ff_only_pull; then
-        echo -e "${YELLOW}⚠ workspace-hub: fast-forward-only pull failed, skipping push${NC}"; return 1
+    if git merge --ff-only "origin/$default_branch" >/dev/null 2>&1; then
+        echo -e "${GREEN}✓ workspace-hub: fast-forwarded from origin/$default_branch${NC}"
+        return 0
     fi
 
-    if git rev-parse --abbrev-ref --symbolic-full-name '@{u}' >/dev/null 2>&1 \
-       && [ -z "$(git log @{u}.. 2>/dev/null)" ]; then
-        echo -e "${YELLOW}⊘ workspace-hub: nothing to push${NC}"
-    elif git push 2>/dev/null; then
-        echo -e "${GREEN}✓ workspace-hub: pushed${NC}"
-    else
-        echo -e "${RED}✗ workspace-hub: push failed${NC}"; return 1
-    fi
+    echo -e "${RED}✗ workspace-hub: not fast-forwardable from origin/$default_branch; resolve manually${NC}"
+    return 1
 }
 
 auto_sync_all() {

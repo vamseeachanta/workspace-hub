@@ -323,8 +323,9 @@ resolved_dispositions:
     members: [scripts/cron/cron_apply.py, scripts/cron/setup-cron.sh, scripts/setup/new-machine-setup.sh]
     resolved_on: "2026-07-12"
     pull_request: 3492
-    # Re-affirmed 2026-09-26 (#3904, owner-authorised): a comment in
-    # schedule-tasks.yaml changed, which moves the governed input digest. No
-    # task, command, schedule or machine binding changed, so the #3475
-    # disposition still holds. Digest computed from git index blobs on Linux.
-    source_digest: fcfd80cb822b96dcf573fea42674daf35786c58fedbe860256e17acabb473dae
+    # Re-affirmed 2026-10-09 (owner-authorised board card F06): the
+    # repository-sync task description records the workspace-hub no-commit,
+    # fast-forward-only sync behavior. No task, command, schedule or machine
+    # binding changed, so the #3475 disposition still holds. Digest computed
+    # from git index blobs on Linux.
+    source_digest: 5e6cad06f0a6b0a3d7a3a247ffa7f2daba5cf6c6a9a912f9a2478cd689527831

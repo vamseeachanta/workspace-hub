@@ -275,6 +275,86 @@ _res=$(cat "$_rfile" 2>/dev/null || echo "")
     || _fail "behavioral: index lock not preserved or not reported (got: $_res)"
 rm -rf "$_td"
 
+# T36: behavioral — workspace-hub clean tree fast-forwards to origin/main
+_td=$(mktemp -d)
+_seed="$_td/seed"
+_hub="$_td/hub"
+git init -q --bare "$_td/origin.git" 2>/dev/null
+git init -q -b main "$_seed" 2>/dev/null
+(cd "$_seed" && git config user.email "t@t" && git config user.name "T" \
+    && echo "one" > tracked.txt && git add tracked.txt && git commit -q -m "init" \
+    && git remote add origin "$_td/origin.git" && git push -q -u origin main) 2>/dev/null
+git clone -q -b main "$_td/origin.git" "$_hub" 2>/dev/null
+(cd "$_seed" && echo "two" >> tracked.txt && git add tracked.txt \
+    && git commit -q -m "remote advance" && git push -q origin main) 2>/dev/null
+(WORKSPACE_ROOT="$_hub"; NC="" GREEN="" RED="" YELLOW="" BLUE="" CYAN="" BOLD="";
+ source "$AUTO_HELPER" 2>/dev/null; _auto_sync_hub "2026-01-01" "false") >/dev/null 2>&1
+_rc=$?
+_head=$(cd "$_hub" && git rev-parse HEAD)
+_remote=$(cd "$_hub" && git rev-parse origin/main)
+([ "$_rc" -eq 0 ] && [ "$_head" = "$_remote" ] && grep -q "two" "$_hub/tracked.txt") \
+    && _pass "behavioral: workspace-hub clean tree fast-forwards" \
+    || _fail "behavioral: workspace-hub clean tree did not fast-forward"
+rm -rf "$_td"
+
+# T37: behavioral — workspace-hub dirty tree is reported and left untouched
+_td=$(mktemp -d)
+_seed="$_td/seed"
+_hub="$_td/hub"
+git init -q --bare "$_td/origin.git" 2>/dev/null
+git init -q -b main "$_seed" 2>/dev/null
+(cd "$_seed" && git config user.email "t@t" && git config user.name "T" \
+    && echo "one" > tracked.txt && git add tracked.txt && git commit -q -m "init" \
+    && git remote add origin "$_td/origin.git" && git push -q -u origin main) 2>/dev/null
+git clone -q -b main "$_td/origin.git" "$_hub" 2>/dev/null
+_before_head=$(cd "$_hub" && git rev-parse HEAD)
+_before_origin=$(cd "$_hub" && git rev-parse origin/main)
+echo "local dirty" >> "$_hub/tracked.txt"
+(cd "$_seed" && echo "remote advance" >> tracked.txt && git add tracked.txt \
+    && git commit -q -m "remote advance" && git push -q origin main) 2>/dev/null
+_out=$(WORKSPACE_ROOT="$_hub" NC="" GREEN="" RED="" YELLOW="" BLUE="" CYAN="" BOLD="" bash -c '
+    source "'"$AUTO_HELPER"'" 2>/dev/null
+    _auto_sync_hub "2026-01-01" "false"
+' 2>&1)
+_rc=$?
+_after_head=$(cd "$_hub" && git rev-parse HEAD)
+_after_origin=$(cd "$_hub" && git rev-parse origin/main)
+([ "$_rc" -ne 0 ] && [ "$_before_head" = "$_after_head" ] \
+    && [ "$_before_origin" = "$_after_origin" ] \
+    && grep -q "local dirty" "$_hub/tracked.txt" \
+    && echo "$_out" | grep -qi "dirty") \
+    && _pass "behavioral: workspace-hub dirty tree reports and changes nothing" \
+    || _fail "behavioral: workspace-hub dirty tree was not preserved/reported"
+rm -rf "$_td"
+
+# T38: behavioral — workspace-hub diverged tree is reported and left unmerged
+_td=$(mktemp -d)
+_seed="$_td/seed"
+_hub="$_td/hub"
+git init -q --bare "$_td/origin.git" 2>/dev/null
+git init -q -b main "$_seed" 2>/dev/null
+(cd "$_seed" && git config user.email "t@t" && git config user.name "T" \
+    && echo "one" > tracked.txt && git add tracked.txt && git commit -q -m "init" \
+    && git remote add origin "$_td/origin.git" && git push -q -u origin main) 2>/dev/null
+git clone -q -b main "$_td/origin.git" "$_hub" 2>/dev/null
+(cd "$_hub" && git config user.email "t@t" && git config user.name "T" \
+    && echo "local" > local.txt && git add local.txt && git commit -q -m "local advance") 2>/dev/null
+_before_head=$(cd "$_hub" && git rev-parse HEAD)
+(cd "$_seed" && echo "remote" > remote.txt && git add remote.txt \
+    && git commit -q -m "remote advance" && git push -q origin main) 2>/dev/null
+_out=$(WORKSPACE_ROOT="$_hub" NC="" GREEN="" RED="" YELLOW="" BLUE="" CYAN="" BOLD="" bash -c '
+    source "'"$AUTO_HELPER"'" 2>/dev/null
+    _auto_sync_hub "2026-01-01" "false"
+' 2>&1)
+_rc=$?
+_after_head=$(cd "$_hub" && git rev-parse HEAD)
+([ "$_rc" -ne 0 ] && [ "$_before_head" = "$_after_head" ] \
+    && [ ! -e "$_hub/remote.txt" ] \
+    && echo "$_out" | grep -Eqi "fast-forward|ff-only|diverged") \
+    && _pass "behavioral: workspace-hub diverged tree reports and leaves HEAD unchanged" \
+    || _fail "behavioral: workspace-hub diverged tree was not preserved/reported"
+rm -rf "$_td"
+
 echo ""
 echo "Results: PASS=$PASS  FAIL=$FAIL"
 [ "$FAIL" -eq 0 ]
