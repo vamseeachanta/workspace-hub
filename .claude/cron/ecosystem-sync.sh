@@ -16,28 +16,84 @@ LOG="$LOG_DIR/$(date -u +%Y-%m-%d).log"
 STATE_FILE=".claude/state/ecosystem-sync/last-sync.yaml"
 REPORT_DIR="docs/sync-reports/"
 
-# Reads paths on stdin; prints those outside the exemption's write surface.
-outside_allowlist() {
+# Reads NUL-delimited paths on stdin; prints disallowed paths as NUL-delimited.
+outside_allowlist_z() {
   local path
-  while IFS= read -r path; do
+  while IFS= read -r -d '' path; do
     [[ -z "$path" ]] && continue
     [[ "$path" == "$STATE_FILE" || "$path" == "$REPORT_DIR"* ]] && continue
-    printf '%s\n' "$path"
+    printf '%s\0' "$path"
   done
 }
 
+log_foreign_paths() {
+  local context="$1" path_file="$2"
+  echo "$(date -u +%FT%TZ) ecosystem-sync: $context; not pushing:" >> "$LOG"
+  tr '\0' '\n' < "$path_file" | sed 's/^/  /' >> "$LOG"
+}
+
+check_path_output() {
+  local context="$1" foreign_paths
+  shift
+  foreign_paths="$(mktemp)"
+  if ! "$@" | outside_allowlist_z > "$foreign_paths"; then
+    echo "$(date -u +%FT%TZ) ecosystem-sync: git plumbing failed during $context; not pushing" >> "$LOG"
+    rm -f "$foreign_paths"
+    exit 6
+  fi
+  if [[ -s "$foreign_paths" ]]; then
+    log_foreign_paths "$context touches paths outside the direct-main exemption" "$foreign_paths"
+    rm -f "$foreign_paths"
+    exit 6
+  fi
+  rm -f "$foreign_paths"
+}
+
 # Fails (exit 6) unless every commit main would push touches only allowed paths.
-# Checked per commit, so a foreign add later reverted is still caught.
+# Refuses merges and also checks the cumulative range, so merge resolution and
+# add-then-revert cases cannot ride along with allowed sync output.
 guard_outgoing() {
-  local c foreign
-  for c in $(git rev-list origin/main..main); do
-    foreign="$(git diff-tree --no-commit-id --name-only -r --root "$c" | outside_allowlist)"
-    if [[ -n "$foreign" ]]; then
-      echo "$(date -u +%FT%TZ) ecosystem-sync: outgoing commit $c touches paths outside the direct-main exemption; not pushing:" >> "$LOG"
-      printf '%s\n' "$foreign" | sed 's/^/  /' >> "$LOG"
-      exit 6
-    fi
+  local c commits merge_commits
+  if ! git rev-parse --verify --quiet refs/remotes/origin/main >/dev/null; then
+    echo "$(date -u +%FT%TZ) ecosystem-sync: missing refs/remotes/origin/main; not pushing" >> "$LOG"
+    exit 6
+  fi
+  if ! commits="$(git rev-list refs/remotes/origin/main..main)"; then
+    echo "$(date -u +%FT%TZ) ecosystem-sync: git rev-list failed; not pushing" >> "$LOG"
+    exit 6
+  fi
+  if ! merge_commits="$(git rev-list --merges refs/remotes/origin/main..main)"; then
+    echo "$(date -u +%FT%TZ) ecosystem-sync: git rev-list --merges failed; not pushing" >> "$LOG"
+    exit 6
+  fi
+  if [[ -n "$merge_commits" ]]; then
+    echo "$(date -u +%FT%TZ) ecosystem-sync: outgoing merge commits are not allowed by the direct-main exemption; not pushing:" >> "$LOG"
+    printf '%s\n' "$merge_commits" | sed 's/^/  /' >> "$LOG"
+    exit 6
+  fi
+  check_path_output "outgoing range" \
+    git diff --name-only -z --no-renames refs/remotes/origin/main...main
+  for c in $commits; do
+    check_path_output "outgoing commit $c" \
+      git diff-tree --no-commit-id --name-only -r -z --root --no-renames "$c"
   done
+}
+
+guard_staged() {
+  local foreign_paths
+  foreign_paths="$(mktemp)"
+  if ! git diff --cached --name-only -z --no-renames | outside_allowlist_z > "$foreign_paths"; then
+    echo "$(date -u +%FT%TZ) ecosystem-sync: git diff --cached failed; not committing" >> "$LOG"
+    rm -f "$foreign_paths"
+    exit 6
+  fi
+  if [[ -s "$foreign_paths" ]]; then
+    echo "$(date -u +%FT%TZ) ecosystem-sync: staged paths outside the direct-main exemption; not committing:" >> "$LOG"
+    tr '\0' '\n' < "$foreign_paths" | sed 's/^/  /' >> "$LOG"
+    rm -f "$foreign_paths"
+      exit 6
+  fi
+  rm -f "$foreign_paths"
 }
 
 # Parse args (pass-through to run.py)
@@ -56,6 +112,7 @@ if ! git pull --ff-only origin main >> "$LOG" 2>&1; then
   echo "$(date -u +%FT%TZ) ecosystem-sync: git pull failed" >> "$LOG"
   exit 3
 fi
+guard_outgoing
 
 START=$(date +%s)
 if uv run scripts/ecosystem-sync/run.py "${EXTRA_ARGS[@]}" >> "$LOG" 2>&1; then
@@ -70,15 +127,14 @@ echo "$(date -u +%FT%TZ) ecosystem-sync: rc=$RC duration=${DURATION}s" >> "$LOG"
 if [[ "$RC" == "0" ]]; then
   # Attempt to commit + push state changes. One-shot rebase on reject.
   # No dirty-tree pre-check: a new report file is untracked and would be missed.
+  mkdir -p "$REPORT_DIR"
   git add "$STATE_FILE" "$REPORT_DIR" 2>>"$LOG"
   if ! git diff --cached --quiet; then
-    FOREIGN_STAGED="$(git diff --cached --name-only | outside_allowlist)"
-    if [[ -n "$FOREIGN_STAGED" ]]; then
-      echo "$(date -u +%FT%TZ) ecosystem-sync: staged paths outside the direct-main exemption; not committing:" >> "$LOG"
-      printf '%s\n' "$FOREIGN_STAGED" | sed 's/^/  /' >> "$LOG"
-      exit 6
-    fi
-    git commit -m "chore(ecosystem-sync): $(date -u +%Y-%m-%d) digest + state" >> "$LOG" 2>&1 || true
+    guard_staged
+    git commit -m "chore(ecosystem-sync): $(date -u +%Y-%m-%d) digest + state" -- "$STATE_FILE" "$REPORT_DIR" >> "$LOG" 2>&1 || {
+      echo "$(date -u +%FT%TZ) ecosystem-sync: git commit failed" >> "$LOG"
+      exit 7
+    }
     guard_outgoing
     if ! git push origin main >> "$LOG" 2>&1; then
       echo "$(date -u +%FT%TZ) push rejected, attempting rebase" >> "$LOG"

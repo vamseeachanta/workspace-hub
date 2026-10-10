@@ -57,12 +57,15 @@ setup_fixture() {
 
     mkdir -p "$tmp/bin"
     # Stub uv: emulates run.py writing state + a report. Options via env:
-    #   STUB_UV_RC=<n>         exit code
-    #   STUB_ADVANCE_REMOTE=1  push an unrelated commit to the remote mid-run
+    #   STUB_UV_RC=<n>              exit code
+    #   STUB_ADVANCE_REMOTE=1       push an unrelated commit to the remote mid-run
+    #   STUB_REPORT_NAME=<path>     report path below docs/sync-reports/
     cat > "$tmp/bin/uv" <<'STUB'
 #!/usr/bin/env bash
 echo "last_sync: $(date -u +%FT%TZ)" > .claude/state/ecosystem-sync/last-sync.yaml
-echo "# digest" > docs/sync-reports/digest.md
+report="${STUB_REPORT_NAME:-digest.md}"
+mkdir -p "docs/sync-reports/$(dirname "$report")"
+echo "# digest" > "docs/sync-reports/$report"
 if [[ "${STUB_ADVANCE_REMOTE:-0}" == "1" ]]; then
     other="$(mktemp -d)"
     git clone --quiet "$(git config --get remote.origin.url)" "$other/c" 2>/dev/null
@@ -145,6 +148,78 @@ before="$(remote_head "$T")"
 run_sync "$T"; rc=$?
 assert_eq "exit code 6" "6" "$rc"
 assert_eq "remote main unchanged" "$before" "$(remote_head "$T")"
+rm -rf "$T"
+
+echo "=== merge commit in outgoing range blocks push ==="
+T="$(setup_fixture)"
+(
+    cd "$T/local" || exit 1
+    other="$(mktemp -d)"
+    git clone --quiet "$(git config --get remote.origin.url)" "$other/c" 2>/dev/null
+    (
+        cd "$other/c" || exit 1
+        git config user.email "remote@example.invalid"
+        git config user.name "remote"
+        echo "remote update" >> README.md
+        git commit --quiet -am "remote readme update"
+        git push --quiet origin main 2>/dev/null
+    )
+    rm -rf "$other"
+    git fetch --quiet origin main
+    echo "local report" > docs/sync-reports/local.md
+    git add docs/sync-reports/local.md
+    git commit --quiet -m "allowed local report"
+    git merge --quiet -s ours origin/main -m "merge origin/main with local report"
+)
+before="$(remote_head "$T")"
+run_sync "$T"; rc=$?
+assert_eq "exit code 6" "6" "$rc"
+assert_eq "remote main unchanged" "$before" "$(remote_head "$T")"
+rm -rf "$T"
+
+echo "=== missing origin/main blocks instead of failing open ==="
+T="$(setup_fixture)"
+before="$(remote_head "$T")"
+(
+    cd "$T/local" || exit 1
+    git config remote.origin.fetch "+refs/heads/not-main:refs/remotes/origin/not-main"
+    git update-ref -d refs/remotes/origin/main
+)
+run_sync "$T"; rc=$?
+assert_eq "exit code 6" "6" "$rc"
+assert_eq "remote main unchanged" "$before" "$(remote_head "$T")"
+rm -rf "$T"
+
+echo "=== staged rename from outside into report dir blocks before commit ==="
+T="$(setup_fixture)"
+before="$(remote_head "$T")"
+local_before="$(git -C "$T/local" rev-parse HEAD)"
+(
+    cd "$T/local" || exit 1
+    mkdir -p scripts
+    echo "helper" > scripts/helper.sh
+    git add scripts/helper.sh
+    git commit --quiet -m "add helper"
+    git push --quiet origin main 2>/dev/null
+    git mv scripts/helper.sh docs/sync-reports/helper.sh
+)
+before="$(remote_head "$T")"
+local_before="$(git -C "$T/local" rev-parse HEAD)"
+run_sync "$T"; rc=$?
+assert_eq "exit code 6" "6" "$rc"
+assert_eq "remote main unchanged" "$before" "$(remote_head "$T")"
+assert_eq "no local commit created" "$local_before" "$(git -C "$T/local" rev-parse HEAD)"
+rm -rf "$T"
+
+echo "=== report paths with spaces and newlines are accepted ==="
+T="$(setup_fixture)"
+before="$(remote_head "$T")"
+odd_name=$'space dir/report with space\nand newline.md'
+STUB_REPORT_NAME="$odd_name" run_sync "$T"; rc=$?
+assert_eq "exit code 0" "0" "$rc"
+assert_ne "remote main advanced" "$before" "$(remote_head "$T")"
+git --git-dir="$T/remote.git" cat-file -e "main:docs/sync-reports/$odd_name"
+assert_eq "odd report path was pushed" "0" "$?"
 rm -rf "$T"
 
 echo "=== rejected push rebases and re-pushes only allowed paths ==="
