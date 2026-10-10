@@ -29,6 +29,7 @@ DIRECT = {
     "scripts/solver/setup-scheduler.ps1",
     "scripts/install/setup-tmux-autosave-timer.sh",
     "scripts/monitoring/bundle-sentinel-install/install.sh",
+    "scripts/install/disable-cnh-source-watch-timer.sh",
     "scripts/operations/pause-memory-publishers.sh",
     "scripts/operations/pause-memory-publishers.ps1",
 }
@@ -322,7 +323,12 @@ def test_dedicated_disposition_coordinates_are_exact():
     _, _, registry = current_contract()
     groups = {g["group_id"]: g["issue"]["number"] for g in registry["disposition_groups"]}
     assert groups == {
-            "legacy-crontab-writers": 3476, "kanban-dual-backend": 3477, "windows-task-writers": 3478,
-        "harness-update": 3479, "tmux-session-persistence": 3792,
-        "bundle-integrity-sentinel": 3792, "x02-memory-publisher-pausers": 3982,
+        "legacy-crontab-writers": 3476,
+        "kanban-dual-backend": 3477,
+        "windows-task-writers": 3478,
+        "harness-update": 3479,
+        "tmux-session-persistence": 3792,
+        "bundle-integrity-sentinel": 3792,
+        "cnh-source-watch-disable": 3792,
+        "x02-memory-publisher-pausers": 3982,
     }

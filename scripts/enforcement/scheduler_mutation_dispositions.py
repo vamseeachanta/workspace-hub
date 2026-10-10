@@ -83,6 +83,15 @@ DISPOSITION_CONTRACT = {
         "systemd-user-transaction-unattestable",
         {"scripts/monitoring/bundle-sentinel-install/install.sh"},
     ),
+    # Card E12 / worldenergydata#720 — exact timer-disable mutator for the
+    # Mexico CNH source-watch user timer. Same systemd shell attestation gap as
+    # the other user-timer surfaces; live mutation stays blocked until the
+    # registry can attest systemd transactions or an owner executes manually.
+    "cnh-source-watch-disable": (
+        3792,
+        "systemd-user-transaction-unattestable",
+        {"scripts/install/disable-cnh-source-watch-timer.sh"},
+    ),
     "x02-memory-publisher-pausers": (
         3982,
         "owner-runnable-pause-script-without-reference-transaction",
