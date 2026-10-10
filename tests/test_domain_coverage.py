@@ -93,3 +93,25 @@ def test_render_clean_report_has_check():
         "o/r": dc.analyze([_issue(1, "domain:a")], {"a"}, set())}}
     md, total = dc.render(report)
     assert total == 0 and "✅" in md
+
+
+# --- repository codename aliases (#3694) -----------------------------------
+
+def test_collect_queries_real_repo_but_reports_public_codename():
+    calls = []
+
+    def fake(args):
+        calls.append(args[4])
+        return '[{"number": 1, "title": "t", "labels": [{"name": "domain:a"}]}]'
+
+    report = dc.collect(["o/llm-wiki-codename", "o/other"], fake, {"a"}, set(),
+                        repo_aliases={"llm-wiki-codename": "llm-wiki-real"})
+    assert calls == ["o/llm-wiki-real", "o/other"]
+    assert list(report["repos"]) == ["o/llm-wiki-codename", "o/other"]
+    assert report["any_taxonomy"] is True
+
+
+def test_collect_without_aliases_queries_listed_names():
+    calls = []
+    dc.collect(["o/r"], lambda a: calls.append(a[4]) or "", None, None)
+    assert calls == ["o/r"]

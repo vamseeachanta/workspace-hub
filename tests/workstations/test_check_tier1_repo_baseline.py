@@ -439,3 +439,40 @@ def test_plan_index_row_is_upserted_once():
     assert "2026-05-20-issue-2766-ace-linux-1-checkout-normalization.md" in readme
     assert "| [#2766](https://github.com/vamseeachanta/workspace-hub/issues/2766) | ace-linux-1-checkout-normalization |" in readme
     assert "| plan-approved | T2 |" in readme
+
+
+# --- repository codename aliases (#3694) -----------------------------------
+
+CODENAME = "llm-wiki-mkt-a"
+REAL_DIR = "llm-wiki-realname"
+
+
+def test_codename_alias_resolves_to_real_checkout(tmp_path: Path):
+    checker = load_checker()
+    workspace = tmp_path / "workspace-hub"
+    git_dir(workspace)
+    data = checker.minimal_registry_for_tests(repo_root=tmp_path, workspace_root=workspace)
+    for repo in REQUIRED + OPTIONAL + NON_TIER1:
+        if repo != CODENAME:
+            git_dir(tmp_path / repo)
+    git_dir(tmp_path / REAL_DIR)
+    report = checker.check_machine(data, "dev-primary", repo_root=tmp_path, now="2026-05-21T00:00:00Z",
+                                   repo_aliases={CODENAME: REAL_DIR})
+    codes = {(w["code"], w.get("repo")) for w in report["warnings"] + report["blockers"]}
+    assert ("non_tier1_missing", CODENAME) not in codes
+    assert ("unknown_sibling_git_repo", REAL_DIR) not in codes
+    assert CODENAME in report["inventory"]["sibling_git_repos"]
+    assert REAL_DIR not in json.dumps(report)  # reports carry the public codename only
+    assert CODENAME in report["git_state"]  # probed at the real path
+
+
+def test_codename_without_alias_still_reports_missing(tmp_path: Path):
+    checker = load_checker()
+    workspace = tmp_path / "workspace-hub"
+    git_dir(workspace)
+    data = checker.minimal_registry_for_tests(repo_root=tmp_path, workspace_root=workspace)
+    git_dir(tmp_path / REAL_DIR)
+    report = checker.check_machine(data, "dev-primary", repo_root=tmp_path, now="2026-05-21T00:00:00Z")
+    codes = {(w["code"], w.get("repo")) for w in report["warnings"] + report["blockers"]}
+    assert ("non_tier1_missing", CODENAME) in codes
+    assert ("unknown_sibling_git_repo", REAL_DIR) in codes

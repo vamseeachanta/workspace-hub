@@ -6,7 +6,7 @@
 
 **How to apply:**
 
-1. **Naming.** Generic sibling is `vamseeachanta/llm-wiki` (private since 2026-05-20 — see [[project_llm_wiki_privacy_flip]]). Client siblings use the **suffix form** `vamseeachanta/llm-wiki-<client>` — one sibling per client, not per project. Projects nest as folders under `projects/<project-slug>/` inside the client sibling. Registry: [`config/client-wikis.yml`](../../config/client-wikis.yml). Confirmed bootstrap: `llm-wiki-mkt-a` (created 2026-05-18, PRIVATE).
+1. **Naming.** Generic sibling is `vamseeachanta/llm-wiki` (private since 2026-05-20 — see [[project_llm_wiki_privacy_flip]]). Client siblings use the **suffix form** `vamseeachanta/llm-wiki-<client>` — one sibling per client, not per project. Projects nest as folders under `projects/<project-slug>/` inside the client sibling. Registry: [`config/client-wikis.yml`](../../config/client-wikis.yml). Confirmed bootstrap: `llm-wiki-mkt-a` (created 2026-05-18, PRIVATE). `llm-wiki-mkt-a` is a public codename; the repository's real name lives only in the private overlay's `repos.aliases` map (`scripts/lib/private_overlay.py`), from which `scripts/kanban/domain_coverage.py` and `scripts/workstations/check-tier1-repo-baseline.py` resolve it at run time while reporting the codename ([#3694](https://github.com/vamseeachanta/workspace-hub/issues/3694)).
 
 2. **Data layer.** Writers (ingest pipelines, AI-assisted extraction, manual digitization) declare their target sibling via `LLM_WIKI_TARGET={generic,<client>}` env or config. Frontmatter must carry a `visibility:` field from the allowed set:
 
