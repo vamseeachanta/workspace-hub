@@ -4,6 +4,45 @@
 set -u
 [[ -n "${MOCK_SLEEP_S:-}" ]] && sleep "$MOCK_SLEEP_S"
 capture="${PLAN_REVIEW_CAPTURE_DIR:-/tmp}/agy.capture"
+if [[ -n "${MOCK_AGY_ARG_MAX:-}" ]]; then
+  for arg in "$@"; do
+    if (( ${#arg} > MOCK_AGY_ARG_MAX )); then
+      echo "agy: Argument list too long" >&2
+      exit 126
+    fi
+  done
+fi
+print_arg=""
+while (($#)); do
+  if [[ "$1" == "--print" && $# -ge 2 ]]; then
+    print_arg="$2"
+    break
+  fi
+  shift
+done
+payload_path=""
+if [[ "$print_arg" == *"The review payload has been written to this local file:"* ]]; then
+  payload_path="$(printf '%s\n' "$print_arg" | awk 'prev { print; exit } /The review payload has been written to this local file:/ { prev=1 }')"
+fi
+payload_read_status="not-requested"
+if [[ "${MOCK_AGY_REQUIRE_PAYLOAD_READ:-0}" == "1" ]]; then
+  if [[ -z "$payload_path" ]]; then
+    echo "agy: payload path missing from prompt" >&2
+    exit 127
+  elif [[ ! -r "$payload_path" ]]; then
+    echo "agy: payload path unreadable: $payload_path" >&2
+    exit 127
+  elif [[ -n "${MOCK_AGY_EXPECT_PAYLOAD_MARKER:-}" ]] && ! grep -qF "$MOCK_AGY_EXPECT_PAYLOAD_MARKER" "$payload_path"; then
+    echo "agy: payload marker missing from $payload_path" >&2
+    exit 127
+  fi
+  payload_read_status="ok"
+fi
+if [[ "${MOCK_AGY_FAIL_INVALID_STDOUT:-0}" == "1" ]]; then
+  echo "INVALID_OUTPUT mentioned in provider debug output, not a structured verdict"
+  echo "agy: simulated provider failure" >&2
+  exit 1
+fi
 {
   printf 'ARGV:'
   for a in "$@"; do printf ' %s' "$a"; done
@@ -11,6 +50,8 @@ capture="${PLAN_REVIEW_CAPTURE_DIR:-/tmp}/agy.capture"
   echo "PWD: $PWD"
   echo "AGY_REVIEW_MODE: ${AGY_REVIEW_MODE:-(unset)}"
   echo "CLAUDECODE: ${CLAUDECODE:-(unset)}"
+  echo "PAYLOAD_PATH: ${payload_path:-}"
+  echo "PAYLOAD_READ: ${payload_read_status}"
   echo "STDIN:"
   if [[ ! -t 0 ]]; then cat; else echo "(no stdin)"; fi
 } > "$capture"
