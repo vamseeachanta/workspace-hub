@@ -2,6 +2,10 @@
 # Real data lives in each client wiki at reports/team-summary/summary.yml.
 client: Example Client
 as_of: 2026-10-08
+review:
+  link_base: https://example.invalid/wiki
+  copies_dir: docs/reviews/team-summary
+  return_to: Send the saved comments JSON to the project inbox.
 learn_or_solve: >-
   Solve: confirm the screening basis for the phase 1 concept selection so the
   client meeting can close the open data requests.
@@ -16,6 +20,9 @@ priorities:
     next_action: Incorporate reviewer dispositions R1 to R6
     due: 2026-10-20
     source: reports/README.md
+    review:
+      doc: reports/screening-note/README.md
+      ask: approval
 issues:
   - title: Well count basis differs between source documents
     status: investigating
@@ -27,6 +34,9 @@ issues:
     owner: Reviewer
     next_action: Review the replacement table and its source edition
     source: docs/decisions/scatter-table.md
+    review:
+      doc: reports/screening-note/rev-4.html
+      ask: comments
 decisions:
   - date: 2026-10-06
     text: Phase 1 screens concepts only; detailed riser design moves to phase 2.
