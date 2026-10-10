@@ -46,12 +46,17 @@ $secretEnvValues = @(Get-ChildItem Env: | Where-Object {
         $_.Value -and $_.Value.Length -ge 8 } | ForEach-Object { $_.Value } | Select-Object -Unique |
     Sort-Object -Property Length -Descending)
 
-function Hide-Secrets([string]$Text) {
+function Hide-Secrets([string]$Text, [switch]$SerializedJson) {
     if ($null -eq $Text) { return $null }
     $t = $Text -replace '(?i)(gh[pousr]_[A-Za-z0-9]{8,}|github_pat_[A-Za-z0-9_]{8,}|\bhf_[A-Za-z0-9]{20,}|sk-[A-Za-z0-9_\-]{8,}|xox[abpr]-[A-Za-z0-9\-]{8,}|AKIA[0-9A-Z]{12,}|eyJ[A-Za-z0-9_\-]{10,}\.[A-Za-z0-9_\-\.]+)', '[REDACTED]'
     foreach ($v in $secretEnvValues) {
         $escaped = ConvertTo-Json -InputObject $v -Compress
-        $t = $t.Replace($v, '[REDACTED]').Replace($escaped.Substring(1, $escaped.Length - 2), '[REDACTED]')
+        $escapedValue = $escaped.Substring(1, $escaped.Length - 2)
+        if ($SerializedJson) {
+            $t = $t.Replace($escapedValue, '[REDACTED]')
+        } else {
+            $t = $t.Replace($v, '[REDACTED]').Replace($escapedValue, '[REDACTED]')
+        }
     }
     return $t
 }
@@ -311,7 +316,7 @@ $receipt = [ordered]@{
     clis = $clis
     findings = $findings.ToArray()   # @($list) inside an [ordered] literal throws "Argument types do not match"
 }
-$json = Hide-Secrets ($receipt | ConvertTo-Json -Depth 6)
+$json = Hide-Secrets -Text ($receipt | ConvertTo-Json -Depth 6) -SerializedJson
 if ($OutFile) {
     [System.IO.File]::WriteAllText($OutFile, $json + "`n", (New-Object System.Text.UTF8Encoding($false)))
     $errs = @($findings | Where-Object { $_.severity -eq 'error' }).Count

@@ -140,6 +140,16 @@ def test_secret_env_values_of_any_shape_are_redacted(host, tmp_path):
     assert "[REDACTED]" in receipt["clis"]["codex"]["version"]
 
 
+@pytest.mark.parametrize("secret", [r"\abcdefgh", r"abcdefgh\\", 'abc"defgh'])
+def test_secret_env_values_with_json_escapes_keep_receipt_parseable(host, tmp_path, secret):
+    r, receipt = run(host, tmp_path, {"MY_SERVICE_API_KEY": secret,
+                                      "CLAUDE_CODE_GIT_BASH_PATH": "C:\\x\\" + secret})
+    assert r.returncode == 0, r.stdout + r.stderr
+    text = json.dumps(receipt)
+    assert secret not in text
+    assert "[REDACTED]" in text
+
+
 def _fake_gh(tmp_path, status_exit, api_exit, api_text="someone"):
     d = tmp_path / "fakegh"
     d.mkdir(exist_ok=True)
