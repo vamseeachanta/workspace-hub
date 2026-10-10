@@ -25,4 +25,21 @@ uv run --group dev python tools/team_summary/build.py \
   and `docs/standards/FINAL_REPORT_VERIFICATION.md` before the first publication to a new audience.
 - Renderer: headless Chrome (Linux, Windows) or Edge (Windows). Override with `TEAM_SUMMARY_BROWSER`.
 
+## Review links
+
+An item may point to the document that needs a response. These fields are optional and existing
+`summary.yml` files remain valid.
+
+| Field | Where | Meaning |
+|---|---|---|
+| `review.link_base` | Top level | URL prefix used to link wiki-relative document paths in the PDF. When omitted, paths render as plain text. |
+| `review.copies_dir` | Top level | Wiki-relative folder for generated HTML review copies and saved comment JSON files. |
+| `review.return_to` | Top level | Short instruction for where saved comment JSON files go back. |
+| `review.doc` | Priority, issue, blocker, area item or deliverable | Wiki-relative document path that needs input, approval, a conclusion or comments. |
+| `review.ask` | Priority, issue, blocker, area item or deliverable | One of `input`, `approval`, `conclusion`, `comments`; controls the rendered label. |
+
+Use `--make-review-copies` with `--wiki-root` to generate commentable copies for reviewed HTML
+documents under `review.copies_dir`. The generator links those copies and never deletes saved comment
+JSON files.
+
 `example/summary.yml` is synthetic and drives the tests in `tests/team_summary/`.

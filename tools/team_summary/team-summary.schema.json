@@ -18,6 +18,50 @@
       "minLength": 1,
       "description": "Wiki-relative path or URL backing the item."
     },
+    "reviewSettings": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "link_base": {
+          "type": "string",
+          "minLength": 1,
+          "description": "URL prefix under which wiki-relative paths resolve for the team."
+        },
+        "copies_dir": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Wiki-relative folder where HTML review copies and saved comments live."
+        },
+        "return_to": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Short text saying where saved comments files go back."
+        }
+      }
+    },
+    "itemReview": {
+      "type": "object",
+      "required": [
+        "doc",
+        "ask"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "doc": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Wiki-relative document path that needs input, approval, a conclusion, or comments."
+        },
+        "ask": {
+          "enum": [
+            "input",
+            "approval",
+            "conclusion",
+            "comments"
+          ]
+        }
+      }
+    },
     "text": {
       "type": "string",
       "minLength": 1
@@ -37,6 +81,9 @@
           },
           "source": {
             "$ref": "#/$defs/source"
+          },
+          "review": {
+            "$ref": "#/$defs/itemReview"
           }
         }
       }
@@ -52,6 +99,9 @@
     },
     "wiki_revision": {
       "type": "string"
+    },
+    "review": {
+      "$ref": "#/$defs/reviewSettings"
     },
     "learn_or_solve": {
       "$ref": "#/$defs/text"
@@ -93,6 +143,9 @@
           },
           "source": {
             "$ref": "#/$defs/source"
+          },
+          "review": {
+            "$ref": "#/$defs/itemReview"
           }
         }
       }
@@ -129,6 +182,9 @@
           },
           "source": {
             "$ref": "#/$defs/source"
+          },
+          "review": {
+            "$ref": "#/$defs/itemReview"
           }
         }
       }
@@ -176,6 +232,9 @@
           },
           "source": {
             "$ref": "#/$defs/source"
+          },
+          "review": {
+            "$ref": "#/$defs/itemReview"
           }
         }
       }
@@ -221,6 +280,9 @@
           },
           "source": {
             "$ref": "#/$defs/source"
+          },
+          "review": {
+            "$ref": "#/$defs/itemReview"
           }
         }
       }
