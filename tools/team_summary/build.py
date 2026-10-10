@@ -103,18 +103,45 @@ def review_target(data: dict, doc: str) -> str:
         stem = Path(doc).stem
         return str(Path(settings["copies_dir"]) / f"{stem}-review.html").replace("\\", "/")
     return doc
-def link_or_path(data: dict, doc: str) -> str:
+def review_label(review: dict, target: str) -> str:
+    if review.get("title"):
+        return review["title"]
+    path = Path(target)
+    parent = path.parent.name
+    return f"{parent}/{path.name}" if parent else path.name
+def quote_url(value: str) -> str:
+    return quote(value.replace("\\", "/"), safe="/:#?&=@[]!$&'()*+,;-%")
+def review_link_or_path(data: dict, review: dict) -> str:
+    doc = review["doc"]
     target = review_target(data, doc)
-    label = Path(doc).name
+    label = review_label(review, target)
     base = (data.get("review") or {}).get("link_base")
+    link_style = (data.get("review") or {}).get("link_style", "path")
+    suffix = ""
+    if link_style == "folder":
+        suffix = f" (file {escape(Path(target).name)} in the shared folder)"
     if not base:
-        return escape(target)
-    href = f"{base.rstrip('/')}/{quote(target.lstrip('/'), safe='/')}"
-    return f'<a href="{escape(href, quote=True)}">{escape(label)}</a>'
-def response_text(data: dict, doc: str) -> str:
+        return f"{escape(label)}{suffix}"
+    if link_style == "folder":
+        href = quote_url(base)
+    else:
+        target_path = target.lstrip("/").replace("\\", "/")
+        href = f"{quote_url(base.rstrip('/'))}/{quote(target_path, safe='/')}"
+    return f'<a href="{escape(href, quote=True)}">{escape(label)}</a>{suffix}'
+def response_text(data: dict, review: dict) -> str:
+    doc = review["doc"]
+    target = review_target(data, doc)
     if not is_html_doc(doc):
         return "Record the response in the linked document."
-    parts = [HTML_REVIEW_INSTRUCTION]
+    link_style = (data.get("review") or {}).get("link_style", "path")
+    if link_style == "folder":
+        instruction = (
+            f"Download {Path(target).name} from the shared folder, open it in Edge or Chrome "
+            "from disk, select text, click Comment, then Save comments."
+        )
+    else:
+        instruction = HTML_REVIEW_INSTRUCTION
+    parts = [instruction]
     ret = (data.get("review") or {}).get("return_to")
     if ret:
         parts.append(ret)
@@ -125,8 +152,8 @@ def review_line(data: dict, item: dict) -> str:
         return ""
     return (
         '<div class="review-line">'
-        f"{escape(ASK_LABELS[review['ask']])}: {link_or_path(data, review['doc'])}"
-        f"{' ' + escape(response_text(data, review['doc'])) if is_html_doc(review['doc']) else ''}"
+        f"{escape(ASK_LABELS[review['ask']])}: {review_link_or_path(data, review)}"
+        f"{' ' + escape(response_text(data, review)) if is_html_doc(review['doc']) else ''}"
         "</div>"
     )
 CSS = """
@@ -178,9 +205,9 @@ def render_html(data: dict) -> str:
         for rec in records:
             review = rec["review"]
             out.append(
-                f"<tr><td>{link_or_path(data, review['doc'])}</td>"
+                f"<tr><td>{review_link_or_path(data, review)}</td>"
                 f"<td>{e(ASK_LABELS[review['ask']])}</td><td>{e(rec['owner'])}</td>"
-                f"<td>{e(response_text(data, review['doc']))}</td></tr>"
+                f"<td>{e(response_text(data, review))}</td></tr>"
             )
         out.append("</table></section>")
     out.append(f"<section><h2>{SECTION_TITLES['issues']}</h2>")
@@ -325,9 +352,43 @@ def make_review_copies(data: dict, wiki_root: Path) -> list[Path]:
         subprocess.run([sys.executable, str(tool), str(src), str(out), key], check=True)
         made.append(out)
     return made
+def publish_review_requests(data: dict, wiki_root: Path, publish_dir: Path) -> list[Path]:
+    settings = data.get("review") or {}
+    link_style = settings.get("link_style", "path")
+    requests: list[tuple[str, str]] = []
+    for rec in review_records(data):
+        doc = rec["review"]["doc"]
+        target = review_target(data, doc)
+        requests.append((doc, target))
+    if link_style == "folder":
+        seen: dict[str, str] = {}
+        for doc, target in requests:
+            name = Path(target).name
+            previous = seen.get(name)
+            if previous and previous != doc:
+                raise SystemExit(
+                    f"publish file-name collision for {name}: {previous} and {doc}"
+                )
+            seen[name] = doc
+    published: list[Path] = []
+    for _doc, target in requests:
+        rel = Path(target)
+        src = wiki_root / rel
+        if not src.is_file():
+            raise SystemExit(f"Review file to publish not found: {target}")
+        dest = publish_dir / (Path(rel.name) if link_style == "folder" else rel)
+        if dest.suffix.lower() == ".json":
+            raise SystemExit(f"Refusing to overwrite review comments JSON: {dest}")
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        if dest.exists() and dest.read_bytes() == src.read_bytes():
+            continue
+        shutil.copy2(src, dest)
+        print(f"published review file: {dest}")
+        published.append(dest)
+    return published
 def build(data_path: Path, pdf_path: Path, html_path: Path | None = None,
           wiki_root: Path | None = None, check_sources: bool = False,
-          make_copies: bool = False) -> Path:
+          make_copies: bool = False, publish_dir: Path | None = None) -> Path:
     data = load(data_path)
     errors = validate(data)
     if errors:
@@ -342,6 +403,10 @@ def build(data_path: Path, pdf_path: Path, html_path: Path | None = None,
         if wiki_root is None:
             raise SystemExit("--make-review-copies needs --wiki-root")
         make_review_copies(data, wiki_root)
+    if publish_dir is not None:
+        if wiki_root is None:
+            raise SystemExit("--publish-dir needs --wiki-root")
+        publish_review_requests(data, wiki_root, publish_dir)
     if wiki_root is not None:
         rev = wiki_revision(wiki_root)
         if rev:
@@ -369,6 +434,8 @@ def main(argv: list[str] | None = None) -> int:
                     help="fail when a wiki-relative source does not exist under --wiki-root")
     ap.add_argument("--make-review-copies", action="store_true",
                     help="create HTML review copies for reviewed HTML documents")
+    ap.add_argument("--publish-dir", type=Path,
+                    help="copy linked review files into this publication directory")
     args = ap.parse_args(argv)
     if args.check_only:
         data = load(args.data)
@@ -383,6 +450,11 @@ def main(argv: list[str] | None = None) -> int:
                 problems.append("--make-review-copies needs --wiki-root")
             else:
                 make_review_copies(data, args.wiki_root)
+        if args.publish_dir is not None and not problems:
+            if args.wiki_root is None:
+                problems.append("--publish-dir needs --wiki-root")
+            else:
+                publish_review_requests(data, args.wiki_root, args.publish_dir)
         if problems:
             print("\n".join(problems))
             return 1
@@ -391,7 +463,7 @@ def main(argv: list[str] | None = None) -> int:
     if args.out is None:
         ap.error("--out is required unless --check-only")
     pdf = build(args.data, args.out, args.html, args.wiki_root, args.check_sources,
-                args.make_review_copies)
+                args.make_review_copies, args.publish_dir)
     print(f"OK: {pdf}")
     return 0
 if __name__ == "__main__":

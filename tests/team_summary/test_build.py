@@ -73,13 +73,39 @@ def test_review_links_render_with_link_base(data):
     assert "Approval needed:" in html
     assert (
         '<a href="https://example.invalid/wiki/reports/screening-note/README.md">'
-        "README.md</a>"
+        "screening-note/README.md</a>"
     ) in html
     assert (
         '<a href="https://example.invalid/wiki/docs/reviews/team-summary/rev-4-review.html">'
-        "rev-4.html</a>"
+        "team-summary/rev-4-review.html</a>"
     ) in html
     assert build.HTML_REVIEW_INSTRUCTION in html
+    assert "Send the saved comments JSON to the project inbox." in html
+
+
+def test_review_title_overrides_fallback_label_in_line_and_table(data):
+    titled = copy.deepcopy(data)
+    titled["priorities"][1]["review"]["title"] = "Screening basis approval"
+    html = build.render_html(titled)
+
+    assert html.count(">Screening basis approval</a>") == 2
+    assert "screening-note/README.md</a>" not in html
+
+
+def test_folder_style_uses_shared_folder_href_and_names_file(data):
+    folder = copy.deepcopy(data)
+    folder["review"]["link_style"] = "folder"
+    folder["review"]["link_base"] = "https://example.invalid/shared folder"
+    html = build.render_html(folder)
+
+    assert 'href="https://example.invalid/shared%20folder"' in html
+    assert "https://example.invalid/shared%20folder/reports" not in html
+    assert "(file README.md in the shared folder)" in html
+    assert "(file rev-4-review.html in the shared folder)" in html
+    assert (
+        "Download rev-4-review.html from the shared folder, open it in Edge or Chrome "
+        "from disk, select text, click Comment, then Save comments."
+    ) in html
     assert "Send the saved comments JSON to the project inbox." in html
 
 
@@ -88,8 +114,8 @@ def test_review_paths_render_as_plain_text_without_link_base(data):
     del plain["review"]["link_base"]
     html = build.render_html(plain)
     assert '<a href="https://example.invalid' not in html
-    assert "reports/screening-note/README.md" in html
-    assert "docs/reviews/team-summary/rev-4-review.html" in html
+    assert "screening-note/README.md" in html
+    assert "team-summary/rev-4-review.html" in html
 
 
 def test_review_section_is_omitted_without_review_items(data):
@@ -173,6 +199,17 @@ def test_missing_sources_includes_absent_review_doc(tmp_path, data):
     assert "reports/screening-note/rev-4.html" in missing
 
 
+def test_file_url_link_base_with_space_is_quoted(data):
+    file_url = copy.deepcopy(data)
+    file_url["review"]["link_base"] = "file://server/share/shared folder/"
+    file_url["priorities"][1]["review"]["doc"] = "reports/needs review/README.md"
+
+    html = build.render_html(file_url)
+
+    assert 'href="file://server/share/shared%20folder/reports/needs%20review/README.md"' in html
+    assert "\\" not in html
+
+
 def test_make_review_copies_creates_once_and_preserves_comments(tmp_path, data):
     source = tmp_path / "reports" / "screening-note" / "rev-4.html"
     source.parent.mkdir(parents=True)
@@ -197,3 +234,57 @@ def test_make_review_copies_is_noop_without_html_review_docs(tmp_path, data):
     md_only["review"].pop("copies_dir")
     md_only["issues"][1].pop("review")
     assert build.make_review_copies(md_only, tmp_path) == []
+
+
+def test_publish_review_requests_path_style_preserves_tree_and_json(tmp_path, data, capsys):
+    wiki = tmp_path / "wiki"
+    publish = tmp_path / "publish"
+    md = wiki / "reports" / "screening-note" / "README.md"
+    html_doc = wiki / "reports" / "screening-note" / "rev-4.html"
+    review_copy = wiki / "docs" / "reviews" / "team-summary" / "rev-4-review.html"
+    for path, text in (
+        (md, "markdown"),
+        (html_doc, "<html></html>"),
+        (review_copy, "<html>review</html>"),
+    ):
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(text, encoding="utf-8")
+    comments = publish / "docs" / "reviews" / "team-summary" / "rev-4-review.json"
+    comments.parent.mkdir(parents=True)
+    comments.write_text(json.dumps({"comments": []}), encoding="utf-8")
+
+    build.publish_review_requests(data, wiki, publish)
+
+    assert (publish / "reports" / "screening-note" / "README.md").read_text(encoding="utf-8") == "markdown"
+    assert (publish / "docs" / "reviews" / "team-summary" / "rev-4-review.html").read_text(encoding="utf-8") == "<html>review</html>"
+    assert json.loads(comments.read_text(encoding="utf-8")) == {"comments": []}
+    assert "published review file:" in capsys.readouterr().out
+
+
+def test_publish_review_requests_folder_style_is_flat_and_detects_collision(tmp_path, data):
+    wiki = tmp_path / "wiki"
+    publish = tmp_path / "publish"
+    folder = copy.deepcopy(data)
+    folder["review"]["link_style"] = "folder"
+    folder["issues"][1]["review"]["doc"] = "other/rev-4.html"
+    folder["blockers"][0]["review"] = {"doc": "third/rev-4.html", "ask": "comments"}
+    folder["review"]["copies_dir"] = "reviews"
+    for source in (
+        wiki / "reports" / "screening-note" / "README.md",
+        wiki / "reports" / "screening-note" / "rev-4.html",
+        wiki / "other" / "rev-4.html",
+        wiki / "third" / "rev-4.html",
+        wiki / "reviews" / "rev-4-review.html",
+    ):
+        source.parent.mkdir(parents=True, exist_ok=True)
+        source.write_text(source.as_posix(), encoding="utf-8")
+
+    with pytest.raises(SystemExit, match="publish file-name collision"):
+        build.publish_review_requests(folder, wiki, publish)
+
+    folder["issues"][1]["review"]["doc"] = "reports/screening-note/rev-4.html"
+    folder["blockers"][0].pop("review")
+    build.publish_review_requests(folder, wiki, publish)
+    assert (publish / "README.md").is_file()
+    assert (publish / "rev-4-review.html").is_file()
+    assert not (publish / "reports").exists()
