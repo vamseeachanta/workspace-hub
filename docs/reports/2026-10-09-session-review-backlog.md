@@ -9,7 +9,7 @@ Classes: **MERGE-APPROVED** owner approved, only the merge is left · **AGENT** 
 ## workspace-hub
 | ID | P | Class | Item | Remaining work | Refs | Last activity |
 |---|---|---|---|---|---|---|
-| HUB-01 | P0 | MERGE-APPROVED | Dated fleet snapshots: relabel hostnames (E02) | Mark the draft ready and merge it. Raw hostnames stay on public main until this merges. Per E04 there is no history rewrite. | #4026, #3944 | 2026-10-09 |
+| HUB-01 | P0 | MERGE-APPROVED | Dated fleet snapshots: relabel hostnames (E02) | Mark the draft ready and merge it. | #4026, #3944 | 2026-10-09 |
 | HUB-02 | P0 | MERGE-APPROVED | Local private-repo CI runner (T03) | Mark the draft ready and merge it. This is the CI route around the Actions billing block. | #4025 | 2026-10-10 |
 | HUB-03 | P1 | MERGE-APPROVED | Team summary generator and scheduler fingerprint sign-off (E01) | Merge #3969 (`gh pr merge 3969`). Then review and merge #3970 (task-dispatch readiness, #3968) and #4033 (review document links). | #3969, #3970, #4033, #3967, #3968 | 2026-10-10 |
 | HUB-04 | P1 | AGENT | Snapshot writer routed through the fail-closed labeller | Implement #4027: bring the VM writer in-repo, run the labeller before staging, and diagnose the safety-net refusal. Per E03, retire dated files in favour of a single latest.json. Fix the S01 test, which fails on main; latest.json has not refreshed since 09-27. Confirm the next daily run is green, then close #3944. | #4027, #3944 | 2026-10-10 |
@@ -25,7 +25,7 @@ Classes: **MERGE-APPROVED** owner approved, only the merge is left · **AGENT** 
 | HUB-14 | P1 | OWNER | AGENTS.md hub-contract coverage | Merge the two private-wiki AGENTS.md PRs. One PR's verify-gate never started because of billing, so it needs an admin-merge or the `verified` label plus a verification record. Decide the wording PR and whether to trim llm-wiki/AGENTS.md to 20 lines. Then close #3958. | #3958, private-wiki PRs, private-wiki PRs, a private-wiki PR | 2026-10-10 |
 | HUB-15 | P1 | OWNER | ace-win-2 seat mapping (implements E05) | Merge #4029. An agent then updates the 10-01 ecosystem-loop handoff note. | #4029, #4024 | 2026-10-10 |
 | HUB-16 | P1 | OWNER | OrcaFlex licence seat and leak-remediation rule | Confirm whether the Python session holding the OrcaFlex seat on the standby Windows host is still needed; OrcaFlex/OrcaWave dispatch is blocked until it is released. Review draft #4028 (leak remediation must also scrub commit, PR and issue text). | #4028 | 2026-10-10 |
-| HUB-17 | P1 | AGENT | L3 routing/protocol follow-through | #4010 merged while CHANGES-REQUIRED was open. Verify on main: the absolute mount path in host-role-routing.yaml, raw hostnames in public docs, and the ai:-over-lane: precedence in COORDINATOR_PROTOCOL.md. Then rebuild the dispatch coordinator loop (closed #4011) cleanly on main for #4000. | #4010, #4011, #4000 | 2026-10-09 |
+| HUB-17 | P1 | AGENT | L3 routing/protocol follow-through | #4010 merged while CHANGES-REQUIRED was open. Verify the three #4010 review findings on main. Then rebuild the dispatch coordinator loop (closed #4011) cleanly on main for #4000. | #4010, #4011, #4000 | 2026-10-09 |
 | HUB-19 | P2 | AGENT | Snapshot dry-run mutates files (E07 MAJOR) | Verify on main that `commit-learning-artifacts.sh --dry-run` no longer writes through redact_copy. If it still does, fix it and the test that asserts the mutation (test_commit_learning_artifacts_redaction.py:99). | codex/e07-memory-snapshots | 2026-10-09 |
 | HUB-20 | P2 | OWNER | Reporting conventions decisions C01–C06 | Reply on #3925 with "all recommended" or exceptions; C06 then starts the 60-minute synthetic pilot. Resolve M4: which prevails, owner presentation instructions or client document control? Fleet adoption is unverified. | #3925 | 2026-10-10 |
 | HUB-21 | P2 | OWNER | Rewire governance leftovers | Apply the branch-protection settings for L5 (#4002). Apply the completeness labels before closing #3998. Decide whether to close #3989 as a duplicate. | #4002, #3998, #3989 | 2026-10-09 |
@@ -57,7 +57,6 @@ Classes: **MERGE-APPROVED** owner approved, only the merge is left · **AGENT** 
 | DM-14 | P2 | AGENT | Riser W510 significant-range follow-up | Establish caller-wide sections_m geometry validity. Fix the coupling within 0.1 mm of End B, which loses its upper-side requirement. The confirmation review could not run tests. | #2292 | 2026-10-08 |
 | DM-15 | P2 | AGENT | Campaign state and solver benchmark pack | Finish the remaining #2298 slices. Address the #2300 review findings left after #2302 merged: licence wait included in the timed span, divide-by-zero at compare.py:61, a lock that is not machine-wide (runner.py:124), and no variant/repeat/warmup validation. Add failure-path tests. | #2298, #2300, #2302 | 2026-10-08 |
 | DM-16 | P2 | AGENT | Mudmat eccentricity bug | Bearing capacity reduces the wrong dimension under eccentricity. Fix it with a regression test. | #2105 | 2026-09-15 |
-| DM-17 | P1 | AGENT | Public-repo CAD triage (X03b, 216 hits) | Confirm the private triage note was written. Prepare dispositions for the remaining hits and the private backup of the evidence; both are owner checkpoints. | #2316 | 2026-10-09 |
 | DM-18 | P3 | OWNER | Diffraction contract issues | Decide the reference-point split and the #1581 rescope (AQWA fail-closed plus provenance). Procure the AQWA manual (PMAS/FISK reference). Then plans are revised; #1582 lands first. | #1579–#1582, #2107, #2108, #2111, #2112 | 2026-09-19 |
 | DM-19 | P3 | AGENT | ANSYS example decks | Add padeye negative tests and fix the minors. Run the two-mesh singularity check, then the golden. Write the offline pressure parser (24 loaded faces). Owner cards: hole region, a third mesh run, PLANE182 or PLANE183. | #2094 | 2026-09-15 |
 | DM-20 | P3 | PARKED | CP report draft visual check | C14 "Later" (the report is open on ace-win-2). #2281 closed at 11/16 per C13; cases A–E are in DMD-11. | #2281 | 2026-10-10 |
@@ -79,17 +78,16 @@ Classes: **MERGE-APPROVED** owner approved, only the merge is left · **AGENT** 
 ## worldenergydata
 | ID | P | Class | Item | Remaining work | Refs | Last activity |
 |---|---|---|---|---|---|---|
-| WED-01 | P0 | AGENT | Contractor spec PDFs in a public repo (C11) | Move the 207 PDFs to private results storage and keep the repo to scripts, ASCII data and datasets. Git history still holds the PDFs. | C11, digitalmodel#2316 | 2026-10-10 |
 | WED-02 | P2 | AGENT | Catalog lane follow-up | Rebase #1136 now that #1149 is merged. Mark #1150 ready after CI. Check whether the 11 failures in test_cost_estimator.py and test_integrations.py also occur on main. | #1136, #1150, #1144 | 2026-10-09 |
 
 ## Private repositories (counts only)
 
 | Class | Rows |
 |---|---|
-| AGENT | 29 |
+| AGENT | 31 |
 | COMPUTE | 3 |
 | MERGE-APPROVED | 4 |
 | OWNER | 25 |
 | PARKED | 2 |
 
-Public rows above: 60 (AGENT 33, COMPUTE 1, MERGE-APPROVED 3, OWNER 22, PARKED 1). Private rows: 63.
+Public rows above: 58 (AGENT 31, COMPUTE 1, MERGE-APPROVED 3, OWNER 22, PARKED 1). Private rows: 65.
