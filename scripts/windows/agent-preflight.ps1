@@ -39,9 +39,29 @@ function Add-Finding([string]$Id, [string]$Severity, [string]$Message) {
     $findings.Add([ordered]@{ id = $Id; severity = $Severity; message = (Protect-Text $Message) })
 }
 
+# Shape patterns cannot list every token format, so the values of secret-named environment
+# variables are also redacted exactly, raw and in their JSON-escaped form.
+$secretEnvValues = @(Get-ChildItem Env: | Where-Object {
+        $_.Name -match '(?i)(TOKEN|SECRET|PASSWORD|PASSWD|CREDENTIAL|API_?KEY|ACCESS_?KEY|PRIVATE_?KEY|(^|_)PAT$|AUTH)' -and
+        $_.Value -and $_.Value.Length -ge 8 } | ForEach-Object { $_.Value } | Select-Object -Unique |
+    Sort-Object -Property Length -Descending)
+
 function Hide-Secrets([string]$Text) {
     if ($null -eq $Text) { return $null }
-    return ($Text -replace '(?i)(gh[pousr]_[A-Za-z0-9]{8,}|github_pat_[A-Za-z0-9_]{8,}|sk-[A-Za-z0-9_\-]{8,}|xox[abpr]-[A-Za-z0-9\-]{8,}|AKIA[0-9A-Z]{12,}|eyJ[A-Za-z0-9_\-]{10,}\.[A-Za-z0-9_\-\.]+)', '[REDACTED]')
+    $t = $Text -replace '(?i)(gh[pousr]_[A-Za-z0-9]{8,}|github_pat_[A-Za-z0-9_]{8,}|\bhf_[A-Za-z0-9]{20,}|sk-[A-Za-z0-9_\-]{8,}|xox[abpr]-[A-Za-z0-9\-]{8,}|AKIA[0-9A-Z]{12,}|eyJ[A-Za-z0-9_\-]{10,}\.[A-Za-z0-9_\-\.]+)', '[REDACTED]'
+    foreach ($v in $secretEnvValues) {
+        $escaped = ConvertTo-Json -InputObject $v -Compress
+        $t = $t.Replace($v, '[REDACTED]').Replace($escaped.Substring(1, $escaped.Length - 2), '[REDACTED]')
+    }
+    return $t
+}
+
+function Get-GhFailureLayer([string]$Text) {
+    # Name the layer that failed; only a credential rejection means "not authenticated".
+    if ($Text -match '(?i)HTTP 401|Bad credentials|gh auth login|not logged in|authentication (failed|required)') { return 'auth' }
+    if ($Text -match '(?i)no such host|could not resolve|dial tcp|connection (refused|reset|timed out)|i/o timeout|network is unreachable|TLS handshake|proxyconnect|error connecting to') { return 'network' }
+    if ($Text -match '(?i)rate limit') { return 'rate-limit' }
+    return 'unknown'
 }
 
 function Protect-Text([string]$Text) {
@@ -61,9 +81,10 @@ function Stop-Tree($Proc) {
 function Invoke-Probe([string]$Exe, [string[]]$ArgList) {
     # Hidden, captured, bounded by one deadline covering both exit and stream collection
     # (a detached child can hold the pipes open after the parent exits).
-    # Returns @{ ok; exit; out; failure } where failure is $null, 'launch' or 'timeout'. Never throws.
-    # ArgList must be fixed literal arguments: quoting covers spaces and quotes, not every CRT edge case.
-    $result = [ordered]@{ ok = $false; exit = $null; out = $null; failure = $null }
+    # Returns @{ ok; exit; out; text; failure } where out is the first line, text the redacted, capped
+    # combined output (for classification, not for the receipt), and failure is $null, 'launch' or 'timeout'.
+    # Never throws. ArgList must be fixed literal arguments: quoting covers spaces and quotes, not every CRT edge case.
+    $result = [ordered]@{ ok = $false; exit = $null; out = $null; text = $null; failure = $null }
     if (-not $Exe) { $result.failure = 'launch'; return $result }
     $p = $null
     try {
@@ -91,6 +112,7 @@ function Invoke-Probe([string]$Exe, [string[]]$ArgList) {
         $result.ok = ($p.ExitCode -eq 0)
         $first = ($text -split "`r?`n" | Select-Object -First 1)
         $result.out = $(if ($first) { Protect-Text $first } else { $null })
+        $result.text = Protect-Text $text
     } catch {
         $result.failure = 'launch'
     } finally {
@@ -227,22 +249,33 @@ $gh = [ordered]@{
     version = $null
     auth_ok = $null
     auth_status_ok = $null
+    api_failure_layer = $null
     gh_token_env_present = [bool]$env:GH_TOKEN
 }
 if ($ghPath) {
     $gh.version = (Invoke-Probe $ghPath @('--version')).out
     # `gh auth status` exits 1 when ANY stored account is invalid, even while the active
     # one (e.g. GH_TOKEN) works, so an authenticated API call decides auth_ok.
-    # Outputs are deliberately not recorded.
+    # Outputs are deliberately not recorded; a failed call is classified by layer, and only
+    # a credential rejection sets auth_ok to false.
     $api = Invoke-Probe $ghPath @('api', 'user', '-q', '.login')
-    $gh.auth_ok = $api.ok
+    $gh.auth_ok = $(if ($api.ok) { $true } else { $null })
     $status = Invoke-Probe $ghPath @('auth', 'status')
     $gh.auth_status_ok = $(if ($status.failure) { $null } else { $status.ok })
     if ($api.failure) {
-        $gh.auth_ok = $null
+        $gh.api_failure_layer = $api.failure
         Add-Finding 'GH_PROBE_FAILED' 'warn' "gh api user could not be completed ($($api.failure)); authentication is not established"
-    } elseif (-not $gh.auth_ok) {
-        Add-Finding 'GH_NOT_AUTHENTICATED' 'warn' 'gh api user failed; issue/PR reads will 401 (or the network is unreachable)'
+    } elseif (-not $api.ok) {
+        $gh.api_failure_layer = Get-GhFailureLayer $api.text
+        switch ($gh.api_failure_layer) {
+            'auth' {
+                $gh.auth_ok = $false
+                Add-Finding 'GH_NOT_AUTHENTICATED' 'warn' 'gh api user was rejected for its credentials; issue/PR reads will 401'
+            }
+            'network' { Add-Finding 'GH_NETWORK_UNREACHABLE' 'warn' 'gh api user could not reach GitHub; authentication is not established either way' }
+            'rate-limit' { Add-Finding 'GH_RATE_LIMITED' 'warn' 'gh api user was rate-limited; authentication is not established either way' }
+            default { Add-Finding 'GH_API_FAILED' 'warn' "gh api user failed (exit $($api.exit)) for an unclassified reason; authentication is not established either way" }
+        }
     } elseif ($status.failure) {
         Add-Finding 'GH_STATUS_PROBE_FAILED' 'info' "gh auth status could not be completed ($($status.failure)); the active account works"
     } elseif (-not $gh.auth_status_ok) {

@@ -125,14 +125,30 @@ def test_env_derived_paths_are_redacted_in_fields_and_findings(host, tmp_path):
     assert "PYTHON_SELECTED_MISSING" in ids(receipt)
 
 
-def _fake_gh(tmp_path, status_exit, api_exit):
+def test_secret_env_values_of_any_shape_are_redacted(host, tmp_path):
+    # Shape patterns cannot list every token format; values of secret-named variables are redacted exactly.
+    hf = "hf_abcdefSECRETvalue0123456789"
+    plain = "Zq7plainSecretValue42xx"
+    d = tmp_path / "leaky"
+    d.mkdir()
+    (d / "codex.cmd").write_text("@echo off\r\necho codex-cli 1.0 " + hf + " " + plain + "\r\n", encoding="ascii")
+    r, receipt = run(host, tmp_path, {"HF_TOKEN": hf, "MY_SERVICE_API_KEY": plain,
+                                      "CLAUDE_CODE_GIT_BASH_PATH": "C:\\x\\" + plain}, d)
+    text = json.dumps(receipt)
+    assert hf not in text and plain not in text
+    assert hf not in r.stdout + r.stderr and plain not in r.stdout + r.stderr
+    assert "[REDACTED]" in receipt["clis"]["codex"]["version"]
+
+
+def _fake_gh(tmp_path, status_exit, api_exit, api_text="someone"):
     d = tmp_path / "fakegh"
     d.mkdir(exist_ok=True)
     (d / "gh.cmd").write_text(
         "@echo off\r\n"
         'if "%1"=="auth" exit /b ' + str(status_exit) + "\r\n"
-        'if "%1"=="api" (echo someone& exit /b ' + str(api_exit) + ")\r\n"
-        "echo gh version 9.9.9\r\nexit /b 0\r\n", encoding="ascii")
+        'if "%1"=="api" goto api\r\n'
+        "echo gh version 9.9.9\r\nexit /b 0\r\n"
+        ":api\r\necho " + api_text + "\r\nexit /b " + str(api_exit) + "\r\n", encoding="ascii")
     return d
 
 
@@ -146,11 +162,29 @@ def test_stale_inactive_gh_account_is_not_reported_as_unauthenticated(host, tmp_
     assert "GH_STALE_STORED_ACCOUNT" in ids(receipt)
 
 
-def test_failed_api_call_is_reported_unauthenticated(host, tmp_path):
-    r, receipt = run(host, tmp_path, None, _fake_gh(tmp_path, status_exit=1, api_exit=1))
+def test_rejected_credentials_are_reported_unauthenticated(host, tmp_path):
+    r, receipt = run(host, tmp_path, None, _fake_gh(tmp_path, status_exit=1, api_exit=1,
+                                                    api_text="HTTP 401: Bad credentials"))
     assert receipt["gh"]["version"] == "gh version 9.9.9"
     assert receipt["gh"]["auth_ok"] is False
+    assert receipt["gh"]["api_failure_layer"] == "auth"
     assert "GH_NOT_AUTHENTICATED" in ids(receipt)
+
+
+def test_unreachable_network_is_not_reported_as_unauthenticated(host, tmp_path):
+    text = "error connecting to api.github.com: dial tcp: lookup api.github.com: no such host"
+    r, receipt = run(host, tmp_path, None, _fake_gh(tmp_path, status_exit=1, api_exit=1, api_text=text))
+    assert receipt["gh"]["auth_ok"] is None
+    assert receipt["gh"]["api_failure_layer"] == "network"
+    assert "GH_NOT_AUTHENTICATED" not in ids(receipt)
+    assert "GH_NETWORK_UNREACHABLE" in ids(receipt)
+
+
+def test_unclassified_api_failure_does_not_claim_an_auth_layer(host, tmp_path):
+    r, receipt = run(host, tmp_path, None, _fake_gh(tmp_path, status_exit=1, api_exit=1, api_text="HTTP 502: Bad Gateway"))
+    assert receipt["gh"]["auth_ok"] is None
+    assert receipt["gh"]["api_failure_layer"] == "unknown"
+    assert "GH_NOT_AUTHENTICATED" not in ids(receipt) and "GH_API_FAILED" in ids(receipt)
 
 
 def test_cli_version_read_past_powershell_shim(host, tmp_path):
