@@ -4,9 +4,11 @@ from __future__ import annotations
 
 import json
 import os
+import signal
 import shlex
 import shutil
 import subprocess
+import time
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -47,6 +49,25 @@ def _run(cmd: list[str], cwd: Path, **kwargs) -> subprocess.CompletedProcess:
     check = kwargs.pop("check", False)
     return subprocess.run(
         cmd, check=check, cwd=cwd, text=True, capture_output=True, **kwargs
+    )
+
+
+def _start_daily_writer(
+    repo: Path, map_path: Path, collect_cmd: str
+) -> subprocess.Popen[str]:
+    return subprocess.Popen(
+        ["bash", str(repo / "scripts" / "fleet" / "fleet-snapshot-daily.sh")],
+        cwd=repo,
+        text=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        start_new_session=True,
+        env={
+            "FLEET_HUB": str(repo),
+            "FLEET_LABEL_MAP": str(map_path),
+            "FLEET_SNAPSHOT_COLLECT_CMD": collect_cmd,
+            "FLEET_NO_PUSH": "1",
+        },
     )
 
 
@@ -117,6 +138,55 @@ def test_daily_writer_collect_command_writes_to_temp_output(tmp_path: Path) -> N
         )
     )
     assert [machine["name"] for machine in latest["machines"]] == ["ace-linux-1"]
+    assert _run(["git", "status", "--short"], repo, check=True).stdout == ""
+
+
+def test_daily_writer_keeps_raw_collection_outside_repo_until_labelled(
+    tmp_path: Path,
+) -> None:
+    repo, map_path = _make_repo(tmp_path)
+    source = tmp_path / "raw-snapshot.json"
+    source.write_text(json.dumps(_snapshot("phys-box-b"), indent=2) + "\n", encoding="utf-8")
+    marker = tmp_path / "collector-ready"
+    listing = tmp_path / "snapshot-dir-before-label.txt"
+    collector = tmp_path / "collector.sh"
+    collector.write_text(
+        "#!/usr/bin/env bash\n"
+        "set -euo pipefail\n"
+        "find \"$1\" -maxdepth 1 -type f -printf '%f\\n' | sort > \"$2\"\n"
+        "cp \"$3\" \"$FLEET_SNAPSHOT_OUT\"\n"
+        "touch \"$4\"\n"
+        "sleep 60\n",
+        encoding="utf-8",
+    )
+    collector.chmod(0o755)
+
+    process = _start_daily_writer(
+        repo,
+        map_path,
+        (
+            f"{shlex.quote(str(collector))} "
+            f"{shlex.quote(str(repo / 'docs' / 'reports' / 'fleet-snapshots'))} "
+            f"{shlex.quote(str(listing))} "
+            f"{shlex.quote(str(source))} "
+            f"{shlex.quote(str(marker))}"
+        ),
+    )
+    try:
+        deadline = time.monotonic() + 5
+        while time.monotonic() < deadline and not marker.exists():
+            time.sleep(0.05)
+        assert marker.exists()
+        assert listing.read_text(encoding="utf-8").splitlines() == ["latest.json"]
+        os.killpg(process.pid, signal.SIGKILL)
+        process.wait(timeout=5)
+    finally:
+        if process.poll() is None:
+            os.killpg(process.pid, signal.SIGKILL)
+            process.wait(timeout=5)
+
+    snap_dir = repo / "docs" / "reports" / "fleet-snapshots"
+    assert sorted(p.name for p in snap_dir.iterdir() if p.is_file()) == ["latest.json"]
     assert _run(["git", "status", "--short"], repo, check=True).stdout == ""
 
 

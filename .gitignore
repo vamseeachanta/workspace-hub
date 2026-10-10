@@ -657,3 +657,7 @@ scripts/review/results/*
 
 # Machine-local topic file; kept out of version control
 .claude/memory/topics/network_machines.md
+
+# Fleet snapshot wrapper scratch files must never be tracked in the public repo.
+docs/reports/fleet-snapshots/.latest.*
+docs/reports/fleet-snapshots/.fleet-label-*.tmp

@@ -86,7 +86,10 @@ mkdir -p "$(dirname "${LOCK_PATH}")"
 exec 9>"${LOCK_PATH}"
 flock 9
 
-TMP_SNAPSHOT="$(mktemp "$(dirname "${SNAPSHOT}")/.latest.XXXXXX.json")"
+TMP_DIR="$(mktemp -d "${TMPDIR:-/tmp}/fleet-snapshot-daily.XXXXXX")"
+chmod 0700 "${TMP_DIR}"
+TMP_SNAPSHOT="${TMP_DIR}/latest.raw.json"
+INSTALL_TMP=""
 COLLECT_LOG="$(mktemp "${TMPDIR:-/tmp}/fleet-snapshot-collector.XXXXXX.log")"
 installed=0
 committed=0
@@ -96,7 +99,10 @@ cleanup() {
         git reset -q HEAD -- "${SNAPSHOT_REL}" 2>/dev/null || true
         git checkout -- "${SNAPSHOT_REL}" 2>/dev/null || true
     fi
-    rm -f "${TMP_SNAPSHOT}"
+    rm -rf "${TMP_DIR}"
+    if [[ -n "${INSTALL_TMP}" ]]; then
+        rm -f "${INSTALL_TMP}"
+    fi
     if (( rc == 0 )); then
         rm -f "${COLLECT_LOG}"
     fi
@@ -119,9 +125,11 @@ if ! python3 scripts/fleet/fleet_snapshot_labels.py "${TMP_SNAPSHOT}"; then
     exit 2
 fi
 
-mv -- "${TMP_SNAPSHOT}" "${SNAPSHOT}"
-chmod 0644 "${SNAPSHOT}"
 installed=1
+INSTALL_TMP="$(mktemp "$(dirname "${SNAPSHOT}")/.fleet-label-XXXXXX.tmp")"
+cp -- "${TMP_SNAPSHOT}" "${INSTALL_TMP}"
+chmod 0644 "${INSTALL_TMP}"
+mv -- "${INSTALL_TMP}" "${SNAPSHOT}"
 git add -- "${SNAPSHOT_REL}"
 mapfile -t staged_paths < <(git diff --cached --name-only)
 if (( ${#staged_paths[@]} > 0 )) \
