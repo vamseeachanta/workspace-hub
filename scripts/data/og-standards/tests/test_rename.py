@@ -272,6 +272,41 @@ def test_swap_through_temp_name_rerun_is_noop(library, tmp_path):
     assert _row(library["db"], a)["id"] == 2
 
 
+def test_identical_digest_swap_rerun_preserves_row_identity(library, tmp_path):
+    """Replay of a temp-name swap must not use SHA equality as row identity."""
+    from conftest import sha256_of
+    from rename import apply_renames
+
+    a, b = library["root"] / "API" / "a.pdf", library["root"] / "API" / "b.pdf"
+    a.write_bytes(b"same-bytes")
+    b.write_bytes(b"same-bytes")
+    conn = sqlite3.connect(library["db"])
+    conn.execute("UPDATE documents SET target_path=? WHERE id=1", (str(a),))
+    conn.execute("UPDATE documents SET target_path=? WHERE id=2", (str(b),))
+    conn.commit()
+    conn.close()
+    sha = sha256_of(a)
+
+    a.rename(library["root"] / "API" / "t.pdf")
+    b.rename(a)
+    (library["root"] / "API" / "t.pdf").rename(b)
+    rows = [
+        ("API/a.pdf", "API/t.pdf", sha),
+        ("API/b.pdf", "API/a.pdf", sha),
+        ("API/t.pdf", "API/b.pdf", sha),
+    ]
+
+    first = apply_renames(library["db"], _entries(library, tmp_path, rows), dry_run=False)
+    assert first.applied == 2
+    assert _row(library["db"], b)["id"] == 1
+    assert _row(library["db"], a)["id"] == 2
+
+    again = apply_renames(library["db"], _entries(library, tmp_path, rows), dry_run=False)
+    assert again.applied == 0
+    assert _row(library["db"], b)["id"] == 1
+    assert _row(library["db"], a)["id"] == 2
+
+
 def test_name_reused_later_in_log_is_accepted(library, tmp_path):
     from rename import apply_renames
 
@@ -286,6 +321,40 @@ def test_name_reused_later_in_log_is_accepted(library, tmp_path):
     report = apply_renames(library["db"], _entries(library, tmp_path, rows), dry_run=False)
     assert report.applied == 1
     assert _row(library["db"], library["root"] / "API" / "tmp.pdf") is not None
+
+
+def test_replay_allows_intermediate_name_reused_by_another_document(library, tmp_path):
+    from conftest import sha256_of
+    from rename import apply_renames
+
+    a = library["root"] / "API" / "a.pdf"
+    b = library["root"] / "API" / "b.pdf"
+    c = library["root"] / "API" / "c.pdf"
+    d = library["root"] / "API" / "d.pdf"
+    a.write_bytes(b"content-x")
+    c.write_bytes(b"content-x")
+    b.write_bytes(b"content-y")
+    conn = sqlite3.connect(library["db"])
+    conn.execute("UPDATE documents SET target_path=? WHERE id=1", (str(a),))
+    conn.execute("UPDATE documents SET target_path=? WHERE id=2", (str(d),))
+    conn.commit()
+    conn.close()
+    sha_x, sha_y = sha256_of(a), sha256_of(b)
+    rows = [
+        ("API/a.pdf", "API/b.pdf", sha_x),
+        ("API/b.pdf", "API/c.pdf", sha_x),
+        ("API/d.pdf", "API/b.pdf", sha_y),
+    ]
+
+    first = apply_renames(library["db"], _entries(library, tmp_path, rows), dry_run=False)
+    assert first.applied == 2
+    assert _row(library["db"], c)["id"] == 1
+    assert _row(library["db"], b)["id"] == 2
+
+    again = apply_renames(library["db"], _entries(library, tmp_path, rows), dry_run=False)
+    assert again.applied == 0
+    assert _row(library["db"], c)["id"] == 1
+    assert _row(library["db"], b)["id"] == 2
 
 
 def test_header_with_to_in_other_column_is_not_misread(library, tmp_path):
@@ -358,6 +427,29 @@ def test_remap_flatten_out_of_nested_root(library):
     assert row["source_dir"] == "/old/src"
 
 
+def test_remap_flatten_replay_does_not_strip_repeated_suffix(library):
+    from rename import remap_source_root
+
+    conn = sqlite3.connect(library["db"])
+    conn.execute(
+        "UPDATE documents SET file_path='/lib/raw/raw/1.pdf', source_dir='/lib/raw' "
+        "WHERE id=1"
+    )
+    conn.commit()
+    conn.close()
+
+    assert remap_source_root(library["db"], "/lib/raw", "/lib", dry_run=False) == 1
+    row = _row(library["db"], library["old"])
+    assert row["file_path"] == "/lib/raw/1.pdf"
+    assert row["source_dir"] == "/lib"
+
+    assert remap_source_root(library["db"], "/lib/raw", "/lib", dry_run=True) == 0
+    assert remap_source_root(library["db"], "/lib/raw", "/lib", dry_run=False) == 0
+    row = _row(library["db"], library["old"])
+    assert row["file_path"] == "/lib/raw/1.pdf"
+    assert row["source_dir"] == "/lib"
+
+
 def test_remap_collision_rolls_back(library):
     from rename import remap_source_root
 
@@ -414,6 +506,26 @@ def test_main_applies_and_regenerates_catalog(library, tmp_path):
     rc = main(["--config", str(library["config"])])
 
     assert rc == 0
+    catalog = json.loads((library["root"] / "_catalog.json").read_text(encoding="utf-8"))
+    rel_paths = {d.get("relative_path") for d in catalog["documents"]}
+    assert any(p and p.endswith("API RP 2RD (2013 draft).pdf") for p in rel_paths)
+    assert not any(p and p.endswith("API RP 2RD (2013).pdf") for p in rel_paths)
+
+
+def test_main_db_override_regenerates_catalog_from_effective_db(library, tmp_path):
+    from rename import main
+
+    override_db = tmp_path / "override.db"
+    override_db.write_bytes(library["db"].read_bytes())
+    write_log(
+        library["root"] / "RENAME-LOG.md",
+        [("API/API RP 2RD (2013).pdf", "API/API RP 2RD (2013 draft).pdf", library["sha"])],
+    )
+    rc = main(["--config", str(library["config"]), "--db", str(override_db)])
+
+    assert rc == 0
+    assert _row(library["db"], library["old"]) is not None
+    assert _row(override_db, library["new"]) is not None
     catalog = json.loads((library["root"] / "_catalog.json").read_text(encoding="utf-8"))
     rel_paths = {d.get("relative_path") for d in catalog["documents"]}
     assert any(p and p.endswith("API RP 2RD (2013 draft).pdf") for p in rel_paths)

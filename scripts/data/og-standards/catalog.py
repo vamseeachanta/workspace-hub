@@ -37,9 +37,18 @@ logger = logging.getLogger(__name__)
 class CatalogGenerator:
     """Generates searchable catalogs for O&G standards."""
 
-    def __init__(self, config_path: str):
+    def __init__(
+        self,
+        config_path: str,
+        database_path: Optional[str] = None,
+        target_directory: Optional[str] = None,
+    ):
         """Initialize with configuration file."""
         self.config = self._load_config(config_path)
+        if database_path is not None:
+            self.config['database_path'] = database_path
+        if target_directory is not None:
+            self.config['target_directory'] = target_directory
         self.db_path = self.config['database_path']
         self.target_dir = self.config['target_directory']
         self.conn = None
