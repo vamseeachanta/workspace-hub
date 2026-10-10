@@ -39,11 +39,16 @@ SCRIPT_SH = REPO_ROOT / "scripts" / "enforcement" / "check-wiki-sibling-frontmat
 # ── Fixtures ──────────────────────────────────────────────────────────────
 
 
-def _make_wiki_repo(parent: Path, name: str) -> Path:
+def _make_wiki_repo(parent: Path, name: str, origin_url: str | None = None) -> Path:
     """Initialize a hermetic wiki-named git repo at parent/name."""
     repo = parent / name
     repo.mkdir()
     subprocess.run(["git", "init", "-q", "-b", "main", str(repo)], check=True)
+    if origin_url is not None:
+        subprocess.run(
+            ["git", "-C", str(repo), "remote", "add", "origin", origin_url],
+            check=True,
+        )
     subprocess.run(
         ["git", "-C", str(repo), "config", "user.email", "test@example.com"],
         check=True,
@@ -279,6 +284,63 @@ def test_enforcement_skips_when_not_in_wiki_repo(tmp_path: Path) -> None:
     _stage(repo, "wikis/foo.md", _fm("invalid-visibility"))
     r = _run_check(repo)
     assert r.returncode == 0, f"should bail early in non-wiki repo: stderr={r.stderr}"
+
+
+def test_enforcement_resolves_generic_identity_from_remote_origin(tmp_path: Path) -> None:
+    """#3932 — arbitrary llm-wiki worktree names still validate via origin repo slug."""
+    repo = _make_wiki_repo(
+        tmp_path,
+        "wt-wiki-task-3932",
+        origin_url="https://github.com/vamseeachanta/llm-wiki.git",
+    )
+    _vendor_registry(repo)
+    _stage(repo, "wikis/bad.md", _fm("invalid-visibility"))
+    r = _run_check(repo)
+    assert r.returncode == 1
+    assert "invalid-visibility" in r.stderr
+
+
+def test_enforcement_resolves_client_identity_from_remote_origin(tmp_path: Path) -> None:
+    """#3932 — arbitrary client-wiki worktree names use the client slug from origin."""
+    repo = _make_wiki_repo(
+        tmp_path,
+        "task-branch",
+        origin_url="git@github.com:vamseeachanta/llm-wiki-mkt-a.git",
+    )
+    _vendor_registry(repo)
+    _stage(
+        repo,
+        "pages/foo.md",
+        _fm("private-client-llm-wiki", client="mkt-a", project="proj-a"),
+    )
+    r = _run_check(repo)
+    assert r.returncode == 0, f"unexpected fail: stdout={r.stdout} stderr={r.stderr}"
+
+
+def test_enforcement_rejects_wrong_client_in_remote_resolved_worktree(tmp_path: Path) -> None:
+    """#3932 — Rule C still fails mismatched client values after remote identity resolution."""
+    repo = _make_wiki_repo(
+        tmp_path,
+        "wt-mkt-a-task",
+        origin_url="ssh://git@github.com/vamseeachanta/llm-wiki-mkt-a.git",
+    )
+    _vendor_registry(repo)
+    _stage(repo, "pages/foo.md", _fm("private-client-llm-wiki", client="lng-a"))
+    r = _run_check(repo)
+    assert r.returncode == 1
+    assert "repo identity is 'mkt-a'" in r.stderr
+
+
+def test_enforcement_skips_non_wiki_remote_in_wiki_shaped_worktree(tmp_path: Path) -> None:
+    """#3932 — remote identity prevents llm-wiki-shaped worktree names from misclassifying."""
+    repo = _make_wiki_repo(
+        tmp_path,
+        "llm-wiki-temp",
+        origin_url="https://github.com/vamseeachanta/workspace-hub.git",
+    )
+    _stage(repo, "wikis/foo.md", _fm("invalid-visibility"))
+    r = _run_check(repo)
+    assert r.returncode == 0, f"should bail early for non-wiki remote: stderr={r.stderr}"
 
 
 def test_enforcement_excludes_readme_md_from_project_validation(tmp_path: Path) -> None:
