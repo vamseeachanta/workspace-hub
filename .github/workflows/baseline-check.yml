@@ -82,6 +82,7 @@ jobs:
       - name: Run shell test helper guard checks
         run: |
           uv run python -m pytest tests/enforcement/test_check_shell_conditional_helpers.py \
+            tests/enforcement/test_check_shell_conditional_helpers_scopes.py \
             tests/enforcement/test_shell_test_guards.py -v --tb=short
 
       - name: Generate test summary

@@ -19,13 +19,21 @@
 # require_executed <fn>...             rc 1 if any <fn> never called guard_mark
 # run_step <label> <cmd>...            run cmd, keep its rc in GUARD_LAST_RC, report
 #                                      a failure on stderr and append every outcome
-#                                      to $GUARD_RECEIPT when set (never truncated)
+#                                      to $GUARD_RECEIPT when set (never truncated);
+#                                      rc 3 if the receipt cannot be written.
+#                                      It records the status the command RETURNS: a
+#                                      helper function must propagate its own internal
+#                                      failures, because errexit is not in force inside
+#                                      a command run from an && / || list.
+#
+# Snapshot records with a fixed frame (e.g. 'A <path> <payload>') are never blank;
+# check the payload itself with require_nonempty before framing it.
 
 require_helpers() {
   [ "$#" -gt 0 ] || { echo "require_helpers: no helper names given" >&2; return 2; }
   local fn missing=0
   for fn in "$@"; do
-    declare -F "$fn" >/dev/null 2>&1 && continue
+    [[ "$fn" != -* ]] && declare -F "$fn" >/dev/null 2>&1 && continue
     echo "require_helpers: helper '$fn' is not defined in this mode" >&2
     missing=1
   done
@@ -52,6 +60,7 @@ assert_snapshot_unchanged() {
 }
 
 guard_init() {
+  guard_cleanup
   GUARD_MARK_DIR="$(mktemp -d)" || { echo "guard_init: mktemp failed" >&2; return 1; }
   export GUARD_MARK_DIR
 }
@@ -63,6 +72,7 @@ guard_cleanup() {
 }
 
 guard_mark() {
+  [ "$#" -eq 1 ] || { echo "guard_mark: usage: guard_mark <fn>" >&2; return 2; }
   if [[ -z "${GUARD_MARK_DIR:-}" || ! -d "$GUARD_MARK_DIR" ]]; then
     echo "guard_mark: call guard_init in the parent shell first" >&2
     return 1
@@ -91,7 +101,7 @@ run_step() {
   fi
   if [[ -n "${GUARD_RECEIPT:-}" ]]; then
     printf '%s step=%s rc=%s\n' "$(date -u +%Y-%m-%dT%H:%M:%SZ)" "$label" "$GUARD_LAST_RC" \
-      >> "$GUARD_RECEIPT"
+      >> "$GUARD_RECEIPT" || { echo "run_step: receipt write failed: $GUARD_RECEIPT" >&2; return 3; }
   fi
   return "$GUARD_LAST_RC"
 }

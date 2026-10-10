@@ -270,6 +270,40 @@ def test_run_step_records_failure_under_errexit(tmp_path):
     assert "rc=3" in receipt.read_text(encoding="utf-8")
 
 
+def test_run_step_fails_when_receipt_cannot_be_written(tmp_path):
+    result = _bash(
+        tmp_path,
+        """
+        GUARD_RECEIPT=/nonexistent-dir-3876/receipt.log
+        run_step ok true; echo rc=$?
+        """,
+    )
+    assert "rc=3" in result.stdout
+    assert "receipt" in result.stderr
+
+
+def test_require_helpers_rejects_option_like_names(tmp_path):
+    result = _bash(tmp_path, "require_helpers -p && echo OK || echo REJECTED\n")
+    assert "REJECTED" in result.stdout
+
+
+def test_guard_mark_without_name_is_a_usage_error(tmp_path):
+    result = _bash(tmp_path, "guard_init; guard_mark; echo rc=$?; guard_cleanup\n")
+    assert "rc=2" in result.stdout
+
+
+def test_guard_init_twice_removes_first_dir(tmp_path):
+    result = _bash(
+        tmp_path,
+        """
+        guard_init; first="$GUARD_MARK_DIR"
+        guard_init; [[ -e "$first" ]] && echo LEFT || echo GONE
+        guard_cleanup
+        """,
+    )
+    assert result.stdout.strip() == "GONE"
+
+
 def test_run_step_with_no_command_is_a_usage_error(tmp_path):
     result = _bash(tmp_path, "run_step label; echo rc=$?\n")
     assert "rc=2" in result.stdout

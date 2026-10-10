@@ -17,10 +17,13 @@ passed.
 
 **How to apply:**
 
-1. **Define shared helpers unconditionally**, before the first selector branch. Where a helper
-   must stay conditional, guard every use outside its block:
-   `require_helpers snapshot || { fail snapshot_defined; exit 1; }` (or `declare -F snapshot`).
-   `command -v` is not a guard: it accepts an executable of the same name.
+1. **Define shared helpers unconditionally**, at top level before the first selector branch —
+   not behind `&&`/`||`, inside another function's body, or in a subshell. Where a helper
+   must stay conditional, guard every use outside its scope with a guard that is **acted on**
+   and **reachable** from the call (top level, or a scope enclosing the call):
+   `require_helpers snapshot || { fail snapshot_defined; exit 1; }`. A bare
+   `declare -F snapshot`, `... || true`, or a guard inside another selector branch proves
+   nothing. `command -v` is not a guard: it accepts an executable of the same name.
 2. **Check every load-bearing substitution explicitly.**
    `before="$(snapshot "$p")" || { fail snapshot_before; exit 1; }`. `set -e` does not propagate
    from a substitution inside `local x=$(...)`, a condition, a pipeline element or a function
@@ -29,24 +32,35 @@ passed.
 3. **Reject empty records.** Compare snapshots with
    `assert_snapshot_unchanged <label> "$after" "$before"`, which fails when either side is
    blank. `require_nonempty <label> "$record"` covers single records. Equal emptiness is not
-   evidence of preservation.
+   evidence of preservation. A framed record (`A <path> <payload>`) is never blank, so check
+   the payload with `require_nonempty` before framing it.
 4. **Prove a targeted mode ran its helper** when the helper's output is the evidence:
    `guard_init` in the parent shell, `guard_mark <fn>` inside the helper (it survives `$(...)`),
    `require_executed <fn>` before reporting.
 5. **Capture each prerequisite's exit code before the next command.**
    `run_step render <cmd...> || { fail render; exit 1; }` keeps the code in `GUARD_LAST_RC`.
+   It records the status the command **returns**: inside a command run from an `&&`/`||`
+   list `errexit` is not in force, so a multi-step helper function must propagate its own
+   failures (item 2).
    In PowerShell, test `$LASTEXITCODE` immediately after each native command (or chain with
    `&&`); never let a later `Write-Output` or successful command stand for the pipeline.
    Assert the expected artifact state separately from any exit code.
 6. **Retain the failure receipt.** Set `GUARD_RECEIPT` to an append-only log; a corrected run
-   adds lines and never overwrites the failed one.
+   adds lines and never overwrites the failed one. `run_step` returns 3 when the receipt
+   cannot be written.
 
 **Tools:** `scripts/lib/shell-test-guards.sh` (runtime guards; tests
 `tests/enforcement/test_shell_test_guards.py`) and Level-2
 `scripts/enforcement/check-shell-conditional-helpers.py [PATH...]`, which flags calls to a
-conditionally-defined helper outside its block without an earlier guard. With no path it
-scans every tracked shell test harness (tests
-`tests/enforcement/test_check_shell_conditional_helpers.py`).
+conditionally-defined helper outside its scope without an earlier, acted-on, reachable guard.
+With no path it scans every tracked shell test harness (tests
+`tests/enforcement/test_check_shell_conditional_helpers*.py`).
+
+**Checker limitations** (rely on review and items 2–4 for these): calls inside unquoted
+heredoc bodies, helper names passed to wrappers other than `run_step`, and nested quotes
+inside `${...}` are not parsed; a `case` defining the helper in every arm is still
+reported. No static check finds an unchecked load-bearing substitution — item 2 is
+review-enforced.
 
 **Do NOT apply when:** the helper is defined in every branch of an `if ... else ... fi`, or by
 `if ! declare -F f; then f() {...}; fi` — the checker already treats both as defined. A
