@@ -298,10 +298,14 @@ def test_unmapped_host_value_left_after_labelling_fails_closed(env):
 SNAPSHOT_DIR = ROOT / "docs" / "reports" / "fleet-snapshots"
 
 
-def test_latest_snapshot_is_the_writer_target():
-    """Owner decision S01: the daily writer overwrites latest.json."""
+@pytest.mark.xfail(
+    strict=True,
+    reason="Draft PR #4026 still owns removal of dated fleet snapshot files.",
+)
+def test_only_the_latest_snapshot_is_kept():
+    """Owner decision S01: the daily writer overwrites latest.json only."""
     names = sorted(p.name for p in SNAPSHOT_DIR.iterdir())
-    assert "latest.json" in names
+    assert names == ["latest.json"]
 
 
 def test_committed_snapshot_carries_only_public_labels():
@@ -325,7 +329,8 @@ def test_unmapped_hostname_shape_in_branch_fails_closed(env):
     assert snap.read_bytes() == before
     assert "77-parked" not in r.stdout + r.stderr
 
-def test_latest_snapshot_carries_no_hostname_shaped_name():
-    """The public latest snapshot must carry only labeller-approved names."""
-    text = (SNAPSHOT_DIR / "latest.json").read_text(encoding="utf-8")
-    assert not fsl.HOSTNAME_SHAPE_RE.search(text)
+def test_no_committed_snapshot_carries_a_hostname_shaped_name():
+    """Every committed public snapshot must carry only labeller-approved names."""
+    for path in SNAPSHOT_DIR.glob("*.json"):
+        text = path.read_text(encoding="utf-8")
+        assert not fsl.HOSTNAME_SHAPE_RE.search(text), path.name

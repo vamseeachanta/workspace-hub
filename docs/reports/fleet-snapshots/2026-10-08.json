@@ -43,7 +43,7 @@
       "note": "ssh_unreachable"
     },
     {
-      "name": "acma-ws014",
+      "name": "ace-win-1",
       "reachable": true,
       "branch": "main",
       "head": "13e8c9953",
@@ -52,7 +52,7 @@
       "dirty": 239
     },
     {
-      "name": "acma-hou-rds02",
+      "name": "ace-win-2",
       "reachable": true,
       "branch": "main",
       "head": "36d4c9a99",
