@@ -154,6 +154,66 @@ def test_verify_rejects_non_string_paths(tmp_path):
     assert r.returncode == 1 and "Traceback" not in r.stderr
 
 
+def _case_insensitive(tmp_path):
+    probe = tmp_path / "CaseProbe"
+    probe.write_bytes(b"")
+    try:
+        return (tmp_path / "caseprobe").exists()
+    finally:
+        probe.unlink()
+
+
+def test_outputs_differing_only_in_case_collide_on_case_insensitive_fs(tmp_path):
+    if not _case_insensitive(tmp_path):
+        import pytest
+        pytest.skip("filesystem is case-sensitive")
+    make(tmp_path, "a.txt", b"x\n")
+    r = run("build", "--out", "Packet.md", "--manifest", "packet.MD", "a.txt", cwd=tmp_path)
+    assert r.returncode == 1, r.stdout + r.stderr
+    assert not (tmp_path / "packet.md").exists()
+
+
+def test_failed_manifest_publish_leaves_the_previous_packet_in_place(tmp_path):
+    make(tmp_path, "a.txt", b"x\n")
+    (tmp_path / "p.md").write_bytes(b"previous packet\n")
+    (tmp_path / "mdir").mkdir()  # the manifest cannot replace a directory
+    r = run("build", "--out", "p.md", "--manifest", "mdir", "a.txt", cwd=tmp_path)
+    assert r.returncode != 0 and "Traceback" not in r.stderr, r.stderr
+    assert (tmp_path / "p.md").read_bytes() == b"previous packet\n"
+    assert not [p.name for p in tmp_path.iterdir() if p.name.endswith(".staging")]
+
+
+def test_failed_manifest_publish_leaves_no_new_packet(tmp_path):
+    make(tmp_path, "a.txt", b"x\n")
+    (tmp_path / "mdir").mkdir()
+    r = run("build", "--out", "p.md", "--manifest", "mdir", "a.txt", cwd=tmp_path)
+    assert r.returncode != 0 and "Traceback" not in r.stderr, r.stderr
+    assert not (tmp_path / "p.md").exists()
+
+
+def test_verify_refuses_manifest_without_packet_digest(tmp_path):
+    make(tmp_path, "a.txt", b"x\n")
+    assert run("build", "--out", "p.md", "--manifest", "m.json", "a.txt", cwd=tmp_path).returncode == 0
+    m = json.loads((tmp_path / "m.json").read_text(encoding="utf-8"))
+    del m["packet_sha256"]
+    (tmp_path / "m.json").write_text(json.dumps(m), encoding="utf-8")
+    (tmp_path / "p.md").write_text("any packet at all\n", encoding="utf-8")
+    r = run("verify", "--manifest", "m.json", cwd=tmp_path)
+    assert r.returncode == 1, r.stdout + r.stderr
+
+
+def test_verify_checks_the_packet_actually_sent(tmp_path):
+    make(tmp_path, "a.txt", b"x\n")
+    assert run("build", "--out", "p.md", "--manifest", "m.json", "a.txt", cwd=tmp_path).returncode == 0
+    sent = tmp_path / "sent.md"
+    sent.write_bytes((tmp_path / "p.md").read_bytes())
+    r = run("verify", "--manifest", "m.json", "--packet", "sent.md", cwd=tmp_path)
+    assert r.returncode == 0 and json.loads(r.stdout)["packet"] == "match", r.stdout + r.stderr
+    sent.write_bytes(sent.read_bytes() + b"edited\n")
+    r = run("verify", "--manifest", "m.json", "--packet", "sent.md", cwd=tmp_path)
+    assert r.returncode == 3 and json.loads(r.stdout)["packet"] == "mismatch"
+
+
 def test_path_outside_root_is_refused(tmp_path):
     root = tmp_path / "root"
     root.mkdir()
