@@ -357,14 +357,5 @@ resolved_dispositions:
     members: [scripts/cron/cron_apply.py, scripts/cron/setup-cron.sh, scripts/setup/new-machine-setup.sh]
     resolved_on: "2026-07-12"
     pull_request: 3492
-    # Re-affirmed 2026-10-09 (board card O17): schedule-tasks.yaml adds the
-    # manual-only coordinator-dispatch-loop registration. The existing #3475
-    # disposition still holds because the task is not installed by cron and
-    # remains inert unless an operator runs it with --apply. Digest computed
-    # from git index blobs on Linux.
-    # Re-affirmed 2026-10-09 (board card X08): schedule-tasks.yaml carries
-    # the team-summary refresh registration and current main scheduler entries.
-    # The #3475 disposition still holds because the generated identity inventory
-    # is regenerated from the same governed catalog, registry and state-class
-    # inputs. Digest computed from git index blobs on Linux.
-    source_digest: 328b017ea346ce68da0fef8fe696d9f489cdae44a87363172872cc811abf77ec
+    # Provisional: owner to confirm digest re-affirmation at merge; owner approval for the report-only ace-linux-1 registration: board card O17 (2026-10-09T16:55Z).
+    source_digest: 2e140cb8ea0ff52b4d423d6f0a0af91dc806786a60ab0cae9d991e44e13e6760
