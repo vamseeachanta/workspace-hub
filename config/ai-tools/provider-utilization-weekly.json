@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-10T09:21:17.344669Z",
+  "generated_at": "2026-10-10T13:21:21.363516Z",
   "current_week": "2026-W41",
   "report_weeks": 8,
   "subscriptions": {
@@ -602,19 +602,27 @@
       "claude": {
         "provider": "claude",
         "week": "2026-W41",
-        "sessions": 7,
-        "post_records": 8,
-        "activity_utilization_pct": 0.0,
+        "sessions": 8,
+        "post_records": 52,
+        "activity_utilization_pct": 0.1,
         "quota_utilization_pct": null,
-        "reported_utilization_pct": 0.0,
+        "reported_utilization_pct": 0.1,
         "utilization_basis": "activity_vs_recent_peak",
         "quota_basis": "unavailable",
         "quota_source": "unavailable",
-        "quota_snapshot_ts": "2026-10-10T09:20:04Z",
+        "quota_snapshot_ts": "2026-10-10T13:20:04Z",
         "top_tools": [
           {
             "tool": "Read",
-            "count": 7
+            "count": 21
+          },
+          {
+            "tool": "Grep",
+            "count": 17
+          },
+          {
+            "tool": "Glob",
+            "count": 13
           },
           {
             "tool": "Bash",
@@ -622,7 +630,7 @@
           }
         ],
         "first_ts": "2026-10-05T06:35:41Z",
-        "last_ts": "2026-10-05T22:44:19Z",
+        "last_ts": "2026-10-10T13:04:38Z",
         "note": "quota unavailable from unavailable; using activity fallback"
       },
       "codex": {
@@ -631,12 +639,12 @@
         "sessions": 33,
         "post_records": 1382,
         "activity_utilization_pct": 3.6,
-        "quota_utilization_pct": 38.0,
-        "reported_utilization_pct": 38.0,
+        "quota_utilization_pct": 41.0,
+        "reported_utilization_pct": 41.0,
         "utilization_basis": "quota",
         "quota_basis": "quota",
         "quota_source": "app-server-live",
-        "quota_snapshot_ts": "2026-10-10T09:20:04Z",
+        "quota_snapshot_ts": "2026-10-10T13:20:04Z",
         "top_tools": [
           {
             "tool": "Bash",
@@ -702,9 +710,9 @@
   "underutilization_alerts": [
     {
       "provider": "claude",
-      "reported_utilization_pct": 0.0,
+      "reported_utilization_pct": 0.1,
       "basis": "activity_vs_recent_peak",
-      "message": "claude at 0.0% (activity_vs_recent_peak)"
+      "message": "claude at 0.1% (activity_vs_recent_peak)"
     },
     {
       "provider": "agy",
