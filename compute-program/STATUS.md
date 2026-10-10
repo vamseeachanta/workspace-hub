@@ -14,9 +14,9 @@ anything client-specific stay on the private side.
 
 | # | Workstream | Deliverable | Runs on | State |
 |---|---|---|---|---|
-| 1 | Fleet solver baseline (digitalmodel#2300 follow-on) | Cross-machine timing and reproducibility report for OrcaFlex, OrcaWave, AQWA, MAPDL, OpenFOAM | OpenFOAM leg: dev-primary, dev-secondary. Licensed leg: licensed-win-1 | OpenFOAM leg done on dev-primary. Licensed leg not run. |
-| 2 | Licensed vs open-source diffraction | One box barge through OrcaWave, AQWA and Capytaine; heave added mass and heave RAO compared | Capytaine: dev-primary. Licensed: from workstream 1 | Capytaine leg done. Waiting on the licensed leg. |
-| 3 | OpenFOAM known-answer case study (digitalmodel#1161) | Client-facing summary of the known-answer cases, re-run independently at a pinned commit | dev-primary | Six cases re-running. |
+| 1 | Fleet solver baseline (digitalmodel#2300 follow-on) | Cross-machine timing and reproducibility report for OrcaFlex, OrcaWave, AQWA, MAPDL, OpenFOAM | OpenFOAM leg: dev-primary, dev-secondary. Licensed leg: licensed-win-1 | OpenFOAM leg done on dev-primary ([page](https://github.com/vamseeachanta/digitalmodel/pull/2323)). Licensed leg not run. |
+| 2 | Licensed vs open-source diffraction | One box barge through OrcaWave, AQWA and Capytaine; heave added mass and heave RAO compared | Capytaine: dev-primary. Licensed: from workstream 1 | Capytaine leg done and written up (digitalmodel#2323). Waiting on the licensed leg. |
+| 3 | OpenFOAM known-answer case study (digitalmodel#1161) | Client-facing summary of the known-answer cases, re-run independently at a pinned commit | dev-primary | Five cases re-run and written up (digitalmodel#2323); three more running. |
 | 4 | Matched AQWA/OrcaWave 13-hull benchmark (digitalmodel#2140) | Report draft reviewed and issued | Agent work, no compute | Not started. Draft is in the private data repository. |
 | 5 | Drilling-riser coupling-station timing probe (digitalmodel#2297) | Measured cost of the 0.1 m coupling segments, required before any batch | The single Orcina seat, licensed-win-1 | Not started. Needs the seat and the private case matrix. |
 
@@ -66,16 +66,37 @@ the lid changes heave added mass there by 2.7 %. The licensed solvers need the
 same treatment stated before the three are compared. No licensed numbers are
 in hand yet, so there is no comparison to report.
 
-### Workstream 3
+### Workstream 3: OpenFOAM known-answer re-run
 
-Six cases started on dev-primary (cylinder Re=100, laminar flat plate,
-turbulent flat plate, dam break, wave tank, NACA 0012 polar). Results pending.
+Case files copied from digitalmodel `4f7bfc0c` to a clean directory on
+dev-primary and run with the README commands. Each completed case reproduces
+the figure the repository already publishes.
+
+| Case | Quantity | Reference | Published | Re-run |
+|---|---|---|---|---|
+| Cylinder, Re = 100 | Mean drag coefficient | 1.33 to 1.37 | 1.344 | 1.344 |
+| | Strouhal number | 0.164 | 0.1655 | 0.1655 |
+| Laminar flat plate | Skin friction against Blasius, mean error | n/a | 4.6 % | 4.6 % |
+| Turbulent flat plate | Skin friction against Schlichting, mean error | n/a | about 9 % | 9.3 % |
+| NACA 0012 | Lift-curve slope per degree | 0.106 | 0.1037 | 0.1037 |
+| Dam break | Surge front against Martin and Moyce, mean deviation | n/a | 3.0 % | 3.0 % |
+
+Still running: wave tank, floating-body decay, then the Kleefsman wave-impact
+case (about 2.5 hours on 14 ranks).
+
+### Deliverables
+
+- digitalmodel#2323: three case-study pages under
+  `docs/reports/2026-10-09-compute-program/` (known-answer re-run, Capytaine
+  barge leg, OpenFOAM baseline). Open, not merged. Pages have not been checked
+  in a browser.
+- digitalmodel#2321: fix for digitalmodel#2320. Open, not merged; 69 tests pass.
 
 ## What is running where
 
 | Role | Now | Next |
 |---|---|---|
-| dev-primary | Workstream 3 re-runs (six serial OpenFOAM cases) | Remaining known-answer cases; report builds |
+| dev-primary | Wave tank and floating-body decay (serial); Kleefsman wave impact chained behind them | Rebuild the known-answer page with the three new results |
 | dev-secondary | Another session's CFD chain holds all physical cores. Not touched. | OpenFOAM baseline once that chain ends |
 | licensed-win-1 | Other sessions' AQWA and riser jobs. Nothing added by this program. | Licensed baseline leg in a quiet window (see blockers) |
 | licensed-win-2 | No solver work: short of memory, and its run-queue checkout is under repair by the sync session | None planned |
@@ -95,9 +116,9 @@ turbulent flat plate, dam break, wave tank, NACA 0012 polar). Results pending.
 
 ## Next steps
 
-1. Collect workstream 3 results and publish the case-study summary.
+1. Add the wave tank, floating-body and Kleefsman results to the known-answer page; review and merge digitalmodel#2323 and #2321.
 2. Run the licensed baseline leg in a quiet window; then publish the
    cross-machine baseline report and the three-solver barge comparison.
-3. Fix digitalmodel#2320 and add the report generator deferred by #2300.
+3. Add the cross-machine report generator deferred by #2300.
 4. Run the OpenFOAM baseline on dev-secondary when its current chain finishes.
 5. Review and issue the 13-hull report (workstream 4).
