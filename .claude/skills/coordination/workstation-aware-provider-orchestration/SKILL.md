@@ -345,7 +345,7 @@ Recommended guardrails for the cron prompt:
 - State the exact stop time with timezone and tell the job to stop launching after that timestamp.
 - Monitor known lanes first: OS processes, tmux sessions, worktree status, remote branches, issue labels/comments, and logs/reports.
 - Classify lanes as `RUNNING`, `READY_FOR_REVIEW`, `STALLED_NO_OUTPUT`, or `BLOCKED`.
-- Do **not** merge, close issues, force-push, hard reset/clean primary checkout, or remove `status:working` autonomously.
+- Do **not** merge, close issues, force-push, hard reset/clean primary checkout, or remove `dispatch:active` autonomously.
 - Only restart a lane when it has no live process, no ahead commit/evidence, and no duplicate active branch; restrict restarts to explicitly named stalled lanes unless the prompt has a safe shortlist rule.
 - For ready branches, run only lightweight read-only validation and leave final merge/closure to the interactive review session.
 - Keep `ace-linux-1` as control plane and avoid `ace-linux-2` GitHub mutations unless fresh auth/readiness proves safe.

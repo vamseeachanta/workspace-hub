@@ -19,7 +19,7 @@ Keep the GitHub issue tree truthful without pretending implementation happened.
    - state what remains in residual scope;
    - state how to reintroduce the work later, usually by opening a fresh issue with new evidence rather than reopening stale scope.
 4. Close the child as `not planned`.
-5. Adjust labels so the state is not ambiguous, e.g. remove `status:needs-plan`, add `status:closed` and `wontfix` if those labels exist in the repo.
+5. Adjust labels so the state is not ambiguous, e.g. remove `status:needs-plan`, add `dispatch:done` and `wontfix` if those labels exist in the repo.
 6. Comment on the parent with the scope update summary.
 7. Verify both sides:
    - child is closed with `stateReason: NOT_PLANNED`;

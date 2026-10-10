@@ -507,7 +507,7 @@ Keep the issue open when:
 - validation or review evidence is missing
 - a blocker was identified without a resolved reroute path
 
-After close/push, verify and repair status labels explicitly. Auto-closing through a `Closes #NNNN` commit can leave stale workflow labels such as `status:plan-approved` on a closed issue. Read the final issue labels, remove conflicting `status:*` labels, and apply the terminal label used by the repo (for workspace-hub, usually `status:done`) before reporting final gate state.
+After close/push, verify and repair status labels explicitly. Auto-closing through a `Closes #NNNN` commit can leave stale workflow labels such as `status:plan-approved` on a closed issue. Read the final issue labels, remove conflicting `status:*` labels, and apply the terminal label used by the repo (for workspace-hub, usually `dispatch:done`) before reporting final gate state.
 
 For generated inventory/report closeouts, preserve authoritative input snapshots rather than overwriting them with a simplified helper fixture. If a helper needs planning-time paths, parse the existing snapshot schema (for example `paths.filesystem_only_active`) and add tests for that schema. Treat accidental snapshot shrinkage as artifact drift: restore the snapshot, update the helper adapter, rerun targeted tests, regenerate only the intended closeout report, and then commit.
 

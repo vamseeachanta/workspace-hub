@@ -26,6 +26,7 @@ DEFECT_CLASSES = {
     "untransactional-dual-backend-replacement",
     "windows-task-mutation-without-verified-transaction",
     "transitive-mutation-error-swallowing",
+    "owner-runnable-pause-script-without-reference-transaction",
     # workspace-hub#3792. Distinct in kind from the classes above: those
     # describe surfaces that DO NOT implement a transaction. This one describes
     # a surface whose transaction cannot be ATTESTED. The reference shape is
@@ -90,5 +91,13 @@ DISPOSITION_CONTRACT = {
         3792,
         "systemd-user-transaction-unattestable",
         {"scripts/install/disable-cnh-source-watch-timer.sh"},
+    ),
+    "x02-memory-publisher-pausers": (
+        3982,
+        "owner-runnable-pause-script-without-reference-transaction",
+        {
+            "scripts/operations/pause-memory-publishers.sh",
+            "scripts/operations/pause-memory-publishers.ps1",
+        },
     ),
 }

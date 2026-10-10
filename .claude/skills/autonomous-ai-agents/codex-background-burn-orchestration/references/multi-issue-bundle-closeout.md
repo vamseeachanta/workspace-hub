@@ -31,7 +31,7 @@ After the Codex process exits:
 - Inspect the Codex transcript for claimed completions, blockers, and token usage.
 - Run `git status --short` in the worktree and verify the pushed branch/commits.
 - Cross-check each issue with `gh issue view --json state,labels,comments`.
-- Remove temporary `status:working` labels from issues that are closed or explicitly parked as blocked.
+- Remove temporary `dispatch:active` labels from issues that are closed or explicitly parked as blocked.
 - Keep the worktree/branch until the user accepts the bundle summary or cleanup is explicitly safe; if preserving evidence, say so.
 
 ## Useful outcome shape

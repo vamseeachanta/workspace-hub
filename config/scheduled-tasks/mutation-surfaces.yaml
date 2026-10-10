@@ -294,6 +294,36 @@ surfaces:
         transaction: *missing_transaction
         attestations: [systemd-user-enable-disable-v1]
 
+  - path: scripts/operations/pause-memory-publishers.sh
+    kind: direct-owner
+    disposition_group: x02-memory-publisher-pausers
+    operations:
+      - id: pause-current-user-crontab-lines
+        primitive: crontab-replace
+        target_kind: current-user-cron
+        scheduler_identity: local-current-user-crontab-memory-publishers
+        execution_host_binding: physical-local
+        destructive: true
+        authority_branches:
+          - {id: x02-marker-targets, mechanism: command-substring, config_source: scripts/operations/pause-memory-publishers.sh, destructive: true, strength: substring}
+        transaction: *missing_transaction
+        attestations: []
+
+  - path: scripts/operations/pause-memory-publishers.ps1
+    kind: direct-owner
+    disposition_group: x02-memory-publisher-pausers
+    operations:
+      - id: disable-memory-bridge-sync
+        primitive: windows-task-set
+        target_kind: windows-current-user-task
+        scheduler_identity: local-windows-task-scheduler-memory-bridge-sync
+        execution_host_binding: physical-local
+        destructive: true
+        authority_branches:
+          - {id: fixed-task-name, mechanism: unknown, config_source: scripts/operations/pause-memory-publishers.ps1, destructive: true, strength: unknown}
+        transaction: *missing_transaction
+        attestations: []
+
 disposition_groups:
   - group_id: legacy-crontab-writers
     issue: {repository: vamseeachanta/workspace-hub, number: 3476}
@@ -338,15 +368,19 @@ disposition_groups:
     issue: {repository: vamseeachanta/workspace-hub, number: 3792}
     members: [scripts/install/disable-cnh-source-watch-timer.sh]
     defect_class: systemd-user-transaction-unattestable
+  - group_id: x02-memory-publisher-pausers
+    issue: {repository: vamseeachanta/workspace-hub, number: 3982}
+    members: [scripts/operations/pause-memory-publishers.sh, scripts/operations/pause-memory-publishers.ps1]
+    defect_class: owner-runnable-pause-script-without-reference-transaction
 
 resolved_dispositions:
   - issue: 3475
     members: [scripts/cron/cron_apply.py, scripts/cron/setup-cron.sh, scripts/setup/new-machine-setup.sh]
     resolved_on: "2026-07-12"
     pull_request: 3492
-    # Re-affirmed 2026-10-08 (owner board card E03): a description in
-    # schedule-tasks.yaml changed for the agent:* -> ai:* label migration, which
-    # moves the governed input digest. No task, command, schedule or machine
-    # binding changed, so the #3475 disposition still holds. Digest computed
+    # Re-affirmed 2026-10-09 (board card O17): schedule-tasks.yaml adds the
+    # manual-only coordinator-dispatch-loop registration. The existing #3475
+    # disposition still holds because the task is not installed by cron and
+    # remains inert unless an operator runs it with --apply. Digest computed
     # from git index blobs on Linux.
-    source_digest: 923afc737c51855a4b530f7af0e5bed167ab51be251835257aa0b9588dac284b
+    source_digest: af00bca7207e1273b7e35fb094c01b500d32859465d942390e6e66564780a1a4

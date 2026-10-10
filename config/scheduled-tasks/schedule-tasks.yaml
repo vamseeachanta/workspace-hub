@@ -852,6 +852,26 @@ tasks:
       card rather than leaving long-lived churn for it to stash.
       Operator runbook: docs/runbooks/dispatch-pull.md. Issues #3000, #3773.
 
+  - id: coordinator-dispatch-loop
+    label: Coordinator label dispatch loop preview (#4000)
+    schedule: "0 0 31 2 *"
+    install: manual-registration-only
+    machines: [ace-linux-1]
+    roles: [control-plane]
+    requires: [bash, python3, uv, git, gh]
+    prefer: ace-linux-1
+    command: >-
+      PATH=$HOME/.local/bin:$PATH;
+      cd $WORKSPACE_HUB &&
+      uv run --with pyyaml python scripts/dispatch/coordinator_loop.py
+    log: logs/dispatch/coordinator-loop-*.log
+    is_claude_task: false
+    description: >-
+      Registered but not installed. Dry-run coordinator loop for #4000: reads
+      `dispatch:ready` / `dispatch:active` labels, routes lane work through
+      config/agents/host-role-routing.yaml, and only mutates labels or starts a
+      runner when an operator supplies `--apply` and a runner command.
+
   - id: repo-ecosystem-hygiene
     label: Repo ecosystem hygiene audit
     schedule: "35 5 * * *"
@@ -979,7 +999,11 @@ tasks:
       bash scripts/cron-repository-sync.sh
     log: logs/repository-sync-*.log
     is_claude_task: false
-    description: Pull from remotes, push derived state; every 4 hours.
+    description: >-
+      Pull from remotes, push derived state; every 4 hours. For the workspace-hub
+      checkout itself, the cron wrapper performs only a clean-tree fast-forward
+      from origin/main and never commits local drift; dirty or non-fast-forward
+      state is reported and stops the hub phase non-zero.
 
   - id: repository-sync-ace-linux-1
     label: Repository sync (ace-linux-1; workspace-hub via machine branch)
