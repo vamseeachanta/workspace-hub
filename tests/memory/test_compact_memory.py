@@ -39,21 +39,18 @@ def test_dry_run_writes_no_files(memory_root: Path, work_queue_root: Path) -> No
     assert "audit" in result.stdout.lower() or "eviction" in result.stdout.lower()
 
 
-# ── T2: done-WRK eviction ────────────────────────────────────────────────────
+# ── T2: legacy done-WRK lookup retired ───────────────────────────────────────
 
-def test_done_wrk_eviction(memory_root: Path, work_queue_root: Path) -> None:
-    """Bullets referencing done WRK items are moved to archive/done-wrk.md."""
+def test_done_wrk_eviction_is_retired(memory_root: Path, work_queue_root: Path) -> None:
+    """Legacy .claude/work-queue lookup no longer evicts memory bullets."""
     result = run_script(memory_root=memory_root, work_queue_root=work_queue_root)
     assert result.returncode == 0, result.stderr
 
     archive_file = memory_root / "archive" / "done-wrk.md"
-    assert archive_file.exists(), "archive/done-wrk.md must be created"
-    content = archive_file.read_text()
-    assert "WRK-001" in content, "done-WRK bullet must appear in archive"
+    assert not archive_file.exists(), "done-WRK archive must not be created from legacy queue files"
 
-    # original topic file should not still contain the WRK-001 ref
     topic = (memory_root / "ai-orchestration.md").read_text()
-    assert "WRK-001" not in topic
+    assert "WRK-001" in topic
 
 
 # ── T3: path staleness (opt-in) ──────────────────────────────────────────────
@@ -90,8 +87,8 @@ def test_keep_marker_survives_eviction(memory_root: Path, work_queue_root: Path)
 
 # ── T5: keep marker does NOT exempt done-WRK eviction ───────────────────────
 
-def test_keep_does_not_exempt_done_wrk(memory_root: Path, tmp_path: Path) -> None:
-    """# keep does not protect a done-WRK reference from eviction."""
+def test_keep_marked_wrk_reference_survives_retired_done_lookup(memory_root: Path, tmp_path: Path) -> None:
+    """Done-WRK lookup is retired, so # keep WRK bullets are preserved."""
     # add a keep-marked done-WRK bullet
     topic = memory_root / "ai-orchestration.md"
     topic.write_text(
@@ -109,7 +106,7 @@ def test_keep_does_not_exempt_done_wrk(memory_root: Path, tmp_path: Path) -> Non
     assert result.returncode == 0, result.stderr
 
     topic_text = topic.read_text()
-    assert "WRK-001 old fact" not in topic_text, "done-WRK eviction ignores # keep"
+    assert "WRK-001 old fact" in topic_text
 
 
 # ── T6: compaction frees lines from oversized topic file ────────────────────
