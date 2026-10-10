@@ -5,7 +5,6 @@ state_dir: "~/.local/state/local-ci"
 job_timeout_seconds: 900
 repos:
   - name: llm-wiki-acma
-  - name: deckhand
   - name: achantas-data
   - name: llm-wiki-fdas
   - name: aceengineer-admin

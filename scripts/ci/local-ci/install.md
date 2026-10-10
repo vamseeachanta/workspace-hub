@@ -14,7 +14,6 @@ sudo loginctl enable-linger ghrunner
 2. Create a fine-grained GitHub token for `vamseeachanta` with access only to:
 
 - `llm-wiki-acma`
-- `deckhand`
 - `achantas-data`
 - `llm-wiki-fdas`
 - `aceengineer-admin`
@@ -42,7 +41,7 @@ Paste the fine-grained token on stdin when prompted.
 ```bash
 mkdir -p ~/ws/vamseeachanta
 gh repo clone vamseeachanta/workspace-hub ~/ws/workspace-hub
-for repo in llm-wiki-acma deckhand achantas-data llm-wiki-fdas aceengineer-admin llm-wiki-baez; do
+for repo in llm-wiki-acma achantas-data llm-wiki-fdas aceengineer-admin llm-wiki-baez; do
   gh repo clone "vamseeachanta/${repo}" "${HOME}/ws/vamseeachanta/${repo}"
 done
 ```
