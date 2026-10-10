@@ -12,7 +12,7 @@
 1. A script measured every in-scope repository over its git-tracked files: file and line counts, function and class lengths from the Python AST, test-suite patterns, packaging inventory, imports between subpackages, byte-identical files across repositories, and same-named modules with line similarity.
 2. Nine review lanes, each restricted to read-only tools, read the code against those measurements: one per package, one for `llm-wiki`, one for the client wiki with the most tooling, one for package boundaries, one for the wiki set, and one cross-repository lane. Each lane had a budget of about sixty files.
 3. The client wiki with the most tooling was reviewed in full for tooling, including scripts under its project folders. The other eleven were compared from tree listings (path and blob identity) and tooling-only checkouts; their pages, data and project content were not read.
-4. The highest-ranked claims were re-measured independently (section 9), and the merged document was then checked by a separate verifier against the lane records and the measurements. Its 26 corrections are applied.
+4. The highest-ranked claims were re-measured independently (section 9), and the merged document was then checked in two rounds by a separate verifier against the lane records and the measurements. The corrections from both rounds are applied.
 
 Every figure below is a script measurement, a statement from a review lane, or an independent check listed in section 9. Where a cause was not confirmed in the code it is labelled a hypothesis. **Confidence** is `verified` when the code was opened and `inferred` when the finding rests on a measurement alone; where the two apply to different parts of an item, both are stated.
 
@@ -69,7 +69,7 @@ The graph is acyclic. `assetutilities` imports none of its siblings. `worldenerg
 | Equity and portfolio analysis (`specialized/finance/…`, web blueprints) | digitalmodel | assethold | assethold has the maintained `modules/stocks/`; the digitalmodel copies import a top-level `common` package that is not shipped. |
 | BSEE data components, field-development components (`ong_fd_components.py`, 1,115 lines) | digitalmodel | worldenergydata | worldenergydata holds maintained versions; line similarity 0.29 for the largest pair. |
 | Well-path module (`wellpath3D.py`, 1,986 lines, includes a desktop GUI) | digitalmodel | one owner, to be decided | A decomposed 1,250-line copy sits in worldenergydata; similarity 0.15. |
-| Riser, pipeline, wellhead and casing calculations (11 modules under `calculations/`, plus `polynomial`) | assetutilities | digitalmodel | Zero imports of `assetutilities.calculations` from digitalmodel `src`, `tests`, `scripts` or `examples`. Only `polynomial` is used inside assetutilities. |
+| Riser, pipeline, wellhead and casing calculations (11 modules under `calculations/`; `polynomial` stays) | assetutilities | digitalmodel | Zero imports of `assetutilities.calculations` from digitalmodel `src`, `tests`, `scripts` or `examples`. Only `polynomial` is used inside assetutilities. |
 | Agent tooling (`agent_os/`, `cli/create-spec*`, `devtools/`) | assetutilities (inside the importable package) | workspace tooling, outside the library | About 50 modules; no consumer import was found. |
 | Generic readers and legacy components (`common/legacy/`, 26 files with a nested second copy) | worldenergydata core member | BSEE member for the four live callers; delete the remainder | 17 references in 9 files; four are outside the legacy tree. |
 
@@ -106,18 +106,18 @@ Impact, effort and risk are the reviewers' ratings. Effort: **S** under one day,
 | P3 | Declare the assetutilities public surface with an import-contract test; declare the sibling one way with a floor that contains the imported modules | all four | High | S–M | Low | 1 | partly | verified |
 | P4 | Replace digitalmodel's second copy of the assetutilities utility layer with imports | digitalmodel, assetutilities | High | M | Medium | 2–3 | partly | verified |
 | P5 | Move misplaced modules to the owning package (Table 4) | all four | High | M | Low–Medium | 2 | partly | verified for files opened; inferred for 31 files |
-| P6 | Delete the vendored agent-tooling trees | assetutilities, assethold | High | S | Low | 0 | yes | verified (duplication); callers inferred |
+| P6 | Delete the vendored agent-tooling trees | assetutilities, assethold | Medium–High | S–M | Low–Medium | 0 | yes | verified (duplication); callers inferred |
 | P7 | Restore the assetutilities test net: collect the seven directories skipped off Windows; write test output to temporary directories | assetutilities | High | M | Medium | 1 | no | verified |
 | P8 | Correct assetutilities runtime dependencies: tooling and browser automation out, missing imports in | assetutilities | High | S–M | Medium | 1 | partly | verified (manifest); unused status inferred |
-| P9 | Extend lint, type and security gates from `src/` to `packages/` | worldenergydata | High | M | Medium | 1 | no | verified |
+| P9 | Extend the CI quality gates from `src/` to the workspace members under `packages/` | worldenergydata | High | M | Medium | 1 | no | verified |
 | P10 | Replace three overlapping test-exclusion mechanisms with one audited list | worldenergydata | High | M | Medium | 1 | no | verified |
-| P11 | Collapse duplicated scripts and delete module copies the import system cannot reach | worldenergydata | High | S–M | Low | 0 | partly | verified in part |
+| P11 | Collapse duplicated scripts and delete module copies the import system cannot reach | worldenergydata | High | S–M | Low | 0, 1 | partly | verified in part |
 | P12 | Make workspace members stop importing the root distribution | worldenergydata | High | L | Medium | 3 | no | verified (imports); installability inferred |
 | P13 | Remove legacy forks: the nested `legacy/legacy/` tree, `src/validators`, and the five `DataValidator` copies | worldenergydata, digitalmodel, assetutilities | Medium | M | Medium | 0, 2 | partly | verified |
-| P14 | Turn the three engine dispatchers into lazy registries | digitalmodel, assetutilities, assethold | High | M | Medium | 2 | partly | verified |
+| P14 | Turn the three engine dispatchers into lazy registries | digitalmodel, assetutilities, assethold | Medium–High | M | Medium | 2 | partly | verified |
 | P15 | Repair assethold packaging metadata; scope its session-wide mocks of 15 third-party modules | assethold | High | S–M | Low–Medium | 0, 2 | partly | verified |
 | P16 | Adopt one tooling baseline: Python floor, formatter, type-check scope, one pytest configuration per repository | all four | Medium | M | Low–Medium | 3 | partly | verified (configuration) |
-| P17 | Stop vendoring harness scripts by copy; two variants already exist | all four | Low–Medium | S | Low | 0 | yes | inferred |
+| P17 | Stop vendoring harness scripts by copy; two variants already exist | all four | Low–Medium | S–M | Low | 1 | after P29 | inferred |
 | P18 | Move code and generated output out of `docs/`, `config/` and tracked result trees | assetutilities, digitalmodel, worldenergydata | Medium | M | Low | 2 | partly | verified (presence) |
 | P19 | Split oversized modules that mix calculation, user interface and HTML generation | digitalmodel, worldenergydata, assethold | Medium | L | Medium | 4 | no | inferred |
 | P20 | Enforce the frontmatter visibility check in CI for every wiki | wiki set | High | M | Medium | 1 | no | verified |
@@ -125,11 +125,11 @@ Impact, effort and risk are the reviewers' ratings. Effort: **S** under one day,
 | P22 | Issue one redaction, data-cycle and agent-posture baseline from a template, with a drift check | wiki set | High | M | Low | 1 | no | verified |
 | P23 | Replace client-local publication gates with one shared, fail-closed implementation and per-client pattern data | wiki set | High | L | Medium | 2 | no | verified (tooling); site status not established |
 | P24 | Check content promoted from a client wiki on arrival in the generic wiki | llm-wiki | High | M | Medium | 2 | no | verified |
-| P25 | Agree the smallest common wiki skeleton; correct the template ignore rules and the project-instantiation procedure | wiki set | Medium | M | Medium | 1, 2 | partly | verified (layout) |
+| P25 | Agree the smallest common wiki skeleton; correct the template ignore rules and the project-instantiation procedure | wiki set | Medium | M | Medium | 0, 1, 2 | partly | verified (layout) |
 | P26 | Give `llm-wiki` a dependency manifest and a CI job that runs its tests; remove loader and helper copy-paste | llm-wiki | High | S–M | Medium | 1 | partly | verified |
 | P27 | In the client wiki with the most tooling: declare the `digitalmodel` dependency once; share extractor helpers; bring project test suites into CI | llm-wiki-&lt;client&gt; | High | M | Medium | 2 | partly | verified |
 | P28 | Inspect the files carrying the client-registry file name that are tracked in three client wikis | wiki set | High if a file is the full registry; otherwise Low | S | Medium | 0 | yes | file name verified; content not read |
-| P29 | Make pre-commit hook targets resolve in every checkout layout | all four | High | S | Low | 0 | yes | verified |
+| P29 | Make pre-commit hook targets resolve in every checkout layout | all four | High | S | Low | 0 | yes | verified for three; assethold inferred |
 
 Caption: Table 6 — prioritised refactor items.
 
@@ -160,7 +160,7 @@ Whether the two are ever resolved together today, and whether the imports are al
 
 **P14.** `engine()` in digitalmodel is 778 lines: about 20 solver imports at module top, an `if/elif` chain on a name, and a branch that changes argument handling when a test runner is detected. The same eager-import dispatcher exists in assetutilities and assethold. A name-to-callable table resolved lazily makes adding a workflow a table entry and lets a test import the engine without the solver stack. That it would also remove the motive for the mocks in P2 and P15 is a hypothesis.
 
-**P29.** The pre-commit configurations of the four packages reference files in a parent workspace checkout. The cross-repository lane found that those targets resolve only in one checkout layout, so the hooks that depend on them fail or are skipped in the other. The fix is to resolve the hub location from one environment variable or a vendored configuration.
+**P29.** The pre-commit configurations of the four packages reference files in a parent workspace checkout. For digitalmodel, assetutilities and worldenergydata the cross-repository lane found that those targets resolve only in one checkout layout, so the hooks that depend on them fail or are skipped in the other. assethold carries the same parent-relative references; their resolution was not tested. The fix is to resolve the hub location from one environment variable or a vendored configuration.
 
 ### 5.2 Test debt
 
@@ -192,7 +192,7 @@ The mechanism is verified in the code. Its share of the failures is **not establ
 
 **P8.** assetutilities declares 37 runtime dependencies. No import was found in its `src` for a web framework, three browser-automation packages, or the release tools `build`, `twine` and `bumpver`; `ruff` is listed as a runtime dependency and again under `dev`. Imported and not declared: `colorama`, `PIL`, `sqlalchemy`, `pyodbc`, `psycopg2`. Every consumer installs the declared set transitively. The scan covered direct import statements in `src` only.
 
-**P9.** worldenergydata CI runs black and isort on `src/ tests/`, flake8 and the security scan on `src/`, and mypy on `src/worldenergydata/`. `src` holds 36,131 source lines; `packages` holds 288,773.
+**P9.** The worldenergydata CI quality gates (formatting, lint and type checking) are scoped to `src/` and `tests/` and do not yet cover the workspace members. `src` holds 36,131 source lines; `packages` holds 288,773.
 
 **P16.**
 
@@ -229,7 +229,7 @@ Caption: Table 9 — proposed single sources for the wiki set.
 
 ### 6.3 Publication and redaction controls, ranked by exposure
 
-1. **P20.** The frontmatter visibility check runs only where a per-host installer has written an untracked hook. No workflow invokes it. Its path filter covers three directory names, while the content directories in use across the set include five others, and it does not fail closed in every condition.
+1. **P20.** The frontmatter visibility check is not enforced in CI, and its path filter does not match all of the content directories in use across the set.
 2. **P23.** Two client wikis carry outward-publication tooling, as separate implementations; in one the redaction lint is advisory, and in one the leak check is a short hard-coded pattern list. One of them has a site-deployment workflow; whether that site is enabled or public, and whether branch protection makes any of these gates blocking, is not established.
 3. **P21.** No secret scanning exists anywhere in the set. Credential filename patterns appear in the ignore rules of 2 of 12.
 4. **P24.** The gate for promoting content from a client wiki to the generic one is a written procedure only; no receiving-side check exists.
@@ -238,11 +238,11 @@ Caption: Table 9 — proposed single sources for the wiki set.
 
 ### 6.4 Structure (P25)
 
-The hub template defines content, source, report and ledger directories, a project template folder and five root control files. The smallest common skeleton in use today is `README.md` alone. Three matters need a decision or correction: which directory name is the content root (two conventions are in use); the template ignore rules, which exclude every `raw/` directory although the data policy requires as-received data to be tracked under `data/<dataset>/raw/` (four wikis have each worked around this differently); and the project-instantiation procedure, on which the routing rule, the bootstrap skill and the one rendered project template disagree. Two repositories in the registry are not client engagements and should be reclassified.
+The hub template defines content, source, report and ledger directories, a project template folder and five root control files. The smallest common skeleton in use today is `README.md` alone. Three matters need a decision or correction: which directory name is the content root (two conventions are in use); the template ignore rules, which exclude every `raw/` directory although the data policy requires as-received data to be tracked under `data/<dataset>/raw/` (four wikis have each worked around this differently); and the project-instantiation procedure, on which the routing rule, the bootstrap skill and the one rendered project template disagree. Two of the twelve repositories are not client engagements; how the registry classifies them is not established.
 
 ### 6.5 `llm-wiki` tooling (P26)
 
-No CI job runs the test suite and no manifest declares its dependencies. Module-loader boilerplate is repeated in 151 test files. JSON, JSONL and hashing helpers are re-declared 145 times across 88 files under `scripts/ingest/`; six source-manifest helpers alone recur in up to 17 files. The coordination helper named in hub agent instructions has lock-handling gaps that the lane rates High impact, effort S; the detail is in the private review record. A file-length cap of 400 lines is enforced by a test; that the cap caused the compressed formatting and split modules observed is a hypothesis, since no commit history was read. A per-function limit already exists in the same test.
+No CI job runs the test suite and no manifest declares its dependencies. Module-loader boilerplate is repeated in 151 test files. JSON, JSONL and hashing helpers are re-declared 145 times across 88 files under `scripts/ingest/`; six source-manifest helpers alone recur in up to 17 files. The coordination helper that both pipeline entry points in `llm-wiki` depend on has lock-handling gaps that the lane rates High impact, effort S; the detail is in the private review record. A file-length cap of 400 lines is enforced by a test; that the cap caused the compressed formatting and split modules observed is a hypothesis, since no commit history was read. A per-function limit already exists in the same test.
 
 ### 6.6 Client wiki with the most tooling (P27)
 
@@ -252,9 +252,9 @@ No CI job runs the test suite and no manifest declares its dependencies. Module-
 
 | Wave | Purpose | Items | Gate before the next wave |
 |---|---|---|---|
-| 0 | Remove dead weight and close the cheapest control gaps. Intended to be behaviour-preserving; each deletion needs its caller check first | P6, P17, P21, P28, P29; the deletion parts of P11, P13 and P15 (packaging) | Suites pass unchanged; duplicate count re-measured |
-| 1 | Make the test and CI signal trustworthy before code moves | P2, P3, P7, P8, P9, P10, P20, P22, P26; the content-root decision of P25 | A seeded full-suite run per package; contract test green in all three consumers |
-| 2 | Move code across package boundaries, behind the wave-1 signal | P1, P5, P14, P18, P23, P24, P27; the identical-logic modules of P4; the remainder of P13; the mock scoping of P15; the skeleton rollout of P25 | All three consumers resolve and test against the slimmed assetutilities |
+| 0 | Remove dead weight and close the cheapest control gaps. Intended to be behaviour-preserving; each deletion needs its caller check first | P6, P21, P28, P29; the deletion parts of P11 and P13; the packaging part of P15; the template corrections of P25 | Suites pass unchanged; duplicate count re-measured |
+| 1 | Make the test and CI signal trustworthy before code moves | P2, P3, P7, P8, P9, P10, P17, P20, P22, P26; the script collapse of P11; the content-root decision of P25 | A seeded full-suite run per package; contract test green in all three consumers |
+| 2 | Move code across package boundaries, behind the wave-1 signal | P1, P5, P14, P18, P23, P24, P27; the identical-logic modules and the plotting module of P4; the remainder of P13; the mock scoping of P15; the skeleton rollout of P25 | All three consumers resolve and test against the slimmed assetutilities |
 | 3 | Structural work that depends on wave 2 | P12, P16; the database and application-manager modules of P4 | n/a |
 | 4 | Decomposition of oversized modules, one module per change | P19 | n/a |
 
@@ -284,7 +284,7 @@ Smallest independently shippable steps. Ratings for each parent item are in Tabl
 16. Correct the wiki template ignore rules and the project-instantiation procedure (P25).
 17. Keep one pytest configuration per repository, setting any newly effective coverage threshold to the measured current value first (P16).
 
-P17 becomes a quick win once P29 has settled the delivery mechanism.
+P17 follows once P29 has settled the delivery mechanism.
 
 ## 9. Independent checks
 
@@ -297,7 +297,7 @@ These checks were run by script or search after the lanes reported. The table is
 | assetutilities declared three ways (P3) | Three manifests read by script | Reproduced; version 0.1.1 |
 | 49 assignments in 41 files; no teardown in the main offender (P2) | Pattern count over `tests/`; search of `tests/simple_engine_test.py` for teardown constructs | 49 in 41; 0 teardown constructs |
 | `engine()` is 778 lines (P14) | Python AST | 778 |
-| Lint gates cover `src/` only (P9) | CI workflow lines; measured line counts | Reproduced; 36,131 against 288,773 |
+| CI quality gates are scoped to `src/` and `tests/` (P9) | CI workflow lines; measured line counts | Reproduced; 36,131 against 288,773 |
 | 98 bare `common` imports in 33 files (3.3) | Pattern count over `src/` | 98 in 33; no top-level `common` directory |
 | No digitalmodel import of `assetutilities.calculations` (Table 4) | Search of `src`, `tests`, `scripts`, `examples` | 0 in all four trees |
 | Tracked test output in assetutilities (P7) | `git ls-files` under `tests/modules/**/results/` | 302 tracked files; the lane counted 125 result files plus 199 other output files in the working tree |
@@ -320,7 +320,7 @@ Caption: Table 11 — claims re-measured after the review lanes reported.
 - Unused status of each assetutilities runtime dependency: dynamic imports and use from `tests/` or `scripts/` were not scanned.
 - Overlap between unit-conversion constants in worldenergydata and the assetutilities units registry; overlap in logging and caching helpers. Not assessed.
 - Whether the site-deployment workflow in one client wiki corresponds to an enabled or public site, and whether branch protection makes any wiki gate blocking.
-- The content of the three registry-named files, and how they came to be tracked.
+- The content of the three registry-named files, and how they came to be tracked; whether the registry lists all twelve repositories and how it classifies the two that are not client engagements.
 - Pass or fail state of any excluded or uncollected test population. No test was executed by this review.
 
 ## 11. Limits
@@ -329,4 +329,4 @@ Caption: Table 11 — claims re-measured after the review lanes reported.
 - Each review lane had a budget of about sixty files. Findings marked `inferred` rest on measurements and names.
 - Line similarity is a text measure; two files at 0.42 may differ in behaviour in ways the figure does not show.
 - Eleven of the twelve client wikis were reviewed from tooling paths only. Their content, and therefore the adequacy of any redaction actually applied, was outside the review.
-- Impact, effort and risk are reviewer judgements, not measurements. Where two lanes rated the same work differently, both ratings are given.
+- Impact, effort and risk are reviewer judgements, not measurements. Where lanes rated the same work differently, Table 6 gives the range.
