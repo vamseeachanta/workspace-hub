@@ -76,6 +76,14 @@ jobs:
         run: |
           uv run python -m pytest tests/enforcement/test_script_reference_integrity.py -v --tb=short
 
+      # Shell test helper guards (#3876): no tracked shell harness may call a
+      # conditionally-defined helper without a guard, and the runtime guard
+      # library must reject undefined helpers and empty snapshot records.
+      - name: Run shell test helper guard checks
+        run: |
+          uv run python -m pytest tests/enforcement/test_check_shell_conditional_helpers.py \
+            tests/enforcement/test_shell_test_guards.py -v --tb=short
+
       - name: Generate test summary
         if: always()
         run: |
