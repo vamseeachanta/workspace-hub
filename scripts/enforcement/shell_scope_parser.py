@@ -11,6 +11,11 @@ from __future__ import annotations
 import re
 from dataclasses import dataclass, field
 
+try:
+    from shell_sanitizer import Sanitizer
+except ModuleNotFoundError:
+    from scripts.enforcement.shell_sanitizer import Sanitizer
+
 NAME_RE = re.compile(r"^[A-Za-z_][A-Za-z0-9_:.-]*$")
 ASSIGN_RE = re.compile(r"^[A-Za-z_][A-Za-z0-9_]*(\[[^]]*\])?\+?=")
 TOKEN_RE = re.compile(r";;|&&|\|\||[;&|(){}]|[^\s;&|(){}]+")
@@ -37,16 +42,42 @@ BRACE_KINDS = {"brace", "function", "list"}
 NO_OP_ACTIONS = {"true", ":"}
 
 
+def strip_shell_comment(raw: str) -> str:
+    """Remove lexical shell comments for continuation detection."""
+    quote: str | None = None
+    i = 0
+    while i < len(raw):
+        ch = raw[i]
+        if ch == "\\":
+            i += 2
+            continue
+        if quote:
+            if ch == quote:
+                quote = None
+            i += 1
+            continue
+        if ch in ("'", '"', "`"):
+            quote = ch
+        elif ch == "#" and (i == 0 or raw[i - 1] in " \t;&|("):
+            return raw[:i].rstrip()
+        i += 1
+    return raw.rstrip()
+
+
 @dataclass
 class Frame:
     kind: str  # if | case | loop | function | list | subshell | brace
     start: int
     end: int | None = None
+    start_order: int = 0
+    end_order: int | None = None
     branch: int = 0
     has_else: bool = False
     ensures: str | None = None  # name from ``if ! declare -F <name>``
     parent: Frame | None = None  # nearest enclosing scope (never a plain brace)
     defs: dict[str, set[int]] = field(default_factory=dict)  # name -> branches
+    branch_starts: dict[int, tuple[int, int]] = field(default_factory=dict)
+    branch_ends: dict[int, tuple[int, int]] = field(default_factory=dict)
 
     @property
     def transparent(self) -> bool:
@@ -58,139 +89,17 @@ class Frame:
 class Definition:
     name: str
     line: int
+    order: int
     frame: Frame | None  # None = unconditional
 
 
 @dataclass
 class Guard:
     line: int
+    order: int
     frame: Frame | None
     acted: bool
-
-
-class Sanitizer:
-    """Blank out quoted literals and comments, keep command substitutions.
-
-    The context stack persists across lines so multi-line strings and
-    substitutions are handled. Each entry is ``[kind, paren_depth]``; kinds are
-    ``code`` (top level or ``$(...)``), ``bt`` (backticks), ``sq``, ``ansi``
-    (``$'...'``) and ``dq``.
-    """
-
-    def __init__(self) -> None:
-        self.stack: list[list] = [["code", 0]]
-
-    @property
-    def at_top_level(self) -> bool:
-        return len(self.stack) == 1
-
-    def line(self, raw: str) -> str:
-        out: list[str] = []
-        i = 0
-        while i is not None and i < len(raw):
-            kind = self.stack[-1][0]
-            if kind in ("sq", "ansi"):
-                i = self._single(raw, i, kind == "ansi")
-            elif kind == "dq":
-                i = self._double(raw, i, out)
-            else:
-                i = self._code(raw, i, out)
-        return "".join(out)
-
-    def _single(self, raw: str, i: int, ansi: bool) -> int:
-        if ansi and raw[i] == "\\":
-            return i + 2
-        if raw[i] == "'":
-            self.stack.pop()
-        return i + 1
-
-    def _double(self, raw: str, i: int, out: list[str]) -> int:
-        ch, nxt = raw[i], raw[i + 1 : i + 2]
-        if ch == "\\":
-            return i + 2
-        if ch == '"':
-            self.stack.pop()
-        elif ch == "`":
-            self.stack.append(["bt", 0])
-            out.append(" ( ")
-        elif raw.startswith("$((", i):
-            return self._skip_arith(raw, i + 3)
-        elif ch == "$" and nxt == "(":
-            self.stack.append(["code", 0])
-            out.append(" ( ")
-            return i + 2
-        elif ch == "$" and nxt == "{":
-            return self._skip_param(raw, i + 2)
-        return i + 1
-
-    def _code(self, raw: str, i: int, out: list[str]) -> int | None:
-        ch, nxt = raw[i], raw[i + 1 : i + 2]
-        ctx = self.stack[-1]
-        if ch == "\\":
-            return i + 2
-        if ch == "$" and nxt == "'":
-            self.stack.append(["ansi", 0])
-            out.append("S")
-            return i + 2
-        if raw.startswith("$((", i) or (
-            raw.startswith("((", i) and (i == 0 or raw[i - 1] in " \t;&|(!")
-        ):
-            # Arithmetic: names inside are variables, not commands.
-            out.append(" A ")
-            return self._skip_arith(raw, i + (3 if ch == "$" else 2))
-        if ch in "'\"":
-            self.stack.append(["sq" if ch == "'" else "dq", 0])
-            out.append("S")
-        elif ch == "`":
-            self._backtick(out)
-        elif ch == "#" and (i == 0 or raw[i - 1] in " \t;&|("):
-            return None  # comment runs to end of line
-        elif ch == "$" and nxt == "{":
-            out.append("V")
-            return self._skip_param(raw, i + 2)
-        elif ch == "$" and nxt == "(":
-            self.stack.append(["code", 0])
-            out.append(" ( ")
-            return i + 2
-        elif ch in "()":
-            self._paren(ch, ctx, out)
-        else:
-            out.append(ch)
-        return i + 1
-
-    def _backtick(self, out: list[str]) -> None:
-        if self.stack[-1][0] == "bt":
-            self.stack.pop()
-            out.append(" ) ")
-        else:
-            self.stack.append(["bt", 0])
-            out.append(" ( ")
-
-    def _paren(self, ch: str, ctx: list, out: list[str]) -> None:
-        if not self.at_top_level and ctx[0] == "code":
-            if ch == "(":
-                ctx[1] += 1
-            elif ctx[1] == 0:
-                self.stack.pop()
-            else:
-                ctx[1] -= 1
-        out.append(f" {ch} ")
-
-    @staticmethod
-    def _skip_arith(raw: str, i: int) -> int:
-        depth = 2
-        while i < len(raw) and depth:
-            depth += {"(": 1, ")": -1}.get(raw[i], 0)
-            i += 1
-        return i
-
-    @staticmethod
-    def _skip_param(raw: str, i: int) -> int:
-        depth = 1
-        while i < len(raw) and depth:
-            depth += {"{": 1, "}": -1}.get(raw[i], 0)
-            i += 1
-        return i
+    branch: int | None = None
 
 
 class Analyser:
@@ -202,10 +111,12 @@ class Analyser:
         self.frames: list[Frame] = []
         self.defs: list[Definition] = []
         self.guards: dict[str, list[Guard]] = {}
-        self.refs: list[tuple[str, int]] = []
+        self.refs: list[tuple[str, int, int]] = []
         self.heredoc: tuple[str, bool] | None = None
         self.in_list = False  # after && / || on the current command line
         self.pending_body = False  # a definition's body has not opened yet
+        self.command_order = 0
+        self.current_order = 0
 
     def run(self, text: str) -> Analyser:
         lines = text.splitlines()
@@ -214,12 +125,15 @@ class Analyser:
             if self.heredoc is not None:
                 self._heredoc_line(raw)
                 continue
-            if raw.endswith("\\") and not raw.endswith("\\\\"):
-                pending, first = pending + raw[:-1] + " ", first or lineno
+            code = strip_shell_comment(raw)
+            if pending and not code.strip():
                 continue
-            if TRAILING_OP_RE.search(raw):
+            if code.endswith("\\") and not code.endswith("\\\\"):
+                pending, first = pending + code[:-1] + " ", first or lineno
+                continue
+            if TRAILING_OP_RE.search(code):
                 # A line ending in && / || / | continues the command list.
-                pending, first = pending + raw + " ", first or lineno
+                pending, first = pending + code + " ", first or lineno
                 continue
             self._line(first or lineno, pending + raw)
             pending, first = "", 0
@@ -228,6 +142,8 @@ class Analyser:
         for frame in self.frames:
             if frame.end is None:
                 frame.end = len(lines)
+            if frame.end_order is None:
+                frame.end_order = self.command_order
         return self
 
     def _heredoc_line(self, raw: str) -> None:
@@ -276,6 +192,8 @@ class Analyser:
 
     def _command_word(self, tokens: list[str], i: int, lineno: int) -> tuple[bool, int]:
         """Handle the word at command position; return (cmd_start, next index)."""
+        self.command_order += 1
+        self.current_order = self.command_order
         tok = tokens[i]
         if tok in ("if", "case", "do"):
             self._open(tok, tokens[i + 1 : i + 5], lineno)
@@ -285,8 +203,11 @@ class Analyser:
             return False, i + 1
         if tok in ("else", "elif"):
             if self.stack and self.stack[-1].kind == "if":
-                self.stack[-1].branch += 1
-                self.stack[-1].has_else |= tok == "else"
+                frame = self.stack[-1]
+                frame.branch_ends[frame.branch] = (lineno, self.current_order)
+                frame.branch += 1
+                frame.branch_starts[frame.branch] = (lineno, self.current_order)
+                frame.has_else |= tok == "else"
             return True, i + 1
         if tok in COMMAND_PREFIX_WORDS or ASSIGN_RE.match(tok):
             return True, i + 1
@@ -311,20 +232,33 @@ class Analyser:
                     break
                 self._guard(name, tokens, i, lineno)
         elif NAME_RE.match(tok):
-            self.refs.append((tok, lineno))
+            self.refs.append((tok, lineno, self.current_order))
             if (
                 tok == "run_step"
                 and i + 2 < len(tokens)
                 and NAME_RE.match(tokens[i + 2])
             ):
-                self.refs.append((tokens[i + 2], lineno))
+                self.refs.append((tokens[i + 2], lineno, self.current_order))
 
     def _guard(self, name: str, tokens: list[str], i: int, lineno: int) -> None:
+        in_skipped_list = self.in_list
         acted = i > 0 and tokens[i - 1] in ("if", "elif")
+        scope = self._scope()
+        acted = acted and not (scope is not None and scope.branch != 0)
+        if in_skipped_list:
+            acted = False
         for j in range(i + 1, len(tokens) - 1):
+            if in_skipped_list:
+                break
+            if tokens[j] in (";", ";;", "&", "|"):
+                break
             if tokens[j] == "||" and tokens[j + 1] not in NO_OP_ACTIONS:
                 acted = True
-        self.guards.setdefault(name, []).append(Guard(lineno, self._scope(), acted))
+                break
+        branch = scope.branch if scope is not None and scope.kind == "if" else None
+        self.guards.setdefault(name, []).append(
+            Guard(lineno, self.current_order, scope, acted, branch)
+        )
 
     def _scope(self) -> Frame | None:
         for frame in reversed(self.stack):
@@ -333,7 +267,11 @@ class Analyser:
         return None
 
     def _push(self, kind: str, lineno: int) -> Frame:
-        frame = Frame(kind, lineno, parent=self._scope())
+        frame = Frame(
+            kind, lineno, start_order=self.current_order, parent=self._scope()
+        )
+        if kind == "if":
+            frame.branch_starts[0] = (lineno, self.current_order)
         self.stack.append(frame)
         self.frames.append(frame)
         return frame
@@ -352,15 +290,25 @@ class Analyser:
             return
         frame = self.stack.pop()
         frame.end = lineno
+        frame.end_order = self.current_order
+        if frame.kind == "if":
+            frame.branch_ends[frame.branch] = (lineno, self.current_order)
         self._promote(frame)
 
     def _define(self, name: str, lineno: int) -> None:
         frame = self._scope()
         if self.in_list:
             # `[[ x ]] && f() {...}` defines f only when the test succeeds.
-            frame = Frame("list", lineno, lineno, parent=frame)
+            frame = Frame(
+                "list",
+                lineno,
+                lineno,
+                start_order=self.current_order,
+                end_order=self.current_order,
+                parent=frame,
+            )
             self.frames.append(frame)
-        self.defs.append(Definition(name, lineno, frame))
+        self.defs.append(Definition(name, lineno, self.current_order, frame))
         if frame is not None:
             frame.defs.setdefault(name, set()).add(frame.branch)
         self.pending_body = True
@@ -375,14 +323,16 @@ class Analyser:
             if not covered and not (name == frame.ensures and 0 in seen):
                 continue
             parent = frame.parent
-            self.defs.append(Definition(name, frame.end or frame.start, parent))
+            promoted_line = frame.end or frame.start
+            promoted_order = frame.end_order or frame.start_order
+            self.defs.append(Definition(name, promoted_line, promoted_order, parent))
             if parent is not None:
                 parent.defs.setdefault(name, set()).add(parent.branch)
 
 
 def analyse(
     text: str,
-) -> tuple[list[Definition], dict[str, list[Guard]], list[tuple[str, int]]]:
+) -> tuple[list[Definition], dict[str, list[Guard]], list[tuple[str, int, int]]]:
     """Return (definitions, guards per name, command-position references)."""
     result = Analyser().run(text)
     return result.defs, result.guards, result.refs

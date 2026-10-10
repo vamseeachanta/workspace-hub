@@ -50,16 +50,30 @@ from shell_scope_parser import Frame, Guard, analyse
 REPO_ROOT = Path(__file__).resolve().parents[2]
 
 
-def _inside(line: int, frame: Frame) -> bool:
-    return frame.start <= line <= (frame.end or frame.start)
+def _inside(line: int, order: int, frame: Frame) -> bool:
+    start = (frame.start, frame.start_order)
+    end = (frame.end or frame.start, frame.end_order or frame.start_order)
+    return start <= (line, order) <= end
 
 
-def _guarded(line: int, guards: list[Guard], regions: list[Frame]) -> bool:
+def _inside_branch(line: int, order: int, frame: Frame, branch: int) -> bool:
+    start = frame.branch_starts.get(branch, (frame.start, frame.start_order))
+    default_end = (frame.end or frame.start, frame.end_order or frame.start_order)
+    end = frame.branch_ends.get(branch, default_end)
+    return start <= (line, order) <= end
+
+
+def _guarded(line: int, order: int, guards: list[Guard], regions: list[Frame]) -> bool:
     return any(
         g.acted
-        and g.line < line
-        and not any(_inside(g.line, f) for f in regions)
-        and (g.frame is None or _inside(line, g.frame))
+        and (g.line, g.order) < (line, order)
+        and not any(_inside(g.line, g.order, f) for f in regions)
+        and (g.frame is None or _inside(line, order, g.frame))
+        and (
+            g.branch is None
+            or g.frame is None
+            or _inside_branch(line, order, g.frame, g.branch)
+        )
         for g in guards
     )
 
@@ -72,11 +86,11 @@ def find_issues(text: str) -> list[tuple[int, str, Frame]]:
         if d.frame is not None and d.name not in unconditional:
             regions.setdefault(d.name, []).append(d.frame)
     issues = []
-    for name, line in refs:
+    for name, line, order in refs:
         frames = regions.get(name)
-        if not frames or any(_inside(line, f) for f in frames):
+        if not frames or any(_inside(line, order, f) for f in frames):
             continue
-        if not _guarded(line, guards.get(name, []), frames):
+        if not _guarded(line, order, guards.get(name, []), frames):
             issues.append((line, name, frames[0]))
     return issues
 

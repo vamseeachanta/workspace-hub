@@ -153,6 +153,58 @@ def test_guard_must_be_acted_on_and_reachable(tmp_path, guard):
     assert _run(path).returncode == 1
 
 
+@pytest.mark.parametrize(
+    "guard",
+    [
+        "declare -F helper >/dev/null; true || exit 1",
+        "true || declare -F helper >/dev/null || exit 1",
+    ],
+    ids=["ignored-before-acted-command", "guard-skipped-by-or-list"],
+)
+def test_guard_action_must_control_guard_command(tmp_path, guard):
+    path = _harness(
+        tmp_path,
+        f"""
+        if [[ "${{MODE:-target}}" == all ]]; then helper() {{ printf id; }}; fi
+        {guard}
+        before=$(helper 2>/dev/null)
+        after=$(helper 2>/dev/null)
+        [[ "$before" == "$after" ]] && echo PASS
+        """,
+    )
+    assert _run(path).returncode == 1
+
+
+def test_same_line_definition_scope_does_not_cover_later_commands(tmp_path):
+    body = (
+        "if [[ ${MODE:-target} == all ]]; then helper() { printf id; }; fi; "
+        "before=$(helper 2>/dev/null); after=$(helper 2>/dev/null); "
+        '[[ "$before" == "$after" ]] && echo PASS\n'
+    )
+    path = _harness(
+        tmp_path,
+        body,
+    )
+    assert _run(path).returncode == 1
+
+
+def test_failed_if_guard_does_not_guard_else_branch_or_after_if(tmp_path):
+    path = _harness(
+        tmp_path,
+        """
+        if [[ "${MODE:-target}" == all ]]; then helper() { printf id; }; fi
+        if declare -F helper >/dev/null; then
+          :
+        else
+          before=$(helper 2>/dev/null)
+          after=$(helper 2>/dev/null)
+          [[ "$before" == "$after" ]] && echo PASS
+        fi
+        """,
+    )
+    assert _run(path).returncode == 1
+
+
 def test_guard_on_continuation_line_counts(tmp_path):
     path = _harness(
         tmp_path,
@@ -193,6 +245,19 @@ def test_definition_after_trailing_and_operator_is_conditional(tmp_path):
     assert _run(path).returncode == 1
 
 
+@pytest.mark.parametrize(
+    "body",
+    [
+        "[[ ${X:-0} == 1 ]] &&\n# skipped comment\nhelper() { :; }\nhelper\n",
+        "[[ ${X:-0} == 1 ]] && # inline comment\nhelper() { :; }\nhelper\n",
+    ],
+    ids=["comment-only-line", "inline-comment-after-operator"],
+)
+def test_definition_after_operator_with_comments_is_conditional(tmp_path, body):
+    path = _harness(tmp_path, body)
+    assert _run(path).returncode == 1
+
+
 def test_guard_action_after_trailing_or_operator_counts(tmp_path):
     path = _harness(
         tmp_path,
@@ -212,3 +277,23 @@ def test_arithmetic_names_are_not_calls(tmp_path, expr):
         tmp_path, f"if [[ -n ${{X:-}} ]]; then helper() {{ :; }}; fi\n{expr}\n"
     )
     assert _run(path).returncode == 0
+
+
+@pytest.mark.parametrize(
+    "expr",
+    [
+        "value=$(( $(helper 2>/dev/null) + 1 ))",
+        'value="$(( $(helper 2>/dev/null) + 1 ))"',
+        "value=$(( `helper 2>/dev/null` + 1 ))",
+    ],
+    ids=["unquoted-command-substitution", "quoted-command-substitution", "backtick"],
+)
+def test_arithmetic_command_substitutions_are_calls(tmp_path, expr):
+    path = _harness(
+        tmp_path,
+        f"""
+        if [[ "${{MODE:-target}}" == all ]]; then helper() {{ printf 1; }}; fi
+        {expr}
+        """,
+    )
+    assert _run(path).returncode == 1
