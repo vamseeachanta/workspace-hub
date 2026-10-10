@@ -32,6 +32,13 @@
           "minLength": 1,
           "description": "Wiki-relative folder where HTML review copies and saved comments live."
         },
+        "link_style": {
+          "enum": [
+            "path",
+            "folder"
+          ],
+          "description": "path links to wiki-relative documents; folder links every review item to link_base."
+        },
         "return_to": {
           "type": "string",
           "minLength": 1,
@@ -59,6 +66,11 @@
             "conclusion",
             "comments"
           ]
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Optional display label for the reviewed document link."
         }
       }
     },

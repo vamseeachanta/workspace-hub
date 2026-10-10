@@ -90,8 +90,17 @@ if [[ "$touched" != "$DIR/summary.yml" ]]; then
   exit 1
 fi
 
-uv run --project "$HUB" --group dev python "$HUB/tools/team_summary/build.py" \
-  --data "$DIR/summary.yml" --out "$DIR/team-summary.pdf" --wiki-root . --check-sources --make-review-copies
+build_args=(
+  --data "$DIR/summary.yml"
+  --out "$DIR/team-summary.pdf"
+  --wiki-root .
+  --check-sources
+  --make-review-copies
+)
+if [[ -n "${TEAM_SUMMARY_PUBLISH_DIR:-}" ]]; then
+  build_args+=(--publish-dir "$TEAM_SUMMARY_PUBLISH_DIR")
+fi
+uv run --project "$HUB" --group dev python "$HUB/tools/team_summary/build.py" "${build_args[@]}"
 
 git add "$DIR/summary.yml" "$DIR/team-summary.pdf"
 copies_dir="$(uv run --project "$HUB" --group dev python -c 'import sys,yaml; d=yaml.safe_load(open(sys.argv[1], encoding="utf-8")); print((d.get("review") or {}).get("copies_dir") or "")' "$DIR/summary.yml")"
