@@ -1,6 +1,6 @@
 # Provider utilization weekly report
 
-Generated: 2026-10-10T13:21:21.363516Z
+Generated: 2026-10-10T17:21:13.403085Z
 Current week: 2026-W41
 Total monthly spend tracked: $260.0/mo
 
@@ -11,7 +11,7 @@ Quota-based utilization is preferred when available; otherwise the report falls 
 | Provider | Sessions | Post records | Reported util | Basis | Quota util | Notes |
 |---|---:|---:|---:|---|---:|---|
 | claude | 8 | 52 | 0.1% | activity_vs_recent_peak | n/a | quota unavailable from unavailable; using activity fallback |
-| codex | 33 | 1382 | 41.0% | quota | 41.0% | week_pct from app-server-live |
+| codex | 33 | 1382 | 42.0% | quota | 42.0% | week_pct from app-server-live |
 | agy | 0 | 0 | 0.0% | activity_vs_recent_peak | n/a | no quota snapshot; using activity fallback |
 | hermes | 0 | 0 | 0.0% | activity_vs_recent_peak | n/a | no quota snapshot; using activity fallback |
 
