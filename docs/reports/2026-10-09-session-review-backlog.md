@@ -9,7 +9,7 @@ Classes: **MERGE-APPROVED** owner approved, only the merge is left · **AGENT** 
 ## workspace-hub
 | ID | P | Class | Item | Remaining work | Refs | Last activity |
 |---|---|---|---|---|---|---|
-| HUB-01 | P0 | MERGE-APPROVED | Dated fleet snapshots: relabel hostnames (E02) | Mark the draft ready and merge it. | #4026, #3944 | 2026-10-09 |
+| HUB-01 | P0 | MERGE-APPROVED | Fleet snapshot labelling (E02) | Mark the draft ready and merge it. | #4026, #3944 | 2026-10-09 |
 | HUB-02 | P0 | MERGE-APPROVED | Local private-repo CI runner (T03) | Mark the draft ready and merge it. This is the CI route around the Actions billing block. | #4025 | 2026-10-10 |
 | HUB-03 | P1 | MERGE-APPROVED | Team summary generator and scheduler fingerprint sign-off (E01) | Merge #3969 (`gh pr merge 3969`). Then review and merge #3970 (task-dispatch readiness, #3968) and #4033 (review document links). | #3969, #3970, #4033, #3967, #3968 | 2026-10-10 |
 | HUB-04 | P1 | AGENT | Snapshot writer routed through the fail-closed labeller | Implement #4027: bring the VM writer in-repo, run the labeller before staging, and diagnose the safety-net refusal. Per E03, retire dated files in favour of a single latest.json. Fix the S01 test, which fails on main; latest.json has not refreshed since 09-27. Confirm the next daily run is green, then close #3944. | #4027, #3944 | 2026-10-10 |
@@ -45,7 +45,6 @@ Classes: **MERGE-APPROVED** owner approved, only the merge is left · **AGENT** 
 | DM-02 | P1 | OWNER | FFS epic Wave 1 plan-lites | Reply "Wave 1 approved" on #1057 and choose A (loaders read the private dataset at run time; recommended) or B (user-supplied tables) for the #2175 Annex C/E tables. Implementation follows. | #1057, #2175, #2181–#2185 | 2026-10-10 |
 | DM-03 | P2 | OWNER | Crack-FE report Rev C | Provide the Rev C review comments. An agent then applies them in crack_fe_report.py, regenerates the report, updates the revision metadata and does browser verification. | #2157 | 2026-10-06 |
 | DM-04 | P2 | AGENT | Crack-FE assessment MAJOR findings | Fix four phases:<br>• P3: run() can bypass receipt_problems through an injected validator, and extrapolated life is exported as case=base.<br>• P0b: NCNV is accepted as collapse without corroboration.<br>• P1: Threshold accepts a NaN dk_th.<br>• P0a: receipt provenance gaps.<br>Then re-review. | #2157 | 2026-09-26 |
-| DM-05 | P1 | OWNER | Drawing-to-digital-twin phases A2/B1 | Approve both plan-lites and choose the DWG→DXF route: private LibreDWG (recommended), manual ODA, or defer. Confirm drawing units/scale and publication rights (the open points from the closed #2305). Codex jobs then run one at a time. | #2272, #2305, #2308 | 2026-10-10 |
 | DM-06 | P1 | AGENT | Hull parametric forms #2241 items 3–4 (A01 approved) | Dispatch the Codex jobs for semi-sub/spar generators and moonpools, one at a time. Per T05, PR the docs/2241-brep-validity-plan file and then delete the branch. Finish the item 2 second-provider review and post the changes to #2241. Still open: bracing and AQWA-comparator decisions. Item 5 waits on items 1–2. | #2241 | 2026-10-10 |
 | DM-07 | P1 | AGENT | .sim validity checker findings (merged #2307) | Verify on main and fix with regressions: the first passing Line skips later Lines; a missing completion flag defaults to success; SimulationPaused/StoppedUnstable are accepted as completed. | #2307 | 2026-10-09 |
 | DM-08 | P2 | AGENT | OrcaFlex generator rework (#2093) | On rework/2093-orcaflex-generator: clear GIT_DIR, GIT_WORK_TREE and GIT_COMMON_DIR before the checkout probe (openfoam_batch_config.py:275–280); add .gitattributes eol rules for the smoke template and reference files; restore sys.path in test_mooring_semantic_preservation.py:124. Add regressions and open a fresh PR on current main (#2294 is closed). | #2093, #2294 | 2026-10-09 |
@@ -87,7 +86,7 @@ Classes: **MERGE-APPROVED** owner approved, only the merge is left · **AGENT** 
 | AGENT | 31 |
 | COMPUTE | 3 |
 | MERGE-APPROVED | 4 |
-| OWNER | 25 |
+| OWNER | 26 |
 | PARKED | 2 |
 
-Public rows above: 58 (AGENT 31, COMPUTE 1, MERGE-APPROVED 3, OWNER 22, PARKED 1). Private rows: 65.
+Public rows above: 57 (AGENT 31, COMPUTE 1, MERGE-APPROVED 3, OWNER 21, PARKED 1). Private rows: 66.
