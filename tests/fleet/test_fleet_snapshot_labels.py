@@ -330,3 +330,10 @@ def test_no_committed_snapshot_carries_a_hostname_shaped_name():
     for path in sorted(SNAPSHOT_DIR.glob("*.json")):
         text = path.read_text(encoding="utf-8")
         assert not fsl.HOSTNAME_SHAPE_RE.search(text), path.name
+
+
+@pytest.mark.parametrize("path", sorted(SNAPSHOT_DIR.glob("*.json")), ids=lambda p: p.name)
+def test_every_committed_snapshot_names_hosts_by_label_only(path):
+    """#3944: a raw machine name that is not hostname-shaped (a VM or laptop
+    name) also fails, because every host value must be an approved label."""
+    assert fsl.public_host_values_ok(json.loads(path.read_text(encoding="utf-8")))
