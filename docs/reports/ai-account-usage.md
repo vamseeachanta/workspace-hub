@@ -1,10 +1,10 @@
 # AI account usage (fleet)
 
-Generated 2026-10-10T22:13:36+00:00 by fleet-collector collect_account_usage_fleet. Percentages are USED; headroom = 100 - weekly used. Source of truth: `config/ai-tools/account-usage-latest.json`.
+Generated 2026-10-10T23:13:46+00:00 by fleet-collector collect_account_usage_fleet. Percentages are USED; headroom = 100 - weekly used. Source of truth: `config/ai-tools/account-usage-latest.json`.
 
 ## Recommendation
 
-- **claude**: `claude-professional` (94.0% weekly headroom) on ace-win-1, ace-win-2
+- **claude**: `claude-professional` (93.0% weekly headroom) on ace-win-1, ace-win-2
 - **codex**: `codex-professional` (94.0% weekly headroom) on ace-win-1, ace-win-2
 
 ## Accounts
@@ -12,7 +12,7 @@ Generated 2026-10-10T22:13:36+00:00 by fleet-collector collect_account_usage_fle
 | account | provider | holder | 5h used | week used | headroom | resets | sampled on | source |
 |---|---|---|---|---|---|---|---|---|
 | claude-owner | claude | owner |  |  |  |  |  | unavailable |
-| claude-professional | claude | colleague | 5% | 6% | 94% | 2026-10-17T07:59:59.746027+00:00 | ace-win-1 | oauth-api |
+| claude-professional | claude | colleague | 7% | 7% | 93% | 2026-10-17T07:59:59.978668+00:00 | ace-win-1 | oauth-api |
 | codex-owner | codex | owner |  | 42% | 58% | 2026-10-14T04:04:15+00:00 | fleet-collector | app-server-live |
 | codex-professional | codex | colleague |  | 6% | 94% | 2026-10-14T14:37:23+00:00 | ace-win-1 | app-server-live |
 
@@ -22,12 +22,13 @@ Generated 2026-10-10T22:13:36+00:00 by fleet-collector collect_account_usage_fle
 |---|---|---|---|---|
 | ace-linux-1 | yes | claude-owner | codex-owner | claude: access token expired; a Claude Code session on this host will refresh it |
 | ace-linux-2 | yes | claude-owner | codex-owner | claude: access token expired; a Claude Code session on this host will refresh it |
-| gpu-claw | no | claude-owner | codex-owner | exit 255 |
+| gpu-claw | yes | claude-owner | codex-owner | claude: credentials file has no accessToken |
 | ace-win-2 | yes | claude-professional | codex-professional |  |
 | ace-win-1 | yes | claude-professional | codex-professional |  |
 | fleet-collector | yes |  | codex-owner | claude: credentials file has no accessToken |
 
 ## Warnings
 
+- gpu-claw: codex sample's weekly window reset at 2026-09-19T11:46:38+00:00; ignored
 - ace-win-2: claude fingerprint 78d7e174f2d1 differs from claude-professional (c0c130b8018b)
 - ace-win-2: codex fingerprint 78d7e174f2d1 differs from codex-professional (c0c130b8018b)
