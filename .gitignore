@@ -654,3 +654,6 @@ data/drive-index-search/metrics/*.jsonl
 scripts/review/results/*
 !scripts/review/results/2026-10-05-3943-claude-raw.txt
 !scripts/review/results/2026-10-05-3943-agy-unavailable.md
+
+# Machine-local topic file; kept out of version control
+.claude/memory/topics/network_machines.md
