@@ -240,6 +240,54 @@ def test_chain_in_one_log_applies_to_final_path(library, tmp_path):
     assert _row(library["db"], final) is not None
 
 
+def test_swap_through_temp_name_rerun_is_noop(library, tmp_path):
+    """A->T, B->A, T->B swaps two files; a re-run must not swap the rows back."""
+    from rename import apply_renames
+
+    a, b = library["root"] / "API" / "a.pdf", library["root"] / "API" / "b.pdf"
+    a.write_bytes(b"content-a")
+    b.write_bytes(b"content-b")
+    conn = sqlite3.connect(library["db"])
+    conn.execute("UPDATE documents SET target_path=? WHERE id=1", (str(a),))
+    conn.execute("UPDATE documents SET target_path=? WHERE id=2", (str(b),))
+    conn.commit()
+    conn.close()
+    from conftest import sha256_of
+    sha_a, sha_b = sha256_of(a), sha256_of(b)
+    # perform the swap on disk
+    a.rename(library["root"] / "API" / "t.pdf")
+    b.rename(a)
+    (library["root"] / "API" / "t.pdf").rename(b)
+    rows = [("API/a.pdf", "API/t.pdf", sha_a), ("API/b.pdf", "API/a.pdf", sha_b),
+            ("API/t.pdf", "API/b.pdf", sha_a)]
+
+    first = apply_renames(library["db"], _entries(library, tmp_path, rows), dry_run=False)
+    assert first.applied == 2
+    assert _row(library["db"], b)["id"] == 1
+    assert _row(library["db"], a)["id"] == 2
+
+    again = apply_renames(library["db"], _entries(library, tmp_path, rows), dry_run=False)
+    assert again.applied == 0
+    assert _row(library["db"], b)["id"] == 1
+    assert _row(library["db"], a)["id"] == 2
+
+
+def test_name_reused_later_in_log_is_accepted(library, tmp_path):
+    from rename import apply_renames
+
+    rows = [
+        ("API/API RP 2RD (2013).pdf", "API/tmp.pdf", library["sha"]),
+        ("API/tmp.pdf", "API/API RP 2RD (2013 draft).pdf", library["sha"]),
+    ]
+    report = apply_renames(library["db"], _entries(library, tmp_path, rows), dry_run=False)
+    assert report.applied == 1
+    rows.append(("API/API RP 2RD (2013 draft).pdf", "API/tmp.pdf", library["sha"]))
+    library["new"].rename(library["root"] / "API" / "tmp.pdf")
+    report = apply_renames(library["db"], _entries(library, tmp_path, rows), dry_run=False)
+    assert report.applied == 1
+    assert _row(library["db"], library["root"] / "API" / "tmp.pdf") is not None
+
+
 def test_header_with_to_in_other_column_is_not_misread(library, tmp_path):
     from rename import parse_rename_log
 
@@ -298,6 +346,16 @@ def test_remap_into_nested_root_is_idempotent(library):
     row = _row(library["db"], library["untouched"])
     assert row["file_path"] == "/old/src/raw/API Spec 6A.pdf"
     assert row["source_dir"] == "/old/src/raw"
+
+
+def test_remap_flatten_out_of_nested_root(library):
+    from rename import remap_source_root
+
+    remap_source_root(library["db"], "/old/src", "/old/src/raw", dry_run=False)
+    assert remap_source_root(library["db"], "/old/src/raw", "/old/src", dry_run=False) == 2
+    row = _row(library["db"], library["untouched"])
+    assert row["file_path"] == "/old/src/API Spec 6A.pdf"
+    assert row["source_dir"] == "/old/src"
 
 
 def test_remap_collision_rolls_back(library):

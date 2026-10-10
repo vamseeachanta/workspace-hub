@@ -190,7 +190,10 @@ entry rejects the whole log. Re-running an applied log is a no-op.
 
 The log is append-only. Entries replay in order, so a file renamed twice is two
 rows (`A → B`, then `B → C`); only the end of each chain must exist on disk and
-match its SHA-256. A swap (`A → B` and `B → A` in one log) is rejected.
+match its SHA-256. A direct swap (`A → B`, `B → A`) is rejected; swap through a
+temporary name (`A → T`, `B → A`, `T → B`). A row whose recorded SHA-256 differs
+from an entry's is a different document and is never moved by that entry, which
+keeps re-runs of such logs no-ops.
 
 ```bash
 python rename.py --dry-run     # validate and print the plan

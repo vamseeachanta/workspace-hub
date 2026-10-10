@@ -184,7 +184,6 @@ def _plan(conn, entries: Sequence[RenameEntry], report: RenameReport) -> dict:
     errors: List[str] = []
     moves: dict = {}
     sim: dict = {}  # simulated target_path -> row ids, overriding the DB
-    seen_old, seen_new = set(), set()
     has_sha_col = _has_column(conn, 'documents', 'sha256')
 
     def ids_at(path: str) -> List[int]:
@@ -192,10 +191,6 @@ def _plan(conn, entries: Sequence[RenameEntry], report: RenameReport) -> dict:
 
     for i, e in enumerate(entries):
         where = f'line {e.line}'
-        if e.old_path in seen_old or e.new_path in seen_new:
-            errors.append(f'{where}: path appears in more than one entry')
-        seen_old.add(e.old_path)
-        seen_new.add(e.new_path)
         superseded = any(later.old_path == e.new_path for later in entries[i + 1:])
 
         if not superseded:
@@ -210,6 +205,17 @@ def _plan(conn, entries: Sequence[RenameEntry], report: RenameReport) -> dict:
                     )
 
         old_ids, new_ids = ids_at(e.old_path), ids_at(e.new_path)
+        # A rename never changes content, so a row at old_path that already records
+        # a different SHA-256 is another document that has since taken the name
+        # (e.g. on re-running a swap through a temporary name). Leave it alone.
+        old_shas = [_recorded_sha(conn, r, moves, has_sha_col) for r in old_ids]
+        if old_ids and all(s is not None and s != e.sha256 for s in old_shas):
+            old_ids = []
+        elif any(s is not None and s != e.sha256 for s in old_shas):
+            errors.append(
+                f'{where}: rows {old_ids} at {e.old_path} disagree on SHA-256'
+            )
+            continue
         if old_ids and new_ids:
             errors.append(
                 f'{where}: {e.new_path} is already the target of row(s) {new_ids}'
@@ -240,7 +246,11 @@ def _plan(conn, entries: Sequence[RenameEntry], report: RenameReport) -> dict:
             errors.append(f'{where}: old path not in inventory DB: {e.old_path}')
     if errors:
         raise ValueError('rename log rejected, nothing applied:\n  ' + '\n  '.join(errors))
-    return {r: m for r, m in moves.items() if m[0] != m[1]}
+    # Keep a round trip (A->B, B->A) only if it records a SHA-256 the row lacks.
+    return {
+        r: m for r, m in moves.items()
+        if m[0] != m[1] or _recorded_sha(conn, r, {}, has_sha_col) != m[2]
+    }
 
 
 def apply_renames(
@@ -325,8 +335,12 @@ def remap_source_root(db_path, old_root: str, new_root: str, dry_run: bool = Tru
     old_root = old_root.rstrip('/\\')
     new_root = new_root.rstrip('/\\')
 
+    nested = new_root.startswith(old_root + '/') or new_root.startswith(old_root + '\\')
+
     def where(column: str) -> Tuple[str, tuple]:
         old_sql, old_params = _under(column, old_root)
+        if not nested:
+            return old_sql, old_params
         new_sql, new_params = _under(column, new_root)
         return f'{old_sql} AND NOT {new_sql}', old_params + new_params
 
