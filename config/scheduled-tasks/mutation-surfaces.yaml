@@ -362,4 +362,8 @@ resolved_dispositions:
     # disposition still holds because the task is not installed by cron and
     # remains inert unless an operator runs it with --apply. Digest computed
     # from git index blobs on Linux.
-    source_digest: af00bca7207e1273b7e35fb094c01b500d32859465d942390e6e66564780a1a4
+    # Re-affirmed 2026-10-09 (board card T01, #3909): registry.yaml adds
+    # mystran to dev-secondary capabilities.tools. Capability metadata only;
+    # no scheduled task, cron line, or mutation surface changes, and the
+    # inventory identities are byte-identical apart from input_digest.
+    source_digest: 2b3774b28b8d9bba27d8755a9311a6210e6a2c7d331c7cd271f84affc38f182f
