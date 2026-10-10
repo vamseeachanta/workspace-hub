@@ -658,6 +658,38 @@ test_failed_provider_invalid_output_log_becomes_unavailable() {
   rm -rf "$td"
 }
 
+test_agy_missing_payload_receipt_fails_closed() {
+  run_test "agy review output without payload receipt is INVALID_OUTPUT and non-zero"
+
+  local td; td="$(mktemp -d)"
+  mkdir -p "$td/captures"
+  local fixture="$td/2026-04-17-issue-9999-test-slug.md"
+  local out="$td/out.md"
+  local err="$td/err.txt"
+  printf '%s\n%s\n' "$FIXTURE_FIRST_LINE" "Plan body line 2." > "$fixture"
+
+  local rc=0
+  (
+    export PATH="$MOCKS_DIR:$PATH"
+    export PLAN_REVIEW_CAPTURE_DIR="$td/captures"
+    export AGY_REVIEW_MODE=1
+    export AGY_CMD=agy
+    export MOCK_AGY_DO_NOT_READ_PAYLOAD=1
+    bash "${SCRIPT_DIR}/../submit-to-agy.sh" --file "$fixture" --prompt "Review this plan"
+  ) >"$out" 2>"$err" || rc=$?
+
+  if [[ "$rc" -eq 0 ]]; then
+    fail "submit-to-agy succeeded despite missing payload receipt" "$(head -20 "$out")"
+  elif ! grep -qF 'INVALID_OUTPUT' "$out"; then
+    fail "missing receipt did not emit INVALID_OUTPUT" "$(head -20 "$out")"
+  elif ! grep -qiF 'payload receipt nonce missing' "$out"; then
+    fail "INVALID_OUTPUT missing receipt reason" "$(head -20 "$out")"
+  else
+    pass "missing payload receipt failed closed with structured INVALID_OUTPUT"
+  fi
+  rm -rf "$td"
+}
+
 test_agy_large_plan_avoids_windows_argv_limit() {
   run_test "agy review handles >30KB plan without riding the Windows argv ceiling"
 
@@ -797,6 +829,7 @@ test_codex_guard_still_blocks_genuine_bad_version
 test_agy_leg_closes_stdin
 test_agy_oversize_fails_closed
 test_failed_provider_invalid_output_log_becomes_unavailable
+test_agy_missing_payload_receipt_fails_closed
 test_agy_large_plan_avoids_windows_argv_limit
 test_agy_payload_path_uses_cygpath_when_available
 test_fanout_no_provider_hangs_under_claudecode
