@@ -180,11 +180,25 @@ def _git_run(repo_path: Path, args: list[str]) -> subprocess.CompletedProcess[st
     return subprocess.run(["git", "--no-optional-locks", "-C", str(repo_path), *args], check=False, capture_output=True, text=True, env=env)
 
 
-def _collect_git_state(repo_root: Path, repos: list[str]) -> dict[str, dict[str, Any]]:
+def _classify_git_probe_error(result: subprocess.CompletedProcess[str]) -> str:
+    """Return a public diagnostic class without paths or shell remediation text."""
+    text = f"{result.stderr or ''}\n{result.stdout or ''}".lower()
+    if "dubious ownership" in text or "safe.directory" in text:
+        return "repository_ownership_untrusted"
+    if "not a git repository" in text:
+        return "not_a_git_repository"
+    if "ambiguous argument" in text or "unknown revision" in text:
+        return "revision_unavailable"
+    if "permission denied" in text:
+        return "permission_denied"
+    return f"git_exit_{result.returncode}"
+
+
+def _collect_git_state(repo_root: Path, repos: list[str], repo_aliases: dict[str, str] | None = None) -> dict[str, dict[str, Any]]:
     """Collect read-only dirty/ahead/behind state for existing repo checkouts."""
     states: dict[str, dict[str, Any]] = {}
     for repo in repos:
-        repo_path = repo_root / repo
+        repo_path = repo_root / (repo_aliases or {}).get(repo, repo)
         if not repo_path.exists() or not _is_git_metadata(repo_path):
             continue
         status = _git_run(repo_path, ["status", "--porcelain=v1"])
@@ -194,7 +208,7 @@ def _collect_git_state(repo_root: Path, repos: list[str]) -> dict[str, dict[str,
             "behind": 0,
         }
         if status.returncode != 0:
-            state["probe_error"] = f"git status failed: {status.stderr.strip() or status.stdout.strip() or status.returncode}"
+            state["probe_error"] = f"git status failed: {_classify_git_probe_error(status)}"
             states[repo] = state
             continue
         upstream = _git_run(repo_path, ["rev-parse", "--abbrev-ref", "--symbolic-full-name", "@{upstream}"])
@@ -207,9 +221,9 @@ def _collect_git_state(repo_root: Path, repos: list[str]) -> dict[str, dict[str,
                     state["behind"] = int(behind)
                     state["ahead"] = int(ahead)
                 except ValueError:
-                    state["probe_error"] = f"git rev-list produced invalid counts: {counts.stdout.strip()}"
+                    state["probe_error"] = "git rev-list produced invalid_counts"
             else:
-                state["probe_error"] = f"git rev-list failed: {counts.stderr.strip() or counts.stdout.strip() or counts.returncode}"
+                state["probe_error"] = f"git rev-list failed: {_classify_git_probe_error(counts)}"
         else:
             state["upstream"] = None
         states[repo] = state
@@ -234,7 +248,7 @@ def _classification_for(repo: str, baseline: dict[str, Any]) -> str | None:
     return None
 
 
-def check_machine(data: dict[str, Any], machine_id: str, *, repo_root: Path | None = None, git_state: dict[str, dict[str, Any]] | None = None, now: str | None = None) -> dict[str, Any]:
+def check_machine(data: dict[str, Any], machine_id: str, *, repo_root: Path | None = None, git_state: dict[str, dict[str, Any]] | None = None, now: str | None = None, repo_aliases: dict[str, str] | None = None) -> dict[str, Any]:
     machines = data.get("machines") or {}
     if machine_id != "dev-primary":
         raise ValueError("#2766 checker scope is dev-primary/ace-linux-1 only")
@@ -246,7 +260,9 @@ def check_machine(data: dict[str, Any], machine_id: str, *, repo_root: Path | No
     workspace_root = Path(str(machine.get("workspace_root") or baseline.get("workspace_root") or root / "workspace-hub"))
     timestamp = now or str(((machine.get("telegram_hermes") or {}).get("readiness_now")) or datetime.now(UTC).replace(microsecond=0).isoformat().replace("+00:00", "Z"))
     blockers, warnings = _validate_registry_contract(machine, baseline)
-    inventory = _inventory_sibling_git_repos(root)
+    # Codenamed repos (#3694) are checked out under their real name; report the codename.
+    real_to_codename = {real: codename for codename, real in (repo_aliases or {}).items()}
+    inventory = {real_to_codename.get(name, name) for name in _inventory_sibling_git_repos(root)}
 
     for repo in _as_list(baseline.get("required")):
         if repo not in inventory:
@@ -299,7 +315,7 @@ def check_machine(data: dict[str, Any], machine_id: str, *, repo_root: Path | No
         _apply_policy(blockers, warnings, _policy(baseline, "direct_nested_git_policy", "error"), "direct_nested_git_repo", f"direct nested git repo under workspace-hub: {child}", child)
 
     tracked_repos = _as_list(baseline.get("required")) + _as_list(baseline.get("optional")) + _as_list(baseline.get("non_tier1_machine_access_current"))
-    git_state = git_state if git_state is not None else _collect_git_state(root, tracked_repos)
+    git_state = git_state if git_state is not None else _collect_git_state(root, tracked_repos, repo_aliases)
     dirty_policy = (baseline.get("placement_rules") or {}).get("dirty_policy") or {}
     ahead_policy = (baseline.get("placement_rules") or {}).get("ahead_policy") or {}
     behind_policy = (baseline.get("placement_rules") or {}).get("behind_policy") or {}
@@ -393,6 +409,14 @@ def render_markdown(report: dict[str, Any]) -> str:
     return "\n".join(lines)
 
 
+def _private_repo_aliases() -> dict[str, str]:
+    """Codename -> real repo map from the private overlay (#3694); {} when absent."""
+    sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
+    from scripts.lib import private_overlay
+
+    return private_overlay.repo_aliases()
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Check ace-linux-1 tier-1 repo placement baseline")
     parser.add_argument("--registry", default="config/workstations/registry.yaml")
@@ -444,7 +468,8 @@ def main(argv: list[str] | None = None) -> int:
         parser.error("footprint selection/budget requires --footprint-only")
     if args.footprint_environment:
         parser.error("--footprint-environment requires --footprint-only")
-    report = check_machine(data, args.machine, repo_root=Path(args.repo_root) if args.repo_root else None, now=args.now)
+    report = check_machine(data, args.machine, repo_root=Path(args.repo_root) if args.repo_root else None, now=args.now,
+                           repo_aliases=_private_repo_aliases())
     if args.format == "html":
         rendered = render_html(report)
     elif args.format == "markdown":

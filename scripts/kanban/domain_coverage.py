@@ -41,6 +41,9 @@ try:
 except ImportError:
     yaml = None  # taxonomy checks degrade gracefully
 
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
+from scripts.lib import private_overlay  # noqa: E402  (codename -> real repo, #3694)
+
 DOMAIN_PREFIX = "domain:"
 
 # The canonical coverage set: every repo that must keep one-domain-per-issue.
@@ -129,6 +132,18 @@ def _default_runner(args: list[str]) -> str:
     return subprocess.run(args, capture_output=True, text=True, check=True).stdout
 
 
+def _classify_gh_error(error: subprocess.CalledProcessError) -> str:
+    """Return a public, bounded reason without echoing GitHub's raw diagnostic."""
+    text = f"{error.stderr or ''}\n{error.stdout or ''}".lower()
+    if "could not resolve to a repository" in text:
+        return "repository_lookup_failed"
+    if "authentication" in text or "bad credentials" in text or "forbidden" in text:
+        return "github_auth_failed"
+    if "rate limit" in text:
+        return "github_rate_limited"
+    return "github_query_failed"
+
+
 def render(report: dict) -> tuple[str, int]:
     """Markdown report + total violation count."""
     lines = ["# Domain-coverage guard\n"]
@@ -160,6 +175,20 @@ def render(report: dict) -> tuple[str, int]:
     return "\n".join(lines), total_viol
 
 
+def collect(repos: list[str], runner, canonical: set[str] | None, aliases: set[str] | None,
+            repo_aliases: dict[str, str] | None = None) -> dict:
+    """Analyze each repo; codenames are queried under their real name, reported as listed."""
+    report = {"repos": {}, "any_taxonomy": canonical is not None}
+    for repo in repos:
+        try:
+            issues = _gh(private_overlay.resolve_repo(repo, repo_aliases or {}), runner)
+        except subprocess.CalledProcessError as e:
+            print(f"warn: {repo}: gh failed: {_classify_gh_error(e)} — skipped", file=sys.stderr)
+            continue
+        report["repos"][repo] = analyze(issues, canonical, aliases)
+    return report
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--repos", type=Path, help="file with one owner/repo per line (default: built-in list)")
@@ -179,14 +208,7 @@ def main() -> int:
     elif args.taxonomy:
         print(f"notice: {args.taxonomy} not found — skipping drift/alias checks", file=sys.stderr)
 
-    report = {"repos": {}, "any_taxonomy": canonical is not None}
-    for repo in repos:
-        try:
-            issues = _gh(repo, _default_runner)
-        except subprocess.CalledProcessError as e:
-            print(f"warn: {repo}: gh failed ({e.stderr.strip()[:120]}) — skipped", file=sys.stderr)
-            continue
-        report["repos"][repo] = analyze(issues, canonical, aliases)
+    report = collect(repos, _default_runner, canonical, aliases, private_overlay.repo_aliases())
 
     if args.json:
         print(json.dumps(report, indent=2))
