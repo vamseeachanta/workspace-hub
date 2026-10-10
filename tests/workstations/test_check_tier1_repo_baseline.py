@@ -466,6 +466,48 @@ def test_codename_alias_resolves_to_real_checkout(tmp_path: Path):
     assert CODENAME in report["git_state"]  # probed at the real path
 
 
+def test_codename_alias_git_probe_errors_are_sanitized_in_all_reports(monkeypatch: pytest.MonkeyPatch, tmp_path: Path):
+    checker = load_checker()
+    workspace = tmp_path / "workspace-hub"
+    git_dir(workspace)
+    data = checker.minimal_registry_for_tests(repo_root=tmp_path, workspace_root=workspace)
+    for repo in REQUIRED + OPTIONAL + NON_TIER1:
+        if repo != CODENAME:
+            git_dir(tmp_path / repo)
+    git_dir(tmp_path / REAL_DIR)
+    real_path = tmp_path / REAL_DIR
+
+    def fake_run(cmd, *args, **kwargs):
+        text = " ".join(str(part) for part in cmd)
+        if str(real_path) in text and "status" in cmd:
+            return subprocess.CompletedProcess(
+                cmd,
+                128,
+                stdout="",
+                stderr=(
+                    f"fatal: detected dubious ownership in repository at '{real_path}'\n"
+                    f"git config --global --add safe.directory {real_path}"
+                ),
+            )
+        if "rev-parse" in cmd:
+            return subprocess.CompletedProcess(cmd, 0, stdout="origin/main\n", stderr="")
+        if "rev-list" in cmd:
+            return subprocess.CompletedProcess(cmd, 0, stdout="0 0\n", stderr="")
+        return subprocess.CompletedProcess(cmd, 0, stdout="", stderr="")
+
+    monkeypatch.setattr(subprocess, "run", fake_run)
+    report = checker.check_machine(data, "dev-primary", repo_root=tmp_path, now="2026-05-21T00:00:00Z",
+                                   repo_aliases={CODENAME: REAL_DIR})
+
+    assert any(b["code"] == "git_probe_failed" and b.get("repo") == CODENAME for b in report["blockers"])
+    assert "repository_ownership_untrusted" in json.dumps(report)
+    for rendered in [json.dumps(report), checker.render_markdown(report), checker.render_html(report)]:
+        assert CODENAME in rendered
+        assert REAL_DIR not in rendered
+        assert str(real_path) not in rendered
+        assert "safe.directory" not in rendered
+
+
 def test_codename_without_alias_still_reports_missing(tmp_path: Path):
     checker = load_checker()
     workspace = tmp_path / "workspace-hub"

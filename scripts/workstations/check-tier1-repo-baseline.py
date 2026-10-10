@@ -180,6 +180,20 @@ def _git_run(repo_path: Path, args: list[str]) -> subprocess.CompletedProcess[st
     return subprocess.run(["git", "--no-optional-locks", "-C", str(repo_path), *args], check=False, capture_output=True, text=True, env=env)
 
 
+def _classify_git_probe_error(result: subprocess.CompletedProcess[str]) -> str:
+    """Return a public diagnostic class without paths or shell remediation text."""
+    text = f"{result.stderr or ''}\n{result.stdout or ''}".lower()
+    if "dubious ownership" in text or "safe.directory" in text:
+        return "repository_ownership_untrusted"
+    if "not a git repository" in text:
+        return "not_a_git_repository"
+    if "ambiguous argument" in text or "unknown revision" in text:
+        return "revision_unavailable"
+    if "permission denied" in text:
+        return "permission_denied"
+    return f"git_exit_{result.returncode}"
+
+
 def _collect_git_state(repo_root: Path, repos: list[str], repo_aliases: dict[str, str] | None = None) -> dict[str, dict[str, Any]]:
     """Collect read-only dirty/ahead/behind state for existing repo checkouts."""
     states: dict[str, dict[str, Any]] = {}
@@ -194,7 +208,7 @@ def _collect_git_state(repo_root: Path, repos: list[str], repo_aliases: dict[str
             "behind": 0,
         }
         if status.returncode != 0:
-            state["probe_error"] = f"git status failed: {status.stderr.strip() or status.stdout.strip() or status.returncode}"
+            state["probe_error"] = f"git status failed: {_classify_git_probe_error(status)}"
             states[repo] = state
             continue
         upstream = _git_run(repo_path, ["rev-parse", "--abbrev-ref", "--symbolic-full-name", "@{upstream}"])
@@ -207,9 +221,9 @@ def _collect_git_state(repo_root: Path, repos: list[str], repo_aliases: dict[str
                     state["behind"] = int(behind)
                     state["ahead"] = int(ahead)
                 except ValueError:
-                    state["probe_error"] = f"git rev-list produced invalid counts: {counts.stdout.strip()}"
+                    state["probe_error"] = "git rev-list produced invalid_counts"
             else:
-                state["probe_error"] = f"git rev-list failed: {counts.stderr.strip() or counts.stdout.strip() or counts.returncode}"
+                state["probe_error"] = f"git rev-list failed: {_classify_git_probe_error(counts)}"
         else:
             state["upstream"] = None
         states[repo] = state

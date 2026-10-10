@@ -9,6 +9,7 @@ Run: uv run --with pyyaml pytest tests/test_domain_coverage.py
 from __future__ import annotations
 
 import importlib.util
+import subprocess
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
@@ -115,3 +116,24 @@ def test_collect_without_aliases_queries_listed_names():
     calls = []
     dc.collect(["o/r"], lambda a: calls.append(a[4]) or "", None, None)
     assert calls == ["o/r"]
+
+
+def test_collect_alias_lookup_failure_does_not_print_real_repo(capsys):
+    private_repo = "o/private-target-repo"
+
+    def fake(_args):
+        raise subprocess.CalledProcessError(
+            1,
+            ["gh", "issue", "list", "-R", private_repo],
+            stderr=f"GraphQL: Could not resolve to a Repository with the name '{private_repo}'.",
+        )
+
+    report = dc.collect(["o/llm-wiki-codename"], fake, {"a"}, set(),
+                        repo_aliases={"llm-wiki-codename": "private-target-repo"})
+    captured = capsys.readouterr()
+
+    assert report["repos"] == {}
+    assert "o/llm-wiki-codename" in captured.err
+    assert "gh failed: repository_lookup_failed" in captured.err
+    assert "private-target-repo" not in captured.out
+    assert "private-target-repo" not in captured.err

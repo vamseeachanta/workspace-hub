@@ -132,6 +132,18 @@ def _default_runner(args: list[str]) -> str:
     return subprocess.run(args, capture_output=True, text=True, check=True).stdout
 
 
+def _classify_gh_error(error: subprocess.CalledProcessError) -> str:
+    """Return a public, bounded reason without echoing GitHub's raw diagnostic."""
+    text = f"{error.stderr or ''}\n{error.stdout or ''}".lower()
+    if "could not resolve to a repository" in text:
+        return "repository_lookup_failed"
+    if "authentication" in text or "bad credentials" in text or "forbidden" in text:
+        return "github_auth_failed"
+    if "rate limit" in text:
+        return "github_rate_limited"
+    return "github_query_failed"
+
+
 def render(report: dict) -> tuple[str, int]:
     """Markdown report + total violation count."""
     lines = ["# Domain-coverage guard\n"]
@@ -171,7 +183,7 @@ def collect(repos: list[str], runner, canonical: set[str] | None, aliases: set[s
         try:
             issues = _gh(private_overlay.resolve_repo(repo, repo_aliases or {}), runner)
         except subprocess.CalledProcessError as e:
-            print(f"warn: {repo}: gh failed ({e.stderr.strip()[:120]}) — skipped", file=sys.stderr)
+            print(f"warn: {repo}: gh failed: {_classify_gh_error(e)} — skipped", file=sys.stderr)
             continue
         report["repos"][repo] = analyze(issues, canonical, aliases)
     return report
