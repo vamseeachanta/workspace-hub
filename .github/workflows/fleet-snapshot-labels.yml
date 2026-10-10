@@ -1,0 +1,45 @@
+name: Fleet Snapshot Labels
+
+# #3944: every committed fleet snapshot must name hosts by approved public
+# label only. The dated-snapshot writer on the collector VM pushes straight to
+# main, so this run is detection, not prevention: a red run on its push means a
+# raw machine name reached this public repository.
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'docs/reports/fleet-snapshots/**'
+      - 'scripts/fleet/fleet_snapshot_labels.py'
+      - 'tests/fleet/test_fleet_snapshot_labels.py'
+      - '.github/workflows/fleet-snapshot-labels.yml'
+  push:
+    branches:
+      - main
+    paths:
+      - 'docs/reports/fleet-snapshots/**'
+      - 'scripts/fleet/fleet_snapshot_labels.py'
+      - 'tests/fleet/test_fleet_snapshot_labels.py'
+      - '.github/workflows/fleet-snapshot-labels.yml'
+  workflow_dispatch:
+
+jobs:
+  labels:
+    name: Snapshots carry public labels only
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v7
+        with:
+          enable-cache: true
+
+      # test_only_the_latest_snapshot_is_kept is deselected: the dated files
+      # contradict owner decision S01 and that choice is still open on #3944.
+      - name: Run labeller tests
+        run: |
+          UV_CACHE_DIR=.claude/state/uv-cache uv run --no-project --with pytest --with pyyaml pytest tests/fleet/test_fleet_snapshot_labels.py -v -k "not only_the_latest_snapshot_is_kept"

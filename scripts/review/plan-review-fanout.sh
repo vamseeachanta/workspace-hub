@@ -102,10 +102,24 @@ write_unavailable() {
   } > "$out"
 }
 
+provider_returned_invalid_output() {
+  local out="$1"
+  local first verdict
+  [[ -s "$out" ]] || return 1
+  first="$(sed -n '1p' "$out")"
+  [[ "$first" == "## Verdict" ]] || return 1
+  verdict="$(awk 'NR > 1 && NF { print; exit }' "$out")"
+  [[ "$verdict" =~ ^INVALID_OUTPUT([[:space:]\(]|$) ]]
+}
+
 normalize_provider_output() {
   local prov="$1" rc="$2" out="$3" err="$4"
 
   if (( rc != 0 )); then
+    if provider_returned_invalid_output "$out"; then
+      rm -f "$err"
+      return 0
+    fi
     local reason
     reason="$(error_excerpt "$err")"
     [[ -n "$reason" ]] || reason="no stderr captured"

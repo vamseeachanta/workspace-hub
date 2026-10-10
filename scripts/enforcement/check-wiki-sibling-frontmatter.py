@@ -7,9 +7,9 @@ inside `llm-wiki` (generic) and `llm-wiki-<client>` (per-client) sibling repos.
 Contract reference: .claude/rules/wiki-sibling-routing.md (Rules A-E).
 Plan: docs/plans/2026-05-22-issue-2778-wiki-sibling-routing-contract.md.
 
-Repo-scope: bails early via `git rev-parse --show-toplevel` + basename match
-against `llm-wiki` / `llm-wiki-*`. Workspace-hub paths are out-of-scope by
-construction.
+Repo-scope: bails early unless the canonical repository identity matches
+`llm-wiki` / `llm-wiki-*`. Worktree directory names are not trusted as canonical
+identity when an origin remote is available.
 
 Modes (auto-detected via $CI):
     pre-commit (default): git diff --cached --name-only --diff-filter=ACM
@@ -116,6 +116,36 @@ def _load_registry(repo_root: Path) -> dict[str, dict[str, Any]] | None:
                 return None
             return {w.get("short_name"): w for w in wikis if isinstance(w, dict) and w.get("short_name")}
     return None
+
+
+def _repo_name_from_remote_url(url: str) -> str | None:
+    """Extract a repository name from common HTTPS, SSH, and scp-style remote URLs."""
+    cleaned = url.strip().rstrip("/")
+    if not cleaned:
+        return None
+    name = cleaned.rsplit("/", 1)[-1]
+    if ":" in name:
+        name = name.rsplit(":", 1)[-1]
+    if name.endswith(".git"):
+        name = name[:-4]
+    return name or None
+
+
+def _resolve_repo_identity(repo_root: Path) -> str:
+    """Return the canonical repo name, preferring origin over the worktree basename.
+
+    `git rev-parse --show-toplevel` returns the current worktree directory. A
+    task worktree can be named arbitrarily, so installed wiki hooks must derive
+    identity from the repository's verified origin when one is configured.
+    Hermetic/offline test repos without a remote retain the historical basename
+    fallback.
+    """
+    origin_url = _git_safe(["remote", "get-url", "origin"], cwd=repo_root)
+    if origin_url:
+        repo_name = _repo_name_from_remote_url(origin_url)
+        if repo_name:
+            return repo_name
+    return repo_root.name
 
 
 def _gather_files(mode: str, base_ref: str, repo_root: Path) -> list[str]:
@@ -241,7 +271,7 @@ def main() -> int:
         print("[wiki-frontmatter] not inside a git repo — skipping", file=sys.stderr)
         return 0
     repo_root = Path(repo_root_str)
-    repo_name = repo_root.name
+    repo_name = _resolve_repo_identity(repo_root)
 
     if repo_name != "llm-wiki" and not repo_name.startswith("llm-wiki-"):
         # Not a wiki repo — bail early. Workspace-hub and other repos are out-of-scope.
