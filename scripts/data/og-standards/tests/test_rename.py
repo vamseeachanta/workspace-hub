@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import json
+import random
 import sqlite3
 
 import pytest
@@ -41,6 +42,13 @@ def _fts_integrity_ok(db):
         return False
     finally:
         conn.close()
+
+
+def _target_for_id(db, row_id):
+    conn = sqlite3.connect(db)
+    row = conn.execute("SELECT target_path FROM documents WHERE id = ?", (row_id,)).fetchone()
+    conn.close()
+    return row[0] if row else None
 
 
 # --- parse_rename_log -------------------------------------------------------
@@ -355,6 +363,128 @@ def test_replay_allows_intermediate_name_reused_by_another_document(library, tmp
     assert again.applied == 0
     assert _row(library["db"], c)["id"] == 1
     assert _row(library["db"], b)["id"] == 2
+
+
+def test_repeated_triple_reversal_keeps_database_at_on_disk_name(library, tmp_path):
+    """A->B history must not make a later A->B occurrence undo a B->A replay."""
+    from rename import apply_renames
+
+    rows = [
+        ("API/API RP 2RD (2013).pdf", "API/API RP 2RD (2013 draft).pdf", library["sha"]),
+    ]
+    apply_renames(library["db"], _entries(library, tmp_path, rows), dry_run=False)
+
+    rows.extend([
+        ("API/API RP 2RD (2013 draft).pdf", "API/API RP 2RD (2013).pdf", library["sha"]),
+        ("API/API RP 2RD (2013).pdf", "API/API RP 2RD (2013 draft).pdf", library["sha"]),
+    ])
+    report = apply_renames(library["db"], _entries(library, tmp_path, rows), dry_run=False)
+
+    assert report.applied == 0
+    assert _target_for_id(library["db"], 1) == str(library["new"])
+    again = apply_renames(library["db"], _entries(library, tmp_path, rows), dry_run=False)
+    assert again.applied == 0
+    assert _target_for_id(library["db"], 1) == str(library["new"])
+
+
+def test_repeated_triple_after_applied_revert_moves_database_to_on_disk_name(
+    library, tmp_path
+):
+    """The second A->B occurrence is a distinct log event after A->B, B->A."""
+    from rename import apply_renames
+
+    rows = [
+        ("API/API RP 2RD (2013).pdf", "API/API RP 2RD (2013 draft).pdf", library["sha"]),
+    ]
+    apply_renames(library["db"], _entries(library, tmp_path, rows), dry_run=False)
+    library["new"].rename(library["old"])
+    rows.append(
+        ("API/API RP 2RD (2013 draft).pdf", "API/API RP 2RD (2013).pdf", library["sha"])
+    )
+    apply_renames(library["db"], _entries(library, tmp_path, rows), dry_run=False)
+    assert _target_for_id(library["db"], 1) == str(library["old"])
+
+    library["old"].rename(library["new"])
+    rows.append(
+        ("API/API RP 2RD (2013).pdf", "API/API RP 2RD (2013 draft).pdf", library["sha"])
+    )
+    report = apply_renames(library["db"], _entries(library, tmp_path, rows), dry_run=False)
+
+    assert report.applied == 1
+    assert _target_for_id(library["db"], 1) == str(library["new"])
+    again = apply_renames(library["db"], _entries(library, tmp_path, rows), dry_run=False)
+    assert again.applied == 0
+    assert _target_for_id(library["db"], 1) == str(library["new"])
+
+
+def test_random_rename_revert_replays_match_disk_and_second_run_is_noop(
+    library, tmp_path
+):
+    from conftest import sha256_of
+    from rename import apply_renames
+
+    rng = random.Random(3886)
+    api_dir = library["root"] / "API"
+    names = {
+        1: [api_dir / "row-1-a.pdf", api_dir / "row-1-b.pdf"],
+        2: [api_dir / "row-2-a.pdf", api_dir / "row-2-b.pdf"],
+        3: [api_dir / "row-3-a.pdf", api_dir / "row-3-b.pdf"],
+    }
+    contents = {1: b"row-one", 2: b"row-two", 3: b"row-three"}
+    for row_id, paths in names.items():
+        paths[0].write_bytes(contents[row_id])
+        if paths[1].exists():
+            paths[1].unlink()
+
+    conn = sqlite3.connect(library["db"])
+    for row_id in (1, 2):
+        conn.execute(
+            "UPDATE documents SET target_path = ?, filename = ? WHERE id = ?",
+            (str(names[row_id][0]), names[row_id][0].name, row_id),
+        )
+    conn.execute(
+        """INSERT INTO documents (id, file_path, filename, extension, content_hash,
+               organization, doc_type, doc_number, title, source_dir, target_path)
+           VALUES (3, '/old/src/row-3-a.pdf', 'row-3-a.pdf', '.pdf',
+               'legacy-hash', 'API', 'RP', '3', 'row-3-a', '/old/src', ?)""",
+        (str(names[3][0]),),
+    )
+    conn.commit()
+    conn.close()
+
+    current_index = {1: 0, 2: 0, 3: 0}
+    shas = {row_id: sha256_of(paths[0]) for row_id, paths in names.items()}
+    log_rows = []
+
+    for _ in range(18):
+        row_id = rng.choice([1, 2, 3])
+        old = names[row_id][current_index[row_id]]
+        current_index[row_id] = 1 - current_index[row_id]
+        new = names[row_id][current_index[row_id]]
+        old.rename(new)
+        log_rows.append((
+            old.relative_to(library["root"]).as_posix(),
+            new.relative_to(library["root"]).as_posix(),
+            shas[row_id],
+        ))
+
+        report = apply_renames(
+            library["db"], _entries(library, tmp_path, log_rows), dry_run=False
+        )
+        assert report.applied in (0, 1)
+        for check_id, check_paths in names.items():
+            assert _target_for_id(library["db"], check_id) == str(
+                check_paths[current_index[check_id]]
+            )
+
+        again = apply_renames(
+            library["db"], _entries(library, tmp_path, log_rows), dry_run=False
+        )
+        assert again.applied == 0
+        for check_id, check_paths in names.items():
+            assert _target_for_id(library["db"], check_id) == str(
+                check_paths[current_index[check_id]]
+            )
 
 
 def test_header_with_to_in_other_column_is_not_misread(library, tmp_path):

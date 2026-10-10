@@ -77,7 +77,7 @@ class RenameReport:
 @dataclass
 class RenamePlan:
     moves: dict
-    history: List[Tuple[int, RenameEntry]]
+    history: List[Tuple[int, RenameEntry, int]]
 
 
 def _cells(line: str) -> List[str]:
@@ -190,6 +190,34 @@ def _has_table(conn, table: str) -> bool:
 
 
 def _ensure_rename_history(conn) -> None:
+    if _has_table(conn, 'og_rename_entry_history'):
+        if not _has_column(conn, 'og_rename_entry_history', 'occurrence'):
+            conn.execute(
+                'ALTER TABLE og_rename_entry_history RENAME TO '
+                'og_rename_entry_history_legacy'
+            )
+            conn.execute(
+                """
+                CREATE TABLE og_rename_entry_history (
+                    old_path TEXT NOT NULL,
+                    new_path TEXT NOT NULL,
+                    sha256 TEXT NOT NULL,
+                    row_id INTEGER NOT NULL,
+                    occurrence INTEGER NOT NULL,
+                    PRIMARY KEY (old_path, new_path, sha256, row_id, occurrence)
+                )
+                """
+            )
+            conn.execute(
+                """
+                INSERT OR IGNORE INTO og_rename_entry_history
+                    (old_path, new_path, sha256, row_id, occurrence)
+                SELECT old_path, new_path, sha256, row_id, 1
+                FROM og_rename_entry_history_legacy
+                """
+            )
+            conn.execute('DROP TABLE og_rename_entry_history_legacy')
+        return
     conn.execute(
         """
         CREATE TABLE IF NOT EXISTS og_rename_entry_history (
@@ -197,23 +225,33 @@ def _ensure_rename_history(conn) -> None:
             new_path TEXT NOT NULL,
             sha256 TEXT NOT NULL,
             row_id INTEGER NOT NULL,
-            PRIMARY KEY (old_path, new_path, sha256, row_id)
+            occurrence INTEGER NOT NULL,
+            PRIMARY KEY (old_path, new_path, sha256, row_id, occurrence)
         )
         """
     )
 
 
-def _history_row_ids(conn, entry: RenameEntry) -> List[int]:
+def _history_row_ids(conn, entry: RenameEntry, occurrence: int) -> List[int]:
     if not _has_table(conn, 'og_rename_entry_history'):
         return []
+    if not _has_column(conn, 'og_rename_entry_history', 'occurrence'):
+        if occurrence != 1:
+            return []
+        occurrence_sql = ''
+        params = (entry.old_path, entry.new_path, entry.sha256)
+    else:
+        occurrence_sql = 'AND occurrence = ?'
+        params = (entry.old_path, entry.new_path, entry.sha256, occurrence)
     return [r[0] for r in conn.execute(
-        """
+        f"""
         SELECT row_id
         FROM og_rename_entry_history
         WHERE old_path = ? AND new_path = ? AND sha256 = ?
+            {occurrence_sql}
         ORDER BY row_id
         """,
-        (entry.old_path, entry.new_path, entry.sha256),
+        params,
     )]
 
 
@@ -228,10 +266,11 @@ def _plan(conn, entries: Sequence[RenameEntry], report: RenameReport) -> RenameP
     """
     errors: List[str] = []
     moves: dict = {}
-    history: List[Tuple[int, RenameEntry]] = []
+    history: List[Tuple[int, RenameEntry, int]] = []
     sim: dict = {}  # simulated target_path -> row ids, overriding the DB
     sim_row: dict = {}
     has_sha_col = _has_column(conn, 'documents', 'sha256')
+    occurrences: dict = {}
 
     def ids_at(path: str) -> List[int]:
         return sim[path] if path in sim else _ids_for_target(conn, path)
@@ -256,6 +295,9 @@ def _plan(conn, entries: Sequence[RenameEntry], report: RenameReport) -> RenameP
     for i, e in enumerate(entries):
         where = f'line {e.line}'
         superseded = any(later.old_path == e.new_path for later in entries[i + 1:])
+        event_key = (e.old_path, e.new_path, e.sha256)
+        occurrences[event_key] = occurrences.get(event_key, 0) + 1
+        occurrence = occurrences[event_key]
 
         if not superseded:
             if not os.path.isfile(e.new_path):
@@ -268,7 +310,7 @@ def _plan(conn, entries: Sequence[RenameEntry], report: RenameReport) -> RenameP
                         f'log {e.sha256}, file {actual}'
                     )
 
-        applied_ids = _history_row_ids(conn, e)
+        applied_ids = _history_row_ids(conn, e, occurrence)
         if applied_ids:
             missing = [r for r in applied_ids if _target_for_id(conn, r) is None]
             if missing:
@@ -278,6 +320,8 @@ def _plan(conn, entries: Sequence[RenameEntry], report: RenameReport) -> RenameP
                 continue
             for row_id in applied_ids:
                 set_row_path(row_id, e.new_path)
+                if row_id in moves:
+                    moves[row_id][1:] = [e.new_path, e.sha256]
             report.already_applied += len(applied_ids)
             continue
 
@@ -302,7 +346,7 @@ def _plan(conn, entries: Sequence[RenameEntry], report: RenameReport) -> RenameP
                 set_row_path(row_id, e.new_path)
                 moves.setdefault(row_id, [e.old_path, None, None])
                 moves[row_id][1:] = [e.new_path, e.sha256]
-                history.append((row_id, e))
+                history.append((row_id, e, occurrence))
         elif new_ids:
             recorded = [_recorded_sha(conn, r, moves, has_sha_col) for r in new_ids]
             if all(sha == e.sha256 for sha in recorded):
@@ -384,14 +428,14 @@ def apply_renames(
                     conn.execute(
                         "INSERT INTO documents_fts(documents_fts) VALUES('rebuild')"
                     )
-            for row_id, entry in plan.history:
+            for row_id, entry, occurrence in plan.history:
                 conn.execute(
                     """
                     INSERT OR IGNORE INTO og_rename_entry_history
-                        (old_path, new_path, sha256, row_id)
-                    VALUES (?, ?, ?, ?)
+                        (old_path, new_path, sha256, row_id, occurrence)
+                    VALUES (?, ?, ?, ?, ?)
                     """,
-                    (entry.old_path, entry.new_path, entry.sha256, row_id),
+                    (entry.old_path, entry.new_path, entry.sha256, row_id, occurrence),
                 )
             conn.execute('COMMIT')
         except Exception:
