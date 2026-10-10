@@ -30,6 +30,10 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 
+class StaleSourceRootsError(RuntimeError):
+    """Existing rows were recorded under source roots that are no longer configured."""
+
+
 class StandardsInventory:
     """Builds and manages inventory of O&G standards documents."""
 
@@ -82,9 +86,18 @@ class StandardsInventory:
                 target_path TEXT,
                 processed INTEGER DEFAULT 0,
                 scan_date TEXT,
+                sha256 TEXT,
                 FOREIGN KEY (duplicate_of) REFERENCES documents(id)
             )
         ''')
+
+        # Migrate databases created before the sha256 column existed (#3886).
+        # sha256 is the verified digest of the file on disk, kept beside the
+        # legacy content_hash so rows can be joined against SHA-256 rename logs.
+        columns = {row[1] for row in cursor.execute('PRAGMA table_info(documents)')}
+        if 'sha256' not in columns:
+            cursor.execute('ALTER TABLE documents ADD COLUMN sha256 TEXT')
+            logger.info("Added sha256 column to documents")
 
         # Create indexes for fast querying
         cursor.execute('CREATE INDEX IF NOT EXISTS idx_content_hash ON documents(content_hash)')
@@ -206,7 +219,8 @@ class StandardsInventory:
 
         return org, doc_type, doc_number
 
-    def _extract_title(self, filename: str) -> str:
+    @staticmethod
+    def _extract_title(filename: str) -> str:
         """Extract document title from filename (removing extension and cleanup)."""
         title = os.path.splitext(filename)[0]
         # Clean up common patterns
@@ -263,12 +277,12 @@ class StandardsInventory:
                         INSERT OR IGNORE INTO documents
                         (file_path, filename, extension, file_size, modified_date,
                          content_hash, organization, doc_type, doc_number, title,
-                         source_dir, scan_date)
-                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                         source_dir, scan_date, sha256)
+                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                     ''', (
                         file_path, filename, extension, file_size, modified_date,
                         content_hash, org, doc_type, doc_number, title,
-                        source_dir, scan_date
+                        source_dir, scan_date, content_hash
                     ))
 
                     if cursor.rowcount > 0:
@@ -288,12 +302,39 @@ class StandardsInventory:
         self.conn.commit()
         return files_added
 
-    def run_full_scan(self, force: bool = False):
+    def _stale_source_roots(self) -> List[str]:
+        """Distinct source_dir values that lie outside every configured root."""
+        roots = [r.rstrip('/\\') for r in self.config['source_directories']]
+        cursor = self.conn.cursor()
+        stale = []
+        for (source_dir,) in cursor.execute(
+            'SELECT DISTINCT source_dir FROM documents WHERE source_dir IS NOT NULL'
+        ):
+            if not any(
+                source_dir == root or source_dir.startswith(root + '/')
+                or source_dir.startswith(root + '\\')
+                for root in roots
+            ):
+                stale.append(source_dir)
+        return sorted(stale)
+
+    def run_full_scan(self, force: bool = False, allow_stale_roots: bool = False):
         """Run full inventory scan on all configured source directories."""
         start_time = datetime.now()
 
         # Initialize database
         self._init_database(force=force)
+
+        # Rows are keyed on file_path: scanning a moved root would insert every
+        # moved file again as a new document (#3886). Remap first.
+        stale = [] if allow_stale_roots else self._stale_source_roots()
+        if stale:
+            raise StaleSourceRootsError(
+                'Existing rows sit under source roots that are not configured: '
+                + '; '.join(stale)
+                + '. Remap them with rename.py --remap-root OLD NEW, '
+                'or pass --allow-stale-roots to scan anyway.'
+            )
 
         # Scan each source directory
         for source_dir in self.config['source_directories']:
@@ -360,7 +401,7 @@ class StandardsInventory:
             self.conn.close()
 
 
-def main():
+def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         description='Build inventory of O&G standards documents'
     )
@@ -374,8 +415,16 @@ def main():
         action='store_true',
         help='Force rebuild of database (removes existing)'
     )
+    parser.add_argument(
+        '--allow-stale-roots',
+        action='store_true',
+        help='Scan even if existing rows sit under source roots no longer configured'
+    )
+    return parser
 
-    args = parser.parse_args()
+
+def main():
+    args = build_parser().parse_args()
 
     # Find config file
     config_path = args.config
@@ -390,7 +439,10 @@ def main():
     # Run inventory
     inventory = StandardsInventory(config_path)
     try:
-        inventory.run_full_scan(force=args.force)
+        inventory.run_full_scan(force=args.force, allow_stale_roots=args.allow_stale_roots)
+    except StaleSourceRootsError as exc:
+        logger.error(str(exc))
+        sys.exit(2)
     finally:
         inventory.close()
 

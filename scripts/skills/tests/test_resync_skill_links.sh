@@ -17,6 +17,8 @@ fail() { echo "FAIL: $1"; FAIL=$((FAIL + 1)); }
 assert_eq()       { [[ "$2" == "$3" ]] && pass "$1" || fail "$1 (expected '$3', got '$2')"; }
 assert_contains() { case "$2" in *"$3"*) pass "$1";; *) fail "$1 (missing '$3' in: $2)";; esac; }
 assert_file()     { [[ -f "$2" ]] && pass "$1" || fail "$1 (no file $2)"; }
+# Snapshot comparisons reject empty records instead of accepting equal emptiness (#3876).
+source "${REPO_ROOT}/scripts/lib/shell-test-guards.sh" || exit 1
 
 test_failed_sandbox_assignments() {
   local assignments line result count=0
@@ -321,7 +323,8 @@ gemini_before="$(snapshot_adapter "$r/.gemini/skills")" || { fail dry_run_gemini
 out="$(bash "$hub/scripts/propagate-ecosystem.sh" --skills-only --dry-run 2>&1)"
 assert_contains dry_run_native_disposition "$out" "native skills preserved"
 gemini_after="$(snapshot_adapter "$r/.gemini/skills")" || { fail dry_run_gemini_snapshot_after; exit 1; }
-assert_eq dry_run_gemini_identity_type_target_unchanged "$gemini_after" "$gemini_before"
+assert_snapshot_unchanged dry_run_gemini_identity "$gemini_after" "$gemini_before" \
+  && pass dry_run_gemini_identity_type_target_unchanged || fail dry_run_gemini_identity_type_target_unchanged
 fi
 snapshot_fixture() {
   local root="$1" entry
@@ -333,6 +336,7 @@ snapshot_fixture() {
       else printf 'D %s\n' "$entry"; fi
     done < <(find . -path ./.git -prune -o -print0 | sort -z)
     local adapter; adapter="$(snapshot_adapter "$root/.gemini/skills")" || exit 1
+    require_nonempty gemini_adapter_snapshot "$adapter" || exit 1
     printf 'A .gemini/skills %s\n' "$adapter"
     if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then git status --porcelain=v1 --untracked-files=all; fi
   )
