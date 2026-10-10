@@ -185,3 +185,30 @@ def test_indirect_call_forms_are_seen(tmp_path, call):
         """,
     )
     assert _run(path).returncode == 1
+
+
+def test_definition_after_trailing_and_operator_is_conditional(tmp_path):
+    """A newline after && continues the list (review r2)."""
+    path = _harness(tmp_path, "[[ ${X:-0} == 1 ]] &&\nhelper() { :; }\nhelper\n")
+    assert _run(path).returncode == 1
+
+
+def test_guard_action_after_trailing_or_operator_counts(tmp_path):
+    path = _harness(
+        tmp_path,
+        "if [[ -n ${X:-} ]]; then helper() { :; }; fi\n"
+        "require_helpers helper ||\n"
+        "  { exit 1; }\n"
+        "helper\n",
+    )
+    assert _run(path).returncode == 0
+
+
+@pytest.mark.parametrize(
+    "expr", ["(( helper ))", "x=$(( helper + 1 ))", "(( helper > 0 )) && :"]
+)
+def test_arithmetic_names_are_not_calls(tmp_path, expr):
+    path = _harness(
+        tmp_path, f"if [[ -n ${{X:-}} ]]; then helper() {{ :; }}; fi\n{expr}\n"
+    )
+    assert _run(path).returncode == 0

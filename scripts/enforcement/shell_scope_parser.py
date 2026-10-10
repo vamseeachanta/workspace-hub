@@ -17,6 +17,7 @@ TOKEN_RE = re.compile(r";;|&&|\|\||[;&|(){}]|[^\s;&|(){}]+")
 HEREDOC_RE = re.compile(
     r"(?<!<)<<(?!<)(-?)\s*(?:'([^']*)'|\"([^\"]*)\"|\\?([^\s;&|<>()'\"]+))"
 )
+TRAILING_OP_RE = re.compile(r"(&&|\|\||\|)\s*$")
 SEPARATORS = {";", ";;", "&&", "||", "|", "&", "(", ")", "{", "}"}
 COMMAND_PREFIX_WORDS = {
     "then",
@@ -112,6 +113,8 @@ class Sanitizer:
         elif ch == "`":
             self.stack.append(["bt", 0])
             out.append(" ( ")
+        elif raw.startswith("$((", i):
+            return self._skip_arith(raw, i + 3)
         elif ch == "$" and nxt == "(":
             self.stack.append(["code", 0])
             out.append(" ( ")
@@ -129,6 +132,12 @@ class Sanitizer:
             self.stack.append(["ansi", 0])
             out.append("S")
             return i + 2
+        if raw.startswith("$((", i) or (
+            raw.startswith("((", i) and (i == 0 or raw[i - 1] in " \t;&|(!")
+        ):
+            # Arithmetic: names inside are variables, not commands.
+            out.append(" A ")
+            return self._skip_arith(raw, i + (3 if ch == "$" else 2))
         if ch in "'\"":
             self.stack.append(["sq" if ch == "'" else "dq", 0])
             out.append("S")
@@ -168,6 +177,14 @@ class Sanitizer:
         out.append(f" {ch} ")
 
     @staticmethod
+    def _skip_arith(raw: str, i: int) -> int:
+        depth = 2
+        while i < len(raw) and depth:
+            depth += {"(": 1, ")": -1}.get(raw[i], 0)
+            i += 1
+        return i
+
+    @staticmethod
     def _skip_param(raw: str, i: int) -> int:
         depth = 1
         while i < len(raw) and depth:
@@ -199,6 +216,10 @@ class Analyser:
                 continue
             if raw.endswith("\\") and not raw.endswith("\\\\"):
                 pending, first = pending + raw[:-1] + " ", first or lineno
+                continue
+            if TRAILING_OP_RE.search(raw):
+                # A line ending in && / || / | continues the command list.
+                pending, first = pending + raw + " ", first or lineno
                 continue
             self._line(first or lineno, pending + raw)
             pending, first = "", 0
