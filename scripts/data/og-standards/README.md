@@ -188,6 +188,10 @@ write: the new file must exist and hash to the logged SHA-256, the old path must
 catalogued `target_path`, and the new path must not belong to another row. One bad
 entry rejects the whole log. Re-running an applied log is a no-op.
 
+The log is append-only. Entries replay in order, so a file renamed twice is two
+rows (`A → B`, then `B → C`); only the end of each chain must exist on disk and
+match its SHA-256. A swap (`A → B` and `B → A` in one log) is rejected.
+
 ```bash
 python rename.py --dry-run     # validate and print the plan
 python rename.py               # update rows (target_path, filename, title, sha256,

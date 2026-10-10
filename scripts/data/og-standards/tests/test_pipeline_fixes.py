@@ -106,6 +106,17 @@ def test_og_ingest_passes_only_flags_inventory_accepts():
             assert flag in known, f"og-ingest passes {flag!r}, unknown to inventory.py"
 
 
+def test_og_ingest_stops_when_inventory_fails():
+    """inventory.py exits 2 when its stale-roots guard fires; og-ingest must not
+    pipe that away and carry on with extract/embed."""
+    script = (PIPELINE_DIR / "og-ingest").read_text(encoding="utf-8")
+    assert re.search(r"^set -o pipefail\b", script, re.M)
+    lines = [ln for ln in script.splitlines() if re.search(r"python\s+inventory\.py", ln)]
+    assert lines
+    for ln in lines:
+        assert "|| " in ln, f"inventory.py failure ignored: {ln.strip()}"
+
+
 def test_catalog_fts_survives_rebuild_after_rename(library):
     """INSERT OR REPLACE over an external-content FTS5 table corrupts it once the
     content row has changed; the catalog must rebuild instead."""

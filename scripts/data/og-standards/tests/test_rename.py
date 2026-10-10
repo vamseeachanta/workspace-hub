@@ -204,7 +204,115 @@ def test_rerun_is_idempotent(library, tmp_path):
     assert _fts_integrity_ok(library["db"])
 
 
+def test_cumulative_log_with_second_rename_applies_and_reruns(library, tmp_path):
+    """The log is append-only: A->B applied earlier, B->C appended later."""
+    from rename import apply_renames
+
+    apply_renames(library["db"], _entries(library, tmp_path), dry_run=False)
+    final = library["root"] / "API" / "API RP 2RD (2013 draft rev).pdf"
+    library["new"].rename(final)
+    rows = [
+        ("API/API RP 2RD (2013).pdf", "API/API RP 2RD (2013 draft).pdf", library["sha"]),
+        ("API/API RP 2RD (2013 draft).pdf", "API/API RP 2RD (2013 draft rev).pdf",
+         library["sha"]),
+    ]
+    report = apply_renames(library["db"], _entries(library, tmp_path, rows), dry_run=False)
+    assert report.applied == 1
+    assert _row(library["db"], final)["sha256"] == library["sha"]
+
+    again = apply_renames(library["db"], _entries(library, tmp_path, rows), dry_run=False)
+    assert again.applied == 0
+
+
+def test_chain_in_one_log_applies_to_final_path(library, tmp_path):
+    from rename import apply_renames
+
+    final = library["root"] / "API" / "API RP 2RD (2013 draft rev).pdf"
+    library["new"].rename(final)
+    rows = [
+        ("API/API RP 2RD (2013).pdf", "API/API RP 2RD (2013 draft).pdf", library["sha"]),
+        ("API/API RP 2RD (2013 draft).pdf", "API/API RP 2RD (2013 draft rev).pdf",
+         library["sha"]),
+    ]
+    report = apply_renames(library["db"], _entries(library, tmp_path, rows), dry_run=False)
+    assert report.applied == 1
+    assert _row(library["db"], library["old"]) is None
+    assert _row(library["db"], final) is not None
+
+
+def test_header_with_to_in_other_column_is_not_misread(library, tmp_path):
+    from rename import parse_rename_log
+
+    log = tmp_path / "RENAME-LOG.md"
+    log.write_text(
+        "| Old path | Note to reviewer | New path | SHA-256 |\n|---|---|---|---|\n"
+        f"| API/a.pdf | moved | API/b.pdf | {'e' * 64} |\n",
+        encoding="utf-8",
+    )
+    (entry,) = parse_rename_log(log, library_root="/lib")
+    assert entry.new_path == "/lib/API/b.pdf"
+
+
+def test_parse_stops_at_end_of_rename_table(library, tmp_path):
+    from rename import parse_rename_log
+
+    log = tmp_path / "RENAME-LOG.md"
+    log.write_text(
+        "| Old path | New path | SHA-256 |\n|---|---|---|\n\n"
+        "## Deleted\n\n| File | Reason | sha |\n|---|---|---|\n| x | y | sha |\n",
+        encoding="utf-8",
+    )
+    assert parse_rename_log(log, library_root="/lib") == []
+
+
+def test_posix_library_root_resolves_posix_paths(tmp_path):
+    from rename import parse_rename_log
+
+    log = write_log(tmp_path / "RENAME-LOG.md", [("API/./a.pdf", "API/b.pdf", "f" * 64)])
+    (entry,) = parse_rename_log(log, library_root="/mnt/lib")
+    assert entry.old_path == "/mnt/lib/API/a.pdf"
+    assert entry.new_path == "/mnt/lib/API/b.pdf"
+
+
+def test_row_at_new_path_without_sha_gets_specific_error(library, tmp_path):
+    from rename import apply_renames
+
+    conn = sqlite3.connect(library["db"])
+    conn.execute("ALTER TABLE documents ADD COLUMN sha256 TEXT")
+    conn.execute("UPDATE documents SET target_path=? WHERE id=1", (str(library["new"]),))
+    conn.commit()
+    conn.close()
+    with pytest.raises(ValueError, match="no recorded SHA-256"):
+        apply_renames(library["db"], _entries(library, tmp_path), dry_run=False)
+
+
 # --- remap_source_root -------------------------------------------------------
+
+
+def test_remap_into_nested_root_is_idempotent(library):
+    from rename import remap_source_root
+
+    assert remap_source_root(library["db"], "/old/src", "/old/src/raw", dry_run=False) == 2
+    assert remap_source_root(library["db"], "/old/src", "/old/src/raw", dry_run=True) == 0
+    assert remap_source_root(library["db"], "/old/src", "/old/src/raw", dry_run=False) == 0
+    row = _row(library["db"], library["untouched"])
+    assert row["file_path"] == "/old/src/raw/API Spec 6A.pdf"
+    assert row["source_dir"] == "/old/src/raw"
+
+
+def test_remap_collision_rolls_back(library):
+    from rename import remap_source_root
+
+    conn = sqlite3.connect(library["db"])
+    conn.execute(
+        "INSERT INTO documents (file_path, filename) VALUES ('/lib/raw/API Spec 6A.pdf', 'x')"
+    )
+    conn.commit()
+    conn.close()
+    before = library["db"].read_bytes()
+    with pytest.raises(ValueError, match="collide"):
+        remap_source_root(library["db"], "/old/src", "/lib/raw", dry_run=False)
+    assert library["db"].read_bytes() == before
 
 
 def test_remap_source_root_rewrites_prefix_only_on_boundary(library):
