@@ -1,0 +1,11 @@
+owner: vamseeachanta
+repo_root: "~/ws"
+worktree_root: "~/.local/tmp/local-ci/worktrees"
+state_dir: "~/.local/state/local-ci"
+job_timeout_seconds: 900
+repos:
+  - name: llm-wiki-acma
+  - name: achantas-data
+  - name: llm-wiki-fdas
+  - name: aceengineer-admin
+  - name: llm-wiki-baez

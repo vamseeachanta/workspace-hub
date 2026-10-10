@@ -303,6 +303,8 @@ private-*
 *-private.*
 my-*
 local-*
+!scripts/ci/local-ci/
+!scripts/ci/local-ci/**
 
 # Team member specific settings
 .user-settings/
