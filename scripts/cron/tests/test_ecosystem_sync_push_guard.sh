@@ -76,6 +76,20 @@ fi
 exit "${STUB_UV_RC:-0}"
 STUB
     chmod +x "$tmp/bin/uv"
+    real_mktemp="$(command -v mktemp)"
+    cat > "$tmp/bin/mktemp" <<STUB
+#!/usr/bin/env bash
+if [[ "\${STUB_MKTEMP_FULL:-0}" == "1" ]]; then
+    path="$tmp/write-fails-\$\$-\$RANDOM"
+    rm -f "\$path"
+    mkfifo "\$path"
+    python3 -c 'import sys; f = open(sys.argv[1], "rb"); f.close()' "\$path" >/dev/null 2>&1 &
+    echo "\$path"
+else
+    exec "$real_mktemp" "\$@"
+fi
+STUB
+    chmod +x "$tmp/bin/mktemp"
     if ! command -v flock >/dev/null 2>&1; then
         printf '#!/usr/bin/env bash\nexit 0\n' > "$tmp/bin/flock"
         chmod +x "$tmp/bin/flock"
@@ -149,6 +163,30 @@ run_sync "$T"; rc=$?
 assert_eq "exit code 6" "6" "$rc"
 assert_eq "remote main unchanged" "$before" "$(remote_head "$T")"
 rm -rf "$T"
+
+echo "=== temp-file write failure blocks mixed outgoing commit ==="
+T="$(setup_fixture)"
+before="$(remote_head "$T")"
+(
+    cd "$T/local" || exit 1
+    mkdir -p config docs/sync-reports
+    echo "foreign" > config/foreign.yaml
+    echo "allowed" > docs/sync-reports/mixed.md
+    git add config/foreign.yaml docs/sync-reports/mixed.md
+    git commit --quiet -m "mixed outgoing paths"
+)
+STUB_MKTEMP_FULL=1 run_sync "$T"; rc=$?
+assert_eq "exit code 6" "6" "$rc"
+assert_eq "remote main unchanged" "$before" "$(remote_head "$T")"
+rm -rf "$T"
+
+echo "=== path filter propagates disallowed-path write failure ==="
+STATE_FILE=".claude/state/ecosystem-sync/last-sync.yaml"
+REPORT_DIR="docs/sync-reports/"
+source <(sed -n '/^outside_allowlist_z()/,/^}/p' "$SYNC_SCRIPT")
+printf 'config/foreign.yaml\0docs/sync-reports/allowed.md\0' | outside_allowlist_z > /dev/full
+rc=$?
+assert_eq "write failure returns nonzero" "1" "$rc"
 
 echo "=== merge commit in outgoing range blocks push ==="
 T="$(setup_fixture)"

@@ -22,7 +22,7 @@ outside_allowlist_z() {
   while IFS= read -r -d '' path; do
     [[ -z "$path" ]] && continue
     [[ "$path" == "$STATE_FILE" || "$path" == "$REPORT_DIR"* ]] && continue
-    printf '%s\0' "$path"
+    printf '%s\0' "$path" || return 1
   done
 }
 
