@@ -41,8 +41,15 @@ Schema (version 1; every section and key is optional)::
       "outputs": {
         "job_market_dir":     "/absolute/path/in/a/private/checkout",
         "contact_report_dir": "/absolute/path/in/a/private/checkout"
+      },
+      "repos": {
+        "aliases": {"<public repository codename>": "<real repository name>"}
       }
     }
+
+``repos.aliases`` maps a repository codename used in this public tree to the
+real repository name (#3694). Checkers resolve the real name for disk and
+GitHub lookups and keep reporting under the codename.
 
 ``outputs`` is accepted so that an older configuration still loads; nothing
 reads it. Generated GTM and contact reports are written to this repository
@@ -77,6 +84,9 @@ _SCHEMA: dict[str, dict[str, str]] = {
     "outputs": {
         "job_market_dir": "str",
         "contact_report_dir": "str",
+    },
+    "repos": {
+        "aliases": "map",
     },
 }
 KNOWN_SECTIONS = frozenset(_SCHEMA)
@@ -200,3 +210,14 @@ def get_list(overlay: Mapping[str, Any], dotted: str) -> list[str]:
 
 def get_mapping(overlay: Mapping[str, Any], dotted: str) -> dict:
     return dict(_get(overlay, dotted) or {})
+
+
+def repo_aliases(overlay: Mapping[str, Any] | None = None) -> dict:
+    """Codename -> real repository name map (``repos.aliases``), ``{}`` when unset."""
+    return get_mapping(load() if overlay is None else overlay, "repos.aliases")
+
+
+def resolve_repo(name: str, aliases: Mapping[str, str]) -> str:
+    """Real name for a bare or ``owner/``-qualified repository codename; else ``name``."""
+    owner, sep, bare = name.rpartition("/")
+    return f"{owner}{sep}{aliases.get(bare, bare)}"

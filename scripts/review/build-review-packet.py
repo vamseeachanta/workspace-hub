@@ -8,12 +8,13 @@ when they arrive inline. The manifest pins each file's raw-byte SHA-256, and
 so a verdict on stale bytes is not carried forward.
 
     build-review-packet.py build --out PACKET.md --manifest M.json [--max-bytes N] [--label TEXT] PATH...
-    build-review-packet.py verify --manifest M.json
+    build-review-packet.py verify --manifest M.json [--packet SENT.md]
 
 Send the packet on stdin, never as an argument:
     codex exec -s read-only - < PACKET.md
 
-Exit codes: 0 ok; 1 invalid input (missing, outside root, not UTF-8);
+Exit codes: 0 ok; 1 invalid input (missing, outside root, not UTF-8, a manifest
+that does not pin the packet, or a failed publish that left the previous outputs);
 2 packet exceeds --max-bytes (nothing written); 3 verify found changes.
 """
 from __future__ import annotations
@@ -101,8 +102,9 @@ def build(args: argparse.Namespace) -> int:
                 "packet_path": str(out_path), "packet_bytes": size,
                 "packet_sha256": hashlib.sha256(packet_bytes).hexdigest(), "files": entries}
     # Stage both outputs in exclusively created, uniquely named temp files, then publish.
-    # The manifest goes last and pins the packet digest, so a half-published pair fails `verify`.
-    staged = []
+    # The previous packet is set aside first, so a failed manifest publish restores it
+    # instead of leaving a new packet beside an old manifest.
+    staged, backup = [], None
     try:
         for dest, data in ((out_path, packet_bytes),
                            (manifest_path, (json.dumps(manifest, indent=2) + "\n").encode("utf-8"))):
@@ -110,8 +112,31 @@ def build(args: argparse.Namespace) -> int:
             with os.fdopen(fd, "wb") as fh:
                 fh.write(data)
             staged.append((Path(tmp_name), dest))
-        for tmp, dest in staged:
-            os.replace(tmp, dest)
+        (packet_tmp, _), (manifest_tmp, _) = staged
+        if out_path.exists():
+            fd, backup_name = tempfile.mkstemp(dir=out_path.parent, prefix=f".{out_path.name}.", suffix=".staging")
+            os.close(fd)
+            try:
+                os.replace(out_path, backup_name)
+            except OSError:
+                os.unlink(backup_name)
+                raise
+            backup = Path(backup_name)
+        try:
+            os.replace(packet_tmp, out_path)
+            os.replace(manifest_tmp, manifest_path)
+        except OSError:
+            if backup is not None:
+                os.replace(backup, out_path)
+                backup = None
+            else:
+                out_path.unlink(missing_ok=True)
+            raise
+        if backup is not None:
+            backup.unlink()
+    except OSError as exc:
+        kept = f"; the previous packet is kept at {backup}" if backup is not None and backup.exists() else ""
+        return _fail(1, f"could not publish packet and manifest ({exc}); previous outputs left in place{kept}")
     finally:
         for tmp, _ in staged:
             if tmp.exists():
@@ -133,14 +158,6 @@ def verify(args: argparse.Namespace) -> int:
             or len(set(paths)) != len(paths) or not all(
                 isinstance(f.get("sha256"), str) and re.fullmatch(r"[0-9a-f]{64}", f["sha256"]) for f in files)):
         return _fail(1, "manifest entries need unique string paths and 64-hex sha256 digests")
-    packet_state = "not-recorded"
-    if manifest.get("packet_sha256"):
-        pp = Path(str(manifest.get("packet_path") or ""))
-        if not pp.is_file():
-            packet_state = "missing"
-        else:
-            packet_state = ("match" if hashlib.sha256(pp.read_bytes()).hexdigest() == manifest["packet_sha256"]
-                            else "mismatch")
     root = Path.cwd().resolve()
     changed, missing = [], []
     for f in files:
@@ -153,6 +170,19 @@ def verify(args: argparse.Namespace) -> int:
             missing.append(f["path"])
         elif hashlib.sha256(p.read_bytes()).hexdigest() != f["sha256"]:
             changed.append(f["path"])
+    # The packet is what the reviewer read, so its bytes are always checked; a manifest without
+    # the packet digest cannot vouch for a verdict.
+    packet_digest = manifest.get("packet_sha256")
+    if not (isinstance(packet_digest, str) and re.fullmatch(r"[0-9a-f]{64}", packet_digest)):
+        return _fail(1, "manifest does not pin the packet (packet_sha256 missing or not 64-hex)")
+    packet_ref = args.packet or manifest.get("packet_path")
+    if not (isinstance(packet_ref, str) and packet_ref):
+        return _fail(1, "manifest records no packet_path; pass --packet with the packet that was sent")
+    pp = Path(packet_ref)
+    if not pp.is_file():
+        packet_state = "missing"
+    else:
+        packet_state = "match" if hashlib.sha256(pp.read_bytes()).hexdigest() == packet_digest else "mismatch"
     status = "changed" if changed or missing or packet_state in ("missing", "mismatch") else "unchanged"
     print(json.dumps({"status": status, "changed": changed, "missing": missing, "packet": packet_state,
                       "files": len(files)}))
@@ -170,6 +200,7 @@ def main(argv: list[str] | None = None) -> int:
     b.add_argument("paths", nargs="+")
     v = sub.add_parser("verify", help="recheck reviewed files against the manifest")
     v.add_argument("--manifest", required=True)
+    v.add_argument("--packet", help="packet file that was sent to the reviewer (default: the manifest's packet_path)")
     args = ap.parse_args(argv)
     return build(args) if args.cmd == "build" else verify(args)
 

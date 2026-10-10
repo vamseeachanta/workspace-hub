@@ -16,10 +16,15 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 HUB="${FLEET_HUB:-$(cd "${SCRIPT_DIR}/../.." && pwd)}"
 OUT="config/ai-tools/account-usage-latest.json"
 MD="docs/reports/ai-account-usage.md"
+LOCK_PATH="${FLEET_PUBLISH_LOCK:-${HUB}/.git/fleet-publish.lock}"
 STAMP="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
 
 cd "${HUB}"
 echo "== account-usage-cron ${STAMP} (${HUB}) =="
+
+mkdir -p "$(dirname "${LOCK_PATH}")"
+exec 9>"${LOCK_PATH}"
+flock 9
 
 # 1. Freshen main without touching local edits. A diverged main is a human's
 #    problem; we still publish from what we have.
