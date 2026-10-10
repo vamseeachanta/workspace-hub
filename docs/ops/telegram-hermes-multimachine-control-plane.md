@@ -30,7 +30,7 @@ Ranked options:
 | GitHub issue labels/comments | Workflow gate and human-visible lease mirror | Yes for issue state; comments mirror lease evidence |
 | Git remote ref `refs/heads/dispatch/leases/<issue>-<mode>` | Atomic dispatch lease | Yes |
 | `config/workstations/registry.yaml` | Machine identity, capabilities, dispatch posture, data-access profile | Yes |
-| `.planning/plan-approved/<issue>.md` | Local user-approval marker paired with GitHub `status:plan-approved` | Yes |
+| `.planning/plan-approved/<issue>.md` | Retired local approval marker retained as historical evidence only | No |
 | Local JSONL/job logs | Audit/cache only | No |
 
 ## Supported commands
@@ -55,9 +55,7 @@ Translates a Telegram request into a gated GitHub/repo-backed job decision.
 Fail-closed gates:
 
 1. Resolve issue through `gh`/GitHub. No GitHub authority means no dispatch.
-2. For `--mode implementation`, require both:
-   - GitHub label `status:plan-approved`.
-   - Local marker `.planning/plan-approved/<issue>.md`.
+2. For `--mode implementation`, require GitHub label `status:plan-approved`.
 3. For `--mode plan`, allow only `status:needs-plan` or `status:plan-review` issues.
 4. Select host from `config/workstations/registry.yaml`; status-only hosts cannot execute.
 5. Block dirty worktrees, ahead/behind branches, missing data access, stale readiness, unreachable hosts, or unsafe gateway config.

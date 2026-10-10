@@ -224,10 +224,6 @@ def parse_telegram_command(command: str) -> TelegramCommand:
     raise DispatchPolicyError("usage: /status|/dispatch|/jobs|/sync")
 
 
-def _approval_marker_exists(marker_dir: Path, issue_number: int) -> bool:
-    return (marker_dir / f"{issue_number}.md").exists()
-
-
 def _select_host(hosts: dict[str, HostRecord], selector: str, readiness: dict[str, HostReadiness]) -> str | None:
     if selector != "auto":
         return selector if selector in hosts else None
@@ -258,8 +254,6 @@ def evaluate_dispatch_request(
     """Evaluate whether a Telegram dispatch request can launch work."""
     hosts = load_registry(registry_path)
     labels = set(issue.labels)
-    marker_dir = Path(approval_marker_dir)
-
     if request.issue_number != issue.number:
         return DispatchDecision(False, "issue_mismatch", f"Dispatch request issue {request.issue_number} did not match resolved issue {issue.number}")
     if not lease_snapshot.fetched_ok:
@@ -267,9 +261,7 @@ def evaluate_dispatch_request(
 
     if request.mode == "implementation":
         if "status:plan-approved" not in labels:
-            return DispatchDecision(False, "approval_required", "Implementation requires status:plan-approved and local approval marker")
-        if not _approval_marker_exists(marker_dir, issue.number):
-            return DispatchDecision(False, "approval_marker_missing", f"Implementation requires .planning/plan-approved/{issue.number}.md")
+            return DispatchDecision(False, "approval_required", "Implementation requires status:plan-approved")
     elif request.mode == "plan" and not ({"status:needs-plan", "status:plan-review"} & labels):
         return DispatchDecision(False, "planning_status_required", "Plan-only dispatch requires status:needs-plan or status:plan-review")
 

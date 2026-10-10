@@ -9,7 +9,7 @@ Builds a per-issue Kanban view consumed by:
 The generator REUSES existing primitives instead of re-classifying:
   - scripts/ai/provider-work-queue.py emits full_candidates per provider (#2665)
   - scripts/ai/continuous-planning-pipeline.py exposes build_snapshot() which
-    classifies every issue into lanes A/B/C/D/E with review/marker readiness
+    classifies every issue into lanes A/B/C/D/E with review readiness
 
 If full_candidates is missing in provider-work-queue.json, generation fails
 closed rather than silently consuming top_issues[:8] (a #2665 regression
@@ -191,7 +191,6 @@ def approval_ready(
       - canonical plan exists
       - latest reviews clean (no MAJOR/FAIL/UNAVAILABLE/pending)
       - explicit user approval intent
-      - issue-specific marker path ready (no pre-existing final marker)
       - current status:plan-review label
       - per-issue approval lock acquirable (left to approve-provider-plan.py)
       - served from localhost with explicit user-action metadata
@@ -225,8 +224,6 @@ def approval_ready(
             blockers.append(f"reviews not clean: {','.join(blocking_warnings)}")
         else:
             blockers.append("review evidence not clean")
-    if classification.get("approval_marker"):
-        blockers.append("issue already has approval marker on disk")
     if not served_localhost:
         blockers.append("static dashboard: real approval requires provider-kanban-server.py")
     if served_localhost and not (user_intent_metadata and user_intent_metadata.get("user_action_token")):

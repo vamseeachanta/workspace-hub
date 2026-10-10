@@ -65,28 +65,27 @@ def item(snapshot: dict, number: int) -> dict:
     return next(entry for entries in snapshot["lanes"].values() for entry in entries if entry["number"] == number)
 
 
-def test_lane_b_requires_label_plan_review_and_marker(tmp_path: Path) -> None:
+def test_lane_b_requires_label_plan_and_clean_reviews(tmp_path: Path) -> None:
     plan_path = plan(tmp_path, 101)
     clean_reviews(tmp_path, 101, sha=module.sha256_file(plan_path))
-    marker(tmp_path, 101)
 
     snapshot = classify(tmp_path, [issue(101, ["status:plan-approved"])])
 
     entry = item(snapshot, 101)
     assert entry["lane"] == "B"
     assert entry["review_clean"] is True
-    assert entry["marker_quality"] == "revision-bound"
+    assert entry["marker_quality"] is None
 
 
-def test_approved_without_marker_not_lane_b(tmp_path: Path) -> None:
+def test_approved_without_legacy_marker_is_lane_b(tmp_path: Path) -> None:
     plan_path = plan(tmp_path, 102)
     clean_reviews(tmp_path, 102, sha=module.sha256_file(plan_path))
 
     snapshot = classify(tmp_path, [issue(102, ["status:plan-approved"])])
 
     entry = item(snapshot, 102)
-    assert entry["lane"] != "B"
-    assert "approved_no_marker" in entry["warnings"]
+    assert entry["lane"] == "B"
+    assert "approved_no_marker" not in entry["warnings"]
 
 
 def test_plan_review_with_clean_reviews_and_canonical_comment_is_lane_a(tmp_path: Path) -> None:
@@ -95,7 +94,7 @@ def test_plan_review_with_clean_reviews_and_canonical_comment_is_lane_a(tmp_path
     clean_reviews(tmp_path, 103, sha=sha)
     comments = [
         {
-            "body": f"Plan path: docs/plans/2026-04-26-issue-103-sample.md\nPlan-SHA256: {sha}\nReview artifacts: scripts/review/results/2026-04-26-plan-103-claude.md, scripts/review/results/2026-04-26-plan-103-codex.md, scripts/review/results/2026-04-26-plan-103-agy.md\nVerdicts: claude MINOR, codex MINOR, agy MINOR\nChoices: Approve / Revise / Hold\nExecution remains unauthorized until approval marker creation.",
+            "body": f"Plan path: docs/plans/2026-04-26-issue-103-sample.md\nPlan-SHA256: {sha}\nReview artifacts: scripts/review/results/2026-04-26-plan-103-claude.md, scripts/review/results/2026-04-26-plan-103-codex.md, scripts/review/results/2026-04-26-plan-103-agy.md\nVerdicts: claude MINOR, codex MINOR, agy MINOR\nChoices: Approve / Revise / Hold\nExecution readiness is carried by GitHub labels and comments.",
         }
     ]
 
@@ -125,7 +124,6 @@ def test_missing_and_empty_and_major_reviews_are_not_clean(tmp_path: Path) -> No
 def test_legacy_review_without_sha_requires_explicit_allowance(tmp_path: Path) -> None:
     plan(tmp_path, 105)
     clean_reviews(tmp_path, 105, sha=None)
-    marker(tmp_path, 105)
 
     strict = classify(tmp_path, [issue(105, ["status:plan-approved"])])
     allowed = classify(tmp_path, [issue(105, ["status:plan-approved"])], allow_legacy_review_artifacts=True)
@@ -145,7 +143,6 @@ def test_plan_sha_parser_prefers_canonical_header_over_reviewed_header(tmp_path:
             tmp_path / "scripts" / "review" / "results" / f"2026-04-26-plan-115-{provider}.md",
             f"Reviewed-Plan-SHA256: {old_sha}\nPlan-SHA256: {plan_sha}\nVerdict: MINOR\n",
         )
-    marker(tmp_path, 115)
 
     snapshot = classify(tmp_path, [issue(115, ["status:plan-approved"])])
 
@@ -163,7 +160,7 @@ def test_missing_ledger_is_global_warning_not_issue_primary_blocker(tmp_path: Pa
     assert entry["primary_blocker"] is None
 
 
-def test_self_approved_marker_and_non_numeric_marker_are_not_lane_b(tmp_path: Path) -> None:
+def test_legacy_markers_are_ignored(tmp_path: Path) -> None:
     plan_path = plan(tmp_path, 106)
     clean_reviews(tmp_path, 106, sha=module.sha256_file(plan_path))
     marker(tmp_path, 106, "self-approved by automation\n")
@@ -172,15 +169,14 @@ def test_self_approved_marker_and_non_numeric_marker_are_not_lane_b(tmp_path: Pa
     snapshot = classify(tmp_path, [issue(106, ["status:plan-approved"])])
 
     entry = item(snapshot, 106)
-    assert entry["lane"] != "B"
-    assert "self_approved_marker" in entry["warnings"]
-    assert snapshot["out_of_scope_markers"] == ["aces-2.md"]
+    assert entry["lane"] == "B"
+    assert "self_approved_marker" not in entry["warnings"]
+    assert snapshot["out_of_scope_markers"] == []
 
 
 def test_active_dispatch_and_open_pr_override_lane_b(tmp_path: Path) -> None:
     plan_path = plan(tmp_path, 107)
     clean_reviews(tmp_path, 107, sha=module.sha256_file(plan_path))
-    marker(tmp_path, 107)
     write(
         tmp_path / "docs" / "reports" / "continuous-work" / "dispatch-ledger-2026-04-26.json",
         json.dumps([{"issue": 107, "state": "running", "lease_scope": "issue-107"}]),
@@ -200,7 +196,7 @@ issue: #108
 PR/branch: https://example.test/pull/1
 dispatch id: d-1
 plan SHA: abc
-approval marker: .planning/plan-approved/108.md
+approval evidence: GitHub labels and comments
 changed files: scripts/ai/x.py
 tests/CI: pytest passed
 artifacts: report.md
@@ -264,7 +260,7 @@ def test_live_issue_list_enriches_unlabeled_issues_for_lane_e(monkeypatch) -> No
 
 def test_continuous_planning_pipeline_exports_reusable_readiness_primitives() -> None:
     """Per #2665 acceptance criterion: provider-kanban.py must consume the
-    existing plan/review/marker/lane classification primitives instead of
+    existing plan/review/lane classification primitives instead of
     re-implementing readiness logic. This test pins the stable public surface
     so a future refactor cannot silently break the Kanban consumer.
     """
@@ -301,7 +297,6 @@ def test_kanban_consumer_can_classify_shared_fixture(tmp_path: Path) -> None:
     plan_path = plan(tmp_path, 9001)
     sha = module.sha256_file(plan_path)
     clean_reviews(tmp_path, 9001, sha=sha)
-    marker(tmp_path, 9001)
     plan(tmp_path, 9003)  # plan-review fixture, no marker
 
     snapshot = classify(
@@ -323,7 +318,6 @@ def test_overnight_packet_limits_new_dispatch_candidates_to_three(tmp_path: Path
     for number in range(501, 506):
         plan_path = plan(tmp_path, number)
         clean_reviews(tmp_path, number, sha=module.sha256_file(plan_path))
-        marker(tmp_path, number)
         issues.append(issue(number, ["status:plan-approved"]))
 
     snapshot = classify(tmp_path, issues)

@@ -121,7 +121,7 @@ fi
 assert_contains "ace au --help mentions assetutilities" "assetutilities" "$au_out"
 
 # ---------------------------------------------------------------------------
-# Test: ace wrk list exits 0 and shows WRK items
+# Test: ace wrk list exits 0 and reads the GitHub label queue
 # ---------------------------------------------------------------------------
 wrk_out=$("$ACE" wrk list 2>&1) && wrk_exit=0 || wrk_exit=$?
 if [ "$wrk_exit" -eq 0 ]; then
@@ -129,28 +129,27 @@ if [ "$wrk_exit" -eq 0 ]; then
 else
     fail "ace wrk list exits 0" "exit code $wrk_exit — $wrk_out"
 fi
-assert_contains "ace wrk list shows WRK items" "WRK-" "$wrk_out"
+assert_contains "ace wrk list shows GitHub issues" "#" "$wrk_out"
 
 # ---------------------------------------------------------------------------
-# Test: ace wrk show with valid ID exits 0
+# Test: ace wrk show with valid issue ID exits 0
 # ---------------------------------------------------------------------------
-first_wrk=$(ls /mnt/local-analysis/workspace-hub/.claude/work-queue/pending/ 2>/dev/null | \
-    grep -E '^WRK-[0-9]+\.md$' | sort | head -1 | sed 's/\.md$//')
-if [ -n "$first_wrk" ]; then
-    wrk_show_out=$("$ACE" wrk show "$first_wrk" 2>&1) && wrk_show_exit=0 || wrk_show_exit=$?
+first_issue=$(printf '%s\n' "$wrk_out" | sed -n 's/^#\([0-9][0-9]*\).*/\1/p' | head -1)
+if [ -n "$first_issue" ]; then
+    wrk_show_out=$("$ACE" wrk show "$first_issue" 2>&1) && wrk_show_exit=0 || wrk_show_exit=$?
     if [ "$wrk_show_exit" -eq 0 ]; then
-        pass "ace wrk show $first_wrk exits 0"
+        pass "ace wrk show #$first_issue exits 0"
     else
-        fail "ace wrk show $first_wrk exits 0" "exit code $wrk_show_exit — $wrk_show_out"
+        fail "ace wrk show #$first_issue exits 0" "exit code $wrk_show_exit — $wrk_show_out"
     fi
 else
-    pass "ace wrk show (skipped — no pending WRK items)"
+    pass "ace wrk show (skipped — no dispatch:ready issues)"
 fi
 
 # ---------------------------------------------------------------------------
 # Test: ace wrk show with missing ID exits non-zero
 # ---------------------------------------------------------------------------
-bad_out=$("$ACE" wrk show WRK-99999 2>&1) && bad_exit=0 || bad_exit=$?
+bad_out=$("$ACE" wrk show not-an-issue 2>&1) && bad_exit=0 || bad_exit=$?
 if [ "$bad_exit" -ne 0 ]; then
     pass "ace wrk show missing ID exits non-zero"
 else

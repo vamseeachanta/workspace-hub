@@ -341,3 +341,61 @@ class TestRankWrks:
         ranked = rank_wrks(FIXTURES_DIR, track_mapping, scoring_weights)
         wrk004 = next(r for r in ranked if r["id"] == "WRK-TEST-004")
         assert wrk004["scoring_method"] == "wsjf"
+
+
+class TestGithubLabelQueue:
+    def test_issue_labels_are_normalized_for_scoring(self):
+        from strategic_score import issue_to_work_item
+
+        issue = {
+            "number": 3999,
+            "title": "Rewire queue",
+            "state": "OPEN",
+            "labels": [
+                {"name": "dispatch:ready"},
+                {"name": "lane:codex"},
+                {"name": "decision:ecosystem"},
+                {"name": "priority:high"},
+                {"name": "cat:harness"},
+            ],
+        }
+
+        item = issue_to_work_item(issue)
+
+        assert item["id"] == "#3999"
+        assert item["title"] == "Rewire queue"
+        assert item["status"] == "ready"
+        assert item["track"] == "codex"
+        assert item["category"] == "harness"
+        assert item["priority"] == "high"
+
+    def test_rank_issues_scores_label_queue(self, track_mapping, scoring_weights):
+        from strategic_score import rank_issues
+
+        issues = [
+            {
+                "number": 11,
+                "title": "Low item",
+                "state": "OPEN",
+                "labels": [
+                    {"name": "dispatch:ready"},
+                    {"name": "lane:codex"},
+                    {"name": "priority:low"},
+                ],
+            },
+            {
+                "number": 12,
+                "title": "High item",
+                "state": "OPEN",
+                "labels": [
+                    {"name": "dispatch:ready"},
+                    {"name": "lane:codex"},
+                    {"name": "priority:critical"},
+                ],
+            },
+        ]
+
+        ranked = rank_issues(issues, track_mapping, scoring_weights)
+
+        assert [item["id"] for item in ranked] == ["#12", "#11"]
+        assert all(item["source"] == "github-labels" for item in ranked)

@@ -1,9 +1,11 @@
 #!/usr/bin/env bash
 
-# ABOUTME: Validate WRK frontmatter schema in work queue items
-# ABOUTME: Supports warn/gate mode and changed-only scope for incremental enforcement
+# ABOUTME: Retired local WRK queue schema validator; labels are queue truth
 
 set -euo pipefail
+
+echo "validate_work_queue_schema.sh retired: use GitHub dispatch/lane/ai/decision labels."
+exit 0
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 WORKSPACE_ROOT="$(cd "$SCRIPT_DIR/../../.." && pwd)"
