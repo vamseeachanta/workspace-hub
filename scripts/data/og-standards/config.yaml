@@ -2,10 +2,14 @@
 # Version: 1.0.0
 # Created: 2025-12-25
 
-# Source directories to scan for standards
+# Source directories to scan for standards.
+# The original roots under "/mnt/ace/0000 O&G/" were moved under raw/ (#3886).
+# Existing DB rows still carry the old file_path prefixes; run
+#   python rename.py --remap-root "<old prefix>" "<new prefix>"
+# for each moved root BEFORE the next inventory scan, otherwise the scan
+# inserts every moved file as a new document (inventory keys on file_path).
 source_directories:
-  - "/mnt/ace/0000 O&G/0000 Codes & Standards"
-  - "/mnt/ace/0000 O&G/Oil and Gas Codes"
+  - "/mnt/ace/O&G-Standards/raw"
 
 # Target consolidated directory
 target_directory: "/mnt/ace/O&G-Standards"

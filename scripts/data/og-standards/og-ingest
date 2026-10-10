@@ -98,7 +98,8 @@ add_document() {
 scan_documents() {
     echo -e "${BLUE}Scanning for documents...${NC}"
     cd "$SCRIPT_DIR"
-    python inventory.py --scan-only 2>&1 | tail -20
+    # inventory.py only scans and records metadata; extraction is a separate step
+    python inventory.py 2>&1 | tail -20
 }
 
 process_pending() {
