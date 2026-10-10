@@ -37,9 +37,18 @@ logger = logging.getLogger(__name__)
 class CatalogGenerator:
     """Generates searchable catalogs for O&G standards."""
 
-    def __init__(self, config_path: str):
+    def __init__(
+        self,
+        config_path: str,
+        database_path: Optional[str] = None,
+        target_directory: Optional[str] = None,
+    ):
         """Initialize with configuration file."""
         self.config = self._load_config(config_path)
+        if database_path is not None:
+            self.config['database_path'] = database_path
+        if target_directory is not None:
+            self.config['target_directory'] = target_directory
         self.db_path = self.config['database_path']
         self.target_dir = self.config['target_directory']
         self.conn = None
@@ -72,13 +81,11 @@ class CatalogGenerator:
             )
         ''')
 
-        # Populate FTS index
-        cursor.execute('''
-            INSERT OR REPLACE INTO documents_fts(rowid, filename, title, organization, doc_type, doc_number)
-            SELECT id, filename, title, organization, doc_type, doc_number
-            FROM documents
-            WHERE is_duplicate = 0
-        ''')
+        # Rebuild the FTS index from the content table. Re-inserting rows into an
+        # external-content FTS5 table corrupts it once a document row has changed
+        # (e.g. after a rename), so always rebuild. Duplicates are indexed too and
+        # filtered at query time (search.py).
+        cursor.execute("INSERT INTO documents_fts(documents_fts) VALUES('rebuild')")
 
         self.conn.commit()
         logger.info("Full-text search index created")

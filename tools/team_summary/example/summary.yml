@@ -1,0 +1,55 @@
+# Example team-summary data. Synthetic: no real client, person or project.
+# Real data lives in each client wiki at reports/team-summary/summary.yml.
+client: Example Client
+as_of: 2026-10-08
+learn_or_solve: >-
+  Solve: confirm the screening basis for the phase 1 concept selection so the
+  client meeting can close the open data requests.
+priorities:
+  - title: Close the phase 1 data request list
+    owner: Project lead
+    next_action: Confirm which of the 12 requested items the operator has supplied
+    due: 2026-10-15
+    source: projects/example/requests.md
+  - title: Issue revision 4 of the screening note
+    owner: Technical lead
+    next_action: Incorporate reviewer dispositions R1 to R6
+    due: 2026-10-20
+    source: reports/README.md
+issues:
+  - title: Well count basis differs between source documents
+    status: investigating
+    owner: Technical lead
+    next_action: Reconcile the two counts against the operator field catalog
+    source: pages/field-catalog.md
+  - title: Riser fatigue screening uses a superseded wave scatter table
+    status: awaiting-review
+    owner: Reviewer
+    next_action: Review the replacement table and its source edition
+    source: docs/decisions/scatter-table.md
+decisions:
+  - date: 2026-10-06
+    text: Phase 1 screens concepts only; detailed riser design moves to phase 2.
+    source: docs/decisions/phase-split.md
+blockers:
+  - text: Operator production profiles not yet received.
+    owner: Project lead
+    source: projects/example/requests.md
+areas:
+  marketing:
+    - text: Follow-up meeting with the operator proposed for two weeks after the data request.
+      source: docs/meetings/2026-10-02.md
+  technical:
+    - text: Screening note revision 3 issued; six reviewer comments open.
+      source: reports/README.md
+  data:
+    - text: Field catalog extended to all fields in the licence area.
+      source: data/field-catalog/manifest.yml
+  projects:
+    - text: Phase 1 is on schedule for the 28 October client review.
+      source: projects/example/schedule.md
+deliverables:
+  - name: Concept screening note
+    version: Rev 3
+    status: issued for comment
+    source: reports/screening-note/README.md

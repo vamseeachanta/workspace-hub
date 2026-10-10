@@ -362,8 +362,12 @@ resolved_dispositions:
     # disposition still holds because the task is not installed by cron and
     # remains inert unless an operator runs it with --apply. Digest computed
     # from git index blobs on Linux.
-    # Re-affirmed 2026-10-09 (board card T01, #3909): registry.yaml adds
-    # mystran to dev-secondary capabilities.tools. Capability metadata only;
-    # no scheduled task, cron line, or mutation surface changes, and the
-    # inventory identities are byte-identical apart from input_digest.
-    source_digest: 2b3774b28b8d9bba27d8755a9311a6210e6a2c7d331c7cd271f84affc38f182f
+    # Re-affirmed 2026-10-09 (board card X08): schedule-tasks.yaml carries
+    # the team-summary refresh registration and current main scheduler entries.
+    # The #3475 disposition still holds because the generated identity inventory
+    # is regenerated from the same governed catalog, registry and state-class
+    # inputs. Digest computed from git index blobs on Linux.
+    # Re-affirmed 2026-10-10: registry.yaml changes capability metadata only;
+    # no scheduled task, cron line, or mutation surface was touched. Digest was
+    # recomputed after merging main on 2026-10-10.
+    source_digest: 19a42180366fa6626a4d364e6535e46ef4513b22fa32c04ec754c9480c05ac34

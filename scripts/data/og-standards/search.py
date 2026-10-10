@@ -70,6 +70,7 @@ class StandardsSearch:
                 FROM documents_fts fts
                 JOIN documents d ON fts.rowid = d.id
                 WHERE documents_fts MATCH ?
+                  AND d.is_duplicate = 0
             '''
             params = [query]
         else:

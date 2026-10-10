@@ -95,6 +95,7 @@ og-standards/
 ├── README.md            # This file
 │
 ├── inventory.py         # Document inventory builder
+├── rename.py            # Rename/remap mode for renamed files and moved roots
 ├── extract.py           # PDF text extraction
 ├── embed.py             # Vector embedding generation
 ├── search.py            # CLI search interface
@@ -165,6 +166,51 @@ og-standards/
 
 # Full refresh
 ./og-ingest refresh
+```
+
+### Renamed Files and Moved Roots
+
+A rename on disk leaves the inventory DB, the FTS index and the catalog pointing at
+the old name. A full rebuild (`inventory.py --force`) discards extracted text, chunks
+and embeddings, so carry renames through with `rename.py` instead. It updates rows in
+place by id, so text, chunks and embeddings stay attached.
+
+The rename log is a Markdown table at the library root (`RENAME-LOG.md`):
+
+```markdown
+| Old path | New path | SHA-256 |
+|---|---|---|
+| `API/API RP 2RD (2013).pdf` | `API/API RP 2RD (2013 draft).pdf` | 3f5a…(64 hex) |
+```
+
+Relative paths resolve against `target_directory`. Every entry is checked before any
+write: the new file must exist and hash to the logged SHA-256, the old path must be a
+catalogued `target_path`, and the new path must not belong to another row. One bad
+entry rejects the whole log. Re-running an applied log is a no-op.
+
+The log is append-only. Entries replay in order, so a file renamed twice is two
+rows (`A → B`, then `B → C`); only the end of each chain must exist on disk and
+match its SHA-256. A direct swap (`A → B`, `B → A`) is rejected; swap through a
+temporary name (`A → T`, `B → A`, `T → B`). A row whose recorded SHA-256 differs
+from an entry's is a different document and is never moved by that entry, which
+keeps re-runs of such logs no-ops.
+
+```bash
+python rename.py --dry-run     # validate and print the plan
+python rename.py               # update rows (target_path, filename, title, sha256,
+                               # organization/doc_type/doc_number), rebuild FTS,
+                               # regenerate the catalog (--no-catalog to skip)
+```
+
+Then refresh the document index through its normal chain, starting with
+`scripts/data/document-index/remap_og_standards_paths.py --dry-run`.
+
+Source roots moved under `raw/`. The inventory keys rows on `file_path`, so a scan
+over a moved root would insert every file again; `inventory.py` refuses to scan while
+rows sit under unconfigured roots. Remap each old root first (dry-run, then apply):
+
+```bash
+python rename.py --remap-root "/old/source/root" "/mnt/ace/O&G-Standards/raw/<dir>" --dry-run
 ```
 
 ## Configuration

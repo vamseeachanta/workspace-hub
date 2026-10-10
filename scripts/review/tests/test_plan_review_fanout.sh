@@ -183,8 +183,8 @@ test_codex_invocation_inlines_plan_body() {
   rm -rf "$td"
 }
 
-test_agy_invocation_inlines_plan_body() {
-  run_test "agy is invoked with INLINE plan body via --print (submit-to-agy wrapper)"
+test_agy_invocation_uses_temp_file_payload() {
+  run_test "agy review gets a temp-file payload path, not inline plan body"
 
   local td; td="$(mktemp -d)"
   run_wrapper_under_mocks "$td" >/dev/null 2>&1 || true
@@ -195,14 +195,16 @@ test_agy_invocation_inlines_plan_body() {
     rm -rf "$td"; return
   fi
 
-  if ! grep -qF "$FIXTURE_FIRST_LINE" "$cap"; then
-    fail "agy invocation missing inline plan body"
-  elif ! grep -qF 'UNTRUSTED-CONTENT' "$cap"; then
-    fail "agy invocation missing untrusted-content boundary (#3207 hardening)"
+  if grep -qF "$FIXTURE_FIRST_LINE" "$cap"; then
+    fail "agy invocation inlined plan body despite temp-file transport"
+  elif ! grep -qF 'agy-review-payload.md' "$cap"; then
+    fail "agy invocation missing temp payload path"
+  elif ! grep -qF 'UNTRUSTED input' "$cap"; then
+    fail "agy invocation missing untrusted-input instruction (#3207 hardening)"
   elif ! grep -qF 'AGY_REVIEW_MODE: 1' "$cap"; then
     fail "agy dispatch missing AGY_REVIEW_MODE=1 (oversize fail-closed guard, #3573)" "$(grep 'AGY_REVIEW_MODE:' "$cap" || true)"
   else
-    pass "agy invoked with inline plan body + untrusted boundary + review mode"
+    pass "agy invoked with temp payload path + untrusted instruction + review mode"
   fi
   rm -rf "$td"
 }
@@ -626,14 +628,139 @@ test_agy_oversize_fails_closed() {
   cap="$td/captures/agy.capture"
   if [[ -z "$agy_art" ]]; then
     fail "agy artifact missing under AGY_MAX_BYTES=8"
-  elif ! grep -qF 'UNAVAILABLE' "$agy_art"; then
-    fail "oversize did not produce UNAVAILABLE artifact" "$(head -20 "$agy_art")"
-  elif ! grep -qiF 'payload exceeds review cap' "$agy_art"; then
-    fail "UNAVAILABLE artifact missing oversize reason" "$(head -20 "$agy_art")"
+  elif ! grep -qF 'INVALID_OUTPUT' "$agy_art"; then
+    fail "oversize did not produce INVALID_OUTPUT artifact" "$(head -20 "$agy_art")"
+  elif ! grep -qiF 'payload exceeds delivery cap' "$agy_art"; then
+    fail "INVALID_OUTPUT artifact missing oversize reason" "$(head -20 "$agy_art")"
   elif [[ -f "$cap" ]]; then
     fail "agy was invoked despite oversize fail-closed guard" "$(head -5 "$cap")"
   else
-    pass "oversize fail-closed: UNAVAILABLE artifact written, agy never invoked"
+    pass "oversize fail-closed: INVALID_OUTPUT artifact written, agy never invoked"
+  fi
+  rm -rf "$td"
+}
+
+test_failed_provider_invalid_output_log_becomes_unavailable() {
+  run_test "failed provider log mentioning INVALID_OUTPUT is still UNAVAILABLE"
+
+  local td; td="$(mktemp -d)"
+  run_wrapper_under_mocks "$td" "MOCK_AGY_FAIL_INVALID_STDOUT=1" >/dev/null 2>&1 || true
+
+  local agy_art
+  agy_art="$(ls "$td/results/"*-plan-9999-agy.md 2>/dev/null | head -1)"
+  if [[ -z "$agy_art" ]]; then
+    fail "agy artifact missing for invalid-output log failure"
+  elif ! grep -qF 'UNAVAILABLE' "$agy_art"; then
+    fail "failed provider log was preserved as structured invalid output" "$(head -20 "$agy_art")"
+  else
+    pass "non-structured INVALID_OUTPUT text remained a provider failure"
+  fi
+  rm -rf "$td"
+}
+
+test_agy_missing_payload_receipt_fails_closed() {
+  run_test "agy review output without payload receipt is INVALID_OUTPUT and non-zero"
+
+  local td; td="$(mktemp -d)"
+  mkdir -p "$td/captures"
+  local fixture="$td/2026-04-17-issue-9999-test-slug.md"
+  local out="$td/out.md"
+  local err="$td/err.txt"
+  printf '%s\n%s\n' "$FIXTURE_FIRST_LINE" "Plan body line 2." > "$fixture"
+
+  local rc=0
+  (
+    export PATH="$MOCKS_DIR:$PATH"
+    export PLAN_REVIEW_CAPTURE_DIR="$td/captures"
+    export AGY_REVIEW_MODE=1
+    export AGY_CMD=agy
+    export MOCK_AGY_DO_NOT_READ_PAYLOAD=1
+    bash "${SCRIPT_DIR}/../submit-to-agy.sh" --file "$fixture" --prompt "Review this plan"
+  ) >"$out" 2>"$err" || rc=$?
+
+  if [[ "$rc" -eq 0 ]]; then
+    fail "submit-to-agy succeeded despite missing payload receipt" "$(head -20 "$out")"
+  elif ! grep -qF 'INVALID_OUTPUT' "$out"; then
+    fail "missing receipt did not emit INVALID_OUTPUT" "$(head -20 "$out")"
+  elif ! grep -qiF 'payload receipt nonce missing' "$out"; then
+    fail "INVALID_OUTPUT missing receipt reason" "$(head -20 "$out")"
+  else
+    pass "missing payload receipt failed closed with structured INVALID_OUTPUT"
+  fi
+  rm -rf "$td"
+}
+
+test_agy_large_plan_avoids_windows_argv_limit() {
+  run_test "agy review handles >30KB plan without riding the Windows argv ceiling"
+
+  local td; td="$(mktemp -d)"
+  mkdir -p "$td/captures" "$td/results"
+  local fixture="$td/2026-04-17-issue-9999-large-plan.md"
+  {
+    printf '%s\n' "$FIXTURE_FIRST_LINE"
+    for _ in $(seq 1 1200); do
+      printf 'Large synthetic plan line for Windows argv regression coverage.\n'
+    done
+  } > "$fixture"
+
+  (
+    export PATH="$MOCKS_DIR:$PATH"
+    export PLAN_REVIEW_CAPTURE_DIR="$td/captures"
+    export MOCK_AGY_ARG_MAX=30000
+    export MOCK_AGY_REQUIRE_PAYLOAD_READ=1
+    export MOCK_AGY_EXPECT_PAYLOAD_MARKER="$FIXTURE_FIRST_LINE"
+    bash "$WRAPPER" "$fixture" --providers=agy --output-dir="$td/results"
+  ) >/dev/null 2>&1 || true
+
+  local agy_art cap
+  agy_art="$(ls "$td/results/"*-plan-9999-agy.md 2>/dev/null | head -1)"
+  cap="$td/captures/agy.capture"
+  if [[ -z "$agy_art" ]]; then
+    fail "agy artifact missing for >30KB regression"
+  elif grep -qF 'UNAVAILABLE' "$agy_art"; then
+    fail "large plan was recorded as provider outage" "$(head -20 "$agy_art")"
+  elif ! grep -qF 'Mock finding from agy' "$agy_art"; then
+    fail "large plan did not produce normal agy review artifact" "$(head -20 "$agy_art")"
+  elif [[ ! -f "$cap" ]]; then
+    fail "agy capture missing for >30KB regression"
+  elif grep -qF "$FIXTURE_FIRST_LINE" "$cap"; then
+    fail "large plan content still rode argv" "$(head -5 "$cap")"
+  elif ! grep -qF 'PAYLOAD_READ: ok' "$cap"; then
+    fail "agy mock did not read the advertised payload path" "$(grep 'PAYLOAD_' "$cap" || true)"
+  else
+    pass ">30KB plan reached agy without inline argv payload"
+  fi
+  rm -rf "$td"
+}
+
+test_agy_payload_path_uses_cygpath_when_available() {
+  run_test "agy review converts prompt-visible payload path with cygpath when available"
+
+  local td; td="$(mktemp -d)"
+  mkdir -p "$td/bin"
+  cat > "$td/bin/cygpath" <<'EOF'
+#!/usr/bin/env bash
+if [[ "$1" == "-w" ]]; then
+  shift
+fi
+ln -sf "$1" "${MOCK_CYGPATH_MAPPED_PATH}"
+printf '%s\n' "${MOCK_CYGPATH_MAPPED_PATH}"
+printf 'called\n' > "${MOCK_CYGPATH_CALLED}"
+EOF
+  chmod +x "$td/bin/cygpath"
+  run_wrapper_under_mocks "$td" "PATH=$td/bin:$MOCKS_DIR:$PATH" "MOCK_CYGPATH_CALLED=$td/cygpath-called" "MOCK_CYGPATH_MAPPED_PATH=$td/mapped-payload.md" "MOCK_AGY_REQUIRE_PAYLOAD_READ=1" "MOCK_AGY_EXPECT_PAYLOAD_MARKER=$FIXTURE_FIRST_LINE" >/dev/null 2>&1 || true
+
+  local cap="$td/captures/agy.capture"
+  if [[ ! -s "$td/cygpath-called" ]]; then
+    fail "cygpath was not called for agy review payload path"
+  elif [[ ! -L "$td/mapped-payload.md" ]]; then
+    fail "cygpath mapped path was not created"
+  elif [[ ! -f "$cap" ]] || ! grep -qF "PAYLOAD_PATH: $td/mapped-payload.md" "$cap"; then
+    fail "agy prompt did not use cygpath output" "$([[ -f $cap ]] && grep 'PAYLOAD_PATH' "$cap")"
+  elif [[ ! -f "$cap" ]] || ! grep -qF 'PAYLOAD_READ: ok' "$cap"; then
+    fail "agy mock did not read payload after cygpath conversion" "$([[ -f $cap ]] && grep 'PAYLOAD_' "$cap")"
+  else
+    pass "cygpath conversion hook ran and payload remained readable"
   fi
   rm -rf "$td"
 }
@@ -687,7 +814,7 @@ test_rejects_nonconforming_filename
 test_prompt_file_contains_all_six_stance_clauses
 test_claude_invocation_uses_path_reference
 test_codex_invocation_inlines_plan_body
-test_agy_invocation_inlines_plan_body
+test_agy_invocation_uses_temp_file_payload
 test_agy_runs_from_temp_cwd
 test_writes_claude_artifact
 test_parallel_execution
@@ -701,6 +828,10 @@ test_codex_produces_review_under_claudecode
 test_codex_guard_still_blocks_genuine_bad_version
 test_agy_leg_closes_stdin
 test_agy_oversize_fails_closed
+test_failed_provider_invalid_output_log_becomes_unavailable
+test_agy_missing_payload_receipt_fails_closed
+test_agy_large_plan_avoids_windows_argv_limit
+test_agy_payload_path_uses_cygpath_when_available
 test_fanout_no_provider_hangs_under_claudecode
 test_fanout_codex_unavailable_on_bad_version
 test_claude_invocation_sets_plugin_dir_override

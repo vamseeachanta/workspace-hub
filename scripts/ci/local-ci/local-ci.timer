@@ -1,0 +1,11 @@
+[Unit]
+Description=Run Workspace Hub local pull request CI
+
+[Timer]
+OnBootSec=5m
+OnUnitActiveSec=10m
+AccuracySec=1m
+Persistent=true
+
+[Install]
+WantedBy=timers.target

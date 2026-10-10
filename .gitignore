@@ -303,6 +303,8 @@ private-*
 *-private.*
 my-*
 local-*
+!scripts/ci/local-ci/
+!scripts/ci/local-ci/**
 
 # Team member specific settings
 .user-settings/
@@ -654,3 +656,10 @@ data/drive-index-search/metrics/*.jsonl
 scripts/review/results/*
 !scripts/review/results/2026-10-05-3943-claude-raw.txt
 !scripts/review/results/2026-10-05-3943-agy-unavailable.md
+
+# Machine-local topic file; kept out of version control
+.claude/memory/topics/network_machines.md
+
+# Fleet snapshot wrapper scratch files must never be tracked in the public repo.
+docs/reports/fleet-snapshots/.latest.*
+docs/reports/fleet-snapshots/.fleet-label-*.tmp

@@ -376,3 +376,31 @@ def test_config_written_for_3899_loads_in_every_3898_consumer(tmp_path, monkeypa
         .infer_category_ace("synthetic-client.test") == "client"
     assert _load_script("scripts/gtm/job-market-scanner.py", "fwd_scanner") \
         .is_priority_company("Synthetic Contractor Ltd")
+
+# --------------------------------------------------------------------------
+# repository codename aliases (#3694)
+# --------------------------------------------------------------------------
+def test_repo_aliases_section_loads(tmp_path):
+    path = _write(tmp_path, {"version": 1, "repos": {"aliases": {"llm-wiki-codename": "llm-wiki-real"}}})
+    overlay = private_overlay.load(path)
+    assert private_overlay.repo_aliases(overlay) == {"llm-wiki-codename": "llm-wiki-real"}
+
+
+def test_repo_aliases_wrong_type_fails_closed(tmp_path):
+    path = _write(tmp_path, {"version": 1, "repos": {"aliases": ["llm-wiki-real"]}})
+    with pytest.raises(private_overlay.PrivateOverlayError) as exc:
+        private_overlay.load(path)
+    assert "repos.aliases" in str(exc.value)
+    assert "llm-wiki-real" not in str(exc.value)
+
+
+def test_repo_aliases_absent_overlay_is_empty():
+    assert private_overlay.repo_aliases({}) == {}
+
+
+def test_resolve_repo_handles_bare_and_owner_qualified_names():
+    aliases = {"llm-wiki-codename": "llm-wiki-real"}
+    assert private_overlay.resolve_repo("llm-wiki-codename", aliases) == "llm-wiki-real"
+    assert private_overlay.resolve_repo("owner/llm-wiki-codename", aliases) == "owner/llm-wiki-real"
+    assert private_overlay.resolve_repo("owner/digitalmodel", aliases) == "owner/digitalmodel"
+    assert private_overlay.resolve_repo("llm-wiki-codename", {}) == "llm-wiki-codename"
