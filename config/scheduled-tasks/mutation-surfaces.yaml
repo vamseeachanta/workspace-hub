@@ -367,7 +367,7 @@ resolved_dispositions:
     # The #3475 disposition still holds because the generated identity inventory
     # is regenerated from the same governed catalog, registry and state-class
     # inputs. Digest computed from git index blobs on Linux.
-    # Re-affirmed 2026-10-10: registry.yaml changes capability metadata only;
+    # Re-affirmation proposed in PR #4030; effective on owner merge: registry.yaml changes capability metadata only;
     # no scheduled task, cron line, or mutation surface was touched. Digest was
     # recomputed after merging main on 2026-10-10.
     source_digest: 19a42180366fa6626a4d364e6535e46ef4513b22fa32c04ec754c9480c05ac34
