@@ -1,6 +1,6 @@
 # AI account usage (fleet)
 
-Generated 2026-10-11T14:13:32+00:00 by fleet-collector collect_account_usage_fleet. Percentages are USED; headroom = 100 - weekly used. Source of truth: `config/ai-tools/account-usage-latest.json`.
+Generated 2026-10-11T15:13:33+00:00 by fleet-collector collect_account_usage_fleet. Percentages are USED; headroom = 100 - weekly used. Source of truth: `config/ai-tools/account-usage-latest.json`.
 
 ## Recommendation
 
@@ -11,17 +11,17 @@ Generated 2026-10-11T14:13:32+00:00 by fleet-collector collect_account_usage_fle
 
 | account | provider | holder | 5h used | week used | headroom | resets | sampled on | source |
 |---|---|---|---|---|---|---|---|---|
-| claude-owner | claude | owner | 2% | 3% | 97% | 2026-10-17T13:59:59.988671+00:00 | ace-linux-2 | oauth-api |
-| claude-professional | claude | colleague | 2% | 10% | 90% | 2026-10-17T08:00:00.235736+00:00 | ace-win-1 | oauth-api |
+| claude-owner | claude | owner | 0% | 3% | 97% | 2026-10-17T14:00:00.354730+00:00 | ace-linux-1 | oauth-api |
+| claude-professional | claude | colleague | 2% | 10% | 90% | 2026-10-17T08:00:00.292701+00:00 | ace-win-1 | oauth-api |
 | codex-owner | codex | owner |  | 0% | 100% | 2026-10-18T12:05:07+00:00 | fleet-collector | app-server-live |
-| codex-professional | codex | colleague |  | 0% | 100% | 2026-10-18T14:13:29+00:00 | ace-win-1 | app-server-live |
+| codex-professional | codex | colleague |  | 0% | 100% | 2026-10-18T15:13:30+00:00 | ace-win-1 | app-server-live |
 
 ## Hosts
 
 | host | reachable | claude | codex | note |
 |---|---|---|---|---|
 | ace-linux-1 | yes | claude-owner | codex-owner |  |
-| ace-linux-2 | yes | claude-owner | codex-owner |  |
+| ace-linux-2 | yes | claude-owner | codex-owner | claude: access token expired; a Claude Code session on this host will refresh it |
 | gpu-claw | yes | claude-owner | codex-owner | claude: credentials file has no accessToken |
 | ace-win-2 | yes | claude-professional | codex-professional |  |
 | ace-win-1 | yes | claude-professional | codex-professional |  |
