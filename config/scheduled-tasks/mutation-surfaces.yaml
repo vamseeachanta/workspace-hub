@@ -279,6 +279,21 @@ surfaces:
         transaction: *missing_transaction
         attestations: []
 
+  - path: scripts/install/disable-cnh-source-watch-timer.sh
+    kind: direct-owner
+    disposition_group: cnh-source-watch-disable
+    operations:
+      - id: disable:systemd-disable
+        primitive: systemd-user-enable-disable
+        target_kind: systemd-user
+        scheduler_identity: local-user-systemd-claude-routine-mx-720-cnh-source-watch
+        execution_host_binding: physical-local
+        destructive: true
+        authority_branches:
+          - {id: exact-unit-name, mechanism: exact-sentinel, config_source: scripts/install/disable-cnh-source-watch-timer.sh, destructive: true, strength: exact}
+        transaction: *missing_transaction
+        attestations: [systemd-user-enable-disable-v1]
+
   - path: scripts/operations/pause-memory-publishers.sh
     kind: direct-owner
     disposition_group: x02-memory-publisher-pausers
@@ -346,6 +361,12 @@ disposition_groups:
   - group_id: bundle-integrity-sentinel
     issue: {repository: vamseeachanta/workspace-hub, number: 3792}
     members: [scripts/monitoring/bundle-sentinel-install/install.sh]
+    defect_class: systemd-user-transaction-unattestable
+  # Exact mutator for disabling the Mexico CNH source-watch timer (#720), but
+  # still pinned migration-required by the systemd shell attestation gap.
+  - group_id: cnh-source-watch-disable
+    issue: {repository: vamseeachanta/workspace-hub, number: 3792}
+    members: [scripts/install/disable-cnh-source-watch-timer.sh]
     defect_class: systemd-user-transaction-unattestable
   - group_id: x02-memory-publisher-pausers
     issue: {repository: vamseeachanta/workspace-hub, number: 3982}
