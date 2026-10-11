@@ -129,7 +129,6 @@ collector + matrix run.
 | 04:30 Mon | equality-report | Machine-equality self-report plus matrix build; commits/pushes equality state | `logs/quality/equality-*.log` |
 | Every 6h at :47 | session-curation | Refresh session, skill-currency, memory, and skill-link evidence | `logs/monitoring/session-curation-*.log` |
 | 05:15 daily | ecosystem-reconcile | Report-only ecosystem and machine-equivalence reconciliation plan | `logs/quality/reconcile-*.log` |
-| 05:40 daily | repo-hygiene-auto-safe | Report-only workstation hygiene plus repo sync cleanup audit | `logs/quality/repo-hygiene-auto-safe-*.log` |
 
 ## Skills Curation v2 Contract
 

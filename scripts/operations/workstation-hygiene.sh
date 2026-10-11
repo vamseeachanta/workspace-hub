@@ -11,10 +11,11 @@
 #
 # SAFE = no tracked changes, no untracked files except caches (__pycache__, .pytest_cache,
 # .ruff_cache, .mypy_cache), no stashes of its own (clones), and HEAD contained in an origin ref
-# or equal to the head of a merged PR (squash merge, branch deleted). --apply removes worktrees
-# only under --root; those elsewhere (for example app task folders) stay report-only. A worktree
-# with a running process inside it (Linux) is IN USE and never removed; long jobs should also
-# `git worktree lock --reason <job>` so LOCKED protects them on every platform.
+# or equal to the head of a merged PR (squash merge, branch deleted). Removing a SAFE clone also
+# removes its gitignored files. --apply removes worktrees only under --root; those elsewhere (for
+# example app task folders) stay report-only. A worktree with a running process inside it (Linux)
+# is IN USE and never removed; long jobs should also `git worktree lock --reason <job>` so LOCKED
+# protects them on every platform.
 # Exit 0 always in report mode; non-zero only on usage errors.
 set -uo pipefail
 
