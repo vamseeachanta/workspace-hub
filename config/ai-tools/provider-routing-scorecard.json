@@ -1,16 +1,16 @@
 {
-  "generated_at": "2026-10-11T01:21:54.066336Z",
+  "generated_at": "2026-10-11T05:21:13.979751Z",
   "current_week": "2026-W41",
   "inputs": {
     "utilization_path": "/mnt/ace/ws/workspace-hub/config/ai-tools/provider-utilization-weekly.json",
     "audit_path": "/mnt/ace/ws/workspace-hub/analysis/provider-session-ecosystem-audit.json",
-    "utilization_generated_at": "2026-10-11T01:21:53.437264Z",
+    "utilization_generated_at": "2026-10-11T05:21:13.815419Z",
     "audit_generated_at": "2026-08-03T09:15:08Z"
   },
   "recommended_provider_order": [
+    "codex",
     "agy",
-    "claude",
-    "codex"
+    "claude"
   ],
   "recommendations": [
     {
@@ -65,9 +65,9 @@
     },
     {
       "provider": "codex",
-      "status": "needs_cleanup",
-      "priority": "high",
-      "reported_utilization_pct": 44.0,
+      "status": "underused",
+      "priority": "highest",
+      "reported_utilization_pct": 0.0,
       "quota_basis": "quota",
       "quota_source": "app-server-live",
       "sessions_current_week": 33,
@@ -148,7 +148,7 @@
     }
   ],
   "summary": {
-    "highest_priority_provider": "agy",
-    "highest_priority_reason": "Batch 5-6 related research/recon tasks into agy sessions."
+    "highest_priority_provider": "codex",
+    "highest_priority_reason": "Route bounded implementation/test/refactor issues to Codex immediately."
   }
 }
