@@ -19,12 +19,15 @@
 #
 # Usage:
 #   check-marker-label-parity.sh [--strict] [--base-ref REF] [--head-ref REF]
+#   check-marker-label-parity.sh [--strict] --issue ISSUE [--issue ISSUE ...]
 #
 # Options:
 #   --strict             Exit 1 on any marker-label parity failure (default).
 #   --check              Advisory mode (warn but exit 0).
 #   --base-ref REF       Base ref for diff (default: origin/main).
 #   --head-ref REF       Head ref for diff (default: HEAD).
+#   --issue ISSUE        Check a referenced issue by number.
+#   --issues LIST        Check comma/space-separated issue numbers.
 #
 # Requires: gh CLI authenticated (GH_TOKEN in CI; local: `gh auth status`).
 
@@ -34,6 +37,7 @@ REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
 STRICT_MODE=1
 BASE_REF="origin/main"
 HEAD_REF="HEAD"
+ISSUES=()
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
@@ -43,6 +47,18 @@ while [[ $# -gt 0 ]]; do
     --base-ref=*) BASE_REF="${1#*=}" ;;
     --head-ref) HEAD_REF="${2:-}"; shift ;;
     --head-ref=*) HEAD_REF="${1#*=}" ;;
+    --issue) ISSUES+=("${2:-}"); shift ;;
+    --issue=*) ISSUES+=("${1#*=}") ;;
+    --issues)
+      read -r -a parsed_issues <<< "${2//,/ }"
+      ISSUES+=("${parsed_issues[@]}")
+      shift
+      ;;
+    --issues=*)
+      issues_arg="${1#*=}"
+      read -r -a parsed_issues <<< "${issues_arg//,/ }"
+      ISSUES+=("${parsed_issues[@]}")
+      ;;
     -h|--help) sed -n '2,30p' "$0"; exit 0 ;;
   esac
   shift || true
@@ -57,6 +73,121 @@ fi
 if ! gh auth status >/dev/null 2>&1; then
   echo "ERROR: gh not authenticated (set GH_TOKEN or run 'gh auth login')" >&2
   [[ "$STRICT_MODE" == "1" ]] && exit 2 || exit 0
+fi
+
+REPO="${GITHUB_REPOSITORY:-}"
+if [[ -z "$REPO" ]]; then
+  remote_url="$(git -C "$REPO_ROOT" remote get-url origin 2>/dev/null || true)"
+  if [[ "$remote_url" =~ github.com[:/]([^/]+/[^/.]+)(\.git)?$ ]]; then
+    REPO="${BASH_REMATCH[1]}"
+  fi
+fi
+
+if [[ -z "$REPO" ]]; then
+  echo "ERROR: could not determine GitHub repository (set GITHUB_REPOSITORY)" >&2
+  [[ "$STRICT_MODE" == "1" ]] && exit 2 || exit 0
+fi
+
+check_issue_label_setter() {
+  local issue="$1"
+  local require_label="$2"
+  local labels
+  local setter
+  local login
+  local actor_type
+
+  labels="$(gh issue view "$issue" --repo "$REPO" --json labels 2>/dev/null \
+            | python3 -c 'import json,sys; print(",".join(l["name"] for l in json.load(sys.stdin).get("labels",[])))' || echo "")"
+  if ! echo "$labels" | tr ',' '\n' | grep -qx 'status:plan-approved'; then
+    if [[ "$require_label" == "1" ]]; then
+      echo "  FAIL: #${issue} — marker file present in PR but issue lacks status:plan-approved label"
+      echo "        (labels currently: ${labels:-<none>})"
+      return 1
+    fi
+    echo "  PASS: #${issue} — status:plan-approved label absent"
+    return 0
+  fi
+
+  # Walk all timeline pages and select the most recent matching labeled event.
+  # `gh api --paginate` may print one JSON array per page, so use --slurp and
+  # flatten the resulting page arrays before parsing.
+  setter="$(gh api "repos/${REPO}/issues/${issue}/timeline" \
+            --paginate --slurp -H 'Accept: application/vnd.github.mockingbird-preview+json' 2>/dev/null \
+            | python3 -c '
+import json, sys
+
+try:
+    pages = json.load(sys.stdin)
+except json.JSONDecodeError:
+    pages = []
+
+events = []
+if isinstance(pages, list):
+    for page in pages:
+        if isinstance(page, list):
+            events.extend(page)
+        elif isinstance(page, dict):
+            events.append(page)
+elif isinstance(pages, dict):
+    events.append(pages)
+
+last = None
+for event in events:
+    if event.get("event") == "labeled" and event.get("label", {}).get("name") == "status:plan-approved":
+        last = event
+
+if last:
+    actor = last.get("actor", {}) or {}
+    print("{}\t{}".format(actor.get("login", ""), actor.get("type", "")))
+else:
+    print("\t")
+' 2>/dev/null || echo $'\t')"
+
+  login="$(echo "$setter" | cut -f1)"
+  actor_type="$(echo "$setter" | cut -f2)"
+
+  if [[ -z "$login" ]]; then
+    echo "  WARN: #${issue} — could not determine label-setter from timeline (label is set, but provenance unclear)"
+    return 0
+  fi
+
+  if [[ "$actor_type" == "Bot" ]] || [[ "$login" == *"[bot]" ]]; then
+    echo "  FAIL: #${issue} — status:plan-approved set by bot (${login}, type=${actor_type})"
+    echo "        User-in-loop contract requires a non-bot account."
+    return 1
+  fi
+
+  echo "  PASS: #${issue} — status:plan-approved set by ${login} (type=${actor_type})"
+  return 0
+}
+
+if [[ "${#ISSUES[@]}" -gt 0 ]]; then
+  FAILURES=0
+  CHECKED=0
+  for issue in "${ISSUES[@]}"; do
+    [[ -z "$issue" ]] && continue
+    if ! [[ "$issue" =~ ^[0-9]+$ ]]; then
+      echo "  SKIP: ${issue} — issue reference is not numeric"
+      continue
+    fi
+    CHECKED=$((CHECKED+1))
+    if ! check_issue_label_setter "$issue" 0; then
+      FAILURES=$((FAILURES+1))
+    fi
+  done
+
+  if [[ "$CHECKED" -eq 0 ]]; then
+    echo "PASS: no issue references to inspect"
+    exit 0
+  fi
+
+  if [[ "$FAILURES" -gt 0 ]]; then
+    echo "RESULT: ${FAILURES} referenced issue label provenance failure(s)"
+    [[ "$STRICT_MODE" == "1" ]] && exit 1 || exit 0
+  fi
+
+  echo "RESULT: PASS — ${CHECKED} referenced issue(s) checked"
+  exit 0
 fi
 
 # Find marker files added or modified in the PR diff.
@@ -86,53 +217,9 @@ while IFS= read -r marker_path; do
   fi
   issue="$fname"
 
-  # Verify label currently set
-  labels="$(gh issue view "$issue" --repo vamseeachanta/workspace-hub --json labels 2>/dev/null \
-            | python3 -c 'import json,sys; print(",".join(l["name"] for l in json.load(sys.stdin).get("labels",[])))' || echo "")"
-  if ! echo "$labels" | tr ',' '\n' | grep -qx 'status:plan-approved'; then
-    echo "  FAIL: #${issue} — marker file present in PR but issue lacks status:plan-approved label"
-    echo "        (labels currently: ${labels:-<none>})"
+  if ! check_issue_label_setter "$issue" 1; then
     FAILURES=$((FAILURES+1))
-    continue
   fi
-
-  # Verify label was set by a non-bot account. Walk timeline events of type
-  # 'labeled' in reverse chronological; first match for status:plan-approved
-  # is the current-set actor. If actor.type == 'Bot' or login ends with
-  # '[bot]', treat as fail-closed.
-  setter="$(gh api "repos/vamseeachanta/workspace-hub/issues/${issue}/timeline" \
-            --paginate -H 'Accept: application/vnd.github.mockingbird-preview+json' 2>/dev/null \
-            | python3 -c '
-import json, sys
-events = json.load(sys.stdin) if sys.stdin.isatty() == False else []
-last = None
-for e in events if isinstance(events, list) else []:
-    if e.get("event") == "labeled" and e.get("label", {}).get("name") == "status:plan-approved":
-        last = e
-if last:
-    a = last.get("actor", {}) or {}
-    print(f"{a.get(\"login\",\"?\")}\t{a.get(\"type\",\"?\")}")
-else:
-    print("\t")
-' 2>/dev/null || echo $'\t')"
-
-  login="$(echo "$setter" | cut -f1)"
-  actor_type="$(echo "$setter" | cut -f2)"
-
-  if [[ -z "$login" ]]; then
-    echo "  WARN: #${issue} — could not determine label-setter from timeline (label is set, but provenance unclear)"
-    # Treat unknown setter as soft-pass to avoid blocking on transient API issues.
-    continue
-  fi
-
-  if [[ "$actor_type" == "Bot" ]] || [[ "$login" == *"[bot]" ]]; then
-    echo "  FAIL: #${issue} — status:plan-approved set by bot (${login}, type=${actor_type})"
-    echo "        User-in-loop contract requires a human account."
-    FAILURES=$((FAILURES+1))
-    continue
-  fi
-
-  echo "  PASS: #${issue} — marker present + label set by ${login} (type=${actor_type})"
 done <<< "$ADDED_OR_MODIFIED_MARKERS"
 
 echo

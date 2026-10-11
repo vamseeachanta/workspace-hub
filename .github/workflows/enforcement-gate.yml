@@ -173,6 +173,63 @@ jobs:
           python3 scripts/workflow/plan_approval_gate_check.py
           echo "Separate plan approval retired; task authority and other controls remain." >> "$GITHUB_STEP_SUMMARY"
 
+  marker-label-parity:
+    name: Marker-Label Parity Check
+    # Label-provenance gate: for issues referenced by the PR, reject
+    # status:plan-approved labels applied by bot accounts. Issues without the
+    # label pass; readiness remains label-based and marker files stay retired.
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Validate referenced issue plan-approval label provenance
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          echo "## Marker-Label Parity Check" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          issues="$(
+            python3 - <<'PY'
+import json
+import os
+import re
+from pathlib import Path
+
+event = json.loads(Path(os.environ["GITHUB_EVENT_PATH"]).read_text())
+pr = event.get("pull_request", {})
+text = "\n".join(str(pr.get(key) or "") for key in ("title", "body"))
+
+seen = []
+for match in re.finditer(r"(?<![\w/-])#([1-9][0-9]*)\b|[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+#([1-9][0-9]*)\b", text):
+    issue = match.group(1) or match.group(2)
+    if issue not in seen:
+        seen.append(issue)
+
+print(" ".join(seen))
+PY
+          )"
+
+          chmod +x scripts/enforcement/check-marker-label-parity.sh
+
+          if scripts/enforcement/check-marker-label-parity.sh \
+              --strict \
+              --issues "$issues" 2>&1 | tee /tmp/marker-parity.log; then
+            echo "**Result:** PASS — referenced labels are absent or non-bot set" >> $GITHUB_STEP_SUMMARY
+          else
+            EXIT_CODE=$?
+            echo "**Result:** FAIL — referenced issue has bot-set plan-approval label" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            cat /tmp/marker-parity.log >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            exit $EXIT_CODE
+          fi
+
   retired-queue-paths:
     name: Retired Queue Path Check
     runs-on: ubuntu-latest

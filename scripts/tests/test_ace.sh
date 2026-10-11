@@ -6,9 +6,19 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ACE="$SCRIPT_DIR/../ace"
-GH_STUB_DIR="$(mktemp -d /mnt/ace/ws/_wt/ace-test.XXXXXX)"
-trap 'rm -rf "$GH_STUB_DIR"' EXIT
-export UV_CACHE_DIR="${UV_CACHE_DIR:-/mnt/ace/ws/_wt/.uv-cache}"
+GH_STUB_DIR="$(mktemp -d)"
+CREATED_UV_CACHE_DIR=""
+if [[ -z "${UV_CACHE_DIR:-}" ]]; then
+    CREATED_UV_CACHE_DIR="$(mktemp -d)"
+    export UV_CACHE_DIR="$CREATED_UV_CACHE_DIR"
+fi
+cleanup() {
+    rm -rf "$GH_STUB_DIR"
+    if [[ -n "$CREATED_UV_CACHE_DIR" ]]; then
+        rm -rf "$CREATED_UV_CACHE_DIR"
+    fi
+}
+trap cleanup EXIT
 
 cat >"$GH_STUB_DIR/gh" <<'EOF'
 #!/usr/bin/env bash
