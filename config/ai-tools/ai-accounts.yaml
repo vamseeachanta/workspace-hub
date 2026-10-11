@@ -24,22 +24,22 @@ accounts:
     provider: claude
     holder: owner            # personal subscription; broader authorisations
     access: full
-    fingerprint: 78d7e174f2d1   # confirmed 2026-09-26 from ace-linux-1/2, gpu-claw, fleet-collector probes
+    fingerprint: 78d7e174f2d1   # confirmed 2026-09-26 from ace-linux-1/2, gpu-claw, fleet-collector probes; 2026-10-10 from ace-win-2 probe
   claude-professional:
     provider: claude
-    holder: colleague        # professional seat shared on the company workstations
+    holder: colleague        # professional seat; logged in on ace-win-1 only
     access: limited          # fewer authorisations (OAuth grants, org settings)
-    fingerprint: c0c130b8018b   # confirmed 2026-09-26 from ace-win-2 probe
+    fingerprint: c0c130b8018b   # confirmed 2026-10-10 from ace-win-1 probe (the only host on this seat)
   codex-owner:
     provider: codex
     holder: owner
     access: full
-    fingerprint: 78d7e174f2d1   # confirmed 2026-09-26 from ace-linux-1/2, gpu-claw, fleet-collector probes
+    fingerprint: 78d7e174f2d1   # confirmed 2026-09-26 from ace-linux-1/2, gpu-claw, fleet-collector probes; 2026-10-10 from ace-win-2 probe
   codex-professional:
     provider: codex
     holder: colleague
     access: limited
-    fingerprint: c0c130b8018b   # confirmed 2026-09-26 from ace-win-2 probe
+    fingerprint: c0c130b8018b   # confirmed 2026-10-10 from ace-win-1 probe (the only host on this seat)
 
 # Hosts to probe. `hub_path` is where the workspace-hub checkout lives on that
 # host (only used for logging; the probe is piped over stdin). `local: true`
@@ -64,8 +64,13 @@ hosts:
   ace-win-2:
     os: windows
     hub_path: C:/ws/workspace-hub
-    claude: claude-professional
-    codex: codex-professional
+    # Owner decision E05 (2026-10-09): this workstation is logged in as the
+    # OWNER account for both CLIs, not the professional seat it was mapped to.
+    # Confirmed by the local probe on the box and by the fleet collector run of
+    # 2026-10-10T00:13Z (both providers print 78d7e174f2d1). ace-win-1 is now
+    # the only host that can measure the professional seat.
+    claude: claude-owner
+    codex: codex-owner
   ace-win-1:
     os: windows
     hub_path: C:/ws/workspace-hub

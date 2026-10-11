@@ -279,6 +279,21 @@ surfaces:
         transaction: *missing_transaction
         attestations: []
 
+  - path: scripts/install/disable-cnh-source-watch-timer.sh
+    kind: direct-owner
+    disposition_group: cnh-source-watch-disable
+    operations:
+      - id: disable:systemd-disable
+        primitive: systemd-user-enable-disable
+        target_kind: systemd-user
+        scheduler_identity: local-user-systemd-claude-routine-mx-720-cnh-source-watch
+        execution_host_binding: physical-local
+        destructive: true
+        authority_branches:
+          - {id: exact-unit-name, mechanism: exact-sentinel, config_source: scripts/install/disable-cnh-source-watch-timer.sh, destructive: true, strength: exact}
+        transaction: *missing_transaction
+        attestations: [systemd-user-enable-disable-v1]
+
   - path: scripts/operations/pause-memory-publishers.sh
     kind: direct-owner
     disposition_group: x02-memory-publisher-pausers
@@ -347,6 +362,12 @@ disposition_groups:
     issue: {repository: vamseeachanta/workspace-hub, number: 3792}
     members: [scripts/monitoring/bundle-sentinel-install/install.sh]
     defect_class: systemd-user-transaction-unattestable
+  # Exact mutator for disabling the Mexico CNH source-watch timer (#720), but
+  # still pinned migration-required by the systemd shell attestation gap.
+  - group_id: cnh-source-watch-disable
+    issue: {repository: vamseeachanta/workspace-hub, number: 3792}
+    members: [scripts/install/disable-cnh-source-watch-timer.sh]
+    defect_class: systemd-user-transaction-unattestable
   - group_id: x02-memory-publisher-pausers
     issue: {repository: vamseeachanta/workspace-hub, number: 3982}
     members: [scripts/operations/pause-memory-publishers.sh, scripts/operations/pause-memory-publishers.ps1]
@@ -367,5 +388,8 @@ resolved_dispositions:
     # The #3475 disposition still holds because the generated identity inventory
     # is regenerated from the same governed catalog, registry and state-class
     # inputs. Digest computed from git index blobs on Linux.
+    # Re-affirmation proposed in PR #4030; effective on owner merge: registry.yaml changes capability metadata only;
+    # no scheduled task, cron line, or mutation surface was touched. Digest was
+    # recomputed after merging main on 2026-10-10.
     # Provisional: owner to confirm digest re-affirmation at merge; owner approval for the report-only ace-linux-1 registration: board card O17 (2026-10-09T16:55Z).
-    source_digest: 2e140cb8ea0ff52b4d423d6f0a0af91dc806786a60ab0cae9d991e44e13e6760
+    source_digest: 19a42180366fa6626a4d364e6535e46ef4513b22fa32c04ec754c9480c05ac34

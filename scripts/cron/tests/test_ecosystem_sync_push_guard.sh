@@ -76,14 +76,26 @@ fi
 exit "${STUB_UV_RC:-0}"
 STUB
     chmod +x "$tmp/bin/uv"
+    real_git="$(command -v git)"
+    cat > "$tmp/bin/git" <<STUB
+#!/usr/bin/env bash
+if [[ "\${STUB_COMMIT_BEFORE_PUSH:-0}" == "1" && "\${1:-}" == "push" ]]; then
+    marker=".claude/state/ecosystem-sync/pre-push-extra.yaml"
+    echo "extra: \$(date -u +%FT%TZ)" > "\$marker"
+    "$real_git" add "\$marker"
+    "$real_git" commit --quiet -m "extra local sync state before push"
+    unset STUB_COMMIT_BEFORE_PUSH
+fi
+exec "$real_git" "\$@"
+STUB
+    chmod +x "$tmp/bin/git"
     real_mktemp="$(command -v mktemp)"
     cat > "$tmp/bin/mktemp" <<STUB
 #!/usr/bin/env bash
 if [[ "\${STUB_MKTEMP_FULL:-0}" == "1" ]]; then
     path="$tmp/write-fails-\$\$-\$RANDOM"
-    rm -f "\$path"
-    mkfifo "\$path"
-    python3 -c 'import sys; f = open(sys.argv[1], "rb"); f.close()' "\$path" >/dev/null 2>&1 &
+    : > "\$path"
+    chmod 000 "\$path"
     echo "\$path"
 else
     exec "$real_mktemp" "\$@"
@@ -269,6 +281,22 @@ assert_eq "remote main is the sync commit on top of the other machine's commit" 
 changed="$(git --git-dir="$T/remote.git" diff --name-only main~1 main | sort | tr '\n' ' ')"
 assert_eq "sync commit touches only allowed paths" \
     ".claude/state/ecosystem-sync/last-sync.yaml docs/sync-reports/digest.md " "$changed"
+rm -rf "$T"
+
+echo "=== concurrent local commit after guard cannot ride along with push ==="
+T="$(setup_fixture)"
+before="$(remote_head "$T")"
+STUB_COMMIT_BEFORE_PUSH=1 run_sync "$T"; rc=$?
+validated_oid="$(git -C "$T/local" rev-parse main~1)"
+extra_oid="$(git -C "$T/local" rev-parse main)"
+assert_eq "exit code 0" "0" "$rc"
+assert_ne "extra commit exists locally" "$validated_oid" "$extra_oid"
+assert_eq "remote main is guarded oid" "$validated_oid" "$(remote_head "$T")"
+assert_eq "remote excludes extra local commit" "1" \
+    "$(git -C "$T/local" merge-base --is-ancestor "$extra_oid" "$(remote_head "$T")"; echo "$?")"
+assert_eq "remote changed only by validated sync commit" \
+    ".claude/state/ecosystem-sync/last-sync.yaml docs/sync-reports/digest.md " \
+    "$(git --git-dir="$T/remote.git" diff --name-only "$before" main | sort | tr '\n' ' ')"
 rm -rf "$T"
 
 echo "=== failed sync run neither commits nor pushes ==="
