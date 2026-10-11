@@ -6,6 +6,44 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ACE="$SCRIPT_DIR/../ace"
+GH_STUB_DIR="$(mktemp -d /mnt/ace/ws/_wt/ace-test.XXXXXX)"
+trap 'rm -rf "$GH_STUB_DIR"' EXIT
+export UV_CACHE_DIR="${UV_CACHE_DIR:-/mnt/ace/ws/_wt/.uv-cache}"
+
+cat >"$GH_STUB_DIR/gh" <<'EOF'
+#!/usr/bin/env bash
+set -euo pipefail
+
+if [[ "$*" == *"issue list"* ]]; then
+    printf '#3999 Test dispatch issue\n'
+    exit 0
+fi
+
+if [[ "$*" == *"issue view 3999"* ]]; then
+    printf 'title:\tTest dispatch issue\n'
+    exit 0
+fi
+
+echo "unexpected gh invocation: $*" >&2
+exit 1
+EOF
+chmod +x "$GH_STUB_DIR/gh"
+export PATH="$GH_STUB_DIR:$PATH"
+mkdir -p "$GH_STUB_DIR/worldenergydata"
+cat >"$GH_STUB_DIR/worldenergydata/__init__.py" <<'EOF'
+EOF
+cat >"$GH_STUB_DIR/worldenergydata/__main__.py" <<'EOF'
+#!/usr/bin/env python3
+import sys
+
+if sys.argv[1:] == ["bsee", "--help"]:
+    print("worldenergydata bsee command help")
+    raise SystemExit(0)
+
+print("unexpected worldenergydata invocation:", sys.argv[1:])
+raise SystemExit(1)
+EOF
+export PYTHONPATH="$GH_STUB_DIR:${PYTHONPATH:-}"
 
 PASS=0
 FAIL=0
@@ -107,6 +145,21 @@ else
     fail "ace we --help exits 0" "exit code $we_exit — $we_out"
 fi
 assert_contains "ace we --help shows commands" "worldenergydata" "$we_out"
+
+# ---------------------------------------------------------------------------
+# Test: ace we <subcommand> --help is passed through to worldenergydata
+# ---------------------------------------------------------------------------
+we_sub_help_out=$("$ACE" we bsee --help 2>&1) && we_sub_help_exit=0 || we_sub_help_exit=$?
+if [ "$we_sub_help_exit" -eq 0 ]; then
+    pass "ace we bsee --help exits 0"
+else
+    fail "ace we bsee --help exits 0" "exit code $we_sub_help_exit — $we_sub_help_out"
+fi
+if echo "$we_sub_help_out" | grep -q "ace we — worldenergydata engineering data CLI"; then
+    fail "ace we bsee --help is subcommand help" "generic ace we help swallowed subcommand help"
+else
+    pass "ace we bsee --help is subcommand help"
+fi
 
 # ---------------------------------------------------------------------------
 # Test: ace au --help exits 0 and shows au usage text

@@ -354,6 +354,7 @@ class TestGithubLabelQueue:
             "labels": [
                 {"name": "dispatch:ready"},
                 {"name": "lane:codex"},
+                {"name": "track:engineering"},
                 {"name": "decision:ecosystem"},
                 {"name": "priority:high"},
                 {"name": "cat:harness"},
@@ -365,9 +366,67 @@ class TestGithubLabelQueue:
         assert item["id"] == "#3999"
         assert item["title"] == "Rewire queue"
         assert item["status"] == "ready"
-        assert item["track"] == "codex"
+        assert item["track"] == "engineering"
+        assert item["lane"] == "codex"
         assert item["category"] == "harness"
         assert item["priority"] == "high"
+
+    def test_lane_only_issue_does_not_use_lane_as_track(self):
+        from strategic_score import issue_to_work_item
+
+        issue = {
+            "number": 4000,
+            "title": "Lane only",
+            "state": "OPEN",
+            "labels": [
+                {"name": "dispatch:ready"},
+                {"name": "lane:codex"},
+                {"name": "priority:medium"},
+            ],
+        }
+
+        item = issue_to_work_item(issue)
+
+        assert item["lane"] == "codex"
+        assert item.get("track") is None
+
+    def test_label_queue_track_penalty_uses_strategic_track(
+        self, track_mapping, scoring_weights
+    ):
+        from strategic_score import rank_issues
+
+        issues = [
+            {
+                "number": 4001,
+                "title": "Engineering one",
+                "state": "OPEN",
+                "labels": [
+                    {"name": "dispatch:ready"},
+                    {"name": "lane:codex"},
+                    {"name": "track:engineering"},
+                    {"name": "priority:medium"},
+                ],
+            },
+            {
+                "number": 4002,
+                "title": "Engineering two",
+                "state": "OPEN",
+                "labels": [
+                    {"name": "dispatch:ready"},
+                    {"name": "lane:claude"},
+                    {"name": "track:engineering"},
+                    {"name": "priority:medium"},
+                ],
+            },
+        ]
+
+        ranked = rank_issues(issues, track_mapping, scoring_weights)
+
+        assert {item["track"] for item in ranked} == {"engineering"}
+        assert all(
+            item["score_breakdown"]["track_penalty"] < 0
+            for item in ranked
+        )
 
     def test_rank_issues_scores_label_queue(self, track_mapping, scoring_weights):
         from strategic_score import rank_issues
@@ -395,7 +454,11 @@ class TestGithubLabelQueue:
             },
         ]
 
-        ranked = rank_issues(issues, track_mapping, scoring_weights)
+        scoring_without_penalty = {
+            **scoring_weights,
+            "track_targets": {"other": 100},
+        }
+        ranked = rank_issues(issues, track_mapping, scoring_without_penalty)
 
         assert [item["id"] for item in ranked] == ["#12", "#11"]
         assert all(item["source"] == "github-labels" for item in ranked)

@@ -79,19 +79,6 @@ def _dedupe_issues(issues: list[dict]) -> list[dict]:
     return list(by_number.values())
 
 
-def query_provider_priority(
-    agent: dict,
-    priority: str,
-    query_fn: callable,
-) -> list[dict]:
-    """Query canonical ai:<provider> plus read-only legacy agent:* aliases."""
-    labels_to_query = [agent["label"], *PROVIDER_LABEL_ALIASES.get(agent["provider"], [])]
-    issues: list[dict] = []
-    for provider_label in labels_to_query:
-        issues.extend(query_fn(f"{provider_label},priority:{priority}"))
-    return _dedupe_issues(issues)
-
-
 def _sort_issues(issues: list[dict]) -> list[dict]:
     """Sort issues by number ascending for deterministic output."""
     return sorted(issues, key=lambda i: i["number"])
@@ -102,28 +89,6 @@ def _format_issue_row(idx: int, issue: dict) -> str:
     num = issue["number"]
     title = issue["title"].replace("|", "\\|")
     return f"| {idx} | #{num} | {title} |"
-
-
-def _format_priority_section(
-    priority: str, issues: list[dict], start_idx: int
-) -> tuple[str, int]:
-    """Format a priority sub-section. Returns (markdown, next_index)."""
-    label = priority.capitalize()
-    lines = [f"### {label} Priority", ""]
-    sorted_issues = _sort_issues(issues)
-    if not sorted_issues:
-        lines.append("_No issues at this priority._")
-        lines.append("")
-        return "\n".join(lines), start_idx
-
-    lines.append("| # | Issue | Title |")
-    lines.append("|---|-------|-------|")
-    idx = start_idx
-    for issue in sorted_issues:
-        lines.append(_format_issue_row(idx, issue))
-        idx += 1
-    lines.append("")
-    return "\n".join(lines), idx
 
 
 def generate_queue_markdown(

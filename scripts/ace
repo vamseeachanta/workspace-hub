@@ -208,9 +208,8 @@ cmd_dm() {
 # Subcommand: we
 # ---------------------------------------------------------------------------
 cmd_we() {
-    for arg in "$@"; do
-        if [ "$arg" = "--help" ] || [ "$arg" = "-h" ]; then
-            cat <<'EOF'
+    if [ "${1:-}" = "--help" ] || [ "${1:-}" = "-h" ]; then
+        cat <<'EOF'
 ace we — worldenergydata engineering data CLI
 
 Usage:
@@ -220,9 +219,8 @@ Usage:
 Routes to the worldenergydata Python module when it is installed or available
 in the workspace checkout.
 EOF
-            exit 0
-        fi
-    done
+        exit 0
+    fi
     require_python_module "worldenergydata"
     PYTHONPATH="$(build_pythonpath)" exec uv run --no-project python -m worldenergydata "$@"
 }

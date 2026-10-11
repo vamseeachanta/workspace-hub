@@ -33,6 +33,7 @@ def issue_to_work_item(issue: dict) -> dict:
     priority = axis_value(labels, "priority:") or "medium"
     lane = axis_value(labels, "lane:")
     ai_provider = axis_value(labels, "ai:")
+    strategic_track = axis_value(labels, "track:") or axis_value(labels, "objective:")
     status = axis_value(labels, "dispatch:") or str(issue.get("state", "open")).lower()
     category = (
         axis_value(labels, "cat:")
@@ -40,17 +41,23 @@ def issue_to_work_item(issue: dict) -> dict:
         or axis_value(labels, "decision:")
         or "uncategorised"
     )
-    return {
+    item = {
         "id": f"#{issue['number']}",
         "title": issue.get("title", ""),
         "priority": priority,
         "complexity": "medium",
         "status": status,
         "category": category,
-        "track": ai_provider or lane,
         "blocked_by": [],
         "source": "github-labels",
     }
+    if strategic_track:
+        item["track"] = strategic_track
+    if lane:
+        item["lane"] = lane
+    if ai_provider:
+        item["provider"] = ai_provider
+    return item
 
 
 def gh_query_label_queue(repo: str = REPO_SLUG) -> list[dict]:

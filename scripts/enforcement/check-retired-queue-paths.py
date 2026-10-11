@@ -7,7 +7,7 @@ import argparse
 import subprocess
 import sys
 
-RETIRED_PREFIXES = (".claude/work-queue/", ".planning/")
+RETIRED_PREFIXES = (".claude/work-queue/", ".planning/plan-approved/")
 ARCHIVE_PREFIXES = (
     ".claude/work-queue/_archive/",
     ".planning/archive/",

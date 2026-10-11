@@ -24,9 +24,14 @@ def test_blocks_new_work_queue_file():
     assert mod.violations([("A", ".claude/work-queue/pending/WRK-1.md")])
 
 
-def test_blocks_new_planning_file():
+def test_blocks_new_plan_approved_marker():
     mod = _load()
     assert mod.violations([("A", ".planning/plan-approved/3999.md")])
+
+
+def test_allows_new_non_queue_planning_file():
+    mod = _load()
+    assert mod.violations([("A", ".planning/gsd/notes.md")]) == []
 
 
 def test_allows_archive_under_retired_paths():
