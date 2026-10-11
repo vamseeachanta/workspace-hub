@@ -80,7 +80,6 @@ the figure the repository already publishes.
 | Turbulent flat plate | Skin friction against Schlichting, mean error | n/a | about 9 % | 9.3 % |
 | NACA 0012 | Lift-curve slope per degree | 0.106 | 0.1037 | 0.1037 |
 | Dam break | Surge front against Martin and Moyce, mean deviation | n/a | 3.0 % | 3.0 % |
-
 | Floating-body heave decay | Equilibrium draft against Archimedes | 0.2505 m | +1.1 % | +1.1 % |
 | Wave tank | Wavenumber against linear dispersion | n/a | +0.2 % | +0.2 % |
 | | Height decay along the tank (gate < 5 %) | n/a | 4.6 % | 5.0 % |
@@ -100,7 +99,7 @@ job's hand-off, and the host sat idle overnight.
 - digitalmodel#2321: fix for digitalmodel#2320. Merged.
 - digitalmodel#2323: three case-study pages under
   `docs/reports/2026-10-09-compute-program/` (known-answer re-run, Capytaine
-  barge leg, OpenFOAM baseline). Open; pages not yet checked in a browser.
+  barge leg, OpenFOAM baseline). Merged; pages not yet checked in a browser.
 - digitalmodel#2336: `solver_benchmark.py report`, the cross-machine baseline
   report deferred by #2300. Open; 86 benchmark tests pass. Real receipts exist
   for one machine only, so the cross-machine paths are covered by synthetic
@@ -130,7 +129,7 @@ job's hand-off, and the host sat idle overnight.
 
 ## Next steps
 
-1. Add the Kleefsman result to the known-answer page; merge digitalmodel#2323 and #2336.
+1. Add the Kleefsman result to the known-answer page; merge digitalmodel#2336.
 2. Run the licensed baseline leg in a quiet window; then publish the
    cross-machine baseline report and the three-solver barge comparison.
 3. Re-run the pack with a role label for the machine name: the label used so far is the real hostname, and the report prints it.
