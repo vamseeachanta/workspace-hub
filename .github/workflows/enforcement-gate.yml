@@ -176,8 +176,12 @@ jobs:
   marker-label-parity:
     name: Marker-Label Parity Check
     # Label-provenance gate: for issues referenced by the PR, reject
-    # status:plan-approved labels applied by bot accounts. Issues without the
-    # label pass; readiness remains label-based and marker files stay retired.
+    # status:plan-approved labels applied by a GitHub App or workflow token
+    # (actor type Bot or login ending in [bot]). A pass is not evidence that a
+    # person approved the plan, because the check cannot distinguish an agent
+    # using the owner's token from the owner. The PR's own script/workflow run on
+    # opened, synchronize, and reopened events only; this is advisory until the
+    # owner makes it a required status check.
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -190,34 +194,17 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
+          set -o pipefail
           echo "## Marker-Label Parity Check" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
 
-          issues="$(
-            python3 - <<'PY'
-import json
-import os
-import re
-from pathlib import Path
-
-event = json.loads(Path(os.environ["GITHUB_EVENT_PATH"]).read_text())
-pr = event.get("pull_request", {})
-text = "\n".join(str(pr.get(key) or "") for key in ("title", "body"))
-
-seen = []
-for match in re.finditer(r"(?<![\w/-])#([1-9][0-9]*)\b|[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+#([1-9][0-9]*)\b", text):
-    issue = match.group(1) or match.group(2)
-    if issue not in seen:
-        seen.append(issue)
-
-print(" ".join(seen))
-PY
-          )"
+          issues="$(python3 scripts/enforcement/extract-pr-issue-references.py)"
 
           chmod +x scripts/enforcement/check-marker-label-parity.sh
 
           if scripts/enforcement/check-marker-label-parity.sh \
               --strict \
+              --require-issue-reference \
               --issues "$issues" 2>&1 | tee /tmp/marker-parity.log; then
             echo "**Result:** PASS — referenced labels are absent or non-bot set" >> $GITHUB_STEP_SUMMARY
           else

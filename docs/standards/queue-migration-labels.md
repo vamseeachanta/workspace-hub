@@ -38,7 +38,7 @@ Table 1. Queue state is carried by issue labels, not local markdown queue files.
 | `scripts/telegram_dispatch/policy.py` | Blocked implementation dispatch without `.planning/plan-approved/<issue>.md`. | Uses `status:plan-approved` plus readiness and lease checks. |
 | `scripts/operations/linux-cron-issue-orchestrator.py` | Required `--plan-marker-dir` marker files. | Keeps `--plan-marker-dir` as ignored compatibility input; dispatch readiness is label-based. |
 | `scripts/ai/approve-provider-plan.py` | Wrote quarantine markers and promoted them into `.planning/plan-approved/`. | Posts the approval comment, transitions GitHub labels, refreshes queue data, and writes no approval marker. |
-| `.github/workflows/enforcement-gate.yml` marker-label-parity job | Validated newly added approval markers against GitHub labels. | Checks PR-referenced issues and fails when `status:plan-approved` was applied by a bot account; new marker files are rejected by the retired-path guard. |
+| `.github/workflows/enforcement-gate.yml` marker-label-parity job | Validated newly added approval markers against GitHub labels. | Checks PR-referenced issues and fails when `status:plan-approved` was applied by a GitHub App or workflow token; new marker files are rejected by the retired-path guard. |
 | `scripts/ai/build-orca-kanban.py` | Split `status:plan-approved` issues into ready vs marker-drift lanes. | Treats `status:plan-approved` as ready; local markers are ignored. |
 | `scripts/data/document-index/phase-f-gap-wrk-generator.py` | Wrote generated local WRK files under `.claude/work-queue/pending/`. | Non-dry-run local writes fail closed; `--dry-run` previews GitHub issue candidates. |
 

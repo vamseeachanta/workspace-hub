@@ -26,8 +26,10 @@
 #   --check              Advisory mode (warn but exit 0).
 #   --base-ref REF       Base ref for diff (default: origin/main).
 #   --head-ref REF       Head ref for diff (default: HEAD).
-#   --issue ISSUE        Check a referenced issue by number.
-#   --issues LIST        Check comma/space-separated issue numbers.
+#   --issue ISSUE        Check a referenced issue by number or owner/repo#number.
+#   --issues LIST        Check comma/space-separated issue references.
+#   --require-issue-reference
+#                        Fail strict mode when no referenced issue is supplied.
 #
 # Requires: gh CLI authenticated (GH_TOKEN in CI; local: `gh auth status`).
 
@@ -38,6 +40,8 @@ STRICT_MODE=1
 BASE_REF="origin/main"
 HEAD_REF="HEAD"
 ISSUES=()
+REQUIRE_ISSUE_REFERENCE=0
+ISSUE_MODE=0
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
@@ -47,18 +51,21 @@ while [[ $# -gt 0 ]]; do
     --base-ref=*) BASE_REF="${1#*=}" ;;
     --head-ref) HEAD_REF="${2:-}"; shift ;;
     --head-ref=*) HEAD_REF="${1#*=}" ;;
-    --issue) ISSUES+=("${2:-}"); shift ;;
-    --issue=*) ISSUES+=("${1#*=}") ;;
+    --issue) ISSUE_MODE=1; ISSUES+=("${2:-}"); shift ;;
+    --issue=*) ISSUE_MODE=1; ISSUES+=("${1#*=}") ;;
     --issues)
+      ISSUE_MODE=1
       read -r -a parsed_issues <<< "${2//,/ }"
       ISSUES+=("${parsed_issues[@]}")
       shift
       ;;
     --issues=*)
+      ISSUE_MODE=1
       issues_arg="${1#*=}"
       read -r -a parsed_issues <<< "${issues_arg//,/ }"
       ISSUES+=("${parsed_issues[@]}")
       ;;
+    --require-issue-reference) REQUIRE_ISSUE_REFERENCE=1 ;;
     -h|--help) sed -n '2,30p' "$0"; exit 0 ;;
   esac
   shift || true
@@ -88,38 +95,61 @@ if [[ -z "$REPO" ]]; then
   [[ "$STRICT_MODE" == "1" ]] && exit 2 || exit 0
 fi
 
+issue_display() {
+  local repo="$1"
+  local issue="$2"
+  echo "${repo}#${issue}"
+}
+
 check_issue_label_setter() {
-  local issue="$1"
-  local require_label="$2"
+  local repo="$1"
+  local issue="$2"
+  local require_label="$3"
+  local display
+  local labels_json
   local labels
+  local timeline_json
   local setter
   local login
   local actor_type
 
-  labels="$(gh issue view "$issue" --repo "$REPO" --json labels 2>/dev/null \
-            | python3 -c 'import json,sys; print(",".join(l["name"] for l in json.load(sys.stdin).get("labels",[])))' || echo "")"
+  display="$(issue_display "$repo" "$issue")"
+
+  if ! labels_json="$(gh issue view "$issue" --repo "$repo" --json labels 2>/dev/null)"; then
+    echo "  FAIL: ${display}: could not read labels (API error); failing closed"
+    return 1
+  fi
+  if ! labels="$(printf '%s' "$labels_json" | python3 -c 'import json,sys; print(",".join(l["name"] for l in json.load(sys.stdin).get("labels",[])))' 2>/dev/null)"; then
+    echo "  FAIL: ${display}: could not parse labels; failing closed"
+    return 1
+  fi
+
   if ! echo "$labels" | tr ',' '\n' | grep -qx 'status:plan-approved'; then
     if [[ "$require_label" == "1" ]]; then
-      echo "  FAIL: #${issue} — marker file present in PR but issue lacks status:plan-approved label"
+      echo "  FAIL: ${display} — marker file present in PR but issue lacks status:plan-approved label"
       echo "        (labels currently: ${labels:-<none>})"
       return 1
     fi
-    echo "  PASS: #${issue} — status:plan-approved label absent"
+    echo "  PASS: ${display} — status:plan-approved label absent"
     return 0
   fi
 
   # Walk all timeline pages and select the most recent matching labeled event.
   # `gh api --paginate` may print one JSON array per page, so use --slurp and
   # flatten the resulting page arrays before parsing.
-  setter="$(gh api "repos/${REPO}/issues/${issue}/timeline" \
-            --paginate --slurp -H 'Accept: application/vnd.github.mockingbird-preview+json' 2>/dev/null \
-            | python3 -c '
+  if ! timeline_json="$(gh api "repos/${repo}/issues/${issue}/timeline" \
+            --paginate --slurp -H 'Accept: application/vnd.github.mockingbird-preview+json' 2>/dev/null)"; then
+    echo "  FAIL: ${display}: could not read timeline (API error); failing closed"
+    return 1
+  fi
+
+  if ! setter="$(printf '%s' "$timeline_json" | python3 -c '
 import json, sys
 
 try:
     pages = json.load(sys.stdin)
 except json.JSONDecodeError:
-    pages = []
+    sys.exit(2)
 
 events = []
 if isinstance(pages, list):
@@ -141,44 +171,68 @@ if last:
     print("{}\t{}".format(actor.get("login", ""), actor.get("type", "")))
 else:
     print("\t")
-' 2>/dev/null || echo $'\t')"
+' 2>/dev/null)"; then
+    echo "  FAIL: ${display}: could not parse timeline; failing closed"
+    return 1
+  fi
 
   login="$(echo "$setter" | cut -f1)"
   actor_type="$(echo "$setter" | cut -f2)"
 
   if [[ -z "$login" ]]; then
-    echo "  WARN: #${issue} — could not determine label-setter from timeline (label is set, but provenance unclear)"
-    return 0
+    echo "  FAIL: ${display}: status:plan-approved label is present but no label-setter could be determined; failing closed"
+    return 1
   fi
 
   if [[ "$actor_type" == "Bot" ]] || [[ "$login" == *"[bot]" ]]; then
-    echo "  FAIL: #${issue} — status:plan-approved set by bot (${login}, type=${actor_type})"
+    echo "  FAIL: ${display} — status:plan-approved set by bot (${login}, type=${actor_type})"
     echo "        User-in-loop contract requires a non-bot account."
     return 1
   fi
 
-  echo "  PASS: #${issue} — status:plan-approved set by ${login} (type=${actor_type})"
+  echo "  PASS: ${display} — status:plan-approved set by ${login} (type=${actor_type})"
   return 0
 }
 
-if [[ "${#ISSUES[@]}" -gt 0 ]]; then
+normalize_issue_reference() {
+  local issue_ref="$1"
+  local default_repo="$2"
+  if [[ "$issue_ref" =~ ^([A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+)#([1-9][0-9]*)$ ]]; then
+    echo "${BASH_REMATCH[1]} ${BASH_REMATCH[2]}"
+  elif [[ "$issue_ref" =~ ^#?([1-9][0-9]*)$ ]]; then
+    echo "${default_repo} ${BASH_REMATCH[1]}"
+  else
+    return 1
+  fi
+}
+
+if [[ "$ISSUE_MODE" == "1" ]]; then
   FAILURES=0
   CHECKED=0
+  SEEN_KEYS=" "
   for issue in "${ISSUES[@]}"; do
     [[ -z "$issue" ]] && continue
-    if ! [[ "$issue" =~ ^[0-9]+$ ]]; then
-      echo "  SKIP: ${issue} — issue reference is not numeric"
+    if ! normalized="$(normalize_issue_reference "$issue" "$REPO")"; then
+      echo "  FAIL: ${issue} — issue reference is not a supported issue form"
+      FAILURES=$((FAILURES+1))
       continue
     fi
+    issue_repo="${normalized% *}"
+    issue_number="${normalized#* }"
+    key="${issue_repo}#${issue_number}"
+    if [[ "$SEEN_KEYS" == *" ${key} "* ]]; then
+      continue
+    fi
+    SEEN_KEYS="${SEEN_KEYS}${key} "
     CHECKED=$((CHECKED+1))
-    if ! check_issue_label_setter "$issue" 0; then
+    if ! check_issue_label_setter "$issue_repo" "$issue_number" 0; then
       FAILURES=$((FAILURES+1))
     fi
   done
 
   if [[ "$CHECKED" -eq 0 ]]; then
-    echo "PASS: no issue references to inspect"
-    exit 0
+    echo "FAIL: no issue referenced"
+    [[ "$STRICT_MODE" == "1" && "$REQUIRE_ISSUE_REFERENCE" == "1" ]] && exit 1 || exit 0
   fi
 
   if [[ "$FAILURES" -gt 0 ]]; then
@@ -217,7 +271,7 @@ while IFS= read -r marker_path; do
   fi
   issue="$fname"
 
-  if ! check_issue_label_setter "$issue" 1; then
+  if ! check_issue_label_setter "$REPO" "$issue" 1; then
     FAILURES=$((FAILURES+1))
   fi
 done <<< "$ADDED_OR_MODIFIED_MARKERS"
