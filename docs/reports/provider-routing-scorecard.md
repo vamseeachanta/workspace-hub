@@ -1,8 +1,8 @@
 # Provider routing scorecard
 
-Generated: 2026-10-11T17:21:19.410169Z
+Generated: 2026-10-11T21:21:13.737974Z
 Current week: 2026-W41
-Recommended provider order: codex, agy, claude
+Recommended provider order: agy, codex, claude
 
 This scorecard combines provider utilization with session-audit hygiene to decide where the next work packets should go.
 
@@ -39,7 +39,7 @@ This scorecard combines provider utilization with session-audit hygiene to decid
 
 - Status: underused
 - Priority: highest
-- Current-week reported utilization: 0.0%
+- Current-week reported utilization: 7.0%
 - Quota basis: quota (app-server-live)
 - Current-week sessions / post records: 33 / 1382
 - Audit post records: 206929
