@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-10-11T00:20:04-05:00",
+  "timestamp": "2026-10-11T04:20:05-05:00",
   "agents": [
     {
       "provider": "claude",
@@ -21,7 +21,7 @@
       "five_hour_pct": 0,
       "pct_remaining": 100,
       "hours_to_reset": 167,
-      "resets_at": "2026-10-18T00:20:02-0500",
+      "resets_at": "2026-10-18T04:20:02-0500",
       "source": "app-server-live"
     },
     {
