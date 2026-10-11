@@ -1,6 +1,6 @@
 # Compute program: plan and status
 
-Tracking issue: #4034. Last updated: 2026-10-10 (morning, US Central).
+Tracking issue: #4034. Last updated: 2026-10-11.
 
 This is the single plan and status file for the compute program: a balanced set
 of licensed-solver and open-source solver workstreams, each ending in a result
@@ -46,9 +46,10 @@ Findings:
   tolerance. One of two 8-rank runs fell just outside it. Either the tolerance
   or the iteration count needs revisiting before this is used as a pass/fail
   gate.
-- The pack's "all cores" variant asks for logical cores and Open MPI refuses it
-  on a hyperthreaded host. Filed as digitalmodel#2320; the 16-rank figure above
-  was taken with an explicit rank count.
+- The pack's "all cores" variant asked for logical cores and Open MPI refused it
+  on a hyperthreaded host. Fixed by merged digitalmodel#2321 for
+  digitalmodel#2320; the 16-rank figure above was taken with an explicit rank
+  count.
 
 ### Workstream 2: Capytaine leg of the barge comparison
 
@@ -69,8 +70,9 @@ in hand yet, so there is no comparison to report.
 ### Workstream 3: OpenFOAM known-answer re-run
 
 Case files copied from digitalmodel `4f7bfc0c` to a clean directory on
-dev-primary and run with the README commands. Each completed case reproduces
-the figure the repository already publishes.
+dev-primary and run with the README commands. Six of seven completed cases
+reproduce the published figure; the wave tank differs on one measure, described
+below.
 
 | Case | Quantity | Reference | Published | Re-run |
 |---|---|---|---|---|
@@ -101,7 +103,7 @@ job's hand-off, and the host sat idle overnight.
   `docs/reports/2026-10-09-compute-program/` (known-answer re-run, Capytaine
   barge leg, OpenFOAM baseline). Merged; pages not yet checked in a browser.
 - digitalmodel#2336: `solver_benchmark.py report`, the cross-machine baseline
-  report deferred by #2300. Open; 86 benchmark tests pass. Real receipts exist
+  report deferred by #2300. Merged; 86 benchmark tests pass. Real receipts exist
   for one machine only, so the cross-machine paths are covered by synthetic
   tests alone.
 
@@ -121,17 +123,20 @@ job's hand-off, and the host sat idle overnight.
    not permitted from the coordinating session. It needs either an owner-run
    command or an explicit permission.
 2. **Agent coding work on the licensed host.** Launching a headless agent there
-   was not permitted from the coordinating session. A worktree and prompt for
-   digitalmodel#2320 plus the cross-machine report generator are staged.
+   was not permitted from the coordinating session. The digitalmodel#2320 fix has
+   since been delivered by merged digitalmodel#2321, and the cross-machine report
+   generator has merged as digitalmodel#2336. No remaining coding item in this plan
+   waits on that headless-agent permission.
 3. **Run queue.** Only one licensed runner is healthy, it is serial behind one
    seat, and multi-case OrcaFlex sweeps are not on the allowlist. Workstream 5
    cannot go through the queue as it stands.
 
 ## Next steps
 
-1. Add the Kleefsman result to the known-answer page; merge digitalmodel#2336.
-2. Run the licensed baseline leg in a quiet window; then publish the
+1. Add the Kleefsman result to the known-answer page.
+2. Re-run the pack with a role label for the machine name: the label used so far
+   is the real hostname, and the report prints it.
+3. Run the licensed baseline leg in a quiet window; then publish the
    cross-machine baseline report and the three-solver barge comparison.
-3. Re-run the pack with a role label for the machine name: the label used so far is the real hostname, and the report prints it.
 4. Run the OpenFOAM baseline on dev-secondary when its current chain finishes.
 5. Decide the OpenFOAM tolerance or iteration count: repeat-to-repeat scatter sits at the 1e-3 tolerance.
