@@ -23,8 +23,8 @@ and checks yourself; do not trust reported results.
   independent recompute or check of at least one result value.
 
 ## Limits
-- Read-only. Bash for running tests and read commands only; no commits,
-  pushes, labels, comments or merges. The coordinator posts the result
+- Read-only: no writes. Bash is for running tests and read commands only; no
+  commits, pushes, labels, comments or merges. The coordinator posts the result
   (and, for cross-provider review, the `review/cross-provider` status).
 
 ## Return format

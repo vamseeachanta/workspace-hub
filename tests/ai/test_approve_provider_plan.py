@@ -60,7 +60,6 @@ def _patch_workspace(monkeypatch, root: Path) -> tuple[Path, Path]:
     approved = root / ".planning" / "plan-approved"
     monkeypatch.setattr(module, "WORKSPACE_HUB", root)
     monkeypatch.setattr(module, "APPROVAL_TX_DIR", tx_dir)
-    monkeypatch.setattr(module, "APPROVED_DIR", approved)
     monkeypatch.setattr(module, "PLANS_DIR", root / "docs" / "plans")
     monkeypatch.setattr(module, "REVIEW_RESULTS_DIR", root / "scripts" / "review" / "results")
     return tx_dir, approved
@@ -140,7 +139,8 @@ def test_approve_provider_plan_dry_run_reports_exact_transaction(tmp_path, monke
     assert result["phase"] == "dry-run-only"
     assert "planned_mutations" in result
     assert "preview_comment_body" in result
-    assert "preview_marker_text" in result
+    assert "preview_marker_text" not in result
+    assert not any(".planning/plan-approved" in item for item in result["planned_mutations"])
     # Dry-run must NOT have written a journal nor created markers.
     tx_dir = tmp_path / ".planning" / "approval-transactions"
     assert not list(tx_dir.glob("9001-*.json")) if tx_dir.exists() else True
@@ -249,7 +249,7 @@ def test_approve_provider_plan_resume_race_is_serialized(tmp_path, monkeypatch):
         )
 
 
-def test_approve_provider_plan_promotes_marker_only_after_verification(tmp_path, monkeypatch):
+def test_approve_provider_plan_completes_without_writing_legacy_marker(tmp_path, monkeypatch):
     tx_dir, approved = _patch_workspace(monkeypatch, tmp_path)
     _setup_plan_and_reviews(tmp_path, 9006)
     tracked = {"issue": _issue_payload(9006)}
@@ -261,13 +261,9 @@ def test_approve_provider_plan_promotes_marker_only_after_verification(tmp_path,
         runner=_runner_factory(tracked),
     )
 
-    final = approved / "9006.md"
-    assert final.exists(), "final marker must exist in .planning/plan-approved/ after verification"
-    # Pending marker should NOT exist anymore (atomic promotion)
-    pending = tx_dir / f"9006-{result['txid']}.marker.pending.md"
-    assert not pending.exists(), "pending quarantine marker must be moved, not copied"
     assert result["phase"] == "complete"
-    assert "Idempotency key:" in final.read_text(encoding="utf-8")
+    assert not (approved / "9006.md").exists()
+    assert not list(tx_dir.glob("9006-*.marker.pending.md"))
 
 
 def test_approve_provider_plan_rejects_stale_closed_or_unlabeled_issue(tmp_path, monkeypatch):
@@ -293,7 +289,7 @@ def test_approve_provider_plan_rejects_stale_closed_or_unlabeled_issue(tmp_path,
         )
 
 
-def test_approve_provider_plan_partial_failure_keeps_marker_quarantined(tmp_path, monkeypatch):
+def test_approve_provider_plan_partial_failure_keeps_journal_without_marker(tmp_path, monkeypatch):
     tx_dir, approved = _patch_workspace(monkeypatch, tmp_path)
     _setup_plan_and_reviews(tmp_path, 9008)
     tracked = {"issue": _issue_payload(9008), "fail_at_label": True}
@@ -313,7 +309,6 @@ def test_approve_provider_plan_partial_failure_keeps_marker_quarantined(tmp_path
             runner=runner,
         )
 
-    # No final marker
     assert not (approved / "9008.md").exists()
     # Journal records phase up to comment_posted (last write before failure)
     journals = list(tx_dir.glob("9008-*.json"))
@@ -322,9 +317,7 @@ def test_approve_provider_plan_partial_failure_keeps_marker_quarantined(tmp_path
     assert final_phase in {"comment_posted", "labels_transitioned"}, (
         f"phase after partial failure should record last successful step; got {final_phase}"
     )
-    # Quarantine marker survives for recovery
-    pending = list(tx_dir.glob("9008-*.marker.pending.md"))
-    assert pending, "quarantine marker must remain for --resume recovery"
+    assert not list(tx_dir.glob("9008-*.marker.pending.md"))
 
 
 def test_approve_provider_plan_resume_completes_pending_actions_without_duplicates(tmp_path, monkeypatch):
@@ -369,7 +362,7 @@ def test_approve_provider_plan_resume_completes_pending_actions_without_duplicat
     )
 
     assert result["phase"] == "complete"
-    assert (approved / "9009.md").exists()
+    assert not (approved / "9009.md").exists()
     # No duplicate comment was posted on resume.
     total_comment_count = sum(
         1 for c in tracked["calls"] if c[:3] == ["gh", "issue", "comment"]

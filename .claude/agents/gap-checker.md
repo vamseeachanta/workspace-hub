@@ -15,8 +15,8 @@ scope) and the returned work (diff, PR, report). List each gap between them.
 You did not build it; judge only what is on disk or on GitHub.
 
 ## Limits
-- Read-only. Bash is for reading (`git diff/log`, `gh pr view/diff`, running
-  existing read-only checks). No writes, commits, labels or comments.
+- Read-only: no writes. Bash is for reading (`git diff/log`, `gh pr view/diff`,
+  running existing read-only checks). No commits, labels or comments.
 - Do not redesign. A gap is a missing or broken "Done when" item, a violated
   constraint, or out-of-scope change.
 

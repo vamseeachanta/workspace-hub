@@ -266,6 +266,22 @@ resolve_claude_memory_private_snapshot_source() {
     return 1
 }
 
+resolve_private_snapshot_source() {
+    local clone="$1"
+    local rel_path="$2"
+    local host host_source
+    if host="$(resolve_claude_memory_snapshot_host_name 2>/dev/null)" && [[ -e "$clone/hosts/$host/$rel_path" ]]; then
+        printf '%s\n' "$clone/hosts/$host/$rel_path"
+        return 0
+    fi
+    host_source="$(find "$clone/hosts" -mindepth 2 -maxdepth 8 -path "*/$rel_path" 2>/dev/null | sort | head -n 1 || true)"
+    if [[ -n "$host_source" ]]; then
+        printf '%s\n' "$host_source"
+        return 0
+    fi
+    return 1
+}
+
 sanitize_codex_managed_keys() {
     local source_file="$1"
     local output_file="$2"
@@ -1380,8 +1396,20 @@ fi
 echo
 echo "=== Restoring Agent Memory Snapshots ==="
 
+CLAUDE_MEMORY_SNAPSHOT_REPO="${CLAUDE_MEMORY_SNAPSHOT_REPO:-vamseeachanta/claude-memory-snapshots}"
+CLAUDE_MEMORY_SNAPSHOT_PRIVATE_CLONE="${CLAUDE_MEMORY_SNAPSHOT_PRIVATE_CLONE:-${HOME}/.local/share/claude-memory-snapshots}"
+PRIVATE_SNAPSHOT_AVAILABLE=false
+if verify_private_repo_clone_origin "$CLAUDE_MEMORY_SNAPSHOT_PRIVATE_CLONE" "$CLAUDE_MEMORY_SNAPSHOT_REPO" && verify_private_repo_visibility "$CLAUDE_MEMORY_SNAPSHOT_REPO"; then
+    PRIVATE_SNAPSHOT_AVAILABLE=true
+else
+    echo "[WARN] Agent memory private snapshot repo is unreachable, origin-mismatched, or not PRIVATE; skipping memory/state restore" >&2
+fi
+
 # Hermes memories (#1777)
-HERMES_MEM_SNAP="$WS_HUB/config/agents/hermes/memories"
+HERMES_MEM_SNAP=""
+if [[ "$PRIVATE_SNAPSHOT_AVAILABLE" == "true" ]]; then
+    HERMES_MEM_SNAP="$(resolve_private_snapshot_source "$CLAUDE_MEMORY_SNAPSHOT_PRIVATE_CLONE" "config/agents/hermes/memories" || true)"
+fi
 HERMES_MEM_TARGET="$HOME/.hermes/memories"
 if [[ -d "$HERMES_MEM_SNAP" && -d "$HOME/.hermes" ]]; then
     if [[ ! -f "$HERMES_MEM_TARGET/MEMORY.md" ]] || [[ "$FORCE" == "true" ]]; then
@@ -1405,13 +1433,9 @@ else
 fi
 
 # Claude Code project memory (#1779)
-CLAUDE_MEMORY_SNAPSHOT_REPO="${CLAUDE_MEMORY_SNAPSHOT_REPO:-vamseeachanta/claude-memory-snapshots}"
-CLAUDE_MEMORY_SNAPSHOT_PRIVATE_CLONE="${CLAUDE_MEMORY_SNAPSHOT_PRIVATE_CLONE:-${HOME}/.local/share/claude-memory-snapshots}"
 CLAUDE_MEM_SNAP=""
-if verify_private_repo_clone_origin "$CLAUDE_MEMORY_SNAPSHOT_PRIVATE_CLONE" "$CLAUDE_MEMORY_SNAPSHOT_REPO" && verify_private_repo_visibility "$CLAUDE_MEMORY_SNAPSHOT_REPO"; then
+if [[ "$PRIVATE_SNAPSHOT_AVAILABLE" == "true" ]]; then
     CLAUDE_MEM_SNAP="$(resolve_claude_memory_private_snapshot_source "$CLAUDE_MEMORY_SNAPSHOT_PRIVATE_CLONE" || true)"
-else
-    echo "[WARN] Claude project memory private snapshot repo is unreachable, origin-mismatched, or not PRIVATE; skipping restore" >&2
 fi
 # Derive the encoded project path from WS_HUB
 WS_HUB_ENCODED="$(echo "$WS_HUB" | sed 's|^/||; s|/|-|g')"
@@ -1447,7 +1471,10 @@ else
 fi
 
 # Codex state (#1781)
-CODEX_STATE_SNAP="$WS_HUB/config/agents/codex/state-snapshots"
+CODEX_STATE_SNAP=""
+if [[ "$PRIVATE_SNAPSHOT_AVAILABLE" == "true" ]]; then
+    CODEX_STATE_SNAP="$(resolve_private_snapshot_source "$CLAUDE_MEMORY_SNAPSHOT_PRIVATE_CLONE" "config/agents/codex/state-snapshots" || true)"
+fi
 if [[ -d "$CODEX_STATE_SNAP" && -d "$HOME/.codex" ]]; then
     if [[ ! -f "$HOME/.codex/rules/default.rules" ]] || [[ "$FORCE" == "true" ]]; then
         if [[ "$DRY_RUN" == "true" ]]; then
@@ -1467,7 +1494,10 @@ else
 fi
 
 # Gemini state (#1781)
-GEMINI_STATE_SNAP="$WS_HUB/config/agents/gemini/state-snapshots"
+GEMINI_STATE_SNAP=""
+if [[ "$PRIVATE_SNAPSHOT_AVAILABLE" == "true" ]]; then
+    GEMINI_STATE_SNAP="$(resolve_private_snapshot_source "$CLAUDE_MEMORY_SNAPSHOT_PRIVATE_CLONE" "config/agents/gemini/state-snapshots" || true)"
+fi
 if [[ -d "$GEMINI_STATE_SNAP" && -d "$HOME/.gemini" ]]; then
     if [[ ! -f "$HOME/.gemini/state.json" ]] || [[ "$FORCE" == "true" ]]; then
         if [[ "$DRY_RUN" == "true" ]]; then

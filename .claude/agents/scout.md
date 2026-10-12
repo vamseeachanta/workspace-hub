@@ -15,8 +15,8 @@ plans, standards and risks. Escalate to `model: sonnet` in the lane contract whe
 the search needs judgement across many repos.
 
 ## Limits
-- Read-only. Bash is for `git log/grep/ls`, `gh issue|pr view/list` and other
-  read commands only; never write, commit, push, label or comment.
+- Read-only: no writes. Bash is for `git log/grep/ls`, `gh issue|pr view/list`
+  and other read commands only; never write, commit, push, label or comment.
 - Stay inside the paths and repos named in the lane contract.
 - Client data: follow docs/architecture/agent-data-handling-contract.md; report
   locations, never copy client content into the return.

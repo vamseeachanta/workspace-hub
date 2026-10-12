@@ -3,13 +3,13 @@
 
 Usage:
     uv run --no-project python scripts/memory/eval-memory-quality.py \\
-        --memory-root <path> [--work-queue-root <path>] [--format json|md] [--check-paths]
+        --memory-root <path> [--work-queue-root RETIRED] [--format json|md] [--check-paths]
 
     uv run --no-project python scripts/memory/eval-memory-quality.py \\
         --compare before.json after.json
 
 Metrics:
-    pct_done_wrk        % bullets referencing done/archived WRK items
+    pct_done_wrk        retired metric; always 0.0 because labels are queue truth
     pct_stale_paths     % bullets with non-existent filesystem paths (opt-in)
     signal_density      bullets per line (across all memory files)
     memory_md_headroom  lines remaining before MEMORY.md hits 180L limit
@@ -46,11 +46,7 @@ def _find_paths_in_line(line: str) -> list[str]:
 
 
 def _is_done_wrk(wrk_id: str, work_queue_root: Path) -> bool:
-    """Return True if wrk_id has status: done in any archive/working/pending file."""
-    for md in work_queue_root.rglob(f"{wrk_id}.md"):
-        text = md.read_text(encoding="utf-8", errors="replace")
-        if re.search(r"^status:\s*done", text, re.MULTILINE):
-            return True
+    """Legacy local WRK lookup is retired; labels are queue truth."""
     return False
 
 
@@ -86,15 +82,8 @@ def _collect_bullets(
 # ── Metric computation ────────────────────────────────────────────────────────
 
 def compute_pct_done_wrk(bullets: list[str], work_queue_root: Path | None) -> float:
-    """% of bullets that reference a done/archived WRK item."""
-    if not bullets or work_queue_root is None or not work_queue_root.exists():
-        return 0.0
-    done_count = 0
-    for bullet in bullets:
-        wrk_ids = _parse_wrk_ids(bullet)
-        if any(_is_done_wrk(w, work_queue_root) for w in wrk_ids):
-            done_count += 1
-    return round(done_count / len(bullets) * 100, 2)
+    """Retired local queue metric kept for report schema compatibility."""
+    return 0.0
 
 
 def compute_pct_stale_paths(bullets: list[str]) -> float:
@@ -213,15 +202,6 @@ def run_eval(args: argparse.Namespace) -> int:
         return 1
 
     work_queue_root: Path | None = None
-    if args.work_queue_root:
-        work_queue_root = Path(args.work_queue_root).expanduser()
-    else:
-        # Auto-discover from parents
-        for parent in memory_root.parents:
-            candidate = parent / ".claude" / "work-queue"
-            if candidate.exists():
-                work_queue_root = candidate
-                break
 
     mem_lines, topic_files = _read_all_files(memory_root)
     bullets = _collect_bullets(mem_lines, topic_files)
@@ -261,7 +241,7 @@ def main() -> int:
     parser.add_argument("--memory-root", help="Path to memory directory")
     parser.add_argument(
         "--work-queue-root", default=None,
-        help="Path to .claude/work-queue (for done-WRK lookup)",
+        help="Retired compatibility option; ignored because labels are queue truth.",
     )
     parser.add_argument(
         "--format", choices=["json", "md"], default="json",

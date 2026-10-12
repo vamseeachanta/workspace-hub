@@ -398,13 +398,8 @@ def test_publish_bounded_timeout(tmp_path, monkeypatch):
     assert ehp.publish_candidates("dev-primary") == f"publish-timeout ({ehp.PUBLISH_TIMEOUT_S}s)"
 
 
-# ── bridge wiring: self-contained §7c (grep) ────────────────────────────────
-def test_bridge_wiring_self_contained():
+# ── bridge wiring: X02 private bridge must not emit public candidate state ───
+def test_bridge_no_longer_emits_public_candidates():
     bridge = (REPO_ROOT / "scripts" / "memory" / "bridge-hermes-claude.sh").read_text(encoding='utf-8')
-    assert "extract_hermes_patterns.py" in bridge
-    # the §7c block defines its OWN launcher HPY and never references the §7b-scoped RBPY
-    start = bridge.index("extract_hermes_patterns.py")
-    block = bridge[start - 400 : start + 400]
-    assert "HPY=" in block
-    assert "RBPY" not in block
-    assert "(soft)" in block  # the || echo ... soft guard
+    assert "extract_hermes_patterns.py" not in bridge
+    assert ".claude/state/candidates/hermes-pattern-candidates.md" not in bridge

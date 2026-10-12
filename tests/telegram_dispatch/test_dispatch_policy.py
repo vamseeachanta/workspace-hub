@@ -155,7 +155,7 @@ def test_dispatch_blocks_unapproved_implementation_issue(tmp_path: Path) -> None
     assert result.lease_ref is None
 
 
-def test_dispatch_blocks_plan_approved_without_local_marker(tmp_path: Path) -> None:
+def test_dispatch_allows_plan_approved_without_legacy_local_marker(tmp_path: Path) -> None:
     registry_path = _write_registry(tmp_path)
     request = module.DispatchRequest(command="/dispatch 2720 --host dev-primary", issue_number=2720, mode="implementation", host_selector="dev-primary")
     issue = module.IssueState(number=2720, labels=["status:plan-approved"], url="https://github.com/example/issues/2720")
@@ -163,10 +163,9 @@ def test_dispatch_blocks_plan_approved_without_local_marker(tmp_path: Path) -> N
 
     result = module.evaluate_dispatch_request(request, issue, registry_path, tmp_path / ".planning" / "plan-approved", readiness, lease_snapshot=_verified_empty_lease_snapshot())
 
-    assert result.accepted is False
-    assert result.reason_code == "approval_marker_missing"
-    assert ".planning/plan-approved/2720.md" in result.message
-    assert result.lease_ref is None
+    assert result.accepted is True
+    assert result.reason_code == "accepted"
+    assert result.lease_ref == "refs/heads/dispatch/leases/2720-implementation"
 
 
 def test_dispatch_blocks_issue_identity_mismatch_even_with_approved_resolved_issue(tmp_path: Path) -> None:

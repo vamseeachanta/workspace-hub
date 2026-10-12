@@ -1,9 +1,11 @@
 #!/usr/bin/env bash
 
-# ABOUTME: Normalize WRK metadata in active queue items to required schema
-# ABOUTME: Optionally relocates files so status and directory are consistent
+# ABOUTME: Retired local WRK queue normalizer; labels are queue truth
 
 set -euo pipefail
+
+echo "normalize_work_queue_metadata.sh retired: use GitHub dispatch/lane/ai/decision labels."
+exit 0
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 WORKSPACE_ROOT="$(cd "$SCRIPT_DIR/../../.." && pwd)"

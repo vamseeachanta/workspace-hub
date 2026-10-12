@@ -138,10 +138,9 @@ def test_kanban_groups_issues_by_lane_provider_and_machine(tmp_path, monkeypatch
     cpp = cpp_module
     monkeypatch.setattr(cpp_module, "WORKSPACE_HUB", tmp_path)
 
-    # Issue with all gates clean → execution_ready lane
+    # Issue with all gates clean -> execution_ready lane
     sha = cpp.sha256_file(plan_path)
     _write_reviews(tmp_path, 8001, {"claude": "MINOR", "codex": "MINOR", "agy": "MINOR"}, sha=sha)
-    _marker(tmp_path, 8001)
 
     kanban = module.build_kanban(
         work_queue=_work_queue_with_full_candidates([8001]),
@@ -246,8 +245,6 @@ def test_approve_button_enabled_only_for_open_plan_review_issue_with_plan_and_cl
     plan_path = _write_plan(tmp_path, 8401)
     sha = cpp.sha256_file(plan_path)
     _write_reviews(tmp_path, 8401, {"claude": "MINOR", "codex": "APPROVE", "agy": "MINOR"}, sha=sha)
-    # NOTE: do NOT create a marker — plan-review status needs absent marker.
-
     # Without served_localhost the button must be disabled.
     kanban_static = module.build_kanban(
         work_queue=_work_queue_with_full_candidates([8401]),

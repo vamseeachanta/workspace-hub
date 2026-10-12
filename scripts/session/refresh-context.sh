@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# refresh-context.sh — Serialize session state to WRK items and optionally relaunch
+# refresh-context.sh — Retired local WRK session-state serializer
 #
 # Usage:
 #   scripts/session/refresh-context.sh [--wrk WRK-NNN] [--auto] [--idle-timeout SECS]
@@ -16,6 +16,9 @@
 #   2  Idle threshold not met (skipped cleanly)
 
 set -euo pipefail
+
+echo "refresh-context.sh retired: session state is no longer written to local WRK queue files."
+exit 0
 
 # ─── Paths ────────────────────────────────────────────────────────────────────
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"

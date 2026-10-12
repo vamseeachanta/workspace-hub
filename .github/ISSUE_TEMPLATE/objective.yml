@@ -1,0 +1,61 @@
+name: Objective
+description: Define an outcome-shaped unit of work for coordinator-led execution.
+title: "[Objective] "
+labels: ["gate:completeness", "gate:completeness-v2"]
+body:
+  - type: textarea
+    id: outcome
+    attributes:
+      label: Outcome
+      description: One or two sentences describing the result, not the steps.
+      placeholder: "The system can..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: done_when
+    attributes:
+      label: Done when
+      description: Checkable completion criteria.
+      placeholder: "- ..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: constraints_must_not
+    attributes:
+      label: Constraints / must not
+      description: Policy, data, licensing, authorization, security, or process limits.
+      placeholder: "- ..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: out_of_scope
+    attributes:
+      label: Out of scope
+      description: Work that belongs to a different objective.
+      placeholder: "- ..."
+    validations:
+      required: true
+
+  - type: input
+    id: return_format
+    attributes:
+      label: Return format
+      description: Expected owner-facing return, such as PR, report, table, or issue comment.
+      placeholder: "Draft PR plus issue comment"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: risk_tier
+    attributes:
+      label: Risk tier
+      description: "A=client/licensed/calc/signoff; B=tooling/library/workflow; C=docs/admin."
+      options:
+        - A
+        - B
+        - C
+    validations:
+      required: true

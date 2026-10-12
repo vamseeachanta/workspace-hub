@@ -1,9 +1,11 @@
 #!/usr/bin/env bash
 
-# ABOUTME: Identify WRK items outside the central work-queue
-# ABOUTME: Supports warn/gate mode and JSON reporting
+# ABOUTME: Retired local WRK location audit; labels are queue truth
 
 set -euo pipefail
+
+echo "audit_wrk_location.sh retired: local WRK files are historical evidence only."
+exit 0
 
 CENTRAL_QUEUE=".claude/work-queue"
 MODE="warn"

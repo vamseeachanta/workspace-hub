@@ -106,8 +106,6 @@ PATH_INVOKED_SCRIPTS: dict[str, str] = {
         'scripts/dispatch/overnight-2026-05-13/README.md:12 — ./00-tonight-issue-2702-routing-audit.sh',
     'scripts/enforcement/check-completeness-before-close.sh':
         '.claude/rules/completeness-before-close.md:19 — scripts/enforcement/check-completeness-before-close.sh <issue>',
-    'scripts/enforcement/check-marker-label-parity.sh':
-        '.github/workflows/enforcement-gate.yml:241 — if scripts/enforcement/check-marker-label-parity.sh \\',
     'scripts/enforcement/check-model-id-sourcing.sh':
         '.github/workflows/enforcement-gate.yml:275 — scripts/enforcement/check-model-id-sourcing.sh 2>&1 | tee /tmp/model-id.log',
     'scripts/enforcement/compliance-dashboard.sh':

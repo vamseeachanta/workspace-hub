@@ -2,14 +2,14 @@
 """Provider-dispatch loop (#2665).
 
 Safely consumes provider credits by pulling work from the Kanban execution_ready
-lane (under status:plan-approved + marker) and, when that lane is empty, falling
+lane (under status:plan-approved) and, when that lane is empty, falling
 back to non-mutating planning/recon/review feedstock so Claude/Codex/Gemini do
 not idle.
 
 Hard boundaries enforced here (mirroring plan acceptance criteria):
 
-  - Implementation dispatch requires BOTH the status:plan-approved label AND
-    the .planning/plan-approved/<issue>.md marker. Either alone is insufficient.
+  - Implementation dispatch requires the status:plan-approved label. Retired
+    .planning/plan-approved/<issue>.md markers are historical evidence only.
   - Single-writer lease ledger: only ace-linux-1 (the configured leader host)
     or an explicit promotion handoff may write leases. ace-linux-2 is
     worker-only by default; it executes assignments leader created, never
@@ -235,9 +235,8 @@ def append_run(cfg: DispatcherConfig, payload: dict[str, Any]) -> None:
 def select_execution_ready(
     kanban: dict[str, Any], leases: list[Lease]
 ) -> list[dict[str, Any]]:
-    """Return Kanban cards in the execution_ready lane that have BOTH gates:
+    """Return Kanban cards in the execution_ready lane that have the label gate:
       - status:plan-approved label
-      - .planning/plan-approved/<N>.md marker
 
     Excludes cards with an active lease for the same issue/provider/machine.
     """
@@ -245,8 +244,6 @@ def select_execution_ready(
     for card in kanban.get("lanes", {}).get("execution_ready", []):
         labels = card.get("hover", {}).get("labels", []) or []
         if "status:plan-approved" not in labels:
-            continue
-        if not card.get("approval_marker"):
             continue
         if not card.get("machine_ready"):
             continue

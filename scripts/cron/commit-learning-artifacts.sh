@@ -133,6 +133,13 @@ verify_claude_private_snapshot_repo() {
   fi
 }
 
+approved_private_snapshot_host() {
+  case "$1" in
+    ace-win-1|ace-win-2|ace-linux-1|ace-linux-2|gpu-claw|spark) return 0 ;;
+    *) return 1 ;;
+  esac
+}
+
 prepare_claude_private_snapshot_repo() {
   if [[ "$CLAUDE_PRIVATE_SNAPSHOT_READY" == "true" ]]; then
     return 0
@@ -145,8 +152,8 @@ prepare_claude_private_snapshot_repo() {
   fi
   verify_claude_private_snapshot_repo || return 1
   if ! $DRY_RUN && git -C "$CLAUDE_MEMORY_SNAPSHOT_PRIVATE_CLONE" remote get-url origin >/dev/null 2>&1; then
-    if ! git -C "$CLAUDE_MEMORY_SNAPSHOT_PRIVATE_CLONE" pull --rebase --quiet; then
-      log "ERROR: failed to rebase Claude private memory snapshot clone"
+    if ! git -C "$CLAUDE_MEMORY_SNAPSHOT_PRIVATE_CLONE" pull --ff-only --quiet; then
+      log "ERROR: failed to fast-forward Claude private memory snapshot clone"
       return 1
     fi
   fi
@@ -167,8 +174,8 @@ resolve_claude_private_snapshot_host() {
   host="$(printf '%s' "$host" | tr '[:upper:]' '[:lower:]' | tr -c 'a-z0-9._-' '-')"
   host="${host##[-.]}"
   host="${host%%[-.]}"
-  if [[ -z "$host" ]]; then
-    log "ERROR: could not resolve a safe Claude private snapshot host folder" >&2
+  if [[ -z "$host" ]] || ! approved_private_snapshot_host "$host"; then
+    log "ERROR: could not resolve an approved role slug for the private snapshot host folder" >&2
     return 1
   fi
   printf '%s\n' "$host"
@@ -274,12 +281,12 @@ sync_origin_main_claude_snapshots_to_private_legacy() {
   log "Verified Claude private memory snapshots: $public_count public file(s), $public_unique unique blob(s), $covered_count covered"
 }
 
-stage_claude_private_snapshot_file() {
-  local src="$1" name="$2"
+stage_private_snapshot_file() {
+  local src="$1" rel_path="$2"
   [[ -f "$src" ]] || return 0
   if $DRY_RUN; then
     if [[ "$CLAUDE_PRIVATE_SNAPSHOT_DRY_RUN_LOGGED" != "true" ]]; then
-      log "[dry-run] Would update private Claude memory snapshots in $CLAUDE_MEMORY_SNAPSHOT_REPO"
+      log "[dry-run] Would update private agent memory snapshots in $CLAUDE_MEMORY_SNAPSHOT_REPO"
       CLAUDE_PRIVATE_SNAPSHOT_DRY_RUN_LOGGED=true
     fi
     return 0
@@ -287,8 +294,8 @@ stage_claude_private_snapshot_file() {
   if [[ -z "$CLAUDE_PRIVATE_STAGE" ]]; then
     CLAUDE_PRIVATE_STAGE="$(mktemp -d)"
   fi
-  mkdir -p "$CLAUDE_PRIVATE_STAGE"
-  cp "$src" "$CLAUDE_PRIVATE_STAGE/$name"
+  mkdir -p "$(dirname "$CLAUDE_PRIVATE_STAGE/$rel_path")"
+  cp "$src" "$CLAUDE_PRIVATE_STAGE/$rel_path"
   CLAUDE_PRIVATE_SNAPSHOT_STAGED=true
 }
 
@@ -299,13 +306,13 @@ copy_claude_private_memory_dir() {
   for f in "$src"/*.md; do
     [[ -f "$f" ]] || continue
     base="$(basename "$f")"
-    stage_claude_private_snapshot_file "$f" "${prefix}${base}" || return 1
+    stage_private_snapshot_file "$f" "config/agents/claude/memory-snapshots/${prefix}${base}" || return 1
   done
 }
 
 copy_claude_private_file() {
   local src="$1" name="$2"
-  stage_claude_private_snapshot_file "$src" "$name"
+  stage_private_snapshot_file "$src" "config/agents/claude/memory-snapshots/$name"
 }
 
 finalize_claude_private_snapshot_repo() {
@@ -320,7 +327,7 @@ finalize_claude_private_snapshot_repo() {
       log "ERROR: failed to resolve Claude private snapshot host"
       return 1
     fi
-    host_dir="hosts/$host/config/agents/claude/memory-snapshots"
+    host_dir="hosts/$host"
     if ! mkdir -p "$host_dir"; then
       log "ERROR: failed to create Claude private snapshot host directory"
       return 1
@@ -377,10 +384,10 @@ finalize_claude_private_snapshot_repo() {
 # ── Snapshot agent memories ───────────────────────────────────────────
 log "Snapshotting agent memories..."
 
-# Hermes memories (#1777)
+# Hermes memories (#1777) — private snapshot repo only.
 if [[ -f "${HOME}/.hermes/memories/MEMORY.md" ]]; then
-  redact_copy "${HOME}/.hermes/memories/MEMORY.md" config/agents/hermes/memories/MEMORY.md.snapshot || fail_closed
-  redact_copy "${HOME}/.hermes/memories/USER.md" config/agents/hermes/memories/USER.md.snapshot || fail_closed
+  stage_private_snapshot_file "${HOME}/.hermes/memories/MEMORY.md" config/agents/hermes/memories/MEMORY.md.snapshot || fail_closed
+  stage_private_snapshot_file "${HOME}/.hermes/memories/USER.md" config/agents/hermes/memories/USER.md.snapshot || fail_closed
 fi
 
 # Claude Code project memory (#1779) — private snapshot repo only.
@@ -395,21 +402,25 @@ CLAUDE_MEM_WED="${HOME}/.claude/projects/-mnt-local-analysis-workspace-hub-world
 if [[ -d "$CLAUDE_MEM_WED" ]]; then
   copy_claude_private_file "$CLAUDE_MEM_WED/MEMORY.md" worldenergydata-MEMORY.md || fail_closed
 fi
-finalize_claude_private_snapshot_repo || fail_closed
-
-# Codex state (#1781). history.jsonl is raw prompt history: it is published
-# only in redacted form (C20).
+# Codex state (#1781) — private snapshot repo only. history.jsonl is raw prompt
+# history and must not be staged in this public repository.
 if [[ -d "${HOME}/.codex" ]]; then
-  redact_copy "${HOME}/.codex/rules/default.rules" config/agents/codex/state-snapshots/default.rules || fail_closed
-  redact_copy "${HOME}/.codex/history.jsonl" config/agents/codex/state-snapshots/history.jsonl || fail_closed
-  redact_copy "${HOME}/.codex/session_index.jsonl" config/agents/codex/state-snapshots/session_index.jsonl || fail_closed
+  stage_private_snapshot_file "${HOME}/.codex/rules/default.rules" config/agents/codex/state-snapshots/default.rules || fail_closed
+  stage_private_snapshot_file "${HOME}/.codex/history.jsonl" config/agents/codex/state-snapshots/history.jsonl || fail_closed
+  stage_private_snapshot_file "${HOME}/.codex/session_index.jsonl" config/agents/codex/state-snapshots/session_index.jsonl || fail_closed
 fi
 
-# Gemini state (#1781)
+# Gemini state (#1781) — private snapshot repo only.
 if [[ -d "${HOME}/.gemini" ]]; then
-  redact_copy "${HOME}/.gemini/state.json" config/agents/gemini/state-snapshots/state.json || fail_closed
-  redact_copy "${HOME}/.gemini/projects.json" config/agents/gemini/state-snapshots/projects.json || fail_closed
+  stage_private_snapshot_file "${HOME}/.gemini/state.json" config/agents/gemini/state-snapshots/state.json || fail_closed
+  stage_private_snapshot_file "${HOME}/.gemini/projects.json" config/agents/gemini/state-snapshots/projects.json || fail_closed
 fi
+
+if [[ -f .claude/state/cross-agent-memory.yaml ]]; then
+  stage_private_snapshot_file .claude/state/cross-agent-memory.yaml .claude/state/cross-agent-memory.yaml || fail_closed
+fi
+
+finalize_claude_private_snapshot_repo || fail_closed
 
 # ── Redact session-signals before staging ─────────────────────────────
 REDACT_SCRIPT="${WORKSPACE_HUB}/scripts/cron/redact-session-signals.sh"
@@ -433,8 +444,7 @@ if [[ -f "$PII_MAP" && -f "$PII_REDACTOR" ]]; then
     .claude/state/corrections .claude/state/patterns .claude/state/reflect-history \
     .claude/state/cc-insights .claude/state/candidates .claude/state/graduation .claude/state/trends \
     .claude/state/session-signals .claude/state/skill-eval-results \
-    config/agents/codex/state-snapshots \
-    config/agents/gemini/state-snapshots 2>&1 || log "WARNING: client redaction had errors"
+    2>&1 || log "WARNING: client redaction had errors"
 else
   log "WARNING: PII codename map not found ($PII_MAP) — skipping optional client codename redaction"
 fi
@@ -460,7 +470,6 @@ STATE_FILES=(
   .claude/state/skill-scores.yaml
   .claude/state/cc-user-insights.yaml
   .claude/state/hermes-insights.yaml
-  .claude/state/cross-agent-memory.yaml
   .claude/state/drift-summary.yaml
   .claude/state/portfolio-signals.yaml
   .claude/state/readiness-issues.md
@@ -487,13 +496,6 @@ done
 # logs/orchestrator/ exports are raw session dumps with client names in commands —
 # NOT learning artifacts. Skip staging them; they trigger legal deny-list (client references)
 # and serve no purpose in the repo. (#1985)
-
-# Agent memory snapshots (#1777, #1779, #1781)
-for snap_dir in config/agents/hermes/memories config/agents/codex/state-snapshots config/agents/gemini/state-snapshots; do
-  if [[ -d "$snap_dir" ]]; then
-    git add "$snap_dir/" 2>/dev/null && ((staged++)) || true
-  fi
-done
 
 # .gitignore itself (in case we just added exceptions)
 git add .gitignore 2>/dev/null || true

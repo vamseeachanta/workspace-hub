@@ -73,3 +73,37 @@ mirror; a ready patch is in this session's scratchpad as `a05/a05-mirror-manifes
 issue), T06 (marine-equipment pages to a draft PR), E09 (llm-wiki housekeeping). Most depend on the E01
 settings change. llm-wiki-acma #409 fails only checks that also fail on main (hostname violations from #416,
 workbook tests fixed by #418) and is ready once the owner accepts that reading.
+
+## Final update 2026-10-09 (session exit)
+
+Landed after 2026-10-08:
+
+| PR | Content |
+|---|---|
+| workspace-hub #3978 | `.claude/rules/workstation-hygiene.md`; `scripts/operations/workstation-hygiene.sh` (report-first; SAFE / DIRTY / UNPUSHED / LOCKED / IN USE; `--apply` removes SAFE items under `--root` only); Codex soul delta item 5 (worktrees, not clones); runbook `docs/runbooks/workstation-design-apply.md` with the per-machine prompt |
+| workspace-hub #4018 | `scripts/operations/rollout-claude-permissions.sh` (owner-run; unions canonical rules into each host, per-host backup, dry run by default; content-compare fix by the fleet PM session) |
+| workspace-hub #4022 | Canonical `config/agents/claude/settings.json`: the 37 deny rules moved from a top-level `deny` key (never read by Claude Code) to `permissions.deny`; allow rules added for `merge-when-clean.sh` and `codex exec` |
+
+Permission rollout (owner-run 2026-10-09, verified read-only afterwards on all five hosts):
+
+| Host | allow | deny | Note |
+|---|---|---|---|
+| ace-win-2 workstation | 31 | 47 | keeps the fleet PM's 29 merge-allow rules |
+| ace-linux-1 | 2 | 37 | pre-push hook bypass allow removed first (board round 4, F03) |
+| ace-linux-2 | 2 | 37 | |
+| gpu-claw | 2 | 37 | had no deny rules before |
+| ace-win-1 | 2 | 37 | had no deny rules before |
+
+Each host holds `~/.claude/settings.json.bak-20261009T2020..Z` from the apply. Running Claude sessions load
+the new rules only after a restart.
+
+Ownership after this session (owner decision O01): the fleet PM session ws-11 (on the Windows
+workstation) is the single coordinator. It holds the owner decision board, the PM merge gate and dispatch
+decisions, including the Linux hub inventory (F04), the digitalmodel-data #35 mirror record (patch handed
+over), digitalmodel #2280, the study PRs and the marine-equipment pages. ws-0e is the Codex execution lane:
+it launches Codex jobs on ace-linux-1 and runs no boards. The RDS02 PM loop is status-only. Nothing remains
+with this session.
+
+Lessons recorded in rules rather than here: worktrees not clones, bulk output to `/mnt/ace` with a
+manifest and a second copy, decisions on HTML boards, permission changes are owner-only and are made in
+the canonical file then rolled out, never written by an agent on any host.

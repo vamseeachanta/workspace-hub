@@ -490,7 +490,7 @@ EOF
         return
     }
     target="$home_root/.claude/projects/-$(printf '%s' "$ws_root" | sed 's|^/||; s|/|-|g')/memory"
-    if [[ ! -f "$target/public.md" ]] && grep -q "skipping restore" <<<"$output"; then
+    if [[ ! -f "$target/public.md" ]] && grep -q "private snapshots unavailable" <<<"$output"; then
         pass "claude_memory_public_fallback refuses public-path restore"
     else
         fail "claude_memory_public_fallback restored from a public path"
@@ -587,6 +587,85 @@ EOF
 }
 
 echo "=== test_sync_agent_helpers.sh ==="
+run_agent_state_never_restores_from_public_path_test() {
+    local tmpdir ws_root home_root output
+    tmpdir="$(mktemp -d)"
+    trap 'rm -rf "$tmpdir"' RETURN
+    ws_root="$tmpdir/ws"
+    home_root="$tmpdir/home"
+
+    make_workspace "$ws_root"
+    mkdir -p "$home_root/.hermes" "$home_root/.codex" "$home_root/.gemini" \
+        "$ws_root/config/agents/hermes/memories" \
+        "$ws_root/config/agents/codex/state-snapshots" \
+        "$ws_root/config/agents/gemini/state-snapshots"
+    printf 'public hermes\n' > "$ws_root/config/agents/hermes/memories/MEMORY.md.snapshot"
+    printf 'public codex\n' > "$ws_root/config/agents/codex/state-snapshots/history.jsonl"
+    printf '{}\n' > "$ws_root/config/agents/gemini/state-snapshots/state.json"
+
+    output="$(HOME="$home_root" bash "$ws_root/scripts/_core/sync-agent-configs.sh" 2>&1)" || {
+        fail "agent_state_public_fallback command completed"
+        return
+    }
+
+    if [[ ! -e "$home_root/.hermes/memories/MEMORY.md" ]] \
+        && [[ ! -e "$home_root/.codex/history.jsonl" ]] \
+        && [[ ! -e "$home_root/.gemini/state.json" ]] \
+        && grep -q "skipping memory/state restore" <<<"$output"; then
+        pass "agent_state_public_fallback refuses public state restore"
+    else
+        fail "agent_state_public_fallback restored from a public path"
+    fi
+}
+
+run_agent_state_restores_from_private_clone_test() {
+    local tmpdir ws_root home_root private_clone fake_bin output
+    tmpdir="$(mktemp -d)"
+    trap 'rm -rf "$tmpdir"' RETURN
+    ws_root="$tmpdir/ws"
+    home_root="$tmpdir/home"
+    private_clone="$tmpdir/private-memory"
+
+    make_workspace "$ws_root"
+    mkdir -p "$home_root/.hermes" "$home_root/.codex" "$home_root/.gemini" \
+        "$private_clone/hosts/ace-linux-1/config/agents/hermes/memories" \
+        "$private_clone/hosts/ace-linux-1/config/agents/codex/state-snapshots" \
+        "$private_clone/hosts/ace-linux-1/config/agents/gemini/state-snapshots"
+    git init -q "$private_clone"
+    git -C "$private_clone" remote add origin "https://github.com/local/private.git"
+    printf 'private hermes\n' > "$private_clone/hosts/ace-linux-1/config/agents/hermes/memories/MEMORY.md.snapshot"
+    printf 'private codex\n' > "$private_clone/hosts/ace-linux-1/config/agents/codex/state-snapshots/history.jsonl"
+    printf '{}\n' > "$private_clone/hosts/ace-linux-1/config/agents/gemini/state-snapshots/state.json"
+
+    fake_bin="$tmpdir/bin"
+    mkdir -p "$fake_bin"
+    cat > "$fake_bin/gh" <<'EOF'
+#!/usr/bin/env bash
+if [[ "$1" == repo && "$2" == view ]]; then
+  echo PRIVATE
+  exit 0
+fi
+exit 1
+EOF
+    chmod +x "$fake_bin/gh"
+
+    output="$(HOME="$home_root" PATH="$fake_bin:$PATH" CLAUDE_MEMORY_SNAPSHOT_REPO="local/private" CLAUDE_MEMORY_SNAPSHOT_PRIVATE_CLONE="$private_clone" bash "$ws_root/scripts/_core/sync-agent-configs.sh" 2>&1)" || {
+        fail "agent_state_private_restore command completed"
+        return
+    }
+
+    if [[ -f "$home_root/.hermes/memories/MEMORY.md" ]] \
+        && [[ -f "$home_root/.codex/history.jsonl" ]] \
+        && [[ -f "$home_root/.gemini/state.json" ]] \
+        && grep -q "Codex state -> ~/.codex/ (restored)" <<<"$output"; then
+        pass "agent_state_private_restore restores state from private clone"
+    else
+        fail "agent_state_private_restore did not restore from private clone"
+    fi
+}
+
+echo "=== test_sync_agent_helpers.sh ==="
+
 run_hermes_placeholder_and_terminal_test
 run_invalid_json_create_test
 run_invalid_json_create_without_jq_test
@@ -599,6 +678,8 @@ run_claude_memory_restores_from_private_clone_test
 run_claude_memory_never_restores_from_public_path_test
 run_claude_memory_restore_rejects_wrong_private_origin_test
 run_claude_memory_restore_prefers_host_over_legacy_test
+run_agent_state_never_restores_from_public_path_test
+run_agent_state_restores_from_private_clone_test
 
 echo ""
 echo "Results: ${PASS} PASS, ${FAIL} FAIL"
