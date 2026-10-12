@@ -2,6 +2,9 @@
 # Issue: #1544
 # Generated: 2026-03-31
 # Status: PLAN ONLY — no data moves or script edits in this PR
+# Superseded for data placement by docs/standards/DATA_PLACEMENT.md.
+# Current placement uses one manifest-and-fetch mechanism and content-addressed
+# blobs at ${ACE_DATA_ROOT}/data/<repo>/blobs/sha256/<first two hex>/<sha256>.<ext>.
 #
 # Convention:
 #   /mnt/ace/<repo-name>/<domain>/...

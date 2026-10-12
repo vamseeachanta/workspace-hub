@@ -143,22 +143,22 @@ When code starts reading `cost-tracking.jsonl` from a new place:
 
 ---
 
-## LFS-vs-gzip decision (deferred)
+## LFS-vs-gzip decision
 
-The plan considered Git LFS for `cost-tracking.jsonl` and rejected it for now:
+The plan considered Git LFS for `cost-tracking.jsonl`; Git LFS is now retired
+fleet-wide for data placement:
 
 - **Adopted:** gzip-in-tree under `archive/`. Compresses ~10× (45 MB JSONL → ~4–5 MB).
-- **Rejected (for now):** Git LFS — adds a setup dependency on every machine,
+- **Retired:** Git LFS — adds a setup dependency on every machine,
   contradicting the "git-track everything" philosophy of #1782 (zero-loss
   agent learnings).
 
 ### When to revisit
-Move to LFS if any of these occur:
+Do not move to LFS. Revisit the gzip-in-tree pattern if any of these occur:
 - Total `archive/` size exceeds **500 MB** (clones become slow).
 - A single consumer needs random-access reads on archived history (gzip is
   stream-only).
-- More than three independent consumers need rotation-aware reads (LFS makes
-  the file name single-source).
+- More than three independent consumers need rotation-aware reads.
 
 The weekly cron (`scripts/cron/state-size-report.sh`) reports archive size in
 the YELLOW/RED summary; that's the trigger to revisit this runbook.

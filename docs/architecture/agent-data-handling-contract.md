@@ -44,6 +44,9 @@ and consumer readiness require separate verified implementation evidence.
 - Each reference shall identify the owning repository, existing stable dataset
   and run identifiers, owner-relative manifest locator, pinned revision and
   SHA-256 digest. Preserve existing identities and catalog relationships.
+  Once a payload is archived outside Git, the pinned revision covers the
+  manifest and archived digests; consumers verify the bytes against those
+  digests before use.
 - `digitalmodel` owns solver workflows, schemas and validation. Existing result
   matrices remain the authoritative lookup views and shall link to owned evidence;
   a new storage repository shall not create a competing result matrix.
@@ -105,6 +108,9 @@ ingest acceptance remains blocked pending an explicit owner decision. Do not
 silently substitute off-repository storage or weaken the licensed-original
 exclusion. The [residence policy](../DATA_RESIDENCE_POLICY.md) regeneration and
 size rules apply only after this required-original exception is evaluated.
+Received originals are exempt from the lean data-placement rule; that rule
+applies to derived, generated and regenerable files after the original-retention
+requirement is satisfied.
 
 For original-retention observations, `storage.retention_status` is `retained`
 or `required_pending`. Pending records expose blocked ingest; they do not satisfy

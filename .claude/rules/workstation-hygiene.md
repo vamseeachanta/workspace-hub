@@ -1,8 +1,9 @@
 # Workstation hygiene — agent rule
 
 **Agent work uses `git worktree`, never a full second clone; worktrees and caches are removed
-when their work is on origin; bulky solver output leaves Git for `/mnt/ace` with a hash
-manifest and a second copy; parallel sessions on one machine divide work before starting it.**
+when their work is on origin; bulky output and cold reference files leave Git through the
+manifest-and-fetch layout in `docs/standards/DATA_PLACEMENT.md`; parallel sessions on one
+machine divide work before starting it.**
 
 **Why:** on 2026-10-07 a Windows workstation's 475 GB system drive reached 0 bytes free and
 every agent's `git` write failed with "No space left on device". The cause was eight full
@@ -25,16 +26,16 @@ residue remained. The same day, one riser PR proposed committing 7,300 per-case 
    linked worktrees and caches, and marks each SAFE, DIRTY, UNPUSHED, LOCKED or IN USE (a process running inside it, Linux). `--apply` removes only
    SAFE items; `--apply --caches` also prunes npm, uv and pip caches. DIRTY and UNPUSHED items
    are reported to the owner, never deleted.
-3. **Bulky regenerable output does not go into Git.** Per-case solver results and similar
-   bulk files move to `ace-linux-1:/mnt/ace/data/<repo>/<topic>/` (GA01 layout). The repository
-   keeps a manifest (relative path, bytes and SHA-256 for every file; archive name, SHA-256 and
-   location), a restore/verify helper, a `.gitignore` entry for the moved pattern, and the small
-   files reviews read (ledgers, summaries, inputs). Reference implementation:
-   digitalmodel-data `data/riser-global-analysis/derived/w4/` (`RESULTS-MANIFEST.json`,
-   `results_archive.py`). Merge such a PR with a squash so the bulk never reaches `main` history.
-4. **Two copies.** `/mnt/ace` is a single disk with no RAID or backup job (checked 2026-10-07).
-   Mirror each archive to a second host's own disk (not an NFS view of `/mnt/ace`), verify the
-   SHA-256 there, and record every location in the manifest.
+3. **Bulky output and cold reference files do not go into Git.** Per-case solver results,
+   large generated artifacts and cold non-source references use the one manifest-and-fetch
+   layout in [`DATA_PLACEMENT.md`](../../docs/standards/DATA_PLACEMENT.md): committed manifest,
+   one fetch script and content-addressed blobs under `${ACE_DATA_ROOT}/data/<repo>/`.
+   A removal PR merges only after the stored copy is verified, and after the second copy is
+   verified for data that cannot be re-downloaded. Raw data as received stays in the owning
+   private repository.
+4. **Two copies.** Data that cannot be re-downloaded gets a verified second copy on a second
+   machine's own disk, not a network view of the primary disk, recorded in the manifest.
+   Re-downloadable public data keeps a maintained fetch script instead of a second copy.
 5. **Divide work across live sessions.** Before picking up an item, list peer sessions on the
    machine and message them with the items you intend to take; skip any a peer owns. Record
    ownership on the issue or PR when a peer may not read messages in time.
