@@ -1,5 +1,7 @@
 # Review Gate Defect Record
 
+Refs #4054
+
 ## Purpose and Status
 
 This document records two defects in `scripts/enforcement/require-review-on-push.sh`
@@ -296,6 +298,11 @@ form is a review result file with a machine-readable field such as:
 Reviewed-Commit: <full-commit-id>
 ```
 
+Commit-bound review evidence should live in a later docs-only commit, or outside
+the pushed tree, because an evidence file cannot name the identifier of the
+commit that contains it; the proposed gate can recognize an evidence-only commit
+by limiting the exemption to commits that touch only review-evidence paths.
+
 For each feature commit in the checked range, the gate should require either:
 
 - a review evidence file naming that full commit identifier, or
@@ -327,6 +334,7 @@ assumes the old evidence model and names the bypass variable in remediation text
 | D2 one-for-all | Three feature commits and one generic evidence file | block until each feature commit is named or covered by a named reviewed range | partially; only a broad git-evidence pass is tested |
 | D2 unrelated keyword | Unrelated recent commit subject contains a review keyword | block; subject keyword is ignored | partially; current test expects this pattern to pass |
 | Correct evidence | Feature commit has evidence naming its full identifier | pass | no |
+| Amended or squashed commit | Evidence names the pre-amend or pre-squash identifier, then the feature commit is amended or squashed | block; evidence for the old identifier does not cover the new commit | no |
 | Partial evidence | Three feature commits, evidence names only one | block the two unevidenced commits | no |
 | Docs-only push | Documentation-only commits in the range | pass; no review required | yes |
 | New branch | New branch with feature commits not reachable from `origin/main` | block unless each feature commit has commit-bound evidence | no |
@@ -336,6 +344,9 @@ assumes the old evidence model and names the bypass variable in remediation text
 
 - Should local hooks fail closed when `origin/main` is missing, or should that
   behavior start as warn-only during migration?
+- Should the local hook fetch, or compare against the default-branch tip the
+  push target advertises, before subtracting commits reachable from the default
+  branch?
 - What exact evidence format should reviewers produce: result-file fields,
   commit trailers, or both?
 - How long should legacy non-bound evidence remain accepted in warn-only mode?

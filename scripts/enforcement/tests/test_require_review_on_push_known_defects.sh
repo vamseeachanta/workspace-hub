@@ -170,7 +170,6 @@ case_d2_fresh_checkout() {
   else
     record "D2 fresh checkout mtime evidence" xpass
   fi
-  printf '%s\n%s\n' "$old_output" "$clone_output" >/dev/null
 }
 
 case_d2_one_for_all() {
