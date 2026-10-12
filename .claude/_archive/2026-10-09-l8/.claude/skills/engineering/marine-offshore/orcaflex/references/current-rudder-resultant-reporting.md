@@ -48,7 +48,7 @@ When the user needs the force-review report links to send externally, finish wit
 
 1. Commit and push the generated HTML/static artifacts before constructing rendered links.
 2. Provide both rendered HTML links and GitHub source links.
-   - For checked-in HTML, a stable rendered form is `https://rawcdn.githack.com/<owner>/<repo>/<commit>/<path-to-report.html>`.
+   - For checked-in HTML, a stable rendered form is `raw static report share URL`.
    - Use the pushed commit SHA in rendered links when possible so the report is immutable for review.
 3. Verify the rendered links before reporting them:
    - HTTP status is `200`;

@@ -99,11 +99,8 @@ docs/modules/orcaflex/<category>/
 
 Categories: `jumper/`, `installation/`, `mooring/`, `training/`, `regional/`, `vessel_raos/`
 
-### Step 6: Legal Scan Gate
-```bash
-# Identifier gates retired; review final report via docs/standards/FINAL_REPORT_VERIFICATION.md
-# Must exit 0 before proceeding to spec extraction
-```
+### Step 6: Final Report Verification
+Manual check: review the final report using `docs/standards/FINAL_REPORT_VERIFICATION.md` before proceeding to spec extraction.
 
 ### Step 7: Extract Spec
 Only after legal scan passes:
@@ -141,7 +138,7 @@ The sanitization mapping should be mirrored in `.legal-deny-list.yaml`:
 ### Run sanitization
 ```bash
 uv run python scripts/sanitize_s7_models.py \
-  --s7-root D:/workspace-hub/client-b/s7 \
+  --s7-root <data-root>/project_a/s7 \
   --output-root docs/modules/orcaflex \
   --dry-run  # Preview first
 ```
@@ -149,7 +146,7 @@ uv run python scripts/sanitize_s7_models.py \
 ### Run without OrcFxAPI (.yml only)
 ```bash
 uv run python scripts/sanitize_s7_models.py \
-  --s7-root D:/workspace-hub/client-b/s7 \
+  --s7-root <data-root>/project_a/s7 \
   --output-root docs/modules/orcaflex \
   --skip-dat
 ```
@@ -169,7 +166,7 @@ The sanitization script generates `sanitization_audit.json`:
 ```json
 {
   "timestamp": "2026-02-11T10:00:00",
-  "source_root": "D:/workspace-hub/client-b/s7",
+  "source_root": "<data-root>/project_a/s7",
   "files_processed": 180,
   "files_skipped_dedup": 45,
   "files_skipped_excluded": 12,
@@ -181,10 +178,10 @@ The sanitization script generates `sanitization_audit.json`:
   },
   "transformations": [
     {
-      "source": "s7/gom-tieback-a/Jumper_Manifold to PLET/SZ.yml",
+      "source": "s7/project_a/Jumper_Manifold to PLET/SZ.yml",
       "target": "docs/modules/orcaflex/jumper/manifold_to_plet/monolithic/SZ.yml",
       "hash": "sha256:abc123...",
-      "replacements": ["GoM tieback A→deepwater_field_a", "Candies→installation_vessel_01"],
+      "replacements": ["project identifier replaced", "vessel identifier replaced"],
       "size_bytes": 245000
     }
   ]

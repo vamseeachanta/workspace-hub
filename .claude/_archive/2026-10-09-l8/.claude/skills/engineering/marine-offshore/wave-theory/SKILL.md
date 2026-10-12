@@ -47,9 +47,9 @@ Use wave theory knowledge when:
 
 ## Sub-Skills
 
-- [1. Regular Wave Theory](1-regular-wave-theory/SKILL.md)
-- [2. Wave Spectra](2-wave-spectra/SKILL.md)
-- [3. Wave Statistics](3-wave-statistics/SKILL.md)
-- [4. Time Series Generation (+1)](4-time-series-generation/SKILL.md)
-- [6. Extreme Value Analysis](6-extreme-value-analysis/SKILL.md)
-- [Example 1: Complete Wave Analysis](example-1-complete-wave-analysis/SKILL.md)
+- 1. Regular Wave Theory
+- 2. Wave Spectra
+- 3. Wave Statistics
+- 4. Time Series Generation (+1)
+- 6. Extreme Value Analysis
+- Example 1: Complete Wave Analysis

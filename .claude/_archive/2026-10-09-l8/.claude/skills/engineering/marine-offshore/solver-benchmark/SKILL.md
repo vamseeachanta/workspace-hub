@@ -60,20 +60,20 @@ uv run python scripts/benchmark/run_3way_benchmark.py \
 
 ## Sub-Skills
 
-- [Troubleshooting](troubleshooting/SKILL.md)
+- Troubleshooting
 
 ## Sub-Skills
 
-- [Solver Paths](solver-paths/SKILL.md)
-- [Benchmark Workflow](benchmark-workflow/SKILL.md)
-- [Output Structure](output-structure/SKILL.md)
-- [Consensus Levels](consensus-levels/SKILL.md)
-- [Creating Benchmark Specs](creating-benchmark-specs/SKILL.md)
-- [Available Hull Geometries](available-hull-geometries/SKILL.md)
-- [Programmatic Usage](programmatic-usage/SKILL.md)
-- [MultiSolverComparator (+1)](multisolvercomparator/SKILL.md)
-- [OrcaWave (via OrcFxAPI) (+3)](orcawave-via-orcfxapi/SKILL.md)
-- [Pre-Flight Validation Checklist](pre-flight-validation-checklist/SKILL.md)
-- [Correlation Thresholds (+1)](correlation-thresholds/SKILL.md)
-- [Mandatory Checks Before Committing Reports (+2)](mandatory-checks-before-committing-reports/SKILL.md)
-- [Related Work Items](related-work-items/SKILL.md)
+- Solver Paths
+- Benchmark Workflow
+- Output Structure
+- Consensus Levels
+- Creating Benchmark Specs
+- Available Hull Geometries
+- Programmatic Usage
+- MultiSolverComparator (+1)
+- OrcaWave (via OrcFxAPI) (+3)
+- Pre-Flight Validation Checklist
+- Correlation Thresholds (+1)
+- Mandatory Checks Before Committing Reports (+2)
+- Related Work Items

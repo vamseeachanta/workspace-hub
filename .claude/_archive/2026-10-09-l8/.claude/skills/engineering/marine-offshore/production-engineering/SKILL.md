@@ -106,6 +106,6 @@ def calculate_vrr(injection_volume, production_volume, b_factor):
 
 ## Resources & References
 
-- **Legacy Docs**: `/mnt/ace/Production/` (Workshop PPTs and EOR evaluations).
+- **Legacy Docs**: `<data-root>/production/` (Workshop PPTs and EOR evaluations).
 - **Standards**: API RP 19 (Artificial Lift), ISO 15156 (Material Selection for H2S).
 - **Digital Model**: `digitalmodel/reservoir/` for analytical performance calculations.

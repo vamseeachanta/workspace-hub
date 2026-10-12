@@ -22,7 +22,7 @@ scripts_exempt: true
 
 ## Overview
 
-This skill covers the assessment of aging offshore assets, focusing on structural integrity, corrosion management, and life extension. It synthesizes knowledge from legacy projects like "GoM field H TTR VIV Analysis" and "Marlin TTR Life Extension".
+This skill covers the assessment of aging offshore assets, focusing on structural integrity, corrosion management, and life extension. It synthesizes knowledge from legacy projects like "Project A TTR VIV Analysis" and "Project B TTR Life Extension".
 
 ## Core Capabilities
 
@@ -87,6 +87,6 @@ def check_wall_thickness(nominal_wt, corrosion_rate, years, min_required_wt):
 - **Trend Analysis**: Use historical inspection data (UT/ILI) to validate corrosion models.
 
 ## Resources
-- **Legacy Projects**: `/mnt/ace/docs/disciplines/integrity_management/projects/`
-    - `31519_fmog_marlin_ttr_life_extension`
-    - `0185_ecs_ffs_engineering`
+- **Legacy Projects**: `<data-root>/integrity_management/projects/`
+    - `project_b_ttr_life_extension`
+    - `project_c_ffs_engineering`

@@ -128,10 +128,10 @@ def generate_views_parallel(
 
 ## Related Skills
 
-- [orcaflex-post-processing](../orcaflex-post-processing/SKILL.md) - Data extraction
-- [orcaflex-operability](../orcaflex-operability/SKILL.md) - Envelope visualization
-- [orcaflex-results-comparison](../orcaflex-results-comparison/SKILL.md) - Comparison plots
-- [orcaflex-extreme-analysis](../orcaflex-extreme-analysis/SKILL.md) - Extreme value plots
+- orcaflex-post-processing - Data extraction
+- orcaflex-operability - Envelope visualization
+- orcaflex-results-comparison - Comparison plots
+- orcaflex-extreme-analysis - Extreme value plots
 
 ## References
 
@@ -146,17 +146,17 @@ def generate_views_parallel(
 
 ## Sub-Skills
 
-- [Basic Visualization Configuration (+1)](basic-visualization-configuration/SKILL.md)
-- [Model Views (+2)](model-views/SKILL.md)
+- Basic Visualization Configuration (+1)
+- Model Views (+2)
 
 ## Sub-Skills
 
-- [Error Handling](error-handling/SKILL.md)
+- Error Handling
 
 ## Sub-Skills
 
-- [Version Metadata](version-metadata/SKILL.md)
+- Version Metadata
 - [[1.1.0] - 2026-02-23 (+1)](110-2026-02-23/SKILL.md)
-- [OrcaWave Mesh Export via Diffraction (+4)](orcawave-mesh-export-via-diffraction/SKILL.md)
-- [Model Views (+1)](model-views/SKILL.md)
-- [Image Outputs (+1)](image-outputs/SKILL.md)
+- OrcaWave Mesh Export via Diffraction (+4)
+- Model Views (+1)
+- Image Outputs (+1)

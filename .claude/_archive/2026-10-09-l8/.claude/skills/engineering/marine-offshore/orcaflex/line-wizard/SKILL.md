@@ -80,10 +80,10 @@ def configure_line_sections(
 
 ## Related Skills
 
-- [orcaflex-modeling](../orcaflex-modeling/SKILL.md) - Run OrcaFlex simulations
-- [orcaflex-mooring-iteration](../orcaflex-mooring-iteration/SKILL.md) - Advanced tension iteration
-- [mooring-design](../mooring-design/SKILL.md) - Design mooring systems
-- [orcaflex-static-debug](../orcaflex-static-debug/SKILL.md) - Troubleshoot convergence
+- orcaflex-modeling - Run OrcaFlex simulations
+- orcaflex-mooring-iteration - Advanced tension iteration
+- mooring-design - Design mooring systems
+- orcaflex-static-debug - Troubleshoot convergence
 
 ## References
 
@@ -93,19 +93,19 @@ def configure_line_sections(
 
 ## Sub-Skills
 
-- [Before Using Line Setup Wizard (+2)](before-using-line-setup-wizard/SKILL.md)
+- Before Using Line Setup Wizard (+2)
 
 ## Sub-Skills
 
-- [Error Handling](error-handling/SKILL.md)
+- Error Handling
 
 ## Sub-Skills
 
-- [Version Metadata](version-metadata/SKILL.md)
+- Version Metadata
 - [[1.0.0] - 2026-01-17](100-2026-01-17/SKILL.md)
-- [Calculation Modes](calculation-modes/SKILL.md)
-- [YAML-Based Line Setup (+1)](yaml-based-line-setup/SKILL.md)
-- [Common Line Setup Properties (+1)](common-line-setup-properties/SKILL.md)
-- [With Mooring Iteration (+1)](with-mooring-iteration/SKILL.md)
-- [Common Errors and Fixes (+1)](common-errors-and-fixes/SKILL.md)
-- [Post-Wizard Checks](post-wizard-checks/SKILL.md)
+- Calculation Modes
+- YAML-Based Line Setup (+1)
+- Common Line Setup Properties (+1)
+- With Mooring Iteration (+1)
+- Common Errors and Fixes (+1)
+- Post-Wizard Checks

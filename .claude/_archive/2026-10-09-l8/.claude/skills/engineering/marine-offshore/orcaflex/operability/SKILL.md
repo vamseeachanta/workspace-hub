@@ -103,10 +103,10 @@ report_path = analyzer.generate_comprehensive_report(
 
 ## Related Skills
 
-- [orcaflex-modeling](../orcaflex-modeling/SKILL.md) - Run OrcaFlex simulations
-- [orcaflex-post-processing](../orcaflex-post-processing/SKILL.md) - Extract results
-- [orcaflex-extreme-analysis](../orcaflex-extreme-analysis/SKILL.md) - Extreme value extraction
-- [mooring-design](../mooring-design/SKILL.md) - Mooring system design
+- orcaflex-modeling - Run OrcaFlex simulations
+- orcaflex-post-processing - Extract results
+- orcaflex-extreme-analysis - Extreme value extraction
+- mooring-design - Mooring system design
 
 ## References
 
@@ -117,18 +117,18 @@ report_path = analyzer.generate_comprehensive_report(
 
 ## Sub-Skills
 
-- [Basic Operability Configuration (+1)](basic-operability-configuration/SKILL.md)
-- [Simulation Setup (+2)](simulation-setup/SKILL.md)
+- Basic Operability Configuration (+1)
+- Simulation Setup (+2)
 
 ## Sub-Skills
 
-- [Error Handling](error-handling/SKILL.md)
+- Error Handling
 
 ## Sub-Skills
 
-- [Version Metadata](version-metadata/SKILL.md)
+- Version Metadata
 - [[1.0.0] - 2026-01-17](100-2026-01-17/SKILL.md)
-- [Operability Workflow](operability-workflow/SKILL.md)
-- [Operability Envelope Plot (+2)](operability-envelope-plot/SKILL.md)
-- [CSV Matrix Format](csv-matrix-format/SKILL.md)
-- [With OrcaFlex Modeling (+1)](with-orcaflex-modeling/SKILL.md)
+- Operability Workflow
+- Operability Envelope Plot (+2)
+- CSV Matrix Format
+- With OrcaFlex Modeling (+1)

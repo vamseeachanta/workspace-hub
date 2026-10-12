@@ -46,9 +46,9 @@ Use 6DOF ship dynamics when:
 
 ## Sub-Skills
 
-- [1. 6 Degrees of Freedom (+1)](1-6-degrees-of-freedom/SKILL.md)
-- [3. Natural Frequencies and Periods (+1)](3-natural-frequencies-and-periods/SKILL.md)
-- [5. Time-Domain Simulation](5-time-domain-simulation/SKILL.md)
-- [6. Seakeeping Analysis](6-seakeeping-analysis/SKILL.md)
-- [Example 1: Full 6DOF Simulation](example-1-full-6dof-simulation/SKILL.md)
-- [Example 2: Natural Frequency Sensitivity Study](example-2-natural-frequency-sensitivity-study/SKILL.md)
+- 1. 6 Degrees of Freedom (+1)
+- 3. Natural Frequencies and Periods (+1)
+- 5. Time-Domain Simulation
+- 6. Seakeeping Analysis
+- Example 1: Full 6DOF Simulation
+- Example 2: Natural Frequency Sensitivity Study

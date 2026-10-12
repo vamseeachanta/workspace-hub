@@ -145,14 +145,14 @@ See `references/pipeline-span-pressure-wall-precheck.md` for the session-derived
 
 ## Sub-Skills
 
-- [Best Practices](best-practices/SKILL.md)
+- Best Practices
 
 ## Sub-Skills
 
-- [Version Metadata](version-metadata/SKILL.md)
+- Version Metadata
 - [[1.0.0] - 2026-01-07](100-2026-01-07/SKILL.md)
-- [1. Natural Frequency Analysis (+3)](1-natural-frequency-analysis/SKILL.md)
-- [Strouhal Number (+2)](strouhal-number/SKILL.md)
-- [Complete VIV Screening Workflow](complete-viv-screening-workflow/SKILL.md)
-- [Natural Frequencies JSON (+1)](natural-frequencies-json/SKILL.md)
-- [Design Code References](design-code-references/SKILL.md)
+- 1. Natural Frequency Analysis (+3)
+- Strouhal Number (+2)
+- Complete VIV Screening Workflow
+- Natural Frequencies JSON (+1)
+- Design Code References

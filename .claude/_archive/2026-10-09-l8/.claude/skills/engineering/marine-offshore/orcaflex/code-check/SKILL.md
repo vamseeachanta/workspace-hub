@@ -189,10 +189,10 @@ def generate_compliance_report(
 
 ## Related Skills
 
-- [orcaflex-post-processing](../orcaflex-post-processing/SKILL.md) - Extract results
-- [orcaflex-extreme-analysis](../orcaflex-extreme-analysis/SKILL.md) - Find design loads
-- [structural-analysis](../structural-analysis/SKILL.md) - Structural capacity checks
-- [fatigue-analysis](../fatigue-analysis/SKILL.md) - Fatigue code checks
+- orcaflex-post-processing - Extract results
+- orcaflex-extreme-analysis - Find design loads
+- structural-analysis - Structural capacity checks
+- fatigue-analysis - Fatigue code checks
 
 ## References
 
@@ -205,9 +205,9 @@ def generate_compliance_report(
 
 ## Sub-Skills
 
-- [Mooring Code Check (+1)](mooring-code-check/SKILL.md)
-- [Before Code Check (+2)](before-code-check/SKILL.md)
+- Mooring Code Check (+1)
+- Before Code Check (+2)
 
 ## Sub-Skills
 
-- [Error Handling](error-handling/SKILL.md)
+- Error Handling

@@ -38,7 +38,7 @@ Use hydrodynamic analysis knowledge when:
 
 ## Resources
 
-- **WAMIT User Manual**: https://www.wamit.com/
+- **WAMIT User Manual**: WAMIT user manual
 - **AQWA Documentation**: ANSYS Help System
 - **OrcaWave Manual**: Orcina documentation
 - **DNV-RP-C205**: Environmental Conditions and Environmental Loads
@@ -51,9 +51,9 @@ Use hydrodynamic analysis knowledge when:
 
 ## Sub-Skills
 
-- [1. Boundary Element Method (BEM) (+1)](1-boundary-element-method-bem/SKILL.md)
-- [3. Added Mass and Damping (+1)](3-added-mass-and-damping/SKILL.md)
-- [5. Hydrostatic Stiffness (+1)](5-hydrostatic-stiffness/SKILL.md)
-- [Application 1: Complete RAO Analysis (+1)](application-1-complete-rao-analysis/SKILL.md)
-- [Application 3: Added Mass Convergence Check](application-3-added-mass-convergence-check/SKILL.md)
-- [WAMIT Workflow (+1)](wamit-workflow/SKILL.md)
+- 1. Boundary Element Method (BEM) (+1)
+- 3. Added Mass and Damping (+1)
+- 5. Hydrostatic Stiffness (+1)
+- Application 1: Complete RAO Analysis (+1)
+- Application 3: Added Mass Convergence Check
+- WAMIT Workflow (+1)

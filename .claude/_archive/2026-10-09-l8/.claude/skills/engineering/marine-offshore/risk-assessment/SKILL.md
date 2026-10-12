@@ -112,4 +112,4 @@ See [references/resources.md](references/resources.md) for textbooks, standards,
 
 ## Sub-Skills
 
-- [1. Sample Size Selection (+1)](1-sample-size-selection/SKILL.md)
+- 1. Sample Size Selection (+1)

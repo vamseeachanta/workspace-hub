@@ -29,14 +29,14 @@ scripts_exempt: true
 
 ## Sub-Skills
 
-- [Version Metadata](version-metadata/SKILL.md)
-- [AQWA Programs and Analysis Sequence](aqwa-programs-and-analysis-sequence/SKILL.md)
-- [Locating the Executable (+4)](locating-the-executable/SKILL.md)
-- [Deck 0 — Job Control (mandatory for all runs) (+3)](deck-0-job-control-mandatory-for-all-runs/SKILL.md)
-- [Detecting Success vs. Failure (+2)](detecting-success-vs-failure/SKILL.md)
-- [Debug Sequence](debug-sequence/SKILL.md)
-- [License Architecture (+3)](license-architecture/SKILL.md)
-- [Python Subprocess Pattern](python-subprocess-pattern/SKILL.md)
-- [No Dedicated Python Package](no-dedicated-python-package/SKILL.md)
-- [Validation Checklist](validation-checklist/SKILL.md)
-- [Integration with Downstream Tools](integration-with-downstream-tools/SKILL.md)
+- Version Metadata
+- AQWA Programs and Analysis Sequence
+- Locating the Executable (+4)
+- Deck 0 — Job Control (mandatory for all runs) (+3)
+- Detecting Success vs. Failure (+2)
+- Debug Sequence
+- License Architecture (+3)
+- Python Subprocess Pattern
+- No Dedicated Python Package
+- Validation Checklist
+- Integration with Downstream Tools

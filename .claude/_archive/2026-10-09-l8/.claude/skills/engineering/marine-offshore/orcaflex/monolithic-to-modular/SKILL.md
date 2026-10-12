@@ -31,9 +31,9 @@ tags: []
 
 ## Related Skills
 
-- [orcaflex-model-generator](../orcaflex-model-generator/SKILL.md) - Builder registry and generation architecture
-- [orcaflex-yaml-gotchas](../orcaflex-yaml-gotchas/SKILL.md) - Production OrcaFlex YAML traps
-- [orcaflex-environment-config](../orcaflex-environment-config/SKILL.md) - Environment configuration
+- orcaflex-model-generator - Builder registry and generation architecture
+- orcaflex-yaml-gotchas - Production OrcaFlex YAML traps
+- orcaflex-environment-config - Environment configuration
 
 ## References
 
@@ -52,10 +52,10 @@ tags: []
 
 ## Sub-Skills
 
-- [Architecture](architecture/SKILL.md)
-- [Step 1: Convert .dat to .yml (if needed) (+4)](step-1-convert-dat-to-yml-if-needed/SKILL.md)
-- [Section Mapping (+2)](section-mapping/SKILL.md)
-- [Significance Levels (+2)](significance-levels/SKILL.md)
-- [Output Structure](output-structure/SKILL.md)
-- [Common Issues and Fixes](common-issues-and-fixes/SKILL.md)
-- [Benchmark Results (2026-02-10)](benchmark-results-2026-02-10/SKILL.md)
+- Architecture
+- Step 1: Convert .dat to .yml (if needed) (+4)
+- Section Mapping (+2)
+- Significance Levels (+2)
+- Output Structure
+- Common Issues and Fixes
+- Benchmark Results (2026-02-10)

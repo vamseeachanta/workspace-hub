@@ -23,9 +23,9 @@ tags: []
 
 ## Related Skills
 
-- [orcaflex-monolithic-to-modular](../orcaflex-monolithic-to-modular/SKILL.md) - Extraction pipeline
-- [orcaflex-yaml-gotchas](../orcaflex-yaml-gotchas/SKILL.md) - Production YAML traps
-- [orcaflex-environment-config](../orcaflex-environment-config/SKILL.md) - Environment builder details
+- orcaflex-monolithic-to-modular - Extraction pipeline
+- orcaflex-yaml-gotchas - Production YAML traps
+- orcaflex-environment-config - Environment builder details
 
 ## References
 
@@ -46,9 +46,9 @@ tags: []
 
 ## Sub-Skills
 
-- [Builder Registry Pattern (+3)](builder-registry-pattern/SKILL.md)
-- [Pipeline Builders (order 10-50) (+2)](pipeline-builders-order-10-50/SKILL.md)
-- [Spec Variants](spec-variants/SKILL.md)
-- [From spec.yml file (+3)](from-specyml-file/SKILL.md)
-- [_merge_object() (+2)](mergeobject/SKILL.md)
-- [3-Way Benchmark](3-way-benchmark/SKILL.md)
+- Builder Registry Pattern (+3)
+- Pipeline Builders (order 10-50) (+2)
+- Spec Variants
+- From spec.yml file (+3)
+- _merge_object() (+2)
+- 3-Way Benchmark

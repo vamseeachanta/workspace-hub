@@ -115,10 +115,10 @@ def sensitivity_analysis(
 
 ## Related Skills
 
-- [orcaflex-post-processing](../orcaflex-post-processing/SKILL.md) - Extract results
-- [orcaflex-extreme-analysis](../orcaflex-extreme-analysis/SKILL.md) - Extreme values
-- [orcaflex-operability](../orcaflex-operability/SKILL.md) - Multi-sea-state analysis
-- [mooring-design](../mooring-design/SKILL.md) - Mooring system design
+- orcaflex-post-processing - Extract results
+- orcaflex-extreme-analysis - Extreme values
+- orcaflex-operability - Multi-sea-state analysis
+- mooring-design - Mooring system design
 
 ## References
 
@@ -128,17 +128,17 @@ def sensitivity_analysis(
 
 ## Sub-Skills
 
-- [Basic Comparison (+1)](basic-comparison/SKILL.md)
-- [Simulation Setup (+2)](simulation-setup/SKILL.md)
+- Basic Comparison (+1)
+- Simulation Setup (+2)
 
 ## Sub-Skills
 
-- [Error Handling](error-handling/SKILL.md)
+- Error Handling
 
 ## Sub-Skills
 
-- [Version Metadata](version-metadata/SKILL.md)
+- Version Metadata
 - [[1.0.0] - 2026-01-17](100-2026-01-17/SKILL.md)
-- [1. Pretension Comparison (+3)](1-pretension-comparison/SKILL.md)
-- [Comparison Bar Chart (+1)](comparison-bar-chart/SKILL.md)
-- [Comparison Summary Table (+1)](comparison-summary-table/SKILL.md)
+- 1. Pretension Comparison (+3)
+- Comparison Bar Chart (+1)
+- Comparison Summary Table (+1)

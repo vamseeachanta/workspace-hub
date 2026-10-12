@@ -37,7 +37,7 @@ scripts_exempt: true
 
 ## Operational entry point
 
-Use the [execution runbook](../../../../../../docs/solver/orcaflex-execution-runbook.html)
+Use the execution runbook
 before local or remote batches. It routes to the existing execution owner and
 separates proposed controls from verified deployment. Start with a bounded case
 under the approved host budget; licence availability and CPU count do not authorize
@@ -157,10 +157,10 @@ class BatchMetrics:
 
 ## Related Skills
 
-- [orcaflex-modeling](../orcaflex-modeling/SKILL.md) - Run OrcaFlex simulations
-- [orcaflex-operability](../orcaflex-operability/SKILL.md) - Multi-sea-state campaigns
-- [orcaflex-post-processing](../orcaflex-post-processing/SKILL.md) - Extract results
-- [orcaflex-results-comparison](../orcaflex-results-comparison/SKILL.md) - Compare results
+- orcaflex-modeling - Run OrcaFlex simulations
+- orcaflex-operability - Multi-sea-state campaigns
+- orcaflex-post-processing - Extract results
+- orcaflex-results-comparison - Compare results
 
 ## References
 
@@ -171,16 +171,16 @@ class BatchMetrics:
 
 ## Sub-Skills
 
-- [Basic Batch Configuration (+1)](basic-batch-configuration/SKILL.md)
-- [Resource Management (+2)](resource-management/SKILL.md)
+- Basic Batch Configuration (+1)
+- Resource Management (+2)
 
 ## Sub-Skills
 
-- [Error Handling](error-handling/SKILL.md)
+- Error Handling
 
 ## Sub-Skills
 
-- [Version Metadata](version-metadata/SKILL.md)
+- Version Metadata
 - [[1.0.0] - 2026-01-17](100-2026-01-17/SKILL.md)
-- [Parallel Execution (+1)](parallel-execution/SKILL.md)
-- [Batch Results JSON (+1)](batch-results-json/SKILL.md)
+- Parallel Execution (+1)
+- Batch Results JSON (+1)

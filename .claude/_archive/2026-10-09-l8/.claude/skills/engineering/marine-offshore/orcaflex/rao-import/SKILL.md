@@ -154,10 +154,10 @@ raw_raos = processor.import_from_aqwa("data/vessel.lis")
 
 ## Related Skills
 
-- [orcaflex-modeling](../orcaflex-modeling/SKILL.md) - Apply imported RAOs
-- [orcawave/analysis](../orcawave/analysis/SKILL.md) - Generate RAOs from diffraction
-- [aqwa-analysis](../aqwa-analysis/SKILL.md) - AQWA-specific processing
-- [hydrodynamics](../hydrodynamics/SKILL.md) - Hydrodynamic coefficient management
+- orcaflex-modeling - Apply imported RAOs
+- orcawave/analysis - Generate RAOs from diffraction
+- aqwa-analysis - AQWA-specific processing
+- hydrodynamics - Hydrodynamic coefficient management
 
 ## References
 
@@ -170,18 +170,18 @@ raw_raos = processor.import_from_aqwa("data/vessel.lis")
 
 ## Sub-Skills
 
-- [Basic Import Configuration (+1)](basic-import-configuration/SKILL.md)
-- [Data Quality (+2)](data-quality/SKILL.md)
+- Basic Import Configuration (+1)
+- Data Quality (+2)
 
 ## Sub-Skills
 
-- [Error Handling](error-handling/SKILL.md)
+- Error Handling
 
 ## Sub-Skills
 
-- [Version Metadata](version-metadata/SKILL.md)
+- Version Metadata
 - [[1.0.0] - 2026-01-17](100-2026-01-17/SKILL.md)
-- [Supported Formats](supported-formats/SKILL.md)
-- [6-DOF Motion RAOs](6-dof-motion-raos/SKILL.md)
-- [OrcaFlex YAML Format (+2)](orcaflex-yaml-format/SKILL.md)
-- [AQWA Import (+1)](aqwa-import/SKILL.md)
+- Supported Formats
+- 6-DOF Motion RAOs
+- OrcaFlex YAML Format (+2)
+- AQWA Import (+1)

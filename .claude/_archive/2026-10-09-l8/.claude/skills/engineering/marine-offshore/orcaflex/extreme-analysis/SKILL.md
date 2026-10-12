@@ -101,10 +101,10 @@ config = {
 
 ## Related Skills
 
-- [orcaflex-post-processing](../orcaflex-post-processing/SKILL.md) - General post-processing
-- [orcaflex-operability](../orcaflex-operability/SKILL.md) - Multi-sea-state analysis
-- [orcaflex-results-comparison](../orcaflex-results-comparison/SKILL.md) - Compare multiple results
-- [fatigue-analysis](../fatigue-analysis/SKILL.md) - Fatigue from time histories
+- orcaflex-post-processing - General post-processing
+- orcaflex-operability - Multi-sea-state analysis
+- orcaflex-results-comparison - Compare multiple results
+- fatigue-analysis - Fatigue from time histories
 
 ## References
 
@@ -115,17 +115,17 @@ config = {
 
 ## Sub-Skills
 
-- [Basic Extreme Extraction (+1)](basic-extreme-extraction/SKILL.md)
-- [Variable Selection (+2)](variable-selection/SKILL.md)
+- Basic Extreme Extraction (+1)
+- Variable Selection (+2)
 
 ## Sub-Skills
 
-- [Error Handling](error-handling/SKILL.md)
+- Error Handling
 
 ## Sub-Skills
 
-- [Version Metadata](version-metadata/SKILL.md)
+- Version Metadata
 - [[1.0.0] - 2026-01-17](100-2026-01-17/SKILL.md)
-- [Linked Statistics (+1)](linked-statistics/SKILL.md)
-- [Linked Statistics CSV (+1)](linked-statistics-csv/SKILL.md)
-- [1. Design Load Identification (+2)](1-design-load-identification/SKILL.md)
+- Linked Statistics (+1)
+- Linked Statistics CSV (+1)
+- 1. Design Load Identification (+2)
