@@ -19,7 +19,8 @@ import sys
 from pathlib import Path
 
 
-DEFAULT_SUBTREE = Path(
+REPO_ROOT = Path(__file__).resolve().parents[2]
+DEFAULT_SUBTREE = REPO_ROOT / (
     ".claude/_archive/2026-10-09-l8/.claude/skills/engineering/marine-offshore"
 )
 
@@ -123,9 +124,8 @@ def iter_files(root: Path) -> list[Path]:
 
 
 def repo_relative(path: Path) -> str:
-    repo_root = Path(__file__).resolve().parents[2]
     try:
-        return path.resolve().relative_to(repo_root).as_posix()
+        return path.resolve().relative_to(REPO_ROOT).as_posix()
     except ValueError:
         return path.as_posix()
 

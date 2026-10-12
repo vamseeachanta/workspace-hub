@@ -160,6 +160,64 @@ test_allowlist_uses_repo_relative_key_for_absolute_subtree() {
   fi
 }
 
+test_default_subtree_resolves_from_repo_root() {
+  run_test "default subtree resolves from repository root outside cwd"
+  local repo_root td output rc
+  repo_root="$(git -C "$SCRIPT_DIR" rev-parse --show-toplevel)"
+  td="$(make_tmpdir)"
+  set +e
+  output="$(
+    REPO_ROOT="$repo_root" SCRIPT_UNDER_TEST="$SCRIPT_UNDER_TEST" OFFROOT="$td" python3 - <<'PY'
+import importlib.util
+import os
+from pathlib import Path
+
+script = Path(os.environ["SCRIPT_UNDER_TEST"])
+spec = importlib.util.spec_from_file_location("archived_marine_check", script)
+module = importlib.util.module_from_spec(spec)
+assert spec.loader is not None
+spec.loader.exec_module(module)
+
+
+def run_from(cwd: str) -> tuple[int, int]:
+    seen = []
+    original_scan = module.scan
+
+    def recording_scan(root):
+        paths = module.iter_files(root)
+        seen.append(len(paths))
+        return original_scan(root)
+
+    module.scan = recording_scan
+    old_cwd = os.getcwd()
+    try:
+        os.chdir(cwd)
+        rc = module.main([])
+    finally:
+        os.chdir(old_cwd)
+        module.scan = original_scan
+    return rc, seen[-1] if seen else -1
+
+
+repo_root = os.environ["REPO_ROOT"]
+root_rc, root_count = run_from(repo_root)
+offroot_rc, offroot_count = run_from(os.environ["OFFROOT"])
+print(f"root_rc={root_rc} root_count={root_count}")
+print(f"offroot_rc={offroot_rc} offroot_count={offroot_count}")
+if root_rc != 0 or offroot_rc != 0 or root_count <= 0 or root_count != offroot_count:
+    raise SystemExit(1)
+PY
+  )"
+  rc=$?
+  set -e
+  rm -rf "$td"
+  if [[ $rc -eq 0 ]]; then
+    pass "default subtree scans the same files outside cwd"
+  else
+    fail "default subtree did not resolve from repository root" "$output"
+  fi
+}
+
 test_allowed_forms_pass() {
   run_test "codename, placeholder, neutral description, and structured examples pass"
   local td
@@ -186,6 +244,7 @@ test_drive_and_share_paths_fail
 test_fenced_configuration_label_still_fails
 test_fenced_configuration_codename_passes
 test_allowlist_uses_repo_relative_key_for_absolute_subtree
+test_default_subtree_resolves_from_repo_root
 test_allowed_forms_pass
 
 echo ""
