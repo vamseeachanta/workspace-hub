@@ -32,7 +32,9 @@ residue remained. The same day, one riser PR proposed committing 7,300 per-case 
    one fetch script and content-addressed blobs under `${ACE_DATA_ROOT}/data/<repo>/`.
    A removal PR merges only after the stored copy is verified, and after the second copy is
    verified for data that cannot be re-downloaded. Raw data as received stays in the owning
-   private repository.
+   private repository. Data already stored under the earlier per-topic archive layout stays
+   where it is and remains recorded in its own manifest; new moves use the one layout. No
+   conversion duty is introduced.
 4. **Two copies.** Data that cannot be re-downloaded gets a verified second copy on a second
    machine's own disk, not a network view of the primary disk, recorded in the manifest.
    Re-downloadable public data keeps a maintained fetch script instead of a second copy.

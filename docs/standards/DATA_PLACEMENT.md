@@ -17,6 +17,8 @@ One mechanism: manifest and fetch. The repository keeps a committed manifest wit
 
 One layout: content-addressed blobs live at `${ACE_DATA_ROOT}/data/<repo>/blobs/sha256/<first two hex>/<sha256>.<ext>`. The repository's external data root also contains `${ACE_DATA_ROOT}/data/<repo>/MANIFEST.tsv` and a dated verification file beside it.
 
+Data already stored under the earlier per-topic archive layout stays where it is and remains recorded in its own manifest; new moves use the one layout. No conversion duty is introduced.
+
 Private material, including anything client-derived, quarantined or from a private repository, goes under `${ACE_DATA_ROOT}/data/_private/<repo>/` with owner-only directory permissions. A public manifest records private material only as a count and total size; it carries no host names, mount paths, private locators or payload details.
 
 | Criterion | In git repo | Manifest-and-fetch outside Git |
@@ -85,6 +87,7 @@ A Windows workstation has no mount of the data disk and fetches on demand over s
 - Pipeline checkpoints below the thresholds.
 - `.gitkeep` placeholders for empty directories.
 - Required client-supplied and measured originals in the owning private repository.
+- Compressed state archives produced by the oversized state-file recovery runbook, when kept for consumer-compatible zero-loss state history.
 
 ## What Uses Manifest and Fetch
 

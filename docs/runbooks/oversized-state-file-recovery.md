@@ -153,6 +153,8 @@ fleet-wide for data placement:
   contradicting the "git-track everything" philosophy of #1782 (zero-loss
   agent learnings).
 
+Compressed state archives are a named file class kept in the tree by this runbook's gzip-in-tree pattern because rotation preserves zero-loss agent learnings while known consumers read archive history. The thresholds in [the data placement standard](../standards/DATA_PLACEMENT.md) govern every other file class.
+
 ### When to revisit
 Do not move to LFS. Revisit the gzip-in-tree pattern if any of these occur:
 - Total `archive/` size exceeds **500 MB** (clones become slow).

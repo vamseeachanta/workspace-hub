@@ -50,6 +50,8 @@ Industry standard lookup tables, material properties, and design code parameters
 
 ### Tier 2a — Research Literature (`/mnt/ace-data/digitalmodel/docs/domains/`)
 
+Superseded for data placement by `docs/standards/DATA_PLACEMENT.md`; the locations below are legacy and pending conversion.
+
 Downloaded academic papers, conference proceedings, ITTC guidelines, classification society rules, and textbooks used as reference material for engineering analysis. Organized by domain (hydrodynamics, naval_architecture, pipeline, etc.) with per-domain `download-literature.sh` scripts for reproducible acquisition.
 
 Acquisition and retention require source-specific rights evidence; a download script
@@ -184,6 +186,8 @@ Repos should configure a `check-added-large-files --maxkb=1000` pre-commit check
 
 ## Generated Data — Physical Placement Map
 
+Superseded for data placement by `docs/standards/DATA_PLACEMENT.md`; the locations below are legacy and pending conversion.
+
 Pipeline-generated artifacts outside the required-original exception that exceed git thresholds live on the ace NFS drive. Scripts use `$SUMMARIES_DIR` env var or read from `config.yaml` to resolve paths.
 
 | Artifact | Ace Drive Path | Generator Script | Notes |
@@ -194,6 +198,8 @@ Pipeline-generated artifacts outside the required-original exception that exceed
 | Research literature | `/mnt/ace/docs/domains/<domain>/literature/` | Per-domain `download-literature.sh` | Tier 2a |
 
 ### Path Resolution Convention
+
+Superseded for data placement by `docs/standards/DATA_PLACEMENT.md`; the locations below are legacy and pending conversion.
 
 Scripts should resolve generated-data paths in this order:
 1. **Env var** (`$SUMMARIES_DIR`) — for CI or cross-machine overrides
