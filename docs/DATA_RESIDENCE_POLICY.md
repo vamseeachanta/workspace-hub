@@ -50,6 +50,8 @@ Industry standard lookup tables, material properties, and design code parameters
 
 ### Tier 2a — Research Literature (`/mnt/ace-data/digitalmodel/docs/domains/`)
 
+Superseded for data placement by `docs/standards/DATA_PLACEMENT.md`; the locations below are legacy and pending conversion.
+
 Downloaded academic papers, conference proceedings, ITTC guidelines, classification society rules, and textbooks used as reference material for engineering analysis. Organized by domain (hydrodynamics, naval_architecture, pipeline, etc.) with per-domain `download-literature.sh` scripts for reproducible acquisition.
 
 Acquisition and retention require source-specific rights evidence; a download script
@@ -135,12 +137,11 @@ Required original? Apply the required-original exception above before this tree.
 Otherwise, is the file regenerable from a pipeline/acquirer script?
 ├── YES → Do NOT commit. Add to .gitignore. Commit only the pipeline script + config.
 │         Document regeneration command in a README.
-└── NO → Is the file < 10 MB?
+└── NO → Is the file < 10 MB and outside the cold-file rule?
           ├── YES → Commit to git (normal).
-          └── NO → Is the file < 100 MB?
-                    ├── YES → Use Git LFS.
-                    └── NO → Do NOT commit. Use external storage or .gitignore.
-                              Document the data source and retrieval instructions.
+          └── NO → Use the manifest-and-fetch pattern in
+                    [the data placement standard](standards/DATA_PLACEMENT.md).
+                    Document the data source and retrieval instructions.
 ```
 
 ### What to Commit vs. What to Exclude
@@ -150,11 +151,11 @@ Otherwise, is the file regenerable from a pipeline/acquirer script?
 | **Pipeline scripts & configs** | Always | Normal git | `osha_acquirer.py`, `download_osha_data.sh` |
 | **Engineering reference data** | Only where source-specific rights permit | Normal git | SN curves YAML, steel grades YAML (<1MB) |
 | **Curated/filtered datasets** | If <10MB | Normal git | Filtered oil & gas safety records |
-| **Curated datasets 10-100MB** | Yes | Git LFS | Processed BSEE production summaries |
+| **Curated datasets over threshold** | Manifest only | Manifest and fetch | Processed public-source summaries |
 | **Raw API downloads outside the required-original exception** | Never | .gitignore | OSHA CSVs (6.6GB), EPA TRI bulk data |
 | **ZIP archives outside the required-original exception** | Never | .gitignore | `osha_inspection_20260201.csv.zip` |
 | **Regenerable analysis outputs/reports outside issued-evidence requirements** | Normally exclude | .gitignore | Generated HTML reports, plots |
-| **Binary data files** | If needed | Git LFS | `.bin` conversion files |
+| **Binary data files** | Manifest only when over threshold | Manifest and fetch | `.bin` conversion files |
 
 ### Regeneration Documentation
 
@@ -173,16 +174,19 @@ These thresholds apply after the required-original exception; a storage conflict
 | Threshold | Action |
 |-----------|--------|
 | < 10 MB | Commit to git normally |
-| 10–100 MB | Use Git LFS (configure in `.gitattributes`) |
-| > 100 MB | Never commit. `.gitignore` + pipeline regeneration |
+| >= 10 MB or cold non-source over 1 MB | Use the manifest-and-fetch pattern in [the data placement standard](standards/DATA_PLACEMENT.md) |
+| Existing Git LFS directory | Convert to the manifest pattern when next touched; add no new LFS patterns |
+| > 100 MB | Never commit payload bytes. Use manifest and fetch, `.gitignore` and pipeline regeneration |
 
 ### Pre-Commit Guard
 
-Repos should configure a pre-commit hook or CI check that blocks commits containing files > 50MB that are not tracked by Git LFS. This prevents accidental large data commits.
+Repos should configure a `check-added-large-files --maxkb=1000` pre-commit check with an explicit allow-list. This prevents accidental large data commits and routes over-threshold payloads to the manifest-and-fetch standard instead of Git LFS.
 
 ---
 
 ## Generated Data — Physical Placement Map
+
+Superseded for data placement by `docs/standards/DATA_PLACEMENT.md`; the locations below are legacy and pending conversion.
 
 Pipeline-generated artifacts outside the required-original exception that exceed git thresholds live on the ace NFS drive. Scripts use `$SUMMARIES_DIR` env var or read from `config.yaml` to resolve paths.
 
@@ -194,6 +198,8 @@ Pipeline-generated artifacts outside the required-original exception that exceed
 | Research literature | `/mnt/ace/docs/domains/<domain>/literature/` | Per-domain `download-literature.sh` | Tier 2a |
 
 ### Path Resolution Convention
+
+Superseded for data placement by `docs/standards/DATA_PLACEMENT.md`; the locations below are legacy and pending conversion.
 
 Scripts should resolve generated-data paths in this order:
 1. **Env var** (`$SUMMARIES_DIR`) — for CI or cross-machine overrides
