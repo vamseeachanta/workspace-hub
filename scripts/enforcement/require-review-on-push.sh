@@ -171,15 +171,6 @@ legacy_review_evidence_kind() {
   return 1
 }
 
-# Run all evidence checks in order, return 0 on first hit
-has_review_evidence() {
-  check_review_results && return 0
-  check_planning_reviews && return 0
-  check_report_reviews && return 0
-  check_git_evidence && return 0
-  return 1
-}
-
 is_evidence_only_commit() {
   local commit_hash="$1"
   local files
@@ -221,6 +212,18 @@ emit_commit_lines() {
   done
 }
 
+run_rev_list() {
+  local description="$1"
+  shift
+  local revs
+  if ! revs="$(git rev-list "$@" 2>/dev/null)"; then
+    echo "[review-gate] DIAGNOSTIC: failed to compute commit range (${description})." >&2
+    echo "[review-gate] BLOCKED: commit range lookup failed." >&2
+    return 2
+  fi
+  printf '%s\n' "$revs" | emit_commit_lines
+}
+
 # --- Get commits in range ---
 get_commit_list() {
   local default_ref=""
@@ -228,11 +231,11 @@ get_commit_list() {
   # unless origin/HEAD names another default branch ref.
   if default_ref="$(default_branch_ref)"; then
     if [[ -z "$REMOTE_OID" ]] || [[ "$REMOTE_OID" == "0000000000000000000000000000000000000000" ]]; then
-      git rev-list "$LOCAL_OID" --not "$default_ref" 2>/dev/null | emit_commit_lines
+      run_rev_list "local tip excluding remote default branch" "$LOCAL_OID" --not "$default_ref"
     else
-      git rev-list "$LOCAL_OID" --not "$REMOTE_OID" "$default_ref" 2>/dev/null | emit_commit_lines
+      run_rev_list "local tip excluding remote tip and remote default branch" "$LOCAL_OID" --not "$REMOTE_OID" "$default_ref"
     fi
-    return 0
+    return $?
   fi
 
   echo "[review-gate] DIAGNOSTIC: remote default branch ref is absent; fetch the default branch before running this gate." >&2
@@ -272,16 +275,20 @@ validate_evidence_commit() {
 load_commit_bound_evidence() {
   local result_var="$1"
   local range_var="$2"
-  local valid_var="$3"
   local results_dir="${REPO_ROOT}/scripts/review/results"
   local reviewed=""
   local ranges=""
-  local valid=0
   local file line_no line field value start end display_file
 
   if [[ -d "$results_dir" ]]; then
     while IFS= read -r file; do
       [[ -z "$file" ]] && continue
+      display_file="${file#${REPO_ROOT}/}"
+      if [[ ! -r "$file" ]]; then
+        echo "[review-gate] DIAGNOSTIC: cannot read evidence file: ${display_file}" >&2
+        echo "[review-gate] BLOCKED: unreadable review evidence file." >&2
+        return 2
+      fi
       line_no=0
       while IFS= read -r line || [[ -n "$line" ]]; do
         line_no=$((line_no + 1))
@@ -291,8 +298,6 @@ load_commit_bound_evidence() {
             value="${line#Reviewed-Commit: }"
             if validate_evidence_commit "$file" "$line_no" "$field" "$value"; then
               reviewed+="${value}"$'\n'
-            else
-              valid=1
             fi
             ;;
           Reviewed-Range:*)
@@ -301,7 +306,6 @@ load_commit_bound_evidence() {
             display_file="${file#${REPO_ROOT}/}"
             if [[ ! "$value" =~ ^[0-9a-f]{40}\.\.[0-9a-f]{40}$ ]]; then
               echo "[review-gate] INVALID-EVIDENCE ${display_file}:${line_no}: Reviewed-Range must be '<oldest-full-commit-id>..<reviewed-full-commit-id>'." >&2
-              valid=1
               continue
             fi
             start="${value%%..*}"
@@ -309,14 +313,11 @@ load_commit_bound_evidence() {
             if validate_evidence_commit "$file" "$line_no" "Reviewed-Range start" "$start" \
               && validate_evidence_commit "$file" "$line_no" "Reviewed-Range end" "$end"; then
               ranges+="${start} ${end}"$'\n'
-            else
-              valid=1
             fi
             ;;
           Reviewed-*)
             display_file="${file#${REPO_ROOT}/}"
             echo "[review-gate] INVALID-EVIDENCE ${display_file}:${line_no}: malformed evidence field: ${line}" >&2
-            valid=1
             ;;
         esac
       done < "$file"
@@ -325,7 +326,6 @@ load_commit_bound_evidence() {
 
   printf -v "$result_var" '%s' "$reviewed"
   printf -v "$range_var" '%s' "$ranges"
-  printf -v "$valid_var" '%s' "$valid"
 }
 
 commit_has_bound_evidence() {
@@ -457,13 +457,15 @@ main() {
   local reviewed=0
   local unreviewed=0
   local unreviewed_list=()
-  local reviewed_commits reviewed_ranges invalid_evidence
+  local reviewed_commits reviewed_ranges
   local legacy_kind=""
   local commit_hash commit_msg
-  local strict_missing=()
-  local legacy_missing=()
+  local missing_evidence=()
 
-  load_commit_bound_evidence reviewed_commits reviewed_ranges invalid_evidence
+  if ! load_commit_bound_evidence reviewed_commits reviewed_ranges; then
+    log_latency "blocked"
+    exit 1
+  fi
 
   legacy_kind="$(legacy_review_evidence_kind || true)"
 
@@ -475,23 +477,18 @@ main() {
       continue
     fi
 
-    strict_missing+=("$entry")
     if [[ "$REVIEW_GATE_EVIDENCE_MODE" == "warn" && -n "$legacy_kind" ]]; then
       echo "[review-gate] WOULD-REJECT ${commit_hash} ${commit_msg}"
       echo "[review-gate] DEPRECATED legacy evidence accepted until 2026-10-26: ${legacy_kind}"
       reviewed=$((reviewed + 1))
     else
-      legacy_missing+=("$entry")
+      missing_evidence+=("$entry")
     fi
   done
 
-  if [[ "${#legacy_missing[@]}" -gt 0 ]]; then
-    unreviewed=${#legacy_missing[@]}
-    unreviewed_list=("${legacy_missing[@]}")
-  elif [[ "$REVIEW_GATE_EVIDENCE_MODE" == "strict" && "${#strict_missing[@]}" -gt 0 ]]; then
-    unreviewed=${#strict_missing[@]}
-    unreviewed_list=("${strict_missing[@]}")
-    reviewed=$((feature_count - unreviewed))
+  if [[ "${#missing_evidence[@]}" -gt 0 ]]; then
+    unreviewed=${#missing_evidence[@]}
+    unreviewed_list=("${missing_evidence[@]}")
   fi
 
   # Summary

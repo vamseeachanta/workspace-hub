@@ -83,6 +83,15 @@ run_gate() {
   return "$rc"
 }
 
+run_gate_unset_evidence_mode() {
+  local local_oid="$1"
+  local remote_oid="${2:-}"
+  local output rc=0
+  output="$(env -u REVIEW_GATE_EVIDENCE_MODE bash "$SCRIPT_UNDER_TEST" "$local_oid" "$remote_oid" 2>&1)" || rc=$?
+  printf '%s\n' "$output"
+  return "$rc"
+}
+
 write_reviewed_commit() {
   local commit_id="$1"
   mkdir -p scripts/review/results
@@ -116,12 +125,38 @@ invalid_evidence_value() {
   esac
 }
 
+invalid_range_evidence_value() {
+  local kind="$1"
+  local commit_id="$2"
+  case "$kind" in
+    malformed)
+      printf 'Reviewed-Range: not-a-range\n'
+      ;;
+    abbreviated)
+      printf 'Reviewed-Range: %s..%s\n' "${commit_id:0:12}" "${commit_id:0:12}"
+      ;;
+    *)
+      printf 'ERROR: unknown invalid range evidence kind %s\n' "$kind" >&2
+      return 1
+      ;;
+  esac
+}
+
 write_invalid_evidence() {
   local kind="$1"
   local commit_id="$2"
   local file="scripts/review/results/invalid-${kind}.txt"
   mkdir -p scripts/review/results
   invalid_evidence_value "$kind" "$commit_id" > "$file"
+  printf '%s\n' "$file"
+}
+
+write_invalid_range_evidence() {
+  local kind="$1"
+  local commit_id="$2"
+  local file="scripts/review/results/invalid-range-${kind}.txt"
+  mkdir -p scripts/review/results
+  invalid_range_evidence_value "$kind" "$commit_id" > "$file"
   printf '%s\n' "$file"
 }
 
@@ -261,11 +296,27 @@ case_legacy_warn_and_strict() {
   head="$(git rev-parse HEAD)"
   output="$(REVIEW_GATE_EVIDENCE_MODE=warn run_gate "$head" "$base")" || rc=$?
   assert_rc "Legacy keyword evidence passes warn mode" 0 "$rc" "$output"
+  assert_contains "Legacy warn mode prints PASS" "PASS" "$output"
   assert_contains "Warn mode reports strict failure" "WOULD-REJECT" "$output"
   assert_contains "Warn mode names deprecated evidence" "DEPRECATED" "$output"
   rc=0
   output="$(REVIEW_GATE_EVIDENCE_MODE=strict run_gate "$head" "$base")" || rc=$?
   assert_rc "Legacy keyword evidence blocks strict evidence mode" 1 "$rc" "$output"
+}
+
+case_legacy_unset_default_passes() {
+  run_test "Legacy evidence passes when evidence mode is unset"
+  init_pair legacy_unset_default
+  local base head output rc=0
+  base="$(git rev-parse HEAD)"
+  add_commit "chore: codex adversarial review completed" "review-note.txt"
+  add_commit "feat: add default-mode legacy check" "src/default-legacy.py"
+  head="$(git rev-parse HEAD)"
+  output="$(run_gate_unset_evidence_mode "$head" "$base")" || rc=$?
+  assert_rc "Legacy keyword evidence passes with evidence mode unset" 0 "$rc" "$output"
+  assert_contains "Unset default legacy output contains PASS" "PASS" "$output"
+  assert_contains "Unset default legacy output reports WOULD-REJECT" "WOULD-REJECT" "$output"
+  assert_contains "Unset default legacy output reports DEPRECATED" "DEPRECATED" "$output"
 }
 
 case_d1_mainline_excluded() {
@@ -432,6 +483,35 @@ case_new_branch_feature_blocks() {
   assert_rc "New branch feature commit blocks strict mode" 1 "$rc" "$output"
 }
 
+case_empty_range_passes() {
+  run_test "Empty range passes with no commits to check"
+  init_pair empty_range
+  local head output rc=0
+  head="$(git rev-parse HEAD)"
+  output="$(REVIEW_GATE_EVIDENCE_MODE=strict run_gate "$head" "$head")" || rc=$?
+  assert_rc "Empty range exits 0" 0 "$rc" "$output"
+  assert_contains "Empty range prints no-commits PASS" "PASS: No commits to check" "$output"
+}
+
+case_uncomputable_range_blocks() {
+  run_test "Uncomputable range fails closed"
+  init_pair bad_range
+  local base head missing output rc=0
+  base="$(git rev-parse HEAD)"
+  add_commit "feat: needs computed range" "src/bad-range.py"
+  head="$(git rev-parse HEAD)"
+  missing="1111111111111111111111111111111111111111"
+  output="$(REVIEW_GATE_EVIDENCE_MODE=warn REVIEW_GATE_STRICT=0 run_gate "$head" "$missing")" || rc=$?
+  assert_rc "Unknown remote id exits 1 despite non-strict switch" 1 "$rc" "$output"
+  assert_contains "Unknown remote id prints range diagnostic" "failed to compute commit range" "$output"
+  assert_contains "Unknown remote id prints BLOCKED" "BLOCKED" "$output"
+  if grep -q "PASS" <<< "$output"; then
+    fail "Unknown remote id must not print PASS" "Output: ${output}"
+  else
+    pass "Unknown remote id does not print PASS"
+  fi
+}
+
 case_invalid_evidence_warn_with_legacy() {
   local kind="$1"
   run_test "Invalid ${kind} evidence reports but legacy evidence still passes warn mode"
@@ -500,6 +580,61 @@ case_invalid_evidence_with_valid_commit() {
   assert_contains "Invalid diagnostic names file and line in ${mode} mode" "${evidence_file}:1" "$output"
 }
 
+case_invalid_range_evidence_warn_without_legacy() {
+  local kind="$1"
+  run_test "Invalid ${kind} Reviewed-Range does not replace missing evidence in warn mode"
+  init_pair "invalid_range_${kind}_warn_none"
+  local base head evidence_file output rc=0
+  base="$(git rev-parse HEAD)"
+  add_commit "feat: invalid range ${kind} target" "src/range-${kind}.py"
+  head="$(git rev-parse HEAD)"
+  evidence_file="$(write_invalid_range_evidence "$kind" "$head")"
+  output="$(REVIEW_GATE_EVIDENCE_MODE=warn run_gate "$head" "$base")" || rc=$?
+  assert_rc "Invalid ${kind} Reviewed-Range without other evidence blocks in warn mode" 1 "$rc" "$output"
+  assert_contains "Invalid ${kind} Reviewed-Range reports diagnostic in warn mode" "INVALID-EVIDENCE" "$output"
+  assert_contains "Invalid ${kind} Reviewed-Range diagnostic names file and line" "${evidence_file}:1" "$output"
+  assert_contains "Invalid ${kind} Reviewed-Range warning path reports BLOCKED" "BLOCKED" "$output"
+}
+
+case_invalid_range_evidence_with_valid_commit() {
+  local kind="$1"
+  run_test "Invalid ${kind} Reviewed-Range beside valid Reviewed-Commit passes"
+  init_pair "invalid_range_valid_${kind}"
+  local base head evidence_file output rc=0
+  base="$(git rev-parse HEAD)"
+  add_commit "feat: valid target beside invalid range ${kind}" "src/range-valid-${kind}.py"
+  head="$(git rev-parse HEAD)"
+  evidence_file="$(write_invalid_range_evidence "$kind" "$head")"
+  printf 'Reviewed-Commit: %s\n' "$head" >> "$evidence_file"
+  output="$(REVIEW_GATE_EVIDENCE_MODE=warn run_gate "$head" "$base")" || rc=$?
+  assert_rc "Valid Reviewed-Commit wins despite invalid ${kind} Reviewed-Range" 0 "$rc" "$output"
+  assert_contains "Invalid ${kind} Reviewed-Range is still diagnosed" "INVALID-EVIDENCE" "$output"
+  assert_contains "Invalid ${kind} Reviewed-Range diagnostic names file and line" "${evidence_file}:1" "$output"
+}
+
+case_unreadable_result_blocks() {
+  run_test "Unreadable review result fails closed"
+  init_pair unreadable_result
+  local base head evidence_file output rc=0
+  base="$(git rev-parse HEAD)"
+  add_commit "feat: unreadable evidence target" "src/unreadable.py"
+  head="$(git rev-parse HEAD)"
+  mkdir -p scripts/review/results
+  evidence_file="scripts/review/results/unreadable.txt"
+  printf 'Reviewed-Commit: %s\n' "$head" > "$evidence_file"
+  chmod 000 "$evidence_file"
+  if [[ -r "$evidence_file" ]]; then
+    chmod 600 "$evidence_file"
+    pass "Unreadable review result not applicable on this host"
+    return
+  fi
+  output="$(REVIEW_GATE_EVIDENCE_MODE=strict run_gate "$head" "$base")" || rc=$?
+  chmod 600 "$evidence_file"
+  assert_rc "Unreadable review result exits 1" 1 "$rc" "$output"
+  assert_contains "Unreadable review result diagnostic names file" "cannot read evidence file" "$output"
+  assert_contains "Unreadable review result prints BLOCKED" "BLOCKED" "$output"
+}
+
 case_invalid_evidence_strict_switch_zero_matches_absent() {
   run_test "Invalid evidence with REVIEW_GATE_STRICT=0 behaves like absent evidence"
   init_pair invalid_strict_zero
@@ -516,6 +651,8 @@ case_invalid_evidence_strict_switch_zero_matches_absent() {
   invalid_warning="$(grep 'WARNING:' <<< "$invalid_output" || true)"
   absent_warning="$(grep 'WARNING:' <<< "$absent_output" || true)"
   assert_rc "Invalid-only strict-zero exit matches absent evidence" "$absent_rc" "$invalid_rc" "$invalid_output"
+  assert_rc "Absent evidence exits 0 with REVIEW_GATE_STRICT=0" 0 "$absent_rc" "$absent_output"
+  assert_contains "Absent evidence strict-zero reports WARNING" "WARNING" "$absent_output"
   if [[ "$invalid_warning" == "$absent_warning" && -n "$invalid_warning" ]]; then
     pass "Invalid-only strict-zero WARNING text matches absent evidence"
   else
@@ -590,6 +727,7 @@ main() {
   case_docs_path_supplement_passes
   case_latency_log_written
   case_legacy_warn_and_strict
+  case_legacy_unset_default_passes
   case_d1_mainline_excluded "merge" "git merge --no-edit origin/main >/dev/null"
   case_d1_mainline_excluded "fast_forward" "git merge --ff-only origin/main >/dev/null"
   case_d1_new_branch
@@ -600,6 +738,8 @@ main() {
   case_amended_or_squashed_blocks
   case_partial_evidence
   case_new_branch_feature_blocks
+  case_empty_range_passes
+  case_uncomputable_range_blocks
   for invalid_kind in malformed abbreviated unknown; do
     case_invalid_evidence_warn_with_legacy "$invalid_kind"
     case_invalid_evidence_warn_without_legacy "$invalid_kind"
@@ -607,6 +747,11 @@ main() {
   done
   case_invalid_evidence_with_valid_commit "warn"
   case_invalid_evidence_with_valid_commit "strict"
+  for invalid_range_kind in malformed abbreviated; do
+    case_invalid_range_evidence_warn_without_legacy "$invalid_range_kind"
+    case_invalid_range_evidence_with_valid_commit "$invalid_range_kind"
+  done
+  case_unreadable_result_blocks
   case_invalid_evidence_strict_switch_zero_matches_absent
   case_unknown_mode_docs_only_blocks_first
   case_default_branch_absent
