@@ -391,4 +391,5 @@ resolved_dispositions:
     # Re-affirmation proposed in PR #4030; effective on owner merge: registry.yaml changes capability metadata only;
     # no scheduled task, cron line, or mutation surface was touched. Digest was
     # recomputed after merging main on 2026-10-10.
-    source_digest: 19a42180366fa6626a4d364e6535e46ef4513b22fa32c04ec754c9480c05ac34
+    # Provisional: owner to confirm digest re-affirmation at merge; owner approval for the report-only ace-linux-1 registration: board card O17 (2026-10-09T16:55Z).
+    source_digest: 5d13a8a8942bd9761be10b7f7c4aae07449659e3eadc8558d0344a9a2c2ffc9d
