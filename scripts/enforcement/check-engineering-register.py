@@ -27,7 +27,7 @@ from pathlib import Path
 # and the guide's own quoted exemplars.
 _FENCE = re.compile(r"^```", re.M)
 _FRONTMATTER = re.compile(r"\A---\n.*?\n---\n", re.S)
-_INLINE = re.compile(r"`[^`\n]*`")
+_INLINE = re.compile(r"(`+)(?:(?!\1)[^\n])*\1")
 _LINK = re.compile(r"\]\([^)]*\)")
 _QUOTE = re.compile(r"^\s*>.*$", re.M)
 # A list item consisting solely of a quoted phrase is a citation -- a style guide
@@ -267,6 +267,10 @@ SELF_TEST = {
     "impersonal_ok": ("The riser is designed to the stated basis.\n", 0),
     "us_country_not_pronoun": ("Wells on the US Outer Continental Shelf are recorded.\n", 0),
     "url_not_pronoun": ("Canonical source: noblecorp.com/our-fleet for fleet status.\n", 0),
+    "url_intensifier_exempt": ("Canonical source: https://example.org/definitely-reviewed.\n"
+                                "The result is definitely complete.\n", 1),
+    "inline_code_multitick_exempt": ("The token ``our conservative`` appears in source text.\n"
+                                     "The estimate is conservative.\n", 1),
     "weber_number_exempt": ("The groups Re, Fr, We, Eu and Ma govern the response.\n", 0),
     "water_influx_exempt": ("With m = 0 and We = Wp = 0 the equation reduces.\n", 0),
     "influx_table_exempt": ("| Water drive | We | 35-75% |\n", 0),
