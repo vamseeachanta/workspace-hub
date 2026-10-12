@@ -1,5 +1,10 @@
 title = "workspace-hub gitleaks config"
 
+[extend]
+# Keep default rules enabled; this file carries an allow-list, and without
+# defaults a scan that passes --config detects nothing.
+useDefault = true
+
 [allowlist]
 description = "Known false positives"
 regexes = [
@@ -10,7 +15,7 @@ regexes = [
   '''TODO.*token''',
 ]
 paths = [
-  '''.gitleaks.toml''',
+  '''^\.gitleaks\.toml$''',
   '''scripts/security/tests/''',
-  '''tests/quality/test_secrets_scan.sh''',
+  '''^tests/quality/test_secrets_scan\.sh$''',
 ]
