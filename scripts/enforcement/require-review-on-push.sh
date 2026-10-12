@@ -16,7 +16,7 @@ set -euo pipefail
 
 REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
 TODAY="$(date +%Y-%m-%d)"
-REVIEW_GATE_EVIDENCE_MODE="${REVIEW_GATE_EVIDENCE_MODE:-warn}" # warn-first per owner card O83; flip this one line to strict on or after 2026-10-26 after second-provider review.
+REVIEW_GATE_EVIDENCE_MODE="${REVIEW_GATE_EVIDENCE_MODE:-warn}" # warn-first per repository owner direction; flip this one line to strict on or after 2026-10-26 after second-provider review.
 
 # Tracks whether the latency timer fell back to seconds-resolution (set by _ms_now).
 # Tagged into the JSONL telemetry as "_precision":"seconds" so the audit cron can
@@ -248,10 +248,10 @@ get_commit_list() {
 
   if [[ -z "$REMOTE_OID" ]] || [[ "$REMOTE_OID" == "0000000000000000000000000000000000000000" ]]; then
     # New branch or no remote — check last 10 commits
-    git log --oneline -10 --format='%H %s' "$LOCAL_OID" 2>/dev/null
+    run_rev_list "last 10 commits fallback without remote default branch" -10 "$LOCAL_OID"
   else
     # Normal push — commits between remote and local
-    git log --oneline --format='%H %s' "${REMOTE_OID}..${LOCAL_OID}" 2>/dev/null
+    run_rev_list "remote tip to local tip fallback without remote default branch" "${REMOTE_OID}..${LOCAL_OID}"
   fi
 }
 

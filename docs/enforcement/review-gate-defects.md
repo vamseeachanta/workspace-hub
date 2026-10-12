@@ -133,13 +133,15 @@ bypass variable attractive for ordinary branch maintenance.
 ### What Happened Before the Fix
 
 Evidence passed the gate without proving that the pushed feature commits had
-been reviewed. Three forms were reproduced:
+been reviewed. In warn mode until 2026-10-26, three forms remain accepted as
+legacy evidence during migration:
 
-- A fresh checkout gives old review files today's modification time and satisfies
-  evidence checks.
+- A fresh checkout gives old review files today's modification time and
+  satisfies legacy evidence checks.
 - One current evidence file marks every feature commit in the push range as
-  reviewed.
-- A review keyword in an unrelated recent commit subject satisfies evidence.
+  reviewed by legacy evidence.
+- A review keyword in an unrelated recent commit subject satisfies legacy
+  evidence.
 
 ### Mechanism Before the Fix
 
@@ -278,11 +280,11 @@ Actual output observed:
 [review-gate] PASS: All feature/fix commits have review evidence.
 ```
 
-### Consequence
+### Consequence in Warn Mode Until 2026-10-26
 
-The gate can pass with no review of the pushed commits. Modification time and
-recent subject text are checkout-level signals, not review evidence for the
-commit range.
+The gate can pass with no review of the pushed commits in warn mode until the
+2026-10-26 flip. Modification time and recent subject text are checkout-level
+signals, not review evidence for the commit range.
 
 ## Implemented Fix
 
@@ -320,7 +322,8 @@ outside the pushed tree, because an evidence file cannot name the identifier of
 the commit that contains it. The gate recognizes an evidence-only commit by
 limiting the exemption to commits that touch only review-evidence paths.
 
-For each feature commit in the checked range, the gate requires either:
+In strict evidence mode, for each feature commit in the checked range, the gate
+requires either:
 
 - a review evidence file naming that full commit identifier, or
 - a reviewed later commit in the same checked range that contains the earlier

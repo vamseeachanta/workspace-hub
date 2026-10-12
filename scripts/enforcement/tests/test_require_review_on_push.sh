@@ -12,6 +12,7 @@ trap 'rm -rf "$TMP_ROOT"' EXIT
 
 TESTS_RUN=0
 TESTS_PASSED=0
+TESTS_SKIPPED=0
 TESTS_FAILED=0
 
 pass() {
@@ -22,6 +23,12 @@ pass() {
 fail() {
   TESTS_FAILED=$((TESTS_FAILED + 1))
   echo "  FAIL: $1"
+  [[ -n "${2:-}" ]] && echo "        $2"
+}
+
+skip() {
+  TESTS_SKIPPED=$((TESTS_SKIPPED + 1))
+  echo "  SKIPPED: $1"
   [[ -n "${2:-}" ]] && echo "        $2"
 }
 
@@ -623,9 +630,9 @@ case_unreadable_result_blocks() {
   evidence_file="scripts/review/results/unreadable.txt"
   printf 'Reviewed-Commit: %s\n' "$head" > "$evidence_file"
   chmod 000 "$evidence_file"
-  if [[ -r "$evidence_file" ]]; then
+  if [[ "${REVIEW_GATE_TEST_FORCE_UNREADABLE_SKIP:-0}" == "1" || -r "$evidence_file" ]]; then
     chmod 600 "$evidence_file"
-    pass "Unreadable review result not applicable on this host"
+    skip "Unreadable review result not applicable on this host" "host cannot make the evidence file unreadable"
     return
   fi
   output="$(REVIEW_GATE_EVIDENCE_MODE=strict run_gate "$head" "$base")" || rc=$?
@@ -687,6 +694,26 @@ case_default_branch_absent() {
   rc=0
   output="$(REVIEW_GATE_EVIDENCE_MODE=strict run_gate "$head" "$base")" || rc=$?
   assert_rc "Absent default branch ref fails closed in strict mode" 1 "$rc" "$output"
+}
+
+case_default_branch_absent_fallback_failure_blocks() {
+  run_test "Absent default branch fallback fails closed when lookup fails"
+  init_single default_absent_bad_fallback
+  local base head missing output rc=0
+  base="$(git rev-parse HEAD)"
+  add_commit "feat: absent default bad fallback" "src/absent-default-bad-fallback.py"
+  head="$(git rev-parse HEAD)"
+  missing="1111111111111111111111111111111111111111"
+  output="$(REVIEW_GATE_EVIDENCE_MODE=warn REVIEW_GATE_STRICT=0 run_gate "$head" "$missing")" || rc=$?
+  assert_rc "Absent default bad fallback exits 1 despite non-strict switch" 1 "$rc" "$output"
+  assert_contains "Absent default bad fallback reports missing default ref" "fetch the default branch" "$output"
+  assert_contains "Absent default bad fallback prints range diagnostic" "failed to compute commit range" "$output"
+  assert_contains "Absent default bad fallback prints BLOCKED" "BLOCKED" "$output"
+  if grep -q "PASS" <<< "$output"; then
+    fail "Absent default bad fallback must not print PASS" "Output: ${output}"
+  else
+    pass "Absent default bad fallback does not print PASS"
+  fi
 }
 
 case_default_mode_line() {
@@ -755,6 +782,7 @@ main() {
   case_invalid_evidence_strict_switch_zero_matches_absent
   case_unknown_mode_docs_only_blocks_first
   case_default_branch_absent
+  case_default_branch_absent_fallback_failure_blocks
   case_default_mode_line
   case_sigpipe_regression
 
@@ -769,7 +797,7 @@ main() {
 
   echo ""
   echo "========================================"
-  echo "Results: ${TESTS_RUN} tests, ${TESTS_PASSED} passed, ${TESTS_FAILED} failed"
+  echo "Results: ${TESTS_RUN} tests, ${TESTS_PASSED} passed, ${TESTS_SKIPPED} skipped, ${TESTS_FAILED} failed"
   echo "========================================"
 
   [[ "$TESTS_FAILED" -eq 0 ]]
