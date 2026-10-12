@@ -5,14 +5,20 @@ Refs #4054
 ## Purpose and Status
 
 This document records two defects in `scripts/enforcement/require-review-on-push.sh`
-observed on 2026-10-12 and proposes a later fix. The gate script, hook wiring,
-workflow wiring and bypass policy are unchanged by this record.
+observed on 2026-10-12. The gate fix is implemented in warn-first form on
+2026-10-12. Commit-bound evidence becomes the blocking default on or after
+2026-10-26 by changing the single default assignment line for
+`REVIEW_GATE_EVIDENCE_MODE` from `warn` to `strict`, after second-provider
+review. Hook installer and workflow wiring are unchanged.
 
 ## Current Gate Decision
 
-`get_commit_list` builds the checked range from `REMOTE_OID..LOCAL_OID`. For a
-new branch or an empty remote object, it checks the last ten commits reachable
-from `LOCAL_OID`.
+`get_commit_list` excludes commits reachable from the remote default branch. For
+a new branch or an empty remote object, the checked range is `LOCAL_OID` minus
+the remote default branch. For an existing branch, the checked range is
+`LOCAL_OID` minus both the remote branch tip and the remote default branch. If
+that range lookup cannot be computed, the gate emits a diagnostic, prints a
+`BLOCKED` line, and exits non-zero.
 
 `needs_review` classifies commit subjects. Documentation, chore, test, CI,
 style, sync, merge, revert and build subjects are skipped. Feature, fix,
@@ -23,10 +29,20 @@ also require review.
 documentation or other low-risk paths. Remaining feature-classified commits
 require review evidence.
 
-`has_review_evidence` passes when any one evidence check passes:
-`check_review_results`, `check_planning_reviews`, `check_report_reviews`, or
-`check_git_evidence`. These checks are global to the checkout state and recent
-history; they do not bind evidence to the feature commits being pushed.
+Commit-bound evidence is evaluated before legacy evidence. `Reviewed-Commit`
+matches one full commit identifier. `Reviewed-Range` matches a full ancestor
+range only when the later reviewed commit is in the checked range. Malformed,
+abbreviated, and unresolvable evidence lines are reported with file and line
+number and do not count. Unreadable evidence files fail closed with a diagnostic
+and a `BLOCKED` line.
+
+`REVIEW_GATE_EVIDENCE_MODE=warn` remains the warn-first default until the dated
+flip. In warn mode, missing commit-bound evidence prints `WOULD-REJECT`; legacy
+modification-time or subject-keyword evidence may still pass the commit with a
+`DEPRECATED` warning. In strict mode, only commit-bound evidence counts. When
+unreviewed commits remain, the default strictness setting blocks with a
+`BLOCKED` line, while `REVIEW_GATE_STRICT=0` permits the existing warning-only
+exit.
 
 The pull-request workflow calls the gate with `HEAD` and the merge base with
 `origin/main`. The local hook installer wires the pre-push hook to invoke the
@@ -34,16 +50,17 @@ gate without commit arguments, so the hook's default arguments apply there.
 
 ## Defect 1: Mainline Commits Are Rechecked
 
-### What Happens
+### What Happened Before the Fix
 
-Commits already reachable from `origin/main` are counted as branch commits when
-they enter a topic branch through a merge, a fast-forward, or a new branch push.
-The gate then demands review evidence for work that has already landed on main.
+Commits already reachable from `origin/main` were counted as branch commits
+when they entered a topic branch through a merge, a fast-forward, or a new
+branch push. The gate then demanded review evidence for work that had already
+landed on main.
 
-### Mechanism
+### Mechanism Before the Fix
 
-`get_commit_list` lists `REMOTE_OID..LOCAL_OID`, or the last ten commits for a
-new branch. It does not subtract commits reachable from `origin/main`.
+`get_commit_list` listed `REMOTE_OID..LOCAL_OID`, or the last ten commits for a
+new branch. It did not subtract commits reachable from `origin/main`.
 
 ### Minimal Reproduction
 
@@ -106,31 +123,33 @@ case where the remote object is all zeros. The observed summaries were:
 | Fast-forward to `origin/main` | pass, no feature commit under review | `Reviewed: 0, Unreviewed: 1` | 1 |
 | New branch already containing `origin/main` | pass, no feature commit under review | `Reviewed: 0, Unreviewed: 1` | 1 |
 
-### Consequence
+### Consequence Before the Fix
 
-Reviewed work already on main is demanded again. That false block makes the
+Reviewed work already on main was demanded again. That false block made the
 bypass variable attractive for ordinary branch maintenance.
 
 ## Defect 2: Evidence Is Not Commit-Bound
 
-### What Happens
+### What Happened Before the Fix
 
-Evidence passes the gate without proving that the pushed feature commits were
-reviewed. Three forms were reproduced:
+Evidence passed the gate without proving that the pushed feature commits had
+been reviewed. In warn mode until 2026-10-26, three forms remain accepted as
+legacy evidence during migration:
 
-- A fresh checkout gives old review files today's modification time and satisfies
-  evidence checks.
+- A fresh checkout gives old review files today's modification time and
+  satisfies legacy evidence checks.
 - One current evidence file marks every feature commit in the push range as
-  reviewed.
-- A review keyword in an unrelated recent commit subject satisfies evidence.
+  reviewed by legacy evidence.
+- A review keyword in an unrelated recent commit subject satisfies legacy
+  evidence.
 
-### Mechanism
+### Mechanism Before the Fix
 
-`check_review_results`, `check_planning_reviews` and `check_report_reviews` test
-file modification time, not commit identity. `check_git_evidence` searches the
-last thirty commit subjects for review keywords, not for a relationship to the
-commits under review. When `has_review_evidence` returns success, the main gate
-sets `reviewed` equal to the full feature commit count.
+`check_review_results`, `check_planning_reviews` and `check_report_reviews`
+tested file modification time, not commit identity. `check_git_evidence`
+searched the last thirty commit subjects for review keywords, not for a
+relationship to the commits under review. When `has_review_evidence` returned
+success, the main gate set `reviewed` equal to the full feature commit count.
 
 ### Minimal Reproduction: Fresh Checkout
 
@@ -261,94 +280,142 @@ Actual output observed:
 [review-gate] PASS: All feature/fix commits have review evidence.
 ```
 
-### Consequence
+### Consequence in Warn Mode Until 2026-10-26
 
-The gate can pass with no review of the pushed commits. Modification time and
-recent subject text are checkout-level signals, not review evidence for the
-commit range.
+The gate can pass with no review of the pushed commits in warn mode until the
+2026-10-26 flip. Modification time and recent subject text are checkout-level
+signals, not review evidence for the commit range.
 
-## Proposed Fix
+## Implemented Fix
 
-`get_commit_list` should exclude commits reachable from `origin/main`. A normal
-push can use a commit set equivalent to:
+`get_commit_list` excludes commits reachable from the remote default branch. A
+normal push uses a commit set equivalent to:
 
 ```bash
 git rev-list "$LOCAL_OID" --not "$REMOTE_OID" origin/main
 ```
 
-For a new branch, the remote-side subtraction is absent and `origin/main` still
-serves as the common baseline:
+For a new branch, the remote-side subtraction is absent and the remote default
+branch still serves as the common baseline:
 
 ```bash
 git rev-list "$LOCAL_OID" --not origin/main
 ```
 
-When `origin/main` is absent, the gate should fail closed with a clear diagnostic
-in CI because the workflow fetches full history before calling the gate. For the
-local hook, absence or staleness of `origin/main` should produce a diagnostic
-that tells the developer to fetch; warn-only compatibility can be limited to the
-migration period. CI's merge-base argument remains useful, but the script should
-still subtract `origin/main` so a branch that merged or fast-forwarded main does
-not recheck mainline commits.
+When the remote default branch is absent, warn evidence mode emits a fetch
+diagnostic and uses the prior range calculation during the migration period.
+Strict evidence mode fails closed without that ref. When the ref exists but the
+range cannot be computed, the gate emits a range diagnostic, prints `BLOCKED`,
+and exits non-zero. CI's merge-base argument remains useful, but the script
+still subtracts the remote default branch so a branch that merged or
+fast-forwarded main does not recheck mainline commits.
 
-Review evidence should name the full commit identifiers it covers. One concrete
-form is a review result file with a machine-readable field such as:
+Review evidence names the full commit identifiers it covers. The implemented
+review result file field is:
 
 ```text
 Reviewed-Commit: <full-commit-id>
 ```
 
-Commit-bound review evidence should live in a later docs-only commit, or outside
-the pushed tree, because an evidence file cannot name the identifier of the
-commit that contains it; the proposed gate can recognize an evidence-only commit
-by limiting the exemption to commits that touch only review-evidence paths.
+Commit-bound review evidence may live in a later evidence-only commit, or
+outside the pushed tree, because an evidence file cannot name the identifier of
+the commit that contains it. The gate recognizes an evidence-only commit by
+limiting the exemption to commits that touch only review-evidence paths.
 
-For each feature commit in the checked range, the gate should require either:
+In strict evidence mode, for each feature commit in the checked range, the gate
+requires either:
 
 - a review evidence file naming that full commit identifier, or
 - a reviewed later commit in the same checked range that contains the earlier
   commit as an ancestor and whose evidence explicitly states that the review
   covers the ancestor range.
 
-Merge commits should be ignored unless they introduce non-merge changes requiring
+Merge commits are ignored unless they introduce non-merge changes requiring
 review. Rebases create new commit identifiers, so old evidence for pre-rebase
-identifiers should not satisfy the gate unless a reviewer records the new
+identifiers does not satisfy the gate unless a reviewer records the new
 identifier or an approved range mapping. Modification time and recent subject
-keywords should stop counting as evidence.
+keywords count only as legacy evidence in warn mode.
 
-Migration should use a dated warn-only period for evidence files that lack commit
-bindings. Existing evidence files can remain as historical records, but new
-blocking enforcement should require commit-bound evidence after the migration
-date. `docs/standards/REVIEW_GATE_BYPASS_POLICY.md` should receive a matching
-edit when the gate behavior changes, because the bypass guidance currently
-assumes the old evidence model and names the bypass variable in remediation text.
+Migration uses a dated warn-only period for evidence files that lack commit
+bindings. Existing evidence files can remain as historical records, but strict
+evidence mode requires commit-bound evidence. The bypass policy remains accurate
+for the warn-first period.
 
-## Test Plan for the Later Fix
+## Evidence file format
 
-| Case | Setup | Expected verdict | Covered today by existing test |
+Commit-bound review evidence is a plain-text review result file under the
+existing `scripts/review/results/` evidence location. The gate recognizes these
+fields:
+
+```text
+Reviewed-Commit: <full-commit-id>
+Reviewed-Range: <oldest-full-commit-id>..<reviewed-full-commit-id>
+```
+
+`Reviewed-Commit` names one reviewed commit with its full 40-character lowercase
+hexadecimal identifier. Abbreviated identifiers, non-hexadecimal identifiers,
+unknown commit identifiers and malformed evidence fields are reported with the
+file and line number. The invalid line does not count as evidence; the push is
+then judged as if that line were absent in both evidence modes.
+
+`Reviewed-Range` states that the later reviewed commit covers the ancestor range
+from the oldest named commit through the reviewed commit. The later commit must
+be in the checked push range, and the feature commit under evaluation must be
+reachable between the oldest and later commit. Evidence for a pre-amend,
+pre-squash or pre-rebase identifier does not cover the new commit identifier.
+
+Evidence-only commits are exempt from review when every changed path is in a
+review-evidence location. Modification time and recent subject keywords are
+legacy evidence only during the warn-first migration period.
+
+## Evidence mode
+
+`REVIEW_GATE_EVIDENCE_MODE` selects the commit-bound evidence rule:
+
+- `warn` is the default until the migration date. The gate evaluates the
+  commit-bound rule and prints one `WOULD-REJECT` line per feature commit that
+  would fail in strict evidence mode. If legacy evidence is present, the gate
+  accepts that commit and prints a deprecation warning naming the legacy evidence
+  kind and the 2026-10-26 migration date.
+- `strict` requires commit-bound evidence for every feature-class commit in the
+  checked range. Legacy modification-time and keyword evidence does not count.
+
+`REVIEW_GATE_STRICT` keeps its existing meaning after evidence classification:
+when unreviewed commits remain, `REVIEW_GATE_STRICT=0` permits a warning-only
+push, and the default blocks the push. `SKIP_REVIEW_GATE=1` keeps its existing
+bypass behavior and audit log. A feature-class commit with no commit-bound
+evidence and no legacy evidence remains blocked under the current default.
+
+## Regression Coverage
+
+| Case | Setup | Expected verdict | Regression coverage |
 |---|---|---|---|
-| D1 merge | Topic branch merges `origin/main` after a feature commit lands on main | pass; mainline feature commit excluded | no |
-| D1 fast-forward | Topic branch fast-forwards to `origin/main` after a feature commit lands on main | pass; mainline feature commit excluded | no |
-| D1 new branch | New branch already contains commits reachable from `origin/main` | pass; mainline feature commit excluded | no |
-| D2 fresh checkout | Old evidence file gains today's file time in a fresh clone | block; evidence does not name the feature commit | no |
-| D2 one-for-all | Three feature commits and one generic evidence file | block until each feature commit is named or covered by a named reviewed range | partially; only a broad git-evidence pass is tested |
-| D2 unrelated keyword | Unrelated recent commit subject contains a review keyword | block; subject keyword is ignored | partially; current test expects this pattern to pass |
-| Correct evidence | Feature commit has evidence naming its full identifier | pass | no |
-| Amended or squashed commit | Evidence names the pre-amend or pre-squash identifier, then the feature commit is amended or squashed | block; evidence for the old identifier does not cover the new commit | no |
-| Partial evidence | Three feature commits, evidence names only one | block the two unevidenced commits | no |
-| Docs-only push | Documentation-only commits in the range | pass; no review required | yes |
-| New branch | New branch with feature commits not reachable from `origin/main` | block unless each feature commit has commit-bound evidence | no |
-| SIGPIPE regression | Evidence exists and the search command sees an early match | pass without a pipefail false negative | indirectly; current script comments describe the risk, but no dedicated regression exists |
+| D1 merge | Topic branch merges `origin/main` after a feature commit lands on main | pass; mainline feature commit excluded | `case_d1_mainline_excluded merge`; known-defects D1 merge |
+| D1 fast-forward | Topic branch fast-forwards to `origin/main` after a feature commit lands on main | pass; mainline feature commit excluded | `case_d1_mainline_excluded fast_forward`; known-defects D1 fast-forward |
+| D1 new branch | New branch already contains commits reachable from `origin/main` | pass; mainline feature commit excluded | `case_d1_new_branch`; known-defects D1 new branch |
+| Uncomputable range | Remote tip object is well-formed but absent locally | block; range lookup diagnostic and `BLOCKED`; no `PASS` | `case_uncomputable_range_blocks` |
+| Empty range | Local and remote tips are the same commit | pass; no commits to check | `case_empty_range_passes` |
+| D2 fresh checkout | Old evidence file gains today's file time in a fresh clone | strict mode blocks; warn mode reports `WOULD-REJECT` and accepts legacy evidence | `case_d2_fresh_checkout`; known-defects D2 fresh checkout |
+| D2 one-for-all | Three feature commits and one generic evidence file | strict mode blocks until each feature commit is named or covered by a named reviewed range | `case_d2_one_for_all`; known-defects D2 generic evidence |
+| D2 unrelated keyword | Unrelated recent commit subject contains a review keyword | strict mode blocks; warn mode reports legacy keyword evidence | `case_d2_keyword`; known-defects D2 unrelated keyword |
+| Correct evidence | Feature commit has evidence naming its full identifier | pass | `case_correct_evidence_and_range` |
+| Invalid range evidence | Malformed or abbreviated `Reviewed-Range` line | diagnostic with file and line; invalid line does not count | `case_invalid_range_evidence_warn_without_legacy`; `case_invalid_range_evidence_with_valid_commit` |
+| Unreadable evidence file | Result file cannot be read by the gate process | block; diagnostic and `BLOCKED` | `case_unreadable_result_blocks` |
+| Amended or squashed commit | Evidence names the pre-amend or pre-squash identifier, then the feature commit is amended or squashed | block; evidence for the old identifier does not cover the new commit | `case_amended_or_squashed_blocks` |
+| Partial evidence | Three feature commits, evidence names only one | block the two unevidenced commits | `case_partial_evidence` |
+| Docs-only push | Documentation-only commits in the range | pass; no review required | `case_docs_only_pass` |
+| New branch | New branch with feature commits not reachable from `origin/main` | block unless each feature commit has commit-bound evidence | `case_new_branch_feature_blocks` |
+| SIGPIPE regression | Evidence exists and the search command sees an early match | pass without a pipefail false negative | `case_sigpipe_regression` |
 
 ## Open Questions
 
-- Should local hooks fail closed when `origin/main` is missing, or should that
-  behavior start as warn-only during migration?
-- Should the local hook fetch, or compare against the default-branch tip the
-  push target advertises, before subtracting commits reachable from the default
-  branch?
-- What exact evidence format should reviewers produce: result-file fields,
-  commit trailers, or both?
-- How long should legacy non-bound evidence remain accepted in warn-only mode?
-- Should the local hook receive the same `LOCAL_OID` and `REMOTE_OID` arguments
-  as CI instead of relying on default arguments?
+- Missing default branch ref: `REVIEW_GATE_EVIDENCE_MODE=warn` prints a fetch
+  diagnostic and falls back to the prior range calculation; `strict` fails
+  closed.
+- The local hook does not fetch. The script subtracts `origin/HEAD` when it names
+  a valid remote default branch, otherwise `origin/main`.
+- Review result files are the only commit-bound evidence format implemented by
+  this fix. Commit trailers remain out of scope.
+- Legacy non-bound evidence remains accepted only in `warn` mode until
+  2026-10-26.
+- Local-hook argument passing remains unchanged by this fix.
