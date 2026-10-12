@@ -35,7 +35,7 @@ _QUOTE = re.compile(r"^\s*>.*$", re.M)
 _QUOTED_ITEM = re.compile(r"^\s*[-*]\s*[\"\u201c\u2018'].{0,120}?[\"\u201d\u2019'\u2026]\s*$", re.M)
 # Explicit suppression, for a line that must contain an example.
 _SUPPRESSED = re.compile(r"^.*<!--\s*register-lint:\s*ignore\s*-->.*$", re.M)
-# Bare URLs and paths are identifiers. "noblecorp.com/our-fleet" is not
+# Bare URLs and paths are identifiers. "example.com/our-fleet" is not
 # first-person plural, and markdown-link exemption alone does not cover a URL
 # written in running text.
 _URL = re.compile(r"(?:https?://|www\.)\S+|\b[\w.-]+\.(?:com|org|net|gov|io|ai)/\S*", re.I)
@@ -115,8 +115,8 @@ UNSUPPORTED = re.compile(
 
 # A hedge is honest but weak when it names no criterion. This is a separate
 # finding from an unsupported intensifier because the remedy differs: supply the
-# criterion, do not delete the word. Raised by ws-8c against llm-wiki-risersintl,
-# where three of four "obviously" hits were the negated form.
+# criterion, do not delete the word. Raised by review-lane-alpha against
+# repository-alpha, where three of four "obviously" hits were the negated form.
 # The justification may follow anywhere in the sentence, not immediately after the
 # hedge: "does not obviously fit behind it: the long-lead items exceed the window"
 # explains itself four words later. Scan the remainder of the sentence for a named
@@ -252,7 +252,7 @@ SELF_TEST = {
                             "contained by the second barrier.\n", 0),
     "criterion_clause": ("The value is conservative and analogous to a screen-out.\n", 0),
     "caption_above": ("Table 4.1 – Wall thickness\n| a | b |\n|---|---|\n", 1),
-    # Negated intensifier is a hedge, not an intensifier (ws-8c, llm-wiki-risersintl).
+    # Negated intensifier is a hedge, not an intensifier (review-lane-alpha, repository-alpha).
     "negated_with_criterion": ("X80 is not obviously correct because the mill "
                                 "certificate is absent.\n", 0),
     "negated_explained": ("Manufacture does not obviously fit behind it: the long-lead "
@@ -266,7 +266,7 @@ SELF_TEST = {
     "first_person_plural": ("We design the riser to the stated basis.\n", 1),
     "impersonal_ok": ("The riser is designed to the stated basis.\n", 0),
     "us_country_not_pronoun": ("Wells on the US Outer Continental Shelf are recorded.\n", 0),
-    "url_not_pronoun": ("Canonical source: noblecorp.com/our-fleet for fleet status.\n", 0),
+    "url_not_pronoun": ("Canonical source: example.com/our-fleet for fleet status.\n", 0),
     "url_intensifier_exempt": ("Canonical source: https://example.org/definitely-reviewed.\n"
                                 "The result is definitely complete.\n", 1),
     "inline_code_multitick_exempt": ("The token ``our conservative`` appears in source text.\n"
@@ -276,8 +276,8 @@ SELF_TEST = {
     "influx_table_exempt": ("| Water drive | We | 35-75% |\n", 0),
     "we_pronoun_still_caught": ("We assessed the riser last quarter.\n", 1),
     "inline_quote_exempt": ('Founded under the directive "we need all rig specs".\n', 0),
-    "wrapped_quote_exempt": ('Bini: "We are moving in many directions at the moment\n'
-                              'and it is best that we wait till you get back."\n', 0),
+    "wrapped_quote_exempt": ('The correspondence records: "We are moving in many directions at the moment\n'
+                              'and it is best that we wait until the review resumes."\n', 0),
 }
 
 
