@@ -5,8 +5,11 @@ Refs #4054
 ## Purpose and Status
 
 This document records two defects in `scripts/enforcement/require-review-on-push.sh`
-observed on 2026-10-12 and proposes a later fix. The gate script, hook wiring,
-workflow wiring and bypass policy are unchanged by this record.
+observed on 2026-10-12. The gate fix is implemented in warn-first form on
+2026-10-12. Commit-bound evidence becomes the blocking default on or after
+2026-10-26 by changing the single default assignment line for
+`REVIEW_GATE_EVIDENCE_MODE` from `warn` to `strict`, after second-provider
+review. Hook installer and workflow wiring are unchanged.
 
 ## Current Gate Decision
 
@@ -323,6 +326,50 @@ date. `docs/standards/REVIEW_GATE_BYPASS_POLICY.md` should receive a matching
 edit when the gate behavior changes, because the bypass guidance currently
 assumes the old evidence model and names the bypass variable in remediation text.
 
+## Evidence file format
+
+Commit-bound review evidence is a plain-text review result file under the
+existing `scripts/review/results/` evidence location. The gate recognizes these
+fields:
+
+```text
+Reviewed-Commit: <full-commit-id>
+Reviewed-Range: <oldest-full-commit-id>..<reviewed-full-commit-id>
+```
+
+`Reviewed-Commit` names one reviewed commit with its full 40-character lowercase
+hexadecimal identifier. Abbreviated identifiers, non-hexadecimal identifiers,
+unknown commit identifiers and malformed evidence fields are rejected with the
+file and line number.
+
+`Reviewed-Range` states that the later reviewed commit covers the ancestor range
+from the oldest named commit through the reviewed commit. The later commit must
+be in the checked push range, and the feature commit under evaluation must be
+reachable between the oldest and later commit. Evidence for a pre-amend,
+pre-squash or pre-rebase identifier does not cover the new commit identifier.
+
+Evidence-only commits are exempt from review when every changed path is in a
+review-evidence location. Modification time and recent subject keywords are
+legacy evidence only during the warn-first migration period.
+
+## Evidence mode
+
+`REVIEW_GATE_EVIDENCE_MODE` selects the commit-bound evidence rule:
+
+- `warn` is the default until the migration date. The gate evaluates the
+  commit-bound rule and prints one `WOULD-REJECT` line per feature commit that
+  would fail in strict evidence mode. If legacy evidence is present, the gate
+  accepts that commit and prints a deprecation warning naming the legacy evidence
+  kind and the 2026-10-26 migration date.
+- `strict` requires commit-bound evidence for every feature-class commit in the
+  checked range. Legacy modification-time and keyword evidence does not count.
+
+`REVIEW_GATE_STRICT` keeps its existing meaning after evidence classification:
+when unreviewed commits remain, `REVIEW_GATE_STRICT=0` permits a warning-only
+push, and the default blocks the push. `SKIP_REVIEW_GATE=1` keeps its existing
+bypass behavior and audit log. A feature-class commit with no commit-bound
+evidence and no legacy evidence remains blocked under the current default.
+
 ## Test Plan for the Later Fix
 
 | Case | Setup | Expected verdict | Covered today by existing test |
@@ -342,13 +389,13 @@ assumes the old evidence model and names the bypass variable in remediation text
 
 ## Open Questions
 
-- Should local hooks fail closed when `origin/main` is missing, or should that
-  behavior start as warn-only during migration?
-- Should the local hook fetch, or compare against the default-branch tip the
-  push target advertises, before subtracting commits reachable from the default
-  branch?
-- What exact evidence format should reviewers produce: result-file fields,
-  commit trailers, or both?
-- How long should legacy non-bound evidence remain accepted in warn-only mode?
-- Should the local hook receive the same `LOCAL_OID` and `REMOTE_OID` arguments
-  as CI instead of relying on default arguments?
+- Missing default branch ref: `REVIEW_GATE_EVIDENCE_MODE=warn` prints a fetch
+  diagnostic and falls back to the prior range calculation; `strict` fails
+  closed.
+- The local hook does not fetch. The script subtracts `origin/HEAD` when it names
+  a valid remote default branch, otherwise `origin/main`.
+- Review result files are the only commit-bound evidence format implemented by
+  this fix. Commit trailers remain out of scope.
+- Legacy non-bound evidence remains accepted only in `warn` mode until
+  2026-10-26.
+- Local-hook argument passing remains unchanged by this fix.

@@ -8,6 +8,9 @@ Document when `SKIP_REVIEW_GATE=1` is acceptable and when strict review enforcem
 
 ## Default policy
 - Default interactive behavior is strict: `REVIEW_GATE_STRICT` defaults to `1`, and pre-push review enforcement stays enabled unless a documented bypass is used.
+- Commit-bound evidence is selected by `REVIEW_GATE_EVIDENCE_MODE`. The default is `warn` until 2026-10-26, when the one default assignment line in the gate is expected to change to `strict` after second-provider review.
+- In `warn` evidence mode, legacy modification-time and subject-keyword evidence can still permit a push, but the gate prints `WOULD-REJECT` for each feature commit that lacks commit-bound evidence and marks the legacy evidence as deprecated.
+- In `strict` evidence mode, each feature-class commit in the checked range needs a review result file under `scripts/review/results/` with `Reviewed-Commit: <full-commit-id>` or coverage by `Reviewed-Range: <oldest-full-commit-id>..<reviewed-full-commit-id>`.
 - Treat review bypass as an exception path, not a normal warning-only workflow.
 
 ## Acceptable bypass cases
@@ -33,3 +36,4 @@ When bypass is used:
 ## Audit trail
 - bypasses are logged to `logs/hooks/review-gate-bypass.jsonl`
 - latency measurements are logged to `logs/hooks/review-gate-latency.jsonl`
+- evidence-mode migration warnings are printed by the gate output and are not a bypass record
