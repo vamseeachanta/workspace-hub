@@ -3,12 +3,12 @@
  "role": "contribute",
  "hostname": "ace-linux-2",
  "machine_id": "dev-secondary",
- "ts": "2026-10-11T23:17:29.869773+00:00",
+ "ts": "2026-10-12T05:18:14.064374+00:00",
  "clone_head": "5a075f688",
- "behind_origin": 42,
+ "behind_origin": 52,
  "ahead_origin": 0,
  "harness_version": "2.1.296",
- "harness_install": "npm-global",
+ "harness_install": "other",
  "registry_sha256": "d118c167d168979bb5d53f7622f2924afc4a4759dd66568cd5d2296cc3aa2858",
  "learning_cron_ages_h": {
   "comprehensive-learning-nightly": null,
@@ -23,5 +23,5 @@
  },
  "on_main": true,
  "index_lock_stale_min": null,
- "last_publish_duration_s": 2.0
+ "last_publish_duration_s": 4.0
 }
