@@ -55,18 +55,18 @@ This skill provides guidance on hydrodynamic diffraction/radiation analysis usin
 
 ## Sub-Skills
 
-- [Best Practices](best-practices/SKILL.md)
+- Best Practices
 
 ## Sub-Skills
 
-- [Version](version/SKILL.md)
-- [When to Use Each Module (+1)](when-to-use-each-module/SKILL.md)
-- [DiffractionResults Structure](diffractionresults-structure/SKILL.md)
-- [Workflow 1: AQWA Analysis Only (+4)](workflow-1-aqwa-analysis-only/SKILL.md)
-- [AQWA Module (+2)](aqwa-module/SKILL.md)
-- [OrcaFlex Vessel Type YAML (+2)](orcaflex-vessel-type-yaml/SKILL.md)
-- [Coefficient Validation (+2)](coefficient-validation/SKILL.md)
-- [Required Report Structure (Single-Page HTML) (+3)](required-report-structure-single-page-html/SKILL.md)
-- [Canonical spec.yml Format (DiffractionSpec)](canonical-specyml-format-diffractionspec/SKILL.md)
-- [Module Locations](module-locations/SKILL.md)
-- [Unit Conversion Traps (+3)](unit-conversion-traps/SKILL.md)
+- Version
+- When to Use Each Module (+1)
+- DiffractionResults Structure
+- Workflow 1: AQWA Analysis Only (+4)
+- AQWA Module (+2)
+- OrcaFlex Vessel Type YAML (+2)
+- Coefficient Validation (+2)
+- Required Report Structure (Single-Page HTML) (+3)
+- Canonical spec.yml Format (DiffractionSpec)
+- Module Locations
+- Unit Conversion Traps (+3)

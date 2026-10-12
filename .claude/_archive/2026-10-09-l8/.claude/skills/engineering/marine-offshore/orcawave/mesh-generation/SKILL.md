@@ -90,6 +90,7 @@ study = MeshConvergenceStudy()
 mesh_configs = [
     {"target_panels": 500, "label": "coarse"},
     {"target_panels": 1000, "label": "medium"},
+]
 
 *See sub-skills for full details.*
 ### STL to GDF Conversion
@@ -123,10 +124,10 @@ refiner.load_mesh("geometry/hull_coarse.gdf")
 
 ## Related Skills
 
-- [orcawave-analysis](../orcawave-analysis/SKILL.md) - Main diffraction analysis
-- [gmsh-meshing](../gmsh-meshing/SKILL.md) - Advanced mesh generation
-- [freecad-automation](../freecad-automation/SKILL.md) - CAD geometry preparation
-- [cad-engineering](../cad-engineering/SKILL.md) - CAD file format handling
+- orcawave-analysis - Main diffraction analysis
+- gmsh-meshing - Advanced mesh generation
+- freecad-automation - CAD geometry preparation
+- cad-engineering - CAD file format handling
 
 ## References
 
@@ -143,20 +144,20 @@ refiner.load_mesh("geometry/hull_coarse.gdf")
 
 ## Sub-Skills
 
-- [Geometry Import (+2)](geometry-import/SKILL.md)
-- [Best Practices](best-practices/SKILL.md)
+- Geometry Import (+2)
+- Best Practices
 
 ## Sub-Skills
 
-- [Error Handling](error-handling/SKILL.md)
+- Error Handling
 
 ## Sub-Skills
 
-- [Version Metadata](version-metadata/SKILL.md)
-- [Standard Mesh Generation (+1)](standard-mesh-generation/SKILL.md)
-- [Panel Quality Thresholds (+1)](panel-quality-thresholds/SKILL.md)
-- [CLI Usage](cli-usage/SKILL.md)
-- [Integration with gmsh-meshing Skill](integration-with-gmsh-meshing-skill/SKILL.md)
+- Version Metadata
+- Standard Mesh Generation (+1)
+- Panel Quality Thresholds (+1)
+- CLI Usage
+- Integration with gmsh-meshing Skill
 
 
 ## Documentation Reference

@@ -129,8 +129,8 @@ converter = OrcFxAPIConverter(
 
 ## Related Skills
 
-- [orcaflex-modeling](../orcaflex-modeling/SKILL.md) - Run OrcaFlex simulations
-- [orcaflex-post-processing](../orcaflex-post-processing/SKILL.md) - Process simulation results
+- orcaflex-modeling - Run OrcaFlex simulations
+- orcaflex-post-processing - Process simulation results
 
 ## References
 
@@ -149,22 +149,22 @@ converter = OrcFxAPIConverter(
 
 ## Sub-Skills
 
-- [Batch Converter Options (+1)](batch-converter-options/SKILL.md)
-- [File Organization (+1)](file-organization/SKILL.md)
+- Batch Converter Options (+1)
+- File Organization (+1)
 
 ## Sub-Skills
 
-- [Version Metadata](version-metadata/SKILL.md)
-- [[1.0.0] - 2026-01-07](100-2026-01-07/SKILL.md)
-- [OrcaFlex File Types (+1)](orcaflex-file-types/SKILL.md)
-- [Pattern-Based Conversion (+1)](pattern-based-conversion/SKILL.md)
-- [Conversion Report (Markdown)](conversion-report-markdown/SKILL.md)
-- [Summary](summary/SKILL.md)
-- [Success Rate: 98.9%](success-rate-989/SKILL.md)
-- [Conversion Report (JSON)](conversion-report-json/SKILL.md)
-- [Example OrcaFlex YAML Output](example-orcaflex-yaml-output/SKILL.md)
-- [YAML Structure Validation (+1)](yaml-structure-validation/SKILL.md)
-- [Adding Conversion to Universal CLI](adding-conversion-to-universal-cli/SKILL.md)
-- [1. Version Control Preparation (+3)](1-version-control-preparation/SKILL.md)
-- [Common Issues](common-issues/SKILL.md)
-- [Benchmarks (+1)](benchmarks/SKILL.md)
+- Version Metadata
+- [1.0.0] - 2026-01-07
+- OrcaFlex File Types (+1)
+- Pattern-Based Conversion (+1)
+- Conversion Report (Markdown)
+- Summary
+- Success Rate: 98.9%
+- Conversion Report (JSON)
+- Example OrcaFlex YAML Output
+- YAML Structure Validation (+1)
+- Adding Conversion to Universal CLI
+- 1. Version Control Preparation (+3)
+- Common Issues
+- Benchmarks (+1)

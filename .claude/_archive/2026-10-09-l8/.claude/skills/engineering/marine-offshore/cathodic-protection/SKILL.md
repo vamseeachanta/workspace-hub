@@ -108,12 +108,12 @@ Tests: `digitalmodel/tests/specialized/cathodic_protection/`
 
 ## Sub-Skills
 
-- [Best Practices](best-practices/SKILL.md)
+- Best Practices
 
 ## Sub-Skills
 
-- [Version Metadata](version-metadata/SKILL.md)
-- [[1.2.0] - 2026-02-20 (+2)](120-2026-02-20/SKILL.md)
-- [Cathodic Protection Systems (+2)](cathodic-protection-systems/SKILL.md)
-- [Example: Ship Hull (ABS GN Ships 2018) (+3)](example-ship-hull-abs-gn-ships-2018/SKILL.md)
-- [CP System Design Process](cp-system-design-process/SKILL.md)
+- Version Metadata
+- [1.2.0] - 2026-02-20 (+2)
+- Cathodic Protection Systems (+2)
+- Example: Ship Hull (ABS GN Ships 2018) (+3)
+- CP System Design Process

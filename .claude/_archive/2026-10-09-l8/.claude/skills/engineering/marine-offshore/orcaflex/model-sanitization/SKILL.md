@@ -31,7 +31,7 @@ Sanitize OrcaFlex models from client projects by stripping identifiable referenc
 
 ### Overview
 ```
-Source .dat/.yml → Dedup → Convert → Sanitize Text → Strip Metadata → Organize → Legal Scan → Extract Spec
+Source .dat/.yml → Dedup → Convert → Sanitize Text → Strip Metadata → Organize → Manual Report Check → Extract Spec
 ```
 
 ### Step 1: Inventory & Dedup
@@ -72,7 +72,7 @@ for key in sorted_keys:
     text = text.replace(key, replacement)
 ```
 
-**Critical: Sort by length descending** — prevents "construction vessel A" from being partially matched by "Seven".
+**Critical: Sort by length descending** — prevents "Project Alpha Terminal" from being partially matched by "Project Alpha".
 
 ### Step 4: Strip OrcaFlex Metadata
 Remove embedded user/machine/file path lines:
@@ -99,14 +99,11 @@ docs/modules/orcaflex/<category>/
 
 Categories: `jumper/`, `installation/`, `mooring/`, `training/`, `regional/`, `vessel_raos/`
 
-### Step 6: Legal Scan Gate
-```bash
-# Identifier gates retired; review final report via docs/standards/FINAL_REPORT_VERIFICATION.md
-# Must exit 0 before proceeding to spec extraction
-```
+### Step 6: Final Report Verification
+Manual check: review the final report using `docs/standards/FINAL_REPORT_VERIFICATION.md` before proceeding to spec extraction.
 
 ### Step 7: Extract Spec
-Only after legal scan passes:
+Only after the manual final-report check passes:
 ```python
 from digitalmodel.solvers.orcaflex.modular_generator.extractor import MonolithicExtractor
 extractor = MonolithicExtractor(Path("monolithic/model.yml"))
@@ -140,16 +137,16 @@ The sanitization mapping should be mirrored in `.legal-deny-list.yaml`:
 
 ### Run sanitization
 ```bash
-uv run python scripts/sanitize_s7_models.py \
-  --s7-root D:/workspace-hub/client-b/s7 \
+uv run python scripts/sanitize_models.py \
+  --source-root <data-root>/project_a/models \
   --output-root docs/modules/orcaflex \
   --dry-run  # Preview first
 ```
 
 ### Run without OrcFxAPI (.yml only)
 ```bash
-uv run python scripts/sanitize_s7_models.py \
-  --s7-root D:/workspace-hub/client-b/s7 \
+uv run python scripts/sanitize_models.py \
+  --source-root <data-root>/project_a/models \
   --output-root docs/modules/orcaflex \
   --skip-dat
 ```
@@ -159,8 +156,8 @@ uv run python scripts/sanitize_s7_models.py \
 # Check no client references remain
 grep -ri "ClientProject\|VesselName" docs/modules/orcaflex/
 
-# Run legal scan
-# Identifier gates retired; review final report via docs/standards/FINAL_REPORT_VERIFICATION.md
+# Run manual final-report check
+# Review final report via docs/standards/FINAL_REPORT_VERIFICATION.md
 ```
 
 ## Audit Output
@@ -169,7 +166,7 @@ The sanitization script generates `sanitization_audit.json`:
 ```json
 {
   "timestamp": "2026-02-11T10:00:00",
-  "source_root": "D:/workspace-hub/client-b/s7",
+  "source_root": "<data-root>/project_a/models",
   "files_processed": 180,
   "files_skipped_dedup": 45,
   "files_skipped_excluded": 12,
@@ -181,10 +178,10 @@ The sanitization script generates `sanitization_audit.json`:
   },
   "transformations": [
     {
-      "source": "s7/gom-tieback-a/Jumper_Manifold to PLET/SZ.yml",
+      "source": "models/project_a/Jumper_Manifold_to_PLET/SZ.yml",
       "target": "docs/modules/orcaflex/jumper/manifold_to_plet/monolithic/SZ.yml",
       "hash": "sha256:abc123...",
-      "replacements": ["GoM tieback A→deepwater_field_a", "Candies→installation_vessel_01"],
+      "replacements": ["project identifier replaced", "vessel identifier replaced"],
       "size_bytes": 245000
     }
   ]

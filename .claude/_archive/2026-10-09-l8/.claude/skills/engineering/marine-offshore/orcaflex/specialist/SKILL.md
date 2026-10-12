@@ -160,4 +160,4 @@ def complete_mooring_analysis_workflow(
 
 ## Sub-Skills
 
-- [1. Model Organization (+2)](1-model-organization/SKILL.md)
+- 1. Model Organization (+2)

@@ -120,9 +120,9 @@ correlation = analyzer.compute_correlation(
 
 ## Related Skills
 
-- [orcawave-analysis](../orcawave-analysis/SKILL.md) - OrcaWave analysis execution
-- [aqwa-analysis](../aqwa-analysis/SKILL.md) - AQWA analysis execution
-- [hydrodynamics](../hydrodynamics/SKILL.md) - Coefficient management
+- orcawave-analysis - OrcaWave analysis execution
+- aqwa-analysis - AQWA analysis execution
+- hydrodynamics - Coefficient management
 
 ## References
 
@@ -139,20 +139,20 @@ correlation = analyzer.compute_correlation(
 
 ## Sub-Skills
 
-- [Best Practices](best-practices/SKILL.md)
+- Best Practices
 
 ## Sub-Skills
 
-- [Version Metadata](version-metadata/SKILL.md)
-- [Standard Tolerances (+1)](standard-tolerances/SKILL.md)
-- [Benchmark Suite Configuration (+1)](benchmark-suite-configuration/SKILL.md)
-- [CLI Usage](cli-usage/SKILL.md)
-- [HTML Report Structure (+1)](html-report-structure/SKILL.md)
-- [Standard Test Suite](standard-test-suite/SKILL.md)
-- [Common Causes of Deviation (+1)](common-causes-of-deviation/SKILL.md)
-- [Automated Validation in Pipeline](automated-validation-in-pipeline/SKILL.md)
-- [Convention Differences (+3)](convention-differences/SKILL.md)
-- [Single-Page HTML Report Structure (+3)](single-page-html-report-structure/SKILL.md)
+- Version Metadata
+- Standard Tolerances (+1)
+- Benchmark Suite Configuration (+1)
+- CLI Usage
+- HTML Report Structure (+1)
+- Standard Test Suite
+- Common Causes of Deviation (+1)
+- Automated Validation in Pipeline
+- Convention Differences (+3)
+- Single-Page HTML Report Structure (+3)
 
 
 ## Documentation Reference

@@ -136,10 +136,10 @@ transformer.set_orcawave_origin(
 
 ## Related Skills
 
-- [orcawave-analysis](../orcawave-analysis/SKILL.md) - OrcaWave diffraction analysis
-- [orcaflex-vessel-setup](../orcaflex-vessel-setup/SKILL.md) - OrcaFlex vessel configuration
-- [orcaflex-rao-import](../orcaflex-rao-import/SKILL.md) - RAO data import
-- [hydrodynamics](../hydrodynamics/SKILL.md) - Coefficient management
+- orcawave-analysis - OrcaWave diffraction analysis
+- orcaflex-vessel-setup - OrcaFlex vessel configuration
+- orcaflex-rao-import - RAO data import
+- hydrodynamics - Coefficient management
 
 ## References
 
@@ -156,21 +156,21 @@ transformer.set_orcawave_origin(
 
 ## Sub-Skills
 
-- [Best Practices](best-practices/SKILL.md)
+- Best Practices
 
 ## Sub-Skills
 
-- [Error Handling](error-handling/SKILL.md)
+- Error Handling
 
 ## Sub-Skills
 
-- [Version Metadata](version-metadata/SKILL.md)
-- [Workflow Overview](workflow-overview/SKILL.md)
-- [Standard Export Configuration (+1)](standard-export-configuration/SKILL.md)
-- [Supported Output Formats (+1)](supported-output-formats/SKILL.md)
-- [CLI Usage](cli-usage/SKILL.md)
-- [Pre-Export Validation](pre-export-validation/SKILL.md)
-- [Generated YAML Structure](generated-yaml-structure/SKILL.md)
+- Version Metadata
+- Workflow Overview
+- Standard Export Configuration (+1)
+- Supported Output Formats (+1)
+- CLI Usage
+- Pre-Export Validation
+- Generated YAML Structure
 
 
 ## Documentation Reference

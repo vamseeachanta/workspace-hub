@@ -56,11 +56,11 @@ scripts_exempt: true
 
 ## Related Skills
 
-- [orcaflex-post-processing](../orcaflex-post-processing/SKILL.md) - Post-process simulation results
-- [orcawave/analysis](../orcawave/analysis/SKILL.md) - Diffraction/radiation analysis
-- [mooring-design](../mooring-design/SKILL.md) - Mooring system design
-- [structural-analysis](../structural-analysis/SKILL.md) - Structural verification
-- [aqwa-analysis](../aqwa-analysis/SKILL.md) - AQWA benchmark validation
+- orcaflex-post-processing - Post-process simulation results
+- orcawave/analysis - Diffraction/radiation analysis
+- mooring-design - Mooring system design
+- structural-analysis - Structural verification
+- aqwa-analysis - AQWA benchmark validation
 
 ## References
 
@@ -78,20 +78,20 @@ scripts_exempt: true
 
 ## Sub-Skills
 
-- [Project Setup (+2)](project-setup/SKILL.md)
+- Project Setup (+2)
 
 ## Sub-Skills
 
-- [Version Metadata](version-metadata/SKILL.md)
-- [[2.0.0] - 2026-01-07](200-2026-01-07/SKILL.md)
-- [Domain Expertise (+3)](domain-expertise/SKILL.md)
-- [Standardized Folder Structure](standardized-folder-structure/SKILL.md)
-- [Basic Analysis Configuration (+1)](basic-analysis-configuration/SKILL.md)
-- [Command Line Interface (+1)](command-line-interface/SKILL.md)
-- [Batch Processing](batch-processing/SKILL.md)
-- [Static Analysis (+3)](static-analysis/SKILL.md)
-- [Vessel Loading (+1)](vessel-loading/SKILL.md)
-- [License Check (+2)](license-check/SKILL.md)
-- [Common Issues](common-issues/SKILL.md)
-- [Swarm Coordination (+1)](swarm-coordination/SKILL.md)
-- [External Documentation](external-documentation/SKILL.md)
+- Version Metadata
+- [2.0.0] - 2026-01-07
+- Domain Expertise (+3)
+- Standardized Folder Structure
+- Basic Analysis Configuration (+1)
+- Command Line Interface (+1)
+- Batch Processing
+- Static Analysis (+3)
+- Vessel Loading (+1)
+- License Check (+2)
+- Common Issues
+- Swarm Coordination (+1)
+- External Documentation

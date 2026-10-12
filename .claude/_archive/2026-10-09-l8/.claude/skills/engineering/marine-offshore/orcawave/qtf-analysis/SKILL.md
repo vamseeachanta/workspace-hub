@@ -135,10 +135,10 @@ slow_drift.load_qtf("results/fpso_qtf.yml")
 
 ## Related Skills
 
-- [orcawave-analysis](../orcawave-analysis/SKILL.md) - First-order diffraction analysis
-- [mooring-design](../mooring-design/SKILL.md) - Mooring system design
-- [hydrodynamics](../hydrodynamics/SKILL.md) - Wave loading management
-- [orcaflex/modeling](../orcaflex/modeling/SKILL.md) - Time-domain simulation
+- orcawave-analysis - First-order diffraction analysis
+- mooring-design - Mooring system design
+- hydrodynamics - Wave loading management
+- orcaflex/modeling - Time-domain simulation
 
 ## References
 
@@ -155,19 +155,19 @@ slow_drift.load_qtf("results/fpso_qtf.yml")
 
 ## Sub-Skills
 
-- [When to Use Full QTF vs Newman (+2)](when-to-use-full-qtf-vs-newman/SKILL.md)
+- When to Use Full QTF vs Newman (+2)
 
 ## Sub-Skills
 
-- [Error Handling](error-handling/SKILL.md)
+- Error Handling
 
 ## Sub-Skills
 
-- [Version Metadata](version-metadata/SKILL.md)
-- [Force Components (+1)](force-components/SKILL.md)
-- [QTF Analysis Configuration (+1)](qtf-analysis-configuration/SKILL.md)
-- [Available Data (+1)](available-data/SKILL.md)
-- [CLI Usage](cli-usage/SKILL.md)
+- Version Metadata
+- Force Components (+1)
+- QTF Analysis Configuration (+1)
+- Available Data (+1)
+- CLI Usage
 
 
 ## Documentation Reference

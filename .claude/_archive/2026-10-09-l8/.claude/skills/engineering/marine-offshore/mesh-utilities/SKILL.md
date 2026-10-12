@@ -48,15 +48,15 @@ Use mesh utilities when you need to:
 
 ## Sub-Skills
 
-- [Troubleshooting](troubleshooting/SKILL.md)
+- Troubleshooting
 
 ## Sub-Skills
 
-- [Quick Reference](quick-reference/SKILL.md)
+- Quick Reference
 
 ## Sub-Skills
 
-- [1. Quick Mesh Inspection (+5)](1-quick-mesh-inspection/SKILL.md)
-- [Batch Quality Check (+1)](batch-quality-check/SKILL.md)
-- [Pre-Solver Checklist](pre-solver-checklist/SKILL.md)
-- [CLI Usage](cli-usage/SKILL.md)
+- 1. Quick Mesh Inspection (+5)
+- Batch Quality Check (+1)
+- Pre-Solver Checklist
+- CLI Usage

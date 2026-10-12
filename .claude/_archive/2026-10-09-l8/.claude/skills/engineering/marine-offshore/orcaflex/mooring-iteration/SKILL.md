@@ -102,10 +102,10 @@ print(report)
 
 ## Related Skills
 
-- [orcaflex-modeling](../orcaflex-modeling/SKILL.md) - Run OrcaFlex simulations
-- [mooring-design](../mooring-design/SKILL.md) - Design mooring systems
-- [orcaflex-line-wizard](../orcaflex-line-wizard/SKILL.md) - Configure line properties
-- [catenary-riser](../catenary-riser/SKILL.md) - Catenary analysis
+- orcaflex-modeling - Run OrcaFlex simulations
+- mooring-design - Design mooring systems
+- orcaflex-line-wizard - Configure line properties
+- catenary-riser - Catenary analysis
 
 ## References
 
@@ -117,18 +117,18 @@ print(report)
 
 ## Sub-Skills
 
-- [Basic Configuration (+1)](basic-configuration/SKILL.md)
-- [Initial Model (+2)](initial-model/SKILL.md)
+- Basic Configuration (+1)
+- Initial Model (+2)
 
 ## Sub-Skills
 
-- [Error Handling](error-handling/SKILL.md)
+- Error Handling
 
 ## Sub-Skills
 
-- [Version Metadata](version-metadata/SKILL.md)
-- [[1.0.0] - 2026-01-17](100-2026-01-17/SKILL.md)
-- [1. Scipy Optimization (Recommended) (+2)](1-scipy-optimization-recommended/SKILL.md)
-- [Scipy Method (+2)](scipy-method/SKILL.md)
-- [Iteration Result (+1)](iteration-result/SKILL.md)
-- [With Mooring Design (+1)](with-mooring-design/SKILL.md)
+- Version Metadata
+- [1.0.0] - 2026-01-17
+- 1. Scipy Optimization (Recommended) (+2)
+- Scipy Method (+2)
+- Iteration Result (+1)
+- With Mooring Design (+1)

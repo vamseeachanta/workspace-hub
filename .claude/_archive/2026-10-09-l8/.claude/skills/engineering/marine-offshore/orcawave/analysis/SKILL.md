@@ -132,12 +132,12 @@ mesh_sizes = [2.0, 1.5, 1.0, 0.75, 0.5]
 
 ## Related Skills
 
-- [diffraction-analysis](../diffraction-analysis/SKILL.md) - **Master skill** for all diffraction workflows
-- [bemrosetta](../bemrosetta/SKILL.md) - AQWA → OrcaFlex conversion with QTF and mesh support
-- [orcaflex/modeling](../orcaflex/modeling/SKILL.md) - Apply hydrodynamic database in OrcaFlex
-- [aqwa-analysis](../aqwa-analysis/SKILL.md) - AQWA validation and comparison
-- [gmsh-meshing](../gmsh-meshing/SKILL.md) - Panel mesh generation
-- [hydrodynamics](../hydrodynamics/SKILL.md) - Coefficient management
+- diffraction-analysis - **Master skill** for all diffraction workflows
+- bemrosetta - AQWA → OrcaFlex conversion with QTF and mesh support
+- orcaflex/modeling - Apply hydrodynamic database in OrcaFlex
+- aqwa-analysis - AQWA validation and comparison
+- gmsh-meshing - Panel mesh generation
+- hydrodynamics - Coefficient management
 
 ## References
 
@@ -158,22 +158,22 @@ mesh_sizes = [2.0, 1.5, 1.0, 0.75, 0.5]
 
 ## Sub-Skills
 
-- [Best Practices](best-practices/SKILL.md)
+- Best Practices
 
 ## Sub-Skills
 
-- [Version Metadata](version-metadata/SKILL.md)
-- [[1.0.0] - 2026-01-07](100-2026-01-07/SKILL.md)
-- [Core Capabilities (+2)](core-capabilities/SKILL.md)
-- [Performance Targets](performance-targets/SKILL.md)
-- [Standard Analysis (+1)](standard-analysis/SKILL.md)
-- [Integration Targets](integration-targets/SKILL.md)
-- [Workflow Support](workflow-support/SKILL.md)
-- [Swarm Coordination (+2)](swarm-coordination/SKILL.md)
-- [License Issues (+1)](license-issues/SKILL.md)
-- [OrcFxAPI Result Extraction (+3)](orcfxapi-result-extraction/SKILL.md)
-- [DiffractionSpec Conventions (spec.yml to OrcaWave)](diffractionspec-conventions-specyml-to-orcawave/SKILL.md)
-- [OrcaWave API Properties Reference](orcawave-api-properties-reference/SKILL.md)
+- Version Metadata
+- [1.0.0] - 2026-01-07
+- Core Capabilities (+2)
+- Performance Targets
+- Standard Analysis (+1)
+- Integration Targets
+- Workflow Support
+- Swarm Coordination (+2)
+- License Issues (+1)
+- OrcFxAPI Result Extraction (+3)
+- DiffractionSpec Conventions (spec.yml to OrcaWave)
+- OrcaWave API Properties Reference
 
 
 ## Documentation Reference

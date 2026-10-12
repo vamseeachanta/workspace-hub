@@ -160,19 +160,19 @@ validator = CoefficientValidator(
 ## References
 
 - [BEMRosetta GitHub](https://github.com/BEMRosetta/BEMRosetta)
-- [Module README](../../../src/digitalmodel/modules/bemrosetta/MODULE_README.md)
+- Module README
 - [OrcaFlex Documentation](https://www.orcina.com/webhelp/OrcaFlex/)
 
 ## Sub-Skills
 
-- [Best Practices](best-practices/SKILL.md)
-- [Error Handling](error-handling/SKILL.md)
+- Best Practices
+- Error Handling
 
 ## Sub-Skills
 
-- [Version](version/SKILL.md)
-- [1.0.0 (2026-01-27)](100-2026-01-27/SKILL.md)
-- [Parsing (+3)](parsing/SKILL.md)
-- [CLI Commands](cli-commands/SKILL.md)
-- [Data Models](data-models/SKILL.md)
-- [With diffraction module (+1)](with-diffraction-module/SKILL.md)
+- Version
+- 1.0.0 (2026-01-27)
+- Parsing (+3)
+- CLI Commands
+- Data Models
+- With diffraction module (+1)

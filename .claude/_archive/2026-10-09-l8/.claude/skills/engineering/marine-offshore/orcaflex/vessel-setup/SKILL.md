@@ -111,10 +111,10 @@ def import_multi_body_system(
 
 ## Related Skills
 
-- [orcaflex-modeling](../orcaflex-modeling/SKILL.md) - Run OrcaFlex simulations
-- [orcaflex-rao-import](../orcaflex-rao-import/SKILL.md) - RAO data import
-- [aqwa-analysis](../aqwa-analysis/SKILL.md) - AQWA analysis
-- [hydrodynamics](../hydrodynamics/SKILL.md) - Hydrodynamic coefficients
+- orcaflex-modeling - Run OrcaFlex simulations
+- orcaflex-rao-import - RAO data import
+- aqwa-analysis - AQWA analysis
+- hydrodynamics - Hydrodynamic coefficients
 
 ## References
 
@@ -127,17 +127,17 @@ def import_multi_body_system(
 
 ## Sub-Skills
 
-- [Basic Vessel Configuration (+1)](basic-vessel-configuration/SKILL.md)
-- [Data Import (+2)](data-import/SKILL.md)
+- Basic Vessel Configuration (+1)
+- Data Import (+2)
 
 ## Sub-Skills
 
-- [Error Handling](error-handling/SKILL.md)
+- Error Handling
 
 ## Sub-Skills
 
-- [Version Metadata](version-metadata/SKILL.md)
-- [[1.0.0] - 2026-01-17](100-2026-01-17/SKILL.md)
-- [Vessel Object (+1)](vessel-object/SKILL.md)
-- [Vessel Properties YAML](vessel-properties-yaml/SKILL.md)
-- [1. FPSO with AQWA Hydrodynamics (+2)](1-fpso-with-aqwa-hydrodynamics/SKILL.md)
+- Version Metadata
+- [1.0.0] - 2026-01-17
+- Vessel Object (+1)
+- Vessel Properties YAML
+- 1. FPSO with AQWA Hydrodynamics (+2)

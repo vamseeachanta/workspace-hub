@@ -150,10 +150,10 @@ analyzer.load_results("models/fpso.owr")
 
 ## Related Skills
 
-- [orcawave-analysis](../orcawave-analysis/SKILL.md) - OrcaWave diffraction analysis
-- [orcawave-to-orcaflex](../orcawave-to-orcaflex/SKILL.md) - Export with damping
-- [hydrodynamics](../hydrodynamics/SKILL.md) - Coefficient management
-- [viv-analysis](../viv-analysis/SKILL.md) - Vibration damping
+- orcawave-analysis - OrcaWave diffraction analysis
+- orcawave-to-orcaflex - Export with damping
+- hydrodynamics - Coefficient management
+- viv-analysis - Vibration damping
 
 ## References
 
@@ -170,20 +170,20 @@ analyzer.load_results("models/fpso.owr")
 
 ## Sub-Skills
 
-- [Best Practices](best-practices/SKILL.md)
+- Best Practices
 
 ## Sub-Skills
 
-- [Error Handling](error-handling/SKILL.md)
+- Error Handling
 
 ## Sub-Skills
 
-- [Version Metadata](version-metadata/SKILL.md)
-- [Total Damping Composition (+1)](total-damping-composition/SKILL.md)
-- [Damping Sweep Configuration (+1)](damping-sweep-configuration/SKILL.md)
-- [CLI Usage](cli-usage/SKILL.md)
-- [Typical Values by Vessel Type (+1)](typical-values-by-vessel-type/SKILL.md)
-- [Damping-Related Properties](damping-related-properties/SKILL.md)
+- Version Metadata
+- Total Damping Composition (+1)
+- Damping Sweep Configuration (+1)
+- CLI Usage
+- Typical Values by Vessel Type (+1)
+- Damping-Related Properties
 
 
 ## Documentation Reference

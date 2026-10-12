@@ -91,10 +91,10 @@ cfg = {
 
 ## Related Skills
 
-- [orcaflex-modeling](../orcaflex-modeling/SKILL.md) - Run OrcaFlex simulations
-- [orcaflex-post-processing](../orcaflex-post-processing/SKILL.md) - Extract results
-- [orcaflex-static-debug](../orcaflex-static-debug/SKILL.md) - Debug convergence issues
-- [orcaflex-line-wizard](../orcaflex-line-wizard/SKILL.md) - Configure line properties
+- orcaflex-modeling - Run OrcaFlex simulations
+- orcaflex-post-processing - Extract results
+- orcaflex-static-debug - Debug convergence issues
+- orcaflex-line-wizard - Configure line properties
 
 ## References
 
@@ -105,17 +105,17 @@ cfg = {
 
 ## Sub-Skills
 
-- [Basic Installation Depth Study (+1)](basic-installation-depth-study/SKILL.md)
-- [Model Preparation (+2)](model-preparation/SKILL.md)
+- Basic Installation Depth Study (+1)
+- Model Preparation (+2)
 
 ## Sub-Skills
 
-- [Version Metadata](version-metadata/SKILL.md)
-- [[1.0.0] - 2026-01-17](100-2026-01-17/SKILL.md)
-- [Installation Sequence Workflow](installation-sequence-workflow/SKILL.md)
-- [Output File Structure](output-file-structure/SKILL.md)
-- [Reference Elevation File (+2)](reference-elevation-file/SKILL.md)
-- [Integration with Universal Runner](integration-with-universal-runner/SKILL.md)
-- [1. Splash Zone Analysis (+2)](1-splash-zone-analysis/SKILL.md)
-- [Post-Processing Installation Results](post-processing-installation-results/SKILL.md)
-- [Common Errors and Fixes (+3)](common-errors-and-fixes/SKILL.md)
+- Version Metadata
+- [1.0.0] - 2026-01-17
+- Installation Sequence Workflow
+- Output File Structure
+- Reference Elevation File (+2)
+- Integration with Universal Runner
+- 1. Splash Zone Analysis (+2)
+- Post-Processing Installation Results
+- Common Errors and Fixes (+3)

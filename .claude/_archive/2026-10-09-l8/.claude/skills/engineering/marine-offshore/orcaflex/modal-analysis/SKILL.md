@@ -87,9 +87,9 @@ all_modes_summary_df = modal.all_file_summary["Case1"]
 
 ## Related Skills
 
-- [orcaflex-modeling](../orcaflex-modeling/SKILL.md) - Run OrcaFlex simulations
-- [viv-analysis](../viv-analysis/SKILL.md) - VIV susceptibility assessment
-- [orcaflex-static-debug](../orcaflex-static-debug/SKILL.md) - Static convergence troubleshooting
+- orcaflex-modeling - Run OrcaFlex simulations
+- viv-analysis - VIV susceptibility assessment
+- orcaflex-static-debug - Static convergence troubleshooting
 
 ## References
 
@@ -101,16 +101,16 @@ all_modes_summary_df = modal.all_file_summary["Case1"]
 
 ## Sub-Skills
 
-- [Basic Modal Analysis (+1)](basic-modal-analysis/SKILL.md)
-- [Model Preparation (+2)](model-preparation/SKILL.md)
+- Basic Modal Analysis (+1)
+- Model Preparation (+2)
 
 ## Sub-Skills
 
-- [Version Metadata](version-metadata/SKILL.md)
-- [[1.0.0] - 2026-01-17](100-2026-01-17/SKILL.md)
-- [1. Static Equilibrium → Modal Analysis](1-static-equilibrium-modal-analysis/SKILL.md)
-- [Mode Shapes CSV (+2)](mode-shapes-csv/SKILL.md)
-- [DOF Percentage Calculation (+2)](dof-percentage-calculation/SKILL.md)
-- [Common Errors and Fixes (+1)](common-errors-and-fixes/SKILL.md)
-- [Expected Frequency Ranges (+1)](expected-frequency-ranges/SKILL.md)
-- [With VIV Analysis (+1)](with-viv-analysis/SKILL.md)
+- Version Metadata
+- [1.0.0] - 2026-01-17
+- 1. Static Equilibrium → Modal Analysis
+- Mode Shapes CSV (+2)
+- DOF Percentage Calculation (+2)
+- Common Errors and Fixes (+1)
+- Expected Frequency Ranges (+1)
+- With VIV Analysis (+1)

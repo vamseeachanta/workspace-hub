@@ -122,10 +122,10 @@ def configure_multi_directional_waves(
 
 ## Related Skills
 
-- [orcaflex-modeling](../orcaflex-modeling/SKILL.md) - Run OrcaFlex simulations
-- [orcaflex-operability](../orcaflex-operability/SKILL.md) - Multi-sea-state analysis
-- [hydrodynamics](../hydrodynamics/SKILL.md) - Wave spectra management
-- [mooring-design](../mooring-design/SKILL.md) - Environmental loading
+- orcaflex-modeling - Run OrcaFlex simulations
+- orcaflex-operability - Multi-sea-state analysis
+- hydrodynamics - Wave spectra management
+- mooring-design - Environmental loading
 
 ## References
 
@@ -136,14 +136,14 @@ def configure_multi_directional_waves(
 
 ## Sub-Skills
 
-- [Complete Environment Configuration (+1)](complete-environment-configuration/SKILL.md)
-- [Wave Configuration (+2)](wave-configuration/SKILL.md)
+- Complete Environment Configuration (+1)
+- Wave Configuration (+2)
 
 ## Sub-Skills
 
-- [Version Metadata](version-metadata/SKILL.md)
-- [[1.0.0] - 2026-01-17](100-2026-01-17/SKILL.md)
-- [Wave Types (+2)](wave-types/SKILL.md)
-- [Environment YAML Output](environment-yaml-output/SKILL.md)
-- [Common Errors and Fixes (+2)](common-errors-and-fixes/SKILL.md)
-- [Environment Sanity Checks (+1)](environment-sanity-checks/SKILL.md)
+- Version Metadata
+- [1.0.0] - 2026-01-17
+- Wave Types (+2)
+- Environment YAML Output
+- Common Errors and Fixes (+2)
+- Environment Sanity Checks (+1)

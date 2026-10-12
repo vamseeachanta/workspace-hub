@@ -137,11 +137,11 @@ builder.add_buoyancy_section(
 
 ## Sub-Skills
 
-- [Best Practices](best-practices/SKILL.md)
+- Best Practices
 
 ## Sub-Skills
 
-- [Version Metadata](version-metadata/SKILL.md)
-- [[1.0.0] - 2026-01-07](100-2026-01-07/SKILL.md)
-- [1. Simple Catenary Analysis (+2)](1-simple-catenary-analysis/SKILL.md)
-- [Catenary Shape CSV](catenary-shape-csv/SKILL.md)
+- Version Metadata
+- [1.0.0] - 2026-01-07
+- 1. Simple Catenary Analysis (+2)
+- Catenary Shape CSV

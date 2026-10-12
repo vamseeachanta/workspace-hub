@@ -47,8 +47,8 @@ Use this SME knowledge when:
 
 ## Sub-Skills
 
-- [1. Platform Types (+3)](1-platform-types/SKILL.md)
-- [5. Regulatory Framework (+1)](5-regulatory-framework/SKILL.md)
-- [Application 1: FPSO Preliminary Design (+1)](application-1-fpso-preliminary-design/SKILL.md)
-- [1. Buoyancy and Stability (+1)](1-buoyancy-and-stability/SKILL.md)
-- [Typical Project Phases:](typical-project-phases/SKILL.md)
+- 1. Platform Types (+3)
+- 5. Regulatory Framework (+1)
+- Application 1: FPSO Preliminary Design (+1)
+- 1. Buoyancy and Stability (+1)
+- Typical Project Phases:

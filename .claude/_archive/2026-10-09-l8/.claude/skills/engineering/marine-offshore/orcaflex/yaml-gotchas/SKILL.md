@@ -26,9 +26,9 @@ scripts_exempt: true
 
 ## Related Skills
 
-- [orcaflex-monolithic-to-modular](../orcaflex-monolithic-to-modular/SKILL.md) - Extraction pipeline
-- [orcaflex-model-generator](../orcaflex-model-generator/SKILL.md) - Builder architecture
-- [orcaflex-environment-config](../orcaflex-environment-config/SKILL.md) - Environment setup
+- orcaflex-monolithic-to-modular - Extraction pipeline
+- orcaflex-model-generator - Builder architecture
+- orcaflex-environment-config - Environment setup
 
 ## References
 
@@ -44,21 +44,21 @@ scripts_exempt: true
 
 ## Sub-Skills
 
-- [Symptom (+2)](symptom/SKILL.md)
-- [Symptom (+2)](symptom/SKILL.md)
-- [Symptom (+2)](symptom/SKILL.md)
-- [Symptom (+2)](symptom/SKILL.md)
-- [Symptom (+2)](symptom/SKILL.md)
-- [Symptom (+3)](symptom/SKILL.md)
-- [Symptom (+2)](symptom/SKILL.md)
-- [Symptom (+2)](symptom/SKILL.md)
-- [Symptom (+2)](symptom/SKILL.md)
-- [Symptom (+2)](symptom/SKILL.md)
-- [Symptom (+2)](symptom/SKILL.md)
-- [Symptom (+2)](symptom/SKILL.md)
-- [Symptom (+2)](symptom/SKILL.md)
-- [Symptom (+2)](symptom/SKILL.md)
-- [Symptom (+2)](symptom/SKILL.md)
-- [Symptom (+2)](symptom/SKILL.md)
-- [Safe YAML Builder Pattern (+1)](safe-yaml-builder-pattern/SKILL.md)
-- [Execution: Validating Generated YAML](execution-validating-generated-yaml/SKILL.md)
+- Symptom (+2)
+- Symptom (+2)
+- Symptom (+2)
+- Symptom (+2)
+- Symptom (+2)
+- Symptom (+3)
+- Symptom (+2)
+- Symptom (+2)
+- Symptom (+2)
+- Symptom (+2)
+- Symptom (+2)
+- Symptom (+2)
+- Symptom (+2)
+- Symptom (+2)
+- Symptom (+2)
+- Symptom (+2)
+- Safe YAML Builder Pattern (+1)
+- Execution: Validating Generated YAML

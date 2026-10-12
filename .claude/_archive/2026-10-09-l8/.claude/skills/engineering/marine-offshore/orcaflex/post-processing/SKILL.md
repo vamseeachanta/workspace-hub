@@ -89,9 +89,9 @@ line = model["Line1"]
 
 ## Related Skills
 
-- [orcaflex-modeling](../orcaflex-modeling/SKILL.md) - Run OrcaFlex simulations
-- [mooring-design](../mooring-design/SKILL.md) - Mooring system design
-- [fatigue-analysis](../fatigue-analysis/SKILL.md) - Fatigue assessment
+- orcaflex-modeling - Run OrcaFlex simulations
+- mooring-design - Mooring system design
+- fatigue-analysis - Fatigue assessment
 
 ## References
 
@@ -101,18 +101,18 @@ line = model["Line1"]
 
 ## Sub-Skills
 
-- [Efficient Processing (+2)](efficient-processing/SKILL.md)
+- Efficient Processing (+2)
 
 ## Sub-Skills
 
-- [Error Handling](error-handling/SKILL.md)
+- Error Handling
 
 ## Sub-Skills
 
-- [Version Metadata](version-metadata/SKILL.md)
-- [[1.0.0] - 2026-01-07](100-2026-01-07/SKILL.md)
-- [1. Summary Statistics (+4)](1-summary-statistics/SKILL.md)
-- [Complete Post-Processing Configuration (+1)](complete-post-processing-configuration/SKILL.md)
-- [CSV Output (+2)](csv-output/SKILL.md)
-- [Parallel Processing Details](parallel-processing-details/SKILL.md)
-- [Common Vessel Variables (+2)](common-vessel-variables/SKILL.md)
+- Version Metadata
+- [1.0.0] - 2026-01-07
+- 1. Summary Statistics (+4)
+- Complete Post-Processing Configuration (+1)
+- CSV Output (+2)
+- Parallel Processing Details
+- Common Vessel Variables (+2)

@@ -134,10 +134,10 @@ shielding.load_multibody_results("results/multibody.owr")
 
 ## Related Skills
 
-- [orcawave-analysis](../orcawave-analysis/SKILL.md) - Single body diffraction
-- [orcawave-mesh-generation](../orcawave-mesh-generation/SKILL.md) - Panel mesh creation
-- [orcawave-to-orcaflex](../orcawave-to-orcaflex/SKILL.md) - Export to OrcaFlex
-- [mooring-design](../mooring-design/SKILL.md) - Mooring system design
+- orcawave-analysis - Single body diffraction
+- orcawave-mesh-generation - Panel mesh creation
+- orcawave-to-orcaflex - Export to OrcaFlex
+- mooring-design - Mooring system design
 
 ## References
 
@@ -154,19 +154,19 @@ shielding.load_multibody_results("results/multibody.owr")
 
 ## Sub-Skills
 
-- [Best Practices](best-practices/SKILL.md)
+- Best Practices
 
 ## Sub-Skills
 
-- [Error Handling](error-handling/SKILL.md)
+- Error Handling
 
 ## Sub-Skills
 
-- [Version Metadata](version-metadata/SKILL.md)
-- [Common Scenarios (+1)](common-scenarios/SKILL.md)
-- [Multi-Body Analysis Configuration (+1)](multi-body-analysis-configuration/SKILL.md)
-- [CLI Usage](cli-usage/SKILL.md)
-- [Export for Time-Domain](export-for-time-domain/SKILL.md)
+- Version Metadata
+- Common Scenarios (+1)
+- Multi-Body Analysis Configuration (+1)
+- CLI Usage
+- Export for Time-Domain
 
 
 ## Documentation Reference

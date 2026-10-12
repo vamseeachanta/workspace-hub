@@ -29,20 +29,20 @@ version: 1.0.0
 
 - [fatigue-analysis](../fatigue-analysis/SKILL.md) - Mooring line fatigue
 - [structural-analysis](../structural-analysis/SKILL.md) - Buoy structure
-- [engineering-report-generator](../../.claude/skills/development/engineering-report-generator/SKILL.md) - Analysis reports
+- engineering-report-generator - Analysis reports
 
 ## Sub-Skills
 
-- [Basic Design (+1)](basic-design/SKILL.md)
-- [Design Principles (+2)](design-principles/SKILL.md)
+- Basic Design (+1)
+- Design Principles (+2)
 
 ## Sub-Skills
 
-- [Version Metadata](version-metadata/SKILL.md)
-- [[1.0.0] - 2026-01-07](100-2026-01-07/SKILL.md)
-- [CALM Buoy Systems (+2)](calm-buoy-systems/SKILL.md)
-- [Mooring System Configuration (+3)](mooring-system-configuration/SKILL.md)
-- [YAML Configuration](yaml-configuration/SKILL.md)
-- [DNV-OS-E301 (Position Mooring) (+2)](dnv-os-e301-position-mooring/SKILL.md)
-- [Common Errors and Fixes (+1)](common-errors-and-fixes/SKILL.md)
-- [Design Check Matrix (+2)](design-check-matrix/SKILL.md)
+- Version Metadata
+- [1.0.0] - 2026-01-07
+- CALM Buoy Systems (+2)
+- Mooring System Configuration (+3)
+- YAML Configuration
+- DNV-OS-E301 (Position Mooring) (+2)
+- Common Errors and Fixes (+1)
+- Design Check Matrix (+2)

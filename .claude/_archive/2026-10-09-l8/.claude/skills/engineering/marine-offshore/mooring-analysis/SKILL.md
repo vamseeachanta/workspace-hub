@@ -47,8 +47,8 @@ Use mooring analysis knowledge when:
 
 ## Sub-Skills
 
-- [1. Mooring Types (+1)](1-mooring-types/SKILL.md)
-- [3. Mooring Line Components (+1)](3-mooring-line-components/SKILL.md)
-- [5. Installation and Pretensioning (+1)](5-installation-and-pretensioning/SKILL.md)
-- [Application 1: FPSO 12-Line Mooring (+1)](application-1-fpso-12-line-mooring/SKILL.md)
-- [Key Design Steps](key-design-steps/SKILL.md)
+- 1. Mooring Types (+1)
+- 3. Mooring Line Components (+1)
+- 5. Installation and Pretensioning (+1)
+- Application 1: FPSO 12-Line Mooring (+1)
+- Key Design Steps

@@ -168,7 +168,7 @@ from digitalmodel.marine_ops.marine_analysis.rao_quality_report import RAOQualit
 ## Related Skills
 
 - [diffraction-analysis](../diffraction-analysis/SKILL.md) - **Master skill** for all diffraction workflows
-- [aqwa-analysis](../aqwa-analysis/SKILL.md) - Extract coefficients from AQWA
+- aqwa-analysis - Extract coefficients from AQWA
 - [bemrosetta](../bemrosetta/SKILL.md) - AQWA → OrcaFlex conversion with QTF and mesh support
 - [orcaflex/modeling](../orcaflex/modeling/SKILL.md) - Apply in OrcaFlex models
 - [viv-analysis](../viv-analysis/SKILL.md) - Hydrodynamic coefficient usage
@@ -181,12 +181,12 @@ from digitalmodel.marine_ops.marine_analysis.rao_quality_report import RAOQualit
 
 ## Sub-Skills
 
-- [Best Practices](best-practices/SKILL.md)
+- Best Practices
 
 ## Sub-Skills
 
-- [Version Metadata](version-metadata/SKILL.md)
-- [[1.0.0] - 2026-01-07](100-2026-01-07/SKILL.md)
-- [1. Coefficient Database Management (+4)](1-coefficient-database-management/SKILL.md)
-- [Wave Spectrum Types](wave-spectrum-types/SKILL.md)
-- [Coefficient Database JSON (+1)](coefficient-database-json/SKILL.md)
+- Version Metadata
+- [1.0.0] - 2026-01-07
+- 1. Coefficient Database Management (+4)
+- Wave Spectrum Types
+- Coefficient Database JSON (+1)

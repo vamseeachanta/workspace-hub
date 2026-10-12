@@ -48,7 +48,7 @@ Use fatigue analysis when:
 
 ## Sub-Skills
 
-- [1. S-N Curve Fundamentals](1-s-n-curve-fundamentals/SKILL.md)
-- [2. Rainflow Counting (+1)](2-rainflow-counting/SKILL.md)
-- [4. Spectral Fatigue Analysis (+1)](4-spectral-fatigue-analysis/SKILL.md)
-- [Example 1: Complete Fatigue Assessment](example-1-complete-fatigue-assessment/SKILL.md)
+- 1. S-N Curve Fundamentals
+- 2. Rainflow Counting (+1)
+- 4. Spectral Fatigue Analysis (+1)
+- Example 1: Complete Fatigue Assessment

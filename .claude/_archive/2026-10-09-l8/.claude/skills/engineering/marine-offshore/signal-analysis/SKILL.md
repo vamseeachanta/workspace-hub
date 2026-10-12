@@ -140,16 +140,16 @@ data = reader.read("data/measurements.csv")
 
 ## Sub-Skills
 
-- [Signal Quality (+2)](signal-quality/SKILL.md)
+- Signal Quality (+2)
 
 ## Sub-Skills
 
-- [Error Handling](error-handling/SKILL.md)
+- Error Handling
 
 ## Sub-Skills
 
-- [Version Metadata](version-metadata/SKILL.md)
-- [[1.0.0] - 2026-01-07](100-2026-01-07/SKILL.md)
-- [1. Rainflow Cycle Counting (ASTM E1049-85) (+4)](1-rainflow-cycle-counting-astm-e1049-85/SKILL.md)
-- [Complete Signal Analysis Workflow (+1)](complete-signal-analysis-workflow/SKILL.md)
-- [Rainflow Cycles CSV (+2)](rainflow-cycles-csv/SKILL.md)
+- Version Metadata
+- [1.0.0] - 2026-01-07
+- 1. Rainflow Cycle Counting (ASTM E1049-85) (+4)
+- Complete Signal Analysis Workflow (+1)
+- Rainflow Cycles CSV (+2)
