@@ -102,7 +102,7 @@ def configure_line_sections(
 ## Sub-Skills
 
 - Version Metadata
-- [[1.0.0] - 2026-01-17](100-2026-01-17/SKILL.md)
+- [1.0.0] - 2026-01-17
 - Calculation Modes
 - YAML-Based Line Setup (+1)
 - Common Line Setup Properties (+1)

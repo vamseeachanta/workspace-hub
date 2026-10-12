@@ -18,7 +18,11 @@ fail() {
 run_test() { TESTS_RUN=$((TESTS_RUN + 1)); echo ""; echo "--- Test ${TESTS_RUN}: $1 ---"; }
 
 make_tmpdir() {
-  mktemp -d "${TMPDIR:-.}/archived-marine-check.XXXXXX"
+  if [[ -z "${TMPDIR:-}" ]]; then
+    echo "TMPDIR must be set for archived marine skill checker tests" >&2
+    exit 2
+  fi
+  mktemp -d "$TMPDIR/archived-marine-check.XXXXXX"
 }
 
 test_self_test() {
@@ -62,6 +66,100 @@ test_flags_synthetic_residue() {
   fi
 }
 
+test_public_url_and_signature_pass() {
+  run_test "public URL and typed signature parameter pass"
+  local td
+  td="$(make_tmpdir)"
+  {
+    printf 'reference: https://example.org/docs\n'
+    printf 'def configure(\n'
+    printf '    vessel: OrcFxAPI.OrcaFlexObject,\n'
+    printf ') -> None:\n'
+  } > "$td/SKILL.md"
+  if python3 "$SCRIPT_UNDER_TEST" "$td" >/dev/null 2>&1; then
+    pass "public URL and typed parameter exit 0"
+  else
+    fail "public URL or typed parameter was rejected"
+  fi
+  rm -rf "$td"
+}
+
+test_drive_and_share_paths_fail() {
+  run_test "drive path and share path are still flagged"
+  local td output rc slash backslash
+  td="$(make_tmpdir)"
+  slash="/"
+  backslash="\\"
+  {
+    printf 'tool: Q:%sexample\n' "$slash"
+    printf 'share: %s%sserver%sshare\n' "$backslash" "$backslash" "$backslash"
+  } > "$td/SKILL.md"
+  set +e
+  output="$(python3 "$SCRIPT_UNDER_TEST" "$td" 2>&1)"
+  rc=$?
+  set -e
+  rm -rf "$td"
+  if [[ $rc -eq 0 ]]; then
+    fail "drive/share paths were accepted"
+  elif [[ "$output" == *"RULE drive_abs"* && "$output" == *"RULE unc_share"* ]]; then
+    pass "drive and share rules appeared"
+  else
+    fail "drive/share output missed expected rules" "$output"
+  fi
+}
+
+test_fenced_configuration_label_still_fails() {
+  run_test "fenced configuration label with non-codename value is flagged"
+  local td output rc
+  td="$(make_tmpdir)"
+  {
+    printf '```yaml\n'
+    printf 'client: Example Name\n'
+    printf '```\n'
+  } > "$td/SKILL.md"
+  set +e
+  output="$(python3 "$SCRIPT_UNDER_TEST" "$td" 2>&1)"
+  rc=$?
+  set -e
+  rm -rf "$td"
+  if [[ $rc -eq 0 ]]; then
+    fail "fenced configuration label was accepted"
+  elif [[ "$output" == *"RULE label_identifier"* ]]; then
+    pass "fenced configuration label was flagged"
+  else
+    fail "fenced configuration label missed expected rule" "$output"
+  fi
+}
+
+test_fenced_configuration_codename_passes() {
+  run_test "fenced configuration label with codename passes"
+  local td
+  td="$(make_tmpdir)"
+  {
+    printf '```yaml\n'
+    printf 'client: Client A\n'
+    printf '```\n'
+  } > "$td/SKILL.md"
+  if python3 "$SCRIPT_UNDER_TEST" "$td" >/dev/null 2>&1; then
+    pass "fenced codename label exits 0"
+  else
+    fail "fenced codename label was rejected"
+  fi
+  rm -rf "$td"
+}
+
+test_allowlist_uses_repo_relative_key_for_absolute_subtree() {
+  run_test "absolute subtree path uses repository-relative allowlist key"
+  local repo_root abs_subtree
+  repo_root="$(git -C "$SCRIPT_DIR" rev-parse --show-toplevel)"
+  abs_subtree="$repo_root/.claude/_archive/2026-10-09-l8/.claude/skills/engineering/marine-offshore"
+  if python3 "$SCRIPT_UNDER_TEST" "$abs_subtree" >/dev/null 2>&1; then
+    pass "absolute subtree exits 0"
+  else
+    fail "absolute subtree path was rejected"
+  fi
+}
+
 test_allowed_forms_pass() {
   run_test "codename, placeholder, neutral description, and structured examples pass"
   local td
@@ -83,6 +181,11 @@ test_allowed_forms_pass() {
 
 test_self_test
 test_flags_synthetic_residue
+test_public_url_and_signature_pass
+test_drive_and_share_paths_fail
+test_fenced_configuration_label_still_fails
+test_fenced_configuration_codename_passes
+test_allowlist_uses_repo_relative_key_for_absolute_subtree
 test_allowed_forms_pass
 
 echo ""

@@ -142,6 +142,6 @@ builder.add_buoyancy_section(
 ## Sub-Skills
 
 - Version Metadata
-- [[1.0.0] - 2026-01-07](100-2026-01-07/SKILL.md)
+- [1.0.0] - 2026-01-07
 - 1. Simple Catenary Analysis (+2)
 - Catenary Shape CSV

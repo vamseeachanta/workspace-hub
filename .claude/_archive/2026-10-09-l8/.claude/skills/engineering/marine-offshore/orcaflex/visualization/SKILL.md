@@ -156,7 +156,7 @@ def generate_views_parallel(
 ## Sub-Skills
 
 - Version Metadata
-- [[1.1.0] - 2026-02-23 (+1)](110-2026-02-23/SKILL.md)
+- [1.1.0] - 2026-02-23 (+1)
 - OrcaWave Mesh Export via Diffraction (+4)
 - Model Views (+1)
 - Image Outputs (+1)

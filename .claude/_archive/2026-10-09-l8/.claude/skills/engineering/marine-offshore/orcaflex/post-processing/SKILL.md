@@ -110,7 +110,7 @@ line = model["Line1"]
 ## Sub-Skills
 
 - Version Metadata
-- [[1.0.0] - 2026-01-07](100-2026-01-07/SKILL.md)
+- [1.0.0] - 2026-01-07
 - 1. Summary Statistics (+4)
 - Complete Post-Processing Configuration (+1)
 - CSV Output (+2)

@@ -49,9 +49,9 @@ This skill provides guidance on hydrodynamic diffraction/radiation analysis usin
 
 ## References
 
-- OrcaFlex Documentation: OrcaFlex documentation
-- WAMIT Manual: WAMIT manual
-- BEMRosetta: BEMRosetta project repository
+- OrcaFlex Documentation: https://www.orcina.com/webhelp/OrcaFlex/
+- WAMIT Manual: https://www.wamit.com/manual.htm
+- BEMRosetta: https://github.com/BEMRosetta/BEMRosetta
 
 ## Sub-Skills
 

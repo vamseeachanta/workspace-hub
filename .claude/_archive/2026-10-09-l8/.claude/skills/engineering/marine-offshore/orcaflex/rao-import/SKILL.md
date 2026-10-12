@@ -180,7 +180,7 @@ raw_raos = processor.import_from_aqwa("data/vessel.lis")
 ## Sub-Skills
 
 - Version Metadata
-- [[1.0.0] - 2026-01-17](100-2026-01-17/SKILL.md)
+- [1.0.0] - 2026-01-17
 - Supported Formats
 - 6-DOF Motion RAOs
 - OrcaFlex YAML Format (+2)

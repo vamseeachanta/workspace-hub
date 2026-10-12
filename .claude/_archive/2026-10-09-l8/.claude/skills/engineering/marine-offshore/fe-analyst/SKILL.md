@@ -55,7 +55,7 @@ scripts_exempt: true
 
 ## Method references
 
-These archived methods preserve the existing analysis sequence. Check applicability against the owning project's current qualified inputs, standards and accepted workflow; archive content is not current approval or readiness evidence. For the complete task-to-report route, use engineering context retrieval.
+These archived methods preserve the existing analysis sequence. Check applicability against the owning project's current qualified inputs, standards and accepted workflow; archive content is not current approval or readiness evidence. For the complete task-to-report route, use `.claude/skills/workspace-hub/agent-teams/orchestrator-routing/references/engineering-context.md`.
 
 - 1. FEA Fundamentals for Slender Structures
 - What to Document

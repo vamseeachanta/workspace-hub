@@ -139,7 +139,7 @@ converter = OrcFxAPIConverter(
   - `src/digitalmodel/solvers/orcaflex/examples_integration/batch_converter.py`
   - `src/digitalmodel/solvers/orcaflex/examples_integration/orcfxapi_converter.py`
 - OrcFxAPI Documentation
-- YAML Specification: YAML specification
+- YAML Specification: https://yaml.org/
 
 ---
 
@@ -155,7 +155,7 @@ converter = OrcFxAPIConverter(
 ## Sub-Skills
 
 - Version Metadata
-- [[1.0.0] - 2026-01-07](100-2026-01-07/SKILL.md)
+- [1.0.0] - 2026-01-07
 - OrcaFlex File Types (+1)
 - Pattern-Based Conversion (+1)
 - Conversion Report (Markdown)

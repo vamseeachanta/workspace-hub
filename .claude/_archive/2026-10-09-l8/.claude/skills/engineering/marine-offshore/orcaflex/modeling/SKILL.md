@@ -64,7 +64,7 @@ scripts_exempt: true
 
 ## References
 
-- OrcaFlex Documentation: Orcina OrcaFlex
+- OrcaFlex Documentation: [Orcina OrcaFlex](https://www.orcina.com/orcaflex/)
 - OrcFxAPI Python Guide
 - Universal Runner: `src/digitalmodel/modules/orcaflex/universal/README.md`
 - Agent Configuration: `agents/orcaflex/agent.yaml`
@@ -83,7 +83,7 @@ scripts_exempt: true
 ## Sub-Skills
 
 - Version Metadata
-- [[2.0.0] - 2026-01-07](200-2026-01-07/SKILL.md)
+- [2.0.0] - 2026-01-07
 - Domain Expertise (+3)
 - Standardized Folder Structure
 - Basic Analysis Configuration (+1)

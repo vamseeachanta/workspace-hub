@@ -127,7 +127,7 @@ report_path = analyzer.generate_comprehensive_report(
 ## Sub-Skills
 
 - Version Metadata
-- [[1.0.0] - 2026-01-17](100-2026-01-17/SKILL.md)
+- [1.0.0] - 2026-01-17
 - Operability Workflow
 - Operability Envelope Plot (+2)
 - CSV Matrix Format

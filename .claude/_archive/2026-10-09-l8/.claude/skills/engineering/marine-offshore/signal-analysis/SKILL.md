@@ -149,7 +149,7 @@ data = reader.read("data/measurements.csv")
 ## Sub-Skills
 
 - Version Metadata
-- [[1.0.0] - 2026-01-07](100-2026-01-07/SKILL.md)
+- [1.0.0] - 2026-01-07
 - 1. Rainflow Cycle Counting (ASTM E1049-85) (+4)
 - Complete Signal Analysis Workflow (+1)
 - Rainflow Cycles CSV (+2)

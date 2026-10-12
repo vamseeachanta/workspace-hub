@@ -186,7 +186,7 @@ from digitalmodel.marine_ops.marine_analysis.rao_quality_report import RAOQualit
 ## Sub-Skills
 
 - Version Metadata
-- [[1.0.0] - 2026-01-07](100-2026-01-07/SKILL.md)
+- [1.0.0] - 2026-01-07
 - 1. Coefficient Database Management (+4)
 - Wave Spectrum Types
 - Coefficient Database JSON (+1)

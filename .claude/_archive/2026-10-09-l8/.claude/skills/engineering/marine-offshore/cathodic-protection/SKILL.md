@@ -113,7 +113,7 @@ Tests: `digitalmodel/tests/specialized/cathodic_protection/`
 ## Sub-Skills
 
 - Version Metadata
-- [[1.2.0] - 2026-02-20 (+2)](120-2026-02-20/SKILL.md)
+- [1.2.0] - 2026-02-20 (+2)
 - Cathodic Protection Systems (+2)
 - Example: Ship Hull (ABS GN Ships 2018) (+3)
 - CP System Design Process

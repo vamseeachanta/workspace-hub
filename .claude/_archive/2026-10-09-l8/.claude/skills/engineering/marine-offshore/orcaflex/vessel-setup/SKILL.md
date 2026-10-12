@@ -86,7 +86,7 @@ def import_vessel_from_aqwa(
 import OrcFxAPI
 
 def configure_vessel_calculations(
-    vessel_object: OrcFxAPI.OrcaFlexObject,
+    vessel: OrcFxAPI.OrcaFlexObject,
     settings: dict
 ) -> None:
     """
@@ -137,7 +137,7 @@ def import_multi_body_system(
 ## Sub-Skills
 
 - Version Metadata
-- [[1.0.0] - 2026-01-17](100-2026-01-17/SKILL.md)
+- [1.0.0] - 2026-01-17
 - Vessel Object (+1)
 - Vessel Properties YAML
 - 1. FPSO with AQWA Hydrodynamics (+2)

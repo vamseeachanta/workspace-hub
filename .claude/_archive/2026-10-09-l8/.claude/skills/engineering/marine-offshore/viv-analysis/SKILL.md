@@ -150,7 +150,7 @@ See `references/pipeline-span-pressure-wall-precheck.md` for the session-derived
 ## Sub-Skills
 
 - Version Metadata
-- [[1.0.0] - 2026-01-07](100-2026-01-07/SKILL.md)
+- [1.0.0] - 2026-01-07
 - 1. Natural Frequency Analysis (+3)
 - Strouhal Number (+2)
 - Complete VIV Screening Workflow

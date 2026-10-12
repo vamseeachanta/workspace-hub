@@ -136,11 +136,11 @@ def complete_mooring_analysis_workflow(
 - **OrcaFlex Help**: Built-in help system (F1 in OrcaFlex)
 - **Python API Reference**: OrcaFlex installation → Python folder → OrcFxAPIDocumentation.html
 - **Example Scripts**: OrcaFlex → Examples → Python folder
-- **Orcina Website**: Orcina resources
+- **Orcina Website**: https://www.orcina.com/resources/
 ### Training and Support
 
 - **Orcina Training Courses**: Official OrcaFlex training
-- **User Forum**: Orcina user forum
+- **User Forum**: https://www.orcina.com/forums/
 - **Technical Support**: Orcina technical support (via orcina.com)
 ### Related Standards
 

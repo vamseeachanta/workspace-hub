@@ -38,7 +38,7 @@ Use hydrodynamic analysis knowledge when:
 
 ## Resources
 
-- **WAMIT User Manual**: WAMIT user manual
+- **WAMIT User Manual**: https://www.wamit.com/
 - **AQWA Documentation**: ANSYS Help System
 - **OrcaWave Manual**: Orcina documentation
 - **DNV-RP-C205**: Environmental Conditions and Environmental Loads

@@ -36,10 +36,10 @@ Use this SME knowledge when:
 
 ## Resources
 
-- **DNV Standards**: DNV standards catalog
-- **API Standards**: API standards catalog
-- **ISO Standards**: ISO standards catalog
-- **NORSOK Standards**: NORSOK standards catalog
+- **DNV Standards**: https://www.dnv.com/
+- **API Standards**: https://www.api.org/
+- **ISO Standards**: https://www.iso.org/
+- **NORSOK Standards**: https://www.standard.no/en/sectors/energi-og-klima/petroleum/norsok-standards/
 
 ---
 

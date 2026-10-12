@@ -4,6 +4,11 @@
 This file intentionally contains no real client, vessel, contractor, project,
 person, or account names. The checks use generic patterns so the public guard
 does not preserve the sensitive strings it is meant to prevent.
+
+Limit: this script cannot detect a name that stands outside a label line, such
+as prose, table cells, file names, option names, or identifiers. A clean result
+is not evidence that names are absent; a manual full read-through of the files
+is still required.
 """
 
 from __future__ import annotations
@@ -22,7 +27,7 @@ SLASH = chr(47)
 BACKSLASH = chr(92)
 
 RULES = {
-    "drive_abs": re.compile(r"[A-Za-z]:" + r"[\\/]" + r"[^\s`\"')]+"),
+    "drive_abs": re.compile(r"(?<![A-Za-z])[A-Za-z]:(?!//)" + r"[\\/]" + r"[^\s`\"')]+"),
     "unc_share": re.compile(re.escape(BACKSLASH * 2) + r"[^\\/\s]+[\\/][^\\/\s]+"),
     "home_path": re.compile(
         r"("
@@ -90,10 +95,23 @@ def allowed_label_value(value: str) -> bool:
     return False
 
 
+def is_typed_signature_parameter(label: str, value: str) -> bool:
+    stripped = value.strip()
+    if not stripped.endswith(","):
+        return False
+    if not re.fullmatch(r"[A-Za-z_][\w.]*(?:\[[^\]\n]+\])?,", stripped):
+        return False
+    return label.lower() in {"client", "vessel", "operator", "project", "contractor"}
+
+
 def rules_for_line(line: str) -> list[str]:
     matches = [name for name, pattern in RULES.items() if pattern.search(line)]
     label_match = LABEL_RE.match(line)
-    if label_match and not allowed_label_value(label_match.group(2)):
+    if (
+        label_match
+        and not is_typed_signature_parameter(label_match.group(1), label_match.group(2))
+        and not allowed_label_value(label_match.group(2))
+    ):
         matches.append("label_identifier")
     return matches
 
@@ -104,10 +122,18 @@ def iter_files(root: Path) -> list[Path]:
     return sorted(p for p in root.rglob("*") if p.is_file() and is_text_file(p))
 
 
+def repo_relative(path: Path) -> str:
+    repo_root = Path(__file__).resolve().parents[2]
+    try:
+        return path.resolve().relative_to(repo_root).as_posix()
+    except ValueError:
+        return path.as_posix()
+
+
 def scan(root: Path) -> list[tuple[Path, int, str]]:
     violations: list[tuple[Path, int, str]] = []
     for path in iter_files(root):
-        rel = path.as_posix()
+        rel = repo_relative(path)
         text = path.read_text(encoding="utf-8")
         for line_number, line in enumerate(text.splitlines(), 1):
             for rule in rules_for_line(line):
@@ -133,11 +159,13 @@ def self_test() -> int:
             print(f"self-test failed: {expected} did not fire", file=sys.stderr)
             return 1
     allowed = [
+        "public reference: https://example.org/docs",
         "client: Client A",
         "vessel: Vessel A",
         "operator: a semi-submersible operator",
         "project: <project-name>",
         "vessel: { length: 300.0 }",
+        "    vessel: OrcFxAPI.OrcaFlexObject,",
     ]
     for text in allowed:
         if rules_for_line(text):

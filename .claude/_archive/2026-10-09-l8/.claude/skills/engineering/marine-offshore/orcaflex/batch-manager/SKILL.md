@@ -37,7 +37,7 @@ scripts_exempt: true
 
 ## Operational entry point
 
-Use the execution runbook
+Use `docs/solver/orcaflex-execution-runbook.html`
 before local or remote batches. It routes to the existing execution owner and
 separates proposed controls from verified deployment. Start with a bounded case
 under the approved host budget; licence availability and CPU count do not authorize
@@ -181,6 +181,6 @@ class BatchMetrics:
 ## Sub-Skills
 
 - Version Metadata
-- [[1.0.0] - 2026-01-17](100-2026-01-17/SKILL.md)
+- [1.0.0] - 2026-01-17
 - Parallel Execution (+1)
 - Batch Results JSON (+1)

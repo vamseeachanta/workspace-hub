@@ -124,7 +124,7 @@ refiner.load_mesh("geometry/hull_coarse.gdf")
 
 ## Related Skills
 
-- [orcawave-analysis - Main diffraction analysis
+- orcawave-analysis - Main diffraction analysis
 - gmsh-meshing - Advanced mesh generation
 - freecad-automation - CAD geometry preparation
 - cad-engineering - CAD file format handling

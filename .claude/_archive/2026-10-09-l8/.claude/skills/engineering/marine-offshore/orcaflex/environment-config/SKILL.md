@@ -142,7 +142,7 @@ def configure_multi_directional_waves(
 ## Sub-Skills
 
 - Version Metadata
-- [[1.0.0] - 2026-01-17](100-2026-01-17/SKILL.md)
+- [1.0.0] - 2026-01-17
 - Wave Types (+2)
 - Environment YAML Output
 - Common Errors and Fixes (+2)

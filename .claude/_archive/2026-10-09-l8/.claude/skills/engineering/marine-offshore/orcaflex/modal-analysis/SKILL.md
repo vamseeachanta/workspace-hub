@@ -107,7 +107,7 @@ all_modes_summary_df = modal.all_file_summary["Case1"]
 ## Sub-Skills
 
 - Version Metadata
-- [[1.0.0] - 2026-01-17](100-2026-01-17/SKILL.md)
+- [1.0.0] - 2026-01-17
 - 1. Static Equilibrium → Modal Analysis
 - Mode Shapes CSV (+2)
 - DOF Percentage Calculation (+2)

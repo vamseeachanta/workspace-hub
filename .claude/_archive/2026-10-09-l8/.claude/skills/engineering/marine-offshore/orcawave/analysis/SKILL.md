@@ -163,7 +163,7 @@ mesh_sizes = [2.0, 1.5, 1.0, 0.75, 0.5]
 ## Sub-Skills
 
 - Version Metadata
-- [[1.0.0] - 2026-01-07](100-2026-01-07/SKILL.md)
+- [1.0.0] - 2026-01-07
 - Core Capabilities (+2)
 - Performance Targets
 - Standard Analysis (+1)

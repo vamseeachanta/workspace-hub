@@ -39,7 +39,7 @@ version: 1.0.0
 ## Sub-Skills
 
 - Version Metadata
-- [[1.0.0] - 2026-01-07](100-2026-01-07/SKILL.md)
+- [1.0.0] - 2026-01-07
 - CALM Buoy Systems (+2)
 - Mooring System Configuration (+3)
 - YAML Configuration

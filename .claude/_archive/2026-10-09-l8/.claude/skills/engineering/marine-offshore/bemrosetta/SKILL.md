@@ -159,9 +159,9 @@ validator = CoefficientValidator(
 
 ## References
 
-- BEMRosetta GitHub
+- [BEMRosetta GitHub](https://github.com/BEMRosetta/BEMRosetta)
 - Module README
-- OrcaFlex Documentation
+- [OrcaFlex Documentation](https://www.orcina.com/webhelp/OrcaFlex/)
 
 ## Sub-Skills
 
