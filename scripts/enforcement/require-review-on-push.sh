@@ -108,10 +108,14 @@ commit_touches_only_low_risk_paths() {
 # Check 1: scripts/review/results/ has files from today
 check_review_results() {
   local results_dir="${REPO_ROOT}/scripts/review/results"
+  local file
   if [[ -d "$results_dir" ]]; then
-    if [[ -n "$(find "$results_dir" -maxdepth 2 -type f -newermt "$TODAY 00:00:00" 2>/dev/null)" ]]; then
-      return 0
-    fi
+    while IFS= read -r file; do
+      [[ -z "$file" ]] && continue
+      if grep -qv '^Reviewed-' "$file"; then
+        return 0
+      fi
+    done < <(find "$results_dir" -maxdepth 2 -type f -newermt "$TODAY 00:00:00" 2>/dev/null)
   fi
   return 1
 }
@@ -392,6 +396,13 @@ main() {
     exit 0
   fi
 
+  if [[ "$REVIEW_GATE_EVIDENCE_MODE" != "warn" && "$REVIEW_GATE_EVIDENCE_MODE" != "strict" ]]; then
+    echo "[review-gate] ERROR: REVIEW_GATE_EVIDENCE_MODE must be warn or strict, got '${REVIEW_GATE_EVIDENCE_MODE}'." >&2
+    echo "[review-gate] BLOCKED: invalid review evidence mode."
+    log_latency "blocked"
+    exit 1
+  fi
+
   # Collect commits
   local commits get_commits_rc=0
   commits="$(get_commit_list)" || get_commits_rc=$?
@@ -452,17 +463,7 @@ main() {
   local strict_missing=()
   local legacy_missing=()
 
-  if [[ "$REVIEW_GATE_EVIDENCE_MODE" != "warn" && "$REVIEW_GATE_EVIDENCE_MODE" != "strict" ]]; then
-    echo "[review-gate] ERROR: REVIEW_GATE_EVIDENCE_MODE must be warn or strict, got '${REVIEW_GATE_EVIDENCE_MODE}'." >&2
-    log_latency "blocked"
-    exit 1
-  fi
-
   load_commit_bound_evidence reviewed_commits reviewed_ranges invalid_evidence
-  if [[ "$invalid_evidence" -ne 0 ]]; then
-    log_latency "blocked"
-    exit 1
-  fi
 
   legacy_kind="$(legacy_review_evidence_kind || true)"
 

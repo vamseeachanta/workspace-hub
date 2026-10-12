@@ -96,6 +96,35 @@ write_reviewed_range() {
   printf 'Reviewed-Range: %s..%s\n' "$start_id" "$end_id" > "scripts/review/results/range.txt"
 }
 
+invalid_evidence_value() {
+  local kind="$1"
+  local commit_id="$2"
+  case "$kind" in
+    malformed)
+      printf 'Reviewed-Bogus: %s\n' "$commit_id"
+      ;;
+    abbreviated)
+      printf 'Reviewed-Commit: %s\n' "${commit_id:0:12}"
+      ;;
+    unknown)
+      printf 'Reviewed-Commit: 1111111111111111111111111111111111111111\n'
+      ;;
+    *)
+      printf 'ERROR: unknown invalid evidence kind %s\n' "$kind" >&2
+      return 1
+      ;;
+  esac
+}
+
+write_invalid_evidence() {
+  local kind="$1"
+  local commit_id="$2"
+  local file="scripts/review/results/invalid-${kind}.txt"
+  mkdir -p scripts/review/results
+  invalid_evidence_value "$kind" "$commit_id" > "$file"
+  printf '%s\n' "$file"
+}
+
 assert_rc() {
   local name="$1"
   local expected="$2"
@@ -130,6 +159,7 @@ case_docs_only_pass() {
   head="$(git rev-parse HEAD)"
   output="$(run_gate "$head" "$base")" || rc=$?
   assert_rc "Docs/chore/ci commits pass without review" 0 "$rc" "$output"
+  assert_contains "Docs/chore/ci output contains PASS" "PASS" "$output"
 }
 
 case_feature_without_evidence_blocks() {
@@ -189,6 +219,7 @@ case_mixed_commits_block_feat() {
   assert_rc "Mixed commits block without evidence" 1 "$rc" "$output"
   assert_contains "Output lists the feat commit" "feat: implement search" "$output"
   assert_contains "Summary shows one feature commit" "1 feature/fix" "$output"
+  assert_contains "Summary shows two chore/docs/sync commits" "2 chore/docs/sync" "$output"
 }
 
 case_docs_path_supplement_passes() {
@@ -200,6 +231,7 @@ case_docs_path_supplement_passes() {
   head="$(git rev-parse HEAD)"
   output="$(run_gate "$head" "$base")" || rc=$?
   assert_rc "Docs-only feat commit passes" 0 "$rc" "$output"
+  assert_contains "Docs-only feat output contains PASS" "PASS" "$output"
 }
 
 case_latency_log_written() {
@@ -400,22 +432,109 @@ case_new_branch_feature_blocks() {
   assert_rc "New branch feature commit blocks strict mode" 1 "$rc" "$output"
 }
 
-case_malformed_evidence() {
-  run_test "Malformed evidence is rejected with diagnostics"
-  init_pair malformed
+case_invalid_evidence_warn_with_legacy() {
+  local kind="$1"
+  run_test "Invalid ${kind} evidence reports but legacy evidence still passes warn mode"
+  init_pair "invalid_${kind}_warn_legacy"
+  local base head evidence_file output rc=0
+  base="$(git rev-parse HEAD)"
+  add_commit "chore: codex adversarial review completed" "review-note.txt"
+  add_commit "feat: invalid ${kind} target" "src/${kind}.py"
+  head="$(git rev-parse HEAD)"
+  evidence_file="$(write_invalid_evidence "$kind" "$head")"
+  output="$(REVIEW_GATE_EVIDENCE_MODE=warn run_gate "$head" "$base")" || rc=$?
+  assert_rc "Invalid ${kind} plus legacy passes warn mode" 0 "$rc" "$output"
+  assert_contains "Invalid ${kind} reports INVALID-EVIDENCE" "INVALID-EVIDENCE" "$output"
+  assert_contains "Invalid ${kind} diagnostic names file and line" "${evidence_file}:1" "$output"
+  assert_contains "Invalid ${kind} warn mode reports WOULD-REJECT" "WOULD-REJECT ${head}" "$output"
+  assert_contains "Invalid ${kind} warn mode reports DEPRECATED" "DEPRECATED" "$output"
+}
+
+case_invalid_evidence_warn_without_legacy() {
+  local kind="$1"
+  run_test "Invalid ${kind} evidence does not replace missing evidence in warn mode"
+  init_pair "invalid_${kind}_warn_none"
+  local base head evidence_file output rc=0
+  base="$(git rev-parse HEAD)"
+  add_commit "feat: invalid ${kind} target" "src/${kind}.py"
+  head="$(git rev-parse HEAD)"
+  evidence_file="$(write_invalid_evidence "$kind" "$head")"
+  output="$(REVIEW_GATE_EVIDENCE_MODE=warn run_gate "$head" "$base")" || rc=$?
+  assert_rc "Invalid ${kind} without other evidence blocks in warn mode" 1 "$rc" "$output"
+  assert_contains "Invalid ${kind} reports diagnostic in warn mode" "INVALID-EVIDENCE" "$output"
+  assert_contains "Invalid ${kind} diagnostic names file and line in warn mode" "${evidence_file}:1" "$output"
+  assert_contains "Invalid ${kind} warning path reports BLOCKED" "BLOCKED" "$output"
+}
+
+case_invalid_evidence_strict_with_legacy() {
+  local kind="$1"
+  run_test "Invalid ${kind} evidence does not count in strict mode"
+  init_pair "invalid_${kind}_strict"
+  local base head evidence_file output rc=0
+  base="$(git rev-parse HEAD)"
+  add_commit "chore: codex adversarial review completed" "review-note.txt"
+  add_commit "feat: invalid ${kind} target" "src/${kind}.py"
+  head="$(git rev-parse HEAD)"
+  evidence_file="$(write_invalid_evidence "$kind" "$head")"
+  output="$(REVIEW_GATE_EVIDENCE_MODE=strict run_gate "$head" "$base")" || rc=$?
+  assert_rc "Invalid ${kind} plus legacy blocks in strict mode" 1 "$rc" "$output"
+  assert_contains "Invalid ${kind} reports diagnostic in strict mode" "INVALID-EVIDENCE" "$output"
+  assert_contains "Invalid ${kind} diagnostic names file and line in strict mode" "${evidence_file}:1" "$output"
+  assert_contains "Invalid ${kind} strict path reports BLOCKED" "BLOCKED" "$output"
+  assert_contains "Invalid ${kind} strict path lists the feature commit" "feat: invalid ${kind} target" "$output"
+}
+
+case_invalid_evidence_with_valid_commit() {
+  local mode="$1"
+  run_test "Invalid evidence beside valid Reviewed-Commit passes in ${mode} mode"
+  init_pair "invalid_valid_${mode}"
+  local base head evidence_file output rc=0
+  base="$(git rev-parse HEAD)"
+  add_commit "feat: valid target beside invalid evidence" "src/valid-${mode}.py"
+  head="$(git rev-parse HEAD)"
+  evidence_file="$(write_invalid_evidence malformed "$head")"
+  printf 'Reviewed-Commit: %s\n' "$head" >> "$evidence_file"
+  output="$(REVIEW_GATE_EVIDENCE_MODE="$mode" run_gate "$head" "$base")" || rc=$?
+  assert_rc "Valid Reviewed-Commit wins despite invalid line in ${mode} mode" 0 "$rc" "$output"
+  assert_contains "Invalid line is still diagnosed in ${mode} mode" "INVALID-EVIDENCE" "$output"
+  assert_contains "Invalid diagnostic names file and line in ${mode} mode" "${evidence_file}:1" "$output"
+}
+
+case_invalid_evidence_strict_switch_zero_matches_absent() {
+  run_test "Invalid evidence with REVIEW_GATE_STRICT=0 behaves like absent evidence"
+  init_pair invalid_strict_zero
+  local base head invalid_output absent_output invalid_rc=0 absent_rc=0 invalid_warning absent_warning
+  base="$(git rev-parse HEAD)"
+  add_commit "feat: invalid strict-zero target" "src/strict-zero.py"
+  head="$(git rev-parse HEAD)"
+  invalid_evidence_value unknown "$head" > "${TMP_ROOT}/invalid-only-line.txt"
+  mkdir -p scripts/review/results
+  cp "${TMP_ROOT}/invalid-only-line.txt" scripts/review/results/invalid-only.txt
+  invalid_output="$(REVIEW_GATE_STRICT=0 REVIEW_GATE_EVIDENCE_MODE=warn run_gate "$head" "$base")" || invalid_rc=$?
+  rm scripts/review/results/invalid-only.txt
+  absent_output="$(REVIEW_GATE_STRICT=0 REVIEW_GATE_EVIDENCE_MODE=warn run_gate "$head" "$base")" || absent_rc=$?
+  invalid_warning="$(grep 'WARNING:' <<< "$invalid_output" || true)"
+  absent_warning="$(grep 'WARNING:' <<< "$absent_output" || true)"
+  assert_rc "Invalid-only strict-zero exit matches absent evidence" "$absent_rc" "$invalid_rc" "$invalid_output"
+  if [[ "$invalid_warning" == "$absent_warning" && -n "$invalid_warning" ]]; then
+    pass "Invalid-only strict-zero WARNING text matches absent evidence"
+  else
+    fail "Invalid-only strict-zero WARNING text differs" "Invalid: ${invalid_warning}; absent: ${absent_warning}"
+  fi
+  assert_contains "Invalid-only strict-zero reports diagnostic" "INVALID-EVIDENCE" "$invalid_output"
+}
+
+case_unknown_mode_docs_only_blocks_first() {
+  run_test "Unknown REVIEW_GATE_EVIDENCE_MODE blocks before docs-only classification"
+  init_pair unknown_mode_docs
   local base head output rc=0
   base="$(git rev-parse HEAD)"
-  add_commit "feat: malformed target" "src/malformed.py"
+  add_commit "docs: mode validation still runs" "docs/mode.md"
   head="$(git rev-parse HEAD)"
-  mkdir -p scripts/review/results
-  {
-    printf 'Reviewed-Commit: abc123\n'
-    printf 'Reviewed-Commit: zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz\n'
-    printf 'Reviewed-Commit: 1111111111111111111111111111111111111111\n'
-  } > scripts/review/results/bad.txt
-  output="$(REVIEW_GATE_EVIDENCE_MODE=strict run_gate "$head" "$base")" || rc=$?
-  assert_rc "Malformed evidence exits 1" 1 "$rc" "$output"
-  assert_contains "Malformed evidence reports file and line" "INVALID-EVIDENCE" "$output"
+  output="$(REVIEW_GATE_EVIDENCE_MODE=surprise run_gate "$head" "$base")" || rc=$?
+  assert_rc "Unknown evidence mode exits 1 on docs-only push" 1 "$rc" "$output"
+  assert_contains "Unknown evidence mode prints ERROR" "ERROR: REVIEW_GATE_EVIDENCE_MODE" "$output"
+  assert_contains "Unknown evidence mode prints BLOCKED" "BLOCKED" "$output"
 }
 
 case_default_branch_absent() {
@@ -481,7 +600,15 @@ main() {
   case_amended_or_squashed_blocks
   case_partial_evidence
   case_new_branch_feature_blocks
-  case_malformed_evidence
+  for invalid_kind in malformed abbreviated unknown; do
+    case_invalid_evidence_warn_with_legacy "$invalid_kind"
+    case_invalid_evidence_warn_without_legacy "$invalid_kind"
+    case_invalid_evidence_strict_with_legacy "$invalid_kind"
+  done
+  case_invalid_evidence_with_valid_commit "warn"
+  case_invalid_evidence_with_valid_commit "strict"
+  case_invalid_evidence_strict_switch_zero_matches_absent
+  case_unknown_mode_docs_only_blocks_first
   case_default_branch_absent
   case_default_mode_line
   case_sigpipe_regression

@@ -339,8 +339,9 @@ Reviewed-Range: <oldest-full-commit-id>..<reviewed-full-commit-id>
 
 `Reviewed-Commit` names one reviewed commit with its full 40-character lowercase
 hexadecimal identifier. Abbreviated identifiers, non-hexadecimal identifiers,
-unknown commit identifiers and malformed evidence fields are rejected with the
-file and line number.
+unknown commit identifiers and malformed evidence fields are reported with the
+file and line number. The invalid line does not count as evidence; the push is
+then judged as if that line were absent in both evidence modes.
 
 `Reviewed-Range` states that the later reviewed commit covers the ancestor range
 from the oldest named commit through the reviewed commit. The later commit must
