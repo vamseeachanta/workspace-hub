@@ -673,6 +673,7 @@ config/multi-ai-workflow.yaml	claude-sonnet-4-6	4256949465:53	1
 config/multi-ai-workflow.yaml	gemini-2.5-flash	1498954112:38	1
 config/multi-ai-workflow.yaml	gpt-5.4-mini	4041284303:28	1
 config/multi-ai-workflow.yaml	gpt-5.5	1089194830:20	1
+config/scheduled-tasks/mutation-surfaces.yaml	claude-routine-mx-720-cnh-source-watch	352491524:85	1
 config/workflow-templates.json	claude-sonnet-4.5	2000370752:50	1
 config/workflow-templates.json	claude-sonnet-4.5	2807817696:43	1
 config/workflow-templates.json	claude-sonnet-4.5	2807817696:43	2
@@ -773,6 +774,9 @@ scripts/cron/gemini-nightly-batch.py	gemini-2.5-pro	1994309326:80	1
 scripts/cron/tests/test_repo_ecosystem_hygiene_audit.py	o755	1605952052:24	1
 scripts/cron/tests/test_repo_ecosystem_hygiene_audit.py	o755	3639968800:25	1
 scripts/cron/tests/test_repo_ecosystem_hygiene_audit.py	o755	3639968800:25	2
+scripts/cron/tests/test_repo_hygiene_auto_safe.py	o755	3823969138:28	1
+scripts/cron/tests/test_repo_hygiene_auto_safe.py	o755	596963214:22	1
+scripts/cron/tests/test_repo_hygiene_auto_safe.py	o755	71962003:24	1
 scripts/cron/tests/test_validate_schedule.py	o755	1193999608:21	1
 scripts/cron/tests/test_validate_schedule.py	o755	1499614182:29	1
 scripts/cron/tests/test_validate_schedule.py	o755	1605952052:24	1
@@ -819,6 +823,9 @@ scripts/gtm/tests/test_prospect_adapter.py	o05-plsv.yaml	1371672410:52	1
 scripts/gtm/tests/test_prospect_adapter.py	o05-plsv.yaml	1371672410:52	2
 scripts/gtm/tests/test_prospect_adapter.py	o05.yaml	732054841:47	1
 scripts/gtm/tests/test_prospect_adapter.py	o05.yaml	732054841:47	2
+scripts/install/disable-cnh-source-watch-timer.sh	claude-routine-mx-720-cnh-source-watch	3941761302:61	1
+scripts/install/disable-cnh-source-watch-timer.sh	claude-routine-mx-720-cnh-source-watch.service	860618362:61	1
+scripts/install/disable-cnh-source-watch-timer.sh	claude-routine-mx-720-cnh-source-watch.timer	3624938816:56	1
 scripts/launch-10-claude-planning-pack.sh	claude-2026-04-09-10pack	1052158716:50	1
 scripts/launch-claude-finalization-pack.sh	claude-finalization-2026-04-09	1588931350:65	1
 scripts/launch-claude-finalization-pack.sh	claude-finalization-2026-04-09	2092997512:56	1
