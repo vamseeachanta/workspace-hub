@@ -6,7 +6,12 @@ from pathlib import Path
 
 
 def load_checker():
-    path = Path("scripts/enforcement/check-engineering-register.py")
+    path = (
+        Path(__file__).resolve().parents[2]
+        / "scripts"
+        / "enforcement"
+        / "check-engineering-register.py"
+    )
     spec = importlib.util.spec_from_file_location("check_engineering_register", path)
     assert spec and spec.loader
     module = importlib.util.module_from_spec(spec)
@@ -61,6 +66,51 @@ def test_inline_code_span_masks_unsupported_adjective_but_prose_reports(tmp_path
     assert len(findings) == 1
     assert ":2:" in findings[0]
     assert "[R3]" in findings[0]
+
+
+def test_single_backtick_span_masks_first_person_but_prose_reports(tmp_path: Path) -> None:
+    findings = findings_for(
+        tmp_path,
+        "The token `our` is read from source text.\n"
+        "Our review records the finding.\n",
+    )
+    assert len(findings) == 1
+    assert ":2:" in findings[0]
+    assert "[R6]" in findings[0]
+
+
+# These pin unchanged behaviour: unbalanced backticks do not start masking.
+def test_lone_backtick_leaves_following_prose_checked(tmp_path: Path) -> None:
+    findings = findings_for(
+        tmp_path,
+        "The token ` source text is recorded. Our review records the finding.\n",
+    )
+    assert len(findings) == 1
+    assert ":1:" in findings[0]
+    assert "[R6]" in findings[0]
+
+
+# These pin unchanged behaviour: unbalanced backticks do not start masking.
+def test_unclosed_double_backtick_leaves_following_prose_checked(tmp_path: Path) -> None:
+    findings = findings_for(
+        tmp_path,
+        "The token `` source text is recorded.\n"
+        "Our review records the finding.\n",
+    )
+    assert len(findings) == 1
+    assert ":2:" in findings[0]
+    assert "[R6]" in findings[0]
+
+
+def test_angle_bracket_link_masks_first_person_but_prose_reports(tmp_path: Path) -> None:
+    findings = findings_for(
+        tmp_path,
+        "<https://example.net/reports/our-review>\n"
+        "Our review records the finding.\n",
+    )
+    assert len(findings) == 1
+    assert ":2:" in findings[0]
+    assert "[R6]" in findings[0]
 
 
 def test_first_person_masks_inside_url_and_code_but_not_prose(tmp_path: Path) -> None:

@@ -81,7 +81,8 @@ jobs:
       # library must reject undefined helpers and empty snapshot records.
       - name: Run shell test helper guard checks
         run: |
-          uv run python -m pytest tests/enforcement/test_check_shell_conditional_helpers.py \
+          uv run python -m pytest tests/enforcement/test_check_engineering_register.py \
+            tests/enforcement/test_check_shell_conditional_helpers.py \
             tests/enforcement/test_check_shell_conditional_helpers_scopes.py \
             tests/enforcement/test_shell_test_guards.py \
             tests/enforcement/test_no_abs_paths_ci_report.py -v --tb=short

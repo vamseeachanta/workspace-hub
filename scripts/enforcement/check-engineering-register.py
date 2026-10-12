@@ -289,8 +289,8 @@ def self_test() -> int:
             fh.write(body)
             p = Path(fh.name)
         found = len(check(p))
-        ok = (found > 0) == (expected > 0)
-        print(f"  {'PASS' if ok else 'FAIL'}  {name:24} expected {'≥1' if expected else '0'}, found {found}")
+        ok = found == expected
+        print(f"  {'PASS' if ok else 'FAIL'}  {name:24} expected {expected}, found {found}")
         failures += 0 if ok else 1
         p.unlink()
     print(f"\n{'self-test passed' if not failures else f'self-test FAILED ({failures})'}")
