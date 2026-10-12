@@ -1,0 +1,22 @@
+# Documentation examples.
+_archive/skills/automation/activepieces/README.md:generic-api-key:146
+_archive/skills/automation/activepieces/SKILL.md:curl-auth-header:1582
+_archive/skills/automation/github-actions/SKILL.md:generic-api-key:1218
+_archive/skills/automation/n8n/README.md:generic-api-key:139
+_archive/skills/automation/n8n/SKILL.md:curl-auth-header:1603
+_archive/skills/automation/windmill/SKILL.md:generic-api-key:1801
+_archive/skills/productivity/README.md:curl-auth-user:167
+docs/plans/2026-05-02-issue-2523-hermes-preflight.md:generic-api-key:223
+docs/plans/2026-10-07-workspace-hub-session-decisions.html:generic-api-key:87
+docs/reports/2026-10-02-communication-reporting-decisions.html:generic-api-key:242
+
+# Synthetic fixtures.
+scripts/legal/tests/test_rule_authority_codec.py:generic-api-key:241
+scripts/legal/tests/test_rule_authority_codec.py:generic-api-key:252
+tests/data/doc_intelligence/test_promoter_source_doc_key.py:generic-api-key:279
+tests/data/doc_intelligence/test_promoter_source_doc_key_curves_definitions.py:generic-api-key:69
+tests/data/doc_intelligence/test_promoter_source_doc_key_tables_worked_examples.py:generic-api-key:146
+tests/preflight/test_redact.py:generic-api-key:8
+tests/setup/test_emit_machine_status.sh:gcp-api-key:143
+tests/setup/test_emit_machine_status.sh:generic-api-key:143
+tests/setup/test_emit_machine_status.sh:jwt:143
