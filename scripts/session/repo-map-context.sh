@@ -3,7 +3,7 @@
 # Reads target_repos from WRK frontmatter, looks up each in repo-map.yaml.
 # Non-blocking: always exits 0. workspace-hub is gracefully skipped.
 # Usage: repo-map-context.sh [--wrk-file <path>] [--repo-map <path>]
-#        If --wrk-file omitted: auto-detects sole active WRK from working/ dir.
+#        If --wrk-file omitted: no-op; retired local WRK auto-detect is disabled.
 set -uo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -19,16 +19,9 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
-# Auto-detect active WRK if not specified
+# Auto-detect active WRK if not specified. Retired: labels are queue truth.
 if [[ -z "$WRK_FILE" ]]; then
-  WORKING_DIR="${REPO_ROOT}/.claude/work-queue/working"
-  if [[ -d "$WORKING_DIR" ]]; then
-    mapfile -t WORKING_FILES < <(find "$WORKING_DIR" -maxdepth 1 -name "WRK-*.md" 2>/dev/null | sort)
-    if [[ ${#WORKING_FILES[@]} -eq 1 ]]; then
-      WRK_FILE="${WORKING_FILES[0]}"
-    fi
-    # Multiple or zero active WRKs: silent no-op
-  fi
+  exit 0
 fi
 
 # Non-blocking: no WRK file or file missing → exit 0 silently

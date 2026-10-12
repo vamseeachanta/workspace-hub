@@ -86,17 +86,16 @@ def _set_machine(monkeypatch, machine: str):
 # ────────────────────────────────────────────────────────────────────────────
 
 
-def test_dispatch_loop_never_launches_implementation_without_approval_marker(tmp_path, monkeypatch):
+def test_dispatch_loop_launches_label_approved_implementation_without_legacy_marker(tmp_path, monkeypatch):
     cfg = _cfg(tmp_path)
     _set_machine(monkeypatch, "ace-linux-1")
-    # Card has plan-approved label BUT no marker
     card = _kanban_card(8001, approval_marker=False)
     kanban = _kanban_with([card])
 
     summary = module.run_loop(cfg, kanban, {}, dry_run=False)
 
-    assert summary["execution_ready"] == [], "issue without marker must not be leased"
-    # And nothing fell through to planning because the card stays in execution_ready lane
+    assert len(summary["execution_ready"]) == 1
+    assert summary["execution_ready"][0]["issue_number"] == 8001
     assert summary["planning_fallback"] == []
 
 

@@ -107,7 +107,7 @@ def _blocked(issue: dict[str, Any], labels: list[str], reason: str) -> dict[str,
     return action
 
 
-def _eligible_status_action(issue: dict[str, Any], labels: list[str], marker_dir: Path, lease_acquired: bool | None, worktree_clean: bool) -> dict[str, Any]:
+def _eligible_status_action(issue: dict[str, Any], labels: list[str], lease_acquired: bool | None, worktree_clean: bool) -> dict[str, Any]:
     status = _status_labels(labels)
     if len(status) != 1:
         return _blocked(issue, labels, "expected exactly one status label")
@@ -119,10 +119,6 @@ def _eligible_status_action(issue: dict[str, Any], labels: list[str], marker_dir
     if status[0] == "status:plan-review":
         action.update({"decision": "report_only", "mode": "review_candidate"})
         return action
-
-    marker = marker_dir / f"{issue.get('number')}.md"
-    if not marker.exists():
-        return _blocked(issue, labels, "missing local plan approval marker")
 
     issue_number = issue.get("number")
     lease_ref = f"refs/heads/dispatch/leases/{issue_number}-implementation"
@@ -159,7 +155,6 @@ def plan_tick(
             }
         ]
 
-    marker_dir = Path(plan_marker_dir)
     actions: list[dict[str, Any]] = []
     for issue in sorted(issues, key=_priority_key):
         labels = _label_names(issue)
@@ -174,7 +169,7 @@ def plan_tick(
         if len(provider_labels) != 1:
             actions.append(_blocked(issue, labels, "expected exactly one ai provider label"))
             continue
-        action = _eligible_status_action(issue, labels, marker_dir, lease_acquired, worktree_clean)
+        action = _eligible_status_action(issue, labels, lease_acquired, worktree_clean)
         action["provider_label"] = provider_labels[0]
         action["provider"] = _canonical_provider(provider_labels[0])
         actions.append(action)
@@ -303,7 +298,7 @@ def _print_payload(*, mode: str, host_machine_label: str, actions: list[dict[str
         "mode": mode,
         "generated_at": datetime.utcnow().isoformat(timespec="seconds") + "Z",
         "host_machine_label": host_machine_label,
-        "summary": "provider execution disabled unless approval marker, lease, and clean worktree are present",
+        "summary": "provider execution disabled unless label gates, lease, and clean worktree are present",
         "actions": actions,
     }
     print(json.dumps(_redact_payload(payload), indent=2, sort_keys=True))
@@ -312,7 +307,7 @@ def _print_payload(*, mode: str, host_machine_label: str, actions: list[dict[str
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Dry-run-first Linux cron issue orchestrator")
     parser.add_argument("--host-machine-label", required=True)
-    parser.add_argument("--plan-marker-dir", default=".planning/plan-approved")
+    parser.add_argument("--plan-marker-dir", default=".planning/plan-approved", help="Deprecated compatibility option; local approval markers are ignored")
     parser.add_argument("--issues-json", required=True, help="JSON list from gh issue list --json ...")
     parser.add_argument("--readiness-json", help="Host-local readiness JSON summary")
     parser.add_argument("--repo-root", help="Execution checkout to verify with git status --porcelain")
