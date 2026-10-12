@@ -13,13 +13,16 @@ import pytest
 # Import will work after we create the module
 SCRIPT_DIR = Path(__file__).parent.parent
 BENCHMARK_SCRIPT = SCRIPT_DIR / "benchmark_pdf_tools.py"
+REPO_ROOT = SCRIPT_DIR.parents[2]
 
 
 def find_test_pdf():
     """Find a single accessible PDF for testing."""
     candidates = [
-        Path("/mnt/local-analysis/workspace-hub/digitalmodel/docs/Padeye Design Guide TP2016-001-Rev01.pdf"),
-        Path("/mnt/local-analysis/workspace-hub/.claude/skills/_internal/builders/skill-creator/references/anthropic-complete-guide-building-skills.pdf"),
+        REPO_ROOT / "digitalmodel/docs/Padeye Design Guide TP2016-001-Rev01.pdf",
+        REPO_ROOT
+        / ".claude/_archive/2026-10-09-l8/.claude/skills/_internal/builders"
+        / "skill-creator/references/anthropic-complete-guide-building-skills.pdf",
     ]
     for p in candidates:
         if p.exists():
