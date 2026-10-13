@@ -49,7 +49,7 @@ def minimal_valid():
             "doc_id": "CALC-TEST",
             "revision": 1,
             "date": "2026-01-01",
-            "author": "Test Author",
+            "author": "A. Example",
             "status": "draft",
         },
         "inputs": [

@@ -4,7 +4,257 @@ Builds HTML sections from validated calculation data using the
 warm-parchment design system. Called by generate-calc-report.py.
 """
 import json
+import re
+from datetime import date, datetime
 from html import escape as html_escape
+
+
+# ── Supported-claim guardrails ───────────────────────────────────────────────
+ILLUSTRATIVE_EXAMPLE_LINE = (
+    "Illustrative example: values are typed inputs for demonstration, "
+    "not a project calculation."
+)
+ROLE_PLACEHOLDER_NAMES = {
+    "reviewer",
+    "checker",
+    "approver",
+    "author",
+    "tbd",
+    "n/a",
+    "none",
+    "pending",
+    "unknown",
+    "tba",
+    "tbc",
+    "to be confirmed",
+    "to-be-confirmed",
+    "assigned",
+    "qa",
+    "independent",
+    "your name",
+}
+TOOL_MODEL_PHRASES = {
+    "claude",
+    "claude code",
+    "codex",
+    "gpt",
+    "chatgpt",
+    "gpt4",
+    "gemini",
+    "copilot",
+    "python",
+    "excel",
+}
+TOOL_CONTEXT_WORDS = {
+    "anthropic",
+    "openai",
+    "github",
+    "microsoft",
+    "google",
+    "opus",
+    "sonnet",
+    "haiku",
+    "pro",
+    "flash",
+    "plus",
+    "chat",
+    "cli",
+    "code",
+    "workbook",
+    "assistant",
+}
+PRODUCER_WORDS = {
+    "auto",
+    "automated",
+    "automation",
+    "llm",
+    "engine",
+    "spreadsheet",
+    "anthropic",
+    "openai",
+    "extraction",
+    "pipeline",
+    "poc",
+    "xlsx",
+    "script",
+    "skill",
+    "generator",
+    "model",
+    "solver",
+    "bot",
+}
+WHOLE_VALUE_REFUSALS = {"ai", "na"}
+ORGANIZATION_WORDS = {
+    "engineering",
+    "team",
+    "inc",
+    "llc",
+    "ltd",
+    "group",
+    "department",
+    "company",
+    "dept",
+}
+VERSION_RE = re.compile(r"\bv?\d+\.\d+\b", re.IGNORECASE)
+KNOWN_FILE_EXTENSIONS = {
+    "bib",
+    "cjs",
+    "conf",
+    "csv",
+    "css",
+    "dat",
+    "html",
+    "inp",
+    "js",
+    "json",
+    "jsonl",
+    "md",
+    "mermaid",
+    "parquet",
+    "pdf",
+    "ps1",
+    "psm1",
+    "py",
+    "raw",
+    "sh",
+    "tex",
+    "toml",
+    "ts",
+    "tsv",
+    "tsx",
+    "txt",
+    "xlsx",
+    "xml",
+    "xsd",
+    "yaml",
+    "yml",
+}
+TOKEN_RE = re.compile(r"[^\W_]+", re.UNICODE)
+FILE_TOKEN_RE = re.compile(r"\b[\w-]+\.([A-Za-z0-9]+)\b")
+
+
+def _normalized_guard_text(value):
+    """Return lower-case text with whitespace and hyphen runs collapsed."""
+    return re.sub(r"[\s-]+", " ", value.strip().lower())
+
+
+def _has_known_file_extension(value):
+    """Return True when text contains a tracked source, data, or document suffix."""
+    return any(
+        match.group(1).lower() in KNOWN_FILE_EXTENSIONS
+        for match in FILE_TOKEN_RE.finditer(value)
+    )
+
+
+def is_printable_person_name(value):
+    """The guard is a refusal list and cannot prove that a name is a person's, so a string outside its lists is printed. Programs must not write role fields, which the tests of the two producers hold."""
+    if isinstance(value, dict):
+        value = value.get("name", "")
+    if not isinstance(value, str):
+        return False
+    name = value.strip()
+    lowered = name.lower()
+    normalized = _normalized_guard_text(name)
+    tokens = TOKEN_RE.findall(lowered)
+    normalized_tokens = TOKEN_RE.findall(normalized)
+    if not name or not any(ch.isalpha() for ch in name):
+        return False
+    if "@" in name:
+        return False
+    if any(ch.isdigit() for ch in name):
+        return False
+    if _has_known_file_extension(name):
+        return False
+    if "/" in name or "\\" in name:
+        return False
+    if VERSION_RE.search(name):
+        return False
+    if normalized in WHOLE_VALUE_REFUSALS:
+        return False
+    if normalized in ROLE_PLACEHOLDER_NAMES:
+        return False
+    if any(token in ROLE_PLACEHOLDER_NAMES for token in normalized_tokens):
+        return False
+    if "automated" in normalized:
+        return False
+    if "ai" in normalized_tokens and any(
+        token in TOOL_CONTEXT_WORDS or token in PRODUCER_WORDS
+        for token in normalized_tokens
+    ):
+        return False
+    if any(token in PRODUCER_WORDS for token in normalized_tokens):
+        return False
+    if any(token in ORGANIZATION_WORDS for token in normalized_tokens):
+        return False
+    if normalized in TOOL_MODEL_PHRASES:
+        return False
+    if any(normalized.startswith(f"{phrase} (") for phrase in TOOL_MODEL_PHRASES):
+        return False
+    has_tool_token = any(token in TOOL_MODEL_PHRASES for token in normalized_tokens)
+    if has_tool_token and len(normalized_tokens) == 1:
+        return False
+    if has_tool_token and any(token in TOOL_CONTEXT_WORDS for token in normalized_tokens):
+        return False
+    return True
+
+
+def parse_iso_date(value):
+    """Return an ISO date string, or None when the value is not an ISO date.
+
+    The standard library parser also accepts compact dates and ISO week dates
+    on newer interpreters and normalizes them to calendar-date form.
+    """
+    if isinstance(value, datetime):
+        return None
+    if isinstance(value, date):
+        return value.isoformat()
+    if not isinstance(value, str):
+        return None
+    try:
+        return date.fromisoformat(value).isoformat()
+    except ValueError:
+        return None
+
+
+def person_name(value):
+    """Extract a printable person name from a string or mapping."""
+    if isinstance(value, dict):
+        value = value.get("name", "")
+    return value.strip() if is_printable_person_name(value) else None
+
+
+def dated_role(value, fallback_date=None):
+    """Return printable role data only when a person name and ISO date exist."""
+    role_date = None
+    if isinstance(value, dict):
+        role_date = parse_iso_date(value.get("date"))
+    if role_date is None:
+        role_date = parse_iso_date(fallback_date)
+    name = person_name(value)
+    if not name or not role_date:
+        return None
+    return {"name": name, "date": role_date}
+
+
+def printable_status(meta):
+    """Return a report status only when its supporting role is printable."""
+    status = meta.get("status")
+    if status == "reviewed" and not dated_role(meta.get("reviewer")):
+        return None
+    if status == "approved" and not dated_role(meta.get("approver")):
+        return None
+    return status
+
+
+def printable_verification_status(verification):
+    """Return verification status only with a printable dated checker."""
+    status = verification.get("status")
+    if not status:
+        return None
+    checker = dated_role(verification.get("checker"), verification.get("date"))
+    if not checker:
+        return None
+    return status
 
 
 # ── KaTeX + Chart.js CDN URLs ──────────────────────────────────────────────
@@ -33,36 +283,62 @@ def pass_fail_badge(pf):
     return "—"
 
 
-def build_hero(meta, standard):
+def build_hero(meta, standard, show_notice=True):
     """Build the hero header HTML."""
-    s_cls = status_badge_class(meta["status"])
-    reviewer_html = ""
-    if meta.get("reviewer"):
-        reviewer_html = (
-            '\n        <div class="meta-chip"><strong>Reviewer</strong>'
-            f'{html_escape(meta["reviewer"])}</div>'
+    status = printable_status(meta)
+    status_html = ""
+    if status:
+        s_cls = status_badge_class(status)
+        status_html = (
+            f'\n      <div class="meta-chip"><strong>Status</strong>'
+            f'<span class="badge {s_cls}">{html_escape(status.upper())}</span></div>'
         )
+    role_html = ""
+    for key, label in (("author", "Author"), ("reviewer", "Reviewer"), ("approver", "Approver")):
+        if key == "author":
+            name = person_name(meta.get(key))
+            if name:
+                role_html += (
+                    f'\n        <div class="meta-chip"><strong>{label}</strong>'
+                    f'{html_escape(name)}</div>'
+                )
+            continue
+        role = dated_role(meta.get(key))
+        if role:
+            role_html += (
+                f'\n        <div class="meta-chip"><strong>{label}</strong>'
+                f'{html_escape(role["name"])} ({html_escape(role["date"])})</div>'
+            )
     project_html = ""
     if meta.get("project"):
         project_html = (
             '\n        <div class="meta-chip"><strong>Project</strong>'
             f'{html_escape(meta["project"])}</div>'
         )
+    notice_html = ""
+    if show_notice:
+        notice_html = (
+            f'\n    <p class="report-notice">'
+            f'{html_escape(ILLUSTRATIVE_EXAMPLE_LINE)}</p>'
+        )
 
     return f"""\
 <div class="hero">
   <div class="hero-inner">
     <div class="eyebrow">{html_escape(meta['doc_id'])}</div>
-    <h1 class="report-title">{html_escape(meta['title'])}</h1>
-    <div class="meta-chips">
-      <div class="meta-chip"><strong>Status</strong><span class="badge {s_cls}">{html_escape(meta['status'].upper())}</span></div>
+    <h1 class="report-title">{html_escape(meta['title'])}</h1>{notice_html}
+    <div class="meta-chips">{status_html}
       <div class="meta-chip"><strong>Revision</strong>{meta['revision']}</div>
-      <div class="meta-chip"><strong>Date</strong>{html_escape(meta['date'])}</div>
-      <div class="meta-chip"><strong>Author</strong>{html_escape(meta['author'])}</div>{reviewer_html}{project_html}
+      <div class="meta-chip"><strong>Date</strong>{html_escape(meta['date'])}</div>{role_html}{project_html}
       <div class="meta-chip"><strong>Standard</strong>{html_escape(standard)}</div>
     </div>
   </div>
 </div>"""
+
+
+def build_computed_hero(meta, standard):
+    """Build the hero header without the illustrative notice."""
+    return build_hero(meta, standard, show_notice=False)
 
 
 def build_inputs_card(inputs):
@@ -502,24 +778,32 @@ def build_validation_card(validation):
 
 def build_verification_card(verification):
     """Build verification card with checker record."""
-    checker = html_escape(verification["checker"])
-    date = html_escape(verification["date"])
+    date_text = parse_iso_date(verification["date"]) or str(verification["date"])
+    date = html_escape(date_text)
     method = html_escape(verification["method"])
     optional = ""
+    checker_html = ""
+    checker = dated_role(verification.get("checker"), verification.get("date"))
+    if checker:
+        checker_html = (
+            f'\n  <p><strong>Checker:</strong> '
+            f'{html_escape(checker["name"])} ({html_escape(checker["date"])})</p>'
+        )
     if verification.get("findings"):
         optional += (
             f'\n  <p><strong>Findings:</strong> '
             f'{html_escape(verification["findings"])}</p>'
         )
-    if verification.get("status"):
+    status = printable_verification_status(verification)
+    if status:
         optional += (
             f'\n  <p><strong>Status:</strong> '
-            f'{html_escape(verification["status"])}</p>'
+            f'{html_escape(status)}</p>'
         )
     return f"""\
 <div class="card">
   <h2>Verification</h2>
-  <p><strong>Checker:</strong> {checker}</p>
+  {checker_html}
   <p><strong>Date:</strong> {date}</p>
   <p><strong>Method:</strong> {method}</p>{optional}
 </div>"""
@@ -563,9 +847,10 @@ def build_assumptions_references(data):
             f'    <summary>Assumptions</summary>\n    <ol>\n{items}\n'
             f'    </ol>\n  </details>\n</div>'
         )
-    if data.get("references"):
+    references = list(data.get("references", []))
+    if references:
         items = "\n".join(
-            f"    <li>{html_escape(r)}</li>" for r in data["references"]
+            f"    <li>{html_escape(r)}</li>" for r in references
         )
         parts.append(
             f'<div class="card">\n  <details open>\n'

@@ -6,8 +6,10 @@ exemplar E2E rendering with real engineering data.
 Run: uv run --no-project python -m pytest tests/reporting/ -v
 """
 import os
+from pathlib import Path
 
 import pytest
+import yaml
 
 from conftest import REPO_ROOT
 
@@ -20,6 +22,7 @@ EXAMPLE_GEO = os.path.join(
 EXAMPLE_MC = os.path.join(
     REPO_ROOT, "examples", "reporting", "resource-estimation-monte-carlo.yaml"
 )
+SCHEMA_PATH = Path(REPO_ROOT) / "config" / "reporting" / "calculation-report-schema.yaml"
 
 
 # ── v2 fixture ────────────────────────────────────────────────────────────
@@ -189,6 +192,21 @@ class TestSchemaV2Validation:
         result = load_and_validate(minimal_valid)
         assert result["metadata"]["title"] == "Test Calc"
 
+    def test_schema_notes_state_role_guard_limit(self):
+        schema = yaml.safe_load(SCHEMA_PATH.read_text(encoding="utf-8"))
+        notes = schema["required_fields"]["metadata"]["notes"]
+
+        assert (
+            "The guard is a refusal list and cannot prove that a name is a "
+            "person's, so a string outside its lists is printed. Programs must "
+            "not write role fields, which the tests of the two producers hold."
+        ) in notes["roles"]
+        assert (
+            "Rare real names can be refused by the extension rule and by the "
+            "tool-phrase rule, such as Nguyen T.Dat, A.Ts. Example, "
+            "Jean-Claude Code, Claude Pro and Grace Engine."
+        ) in notes["roles"]
+
     def test_schema_version_defaults_to_1(self, minimal_valid):
         """When schema_version is absent, treat as v1."""
         from generate_calc_report import load_and_validate
@@ -291,11 +309,14 @@ class TestSchemaV2Validation:
         result = load_and_validate(minimal_valid)
         assert "validation" in result
 
-    def test_verification_missing_checker_raises(self, minimal_valid):
+    def test_verification_missing_checker_accepts(self, minimal_valid):
         from generate_calc_report import load_and_validate
+        from generate_calc_report import render_markdown
         minimal_valid["verification"] = {"date": "2026-01-01", "method": "hand calc"}
-        with pytest.raises(ValueError, match="checker"):
-            load_and_validate(minimal_valid)
+        result = load_and_validate(minimal_valid)
+        markdown = render_markdown(result)
+        assert "**Checker:**" not in markdown
+        assert "**Method:** hand calc" in markdown
 
     def test_verification_missing_date_raises(self, minimal_valid):
         from generate_calc_report import load_and_validate

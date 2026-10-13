@@ -49,6 +49,7 @@ class TestGenerateCalcReportYaml:
         assert "title" in md
         assert "doc_id" in md
         assert "status" in md
+        assert "author" not in md
 
     def test_has_inputs_section(self):
         from scripts.data.doc_intelligence.calc_report_from_patterns import (

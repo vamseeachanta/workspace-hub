@@ -14,6 +14,7 @@ Usage:
 """
 import argparse
 import os
+import subprocess
 import sys
 from html import escape as html_escape
 from pathlib import Path
@@ -28,15 +29,16 @@ from calc_report_html import (  # noqa: E402
     build_assumptions_references, build_calculations_card,
     build_changelog_card, build_chart_scripts, build_charts_card,
     build_conclusions_card, build_data_tables_card,
-    build_design_basis_card, build_hero, build_inputs_card,
+    build_design_basis_card, build_computed_hero, build_hero, build_inputs_card,
     build_materials_card, build_methodology_card, build_outputs_card,
     build_scope_card, build_sensitivity_card, build_validation_card,
-    build_verification_card,
+    build_verification_card, dated_role, person_name, ILLUSTRATIVE_EXAMPLE_LINE,
+    printable_status, printable_verification_status,
 )
 
 # ── Validation constants ───────────────────────────────────────────────────
 VALID_STATUSES = {"draft", "reviewed", "approved"}
-METADATA_REQUIRED = {"title", "doc_id", "revision", "date", "author", "status"}
+METADATA_REQUIRED = {"title", "doc_id", "revision", "date", "status"}
 INPUT_REQUIRED = {"name", "symbol", "value", "unit"}
 EQUATION_REQUIRED = {"id", "name", "latex", "description"}
 OUTPUT_REQUIRED = {"name", "symbol", "value", "unit"}
@@ -48,18 +50,123 @@ MATERIAL_REQUIRED = {"name", "grade", "value", "unit"}
 CALCULATION_REQUIRED = {"step", "description"}
 SENSITIVITY_REQUIRED = {"parameter", "range", "result"}
 VALIDATION_REQUIRED = set()  # all fields optional for backwards compat
-VERIFICATION_REQUIRED = {"checker", "date", "method"}
+VERIFICATION_REQUIRED = {"date", "method"}
 CONCLUSIONS_REQUIRED = {"adequacy", "governing_check"}
+SOURCE_MODULE_SUFFIXES = {
+    ".c",
+    ".cc",
+    ".cpp",
+    ".cs",
+    ".go",
+    ".java",
+    ".js",
+    ".jsx",
+    ".m",
+    ".py",
+    ".r",
+    ".rs",
+    ".ts",
+    ".tsx",
+}
 
 
 # ═══════════════════════════════════════════════════════════════════════════
 # Validation
 # ═══════════════════════════════════════════════════════════════════════════
 
-def load_and_validate(data):
+def _warn_string_roles(meta):
+    """Warn once for legacy string roles that cannot carry role dates."""
+    for key in ("reviewer", "approver"):
+        if isinstance(meta.get(key), str) and meta.get(key).strip():
+            print(
+                f"Warning: metadata.{key} as a string has no role date; omitting role.",
+                file=sys.stderr,
+            )
+
+
+def _repo_root_for_input(source_path):
+    """Find the git root for an input file, or None outside a checkout."""
+    if source_path is None:
+        return None
+    path = Path(source_path).resolve().parent
+    try:
+        result = subprocess.run(
+            ["git", "-C", str(path), "rev-parse", "--show-toplevel"],
+            check=True,
+            capture_output=True,
+            text=True,
+            env=_git_env(),
+        )
+    except (OSError, subprocess.CalledProcessError):
+        return None
+    return Path(result.stdout.strip()).resolve()
+
+
+def _git_env():
+    """Return an environment with inherited git bindings removed."""
+    return {
+        key: value for key, value in os.environ.items()
+        if key not in {"GIT_DIR", "GIT_WORK_TREE", "GIT_COMMON_DIR", "GIT_INDEX_FILE"}
+    }
+
+
+def _is_git_tracked(root, rel):
+    """Return True when a path is tracked in the input repository index."""
+    try:
+        subprocess.run(
+            ["git", "-C", str(root), "ls-files", "--error-unmatch", "--", rel],
+            check=True,
+            capture_output=True,
+            text=True,
+            env=_git_env(),
+        )
+    except (OSError, subprocess.CalledProcessError):
+        return False
+    return True
+
+
+def _validate_computed_by(meta, source_path):
+    """Validate metadata.computed_by and return repository-relative paths."""
+    if "computed_by" not in meta:
+        return []
+    value = meta["computed_by"]
+    paths = value if isinstance(value, list) else [value]
+    root = _repo_root_for_input(source_path)
+    if root is None:
+        print(
+            "Warning: metadata.computed_by not established outside a git checkout.",
+            file=sys.stderr,
+        )
+        return []
+    source_resolved = Path(source_path).resolve() if source_path else None
+    valid_paths = []
+    for item in paths:
+        if not isinstance(item, str) or not item.strip():
+            raise ValueError(f"metadata.computed_by invalid path: {item}")
+        rel = Path(item)
+        if rel.is_absolute() or ".." in rel.parts:
+            raise ValueError(f"metadata.computed_by invalid path: {item}")
+        candidate = (root / rel).resolve()
+        try:
+            candidate.relative_to(root.resolve())
+        except ValueError as exc:
+            raise ValueError(f"metadata.computed_by invalid path: {item}") from exc
+        if not candidate.is_file():
+            raise ValueError(f"metadata.computed_by missing file: {item}")
+        if source_resolved is not None and candidate == source_resolved:
+            raise ValueError(f"metadata.computed_by invalid path: {item}")
+        if candidate.suffix.lower() not in SOURCE_MODULE_SUFFIXES:
+            raise ValueError(f"metadata.computed_by invalid path: {item}")
+        if not _is_git_tracked(root, item):
+            raise ValueError(f"metadata.computed_by untracked path: {item}")
+        valid_paths.append(item)
+    return valid_paths
+
+
+def load_and_validate(data, source_path=None):
     """Validate a calculation data dict against the schema.
 
-    Returns the validated data dict unchanged.
+    Returns the validated data dict with internal rendering keys added.
     Raises ValueError if required fields are missing or invalid.
     """
     if not isinstance(data, dict):
@@ -68,6 +175,8 @@ def load_and_validate(data):
     if "metadata" not in data:
         raise ValueError("Missing required section: metadata")
     meta = data["metadata"]
+    _warn_string_roles(meta)
+    data["_computed_by"] = _validate_computed_by(meta, source_path)
     for field in METADATA_REQUIRED:
         if field not in meta:
             raise ValueError(f"Missing required metadata field: {field}")
@@ -194,12 +303,25 @@ def render_markdown(data):
 
     # Title block
     lines.append(f"# {meta['title']}")
-    parts = [f"**{meta['doc_id']}**", f"Rev {meta['revision']}",
-             meta["date"], meta["author"]]
-    if meta.get("reviewer"):
-        parts.append(f"Reviewer: {meta['reviewer']}")
+    if not data.get("_computed_by"):
+        lines.append(ILLUSTRATIVE_EXAMPLE_LINE)
+    parts = [f"**{meta['doc_id']}**", f"Rev {meta['revision']}", meta["date"]]
+    author = person_name(meta.get("author"))
+    if author:
+        parts.append(f"Author: {author}")
+    for key, label in (("reviewer", "Reviewer"), ("approver", "Approver")):
+        role = dated_role(meta.get(key))
+        if role:
+            parts.append(f"{label}: {role['name']} ({role['date']})")
     lines.append(" | ".join(parts))
-    lines.append(f"\n**Status:** {meta['status'].upper()}")
+    status = printable_status(meta)
+    if status:
+        lines.append(f"\n**Status:** {status.upper()}")
+    elif meta.get("status") in {"reviewed", "approved"}:
+        print(
+            "Warning: metadata.status omitted because its role is not printable.",
+            file=sys.stderr,
+        )
     if meta.get("project"):
         lines.append(f"**Project:** {meta['project']}")
     std = data.get("methodology", {}).get("standard", "")
@@ -352,13 +474,21 @@ def render_markdown(data):
     if data.get("verification"):
         ver = data["verification"]
         lines.append("## Verification")
-        lines.append(f"**Checker:** {ver['checker']}")
+        checker = dated_role(ver.get("checker"), ver.get("date"))
+        if checker:
+            lines.append(f"**Checker:** {checker['name']} ({checker['date']})")
         lines.append(f"\n**Date:** {ver['date']}")
         lines.append(f"\n**Method:** {ver['method']}")
         if ver.get("findings"):
             lines.append(f"\n**Findings:** {ver['findings']}")
-        if ver.get("status"):
-            lines.append(f"\n**Status:** {ver['status']}")
+        status = printable_verification_status(ver)
+        if status:
+            lines.append(f"\n**Status:** {status}")
+        elif ver.get("status"):
+            print(
+                "Warning: verification.status omitted because checker is not printable.",
+                file=sys.stderr,
+            )
         lines.append("")
 
     # Conclusions (v2 optional)
@@ -383,9 +513,10 @@ def render_markdown(data):
         lines.append("")
 
     # References
-    if data.get("references"):
+    references = list(data.get("references", []))
+    if references:
         lines.append("## References")
-        for i, r in enumerate(data["references"], 1):
+        for i, r in enumerate(references, 1):
             lines.append(f"{i}. {r}")
         lines.append("")
 
@@ -410,7 +541,10 @@ def render_html(data, markdown_str):
     standard = data["methodology"]["standard"]
     charts = data.get("charts", [])
 
-    hero = build_hero(meta, standard)
+    hero = (
+        build_computed_hero(meta, standard)
+        if data.get("_computed_by") else build_hero(meta, standard)
+    )
     scope_card = build_scope_card(data["scope"]) if data.get("scope") else ""
     design_basis_card = (
         build_design_basis_card(data["design_basis"])
@@ -539,7 +673,7 @@ def generate_report(yaml_path, fmt="html", output_path=None):
     with open(yaml_path) as f:
         data = yaml.safe_load(f)
 
-    data = load_and_validate(data)
+    data = load_and_validate(data, source_path=yaml_path)
     md = render_markdown(data)
 
     if output_path is None:
