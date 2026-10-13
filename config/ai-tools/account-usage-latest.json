@@ -8,22 +8,22 @@
           "resets_at": null
         },
         "five_hour": {
-          "pct": 14.0,
-          "resets_at": "2026-10-13T02:19:59.799675+00:00"
+          "pct": 5.0,
+          "resets_at": "2026-10-13T07:20:00.460541+00:00"
         },
         "iguana_necktie": {
           "pct": 6.0,
           "resets_at": "2026-11-05T07:59:00+00:00"
         },
         "seven_day": {
-          "pct": 35.0,
-          "resets_at": "2026-10-17T13:59:59.799709+00:00"
+          "pct": 36.0,
+          "resets_at": "2026-10-17T14:00:00.460561+00:00"
         }
       },
-      "captured_at": "2026-10-13T02:14:02+00:00",
+      "captured_at": "2026-10-13T03:13:54+00:00",
       "fingerprint": "78d7e174f2d1",
-      "five_hour_pct": 14.0,
-      "headroom_pct": 65.0,
+      "five_hour_pct": 5.0,
+      "headroom_pct": 64.0,
       "holder": "owner",
       "hosts": [
         "ace-linux-1",
@@ -35,13 +35,14 @@
       "reachable_hosts": [
         "ace-linux-1",
         "ace-linux-2",
-        "ace-win-2"
+        "ace-win-2",
+        "gpu-claw"
       ],
       "sampled_on": "ace-win-2",
       "source": "oauth-api",
       "tier": "default_claude_max_20x",
-      "week_pct": 35.0,
-      "week_resets_at": "2026-10-17T13:59:59.799709+00:00"
+      "week_pct": 36.0,
+      "week_resets_at": "2026-10-17T14:00:00.460561+00:00"
     },
     "claude-professional": {
       "access": "limited",
@@ -51,8 +52,8 @@
           "resets_at": null
         },
         "five_hour": {
-          "pct": 0.0,
-          "resets_at": "2026-10-13T04:30:00.144768+00:00"
+          "pct": 1.0,
+          "resets_at": "2026-10-13T04:30:00.010703+00:00"
         },
         "iguana_necktie": {
           "pct": 0.0,
@@ -60,12 +61,12 @@
         },
         "seven_day": {
           "pct": 15.0,
-          "resets_at": "2026-10-17T08:00:00.144796+00:00"
+          "resets_at": "2026-10-17T08:00:00.010729+00:00"
         }
       },
-      "captured_at": "2026-10-13T02:14:07+00:00",
+      "captured_at": "2026-10-13T03:13:56+00:00",
       "fingerprint": "c0c130b8018b",
-      "five_hour_pct": 0.0,
+      "five_hour_pct": 1.0,
       "headroom_pct": 85.0,
       "holder": "colleague",
       "hosts": [
@@ -79,15 +80,15 @@
       "source": "oauth-api",
       "tier": "default_claude_max_20x",
       "week_pct": 15.0,
-      "week_resets_at": "2026-10-17T08:00:00.144796+00:00"
+      "week_resets_at": "2026-10-17T08:00:00.010729+00:00"
     },
     "codex-owner": {
       "access": "full",
       "buckets": null,
-      "captured_at": "2026-10-13T02:14:02+00:00",
+      "captured_at": "2026-10-13T03:13:54+00:00",
       "fingerprint": "78d7e174f2d1",
       "five_hour_pct": null,
-      "headroom_pct": 52.0,
+      "headroom_pct": 51.0,
       "holder": "owner",
       "hosts": [
         "ace-linux-1",
@@ -101,21 +102,22 @@
         "ace-linux-1",
         "ace-linux-2",
         "ace-win-2",
-        "fleet-collector"
+        "fleet-collector",
+        "gpu-claw"
       ],
       "sampled_on": "ace-win-2",
       "source": "app-server-live",
       "tier": "pro",
-      "week_pct": 48,
+      "week_pct": 49,
       "week_resets_at": "2026-10-18T12:05:07+00:00"
     },
     "codex-professional": {
       "access": "limited",
       "buckets": null,
-      "captured_at": "2026-10-13T02:14:07+00:00",
+      "captured_at": "2026-10-13T03:13:56+00:00",
       "fingerprint": "c0c130b8018b",
       "five_hour_pct": null,
-      "headroom_pct": 83.0,
+      "headroom_pct": 80.0,
       "holder": "colleague",
       "hosts": [
         "ace-win-1"
@@ -127,11 +129,11 @@
       "sampled_on": "ace-win-1",
       "source": "app-server-live",
       "tier": "pro",
-      "week_pct": 17,
+      "week_pct": 20,
       "week_resets_at": "2026-10-18T21:10:03+00:00"
     }
   },
-  "generated_at": "2026-10-13T02:13:37+00:00",
+  "generated_at": "2026-10-13T03:13:28+00:00",
   "generated_by": "fleet-collector collect_account_usage_fleet",
   "hosts": {
     "ace-linux-1": {
@@ -139,7 +141,7 @@
         "claude": "claude-owner",
         "codex": "codex-owner"
       },
-      "captured_at": "2026-10-13T02:13:14+00:00",
+      "captured_at": "2026-10-13T03:13:12+00:00",
       "fingerprints": {
         "claude": "78d7e174f2d1",
         "codex": "78d7e174f2d1"
@@ -154,7 +156,7 @@
         "claude": "claude-owner",
         "codex": "codex-owner"
       },
-      "captured_at": "2026-10-13T02:13:16+00:00",
+      "captured_at": "2026-10-13T03:13:13+00:00",
       "fingerprints": {
         "claude": "78d7e174f2d1",
         "codex": "78d7e174f2d1"
@@ -169,7 +171,7 @@
         "claude": "claude-professional",
         "codex": "codex-professional"
       },
-      "captured_at": "2026-10-13T02:14:07+00:00",
+      "captured_at": "2026-10-13T03:13:56+00:00",
       "fingerprints": {
         "claude": "c0c130b8018b",
         "codex": "c0c130b8018b"
@@ -181,7 +183,7 @@
         "claude": "claude-owner",
         "codex": "codex-owner"
       },
-      "captured_at": "2026-10-13T02:14:02+00:00",
+      "captured_at": "2026-10-13T03:13:54+00:00",
       "fingerprints": {
         "claude": "78d7e174f2d1",
         "codex": "78d7e174f2d1"
@@ -192,7 +194,7 @@
       "accounts": {
         "codex": "codex-owner"
       },
-      "captured_at": "2026-10-13T02:13:34+00:00",
+      "captured_at": "2026-10-13T03:13:24+00:00",
       "fingerprints": {
         "codex": "78d7e174f2d1"
       },
@@ -206,8 +208,15 @@
         "claude": "claude-owner",
         "codex": "codex-owner"
       },
-      "note": "exit 255",
-      "reachable": false
+      "captured_at": "2026-10-13T03:13:15+00:00",
+      "fingerprints": {
+        "claude": "78d7e174f2d1",
+        "codex": "78d7e174f2d1"
+      },
+      "reachable": true,
+      "unavailable": {
+        "claude": "access token expired; a Claude Code session on this host will refresh it"
+      }
     }
   },
   "policy": {
@@ -219,7 +228,7 @@
       "account": "claude-professional",
       "alternative": {
         "account": "claude-owner",
-        "headroom_pct": 65.0
+        "headroom_pct": 64.0
       },
       "headroom_pct": 85.0,
       "hosts": [
@@ -230,14 +239,16 @@
       "account": "codex-professional",
       "alternative": {
         "account": "codex-owner",
-        "headroom_pct": 52.0
+        "headroom_pct": 51.0
       },
-      "headroom_pct": 83.0,
+      "headroom_pct": 80.0,
       "hosts": [
         "ace-win-1"
       ]
     }
   },
   "schema_version": 1,
-  "warnings": []
+  "warnings": [
+    "gpu-claw: codex sample's weekly window reset at 2026-09-19T11:46:38+00:00; ignored"
+  ]
 }
