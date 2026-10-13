@@ -58,6 +58,7 @@ jobs:
         run: |
           # Hub-level Python tests (no PYTHONPATH manipulation needed)
           uv run python -m pytest tests/test_deduplication_fix.py \
+            tests/quality/test_gitleaks_config.py \
             -v --tb=short --noconftest
 
       # CI smoke tests for #2532 regression guards (workspace_hub importability,
