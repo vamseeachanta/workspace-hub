@@ -182,6 +182,62 @@ def test_verification_without_checker_builds():
 
 
 @pytest.mark.parametrize(
+    "verification",
+    [
+        {
+            "checker": "solver v2.21",
+            "date": "2026-02-01",
+            "method": "Synthetic comparison",
+            "findings": "Synthetic findings.",
+            "status": "PASS",
+        },
+        {
+            "date": "2026-02-01",
+            "method": "Synthetic comparison",
+            "findings": "Synthetic findings.",
+            "status": "free text review status",
+        },
+    ],
+)
+def test_verification_status_without_printed_checker_is_omitted(verification, capsys):
+    data = _base_data()
+    data["verification"] = verification
+
+    markdown, html = _render_both(data)
+
+    assert "**Checker:**" not in markdown
+    assert "<strong>Checker:</strong>" not in html
+    assert "Synthetic comparison" in markdown
+    assert "Synthetic comparison" in html
+    assert "Synthetic findings." in markdown
+    assert "Synthetic findings." in html
+    assert f"**Status:** {verification['status']}" not in markdown
+    assert f"<strong>Status:</strong> {html_escape(verification['status'])}" not in html
+    warning = capsys.readouterr().err
+    assert warning.count("verification.status") == 1
+    assert verification["status"] not in warning
+
+
+def test_verification_status_with_printed_checker_is_printed(capsys):
+    data = _base_data()
+    data["verification"] = {
+        "checker": "C. Example",
+        "date": "2026-02-01",
+        "method": "Synthetic comparison",
+        "findings": "Synthetic findings.",
+        "status": "free text review status",
+    }
+
+    markdown, html = _render_both(data)
+
+    assert "**Checker:** C. Example (2026-02-01)" in markdown
+    assert "<strong>Checker:</strong> C. Example (2026-02-01)" in html
+    assert "**Status:** free text review status" in markdown
+    assert "<strong>Status:</strong> free text review status" in html
+    assert capsys.readouterr().err == ""
+
+
+@pytest.mark.parametrize(
     "author",
     [
         "Generator (automated)",

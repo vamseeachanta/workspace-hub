@@ -240,24 +240,14 @@ def printable_status(meta):
     return status
 
 
-COMPLETED_VERIFICATION_STATUSES = {
-    "approved",
-    "complete",
-    "completed",
-    "passed",
-    "verified",
-}
-
-
 def printable_verification_status(verification):
-    """Return verification status unless it asserts completion without checker."""
+    """Return verification status only with a printable dated checker."""
     status = verification.get("status")
     if not status:
         return None
-    if str(status).lower() in COMPLETED_VERIFICATION_STATUSES:
-        checker = dated_role(verification.get("checker"), verification.get("date"))
-        if not checker:
-            return None
+    checker = dated_role(verification.get("checker"), verification.get("date"))
+    if not checker:
+        return None
     return status
 
 
