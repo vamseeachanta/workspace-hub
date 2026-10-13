@@ -8,8 +8,9 @@ useDefault = true
 [allowlist]
 description = "Known false positives"
 paths = [
+  # Scanner configuration file; exact self-reference only.
   '''^\.gitleaks\.toml$''',
-  '''^scripts/security/tests/''',
+  # Scanner harness fixture; exact file only.
   '''^tests/quality/test_secrets_scan\.sh$''',
   # Mirrored reference file; upstream examples are not repository credentials.
   '''^\.agents/skills/mlops/training/unsloth/references/llms\-full\.md$''',

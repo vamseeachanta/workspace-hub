@@ -7,6 +7,11 @@ import re
 
 ROOT = Path(__file__).resolve().parents[2]
 FINGERPRINT_RE = re.compile(r"^[^:\n]+:[a-z0-9][a-z0-9-]*:\d+$")
+ALLOWED_DIRECTORY_PATHS = {
+    # Vendored static test assets; not authored repository code.
+    r"^pylib/youtube_transcript_api/test/assets/",
+}
+WILDCARD_CHARS = {"[", "(", "|", "?"}
 
 
 def _load_config(text: str) -> dict:
@@ -47,15 +52,31 @@ def _path_is_directory_prefix(pattern: str) -> bool:
     return pattern.endswith("/") and not pattern.endswith("$")
 
 
+def _contains_unescaped_wildcard(pattern: str) -> bool:
+    escaped = False
+    for index, char in enumerate(pattern):
+        if escaped:
+            escaped = False
+            continue
+        if char == "\\":
+            escaped = True
+            continue
+        if char == "." and index + 1 < len(pattern) and pattern[index + 1] in {"*", "+"}:
+            return True
+        if char in WILDCARD_CHARS:
+            return True
+    return False
+
+
 def _assert_path_allowlist_is_narrow(paths: list[str]) -> None:
     for pattern in paths:
         if not pattern.startswith("^"):
             raise AssertionError(f"path allow-list entry is not anchored: {pattern}")
-        if pattern.startswith("^.*"):
-            raise AssertionError(f"path allow-list entry is an extension pattern: {pattern}")
+        if _contains_unescaped_wildcard(pattern):
+            raise AssertionError(f"path allow-list entry contains wildcard syntax: {pattern}")
         if _path_is_directory_prefix(pattern):
-            if pattern[1:].count("/") < 2:
-                raise AssertionError(f"path allow-list entry is too broad: {pattern}")
+            if pattern not in ALLOWED_DIRECTORY_PATHS:
+                raise AssertionError(f"path allow-list directory is not approved: {pattern}")
         elif not pattern.endswith("$"):
             raise AssertionError(f"single-file path allow-list is not exact: {pattern}")
 
@@ -158,7 +179,7 @@ def test_gitleaks_path_allowlist_rejects_bare_top_level_directory() -> None:
     try:
         _assert_path_allowlist_is_narrow(["^docs/"])
     except AssertionError as exc:
-        assert "too broad" in str(exc)
+        assert "not approved" in str(exc)
     else:
         raise AssertionError("bare top-level directory allow-list entry was accepted")
 
@@ -167,14 +188,104 @@ def test_gitleaks_path_allowlist_rejects_extension_pattern() -> None:
     try:
         _assert_path_allowlist_is_narrow([r"^.*\.pem$"])
     except AssertionError as exc:
-        assert "extension pattern" in str(exc)
+        assert "wildcard" in str(exc)
     else:
         raise AssertionError("extension path allow-list entry was accepted")
+
+
+def test_gitleaks_path_allowlist_rejects_wildcard_exact_file() -> None:
+    try:
+        _assert_path_allowlist_is_narrow([r"^.+$"])
+    except AssertionError as exc:
+        assert "wildcard" in str(exc)
+    else:
+        raise AssertionError("wildcard exact-file allow-list entry was accepted")
+
+
+def test_gitleaks_path_allowlist_rejects_wildcard_file_pattern() -> None:
+    try:
+        _assert_path_allowlist_is_narrow([r"^src/.*\.py$"])
+    except AssertionError as exc:
+        assert "wildcard" in str(exc)
+    else:
+        raise AssertionError("wildcard file allow-list entry was accepted")
+
+
+def test_gitleaks_path_allowlist_rejects_unapproved_directory() -> None:
+    try:
+        _assert_path_allowlist_is_narrow([r"^docs/plans/"])
+    except AssertionError as exc:
+        assert "not approved" in str(exc)
+    else:
+        raise AssertionError("unapproved directory allow-list entry was accepted")
+
+
+def test_gitleaks_path_allowlist_rejects_unescaped_dot_star() -> None:
+    try:
+        _assert_path_allowlist_is_narrow([r"^docs/.*$"])
+    except AssertionError as exc:
+        assert "wildcard" in str(exc)
+    else:
+        raise AssertionError("unescaped dot-star allow-list entry was accepted")
+
+
+def test_gitleaks_path_allowlist_rejects_unescaped_dot_plus() -> None:
+    try:
+        _assert_path_allowlist_is_narrow([r"^docs/.+$"])
+    except AssertionError as exc:
+        assert "wildcard" in str(exc)
+    else:
+        raise AssertionError("unescaped dot-plus allow-list entry was accepted")
+
+
+def test_gitleaks_path_allowlist_rejects_unescaped_bracket() -> None:
+    try:
+        _assert_path_allowlist_is_narrow([r"^docs/[abc]$"])
+    except AssertionError as exc:
+        assert "wildcard" in str(exc)
+    else:
+        raise AssertionError("unescaped bracket allow-list entry was accepted")
+
+
+def test_gitleaks_path_allowlist_rejects_unescaped_parenthesis() -> None:
+    try:
+        _assert_path_allowlist_is_narrow([r"^docs/(abc)$"])
+    except AssertionError as exc:
+        assert "wildcard" in str(exc)
+    else:
+        raise AssertionError("unescaped parenthesis allow-list entry was accepted")
+
+
+def test_gitleaks_path_allowlist_rejects_unescaped_pipe() -> None:
+    try:
+        _assert_path_allowlist_is_narrow([r"^docs/a|b$"])
+    except AssertionError as exc:
+        assert "wildcard" in str(exc)
+    else:
+        raise AssertionError("unescaped pipe allow-list entry was accepted")
+
+
+def test_gitleaks_path_allowlist_rejects_unescaped_question_mark() -> None:
+    try:
+        _assert_path_allowlist_is_narrow([r"^docs/a?$"])
+    except AssertionError as exc:
+        assert "wildcard" in str(exc)
+    else:
+        raise AssertionError("unescaped question mark allow-list entry was accepted")
+
+
+def test_gitleaks_path_allowlist_accepts_escaped_exact_file() -> None:
+    _assert_path_allowlist_is_narrow([r"^docs/example\.md$"])
+
+
+def test_gitleaks_path_allowlist_accepts_vendored_static_assets() -> None:
+    _assert_path_allowlist_is_narrow([r"^pylib/youtube_transcript_api/test/assets/"])
 
 
 def test_gitleaksignore_contains_only_fingerprints() -> None:
     ignore_path = ROOT / ".gitleaksignore"
     if not ignore_path.exists():
+        # Older branches can omit the file; only validate it when present.
         return
 
     _assert_gitleaksignore_fingerprints(ignore_path.read_text(encoding="utf-8"))
