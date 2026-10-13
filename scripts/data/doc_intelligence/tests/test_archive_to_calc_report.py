@@ -114,8 +114,9 @@ class TestRequiredSections:
     def test_metadata_has_required_fields(self):
         result = convert_archive_to_calc_report(MINIMAL_ARCHIVE)
         meta = result["metadata"]
-        for field in ["title", "doc_id", "revision", "date", "author", "status"]:
+        for field in ["title", "doc_id", "revision", "date", "status"]:
             assert field in meta, f"Missing metadata field: {field}"
+        assert "author" not in meta
 
     def test_metadata_status_is_draft(self):
         result = convert_archive_to_calc_report(MINIMAL_ARCHIVE)
@@ -299,8 +300,9 @@ class TestYamlRoundtrip:
         for s in ["metadata", "inputs", "methodology", "outputs",
                    "assumptions", "references"]:
             assert s in result, f"Missing: {s}"
-        for f in ["title", "doc_id", "revision", "date", "author", "status"]:
+        for f in ["title", "doc_id", "revision", "date", "status"]:
             assert f in result["metadata"], f"Missing metadata.{f}"
+        assert "author" not in result["metadata"]
         assert "standard" in result["methodology"]
         assert "equations" in result["methodology"]
         for eq in result["methodology"]["equations"]:

@@ -39,6 +39,8 @@ HERO_CSS = """\
   color:var(--accent);font-weight:700;margin:0 0 6px;}
 h1.report-title{margin:0 0 8px;font-size:clamp(1.6rem,3vw,2.4rem);line-height:1.1;}
 .lede{color:var(--muted);font-size:.92rem;margin:0 0 14px;max-width:72ch;}
+.report-notice{color:var(--muted);font-size:.88rem;font-weight:400;margin:4px 0 12px;
+  max-width:72ch;}
 """
 
 # ── Meta chips ──────────────────────────────────────────────────────────────

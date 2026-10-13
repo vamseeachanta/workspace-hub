@@ -84,7 +84,6 @@ def convert_archive_to_calc_report(archive: dict, max_equations: int = 100) -> d
         "doc_id": _doc_id_from_subcategory(subcategory),
         "revision": 1,
         "date": extracted_date,
-        "author": "XLSX Auto-Extraction (WRK-1247)",
         "status": "draft",
     }
 

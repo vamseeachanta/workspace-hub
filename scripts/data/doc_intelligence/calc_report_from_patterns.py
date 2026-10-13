@@ -46,7 +46,6 @@ def generate_calc_report_yaml(
         "doc_id": f"XLSX-POC-V2-{stem}",
         "revision": 1,
         "date": str(date.today()),
-        "author": "xlsx-poc-v2 pipeline",
         "status": "draft",
     }
 

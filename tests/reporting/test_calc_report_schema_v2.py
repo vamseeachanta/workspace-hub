@@ -293,9 +293,12 @@ class TestSchemaV2Validation:
 
     def test_verification_missing_checker_accepts(self, minimal_valid):
         from generate_calc_report import load_and_validate
+        from generate_calc_report import render_markdown
         minimal_valid["verification"] = {"date": "2026-01-01", "method": "hand calc"}
         result = load_and_validate(minimal_valid)
-        assert "checker" not in result["verification"]
+        markdown = render_markdown(result)
+        assert "**Checker:**" not in markdown
+        assert "**Method:** hand calc" in markdown
 
     def test_verification_missing_date_raises(self, minimal_valid):
         from generate_calc_report import load_and_validate

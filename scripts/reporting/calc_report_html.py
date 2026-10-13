@@ -5,7 +5,7 @@ warm-parchment design system. Called by generate-calc-report.py.
 """
 import json
 import re
-from datetime import date
+from datetime import date, datetime
 from html import escape as html_escape
 
 
@@ -15,7 +15,6 @@ ILLUSTRATIVE_EXAMPLE_LINE = (
     "not a project calculation."
 )
 ROLE_PLACEHOLDER_NAMES = {
-    "independent reviewer",
     "reviewer",
     "checker",
     "approver",
@@ -25,16 +24,34 @@ ROLE_PLACEHOLDER_NAMES = {
     "none",
     "pending",
     "unknown",
+    "tbc",
+    "to be confirmed",
+    "to-be-confirmed",
+    "qa",
+    "independent",
 }
-TOOL_MODEL_WORDS = {
+TOOL_MODEL_PHRASES = {
     "claude",
+    "claude code",
     "codex",
     "gpt",
+    "chatgpt",
+    "gpt4",
     "gemini",
     "copilot",
+    "python",
+    "excel",
+}
+PRODUCER_WORDS = {
+    "auto",
+    "extraction",
+    "pipeline",
+    "poc",
+    "xlsx",
     "script",
     "skill",
     "generator",
+    "model",
     "solver",
     "bot",
 }
@@ -47,38 +64,65 @@ ORGANIZATION_WORDS = {
     "group",
     "department",
     "company",
+    "dept",
 }
 VERSION_RE = re.compile(r"\bv?\d+\.\d+\b", re.IGNORECASE)
+FILE_EXTENSION_RE = re.compile(r"\b[\w-]+\.[A-Za-z]{1,8}\b")
+TOKEN_RE = re.compile(r"[^\W_]+", re.UNICODE)
 
 
 def is_printable_person_name(value):
-    """Return True when a role name is not plainly a non-person value."""
+    """Return True when a refusal list does not show a non-person value."""
     if isinstance(value, dict):
         value = value.get("name", "")
     if not isinstance(value, str):
         return False
     name = value.strip()
     lowered = name.lower()
-    if not name or not re.search(r"[A-Za-z0-9]", name):
+    tokens = TOKEN_RE.findall(lowered)
+    if not name or not any(ch.isalpha() for ch in name):
         return False
-    if lowered in ROLE_PLACEHOLDER_NAMES:
+    if "@" in name:
         return False
-    if "automated" in lowered or "(auto" in lowered:
+    if any(ch.isdigit() for ch in name):
         return False
-    if VERSION_RE.search(name):
+    if FILE_EXTENSION_RE.search(name):
         return False
     if "/" in name or "\\" in name:
         return False
-    words = set(re.findall(r"[a-z0-9]+", lowered))
-    if words & TOOL_MODEL_WORDS:
+    if VERSION_RE.search(name):
         return False
-    if words & ORGANIZATION_WORDS:
+    if lowered in ROLE_PLACEHOLDER_NAMES:
+        return False
+    if any(token in ROLE_PLACEHOLDER_NAMES for token in tokens):
+        return False
+    if any(token in PRODUCER_WORDS for token in tokens):
+        return False
+    if any(token in ORGANIZATION_WORDS for token in tokens):
+        return False
+    if lowered in TOOL_MODEL_PHRASES:
+        return False
+    if any(lowered.startswith(f"{phrase} (") for phrase in TOOL_MODEL_PHRASES):
+        return False
+    if any(token in TOOL_MODEL_PHRASES for token in tokens) and len(tokens) == 1:
+        return False
+    if any(token in TOOL_MODEL_PHRASES for token in tokens) and any(
+        token in PRODUCER_WORDS for token in tokens
+    ):
         return False
     return True
 
 
 def parse_iso_date(value):
-    """Return an ISO date string, or None when the value is not an ISO date."""
+    """Return an ISO date string, or None when the value is not an ISO date.
+
+    The standard library parser also accepts compact dates and ISO week dates
+    on newer interpreters and normalizes them to calendar-date form.
+    """
+    if isinstance(value, datetime):
+        return None
+    if isinstance(value, date):
+        return value.isoformat()
     if not isinstance(value, str):
         return None
     try:
@@ -107,6 +151,37 @@ def dated_role(value, fallback_date=None):
     return {"name": name, "date": role_date}
 
 
+def printable_status(meta):
+    """Return a report status only when its supporting role is printable."""
+    status = meta.get("status")
+    if status == "reviewed" and not dated_role(meta.get("reviewer")):
+        return None
+    if status == "approved" and not dated_role(meta.get("approver")):
+        return None
+    return status
+
+
+COMPLETED_VERIFICATION_STATUSES = {
+    "approved",
+    "complete",
+    "completed",
+    "passed",
+    "verified",
+}
+
+
+def printable_verification_status(verification):
+    """Return verification status unless it asserts completion without checker."""
+    status = verification.get("status")
+    if not status:
+        return None
+    if str(status).lower() in COMPLETED_VERIFICATION_STATUSES:
+        checker = dated_role(verification.get("checker"), verification.get("date"))
+        if not checker:
+            return None
+    return status
+
+
 # ── KaTeX + Chart.js CDN URLs ──────────────────────────────────────────────
 KATEX_VERSION = "0.16.11"
 KATEX_CSS_CDN = f"https://cdn.jsdelivr.net/npm/katex@{KATEX_VERSION}/dist/katex.min.css"
@@ -133,9 +208,16 @@ def pass_fail_badge(pf):
     return "—"
 
 
-def build_hero(meta, standard):
+def build_hero(meta, standard, show_notice=True):
     """Build the hero header HTML."""
-    s_cls = status_badge_class(meta["status"])
+    status = printable_status(meta)
+    status_html = ""
+    if status:
+        s_cls = status_badge_class(status)
+        status_html = (
+            f'\n      <div class="meta-chip"><strong>Status</strong>'
+            f'<span class="badge {s_cls}">{html_escape(status.upper())}</span></div>'
+        )
     role_html = ""
     for key, label in (("author", "Author"), ("reviewer", "Reviewer"), ("approver", "Approver")):
         if key == "author":
@@ -158,15 +240,20 @@ def build_hero(meta, standard):
             '\n        <div class="meta-chip"><strong>Project</strong>'
             f'{html_escape(meta["project"])}</div>'
         )
+    notice_html = ""
+    if show_notice:
+        notice_html = (
+            f'\n    <p class="report-notice">'
+            f'{html_escape(ILLUSTRATIVE_EXAMPLE_LINE)}</p>'
+        )
 
     return f"""\
 <div class="hero">
   <div class="hero-inner">
     <div class="eyebrow">{html_escape(meta['doc_id'])}</div>
-    <h1 class="report-title">{html_escape(meta['title'])}</h1>
-    <p class="report-notice">{html_escape(ILLUSTRATIVE_EXAMPLE_LINE)}</p>
+    <h1 class="report-title">{html_escape(meta['title'])}</h1>{notice_html}
     <div class="meta-chips">
-      <div class="meta-chip"><strong>Status</strong><span class="badge {s_cls}">{html_escape(meta['status'].upper())}</span></div>
+      {status_html}
       <div class="meta-chip"><strong>Revision</strong>{meta['revision']}</div>
       <div class="meta-chip"><strong>Date</strong>{html_escape(meta['date'])}</div>{role_html}{project_html}
       <div class="meta-chip"><strong>Standard</strong>{html_escape(standard)}</div>
@@ -177,10 +264,7 @@ def build_hero(meta, standard):
 
 def build_computed_hero(meta, standard):
     """Build the hero header without the illustrative notice."""
-    return build_hero(meta, standard).replace(
-        f'\n    <p class="report-notice">{html_escape(ILLUSTRATIVE_EXAMPLE_LINE)}</p>',
-        "",
-    )
+    return build_hero(meta, standard, show_notice=False)
 
 
 def build_inputs_card(inputs):
@@ -620,7 +704,8 @@ def build_validation_card(validation):
 
 def build_verification_card(verification):
     """Build verification card with checker record."""
-    date = html_escape(verification["date"])
+    date_text = parse_iso_date(verification["date"]) or str(verification["date"])
+    date = html_escape(date_text)
     method = html_escape(verification["method"])
     optional = ""
     checker_html = ""
@@ -635,10 +720,11 @@ def build_verification_card(verification):
             f'\n  <p><strong>Findings:</strong> '
             f'{html_escape(verification["findings"])}</p>'
         )
-    if verification.get("status"):
+    status = printable_verification_status(verification)
+    if status:
         optional += (
             f'\n  <p><strong>Status:</strong> '
-            f'{html_escape(verification["status"])}</p>'
+            f'{html_escape(status)}</p>'
         )
     return f"""\
 <div class="card">
@@ -688,7 +774,6 @@ def build_assumptions_references(data):
             f'    </ol>\n  </details>\n</div>'
         )
     references = list(data.get("references", []))
-    references.extend(f"Computed by: {path}" for path in data.get("_computed_by", []))
     if references:
         items = "\n".join(
             f"    <li>{html_escape(r)}</li>" for r in references

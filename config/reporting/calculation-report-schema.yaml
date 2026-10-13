@@ -15,10 +15,18 @@ required_fields:
       author: str_or_mapping_name
       reviewer: mapping_name_date
       approver: mapping_name_date
-      computed_by: str_or_list_of_str
+      computed_by: str_or_list_of_tracked_source_modules_not_rendered
       status:
         enum: [draft, reviewed, approved]
       project: str
+    notes:
+      date: >
+        ISO calendar dates are documented as YYYY-MM-DD. Python's date parser
+        may also accept compact dates and ISO week dates and normalize them.
+      computed_by: >
+        This key only suppresses the illustrative typed-input sentence when
+        every path is a tracked source module in the input repository. It is
+        not rendered as a report reference.
     change_log_entry:
       required: [rev, date, description]
 
