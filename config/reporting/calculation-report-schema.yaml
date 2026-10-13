@@ -30,7 +30,10 @@ required_fields:
       roles: >
         The guard is a refusal list and cannot prove that a name is a person's,
         so a string outside its lists is printed. Programs must not write role
-        fields, which the tests of the two producers hold.
+        fields, which the tests of the two producers hold. Rare real names can
+        be refused by the extension rule and by the tool-phrase rule, such as
+        Nguyen T.Dat, A.Ts. Example, Jean-Claude Code, Claude Pro and Grace
+        Engine.
     change_log_entry:
       required: [rev, date, description]
 

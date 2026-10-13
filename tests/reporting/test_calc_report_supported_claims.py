@@ -297,6 +297,12 @@ def test_non_person_author_is_omitted(author):
         "Пример",
         "مثال",
         "Claude Example",
+        "Example Na",
+        "Na Example",
+        "Example Na-sample",
+        "Ai Example",
+        "Ai Sample",
+        "Example Ai",
     ],
 )
 def test_person_author_is_printed(author):
@@ -308,13 +314,17 @@ def test_person_author_is_printed(author):
 
 
 @pytest.mark.parametrize(
-    "author, expected_reason",
+    "author, printable_without_refusing_element",
     [
-        ("Example 2", "digit"),
-        ("Spreadsheet", "producer"),
+        ("Example 2", "Example"),
+        ("Spreadsheet", "Example"),
     ],
 )
-def test_non_person_author_isolated_guard_reasons(author, expected_reason):
+def test_non_person_author_isolated_guard_reasons(
+    author, printable_without_refusing_element
+):
+    from calc_report_html import is_printable_person_name
+
     data = _base_data()
     data["metadata"]["author"] = author
 
@@ -322,7 +332,8 @@ def test_non_person_author_isolated_guard_reasons(author, expected_reason):
 
     assert "Author" not in markdown
     assert "<strong>Author</strong>" not in html
-    assert expected_reason in {"digit", "producer"}
+    assert not is_printable_person_name(author)
+    assert is_printable_person_name(printable_without_refusing_element)
 
 
 @pytest.mark.parametrize(
@@ -367,6 +378,7 @@ def test_initialed_person_author_is_printed(author):
         "Spreadsheet",
         "Automated",
         "Automated Example",
+        "AI Solver",
     ],
 )
 def test_tool_phrase_author_is_omitted(author):
@@ -396,7 +408,12 @@ def test_tool_given_name_author_is_printed(author):
     "author",
     [
         "TBA",
+        "na",
         "NA",
+        "nA",
+        "ai",
+        "AI",
+        "Ai",
         "To be assigned",
         "Not assigned",
         "Your Name",

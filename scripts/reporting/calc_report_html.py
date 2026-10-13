@@ -25,7 +25,6 @@ ROLE_PLACEHOLDER_NAMES = {
     "pending",
     "unknown",
     "tba",
-    "na",
     "tbc",
     "to be confirmed",
     "to-be-confirmed",
@@ -68,7 +67,6 @@ PRODUCER_WORDS = {
     "auto",
     "automated",
     "automation",
-    "ai",
     "llm",
     "engine",
     "spreadsheet",
@@ -85,6 +83,7 @@ PRODUCER_WORDS = {
     "solver",
     "bot",
 }
+WHOLE_VALUE_REFUSALS = {"ai", "na"}
 ORGANIZATION_WORDS = {
     "engineering",
     "team",
@@ -170,11 +169,18 @@ def is_printable_person_name(value):
         return False
     if VERSION_RE.search(name):
         return False
+    if normalized in WHOLE_VALUE_REFUSALS:
+        return False
     if normalized in ROLE_PLACEHOLDER_NAMES:
         return False
     if any(token in ROLE_PLACEHOLDER_NAMES for token in normalized_tokens):
         return False
     if "automated" in normalized:
+        return False
+    if "ai" in normalized_tokens and any(
+        token in TOOL_CONTEXT_WORDS or token in PRODUCER_WORDS
+        for token in normalized_tokens
+    ):
         return False
     if any(token in PRODUCER_WORDS for token in normalized_tokens):
         return False

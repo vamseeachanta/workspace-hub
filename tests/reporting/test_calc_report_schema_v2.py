@@ -201,6 +201,11 @@ class TestSchemaV2Validation:
             "person's, so a string outside its lists is printed. Programs must "
             "not write role fields, which the tests of the two producers hold."
         ) in notes["roles"]
+        assert (
+            "Rare real names can be refused by the extension rule and by the "
+            "tool-phrase rule, such as Nguyen T.Dat, A.Ts. Example, "
+            "Jean-Claude Code, Claude Pro and Grace Engine."
+        ) in notes["roles"]
 
     def test_schema_version_defaults_to_1(self, minimal_valid):
         """When schema_version is absent, treat as v1."""
