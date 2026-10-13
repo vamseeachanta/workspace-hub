@@ -243,6 +243,105 @@ def test_person_author_is_printed(author):
     assert html_escape(author) in html
 
 
+@pytest.mark.parametrize(
+    "author",
+    [
+        "J.R. Example",
+        "Example, A.B.",
+        "A.Example",
+        "Example P.Eng.",
+        "Example, PE",
+    ],
+)
+def test_initialed_person_author_is_printed(author):
+    data = _base_data()
+    data["metadata"]["author"] = author
+
+    markdown, html = _render_both(data)
+
+    assert f"Author: {author}" in markdown
+    assert f"<strong>Author</strong>{html_escape(author)}" in html
+
+
+@pytest.mark.parametrize(
+    "author",
+    [
+        "Claude Opus",
+        "Claude Sonnet",
+        "Gemini Pro",
+        "GitHub Copilot",
+        "OpenAI Codex",
+        "Microsoft Excel",
+        "Claude-Code",
+        "claude  code",
+        "ChatGPT Plus",
+        "Copilot Chat",
+        "Codex CLI",
+        "Excel Workbook",
+        "LLM",
+        "AI Assistant",
+        "OpenAI",
+        "Calc Engine",
+        "Spreadsheet",
+        "Automated",
+        "Automated Example",
+    ],
+)
+def test_tool_phrase_author_is_omitted(author):
+    data = _base_data()
+    data["metadata"]["author"] = author
+
+    markdown, html = _render_both(data)
+
+    assert "Author" not in markdown
+    assert "<strong>Author</strong>" not in html
+    assert author not in markdown
+    assert html_escape(author) not in html
+
+
+@pytest.mark.parametrize("author", ["Claude Example", "Gemini Example"])
+def test_tool_given_name_author_is_printed(author):
+    data = _base_data()
+    data["metadata"]["author"] = author
+
+    markdown, html = _render_both(data)
+
+    assert f"Author: {author}" in markdown
+    assert f"<strong>Author</strong>{html_escape(author)}" in html
+
+
+@pytest.mark.parametrize(
+    "author",
+    [
+        "TBA",
+        "NA",
+        "To be assigned",
+        "Not assigned",
+        "Your Name",
+    ],
+)
+def test_placeholder_author_is_omitted(author):
+    data = _base_data()
+    data["metadata"]["author"] = author
+
+    markdown, html = _render_both(data)
+
+    assert "Author" not in markdown
+    assert "<strong>Author</strong>" not in html
+
+
+def test_person_name_guard_documents_refusal_limit():
+    from calc_report_html import is_printable_person_name
+
+    expected = (
+        "The guard is a refusal list and cannot prove that a name is a "
+        "person's, so a string outside its lists is printed. Programs must "
+        "not write role fields, which the tests of the two producers hold."
+    )
+
+    assert is_printable_person_name.__doc__ == expected
+
+
 def test_missing_author_builds():
 
     without_author = _base_data()

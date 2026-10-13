@@ -6,8 +6,10 @@ exemplar E2E rendering with real engineering data.
 Run: uv run --no-project python -m pytest tests/reporting/ -v
 """
 import os
+from pathlib import Path
 
 import pytest
+import yaml
 
 from conftest import REPO_ROOT
 
@@ -20,6 +22,7 @@ EXAMPLE_GEO = os.path.join(
 EXAMPLE_MC = os.path.join(
     REPO_ROOT, "examples", "reporting", "resource-estimation-monte-carlo.yaml"
 )
+SCHEMA_PATH = Path(REPO_ROOT) / "config" / "reporting" / "calculation-report-schema.yaml"
 
 
 # ── v2 fixture ────────────────────────────────────────────────────────────
@@ -188,6 +191,16 @@ class TestSchemaV2Validation:
         from generate_calc_report import load_and_validate
         result = load_and_validate(minimal_valid)
         assert result["metadata"]["title"] == "Test Calc"
+
+    def test_schema_notes_state_role_guard_limit(self):
+        schema = yaml.safe_load(SCHEMA_PATH.read_text(encoding="utf-8"))
+        notes = schema["required_fields"]["metadata"]["notes"]
+
+        assert (
+            "The guard is a refusal list and cannot prove that a name is a "
+            "person's, so a string outside its lists is printed. Programs must "
+            "not write role fields, which the tests of the two producers hold."
+        ) in notes["roles"]
 
     def test_schema_version_defaults_to_1(self, minimal_valid):
         """When schema_version is absent, treat as v1."""

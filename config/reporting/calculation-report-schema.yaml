@@ -27,6 +27,10 @@ required_fields:
         This key only suppresses the illustrative typed-input sentence when
         every path is a tracked source module in the input repository. It is
         not rendered as a report reference.
+      roles: >
+        The guard is a refusal list and cannot prove that a name is a person's,
+        so a string outside its lists is printed. Programs must not write role
+        fields, which the tests of the two producers hold.
     change_log_entry:
       required: [rev, date, description]
 

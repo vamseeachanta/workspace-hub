@@ -24,11 +24,15 @@ ROLE_PLACEHOLDER_NAMES = {
     "none",
     "pending",
     "unknown",
+    "tba",
+    "na",
     "tbc",
     "to be confirmed",
     "to-be-confirmed",
+    "assigned",
     "qa",
     "independent",
+    "your name",
 }
 TOOL_MODEL_PHRASES = {
     "claude",
@@ -42,8 +46,34 @@ TOOL_MODEL_PHRASES = {
     "python",
     "excel",
 }
+TOOL_CONTEXT_WORDS = {
+    "anthropic",
+    "openai",
+    "github",
+    "microsoft",
+    "google",
+    "opus",
+    "sonnet",
+    "haiku",
+    "pro",
+    "flash",
+    "plus",
+    "chat",
+    "cli",
+    "code",
+    "workbook",
+    "assistant",
+}
 PRODUCER_WORDS = {
     "auto",
+    "automated",
+    "automation",
+    "ai",
+    "llm",
+    "engine",
+    "spreadsheet",
+    "anthropic",
+    "openai",
     "extraction",
     "pipeline",
     "poc",
@@ -67,48 +97,97 @@ ORGANIZATION_WORDS = {
     "dept",
 }
 VERSION_RE = re.compile(r"\bv?\d+\.\d+\b", re.IGNORECASE)
-FILE_EXTENSION_RE = re.compile(r"\b[\w-]+\.[A-Za-z]{1,8}\b")
+KNOWN_FILE_EXTENSIONS = {
+    "bib",
+    "cjs",
+    "conf",
+    "csv",
+    "css",
+    "dat",
+    "html",
+    "inp",
+    "js",
+    "json",
+    "jsonl",
+    "md",
+    "mermaid",
+    "parquet",
+    "pdf",
+    "ps1",
+    "psm1",
+    "py",
+    "raw",
+    "sh",
+    "tex",
+    "toml",
+    "ts",
+    "tsv",
+    "tsx",
+    "txt",
+    "xlsx",
+    "xml",
+    "xsd",
+    "yaml",
+    "yml",
+}
 TOKEN_RE = re.compile(r"[^\W_]+", re.UNICODE)
+FILE_TOKEN_RE = re.compile(r"\b[\w-]+\.([A-Za-z0-9]+)\b")
+
+
+def _normalized_guard_text(value):
+    """Return lower-case text with whitespace and hyphen runs collapsed."""
+    return re.sub(r"[\s-]+", " ", value.strip().lower())
+
+
+def _has_known_file_extension(value):
+    """Return True when text contains a tracked source, data, or document suffix."""
+    return any(
+        match.group(1).lower() in KNOWN_FILE_EXTENSIONS
+        for match in FILE_TOKEN_RE.finditer(value)
+    )
 
 
 def is_printable_person_name(value):
-    """Return True when a refusal list does not show a non-person value."""
+    """The guard is a refusal list and cannot prove that a name is a person's, so a string outside its lists is printed. Programs must not write role fields, which the tests of the two producers hold."""
     if isinstance(value, dict):
         value = value.get("name", "")
     if not isinstance(value, str):
         return False
     name = value.strip()
     lowered = name.lower()
+    normalized = _normalized_guard_text(name)
     tokens = TOKEN_RE.findall(lowered)
+    normalized_tokens = TOKEN_RE.findall(normalized)
     if not name or not any(ch.isalpha() for ch in name):
         return False
     if "@" in name:
         return False
     if any(ch.isdigit() for ch in name):
         return False
-    if FILE_EXTENSION_RE.search(name):
+    if _has_known_file_extension(name):
         return False
     if "/" in name or "\\" in name:
         return False
     if VERSION_RE.search(name):
         return False
-    if lowered in ROLE_PLACEHOLDER_NAMES:
+    if normalized in ROLE_PLACEHOLDER_NAMES:
         return False
-    if any(token in ROLE_PLACEHOLDER_NAMES for token in tokens):
+    if any(token in ROLE_PLACEHOLDER_NAMES for token in normalized_tokens):
         return False
-    if any(token in PRODUCER_WORDS for token in tokens):
+    if "automated" in normalized:
         return False
-    if any(token in ORGANIZATION_WORDS for token in tokens):
+    if any(token in PRODUCER_WORDS for token in normalized_tokens):
         return False
-    if lowered in TOOL_MODEL_PHRASES:
+    if any(token in ORGANIZATION_WORDS for token in normalized_tokens):
         return False
-    if any(lowered.startswith(f"{phrase} (") for phrase in TOOL_MODEL_PHRASES):
+    if normalized in TOOL_MODEL_PHRASES:
         return False
-    if any(token in TOOL_MODEL_PHRASES for token in tokens) and len(tokens) == 1:
+    if any(normalized.startswith(f"{phrase} (") for phrase in TOOL_MODEL_PHRASES):
         return False
-    if any(token in TOOL_MODEL_PHRASES for token in tokens) and any(
-        token in PRODUCER_WORDS for token in tokens
-    ):
+    has_tool_token = any(token in TOOL_MODEL_PHRASES for token in normalized_tokens)
+    if has_tool_token and len(normalized_tokens) == 1:
+        return False
+    if has_tool_token and any(token in TOOL_CONTEXT_WORDS for token in normalized_tokens):
         return False
     return True
 
