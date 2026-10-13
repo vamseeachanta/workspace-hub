@@ -6,12 +6,14 @@ import re
 
 
 ROOT = Path(__file__).resolve().parents[2]
-FINGERPRINT_RE = re.compile(r"^[^:\n]+:[a-z0-9][a-z0-9-]*:\d+$")
+TREE_FINGERPRINT_RE = re.compile(r"^[^:\n]+:[a-z0-9][a-z0-9-]*:\d+$")
+HISTORY_FINGERPRINT_RE = re.compile(r"^[0-9a-f]+:[^:\n]+:[a-z0-9][a-z0-9-]*:\d+$")
+EXACT_PATH_RE = re.compile(r"^\^[A-Za-z0-9_/\-]*(?:\\[.-][A-Za-z0-9_/\-]*)*\$?$")
 ALLOWED_DIRECTORY_PATHS = {
     # Vendored static test assets; not authored repository code.
     r"^pylib/youtube_transcript_api/test/assets/",
 }
-WILDCARD_CHARS = {"[", "(", "|", "?"}
+ALLOWED_ALLOWLIST_KEYS = {"description", "paths"}
 
 
 def _load_config(text: str) -> dict:
@@ -33,46 +35,66 @@ def _regexes_from_allowlist(allowlist: object) -> list[str]:
     return regexes
 
 
-def _assert_no_allowlist_regexes(config: dict) -> None:
-    regexes = list(_regexes_from_allowlist(config.get("allowlist")))
+def _allowlists_from_config(config: dict) -> list[dict]:
+    allowlists: list[dict] = []
+    allowlist = config.get("allowlist")
+    if isinstance(allowlist, dict):
+        allowlists.append(allowlist)
 
     for allowlist in config.get("allowlists", []):
-        regexes.extend(_regexes_from_allowlist(allowlist))
+        if isinstance(allowlist, dict):
+            allowlists.append(allowlist)
 
     for rule in config.get("rules", []):
-        regexes.extend(_regexes_from_allowlist(rule.get("allowlist")))
+        if not isinstance(rule, dict):
+            continue
+        allowlist = rule.get("allowlist")
+        if isinstance(allowlist, dict):
+            allowlists.append(allowlist)
         for allowlist in rule.get("allowlists", []):
-            regexes.extend(_regexes_from_allowlist(allowlist))
+            if isinstance(allowlist, dict):
+                allowlists.append(allowlist)
+
+    return allowlists
+
+
+def _assert_no_allowlist_regexes(config: dict) -> None:
+    regexes: list[str] = []
+    for allowlist in _allowlists_from_config(config):
+        regexes.extend(_regexes_from_allowlist(allowlist))
 
     if regexes:
         raise AssertionError("gitleaks config must not use allow-list regexes")
+
+
+def _assert_allowlist_tables_only_use_path_keys(config: dict) -> None:
+    for allowlist in _allowlists_from_config(config):
+        extra_keys = set(allowlist) - ALLOWED_ALLOWLIST_KEYS
+        if extra_keys:
+            raise AssertionError("gitleaks allow-list tables may only use paths")
+
+
+def _path_allowlists_from_config(config: dict) -> list[str]:
+    paths: list[str] = []
+    for allowlist in _allowlists_from_config(config):
+        table_paths = allowlist.get("paths", [])
+        if table_paths is None:
+            continue
+        if not isinstance(table_paths, list):
+            raise AssertionError("allow-list paths must be a list")
+        paths.extend(table_paths)
+    return paths
 
 
 def _path_is_directory_prefix(pattern: str) -> bool:
     return pattern.endswith("/") and not pattern.endswith("$")
 
 
-def _contains_unescaped_wildcard(pattern: str) -> bool:
-    escaped = False
-    for index, char in enumerate(pattern):
-        if escaped:
-            escaped = False
-            continue
-        if char == "\\":
-            escaped = True
-            continue
-        if char == "." and index + 1 < len(pattern) and pattern[index + 1] in {"*", "+"}:
-            return True
-        if char in WILDCARD_CHARS:
-            return True
-    return False
-
-
 def _assert_path_allowlist_is_narrow(paths: list[str]) -> None:
     for pattern in paths:
         if not pattern.startswith("^"):
             raise AssertionError(f"path allow-list entry is not anchored: {pattern}")
-        if _contains_unescaped_wildcard(pattern):
+        if not EXACT_PATH_RE.fullmatch(pattern):
             raise AssertionError(f"path allow-list entry contains wildcard syntax: {pattern}")
         if _path_is_directory_prefix(pattern):
             if pattern not in ALLOWED_DIRECTORY_PATHS:
@@ -85,7 +107,9 @@ def _assert_gitleaksignore_fingerprints(text: str) -> None:
     for line in text.splitlines():
         if not line or line.startswith("#"):
             continue
-        if len(line) > 240 or not FINGERPRINT_RE.fullmatch(line):
+        if len(line) > 240 or not (
+            TREE_FINGERPRINT_RE.fullmatch(line) or HISTORY_FINGERPRINT_RE.fullmatch(line)
+        ):
             raise AssertionError("gitleaksignore must contain only fingerprints")
 
 
@@ -128,6 +152,13 @@ def test_gitleaks_config_does_not_use_allowlist_regexes() -> None:
     _assert_no_allowlist_regexes(config)
 
 
+def test_gitleaks_config_allowlist_tables_only_use_paths() -> None:
+    config_text = (ROOT / ".gitleaks.toml").read_text(encoding="utf-8")
+    config = _load_config(config_text)
+
+    _assert_allowlist_tables_only_use_path_keys(config)
+
+
 def test_gitleaks_config_rejects_global_allowlist_regexes() -> None:
     config = {"allowlist": {"regexes": ["example"]}}
 
@@ -150,11 +181,33 @@ def test_gitleaks_config_rejects_rule_allowlist_regexes() -> None:
         raise AssertionError("rule allow-list regex was accepted")
 
 
+def test_gitleaks_config_rejects_allowlist_commits_key() -> None:
+    config = {"allowlist": {"paths": [r"^docs/example\.md$"], "commits": ["abc123"]}}
+
+    try:
+        _assert_allowlist_tables_only_use_path_keys(config)
+    except AssertionError as exc:
+        assert "only use paths" in str(exc)
+    else:
+        raise AssertionError("allow-list commits key was accepted")
+
+
+def test_gitleaks_config_rejects_allowlist_stopwords_key() -> None:
+    config = {"allowlists": [{"paths": [r"^docs/example\.md$"], "stopwords": ["example"]}]}
+
+    try:
+        _assert_allowlist_tables_only_use_path_keys(config)
+    except AssertionError as exc:
+        assert "only use paths" in str(exc)
+    else:
+        raise AssertionError("allow-list stopwords key was accepted")
+
+
 def test_gitleaks_path_allowlist_entries_are_narrow() -> None:
     config_text = (ROOT / ".gitleaks.toml").read_text(encoding="utf-8")
     config = _load_config(config_text)
 
-    _assert_path_allowlist_is_narrow(config["allowlist"]["paths"])
+    _assert_path_allowlist_is_narrow(_path_allowlists_from_config(config))
 
 
 def test_gitleaks_path_allowlist_rejects_unanchored_entry() -> None:
@@ -170,7 +223,7 @@ def test_gitleaks_path_allowlist_rejects_non_exact_file() -> None:
     try:
         _assert_path_allowlist_is_narrow(["^scripts/example.py"])
     except AssertionError as exc:
-        assert "not exact" in str(exc)
+        assert "not exact" in str(exc) or "wildcard" in str(exc)
     else:
         raise AssertionError("non-exact file path allow-list entry was accepted")
 
@@ -238,6 +291,42 @@ def test_gitleaks_path_allowlist_rejects_unescaped_dot_plus() -> None:
         raise AssertionError("unescaped dot-plus allow-list entry was accepted")
 
 
+def test_gitleaks_path_allowlist_rejects_escaped_non_space_wildcard() -> None:
+    try:
+        _assert_path_allowlist_is_narrow([r"^\S+$"])
+    except AssertionError as exc:
+        assert "wildcard" in str(exc)
+    else:
+        raise AssertionError("non-space wildcard allow-list entry was accepted")
+
+
+def test_gitleaks_path_allowlist_rejects_escaped_word_wildcard() -> None:
+    try:
+        _assert_path_allowlist_is_narrow([r"^\w+$"])
+    except AssertionError as exc:
+        assert "wildcard" in str(exc)
+    else:
+        raise AssertionError("word wildcard allow-list entry was accepted")
+
+
+def test_gitleaks_path_allowlist_rejects_brace_any_quantifier() -> None:
+    try:
+        _assert_path_allowlist_is_narrow([r"^.{1,}$"])
+    except AssertionError as exc:
+        assert "wildcard" in str(exc)
+    else:
+        raise AssertionError("brace wildcard allow-list entry was accepted")
+
+
+def test_gitleaks_path_allowlist_rejects_brace_literal_quantifier() -> None:
+    try:
+        _assert_path_allowlist_is_narrow([r"^docs/a{1,2}$"])
+    except AssertionError as exc:
+        assert "wildcard" in str(exc)
+    else:
+        raise AssertionError("brace quantifier allow-list entry was accepted")
+
+
 def test_gitleaks_path_allowlist_rejects_unescaped_bracket() -> None:
     try:
         _assert_path_allowlist_is_narrow([r"^docs/[abc]$"])
@@ -280,6 +369,30 @@ def test_gitleaks_path_allowlist_accepts_escaped_exact_file() -> None:
 
 def test_gitleaks_path_allowlist_accepts_vendored_static_assets() -> None:
     _assert_path_allowlist_is_narrow([r"^pylib/youtube_transcript_api/test/assets/"])
+
+
+def test_gitleaks_path_allowlist_rejects_rule_level_broad_path() -> None:
+    config_text = """
+title = "example"
+
+[extend]
+useDefault = true
+
+[[rules]]
+id = "example"
+description = "example"
+regex = '''example'''
+  [rules.allowlist]
+  paths = ['''^\\S+$''']
+"""
+    config = _load_config(config_text)
+
+    try:
+        _assert_path_allowlist_is_narrow(_path_allowlists_from_config(config))
+    except AssertionError as exc:
+        assert "wildcard" in str(exc)
+    else:
+        raise AssertionError("rule-level broad path allow-list entry was accepted")
 
 
 def test_gitleaksignore_contains_only_fingerprints() -> None:
