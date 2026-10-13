@@ -28,15 +28,15 @@ from calc_report_html import (  # noqa: E402
     build_assumptions_references, build_calculations_card,
     build_changelog_card, build_chart_scripts, build_charts_card,
     build_conclusions_card, build_data_tables_card,
-    build_design_basis_card, build_hero, build_inputs_card,
+    build_design_basis_card, build_computed_hero, build_hero, build_inputs_card,
     build_materials_card, build_methodology_card, build_outputs_card,
     build_scope_card, build_sensitivity_card, build_validation_card,
-    build_verification_card,
+    build_verification_card, dated_role, person_name, ILLUSTRATIVE_EXAMPLE_LINE,
 )
 
 # ── Validation constants ───────────────────────────────────────────────────
 VALID_STATUSES = {"draft", "reviewed", "approved"}
-METADATA_REQUIRED = {"title", "doc_id", "revision", "date", "author", "status"}
+METADATA_REQUIRED = {"title", "doc_id", "revision", "date", "status"}
 INPUT_REQUIRED = {"name", "symbol", "value", "unit"}
 EQUATION_REQUIRED = {"id", "name", "latex", "description"}
 OUTPUT_REQUIRED = {"name", "symbol", "value", "unit"}
@@ -48,7 +48,7 @@ MATERIAL_REQUIRED = {"name", "grade", "value", "unit"}
 CALCULATION_REQUIRED = {"step", "description"}
 SENSITIVITY_REQUIRED = {"parameter", "range", "result"}
 VALIDATION_REQUIRED = set()  # all fields optional for backwards compat
-VERIFICATION_REQUIRED = {"checker", "date", "method"}
+VERIFICATION_REQUIRED = {"date", "method"}
 CONCLUSIONS_REQUIRED = {"adequacy", "governing_check"}
 
 
@@ -56,7 +56,55 @@ CONCLUSIONS_REQUIRED = {"adequacy", "governing_check"}
 # Validation
 # ═══════════════════════════════════════════════════════════════════════════
 
-def load_and_validate(data):
+def _warn_string_roles(meta):
+    """Warn once for legacy string roles that cannot carry role dates."""
+    for key in ("reviewer", "approver"):
+        if isinstance(meta.get(key), str) and meta.get(key).strip():
+            print(
+                f"Warning: metadata.{key} as a string has no role date; omitting role.",
+                file=sys.stderr,
+            )
+
+
+def _repo_root_for_input(source_path):
+    """Find the nearest parent with a .git entry for an input file."""
+    if source_path is None:
+        return None
+    path = Path(source_path).resolve()
+    for parent in (path.parent, *path.parents):
+        if (parent / ".git").exists():
+            return parent
+    return None
+
+
+def _validate_computed_by(meta, source_path):
+    """Validate metadata.computed_by and return repository-relative paths."""
+    if "computed_by" not in meta:
+        return []
+    value = meta["computed_by"]
+    paths = value if isinstance(value, list) else [value]
+    root = _repo_root_for_input(source_path)
+    if root is None:
+        raise ValueError("metadata.computed_by requires an input file in a repository")
+    valid_paths = []
+    for item in paths:
+        if not isinstance(item, str) or not item.strip():
+            raise ValueError(f"metadata.computed_by invalid path: {item}")
+        rel = Path(item)
+        if rel.is_absolute() or ".." in rel.parts:
+            raise ValueError(f"metadata.computed_by invalid path: {item}")
+        candidate = (root / rel).resolve()
+        try:
+            candidate.relative_to(root.resolve())
+        except ValueError as exc:
+            raise ValueError(f"metadata.computed_by invalid path: {item}") from exc
+        if not candidate.is_file():
+            raise ValueError(f"metadata.computed_by missing file: {item}")
+        valid_paths.append(item)
+    return valid_paths
+
+
+def load_and_validate(data, source_path=None):
     """Validate a calculation data dict against the schema.
 
     Returns the validated data dict unchanged.
@@ -68,6 +116,8 @@ def load_and_validate(data):
     if "metadata" not in data:
         raise ValueError("Missing required section: metadata")
     meta = data["metadata"]
+    _warn_string_roles(meta)
+    data["_computed_by"] = _validate_computed_by(meta, source_path)
     for field in METADATA_REQUIRED:
         if field not in meta:
             raise ValueError(f"Missing required metadata field: {field}")
@@ -194,10 +244,16 @@ def render_markdown(data):
 
     # Title block
     lines.append(f"# {meta['title']}")
-    parts = [f"**{meta['doc_id']}**", f"Rev {meta['revision']}",
-             meta["date"], meta["author"]]
-    if meta.get("reviewer"):
-        parts.append(f"Reviewer: {meta['reviewer']}")
+    if not data.get("_computed_by"):
+        lines.append(ILLUSTRATIVE_EXAMPLE_LINE)
+    parts = [f"**{meta['doc_id']}**", f"Rev {meta['revision']}", meta["date"]]
+    author = person_name(meta.get("author"))
+    if author:
+        parts.append(f"Author: {author}")
+    for key, label in (("reviewer", "Reviewer"), ("approver", "Approver")):
+        role = dated_role(meta.get(key))
+        if role:
+            parts.append(f"{label}: {role['name']} ({role['date']})")
     lines.append(" | ".join(parts))
     lines.append(f"\n**Status:** {meta['status'].upper()}")
     if meta.get("project"):
@@ -352,7 +408,9 @@ def render_markdown(data):
     if data.get("verification"):
         ver = data["verification"]
         lines.append("## Verification")
-        lines.append(f"**Checker:** {ver['checker']}")
+        checker = dated_role(ver.get("checker"), ver.get("date"))
+        if checker:
+            lines.append(f"**Checker:** {checker['name']} ({checker['date']})")
         lines.append(f"\n**Date:** {ver['date']}")
         lines.append(f"\n**Method:** {ver['method']}")
         if ver.get("findings"):
@@ -383,9 +441,11 @@ def render_markdown(data):
         lines.append("")
 
     # References
-    if data.get("references"):
+    references = list(data.get("references", []))
+    references.extend(f"Computed by: {path}" for path in data.get("_computed_by", []))
+    if references:
         lines.append("## References")
-        for i, r in enumerate(data["references"], 1):
+        for i, r in enumerate(references, 1):
             lines.append(f"{i}. {r}")
         lines.append("")
 
@@ -410,7 +470,10 @@ def render_html(data, markdown_str):
     standard = data["methodology"]["standard"]
     charts = data.get("charts", [])
 
-    hero = build_hero(meta, standard)
+    hero = (
+        build_computed_hero(meta, standard)
+        if data.get("_computed_by") else build_hero(meta, standard)
+    )
     scope_card = build_scope_card(data["scope"]) if data.get("scope") else ""
     design_basis_card = (
         build_design_basis_card(data["design_basis"])
@@ -539,7 +602,7 @@ def generate_report(yaml_path, fmt="html", output_path=None):
     with open(yaml_path) as f:
         data = yaml.safe_load(f)
 
-    data = load_and_validate(data)
+    data = load_and_validate(data, source_path=yaml_path)
     md = render_markdown(data)
 
     if output_path is None:

@@ -291,11 +291,11 @@ class TestSchemaV2Validation:
         result = load_and_validate(minimal_valid)
         assert "validation" in result
 
-    def test_verification_missing_checker_raises(self, minimal_valid):
+    def test_verification_missing_checker_accepts(self, minimal_valid):
         from generate_calc_report import load_and_validate
         minimal_valid["verification"] = {"date": "2026-01-01", "method": "hand calc"}
-        with pytest.raises(ValueError, match="checker"):
-            load_and_validate(minimal_valid)
+        result = load_and_validate(minimal_valid)
+        assert "checker" not in result["verification"]
 
     def test_verification_missing_date_raises(self, minimal_valid):
         from generate_calc_report import load_and_validate

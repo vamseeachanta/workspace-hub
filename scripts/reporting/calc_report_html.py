@@ -4,7 +4,107 @@ Builds HTML sections from validated calculation data using the
 warm-parchment design system. Called by generate-calc-report.py.
 """
 import json
+import re
+from datetime import date
 from html import escape as html_escape
+
+
+# ── Supported-claim guardrails ───────────────────────────────────────────────
+ILLUSTRATIVE_EXAMPLE_LINE = (
+    "Illustrative example: values are typed inputs for demonstration, "
+    "not a project calculation."
+)
+ROLE_PLACEHOLDER_NAMES = {
+    "independent reviewer",
+    "reviewer",
+    "checker",
+    "approver",
+    "author",
+    "tbd",
+    "n/a",
+    "none",
+    "pending",
+    "unknown",
+}
+TOOL_MODEL_WORDS = {
+    "claude",
+    "codex",
+    "gpt",
+    "gemini",
+    "copilot",
+    "script",
+    "skill",
+    "generator",
+    "solver",
+    "bot",
+}
+ORGANIZATION_WORDS = {
+    "engineering",
+    "team",
+    "inc",
+    "llc",
+    "ltd",
+    "group",
+    "department",
+    "company",
+}
+VERSION_RE = re.compile(r"\bv?\d+\.\d+\b", re.IGNORECASE)
+
+
+def is_printable_person_name(value):
+    """Return True when a role name is not plainly a non-person value."""
+    if isinstance(value, dict):
+        value = value.get("name", "")
+    if not isinstance(value, str):
+        return False
+    name = value.strip()
+    lowered = name.lower()
+    if not name or not re.search(r"[A-Za-z0-9]", name):
+        return False
+    if lowered in ROLE_PLACEHOLDER_NAMES:
+        return False
+    if "automated" in lowered or "(auto" in lowered:
+        return False
+    if VERSION_RE.search(name):
+        return False
+    if "/" in name or "\\" in name:
+        return False
+    words = set(re.findall(r"[a-z0-9]+", lowered))
+    if words & TOOL_MODEL_WORDS:
+        return False
+    if words & ORGANIZATION_WORDS:
+        return False
+    return True
+
+
+def parse_iso_date(value):
+    """Return an ISO date string, or None when the value is not an ISO date."""
+    if not isinstance(value, str):
+        return None
+    try:
+        return date.fromisoformat(value).isoformat()
+    except ValueError:
+        return None
+
+
+def person_name(value):
+    """Extract a printable person name from a string or mapping."""
+    if isinstance(value, dict):
+        value = value.get("name", "")
+    return value.strip() if is_printable_person_name(value) else None
+
+
+def dated_role(value, fallback_date=None):
+    """Return printable role data only when a person name and ISO date exist."""
+    role_date = None
+    if isinstance(value, dict):
+        role_date = parse_iso_date(value.get("date"))
+    if role_date is None:
+        role_date = parse_iso_date(fallback_date)
+    name = person_name(value)
+    if not name or not role_date:
+        return None
+    return {"name": name, "date": role_date}
 
 
 # ── KaTeX + Chart.js CDN URLs ──────────────────────────────────────────────
@@ -36,12 +136,22 @@ def pass_fail_badge(pf):
 def build_hero(meta, standard):
     """Build the hero header HTML."""
     s_cls = status_badge_class(meta["status"])
-    reviewer_html = ""
-    if meta.get("reviewer"):
-        reviewer_html = (
-            '\n        <div class="meta-chip"><strong>Reviewer</strong>'
-            f'{html_escape(meta["reviewer"])}</div>'
-        )
+    role_html = ""
+    for key, label in (("author", "Author"), ("reviewer", "Reviewer"), ("approver", "Approver")):
+        if key == "author":
+            name = person_name(meta.get(key))
+            if name:
+                role_html += (
+                    f'\n        <div class="meta-chip"><strong>{label}</strong>'
+                    f'{html_escape(name)}</div>'
+                )
+            continue
+        role = dated_role(meta.get(key))
+        if role:
+            role_html += (
+                f'\n        <div class="meta-chip"><strong>{label}</strong>'
+                f'{html_escape(role["name"])} ({html_escape(role["date"])})</div>'
+            )
     project_html = ""
     if meta.get("project"):
         project_html = (
@@ -54,15 +164,23 @@ def build_hero(meta, standard):
   <div class="hero-inner">
     <div class="eyebrow">{html_escape(meta['doc_id'])}</div>
     <h1 class="report-title">{html_escape(meta['title'])}</h1>
+    <p class="report-notice">{html_escape(ILLUSTRATIVE_EXAMPLE_LINE)}</p>
     <div class="meta-chips">
       <div class="meta-chip"><strong>Status</strong><span class="badge {s_cls}">{html_escape(meta['status'].upper())}</span></div>
       <div class="meta-chip"><strong>Revision</strong>{meta['revision']}</div>
-      <div class="meta-chip"><strong>Date</strong>{html_escape(meta['date'])}</div>
-      <div class="meta-chip"><strong>Author</strong>{html_escape(meta['author'])}</div>{reviewer_html}{project_html}
+      <div class="meta-chip"><strong>Date</strong>{html_escape(meta['date'])}</div>{role_html}{project_html}
       <div class="meta-chip"><strong>Standard</strong>{html_escape(standard)}</div>
     </div>
   </div>
 </div>"""
+
+
+def build_computed_hero(meta, standard):
+    """Build the hero header without the illustrative notice."""
+    return build_hero(meta, standard).replace(
+        f'\n    <p class="report-notice">{html_escape(ILLUSTRATIVE_EXAMPLE_LINE)}</p>',
+        "",
+    )
 
 
 def build_inputs_card(inputs):
@@ -502,10 +620,16 @@ def build_validation_card(validation):
 
 def build_verification_card(verification):
     """Build verification card with checker record."""
-    checker = html_escape(verification["checker"])
     date = html_escape(verification["date"])
     method = html_escape(verification["method"])
     optional = ""
+    checker_html = ""
+    checker = dated_role(verification.get("checker"), verification.get("date"))
+    if checker:
+        checker_html = (
+            f'\n  <p><strong>Checker:</strong> '
+            f'{html_escape(checker["name"])} ({html_escape(checker["date"])})</p>'
+        )
     if verification.get("findings"):
         optional += (
             f'\n  <p><strong>Findings:</strong> '
@@ -519,7 +643,7 @@ def build_verification_card(verification):
     return f"""\
 <div class="card">
   <h2>Verification</h2>
-  <p><strong>Checker:</strong> {checker}</p>
+  {checker_html}
   <p><strong>Date:</strong> {date}</p>
   <p><strong>Method:</strong> {method}</p>{optional}
 </div>"""
@@ -563,9 +687,11 @@ def build_assumptions_references(data):
             f'    <summary>Assumptions</summary>\n    <ol>\n{items}\n'
             f'    </ol>\n  </details>\n</div>'
         )
-    if data.get("references"):
+    references = list(data.get("references", []))
+    references.extend(f"Computed by: {path}" for path in data.get("_computed_by", []))
+    if references:
         items = "\n".join(
-            f"    <li>{html_escape(r)}</li>" for r in data["references"]
+            f"    <li>{html_escape(r)}</li>" for r in references
         )
         parts.append(
             f'<div class="card">\n  <details open>\n'

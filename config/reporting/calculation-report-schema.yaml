@@ -5,15 +5,17 @@
 
 required_fields:
   metadata:
-    required: [title, doc_id, revision, date, author, status]
-    optional: [reviewer, project, change_log]
+    required: [title, doc_id, revision, date, status]
+    optional: [author, reviewer, approver, project, change_log, computed_by]
     types:
       title: str
       doc_id: str
       revision: int
       date: str
-      author: str
-      reviewer: str
+      author: str_or_mapping_name
+      reviewer: mapping_name_date
+      approver: mapping_name_date
+      computed_by: str_or_list_of_str
       status:
         enum: [draft, reviewed, approved]
       project: str
@@ -79,8 +81,8 @@ optional_sections:
     optional: [method, test_file, test_count, test_categories, benchmark_source]
 
   verification:
-    required: [checker, date, method]
-    optional: [findings, status]
+    required: [date, method]
+    optional: [checker, findings, status]
 
   conclusions:
     required: [adequacy, governing_check]
