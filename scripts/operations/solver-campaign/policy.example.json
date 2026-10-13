@@ -1,0 +1,12 @@
+{
+  "repositories": [
+    "placeholder://no-repository"
+  ],
+  "limits": {
+    "id_prefixes": [
+      "placeholder-"
+    ],
+    "max_workers": 1,
+    "max_hours": 1
+  }
+}

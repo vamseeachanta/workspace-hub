@@ -9,6 +9,7 @@ import sys
 import tempfile
 import textwrap
 import time
+import xml.etree.ElementTree as ET
 import uuid
 from pathlib import Path
 
@@ -18,6 +19,9 @@ import pytest
 REPO_ROOT = Path(__file__).resolve().parents[3]
 RUNNER_PATH = REPO_ROOT / "scripts" / "operations" / "solver-campaign" / "campaign_runner.py"
 WRAPPER_PATH = REPO_ROOT / "scripts" / "operations" / "solver-campaign" / "run-solver-campaigns.bat"
+RUNNER_CREATION_FLAGS = 0
+if os.name == "nt":
+    RUNNER_CREATION_FLAGS = subprocess.CREATE_NEW_CONSOLE | subprocess.CREATE_NO_WINDOW
 
 
 def load_runner():
@@ -140,6 +144,73 @@ def make_manifest(root, fake_checkout, campaign_id="example-campaign", **overrid
     return path, manifest
 
 
+def git_run(repo, *args):
+    env = os.environ.copy()
+    env.update(
+        {
+            "GIT_AUTHOR_NAME": "placeholder",
+            "GIT_AUTHOR_EMAIL": "placeholder",
+            "GIT_COMMITTER_NAME": "placeholder",
+            "GIT_COMMITTER_EMAIL": "placeholder",
+            "GIT_CONFIG_NOSYSTEM": "1",
+            "GIT_TERMINAL_PROMPT": "0",
+            "GIT_OPTIONAL_LOCKS": "0",
+        }
+    )
+    return subprocess.run(["git", "-C", str(repo), *args], text=True, capture_output=True, check=False, env=env)
+
+
+@pytest.fixture()
+def git_checkout(work_area):
+    checkout = work_area / "git-checkout"
+    checkout.mkdir()
+    assert subprocess.run(["git", "init", str(checkout)], text=True, capture_output=True, check=False).returncode == 0
+    (checkout / "drivers").mkdir()
+    (checkout / "drivers" / "driver.py").write_text("print('ok')\n", encoding="utf-8")
+    assert git_run(checkout, "add", "drivers/driver.py").returncode == 0
+    assert git_run(checkout, "commit", "-m", "initial").returncode == 0
+    commit = git_run(checkout, "rev-parse", "HEAD").stdout.strip()
+    assert git_run(checkout, "remote", "add", "origin", "placeholder://repo").returncode == 0
+    assert git_run(checkout, "update-ref", "refs/remotes/origin/main", commit).returncode == 0
+    (checkout / ".git" / "refs" / "remotes" / "origin" / "HEAD").write_text("ref: refs/remotes/origin/main\n", encoding="utf-8")
+    return checkout, commit
+
+
+def make_policy_manifest(root, git_checkout, **overrides):
+    checkout, commit = git_checkout
+    manifest = {
+        "id": "policy-example",
+        "title": "Policy Example",
+        "repo_dir": str(checkout),
+        "ref": commit,
+        "driver": [sys.executable, "drivers/driver.py"],
+        "driver_file": "drivers/driver.py",
+        "cwd": str(checkout),
+        "env": {},
+        "expected_hours": 1,
+        "max_hours": 1,
+        "workers": 1,
+        "licence_exit_codes": [12],
+        "retry": {"max_attempts": 1, "backoff_minutes": 0},
+        "priority": 1,
+        "after": [],
+    }
+    manifest.update(overrides)
+    (root / "requested").mkdir(exist_ok=True)
+    path = root / "requested" / f"{manifest['id']}.json"
+    path.write_text(json.dumps(manifest), encoding="utf-8")
+    return path, manifest
+
+
+def write_policy(root, **limits):
+    data = {
+        "repositories": ["placeholder://repo"],
+        "limits": {"id_prefixes": ["policy-"], "max_workers": 2, "max_hours": 2},
+    }
+    data["limits"].update(limits)
+    (root / "policy.json").write_text(json.dumps(data), encoding="utf-8")
+
+
 def approve(root, path, approval_ref="approval-ref-001", date="2026-10-13"):
     digest = hashlib.sha256(path.read_bytes()).hexdigest()
     campaign_id = path.stem
@@ -158,6 +229,17 @@ def run_cli(args, root):
         capture_output=True,
         check=False,
         env=env,
+        creationflags=RUNNER_CREATION_FLAGS,
+    )
+
+
+def popen_runner(args, root):
+    env = os.environ.copy()
+    env["PYTHONDONTWRITEBYTECODE"] = "1"
+    return subprocess.Popen(
+        [sys.executable, str(RUNNER_PATH), *args, "--root", str(root)],
+        env=env,
+        creationflags=RUNNER_CREATION_FLAGS,
     )
 
 
@@ -204,13 +286,13 @@ def test_j4_overlapping_calls_start_only_one_driver(root, fake_checkout, work_ar
         progress=None,
     )
     approve(root, path)
-    first = subprocess.Popen([sys.executable, str(RUNNER_PATH), "run-once", "--root", str(root)])
+    first = popen_runner(["run-once"], root)
     time.sleep(0.2)
     second = run_cli(["run-once"], root)
     first.wait(timeout=10)
     assert second.returncode == 0
     log = (root / "state" / "global" / "runner.log").read_text(encoding="utf-8")
-    assert "lock holder" in log
+    assert "operating-system lock" in log
     assert json.loads(record.read_text(encoding="utf-8")) == manifest["driver"][1:]
 
 
@@ -269,8 +351,11 @@ def test_j8_stop_file_stops_and_blocks_restart(root, fake_checkout):
     assert run_cli(["run-once", "--heartbeat-seconds", "0.1"], root).returncode == 0
     assert not (root / "done" / "example-campaign.result").exists()
     (root / "state" / "example-campaign" / "STOP").unlink()
-    process = subprocess.Popen([sys.executable, str(RUNNER_PATH), "run-once", "--root", str(root), "--heartbeat-seconds", "0.1"])
-    time.sleep(0.3)
+    process = popen_runner(["run-once", "--heartbeat-seconds", "0.1", "--stop-grace-seconds", "1"], root)
+    deadline = time.monotonic() + 5
+    while time.monotonic() < deadline and not (root / "state" / "example-campaign" / "driver.json").exists():
+        time.sleep(0.05)
+    assert (root / "state" / "example-campaign" / "driver.json").exists()
     (root / "state" / "example-campaign" / "STOP").write_text("", encoding="utf-8")
     process.wait(timeout=10)
     assert "STOPPED" in (root / "done" / "example-campaign.result").read_text(encoding="utf-8")
@@ -316,8 +401,9 @@ def test_j12_heartbeat_and_status_format(root, fake_checkout):
     assert run_cli(["run-once"], root).returncode == 0
     heartbeat = root / "state" / "example-campaign" / "heartbeat.json"
     assert heartbeat.exists()
-    status = run_cli(["status"], root).stdout.strip()
-    parts = status.split("\t")
+    status_lines = run_cli(["status"], root).stdout.strip().splitlines()
+    assert status_lines[0] == "task-mode\tunknown"
+    parts = status_lines[1].split("\t")
     assert parts[0] == "example-campaign"
     assert parts[1] == "DONE"
     assert parts[2:4] == ["2", "2"]
@@ -366,6 +452,108 @@ def test_j14_credential_like_env_name_is_refused(root, fake_checkout):
     assert "env name looks like a credential" in done.stdout
 
 
+def test_j14_credential_tokens_are_separator_based(root, fake_checkout):
+    path, manifest = make_manifest(root, fake_checkout, env={"MONKEY_COUNT": "1"})
+    assert run_cli(["validate", str(path)], root).returncode == 0
+    manifest["env"] = {"db_pass": "placeholder"}
+    path.write_text(json.dumps(manifest), encoding="utf-8")
+    done = run_cli(["validate", str(path)], root)
+    assert done.returncode != 0
+    assert "env name looks like a credential" in done.stdout
+
+
+def test_windows_liveness_probe_does_not_call_os_kill(monkeypatch, runner):
+    calls = []
+    monkeypatch.setattr(runner.os, "name", "nt", raising=False)
+    monkeypatch.setattr(runner.os, "kill", lambda *args: calls.append(args))
+    monkeypatch.setattr(runner, "_windows_process_creation_time", lambda pid: 123.0)
+    assert runner.process_alive(44, 123.0)
+    assert not runner.process_alive(44, 124.0)
+    assert calls == []
+
+
+def test_live_and_ended_process_identity(runner):
+    process = subprocess.Popen([sys.executable, "-c", "import time; time.sleep(2)"])
+    try:
+        identity = runner.process_identity(process.pid)
+        assert identity is not None
+        assert runner.process_alive(identity["pid"], identity["creation_time"])
+    finally:
+        process.terminate()
+        process.wait(timeout=5)
+    assert not runner.process_alive(identity["pid"], identity["creation_time"])
+
+
+def test_approvals_accept_bom_and_strip_carriage_return(root, fake_checkout):
+    path, _ = make_manifest(root, fake_checkout)
+    digest = hashlib.sha256(path.read_bytes()).hexdigest()
+    (root / "approvals.tsv").write_bytes(f"\ufeffexample-campaign\t{digest}\tapproval-ref\t2026-10-13\r\n".encode("utf-8"))
+    assert run_cli(["run-once"], root).returncode == 0
+    assert (root / "done" / "example-campaign.result").exists()
+
+
+def test_requested_manifest_without_policy_does_not_run_or_call_git(root, git_checkout, monkeypatch, runner):
+    make_policy_manifest(root, git_checkout)
+    approvals = root / "approvals.tsv"
+    before = approvals.read_bytes() if approvals.exists() else b""
+    calls = []
+    monkeypatch.setattr(runner.subprocess, "run", lambda *args, **kwargs: calls.append(args) or subprocess.CompletedProcess(args, 1))
+    campaigns, errors = runner.discover_campaigns(root)
+    assert errors == []
+    assert campaigns == []
+    assert calls == []
+    assert (approvals.read_bytes() if approvals.exists() else b"") == before
+
+
+def test_policy_approves_requested_manifest(root, git_checkout):
+    path, _ = make_policy_manifest(root, git_checkout)
+    write_policy(root)
+    assert run_cli(["run-once"], root).returncode == 0
+    approvals = (root / "approvals.tsv").read_text(encoding="utf-8")
+    assert f"policy-example\t{hashlib.sha256(path.read_bytes()).hexdigest()}\tpolicy\t" in approvals
+    assert (root / "done" / "policy-example.result").exists()
+
+
+@pytest.mark.parametrize(
+    "mutate, message",
+    [
+        (lambda root, checkout, manifest: (root / "policy.json").write_text("{", encoding="utf-8"), "policy.json is invalid JSON"),
+        (lambda root, checkout, manifest: manifest.__setitem__("workers", 3), "workers exceeds policy limit"),
+        (lambda root, checkout, manifest: manifest.__setitem__("max_hours", 3), "max_hours exceeds policy limit"),
+        (lambda root, checkout, manifest: manifest.__setitem__("id", "other-example"), "id is outside policy limit"),
+        (lambda root, checkout, manifest: (checkout / "drivers" / "driver.py").write_text("changed\n", encoding="utf-8"), "tracked files differ from ref"),
+    ],
+)
+def test_policy_negative_controls(root, git_checkout, mutate, message):
+    path, manifest = make_policy_manifest(root, git_checkout)
+    write_policy(root)
+    mutate(root, git_checkout[0], manifest)
+    path.unlink()
+    path = root / "requested" / f"{manifest['id']}.json"
+    path.write_text(json.dumps(manifest), encoding="utf-8")
+    before = (root / "approvals.tsv").read_bytes() if (root / "approvals.tsv").exists() else b""
+    assert run_cli(["run-once"], root).returncode == 0
+    after = (root / "approvals.tsv").read_bytes() if (root / "approvals.tsv").exists() else b""
+    assert after == before
+    logs = "\n".join(p.read_text(encoding="utf-8") for p in (root / "state").glob("*/runner.log"))
+    assert message in logs
+
+
+def test_invalid_manifest_id_logs_only_in_invalid_bucket(root, fake_checkout, work_area):
+    outside = work_area / "outside"
+    outside.mkdir()
+    before = sorted(p.relative_to(work_area).as_posix() for p in work_area.rglob("*"))
+    path, manifest = make_manifest(root, fake_checkout)
+    path.unlink()
+    bad = root / "approved" / "bad.json"
+    manifest["id"] = "../outside/dotdot"
+    bad.write_text(json.dumps(manifest), encoding="utf-8")
+    run_cli(["run-once"], root)
+    after = sorted(p.relative_to(work_area).as_posix() for p in work_area.rglob("*"))
+    assert all(not item.startswith("outside/") for item in set(after) - set(before))
+    assert (root / "state" / "invalid" / "runner.log").exists()
+
+
 def test_j15_k1_standard_library_imports_and_no_network_modules():
     tree = ast.parse(RUNNER_PATH.read_text(encoding="utf-8"))
     blocked = {"socket", "ssl", "urllib", "http", "ftplib", "imaplib", "smtplib"}
@@ -403,7 +591,7 @@ def test_j15_k3_stop_does_not_end_bystander(root, fake_checkout):
             progress=None,
         )
         approve(root, path)
-        process = subprocess.Popen([sys.executable, str(RUNNER_PATH), "run-once", "--root", str(root), "--heartbeat-seconds", "0.1"])
+        process = popen_runner(["run-once", "--heartbeat-seconds", "0.1"], root)
         time.sleep(0.3)
         (root / "STOP").write_text("", encoding="utf-8")
         process.wait(timeout=10)
@@ -461,3 +649,75 @@ def snapshot(path):
         elif entry.is_dir():
             items[rel] = "dir"
     return items
+
+
+def task_xml(mode):
+    done = subprocess.run(
+        [
+            sys.executable,
+            str(RUNNER_PATH),
+            "task-definition",
+            mode,
+            "--account",
+            "{ACCOUNT}",
+            "--wrapper",
+            "{WRAPPER}",
+            "--campaign-root",
+            "{CAMPAIGN_ROOT}",
+        ],
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+    assert done.returncode == 0, done.stderr
+    return ET.fromstring(done.stdout.split("\n", 1)[1])
+
+
+def find_text(element, name):
+    found = element.find(f".//{{http://schemas.microsoft.com/windows/2004/02/mit/task}}{name}")
+    return found.text if found is not None else None
+
+
+@pytest.mark.parametrize(
+    "mode,logon,trigger",
+    [
+        ("batch", "S4U", "BootTrigger"),
+        ("batch-password", "Password", "BootTrigger"),
+        ("desktop", "InteractiveToken", "LogonTrigger"),
+    ],
+)
+def test_task_definition_modes(mode, logon, trigger):
+    root = task_xml(mode)
+    assert find_text(root, "LogonType") == logon
+    assert find_text(root, "UserId") == "{ACCOUNT}"
+    assert root.find(f".//{{http://schemas.microsoft.com/windows/2004/02/mit/task}}{trigger}") is not None
+    assert find_text(root, "Interval") == "PT10M"
+    assert find_text(root, "ExecutionTimeLimit") == "PT0S"
+    assert find_text(root, "MultipleInstancesPolicy") == "IgnoreNew"
+    assert find_text(root, "DisallowStartIfOnBatteries") == "false"
+    assert find_text(root, "RunOnlyIfIdle") == "false"
+    assert find_text(root, "RunLevel") == "LeastPrivilege"
+    assert find_text(root, "Command") == "cmd.exe"
+    assert "Password" not in "".join(root.itertext()) or mode == "batch-password"
+
+
+def test_status_task_mode_records(root):
+    assert run_cli(["status"], root).stdout.splitlines()[0] == "task-mode\tunknown"
+    for mode in ("batch", "batch-password", "desktop"):
+        (root / "task-mode.txt").write_text(mode + "\n", encoding="utf-8")
+        assert run_cli(["status"], root).stdout.splitlines()[0] == f"task-mode\t{mode}"
+
+
+def test_wrapper_fallback_uses_runtime_errorlevel_check():
+    text = WRAPPER_PATH.read_text(encoding="utf-8")
+    assert "if not errorlevel 1 set \"PYTHON_CMD=python.exe\"" in text
+    assert "if %ERRORLEVEL% EQU 0 set \"PYTHON_CMD=python.exe\"" not in text
+
+
+def test_register_dry_run_exits_before_scheduled_task_command():
+    text = (REPO_ROOT / "scripts" / "operations" / "solver-campaign" / "register-solver-campaign-task.bat").read_text(
+        encoding="utf-8"
+    )
+    dry_run = text.split("if defined DRY_RUN", 1)[1].split(")", 1)[0]
+    assert "exit /b 0" in dry_run
+    assert "schtasks" not in dry_run.lower()

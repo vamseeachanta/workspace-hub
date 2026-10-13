@@ -15,6 +15,7 @@
 # Force LF for shell scripts (CRLF breaks bash on MINGW)
 *.sh text eol=lf
 scripts/* text eol=lf
+scripts/operations/solver-campaign/*.bat text eol=crlf
 # Extensionless hook files in scripts/hooks/ (scripts/* only covers one level)
 scripts/hooks/* text eol=lf
 

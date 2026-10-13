@@ -1,18 +1,61 @@
 @echo off
 setlocal
 set "SCRIPT_DIR=%~dp0"
+set "MODE=%~1"
+set "ROOT=%~2"
+if not defined MODE set "MODE=batch"
+if /I "%MODE%"=="--dry-run" set "MODE=batch" & set "DRY_RUN=1"
+if /I "%~2"=="--dry-run" set "DRY_RUN=1"
+if /I "%MODE%"=="batch" goto mode_ok
+if /I "%MODE%"=="batch-password" goto mode_ok
+if /I "%MODE%"=="desktop" goto mode_ok
+echo Modes: batch, batch-password, desktop.
+exit /b 2
+:mode_ok
+if not defined ROOT set "ROOT=%SOLVER_CAMPAIGN_ROOT%"
+if not defined ROOT set "ROOT=%CD%"
 set "WRAPPER=%SCRIPT_DIR%run-solver-campaigns.bat"
-set "TASK_MINUTE=solver-campaign-runner"
-set "TASK_LOGON=solver-campaign-runner-logon"
-set "ACTION=powershell -NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File \"%WRAPPER%\""
-set "REGISTERED=0"
-
-schtasks /Create /TN "%TASK_MINUTE%" /TR "%ACTION%" /SC MINUTE /MO 10 /IT /F
-if %ERRORLEVEL% EQU 0 set "REGISTERED=1"
-schtasks /Create /TN "%TASK_LOGON%" /TR "%ACTION%" /SC ONLOGON /IT /F
-if %ERRORLEVEL% NEQ 0 echo Logon trigger registration failed; the 10-minute trigger may still be registered.
-if "%REGISTERED%"=="0" exit /b 1
-schtasks /Query /TN "%TASK_MINUTE%" /FO LIST /V
-schtasks /Query /TN "%TASK_LOGON%" /FO LIST /V
-echo Registered solver campaign runner scheduled tasks.
+set "TASK_NAME=solver-campaign-runner"
+set "TASK_XML=%TEMP%\solver-campaign-runner-%RANDOM%.xml"
+set "ACCOUNT=%USERDOMAIN%\%USERNAME%"
+set "PYTHON_CMD="
+where py.exe >nul 2>nul
+if not errorlevel 1 set "PYTHON_CMD=py.exe -3"
+if not defined PYTHON_CMD (
+  where python.exe >nul 2>nul
+  if not errorlevel 1 set "PYTHON_CMD=python.exe"
+)
+if not defined PYTHON_CMD (
+  echo Python was not found on PATH.
+  exit /b 2
+)
+%PYTHON_CMD% "%SCRIPT_DIR%campaign_runner.py" task-definition "%MODE%" --account "{ACCOUNT}" --wrapper "%WRAPPER%" --campaign-root "%ROOT%" > "%TASK_XML%"
+type "%TASK_XML%"
+if defined DRY_RUN (
+  del "%TASK_XML%" >nul 2>nul
+  exit /b 0
+)
+if /I "%MODE%"=="batch-password" (
+  schtasks /Create /TN "%TASK_NAME%" /XML "%TASK_XML%" /RU "%ACCOUNT%" /RP * /F
+) else (
+  schtasks /Create /TN "%TASK_NAME%" /XML "%TASK_XML%" /RU "%ACCOUNT%" /F
+)
+set "RC=%ERRORLEVEL%"
+if not "%RC%"=="0" (
+  echo Task registration failed. Check rights for the selected mode.
+  del "%TASK_XML%" >nul 2>nul
+  exit /b %RC%
+)
+schtasks /Query /TN "%TASK_NAME%" /XML > "%TASK_XML%.readback"
+if not "%ERRORLEVEL%"=="0" (
+  echo Task readback failed.
+  del "%TASK_XML%" >nul 2>nul
+  exit /b 1
+)
+findstr /I /C:"<LogonType>" "%TASK_XML%.readback"
+if not exist "%ROOT%\state" mkdir "%ROOT%\state"
+echo %MODE%>"%ROOT%\task-mode.txt"
+del "%TASK_XML%" >nul 2>nul
+del "%TASK_XML%.readback" >nul 2>nul
+echo Registered solver campaign runner scheduled task in %MODE% mode.
 exit /b 0
