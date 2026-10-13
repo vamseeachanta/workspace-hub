@@ -53,16 +53,16 @@ check_path_output() {
 # Refuses merges and also checks the cumulative range, so merge resolution and
 # add-then-revert cases cannot ride along with allowed sync output.
 guard_outgoing() {
-  local c commits merge_commits
+  local validated_oid="$1" c commits merge_commits
   if ! git rev-parse --verify --quiet refs/remotes/origin/main >/dev/null; then
     echo "$(date -u +%FT%TZ) ecosystem-sync: missing refs/remotes/origin/main; not pushing" >> "$LOG"
     exit 6
   fi
-  if ! commits="$(git rev-list refs/remotes/origin/main..main)"; then
+  if ! commits="$(git rev-list "refs/remotes/origin/main..$validated_oid")"; then
     echo "$(date -u +%FT%TZ) ecosystem-sync: git rev-list failed; not pushing" >> "$LOG"
     exit 6
   fi
-  if ! merge_commits="$(git rev-list --merges refs/remotes/origin/main..main)"; then
+  if ! merge_commits="$(git rev-list --merges "refs/remotes/origin/main..$validated_oid")"; then
     echo "$(date -u +%FT%TZ) ecosystem-sync: git rev-list --merges failed; not pushing" >> "$LOG"
     exit 6
   fi
@@ -72,7 +72,7 @@ guard_outgoing() {
     exit 6
   fi
   check_path_output "outgoing range" \
-    git diff --name-only -z --no-renames refs/remotes/origin/main...main
+    git diff --name-only -z --no-renames "refs/remotes/origin/main...$validated_oid"
   for c in $commits; do
     check_path_output "outgoing commit $c" \
       git diff-tree --no-commit-id --name-only -r -z --root --no-renames "$c"
@@ -112,7 +112,7 @@ if ! git pull --ff-only origin main >> "$LOG" 2>&1; then
   echo "$(date -u +%FT%TZ) ecosystem-sync: git pull failed" >> "$LOG"
   exit 3
 fi
-guard_outgoing
+guard_outgoing "$(git rev-parse HEAD)"
 
 START=$(date +%s)
 if uv run scripts/ecosystem-sync/run.py "${EXTRA_ARGS[@]}" >> "$LOG" 2>&1; then
@@ -135,12 +135,14 @@ if [[ "$RC" == "0" ]]; then
       echo "$(date -u +%FT%TZ) ecosystem-sync: git commit failed" >> "$LOG"
       exit 7
     }
-    guard_outgoing
-    if ! git push origin main >> "$LOG" 2>&1; then
+    validated_oid="$(git rev-parse HEAD)"
+    guard_outgoing "$validated_oid"
+    if ! git push origin "$validated_oid:refs/heads/main" >> "$LOG" 2>&1; then
       echo "$(date -u +%FT%TZ) push rejected, attempting rebase" >> "$LOG"
       if git pull --rebase origin main >> "$LOG" 2>&1; then
-        guard_outgoing
-        git push origin main >> "$LOG" 2>&1 || { echo "re-push failed" >> "$LOG"; exit 4; }
+        validated_oid="$(git rev-parse HEAD)"
+        guard_outgoing "$validated_oid"
+        git push origin "$validated_oid:refs/heads/main" >> "$LOG" 2>&1 || { echo "re-push failed" >> "$LOG"; exit 4; }
       else
         git rebase --abort 2>/dev/null || true
         echo "$(date -u +%FT%TZ) rebase conflict, aborted" >> "$LOG"

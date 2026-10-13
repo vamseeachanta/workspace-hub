@@ -1,0 +1,46 @@
+name: Absolute-Path Guard Report
+
+# Staged rollout documented in docs/enforcement/no-abs-paths-guard.md.
+# The workflow mode line below is the only CI switch for the blocking stage.
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  no-abs-paths-report:
+    name: Absolute-Path Guard Report
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Run absolute-path guard
+        env:
+          ABS_PATH_GUARD_MODE: report-only
+        run: |
+          set +e
+          bash scripts/enforcement/report-no-abs-paths.sh \
+            "$RUNNER_TEMP/no-abs-paths-summary.md" \
+            "$RUNNER_TEMP/no-abs-paths-findings.txt"
+          rc=$?
+          cat "$RUNNER_TEMP/no-abs-paths-summary.md" >> "$GITHUB_STEP_SUMMARY"
+          exit "$rc"
+
+      - name: Upload full findings list
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: no-abs-paths-findings
+          path: ${{ runner.temp }}/no-abs-paths-findings.txt
+          if-no-files-found: error

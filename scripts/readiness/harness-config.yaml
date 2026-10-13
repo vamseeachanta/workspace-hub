@@ -32,8 +32,6 @@ hook_static_max_lines: 200
 # Missing/unreadable key → no exemptions (line check stays fully active).
 hook_static_line_exempt:
   - check-skill-content.sh   # ~553L: security pattern catalog (one add_pattern triple per threat) — table-driven, expanding the table is the point
-  - session-review.sh        # ~361L: end-of-session multi-section review aggregator — sequential sections, not extractable subroutines
-  - capture-corrections.sh   # ~201L: 1 line over; correction-capture state machine across several signal sources
 hook_blocking_patterns:
   - 'git commit'
   - 'git push'

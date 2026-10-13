@@ -29,31 +29,11 @@
         ]
       },
       {
-        "matcher": "Write|Edit|MultiEdit|Bash",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "bash .claude/hooks/plan-approval-gate.sh",
-            "timeout": 5
-          }
-        ]
-      },
-      {
         "matcher": "Write|Edit|MultiEdit",
         "hooks": [
           {
             "type": "command",
             "command": "bash .claude/hooks/config-protection-pretooluse.sh",
-            "timeout": 5
-          }
-        ]
-      },
-      {
-        "matcher": "Write|Edit",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "node .claude/hooks/gsd-prompt-guard.js",
             "timeout": 5
           }
         ]
@@ -77,36 +57,6 @@
             "timeout": 15
           }
         ]
-      },
-      {
-        "matcher": "Write|Edit",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "node .claude/hooks/gsd-read-guard.js",
-            "timeout": 5
-          }
-        ]
-      },
-      {
-        "matcher": "Write|Edit",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "node .claude/hooks/gsd-workflow-guard.js",
-            "timeout": 5
-          }
-        ]
-      },
-      {
-        "matcher": "Bash",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "bash .claude/hooks/gsd-validate-commit.sh",
-            "timeout": 5
-          }
-        ]
       }
     ],
     "PostToolUse": [
@@ -116,36 +66,6 @@
           {
             "type": "command",
             "command": "bash .claude/hooks/error-loop-tracker.sh",
-            "timeout": 5
-          }
-        ]
-      },
-      {
-        "matcher": "Write|Edit|MultiEdit",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "cat | \"${WORKSPACE_HUB:-$(git rev-parse --show-superproject-working-tree 2>/dev/null | grep . || git rev-parse --show-toplevel)}/.claude/hooks/capture-corrections.sh\"",
-            "timeout": 10
-          }
-        ]
-      },
-      {
-        "matcher": "Bash|Edit|Write|MultiEdit|Agent|Task",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "node .claude/hooks/gsd-context-monitor.js",
-            "timeout": 10
-          }
-        ]
-      },
-      {
-        "matcher": "Write|Edit",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "bash .claude/hooks/gsd-phase-boundary.sh",
             "timeout": 5
           }
         ]
@@ -171,18 +91,6 @@
         ]
       }
     ],
-    "PreCompact": [
-      {
-        "matcher": ".*",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "bash \"${WORKSPACE_HUB:-$(git rev-parse --show-superproject-working-tree 2>/dev/null | grep . || git rev-parse --show-toplevel)}/.claude/hooks/context-budget-monitor.sh\" 2>/dev/null || true",
-            "timeout": 10
-          }
-        ]
-      }
-    ],
     "Stop": [
       {
         "matcher": ".*",
@@ -192,24 +100,6 @@
             "command": "bash -c 'SCRIPT=\"${WORKSPACE_HUB:-$(git rev-parse --show-superproject-working-tree 2>/dev/null | grep . || git rev-parse --show-toplevel)}/.claude/hooks/consume-signals.sh\"; [ -f \"$SCRIPT\" ] && bash \"$SCRIPT\" 2>/dev/null || true'",
             "timeout": 10,
             "statusMessage": "Capturing session signals"
-          },
-          {
-            "type": "command",
-            "command": "cat | bash \"${WORKSPACE_HUB:-$(git rev-parse --show-superproject-working-tree 2>/dev/null | grep . || git rev-parse --show-toplevel)}/.claude/hooks/emit-session-quality-signals.sh\" 2>/dev/null || true",
-            "timeout": 10,
-            "statusMessage": "Emitting session quality signals"
-          },
-          {
-            "type": "command",
-            "command": "cat | bash \"${WORKSPACE_HUB:-$(git rev-parse --show-superproject-working-tree 2>/dev/null | grep . || git rev-parse --show-toplevel)}/.claude/hooks/skill-nudge-stop.sh\" 2>/dev/null || true",
-            "timeout": 10,
-            "statusMessage": "Checking for skill creation opportunities"
-          },
-          {
-            "type": "command",
-            "command": "bash \"${WORKSPACE_HUB:-$(git rev-parse --show-superproject-working-tree 2>/dev/null | grep . || git rev-parse --show-toplevel)}/.claude/hooks/session-review.sh\" 2>/dev/null || true",
-            "timeout": 30,
-            "statusMessage": "Extracting session review signals"
           }
         ]
       }
@@ -217,30 +107,6 @@
     "SessionStart": [
       {
         "hooks": [
-          {
-            "type": "command",
-            "command": "node .claude/hooks/gsd-check-update.js",
-            "timeout": 15
-          },
-          {
-            "type": "command",
-            "command": "bash \"${WORKSPACE_HUB:-$(git rev-parse --show-superproject-working-tree 2>/dev/null | grep . || git rev-parse --show-toplevel)}/.claude/hooks/skill-nudge-start.sh\" 2>/dev/null || true",
-            "timeout": 5
-          },
-          {
-            "type": "command",
-            "command": "bash \"${WORKSPACE_HUB:-$(git rev-parse --show-superproject-working-tree 2>/dev/null | grep . || git rev-parse --show-toplevel)}/.claude/hooks/daily-learning-tip.sh\" 2>/dev/null || true",
-            "timeout": 3,
-            "statusMessage": "Daily learning tip"
-          }
-        ]
-      },
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "bash .claude/hooks/gsd-session-state.sh"
-          },
           {
             "type": "command",
             "command": "bash \"${WORKSPACE_HUB:-$(git rev-parse --show-toplevel)}/.claude/hooks/session-review-page.sh\" start 2>/dev/null || true",

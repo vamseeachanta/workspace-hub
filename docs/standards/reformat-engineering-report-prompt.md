@@ -4,6 +4,8 @@
 
 The standard remains a review draft; applying it to one requested report does not establish ecosystem adoption.
 
+Apply the standard's Presentation rules section first where it conflicts with the ten-section structure, examples or older wording.
+
 Record the standard revision and commit used. Apply only to the named report and its authorized save location; preserve issued archives. Verify saved output by reading it back, recording its digest and checking rendering/print where supported. State any unverified checks.
 
 Reference reports supply presentation examples only: do not copy another project's identities, branding, data, criteria, conclusions or figures. Preserve audience/privacy requirements. Identify removed or corrected results in the change record; do not recalculate or select new acceptance criteria as a formatting change.

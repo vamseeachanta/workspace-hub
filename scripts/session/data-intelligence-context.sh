@@ -7,10 +7,9 @@
 #   data-intelligence-context.sh --domain marine
 #   data-intelligence-context.sh --wrk-file .claude/work-queue/working/WRK-123.md
 #   data-intelligence-context.sh --category engineering --subcategory pipeline
-#   data-intelligence-context.sh                  # auto-detect from active WRK
+#   data-intelligence-context.sh                  # no-op; local WRK auto-detect retired
 #
-# When called with no arguments, auto-detects the sole active WRK in working/
-# and extracts its domain from category/subcategory frontmatter.
+# When called with no arguments, local WRK auto-detect is disabled.
 
 set -uo pipefail
 
@@ -21,15 +20,9 @@ PYTHON_HELPER="${SCRIPT_DIR}/data-intelligence-context.py"
 # Pass-through arguments
 ARGS=("$@")
 
-# Auto-detect if no arguments given
+# Auto-detect if no arguments given. Retired: labels are queue truth.
 if [[ ${#ARGS[@]} -eq 0 ]]; then
-  WORKING_DIR="${REPO_ROOT}/.claude/work-queue/working"
-  if [[ -d "$WORKING_DIR" ]]; then
-    mapfile -t WORKING_FILES < <(find "$WORKING_DIR" -maxdepth 1 -name "WRK-*.md" 2>/dev/null | sort)
-    if [[ ${#WORKING_FILES[@]} -eq 1 ]]; then
-      ARGS=("--wrk-file" "${WORKING_FILES[0]}")
-    fi
-  fi
+  exit 0
 fi
 
 # Still no args? Nothing to do.

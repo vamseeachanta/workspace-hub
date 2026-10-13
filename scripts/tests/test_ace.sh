@@ -6,6 +6,54 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ACE="$SCRIPT_DIR/../ace"
+GH_STUB_DIR="$(mktemp -d)"
+CREATED_UV_CACHE_DIR=""
+if [[ -z "${UV_CACHE_DIR:-}" ]]; then
+    CREATED_UV_CACHE_DIR="$(mktemp -d)"
+    export UV_CACHE_DIR="$CREATED_UV_CACHE_DIR"
+fi
+cleanup() {
+    rm -rf "$GH_STUB_DIR"
+    if [[ -n "$CREATED_UV_CACHE_DIR" ]]; then
+        rm -rf "$CREATED_UV_CACHE_DIR"
+    fi
+}
+trap cleanup EXIT
+
+cat >"$GH_STUB_DIR/gh" <<'EOF'
+#!/usr/bin/env bash
+set -euo pipefail
+
+if [[ "$*" == *"issue list"* ]]; then
+    printf '#3999 Test dispatch issue\n'
+    exit 0
+fi
+
+if [[ "$*" == *"issue view 3999"* ]]; then
+    printf 'title:\tTest dispatch issue\n'
+    exit 0
+fi
+
+echo "unexpected gh invocation: $*" >&2
+exit 1
+EOF
+chmod +x "$GH_STUB_DIR/gh"
+export PATH="$GH_STUB_DIR:$PATH"
+mkdir -p "$GH_STUB_DIR/worldenergydata"
+cat >"$GH_STUB_DIR/worldenergydata/__init__.py" <<'EOF'
+EOF
+cat >"$GH_STUB_DIR/worldenergydata/__main__.py" <<'EOF'
+#!/usr/bin/env python3
+import sys
+
+if sys.argv[1:] == ["bsee", "--help"]:
+    print("worldenergydata bsee command help")
+    raise SystemExit(0)
+
+print("unexpected worldenergydata invocation:", sys.argv[1:])
+raise SystemExit(1)
+EOF
+export PYTHONPATH="$GH_STUB_DIR:${PYTHONPATH:-}"
 
 PASS=0
 FAIL=0
@@ -109,6 +157,21 @@ fi
 assert_contains "ace we --help shows commands" "worldenergydata" "$we_out"
 
 # ---------------------------------------------------------------------------
+# Test: ace we <subcommand> --help is passed through to worldenergydata
+# ---------------------------------------------------------------------------
+we_sub_help_out=$("$ACE" we bsee --help 2>&1) && we_sub_help_exit=0 || we_sub_help_exit=$?
+if [ "$we_sub_help_exit" -eq 0 ]; then
+    pass "ace we bsee --help exits 0"
+else
+    fail "ace we bsee --help exits 0" "exit code $we_sub_help_exit — $we_sub_help_out"
+fi
+if echo "$we_sub_help_out" | grep -q "ace we — worldenergydata engineering data CLI"; then
+    fail "ace we bsee --help is subcommand help" "generic ace we help swallowed subcommand help"
+else
+    pass "ace we bsee --help is subcommand help"
+fi
+
+# ---------------------------------------------------------------------------
 # Test: ace au --help exits 0 and shows au usage text
 # (assetutilities is a YAML-driven engine; ace intercepts --help)
 # ---------------------------------------------------------------------------
@@ -121,7 +184,7 @@ fi
 assert_contains "ace au --help mentions assetutilities" "assetutilities" "$au_out"
 
 # ---------------------------------------------------------------------------
-# Test: ace wrk list exits 0 and shows WRK items
+# Test: ace wrk list exits 0 and reads the GitHub label queue
 # ---------------------------------------------------------------------------
 wrk_out=$("$ACE" wrk list 2>&1) && wrk_exit=0 || wrk_exit=$?
 if [ "$wrk_exit" -eq 0 ]; then
@@ -129,28 +192,27 @@ if [ "$wrk_exit" -eq 0 ]; then
 else
     fail "ace wrk list exits 0" "exit code $wrk_exit — $wrk_out"
 fi
-assert_contains "ace wrk list shows WRK items" "WRK-" "$wrk_out"
+assert_contains "ace wrk list shows GitHub issues" "#" "$wrk_out"
 
 # ---------------------------------------------------------------------------
-# Test: ace wrk show with valid ID exits 0
+# Test: ace wrk show with valid issue ID exits 0
 # ---------------------------------------------------------------------------
-first_wrk=$(ls /mnt/local-analysis/workspace-hub/.claude/work-queue/pending/ 2>/dev/null | \
-    grep -E '^WRK-[0-9]+\.md$' | sort | head -1 | sed 's/\.md$//')
-if [ -n "$first_wrk" ]; then
-    wrk_show_out=$("$ACE" wrk show "$first_wrk" 2>&1) && wrk_show_exit=0 || wrk_show_exit=$?
+first_issue=$(printf '%s\n' "$wrk_out" | sed -n 's/^#\([0-9][0-9]*\).*/\1/p' | head -1)
+if [ -n "$first_issue" ]; then
+    wrk_show_out=$("$ACE" wrk show "$first_issue" 2>&1) && wrk_show_exit=0 || wrk_show_exit=$?
     if [ "$wrk_show_exit" -eq 0 ]; then
-        pass "ace wrk show $first_wrk exits 0"
+        pass "ace wrk show #$first_issue exits 0"
     else
-        fail "ace wrk show $first_wrk exits 0" "exit code $wrk_show_exit — $wrk_show_out"
+        fail "ace wrk show #$first_issue exits 0" "exit code $wrk_show_exit — $wrk_show_out"
     fi
 else
-    pass "ace wrk show (skipped — no pending WRK items)"
+    pass "ace wrk show (skipped — no dispatch:ready issues)"
 fi
 
 # ---------------------------------------------------------------------------
 # Test: ace wrk show with missing ID exits non-zero
 # ---------------------------------------------------------------------------
-bad_out=$("$ACE" wrk show WRK-99999 2>&1) && bad_exit=0 || bad_exit=$?
+bad_out=$("$ACE" wrk show not-an-issue 2>&1) && bad_exit=0 || bad_exit=$?
 if [ "$bad_exit" -ne 0 ]; then
     pass "ace wrk show missing ID exits non-zero"
 else

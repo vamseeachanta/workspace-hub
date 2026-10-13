@@ -1,0 +1,118 @@
+---
+name: orcaflex-post-processing
+description: Post-process OrcaFlex simulation results using OPP (OrcaFlex Post-Process).
+  Use for extracting summary statistics, linked statistics, range graphs, time series,
+  histograms, and generating interactive HTML reports from .sim files.
+type: reference
+updated: '2026-01-07'
+capabilities: []
+requires: []
+tags:
+- marine
+- offshore
+- orcaflex
+- post-processing
+- results
+- statistics
+related_skills:
+- orcaflex-modeling
+- orcaflex-batch-manager
+- orcaflex-extreme-analysis
+- orcaflex-results-comparison
+scripts_exempt: true
+category: engineering
+version: 1.0.0
+---
+
+# Orcaflex Post Processing
+
+## When to Use
+
+- Extracting summary statistics from simulation results
+- Creating range graphs for motion/load envelopes
+- Generating time series plots for specific variables
+- Computing linked statistics (correlations between variables)
+- Creating histogram distributions of results
+- Building interactive HTML dashboards from simulation data
+- Batch processing multiple .sim files in parallel
+
+## Prerequisites
+
+- OrcaFlex license (for reading .sim files)
+- Completed simulations in `.sim/` directory
+- Python environment with `digitalmodel` package installed
+
+## Python API
+
+### Basic Post-Processing
+
+```python
+from digitalmodel.solvers.orcaflex.opp import OrcaFlexPostProcess
+
+# Initialize post-processor
+opp = OrcaFlexPostProcess()
+
+# Load configuration
+cfg = {
+    "orcaflex": {
+        "postprocess": {
+
+*See sub-skills for full details.*
+### Batch Processing with Parallel Execution
+
+```python
+from digitalmodel.solvers.orcaflex.opp import OrcaFlexPostProcess
+from concurrent.futures import ProcessPoolExecutor
+from pathlib import Path
+
+opp = OrcaFlexPostProcess()
+
+# Get all .sim files
+sim_files = list(Path("results/.sim/").glob("*.sim"))
+
+
+*See sub-skills for full details.*
+### Extract Specific Results
+
+```python
+from digitalmodel.solvers.orcaflex.orcaflex_utilities import OrcaflexUtilities
+
+utils = OrcaflexUtilities()
+
+# Load simulation
+model, metadata = utils.get_model_and_metadata("simulation.sim")
+
+# Get time history
+line = model["Line1"]
+
+*See sub-skills for full details.*
+
+## Related Skills
+
+- orcaflex-modeling - Run OrcaFlex simulations
+- mooring-design - Mooring system design
+- fatigue-analysis - Fatigue assessment
+
+## References
+
+- OrcaFlex Results Documentation
+- OrcFxAPI Python Guide
+- Workspace HTML Reporting Standards: `docs/modules/standards/HTML_REPORTING_STANDARDS.md`
+
+## Sub-Skills
+
+- Efficient Processing (+2)
+
+## Sub-Skills
+
+- Error Handling
+
+## Sub-Skills
+
+- Version Metadata
+- [1.0.0] - 2026-01-07
+- 1. Summary Statistics (+4)
+- Complete Post-Processing Configuration (+1)
+- CSV Output (+2)
+- Parallel Processing Details
+- Common Vessel Variables (+2)

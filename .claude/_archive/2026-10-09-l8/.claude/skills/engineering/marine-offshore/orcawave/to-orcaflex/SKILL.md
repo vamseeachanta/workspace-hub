@@ -1,0 +1,192 @@
+---
+name: orcawave-to-orcaflex
+description: Integration specialist for converting OrcaWave diffraction results to
+  OrcaFlex vessel types. Handles hydrodynamic database generation, RAO import, viscous
+  damping addition, and coordinate system transformations.
+type: reference
+version: 1.0.0
+updated: 2026-01-17
+category: engineering
+triggers:
+- OrcaWave to OrcaFlex
+- hydrodynamic database
+- vessel type creation
+- RAO import
+- diffraction to time domain
+- added mass damping export
+- OrcaFlex vessel setup
+capabilities: []
+requires: []
+tags: []
+scripts_exempt: true
+---
+
+<!-- ace:api-missing-warning -->
+> [!WARNING]
+> **Part of the Python API documented below does not exist in
+> `digitalmodel`.** These snippets are a *specification* of intended
+> capability, not runnable code. Do not import them, and do not report
+> a result obtained by pretending they ran.
+>
+> Absent as of this revision:
+>   - `digitalmodel.diffraction.orcawave_converter`
+>   - `digitalmodel.diffraction.orcawave_converter.OrcaWaveConverter`
+>   - `digitalmodel.orcawave.coordinate_transform`
+>   - `digitalmodel.orcawave.coordinate_transform.CoordinateTransformer`
+>   - `digitalmodel.orcawave.orcaflex_export`
+>   - `digitalmodel.orcawave.orcaflex_export.HydrodynamicDatabaseCreator`
+>   - `digitalmodel.orcawave.orcaflex_export.OrcaWaveToOrcaFlex`
+>   - `digitalmodel.orcawave.rao_import`
+>   - `digitalmodel.orcawave.rao_import.RAOImporter`
+>
+> The surrounding engineering content — method, conventions, what to
+> watch for — is unaffected and remains usable.
+>
+> **The intended API is now specified in `digitalmodel`**, at
+> `docs/domains/orcawave/intended-api/to-orcaflex.md`, where it is a build
+> target rather than something an agent may mistake for working code.
+> Tracked in aceengineer-strategy#267, digitalmodel#2045.
+
+<!-- ace:known-missing: digitalmodel.diffraction.orcawave_converter, digitalmodel.diffraction.orcawave_converter.OrcaWaveConverter, digitalmodel.orcawave.coordinate_transform, digitalmodel.orcawave.coordinate_transform.CoordinateTransformer, digitalmodel.orcawave.orcaflex_export, digitalmodel.orcawave.orcaflex_export.HydrodynamicDatabaseCreator, digitalmodel.orcawave.orcaflex_export.OrcaWaveToOrcaFlex, digitalmodel.orcawave.rao_import, digitalmodel.orcawave.rao_import.RAOImporter -->
+
+# Orcawave To Orcaflex
+
+## When to Use
+
+- Converting OrcaWave results (.owr) to OrcaFlex vessel type
+- Creating hydrodynamic database for time-domain analysis
+- Importing RAO data from diffraction analysis
+- Adding viscous damping to radiation damping
+- Transforming coordinate systems between tools
+- Setting up vessel types with full hydrodynamic properties
+- Batch conversion of multiple loading conditions
+
+## Python API
+
+### Basic Conversion
+
+```python
+from digitalmodel.diffraction.orcawave_converter import OrcaWaveConverter
+from digitalmodel.hydrodynamics.diffraction.orcaflex_exporter import OrcaFlexExporter
+
+# Load OrcaWave results
+import OrcFxAPI
+
+# Option 1: From OrcaWave model directly
+orcawave_model = OrcFxAPI.DiffractionModel("models/fpso.owr")
+vessel = orcawave_model.Vessel
+
+*See sub-skills for full details.*
+### With Viscous Damping
+
+```python
+from digitalmodel.orcawave.orcaflex_export import OrcaWaveToOrcaFlex
+
+# Initialize converter with damping options
+converter = OrcaWaveToOrcaFlex()
+
+# Load OrcaWave results
+converter.load_orcawave("models/fpso.owr")
+
+# Add viscous damping (percentage of critical)
+
+*See sub-skills for full details.*
+### Full Hydrodynamic Database
+
+```python
+from digitalmodel.orcawave.orcaflex_export import HydrodynamicDatabaseCreator
+
+# Create complete hydrodynamic database
+db_creator = HydrodynamicDatabaseCreator()
+
+# Load all loading conditions
+db_creator.add_condition(
+    name="full_load",
+    orcawave_file="models/fpso_full.owr",
+
+*See sub-skills for full details.*
+### RAO Import with Validation
+
+```python
+from digitalmodel.orcawave.rao_import import RAOImporter
+from digitalmodel.hydrodynamics.diffraction.output_validator import OutputValidator
+
+# Import RAOs with validation
+importer = RAOImporter()
+
+# Load OrcaWave RAOs
+raos = importer.load_from_orcawave("models/fpso.owr")
+
+
+*See sub-skills for full details.*
+### Coordinate Transformation
+
+```python
+from digitalmodel.orcawave.coordinate_transform import CoordinateTransformer
+
+# Handle coordinate system differences
+transformer = CoordinateTransformer()
+
+# OrcaWave uses different conventions than OrcaFlex
+# Transform origin location
+transformer.set_orcawave_origin(
+    x=150.0,  # Midship
+
+*See sub-skills for full details.*
+
+## Related Skills
+
+- orcawave-analysis - OrcaWave diffraction analysis
+- orcaflex-vessel-setup - OrcaFlex vessel configuration
+- orcaflex-rao-import - RAO data import
+- hydrodynamics - Coefficient management
+
+## References
+
+- OrcaWave Data Format Specification
+- OrcaFlex Vessel Type Documentation
+- Converter Implementation: `src/digitalmodel/hydrodynamics/diffraction/solver/orcawave_converter.py`
+- Exporter Implementation: `src/digitalmodel/hydrodynamics/diffraction/orcaflex_exporter.py`
+
+---
+
+**Version History**
+
+- **1.0.0** (2026-01-17): Initial release with conversion, validation, and multi-format export
+
+## Sub-Skills
+
+- Best Practices
+
+## Sub-Skills
+
+- Error Handling
+
+## Sub-Skills
+
+- Version Metadata
+- Workflow Overview
+- Standard Export Configuration (+1)
+- Supported Output Formats (+1)
+- CLI Usage
+- Pre-Export Validation
+- Generated YAML Structure
+
+
+## Documentation Reference
+
+OrcaWave topics (`data/llm-wiki/orcawave/`):
+- `Results,DisplacementRAOs.md` -- RAO output for export
+- `Results,Addedmassanddamping.md` -- AMD matrices to transfer
+- `Results,LoadRAOs.md` -- load RAO data
+- `Theory,Coordinatesystems.md` -- coordinate system conventions
+
+OrcaFlex topics (`data/llm-wiki/orcaflex/`):
+- `Importinghydrodynamicdata,OrcaWave.md` -- OrcaWave import workflow in OrcaFlex
+- `Vesseltypes,RAOs.md` -- RAO data format in vessel types
+- `Vesseltypes,Stiffness,addedmassanddamping.md` -- AMD data in vessel types
+- `Vesseltheory,RAOsandphases.md` -- RAO/phase conventions
+- `Vesseltheory,Stiffness,addedmassanddamping.md` -- AMD theory
+
+Papers (`data/llm-wiki/papers/`):
+- `Generating-Spectral-RAOs.md` -- spectral RAO generation

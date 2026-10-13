@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""update_portfolio_signals.py — WRK-1020 nightly portfolio signals updater.
+"""update_portfolio_signals.py — nightly portfolio signals updater.
 
-L2: per-provider WRK activity counts from last-N-day archive files.
+L2: explicit archive inputs only; default local queue archive is retired.
 L3: gemini capability research (JSON structured output).
 Output: .claude/state/portfolio-signals.yaml (atomic write).
 """
@@ -20,7 +20,7 @@ import yaml
 
 REPO_ROOT = Path(__file__).parents[2]
 DEFAULT_OUTPUT = REPO_ROOT / ".claude" / "state" / "portfolio-signals.yaml"
-ARCHIVE_DIR = REPO_ROOT / ".claude" / "work-queue" / "archive"
+ARCHIVE_DIR = None
 
 KNOWN_ORCHESTRATORS = {"claude", "codex", "gemini"}
 CATEGORY_MAP = {
@@ -77,11 +77,15 @@ def _empty_counts() -> dict:
             for p in ("claude", "codex", "gemini")}
 
 
-def collect_l2_counts(archive_dir: Path, lookback_days: int) -> tuple[dict, dict]:
-    cutoff = date.today() - timedelta(days=lookback_days)
+def collect_l2_counts(archive_dir: Path | None, lookback_days: int) -> tuple[dict, dict]:
     counts = _empty_counts()
     meta = {"files_scanned": 0, "files_with_orchestrator": 0,
             "files_skipped_no_orchestrator": 0, "files_skipped_malformed": 0}
+    if archive_dir is None:
+        meta["retired_local_queue"] = True
+        return counts, meta
+
+    cutoff = date.today() - timedelta(days=lookback_days)
 
     for md_file in sorted(archive_dir.rglob("*.md")):
         meta["files_scanned"] += 1

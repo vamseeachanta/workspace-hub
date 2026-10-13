@@ -24,13 +24,17 @@ def test_github_code_review_contains_operational_workflow():
 
 
 def test_obsidian_contains_vault_operations():
-    text = _text('.claude/skills/business/productivity/obsidian/SKILL.md')
+    text = _text(
+        '.claude/_archive/2026-10-09-l8/.claude/skills/business/productivity/obsidian/SKILL.md'
+    )
     assert 'OBSIDIAN_VAULT_PATH' in text
     assert 'Always quote vault paths' in text
 
 
 def test_dspy_contains_core_concepts_and_examples():
-    text = _text('.claude/skills/ai/prompting/dspy/SKILL.md')
+    text = _text(
+        '.claude/_archive/2026-10-09-l8/.claude/skills/ai/prompting/dspy/SKILL.md'
+    )
     assert '## Core Concepts' in text
     assert 'ChainOfThought' in text
     assert '## Practical Workflow' in text

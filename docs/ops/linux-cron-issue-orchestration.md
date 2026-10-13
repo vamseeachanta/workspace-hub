@@ -16,12 +16,12 @@ Local workers poll GitHub issues assigned to their canonical machine labels from
 | Issue state | Worker behavior | Provider execution |
 |---|---|---|
 | `status:needs-plan` and `status:plan-review` are report-only | Emit planning/review candidate status to GitHub/control-surface digest | No |
-| `status:plan-approved` plus `.planning/plan-approved/<issue>.md` | Eligible after readiness, remote lease, and clean disposable worktree checks | Yes |
+| `status:plan-approved` | Eligible after readiness, remote lease, and clean disposable worktree checks | Yes |
 | Missing/multiple `machine:*` labels | Block and report routing ambiguity | No |
 | Missing/multiple `agent:*` labels | Block and report provider ambiguity | No |
 | Dirty/ahead/behind shared checkout | Block shared-checkout execution | No |
 
-Runnable implementation issues require exactly one `machine:*`, exactly one `agent:*`, GitHub `status:plan-approved`, and a committed local approval marker at `.planning/plan-approved/<issue>.md` in the executing checkout.
+Runnable implementation issues require exactly one `machine:*`, exactly one `agent:*`, and GitHub `status:plan-approved`. Retired local `.planning/plan-approved/<issue>.md` files are historical evidence only.
 
 Priority order is deterministic:
 
@@ -57,10 +57,9 @@ dry-run is the default. Production provider execution remains disabled unless al
 1. host readiness is `pass`;
 2. exactly one matching machine label and exactly one provider label exist;
 3. issue has `status:plan-approved`;
-4. local approval marker exists;
-5. remote lease is acquired;
-6. local no-overlap lock is held;
-7. clean disposable worktree/session is available.
+4. remote lease is acquired;
+5. local no-overlap lock is held;
+6. clean disposable worktree/session is available.
 
 ## Readiness evidence
 
@@ -93,7 +92,6 @@ The repo-owned dry-run worker is:
 ```bash
 uv run python scripts/operations/linux-cron-issue-orchestrator.py \
   --host-machine-label machine:dev-primary \
-  --plan-marker-dir .planning/plan-approved \
   --issues-json /path/to/issues.json \
   --readiness-json /path/to/host-readiness.json \
   --repo-root /path/to/clean/execution-checkout \

@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 """
-WRK-386: Automated Gap-to-WRK Generator
+WRK-386: Retired Gap-to-WRK Generator
 Reads .planning/archive/capability-map/<repo>.yaml for each tier-1 repo, finds all
 entries with status: gap, loads Phase B summaries, and generates scoped
-WRK items written to .claude/work-queue/pending/WRK-NNN.md.
+WRK item previews. Local .claude/work-queue writes are retired; create GitHub
+issues with dispatch:ready and lane:* labels instead.
 
 Usage:
     python phase-f-gap-wrk-generator.py [--dry-run] [--max N] [--repo REPO]
@@ -32,7 +33,6 @@ WORKSPACE = SCRIPT_DIR.parents[2]
 
 CAP_MAP_DIR = WORKSPACE / "specs" / "capability-map"
 SUMMARIES_DIR = WORKSPACE / "data" / "document-index" / "summaries"
-PENDING_DIR = WORKSPACE / ".claude" / "work-queue" / "pending"
 WORK_QUEUE_DIR = WORKSPACE / ".claude" / "work-queue"
 
 TIER_1_REPOS = ["digitalmodel", "worldenergydata", "assetutilities", "assethold"]
@@ -318,7 +318,7 @@ def wrk_content(item: Dict[str, Any]) -> str:
 
 
 def run(dry_run: bool, max_items: int, repo_filter: Optional[str]) -> int:
-    """Main execution: collect gaps, generate WRK items, write files."""
+    """Main execution: collect gaps and preview retired WRK item output."""
     logger.info(
         "Gap-to-WRK generator starting (dry_run=%s, max=%d)", dry_run, max_items
     )
@@ -331,40 +331,20 @@ def run(dry_run: bool, max_items: int, repo_filter: Optional[str]) -> int:
 
     logger.info("Found %d gap items to convert to WRK items", len(items))
 
-    if dry_run:
-        print(f"\nDRY RUN — {len(items)} WRK items would be created:\n")
-        for item in items:
-            print(
-                f"  {item['wrk_id']}: [{item['repo']}/{item['module']}] "
-                f"{item['standard_id_short']} (priority={item['priority']}, "
-                f"complexity={item['complexity']})"
-            )
-        return 0
+    if not dry_run:
+        logger.error(
+            "Local WRK file creation is retired. Re-run with --dry-run and create "
+            "GitHub issues carrying dispatch:ready plus the applicable lane:* label."
+        )
+        return 2
 
-    PENDING_DIR.mkdir(parents=True, exist_ok=True)
-    written = 0
-    skipped = 0
-
+    print(f"\nDRY RUN - {len(items)} GitHub issue candidates would be created:\n")
     for item in items:
-        out_path = PENDING_DIR / f"{item['wrk_id']}.md"
-        if out_path.exists():
-            logger.debug("Skipping %s — already exists", out_path.name)
-            skipped += 1
-            continue
-        out_path.write_text(wrk_content(item))
-        logger.info("Wrote %s", out_path.name)
-        written += 1
-
-    first_id = items[0]["wrk_id"] if items else "N/A"
-    last_id = items[-1]["wrk_id"] if items else "N/A"
-    logger.info(
-        "Done: %d written, %d skipped (%s through %s) → %s",
-        written,
-        skipped,
-        first_id,
-        last_id,
-        PENDING_DIR,
-    )
+        print(
+            f"  {item['wrk_id']}: [{item['repo']}/{item['module']}] "
+            f"{item['standard_id_short']} (priority={item['priority']}, "
+            f"complexity={item['complexity']})"
+        )
     return 0
 
 
