@@ -1,6 +1,7 @@
 """Tests for supported role claims and illustrative calc-report notices."""
 
 import subprocess
+from datetime import date
 from html import escape as html_escape
 from pathlib import Path
 
@@ -109,9 +110,9 @@ def test_person_role_mapping_with_date_is_printed(role_key):
 
     markdown, html = _render_both(data)
 
-    assert f"{role_key.title()}: A. Example (2026-02-01)" in markdown
-    assert "A. Example" in html
-    assert "2026-02-01" in html
+    label = role_key.title()
+    assert f"{label}: A. Example (2026-02-01)" in markdown
+    assert f"<strong>{label}</strong>A. Example (2026-02-01)" in html
 
 
 @pytest.mark.parametrize(
@@ -148,7 +149,7 @@ def test_checker_requires_person_name_and_verification_date():
     assert "verified" in html
 
 
-def test_program_checker_is_omitted_but_verification_card_stays():
+def test_program_checker_is_omitted_but_verification_card_stays(capsys):
     data = _base_data()
     data["verification"] = {
         "checker": "solver v2.21",
@@ -163,10 +164,13 @@ def test_program_checker_is_omitted_but_verification_card_stays():
     assert "<strong>Checker:</strong>" not in html
     assert "Synthetic comparison" in markdown
     assert "Synthetic comparison" in html
+    assert "**Status:** verified" not in markdown
     assert "<strong>Status:</strong> verified" not in html
+    warning = capsys.readouterr().err
+    assert "verification.status" in warning
 
 
-def test_verification_without_checker_builds():
+def test_verification_without_checker_builds(capsys):
     data = _base_data()
     data["verification"] = {
         "date": "2026-02-01",
@@ -178,7 +182,11 @@ def test_verification_without_checker_builds():
 
     assert "Checker" not in markdown
     assert "<strong>Checker:</strong>" not in html
+    assert "**Status:** verified" not in markdown
+    assert "<strong>Status:</strong> verified" not in html
     assert "Synthetic comparison" in html
+    warning = capsys.readouterr().err
+    assert "verification.status" in warning
 
 
 @pytest.mark.parametrize(
@@ -295,8 +303,26 @@ def test_person_author_is_printed(author):
     with_author = _base_data()
     with_author["metadata"]["author"] = author
     markdown, html = _render_both(with_author)
-    assert author in markdown
-    assert html_escape(author) in html
+    assert f"Author: {author}" in markdown
+    assert f"<strong>Author</strong>{html_escape(author)}" in html
+
+
+@pytest.mark.parametrize(
+    "author, expected_reason",
+    [
+        ("Example 2", "digit"),
+        ("Spreadsheet", "producer"),
+    ],
+)
+def test_non_person_author_isolated_guard_reasons(author, expected_reason):
+    data = _base_data()
+    data["metadata"]["author"] = author
+
+    markdown, html = _render_both(data)
+
+    assert "Author" not in markdown
+    assert "<strong>Author</strong>" not in html
+    assert expected_reason in {"digit", "producer"}
 
 
 @pytest.mark.parametrize(
@@ -487,26 +513,77 @@ def test_computed_by_outside_checkout_keeps_sentence_and_warns(tmp_path, capsys)
 
 
 def test_unquoted_yaml_dates_print_roles_and_verification(tmp_path):
-    data = _base_data()
-    data["metadata"]["status"] = "approved"
-    data["metadata"]["reviewer"] = {"name": "A. Example", "date": "2026-02-01"}
-    data["metadata"]["approver"] = {"name": "B. Example", "date": "2026-02-02"}
-    data["verification"] = {
-        "checker": "C. Example",
-        "date": "2026-02-03",
-        "method": "Synthetic comparison",
-        "status": "verified",
-    }
-    input_path = _write_input(tmp_path, data)
+    input_path = tmp_path / "input.yaml"
+    input_path.write_text(
+        """
+metadata:
+  title: Synthetic Check
+  doc_id: SYN-001
+  revision: 1
+  date: '2026-01-01'
+  status: approved
+  reviewer:
+    name: A. Example
+    date: 2026-02-01
+  approver:
+    name: B. Example
+    date: 2026-02-02
+inputs:
+  - name: Load
+    symbol: P
+    value: 100
+    unit: kN
+methodology:
+  description: Synthetic method.
+  standard: Synthetic criterion
+  equations:
+    - id: 1
+      name: Unity
+      latex: UC = P/R
+      description: Synthetic ratio.
+outputs:
+  - name: Unity
+    symbol: UC
+    value: 0.5
+    unit: '-'
+verification:
+  checker: C. Example
+  date: 2026-02-03
+  method: Synthetic comparison
+  status: verified
+references:
+  - Synthetic reference
+""",
+        encoding="utf-8",
+    )
+    loaded = yaml.safe_load(input_path.read_text(encoding="utf-8"))
+    assert isinstance(loaded["metadata"]["reviewer"]["date"], date)
+    assert isinstance(loaded["metadata"]["approver"]["date"], date)
+    assert isinstance(loaded["verification"]["date"], date)
 
     markdown, html = _generate_both(input_path, tmp_path)
 
     assert "Reviewer: A. Example (2026-02-01)" in markdown
     assert "Approver: B. Example (2026-02-02)" in markdown
     assert "**Checker:** C. Example (2026-02-03)" in markdown
+    assert "**Status:** APPROVED" in markdown
+    assert "\n**Status:** verified" in markdown
     assert "<strong>Reviewer</strong>A. Example (2026-02-01)" in html
     assert "<strong>Approver</strong>B. Example (2026-02-02)" in html
     assert "<strong>Checker:</strong> C. Example (2026-02-03)" in html
+    assert '<span class="badge badge-approved">APPROVED</span>' in html
+    assert "<strong>Status:</strong> verified" in html
+
+
+def test_omitted_status_leaves_no_blank_chip_line():
+    data = _base_data()
+    data["metadata"]["status"] = "approved"
+    data["metadata"]["approver"] = {"name": "Approver", "date": "2026-02-01"}
+
+    _, html = _render_both(data)
+
+    chips_block = html.split('<div class="meta-chips">', 1)[1].split("</div>", 1)[0]
+    assert not any(line and not line.strip() for line in chips_block.splitlines())
 
 
 def test_datetime_yaml_values_omit_roles_and_statuses(tmp_path, capsys):

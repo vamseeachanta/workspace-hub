@@ -89,17 +89,13 @@ def _repo_root_for_input(source_path):
     if source_path is None:
         return None
     path = Path(source_path).resolve().parent
-    env = {
-        key: value for key, value in os.environ.items()
-        if key not in {"GIT_DIR", "GIT_WORK_TREE", "GIT_COMMON_DIR", "GIT_INDEX_FILE"}
-    }
     try:
         result = subprocess.run(
             ["git", "-C", str(path), "rev-parse", "--show-toplevel"],
             check=True,
             capture_output=True,
             text=True,
-            env=env,
+            env=_git_env(),
         )
     except (OSError, subprocess.CalledProcessError):
         return None
@@ -127,7 +123,6 @@ def _is_git_tracked(root, rel):
     except (OSError, subprocess.CalledProcessError):
         return False
     return True
-    return None
 
 
 def _validate_computed_by(meta, source_path):

@@ -321,8 +321,7 @@ def build_hero(meta, standard, show_notice=True):
   <div class="hero-inner">
     <div class="eyebrow">{html_escape(meta['doc_id'])}</div>
     <h1 class="report-title">{html_escape(meta['title'])}</h1>{notice_html}
-    <div class="meta-chips">
-      {status_html}
+    <div class="meta-chips">{status_html}
       <div class="meta-chip"><strong>Revision</strong>{meta['revision']}</div>
       <div class="meta-chip"><strong>Date</strong>{html_escape(meta['date'])}</div>{role_html}{project_html}
       <div class="meta-chip"><strong>Standard</strong>{html_escape(standard)}</div>
