@@ -11,9 +11,9 @@ Date of research: 2026-10-13; public sources only; issue reference: #3925.
 
 ## Method
 
-Network access was proven first by opening `https://www.bsee.gov/`; the returned page title was "Home | Bureau of Safety and Environmental Enforcement". Search terms used generic technical words only: `classification society offshore analysis report documentation requirements`, `DNV riser systems standard catalogue`, `DNV cathodic protection design recommended practice catalogue`, `DNV global performance analysis recommended practice catalogue`, `WAMIT SIMA hydrodynamic analysis report`, `offshore lifting report guidance regulator`, and `watch circle wave probability matrix public agency report`.
+Network access was proven first by opening `https://www.bsee.gov/`; the returned page title was "Home | Bureau of Safety and Environmental Enforcement". Search terms used generic technical words only: `classification society offshore analysis report documentation requirements`, `DNV riser systems standard catalogue`, `DNV cathodic protection design recommended practice catalogue`, `DNV global performance analysis recommended practice catalogue`, `WAMIT SIMA hydrodynamic analysis report`, `offshore lifting report guidance regulator`, and `watch circle wave probability matrix public agency report`. This revision made no new search.
 
-Sources opened: 11. Sources cited in findings: 7. Sources listed under Sources: 7. Distinct sources cited in findings: 7. Sources were kept only when fetched from the issuing organization, a standards-body catalogue page, a software-vendor documentation page, a regulator or government page, or an open-access publisher page. Document-sharing sites and mirror copies were not used. Licensed standards and recommended practices were cited only by public catalogue title, edition and public catalogue description; clause titles were not stated when the publisher's public pages did not show them.
+Sources opened: 11. Sources cited in findings: 7. Sources listed under Sources: 7. Distinct sources cited in findings: 7. Findings in all: 18 (question 1: 4; question 2: 6; question 3: 5; question 4: 3). Sources were kept only when fetched from the issuing organization, a standards-body catalogue page, a software-vendor documentation page, a regulator or government page, or an open-access publisher page. Document-sharing sites and mirror copies were not used. For this public research note, licensed standards and recommended practices were cited only by title and edition; clause titles were not stated when the publisher's public pages did not show them.
 
 ## Findings
 
@@ -30,7 +30,7 @@ Sources opened: 11. Sources cited in findings: 7. Sources listed under Sources: 
 
 | ID | Discipline | Source, URL and retrieval date | Short quotation | Finding |
 |---|---|---|---|---|
-| F2.1 | Riser analysis | DNV, `DNV-ST-F201 Riser systems`, https://www.dnv.com/energy/standards-guidelines/dnv-st-f201-riser-systems/, retrieved 2026-10-13 | "structural design and analysis of riser systems" | The public catalogue supports the document's riser-analysis subject and edition only; no public clause titles for report sections were shown. |
+| F2.1 | Riser analysis | DNV, `DNV-ST-F201 Riser systems`, https://www.dnv.com/energy/standards-guidelines/dnv-st-f201-riser-systems/, retrieved 2026-10-13 | "Standard Edition 2020-01 - Amended 2021-10" | The public catalogue supports the document title and edition only; no public clause titles for report sections were shown. |
 | F2.2 | Cathodic protection design | DNV, `DNV-RP-B401 Cathodic protection design`, https://www.dnv.com/energy/standards-guidelines/dnv-rp-b401-cathodic-protection-design/, retrieved 2026-10-13 | "Recommended practice Edition 2021-05" | The public catalogue supports the cathodic-protection recommended practice title and edition only; no public clause titles for report sections were shown. |
 | F2.3 | Global performance analysis | DNV, `DNV-RP-F205 Global performance analysis of deepwater floating structures`, https://www.dnv.com/energy/standards-guidelines/dnv-rp-f205-global-performance-analysis-of-deepwater-floating-structures/, retrieved 2026-10-13 | "Edition 2019-09 - Amended 2021-09" | The public catalogue supports the document title and edition only; no public clause titles for report sections were shown. |
 | F2.4 | Diffraction hydrodynamic analysis | WAMIT Inc., `WAMIT User Manual`, https://www.wamit.com/manual6.htm, retrieved 2026-10-13 | "DEFINITION OF QUANTITIES EVALUATED BY WAMIT" | The public manual page shows report-relevant manual chapter titles for WAMIT quantities, methods and theory. |
@@ -54,24 +54,23 @@ No primary public lifting-and-installation source with report-section contents s
 | ID | Source, URL and retrieval date | Short quotation | Finding |
 |---|---|---|---|
 | F4.1 | CR Classification Society, `Guidelines for Offshore Access "Walk to Work" Gangway`, https://www.crclass.org/wp-content/uploads/2022/12/GD-W2W-202002_R.pdf, retrieved 2026-10-13 | "Operational limitations (principal loads, environmental loads, vessel motions, etc)" | Operations-facing limits are explicit submitted design-criteria content in this classification guideline. |
-| F4.2 | NYSERDA, `Offshore Wind Planning in the NY Bight: Maritime Assessment--Commercial and Recreational Uses Study`, https://www.nyserda.ny.gov/-/media/Project/Nyserda/Files/Programs/Offshore-Wind/25-14-OSW-Planning-in-the-NY-Bight-Maritime-Assessment-Commercial-and-Recreational-Uses-acc.pdf, retrieved 2026-10-13 | "Watch circle radius" | Watch-circle information can be tabulated with metocean-station data in a public offshore assessment. |
-| F4.3 | NYSERDA, `Offshore Wind Planning in the NY Bight: Maritime Assessment--Commercial and Recreational Uses Study`, https://www.nyserda.ny.gov/-/media/Project/Nyserda/Files/Programs/Offshore-Wind/25-14-OSW-Planning-in-the-NY-Bight-Maritime-Assessment-Commercial-and-Recreational-Uses-acc.pdf, retrieved 2026-10-13 | "Wave height and wave period probability matrix" | Wave-height and wave-period matrices can summarize operating-condition exposure. |
-| F4.4 | NYSERDA, `Offshore Wind Planning in the NY Bight: Maritime Assessment--Commercial and Recreational Uses Study`, https://www.nyserda.ny.gov/-/media/Project/Nyserda/Files/Programs/Offshore-Wind/25-14-OSW-Planning-in-the-NY-Bight-Maritime-Assessment-Commercial-and-Recreational-Uses-acc.pdf, retrieved 2026-10-13 | "weather and sea state conditions limit availability" | A summary can state the operational availability effect of weather and sea-state limits. |
+| F4.3 | NYSERDA, `Offshore Wind Planning in the NY Bight: Maritime Assessment--Commercial and Recreational Uses Study`, https://www.nyserda.ny.gov/-/media/Project/Nyserda/Files/Programs/Offshore-Wind/25-14-OSW-Planning-in-the-NY-Bight-Maritime-Assessment-Commercial-and-Recreational-Uses-acc.pdf, retrieved 2026-10-13 | "Wave height and wave period probability matrix" | In this vessel-traffic study, the matrix describes sea-area availability to recreational craft; it is not engineering-operations guidance. |
+| F4.4 | NYSERDA, `Offshore Wind Planning in the NY Bight: Maritime Assessment--Commercial and Recreational Uses Study`, https://www.nyserda.ny.gov/-/media/Project/Nyserda/Files/Programs/Offshore-Wind/25-14-OSW-Planning-in-the-NY-Bight-Maritime-Assessment-Commercial-and-Recreational-Uses-acc.pdf, retrieved 2026-10-13 | "weather and sea state conditions limit availability" | In this vessel-traffic study, weather and sea-state conditions describe sea-area availability to recreational craft; they are not engineering-operations guidance. |
 
 ## What the sources state and what is inferred
 
 Stated:
 
-- Classification guidance states that submitted documentation includes a document package, objectives, premises, assumptions, conclusions, operational limitations and design-basis items (F1.1, F1.2, F1.3, F3.1, F3.2, F3.3, F3.4, F4.1).
+- One classification guideline (source 1) states that submitted documentation includes a document package, objectives, premises, assumptions, conclusions, operational limitations and design-basis items (F1.1, F1.2, F1.3, F3.1, F3.2, F3.3, F3.4, F4.1).
 - DNV public catalogue pages identify the title and edition of selected licensed riser, cathodic-protection and global-performance documents, but do not show public clause titles for report-section contents (F1.4, F2.1, F2.2, F2.3).
 - Software-vendor documentation states that a standardized hydrodynamic analysis report may be generated and identifies radiation/diffraction and basis parameters (F2.4, F2.5, F2.6, F3.5).
-- The public offshore assessment states watch-circle radius, wave-height and wave-period probability matrices, and summary-level availability limits (F4.2, F4.3, F4.4).
+- The public offshore assessment states wave-height and wave-period probability matrices and weather and sea-state availability limits in a vessel-traffic study of sea-area availability to recreational craft (F4.3, F4.4).
 
 Inferred:
 
-- A common offshore analysis-report structure can be formed from submitted-documentation content, design-basis content, hydrodynamic-report parameters and operations-limit evidence (F1.1, F1.2, F1.3, F2.5, F2.6, F3.1, F3.2, F3.3, F3.4, F3.5, F4.1).
+- A common offshore analysis-report structure can be formed from submitted-documentation content, design-basis content, hydrodynamic-report parameters and operating-limit evidence (F1.1, F1.2, F1.3, F2.5, F2.6, F3.1, F3.2, F3.3, F3.4, F3.5, F4.1).
 - The design-basis section should identify governing standards, design principles, environmental conditions, technical specifications and hydrodynamic basis data where applicable (F3.1, F3.2, F3.3, F3.4, F3.5).
-- Operations-facing conclusions should make operational limits and environmental availability effects visible where the analysis supports execution planning (F1.3, F4.1, F4.2, F4.3, F4.4).
+- Operations-facing conclusions should make operational limits visible where the analysis supports execution planning (F1.3, F4.1).
 - Diffraction-analysis reporting should identify the generated report output and the radiation/diffraction calculation parameters used to produce it (F2.5, F2.6, F3.5).
 
 ## Sources
@@ -93,39 +92,55 @@ Inferred:
 - Former source 9, `DNV-RP-N201 Lifting Operations` on a document-sharing site: removed because it was not a primary source. The searched DNV public catalogue URL returned 404.
 - Former source 12, `Ansys Aqwa User's Manual`: removed because the present job did not open a vendor page with the quoted text.
 - Former source 13, weather-window paper page on a research-network site: removed because it was not an open-access publisher page.
-- HSE `Technical guidance on the safe use of lifting equipment offshore` and BSEE `Lifting Our Awareness` were opened as regulator pages, but they did not provide report-section contents for this note.
-- Searches for primary public lifting-and-installation report-section guidance and public clause-title pages for the licensed DNV documents did not return a usable source within the job limits.
+- HSE `Technical guidance on the safe use of lifting equipment offshore`, https://www.hse.gov.uk/pubns/books/hsg221.htm, retrieved 2026-10-13, and BSEE `Lifting Our Awareness`, https://www.bsee.gov/lifting, retrieved 2026-10-13, were opened as regulator pages, but they did not provide report-section contents for this note.
+- Searches for primary public lifting-and-installation report-section guidance, public clause-title pages for the licensed DNV documents, load cases, acceptance criteria and revision control in a design basis, and summary-first layout did not return a usable source within the job limits.
 
 ## Proposed common section list and rules
 
-The following proposal is derived from the surviving findings. Each item is marked as a proposal and compared to `docs/standards/engineering-reporting-conventions-proposed.html`.
+The following proposal is derived from the surviving findings. The section numbers and names are the draft standard's own labels, and the sequence itself is addressed in the first recommendation. Each item is marked as a proposal and compared to `docs/standards/engineering-reporting-conventions-proposed.html`.
 
 | Proposed item | Basis in findings | Relation to repository draft standard |
 |---|---|---|
-| Proposal: 1 Executive Summary with governing result, criterion, operating limit and next action. | F1.2, F1.3, F4.1, F4.4 | Agrees with report section 1 Executive Summary in the draft standard's Section 2 Formal report structure and adds an explicit operations-limit cue for applicable analyses. |
-| Proposal: 2 Scope, configuration and exclusions. | F1.1, F1.2 | Agrees with report section 2 Introduction; no material difference. |
-| Proposal: 3 Design Basis with source data, codes, environmental data, load cases where available, acceptance criteria, assumptions and revision status. | F3.1, F3.2, F3.3, F3.4, F3.5 | Agrees with report section 3 Design Data and adds explicit revision visibility where a cited standard or dataset is versioned. |
-| Proposal: 4 Methodology and model, including software, numerical method, boundary conditions, solver/version and verification approach. | F2.4, F2.5, F2.6, F3.5 | Agrees with report section 4 Analysis Methodology and adds diffraction-specific parameter headings. |
-| Proposal: 5 Analysis cases and operational envelope. | F1.3, F4.1, F4.2, F4.3 | Adds to report section 5 Detailed Results by making the operational envelope easier to find where execution limits matter. |
-| Proposal: 6 Results and checks, with result tables tied to criteria, comparator class and governing case. | F1.2, F2.5, F2.6 | Agrees with report sections 5 Detailed Results and 6 Key Findings. |
-| Proposal: 7 Operating limits and environmental availability where the analysis supports field execution. | F1.3, F4.1, F4.2, F4.3, F4.4 | Adds to report sections 6 Key Findings and 7 Limitations by requiring a visible operations-limit table when the result controls execution. |
-| Proposal: 8 Conclusions, limitations and recommendations, each bound to evidence and missing basis. | F1.2, F4.4 | Agrees with report sections 6 Key Findings, 7 Limitations and 8 Recommendations. |
-| Proposal: 9 Published references and internal traceability. | F3.1, F2.4 | Agrees with report section 9 References; licensed standards should be cited by publisher, title, edition and public clause title where available. |
-| Proposal: 10 Acronyms, symbols and appendices for calculations, model evidence, detailed operability tables and verification records. | F2.4, F2.6, F4.2, F4.3 | Agrees with report section 10 Acronyms and Symbols and Appendix A onward; adds explicit operability-table placement for operations-facing reports. |
+| Proposal: 1 Executive Summary with conclusions and applicable operating limits. | F1.2, F1.3, F4.1 | Agrees with report section 1 Executive Summary only for conclusions and decision-relevant limits. |
+| Proposal: 2 Introduction with objectives and premises. | F1.1, F1.2 | Agrees with report section 2 Introduction only for purpose-level and basis content. |
+| Proposal: 3 Design Basis with codes, design principles, environmental data, technical specifications, assumptions and hydrodynamic basis data. | F3.1, F3.2, F3.3, F3.4, F3.5 | Agrees with report section 3 Design Data only for the listed basis content. |
+| Proposal: 4 Analysis Methodology with WAMIT quantities, generated report output, radiation/diffraction calculation options and hydrodynamic basis parameters. | F2.4, F2.5, F2.6, F3.5 | Agrees with report section 4 Analysis Methodology only for the listed hydrodynamic-analysis content. |
+| Proposal: 5 Operational limitations. | F1.3, F4.1 | Adds to report section 5 Detailed Results by making submitted operational limitations easier to find where they matter. |
+| Proposal: 7 Operating limits where the analysis supports field execution. | F1.3, F4.1 | Adds to report sections 6 Key Findings and 7 Limitations by making operating limits visible when the result controls execution. |
+| Proposal: 8 Conclusions. | F1.2 | Agrees with report section 6 Key Findings only for conclusion-level content. |
+| Proposal: 9 Published references for applicable standards and WAMIT quantities. | F3.1, F2.4 | Agrees with report section 9 References only for published-reference subjects named by the findings. |
 
 Rules proposed:
 
-- Proposal: every section that reports a conclusion also states its criterion, comparator or design limit, and governing case. This follows F1.2 and agrees with the draft standard.
-- Proposal: operating-limit tables are mandatory when the report will be used for execution planning. This follows F1.3, F4.1, F4.2, F4.3 and F4.4 and adds to the draft.
-- Proposal: design-basis tables mark supplied, assumed, derived and pending data, with source revision where available. This follows F3.1, F3.2, F3.3, F3.4 and F3.5 and agrees with the draft while adding revision visibility.
-- Proposal: hydrodynamic diffraction reports state water depth, radiation/diffraction options, method order and selected report outputs when those parameters are used. This follows F2.5, F2.6 and F3.5 and adds discipline-specific detail to the draft.
-- Proposal: licensed standards are cited from publisher public pages by title, edition and public clause title only; if clause titles are not shown, no clause requirement is stated. This follows F1.4, F2.1, F2.2 and F2.3 and agrees with the draft source-rights controls.
+- Proposal: operating limits are stated when the report will be used for execution planning. This follows F1.3 and F4.1 and adds to the draft.
+- Proposal: design-basis tables state applicable rules, regulations and standards, design principles, environmental conditions, technical specifications and hydrodynamic basis data where applicable. This follows F3.1, F3.2, F3.3, F3.4 and F3.5 and agrees with the draft for those subjects.
+- Proposal: hydrodynamic diffraction reports state water depth, radiation/diffraction options and selected report outputs when those parameters are used. This follows F2.5, F2.6 and F3.5 and adds discipline-specific detail to the draft.
+
+## Items in the draft reporting standard for which no public source was found
+
+The following items are not supported by this note: no public source found in this research states them.
+
+- Proposal row 1: governing result, criterion and next action.
+- Proposal row 2: configuration and exclusions.
+- Proposal row 3: load cases, acceptance criteria and revision status.
+- Proposal row 4: boundary conditions, solver/version and verification approach.
+- Proposal row 5: analysis cases and operational envelope.
+- Proposal row 6: result tables tied to criteria, comparator class and governing case.
+- Proposal row 8: limitations and recommendations bound to evidence and missing basis.
+- Proposal row 9: internal traceability.
+- Proposal row 10: acronyms, symbols and appendices for calculations, model evidence, detailed operability tables and verification records.
+- Proposed rule: every section that reports a conclusion also states its criterion, comparator or design limit, and governing case.
+- Proposed rule: operating-limit tables are mandatory when the report will be used for execution planning.
+- Proposed rule: design-basis tables mark supplied, assumed, derived and pending data, with source revision where available.
+- Proposed rule: hydrodynamic diffraction reports state method order.
+- Recommendation: required operating-limit table when the report informs execution planning.
+- Recommendation: design basis as a checkable table with criteria.
+- Not in the draft standard; from the earlier version of this note: watch-circle content, environmental availability effects, detailed operability tables and public-research citation restrictions for engineering reports.
 
 ## Recommendations for the report
 
-- Use the repository draft ten-section sequence as the main report frame; this follows F1.1, F1.2 and F3.1.
-- Add a required operating-limit table when the report informs execution planning; this follows F1.3, F4.1, F4.2, F4.3 and F4.4.
-- Keep the design basis as a checkable table of data, codes, assumptions, environmental conditions, technical specifications and criteria; this follows F3.1, F3.2, F3.3, F3.4 and F3.5.
+- The draft standard's ten-section sequence is not contradicted by the public sources found; they are too few to confirm it. This comparison used F1.1, F1.2, F1.3, F2.4, F2.5, F2.6, F3.1, F3.2, F3.3, F3.4, F3.5 and F4.1.
+- State operating limits when the report informs execution planning; this follows F1.3 and F4.1.
+- Keep the design basis as a table of codes, assumptions, environmental conditions, technical specifications and hydrodynamic basis data; this follows F3.1, F3.2, F3.3, F3.4 and F3.5.
 - For diffraction reports, include the generated report output and the calculation parameters that control the hydrodynamic result; this follows F2.4, F2.5, F2.6 and F3.5.
-- For licensed standards and recommended practices, cite only the publisher public title, edition and clause title shown on the publisher page; this follows F1.4, F2.1, F2.2 and F2.3.
 - Treat lifting-and-installation, detailed riser and detailed cathodic-protection report-section checklists as not established by this note until primary public publisher pages or authorized licensed sources are available; this follows F2.1 and F2.2 and the Not found record.
