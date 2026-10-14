@@ -205,6 +205,7 @@ def make_policy_manifest(root, git_checkout, **overrides):
 def write_policy(root, **limits):
     data = {
         "repositories": ["placeholder://repo"],
+        "interpreters": [sys.executable],
         "limits": {"id_prefixes": ["policy-"], "max_workers": 2, "max_hours": 2},
     }
     data["limits"].update(limits)
@@ -505,6 +506,17 @@ def test_requested_manifest_without_policy_does_not_run_or_call_git(root, git_ch
     assert (approvals.read_bytes() if approvals.exists() else b"") == before
 
 
+def test_status_is_read_only_for_requested_manifest(root, git_checkout, monkeypatch, runner):
+    make_policy_manifest(root, git_checkout)
+    write_policy(root)
+    calls = []
+    monkeypatch.setattr(runner.subprocess, "run", lambda *args, **kwargs: calls.append(args) or subprocess.CompletedProcess(args, 1))
+    lines = runner.status_lines(root)
+    assert any(line.startswith("policy-example\trequested\t") for line in lines)
+    assert calls == []
+    assert not (root / "approvals.tsv").exists()
+
+
 def test_policy_approves_requested_manifest(root, git_checkout):
     path, _ = make_policy_manifest(root, git_checkout)
     write_policy(root)
@@ -512,6 +524,105 @@ def test_policy_approves_requested_manifest(root, git_checkout):
     approvals = (root / "approvals.tsv").read_text(encoding="utf-8")
     assert f"policy-example\t{hashlib.sha256(path.read_bytes()).hexdigest()}\tpolicy\t" in approvals
     assert (root / "done" / "policy-example.result").exists()
+
+
+def test_policy_removed_after_approval_refuses_retry(root, git_checkout):
+    path, manifest = make_policy_manifest(
+        root,
+        git_checkout,
+        driver=[sys.executable, "drivers/driver.py"],
+        retry={"max_attempts": 2, "backoff_minutes": 0},
+    )
+    (git_checkout[0] / "drivers" / "driver.py").write_text("import sys\nsys.exit(9)\n", encoding="utf-8")
+    git_run(git_checkout[0], "add", "drivers/driver.py")
+    git_run(git_checkout[0], "commit", "-m", "failing driver")
+    commit = git_run(git_checkout[0], "rev-parse", "HEAD").stdout.strip()
+    git_run(git_checkout[0], "update-ref", "refs/remotes/origin/main", commit)
+    manifest["ref"] = commit
+    path.write_text(json.dumps(manifest), encoding="utf-8")
+    write_policy(root)
+    assert run_cli(["run-once", "--backoff-minutes", "0"], root).returncode == 0
+    assert (root / "done" / "policy-example.result").read_text(encoding="utf-8").startswith("HELD\t")
+    (root / "policy.json").unlink()
+    (root / "done" / "policy-example.result").unlink()
+    assert run_cli(["run-once"], root).returncode == 0
+    log = (root / "state" / "policy-example" / "runner.log").read_text(encoding="utf-8")
+    assert "policy.json is not valid at start time" in log
+
+
+def test_policy_rechecks_checkout_before_retry(root, git_checkout):
+    path, manifest = make_policy_manifest(root, git_checkout, driver=[sys.executable, "drivers/driver.py"])
+    (git_checkout[0] / "drivers" / "driver.py").write_text("import sys\nsys.exit(9)\n", encoding="utf-8")
+    git_run(git_checkout[0], "add", "drivers/driver.py")
+    git_run(git_checkout[0], "commit", "-m", "failing driver")
+    commit = git_run(git_checkout[0], "rev-parse", "HEAD").stdout.strip()
+    git_run(git_checkout[0], "update-ref", "refs/remotes/origin/main", commit)
+    manifest["ref"] = commit
+    path.write_text(json.dumps(manifest), encoding="utf-8")
+    write_policy(root)
+    assert run_cli(["run-once", "--backoff-minutes", "0"], root).returncode == 0
+    (root / "done" / "policy-example.result").unlink()
+    (git_checkout[0] / "drivers" / "driver.py").write_text("print('changed')\n", encoding="utf-8")
+    assert run_cli(["run-once"], root).returncode == 0
+    log = (root / "state" / "policy-example" / "runner.log").read_text(encoding="utf-8")
+    assert "policy unapproved" in log
+    assert "tracked files differ from ref" in log
+
+
+def test_policy_refuses_driver_code_option_and_loading_env(root, git_checkout):
+    path, manifest = make_policy_manifest(root, git_checkout, driver=[sys.executable, "-c", "print('outside')", "drivers/driver.py"])
+    write_policy(root)
+    assert run_cli(["run-once"], root).returncode == 0
+    logs = "\n".join(p.read_text(encoding="utf-8") for p in (root / "state").glob("*/runner.log"))
+    assert "driver must execute driver_file directly" in logs
+    manifest["driver"] = [sys.executable, "drivers/driver.py"]
+    manifest["env"] = {"PYTHONPATH": "placeholder"}
+    path.write_text(json.dumps(manifest), encoding="utf-8")
+    assert run_cli(["run-once"], root).returncode == 0
+    logs = "\n".join(p.read_text(encoding="utf-8") for p in (root / "state").glob("*/runner.log"))
+    assert "env name changes program loading: PYTHONPATH" in logs
+
+
+def test_policy_refuses_index_flags_and_untracked_loadable_files(root, git_checkout):
+    path, _ = make_policy_manifest(root, git_checkout)
+    write_policy(root)
+    assert git_run(git_checkout[0], "update-index", "--skip-worktree", "drivers/driver.py").returncode == 0
+    (git_checkout[0] / "drivers" / "driver.py").write_text("print('changed')\n", encoding="utf-8")
+    assert run_cli(["run-once"], root).returncode == 0
+    logs = "\n".join(p.read_text(encoding="utf-8") for p in (root / "state").glob("*/runner.log"))
+    assert "skip-worktree or assume-unchanged" in logs
+    assert git_run(git_checkout[0], "update-index", "--no-skip-worktree", "drivers/driver.py").returncode == 0
+    original = git_run(git_checkout[0], "show", "HEAD:drivers/driver.py")
+    assert original.returncode == 0
+    (git_checkout[0] / "drivers" / "driver.py").write_text(original.stdout, encoding="utf-8")
+    (git_checkout[0] / "drivers" / "helper.py").write_text("print('helper')\n", encoding="utf-8")
+    (root / "approvals.tsv").unlink(missing_ok=True)
+    assert run_cli(["run-once"], root).returncode == 0
+    logs = "\n".join(p.read_text(encoding="utf-8") for p in (root / "state").glob("*/runner.log"))
+    assert "untracked loadable file is present" in logs
+
+
+def test_policy_type_checks_and_refuses_linked_policy(root, git_checkout):
+    make_policy_manifest(root, git_checkout)
+    write_policy(root, id_prefixes=[""])
+    assert run_cli(["run-once"], root).returncode == 0
+    logs = "\n".join(p.read_text(encoding="utf-8") for p in (root / "state").glob("*/runner.log"))
+    assert "non-empty id_prefixes" in logs
+    (root / "policy.json").write_text(json.dumps({"repositories": ["placeholder://repo"], "limits": {"id_pattern": 1, "max_workers": True, "max_hours": 1}}), encoding="utf-8")
+    assert run_cli(["run-once"], root).returncode == 0
+    logs = "\n".join(p.read_text(encoding="utf-8") for p in (root / "state").glob("*/runner.log"))
+    assert "policy id_pattern must be a string" in logs
+    if hasattr(os, "symlink"):
+        (root / "policy.json").unlink()
+        target = root / "policy-target.json"
+        target.write_text(json.dumps({"repositories": ["placeholder://repo"], "interpreters": [sys.executable], "limits": {"id_prefixes": ["policy-"], "max_workers": 2, "max_hours": 2}}), encoding="utf-8")
+        try:
+            os.symlink(target, root / "policy.json")
+        except OSError:
+            pytest.skip("symbolic links are not available on this platform")
+        assert run_cli(["run-once"], root).returncode == 0
+        logs = "\n".join(p.read_text(encoding="utf-8") for p in (root / "state").glob("*/runner.log"))
+        assert "policy.json must not be a symbolic link" in logs
 
 
 @pytest.mark.parametrize(
@@ -552,6 +663,43 @@ def test_invalid_manifest_id_logs_only_in_invalid_bucket(root, fake_checkout, wo
     after = sorted(p.relative_to(work_area).as_posix() for p in work_area.rglob("*"))
     assert all(not item.startswith("outside/") for item in set(after) - set(before))
     assert (root / "state" / "invalid" / "runner.log").exists()
+
+
+@pytest.mark.parametrize("bad_id", [".", ".."])
+def test_dot_manifest_ids_are_refused(root, fake_checkout, bad_id):
+    path, manifest = make_manifest(root, fake_checkout)
+    path.unlink()
+    manifest["id"] = bad_id
+    bad = root / "approved" / f"{bad_id}.json"
+    bad.write_text(json.dumps(manifest), encoding="utf-8")
+    approve(root, bad)
+    assert run_cli(["run-once"], root).returncode == 0
+    log = (root / "state" / "invalid" / "runner.log").read_text(encoding="utf-8")
+    assert "id must be a short safe token" in log
+
+
+def test_case_folded_duplicate_ids_are_refused(root, fake_checkout):
+    first, _ = make_manifest(root, fake_checkout, "POL-A")
+    requested = root / "requested"
+    requested.mkdir()
+    _, manifest = make_manifest(root, fake_checkout, "placeholder")
+    (root / "approved" / "placeholder.json").unlink()
+    manifest["id"] = "pol-a"
+    second = requested / "pol-a.json"
+    second.write_text(json.dumps(manifest), encoding="utf-8")
+    approve(root, first)
+    approve(root, second, approval_ref="policy")
+    runner = load_runner()
+    campaigns, errors = runner.discover_campaigns(root)
+    assert errors == []
+    assert any("campaign id differs only by case" in "; ".join(item["errors"]) for item in campaigns)
+
+
+def test_low_disk_threshold_skips_campaign(root, fake_checkout):
+    path, _ = make_manifest(root, fake_checkout)
+    approve(root, path)
+    assert run_cli(["run-once", "--min-free-bytes", str(10**18)], root).returncode == 0
+    assert not (root / "done" / "example-campaign.result").exists()
 
 
 def test_j15_k1_standard_library_imports_and_no_network_modules():
@@ -673,6 +821,30 @@ def task_xml(mode):
     return ET.fromstring(done.stdout.split("\n", 1)[1])
 
 
+def task_xml_bytes(mode, output):
+    done = subprocess.run(
+        [
+            sys.executable,
+            str(RUNNER_PATH),
+            "task-definition",
+            mode,
+            "--account",
+            "{ACCOUNT}",
+            "--wrapper",
+            "{WRAPPER}",
+            "--campaign-root",
+            "{CAMPAIGN_ROOT}",
+            "--output",
+            str(output),
+        ],
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+    assert done.returncode == 0, done.stderr
+    return output.read_bytes()
+
+
 def find_text(element, name):
     found = element.find(f".//{{http://schemas.microsoft.com/windows/2004/02/mit/task}}{name}")
     return found.text if found is not None else None
@@ -698,7 +870,21 @@ def test_task_definition_modes(mode, logon, trigger):
     assert find_text(root, "RunOnlyIfIdle") == "false"
     assert find_text(root, "RunLevel") == "LeastPrivilege"
     assert find_text(root, "Command") == "cmd.exe"
+    assert find_text(root, "Priority") == "5"
+    if mode == "desktop":
+        trigger_user = root.find(".//{http://schemas.microsoft.com/windows/2004/02/mit/task}LogonTrigger/{http://schemas.microsoft.com/windows/2004/02/mit/task}UserId")
+        assert trigger_user is not None
+        assert trigger_user.text == "{ACCOUNT}"
     assert "Password" not in "".join(root.itertext()) or mode == "batch-password"
+
+
+def test_task_definition_output_is_utf16_with_declaration(work_area):
+    output = work_area / "task.xml"
+    raw = task_xml_bytes("batch", output)
+    assert raw.startswith(b"\xff\xfe")
+    decoded = raw.decode("utf-16")
+    assert decoded.startswith('<?xml version="1.0" encoding="UTF-16"?>')
+    assert ET.fromstring(decoded.split("\n", 1)[1]).tag.endswith("Task")
 
 
 def test_status_task_mode_records(root):
@@ -721,3 +907,6 @@ def test_register_dry_run_exits_before_scheduled_task_command():
     dry_run = text.split("if defined DRY_RUN", 1)[1].split(")", 1)[0]
     assert "exit /b 0" in dry_run
     assert "schtasks" not in dry_run.lower()
+    assert "--output" in text
+    assert '/RU "%ACCOUNT%" /F' not in text
+    assert "Registered task logon type did not match requested mode." in text

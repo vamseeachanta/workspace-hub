@@ -2,6 +2,10 @@
   "repositories": [
     "placeholder://no-repository"
   ],
+  "interpreters": [
+    "python"
+  ],
+  "allowed_env": [],
   "limits": {
     "id_prefixes": [
       "placeholder-"
