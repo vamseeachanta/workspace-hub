@@ -11,8 +11,9 @@ The campaign root is selected by `--root`, then `SOLVER_CAMPAIGN_ROOT`, then the
 default home-relative `solver-campaigns` directory. The root contains:
 
 - `approved/<id>.json`: campaign manifests.
-- `approvals.tsv`: read-only approval records, one tab-separated line with id,
-  manifest SHA-256 digest, approval reference, and date.
+- `approvals.tsv`: approval records, one tab-separated line with id, manifest
+  SHA-256 digest, approval reference, and date. A person may edit it directly;
+  a valid standing policy may append `policy` approvals under the runner lock.
 - `state/<id>/`: heartbeat, attempt count, next-try time, runner log, and driver
   logs.
 - `done/<id>.result`: first line is `STATE<TAB>UTC<TAB>cases_done<TAB>cases_total`.
@@ -71,7 +72,8 @@ Example:
 `validate <manifest>` prints all validation errors. On success it prints the id
 and SHA-256 digest used by the approval gate. A placeholder example can validate
 structurally even when its checkout path is not present; `run-once` records the
-missing checkout as a preflight failure.
+missing checkout as a preflight failure. `status` and `validate` are read-only:
+they do not evaluate policy, start git, or append approval records.
 
 ## Approval
 
@@ -85,16 +87,33 @@ and `approvals.tsv` is not written. If the file is present and valid, the runner
 checks the local clone only: the normalized remote address must match the policy
 entry after trimming trailing slashes and case-folding; the manifest ref must be
 an ancestor of the clone's recorded remote default branch; `driver_file` must be
-tracked at the ref; tracked files must match the ref; and the id, workers, and
-hours must fit the limits. A passing request appends one `policy` line to
-`approvals.tsv` under the runner lock. A changed manifest is a new request.
+tracked at the ref; tracked files must match the ref; files marked skip-worktree
+or assume-unchanged are refused; untracked loadable files in the driver folder
+and working directory are refused for `.py`, `.pyw`, `.pth`, `.bat`, `.cmd`,
+`.ps1`, `.exe`, `.dll`, and `.pyd`; and the id, workers, and hours must fit the
+limits. The policy may list interpreter executable names or paths in
+`interpreters`. A policy-approved manifest must execute either `driver_file`
+directly or one listed interpreter followed immediately by `driver_file`, with no
+interpreter option before the driver file. `cwd` must be the checkout or a
+directory inside it. `env` must be empty unless the policy lists allowed names in
+`allowed_env`; names that change program loading (`PYTHON*`, `PATH`, `PATHEXT`,
+and `COMSPEC`) are refused even when listed. A passing request appends one
+`policy` line to `approvals.tsv` under the runner lock. A changed manifest is a
+new request. Before every policy-approved start, including retries, the runner
+rechecks the current policy file and the git conditions under the runner lock.
 
 The policy does not contact a remote service. "Merged" means the clone's
 remote-tracking reference as it stood at its last update. Review status is not
-checked. A user who can change the checkout git data or the campaign root can
-satisfy the policy conditions. The policy is a convenience on a solver
-workstation controlled by the workstation administrator, not a protection against
-a user of that workstation.
+checked. The policy refuses a `policy.json` symbolic link and refuses a campaign
+root inside a git working tree. Git checks run with `core.fsmonitor=false`,
+`GIT_CONFIG_NOSYSTEM=1`, and diff checks use `--no-ext-diff --no-textconv`.
+Remote URL rewrite rules in local git configuration can still affect what git
+reports. The policy does not inspect every untracked file in the checkout; it
+checks the driver folder and working directory for the suffixes listed above. The
+`workers` limit gates approval but is not passed to the driver. A user who can
+change the checkout git data or the campaign root can satisfy the policy
+conditions. The policy is a convenience on a solver workstation controlled by the
+workstation administrator, not a protection against a user of that workstation.
 
 ## States
 
@@ -104,7 +123,7 @@ a user of that workstation.
 - `HELD`: a retry, licence hold, incomplete progress, or max-hours condition
   requires a later deliberate action.
 - `STOPPED`: a STOP file ended the campaign.
-- `pending`, `running`, `unapproved`, `digest-mismatch`, and `invalid` are
+- `pending`, `requested`, `running`, `unapproved`, `digest-mismatch`, and `invalid` are
   status-only words.
 
 For `HELD`:
@@ -148,7 +167,9 @@ error is found.
 ## Running without a person at the keyboard
 
 The workstation administrator runs `register-solver-campaign-task.bat` once. With
-no argument, it uses `batch`. The administrator can also run
+no argument, it uses `batch`. The argument form is
+`register-solver-campaign-task.bat [batch|batch-password|desktop] [root] [--dry-run]`;
+unknown or misplaced arguments are refused. The administrator can also run
 `write-solver-campaign-policy.bat` once, then edit `policy.json` to list the
 permitted repositories and limits.
 
@@ -157,11 +178,16 @@ The modes are:
 - `batch`: runs as the registering account whether or not a desktop session is
   active, without storing a password. This is the default because some
   workstations refuse licensed-solver access from a network logon, and a batch
-  logon is not a network logon.
+  logon is not a network logon. Batch modes need rights to create a boot-trigger
+  task. When registration is refused, the register script prints
+  `Task registration failed. Check rights for the selected mode.` and exits with
+  the task registration command's exit code.
 - `batch-password`: runs as the registering account with the password prompt
-  handled by the task registration command.
+  handled by the task registration command. `S4U` mode has no network
+  credentials, so shares and authenticated network resources are unavailable.
 - `desktop`: runs only while the registering account is logged on to the desktop
-  session.
+  session. A console window appears on each scheduled start and remains open for
+  that runner invocation; closing it ends the runner and the active driver tree.
 
 The first campaign under `batch` is the license-access test. If it is held on a
 license error, the administrator registers again as `batch-password`. If that
@@ -172,7 +198,10 @@ manifest is placed in `approved/` with an approval line, or a manifest is placed
 in `requested/` and a valid policy approves it. Progress is read from `status`;
 the first line is `task-mode <batch|batch-password|desktop|unknown>`. Batch
 modes include a startup trigger, so a reboot starts the runner again. Desktop
-mode does not run after a reboot until that account logs on.
+mode does not run after a reboot until that account logs on. A runner crash ends
+the driver tree through the job object; the next call restarts the campaign and
+counts another attempt. The scheduled action runs the runner code present in the
+checkout at the time the task starts.
 
 Create `STOP` in the root to stop new starts and end the active driver's whole
 tree. `unregister-solver-campaign-task.bat` removes the scheduled task and the
@@ -186,8 +215,10 @@ not decide lock ownership.
 
 ## Logs
 
-Driver stdout, driver stderr, and runner logs rotate in `state/<id>/`. Each file
-is capped at 1 MiB with three retained rotations.
+Driver stdout, driver stderr, and per-campaign runner logs rotate in
+`state/<id>/` between starts. A single run can grow beyond the rotation limit
+until the next start rotates it. The wrapper's `state/task-runner.log` is not
+rotated by the wrapper.
 
 ## Test Boundary
 
