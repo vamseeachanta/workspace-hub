@@ -6,7 +6,7 @@ This page merges four audit procedures. An audit of 3,752 closed issues on 2026-
 
 1. **A merged PR** whose description says `Closes #N`, one line per issue, merged into the default branch at the head the reviewing role approved. One role builds and a different one reviews. The builder does not merge its own PR.
 2. **An evidence comment (section B)** by the builder for work that landed through another PR, posted after the reviewing role has agreed on the issue.
-3. **Not planned**, with one of these: an owner decision, quoted with its date; a retired tool or process, named with its retirement reference; or a passed date that the issue itself depended on.
+3. **Not planned**, with one of these: a maintainer decision, quoted with its date; a retired tool or process, named with its retirement reference; or a passed date that the issue itself depended on.
 4. **Duplicate or superseded**, written as `Superseded by #M`. The successor is open, or itself closed under these rules. Every unfinished acceptance item has been copied into it first. A chain that ends in a closure without delivery counts as not delivered.
 5. **Nothing else.** This excludes: a push to a branch; a draft or unmerged PR; a commit message (closing keywords never go in commits); a migration, triage, sync or stale script; a "Status: done" line; elapsed time; an archived target repository; "implemented locally" or "unpushed"; "evidence recorded in the triage pass"; a comment that restates the plan; and a claim about a machine that no committed record backs.
 
@@ -29,9 +29,9 @@ This page merges four audit procedures. An audit of 3,752 closed issues on 2026-
 
 ## D. Reopening
 
-1. Reopen, or open a successor that links the closed issue, when an audit or the owner finds any section-B element missing or false. Use a new issue where the closed body was overwritten or the record came from a migration.
-2. The short plan sits on the issue itself, in five to ten lines: why it was reopened (cite the audit row); what exists (paths and SHAs, checked today); what remains, as numbered testable items with their standard clauses; the deliverable and the test that will prove it; the builder, a different reviewer, and the kind of machine the work needs; prerequisites and owner decisions; and the size. It is written in future tense. Past-tense claims cite a path or SHA.
-3. Publication, delivery, data deletion and GitHub mass-writes each wait for explicit owner approval.
+1. Reopen, or open a successor that links the closed issue, when an audit or a maintainer finds any section-B element missing or false. Use a new issue where the closed body was overwritten or the record came from a migration.
+2. The short plan sits on the issue itself, in five to ten lines: why it was reopened (cite the audit row); what exists (paths and SHAs, checked today); what remains, as numbered testable items with their standard clauses; the deliverable and the test that will prove it; the builder, a different reviewer, and the kind of machine the work needs; prerequisites and maintainer decisions; and the size. It is written in future tense. Past-tense claims cite a path or SHA.
+3. Publication, delivery, data deletion and GitHub mass-writes each wait for maintainer approval.
 
 ## E. The checker
 
@@ -50,4 +50,4 @@ The checker is read-only, and runs on each closing event (webhook or nightly) an
 | 9 | Closed within 60 s of creation with no comment (import) | FAIL |
 | 10 | Body edited after the closing time | WARN; edit history unavailable: NOT_EVALUATED |
 
-A FAIL is reported to the audit lane and proposed for reopening. The checker itself never writes to GitHub.
+A FAIL is reported for audit and proposed for reopening. The checker itself never writes to GitHub.
