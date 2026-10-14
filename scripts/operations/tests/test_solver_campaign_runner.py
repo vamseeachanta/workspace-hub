@@ -9,7 +9,6 @@ import sys
 import tempfile
 import textwrap
 import time
-import types
 import xml.etree.ElementTree as ET
 import uuid
 from pathlib import Path
@@ -510,7 +509,7 @@ def test_invalid_manifest_id_logs_only_in_invalid_bucket(root, fake_checkout, wo
     run_cli(["run-once"], root)
     after = sorted(p.relative_to(work_area).as_posix() for p in work_area.rglob("*"))
     assert all(not item.startswith("outside/") for item in set(after) - set(before))
-    assert (root / "state" / "invalid" / "runner.log").exists()
+    assert (root / "state" / "bad" / "runner.log").exists()
 
 
 @pytest.mark.parametrize("bad_id", [".", ".."])
@@ -527,15 +526,29 @@ def test_dot_manifest_ids_are_refused(root, fake_checkout, bad_id):
 
 
 def test_case_folded_duplicate_ids_are_skipped_without_halting_root(root, fake_checkout, runner, monkeypatch):
-    upper = root / "approved" / "upper.json"
-    lower = root / "approved" / "lower.json"
-    good = root / "approved" / "good-campaign.json"
-    for path in (upper, lower, good):
-        path.write_text(path.name, encoding="utf-8")
-    digest_by_path = {path: hashlib.sha256(path.read_bytes()).hexdigest() for path in (upper, lower, good)}
+    class FakeManifestPath:
+        def __init__(self, name):
+            self.name = name
+            self.stem = name.rsplit(".", 1)[0]
+
+        def __lt__(self, other):
+            return self.name < other.name
+
+        def __eq__(self, other):
+            return isinstance(other, FakeManifestPath) and self.name == other.name
+
+        def __hash__(self):
+            return hash(self.name)
+
+    upper = FakeManifestPath("POL-A.json")
+    lower = FakeManifestPath("pol-a.json")
+    good = FakeManifestPath("good-campaign.json")
     _, good_manifest = make_manifest(root, fake_checkout, "good-campaign", priority=3)
-    good.write_text("good-campaign.json", encoding="utf-8")
-    digest_by_path[good] = hashlib.sha256(good.read_bytes()).hexdigest()
+    digest_by_path = {
+        upper: "1" * 64,
+        lower: "2" * 64,
+        good: "3" * 64,
+    }
 
     manifests = {
         upper: {**good_manifest, "id": "POL-A", "priority": 1},
@@ -546,24 +559,33 @@ def test_case_folded_duplicate_ids_are_skipped_without_halting_root(root, fake_c
     def fake_load_manifest(path):
         return manifests[path], [], digest_by_path[path]
 
+    def fake_sha256_file(path):
+        if path in digest_by_path:
+            return digest_by_path[path]
+        return hashlib.sha256(path.read_bytes()).hexdigest()
+
+    original_glob = Path.glob
+
+    def fake_glob(path, pattern):
+        if path == root / "approved" and pattern == "*.json":
+            return iter([upper, lower, good])
+        return original_glob(path, pattern)
+
     monkeypatch.setattr(runner, "load_manifest", fake_load_manifest)
+    monkeypatch.setattr(runner, "sha256_file", fake_sha256_file)
+    monkeypatch.setattr(Path, "glob", fake_glob)
     with (root / "approvals.tsv").open("w", encoding="utf-8", newline="\n") as stream:
         for campaign_id, path in (("POL-A", upper), ("pol-a", lower), ("good-campaign", good)):
             stream.write(f"{campaign_id}\t{digest_by_path[path]}\tapproval-ref\t2026-10-13\n")
-    args = types.SimpleNamespace(
-        heartbeat_seconds=60.0,
-        heartbeat_fresh_seconds=180.0,
-        stop_grace_seconds=5.0,
-        min_free_bytes=0,
-        backoff_minutes=None,
-    )
+    campaigns, approval_errors = runner.discover_campaigns(root)
 
-    assert runner.command_run_once(types.SimpleNamespace(root=str(root), **vars(args))) == 0
-
-    assert (root / "done" / "good-campaign.result").exists()
-    assert not (root / "done" / "POL-A.result").exists()
-    assert not (root / "done" / "pol-a.result").exists()
-    assert "campaign id differs only by case" in all_runner_logs(root)
+    assert approval_errors == []
+    by_id = {campaign["id"]: campaign for campaign in campaigns}
+    assert by_id["good-campaign"]["approved"]
+    assert not by_id["POL-A"]["approved"]
+    assert not by_id["pol-a"]["approved"]
+    assert any("campaign id differs only by case" in error for error in by_id["POL-A"]["errors"])
+    assert any("campaign id differs only by case" in error for error in by_id["pol-a"]["errors"])
 
 
 
@@ -595,6 +617,55 @@ def test_manifest_without_string_id_is_skipped_without_halting_root(root, fake_c
     assert status.returncode == 0, status.stderr
     assert "good-campaign\tDONE\t" in status.stdout
     assert "\tinvalid\t" in status.stdout
+
+
+def test_invalid_mismatched_id_does_not_create_casefold_collision(root, fake_checkout):
+    good, _ = make_manifest(root, fake_checkout, "good")
+    approve(root, good)
+    evil, manifest = make_manifest(root, fake_checkout, "evil", id="Good")
+    approve(root, evil)
+
+    status = run_cli(["status"], root)
+
+    assert status.returncode == 0, status.stderr
+    assert "good\tpending\t" in status.stdout
+    assert "evil\tinvalid\t" in status.stdout
+    assert "good\tinvalid\t" not in status.stdout
+    done = run_cli(["run-once"], root)
+    assert done.returncode == 0, done.stderr
+    assert (root / "done" / "good.result").exists()
+    assert not (root / "done" / "evil.result").exists()
+    assert manifest["id"] == "Good"
+
+
+@pytest.mark.parametrize("bad_id", ["something-else", "good"])
+def test_invalid_mismatched_or_duplicate_id_does_not_disable_valid_campaign(root, fake_checkout, bad_id):
+    good, _ = make_manifest(root, fake_checkout, "good")
+    approve(root, good)
+    bad, _ = make_manifest(root, fake_checkout, "bad", id=bad_id)
+    approve(root, bad)
+
+    status = run_cli(["status"], root)
+
+    assert status.returncode == 0, status.stderr
+    assert "good\tpending\t" in status.stdout
+    assert "bad\tinvalid\t" in status.stdout
+    assert "good\tinvalid\t" not in status.stdout
+
+
+def test_valid_casefold_id_collision_is_reported(root, fake_checkout):
+    if os.name == "nt":
+        pytest.skip("casefold collision requires a case-sensitive approved directory")
+    lower, _ = make_manifest(root, fake_checkout, "good")
+    upper, _ = make_manifest(root, fake_checkout, "Good")
+    approve(root, lower)
+    approve(root, upper)
+
+    status = run_cli(["status"], root)
+
+    assert status.returncode == 0, status.stderr
+    assert "good\tinvalid\t" in status.stdout
+    assert "Good\tinvalid\t" in status.stdout
 
 
 def test_start_failure_is_recorded_and_next_campaign_runs(root, fake_checkout):
@@ -896,6 +967,9 @@ goto mode_ok
 :missing_root
 echo Campaign root must be an existing folder.
 exit /b 2
+:unsafe_root
+echo Campaign root contains unsupported characters.
+exit /b 2
 :arg_error
 echo Usage: register-solver-campaign-task.bat [batch^|batch-password^|desktop] root [--dry-run]
 exit /b 2
@@ -906,6 +980,38 @@ if defined DRY_RUN echo DRY_RUN=1
 exit /b 0
 """
     body += textwrap.dedent(tail).lstrip().replace("\n", "\r\n")
+    probe.write_text(body, encoding="utf-8", newline="")
+    return probe
+
+
+def write_register_argument_probe(work_area):
+    probe = work_area / "argument-probe.bat"
+    body = "@echo off\r\nsetlocal\r\nset \"MODE=batch\"\r\nset \"MODE_SET=\"\r\nset \"ROOT=\"\r\nset \"DRY_RUN=\"\r\n"
+    body += "rem BEGIN_ARGUMENT_PARSE" + register_parse_section() + "rem END_ARGUMENT_PARSE\r\n"
+    tail = """
+goto mode_ok
+:missing_root
+echo Campaign root must be an existing folder.
+exit /b 2
+:unsafe_root
+echo Campaign root contains unsupported characters.
+exit /b 2
+:arg_error
+echo Usage: register-solver-campaign-task.bat [batch^|batch-password^|desktop] root [--dry-run]
+exit /b 2
+:mode_ok
+if defined DRY_RUN (
+  echo Resolved campaign root: %ROOT%
+  exit /b 0
+)
+echo STANDIN_REACHED
+exit /b 0
+"""
+    body += textwrap.dedent(tail).lstrip().replace("\n", "\r\n")
+    lowered = body.lower()
+    blocked = ["schtasks", " /delete", " /create"]
+    for token in blocked:
+        assert token not in lowered
     probe.write_text(body, encoding="utf-8", newline="")
     return probe
 
@@ -1027,6 +1133,40 @@ def test_register_absolute_root_remains_absolute(work_area):
     done = run_register_parse_probe(probe, str(root))
     assert done.returncode == 0, done.stdout + done.stderr
     assert f"ROOT={root.resolve()}" in done.stdout
+
+
+@pytest.mark.skipif(os.name != "nt", reason="batch parsing is Windows-specific")
+@pytest.mark.parametrize("mode", ["batch", "batch-password", "desktop"])
+@pytest.mark.parametrize("dry_run", [False, True])
+@pytest.mark.parametrize(
+    "root_name",
+    [
+        "Campaigns (2026)",
+        "Campaigns ) 2026",
+        "Campaigns & zz-not-a-command-4066",
+        "Campaigns ^ 2026",
+        "Campaigns % 2026",
+        "Campaigns ! 2026",
+    ],
+)
+def test_register_refuses_unsafe_root_characters_before_registration(work_area, mode, dry_run, root_name):
+    root = work_area / root_name
+    root.mkdir()
+    probe = write_register_argument_probe(work_area)
+    root_arg = str(root)
+    if "^" in root_name:
+        root_arg = root_arg.replace("^", "^^")
+    args = [mode, root_arg]
+    if dry_run:
+        args.append("--dry-run")
+
+    done = run_register_parse_probe(probe, *args)
+
+    assert done.returncode != 0, done.stdout + done.stderr
+    assert "Campaign root contains unsupported characters." in done.stdout
+    assert "STANDIN_REACHED" not in done.stdout
+    assert "zz-not-a-command-4066" not in done.stderr
+    assert "not recognized as an internal or external command" not in done.stderr
 
 
 def test_task_readback_parser_accepts_utf16_and_utf8(work_area):
