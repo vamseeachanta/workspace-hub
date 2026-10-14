@@ -7,7 +7,6 @@ import argparse
 import contextlib
 import ctypes
 import datetime as dt
-import fnmatch
 import hashlib
 import json
 import os
@@ -36,21 +35,7 @@ DEFAULT_LICENCE_TRIES_PER_DAY = 3
 LOG_LIMIT_BYTES = 1024 * 1024
 LOG_ROTATIONS = 3
 PROCESS_TREE_KILL_COMMAND = "taskkill"
-PERMITTED_PROGRAMS = {
-    "git": {
-        "branch",
-        "diff",
-        "ls-files",
-        "merge-base",
-        "remote",
-        "rev-parse",
-    }
-}
 TASK_NAMESPACE = "http://schemas.microsoft.com/windows/2004/02/mit/task"
-POLICY_BLOCKED_ENV = ("PYTHON",)
-POLICY_BLOCKED_ENV_NAMES = {"PATH", "PATHEXT", "COMSPEC"}
-POLICY_UNTRACKED_SUFFIXES = {".py", ".pyw", ".pth", ".bat", ".cmd", ".ps1", ".exe", ".dll", ".pyd"}
-
 REQUIRED_FIELDS = {
     "id",
     "title",
@@ -154,6 +139,10 @@ def validate_manifest_data(data: dict, path: Path) -> list[str]:
     driver = data.get("driver")
     if not isinstance(driver, list) or not driver or not all(isinstance(item, str) and item for item in driver):
         errors.append("driver must be a non-empty argument list of strings")
+    else:
+        driver_program = Path(driver[0])
+        if not driver_program.is_absolute() and driver_program.parent != Path("."):
+            errors.append("driver program path must be absolute or resolved from PATH")
     cwd = data.get("cwd")
     if not isinstance(cwd, str) or not is_declared_absolute(cwd):
         errors.append("cwd must be absolute")
@@ -514,6 +503,11 @@ def read_checkout_head(repo_dir: Path) -> str | None:
         git_path = (repo_dir / text.split(":", 1)[1].strip()).resolve()
     if not git_path.is_dir():
         return None
+    common_path = git_path
+    common_file = git_path / "commondir"
+    if common_file.exists():
+        common_text = common_file.read_text(encoding="utf-8").strip()
+        common_path = (git_path / common_text).resolve() if common_text else git_path
     head_path = git_path / "HEAD"
     if not head_path.exists():
         return None
@@ -523,11 +517,12 @@ def read_checkout_head(repo_dir: Path) -> str | None:
     if not head.startswith("ref:"):
         return None
     ref = head.split(":", 1)[1].strip()
-    loose = git_path / ref
-    if loose.exists():
-        value = loose.read_text(encoding="utf-8").strip()
-        return value.lower() if FULL_COMMIT_RE.fullmatch(value) else None
-    packed = git_path / "packed-refs"
+    for ref_root in (git_path, common_path):
+        loose = ref_root / ref
+        if loose.exists():
+            value = loose.read_text(encoding="utf-8").strip()
+            return value.lower() if FULL_COMMIT_RE.fullmatch(value) else None
+    packed = common_path / "packed-refs"
     if packed.exists():
         for line in packed.read_text(encoding="utf-8").splitlines():
             if line.startswith("#") or line.startswith("^") or not line.strip():
@@ -538,301 +533,41 @@ def read_checkout_head(repo_dir: Path) -> str | None:
     return None
 
 
-def run_git(repo_dir: Path, *args: str) -> subprocess.CompletedProcess:
-    if not args or args[0] not in PERMITTED_PROGRAMS["git"]:
-        raise ValueError("git sub-command is not permitted")
-    env = os.environ.copy()
-    env.update({"GIT_OPTIONAL_LOCKS": "0", "GIT_TERMINAL_PROMPT": "0", "GIT_PAGER": "cat", "GIT_CONFIG_NOSYSTEM": "1"})
-    return subprocess.run(
-        ["git", "-c", "core.fsmonitor=false", "-C", str(repo_dir), *args],
-        text=True,
-        capture_output=True,
-        check=False,
-        env=env,
-    )
-
-
-def normalize_remote(value: str) -> str:
-    return value.strip().rstrip("/").lower()
-
-
-def read_policy(root: Path) -> tuple[dict | None, list[str]]:
-    path = root / "policy.json"
-    if not path.exists():
-        return None, []
-    if path.is_symlink():
-        return None, ["policy.json must not be a symbolic link"]
-    if any((parent / ".git").exists() for parent in [root, *root.parents]):
-        return None, ["campaign root must not be inside a git working tree"]
-    try:
-        data = json.loads(path.read_text(encoding="utf-8-sig"))
-    except Exception as exc:  # noqa: BLE001
-        return None, [f"policy.json is invalid JSON: {exc}"]
-    errors = []
-    if not isinstance(data, dict):
-        return None, ["policy.json must be an object"]
-    repos = data.get("repositories")
-    limits = data.get("limits")
-    interpreters = data.get("interpreters", [])
-    allowed_env = data.get("allowed_env", [])
-    if not isinstance(repos, list) or not repos or not all(isinstance(item, str) and item for item in repos):
-        errors.append("policy repositories must be a non-empty list of remote addresses")
-    if not isinstance(interpreters, list) or not all(isinstance(item, str) and item for item in interpreters):
-        errors.append("policy interpreters must be a list of non-empty strings")
-    if not isinstance(allowed_env, list) or not all(isinstance(item, str) and item for item in allowed_env):
-        errors.append("policy allowed_env must be a list of environment names")
-    elif any(env_name_blocked_by_policy(item) for item in allowed_env):
-        errors.append("policy allowed_env includes a program-loading environment name")
-    if not isinstance(limits, dict):
-        errors.append("policy limits must be an object")
-        limits = {}
-    id_pattern = limits.get("id_pattern")
-    id_prefixes = limits.get("id_prefixes")
-    if id_pattern is not None:
-        if not isinstance(id_pattern, str):
-            errors.append("policy id_pattern must be a string")
-        else:
-            try:
-                re.compile(id_pattern)
-            except re.error:
-                errors.append("policy id_pattern must compile")
-    elif not isinstance(id_prefixes, list) or not all(isinstance(item, str) and item for item in id_prefixes):
-        errors.append("policy limits need id_pattern or non-empty id_prefixes")
-    elif any(not item for item in id_prefixes):
-        errors.append("policy id_prefixes must be non-empty")
-    if not isinstance(limits.get("max_workers"), int) or isinstance(limits.get("max_workers"), bool) or limits.get("max_workers") <= 0:
-        errors.append("policy max_workers must be positive")
-    if (
-        not isinstance(limits.get("max_hours"), (int, float))
-        or isinstance(limits.get("max_hours"), bool)
-        or limits.get("max_hours") <= 0
-    ):
-        errors.append("policy max_hours must be positive")
-    if errors:
-        return None, errors
-    return data, []
-
-
-def env_name_blocked_by_policy(name: str) -> bool:
-    upper = name.upper()
-    return upper in POLICY_BLOCKED_ENV_NAMES or any(upper.startswith(prefix) for prefix in POLICY_BLOCKED_ENV)
-
-
-def policy_id_allowed(policy: dict, campaign_id: str) -> bool:
-    limits = policy["limits"]
-    if "id_pattern" in limits:
-        return re.fullmatch(limits["id_pattern"], campaign_id) is not None
-    return any(campaign_id.startswith(prefix) for prefix in limits["id_prefixes"])
-
-
-def append_policy_approval(root: Path, campaign_id: str, digest: str) -> None:
-    path = root / "approvals.tsv"
-    path.parent.mkdir(parents=True, exist_ok=True)
-    with path.open("a", encoding="utf-8", newline="\n") as stream:
-        stream.write(f"{campaign_id}\t{digest}\tpolicy\t{utc_text()}\n")
-
-
-def path_inside(child: Path, parent: Path) -> bool:
-    try:
-        child.resolve().relative_to(parent.resolve())
-        return True
-    except ValueError:
-        return False
-
-
-def repo_relative_path(repo_dir: Path, path: Path) -> str | None:
-    try:
-        return path.resolve().relative_to(repo_dir.resolve()).as_posix()
-    except ValueError:
-        return None
-
-
-def policy_command_errors(policy: dict, manifest: dict) -> list[str]:
-    errors: list[str] = []
-    repo_dir = Path(manifest["repo_dir"])
-    driver_file = manifest.get("driver_file")
-    driver = manifest.get("driver")
-    if not isinstance(driver_file, str) or not isinstance(driver, list):
-        return errors
-    cwd = Path(manifest["cwd"])
-    if not path_inside(cwd, repo_dir):
-        errors.append("cwd is outside repo_dir")
-    env = manifest.get("env", {})
-    allowed_env = set(policy.get("allowed_env", []))
-    if env and not allowed_env:
-        errors.append("policy requires env to be empty")
-    for name in env:
-        if name not in allowed_env:
-            errors.append(f"env name is outside policy: {name}")
-        if env_name_blocked_by_policy(name):
-            errors.append(f"env name changes program loading: {name}")
-    allowed_interpreters = set(policy.get("interpreters", []))
-    if driver[0] == driver_file:
-        return errors
-    if len(driver) >= 2 and driver[0] in allowed_interpreters and driver[1] == driver_file:
-        return errors
-    errors.append("driver must execute driver_file directly or through a listed interpreter")
-    return errors
-
-
-def policy_index_errors(repo_dir: Path, manifest: dict) -> list[str]:
-    errors: list[str] = []
-    driver_file = manifest.get("driver_file")
-    if not isinstance(driver_file, str):
-        return errors
-    flags = run_git(repo_dir, "ls-files", "-v", "--", driver_file)
-    if flags.returncode != 0:
-        errors.append("driver_file index flags cannot be checked")
-    else:
-        for line in flags.stdout.splitlines():
-            if line and (line[0] == "S" or line[0].islower()):
-                errors.append("driver_file has skip-worktree or assume-unchanged index state")
-                break
-    cwd_rel = repo_relative_path(repo_dir, Path(manifest["cwd"]))
-    driver_dir = str(Path(driver_file).parent.as_posix())
-    scopes = [item for item in {cwd_rel or "", driver_dir} if item and item != "."]
-    if not scopes:
-        scopes = ["."]
-    others = run_git(repo_dir, "ls-files", "--others", "--exclude-standard", "--", *scopes)
-    if others.returncode != 0:
-        errors.append("untracked loadable files cannot be checked")
-    else:
-        for line in others.stdout.splitlines():
-            if Path(line).suffix.lower() in POLICY_UNTRACKED_SUFFIXES:
-                errors.append("untracked loadable file is present")
-                break
-    return errors
-
-
-def policy_approval_errors(root: Path, policy: dict, manifest: dict, digest: str) -> list[str]:
-    errors = []
-    repo_dir = Path(manifest["repo_dir"])
-    driver_file = manifest.get("driver_file")
-    workers = manifest.get("workers")
-    if workers is None:
-        errors.append("policy requires workers")
-    if driver_file is None:
-        errors.append("policy requires driver_file")
-    if workers is not None and workers > policy["limits"]["max_workers"]:
-        errors.append("workers exceeds policy limit")
-    if float(manifest["max_hours"]) > float(policy["limits"]["max_hours"]):
-        errors.append("max_hours exceeds policy limit")
-    if not policy_id_allowed(policy, manifest["id"]):
-        errors.append("id is outside policy limit")
-    if driver_file is not None:
-        resolved = (repo_dir / driver_file).resolve()
-        if not path_inside(resolved, repo_dir):
-            errors.append("driver_file is outside repo_dir")
-        if not resolved.exists():
-            errors.append("driver_file is absent")
-    errors.extend(policy_command_errors(policy, manifest))
-    approved_remotes = {normalize_remote(item) for item in policy["repositories"]}
-    remote = run_git(repo_dir, "remote", "get-url", "origin")
-    if remote.returncode != 0 or normalize_remote(remote.stdout) not in approved_remotes:
-        errors.append("remote is not listed in policy")
-    default_branch = run_git(repo_dir, "rev-parse", "--abbrev-ref", "origin/HEAD")
-    if default_branch.returncode != 0:
-        errors.append("default branch is unresolved")
-    else:
-        default_ref = default_branch.stdout.strip()
-        ancestor = run_git(repo_dir, "merge-base", "--is-ancestor", manifest["ref"], default_ref)
-        if ancestor.returncode != 0:
-            errors.append("ref is not on the recorded default branch")
-    if driver_file is not None:
-        tracked = run_git(repo_dir, "branch", "--contains", manifest["ref"])
-        if tracked.returncode != 0:
-            errors.append("ref cannot be checked for tracked driver")
-        show_file = run_git(repo_dir, "rev-parse", "--verify", f"{manifest['ref']}:{driver_file}")
-        if show_file.returncode != 0:
-            errors.append("driver_file is not tracked at ref")
-        errors.extend(policy_index_errors(repo_dir, manifest))
-    dirty = run_git(repo_dir, "diff", "--no-ext-diff", "--no-textconv", "--quiet", manifest["ref"], "--")
-    if dirty.returncode != 0:
-        errors.append("tracked files differ from ref")
-    return errors
-
-
-def apply_policy_approvals(root: Path, approvals: dict[str, list[dict]]) -> list[str]:
-    policy, policy_errors = read_policy(root)
-    for error in policy_errors:
-        append_runner_log(root, "global", error)
-    if policy is None:
-        return policy_errors
-    requested = root / "requested"
-    if not requested.exists():
-        return policy_errors
-    approved_ids = {path.stem for path in (root / "approved").glob("*.json")}
-    for path in sorted(requested.glob("*.json")):
-        manifest, errors, digest = load_manifest(path)
-        campaign_id = safe_log_id(path, manifest)
-        if campaign_id in approved_ids:
-            append_runner_log(root, campaign_id, "requested id also exists in approved")
-            continue
-        if errors or manifest is None:
-            append_runner_log(root, campaign_id, "; ".join(errors))
-            continue
-        if any(item["digest"] == digest for item in approvals.get(manifest["id"], [])):
-            continue
-        policy_failures = policy_approval_errors(root, policy, manifest, digest)
-        if policy_failures:
-            for failure in policy_failures:
-                append_runner_log(root, manifest["id"], f"policy unapproved: {failure}")
-            continue
-        append_policy_approval(root, manifest["id"], digest)
-        approvals.setdefault(manifest["id"], []).append({"digest": digest, "approval_ref": "policy", "date": utc_text()})
-        append_runner_log(root, manifest["id"], "policy approval appended")
-    return policy_errors
-
-
 def discover_campaigns(root: Path, apply_policy: bool = True) -> tuple[list[dict], list[str]]:
     approvals, approval_errors = read_approvals(root)
-    policy_available = False
-    if apply_policy:
-        policy, policy_errors = read_policy(root)
-        policy_available = policy is not None
-        if policy is not None:
-            approval_errors.extend(apply_policy_approvals(root, approvals))
-        else:
-            for error in policy_errors:
-                append_runner_log(root, "global", error)
-            approval_errors.extend(policy_errors)
     campaigns: list[dict] = []
-    paths = [(path, False) for path in sorted((root / "approved").glob("*.json"))]
-    paths.extend((path, True) for path in sorted((root / "requested").glob("*.json")))
-    seen_casefold: dict[str, str] = {}
-    for path, requested in paths:
+    paths = sorted((root / "approved").glob("*.json"))
+    loaded: list[dict] = []
+    casefold_ids: dict[str, set[str]] = {}
+    for path in paths:
         manifest, errors, digest = load_manifest(path)
         campaign_id = safe_log_id(path, manifest)
-        folded_id = str(campaign_id).casefold()
-        if folded_id in seen_casefold and seen_casefold[folded_id] != str(campaign_id):
+        loaded.append({"path": path, "manifest": manifest, "errors": errors, "digest": digest, "id": str(campaign_id)})
+        if manifest is not None and isinstance(manifest.get("id"), str):
+            casefold_ids.setdefault(manifest["id"].casefold(), set()).add(manifest["id"])
+    colliding = {folded for folded, ids in casefold_ids.items() if len(ids) > 1}
+    for item in loaded:
+        errors = list(item["errors"])
+        campaign_id = item["id"]
+        if item["manifest"] is not None and item["manifest"]["id"].casefold() in colliding:
             errors.append("campaign id differs only by case from another manifest")
-        else:
-            seen_casefold[folded_id] = str(campaign_id)
-        policy_listed = any(item["digest"] == digest and item["approval_ref"] == "policy" for item in approvals.get(campaign_id, []))
-        if requested and apply_policy and not policy_listed:
-            continue
-        approved = False
-        approval_date = "9999-99-99"
-        if not errors:
-            matches = approvals.get(str(campaign_id), [])
-            approved = any(item["digest"] == digest for item in matches)
-            if matches:
-                approval_date = min(item["date"] for item in matches if item["digest"] == digest) if approved else matches[0]["date"]
-            approval_ref = next((item["approval_ref"] for item in matches if item["digest"] == digest), "")
-        else:
-            approval_ref = ""
+        matches = approvals.get(campaign_id, [])
+        digest_matches = [match for match in matches if match["digest"] == item["digest"]]
+        valid_matches = [match for match in digest_matches if match["approval_ref"] != "policy"]
+        approved = bool(valid_matches) and not errors
+        approval_date = min(match["date"] for match in valid_matches) if valid_matches else (matches[0]["date"] if matches else "9999-99-99")
+        approval_ref = valid_matches[0]["approval_ref"] if valid_matches else (digest_matches[0]["approval_ref"] if digest_matches else "")
         campaigns.append(
             {
-                "path": path,
-                "id": str(campaign_id),
-                "manifest": manifest,
+                "path": item["path"],
+                "id": campaign_id,
+                "manifest": item["manifest"],
                 "errors": errors,
-                "digest": digest,
+                "digest": item["digest"],
                 "approved": approved,
                 "approval_date": approval_date,
                 "approval_ref": approval_ref,
-                "listed": bool(approvals.get(str(campaign_id))),
-                "requested": requested,
+                "listed": bool(matches),
             }
         )
     return campaigns, approval_errors
@@ -858,8 +593,6 @@ def status_lines(root: Path) -> list[str]:
                 heartbeat_age = str(int((utc_now() - parse_utc(json.loads(beat_path.read_text(encoding="utf-8"))["time"])).total_seconds()))
         if item["errors"]:
             state = "invalid"
-        elif item.get("requested") and not item["listed"]:
-            state = "requested"
         elif not item["listed"]:
             state = "unapproved"
         elif not item["approved"]:
@@ -890,11 +623,6 @@ def eligible_campaigns(root: Path, min_free_bytes: int) -> tuple[list[dict], boo
     failed_ids = {path.stem for path in (root / "done").glob("*.result") if path.read_text(encoding="utf-8").startswith("FAILED\t")}
     now = utc_now()
     eligible = []
-    if any(any("differs only by case" in error for error in item["errors"]) for item in campaigns):
-        for item in campaigns:
-            if any("differs only by case" in error for error in item["errors"]):
-                append_runner_log(root, item["id"], "; ".join(item["errors"]))
-        return [], False
     for item in campaigns:
         campaign_id = item["id"]
         if item["errors"]:
@@ -904,7 +632,10 @@ def eligible_campaigns(root: Path, min_free_bytes: int) -> tuple[list[dict], boo
             append_runner_log(root, campaign_id, "manifest digest is not listed in approvals.tsv")
             continue
         if not item["approved"]:
-            append_runner_log(root, campaign_id, "manifest digest differs from approvals.tsv")
+            if item.get("approval_ref") == "policy":
+                append_runner_log(root, campaign_id, "approval reference policy is not available in this release")
+            else:
+                append_runner_log(root, campaign_id, "manifest digest differs from approvals.tsv")
             continue
         result = read_result(root, campaign_id)
         if result and result[0] in {"DONE", "FAILED", "STOPPED"}:
@@ -951,13 +682,45 @@ def eligible_campaigns(root: Path, min_free_bytes: int) -> tuple[list[dict], boo
     return eligible, False
 
 
-def recheck_policy_approval(root: Path, item: dict) -> list[str]:
-    if item.get("approval_ref") != "policy":
-        return []
-    policy, errors = read_policy(root)
-    if policy is None:
-        return errors or ["policy.json is not valid at start time"]
-    return policy_approval_errors(root, policy, item["manifest"], item["digest"])
+
+class THREADENTRY32(ctypes.Structure):
+    _fields_ = [
+        ("dwSize", ctypes.c_ulong),
+        ("cntUsage", ctypes.c_ulong),
+        ("th32ThreadID", ctypes.c_ulong),
+        ("th32OwnerProcessID", ctypes.c_ulong),
+        ("tpBasePri", ctypes.c_long),
+        ("tpDeltaPri", ctypes.c_long),
+        ("dwFlags", ctypes.c_ulong),
+    ]
+
+
+def resume_windows_process_threads(pid: int) -> None:
+    kernel32 = ctypes.WinDLL("kernel32", use_last_error=True)
+    snapshot = kernel32.CreateToolhelp32Snapshot(0x00000004, 0)
+    if snapshot == -1:
+        raise OSError(ctypes.get_last_error(), "CreateToolhelp32Snapshot failed")
+    resumed = 0
+    try:
+        entry = THREADENTRY32()
+        entry.dwSize = ctypes.sizeof(entry)
+        has_entry = kernel32.Thread32First(snapshot, ctypes.byref(entry))
+        while has_entry:
+            if entry.th32OwnerProcessID == pid:
+                thread = kernel32.OpenThread(0x0002, False, entry.th32ThreadID)
+                if not thread:
+                    raise OSError(ctypes.get_last_error(), "OpenThread failed")
+                try:
+                    if kernel32.ResumeThread(thread) == 0xFFFFFFFF:
+                        raise OSError(ctypes.get_last_error(), "ResumeThread failed")
+                    resumed += 1
+                finally:
+                    kernel32.CloseHandle(thread)
+            has_entry = kernel32.Thread32Next(snapshot, ctypes.byref(entry))
+    finally:
+        kernel32.CloseHandle(snapshot)
+    if resumed == 0:
+        raise OSError("no process thread was resumed")
 
 
 class JOBOBJECT_BASIC_LIMIT_INFORMATION(ctypes.Structure):
@@ -1035,12 +798,20 @@ def start_process(manifest: dict, stdout_path: Path, stderr_path: Path) -> subpr
         "stderr": stderr,
     }
     if os.name == "nt":
-        kwargs["creationflags"] = subprocess.CREATE_NEW_PROCESS_GROUP
+        kwargs["creationflags"] = subprocess.CREATE_NEW_PROCESS_GROUP | 0x00000004
     else:
         kwargs["start_new_session"] = True
     try:
         process = subprocess.Popen(manifest["driver"], **kwargs)
-        process._solver_job = create_windows_job_for_process(process) if os.name == "nt" else None  # noqa: SLF001
+        if os.name == "nt":
+            process._solver_job = create_windows_job_for_process(process)  # noqa: SLF001
+            try:
+                resume_windows_process_threads(process.pid)
+            except Exception:
+                ctypes.WinDLL("kernel32", use_last_error=True).TerminateJobObject(process._solver_job, 1)  # noqa: SLF001
+                raise
+        else:
+            process._solver_job = None  # noqa: SLF001
         return process
     except Exception:
         stdout.close()
@@ -1114,7 +885,13 @@ def run_campaign(root: Path, item: dict, args: argparse.Namespace) -> None:
     stderr_path = state_dir / "driver.stderr.log"
     rotate_log(stdout_path)
     rotate_log(stderr_path)
-    process = start_process(manifest, stdout_path, stderr_path)
+    try:
+        process = start_process(manifest, stdout_path, stderr_path)
+    except Exception as exc:  # noqa: BLE001
+        write_attempts(root, campaign_id, attempt_for_heartbeat)
+        write_result(root, campaign_id, "HELD", 0, 0, f"reason: driver-start-failed: {exc}")
+        append_runner_log(root, campaign_id, f"driver start failed: {exc}")
+        return "start-failed"
     created_from_handle = _windows_handle_creation_time(process._handle) if os.name == "nt" else None  # noqa: SLF001
     identity = {"pid": process.pid, "creation_time": created_from_handle} if created_from_handle is not None else process_identity(process.pid)
     identity = identity or {"pid": process.pid, "creation_time": None}
@@ -1267,6 +1044,8 @@ def command_run_once(args: argparse.Namespace) -> int:
     root = Path(args.root)
     for folder in ("approved", "state", "done"):
         (root / folder).mkdir(parents=True, exist_ok=True)
+    if (root / "policy.json").exists():
+        append_runner_log(root, "global", "standing approval is not available in this release")
     lock = RunnerLock(root, args.heartbeat_fresh_seconds)
     acquired, reason = lock.acquire()
     if not acquired:
@@ -1280,21 +1059,52 @@ def command_run_once(args: argparse.Namespace) -> int:
                 append_runner_log(root, campaign_id, "recorded driver is still running; no second driver started")
                 return 0
         campaigns, blocked = eligible_campaigns(root, args.min_free_bytes)
-        if blocked or not campaigns:
+        if blocked:
             return 0
-        digest_now = sha256_file(campaigns[0]["path"])
-        if digest_now != campaigns[0]["digest"]:
-            append_runner_log(root, campaigns[0]["id"], "manifest digest changed before start")
+        for campaign in campaigns:
+            digest_now = sha256_file(campaign["path"])
+            if digest_now != campaign["digest"]:
+                append_runner_log(root, campaign["id"], "manifest digest changed before start")
+                continue
+            outcome = run_campaign(root, campaign, args)
+            if outcome == "start-failed":
+                continue
             return 0
-        policy_failures = recheck_policy_approval(root, campaigns[0])
-        if policy_failures:
-            for failure in policy_failures:
-                append_runner_log(root, campaigns[0]["id"], f"policy unapproved at start: {failure}")
-            return 0
-        run_campaign(root, campaigns[0], args)
         return 0
     finally:
         lock.release()
+
+
+def parse_task_readback(path: Path) -> tuple[str | None, str | None]:
+    data = path.read_bytes()
+    last_error: Exception | None = None
+    for encoding in ("utf-16", "utf-8-sig", "utf-8"):
+        try:
+            root = ET.fromstring(data.decode(encoding))
+            return find_task_text(root, "LogonType"), find_task_text(root, "UserId")
+        except Exception as exc:  # noqa: BLE001
+            last_error = exc
+    raise ValueError(f"task readback XML could not be parsed: {last_error}")
+
+
+def find_task_text(root: ET.Element, name: str) -> str | None:
+    found = root.find(f".//{{{TASK_NAMESPACE}}}{name}")
+    return found.text if found is not None else None
+
+
+def command_task_readback(args: argparse.Namespace) -> int:
+    try:
+        logon, account = parse_task_readback(Path(args.xml))
+    except Exception as exc:  # noqa: BLE001
+        print(f"Task readback parse failed: {exc}")
+        return 1
+    print(f"Registered task readback LogonType: {logon or ''}")
+    print(f"Registered task readback account: {account or ''}")
+    if logon == args.expected_logon and account == args.account:
+        print("Registered task readback matches requested mode and account.")
+        return 0
+    print("Registered task readback did not match requested mode and account.")
+    return 1
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -1323,6 +1133,11 @@ def build_parser() -> argparse.ArgumentParser:
     task_definition.add_argument("--campaign-root", default="{CAMPAIGN_ROOT}")
     task_definition.add_argument("--output")
     task_definition.set_defaults(func=command_task_definition)
+    task_readback = sub.add_parser("task-readback")
+    task_readback.add_argument("xml")
+    task_readback.add_argument("--expected-logon", required=True)
+    task_readback.add_argument("--account", required=True)
+    task_readback.set_defaults(func=command_task_readback)
     return parser
 
 

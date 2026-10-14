@@ -4,28 +4,36 @@ set "SCRIPT_DIR=%~dp0"
 set "MODE=batch"
 set "MODE_SET="
 set "ROOT="
+set "DRY_RUN="
+rem BEGIN_ARGUMENT_PARSE
 :parse_args
-if "%~1"=="" goto args_done
-if /I "%~1"=="--dry-run" (
+if "%~1"=="" (
+  if "%1"=="" goto args_done
+  goto arg_error
+)
+set "ARG=%~1"
+if /I "%ARG%"=="--dry-run" (
   set "DRY_RUN=1"
   shift
   goto parse_args
 )
-if /I "%~1"=="batch" (
+if "%ARG:~0,1%"=="-" goto arg_error
+if "%ARG:~0,1%"=="/" goto arg_error
+if /I "%ARG%"=="batch" (
   if defined MODE_SET goto arg_error
   set "MODE=batch"
   set "MODE_SET=1"
   shift
   goto parse_args
 )
-if /I "%~1"=="batch-password" (
+if /I "%ARG%"=="batch-password" (
   if defined MODE_SET goto arg_error
   set "MODE=batch-password"
   set "MODE_SET=1"
   shift
   goto parse_args
 )
-if /I "%~1"=="desktop" (
+if /I "%ARG%"=="desktop" (
   if defined MODE_SET goto arg_error
   set "MODE=desktop"
   set "MODE_SET=1"
@@ -33,23 +41,23 @@ if /I "%~1"=="desktop" (
   goto parse_args
 )
 if not defined ROOT (
-  set "ROOT=%~1"
+  set "ROOT=%ARG%"
   shift
   goto parse_args
 )
-:arg_error
-echo Usage: register-solver-campaign-task.bat [batch^|batch-password^|desktop] [root] [--dry-run]
-exit /b 2
+goto arg_error
 :args_done
-if not defined MODE set "MODE=batch"
-if /I "%MODE%"=="batch" goto mode_ok
-if /I "%MODE%"=="batch-password" goto mode_ok
-if /I "%MODE%"=="desktop" goto mode_ok
-echo Modes: batch, batch-password, desktop.
+if not defined ROOT goto missing_root
+if not exist "%ROOT%" goto missing_root
+rem END_ARGUMENT_PARSE
+goto mode_ok
+:missing_root
+echo Campaign root must be an existing folder.
+exit /b 2
+:arg_error
+echo Usage: register-solver-campaign-task.bat [batch^|batch-password^|desktop] root [--dry-run]
 exit /b 2
 :mode_ok
-if not defined ROOT set "ROOT=%SOLVER_CAMPAIGN_ROOT%"
-if not defined ROOT set "ROOT=%CD%"
 set "WRAPPER=%SCRIPT_DIR%run-solver-campaigns.bat"
 set "TASK_NAME=solver-campaign-runner"
 set "TASK_XML=%TEMP%\solver-campaign-runner-%RANDOM%.xml"
@@ -92,16 +100,22 @@ if not "%RC%"=="0" (
 schtasks /Query /TN "%TASK_NAME%" /XML > "%TASK_XML%.readback"
 if not "%ERRORLEVEL%"=="0" (
   echo Task readback failed.
-  schtasks /Delete /TN "%TASK_NAME%" /F >nul 2>nul
+  echo Earlier task of the same name was replaced and then removed after readback failed.
+  schtasks /Delete /TN "%TASK_NAME%" /F
+  set "DELETE_RC=%ERRORLEVEL%"
+  if not "%DELETE_RC%"=="0" echo Cleanup deletion failed with exit code %DELETE_RC%.
+  if "%DELETE_RC%"=="0" echo Cleanup deletion completed.
   del "%TASK_XML%" >nul 2>nul
   del "%TASK_XML%.readback" >nul 2>nul
   exit /b 1
 )
-findstr /I /C:"<LogonType>" "%TASK_XML%.readback"
-findstr /I /C:"<LogonType>%EXPECTED_LOGON%</LogonType>" "%TASK_XML%.readback" >nul
+%PYTHON_CMD% "%SCRIPT_DIR%campaign_runner.py" task-readback "%TASK_XML%.readback" --expected-logon "%EXPECTED_LOGON%" --account "%ACCOUNT%"
 if not "%ERRORLEVEL%"=="0" (
-  echo Registered task logon type did not match requested mode.
-  schtasks /Delete /TN "%TASK_NAME%" /F >nul 2>nul
+  echo Earlier task of the same name was replaced and then removed after readback mismatch.
+  schtasks /Delete /TN "%TASK_NAME%" /F
+  set "DELETE_RC=%ERRORLEVEL%"
+  if not "%DELETE_RC%"=="0" echo Cleanup deletion failed with exit code %DELETE_RC%.
+  if "%DELETE_RC%"=="0" echo Cleanup deletion completed.
   del "%TASK_XML%" >nul 2>nul
   del "%TASK_XML%.readback" >nul 2>nul
   exit /b 1

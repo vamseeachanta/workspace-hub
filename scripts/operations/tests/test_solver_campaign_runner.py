@@ -9,6 +9,7 @@ import sys
 import tempfile
 import textwrap
 import time
+import types
 import xml.etree.ElementTree as ET
 import uuid
 from pathlib import Path
@@ -142,74 +143,6 @@ def make_manifest(root, fake_checkout, campaign_id="example-campaign", **overrid
     path = root / "approved" / f"{campaign_id}.json"
     path.write_text(json.dumps(manifest, indent=2), encoding="utf-8", newline="\n")
     return path, manifest
-
-
-def git_run(repo, *args):
-    env = os.environ.copy()
-    env.update(
-        {
-            "GIT_AUTHOR_NAME": "placeholder",
-            "GIT_AUTHOR_EMAIL": "placeholder",
-            "GIT_COMMITTER_NAME": "placeholder",
-            "GIT_COMMITTER_EMAIL": "placeholder",
-            "GIT_CONFIG_NOSYSTEM": "1",
-            "GIT_TERMINAL_PROMPT": "0",
-            "GIT_OPTIONAL_LOCKS": "0",
-        }
-    )
-    return subprocess.run(["git", "-C", str(repo), *args], text=True, capture_output=True, check=False, env=env)
-
-
-@pytest.fixture()
-def git_checkout(work_area):
-    checkout = work_area / "git-checkout"
-    checkout.mkdir()
-    assert subprocess.run(["git", "init", str(checkout)], text=True, capture_output=True, check=False).returncode == 0
-    (checkout / "drivers").mkdir()
-    (checkout / "drivers" / "driver.py").write_text("print('ok')\n", encoding="utf-8")
-    assert git_run(checkout, "add", "drivers/driver.py").returncode == 0
-    assert git_run(checkout, "commit", "-m", "initial").returncode == 0
-    commit = git_run(checkout, "rev-parse", "HEAD").stdout.strip()
-    assert git_run(checkout, "remote", "add", "origin", "placeholder://repo").returncode == 0
-    assert git_run(checkout, "update-ref", "refs/remotes/origin/main", commit).returncode == 0
-    (checkout / ".git" / "refs" / "remotes" / "origin" / "HEAD").write_text("ref: refs/remotes/origin/main\n", encoding="utf-8")
-    return checkout, commit
-
-
-def make_policy_manifest(root, git_checkout, **overrides):
-    checkout, commit = git_checkout
-    manifest = {
-        "id": "policy-example",
-        "title": "Policy Example",
-        "repo_dir": str(checkout),
-        "ref": commit,
-        "driver": [sys.executable, "drivers/driver.py"],
-        "driver_file": "drivers/driver.py",
-        "cwd": str(checkout),
-        "env": {},
-        "expected_hours": 1,
-        "max_hours": 1,
-        "workers": 1,
-        "licence_exit_codes": [12],
-        "retry": {"max_attempts": 1, "backoff_minutes": 0},
-        "priority": 1,
-        "after": [],
-    }
-    manifest.update(overrides)
-    (root / "requested").mkdir(exist_ok=True)
-    path = root / "requested" / f"{manifest['id']}.json"
-    path.write_text(json.dumps(manifest), encoding="utf-8")
-    return path, manifest
-
-
-def write_policy(root, **limits):
-    data = {
-        "repositories": ["placeholder://repo"],
-        "interpreters": [sys.executable],
-        "limits": {"id_prefixes": ["policy-"], "max_workers": 2, "max_hours": 2},
-    }
-    data["limits"].update(limits)
-    (root / "policy.json").write_text(json.dumps(data), encoding="utf-8")
 
 
 def approve(root, path, approval_ref="approval-ref-001", date="2026-10-13"):
@@ -493,162 +426,67 @@ def test_approvals_accept_bom_and_strip_carriage_return(root, fake_checkout):
     assert (root / "done" / "example-campaign.result").exists()
 
 
-def test_requested_manifest_without_policy_does_not_run_or_call_git(root, git_checkout, monkeypatch, runner):
-    make_policy_manifest(root, git_checkout)
-    approvals = root / "approvals.tsv"
-    before = approvals.read_bytes() if approvals.exists() else b""
-    calls = []
-    monkeypatch.setattr(runner.subprocess, "run", lambda *args, **kwargs: calls.append(args) or subprocess.CompletedProcess(args, 1))
-    campaigns, errors = runner.discover_campaigns(root)
-    assert errors == []
-    assert campaigns == []
-    assert calls == []
-    assert (approvals.read_bytes() if approvals.exists() else b"") == before
 
-
-def test_status_is_read_only_for_requested_manifest(root, git_checkout, monkeypatch, runner):
-    make_policy_manifest(root, git_checkout)
-    write_policy(root)
-    calls = []
-    monkeypatch.setattr(runner.subprocess, "run", lambda *args, **kwargs: calls.append(args) or subprocess.CompletedProcess(args, 1))
-    lines = runner.status_lines(root)
-    assert any(line.startswith("policy-example\trequested\t") for line in lines)
-    assert calls == []
-    assert not (root / "approvals.tsv").exists()
-
-
-def test_policy_approves_requested_manifest(root, git_checkout):
-    path, _ = make_policy_manifest(root, git_checkout)
-    write_policy(root)
-    assert run_cli(["run-once"], root).returncode == 0
-    approvals = (root / "approvals.tsv").read_text(encoding="utf-8")
-    assert f"policy-example\t{hashlib.sha256(path.read_bytes()).hexdigest()}\tpolicy\t" in approvals
-    assert (root / "done" / "policy-example.result").exists()
-
-
-def test_policy_removed_after_approval_refuses_retry(root, git_checkout):
-    path, manifest = make_policy_manifest(
-        root,
-        git_checkout,
-        driver=[sys.executable, "drivers/driver.py"],
-        retry={"max_attempts": 2, "backoff_minutes": 0},
-    )
-    (git_checkout[0] / "drivers" / "driver.py").write_text("import sys\nsys.exit(9)\n", encoding="utf-8")
-    git_run(git_checkout[0], "add", "drivers/driver.py")
-    git_run(git_checkout[0], "commit", "-m", "failing driver")
-    commit = git_run(git_checkout[0], "rev-parse", "HEAD").stdout.strip()
-    git_run(git_checkout[0], "update-ref", "refs/remotes/origin/main", commit)
-    manifest["ref"] = commit
-    path.write_text(json.dumps(manifest), encoding="utf-8")
-    write_policy(root)
-    assert run_cli(["run-once", "--backoff-minutes", "0"], root).returncode == 0
-    assert (root / "done" / "policy-example.result").read_text(encoding="utf-8").startswith("HELD\t")
-    (root / "policy.json").unlink()
-    (root / "done" / "policy-example.result").unlink()
-    assert run_cli(["run-once"], root).returncode == 0
-    log = (root / "state" / "policy-example" / "runner.log").read_text(encoding="utf-8")
-    assert "policy.json is not valid at start time" in log
-
-
-def test_policy_rechecks_checkout_before_retry(root, git_checkout):
-    path, manifest = make_policy_manifest(root, git_checkout, driver=[sys.executable, "drivers/driver.py"])
-    (git_checkout[0] / "drivers" / "driver.py").write_text("import sys\nsys.exit(9)\n", encoding="utf-8")
-    git_run(git_checkout[0], "add", "drivers/driver.py")
-    git_run(git_checkout[0], "commit", "-m", "failing driver")
-    commit = git_run(git_checkout[0], "rev-parse", "HEAD").stdout.strip()
-    git_run(git_checkout[0], "update-ref", "refs/remotes/origin/main", commit)
-    manifest["ref"] = commit
-    path.write_text(json.dumps(manifest), encoding="utf-8")
-    write_policy(root)
-    assert run_cli(["run-once", "--backoff-minutes", "0"], root).returncode == 0
-    (root / "done" / "policy-example.result").unlink()
-    (git_checkout[0] / "drivers" / "driver.py").write_text("print('changed')\n", encoding="utf-8")
-    assert run_cli(["run-once"], root).returncode == 0
-    log = (root / "state" / "policy-example" / "runner.log").read_text(encoding="utf-8")
-    assert "policy unapproved" in log
-    assert "tracked files differ from ref" in log
-
-
-def test_policy_refuses_driver_code_option_and_loading_env(root, git_checkout):
-    path, manifest = make_policy_manifest(root, git_checkout, driver=[sys.executable, "-c", "print('outside')", "drivers/driver.py"])
-    write_policy(root)
-    assert run_cli(["run-once"], root).returncode == 0
-    logs = "\n".join(p.read_text(encoding="utf-8") for p in (root / "state").glob("*/runner.log"))
-    assert "driver must execute driver_file directly" in logs
-    manifest["driver"] = [sys.executable, "drivers/driver.py"]
-    manifest["env"] = {"PYTHONPATH": "placeholder"}
-    path.write_text(json.dumps(manifest), encoding="utf-8")
-    assert run_cli(["run-once"], root).returncode == 0
-    logs = "\n".join(p.read_text(encoding="utf-8") for p in (root / "state").glob("*/runner.log"))
-    assert "env name changes program loading: PYTHONPATH" in logs
-
-
-def test_policy_refuses_index_flags_and_untracked_loadable_files(root, git_checkout):
-    path, _ = make_policy_manifest(root, git_checkout)
-    write_policy(root)
-    assert git_run(git_checkout[0], "update-index", "--skip-worktree", "drivers/driver.py").returncode == 0
-    (git_checkout[0] / "drivers" / "driver.py").write_text("print('changed')\n", encoding="utf-8")
-    assert run_cli(["run-once"], root).returncode == 0
-    logs = "\n".join(p.read_text(encoding="utf-8") for p in (root / "state").glob("*/runner.log"))
-    assert "skip-worktree or assume-unchanged" in logs
-    assert git_run(git_checkout[0], "update-index", "--no-skip-worktree", "drivers/driver.py").returncode == 0
-    original = git_run(git_checkout[0], "show", "HEAD:drivers/driver.py")
-    assert original.returncode == 0
-    (git_checkout[0] / "drivers" / "driver.py").write_text(original.stdout, encoding="utf-8")
-    (git_checkout[0] / "drivers" / "helper.py").write_text("print('helper')\n", encoding="utf-8")
-    (root / "approvals.tsv").unlink(missing_ok=True)
-    assert run_cli(["run-once"], root).returncode == 0
-    logs = "\n".join(p.read_text(encoding="utf-8") for p in (root / "state").glob("*/runner.log"))
-    assert "untracked loadable file is present" in logs
-
-
-def test_policy_type_checks_and_refuses_linked_policy(root, git_checkout):
-    make_policy_manifest(root, git_checkout)
-    write_policy(root, id_prefixes=[""])
-    assert run_cli(["run-once"], root).returncode == 0
-    logs = "\n".join(p.read_text(encoding="utf-8") for p in (root / "state").glob("*/runner.log"))
-    assert "non-empty id_prefixes" in logs
-    (root / "policy.json").write_text(json.dumps({"repositories": ["placeholder://repo"], "limits": {"id_pattern": 1, "max_workers": True, "max_hours": 1}}), encoding="utf-8")
-    assert run_cli(["run-once"], root).returncode == 0
-    logs = "\n".join(p.read_text(encoding="utf-8") for p in (root / "state").glob("*/runner.log"))
-    assert "policy id_pattern must be a string" in logs
-    if hasattr(os, "symlink"):
-        (root / "policy.json").unlink()
-        target = root / "policy-target.json"
-        target.write_text(json.dumps({"repositories": ["placeholder://repo"], "interpreters": [sys.executable], "limits": {"id_prefixes": ["policy-"], "max_workers": 2, "max_hours": 2}}), encoding="utf-8")
-        try:
-            os.symlink(target, root / "policy.json")
-        except OSError:
-            pytest.skip("symbolic links are not available on this platform")
-        assert run_cli(["run-once"], root).returncode == 0
-        logs = "\n".join(p.read_text(encoding="utf-8") for p in (root / "state").glob("*/runner.log"))
-        assert "policy.json must not be a symbolic link" in logs
-
-
-@pytest.mark.parametrize(
-    "mutate, message",
-    [
-        (lambda root, checkout, manifest: (root / "policy.json").write_text("{", encoding="utf-8"), "policy.json is invalid JSON"),
-        (lambda root, checkout, manifest: manifest.__setitem__("workers", 3), "workers exceeds policy limit"),
-        (lambda root, checkout, manifest: manifest.__setitem__("max_hours", 3), "max_hours exceeds policy limit"),
-        (lambda root, checkout, manifest: manifest.__setitem__("id", "other-example"), "id is outside policy limit"),
-        (lambda root, checkout, manifest: (checkout / "drivers" / "driver.py").write_text("changed\n", encoding="utf-8"), "tracked files differ from ref"),
-    ],
-)
-def test_policy_negative_controls(root, git_checkout, mutate, message):
-    path, manifest = make_policy_manifest(root, git_checkout)
-    write_policy(root)
-    mutate(root, git_checkout[0], manifest)
+def make_requested_manifest(root, fake_checkout, campaign_id="requested-campaign", **overrides):
+    path, manifest = make_manifest(root, fake_checkout, campaign_id, **overrides)
     path.unlink()
-    path = root / "requested" / f"{manifest['id']}.json"
-    path.write_text(json.dumps(manifest), encoding="utf-8")
-    before = (root / "approvals.tsv").read_bytes() if (root / "approvals.tsv").exists() else b""
-    assert run_cli(["run-once"], root).returncode == 0
-    after = (root / "approvals.tsv").read_bytes() if (root / "approvals.tsv").exists() else b""
-    assert after == before
-    logs = "\n".join(p.read_text(encoding="utf-8") for p in (root / "state").glob("*/runner.log"))
-    assert message in logs
+    requested = root / "requested"
+    requested.mkdir(exist_ok=True)
+    target = requested / path.name
+    target.write_text(json.dumps(manifest, indent=2), encoding="utf-8", newline="\n")
+    return target, manifest
 
+
+def all_runner_logs(root):
+    return "\n".join(p.read_text(encoding="utf-8") for p in (root / "state").glob("*/runner.log"))
+
+
+def test_requested_manifest_policy_file_and_stale_policy_line_do_not_authorize(root, fake_checkout):
+    requested_path, _ = make_requested_manifest(root, fake_checkout)
+    approved_path, _ = make_manifest(root, fake_checkout, "person-approved", priority=5)
+    approve(root, requested_path, approval_ref="policy")
+    before = (root / "approvals.tsv").read_bytes()
+    approve(root, approved_path)
+    after_person_approval = (root / "approvals.tsv").read_bytes()
+    (root / "policy.json").write_text('{"standing": true}\n', encoding="utf-8")
+
+    assert run_cli(["run-once"], root).returncode == 0
+
+    assert (root / "done" / "person-approved.result").exists()
+    assert not (root / "done" / "requested-campaign.result").exists()
+    assert (root / "approvals.tsv").read_bytes() == after_person_approval
+    assert before in after_person_approval
+    log = (root / "state" / "global" / "runner.log").read_text(encoding="utf-8")
+    assert log.count("standing approval is not available in this release") == 1
+
+
+def test_status_ignores_requested_folder(root, fake_checkout):
+    make_requested_manifest(root, fake_checkout)
+    lines = run_cli(["status"], root).stdout.splitlines()
+    assert all("requested-campaign" not in line for line in lines)
+
+
+def test_policy_approval_reference_on_approved_manifest_does_not_authorize(root, fake_checkout):
+    path, _ = make_manifest(root, fake_checkout)
+    approve(root, path, approval_ref="policy")
+    assert run_cli(["run-once"], root).returncode == 0
+    assert not (root / "done" / "example-campaign.result").exists()
+    log = (root / "state" / "example-campaign" / "runner.log").read_text(encoding="utf-8")
+    assert "approval reference policy is not available in this release" in log
+
+
+def test_runner_static_release_has_no_policy_execution_surface():
+    source = RUNNER_PATH.read_text(encoding="utf-8")
+    tree = ast.parse(source)
+    for node in ast.walk(tree):
+        if isinstance(node, ast.Call) and isinstance(node.func, ast.Attribute):
+            if node.func.attr in {"run", "Popen"} and node.args:
+                first = node.args[0]
+                if isinstance(first, ast.List) and first.elts and isinstance(first.elts[0], ast.Constant):
+                    assert first.elts[0].value != "git"
+    assert 'root / "requested"' not in source
+    assert "append_policy_approval" not in source
+    assert "run_git" not in source
 
 def test_invalid_manifest_id_logs_only_in_invalid_bucket(root, fake_checkout, work_area):
     outside = work_area / "outside"
@@ -678,21 +516,95 @@ def test_dot_manifest_ids_are_refused(root, fake_checkout, bad_id):
     assert "id must be a short safe token" in log
 
 
-def test_case_folded_duplicate_ids_are_refused(root, fake_checkout):
-    first, _ = make_manifest(root, fake_checkout, "POL-A")
-    requested = root / "requested"
-    requested.mkdir()
-    _, manifest = make_manifest(root, fake_checkout, "placeholder")
-    (root / "approved" / "placeholder.json").unlink()
-    manifest["id"] = "pol-a"
-    second = requested / "pol-a.json"
-    second.write_text(json.dumps(manifest), encoding="utf-8")
-    approve(root, first)
-    approve(root, second, approval_ref="policy")
-    runner = load_runner()
-    campaigns, errors = runner.discover_campaigns(root)
-    assert errors == []
-    assert any("campaign id differs only by case" in "; ".join(item["errors"]) for item in campaigns)
+def test_case_folded_duplicate_ids_are_skipped_without_halting_root(root, fake_checkout, runner, monkeypatch):
+    upper = root / "approved" / "upper.json"
+    lower = root / "approved" / "lower.json"
+    good = root / "approved" / "good-campaign.json"
+    for path in (upper, lower, good):
+        path.write_text(path.name, encoding="utf-8")
+    digest_by_path = {path: hashlib.sha256(path.read_bytes()).hexdigest() for path in (upper, lower, good)}
+    _, good_manifest = make_manifest(root, fake_checkout, "good-campaign", priority=3)
+    good.write_text("good-campaign.json", encoding="utf-8")
+    digest_by_path[good] = hashlib.sha256(good.read_bytes()).hexdigest()
+
+    manifests = {
+        upper: {**good_manifest, "id": "POL-A", "priority": 1},
+        lower: {**good_manifest, "id": "pol-a", "priority": 2},
+        good: good_manifest,
+    }
+
+    def fake_load_manifest(path):
+        return manifests[path], [], digest_by_path[path]
+
+    monkeypatch.setattr(runner, "load_manifest", fake_load_manifest)
+    with (root / "approvals.tsv").open("w", encoding="utf-8", newline="\n") as stream:
+        for campaign_id, path in (("POL-A", upper), ("pol-a", lower), ("good-campaign", good)):
+            stream.write(f"{campaign_id}\t{digest_by_path[path]}\tapproval-ref\t2026-10-13\n")
+    args = types.SimpleNamespace(
+        heartbeat_seconds=60.0,
+        heartbeat_fresh_seconds=180.0,
+        stop_grace_seconds=5.0,
+        min_free_bytes=0,
+        backoff_minutes=None,
+    )
+
+    assert runner.command_run_once(types.SimpleNamespace(root=str(root), **vars(args))) == 0
+
+    assert (root / "done" / "good-campaign.result").exists()
+    assert not (root / "done" / "POL-A.result").exists()
+    assert not (root / "done" / "pol-a.result").exists()
+    assert "campaign id differs only by case" in all_runner_logs(root)
+
+
+
+def test_malformed_manifest_is_skipped_without_halting_root(root, fake_checkout):
+    bad = root / "approved" / "bad-campaign.json"
+    bad.write_text("{\n", encoding="utf-8")
+    good, _ = make_manifest(root, fake_checkout, "good-campaign")
+    approve(root, good)
+
+    assert run_cli(["run-once"], root).returncode == 0
+
+    assert (root / "done" / "good-campaign.result").exists()
+    log = (root / "state" / "bad-campaign" / "runner.log").read_text(encoding="utf-8")
+    assert "invalid JSON" in log
+
+
+def test_start_failure_is_recorded_and_next_campaign_runs(root, fake_checkout):
+    bad_cwd = fake_checkout[0] / "missing-cwd"
+    bad, _ = make_manifest(root, fake_checkout, "bad-start", cwd=str(bad_cwd), priority=1)
+    good, _ = make_manifest(root, fake_checkout, "good-campaign", priority=2)
+    approve(root, bad)
+    approve(root, good)
+
+    assert run_cli(["run-once"], root).returncode == 0
+
+    assert (root / "done" / "good-campaign.result").exists()
+    bad_result = (root / "done" / "bad-start.result").read_text(encoding="utf-8")
+    assert "driver-start-failed" in bad_result
+    assert (root / "state" / "bad-start" / "attempts.txt").read_text(encoding="utf-8").strip() == "1"
+
+
+def test_validate_refuses_relative_driver_program_path(root, fake_checkout):
+    path, _ = make_manifest(root, fake_checkout, driver=["drivers/driver.py"])
+    done = run_cli(["validate", str(path)], root)
+    assert done.returncode == 1
+    assert "driver program path must be absolute or resolved from PATH" in done.stdout
+
+
+def test_read_checkout_head_resolves_branch_ref_through_common_dir(work_area, runner):
+    checkout = work_area / "linked-checkout"
+    common = work_area / "common-git"
+    gitdir = work_area / "linked-git"
+    commit = "b" * 40
+    checkout.mkdir()
+    gitdir.mkdir()
+    (common / "refs" / "heads").mkdir(parents=True)
+    (checkout / ".git").write_text(f"gitdir: {gitdir.as_posix()}\n", encoding="utf-8")
+    (gitdir / "HEAD").write_text("ref: refs/heads/main\n", encoding="utf-8")
+    (gitdir / "commondir").write_text(common.as_posix() + "\n", encoding="utf-8")
+    (common / "refs" / "heads" / "main").write_text(commit + "\n", encoding="utf-8")
+    assert runner.read_checkout_head(checkout) == commit
 
 
 def test_low_disk_threshold_skips_campaign(root, fake_checkout):
@@ -900,13 +812,159 @@ def test_wrapper_fallback_uses_runtime_errorlevel_check():
     assert "if %ERRORLEVEL% EQU 0 set \"PYTHON_CMD=python.exe\"" not in text
 
 
-def test_register_dry_run_exits_before_scheduled_task_command():
-    text = (REPO_ROOT / "scripts" / "operations" / "solver-campaign" / "register-solver-campaign-task.bat").read_text(
+def register_batch_text():
+    return (REPO_ROOT / "scripts" / "operations" / "solver-campaign" / "register-solver-campaign-task.bat").read_text(
         encoding="utf-8"
     )
-    dry_run = text.split("if defined DRY_RUN", 1)[1].split(")", 1)[0]
-    assert "exit /b 0" in dry_run
-    assert "schtasks" not in dry_run.lower()
-    assert "--output" in text
-    assert '/RU "%ACCOUNT%" /F' not in text
-    assert "Registered task logon type did not match requested mode." in text
+
+
+def register_parse_section():
+    text = register_batch_text()
+    return text.split("rem BEGIN_ARGUMENT_PARSE", 1)[1].split("rem END_ARGUMENT_PARSE", 1)[0]
+
+
+def test_register_parse_section_cannot_reach_scheduled_task_commands():
+    section = register_parse_section().lower()
+    blocked = ["schtasks", "task-definition", "task-readback", " del ", " /delete", " /create"]
+    for token in blocked:
+        assert token not in section
+
+
+def write_register_parse_probe(work_area):
+    probe = work_area / "parse-probe.bat"
+    body = "@echo off\r\nsetlocal\r\nset \"MODE=batch\"\r\nset \"MODE_SET=\"\r\nset \"ROOT=\"\r\nset \"DRY_RUN=\"\r\n"
+    body += "rem BEGIN_ARGUMENT_PARSE" + register_parse_section() + "rem END_ARGUMENT_PARSE\r\n"
+    tail = """
+goto mode_ok
+:missing_root
+echo Campaign root must be an existing folder.
+exit /b 2
+:arg_error
+echo Usage: register-solver-campaign-task.bat [batch^|batch-password^|desktop] root [--dry-run]
+exit /b 2
+:mode_ok
+echo MODE=%MODE%
+echo ROOT=%ROOT%
+if defined DRY_RUN echo DRY_RUN=1
+exit /b 0
+"""
+    body += textwrap.dedent(tail).lstrip().replace("\n", "\r\n")
+    probe.write_text(body, encoding="utf-8", newline="")
+    return probe
+
+
+def run_register_parse_probe(probe, *args):
+    return subprocess.run(
+        ["cmd.exe", "/c", str(probe), *args],
+        text=True,
+        capture_output=True,
+        check=False,
+        creationflags=RUNNER_CREATION_FLAGS,
+    )
+
+
+@pytest.mark.skipif(os.name != "nt", reason="batch parsing is Windows-specific")
+@pytest.mark.parametrize(
+    "args",
+    [
+        ("--dry-run", "batch", "{root}"),
+        ("batch", "--dry-run", "{root}"),
+        ("batch", "{root}", "--dry-run"),
+    ],
+)
+def test_register_dry_run_option_is_accepted_in_each_position(work_area, args):
+    root = work_area / "campaign-root"
+    root.mkdir()
+    probe = write_register_parse_probe(work_area)
+    expanded = [str(root) if item == "{root}" else item for item in args]
+    done = run_register_parse_probe(probe, *expanded)
+    assert done.returncode == 0, done.stdout + done.stderr
+    assert "DRY_RUN=1" in done.stdout
+    assert f"ROOT={root}" in done.stdout
+
+
+@pytest.mark.skipif(os.name != "nt", reason="batch parsing is Windows-specific")
+@pytest.mark.parametrize(
+    "args",
+    [
+        ("batch", "--dry_run"),
+        ("/?",),
+        ("-n",),
+        ("batch", "", "--dry-run"),
+        ("",),
+        tuple(),
+        ("batch",),
+        ("batch", "{missing}"),
+        ("batch", "desktop", "{root}"),
+        ("batch", "{root}", "extra"),
+    ],
+)
+def test_register_malformed_arguments_never_parse_as_real_registration(work_area, args):
+    root = work_area / "campaign-root"
+    root.mkdir()
+    missing = work_area / "missing-root"
+    probe = write_register_parse_probe(work_area)
+    expanded = [str(root) if item == "{root}" else str(missing) if item == "{missing}" else item for item in args]
+    done = run_register_parse_probe(probe, *expanded)
+    assert done.returncode != 0
+    assert "DRY_RUN=1" not in done.stdout
+    assert "MODE=" not in done.stdout
+
+
+def test_task_readback_parser_accepts_utf16_and_utf8(work_area):
+    runner = load_runner()
+    xml = runner.task_definition_xml("batch", "{ACCOUNT}", "{WRAPPER}", "{ROOT}")
+    for encoding in ("utf-16", "utf-8"):
+        path = work_area / f"readback-{encoding}.xml"
+        path.write_text(xml, encoding=encoding)
+        assert runner.parse_task_readback(path) == ("S4U", "{ACCOUNT}")
+
+
+def test_task_readback_command_compares_logon_and_account(work_area):
+    xml = task_xml_bytes("batch", work_area / "task.xml")
+    readback = work_area / "readback.xml"
+    readback.write_bytes(xml)
+    ok = subprocess.run(
+        [
+            sys.executable,
+            str(RUNNER_PATH),
+            "task-readback",
+            str(readback),
+            "--expected-logon",
+            "S4U",
+            "--account",
+            "{ACCOUNT}",
+        ],
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+    assert ok.returncode == 0
+    assert "Registered task readback matches requested mode and account." in ok.stdout
+    bad = subprocess.run(
+        [
+            sys.executable,
+            str(RUNNER_PATH),
+            "task-readback",
+            str(readback),
+            "--expected-logon",
+            "Password",
+            "--account",
+            "{ACCOUNT}",
+        ],
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+    assert bad.returncode == 1
+    assert "Registered task readback did not match requested mode and account." in bad.stdout
+
+
+def test_register_reports_readback_cleanup_result():
+    text = register_batch_text()
+    assert "Task readback failed." in text
+    assert "Earlier task of the same name was replaced and then removed after readback failed." in text
+    assert "Earlier task of the same name was replaced and then removed after readback mismatch." in text
+    assert "Cleanup deletion completed." in text
+    assert "Cleanup deletion failed with exit code" in text
+    assert "findstr" not in text.lower()
