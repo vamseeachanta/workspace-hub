@@ -17,12 +17,13 @@ Generated: 2026-04-10 | GH: #2098
 | 9 | Mooring Design | digitalmodel/mooring | --- | DNV-OS-E301, API RP 2SK | Available | Line sizing, fatigue life |
 | 10 | Riser Analysis | digitalmodel/risers | --- | API RP 2RD, DNV-OS-F201 | Available | Dynamic response, VIV |
 | 11 | Floating Offshore Wind (FOWT) | digitalmodel/mooring + digitalmodel/naval_arch | --- | API RP 2SK, DNV-RP-J203 | Available | O&G-to-FOWT transfer for moorings, installation, and integrity |
-| 12 | On-Bottom Stability | --- | --- | DNV-RP-F109 | Planned (#1835) | Hydrodynamic stability check |
+| 12 | On-Bottom Stability | --- | --- | DNV-RP-F109 | Planned (none) | Hydrodynamic stability check |
 | 13 | Shore Approach | --- | --- | --- | Planned (#1836) | HDD, trenching, pull-in |
-| 14 | Pipeline CAPEX | --- | --- | --- | Planned (#1837) | Cost estimation |
+| 14 | Pipeline CAPEX | --- | --- | --- | Planned (none) | Cost estimation |
 | 15 | Field Development Economics | digitalmodel/field_development | --- | --- | Production | NPV, CAPEX/OPEX, concept screening |
 | 16 | Drilling Rig Fleet | digitalmodel/naval_arch | --- | --- | Production (#2062) | Hull form validation |
 | 17 | Marine Terminal Engineering (LNG / Port Ops) | digitalmodel/mooring + digitalmodel/marine_ops + ACE marine engineering methods | --- | PIANC, OCIMF, SIGTTO, project-specific terminal criteria | Available | Berth operability, mooring/fendering checks, ship/shore transfer interface, harbour response, FSRU/import-export terminal screening |
+| 18 | Installation - pipelines | digitalmodel/installation/pipelay; digitalmodel/pipelay; digitalmodel/subsea/on_bottom_stability; digitalmodel/solvers/orcaflex/modular_generator | Coverage analysis | DNV-ST-F101, API RP 1111, DNV-RP-F109 (source attribution; qualification pending) | Partial: analytical screens and model composition; baseline collection blocked; native validation pending | Installation-method coverage and test gaps; no solver-result claim |
 
 ---
 
@@ -77,9 +78,9 @@ Generated: 2026-04-10 | GH: #2098
 
 | Discipline | Market Demand | Effort to Build | Priority |
 |-----------|--------------|-----------------|----------|
-| On-Bottom Stability (#1835) | Common RFQ item for pipeline contractors | 2 weeks | Tier 4 --- frequently bundled with wall thickness |
+| On-Bottom Stability (none) | Common RFQ item for pipeline contractors | 2 weeks | Tier 4 --- frequently bundled with wall thickness |
 | Shore Approach (#1836) | Niche but differentiating for shallow water | 3 weeks | Tier 5 --- differentiator for GoM shelf work |
-| Pipeline CAPEX (#1837) | Pairs with every pipeline discipline above | 1 week for screening-level | Tier 4 --- turns engineering into business case |
+| Pipeline CAPEX (none) | Pairs with every pipeline discipline above | 1 week for screening-level | Tier 4 --- turns engineering into business case |
 
 ---
 
