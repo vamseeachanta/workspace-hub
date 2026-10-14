@@ -475,6 +475,16 @@ def test_policy_approval_reference_on_approved_manifest_does_not_authorize(root,
     assert "approval reference policy is not available in this release" in log
 
 
+def test_status_shows_policy_reference_as_unapproved(root, fake_checkout):
+    path, _ = make_manifest(root, fake_checkout)
+    approve(root, path, approval_ref="policy")
+
+    lines = run_cli(["status"], root).stdout.splitlines()
+
+    assert any(line.startswith("example-campaign\tunapproved\t") for line in lines)
+    assert not any(line.startswith("example-campaign\tdigest-mismatch\t") for line in lines)
+
+
 def test_runner_static_release_has_no_policy_execution_surface():
     source = RUNNER_PATH.read_text(encoding="utf-8")
     tree = ast.parse(source)
@@ -570,6 +580,23 @@ def test_malformed_manifest_is_skipped_without_halting_root(root, fake_checkout)
     assert "invalid JSON" in log
 
 
+@pytest.mark.parametrize("bad_payload", [{"title": "Missing id"}, {"id": 5, "title": "Non-string id"}])
+def test_manifest_without_string_id_is_skipped_without_halting_root(root, fake_checkout, bad_payload):
+    bad = root / "approved" / "bad-campaign.json"
+    bad.write_text(json.dumps(bad_payload), encoding="utf-8")
+    approve(root, bad)
+    good, _ = make_manifest(root, fake_checkout, "good-campaign")
+    approve(root, good)
+
+    assert run_cli(["run-once"], root).returncode == 0
+
+    assert (root / "done" / "good-campaign.result").exists()
+    status = run_cli(["status"], root)
+    assert status.returncode == 0, status.stderr
+    assert "good-campaign\tDONE\t" in status.stdout
+    assert "\tinvalid\t" in status.stdout
+
+
 def test_start_failure_is_recorded_and_next_campaign_runs(root, fake_checkout):
     bad_cwd = fake_checkout[0] / "missing-cwd"
     bad, _ = make_manifest(root, fake_checkout, "bad-start", cwd=str(bad_cwd), priority=1)
@@ -583,6 +610,31 @@ def test_start_failure_is_recorded_and_next_campaign_runs(root, fake_checkout):
     bad_result = (root / "done" / "bad-start.result").read_text(encoding="utf-8")
     assert "driver-start-failed" in bad_result
     assert (root / "state" / "bad-start" / "attempts.txt").read_text(encoding="utf-8").strip() == "1"
+
+
+def test_start_failure_uses_backoff_and_fails_at_max_attempts(root, fake_checkout):
+    bad_cwd = fake_checkout[0] / "missing-cwd"
+    bad, _ = make_manifest(
+        root,
+        fake_checkout,
+        "bad-start",
+        cwd=str(bad_cwd),
+        retry={"max_attempts": 2, "backoff_minutes": 0, "licence_tries_per_day": 2},
+    )
+    approve(root, bad)
+
+    assert run_cli(["run-once"], root).returncode == 0
+    first = (root / "done" / "bad-start.result").read_text(encoding="utf-8")
+    assert first.startswith("HELD\t")
+    assert "driver-start-failed" in first
+    assert "next-try:" in first
+    assert run_cli(["run-once"], root).returncode == 0
+    second = (root / "done" / "bad-start.result").read_text(encoding="utf-8")
+    assert second.startswith("FAILED\t")
+    assert "driver-start-failed" in second
+    assert (root / "state" / "bad-start" / "attempts.txt").read_text(encoding="utf-8").strip() == "2"
+    assert run_cli(["run-once"], root).returncode == 0
+    assert (root / "state" / "bad-start" / "attempts.txt").read_text(encoding="utf-8").strip() == "2"
 
 
 def test_validate_refuses_relative_driver_program_path(root, fake_checkout):
@@ -823,6 +875,11 @@ def register_parse_section():
     return text.split("rem BEGIN_ARGUMENT_PARSE", 1)[1].split("rem END_ARGUMENT_PARSE", 1)[0]
 
 
+def register_cleanup_section():
+    text = register_batch_text()
+    return text.rsplit(":cleanup_registration", 1)[1].split(":after_cleanup_registration", 1)[0]
+
+
 def test_register_parse_section_cannot_reach_scheduled_task_commands():
     section = register_parse_section().lower()
     blocked = ["schtasks", "task-definition", "task-readback", " del ", " /delete", " /create"]
@@ -853,7 +910,32 @@ exit /b 0
     return probe
 
 
-def run_register_parse_probe(probe, *args):
+def write_register_cleanup_probe(work_area, delete_exit_code):
+    section = register_cleanup_section()
+    safe = section.replace('schtasks /Delete /TN "%TASK_NAME%" /F', f"cmd /c exit {delete_exit_code}")
+    lowered = safe.lower()
+    blocked = ["schtasks", " /delete", " /create"]
+    for token in blocked:
+        assert token not in lowered
+    probe = work_area / f"cleanup-probe-{delete_exit_code}.bat"
+    body = "@echo off\r\nsetlocal\r\nset \"TASK_NAME=solver-campaign-runner\"\r\n"
+    body += ":cleanup_registration" + safe + ":after_cleanup_registration\r\nexit /b 0\r\n"
+    probe.write_text(body, encoding="utf-8", newline="")
+    return probe
+
+
+def run_register_parse_probe(probe, *args, cwd=None):
+    return subprocess.run(
+        ["cmd.exe", "/c", str(probe), *args],
+        text=True,
+        capture_output=True,
+        check=False,
+        creationflags=RUNNER_CREATION_FLAGS,
+        cwd=cwd,
+    )
+
+
+def run_register_probe(probe, *args):
     return subprocess.run(
         ["cmd.exe", "/c", str(probe), *args],
         text=True,
@@ -865,22 +947,30 @@ def run_register_parse_probe(probe, *args):
 
 @pytest.mark.skipif(os.name != "nt", reason="batch parsing is Windows-specific")
 @pytest.mark.parametrize(
-    "args",
+    "mode",
+    ["batch", "batch-password", "desktop"],
+)
+@pytest.mark.parametrize(
+    "root_name",
+    ["campaign root", "campaign root with spaces", "parent folder/campaign-root"],
+)
+@pytest.mark.parametrize(
+    "form",
     [
-        ("--dry-run", "batch", "{root}"),
-        ("batch", "--dry-run", "{root}"),
-        ("batch", "{root}", "--dry-run"),
+        ("--dry-run", "{mode}", "{root}"),
+        ("{mode}", "--dry-run", "{root}"),
+        ("{mode}", "{root}", "--dry-run"),
     ],
 )
-def test_register_dry_run_option_is_accepted_in_each_position(work_area, args):
-    root = work_area / "campaign-root"
-    root.mkdir()
+def test_register_dry_run_option_accepts_roots_with_spaces(work_area, mode, root_name, form):
+    root = work_area / root_name
+    root.mkdir(parents=True)
     probe = write_register_parse_probe(work_area)
-    expanded = [str(root) if item == "{root}" else item for item in args]
+    expanded = [str(root) if item == "{root}" else mode if item == "{mode}" else item for item in form]
     done = run_register_parse_probe(probe, *expanded)
     assert done.returncode == 0, done.stdout + done.stderr
     assert "DRY_RUN=1" in done.stdout
-    assert f"ROOT={root}" in done.stdout
+    assert f"ROOT={root.resolve()}" in done.stdout
 
 
 @pytest.mark.skipif(os.name != "nt", reason="batch parsing is Windows-specific")
@@ -895,6 +985,7 @@ def test_register_dry_run_option_is_accepted_in_each_position(work_area, args):
         tuple(),
         ("batch",),
         ("batch", "{missing}"),
+        ("batch", "{file}"),
         ("batch", "desktop", "{root}"),
         ("batch", "{root}", "extra"),
     ],
@@ -903,12 +994,39 @@ def test_register_malformed_arguments_never_parse_as_real_registration(work_area
     root = work_area / "campaign-root"
     root.mkdir()
     missing = work_area / "missing-root"
+    existing_file = work_area / "not-a-root.txt"
+    existing_file.write_text("not a folder\n", encoding="utf-8")
     probe = write_register_parse_probe(work_area)
-    expanded = [str(root) if item == "{root}" else str(missing) if item == "{missing}" else item for item in args]
+    expanded = [
+        str(root) if item == "{root}" else str(missing) if item == "{missing}" else str(existing_file) if item == "{file}" else item
+        for item in args
+    ]
     done = run_register_parse_probe(probe, *expanded)
     assert done.returncode != 0
     assert "DRY_RUN=1" not in done.stdout
     assert "MODE=" not in done.stdout
+
+
+@pytest.mark.skipif(os.name != "nt", reason="batch parsing is Windows-specific")
+@pytest.mark.parametrize("args", [(".",), ("relative-root",), ("batch", ".", "--dry-run"), ("desktop", "relative-root")])
+def test_register_relative_roots_are_resolved_before_registration(work_area, args):
+    relative_root = work_area / "relative-root"
+    relative_root.mkdir()
+    probe = write_register_parse_probe(work_area)
+    done = run_register_parse_probe(probe, *args, cwd=work_area)
+    expected = work_area if "." in args else relative_root
+    assert done.returncode == 0, done.stdout + done.stderr
+    assert f"ROOT={expected.resolve()}" in done.stdout
+
+
+@pytest.mark.skipif(os.name != "nt", reason="batch parsing is Windows-specific")
+def test_register_absolute_root_remains_absolute(work_area):
+    root = work_area / "campaign-root"
+    root.mkdir()
+    probe = write_register_parse_probe(work_area)
+    done = run_register_parse_probe(probe, str(root))
+    assert done.returncode == 0, done.stdout + done.stderr
+    assert f"ROOT={root.resolve()}" in done.stdout
 
 
 def test_task_readback_parser_accepts_utf16_and_utf8(work_area):
@@ -920,10 +1038,21 @@ def test_task_readback_parser_accepts_utf16_and_utf8(work_area):
         assert runner.parse_task_readback(path) == ("S4U", "{ACCOUNT}")
 
 
-def test_task_readback_command_compares_logon_and_account(work_area):
-    xml = task_xml_bytes("batch", work_area / "task.xml")
+def test_task_readback_parser_accepts_8_bit_non_ascii_account(work_area):
+    runner = load_runner()
+    account = "PLACEHOLDER-" + chr(0x00C9)
+    xml = runner.task_definition_xml("batch", account, "{WRAPPER}", "{ROOT}")
+    readback = work_area / "readback-cp1252.xml"
+    readback.write_bytes(xml.encode("cp1252"))
+    assert runner.parse_task_readback(readback) == ("S4U", account)
+
+
+def test_task_readback_command_compares_logon_and_account_case_insensitively(work_area):
+    runner = load_runner()
+    account = "PLACEHOLDER-" + chr(0x00C9)
+    xml = runner.task_definition_xml("batch", account.upper(), "{WRAPPER}", "{ROOT}")
     readback = work_area / "readback.xml"
-    readback.write_bytes(xml)
+    readback.write_text(xml, encoding="utf-16")
     ok = subprocess.run(
         [
             sys.executable,
@@ -931,9 +1060,9 @@ def test_task_readback_command_compares_logon_and_account(work_area):
             "task-readback",
             str(readback),
             "--expected-logon",
-            "S4U",
+            "s4u",
             "--account",
-            "{ACCOUNT}",
+            account.lower(),
         ],
         text=True,
         capture_output=True,
@@ -948,9 +1077,9 @@ def test_task_readback_command_compares_logon_and_account(work_area):
             "task-readback",
             str(readback),
             "--expected-logon",
-            "Password",
+            "password",
             "--account",
-            "{ACCOUNT}",
+            account.lower(),
         ],
         text=True,
         capture_output=True,
@@ -960,11 +1089,17 @@ def test_task_readback_command_compares_logon_and_account(work_area):
     assert "Registered task readback did not match requested mode and account." in bad.stdout
 
 
-def test_register_reports_readback_cleanup_result():
-    text = register_batch_text()
-    assert "Task readback failed." in text
-    assert "Earlier task of the same name was replaced and then removed after readback failed." in text
-    assert "Earlier task of the same name was replaced and then removed after readback mismatch." in text
-    assert "Cleanup deletion completed." in text
-    assert "Cleanup deletion failed with exit code" in text
-    assert "findstr" not in text.lower()
+@pytest.mark.skipif(os.name != "nt", reason="batch cleanup is Windows-specific")
+@pytest.mark.parametrize(
+    "delete_exit_code, expected",
+    [
+        (0, "Cleanup deletion completed."),
+        (5, "Cleanup deletion failed with exit code 5."),
+    ],
+)
+def test_register_reports_readback_cleanup_result(work_area, delete_exit_code, expected):
+    probe = write_register_cleanup_probe(work_area, delete_exit_code)
+    done = run_register_probe(probe)
+    assert done.returncode == delete_exit_code, done.stdout + done.stderr
+    assert expected in done.stdout
+    assert "findstr" not in register_batch_text().lower()

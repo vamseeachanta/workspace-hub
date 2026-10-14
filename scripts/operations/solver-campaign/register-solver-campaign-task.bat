@@ -7,8 +7,9 @@ set "ROOT="
 set "DRY_RUN="
 rem BEGIN_ARGUMENT_PARSE
 :parse_args
+set "RAW_ARG=%1"
 if "%~1"=="" (
-  if "%1"=="" goto args_done
+  if not defined RAW_ARG goto args_done
   goto arg_error
 )
 set "ARG=%~1"
@@ -48,7 +49,8 @@ if not defined ROOT (
 goto arg_error
 :args_done
 if not defined ROOT goto missing_root
-if not exist "%ROOT%" goto missing_root
+if not exist "%ROOT%\" goto missing_root
+for %%I in ("%ROOT%") do set "ROOT=%%~fI"
 rem END_ARGUMENT_PARSE
 goto mode_ok
 :missing_root
@@ -83,6 +85,7 @@ if not "%ERRORLEVEL%"=="0" (
 )
 type "%TASK_XML%"
 if defined DRY_RUN (
+  echo Resolved campaign root: %ROOT%
   del "%TASK_XML%" >nul 2>nul
   exit /b 0
 )
@@ -101,10 +104,7 @@ schtasks /Query /TN "%TASK_NAME%" /XML > "%TASK_XML%.readback"
 if not "%ERRORLEVEL%"=="0" (
   echo Task readback failed.
   echo Earlier task of the same name was replaced and then removed after readback failed.
-  schtasks /Delete /TN "%TASK_NAME%" /F
-  set "DELETE_RC=%ERRORLEVEL%"
-  if not "%DELETE_RC%"=="0" echo Cleanup deletion failed with exit code %DELETE_RC%.
-  if "%DELETE_RC%"=="0" echo Cleanup deletion completed.
+  call :cleanup_registration
   del "%TASK_XML%" >nul 2>nul
   del "%TASK_XML%.readback" >nul 2>nul
   exit /b 1
@@ -112,10 +112,7 @@ if not "%ERRORLEVEL%"=="0" (
 %PYTHON_CMD% "%SCRIPT_DIR%campaign_runner.py" task-readback "%TASK_XML%.readback" --expected-logon "%EXPECTED_LOGON%" --account "%ACCOUNT%"
 if not "%ERRORLEVEL%"=="0" (
   echo Earlier task of the same name was replaced and then removed after readback mismatch.
-  schtasks /Delete /TN "%TASK_NAME%" /F
-  set "DELETE_RC=%ERRORLEVEL%"
-  if not "%DELETE_RC%"=="0" echo Cleanup deletion failed with exit code %DELETE_RC%.
-  if "%DELETE_RC%"=="0" echo Cleanup deletion completed.
+  call :cleanup_registration
   del "%TASK_XML%" >nul 2>nul
   del "%TASK_XML%.readback" >nul 2>nul
   exit /b 1
@@ -126,3 +123,11 @@ del "%TASK_XML%" >nul 2>nul
 del "%TASK_XML%.readback" >nul 2>nul
 echo Registered solver campaign runner scheduled task in %MODE% mode.
 exit /b 0
+
+:cleanup_registration
+schtasks /Delete /TN "%TASK_NAME%" /F
+set "DELETE_RC=%ERRORLEVEL%"
+if "%DELETE_RC%"=="0" echo Cleanup deletion completed.
+if not "%DELETE_RC%"=="0" echo Cleanup deletion failed with exit code %DELETE_RC%.
+exit /b %DELETE_RC%
+:after_cleanup_registration

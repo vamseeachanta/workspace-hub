@@ -99,8 +99,8 @@ of those inherited inputs.
 - `DONE`: driver exit code was zero and progress was complete, or no progress
   rule was declared.
 - `FAILED`: non-licence failures exhausted retry attempts.
-- `HELD`: a retry, licence hold, incomplete progress, max-hours condition, or
-  driver start failure requires a later deliberate action.
+- `HELD`: a retryable condition is waiting for `next-try`, or an operator-held
+  condition requires a later deliberate action.
 - `STOPPED`: a STOP file ended the campaign.
 - `pending`, `running`, `unapproved`, `digest-mismatch`, and `invalid` are
   status-only words.
@@ -112,7 +112,8 @@ For `HELD`:
 - `driver-exit-<code>`: inspect the driver logs; the runner retries after the
   back-off until `max_attempts`.
 - `driver-start-failed`: inspect the driver path, account rights, and working
-  directory; the failed start counts as an attempt.
+  directory; the failed start counts as an attempt and is retried after the
+  back-off until `max_attempts`, then recorded as `FAILED`.
 - `progress-incomplete`: inspect outputs and manifest progress rules; edit the
   manifest and approve the new digest if the rule was wrong.
 - `max-hours`: remove or archive the result file after an operator decides the
@@ -150,8 +151,8 @@ no mode argument, it uses `batch`. The root argument is required and must be an
 existing folder. The argument form is
 `register-solver-campaign-task.bat [batch|batch-password|desktop] root [--dry-run]`;
 unknown arguments, empty arguments, duplicate modes, extra arguments, and unknown
-options are refused. Run the dry run first to print the task definition without
-registering it.
+options are refused. Run the dry run first to print the task definition and
+resolved campaign root without registering it. The root may contain spaces.
 
 The modes are:
 
@@ -180,7 +181,9 @@ include a startup trigger, so a reboot starts the runner again. Desktop mode doe
 not run after a reboot until that account logs on. A runner crash ends the driver
 tree through the job object; the next call restarts the campaign and counts
 another attempt. The scheduled action runs the runner code present in the
-checkout at the time the task starts.
+checkout at the time the task starts. The form and encoding of the registered
+account returned by the task service are confirmed during the first registration
+read-back.
 
 Create `STOP` in the root to stop new starts and end the active driver's whole
 tree. `unregister-solver-campaign-task.bat` removes the scheduled task and the
