@@ -7,7 +7,7 @@ set "ROOT="
 set "DRY_RUN="
 rem BEGIN_ARGUMENT_PARSE
 :parse_args
-if "%~1"=="" goto args_done
+if "%~1"=="" goto empty_or_end
 set "ARG=%~1"
 if /I "%ARG%"=="--dry-run" (
   set "DRY_RUN=1"
@@ -43,12 +43,15 @@ if not defined ROOT (
   goto parse_args
 )
 goto arg_error
+:empty_or_end
+if "%1"=="" goto args_done
+goto arg_error
 :args_done
 if not defined ROOT goto missing_root
 set ROOT | "%SystemRoot%\System32\find.exe" "(" >nul && goto unsafe_root
 set ROOT | "%SystemRoot%\System32\find.exe" ")" >nul && goto unsafe_root
 set ROOT | "%SystemRoot%\System32\find.exe" "&" >nul && goto unsafe_root
-set ROOT | "%SystemRoot%\System32\find.exe" "^^" >nul && goto unsafe_root
+set ROOT | "%SystemRoot%\System32\find.exe" "^" >nul && goto unsafe_root
 set ROOT | "%SystemRoot%\System32\find.exe" "%%" >nul && goto unsafe_root
 set ROOT | "%SystemRoot%\System32\find.exe" "!" >nul && goto unsafe_root
 if not exist "%ROOT%\" goto missing_root

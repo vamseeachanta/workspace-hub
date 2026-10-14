@@ -1087,6 +1087,8 @@ def test_register_dry_run_option_accepts_roots_with_spaces(work_area, mode, root
         ("/?",),
         ("-n",),
         ("batch", "", "--dry-run"),
+        ("batch", "{root}", "", "--dry-run"),
+        ("batch", "{root}", "", "extra"),
         ("",),
         tuple(),
         ("batch",),
@@ -1102,7 +1104,7 @@ def test_register_malformed_arguments_never_parse_as_real_registration(work_area
     missing = work_area / "missing-root"
     existing_file = work_area / "not-a-root.txt"
     existing_file.write_text("not a folder\n", encoding="utf-8")
-    probe = write_register_parse_probe(work_area)
+    probe = write_register_argument_probe(work_area)
     expanded = [
         str(root) if item == "{root}" else str(missing) if item == "{missing}" else str(existing_file) if item == "{file}" else item
         for item in args
@@ -1111,6 +1113,9 @@ def test_register_malformed_arguments_never_parse_as_real_registration(work_area
     assert done.returncode != 0
     assert "DRY_RUN=1" not in done.stdout
     assert "MODE=" not in done.stdout
+    assert "STANDIN_REACHED" not in done.stdout
+    if "" in args and "{root}" in args:
+        assert "Usage:" in done.stdout
 
 
 @pytest.mark.skipif(os.name != "nt", reason="batch parsing is Windows-specific")
@@ -1154,8 +1159,6 @@ def test_register_refuses_unsafe_root_characters_before_registration(work_area, 
     root.mkdir()
     probe = write_register_argument_probe(work_area)
     root_arg = str(root)
-    if "^" in root_name:
-        root_arg = root_arg.replace("^", "^^")
     args = [mode, root_arg]
     if dry_run:
         args.append("--dry-run")
