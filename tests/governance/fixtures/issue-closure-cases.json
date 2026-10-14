@@ -40,12 +40,20 @@
           "head_sha": "head-new",
           "review_head_sha": "head-old",
           "merge_commit_sha": "abcdef1",
-          "body": ""
+          "body": "",
+          "reviewer": "reviewer-a"
         }
       ],
-      "default_branch_shas": ["abcdef1"],
-      "paths_at_refs": {"scripts/governance/example.py": true},
-      "successor_states": {"3000": "open"},
+      "default_branch_shas": [
+        "abcdef1"
+      ],
+      "paths_at_refs": {
+        "scripts/governance/example.py": true,
+        "tests/governance": true
+      },
+      "successor_states": {
+        "3000": "open"
+      },
       "body_edited_after_close": false
     },
     {
@@ -67,7 +75,9 @@
       "pull_requests": [],
       "default_branch_shas": [],
       "paths_at_refs": {},
-      "successor_states": {"133": "open"},
+      "successor_states": {
+        "133": "open"
+      },
       "body_edited_after_close": false
     },
     {
@@ -109,11 +119,17 @@
           "head_sha": "reviewed-head",
           "review_head_sha": "reviewed-head",
           "merge_commit_sha": "feed123",
-          "body": "Closes #1983"
+          "body": "Closes #1983",
+          "reviewer": "reviewer-a"
         }
       ],
-      "default_branch_shas": ["feed123"],
-      "paths_at_refs": {"scripts/governance/check.py": true},
+      "default_branch_shas": [
+        "feed123"
+      ],
+      "paths_at_refs": {
+        "scripts/governance/check.py": true,
+        "tests/governance": true
+      },
       "successor_states": {},
       "body_edited_after_close": false
     },
@@ -217,6 +233,57 @@
       "default_branch_shas": [],
       "paths_at_refs": {},
       "successor_states": {},
+      "body_edited_after_close": false
+    },
+    {
+      "repository": "fixture",
+      "number": 9101,
+      "state_reason": "not_planned",
+      "created_at": "2026-07-27T12:00:00Z",
+      "closed_at": "2026-07-27T12:03:00Z",
+      "closed_by": "actor-d",
+      "closer_type": "comment",
+      "body": "Superseded by #9103.",
+      "comments": [
+        {
+          "created_at": "2026-07-27T12:03:00Z",
+          "closing_evidence": true,
+          "body": "Owner decision recorded. Superseded by #9103."
+        }
+      ],
+      "pull_requests": [],
+      "default_branch_shas": [],
+      "paths_at_refs": {},
+      "successor_states": {
+        "9103": "open"
+      },
+      "body_edited_after_close": false
+    },
+    {
+      "repository": "fixture",
+      "number": 9102,
+      "state_reason": "duplicate",
+      "created_at": "2026-07-27T12:00:00Z",
+      "closed_at": "2026-07-27T12:03:00Z",
+      "closed_by": "actor-d",
+      "closer_type": "comment",
+      "body": "Duplicate of #9104.",
+      "comments": [
+        {
+          "created_at": "2026-07-27T12:03:00Z",
+          "closing_evidence": true,
+          "body": "Duplicate of #9104."
+        }
+      ],
+      "pull_requests": [],
+      "default_branch_shas": [],
+      "paths_at_refs": {},
+      "successor_states": {
+        "9104": {
+          "state": "closed",
+          "state_reason": "completed"
+        }
+      },
       "body_edited_after_close": false
     }
   ]
