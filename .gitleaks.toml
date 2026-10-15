@@ -1,16 +1,75 @@
 title = "workspace-hub gitleaks config"
 
+[extend]
+# Keep default rules enabled; this file carries an allow-list, and without
+# defaults a scan that passes --config detects nothing.
+useDefault = true
+
 [allowlist]
 description = "Known false positives"
-regexes = [
-  # Variable name contains test/example/placeholder (weak but retained for compat)
-  '''(?i)(example|placeholder|test|fake|dummy|sample|mock)_?(token|key|secret|password|api_?key)\s*=\s*["\']?[^"\']{0,50}["\']?''',
-  # Placeholder value patterns (angle brackets, YOUR_, etc.)
-  '''(?i)(=|:)\s*["\']?(<[^>]+>|YOUR_[A-Z_]+|EXAMPLE_[A-Z_]+|\$\{[^}]+\}|xxx+|aaa+)["\']?''',
-  '''TODO.*token''',
-]
 paths = [
-  '''.gitleaks.toml''',
-  '''scripts/security/tests/''',
-  '''tests/quality/test_secrets_scan.sh''',
+  # Scanner configuration file; exact self-reference only.
+  '''^\.gitleaks\.toml$''',
+  # Scanner harness fixture; exact file only.
+  '''^tests/quality/test_secrets_scan\.sh$''',
+  # Mirrored reference file; upstream examples are not repository credentials.
+  '''^\.agents/skills/mlops/training/unsloth/references/llms\-full\.md$''',
+  # Mirrored reference file; upstream examples are not repository credentials.
+  '''^\.agents/skills/mlops/training/unsloth/references/llms\-txt\.md$''',
+  # Mirrored reference file; upstream examples are not repository credentials.
+  '''^\.claude/skills/mlops/training/unsloth/references/llms\-full\.md$''',
+  # Mirrored reference file; upstream examples are not repository credentials.
+  '''^\.claude/skills/mlops/training/unsloth/references/llms\-txt\.md$''',
+  # Vendored static test assets; not authored repository code.
+  '''^pylib/youtube_transcript_api/test/assets/''',
+  # Generated or archived runtime state; existing snapshot content only.
+  '''^\.gemini/gsd\-file\-manifest\.json$''',
+  # Generated or archived runtime state; existing snapshot content only.
+  '''^config/agents/gemini/state\-snapshots/projects\.json$''',
+  # Archived documentation examples with repeated command examples.
+  '''^_archive/skills/productivity/time\-tracking/SKILL\.md$''',
+  # Archived documentation examples with repeated command examples.
+  '''^_archive/skills/productivity/time\-tracking/README\.md$''',
+  # Provider skill documentation example; path is exact and not new code.
+  '''^\.agents/skills/_archive/business/productivity/time\-tracking/1\-toggl\-track\-time\-entries/SKILL\.md$''',
+  # Provider skill documentation example; path is exact and not new code.
+  '''^\.agents/skills/_archive/business/productivity/time\-tracking/2\-toggl\-track\-projects\-and\-clients/SKILL\.md$''',
+  # Provider skill documentation example; path is exact and not new code.
+  '''^\.agents/skills/_archive/business/productivity/time\-tracking/3\-toggl\-track\-reports/SKILL\.md$''',
+  # Provider skill documentation example; path is exact and not new code.
+  '''^\.agents/skills/_archive/business/productivity/time\-tracking/common\-issues/SKILL\.md$''',
+  # Provider skill documentation example; path is exact and not new code.
+  '''^\.agents/skills/_archive/business/productivity/time\-tracking/time\-tracking\-with\-github\-actions/SKILL\.md$''',
+  # Provider skill documentation example; path is exact and not new code.
+  '''^\.agents/skills/_archive/operations/automation/activepieces/common\-issues/SKILL\.md$''',
+  # Provider skill documentation example; path is exact and not new code.
+  '''^\.agents/skills/_archive/operations/automation/github\-actions/1\-security\-best\-practices/SKILL\.md$''',
+  # Provider skill documentation example; path is exact and not new code.
+  '''^\.agents/skills/_archive/operations/automation/n8n/common\-issues/SKILL\.md$''',
+  # Provider skill documentation example; path is exact and not new code.
+  '''^\.agents/skills/_archive/operations/automation/windmill/1\-script\-organization/SKILL\.md$''',
+  # Provider skill documentation example; path is exact and not new code.
+  '''^\.agents/skills/business/productivity/time\-tracking/SKILL\.md$''',
+  # Provider skill documentation example; path is exact and not new code.
+  '''^\.claude/skills/_archive/business/productivity/time\-tracking/1\-toggl\-track\-time\-entries/SKILL\.md$''',
+  # Provider skill documentation example; path is exact and not new code.
+  '''^\.claude/skills/_archive/business/productivity/time\-tracking/2\-toggl\-track\-projects\-and\-clients/SKILL\.md$''',
+  # Provider skill documentation example; path is exact and not new code.
+  '''^\.claude/skills/_archive/business/productivity/time\-tracking/3\-toggl\-track\-reports/SKILL\.md$''',
+  # Provider skill documentation example; path is exact and not new code.
+  '''^\.claude/skills/_archive/business/productivity/time\-tracking/common\-issues/SKILL\.md$''',
+  # Provider skill documentation example; path is exact and not new code.
+  '''^\.claude/skills/_archive/business/productivity/time\-tracking/time\-tracking\-with\-github\-actions/SKILL\.md$''',
+  # Provider skill documentation example; path is exact and not new code.
+  '''^\.claude/skills/_archive/operations/automation/activepieces/common\-issues/SKILL\.md$''',
+  # Provider skill documentation example; path is exact and not new code.
+  '''^\.claude/skills/_archive/operations/automation/github\-actions/1\-security\-best\-practices/SKILL\.md$''',
+  # Provider skill documentation example; path is exact and not new code.
+  '''^\.claude/skills/_archive/operations/automation/n8n/common\-issues/SKILL\.md$''',
+  # Provider skill documentation example; path is exact and not new code.
+  '''^\.claude/skills/_archive/operations/automation/windmill/1\-script\-organization/SKILL\.md$''',
+  # Provider skill documentation example; path is exact and not new code.
+  '''^\.claude/skills/business/productivity/time\-tracking/SKILL\.md$''',
+  # Provider guidance documentation example; path is exact and not new code.
+  '''^\.claude/agent\-library/BEST_PRACTICES\.md$''',
 ]
