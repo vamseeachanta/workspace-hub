@@ -100,7 +100,11 @@ def successor_ok(issue: dict, number: str | int) -> bool:
 
 def has_decision_text(text: str) -> bool:
     lowered = text.lower()
-    return any(term in lowered for term in ("maintainer decision", "retired", "passed date"))
+    return any(term in lowered for term in (
+        "maintainer decision",
+        "owner decision",  # wording-allow: historical decision evidence
+        "retired", "passed date",
+    ))
 
 
 def evidence_status(issue: dict) -> tuple[bool, bool, list[str]]:
@@ -151,7 +155,7 @@ def check_review_head(issue: dict) -> RuleResult:
             return RuleResult(2, NOT_EVALUATED, "review record not evaluated: reviewed head not found")
         if not reviewer:
             return RuleResult(2, NOT_EVALUATED, "review record not evaluated: reviewer not found")
-        if len(str(reviewed)) < 7 or not str(merged or "").startswith(str(reviewed)):
+        if len(str(reviewed)) < 7 or not str(merged or "").lower().startswith(str(reviewed).lower()):
             return RuleResult(2, "FAIL", "reviewed head differs from merged head")
     return RuleResult(2, "PASS", "reviewed head equals merged head and reviewer is recorded")
 
@@ -377,10 +381,9 @@ def _closed_by_timeline(timeline: list[object], commit_id: str | None) -> tuple[
 
 def _body_edit_status(raw: dict, reader: GitHubReader, repo: str, number: int, closed_at: str | None) -> bool | None:
     repo_org, name = repo.split("/", 1)
-    owner_field = "ow" + "ner"
     query = f"""
     query {{
-      repository({owner_field}:{json.dumps(repo_org)}, name:{json.dumps(name)}) {{
+      repository(owner:{json.dumps(repo_org)}, name:{json.dumps(name)}) {{ # wording-allow: GitHub API field
         issue(number:{int(number)}) {{
           lastEditedAt
           userContentEdits(first: 100) {{ nodes {{ editedAt }} }}
@@ -615,7 +618,7 @@ def auditor_mapping() -> dict[str, str]:
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--fixture", type=Path, help="Evaluate trimmed fixture JSON.")
-    parser.add_argument("--repo", help="Repository as org/name for live read-only collection.")
+    parser.add_argument("--repo", help="Repository slug NAME/REPO for live read-only collection.")
     parser.add_argument("--issue", type=int, help="Single issue number for live read-only collection.")
     parser.add_argument("--closed-from", help="Closed date lower bound, YYYY-MM-DD.")
     parser.add_argument("--closed-to", help="Closed date upper bound, YYYY-MM-DD.")
