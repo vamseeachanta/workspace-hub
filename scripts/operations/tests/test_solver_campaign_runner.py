@@ -668,6 +668,31 @@ def test_valid_casefold_id_collision_is_reported(root, fake_checkout):
     assert "Good\tinvalid\t" in status.stdout
 
 
+@pytest.mark.skipif(os.name != "nt", reason="job objects are Windows-specific")
+def test_windows_job_setup_failure_ends_suspended_child(root, fake_checkout, work_area, runner, monkeypatch):
+    _, manifest = make_manifest(root, fake_checkout)
+    started = []
+
+    def fail_job_setup(process):
+        started.append((process, runner._windows_handle_creation_time(process._handle)))
+        raise OSError("job setup failed")
+
+    monkeypatch.setattr(runner, "create_windows_job_for_process", fail_job_setup)
+    try:
+        with pytest.raises(OSError, match="job setup failed"):
+            runner.start_process(manifest, work_area / "stdout.log", work_area / "stderr.log")
+        assert len(started) == 1
+        process, creation_time = started[0]
+        assert creation_time is not None
+        assert process.poll() is not None
+        assert not runner.process_alive(process.pid, creation_time)
+    finally:
+        for process, _ in started:
+            if process.poll() is None:
+                process.kill()
+                process.wait(timeout=5)
+
+
 def test_start_failure_is_recorded_and_next_campaign_runs(root, fake_checkout):
     bad_cwd = fake_checkout[0] / "missing-cwd"
     bad, _ = make_manifest(root, fake_checkout, "bad-start", cwd=str(bad_cwd), priority=1)
@@ -1179,6 +1204,27 @@ def test_task_readback_parser_accepts_utf16_and_utf8(work_area):
         path = work_area / f"readback-{encoding}.xml"
         path.write_text(xml, encoding=encoding)
         assert runner.parse_task_readback(path) == ("S4U", "{ACCOUNT}")
+
+
+@pytest.mark.parametrize("encoding", ["utf-16", "utf-8"])
+def test_desktop_readback_uses_principal_account(work_area, runner, encoding):
+    xml = runner.task_definition_xml("desktop", "{PRINCIPAL_ACCOUNT}", "{WRAPPER}", "{ROOT}")
+    task = ET.fromstring(xml)
+    trigger_user = task.find(
+        f"./{{{runner.TASK_NAMESPACE}}}Triggers/{{{runner.TASK_NAMESPACE}}}LogonTrigger/{{{runner.TASK_NAMESPACE}}}UserId"
+    )
+    assert trigger_user is not None
+    trigger_user.text = "{TRIGGER_ACCOUNT}"
+    readback = work_area / "desktop-readback.xml"
+    readback.write_bytes(ET.tostring(task, encoding=encoding))
+
+    assert runner.parse_task_readback(readback) == ("InteractiveToken", "{PRINCIPAL_ACCOUNT}")
+    args = runner.build_parser().parse_args(
+        ["task-readback", str(readback), "--expected-logon", "InteractiveToken", "--account", "{TRIGGER_ACCOUNT}"]
+    )
+    assert runner.command_task_readback(args) == 1
+    args.account = "{PRINCIPAL_ACCOUNT}"
+    assert runner.command_task_readback(args) == 0
 
 
 def test_task_readback_parser_accepts_8_bit_non_ascii_account(work_area):
