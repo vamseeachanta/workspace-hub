@@ -786,6 +786,7 @@ def start_process(manifest: dict, stdout_path: Path, stderr_path: Path) -> subpr
         kwargs["creationflags"] = subprocess.CREATE_NEW_PROCESS_GROUP | 0x00000004
     else:
         kwargs["start_new_session"] = True
+    process = None
     try:
         process = subprocess.Popen(manifest["driver"], **kwargs)
         if os.name == "nt":
@@ -799,6 +800,9 @@ def start_process(manifest: dict, stdout_path: Path, stderr_path: Path) -> subpr
             process._solver_job = None  # noqa: SLF001
         return process
     except Exception:
+        if process is not None and process.poll() is None:
+            process.kill()
+            process.wait(timeout=5)
         stdout.close()
         stderr.close()
         raise
@@ -1083,7 +1087,7 @@ def parse_task_readback(path: Path) -> tuple[str | None, str | None]:
 
 
 def find_task_text(root: ET.Element, name: str) -> str | None:
-    found = root.find(f".//{{{TASK_NAMESPACE}}}{name}")
+    found = root.find(f"./{{{TASK_NAMESPACE}}}Principals/{{{TASK_NAMESPACE}}}Principal/{{{TASK_NAMESPACE}}}{name}")
     return found.text if found is not None else None
 
 
