@@ -20,7 +20,6 @@ import xml.etree.ElementTree as ET
 from pathlib import Path, PureWindowsPath
 
 
-STATE_WORDS = ("DONE", "FAILED", "HELD", "STOPPED", "pending", "requested", "running", "unapproved", "digest-mismatch")
 CREDENTIAL_TOKENS = {"TOKEN", "SECRET", "PASSWORD", "PASSWD", "CREDENTIAL", "KEY", "PASS", "PWD", "AUTH", "COOKIE"}
 ID_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9_.-]{0,79}$")
 FULL_COMMIT_RE = re.compile(r"^[0-9a-fA-F]{40}$")
@@ -28,13 +27,11 @@ LOCK_NAME = "runner.lock"
 HEARTBEAT_NAME = "heartbeat.json"
 TASK_MODE_NAME = "task-mode.txt"
 DEFAULT_HEARTBEAT_SECONDS = 60.0
-DEFAULT_HEARTBEAT_FRESH_SECONDS = 180.0
 DEFAULT_STOP_GRACE_SECONDS = 20.0
 DEFAULT_MIN_FREE_BYTES = 5 * 1024 * 1024 * 1024
 DEFAULT_LICENCE_TRIES_PER_DAY = 3
 LOG_LIMIT_BYTES = 1024 * 1024
 LOG_ROTATIONS = 3
-PROCESS_TREE_KILL_COMMAND = "taskkill"
 TASK_NAMESPACE = "http://schemas.microsoft.com/windows/2004/02/mit/task"
 REQUIRED_FIELDS = {
     "id",
@@ -229,10 +226,6 @@ def campaign_state_dir(root: Path, campaign_id: str) -> Path:
 
 
 def safe_log_id(path: Path, manifest: dict | None = None) -> str:
-    if manifest and ("id" in manifest) and manifest.get("id") != path.stem:
-        return "invalid"
-    if manifest and isinstance(manifest.get("id"), str) and not ID_RE.fullmatch(manifest["id"]):
-        return "invalid"
     if ID_RE.fullmatch(path.stem):
         return path.stem
     return "invalid"
@@ -410,10 +403,9 @@ def process_alive(pid: int, creation_time: float | None = None) -> bool:
 
 
 class RunnerLock:
-    def __init__(self, root: Path, fresh_seconds: float):
+    def __init__(self, root: Path):
         self.root = root
         self.path = root / LOCK_NAME
-        self.fresh_seconds = fresh_seconds
         self.held = False
         self.stream = None
 
@@ -444,9 +436,6 @@ class RunnerLock:
         self.held = True
         return True, "lock acquired"
 
-    def _is_stale(self) -> tuple[bool, str]:
-        return False, "staleness is decided by the operating-system lock"
-
     def release(self) -> None:
         if self.held:
             if self.stream is not None:
@@ -463,16 +452,6 @@ class RunnerLock:
                 self.stream.close()
                 self.stream = None
             self.held = False
-
-
-def newest_heartbeat(root: Path) -> dt.datetime | None:
-    newest = None
-    for path in (root / "state").glob(f"*/{HEARTBEAT_NAME}"):
-        with contextlib.suppress(Exception):
-            beat = parse_utc(json.loads(path.read_text(encoding="utf-8"))["time"])
-            if newest is None or beat > newest:
-                newest = beat
-    return newest
 
 
 def read_task_mode(root: Path) -> str:
@@ -533,7 +512,7 @@ def read_checkout_head(repo_dir: Path) -> str | None:
     return None
 
 
-def discover_campaigns(root: Path, apply_policy: bool = True) -> tuple[list[dict], list[str]]:
+def discover_campaigns(root: Path) -> tuple[list[dict], list[str]]:
     approvals, approval_errors = read_approvals(root)
     campaigns: list[dict] = []
     paths = sorted((root / "approved").glob("*.json"))
@@ -543,13 +522,13 @@ def discover_campaigns(root: Path, apply_policy: bool = True) -> tuple[list[dict
         manifest, errors, digest = load_manifest(path)
         campaign_id = safe_log_id(path, manifest)
         loaded.append({"path": path, "manifest": manifest, "errors": errors, "digest": digest, "id": str(campaign_id)})
-        if manifest is not None and isinstance(manifest.get("id"), str):
+        if manifest is not None and isinstance(manifest.get("id"), str) and manifest["id"] == path.stem:
             casefold_ids.setdefault(manifest["id"].casefold(), set()).add(manifest["id"])
     colliding = {folded for folded, ids in casefold_ids.items() if len(ids) > 1}
     for item in loaded:
         errors = list(item["errors"])
         campaign_id = item["id"]
-        if item["manifest"] is not None and item["manifest"]["id"].casefold() in colliding:
+        if item["manifest"] is not None and isinstance(item["manifest"].get("id"), str) and item["manifest"]["id"].casefold() in colliding:
             errors.append("campaign id differs only by case from another manifest")
         matches = approvals.get(campaign_id, [])
         digest_matches = [match for match in matches if match["digest"] == item["digest"]]
@@ -562,6 +541,7 @@ def discover_campaigns(root: Path, apply_policy: bool = True) -> tuple[list[dict
                 "path": item["path"],
                 "id": campaign_id,
                 "manifest": item["manifest"],
+                "display_id": item["path"].name if campaign_id == "invalid" else campaign_id,
                 "errors": errors,
                 "digest": item["digest"],
                 "approved": approved,
@@ -574,12 +554,15 @@ def discover_campaigns(root: Path, apply_policy: bool = True) -> tuple[list[dict
 
 
 def status_lines(root: Path) -> list[str]:
-    campaigns, approval_errors = discover_campaigns(root, apply_policy=False)
+    campaigns, approval_errors = discover_campaigns(root)
     lines = [f"task-mode\t{read_task_mode(root)}"]
+    if (root / "policy.json").exists():
+        lines.append("policy.json\tignored\t0\t0\t-\tstanding approval is not available in this release")
     for error in approval_errors:
         lines.append(f"approvals.tsv\tmalformed\t0\t0\t-\t{error}")
     for item in campaigns:
         campaign_id = item["id"]
+        display_id = item.get("display_id", campaign_id)
         done, total = (0, 0)
         manifest = item["manifest"]
         if manifest:
@@ -595,6 +578,8 @@ def status_lines(root: Path) -> list[str]:
             state = "invalid"
         elif not item["listed"]:
             state = "unapproved"
+        elif not item["approved"] and item.get("approval_ref") == "policy":
+            state = "unapproved"
         elif not item["approved"]:
             state = "digest-mismatch"
         elif result:
@@ -605,12 +590,12 @@ def status_lines(root: Path) -> list[str]:
             state = "running"
         else:
             state = "pending"
-        lines.append(f"{campaign_id}\t{state}\t{done}\t{total}\t{heartbeat_age}" + (f"\t{utc_text(next_try)}" if next_try else ""))
+        lines.append(f"{display_id}\t{state}\t{done}\t{total}\t{heartbeat_age}" + (f"\t{utc_text(next_try)}" if next_try else ""))
     return lines
 
 
 def eligible_campaigns(root: Path, min_free_bytes: int) -> tuple[list[dict], bool]:
-    campaigns, approval_errors = discover_campaigns(root, apply_policy=True)
+    campaigns, approval_errors = discover_campaigns(root)
     for error in approval_errors:
         append_runner_log(root, "global", error)
     if (root / "STOP").exists():
@@ -801,6 +786,7 @@ def start_process(manifest: dict, stdout_path: Path, stderr_path: Path) -> subpr
         kwargs["creationflags"] = subprocess.CREATE_NEW_PROCESS_GROUP | 0x00000004
     else:
         kwargs["start_new_session"] = True
+    process = None
     try:
         process = subprocess.Popen(manifest["driver"], **kwargs)
         if os.name == "nt":
@@ -814,6 +800,9 @@ def start_process(manifest: dict, stdout_path: Path, stderr_path: Path) -> subpr
             process._solver_job = None  # noqa: SLF001
         return process
     except Exception:
+        if process is not None and process.poll() is None:
+            process.kill()
+            process.wait(timeout=5)
         stdout.close()
         stderr.close()
         raise
@@ -889,8 +878,16 @@ def run_campaign(root: Path, item: dict, args: argparse.Namespace) -> None:
         process = start_process(manifest, stdout_path, stderr_path)
     except Exception as exc:  # noqa: BLE001
         write_attempts(root, campaign_id, attempt_for_heartbeat)
-        write_result(root, campaign_id, "HELD", 0, 0, f"reason: driver-start-failed: {exc}")
-        append_runner_log(root, campaign_id, f"driver start failed: {exc}")
+        outcome_reason = f"driver-start-failed: {exc}"
+        if attempt_for_heartbeat >= int(manifest["retry"]["max_attempts"]):
+            write_result(root, campaign_id, "FAILED", 0, 0, f"reason: {outcome_reason}")
+            append_runner_log(root, campaign_id, f"failed after attempt {attempt_for_heartbeat}: {outcome_reason}")
+            return "start-failed"
+        delay = float(args.backoff_minutes if args.backoff_minutes is not None else manifest["retry"]["backoff_minutes"])
+        next_try = utc_now() + dt.timedelta(minutes=delay)
+        write_next_try(root, campaign_id, next_try)
+        write_result(root, campaign_id, "HELD", 0, 0, f"reason: {outcome_reason}", f"next-try: {utc_text(next_try)}")
+        append_runner_log(root, campaign_id, f"held for retry after attempt {attempt_for_heartbeat}: {outcome_reason}")
         return "start-failed"
     created_from_handle = _windows_handle_creation_time(process._handle) if os.name == "nt" else None  # noqa: SLF001
     identity = {"pid": process.pid, "creation_time": created_from_handle} if created_from_handle is not None else process_identity(process.pid)
@@ -1044,14 +1041,14 @@ def command_run_once(args: argparse.Namespace) -> int:
     root = Path(args.root)
     for folder in ("approved", "state", "done"):
         (root / folder).mkdir(parents=True, exist_ok=True)
-    if (root / "policy.json").exists():
-        append_runner_log(root, "global", "standing approval is not available in this release")
-    lock = RunnerLock(root, args.heartbeat_fresh_seconds)
+    lock = RunnerLock(root)
     acquired, reason = lock.acquire()
     if not acquired:
         append_runner_log(root, "global", reason)
         return 0
     try:
+        if (root / "policy.json").exists():
+            append_runner_log(root, "global", "standing approval is not available in this release")
         for record_path in sorted((root / "state").glob("*/driver.json")):
             campaign_id = record_path.parent.name
             record = read_driver_record(root, campaign_id)
@@ -1078,7 +1075,9 @@ def command_run_once(args: argparse.Namespace) -> int:
 def parse_task_readback(path: Path) -> tuple[str | None, str | None]:
     data = path.read_bytes()
     last_error: Exception | None = None
-    for encoding in ("utf-16", "utf-8-sig", "utf-8"):
+    encodings = ["utf-16", "utf-8-sig", "utf-8"]
+    encodings.append("mbcs" if os.name == "nt" else "cp1252")
+    for encoding in encodings:
         try:
             root = ET.fromstring(data.decode(encoding))
             return find_task_text(root, "LogonType"), find_task_text(root, "UserId")
@@ -1088,7 +1087,7 @@ def parse_task_readback(path: Path) -> tuple[str | None, str | None]:
 
 
 def find_task_text(root: ET.Element, name: str) -> str | None:
-    found = root.find(f".//{{{TASK_NAMESPACE}}}{name}")
+    found = root.find(f"./{{{TASK_NAMESPACE}}}Principals/{{{TASK_NAMESPACE}}}Principal/{{{TASK_NAMESPACE}}}{name}")
     return found.text if found is not None else None
 
 
@@ -1100,7 +1099,7 @@ def command_task_readback(args: argparse.Namespace) -> int:
         return 1
     print(f"Registered task readback LogonType: {logon or ''}")
     print(f"Registered task readback account: {account or ''}")
-    if logon == args.expected_logon and account == args.account:
+    if (logon or "").casefold() == args.expected_logon.casefold() and (account or "").casefold() == args.account.casefold():
         print("Registered task readback matches requested mode and account.")
         return 0
     print("Registered task readback did not match requested mode and account.")
@@ -1114,7 +1113,6 @@ def build_parser() -> argparse.ArgumentParser:
     run_once = sub.add_parser("run-once")
     run_once.add_argument("--root", default=os.environ.get("SOLVER_CAMPAIGN_ROOT") or str(default_root()))
     run_once.add_argument("--heartbeat-seconds", type=float, default=DEFAULT_HEARTBEAT_SECONDS)
-    run_once.add_argument("--heartbeat-fresh-seconds", type=float, default=DEFAULT_HEARTBEAT_FRESH_SECONDS)
     run_once.add_argument("--stop-grace-seconds", type=float, default=DEFAULT_STOP_GRACE_SECONDS)
     run_once.add_argument("--min-free-bytes", type=int, default=DEFAULT_MIN_FREE_BYTES)
     run_once.add_argument("--backoff-minutes", type=float, default=None)
