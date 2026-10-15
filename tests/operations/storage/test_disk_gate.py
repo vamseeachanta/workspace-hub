@@ -48,10 +48,10 @@ printf '%s\\t%s\\n' "${DU_KB:-1024}" "$4"
 
 
 @pytest.mark.parametrize('variables,code', [
-    ({'PCT': '84'}, 0), ({'PCT': '85'}, 10), ({'PCT': '90'}, 20),
-    ({'FREE': '100'}, 20), ({'INODE': '95'}, 20),
-    ({'DF_BAD': '1'}, 20), ({'DF_FAIL': '1'}, 20),
-    ({'INODE_COUNTER_BAD': '1'}, 20), ({'INODE_BAD': '1'}, 20), ({'INODE_FAIL': '1'}, 20),
+    ({'PCT': '84'}, 0), ({'PCT': '85'}, 10), ({'PCT': '90'}, 4),
+    ({'FREE': '100'}, 4), ({'INODE': '95'}, 4),
+    ({'DF_BAD': '1'}, 4), ({'DF_FAIL': '1'}, 4),
+    ({'INODE_COUNTER_BAD': '1'}, 4), ({'INODE_BAD': '1'}, 4), ({'INODE_FAIL': '1'}, 4),
 ])
 def test_exit_table(gate, variables, code):
     run, _, _ = gate
@@ -69,7 +69,7 @@ def test_json_and_mount_selection(gate):
     run, conf, _ = gate
     conf.write_text('/ warn_pct=40 block_pct=90 floor_gb=1\n/data warn_pct=40 block_pct=50 floor_gb=1\n')
     result = run('--json')
-    assert result.returncode == 20
+    assert result.returncode == 4
     rows = [json.loads(line) for line in result.stdout.splitlines()]
     assert rows[0]['state'] == 'WARN'
     assert rows[1]['state'] == 'BLOCK'
@@ -102,7 +102,7 @@ def test_consumers_caps_cache_and_block(gate):
     assert run('--consumers', DU_KB='1').returncode == 10
     assert (tmp / 'du-calls').read_text() == calls
     result = run('--json', PCT='90')
-    assert result.returncode == 20
+    assert result.returncode == 4
     assert str(cache) in result.stdout
     assert (tmp / 'du-calls').read_text() == calls  # starts use cached measurements only
     state = conf.with_name(conf.name + '.consumers.tsv')
@@ -158,3 +158,55 @@ def test_zero_consumer_cap_warns(gate):
     with conf.open('a') as stream:
         stream.write(f'cache uv {tmp} cap_gb=0\n')
     assert run('--consumers').returncode == 10
+
+
+@pytest.mark.parametrize('records', [
+    '/ floor_gb=1', '/ floor_gb=1\n/data floor_gb=1',
+    '/ floor_gb=1\r\n', '/ floor_gb=1\r\n\r\n',
+])
+def test_settings_line_endings_block_full_disk(gate, records):
+    run, conf, _ = gate
+    conf.write_bytes(records.encode())
+    result = run(PCT='99')
+    assert result.returncode == 4, result.stdout + result.stderr
+    assert result.stdout.count('BLOCK') == records.count('floor_gb')
+
+
+@pytest.mark.parametrize('code', [0, 10, 4, 2, 1, 126, 127, 124, 137, 130, 143])
+def test_documented_start_helper_allows_only_ok_or_warn(tmp_path, code):
+    readme = (GATE.parent / 'README.md').read_text()
+    snippet = readme.split('```bash\n', 1)[1].split('```', 1)[0]
+    stub = tmp_path / 'scripts/operations/storage/disk_gate.sh'
+    stub.parent.mkdir(parents=True)
+    stub.write_text(f'#!/bin/sh\nexit {code}\n')
+    result = subprocess.run(['bash', '-c', snippet + '\nprintf "START\\n"'],
+                            cwd=tmp_path, text=True, capture_output=True,
+                            env={**os.environ, 'CONF': 'settings', 'job': 'example',
+                                 'mount': 'disk', 'used_pct': '99', 'free_gb': '0'})
+    assert ('START' in result.stdout) == (code in (0, 10))
+    assert result.returncode == (0 if code in (0, 10) else code)
+
+
+@pytest.mark.parametrize('order', [('/', '/data'), ('/data', '/')])
+def test_block_outranks_warning(gate, order):
+    run, conf, tmp = gate
+    conf.write_text(''.join(f'{mount} warn_pct=40 block_pct={50 if mount == "/data" else 90}\n'
+                            for mount in order) + f'cache uv {tmp} cap_gb=0\n')
+    assert run('--consumers').returncode == 4
+
+
+def test_hosted_storage_step_is_present_once():
+    workflow = (ROOT / '.github/workflows/baseline-check.yml').read_text()
+    assert workflow.count('uv run python -m pytest tests/operations/storage -v --tb=short') == 1
+
+
+@pytest.mark.parametrize('kind', ['cache', 'tmp'])
+def test_unterminated_final_consumer_record(gate, kind):
+    run, conf, tmp = gate
+    cache = tmp / 'consumer'
+    cache.mkdir()
+    record = f'cache uv {cache} cap_gb=0' if kind == 'cache' else f'tmp {cache} cap_gb=0'
+    conf.write_text('/ floor_gb=1\n' + record)
+    result = run('--consumers', '--json', DU_KB='20971520')
+    assert result.returncode == 10
+    assert any(row.get('path') == str(cache) for row in map(json.loads, result.stdout.splitlines()))

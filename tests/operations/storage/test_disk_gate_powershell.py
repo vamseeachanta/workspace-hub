@@ -12,8 +12,8 @@ pytestmark = pytest.mark.skipif(not PWSH, reason='pwsh not installed')
 
 
 @pytest.mark.parametrize('used,free,inode,code', [
-    (84, 16, 10, 0), (85, 15, 10, 10), (90, 10, 10, 20),
-    (0.5, 0.5, 10, 20), (50, 50, 95, 20),
+    (84, 16, 10, 0), (85, 15, 10, 10), (90, 10, 10, 4),
+    (0.5, 0.5, 10, 4), (50, 50, 95, 4),
 ])
 def test_windows_exit_codes(tmp_path, used, free, inode, code):
     conf = tmp_path / 'floors.conf'
@@ -32,7 +32,7 @@ function Get-PSDrive {{ [pscustomobject]@{{Used={used}GB;Free={free}GB;InodePct=
     assert set(row) == {'mount', 'size_kb', 'used_kb', 'free_kb', 'used_pct', 'inode_pct', 'state'}
 
 
-@pytest.mark.parametrize('mode,code', [('missing', 2), ('unreadable', 20), ('mixed', 20)])
+@pytest.mark.parametrize('mode,code', [('missing', 2), ('unreadable', 4), ('mixed', 4)])
 def test_windows_errors_and_multiple_mounts(tmp_path, mode, code):
     conf = tmp_path / 'floors.conf'
     if mode != 'missing':

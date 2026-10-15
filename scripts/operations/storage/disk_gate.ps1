@@ -44,7 +44,7 @@ foreach ($disk in $disks) {
     if ($Mount.Count -gt 0 -and $disk.Path -notin $Mount) { continue }
     $row = [ordered]@{mount=$disk.Path; size_kb=$null; used_kb=$null;
         free_kb=$null; used_pct=$null; inode_pct=$null; state='BLOCK'}
-    $level = 20
+    $level = 4
     try {
         $name = $disk.Path -replace '[:\\/]+$', ''
         $drive = Get-PSDrive -Name $name -PSProvider FileSystem -ErrorAction Stop
@@ -64,11 +64,11 @@ foreach ($disk in $disks) {
         $row.used_pct = $pct; $row.inode_pct = $inode
         if ($pct -ge $disk.Block -or $free -lt $disk.Floor * 1GB -or
             ($null -ne $inode -and $inode -ge 95)) {
-            $level = 20
+            $level = 4
         } elseif ($pct -ge $disk.Warn) { $row.state = 'WARN'; $level = 10 }
         else { $row.state = 'OK'; $level = 0 }
-    } catch { $level = 20 }
-    if ($level -gt $result) { $result = $level }
+    } catch { $level = 4 }
+    if ($level -eq 4 -or ($result -ne 4 -and $level -eq 10)) { $result = $level }
     if ($Json) { $row | ConvertTo-Json -Compress }
     else {
         $freeText = if ($null -eq $row.free_kb) { 'unknown' }

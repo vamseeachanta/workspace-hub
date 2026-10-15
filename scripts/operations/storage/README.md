@@ -1,5 +1,8 @@
 # Storage operations
 
+The disk gate checks disk floors and reports storage consumers.
+The worktree location guard and checkout helper check checkout destinations.
+
 ## Disk gate
 
 The gate checks every configured filesystem before a job starts. It never stops
@@ -34,11 +37,13 @@ zero free-space floor, and the cache caps shown above. Sizes use binary GiB
 | --- | --- |
 | 0 | All selected disks are below their warning threshold |
 | 10 | A disk warns, or explicit consumer inspection reports a cap or unknown measurement |
-| 20 | A disk reaches its block percentage, falls below its free floor, reaches 95% inode use, or cannot be read |
-| 2 | Settings are unreadable or invalid |
+| 4 | A disk reaches its block percentage, falls below its free floor, reaches 95% inode use, or cannot be read |
+| 2 | Settings are unreadable or invalid; do not start |
+| Other than 0 or 10 | Do not start, including 1, 4, 124, 126, 127, 130, 137 and 143 |
 
-The highest severity across selected disks wins. Equality warns at 85% and blocks
-at 90%; free space equal to its floor is permitted. Windows exposes no inode
+Exit 4 also represents low space in the worktree location guard of #4083.
+The highest severity across selected disks wins, independently of numeric codes.
+Equality warns at 85% and blocks at 90%; free space equal to its floor is permitted. Windows exposes no inode
 accounting through `Get-PSDrive`, so `inode_pct` is null there. `--json` (Windows:
 `-Json`) writes newline-delimited JSON objects, one per disk, with `mount`,
 `size_kb`, `used_kb`, `free_kb`, `used_pct`, `inode_pct`, and `state`. Unreadable
@@ -51,11 +56,13 @@ rc=0
 bash scripts/operations/storage/disk_gate.sh --conf "$CONF" || rc=$?
 # During the first 24 hours, log all outcomes and continue starting work.
 # After that observation period, enable this refusal branch:
-if [ "$rc" -eq 20 ] || [ "$rc" -eq 2 ]; then
+case $rc in
+  0|10) ;;
+  *)
     printf '=== %s NOT-LAUNCHED disk gate: %s %s %s\n' \
         "$job" "$mount" "$used_pct" "$free_gb"
-    exit "$rc"
-fi
+    exit "$rc" ;;
+esac
 ```
 
 The helper must obtain `mount`, `used_pct`, and `free_gb` from the gate report for
@@ -77,7 +84,7 @@ settings directory still permits inspection but cannot retain the snapshot.
 
 The snapshot is bound to the settings checksum and measurement time. A consumer
 record has `path`, `bytes`, `cap_bytes`, and `state`. A cap exceeded alone warns
-with exit 10 and cannot produce 20. Inspection lists configured paths across the
+with exit 10 and cannot produce 4. Inspection lists configured paths across the
 host; consumers must be configured on the appropriate filesystem by the settings
 author. The gate cannot attribute shared or nested mounts from path names alone.
 
@@ -97,17 +104,34 @@ cap and no job is running. These scripts never invoke those commands.
 `bash tmp_sweep.sh` reports candidate folders beneath `/tmp` without modifying
 them. Use `--root DIR` for another temporary tree and `--move ARCHIVE` only after
 reviewing the report. Remote archives use `HOST:DIR`; transfers use `rsync -a`
-and inner SSH calls use `-n`. No running process is stopped.
+with one filesystem per transfer. The rsync SSH transport keeps its standard
+input; standalone SSH commands use `-n`. No running process is stopped.
 
 The sweep keeps hidden folders, symlinks, recently modified trees, trees owned by
 another user, sockets, read-only entries, process-referenced trees, and Git work
 with dirty state or commits absent from remotes. Bare repositories are retained. Missing inspection capabilities
-or unreadable process/Git state prevent a move. Copies are compared by file count, byte total and entry count before guarded source removal; unsuccessful verification leaves the
-source in place. A `MANIFEST.tsv` records archival outcomes. Source removal can
-still fail, in which case both copies remain and the outcome is reported.
+or unreadable Git state prevent a move. Process inspection uses `/proc` by default;
+`TMP_SWEEP_PROC_ROOT` selects an alternative process tree for isolated tests.
+An unreadable process view keeps the folder unless that process has a different
+owner and the folder and every entry deny all group and other access. The report
+counts distinct foreign processes skipped during the scan. Root-owned processes
+can still access private trees and are unchecked when skipped. Root with explicit
+`--uid UID` inspects folders owned by that UID; root or `CAP_SYS_PTRACE` can remove
+the process-view restriction where process access policy permits. An unreadable
+same-owner view always keeps the folder.
+
+Device changes and mount-table entries at or below a candidate keep it with
+`mount-point`, including bind mounts on the same device. All tree traversal,
+copying and removal stay on one filesystem. Missing mount information keeps the
+folder. Copies are compared by file count, byte total and entry count before
+guarded source removal; unsuccessful verification leaves the source in place. Remote attempts use unique staging directories; partial copies
+are retained for inspection and do not occupy the final archive name or prevent
+a retry. The final name is assigned only after verification. A `MANIFEST.tsv`
+records archival outcomes. Source removal can still fail, in which case both copies remain and the outcome is reported.
 
 Archival requires a quiescent tree: checks immediately before removal reduce but
 cannot eliminate races with a process that starts or writes after inspection.
 Use report mode while jobs run. Automated destructive cleanup is outside the
 gate's role. Remote archival requires compatible tools at the destination and
-is not exercised by the local temporary-tree tests.
+is exercised offline with rsync and an SSH command fixture; no network transfer
+is established by those tests.

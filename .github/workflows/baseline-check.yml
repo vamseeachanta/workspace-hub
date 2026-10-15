@@ -88,6 +88,10 @@ jobs:
             tests/enforcement/test_shell_test_guards.py \
             tests/enforcement/test_no_abs_paths_ci_report.py -v --tb=short
 
+      - name: Run storage tests
+        run: |
+          uv run python -m pytest tests/operations/storage -v --tb=short
+
       - name: Generate test summary
         if: always()
         run: |

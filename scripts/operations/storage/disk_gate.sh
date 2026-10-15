@@ -19,8 +19,9 @@ while (($#)); do
 done
 [[ -n $conf && -r $conf && -f $conf ]] || { echo 'Settings unreadable' >&2; exit 2; }
 # The line format uses whitespace-delimited paths; it is data, never shell code.
-awk '
+validated_disks=$(awk '
 function num(s) { return s ~ /^[0-9]+([.][0-9]+)?$/ }
+{ gsub(/\r/, "") }
 /^[[:space:]]*(#|$)/ { next }
 {
     if ($1=="cache") { if (NF<3) exit 2; start=4; kind="cache" }
@@ -36,8 +37,8 @@ function num(s) { return s ~ /^[0-9]+([.][0-9]+)?$/ }
     }
     if(kind=="disk" && (warn>=block || block>100)) exit 2
 }
-END { if(!disks) exit 2 }
-' "$conf" || { echo 'Invalid settings' >&2; exit 2; }
+END { if(!disks) exit 2; print disks }
+' "$conf") || { echo 'Invalid settings' >&2; exit 2; }
 quote() {
     local value=$1
     value=${value//\\/\\\\}; value=${value//\"/\\\"}
@@ -52,7 +53,8 @@ paths=()
 caps=()
 old_days=3
 add_consumer() { names+=("$1"); paths+=("$2"); caps+=("$3"); }
-while read -r first rest; do
+while read -r first rest || [[ -n ${first:-} ]]; do
+    first=${first//$'\r'/}; rest=${rest//$'\r'/}
     [[ -z $first || $first == \#* ]] && continue
     read -r -a words <<< "$rest"
     if [[ $first == cache ]]; then
@@ -71,11 +73,22 @@ while read -r first rest; do
         mounts+=("$first")
     fi
 done < "$conf"
+[[ ${#mounts[@]} == "$validated_disks" ]] || exit 2
 for wanted in "${selected[@]}"; do
     found=0
     for mount in "${mounts[@]}"; do [[ $mount == "$wanted" ]] && found=1; done
     ((found)) || { echo 'Requested mount absent from settings' >&2; exit 2; }
 done
+measured=0
+expected=$validated_disks
+if ((${#selected[@]})); then
+    expected=0
+    for mount in "${mounts[@]}"; do
+        for wanted in "${selected[@]}"; do
+            if [[ $mount == "$wanted" ]]; then ((expected+=1)); break; fi
+        done
+    done
+fi
 for mount in "${mounts[@]}"; do
     if ((${#selected[@]})); then
         found=0
@@ -83,12 +96,14 @@ for mount in "${mounts[@]}"; do
         ((found)) || continue
     fi
     warn=85; block=90; floor=0
-    while read -r first rest; do
+    while read -r first rest || [[ -n ${first:-} ]]; do
+        first=${first//$'\r'/}; rest=${rest//$'\r'/}
         [[ $first == "$mount" ]] || continue
         for word in $rest; do
             case $word in warn_pct=*) warn=${word#*=};; block_pct=*) block=${word#*=};; floor_gb=*) floor=${word#*=};; esac
         done
     done < "$conf"
+    ((measured+=1))
     state=BLOCK
     size=null; used=null; free=null; pct=null; inode=null
     if reading=$(df -Pk -- "$mount" 2>/dev/null); then
@@ -105,13 +120,13 @@ for mount in "${mounts[@]}"; do
         fi
     fi
     if [[ $size != null ]]; then
-        level=$(awk -v p="$pct" -v f="$free" -v i="$inode" -v w="$warn" -v b="$block" -v floor="$floor" 'BEGIN {print (p>=b || f<floor*1048576 || (i!="null" && i>=95)) ? 20 : (p>=w ? 10 : 0)}')
+        level=$(awk -v p="$pct" -v f="$free" -v i="$inode" -v w="$warn" -v b="$block" -v floor="$floor" 'BEGIN {print (p>=b || f<floor*1048576 || (i!="null" && i>=95)) ? 4 : (p>=w ? 10 : 0)}')
         # A failed inode command is unreadable df, and must fail closed.
-        if [[ $inode == null && $inode_unavailable == 0 ]]; then level=20; fi
+        if [[ $inode == null && $inode_unavailable == 0 ]]; then level=4; fi
         case $level in 0) state=OK;; 10) state=WARN;; esac
-    else level=20
+    else level=4
     fi
-    ((level>rc)) && rc=$level
+    if ((level == 4 || (rc != 4 && level == 10))); then rc=$level; fi
     [[ $state == BLOCK ]] && blocked=1
     if ((json)); then
         printf '{"mount":'; quote "$mount"
@@ -121,6 +136,7 @@ for mount in "${mounts[@]}"; do
         printf '%s used=%s%% free=%s GiB inodes=%s%% %s\n' "$mount" "$pct" "$gb" "$inode" "$state"
     fi
 done
+((measured > 0 && measured == expected)) || exit 2
 # Explicit inspection refreshes; ordinary starts only read this six-hour snapshot.
 state_file=$conf.consumers.tsv
 signature=$(cksum < "$conf")
@@ -188,7 +204,7 @@ while IFS=$'\t' read -r path bytes cap_bytes name; do
         if [[ $bytes == unknown ]]; then state=UNKNOWN
         elif [[ $name != tmp-largest ]] && ((bytes>cap_bytes)); then state=WARN
         fi
-        if [[ $state == WARN || ( $consumers == 1 && $state == UNKNOWN ) ]] && ((rc<10)); then rc=10; fi
+        if [[ $state == WARN || ( $consumers == 1 && $state == UNKNOWN ) ]] && ((rc != 4 && rc != 10)); then rc=10; fi
         ((consumers || blocked)) || [[ $state == WARN ]] || continue
         if ((json)); then
             printf '{"path":'; quote "$path"

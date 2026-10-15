@@ -12,6 +12,18 @@ SCRIPT = Path(__file__).resolve().parents[3] / "scripts/operations/storage/tmp_s
 OLD = time.time() - 5 * 86400
 
 
+@pytest.fixture(autouse=True)
+def process_tree(tmp_path, monkeypatch):
+    # Only this test process is linked; unrelated system processes are never read.
+    proc = tmp_path / 'processes'
+    (proc / 'self/fd').mkdir(parents=True)
+    (proc / 'self/maps').write_text('')
+    (proc / 'self/mountinfo').write_text('')
+    (proc / str(os.getpid())).symlink_to(Path('/proc') / str(os.getpid()))
+    monkeypatch.setenv('TMP_SWEEP_PROC_ROOT', str(proc))
+    return proc
+
+
 def old_tree(path):
     path.mkdir()
     (path / "payload").write_text("saved payload")
@@ -108,11 +120,12 @@ def test_protected_folder_is_kept(tmp_path, kind):
             listener.close()
 
 
-def test_process_working_directory_is_kept(tmp_path):
+def test_process_working_directory_is_kept(tmp_path, process_tree):
     root = tmp_path / "tree"
     root.mkdir()
     folder = old_tree(root / "busy")
     process = subprocess.Popen(["sleep", "3"], cwd=folder)
+    (process_tree / str(process.pid)).symlink_to(Path("/proc") / str(process.pid))
     try:
         result = run(root)
         assert result.returncode == 0, result.stderr
@@ -164,8 +177,8 @@ def test_removal_only_in_verified_branch():
     text = SCRIPT.read_text()
     assert "--delete" not in text
     removal_lines = [line.strip() for line in text.splitlines() if line.strip().startswith("rm ")]
-    assert removal_lines == ['rm -r -- "$folder"']
-    assert text.index("# BEGIN VERIFIED MOVE") < text.index('rm -r -- "$folder"') < text.index("# END VERIFIED MOVE")
+    assert removal_lines == ['rm -r --one-file-system -- "$folder"']
+    assert text.index("# BEGIN VERIFIED MOVE") < text.index('rm -r --one-file-system -- "$folder"') < text.index("# END VERIFIED MOVE")
 
 
 def test_mapped_file_is_kept(tmp_path):
@@ -303,3 +316,177 @@ def test_bare_repository_is_kept(tmp_path):
     result = run(root, '--move', str(tmp_path / 'archive'))
     assert 'bare-git' in result.stdout
     assert snapshot(root) == before
+
+
+def test_all_tree_commands_have_filesystem_guards():
+    import re
+    text = SCRIPT.read_text()
+    for line in text.splitlines():
+        if re.search(r'\bfind\s+["$]', line):
+            assert '-xdev' in line, line
+        if re.search(r'\b(?:cp|rm)\s+-', line):
+            assert '--one-file-system' in line, line
+
+
+def test_different_device_is_kept(tmp_path, monkeypatch):
+    import shutil
+    root, archive, tools = (tmp_path / name for name in ('tree', 'archive', 'bin'))
+    root.mkdir()
+    tools.mkdir()
+    old_tree(root / 'idle')
+    real_find = shutil.which('find')
+    shim = tools / 'find'
+    shim.write_text('''#!/bin/bash
+case "$*" in
+ *%D*) printf '%s\\td\\t1\\t700\\t999999999\\n' "$(id -u)"; exit 0;;
+esac
+exec "$REAL_FIND" "$@"
+''')
+    shim.chmod(0o755)
+    monkeypatch.setenv('PATH', str(tools) + os.pathsep + os.environ['PATH'])
+    monkeypatch.setenv('REAL_FIND', real_find)
+    before = snapshot(root)
+    result = run(root, '--move', str(archive))
+    assert 'mount-point' in result.stdout
+    assert snapshot(root) == before
+    assert not (archive / 'idle').exists()
+
+
+@pytest.mark.parametrize('private,foreign,status_foreign', [
+    (True, True, True), (False, True, True), (True, False, False),
+    (True, True, False), (True, True, None),
+])
+def test_unreadable_process_privacy_rule(tmp_path, monkeypatch, process_tree, private, foreign, status_foreign):
+    import shutil
+    root, archive, tools = (tmp_path / name for name in ('tree', 'archive', 'bin'))
+    root.mkdir()
+    tools.mkdir()
+    folder = old_tree(root / 'idle')
+    folder.chmod(0o700)
+    (folder / 'payload').chmod(0o600 if private else 0o644)
+    unreadable = process_tree / '99999999'
+    unreadable.mkdir()  # Missing fd/maps is unreadable even for a privileged test user.
+    if status_foreign is not None:
+        process_uid = os.getuid() + int(status_foreign)
+        (unreadable / 'status').write_text('Uid:\t' + '\t'.join([str(process_uid)] * 4) + '\n')
+    shim = tools / 'stat'
+    shim.write_text('''#!/bin/bash
+if [[ ${@: -1} == "$UNREADABLE_PROC" && $* == *%u* ]]; then
+    printf '%s\n' "$PROCESS_UID"; exit 0
+fi
+exec "$REAL_STAT" "$@"
+''')
+    shim.chmod(0o755)
+    monkeypatch.setenv('REAL_STAT', shutil.which('stat'))
+    monkeypatch.setenv('UNREADABLE_PROC', str(unreadable))
+    monkeypatch.setenv('PROCESS_UID', str(os.getuid() + (1 if foreign else 0)))
+    monkeypatch.setenv('PATH', str(tools) + os.pathsep + os.environ['PATH'])
+    before = snapshot(root)
+    folder_before = snapshot(folder)
+    result = run(root, '--move', str(archive))
+    if private and foreign and status_foreign:
+        assert 'moved=1' in result.stdout, result.stdout + result.stderr
+        assert 'foreign-processes-skipped=1' in result.stdout
+        assert snapshot(archive / 'idle') == folder_before
+    else:
+        assert 'process-view-unreadable' in result.stdout
+        assert snapshot(root) == before
+        assert not (archive / 'idle').exists()
+
+
+@pytest.mark.parametrize('fail_first', [False, True])
+def test_remote_transfer_and_partial_retry(tmp_path, monkeypatch, fail_first):
+    import shutil
+    real_rsync = shutil.which('rsync')
+    if not real_rsync:
+        pytest.skip('rsync not installed')
+    root, archive, tools = (tmp_path / name for name in ('tree', 'archive', 'bin'))
+    root.mkdir()
+    tools.mkdir()
+    folder = old_tree(root / 'idle')
+    before = snapshot(root)
+    payload_before = snapshot(folder)
+    ssh = tools / 'ssh'
+    ssh.write_text('''#!/bin/bash
+while [[ $1 == -* ]]; do
+    case $1 in -n) exec </dev/null; shift;; --) shift; break;; *) shift;; esac
+done
+shift
+exec bash -c "$*"
+''')
+    ssh.chmod(0o755)
+    rsync = tools / 'rsync'
+    rsync.write_text('''#!/bin/bash
+if [[ ${FAIL_TRANSFER:-0} == 1 ]]; then
+    destination=${@: -1}; destination=${destination#*:}
+    mkdir -p -- "$destination"
+    printf partial > "$destination/partial"
+    exit 1
+fi
+exec "$REAL_RSYNC" "$@"
+''')
+    rsync.chmod(0o755)
+    monkeypatch.setenv('REAL_RSYNC', real_rsync)
+    monkeypatch.setenv('PATH', str(tools) + os.pathsep + os.environ['PATH'])
+    if fail_first:
+        monkeypatch.setenv('FAIL_TRANSFER', '1')
+        failed = run(root, '--move', f'archive:{archive}')
+        assert failed.returncode == 1
+        assert snapshot(root) == before
+        assert not (archive / 'idle').exists()
+        monkeypatch.delenv('FAIL_TRANSFER')
+    result = run(root, '--move', f'archive:{archive}')
+    assert result.returncode == 0, result.stdout + result.stderr
+    assert 'moved=1' in result.stdout
+    assert not folder.exists()
+    assert snapshot(archive / 'idle') == payload_before
+    assert 'moved' in (archive / 'MANIFEST.tsv').read_text()
+
+
+@pytest.mark.parametrize('name', ['idle', 'idle space', r'idle\escaped'])
+def test_mountinfo_same_device_is_kept(tmp_path, process_tree, name):
+    root, archive = tmp_path / 'tree', tmp_path / 'archive'
+    root.mkdir()
+    folder = old_tree(root / name)
+    mounted = folder / 'mounted'
+    mounted.mkdir()
+    os.utime(mounted, (OLD, OLD))
+    os.utime(folder, (OLD, OLD))
+    escaped = str(mounted).replace('\\', r'\134').replace(' ', r'\040')
+    (process_tree / 'self/mountinfo').write_text(f'1 0 0:1 / {escaped} rw - tmpfs tmpfs rw\n')
+    before = snapshot(root)
+    result = run(root, '--move', str(archive))
+    assert 'mount-point' in result.stdout
+    assert snapshot(root) == before
+    assert not (archive / name).exists()
+
+
+def test_bind_mount_is_kept_when_namespace_available(tmp_path, process_tree):
+    import shutil
+    unshare = shutil.which('unshare')
+    if not unshare:
+        pytest.skip('unshare not installed')
+    root, archive, external = (tmp_path / name for name in ('tree', 'archive', 'external'))
+    root.mkdir()
+    folder = old_tree(root / 'idle')
+    mounted = folder / 'mounted'
+    mounted.mkdir()
+    old_tree(external)
+    os.utime(mounted, (OLD, OLD))
+    os.utime(folder, (OLD, OLD))
+    mountinfo = process_tree / 'self/mountinfo'
+    mountinfo.unlink()
+    mountinfo.symlink_to(Path('/proc') / 'self/mountinfo')
+    before, outside = snapshot(root), snapshot(external)
+    command = '''mount --bind "$1" "$2" || exit 125
+bash "$3" --root "$4" --move "$5"
+'''
+    result = subprocess.run([unshare, '-rm', 'bash', '-c', command, 'bind-test',
+                             str(external), str(mounted), str(SCRIPT), str(root), str(archive)],
+                            text=True, capture_output=True, timeout=30)
+    if result.returncode == 125 or 'unshare failed' in result.stderr:
+        pytest.skip(result.stderr.strip() or 'bind mount unavailable')
+    assert result.returncode == 0, result.stderr
+    assert 'mount-point' in result.stdout
+    assert snapshot(root) == before and snapshot(external) == outside
+    assert not (archive / 'idle').exists()
