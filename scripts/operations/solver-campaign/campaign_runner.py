@@ -5,8 +5,8 @@ from __future__ import annotations
 
 import argparse
 import contextlib
+import ctypes
 import datetime as dt
-import fnmatch
 import hashlib
 import json
 import os
@@ -16,24 +16,23 @@ import signal
 import subprocess
 import sys
 import time
+import xml.etree.ElementTree as ET
 from pathlib import Path, PureWindowsPath
 
 
-STATE_WORDS = ("DONE", "FAILED", "HELD", "STOPPED", "pending", "running", "unapproved", "digest-mismatch")
-CREDENTIAL_NAME_RE = re.compile(r"(TOKEN|SECRET|PASSWORD|PASSWD|CREDENTIAL|KEY)", re.IGNORECASE)
-ID_RE = re.compile(r"^[A-Za-z0-9_.-]{1,80}$")
+CREDENTIAL_TOKENS = {"TOKEN", "SECRET", "PASSWORD", "PASSWD", "CREDENTIAL", "KEY", "PASS", "PWD", "AUTH", "COOKIE"}
+ID_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9_.-]{0,79}$")
 FULL_COMMIT_RE = re.compile(r"^[0-9a-fA-F]{40}$")
 LOCK_NAME = "runner.lock"
 HEARTBEAT_NAME = "heartbeat.json"
+TASK_MODE_NAME = "task-mode.txt"
 DEFAULT_HEARTBEAT_SECONDS = 60.0
-DEFAULT_HEARTBEAT_FRESH_SECONDS = 180.0
 DEFAULT_STOP_GRACE_SECONDS = 20.0
 DEFAULT_MIN_FREE_BYTES = 5 * 1024 * 1024 * 1024
 DEFAULT_LICENCE_TRIES_PER_DAY = 3
 LOG_LIMIT_BYTES = 1024 * 1024
 LOG_ROTATIONS = 3
-PROCESS_TREE_KILL_COMMAND = "taskkill"
-
+TASK_NAMESPACE = "http://schemas.microsoft.com/windows/2004/02/mit/task"
 REQUIRED_FIELDS = {
     "id",
     "title",
@@ -49,12 +48,12 @@ REQUIRED_FIELDS = {
     "priority",
     "after",
 }
-OPTIONAL_FIELDS = {"progress"}
+OPTIONAL_FIELDS = {"progress", "workers", "driver_file"}
 ALL_FIELDS = REQUIRED_FIELDS | OPTIONAL_FIELDS
 
 
 def utc_now() -> dt.datetime:
-    return dt.datetime.now(dt.UTC)
+    return dt.datetime.now(dt.timezone.utc)
 
 
 def utc_text(moment: dt.datetime | None = None) -> str:
@@ -77,6 +76,10 @@ def sha256_file(path: Path) -> str:
     return digest.hexdigest()
 
 
+def sha256_bytes(data: bytes) -> str:
+    return hashlib.sha256(data).hexdigest()
+
+
 def is_declared_absolute(value: str) -> bool:
     return Path(value).is_absolute() or value.startswith("/") or PureWindowsPath(value).is_absolute()
 
@@ -92,15 +95,22 @@ def read_json(path: Path) -> object:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
-def load_manifest(path: Path) -> tuple[dict | None, list[str]]:
+def load_manifest(path: Path) -> tuple[dict | None, list[str], str]:
     try:
-        data = read_json(path)
+        raw = path.read_bytes()
+        digest = sha256_bytes(raw)
+        data = json.loads(raw.decode("utf-8"))
     except Exception as exc:  # noqa: BLE001
-        return None, [f"{path.name}: invalid JSON: {exc}"]
+        return None, [f"{path.name}: invalid JSON: {exc}"], ""
     if not isinstance(data, dict):
-        return None, [f"{path.name}: manifest must be a JSON object"]
+        return None, [f"{path.name}: manifest must be a JSON object"], digest
     errors = validate_manifest_data(data, path)
-    return data, errors
+    return data, errors, digest
+
+
+def env_name_looks_like_credential(name: str) -> bool:
+    tokens = [token for token in re.split(r"[^A-Za-z0-9]+", name.upper()) if token]
+    return any(token in CREDENTIAL_TOKENS for token in tokens)
 
 
 def validate_manifest_data(data: dict, path: Path) -> list[str]:
@@ -126,13 +136,17 @@ def validate_manifest_data(data: dict, path: Path) -> list[str]:
     driver = data.get("driver")
     if not isinstance(driver, list) or not driver or not all(isinstance(item, str) and item for item in driver):
         errors.append("driver must be a non-empty argument list of strings")
+    else:
+        driver_program = Path(driver[0])
+        if not driver_program.is_absolute() and driver_program.parent != Path("."):
+            errors.append("driver program path must be absolute or resolved from PATH")
     cwd = data.get("cwd")
     if not isinstance(cwd, str) or not is_declared_absolute(cwd):
         errors.append("cwd must be absolute")
     env = data.get("env")
     if not isinstance(env, dict) or not all(isinstance(k, str) and isinstance(v, str) for k, v in getattr(env, "items", lambda: [])()):
         errors.append("env must be an object of string names and string values")
-    elif any(CREDENTIAL_NAME_RE.search(name) for name in env):
+    elif any(env_name_looks_like_credential(name) for name in env):
         errors.append("env name looks like a credential")
     expected = data.get("expected_hours")
     max_hours = data.get("max_hours")
@@ -174,6 +188,15 @@ def validate_manifest_data(data: dict, path: Path) -> list[str]:
         errors.append("after must be a list of safe campaign ids")
     elif isinstance(campaign_id, str) and campaign_id in after:
         errors.append("after must not include the campaign id")
+    workers = data.get("workers")
+    if workers is not None and (not isinstance(workers, int) or workers <= 0):
+        errors.append("workers must be a positive integer")
+    driver_file = data.get("driver_file")
+    if driver_file is not None:
+        if not isinstance(driver_file, str) or is_declared_absolute(driver_file) or ".." in Path(driver_file).parts:
+            errors.append("driver_file must be a relative path inside repo_dir")
+        elif isinstance(driver, list) and driver_file not in driver:
+            errors.append("driver_file must be one of the driver arguments")
     return errors
 
 
@@ -183,9 +206,9 @@ def read_approvals(root: Path) -> tuple[dict[str, list[dict]], list[str]]:
     path = root / "approvals.tsv"
     if not path.exists():
         return approvals, errors
-    with path.open("r", encoding="utf-8") as stream:
+    with path.open("r", encoding="utf-8-sig", newline="") as stream:
         for number, line in enumerate(stream, 1):
-            stripped = line.rstrip("\n")
+            stripped = line.rstrip("\r\n")
             if not stripped:
                 continue
             parts = stripped.split("\t")
@@ -200,6 +223,12 @@ def read_approvals(root: Path) -> tuple[dict[str, list[dict]], list[str]]:
 
 def campaign_state_dir(root: Path, campaign_id: str) -> Path:
     return root / "state" / campaign_id
+
+
+def safe_log_id(path: Path, manifest: dict | None = None) -> str:
+    if ID_RE.fullmatch(path.stem):
+        return path.stem
+    return "invalid"
 
 
 def result_path(root: Path, campaign_id: str) -> Path:
@@ -292,20 +321,76 @@ def write_next_try(root: Path, campaign_id: str, when: dt.datetime | None) -> No
         atomic_write_text(path, utc_text(when) + "\n")
 
 
-def boot_time() -> str:
-    if sys.platform.startswith("linux"):
-        with contextlib.suppress(OSError, ValueError):
-            for line in Path("/proc/stat").read_text(encoding="utf-8").splitlines():
-                if line.startswith("btime "):
-                    return line.split()[1]
-    return str(int(time.time() - time.monotonic()))
+def _windows_process_creation_time(pid: int) -> float | None:
+    if os.name != "nt":
+        return None
+    kernel32 = ctypes.WinDLL("kernel32", use_last_error=True)
+    handle = kernel32.OpenProcess(0x1000, False, pid)
+    if not handle:
+        return None
+    try:
+        exit_code = ctypes.c_ulong()
+        if not kernel32.GetExitCodeProcess(handle, ctypes.byref(exit_code)) or exit_code.value != 259:
+            return None
+        creation = ctypes.c_ulonglong()
+        exit_time = ctypes.c_ulonglong()
+        kernel = ctypes.c_ulonglong()
+        user = ctypes.c_ulonglong()
+        if not kernel32.GetProcessTimes(
+            handle,
+            ctypes.byref(creation),
+            ctypes.byref(exit_time),
+            ctypes.byref(kernel),
+            ctypes.byref(user),
+        ):
+            return None
+        return round((creation.value / 10_000_000) - 11644473600, 3)
+    finally:
+        kernel32.CloseHandle(handle)
 
 
-def process_alive(pid: int) -> bool:
+def _windows_handle_creation_time(handle: int) -> float | None:
+    if os.name != "nt":
+        return None
+    kernel32 = ctypes.WinDLL("kernel32", use_last_error=True)
+    creation = ctypes.c_ulonglong()
+    exit_time = ctypes.c_ulonglong()
+    kernel = ctypes.c_ulonglong()
+    user = ctypes.c_ulonglong()
+    if not kernel32.GetProcessTimes(
+        int(handle),
+        ctypes.byref(creation),
+        ctypes.byref(exit_time),
+        ctypes.byref(kernel),
+        ctypes.byref(user),
+    ):
+        return None
+    return round((creation.value / 10_000_000) - 11644473600, 3)
+
+
+def process_identity(pid: int) -> dict | None:
+    if pid <= 0:
+        return None
+    if os.name == "nt":
+        created = _windows_process_creation_time(pid)
+        if created is None:
+            return None
+        return {"pid": pid, "creation_time": created}
+    if not process_alive(pid):
+        return None
+    return {"pid": pid, "creation_time": None}
+
+
+def process_alive(pid: int, creation_time: float | None = None) -> bool:
     if pid <= 0:
         return False
     if pid == os.getpid():
         return True
+    if os.name == "nt":
+        created = _windows_process_creation_time(pid)
+        if created is None:
+            return False
+        return creation_time is not None and created == round(float(creation_time), 3)
     try:
         os.kill(pid, 0)
         return True
@@ -314,74 +399,78 @@ def process_alive(pid: int) -> bool:
     except PermissionError:
         return True
     except OSError:
-        if os.name == "nt":
-            done = subprocess.run(["tasklist", "/FI", f"PID eq {pid}"], capture_output=True, text=True, check=False)
-            return str(pid) in done.stdout
         return False
 
 
 class RunnerLock:
-    def __init__(self, root: Path, fresh_seconds: float):
+    def __init__(self, root: Path):
         self.root = root
         self.path = root / LOCK_NAME
-        self.fresh_seconds = fresh_seconds
         self.held = False
+        self.stream = None
 
     def acquire(self) -> tuple[bool, str]:
         self.root.mkdir(parents=True, exist_ok=True)
-        while True:
-            record = {"pid": os.getpid(), "boot_time": boot_time(), "created_at": utc_text()}
-            try:
-                handle = os.open(self.path, os.O_CREAT | os.O_EXCL | os.O_WRONLY)
-            except FileExistsError:
-                stale, reason = self._is_stale()
-                if not stale:
-                    return False, reason
-                stale_path = self.path.with_name(f"{LOCK_NAME}.stale.{os.getpid()}")
-                try:
-                    os.replace(self.path, stale_path)
-                except FileNotFoundError:
-                    continue
-                except OSError:
-                    return False, "lock changed while replacing stale lock"
-                with contextlib.suppress(OSError):
-                    stale_path.unlink()
-                continue
-            with os.fdopen(handle, "w", encoding="utf-8", newline="\n") as stream:
-                json.dump(record, stream)
-                stream.write("\n")
-            self.held = True
-            return True, "lock acquired"
-
-    def _is_stale(self) -> tuple[bool, str]:
+        self.stream = self.path.open("a+", encoding="utf-8", newline="\n")
         try:
-            record = json.loads(self.path.read_text(encoding="utf-8"))
-        except Exception:  # noqa: BLE001
-            return True, "lock unreadable"
-        pid = int(record.get("pid", -1))
-        if record.get("boot_time") != boot_time():
-            return True, "lock boot time differs"
-        if not process_alive(pid):
-            return True, "lock process is gone"
-        heartbeat = newest_heartbeat(self.root)
-        if heartbeat and (utc_now() - heartbeat).total_seconds() <= self.fresh_seconds:
-            return False, "another runner holds the lock with a fresh heartbeat"
-        return False, "lock holder may still be alive; heartbeat is not fresh"
+            if os.name == "nt":
+                import msvcrt
+
+                self.stream.seek(0)
+                msvcrt.locking(self.stream.fileno(), msvcrt.LK_NBLCK, 1)
+            else:
+                import fcntl
+
+                fcntl.flock(self.stream.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
+        except OSError:
+            self.stream.close()
+            self.stream = None
+            return False, "another runner holds the operating-system lock"
+        record = {"pid": os.getpid(), "created_at": utc_text()}
+        self.stream.seek(0)
+        self.stream.truncate()
+        json.dump(record, self.stream)
+        self.stream.write("\n")
+        self.stream.flush()
+        os.fsync(self.stream.fileno())
+        self.held = True
+        return True, "lock acquired"
 
     def release(self) -> None:
         if self.held:
-            with contextlib.suppress(FileNotFoundError):
-                self.path.unlink()
+            if self.stream is not None:
+                with contextlib.suppress(OSError):
+                    if os.name == "nt":
+                        import msvcrt
+
+                        self.stream.seek(0)
+                        msvcrt.locking(self.stream.fileno(), msvcrt.LK_UNLCK, 1)
+                    else:
+                        import fcntl
+
+                        fcntl.flock(self.stream.fileno(), fcntl.LOCK_UN)
+                self.stream.close()
+                self.stream = None
+            self.held = False
 
 
-def newest_heartbeat(root: Path) -> dt.datetime | None:
-    newest = None
-    for path in (root / "state").glob(f"*/{HEARTBEAT_NAME}"):
-        with contextlib.suppress(Exception):
-            beat = parse_utc(json.loads(path.read_text(encoding="utf-8"))["time"])
-            if newest is None or beat > newest:
-                newest = beat
-    return newest
+def read_task_mode(root: Path) -> str:
+    path = root / TASK_MODE_NAME
+    if not path.exists():
+        return "unknown"
+    mode = path.read_text(encoding="utf-8").strip()
+    return mode if mode in {"batch", "batch-password", "desktop"} else "unknown"
+
+
+def read_driver_record(root: Path, campaign_id: str) -> dict | None:
+    path = campaign_state_dir(root, campaign_id) / "driver.json"
+    if not path.exists():
+        return None
+    with contextlib.suppress(Exception):
+        record = json.loads(path.read_text(encoding="utf-8"))
+        if isinstance(record, dict) and isinstance(record.get("pid"), int):
+            return record
+    return None
 
 
 def read_checkout_head(repo_dir: Path) -> str | None:
@@ -393,6 +482,11 @@ def read_checkout_head(repo_dir: Path) -> str | None:
         git_path = (repo_dir / text.split(":", 1)[1].strip()).resolve()
     if not git_path.is_dir():
         return None
+    common_path = git_path
+    common_file = git_path / "commondir"
+    if common_file.exists():
+        common_text = common_file.read_text(encoding="utf-8").strip()
+        common_path = (git_path / common_text).resolve() if common_text else git_path
     head_path = git_path / "HEAD"
     if not head_path.exists():
         return None
@@ -402,11 +496,12 @@ def read_checkout_head(repo_dir: Path) -> str | None:
     if not head.startswith("ref:"):
         return None
     ref = head.split(":", 1)[1].strip()
-    loose = git_path / ref
-    if loose.exists():
-        value = loose.read_text(encoding="utf-8").strip()
-        return value.lower() if FULL_COMMIT_RE.fullmatch(value) else None
-    packed = git_path / "packed-refs"
+    for ref_root in (git_path, common_path):
+        loose = ref_root / ref
+        if loose.exists():
+            value = loose.read_text(encoding="utf-8").strip()
+            return value.lower() if FULL_COMMIT_RE.fullmatch(value) else None
+    packed = common_path / "packed-refs"
     if packed.exists():
         for line in packed.read_text(encoding="utf-8").splitlines():
             if line.startswith("#") or line.startswith("^") or not line.strip():
@@ -420,27 +515,39 @@ def read_checkout_head(repo_dir: Path) -> str | None:
 def discover_campaigns(root: Path) -> tuple[list[dict], list[str]]:
     approvals, approval_errors = read_approvals(root)
     campaigns: list[dict] = []
-    for path in sorted((root / "approved").glob("*.json")):
-        manifest, errors = load_manifest(path)
-        campaign_id = path.stem if manifest is None else manifest.get("id", path.stem)
-        digest = sha256_file(path)
-        approved = False
-        approval_date = "9999-99-99"
-        if not errors:
-            matches = approvals.get(str(campaign_id), [])
-            approved = any(item["digest"] == digest for item in matches)
-            if matches:
-                approval_date = min(item["date"] for item in matches if item["digest"] == digest) if approved else matches[0]["date"]
+    paths = sorted((root / "approved").glob("*.json"))
+    loaded: list[dict] = []
+    casefold_ids: dict[str, set[str]] = {}
+    for path in paths:
+        manifest, errors, digest = load_manifest(path)
+        campaign_id = safe_log_id(path, manifest)
+        loaded.append({"path": path, "manifest": manifest, "errors": errors, "digest": digest, "id": str(campaign_id)})
+        if manifest is not None and isinstance(manifest.get("id"), str) and manifest["id"] == path.stem:
+            casefold_ids.setdefault(manifest["id"].casefold(), set()).add(manifest["id"])
+    colliding = {folded for folded, ids in casefold_ids.items() if len(ids) > 1}
+    for item in loaded:
+        errors = list(item["errors"])
+        campaign_id = item["id"]
+        if item["manifest"] is not None and isinstance(item["manifest"].get("id"), str) and item["manifest"]["id"].casefold() in colliding:
+            errors.append("campaign id differs only by case from another manifest")
+        matches = approvals.get(campaign_id, [])
+        digest_matches = [match for match in matches if match["digest"] == item["digest"]]
+        valid_matches = [match for match in digest_matches if match["approval_ref"] != "policy"]
+        approved = bool(valid_matches) and not errors
+        approval_date = min(match["date"] for match in valid_matches) if valid_matches else (matches[0]["date"] if matches else "9999-99-99")
+        approval_ref = valid_matches[0]["approval_ref"] if valid_matches else (digest_matches[0]["approval_ref"] if digest_matches else "")
         campaigns.append(
             {
-                "path": path,
-                "id": str(campaign_id),
-                "manifest": manifest,
+                "path": item["path"],
+                "id": campaign_id,
+                "manifest": item["manifest"],
+                "display_id": item["path"].name if campaign_id == "invalid" else campaign_id,
                 "errors": errors,
-                "digest": digest,
+                "digest": item["digest"],
                 "approved": approved,
                 "approval_date": approval_date,
-                "listed": bool(approvals.get(str(campaign_id))),
+                "approval_ref": approval_ref,
+                "listed": bool(matches),
             }
         )
     return campaigns, approval_errors
@@ -448,11 +555,14 @@ def discover_campaigns(root: Path) -> tuple[list[dict], list[str]]:
 
 def status_lines(root: Path) -> list[str]:
     campaigns, approval_errors = discover_campaigns(root)
-    lines = []
+    lines = [f"task-mode\t{read_task_mode(root)}"]
+    if (root / "policy.json").exists():
+        lines.append("policy.json\tignored\t0\t0\t-\tstanding approval is not available in this release")
     for error in approval_errors:
         lines.append(f"approvals.tsv\tmalformed\t0\t0\t-\t{error}")
     for item in campaigns:
         campaign_id = item["id"]
+        display_id = item.get("display_id", campaign_id)
         done, total = (0, 0)
         manifest = item["manifest"]
         if manifest:
@@ -468,13 +578,19 @@ def status_lines(root: Path) -> list[str]:
             state = "invalid"
         elif not item["listed"]:
             state = "unapproved"
+        elif not item["approved"] and item.get("approval_ref") == "policy":
+            state = "unapproved"
         elif not item["approved"]:
             state = "digest-mismatch"
         elif result:
             state, done, total, _ = result
+        elif (record := read_driver_record(root, campaign_id)) and process_alive(
+            int(record.get("pid", -1)), record.get("creation_time")
+        ):
+            state = "running"
         else:
             state = "pending"
-        lines.append(f"{campaign_id}\t{state}\t{done}\t{total}\t{heartbeat_age}" + (f"\t{utc_text(next_try)}" if next_try else ""))
+        lines.append(f"{display_id}\t{state}\t{done}\t{total}\t{heartbeat_age}" + (f"\t{utc_text(next_try)}" if next_try else ""))
     return lines
 
 
@@ -489,6 +605,7 @@ def eligible_campaigns(root: Path, min_free_bytes: int) -> tuple[list[dict], boo
         append_runner_log(root, "global", "free disk below threshold")
         return [], True
     done_ids = {path.stem for path in (root / "done").glob("*.result") if path.read_text(encoding="utf-8").startswith("DONE\t")}
+    failed_ids = {path.stem for path in (root / "done").glob("*.result") if path.read_text(encoding="utf-8").startswith("FAILED\t")}
     now = utc_now()
     eligible = []
     for item in campaigns:
@@ -500,7 +617,10 @@ def eligible_campaigns(root: Path, min_free_bytes: int) -> tuple[list[dict], boo
             append_runner_log(root, campaign_id, "manifest digest is not listed in approvals.tsv")
             continue
         if not item["approved"]:
-            append_runner_log(root, campaign_id, "manifest digest differs from approvals.tsv")
+            if item.get("approval_ref") == "policy":
+                append_runner_log(root, campaign_id, "approval reference policy is not available in this release")
+            else:
+                append_runner_log(root, campaign_id, "manifest digest differs from approvals.tsv")
             continue
         result = read_result(root, campaign_id)
         if result and result[0] in {"DONE", "FAILED", "STOPPED"}:
@@ -511,7 +631,21 @@ def eligible_campaigns(root: Path, min_free_bytes: int) -> tuple[list[dict], boo
         if next_try and next_try > now:
             continue
         manifest = item["manifest"]
+        failed_after = [dep for dep in manifest["after"] if dep in failed_ids]
+        if failed_after:
+            append_runner_log(root, campaign_id, f"after dependency failed: {', '.join(failed_after)}")
+            continue
         if any(dep not in done_ids for dep in manifest["after"]):
+            continue
+        low_disk = False
+        for disk_path in [Path(manifest["cwd"])] + [
+            Path(manifest["progress"]["glob"]).parent for _ in [0] if manifest.get("progress") and is_declared_absolute(manifest["progress"]["glob"])
+        ]:
+            if disk_path.exists() and shutil.disk_usage(disk_path).free < min_free_bytes:
+                append_runner_log(root, campaign_id, f"free disk below threshold for {disk_path}")
+                low_disk = True
+                break
+        if low_disk:
             continue
         if (campaign_state_dir(root, campaign_id) / "STOP").exists():
             append_runner_log(root, campaign_id, "per-campaign STOP file present")
@@ -521,12 +655,120 @@ def eligible_campaigns(root: Path, min_free_bytes: int) -> tuple[list[dict], boo
             append_runner_log(root, campaign_id, f"checkout HEAD mismatch: {head or 'unresolved'}")
             continue
         driver_file = Path(manifest["driver"][0])
+        declared_driver = manifest.get("driver_file")
+        if declared_driver and not (Path(manifest["repo_dir"]) / declared_driver).exists():
+            append_runner_log(root, campaign_id, "driver_file absent")
+            continue
         if not driver_file.exists() and not shutil.which(manifest["driver"][0]):
             append_runner_log(root, campaign_id, "driver file absent")
             continue
         eligible.append(item)
     eligible.sort(key=lambda item: (item["manifest"]["priority"], item["approval_date"], item["id"]))
     return eligible, False
+
+
+
+class THREADENTRY32(ctypes.Structure):
+    _fields_ = [
+        ("dwSize", ctypes.c_ulong),
+        ("cntUsage", ctypes.c_ulong),
+        ("th32ThreadID", ctypes.c_ulong),
+        ("th32OwnerProcessID", ctypes.c_ulong),
+        ("tpBasePri", ctypes.c_long),
+        ("tpDeltaPri", ctypes.c_long),
+        ("dwFlags", ctypes.c_ulong),
+    ]
+
+
+def resume_windows_process_threads(pid: int) -> None:
+    kernel32 = ctypes.WinDLL("kernel32", use_last_error=True)
+    snapshot = kernel32.CreateToolhelp32Snapshot(0x00000004, 0)
+    if snapshot == -1:
+        raise OSError(ctypes.get_last_error(), "CreateToolhelp32Snapshot failed")
+    resumed = 0
+    try:
+        entry = THREADENTRY32()
+        entry.dwSize = ctypes.sizeof(entry)
+        has_entry = kernel32.Thread32First(snapshot, ctypes.byref(entry))
+        while has_entry:
+            if entry.th32OwnerProcessID == pid:
+                thread = kernel32.OpenThread(0x0002, False, entry.th32ThreadID)
+                if not thread:
+                    raise OSError(ctypes.get_last_error(), "OpenThread failed")
+                try:
+                    if kernel32.ResumeThread(thread) == 0xFFFFFFFF:
+                        raise OSError(ctypes.get_last_error(), "ResumeThread failed")
+                    resumed += 1
+                finally:
+                    kernel32.CloseHandle(thread)
+            has_entry = kernel32.Thread32Next(snapshot, ctypes.byref(entry))
+    finally:
+        kernel32.CloseHandle(snapshot)
+    if resumed == 0:
+        raise OSError("no process thread was resumed")
+
+
+class JOBOBJECT_BASIC_LIMIT_INFORMATION(ctypes.Structure):
+    _fields_ = [
+        ("PerProcessUserTimeLimit", ctypes.c_int64),
+        ("PerJobUserTimeLimit", ctypes.c_int64),
+        ("LimitFlags", ctypes.c_ulong),
+        ("MinimumWorkingSetSize", ctypes.c_size_t),
+        ("MaximumWorkingSetSize", ctypes.c_size_t),
+        ("ActiveProcessLimit", ctypes.c_ulong),
+        ("Affinity", ctypes.c_size_t),
+        ("PriorityClass", ctypes.c_ulong),
+        ("SchedulingClass", ctypes.c_ulong),
+    ]
+
+
+class IO_COUNTERS(ctypes.Structure):
+    _fields_ = [
+        ("ReadOperationCount", ctypes.c_uint64),
+        ("WriteOperationCount", ctypes.c_uint64),
+        ("OtherOperationCount", ctypes.c_uint64),
+        ("ReadTransferCount", ctypes.c_uint64),
+        ("WriteTransferCount", ctypes.c_uint64),
+        ("OtherTransferCount", ctypes.c_uint64),
+    ]
+
+
+class JOBOBJECT_EXTENDED_LIMIT_INFORMATION(ctypes.Structure):
+    _fields_ = [
+        ("BasicLimitInformation", JOBOBJECT_BASIC_LIMIT_INFORMATION),
+        ("IoInfo", IO_COUNTERS),
+        ("ProcessMemoryLimit", ctypes.c_size_t),
+        ("JobMemoryLimit", ctypes.c_size_t),
+        ("PeakProcessMemoryUsed", ctypes.c_size_t),
+        ("PeakJobMemoryUsed", ctypes.c_size_t),
+    ]
+
+
+def create_windows_job_for_process(process: subprocess.Popen) -> int:
+    kernel32 = ctypes.WinDLL("kernel32", use_last_error=True)
+    job = kernel32.CreateJobObjectW(None, None)
+    if not job:
+        raise OSError(ctypes.get_last_error(), "CreateJobObjectW failed")
+    info = JOBOBJECT_EXTENDED_LIMIT_INFORMATION()
+    info.BasicLimitInformation.LimitFlags = 0x00002000
+    ok = kernel32.SetInformationJobObject(
+        job,
+        9,
+        ctypes.byref(info),
+        ctypes.sizeof(info),
+    )
+    if not ok:
+        kernel32.CloseHandle(job)
+        raise OSError(ctypes.get_last_error(), "SetInformationJobObject failed")
+    if not kernel32.AssignProcessToJobObject(job, int(process._handle)):  # noqa: SLF001
+        kernel32.CloseHandle(job)
+        raise OSError(ctypes.get_last_error(), "AssignProcessToJobObject failed")
+    return job
+
+
+def close_windows_job(job: int | None) -> None:
+    if os.name == "nt" and job:
+        ctypes.WinDLL("kernel32", use_last_error=True).CloseHandle(job)
 
 
 def start_process(manifest: dict, stdout_path: Path, stderr_path: Path) -> subprocess.Popen:
@@ -541,12 +783,26 @@ def start_process(manifest: dict, stdout_path: Path, stderr_path: Path) -> subpr
         "stderr": stderr,
     }
     if os.name == "nt":
-        kwargs["creationflags"] = subprocess.CREATE_NEW_PROCESS_GROUP
+        kwargs["creationflags"] = subprocess.CREATE_NEW_PROCESS_GROUP | 0x00000004
     else:
         kwargs["start_new_session"] = True
+    process = None
     try:
-        return subprocess.Popen(manifest["driver"], **kwargs)
+        process = subprocess.Popen(manifest["driver"], **kwargs)
+        if os.name == "nt":
+            process._solver_job = create_windows_job_for_process(process)  # noqa: SLF001
+            try:
+                resume_windows_process_threads(process.pid)
+            except Exception:
+                ctypes.WinDLL("kernel32", use_last_error=True).TerminateJobObject(process._solver_job, 1)  # noqa: SLF001
+                raise
+        else:
+            process._solver_job = None  # noqa: SLF001
+        return process
     except Exception:
+        if process is not None and process.poll() is None:
+            process.kill()
+            process.wait(timeout=5)
         stdout.close()
         stderr.close()
         raise
@@ -556,17 +812,29 @@ def terminate_process(process: subprocess.Popen, grace_seconds: float) -> str:
     if process.poll() is not None:
         return "already-exited"
     with contextlib.suppress(Exception):
-        process.terminate()
+        if os.name == "nt":
+            ctypes.WinDLL("kernel32", use_last_error=True).GenerateConsoleCtrlEvent(1, process.pid)
+        else:
+            os.killpg(process.pid, signal.SIGTERM)
     try:
         process.wait(timeout=grace_seconds)
         return "polite"
     except subprocess.TimeoutExpired:
         if os.name == "nt":
-            subprocess.run([PROCESS_TREE_KILL_COMMAND, "/PID", str(process.pid), "/T", "/F"], capture_output=True, check=False)
+            job = getattr(process, "_solver_job", None)
+            if job:
+                ctypes.WinDLL("kernel32", use_last_error=True).TerminateJobObject(job, 1)
+            else:
+                process.kill()
         else:
             with contextlib.suppress(Exception):
                 os.killpg(process.pid, signal.SIGKILL)
-        process.wait(timeout=grace_seconds)
+        try:
+            process.wait(timeout=grace_seconds)
+        except subprocess.TimeoutExpired:
+            with contextlib.suppress(Exception):
+                process.kill()
+            process.wait(timeout=grace_seconds)
         return "forced"
 
 
@@ -606,32 +874,63 @@ def run_campaign(root: Path, item: dict, args: argparse.Namespace) -> None:
     stderr_path = state_dir / "driver.stderr.log"
     rotate_log(stdout_path)
     rotate_log(stderr_path)
-    process = start_process(manifest, stdout_path, stderr_path)
+    try:
+        process = start_process(manifest, stdout_path, stderr_path)
+    except Exception as exc:  # noqa: BLE001
+        write_attempts(root, campaign_id, attempt_for_heartbeat)
+        outcome_reason = f"driver-start-failed: {exc}"
+        if attempt_for_heartbeat >= int(manifest["retry"]["max_attempts"]):
+            write_result(root, campaign_id, "FAILED", 0, 0, f"reason: {outcome_reason}")
+            append_runner_log(root, campaign_id, f"failed after attempt {attempt_for_heartbeat}: {outcome_reason}")
+            return "start-failed"
+        delay = float(args.backoff_minutes if args.backoff_minutes is not None else manifest["retry"]["backoff_minutes"])
+        next_try = utc_now() + dt.timedelta(minutes=delay)
+        write_next_try(root, campaign_id, next_try)
+        write_result(root, campaign_id, "HELD", 0, 0, f"reason: {outcome_reason}", f"next-try: {utc_text(next_try)}")
+        append_runner_log(root, campaign_id, f"held for retry after attempt {attempt_for_heartbeat}: {outcome_reason}")
+        return "start-failed"
+    created_from_handle = _windows_handle_creation_time(process._handle) if os.name == "nt" else None  # noqa: SLF001
+    identity = {"pid": process.pid, "creation_time": created_from_handle} if created_from_handle is not None else process_identity(process.pid)
+    identity = identity or {"pid": process.pid, "creation_time": None}
+    write_attempts(root, campaign_id, attempt_for_heartbeat)
     atomic_write_text(
         state_dir / "driver.json",
-        json.dumps({"pid": process.pid, "start_time": utc_text(), "attempt": attempt_for_heartbeat}, sort_keys=True) + "\n",
+        json.dumps(
+            {
+                "pid": process.pid,
+                "creation_time": identity.get("creation_time"),
+                "start_time": utc_text(),
+                "attempt": attempt_for_heartbeat,
+            },
+            sort_keys=True,
+        )
+        + "\n",
     )
     started = time.monotonic()
     append_runner_log(root, campaign_id, f"started driver pid {process.pid}")
+    write_heartbeat(root, campaign_id, process, attempt_for_heartbeat, started, manifest)
     outcome_reason = None
-    while True:
-        try:
-            returncode = process.wait(timeout=args.heartbeat_seconds)
-            break
-        except subprocess.TimeoutExpired:
-            write_heartbeat(root, campaign_id, process, attempt_for_heartbeat, started, manifest)
-            if (root / "STOP").exists() or (state_dir / "STOP").exists():
-                method = terminate_process(process, args.stop_grace_seconds)
-                done, total = count_progress(manifest)
-                write_result(root, campaign_id, "STOPPED", done, total, f"reason: stop-file", f"termination: {method}")
-                append_runner_log(root, campaign_id, f"stopped by STOP file using {method}")
-                return
-            if (time.monotonic() - started) / 3600.0 >= float(manifest["max_hours"]):
-                method = terminate_process(process, args.stop_grace_seconds)
-                done, total = count_progress(manifest)
-                write_result(root, campaign_id, "HELD", done, total, "reason: max-hours", f"termination: {method}")
-                append_runner_log(root, campaign_id, f"held at max_hours using {method}")
-                return
+    try:
+        while True:
+            try:
+                returncode = process.wait(timeout=args.heartbeat_seconds)
+                break
+            except subprocess.TimeoutExpired:
+                write_heartbeat(root, campaign_id, process, attempt_for_heartbeat, started, manifest)
+                if (root / "STOP").exists() or (state_dir / "STOP").exists():
+                    method = terminate_process(process, args.stop_grace_seconds)
+                    done, total = count_progress(manifest)
+                    write_result(root, campaign_id, "STOPPED", done, total, f"reason: stop-file", f"termination: {method}")
+                    append_runner_log(root, campaign_id, f"stopped by STOP file using {method}")
+                    return
+                if (time.monotonic() - started) / 3600.0 >= float(manifest["max_hours"]):
+                    method = terminate_process(process, args.stop_grace_seconds)
+                    done, total = count_progress(manifest)
+                    write_result(root, campaign_id, "HELD", done, total, "reason: max-hours", f"termination: {method}")
+                    append_runner_log(root, campaign_id, f"held at max_hours using {method}")
+                    return
+    finally:
+        close_windows_job(getattr(process, "_solver_job", None))
     write_heartbeat(root, campaign_id, process, attempt_for_heartbeat, started, manifest)
     done, total = count_progress(manifest)
     if returncode == 0 and (not manifest.get("progress") or done >= total):
@@ -673,12 +972,12 @@ def run_campaign(root: Path, item: dict, args: argparse.Namespace) -> None:
 
 def command_validate(args: argparse.Namespace) -> int:
     path = Path(args.manifest)
-    manifest, errors = load_manifest(path)
+    manifest, errors, digest = load_manifest(path)
     if errors:
         for error in errors:
             print(error)
         return 1
-    print(f"{manifest['id']}\t{sha256_file(path)}")
+    print(f"{manifest['id']}\t{digest}")
     return 0
 
 
@@ -689,27 +988,122 @@ def command_status(args: argparse.Namespace) -> int:
     return 0
 
 
+def task_definition_xml(mode: str, account: str, wrapper: str, root: str) -> str:
+    if mode not in {"batch", "batch-password", "desktop"}:
+        raise ValueError("unknown mode")
+    ET.register_namespace("", TASK_NAMESPACE)
+    task = ET.Element(f"{{{TASK_NAMESPACE}}}Task", {"version": "1.4"})
+    registration = ET.SubElement(task, f"{{{TASK_NAMESPACE}}}RegistrationInfo")
+    ET.SubElement(registration, f"{{{TASK_NAMESPACE}}}Description").text = "Solver campaign runner"
+    triggers = ET.SubElement(task, f"{{{TASK_NAMESPACE}}}Triggers")
+    calendar = ET.SubElement(triggers, f"{{{TASK_NAMESPACE}}}CalendarTrigger")
+    ET.SubElement(calendar, f"{{{TASK_NAMESPACE}}}StartBoundary").text = "2026-01-01T00:00:00"
+    repetition = ET.SubElement(calendar, f"{{{TASK_NAMESPACE}}}Repetition")
+    ET.SubElement(repetition, f"{{{TASK_NAMESPACE}}}Interval").text = "PT10M"
+    schedule = ET.SubElement(calendar, f"{{{TASK_NAMESPACE}}}ScheduleByDay")
+    ET.SubElement(schedule, f"{{{TASK_NAMESPACE}}}DaysInterval").text = "1"
+    if mode == "desktop":
+        logon_trigger = ET.SubElement(triggers, f"{{{TASK_NAMESPACE}}}LogonTrigger")
+        ET.SubElement(logon_trigger, f"{{{TASK_NAMESPACE}}}UserId").text = account
+    else:
+        ET.SubElement(triggers, f"{{{TASK_NAMESPACE}}}BootTrigger")
+    principals = ET.SubElement(task, f"{{{TASK_NAMESPACE}}}Principals")
+    principal = ET.SubElement(principals, f"{{{TASK_NAMESPACE}}}Principal", {"id": "Author"})
+    ET.SubElement(principal, f"{{{TASK_NAMESPACE}}}UserId").text = account
+    logon = {"batch": "S4U", "batch-password": "Password", "desktop": "InteractiveToken"}[mode]
+    ET.SubElement(principal, f"{{{TASK_NAMESPACE}}}LogonType").text = logon
+    ET.SubElement(principal, f"{{{TASK_NAMESPACE}}}RunLevel").text = "LeastPrivilege"
+    settings = ET.SubElement(task, f"{{{TASK_NAMESPACE}}}Settings")
+    ET.SubElement(settings, f"{{{TASK_NAMESPACE}}}MultipleInstancesPolicy").text = "IgnoreNew"
+    ET.SubElement(settings, f"{{{TASK_NAMESPACE}}}DisallowStartIfOnBatteries").text = "false"
+    ET.SubElement(settings, f"{{{TASK_NAMESPACE}}}StopIfGoingOnBatteries").text = "false"
+    ET.SubElement(settings, f"{{{TASK_NAMESPACE}}}RunOnlyIfIdle").text = "false"
+    ET.SubElement(settings, f"{{{TASK_NAMESPACE}}}Priority").text = "5"
+    ET.SubElement(settings, f"{{{TASK_NAMESPACE}}}ExecutionTimeLimit").text = "PT0S"
+    actions = ET.SubElement(task, f"{{{TASK_NAMESPACE}}}Actions", {"Context": "Author"})
+    exec_action = ET.SubElement(actions, f"{{{TASK_NAMESPACE}}}Exec")
+    ET.SubElement(exec_action, f"{{{TASK_NAMESPACE}}}Command").text = "cmd.exe"
+    ET.SubElement(exec_action, f"{{{TASK_NAMESPACE}}}Arguments").text = f'/d /c ""{wrapper}" "{root}""'
+    xml = ET.tostring(task, encoding="unicode")
+    return '<?xml version="1.0" encoding="UTF-16"?>\n' + xml + "\n"
+
+
+def command_task_definition(args: argparse.Namespace) -> int:
+    xml = task_definition_xml(args.mode, args.account, args.wrapper, args.campaign_root)
+    if args.output:
+        Path(args.output).write_text(xml, encoding="utf-16", newline="\n")
+    else:
+        print(xml, end="")
+    return 0
+
+
 def command_run_once(args: argparse.Namespace) -> int:
     root = Path(args.root)
     for folder in ("approved", "state", "done"):
         (root / folder).mkdir(parents=True, exist_ok=True)
-    lock = RunnerLock(root, args.heartbeat_fresh_seconds)
+    lock = RunnerLock(root)
     acquired, reason = lock.acquire()
     if not acquired:
         append_runner_log(root, "global", reason)
         return 0
     try:
+        if (root / "policy.json").exists():
+            append_runner_log(root, "global", "standing approval is not available in this release")
+        for record_path in sorted((root / "state").glob("*/driver.json")):
+            campaign_id = record_path.parent.name
+            record = read_driver_record(root, campaign_id)
+            if record and process_alive(int(record.get("pid", -1)), record.get("creation_time")):
+                append_runner_log(root, campaign_id, "recorded driver is still running; no second driver started")
+                return 0
         campaigns, blocked = eligible_campaigns(root, args.min_free_bytes)
-        if blocked or not campaigns:
+        if blocked:
             return 0
-        digest_now = sha256_file(campaigns[0]["path"])
-        if digest_now != campaigns[0]["digest"]:
-            append_runner_log(root, campaigns[0]["id"], "manifest digest changed before start")
+        for campaign in campaigns:
+            digest_now = sha256_file(campaign["path"])
+            if digest_now != campaign["digest"]:
+                append_runner_log(root, campaign["id"], "manifest digest changed before start")
+                continue
+            outcome = run_campaign(root, campaign, args)
+            if outcome == "start-failed":
+                continue
             return 0
-        run_campaign(root, campaigns[0], args)
         return 0
     finally:
         lock.release()
+
+
+def parse_task_readback(path: Path) -> tuple[str | None, str | None]:
+    data = path.read_bytes()
+    last_error: Exception | None = None
+    encodings = ["utf-16", "utf-8-sig", "utf-8"]
+    encodings.append("mbcs" if os.name == "nt" else "cp1252")
+    for encoding in encodings:
+        try:
+            root = ET.fromstring(data.decode(encoding))
+            return find_task_text(root, "LogonType"), find_task_text(root, "UserId")
+        except Exception as exc:  # noqa: BLE001
+            last_error = exc
+    raise ValueError(f"task readback XML could not be parsed: {last_error}")
+
+
+def find_task_text(root: ET.Element, name: str) -> str | None:
+    found = root.find(f"./{{{TASK_NAMESPACE}}}Principals/{{{TASK_NAMESPACE}}}Principal/{{{TASK_NAMESPACE}}}{name}")
+    return found.text if found is not None else None
+
+
+def command_task_readback(args: argparse.Namespace) -> int:
+    try:
+        logon, account = parse_task_readback(Path(args.xml))
+    except Exception as exc:  # noqa: BLE001
+        print(f"Task readback parse failed: {exc}")
+        return 1
+    print(f"Registered task readback LogonType: {logon or ''}")
+    print(f"Registered task readback account: {account or ''}")
+    if (logon or "").casefold() == args.expected_logon.casefold() and (account or "").casefold() == args.account.casefold():
+        print("Registered task readback matches requested mode and account.")
+        return 0
+    print("Registered task readback did not match requested mode and account.")
+    return 1
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -719,7 +1113,6 @@ def build_parser() -> argparse.ArgumentParser:
     run_once = sub.add_parser("run-once")
     run_once.add_argument("--root", default=os.environ.get("SOLVER_CAMPAIGN_ROOT") or str(default_root()))
     run_once.add_argument("--heartbeat-seconds", type=float, default=DEFAULT_HEARTBEAT_SECONDS)
-    run_once.add_argument("--heartbeat-fresh-seconds", type=float, default=DEFAULT_HEARTBEAT_FRESH_SECONDS)
     run_once.add_argument("--stop-grace-seconds", type=float, default=DEFAULT_STOP_GRACE_SECONDS)
     run_once.add_argument("--min-free-bytes", type=int, default=DEFAULT_MIN_FREE_BYTES)
     run_once.add_argument("--backoff-minutes", type=float, default=None)
@@ -731,6 +1124,18 @@ def build_parser() -> argparse.ArgumentParser:
     validate.add_argument("manifest")
     validate.add_argument("--root", default=os.environ.get("SOLVER_CAMPAIGN_ROOT") or str(default_root()))
     validate.set_defaults(func=command_validate)
+    task_definition = sub.add_parser("task-definition")
+    task_definition.add_argument("mode", choices=("batch", "batch-password", "desktop"))
+    task_definition.add_argument("--account", default="{ACCOUNT}")
+    task_definition.add_argument("--wrapper", default="{WRAPPER}")
+    task_definition.add_argument("--campaign-root", default="{CAMPAIGN_ROOT}")
+    task_definition.add_argument("--output")
+    task_definition.set_defaults(func=command_task_definition)
+    task_readback = sub.add_parser("task-readback")
+    task_readback.add_argument("xml")
+    task_readback.add_argument("--expected-logon", required=True)
+    task_readback.add_argument("--account", required=True)
+    task_readback.set_defaults(func=command_task_readback)
     return parser
 
 
@@ -740,6 +1145,9 @@ def main(argv: list[str] | None = None) -> int:
     try:
         return args.func(args)
     except Exception as exc:  # noqa: BLE001
+        with contextlib.suppress(Exception):
+            if hasattr(args, "root"):
+                append_runner_log(Path(args.root), "global", f"runner fault: {exc}")
         print(f"runner fault: {exc}", file=sys.stderr)
         return 2
 
