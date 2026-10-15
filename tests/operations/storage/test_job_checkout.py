@@ -5,7 +5,7 @@ import subprocess
 
 import pytest
 
-from test_worktree_location_guard import filesystem_env
+from test_worktree_location_guard import NETWORK_TYPES, filesystem_env
 
 ROOT = Path(__file__).resolve().parents[3]
 CHECKOUT = ROOT / "scripts/operations/storage/job_checkout.sh"
@@ -214,3 +214,20 @@ def test_nonbare_source_configuration_preserved(source, tmp_path, monkeypatch):
     assert (canonical / "docs/current.bin").exists()
     assert (dest / "src/code.py").exists() and not (dest / "docs").exists()
     assert git(dest, "rev-parse", "--show-toplevel") == str(dest)
+
+
+@pytest.mark.parametrize("kind", NETWORK_TYPES)
+@pytest.mark.parametrize("remote", [False, True])
+@pytest.mark.parametrize("dry", [False, True])
+def test_network_refusal_before_git_changes(source, tmp_path, monkeypatch, kind, remote, dry):
+    filesystem_env(tmp_path, monkeypatch)
+    monkeypatch.setenv("FS_TYPE", kind)
+    dest = tmp_path / "absent" / "checkout"
+    before = git(source, "worktree", "list", "--porcelain")
+    result = run_checkout(source.as_uri() if remote else source, dest,
+                          *(["--dry-run"] if dry else []))
+    assert result.returncode == 3, result.stdout + result.stderr
+    assert kind in result.stderr
+    assert not dest.parent.exists()
+    assert git(source, "branch", "--list", "job-test") == ""
+    assert git(source, "worktree", "list", "--porcelain") == before

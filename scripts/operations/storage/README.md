@@ -1,16 +1,16 @@
-# Checkout storage
+# Worktree location guard and checkout storage
 
 `worktree_location_guard.sh` checks a destination before checkout creation.
 `job_checkout.sh` runs that guard, then uses a local worktree or a partial,
 single-branch clone. Sparse checkout is optional; neither script selects a
 replacement destination, redirects a checkout, or retries elsewhere.
 
-For a 17,771-file checkout measured on 2026-10-15, an NTFS-formatted FUSE data
-volume took 133 minutes to add and 52 minutes to remove a worktree. The host
+For a 17,771-file checkout measured on Linux on 2026-10-15, an NTFS-formatted
+FUSE data volume took 133 minutes to add and 52 minutes to remove a worktree. The host
 SSD took 130 seconds to add and 33 seconds to remove it. Sparse checkout reduces
-file volume but does not make an NTFS or FUSE destination acceptable.
+file volume but does not make an NTFS or FUSE destination acceptable on Linux.
 
-## Start helper integration
+## Worktree location guard: Start helper integration
 
 Run this before any command that creates a checkout, directory, or branch:
 
@@ -35,26 +35,42 @@ worktree_location_guard.sh --dest <dir> [--min-free-gb <n>]
 
 The floor defaults to `JOB_CHECKOUT_MIN_FREE_GB` when set, otherwise 50.
 An explicit option overrides the environment. Nonnegative decimal floors are
-accepted. Space is read using `df -Pk`; GB means 1,048,576 KiB here (GiB).
+accepted. On Linux, space is read using `stat -f -c '%a %S'` (available blocks
+times bytes per block). If unavailable or invalid, `df -Pk` is parsed using its
+capacity field and the three preceding numeric fields; source or mount names
+containing spaces do not shift Available. Windows uses that same `df` parsing.
+GB means 1,048,576 KiB here (GiB).
 Comparison uses the unrounded space value; output shows one decimal place.
 
 | Exit | Meaning |
 | --- | --- |
 | 0 | Safe location with enough space; prints `worktree_location=ok fs=<type> free_gb=<n> dest=<dest>`. |
 | 2 | Missing or invalid arguments, branch, base, or sparse profile. |
-| 3 | NTFS/FUSE type, unreadable filesystem type, or inaccessible ancestor. |
+| 3 | Refused Linux filesystem type, unreadable type, inaccessible ancestor, or network/unclassified Windows destination. |
 | 4 | Space below the floor, or unreadable free-space information. |
 
-The guard finds the nearest existing ancestor, resolves its symlinks, and probes
-it with `stat -f -c %T -- <ancestor>`. If that probe fails or returns an unknown
-type, it tries `findmnt -n -o FSTYPE --target <ancestor>`. Failure of both probes
+The guard finds the nearest existing ancestor and resolves its symlinks. On Linux,
+it probes that ancestor with `stat -f -c %T -- <ancestor>`. If that probe fails
+or returns an unknown type, it tries `findmnt -n -o FSTYPE --target <ancestor>`. Failure of both probes
 refuses the start. The single `SLOW_TYPES` list refuses `fuseblk`, `fuse`,
-`fuse.*`, `ntfs`, `ntfs3`, and `ntfs-3g`. Other types pass the location check,
-including `ext2/ext3`, `xfs`, `btrfs`, `tmpfs`, and `overlayfs`.
+`fuse.*`, `ntfs`, `ntfs3`, `ntfs-3g`, `9p`, `v9fs`, `drvfs`, `cifs`,
+`smb`, `smb2`, `smb3`, `nfs`, `nfs3`, and `nfs4`. Other Linux types pass
+the location check, including `ext2/ext3`, `xfs`, `btrfs`, `tmpfs`, and `overlayfs`.
 Passing identifies a filesystem type and space at the instant of the check;
 it does not prove SSD hardware or reserve space against concurrent use.
 
-## Checkout helper
+On Windows, `uname -s` beginning with `MINGW`, `MSYS` or `CYGWIN` selects a
+separate branch; Linux type probes are not used. Git for Windows supplies
+`cygpath -m` to convert the resolved ancestor. A PowerShell executable on PATH
+queries `Win32_LogicalDisk.DriveType`; only a local fixed drive (type 3) passes.
+Native NTFS on a local Windows drive is accepted. UNC paths, mapped network
+drives, and destinations that cannot be classified are refused with exit 3 and
+"network or non-local path". Missing conversion or classification tools also
+refuse. The free-space floor still applies with exit 4. Linux is the measured
+platform; Windows behavior is covered by stubs, without a native Windows run.
+macOS is not supported.
+
+## Worktree location guard: Checkout helper
 
 ```text
 job_checkout.sh --repo <canonical-checkout-or-URL> --branch <new-branch> --base <ref> --dest <dir> [--profile <name>] [--min-free-gb <n>] [--dry-run]
@@ -114,10 +130,32 @@ If a later operation needs another base, fetch it explicitly:
 git fetch --filter=blob:none origin <base>
 ```
 
-## Local tests
+## Worktree location guard: Relation to the disk gate and to the lean clone profile
 
-The tests use disposable repositories and stub only filesystem probes in the
-fixtures. No NTFS/FUSE volume is needed. Run from the repository root, directing
+The guard's floor is the lowest free space a job checkout needs. A start helper
+passes its value from the disk gate's per-filesystem settings using
+`--min-free-gb`. Exit 4 here means the checkout floor was not met or could not be
+read; exit 20 in the disk gate covers a disk-level block, including capacity and
+inode thresholds. The meanings differ; both refuse the start. The guard does
+not read the disk gate settings itself.
+
+`scripts/workstations/clone_profile.py` is the other lean-clone facility: use it
+for an explicit shallow, blob-filtered workstation clone with selected sparse
+directories. It has no location guard. Use `job_checkout.sh` for a guarded job
+checkout that prefers a linked worktree and otherwise uses a single-branch
+partial clone, with an optional repository profile. Call the location guard
+separately before creating a checkout with the clone-profile facility.
+
+Keep the sections in this README prefixed with "Worktree location guard". The
+related disk-gate README uses `## Disk gate`; merge its content as that section
+in this file, retaining its `### Consumer inspection` and
+`### Temporary-folder sweep` subsections. Distinct section headings allow both
+sets of instructions to coexist.
+
+## Worktree location guard: Local tests
+
+The tests use disposable repositories and stub platform and filesystem probes
+in the fixtures. No NTFS/FUSE volume is needed. Run from the repository root, directing
 pytest temporary files outside the checkout as appropriate:
 
 ```bash
