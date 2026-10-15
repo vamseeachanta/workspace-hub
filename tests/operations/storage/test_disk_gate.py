@@ -174,7 +174,7 @@ def test_settings_line_endings_block_full_disk(gate, records):
 
 @pytest.mark.parametrize('code', [0, 10, 4, 2, 1, 126, 127, 124, 137, 130, 143])
 def test_documented_start_helper_allows_only_ok_or_warn(tmp_path, code):
-    readme = (GATE.parent / 'README.md').read_text()
+    readme = (GATE.parent / 'README-disk-gate.md').read_text()
     snippet = readme.split('```bash\n', 1)[1].split('```', 1)[0]
     stub = tmp_path / 'scripts/operations/storage/disk_gate.sh'
     stub.parent.mkdir(parents=True)

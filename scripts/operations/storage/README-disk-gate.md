@@ -1,3 +1,5 @@
+This is the disk gate section to be combined into `README.md`.
+
 # Storage operations
 
 The disk gate checks disk floors and reports storage consumers.
