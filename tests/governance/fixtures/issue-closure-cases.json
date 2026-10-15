@@ -248,7 +248,7 @@
         {
           "created_at": "2026-07-27T12:03:00Z",
           "closing_evidence": true,
-          "body": "Owner decision recorded. Superseded by #9103."
+          "body": "Maintainer decision recorded. Superseded by #9103."
         }
       ],
       "pull_requests": [],
@@ -284,6 +284,26 @@
           "state_reason": "completed"
         }
       },
+      "body_edited_after_close": false
+    },
+    {
+      "repository": "fixture",
+      "number": 9103,
+      "state_reason": "NOT_PLANNED",
+      "created_at": "2026-07-27T12:00:00Z",
+      "closed_at": "2026-07-27T12:03:00Z",
+      "closer_type": "comment",
+      "body": "",
+      "comments": [
+        {
+          "closing_evidence": true,
+          "body": "Owner decision recorded. Evidence at abcdef1, path scripts/governance/example.py. Tests: pytest - 1 passed.", "note": "wording-allow: historical decision evidence"
+        }
+      ],
+      "pull_requests": [],
+      "default_branch_shas": ["abcdef1"],
+      "paths_at_refs": {"scripts/governance/example.py": true},
+      "successor_states": {},
       "body_edited_after_close": false
     }
   ]

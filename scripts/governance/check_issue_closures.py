@@ -100,7 +100,11 @@ def successor_ok(issue: dict, number: str | int) -> bool:
 
 def has_decision_text(text: str) -> bool:
     lowered = text.lower()
-    return any(term in lowered for term in ("owner decision", "retired", "passed date"))
+    return any(term in lowered for term in (
+        "maintainer decision",
+        "owner decision",  # wording-allow: historical decision evidence
+        "retired", "passed date",
+    ))
 
 
 def evidence_status(issue: dict) -> tuple[bool, bool, list[str]]:
@@ -151,7 +155,7 @@ def check_review_head(issue: dict) -> RuleResult:
             return RuleResult(2, NOT_EVALUATED, "review record not evaluated: reviewed head not found")
         if not reviewer:
             return RuleResult(2, NOT_EVALUATED, "review record not evaluated: reviewer not found")
-        if reviewed != merged:
+        if len(str(reviewed)) < 7 or not str(merged or "").lower().startswith(str(reviewed).lower()):
             return RuleResult(2, "FAIL", "reviewed head differs from merged head")
     return RuleResult(2, "PASS", "reviewed head equals merged head and reviewer is recorded")
 
@@ -320,10 +324,14 @@ class GitHubReader:
         stdout = self._run_gh(["gh", "api", "--method", "GET", "--paginate", route])
         items: list[object] = []
         total_count: int | None = None
-        for line in stdout.splitlines():
-            if not line.strip():
-                continue
-            page = json.loads(line)
+        decoder = json.JSONDecoder()
+        index = 0
+        while index < len(stdout):
+            while index < len(stdout) and stdout[index].isspace():
+                index += 1
+            if index >= len(stdout):
+                break
+            page, index = decoder.raw_decode(stdout, index)
             if isinstance(page, dict) and "items" in page:
                 total_count = page.get("total_count", total_count)
                 items.extend(page.get("items") or [])
@@ -364,28 +372,18 @@ def _closed_by_timeline(timeline: list[object], commit_id: str | None) -> tuple[
         event = item.get("event")
         if event == "closed":
             closed_by = _login(item.get("actor"))
-            source = item.get("source") or {}
-            issue = source.get("issue") or {}
-            pull_request = issue.get("pull_request") if isinstance(issue, dict) else None
-            if pull_request:
-                closer_type = "merged_pr"
-            elif item.get("commit_id") or commit_id:
+            if item.get("commit_id") or commit_id:
                 closer_type = "commit"
             else:
                 closer_type = "comment"
-        elif event in {"cross-referenced", "connected"}:
-            source = item.get("source") or {}
-            issue = source.get("issue") or {}
-            if isinstance(issue, dict) and issue.get("pull_request"):
-                closer_type = "merged_pr"
     return closer_type, closed_by
 
 
 def _body_edit_status(raw: dict, reader: GitHubReader, repo: str, number: int, closed_at: str | None) -> bool | None:
-    owner, name = repo.split("/", 1)
+    repo_org, name = repo.split("/", 1)
     query = f"""
     query {{
-      repository(owner:{json.dumps(owner)}, name:{json.dumps(name)}) {{
+      repository(owner:{json.dumps(repo_org)}, name:{json.dumps(name)}) {{ # wording-allow: GitHub API field
         issue(number:{int(number)}) {{
           lastEditedAt
           userContentEdits(first: 100) {{ nodes {{ editedAt }} }}
@@ -417,6 +415,8 @@ def _review_record(pr: dict, reader: GitHubReader, repo: str, pr_number: int) ->
     reviews = reader.try_api(f"repos/{repo}/pulls/{pr_number}/reviews?per_page=100")
     if isinstance(reviews, list):
         for review in reversed(reviews):
+            if review.get("state") != "APPROVED":
+                continue
             commit_id = review.get("commit_id")
             if commit_id:
                 reviewed_head = commit_id
@@ -424,7 +424,7 @@ def _review_record(pr: dict, reader: GitHubReader, repo: str, pr_number: int) ->
                 break
     if reviewed_head:
         return reviewed_head, reviewer
-    comments, _total = reader.paginated_api(f"repos/{repo}/pulls/{pr_number}/comments?per_page=100")
+    comments, _total = reader.paginated_api(f"repos/{repo}/issues/{pr_number}/comments?per_page=100")
     for comment in reversed(comments):
         if not isinstance(comment, dict):
             continue
@@ -434,9 +434,17 @@ def _review_record(pr: dict, reader: GitHubReader, repo: str, pr_number: int) ->
     return None, None
 
 
-def _commit_has_pr(reader: GitHubReader, repo: str, sha: str) -> bool:
+def _commit_closes_via_default_merged_pr(reader: GitHubReader, repo: str, sha: str, default_branch: str) -> bool:
     pulls = reader.try_api(f"repos/{repo}/commits/{sha}/pulls")
-    return isinstance(pulls, list) and bool(pulls)
+    if not isinstance(pulls, list):
+        return False
+    for pull in pulls:
+        if not isinstance(pull, dict):
+            continue
+        base = pull.get("base") or {}
+        if pull.get("merged_at") and isinstance(base, dict) and base.get("ref") == default_branch:
+            return True
+    return False
 
 
 def _on_default_branch(reader: GitHubReader, repo: str, default_branch: str, sha: str) -> bool:
@@ -459,7 +467,7 @@ def _neutral_issue(raw: dict, reader: GitHubReader, repo: str) -> dict:
         if isinstance(event, dict) and event.get("event") == "closed" and event.get("commit_id"):
             commit_id = event.get("commit_id")
     closer_type, closed_by = _closed_by_timeline(timeline, commit_id)
-    if closer_type == "commit" and commit_id and _commit_has_pr(reader, repo, commit_id):
+    if closer_type == "commit" and commit_id and _commit_closes_via_default_merged_pr(reader, repo, commit_id, default_branch):
         closer_type = "merged_pr"
     neutral_comments = [
         {
@@ -610,7 +618,7 @@ def auditor_mapping() -> dict[str, str]:
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--fixture", type=Path, help="Evaluate trimmed fixture JSON.")
-    parser.add_argument("--repo", help="Repository as owner/name for live read-only collection.")
+    parser.add_argument("--repo", help="Repository slug NAME/REPO for live read-only collection.")
     parser.add_argument("--issue", type=int, help="Single issue number for live read-only collection.")
     parser.add_argument("--closed-from", help="Closed date lower bound, YYYY-MM-DD.")
     parser.add_argument("--closed-to", help="Closed date upper bound, YYYY-MM-DD.")
