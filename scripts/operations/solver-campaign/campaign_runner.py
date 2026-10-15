@@ -226,10 +226,6 @@ def campaign_state_dir(root: Path, campaign_id: str) -> Path:
 
 
 def safe_log_id(path: Path, manifest: dict | None = None) -> str:
-    if manifest and ("id" in manifest) and manifest.get("id") != path.stem:
-        return "invalid"
-    if manifest and isinstance(manifest.get("id"), str) and not ID_RE.fullmatch(manifest["id"]):
-        return "invalid"
     if ID_RE.fullmatch(path.stem):
         return path.stem
     return "invalid"
@@ -526,7 +522,7 @@ def discover_campaigns(root: Path) -> tuple[list[dict], list[str]]:
         manifest, errors, digest = load_manifest(path)
         campaign_id = safe_log_id(path, manifest)
         loaded.append({"path": path, "manifest": manifest, "errors": errors, "digest": digest, "id": str(campaign_id)})
-        if manifest is not None and isinstance(manifest.get("id"), str):
+        if manifest is not None and isinstance(manifest.get("id"), str) and manifest["id"] == path.stem:
             casefold_ids.setdefault(manifest["id"].casefold(), set()).add(manifest["id"])
     colliding = {folded for folded, ids in casefold_ids.items() if len(ids) > 1}
     for item in loaded:
@@ -545,6 +541,7 @@ def discover_campaigns(root: Path) -> tuple[list[dict], list[str]]:
                 "path": item["path"],
                 "id": campaign_id,
                 "manifest": item["manifest"],
+                "display_id": item["path"].name if campaign_id == "invalid" else campaign_id,
                 "errors": errors,
                 "digest": item["digest"],
                 "approved": approved,
@@ -565,6 +562,7 @@ def status_lines(root: Path) -> list[str]:
         lines.append(f"approvals.tsv\tmalformed\t0\t0\t-\t{error}")
     for item in campaigns:
         campaign_id = item["id"]
+        display_id = item.get("display_id", campaign_id)
         done, total = (0, 0)
         manifest = item["manifest"]
         if manifest:
@@ -592,7 +590,7 @@ def status_lines(root: Path) -> list[str]:
             state = "running"
         else:
             state = "pending"
-        lines.append(f"{campaign_id}\t{state}\t{done}\t{total}\t{heartbeat_age}" + (f"\t{utc_text(next_try)}" if next_try else ""))
+        lines.append(f"{display_id}\t{state}\t{done}\t{total}\t{heartbeat_age}" + (f"\t{utc_text(next_try)}" if next_try else ""))
     return lines
 
 
@@ -788,6 +786,7 @@ def start_process(manifest: dict, stdout_path: Path, stderr_path: Path) -> subpr
         kwargs["creationflags"] = subprocess.CREATE_NEW_PROCESS_GROUP | 0x00000004
     else:
         kwargs["start_new_session"] = True
+    process = None
     try:
         process = subprocess.Popen(manifest["driver"], **kwargs)
         if os.name == "nt":
@@ -801,6 +800,9 @@ def start_process(manifest: dict, stdout_path: Path, stderr_path: Path) -> subpr
             process._solver_job = None  # noqa: SLF001
         return process
     except Exception:
+        if process is not None and process.poll() is None:
+            process.kill()
+            process.wait(timeout=5)
         stdout.close()
         stderr.close()
         raise
@@ -1085,7 +1087,7 @@ def parse_task_readback(path: Path) -> tuple[str | None, str | None]:
 
 
 def find_task_text(root: ET.Element, name: str) -> str | None:
-    found = root.find(f".//{{{TASK_NAMESPACE}}}{name}")
+    found = root.find(f"./{{{TASK_NAMESPACE}}}Principals/{{{TASK_NAMESPACE}}}Principal/{{{TASK_NAMESPACE}}}{name}")
     return found.text if found is not None else None
 
 

@@ -7,11 +7,7 @@ set "ROOT="
 set "DRY_RUN="
 rem BEGIN_ARGUMENT_PARSE
 :parse_args
-set "RAW_ARG=%1"
-if "%~1"=="" (
-  if not defined RAW_ARG goto args_done
-  goto arg_error
-)
+if "%~1"=="" goto empty_or_end
 set "ARG=%~1"
 if /I "%ARG%"=="--dry-run" (
   set "DRY_RUN=1"
@@ -47,14 +43,26 @@ if not defined ROOT (
   goto parse_args
 )
 goto arg_error
+:empty_or_end
+if "%1"=="" goto args_done
+goto arg_error
 :args_done
 if not defined ROOT goto missing_root
+set ROOT | "%SystemRoot%\System32\find.exe" "(" >nul && goto unsafe_root
+set ROOT | "%SystemRoot%\System32\find.exe" ")" >nul && goto unsafe_root
+set ROOT | "%SystemRoot%\System32\find.exe" "&" >nul && goto unsafe_root
+set ROOT | "%SystemRoot%\System32\find.exe" "^" >nul && goto unsafe_root
+set ROOT | "%SystemRoot%\System32\find.exe" "%%" >nul && goto unsafe_root
+set ROOT | "%SystemRoot%\System32\find.exe" "!" >nul && goto unsafe_root
 if not exist "%ROOT%\" goto missing_root
 for %%I in ("%ROOT%") do set "ROOT=%%~fI"
 rem END_ARGUMENT_PARSE
 goto mode_ok
 :missing_root
 echo Campaign root must be an existing folder.
+exit /b 2
+:unsafe_root
+echo Campaign root contains unsupported characters: ( ) ^& ^^ %% !
 exit /b 2
 :arg_error
 echo Usage: register-solver-campaign-task.bat [batch^|batch-password^|desktop] root [--dry-run]
@@ -85,7 +93,7 @@ if not "%ERRORLEVEL%"=="0" (
 )
 type "%TASK_XML%"
 if defined DRY_RUN (
-  echo Resolved campaign root: %ROOT%
+  echo Resolved campaign root: "%ROOT%"
   del "%TASK_XML%" >nul 2>nul
   exit /b 0
 )

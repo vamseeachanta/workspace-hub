@@ -152,7 +152,8 @@ existing folder. The argument form is
 `register-solver-campaign-task.bat [batch|batch-password|desktop] root [--dry-run]`;
 unknown arguments, empty arguments, duplicate modes, extra arguments, and unknown
 options are refused. Run the dry run first to print the task definition and
-resolved campaign root without registering it. The root may contain spaces.
+resolved campaign root without registering it. The root may contain spaces, but
+must not contain `(`, `)`, `&`, `^`, `%`, or `!`.
 
 The modes are:
 
@@ -161,9 +162,11 @@ The modes are:
   workstations refuse licensed-solver access from a network logon, and a batch
   logon is not a network logon. `S4U` mode has no stored network credentials, so
   shares and authenticated network resources are unavailable. Batch modes need
-  rights to create a boot-trigger task. When registration is refused, the
-  register script prints `Task registration failed. Check rights for the selected
-  mode.` and exits with the task registration command's exit code.
+  rights to create a boot-trigger task. Whether that requires an elevated prompt
+  depends on workstation policy and is not established by these tests. When
+  registration is refused, the register script prints `Task registration failed.
+  Check rights for the selected mode.` and exits with the task registration
+  command's exit code.
 - `batch-password`: runs as the registering account with the password prompt
   handled by the task registration command.
 - `desktop`: runs only while the registering account is logged on to the desktop
