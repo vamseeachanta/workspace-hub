@@ -1,6 +1,8 @@
 param(
   [string]$ConfigPath = (Join-Path $PSScriptRoot 'job-queue.local.conf'),
-  [switch]$Once
+  [switch]$DryRun,
+  [scriptblock]$FreeSpaceProbe,
+  [string]$Launcher
 )
 $ErrorActionPreference = 'Stop'
 
@@ -20,7 +22,7 @@ function Read-LocalConfig([string]$Path) {
 }
 
 function Read-Limits([string]$Path, [int]$DiskFloorFromConfig) {
-  $limits = @{ max_running = 2; max_starts_per_run = 1; min_free_gb = 60; per_repo_max = 0; min_disk_free_gb = $DiskFloorFromConfig }
+  $limits = @{ max_running = 2; max_starts_per_run = 1; per_repo_max = 0; min_disk_free_gb = $DiskFloorFromConfig }
   if (Test-Path -LiteralPath $Path) {
     foreach ($line in @(Get-Content -LiteralPath $Path -ErrorAction SilentlyContinue)) {
       if ("$line" -match '^\s*([a-z_]+)\s*=\s*(\d{1,4})\s*$') {
@@ -28,7 +30,6 @@ function Read-Limits([string]$Path, [int]$DiskFloorFromConfig) {
         $value = [int]$Matches[2]
         if ($key -eq 'max_running' -and $value -ge 1) { $limits[$key] = [math]::Min($value, 8) }
         if ($key -eq 'max_starts_per_run' -and $value -ge 1) { $limits[$key] = [math]::Min($value, 6) }
-        if ($key -eq 'min_free_gb') { $limits[$key] = [math]::Max($value, 60) }
         if ($key -eq 'per_repo_max' -and $value -ge 1) { $limits[$key] = $value }
         if ($key -eq 'min_disk_free_gb') { $limits[$key] = [math]::Max($value, 50) }
       }
@@ -44,10 +45,7 @@ function Write-PumpLog([string]$QueueRoot, [string]$Message) {
 }
 
 function Get-FreeDiskGb([string]$Root, [string]$Role) {
-  if ($env:JOB_QUEUE_TEST_FREE_GB_JSON) {
-    $probe = $env:JOB_QUEUE_TEST_FREE_GB_JSON | ConvertFrom-Json
-    return [double]$probe.$Role
-  }
+  if ($FreeSpaceProbe) { return & $FreeSpaceProbe $Root $Role }
   $full = [System.IO.Path]::GetFullPath($Root)
   $drive = New-Object System.IO.DriveInfo([System.IO.Path]::GetPathRoot($full))
   return [math]::Round($drive.AvailableFreeSpace / 1GB, 1)
@@ -66,7 +64,7 @@ function Get-JobRepo([hashtable]$Config, [string]$JobsRoot, [string]$Id) {
   $repo = Get-SpecHead $JobsRoot $Id 'REPO'
   if ($repo -eq '') { $repo = $Config.DEFAULT_REPOSITORY }
   $allow = @($Config.REPOSITORY_ALLOW_LIST -split ',' | ForEach-Object { $_.Trim() } | Where-Object { $_ -ne '' })
-  if ($repo -notmatch '^[A-Za-z0-9._-]+$' -or $allow -notcontains $repo) { return 'invalid' }
+  if ($repo -notmatch '^[A-Za-z0-9][A-Za-z0-9._-]*$' -or $allow -notcontains $repo) { return 'invalid' }
   return $repo
 }
 
@@ -98,8 +96,16 @@ $limits = Read-Limits (Join-Path $queueRoot 'limits.txt') ([int]($config.MIN_DIS
 
 New-Item -ItemType Directory -Force -Path $logs,$locks | Out-Null
 
-$cloneFree = Get-FreeDiskGb $config.CLONE_ROOT 'clone'
-$worktreeFree = Get-FreeDiskGb $config.WORKTREE_ROOT 'worktree'
+try {
+  $cloneFree = Get-FreeDiskGb $config.CLONE_ROOT 'clone'
+  $worktreeFree = Get-FreeDiskGb $config.WORKTREE_ROOT 'worktree'
+  if ($null -eq $cloneFree -or $null -eq $worktreeFree -or
+      [double]::IsNaN([double]$cloneFree) -or [double]::IsNaN([double]$worktreeFree) -or
+      [double]::IsInfinity([double]$cloneFree) -or [double]::IsInfinity([double]$worktreeFree)) { throw 'invalid disk probe' }
+} catch {
+  Write-PumpLog $queueRoot 'action=hold reason=disk-probe-failed'
+  exit 0
+}
 $running = Get-RunningState $locks
 $gateText = 'clone_free_gb=' + $cloneFree + ' worktree_free_gb=' + $worktreeFree + ' running=' + ([math]::Max([int]$running.Slots, @($running.Ids).Count)) + ' min_disk_free_gb=' + $limits.min_disk_free_gb
 
@@ -120,6 +126,11 @@ if (-not (Test-Path -LiteralPath $queueFile)) {
   exit 0
 }
 
+if ([math]::Max([int]$running.Slots, @($running.Ids).Count) -ge $limits.max_running) {
+  Write-PumpLog $queueRoot ($gateText + ' action=hold reason=max-running')
+  exit 0
+}
+
 $entries = @()
 foreach ($line in @(Get-Content -LiteralPath $queueFile)) {
   $s = "$line".Trim()
@@ -132,9 +143,13 @@ foreach ($line in @(Get-Content -LiteralPath $queueFile)) {
 $pick = $null
 foreach ($entry in $entries) {
   $id = $entry[0]
+  if ($running.Ids -contains $id) { continue }
   if (Test-Path -LiteralPath (Join-Path $logs ($id + '.result'))) { continue }
   if (-not (Test-Path -LiteralPath (Join-Path $jobs ($id + '.md')))) { continue }
-  if ((Get-JobRepo $config $jobs $id) -eq 'invalid') { continue }
+  $repo = Get-JobRepo $config $jobs $id
+  if ($repo -eq 'invalid') { continue }
+  $repoRunning = @($running.Ids | Where-Object { (Get-JobRepo $config $jobs $_) -eq $repo }).Count
+  if ($limits.per_repo_max -gt 0 -and $repoRunning -ge $limits.per_repo_max) { continue }
   $pick = $entry
   break
 }
@@ -144,9 +159,14 @@ if ($null -eq $pick) {
   exit 0
 }
 
-$launcher = Join-Path $PSScriptRoot 'launch.ps1'
-if ($env:JOB_QUEUE_TEST_LAUNCHER) { $launcher = $env:JOB_QUEUE_TEST_LAUNCHER }
-$out = & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $launcher -ConfigPath $ConfigPath -Script run-job.sh -A1 $pick[0] -A2 $pick[1] 2>&1
+if ($DryRun) {
+  Write-PumpLog $queueRoot ($gateText + ' action=would-start job=' + $pick[0] + ' issue=' + $pick[1])
+  exit 0
+}
+
+# A single pass starts at most one job; live slot acquisition remains required.
+if (-not $Launcher) { $Launcher = Join-Path $PSScriptRoot 'launch.ps1' }
+$out = & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $Launcher -ConfigPath $ConfigPath -Script run-job.sh -A1 $pick[0] -A2 $pick[1] 2>&1
 $rc = $LASTEXITCODE
 $outText = (@($out) | ForEach-Object { "$_" }) -join ' / '
 Write-PumpLog $queueRoot ($gateText + ' action=started job=' + $pick[0] + ' issue=' + $pick[1] + ' launch_rc=' + $rc + ' launch_out=[' + $outText + ']')

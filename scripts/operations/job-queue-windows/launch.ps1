@@ -27,7 +27,14 @@ $scriptPath = Join-Path $PSScriptRoot $Script
 $out = Join-Path (Join-Path $cfg.QUEUE_ROOT 'logs') ($A1 + '.launch.out')
 $psi = New-Object System.Diagnostics.ProcessStartInfo
 $psi.FileName = $bash
-$psi.Arguments = '-lc "' + ($scriptPath -replace '\\','/') + ' start ' + $A1 + ' ' + $A2 + ' > ' + ($out -replace '\\','/') + ' 2>&1 < /dev/null"'
+# Quote shell words, including embedded apostrophes; quote the outer Windows argument.
+function Quote-Bash([string]$Value) {
+  $quote = [string][char]39
+  $double = [string][char]34
+  return $quote + $Value.Replace($quote, ($quote + $double + $quote + $double + $quote)) + $quote
+}
+$command = (Quote-Bash ($scriptPath -replace '\\','/')) + ' start ' + $A1 + ' ' + $A2 + ' ' + (Quote-Bash (([System.IO.Path]::GetFullPath($ConfigPath)) -replace '\\','/')) + ' > ' + (Quote-Bash ($out -replace '\\','/')) + ' 2>&1 < /dev/null'
+$psi.Arguments = '-lc "' + $command.Replace('"', '\"') + '"'
 $psi.WorkingDirectory = $PSScriptRoot
 $psi.UseShellExecute = $false
 $psi.CreateNoWindow = $true

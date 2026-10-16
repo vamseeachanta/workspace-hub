@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
-script_dir=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+script_dir=$(CDPATH='' cd -- "$(dirname -- "$0")" && pwd)
 config_path="${JOB_QUEUE_CONFIG:-$script_dir/job-queue.local.conf}"
 script="${1:?script required}"
 job_id="${2:?job id required}"
