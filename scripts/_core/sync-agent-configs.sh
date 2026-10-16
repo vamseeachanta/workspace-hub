@@ -299,7 +299,8 @@ strip_status_line = sys.argv[3].lower() == 'true'
 managed_keys = {'model', 'model_reasoning_effort'}
 table_header_re = re.compile(r'^\[\[?[^\]]+\]\]?\s*(?:#.*)?$')
 status_line_re = re.compile(r'^\[status_line\]\s*(?:#.*)?$')
-managed_line_re = re.compile(r'^\s*(model|model_reasoning_effort)\s*=')
+managed_line_re = re.compile(r"""^\s*(?:model|model_reasoning_effort|"model"|"model_reasoning_effort"|'model'|'model_reasoning_effort')\s*=""")
+root_model_re = re.compile(r"""^\s*(?:model|"model"|'model')\s*=""")
 
 
 def split_top_level(text, delimiter=','):
@@ -447,10 +448,17 @@ def multiline_state_after(line, current_state):
 
 skip_status = False
 multiline = None
+root_scope = True
 output = []
-for line in source_path.read_text().splitlines(keepends=True):
+for line in source_path.read_bytes().decode('utf-8').splitlines(keepends=True):
     if multiline is None:
         stripped = line.strip()
+        if table_header_re.match(stripped):
+            root_scope = False
+        if root_scope and root_model_re.match(line):
+            output.append(line)
+            multiline = multiline_state_after(line, multiline)
+            continue
         if skip_status:
             if stripped and table_header_re.match(stripped):
                 skip_status = False
@@ -468,7 +476,7 @@ for line in source_path.read_text().splitlines(keepends=True):
     output.append(line)
     multiline = multiline_state_after(line, multiline)
 
-output_path.write_text(''.join(output))
+output_path.write_bytes(''.join(output).encode('utf-8'))
 PY
         then
             return
@@ -487,7 +495,8 @@ strip_status_line = sys.argv[3].lower() == 'true'
 managed_keys = {'model', 'model_reasoning_effort'}
 table_header_re = re.compile(r'^\[\[?[^\]]+\]\]?\s*(?:#.*)?$')
 status_line_re = re.compile(r'^\[status_line\]\s*(?:#.*)?$')
-managed_line_re = re.compile(r'^\s*(model|model_reasoning_effort)\s*=')
+managed_line_re = re.compile(r"""^\s*(?:model|model_reasoning_effort|"model"|"model_reasoning_effort"|'model'|'model_reasoning_effort')\s*=""")
+root_model_re = re.compile(r"""^\s*(?:model|"model"|'model')\s*=""")
 
 
 def split_top_level(text, delimiter=','):
@@ -635,10 +644,17 @@ def multiline_state_after(line, current_state):
 
 skip_status = False
 multiline = None
+root_scope = True
 output = []
-for line in source_path.read_text().splitlines(keepends=True):
+for line in source_path.read_bytes().decode('utf-8').splitlines(keepends=True):
     if multiline is None:
         stripped = line.strip()
+        if table_header_re.match(stripped):
+            root_scope = False
+        if root_scope and root_model_re.match(line):
+            output.append(line)
+            multiline = multiline_state_after(line, multiline)
+            continue
         if skip_status:
             if stripped and table_header_re.match(stripped):
                 skip_status = False
@@ -656,7 +672,7 @@ for line in source_path.read_text().splitlines(keepends=True):
     output.append(line)
     multiline = multiline_state_after(line, multiline)
 
-output_path.write_text(''.join(output))
+output_path.write_bytes(''.join(output).encode('utf-8'))
 PY
         return
     fi
@@ -767,6 +783,26 @@ PY
     echo "[WARN] Skipping Codex managed-key scope validation for $label -> $target (uv/python3 unavailable)" >&2
 }
 
+validate_codex_template() {
+    local template="$1"
+    local -a python_cmd
+    if command -v uv >/dev/null 2>&1; then
+        python_cmd=(uv run --no-project python)
+    else
+        python_cmd=(python3)
+    fi
+    "${python_cmd[@]}" - "$template" <<'PY'
+import pathlib
+import sys
+import tomllib
+
+with pathlib.Path(sys.argv[1]).open('rb') as source:
+    data = tomllib.load(source)
+if 'model' in data:
+    raise SystemExit('[ERROR] Remove the top-level model pin from the Codex template before syncing.')
+PY
+}
+
 upsert_codex_root_model_defaults() {
     local target="$1"
     local label="$2"
@@ -781,7 +817,6 @@ upsert_codex_root_model_defaults() {
     sanitize_codex_managed_keys "$target" "$tmp_clean"
 
     cat > "$tmp_final" <<'EOF'
-model = "gpt-5.5"
 model_reasoning_effort = "medium"
 
 EOF
@@ -916,6 +951,8 @@ sync_codex_managed_config() {
     local tmp_new=""
     local template_clean=""
 
+    validate_codex_template "$template" || return 1
+
     trap 'rm -f "$tmp" "$tmp_new" "$template_clean"' RETURN
 
     template_clean="$(mktemp)"
@@ -932,7 +969,6 @@ sync_codex_managed_config() {
         ensure_parent_dir "$target"
         tmp_new="$(mktemp)"
         cat > "$tmp_new" <<'EOF'
-model = "gpt-5.5"
 model_reasoning_effort = "medium"
 
 EOF
@@ -958,11 +994,10 @@ EOF
     tmp="$(mktemp)"
     tmp_new="$(mktemp)"
 
-    # Remove managed keys from any scope and replace the managed status_line section.
+    # Preserve the user's root model line while replacing managed settings.
     sanitize_codex_managed_keys "$target" "$tmp" true
 
     cat > "$tmp_new" <<'EOF'
-model = "gpt-5.5"
 model_reasoning_effort = "medium"
 
 EOF
@@ -1373,6 +1408,9 @@ sync_repo_codex_configs() {
         )
     fi
 }
+
+# Reject a pinned template before any configuration target can be written.
+validate_codex_template "$CODEX_TEMPLATE"
 
 echo "=== Syncing Agent Configs ==="
 echo "Workspace: $WS_HUB"

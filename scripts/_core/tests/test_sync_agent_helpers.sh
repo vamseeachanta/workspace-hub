@@ -63,7 +63,6 @@ EOF
 EOF
 
     cat > "$ws_root/config/agents/codex/config.toml" <<'EOF'
-model = "gpt-5.5"
 model_reasoning_effort = "medium"
 
 [status_line]
