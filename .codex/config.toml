@@ -1,4 +1,4 @@
-model = "gpt-5.5"
+# model is not pinned here: each machine's own Codex user configuration chooses it (pinned model was refused for this account, 2026-10-15)
 model_reasoning_effort = "medium"
 
 

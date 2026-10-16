@@ -125,7 +125,7 @@ def test_sync_preserves_legacy_harness_only_workspace_without_registry(tmp_path)
         f"workstations:\n  {hostname}:\n    ws_hub_path: {ws_root}\n"
     )
     (ws_root / "config/agents/claude/settings.json").write_text('{"statusLine": {"type": "command"}}\n')
-    (ws_root / "config/agents/codex/config.toml").write_text('model = "gpt-5.5"\n')
+    (ws_root / "config/agents/codex/config.toml").write_text('# Model is chosen by the user.\n')
     (ws_root / "config/agents/gemini/settings.json").write_text(
         '{"security": {"auth": {"selectedType": "oauth-personal"}}}\n'
     )
