@@ -1,6 +1,9 @@
 import os
 import re
+import shlex
+import shutil
 import subprocess
+import time
 from pathlib import Path
 
 import pytest
@@ -30,6 +33,14 @@ def write_text(path, text):
 
 def git(cmd, cwd, check=True):
     return run(["git", *cmd], cwd=cwd, check=check)
+
+
+def age_worktree(wt, minutes=120):
+    admin = Path(git(["rev-parse", "--absolute-git-dir"], wt).stdout.strip())
+    stamp = time.time() - minutes * 60
+    for root in (wt, admin):
+        for path in [*root.rglob("*"), root]:
+            os.utime(path, (stamp, stamp))
 
 
 def make_repo(tmp_path, job_id="done"):
@@ -62,6 +73,7 @@ def make_repo(tmp_path, job_id="done"):
         "DEFAULT_REPOSITORY=example-repo", "REPOSITORY_ALLOW_LIST=example-repo",
         "MIN_DISK_FREE_GB=50", "",
     ]))
+    age_worktree(wt)
     return queue, clones, worktrees, wt, config
 
 
@@ -134,12 +146,136 @@ def test_cleanup_dry_run_reports_keep_reason(tmp_path):
     assert not (queue / "logs" / "kept-worktrees.tsv").exists()
 
 
-def test_worktree_remove_refusal_is_recorded(tmp_path):
+@pytest.mark.parametrize("dry_run", [False, True])
+def test_git_locked_worktree_is_kept(tmp_path, dry_run):
     queue, clones, _, wt, config = make_repo(tmp_path)
     git(["worktree", "lock", str(wt)], clones / "example-repo")
+    result = runner(config, "cleanup", "done", *(["--dry-run"] if dry_run else []))
+    assert result.returncode == 0
+    assert wt.exists()
+    log = result.stdout if dry_run else (queue / "logs" / "kept-worktrees.tsv").read_text()
+    assert "worktree is locked" in log
+    assert "would remove" not in log
+
+
+def fake_git_fixture(tmp_path, monkeypatch, wt, mode):
+    real_git = shutil.which("git")
+    tools = tmp_path / "tools"
+    calls = tmp_path / "git-calls.txt"
+    script = tools / "git"
+    write_text(script, f"""#!/usr/bin/env bash
+printf '%s\\n' "$*" >> {shlex.quote(str(calls))}
+if [[ "$*" == *'worktree list --porcelain'* && {shlex.quote(mode)} == locked ]]; then
+  printf 'worktree %s\\nlocked manual work\\n\\n' {shlex.quote(str(wt))}
+  exit 0
+fi
+if [[ "$*" == *'worktree list --porcelain'* && {shlex.quote(mode)} == other-locked ]]; then
+  printf 'worktree %s-other\\nlocked manual work\\n\\nworktree %s\\n\\n' {shlex.quote(str(wt))} {shlex.quote(str(wt))}
+  exit 0
+fi
+if [[ "$*" == *'worktree list --porcelain'* ]]; then
+  case {shlex.quote(mode)} in
+    lock-failure) exit 1 ;;
+    unlisted) exit 0 ;;
+  esac
+fi
+if [[ "$*" == *'rev-parse --absolute-git-dir'* && {shlex.quote(mode)} == activity-failure ]]; then
+  exit 1
+fi
+if [[ "$*" == *'worktree remove'* ]]; then
+  case {shlex.quote(mode)} in
+    refused) exit 1 ;;
+    partial) mv {shlex.quote(str(wt / '.git'))} {shlex.quote(str(tmp_path / 'retained-git'))}; exit 1 ;;
+  esac
+fi
+exec {shlex.quote(real_git)} "$@"
+""")
+    script.chmod(int("755", 8))
+    monkeypatch.setenv("PATH", str(tools) + os.pathsep + os.environ["PATH"])
+    return calls
+
+
+@pytest.mark.parametrize("state,reason", [
+    ("locked", "worktree is locked"),
+    ("recent-file", "worktree was touched recently"),
+    ("recent-admin", "worktree was touched recently"),
+    ("lock-failure", "git worktree lock lookup failed"),
+    ("activity-failure", "worktree activity probe failed"),
+    ("unlisted", "worktree is not listed by git"),
+    ("other-locked", None),
+    ("old", None),
+])
+@pytest.mark.parametrize("dry_run", [False, True])
+def test_cleanup_activity_guards(tmp_path, monkeypatch, state, reason, dry_run):
+    queue, _, _, wt, config = make_repo(tmp_path)
+    if state == "recent-file":
+        # Same bytes, clean and pushed; only the file's mtime has changed.
+        (wt / "README.md").touch()
+    elif state == "recent-admin":
+        admin = Path(git(["rev-parse", "--absolute-git-dir"], wt).stdout.strip())
+        admin.touch()
+    calls = fake_git_fixture(tmp_path, monkeypatch, wt, state)
+    result = runner(config, "cleanup", "done", *(["--dry-run"] if dry_run else []))
+    assert result.returncode == 0
+    if reason:
+        assert wt.exists()
+        log = result.stdout if dry_run else (queue / "logs" / "kept-worktrees.tsv").read_text()
+        assert reason in log
+        assert "would remove" not in log
+    elif dry_run:
+        assert wt.exists()
+        assert "would remove" in result.stdout
+    else:
+        assert not wt.exists()
+    assert ("worktree remove" in calls.read_text()) == (not reason and not dry_run)
+
+
+@pytest.mark.parametrize("minutes,kept", [(10, False), (90, True)])
+def test_cleanup_recent_window_override(tmp_path, monkeypatch, minutes, kept):
+    _, _, _, wt, config = make_repo(tmp_path)
+    age_worktree(wt, minutes=30)
+    monkeypatch.setenv("WORKTREE_KEEP_MINUTES", str(minutes))
+    assert runner(config).returncode == 0
+    assert wt.exists() == kept
+
+
+@pytest.mark.parametrize("minutes", ["0", "invalid", "-1"])
+def test_cleanup_invalid_recent_window_keeps_worktree(tmp_path, monkeypatch, minutes):
+    queue, _, _, wt, config = make_repo(tmp_path)
+    monkeypatch.setenv("WORKTREE_KEEP_MINUTES", minutes)
     assert runner(config).returncode == 0
     assert wt.exists()
-    assert "git worktree remove refused" in (queue / "logs" / "kept-worktrees.tsv").read_text()
+    assert "invalid worktree retention minutes" in (queue / "logs" / "kept-worktrees.tsv").read_text()
+
+
+@pytest.mark.parametrize("mode,reason", [
+    ("refused", "git worktree remove refused"),
+    ("partial", "removal failed; tree may be partial"),
+])
+def test_worktree_remove_failure_is_recorded(tmp_path, monkeypatch, mode, reason):
+    queue, _, _, wt, config = make_repo(tmp_path)
+    fake_git_fixture(tmp_path, monkeypatch, wt, mode)
+    assert runner(config).returncode == 0
+    assert reason in (queue / "logs" / "kept-worktrees.tsv").read_text()
+
+
+def test_cleanup_without_tmpdir_uses_queue_scratch(tmp_path, monkeypatch):
+    queue, _, _, wt, config = make_repo(tmp_path)
+    monkeypatch.delenv("TMPDIR", raising=False)
+    result = runner(config)
+    assert result.returncode == 0
+    assert not wt.exists()
+    assert not list(queue.glob("*pending*"))
+
+
+def test_cleanup_dry_run_does_not_create_logs(tmp_path):
+    queue, _, _, wt, config = make_repo(tmp_path)
+    (queue / "logs").rename(tmp_path / "saved-logs")
+    result = runner(config, "cleanup", "done", "--dry-run")
+    assert result.returncode == 0
+    assert "job has no result line" in result.stdout
+    assert wt.exists()
+    assert not (queue / "logs").exists()
 
 
 def test_git_status_failure_is_recorded_without_pending_file(tmp_path, monkeypatch):

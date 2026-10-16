@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+DEFAULT_WORKTREE_KEEP_MINUTES=60
+
 cmd="${1:-start}"
 dry_run=false
 if [ "${2:-}" = --dry-run ]; then
@@ -97,8 +99,8 @@ ignored_kind_ok() {
 
 append_keep() {
   local wt="$1" reason="$2" size="0"
-  mkdir -p "$QUEUE_ROOT/logs"
   if $dry_run; then printf 'keep: %s: %s\n' "$id" "$reason"; return 0; fi
+  mkdir -p "$QUEUE_ROOT/logs"
   if [ -d "$wt" ]; then size=$(du -sk -- "$wt" 2>/dev/null | awk '{print $1}') || size=unknown; fi
   printf '%s\t%s\t%s\t%s\n' "$id" "$wt" "$size" "$reason" >> "$QUEUE_ROOT/logs/kept-worktrees.tsv"
 }
@@ -116,10 +118,11 @@ is_pushed() {
 cleanup_worktree() (
   read_config
   local repo wt refs branch status ignored item bad reason result clone err rc marker holder
+  local listing top listed_wt entry admin touched keep_minutes listed
   repo="$(job_repo)"
   wt="$(worktree_path "$repo")"
   result="$QUEUE_ROOT/logs/$id.result"
-  refs=$(mktemp "${TMPDIR:?missing TMPDIR}/pending-refs.XXXXXX")
+  refs=$(mktemp "${TMPDIR:-$QUEUE_ROOT}/pending-refs.XXXXXX")
   trap 'rm -f -- "$refs"' EXIT
   pending_refs_file "$refs"
   reason=""
@@ -153,6 +156,35 @@ cleanup_worktree() (
       reason="${reason}${reason:+; }git ignored status failed"
     fi
     [ -z "$bad" ] || reason="${reason}${reason:+; }ignored item is not regenerable"
+    if top=$(git -C "$wt" rev-parse --show-toplevel) &&
+       listing=$(git -C "$wt" worktree list --porcelain); then
+      listed_wt=""
+      listed=false
+      while IFS= read -r entry; do
+        case "$entry" in
+          worktree\ *)
+            listed_wt=${entry#worktree }
+            [ "$listed_wt" != "$top" ] || listed=true
+            ;;
+          locked|locked\ *)
+            [ "$listed_wt" != "$top" ] || reason="${reason}${reason:+; }worktree is locked"
+            ;;
+        esac
+      done <<< "$listing"
+      $listed || reason="${reason}${reason:+; }worktree is not listed by git"
+    else
+      reason="${reason}${reason:+; }git worktree lock lookup failed"
+    fi
+    keep_minutes=${WORKTREE_KEEP_MINUTES:-$DEFAULT_WORKTREE_KEEP_MINUTES}
+    if [[ ! $keep_minutes =~ ^[0-9]+$ || ! $keep_minutes =~ [1-9] ]]; then
+      reason="${reason}${reason:+; }invalid worktree retention minutes"
+    elif admin=$(git -C "$wt" rev-parse --absolute-git-dir) &&
+         touched=$(find "$wt" -path "$wt/.git" -prune -o -type f -mmin "-$keep_minutes" -print -quit) &&
+         touched+=$(find "$admin" -mmin "-$keep_minutes" -print -quit); then
+      [ -z "$touched" ] || reason="${reason}${reason:+; }worktree was touched recently"
+    else
+      reason="${reason}${reason:+; }worktree activity probe failed"
+    fi
   fi
   if [ -n "$reason" ]; then append_keep "$wt" "$reason"; return 0; fi
   if $dry_run; then printf 'would remove: %s\n' "$id"; return 0; fi
@@ -160,7 +192,9 @@ cleanup_worktree() (
   clone=${clone%/.git}
   err=$(git -C "$clone" worktree remove "$wt" 2>&1) && return 0
   rc=$?
-  append_keep "$wt" "git worktree remove refused: exit $rc: $(printf '%s' "$err" | tr '\t\r\n' '   ' | cut -c1-160)"
+  reason="git worktree remove refused"
+  if [ ! -e "$wt/.git" ]; then reason="removal failed; tree may be partial"; fi
+  append_keep "$wt" "$reason: exit $rc: $(printf '%s' "$err" | tr '\t\r\n' '   ' | cut -c1-160)"
 )
 
 # Recheck immediately before creating a worktree, including direct launcher use.

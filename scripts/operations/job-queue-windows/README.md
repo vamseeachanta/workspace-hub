@@ -20,6 +20,12 @@ The live runner calls cleanup after publication, result writing and slot release
 The example `start` command only creates a worktree. Existing branches require a
 matching `JOB_BRANCH_PREFIX` before cleanup can consider them.
 
+Lock a job worktree (`git worktree lock`) before working in it by hand.
+Cleanup keeps Git-locked worktrees and worktrees with files or administrative
+entries touched in the last 60 minutes. Set the environment variable
+`WORKTREE_KEEP_MINUTES` to a positive integer to override that interval.
+Failed lock or activity probes keep the worktree and record the reason.
+
 `pump.ps1 -DryRun` probes both disks and applies queue gates without launching.
 `run-job.sh cleanup <id> none <config> --dry-run` prints the keep reason or
 "would remove" without changing worktrees or the keep log. Keep-log sizes use KiB;

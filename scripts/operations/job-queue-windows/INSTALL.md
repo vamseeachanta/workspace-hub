@@ -28,3 +28,9 @@ runner are integration examples, not complete replacements for live scripts.
 
 No installation or live-script execution is performed by this repository change.
 Existing worktrees under the old root require a separate reviewed cleanup.
+
+Lock a job worktree (`git worktree lock`) before working in it by hand.
+Cleanup also keeps worktrees whose files or administrative entries were touched
+in the last 60 minutes. The environment variable `WORKTREE_KEEP_MINUTES` overrides
+that interval with a positive integer. Confirm locked and recently touched trees
+report a keep reason in both dry-run and normal cleanup before resuming work.
