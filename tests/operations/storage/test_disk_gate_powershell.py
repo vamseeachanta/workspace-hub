@@ -21,7 +21,7 @@ def test_windows_exit_codes(tmp_path, used, free, inode, code):
     # Freeze the size at 100 GiB except for the independent free-floor case.
     command = f'''
 function Get-PSDrive {{ [pscustomobject]@{{Used={used}GB;Free={free}GB;InodePct={inode}}} }}
-& $env:GATE -Conf $env:CONF -Json
+& $env:GATE -Conf $env:CONF -Json; exit $LASTEXITCODE
 '''
     import os
     result = subprocess.run([PWSH, '-NoProfile', '-Command', command],
@@ -44,7 +44,7 @@ function Get-PSDrive {
     if ($Name -eq 'C') { [pscustomobject]@{Used=85GB;Free=15GB} }
     else { [pscustomobject]@{Used=90GB;Free=10GB} }
 }
-& $env:GATE -Conf $env:CONF -Json
+& $env:GATE -Conf $env:CONF -Json; exit $LASTEXITCODE
 '''
     import os
     result = subprocess.run([PWSH, '-NoProfile', '-Command', command],

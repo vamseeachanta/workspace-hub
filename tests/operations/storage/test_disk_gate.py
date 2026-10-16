@@ -1,6 +1,7 @@
 """Disk gate contracts with isolated filesystem command fixtures."""
 import json
 import os
+import re
 from pathlib import Path
 import subprocess
 import time
@@ -172,10 +173,50 @@ def test_settings_line_endings_block_full_disk(gate, records):
     assert result.stdout.count('BLOCK') == records.count('floor_gb')
 
 
+def extract_start_helper(readme):
+    blocks = re.findall(r'^```bash[ \t]*\n(.*?)^```[ \t]*$', readme, re.M | re.S)
+    matches = [block for block in blocks
+               if 'disk_gate.sh --conf' in block
+               and re.search(r'^case \$rc in\s*\n\s*0\|10\)', block, re.M)]
+    if len(matches) != 1:
+        raise ValueError(f'expected one disk gate start-helper block; found {len(matches)}')
+    return matches[0]
+
+
+def test_start_helper_selection_ignores_earlier_bash_block(tmp_path):
+    readme = (GATE.parent / 'README.md').read_text()
+    copy = tmp_path / 'README.md'
+    # Keep the decoy under the same heading: selection must depend on content.
+    copy.write_text(readme.replace('## Disk gate\n',
+                                  '## Disk gate\n\n```bash\nprintf decoy\n```\n', 1))
+    snippet = extract_start_helper(copy.read_text())
+    assert 'disk_gate.sh --conf' in snippet
+    assert 'case $rc in' in snippet
+    assert '0|10)' in snippet
+    assert 'printf decoy' not in snippet
+
+
+@pytest.mark.parametrize('count', [0, 2])
+def test_start_helper_selection_requires_exactly_one_match(count):
+    block = "```bash\nbash scripts/operations/storage/disk_gate.sh --conf \"$CONF\"\ncase $rc in\n  0|10) ;;\nesac\n```\n"
+    with pytest.raises(ValueError, match=f'expected one disk gate start-helper block; found {count}'):
+        extract_start_helper(block * count)
+
+
+def test_combined_storage_readme_structure_and_exit_codes():
+    readme = (GATE.parent / 'README.md').read_text()
+    assert readme.startswith('# Storage operations\n')
+    assert [line for line in readme.splitlines() if line.startswith('## ')] == [
+        '## Worktree location guard', '## Disk gate']
+    assert '| 4 | Space below the floor' in readme
+    assert '| 4 | A disk reaches its block percentage' in readme
+    assert 'exit 20' not in readme.lower()
+
+
 @pytest.mark.parametrize('code', [0, 10, 4, 2, 1, 126, 127, 124, 137, 130, 143])
 def test_documented_start_helper_allows_only_ok_or_warn(tmp_path, code):
-    readme = (GATE.parent / 'README-disk-gate.md').read_text()
-    snippet = readme.split('```bash\n', 1)[1].split('```', 1)[0]
+    readme = (GATE.parent / 'README.md').read_text()
+    snippet = extract_start_helper(readme)
     stub = tmp_path / 'scripts/operations/storage/disk_gate.sh'
     stub.parent.mkdir(parents=True)
     stub.write_text(f'#!/bin/sh\nexit {code}\n')

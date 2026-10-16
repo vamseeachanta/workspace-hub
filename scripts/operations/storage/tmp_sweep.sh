@@ -24,11 +24,17 @@ while (($#)); do
         *) echo 'unknown option' >&2; exit 2 ;;
     esac
 done
-[[ $old_days =~ ^[0-9]+$ && -d $root && ! -L $root ]] || exit 2
+[[ $root =~ [^[:space:]] ]] || { echo 'sweep root must not be empty' >&2; exit 2; }
+[[ $old_days =~ ^[0-9]+$ && -d $root ]] || exit 2
+resolved_root=$(cd -P -- "$root" >/dev/null && pwd -P) || exit 2
+# Bash can preserve a double leading slash even after physical resolution.
+while [[ $resolved_root == //* ]]; do resolved_root=${resolved_root#/}; done
+[[ $resolved_root != / ]] || { echo 'sweep root must not resolve to the filesystem root' >&2; exit 2; }
+[[ ! -L $root ]] || exit 2
+root=$resolved_root
 for tool in find awk stat readlink sort cksum git date; do
     command -v "$tool" >/dev/null || { echo "required tool unavailable: $tool" >&2; exit 2; }
 done
-root=$(cd -- "$root" && pwd -P) || exit 2
 [[ $root != *$'\n'* && $root != *$'\t'* ]] || exit 2
 uid=$(id -u)
 if [[ -n $target_uid ]]; then

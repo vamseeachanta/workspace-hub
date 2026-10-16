@@ -465,7 +465,14 @@ def test_bind_mount_is_kept_when_namespace_available(tmp_path, process_tree):
     import shutil
     unshare = shutil.which('unshare')
     if not unshare:
-        pytest.skip('unshare not installed')
+        pytest.skip('user and mount namespaces unavailable')
+    try:
+        probe = subprocess.run([unshare, '-rm', 'true'], text=True,
+                               capture_output=True, timeout=30)
+    except OSError:
+        pytest.skip('user and mount namespaces unavailable')
+    if probe.returncode != 0:
+        pytest.skip('user and mount namespaces unavailable')
     root, archive, external = (tmp_path / name for name in ('tree', 'archive', 'external'))
     root.mkdir()
     folder = old_tree(root / 'idle')
@@ -490,3 +497,27 @@ bash "$3" --root "$4" --move "$5"
     assert 'mount-point' in result.stdout
     assert snapshot(root) == before and snapshot(external) == outside
     assert not (archive / 'idle').exists()
+
+
+@pytest.mark.parametrize('root_form', ['/', '//', '///', '/.', '/..', 'symlink', '', '   '])
+@pytest.mark.parametrize('move', [False, True])
+def test_filesystem_root_is_refused_without_changes(tmp_path, monkeypatch, root_form, move):
+    tools = tmp_path / 'bin'
+    tools.mkdir()
+    # Protect the real filesystem even when exercising the unfixed script.
+    find = tools / 'find'
+    find.write_text('#!/bin/sh\necho "unexpected scan" >&2\nexit 91\n')
+    find.chmod(0o755)
+    monkeypatch.setenv('PATH', str(tools) + os.pathsep + os.environ['PATH'])
+    link = tmp_path / 'root-link'
+    link.symlink_to(Path('/'), target_is_directory=True)
+    root = str(link) if root_form == 'symlink' else root_form
+    old_tree(tmp_path / 'retained')
+    before = snapshot(tmp_path)
+    args = ('--move', str(tmp_path / 'archive')) if move else ()
+    result = run(root, *args)
+    assert result.returncode == 2, result.stdout + result.stderr
+    reason = 'empty' if not root_form.strip() else 'filesystem root'
+    assert reason in result.stderr.lower(), result.stderr
+    assert 'unexpected scan' not in result.stderr
+    assert snapshot(tmp_path) == before
