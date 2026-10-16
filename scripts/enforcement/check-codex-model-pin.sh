@@ -20,12 +20,8 @@ import re
 import subprocess
 import sys
 
-# Temporary: existing role defaults await a decision to retain or unpin them.
-ALLOWLIST = (
-    '.codex/agents/batch/config.toml',
-    '.codex/agents/explorer/config.toml',
-    '.codex/agents/worker/config.toml',
-)
+# Explicit exceptions must retain a top-level model assignment.
+ALLOWLIST = ()
 MODEL = re.compile(r'''^\s*(?:model|"model"|'model')\s*=\s*(.*)''')
 
 
