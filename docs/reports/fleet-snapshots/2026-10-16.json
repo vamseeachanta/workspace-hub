@@ -1,6 +1,6 @@
 {
   "generated_at": "2026-10-16T11:13:37.685414+00:00",
-  "generated_by": "muse-vm fleet-daily-collector",
+  "generated_by": "fleet-collector fleet-daily-collector",
   "date": "2026-10-16",
   "origin_main": "4dc770a25",
   "fleet_size": 8,

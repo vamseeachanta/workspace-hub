@@ -341,7 +341,7 @@ def test_every_committed_snapshot_names_hosts_by_label_only(path):
 
 @pytest.mark.parametrize("path", sorted(SNAPSHOT_DIR.glob("*.json")), ids=lambda p: p.name)
 def test_snapshot_names_use_exact_public_label_list(path):
-    """Every snapshot name belongs to the owner's finite public fleet roster."""
+    """Every snapshot name belongs to the finite public fleet roster."""
     labels = {
         "ace-linux-1", "ace-linux-2", "ace-win-1", "ace-win-2",
         "fleet-collector", "gpu-claw", "mac-1", "spark-1",
@@ -354,4 +354,4 @@ def test_snapshot_names_use_exact_public_label_list(path):
         or not isinstance(machine.get("name"), str)
         or machine["name"] not in labels
     ]
-    assert invalid_indices == [], f"{path.name}: names outside public roster at entry indices"
+    assert invalid_indices == [], f"{path.name}: names outside public roster at entry indices {invalid_indices}"
