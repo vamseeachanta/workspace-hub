@@ -337,3 +337,21 @@ def test_every_committed_snapshot_names_hosts_by_label_only(path):
     """#3944: a raw machine name that is not hostname-shaped (a VM or laptop
     name) also fails, because every host value must be an approved label."""
     assert fsl.public_host_values_ok(json.loads(path.read_text(encoding="utf-8")))
+
+
+@pytest.mark.parametrize("path", sorted(SNAPSHOT_DIR.glob("*.json")), ids=lambda p: p.name)
+def test_snapshot_names_use_exact_public_label_list(path):
+    """Every snapshot name belongs to the owner's finite public fleet roster."""
+    labels = {
+        "ace-linux-1", "ace-linux-2", "ace-win-1", "ace-win-2",
+        "fleet-collector", "gpu-claw", "mac-1", "spark-1",
+    }
+    data = json.loads(path.read_text(encoding="utf-8"))
+    assert isinstance(data.get("machines"), list), path.name
+    invalid_indices = [
+        index for index, machine in enumerate(data["machines"])
+        if not isinstance(machine, dict)
+        or not isinstance(machine.get("name"), str)
+        or machine["name"] not in labels
+    ]
+    assert invalid_indices == [], f"{path.name}: names outside public roster at entry indices"

@@ -11,7 +11,7 @@
   },
   "machines": [
     {
-      "name": "muse-vm",
+      "name": "fleet-collector",
       "reachable": true,
       "branch": "main",
       "head": "0f8f91e6e",
@@ -43,7 +43,7 @@
       "note": "ssh_unreachable"
     },
     {
-      "name": "acma-ws014",
+      "name": "ace-win-2",
       "reachable": true,
       "branch": "main",
       "head": "205fc2978",
@@ -52,7 +52,7 @@
       "dirty": 16
     },
     {
-      "name": "acma-hou-rds02",
+      "name": "ace-win-1",
       "reachable": true,
       "branch": "main",
       "head": "5a075f688",
@@ -61,12 +61,12 @@
       "dirty": 10
     },
     {
-      "name": "macbook-air",
+      "name": "mac-1",
       "reachable": false,
       "note": "ssh_unreachable"
     },
     {
-      "name": "spark-a681",
+      "name": "spark-1",
       "reachable": false,
       "note": "ssh_unreachable"
     }
