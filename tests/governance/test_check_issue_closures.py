@@ -462,6 +462,76 @@ def test_rule_3_requires_merged_pr_on_default_branch(reference, merged, state, o
     assert checker.check_evidence_reference(item).verdict == verdict
 
 
+@pytest.mark.parametrize("reference, verdict", [
+    ("#2026", "PASS"),
+    ("PR #2026", "PASS"),
+    ("PR 2026", "PASS"),
+    ("pr 2026", "PASS"),
+    ("pull request #2026", "PASS"),
+    ("https://github.com/o/r/pull/2026", "PASS"),
+    ("o/r#2026", "PASS"),
+    ("(PR #2026)", "PASS"),
+    ("Evidence: #2026.", "PASS"),
+    ("Apr 2026", "FAIL"),
+    ("Sept 2026", "FAIL"),
+    ("January 2026", "FAIL"),
+    ("v2026", "FAIL"),
+    ("abc2026", "FAIL"),
+    ("2026", "FAIL"),
+    ("Apr 3", "FAIL"),
+    ("expr 12", "FAIL"),
+    ("xPR 2026", "FAIL"),
+    ("_PR 2026", "FAIL"),
+    ("word#2026", "FAIL"),
+    ("#2026suffix", "FAIL"),
+    ("PR 2026suffix", "FAIL"),
+    ("PR #2026_suffix", "FAIL"),
+    ("o/r#2026suffix", "FAIL"),
+    ("https://github.com/o/r/pull/2026suffix", "FAIL"),
+])
+def test_rule_3_reference_markers_and_token_boundaries(reference, verdict):
+    item = {
+        "repository_slug": "o/r",
+        "comments": [{"closing_evidence": True, "body": f"{reference}; scripts/a.py; 1 passed"}],
+        "pull_requests": [
+            {"number": number, "merged": True, "merge_commit_sha": "abcdef1"}
+            for number in (3, 12, 2026)
+        ],
+        "default_branch_shas": ["abcdef1"],
+        "paths_at_refs": {"scripts/a.py": True},
+    }
+    assert checker.check_evidence_reference(item).verdict == verdict
+
+
+@pytest.mark.parametrize("reference, accepted", [
+    ("PR #2026", True),
+    ("PR 2026", True),
+    ("pull request #2026", True),
+    ("https://github.com/o/r/pull/2026", True),
+    ("o/r#2026", True),
+    ("Apr 2026", False),
+    ("word#2026", False),
+    ("PR #2026suffix", False),
+])
+def test_live_collection_uses_only_explicit_reference_tokens(monkeypatch, reference, accepted):
+    reader = FakeReader({
+        "repos/o/r/issues/1/comments?per_page=100": ([{
+            "body": f"{reference}; scripts/a.py; 1 passed",
+        }], None),
+        "repos/o/r/issues/2026": {"number": 2026, "pull_request": {"url": "https://api.github.com/repos/o/r/pulls/2026"}},
+        "repos/o/r/pulls/2026": {
+            "merged_at": "2026-01-01T00:00:00Z", "merge_commit_sha": "abcdef1",
+        },
+        "repos/o/r/compare/main...abcdef1": {"status": "behind"},
+        "repos/o/r/contents/scripts/a.py?ref=abcdef1": {"type": "file"},
+    })
+    monkeypatch.setattr(checker, "_body_edit_status", lambda *args: False)
+    item = checker._neutral_issue({"number": 1}, reader, "o/r")
+    assert ("repos/o/r/pulls/2026" in reader.api_routes) is accepted
+    assert item["default_branch_shas"] == (["abcdef1"] if accepted else [])
+    assert checker.check_evidence_reference(item).verdict == ("PASS" if accepted else "FAIL")
+
+
 def test_reopened_successor_remains_unresolved(monkeypatch):
     fixture = json.loads((FIXTURE.parent / "issue-closure-references.json").read_text())
     monkeypatch.setattr(checker, "_body_edit_status", lambda *args: False)

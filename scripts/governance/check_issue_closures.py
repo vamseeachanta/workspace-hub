@@ -31,11 +31,11 @@ from urllib.parse import quote, urlsplit
 
 
 API_BUDGET = 500
-EVIDENCE_REF = re.compile(r"(?:\b(?=[0-9a-f]{7,40}\b)(?=[0-9a-f]*[a-f])[0-9a-f]{7,40}\b|#(?P<issue>\d+)|PR\s*#?(?P<pr>\d+))", re.I)
+EVIDENCE_REF = re.compile(r"(?:\b(?=[0-9a-f]{7,40}\b)(?=[0-9a-f]*[a-f])[0-9a-f]{7,40}\b|(?<!\w)#(?P<issue>\d+)(?!\w)|(?<!\w)PR\s*#?(?P<pr>\d+)(?!\w))", re.I)
 PATH_REF = re.compile(r"(?<![\w/.:\\-])(?:scripts|tests|docs|reports|src|config)/[A-Za-z0-9._/\-]+")
 TEST_COUNT = re.compile(r"\b\d+\s+(?:passed|pass|failed|fail|skipped|skip|tests?)\b", re.I)
 CHECKBOX = re.compile(r"^\s*-\s+\[(?P<mark>[ xX])\]\s*(?P<text>.*)$", re.M)
-ISSUE_REF = re.compile(r"(?:(?P<repository>[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+))?#(?P<number>\d+)")
+ISSUE_REF = re.compile(r"(?<!\w)(?:(?P<repository>[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+))?#(?P<number>\d+)(?!\w)")
 URL_REF = re.compile(r"https://(?:api\.)?github\.com/(?:repos/)?(?P<repository>[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+)/(?P<kind>issues|pulls?)/(?P<number>\d+)\b")
 HEDGE = re.compile(r"\b(deferred|follow-up|partial|stub|placeholder|tracked elsewhere)\b", re.I)
 NOT_EVALUATED = "NOT_EVALUATED"

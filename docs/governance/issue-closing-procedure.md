@@ -41,11 +41,11 @@ The checker is read-only, and runs on each closing event (webhook or nightly) an
 |---|---|---|
 | 1 | Closer is a merged PR, a comment, or nothing; a closing event that cites a commit with no PR | commit-only or nothing: FAIL |
 | 2 | PR merged head equals the approved review head, and a reviewer is recorded | mismatch: FAIL; review record unavailable: NOT_EVALUATED |
-| 3 | Comment has a default-branch SHA, a merged PR with its merge SHA on the default branch, or a completed issue with its own verified SHA/PR and test-count evidence; each cited path exists at a verified revision | any missing: FAIL |
+| 3 | Comment has a default-branch SHA, a merged PR with its merge SHA on the default branch, or a completed issue with its own verified SHA/PR and test-count evidence; each cited path exists at a verified revision, which may be supplied by that completed issue | any missing: FAIL |
 | 4 | Comment has a test command with a count | missing: FAIL (WARN for not-planned closures) |
-| 5 | Every body checkbox is ticked or followed by an open `#M` | otherwise FAIL |
+| 5 | Every body checkbox is ticked or followed by an open `#M` (not reopened; see A.4) | otherwise FAIL |
 | 6 | Duplicate, superseded or not-planned closures name a successor or a decision, and the successor resolves and is open or itself closed under these rules | otherwise FAIL |
-| 7 | Hedge words (deferred, follow-up, partial, stub, placeholder, tracked elsewhere) are followed by an open `#M` | otherwise FAIL |
+| 7 | Hedge words (deferred, follow-up, partial, stub, placeholder, tracked elsewhere) are followed by an open `#M` (not reopened; see A.4) | otherwise FAIL |
 | 8 | Same actor closed more than 5 issues within 10 minutes | each without test 3: FAIL |
 | 9 | Closed within 60 s of creation with no comment (import) | FAIL |
 | 10 | Body edited after the closing time | WARN; edit history unavailable: NOT_EVALUATED |
