@@ -1,0 +1,27 @@
+{
+  "reopened": {
+    "timeline": [
+      {"event": "closed"},
+      {"event": "reopened"}
+    ],
+    "responses": {
+      "repos/o/r/issues/7": {"state": "open", "state_reason": "reopened"}
+    }
+  },
+  "cross_repository": {
+    "responses": {
+      "repos/o/r/pulls/7": {
+        "merged_at": "2026-01-01T00:00:00Z",
+        "merge_commit_sha": "abcdef1",
+        "body": "scripts/a.py; pytest: 1 passed"
+      },
+      "repos/o/other/pulls/7": {
+        "merged_at": null,
+        "merge_commit_sha": null,
+        "body": ""
+      },
+      "repos/o/r/compare/main...abcdef1": {"status": "behind"},
+      "repos/o/r/contents/scripts/a.py?ref=abcdef1": {"type": "file"}
+    }
+  }
+}

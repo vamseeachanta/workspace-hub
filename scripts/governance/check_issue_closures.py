@@ -15,6 +15,7 @@ be read is reported as NOT_EVALUATED instead of inferred.
 from __future__ import annotations
 
 import argparse
+from bisect import bisect_right
 import csv
 from dataclasses import dataclass
 from datetime import datetime, timedelta
@@ -26,15 +27,16 @@ import subprocess
 import sys
 import tempfile
 from typing import Iterable
-from urllib.parse import quote
+from urllib.parse import quote, urlsplit
 
 
 API_BUDGET = 500
 EVIDENCE_REF = re.compile(r"(?:\b(?=[0-9a-f]{7,40}\b)(?=[0-9a-f]*[a-f])[0-9a-f]{7,40}\b|#(?P<issue>\d+)|PR\s*#?(?P<pr>\d+))", re.I)
-PATH_REF = re.compile(r"\b(?:scripts|tests|docs|reports|src|config)/[A-Za-z0-9._/\-]+")
+PATH_REF = re.compile(r"(?<![\w/.:\\-])(?:scripts|tests|docs|reports|src|config)/[A-Za-z0-9._/\-]+")
 TEST_COUNT = re.compile(r"\b\d+\s+(?:passed|pass|failed|fail|skipped|skip|tests?)\b", re.I)
 CHECKBOX = re.compile(r"^\s*-\s+\[(?P<mark>[ xX])\]\s*(?P<text>.*)$", re.M)
-ISSUE_REF = re.compile(r"#(?P<number>\d+)")
+ISSUE_REF = re.compile(r"(?:(?P<repository>[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+))?#(?P<number>\d+)")
+URL_REF = re.compile(r"https://(?:api\.)?github\.com/(?:repos/)?(?P<repository>[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+)/(?P<kind>issues|pulls?)/(?P<number>\d+)\b")
 HEDGE = re.compile(r"\b(deferred|follow-up|partial|stub|placeholder|tracked elsewhere)\b", re.I)
 NOT_EVALUATED = "NOT_EVALUATED"
 
@@ -98,6 +100,23 @@ def successor_ok(issue: dict, number: str | int) -> bool:
     return state in {"open", "pass", "closed:completed", "completed"}
 
 
+def issue_references(text: str) -> list[str]:
+    refs = []
+    for match in ISSUE_REF.finditer(text):
+        repository = match.group("repository")
+        number = match.group("number")
+        refs.append(f"{repository}#{number}" if repository else number)
+    refs.extend(f"{match.group('repository')}#{match.group('number')}" for match in URL_REF.finditer(text))
+    return refs
+
+
+def reference_target(reference: str, repo: str) -> tuple[str, int]:
+    if "#" in reference:
+        repository, number = reference.rsplit("#", 1)
+        return repository, int(number)
+    return repo, int(reference)
+
+
 def has_decision_text(text: str) -> bool:
     lowered = text.lower()
     return any(term in lowered for term in (
@@ -107,20 +126,36 @@ def has_decision_text(text: str) -> bool:
     ))
 
 
-def evidence_status(issue: dict) -> tuple[bool, bool, list[str]]:
+def evidence_status(issue: dict, *, allow_issue_reference: bool = True) -> tuple[bool, bool, list[str]]:
     evidence = closure_evidence_text(issue)
     reasons: list[str] = []
     has_reference = False
+    refs = issue_references(evidence)
     for match in EVIDENCE_REF.finditer(evidence):
         token = match.group(0)
-        if token.startswith("#"):
-            state = successor_state(issue, token[1:])
-            has_reference = has_reference or state is not None
-        elif token.lower().startswith("pr"):
-            pr_number = int(re.sub(r"\D", "", token))
-            has_reference = has_reference or any(pr.get("number") == pr_number for pr in issue.get("pull_requests", []))
-        else:
+        if token.lower().startswith("pr"):
+            refs.append(re.sub(r"\D", "", token))
+        elif not token.startswith("#"):
             has_reference = has_reference or token in issue.get("default_branch_shas", [])
+    for ref in refs:
+        repo = issue.get("repository_slug", "")
+        ref_repo, ref_number = reference_target(ref, repo)
+        if ref_repo.lower() != repo.lower():
+            continue
+        has_reference = has_reference or any(
+            pr.get("number") == ref_number
+            and pr.get("merged")
+            and pr.get("merge_commit_sha") in issue.get("default_branch_shas", [])
+            for pr in issue.get("pull_requests", [])
+        )
+        linked = (issue.get("successor_states") or {}).get(ref)
+        if allow_issue_reference and isinstance(linked, dict):
+            own_evidence = linked.get("evidence")
+            if (str(linked.get("state", "")).lower() == "closed"
+                    and normalize_state_reason(linked.get("state_reason")) == "COMPLETED"
+                    and not linked.get("is_pull_request") and isinstance(own_evidence, dict)):
+                own_ok, own_tests, _ = evidence_status(own_evidence, allow_issue_reference=False)
+                has_reference = has_reference or (own_ok and own_tests)
     if not has_reference:
         reasons.append("no resolving default-branch SHA or pull request")
     paths = [path.rstrip(".,);:") for path in PATH_REF.findall(evidence)]
@@ -181,7 +216,7 @@ def check_body_checkboxes(issue: dict) -> RuleResult:
     for match in CHECKBOX.finditer(issue.get("body") or ""):
         if match.group("mark").lower() == "x":
             continue
-        refs = ISSUE_REF.findall(match.group("text"))
+        refs = issue_references(match.group("text"))
         if not any(successor_ok(issue, ref) for ref in refs):
             failures.append(match.group("text").strip() or "unticked checkbox")
     if failures:
@@ -195,7 +230,7 @@ def check_successor_or_decision(issue: dict) -> RuleResult:
     applies = state_reason in {"NOT_PLANNED", "DUPLICATE"} or re.search(r"\b(duplicate|superseded)\b", text, re.I)
     if not applies:
         return RuleResult(6, "PASS", "successor rule not triggered")
-    refs = ISSUE_REF.findall(text)
+    refs = issue_references(text)
     if any(successor_ok(issue, ref) for ref in refs) or has_decision_text(text):
         return RuleResult(6, "PASS", "successor or decision resolves")
     return RuleResult(6, "FAIL", "not-planned, duplicate, or superseded closure lacks resolving successor or decision")
@@ -205,7 +240,7 @@ def check_hedges(issue: dict) -> RuleResult:
     bad = []
     for line in text_blob(issue).splitlines():
         if HEDGE.search(line):
-            refs = ISSUE_REF.findall(line)
+            refs = issue_references(line)
             if not any(successor_ok(issue, ref) for ref in refs):
                 bad.append(line.strip())
     if bad:
@@ -218,15 +253,19 @@ def check_bulk(issue: dict, closures: list[dict]) -> RuleResult:
     closed_at = parse_instant(issue.get("closed_at"))
     if not actor or not closed_at:
         return RuleResult(8, "PASS", "bulk rule not triggered")
-    window_start = closed_at - timedelta(minutes=10)
-    peers = [
-        item for item in closures
+    window = timedelta(minutes=10)
+    stamps = sorted(
+        stamp for item in closures
         if item.get("closed_by") == actor
         and (stamp := parse_instant(item.get("closed_at"))) is not None
-        and window_start <= stamp <= closed_at + timedelta(minutes=10)
-    ]
+    )
+    exceeds_threshold = any(
+        bisect_right(stamps, start + window) - index > 5
+        for index, start in enumerate(stamps)
+        if start <= closed_at <= start + window
+    )
     rule3_ok, _has_test, _reasons = evidence_status(issue)
-    if len(peers) > 5 and not rule3_ok:
+    if exceeds_threshold and not rule3_ok:
         return RuleResult(8, "FAIL", "bulk closure lacks rule-3 evidence")
     return RuleResult(8, "PASS", "bulk threshold not exceeded or evidence present")
 
@@ -363,7 +402,7 @@ def _login(value: object) -> str:
     return ""
 
 
-def _closed_by_timeline(timeline: list[object], commit_id: str | None) -> tuple[str, str]:
+def _closed_by_timeline(timeline: list[object]) -> tuple[str, str]:
     closer_type = "nothing"
     closed_by = ""
     for item in timeline:
@@ -372,7 +411,7 @@ def _closed_by_timeline(timeline: list[object], commit_id: str | None) -> tuple[
         event = item.get("event")
         if event == "closed":
             closed_by = _login(item.get("actor"))
-            if item.get("commit_id") or commit_id:
+            if item.get("commit_id"):
                 closer_type = "commit"
             else:
                 closer_type = "comment"
@@ -452,21 +491,18 @@ def _on_default_branch(reader: GitHubReader, repo: str, default_branch: str, sha
     return isinstance(compare, dict) and compare.get("status") in {"behind", "identical"}
 
 
-def _neutral_issue(raw: dict, reader: GitHubReader, repo: str) -> dict:
+def _neutral_issue(raw: dict, reader: GitHubReader, repo: str, *, collect_successor_evidence: bool = True) -> dict:
     number = raw["number"]
     comments, _comment_total = reader.paginated_api(f"repos/{repo}/issues/{number}/comments?per_page=100")
-    events, _event_total = reader.paginated_api(f"repos/{repo}/issues/{number}/events?per_page=100")
     timeline, _timeline_total = reader.paginated_api(f"repos/{repo}/issues/{number}/timeline?per_page=100")
     repo_info = reader.try_api(f"repos/{repo}")
     default_branch = "main"
     if isinstance(repo_info, dict):
         default_branch = repo_info.get("default_branch") or default_branch
     closed_at = raw.get("closed_at")
-    commit_id = None
-    for event in events:
-        if isinstance(event, dict) and event.get("event") == "closed" and event.get("commit_id"):
-            commit_id = event.get("commit_id")
-    closer_type, closed_by = _closed_by_timeline(timeline, commit_id)
+    closed_events = [event for event in timeline if isinstance(event, dict) and event.get("event") == "closed"]
+    commit_id = closed_events[-1].get("commit_id") if closed_events else None
+    closer_type, closed_by = _closed_by_timeline(timeline)
     if closer_type == "commit" and commit_id and _commit_closes_via_default_merged_pr(reader, repo, commit_id, default_branch):
         closer_type = "merged_pr"
     neutral_comments = [
@@ -486,19 +522,51 @@ def _neutral_issue(raw: dict, reader: GitHubReader, repo: str) -> dict:
     for sha in shas:
         if _on_default_branch(reader, repo, default_branch, sha):
             default_branch_shas.append(sha)
+    successor_states = {}
+    linked_issues = {}
+    for ref in issue_references(evidence):
+        ref_repo, ref_number = reference_target(ref, repo)
+        linked = reader.try_api(f"repos/{ref_repo}/issues/{ref_number}")
+        linked_issues[ref] = linked
+        if isinstance(linked, dict):
+            state = {"state": linked.get("state"), "state_reason": normalize_state_reason(linked.get("state_reason")), "is_pull_request": bool(linked.get("pull_request"))}
+            successor_states[ref] = state
+            if (collect_successor_evidence and ref_repo.lower() == repo.lower()
+                    and str(state["state"]).lower() == "closed" and state["state_reason"] == "COMPLETED"
+                    and not state["is_pull_request"]):
+                own_evidence = _neutral_issue(linked, reader, ref_repo, collect_successor_evidence=False)
+                state["evidence"] = own_evidence
+                own_ok, own_tests, _ = evidence_status(own_evidence, allow_issue_reference=False)
+                if own_ok and own_tests:
+                    default_branch_shas.extend(own_evidence["default_branch_shas"])
     pull_requests = []
+    foreign_pull_requests = []
     pr_numbers = {int(re.sub(r"\D", "", match.group(0))) for match in EVIDENCE_REF.finditer(evidence) if match.group(0).lower().startswith("pr")}
+    pr_targets = {(repo, pr_number) for pr_number in pr_numbers}
+    for ref in issue_references(evidence):
+        ref_repo, ref_number = reference_target(ref, repo)
+        if "#" in ref:
+            pr_targets.add((ref_repo, ref_number))
+        else:
+            linked = linked_issues.get(ref)
+            if isinstance(linked, dict) and linked.get("pull_request"):
+                pr_targets.add((ref_repo, ref_number))
     for item in timeline:
         if isinstance(item, dict):
             source = item.get("source") or {}
             issue = source.get("issue") or {}
             pr_url = ((issue.get("pull_request") or {}).get("url")) if isinstance(issue, dict) else None
             if pr_url:
-                pr_numbers.add(int(pr_url.rstrip("/").split("/")[-1]))
-    for pr_number in sorted(pr_numbers):
-        pr = reader.try_api(f"repos/{repo}/pulls/{pr_number}")
+                target = re.fullmatch(r"/(?:repos/)?([A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+)/pulls?/(\d+)/?", urlsplit(pr_url).path)
+                if target:
+                    pr_targets.add((target.group(1), int(target.group(2))))
+    for pr_repo, pr_number in sorted(pr_targets):
+        pr = reader.try_api(f"repos/{pr_repo}/pulls/{pr_number}")
         if isinstance(pr, dict):
-            reviewed_head, reviewer = _review_record(pr, reader, repo, pr_number)
+            if pr_repo.lower() != repo.lower():
+                foreign_pull_requests.append({"repository": pr_repo, "number": pr_number, "merged": bool(pr.get("merged_at"))})
+                continue
+            reviewed_head, reviewer = _review_record(pr, reader, pr_repo, pr_number)
             merge_commit_sha = pr.get("merge_commit_sha")
             pull_requests.append({
                 "number": pr_number,
@@ -509,13 +577,8 @@ def _neutral_issue(raw: dict, reader: GitHubReader, repo: str) -> dict:
                 "merge_commit_sha": merge_commit_sha,
                 "body": pr.get("body") or "",
             })
-            if merge_commit_sha and _on_default_branch(reader, repo, default_branch, merge_commit_sha):
+            if pr.get("merged_at") and merge_commit_sha and _on_default_branch(reader, repo, default_branch, merge_commit_sha):
                 default_branch_shas.append(merge_commit_sha)
-    successor_states = {}
-    for ref in ISSUE_REF.findall(evidence):
-        linked = reader.try_api(f"repos/{repo}/issues/{ref}")
-        if isinstance(linked, dict):
-            successor_states[ref] = {"state": linked.get("state"), "state_reason": normalize_state_reason(linked.get("state_reason"))}
     paths_at_refs = {}
     for path in {item.rstrip(".,);:") for item in PATH_REF.findall(evidence)}:
         paths_at_refs[path] = False
@@ -525,6 +588,7 @@ def _neutral_issue(raw: dict, reader: GitHubReader, repo: str) -> dict:
                 break
     return {
         "repository": repo.split("/")[-1],
+        "repository_slug": repo,
         "number": number,
         "state_reason": normalize_state_reason(raw.get("state_reason")),
         "created_at": raw.get("created_at"),
@@ -534,6 +598,7 @@ def _neutral_issue(raw: dict, reader: GitHubReader, repo: str) -> dict:
         "body": raw.get("body") or "",
         "comments": neutral_comments,
         "pull_requests": pull_requests,
+        "foreign_pull_requests": foreign_pull_requests,
         "default_branch_shas": sorted(set(default_branch_shas)),
         "paths_at_refs": paths_at_refs,
         "successor_states": successor_states,
@@ -592,7 +657,7 @@ def write_markdown(path: Path, evaluations: list[dict], auditor: dict[int, str] 
     lines = ["# Issue Closure Check Summary", "", f"- PASS: {counts['PASS']}", f"- WARN: {counts['WARN']}", f"- FAIL: {counts['FAIL']}"]
     if auditor:
         matches = sum(1 for item in evaluations if checker_class(item["verdict"]) == auditor.get(item["number"]))
-        total = len(evaluations)
+        total = sum(item["number"] in auditor for item in evaluations)
         rate = 0 if total == 0 else matches / total
         lines.extend(["", f"- Auditor agreement: {matches}/{total} ({rate:.1%})"])
     lines.extend(["", "| Repository | Issue | Verdict | Auditor class |", "|---|---:|---|---|"])
@@ -603,16 +668,6 @@ def write_markdown(path: Path, evaluations: list[dict], auditor: dict[int, str] 
 
 def checker_class(verdict: str) -> str:
     return {"PASS": "DONE", "WARN": "PARTLY DONE", "FAIL": "CLOSED WITHOUT DELIVERY"}[verdict]
-
-
-def auditor_mapping() -> dict[str, str]:
-    return {
-        "DONE": "PASS",
-        "PARTLY DONE": "WARN",
-        "SUPERSEDED": "WARN",
-        "NOT PLANNED OR OBSOLETE": "WARN",
-        "CLOSED WITHOUT DELIVERY": "FAIL",
-    }
 
 
 def main(argv: list[str] | None = None) -> int:

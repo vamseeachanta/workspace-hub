@@ -7,7 +7,7 @@ This page merges four audit procedures. An audit of 3,752 closed issues on 2026-
 1. **A merged PR** whose description says `Closes #N`, one line per issue, merged into the default branch at the head the reviewing role approved. One role builds and a different one reviews. The builder does not merge its own PR.
 2. **An evidence comment (section B)** by the builder for work that landed through another PR, posted after the reviewing role has agreed on the issue.
 3. **Not planned**, with one of these: a maintainer decision, quoted with its date; a retired tool or process, named with its retirement reference; or a passed date that the issue itself depended on.
-4. **Duplicate or superseded**, written as `Superseded by #M`. The successor is open, or itself closed under these rules. Every unfinished acceptance item has been copied into it first. A chain that ends in a closure without delivery counts as not delivered.
+4. **Duplicate or superseded**, written as `Superseded by #M`. The successor is open, or itself closed under these rules. A reopened successor remains unresolved until its replacement scope is assessed. Every unfinished acceptance item has been copied into it first. A chain that ends in a closure without delivery counts as not delivered.
 5. **Nothing else.** This excludes: a push to a branch; a draft or unmerged PR; a commit message (closing keywords never go in commits); a migration, triage, sync or stale script; a "Status: done" line; elapsed time; an archived target repository; "implemented locally" or "unpushed"; "evidence recorded in the triage pass"; a comment that restates the plan; and a claim about a machine that no committed record backs.
 
 ## B. What a closing comment carries
@@ -22,7 +22,7 @@ This page merges four audit procedures. An audit of 3,752 closed issues on 2026-
 
 ## C. Bulk actions, migrations and bodies
 
-1. An agent closes at most 5 issues in one session. Each closure needs its own section-B comment; template comments do not count. More than 3 closures by one actor within a minute is treated as a defect and reviewed.
+1. An agent closes at most 5 issues in one session. Each closure needs its own section-B comment; template comments do not count. More than 5 closures by one actor within 10 minutes is reviewed; each closure without section-E rule-3 evidence fails the checker.
 2. Scripts may label, comment and propose closures. A person or an agent closes each issue individually.
 3. Imported records are created OPEN unless each one carries section-B evidence. No duplicate records are created.
 4. The body of a closed issue is never edited to carry new scope. New scope goes in a new issue that links the old one.
@@ -41,7 +41,7 @@ The checker is read-only, and runs on each closing event (webhook or nightly) an
 |---|---|---|
 | 1 | Closer is a merged PR, a comment, or nothing; a closing event that cites a commit with no PR | commit-only or nothing: FAIL |
 | 2 | PR merged head equals the approved review head, and a reviewer is recorded | mismatch: FAIL; review record unavailable: NOT_EVALUATED |
-| 3 | Comment has a SHA or PR that resolves and is an ancestor of the default branch; each cited path exists at it | any missing: FAIL |
+| 3 | Comment has a default-branch SHA, a merged PR with its merge SHA on the default branch, or a completed issue with its own verified SHA/PR and test-count evidence; each cited path exists at a verified revision | any missing: FAIL |
 | 4 | Comment has a test command with a count | missing: FAIL (WARN for not-planned closures) |
 | 5 | Every body checkbox is ticked or followed by an open `#M` | otherwise FAIL |
 | 6 | Duplicate, superseded or not-planned closures name a successor or a decision, and the successor resolves and is open or itself closed under these rules | otherwise FAIL |
