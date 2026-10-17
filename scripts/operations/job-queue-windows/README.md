@@ -26,10 +26,25 @@ entries touched in the last 60 minutes. Set the environment variable
 `WORKTREE_KEEP_MINUTES` to a positive integer to override that interval.
 Failed lock or activity probes keep the worktree and record the reason.
 
+The review's later-pass option retains that activity window. A keep caused only
+by recent activity creates `logs/recent-cleanup/<id>`. Each unpaused pump pass
+calls `run-job.sh cleanup-recent all none <config>` before disk admission and
+queue selection, including when the queue is empty or disk space is low. The
+literal `all` selects the retry batch; it is not a job to start. At most 32 due
+markers are retried per invocation, after a full retention interval since the
+last keep or failed attempt. Each retry calls the existing `cleanup <id>` path
+and rechecks every guard. New activity postpones another attempt; another keep
+reason removes the marker and leaves the worktree for manual disposition.
+Successful removal clears the marker. Identical keep-log records are not appended
+again. This requires later invocations of the integrated pump; no scheduler is
+installed and a stopped or paused pump cannot reclaim worktrees.
+
 `pump.ps1 -DryRun` probes both disks and applies queue gates without launching.
 `run-job.sh cleanup <id> none <config> --dry-run` prints the keep reason or
 "would remove" without changing worktrees or the keep log. Keep-log sizes use KiB;
 size-probe failures are recorded as `unknown`.
+`run-job.sh cleanup-recent all none <config> --dry-run` also preserves retry
+markers. Run under Git Bash with `/usr/bin` first on `PATH` so `find` is GNU find.
 
 `-FreeSpaceProbe` and `-Launcher` are explicit PowerShell test parameters; ambient
 environment variables cannot replace the disk measurement or launcher.

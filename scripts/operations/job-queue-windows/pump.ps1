@@ -85,6 +85,30 @@ function Get-RunningState([string]$LocksRoot) {
   return @{ Slots = $slots; Ids = $ids }
 }
 
+function Invoke-RecentCleanup([string]$Path) {
+  $psi = New-Object System.Diagnostics.ProcessStartInfo
+  $psi.FileName = 'bash'
+  if ($env:JOB_QUEUE_BASH) { $psi.FileName = $env:JOB_QUEUE_BASH }
+  $runner = (Join-Path $PSScriptRoot 'run-job.sh') -replace '\\','/'
+  $fullConfig = ([System.IO.Path]::GetFullPath($Path)) -replace '\\','/'
+  $psi.Arguments = '"' + $runner + '" cleanup-recent all none "' + $fullConfig + '"'
+  if ($DryRun) { $psi.Arguments += ' --dry-run' }
+  $psi.UseShellExecute = $false
+  $psi.CreateNoWindow = $true
+  $psi.RedirectStandardOutput = $true
+  $psi.RedirectStandardError = $true
+  $process = [System.Diagnostics.Process]::Start($psi)
+  try {
+    $stdout = $process.StandardOutput.ReadToEndAsync()
+    $stderr = $process.StandardError.ReadToEndAsync()
+    $process.WaitForExit()
+    $text = ($stdout.Result + $stderr.Result) -replace '[\r\n]+',' / '
+    Write-PumpLog $queueRoot ('action=cleanup-pass rc=' + $process.ExitCode + ' output=[' + $text + ']')
+  } finally {
+    $process.Dispose()
+  }
+}
+
 $config = Read-LocalConfig $ConfigPath
 $queueRoot = $config.QUEUE_ROOT
 $queueFile = Join-Path $queueRoot 'queue.txt'
@@ -95,6 +119,15 @@ $pauseFile = Join-Path $queueRoot 'PAUSE'
 $limits = Read-Limits (Join-Path $queueRoot 'limits.txt') ([int]($config.MIN_DISK_FREE_GB))
 
 New-Item -ItemType Directory -Force -Path $logs,$locks | Out-Null
+
+# A paused integration stays paused. Otherwise reclamation precedes disk holds
+# and queue selection, so low space or an empty queue cannot starve later passes.
+if (-not (Test-Path -LiteralPath $pauseFile) -and
+    (Test-Path -LiteralPath (Join-Path $logs 'recent-cleanup'))) {
+  try { Invoke-RecentCleanup $ConfigPath } catch {
+    Write-PumpLog $queueRoot 'action=cleanup-pass-failed worktrees=kept'
+  }
+}
 
 try {
   $cloneFree = Get-FreeDiskGb $config.CLONE_ROOT 'clone'

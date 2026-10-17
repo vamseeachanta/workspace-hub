@@ -98,11 +98,22 @@ ignored_kind_ok() {
 }
 
 append_keep() {
-  local wt="$1" reason="$2" size="0"
+  local wt="$1" reason="$2" size="0" record retry_dir
   if $dry_run; then printf 'keep: %s: %s\n' "$id" "$reason"; return 0; fi
   mkdir -p "$QUEUE_ROOT/logs"
+  retry_dir="$QUEUE_ROOT/logs/recent-cleanup"
+  if [ "$reason" = "worktree was touched recently" ]; then
+    mkdir -p "$retry_dir"
+    touch -- "$retry_dir/$id"
+  else
+    rm -f -- "$retry_dir/$id"
+  fi
   if [ -d "$wt" ]; then size=$(du -sk -- "$wt" 2>/dev/null | awk '{print $1}') || size=unknown; fi
-  printf '%s\t%s\t%s\t%s\n' "$id" "$wt" "$size" "$reason" >> "$QUEUE_ROOT/logs/kept-worktrees.tsv"
+  record=$(printf '%s\t%s\t%s\t%s' "$id" "$wt" "$size" "$reason")
+  if [ ! -f "$QUEUE_ROOT/logs/kept-worktrees.tsv" ] ||
+     ! grep -Fxq -- "$record" "$QUEUE_ROOT/logs/kept-worktrees.tsv"; then
+    printf '%s\n' "$record" >> "$QUEUE_ROOT/logs/kept-worktrees.tsv"
+  fi
 }
 
 is_pushed() {
@@ -190,11 +201,47 @@ cleanup_worktree() (
   if $dry_run; then printf 'would remove: %s\n' "$id"; return 0; fi
   clone=$(git -C "$wt" rev-parse --path-format=absolute --git-common-dir) || { append_keep "$wt" "git common directory lookup failed"; return 0; }
   clone=${clone%/.git}
-  err=$(git -C "$clone" worktree remove "$wt" 2>&1) && return 0
-  rc=$?
+  if err=$(git -C "$clone" worktree remove "$wt" 2>&1); then
+    rm -f -- "$QUEUE_ROOT/logs/recent-cleanup/$id"
+    return 0
+  else
+    rc=$?
+  fi
   reason="git worktree remove refused"
   if [ ! -e "$wt/.git" ]; then reason="removal failed; tree may be partial"; fi
   append_keep "$wt" "$reason: exit $rc: $(printf '%s' "$err" | tr '\t\r\n' '   ' | cut -c1-160)"
+)
+
+# Retry only recent-only keeps, at most 32 due entries per pump invocation.
+# Child execution preserves errexit in cleanup_worktree; no job is started here.
+cleanup_recent() (
+  read_config
+  local retry_dir marker retry_id due count=0 keep_minutes
+  local -a retry_args=()
+  retry_dir="$QUEUE_ROOT/logs/recent-cleanup"
+  keep_minutes=${WORKTREE_KEEP_MINUTES:-$DEFAULT_WORKTREE_KEEP_MINUTES}
+  [[ $keep_minutes =~ ^[0-9]+$ && $keep_minutes =~ [1-9] ]] ||
+    die "invalid worktree retention minutes"
+  [ -d "$retry_dir" ] || return 0
+  if $dry_run; then retry_args=(--dry-run); fi
+  for marker in "$retry_dir"/*; do
+    [ -f "$marker" ] && [ ! -L "$marker" ] || continue
+    retry_id=${marker##*/}
+    case "$retry_id" in ""|*[!a-z0-9-]*) continue;; esac
+    due=$(find "$marker" -maxdepth 0 -type f ! -mmin "-$keep_minutes" -print) ||
+      die "retry activity probe failed; worktrees kept"
+    [ -n "$due" ] || continue
+    count=$((count + 1))
+    printf 'retry cleanup: %s\n' "$retry_id"
+    if "$BASH" "$0" cleanup "$retry_id" none "$config_path" "${retry_args[@]}"; then
+      :
+    else
+      printf 'cleanup retry failed: %s; worktree kept\n' "$retry_id" >&2
+      # Back off operational failures too, so one entry cannot monopolize a pass.
+      $dry_run || touch -- "$marker"
+    fi
+    [ "$count" -lt 32 ] || break
+  done
 )
 
 # Recheck immediately before creating a worktree, including direct launcher use.
@@ -228,6 +275,7 @@ start_job() {
 case "$cmd" in
   start) start_job;;
   cleanup) cleanup_worktree;;
+  cleanup-recent) cleanup_recent;;
   path-check)
     read_config
     repo="$(job_repo)"

@@ -1,5 +1,4 @@
 max_running=8
 max_starts_per_run=4
-min_free_gb=60
 per_repo_max=3
 min_disk_free_gb=50
