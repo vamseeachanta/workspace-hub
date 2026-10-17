@@ -225,7 +225,7 @@ cleanup_recent() (
   [ -d "$retry_dir" ] || return 0
   if $dry_run; then retry_args=(--dry-run); fi
   for marker in "$retry_dir"/*; do
-    [ -f "$marker" ] && [ ! -L "$marker" ] || continue
+    if [ ! -f "$marker" ] || [ -L "$marker" ]; then continue; fi
     retry_id=${marker##*/}
     case "$retry_id" in ""|*[!a-z0-9-]*) continue;; esac
     due=$(find "$marker" -maxdepth 0 -type f ! -mmin "-$keep_minutes" -print) ||
@@ -233,12 +233,12 @@ cleanup_recent() (
     [ -n "$due" ] || continue
     count=$((count + 1))
     printf 'retry cleanup: %s\n' "$retry_id"
-    if "$BASH" "$0" cleanup "$retry_id" none "$config_path" "${retry_args[@]}"; then
+    # Record before starting: even an outer kill must leave this entry backed off.
+    $dry_run || touch -- "$marker"
+    if timeout --kill-after=2s 15s "$BASH" "$0" cleanup "$retry_id" none "$config_path" "${retry_args[@]}"; then
       :
     else
-      printf 'cleanup retry failed: %s; worktree kept\n' "$retry_id" >&2
-      # Back off operational failures too, so one entry cannot monopolize a pass.
-      $dry_run || touch -- "$marker"
+      printf 'cleanup retry failed: %s; inspect worktree and keep log\n' "$retry_id" >&2
     fi
     [ "$count" -lt 32 ] || break
   done

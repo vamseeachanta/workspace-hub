@@ -1,6 +1,8 @@
 """Deferred cleanup uses only disposable repositories and aged retry markers."""
 
 import os
+import shlex
+import shutil
 import subprocess
 import time
 
@@ -183,6 +185,53 @@ def test_failed_child_is_backed_off_without_starving_next_job(tmp_path):
     assert "retry cleanup" not in again.stdout
 
 
+@pytest.mark.parametrize("dry_run", [False, True])
+def test_stalled_remote_probe_is_bounded_and_next_entry_runs(tmp_path, monkeypatch, dry_run):
+    queue, _, _, wt, config = retain_recent(tmp_path)
+    age_worktree(wt)
+    age_retry(queue)
+    marker = retry_path(queue)
+    before = marker.stat().st_mtime_ns
+    write_text(retry_path(queue, "next"), "")
+    age_retry(queue, "next")
+    tools = tmp_path / "tools"
+    calls = tmp_path / "remote-probes.txt"
+    real_git = shutil.which("git")
+    write_text(tools / "git", f'''#!/usr/bin/env bash
+if [[ "$*" == *'refs/remotes/origin/jobs/run-done'* ]]; then exit 1; fi
+if [[ "$*" == *'ls-remote origin'* ]]; then
+  printf 'probe\\n' >> {shlex.quote(str(calls))}
+  trap '' TERM
+  sleep 60
+  exit 1
+fi
+exec {shlex.quote(real_git)} "$@"
+''')
+    (tools / "git").chmod(int("755", 8))
+    monkeypatch.setenv("PATH", str(tools) + os.pathsep + os.environ["PATH"])
+    started = time.monotonic()
+    result = run(["bash", str(SCRIPT_DIR / "run-job.sh"), "cleanup-recent", "all",
+                  "none", str(config), *(["--dry-run"] if dry_run else [])],
+                 check=False, timeout=25)
+    assert result.returncode == 0, result.stderr
+    assert time.monotonic() - started < 25
+    assert "cleanup retry failed: done" in result.stderr
+    assert "retry cleanup: next" in result.stdout
+    assert wt.exists()
+    assert (marker.stat().st_mtime_ns == before) == dry_run
+    if not dry_run:
+        assert not retry_path(queue, "next").exists()
+        again = runner(config, "cleanup-recent", "all")
+        assert "retry cleanup" not in again.stdout
+        assert calls.read_text().splitlines() == ["probe"]
+
+
+def test_retry_records_attempt_before_starting_child():
+    runner_text = (SCRIPT_DIR / "run-job.sh").read_text()
+    batch = runner_text.split("cleanup_recent()", 1)[1].split("disk_floor_check()", 1)[0]
+    assert batch.index('$dry_run || touch -- "$marker"') < batch.index('if timeout ')
+
+
 @WINDOWS_ONLY
 @pytest.mark.parametrize("mode", ["disk-hold", "empty", "dry-run", "paused"])
 def test_pump_retries_cleanup_before_admission(tmp_path, mode):
@@ -211,7 +260,7 @@ def test_pump_wires_guarded_pass_before_disk_admission():
     call = pump.index("Invoke-RecentCleanup $ConfigPath")
     assert call < pump.index("$cloneFree = Get-FreeDiskGb")
     assert "cleanup-recent" in pump
-    assert "$psi.Arguments = '-l \"'" in pump
+    assert "$psi.Arguments = '-lc \"'" in pump
     assert "min_free_gb=" not in (SCRIPT_DIR / "limits.txt").read_text()
 
 
@@ -219,10 +268,13 @@ def test_pump_bounds_cleanup_and_disables_interactive_git():
     pump = (SCRIPT_DIR / "pump.ps1").read_text()
     assert "if (-not $process.WaitForExit(600000))" in pump
     assert "taskkill.exe /T /F /PID $process.Id" in pump
-    assert "action=cleanup-pass-timeout worktrees=kept" in pump
+    assert "$action = 'cleanup-pass-timeout worktrees=inspect-log'" in pump
     assert "$psi.EnvironmentVariables['GIT_TERMINAL_PROMPT'] = '0'" in pump
     assert "$psi.EnvironmentVariables['GCM_INTERACTIVE'] = 'never'" in pump
     assert "$process.WaitForExit()" not in pump
+    assert ".Result" not in pump
+    assert "recent-cleanup.out" in pump
+    assert "ReadToEndAsync" not in pump
 
 
 @WINDOWS_ONLY
@@ -242,6 +294,8 @@ public class SleepingBash {
             new string[] { Process.GetCurrentProcess().Id.ToString(),
                 Environment.GetEnvironmentVariable("GIT_TERMINAL_PROMPT"),
                 Environment.GetEnvironmentVariable("GCM_INTERACTIVE"), args[0] });
+        File.WriteAllText(Environment.GetEnvironmentVariable("CLEANUP_CAPTURE"),
+            "retry cleanup: stalled-entry\n");
         Thread.Sleep(660000);
     }
 }
@@ -257,7 +311,9 @@ public class SleepingBash {
     env = os.environ.copy()
     for key in ("GIT_DIR", "GIT_WORK_TREE", "GIT_COMMON_DIR"):
         env.pop(key, None)
-    env.update(JOB_QUEUE_BASH=str(fake_bash), CLEANUP_OBSERVED=str(observed),
+    write_text(config, config.read_text() + f"BASH_EXECUTABLE={fake_bash.as_posix()}\n")
+    env.update(CLEANUP_OBSERVED=str(observed),
+               CLEANUP_CAPTURE=str(queue / "logs" / "recent-cleanup.out"),
                GIT_TERMINAL_PROMPT="1", GCM_INTERACTIVE="always")
     started = time.monotonic()
     result = subprocess.run(
@@ -267,13 +323,14 @@ public class SleepingBash {
     assert result.returncode == 0, result.stderr
     assert 600 <= time.monotonic() - started < 630
     pid, terminal_prompt, interactive, login = observed.read_text().splitlines()
-    assert (terminal_prompt, interactive, login) == ("0", "never", "-l")
+    assert (terminal_prompt, interactive, login) == ("0", "never", "-lc")
     stopped = run(["powershell", "-NoProfile", "-Command",
                    f"if (Get-Process -Id {int(pid)} -ErrorAction SilentlyContinue) "
                    "{ exit 1 }"])
     assert stopped.returncode == 0
     log = (queue / "pump.log").read_text()
-    assert "action=cleanup-pass-timeout worktrees=kept" in log
+    assert "action=cleanup-pass-timeout worktrees=inspect-log" in log
+    assert "retry cleanup: stalled-entry" in log
     assert "reason=no-queue-file" in log
     assert "action=cleanup-pass rc=" not in log
     assert wt.exists() and retry_path(queue).exists()

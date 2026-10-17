@@ -21,17 +21,28 @@ function Read-LocalConfig([string]$Path) {
   return $cfg
 }
 
+function Read-DiskFloor([string]$Value) {
+  $floor = 0
+  if ($Value -notmatch '^[0-9]+$' -or -not [int]::TryParse($Value, [ref]$floor)) {
+    throw 'invalid disk floor'
+  }
+  return [math]::Max($floor, 50)
+}
+
 function Read-Limits([string]$Path, [int]$DiskFloorFromConfig) {
   $limits = @{ max_running = 2; max_starts_per_run = 1; per_repo_max = 0; min_disk_free_gb = $DiskFloorFromConfig }
   if (Test-Path -LiteralPath $Path) {
     foreach ($line in @(Get-Content -LiteralPath $Path -ErrorAction SilentlyContinue)) {
+      if ("$line" -match '^\s*min_disk_free_gb\s*=\s*(.*?)\s*$') {
+        $limits.min_disk_free_gb = [math]::Max($limits.min_disk_free_gb, (Read-DiskFloor $Matches[1]))
+        continue
+      }
       if ("$line" -match '^\s*([a-z_]+)\s*=\s*(\d{1,4})\s*$') {
         $key = $Matches[1]
         $value = [int]$Matches[2]
         if ($key -eq 'max_running' -and $value -ge 1) { $limits[$key] = [math]::Min($value, 8) }
         if ($key -eq 'max_starts_per_run' -and $value -ge 1) { $limits[$key] = [math]::Min($value, 6) }
         if ($key -eq 'per_repo_max' -and $value -ge 1) { $limits[$key] = $value }
-        if ($key -eq 'min_disk_free_gb') { $limits[$key] = [math]::Max($value, 50) }
       }
     }
   }
@@ -85,31 +96,41 @@ function Get-RunningState([string]$LocksRoot) {
   return @{ Slots = $slots; Ids = $ids }
 }
 
+function Quote-Bash([string]$Value) {
+  $quote = [string][char]39
+  $double = [string][char]34
+  return $quote + $Value.Replace($quote, ($quote + $double + $quote + $double + $quote)) + $quote
+}
+
 function Invoke-RecentCleanup([string]$Path) {
   $psi = New-Object System.Diagnostics.ProcessStartInfo
   $psi.FileName = 'bash'
-  if ($env:JOB_QUEUE_BASH) { $psi.FileName = $env:JOB_QUEUE_BASH }
+  if ($config.BASH_EXECUTABLE) { $psi.FileName = $config.BASH_EXECUTABLE }
   $runner = (Join-Path $PSScriptRoot 'run-job.sh') -replace '\\','/'
   $fullConfig = ([System.IO.Path]::GetFullPath($Path)) -replace '\\','/'
-  $psi.Arguments = '-l "' + $runner + '" cleanup-recent all none "' + $fullConfig + '"'
-  if ($DryRun) { $psi.Arguments += ' --dry-run' }
+  $capture = [System.IO.Path]::GetFullPath((Join-Path $queueRoot 'logs/recent-cleanup.out'))
+  $command = (Quote-Bash $runner) + ' cleanup-recent all none ' + (Quote-Bash $fullConfig)
+  if ($DryRun) { $command += ' --dry-run' }
+  $command += ' > ' + (Quote-Bash ($capture -replace '\\','/')) + ' 2>&1'
+  $psi.Arguments = '-lc "' + $command.Replace('"', '\"') + '"'
   $psi.UseShellExecute = $false
   $psi.CreateNoWindow = $true
-  $psi.RedirectStandardOutput = $true
-  $psi.RedirectStandardError = $true
   $psi.EnvironmentVariables['GIT_TERMINAL_PROMPT'] = '0'
   $psi.EnvironmentVariables['GCM_INTERACTIVE'] = 'never'
+  # Capture through the shell, so inherited pipe handles cannot extend the wait.
+  [System.IO.File]::WriteAllText($capture, '')
   $process = [System.Diagnostics.Process]::Start($psi)
   try {
-    $stdout = $process.StandardOutput.ReadToEndAsync()
-    $stderr = $process.StandardError.ReadToEndAsync()
+    $action = 'cleanup-pass'
+    $rc = 'timeout'
     if (-not $process.WaitForExit(600000)) {
       & taskkill.exe /T /F /PID $process.Id | Out-Null
-      Write-PumpLog $queueRoot 'action=cleanup-pass-timeout worktrees=kept'
-      return
+      $action = 'cleanup-pass-timeout worktrees=inspect-log'
+    } else {
+      $rc = $process.ExitCode
     }
-    $text = ($stdout.Result + $stderr.Result) -replace '[\r\n]+',' / '
-    Write-PumpLog $queueRoot ('action=cleanup-pass rc=' + $process.ExitCode + ' output=[' + $text + ']')
+    $text = [System.IO.File]::ReadAllText($capture) -replace '[\r\n]+',' / '
+    Write-PumpLog $queueRoot ('action=' + $action + ' rc=' + $rc + ' output=[' + $text + ']')
   } finally {
     $process.Dispose()
   }
@@ -122,9 +143,16 @@ $logs = Join-Path $queueRoot 'logs'
 $jobs = Join-Path $queueRoot 'jobs'
 $locks = Join-Path $queueRoot 'locks'
 $pauseFile = Join-Path $queueRoot 'PAUSE'
-$limits = Read-Limits (Join-Path $queueRoot 'limits.txt') ([int]($config.MIN_DISK_FREE_GB))
 
 New-Item -ItemType Directory -Force -Path $logs,$locks | Out-Null
+try {
+  $floor = 50
+  if ($config.ContainsKey('MIN_DISK_FREE_GB')) { $floor = Read-DiskFloor $config.MIN_DISK_FREE_GB }
+  $limits = Read-Limits (Join-Path $queueRoot 'limits.txt') $floor
+} catch {
+  Write-PumpLog $queueRoot 'action=hold reason=invalid-disk-floor'
+  exit 0
+}
 
 # A paused integration stays paused. Otherwise reclamation precedes disk holds
 # and queue selection, so low space or an empty queue cannot starve later passes.

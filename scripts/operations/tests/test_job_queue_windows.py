@@ -14,13 +14,13 @@ SCRIPT_DIR = REPO_ROOT / "scripts" / "operations" / "job-queue-windows"
 WINDOWS_ONLY = pytest.mark.skipif(os.name != "nt", reason="Windows PowerShell required")
 
 
-def run(cmd, cwd=None, env=None, check=True):
+def run(cmd, cwd=None, env=None, check=True, timeout=None):
     merged = os.environ.copy()
     merged.update(env or {})
     for key in ("GIT_DIR", "GIT_WORK_TREE", "GIT_COMMON_DIR"):
         merged.pop(key, None)
     merged["PYTHONDONTWRITEBYTECODE"] = "1"
-    result = subprocess.run(cmd, cwd=cwd, env=merged, text=True, capture_output=True)
+    result = subprocess.run(cmd, cwd=cwd, env=merged, text=True, capture_output=True, timeout=timeout)
     if check and result.returncode != 0:
         raise AssertionError(f"{cmd} failed\nstdout={result.stdout}\nstderr={result.stderr}")
     return result
@@ -363,6 +363,32 @@ def test_public_scripts_and_install_contract():
     install = (SCRIPT_DIR / "INSTALL.md").read_text()
     assert "Do not copy" in install
     assert "cleanup" in install and "-DryRun" in install
+
+
+def test_shell_executable_is_selected_from_configuration():
+    for name in ("pump.ps1", "launch.ps1"):
+        text = (SCRIPT_DIR / name).read_text()
+        assert "$env:JOB_QUEUE_BASH" not in text
+        assert ".BASH_EXECUTABLE" in text
+
+
+@WINDOWS_ONLY
+@pytest.mark.parametrize("config_floor,limit_floor,expected", [
+    ("80", "50", "clone-disk-under-80GB"),
+    ("50", "80", "clone-disk-under-80GB"),
+    ("invalid", "50", "invalid-disk-floor"),
+    ("50", "invalid", "invalid-disk-floor"),
+    ("50", "-1", "invalid-disk-floor"),
+])
+def test_pump_disk_floor_precedence_and_invalid_values(tmp_path, config_floor, limit_floor, expected):
+    queue, _, _, _, config = make_repo(tmp_path)
+    write_text(config, config.read_text().replace("MIN_DISK_FREE_GB=50", f"MIN_DISK_FREE_GB={config_floor}"))
+    write_text(queue / "limits.txt", f"min_disk_free_gb={limit_floor}\n")
+    command = (f"& '{(SCRIPT_DIR / 'pump.ps1').as_posix()}' "
+               f"-ConfigPath '{config.as_posix()}' -DryRun "
+               "-FreeSpaceProbe { param($root,$role) 60 }")
+    run(["powershell", "-NoProfile", "-Command", command])
+    assert "reason=" + expected in (queue / "pump.log").read_text()
 
 
 def disk_probe_fixture(tmp_path, monkeypatch, available):

@@ -20,6 +20,13 @@ runner are integration examples, not complete replacements for live scripts.
    selection, even when no new job can start. Preserve `CreateNoWindow` and
    captured output/exit status for the synchronous Bash child. Do not route
    cleanup through the asynchronous job launcher or acquire a job slot for it.
+   Preserve the login shell (`-lc`), absolute runner/configuration paths,
+   `GIT_TERMINAL_PROMPT=0` and `GCM_INTERACTIVE=never`. Preserve the ten-minute
+   outer wait and `taskkill /T /F` on expiry, including partial output capture in
+   `logs/recent-cleanup.out`; a timeout requires inspection of earlier progress.
+   Preserve the marker refresh before each attempt and GNU coreutils `timeout`
+   with its 15-second limit and two-second forced-kill grace period. These keep
+   an interrupted entry from blocking every subsequent pass.
    The example `start` command only creates a worktree; it does not execute jobs
    or call cleanup. Its command dispatch must not replace the live dispatch.
 7. Against a disposable queue, run `pump.ps1 -ConfigPath <config> -DryRun` and
@@ -44,6 +51,11 @@ report a keep reason in both dry-run and normal cleanup before resuming work.
 Use Git Bash with `/usr/bin` first on `PATH`; the activity and retry probes require
 GNU find, not the Windows text-search command. Use the same environment, retention
 override and configuration for immediate cleanup and later pump invocations.
+GNU coreutils `timeout` must also be available. Configure `BASH_EXECUTABLE` if
+`bash` does not resolve to the intended executable; environment overrides are
+not used. The largest configured floor applies in the pump; invalid values hold
+admission. Keep `MIN_DISK_FREE_GB` at least as high as the limits-file floor so
+the independent runner check protects direct launches too.
 `min_disk_free_gb=50` is the sole disk-floor key in the example limits file;
 `min_free_gb` is obsolete and is not read.
 

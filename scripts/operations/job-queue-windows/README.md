@@ -11,6 +11,7 @@ The scripts read their local values from `job-queue.local.conf`, which is intent
 - `DEFAULT_REPOSITORY`: repository used when a job spec omits `REPO`.
 - `REPOSITORY_ALLOW_LIST`: comma-separated local repository allow-list.
 - `MIN_DISK_FREE_GB`: disk floor; values below 50 are raised to 50.
+- `BASH_EXECUTABLE`: optional Bash executable; defaults to `bash`.
 
 The committed scripts are neutralized for a public repository. They contain no live queue path, repository namespace, default repository name, or private allow-list.
 
@@ -45,6 +46,26 @@ installed and a stopped or paused pump cannot reclaim worktrees.
 size-probe failures are recorded as `unknown`.
 `run-job.sh cleanup-recent all none <config> --dry-run` also preserves retry
 markers. Run under Git Bash with `/usr/bin` first on `PATH` so `find` is GNU find.
+
+Each due marker is refreshed before the child starts, so interruption also backs
+off that entry for a full retention interval. GNU coreutils `timeout` bounds each
+attempt to 15 seconds, followed by a forced kill after a two-second grace period.
+A timed-out attempt retains its marker; inspect the worktree and keep log because
+interrupted removal may be partial. Later entries can still run.
+Dry-run leaves marker times unchanged, including when a probe times out.
+
+The pump starts cleanup in a login shell (`-lc`) with absolute runner and
+configuration paths. It sets `GIT_TERMINAL_PROMPT=0` and `GCM_INTERACTIVE=never`.
+The whole pass has a ten-minute outer bound; on expiry, `taskkill /T /F` terminates
+the child tree. Output goes to `logs/recent-cleanup.out`, allowing the pump to
+report partial progress without waiting on inherited pipes. A timeout does not
+establish whether earlier entries were removed; inspect that output and the keep
+log. Preserve these controls when integrating functions into live scripts.
+
+The pump uses the largest disk floor from configuration, `min_disk_free_gb` in
+the limits file, and 50 GB. Invalid floor values hold admission with a log reason.
+The runner independently enforces the configuration floor before creating a tree;
+set it at least as high as the limits-file floor for direct launcher use.
 
 `-FreeSpaceProbe` and `-Launcher` are explicit PowerShell test parameters; ambient
 environment variables cannot replace the disk measurement or launcher.

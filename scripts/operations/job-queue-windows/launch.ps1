@@ -21,7 +21,7 @@ if ($Script -notmatch '^[A-Za-z0-9._-]+\.sh$') { Write-Output 'bad script name';
 if ($A1 -notmatch '^[a-z0-9-]+$' -or $A2 -notmatch '^[a-z0-9-]+$') { Write-Output 'bad argument'; exit 1 }
 
 $cfg = Read-LocalConfig $ConfigPath
-$bash = $env:JOB_QUEUE_BASH
+$bash = $cfg.BASH_EXECUTABLE
 if (-not $bash) { $bash = 'bash' }
 $scriptPath = Join-Path $PSScriptRoot $Script
 $out = Join-Path (Join-Path $cfg.QUEUE_ROOT 'logs') ($A1 + '.launch.out')
