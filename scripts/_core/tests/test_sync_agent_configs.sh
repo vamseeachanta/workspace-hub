@@ -81,7 +81,7 @@ for arg in sys.argv[1:]:
     path = pathlib.Path(arg)
     with path.open('rb') as fh:
         data = tomllib.load(fh)
-    if data.get('model') != 'gpt-5.5':
+    if 'model' in data:
         raise SystemExit(1)
     if data.get('model_reasoning_effort') != 'medium':
         raise SystemExit(1)
@@ -110,7 +110,6 @@ EOF
 {}
 EOF
     cat > "$ws_root/config/agents/codex/config.toml" <<'EOF'
-model = "gpt-5.5"
 model_reasoning_effort = "medium"
 
 [status_line]
@@ -335,7 +334,6 @@ run_invalid_template_atomicity_test() {
     make_workspace "$ws_root"
     mkdir -p "$home_root" "$tmp_area"
     cat > "$ws_root/config/agents/codex/config.toml" <<'EOF'
-model = "gpt-5.5"
 model_reasoning_effort = "medium"
 
 [status_line]
@@ -405,7 +403,98 @@ run_hermes_soul_no_clobber_test() {
     rm -rf "$tmpdir"
 }
 
+run_user_model_preservation_test() {
+    local tmpdir ws_root home_root model_line
+    for model_line in 'model = "user-choice"' '  "model"  = "user-choice" # keep spacing' "'model' = 'user-choice'"; do
+        tmpdir="$(mktemp -d)"
+        ws_root="$tmpdir/ws"
+        home_root="$tmpdir/home"
+        make_workspace "$ws_root"
+        mkdir -p "$home_root/.codex"
+        printf '%s\r\n' "$model_line" > "$tmpdir/model-line"
+        cat "$tmpdir/model-line" > "$home_root/.codex/config.toml"
+        printf '\n[features]\njs_repl = true\n' >> "$home_root/.codex/config.toml"
+        cat "$home_root/.codex/config.toml" > "$ws_root/.codex/config.toml"
+        if HOME="$home_root" bash "$ws_root/scripts/_core/sync-agent-configs.sh" > "$tmpdir/output" 2>&1; then
+            pass "user model sync completed"
+        else
+            fail "user model sync completed"
+        fi
+        if python3 - "$tmpdir/model-line" "$home_root/.codex/config.toml" "$ws_root/.codex/config.toml" <<'PY'
+import pathlib
+import sys
+import tomllib
+
+expected = pathlib.Path(sys.argv[1]).read_bytes()
+for name in sys.argv[2:]:
+    data = pathlib.Path(name).read_bytes()
+    assert expected in data.splitlines(keepends=True)
+    assert tomllib.loads(data.decode())['model'] == 'user-choice'
+PY
+        then
+            pass "user and repository model lines preserved byte for byte"
+        else
+            fail "user and repository model lines preserved byte for byte"
+        fi
+    done
+}
+
+run_unpinned_user_test() {
+    local tmpdir ws_root home_root mode
+    for mode in create merge; do
+        tmpdir="$(mktemp -d)"
+        ws_root="$tmpdir/ws"
+        home_root="$tmpdir/home"
+        make_workspace "$ws_root"
+        mkdir -p "$home_root/.codex"
+        printf 'model_provider = "local"\n' > "$ws_root/.codex/config.toml"
+        if [[ "$mode" == merge ]]; then
+            printf 'model_provider = "local"\n' > "$home_root/.codex/config.toml"
+        fi
+        if HOME="$home_root" bash "$ws_root/scripts/_core/sync-agent-configs.sh" > "$tmpdir/output" 2>&1; then
+            pass "unpinned user $mode sync completed"
+        else
+            fail "unpinned user $mode sync completed"
+        fi
+        assert_managed_keys_root_only "unpinned user $mode adds no model" \
+            "$home_root/.codex/config.toml" "$ws_root/.codex/config.toml"
+    done
+}
+
+run_pinned_template_refusal_test() {
+    local tmpdir ws_root home_root key mode
+    for key in model '"model"' "'model'"; do
+        for mode in normal --force --dry-run; do
+            tmpdir="$(mktemp -d)"
+            ws_root="$tmpdir/ws"
+            home_root="$tmpdir/home"
+            make_workspace "$ws_root"
+            mkdir -p "$home_root/.codex"
+            printf '  %s = "template-choice"\n' "$key" > "$ws_root/config/agents/codex/config.toml"
+            printf 'model = "user-choice"\n' > "$home_root/.codex/config.toml"
+            cp "$home_root/.codex/config.toml" "$tmpdir/before"
+            local -a options=()
+            [[ "$mode" == normal ]] || options=("$mode")
+            if HOME="$home_root" bash "$ws_root/scripts/_core/sync-agent-configs.sh" "${options[@]}" > "$tmpdir/output" 2>&1; then
+                fail "pinned template refused"
+            else
+                pass "pinned template refused"
+            fi
+            if cmp -s "$tmpdir/before" "$home_root/.codex/config.toml" \
+                && [[ ! -e "$home_root/.claude" && ! -e "$home_root/.gemini" ]] \
+                && grep -qi 'remove.*model.*template' "$tmpdir/output"; then
+                pass "refusal preserves targets and explains removal"
+            else
+                fail "refusal preserves targets and explains removal"
+            fi
+        done
+    done
+}
+
 echo "=== test_sync_agent_configs.sh ==="
+run_user_model_preservation_test
+run_unpinned_user_test
+run_pinned_template_refusal_test
 run_hermes_soul_no_clobber_test
 run_sanitize_test
 run_multiline_string_preservation_test

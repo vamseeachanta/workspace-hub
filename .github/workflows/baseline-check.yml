@@ -60,6 +60,7 @@ jobs:
           uv run python -m pytest tests/test_deduplication_fix.py \
             tests/quality/test_gitleaks_config.py \
             scripts/operations/tests/test_job_queue_windows.py \
+            tests/enforcement/test_check_codex_model_pin.py \
             -v --tb=short --noconftest
 
       # CI smoke tests for #2532 regression guards (workspace_hub importability,
@@ -88,6 +89,10 @@ jobs:
             tests/enforcement/test_check_shell_conditional_helpers_scopes.py \
             tests/enforcement/test_shell_test_guards.py \
             tests/enforcement/test_no_abs_paths_ci_report.py -v --tb=short
+
+      - name: Run storage tests
+        run: |
+          uv run python -m pytest tests/operations/storage -v --tb=short
 
       - name: Generate test summary
         if: always()

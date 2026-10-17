@@ -79,6 +79,7 @@
       "limitations": ["very-long-context", "specialized-domains"],
       "costTier": "medium",
       "modelDetails": {
+        "retired_on": "2026-10-14",
         "name": "gpt-5.5",
         "contextWindow": "128K tokens",
         "speed": "fast"
@@ -101,6 +102,7 @@
       "limitations": ["response-speed", "cost"],
       "costTier": "high",
       "modelDetails": {
+        "retired_on": "2026-10-14",
         "name": "gpt-5.5",
         "contextWindow": "128K tokens",
         "speed": "medium"
@@ -121,6 +123,7 @@
       "limitations": ["complex-reasoning", "advanced-architecture"],
       "costTier": "low",
       "modelDetails": {
+        "retired_on": "2026-08-31",
         "name": "gpt-5.4-mini",
         "contextWindow": "16K tokens",
         "speed": "very-fast"

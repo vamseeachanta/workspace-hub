@@ -9,7 +9,7 @@ Generated: 2026-04-10 | GH: #2098
 | 1 | Pipeline Wall Thickness | digitalmodel/structural/wall_thickness | Demo 2 (72 cases) | DNV-ST-F101, API RP 1111, PD 8010-2 | Production | Multi-code comparison overnight |
 | 2 | Freespan / VIV Screening | digitalmodel/subsea/free_span | Demo 1 (680 cases) | DNV-RP-F105, DNV-RP-C205 | Production | Allowable span maps for pipeline routes |
 | 3 | Deepwater Installation (Lift) | digitalmodel/marine_ops/installation | Demo 3 (180 cases) | DNV-RP-H103, DNV-ST-N001 | Production | Vessel-structure go/no-go matrix |
-| 4 | S-Lay Pipelay | digitalmodel/marine_ops | Demo 4 (60 cases) | DNV-ST-F101 Sec 5, API RP 1111 | Production | Catenary screening for pipe catalog |
+| 4 | S-Lay Pipelay | digitalmodel/marine_ops | Demo 4 (60 cases) | DNV-ST-F101 Sec 5, API RP 1111 | Partial: analytical catenary screening; native validation pending | Catenary screening for pipe catalog |
 | 5 | Rigid Jumper Installation | digitalmodel/marine_ops | Demo 5 (300 cases) | DNV-RP-H103, DNV-OS-F101 | Production | Tie-in feasibility assessment |
 | 6 | Fatigue / S-N Curves | digitalmodel/fatigue/sn_library | Notebook planned (#1692) | DNV-RP-C203, BS 7608, API RP 2A | Production | 221 curves, 17 standards |
 | 7 | Cathodic Protection | digitalmodel/structural/cp | CP demo exists | DNV-RP-B401, NACE SP0169 | Production | Anode sizing and life prediction |
@@ -17,12 +17,13 @@ Generated: 2026-04-10 | GH: #2098
 | 9 | Mooring Design | digitalmodel/mooring | --- | DNV-OS-E301, API RP 2SK | Available | Line sizing, fatigue life |
 | 10 | Riser Analysis | digitalmodel/risers | --- | API RP 2RD, DNV-OS-F201 | Available | Dynamic response, VIV |
 | 11 | Floating Offshore Wind (FOWT) | digitalmodel/mooring + digitalmodel/naval_arch | --- | API RP 2SK, DNV-RP-J203 | Available | O&G-to-FOWT transfer for moorings, installation, and integrity |
-| 12 | On-Bottom Stability | --- | --- | DNV-RP-F109 | Planned (#1835) | Hydrodynamic stability check |
-| 13 | Shore Approach | --- | --- | --- | Planned (#1836) | HDD, trenching, pull-in |
-| 14 | Pipeline CAPEX | --- | --- | --- | Planned (#1837) | Cost estimation |
+| 12 | On-Bottom Stability | digitalmodel/subsea/on_bottom_stability | --- | DNV-RP-F109 | Partial: analytical module; native validation pending (vamseeachanta/digitalmodel#1738 closed) | Hydrodynamic stability check |
+| 13 | Shore Approach | --- | --- | --- | Planned (vamseeachanta/digitalmodel#1739 open) | HDD, trenching, pull-in |
+| 14 | Pipeline CAPEX | --- | --- | --- | Planned (vamseeachanta/digitalmodel#1740 open) | Cost estimation |
 | 15 | Field Development Economics | digitalmodel/field_development | --- | --- | Production | NPV, CAPEX/OPEX, concept screening |
 | 16 | Drilling Rig Fleet | digitalmodel/naval_arch | --- | --- | Production (#2062) | Hull form validation |
 | 17 | Marine Terminal Engineering (LNG / Port Ops) | digitalmodel/mooring + digitalmodel/marine_ops + ACE marine engineering methods | --- | PIANC, OCIMF, SIGTTO, project-specific terminal criteria | Available | Berth operability, mooring/fendering checks, ship/shore transfer interface, harbour response, FSRU/import-export terminal screening |
+| 18 | Installation - pipelines | digitalmodel/installation/pipelay; digitalmodel/pipelay; digitalmodel/subsea/pipeline; digitalmodel/subsea/on_bottom_stability; digitalmodel/solvers/orcaflex/modular_generator | --- | DNV-ST-F101, API RP 1111, DNV-RP-F109 (source attribution; qualification pending) | Partial: analytical screens and model composition; baseline collection blocked; native validation pending | Installation-method coverage and test gaps; no solver-result claim |
 
 ---
 
@@ -30,6 +31,7 @@ Generated: 2026-04-10 | GH: #2098
 
 - **Production**: Module exists, tested, demo-ready
 - **Available**: Module exists, needs demo packaging
+- **Partial**: Analytical code exists; native validation pending
 - **Planned**: Issue created, dependencies known
 
 ---
@@ -41,10 +43,11 @@ Generated: 2026-04-10 | GH: #2098
 | Parametric demos (GTM suite) | 5 |
 | Total parametric cases across demos | 1,292 |
 | Additional demos (CP, PV, S-N) | 3 exist, not in GTM suite |
-| Disciplines with demos | 8 of 17 |
-| Disciplines at Production readiness | 10 of 17 |
-| Disciplines at Available readiness | 4 of 17 |
-| Disciplines at Planned readiness | 3 of 17 |
+| Disciplines with demos | 8 of 18 |
+| Disciplines at Production readiness | 9 of 18 |
+| Disciplines at Available readiness | 4 of 18 |
+| Disciplines at Partial readiness | 3 of 18 |
+| Disciplines at Planned readiness | 2 of 18 |
 
 ---
 
@@ -77,9 +80,9 @@ Generated: 2026-04-10 | GH: #2098
 
 | Discipline | Market Demand | Effort to Build | Priority |
 |-----------|--------------|-----------------|----------|
-| On-Bottom Stability (#1835) | Common RFQ item for pipeline contractors | 2 weeks | Tier 4 --- frequently bundled with wall thickness |
-| Shore Approach (#1836) | Niche but differentiating for shallow water | 3 weeks | Tier 5 --- differentiator for GoM shelf work |
-| Pipeline CAPEX (#1837) | Pairs with every pipeline discipline above | 1 week for screening-level | Tier 4 --- turns engineering into business case |
+| On-Bottom Stability (vamseeachanta/digitalmodel#1738 closed) | Analytical module exists; native validation remains pending | 2 weeks | Tier 4 --- frequently bundled with wall thickness |
+| Shore Approach (vamseeachanta/digitalmodel#1739 open) | Niche but differentiating for shallow water | 3 weeks | Tier 5 --- differentiator for GoM shelf work |
+| Pipeline CAPEX (vamseeachanta/digitalmodel#1740 open) | Pairs with every pipeline discipline above | 1 week for screening-level | Tier 4 --- turns engineering into business case |
 
 ---
 

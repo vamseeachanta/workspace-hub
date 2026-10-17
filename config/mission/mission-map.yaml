@@ -67,7 +67,7 @@ repos:
     sensitivity: public
     mcp_required: true
     mission: "Single source of truth for engineering calculations with standard-clause traceability."
-    objectives: [standards-traced calcs, library-first APIs, golden-test provenance]
+    objectives: [standards-traced calcs, library-first APIs, golden-test provenance, pipeline installation coverage toward validated campaigns]
     explicit: true
     status: active
   - repo: assetutilities
