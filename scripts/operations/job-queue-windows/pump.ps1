@@ -91,17 +91,23 @@ function Invoke-RecentCleanup([string]$Path) {
   if ($env:JOB_QUEUE_BASH) { $psi.FileName = $env:JOB_QUEUE_BASH }
   $runner = (Join-Path $PSScriptRoot 'run-job.sh') -replace '\\','/'
   $fullConfig = ([System.IO.Path]::GetFullPath($Path)) -replace '\\','/'
-  $psi.Arguments = '"' + $runner + '" cleanup-recent all none "' + $fullConfig + '"'
+  $psi.Arguments = '-l "' + $runner + '" cleanup-recent all none "' + $fullConfig + '"'
   if ($DryRun) { $psi.Arguments += ' --dry-run' }
   $psi.UseShellExecute = $false
   $psi.CreateNoWindow = $true
   $psi.RedirectStandardOutput = $true
   $psi.RedirectStandardError = $true
+  $psi.EnvironmentVariables['GIT_TERMINAL_PROMPT'] = '0'
+  $psi.EnvironmentVariables['GCM_INTERACTIVE'] = 'never'
   $process = [System.Diagnostics.Process]::Start($psi)
   try {
     $stdout = $process.StandardOutput.ReadToEndAsync()
     $stderr = $process.StandardError.ReadToEndAsync()
-    $process.WaitForExit()
+    if (-not $process.WaitForExit(600000)) {
+      & taskkill.exe /T /F /PID $process.Id | Out-Null
+      Write-PumpLog $queueRoot 'action=cleanup-pass-timeout worktrees=kept'
+      return
+    }
     $text = ($stdout.Result + $stderr.Result) -replace '[\r\n]+',' / '
     Write-PumpLog $queueRoot ('action=cleanup-pass rc=' + $process.ExitCode + ' output=[' + $text + ']')
   } finally {

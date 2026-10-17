@@ -1,6 +1,7 @@
 """Deferred cleanup uses only disposable repositories and aged retry markers."""
 
 import os
+import subprocess
 import time
 
 import pytest
@@ -210,4 +211,69 @@ def test_pump_wires_guarded_pass_before_disk_admission():
     call = pump.index("Invoke-RecentCleanup $ConfigPath")
     assert call < pump.index("$cloneFree = Get-FreeDiskGb")
     assert "cleanup-recent" in pump
+    assert "$psi.Arguments = '-l \"'" in pump
     assert "min_free_gb=" not in (SCRIPT_DIR / "limits.txt").read_text()
+
+
+def test_pump_bounds_cleanup_and_disables_interactive_git():
+    pump = (SCRIPT_DIR / "pump.ps1").read_text()
+    assert "if (-not $process.WaitForExit(600000))" in pump
+    assert "taskkill.exe /T /F /PID $process.Id" in pump
+    assert "action=cleanup-pass-timeout worktrees=kept" in pump
+    assert "$psi.EnvironmentVariables['GIT_TERMINAL_PROMPT'] = '0'" in pump
+    assert "$psi.EnvironmentVariables['GCM_INTERACTIVE'] = 'never'" in pump
+    assert "$process.WaitForExit()" not in pump
+
+
+@WINDOWS_ONLY
+def test_pump_times_out_sleeping_cleanup_child(tmp_path):
+    queue, _, _, wt, config = retain_recent(tmp_path)
+    fake_bash = tmp_path / "sleeping-bash.exe"
+    observed = tmp_path / "child.txt"
+    # Exercise the production ten-minute bound without shortening its wait.
+    source = r'''
+using System;
+using System.Diagnostics;
+using System.IO;
+using System.Threading;
+public class SleepingBash {
+    public static void Main(string[] args) {
+        File.WriteAllLines(Environment.GetEnvironmentVariable("CLEANUP_OBSERVED"),
+            new string[] { Process.GetCurrentProcess().Id.ToString(),
+                Environment.GetEnvironmentVariable("GIT_TERMINAL_PROMPT"),
+                Environment.GetEnvironmentVariable("GCM_INTERACTIVE"), args[0] });
+        Thread.Sleep(660000);
+    }
+}
+'''
+    compile_command = (
+        "Add-Type -TypeDefinition @'\n" + source + "\n'@ "
+        f"-OutputAssembly '{fake_bash.as_posix()}' -OutputType ConsoleApplication"
+    )
+    run(["powershell", "-NoProfile", "-Command", compile_command])
+    command = (f"& '{(SCRIPT_DIR / 'pump.ps1').as_posix()}' "
+               f"-ConfigPath '{config.as_posix()}' "
+               "-FreeSpaceProbe { param($root,$role) 999 }")
+    env = os.environ.copy()
+    for key in ("GIT_DIR", "GIT_WORK_TREE", "GIT_COMMON_DIR"):
+        env.pop(key, None)
+    env.update(JOB_QUEUE_BASH=str(fake_bash), CLEANUP_OBSERVED=str(observed),
+               GIT_TERMINAL_PROMPT="1", GCM_INTERACTIVE="always")
+    started = time.monotonic()
+    result = subprocess.run(
+        ["powershell", "-NoProfile", "-Command", command],
+        env=env, text=True, capture_output=True, timeout=630,
+    )
+    assert result.returncode == 0, result.stderr
+    assert 600 <= time.monotonic() - started < 630
+    pid, terminal_prompt, interactive, login = observed.read_text().splitlines()
+    assert (terminal_prompt, interactive, login) == ("0", "never", "-l")
+    stopped = run(["powershell", "-NoProfile", "-Command",
+                   f"if (Get-Process -Id {int(pid)} -ErrorAction SilentlyContinue) "
+                   "{ exit 1 }"])
+    assert stopped.returncode == 0
+    log = (queue / "pump.log").read_text()
+    assert "action=cleanup-pass-timeout worktrees=kept" in log
+    assert "reason=no-queue-file" in log
+    assert "action=cleanup-pass rc=" not in log
+    assert wt.exists() and retry_path(queue).exists()
