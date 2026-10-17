@@ -157,7 +157,7 @@ def test_later_find_failure_preserves_tree_and_marker(tmp_path, monkeypatch):
     age_retry(queue)
     tools = tmp_path / "tools"
     write_text(tools / "find", "#!/usr/bin/env bash\nexit 1\n")
-    (tools / "find").chmod(0o755)
+    (tools / "find").chmod(int("755", 8))
     monkeypatch.setenv("PATH", str(tools) + os.pathsep + os.environ["PATH"])
     assert runner(config, "cleanup-recent", "all").returncode != 0
     assert wt.exists() and retry_path(queue).exists()

@@ -25,10 +25,12 @@ entries are used. Fixture child processes clear inherited Git directory bindings
 | --- | --- |
 | Original queue suite plus initial deferred suite | 74 passed, 10 Windows skips |
 | Final deferred suite, including failed-child backoff | 23 passed, 4 Windows skips |
+| Exact Baseline Python selection, including both queue files and model-pin tests | 148 passed, 13 Windows skips |
 | Retained model-pin and storage suites | 273 passed, 8 PowerShell skips |
 | `bash -n` for runner and Bash launcher | Passed |
 | ShellCheck for runner and Bash launcher | Passed through an isolated `shellcheck-py` environment |
 | `git diff --check` | Passed |
+| Advisory model-ID sourcing scan over changed scripts and workflow | No new literals |
 
 Table 1. Local verification against disposable fixtures; skipped cases are not execution proof.
 
@@ -40,7 +42,7 @@ deduplicated keep records, the 32-attempt bound and failed-child backoff.
 Local artifact inspection targeted removal bypasses, dry-run mutations, lost main
 tests, retry starvation and uncaptured child execution. No unresolved defect was
 identified in that inspection. The frozen packet's SHA-256 is
-`f21fecfc99a4f8b3dd0379695a58620df8f7cceb7ed89954685a96f55c9adfcb`;
+`af622420b80a6e3467d42cfc78f2a95e32e55e8d62579fe5a3f850937b779d01`;
 the manifest verifier reported all 10 inputs unchanged. This is local inspection,
 not independent provider consensus. Additional model calls are prohibited for
 this fix-up, so cross-provider review remains outstanding.
