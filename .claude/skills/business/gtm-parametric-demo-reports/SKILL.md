@@ -31,7 +31,7 @@ trigger: manual
 3. **First 5 seconds matter** -- the headline must trigger: "this would take my team 2 weeks"
 4. **Real deliverable feel** -- not a toy, not a slide deck
 5. **Defensible engineering** -- proper code clause refs, safety factors, material data; senior engineers will spot-check
-6. **LIVE MODE teaser** -- plant seed for higher-value retainer: "In LIVE MODE, feed VMMS/IMMS for real-time go/no-go"
+6. **Internal screening notice** -- every output carries the template's internal-screening notice; no sales, retainer or funding pitch (the May 2026 packs were retired as outward documents, maintainer decision 2026-10-13)
 
 ## Data Architecture (Three Layers)
 
@@ -86,9 +86,9 @@ Two cross-demo aggregation files:
 - **Primary**: Interactive HTML with embedded Plotly (single .html file, works offline)
 - **Fallback**: PDF via print-friendly CSS (`@media print` in same HTML)
 - Both from same Python script
-- **Same-day client pack**: when existing GTM HTML exists and the user needs PDFs immediately, generate a branded PDF pack directly from those HTML reports with headless Chrome, add a pack index, visible caveats, and a PDF-only ZIP for email. See `references/client-pdf-packaging.md`.
+- **Same-day client pack (retired for outward use, maintainer decision 2026-10-13)**: historical recipe only, in `references/client-pdf-packaging.md`; do not build or send client packs from demo outputs.
 - **Repo ecosystem flowchart collateral**: when a prospect/pilot conversation needs a one-page explanation of how the engineering consulting repo ecosystem works, review live tier-1 repo roles, draft a self-contained HTML flowchart with clickable GitHub repo links, render to a one-page PDF, and verify page count/text/links. See `references/repo-ecosystem-flowchart-collateral.md`.
-- **Pipeline-company brochure pack**: for pipeline/subsea prospects, package wall thickness multi-code screening, rigid jumper freespan/VIV screening, and optional rigid jumper installation/vessel suitability into a concise HTML+PDF+email bundle. See `references/pipeline-company-brochure-pack.md`.
+- **Pipeline-company brochure pack (retired for outward use, maintainer decision 2026-10-13)**: historical record only, in `references/pipeline-company-brochure-pack.md`; do not build or send prospect packs from demo outputs.
 - **Field-development consulting outreach**: when drafting email to a field development / subsea engineering consulting company, start from `templates/field-development-consulting-outreach.md`; lead with concrete analysis-pack deliverables, low-risk pilot framing, and a 30-minute review ask.
 - **Offshore intervention / HSE / riser outreach**: for prospect-specific outreach around intervention, abandonment, HSE inputs, and riser/OrcaFlex automation, prepare a PII-safe strategy plan and minimum credible collateral packet before sending email. See `references/offshore-intervention-hse-riser-outreach.md`.
 
@@ -98,7 +98,7 @@ Two cross-demo aggregation files:
 - Color-coded pass/fail tables (green/red/amber)
 - Methodology section with code clause references
 - Assumptions and limitations footer
-- LIVE MODE teaser section at bottom
+- Internal screening notice at the bottom (emitted by `add_live_mode_teaser`)
 - Case count in the title: "84 Freespan Cases Screened Overnight"
 
 ## Workflow Steps
@@ -146,12 +146,12 @@ report = GTMReportBuilder(
 report.add_methodology("<p>...</p>")          # Goes first
 report.add_chart("chart_id", plotly_fig, title="...", subtitle="...")
 report.add_table("title", df, status_col="Status")  # Auto color-codes PASS/FAIL
-report.add_live_mode_teaser("this analysis")  # VC funding + VMMS/IMMS pitch
+report.add_live_mode_teaser("this analysis")  # emits the internal-screening notice; no funding or sales block
 report.add_assumptions(["assumption 1", "assumption 2"])
 report.build("output/report.html")
 ```
 
-**Template features**: Inter font, navy/orange brand colors, 8-color chart palette, animated LIVE badge, $500K VC funding badge, CTA mailto link, `@media print` for PDF.
+**Template features**: Inter font, navy/orange brand colors, 8-color chart palette, animated LIVE badge, `@media print` for PDF. The funding badge and the demo mailto were removed when the May 2026 packs were retired as outward documents (maintainer decision, 2026-10-13); outputs are internal screening, not client material.
 
 ## Lifecycle Utilisation Chart Pattern (Wall Thickness Hero Chart)
 

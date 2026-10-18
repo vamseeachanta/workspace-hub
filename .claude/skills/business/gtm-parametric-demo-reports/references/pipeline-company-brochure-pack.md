@@ -1,6 +1,6 @@
 # Pipeline-Company GTM Brochure Pack Pattern
 
-Use when a prospect/outreach request needs client-ready pipeline/subsea brochures from existing `digitalmodel/examples/demos/gtm` assets.
+Historical record of the May 2026 pipeline-company pack, retired as an outward document (maintainer decision 2026-10-13). It is not executable guidance: do not build or send prospect packs from demo outputs, and do not reuse its outreach wording.
 
 ## Proven asset map
 
@@ -71,10 +71,9 @@ Suggested title: **Rigid Jumper Freespan & VIV Screening — DNV-RP-F105 Digital
 
 ### Rigid jumper installation extension
 
-Already has a client-pack PDF from Demo 5:
+Demo 5 results (the May 2026 client-pack PDF is retired as an outward document, maintainer decision 2026-10-13; do not link or send it):
 
 ```text
-examples/demos/gtm/output/client_pdf_pack_2026-05-07/05_rigid_jumper_installation_vessel_capability_digitalmodel.pdf
 examples/demos/gtm/results/demo_05_jumper_installation_results.json
 ```
 
@@ -89,7 +88,7 @@ Verified positioning facts from `demo_05_jumper_installation_results.json`:
 - Jumper lengths: 20, 40, 60, 80, 100 m.
 - Output supports GO / NO_GO installation suitability envelope messaging.
 
-## Recommended output pack
+## Historical output pack (May 2026; retired as an outward document, not for client distribution)
 
 ```text
 examples/demos/gtm/output/pipeline_company_pack_<YYYY-MM-DD>/
@@ -99,14 +98,13 @@ examples/demos/gtm/output/pipeline_company_pack_<YYYY-MM-DD>/
 ├── 01_pipeline_wall_thickness_gtm_brochure_digitalmodel.pdf
 ├── 02_rigid_jumper_viv_gtm_brochure_digitalmodel.html
 ├── 02_rigid_jumper_viv_gtm_brochure_digitalmodel.pdf
-├── 03_rigid_jumper_installation_vessel_capability_existing_digitalmodel.pdf
 ├── pipeline_company_outreach_email.md
 └── digitalmodel_pipeline_company_gtm_pack_<YYYY-MM-DD>.zip
 ```
 
-The index should state the routing logic: wall-thickness first for pipeline design/verification teams, freespan/VIV second for rigid-jumper or span-risk teams, and the installation/vessel-suitability PDF as the optional operating-envelope extension.
+The historical index stated the routing logic: wall-thickness first for pipeline design/verification teams, then freespan/VIV for rigid-jumper or span-risk teams. The installation/vessel-suitability PDF is retired and is not offered.
 
-## Workflow notes
+## Historical workflow notes (May 2026; not current guidance)
 
 1. Verify source files before claiming readiness; use JSON metadata rather than README memory.
 2. If documenting prior outreach, log it in `aceengineer-strategy/pipeline/conversations.md` without personal names or PII.
@@ -114,6 +112,6 @@ The index should state the routing logic: wall-thickness first for pipeline desi
 4. Avoid desperation/underpricing language such as "survival pricing" in outreach copy.
 5. Make the engineering boundary explicit: early screening, option comparison, and traceable reporting; not a replacement for engineering judgment or final certification.
 
-## Example outreach ask
+## Historical outreach ask (May 2026; retired, do not reuse)
 
 > Would you be open to a 30-minute call to review two sample capability packs: a multi-code wall thickness screen and a rigid jumper freespan/VIV screen, with optional vessel installation suitability envelopes?
