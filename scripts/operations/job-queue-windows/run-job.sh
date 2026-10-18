@@ -105,14 +105,18 @@ append_keep() {
   if [ "$reason" = "worktree was touched recently" ]; then
     mkdir -p "$retry_dir"
     touch -- "$retry_dir/$id"
-  else
-    rm -f -- "$retry_dir/$id"
   fi
-  if [ -d "$wt" ]; then size=$(du -sk -- "$wt" 2>/dev/null | awk '{print $1}') || size=unknown; fi
+  if [ -d "$wt" ]; then
+    if size=$(timeout --kill-after=1s 2s du -sk -- "$wt" 2>/dev/null | awk '{print $1}') &&
+       [[ $size =~ ^[0-9]+$ ]]; then :; else size=unknown; fi
+  fi
   record=$(printf '%s\t%s\t%s\t%s' "$id" "$wt" "$size" "$reason")
   if [ ! -f "$QUEUE_ROOT/logs/kept-worktrees.tsv" ] ||
      ! grep -Fxq -- "$record" "$QUEUE_ROOT/logs/kept-worktrees.tsv"; then
     printf '%s\n' "$record" >> "$QUEUE_ROOT/logs/kept-worktrees.tsv"
+  fi
+  if [ "$reason" != "worktree was touched recently" ]; then
+    rm -f -- "$retry_dir/$id"
   fi
 }
 
@@ -120,7 +124,10 @@ is_pushed() {
   local wt="$1" branch="$2" head remote
   head=$(git -C "$wt" rev-parse HEAD)
   remote=$(git -C "$wt" rev-parse -q --verify "refs/remotes/origin/$branch^{commit}" 2>/dev/null || true)
-  [ -n "$remote" ] || remote=$(git -C "$wt" ls-remote origin "refs/heads/$branch" 2>/dev/null | cut -f1 | head -n 1)
+  if [ -z "$remote" ]; then
+    remote=$(timeout --kill-after=2s 15s git -C "$wt" ls-remote origin "refs/heads/$branch" 2>/dev/null |
+      cut -f1 | head -n 1) || return 1
+  fi
   [ -n "$remote" ] || return 1
   [ "$remote" = "$head" ] && return 0
   git -C "$wt" merge-base --is-ancestor "$head" "$remote" 2>/dev/null
@@ -212,11 +219,11 @@ cleanup_worktree() (
   append_keep "$wt" "$reason: exit $rc: $(printf '%s' "$err" | tr '\t\r\n' '   ' | cut -c1-160)"
 )
 
-# Retry only recent-only keeps, at most 32 due entries per pump invocation.
+# Retry only recent-only keeps, at most six due entries per pump invocation.
 # Child execution preserves errexit in cleanup_worktree; no job is started here.
 cleanup_recent() (
   read_config
-  local retry_dir marker retry_id due count=0 keep_minutes
+  local retry_dir marker retry_id due count=0 keep_minutes rc
   local -a retry_args=()
   retry_dir="$QUEUE_ROOT/logs/recent-cleanup"
   keep_minutes=${WORKTREE_KEEP_MINUTES:-$DEFAULT_WORKTREE_KEEP_MINUTES}
@@ -235,12 +242,16 @@ cleanup_recent() (
     printf 'retry cleanup: %s\n' "$retry_id"
     # Record before starting: even an outer kill must leave this entry backed off.
     $dry_run || touch -- "$marker"
-    if timeout --kill-after=2s 15s "$BASH" "$0" cleanup "$retry_id" none "$config_path" "${retry_args[@]}"; then
+    if timeout --kill-after=2s 90s "$BASH" "$0" cleanup "$retry_id" none "$config_path" "${retry_args[@]}"; then
       :
     else
+      rc=$?
+      if [ "$rc" -eq 124 ] || [ "$rc" -eq 137 ]; then
+        ( id="$retry_id"; append_keep "$(worktree_path "$(job_repo)")" "cleanup attempt timed out" )
+      fi
       printf 'cleanup retry failed: %s; inspect worktree and keep log\n' "$retry_id" >&2
     fi
-    [ "$count" -lt 32 ] || break
+    [ "$count" -lt 6 ] || break
   done
 )
 

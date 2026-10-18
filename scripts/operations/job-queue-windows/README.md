@@ -31,7 +31,7 @@ The review's later-pass option retains that activity window. A keep caused only
 by recent activity creates `logs/recent-cleanup/<id>`. Each unpaused pump pass
 calls `run-job.sh cleanup-recent all none <config>` before disk admission and
 queue selection, including when the queue is empty or disk space is low. The
-literal `all` selects the retry batch; it is not a job to start. At most 32 due
+literal `all` selects the retry batch; it is not a job to start. At most six due
 markers are retried per invocation, after a full retention interval since the
 last keep or failed attempt. Each retry calls the existing `cleanup <id>` path
 and rechecks every guard. New activity postpones another attempt; another keep
@@ -43,15 +43,21 @@ installed and a stopped or paused pump cannot reclaim worktrees.
 `pump.ps1 -DryRun` probes both disks and applies queue gates without launching.
 `run-job.sh cleanup <id> none <config> --dry-run` prints the keep reason or
 "would remove" without changing worktrees or the keep log. Keep-log sizes use KiB;
-size-probe failures are recorded as `unknown`.
+size-probe failures, empty output and timeouts are recorded as `unknown`. Size
+collection has a two-second limit and one-second forced-kill grace period. A
+non-recent retry marker is removed only after its keep record is written.
 `run-job.sh cleanup-recent all none <config> --dry-run` also preserves retry
 markers. Run under Git Bash with `/usr/bin` first on `PATH` so `find` is GNU find.
 
 Each due marker is refreshed before the child starts, so interruption also backs
-off that entry for a full retention interval. GNU coreutils `timeout` bounds each
-attempt to 15 seconds, followed by a forced kill after a two-second grace period.
-A timed-out attempt retains its marker; inspect the worktree and keep log because
-interrupted removal may be partial. Later entries can still run.
+off that entry for a full retention interval. GNU coreutils `timeout` bounds the
+remote probe to 15 seconds and each whole attempt to 90 seconds, each followed by
+a two-second forced-kill grace period. A remote timeout keeps the tree as not
+pushed. An entry timeout writes `cleanup attempt timed out` to the keep log and
+ends automatic retries for that tree. Inspect it because interrupted removal may
+be partial. Six bounded entries, including fallback size probes, fit below the
+ten-minute outer wait apart from scheduling and record-writing overhead. Later
+entries can still run. These bounds are limits, not full-size timing measurements.
 Dry-run leaves marker times unchanged, including when a probe times out.
 
 The pump starts cleanup in a login shell (`-lc`) with absolute runner and
@@ -63,7 +69,8 @@ establish whether earlier entries were removed; inspect that output and the keep
 log. Preserve these controls when integrating functions into live scripts.
 
 The pump uses the largest disk floor from configuration, `min_disk_free_gb` in
-the limits file, and 50 GB. Invalid floor values hold admission with a log reason.
+the limits file, and 50 GB. Invalid floor values hold cleanup and admission with
+a log reason.
 The runner independently enforces the configuration floor before creating a tree;
 set it at least as high as the limits-file floor for direct launcher use.
 

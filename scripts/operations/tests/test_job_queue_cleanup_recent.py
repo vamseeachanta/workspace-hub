@@ -144,7 +144,7 @@ def test_later_invalid_window_preserves_tree_and_marker(tmp_path, monkeypatch, m
 
 def test_later_pass_is_bounded_and_continues_on_next_invocation(tmp_path):
     queue, _, _, _, config = make_repo(tmp_path)
-    for index in range(33):
+    for index in range(7):
         job_id = f"old-{index:02d}"
         write_text(retry_path(queue, job_id), "")
         age_retry(queue, job_id)
@@ -215,10 +215,13 @@ exec {shlex.quote(real_git)} "$@"
                  check=False, timeout=25)
     assert result.returncode == 0, result.stderr
     assert time.monotonic() - started < 25
-    assert "cleanup retry failed: done" in result.stderr
+    assert "head is not on its remote branch" in (result.stdout if dry_run else
+                                                (queue / "logs" / "kept-worktrees.tsv").read_text())
     assert "retry cleanup: next" in result.stdout
     assert wt.exists()
-    assert (marker.stat().st_mtime_ns == before) == dry_run
+    assert marker.exists() == dry_run
+    if dry_run:
+        assert marker.stat().st_mtime_ns == before
     if not dry_run:
         assert not retry_path(queue, "next").exists()
         again = runner(config, "cleanup-recent", "all")
@@ -334,3 +337,84 @@ public class SleepingBash {
     assert "reason=no-queue-file" in log
     assert "action=cleanup-pass rc=" not in log
     assert wt.exists() and retry_path(queue).exists()
+
+
+@pytest.mark.parametrize("probe", ["du", "status"])
+def test_slow_local_probe_keeps_a_durable_record(tmp_path, monkeypatch, probe):
+    queue, _, _, wt, config = retain_recent(tmp_path)
+    age_worktree(wt)
+    age_retry(queue)
+    write_text(wt / "dirty.txt", "retain\n")
+    tools = tmp_path / "tools"
+    real_git = shutil.which("git")
+    if probe == "du":
+        body = "sleep 60\n"
+        executable = "du"
+    else:
+        body = (f'if [[ "$*" == *"--untracked-files=all"* ]]; then sleep 18; fi\n'
+                f'exec {shlex.quote(real_git)} "$@"\n')
+        executable = "git"
+    write_text(tools / executable, "#!/usr/bin/env bash\n" + body)
+    (tools / executable).chmod(int("755", 8))
+    monkeypatch.setenv("PATH", str(tools) + os.pathsep + os.environ["PATH"])
+    result = run(["bash", str(SCRIPT_DIR / "run-job.sh"), "cleanup-recent", "all",
+                  "none", str(config)], check=False, timeout=25)
+    assert result.returncode == 0, result.stderr
+    rows = (queue / "logs" / "kept-worktrees.tsv").read_text().splitlines()
+    assert any("changed or untracked files" in row for row in rows)
+    if probe == "du":
+        assert any("\tunknown\t" in row and "changed or untracked files" in row for row in rows)
+    assert wt.exists() and not retry_path(queue).exists()
+
+
+@pytest.mark.parametrize("exit_code", [124, 137])
+def test_entry_timeout_records_keep_and_continues(tmp_path, monkeypatch, exit_code):
+    queue, _, _, wt, config = retain_recent(tmp_path)
+    age_worktree(wt)
+    age_retry(queue)
+    write_text(retry_path(queue, "next"), "")
+    age_retry(queue, "next")
+    tools = tmp_path / "tools"
+    real_timeout = shutil.which("timeout")
+    write_text(tools / "timeout", f'''#!/usr/bin/env bash
+if [[ "$*" == *"cleanup done none"* ]]; then exit {exit_code}; fi
+exec {shlex.quote(real_timeout)} "$@"
+''')
+    (tools / "timeout").chmod(int("755", 8))
+    monkeypatch.setenv("PATH", str(tools) + os.pathsep + os.environ["PATH"])
+    result = runner(config, "cleanup-recent", "all")
+    assert result.returncode == 0, result.stderr
+    assert "cleanup attempt timed out" in (queue / "logs" / "kept-worktrees.tsv").read_text()
+    assert "retry cleanup: next" in result.stdout
+    assert wt.exists() and not retry_path(queue).exists()
+
+
+def test_capture_reader_shares_with_an_active_writer(tmp_path):
+    powershell = shutil.which("pwsh") or shutil.which("powershell")
+    if not powershell:
+        pytest.skip("PowerShell required")
+    capture = tmp_path / "capture.out"
+    write_text(capture, "retry cleanup: pending\n")
+    script = tmp_path / "capture-test.ps1"
+    write_text(script, f'''
+$ErrorActionPreference = 'Stop'
+$ast = [System.Management.Automation.Language.Parser]::ParseFile(
+    '{SCRIPT_DIR / "pump.ps1"}', [ref]$null, [ref]$null)
+$ast.FindAll({{ param($node)
+    $node -is [System.Management.Automation.Language.FunctionDefinitionAst]
+}}, $false) | ForEach-Object {{ Invoke-Expression $_.Extent.Text }}
+$writer = [System.IO.File]::Open('{capture}', 'Open', 'Write', 'ReadWrite')
+try {{
+    $text = Read-CleanupCapture '{capture}'
+    if ($text -notmatch 'retry cleanup: pending') {{ throw 'partial output lost' }}
+}} finally {{ $writer.Dispose() }}
+''')
+    run([powershell, "-NoProfile", "-File", str(script)])
+
+
+def test_capture_errors_preserve_action_and_avoid_kept_claim():
+    pump = (SCRIPT_DIR / "pump.ps1").read_text()
+    assert "[System.IO.File]::WriteAllText($capture" not in pump
+    assert "capture-read-failed" in pump
+    assert "cleanup-pass-failed worktrees=kept" not in pump
+    assert "invalid disk floors hold cleanup" in pump

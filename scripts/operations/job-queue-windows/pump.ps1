@@ -102,6 +102,15 @@ function Quote-Bash([string]$Value) {
   return $quote + $Value.Replace($quote, ($quote + $double + $quote + $double + $quote)) + $quote
 }
 
+function Read-CleanupCapture([string]$Path) {
+  $stream = [System.IO.File]::Open($Path, [System.IO.FileMode]::Open,
+    [System.IO.FileAccess]::Read, [System.IO.FileShare]::ReadWrite)
+  try {
+    $reader = New-Object System.IO.StreamReader($stream)
+    try { return $reader.ReadToEnd() } finally { $reader.Dispose() }
+  } finally { $stream.Dispose() }
+}
+
 function Invoke-RecentCleanup([string]$Path) {
   $psi = New-Object System.Diagnostics.ProcessStartInfo
   $psi.FileName = 'bash'
@@ -118,7 +127,6 @@ function Invoke-RecentCleanup([string]$Path) {
   $psi.EnvironmentVariables['GIT_TERMINAL_PROMPT'] = '0'
   $psi.EnvironmentVariables['GCM_INTERACTIVE'] = 'never'
   # Capture through the shell, so inherited pipe handles cannot extend the wait.
-  [System.IO.File]::WriteAllText($capture, '')
   $process = [System.Diagnostics.Process]::Start($psi)
   try {
     $action = 'cleanup-pass'
@@ -129,7 +137,11 @@ function Invoke-RecentCleanup([string]$Path) {
     } else {
       $rc = $process.ExitCode
     }
-    $text = [System.IO.File]::ReadAllText($capture) -replace '[\r\n]+',' / '
+    try {
+      $text = (Read-CleanupCapture $capture) -replace '[\r\n]+',' / '
+    } catch {
+      $text = 'capture-read-failed; inspect capture file'
+    }
     Write-PumpLog $queueRoot ('action=' + $action + ' rc=' + $rc + ' output=[' + $text + ']')
   } finally {
     $process.Dispose()
@@ -154,12 +166,13 @@ try {
   exit 0
 }
 
-# A paused integration stays paused. Otherwise reclamation precedes disk holds
-# and queue selection, so low space or an empty queue cannot starve later passes.
+# A paused integration stays paused; invalid disk floors hold cleanup as well.
+# Otherwise reclamation precedes disk holds and queue selection, so low space
+# or an empty queue cannot starve later passes.
 if (-not (Test-Path -LiteralPath $pauseFile) -and
     (Test-Path -LiteralPath (Join-Path $logs 'recent-cleanup'))) {
   try { Invoke-RecentCleanup $ConfigPath } catch {
-    Write-PumpLog $queueRoot 'action=cleanup-pass-failed worktrees=kept'
+    Write-PumpLog $queueRoot 'action=cleanup-pass-failed worktrees=inspect-log'
   }
 }
 

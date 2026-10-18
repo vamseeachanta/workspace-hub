@@ -25,8 +25,11 @@ runner are integration examples, not complete replacements for live scripts.
    outer wait and `taskkill /T /F` on expiry, including partial output capture in
    `logs/recent-cleanup.out`; a timeout requires inspection of earlier progress.
    Preserve the marker refresh before each attempt and GNU coreutils `timeout`
-   with its 15-second limit and two-second forced-kill grace period. These keep
-   an interrupted entry from blocking every subsequent pass.
+   with a 15-second network limit, a 90-second entry limit and two-second
+   forced-kill grace periods. Preserve the six-entry batch cap, bounded size
+   collection with `unknown` fallback, and durable timeout keep records. These
+   keep an interrupted entry from blocking every subsequent pass. Capture reads
+   must share active writers and preserve the timeout action on read failure.
    The example `start` command only creates a worktree; it does not execute jobs
    or call cleanup. Its command dispatch must not replace the live dispatch.
 7. Against a disposable queue, run `pump.ps1 -ConfigPath <config> -DryRun` and
@@ -54,14 +57,14 @@ override and configuration for immediate cleanup and later pump invocations.
 GNU coreutils `timeout` must also be available. Configure `BASH_EXECUTABLE` if
 `bash` does not resolve to the intended executable; environment overrides are
 not used. The largest configured floor applies in the pump; invalid values hold
-admission. Keep `MIN_DISK_FREE_GB` at least as high as the limits-file floor so
+cleanup and admission. Keep `MIN_DISK_FREE_GB` at least as high as the limits-file floor so
 the independent runner check protects direct launches too.
 `min_disk_free_gb=50` is the sole disk-floor key in the example limits file;
 `min_free_gb` is obsolete and is not read.
 
 Recent-only keeps create retry markers in `logs/recent-cleanup/`. The existing
 pump invocation cadence supplies the later pass; this change installs no timer
-or persistent scheduler. After the configured interval, at most 32 due markers
+or persistent scheduler. After the configured interval, at most six due markers
 are retried, with all cleanup guards reevaluated. New activity refreshes the retry
 interval. Another guard failure stops automatic retries for that tree and leaves
 its reason in the keep log. Resolve that condition before a manual cleanup call.

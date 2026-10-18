@@ -372,7 +372,6 @@ def test_shell_executable_is_selected_from_configuration():
         assert ".BASH_EXECUTABLE" in text
 
 
-@WINDOWS_ONLY
 @pytest.mark.parametrize("config_floor,limit_floor,expected", [
     ("80", "50", "clone-disk-under-80GB"),
     ("50", "80", "clone-disk-under-80GB"),
@@ -381,13 +380,16 @@ def test_shell_executable_is_selected_from_configuration():
     ("50", "-1", "invalid-disk-floor"),
 ])
 def test_pump_disk_floor_precedence_and_invalid_values(tmp_path, config_floor, limit_floor, expected):
+    powershell = shutil.which("pwsh") or shutil.which("powershell")
+    if not powershell:
+        pytest.skip("PowerShell required")
     queue, _, _, _, config = make_repo(tmp_path)
     write_text(config, config.read_text().replace("MIN_DISK_FREE_GB=50", f"MIN_DISK_FREE_GB={config_floor}"))
     write_text(queue / "limits.txt", f"min_disk_free_gb={limit_floor}\n")
     command = (f"& '{(SCRIPT_DIR / 'pump.ps1').as_posix()}' "
                f"-ConfigPath '{config.as_posix()}' -DryRun "
                "-FreeSpaceProbe { param($root,$role) 60 }")
-    run(["powershell", "-NoProfile", "-Command", command])
+    run([powershell, "-NoProfile", "-Command", command])
     assert "reason=" + expected in (queue / "pump.log").read_text()
 
 
