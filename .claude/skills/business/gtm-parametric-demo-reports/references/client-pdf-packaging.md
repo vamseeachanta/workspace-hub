@@ -2,9 +2,9 @@
 
 > Retired for outward use (maintainer decision, 2026-10-13): the May 2026 client PDF packs are internal screening only. Do not build or send client packs from the demo template; no funding or sales block appears in any output.
 
-Use when the user needs same-day client-facing PDFs from existing GTM HTML material.
+Historical record of the May 2026 recipe. It is not executable guidance: do not run it to build or send client packs.
 
-## Pattern
+## Historical pattern (May 2026; not for client distribution)
 
 1. **Package existing print-friendly HTML first.** Do not wait for a deeper report refactor when the user needs material today. Use current `examples/demos/gtm/output/*.html` reports and add a lightweight client header/caveat/footer.
 2. **Brand with digitalmodel assets.** Prefer `assets/logo/digitalmodel_logo.svg`; base64-embed the SVG in generated wrapper HTML so Chrome can render it without external path issues.

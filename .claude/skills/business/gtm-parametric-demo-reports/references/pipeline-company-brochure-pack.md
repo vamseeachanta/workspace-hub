@@ -88,7 +88,7 @@ Verified positioning facts from `demo_05_jumper_installation_results.json`:
 - Jumper lengths: 20, 40, 60, 80, 100 m.
 - Output supports GO / NO_GO installation suitability envelope messaging.
 
-## Recommended output pack
+## Historical output pack (May 2026; retired as an outward document, not for client distribution)
 
 ```text
 examples/demos/gtm/output/pipeline_company_pack_<YYYY-MM-DD>/
@@ -98,7 +98,6 @@ examples/demos/gtm/output/pipeline_company_pack_<YYYY-MM-DD>/
 ├── 01_pipeline_wall_thickness_gtm_brochure_digitalmodel.pdf
 ├── 02_rigid_jumper_viv_gtm_brochure_digitalmodel.html
 ├── 02_rigid_jumper_viv_gtm_brochure_digitalmodel.pdf
-├── 03_rigid_jumper_installation_vessel_capability_existing_digitalmodel.pdf
 ├── pipeline_company_outreach_email.md
 └── digitalmodel_pipeline_company_gtm_pack_<YYYY-MM-DD>.zip
 ```
