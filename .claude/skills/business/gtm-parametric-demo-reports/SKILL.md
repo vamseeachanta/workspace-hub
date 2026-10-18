@@ -146,12 +146,12 @@ report = GTMReportBuilder(
 report.add_methodology("<p>...</p>")          # Goes first
 report.add_chart("chart_id", plotly_fig, title="...", subtitle="...")
 report.add_table("title", df, status_col="Status")  # Auto color-codes PASS/FAIL
-report.add_live_mode_teaser("this analysis")  # VC funding + VMMS/IMMS pitch
+report.add_live_mode_teaser("this analysis")  # live-mode note only; no funding or sales block
 report.add_assumptions(["assumption 1", "assumption 2"])
 report.build("output/report.html")
 ```
 
-**Template features**: Inter font, navy/orange brand colors, 8-color chart palette, animated LIVE badge, $500K VC funding badge, CTA mailto link, `@media print` for PDF.
+**Template features**: Inter font, navy/orange brand colors, 8-color chart palette, animated LIVE badge, `@media print` for PDF. The funding badge and the demo mailto were removed when the May 2026 packs were retired as outward documents (maintainer decision, 2026-10-13); outputs are internal screening, not client material.
 
 ## Lifecycle Utilisation Chart Pattern (Wall Thickness Hero Chart)
 

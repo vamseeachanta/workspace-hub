@@ -71,10 +71,9 @@ Suggested title: **Rigid Jumper Freespan & VIV Screening — DNV-RP-F105 Digital
 
 ### Rigid jumper installation extension
 
-Already has a client-pack PDF from Demo 5:
+Demo 5 results (the May 2026 client-pack PDF is retired as an outward document, maintainer decision 2026-10-13; do not link or send it):
 
 ```text
-examples/demos/gtm/output/client_pdf_pack_2026-05-07/05_rigid_jumper_installation_vessel_capability_digitalmodel.pdf
 examples/demos/gtm/results/demo_05_jumper_installation_results.json
 ```
 

@@ -1,5 +1,7 @@
 # Client PDF Packaging for GTM Reports
 
+> Retired for outward use (maintainer decision, 2026-10-13): the May 2026 client PDF packs are internal screening only. Do not build or send client packs from the demo template; no funding or sales block appears in any output.
+
 Use when the user needs same-day client-facing PDFs from existing GTM HTML material.
 
 ## Pattern
