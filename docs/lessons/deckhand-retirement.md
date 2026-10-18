@@ -1,0 +1,3 @@
+# Deckhand retirement lessons
+
+Deckhand's retirement lessons preserve reusable guidance for a future Claude or ChatGPT bot: enforce repository permissions below the model, separate authorization from message delivery and knowledge routing, isolate memory and tools, verify deployed changes, and record whether artifacts reached the recipient. The maintainer retained the supporting decisions, patches and incident fixes alongside the [lessons page](https://github.com/vamseeachanta/deckhand/blob/dd6171ee3d1fbd0572b416d03f4677ada4a2cf2e/docs/deckhand/LESSONS.md) (private repository; access required). Future implementations should use repeatable onboarding, explicit approval for privileged actions, and evaluations tied to confirmed exchanges and deployed revisions.
