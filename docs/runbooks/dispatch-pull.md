@@ -147,7 +147,7 @@ Detached payloads are reachable only through the runner's state directory,
 ```bash
 bash scripts/dispatch/run.sh list
 # {"ok":true,"action":"list","count":2,"jobs":[{"job_id":"drain-20260802T023313Z-5bdc00",
-#  "issue_ref":"vamseeachanta/deckhand#33","state":"finished","exit_code":0}, ...]}
+#  "issue_ref":"REPOSITORY#ISSUE","state":"finished","exit_code":0}, ...]}
 
 bash scripts/dispatch/run.sh status --job-id drain-20260802T023313Z-5bdc00
 bash scripts/dispatch/run.sh logs   --job-id drain-20260802T023313Z-5bdc00 --tail 50

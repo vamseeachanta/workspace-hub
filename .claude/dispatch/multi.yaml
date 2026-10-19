@@ -3,55 +3,9 @@ generated_by: dispatch.py
 generated_at: '2026-08-02T03:34:51Z'
 ttl_hours: 24
 title_policy: 'omitted: issue titles are not written to a public tracked file'
+# Deckhand retired 2026-10-18 (deckhand issue 599). Retired repository cards
+# removed.
 cards:
-- gh: vamseeachanta/deckhand#24
-  repo: vamseeachanta/deckhand
-  domain: security
-  provider: claude
-  url: https://github.com/vamseeachanta/deckhand/issues/24
-  dispatch_status: ready
-  wip_eligible: true
-  routed_by: manual
-- gh: vamseeachanta/deckhand#187
-  repo: vamseeachanta/deckhand
-  domain: capability
-  provider: codex
-  url: https://github.com/vamseeachanta/deckhand/issues/187
-  dispatch_status: ready
-  wip_eligible: false
-  routed_by: manual
-- gh: vamseeachanta/deckhand#192
-  repo: vamseeachanta/deckhand
-  domain: routing,security,onboarding
-  provider: claude
-  url: https://github.com/vamseeachanta/deckhand/issues/192
-  dispatch_status: ready
-  wip_eligible: false
-  routed_by: manual
-- gh: vamseeachanta/deckhand#389
-  repo: vamseeachanta/deckhand
-  domain: capability,onboarding
-  provider: claude
-  url: https://github.com/vamseeachanta/deckhand/issues/389
-  dispatch_status: ready
-  wip_eligible: false
-  routed_by: manual
-- gh: vamseeachanta/deckhand#405
-  repo: vamseeachanta/deckhand
-  domain: routing,security,onboarding
-  provider: claude
-  url: https://github.com/vamseeachanta/deckhand/issues/405
-  dispatch_status: ready
-  wip_eligible: false
-  routed_by: manual
-- gh: vamseeachanta/deckhand#577
-  repo: vamseeachanta/deckhand
-  domain: gateway-ops
-  provider: claude
-  url: https://github.com/vamseeachanta/deckhand/issues/577
-  dispatch_status: ready
-  wip_eligible: false
-  routed_by: manual
 - gh: vamseeachanta/digitalmodel#622
   repo: vamseeachanta/digitalmodel
   domain: hydro
@@ -377,86 +331,6 @@ cards:
   domain: null
   provider: claude
   url: https://github.com/vamseeachanta/workspace-hub/issues/3724
-  dispatch_status: ready
-  wip_eligible: false
-  routed_by: manual
-- gh: vamseeachanta/deckhand#38
-  repo: vamseeachanta/deckhand
-  domain: capability
-  provider: claude
-  url: https://github.com/vamseeachanta/deckhand/issues/38
-  dispatch_status: ready
-  wip_eligible: false
-  routed_by: manual
-- gh: vamseeachanta/deckhand#141
-  repo: vamseeachanta/deckhand
-  domain: onboarding
-  provider: claude
-  url: https://github.com/vamseeachanta/deckhand/issues/141
-  dispatch_status: ready
-  wip_eligible: false
-  routed_by: manual
-- gh: vamseeachanta/deckhand#142
-  repo: vamseeachanta/deckhand
-  domain: onboarding
-  provider: claude
-  url: https://github.com/vamseeachanta/deckhand/issues/142
-  dispatch_status: ready
-  wip_eligible: false
-  routed_by: manual
-- gh: vamseeachanta/deckhand#425
-  repo: vamseeachanta/deckhand
-  domain: onboarding
-  provider: claude
-  url: https://github.com/vamseeachanta/deckhand/issues/425
-  dispatch_status: ready
-  wip_eligible: false
-  routed_by: manual
-- gh: vamseeachanta/deckhand#572
-  repo: vamseeachanta/deckhand
-  domain: workstations
-  provider: claude
-  url: https://github.com/vamseeachanta/deckhand/issues/572
-  dispatch_status: ready
-  wip_eligible: false
-  routed_by: manual
-- gh: vamseeachanta/deckhand#573
-  repo: vamseeachanta/deckhand
-  domain: workstations
-  provider: claude
-  url: https://github.com/vamseeachanta/deckhand/issues/573
-  dispatch_status: ready
-  wip_eligible: false
-  routed_by: manual
-- gh: vamseeachanta/deckhand#574
-  repo: vamseeachanta/deckhand
-  domain: routing
-  provider: claude
-  url: https://github.com/vamseeachanta/deckhand/issues/574
-  dispatch_status: ready
-  wip_eligible: false
-  routed_by: manual
-- gh: vamseeachanta/deckhand#575
-  repo: vamseeachanta/deckhand
-  domain: routing
-  provider: claude
-  url: https://github.com/vamseeachanta/deckhand/issues/575
-  dispatch_status: ready
-  wip_eligible: false
-  routed_by: manual
-- gh: vamseeachanta/deckhand#576
-  repo: vamseeachanta/deckhand
-  domain: chat-quality
-  provider: claude
-  url: https://github.com/vamseeachanta/deckhand/issues/576
-  dispatch_status: ready
-  wip_eligible: false
-  routed_by: manual
-- gh: vamseeachanta/deckhand#578
-  repo: vamseeachanta/deckhand
-  domain: onboarding
-  provider: claude
-  url: https://github.com/vamseeachanta/deckhand/issues/578
   dispatch_status: ready
   wip_eligible: false
   routed_by: manual
@@ -1273,22 +1147,6 @@ cards:
   domain: workstations
   provider: claude
   url: https://github.com/vamseeachanta/workspace-hub/issues/3594
-  dispatch_status: ready
-  wip_eligible: false
-  routed_by: manual
-- gh: vamseeachanta/deckhand#439
-  repo: vamseeachanta/deckhand
-  domain: routing
-  provider: claude
-  url: https://github.com/vamseeachanta/deckhand/issues/439
-  dispatch_status: ready
-  wip_eligible: false
-  routed_by: manual
-- gh: vamseeachanta/deckhand#521
-  repo: vamseeachanta/deckhand
-  domain: capability
-  provider: claude
-  url: https://github.com/vamseeachanta/deckhand/issues/521
   dispatch_status: ready
   wip_eligible: false
   routed_by: manual

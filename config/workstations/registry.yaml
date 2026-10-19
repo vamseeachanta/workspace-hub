@@ -219,8 +219,9 @@ machines:
     # replaced. They named a box that is not this role and is absent from the
     # tailnet entirely, so they were both wrong AND infrastructure detail in a
     # PUBLIC repo. The host actually serving this role is recorded in the private
-    # tier. Verified at four layers: tailnet membership, `hostname` over SSH, the
-    # deckhand policy file present on the box, and the live licensed-run agent.
+    # tier. Deckhand retired 2026-10-18 (deckhand issue 599).
+    # Retired gateway and execution-agent presence are no longer readiness
+    # evidence.
     hostname_aliases: [licensed-win-1]  # WF0 #3001: renamed from licensed-win-1
     os: windows
     role: simulation-license-host

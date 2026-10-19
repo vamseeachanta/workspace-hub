@@ -50,15 +50,8 @@ repos:
     objectives: [route work to machines/providers, enforce harness rules, carry portable memory]
     explicit: true
     status: active
-  - repo: deckhand
-    tier: control-plane
-    profile: control-product
-    sensitivity: public
-    mcp_required: false
-    mission: "Authenticated scope-gated git/gh automation gateway (Hermes); also a live demo surface."
-    objectives: [scoped repo ops, deterministic live delivery channel]
-    explicit: true
-    status: active
+  # Deckhand retired 2026-10-18 (deckhand issue 599). Retired gateway removed
+  # from active missions.
 
   # ---- engineering-ip (O1) ----
   - repo: digitalmodel

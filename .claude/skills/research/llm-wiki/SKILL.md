@@ -9,11 +9,6 @@ metadata:
     tags: [wiki, knowledge-base, research, notes, markdown, rag-alternative, batch-ingest]
     category: research
     related_skills: [obsidian, arxiv, agentic-research-ideas]
-    config:
-      - key: wiki.path
-        description: Path to the LLM Wiki knowledge base directory
-        default: "~/wiki"
-        prompt: Wiki directory path
 ---
 
 # Karpathy's LLM Wiki
@@ -43,34 +38,14 @@ Use this skill when the user:
 
 ## Wiki Location
 
-Configured via `skills.config.wiki.path` in `~/.hermes/config.yaml` (prompted
-during `hermes config migrate` or `hermes setup`):
+Deckhand retired 2026-10-18 (deckhand issue 599). The former gateway
+configuration no longer applies.
 
-```yaml
-skills:
-  config:
-    wiki:
-      path: ~/wiki
-```
+Use the repository CLI documented below with `--wiki <domain>`; its existing
+workspace layout is `knowledge/wikis/<domain>/`.
 
-Falls back to `~/wiki` default. The resolved path is injected when this
-skill loads — check the `[Skill config: ...]` block above for the active value.
-
-Before setting `wiki.path`, verify the target actually exists. A stale default like
-`~/wiki` is easy to leave behind even when the real wiki lives elsewhere.
-
-For the workspace-hub multi-wiki layout, the preferred root is usually:
-
-```yaml
-skills:
-  config:
-    wiki:
-      path: /mnt/local-analysis/workspace-hub/knowledge/wikis
-```
-
-This points at the domain-wiki root (`engineering/`, `marine-engineering/`,
-`maritime-law/`, `naval-architecture/`, etc.) rather than a single flat `~/wiki`
-folder.
+Verify that the selected wiki directory exists before reading or ingesting
+sources.
 
 The wiki is just a directory of markdown files — open it in Obsidian, VS Code, or
 any editor. No database, no special tooling required.
@@ -328,7 +303,9 @@ When working in a private client wiki such as `llm-wiki-<client>` and the user a
 3. If the user later says the draft "looks good" and asks to "submit" it so they can approve it, do **not** treat that as external sending or final client publication. Instead, mark the artifact as submitted for internal/client review, for example `review_status: submitted_for_<client>_review`.
 4. Add the artifact to the local review queue/index if one exists (for the simple private-wiki layout, add it to `reports/README.md` under a "Submitted for <Client> review" section).
 5. Read back the touched files to verify the submission marker and queue entry landed before claiming it is submitted.
-6. If the wiki uses PR-only/Deckhand guardrails, avoid direct push claims unless the approved workflow explicitly authorizes GitHub write actions; local review-queue submission is still useful and auditable.
+6. If the wiki uses PR-only guardrails, avoid direct push claims unless the
+   approved workflow explicitly authorizes GitHub write actions; local
+   review-queue submission is still useful and auditable.
 
 ## Working with the Wiki
 

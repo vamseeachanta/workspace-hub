@@ -8,9 +8,8 @@
 # survives. So nothing long-running can be dispatched over plain SSH -- which nullifies
 # the box's actual asset (64 cores, free AQWA seats).
 #
-# A Scheduled Task is the ONE mechanism proven durable here: the licensed-run agent task
-# has run continuously since 2026-07-13 across many sessions. This wraps that mechanism
-# in a submit/status/logs/cancel interface so a control-surface host can fire and forget.
+# A Scheduled Task provides the durable process boundary used by this runner.
+# The submit/status/logs/cancel interface records job state independently of SSH.
 #
 # ASCII ONLY, deliberately. Windows PowerShell 5.1 reads a BOM-less .ps1 as ANSI, so any
 # non-ASCII byte becomes mojibake and the parser dies with misleading errors on valid
@@ -55,8 +54,7 @@ param(
 $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version Latest
 
-# Task folder is namespaced so this can never collide with, or be confused for, the
-# licensed-run agent's task. Nothing here touches \DeckhandLicensedRunAgent.
+# Dispatch tasks use their own folder and job-state directory.
 $TaskFolder = '\WorkspaceHubDispatch'
 $Root       = Join-Path $env:LOCALAPPDATA 'workspace-hub\dispatch'
 

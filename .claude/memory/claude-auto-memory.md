@@ -42,6 +42,10 @@
 - [wed economics C9 handoff](project_wed_economics_c9_session_handoff.md) — 2026-07-13: C9 WIP preserved; all merged
 
 ## Key Lessons (how to work)
+
+Deckhand retired 2026-10-18 (deckhand issue 599). The dated identity-policy
+entry below is historical; its former bot promotion claim no longer applies.
+
 - [Machine identity — ⚠ #565 SUPERSEDED by deckhand#581](feedback_machine_identity_is_logical_alias_565.md) — 2026-07-30 owner decision: route by **canonical lowercase hostname, PRIVATE tier only**; public workspace-hub keeps **neutral tokens** (`ace-win-1`…), no physical hostname in a public label. Field `host_aliases` stays, values change; casefold on join; never rewrite historical queue JSON. Heartbeat-filename freeze + hostname-rejecting tests now INVERT. Still true: tier split, `verified_at`, deckhand = promotable, **scan your own plan artifacts**
 - [Validation chain: BSEE definitions FIRST, then wed interpretation](feedback_validation_chain_bsee_first_then_interpretation.md) — source-published → labelled inference → analysis → published HTML → validation blog (`content-sync.yaml` `extract_blog` from wed `docs/` ALREADY WIRED); definitions get ONE home the code imports; **every unknown/assumed gets a footnote on EVERY surface, blog included**
 - [Absence of signal reads as success](feedback_absence_of_signal_reads_as_success.md) — missing check looks GREENER than failing one; verify every suppression's stated reason (comments lie); import scans are blind to `engine=`/entry-point deps
@@ -105,7 +109,6 @@
 - [NTFS-FUSE git stalls on /mnt/local-analysis](reference_ntfs_fuse_git_stalls_local_analysis.md) — porcelain git hangs; plumbing commits, local sparse clones
 - [Squash-merge → false "orphaned" PR](reference_squash_merge_reachability_false_orphan.md) — verify merged work by CONTENT, not mergeCommit reachability
 - [Claude Desktop install state (ace-linux-1)](reference_claude_desktop_install_state.md) — official dpkg 1.17377.0 pristine
-- [Deckhand Telegram MTProto creds blocker](reference_deckhand_operator_telegram_creds.md) — sends as USER; needs user-run interactive login
 - [Gmail create_draft attachment limit](reference_gmail_create_draft_attachment_limit.md) — no files >few KB inline; operator drag-drop or public link
 - [Gmail search can't read Contacts/autocomplete](reference_gmail_search_no_contacts_autocomplete.md) — searches MESSAGES only
 - [Emails are ephemeral; strategy repo is SSOT](feedback_emails_are_ephemeral_strategy_repo_is_ssot.md) — durable record → `aceengineer-strategy`
