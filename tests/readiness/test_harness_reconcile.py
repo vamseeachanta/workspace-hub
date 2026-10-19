@@ -169,3 +169,9 @@ def test_cli_managed_false_writes_nothing(tmp_path, monkeypatch):
     assert rc == 0
     assert not settings.exists()                # never wrote
     assert not (tmp_path / "settings.json.bak").exists()
+
+
+def test_active_runtime_gateway_is_detected():
+    assert hr.detect_live_daemons(
+        pgrep_fn=lambda pattern: pattern == "hermes_cli.main gateway"
+    ) == ["hermes_cli.main gateway"]

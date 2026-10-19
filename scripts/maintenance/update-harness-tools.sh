@@ -56,6 +56,7 @@ run_step() {
 echo "Harness update — $(date '+%Y-%m-%d %H:%M:%S')"
 (( DRY_RUN )) && echo "(dry-run mode)"
 
+run_step hermes hermes update
 run_step claude claude update
 run_step codex  codex  update
 run_step gemini npm install -g @google/gemini-cli@latest

@@ -264,7 +264,24 @@ if ($Apply -and -not $curShell -and $gitBash) {
     }
 }
 
-# Deckhand retired 2026-10-18 (deckhand issue 599).
+# -----------------------------------------------------------------------------
+# 6. Scheduled-task residue -- report only; no tasks are started or stopped.
+# -----------------------------------------------------------------------------
+Write-Section "Scheduled-task residue (report only)"
+$tasks = Get-ScheduledTask -ErrorAction SilentlyContinue |
+    Where-Object { $_.TaskName -match 'licensed|deckhand|agent' }
+if ($tasks) {
+    $Findings.scheduled_tasks = @($tasks | ForEach-Object {
+        $i = $_ | Get-ScheduledTaskInfo -ErrorAction SilentlyContinue
+        [ordered]@{ name=$_.TaskName; state="$($_.State)"; last_run="$($i.LastRunTime)"; last_result=$i.LastTaskResult }
+    })
+    foreach ($t in $Findings.scheduled_tasks) {
+        Write-Info "task '$($t.name)': state=$($t.state) last_run=$($t.last_run) result=$($t.last_result)"
+    }
+} else {
+    $Findings.scheduled_tasks = @()
+    Write-Info "no matching scheduled-task residue found"
+}
 
 # -----------------------------------------------------------------------------
 # 7. Evidence

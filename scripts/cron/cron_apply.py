@@ -124,7 +124,7 @@ def detect_comms_daemons(pgrep_fn=None) -> list[str]:
 
 
 def ct_detect(pgrep_fn=None) -> list[str]:
-    pats = ["whatsapp-bridge"]
+    pats = ["hermes_cli.main gateway", "whatsapp-bridge"]
     def _default(p):
         return subprocess.run(["pgrep", "-f", p], capture_output=True).returncode == 0
     probe = pgrep_fn or _default

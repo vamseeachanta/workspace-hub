@@ -48,7 +48,7 @@ STATE_CLASSES = REPO / "config" / "workstations" / "harness-state-classes.yaml"
 SETTINGS = Path.home() / ".claude" / "settings.json"
 
 # daemons whose presence makes a host "live" for hook-surface changes
-LIVE_DAEMON_PATTERNS = ["whatsapp-bridge"]
+LIVE_DAEMON_PATTERNS = ["hermes_cli.main gateway", "whatsapp-bridge"]
 
 
 class ReconcileError(Exception):

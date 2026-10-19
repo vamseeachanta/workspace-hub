@@ -38,7 +38,7 @@ from lib.tier1_repos import resolve_tier1_repo_path, tier1_python_repos  # noqa:
 
 import yaml  # noqa: E402
 
-MANIFEST_VERSION = 1  # manifest-format version (independent of per-repo registry schema_version)
+MANIFEST_VERSION = 2  # manifest-format version (independent of per-repo registry schema_version)
 RESOLVER = None
 GENERATOR = "scripts/workflow/generate_workflow_manifest.py"
 

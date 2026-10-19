@@ -237,3 +237,9 @@ def test_output_is_deterministic_sorted(tmp_path):
     ids = [w["workflow_id"] for w in m1["workflows"]]
     assert ids == sorted(ids)
     assert json.dumps(m1["workflows"]) == json.dumps(m2["workflows"])  # order-independent of slug order
+
+
+def test_null_resolver_uses_new_manifest_version():
+    manifest = gm.build_manifest(slugs=[])
+    assert manifest["manifest_version"] == 2
+    assert manifest["resolver"] is None

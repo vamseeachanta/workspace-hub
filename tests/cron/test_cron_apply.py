@@ -557,3 +557,9 @@ def test_real_linux_cutover_filters_named_windows_scheduler_tasks_and_dev_second
     assert windows_task_ids.isdisjoint(secondary["selected"])
     assert "solver-watch-results" not in secondary["selected"]
     assert "solver-dashboard" not in secondary["selected"]
+
+
+def test_active_runtime_gateway_blocks_cutover():
+    assert ca.ct_detect(
+        pgrep_fn=lambda pattern: pattern == "hermes_cli.main gateway"
+    ) == ["hermes_cli.main gateway"]
