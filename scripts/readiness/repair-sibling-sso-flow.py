@@ -294,9 +294,13 @@ def build_manifest(machine: str) -> dict[str, Any]:
 
 def rewrite_agents_pointer(path: Path, old: str, new: str) -> None:
     """Rewrite stale AGENTS contract pointer lines without mutating arbitrary prose."""
+    # Python 3.11 open(), errors/newline: text mode normalizes line endings;
+    # surrogateescape round trips undecodable bytes with the same handler.
+    # https://docs.python.org/3.11/library/functions.html#open
+    text = path.read_bytes().decode("utf-8", errors="surrogateescape")
     rewritten_lines = []
     previous_was_inherits = False
-    for line in path.read_text(errors="replace").splitlines(keepends=True):
+    for line in text.splitlines(keepends=True):
         stripped = line.strip()
         if re.match(r"^\s*(Contract|Legacy contract):", line):
             line = line.replace(old, new)
@@ -304,7 +308,7 @@ def rewrite_agents_pointer(path: Path, old: str, new: str) -> None:
             line = line.replace(old, new)
         rewritten_lines.append(line)
         previous_was_inherits = stripped == "This repository inherits the canonical contract from:"
-    path.write_text("".join(rewritten_lines))
+    path.write_bytes("".join(rewritten_lines).encode("utf-8", errors="surrogateescape"))
 
 REPAIRABLE_ACTION_KINDS = frozenset({"rewrite_symlink", "rewrite_agents_pointer"})
 
