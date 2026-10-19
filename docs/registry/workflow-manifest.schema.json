@@ -2,7 +2,7 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://github.com/vamseeachanta/workspace-hub/docs/registry/workflow-manifest.schema.json",
   "title": "Ecosystem workflow discovery manifest (#3284)",
-  "description": "Aggregates every tier-1 repo's docs/registry/workflows.yaml into a single provenance-stamped manifest. The per-workflow field-set is exactly what the reference resolver deckhand/src/deckhand/capability_smoke.py consumes, so a consumer can round-trip an entry through resolve_workflow().",
+  "description": "Aggregates workflow registries into one provenance-stamped manifest with invocation metadata.",
   "type": "object",
   "required": [
     "manifest_version", "generated_at", "generator", "resolver",
@@ -19,9 +19,8 @@
     },
     "generator": { "type": "string", "const": "scripts/workflow/generate_workflow_manifest.py" },
     "resolver": {
-      "type": "string",
-      "const": "deckhand/src/deckhand/capability_smoke.py",
-      "description": "The reference resolver whose consumed field-set this manifest targets (D1)."
+      "type": "null",
+      "description": "No supported delivery resolver. Deckhand retired 2026-10-18 (deckhand issue 599)."
     },
     "repos": {
       "type": "array",

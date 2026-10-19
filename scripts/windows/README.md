@@ -117,8 +117,7 @@ Every apply step is idempotent. Three things it handles that are easy to get wro
   shell can return correct stdout while losing the exit code — which reads as success. Verify with
   `ssh <host> "exit 7"; echo $?` and require `7`.
 
-It never starts or stops the licensed-run poller: whether that *should* run on a given host is
-deckhand#579's decision, so the script only reports its state.
+Deckhand retired 2026-10-18 (deckhand issue 599).
 
 Full operator walkthrough: [`docs/runbooks/windows-remote-exec.md`](../../docs/runbooks/windows-remote-exec.md).
 

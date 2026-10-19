@@ -111,7 +111,7 @@ def test_match_fingerprint_command_contains_str():
 
 
 def test_match_fingerprint_command_tokens_require_adjacent_shell_tokens():
-    token = ".claude/skills/business-marketing/deckhand-api-presence-sync/catalog_delta.py"
+    token = "scripts/publish.py"
     line = f"0 5 * * 0 uv run python {token} >> logs/out.log"
 
     fingerprint = {"command_tokens": ["python", token]}
@@ -123,11 +123,11 @@ def test_match_fingerprint_command_tokens_require_adjacent_shell_tokens():
 
 
 def test_match_fingerprint_cwd_and_basename():
-    line = "30 7 * * * cd /mnt/x/deckhand && python3 scripts/member-audit-cron.py"
-    assert ct.match_fingerprint(line, {"cwd_contains": "/deckhand"})
-    assert ct.match_fingerprint(line, {"script_basename": "member-audit-cron.py"})
+    line = "30 7 * * * cd /mnt/x/external-repo && python3 scripts/refresh.py"
+    assert ct.match_fingerprint(line, {"cwd_contains": "/external-repo"})
+    assert ct.match_fingerprint(line, {"script_basename": "refresh.py"})
     assert ct.match_fingerprint(
-        line, {"cwd_contains": "/deckhand", "script_basename": "member-audit-cron.py"}
+        line, {"cwd_contains": "/external-repo", "script_basename": "refresh.py"}
     )
 
 
@@ -136,16 +136,16 @@ def test_match_fingerprint_empty_is_false():
 
 
 def test_match_fingerprint_partial_mismatch_is_false():
-    line = "30 7 * * * cd /deckhand && python3 other.py"
+    line = "30 7 * * * cd /external-repo && python3 other.py"
     assert not ct.match_fingerprint(
-        line, {"cwd_contains": "/deckhand", "script_basename": "member-audit-cron.py"}
+        line, {"cwd_contains": "/external-repo", "script_basename": "refresh.py"}
     )
 
 
 def test_match_fingerprint_rejects_descriptive_owner_repo_field():
-    line = "0 1 * * * cd /mnt/local-analysis/deckhand && run"
+    line = "0 1 * * * cd /mnt/local-analysis/external-repo && run"
 
-    assert not ct.match_fingerprint(line, {"owner_repo": "deckhand"})
+    assert not ct.match_fingerprint(line, {"owner_repo": "external-repo"})
 
 
 # --- classify_line ---------------------------------------------------------
@@ -156,8 +156,8 @@ def test_catalog_substring_does_not_authorize_destructive_identity():
 
 
 def test_classify_preserved_external():
-    line = "30 7 * * * cd /deckhand && python3 scripts/member-audit-cron.py"
-    fps = [{"cwd_contains": "/deckhand", "script_basename": "member-audit-cron.py"}]
+    line = "30 7 * * * cd /external-repo && python3 scripts/refresh.py"
+    fps = [{"cwd_contains": "/external-repo", "script_basename": "refresh.py"}]
     assert ct.classify_line(line, ["run-task.sh"], fps) == "preserved_external"
 
 
@@ -337,10 +337,10 @@ def test_render_block_deterministic():
 
 EXTERNAL_LINE = (
     "30 7 * * * PATH=/snap/bin:$HOME/.local/bin:/usr/local/bin:/usr/bin:/bin; "
-    "cd /mnt/local-analysis/deckhand && uv run --with telethon python3 "
-    "scripts/deckhand/member-audit-cron.py >> $HOME/.hermes/logs/member-audit.log 2>&1"
+    "cd /mnt/local-analysis/external-repo && python3 "
+    "scripts/refresh.py >> /tmp/refresh.log 2>&1"
 )
-EXTERNAL_FP = {"cwd_contains": "/deckhand", "script_basename": "member-audit-cron.py"}
+EXTERNAL_FP = {"cwd_contains": "/external-repo", "script_basename": "refresh.py"}
 
 
 def test_plan_cutover_preserves_external_line_verbatim_outside_block():

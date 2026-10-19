@@ -148,7 +148,7 @@ def test_state_classes_still_parses_with_expected_counts():
     # 2 hooks_known unchanged
     assert len(classes["hooks_known"]) == 2
     owners_ext = [e["owner"] for e in classes["preserved_external"]]
-    assert owners_ext.count("deckhand") >= 3
+    assert "deckhand" not in owners_ext
     assert "llm-wiki" in owners_ext
     assert any(
         entry.get("catalog_task_id") == "notification-purge"

@@ -7,10 +7,10 @@
 
 Wraps the pure planning core (cron_transaction.py) in a FAIL-CLOSED IO transaction so a
 machine's crontab converges to its role's catalog tasks WITHOUT ever deleting an
-externally-owned live cron (e.g. the deckhand Telegram automation on ace-linux-2).
+externally maintained live cron.
 
 Transaction (Codex MAJOR fold):
-  1. flock a per-host lock (serialize against a concurrent setup-cron / deckhand reinstall).
+  1. flock a per-host lock (serialize against a concurrent cron installer).
   2. A = read crontab.
   3. plan_cutover(A, …): abort on parse error or any uncataloged live line (fail closed).
   4. backup A to logs/cron-backups/<host>-<ts>.crontab.
@@ -124,7 +124,7 @@ def detect_comms_daemons(pgrep_fn=None) -> list[str]:
 
 
 def ct_detect(pgrep_fn=None) -> list[str]:
-    pats = ["hermes_cli.main gateway", "whatsapp-bridge", "deckhand"]
+    pats = ["whatsapp-bridge"]
     def _default(p):
         return subprocess.run(["pgrep", "-f", p], capture_output=True).returncode == 0
     probe = pgrep_fn or _default
@@ -201,7 +201,7 @@ def catalog_fingerprints(tasks: list[dict]) -> list[dict]:
 
 
 def external_fingerprints(state_classes: dict) -> list[dict]:
-    # preserved_external (other-repo-owned, e.g. deckhand) + preserved_local (this host's
+    # preserved_external (maintained by another repository) + preserved_local (this host's
     # own non-catalog workspace-hub crons, #2988) — both are the keep-verbatim bucket.
     entries = (state_classes.get("preserved_external") or []) + \
               (state_classes.get("preserved_local") or [])
@@ -348,7 +348,7 @@ def run_cutover(machine_id: str, apply: bool, ts: str | None,
 
     # Hold an exclusive process lock across the read→write critical section so a concurrent
     # cron-apply / setup-cron cannot interleave (#2969 code-review MAJOR #2). A writer that
-    # does NOT honor the lock (e.g. deckhand) is still caught by the compare-and-swap below.
+    # does NOT honor the lock is still caught by the compare-and-swap below.
     with _flock(LOCKFILE):
         current = _read()                         # re-read UNDER the lock (CAS baseline)
         if current != A:                          # changed since we planned → plan is stale

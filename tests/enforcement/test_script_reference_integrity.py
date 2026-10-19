@@ -57,13 +57,7 @@ ROOT_PREFIXES = (
     "./",
 )
 
-DEFERRED_MISSING_REFERENCES = {
-    (
-        "config/scheduled-tasks/schedule-tasks.yaml",
-        106,
-        "scripts/deckhand/licensed-run-ops.py",
-    ): "external: resolves inside the deckhand checkout (cd .../deckhand-ops), not this repo",
-}
+DEFERRED_MISSING_REFERENCES = {}
 
 
 def _reference_key(rel_source: PurePath, line_number: int, raw_path: str) -> tuple[str, int, str]:
@@ -162,9 +156,9 @@ def test_reference_key_uses_posix_separators() -> None:
     key = _reference_key(
         PureWindowsPath("config", "scheduled-tasks", "schedule-tasks.yaml"),
         106,
-        "scripts/deckhand/licensed-run-ops.py",
+        "scripts/example.py",
     )
-    assert key in DEFERRED_MISSING_REFERENCES
+    assert key == ("config/scheduled-tasks/schedule-tasks.yaml", 106, "scripts/example.py")
 
 
 def test_for_loop_variable_named_path_is_not_an_invocation() -> None:

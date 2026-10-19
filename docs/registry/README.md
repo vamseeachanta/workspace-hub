@@ -2,12 +2,13 @@
 
 `workflow-manifest.json` is a single, provenance-stamped, ecosystem-wide
 enumeration of every callable workflow across the tier-1 repos. It aggregates
-each repo's own `docs/registry/workflows.yaml` so a consumer (Deckhand, an agent,
+each repo's own `docs/registry/workflows.yaml` so a consumer (an agent or
 a CI gate) can discover and resolve a workflow without reading four registries.
 
 - **Generator:** `scripts/workflow/generate_workflow_manifest.py`
 - **Schema:** `workflow-manifest.schema.json`
-- **Reference resolver:** [`deckhand/src/deckhand/capability_smoke.py`](../../../deckhand/src/deckhand/capability_smoke.py) — the manifest's per-workflow field-set is chosen to be exactly what this resolver's `resolve_workflow()` consumes, so a manifest entry round-trips through it.
+- **Delivery resolver:** Deckhand retired 2026-10-18 (deckhand issue 599). The
+  `resolver` field is null; no replacement execution route is asserted here.
 - **Source registries:** the four tier-1 repos in `config/tier1-python-repos.txt` (`assetutilities`, `digitalmodel`, `worldenergydata`, `assethold`), resolved via `scripts/lib/tier1_repos.py` — never hardcoded paths.
 
 ## Usage
@@ -25,11 +26,8 @@ uv run python scripts/workflow/generate_workflow_manifest.py --check
 
 1. Pick a `workflow_id` (`repo:id@version`) directly, OR resolve a `routing_id`
    (`repo:id`) to its latest-stable `workflow_id` via `latest_by_routing_id`.
-2. Feed the resolved ref to `capability_smoke.resolve_workflow()`, which uses the
-   manifest's per-row `input` and the **top-level** `invocation` template
-   (`{input}`-only substitution) to render the run command.
-3. Driving the actual run via `run_workflow()` is #3282 scope; this manifest
-   supplies the resolver inputs.
+2. Read the selected entry's `input`, `outputs` and top-level `invocation`
+   metadata. The manifest describes workflows; it does not execute them.
 
 ## Field-set (per the schema)
 
@@ -37,8 +35,8 @@ uv run python scripts/workflow/generate_workflow_manifest.py --check
 |---|---|
 | `workflow_id` | `repo:id@version` — disambiguates duplicate ids across versions (D4). |
 | `routing_id` | `repo:id` — unversioned routing key; resolve via `latest_by_routing_id`. |
-| `version` / `status` / `latest` | the deckhand routing triple (unversioned row == v1). |
-| `input` | per-row input, **preserved** — the resolver fails closed without it (D4). |
+| `version` / `status` / `latest` | workflow version and selection metadata (unversioned row == v1). |
+| `input` | per-row input, **preserved** (D4). |
 | `runtime` | per-row runtime (`offline` / `requires-license` / `fast` / `uv-python` / ...). |
 | `invocation` | **top-level** registry template, `{input}`-only (D1). Never a per-row `test:` nodeid. Null + warning for pre-#3295 registries. |
 | `license_gated` | `runtime == 'requires-license'` (D4). `data_source.network_required` does NOT set it. |

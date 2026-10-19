@@ -264,29 +264,7 @@ if ($Apply -and -not $curShell -and $gitBash) {
     }
 }
 
-# -----------------------------------------------------------------------------
-# 6. Licensed-run poller -- report only. Whether it SHOULD run here is deckhand#579's
-#    call (one Windows host was reclassified out of the licensed lane on 2026-07-30),
-#    so this script never starts or stops it.
-# -----------------------------------------------------------------------------
-Write-Section "Licensed-run poller (report only)"
-$tasks = Get-ScheduledTask -ErrorAction SilentlyContinue |
-    Where-Object { $_.TaskName -match 'licensed|deckhand|agent' }
-if ($tasks) {
-    $Findings.scheduled_tasks = @($tasks | ForEach-Object {
-        $i = $_ | Get-ScheduledTaskInfo -ErrorAction SilentlyContinue
-        [ordered]@{ name=$_.TaskName; state="$($_.State)"; last_run="$($i.LastRunTime)"; last_result=$i.LastTaskResult }
-    })
-    foreach ($t in $Findings.scheduled_tasks) {
-        Write-Info "task '$($t.name)': state=$($t.state) last_run=$($t.last_run) result=$($t.last_result)"
-    }
-} else {
-    $Findings.scheduled_tasks = @()
-    Write-Info "no licensed-run/deckhand/agent scheduled tasks found"
-}
-$agentProc = Get-Process -Name python*,pythonw* -ErrorAction SilentlyContinue | Select-Object -First 3
-$Findings.python_processes = @($agentProc | ForEach-Object { $_.ProcessName })
-Write-Info "python-ish processes running: $(@($agentProc).Count)"
+# Deckhand retired 2026-10-18 (deckhand issue 599).
 
 # -----------------------------------------------------------------------------
 # 7. Evidence

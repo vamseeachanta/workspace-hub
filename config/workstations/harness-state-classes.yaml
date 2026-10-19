@@ -53,65 +53,13 @@ hooks_known:
     command_contains: [".consolidate-lock", "dream"]
     class: role-managed            # stale dream-lock reaper
 
-# Preserved-external cron lines (#2969, F2) — crontab entries OWNED by another repo.
-# The deckhand repo installs its OWN Telegram client-SLA cron jobs on ace-linux-2. The
-# workspace-hub cron reconciler/cutover (scripts/cron/cron-audit.py + cron_transaction.py)
-# MUST classify any live line matching one of these fingerprints as `preserved_external`
-# and NEVER delete, absorb, or rewrite it. These are read by classify_line() via
-# match_fingerprint(): ALL present fingerprint keys must be substrings of the cron line.
-#
-# Fingerprints intentionally match only STABLE identity bits — the working directory and
-# the script basename — NOT the full command string. This keeps the match valid even if
-# deckhand changes its PATH prefix, log-redirect target, or python wrapper
-# (uv run --with X / python3 / .venv/bin/python). Do NOT add command_contains values that
-# pin volatile flags (e.g. "--with telethon") or they will stop matching on a deckhand bump.
+# Preserve active cron entries maintained by other repositories.
+# Fingerprints match stable working-directory and script identity.
 preserved_external:
-  - owner: deckhand
-    note: >-
-      Daily Telegram member-audit cron (member-audit-cron.py) run from the deckhand
-      checkout. Stable bits: /deckhand cwd + member-audit-cron.py basename.
-    fingerprint:
-      cwd_contains: /deckhand
-      script_basename: member-audit-cron.py
-  - owner: deckhand
-    note: >-
-      15-minute escalation-sweep cron (escalations.py sweep) run from the detached
-      .deckhand-sweep worktree. Stable bits: /.deckhand-sweep cwd + escalations.py basename.
-    fingerprint:
-      cwd_contains: /.deckhand-sweep
-      script_basename: escalations.py
-  - owner: deckhand
-    note: >-
-      Hourly patch-health-check cron (patch-health-check.py) run from the detached
-      .deckhand-guard worktree. Stable bits: /.deckhand-guard cwd + patch-health-check.py basename.
-    fingerprint:
-      cwd_contains: /.deckhand-guard
-      script_basename: patch-health-check.py
-  - owner: deckhand
-    note: >-
-      2-minute deliverables-sweep cron (sweep-deliverables.py scan) run from the detached
-      .deckhand-sweep worktree. Stable bits: /.deckhand-sweep cwd + sweep-deliverables.py basename.
-    fingerprint:
-      cwd_contains: /.deckhand-sweep
-      script_basename: sweep-deliverables.py
-  - owner: deckhand
-    note: >-
-      Hourly per-patch wipe/drift detector (patch-guard.py, deckhand#162) run from the deckhand
-      checkout. Stable bits: /deckhand cwd + patch-guard.py basename.
-    fingerprint:
-      cwd_contains: /deckhand
-      script_basename: patch-guard.py
-  - owner: deckhand
-    note: >-
-      Daily hermes-update sentinel (hermes-update-sentinel.py, deckhand#162) that re-applies patches
-      after an update wipe, run from the deckhand checkout. Stable bits: /deckhand cwd + basename.
-    fingerprint:
-      cwd_contains: /deckhand
-      script_basename: hermes-update-sentinel.py
   - owner: llm-wiki
     note: >-
       6-hourly O&G-Standards corpus-ingest campaign (cron_ingest.sh) owned by the SEPARATE
-      llm-wiki repo (canonical clone /mnt/local-analysis/llm-wiki), like the deckhand crons.
+      llm-wiki repo (canonical clone /mnt/local-analysis/llm-wiki).
       Stable bits: /llm-wiki cwd-path fragment + cron_ingest.sh basename. Does NOT pin the
       full command, the # campaign comment, or the /bin/bash prefix so the match survives a
       log-redirect/wrapper/path change. Keep verbatim; the workspace-hub cutover never owns it.

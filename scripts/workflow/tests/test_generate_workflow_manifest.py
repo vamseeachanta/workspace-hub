@@ -183,7 +183,7 @@ def test_provenance_registry_hash_and_timestamp(tmp_path):
     expected = hashlib.sha256(REG_V2.encode("utf-8")).hexdigest()
     assert repo_entry["registry_sha256"] == expected
     assert "T" in m["generated_at"]  # ISO-8601
-    assert m["resolver"] == "deckhand/src/deckhand/capability_smoke.py"
+    assert m["resolver"] is None
 
 
 def test_missing_registry_is_warning_not_crash(tmp_path):

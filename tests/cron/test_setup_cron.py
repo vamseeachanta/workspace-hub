@@ -83,13 +83,8 @@ def test_setup_cron_entrypoint_twice_is_idempotent(tmp_path):
         "30 4 * * * cd /mnt/local-analysis/workspace-hub && "
         'find logs/notifications/ -name "*.jsonl" -mtime +7 -delete 2>/dev/null || true\n'
     )
-    deckhand = (
-        "0 5 * * 0 PATH=$HOME/.local/bin:$PATH; cd /mnt/local-analysis/workspace-hub && "
-        "uv run --no-project --with pyyaml python "
-        ".claude/skills/business-marketing/deckhand-api-presence-sync/catalog_delta.py "
-        ">> /mnt/local-analysis/workspace-hub/logs/marketing/deckhand.log 2>&1\n"
-    )
-    initial = notification * 2 + deckhand * 2
+    external = "0 */6 * * * bash /srv/llm-wiki/scripts/ingest/cron_ingest.sh\n"
+    initial = notification * 2 + external * 2
     first, installed_once = _run_setup(
         tmp_path,
         "--machine",
@@ -112,9 +107,8 @@ def test_setup_cron_entrypoint_twice_is_idempotent(tmp_path):
     assert second.returncode == 0, second.stderr + second.stdout
     assert installed_twice == installed_once
     assert installed_twice.count("find logs/notifications/") == 1
-    # Preservation fingerprints never authorize deletion; two historical lines
-    # remain verbatim beside the one canonical managed line.
-    assert installed_twice.count("deckhand-api-presence-sync/catalog_delta.py") == 3
+    # Both external lines remain verbatim; neither is a managed task.
+    assert installed_twice.count("/srv/llm-wiki/scripts/ingest/cron_ingest.sh") == 2
 
 
 def test_setup_cron_dry_run_never_writes(tmp_path):

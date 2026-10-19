@@ -55,7 +55,6 @@ ROUTE_PY = REPO_ROOT / "scripts" / "dispatch" / "route.py"
 DEFAULT_REPOS = (
     "vamseeachanta/workspace-hub",
     "vamseeachanta/digitalmodel",
-    "vamseeachanta/deckhand",
 )
 
 #: Values that are legitimate on the machine: axis but are not roster keys.

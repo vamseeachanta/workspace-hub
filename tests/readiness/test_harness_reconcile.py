@@ -30,7 +30,7 @@ ROLES = {
         },
         "control-plane": {"scalar_required": {"effortLevel": "high"},
                           "skill_families": ["coordination"]},
-        "comms-dispatch": {"skill_families": ["deckhand"]},
+        "comms-dispatch": {"skill_families": ["coordination"]},
         "sim-worker": {"skill_families": ["engineering-sim"]},
     }
 }
@@ -39,7 +39,7 @@ ROLES = {
 # ── role composition (Q1) ─────────────────────────────────────────────────────
 def test_compose_union_two_roles():
     ov = hr.compose_overlay(ROLES, ["comms-dispatch", "sim-worker"])
-    assert set(ov["skill_families"]) == {"core", "deckhand", "engineering-sim"}
+    assert set(ov["skill_families"]) == {"core", "coordination", "engineering-sim"}
 
 
 def test_base_applies_to_all_managed():
@@ -152,8 +152,8 @@ def test_apply_refuses_on_live_daemon():
 
 
 def test_detect_live_daemons_injectable():
-    daemons = hr.detect_live_daemons(pgrep_fn=lambda pat: "deckhand" in pat)
-    assert daemons == ["deckhand"]
+    daemons = hr.detect_live_daemons(pgrep_fn=lambda pat: "whatsapp-bridge" in pat)
+    assert daemons == ["whatsapp-bridge"]
 
 
 # ── CLI dry-run writes nothing (Codex MAJOR #4) ──────────────────────────────

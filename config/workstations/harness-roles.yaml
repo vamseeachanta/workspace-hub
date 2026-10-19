@@ -89,8 +89,8 @@ roles:
     schedule_jobs: [benchmarks, nightly-learning, memory-backup, equality-matrix, gtm, research]
 
   comms-dispatch:
-    skill_families: [coordination, deckhand]
-    schedule_jobs: [deckhand-member-audit, escalation-sweep, provider-utilization]
+    skill_families: [coordination]
+    schedule_jobs: [provider-utilization]
 
   sim-worker:
     skill_families: [engineering-sim]

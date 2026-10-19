@@ -48,13 +48,12 @@ DOMAIN_PREFIX = "domain:"
 
 # The canonical coverage set: every repo that must keep one-domain-per-issue.
 # Explicit (not manifest-derived) because the kanban manifest is board-scoped —
-# it carries the wrong owner for assethold and omits the client wikis + deckhand.
+# it omits repositories outside the board scope.
 DEFAULT_REPOS = [
     "vamseeachanta/aceengineer-admin",
     "vamseeachanta/aceengineer-strategy",
     "vamseeachanta/achantas-data",
     "vamseeachanta/assetutilities",
-    "vamseeachanta/deckhand",
     "vamseeachanta/deckhand-sandbox",
     "vamseeachanta/digitalmodel",
     "vamseeachanta/hobbies",
