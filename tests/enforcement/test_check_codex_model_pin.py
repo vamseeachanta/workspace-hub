@@ -97,7 +97,8 @@ def test_multiline_header_cannot_hide_pin(repo):
 
 @pytest.mark.parametrize("name", EXCEPTIONS)
 def test_allowlisted_pin_passes(repo, exception_script, name):
-    track(repo, name, 'model = "small"\n')
+    for exception in EXCEPTIONS:
+        track(repo, exception, 'model = "small"\n')
     result = run(repo, script=exception_script)
     assert result.returncode == 0
     assert f"ALLOW {name}" in result.stdout
@@ -115,6 +116,43 @@ def test_stale_allowlist_fails(repo, exception_script):
     result = run(repo, script=exception_script)
     assert result.returncode == 1
     assert f"{EXCEPTIONS[0]}: stale allowlist entry" in result.stdout + result.stderr
+
+
+@pytest.mark.parametrize("untracked_present", [False, True])
+def test_missing_tracked_exception_fails(repo, exception_script, untracked_present):
+    """Set subtraction leaves exactly the last exception missing from Git.
+
+    Track every other exception with a root pin. The last path is either absent
+    or present only on disk, so neither case satisfies the tracked-file contract.
+    Expected exit status follows the checker header: stale exception means 1.
+    """
+    for name in EXCEPTIONS[:-1]:
+        track(repo, name, 'model = "small"\n')
+    missing = EXCEPTIONS[-1]
+    if untracked_present:
+        root, _ = repo
+        path = root / missing
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text('model = "small"\n')
+
+    result = run(repo, script=exception_script)
+
+    assert result.returncode == 1
+    assert f"{missing}: stale allowlist entry (not tracked)" in result.stdout
+    assert "PASS" not in result.stdout
+    for name in EXCEPTIONS[:-1]:
+        assert f"ALLOW {name}" in result.stdout
+        assert f"{name}: stale allowlist entry" not in result.stdout
+
+
+def test_all_missing_exceptions_fail(repo, exception_script):
+    """An empty tracked set leaves every exception stale; header exit code is 1."""
+    result = run(repo, script=exception_script)
+
+    assert result.returncode == 1
+    for name in EXCEPTIONS:
+        assert f"{name}: stale allowlist entry (not tracked)" in result.stdout
+    assert "PASS" not in result.stdout
 
 
 def test_worker_model_pin_readded_is_rejected(repo):

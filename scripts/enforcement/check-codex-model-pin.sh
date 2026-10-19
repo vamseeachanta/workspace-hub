@@ -63,6 +63,10 @@ try:
         '.codex/agents/*.toml', 'config/agents/codex/*.toml',
     ]).decode().split('\0')
     failed = False
+    # Every exception must name a tracked matching configuration.
+    for name in sorted(set(ALLOWLIST).difference(names)):
+        print(f'check-codex-model-pin: {name}: stale allowlist entry (not tracked)')
+        failed = True
     for name in filter(None, names):
         found = list(pins((root / name).read_text(encoding='utf-8')))
         if name in ALLOWLIST:
