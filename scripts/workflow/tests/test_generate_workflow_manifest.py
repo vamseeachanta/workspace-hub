@@ -243,3 +243,11 @@ def test_null_resolver_uses_new_manifest_version():
     manifest = gm.build_manifest(slugs=[])
     assert manifest["manifest_version"] == 2
     assert manifest["resolver"] is None
+
+
+def test_committed_manifest_matches_generator_format():
+    import json
+
+    manifest = json.loads(gm.default_manifest_path().read_text())
+    assert manifest["manifest_version"] == gm.MANIFEST_VERSION
+    assert manifest["resolver"] == gm.RESOLVER

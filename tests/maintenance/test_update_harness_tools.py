@@ -21,9 +21,7 @@ def _run_update(tmp_path: Path, *args: str, fail: bool = False, hermes_fail: boo
         "agy() { echo fourth >> \"$TOOL_LOG\"; }\n"
     )
     env = dict(os.environ, BASH_ENV=str(startup), TOOL_LOG=str(log),
-               FAKE_STATUS="7" if fail else "0", HERMES_STATUS="7" if hermes_fail else "0", DECKHAND_PATCHES="1",
-               DECKHAND_HERMES_INSTALLER=str(tmp_path / "absent-installer"),
-               DECKHAND_HEALTH_CHECK=str(tmp_path / "absent-health.py"))
+               FAKE_STATUS="7" if fail else "0", HERMES_STATUS="7" if hermes_fail else "0")
     result = subprocess.run(["bash", str(SCRIPT), *args], cwd=REPO_ROOT,
                             env=env, text=True, capture_output=True, check=False)
     return result, log.read_text().splitlines() if log.exists() else []

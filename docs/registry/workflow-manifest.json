@@ -1,5 +1,5 @@
 {
-  "manifest_version": 1,
+  "manifest_version": 2,
   "generated_at": "2026-06-28T23:14:27.997383+00:00",
   "generator": "scripts/workflow/generate_workflow_manifest.py",
   "resolver": null,

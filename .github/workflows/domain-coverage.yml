@@ -3,6 +3,8 @@
 # Uses the kanban-reconcile GitHub App token mechanism for
 # cross-repository issue reads.
 # Reports to the run summary; never mutates anything.
+# Without the retired taxonomy source, only missing/multiple domain labels are
+# checked; taxonomy drift and alias checks no longer run in this workflow.
 name: domain-coverage
 
 on:

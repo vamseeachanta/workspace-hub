@@ -17,7 +17,9 @@ repo, the four ways it can break:
 Checks 1 and 2 need only GitHub labels and always run. Checks 3 and 4 need the
 canonical label set + aliases from taxonomy.yaml; pass it with --taxonomy. If it
 is absent (e.g. the private SoT is unreachable in CI) those checks are skipped
-with a logged notice rather than failing.
+with a logged notice rather than failing. The scheduled workflow no longer
+provides the retired taxonomy source, so it checks only zero/multiple labels;
+taxonomy drift and alias checks remain available only with an explicit taxonomy.
 
 Warn-only by default (exit 0); --strict exits 1 when any violation exists so a
 gate can block. The planning core (`analyze`) is pure; gh calls are isolated

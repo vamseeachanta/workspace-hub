@@ -394,7 +394,7 @@ tasks:
     log: logs/maintenance/update-harness-tools-*.log
     is_claude_task: false
     description: >-
-      Daily AI harness update via NATIVE updaters — claude update /
+      Daily AI harness update via NATIVE updaters — hermes update / claude update /
       codex update / gemini (npm). Per #2920 decision A: native script is canonical;
       missing tools are skipped per machine. Staggered: dev-primary 01:15,
       dev-secondary 01:45, Windows 02:15. NOTE: the prior npm-based
