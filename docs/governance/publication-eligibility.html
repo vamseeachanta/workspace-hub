@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Publication eligibility across dependency closure</title>
+<style>body{font:1rem/1.6 system-ui;max-width:64rem;margin:2rem auto;padding:0 1rem}
+pre{overflow:auto;background:#f2f4f6;padding:1rem}table{border-collapse:collapse}
+td,th{border:1px solid #aaa;padding:.5rem;text-align:left}</style></head>
+<body>
+<h1>Publication eligibility across dependency closure</h1>
+<p>The validator checks reviewed record decisions, transitive dependencies, retained-input
+metadata and the complete staged JSON file set. An eligible receipt establishes agreement
+with these declarations; it does not authenticate approval, establish source rights or
+publish data. This reusable implementation addresses
+issue 3942.</p>
+<h2>Revision history</h2>
+<table><tr><th>Revision</th><th>Date</th><th>Change and reason</th></tr>
+<tr><td>Initial</td><td>2026-10-20</td><td>Define record, dependency and staging checks to prevent deferred material entering public exports.</td></tr></table>
+<h2>Implementation plan</h2>
+<p>The first slice will validate record identity, reviewed decisions and evidence fields.
+The second slice will compute dependency closure and distinguish retained originals from
+eligible exports. The third slice will validate the exact staged JSON files and provide
+an executable example. Tests will precede each implementation increment. Adversarial
+inspection will target approval replay, retained-input leaks and false empty acceptance.</p>
+<h2>Contract and method</h2>
+<p>The implementation is <code>scripts/governance/publication_eligibility.py</code>.
+The JSON bundle contains exactly <code>publication</code>, <code>records</code>,
+<code>decisions</code>, <code>originals</code> and <code>files</code>. Unknown top-level
+or record fields are rejected. Each record has a unique <code>id</code>, explicit
+<code>dependencies</code>, <code>original_ids</code> and a <code>payload</code> object.
+The adapter shall enumerate every source, entity, relationship and parent dependency;
+no dependency is inferred from prose or arbitrary payload fields.</p>
+<p>Each decision supplies <code>decision</code>, <code>basis</code>, <code>reviewer</code>
+and <code>evidence_ref</code>. Eligible decisions are
+<code>eligible_factual_derivative</code> and <code>permission_granted</code>; permission
+also requires <code>permission_ref</code>. Missing, unresolved, prohibited or malformed
+decisions defer the record. The maintainer shall independently verify the public-source
+basis and any permission record; a nonempty string is not evidence authentication.</p>
+<pre>E(initial) = empty set
+E(next) = E union {r: decision(r) valid and dependencies(r) subset of E}
+D = all records minus E</pre>
+<p>This least fixed point defers missing dependencies and ungrounded cycles. Its source
+is issue 3942's transitive-deferral requirement, not a numerical engineering standard.
+Records representing source evidence are graph nodes too. All eligible records shall
+appear exactly once in the export; no deferred record may appear. An empty export,
+including an all-deferred bundle, is blocked.</p>
+<p>Each retained original declares <code>id</code>, <code>retention</code> equal to
+<code>private_retained</code>, <code>raw_sha256</code>, <code>archive_sha256</code> and
+an opaque <code>evidence_ref</code>. The raw digest identifies original received bytes;
+the archive digest identifies archive bytes and never substitutes for a raw digest.
+The validator checks declarations only. The private retention system shall independently
+verify the retained bytes, private Git disposition and source-specific copying rights.
+Pending retention blocks validation. Licensed standards are outside this adapter's
+retained-original format and shall remain at their licensed locations.</p>
+<p>The trusted caller supplies an externally authenticated approved SHA-256 digest of
+the entire bundle. Canonical JSON uses UTF-8, sorted object keys, compact separators,
+unescaped Unicode and finite numbers. Every payload, original digest, decision, staged
+hash and publication destination is bound to that approval. The destination argument
+shall match <code>publication.destination</code>; the audience is <code>public</code>.
+A digest supplied by the bundle itself does not authenticate human approval.</p>
+<p>The stage is an exclusively owned frozen directory. Every file is declared once with
+<code>path</code>, <code>role</code> equal to <code>eligible_export</code>, ordered
+<code>record_ids</code> and byte <code>sha256</code>. Each UTF-8 JSON file contains exactly
+<code>{"records": [...]}</code>, matching the pinned record objects in declared order.
+Symlinks, special files, ambiguous relative paths, undeclared files, duplicate exports,
+changed bytes, retained-original roles and payload mismatches block acceptance.
+Raw originals, private manifests and the bundle itself stay outside public staging.</p>
+<p>Only authorized opaque identifiers may appear in exported records, including
+<code>original_ids</code>. The aggregate receipt exposes counts and fixed error codes,
+never private identifiers, paths, payloads or exception messages. Deferred-record
+identity accounting remains in the private bundle; public reporting uses deferred counts.</p>
+<h2>Worked example: inputs, method and answer</h2>
+<p><code>examples/governance/publication_eligibility_example.py</code> writes synthetic
+inputs into a new explicitly selected directory and prints the candidate bundle digest.
+It creates no approval record. The graph is <code>source -&gt; entity -&gt; cost</code>
+(where each right-hand node depends on its predecessor), plus <code>independent</code>.
+Source is unresolved; all other decisions are synthetically eligible. Hand evaluation
+defers source, then entity, then cost, leaving only independent eligible.</p>
+<pre>python examples/governance/publication_eligibility_example.py --output example
+# Inspect example/bundle.json and obtain approval of its exact digest.
+python scripts/governance/publication_eligibility.py \
+  --bundle example/bundle.json --stage example/stage \
+  --approved-bundle-sha256 APPROVED_DIGEST --destination public-example</pre>
+<p>The generator shall be run in external scratch storage. Placeholder
+<code>APPROVED_DIGEST</code> deliberately blocks validation until replaced with the
+approved digest. In the synthetic regression only, approval is simulated explicitly.</p>
+<pre>{"status":"eligible","counts":{"eligible":1,"deferred":3,"exported":1},"errors":[]}</pre>
+<p>The expected counts are independent graph cardinalities. No measured values or
+engineering acceptance limits are asserted. Raw and archive digests are calculated
+from separately labeled synthetic byte strings; no actual archival retention is claimed.</p>
+<h2>Sources</h2>
+<ul>
+<li><a href="../architecture/agent-data-handling-contract.md">Agent data handling contract</a>,
+Original retention, rights and publication; Stable projection and shared conformance contract.</li>
+<li>Issue 3942,
+complete staged dependency closure and all-deferred rejection.</li>
+<li><a href="../../config/schemas/resource-descriptor-v1.schema.json">Resource descriptor v1 schema</a>,
+projection content_digest: the required SHA-256 hexadecimal representation. Hashing is
+provided by Python hashlib.</li>
+</ul>
+<h2>Verification and review boundary</h2>
+<p>The regression suite covers valid exports, source and parent deferral, missing
+nodes, cycles, empty exports, permission evidence, approval mutations, original-retention
+gaps, exact staging, duplicate JSON keys, non-finite values and the executable example.
+Inline adversarial inspection identified destination replay; destination binding and
+regressions address it. No independent-provider verdict is claimed.</p>
+<h2>Known limits and follow-up</h2>
+<p>This is an opt-in validator, not an installed publication hook. Integration into a
+producer, authenticated approval transport, access to private retention evidence and
+source-specific rights decisions remain external responsibilities. Complete inventory
+and lineage are trusted adapter inputs. The validator cannot discover concealed
+relationships, classify arbitrary payload rights, redact free text or establish that
+original bytes exist from a declaration. A hostile concurrent writer is outside the
+frozen-stage contract; acceptance shall be bound to the same bytes actually published.
+No data is moved, deleted or published, and no third-party workflow is changed.</p>
+</body></html>
