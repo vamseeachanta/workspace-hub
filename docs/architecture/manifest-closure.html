@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Manifest closure before data readback</title>
+<style>
+body{font:1rem/1.6 system-ui,sans-serif;max-width:64rem;margin:2rem auto;padding:0 1rem;color:#172b40}
+pre{white-space:pre-wrap;background:#f0f4f8;padding:1rem}table{border-collapse:collapse;width:100%}
+th,td{border:1px solid #bcccdc;padding:.5rem;text-align:left}code{font-family:monospace}
+caption{caption-side:bottom;text-align:left;padding:.5rem}h1,h2{line-height:1.2}
+</style>
+<h1>Manifest closure before data readback</h1>
+<h2>Summary</h2>
+<p>Hash agreement over listed files cannot establish completeness. The shared
+<code>scripts/data/manifest_closure.py</code> validator accepts a dataset only when
+its inventory equals an independently pinned contract, its payload hashes agree,
+and its declared record counts, primary keys and foreign keys pass. It returns
+the verified bytes and a separate versioned integrity receipt. No engineering
+thresholds or source-rights decisions are inferred.</p>
+<h2>Revision history</h2>
+<table><tr><th>Revision</th><th>Date</th><th>Change and reason</th></tr>
+<tr><td>1</td><td>2026-10-20</td><td>Define complete readback closure and a synthetic
+example so omitted files and rehashed invalid records cannot pass acceptance.</td></tr>
+<caption>Table 1. Document revision history.</caption></table>
+<h2>Basis and method</h2>
+<p>The governing requirement is
+issue 3952.
+The repository <a href="agent-data-handling-contract.md">agent data handling
+contract</a> (2026), sections “Original retention, rights and publication” and
+“Stable projection and shared conformance contract”, supplies retention,
+SHA-256, duplicate-key, finite-number and authority-separation requirements.
+This document defines the version-one protocol; version strings are protocol
+identifiers, not empirical coefficients. Counts and inventory are mandatory
+caller inputs. No physical equations or acceptance constants are introduced.</p>
+<ol>
+<li>Pin the contract SHA-256 through the consuming workflow's independently
+reviewed configuration. Computing the pin from an untrusted contract during
+acceptance defeats this boundary.</li>
+<li>Parse manifest and contract JSON with duplicate keys and non-finite numbers
+rejected. Require the exact documented fields and versions.</li>
+<li>Compare file ID sets for equality, then compare every role, path, format,
+record count and primary key. Extra entries fail as well as omitted entries.
+IDs and paths shall be unique.</li>
+<li>Resolve canonical owner-relative POSIX paths below the supplied owner root.
+Absolute paths, parent traversal, drive syntax, backslashes, aliases such as dot
+segments, and payload symlinks fail. Unlisted directory files are not implicitly
+part of the dataset; completeness is defined by the pinned inventory.</li>
+<li>Read each regular file once and compare its SHA-256 against the manifest.
+For record arrays, require the pinned number of rows, object rows, present and
+unique primary keys, and all declared foreign keys to resolve to a target primary
+key. Keys are nonempty strings or integers; types remain distinct. Booleans,
+nulls, containers and floating-point keys fail. Self-references are permitted;
+acyclicity is outside this contract.</li>
+<li>Return immutable byte mappings only after every check passes. Consume those
+bytes rather than reopening payload paths. Persist the returned receipt separately
+from the manifest; its manifest digest is calculated over the supplied raw bytes.</li>
+</ol>
+<h2>Protocol fields</h2>
+<p>A contract has exactly <code>version</code> (value
+<code>manifest-closure-contract/v1</code>), <code>files</code> and
+<code>foreign_keys</code>. Its nonempty file array declares exactly
+<code>id, role, path, format, record_count, primary_key</code> per entry.
+A manifest has exactly <code>version</code> (value <code>manifest-closure/v1</code>)
+and <code>files</code>; each manifest entry repeats the contract entry and adds
+<code>sha256</code>, a lowercase hexadecimal SHA-256 digest. The
+<a href="../../config/schemas/resource-descriptor-v1.schema.json">resource
+descriptor schema</a> defines the SHA-256 representation basis; this file-field
+protocol uses bare hex rather than its namespaced resource-identity form.</p>
+<p><code>format</code> is <code>bytes</code> or <code>json-records</code>.
+Byte files require null count and primary key. Record files require an integer
+count greater than or equal to zero and a nonempty primary-key field name.
+An explicitly empty array means zero declared records, not missing evidence.
+The foreign-key list is explicit, including when empty. Each declaration has
+exactly <code>from_file, field, to_file, key</code>; both files must be counted
+record files, and <code>key</code> must equal the target's declared primary key.
+Duplicate declarations fail. Additional domain predicates remain the consumer's
+responsibility; a foreign-key list does not establish physical validity.</p>
+<h2>Worked example: inputs, method and answer</h2>
+<p>The committed synthetic inputs are under
+<code>tests/fixtures/data/manifest_closure/</code>. The byte file contains
+<code>synthetic original</code> followed by a newline. The two record rows are:</p>
+<pre>[{"id":"a","parent":"a"},{"id":"b","parent":"a"}]</pre>
+<p>Independent hand calculation: the file set is {original, records}; its
+cardinality is two. The record key set is {a, b}, with two unique values and two
+rows. Both parent values are a, which belongs to that key set. The expected answer
+is complete integrity closure for two files and two records. The role
+“retained-original” describes a synthetic fixture and makes no claim about
+received private originals or Git retention.</p>
+<p>The exact example contract pin is
+<code>c77d245c1e6f361a596b8e3b799fa989b713314515ea0f060a61bfe92e3b6f93</code>.
+It is computed from the committed contract bytes by the standard library
+SHA-256 implementation; the example test independently recomputes it. A consumer
+shall obtain a production pin from its reviewed configuration, not this example.</p>
+<pre>python scripts/data/manifest_closure.py \
+  --root tests/fixtures/data/manifest_closure \
+  --manifest tests/fixtures/data/manifest_closure/manifest.json \
+  --contract tests/fixtures/data/manifest_closure/contract.json \
+  --contract-sha256 c77d245c1e6f361a596b8e3b799fa989b713314515ea0f060a61bfe92e3b6f93 \
+  --view working-tree</pre>
+<p>On success, standard output contains a <code>manifest-closure-receipt/v1</code>
+object with <code>file_count: 2</code>, the manifest and contract digests, the view,
+<code>integrity: verified</code> and <code>authority: not-established</code>.
+The CLI emits no receipt on failure and returns a nonzero exit code. Its failure
+message deliberately omits payload values and filesystem paths. To preserve a
+receipt, capture standard output in a separate evidence artifact; do not insert
+it into the manifest being hashed.</p>
+<h2>Independent byte views and limits</h2>
+<p>Run acceptance independently against retained originals, working-tree bytes,
+materialized staged bytes and a fresh-checkout snapshot. The explicit view labels
+are <code>retained-original</code>, <code>working-tree</code>, <code>staged</code>
+and <code>fresh-checkout</code>. The caller supplies the correct materialized root
+and manifest bytes for each view; this utility neither exports the Git index nor
+creates a checkout. A label alone does not prove its provenance. A passing working
+tree cannot substitute for staged or fresh-checkout evidence. The regression suite
+uses independent disposable materializations and corrupts one without changing
+the others.</p>
+<p>Filesystem inputs shall remain quiescent during validation. The utility does
+not provide an atomic filesystem snapshot or protection against a concurrent
+malicious filesystem writer. Receipt serialization and durable evidence storage
+are the consuming workflow's responsibility. Receipt equality or a matching
+contract pin establishes integrity only; independent source rights, retention,
+units, engineering qualification, task authority and publication authorization
+remain required. Existing manifests in other repositories need explicit adapters
+and independently reviewed contracts; no ecosystem-wide installation is claimed.</p>
+<h2>Verification</h2>
+<p>The test module <code>tests/data/test_manifest_closure.py</code> enumerates
+positive closure and negative omissions, redirects, duplicate JSON keys, invalid
+digest syntax, count and key errors, rehashed invalid semantics, traversal,
+symlinks, missing files, malformed documents, numeric overflow and independent
+views. A subprocess started with <code>python -O</code> verifies that production
+checks do not depend on assertions. Expected set and count results are derived
+in test docstrings by direct enumeration, independently of the validator.</p>
+</html>
