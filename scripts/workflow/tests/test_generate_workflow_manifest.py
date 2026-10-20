@@ -183,7 +183,7 @@ def test_provenance_registry_hash_and_timestamp(tmp_path):
     expected = hashlib.sha256(REG_V2.encode("utf-8")).hexdigest()
     assert repo_entry["registry_sha256"] == expected
     assert "T" in m["generated_at"]  # ISO-8601
-    assert m["resolver"] == "deckhand/src/deckhand/capability_smoke.py"
+    assert m["resolver"] is None
 
 
 def test_missing_registry_is_warning_not_crash(tmp_path):
@@ -237,3 +237,17 @@ def test_output_is_deterministic_sorted(tmp_path):
     ids = [w["workflow_id"] for w in m1["workflows"]]
     assert ids == sorted(ids)
     assert json.dumps(m1["workflows"]) == json.dumps(m2["workflows"])  # order-independent of slug order
+
+
+def test_null_resolver_uses_new_manifest_version():
+    manifest = gm.build_manifest(slugs=[])
+    assert manifest["manifest_version"] == 2
+    assert manifest["resolver"] is None
+
+
+def test_committed_manifest_matches_generator_format():
+    import json
+
+    manifest = json.loads(gm.default_manifest_path().read_text())
+    assert manifest["manifest_version"] == gm.MANIFEST_VERSION
+    assert manifest["resolver"] == gm.RESOLVER

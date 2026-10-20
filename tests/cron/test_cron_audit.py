@@ -3,7 +3,7 @@
 cron-audit.py carries a hyphen, so it is imported by file path. It in turn
 imports the pure core cron_transaction.py (also by path). These tests exercise
 the three required classifications end-to-end through the real loaders + the
-real classify_line: a deckhand line -> preserved_external, a catalog line ->
+real classify_line: an external line -> preserved_external, a catalog line ->
 cataloged, a random line -> uncataloged.
 """
 from __future__ import annotations
@@ -36,42 +36,20 @@ def ct():
     return _load_module("cron_transaction_under_test", CRON_TX_PATH)
 
 
-# The 3 live deckhand cron lines on ace-linux-2 (from #2969 background).
-DECKHAND_MEMBER_AUDIT = (
-    "30 7 * * * PATH=/snap/bin:$HOME/.local/bin:/usr/local/bin:/usr/bin:/bin; "
-    "cd /mnt/local-analysis/deckhand && uv run --with telethon python3 "
-    "scripts/deckhand/member-audit-cron.py >> $HOME/.hermes/logs/member-audit.log 2>&1"
-)
-DECKHAND_SWEEP = (
-    "*/15 * * * * PATH=/home/linuxbrew/.linuxbrew/bin:/snap/bin:/usr/local/bin:/usr/bin:/bin; "
-    "cd /mnt/local-analysis/.deckhand-sweep && git fetch -q origin main && "
-    "git checkout -q --detach FETCH_HEAD && uv run --with pyyaml python3 "
-    "scripts/deckhand/escalations.py sweep >> $HOME/.hermes/logs/escalation-sweep.log 2>&1"
-)
-DECKHAND_GUARD = (
-    "17 * * * * PATH=/snap/bin:$HOME/.local/bin:/usr/local/bin:/usr/bin:/bin; "
-    "cd /mnt/local-analysis/.deckhand-guard && git fetch -q origin main && "
-    "git checkout -q --detach FETCH_HEAD && uv run python3 "
-    "scripts/deckhand/patch-health-check.py >> $HOME/.hermes/logs/patch-health.log 2>&1"
+# Active external ingestion is preserved across wrapper and logging changes.
+EXTERNAL_INGEST = (
+    "0 */6 * * * bash /srv/llm-wiki/scripts/ingest/cron_ingest.sh >> /tmp/ingest.log 2>&1"
 )
 
 
-def test_deckhand_lines_are_preserved_external(audit, ct):
+def test_external_line_is_preserved(audit, ct):
     fps = audit.load_external_fingerprints()
-    assert fps, "preserved_external fingerprints must be loaded"
-    for line in (DECKHAND_MEMBER_AUDIT, DECKHAND_SWEEP, DECKHAND_GUARD):
-        assert ct.classify_line(line, [], fps) == "preserved_external", line
+    assert ct.classify_line(EXTERNAL_INGEST, [], fps) == "preserved_external"
 
 
-def test_deckhand_match_survives_path_log_and_wrapper_changes(audit, ct):
-    """Fingerprints must match on stable bits only (cwd + basename)."""
+def test_external_match_survives_path_log_and_wrapper_changes(audit, ct):
     fps = audit.load_external_fingerprints()
-    # Mutated: different PATH prefix, .venv python wrapper, different log target.
-    mutated = (
-        "30 7 * * * PATH=/totally/different/bin:/bin; "
-        "cd /mnt/local-analysis/deckhand && .venv/bin/python "
-        "scripts/deckhand/member-audit-cron.py >> /var/log/whatever.log 2>&1"
-    )
+    mutated = "0 */6 * * * /bin/bash /opt/llm-wiki/cron_ingest.sh >> /var/log/ingest.log 2>&1"
     assert ct.classify_line(mutated, [], fps) == "preserved_external"
 
 
@@ -104,7 +82,7 @@ def test_audit_crontab_fails_closed_on_uncataloged(audit, ct):
         [
             "# a comment",
             "MAILTO=ops@example.com",
-            DECKHAND_GUARD,
+            EXTERNAL_INGEST,
             "0 3 * * * /usr/local/bin/some-rando-thing >> /tmp/x.log 2>&1",
         ]
     )
@@ -135,7 +113,7 @@ def test_preserved_local_merged_into_fingerprints(tmp_path):
     m = _u.module_from_spec(spec); _s.modules["cron_audit_x"] = m; spec.loader.exec_module(m)
     classes = tmp_path / "hsc.yaml"
     classes.write_text(
-        "preserved_external:\n  - fingerprint: {cwd_contains: /deckhand}\n"
+        "preserved_external:\n  - fingerprint: {cwd_contains: /external-repo}\n"
         "preserved_local:\n  - fingerprint: {command_contains: scripts/maintenance/update-model-ids.sh}\n"
     )
     fps = m.load_external_fingerprints(classes)

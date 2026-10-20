@@ -287,16 +287,11 @@ def test_hermes_bridge_uses_canonical_rendered_identity(tasks):
     assert "installed_fingerprint" not in task
 
 
-def test_deckhand_presence_sync_has_exact_installed_fingerprint(tasks):
-    task = next(t for t in tasks if t["id"] == "deckhand-api-presence-sync")
+def test_retired_delivery_tasks_are_absent(tasks):
+    ids = {task["id"] for task in tasks}
+    assert "licensed-run-alarm" not in ids
+    assert "deckhand-api-presence-sync" not in ids
 
-    assert task["installed_fingerprint"] == {
-        "command_tokens": [
-            "python",
-            ".claude/skills/business-marketing/deckhand-api-presence-sync/catalog_delta.py",
-        ],
-        "cwd_basename": "workspace-hub",
-    }
 
 
 def test_installed_fingerprint_schema_rejects_broad_or_malformed_values():
@@ -304,7 +299,7 @@ def test_installed_fingerprint_schema_rejects_broad_or_malformed_values():
 
     invalid = [
         {},
-        {"command_contains": "deckhand"},
+        {"command_contains": "publisher"},
         {"command_token": "x.py", "cwd_basename": "workspace-hub"},
         {"command_tokens": ["python", "x.py"]},
         {"command_tokens": [], "cwd_basename": "workspace-hub"},
@@ -359,7 +354,7 @@ def test_log_path_rejects_shell_splitting_and_unsafe_globs(log_path):
     assert validator.validate_log_path("task-a", log_path)
 
 
-@pytest.mark.parametrize("log_path", ["logs/research/*.log", "~/.deckhand/alarm.log"])
+@pytest.mark.parametrize("log_path", ["logs/research/*.log", "~/.local/state/alarm.log"])
 def test_log_path_accepts_controlled_workspace_and_home_patterns(log_path):
     validator = _load_module("validate_schedule_valid_log_path", VALIDATOR)
 

@@ -992,7 +992,6 @@ def cmd_coverage(args) -> None:
 DEFAULT_COVERAGE_REPOS = (
     "vamseeachanta/workspace-hub",
     "vamseeachanta/digitalmodel",
-    "vamseeachanta/deckhand",
 )
 
 

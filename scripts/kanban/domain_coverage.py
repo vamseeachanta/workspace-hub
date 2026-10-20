@@ -17,7 +17,9 @@ repo, the four ways it can break:
 Checks 1 and 2 need only GitHub labels and always run. Checks 3 and 4 need the
 canonical label set + aliases from taxonomy.yaml; pass it with --taxonomy. If it
 is absent (e.g. the private SoT is unreachable in CI) those checks are skipped
-with a logged notice rather than failing.
+with a logged notice rather than failing. The scheduled workflow no longer
+provides the retired taxonomy source, so it checks only zero/multiple labels;
+taxonomy drift and alias checks remain available only with an explicit taxonomy.
 
 Warn-only by default (exit 0); --strict exits 1 when any violation exists so a
 gate can block. The planning core (`analyze`) is pure; gh calls are isolated
@@ -48,13 +50,12 @@ DOMAIN_PREFIX = "domain:"
 
 # The canonical coverage set: every repo that must keep one-domain-per-issue.
 # Explicit (not manifest-derived) because the kanban manifest is board-scoped —
-# it carries the wrong owner for assethold and omits the client wikis + deckhand.
+# it omits repositories outside the board scope.
 DEFAULT_REPOS = [
     "vamseeachanta/aceengineer-admin",
     "vamseeachanta/aceengineer-strategy",
     "vamseeachanta/achantas-data",
     "vamseeachanta/assetutilities",
-    "vamseeachanta/deckhand",
     "vamseeachanta/deckhand-sandbox",
     "vamseeachanta/digitalmodel",
     "vamseeachanta/hobbies",

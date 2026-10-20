@@ -265,11 +265,9 @@ if ($Apply -and -not $curShell -and $gitBash) {
 }
 
 # -----------------------------------------------------------------------------
-# 6. Licensed-run poller -- report only. Whether it SHOULD run here is deckhand#579's
-#    call (one Windows host was reclassified out of the licensed lane on 2026-07-30),
-#    so this script never starts or stops it.
+# 6. Scheduled-task residue -- report only; no tasks are started or stopped.
 # -----------------------------------------------------------------------------
-Write-Section "Licensed-run poller (report only)"
+Write-Section "Scheduled-task residue (report only)"
 $tasks = Get-ScheduledTask -ErrorAction SilentlyContinue |
     Where-Object { $_.TaskName -match 'licensed|deckhand|agent' }
 if ($tasks) {
@@ -282,11 +280,8 @@ if ($tasks) {
     }
 } else {
     $Findings.scheduled_tasks = @()
-    Write-Info "no licensed-run/deckhand/agent scheduled tasks found"
+    Write-Info "no matching scheduled-task residue found"
 }
-$agentProc = Get-Process -Name python*,pythonw* -ErrorAction SilentlyContinue | Select-Object -First 3
-$Findings.python_processes = @($agentProc | ForEach-Object { $_.ProcessName })
-Write-Info "python-ish processes running: $(@($agentProc).Count)"
 
 # -----------------------------------------------------------------------------
 # 7. Evidence

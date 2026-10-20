@@ -3,9 +3,9 @@
 ## Current operational routing
 
 Start with the [OrcaFlex execution and qualification runbook](orcaflex-execution-runbook.html)
-and its linked strategy, execution plan and measured evidence. The reconciled
-Deckhand lane is the intended owner of local and remote execution. Proposed
-controls remain planned until their implementation and deployment are verified.
+and its linked strategy, execution plan and measured evidence.
+Deckhand retired 2026-10-18 (deckhand issue 599). No replacement execution route
+is asserted here. Proposed controls require implementation and deployment evidence.
 
 The Git-queue instructions below are retained as **legacy reference for discovery
 and migration**, not instructions to activate a competing queue or scheduled task.

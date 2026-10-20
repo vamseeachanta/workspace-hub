@@ -7,7 +7,7 @@
 
 This is the fail-closed pre-cutover gate. It reads the live crontab, classifies
 every non-ignore line against (a) the workspace-hub scheduled-task catalog and
-(b) the `preserved_external` fingerprints (deckhand etc.), and EXITS NON-ZERO if
+(b) the `preserved_external` fingerprints for other repositories, and EXITS NON-ZERO if
 ANY line is `uncataloged` — so a cutover that would otherwise delete an unknown
 live line is blocked until that line is classified.
 

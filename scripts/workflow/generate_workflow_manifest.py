@@ -3,9 +3,8 @@
 
 Aggregates each tier-1 repo's ``docs/registry/workflows.yaml`` into a single
 provenance-stamped ``docs/registry/workflow-manifest.json`` enumerating every
-callable workflow with exactly the field-set the reference resolver
-``deckhand/src/deckhand/capability_smoke.py`` consumes, so a consumer can
-round-trip a manifest entry through ``resolve_workflow()``.
+callable workflow and its structured invocation metadata. The former delivery
+resolver is retired; ``resolver`` is null until a supported replacement exists.
 
 Owner-confirmed decisions baked in (2026-06-28):
 - D1: per-repo ``schema_version`` recorded, never assumed (target = v2 additive
@@ -39,8 +38,8 @@ from lib.tier1_repos import resolve_tier1_repo_path, tier1_python_repos  # noqa:
 
 import yaml  # noqa: E402
 
-MANIFEST_VERSION = 1  # manifest-format version (independent of per-repo registry schema_version)
-RESOLVER = "deckhand/src/deckhand/capability_smoke.py"
+MANIFEST_VERSION = 2  # manifest-format version (independent of per-repo registry schema_version)
+RESOLVER = None
 GENERATOR = "scripts/workflow/generate_workflow_manifest.py"
 
 
@@ -90,7 +89,7 @@ def load_registry(repo_slug, resolve=resolve_tier1_repo_path):
 
 
 def row_version(row) -> int:
-    """Mirror ``capability_smoke._row_version``: an unversioned row is v1."""
+    """An unversioned registry row is v1."""
     try:
         return int(row.get("version") or 1)
     except (TypeError, ValueError):
@@ -183,7 +182,7 @@ def build_manifest(slugs=None, resolve=resolve_tier1_repo_path) -> dict:
         "manifest_version": MANIFEST_VERSION,
         "generated_at": _dt.datetime.now(_dt.timezone.utc).isoformat(),
         "generator": GENERATOR,
-        "resolver": RESOLVER,                              # D1: name the reference resolver
+        "resolver": RESOLVER,                              # no supported delivery resolver
         "repos": repos,
         "workflow_count": len(workflows),
         "workflows": workflows,

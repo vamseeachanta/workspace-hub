@@ -69,7 +69,7 @@ if [ -n "$PULL_FROM" ]; then
   echo "=== runtime-reference scan on $PULL_FROM for $SRC ==="
   hits=$($RSH "$PULL_FROM" "
     { crontab -l 2>/dev/null; sed -n p ~/.config/systemd/user/* 2>/dev/null;
-      cat ~/.deckhand/*.env ~/.hermes/*.env 2>/dev/null; } | grep -F -- '$SRC' || true")
+      cat ~/.hermes/*.env ~/.config/*.env 2>/dev/null; } | grep -F -- '$SRC' || true")
   if [ -n "$hits" ]; then
     echo "$hits"; die "$SRC is a live runtime dependency on $PULL_FROM — cut the service over first"
   fi
@@ -163,7 +163,7 @@ for d in "$HOME/.config/systemd/user" /etc/systemd/system; do
   [ -d "$d" ] || continue
   if grep -rlF -- "$SRC" "$d" 2>/dev/null | grep . ; then refs=$((refs+1)); fi
 done
-for f in "$HOME"/.deckhand/*.env "$HOME"/.hermes/*.env "$HOME"/.config/*.env; do
+for f in "$HOME"/.hermes/*.env "$HOME"/.config/*.env; do
   [ -f "$f" ] || continue
   if grep -lF -- "$SRC" "$f" 2>/dev/null | grep . ; then refs=$((refs+1)); fi
 done

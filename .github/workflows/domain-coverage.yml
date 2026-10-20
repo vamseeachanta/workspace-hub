@@ -1,8 +1,10 @@
 # workspace-hub#2962: warn-only guard that the ecosystem `domain:` label
 # invariant (exactly one taxonomy-known domain per open issue) does not rot.
 # Uses the kanban-reconcile GitHub App token mechanism for
-# cross-repo issue reads, plus contents:read to fetch the deckhand taxonomy SoT.
+# cross-repository issue reads.
 # Reports to the run summary; never mutates anything.
+# Without the retired taxonomy source, only missing/multiple domain labels are
+# checked; taxonomy drift and alias checks no longer run in this workflow.
 name: domain-coverage
 
 on:
@@ -27,24 +29,12 @@ jobs:
           app-id: ${{ secrets.KANBAN_RECONCILE_APP_ID }}
           private-key: ${{ secrets.KANBAN_RECONCILE_APP_KEY }}
           owner: ${{ github.repository_owner }}
-          # Reads sibling-repo issues (coverage) + the deckhand taxonomy file.
+          # Reads sibling-repository issues for coverage.
           permission-issues: read
-          permission-contents: read
-
-      - name: Fetch taxonomy SoT (best effort)
-        env:
-          GH_TOKEN: ${{ steps.app-token.outputs.token }}
-        run: |
-          # The 1:1 crosswalk lives in the private deckhand repo. If unreachable,
-          # the guard still runs zero/multi checks (drift/alias are skipped).
-          gh api repos/${{ github.repository_owner }}/deckhand/contents/routing/taxonomy.yaml \
-            --jq '.content' 2>/dev/null | base64 -d > /tmp/taxonomy.yaml \
-            && echo "taxonomy fetched ($(wc -l < /tmp/taxonomy.yaml) lines)" \
-            || echo "taxonomy unreachable — zero/multi checks only"
 
       - name: Run domain-coverage guard
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
         run: |
-          python scripts/kanban/domain_coverage.py --taxonomy /tmp/taxonomy.yaml \
+          python scripts/kanban/domain_coverage.py \
             | tee "$GITHUB_STEP_SUMMARY"

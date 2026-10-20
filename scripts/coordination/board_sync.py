@@ -21,7 +21,6 @@ CANONICAL_REPOS = frozenset(
     {
         "vamseeachanta/workspace-hub",
         "vamseeachanta/digitalmodel",
-        "vamseeachanta/deckhand",
     }
 )
 ANSWER_TARGET_LABELS = {
