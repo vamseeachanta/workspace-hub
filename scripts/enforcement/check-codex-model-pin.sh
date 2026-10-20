@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # check-codex-model-pin.sh — keep shared Codex model defaults unpinned.
 # Usage: bash scripts/enforcement/check-codex-model-pin.sh [--help]
-# Exit codes: 0 = no unexpected pins; 1 = pin or stale exception; 2 = usage error.
-# Uses Git and Python's standard-library line parser; no TOML library required.
+# Exit codes: 0 = no unexpected pins; 1 = pin, invalid TOML or stale exception;
+# 2 = usage error. Requires Git and Python with standard-library tomllib.
 set -euo pipefail
 
 if [[ $# -eq 1 && ( "$1" == --help || "$1" == -h ) ]]; then
@@ -19,6 +19,7 @@ import pathlib
 import re
 import subprocess
 import sys
+import tomllib
 
 # Explicit exceptions must retain a top-level model assignment.
 ALLOWLIST = ()
@@ -26,7 +27,7 @@ MODEL = re.compile(r'''^\s*(?:model|"model"|'model')\s*=\s*(.*)''')
 
 
 def pins(text):
-    """Find root assignments, ignoring comments and multiline string contents."""
+    """Best-effort diagnostic locations; parsed TOML decides whether a pin exists."""
     quote = None
     for number, line in enumerate(text.splitlines(), 1):
         if quote is None:
@@ -64,7 +65,21 @@ try:
     ]).decode().split('\0')
     failed = False
     for name in filter(None, names):
-        found = list(pins((root / name).read_text(encoding='utf-8')))
+        text = (root / name).read_text(encoding='utf-8')
+        try:
+            # TOML v1.0.0, Keys and Table: decoded keys identify root entries.
+            # https://toml.io/en/v1.0.0#keys
+            config = tomllib.loads(text)
+        except tomllib.TOMLDecodeError:
+            # Python tomllib docs, loads: invalid documents raise this error.
+            # Do not echo exception text, which may contain configuration data.
+            # https://docs.python.org/3.11/library/tomllib.html#tomllib.loads
+            print(f'check-codex-model-pin: {name}: invalid TOML', file=sys.stderr)
+            failed = True
+            continue
+        found = []
+        if 'model' in config:
+            found = list(pins(text)) or [('?', '<parsed root assignment>')]
         if name in ALLOWLIST:
             if found:
                 print(f'check-codex-model-pin: ALLOW {name}')

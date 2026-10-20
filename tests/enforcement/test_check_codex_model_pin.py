@@ -95,6 +95,75 @@ def test_multiline_header_cannot_hide_pin(repo):
     assert run(repo).returncode == 1
 
 
+@pytest.mark.parametrize("prefix", [
+    'options = [\n["nested"]\n]\n',
+    'description = """quoted""""\n',
+    "description = '''quoted''''\n",
+])
+def test_valid_toml_constructs_cannot_hide_root_pin(repo, prefix):
+    """TOML v1.0.0 (2021), Array, String and Table sections:
+
+    Nested arrays and trailing quotes belong to the preceding value. The
+    following model key therefore remains in the root table and must fail.
+    Source: https://toml.io/en/v1.0.0
+    """
+    track(repo, ".codex/config.toml", prefix + 'model = "unsupported"\n')
+    result = run(repo)
+    assert result.returncode == 1
+    assert "model =" in result.stdout
+    assert "invalid TOML" not in result.stdout + result.stderr
+
+
+def test_escaped_quoted_model_key_fails(repo):
+    """TOML v1.0.0 (2021), Keys: quoted keys follow basic string escapes.
+
+    The Unicode escape for m makes this key equivalent to model, so it fails.
+    Source: https://toml.io/en/v1.0.0#keys
+    """
+    track(repo, ".codex/config.toml", r'"\u006dodel" = "unsupported"' + "\n")
+    result = run(repo)
+    assert result.returncode == 1
+    assert "model =" in result.stdout
+    assert "invalid TOML" not in result.stdout + result.stderr
+
+
+@pytest.mark.parametrize("text", [
+    'options = [\n["nested"]\n]\n',
+    'description = """quoted""""\n[settings]\nmodel = "local"\n',
+    "description = '''quoted''''\n[settings]\nmodel = \"local\"\n",
+])
+def test_valid_toml_without_root_pin_passes(repo, text):
+    """TOML v1.0.0 (2021), Array, String and Table sections:
+
+    These documents have no root model key; a key after settings belongs to
+    that table. Expected success follows from the document structure.
+    Source: https://toml.io/en/v1.0.0
+    """
+    track(repo, ".codex/config.toml", text)
+    assert run(repo).returncode == 0
+
+
+@pytest.mark.parametrize("text", [
+    'options = ["unclosed"\n',
+    'description = "do-not-echo"\ndescription = "duplicate"\n',
+])
+def test_invalid_toml_fails_without_echoing_contents(repo, text):
+    """Python 3.11 tomllib docs, loads: invalid TOML raises TOMLDecodeError.
+
+    A missing closing bracket or duplicate key cannot establish an unpinned
+    configuration, so the guard must fail closed without printing contents.
+    Source: https://docs.python.org/3.11/library/tomllib.html#tomllib.loads
+    """
+    name = ".codex/config.toml"
+    track(repo, name, text)
+    result = run(repo)
+    assert result.returncode == 1
+    assert name in result.stdout + result.stderr
+    assert "invalid TOML" in result.stdout + result.stderr
+    assert "do-not-echo" not in result.stdout + result.stderr
+    assert "Traceback" not in result.stdout + result.stderr
+
+
 @pytest.mark.parametrize("name", EXCEPTIONS)
 def test_allowlisted_pin_passes(repo, exception_script, name):
     track(repo, name, 'model = "small"\n')
