@@ -45,6 +45,14 @@ def _load():
 
 R = _load()
 
+
+def test_default_coverage_targets_only_active_repositories():
+    assert tuple(repo.split("/")[-1] for repo in R.DEFAULT_COVERAGE_REPOS) == (
+        "workspace-hub",
+        "digitalmodel",
+    )
+
+
 TERMINAL = ["machine:unassigned", "status:icebox"]
 SKIP = ["wip", "blocked", "status:plan-review"]
 

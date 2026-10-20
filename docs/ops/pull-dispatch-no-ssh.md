@@ -35,12 +35,15 @@ python scripts/operations/dispatch_pull.py --machine ace-win-1 --apply
 
 Scheduling the poll is **WF2** (#2815, Windows Task Scheduler); on Linux no-SSH hosts (gali) use cron.
 
-## Trigger: Telegram via deckhand (long-term control surface)
+## Trigger: scheduled polling
 
-Per the epic decision, the durable trigger is **Telegram via deckhand** (WF4 / #2742 + the venue
-contract): an operator announces work in the venue; the no-SSH host's poll claims the lease-arbitrated
-item. The poll cadence + the deckhand announcement are the two ways a host learns there is work; the
-lease is the safety net that makes either safe to run on multiple hosts.
+Deckhand retired 2026-10-18 (deckhand issue 599). Telegram announcements are
+retired.
+Use the scheduled pull path described in **How it works** and **Running it on a
+no-SSH host** above. The poll reads routed cards and acquires the existing fenced
+lease; execution remains opt-in as described below. See also the
+[continuous pull-dispatch runbook](../runbooks/dispatch-pull.md) for its
+existing schedule, command bindings and write gates.
 
 ## Integration (opt-in — not wired by default)
 

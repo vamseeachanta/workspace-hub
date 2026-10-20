@@ -38,7 +38,6 @@ Per-repo guardrail flags (the loop MUST honor these — they override any generi
 | `assetutilities` / `assethold` | PUBLIC | PR-only | — |
 | `aceengineer-website` | PUBLIC | PR-only | Primary `seo` target. PostHTML stack. |
 | `workspace-hub` | PUBLIC | **ADVISORY-ONLY** | Umbrella. Loops here may open issues/PRs but **never auto-commit fixes**. No client PII, ever. |
-| `deckhand` / `deckhand-live` | PRIVATE | PR-only, live bot host | Primary `error-sweep` target (gateway.log + audit ndjson). Shared-clone hazard: verify HEAD before commit. Deploy ≠ merge. |
 | `deckhand-sandbox` | PUBLIC | PR-only | Demo gallery. |
 | `llm-wiki*` | PRIVATE | PR-only | Vendor-licensed standards; wiki-sibling routing rules apply. |
 | `aceengineer-strategy` / `*-admin` / `achantas-data` / `investments` | PRIVATE | PR-only | Client/financial PII lives here — keep it here. |
@@ -49,7 +48,11 @@ Any repo not listed → treat as PR-only, no self-merge, ask before writing.
 
 **Spine-of-3 (primary):**
 
-- **`error-sweep`** (FF #004) — *default verify: independent.* Review recent production logs → trace each error to root cause → fix → verify the fix clears the log signature. Default target `deckhand`. Stop when no new error signatures remain or `--max-iters` hit.
+- **`error-sweep`** (FF #004) — *default verify: independent.* Review recent
+  production logs → trace each error to root cause → fix → verify the fix clears
+  the log signature. Require an explicitly selected active repository. Deckhand
+  retired 2026-10-18 (deckhand issue 599). Stop when no new error signatures
+  remain or `--max-iters` hit.
   Inputs to read: gateway/service logs, audit ndjson. One iteration = pick the top-severity unresolved signature, reproduce, patch on a branch, verify, open PR.
 
 - **`adversarial-review`** / alias `clodex` (FF #019) — *default verify: independent.* Run an **adversarial** code review (defect-hunting stance, default to non-APPROVE) over the working tree or a target diff → fix findings → re-review. Default target `digitalmodel`/`worldenergydata`. One iteration = review → triage findings by severity → fix MAJORs on a branch → re-review until a clean pass or `--max-iters`. If `--lane codex` produced the code, **hand-verify** (codex has silently broken engines before).
@@ -60,7 +63,9 @@ Any repo not listed → treat as PR-only, no self-merge, ask before writing.
 
 - **`docs-sweep`** (FF #001, nightly) — reconcile docs/wiki to the day's code changes. Feeds the bot↔wiki flywheel. Targets `digitalmodel`, `llm-wiki`.
 - **`changelog`** (FF #008, nightly) — append a changelog entry from the day's merged changes. Slots into the existing 3am cron cadence.
-- **`quality-streak`** (FF #009) — run scenarios; on failure document + fix until **N consecutive passes** (`--max-iters` = N). Target = Deckhand chat-rating harness.
+- **`quality-streak`** (FF #009) — run scenarios; on failure document + fix
+  until **N consecutive passes** (`--max-iters` = N). The former bot chat-rating
+  target is retired; require an explicitly selected active test harness.
 - **`repo-cleanup`** (FF #012) — prune merged branches, stale PRs, dead worktrees until tree is current. **Advisory-only on workspace-hub.** Never delete unpushed/unique work — check `stash-archive/*` branches first.
 - **`seo`** (FF #006) — SEO/GEO audit → fix indexability/answer-readiness gaps. Target `aceengineer-website`.
 - **`batch-release`** (FF #013) — review pending merged-but-undeployed changes, exclude stale work, assemble a deploy set in correct merge order (compute-clone sync + redeploy gate).
@@ -83,7 +88,8 @@ A loop that can't pass verification within `--max-iters` stops and reports the u
 ### 4. Execution
 
 1. Echo the resolved plan: `type`, `repo`, `REPO_PATH`, cadence, verify mode, max-iters, lane, stop condition, and the active guardrails for that repo. If `--dry-run` (or exploratory invocation): **stop here.**
-2. Confirm the repo is clean / on the expected HEAD (`git -C "$REPO_PATH" status --short`, log -1). For `deckhand` verify HEAD first (shared-clone hazard).
+2. Confirm the repo is clean / on the expected HEAD (`git -C "$REPO_PATH" status
+   --short`, log -1).
 3. For `--cadence now`: run the iterate-until-done loop, bounded by `--max-iters`. Use `ScheduleWakeup` only if an iteration must wait on an external signal (CI, a licensed run); otherwise iterate inline. Track iterations with TaskCreate/TaskUpdate.
 4. For `--cadence nightly|weekly`: do NOT auto-register. Emit the exact `cron`/scheduler line and the loop invocation it would run, and ask the user to approve registration. (Per ecosystem cron rules: register via Python subprocess, not the blocked `crontab` binary.)
 5. Code-modifying loops produce a **branch + PR** — never a direct push to a protected main, never a self-merge on `digitalmodel`. workspace-hub loops produce an **issue or advisory artifact**, not a commit.
@@ -95,7 +101,7 @@ Stop and report when ANY holds: stop condition met · `--max-iters` reached · v
 
 ---
 **Examples**
-- `/loop-repo-ecosystem --type error-sweep --repo deckhand --verify independent --max-iters 3`
+
 - `/loop-repo-ecosystem --type adversarial-review --repo digitalmodel --lane codex` (codex works, you hand-verify; PR only)
 - `/loop-repo-ecosystem --type loop-harness --repo worldenergydata --run adversarial-review --verify independent`
 - `/loop-repo-ecosystem --type docs-sweep --repo digitalmodel --cadence nightly` (proposes a schedule)

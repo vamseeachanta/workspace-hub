@@ -72,7 +72,10 @@ Look for:
 ### 4. Reproduce at least one concrete check
 Do not stop at document review. Re-run focused tests or scripts for the changed area.
 
-When reviewing Deckhand/customer-channel behavior, include an interaction inconsistency pass using `references/deckhand-interaction-inconsistency-audit.md`. This pass must compare channel logs, scope/routing config, audit rows, and Claude/session claims across five axes: channel fit, domain scope, result-delivery state, engineering credibility, and live-readiness/canary evidence.
+Deckhand retired 2026-10-18 (deckhand issue 599). The former bot interaction
+pass is no longer an active review requirement; its
+[reference](references/deckhand-interaction-inconsistency-audit.md) records
+retirement.
 
 Good pattern for governance/runtime work:
 ```bash

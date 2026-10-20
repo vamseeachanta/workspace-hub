@@ -183,7 +183,6 @@ ATTENTION_PRINT_LIMIT = 12
 DEFAULT_REPOS = (
     "vamseeachanta/workspace-hub",
     "vamseeachanta/digitalmodel",
-    "vamseeachanta/deckhand",
 )
 
 

@@ -82,6 +82,14 @@ def _load():
 
 C = _load()
 
+
+def test_default_chain_targets_only_active_repositories():
+    assert tuple(repo.split("/")[-1] for repo in C.DEFAULT_REPOS) == (
+        "workspace-hub",
+        "digitalmodel",
+    )
+
+
 FULL_VOCAB = {"machine:dev-primary", "dispatch:ready", "dispatch:active", "dispatch:done"}
 REAL_VOCAB = {"machine:dev-primary", "dispatch:ready"}   # what actually exists today
 

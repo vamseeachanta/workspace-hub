@@ -107,7 +107,11 @@ Rules:
 | `macbook-portable` | Manual/status-only | Portable/manual machine, no unattended Linux cron/control-plane dependency. |
 | `gali-linux-compute-1` | Not onboarded | GPU node lacks workspace/repo/Hermes setup. |
 
-> **Cross-platform parity:** the no-SSH hosts (`ace-win-1/2`, `macbook-portable`, `gali-linux-compute-1`) move from status-only to dispatch via the **coordinator-routed pull-worker** model — see [`windows-macos-dispatch-parity.md`](windows-macos-dispatch-parity.md) (#2742).
+> **Cross-platform parity:** the former bot control plane is retired. Polling
+> is not installed on Windows or macOS. Promotion requires an authorized
+> operator to register polling, prove a dry-run claim, verify lease access and
+> validate the required registry fields before enabling dispatch. See the
+> [promotion and demotion checklist](windows-macos-dispatch-parity.md).
 
 ## Security and token handling
 

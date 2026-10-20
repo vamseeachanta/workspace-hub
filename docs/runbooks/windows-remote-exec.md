@@ -20,7 +20,10 @@ One SSH service converts each box from "manual, therefore stale" into "swept lik
 
 ## Step 0 — know which box you are on
 
-Do not assume the fleet token. deckhand#579/#581 are still settling which physical machine each token denotes, and an alias stayed bound to a retired machine for ~18 days undetected. **The audit in Step 1 prints the real identity — read it before doing anything else.**
+Do not assume the fleet token. The historical identity issues deckhand#579/#581
+concerned which physical machine each token denoted, and an alias stayed bound
+to a retired machine for ~18 days undetected. **The audit in Step 1 prints the
+real identity — read it before doing anything else.**
 
 If the audit reports a hostname you did not expect, stop and report it on #3721 rather than provisioning.
 
@@ -69,7 +72,8 @@ Every step is idempotent — re-running is safe and does nothing already done.
 
 It will, only as needed: install the `OpenSSH.Server` capability, set `sshd` to Automatic and start it, append your key to the **correct** `authorized_keys` for your account type and lock its ACL, and create a firewall rule scoped to the tailnet range.
 
-**It deliberately does not touch the licensed-run poller.** Whether that should run on a given host is deckhand#579's decision.
+Deckhand retired 2026-10-18 (deckhand issue 599). The retired poller is no
+longer part of remote-access setup.
 
 ---
 
@@ -133,14 +137,15 @@ Both Windows hosts have Claude installed. Paste this into a Claude session **on 
 >
 > Rules for this task:
 > - Report the identity the audit prints. If the hostname is not what the fleet
->   token implies, STOP and tell me — deckhand#579/#581 are unresolved and an alias
+>   token implies, STOP and tell me — historical identity issues
+>   deckhand#579/#581 recorded that an alias
 >   was previously bound to a retired machine for ~18 days.
 > - If `tailscale.exe` is not found, STOP. Do not open port 22 without a private
 >   transport.
 > - Never disable password authentication before key auth is proven from
 >   ace-linux-1. I will run that verification myself.
-> - Do not start, stop, or reconfigure the licensed-run poller — that is
->   deckhand#579's decision, not this task's.
+> - Deckhand retired 2026-10-18 (deckhand issue 599). Do not reactivate the
+>   retired poller.
 > - Do not hand-edit `config/fleet-ssh-hosts.yml`; #3723 covers it.
 > - This is a PUBLIC repo. Never put a physical hostname, client name, tailnet
 >   address, or account principal into a commit message, issue comment, or any

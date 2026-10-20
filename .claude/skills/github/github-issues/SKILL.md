@@ -23,9 +23,15 @@ Create, search, triage, and manage GitHub issues. Each section shows `gh` first,
 - Authenticated with GitHub (see `github-auth` skill)
 - Inside a git repo with a GitHub remote, or specify the repo explicitly
 
-### Private repos behind Deckhand shims
+### Private repository authorization
 
-When operating on a private repo whose `git`/`gh` binaries are wrapped by Deckhand scope shims, do not assume ordinary `gh issue list --repo ...` will work from every chat/session. First verify the session has the identity fields the shim needs (`HERMES_SESSION_USER_ID`, `HERMES_SESSION_PLATFORM`, `HERMES_SESSION_CHAT_ID`) and that the current chat is bound to a scope that authorizes the target repo. If `gh` fails closed with `unknown operator` or no active scope, report that as an authorization/context gap, not as “no issues.” For read-only status requests, fall back to durable repo-local handoff/issue-map documents only as clearly labeled secondary evidence, and keep direct GitHub issue state marked unverified until an authorized Deckhand/`gh` path succeeds. Avoid browser or unauthenticated REST as the primary path for private repos; 404 commonly means private/auth-blocked, not absent.
+Deckhand retired 2026-10-18 (deckhand issue 599). The former bot scope shims and
+gateway identity variables no longer apply.
+Use the GitHub authentication prerequisite above. If authorized GitHub access
+fails, report that access gap and keep direct issue state unverified. Durable
+repository handoffs may supply clearly labeled secondary evidence. A private
+repository 404
+does not establish absence; do not bypass authorization controls.
 
 ### Setup
 

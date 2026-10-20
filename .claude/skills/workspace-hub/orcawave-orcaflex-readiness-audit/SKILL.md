@@ -34,7 +34,9 @@ This domain has multiple issues that still read like greenfield work even though
 
 2. Resolve each issue's actual repository before querying it.
    - Use the full issue URL or an explicit `gh --repo` argument; a number alone is ambiguous across repositories.
-   - digitalmodel owns solver behaviour, Deckhand owns execution transport, workspace-hub owns cross-repository coordination, and knowledge/project issues retain their existing owners.
+   - digitalmodel maintains solver behaviour, workspace-hub maintains
+     cross-repository coordination, and knowledge/project issues retain their
+     existing maintainers. Deckhand retired 2026-10-18 (deckhand issue 599).
 
 3. Reconcile issue state against source + tests.
    Unresolved historical references (owning repositories have not been reverified):
