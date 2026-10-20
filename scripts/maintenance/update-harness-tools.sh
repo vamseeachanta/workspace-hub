@@ -2,6 +2,7 @@
 #
 # update-harness.sh — Update the key harness CLI programs.
 #
+#   hermes  -> hermes update (only with HERMES_UPDATE=1)
 #   claude  -> claude update
 #   codex   -> codex update
 #   gemini  -> npm install -g @google/gemini-cli@latest
@@ -56,7 +57,13 @@ run_step() {
 echo "Harness update — $(date '+%Y-%m-%d %H:%M:%S')"
 (( DRY_RUN )) && echo "(dry-run mode)"
 
-run_step hermes hermes update
+# Native updates can discard local gateway patches. Keep them opt-in until
+# the maintainer confirms that patched gateways have been decommissioned.
+if [[ "${HERMES_UPDATE:-}" == "1" ]]; then
+  run_step hermes hermes update
+else
+  echo "SKIP: hermes update requires HERMES_UPDATE=1 (local patches may be lost)"
+fi
 run_step claude claude update
 run_step codex  codex  update
 run_step gemini npm install -g @google/gemini-cli@latest

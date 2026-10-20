@@ -293,7 +293,6 @@ def test_retired_delivery_tasks_are_absent(tasks):
     assert "deckhand-api-presence-sync" not in ids
 
 
-
 def test_installed_fingerprint_schema_rejects_broad_or_malformed_values():
     validator = _load_module("validate_schedule_fingerprint", VALIDATOR)
 

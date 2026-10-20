@@ -11,6 +11,7 @@
   "properties": {
     "manifest_version": {
       "type": "integer",
+      "const": 2,
       "description": "Manifest-format version, independent of per-repo registry schema_version."
     },
     "generated_at": {

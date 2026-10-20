@@ -16,6 +16,18 @@ sys.path.insert(0, str(SCRIPTS_WORKFLOW))
 import generate_workflow_manifest as gm  # noqa: E402
 
 
+def test_manifest_schema_rejects_legacy_and_future_versions():
+    from jsonschema import Draft7Validator
+
+    schema_path = SCRIPTS_WORKFLOW.parents[1] / "docs/registry/workflow-manifest.schema.json"
+    schema = json.loads(schema_path.read_text())
+    Draft7Validator.check_schema(schema)
+    validator = Draft7Validator(schema["properties"]["manifest_version"])
+    assert validator.is_valid(gm.MANIFEST_VERSION)
+    for version in (1, 3, "2", None):
+        assert not validator.is_valid(version)
+
+
 # ---- fixtures ------------------------------------------------------------
 
 def _make_repo(base: Path, slug: str, registry_text: str | None = None) -> Path:

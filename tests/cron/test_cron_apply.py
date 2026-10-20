@@ -559,7 +559,7 @@ def test_real_linux_cutover_filters_named_windows_scheduler_tasks_and_dev_second
     assert "solver-dashboard" not in secondary["selected"]
 
 
-def test_active_runtime_gateway_blocks_cutover():
+def test_active_runtime_gateway_is_detected():
     assert ca.ct_detect(
         pgrep_fn=lambda pattern: pattern == "hermes_cli.main gateway"
     ) == ["hermes_cli.main gateway"]
