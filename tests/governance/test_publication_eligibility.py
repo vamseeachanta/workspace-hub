@@ -10,6 +10,7 @@ import copy
 import hashlib
 import json
 import sys
+from decimal import Decimal
 from pathlib import Path
 
 import pytest
@@ -250,3 +251,48 @@ def test_documented_example(tmp_path):
         'eligible': 1, 'deferred': 3, 'exported': 1}, 'errors': []}
     with pytest.raises(FileExistsError):
         example.build_example(output)
+
+
+@pytest.mark.parametrize(('pinned', 'staged'), [
+    ('0.0', '1e-400'), ('0.0', '-1e-400'),
+    ('1.0', '1.00000000000000001'),
+    ('9007199254740992.0', '9007199254740993.0'),
+])
+def test_numeric_rounding_cannot_hide_staged_mismatch(tmp_path, pinned, staged):
+    """Pin the actual staged bytes while independently proving numeric inequality."""
+    assert Decimal(pinned) != Decimal(staged)
+    bundle, stage = fixture(tmp_path)
+    bundle['records'][0]['payload'] = {'value': json.loads(pinned)}
+    content = json.dumps({'records': bundle['records']})
+    marker = '"value": ' + pinned
+    assert content.count(marker) == 1
+    content = content.replace(marker, '"value": ' + staged).encode()
+    (stage / 'export.json').write_bytes(content)
+    bundle['files'][0]['sha256'] = hashlib.sha256(content).hexdigest()
+    result = evaluate(bundle, stage)
+    assert result['status'] == 'blocked'
+    assert result['errors'] == ['lossy_json_number']
+
+
+@pytest.mark.parametrize('token', [
+    '1e-400', '-1e-400', '1.00000000000000001', '9007199254740993.0',
+])
+def test_lossy_json_number_rejected(token):
+    with pytest.raises(pe.InvalidBundle, match='^lossy_json_number$'):
+        pe.load_json('{"nested": [{"value": ' + token + '}]}')
+
+
+@pytest.mark.parametrize('token', ['1e999', '-1e999'])
+def test_exponent_overflow_rejected_during_parsing(token):
+    with pytest.raises(pe.InvalidBundle, match='^nonfinite_json$'):
+        pe.load_json('{"value": ' + token + '}')
+
+
+@pytest.mark.parametrize('token', [
+    '0.0', '-0.0', '0.1', '1.00', '1e-300', '1e300', '9007199254740993',
+])
+def test_round_trip_numbers_remain_supported(token):
+    parsed = pe.load_json('{"value": ' + token + '}')
+    rendered = json.dumps(parsed)
+    assert json.loads(rendered, parse_float=Decimal)['value'] == Decimal(token)
+    assert pe.bundle_digest(parsed) == pe.bundle_digest(json.loads(rendered))

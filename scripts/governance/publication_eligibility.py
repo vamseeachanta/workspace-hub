@@ -9,7 +9,9 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import math
 import re
+from decimal import Decimal, InvalidOperation
 from pathlib import Path
 
 
@@ -45,9 +47,28 @@ def _nonfinite(_value):
     raise InvalidBundle('nonfinite_json')
 
 
+def _lossless_float(token):
+    value = float(token)
+    _require(math.isfinite(value), 'nonfinite_json')
+    try:
+        exact = Decimal(token)
+    except InvalidOperation:
+        raise InvalidBundle('lossy_json_number') from None
+    # Compare decimal values before the canonical serializer can hide rounding.
+    # Ordinary decimals such as 0.1 need not have an exact binary representation;
+    # their shortest float representation must preserve the original JSON value.
+    _require(exact == Decimal(str(value)), 'lossy_json_number')
+    return value
+
+
 def load_json(text):
-    """Reject duplicate keys and non-finite JSON before evidence is lost."""
-    return json.loads(text, object_pairs_hook=_pairs, parse_constant=_nonfinite)
+    """Reject duplicate keys, non-finite numbers and decimal round-trip loss.
+
+    Numeric spelling may normalize, but its decimal value must survive the
+    float representation used by bundle_digest. Integer tokens remain exact.
+    """
+    return json.loads(text, object_pairs_hook=_pairs, parse_constant=_nonfinite,
+                      parse_float=_lossless_float)
 
 
 def bundle_digest(bundle):
