@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<title>Body recovery draft observations</title>
+<style>body { max-width: 65rem; margin: 2rem auto; font: 1rem/1.6 system-ui,sans-serif; padding: 1rem; } table { border-collapse: collapse; } th,td { border: 1px solid #aaa; padding: .6rem; text-align: left; } caption { caption-side: bottom; text-align: left; }</style>
+<h1>Body recovery draft observations</h1>
+<p>All six requested issue histories in the digitalmodel repository resolved through
+the GitHub GraphQL API on 2026-10-20. Pagination reported no remaining pages for each
+history. Exact original-body recovery is NOT_EVALUATED: the available field is an
+edit summary, not a verified original-body archive. No original body is invented.</p>
+<h2>Revision history</h2>
+<table><tr><th>Revision</th><th>Date</th><th>Change and reason</th></tr>
+<tr><td>Initial</td><td>2026-10-20</td><td>Read-only history observations and separate recovery decisions are recorded to avoid restoring unverified summaries.</td></tr>
+<caption>Revision history.</caption></table>
+<h2>Source and coverage</h2>
+<p>Source: GitHub GraphQL <code>Issue.userContentEdits</code>, requesting
+<code>editedAt</code>, <code>deletedAt</code>, <code>diff</code> and
+<code>pageInfo.hasNextPage</code> for the explicitly requested issue numbers.
+The live schema describes <code>UserContentEdit.diff</code> as a summary of changes.
+The source issue is workspace-hub issue 4074; the linked migration record is
+digitalmodel issue 690. This is a bounded observation, not the original source bytes.</p>
+<table><tr><th>Issue</th><th>Earlier edit evidence</th><th>Replacement scope observed</th><th>Restoration disposition</th></tr>
+<tr><td>digitalmodel issue 14</td><td>Earlier edit text unavailable.</td><td>Parametric CAD geometry, finite-element preprocessing and design studies.</td><td>NOT_EVALUATED; obtain an exact verified original.</td></tr>
+<tr><td>digitalmodel issue 22</td><td>Earlier edit summary available.</td><td>Parametric hull analysis and response lookup graphs.</td><td>NOT_EVALUATED; verify original library-refactor scope.</td></tr>
+<tr><td>digitalmodel issue 24</td><td>Earlier edit summaries available.</td><td>Drilling and completion riser parametric analysis.</td><td>NOT_EVALUATED; verify original file-management scope.</td></tr>
+<tr><td>digitalmodel issue 25</td><td>Earlier edit summary available.</td><td>Computational fluid dynamics capability.</td><td>NOT_EVALUATED; verify original software-extension refactor scope.</td></tr>
+<tr><td>digitalmodel issue 29</td><td>Earlier edit summaries available.</td><td>Hull benchmarking across analysis programs.</td><td>NOT_EVALUATED; verify original fatigue-library scope.</td></tr>
+<tr><td>digitalmodel issue 33</td><td>Earlier edit summaries available.</td><td>Cathodic protection benchmarking.</td><td>NOT_EVALUATED; verify original extraction-enhancement scope.</td></tr>
+<caption>Earlier summaries indicate possible recovery evidence but do not establish exact original bodies.</caption></table>
+<h2>Draft text</h2>
+<p>Restoration draft for each row: “Restore only the exact original body after its
+source is verified. The available edit summary is insufficient to authorize text
+replacement. Keep the current replacement scope in a separate proposed issue.”</p>
+<p>New-issue draft for each row: “Separate the replacement scope described in the
+table from the original issue. Link the original issue and retain its unfinished
+acceptance criteria after source verification. Delivery and closure remain
+unverified until the issue-closing procedure is satisfied.”</p>
+<h2>Draft decision sheet</h2>
+<table><tr><th>Issue reference</th><th>Decision</th></tr>
+<tr><td>digitalmodel issue 14</td><td>Restore the verified original body when available? Yes / No.</td></tr>
+<tr><td>digitalmodel issue 14</td><td>Create a separate issue for the replacement scope? Yes / No.</td></tr>
+<tr><td>digitalmodel issue 22</td><td>Restore the verified original body when available? Yes / No.</td></tr>
+<tr><td>digitalmodel issue 22</td><td>Create a separate issue for the replacement scope? Yes / No.</td></tr>
+<tr><td>digitalmodel issue 24</td><td>Restore the verified original body when available? Yes / No.</td></tr>
+<tr><td>digitalmodel issue 24</td><td>Create a separate issue for the replacement scope? Yes / No.</td></tr>
+<tr><td>digitalmodel issue 25</td><td>Restore the verified original body when available? Yes / No.</td></tr>
+<tr><td>digitalmodel issue 25</td><td>Create a separate issue for the replacement scope? Yes / No.</td></tr>
+<tr><td>digitalmodel issue 29</td><td>Restore the verified original body when available? Yes / No.</td></tr>
+<tr><td>digitalmodel issue 29</td><td>Create a separate issue for the replacement scope? Yes / No.</td></tr>
+<tr><td>digitalmodel issue 33</td><td>Restore the verified original body when available? Yes / No.</td></tr>
+<tr><td>digitalmodel issue 33</td><td>Create a separate issue for the replacement scope? Yes / No.</td></tr>
+<caption>Decisions are drafts only; no action is executed.</caption></table>
+<h2>Remaining coverage</h2>
+<p>The successor and import sweeps require a bounded, fully paginated inventory.
+The retired repository identity and retirement reference are not established by
+the source issue. Repository discovery returned no matching identity in the first
+queried repository page; that does not establish absence. These records remain
+NOT_EVALUATED rather than empty findings. No live successor mapping, import list
+or retired-repository triage is claimed complete.</p>
+</html>

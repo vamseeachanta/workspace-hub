@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Closure record drafts</title>
+<style>
+body { max-width: 65rem; margin: 2rem auto; padding: 0 1rem; color: #172535; font: 1rem/1.6 system-ui, sans-serif; }
+table { border-collapse: collapse; width: 100%; } th, td { text-align: left; vertical-align: top; border: 1px solid #aab5c0; padding: .6rem; }
+pre { white-space: pre-wrap; background: #eef2f5; padding: 1rem; }
+caption { caption-side: bottom; text-align: left; padding: .5rem 0; }
+</style>
+<h1>Closure record drafts</h1>
+<p>The read-only builder prepares successor CSV, body-restoration records,
+replacement-scope drafts, import-label proposals, retirement triage and yes/no
+decisions. Outputs are proposals for maintainer assessment. No issue is posted,
+edited, labelled, closed or reopened. A supplied snapshot is not an exhaustive audit.</p>
+<h2>Revision history</h2>
+<table><tr><th>Revision</th><th>Date</th><th>Change and reason</th></tr>
+<tr><td>Initial</td><td>2026-10-20</td><td>Draft preparation and evidence limits are documented so that closure state is distinguished from delivery.</td></tr>
+<caption>Revision history.</caption></table>
+<h2>Sources and method</h2>
+<p><a href="issue-closing-procedure.md">Issue-closing procedure</a>, sections A.4,
+B, C.3, C.4, D.1 and E, supplies the disposition criteria. The existing
+<a href="../../scripts/governance/check_issue_closures.py">closure checker</a>
+supplies closure and import evaluation. No engineering equations or material
+coefficients apply.</p>
+<p>Slice 1 will use explicit candidate mappings rather than infer successors from
+unrelated mentions in issue text. Open successors will remain subject to scope
+confirmation. Closed successors will qualify only when every existing checker
+rule passes. Cycles, missing targets, reopened targets without scope assessment,
+and a completed state without evidence will remain unresolved.</p>
+<p>Slice 2 will separate verified original bodies from replacement scope. A caller
+will supply the original text, its source and an explicit verification flag.
+An edit summary alone will never populate a restore-body field. Missing evidence
+will produce NOT_EVALUATED rather than reconstructed text.</p>
+<p>Slice 3 will produce import and retirement proposals and one yes/no question per
+proposed action. Import candidates will follow procedure E.9 and lack resolving
+delivery/test evidence. Retirement proposals will require an open issue, a reason,
+and either a retirement reference or an open destination.</p>
+<h2>Input and execution</h2>
+<p>Input is JSON on standard input. The <code>issues</code> array uses normalized
+checker records plus required <code>repository_slug</code>, <code>number</code> and
+<code>state</code>. Closed records retain checker evidence fields. The
+<code>successors</code> object maps fully qualified issue identities to candidate
+identities; both endpoints require independent assessment. Recovery records use
+<code>issue</code>, <code>original_body</code>, <code>original_source</code>,
+<code>original_verified</code> and <code>replacing_scope</code>. Retirement records
+use <code>issue</code>, <code>action</code>, <code>reason</code>, and
+<code>retirement_reference</code> or <code>destination</code>.</p>
+<pre>python scripts/governance/closure_records.py &lt; docs/governance/examples/closure-records.json
+python scripts/governance/closure_records.py --successor-csv &lt; docs/governance/examples/closure-records.json</pre>
+<p>The example uses synthetic identities and shall not be submitted for live API
+validation. For an authorized real snapshot, <code>--verify-live</code> will read
+each unique referenced issue with <code>gh api --method GET</code>, check its
+canonical repository and number, reject pull requests and return a nonzero exit
+status if any reference fails or remains NOT_EVALUATED. Live validation establishes
+reference resolution only; it does not refresh closure evidence or authenticate
+supplied original-body verification. JSON output retains each reference result;
+CSV output contains only successor rows.</p>
+<h2>Worked example: inputs, method and answer</h2>
+<p><a href="examples/closure-records.json">The complete synthetic input</a> contains
+a duplicate with an open candidate, an import record with a verified synthetic
+original and replacement scope, and an open retirement candidate. The generated
+<a href="examples/closure-successors.csv">successor CSV</a> is retained beside the
+input and checked against the independent answers below.</p>
+<table><tr><th>Input</th><th>Independent method</th><th>Expected answer</th></tr>
+<tr><td>Duplicate record 1 maps to open record 2.</td><td>Procedure A.4 permits an open successor, pending scope confirmation.</td><td>Successor 2, status open; one successor draft.</td></tr>
+<tr><td>Record 3 closes at 00:00:30 after creation at 00:00:00, without comments or delivery evidence.</td><td>Hand subtraction gives 30 s; procedure E.9 uses 60 s. The synthetic time difference is below that threshold.</td><td>Propose closure:unverified; delivery remains unestablished.</td></tr>
+<tr><td>Record 3 supplies a verified synthetic original and separate replacement text.</td><td>Procedure C.4 separates old scope from new scope.</td><td>Preserve the original exactly; draft a separate replacement issue.</td></tr>
+<tr><td>Open record 4 moves to open record 2, with a reason.</td><td>The destination retains unfinished scope; no move is executed.</td><td>Proposed move, subject to maintainer confirmation.</td></tr>
+<tr><td>All proposals above.</td><td>Hand count: one successor + one import + two recovery actions + one retirement action.</td><td>Five yes/no decisions; live reference validation remains NOT_EVALUATED offline.</td></tr>
+<caption>Worked-example answers follow the procedure independently of implementation output.</caption></table>
+<h2>Known limits and remaining audit work</h2>
+<p>The builder does not enumerate repositories, infer a retired repository identity,
+reconstruct edit histories, or establish the provenance of caller-supplied evidence.
+Empty inputs mean no supplied records, not proof of no findings. A complete audit
+will require an enumerated repository/date boundary, pagination evidence, exact
+original-body sources and a retirement reference. The maintainer decision sheet
+will be assessed before any issue mutation.</p>
+<p>Reference validation checks the canonical repository and issue number together.
+A successful response after an issue transfer, or an equal number in another
+repository, does not establish the identity originally cited. This defect class
+also applies to other issue-audit consumers.</p>
+<p>The bounded <a href="closure-recovery-observations.html">recovery observations</a>
+record the six explicitly requested histories, their evidence gaps and draft
+decisions. They do not claim recovery of original text or a complete closure sweep.</p>
+</html>
