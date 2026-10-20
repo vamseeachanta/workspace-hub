@@ -78,3 +78,20 @@ set it at least as high as the limits-file floor for direct launcher use.
 environment variables cannot replace the disk measurement or launcher.
 The pump performs one pass and starts at most one job. The live pump must retain
 atomic slot acquisition and enforce its configured start and concurrency limits.
+
+Cleanup requires the result record to begin with `OK`. Failed and empty results
+are retained. Every cleanup attempt probes the remote job branch with interactive
+authentication disabled and the existing bounded timeout. Cached tracking refs
+do not establish publication: a deleted or unreachable remote branch keeps the
+worktree. A remote descendant is accepted only when local objects establish
+ancestry; unknown remote objects keep the worktree.
+
+Disk admission compares unrounded availability. The legacy `GB` configuration
+keys use binary GiB in both scripts, retaining the existing more restrictive
+interpretation of the issue's 50 GB minimum. For example, 49.96 GiB remains below
+the 50 GiB floor even though display rounding would give 50.0 GiB. These input
+values illustrate the boundary; they are not measured disk availability.
+
+The reproducible storage comparison is documented in
+`docs/operations/job-queue-worktree-footprint.md`. No live queue installation or
+job execution is established by the stand-in tests or storage measurements.

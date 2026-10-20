@@ -59,7 +59,8 @@ function Get-FreeDiskGb([string]$Root, [string]$Role) {
   if ($FreeSpaceProbe) { return & $FreeSpaceProbe $Root $Role }
   $full = [System.IO.Path]::GetFullPath($Root)
   $drive = New-Object System.IO.DriveInfo([System.IO.Path]::GetPathRoot($full))
-  return [math]::Round($drive.AvailableFreeSpace / 1GB, 1)
+  # Issue 4081 disk criterion: compare before rounding (49.96 is below 50).
+  return $drive.AvailableFreeSpace / 1GB
 }
 
 function Get-SpecHead([string]$JobsRoot, [string]$Id, [string]$Key) {

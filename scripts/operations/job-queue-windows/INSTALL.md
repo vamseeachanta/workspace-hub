@@ -45,6 +45,19 @@ runner are integration examples, not complete replacements for live scripts.
 No installation or live-script execution is performed by this repository change.
 Existing worktrees under the old root require a separate reviewed cleanup.
 
+Select a short folder on the system drive for `WORKTREE_ROOT`; retain clones in
+their existing location. Confirm that the system-drive and clone-drive roots
+resolve to the intended volumes before testing admission. No live root is
+committed in the configuration example. Verify below-floor and exact-floor cases
+on each volume using the unrounded availability; the legacy `GB` keys mean GiB.
+Before installation, obtain second-provider review of the exact integrated
+scripts. A repository test pass alone does not authorize installation.
+
+Confirm failed and empty result records are kept. Disconnect the disposable
+remote, then delete its job branch, testing each condition separately: both must
+retain the worktree even when a local tracking ref still matches its head.
+Successful cleanup must establish publication from a live remote branch probe.
+
 Lock a job worktree (`git worktree lock`) before working in it by hand.
 Cleanup also keeps worktrees whose files or administrative entries were touched
 in the last 60 minutes. The environment variable `WORKTREE_KEEP_MINUTES` overrides
