@@ -1,9 +1,10 @@
 from __future__ import annotations
 
+import re
 import tomllib
 from pathlib import Path
-import re
 
+import pytest
 
 ROOT = Path(__file__).resolve().parents[2]
 TREE_FINGERPRINT_RE = re.compile(r"^[^:\n]+:[a-z0-9][a-z0-9-]*:\d+$")
@@ -21,6 +22,11 @@ def _load_config(text: str) -> dict:
     extend = config.get("extend")
     if not isinstance(extend, dict) or extend.get("useDefault") is not True:
         raise AssertionError("gitleaks config must extend the default rules")
+    # Issue 4069: preserve every default rule; no alternate rule sources.
+    if set(extend) != {"useDefault"}:
+        raise AssertionError("gitleaks extend must contain only useDefault")
+    if "rules" in config:
+        raise AssertionError("gitleaks config must not declare custom rules")
     return config
 
 
@@ -385,7 +391,7 @@ regex = '''example'''
   [rules.allowlist]
   paths = ['''^\\S+$''']
 """
-    config = _load_config(config_text)
+    config = tomllib.loads(config_text)
 
     try:
         _assert_path_allowlist_is_narrow(_path_allowlists_from_config(config))
@@ -411,3 +417,23 @@ def test_gitleaksignore_rejects_non_fingerprint_line() -> None:
         assert "fingerprints" in str(exc)
     else:
         raise AssertionError("non-fingerprint gitleaksignore line was accepted")
+
+
+@pytest.mark.parametrize("extension", [
+    'disabledRules = ["generic-api-key"]',
+    'disabledRules = []',
+    'path = "replacement.toml"',
+])
+def test_gitleaks_config_rejects_extra_extend_keys(extension: str) -> None:
+    """Issue 4069: only useDefault is allowed, regardless of extra-key value."""
+    with pytest.raises(AssertionError, match="only useDefault"):
+        _load_config("[extend]\nuseDefault = true\n" + extension)
+
+
+@pytest.mark.parametrize("rule_id", ["generic-api-key", "custom-example"])
+def test_gitleaks_config_rejects_rule_tables(rule_id: str) -> None:
+    """Issue 4069 permits rejecting all custom rules: both inputs must fail."""
+    text = ('[extend]\nuseDefault = true\n\n[[rules]]\n'
+            f'id = "{rule_id}"\nregex = "example"\n')
+    with pytest.raises(AssertionError, match="custom rules"):
+        _load_config(text)
