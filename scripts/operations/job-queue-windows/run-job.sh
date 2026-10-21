@@ -123,11 +123,11 @@ append_keep() {
 is_pushed() {
   local wt="$1" branch="$2" head remote
   head=$(git -C "$wt" rev-parse HEAD)
-  remote=$(git -C "$wt" rev-parse -q --verify "refs/remotes/origin/$branch^{commit}" 2>/dev/null || true)
-  if [ -z "$remote" ]; then
-    remote=$(timeout --kill-after=2s 15s git -C "$wt" ls-remote origin "refs/heads/$branch" 2>/dev/null |
-      cut -f1 | head -n 1) || return 1
-  fi
+  # Issue 4081, cleanup criterion: work must be pushed, not merely cached locally.
+  # Preserve the existing network timeout used by cleanup-recent.
+  remote=$(GIT_TERMINAL_PROMPT=0 GCM_INTERACTIVE=never timeout --kill-after=2s 15s \
+    git -C "$wt" ls-remote origin "refs/heads/$branch" 2>/dev/null |
+    cut -f1 | head -n 1) || return 1
   [ -n "$remote" ] || return 1
   [ "$remote" = "$head" ] && return 0
   git -C "$wt" merge-base --is-ancestor "$head" "$remote" 2>/dev/null
@@ -145,6 +145,9 @@ cleanup_worktree() (
   pending_refs_file "$refs"
   reason=""
   [ -f "$result" ] || reason="${reason}${reason:+; }job has no result line"
+  if [ -f "$result" ] && ! head -n 1 "$result" | grep -qE '^OK([[:space:]]|$)'; then
+    reason="${reason}${reason:+; }job result is not successful"
+  fi
   for marker in "$QUEUE_ROOT"/locks/slot*/owner; do
     [ -f "$marker" ] || continue
     read -r holder _ < "$marker" || true
