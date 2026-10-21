@@ -23,6 +23,8 @@ thresholds or source-rights decisions are inferred.</p>
 example so omitted files and rehashed invalid records cannot pass acceptance.</td></tr>
 <tr><td>2</td><td>2026-10-21</td><td>Specify byte-preserving retention and reject
 path segments that Windows trims to prevent cross-platform digest and identity drift.</td></tr>
+<tr><td>3</td><td>2026-10-21</td><td>Remove the synthetic original's newline
+and update its manifest digest so the example survives checkout line-ending conversion.</td></tr>
 <caption>Table 1. Document revision history.</caption></table>
 <h2>Basis and method</h2>
 <p>The governing requirement is
@@ -43,7 +45,7 @@ rejected. Require the exact documented fields and versions.</li>
 <li>Compare file ID sets for equality, then compare every role, path, format,
 record count and primary key. Extra entries fail as well as omitted entries.
 IDs and paths shall be unique.</li>
-<li>Resolve canonical owner-relative POSIX paths below the supplied owner root.
+<li>Resolve canonical root-relative POSIX paths below the supplied dataset root.
 Absolute paths, parent traversal, drive syntax, backslashes, aliases such as dot
 segments, trailing dots or spaces in any segment, and payload symlinks fail.
 Unlisted directory files are not implicitly
@@ -81,7 +83,9 @@ responsibility; a foreign-key list does not establish physical validity.</p>
 <h2>Worked example: inputs, method and answer</h2>
 <p>The committed synthetic inputs are under
 <code>tests/fixtures/data/manifest_closure/</code>. The byte file contains
-<code>synthetic original</code> followed by a newline. The two record rows are:</p>
+<code>synthetic original</code> without a newline. This synthetic byte sequence
+contains no line endings for automatic checkout conversion to alter; its manifest
+digest is calculated over these exact bytes. The two record rows are:</p>
 <pre>[{"id":"a","parent":"a"},{"id":"b","parent":"a"}]</pre>
 <p>Independent hand calculation: the file set is {original, records}; its
 cardinality is two. The record key set is {a, b}, with two unique values and two

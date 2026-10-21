@@ -87,7 +87,7 @@ def _path(value):
         and all(part == part.rstrip(" .") for part in path.parts)
         and not any(char in value for char in ("\\", ":", "\x00"))
         and bool(path.parts),
-        "path must be canonical and owner-relative",
+        "path must be canonical and root-relative",
     )
     return path
 
@@ -239,7 +239,7 @@ def readback(
         )
     links = _foreign_keys(contract, expected)
     root = Path(root).resolve()
-    _require(root.is_dir(), "owner root is not a directory")
+    _require(root.is_dir(), "dataset root is not a directory")
     contents, records, keys = {}, {}, {}
     for identifier, entry in expected.items():
         raw = _read(root, entry["path"])

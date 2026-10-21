@@ -173,7 +173,7 @@ def test_inventory_and_shape_fail_closed(bundle, mutation):
         "",
     ],
 )
-def test_owner_relative_paths_are_canonical(bundle, path):
+def test_root_relative_paths_are_canonical(bundle, path):
     for document in bundle[1:]:
         document["files"][0]["path"] = path
     with pytest.raises(ClosureError):
@@ -186,12 +186,31 @@ def test_owner_relative_paths_are_canonical(bundle, path):
 def test_windows_trimmed_path_segments_are_rejected(bundle, path):
     root, contract, manifest = bundle
     payload = root / path
+    if sys.platform == "win32":
+        # Extended paths preserve the invalid segments for the validator to reject.
+        payload = Path("\\\\?\\" + str(payload.absolute()))
     payload.parent.mkdir(exist_ok=True)
     payload.write_bytes((root / "raw/input.txt").read_bytes())
     for document in (contract, manifest):
         document["files"][0]["path"] = path
     with pytest.raises(ClosureError, match="canonical"):
         accept(bundle)
+
+
+def test_windows_alias_setup_preserves_segments(bundle, monkeypatch):
+    """Exercise Windows path selection without requiring a Windows filesystem."""
+    captured = []
+    real_path = Path
+
+    def capture_path(value):
+        captured.append(value)
+        return real_path(value.removeprefix("\\\\?\\"))
+
+    with monkeypatch.context() as patch:
+        patch.setattr(sys, "platform", "win32")
+        patch.setattr(sys.modules[__name__], "Path", capture_path)
+        test_windows_trimmed_path_segments_are_rejected(bundle, "raw /input.txt")
+    assert captured == ["\\\\?\\" + str((bundle[0] / "raw /input.txt").absolute())]
 
 
 @pytest.mark.parametrize(
@@ -419,6 +438,12 @@ def test_all_four_views_must_read_their_own_bytes(bundle, tmp_path):
             view="staged",
         )
     accept(bundle)
+
+
+def test_original_fixture_has_no_convertible_line_endings():
+    """A newline-free synthetic original survives automatic checkout conversion."""
+    example = Path(__file__).parents[1] / "fixtures/data/manifest_closure"
+    assert (example / "raw/input.txt").read_bytes() == b"synthetic original"
 
 
 def test_documented_example_and_cli_receipt(tmp_path):
