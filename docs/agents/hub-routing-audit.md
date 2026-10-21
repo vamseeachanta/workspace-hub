@@ -9,11 +9,13 @@ The report establishes marker coverage for the supplied directories only.
 | Revision | Date | Change and reason |
 | --- | --- | --- |
 | Initial | 2026-10-20 | Add literal routing observations and a fixture example so missing links can be inspected before edits. |
+| 1 | 2026-10-21 | Recognize Contract headers with extra fields, preserve prose after fenced examples, decode a leading BOM, and distinguish absent retired files from missing markers. |
 
 ## Basis and method
 
-Issue 3958, acceptance criteria, specifies the exact header line
-`Contract: ../workspace-hub/AGENTS.md`. The
+Issue 3958, acceptance criteria, requires that the header carries
+`Contract: ../workspace-hub/AGENTS.md`, alone or followed by whitespace and
+a `|` field list such as `| Source: src/example/`. The
 [template](hub-routing-block.md) supplies this line beneath a generic header;
 maintainers will preserve existing repository-specific instructions when applying
 it. It is a template, not an installed instruction file.
@@ -26,16 +28,20 @@ No equations, engineering constants, or numerical acceptance limits are used.
 For each supplied directory, the tool will report a separate row for each of
 AGENTS.md and CLAUDE.md:
 
-- `yes`: an active prose line exactly equals the required Contract line.
-- `partial`: a Contract prefix or hub AGENTS reference occurs, but the exact
-  line is absent. Split markers, altered targets, and URL references fall here.
+- `yes`: an active prose line carries the required Contract token alone or
+  followed by whitespace and a `|` field list.
+- `partial`: a Contract prefix or hub AGENTS reference occurs, but a matching
+  header is absent. Split markers, altered targets, and URL references fall here.
 - `no`: neither marker occurs in active prose, or the file cannot be read.
 
-Fenced code, indented code, and HTML comments are excluded. Line numbers are
-one-based physical lines. A `yes` row lists exact-match lines; a `partial` row
+Fenced code, indented code, and HTML comments are excluded. Comment openers
+inside fenced code do not affect later prose. A leading UTF-8 BOM is ignored.
+Line numbers are one-based physical lines. A `yes` row lists matching lines; a `partial` row
 lists candidate evidence. Missing files have no evidence lines. An unreadable
 file adds an explicit diagnostic. File-presence and routing observations are
-separate; a missing CLAUDE.md does not invalidate a complete AGENTS.md.
+separate; an absent CLAUDE.md has `n/a (file absent)` in the missing-marker
+column and does not invalidate a complete AGENTS.md or call for a retired file
+to be recreated.
 
 ## Invocation
 
@@ -84,13 +90,13 @@ by `test_documented_fixture_table`.
 | repository | file present | routes to the hub contract | missing marker(s) | line numbers |
 | --- | --- | --- | --- | --- |
 | complete | AGENTS.md: yes | yes | none | 2 |
-| complete | CLAUDE.md: no | no | Contract: ../workspace-hub/AGENTS.md | none |
+| complete | CLAUDE.md: no | no | n/a (file absent) | none |
 | unlinked | AGENTS.md: yes | no | Contract: ../workspace-hub/AGENTS.md | none |
-| unlinked | CLAUDE.md: no | no | Contract: ../workspace-hub/AGENTS.md | none |
-| partial | AGENTS.md: yes | partial | exact line: Contract: ../workspace-hub/AGENTS.md | 1 |
-| partial | CLAUDE.md: no | no | Contract: ../workspace-hub/AGENTS.md | none |
+| unlinked | CLAUDE.md: no | no | n/a (file absent) | none |
+| partial | AGENTS.md: yes | partial | header carries: Contract: ../workspace-hub/AGENTS.md | 1 |
+| partial | CLAUDE.md: no | no | n/a (file absent) | none |
 | absent | AGENTS.md: no | no | Contract: ../workspace-hub/AGENTS.md | none |
-| absent | CLAUDE.md: no | no | Contract: ../workspace-hub/AGENTS.md | none |
+| absent | CLAUDE.md: no | no | n/a (file absent) | none |
 <!-- fixture-table:end -->
 
 Table: Expected literal routing observations for synthetic inputs.

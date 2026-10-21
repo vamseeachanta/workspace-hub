@@ -30,6 +30,16 @@ def load_module():
     ("text", "status", "lines"),
     [
         (BLOCK, "yes", [2]),
+        ("Contract: ../workspace-hub/AGENTS.md | Source: src/digitalmodel/\n", "yes", [1]),
+        ("Contract: ../workspace-hub/AGENTS.md | Source: src/example/ | Mode: local\n",
+         "yes", [1]),
+        ("Contract: ../workspace-hub/AGENTS.md unrelated\n", "partial", [1]),
+        ("Contract: ../workspace-hub/AGENTS.md| Source: src/example/\n", "partial", [1]),
+        (("# X\n```html\n<!-- example opener\n```\n"
+          "Contract: ../workspace-hub/AGENTS.md\n"), "yes", [5]),
+        (("# X\n~~~html\n<!-- example opener\n~~~\n"
+          "Contract: ../workspace-hub/AGENTS.md\n"), "yes", [5]),
+        ("\ufeffContract: ../workspace-hub/AGENTS.md\n", "yes", [1]),
         ("# Independent instructions\n", "no", []),
         ("Contract: elsewhere/AGENTS.md\n", "partial", [1]),
         ("../workspace-hub/AGENTS.md\n", "partial", [1]),
@@ -69,6 +79,9 @@ def test_missing_files_and_read_only(tmp_path):
     empty.mkdir()
     assert all(not r["present"] and r["routes"] == "no"
                for r in module.audit_repository(empty))
+    missing_agents, missing_legacy = module.audit_repository(empty)
+    assert missing_agents["missing"] == ["Contract: ../workspace-hub/AGENTS.md"]
+    assert missing_legacy["missing"] == ["n/a (file absent)"]
     assert list(empty.iterdir()) == []
 
 
@@ -92,7 +105,7 @@ def test_cli_paths_and_json_relative_to_config(tmp_path):
     assert direct.returncode == configured.returncode == 0
     assert direct.stdout == configured.stdout
     assert "| sample | AGENTS.md: yes | yes | none | 2 |" in direct.stdout
-    assert "| sample | CLAUDE.md: no | no |" in direct.stdout
+    assert "| sample | CLAUDE.md: no | no | n/a (file absent) | none |" in direct.stdout
     assert str(tmp_path) not in direct.stdout
 
 
@@ -122,12 +135,12 @@ def test_unreadable_text_is_a_reported_gap(tmp_path):
     assert "unreadable UTF-8 file" in row["missing"]
 
 
-def test_table_escapes_repository_names(tmp_path):
-    repo = tmp_path / "sample|<x>"
-    repo.mkdir()
-    result = run_cli(repo)
-    assert result.returncode == 0
-    assert "sample&#124;&lt;x&gt;" in result.stdout
+def test_table_escapes_repository_names():
+    row = {"repository": "sample|<x>", "file": "AGENTS.md", "present": False,
+           "routes": "no", "missing": ["Contract: ../workspace-hub/AGENTS.md"],
+           "lines": []}
+    table = load_module().render_table([row])
+    assert "| sample&#124;&lt;x&gt; | AGENTS.md: no |" in table
 
 
 def test_duplicate_names_are_not_ambiguous(tmp_path):
