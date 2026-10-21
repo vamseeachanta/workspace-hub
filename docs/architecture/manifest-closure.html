@@ -21,6 +21,8 @@ thresholds or source-rights decisions are inferred.</p>
 <table><tr><th>Revision</th><th>Date</th><th>Change and reason</th></tr>
 <tr><td>1</td><td>2026-10-20</td><td>Define complete readback closure and a synthetic
 example so omitted files and rehashed invalid records cannot pass acceptance.</td></tr>
+<tr><td>2</td><td>2026-10-21</td><td>Specify byte-preserving retention and reject
+path segments that Windows trims to prevent cross-platform digest and identity drift.</td></tr>
 <caption>Table 1. Document revision history.</caption></table>
 <h2>Basis and method</h2>
 <p>The governing requirement is
@@ -43,7 +45,8 @@ record count and primary key. Extra entries fail as well as omitted entries.
 IDs and paths shall be unique.</li>
 <li>Resolve canonical owner-relative POSIX paths below the supplied owner root.
 Absolute paths, parent traversal, drive syntax, backslashes, aliases such as dot
-segments, and payload symlinks fail. Unlisted directory files are not implicitly
+segments, trailing dots or spaces in any segment, and payload symlinks fail.
+Unlisted directory files are not implicitly
 part of the dataset; completeness is defined by the pinned inventory.</li>
 <li>Read each regular file once and compare its SHA-256 against the manifest.
 For record arrays, require the pinned number of rows, object rows, present and
@@ -105,6 +108,10 @@ message deliberately omits payload values and filesystem paths. To preserve a
 receipt, capture standard output in a separate evidence artifact; do not insert
 it into the manifest being hashed.</p>
 <h2>Independent byte views and limits</h2>
+<p>Retained raw originals require a matching <code>-text</code> Git attribute so
+checkout line-ending conversion cannot change their received bytes. Otherwise,
+pinned digests can differ by platform. Verify the effective attributes and bytes
+in a fresh checkout before acceptance.</p>
 <p>Run acceptance independently against retained originals, working-tree bytes,
 materialized staged bytes and a fresh-checkout snapshot. The explicit view labels
 are <code>retained-original</code>, <code>working-tree</code>, <code>staged</code>

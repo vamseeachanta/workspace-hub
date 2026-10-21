@@ -11,6 +11,7 @@ import copy
 import hashlib
 import json
 import os
+import re
 import subprocess
 import sys
 from pathlib import Path
@@ -176,6 +177,20 @@ def test_owner_relative_paths_are_canonical(bundle, path):
     for document in bundle[1:]:
         document["files"][0]["path"] = path
     with pytest.raises(ClosureError):
+        accept(bundle)
+
+
+@pytest.mark.parametrize(
+    "path", ["raw/input.txt.", "raw/input.txt ", "raw./input.txt", "raw /input.txt"]
+)
+def test_windows_trimmed_path_segments_are_rejected(bundle, path):
+    root, contract, manifest = bundle
+    payload = root / path
+    payload.parent.mkdir(exist_ok=True)
+    payload.write_bytes((root / "raw/input.txt").read_bytes())
+    for document in (contract, manifest):
+        document["files"][0]["path"] = path
+    with pytest.raises(ClosureError, match="canonical"):
         accept(bundle)
 
 
@@ -411,6 +426,16 @@ def test_documented_example_and_cli_receipt(tmp_path):
     example = Path(__file__).parents[1] / "fixtures/data/manifest_closure"
     contract = (example / "contract.json").read_bytes()
     expected_pin = digest(contract)
+    documentation = (
+        Path(__file__).parents[2] / "docs/architecture/manifest-closure.html"
+    ).read_text(encoding="utf-8")
+    literal = re.search(
+        r"exact example contract pin is\s*<code>([0-9a-f]{64})</code>", documentation
+    )
+    assert literal is not None
+    assert expected_pin == literal.group(1)
+    assert f"--contract-sha256 {expected_pin}" in documentation
+    assert b"\r" not in (example / "raw/input.txt").read_bytes()
     env = {
         k: v
         for k, v in os.environ.items()

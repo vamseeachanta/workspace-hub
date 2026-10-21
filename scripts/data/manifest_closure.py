@@ -84,6 +84,7 @@ def _path(value):
         not path.is_absolute()
         and path.as_posix() == value
         and all(part not in {".", ".."} for part in path.parts)
+        and all(part == part.rstrip(" .") for part in path.parts)
         and not any(char in value for char in ("\\", ":", "\x00"))
         and bool(path.parts),
         "path must be canonical and owner-relative",
