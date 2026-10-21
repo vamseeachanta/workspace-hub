@@ -9,8 +9,8 @@ import csv
 import importlib
 import io
 import json
-from pathlib import Path
 import sys
+from pathlib import Path
 
 import pytest
 
@@ -48,7 +48,7 @@ def test_closed_completed_alone_is_not_proper_closure():
     assert result["successors"][0]["successor"] == "none: reopen"
 
 
-def test_properly_closed_successor_requires_all_checker_rules():
+def test_properly_closed_successor_requires_all_checker_rules(monkeypatch, capsys):
     """A/B/E: delivered scope, reviewed head, paths and test evidence agree."""
     delivered = issue(
         2, state_reason="COMPLETED", closer_type="merged_pr", body="- [x] Delivered",
@@ -59,9 +59,27 @@ def test_properly_closed_successor_requires_all_checker_rules():
                         "merge_commit_sha": "abcdef1"}],
         default_branch_shas=["abcdef1"], paths_at_refs={"scripts/example.py": True},
         body_edited_after_close=False)
-    result = records.build_drafts(packet(issues=[issue(1), delivered],
-                                        successors={"example/tools#1": "example/tools#2"}))
+    data = packet(issues=[issue(1), delivered],
+                  successors={"example/tools#1": "example/tools#2"})
+    result = records.build_drafts(data)
     assert result["successors"][0]["status"] == "properly closed"
+    calls = []
+
+    def run(args, **kwargs):
+        number = int(args[-1].rsplit("/", 1)[1])
+        calls.append(number)
+        raw = {"number": number, "state": "closed",
+               "html_url": f"https://github.com/example/tools/issues/{number}"}
+        if number == 4:
+            raw["pull_request"] = {"url": "ignored"}
+        return type("Response", (), {"returncode": 0, "stdout": json.dumps(raw)})()
+
+    monkeypatch.setattr(records.subprocess, "run", run)
+    monkeypatch.setattr(sys, "stdin", io.StringIO(json.dumps(data)))
+    assert records.main(["--verify-live"]) == 0
+    assert calls == [1, 2]
+    assert set(json.loads(capsys.readouterr().out)["reference_validation"]) == {
+        "example/tools#1", "example/tools#2"}
 
 
 def test_reopened_successor_needs_scope_assessment():
@@ -168,13 +186,12 @@ def test_live_validation_failure_is_explicit():
     assert result["example/tools#1"]["status"] == "NOT_EVALUATED"
 
 
-def test_all_embedded_issue_references_are_enumerated():
+def test_only_proposed_text_and_structured_identities_are_enumerated():
     result = records.build_drafts(packet(issues=[issue(
         1, body="Related #8 and example/other#9.")], recoveries=[{
             "issue": "example/tools#1", "original_body": "Follow #10.",
             "original_source": "verified revision", "original_verified": True}]))
-    assert result["references"] == ["example/other#9", "example/tools#1",
-                                     "example/tools#10", "example/tools#8"]
+    assert result["references"] == ["example/tools#1", "example/tools#10"]
 
 
 def test_live_validation_checks_canonical_identity():
@@ -215,10 +232,13 @@ def test_documented_example_matches_independent_answers():
     assert result["recoveries"][0]["restore_body"] == data["recoveries"][0]["original_body"]
     assert result["retired"][0]["status"] == "proposed"
     assert len(result["decisions"]) == 5
-    expected_csv = (root / "docs/governance/examples/closure-successors.csv").read_text()
+    expected_row = {
+        "issue": "example/tools#1", "successor": "example/tools#2", "status": "open",
+        "draft_comment": "Proposed successor: example/tools#2 (open); confirm that unfinished scope is carried forward.",
+    }
     output = io.StringIO()
     records.write_successor_csv(result["successors"], output)
-    assert output.getvalue() == expected_csv
+    assert list(csv.DictReader(io.StringIO(output.getvalue()))) == [expected_row]
 
 
 def test_cli_live_reads_are_only_get_requests(monkeypatch, capsys):
@@ -238,7 +258,7 @@ def test_cli_live_reads_are_only_get_requests(monkeypatch, capsys):
 
 def test_cli_returns_failure_when_reference_cannot_be_verified(monkeypatch, capsys):
     monkeypatch.setattr(sys, "stdin", io.StringIO(json.dumps(packet(issues=[issue(1)]))))
-    monkeypatch.setattr(records, "verify_references", lambda refs: {
+    monkeypatch.setattr(records, "verify_references", lambda refs, reader: {
         "example/tools#1": {"status": "NOT_EVALUATED", "state": None}})
     assert records.main(["--verify-live"]) == 1
     assert json.loads(capsys.readouterr().out)["draft_only"] is True
@@ -251,7 +271,7 @@ def test_reference_mismatch_fails_without_leaking_response():
 
 
 def test_api_retries_only_transient_server_errors(monkeypatch):
-    """Operational retry counts and delays follow the supplied server-error rule."""
+    """The documented default retries transient server failures after 60 seconds."""
     calls, delays = [], []
 
     def run(args, **kwargs):
@@ -265,3 +285,35 @@ def test_api_retries_only_transient_server_errors(monkeypatch):
     assert records.read_issue("example/tools", 1) == {"number": 1}
     assert len(calls) == 2
     assert delays == [60]
+
+
+@pytest.mark.parametrize("retries,delay,error,attempts", [
+    (0, 0.0, "HTTP 503", 1), (2, 0.25, "HTTP 503", 3),
+    (2, 0.25, "HTTP 403", 1),
+])
+def test_cli_retry_controls(monkeypatch, capsys, retries, delay, error, attempts):
+    calls, delays = [], []
+
+    def run(args, **kwargs):
+        calls.append(args)
+        return type("Response", (), {"returncode": 1, "stderr": error})()
+
+    monkeypatch.setattr(records.subprocess, "run", run)
+    monkeypatch.setattr(records.time, "sleep", delays.append)
+    monkeypatch.setattr(sys, "stdin", io.StringIO(json.dumps(packet(issues=[issue(1)]))))
+    assert records.main(["--verify-live", "--retries", str(retries),
+                         "--retry-delay", str(delay)]) == 1
+    assert len(calls) == attempts
+    assert delays == [delay] * (attempts - 1)
+    assert json.loads(capsys.readouterr().out)["reference_validation"][
+        "example/tools#1"]["status"] == "NOT_EVALUATED"
+
+
+@pytest.mark.parametrize("option,value", [
+    ("--retries", "-1"), ("--retries", "1.5"), ("--retry-delay", "-1"),
+    ("--retry-delay", "nan"), ("--retry-delay", "inf"),
+])
+def test_cli_rejects_invalid_retry_controls(option, value):
+    with pytest.raises(SystemExit) as exc:
+        records.main([option, value])
+    assert exc.value.code == 2

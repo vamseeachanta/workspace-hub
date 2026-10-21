@@ -10,14 +10,16 @@ from __future__ import annotations
 import argparse
 import csv
 import json
+import math
 import re
 import subprocess
 import sys
 import time
-from typing import Callable, TextIO
+from collections.abc import Callable
+from functools import partial
+from typing import TextIO
 
 import check_issue_closures as checker
-
 
 IDENTITY = re.compile(r"([A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+)#([1-9][0-9]*)\Z")
 SUCCESSOR_WORDS = re.compile(r"\b(duplicate|superseded)\b", re.I)
@@ -149,29 +151,29 @@ def build_drafts(data: dict) -> dict:
         output["retired"].append(_retirement(entry, index))
         decision(entry["issue"], f"Approve retirement disposition for {entry['issue']}")
 
-    # Check every reference in source and proposed text, including original bodies.
-    for section in (issues, data.get("recoveries", []), data.get("retired", [])):
-        for item in section:
-            ref = item.get("issue") or identity(item)
-            repository, _ = target(ref)
-            for mentioned in checker.issue_references(json.dumps(item)):
+    # Restored bodies and replacement scope are proposed text; closure evidence
+    # stays with the source record and may cite PRs rather than issue identities.
+    for item in output["recoveries"]:
+        repository, _ = target(item["issue"])
+        for key in ("restore_body", "new_issue_body"):
+            for mentioned in checker.issue_references(item.get(key) or ""):
                 refs.add(mentioned if "#" in mentioned else f"{repository}#{mentioned}")
     output["references"] = sorted(refs)
     output["coverage"] = data.get("coverage", "Supplied snapshot only; exhaustive collection is not established.")
     return output
 
 
-def read_issue(repository: str, number: int) -> dict:
+def read_issue(repository: str, number: int, *, retries: int = 5,
+               retry_delay: float = 60) -> dict:
     """Read one issue; retry only transient server failures, never mutations."""
-    # Retry count and delay follow the task's server-error rule, not an engineering limit.
-    for attempt in range(6):
+    for attempt in range(retries + 1):
         result = subprocess.run(["gh", "api", "--method", "GET",
                                  f"repos/{repository}/issues/{number}"],
                                 capture_output=True, text=True, check=False)
         if result.returncode == 0:
             return json.loads(result.stdout)
-        if attempt < 5 and re.search(r"\b(502|503|504)\b", result.stderr):
-            time.sleep(60)
+        if attempt < retries and re.search(r"\b(502|503|504)\b", result.stderr):
+            time.sleep(retry_delay)
             continue
         raise RuntimeError("Issue API request failed; reference remains unverified")
     raise RuntimeError("Issue API retries exhausted")
@@ -203,11 +205,18 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--verify-live", action="store_true", help="GET each cited issue through gh.")
     parser.add_argument("--successor-csv", action="store_true", help="Print successor CSV instead of JSON.")
+    parser.add_argument("--retries", type=int, default=5,
+                        help="Retries after the first GET for HTTP 502/503/504 (default: 5).")
+    parser.add_argument("--retry-delay", type=float, default=60,
+                        help="Seconds between transient-error retries (default: 60).")
     args = parser.parse_args(argv)
+    if args.retries < 0 or not math.isfinite(args.retry_delay) or args.retry_delay < 0:
+        parser.error("retries and retry-delay must be nonnegative; retry-delay must be finite")
     result = build_drafts(json.load(sys.stdin))
     failed = False
     if args.verify_live:
-        result["reference_validation"] = verify_references(result["references"])
+        result["reference_validation"] = verify_references(
+            result["references"], partial(read_issue, retries=args.retries, retry_delay=args.retry_delay))
         failed = any(row["status"] != "PASS" for row in result["reference_validation"].values())
     if args.successor_csv:
         write_successor_csv(result["successors"], sys.stdout)
