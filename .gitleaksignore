@@ -33,7 +33,9 @@ tests/setup/test_emit_machine_status.sh:jwt:143
 # looks-real: accepted by the maintainer on 2026-10-13 as revoked, rotated or
 # long expired; this records that decision and does not establish live validity.
 # These historical fingerprints remain exact; no new suppression is added.
+# Class: looks-real; accepted on 2026-10-13 in pull request 4051.
 09ac32aa5e748201e423a882af9cc99ba9baf9b1:logs/orchestrator/hermes/session_20260519.jsonl:generic-api-key:6598
+# Class: looks-real; accepted on 2026-10-13 in pull request 4051.
 29b6f8b1ce9bc9e892d12a195a37eb7587526c3d:logs/orchestrator/hermes/session_20260519.jsonl:generic-api-key:19258
 4ff7e52f03662ac14f7a244044197a03ff56f053:docs/document-intelligence/standards-codes-provenance-reuse-contract.md:generic-api-key:258
 5b88341efdab9209e1b2a04e3f378baa22a42f73:tests/data/doc_intelligence/test_promoter_source_doc_key_followup.py:generic-api-key:286
@@ -52,7 +54,9 @@ tests/setup/test_emit_machine_status.sh:jwt:143
 7db418fc2464f82f1ab955451b2b8caeb9f53549:examples/claude-code-course/uigen/.next/server/middleware-manifest.json:generic-api-key:25
 7db418fc2464f82f1ab955451b2b8caeb9f53549:examples/claude-code-course/uigen/.next/server/middleware/middleware-manifest.json:generic-api-key:24
 7db418fc2464f82f1ab955451b2b8caeb9f53549:examples/claude-code-course/uigen/.next/server/middleware/middleware-manifest.json:generic-api-key:25
+# Class: looks-real; accepted on 2026-10-13 in pull request 4051.
 807e4b2c61c21f113840fe6fdff61f0e505c9f96:logs/orchestrator/codex/session_20260608.jsonl:grafana-api-key:5526
+# Class: looks-real; accepted on 2026-10-13 in pull request 4051.
 8d1a1801e28bc07d870f09f4f525ed73d2efd8e7:logs/orchestrator/hermes/session_20260519.jsonl:generic-api-key:19258
 963f20cdef8eed6cd8e1e7fb5643e237ba77d7e9:.claude/skills/_archive/coordination/workspace/productivity/SKILL.md:curl-auth-user:174
 963f20cdef8eed6cd8e1e7fb5643e237ba77d7e9:.claude/skills/_archive/operations/automation/activepieces/README.md:generic-api-key:146
@@ -147,6 +151,7 @@ tests/setup/test_emit_machine_status.sh:jwt:143
 9c886b4edfd5b898bf241b4948eb50220a3e31ab:.claude/skills/operations/automation/github-actions/1-security-best-practices/SKILL.md:generic-api-key:26
 9c886b4edfd5b898bf241b4948eb50220a3e31ab:.claude/skills/operations/automation/n8n/common-issues/SKILL.md:curl-auth-header:33
 9c886b4edfd5b898bf241b4948eb50220a3e31ab:.claude/skills/operations/automation/windmill/1-script-organization/SKILL.md:generic-api-key:59
+# Class: looks-real; accepted on 2026-10-13 in pull request 4051.
 b353a1cfe82cfdb383bde5afcf5a0ec9a32fcd2a:logs/orchestrator/hermes/session_20260519.jsonl:generic-api-key:19258
 b40e26732db5b7213d50ad6e11d1d40aaf1d2aed:specs/repos/worldenergydata/specs/modules/analysis/marine/security-architecture.md:generic-api-key:1023
 b40e26732db5b7213d50ad6e11d1d40aaf1d2aed:specs/repos/worldenergydata/specs/modules/analysis/marine/security-architecture.md:generic-api-key:1089
@@ -185,5 +190,7 @@ bec337ec9e46f7a76b57416d08998a6598ab0bf4:skills/productivity/time-tracking/SKILL
 bec337ec9e46f7a76b57416d08998a6598ab0bf4:skills/productivity/time-tracking/SKILL.md:curl-auth-user:444
 bec337ec9e46f7a76b57416d08998a6598ab0bf4:skills/productivity/time-tracking/SKILL.md:curl-auth-user:455
 bec337ec9e46f7a76b57416d08998a6598ab0bf4:skills/productivity/time-tracking/SKILL.md:curl-auth-user:70
+# Class: looks-real; accepted on 2026-10-13 in pull request 4051.
 d08e36e5538f253a228251e7e9d26a175c446af7:logs/orchestrator/hermes/session_20260519.jsonl:generic-api-key:6598
+# Class: looks-real; accepted on 2026-10-13 in pull request 4051.
 d681e70b46bbfaad0378c6b81dc48f4c029ae084:logs/orchestrator/hermes/session_20260519.jsonl:generic-api-key:1091
