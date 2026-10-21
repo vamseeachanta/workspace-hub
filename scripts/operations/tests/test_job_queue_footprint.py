@@ -1,11 +1,11 @@
 """Independent byte counts for a disposable two-revision storage experiment."""
 
-import importlib.util
 import hashlib
+import importlib.util
+import os
 from pathlib import Path
 
 import pytest
-
 from test_job_queue_windows import git, write_text
 
 MODULE = Path(__file__).parents[1] / "job_queue_footprint.py"
@@ -65,6 +65,8 @@ def test_layouts_have_independently_counted_payloads(tmp_path, monkeypatch):
     assert rows["linked"]["incremental_object_bytes"] == 0
     assert rows["shallow"]["commits"] == 1
     assert rows["full"]["commits"] == 2
+    assert result["git_version"] == git(["--version"], source).stdout.strip()
+    assert result["checkout_policy"] == {"core.autocrlf": "false", "core.eol": "lf"}
     assert result["source_commit"] == git(["rev-parse", "HEAD"], source).stdout.strip()
     assert git(["status", "--porcelain"], source).stdout == before
     assert len(git(["worktree", "list", "--porcelain"], source).stdout.split("worktree ")) == 2
@@ -88,6 +90,39 @@ def test_broken_symlink_counts_its_stored_target_bytes(tmp_path):
     except OSError:
         pytest.skip("symlink creation unavailable")
     assert load_module().file_bytes(link) == len(b"absent")
+    assert load_module().file_bytes(tmp_path) == len(b"absent")
+
+
+def test_checkout_overrides_conflicting_git_defaults(tmp_path, monkeypatch):
+    source = source_repo(tmp_path)
+    module = load_module()
+    original_run = module.subprocess.run
+    config = tmp_path / "gitconfig"
+    write_text(config, "[core]\n\tautocrlf = true\n\teol = crlf\n")
+
+    def with_conflicting_defaults(*args, **kwargs):
+        kwargs["env"].update(GIT_CONFIG_GLOBAL=str(config), GIT_CONFIG_NOSYSTEM="1")
+        return original_run(*args, **kwargs)
+
+    monkeypatch.setattr(module.subprocess, "run", with_conflicting_defaults)
+    result = module.measure(source, tmp_path / "experiment", "selected")
+    assert [row["payload_bytes"] for row in result["measurements"]] == [10, 10, 10, 8]
+
+
+def test_directory_symlink_counts_target_without_following(tmp_path):
+    target = tmp_path / "target"
+    target.mkdir()
+    write_text(target / "payload", "not counted through the link\n")
+    container = tmp_path / "container"
+    container.mkdir()
+    link = container / "link"
+    try:
+        link.symlink_to(target, target_is_directory=True)
+    except OSError:
+        pytest.skip("symlink creation unavailable")
+    expected = len(os.fsencode(os.readlink(link)))
+    assert load_module().file_bytes(link) == expected
+    assert load_module().file_bytes(container) == expected
 
 
 @pytest.mark.parametrize("selected", ["../escape", "/absolute", "", ".git", "missing"])
