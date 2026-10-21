@@ -68,7 +68,7 @@ def test_user_npm_keep_system_remove(planner, tmp_path):
     rows = inventory(planner, home, system, str(other.parent))
     text = planner.render(rows, home)
     assert f'KEEP claude: {user}' in text
-    assert f"npm uninstall --global --prefix {other.parent.parent}" in text
+    assert f"npm uninstall --global --prefix {planner.q(other.parent.parent)}" in text
     assert next(r for r in rows if r.winner).winner == other
 
 
@@ -80,7 +80,6 @@ def test_missing_tools_requires_install_not_removal(planner, tmp_path):
     assert 'REMOVE' not in text
 
 
-@pytest.mark.skipif(sys.platform == 'win32', reason='Requires POSIX shell or executable semantics')
 def test_nvm_and_explicit_prefix(planner, tmp_path):
     home, system = layout(tmp_path)
     old = npm(home / '.nvm/versions/node/fixture', 'codex')
@@ -221,7 +220,7 @@ def test_regular_launcher_is_independent_of_adjacent_package(planner, tmp_path):
     native = next(row for row in rows if row.winner == executable)
     assert native.version == 'UNKNOWN'
     assert native.prefix is None
-    assert f'MANUAL REVIEW claude: {executable}' in planner.render(rows, home)
+    assert f'MANUAL REVIEW claude: {planner.q(executable)}' in planner.render(rows, home)
 
 
 def test_system_prefix_never_preferred(planner, tmp_path):
@@ -276,8 +275,8 @@ def test_path_inferred_user_prefix_is_kept(planner, tmp_path, explicit):
     expected = second if explicit else first
     assert f'KEEP codex: {expected}' in text
     assert 'MISSING codex' not in text
-    assert f'npm install --global --prefix {expected.parent.parent}' in text
-    assert f'npm uninstall --global --prefix {default.parent.parent}' in text
+    assert f'npm install --global --prefix {planner.q(expected.parent.parent)}' in text
+    assert f'npm uninstall --global --prefix {planner.q(default.parent.parent)}' in text
 
 
 def test_missing_wording_limits_metadata_claim(planner, tmp_path):
