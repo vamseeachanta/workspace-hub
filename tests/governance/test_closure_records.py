@@ -9,6 +9,8 @@ import csv
 import importlib
 import io
 import json
+import os
+import subprocess
 import sys
 from pathlib import Path
 
@@ -367,3 +369,22 @@ def test_text_pull_request_cannot_bypass_identity_checks(monkeypatch, capsys, ur
     assert records.main(["--verify-live"]) == 1
     assert json.loads(capsys.readouterr().out)["reference_validation"][
         "example/tools#4"]["status"] == "FAIL"
+
+
+def test_cli_json_is_reproducible_across_hash_seeds():
+    root = Path(__file__).resolve().parents[2]
+    source = (root / "docs/governance/examples/closure-records.json").read_text()
+    outputs = []
+    for seed in ("1", "3", "4"):
+        env = {key: value for key, value in os.environ.items()
+               if key not in {"GIT_DIR", "GIT_WORK_TREE", "GIT_COMMON_DIR"}}
+        env["PYTHONHASHSEED"] = seed
+        result = subprocess.run(
+            [sys.executable, str(root / "scripts/governance/closure_records.py")],
+            input=source, capture_output=True, text=True, check=True, env=env,
+            cwd=root,
+        )
+        outputs.append(result.stdout)
+        draft = json.loads(result.stdout)
+        assert list(draft["reference_origins"]) == draft["references"]
+    assert outputs[0] == outputs[1] == outputs[2]

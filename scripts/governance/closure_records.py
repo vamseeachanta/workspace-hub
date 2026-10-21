@@ -162,7 +162,7 @@ def build_drafts(data: dict) -> dict:
                 refs.add(ref)
                 origins.setdefault(ref, "proposed_text")
     output["references"] = sorted(refs)
-    output["reference_origins"] = origins
+    output["reference_origins"] = {ref: origins[ref] for ref in sorted(refs)}
     output["coverage"] = data.get("coverage", "Supplied snapshot only; exhaustive collection is not established.")
     return output
 
