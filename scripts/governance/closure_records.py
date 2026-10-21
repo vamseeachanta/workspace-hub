@@ -153,12 +153,16 @@ def build_drafts(data: dict) -> dict:
 
     # Restored bodies and replacement scope are proposed text; closure evidence
     # stays with the source record and may cite PRs rather than issue identities.
+    origins = {ref: "structured" for ref in refs}
     for item in output["recoveries"]:
         repository, _ = target(item["issue"])
         for key in ("restore_body", "new_issue_body"):
             for mentioned in checker.issue_references(item.get(key) or ""):
-                refs.add(mentioned if "#" in mentioned else f"{repository}#{mentioned}")
+                ref = mentioned if "#" in mentioned else f"{repository}#{mentioned}"
+                refs.add(ref)
+                origins.setdefault(ref, "proposed_text")
     output["references"] = sorted(refs)
+    output["reference_origins"] = origins
     output["coverage"] = data.get("coverage", "Supplied snapshot only; exhaustive collection is not established.")
     return output
 
@@ -179,7 +183,8 @@ def read_issue(repository: str, number: int, *, retries: int = 5,
     raise RuntimeError("Issue API retries exhausted")
 
 
-def verify_references(refs: list[str], reader: Callable = read_issue) -> dict:
+def verify_references(refs: list[str], reader: Callable = read_issue, *,
+                      origins: dict[str, str] | None = None) -> dict:
     results = {}
     for ref in sorted(set(refs)):
         repository, number = target(ref)
@@ -188,7 +193,12 @@ def verify_references(refs: list[str], reader: Callable = read_issue) -> dict:
             canonical = f"https://github.com/{repository}/issues/{number}"
             valid = (raw.get("number") == number and "pull_request" not in raw
                      and str(raw.get("html_url", "")).lower() == canonical.lower())
-            results[ref] = {"status": "PASS" if valid else "FAIL", "state": raw.get("state")}
+            text_pull = ((origins or {}).get(ref) == "proposed_text"
+                         and raw.get("number") == number and "pull_request" in raw
+                         and str(raw.get("html_url", "")).lower()
+                         == f"https://github.com/{repository}/pull/{number}".lower())
+            status = "PASS (pull request)" if text_pull else "PASS" if valid else "FAIL"
+            results[ref] = {"status": status, "state": raw.get("state")}
         except (RuntimeError, json.JSONDecodeError):
             results[ref] = {"status": checker.NOT_EVALUATED, "state": None}
     return results
@@ -216,8 +226,9 @@ def main(argv: list[str] | None = None) -> int:
     failed = False
     if args.verify_live:
         result["reference_validation"] = verify_references(
-            result["references"], partial(read_issue, retries=args.retries, retry_delay=args.retry_delay))
-        failed = any(row["status"] != "PASS" for row in result["reference_validation"].values())
+            result["references"], partial(read_issue, retries=args.retries, retry_delay=args.retry_delay),
+            origins=result["reference_origins"])
+        failed = any(row["status"] not in ("PASS", "PASS (pull request)") for row in result["reference_validation"].values())
     if args.successor_csv:
         write_successor_csv(result["successors"], sys.stdout)
     else:

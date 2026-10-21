@@ -239,6 +239,8 @@ def test_documented_example_matches_independent_answers():
     output = io.StringIO()
     records.write_successor_csv(result["successors"], output)
     assert list(csv.DictReader(io.StringIO(output.getvalue()))) == [expected_row]
+    with (root / "docs/governance/examples/closure-successors.csv").open(newline="") as stream:
+        assert list(csv.DictReader(stream)) == [expected_row]
 
 
 def test_cli_live_reads_are_only_get_requests(monkeypatch, capsys):
@@ -258,7 +260,7 @@ def test_cli_live_reads_are_only_get_requests(monkeypatch, capsys):
 
 def test_cli_returns_failure_when_reference_cannot_be_verified(monkeypatch, capsys):
     monkeypatch.setattr(sys, "stdin", io.StringIO(json.dumps(packet(issues=[issue(1)]))))
-    monkeypatch.setattr(records, "verify_references", lambda refs, reader: {
+    monkeypatch.setattr(records, "verify_references", lambda refs, reader, **kwargs: {
         "example/tools#1": {"status": "NOT_EVALUATED", "state": None}})
     assert records.main(["--verify-live"]) == 1
     assert json.loads(capsys.readouterr().out)["draft_only"] is True
@@ -317,3 +319,51 @@ def test_cli_rejects_invalid_retry_controls(option, value):
     with pytest.raises(SystemExit) as exc:
         records.main([option, value])
     assert exc.value.code == 2
+
+
+@pytest.mark.parametrize("field", ["original_body", "replacing_scope"])
+@pytest.mark.parametrize("mention", ["Follow-up to PR #4.",
+                                     "See https://github.com/example/tools/pull/4."])
+def test_proposed_text_accepts_canonical_pull_request(monkeypatch, capsys, field, mention):
+    data = packet(issues=[issue(1)], recoveries=[{
+        "issue": "example/tools#1", "original_source": "verified revision",
+        "original_verified": True, field: mention}])
+
+    def read(repository, number, **kwargs):
+        kind = "pull" if number == 4 else "issues"
+        raw = {"number": number, "state": "closed",
+               "html_url": f"https://github.com/{repository}/{kind}/{number}"}
+        if number == 4:
+            raw["pull_request"] = {}
+        return raw
+
+    monkeypatch.setattr(records, "read_issue", read)
+    monkeypatch.setattr(sys, "stdin", io.StringIO(json.dumps(data)))
+    assert records.main(["--verify-live"]) == 0
+    result = json.loads(capsys.readouterr().out)
+    assert result["reference_validation"]["example/tools#4"]["status"] == "PASS (pull request)"
+
+
+@pytest.mark.parametrize("url,number,structured", [
+    ("https://github.com/example/other/pull/4", 4, False),
+    ("https://github.com/example/tools/issues/4", 4, False),
+    ("https://github.com/example/tools/pull/4", 5, False),
+    ("https://github.com/example/tools/pull/4", 4, True),
+])
+def test_text_pull_request_cannot_bypass_identity_checks(monkeypatch, capsys, url, number, structured):
+    issues = [issue(1), issue(4)] if structured else [issue(1)]
+    data = packet(issues=issues, recoveries=[{
+        "issue": "example/tools#1", "original_body": "Follow-up to PR #4.",
+        "original_source": "verified revision", "original_verified": True}])
+
+    def read(repository, requested, **kwargs):
+        if requested == 4:
+            return {"number": number, "html_url": url, "pull_request": {}}
+        return {"number": requested, "html_url":
+                f"https://github.com/{repository}/issues/{requested}"}
+
+    monkeypatch.setattr(records, "read_issue", read)
+    monkeypatch.setattr(sys, "stdin", io.StringIO(json.dumps(data)))
+    assert records.main(["--verify-live"]) == 1
+    assert json.loads(capsys.readouterr().out)["reference_validation"][
+        "example/tools#4"]["status"] == "FAIL"
