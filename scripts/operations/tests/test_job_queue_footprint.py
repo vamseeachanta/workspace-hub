@@ -2,6 +2,7 @@
 
 import importlib.util
 import hashlib
+import os
 from pathlib import Path
 
 import pytest
@@ -35,12 +36,18 @@ def source_repo(tmp_path):
     return source
 
 
-def test_layouts_have_independently_counted_payloads(tmp_path, monkeypatch):
+@pytest.mark.parametrize("autocrlf", ["false", "true"])
+def test_layouts_have_independently_counted_payloads(tmp_path, monkeypatch, autocrlf):
     """Full: 5+3+2=10 bytes; cone sparse: root 5 + selected 3=8 bytes.
 
     Git sparse-checkout cone mode includes root files; history is two commits
     except the depth-one clone. These are hand counts of fixture literals.
     """
+    home = tmp_path / "home"
+    home.mkdir()
+    write_text(home / ".gitconfig", f"[core]\n\tautocrlf = {autocrlf}\n\teol = crlf\n")
+    for key in ("HOME", "USERPROFILE", "XDG_CONFIG_HOME"):
+        monkeypatch.setenv(key, str(home))
     source = source_repo(tmp_path)
     before = git(["status", "--porcelain"], source).stdout
     caller = tmp_path / "caller"
@@ -65,6 +72,9 @@ def test_layouts_have_independently_counted_payloads(tmp_path, monkeypatch):
     assert rows["linked"]["incremental_object_bytes"] == 0
     assert rows["shallow"]["commits"] == 1
     assert rows["full"]["commits"] == 2
+    assert result["git_version"] == git(["--version"], source).stdout.strip()
+    assert result["core_autocrlf"] == "false"
+    assert result["core_eol"] == "lf"
     assert result["source_commit"] == git(["rev-parse", "HEAD"], source).stdout.strip()
     assert git(["status", "--porcelain"], source).stdout == before
     assert len(git(["worktree", "list", "--porcelain"], source).stdout.split("worktree ")) == 2
@@ -80,14 +90,25 @@ def test_existing_experiment_is_never_overwritten(tmp_path):
     assert (destination / "keep").read_text() == "retained\n"
 
 
-def test_broken_symlink_counts_its_stored_target_bytes(tmp_path):
+@pytest.mark.parametrize("nested", [False, True])
+def test_broken_symlink_counts_its_stored_target_bytes(tmp_path, monkeypatch, nested):
     """A link stores the literal target 'absent': six bytes, with no target file."""
     link = tmp_path / "link"
     try:
         link.symlink_to("absent")
     except OSError:
         pytest.skip("symlink creation unavailable")
-    assert load_module().file_bytes(link) == len(b"absent")
+    # Emulate the zero-size symlink metadata returned on Windows.
+    original_lstat = Path.lstat
+    def zero_size_lstat(path, *args, **kwargs):
+        result = original_lstat(path, *args, **kwargs)
+        if path == link:
+            fields = list(result)
+            fields[6] = 0
+            return os.stat_result(fields)
+        return result
+    monkeypatch.setattr(Path, "lstat", zero_size_lstat)
+    assert load_module().file_bytes(tmp_path if nested else link) == len(b"absent")
 
 
 @pytest.mark.parametrize("selected", ["../escape", "/absolute", "", ".git", "missing"])

@@ -15,6 +15,7 @@ preserve job execution and concurrency controls.
 | 0 | 2026-10-14 | Initial footprint note for the versioned queue scripts. | The queue needed a reviewed path to reduce accumulated worktree storage. |
 | 1 | 2026-10-15 | Recast as a measurement plan and correct integration claims. | Storage measurements and live installation remain unestablished. |
 | 2 | 2026-10-20 | Add a reproducible stand-in comparison and cleanup regressions. | Distinguish measured byte counts from production storage assumptions. |
+| 3 | 2026-10-21 | Pin LF checkout policy, record Git provenance, and count symlink target bytes. | Reproduce payload counts across operating systems and inherited Git settings. |
 
 ## Source Basis
 
@@ -32,6 +33,14 @@ that disposable full clone. The original source is read only. Existing experimen
 directories are refused; no worktree, branch or data is removed by the tool.
 The shallow clone uses file transport so its depth request is honored. The full
 and sparse clones disable object hardlinks so their storage is independent.
+Every experiment Git invocation uses command-local `core.autocrlf=false` and
+`core.eol=lf`, including clone, linked worktree creation, sparse selection and
+checkout. Source and user configuration files are unchanged. New JSON output
+records `git_version`, `core_autocrlf` and `core_eol` as effective command settings.
+Tracked attributes and filters can still affect checkout bytes; LF policy alone
+does not establish identical payloads for arbitrary repositories. Symlinks count
+the encoded literal target returned by `os.readlink`, including broken links,
+rather than the platform-dependent symlink metadata size.
 
 The recorded run used Git 2.43.0 on 2026-10-20. The fixture has two revisions and
 three tracked files: `README.md`, `selected/item.txt`, and `excluded/item.txt`.
@@ -50,7 +59,10 @@ fixture in `scripts/operations/tests/test_job_queue_footprint.py`.
 
 Table 1. Logical file sizes at the time of measurement; object bytes are included
 in metadata, not added to it. Linked metadata is excluded from the full-clone
-metadata row to avoid double counting.
+metadata row to avoid double counting. This historical observation used Git
+2.43.0; its effective EOL settings were not recorded. The hand-counted payloads
+assume LF line endings. The historical JSON is retained unchanged and lacks the
+provenance fields emitted by new runs.
 
 The retained numerical output is [the measurement record](examples/job-queue-footprint.json).
 The linked increment is payload plus its metadata: 10 + 745 = 755 bytes for this
@@ -74,7 +86,8 @@ python scripts/operations/job_queue_footprint.py \
   <scratch>/new-experiment --sparse-path selected
 ```
 
-Use a new destination on every invocation. Inspect JSON on standard output;
+Use a new destination on every invocation. Confirm `git_version`,
+`core_autocrlf` (`false`) and `core_eol` (`lf`) in JSON on standard output;
 the tool retains all experiment directories for subsequent review. Invalid
 sparse selections are rejected before an experiment directory is created.
 
