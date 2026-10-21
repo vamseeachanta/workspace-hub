@@ -17,6 +17,7 @@ edited, labelled, closed or reopened. A supplied snapshot is not an exhaustive a
 <h2>Revision history</h2>
 <table><tr><th>Revision</th><th>Date</th><th>Change and reason</th></tr>
 <tr><td>Initial</td><td>2026-10-20</td><td>Draft preparation and evidence limits are documented so that closure state is distinguished from delivery.</td></tr>
+<tr><td>1</td><td>2026-10-21</td><td>Proposed-text reference checks, retry limits and identity rejection are documented to prevent unchecked drafts and excessive retry delays.</td></tr>
 <caption>Revision history.</caption></table>
 <h2>Sources and method</h2>
 <p><a href="issue-closing-procedure.md">Issue-closing procedure</a>, sections A.4,
@@ -51,25 +52,27 @@ use <code>issue</code>, <code>action</code>, <code>reason</code>, and
 python scripts/governance/closure_records.py --successor-csv &lt; docs/governance/examples/closure-records.json</pre>
 <p>The example uses synthetic identities and shall not be submitted for live API
 validation. For an authorized real snapshot, <code>--verify-live</code> will read
-each unique structured draft issue identity and successor candidate endpoint with
-<code>gh api --method GET</code>, check its
-canonical repository and number, reject pull requests and return a nonzero exit
-status if any reference fails or remains NOT_EVALUATED. Live validation establishes
+each unique reference with <code>gh api --method GET</code> and check its
+canonical repository and number. Structured identities require issues and reject
+pull requests. Mentions in restored or replacement text may resolve to canonical
+<code>/pull/N</code> URLs and report <code>PASS (pull request)</code>. An identity
+used in both contexts retains the issue-only requirement. Source closure evidence
+is not scanned for draft references. Validation returns a nonzero exit status if
+any reference fails or remains NOT_EVALUATED. Live validation establishes
 reference resolution only; it does not refresh closure evidence or authenticate
 supplied original-body verification. JSON output retains each reference result;
-CSV output contains only successor rows.</p>
-<p>Validation covers decision and recovery issues, successor candidates and resolved
-successors, retirement references and destinations. Free-text mentions in closure
-evidence, original bodies and replacement scope are not classified as issue
-identities: these can cite pull requests. Those mentions and unused snapshot
-records are not live-validated. A pull request supplied as a structured issue
-target still fails validation.</p>
-<p><code>--retries</code> sets the number of retries after the first request
-(nonnegative integer, default 5: at most six attempts per reference).
-<code>--retry-delay</code> sets seconds between retries (finite, nonnegative,
-default 60). Only HTTP 502, 503 and 504 failures are retried; other failures
-return NOT_EVALUATED immediately. These are configurable operational defaults,
-not acceptance criteria from the issue-closing procedure.</p>
+CSV output contains only successor rows. Malformed proposed-text identities are
+rejected before any live request; the CLI reports an input error with exit status 2.
+The shared extractor treats hash-prefixed digits as reference candidates. Zero,
+leading-zero and non-ASCII numbers, and dot-segment repository names, reject the
+whole input, including offline drafts. Literal colours or URL fragments with these
+shapes may therefore prevent drafting; verified original text is not rewritten.</p>
+<p><code>--retries</code> sets retries after the first request (integer from 0 to 10,
+default 5). <code>--retry-delay</code> sets seconds between retries (finite, from
+0 to 300, default 60). Only HTTP 502, 503 and 504 failures are retried; other failures
+return NOT_EVALUATED immediately. The caps bound execution to eleven requests and
+3,000 seconds of retry delay per reference, excluding request duration. These are
+operational limits, not acceptance criteria from the issue-closing procedure.</p>
 <h2>Worked example: inputs, method and answer</h2>
 <p><a href="examples/closure-records.json">The complete synthetic input</a> contains
 a duplicate with an open candidate, an import record with a verified synthetic

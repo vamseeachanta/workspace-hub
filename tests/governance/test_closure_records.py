@@ -9,6 +9,8 @@ import csv
 import importlib
 import io
 import json
+import os
+import subprocess
 import sys
 from pathlib import Path
 
@@ -71,7 +73,7 @@ def test_properly_closed_successor_requires_all_checker_rules(monkeypatch, capsy
         raw = {"number": number, "state": "closed",
                "html_url": f"https://github.com/example/tools/issues/{number}"}
         if number == 4:
-            raw["pull_request"] = {}
+            raw["pull_request"] = {"url": "ignored"}
         return type("Response", (), {"returncode": 0, "stdout": json.dumps(raw)})()
 
     monkeypatch.setattr(records.subprocess, "run", run)
@@ -186,25 +188,12 @@ def test_live_validation_failure_is_explicit():
     assert result["example/tools#1"]["status"] == "NOT_EVALUATED"
 
 
-def test_evidence_and_body_mentions_are_not_draft_issue_identities():
+def test_only_proposed_text_and_structured_identities_are_enumerated():
     result = records.build_drafts(packet(issues=[issue(
         1, body="Related #8 and example/other#9.")], recoveries=[{
             "issue": "example/tools#1", "original_body": "Follow #10.",
             "original_source": "verified revision", "original_verified": True}]))
-    assert result["references"] == ["example/tools#1"]
-
-
-def test_draft_references_include_structured_targets_only():
-    result = records.build_drafts(packet(
-        issues=[issue(1), issue(2, state="open"), issue(3, state="open")],
-        successors={"example/tools#1": "example/other#4"},
-        recoveries=[{"issue": "example/tools#2"}],
-        retired=[{"issue": "example/tools#2", "action": "close",
-                  "reason": "Retired", "retirement_reference": "example/other#5",
-                  "destination": "example/other#6"}]))
-    assert result["references"] == ["example/other#4", "example/other#5",
-                                     "example/other#6", "example/tools#1",
-                                     "example/tools#2"]
+    assert result["references"] == ["example/tools#1", "example/tools#10"]
 
 
 def test_live_validation_checks_canonical_identity():
@@ -245,12 +234,15 @@ def test_documented_example_matches_independent_answers():
     assert result["recoveries"][0]["restore_body"] == data["recoveries"][0]["original_body"]
     assert result["retired"][0]["status"] == "proposed"
     assert len(result["decisions"]) == 5
-    output = io.StringIO()
-    records.write_successor_csv(result["successors"], output)
-    assert list(csv.DictReader(io.StringIO(output.getvalue()))) == [{
+    expected_row = {
         "issue": "example/tools#1", "successor": "example/tools#2", "status": "open",
         "draft_comment": "Proposed successor: example/tools#2 (open); confirm that unfinished scope is carried forward.",
-    }]
+    }
+    output = io.StringIO()
+    records.write_successor_csv(result["successors"], output)
+    assert list(csv.DictReader(io.StringIO(output.getvalue()))) == [expected_row]
+    with (root / "docs/governance/examples/closure-successors.csv").open(newline="") as stream:
+        assert list(csv.DictReader(stream)) == [expected_row]
 
 
 def test_cli_live_reads_are_only_get_requests(monkeypatch, capsys):
@@ -270,7 +262,7 @@ def test_cli_live_reads_are_only_get_requests(monkeypatch, capsys):
 
 def test_cli_returns_failure_when_reference_cannot_be_verified(monkeypatch, capsys):
     monkeypatch.setattr(sys, "stdin", io.StringIO(json.dumps(packet(issues=[issue(1)]))))
-    monkeypatch.setattr(records, "verify_references", lambda refs, **kwargs: {
+    monkeypatch.setattr(records, "verify_references", lambda refs, reader, **kwargs: {
         "example/tools#1": {"status": "NOT_EVALUATED", "state": None}})
     assert records.main(["--verify-live"]) == 1
     assert json.loads(capsys.readouterr().out)["draft_only"] is True
@@ -283,7 +275,7 @@ def test_reference_mismatch_fails_without_leaking_response():
 
 
 def test_api_retries_only_transient_server_errors(monkeypatch):
-    """The documented defaults preserve the existing retry behaviour."""
+    """The documented default retries transient server failures after 60 seconds."""
     calls, delays = [], []
 
     def run(args, **kwargs):
@@ -299,28 +291,236 @@ def test_api_retries_only_transient_server_errors(monkeypatch):
     assert delays == [60]
 
 
-@pytest.mark.parametrize("status,retries,attempts", [(503, 2, 3), (503, 0, 1), (403, 2, 1)])
-def test_cli_retry_options_bound_transient_retries(monkeypatch, capsys, status, retries, attempts):
+@pytest.mark.parametrize("retries,delay,error,attempts", [
+    (0, 0.0, "HTTP 503", 1), (2, 0.25, "HTTP 503", 3),
+    (2, 0.25, "HTTP 403", 1),
+])
+def test_cli_retry_controls(monkeypatch, capsys, retries, delay, error, attempts):
     calls, delays = [], []
 
     def run(args, **kwargs):
         calls.append(args)
-        return type("Response", (), {"returncode": 1, "stderr": f"HTTP {status}"})()
+        return type("Response", (), {"returncode": 1, "stderr": error})()
 
     monkeypatch.setattr(records.subprocess, "run", run)
     monkeypatch.setattr(records.time, "sleep", delays.append)
     monkeypatch.setattr(sys, "stdin", io.StringIO(json.dumps(packet(issues=[issue(1)]))))
-    assert records.main(["--verify-live", "--retries", str(retries), "--retry-delay", "0.25"]) == 1
+    assert records.main(["--verify-live", "--retries", str(retries),
+                         "--retry-delay", str(delay)]) == 1
     assert len(calls) == attempts
-    assert delays == [0.25] * (attempts - 1)
-    assert json.loads(capsys.readouterr().out)["reference_validation"]["example/tools#1"]["status"] == "NOT_EVALUATED"
+    assert delays == [delay] * (attempts - 1)
+    assert json.loads(capsys.readouterr().out)["reference_validation"][
+        "example/tools#1"]["status"] == "NOT_EVALUATED"
 
 
 @pytest.mark.parametrize("option,value", [
     ("--retries", "-1"), ("--retries", "1.5"), ("--retry-delay", "-1"),
     ("--retry-delay", "nan"), ("--retry-delay", "inf"),
 ])
-def test_invalid_retry_options_are_rejected(option, value):
-    with pytest.raises(SystemExit) as caught:
+def test_cli_rejects_invalid_retry_controls(option, value):
+    with pytest.raises(SystemExit) as exc:
         records.main([option, value])
-    assert caught.value.code == 2
+    assert exc.value.code == 2
+
+
+@pytest.mark.parametrize("field", ["original_body", "replacing_scope"])
+@pytest.mark.parametrize("mention", ["Follow-up to PR #4.",
+                                     "See https://github.com/example/tools/pull/4."])
+def test_proposed_text_accepts_canonical_pull_request(monkeypatch, capsys, field, mention):
+    data = packet(issues=[issue(1)], recoveries=[{
+        "issue": "example/tools#1", "original_source": "verified revision",
+        "original_verified": True, field: mention}])
+
+    def read(repository, number, **kwargs):
+        kind = "pull" if number == 4 else "issues"
+        raw = {"number": number, "state": "closed",
+               "html_url": f"https://github.com/{repository}/{kind}/{number}"}
+        if number == 4:
+            raw["pull_request"] = {}
+        return raw
+
+    monkeypatch.setattr(records, "read_issue", read)
+    monkeypatch.setattr(sys, "stdin", io.StringIO(json.dumps(data)))
+    assert records.main(["--verify-live"]) == 0
+    result = json.loads(capsys.readouterr().out)
+    assert result["reference_validation"]["example/tools#4"]["status"] == "PASS (pull request)"
+
+
+@pytest.mark.parametrize("url,number,structured", [
+    ("https://github.com/example/other/pull/4", 4, False),
+    ("https://github.com/example/tools/issues/4", 4, False),
+    ("https://github.com/example/tools/pull/4", 5, False),
+    ("https://github.com/example/tools/pull/4", 4, True),
+])
+def test_text_pull_request_cannot_bypass_identity_checks(monkeypatch, capsys, url, number, structured):
+    issues = [issue(1), issue(4)] if structured else [issue(1)]
+    data = packet(issues=issues, recoveries=[{
+        "issue": "example/tools#1", "original_body": "Follow-up to PR #4.",
+        "original_source": "verified revision", "original_verified": True}])
+
+    def read(repository, requested, **kwargs):
+        if requested == 4:
+            return {"number": number, "html_url": url, "pull_request": {}}
+        return {"number": requested, "html_url":
+                f"https://github.com/{repository}/issues/{requested}"}
+
+    monkeypatch.setattr(records, "read_issue", read)
+    monkeypatch.setattr(sys, "stdin", io.StringIO(json.dumps(data)))
+    assert records.main(["--verify-live"]) == 1
+    assert json.loads(capsys.readouterr().out)["reference_validation"][
+        "example/tools#4"]["status"] == "FAIL"
+
+
+def test_cli_json_is_reproducible_across_hash_seeds():
+    root = Path(__file__).resolve().parents[2]
+    source = (root / "docs/governance/examples/closure-records.json").read_text()
+    outputs = []
+    for seed in ("1", "3", "4"):
+        env = {key: value for key, value in os.environ.items()
+               if key not in {"GIT_DIR", "GIT_WORK_TREE", "GIT_COMMON_DIR"}}
+        env["PYTHONHASHSEED"] = seed
+        result = subprocess.run(
+            [sys.executable, str(root / "scripts/governance/closure_records.py")],
+            input=source, capture_output=True, text=True, check=True, env=env,
+            cwd=root,
+        )
+        outputs.append(result.stdout)
+        draft = json.loads(result.stdout)
+        assert list(draft["reference_origins"]) == draft["references"]
+    assert outputs[0] == outputs[1] == outputs[2]
+
+
+@pytest.mark.parametrize("option,value", [
+    ("--retries", "11"), ("--retries", "100000000000000000000"),
+    ("--retry-delay", "301"), ("--retry-delay", "1e308"),
+])
+def test_cli_rejects_excessive_retry_controls(monkeypatch, option, value):
+    monkeypatch.setattr(sys, "stdin", io.StringIO(json.dumps(packet())))
+    with pytest.raises(SystemExit) as exc:
+        records.main([option, value])
+    assert exc.value.code == 2
+
+
+def test_cli_accepts_retry_caps(monkeypatch, capsys):
+    monkeypatch.setattr(sys, "stdin", io.StringIO(json.dumps(packet())))
+    assert records.main(["--retries", "10", "--retry-delay", "300"]) == 0
+    assert json.loads(capsys.readouterr().out)["draft_only"] is True
+
+
+def test_cli_structured_successor_rejects_pull_request(monkeypatch, capsys):
+    data = packet(issues=[issue(1)],
+                  successors={"example/tools#1": "example/tools#2"},
+                  recoveries=[{"issue": "example/tools#1", "replacing_scope": "See PR #2."}])
+    calls = []
+
+    def run(args, **kwargs):
+        calls.append(args)
+        number = int(args[-1].rsplit("/", 1)[1])
+        kind = "pull" if number == 2 else "issues"
+        raw = {"number": number, "html_url":
+               f"https://github.com/example/tools/{kind}/{number}"}
+        if number == 2:
+            raw["pull_request"] = {}
+        return type("Response", (), {"returncode": 0, "stdout": json.dumps(raw)})()
+
+    monkeypatch.setattr(records.subprocess, "run", run)
+    monkeypatch.setattr(sys, "stdin", io.StringIO(json.dumps(data)))
+    assert records.main(["--verify-live"]) == 1
+    result = json.loads(capsys.readouterr().out)
+    assert result["reference_validation"]["example/tools#2"]["status"] == "FAIL"
+    assert calls == [["gh", "api", "--method", "GET", f"repos/example/tools/issues/{n}"]
+                     for n in (1, 2)]
+
+
+@pytest.mark.parametrize("ref", ["../..#1", "./tools#1", "example/..#1",
+                                  "example/.#1", "../tools#1"])
+def test_identity_rejects_dot_segments(ref):
+    with pytest.raises(ValueError, match="identity"):
+        records.target(ref)
+
+
+def test_response_boolean_number_is_rejected():
+    result = records.verify_references(["example/tools#1"], lambda repo, number: {
+        "number": True, "html_url": "https://github.com/example/tools/issues/1"})
+    assert result["example/tools#1"]["status"] == "FAIL"
+
+
+def test_proposed_pull_request_boolean_number_is_rejected():
+    result = records.verify_references(
+        ["example/tools#1"], lambda repo, number: {
+            "number": True, "html_url": "https://github.com/example/tools/pull/1",
+            "pull_request": {}}, origins={"example/tools#1": "proposed_text"})
+    assert result["example/tools#1"]["status"] == "FAIL"
+
+
+@pytest.mark.parametrize("mention", ["See #0.", "See #007.", "See ../..#1."])
+def test_proposed_text_rejects_malformed_identity(mention):
+    data = packet(issues=[issue(1)], recoveries=[{
+        "issue": "example/tools#1", "replacing_scope": mention}])
+    with pytest.raises(ValueError, match="identity"):
+        records.build_drafts(data)
+
+
+@pytest.mark.parametrize("error", ["HTTP 403 at issues/503", "retry after 502 seconds"])
+def test_retry_classifier_ignores_incidental_server_numbers(monkeypatch, error):
+    calls = []
+
+    def run(args, **kwargs):
+        calls.append(args)
+        return type("Response", (), {"returncode": 1, "stderr": error})()
+
+    monkeypatch.setattr(records.subprocess, "run", run)
+    monkeypatch.setattr(records.time, "sleep", lambda delay: None)
+    with pytest.raises(RuntimeError):
+        records.read_issue("example/tools", 1, retries=1, retry_delay=0)
+    assert len(calls) == 1
+
+
+def test_wrong_identity_does_not_report_unrelated_state():
+    result = records.verify_references(["example/tools#1"], lambda repo, number: {
+        "number": 1, "state": "open", "html_url": "https://github.com/example/other/issues/1"})
+    assert result["example/tools#1"] == {"status": "FAIL", "state": None}
+
+
+@pytest.mark.parametrize("raw", [None, [], "not an object"])
+def test_nonobject_api_response_fails_explicitly(raw):
+    result = records.verify_references(["example/tools#1"], lambda repo, number: raw)
+    assert result["example/tools#1"] == {"status": "FAIL", "state": None}
+
+
+@pytest.mark.parametrize("ref", [None, 1, True, {}])
+def test_nonstring_identity_rejected_explicitly(ref):
+    with pytest.raises(ValueError, match="identity"):
+        records.target(ref)
+
+
+def test_cli_rejects_malformed_proposed_text_before_api(monkeypatch):
+    calls = []
+    monkeypatch.setattr(records.subprocess, "run", lambda *args, **kwargs: calls.append(args))
+    data = packet(issues=[issue(1)], recoveries=[{
+        "issue": "example/tools#1", "replacing_scope": "See #0."}])
+    monkeypatch.setattr(sys, "stdin", io.StringIO(json.dumps(data)))
+    with pytest.raises(SystemExit) as exc:
+        records.main(["--verify-live"])
+    assert exc.value.code == 2
+    assert calls == []
+
+
+@pytest.mark.parametrize("kind,status", [("issues", "PASS"), ("pull", "PASS (pull request)")])
+def test_cli_validates_cross_repository_proposed_text(monkeypatch, capsys, kind, status):
+    data = packet(issues=[issue(1)], recoveries=[{
+        "issue": "example/tools#1", "replacing_scope": "See example/other#4."}])
+
+    def read(repository, number, **kwargs):
+        endpoint = kind if number == 4 else "issues"
+        raw = {"number": number, "html_url":
+               f"https://github.com/{repository}/{endpoint}/{number}"}
+        if endpoint == "pull":
+            raw["pull_request"] = {}
+        return raw
+
+    monkeypatch.setattr(records, "read_issue", read)
+    monkeypatch.setattr(sys, "stdin", io.StringIO(json.dumps(data)))
+    assert records.main(["--verify-live"]) == 0
+    assert json.loads(capsys.readouterr().out)["reference_validation"][
+        "example/other#4"]["status"] == status
