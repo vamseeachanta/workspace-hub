@@ -1,0 +1,52 @@
+{
+  "coverage": "Synthetic worked example only; not an inventory of repository issues.",
+  "issues": [
+    {
+      "repository_slug": "example/tools",
+      "number": 1,
+      "state": "closed",
+      "state_reason": "DUPLICATE",
+      "body": "Superseded; unfinished scope is retained by the proposed successor."
+    },
+    {
+      "repository_slug": "example/tools",
+      "number": 2,
+      "state": "open",
+      "body": "Unfinished scope retained."
+    },
+    {
+      "repository_slug": "example/tools",
+      "number": 3,
+      "state": "closed",
+      "state_reason": "COMPLETED",
+      "created_at": "2026-01-01T00:00:00Z",
+      "closed_at": "2026-01-01T00:00:30Z",
+      "comments": []
+    },
+    {
+      "repository_slug": "example/tools",
+      "number": 4,
+      "state": "open"
+    }
+  ],
+  "successors": {
+    "example/tools#1": "example/tools#2"
+  },
+  "recoveries": [
+    {
+      "issue": "example/tools#3",
+      "original_body": "Original scope retained in the synthetic archive.",
+      "original_source": "Synthetic archive, revision initial",
+      "original_verified": true,
+      "replacing_scope": "Separate replacement work."
+    }
+  ],
+  "retired": [
+    {
+      "issue": "example/tools#4",
+      "action": "move",
+      "destination": "example/tools#2",
+      "reason": "Unfinished scope is retained in the open successor"
+    }
+  ]
+}
