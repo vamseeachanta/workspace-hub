@@ -8,22 +8,28 @@ Sizes are logical file bytes, not allocated disk blocks or peak storage.
 import argparse
 import json
 import os
-from pathlib import Path, PurePosixPath
 import subprocess
+from pathlib import Path, PurePosixPath
+
+CHECKOUT_POLICY = {"core.autocrlf": "false", "core.eol": "lf"}
 
 
 def git(*args, cwd):
     env = {key: value for key, value in os.environ.items() if not key.startswith("GIT_")}
     env.update(GIT_TERMINAL_PROMPT="0", GCM_INTERACTIVE="never")
     return subprocess.run(
-        ["git", *args], cwd=cwd, env=env, check=True,
+        ["git", "-c", "core.autocrlf=false", "-c", "core.eol=lf", *args],
+        cwd=cwd, env=env, check=True,
         capture_output=True, text=True,
+        creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0),
     ).stdout.strip()
 
 
 def file_bytes(root):
     """Sum each file entry once; directory symlinks are never traversed."""
-    if root.is_file() or root.is_symlink():
+    if root.is_symlink():
+        return len(os.fsencode(os.readlink(root)))
+    if root.is_file():
         return root.lstat().st_size
     if not root.exists():
         return 0
@@ -31,7 +37,9 @@ def file_bytes(root):
     for parent, dirs, files in os.walk(root, followlinks=False):
         for name in dirs + files:
             path = Path(parent) / name
-            if path.is_symlink() or path.is_file():
+            if path.is_symlink():
+                total += len(os.fsencode(os.readlink(path)))
+            elif path.is_file():
                 total += path.lstat().st_size
     return total
 
@@ -85,6 +93,8 @@ def measure(source, destination, sparse_path):
     if git("rev-parse", "HEAD", cwd=source) != revision:
         raise ValueError("source revision changed during measurement")
     return {"source_commit": revision, "size_basis": "logical file bytes",
+            "git_version": git("--version", cwd=source),
+            "checkout_policy": dict(CHECKOUT_POLICY),
             "measurements": rows}
 
 

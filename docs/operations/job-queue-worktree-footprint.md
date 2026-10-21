@@ -32,6 +32,12 @@ that disposable full clone. The original source is read only. Existing experimen
 directories are refused; no worktree, branch or data is removed by the tool.
 The shallow clone uses file transport so its depth request is honored. The full
 and sparse clones disable object hardlinks so their storage is independent.
+Every Git invocation uses `core.autocrlf=false` and `core.eol=lf` command options,
+including clone, linked-worktree creation and sparse checkout. New JSON output
+records `git_version` and these defaults in `checkout_policy`. Repository
+attributes can still prescribe file-specific conversion; the synthetic fixture
+has no attributes. Symlinks count the filesystem-encoded target text returned
+by `readlink`, including broken links and directory links, without traversal.
 
 The recorded run used Git 2.43.0 on 2026-10-20. The fixture has two revisions and
 three tracked files: `README.md`, `selected/item.txt`, and `excluded/item.txt`.
@@ -51,6 +57,10 @@ fixture in `scripts/operations/tests/test_job_queue_footprint.py`.
 Table 1. Logical file sizes at the time of measurement; object bytes are included
 in metadata, not added to it. Linked metadata is excluded from the full-clone
 metadata row to avoid double counting.
+This historical table used Git 2.43.0; its effective EOL configuration was not
+recorded. The retained generated JSON is unchanged and lacks that provenance.
+The observed LF payload sizes do not establish the historical Git settings.
+New runs record the explicit LF defaults; metadata totals can differ by platform.
 
 The retained numerical output is [the measurement record](examples/job-queue-footprint.json).
 The linked increment is payload plus its metadata: 10 + 745 = 755 bytes for this
