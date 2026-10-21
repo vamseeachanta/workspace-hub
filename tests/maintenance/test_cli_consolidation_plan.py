@@ -5,10 +5,12 @@ import json
 import os
 import sys
 from pathlib import Path
+from types import SimpleNamespace
 
 import pytest
 
 SCRIPT = Path(__file__).resolve().parents[2] / 'scripts/maintenance/cli_consolidation_plan.py'
+posix_only = pytest.mark.skipif(sys.platform == 'win32', reason='POSIX/Linux semantics')
 
 
 @pytest.fixture
@@ -60,6 +62,7 @@ def test_path_winner_and_alias_grouping(planner, tmp_path):
     assert 'REMOVE' not in planner.render(rows, home)
 
 
+@posix_only
 def test_user_npm_keep_system_remove(planner, tmp_path):
     """System first wins today; preferred user prefix is kept in the plan."""
     home, system = layout(tmp_path)
@@ -136,6 +139,7 @@ def test_unknown_copy_not_removed(planner, tmp_path):
     assert 'rm ' not in text
 
 
+@posix_only
 def test_no_execution_network_or_writes(planner, tmp_path, monkeypatch, capsys):
     """Before/after bytes and links match; all process/network/write APIs fail."""
     import builtins
@@ -182,6 +186,7 @@ def test_no_execution_network_or_writes(planner, tmp_path, monkeypatch, capsys):
     assert snapshot() == before
 
 
+@posix_only
 def test_non_executable_and_broken_link_not_path_winners(planner, tmp_path):
     home, system = layout(tmp_path)
     folder = home / 'bin'
@@ -207,15 +212,18 @@ def test_custom_prefix_on_path_metadata_is_discovered(planner, tmp_path):
     assert rows[0].prefix == executable.parent.parent
 
 
-def test_regular_npm_launcher_uses_adjacent_package_metadata(planner, tmp_path):
+def test_regular_launcher_remains_separate_from_adjacent_package(planner, tmp_path):
     home, system = layout(tmp_path)
     executable = npm(home / '.npm-global', 'claude')
     executable.unlink()
     executable.write_text('#!/bin/sh\nexit 99\n')
     executable.chmod(0o755)
     rows = inventory(planner, home, system, str(executable.parent))
-    assert len(rows) == 1
-    assert rows[0].version == 'fixture-version'
+    assert len(rows) == 2
+    binary = next(row for row in rows if row.winner == executable)
+    assert binary.version == 'UNKNOWN'
+    assert binary.prefix is None
+    assert f'MANUAL REVIEW claude: {planner.q(executable)}' in planner.render(rows, home)
 
 
 def test_system_prefix_never_preferred(planner, tmp_path):
@@ -255,3 +263,59 @@ def test_custom_prefix_alias_includes_canonical_launcher(planner, tmp_path):
     rows = inventory(planner, home, system, str(alias.parent))
     assert len(rows) == 1
     assert set(rows[0].paths) == {alias, executable}
+
+
+@pytest.mark.parametrize('explicit', [False, True])
+def test_inferred_user_prefix_priority(planner, explicit):
+    home = Path('example/user').absolute()
+    default = home / '.npm-global'
+    custom = home / '.npm-packages'
+    rows = [planner.Installation('codex', 'user npm (path inference)', 'fixture',
+                                 prefix / 'package', [prefix / 'bin/codex'],
+                                 prefix / 'bin/codex' if prefix == custom else None,
+                                 prefix) for prefix in (default, custom)]
+    text = planner.render(rows, home, [default] if explicit else [])
+    selected = default if explicit else custom
+    assert f'KEEP codex: {selected / "bin/codex"}' in text
+    assert 'MISSING codex' not in text
+
+
+def test_custom_path_installation_is_kept(planner, tmp_path):
+    home, system = layout(tmp_path)
+    executable = npm(home / '.npm-packages', 'codex')
+    text = planner.render(inventory(planner, home, system, str(executable.parent)), home)
+    assert f'KEEP codex: {executable}' in text
+    assert 'MISSING codex' not in text
+
+
+def test_missing_wording_matches_evidence(planner):
+    text = planner.render([], Path('example/user').absolute())
+    assert 'metadata-matched preferred user npm installation' in text
+    assert 'verified preferred' not in text
+
+
+def test_adjacent_metadata_does_not_identify_regular_binary(planner, monkeypatch):
+    home = Path('example/user').absolute()
+    prefix = home / '.npm-global'
+    launcher = prefix / 'bin/codex'
+    monkeypatch.setattr(planner, 'resolved', lambda path: path)
+    monkeypatch.setattr(Path, 'is_file', lambda path: True)
+    monkeypatch.setattr(Path, 'is_symlink', lambda path: False)
+    monkeypatch.setattr(planner, 'package_version', lambda *args: 'fixture')
+    row = planner.classify('codex', launcher, [prefix], home.parent / 'system', home)
+    assert row.identity == launcher
+    assert row.prefix is None
+    assert row.version == 'UNKNOWN'
+
+
+def test_windows_rejected_before_discovery(planner, monkeypatch, capsys):
+    monkeypatch.setattr(planner, 'os', SimpleNamespace(name='nt'))
+
+    def forbidden(*args, **kwargs):
+        pytest.fail('Unsupported platform reached discovery')
+
+    monkeypatch.setattr(planner, 'inventory', forbidden)
+    with pytest.raises(SystemExit) as exc:
+        planner.main([])
+    assert exc.value.code == 2
+    assert 'POSIX/Linux only' in capsys.readouterr().err

@@ -13,6 +13,9 @@ requests, executes no installed CLI, and changes no files.
 
 ## Basis and scope
 
+The tool is POSIX/Linux only. Windows npm layouts and command shims are not
+supported; execution on Windows exits with status 2 before discovery or planning.
+
 The installation preference and desktop-component exclusion follow repository
 issue 3964. Package identifiers follow the existing
 `scripts/setup/lib/install-provider-clis.sh` and `scripts/install/pin-codex.sh`.
@@ -28,7 +31,8 @@ python3 scripts/maintenance/cli_consolidation_plan.py --npm-prefix "$HOME/.npm-g
 ```
 
 The first additional prefix inside the user root is preferred, followed by
-`.npm-global`, `.local`, and `.npm`. System prefixes may be inspected but are
+metadata-matched user npm prefixes discovered through PATH (the PATH winner
+first), then `.npm-global`, `.local`, and `.npm`. System prefixes may be inspected but are
 never selected as the preferred user installation. An empty `--path ''` disables
 PATH lookup; empty elements within a nonempty PATH denote the current directory.
 `--home` and `--system-root` support isolated fixtures. Custom npm prefixes must
@@ -41,7 +45,9 @@ recursive scan of the machine. Desktop application bundles are not searched;
 do not add their internal directories to the inventory PATH or npm prefixes.
 
 Each installation reports its launchers, inferred installation method, metadata
-version and winning launcher. Symlink aliases share a package identity. Snap
+version and winning launcher. Symlink aliases share a package identity. A regular
+launcher outside the package directory remains a separate manual-review row;
+adjacent metadata does not establish its association with the package. Snap
 commands retain separate identities even when they resolve to the same Snap
 executable. Only matching npm package names qualify versions; absent, malformed
 or mismatched metadata is reported as `UNKNOWN`. Snap versions are read from
