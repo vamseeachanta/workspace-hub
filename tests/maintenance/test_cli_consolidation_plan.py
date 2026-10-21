@@ -80,6 +80,7 @@ def test_missing_tools_requires_install_not_removal(planner, tmp_path):
     assert 'REMOVE' not in text
 
 
+@pytest.mark.skipif(sys.platform == 'win32', reason='Requires POSIX shell or executable semantics')
 def test_nvm_and_explicit_prefix(planner, tmp_path):
     home, system = layout(tmp_path)
     old = npm(home / '.nvm/versions/node/fixture', 'codex')
@@ -136,6 +137,7 @@ def test_unknown_copy_not_removed(planner, tmp_path):
     assert 'rm ' not in text
 
 
+@pytest.mark.skipif(sys.platform == 'win32', reason='Requires POSIX shell or executable semantics')
 def test_no_execution_network_or_writes(planner, tmp_path, monkeypatch, capsys):
     """Before/after bytes and links match; all process/network/write APIs fail."""
     import builtins
@@ -182,6 +184,7 @@ def test_no_execution_network_or_writes(planner, tmp_path, monkeypatch, capsys):
     assert snapshot() == before
 
 
+@pytest.mark.skipif(sys.platform == 'win32', reason='Requires POSIX shell or executable semantics')
 def test_non_executable_and_broken_link_not_path_winners(planner, tmp_path):
     home, system = layout(tmp_path)
     folder = home / 'bin'
@@ -207,15 +210,18 @@ def test_custom_prefix_on_path_metadata_is_discovered(planner, tmp_path):
     assert rows[0].prefix == executable.parent.parent
 
 
-def test_regular_npm_launcher_uses_adjacent_package_metadata(planner, tmp_path):
+def test_regular_launcher_is_independent_of_adjacent_package(planner, tmp_path):
     home, system = layout(tmp_path)
     executable = npm(home / '.npm-global', 'claude')
     executable.unlink()
     executable.write_text('#!/bin/sh\nexit 99\n')
     executable.chmod(0o755)
     rows = inventory(planner, home, system, str(executable.parent))
-    assert len(rows) == 1
-    assert rows[0].version == 'fixture-version'
+    assert len(rows) == 2
+    native = next(row for row in rows if row.winner == executable)
+    assert native.version == 'UNKNOWN'
+    assert native.prefix is None
+    assert f'MANUAL REVIEW claude: {executable}' in planner.render(rows, home)
 
 
 def test_system_prefix_never_preferred(planner, tmp_path):
@@ -255,3 +261,53 @@ def test_custom_prefix_alias_includes_canonical_launcher(planner, tmp_path):
     rows = inventory(planner, home, system, str(alias.parent))
     assert len(rows) == 1
     assert set(rows[0].paths) == {alias, executable}
+
+
+@pytest.mark.parametrize('explicit', [False, True])
+def test_path_inferred_user_prefix_is_kept(planner, tmp_path, explicit):
+    home, system = layout(tmp_path)
+    first = npm(home / '.npm-packages', 'codex')
+    second = npm(home / 'another-prefix', 'codex')
+    default = npm(home / '.npm-global', 'codex')
+    prefixes = [second.parent.parent] if explicit else []
+    path = os.pathsep.join(map(str, [first.parent, second.parent]))
+    rows = inventory(planner, home, system, path, prefixes)
+    text = planner.render(rows, home, prefixes)
+    expected = second if explicit else first
+    assert f'KEEP codex: {expected}' in text
+    assert 'MISSING codex' not in text
+    assert f'npm install --global --prefix {expected.parent.parent}' in text
+    assert f'npm uninstall --global --prefix {default.parent.parent}' in text
+
+
+def test_missing_wording_limits_metadata_claim(planner, tmp_path):
+    home, system = layout(tmp_path)
+    text = planner.render(inventory(planner, home, system), home)
+    assert 'MISSING codex: metadata-matched preferred user npm installation' in text
+    assert 'verified preferred' not in text
+
+
+def test_windows_is_rejected_before_inventory(planner, monkeypatch, capsys):
+    from types import SimpleNamespace
+
+    def forbidden(*args, **kwargs):
+        pytest.fail('Unsupported platform reached inventory')
+
+    monkeypatch.setattr(planner, 'os', SimpleNamespace(name='nt', environ=os.environ))
+    monkeypatch.setattr(planner, 'inventory', forbidden)
+    with pytest.raises(SystemExit) as error:
+        planner.main([])
+    assert error.value.code == 2
+    captured = capsys.readouterr()
+    assert 'POSIX/Linux only' in captured.err
+    assert captured.out == ''
+
+
+def test_single_custom_path_prefix_avoids_duplicate_install(planner, tmp_path):
+    home, system = layout(tmp_path)
+    executable = npm(home / '.npm-packages', 'codex')
+    rows = inventory(planner, home, system, str(executable.parent))
+    text = planner.render(rows, home)
+    assert f'KEEP codex: {executable}' in text
+    assert 'MISSING codex' not in text
+    assert f'--prefix {home / ".npm-global"} @openai/codex' not in text

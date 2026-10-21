@@ -1,4 +1,4 @@
-"""Read local installation metadata and print a dry-run consolidation plan.
+"""Read local installation metadata and print a dry-run plan (POSIX/Linux only).
 
 Policy basis: issue 3964, user npm preference and desktop-component exclusion.
 No registry queries, process execution, package changes or filesystem writes.
@@ -86,9 +86,7 @@ def classify(tool: str, path: Path, prefixes: list[Path], system: Path,
     target = resolved(path)
     for prefix in prefixes:
         root = prefix / 'lib/node_modules' / PACKAGES[tool]
-        if (target.is_relative_to(resolved(root))
-                or (path.parent == prefix / 'bin' and not path.is_symlink()
-                    and (root / 'package.json').is_file())):
+        if target.is_relative_to(resolved(root)):
             version = package_version(root, tool)
             kind = 'npm (path inference)'
             if any(part in prefix.parts for part in ('.nvm', '.volta', 'fnm')):
@@ -161,7 +159,7 @@ def q(value) -> str:
 def render(rows: list[Installation], home: Path, extra_prefixes=()) -> str:
     preferred = [Path(p).absolute() for p in extra_prefixes
                  if Path(p).absolute().is_relative_to(home.absolute())]
-    preferred += [home / '.npm-global', home / '.local', home / '.npm']
+    defaults = [home / '.npm-global', home / '.local', home / '.npm']
     lines = ['DRY RUN ONLY: no commands are executed; no files are changed.',
              'path | inferred installation | metadata version | PATH winner']
     for row in rows:
@@ -170,13 +168,20 @@ def render(rows: list[Installation], home: Path, extra_prefixes=()) -> str:
                          f'{"yes" if row.winner == path else "no"}')
     for tool, package in PACKAGES.items():
         copies = [r for r in rows if r.tool == tool]
-        keep = next((r for prefix in preferred for r in copies
+        inferred = sorted(
+            (r for r in copies if r.prefix is not None
+             and r.kind == 'user npm (path inference)'
+             and r.prefix.is_relative_to(home.absolute())),
+            key=lambda r: r.winner is None,
+        )
+        candidates = [*preferred, *(r.prefix for r in inferred), *defaults]
+        keep = next((r for prefix in candidates for r in copies
                      if r.prefix == prefix), None)
-        destination = keep.prefix if keep else preferred[0]
+        destination = keep.prefix if keep else candidates[0]
         if keep:
             lines.append(f'KEEP {tool}: {keep.paths[0]}')
         else:
-            lines.append(f'MISSING {tool}: verified preferred user npm installation')
+            lines.append(f'MISSING {tool}: metadata-matched preferred user npm installation')
         lines += [(f'INSTALL/UPDATE (maintainer review): npm install --global '
                   f'--prefix {q(destination)} {q(package + "@latest")}'),
                   (f'PATH prerequisite: place {q(destination / "bin")} before other CLI directories; '
@@ -205,6 +210,8 @@ def render(rows: list[Installation], home: Path, extra_prefixes=()) -> str:
 
 def main(argv=None) -> None:
     parser = argparse.ArgumentParser(description=__doc__)
+    if os.name == 'nt':
+        parser.error('POSIX/Linux only; Windows npm layouts are unsupported')
     parser.add_argument('--home', type=Path, default=Path.home(), help='User installation root')
     parser.add_argument('--system-root', type=Path, default=Path('/'), help='System root (fixture support)')
     parser.add_argument('--path', default=os.environ.get('PATH', ''), help='PATH value to inspect')

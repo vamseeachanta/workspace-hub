@@ -3,13 +3,15 @@
 The local inventory distinguishes independently installed Claude Code and Codex
 commands from aliases and proposes consolidation into a user npm prefix. All
 commands printed by the tool are proposals. The inventory performs no network
-requests, executes no installed CLI, and changes no files.
+requests, executes no installed CLI, and changes no files. It is POSIX/Linux only;
+Windows npm layouts are unsupported and the command exits with status 2 there.
 
 ## Revision history
 
 | Revision | Date | Change and reason |
 | --- | --- | --- |
 | Initial | 2026-10-20 | Add metadata-only inventory and a dry-run procedure to distinguish duplicate installations from aliases. |
+| 1 | 2026-10-21 | Retain inferred user prefixes, count adjacent binaries separately, limit metadata claims and reject unsupported Windows layouts. |
 
 ## Basis and scope
 
@@ -27,8 +29,10 @@ python3 scripts/maintenance/cli_consolidation_plan.py
 python3 scripts/maintenance/cli_consolidation_plan.py --npm-prefix "$HOME/.npm-global"
 ```
 
-The first additional prefix inside the user root is preferred, followed by
-`.npm-global`, `.local`, and `.npm`. System prefixes may be inspected but are
+Additional prefixes inside the user root are preferred in argument order, followed
+by metadata-matched inferred user npm prefixes, with the PATH winner first, then
+`.npm-global`, `.local`, and `.npm`. Ties among inferred prefixes retain discovery
+order. System prefixes may be inspected but are
 never selected as the preferred user installation. An empty `--path ''` disables
 PATH lookup; empty elements within a nonempty PATH denote the current directory.
 `--home` and `--system-root` support isolated fixtures. Custom npm prefixes must
@@ -41,7 +45,10 @@ recursive scan of the machine. Desktop application bundles are not searched;
 do not add their internal directories to the inventory PATH or npm prefixes.
 
 Each installation reports its launchers, inferred installation method, metadata
-version and winning launcher. Symlink aliases share a package identity. Snap
+version and winning launcher. Symlink aliases share a package identity. A regular
+launcher outside the package directory is counted separately and receives manual
+review, even when package metadata exists beside its prefix. Launcher contents
+are not used to establish ownership. Snap
 commands retain separate identities even when they resolve to the same Snap
 executable. Only matching npm package names qualify versions; absent, malformed
 or mismatched metadata is reported as `UNKNOWN`. Snap versions are read from
@@ -116,7 +123,10 @@ The focused test `test_user_npm_keep_system_remove` constructs this ordering in 
 temporary filesystem and asserts the winner, retained prefix and uninstall
 command directly. Other tests cover missing tools, aliases, version managers,
 Snap shared executables, malformed metadata, nonexecutable launchers, excluded desktop
-components and read-only behavior. No expected value comes from running a CLI.
+components and read-only behavior. Regressions also cover inferred-prefix
+preference, independent adjacent binaries, metadata wording and Windows rejection.
+Tests requiring POSIX shell or executable semantics are skipped on Windows; the
+platform-rejection test remains enabled. No expected value comes from running a CLI.
 
 ```sh
 python3 -m pytest tests/maintenance/test_cli_consolidation_plan.py -q -p no:cacheprovider
