@@ -51,18 +51,32 @@ use <code>issue</code>, <code>action</code>, <code>reason</code>, and
 python scripts/governance/closure_records.py --successor-csv &lt; docs/governance/examples/closure-records.json</pre>
 <p>The example uses synthetic identities and shall not be submitted for live API
 validation. For an authorized real snapshot, <code>--verify-live</code> will read
-each unique referenced issue with <code>gh api --method GET</code>, check its
+each unique structured draft issue identity and successor candidate endpoint with
+<code>gh api --method GET</code>, check its
 canonical repository and number, reject pull requests and return a nonzero exit
 status if any reference fails or remains NOT_EVALUATED. Live validation establishes
 reference resolution only; it does not refresh closure evidence or authenticate
 supplied original-body verification. JSON output retains each reference result;
 CSV output contains only successor rows.</p>
+<p>Validation covers decision and recovery issues, successor candidates and resolved
+successors, retirement references and destinations. Free-text mentions in closure
+evidence, original bodies and replacement scope are not classified as issue
+identities: these can cite pull requests. Those mentions and unused snapshot
+records are not live-validated. A pull request supplied as a structured issue
+target still fails validation.</p>
+<p><code>--retries</code> sets the number of retries after the first request
+(nonnegative integer, default 5: at most six attempts per reference).
+<code>--retry-delay</code> sets seconds between retries (finite, nonnegative,
+default 60). Only HTTP 502, 503 and 504 failures are retried; other failures
+return NOT_EVALUATED immediately. These are configurable operational defaults,
+not acceptance criteria from the issue-closing procedure.</p>
 <h2>Worked example: inputs, method and answer</h2>
 <p><a href="examples/closure-records.json">The complete synthetic input</a> contains
 a duplicate with an open candidate, an import record with a verified synthetic
 original and replacement scope, and an open retirement candidate. The generated
 <a href="examples/closure-successors.csv">successor CSV</a> is retained beside the
-input and checked against the independent answers below.</p>
+input as a regression artifact. Test expectations are specified directly from
+the independent answers below, rather than read from that generated CSV.</p>
 <table><tr><th>Input</th><th>Independent method</th><th>Expected answer</th></tr>
 <tr><td>Duplicate record 1 maps to open record 2.</td><td>Procedure A.4 permits an open successor, pending scope confirmation.</td><td>Successor 2, status open; one successor draft.</td></tr>
 <tr><td>Record 3 closes at 00:00:30 after creation at 00:00:00, without comments or delivery evidence.</td><td>Hand subtraction gives 30 s; procedure E.9 uses 60 s. The synthetic time difference is below that threshold.</td><td>Propose closure:unverified; delivery remains unestablished.</td></tr>

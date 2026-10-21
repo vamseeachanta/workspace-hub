@@ -10,17 +10,18 @@ from __future__ import annotations
 import argparse
 import csv
 import json
+import math
 import re
 import subprocess
 import sys
 import time
-from typing import Callable, TextIO
+from collections.abc import Callable
+from typing import TextIO
 
 import check_issue_closures as checker
 
-
 IDENTITY = re.compile(r"([A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+)#([1-9][0-9]*)\Z")
-SUCCESSOR_WORDS = re.compile(r"\b(duplicate|superseded)\b", re.I)
+SUCCESSOR_WORDS = re.compile(r"\b(duplicate|superseded)\b", re.IGNORECASE)
 
 
 def target(identity: str) -> tuple[str, int]:
@@ -100,7 +101,7 @@ def build_drafts(data: dict) -> dict:
     if len(index) != len(issues):
         raise ValueError("duplicate issue identity")
     mappings = data.get("successors", {})
-    refs = set(index)
+    refs = set()
     for source, destination in mappings.items():
         target(source)
         target(destination)
@@ -110,6 +111,7 @@ def build_drafts(data: dict) -> dict:
               "reference_validation": checker.NOT_EVALUATED}
 
     def decision(issue_ref: str, action: str) -> None:
+        refs.add(issue_ref)
         output["decisions"].append({"issue": issue_ref, "question": f"{action}? Yes / No"})
 
     for ref, item in sorted(index.items()):
@@ -119,6 +121,8 @@ def build_drafts(data: dict) -> dict:
             successor, status = _terminal(mappings.get(ref), index, mappings)
             if successor == ref:
                 successor, status = None, "unresolved"
+            if successor:
+                refs.add(successor)
             draft = (f"Proposed successor: {successor} ({status}); confirm that unfinished scope is carried forward."
                      if successor else "No qualified successor is established. Proposed disposition: none: reopen.")
             output["successors"].append({"issue": ref, "successor": successor or "none: reopen",
@@ -149,29 +153,24 @@ def build_drafts(data: dict) -> dict:
         output["retired"].append(_retirement(entry, index))
         decision(entry["issue"], f"Approve retirement disposition for {entry['issue']}")
 
-    # Check every reference in source and proposed text, including original bodies.
-    for section in (issues, data.get("recoveries", []), data.get("retired", [])):
-        for item in section:
-            ref = item.get("issue") or identity(item)
-            repository, _ = target(ref)
-            for mentioned in checker.issue_references(json.dumps(item)):
-                refs.add(mentioned if "#" in mentioned else f"{repository}#{mentioned}")
+    # Structured draft identities and candidate endpoints are issue targets.
+    # Evidence and restored prose can cite PRs; they are not issue identities.
     output["references"] = sorted(refs)
     output["coverage"] = data.get("coverage", "Supplied snapshot only; exhaustive collection is not established.")
     return output
 
 
-def read_issue(repository: str, number: int) -> dict:
+def read_issue(repository: str, number: int, *, retries: int = 5, retry_delay: float = 60) -> dict:
     """Read one issue; retry only transient server failures, never mutations."""
-    # Retry count and delay follow the task's server-error rule, not an engineering limit.
-    for attempt in range(6):
+    # Operational defaults are documented and configurable through the CLI.
+    for attempt in range(retries + 1):
         result = subprocess.run(["gh", "api", "--method", "GET",
                                  f"repos/{repository}/issues/{number}"],
                                 capture_output=True, text=True, check=False)
         if result.returncode == 0:
             return json.loads(result.stdout)
-        if attempt < 5 and re.search(r"\b(502|503|504)\b", result.stderr):
-            time.sleep(60)
+        if attempt < retries and re.search(r"\b(502|503|504)\b", result.stderr):
+            time.sleep(retry_delay)
             continue
         raise RuntimeError("Issue API request failed; reference remains unverified")
     raise RuntimeError("Issue API retries exhausted")
@@ -203,11 +202,21 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--verify-live", action="store_true", help="GET each cited issue through gh.")
     parser.add_argument("--successor-csv", action="store_true", help="Print successor CSV instead of JSON.")
+    parser.add_argument("--retries", type=int, default=5,
+                        help="Retries after transient HTTP 502/503/504 failures (default: 5).")
+    parser.add_argument("--retry-delay", type=float, default=60,
+                        help="Seconds between transient retries (default: 60).")
     args = parser.parse_args(argv)
+    if args.retries < 0:
+        parser.error("--retries must be nonnegative")
+    if not math.isfinite(args.retry_delay) or args.retry_delay < 0:
+        parser.error("--retry-delay must be finite and nonnegative")
     result = build_drafts(json.load(sys.stdin))
     failed = False
     if args.verify_live:
-        result["reference_validation"] = verify_references(result["references"])
+        result["reference_validation"] = verify_references(
+            result["references"], reader=lambda repository, number: read_issue(
+                repository, number, retries=args.retries, retry_delay=args.retry_delay))
         failed = any(row["status"] != "PASS" for row in result["reference_validation"].values())
     if args.successor_csv:
         write_successor_csv(result["successors"], sys.stdout)
