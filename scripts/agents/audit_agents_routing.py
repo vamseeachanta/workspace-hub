@@ -9,6 +9,7 @@ from pathlib import Path
 # Acceptance marker: workspace-hub issue 3958, Acceptance criteria.
 TARGET = "../workspace-hub/AGENTS.md"
 CONTRACT = f"Contract: {TARGET}"
+CONTRACT_HEADER = re.compile(re.escape(CONTRACT) + r"(?:\s+\|.*)?")
 HUB_REFERENCE = re.compile(r"workspace-hub/(?:blob/[^/\s]+/)?AGENTS\.md\b")
 
 
@@ -17,6 +18,12 @@ def active_lines(text):
     fence = None
     in_comment = False
     for number, line in enumerate(text.splitlines(), 1):
+        if fence:
+            match = re.match(r"^ {0,3}(`{3,}|~{3,})(.*)$", line)
+            if (match and match[1][0] == fence[0]
+                    and len(match[1]) >= len(fence) and not match[2].strip()):
+                fence = None
+            continue
         visible = ""
         while line:
             if in_comment:
@@ -31,11 +38,6 @@ def active_lines(text):
                     break
                 in_comment = True
         match = re.match(r"^ {0,3}(`{3,}|~{3,})(.*)$", visible)
-        if fence:
-            if (match and match[1][0] == fence[0]
-                    and len(match[1]) >= len(fence) and not match[2].strip()):
-                fence = None
-            continue
         if match:
             fence = match[1]
             continue
@@ -51,8 +53,10 @@ def audit_file(repo, filename):
            "routes": "no", "missing": [CONTRACT], "lines": []}
     path = repo / filename
     try:
-        text = path.read_text(encoding="utf-8")
+        text = path.read_text(encoding="utf-8-sig")
     except FileNotFoundError:
+        if filename == "CLAUDE.md":
+            row["missing"] = ["n/a (file absent)"]
         return row
     except (OSError, UnicodeError):
         row["present"] = path.exists()
@@ -60,7 +64,7 @@ def audit_file(repo, filename):
         return row
     row["present"] = True
     lines = list(active_lines(text))
-    exact = [n for n, line in lines if line == CONTRACT]
+    exact = [n for n, line in lines if CONTRACT_HEADER.fullmatch(line)]
     evidence = [n for n, line in lines
                 if "Contract:" in line or HUB_REFERENCE.search(line)]
     row["lines"] = exact or evidence
@@ -68,7 +72,7 @@ def audit_file(repo, filename):
         row.update(routes="yes", missing=[])
     elif evidence:
         row["routes"] = "partial"
-        row["missing"] = [f"exact line: {CONTRACT}"]
+        row["missing"] = [f"required header: {CONTRACT}"]
     return row
 
 

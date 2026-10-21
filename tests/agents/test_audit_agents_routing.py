@@ -30,6 +30,15 @@ def load_module():
     ("text", "status", "lines"),
     [
         (BLOCK, "yes", [2]),
+        ("Contract: ../workspace-hub/AGENTS.md | Source: src/digitalmodel/\n", "yes", [1]),
+        ("Contract: ../workspace-hub/AGENTS.md | Source: src/sample/ | Other: value\n", "yes", [1]),
+        ("Contract: ../workspace-hub/AGENTS.md extra\n", "partial", [1]),
+        ("Contract: ../workspace-hub/AGENTS.md| Source: src/sample/\n", "partial", [1]),
+        ("\ufeffContract: ../workspace-hub/AGENTS.md\n", "yes", [1]),
+        ("# X\n```html\n<!-- example opener\n```\n" + BLOCK, "yes", [6]),
+        ("~~~html\n<!-- example opener\n~~~\n" + BLOCK, "yes", [5]),
+        ("<!--\n```\n-->\n" + BLOCK, "yes", [5]),
+        ("```html\n<!--\n" + BLOCK + "```\n", "no", []),
         ("# Independent instructions\n", "no", []),
         ("Contract: elsewhere/AGENTS.md\n", "partial", [1]),
         ("../workspace-hub/AGENTS.md\n", "partial", [1]),
@@ -70,6 +79,8 @@ def test_missing_files_and_read_only(tmp_path):
     assert all(not r["present"] and r["routes"] == "no"
                for r in module.audit_repository(empty))
     assert list(empty.iterdir()) == []
+    assert module.audit_repository(empty)[0]["missing"] == [module.CONTRACT]
+    assert module.audit_repository(empty)[1]["missing"] == ["n/a (file absent)"]
 
 
 def test_template_is_the_canonical_fixture():
@@ -122,12 +133,10 @@ def test_unreadable_text_is_a_reported_gap(tmp_path):
     assert "unreadable UTF-8 file" in row["missing"]
 
 
-def test_table_escapes_repository_names(tmp_path):
-    repo = tmp_path / "sample|<x>"
-    repo.mkdir()
-    result = run_cli(repo)
-    assert result.returncode == 0
-    assert "sample&#124;&lt;x&gt;" in result.stdout
+def test_table_escapes_repository_names():
+    row = {"repository": "sample|<x>", "file": "AGENTS.md", "present": False,
+           "routes": "no", "missing": [], "lines": []}
+    assert "sample&#124;&lt;x&gt;" in load_module().render_table([row])
 
 
 def test_duplicate_names_are_not_ambiguous(tmp_path):
