@@ -197,6 +197,9 @@ def test_windows_trimmed_path_segments_are_rejected(bundle, path):
         accept(bundle)
 
 
+@pytest.mark.skipif(
+    sys.platform == "win32", reason="the native parametrized cases cover win32"
+)
 def test_windows_alias_setup_preserves_segments(bundle, monkeypatch):
     """Exercise Windows path selection without requiring a Windows filesystem."""
     captured = []
