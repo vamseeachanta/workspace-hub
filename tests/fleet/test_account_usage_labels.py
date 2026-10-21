@@ -224,17 +224,30 @@ def test_committed_account_map_names_hosts_by_label_only():
     fleet.load_config(CONFIG)
 
 
-def test_committed_windows_probe_uses_linux_key_hop(table):
+def test_committed_windows_probe_uses_linux_key_hop():
+    # Route and host-key policy: https://github.com/vamseeachanta/workspace-hub/pull/4116
+    table = {"phys-box-a": "ace-win-1", "phys-box-b": "ace-win-2",
+             "ace-linux-1": "ace-linux-1"}
     host = fleet.load_config(CONFIG)["hosts"]["ace-win-1"]
     argv = host["ssh"]
-    assert argv[1].split("@", 1)[-1] == "ace-linux-1"
+    assert argv[1] == "ace-linux-1"
     assert argv[2] == "ssh"
     assert argv[-1].split("@", 1)[-1] == "ace-win-1"
     targets = [arg.split("@", 1)[-1] for arg in argv if "@" in arg]
-    assert targets == ["ace-linux-1", "ace-win-1"]
-    fsl.assert_no_physical("\n".join(argv), table)
-    fleet.resolve_ssh_argv(argv, table)
+    assert targets == ["ace-win-1"]
+    target_user = argv[-1].split("@", 1)[0]
+    assert fleet.resolve_ssh_argv(argv, table) == [
+        argv[0], "ace-linux-1", "ssh", "-o", "BatchMode=yes",
+        "-o", "ConnectTimeout=20", "-o", "StrictHostKeyChecking=accept-new",
+        f"{target_user}@phys-box-a",
+    ]
     assert host["remote_wrap"] == "powershell"
     assert ("-o", "BatchMode=yes") in list(zip(argv, argv[1:]))
     assert ("-o", "ConnectTimeout=20") in list(zip(argv, argv[1:]))
     assert "StrictHostKeyChecking=no" not in argv
+
+
+def test_committed_windows_probe_accepts_new_host_keys():
+    # Host-key policy: https://github.com/vamseeachanta/workspace-hub/pull/4116
+    argv = fleet.load_config(CONFIG)["hosts"]["ace-win-1"]["ssh"]
+    assert ("-o", "StrictHostKeyChecking=accept-new") in list(zip(argv, argv[1:]))
