@@ -2,8 +2,9 @@
 import hashlib
 import json
 import os
-from pathlib import Path
 import stat
+import uuid
+from pathlib import Path
 
 
 def digest(raw):
@@ -91,10 +92,22 @@ def durable_file(path, raw):
         os.fsync(stream.fileno())
 
 
-def save_journal(transaction, receipt):
+def stage_attempt(transaction, prefix, raw):
+    """Create fresh staging; never consume or overwrite earlier attempt evidence.
+
+    Exclusive creation is the collision guard, not the random name. Failed writes
+    remain for operator reconciliation; their names do not establish ownership.
+    """
     checked(transaction)
-    pending = transaction / "journal.pending"
-    durable_file(pending, (json.dumps(receipt, sort_keys=True, indent=2) + "\n").encode())
+    staged = transaction / f"{prefix}-{uuid.uuid4().hex}.payload"
+    durable_file(staged, raw)
+    return staged
+
+
+def save_journal(transaction, receipt):
+    pending = stage_attempt(transaction, "journal", (
+        json.dumps(receipt, sort_keys=True, indent=2) + "\n").encode())
+    checked(transaction / "journal.json", missing=True)
     os.replace(pending, transaction / "journal.json")
 
 
