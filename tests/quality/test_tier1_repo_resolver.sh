@@ -18,7 +18,9 @@ mkdir -p "$MB/hub"
 export REPO_ROOT="$MB/hub"
 unset TIER1_REPOS_BASE 2>/dev/null || true
 
-mkdir -p "$MB/hub/nestedrepo/.git" "$MB/siblingrepo/.git" "$MB/hub/emptyrepo"
+mkdir -p "$MB/hub/emptyrepo"
+git init -q "$MB/hub/nestedrepo"
+git init -q "$MB/siblingrepo"
 
 eq "nested layout resolves"   "$(resolve_tier1_repo_path nestedrepo)"  "$MB/hub/nestedrepo"
 eq "sibling layout resolves"  "$(resolve_tier1_repo_path siblingrepo)" "$MB/siblingrepo"
@@ -31,11 +33,12 @@ mkdir -p "$MB/pyrepo"; : > "$MB/pyrepo/pyproject.toml"
 eq "pyproject.toml marker resolves" "$(resolve_tier1_repo_path pyrepo)" "$MB/pyrepo"
 
 # explicit TIER1_REPOS_BASE wins
-mkdir -p "$MB/extbase/basedrepo/.git"
+git init -q "$MB/extbase/basedrepo"
 TIER1_REPOS_BASE="$MB/extbase" eq "TIER1_REPOS_BASE resolves" "$(TIER1_REPOS_BASE="$MB/extbase" resolve_tier1_repo_path basedrepo)" "$MB/extbase/basedrepo"
 
 # both layouts present -> nested-first + stderr warning
-mkdir -p "$MB/hub/dup/.git" "$MB/dup/.git"
+git init -q "$MB/hub/dup"
+git init -q "$MB/dup"
 eq "both-present picks nested" "$(resolve_tier1_repo_path dup 2>/dev/null)" "$MB/hub/dup"
 if resolve_tier1_repo_path dup 2>&1 >/dev/null | grep -q "multiple layouts"; then ok "both-present warns on stderr"; else bad "both-present warns on stderr"; fi
 
