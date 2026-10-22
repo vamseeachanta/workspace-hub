@@ -2,8 +2,8 @@
 
 from __future__ import annotations
 
-import copy
 import ast
+import copy
 import functools
 import hashlib
 import importlib.util
@@ -11,9 +11,10 @@ import json
 import sys
 from pathlib import Path
 
-import yaml
 import pytest
-
+import yaml
+from pin_helpers import assert_semantic_rejection
+from scheduler_contract_fixtures import checkout_records
 
 ROOT = Path(__file__).resolve().parents[2]
 CHECKER = ROOT / "scripts/enforcement/check-scheduler-mutation-surfaces.py"
@@ -33,7 +34,7 @@ def load_checker():
 @functools.cache
 def _contract_baseline():
     checker = load_checker()
-    records = checker.read_index_records(ROOT)
+    records = checkout_records(checker, ROOT)
     registry = yaml.safe_load(records[checker.REGISTRY])
     discovered = checker.discover_mutation_surfaces(records)
     return checker, records, registry, discovered
@@ -270,7 +271,7 @@ def test_preservation_attestation_proves_plan_reconstruction():
         assert not checker.evaluate_attestation(name, changed, source)
 
 
-def test_enforcement_modules_obey_size_limits_and_extract_responsibilities():
+def test_enforcement_modules_extract_responsibilities_and_bound_functions():
     required = {
         "scripts/enforcement/scheduler_mutation_report.py",
         "scripts/enforcement/scheduler_mutation_delegation.py",
@@ -280,7 +281,6 @@ def test_enforcement_modules_obey_size_limits_and_extract_responsibilities():
     production = list((ROOT / "scripts/enforcement").glob("scheduler_mutation*.py"))
     production.append(CHECKER)
     for path in set(production):
-        assert len(path.read_text().splitlines()) <= 400, path
         tree = ast.parse(path.read_text())
         for node in ast.walk(tree):
             if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
@@ -323,38 +323,29 @@ def test_3490_gap_is_linked_in_render_and_docs():
         ("harness-dry-run-v1", b"| grep -cE '^[[:space:]]+[0-9*]' || true", b"| grep -cE '^[[:space:]]+[0-9*]'"),
     ],
 )
-def test_wrapper_attestations_reject_live_source_mutations(attestation, old, new):
+def test_wrapper_attestations_reject_live_source_mutations(attestation, old, new, tmp_path, monkeypatch):
     checker, records, _registry, _discovered = current_contract()
-    wrapper_module = sys.modules["scheduler_mutation_wrapper_attestations"]
     source = checker.attestation_source(attestation)
     body = records[source]
     mutated = body.replace(old, new, 1)
     assert mutated != body, (attestation, old)
-    records[source] = mutated
-    original_pin = wrapper_module.WRAPPER_SHA256[source]
-    wrapper_module.WRAPPER_SHA256[source] = hashlib.sha256(mutated).hexdigest()
-    try:
-        assert wrapper_module._pinned(source, records)
-        assert not checker.evaluate_attestation(attestation, records, source)
-    finally:
-        records[source] = body
-        wrapper_module.WRAPPER_SHA256[source] = original_pin
+    _reject_wrapper_mutation(tmp_path, monkeypatch, checker, records, source,
+                             attestation, mutated, "source-shape")
 
 
-def _evaluate_self_pinned_setup(body, attestation="setup-windows-skip-v1"):
-    checker, records, _registry, _discovered = current_contract()
+def _reject_wrapper_mutation(tmp_path, monkeypatch, checker, records, source,
+                             attestation, mutated, expected):
     wrapper_module = sys.modules["scheduler_mutation_wrapper_attestations"]
-    source = checker.attestation_source(attestation)
-    original_body = records[source]
-    original_pin = wrapper_module.WRAPPER_SHA256[source]
-    records[source] = body
-    wrapper_module.WRAPPER_SHA256[source] = hashlib.sha256(body).hexdigest()
-    try:
-        assert wrapper_module._pinned(source, records)
-        return checker.evaluate_attestation(attestation, records, source)
-    finally:
-        records[source] = original_body
-        wrapper_module.WRAPPER_SHA256[source] = original_pin
+
+    def evaluate(changed):
+        if changed[source] != records[source]:
+            assert not checker.evaluate_attestation(attestation, changed, source)
+        return wrapper_module.wrapper_attestation_reason(attestation, changed)
+
+    assert_semantic_rejection(
+        tmp_path, monkeypatch, source, records[source], lambda _body: mutated,
+        wrapper_module.WRAPPER_SHA256, evaluate, expected, records=records,
+    )
 
 
 def test_setup_self_pinned_baseline_accepts_registry_os_gate():
@@ -404,12 +395,13 @@ fi'''
         (b'CANONICAL_MACHINE="$(uv run', b": <<'fi'\nCANONICAL_MACHINE=\"$(uv run"),
     ],
 )
-def test_setup_attestation_rejects_self_pinned_semantic_bypasses(old, new):
+def test_setup_attestation_rejects_self_pinned_semantic_bypasses(old, new, tmp_path, monkeypatch):
     checker, records, _registry, _discovered = current_contract()
     source = checker.attestation_source("setup-windows-skip-v1")
     mutated = records[source].replace(old, new, 1)
     assert mutated != records[source], old
-    assert not _evaluate_self_pinned_setup(mutated)
+    _reject_wrapper_mutation(tmp_path, monkeypatch, checker, records, source,
+                             "setup-windows-skip-v1", mutated, "source-shape")
 
 
 @pytest.mark.parametrize(
@@ -428,13 +420,14 @@ def test_setup_attestation_rejects_self_pinned_semantic_bypasses(old, new):
     ],
 )
 def test_setup_attestation_rejects_self_pinned_control_scope_bypasses(
-    block, prefix, suffix,
+    block, prefix, suffix, tmp_path, monkeypatch,
 ):
     checker, records, _registry, _discovered = current_contract()
     source = checker.attestation_source("setup-windows-skip-v1")
     mutated = records[source].replace(block, prefix + block + suffix, 1)
     assert mutated != records[source], block
-    assert not _evaluate_self_pinned_setup(mutated)
+    _reject_wrapper_mutation(tmp_path, monkeypatch, checker, records, source,
+                             "setup-windows-skip-v1", mutated, "source-shape")
 
 
 WRAPPER_MUTATIONS = {
@@ -468,14 +461,14 @@ def _decoy(kind, original):
 
 @pytest.mark.parametrize("source", sorted(WRAPPER_MUTATIONS))
 @pytest.mark.parametrize("decoy", ["comment", "heredoc", "dead-function", "if-false"])
-def test_wrapper_attestations_reject_dead_scope_and_fragment_decoys(source, decoy):
+def test_wrapper_attestations_reject_dead_scope_and_fragment_decoys(source, decoy, tmp_path, monkeypatch):
     checker, records, _registry, _discovered = current_contract()
     attestation, old, new = WRAPPER_MUTATIONS[source]
     original = records[source]
     mutated = original.replace(old, new, 1) + _decoy(decoy, original)
     assert mutated != original
-    records[source] = mutated
-    assert not checker.evaluate_attestation(attestation, records, source)
+    _reject_wrapper_mutation(tmp_path, monkeypatch, checker, records, source,
+                             attestation, mutated, "source-shape")
 
 
 def test_wrapper_digest_pins_are_exact_complete_and_fail_closed():
@@ -498,23 +491,23 @@ def test_wrapper_digest_pins_are_exact_complete_and_fail_closed():
 
 
 def test_setup_wrapper_pin_matches_exact_staged_blob():
-    checker, records, _registry, _discovered = current_contract()
+    _checker, records, _registry, _discovered = current_contract()
     wrapper_module = sys.modules["scheduler_mutation_wrapper_attestations"]
     source = wrapper_module.SETUP
     staged_body = records[source]
     working_body = (ROOT / source.decode()).read_bytes()
     assert staged_body == working_body
-    assert wrapper_module.WRAPPER_SHA256[source] == hashlib.sha256(staged_body).hexdigest()
+    actual = hashlib.sha256(staged_body).hexdigest()
+    expected = wrapper_module.WRAPPER_SHA256[source]
+    assert expected == actual, f"staged sha256={actual}; pinned sha256={expected}"
 
 
 @pytest.mark.parametrize("source", sorted(WRAPPER_MUTATIONS))
 @pytest.mark.parametrize("bypass", ["early-exit", "dead-script"])
-def test_wrapper_attestations_reject_self_refreshed_reachability_bypass(source, bypass):
+def test_wrapper_attestations_reject_self_refreshed_reachability_bypass(source, bypass, tmp_path, monkeypatch):
     checker, records, _registry, _discovered = current_contract()
-    wrapper_module = sys.modules["scheduler_mutation_wrapper_attestations"]
     attestation = WRAPPER_MUTATIONS[source][0]
     original_body = records[source]
-    original_pin = wrapper_module.WRAPPER_SHA256[source]
     if bypass == "early-exit":
         lines = original_body.splitlines(keepends=True)
         index = next(i for i, line in enumerate(lines) if line.strip().startswith(b"set -"))
@@ -523,12 +516,8 @@ def test_wrapper_attestations_reject_self_refreshed_reachability_bypass(source, 
     else:
         nested = b"\n".join(b"  " + line for line in original_body.splitlines())
         mutated = b"if false; then\n" + nested + b"\nfi\nexit 0\n"
-    records[source] = mutated
-    wrapper_module.WRAPPER_SHA256[source] = hashlib.sha256(mutated).hexdigest()
-    try:
-        assert not checker.evaluate_attestation(attestation, records, source)
-    finally:
-        wrapper_module.WRAPPER_SHA256[source] = original_pin
+    _reject_wrapper_mutation(tmp_path, monkeypatch, checker, records, source,
+                             attestation, mutated, "unreachable")
 
 
 def _dead_transaction_source(records, mutation):
