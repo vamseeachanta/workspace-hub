@@ -26,7 +26,9 @@ limits; it does not establish equivalent output quality or operational readiness
 <table>
 <thead><tr><th>Revision</th><th>Date</th><th>Change and reason</th></tr></thead>
 <tbody><tr><td>Initial</td><td>2026-10-22</td><td>Explicit-criterion evaluation is
-added to distinguish measured comparisons from absent evidence.</td></tr></tbody>
+added to distinguish measured comparisons from absent evidence.</td></tr>
+<tr><td>1</td><td>2026-10-22</td><td>Nested JSON errors, decimal boundaries,
+evidence hashes and external example storage are clarified following input review.</td></tr></tbody>
 <caption>Table 1. Document revision history.</caption>
 </table>
 <h2>Basis and scope</h2>
@@ -53,7 +55,7 @@ Both cohorts must meet minimum_sessions. All limits and their nonempty reference
 are required inputs. The multiplier must be positive, the clarification delta
 nonnegative and the sample minimum a positive integer. These are mathematical
 domain constraints, not calibrated policy values. Equality meets the upper limit.
-Exact fractions drive comparisons; displayed rates are rounded to one decimal place.</p>
+Exact fractions drive comparisons; displayed rates are rounded to three decimal places.</p>
 <p>Counts must be nonnegative integers, excluding booleans. Each included session
 must carry token evidence for the selected model. Token counts without model turns
 are invalid. Tool totals in a session with multiple active models cannot be
@@ -101,14 +103,20 @@ A(current) = (0 + 2) / 2 = 1.0 and A(reference) = (0 + 0) / 2 = 0.0 calls/sessio
 The clarification limit is 0.0 + 1.0 = 1.0 calls/session. Each cohort has two
 sessions, meeting the example minimum. Both rates equal their limits;
 the answer is <code>WITHIN_LIMITS</code>, exit 0.</p>
+<p>Set <code>PARITY_EVIDENCE_DIR</code> to a dedicated directory outside the
+checkout before saving inputs or running the example. Real digests may contain
+private transcript metadata; they shall not be stored in the public checkout.</p>
 <pre>uv run --no-project python scripts/ai/parity_evaluation.py \
-  examples/current examples/reference \
+  "$PARITY_EVIDENCE_DIR/current" "$PARITY_EVIDENCE_DIR/reference" \
   --model candidate --baseline-model reference \
-  --criteria examples/criteria.json</pre>
+  --criteria "$PARITY_EVIDENCE_DIR/criteria.json"</pre>
 <p>Only immediate <code>*.json</code> files are loaded. Dedicated cohort folders
 are required: a criteria file or report in a cohort folder is not a digest.
 Malformed files, duplicate JSON keys and non-finite counts or criteria are rejected,
-not silently skipped. The JSON report excludes input filenames and transcript text.</p>
+not silently skipped. The JSON report excludes input filenames and transcript text. Successful loading
+records the compared model labels and SHA-256 of the exact bytes parsed, including
+each cohort file in sorted filename order and the criteria file. These hashes
+identify supplied evidence; they do not authenticate its source.</p>
 <h2>Verification and limitations</h2>
 <p>The <a href="../../tests/ai/test_parity_evaluation.py">focused tests</a> contain
 independent arithmetic expectations for the worked example, threshold equality,

@@ -9,6 +9,7 @@ This evaluates reported counts, not transcript completeness or output quality.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import math
 from fractions import Fraction
@@ -83,8 +84,8 @@ def _compare(current, baseline, limit):
     # are interpreted by their decimal string, avoiding binary boundary drift.
     status = "REGRESSION" if current > limit else "WITHIN_LIMITS"
     try:
-        # Presentation is to one decimal place; these values do not drive status.
-        values = {key: round(float(value), 1) for key, value in
+        # Presentation is to three decimal places; these values do not drive status.
+        values = {key: round(float(value), 3) for key, value in
                   (("current", current), ("baseline", baseline), ("limit", limit))}
     except OverflowError as exc:
         raise ValueError("metric exceeds supported JSON numeric range") from exc
@@ -143,25 +144,27 @@ def _reject_constant(value):
     raise ValueError("non-finite JSON constant")
 
 
-def read_object(path):
+def read_object(path, evidence=None):
     """Read strict JSON; errors expose no input payloads or filesystem paths."""
     try:
-        with Path(path).open(encoding="utf-8") as stream:
-            result = json.load(stream, object_pairs_hook=_unique_object,
-                               parse_constant=_reject_constant)
-    except (OSError, ValueError) as exc:
+        payload = Path(path).read_bytes()
+        result = json.loads(payload.decode("utf-8"), object_pairs_hook=_unique_object,
+                            parse_constant=_reject_constant)
+    except (OSError, ValueError, RecursionError) as exc:
         raise ValueError("input is unreadable or invalid JSON") from exc
     if not isinstance(result, dict):
         raise TypeError("input must be a JSON object")
+    if evidence is not None:
+        evidence.append(hashlib.sha256(payload).hexdigest())
     return result
 
 
-def load_cohort(directory):
+def load_cohort(directory, evidence=None):
     """Load every immediate JSON digest; never skip a malformed input."""
     path = Path(directory)
     if not path.is_dir():
         raise ValueError("cohort directory is unavailable")
-    return [read_object(item) for item in sorted(path.glob("*.json"))]
+    return [read_object(item, evidence) for item in sorted(path.glob("*.json"))]
 
 
 def main(argv=None):
@@ -172,11 +175,15 @@ def main(argv=None):
     parser.add_argument("--baseline-model", required=True)
     parser.add_argument("--criteria", required=True)
     args = parser.parse_args(argv)
+    evidence = {"current": [], "baseline": [], "criteria": []}
     try:
         report = evaluate_parity(
-            load_cohort(args.current_dir), load_cohort(args.baseline_dir),
-            args.model, args.baseline_model, read_object(args.criteria),
+            load_cohort(args.current_dir, evidence["current"]),
+            load_cohort(args.baseline_dir, evidence["baseline"]),
+            args.model, args.baseline_model, read_object(args.criteria, evidence["criteria"]),
         )
+        report["models"] = {"current": args.model, "baseline": args.baseline_model}
+        report["evidence_sha256"] = evidence
     except (ValueError, TypeError) as exc:
         report = {"status": "ERROR", "reason": str(exc)}
     print(json.dumps(report, indent=2, allow_nan=False))

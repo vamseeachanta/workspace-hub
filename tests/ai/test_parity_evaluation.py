@@ -3,6 +3,7 @@
 All quantities are synthetic counts, not measured provider performance.
 Criteria are explicit test inputs, not universal acceptance limits.
 """
+import hashlib
 import importlib.util
 import json
 from pathlib import Path
@@ -142,13 +143,13 @@ def test_unrelated_models_do_not_add_samples(criteria):
 @pytest.mark.parametrize("text", ['{"x":1,"x":2}', '{"x":NaN}', '[]', 'null'])
 def test_json_loader_rejects_ambiguous_or_nonobject_input(tmp_path, text):
     path = tmp_path / "bad.json"
-    path.write_text(text)
+    path.write_text(text, encoding="utf-8", newline="\n")
     with pytest.raises((ValueError, TypeError)):
         pe.read_object(path)
 
 
 def test_loader_does_not_skip_corrupt_files(tmp_path):
-    (tmp_path / "bad.json").write_text("broken")
+    (tmp_path / "bad.json").write_text("broken", encoding="utf-8", newline="\n")
     with pytest.raises(ValueError):
         pe.load_cohort(tmp_path)
 
@@ -163,10 +164,10 @@ def test_cli(tmp_path, capsys, criteria, state, exit_code):
     for index in range(2):
         if state != "empty":
             (current / f"{index}.json").write_text(json.dumps(
-                digest(tokens=400 if state == "regression" else 40)))
-        (baseline / f"{index}.json").write_text(json.dumps(digest(model="reference")))
+                digest(tokens=400 if state == "regression" else 40)), encoding="utf-8", newline="\n")
+        (baseline / f"{index}.json").write_text(json.dumps(digest(model="reference")), encoding="utf-8", newline="\n")
     policy = tmp_path / "criteria.json"
-    policy.write_text(json.dumps(criteria))
+    policy.write_text(json.dumps(criteria), encoding="utf-8", newline="\n")
     assert pe.main([str(current), str(baseline), "--model", "candidate",
                     "--baseline-model", "reference", "--criteria", str(policy)]) == exit_code
     report = json.loads(capsys.readouterr().out)
@@ -175,7 +176,7 @@ def test_cli(tmp_path, capsys, criteria, state, exit_code):
 
 def test_cli_invalid_input_is_error(tmp_path, capsys, criteria):
     policy = tmp_path / "criteria.json"
-    policy.write_text(json.dumps(criteria))
+    policy.write_text(json.dumps(criteria), encoding="utf-8", newline="\n")
     assert pe.main([str(tmp_path / "absent"), str(tmp_path), "--model", "candidate",
                     "--baseline-model", "reference", "--criteria", str(policy)]) == 2
     report = json.loads(capsys.readouterr().out)
@@ -184,12 +185,13 @@ def test_cli_invalid_input_is_error(tmp_path, capsys, criteria):
 
 
 def test_small_exceedance_survives_display_rounding(criteria):
-    """2001/100=20.01 exceeds 1000/100*2=20 even if both display 20.0."""
+    """2001/100=20.01 exceeds 1000/100*2=20 with a displayed limit of 20.000."""
     report = evaluate(criteria, [digest(50, 1000), digest(50, 1001)],
                       [digest(50, 500, model="reference")] * 2)
     metric = report["metrics"]["tokens_per_turn"]
     assert metric["status"] == "REGRESSION"
-    assert metric["current"] == metric["limit"] == 20.0
+    assert metric["current"] == 20.01
+    assert metric["limit"] == 20.0
 
 
 def test_documented_example(tmp_path, capsys):
@@ -222,14 +224,18 @@ def test_documented_example(tmp_path, capsys):
 
     examples = Examples()
     doc = Path(__file__).resolve().parents[2] / "docs/ai/behavioral-parity-evaluation.html"
-    examples.feed(doc.read_text())
+    document = doc.read_text(encoding="utf-8")
+    assert "examples/current" not in document
+    assert '"$PARITY_EVIDENCE_DIR/current"' in document
+    assert "outside the" in document
+    examples.feed(document)
     for cohort in ("current", "baseline"):
         folder = tmp_path / cohort
         folder.mkdir()
         for index, record in enumerate(json.loads(examples.values[f"example-{cohort}"])):
-            (folder / f"{index}.json").write_text(json.dumps(record))
+            (folder / f"{index}.json").write_text(json.dumps(record), encoding="utf-8", newline="\n")
     policy = tmp_path / "criteria.json"
-    policy.write_text(examples.values["example-criteria"])
+    policy.write_text(examples.values["example-criteria"], encoding="utf-8", newline="\n")
     assert pe.main([str(tmp_path / "current"), str(tmp_path / "baseline"),
                     "--model", "candidate", "--baseline-model", "reference",
                     "--criteria", str(policy)]) == 0
@@ -238,3 +244,58 @@ def test_documented_example(tmp_path, capsys):
     assert result["metrics"]["tokens_per_turn"]["current"] == 16
     assert result["metrics"]["tokens_per_turn"]["baseline"] == 8
     assert result["metrics"]["askuser_per_session"]["current"] == 1
+
+
+@pytest.mark.parametrize("target", ["cohort", "criteria"])
+def test_cli_deep_json_is_error(tmp_path, capsys, criteria, target):
+    cohort = tmp_path / "cohort"
+    cohort.mkdir()
+    policy = tmp_path / "criteria.json"
+    policy.write_text(json.dumps(criteria), encoding="utf-8", newline="\n")
+    path = cohort / "deep.json" if target == "cohort" else policy
+    path.write_text("[" * 2000 + "]" * 2000, encoding="utf-8", newline="\n")
+    assert pe.main([str(cohort), str(cohort), "--model", "candidate",
+                    "--baseline-model", "reference", "--criteria", str(policy)]) == 2
+    report = json.loads(capsys.readouterr().out)
+    assert report["status"] == "ERROR"
+    assert str(tmp_path) not in json.dumps(report)
+
+
+def test_exact_decimal_equality(criteria):
+    """Reference 7/10 times 3 = 21/10, exactly equal to candidate 21/10."""
+    criteria["verbosity_multiplier"] = 3
+    report = evaluate(criteria, [digest(5, 10), digest(5, 11)],
+                      [digest(5, 3, model="reference"),
+                       digest(5, 4, model="reference")])
+    assert report["metrics"]["tokens_per_turn"]["status"] == "WITHIN_LIMITS"
+    assert report["metrics"]["tokens_per_turn"]["limit"] == 2.1
+
+
+def test_clarification_display_preserves_margin(criteria):
+    """3/20 = 0.150 exceeds 1/20 + 0.05 = 0.100 calls per session."""
+    criteria["clarification_delta"] = 0.05
+    report = evaluate(criteria, [digest(asks=3)] + [digest()] * 19,
+                      [digest(asks=1, model="reference")]
+                      + [digest(model="reference")] * 19)
+    metric = report["metrics"]["askuser_per_session"]
+    assert metric["status"] == "REGRESSION"
+    assert (metric["current"], metric["baseline"], metric["limit"]) == (0.15, 0.05, 0.1)
+
+
+def test_cli_evidence_hashes_loaded_bytes(tmp_path, capsys, criteria):
+    cohort = tmp_path / "cohort"
+    cohort.mkdir()
+    payload = json.dumps(digest(), indent=2).encode("utf-8")
+    (cohort / "sample.json").write_bytes(payload)
+    policy = tmp_path / "criteria.json"
+    policy.write_text(json.dumps(criteria), encoding="utf-8", newline="\n")
+    pe.main([str(cohort), str(cohort), "--model", "candidate",
+             "--baseline-model", "reference", "--criteria", str(policy)])
+    report = json.loads(capsys.readouterr().out)
+    assert report["models"] == {"current": "candidate", "baseline": "reference"}
+    expected = [hashlib.sha256(payload).hexdigest()]
+    assert report["evidence_sha256"] == {
+        "current": expected, "baseline": expected,
+        "criteria": [hashlib.sha256(policy.read_bytes()).hexdigest()],
+    }
+    assert str(tmp_path) not in json.dumps(report)
