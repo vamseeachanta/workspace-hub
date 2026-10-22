@@ -51,3 +51,8 @@ Historical plans and reports remain historical records. Live instructions that
 still demand the retired scanner are superseded by this decision and should be
 corrected when found. Track per-repository deployed revisions; a local or branch
 change alone does not prove all machines have adopted retirement.
+
+For the empty-target failure behind issue #3935, see the
+[worked example and regression scope](examples/legal-scan-empty-target.md).
+Runtime resolver behavior remains unevaluated after removal; a historical PASS
+with an empty target supplies no coverage evidence.
