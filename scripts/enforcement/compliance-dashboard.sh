@@ -7,7 +7,18 @@ set -euo pipefail
 
 REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
 LOGS_DIR="${REPO_ROOT}/logs/hooks"
-REPORTS_DIR="${REPO_ROOT}/logs/compliance"
+REPORTS_DIR="${COMPLIANCE_REPORTS_DIR:-${REPO_ROOT}/logs/compliance}"
+OUTPUT_FORMAT="${COMPLIANCE_FORMAT:-text}"
+if [[ "${1:-}" == "--json" && $# -eq 1 ]]; then
+  OUTPUT_FORMAT="json"
+elif [[ $# -gt 0 ]]; then
+  echo "Usage: compliance-dashboard.sh [--json]" >&2
+  exit 2
+fi
+case "$OUTPUT_FORMAT" in
+  text|json) ;;
+  *) echo "ERROR: Unsupported compliance output format" >&2; exit 2 ;;
+esac
 
 mkdir -p "$REPORTS_DIR"
 
@@ -164,6 +175,7 @@ main() {
   
   local total=0 reviewed=0 unreviewed=0 skipped=0 engineering_total=0 engineering_reviewed=0
   local unreviewed_list=""
+  local unreviewed_records=""
   local no_commits_message=""
 
   if [[ -z "$commits" ]]; then
@@ -194,6 +206,7 @@ main() {
             fi
           else
             unreviewed=$((unreviewed + 1))
+            unreviewed_records+="${hash} ${msg}"$'\n'
             local short="${hash:0:8}"
             unreviewed_list="${unreviewed_list}  - ${short} ${msg}\n"
           fi
@@ -202,6 +215,8 @@ main() {
     done <<< "$commits"
   fi
   
+  # Integer percentage basis: docs/methodology/compliance-dashboard.md,
+  # "How Compliance is Calculated" (2026); truncate after multiplying by 100.
   # Calculate rates
   local reviewable=$((total - skipped))
   local compliance_rate=0
@@ -221,6 +236,7 @@ main() {
   fi
   
   # ── Output: Human-readable ───────────────────────────────────────────
+  if [[ "$OUTPUT_FORMAT" == "text" ]]; then
   echo "============================================================"
   echo "Compliance Report — Last ${WINDOW_HOURS}h"
   echo "============================================================"
@@ -254,17 +270,25 @@ main() {
   echo ""
   print_stage_prompt_drift_summary "$stage_prompt_drift_json"
   
+  fi
+
   # ── Output: Machine-readable (JSON) ─────────────────────────────────
   local report_file="${REPORTS_DIR}/compliance-$(date +%Y%m%d).json"
   
-  cat <<EOF
----
-JSON Report:
-EOF
+  if [[ "$OUTPUT_FORMAT" == "text" ]]; then
+    printf '\n---\nJSON Report:\n'
+  fi
+  local backlog_json
+  backlog_json="$(python3 -c '
+import json, sys
+rows = [line.split(" ", 1) for line in sys.stdin.read().splitlines() if line]
+print(json.dumps([{"hash": h, "subject": s} for h, s in rows]))
+' <<< "$unreviewed_records")"
   
   # Create JSON (simple approach)
   local json
   json="{
+  \"schema_version\": 1,
   \"timestamp\": \"$(date -Iseconds 2>/dev/null || date '+%Y-%m-%dT%H:%M:%S%z')\",
   \"window_hours\": $WINDOW_HOURS,
   \"total_commits\": $total,
@@ -279,14 +303,17 @@ EOF
   \"engineering_total\": $engineering_total,
   \"engineering_reviewed\": $engineering_reviewed,
   \"engineering_rate\": $engineering_rate,
+  \"unreviewed_commits\": $backlog_json,
   \"stage_prompt_drift\": $stage_prompt_drift_json
 }"
   echo "$json"
   
   # Save to file
   echo "$json" > "$report_file"
-  echo ""
-  echo "Report saved to: $report_file"
+  if [[ "$OUTPUT_FORMAT" == "text" ]]; then
+    echo ""
+    echo "Report saved to: $report_file"
+  fi
   
   # Exit code based on verdict
   if [[ "$verdict" == "FAIL" ]]; then
