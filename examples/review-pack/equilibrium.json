@@ -1,0 +1,44 @@
+{
+  "schema": "human-review-pack/1",
+  "title": "Synthetic static equilibrium review",
+  "revision": "example-1",
+  "surface": "internal",
+  "disclosure": {
+    "status": "unreviewed",
+    "reference": ""
+  },
+  "cards": [
+    {
+      "id": "equilibrium",
+      "title": "Support reaction sum",
+      "recommendation": "accepted",
+      "rationale": "Synthetic inputs from the worked hand calculation; no solver result.",
+      "evidence": [
+        {
+          "caption": "Synthetic force plot: top applied load 10 N; middle reaction 4 N; bottom reaction 6 N. Equal plot scale. This is illustrative evidence, not a measured screenshot.",
+          "source_ref": "docs/engineering/human-review-pack.md, Worked example, revision 1",
+          "identifier_status": "absent",
+          "data": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAUAAAACgCAIAAADywSLLAAADIUlEQVR4nO3dQW1dQRREQSPxJlwCwlzCJUwTDnFLmTNTpQZg+c7Zfel9/AGyPv73HwD8OwFDmIAhTMAQJmAIEzCECRjCBAxhAoYwAUOYgCFMwBAmYAgTMIQJGMIEDGEChjABQ5iAIexbAX9+/Tabb/W4XyBgO26rx/0CAdtxWz3uFwjYjtvqcb9AwHbcVo/7BQK247Z63C8QsB231eN+gYDtuK0e9wsEbMdt9bhfIGA7bqvH/QIB23FbPe4XCNiO2+pxv0DAdtxWj/sFArbjtnrcLxCwHbfV436BgO24rR73CwRsx231uF8gYDtuq8f9AgHbcVs97hcI2I7b6nG/QMB23FaP+wUCtuO2etwvELAdt9XjfoGA7bitHvcLBGzHbfW4XyBgO26rx/0CAdtxWz3uFwjYjtvqcb9AwHbcVo/7BQK247Z63C/weVEIEzCECRjCBAxhAoYwAUOYgCFMwBAmYAgTMIQJGMIEDGEChjABQ5iAIUzAECZgCBMwhAkYwgQMYd8K+Mevn09t9U+HFQELmDABC5gwAQuYMAELmDABC5gwAQuYMAELmDABC5gwAQuYMAELmDABC5gwAQuYMAELmDABC5gwAQuYMAELmDABC5gwAQuYMAELmDABC5gwAQuYMAELmDABC5gwAQuYMAELmDABC5gwAQuYMAELmDABC5gwnxeFMAFDmIAhTMAQJmAIEzCECRjCBAxhAoYwAUOYn1IGtjo29xFwYKtjcx8BB7Y6NvcRcGCrY3MfAQe2Ojb3EXBgq2NzHwEHtjo29xFwYKtjcx8BB7Y6NvcRcGCrY3MfAQe2Ojb3EXBgq2NzHwEHtjo29xFwYKtjcx8BB7Y6NvcRcGCrY3MfAQe2Ojb3EXBgq2NzHwEHtjo29xFwYKtjcx8BB7Y6NvcRcGCrY3MfAQe2Ojb3EXBgq2NzHwEHtjo29xFwYKtjcx8BB7Y6NvcRcGCrY3MfAQe2Ojb3EXBgq2NzH58XhTABQ5iAIUzAECZgCBMwhAkYwgQMYQKGMAFDmIAhTMAQJmAIEzCECRjCBAxhAoYwAUOYgCFMwBD2F14FY0mK7/zaAAAAAElFTkSuQmCC"
+        }
+      ],
+      "checks": [
+        {
+          "quantity": "Reaction sum",
+          "expectation": "Support reactions balance the applied load",
+          "comparator": "conservation",
+          "independent": true,
+          "expected": 10,
+          "observed": 10,
+          "units": "N",
+          "tolerance": 0.5,
+          "criterion_source": "Synthetic demonstration inputs; docs/engineering/human-review-pack.md, Worked example, revision 1. The tolerance is illustrative, not a design limit.",
+          "fixed_at": "2026-10-22T09:00:00Z",
+          "run_started_at": "2026-10-22T10:00:00Z",
+          "qualification": "qualified",
+          "qualification_ref": "Independent hand calculation: 4 N + 6 N = 10 N. Boundary probes: 10.5 N within 0.5 N; 11 N outside. See tests/review/test_review_pack.py module docstring.",
+          "governing_case": "Synthetic balanced static load"
+        }
+      ]
+    }
+  ]
+}
