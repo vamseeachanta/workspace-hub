@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Equality collector isolation</title>
+<style>
+body{max-width:72ch;margin:2rem auto;padding:0 1rem;font:1rem/1.6 system-ui;color:#18212b}
+table{border-collapse:collapse;width:100%}th,td{border:1px solid #bbc;padding:.5rem;text-align:left}
+code{overflow-wrap:anywhere}caption{caption-side:bottom;text-align:left}
+</style>
+<main>
+<h1>Equality collector isolation</h1>
+<h2>Summary</h2>
+<p>Checkout provenance and matrix remediation are separated from orchestration.
+Collector tests replace installation lookup and SDK discovery with controlled fixtures.
+The existing report schema, verdict rules, measured paths and remediation text are preserved.
+Native Windows execution remains unverified.</p>
+<h2>Revision history</h2>
+<table><thead><tr><th>Revision</th><th>Date</th><th>Change and reason</th></tr></thead>
+<tbody><tr><td>1</td><td>2026-10-22</td><td>Separate collection responsibilities and isolate
+fixture discovery so installed software cannot change expected results.</td></tr></tbody>
+<caption>Table 1. Initial documentation revision.</caption></table>
+<h2>Responsibilities</h2>
+<ul>
+<li><code>scripts/readiness/lib/collect-provenance.sh</code> reads checkout state using the unchanged measured-path allowlist.</li>
+<li><code>scripts/readiness/equality_actions.py</code> owns rollup severity and remediation; the builder re-exports its existing API.</li>
+<li><code>tests/readiness/collector_support.py</code> owns subprocess environments, path conversion and synthetic SDK outcomes.</li>
+<li>Provenance and solver tests are separated from schema and serialization tests.</li>
+</ul>
+<p>The installation-root function preserves production defaults. Tests override that function
+through a fixture-owned Bash startup file and the existing library source guard. No production
+environment switch is added. Interpreter shims reject SDK imports and forward other calls to
+the test interpreter. Synthetic successful-import tests supply their own earlier shim.</p>
+<p>Fixture Git commands clear inherited repository bindings, isolate global configuration and
+disable automatic line-ending conversion in disposable repositories. Native paths are converted
+to shell paths before use in Bash; filesystem operations convert shell paths back to native paths.
+Temporary files are placed in the fixture runtime directory outside its checkout.</p>
+<h2>Worked example</h2>
+<p><strong>Inputs:</strong> a workspace containing spaces, empty synthetic installation roots,
+and an interpreter shim that rejects SDK imports.</p>
+<p><strong>Method:</strong> run the real collector with <code>--stdout --machine fixture</code>.
+An installation directory is then created for the wave solver before a second collection.</p>
+<p><strong>Answer:</strong> empty roots produce <code>absent</code> for every solver. After the
+wave installation directory exists, only that solver produces <code>present</code>, with
+<code>root</code> evidence. Installation presence never establishes a licence entitlement.
+The workspace remains empty; temporary files stay outside it.</p>
+<p>The executable examples are <code>test_solver_roots_are_fixture_owned</code>,
+<code>test_installed_sdk_cannot_execute_in_collector_fixture</code> and
+<code>test_environment_clears_repository_bindings_and_owns_temporary_files</code> in
+<code>tests/readiness/test_collector_isolation.py</code>. Git examples in
+<code>test_collect_equality_provenance.py</code> verify clean versus changed tracked bytes,
+caller metadata preservation and user line-ending configuration isolation.</p>
+<h2>Sources and criteria</h2>
+<p>The source of the discovery truth table is the output contract in
+<code>scripts/readiness/lib/probe-solvers.sh</code>. The source of preserved schema and verdict
+behavior is the parent implementation of <code>collect-equality.sh</code> and
+<code>build-equality-matrix.py</code>, with expectations in their existing tests. No engineering
+coefficient, physical equation or new acceptance threshold is introduced. The historical
+module line cap is superseded by the current task instruction; no line-cap enforcement is added.</p>
+<h2>Validation and limits</h2>
+<p>The required collector, matrix, solver, provenance and schema tests are run before publication.
+The extracted matrix functions are compared with the parent using parsed syntax trees; the
+provenance extraction is compared byte for byte. Ruff is run on touched Python files and Bash
+syntax is checked on touched shell files.</p>
+<h3>Baseline</h3>
+<p>The existing tree-cleanliness suite expects output-directory seams that are absent in the
+parent collector and builder. Its failures are retained and reported rather than changing
+output destinations in this refactor. Existing Ruff findings on unchanged source lines remain.</p>
+<h3>Hooks that could not run</h3>
+<p>The hook framework is unavailable in this environment. The existing cron and curation tests
+also reach a bare tool launcher that fails before execution. Direct checks are used; hooks
+remain enabled for the later commit.</p>
+<h3>Follow-up</h3>
+<p>Native Windows execution and second-provider review remain required before merge. The
+existing output-seam discrepancy is tracked separately in issue 3702.</p>
+</main>
+</html>

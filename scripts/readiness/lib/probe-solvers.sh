@@ -47,12 +47,22 @@ _ps_python() {
   else echo ""; fi
 }
 
+# Default install locations remain unchanged; fixture shells replace this function.
+_ps_install_root() {
+  case "$1" in
+    ansys) printf '%s' '/c/Program Files/ANSYS Inc';;
+    orcaflex) printf '%s' '/c/Program Files (x86)/Orcina/OrcaFlex';;
+    orcawave) printf '%s' '/c/Program Files (x86)/Orcina/OrcaWave';;
+    *) return 1;;
+  esac
+}
+
 # ── ANSYS / AQWA: install-root detection (factored from the old nightly R-ANSYS) ──
 # Echoes "absent" OR "present:<v252 v251 ...>" (latest last, sorted) — version dirs
 # under the Windows ANSYS install root. NO absolute path is echoed (only the bare
 # vNNN tokens). Linux/macOS have no such root → "absent".
 probe_ansys_root() {
-  local root="/c/Program Files/ANSYS Inc"
+  local root; root="$(_ps_install_root ansys)"
   [[ -d "$root" ]] || { echo "absent"; return 0; }
   local versions
   versions=$(ls "$root" 2>/dev/null | grep -E '^v[0-9]+$' | sort -V | tr '\n' ' ' | sed 's/ $//')
@@ -63,7 +73,7 @@ probe_ansys_root() {
 # ── OrcaFlex install-root detection (Windows; bare version tokens only) ──────────
 # Echoes "absent" OR "present:<11.5 11.6 ...>" — version dirs under the Orcina root.
 probe_orcaflex_root() {
-  local root="/c/Program Files (x86)/Orcina/OrcaFlex"
+  local root; root="$(_ps_install_root orcaflex)"
   [[ -d "$root" ]] || { echo "absent"; return 0; }
   local versions
   versions=$(ls "$root" 2>/dev/null | grep -E '^[0-9]+\.' | sort -V | tr '\n' ' ' | sed 's/ $//')
@@ -100,7 +110,7 @@ probe_orcawave() {
   local py; py="$(_ps_python)"
   if [[ -n "$py" ]] && "$py" -c "import OrcFxAPI" >/dev/null 2>&1; then echo "present"; return 0; fi
   if [[ -n "${ORCAWAVE_PATH:-}" && -d "${ORCAWAVE_PATH:-/nonexistent}" ]]; then echo "present"; return 0; fi
-  local root="/c/Program Files (x86)/Orcina/OrcaWave"
+  local root; root="$(_ps_install_root orcawave)"
   [[ -d "$root" ]] && { echo "present"; return 0; }
   echo "absent"
 }
@@ -108,7 +118,7 @@ probe_orcawave_evidence() {
   local py; py="$(_ps_python)"
   if [[ -n "$py" ]] && "$py" -c "import OrcFxAPI" >/dev/null 2>&1; then echo "import"; return 0; fi
   if [[ -n "${ORCAWAVE_PATH:-}" && -d "${ORCAWAVE_PATH:-/nonexistent}" ]]; then echo "env"; return 0; fi
-  [[ -d "/c/Program Files (x86)/Orcina/OrcaWave" ]] && { echo "root"; return 0; }
+  [[ -d "$(_ps_install_root orcawave)" ]] && { echo "root"; return 0; }
   echo "absent"
 }
 

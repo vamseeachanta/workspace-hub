@@ -26,6 +26,7 @@ import sys
 from pathlib import Path
 
 import yaml
+from collector_support import collector_env
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 RD = REPO_ROOT / "scripts" / "readiness"
@@ -112,7 +113,8 @@ def _ws_fixture(tmp_path: Path, *, with_publisher: bool = False,
     """A committed git repo laid out like workspace-hub, carrying REAL generators."""
     ws = tmp_path / "ws"
     ws.mkdir()
-    for rel in ("scripts/readiness/collect-equality.sh",
+    for rel in ("scripts/readiness/equality_actions.py",
+                "scripts/readiness/collect-equality.sh",
                 "scripts/readiness/build-equality-matrix.py",
                 "scripts/readiness/equality-matrix-cron.sh",
                 "scripts/readiness/lib"):
@@ -184,7 +186,7 @@ def _env(ws: Path, tmp_path: Path, **extra: str) -> dict:
     }
     env.pop("XDG_STATE_HOME", None)
     env.update(extra)
-    return env
+    return collector_env(env)
 
 
 def _default_seam(tmp_path: Path) -> Path:
@@ -513,7 +515,8 @@ def test_windows_collect_ps1_pins_or_forwards_seam():
 def test_enforcement_check_flags_in_tree_default(tmp_path):
     assert ENFORCE.exists(), f"missing enforcement script {ENFORCE}"
     regressed = tmp_path / "regressed"
-    for rel in ("scripts/readiness/collect-equality.sh",
+    for rel in ("scripts/readiness/equality_actions.py",
+                "scripts/readiness/collect-equality.sh",
                 "scripts/readiness/build-equality-matrix.py",
                 "scripts/readiness/publish-equality.sh",
                 "scripts/readiness/lib",
@@ -563,7 +566,7 @@ MEASURED_BLOCK = """MEASURED=(.claude/skills .claude/memory/context.md .claude/m
 def test_measured_allowlist_unchanged():
     # The `dirty` provenance scoping must stay byte-identical — widening it would
     # false-STALE healthy machines; narrowing it would hide real drift.
-    assert MEASURED_BLOCK in COLLECT.read_text(encoding="utf-8")
+    assert MEASURED_BLOCK in (RD / "lib/collect-provenance.sh").read_text(encoding="utf-8")
 
 
 def test_is_stale_semantics_unchanged():
