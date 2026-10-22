@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Family photo browser evaluation</title>
+  <style>
+    body { font-family: system-ui, sans-serif; line-height: 1.6; max-width: 76rem; margin: auto; padding: 2rem; color: #17212b; }
+    table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+    th, td { border: 1px solid #b7c5d3; padding: .7rem; text-align: left; vertical-align: top; }
+    th { background: #edf3f8; }
+    pre { overflow-x: auto; background: #edf3f8; padding: 1rem; }
+    code { overflow-wrap: anywhere; }
+    a { color: #064f8c; }
+    .status { border-left: .3rem solid #986800; padding-left: 1rem; }
+  </style>
+</head>
+<body>
+<main>
+<h1>Family photo browser evaluation</h1>
+<p class="status"><strong>Summary:</strong> Trial Immich first for private family browsing;
+retain PhotoPrism as the alternative when folder-oriented indexing is preferred.
+This is a documentation-based trial order, not a deployment acceptance result.
+Neither product has been installed or tested against the archive by this evaluation.
+All real deployment checks remain <code>NOT_EVALUATED</code>.</p>
+
+<h2>Revision history</h2>
+<table>
+  <thead><tr><th>Revision</th><th>Date</th><th>What changed and why</th></tr></thead>
+  <tbody><tr><td>Initial</td><td>2026-10-22</td><td>Compare the documented candidates and add an offline trial procedure for issue #3588.</td></tr></tbody>
+</table>
+
+<h2>Scope and basis</h2>
+<p>Issue #3588 requests browsing and search of an existing family archive over the
+tailnet, with no public media serving. The related archive epic #3589 separates
+organization and cross-phone content deduplication into #3585. Browser indexing
+must preserve that archive and must not replace its backup or deduplication workflow.
+The existing archive handoff establishes context only; no private locations,
+device identifiers, media, or inherited capacity estimates are reproduced here.</p>
+<p>The implementation has three slices: a source-backed candidate comparison;
+an offline acceptance evaluator; and a synthetic worked example plus an operational
+trial procedure. Installing either service, changing access policy, reading the
+archive and scheduling jobs are later work. No deployment configuration is applied.</p>
+
+<h2>Documented candidate comparison</h2>
+<p>Sources below are living official documentation retrieved on 2026-10-22.
+They describe capabilities, not observed behavior of a pinned release. Record
+the actual application release and container image digest before a trial.</p>
+<table>
+<thead><tr><th>Requirement</th><th>Immich</th><th>PhotoPrism</th><th>Qualification</th></tr></thead>
+<tbody>
+<tr><td>Existing folders and originals</td>
+<td>External libraries scan existing folders into the timeline; a read-only volume prevents original deletion and sidecar writes. <a href="#s-immich-library">Source</a></td>
+<td>Index originals in place; read-only mode disables import, upload and deletion. Generated sidecars can live separately. <a href="#s-photoprism-library">Library</a>, <a href="#s-photoprism-readonly">settings</a></td>
+<td>Enforce a read-only archive mount as well as application settings. Keep database, thumbnails and derived data in separate writable storage.</td></tr>
+<tr><td>HEIC preview</td>
+<td>HEIC is listed in supported formats. <a href="#s-immich-formats">Source</a></td>
+<td>HEIF and HEIC are listed as supported. <a href="#s-photoprism-features">Source</a></td>
+<td>Preview decoding and orientation still require a sample from each relevant capture format.</td></tr>
+<tr><td>Capture-date browsing and search</td>
+<td>External assets appear in the main timeline; search supports metadata filters and semantic queries. <a href="#s-immich-library">Libraries</a>, <a href="#s-immich-search">search</a></td>
+<td>Feature documentation describes metadata-based organization and search. <a href="#s-photoprism-features">Source</a></td>
+<td>Correct EXIF dates, time zones, missing dates and edited exports are untested for both candidates.</td></tr>
+<tr><td>Faces</td>
+<td>Face grouping and named-person search are documented. Preview images are processed by the machine-learning service. <a href="#s-immich-faces">Source</a></td>
+<td>Face detection, grouping and naming are documented. <a href="#s-photoprism-features">Source</a></td>
+<td>Use local processing for the trial. Record consent, false matches, missed faces and manual correction behavior privately.</td></tr>
+<tr><td>Duplicates</td>
+<td>The duplicates utility reviews visually similar assets. Partner-shared libraries may show duplicates because detection is per user. <a href="#s-immich-duplicates">Utility</a>, <a href="#s-immich-sharing">sharing</a></td>
+<td>Exact duplicates are skipped at scan time; related images may be stacked. <a href="#s-photoprism-features">Source</a></td>
+<td>These are different operations. Neither establishes complete cross-phone content deduplication. Do not trash, move, import or automatically resolve duplicates during this trial.</td></tr>
+<tr><td>Family access</td>
+<td>Partner sharing exposes a library to other users, including download; an external library belongs to a single user. <a href="#s-immich-sharing">Sharing</a>, <a href="#s-immich-library">libraries</a></td>
+<td>User management is documented. <a href="#s-photoprism-users">Source</a></td>
+<td>Confirm available roles and edition terms for the selected release. Test a separate non-administrator account and verify that unshared media is inaccessible.</td></tr>
+<tr><td>Tailnet-only serving</td>
+<td colspan="2">Use Tailscale Serve to proxy a loopback-bound service; Funnel exposes services publicly. <a href="#s-serve">Source</a></td>
+<td>Serve does not secure other listeners. Inspect published container ports, IPv4 and IPv6, existing proxies, device sharing and tailnet access rules. Keep application authentication enabled.</td></tr>
+<tr><td>Capacity and recoverability</td>
+<td colspan="2">No measured indexing time, derived-storage size, memory consumption, GPU compatibility or restore result is available.</td>
+<td>Required trial inputs: available resources, approved budgets, observed peaks and a successful isolated restore. No extrapolated size multiplier or performance limit is assumed.</td></tr>
+</tbody>
+</table>
+
+<h2>Recommendation and limits</h2>
+<p>Immich is the first trial candidate because its documented external-library
+timeline, people search and partner sharing closely match the requested family
+browsing workflow. PhotoPrism remains a credible alternative for indexing a curated
+folder archive in place. This preference is an interpretation of the comparison,
+without a numerical score. It does not establish usability, speed, accuracy, current
+security posture, licensing suitability or operating cost.</p>
+<p>The publication date of a living documentation page is not a release pin.
+Recheck the selected release's installation, backup, upgrade and role documentation
+before deployment. No undocumented hardware floor, storage ratio, face threshold
+or acceptance percentage is embedded in the evaluator.</p>
+
+<h2>Read-only trial procedure</h2>
+<p>A maintainer will authorize deployment and private archive access separately.
+Keep the trial records in private storage, with release, image digest, observation
+date, test method and evidence locators. The public example contains no real results.
+Before starting, specify acceptable indexing time, preview latency, memory, disk
+and CPU budgets based on the intended environment; absent budgets leave
+<code>resource_fit</code> unevaluated.</p>
+<ol>
+<li>Prepare an authorized, representative sample without moving or deleting originals.
+Include HEIC, JPEG, PNG, MOV, a Live Photo pair, an edited image and its sidecar,
+known capture dates and a missing-date case, an exact duplicate across folders,
+a visually similar non-duplicate, and consenting face examples. These are coverage
+categories, not a statistical sample-size claim. Record expected dates, orientation,
+relationships and file digests independently before indexing.</li>
+<li>Use the selected release's official deployment instructions. Bind the application
+only to loopback; publish no database or machine-learning service ports. Mount
+originals read-only into every process that can access them; use separate writable
+database, index and thumbnail storage. Do not use import/move or mobile auto-upload
+on the archive. Keep application authentication and local face processing enabled.
+Record configuration inspection and the absence of external image-processing endpoints.</li>
+<li>Configure Serve without Funnel. Check Serve and Funnel state, container mappings,
+host listeners, existing reverse proxies and firewall rules. Verify browsing from
+an authorized family device and denial from an unauthorized tailnet identity, a
+non-tailnet LAN device, and an external network. Include IPv6 and authenticated
+device shares. If those negative probes cannot be performed, leave
+<code>tailnet_only</code> unevaluated; a missing public listener alone is insufficient.</li>
+<li>Run the feature procedures in the table below. Compare archive digests before and
+after; do not exercise deletion against real originals. Verify mount read-only
+enforcement with a disposable synthetic fixture. Keep duplicate suggestions as
+observations only, preserving both files. Measure resource peaks and derived
+storage separately from original bytes and compare against the recorded budgets.</li>
+<li>Back up application state and derived metadata using the selected release's
+documented method. Perform an isolated restore and verify browsing, date metadata,
+face labels and sharing policy against the original record. Original media needs
+its own verified backup; a browser database is not an archive backup.</li>
+<li>Record statuses and evidence references, then run the offline evaluator. On a
+failed security or preservation check, stop serving the trial and keep the archive
+intact. Retain private evidence for diagnosis. On success, a maintainer reviews
+the evidence before deciding deployment. Rollback removes trial exposure and stops
+trial services; it does not delete originals or backups.</li>
+</ol>
+
+<table>
+<thead><tr><th>Check key</th><th>Observation required for PASS</th></tr></thead>
+<tbody>
+<tr><td><code>heic_preview</code></td><td>Authorized devices decode the sample with expected orientation; expected results come from independent sample inspection.</td></tr>
+<tr><td><code>exif_timeline</code></td><td>Displayed capture dates and ordering agree with recorded EXIF/time zones; missing-date fallback is documented and accepted.</td></tr>
+<tr><td><code>face_search</code></td><td>Consented examples can be found after naming; mistakes can be corrected and the maintainer accepts the recorded results.</td></tr>
+<tr><td><code>duplicate_review</code></td><td>Record exact and similar-image behavior separately; inspect suggestions without deleting either original. Record limitations across users and folders.</td></tr>
+<tr><td><code>family_access</code></td><td>A separate family account browses intended media and cannot access unshared media or administration.</td></tr>
+<tr><td><code>originals_read_only</code></td><td>Mount inspection, synthetic write-denial test and unchanged real-original digests agree; sidecars and derivatives are outside the archive.</td></tr>
+<tr><td><code>tailnet_only</code></td><td>The positive and negative network probes above agree with intended access; no alternate public or LAN listener is reachable.</td></tr>
+<tr><td><code>restore_verified</code></td><td>An isolated application restore reproduces the recorded browsing, metadata and sharing behavior; original backup is independently verified.</td></tr>
+<tr><td><code>resource_fit</code></td><td>Recorded indexing, browsing and storage measurements satisfy the maintainer's supplied budgets; no missing metric is treated as a pass.</td></tr>
+</tbody>
+</table>
+
+<h2>Offline evaluator and worked example</h2>
+<p>Run from the repository root; set the environment's shared cache and temporary
+directory as required by the local execution environment. The evaluator reads
+only the supplied JSON and writes a report to standard output. It installs no
+service and opens no network connection.</p>
+<pre><code>uv run --no-project python scripts/phone_media/evaluate_browser.py examples/phone-media/browser-assessment.json</code></pre>
+<p>The input has exactly one top-level <code>candidates</code> object containing
+<code>immich</code>, <code>photoprism</code>, or both. Each candidate has
+<code>version</code> (a recorded release string, or null) and a <code>checks</code>
+object. Check names are the keys above; omitted checks are unevaluated. Each supplied
+check has exactly <code>status</code> (<code>PASS</code>, <code>FAIL</code> or
+<code>NOT_EVALUATED</code>), <code>kind</code> (<code>observed</code> or
+<code>documentation</code>) and a nonblank <code>reference</code>. For unknowns,
+the reference points to a private gap record. Unknown keys, duplicate JSON keys,
+non-finite constants and malformed values are rejected.</p>
+<p>Method: any FAIL makes a candidate <code>BLOCKED</code>. Otherwise any missing
+observed PASS or missing release makes it <code>NOT_EVALUATED</code>. Otherwise
+it is <code>READY_FOR_REVIEW</code>. A documentation PASS is converted to
+<code>NOT_EVALUATED</code>; a documented FAIL still blocks. This is a logical
+conjunction of this runbook's local prerequisites, not a sourced engineering equation
+or weighted scoring model. Evidence locators and release strings are omitted from
+output. They are not verified by the program: a plausible reference does not prove
+that a test happened. Never publish private assessment input.</p>
+<p>Worked inputs are <a href="../../examples/phone-media/browser-assessment.json">browser-assessment.json</a>;
+the independently written answer is <a href="../../examples/phone-media/browser-answer.json">browser-answer.json</a>.
+Immich has documented HEIC support but no observed preview, no installed version
+and no restore evidence, so it is <code>NOT_EVALUATED</code>. The synthetic
+PhotoPrism record contains an observed network FAIL, so it is <code>BLOCKED</code>
+despite other unknowns. The eligible list is empty. These are invented test records,
+not findings about either product. The example exits with code 1 by design.</p>
+<p>Exit codes are the CLI contract: 0 when at least one candidate is eligible,
+1 when none is eligible, 2 for invalid or unreadable input. If both qualify, the
+output lists both without ranking. A ready alternative does not conceal another
+candidate's failed checks. The tests derive expected outcomes from the truth table,
+not from production function results.</p>
+<pre><code>uv run --no-project --with pytest python -m pytest tests/phone_media -q -rA -p no:cacheprovider
+uv run --no-project --with ruff ruff check scripts/phone_media/evaluate_browser.py tests/phone_media/test_evaluate_browser.py --no-cache</code></pre>
+
+<h2>Sources</h2>
+<p>All sources below returned HTTP 200 on retrieval. Response bodies and URL/time/status
+receipts were retained in execution scratch storage, outside the public repository.
+An initial guessed duplicates-document address returned HTTP 404 and was not used;
+the correct address was found through the official documentation navigation.</p>
+<ul>
+<li id="s-immich-library"><a href="https://docs.immich.app/features/libraries/">Immich: External Libraries</a> — indexing, ownership, timeline, read-only volume and sidecar restrictions.</li>
+<li id="s-immich-formats"><a href="https://docs.immich.app/features/supported-formats/">Immich: Supported Formats</a> — HEIC.</li>
+<li id="s-immich-search"><a href="https://docs.immich.app/features/searching/">Immich: Searching</a> — search and filters.</li>
+<li id="s-immich-faces"><a href="https://docs.immich.app/features/facial-recognition/">Immich: Facial Recognition</a> — named people and preview processing.</li>
+<li id="s-immich-duplicates"><a href="https://docs.immich.app/features/duplicates-utility/">Immich: Duplicates Utility</a> — visual similarity review.</li>
+<li id="s-immich-sharing"><a href="https://docs.immich.app/features/partner-sharing/">Immich: Partner Sharing</a> — shared access and per-user duplicates.</li>
+<li id="s-photoprism-features"><a href="https://www.photoprism.app/features/">PhotoPrism: Features</a> — formats, search, faces, exact duplicates and stacking.</li>
+<li id="s-photoprism-library"><a href="https://docs.photoprism.app/user-guide/library/">PhotoPrism: Library</a> — indexing versus import and move behavior.</li>
+<li id="s-photoprism-readonly"><a href="https://docs.photoprism.app/user-guide/settings/advanced/">PhotoPrism: Advanced Settings</a> — read-only mode and separate generated sidecars.</li>
+<li id="s-photoprism-users"><a href="https://docs.photoprism.app/user-guide/users/">PhotoPrism: Users</a> — user management; release and edition qualification remains required.</li>
+<li id="s-serve"><a href="https://tailscale.com/docs/features/tailscale-serve">Tailscale Serve</a> — tailnet serving, public Funnel and loopback listener guidance.</li>
+</ul>
+
+<h2>Handoff</h2>
+<p>The offline evaluation is available for review. The next authorized step is a
+maintainer-selected, release-pinned private trial using the procedures above.
+Independent provider review remains pending; no other model or assistant was
+invoked during implementation. No service was started and no archive was accessed.</p>
+</main>
+</body>
+</html>
