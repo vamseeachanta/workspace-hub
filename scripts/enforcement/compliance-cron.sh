@@ -23,7 +23,7 @@ LOG_FILE="${LOG_DIR}/daily-${DATE_COMPACT}.log"
 DASHBOARD_SCRIPT="${SCRIPT_DIR}/compliance-dashboard.sh"
 DRY_RUN="${DRY_RUN:-false}"
 
-# Alert thresholds
+# Source: issue #3940 (2026), Thresholds table; retained alert policy.
 THRESHOLD_HIGH=50    # Below this: create issue with priority:high
 THRESHOLD_CRITICAL=30  # Below this: add priority:critical
 THRESHOLD_PASS=80    # At or above this: log as pass, no action
@@ -41,35 +41,34 @@ if [[ ! -x "$DASHBOARD_SCRIPT" ]]; then
     exit 1
 fi
 
-DASHBOARD_OUTPUT="$(bash "$DASHBOARD_SCRIPT" 2>&1)" || true
+DASHBOARD_STATUS=0
+DASHBOARD_OUTPUT="$(bash "$DASHBOARD_SCRIPT" 2>&1)" || DASHBOARD_STATUS=$?
 echo "$DASHBOARD_OUTPUT" >> "$LOG_FILE"
 
-# ── Parse compliance percentage from output ──────────────────────────────────
-# The dashboard outputs: "Compliance rate:    NN% (threshold: MM%)"
-COMPLIANCE_RATE="$(echo "$DASHBOARD_OUTPUT" | grep -oP 'Compliance rate:\s+\K[0-9]+' || echo "")"
+# Read only this invocation's structured report. A failed command without a
+# valid report is an execution error, not a measured compliance violation.
+PARSED_REPORT="$(python3 "${SCRIPT_DIR}/compliance-alert.py" "$DASHBOARD_STATUS" \
+    <<< "$DASHBOARD_OUTPUT" 2>> "$LOG_FILE")" || {
+    log "ERROR: Dashboard report validation failed — no alert posted"
+    exit 1
+}
+mapfile -t REPORT_FIELDS <<< "$PARSED_REPORT"
+COMPLIANCE_RATE="${REPORT_FIELDS[0]}"
+TOTAL_COMMITS="${REPORT_FIELDS[1]}"
+REVIEWED="${REPORT_FIELDS[2]}"
+UNREVIEWED="${REPORT_FIELDS[3]}"
+VERDICT="${REPORT_FIELDS[4]}"
+REVIEWABLE="${REPORT_FIELDS[5]}"
+SKIPPED="${REPORT_FIELDS[6]}"
 
-if [[ -z "$COMPLIANCE_RATE" ]]; then
-    # Try to parse from JSON output as fallback
-    COMPLIANCE_RATE="$(echo "$DASHBOARD_OUTPUT" | grep -oP '"compliance_rate":\s*\K[0-9]+' || echo "")"
-fi
-
-if [[ -z "$COMPLIANCE_RATE" ]]; then
-    # Check if there were no commits (which is fine)
-    if echo "$DASHBOARD_OUTPUT" | grep -q '"total_commits": *0\|No commits in window'; then
-        log "No commits in window — nothing to check"
-        exit 0
-    fi
-    log "WARNING: Could not parse compliance rate from dashboard output"
+# Source: issue #2031 (2026), empty-window behavior, and dashboard's
+# reviewable = total - skipped. With no denominator the rate is not evaluated.
+if [[ "$REVIEWABLE" -eq 0 ]]; then
+    log "No reviewable commits — compliance NOT_EVALUATED (total: ${TOTAL_COMMITS}, skipped: ${SKIPPED})"
     exit 0
 fi
 
 log "Compliance rate: ${COMPLIANCE_RATE}%"
-
-# ── Parse additional details from JSON ───────────────────────────────────────
-TOTAL_COMMITS="$(echo "$DASHBOARD_OUTPUT" | grep -oP '"total_commits":\s*\K[0-9]+' || echo "?")"
-REVIEWED="$(echo "$DASHBOARD_OUTPUT" | grep -oP '"reviewed":\s*\K[0-9]+' || echo "?")"
-UNREVIEWED="$(echo "$DASHBOARD_OUTPUT" | grep -oP '"unreviewed":\s*\K[0-9]+' || echo "?")"
-VERDICT="$(echo "$DASHBOARD_OUTPUT" | grep -oP '"verdict":\s*"\K[^"]+' || echo "?")"
 
 # ── Threshold evaluation ─────────────────────────────────────────────────────
 if [[ "$COMPLIANCE_RATE" -ge "$THRESHOLD_PASS" ]]; then
@@ -95,25 +94,6 @@ log "ALERT: Compliance at ${COMPLIANCE_RATE}% — severity: ${SEVERITY}"
 WEEK_NUM="$(date +%V)"
 YEAR="$(date +%Y)"
 DEDUP_KEY="compliance-alert-${YEAR}-W${WEEK_NUM}"
-
-# Check gh authentication
-if ! command -v gh >/dev/null 2>&1; then
-    log "WARNING: gh CLI not available — skipping issue creation"
-    exit 0
-fi
-
-if ! gh auth status >/dev/null 2>&1; then
-    log "WARNING: gh CLI not authenticated — skipping issue creation"
-    exit 0
-fi
-
-# Search for existing open compliance alert this week
-EXISTING_ISSUE="$(gh issue list \
-    --state open \
-    --label "compliance-alert" \
-    --search "Compliance alert: W${WEEK_NUM}" \
-    --json number,title \
-    --jq '.[0].number' 2>/dev/null || true)"
 
 # ── Build unreviewed commits section ─────────────────────────────────────────
 UNREVIEWED_SECTION=""
@@ -161,6 +141,26 @@ if [[ "$DRY_RUN" == "true" ]]; then
     echo "$ISSUE_BODY" >> "$LOG_FILE"
     exit 0
 fi
+
+# Dry runs above never query or mutate GitHub.
+# Check gh authentication
+if ! command -v gh >/dev/null 2>&1; then
+    log "WARNING: gh CLI not available — skipping issue creation"
+    exit 0
+fi
+
+if ! gh auth status >/dev/null 2>&1; then
+    log "WARNING: gh CLI not authenticated — skipping issue creation"
+    exit 0
+fi
+
+# Search for existing open compliance alert this week
+EXISTING_ISSUE="$(gh issue list \
+    --state open \
+    --label "compliance-alert" \
+    --search "Compliance alert: W${WEEK_NUM}" \
+    --json number,title \
+    --jq '.[0].number' 2>/dev/null || true)"
 
 # Ensure labels exist (idempotent)
 gh label create "compliance-alert" --description "Automated compliance threshold alert" --color "D93F0B" 2>/dev/null || true
