@@ -1,0 +1,15 @@
+{
+  "scripts/readiness/repair-sibling-sso-flow.py": [
+    {
+      "scope": "run",
+      "fingerprint": "1d1f35b0d320c912670c00f357782d808e6b6aff2a461691a8f34afe610ca189",
+      "reason": "Metadata and diagnostics only: Git status, branch, upstream and counts, findmnt and file. The content repair reads local bytes independently; content command reuse is guarded."
+    },
+    {
+      "scope": "require_user_approval",
+      "fingerprint": "48b40d4dc96c5f76597b38e879e23c874e43e3b274bcb085cb208bc1ef903eb4",
+      "reason": "GitHub label names are parsed as metadata and are never written as file content."
+    }
+  ],
+  "scripts/client_llm_wiki/bootstrap_renderer.py": []
+}
