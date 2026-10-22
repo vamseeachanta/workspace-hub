@@ -61,6 +61,7 @@ jobs:
             tests/quality/test_gitleaks_config.py \
             scripts/operations/tests/test_job_queue_windows.py \
             scripts/operations/tests/test_job_queue_cleanup_recent.py \
+            scripts/operations/tests/test_job_queue_environment.py \
             tests/enforcement/test_check_codex_model_pin.py \
             -v --tb=short --noconftest
 
