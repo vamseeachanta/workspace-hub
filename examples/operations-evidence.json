@@ -1,0 +1,78 @@
+{
+  "travel": {
+    "state": "complete",
+    "checks": {
+      "surface": {
+        "result": "pass",
+        "reference": "evidence-example",
+        "checked_at": "2030-06-01T11:00:00Z",
+        "valid_until": "2030-06-02T11:00:00Z"
+      },
+      "parameters": {
+        "result": "pass",
+        "reference": "evidence-example",
+        "checked_at": "2030-06-01T11:00:00Z",
+        "valid_until": "2030-06-02T11:00:00Z"
+      },
+      "cost_basis": {
+        "result": "pass",
+        "reference": "evidence-example",
+        "checked_at": "2030-06-01T11:00:00Z",
+        "valid_until": "2030-06-02T11:00:00Z"
+      },
+      "decision": {
+        "result": "pass",
+        "reference": "evidence-example",
+        "checked_at": "2030-06-01T11:00:00Z",
+        "valid_until": "2030-06-02T11:00:00Z"
+      },
+      "terminal": {
+        "result": "pass",
+        "reference": "evidence-example",
+        "checked_at": "2030-06-01T11:00:00Z",
+        "valid_until": "2030-06-02T11:00:00Z"
+      }
+    }
+  },
+  "media": {
+    "state": "complete",
+    "checks": {
+      "surface": {
+        "result": "pass",
+        "reference": "evidence-example",
+        "checked_at": "2030-06-01T11:00:00Z",
+        "valid_until": "2030-06-02T11:00:00Z"
+      },
+      "extraction": {
+        "result": "pass",
+        "reference": "evidence-example",
+        "checked_at": "2030-06-01T11:00:00Z",
+        "valid_until": "2030-06-02T11:00:00Z"
+      },
+      "integrity": {
+        "result": "pass",
+        "reference": "evidence-example",
+        "checked_at": "2030-06-01T11:00:00Z",
+        "valid_until": "2030-06-02T11:00:00Z"
+      },
+      "offsite": {
+        "result": "fail",
+        "reference": "evidence-example",
+        "checked_at": "2030-06-01T11:00:00Z",
+        "valid_until": "2030-06-02T11:00:00Z"
+      },
+      "sync_decision": {
+        "result": "pass",
+        "reference": "evidence-example",
+        "checked_at": "2030-06-01T11:00:00Z",
+        "valid_until": "2030-06-02T11:00:00Z"
+      },
+      "terminal": {
+        "result": "pass",
+        "reference": "evidence-example",
+        "checked_at": "2030-06-01T11:00:00Z",
+        "valid_until": "2030-06-02T11:00:00Z"
+      }
+    }
+  }
+}
