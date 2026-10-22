@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # /// script
-# requires-python = ">=3.10"
+# requires-python = ">=3.11"
 # dependencies = ["pyyaml"]
 # ///
 """build-equality-matrix.py — machine-equality matrix verdict engine + HTML render (#2801).
@@ -22,10 +22,20 @@ import math
 import re
 import sys
 from collections import Counter
-from datetime import date, datetime, timezone
+from datetime import UTC, date, datetime, timezone
+from html import escape
 from pathlib import Path
 
 import yaml
+
+try:
+    import repo_hygiene
+except ModuleNotFoundError:
+    try:
+        from readiness import repo_hygiene
+    except ModuleNotFoundError:
+        # Legacy standalone copies can still render older evidence; hygiene fails closed.
+        repo_hygiene = None
 
 REPO = Path(__file__).resolve().parents[2]
 STATE = REPO / ".claude" / "state"
@@ -542,6 +552,9 @@ def verdict_for(dim: str, machine: str, reports: dict, baselines: dict,
         return skill_link_health_verdict(rep)
     if dim == "harness_checkup":            # /doctor hygiene — per-box facts (currency/settings/mode)
         return harness_checkup_verdict(rep)
+    if dim == "repo_hygiene":
+        return (repo_hygiene.verdict(rep["dimensions"].get("repo_hygiene"))
+                if repo_hygiene is not None else "MISSING-EVIDENCE")
     if dim == "publish_health":             # equivalence publish landing/speed — per-box facts
         return publish_health_verdict(rep)
     if dim in COLD_DIMS:
@@ -574,7 +587,7 @@ def load_reports() -> dict[str, dict]:
 BASE_DISPLAY_DIMS = ["compute", "data_access", "solvers", "harness", "python_cmd", "skills",
                      "kanban", "memory", "behavior", "scheduler", "session_curation",
                      "skill_currency", "memory_freshness", "skill_link_health", "harness_checkup",
-                     "publish_health"]
+                     "publish_health", "repo_hygiene"]
 DISPLAY_DIMS = BASE_DISPLAY_DIMS + provider_rows()
 
 # ── render grouping (#2801 collapsible-rows enhancement) ─────────────────────
@@ -587,6 +600,7 @@ DISPLAY_DIMS = BASE_DISPLAY_DIMS + provider_rows()
 # they only drive HTML layout. Every BASE_DISPLAY_DIM + provider row lands in exactly
 # one group.
 GROUPS = [
+    ("repo-hygiene", "Repository hygiene — sync freshness and residue", ["repo_hygiene"]),
     ("machine", "Machine equivalence — hardware &amp; solvers", ["compute", "solvers"]),
     ("repo", "Repo equivalence — clones · skills · kanban · memory",
         ["data_access", "skills", "kanban", "memory"]),
@@ -606,6 +620,9 @@ GROUPS = [
 # A group's rollup cell shows the worst verdict among its dims for that machine; an
 # all-good group collapses to a single green "OK" so a clean box reads at a glance.
 ROLLUP_SEVERITY = {
+    # Ordinal ranks reuse the existing broken/drifted/healthy categories below.
+    "HYGIENE-WEDGED": 6, "HYGIENE-DIRTY": 6, "HYGIENE-BLOCKED": 5,
+    "HYGIENE-STALE": 5, "HYGIENE-RESIDUE": 5, "HYGIENE-OK": 0,
     "BELOW-BASELINE": 6, "DIVERGES": 6, "CURATED-EXPIRED": 6, "SKILLS-DRIFTED": 6, "MEMORY-EXPIRED": 6,
     "CHECKUP-BROKEN": 6, "PUBLISH-GATED": 6,
     "MISSING-BASELINE": 5, "NO-MAJORITY": 5, "CURATED-STALE": 5, "SKILLS-INDEX-STALE": 5, "MEMORY-STALE": 5,
@@ -633,7 +650,7 @@ def rollup_verdict(verdicts: list[str]) -> tuple[str, str]:
 #    .claude/skills/workspace-hub/ecosystem-equivalence-reconcile/SKILL.md + reconcile-ecosystem.sh
 OK_VERDICTS = {"CONFORMS", "EQUAL", "PARITY", "EXPECTED-DIFF", "EXPECTED-DIVERGENCE",
                "UNREACHABLE", "ABSENT", "CURATED-FRESH", "SKILLS-CURRENT", "MEMORY-FRESH",
-               "SKILL-LINKS-OK", "CHECKUP-OK", "PUBLISH-OK"}
+               "SKILL-LINKS-OK", "CHECKUP-OK", "PUBLISH-OK", "HYGIENE-OK"}
 
 
 def remediate(dim: str, verdict: str) -> tuple[str, str, bool] | None:
@@ -641,6 +658,9 @@ def remediate(dim: str, verdict: str) -> tuple[str, str, bool] | None:
     by_design=True means the cell can't/shouldn't reach green — it's expected, not a defect."""
     if verdict in OK_VERDICTS:
         return None
+    if dim == "repo_hygiene":
+        return (("inspect sync status, freshness policy and residue inventory; "
+                 "resolve dirty or diverged checkouts manually, then collect again"), "maintainer", False)
     is_provider = dim.startswith("harness:")
     if verdict == "MISSING-EVIDENCE":
         if is_provider:
@@ -765,6 +785,26 @@ def equivalence_section(vmap: dict, machines: list[str], roster: dict,
     return "".join(cards)
 
 
+def hygiene_details(report: dict, now=None) -> str:
+    """Display only validated aliases, enums, ages and flags; never raw diagnostics."""
+    if repo_hygiene is None or not isinstance(report, dict) or not isinstance(report.get("dimensions"), dict):
+        return ""
+    data = repo_hygiene.public_status(report["dimensions"].get("repo_hygiene"))
+    if data is None:
+        return ""
+    now = now or datetime.now(UTC)
+    rows = []
+    for row in data["repos"]:
+        age = (now - repo_hygiene.timestamp(row["last_success_at"])).total_seconds() if row["last_success_at"] else None
+        shown = f"{age:.1f}s" if age is not None and age >= 0 else "unknown"
+        rows.append(f'{escape(row["id"])}: {row["status"]}, age {shown}, '
+                    f'dirty={str(row["dirty"]).lower()}, wedged={str(row["wedged"]).lower()}')
+    cleanup = data["cleanup"]
+    rows.append(f'residue: {cleanup["status"]}, {cleanup["bytes"]} bytes, '
+                f'{cleanup["expired_files"]} expired files')
+    return "<small>" + "<br>".join(rows) + "</small>"
+
+
 def main() -> None:
     config = yaml.safe_load(CONFIG.read_text(encoding="utf-8")) if CONFIG.exists() else {}
     roster = load_roster(config)
@@ -804,8 +844,10 @@ def main() -> None:
         # Detail rows (default collapsed). Per-dimension <th>{dim}</th> kept verbatim
         # so the verdict-engine HTML contract / tests stay stable.
         for dim in dims:
-            cells = "".join(f'<td class="{vmap[(dim, m)].lower()}">{vmap[(dim, m)]}</td>'
-                            for m in machines)
+            cells = "".join(
+                f'<td class="{vmap[(dim, m)].lower()}">{vmap[(dim, m)]}'
+                + ("<br>" + hygiene_details(reports.get(m, {})) if dim == "repo_hygiene" else "")
+                + '</td>' for m in machines)
             rows.append(f'<tr class="detail" data-group="{gid}"><th>{dim}</th>{cells}</tr>')
 
     cols = "".join(
@@ -830,6 +872,8 @@ def main() -> None:
 th,td{{border:1px solid #ddd;padding:.4rem .6rem;font-size:.8rem;text-align:center}}thead th{{background:#2d3748;color:#fff}}
 tbody th{{background:#edf2f7;text-align:left}}.conforms,.equal,.parity,.ok,.curated-fresh,.skills-current,.memory-fresh{{background:#c6f6d5}}.ok{{font-weight:700}}
 .below-baseline,.diverges,.curated-expired,.skills-drifted,.memory-expired{{background:#fed7d7}}.no-majority,.missing-baseline,.curated-stale,.skills-index-stale,.memory-stale,.skill-links-drifted{{background:#feebc8}}.skill-links-ok{{background:#c6f6d5}}
+.hygiene-ok{{background:#c6f6d5}}.hygiene-dirty,.hygiene-wedged{{background:#fed7d7}}
+.hygiene-stale,.hygiene-blocked,.hygiene-residue{{background:#feebc8}}
 .expected-diff,.expected-divergence{{background:#e9d8fd}}
 .pending,.missing-evidence{{background:#fffaf0}}.unreachable,.absent,.na{{background:#f7fafc;color:#a0aec0}}
 .stale-checkout{{background:#e2e8f0;color:#4a5568;font-style:italic}}

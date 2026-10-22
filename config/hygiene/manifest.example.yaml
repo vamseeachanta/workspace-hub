@@ -1,0 +1,14 @@
+# Synthetic policy inputs, not measured limits or operational recommendations.
+# Each installation keeps its own private manifest; paths are relative to --root.
+schema_version: 1
+git_timeout_seconds: 10
+max_age_seconds: 60
+repos:
+  - id: repo-a
+    path: repos/repo-a
+    branch: main
+    activity_lock: activity/repo-a.lock
+scratch:
+  - path: scratch/completed
+    max_bytes: 3
+    max_age_seconds: 5
