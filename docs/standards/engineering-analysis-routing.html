@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Engineering analysis criteria and dataset routing</title>
+<style>
+body { max-width: 1120px; margin: 2rem auto; padding: 0 1rem; font: 17px/1.55 system-ui; color: #243641; }
+table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+th, td { border: 1px solid #b6c3c8; padding: .65rem; text-align: left; vertical-align: top; }
+caption { caption-side: bottom; text-align: left; padding: .5rem 0; }
+code { overflow-wrap: anywhere; }
+a { color: #075c7d; }
+.note { background: #edf3f5; padding: 1rem; border-left: .3rem solid #075c7d; }
+</style>
+</head>
+<body>
+<h1>Engineering analysis criteria and dataset routing</h1>
+<p class="note">Summary: digitalmodel owns the engineering criteria and common workflow.
+This guide routes readers and evidence records to those authorities. Documentation reach,
+analysis compliance and reusable response readiness are separate observations. This guide
+introduces no engineering equations, acceptance limits, solver execution or installed enforcement.</p>
+<h2>Revision history</h2>
+<table>
+<tr><th>Revision</th><th>Date</th><th>Change and reason</th></tr>
+<tr><td>1</td><td>2026-10-22</td><td>Add canonical references, bounded discovery, observation records and representative mappings to distinguish routing from demonstrated compliance.</td></tr>
+<caption>Table 1. Initial routing guide issue.</caption>
+</table>
+
+<h2 id="authorities">Authoritative references</h2>
+<p>Read the owner-issued sources rather than copying or maintaining their acceptance text here.
+The inspected source revision is <code>df3a42386c6edb1acf47653b52d9b091f54a8940</code>.
+Owner-relative locators identify the repository and file; resolve them in an authorized checkout
+at that revision. The public source links provide repository metadata and encoded file content
+without requiring a local checkout. A pinned source is evidence of that revision, not current default-branch adoption.</p>
+<table>
+<tr><th>Authority</th><th>Owner-relative locator</th><th>Revision and evidence</th></tr>
+<tr><td>Engineering acceptance criteria</td><td><code>digitalmodel:docs/standards/analysis-parametric-lookup-criteria.html</code></td><td>ENG-ANALYSIS-CRITERIA, Revision 1, 2026-09-13; <a href="https://api.github.com/repositories/590299785/contents/docs/standards/analysis-parametric-lookup-criteria.html?ref=df3a42386c6edb1acf47653b52d9b091f54a8940">pinned criteria source</a>.</td></tr>
+<tr><td>Common lifecycle and evidence handoffs</td><td><code>digitalmodel:docs/standards/engineering-analysis-workflow.html</code></td><td>Revision 1, 2026-09-13; <a href="https://api.github.com/repositories/590299785/contents/docs/standards/engineering-analysis-workflow.html?ref=df3a42386c6edb1acf47653b52d9b091f54a8940">pinned workflow source</a>.</td></tr>
+<tr><td>Observed engineering entry point</td><td><code>digitalmodel:docs/README.md</code></td><td><a href="https://api.github.com/repositories/590299785/contents/docs/README.md?ref=df3a42386c6edb1acf47653b52d9b091f54a8940">Pinned entry point</a> links both sources.</td></tr>
+<tr><td>Data ownership, rights and qualification</td><td><a href="../architecture/agent-data-handling-contract.md">Agent data-handling contract</a></td><td>Existing authority, including resource-descriptor qualification and result ownership.</td></tr>
+<tr><td>Planning and shared workflow changes</td><td><a href="HARD-STOP-POLICY.md">Risk-based authorization</a> and <a href="AI_REVIEW_ROUTING_POLICY.md">review routing</a></td><td>Task authority, proportionate planning, tests and independent review remain distinct. Documentation does not authorize native runs.</td></tr>
+</table>
+<p>The existing metadata authorities remain <code>llm-wiki:data/data-source-catalog.yml</code>
+and <code>llm-wiki:data/domain-database-index.yml</code>. Preserve their source/dataset identities.
+The hub coordinates references; it does not create a second catalog, result matrix or dataset store.</p>
+
+<h2 id="discovery">Bounded discovery and repository routing</h2>
+<p>Observation date: 2026-10-22. The actual inspected set comprises the current workspace-hub
+checkout and the public digitalmodel sources at the pinned revision. The execution-context set
+contains only the context running these checks; no other context was queried. Private identities
+and locators are omitted. This is not an ecosystem census. The configured repository list in
+<code>config/repos.conf</code>, repository map in <code>config/onboarding/repo-map.yaml</code>
+and context registry in <code>config/workstations/registry.yaml</code> are discovery candidates,
+not proof of installed checkouts, access or compliance.</p>
+<table>
+<tr><th>Repository responsibility</th><th>Observed reach</th><th>Analysis compliance and next evidence</th></tr>
+<tr><td>workspace-hub: shared reading route</td><td>This change links this guide from <a href="../README.md">the documentation entry point</a> and <a href="../ROUTING_INDEX.md">the routing index</a>. Local tests inspect these links.</td><td>NOT_EVALUATED. No engineering analysis was accepted here; shared enforcement was not changed.</td></tr>
+<tr><td>digitalmodel: criteria, domain workflows and computational references</td><td>DOCUMENTED at the pinned source revision; the entry point and common workflow were read. No local engineering checkout was available in the inspected root.</td><td>NOT_EVALUATED. Read an exact-current analysis package and independent review record before assessing an analysis.</td></tr>
+<tr><td>assetutilities: reusable calculation utilities; worldenergydata: public-source collection</td><td>NOT_EVALUATED. Declared responsibilities follow the existing data-handling contract and repository map; no local checkout was present at their declared relative locations.</td><td>Read their current entry points and existing issue/analysis records. Do not infer adoption from a dependency or repository name.</td></tr>
+<tr><td>Restricted original and reusable-result owners</td><td>NOT_EVALUATED. The sibling metadata checkout was unavailable at the expected relative location. No private sources or remote execution contexts were inspected.</td><td>Retain identities and per-context observations in authorized private evidence. Publish only permitted summaries. Missing catalog access is a coverage gap, not evidence of absence.</td></tr>
+<caption>Table 2. Observed sources and uninspected responsibility routes. No cross-repository installation is asserted.</caption>
+</table>
+<p>For broader discovery, an authorized maintainer will enumerate actual available roots and
+contexts against the existing configuration, recording timestamp, inspected revision, entry-point
+reference, access outcome and exclusions in the existing routing issue. The private evidence will
+retain restricted identities. The public summary will distinguish inspected, unavailable and
+uninspected coverage without exposing them. No copying or cross-context execution follows from this guide.</p>
+
+<h2 id="records">Record routing and compliance in existing records</h2>
+<p>Attach a <a href="../../config/schemas/engineering-analysis-observation.schema.json">structured observation</a>
+to the existing repository issue or owning analysis record. The <a href="../examples/engineering-analysis-observation.json">worked example</a>
+is a template, not a new allocation registry. The schema is optional documentation support; it
+is not connected to runtime gates, hooks or publication. Its validation checks shape only.</p>
+<table>
+<tr><th>Observation</th><th>Recording rule</th></tr>
+<tr><td>Criteria and workflow</td><td>Record both owner-relative locators, document revisions and exact source revisions. Reconcile later source changes in the owning analysis; never silently replace a pinned basis.</td></tr>
+<tr><td>Routing</td><td>Use DOCUMENTED only with an inspected entry point, its exact revision and an evidence reference. NOT_EVALUATED means not assessed; UNREACHABLE records a failed resolution with its reason. None of these statuses establishes analysis compliance.</td></tr>
+<tr><td>Compliance</td><td>Use NOT_EVALUATED until an analysis is assessed. PARTIAL and DEMONSTRATED require an exact analysis revision and evidence references. The assigned independent reviewer checks every applicable criterion, approved exception and unresolved finding. Schema validity alone cannot establish either assessment or independence.</td></tr>
+<tr><td>Dataset</td><td>REFERENCED requires the authoritative owner, unchanged dataset identity, explicit revision, owner-relative manifest reference, SHA-256 digest and existing catalog reference. It indicates a reference, not verified bytes, rights or readiness. Uninspected datasets remain NOT_EVALUATED with null identity fields.</td></tr>
+<tr><td>Coverage and response qualification</td><td>Retain the complete attempted-case ledger, sampling design, invalid/failed/unresolved dispositions and response-specific evidence in the owning analysis. Do not sum documentation records as verified cases or treat a missing check as a physical zero. Refer to criteria AC-06 through AC-08 rather than defining new thresholds here.</td></tr>
+<tr><td>Query and maintenance</td><td>Resolve dataset/method revision, component/model identity, exact parameter keys, units, response definition and intended use. Verify current rights, bytes, review, withdrawal and readiness before use. Record consumers and impact dispositions on correction. The existing criteria AC-09 through AC-13 govern acceptance and non-exact extensions.</td></tr>
+<caption>Table 3. Evidence accounting derived from the referenced criteria and shared data-handling contract.</caption>
+</table>
+<p>Store the observation with its existing issue/analysis history; retain prior observations on
+reassessment. Evidence locators in public records must be authorized for that audience.
+A missing catalog or unresolved reference leaves affected reuse unavailable. The schema does not
+resolve locators, validate digests, authenticate authority or compare recorded revisions with live content.</p>
+
+<h2 id="mappings">Representative program and scale mappings</h2>
+<p>These are routing prompts for representative families, not completed adapters or compliance
+assessments. Source: criteria Revision 1, section 4, and common workflow Revision 1, program workflows.
+Every mapping currently has compliance NOT_EVALUATED. Program-specific formulas and tolerances
+remain required inputs from the applicable reviewed domain basis.</p>
+<table>
+<tr><th>Program / family</th><th>Scale and response identity</th><th>Evidence route and remaining work</th></tr>
+<tr><td>Hand calculations and shared utilities</td><td>component or connection; section, load case, units and method revision</td><td>Owning engineering analysis and utility tests; digitalmodel issue 2117 is a proposed lifting-connection example, not an accepted range or dataset.</td></tr>
+<tr><td>ANSYS / structural strength</td><td>component, connection, assembly or structure; stress interpretation, location, frame and load step</td><td><code>digitalmodel:docs/domains/ansys/analysis-workflow.html</code> at the pinned source revision; issue 2119 tracks the evidence adapter. Mesh/contact convergence and strength acceptance remain separate.</td></tr>
+<tr><td>AQWA and OrcaWave / diffraction</td><td>structure or system; geometry, equilibrium basis, frequency/heading, response component and phase convention</td><td><code>digitalmodel:docs/domains/aqwa/analysis-workflow.html</code> at the pinned source revision; issue 141 needs basis reconciliation. OrcaWave needs its own reviewed mapping. Agreement of two programs does not establish physical validation.</td></tr>
+<tr><td>OrcaFlex / dynamic systems</td><td>component, assembly or system; line/model identity, location, frame, time window and statistic</td><td>Use the existing engineering operator map, then record a reviewed domain mapping and response-specific verification. No adapter or native case was inspected.</td></tr>
+<tr><td>GHS / stability</td><td>structure or complete system; loading condition, equilibrium state and stability response definition</td><td>Route to the owning engineering analysis. Establish source-qualified basis, governing criteria and a reviewed program mapping before lookup use.</td></tr>
+<tr><td>NavCad / propulsion</td><td>component or complete system; configuration, operating condition, resistance/propulsion response and units</td><td>Route to the owning engineering analysis. Establish applicability and independent reference comparisons before claiming range coverage.</td></tr>
+<tr><td>Other solvers and calculation tools</td><td>Any component, connection, assembly, structure or system</td><td>Map the common lifecycle into the existing domain record. No software family inherits another family's qualification or parameter domain.</td></tr>
+<caption>Table 4. Representative routing coverage, not demonstrated engineering compliance.</caption>
+</table>
+<p>Do not compare response values across programs until definitions, conventions, applicability
+and intended use have been reconciled independently. A common query interface does not make
+unlike geometry, stress definitions or response statistics interchangeable.</p>
+
+<h2 id="worked-example">Worked example: documented route with no qualified answer</h2>
+<p><strong>Inputs:</strong> the linked JSON observation identifies digitalmodel issue 2117,
+a lifting connection assessed by hand calculation, the pinned criteria/workflow revisions and
+the historical direction record. The pinned engineering entry point links the criteria. No
+current analysis package, independent response verification or dataset was inspected.</p>
+<p><strong>Method:</strong> inspect the pinned entry point and resolve the criteria/workflow
+identity. Classify documentation reach separately from analysis and dataset evidence. The schema
+requires entry-point evidence for DOCUMENTED and refuses PARTIAL or DEMONSTRATED without an
+analysis revision and assessment evidence. This is a logical evidence classification; no
+engineering equation, coefficient or numerical acceptance limit is used.</p>
+<p><strong>Answer:</strong> routing is DOCUMENTED at the pinned revision; analysis compliance and
+dataset status are NOT_EVALUATED. The null dataset identity means no engineering answer can be
+returned. It is not a zero response, failed design check or accepted benchmark.</p>
+<table>
+<tr><th>Requested query</th><th>Expected disposition from criteria AC-08, AC-10 and AC-11</th></tr>
+<tr><td>Exact parameter key but no qualified dataset/response</td><td>Refuse the engineering answer; preserve NOT_EVALUATED and the missing-evidence reason.</td></tr>
+<tr><td>Valid but off-grid parameter key</td><td>Refuse an exact match. A separately authorized, validated non-exact method would require its own evidence; this example enables none.</td></tr>
+<tr><td>Existing but unqualified response</td><td>Refuse ordinary engineering lookup; authorized diagnostic access may retain status and reason.</td></tr>
+<caption>Table 5. Documented expected behavior only. No lookup service is implemented or exercised by this example.</caption>
+</table>
+<p>The tests validate the JSON schema and example, reject missing identity/evidence, and check
+local links and program/scale coverage. They do not execute a lookup engine or independently
+review an engineering calculation. Run the targeted tests with pytest and jsonschema, with
+format checking enabled; run ruff on the Python test file.</p>
+
+<h2>Next adoption checkpoint</h2>
+<p>The maintainers will retain the ecosystem routing issue as the existing coverage record.
+Remaining work includes authorized private/context enumeration, sibling entry-point changes,
+reviewed domain adapters and representative accepted analysis packages. Shared workflow or
+harness changes will use the shared planning and review route before implementation.
+New runs require their own authority and frozen case definitions. No historical approval,
+review disagreement or unresolved engineering basis is superseded by this routing guide.</p>
+</body>
+</html>
