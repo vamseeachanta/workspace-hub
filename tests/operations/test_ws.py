@@ -4,7 +4,8 @@ Expected counts follow explicit graph construction: a seed commit shared by both
 clones gives (ahead=0, behind=0); one local child gives (1, 0); a remote
 child gives (0, 1); distinct children give (1, 1). No production function
 computes these expected values. Git semantics: git-rev-list, --left-right
-and --count; git-pull, --ff-only; git-push, refspec documentation.
+and --count; git-merge, --ff-only and --no-overwrite-ignore; git-push,
+refspec documentation.
 """
 
 import importlib.util
@@ -103,6 +104,57 @@ def test_pull_fast_forwards(repos):
     git(right, "push")
     ws.sync(left, "pull")
     assert git(left, "rev-parse", "HEAD") == git(right, "rev-parse", "HEAD")
+
+
+def publish_file(root, name):
+    """Publish a tracked file independently of the synchronization helper."""
+    identity = "Fixture <fixture" + chr(64) + "example.invalid>"
+    parent = git(root, "rev-parse", "HEAD")
+    branch = git(root, "symbolic-ref", "HEAD")
+    git(root, "fast-import", "--quiet", input=(
+        f"commit {branch}\ncommitter {identity} 2 +0000\n"
+        f"data 6\nremote\nfrom {parent}\nM 100644 inline {name}\n"
+        "data 6\nremote\n\ndone\n"
+    ))
+    git(root, "push")
+
+
+@pytest.mark.parametrize(("local_name", "remote_name"), [
+    ("generated.txt", "generated.txt"),
+    ("generated/output.txt", "generated/output.txt"),
+    ("generated/output.txt", "generated"),
+])
+def test_pull_refuses_ignored_collision(repos, local_name, remote_name):
+    left, right, _ = repos
+    (left / ".git/info/exclude").write_text(
+        "/" + local_name.split("/")[0] + "\n", encoding="utf-8",
+    )
+    ignored = left / local_name
+    ignored.parent.mkdir(parents=True, exist_ok=True)
+    ignored.write_bytes(b"local evidence\x00\n")
+    publish_file(right, remote_name)
+    before_head = git(left, "rev-parse", "HEAD")
+    before_index = (left / ".git/index").read_bytes()
+    assert ws.status(left)["dirty"] is False
+    with pytest.raises(ws.SyncError):
+        ws.sync(left, "pull")
+    assert ignored.read_bytes() == b"local evidence\x00\n"
+    assert git(left, "rev-parse", "HEAD") == before_head
+    assert (left / ".git/index").read_bytes() == before_index
+    assert git(left, "rev-parse", "origin/feature/sample") == git(right, "rev-parse", "HEAD")
+    assert (ws.status(left)["ahead"], ws.status(left)["behind"]) == (0, 1)
+
+
+def test_pull_preserves_noncolliding_ignored_file(repos):
+    left, right, _ = repos
+    (left / ".git/info/exclude").write_text("/generated.txt\n", encoding="utf-8")
+    ignored = left / "generated.txt"
+    ignored.write_bytes(b"local evidence\x00\n")
+    publish_file(right, "tracked.txt")
+    ws.sync(left, "pull")
+    assert git(left, "rev-parse", "HEAD") == git(right, "rev-parse", "HEAD")
+    assert (left / "tracked.txt").read_bytes() == b"remote"
+    assert ignored.read_bytes() == b"local evidence\x00\n"
 
 
 def test_pull_divergence_preserves_local_head(repos):

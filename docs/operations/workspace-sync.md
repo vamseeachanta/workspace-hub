@@ -11,6 +11,7 @@ because the implementation uses `str.removeprefix`.
 | Revision | Date | Change and reason |
 | --- | --- | --- |
 | Initial | 2026-10-22 | Add explicit repository synchronization and inspection to support consistent checkout layouts. |
+| 1 | 2026-10-22 | Refuse integration that would overwrite ignored files, preserving local evidence. |
 
 Table 1. Guide revisions.
 
@@ -66,9 +67,12 @@ to local tracking refs and do not establish current remote state.
 
 Synchronization refuses uncommitted tracked, staged or untracked changes,
 detached HEAD, absent upstreams, local-branch upstreams and unfinished merge,
-rebase, cherry-pick or revert operations. Ignored files are left in place; Git
-still enforces its overwrite checks. A push uses an explicit refspec so a
-configured push default cannot select additional branches. Submodule recursion
+rebase, cherry-pick or revert operations. Pull fetches the configured upstream,
+then integrates `FETCH_HEAD` with `--ff-only` and `--no-overwrite-ignore`.
+An ignored-file collision refuses integration and preserves the ignored bytes,
+HEAD and index. Fetching can update tracking refs even when integration is
+refused. Noncolliding ignored files are left in place. A push uses an explicit
+refspec so a configured push default cannot select additional branches. Submodule recursion
 is disabled. No commit, stash, reset, clone, installation or automatic recovery
 is performed. Repository hooks retain their normal behavior. Review the
 upstream and remote configuration before authorizing a synchronization command.
@@ -120,8 +124,9 @@ histories and select a separate integration procedure.
 
 The tests construct these graphs using independent Git fixture operations and
 assert literal expected counts and commit identity preservation. Additional
-cases cover dirty and staged changes, upstream selection, protected branches,
-non-fast-forward pushes, configured tag following, linked worktrees, repository
+cases cover ignored-file collisions and preservation, dirty and staged changes,
+upstream selection, protected branches, non-fast-forward pushes, configured tag
+following, linked worktrees, repository
 environment isolation, missing tools, and layout qualification.
 
 For a layout example, take immediate checkout folders `alpha` and `beta`, plus

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Portable, single-repository sync with explicit upstreams and no auto-commit.
 
-Git command contracts: git-status(1), git-rev-list(1), git-pull(1),
+Git command contracts: git-status(1), git-rev-list(1), git-fetch(1), git-merge(1),
 git-push(1), and git-for-each-ref(1); see the worked example documentation.
 """
 
@@ -124,8 +124,9 @@ def sync(repo: Path, command: str) -> dict:
         git(repo, "push", "--porcelain", "--no-follow-tags", "--recurse-submodules=no",
             "--", remote, f"HEAD:{ref}")
     else:
-        git(repo, "pull", "--ff-only", "--no-rebase", "--no-recurse-submodules",
-            "--", remote, ref)
+        git(repo, "fetch", "--no-recurse-submodules", "--", remote, ref)
+        git(repo, "-c", "submodule.recurse=false", "merge", "--ff-only",
+            "--no-overwrite-ignore", "--no-edit", "FETCH_HEAD")
     return {"operation": command, "result": "completed"}
 
 
