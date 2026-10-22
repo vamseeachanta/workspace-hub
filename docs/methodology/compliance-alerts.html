@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><title>Compliance alert reconciliation</title></head>
+<body>
+<h1>Compliance alert reconciliation</h1>
+<p>The daily alert validates the dashboard's top-level JSON before a percentage
+is compared with the alert thresholds. A window without reviewable commits
+produces no alert. An inconsistent report produces a nonzero exit status and
+an error in the daily log, without publishing a compliance conclusion.</p>
+<h2>Revision history</h2>
+<table><tr><th>Revision</th><th>Date</th><th>Change and reason</th></tr>
+<tr><td>1</td><td>2026-10-22</td><td>Document structured parsing and empty-window
+handling to prevent contradictory compliance alerts.</td></tr></table>
+<p>Table 1. Document revision.</p>
+<h2>Method and sources</h2>
+<p>Let T be total commits, S skipped commits, R reviewed commits, and U unreviewed
+commits. The reviewable count N = T − S shall equal R + U. For N greater than
+zero, the dashboard rate is floor(100 × R / N), in percent. The formula follows
+<a href="compliance-dashboard.md">Compliance Dashboard Guide, How Compliance is
+Calculated</a> and its implementation in
+<code>scripts/enforcement/compliance-dashboard.sh</code>. For N = 0 the dashboard
+stores a zero rate and PASS; the alert treats this as no applicable denominator,
+not evidence of failed review compliance.</p>
+<p>Alert boundaries follow the Thresholds table in
+<cite>issue 3855, Thresholds table, 2026-09-14</cite>: at least 80 percent requires no alert; 50 to below 80 percent
+is medium; 30 to below 50 percent is high; below 30 percent is critical.
+These are repository monitoring criteria, not engineering design limits.</p>
+<h2>Worked examples</h2>
+<table><tr><th>Inputs (commits)</th><th>Independent calculation</th><th>Answer</th></tr>
+<tr><td>T = 7, S = 7, R = 0, U = 0</td><td>N = 7 − 7 = 0</td>
+<td>No reviewable commits; no alert.</td></tr>
+<tr><td>T = 10, S = 0, R = 3, U = 7</td><td>N = 10; floor(100 × 3 / 10) = 30 percent</td>
+<td>High severity; dashboard FAIL at its default threshold.</td></tr>
+<tr><td>T = 10, S = 0, R = 8, U = 2</td><td>N = 10; floor(100 × 8 / 10) = 80 percent</td>
+<td>No alert.</td></tr></table>
+<p>Table 2. Synthetic hand-calculated examples using the published issue criteria.</p>
+<h2>Operation and checks</h2>
+<p>The cron wrapper reads one JSON object after the dashboard's JSON Report
+marker. Counts shall be nonnegative integers; boolean values are rejected.
+The total, skipped, reviewable, reviewed and unreviewed counts shall reconcile.
+The calculated rate, configured dashboard threshold, verdict and process exit
+status shall agree. Nested stage-event verdicts are not commit verdicts.</p>
+<p><code>DRY_RUN=true bash scripts/enforcement/compliance-cron.sh</code> logs the
+proposed alert without calling GitHub. Regression fixtures substitute local
+scripts and preserve both the caller's repository and its Git metadata.
+Run <code>tests/enforcement/test_compliance_cron.py</code> together with
+<code>tests/enforcement/test_compliance_dashboard.py</code> for the consumer and
+producer regression checks.</p>
+<h2>Limits and follow-up</h2>
+<p>The examples reproduce the alert mechanism; the historical daily logs and
+review artifacts were not supplied, so the review disposition of the historical
+commits is not established. The existing dashboard's commit classifier and
+review-evidence heuristics are unchanged. This repair does not conduct historical
+cross-reviews, prove the absence of bypasses, change review requirements, or
+establish that the scheduled task is installed. Second-provider review remains
+required before merge. The daily error log and nonzero process status require
+monitoring when report validation fails.</p>
+</body></html>
