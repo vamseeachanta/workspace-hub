@@ -52,7 +52,7 @@ while (( $# > 0 )); do
     --baseline=*)      BASELINE="${1#*=}"; BASELINE_EXPLICIT=1; shift ;;
     --baseline)        BASELINE="${2:?--baseline requires a path}"; BASELINE_EXPLICIT=1; shift 2 ;;
     --staged)         CONTENT_MODE=index; shift ;;
-    --head)           CONTENT_MODE=head; shift ;;
+    --head)           CONTENT_MODE='head'; shift ;;
     --worktree)       CONTENT_MODE=worktree; shift ;;
     --update-baseline) UPDATE_BASELINE=1; shift ;;
     --no-baseline)     BASELINE=""; BASELINE_EXPLICIT=1; shift ;;
@@ -67,6 +67,15 @@ if (( ${#POSITIONAL[@]} == 0 )) && (( BASELINE_EXPLICIT == 0 )); then
   BASELINE="$DEFAULT_BASELINE"
 fi
 
+# Only staged scans select a caller index. Explicit-root discovery and the
+# other content modes remain independent of inherited repository bindings.
+git_read=worktree_git
+WORKTREE_ACTIVE_INDEX=
+if [[ $CONTENT_MODE == index ]]; then
+  worktree_select_index "$REPO_ROOT" || exit 2
+  git_read=worktree_index_git
+fi
+
 # ── Collect the target file set ──────────────────────────────────────────
 declare -a TARGETS=()
 # Keep NUL bytes in a file, not command substitution, and check the producer.
@@ -74,16 +83,16 @@ declare -a TARGETS=()
 targets_file=$(mktemp)
 trap 'rm -f -- "$targets_file"' EXIT
 if (( ${#POSITIONAL[@]} == 0 )); then
-  worktree_index_preflight "$REPO_ROOT" >&2
-  unmerged=$(worktree_git -C "$REPO_ROOT" ls-files --unmerged) || exit 2
+  worktree_index_preflight "$REPO_ROOT" "" "$git_read" >&2
+  unmerged=$("$git_read" -C "$REPO_ROOT" ls-files --unmerged) || exit 2
   if [[ -n $unmerged ]]; then
     echo 'check-no-abs-paths: unmerged index; content authority ambiguous' >&2
     exit 2
   fi
   if [[ $CONTENT_MODE == head ]]; then
-    worktree_git -C "$REPO_ROOT" ls-tree -r -z --name-only HEAD > "$targets_file" || exit 2
+    "$git_read" -C "$REPO_ROOT" ls-tree -r -z --name-only HEAD > "$targets_file" || exit 2
   else
-    worktree_git -C "$REPO_ROOT" ls-files --cached -z > "$targets_file" || exit 2
+    "$git_read" -C "$REPO_ROOT" ls-files --cached -z > "$targets_file" || exit 2
   fi
   while IFS= read -r -d '' f; do
     case "$f" in
@@ -143,7 +152,7 @@ for file in "${TARGETS[@]}"; do
   fi
   authority=$CONTENT_MODE
   if (( ${#POSITIONAL[@]} == 0 )) && [[ $authority == worktree && ! -f $file ]]; then
-    tag=$(worktree_git -C "$REPO_ROOT" ls-files -t -- ":(literal)$rel")
+    tag=$("$git_read" -C "$REPO_ROOT" ls-files -t -- ":(literal)$rel")
     if [[ $tag == 'S '* ]]; then
       authority=index
       fallback=$((fallback + 1))
@@ -154,8 +163,8 @@ for file in "${TARGETS[@]}"; do
   fi
   case "$authority" in
     worktree) content=$(cat -- "$file") || exit 2 ;;
-    index) content=$(worktree_git -C "$REPO_ROOT" show ":$rel") || exit 2 ;;
-    head) content=$(worktree_git -C "$REPO_ROOT" show "HEAD:$rel") || exit 2 ;;
+    index) content=$("$git_read" -C "$REPO_ROOT" show ":$rel") || exit 2 ;;
+    head) content=$("$git_read" -C "$REPO_ROOT" show "HEAD:$rel") || exit 2 ;;
   esac
   scanned=$((scanned + 1))
   line_no=0
