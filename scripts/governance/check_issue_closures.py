@@ -20,6 +20,7 @@ import hashlib
 import json
 import os
 import re
+import shlex
 import subprocess
 import sys
 import tempfile
@@ -34,11 +35,21 @@ API_BUDGET = 500  # Issue 4073, plan item 3: maximum API calls per run.
 EVIDENCE_REF = re.compile(r"(?:\b(?=[0-9a-f]{7,40}\b)(?=[0-9a-f]*[a-f])[0-9a-f]{7,40}\b|(?<!\w)#(?P<issue>\d+)(?!\w)|(?<!\w)PR\s*#?(?P<pr>\d+)(?!\w))", re.I)
 PATH_REF = re.compile(r"(?<![\w/.:\\-])(?:scripts|tests|docs|reports|src|config)/[A-Za-z0-9._/\-]+")
 TEST_COUNT = re.compile(r"\b\d+\s+(?:passed|pass|failed|fail|skipped|skip|tests?)\b", re.I)
-# Procedure B.3 and E.4 require a command as well as a count. An explicit
-# command label supports builders that are not in this common-tool vocabulary.
+# Procedure B.3 and E.4 require a command as well as a count. Match tools
+# only at the start of a command candidate, rather than anywhere in prose.
 TEST_COMMAND = re.compile(
-    r"\b(?:pytest|unittest|ctest|tox|nox)\b|\b(?:npm|pnpm|yarn|cargo|go)\s+test\b"
-    r"|\b(?:command|builder)\s*:\s*\S+", re.IGNORECASE,
+    r"(?:(?:python(?:3(?:\.\d+)?)?\s+-m\s+)?(?:pytest|unittest)"
+    r"|ctest|tox|nox|(?:npm|pnpm|yarn|cargo|go)\s+test)\b", re.IGNORECASE,
+)
+NON_EXECUTION = re.compile(
+    r"\b(?:not|never|wasn't|weren't|isn't|didn't|cannot|can't)\s+"
+    r"(?:(?:yet|been|actually|be)\s+)*(?:run|executed?|performed)\b"
+    r"|\b(?:execution|command|tests?)\s+(?:(?:is|are|was|were)\s+)?skipped\b",
+    re.IGNORECASE,
+)
+COMMAND_PROSE = re.compile(
+    r"(?:was|were|is|are|will|would|should|could|must|may|might|can|"
+    r"not|never|none|unavailable|skipped|pending|remains?)\b", re.IGNORECASE,
 )
 CHECKBOX = re.compile(r"^\s*-\s+\[(?P<mark>[ xX])\]\s*(?P<text>.*)$", re.M)
 ISSUE_REF = re.compile(r"(?<!\w)(?:(?P<repository>[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+))?#(?P<number>\d+)(?!\w)")
@@ -132,6 +143,59 @@ def has_decision_text(text: str) -> bool:
     ))
 
 
+def has_test_command(text: str) -> bool:
+    """Recognize command claims, without authenticating their execution.
+
+    Statements, inline code, execution verbs and labels provide command
+    context. Negation applies to the whole clause, including quoted commands.
+    Unknown builders require a label and arguments or a script path.
+    """
+    for clause in re.split(r"[;\n]", text):
+        if NON_EXECUTION.search(clause):
+            continue
+        candidates = [(clause.strip(), False)]
+        candidates.extend(
+            (clause[match.end():].strip(), True)
+            for match in re.finditer(r"\b(?:command|builder|tests?)\s*:\s*", clause, re.IGNORECASE)
+        )
+        candidates.extend(
+            (clause[match.end():].strip(), False)
+            for match in re.finditer(r"\b(?:ran|executed)\s+", clause, re.IGNORECASE)
+        )
+        # Inline code naming a tool alone may just be a prose mention.
+        candidates.extend(
+            (match.group(1), False) for match in re.finditer(r"`([^`]+)`", clause)
+            if " " in match.group(1).strip()
+        )
+        for candidate, labelled in candidates:
+            candidate = candidate.replace("`", "").strip()
+            known = TEST_COMMAND.match(candidate)
+            if known:
+                if not COMMAND_PROSE.match(candidate[known.end():].lstrip()):
+                    return True
+                continue
+            if not labelled:
+                continue
+            # A result delimiter must not turn a lone labelled token into
+            # a command with arguments, e.g. "Command: none: 3 passed".
+            command = re.split(r":|\s+-\s+", candidate, maxsplit=1)[0]
+            command = TEST_COUNT.split(command, maxsplit=1)[0].strip()
+            try:
+                words = shlex.split(command)
+            except ValueError:
+                continue
+            if (not words or COMMAND_PROSE.fullmatch(words[0])
+                    or words[0].lower() in {"n/a", "na", "null", "unknown", "todo", "tbd"}):
+                continue
+            if COMMAND_PROSE.match(" ".join(words[1:])):
+                continue
+            if re.fullmatch(r"[\w./-]+", words[0]) and (
+                len(words) > 1 or words[0].startswith("./") or words[0].endswith((".sh", ".py"))
+            ):
+                return True
+    return False
+
+
 def evidence_status(issue: dict, *, allow_issue_reference: bool = True) -> tuple[bool, bool, list[str]]:
     evidence = closure_evidence_text(issue)
     reasons: list[str] = []
@@ -171,7 +235,7 @@ def evidence_status(issue: dict, *, allow_issue_reference: bool = True) -> tuple
         reasons.append("no cited path exists at the evidence revision")
     elif missing_paths:
         reasons.append("one or more cited paths do not exist at the evidence revision")
-    has_test = bool(TEST_COUNT.search(evidence) and TEST_COMMAND.search(evidence))
+    has_test = bool(TEST_COUNT.search(evidence) and has_test_command(evidence))
     return not reasons, has_test, reasons
 
 
@@ -388,15 +452,21 @@ class GitHubReader:
             if not separator:
                 raise RuntimeError("API response headers missing; collection incomplete")
             page = json.loads(body)
-            if isinstance(page, dict) and "items" in page:
+            if isinstance(page, dict):
+                if (not isinstance(page.get("items"), list)
+                        or type(page.get("total_count")) is not int
+                        or type(page.get("incomplete_results", False)) is not bool):
+                    raise TypeError("malformed search response; collection incomplete")
+                if page["total_count"] < 0:
+                    raise ValueError("malformed search count; collection incomplete")
                 if page.get("incomplete_results"):
                     raise RuntimeError("GitHub search is incomplete")
-                total_count = page.get("total_count", total_count)
-                items.extend(page.get("items") or [])
+                total_count = page["total_count"]
+                items.extend(page["items"])
             elif isinstance(page, list):
                 items.extend(page)
             else:
-                items.append(page)
+                raise TypeError("malformed collection response; collection incomplete")
             route = self._next_page(headers)
         cached.write_text(json.dumps({"total_count": total_count, "items": items}, indent=2) + "\n", encoding="utf-8", newline="\n")
         return items, total_count

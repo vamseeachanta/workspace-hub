@@ -87,6 +87,53 @@ def test_search_incomplete_results_cannot_be_reported_as_complete(monkeypatch, t
         checker.GitHubReader(tmp_path).paginated_api("search/issues?q=example")
 
 
+@pytest.mark.parametrize("page,error", [
+    ({"unexpected": "schema"}, TypeError),
+    (None, TypeError),
+    ("unexpected", TypeError),
+    (7, TypeError),
+    ({"items": []}, TypeError),
+    ({"items": None, "total_count": 0}, TypeError),
+    ({"items": "unexpected", "total_count": 1}, TypeError),
+    ({"items": {}, "total_count": 0}, TypeError),
+    ({"items": [], "total_count": None}, TypeError),
+    ({"items": [], "total_count": "0"}, TypeError),
+    ({"items": [], "total_count": -1}, ValueError),
+    ({"items": [], "total_count": True}, TypeError),
+    ({"items": [], "total_count": 0.5}, TypeError),
+    ({"items": [], "total_count": 0, "incomplete_results": "false"}, TypeError),
+    ({"items": [], "total_count": 0, "incomplete_results": None}, TypeError),
+])
+@pytest.mark.parametrize("later_page", [False, True])
+def test_malformed_collection_is_rejected_without_complete_cache(monkeypatch, tmp_path, page, error, later_page):
+    route = "search/issues?q=example"
+    next_route = route + "&page=2"
+    replies = [response([{"number": 1}], next_route)] if later_page else []
+    replies.append(response(page))
+
+    def run(argv, **kwargs):
+        return subprocess.CompletedProcess(argv, 0, replies.pop(0), "")
+
+    monkeypatch.setattr(checker.subprocess, "run", run)
+    reader = checker.GitHubReader(tmp_path)
+    with pytest.raises(error, match="malformed.*collection incomplete"):
+        reader.paginated_api(route)
+    assert reader.calls == (2 if later_page else 1)
+    assert not reader._cache_path(f"paginate/{route}").exists()
+
+
+@pytest.mark.parametrize("incomplete", [{}, {"incomplete_results": False}])
+def test_valid_search_envelope_and_empty_results_are_cacheable(monkeypatch, tmp_path, incomplete):
+    route = "search/issues?q=example"
+    page = {"items": [], "total_count": 0, **incomplete}
+    monkeypatch.setattr(checker.subprocess, "run", lambda argv, **kwargs:
+                        subprocess.CompletedProcess(argv, 0, response(page), ""))
+    reader = checker.GitHubReader(tmp_path)
+    assert reader.paginated_api(route) == ([], 0)
+    assert reader.calls == 1
+    assert checker.GitHubReader(tmp_path, budget=0).paginated_api(route) == ([], 0)
+
+
 @pytest.mark.parametrize("budget", [-1, 501])
 def test_reader_cannot_raise_hard_ceiling(tmp_path, budget):
     """Issue 4073 item 3 caps every run at 500 calls, including custom budgets."""
@@ -97,10 +144,37 @@ def test_reader_cannot_raise_hard_ceiling(tmp_path, budget):
 @pytest.mark.parametrize("evidence, verdict", [
     ("3 passed", "FAIL"),
     ("No command is recorded; 3 tests", "FAIL"),
+    ("pytest was not run; 3 tests remain.", "FAIL"),
+    ("Command: none; 3 passed", "FAIL"),
+    ("Builder: N/A; 3 passed", "FAIL"),
+    ("Command: pending; 3 passed", "FAIL"),
+    ("Command: not recorded; 3 passed", "FAIL"),
+    ("Command: skipped --check; 3 passed", "FAIL"),
+    ("Command: arbitrary; 3 passed", "FAIL"),
+    ("Command: none --check; 3 passed", "FAIL"),
+    ("pytest is installed; 3 tests remain", "FAIL"),
+    ("The pytest tool is available; 3 tests remain", "FAIL"),
+    ("The `pytest` tool is available; 3 tests remain", "FAIL"),
+    ("`pytest` is installed; 3 tests remain", "FAIL"),
+    ("Command: python -m unittest is installed; 3 tests remain", "FAIL"),
+    ("Tests: pytest tests/unit was not run; 3 tests remain", "FAIL"),
+    ("Command: pytest tests/unit (not executed); 3 passed", "FAIL"),
+    ("Did not run `pytest tests/unit`; 3 tests remain", "FAIL"),
+    ("`pytest tests/unit` was not run; 3 tests remain", "FAIL"),
+    ("Command: custom-builder --check was not run; 3 passed", "FAIL"),
     ("pytest tests/unit -q: 3 passed", "PASS"),
     ("python -m unittest: 3 tests", "PASS"),
     ("ctest --output-on-failure: 3 passed", "PASS"),
     ("Command: custom-builder --check; 3 passed", "PASS"),
+    ("Tests: pytest - 3 passed", "PASS"),
+    ("Ran `pytest tests/unit -q`; 3 passed", "PASS"),
+    ("Executed pytest tests/unit -q; 3 passed", "PASS"),
+    ("Verified with `pytest tests/unit -q`: 3 passed", "PASS"),
+    ("```sh\npytest tests/unit -q\n```\n3 passed", "PASS"),
+    ("Command: ./scripts/check.sh; 3 passed", "PASS"),
+    ("Builder: make test; 3 passed", "PASS"),
+    ("Command: uv run --no-project python -m pytest tests/unit; 3 passed", "PASS"),
+    ("pytest was not run; Command: custom-builder --check; 3 passed", "PASS"),
 ])
 def test_rule_four_requires_command_and_count(evidence, verdict):
     item = {"comments": [{"closing_evidence": True, "body": evidence}]}

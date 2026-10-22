@@ -18,6 +18,7 @@ certification. No GitHub write is performed.</p>
 <h2>Revision history</h2>
 <table><tr><th>Revision</th><th>Date</th><th>Change and reason</th></tr>
 <tr><td>Initial</td><td>2026-10-22</td><td>Request accounting and command evidence are documented to expose incomplete collection and count-only evidence.</td></tr>
+<tr><td>1</td><td>2026-10-22</td><td>Command contexts, non-execution rejection and collection response shapes are specified to prevent absent evidence from passing.</td></tr>
 <caption>Revision history.</caption></table>
 <h2>Sources and method</h2>
 <p><a href="issue-closing-procedure.md">Issue-closing procedure</a>, sections B.3
@@ -30,14 +31,23 @@ GraphQL requests. Failed requests also consume budget. Cache hits consume none.<
 response Link header selects the next page, restricted to the public API origin.
 A repeated page, incomplete search result, malformed response or exhausted budget
 raises an error instead of saving a complete list. Budget exhaustion propagates
-through optional evidence reads. Body references retain successor-state lookups,
+through optional evidence reads. Collection responses must be JSON lists or
+search envelopes with list-valued <code>items</code>, a nonnegative integer
+<code>total_count</code> and, when present, a Boolean <code>incomplete_results</code>.
+An unknown object or scalar response is rejected before caching. Body references
+retain successor-state lookups,
 but only references in closing comments trigger recursive delivery-evidence reads.
 Cache filenames use SHA-256 of the exact request
 string; this digest identifies a request, not the integrity or freshness of its
 response. Legacy punctuation-based cache entries are not reused.</p>
-<p>Test commands are recognized from common test tools, or an explicit
-<code>Command:</code> or <code>Builder:</code> label followed by text. A count alone
-fails rule 4. This is a text check; commands are never executed by the checker,
+<p>Common test tools must appear in command context: at a statement's start,
+in inline code, after an execution verb, or after a <code>Tests:</code>,
+<code>Command:</code> or <code>Builder:</code> label. Labelled custom builders
+require arguments or a script path. Placeholder values and explicit non-execution
+within the same clause are rejected, including negation around inline code.
+For example, <code>pytest was not run; 3 tests remain.</code> and
+<code>Command: none; 3 passed</code> both fail rule 4. A count alone also fails.
+This is a lexical text check; commands are never executed by the checker,
 and their claimed results are not independently authenticated.</p>
 <h2>Usage</h2>
 <pre>python scripts/governance/check_issue_closures.py --fixture docs/governance/examples/closure-command-evidence.json --csv &lt;output&gt;.csv --markdown &lt;output&gt;.md
