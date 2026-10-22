@@ -25,14 +25,15 @@ from collector_support import (
 MEASURED_PATH = ("scripts", "readiness", "harness-config.yaml")  # in the MEASURED allowlist
 
 
-def _git(ws: Path, *args: str) -> None:
+def _git(ws: Path, *args: str) -> str:
     """Run a git command in the fixture with deterministic identity."""
     env = {**{k: v for k, v in os.environ.items() if k not in GIT_BINDINGS},
            "GIT_AUTHOR_NAME": "t", "GIT_AUTHOR_EMAIL": "t" + "@" + "example.test",
            "GIT_COMMITTER_NAME": "t", "GIT_COMMITTER_EMAIL": "t" + "@" + "example.test",
            "HOME": str(ws.parent), "TEST_ROOT": str(ws.parent)}
-    subprocess.run(["git", "-C", str(ws), *args], env=collector_env(env), check=True,
-                   capture_output=True, timeout=60)
+    result = subprocess.run(["git", "-C", str(ws), *args], env=collector_env(env), check=True,
+                            capture_output=True, text=True, timeout=60)
+    return result.stdout.strip()
 
 
 def _git_fixture(tmp_path: Path) -> Path:
@@ -57,7 +58,7 @@ def _stdout_prov(ws: Path, *args: str, env_extra: dict | None = None) -> dict:
     if env_extra:
         env.update(env_extra)
     res = subprocess.run(
-        ["bash", _bash_path(SCRIPT), "--stdout", "--machine", "dev-primary", *args],
+        ["bash", _bash_path(SCRIPT), "--stdout", "--machine", "machine-a", *args],
         env=collector_env(env), capture_output=True, text=True, timeout=60, check=False)
     assert res.returncode == 0, res.stderr
     return yaml.safe_load(res.stdout)["provenance"]
@@ -84,7 +85,7 @@ def test_collect_behind_main_zero_when_current(tmp_path):
 def test_collect_dirty_true_on_measured_path(tmp_path):
     # modify a tracked MEASURED-allowlist file → dirty true (BC1)
     ws = _git_fixture(tmp_path)
-    (ws.joinpath(*MEASURED_PATH)).write_text("workstations: {dev-primary: {}}\n# changed\n")
+    (ws.joinpath(*MEASURED_PATH)).write_text("workstations: {machine-a: {}}\n# changed\n")
     p = _stdout_prov(ws)
     assert p["dirty"] is True
 
@@ -92,7 +93,7 @@ def test_collect_dirty_true_on_measured_path(tmp_path):
 def test_collect_dirty_false_on_unrelated_edit(tmp_path):
     # edit a tracked file OUTSIDE the measured allowlist (.claude/state/*) → dirty FALSE (BC1)
     ws = _git_fixture(tmp_path)
-    (ws / ".claude" / "state" / "harness-readiness-dev-primary.yaml").write_text(
+    (ws / ".claude" / "state" / "harness-readiness-machine-a.yaml").write_text(
         "overall: fail\npass_count: 99\n")        # tracked, but not a measured path
     p = _stdout_prov(ws)
     assert p["dirty"] is False
@@ -116,12 +117,10 @@ def test_collect_origin_ref_age_recorded(tmp_path):
     assert 0 <= p["origin_ref_age_h"] <= 12
 
 
-def test_collect_fetch_head_freshness_requires_origin_main_sha_match(tmp_path):
-    ws = _git_fixture(tmp_path)
+def _backdate_origin_with_unmatched_fetch(ws: Path) -> None:
     _git(ws, "commit", "-q", "--allow-empty", "-m", "advance local head")
-    head_sha = subprocess.check_output(["git", "-C", str(ws), "rev-parse", "HEAD"], text=True).strip()
-    common_dir = subprocess.check_output(
-        ["git", "-C", str(ws), "rev-parse", "--git-common-dir"], text=True).strip()
+    head_sha = _git(ws, "rev-parse", "HEAD")
+    common_dir = _git(ws, "rev-parse", "--git-common-dir")
     git_dir = Path(common_dir)
     if not git_dir.is_absolute():
         git_dir = ws / git_dir
@@ -131,6 +130,10 @@ def test_collect_fetch_head_freshness_requires_origin_main_sha_match(tmp_path):
     stale_time = time.time() - (26 * 3600)
     os.utime(origin_ref, (stale_time, stale_time))
 
+
+def test_collect_fetch_head_freshness_requires_origin_main_sha_match(tmp_path):
+    ws = _git_fixture(tmp_path)
+    _backdate_origin_with_unmatched_fetch(ws)
     p = _stdout_prov(ws)
     assert p["ahead_main"] == 1
     assert p["origin_ref_age_h"] >= 24
@@ -164,13 +167,14 @@ def test_collect_sha_excluded_from_hash(tmp_path):
     # (which ARE hashed), advance origin/main in lockstep with HEAD — i.e. a normal pull where
     # local and remote move together. Only checkout_sha differs → canonical payload identical.
     ws = _git_fixture(tmp_path)
-    out = ws / ".claude" / "state" / "equality-dev-primary.yaml"
-    env = {"WORKSPACE_HUB": str(ws), "PATH": "/usr/bin:/bin:/usr/local/bin", "HOME": str(ws.parent)}
-    subprocess.run(["bash", _bash_path(SCRIPT), "--machine", "dev-primary"], env=collector_env(env), timeout=60, check=True)
+    assert _stdout_prov(ws)["checkout_sha"] == _git(ws, "rev-parse", "--short", "HEAD")
+    out = ws / ".claude" / "state" / "equality-machine-a.yaml"
+    env = {"WORKSPACE_HUB": str(ws), "PATH": BASH_PATH, "HOME": str(ws.parent)}
+    subprocess.run(["bash", _bash_path(SCRIPT), "--machine", "machine-a"], env=collector_env(env), timeout=60, check=True)
     first_mtime = out.stat().st_mtime_ns
     _git(ws, "commit", "-q", "--allow-empty", "-m", "advance sha")
     _git(ws, "update-ref", "refs/remotes/origin/main", "HEAD")       # origin advances too → ahead=behind=0
-    subprocess.run(["bash", _bash_path(SCRIPT), "--machine", "dev-primary"], env=collector_env(env), timeout=60, check=True)
+    subprocess.run(["bash", _bash_path(SCRIPT), "--machine", "machine-a"], env=collector_env(env), timeout=60, check=True)
     assert out.stat().st_mtime_ns == first_mtime     # only sha changed → must not rewrite
 
 
@@ -178,12 +182,12 @@ def test_collect_dirty_change_forces_rewrite(tmp_path):
     # A1: a clean→dirty transition (same emitted dims) MUST rewrite, so the committed report
     # cannot keep a stale dirty:false that fools the matrix.
     ws = _git_fixture(tmp_path)
-    out = ws / ".claude" / "state" / "equality-dev-primary.yaml"
-    env = {"WORKSPACE_HUB": str(ws), "PATH": "/usr/bin:/bin:/usr/local/bin", "HOME": str(ws.parent)}
-    subprocess.run(["bash", _bash_path(SCRIPT), "--machine", "dev-primary"], env=collector_env(env), timeout=60, check=True)
+    out = ws / ".claude" / "state" / "equality-machine-a.yaml"
+    env = {"WORKSPACE_HUB": str(ws), "PATH": BASH_PATH, "HOME": str(ws.parent)}
+    subprocess.run(["bash", _bash_path(SCRIPT), "--machine", "machine-a"], env=collector_env(env), timeout=60, check=True)
     assert "dirty: false" in out.read_text()
     (ws.joinpath(*MEASURED_PATH)).write_text("workstations: {}\n# now dirty\n")
-    subprocess.run(["bash", _bash_path(SCRIPT), "--machine", "dev-primary"], env=collector_env(env), timeout=60, check=True)
+    subprocess.run(["bash", _bash_path(SCRIPT), "--machine", "machine-a"], env=collector_env(env), timeout=60, check=True)
     assert "dirty: true" in out.read_text()          # transition was hashed → rewrite happened
 
 
@@ -191,9 +195,10 @@ def test_collect_dirty_no_self_trigger(tmp_path):
     # A3: the collector's OWN output (.claude/state/equality-*.yaml) must not make dirty true.
     # dirty is captured pre-write AND .claude/state is outside the measured allowlist.
     ws = _git_fixture(tmp_path)
-    out = ws / ".claude" / "state" / "equality-dev-primary.yaml"
-    env = {"WORKSPACE_HUB": str(ws), "PATH": "/usr/bin:/bin:/usr/local/bin", "HOME": str(ws.parent)}
-    subprocess.run(["bash", _bash_path(SCRIPT), "--machine", "dev-primary"], env=collector_env(env), timeout=60, check=True)
+    assert _stdout_prov(ws)["checkout_sha"] == _git(ws, "rev-parse", "--short", "HEAD")
+    out = ws / ".claude" / "state" / "equality-machine-a.yaml"
+    env = {"WORKSPACE_HUB": str(ws), "PATH": BASH_PATH, "HOME": str(ws.parent)}
+    subprocess.run(["bash", _bash_path(SCRIPT), "--machine", "machine-a"], env=collector_env(env), timeout=60, check=True)
     assert "dirty: false" in out.read_text()         # writing its own report didn't self-dirty
 
 
@@ -244,12 +249,12 @@ def test_collect_origin_ref_age_refreshed_not_frozen(tmp_path):
     # so a stale freshness value can never be frozen into the committed report and fool the
     # matrix. Tamper the committed age to a huge stale value; the next run MUST rewrite it back.
     ws = _git_fixture(tmp_path)
-    out = ws / ".claude" / "state" / "equality-dev-primary.yaml"
-    env = {"WORKSPACE_HUB": str(ws), "PATH": "/usr/bin:/bin:/usr/local/bin", "HOME": str(ws.parent)}
-    subprocess.run(["bash", _bash_path(SCRIPT), "--machine", "dev-primary"], env=collector_env(env), timeout=60, check=True)
+    out = ws / ".claude" / "state" / "equality-machine-a.yaml"
+    env = {"WORKSPACE_HUB": str(ws), "PATH": BASH_PATH, "HOME": str(ws.parent)}
+    subprocess.run(["bash", _bash_path(SCRIPT), "--machine", "machine-a"], env=collector_env(env), timeout=60, check=True)
     assert re.search(r"origin_ref_age_h: \d", out.read_text())          # live numeric value
     out.write_text(re.sub(r"origin_ref_age_h: .*", "origin_ref_age_h: 999", out.read_text()))
-    subprocess.run(["bash", _bash_path(SCRIPT), "--machine", "dev-primary"], env=collector_env(env), timeout=60, check=True)
+    subprocess.run(["bash", _bash_path(SCRIPT), "--machine", "machine-a"], env=collector_env(env), timeout=60, check=True)
     assert "origin_ref_age_h: 999" not in out.read_text()               # refreshed, not frozen
 
 
@@ -260,8 +265,17 @@ def test_fixture_ignores_inherited_repository_bindings(tmp_path, monkeypatch):
     caller = _git_fixture(tmp_path / "caller")
     sentinel = caller.joinpath(*MEASURED_PATH)
     metadata = caller / ".git"
-    before = (sentinel.read_bytes(), (metadata / "HEAD").read_bytes(),
-              (metadata / "index").read_bytes())
+    fetch_head = metadata / "FETCH_HEAD"
+    fetch_head.write_text("caller fetch metadata\n")
+    origin_ref = metadata / "refs" / "remotes" / "origin" / "main"
+
+    def snapshot():
+        return (sentinel.read_bytes(), (metadata / "HEAD").read_bytes(),
+                (metadata / "index").read_bytes(), fetch_head.read_bytes(),
+                fetch_head.stat().st_mtime_ns, origin_ref.read_bytes(),
+                origin_ref.stat().st_mtime_ns)
+
+    before = snapshot()
     monkeypatch.setenv("GIT_DIR", str(metadata))
     monkeypatch.setenv("GIT_WORK_TREE", str(caller))
     monkeypatch.setenv("GIT_COMMON_DIR", str(metadata))
@@ -269,14 +283,20 @@ def test_fixture_ignores_inherited_repository_bindings(tmp_path, monkeypatch):
     assert _stdout_prov(child)["dirty"] is False
     child.joinpath(*MEASURED_PATH).write_text("workstations: {}\n# changed\n")
     assert _stdout_prov(child)["dirty"] is True
-    assert before == (sentinel.read_bytes(), (metadata / "HEAD").read_bytes(),
-                      (metadata / "index").read_bytes())
+    _backdate_origin_with_unmatched_fetch(child)
+    assert before == snapshot(), "freshness setup changed caller Git metadata"
+    assert _stdout_prov(child)["origin_ref_age_h"] >= 24
 
 
 def test_fixture_ignores_user_line_ending_configuration(tmp_path):
     """Independent Git example: clean index -> false, changed tracked bytes -> true."""
     (tmp_path / ".gitconfig").write_text("[core]\n\tautocrlf = true\n")
+    env = collector_env({"HOME": str(tmp_path), "TEST_ROOT": str(tmp_path), "PATH": BASH_PATH})
+    global_config = subprocess.run(["git", "config", "--global", "--get", "core.autocrlf"],
+                                   env=env, capture_output=True, text=True, check=False)
+    assert global_config.returncode == 1, "fixture inherited user line-ending configuration"
     workspace = _git_fixture(tmp_path)
+    assert _git(workspace, "config", "--local", "--get", "core.autocrlf") == "false"
     assert _stdout_prov(workspace)["dirty"] is False
     workspace.joinpath(*MEASURED_PATH).write_text("workstations: {}\n# changed\n")
     assert _stdout_prov(workspace)["dirty"] is True

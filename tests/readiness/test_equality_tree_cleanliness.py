@@ -26,7 +26,7 @@ import sys
 from pathlib import Path
 
 import yaml
-from collector_support import collector_env
+from collector_support import BASH_PATH, bash_path, collector_env
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 RD = REPO_ROOT / "scripts" / "readiness"
@@ -174,8 +174,11 @@ def _home(tmp_path: Path) -> Path:
 def _env(ws: Path, tmp_path: Path, **extra: str) -> dict:
     """Runtime env for a generator run. HOME is redirected so the out-of-tree default
     resolves inside tmp_path — the tests never touch the operator's real state dir."""
+    uv_dir = next((Path(part) for part in os.environ.get("PATH", "").split(os.pathsep)
+                   if part and any((Path(part) / name).is_file() for name in ("uv", "uv.exe"))), None)
+    path = BASH_PATH if uv_dir is None else f"{BASH_PATH}:{bash_path(uv_dir)}"
     env = {
-        "PATH": os.environ.get("PATH", "/usr/bin:/bin"),
+        "PATH": path,
         "HOME": str(_home(tmp_path)),
         "WORKSPACE_HUB": str(ws),
         "EQ_MACHINE": "dev-primary",

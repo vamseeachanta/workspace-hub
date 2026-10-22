@@ -28,12 +28,12 @@ def native_path(path: str) -> Path:
     return Path(path)
 
 
-def collector_env(env: dict[str, str]) -> dict[str, str]:
+def collector_env(env: dict[str, str], *, stub_dirs: tuple[Path, ...] = ()) -> dict[str, str]:
     """Keep fixture files, SDK outcomes and child Git roots independent of the caller.
 
     BASH_ENV overrides the discovery primitives after sourcing the production library.
     The library's existing source guard retains these overrides in the collector.
-    Synthetic import-success tests may prepend their own interpreter stub.
+    Only explicit stub directories may precede the SDK-blocking interpreter shims.
     """
     env = dict(env)
     for name in GIT_BINDINGS:
@@ -65,12 +65,8 @@ def collector_env(env: dict[str, str]) -> dict[str, str]:
         '_ps_install_root() { printf "%s/%s" "$TEST_INSTALL_ROOT" "$1"; }\n',
         encoding="utf-8", newline="\n",
     )
-    # Existing caller stubs keep precedence; these shims replace system interpreters.
-    path = env.get("PATH", "")
-    parts = path.split(":")
-    index = next((i for i, part in enumerate(parts) if part in
-                  ("/mingw64/bin", "/usr/bin", "/bin", "/usr/local/bin")), len(parts))
-    parts.insert(index, bash_path(bindir))
+    parts = [*(bash_path(path) for path in stub_dirs), bash_path(bindir),
+             env.get("PATH", BASH_PATH)]
     env.update(PATH=":".join(parts), BASH_ENV=bash_path(startup),
                TEST_INSTALL_ROOT=bash_path(installs), TMPDIR=bash_path(temp),
                HOME=env.get("HOME", bash_path(home)), PYTHONDONTWRITEBYTECODE="1",
@@ -94,12 +90,12 @@ def _fixture(tmp_path: Path) -> Path:
     (ws / ".claude" / "skills" / "cat" / "skillA").mkdir(parents=True)
     (ws / ".claude" / "skills" / "cat" / "skillA" / "SKILL.md").write_text("x")
     (ws / ".claude" / "dispatch").mkdir(parents=True)
-    (ws / ".claude" / "dispatch" / "dev-primary.yaml").write_text("x")
+    (ws / ".claude" / "dispatch" / "machine-a.yaml").write_text("x")
     (ws / ".claude" / "dispatch" / "multi.yaml").write_text("x")
     (ws / ".claude" / "memory").mkdir(parents=True)
     (ws / ".claude" / "memory" / "context.md").write_text("ctx")
     (ws / ".claude" / "state").mkdir(parents=True)
-    (ws / ".claude" / "state" / "harness-readiness-dev-primary.yaml").write_text(
+    (ws / ".claude" / "state" / "harness-readiness-machine-a.yaml").write_text(
         "overall: fail\npass_count: 17\n")
     # sibling tier-1 repo (not nested) — exercises bare-name + sibling mode
     (tmp_path / "digitalmodel" / ".git").mkdir(parents=True)

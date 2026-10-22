@@ -5,7 +5,7 @@ from __future__ import annotations
 import subprocess
 from pathlib import Path
 
-from collector_support import PROBE_LIB, collector_env
+from collector_support import BASH_PATH, PROBE_LIB, collector_env, native_path
 from collector_support import bash_path as _bash_path
 
 # ── probe-solvers.sh unit semantics (#2849 / PR #2850 decision 2026-05-28) ──────
@@ -21,8 +21,8 @@ def _probe(fn: str, env_extra: dict | None = None, fake_import_ok: bool = False,
     so the OrcFxAPI SDK-present path is exercised without the real SDK installed.
     """
     assert tmp_path is not None
-    env = {"PATH": "/usr/bin:/bin:/usr/local/bin", "TEST_ROOT": str(tmp_path)}
-    path_prefix = ""
+    env = {"PATH": BASH_PATH, "TEST_ROOT": str(tmp_path)}
+    stub_dirs = ()
     if fake_import_ok:
         assert tmp_path is not None
         binp = tmp_path / "bin"
@@ -30,13 +30,13 @@ def _probe(fn: str, env_extra: dict | None = None, fake_import_ok: bool = False,
         py = binp / "python"
         py.write_text("#!/usr/bin/env bash\nexit 0\n")  # any args → success (import ok)
         py.chmod(0o755)
-        path_prefix = f"{_bash_path(binp)}:"
-    env["PATH"] = path_prefix + env["PATH"]
+        stub_dirs = (binp,)
     if env_extra:
         env.update(env_extra)
     res = subprocess.run(
         ["bash", "-c", f'source "{_bash_path(PROBE_LIB)}"; {fn}'],
-        env=collector_env(env), capture_output=True, text=True, timeout=30, check=False)
+        env=collector_env(env, stub_dirs=stub_dirs),
+        capture_output=True, text=True, timeout=30, check=False)
     assert res.returncode == 0, res.stderr
     return res.stdout.strip()
 
@@ -58,9 +58,11 @@ def test_probe_orcawave_env_only_is_present(tmp_path):
 
 def test_probe_ansys_license_env_does_not_upgrade_to_licensed(tmp_path):
     # A license-server env var is recorded as evidence but never upgrades status to licensed.
-    # No ANSYS root on the test host → absent regardless of env (real signal still needed).
-    assert _probe("probe_ansys",
-                  env_extra={"ANSYSLI_SERVERS": "1055@licsrv"}, tmp_path=tmp_path) == "absent"
+    env = collector_env({"TEST_ROOT": str(tmp_path), "PATH": BASH_PATH})
+    (native_path(env["TEST_INSTALL_ROOT"]) / "ansys" / "v252").mkdir(parents=True)
+    license_env = {"ANSYSLI_SERVERS": "1055@licsrv"}
+    assert _probe("probe_ansys", env_extra=license_env, tmp_path=tmp_path) == "present"
+    assert _probe("probe_ansys_evidence", env_extra=license_env, tmp_path=tmp_path) == "env"
 
 
 def test_probe_never_emits_licensed_locally(tmp_path):

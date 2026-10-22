@@ -41,7 +41,7 @@ OK_VERDICTS = {"CONFORMS", "EQUAL", "PARITY", "EXPECTED-DIFF", "EXPECTED-DIVERGE
 
 
 def remediate(dim: str, verdict: str) -> tuple[str, str, bool] | None:
-    """(action, owner, by_design) for a non-OK cell; None if the cell needs no action.
+    """(action, assignee, by_design) for a non-OK cell; None if the cell needs no action.
     by_design=True means the cell can't/shouldn't reach green — it's expected, not a defect."""
     if verdict in OK_VERDICTS:
         return None

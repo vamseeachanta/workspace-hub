@@ -30,7 +30,7 @@ from collector_support import (
 
 def _run(ws: Path, *args: str) -> dict:
     res = subprocess.run(
-        ["bash", _bash_path(SCRIPT), "--stdout", "--machine", "dev-primary", *args],
+        ["bash", _bash_path(SCRIPT), "--stdout", "--machine", "machine-a", *args],
         env=collector_env({"WORKSPACE_HUB": _bash_path(ws), "PATH": BASH_PATH}),
         capture_output=True, text=True, timeout=60, check=False)
     assert res.returncode == 0, res.stderr
@@ -64,7 +64,7 @@ def test_collect_publish_health_uses_working_resolver_and_exact_schema(tmp_path)
     }))
     bin_dir = _uv_stub(tmp_path)
     res = subprocess.run(
-        ["bash", _bash_path(SCRIPT), "--stdout", "--machine", "dev-primary"],
+        ["bash", _bash_path(SCRIPT), "--stdout", "--machine", "machine-a"],
         env=collector_env({"WORKSPACE_HUB": _bash_path(ws), "PATH": f"{_bash_path(bin_dir)}:{BASH_PATH}"}),
         capture_output=True, text=True, timeout=60,
      check=False)
@@ -90,7 +90,7 @@ def test_collect_invalid_publish_health_emits_no_partial_tuple(tmp_path):
     }))
     bin_dir = _uv_stub(tmp_path)
     res = subprocess.run(
-        ["bash", _bash_path(SCRIPT), "--stdout", "--machine", "dev-primary"],
+        ["bash", _bash_path(SCRIPT), "--stdout", "--machine", "machine-a"],
         env=collector_env({"WORKSPACE_HUB": _bash_path(ws), "PATH": f"{_bash_path(bin_dir)}:{BASH_PATH}"}),
         capture_output=True, text=True, timeout=60,
      check=False)
@@ -105,7 +105,7 @@ def test_collect_invalid_publish_health_emits_no_partial_tuple(tmp_path):
 
 def test_collect_emits_valid_yaml(tmp_path):
     d = _run(_fixture(tmp_path))
-    assert d["machine"] == "dev-primary"
+    assert d["machine"] == "machine-a"
     assert set(d["dimensions"]) >= {"compute", "data_access", "harness", "skills",
                                     "kanban", "memory", "behavior", "scheduler",
                                     "provider_harness"}
@@ -113,14 +113,14 @@ def test_collect_emits_valid_yaml(tmp_path):
 
 def test_collect_machine_override(tmp_path):
     res = subprocess.run(
-        ["bash", _bash_path(SCRIPT), "--stdout", "--machine", "licensed-win-2"],
+        ["bash", _bash_path(SCRIPT), "--stdout", "--machine", "machine-b"],
         env=collector_env({"WORKSPACE_HUB": _bash_path(_fixture(tmp_path)), "PATH": BASH_PATH}),
         capture_output=True, text=True, timeout=60, check=False)
-    assert yaml.safe_load(res.stdout)["machine"] == "licensed-win-2"
+    assert yaml.safe_load(res.stdout)["machine"] == "machine-b"
 
 
 def test_collect_public_host_replaces_private_hostname(tmp_path):
-    # The Windows wrapper exports EQ_PUBLIC_HOST=<fleet label>; tracked evidence must
+    # The Windows wrapper exports EQ_PUBLIC_HOST=<public label>; tracked evidence must
     # carry that label, never the private OS hostname.
     ws = _fixture(tmp_path)
     bin_dir = tmp_path / "bin"
@@ -129,13 +129,13 @@ def test_collect_public_host_replaces_private_hostname(tmp_path):
     hostname.write_text("#!/usr/bin/env bash\nprintf '%s\\n' private-box-07\n")
     hostname.chmod(0o755)
     res = subprocess.run(
-        ["bash", _bash_path(SCRIPT), "--stdout", "--machine", "dev-primary"],
+        ["bash", _bash_path(SCRIPT), "--stdout", "--machine", "machine-a"],
         env=collector_env({"WORKSPACE_HUB": _bash_path(ws), "PATH": f"{_bash_path(bin_dir)}:{BASH_PATH}",
-             "EQ_PUBLIC_HOST": "dev-primary"}),
+             "EQ_PUBLIC_HOST": "machine-a"}),
         capture_output=True, text=True, timeout=60, check=False)
     assert res.returncode == 0, res.stderr
     assert "private-box-07" not in res.stdout
-    assert yaml.safe_load(res.stdout)["host"] == "dev-primary"
+    assert yaml.safe_load(res.stdout)["host"] == "machine-a"
 
 
 def test_collect_host_defaults_to_os_hostname_without_public_host(tmp_path):
@@ -146,7 +146,7 @@ def test_collect_host_defaults_to_os_hostname_without_public_host(tmp_path):
     hostname.write_text("#!/usr/bin/env bash\nprintf '%s\\n' linux-box\n")
     hostname.chmod(0o755)
     res = subprocess.run(
-        ["bash", _bash_path(SCRIPT), "--stdout", "--machine", "dev-primary"],
+        ["bash", _bash_path(SCRIPT), "--stdout", "--machine", "machine-a"],
         env=collector_env({"WORKSPACE_HUB": _bash_path(ws), "PATH": f"{_bash_path(bin_dir)}:{BASH_PATH}"}),
         capture_output=True, text=True, timeout=60, check=False)
     assert res.returncode == 0, res.stderr
@@ -194,7 +194,7 @@ def test_collect_data_access_bare_name_and_mode(tmp_path):
 def test_collect_sources_readiness_value(tmp_path):
     # m1: readiness_overall SOURCED from the fixture file; file not modified
     ws = _fixture(tmp_path)
-    rf = ws / ".claude" / "state" / "harness-readiness-dev-primary.yaml"
+    rf = ws / ".claude" / "state" / "harness-readiness-machine-a.yaml"
     before = rf.read_text()
     d = _run(ws)
     assert d["dimensions"]["harness"]["readiness_overall"] == "fail"
@@ -211,7 +211,7 @@ def test_collect_behavior_typed_groups(tmp_path):
 def test_collect_no_forbidden_fields(tmp_path):
     # C4: no tokens, env values, cron lines, or absolute $HOME paths in the emitted YAML
     res = subprocess.run(
-        ["bash", _bash_path(SCRIPT), "--stdout", "--machine", "dev-primary"],
+        ["bash", _bash_path(SCRIPT), "--stdout", "--machine", "machine-a"],
         env=collector_env({"WORKSPACE_HUB": _bash_path(_fixture(tmp_path)), "PATH": BASH_PATH}),
         capture_output=True, text=True, timeout=60, check=False)
     out = res.stdout
@@ -234,11 +234,11 @@ def test_collect_yaml_injection_escaped(tmp_path):
 def test_collect_commit_on_change_idempotent(tmp_path):
     # D1/DC4: two runs with no real change must not rewrite (hash excludes volatile + generated_at)
     ws = _fixture(tmp_path)
-    out = ws / ".claude" / "state" / "equality-dev-primary.yaml"
+    out = ws / ".claude" / "state" / "equality-machine-a.yaml"
     env = {"WORKSPACE_HUB": str(ws), "PATH": "/usr/bin:/bin:/usr/local/bin"}
-    subprocess.run(["bash", _bash_path(SCRIPT), "--machine", "dev-primary"], env=collector_env(env), timeout=60, check=True)
+    subprocess.run(["bash", _bash_path(SCRIPT), "--machine", "machine-a"], env=collector_env(env), timeout=60, check=True)
     first_mtime = out.stat().st_mtime_ns
-    subprocess.run(["bash", _bash_path(SCRIPT), "--machine", "dev-primary"], env=collector_env(env), timeout=60, check=True)
+    subprocess.run(["bash", _bash_path(SCRIPT), "--machine", "machine-a"], env=collector_env(env), timeout=60, check=True)
     assert out.stat().st_mtime_ns == first_mtime         # unchanged content → not rewritten
 
 
@@ -253,8 +253,8 @@ def _atomic_write_env(ws: Path, bindir: Path | None = None) -> dict[str, str]:
 
 def test_collect_atomic_failure_preserves_prior_report(tmp_path):
     ws = _fixture(tmp_path)
-    out = ws / ".claude" / "state" / "equality-dev-primary.yaml"
-    prior = 'generated_at: "prior"\nmachine: "dev-primary"\nsentinel: old\n'
+    out = ws / ".claude" / "state" / "equality-machine-a.yaml"
+    prior = 'generated_at: "prior"\nmachine: "machine-a"\nsentinel: old\n'
     out.write_text(prior)
     bindir = tmp_path / "bin"
     bindir.mkdir()
@@ -262,18 +262,18 @@ def test_collect_atomic_failure_preserves_prior_report(tmp_path):
     fake_mv.write_text("#!/usr/bin/env bash\nexit 19\n")
     fake_mv.chmod(0o755)
     res = subprocess.run(
-        ["bash", _bash_path(SCRIPT), "--machine", "dev-primary"],
+        ["bash", _bash_path(SCRIPT), "--machine", "machine-a"],
         env=collector_env(_atomic_write_env(ws, bindir)), capture_output=True, text=True, timeout=60,
      check=False)
     assert res.returncode != 0
     assert out.read_text() == prior
-    assert not list(out.parent.glob(".equality-dev-primary.yaml.tmp.*"))
+    assert not list(out.parent.glob(".equality-machine-a.yaml.tmp.*"))
 
 
 def test_collect_keeps_old_report_visible_until_atomic_rename(tmp_path):
     ws = _fixture(tmp_path)
-    out = ws / ".claude" / "state" / "equality-dev-primary.yaml"
-    prior = 'generated_at: "prior"\nmachine: "dev-primary"\nsentinel: old\n'
+    out = ws / ".claude" / "state" / "equality-machine-a.yaml"
+    prior = 'generated_at: "prior"\nmachine: "machine-a"\nsentinel: old\n'
     out.write_text(prior)
     bindir = tmp_path / "bin"
     bindir.mkdir()
@@ -288,7 +288,7 @@ def test_collect_keeps_old_report_visible_until_atomic_rename(tmp_path):
     )
     fake_mv.chmod(0o755)
     proc = subprocess.Popen(
-        ["bash", _bash_path(SCRIPT), "--machine", "dev-primary"],
+        ["bash", _bash_path(SCRIPT), "--machine", "machine-a"],
         env=collector_env(_atomic_write_env(ws, bindir)), stdout=subprocess.PIPE,
         stderr=subprocess.PIPE, text=True,
     )
@@ -319,13 +319,13 @@ def test_collect_keeps_old_report_visible_until_atomic_rename(tmp_path):
     assert proc.returncode == 0, (stdout, stderr)
     final = out.read_text()
     parsed = yaml.safe_load(final)
-    assert parsed["machine"] == "dev-primary"
+    assert parsed["machine"] == "machine-a"
     assert "dimensions" in parsed
     assert not read_errors
     assert prior in observations
     assert final in observations
     assert set(observations) <= {prior, final}
-    assert not list(out.parent.glob(".equality-dev-primary.yaml.tmp.*"))
+    assert not list(out.parent.glob(".equality-machine-a.yaml.tmp.*"))
 
 
 SOLVER_NAMES = {"orcaflex", "orcawave", "aqwa", "ansys"}
@@ -358,7 +358,7 @@ def test_collect_emits_schema_v4_with_complete_provider_harness(tmp_path):
 def test_collect_provider_harness_no_forbidden_fields(tmp_path):
     ws = _fixture(tmp_path)
     res = subprocess.run(
-        ["bash", _bash_path(SCRIPT), "--stdout", "--machine", "dev-primary"],
+        ["bash", _bash_path(SCRIPT), "--stdout", "--machine", "machine-a"],
         env=collector_env({
             "WORKSPACE_HUB": _bash_path(ws),
             "PATH": BASH_PATH,
@@ -434,7 +434,7 @@ def test_collect_solvers_present_via_env_before_sandbox(tmp_path):
     owp = tmp_path / "OrcaWaveInstall"
     owp.mkdir()
     res = subprocess.run(
-        ["bash", _bash_path(SCRIPT), "--stdout", "--machine", "dev-primary"],
+        ["bash", _bash_path(SCRIPT), "--stdout", "--machine", "machine-a"],
         env=collector_env({"WORKSPACE_HUB": str(ws), "PATH": "/usr/bin:/bin:/usr/local/bin",
              "ORCAWAVE_PATH": str(owp)}),
         capture_output=True, text=True, timeout=60, check=False)
@@ -450,13 +450,13 @@ def test_collect_solvers_present_via_env_before_sandbox(tmp_path):
 def test_collect_solvers_canonical_hash_includes_block(tmp_path):
     # Toggling a solver status in the committed file is a MEANINGFUL change → rewrite.
     ws = _fixture(tmp_path)
-    out = ws / ".claude" / "state" / "equality-dev-primary.yaml"
+    out = ws / ".claude" / "state" / "equality-machine-a.yaml"
     env = {"WORKSPACE_HUB": str(ws), "PATH": "/usr/bin:/bin:/usr/local/bin"}
-    subprocess.run(["bash", _bash_path(SCRIPT), "--machine", "dev-primary"], env=collector_env(env), timeout=60, check=True)
+    subprocess.run(["bash", _bash_path(SCRIPT), "--machine", "machine-a"], env=collector_env(env), timeout=60, check=True)
     text = out.read_text().replace(
         "{name: orcaflex, status: absent", "{name: orcaflex, status: licensed")
     out.write_text(text)
-    subprocess.run(["bash", _bash_path(SCRIPT), "--machine", "dev-primary"], env=collector_env(env), timeout=60, check=True)
+    subprocess.run(["bash", _bash_path(SCRIPT), "--machine", "machine-a"], env=collector_env(env), timeout=60, check=True)
     # real collection differs from the tampered file → rewritten back to absent
     assert "{name: orcaflex, status: absent" in out.read_text()
 
@@ -465,13 +465,13 @@ def test_collect_commit_on_change_detects_real_drift(tmp_path):
     # DC4: a change to a MEANINGFUL (non-volatile) field MUST trigger a rewrite. Guards the
     # canonical()-grep bug where a volatile field sharing a line masked its neighbors.
     ws = _fixture(tmp_path)
-    out = ws / ".claude" / "state" / "equality-dev-primary.yaml"
+    out = ws / ".claude" / "state" / "equality-machine-a.yaml"
     env = {"WORKSPACE_HUB": str(ws), "PATH": "/usr/bin:/bin:/usr/local/bin"}
-    subprocess.run(["bash", _bash_path(SCRIPT), "--machine", "dev-primary"], env=collector_env(env), timeout=60, check=True)
+    subprocess.run(["bash", _bash_path(SCRIPT), "--machine", "machine-a"], env=collector_env(env), timeout=60, check=True)
     # tamper a meaningful field in the committed file; real collection differs → must rewrite
     text = out.read_text().replace("hermes_home: absent", "hermes_home: present")
     out.write_text(text)
-    subprocess.run(["bash", _bash_path(SCRIPT), "--machine", "dev-primary"], env=collector_env(env), timeout=60, check=True)
+    subprocess.run(["bash", _bash_path(SCRIPT), "--machine", "machine-a"], env=collector_env(env), timeout=60, check=True)
     assert "hermes_home: absent" in out.read_text()      # rewritten back to the real value
 
 
@@ -481,7 +481,7 @@ def test_collect_kanban_queue_order_is_byte_sorted(tmp_path):
     ws = _fixture(tmp_path)
     (ws / ".claude" / "dispatch" / "_leader-state.yaml").write_text("x")
     d = _run(ws)
-    assert d["dimensions"]["kanban"]["dispatch_queues"] == "_leader-state,dev-primary,multi"
+    assert d["dimensions"]["kanban"]["dispatch_queues"] == "_leader-state,machine-a,multi"
 
 
 # ── harness_checkup dimension (#3408) ────────────────────────────────────────
@@ -499,7 +499,7 @@ def test_collect_harness_checkup_failclosed_when_absent(tmp_path):
 def test_collect_harness_checkup_passthrough(tmp_path):
     import json as _json
     ws = _fixture(tmp_path)
-    (ws / ".claude" / "state" / "harness-checkup-dev-primary.json").write_text(_json.dumps({
+    (ws / ".claude" / "state" / "harness-checkup-machine-a.json").write_text(_json.dumps({
         "audited_at": "2026-07-09T12:00:00+00:00", "cc_version": "2.1.205", "cc_latest": "2.1.205",
         "version_current": True, "install_method": "npm-global", "duplicate_installs": 0,
         "settings_parse_ok": True, "broken_agents": 0, "unused_skills": 23, "unused_plugins": 8,
@@ -517,7 +517,7 @@ def test_collect_harness_checkup_type_gated(tmp_path):
     # collector type-gates each field and drops mismatches to null (allowlist-safe by construction).
     import json as _json
     ws = _fixture(tmp_path)
-    (ws / ".claude" / "state" / "harness-checkup-dev-primary.json").write_text(_json.dumps({
+    (ws / ".claude" / "state" / "harness-checkup-machine-a.json").write_text(_json.dumps({
         "audited_at": "2026-07-09T12:00:00+00:00",
         "version_current": "yes",          # wrong type → null
         "duplicate_installs": "lots",       # wrong type → null
