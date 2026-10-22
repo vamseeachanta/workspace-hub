@@ -172,7 +172,7 @@ def _inventory(stage):
     return found
 
 
-def _export_file(stage, entry, records, eligible):
+def _export_file(stage, entry, records, eligible, retained_digests):
     _require(isinstance(entry, dict) and set(entry) == {
         'path', 'role', 'record_ids', 'sha256'}, 'invalid_stage_entry')
     relative = _relative_path(entry['path'])
@@ -184,11 +184,18 @@ def _export_file(stage, entry, records, eligible):
     content = (stage / relative).read_bytes()
     _require(_sha(entry['sha256']) and hashlib.sha256(content).hexdigest() == entry['sha256'],
              'staged_digest_mismatch')
+    # Agent data handling contract, Original retention, rights and publication:
+    # a public export must not relabel known retained raw or archive bytes.
+    _require(entry['sha256'] not in retained_digests, 'retained_bytes_in_stage')
     payload = load_json(content.decode('utf-8'))
     _require(isinstance(payload, dict) and set(payload) == {'records'}
              and isinstance(payload['records'], list), 'invalid_export_payload')
     # Canonical bytes distinguish true from 1, unlike Python object equality.
-    expected = {'records': [records[key] for key in identities]}
+    # Private retention links remain exclusively in the reviewed bundle.
+    expected = {'records': [
+        {field: records[key][field] for field in ('id', 'dependencies', 'payload')}
+        for key in identities
+    ]}
     _require(bundle_digest(payload) == bundle_digest(expected), 'export_record_mismatch')
     return relative, set(identities)
 
@@ -198,8 +205,10 @@ def _stage(bundle, stage, records, eligible):
     _require(isinstance(entries, list), 'invalid_stage_entries')
     found = _inventory(stage)
     declared, exported = set(), set()
+    retained_digests = {original[field] for original in bundle['originals']
+                        for field in ('raw_sha256', 'archive_sha256')}
     for entry in entries:
-        relative, identities = _export_file(stage, entry, records, eligible)
+        relative, identities = _export_file(stage, entry, records, eligible, retained_digests)
         _require(relative not in declared and not identities & exported,
                  'duplicate_export')
         declared.add(relative)

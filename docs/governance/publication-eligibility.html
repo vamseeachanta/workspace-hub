@@ -14,13 +14,18 @@ publish data. This reusable implementation addresses
 issue 3942.</p>
 <h2>Revision history</h2>
 <table><tr><th>Revision</th><th>Date</th><th>Change and reason</th></tr>
-<tr><td>Initial</td><td>2026-10-20</td><td>Define record, dependency and staging checks to prevent deferred material entering public exports.</td></tr></table>
+<tr><td>Initial</td><td>2026-10-20</td><td>Define record, dependency and staging checks to prevent deferred material entering public exports.</td></tr>
+<tr><td>Public projection</td><td>2026-10-22</td><td>Exclude private retention links from public rows and reject known retained bytes, closing two staging gaps.</td></tr></table>
 <h2>Implementation plan</h2>
 <p>The first slice will validate record identity, reviewed decisions and evidence fields.
 The second slice will compute dependency closure and distinguish retained originals from
 eligible exports. The third slice will validate the exact staged JSON files and provide
 an executable example. Tests will precede each implementation increment. Adversarial
 inspection will target approval replay, retained-input leaks and false empty acceptance.</p>
+<p>The staging correction will separate the public record projection from private
+retention metadata, compare every staged digest with both retained digest kinds and
+extend the worked example. Regression cases will cover relationship dependencies,
+inherited parents, missing sources, reversed graph order and closure across files.</p>
 <h2>Contract and method</h2>
 <p>The implementation is <code>scripts/governance/publication_eligibility.py</code>.
 The JSON bundle contains exactly <code>publication</code>, <code>records</code>,
@@ -60,14 +65,30 @@ A digest supplied by the bundle itself does not authenticate human approval.</p>
 <p>The stage is an exclusively owned frozen directory. Every file is declared once with
 <code>path</code>, <code>role</code> equal to <code>eligible_export</code>, ordered
 <code>record_ids</code> and byte <code>sha256</code>. Each UTF-8 JSON file contains exactly
-<code>{"records": [...]}</code>, matching the pinned record objects in declared order.
+<code>{"records": [...]}</code>, matching the public projection of the pinned records
+in declared order. A public row contains exactly <code>id</code>,
+<code>dependencies</code> and <code>payload</code>. The private bundle continues to
+require <code>original_ids</code>; it is omitted from every public row.</p>
+<pre>public(r) = {id: r.id, dependencies: r.dependencies, payload: r.payload}
+retained = {o.raw_sha256, o.archive_sha256 for each retained original o}
+For every staged file f: sha256(f) must not belong to retained.</pre>
+<p>These rules implement the data handling contract's separation of protected original
+retention and public publication. Digest equality identifies known retained bytes even
+when an entry claims an export role. Both digest kinds are checked independently;
+neither an archive digest nor an export digest establishes the raw-source digest.
 Symlinks, special files, ambiguous relative paths, undeclared files, duplicate exports,
 changed bytes, retained-original roles and payload mismatches block acceptance.
 Raw originals, private manifests and the bundle itself stay outside public staging.</p>
-<p>Only authorized opaque identifiers may appear in exported records, including
-<code>original_ids</code>. The aggregate receipt exposes counts and fixed error codes,
+<p>Only authorized public identifiers may appear in exported record IDs and dependency
+links. Retention identifiers and evidence references remain in the private bundle.
+The aggregate receipt exposes counts and fixed error codes,
 never private identifiers, paths, payloads or exception messages. Deferred-record
 identity accounting remains in the private bundle; public reporting uses deferred counts.</p>
+<p>This changes the accepted public row format: producers that previously serialized
+complete private records shall omit <code>original_ids</code>, regenerate export hashes
+and obtain approval of the changed bundle. Existing approval digests cannot be reused.
+Additional private fields in staged rows fail with <code>export_record_mismatch</code>;
+known retained bytes fail with <code>retained_bytes_in_stage</code>.</p>
 <h2>Worked example: inputs, method and answer</h2>
 <p><code>examples/governance/publication_eligibility_example.py</code> writes synthetic
 inputs into a new explicitly selected directory and prints the candidate bundle digest.
@@ -75,6 +96,14 @@ It creates no approval record. The graph is <code>source -&gt; entity -&gt; cost
 (where each right-hand node depends on its predecessor), plus <code>independent</code>.
 Source is unresolved; all other decisions are synthetically eligible. Hand evaluation
 defers source, then entity, then cost, leaving only independent eligible.</p>
+<table><tr><th>Input record</th><th>Dependencies</th><th>Decision</th><th>Result</th></tr>
+<tr><td>source</td><td>none</td><td>unresolved</td><td>deferred</td></tr>
+<tr><td>entity</td><td>source</td><td>eligible derivative</td><td>deferred</td></tr>
+<tr><td>cost</td><td>entity</td><td>eligible derivative</td><td>deferred</td></tr>
+<tr><td>independent</td><td>none</td><td>eligible derivative</td><td>exported</td></tr></table>
+<p>The private bundle links each record to <code>synthetic-input</code> and separately
+declares raw and archive digests. The public file contains only:</p>
+<pre>{"records":[{"id":"independent","dependencies":[],"payload":{"note":"synthetic example"}}]}</pre>
 <pre>python examples/governance/publication_eligibility_example.py --output example
 # Inspect example/bundle.json and obtain approval of its exact digest.
 python scripts/governance/publication_eligibility.py \
@@ -101,6 +130,9 @@ provided by Python hashlib.</li>
 <p>The regression suite covers valid exports, source and parent deferral, missing
 nodes, cycles, empty exports, permission evidence, approval mutations, original-retention
 gaps, exact staging, duplicate JSON keys, non-finite values and the executable example.
+Additional regressions exercise private-link rejection, raw and archive byte rejection,
+cross-file dependencies, relationship and inherited-parent deferral, missing sources
+and graph-order independence. Expected sets are derived by hand in test docstrings.
 Inline adversarial inspection identified destination replay; destination binding and
 regressions address it. No independent-provider verdict is claimed.</p>
 <h2>Known limits and follow-up</h2>
@@ -109,7 +141,10 @@ producer, authenticated approval transport, access to private retention evidence
 source-specific rights decisions remain external responsibilities. Complete inventory
 and lineage are trusted adapter inputs. The validator cannot discover concealed
 relationships, classify arbitrary payload rights, redact free text or establish that
-original bytes exist from a declaration. A hostile concurrent writer is outside the
+original bytes exist from a declaration. The public projection removes structural
+retention links; it cannot detect private text embedded in a payload or record ID.
+Digest exclusion detects exact declared bytes, not rewritten or undeclared originals.
+A hostile concurrent writer is outside the
 frozen-stage contract; acceptance shall be bound to the same bytes actually published.
 No data is moved, deleted or published, and no third-party workflow is changed.</p>
 </body></html>
