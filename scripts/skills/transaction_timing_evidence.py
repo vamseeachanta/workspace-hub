@@ -34,6 +34,8 @@ def policy_digest(policy):
 
 def validate_policy(policy, binding):
     """Policy identity binds boundaries and allowances before measurement."""
+    if not isinstance(binding, dict):
+        raise ValueError("invalid source/target/policy binding")
     if set(binding) != BINDING_KEYS or any(
         not isinstance(v, str) or not re.fullmatch(r"[0-9a-f]{64}", v)
         for v in binding.values()

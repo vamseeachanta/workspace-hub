@@ -171,6 +171,28 @@ def test_cli_read_only_and_duplicate_json_rejected(tmp_path):
     assert "duplicate" in result.stdout
 
 
+def test_cli_binding_array_is_invalid_packet(tmp_path):
+    data = packet()
+    data["binding"] = ["source_sha256", "target_sha256", "policy_sha256"]
+    source = tmp_path / "evidence.json"
+    source.write_text(json.dumps(data))
+    result = subprocess.run([sys.executable, "-B", str(MODULE), str(source)],
+                            capture_output=True, text=True, check=False)
+    assert result.returncode == 2
+    assert json.loads(result.stdout)["status"] == "NOT_EVALUATED"
+    assert "Traceback" not in result.stderr
+
+
+@pytest.mark.parametrize("binding", [
+    ["source_sha256", "target_sha256", "policy_sha256"], [], "", None, 1, True,
+])
+def test_nonobject_binding_rejected(binding):
+    data = packet()
+    data["binding"] = binding
+    with pytest.raises(ValueError, match="invalid source/target/policy binding"):
+        evaluate(data)
+
+
 @pytest.mark.parametrize("field,value", [
     ("cap_s", -1), ("cap_s", True), ("basis_ref", ""),
     ("checkpoints", []),
