@@ -7,7 +7,7 @@ set -euo pipefail
 
 REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
 LOGS_DIR="${REPO_ROOT}/logs/hooks"
-REPORTS_DIR="${REPO_ROOT}/logs/compliance"
+REPORTS_DIR="${COMPLIANCE_REPORTS_DIR:-${REPO_ROOT}/logs/compliance}"
 
 mkdir -p "$REPORTS_DIR"
 
@@ -110,7 +110,19 @@ PY
 get_recent_commits() {
   local since
   since="$(date -d "-${WINDOW_HOURS} hours" -Iseconds 2>/dev/null || date -v-${WINDOW_HOURS}H -Iseconds 2>/dev/null || echo "2026-04-06T00:00:00")"
-  git log --since="$since" --format='%H %s' 2>/dev/null || true
+  if git rev-parse --verify HEAD >/dev/null 2>&1; then
+    git log --since="$since" --format='%H %s'
+  else
+    # An unborn branch is a legitimate empty window, not a history read error.
+    local head_ref status
+    head_ref="$(git symbolic-ref --quiet HEAD 2>/dev/null)" || return 1
+    if git show-ref --verify --quiet "$head_ref"; then
+      return 1
+    else
+      status=$?
+      [[ "$status" -eq 1 ]]
+    fi
+  fi
 }
 
 classify_commit() {
@@ -118,18 +130,19 @@ classify_commit() {
   local lower
   lower="$(echo "$msg" | tr '[:upper:]' '[:lower:]')"
   
-  # Skip: docs, chore, test, ci, style, sync, merge, revert, build, feat(skill), feat:wiki, feat:email  
-  if echo "$lower" | grep -qE '^(docs|chore|test|ci|style|sync|merge|revert|build)\('; then
+  # Repository policy: docs/methodology/compliance-dashboard.md (2026),
+  # How Compliance is Calculated. Accept scoped/unscoped and breaking subjects.
+  if echo "$lower" | grep -qE '^(docs|chore|test|ci|style|sync|merge|revert|build)(\([^)]*\))?!?:[[:space:]]|^(merge|revert)[[:space:]]'; then
     echo "skip"
     return
   fi
-  if echo "$lower" | grep -qE '^feat\((skill|email|wiki)'; then
+  if echo "$lower" | grep -qE '^feat\((skill|email|wiki)(/[^)]*)?\)!?:[[:space:]]'; then
     echo "skip"
     return
   fi
   
   # Needs review: feat, fix, refactor, perf, security (excluding skip patterns above)
-  if echo "$lower" | grep -qE '^(feat|fix|refactor|perf|security)\('; then
+  if echo "$lower" | grep -qE '^(feat|fix|refactor|perf|security)(\([^)]*\))?!?:[[:space:]]'; then
     # Additional check: is this an engineering-critical commit?
     if echo "$lower" | grep -qE 'cat:engineering|cat:data-pipeline|engineering|calculation|pipeline|orcaflex|riser|mooring|fdas'; then
       echo "engineering"
@@ -158,7 +171,10 @@ check_commit_reviewed() {
 # ── Main Analysis ───────────────────────────────────────────────────────
 main() {
   local commits
-  commits="$(get_recent_commits)"
+  commits="$(get_recent_commits)" || {
+    echo "ERROR: Could not read commit history" >&2
+    return 1
+  }
   local stage_prompt_drift_json
   stage_prompt_drift_json="$(stage_prompt_drift_summary_json)"
   
