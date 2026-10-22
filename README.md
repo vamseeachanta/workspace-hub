@@ -140,3 +140,11 @@ This workspace includes automated code review workflows:
 ---
 
 *Repository Management Hub - Keeping your projects organized*
+
+## Golden provenance
+
+The Level 2 [golden provenance checker](scripts/enforcement/check-golden-provenance.py)
+requires a comparator class for committed golden and baseline directories.
+Missing or invalid classes fail; `archived-run` and `none` warn.
+See the [declaration contract and worked example](docs/standards/golden-provenance.md)
+for discovery limits and executable checks of behavioral claims.
