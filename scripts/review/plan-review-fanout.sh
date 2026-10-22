@@ -32,6 +32,10 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# Refuse interrupted preparation before review metadata or broad Git inspection.
+# shellcheck source=scripts/lib/worktree-index.sh
+source "$SCRIPT_DIR/../lib/worktree-index.sh"
+worktree_index_preflight "$PWD" >&2
 # shellcheck source=/dev/null
 source "$SCRIPT_DIR/lib/plan-file-parse.sh"
 
