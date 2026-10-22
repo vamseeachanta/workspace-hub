@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Python replay import evidence</title>
+<style>
+body { max-width: 58rem; margin: 2rem auto; padding: 0 1rem; font-family: sans-serif; line-height: 1.5; }
+pre { overflow: auto; padding: 1rem; background: #f2f4f6; }
+table { border-collapse: collapse; width: 100%; }
+td, th { text-align: left; border: 1px solid #aaa; padding: .5rem; }
+code { overflow-wrap: anywhere; }
+</style>
+</head>
+<body>
+<h1>Python replay import evidence</h1>
+<p>The recorder captures separate production and test import observations, bundles
+observed project sources, and retains commands, output digests and frozen inputs.
+Verification checks a separately retained receipt digest against the bundle and
+current checkout. These observations support review of the executed Python paths;
+they do not qualify numerical results or establish unexecuted-path coverage.</p>
+<h2>Revision history</h2>
+<table><tr><th>Revision</th><th>Date</th><th>Change and reason</th></tr>
+<tr><td>Initial</td><td>2026-10-22</td><td>Import-derived replay evidence replaces an unauthenticated filename inventory.</td></tr></table>
+<p>Table 1. Document revision history.</p>
+<h2>Scope and method</h2>
+<p>Each command runs sequentially in a fresh Python interpreter. Source-loader and
+profile observations retain package initializers, function-local imports, dynamic
+imports and modules removed from <code>sys.modules</code>. The final module table
+adds imported sources that contain no Python calls. Flat and conventional
+<code>src</code> layouts are recognized. Project module names observed outside the
+owning checkout refuse an exact-current observation.</p>
+<p>All checkout Python source bytes and declared inputs are frozen before either
+command. Observed source digests are compared with this snapshot, and all checkout
+Python files, input bytes and Git HEAD are checked after each command. Observed
+sources are copied from the frozen snapshot into the bundle. The recorder bypasses
+project bytecode caches through <code>SourceFileLoader</code> so reviewed source
+bytes supply standard source imports.</p>
+<p>The digest method is raw-byte SHA-256, following the Python standard-library
+<a href="https://docs.python.org/3/library/hashlib.html">hashlib documentation</a>.
+Observation interfaces follow
+<a href="https://docs.python.org/3/library/sys.html#sys.setprofile">sys.setprofile</a>
+and <a href="https://docs.python.org/3/library/importlib.html#importlib.machinery.SourceFileLoader">SourceFileLoader</a>.
+These public documentation pages were checked on 2026-10-22. No engineering
+coefficients, equations or numerical acceptance limits are introduced.</p>
+<h2>Worked synthetic example</h2>
+<p>Create a disposable checkout with the following literal inputs. The integer is
+an arbitrary fixture marker; it is not an engineering constant.</p>
+<pre>sample/__init__.py:  (empty file)
+sample/helper.py:    VALUE = 7
+sample/main.py:
+    def run():
+        from .helper import VALUE
+        print(VALUE)
+    run()
+test_run.py:
+    def test_value():
+        from sample.helper import VALUE
+        assert VALUE == 7
+input.json:          {"synthetic": true}</pre>
+<p>From the repository containing the recorder, set <code>CHECKOUT</code> to that
+disposable checkout and <code>BUNDLE</code> to a new directory outside it. The
+following shell commands illustrate capture and verification. The receipt digest
+printed by capture shall be retained separately as <code>PIN</code> for review.</p>
+<pre>python scripts/review/python_replay.py capture \
+  --root "$CHECKOUT" --bundle "$BUNDLE" \
+  --production '["-m", "sample.main"]' \
+  --tests '["-m", "pytest", "test_run.py", "-q", "-p", "no:cacheprovider"]' \
+  --input input.json
+python scripts/review/python_replay.py verify \
+  --root "$CHECKOUT" --bundle "$BUNDLE" --receipt-sha256 "$PIN"</pre>
+<table>
+<tr><th>Run</th><th>Expected project source set</th><th>Expected output</th></tr>
+<tr><td>Production</td><td>sample/__init__.py, sample/main.py, sample/helper.py</td><td>7 followed by a newline</td></tr>
+<tr><td>Tests</td><td>test_run.py, sample/__init__.py, sample/helper.py</td><td>One passing pytest test</td></tr>
+</table>
+<p>Table 2. Independently enumerated expected results: the main module calls the
+helper import, and the test imports the helper directly; both require the parent
+initializer. Each set contains three files by direct counting of these paths.</p>
+<p><code>tests/review/test_python_replay.py</code> executes this example and asserts
+both inventories, the marker output and the input digest. Additional synthetic
+cases remove a helper or parent initializer from the bundle, change sources,
+import from another checkout, tamper with captured output and launch unsupported
+threads or subprocesses. Synthetic checks remain separate from engineering evidence.</p>
+<h2>Bundle contract and review</h2>
+<ul>
+<li><code>receipt.json</code> contains schema, revision, recorder digest, separate
+run inventories, exact commands, interpreter/version observations, input/source
+hashes, output hashes, limitations and errors.</li>
+<li><code>sources/</code> and <code>inputs/</code> retain original bytes at
+checkout-relative paths. Each run retains stdout, stderr and its runtime inventory.</li>
+<li>The externally retained receipt digest authenticates the expected manifest
+bytes only. A receipt that is edited to omit an imported helper fails this pin.</li>
+<li>Verification rechecks bundle bytes, current checkout sources, input digests,
+HEAD and recorder digest. A changed file requires replay and renewed review.</li>
+<li>The existing <code>scripts/review/build-review-packet.py</code> can inline
+bundled source text for a reviewer. Review shall include the pinned receipt,
+source union, inputs and captured evidence; a test count alone is insufficient.</li>
+</ul>
+<h2>Known limits and disposition</h2>
+<p><code>exact_current</code> denotes agreement of the recorded file observations
+and successful command exits within the stated execution scope. It does not mean
+that an independent review or engineering acceptance has passed. A null revision
+means Git revision identity is unavailable; such a bundle cannot substantiate an
+exact Git-revision claim. Dirty files are identified by their source hashes rather
+than being inferred from HEAD.</p>
+<p>Only trusted, single-process, single-threaded Python source commands are
+supported. Observed additional threads, child processes and project extension or
+bytecode-only modules refuse exact-current observations. Native libraries loaded
+by external dependencies, custom loaders, generated code, startup hooks, environment
+identity and file reads not declared as inputs are not qualified. External modules
+are recorded with observed paths and installed distribution versions where a
+mapping exists, plus the interpreter version; they are not bundled project source.
+An absent distribution mapping does not establish a dependency version.</p>
+<p>The recorder is not a security boundary. A target that tampers with tracing or
+receipts can invalidate observation. Before/after hashing cannot exclude every
+transient edit restored between observations. Imports under an unrelated alias
+cannot reliably establish project ownership. Packaging layouts other than flat
+or conventional src layouts require separate qualification. Checkout scans exclude
+Git metadata, standard virtual environments, node_modules and bytecode caches;
+symlinked Python files outside the checkout are refused.</p>
+<p>Commands are not retried automatically. Each attempt requires a new bundle
+folder, preserving previous evidence. Bundles may contain sensitive paths and raw
+output; public distribution requires an independent content review. The executable
+receipts are retained evidence, not substitutes for authorization.</p>
+<p>Requirement basis: repository issue 3861, concerning import-closure evidence.
+The linked numerical campaign supplies the defect motivation only; no solver is
+invoked and no solver-specific acceptance criterion is changed.</p>
+</body>
+</html>
