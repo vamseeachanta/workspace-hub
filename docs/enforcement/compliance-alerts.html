@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<title>Compliance alert interpretation</title>
+<body>
+<h1>Compliance alert interpretation</h1>
+<p>The cron wrapper reads the dashboard's top-level JSON metrics. Human-readable
+text and nested stage-prompt verdicts are excluded from metric selection.
+Invalid metrics or an execution-status mismatch produce an error exit before
+GitHub access. A window containing no reviewable commits produces no alert.</p>
+<h2>Revision history</h2>
+<table><tr><th>Revision</th><th>Date</th><th>Change and reason</th></tr>
+<tr><td>1</td><td>2026-10-22</td><td>Document structured parsing and empty-window handling to prevent misleading alerts.</td></tr></table>
+<h2>Method and sources</h2>
+<p>The existing <a href="../../scripts/enforcement/compliance-dashboard.sh">dashboard</a>
+defines reviewable = total − skipped and the integer percentage
+floor(100 × reviewed / reviewable). For a zero denominator, the dashboard stores
+zero and returns PASS; cron treats this as no reviewable work, rather than a
+measured failure rate. Count identities and the dashboard verdict are validated
+by <a href="../../scripts/enforcement/compliance_report.py">the parser</a>.</p>
+<p>The threshold table in issue 3693 and the existing
+<a href="../../scripts/enforcement/compliance-cron.sh">cron policy</a>
+supply the alert boundaries: below 30% critical; 30% to below 50% high;
+50% to below 80% medium; at least 80% no alert. These are repository policy
+values, not engineering acceptance limits. Alert policy remains separate from
+the dashboard's configurable pass threshold.</p>
+<h2>Worked examples</h2>
+<table><tr><th>Total commits</th><th>Skipped</th><th>Reviewed</th><th>Unreviewed</th><th>Method</th><th>Answer</th></tr>
+<tr><td>9</td><td>8</td><td>0</td><td>1</td><td>floor(100 × 0 / (9 − 8))</td><td>0%; critical alert</td></tr>
+<tr><td>11</td><td>8</td><td>1</td><td>2</td><td>floor(100 × 1 / (11 − 8))</td><td>33%; high alert</td></tr>
+<tr><td>6</td><td>6</td><td>0</td><td>0</td><td>Zero reviewable commits</td><td>No alert; no measured review rate</td></tr></table>
+<p>Table 1. Synthetic inputs with independent hand calculations; no historical review qualification is implied.</p>
+<h2>Verification and limits</h2>
+<p>The parser and dry-run cron tests cover nested verdicts, missing and malformed
+reports, inconsistent counts, threshold boundaries, no-reviewable windows, and
+execution failures. GitHub commands are stubbed and mutation attempts are rejected.
+Run the compliance cron and dashboard tests in tests/enforcement.</p>
+<p>The dashboard's existing commit classification and review-evidence heuristics
+are unchanged. In particular, a review-related word in a commit message is not
+independent proof of review. Historical commit reviews, bypass investigation,
+weekly aggregation and independent provider review remain to be assessed.
+This change does not establish restored review compliance or close the alert.</p>
+</body>
+</html>
