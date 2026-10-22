@@ -618,7 +618,7 @@ orcaflex_models:
   standards: [DNV-OS-F101, DNV-RP-F110]
   host: dev-secondary
   file_count: 1514
-  portability: direct
+  portability: aliased  # subproject names are display aliases; the real source paths are not recorded here
   subprojects:
     - name: SubprojA
       path: /mnt/remote/dev-secondary/dde/Orcaflex/611 the pipelay client S Lay Installation/SubprojA/Latest
