@@ -102,6 +102,8 @@ def _assert_path_allowlist_is_narrow(paths: list[str]) -> None:
             raise AssertionError(f"path allow-list entry is not anchored: {pattern}")
         if not EXACT_PATH_RE.fullmatch(pattern):
             raise AssertionError(f"path allow-list entry contains wildcard syntax: {pattern}")
+        if re.fullmatch(r"\^[^/]+/\$?", pattern):
+            raise AssertionError("path allow-list directory is not approved")
         if _path_is_directory_prefix(pattern):
             if pattern not in ALLOWED_DIRECTORY_PATHS:
                 raise AssertionError(f"path allow-list directory is not approved: {pattern}")
@@ -117,6 +119,57 @@ def _assert_gitleaksignore_fingerprints(text: str) -> None:
             TREE_FINGERPRINT_RE.fullmatch(line) or HISTORY_FINGERPRINT_RE.fullmatch(line)
         ):
             raise AssertionError("gitleaksignore must contain only fingerprints")
+
+
+def _assert_reason_groups(text: str) -> None:
+    reason = False
+    entries = False
+    for number, raw in enumerate(text.splitlines(), start=1):
+        line = raw.strip()
+        if not line:
+            reason = entries = False
+        elif line.startswith("#"):
+            if entries:
+                reason = entries = False
+            if line.startswith("# Reason:") and line.removeprefix("# Reason:").strip():
+                reason = True
+        else:
+            if not reason:
+                raise AssertionError(f"fingerprint group needs a reason at line {number}")
+            entries = True
+
+
+def _assert_scan_provenance(text: str) -> None:
+    plain = " ".join(re.sub(r"<[^>]+>", " ", text).split())
+    if ("gitleaks dir . --config .gitleaks.toml" not in plain
+            or not re.search(r"Configuration revision:\s+[0-9a-f]+\b", plain)):
+        raise AssertionError("scan provenance needs a command and configuration revision")
+
+
+def _assert_path_reasons(text: str) -> None:
+    in_allowlist = in_paths = False
+    previous = ""
+    checked: list[str] = []
+    for number, raw in enumerate(text.splitlines(), start=1):
+        line = raw.strip()
+        if line.startswith("[") and not in_paths:
+            in_allowlist = line == "[allowlist]"
+        elif in_allowlist and re.fullmatch(r"paths\s*=\s*\[", line):
+            in_paths = True
+        elif in_paths and line == "]":
+            in_paths = False
+        elif in_paths and line and not line.startswith("#"):
+            if not previous.startswith("#") or not previous[1:].strip():
+                raise AssertionError(f"allow-list path needs a reason at line {number}")
+            # One entry per line makes the comment-to-path association unambiguous.
+            values = tomllib.loads("values = [" + line + "]")["values"]
+            if len(values) != 1:
+                raise AssertionError("each allow-list path needs its own reason")
+            checked.extend(values)
+        previous = line
+    expected = tomllib.loads(text).get("allowlist", {}).get("paths", [])
+    if checked != expected:
+        raise AssertionError("allow-list paths need individual lines and reason comments")
 
 
 def test_gitleaks_config_loads_default_rules() -> None:
@@ -437,3 +490,97 @@ def test_gitleaks_config_rejects_rule_tables(rule_id: str) -> None:
             f'id = "{rule_id}"\nregex = "example"\n')
     with pytest.raises(AssertionError, match="custom rules"):
         _load_config(text)
+
+
+@pytest.mark.parametrize("text", [
+    '[extend]\nuseDefault = true\ndisabledRules = ["generic-api-key"]\n',
+    '[extend]\nuseDefault = true\npath = "replacement.toml"\n',
+    '[extend]\nuseDefault = true\nunknown = true\n',
+    '[extend]\n',
+    '[extend]\nuseDefault = false\n',
+    '[extend]\nuseDefault = true\n[[rules]]\nid = "generic-api-key"\n',
+    '[extend]\nuseDefault = true\n[[rules]]\nid = "new-example"\n',
+])
+def test_temporary_config_rejects_rule_replacement(tmp_path: Path, text: str) -> None:
+    """Expected rejection: issue 4069 item 1, exact extension and no rule tables.
+
+    The colliding identifier is from config/gitleaks.toml, generic-api-key,
+    at https://github.com/gitleaks/gitleaks/tree/v8.21.2. Rejecting every
+    custom table also protects defaults added by future scanner releases.
+    TOML tables and booleans follow https://toml.io/en/v1.0.0.
+    """
+    config = tmp_path / "config.toml"
+    config.write_text(text, encoding="utf-8")
+    with pytest.raises(AssertionError):
+        _load_config(config.read_text(encoding="utf-8"))
+
+
+def test_ignore_groups_have_adjacent_reasons() -> None:
+    """Issue 4069 item 2: each fingerprint group needs an explicit reason."""
+    _assert_reason_groups((ROOT / ".gitleaksignore").read_text(encoding="utf-8"))
+
+
+@pytest.mark.parametrize("text", [
+    "file:generic-api-key:1\n",
+    "# Group title only\nfile:generic-api-key:1\n",
+    "# Reason: documentation example\na:generic-api-key:1\n\nb:generic-api-key:2\n",
+    "# Reason: fixture\na:generic-api-key:1\n# Another group\nb:generic-api-key:2\n",
+    "# Reason: \nfile:generic-api-key:1\n",
+])
+def test_ignore_groups_reject_missing_reasons(text: str) -> None:
+    with pytest.raises(AssertionError, match="reason"):
+        _assert_reason_groups(text)
+
+
+def test_ignore_group_reason_covers_multiple_entries() -> None:
+    _assert_reason_groups("# Reason: documentation example\n"
+                          "a:generic-api-key:1\nb:generic-api-key:2\n")
+
+
+def test_scan_note_records_command_configuration_revision_and_status() -> None:
+    """Provenance comes from pull request 4051 and issue 4069 item 3."""
+    _assert_scan_provenance((ROOT / "docs/security/secret-scanning-notes.html")
+                            .read_text(encoding="utf-8"))
+
+
+@pytest.mark.parametrize("missing", ["command", "revision"])
+def test_scan_provenance_rejects_missing_basis(missing: str) -> None:
+    command = "" if missing == "command" else "gitleaks dir . --config .gitleaks.toml"
+    revision = "" if missing == "revision" else "Configuration revision: 9b745efc"
+    with pytest.raises(AssertionError, match="provenance"):
+        _assert_scan_provenance(f"{command} {revision} NOT_EVALUATED")
+
+
+def test_allowlist_paths_have_individual_reasons() -> None:
+    """Each path needs an adjacent reason under the requested hygiene contract."""
+    _assert_path_reasons((ROOT / ".gitleaks.toml").read_text(encoding="utf-8"))
+
+
+@pytest.mark.parametrize("reason", ["", "#\n", "# Reason elsewhere\n\n"])
+def test_allowlist_paths_reject_missing_adjacent_reason(reason: str) -> None:
+    with pytest.raises(AssertionError, match="reason"):
+        _assert_path_reasons("[allowlist]\npaths = [\n" + reason
+                             + "'''^docs/example\\.md$''',\n]\n")
+
+
+def test_allowlist_reason_does_not_cover_next_path() -> None:
+    with pytest.raises(AssertionError, match="reason"):
+        _assert_path_reasons("[allowlist]\npaths = [\n# Example documentation\n"
+                             "'''^docs/first$''',\n'''^docs/second$''',\n]\n")
+
+
+def test_allowlist_accepts_individual_reason() -> None:
+    _assert_path_reasons("[allowlist]\npaths = [\n# Reviewed example documentation\n"
+                         "'''^docs/example\\.md$''',\n]\n")
+
+
+def test_allowlist_rejects_exact_top_level_directory() -> None:
+    with pytest.raises(AssertionError, match="not approved"):
+        _assert_path_allowlist_is_narrow(["^docs/$"])
+
+
+def test_scanner_regressions_are_collected_by_ci() -> None:
+    workflow = (ROOT / ".github/workflows/baseline-check.yml").read_text(encoding="utf-8")
+    for test_file in ["test_gitleaks_config.py", "test_gitleaks_wrapper.py",
+                      "test_gitleaks_runtime.py"]:
+        assert "tests/quality/" + test_file in workflow

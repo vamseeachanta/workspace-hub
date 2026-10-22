@@ -56,6 +56,12 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
+# Require the shared configuration; never fall back to implicit discovery.
+if [[ ! -f "${GITLEAKS_CONFIG}" || ! -r "${GITLEAKS_CONFIG}" ]]; then
+  echo "ERROR: required scanner configuration is missing or unreadable" >&2
+  exit 1
+fi
+
 # ---------------------------------------------------------------------------
 # Verify gitleaks is available
 # ---------------------------------------------------------------------------
@@ -90,24 +96,22 @@ scan_repo() {
     baseline_arg=(--baseline-path "${baseline}")
   fi
 
-  local tmpout
-  tmpout=$(mktemp)
-
   # Use gitleaks protect --staged for pre-commit staged-files check;
   # use gitleaks detect (without --no-git) for full git history scan.
+  # Full redaction: Gitleaks v8.21.2 README.md, --redact (100 percent).
+  # Withhold raw diagnostics as well: parser errors can quote invalid input.
   if gitleaks detect \
       --source "${repo_path}" \
       --config "${GITLEAKS_CONFIG}" \
       "${baseline_arg[@]}" \
       --exit-code 1 \
-      > "$tmpout" 2>&1; then
+      --redact=100 \
+      > /dev/null 2>&1; then
     echo "PASS: ${repo_name}"
-    rm -f "$tmpout"
     return 0
   else
     echo "FAIL: ${repo_name}"
-    cat "$tmpout"
-    rm -f "$tmpout"
+    echo "  Finding or scanner error; raw diagnostic output withheld."
     return 1
   fi
 }
