@@ -3,20 +3,18 @@ from __future__ import annotations
 
 import csv
 import json
-from pathlib import Path
 import re
 import shutil
 import subprocess
 import sys
+from pathlib import Path
 
 import pytest
-
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "scripts/governance"))
 
 import check_issue_closures as checker
-
 
 FIXTURE = ROOT / "tests/governance/fixtures/issue-closure-cases.json"
 
@@ -214,13 +212,19 @@ def test_paginated_search_fails_when_total_exceeds_items(monkeypatch, tmp_path):
         checker.collect_live("org/repo", tmp_path, closed_from="2026-01-01", closed_to="2026-01-02")
 
 
-def test_paginated_search_decodes_concatenated_object_pages(monkeypatch, tmp_path):
+def test_paginated_search_decodes_individually_counted_object_pages(monkeypatch, tmp_path):
     page1 = {"total_count": 101, "items": [{"number": number} for number in range(1, 101)]}
     page2 = {"total_count": 101, "items": [{"number": 101}]}
 
     def fake_run(argv, **kwargs):
-        assert "--paginate" in argv
-        return subprocess.CompletedProcess(argv, 0, stdout=json.dumps(page1) + json.dumps(page2), stderr="")
+        assert "--include" in argv
+        assert "--paginate" not in argv
+        if "page=2" in argv[-1]:
+            stdout = "HTTP/2.0 200 OK\n\n" + json.dumps(page2)
+        else:
+            stdout = ('HTTP/2.0 200 OK\nLink: <https://api.github.com/search/issues?page=2>; rel="next"\n\n'
+                      + json.dumps(page1))
+        return subprocess.CompletedProcess(argv, 0, stdout=stdout, stderr="")
 
     monkeypatch.setattr(checker.subprocess, "run", fake_run)
     reader = checker.GitHubReader(tmp_path)
@@ -357,8 +361,8 @@ def test_reader_uses_get_pagination_and_read_only_graphql(monkeypatch, tmp_path)
 
     def fake_run(argv, **kwargs):
         calls.append(argv)
-        if "--paginate" in argv:
-            return subprocess.CompletedProcess(argv, 0, stdout='[{"id":1}]\n', stderr="")
+        if "--include" in argv:
+            return subprocess.CompletedProcess(argv, 0, stdout='HTTP/2.0 200 OK\n\n[{"id":1}]\n', stderr="")
         return subprocess.CompletedProcess(argv, 0, stdout='{"ok":true}', stderr="")
 
     monkeypatch.setattr(checker.subprocess, "run", fake_run)
@@ -692,5 +696,6 @@ def test_completed_issue_reference_cycle_is_bounded(monkeypatch):
     reader = FakeReader({"repos/o/r/issues/1": raw})
     monkeypatch.setattr(checker, "_body_edit_status", lambda *args: False)
     result = checker._neutral_issue(raw, reader, "o/r")
-    assert reader.api_routes.count("repos/o/r/issues/1") == 2
+    # A body-only cycle needs state, not recursive closing-comment evidence.
+    assert reader.api_routes.count("repos/o/r/issues/1") == 1
     assert checker.check_evidence_reference(result).verdict == "FAIL"

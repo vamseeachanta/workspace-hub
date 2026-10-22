@@ -1,0 +1,19 @@
+{
+  "source": "Synthetic worked example; expected rule 4 outcomes follow procedure E.4.",
+  "issues": [
+    {
+      "repository": "example",
+      "number": 1,
+      "state_reason": "COMPLETED",
+      "closer_type": "comment",
+      "comments": [{"closing_evidence": true, "body": "3 passed"}]
+    },
+    {
+      "repository": "example",
+      "number": 2,
+      "state_reason": "COMPLETED",
+      "closer_type": "comment",
+      "comments": [{"closing_evidence": true, "body": "Command: custom-builder --check; 3 passed"}]
+    }
+  ]
+}
