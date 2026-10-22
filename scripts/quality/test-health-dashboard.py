@@ -13,13 +13,15 @@ Usage:
 """
 from __future__ import annotations
 
+import json
+import math
 import os
 import re
 import subprocess
 import sys
-from datetime import datetime, timezone
+import tempfile
+from datetime import UTC, datetime
 from pathlib import Path
-
 
 # ---------------------------------------------------------------------------
 # Parsing helpers
@@ -38,7 +40,8 @@ def parse_pytest_summary(raw: str) -> dict[str, int]:
     if not raw.strip():
         return result
     for key in result:
-        match = re.search(rf"(\d+)\s+{key}", raw)
+        label = r"errors?" if key == "errors" else key
+        match = re.search(rf"(\d+)\s+{label}\b", raw)
         if match:
             result[key] = int(match.group(1))
     return result
@@ -106,6 +109,79 @@ def compute_pass_rate(passed: int, total: int) -> float:
     return round((passed / total) * 100, 1)
 
 
+# History policy: issue 1666, acceptance criteria 2-4 (2026).
+# See docs/quality/test-health-telemetry.html for the calculation basis.
+TREND_RUNS = 8
+REGRESSION_POINTS = 5.0
+COUNT_FIELDS = ("passed", "failed", "skipped", "errors")
+
+
+def make_history_record(packages: dict, timestamp: datetime) -> dict:
+    """Summarize counts; diagnostics remain included in the outcome total."""
+    if timestamp.tzinfo is None or timestamp.utcoffset() is None:
+        raise ValueError("History timestamps require a timezone")
+    counts = {key: sum(p[key] for p in packages.values()) for key in COUNT_FIELDS}
+    total = sum(counts.values())
+    record = dict(timestamp=timestamp.astimezone(UTC).isoformat(),
+                  total=total, **counts,
+                  pass_rate=compute_pass_rate(counts["passed"], total))
+    validate_history([record])
+    if any(p["total"] != sum(p[key] for key in COUNT_FIELDS)
+           for p in packages.values()):
+        raise ValueError("Package totals disagree with outcome counts")
+    if any(type(p[key]) is not int or p[key] < 0
+           for p in packages.values() for key in (*COUNT_FIELDS, "total")):
+        raise ValueError("Package counts require nonnegative integers")
+    return record
+
+
+def validate_history(records: object) -> None:
+    """Reject malformed or contradictory stored evidence before replacement."""
+    if not isinstance(records, list):
+        raise TypeError("History must be a JSON array")
+    fields = {"timestamp", "total", "pass_rate", *COUNT_FIELDS}
+    for record in records:
+        if not isinstance(record, dict) or set(record) != fields:
+            raise ValueError("History record fields do not match the schema")
+        if any(type(record[key]) is not int or record[key] < 0
+               for key in (*COUNT_FIELDS, "total")):
+            raise ValueError("History counts require nonnegative integers")
+        if record["total"] != sum(record[key] for key in COUNT_FIELDS):
+            raise ValueError("History total disagrees with outcome counts")
+        stamp = record["timestamp"]
+        try:
+            instant = datetime.fromisoformat(stamp)
+        except (TypeError, ValueError) as exc:
+            raise ValueError("Invalid history timestamp") from exc
+        if instant.tzinfo is None or instant.utcoffset() is None:
+            raise ValueError("History timestamps require a timezone")
+        rate = record["pass_rate"]
+        if (type(rate) not in (int, float) or not math.isfinite(rate)
+                or rate != compute_pass_rate(record["passed"], record["total"])):
+            raise ValueError("History pass rate disagrees with outcome counts")
+
+
+def append_history(path: Path, packages: dict, timestamp: datetime) -> list[dict]:
+    """Append one observation atomically; invalid existing data is preserved.
+
+    A single writer is required. This does not merge concurrent writers.
+    """
+    records = json.loads(path.read_text(encoding="utf-8")) if path.exists() else []
+    validate_history(records)
+    records.append(make_history_record(packages, timestamp))
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with tempfile.NamedTemporaryFile(mode="w", encoding="utf-8", dir=path.parent,
+                                     prefix=path.name + ".", suffix=".partial",
+                                     delete=False) as stream:
+        json.dump(records, stream, indent=2, allow_nan=False)
+        stream.write("\n")
+        stream.flush()
+        os.fsync(stream.fileno())
+        temporary_path = stream.name
+    os.replace(temporary_path, path)
+    return records
+
+
 # ---------------------------------------------------------------------------
 # Gap detection
 # ---------------------------------------------------------------------------
@@ -134,6 +210,7 @@ def generate_markdown_report(
     packages: dict[str, dict[str, int]],
     timestamp: datetime,
     gaps: list[str] | None = None,
+    history: list[dict] | None = None,
 ) -> str:
     """Generate a markdown dashboard report.
 
@@ -162,9 +239,9 @@ def generate_markdown_report(
 
     lines.append("## Overall Summary")
     lines.append("")
-    lines.append(f"| Metric | Value |")
-    lines.append(f"|--------|-------|")
-    lines.append(f"| Total tests | {total_tests} |")
+    lines.append("| Metric | Value |")
+    lines.append("|--------|-------|")
+    lines.append(f"| Total outcomes | {total_tests} |")
     lines.append(f"| Passed | {total_passed} |")
     lines.append(f"| Failed | {total_failed} |")
     lines.append(f"| Skipped | {total_skipped} |")
@@ -172,11 +249,13 @@ def generate_markdown_report(
     lines.append(f"| Pass rate | {overall_rate}% |")
     lines.append(f"| Packages with failures | {len(failing_packages)} |")
     lines.append("")
+    lines.append("Totals include diagnostic execution errors, not only collected test cases.")
+    lines.append("")
 
     # Per-package table
     lines.append("## Per-Package Results")
     lines.append("")
-    lines.append("| Status | Package | Tests | Pass | Fail | Skip | Errors | Rate |")
+    lines.append("| Status | Package | Outcomes | Pass | Fail | Skip | Errors | Rate |")
     lines.append("|--------|---------|-------|------|------|------|--------|------|")
 
     for name in sorted(packages.keys()):
@@ -191,7 +270,7 @@ def generate_markdown_report(
         # Emoji badge
         if failed > 0 or errors > 0:
             badge = "\u274c"
-        elif total == 0:
+        elif total == 0 or passed == 0:
             badge = "\u26a0\ufe0f"
         else:
             badge = "\u2705"
@@ -208,9 +287,22 @@ def generate_markdown_report(
             for g in sorted(gaps):
                 lines.append(f"- `{g}`")
         else:
-            lines.append("All source packages have tests. \u2705")
+            lines.append("No gaps detected in the supplied package inventory.")
         lines.append("")
 
+    if history:
+        lines.extend(["## Recent Test Health", ""])
+        if len(history) > 1:
+            drop = history[-2]["pass_rate"] - history[-1]["pass_rate"]
+            if drop > REGRESSION_POINTS:
+                lines.extend([
+                    f"> WARNING: Pass rate dropped by {drop:.1f} percentage points.",
+                    "",
+                ])
+        lines.extend(["| Timestamp | Pass rate (%) |", "|-----------|---------------|"])
+        for record in history[-TREND_RUNS:]:
+            lines.append(f"| {record['timestamp']} | {record['pass_rate']:.1f} |")
+        lines.extend(["", "Pass rate measures reported outcomes, not source coverage.", ""])
     return "\n".join(lines)
 
 
@@ -241,7 +333,7 @@ def run_pytest_per_package(repo_root: Path) -> dict[str, dict[str, int]]:
     """
     tests_dir = repo_root / "digitalmodel" / "tests"
     if not tests_dir.is_dir():
-        return {}
+        raise FileNotFoundError("Required test tree is unavailable")
 
     packages: dict[str, dict[str, int]] = {}
     skip_dirs = {"__pycache__", "fixtures", "output", "outputs",
@@ -262,6 +354,7 @@ def run_pytest_per_package(repo_root: Path) -> dict[str, dict[str, int]]:
         try:
             result = subprocess.run(
                 cmd,
+                check=False,
                 capture_output=True,
                 text=True,
                 cwd=str(repo_root),
@@ -288,18 +381,24 @@ def run_pytest_per_package(repo_root: Path) -> dict[str, dict[str, int]]:
                 "total": counts["passed"] + counts["failed"] + counts["skipped"] + counts["errors"],
             }
 
+            # A nonzero exit without reported failure evidence is diagnostic,
+            # not a successful or empty package (including pytest exit code 5).
+            if result.returncode != 0 and not (entry["failed"] or entry["errors"]):
+                entry["errors"] += 1
+                entry["total"] += 1
+
             if no_tests and entry["total"] == 0:
                 # Skip packages with no tests (they'll appear in gaps)
                 print("no tests")
                 continue
 
             packages[pkg] = entry
-            print(f"{entry['total']} tests ({entry['passed']}P/{entry['failed']}F/{entry['skipped']}S/{entry['errors']}E)")
+            print(f"{entry['total']} outcomes ({entry['passed']}P/{entry['failed']}F/{entry['skipped']}S/{entry['errors']}E)")
 
         except subprocess.TimeoutExpired:
             packages[pkg] = {"passed": 0, "failed": 0, "skipped": 0, "errors": 1, "total": 1}
             print("TIMEOUT")
-        except Exception as e:
+        except OSError as e:
             packages[pkg] = {"passed": 0, "failed": 0, "skipped": 0, "errors": 1, "total": 1}
             print(f"ERROR: {e}")
 
@@ -309,29 +408,31 @@ def run_pytest_per_package(repo_root: Path) -> dict[str, dict[str, int]]:
 def main() -> None:
     """Run the test health dashboard pipeline."""
     repo_root = Path(__file__).resolve().parents[2]
-    now = datetime.now(timezone.utc)
+    now = datetime.now(UTC)
 
-    print(f"[test-health-dashboard] Running pytest per package on digitalmodel/tests/ ...")
+    print("[test-health-dashboard] Running pytest per package on digitalmodel/tests/ ...")
     packages = run_pytest_per_package(repo_root)
 
-    print(f"[test-health-dashboard] Aggregating results ...")
+    print("[test-health-dashboard] Aggregating results ...")
 
     source_packages = discover_source_packages(repo_root)
     gaps = find_test_gaps(source_packages, packages)
 
-    print(f"[test-health-dashboard] Generating dashboard ...")
-    md = generate_markdown_report(packages, now, gaps=gaps)
+    print("[test-health-dashboard] Generating dashboard ...")
+    history_path = repo_root / "docs" / "dashboards" / "test-health-history.json"
+    history = append_history(history_path, packages, now)
+    md = generate_markdown_report(packages, now, gaps=gaps, history=history)
 
     output_path = repo_root / "docs" / "dashboards" / "test-health-dashboard.md"
     output_path.parent.mkdir(parents=True, exist_ok=True)
-    output_path.write_text(md)
+    output_path.write_text(md, encoding="utf-8")
 
     # Compute overall stats
     total_tests = sum(p.get("total", 0) for p in packages.values())
     total_passed = sum(p.get("passed", 0) for p in packages.values())
 
     print(f"[test-health-dashboard] Dashboard written to {output_path}")
-    print(f"[test-health-dashboard] Overall: {total_tests} tests, {total_passed} passed ({compute_pass_rate(total_passed, total_tests)}%)")
+    print(f"[test-health-dashboard] Overall: {total_tests} outcomes, {total_passed} passed ({compute_pass_rate(total_passed, total_tests)}%)")
     print(f"[test-health-dashboard] Packages tested: {len(packages)}, Gaps: {len(gaps)}")
 
 
