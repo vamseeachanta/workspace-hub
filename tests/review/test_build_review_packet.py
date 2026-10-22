@@ -10,6 +10,8 @@ import subprocess
 import sys
 from pathlib import Path
 
+import pytest
+
 SCRIPT = Path(__file__).resolve().parents[2] / "scripts" / "review" / "build-review-packet.py"
 
 
@@ -220,3 +222,97 @@ def test_path_outside_root_is_refused(tmp_path):
     make(tmp_path, "outside.txt", b"x\n")
     r = run("build", "--out", "p.md", "--manifest", "m.json", "../outside.txt", cwd=root)
     assert r.returncode == 1 and "outside" in r.stderr.lower()
+
+
+@pytest.mark.parametrize("alias", ["a.txt", "./a.txt", "sub/../a.txt"])
+def test_duplicate_resolved_inputs_are_refused_before_publication(tmp_path, alias):
+    """One unique target is supplied twice; no verifiable pair can represent it twice."""
+    make(tmp_path, "a.txt", b"x\n")
+    (tmp_path / "sub").mkdir()
+    make(tmp_path, "p.md", b"previous packet\n")
+    make(tmp_path, "m.json", b"previous manifest\n")
+    r = run("build", "--out", "p.md", "--manifest", "m.json", "a.txt", alias, cwd=tmp_path)
+    assert r.returncode == 1 and "duplicate" in r.stderr.lower()
+    assert (tmp_path / "p.md").read_bytes() == b"previous packet\n"
+    assert (tmp_path / "m.json").read_bytes() == b"previous manifest\n"
+
+
+def test_symlink_alias_is_a_duplicate_input(tmp_path):
+    make(tmp_path, "a.txt", b"x\n")
+    try:
+        (tmp_path / "alias.txt").symlink_to("a.txt")
+    except OSError:
+        pytest.skip("symlinks unavailable")
+    r = run("build", "--out", "p.md", "--manifest", "m.json", "a.txt", "alias.txt", cwd=tmp_path)
+    assert r.returncode == 1 and "duplicate" in r.stderr.lower()
+    assert not (tmp_path / "p.md").exists()
+
+
+@pytest.mark.parametrize("operation", ["build", "verify"])
+def test_filesystem_errors_are_reported_without_tracebacks(tmp_path, operation):
+    """A NUL filename cannot be read; input errors use the documented exit code."""
+    if operation == "build":
+        # An output parent that is a file exercises publication without permissions tricks.
+        make(tmp_path, "parent", b"not a directory")
+        make(tmp_path, "a.txt", b"x\n")
+        r = run("build", "--out", "parent/p.md", "--manifest", "m.json", "a.txt", cwd=tmp_path)
+    else:
+        make(tmp_path, "a.txt", b"x\n")
+        assert run("build", "--out", "p.md", "--manifest", "m.json", "a.txt", cwd=tmp_path).returncode == 0
+        manifest = json.loads((tmp_path / "m.json").read_text(encoding="utf-8"))
+        manifest["files"][0]["path"] = "bad\x00name"
+        (tmp_path / "m.json").write_text(json.dumps(manifest), encoding="utf-8")
+        r = run("verify", "--manifest", "m.json", cwd=tmp_path)
+    assert r.returncode == 1 and "Traceback" not in r.stderr
+
+
+def test_verify_rejects_duplicate_json_keys(tmp_path):
+    """RFC 8259 section 4 (2017): duplicate object names are not interoperable."""
+    make(tmp_path, "a.txt", b"x\n")
+    assert run("build", "--out", "p.md", "--manifest", "m.json", "a.txt", cwd=tmp_path).returncode == 0
+    manifest = (tmp_path / "m.json").read_text(encoding="utf-8")
+    (tmp_path / "m.json").write_text(manifest.replace('"schema":', '"schema": "other", "schema":'), encoding="utf-8")
+    r = run("verify", "--manifest", "m.json", cwd=tmp_path)
+    assert r.returncode == 1 and "duplicate" in r.stderr.lower()
+
+
+def test_verify_rejects_invalid_utf8_manifest_without_traceback(tmp_path):
+    make(tmp_path, "m.json", b"\xff")
+    r = run("verify", "--manifest", "m.json", cwd=tmp_path)
+    assert r.returncode == 1 and "Traceback" not in r.stderr
+
+
+@pytest.mark.parametrize("field,value", [("digest_domain", "normalized-text"), ("packet_bytes", True),
+                                        ("packet_bytes", -1), ("packet_bytes", "100")])
+def test_verify_rejects_invalid_manifest_metadata(tmp_path, field, value):
+    """Raw bytes are the domain in build's review-packet/1 producer contract."""
+    make(tmp_path, "a.txt", b"x\n")
+    assert run("build", "--out", "p.md", "--manifest", "m.json", "a.txt", cwd=tmp_path).returncode == 0
+    manifest = json.loads((tmp_path / "m.json").read_text(encoding="utf-8"))
+    manifest[field] = value
+    (tmp_path / "m.json").write_text(json.dumps(manifest), encoding="utf-8")
+    r = run("verify", "--manifest", "m.json", cwd=tmp_path)
+    assert r.returncode == 1 and "Traceback" not in r.stderr
+
+
+@pytest.mark.parametrize("field", ["packet_bytes", "bytes"])
+def test_verify_checks_recorded_byte_counts(tmp_path, field):
+    """An independently counted length differs by one; verification cannot match."""
+    make(tmp_path, "a.txt", b"x\n")
+    assert run("build", "--out", "p.md", "--manifest", "m.json", "a.txt", cwd=tmp_path).returncode == 0
+    manifest = json.loads((tmp_path / "m.json").read_text(encoding="utf-8"))
+    target = manifest if field == "packet_bytes" else manifest["files"][0]
+    target[field] += 1
+    (tmp_path / "m.json").write_text(json.dumps(manifest), encoding="utf-8")
+    r = run("verify", "--manifest", "m.json", cwd=tmp_path)
+    assert r.returncode == 3
+
+
+def test_verify_rejects_resolved_aliases_in_manifest(tmp_path):
+    make(tmp_path, "a.txt", b"x\n")
+    assert run("build", "--out", "p.md", "--manifest", "m.json", "a.txt", cwd=tmp_path).returncode == 0
+    manifest = json.loads((tmp_path / "m.json").read_text(encoding="utf-8"))
+    manifest["files"].append({**manifest["files"][0], "path": "./a.txt"})
+    (tmp_path / "m.json").write_text(json.dumps(manifest), encoding="utf-8")
+    r = run("verify", "--manifest", "m.json", cwd=tmp_path)
+    assert r.returncode == 1 and "duplicate" in r.stderr.lower()
