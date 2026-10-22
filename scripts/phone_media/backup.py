@@ -11,6 +11,7 @@ import os
 import re
 import subprocess
 import sys
+import time
 from pathlib import Path
 
 
@@ -51,15 +52,38 @@ def _validate_source(source):
     return source.resolve()
 
 
+def _run_bounded(argv, *, timeout, **kwargs):
+    """Account for child startup when computing the remaining wait budget.
+
+    Avoid subprocess.run's unconditional post-kill wait: a child blocked in
+    kernel I/O may not exit promptly even after kill. The service backstop
+    covers process creation and cleans up any remaining children.
+    """
+    if timeout <= 0:
+        raise subprocess.TimeoutExpired(argv, timeout)
+    deadline = time.monotonic() + timeout
+    process = subprocess.Popen(argv, **kwargs)
+    try:
+        code = process.wait(timeout=max(0, deadline - time.monotonic()))
+    except subprocess.TimeoutExpired:
+        try:
+            process.kill()
+        except ProcessLookupError:
+            pass  # Child exited between the deadline and kill.
+        # Do not use a Popen context manager: __exit__ waits without a deadline.
+        raise
+    return subprocess.CompletedProcess(argv, code)
+
+
 def _notify(alert_command, timeout_seconds):
     """Execute a configured notification adapter without shell interpolation."""
     try:
         if not math.isfinite(timeout_seconds) or timeout_seconds <= 0:
             raise ValueError("notification deadline is not configured")
         # One argument is the adapter contract; the input deadline also bounds alerts.
-        result = subprocess.run(
+        result = _run_bounded(
             [alert_command, "Phone-media verification failed; inspect the user journal."],
-            check=False, timeout=timeout_seconds,
+            timeout=timeout_seconds,
         )
         if result.returncode:
             raise ValueError("notification adapter returned failure")
@@ -74,20 +98,30 @@ def verify(source, remote, timeout_seconds, alert_command):
             raise ValueError("timeout must be positive and finite")
         if not re.fullmatch(r"[A-Za-z0-9_][A-Za-z0-9_.-]*:[^\r\n]+", remote):
             raise ValueError("remote must name a configured remote and archive prefix")
-        if not remote.split(":", 1)[1].strip("/ "):
-            raise ValueError("remote archive prefix must not be empty")
-        source = _validate_source(source)
+        prefix = remote.split(":", 1)[1]
+        if not prefix.strip("/ ") or any(part in (".", "..") for part in prefix.split("/")):
+            raise ValueError("remote archive prefix must be nonempty without dot segments")
+        deadline = time.monotonic() + timeout_seconds
+        # Keep all archive filesystem operations in a child; a stalled mount
+        # must not block the parent before its deadline starts.
+        preflight = _run_bounded(
+            [sys.executable, __file__, "_preflight", str(source)],
+            timeout=deadline - time.monotonic(),
+            stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+        )
+        if preflight.returncode:
+            raise ValueError("archive preflight failed")
         # rclone check docs: --download compares contents without relying on hashes;
         # omitting --one-way detects destination-only files too. Neither copy nor
         # sync is invoked. One checker/transfer is an explicit resource policy.
-        result = subprocess.run(
+        result = _run_bounded(
             ["rclone", "check", str(source), remote, "--download",
              "--checkers", "1", "--transfers", "1"],
-            check=False, timeout=timeout_seconds,
+            timeout=deadline - time.monotonic(),
             # Ambient global flags (notably filters) must not narrow coverage.
             # Preserve configured-remote credentials and the private config locator.
             env={key: value for key, value in os.environ.items()
-                 if not key.startswith("RCLONE_") or key == "RCLONE_CONFIG"
+                 if not key.startswith("RCLONE_") or key in ("RCLONE_CONFIG", "RCLONE_PASSWORD_COMMAND")
                  or key.startswith("RCLONE_CONFIG_")},
         )
         if result.returncode == 0:
@@ -103,6 +137,14 @@ def verify(source, remote, timeout_seconds, alert_command):
 
 
 def main(argv=None):
+    argv = sys.argv[1:] if argv is None else argv
+    # Internal child entry point: keep paths and low-level errors out of output.
+    if len(argv) == 2 and argv[0] == "_preflight":
+        try:
+            _validate_source(argv[1])
+        except (OSError, ValueError):
+            return 1
+        return 0
     parser = argparse.ArgumentParser(description=__doc__)
     commands = parser.add_subparsers(dest="command", required=True)
     plan = commands.add_parser("plan", help="compare free bytes with an input projection")

@@ -1,0 +1,12 @@
+[Unit]
+Description=Report phone-media verification service failure
+
+[Service]
+Type=oneshot
+# Independent configuration also covers an absent or invalid backup environment.
+EnvironmentFile=%h/.config/phone-media/alert.env
+ExecStart=/usr/bin/env ${PHONE_MEDIA_ALERT_COMMAND} "Phone-media verification service failed; inspect the user journal."
+TimeoutStartSec=1min
+TimeoutStopSec=10s
+UMask=0077
+NoNewPrivileges=true
