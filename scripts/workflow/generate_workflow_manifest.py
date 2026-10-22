@@ -27,6 +27,7 @@ import argparse
 import datetime as _dt
 import hashlib
 import json
+import os
 import subprocess
 import sys
 from pathlib import Path
@@ -56,6 +57,7 @@ def _git_head(repo_path: Path) -> str | None:
     try:
         out = subprocess.run(
             ["git", "-C", str(repo_path), "rev-parse", "HEAD"],
+            env={key: value for key, value in os.environ.items() if not key.startswith("GIT_")},
             capture_output=True, text=True, timeout=10,
         )
         if out.returncode == 0:
@@ -68,25 +70,46 @@ def _git_head(repo_path: Path) -> str | None:
 def load_registry(repo_slug, resolve=resolve_tier1_repo_path):
     """Return ``(raw_text, parsed_dict|None, error|None)``.
 
-    ``error`` is ``"missing-registry"`` (no file / unresolvable repo) or
-    ``"unparseable-registry"`` (invalid YAML or non-dict top-level). Robustness
-    contract per wed#450.
+    Issue #3450: resolution, absent registry and invalid/unreadable registry
+    are distinct observations. Failed observations never carry a usable hash.
     """
+    _, raw, parsed, error = _registry_observation(repo_slug, resolve)
+    return raw, parsed, error
+
+
+def _registry_observation(repo_slug, resolve):
+    """Bind registry bytes and Git provenance to one resolution result."""
     try:
-        repo_path = resolve(repo_slug)
-    except Exception:
-        return (None, None, "missing-registry")
-    reg = Path(repo_path) / "docs" / "registry" / "workflows.yaml"
-    if not reg.is_file():
-        return (None, None, "missing-registry")
-    raw = reg.read_text(encoding="utf-8")
+        repo_path = Path(resolve(repo_slug))
+        if not repo_path.is_dir():
+            return (None, None, None, "missing-repository")
+    except (OSError, RuntimeError, TypeError, ValueError):
+        return (None, None, None, "missing-repository")
+    reg = repo_path / "docs" / "registry" / "workflows.yaml"
+    try:
+        raw = reg.read_text(encoding="utf-8")
+    except FileNotFoundError:
+        return (repo_path, None, None, "missing-registry")
+    except (OSError, UnicodeError):
+        return (repo_path, None, None, "invalid-registry")
     try:
         parsed = yaml.safe_load(raw)
-    except Exception:
-        return (raw, None, "unparseable-registry")
+    except yaml.YAMLError:
+        return (repo_path, raw, None, "invalid-registry")
     if not isinstance(parsed, dict):
-        return (raw, None, "unparseable-registry")
-    return (raw, parsed, None)
+        return (repo_path, raw, None, "invalid-registry")
+    rows = parsed.get("workflows", [])
+    if rows is not None and (
+        not isinstance(rows, list)
+        or any(
+            not isinstance(row, dict)
+            or not isinstance(row.get("id"), str)
+            or not row["id"].strip()
+            for row in rows
+        )
+    ):
+        return (repo_path, raw, None, "invalid-registry")
+    return (repo_path, raw, parsed, None)
 
 
 def row_version(row) -> int:
@@ -148,7 +171,7 @@ def build_manifest(slugs=None, resolve=resolve_tier1_repo_path) -> dict:
     warnings: list[str] = []
 
     for slug in slugs:
-        raw, parsed, err = load_registry(slug, resolve=resolve)
+        repo_path, raw, parsed, err = _registry_observation(slug, resolve)
         if err:
             warnings.append(f"{slug}: {err}")
             repos.append({"repo": slug, "status": err, "registry_sha256": None})
@@ -158,11 +181,7 @@ def build_manifest(slugs=None, resolve=resolve_tier1_repo_path) -> dict:
             warnings.append(
                 f"{slug}: missing top-level 'invocation' (pre-#3295 registry); invocation emitted null"
             )
-        try:
-            repo_path = resolve(slug)
-            git_sha = _git_head(Path(repo_path))
-        except Exception:
-            git_sha = None
+        git_sha = _git_head(repo_path)
         rows = parsed.get("workflows") or []
         repos.append({
             "repo": slug,
@@ -173,9 +192,6 @@ def build_manifest(slugs=None, resolve=resolve_tier1_repo_path) -> dict:
             "status": "ok",
         })
         for row in rows:
-            if not isinstance(row, dict) or "id" not in row:
-                warnings.append(f"{slug}: row missing id")
-                continue
             workflows.append(normalize_row(slug, parsed, row))
 
     workflows = sorted(workflows, key=lambda w: w["workflow_id"])
@@ -202,32 +218,91 @@ def write_manifest(path=None, slugs=None, resolve=resolve_tier1_repo_path) -> Pa
     return path
 
 
-def check_stale(manifest_path=None, slugs=None, resolve=resolve_tier1_repo_path) -> int:
-    """Return 1 if any repo's live registry hash drifts from the committed
-    manifest (fail closed; never silently serve stale), else 0. ``generated_at``
-    is excluded from the comparison."""
+def _valid_digest(value) -> bool:
+    """Require a complete lowercase SHA-256 hex digest before comparison."""
+    return (
+        isinstance(value, str)
+        and len(value) == len(hashlib.sha256().hexdigest())
+        and all(char in "0123456789abcdef" for char in value)
+    )
+
+
+def stale_report(manifest_path=None, slugs=None, resolve=resolve_tier1_repo_path) -> dict:
+    """Partition observations per issue #3450; only valid hashes imply drift.
+
+    Missing/invalid saved provenance is an invalid-registry observation with a
+    reason, even if live bytes are readable. Equal null hashes never pass.
+    """
     manifest_path = Path(manifest_path) if manifest_path is not None else default_manifest_path()
-    saved = json.loads(manifest_path.read_text(encoding="utf-8"))
+    try:
+        saved = json.loads(manifest_path.read_text(encoding="utf-8"))
+    except (OSError, UnicodeError, ValueError):
+        saved = {}
     fresh = build_manifest(slugs=slugs, resolve=resolve)
-    saved_h = {r["repo"]: r.get("registry_sha256") for r in saved.get("repos", [])}
-    fresh_h = {r["repo"]: r.get("registry_sha256") for r in fresh.get("repos", [])}
-    drift = sorted(s for s in saved_h if saved_h[s] != fresh_h.get(s))
-    drift += sorted(s for s in fresh_h if s not in saved_h)
+    saved_rows = saved.get("repos", []) if isinstance(saved, dict) else []
+    if not isinstance(saved_rows, list):
+        saved_rows = []
+    saved_by_repo = {
+        row["repo"]: row for row in saved_rows
+        if isinstance(row, dict) and isinstance(row.get("repo"), str)
+    }
+    fresh_by_repo = {row["repo"]: row for row in fresh["repos"]}
+    results = []
+    for slug in sorted(saved_by_repo.keys() | fresh_by_repo.keys()):
+        old = saved_by_repo.get(slug, {})
+        live = fresh_by_repo.get(slug, {})
+        status = live.get("status", "missing-repository")
+        result = {
+            "repo": slug,
+            "status": status,
+            "saved_registry_sha256": old.get("registry_sha256"),
+            "registry_sha256": live.get("registry_sha256"),
+        }
+        if not live:
+            result["reason"] = "not-visited"
+        elif status == "ok":
+            if old.get("status") != "ok" or not _valid_digest(old.get("registry_sha256")):
+                result.update(status="invalid-registry", reason="invalid-saved-observation")
+            elif not _valid_digest(live.get("registry_sha256")):
+                result.update(status="invalid-registry", reason="invalid-live-observation")
+            else:
+                result["status"] = (
+                    "unchanged" if old["registry_sha256"] == live["registry_sha256"] else "drifted"
+                )
+        results.append(result)
+    return {"ok": all(row["status"] == "unchanged" for row in results), "repos": results}
+
+
+def check_stale(manifest_path=None, slugs=None, resolve=resolve_tier1_repo_path, *, json_output=False) -> int:
+    """Fail closed on drift OR failed observations; exclude generation time."""
+    report = stale_report(manifest_path, slugs=slugs, resolve=resolve)
+    if json_output:
+        print(json.dumps(report, indent=2))
+        return int(not report["ok"])
+    drift = [row["repo"] for row in report["repos"] if row["status"] == "drifted"]
     if drift:
         print(f"STALE: registries changed since manifest: {drift}", file=sys.stderr)
-        return 1
-    return 0
+    for row in report["repos"]:
+        if row["status"] == "unchanged":
+            print(f"UNCHANGED: {row['repo']}", file=sys.stderr)
+        elif row["status"] != "drifted":
+            reason = f" ({row['reason']})" if "reason" in row else ""
+            print(f"UNAVAILABLE: {row['repo']}: {row['status']}{reason}", file=sys.stderr)
+    return int(not report["ok"])
 
 
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description="Generate or check the ecosystem workflow manifest (#3284).")
     ap.add_argument("--write", action="store_true", help="regenerate the manifest (default)")
-    ap.add_argument("--check", action="store_true", help="stale-detection gate: exit 1 on registry drift")
+    ap.add_argument("--check", action="store_true", help="exit nonzero on drift or failed registry observations")
+    ap.add_argument("--json", action="store_true", help="emit a structured --check report")
     ap.add_argument("--output", default=None, help="manifest path override")
     args = ap.parse_args(argv)
+    if args.json and not args.check:
+        ap.error("--json requires --check")
 
     if args.check:
-        return check_stale(args.output)
+        return check_stale(args.output, json_output=args.json)
     path = write_manifest(args.output)
     print(f"wrote workflow manifest to {path}")
     return 0

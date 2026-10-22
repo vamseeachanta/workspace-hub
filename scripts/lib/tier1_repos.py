@@ -15,6 +15,7 @@ Resolution order for the canonical file:
 from __future__ import annotations
 
 import os
+import subprocess
 import sys
 from pathlib import Path
 
@@ -54,7 +55,32 @@ def tier1_python_repos(path: str | os.PathLike[str] | None = None) -> list[str]:
 
 
 def _has_repo_marker(path: Path) -> bool:
-    return (path / ".git").is_dir() or (path / "pyproject.toml").is_file()
+    return (
+        (path / ".git").is_dir()
+        or (path / ".git").is_file()
+        or (path / "pyproject.toml").is_file()
+    )
+
+
+def _canonical_checkout(root: Path) -> Path | None:
+    """Locate the main checkout through Git metadata, never ancestor guessing.
+
+    Source: Git gitrepository-layout, ``commondir`` and ``worktrees``:
+    https://git-scm.com/docs/gitrepository-layout
+    Bare repositories and separate Git directories have no inferred checkout.
+    """
+    try:
+        result = subprocess.run(
+            ["git", "-C", str(root), "rev-parse", "--path-format=absolute", "--git-common-dir"],
+            env={key: value for key, value in os.environ.items() if not key.startswith("GIT_")},
+            capture_output=True, text=True, check=True,
+        )
+    except (OSError, subprocess.SubprocessError):
+        return None
+    common = Path(result.stdout.strip())
+    if common.name == ".git" and common.is_dir():
+        return common.parent
+    return None
 
 
 def resolve_tier1_repo_path(
@@ -64,10 +90,13 @@ def resolve_tier1_repo_path(
 ) -> Path:
     """Resolve a tier-1 repo slug for nested or sibling checkout layouts.
 
-    Probe order matches ``scripts/lib/tier1-repos.sh``:
+    Initial probe order matches ``scripts/lib/tier1-repos.sh``:
     explicit base / ``$TIER1_REPOS_BASE``, then ``repo_root/slug``, then the
     sibling ``dirname(repo_root)/slug``. A path counts only if it has a repo
-    marker (``.git`` directory or ``pyproject.toml``). Missing repos fail closed.
+    marker (``.git`` directory/file or ``pyproject.toml``). Python additionally
+    probes nested/sibling layouts of the canonical checkout obtained from Git's
+    common directory, allowing arbitrarily nested linked worktrees. Missing
+    repos fail closed; an explicit base retains first priority.
     """
     if not slug:
         raise FileNotFoundError("empty tier-1 repo slug")
@@ -80,11 +109,14 @@ def resolve_tier1_repo_path(
     if base_value:
         candidates.append(Path(base_value).expanduser() / slug)
     candidates.extend([root / slug, root.parent / slug])
+    canonical = _canonical_checkout(root)
+    if canonical is not None:
+        candidates.extend([canonical / slug, canonical.parent / slug])
 
     seen: set[str] = set()
     found: list[Path] = []
     for candidate in candidates:
-        key = str(candidate)
+        key = str(candidate.resolve())
         if key in seen:
             continue
         seen.add(key)
