@@ -257,3 +257,149 @@ def test_repository_has_no_unexpected_pins():
         env.pop(key, None)
     result = run((ROOT, env))
     assert result.returncode == 0, result.stdout + result.stderr
+
+
+# Expected statuses follow the checker header's existing exit-code contract.
+# TOML v1.0.0 (2021), Keys, String, Array, Table, Inline Table and Array of
+# Tables: https://toml.io/en/v1.0.0 . Each row states the independent structural
+# interpretation: only a decoded root model key is a pin (existing policy).
+TOML_CASES = [
+    ("comment", '# model = "x"\n', 0, "PASS", "comment has no key"),
+    ("nested-array", 'matrix = [\n [1, 2],\n]\nmodel = "x"\n',
+     1, "model =", "array closes before the root assignment"),
+    ("four-quotes", 'x = """a""""\nmodel = "x"\n',
+     1, "model =", "four quotes terminate a value containing one quote"),
+    ("literal-string", "x = '''\nmodel = 'x'\n'''\n",
+     0, "PASS", "model text belongs to a literal string"),
+    ("inline-nested", 'x = { model = "x" }\n',
+     0, "PASS", "model belongs to x"),
+    ("inline-root", 'model = { name = "x" }\n',
+     1, "model =", "root model exists even with a table value"),
+    ("array-of-tables", '[[profiles.x]]\nmodel = "x"\n',
+     0, "PASS", "model belongs to an array element below profiles"),
+    ("root-table", '[model]\nname = "x"\n',
+     1, "model =", "table declaration creates a root model key"),
+    ("dotted-nested", 'profiles.x.model = "x"\n',
+     0, "PASS", "dotted key places model below profiles"),
+    ("dotted-root", 'model.name = "x"\n',
+     1, "model =", "dotted key creates root model table"),
+    ("quoted-key", "'model' = 'x'\n",
+     1, "model =", "quoted key decodes to model"),
+    ("escaped-key", r'"\u006dodel" = "x"' + '\n',
+     1, "model =", "Unicode escape decodes to m"),
+    ("quoted-dot", '"profiles.x.model" = "x"\n',
+     0, "PASS", "quoted dots are literal key characters"),
+    ("crlf", '# comment\r\nmodel = "x"\r\n',
+     1, "model =", "CRLF is a permitted newline"),
+    ("bom", '\ufeffmodel = "x"\n',
+     1, "invalid TOML", "BOM is neither a bare key nor TOML whitespace"),
+    ("empty", '', 0, "PASS", "empty document contains no key"),
+    ("invalid", 'model = [\n',
+     1, "invalid TOML", "array delimiter is not closed"),
+    ("duplicate", 'model = "x"\nmodel = "y"\n',
+     1, "invalid TOML", "duplicate key definitions are prohibited"),
+    ("profile", '[profiles.x]\nmodel = "x"\n',
+     0, "PASS", "model belongs to a profile table"),
+]
+
+
+@pytest.mark.parametrize(
+    "case,text,status,message,basis", TOML_CASES, ids=[row[0] for row in TOML_CASES]
+)
+def test_toml_fixture_matrix(repo, case, text, status, message, basis):
+    """Expected structure and diagnostic are written into each fixture row."""
+    name = ".codex/config.toml"
+    track(repo, name, text)
+    result = run(repo)
+    output = result.stdout + result.stderr
+    assert result.returncode == status, (case, basis, output)
+    assert message in output, (case, basis, output)
+    if status:
+        assert name in output
+        assert "PASS" not in output
+
+
+def test_exception_inventory_is_separate(repo, exception_script):
+    """The three fixture exceptions are tracked root pins, hence exit 0.
+
+    Expected membership is the fixture allowlist, independently of discovery
+    order; no stale entry or ordinary configuration belongs in the inventory.
+    """
+    for name in EXCEPTIONS:
+        track(repo, name, 'model = "small"\n')
+    track(repo, ".codex/config.toml", '[profiles.x]\nmodel = "large"\n')
+    result = run(repo, script=exception_script)
+    assert result.returncode == 0
+    inventory = result.stdout.split("Allowlisted pin inventory:\n", 1)[1]
+    for name in EXCEPTIONS:
+        assert f'ALLOW {name}: model = \'small\'' in inventory
+    assert ".codex/config.toml" not in inventory
+
+
+def test_empty_exception_inventory(repo):
+    """The production allowlist is empty, so no exceptions are invented."""
+    result = run(repo)
+    assert result.returncode == 0
+    assert "Allowlisted pin inventory:\n  (none)" in result.stdout
+
+
+def test_missing_working_file_has_per_file_error(repo):
+    """A tracked file removed from disk is unreadable: header status 1."""
+    name = ".codex/config.toml"
+    track(repo, name, 'model = "x"\n')
+    (repo[0] / name).unlink()
+    result = run(repo)
+    assert result.returncode == 1
+    assert f"{name}: cannot read UTF-8 configuration" in result.stderr
+    assert "Traceback" not in result.stderr
+
+
+def test_exception_without_pin_is_not_in_inventory(repo, exception_script):
+    """All paths are tracked, but only the last lacks a root key: stale exit 1."""
+    for name in EXCEPTIONS[:-1]:
+        track(repo, name, 'model = "small"\n')
+    track(repo, EXCEPTIONS[-1], '[profiles.x]\nmodel = "small"\n')
+    result = run(repo, script=exception_script)
+    assert result.returncode == 1
+    assert f"{EXCEPTIONS[-1]}: stale allowlist entry (no root model key)" in result.stdout
+    assert f"ALLOW {EXCEPTIONS[-1]}" not in result.stdout
+
+
+def test_documented_example(repo):
+    """Execute the documented TOML input and compare the published transcript.
+
+    Array closure leaves a root key (TOML v1.0.0, Array and Table), so the
+    checker's exit-code contract requires 1 independently of the transcript.
+    """
+    doc = (ROOT / "docs/operations/codex-model-pin-checker.md").read_text()
+    example = doc.split("```toml\n", 1)[1].split("```", 1)[0]
+    expected = doc.split("```text\n", 1)[1].split("```", 1)[0]
+    track(repo, ".codex/config.toml", example)
+    result = run(repo)
+    assert result.returncode == 1
+    assert result.stdout == expected
+    assert result.stderr == ""
+
+
+def test_invalid_utf8_has_per_file_error(repo):
+    """TOML v1.0.0, Spec: a document must be UTF-8; byte ff is invalid."""
+    name = ".codex/config.toml"
+    track(repo, name, '')
+    (repo[0] / name).write_bytes(b'\xff')
+    result = run(repo)
+    assert result.returncode == 1
+    assert f"{name}: cannot read UTF-8 configuration" in result.stderr
+    assert "Traceback" not in result.stderr
+
+
+def test_inventory_survives_other_file_failure(repo, exception_script):
+    """Valid exceptions remain inventory facts when an ordinary pin fails."""
+    for name in EXCEPTIONS:
+        track(repo, name, 'model = "small"\n')
+    track(repo, ".codex/config.toml", 'model = "x"\n')
+    result = run(repo, script=exception_script)
+    assert result.returncode == 1
+    inventory = result.stdout.split("Allowlisted pin inventory:\n", 1)[1]
+    for name in EXCEPTIONS:
+        assert f"ALLOW {name}" in inventory
+    assert "PASS" not in result.stdout
