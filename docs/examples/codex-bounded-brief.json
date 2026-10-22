@@ -1,0 +1,11 @@
+{
+  "objective": "Correct the parser's empty-input result.",
+  "scope": ["Return an empty list for an empty document."],
+  "owned_files": ["src/parser.py", "tests/test_parser.py"],
+  "checks": ["python -m pytest tests/test_parser.py -q"],
+  "stop_conditions": [
+    "A required fix touches a file outside owned_files.",
+    "Existing changes conflict with the proposed parser edit.",
+    "A required check fails and cannot be resolved within scope."
+  ]
+}
