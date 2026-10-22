@@ -509,7 +509,14 @@ ${provider_harness_yaml}
     last_publish_duration_s: ${ph_dur}
     last_publish_rc: ${ph_rc}
 YAML
-FULL="generated_at: \"${RUN_TS}\""$'\n'"${BODY}"
+# Private inventory details never enter this report. The helper emits only the
+# validated metadata contract from issue #3498; unavailable input fails closed.
+map_pointer='{"present":false,"updated_at":null,"content_hash":null}'
+if [[ -n "$provider_py" && -f "${SCRIPT_DIR}/machine_map.py" ]]; then
+  map_pointer=$("$provider_py" "${SCRIPT_DIR}/machine_map.py" project --machine "$MACHINE" 2>/dev/null) \
+    || map_pointer='{"present":false,"updated_at":null,"content_hash":null}'
+fi
+FULL="generated_at: \"${RUN_TS}\""$'\n'"${BODY}"$'\n'"machine_map: ${map_pointer}"
 
 # canonical payload = exclude volatile/meaningless fields (DC4/DG1)
 # CC2/GC2: anchor volatile-field exclusion to line start/indent so a value that merely

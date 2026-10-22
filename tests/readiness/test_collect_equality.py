@@ -8,8 +8,8 @@ depending on the host's real hardware.
 
 from __future__ import annotations
 
-import os
 import json
+import os
 import re
 import shlex
 import subprocess
@@ -18,11 +18,47 @@ import threading
 import time
 from pathlib import Path
 
+import pytest
 import yaml
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 SCRIPT = REPO_ROOT / "scripts" / "readiness" / "collect-equality.sh"
 BASH_PATH = "/mingw64/bin:/usr/bin:/bin:/usr/local/bin"
+
+
+@pytest.fixture(autouse=True)
+def isolate_sdk_detection(tmp_path, monkeypatch):
+    """Keep collector contracts independent of installed licensed software.
+
+    Existing positive import stubs remain first on PATH. Real SDK imports are
+    answered as absent without loading the SDK; other Python calls still run.
+    """
+    bin_dir = tmp_path / "sdk-guard"
+    bin_dir.mkdir()
+    guard = bin_dir / "python"
+    guard.write_text(
+        '#!/usr/bin/env bash\n'
+        'if [[ "$1" == "-c" && "$2" == "import OrcFxAPI" ]]; then exit 1; fi\n'
+        f'exec {shlex.quote(str(sys.executable))} "$@"\n'
+    )
+    guard.chmod(0o755)
+    original = subprocess.Popen
+
+    def isolated_popen(args, **kwargs):
+        if isinstance(args, list) and args and args[0] == "bash":
+            env = dict(kwargs.get("env") or os.environ)
+            parts = env.get("PATH", os.defpath).split(os.pathsep)
+            index = next((i for i, p in enumerate(parts)
+                          if p.startswith(("/usr/", "/bin", "/mingw64/"))), len(parts))
+            parts.insert(index, str(bin_dir))
+            env["PATH"] = os.pathsep.join(parts)
+            for key in ("TMPDIR", "UV_CACHE_DIR", "PYTHONDONTWRITEBYTECODE"):
+                if key in os.environ:
+                    env[key] = os.environ[key]
+            kwargs["env"] = env
+        return original(args, **kwargs)
+
+    monkeypatch.setattr(subprocess, "Popen", isolated_popen)
 
 
 def _bash_path(path: Path) -> str:

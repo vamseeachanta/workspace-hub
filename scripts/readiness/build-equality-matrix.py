@@ -514,6 +514,39 @@ def provider_row_verdict(dim: str, report: dict) -> str:
 
 
 # ── precedence orchestrator (C3) ─────────────────────────────────────────────
+def machine_map_verdict(report: dict, max_age_seconds=None, now: datetime | None = None) -> str:
+    """Public metadata only; the freshness limit must be supplied by policy.
+
+    Pointer fields: issue #3498, Security posture (2026). The SHA-256 digest has
+    256 bits / 4 bits per hexadecimal digit = 64 digits (FIPS 180-4, 2015, §6.2).
+    No inventory detail is rendered. See docs/readiness/machine-map.md.
+    """
+    pointer = report.get("machine_map")
+    if not isinstance(pointer, dict) or set(pointer) != {"present", "updated_at", "content_hash"}:
+        return "MISSING-EVIDENCE"
+    if pointer["present"] is not True or not isinstance(pointer["content_hash"], str):
+        return "MISSING-EVIDENCE"
+    if not re.fullmatch(r"[0-9a-f]{64}", pointer["content_hash"]):
+        return "MISSING-EVIDENCE"
+    stamp = pointer["updated_at"]
+    # RFC 3339 (2002), §5.6: full date, time and explicit offset are required.
+    if not isinstance(stamp, str) or not re.fullmatch(
+        r"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})", stamp
+    ):
+        return "MISSING-EVIDENCE"
+    try:
+        observed = datetime.fromisoformat(stamp[:-1] + "+00:00" if stamp.endswith("Z") else stamp)
+        age = ((now or datetime.now().astimezone()) - observed).total_seconds()
+    except (ValueError, TypeError):
+        return "MISSING-EVIDENCE"
+    if age < 0:
+        return "MISSING-EVIDENCE"
+    if (type(max_age_seconds) not in (int, float) or not math.isfinite(max_age_seconds)
+            or max_age_seconds <= 0):
+        return "NOT_EVALUATED"
+    return "MAP-FRESH" if age <= max_age_seconds else "MAP-STALE"
+
+
 def verdict_for(dim: str, machine: str, reports: dict, baselines: dict,
                 roster: dict, probed_repos: list[str]) -> str:
     status = roster.get(machine, {}).get("status", "active")
@@ -544,6 +577,8 @@ def verdict_for(dim: str, machine: str, reports: dict, baselines: dict,
         return harness_checkup_verdict(rep)
     if dim == "publish_health":             # equivalence publish landing/speed — per-box facts
         return publish_health_verdict(rep)
+    if dim == "machine_map":
+        return machine_map_verdict(rep, roster[machine].get("machine_map_max_age_seconds"))
     if dim in COLD_DIMS:
         return cold_verdict(dim, rep, baselines.get(machine), probed_repos)
     # Stale peers are EXCLUDED from the uniform value list so a stale report can never
@@ -574,7 +609,7 @@ def load_reports() -> dict[str, dict]:
 BASE_DISPLAY_DIMS = ["compute", "data_access", "solvers", "harness", "python_cmd", "skills",
                      "kanban", "memory", "behavior", "scheduler", "session_curation",
                      "skill_currency", "memory_freshness", "skill_link_health", "harness_checkup",
-                     "publish_health"]
+                     "publish_health", "machine_map"]
 DISPLAY_DIMS = BASE_DISPLAY_DIMS + provider_rows()
 
 # ── render grouping (#2801 collapsible-rows enhancement) ─────────────────────
@@ -600,12 +635,14 @@ GROUPS = [
     ("harness-checkup", "Harness checkup — /doctor hygiene per box (version · settings · mode)", ["harness_checkup"]),
     ("publish-health", "Publish health — equivalence fingerprint publish landing fast on every box",
         ["publish_health"]),
+    ("machine-map", "Private inventory — metadata freshness only", ["machine_map"]),
 ]
 
 # Worst-of severity for the collapsed group rollup. Higher = more operator attention.
 # A group's rollup cell shows the worst verdict among its dims for that machine; an
 # all-good group collapses to a single green "OK" so a clean box reads at a glance.
 ROLLUP_SEVERITY = {
+    "MAP-FRESH": 0, "MAP-STALE": 5, "NOT_EVALUATED": 4,
     "BELOW-BASELINE": 6, "DIVERGES": 6, "CURATED-EXPIRED": 6, "SKILLS-DRIFTED": 6, "MEMORY-EXPIRED": 6,
     "CHECKUP-BROKEN": 6, "PUBLISH-GATED": 6,
     "MISSING-BASELINE": 5, "NO-MAJORITY": 5, "CURATED-STALE": 5, "SKILLS-INDEX-STALE": 5, "MEMORY-STALE": 5,
@@ -632,6 +669,7 @@ def rollup_verdict(verdicts: list[str]) -> tuple[str, str]:
 # ── remediation playbook (verdict → action) — keep in sync with the verdict→fix table in
 #    .claude/skills/workspace-hub/ecosystem-equivalence-reconcile/SKILL.md + reconcile-ecosystem.sh
 OK_VERDICTS = {"CONFORMS", "EQUAL", "PARITY", "EXPECTED-DIFF", "EXPECTED-DIVERGENCE",
+               "MAP-FRESH",
                "UNREACHABLE", "ABSENT", "CURATED-FRESH", "SKILLS-CURRENT", "MEMORY-FRESH",
                "SKILL-LINKS-OK", "CHECKUP-OK", "PUBLISH-OK"}
 
@@ -641,6 +679,10 @@ def remediate(dim: str, verdict: str) -> tuple[str, str, bool] | None:
     by_design=True means the cell can't/shouldn't reach green — it's expected, not a defect."""
     if verdict in OK_VERDICTS:
         return None
+    if dim == "machine_map":
+        action = ("refresh the private inventory and its public metadata; declare a positive "
+                  "machine_map_max_age_seconds to evaluate freshness")
+        return (action, "maintainer", False)
     is_provider = dim.startswith("harness:")
     if verdict == "MISSING-EVIDENCE":
         if is_provider:
@@ -833,6 +875,7 @@ tbody th{{background:#edf2f7;text-align:left}}.conforms,.equal,.parity,.ok,.cura
 .expected-diff,.expected-divergence{{background:#e9d8fd}}
 .pending,.missing-evidence{{background:#fffaf0}}.unreachable,.absent,.na{{background:#f7fafc;color:#a0aec0}}
 .stale-checkout{{background:#e2e8f0;color:#4a5568;font-style:italic}}
+.map-fresh{{background:#c6f6d5}}.map-stale,.not_evaluated{{background:#feebc8}}
 tr.grp{{cursor:pointer}}tr.grp th{{background:#1a202c;color:#fff;border-color:#2d3748}}tr.grp td{{color:#1a202c;border-color:#cbd5e0;font-weight:800;box-shadow:inset 0 0 0 9999px rgba(0,0,0,.04)}}
 tr.grp .twist{{color:#90cdf4;font-size:.7rem}}
 tr.detail{{display:none}}tr.detail th{{padding-left:1.8rem;font-weight:400}}
