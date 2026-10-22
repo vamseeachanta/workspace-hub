@@ -114,6 +114,13 @@ jobs:
           uv run python scripts/enforcement/check-brand-token-drift.py | tee -a $GITHUB_STEP_SUMMARY
           echo '```' >> $GITHUB_STEP_SUMMARY
 
+      - name: Test static Pages source evidence and navigation
+        run: |
+          uv run python -m pytest \
+            tests/test_build_pages_evidence.py tests/test_build_pages_a11y.py \
+            tests/test_build_pages_brand.py tests/test_build_pages_sessions.py \
+            tests/enforcement/test_check_brand_drift.py -q -p no:cacheprovider
+
   review-evidence:
     name: Review Evidence Check
     runs-on: ubuntu-latest

@@ -11,9 +11,12 @@ issue-data dashboards that must never be published; this generator reads only
 the named files below, never globs the repo.
 
 Run:  python3 scripts/build_pages.py   (writes public/, gitignored)
+Use --output-dir to write an isolated build without modifying the checkout.
 """
 from __future__ import annotations
 
+import argparse
+import hashlib
 import html
 import json
 import re
@@ -135,59 +138,87 @@ def nav_html() -> str:
     items += [(f"{slug}.html", title) for slug, (_f, title) in HTML_PAGES.items()]
     if (SESSIONS_SRC / "index.html").exists():
         items.append(("sessions/index.html", "Sessions"))
-    return '<nav>' + " · ".join(
+    return '<nav aria-label="Primary">' + " · ".join(
         f'<a href="{href}">{title}</a>' for href, title in items
     ) + '</nav>'
 
 
-def build_sessions() -> list[str]:
+def build_sessions(output_dir: Path | None = None) -> list[str]:
     """Copy the session index + each manifest-enumerated session page into
     public/sessions/. Enumeration-driven (no glob), mirroring the source tree so
     the index's relative links resolve identically when published."""
     manifest = SESSIONS_SRC / "manifest.json"
     if not manifest.exists():
         return []
-    out_dir = PUBLIC / "sessions"
+    out_dir = (PUBLIC if output_dir is None else output_dir) / "sessions"
     out_dir.mkdir(parents=True, exist_ok=True)
     built: list[str] = []
     idx = SESSIONS_SRC / "index.html"
     if idx.exists():
-        (out_dir / "index.html").write_text(idx.read_text(encoding="utf-8"), encoding="utf-8")
+        (out_dir / "index.html").write_bytes(idx.read_bytes())
         built.append("sessions/index.html")
     for entry in json.loads(manifest.read_text(encoding="utf-8")):
         src = SESSIONS_SRC / entry["file"]
         if src.exists():
-            (out_dir / entry["file"]).write_text(src.read_text(encoding="utf-8"), encoding="utf-8")
+            (out_dir / entry["file"]).write_bytes(src.read_bytes())
             built.append(f"sessions/{entry['file']}")
         else:
             print(f"  WARN: manifest lists {entry['file']} but it is missing, skipping")
     return built
 
 
-def shell(title: str, body: str) -> str:
+def source_evidence(source_path: str, source_bytes: bytes) -> str:
+    """Identify the rendered documentation snapshot, not live capability proof.
+
+    Digest method: RFC 6234 (2011), sections 4.1 and 6.2 (SHA-256).
+    Disclosure basis: the deterministic, frozen-output contract in issue #3223.
+    """
+    digest = hashlib.sha256(source_bytes).hexdigest()
+    return f"""<aside class="source-evidence" aria-labelledby="source-evidence-title">
+<h2 id="source-evidence-title">Source and data limits</h2>
+<p>Source: <code>{html.escape(source_path)}</code> in the repository linked below.
+SHA-256 of the source bytes: <code>{digest}</code>.</p>
+<p>This is a static documentation snapshot. It does not establish current deployment
+status, live algorithm results, or outreach activity. Follow the source references
+for supporting evidence and its limitations. The digest identifies the input bytes;
+it does not validate the claims in that input.</p></aside>"""
+
+
+def shell(title: str, body: str, *, source_path: str, source_bytes: bytes) -> str:
     return f"""<!doctype html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{html.escape(title)} · workspace-hub</title>
 <link rel="stylesheet" href="assets/style.css"></head>
-<body><header class="site"><a class="home" href="index.html">workspace-hub</a>{nav_html()}</header>
-<main><div class="content">{body}</div></main>
+<body><a class="skip-link" href="#main-content">Skip to main content</a>
+<header class="site"><a class="home" href="index.html">workspace-hub</a>{nav_html()}</header>
+<main id="main-content" tabindex="-1"><div class="content">{body}</div>
+{source_evidence(source_path, source_bytes)}</main>
 <footer class="site"><p>Multi-repo orchestration &amp; governance hub. Rendered from an explicit public-safe allowlist (README, portfolio map, skills index). <a href="https://github.com/vamseeachanta/workspace-hub">source</a></p></footer>
 </body></html>"""
 
 
-def build():
-    PUBLIC.mkdir(exist_ok=True)
-    ASSETS.mkdir(exist_ok=True)
-    (ASSETS / "style.css").write_text(STYLE, encoding="utf-8")
+def build(output_dir: Path | None = None):
+    public = PUBLIC if output_dir is None else output_dir
+    public.mkdir(parents=True, exist_ok=True)
+    assets = public / "assets"
+    assets.mkdir(exist_ok=True)
+    (assets / "style.css").write_text(STYLE, encoding="utf-8")
     built = []
     for slug, (src, title) in PAGES.items():
         path = ROOT / src
         if not path.exists():
             print(f"  WARN: {src} missing, skipping")
             continue
-        (PUBLIC / f"{slug}.html").write_text(
-            shell(title, md_to_html(path.read_text(encoding="utf-8"))), encoding="utf-8")
+        # Read once so the displayed digest describes precisely the bytes rendered.
+        source_bytes = path.read_bytes()
+        (public / f"{slug}.html").write_text(
+            shell(
+                title, md_to_html(source_bytes.decode("utf-8")),
+                source_path=src, source_bytes=source_bytes,
+            ),
+            encoding="utf-8",
+        )
         built.append(slug)
     # Pre-rendered standalone HTML: copied verbatim (keeps the matrix's own styling).
     for slug, (src, _title) in HTML_PAGES.items():
@@ -195,13 +226,18 @@ def build():
         if not path.exists():
             print(f"  WARN: {src} missing, skipping")
             continue
-        (PUBLIC / f"{slug}.html").write_text(path.read_text(encoding="utf-8"), encoding="utf-8")
+        (public / f"{slug}.html").write_bytes(path.read_bytes())
         built.append(slug)
-    session_pages = build_sessions()
+    session_pages = build_sessions(output_dir=public)
     print(f"Built {len(built)} pages: {', '.join(s + '.html' for s in built)}")
     if session_pages:
         print(f"Published {len(session_pages)} session page(s): {', '.join(session_pages)}")
 
 
 if __name__ == "__main__":
-    build()
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--output-dir", type=Path, default=PUBLIC,
+        help="Build destination (defaults to the ignored public directory).",
+    )
+    build(output_dir=parser.parse_args().output_dir)
