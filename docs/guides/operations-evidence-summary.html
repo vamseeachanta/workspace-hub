@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Personal operations evidence summary</title>
+<style>
+body { max-width: 64em; margin: auto; padding: 2em; font-family: sans-serif; line-height: 1.5; }
+table { border-collapse: collapse; width: 100%; }
+th, td { border: thin solid; padding: .6em; text-align: left; }
+code, pre { background: #eee; overflow-wrap: anywhere; }
+pre { padding: 1em; white-space: pre-wrap; }
+</style>
+</head>
+<body>
+<h1>Personal operations evidence summary</h1>
+<p>The local summary tool coordinates travel, media archiving and private workspace
+readiness without copying personal records into the public repository. It evaluates
+self-reported evidence; service availability and evidence authenticity are not established.
+The initiative's live-surface and terminal-state criteria remain unfulfilled until
+private integrations and their evidence are independently checked.</p>
+<h2>Revision history</h2>
+<table><tr><th>Revision</th><th>Date</th><th>Change and reason</th></tr>
+<tr><td>Initial</td><td>2026-10-22</td><td>Add local evidence summaries and a synthetic
+example to expose incomplete personal operations work.</td></tr></table>
+<p>Table: guide revision.</p>
+<h2>Scope and sources</h2>
+<p>Initiative 3609 requires travel programs, media archives and private workspaces to
+have live-facing surfaces and terminal states. The linked travel comparison epic
+requires trip parameters, a current cost basis and explicit decisions. Media epic
+3589 requires extraction, integrity, off-site copies and an incremental-sync decision.
+The linked private-workspace epic requires data boundaries, membership restrictions
+and cross-scope isolation checks. These issue requirements were inspected on
+2026-10-22; the summary criteria below do not replace their detailed acceptance criteria.</p>
+<p>The existing <a href="../REPO_MISSION_PORTFOLIO.md">repository mission portfolio</a>
+assigns cross-repository coordination to the hub and execution to the owning repositories.
+The <a href="../architecture/agent-data-handling-contract.md">data-handling contract</a>
+requires explicit freshness and distinguishes evidence claims from permission or proof.
+No external dataset is ingested or allocated. The existing source catalog and domain
+index remain authoritative; no parallel personal-data registry is introduced.</p>
+<h2>Implementation slices</h2>
+<ol>
+<li>Validate a narrow JSON evidence vocabulary and reject unknown fields.</li>
+<li>Evaluate the domain criteria below with explicit missing and terminal states.</li>
+<li>Produce local HTML or JSON summaries and exercise the synthetic worked example.</li>
+</ol>
+<p>Private service integrations, trip bookings, archive manipulation, messaging-channel
+creation and decisions on the linked epics remain later work. No network operation,
+credential lookup, scheduling, deletion or cross-repository mutation is performed.</p>
+<h2>Input contract</h2>
+<p>The top-level object may contain only <code>travel</code>, <code>media</code> and
+<code>workspace</code>. A missing domain produces NOT_EVALUATED. Each present domain
+has exactly <code>state</code> (active or complete) and <code>checks</code>.
+Every provided check has exactly <code>result</code> (pass, fail or unknown),
+<code>reference</code>, <code>checked_at</code> and <code>valid_until</code>.</p>
+<p>References are opaque lowercase tokens starting with <code>evidence-</code>, followed
+by letters and optional hyphen-separated letter groups. Keep the mapping to actual
+records in the owning private repository. No names, links, personal text or paths
+belong in these tokens. This vocabulary reduces accidental disclosure; it cannot
+establish whether a token encodes private information. Real inputs and generated
+reports require private storage and audience review.</p>
+<table><tr><th>Domain</th><th>Required local summary checks</th><th>Evidence meaning</th></tr>
+<tr><td>travel</td><td>surface, parameters, cost_basis, decision</td>
+<td>Private planning surface, confirmed inputs, current sourced costs and recorded disposition.</td></tr>
+<tr><td>media</td><td>surface, extraction, integrity, offsite, sync_decision</td>
+<td>Private archive surface, retained originals, integrity evidence, independent copy and ongoing-sync disposition.</td></tr>
+<tr><td>workspace</td><td>surface, boundary, membership, isolation</td>
+<td>Private coordination surface, storage boundary, authorized membership and leakage-test evidence.</td></tr>
+</table>
+<p>Table: personal-operations-evidence-v1 local criteria derived from the linked epic requirements.</p>
+<p>Every complete domain additionally requires a passing <code>terminal</code> check.
+A pass is a declaration that the criterion was satisfied, never an instruction to
+execute an operation. Terminal evidence shall identify the actual disposition in
+the private record; arbitrary closure of a tracking issue does not establish completion.</p>
+<h2>Method and status meanings</h2>
+<p>All timestamps require timezones. A supplied observation is current only when
+<code>checked_at &lt;= as_of &lt; valid_until</code> and
+<code>checked_at &lt; valid_until</code>. The caller supplies the assessment time and
+the expiry; no age limit or physical coefficient is assumed. This interval test
+implements the freshness ordering in the data-handling contract. It is a logical
+comparison, so engineering equations and numerical standards constants do not apply.</p>
+<table><tr><th>Condition, evaluated in this order</th><th>Result</th></tr>
+<tr><td>Any current provided check fails</td><td>BLOCKED</td></tr>
+<tr><td>Any required check is absent, unknown, future-dated or expired</td><td>NOT_EVALUATED</td></tr>
+<tr><td>All required checks pass and state is active</td><td>ACTIVE</td></tr>
+<tr><td>All required checks and terminal evidence pass and state is complete</td><td>COMPLETE</td></tr>
+</table>
+<p>Table: synthetic logical truth table, with no averaging or cross-domain completion inference.</p>
+<p>A stale failing observation becomes unknown; its prior failure is not established
+at the new assessment time. An optional terminal check supplied for an active domain
+is still validated; a current failure blocks the domain. Malformed input aborts the
+entire assessment without emitting input content. Duplicate keys and non-finite JSON
+tokens are rejected.</p>
+<h2>Worked example: inputs, method and answer</h2>
+<p><a href="../../examples/operations-evidence.json">The synthetic input</a> declares
+travel complete with passing checks, media complete with a failed off-site check,
+and supplies no workspace record. All supplied observations run from
+2030-06-01T11:00:00Z to 2030-06-02T11:00:00Z. The assessment time is
+2030-06-01T12:00:00Z. These dates are invented example inputs, not observed records.</p>
+<p>Hand calculation: the assessment falls inside each declared interval. Every travel
+criterion and terminal check passes, yielding COMPLETE. The media off-site check
+fails, yielding BLOCKED regardless of the passing terminal check. The workspace
+record is absent, yielding NOT_EVALUATED. No domain result establishes live availability.</p>
+<pre>python scripts/operations/personal_operations.py examples/operations-evidence.json \
+  --as-of 2030-06-01T12:00:00Z --output report.html</pre>
+<p>Run from the repository root with a supported Python interpreter. The output path
+shall be a new file in an appropriate private location for real evidence. The command
+returns the incomplete-result status for this example and creates an HTML report
+with the assessment time and criteria version. Without <code>--output</code>, fixed
+summary labels are written as a JSON object to standard output, with the assessment
+time, criteria version and self-reported basis. Evidence references
+are omitted from both forms. Existing output files and the input are never overwritten.</p>
+<p>Exit codes follow this tool's interface: zero means every domain is COMPLETE;
+one means a valid assessment includes another state; two means invalid input or
+an inaccessible file. These are interface identifiers, not numerical acceptance limits.</p>
+<h2>Verification and limits</h2>
+<p>The accompanying tests derive expected states from the hand evaluation above and
+exercise missing criteria, failures, expiry boundaries, timezone offsets, malformed
+records, duplicate keys, report metadata and file preservation. No private content,
+service probe or external numerical reference is required. Provider-independent review
+and verification of actual evidence remain prerequisites for relying on a real summary.</p>
+<p>The public example and guide are synthetic. Actual private surfaces, backup status,
+family membership and travel decisions have not been verified by this change.
+Reports are static snapshots and shall be regenerated against current evidence;
+the initiative is not declared complete by this tooling.</p>
+</body></html>
