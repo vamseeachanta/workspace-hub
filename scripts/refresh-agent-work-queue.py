@@ -22,6 +22,9 @@ import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from scripts.lib.issue_publication import WITHHELD, public_issue_view
+
 REPO_ROOT = Path(__file__).resolve().parents[1]
 QUEUE_FILE = REPO_ROOT / "notes" / "agent-work-queue.md"
 REPO_SLUG = "vamseeachanta/workspace-hub"
@@ -87,7 +90,7 @@ def _sort_issues(issues: list[dict]) -> list[dict]:
 def _format_issue_row(idx: int, issue: dict) -> str:
     """Format a single issue as a Markdown table row."""
     num = issue["number"]
-    title = issue["title"].replace("|", "\\|")
+    title = public_issue_view(issue).get("title", WITHHELD)
     return f"| {idx} | #{num} | {title} |"
 
 

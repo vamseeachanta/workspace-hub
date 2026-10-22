@@ -43,6 +43,7 @@ except ImportError:
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 from scripts.lib import private_overlay  # noqa: E402  (codename -> real repo, #3694)
+from scripts.lib.issue_publication import public_issue_view
 
 DOMAIN_PREFIX = "domain:"
 
@@ -146,6 +147,7 @@ def _classify_gh_error(error: subprocess.CalledProcessError) -> str:
 
 def render(report: dict) -> tuple[str, int]:
     """Markdown report + total violation count."""
+    report = public_issue_view(report)
     lines = ["# Domain-coverage guard\n"]
     if not report["any_taxonomy"]:
         lines.append("> taxonomy.yaml not provided — crosswalk-drift (unknown) "
@@ -211,7 +213,7 @@ def main() -> int:
     report = collect(repos, _default_runner, canonical, aliases, private_overlay.repo_aliases())
 
     if args.json:
-        print(json.dumps(report, indent=2))
+        print(json.dumps(public_issue_view(report), indent=2))
         total = sum(len(r["zero"]) + len(r["multi"]) + len(r["unknown"]) + len(r["alias"])
                     for r in report["repos"].values())
     else:
