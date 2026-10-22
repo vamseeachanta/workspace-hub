@@ -12,6 +12,8 @@ import subprocess
 import sys
 from pathlib import Path
 
+import pytest
+
 ROOT = Path(__file__).resolve().parents[2]
 AUDIT = ROOT / "scripts/enforcement/audit_script_modes.py"
 
@@ -81,6 +83,54 @@ def test_audit_uses_index_bytes_and_clears_inherited_binding(tmp_path):
     assert result.returncode == 0, result.stderr
     assert json.loads(result.stdout)[0]["kind"] == "shebang_without_exec"
     assert git(tmp_path, "ls-files", "--stage") == before
+
+
+@pytest.mark.parametrize("explicit_repo", [True, False])
+def test_nested_audit_covers_repository_and_preserves_exemptions(tmp_path, explicit_repo):
+    root = tmp_path / "repo with spaces"
+    root.mkdir()
+    fixture(root)
+    nested = root / "nested directory"
+    nested.mkdir()
+    command = [sys.executable, str(AUDIT), "--check"]
+    if explicit_repo:
+        command.extend(["--repo", str(nested)])
+    env = os.environ | {
+        "GIT_DIR": str(ROOT / ".git"), "GIT_WORK_TREE": str(ROOT),
+        "GIT_COMMON_DIR": str(ROOT / ".git"),
+    }
+    # An empty subtree must still detect the blocking script at the root.
+    outside = subprocess.run(command, cwd=nested, env=env, text=True,
+                             capture_output=True, check=False)
+    assert outside.returncode == 1, outside.stderr
+    (nested / "local.sh").write_text("#!/bin/sh\ntrue\n")
+    git(root, "add", "--", "nested directory/local.sh")
+    git(root, "update-index", "--chmod=-x", "--", "nested directory/local.sh")
+    before = git(root, "ls-files", "--stage")
+    result = subprocess.run(command, cwd=nested, env=env, text=True,
+                            capture_output=True, check=False)
+    assert result.returncode == 1, result.stderr
+    records = json.loads(result.stdout)
+    assert [(r["path"], r["mode"], r["kind"]) for r in records] == [
+        ("needs exec.sh", "100644", "shebang_without_exec"),
+        ("nested directory/local.sh", "100644", "shebang_without_exec"),
+        ("plain.txt", "100755", "exec_without_shebang"),
+    ]
+    exemptions = tmp_path / "exemptions.json"
+    exemptions.write_text(json.dumps({
+        "needs exec.sh": "Sourced fixture library.",
+        "nested directory/local.sh": "Nested sourced fixture library.",
+    }))
+    exempted = subprocess.run(
+        [*command, "--exemptions", str(exemptions)], cwd=nested, env=env,
+        text=True, capture_output=True, check=False,
+    )
+    assert exempted.returncode == 0, exempted.stderr
+    exempted_records = json.loads(exempted.stdout)
+    assert [r["path"] for r in exempted_records] == [r["path"] for r in records]
+    assert all("exemption" in r for r in exempted_records
+               if r["kind"] == "shebang_without_exec")
+    assert git(root, "ls-files", "--stage") == before
 
 
 def test_guard_rejects_broad_or_reasonless_exemptions(tmp_path):

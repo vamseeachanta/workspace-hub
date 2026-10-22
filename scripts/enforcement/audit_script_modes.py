@@ -28,6 +28,7 @@ def git(repo, *args, allowed=(0,)):
 
 def audit(repo):
     """Use indexed blobs, not working-tree permissions or unstaged content."""
+    repo = Path(os.fsdecode(git(repo, "rev-parse", "--show-toplevel").removesuffix(b"\n")))
     candidates = set(git(
         repo, "grep", "--cached", "-a", "-l", "-z", "^#!", "--", allowed=(0, 1),
     ).split(b"\0"))
