@@ -20,6 +20,7 @@ from __future__ import annotations
 import argparse
 import re
 import sys
+from collections.abc import Iterator
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -99,18 +100,28 @@ ADVICE_MODAL = re.compile(
     r"\bit (?:is|shall be) recommended that .{0,120}?\b(?:shall|must)\b"
     r"|\bwe (?:shall|must) (?:consider|look|review|explore)\b", re.I)
 
-# "acceptable"/"conservative"/"safe" with no criterion nearby.
+# "acceptable"/"conservative"/"safe" with no criterion in the sentence.
 # The criterion may be named ("against the allowable"), cited ("per Reference [2]"),
 # or simply explained in the clause that follows. The first version of this rule
 # recognised only the first two forms and flagged two pages that had in fact given
 # their reason -- "contained by the second" and "analogous to a screen-out". A
-# justification is a justification whatever vocabulary carries it.
+# justification is a justification whatever vocabulary carries it. Issue #3835
+# (2026) also requires either clause order, bounded by the sentence rather than
+# by an arbitrary character window. These patterns identify candidate claims;
+# check() applies the same sentence-scoped criterion test to both R3 and R5.
 _CRITERION = (r"against|per\b|criteri|limit|threshold|allowable|basis|code|standard"
               r"|because|since|as it|Reference|Table|Section|by design|in that")
+# A sentence-wide search also sees the claim: "Table" inside "acceptable"
+# cannot qualify that claim. Retain stems such as "criteri" at word starts.
+CRITERION = re.compile(rf"\b(?:{_CRITERION})", re.IGNORECASE)
+# Conservative lexical boundaries, not a natural-language sentence tokenizer.
+# Blank paragraphs end scope; a single soft wrap does not (issue #3835, 2026).
+# A dot between digits stays within reference numbers such as Table 4.1 in the
+# existing criterion_named fixture; a following full stop still ends scope.
+SENTENCE_BOUNDARY = re.compile(r"(?<!\d)\.|\.(?!\d)|[!?]|\n[ \t]*\n")
 UNSUPPORTED = re.compile(
     r"\b(?:is|are|remains?|were)\s+(acceptable|conservative|safe)\b"
-    r"(?!\s*(?:[-\u2013\u2014:;,]|\band\b|\bwhich\b|\bbut\b))"      # an explanation follows
-    rf"(?![^.]{{0,160}}(?:{_CRITERION}))",
+    r"(?!\s*(?:[-\u2013\u2014:;,]|\band\b|\bwhich\b|\bbut\b))",  # an explanation follows
     re.I)
 
 # A hedge is honest but weak when it names no criterion. This is a separate
@@ -120,10 +131,11 @@ UNSUPPORTED = re.compile(
 # The justification may follow anywhere in the sentence, not immediately after the
 # hedge: "does not obviously fit behind it: the long-lead items exceed the window"
 # explains itself four words later. Scan the remainder of the sentence for a named
-# criterion or an explanatory mark.
+# criterion or an explanatory mark. Named criteria are now checked in either
+# direction by the shared sentence test; explanatory punctuation stays forward.
 HEDGE = re.compile(
     r"\b(?:not|n't|nor)\s+(?:obviously|clearly|evidently|necessarily)\b"
-    rf"(?![^.]{{0,200}}(?:{_CRITERION}|[:\u2013\u2014]))",
+    r"(?![\s\S]*[:\u2013\u2014])",  # bounded by the sentence's endpos in check()
     re.I)
 
 # Caption placed above its table rather than below it.
@@ -150,6 +162,20 @@ SYMBOL_CONTEXT = re.compile(
 
 
 TABLE_CELL_SYMBOL = re.compile(r"^\s*\|")
+
+
+def sentence_spans(text: str) -> Iterator[tuple[int, int]]:
+    """Yield prose scope offsets without changing diagnostic positions."""
+    start = 0
+    for boundary in SENTENCE_BOUNDARY.finditer(text):
+        yield start, boundary.start()
+        start = boundary.end()
+    yield start, len(text)
+
+
+def has_criterion(text: str, start: int, end: int) -> bool:
+    """Recognise existing criterion vocabulary anywhere in one prose scope."""
+    return CRITERION.search(text, start, end) is not None
 
 
 def line_of(text: str, pos: int) -> str:
@@ -203,12 +229,15 @@ def check(path: Path) -> list[str]:
     for m in ADVICE_MODAL.finditer(text):
         report(m.start(), "R2", "shall/must used for advice; use should or is recommended",
                m.group(0)[:60])
-    for m in UNSUPPORTED.finditer(text):
-        report(m.start(), "R3", f"{m.group(1)!r} without its governing criterion",
-               m.group(0)[:60])
-    for m in HEDGE.finditer(text):
-        report(m.start(), "R5", "hedge without a criterion; supply the criterion rather "
-               "than remove the hedge", m.group(0)[:60])
+    for start, end in sentence_spans(text):
+        if has_criterion(text, start, end):
+            continue
+        for m in UNSUPPORTED.finditer(text, start, end):
+            report(m.start(), "R3", f"{m.group(1)!r} without its governing criterion",
+                   m.group(0)[:60])
+        for m in HEDGE.finditer(text, start, end):
+            report(m.start(), "R5", "hedge without a criterion; supply the criterion rather "
+                   "than remove the hedge", m.group(0)[:60])
     if not is_proposal(path, raw[:600]):
         for m in FIRST_PERSON.finditer(text):
             # "US" is the country, not first-person plural. Matching it case-
