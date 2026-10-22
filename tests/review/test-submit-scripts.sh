@@ -83,12 +83,13 @@ make_mock() {
 # ── T05: SETSID_CMD=/nonexistent → WARN to stderr, does not hard-fail ────────
 {
   tmpf="$(mktemp --suffix=.md)"; echo "# test" > "$tmpf"
+  stderr_log="$(mktemp)"
   ec=0
   stdout=$(SETSID_CMD=/nonexistent CLAUDE_CMD=__no_claude__ \
     bash "$SCRIPTS/submit-to-claude.sh" --file "$tmpf" --prompt "p" \
-    2>/tmp/_t05_stderr) || ec=$?
-  stderr=$(cat /tmp/_t05_stderr 2>/dev/null || true)
-  rm -f "$tmpf" /tmp/_t05_stderr
+    2>"$stderr_log") || ec=$?
+  stderr=$(cat "$stderr_log" 2>/dev/null || true)
+  rm -f "$tmpf" "$stderr_log"
   assert_contains "T05: setsid missing → WARN in stderr" "WARN" "$stderr"
   assert_exit "T05: setsid missing → exit 0, not hard-fail" 0 "$ec"
 }
@@ -338,6 +339,12 @@ make_mock_codex() {
 #   CODEX_MOCK_ERR_PATTERN     — stderr text for classify_codex_failure
 #   CODEX_MOCK_EMPTY_FIRST_CALL — "1" → call-1 writes empty raw_file (forces retry)
 #   CODEX_MOCK_RAW             — content for raw_file (default: valid JSON)
+
+# Version probes are not review attempts; keep retry/input counts independent.
+if [[ "${1:-}" == "--version" ]]; then
+  echo 'codex-cli 0.123.0'  # Existing pinned version in scripts/install/codex-pin.env.
+  exit 0
+fi
 
 if [[ -n "${CODEX_MOCK_CALLCOUNT:-}" ]]; then
   call_n=$(( $(cat "$CODEX_MOCK_CALLCOUNT" 2>/dev/null || echo 0) + 1 ))
