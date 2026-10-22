@@ -28,6 +28,16 @@ sys.modules["readiness_bundle_schema"] = readiness_bundle_schema
 _spec.loader.exec_module(readiness_bundle_schema)
 
 
+@pytest.fixture(
+    params=["2026-99-22T00:00:00Z", "2026-02-30", "2026-10-22T25:00:00Z"],
+    ids=["invalid-month", "invalid-date", "invalid-hour"],
+)
+def invalid_timestamp_file(tmp_path, request):
+    path = tmp_path / "invalid-timestamp.yaml"
+    path.write_text(f"collected_at: {request.param}\n", encoding="utf-8")
+    return path
+
+
 class TestReadinessBundleSchemaContract:
     def test_schema_file_exists(self) -> None:
         assert SCHEMA_PATH.is_file()
@@ -255,6 +265,25 @@ class TestReadinessBundleIntegrity:
         path = tmp_path / "invalid.yaml"
         path.write_text(text)
         assert readiness_bundle_schema.validate_bundle_file(path)
+
+    def test_invalid_yaml_timestamp_returns_generic_error(self, invalid_timestamp_file):
+        assert readiness_bundle_schema.validate_bundle_file(invalid_timestamp_file) == [
+            "$: invalid or ambiguous input"
+        ]
+
+    def test_cli_invalid_yaml_timestamp_is_count_only(self, invalid_timestamp_file):
+        import json
+        import subprocess
+
+        result = subprocess.run(
+            [sys.executable, str(SCRIPT_PATH), str(invalid_timestamp_file)],
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        assert result.returncode == 1
+        assert json.loads(result.stdout) == {"valid": False, "error_count": 1}
+        assert result.stderr == ""
 
     def test_missing_file_returns_error(self, tmp_path):
         assert readiness_bundle_schema.validate_bundle_file(tmp_path / "missing.yaml")

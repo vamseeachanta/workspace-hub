@@ -98,11 +98,11 @@ def validate_bundle_file(path: str | Path) -> list[str]:
         bundle = yaml.load(
             Path(path).read_text(encoding="utf-8"), Loader=_UniqueKeyLoader
         )
-        return validate_bundle(bundle)
     except (OSError, UnicodeError):
         return ["$: input could not be read"]
-    except (yaml.YAMLError, RecursionError):
+    except (yaml.YAMLError, RecursionError, ValueError):
         return ["$: invalid or ambiguous input"]
+    return validate_bundle(bundle)
 
 
 class _PrivateArgumentParser(argparse.ArgumentParser):
