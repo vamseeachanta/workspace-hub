@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Compliance alert interpretation</title>
+<style>
+body { max-width: 58rem; margin: 2rem auto; padding: 0 1rem;
+       font-family: system-ui, sans-serif; line-height: 1.6; color: #172536; }
+table { border-collapse: collapse; width: 100%; }
+th, td { padding: .5rem; text-align: left; border: 1px solid #bcc6d1; }
+caption { caption-side: bottom; text-align: left; }
+pre { background: #eef2f6; padding: 1rem; overflow: auto; }
+</style>
+</head>
+<body>
+<h1>Compliance alert interpretation</h1>
+<h2>Summary</h2>
+<p>The daily alert uses the dashboard's root JSON commit metrics. A window with
+no reviewable commits requires no review action. A stored zero percentage in
+that case is a legacy sentinel, rather than evidence of failed review.</p>
+<h2>Revision history</h2>
+<table>
+<tr><th>Revision</th><th>Date</th><th>Change and reason</th></tr>
+<tr><td>1</td><td>2026-10-22</td><td>Document structured parsing and empty-set
+handling to prevent contradictory critical alerts.</td></tr>
+<caption>Table 1. Document revisions.</caption>
+</table>
+<h2>Method and sources</h2>
+<p>The existing
+<a href="compliance-dashboard.md">Compliance Dashboard Guide</a>,
+“How Compliance is Calculated”, steps 4–5, defines the reviewable denominator,
+percentage and default threshold. The alert bands are the Thresholds table in
+<a href="../../../../issues/3809">issue 3809</a> (2026-08-17), consistent with
+<code>scripts/enforcement/compliance-cron.sh</code>. These are repository workflow
+criteria; no engineering standard or physical coefficient is used.</p>
+<pre>reviewable = total_commits - skipped = reviewed + unreviewed
+rate = floor(100 × reviewed / reviewable), when reviewable &gt; 0</pre>
+<p>The factor 100 converts a ratio to percent. Integer truncation preserves the
+existing dashboard contract. When reviewable equals zero, no ratio is calculated;
+the stored zero is retained for compatibility and the cron exits without an alert.</p>
+<table>
+<tr><th>Rate (%)</th><th>Alert severity</th></tr>
+<tr><td>Below 30</td><td>Critical</td></tr>
+<tr><td>30 to below 50</td><td>High</td></tr>
+<tr><td>50 to below 80</td><td>Medium</td></tr>
+<tr><td>At least 80</td><td>No alert if the dashboard verdict is PASS</td></tr>
+<caption>Table 2. Alert policy from the issue's Thresholds table.</caption>
+</table>
+<p>A stricter configured dashboard threshold can also require an alert at or
+above 80%; its severity remains medium. A lower configured dashboard threshold
+does not lower the cron's alert bands.</p>
+<h2>Worked examples</h2>
+<p><strong>Exempt window:</strong> total = 7, skipped = 7, reviewed = 0,
+unreviewed = 0. Reviewable = 7 − 7 = 0. The dashboard stores rate = 0 and
+verdict = PASS. The cron records “No reviewable commits” and creates no alert.</p>
+<p><strong>Review backlog:</strong> total = 11, skipped = 7, reviewed = 1,
+unreviewed = 3. Reviewable = 11 − 7 = 4; rate = floor(100 × 1 / 4) = 25%.
+Against the default 80% criterion, the verdict is FAIL; 25% is below the 30%
+critical boundary. The alert reports exactly one reviewed and three unreviewed
+commits, regardless of nested event counters or verdicts.</p>
+<h2>Validation and error handling</h2>
+<p>The parser requires a single JSON Report section, nonnegative integer counts,
+consistent totals and rates, a percentage threshold and the matching verdict.
+Duplicate JSON keys, missing fields and malformed JSON are rejected. The cron
+also verifies the dashboard exit status against the verdict before any GitHub
+access. The dashboard runs from the resolved repository root so that the caller
+cannot redirect the analyzed history or the saved report through its working directory. Invalid evidence produces a nonzero exit and an ERROR in the daily log,
+rather than a fabricated compliance result.</p>
+<p>Run the regression and existing dashboard tests using pytest on
+<code>tests/enforcement/test_compliance_alert.py</code> and
+<code>tests/enforcement/test_compliance_dashboard.py</code>. Tests use disposable
+repositories and synthetic fixtures with independent arithmetic in docstrings.
+Git bindings inherited from the caller are removed before fixture initialization.</p>
+<h2>Limits and next action</h2>
+<p>This correction changes alert interpretation, not commit classification or
+review-evidence qualification. A keyword in a commit message remains heuristic
+evidence under the existing dashboard. Historical commits are not retrospectively
+reviewed, and historical issues are not edited. The weekly report remains unchanged.
+The maintainers should inspect the daily log and obtain actual review evidence
+before treating an alert as a verified account of missing reviews.</p>
+</body>
+</html>
