@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<title>Compliance alert accounting</title>
+<main>
+<h1>Compliance alert accounting</h1>
+<h2>Summary</h2>
+<p>The daily alert decision is derived from the dashboard's top-level JSON
+report. Nested event verdicts describe separate checks. A window containing no
+reviewable commits produces no compliance alert. Invalid accounting or a
+dashboard execution failure exits with an error before GitHub is contacted.</p>
+<h2>Revision history</h2>
+<table>
+<tr><th>Revision</th><th>Date</th><th>Change and reason</th></tr>
+<tr><td>Initial</td><td>2026-10-22</td><td>Define validated alert accounting
+and document examples for empty reviewable windows and nested verdicts.</td></tr>
+</table>
+<p>Table 1. Document revisions.</p>
+<h2>Scope and method</h2>
+<ol>
+<li>The parser reads exactly one <code>JSON Report:</code> section and validates
+integer counts, duplicate fields, accounting identities, rate and verdict.</li>
+<li>The cron wrapper retains the dashboard exit status and requires agreement
+with its verdict. It suppresses alerts when reviewable is zero and retains the
+existing alert thresholds for populated windows.</li>
+<li>Regression tests exercise the parser and the cron path with isolated
+substitutes for the dashboard and GitHub. Existing dashboard tests remain
+part of the regression command.</li>
+</ol>
+<p>The accounting identities are total = skipped + reviewable and reviewable =
+reviewed + unreviewed. For a populated reviewable window, the displayed integer
+rate is floor(100 × reviewed / reviewable). The factor 100 expresses a fraction
+as a percentage. The dashboard stores zero for an empty reviewable window;
+that stored value does not establish a compliance failure.</p>
+<p>Source for these identities, the integer-rate method and verdict semantics:
+<code>scripts/enforcement/compliance-dashboard.sh</code>, “Calculate rates”
+and “Determine verdict” (repository implementation, 2026).</p>
+<table>
+<tr><th>Rate (%)</th><th>Alert</th></tr>
+<tr><td>80 or greater</td><td>None</td></tr>
+<tr><td>50 through 79</td><td>Medium</td></tr>
+<tr><td>30 through 49</td><td>High</td></tr>
+<tr><td>Below 30</td><td>Critical</td></tr>
+</table>
+<p>Table 2. Retained integer-rate alert policy, sourced from
+<a href="https://github.com/vamseeachanta/workspace-hub/issues/3882">issue 3882</a>,
+“Thresholds” (2026), and <code>compliance-cron.sh</code>, “Alert thresholds”.
+The dashboard's configurable threshold validates its verdict independently;
+the cron alert policy retains the boundaries above.</p>
+<h2>Worked examples</h2>
+<p>All example counts are synthetic test inputs, not observations of repository
+compliance. Expected results follow the hand calculations below.</p>
+<p>Inputs: total 7, skipped 7, reviewed 0 and unreviewed 0. Calculation:
+reviewable = 7 − 7 = 0. A percentage cannot be calculated with a zero denominator.
+The stored dashboard rate is zero and its verdict is PASS. Answer: no alert
+and no GitHub call; a critical alert would be unsupported by this window.</p>
+<p>Inputs: total 5, skipped 0, reviewed 1 and unreviewed 4. Calculation:
+reviewable = 5 − 0 = 5 = 1 + 4; floor(100 × 1 / 5) = 20 percent.
+Against the retained 80 percent dashboard threshold, the verdict is FAIL.
+Against the alert policy's 30 percent boundary, the severity is critical.
+A nested drift-event verdict of pass does not alter this result.</p>
+<p>The second example can be passed directly to the validator. The argument
+represents the dashboard's FAIL exit status:</p>
+<pre><code>printf '%s\n' 'JSON Report:' \
+'{"total_commits":5,"skipped":0,"reviewable":5,"reviewed":1,"unreviewed":4,"compliance_rate":20,"threshold":80,"verdict":"FAIL","stage_prompt_drift":{"latest_event":{"verdict":"pass"}}}' \
+| python3 scripts/enforcement/compliance_alert_report.py 1</code></pre>
+<p>Answer, as tab-separated fields: <code>20 5 1 4 FAIL 5</code>
+(rate, total, reviewed, unreviewed, verdict, reviewable).</p>
+<h2>Verification</h2>
+<pre><code>uv run --no-project --with pytest python -m pytest \
+  tests/enforcement/test_compliance_cron.py \
+  tests/enforcement/test_compliance_dashboard.py -q -rA -p no:cacheprovider
+uv run --no-project --with ruff ruff check \
+  scripts/enforcement/compliance_alert_report.py \
+  tests/enforcement/test_compliance_cron.py
+bash -n scripts/enforcement/compliance-cron.sh</code></pre>
+<h2>Known limits and follow-up</h2>
+<p>This change establishes alert accounting consistency, not independent review
+evidence. Historical commits have not been reviewed or reclassified. The
+existing dashboard's message-based review detection remains unchanged;
+authenticated review evidence and retrospective backlog review require separate
+work. Weekly aggregation and commit classification are unchanged. No hosted
+alert publication is exercised by these tests. Second-provider review remains
+pending before merge.</p>
+</main>
+</html>
