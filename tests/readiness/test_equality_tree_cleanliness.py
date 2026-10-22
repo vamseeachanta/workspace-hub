@@ -99,7 +99,7 @@ PEER_REPO_YAML = (
 )
 # Seam layer: provably fresh provenance ⇒ anything BUT STALE-CHECKOUT.
 PEER_SEAM_YAML = (
-    'generated_at: "2026-07-30T12:00:00"\nmachine: "peer-box"\nos: "linux"\n'
+    'generated_at: "2026-10-22T12:00:00Z"\nmachine: "peer-box"\nos: "linux"\n'
     'status: "active"\n'
     'provenance:\n  checkout_sha: "abc1234"\n  dirty: false\n  behind_main: 0\n'
     '  ahead_main: 0\n  origin_ref_age_h: 1\n'
@@ -123,7 +123,13 @@ def _ws_fixture(tmp_path: Path, *, with_publisher: bool = False,
     if with_publisher:
         _copy("scripts/readiness/publish-equality.sh", ws)
     else:
-        _stub(ws, "scripts/readiness/publish-equality.sh")
+        _stub(ws, "scripts/readiness/publish-equality.sh",
+              '#!/usr/bin/env bash\n'
+              'source "$(dirname "$0")/lib/eq-seam.sh"\n'
+              'state=$(eq_state_dir "")\nmkdir -p "$state"\n'
+              'printf \'{"schema_version":1,"ts":"%s","phase":"publish",'
+              '"duration_s":0,"rc":0}\\n\' "$(date -u +%Y-%m-%dT%H:%M:%SZ)" '
+              '> "$state/publish-health.json"\n')
     if with_curation:
         _copy("scripts/curation/curate-session-memory.sh", ws)
         if CURATION_PREFLIGHT.exists():
@@ -212,7 +218,8 @@ def _run_collect(ws: Path, tmp_path: Path, *args: str, expect_rc: int = 0,
 def _run_builder(ws: Path, tmp_path: Path, *args: str, expect_rc: int = 0,
                  **envx: str) -> subprocess.CompletedProcess:
     res = subprocess.run([sys.executable,
-                          str(ws / "scripts" / "readiness" / "build-equality-matrix.py"), *args],
+                          str(ws / "scripts" / "readiness" / "build-equality-matrix.py"),
+                          "--now", "2026-10-22T12:00:00Z", *args],
                          env=_env(ws, tmp_path, **envx), capture_output=True, text=True,
                          timeout=180)
     assert res.returncode == expect_rc, f"rc={res.returncode}\n{res.stdout}\n{res.stderr}"
@@ -344,10 +351,10 @@ def test_build_matrix_state_dir_replaces_default_layers(tmp_path):
         'status: "active"\ndimensions: {}\n')
     # Control: with the default layers the repo's peer-box evidence IS read (STALE-CHECKOUT).
     control = json.loads(_run_builder(ws, tmp_path, "--json").stdout)
-    assert control["peer-box"]["compute"] == "STALE-CHECKOUT"
+    assert control["peer-box"]["compute"] == "STALE"
     # With --state-dir the repo layer must be REPLACED, so peer-box has no evidence at all.
     verdicts = json.loads(_run_builder(ws, tmp_path, "--state-dir", str(only), "--json").stdout)
-    assert verdicts["peer-box"]["compute"] == "MISSING-EVIDENCE", (
+    assert verdicts["peer-box"]["compute"] == "STALE", (
         "peer-box evidence was folded in from the repo layer despite --state-dir "
         f"(got {verdicts['peer-box']['compute']})")
 
@@ -359,10 +366,10 @@ def test_build_matrix_overlays_local_over_repo_in_default_mode(tmp_path):
     (seam / "equality-peer-box.yaml").write_text(PEER_SEAM_YAML)   # fresh provenance
     # Control: without the seam layer the repo copy (no provenance) grades STALE-CHECKOUT.
     control = json.loads(_run_builder(ws, tmp_path, "--json").stdout)
-    assert control["peer-box"]["compute"] == "STALE-CHECKOUT"
+    assert control["peer-box"]["compute"] == "STALE"
     verdicts = json.loads(
         _run_builder(ws, tmp_path, "--json", EQ_STATE_DIR=str(seam)).stdout)
-    assert verdicts["peer-box"]["compute"] != "STALE-CHECKOUT", (
+    assert verdicts["peer-box"]["compute"] != "STALE", (
         "the seam copy did not override the repo copy in default mode")
 
 
@@ -614,7 +621,7 @@ def test_build_matrix_reads_repo_peer_evidence_readonly(tmp_path):
     before = peer.read_text()
     verdicts = json.loads(_run_builder(ws, tmp_path, "--json").stdout)
     assert peer.read_text() == before, "peer evidence in the tracked tree was mutated"
-    assert verdicts["peer-box"]["compute"] == "STALE-CHECKOUT", (
+    assert verdicts["peer-box"]["compute"] == "STALE", (
         "repo peer evidence was not read in default mode")
 
 

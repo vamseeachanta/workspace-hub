@@ -7,13 +7,13 @@ the guard (worktree_guard.py, separately tested) is the runtime backstop.
 """
 from __future__ import annotations
 
-import re
-import subprocess
 import json
 import os
-import shutil
-import sys
+import re
 import shlex
+import shutil
+import subprocess
+import sys
 from pathlib import Path
 
 import pytest
@@ -38,7 +38,7 @@ def fixture_repo(tmp_path, name="owner root"):
         target.parent.mkdir(parents=True, exist_ok=True)
         shutil.copyfile(REPO_ROOT / relative, target)
     matrix = root / "scripts/readiness/build-equality-matrix.py"
-    matrix.write_text('print(\'{"skills": "DIVERGES"}\')\n', encoding="utf-8")
+    matrix.write_text('print(\'{"fixture": {"skills": "DIVERGES"}}\')\n', encoding="utf-8")
     bins = tmp_path / "bins"
     bins.mkdir()
     interpreter = shlex.quote(Path(sys.executable).as_posix())
@@ -67,7 +67,7 @@ def fixture_repo(tmp_path, name="owner root"):
 
 def skills_advice(root, env):
     result = subprocess.run(["bash", str(root / "scripts/readiness/reconcile-ecosystem.sh"),
-                             "--json"], env=env, capture_output=True, text=True, timeout=30)
+                             "--json", "--no-fetch"], env=env, capture_output=True, text=True, timeout=30)
     assert result.returncode == 0, result.stderr
     entries = [x for x in json.loads(result.stdout)["plan"] if "[skills]" in x["action"]]
     assert len(entries) == 1, result.stdout

@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Equality freshness and publication semantics</title>
+<style>
+body{max-width:78ch;margin:2rem auto;padding:0 1rem;font:1rem/1.5 system-ui;color:#18212b}
+table{border-collapse:collapse;width:100%}th,td{border:1px solid #bbc;padding:.4rem;text-align:left}
+.stale{background:#fed7d7}.fresh{background:#c6f6d5}code{overflow-wrap:anywhere}
+</style>
+<main>
+<h1>Equality freshness and publication semantics</h1>
+<h2>Summary</h2>
+<p>Report age gates matrix conformance and peer voting. Unreadable inputs, stale refs
+and unsuccessful publication remain visible. Local collection preserves an unchanged
+canonical payload and publishes changed reports through atomic rename.</p>
+<h2>Revision history</h2>
+<table><tr><th>Revision</th><th>Date</th><th>Change and reason</th></tr>
+<tr><td>1</td><td>2026-10-22</td><td>Define freshness, ref acquisition and publication outcomes
+so missing observations cannot imply conformance.</td></tr></table>
+<h2>Policy inputs</h2>
+<p><code>DEFAULT_EVIDENCE_TTL_HOURS = 24.0</code> is a configurable maintainer policy
+choice, not an engineering limit. The command accepts <code>--ttl-hours</code>; the
+freshness function requires an explicit TTL. Values must be positive and finite.
+The required timestamp is <code>generated_at</code>, with an explicit UTC offset.
+The inclusive rule is <code>0 ≤ age ≤ TTL</code>, where age is the comparison clock
+minus the timestamp. Future timestamps have zero allowed tolerance and grade
+<code>STALE</code>; offset-free timestamps are ambiguous and also grade stale.
+An offset-free historical report must be collected again rather than assigned an assumed zone.</p>
+<p>Timestamp syntax uses the ISO 8601 profile specified in RFC 3339 (2002), section 5.6.
+Hours use the section's minute and second ranges. The referenced ISO edition in
+RFC 3339 is ISO 8601:1988. The ISO 8601-1:2019 catalogue page returned HTTP 403
+when consulted; no normative requirement from that edition is asserted.</p>
+<p>The lock-directory fallback uses
+<code>PUBLISH_EQUALITY_LOCK_STALE_SECONDS</code>, default <code>3600</code> seconds,
+as a maintainer policy. The value must be a positive integer with at most nine digits
+(an implementation safety bound, also policy). Reclamation requires an age strictly
+greater than the bound and a dead owner PID. Live owners, recent locks, missing ownership,
+and unverifiable ownership are never reclaimed. A guard directory serializes acquisition
+and reclamation; an abandoned guard requires manual inspection. All callers reserve the
+same directory even when their available locking tools differ.</p>
+<p><code>PUBLISH_EQUALITY_LOCK=mkdir</code> explicitly selects the portable implementation.
+Automatic mode additionally uses <code>flock</code> when found. Status <code>75</code>
+is the configured contention convention, supplied through <code>flock -E</code>.
+Other lock setup failures return nonzero. The publication lock is scoped to the common
+Git directory, so linked checkouts share it.</p>
+<h2>Rendered states</h2>
+<table><tr><th>State</th><th>Meaning and consequence</th></tr>
+<tr><td>FRESH</td><td>The timestamp passes policy; dimension checks still determine conformance.</td></tr>
+<tr class="stale"><td>STALE</td><td>Old, absent, ambiguous, malformed or future timestamp.
+Every matrix dimension is stale; the report cannot vote in peer comparisons.</td></tr>
+<tr><td>UNREADABLE</td><td>A report cannot be read or parsed. Dimension verdicts are
+MISSING-EVIDENCE, with no conformance claim.</td></tr>
+<tr><td>NOT-FETCHED</td><td>An explicit reconciliation <code>--no-fetch</code> run.
+Counts use possibly stale refs; the banner and JSON ref status retain that qualification.</td></tr>
+<tr><td>fetch-failed</td><td>A repository's fetch failed. The report is incomplete, returns
+nonzero and prevents automatic application. Other repository failures remain individually visible.</td></tr></table>
+<p>Roster entries declared unreachable retain that verdict. A fresh timestamp alone
+cannot override unreachable status, checkout contamination, missing evidence or a failed dimension.</p>
+<h2>Worked example</h2>
+<p>Clock: <code>2026-10-22T12:00:00Z</code>. TTL: <code>24.0</code> hours.
+The five rows are synthetic. One day is 24 hours; subtracting one second gives the
+inside case and adding one second gives the outside case. Displayed ages round to
+one decimal place; verdicts compare unrounded values.</p>
+<table><tr><th>Row</th><th>generated_at</th><th>Age (hours)</th><th>Verdict</th></tr>
+<tr class="fresh"><td>alpha</td><td>2026-10-22T12:00:00Z</td><td>0.0</td><td>FRESH</td></tr>
+<tr class="fresh"><td>beta</td><td>2026-10-21T12:00:01Z</td><td>24.0 (inside)</td><td>FRESH</td></tr>
+<tr class="stale"><td>gamma</td><td>2026-10-21T11:59:59Z</td><td>24.0 (outside)</td><td>STALE</td></tr>
+<tr class="stale"><td>delta</td><td>absent</td><td>unknown</td><td>STALE</td></tr>
+<tr class="stale"><td>epsilon</td><td>2026-10-22T12:00:01Z</td><td>-0.0 (future)</td><td>STALE</td></tr></table>
+<p>The summary is <code>2/5 fresh active reports</code>. Freshness does not assert that
+the two fresh reports conform. Exactly <code>2026-10-21T12:00:00Z</code> is on the
+inclusive boundary and remains fresh. These subtractions are independent test expectations
+in <code>tests/readiness/test_equality_freshness.py</code>.</p>
+<h2>Inputs and publication</h2>
+<p>Reconciliation resolves <code>uv</code> on PATH, then the documented
+<code>$HOME/.local/bin</code> location. Missing execution support, failed matrix execution,
+invalid JSON or a missing verdict map stops before printing a plan. Default reconciliation
+fetches remote-tracking refs before scanning. Each successful fetch reports its observation
+time; opt-out runs deliberately make no claim about ref age.</p>
+<p>Publication records <code>publish-health.json</code> alongside local equality evidence,
+after successful publication and worktree cleanup. A dry run records no success.
+The record uses the existing publication-health schema, separately from fingerprint
+monitoring. Cron requires a successful publisher exit and a record at least as recent
+as this invocation. Collection uses the equality receipt when the evidence directory
+is explicitly configured, otherwise preserving the existing fingerprint-health input.</p>
+<p>Canonical comparison excludes observation time, checkout identifier, available resources,
+context modification time and scheduler job count. Checkout dirtiness, ahead/behind counts,
+ref age and dimension values remain meaningful. Equality uses canonical bytes directly,
+so absence of a hashing executable cannot force a rewrite. Unchanged payloads intentionally
+retain their old collection timestamp; freshness therefore means changed evidence within the TTL,
+not proof of a collector heartbeat. Periodic heartbeat observation is separate follow-up work.</p>
+<h2>Sources and limits</h2>
+<ul>
+<li><a href="https://www.rfc-editor.org/rfc/rfc3339.html">RFC 3339 (2002), sections 4.2,
+5.6 and Appendix A: an ISO 8601 profile</a>.</li>
+<li><a href="https://git-scm.com/docs/git-fetch/2.51.1">git-fetch 2.51.1,
+DESCRIPTION and --all: updating remote-tracking branches</a>.</li>
+<li><a href="https://man7.org/linux/man-pages/man1/flock.1.html">flock(1),
+util-linux 2.43 development manual dated 2026-05-24: -n, -E and exit status</a>.</li>
+</ul>
+<p>No engineering equation or licensed source value is used. Tests run offline with
+synthetic evidence, controlled executables and local bare remotes. Native Windows and macOS
+execution remains unverified; the directory fallback is exercised on Linux. This change
+adds no automatic issue creation, remote execution or new publication monitoring service.</p>
+</main>
+</html>

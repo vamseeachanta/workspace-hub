@@ -17,12 +17,14 @@ hardcoded, M1). Run: uv run --script scripts/readiness/build-equality-matrix.py 
 """
 from __future__ import annotations
 
+import argparse
 import json
 import math
 import re
 import sys
 from collections import Counter
-from datetime import date, datetime, timezone
+from datetime import datetime, timezone
+from html import escape
 from pathlib import Path
 
 import yaml
@@ -31,6 +33,74 @@ REPO = Path(__file__).resolve().parents[2]
 STATE = REPO / ".claude" / "state"
 REPORTS = REPO / "docs" / "reports"
 CONFIG = REPO / "scripts" / "readiness" / "harness-config.yaml"
+
+# Configurable maintainer policy, not an engineering limit; see
+# docs/readiness/equality-semantics.html, "Policy inputs" (revision 1).
+DEFAULT_EVIDENCE_TTL_HOURS = 24.0
+
+
+def evidence_age(report: dict, *, now: datetime, ttl_hours: float) -> tuple[float | None, str]:
+    """UTC age and freshness; absent, invalid, ambiguous or future stamps fail closed.
+
+    Timestamp syntax: RFC 3339 (2002), sections 4.2 and 5.6, an ISO 8601 profile.
+    The inclusive TTL boundary and zero future tolerance are maintainer policy.
+    """
+    if not math.isfinite(ttl_hours) or ttl_hours <= 0:
+        raise ValueError("evidence TTL must be positive and finite")
+    if now.tzinfo is None:
+        raise ValueError("comparison clock requires a UTC offset")
+    try:
+        stamp = report.get("generated_at")
+        if isinstance(stamp, datetime):
+            ts = stamp
+        else:
+            text = stamp[:-1] + "+00:00" if stamp.endswith("Z") else stamp
+            ts = datetime.fromisoformat(text)
+        if ts.tzinfo is None:
+            return None, "STALE"
+        age = (now - ts).total_seconds() / 3600  # seconds per hour: RFC 3339, section 5.6
+    except (AttributeError, TypeError, ValueError, OverflowError):
+        return None, "STALE"
+    return age, "FRESH" if 0 <= age <= ttl_hours else "STALE"
+
+
+def matrix_verdicts(reports: dict, baselines: dict, roster: dict, probed: list,
+                    *, now: datetime, ttl_hours: float) -> dict:
+    """Apply report freshness before dimension grading and peer voting."""
+    fresh = {m: r for m, r in reports.items() if isinstance(r, dict)
+             and evidence_age(r, now=now, ttl_hours=ttl_hours)[1] == "FRESH"}
+    verdicts = {}
+    for m, entry in roster.items():
+        for dim in DISPLAY_DIMS:
+            if entry.get("status") != "unreachable" and m in reports and (
+                    not isinstance(reports[m], dict) or "_error" in reports[m]):
+                verdicts[(dim, m)] = "MISSING-EVIDENCE"
+            elif entry.get("status") != "unreachable" and m not in fresh:
+                verdicts[(dim, m)] = "STALE"
+            else:
+                verdicts[(dim, m)] = verdict_for(dim, m, fresh, baselines, roster, probed, now=now)
+    return verdicts
+
+
+def freshness_table(reports: dict, roster: dict, *, now: datetime, ttl_hours: float) -> str:
+    rows = []
+    fresh_count = 0
+    for m, entry in roster.items():
+        report = reports.get(m)
+        age, state = evidence_age(report if isinstance(report, dict) else {},
+                                  now=now, ttl_hours=ttl_hours)
+        if m in reports and (not isinstance(report, dict) or "_error" in report):
+            state = "UNREADABLE"
+        if entry.get("status") == "active" and state == "FRESH":
+            fresh_count += 1
+        shown_age = "unknown" if age is None else f"{age:.1f}"
+        rows.append(f'<tr class="{state.lower()}"><th>{escape(m)}</th>'
+                    f'<td>{shown_age}</td><td>{state}</td></tr>')
+    active = sum(entry.get("status") == "active" for entry in roster.values())
+    return (f'<p>{fresh_count}/{active} fresh active reports; TTL {ttl_hours:g} hours; '
+            f'clock {now.isoformat()}.</p><table><thead><tr><th>Report</th>'
+            '<th>Age (hours)</th><th>Evidence verdict</th></tr></thead><tbody>'
+            + ''.join(rows) + '</tbody></table>')
 
 TIER1_DEFAULT = ["assetutilities", "digitalmodel", "worldenergydata", "assethold"]
 UNREACHABLE_DEFAULT = {"home-win", "macbook-portable"}
@@ -515,7 +585,7 @@ def provider_row_verdict(dim: str, report: dict) -> str:
 
 # ── precedence orchestrator (C3) ─────────────────────────────────────────────
 def verdict_for(dim: str, machine: str, reports: dict, baselines: dict,
-                roster: dict, probed_repos: list[str]) -> str:
+                roster: dict, probed_repos: list[str], *, now: datetime | None = None) -> str:
     status = roster.get(machine, {}).get("status", "active")
     # BC3: a status:unreachable roster entry DOMINATES any present report (a stale/old report
     # on an unreachable machine must never grade as STALE-CHECKOUT or get graded on its merits).
@@ -533,17 +603,17 @@ def verdict_for(dim: str, machine: str, reports: dict, baselines: dict,
     if parse_provider_row(dim) is not None:
         return provider_row_verdict(dim, rep)
     if dim == "session_curation":           # freshness family — graded vs real now, not peers
-        return freshness_verdict(rep)
+        return freshness_verdict(rep, now=now)
     if dim == "skill_currency":             # cross-provider skill-drift family — per-box facts
         return skill_currency_verdict(rep)
     if dim == "memory_freshness":           # memory-staleness family — recomputed vs now
-        return memory_freshness_verdict(rep)
+        return memory_freshness_verdict(rep, now=now)
     if dim == "skill_link_health":          # shared-skill-link propagation — per-box facts
         return skill_link_health_verdict(rep)
     if dim == "harness_checkup":            # /doctor hygiene — per-box facts (currency/settings/mode)
         return harness_checkup_verdict(rep)
     if dim == "publish_health":             # equivalence publish landing/speed — per-box facts
-        return publish_health_verdict(rep)
+        return publish_health_verdict(rep, now=now)
     if dim in COLD_DIMS:
         return cold_verdict(dim, rep, baselines.get(machine), probed_repos)
     # Stale peers are EXCLUDED from the uniform value list so a stale report can never
@@ -566,7 +636,7 @@ def load_reports() -> dict[str, dict]:
         machine = f.stem[len("equality-"):]
         try:
             out[machine] = yaml.safe_load(f.read_text(encoding="utf-8")) or {}
-        except yaml.YAMLError as e:
+        except (OSError, yaml.YAMLError) as e:
             out[machine] = {"_error": str(e)}
     return out
 
@@ -606,6 +676,7 @@ GROUPS = [
 # A group's rollup cell shows the worst verdict among its dims for that machine; an
 # all-good group collapses to a single green "OK" so a clean box reads at a glance.
 ROLLUP_SEVERITY = {
+    "STALE": 6,
     "BELOW-BASELINE": 6, "DIVERGES": 6, "CURATED-EXPIRED": 6, "SKILLS-DRIFTED": 6, "MEMORY-EXPIRED": 6,
     "CHECKUP-BROKEN": 6, "PUBLISH-GATED": 6,
     "MISSING-BASELINE": 5, "NO-MAJORITY": 5, "CURATED-STALE": 5, "SKILLS-INDEX-STALE": 5, "MEMORY-STALE": 5,
@@ -641,6 +712,9 @@ def remediate(dim: str, verdict: str) -> tuple[str, str, bool] | None:
     by_design=True means the cell can't/shouldn't reach green — it's expected, not a defect."""
     if verdict in OK_VERDICTS:
         return None
+    if verdict == "STALE":
+        return (("report timestamp is missing, invalid, future or older than the configured TTL; "
+                 "refresh collection and verify the clock"), "maintainer", False)
     is_provider = dim.startswith("harness:")
     if verdict == "MISSING-EVIDENCE":
         if is_provider:
@@ -766,6 +840,27 @@ def equivalence_section(vmap: dict, machines: list[str], roster: dict,
 
 
 def main() -> None:
+    global STATE, REPORTS
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--ttl-hours", type=float, default=DEFAULT_EVIDENCE_TTL_HOURS,
+                        help="required freshness policy input; default: %(default)s hours")
+    parser.add_argument("--now", help="fixed comparison clock with UTC offset (testing/replay)")
+    parser.add_argument("--json", action="store_true")
+    parser.add_argument("--machine")
+    parser.add_argument("--state-dir", type=Path, help="explicit publication evidence directory")
+    parser.add_argument("--out-dir", type=Path, help="explicit publication render directory")
+    parser.add_argument("--open", action="store_true")
+    args = parser.parse_args(sys.argv[1:])
+    STATE = args.state_dir or STATE
+    REPORTS = args.out_dir or REPORTS
+    try:
+        stamp = args.now
+        if stamp and stamp.endswith("Z"):
+            stamp = stamp[:-1] + "+00:00"
+        now = datetime.fromisoformat(stamp) if stamp else datetime.now().astimezone()
+        evidence_age({}, now=now, ttl_hours=args.ttl_hours)
+    except ValueError as exc:
+        parser.error(str(exc))
     config = yaml.safe_load(CONFIG.read_text(encoding="utf-8")) if CONFIG.exists() else {}
     roster = load_roster(config)
     baselines = load_baselines(config)
@@ -774,17 +869,14 @@ def main() -> None:
 
     machines = list(roster)
     # Compute every verdict once (cells + rollups both consume it).
-    vmap = {(dim, m): verdict_for(dim, m, reports, baselines, roster, probed)
-            for dim in DISPLAY_DIMS for m in machines}
+    vmap = matrix_verdicts(reports, baselines, roster, probed,
+                          now=now, ttl_hours=args.ttl_hours)
+    freshness = freshness_table(reports, roster, now=now, ttl_hours=args.ttl_hours)
 
     # --json: emit the verdict map for tooling (reconcile-ecosystem.sh consumes this
     # instead of scraping HTML). Optionally scope to one machine via --machine <slug>.
-    if "--json" in sys.argv:
-        only = None
-        if "--machine" in sys.argv:
-            idx = sys.argv.index("--machine")
-            only = sys.argv[idx + 1] if idx + 1 < len(sys.argv) else None
-        targets = [only] if only else machines
+    if args.json:
+        targets = [args.machine] if args.machine else machines
         emit = {m: {dim: vmap[(dim, m)] for dim in DISPLAY_DIMS}
                 for m in targets if m in roster}
         print(json.dumps(emit, indent=2))
@@ -833,6 +925,8 @@ tbody th{{background:#edf2f7;text-align:left}}.conforms,.equal,.parity,.ok,.cura
 .expected-diff,.expected-divergence{{background:#e9d8fd}}
 .pending,.missing-evidence{{background:#fffaf0}}.unreachable,.absent,.na{{background:#f7fafc;color:#a0aec0}}
 .stale-checkout{{background:#e2e8f0;color:#4a5568;font-style:italic}}
+.stale{{background:#fed7d7;color:#742a2a;font-weight:700}}
+.unreadable{{background:#feebc8;font-weight:700}}
 tr.grp{{cursor:pointer}}tr.grp th{{background:#1a202c;color:#fff;border-color:#2d3748}}tr.grp td{{color:#1a202c;border-color:#cbd5e0;font-weight:800;box-shadow:inset 0 0 0 9999px rgba(0,0,0,.04)}}
 tr.grp .twist{{color:#90cdf4;font-size:.7rem}}
 tr.detail{{display:none}}tr.detail th{{padding-left:1.8rem;font-weight:400}}
@@ -851,7 +945,8 @@ tr.detail{{display:none}}tr.detail th{{padding-left:1.8rem;font-weight:400}}
 .fix-card li.design{{color:#718096}}.fix-card code{{background:#edf2f7;padding:.03rem .25rem;border-radius:3px;font-size:.76rem}}</style>
 <noscript><style>tr.detail{{display:table-row}}</style></noscript></head>
 <body><h1>Machine &amp; Repo Equivalence Matrix</h1>
-<p>#2801 · {date.today().isoformat()} · reporting {reporting}/{active} active machines ·
+{freshness}
+<p>#2801 · {now.date().isoformat()} · reporting {reporting}/{active} active machines ·
 <small>rows are grouped &amp; <b>collapsed by default</b> — click a dark group row to expand its per-dimension detail.</small></p>
 <div class="note"><b>Work policy.</b> All development work — anything requiring OS equivalence — happens on the
 <b>Linux boxes</b> (dev-primary, dev-secondary). The Windows hosts (ace-win-1, ace-win-2) are <b>scout-only</b>
@@ -902,14 +997,14 @@ function copyGenPrompt(btn){{
 </script></body></html>"""
 
     REPORTS.mkdir(parents=True, exist_ok=True)
-    out = REPORTS / f"{date.today().isoformat()}-machine-equality-matrix.html"
+    out = REPORTS / f"{now.date().isoformat()}-machine-equality-matrix.html"
     out.write_text(html, encoding="utf-8")
     # Stable (undated) alias so GitHub Pages serves a fixed "latest" URL that never
     # changes as the dated reports roll over (published by scripts/build_pages.py).
     latest = REPORTS / "machine-equality-matrix.html"
     latest.write_text(html, encoding="utf-8")
     print(f"wrote {out} (+ {latest.name} alias) ({reporting}/{active} active reporting)")
-    if "--open" in sys.argv:
+    if args.open:
         import webbrowser
         webbrowser.open(out.as_uri())
 

@@ -16,7 +16,8 @@ set -uo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" 2>/dev/null && pwd)"
 WS="${WORKSPACE_HUB:-$(cd "${SCRIPT_DIR}/../.." 2>/dev/null && pwd)}"
 STATE_DIR="${WS}/.claude/state"
-RUN_TS="$(date +%Y-%m-%dT%H:%M:%S 2>/dev/null)"
+# RFC 3339 (2002), section 5.6: UTC timestamps carry Z; naive local time is ambiguous.
+RUN_TS="$(date -u +%Y-%m-%dT%H:%M:%SZ 2>/dev/null)"
 
 MACHINE=""; TO_STDOUT=0
 for ((i=1; i<=$#; i++)); do
@@ -410,6 +411,10 @@ provider_harness_yaml="$(printf '%s\n' "$provider_harness_yaml" | sed 's/^/    /
 #    equivalence-sentinel.sh. A gate-length duration or a stale/missing record is
 #    the #3500 pre-push-deadlock signature; the matrix renders it per machine.
 ph_file="${WS}/.claude/state/equivalence/publish-health.json"
+# Equality publication has a separate receipt; fingerprint monitoring keeps its own file.
+if [[ -n "${EQ_STATE_DIR:-}" && -f "$EQ_STATE_DIR/publish-health.json" ]]; then
+  ph_file="$EQ_STATE_DIR/publish-health.json"
+fi
 ph_ts="missing"; ph_dur="null"; ph_rc="null"
 if [[ -f "$ph_file" && "${#PYTHON_CMD[@]}" -gt 0 ]]; then
   read -r ph_ts ph_dur ph_rc < <("${PYTHON_CMD[@]}" - "$ph_file" "${SCRIPT_DIR}/../monitoring" <<'PY' 2>/dev/null || echo "missing null null"
@@ -522,9 +527,12 @@ if [[ "$TO_STDOUT" == "1" ]]; then
 fi
 mkdir -p "$STATE_DIR"
 OUT="${STATE_DIR}/equality-${MACHINE}.yaml"
-if [[ -f "$OUT" ]] && have sha256sum; then
-  old=$(canonical "$(cat "$OUT")" | sha256sum)
-  new=$(canonical "$FULL" | sha256sum)
+if [[ -f "$OUT" ]]; then
+  # Byte equality of the canonical payload is sufficient and independent of hash-tool
+  # availability. Checkout identifiers and observation timestamps are excluded above.
+  prior=$(cat -- "$OUT") || { echo 'collect-equality: cannot read prior report' >&2; exit 1; }
+  old=$(canonical "$prior") || { echo 'collect-equality: cannot read prior canonical payload' >&2; exit 1; }
+  new=$(canonical "$FULL") || { echo 'collect-equality: cannot form canonical payload' >&2; exit 1; }
   if [[ "$old" == "$new" ]]; then
     echo "unchanged (canonical payload identical) — ${OUT} left as-is"
     exit 0

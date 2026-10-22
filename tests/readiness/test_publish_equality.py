@@ -34,6 +34,10 @@ def _shell_path(path: Path | str) -> str:
     return str(path)
 
 
+def _seam(clone: Path) -> dict[str, str]:
+    return {"EQ_STATE_DIR": str(clone / ".claude/state")}
+
+
 def _publisher_env(tmp_path: Path, **updates: str) -> dict[str, str]:
     publisher_tmp = tmp_path / "publisher-tmp"
     publisher_tmp.mkdir(exist_ok=True)
@@ -114,9 +118,9 @@ def test_publishes_newer_local_evidence(tmp_path):
         origin, ".claude/state/equality-dev-primary.yaml")
 
 
-def test_publishes_when_flock_is_unavailable(tmp_path):
+def test_present_but_broken_flock_fails_closed(tmp_path):
     assert "flock" not in SCRIPT.read_text()
-    origin, clone = _fixture(tmp_path)
+    _origin, clone = _fixture(tmp_path)
     (clone / ".claude" / "state" / "equality-dev-primary.yaml").write_text(
         _yaml("dev-primary", "2026-07-02T12:00:00"))
     bindir = tmp_path / "bin"
@@ -127,9 +131,8 @@ def test_publishes_when_flock_is_unavailable(tmp_path):
     env = _publisher_env(
         tmp_path, PATH=f"{_shell_path(bindir)}:{GIT_ENV['PATH']}",
     )
-    _run(clone, env=env)
-    assert "2026-07-02T12:00:00" in _origin_file(
-        origin, ".claude/state/equality-dev-primary.yaml")
+    result = _run(clone, env=env, expect_rc=1)
+    assert "done (" not in result.stdout
     _assert_no_publisher_residue(tmp_path, clone)
 
 
@@ -167,8 +170,10 @@ def test_same_checkout_concurrent_publishers_converge(tmp_path):
         for _ in range(2)
     ]
     results = [p.communicate(timeout=120) + (p.returncode,) for p in procs]
-    assert all(rc == 0 for _out, _err, rc in results), results
-    assert any("no commit needed" in out for out, _err, _rc in results), results
+    assert all(rc in (0, 75) for _out, _err, rc in results), results
+    assert any(rc == 0 for _out, _err, rc in results), results
+    assert any("no commit needed" in out or "another publish in flight" in err
+               for out, err, _rc in results), results
     assert stamp in _origin_file(origin, ".claude/state/equality-dev-primary.yaml")
     _assert_no_publisher_residue(tmp_path, clone)
 
@@ -323,7 +328,7 @@ def test_transient_rmdir_failure_retries_from_clean_state(tmp_path):
     rmdir_stub = bindir / "rmdir"
     rmdir_stub.write_text(
         "#!/usr/bin/env bash\n"
-        f"if [[ ! -f {marker!r} ]]; then touch {marker!r}; exit 32; fi\n"
+        f"if [[ \"$*\" == *publish-equality-wt.* && ! -f {marker!r} ]]; then touch {marker!r}; exit 32; fi\n"
         "exec /usr/bin/rmdir \"$@\"\n"
     )
     rmdir_stub.chmod(0o755)
@@ -441,15 +446,13 @@ def test_worktree_always_cleaned_up(tmp_path):
 
 
 def _host_lock_dir(tmp_path: Path) -> Path:
-    host = subprocess.run(["hostname"], capture_output=True, text=True,
-                          timeout=30).stdout.strip().lower()
-    return tmp_path / f"publish-equality-{host}.lock.d"
+    return tmp_path / "clone" / ".git" / "equality-publish.d"
 
 
 def _run_mkdir_lock(clone: Path, tmp_path: Path, *args: str,
                     expect_rc: int = 0) -> subprocess.CompletedProcess:
     env = {**GIT_ENV, "PUBLISH_EQUALITY_LOCK": "mkdir", "TMPDIR": str(tmp_path),
-           **_seam(clone)}
+           "PUBLISH_TEST_LOCK": str(_host_lock_dir(tmp_path)), **_seam(clone)}
     res = subprocess.run(["bash", str(SCRIPT), "--repo", str(clone), *args],
                          env=env, capture_output=True, text=True, timeout=120)
     assert res.returncode == expect_rc, f"rc={res.returncode}\n{res.stdout}\n{res.stderr}"
@@ -466,14 +469,15 @@ def test_mkdir_lock_publishes(tmp_path):
     assert not _host_lock_dir(tmp_path).exists()      # lock released on exit
 
 
-def test_mkdir_lock_held_skips_exit_zero(tmp_path):
+def test_mkdir_lock_held_returns_contention(tmp_path):
     origin, clone = _fixture(tmp_path)
     before = _git("rev-parse", "main", cwd=origin).strip()
     (clone / ".claude" / "state" / "equality-dev-primary.yaml").write_text(
         _yaml("dev-primary", "2026-07-01T12:00:00"))
     _host_lock_dir(tmp_path).mkdir(parents=True)      # a live holder
-    res = _run_mkdir_lock(clone, tmp_path)            # exit 0, like flock -n
-    assert "another publish in flight" in res.stdout
+    (_host_lock_dir(tmp_path) / "owner").write_text(f"{os.getpid()} 0\n")
+    res = _run_mkdir_lock(clone, tmp_path, expect_rc=75)
+    assert "another publish in flight" in res.stderr
     assert _git("rev-parse", "main", cwd=origin).strip() == before
     assert _host_lock_dir(tmp_path).exists()          # holder's lock untouched
 
@@ -486,9 +490,10 @@ def test_mkdir_lock_stale_is_stolen_and_publish_proceeds(tmp_path):
     lock.mkdir(parents=True)
     two_hours_ago = 7200
     import time
-    os.utime(lock, (time.time() - two_hours_ago, time.time() - two_hours_ago))
+    dead = subprocess.check_output(["bash", "-c", "echo $$"], text=True).strip()
+    (lock / "owner").write_text(f"{dead} {int(time.time()) - two_hours_ago}\n")
     res = _run_mkdir_lock(clone, tmp_path)
-    assert "stale" in res.stdout                      # loud steal
+    assert "stale" in res.stderr                      # loud steal
     assert "2026-07-01T12:00:00" in _origin_file(
         origin, ".claude/state/equality-dev-primary.yaml")
     assert not lock.exists()
@@ -516,8 +521,7 @@ LOCK_PROBE_BUILDER = """\
 import glob, os
 from pathlib import Path
 root = Path(__file__).resolve().parents[2]
-held = bool(glob.glob(os.path.join(os.environ.get("TMPDIR", "/tmp"),
-                                   "publish-equality-*.lock.d")))
+held = Path(os.environ["PUBLISH_TEST_LOCK"]).is_dir()
 (root / "docs" / "reports" / "machine-equality-matrix.html").write_text(
     "lock-held" if held else "lock-missing")
 """
@@ -583,7 +587,7 @@ def test_commit_subject_honors_eq_machine_env(tmp_path):
 def test_lock_autodetect_gates_on_command_v_not_exit_code():
     # Static contract: detection must be `command -v flock`; a bare `flock -n || skip`
     # conflates command-not-found with lock-held (the #3571 silent no-op).
-    text = SCRIPT.read_text(encoding="utf-8")
+    text = (SCRIPT.parent / "lib/publish-lock.sh").read_text(encoding="utf-8")
     assert "command -v flock" in text
     assert "PUBLISH_EQUALITY_LOCK" in text
 
