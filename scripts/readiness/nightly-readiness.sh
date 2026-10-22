@@ -17,6 +17,7 @@ mkdir -p "$STATE_DIR"
 issues=()
 pass_count=0
 fail_count=0
+not_evaluated_count=0
 declare -A check_results=()
 declare -A check_details=()
 
@@ -214,22 +215,31 @@ check_r_registry() {
 # operational truth; the registry must track it.
 # ─────────────────────────────────────────────────────────────────────────────
 check_r_model_drift() {
-  # shellcheck source=../lib/model-registry.sh
-  source "${WORKSPACE_HUB}/scripts/lib/model-registry.sh" 2>/dev/null || \
-    { log_fail "R-MODEL-DRIFT: model-registry.sh lib missing"; return; }
-  local reg_openai live_codex live_hermes drift=0
-  reg_openai="$(registry_model openai_primary "" 2>/dev/null)"
-  live_codex="$(sed -n -E 's/^model[[:space:]]*=[[:space:]]*"([^"]+)".*/\1/p' "${HOME}/.codex/config.toml" 2>/dev/null | head -1)"
-  live_hermes="$(sed -n -E 's/^model[[:space:]]*[=:][[:space:]]*"?([A-Za-z0-9._-]+)"?.*/\1/p' "${HOME}/.hermes/config.yaml" 2>/dev/null | head -1)"
-  if [[ -n "$live_codex" && -n "$reg_openai" && "$live_codex" != "$reg_openai" ]]; then
-    log_fail "R-MODEL-DRIFT: ~/.codex/config.toml model='${live_codex}' vs registry openai_primary='${reg_openai}' — update model-registry.yaml"
-    drift=1
+  local output rc=0 status detail failed=0 incomplete=0
+  output=$(python3 "${WORKSPACE_HUB}/scripts/readiness/model_drift.py" \
+    --registry "${MODEL_REGISTRY_FILE:-${WORKSPACE_HUB}/config/agents/model-registry.yaml}" \
+    --project-root "${WORKSPACE_HUB}" 2>/dev/null) || rc=$?
+  if [[ -z "$output" ]]; then
+    echo "  NOT_EVALUATED R-MODEL-DRIFT: validator unavailable (exit ${rc}); requires Python 3.11 and PyYAML"
+    check_results["R-MODEL-DRIFT"]="not_evaluated"
+    check_details["R-MODEL-DRIFT"]="validator unavailable"
+    not_evaluated_count=$((not_evaluated_count + 1))
+    return
   fi
-  if [[ -n "$live_hermes" && -n "$reg_openai" && "$live_hermes" != "$reg_openai" ]]; then
-    log_fail "R-MODEL-DRIFT: ~/.hermes/config.yaml model='${live_hermes}' vs registry openai_primary='${reg_openai}' — update model-registry.yaml"
-    drift=1
+  while IFS=$'\t' read -r status detail; do
+    echo "  ${status} R-MODEL-DRIFT: ${detail}"
+    [[ "$status" == FAIL ]] && failed=1
+    [[ "$status" == NOT_EVALUATED || "$status" == WARN ]] && incomplete=1
+  done <<< "$output"
+  if [[ "$failed" -eq 1 || "$rc" -ne 0 ]]; then
+    log_fail "R-MODEL-DRIFT: registry or runtime configuration failed validation"
+  elif [[ "$incomplete" -eq 1 ]]; then
+    check_results["R-MODEL-DRIFT"]="not_evaluated"
+    check_details["R-MODEL-DRIFT"]="see per-key results and comparison counts"
+    not_evaluated_count=$((not_evaluated_count + 1))
+  else
+    log_pass "R-MODEL-DRIFT: all configured comparisons evaluated; see counts above"
   fi
-  [[ "$drift" -eq 0 ]] && log_pass "R-MODEL-DRIFT: live codex/hermes models match registry (openai_primary='${reg_openai}')"
 } ; check_r_model_drift || true
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -851,6 +861,7 @@ _emit_harness_report() {
   ws_key=$(_resolve_workstation_key)
   local report_path="${STATE_DIR}/harness-readiness-${ws_key}.yaml"
   local overall="pass"
+  [[ "$not_evaluated_count" -gt 0 ]] && overall="not_evaluated"
   [[ "$fail_count" -gt 0 ]] && overall="fail"
   {
     echo "schema_version: 1"
@@ -859,6 +870,7 @@ _emit_harness_report() {
     echo "overall: ${overall}"
     echo "pass_count: ${pass_count}"
     echo "fail_count: ${fail_count}"
+    echo "not_evaluated_count: ${not_evaluated_count}"
     echo "checks:"
     for cid in $(echo "${!check_results[@]}" | tr ' ' '\n' | sort); do
       local status="${check_results[$cid]}"
@@ -904,6 +916,14 @@ if [[ ${#issues[@]} -gt 0 ]]; then
     echo ""
   } > "$ISSUES_FILE"
   echo "--- Readiness: ${fail_count}/$((pass_count + fail_count)) checks failed — see ${ISSUES_FILE} ---"
+elif [[ "$not_evaluated_count" -gt 0 ]]; then
+  {
+    echo "# Readiness Issues — ${RUN_TS}"
+    echo ""
+    echo "Readiness incomplete: ${not_evaluated_count} check(s) not fully evaluated."
+    echo "See per-key model-drift output for missing evidence or freshness warnings."
+  } > "$ISSUES_FILE"
+  echo "--- Readiness: ${not_evaluated_count} check(s) not fully evaluated ---"
 else
   echo "# Readiness Issues — ${RUN_TS}" > "$ISSUES_FILE"
   echo "" >> "$ISSUES_FILE"
