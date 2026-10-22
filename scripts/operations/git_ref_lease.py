@@ -16,10 +16,9 @@ lease JSON is stored as the MESSAGE of a commit over the empty tree, and the ref
 points at that commit — because `refs/heads/*` must point to commits (git rejects a
 bare blob there) and GitHub only accepts pushes to `refs/heads/*`.
 
-LOCAL refs arbitrate processes on one host. CROSS-MACHINE arbitration is the same
-refs moved by `dispatch_pull._fetch_lease_refs` / `_push_lease_refs`; a lease that
-never leaves the host arbitrates nothing, because every host then CASes against
-refs only it can see and wins every claim (#3772).
+`GitRefLease` arbitrates local processes. `RemoteGitRefLease` publishes each
+grant to origin before returning success, and reads origin for every fence.
+Bulk synchronization after execution cannot arbitrate that execution (#3772).
 
 The lease NAMESPACE is owned by `dispatch_lease.REF_PREFIX` and imported here
 rather than restated. It used to be a second string literal that happened to
@@ -99,3 +98,70 @@ class GitRefLease:
         # update-ref with an explicit old-value is an atomic compare-and-swap
         r = self._git("update-ref", ref, csha, expected_sha, check=False)
         return csha if r.returncode == 0 else None
+
+
+class LeaseSyncError(RuntimeError):
+    """Remote state could not be established; execution must be refused."""
+
+
+class RemoteGitRefLease(GitRefLease):
+    """Arbitrate against origin, without publishing pending local lease refs.
+
+    Each candidate is a root (creation) or a child of the observed remote tip
+    (update). Competing candidates are unrelated roots or siblings; a normal
+    branch push rejects the loser. Source: git-push, NOTE ABOUT FAST-FORWARDS,
+    https://git-scm.com/docs/git-push#_note_about_fast_forwards
+    (Git 2.55.0 manual, accessed 2026-10-22).
+
+    This protocol requires append-only remote lease history: no deletion,
+    merging competing grants, or forced updates. A remote read failure raises;
+    a rejected publication returns None. Neither grants execution authority.
+    """
+
+    def __init__(self, repo: str | Path):
+        super().__init__(repo)
+        self.fetch_rc = 0
+        self.push_rc = 0
+
+    def read_ref(self, ref: str):
+        result = self._git("ls-remote", "--exit-code", "--refs", "origin", ref,
+                           check=False)
+        # git-ls-remote --exit-code: 2 means no matching refs; other failures
+        # are not absence. Source: https://git-scm.com/docs/git-ls-remote (2026),
+        # Git 2.48.0 manual, OPTIONS, --exit-code. Preserve failures in the summary.
+        if result.returncode == 2:
+            return None
+        if result.returncode != 0:
+            self.fetch_rc = result.returncode
+            raise LeaseSyncError(f"lease remote read failed (exit {result.returncode})")
+        # One exact ref, with SHA and refname: git-ls-remote OUTPUT (same source).
+        matches = [line.split() for line in result.stdout.splitlines()]
+        if len(matches) != 1 or len(matches[0]) != 2 or matches[0][1] != ref:
+            raise LeaseSyncError("lease remote read returned an unexpected ref")
+        sha = matches[0][0]
+        # Fetch objects without advancing a local lease ref or FETCH_HEAD.
+        # Read the advertised SHA, even if a newer descendant is fetched.
+        result = self._git("fetch", "--no-tags", "--no-write-fetch-head", "origin", ref,
+                           check=False)
+        if result.returncode != 0:
+            self.fetch_rc = result.returncode
+            raise LeaseSyncError(f"lease object fetch failed (exit {result.returncode})")
+        result = self._git("show", "-s", "--format=%B", sha, check=False)
+        if result.returncode != 0:
+            raise LeaseSyncError("advertised lease object is unavailable")
+        return sha, json.loads(result.stdout)
+
+    def _publish(self, ref: str, blob_dict: dict, parent: str | None = None):
+        candidate = self._write_lease_commit(blob_dict, parent=parent)
+        result = self._git("push", "--no-follow-tags", "origin", f"{candidate}:{ref}",
+                           check=False)
+        if result.returncode != 0:
+            self.push_rc = result.returncode
+            return None
+        return candidate
+
+    def create_ref(self, ref: str, blob_dict: dict):
+        return self._publish(ref, blob_dict)
+
+    def cas_update_ref(self, ref: str, expected_sha: str, blob_dict: dict):
+        return self._publish(ref, blob_dict, parent=expected_sha)
