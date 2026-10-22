@@ -2,6 +2,7 @@
 
 import argparse
 import json
+import math
 import os
 import tomllib
 from collections import Counter
@@ -60,6 +61,12 @@ def consistency(registry):
     aliases = registry.get("model_aliases", {})
     aliases = aliases if isinstance(aliases, dict) else {}
     rows = []
+    invalid_windows = set()
+    for model, capacity in windows.items():
+        if (type(capacity) not in (int, float) or capacity <= 0 or
+                (isinstance(capacity, float) and not math.isfinite(capacity))):
+            invalid_windows.add(model)
+            rows.append(("FAIL", f"context_windows_k/{model}: positive finite number required"))
     counts = Counter(v for v in latest.values() if isinstance(v, str))
     deprecated = deprecated_ids(registry)
     for key, model in latest.items():
@@ -67,6 +74,8 @@ def consistency(registry):
             rows.append(("FAIL", f"{key}: non-empty string id required"))
         elif model not in windows:
             rows.append(("FAIL", f"{key}: context window missing for {model}"))
+        elif model in invalid_windows:
+            rows.append(("FAIL", f"{key}: invalid context window for {model}"))
         elif model in deprecated:
             rows.append(("FAIL", f"{key}: deprecated id {model}"))
         elif counts[model] > 1 and sorted(aliases.get(model, [])) != sorted(
@@ -94,7 +103,7 @@ def freshness(registry, today, max_age):
 
 
 def read_live(paths, kind):
-    """Project overrides user only when its top-level model is present."""
+    """Read model strings or Hermes YAML model.default; project wins when set."""
     value = None
     for path in paths:
         try:
@@ -113,9 +122,14 @@ def read_live(paths, kind):
         if not isinstance(data, dict):
             raise TypeError("malformed configuration mapping")
         if "model" in data:
-            if not isinstance(data["model"], str) or not data["model"].strip():
+            model = data["model"]
+            if kind == "yaml" and isinstance(model, dict):
+                if "default" not in model:
+                    continue
+                model = model["default"]
+            if not isinstance(model, str) or not model.strip():
                 raise ValueError("invalid model value")
-            value = data["model"]
+            value = model
     return value
 
 

@@ -9,6 +9,9 @@ configured generation is the newest available generation.
 Every `latest_models` key receives a consistency result. IDs shall be non-empty
 strings and shall occur in `context_windows_k`. Shared IDs require an exact
 `model_aliases` mapping from ID to the list of keys allowed to share that ID.
+Every context capacity, including entries unused by `latest_models`, shall be
+a positive finite integer or floating-point number in thousands of tokens.
+Nulls, booleans, strings, containers, zero, negative values, infinities and NaN fail.
 Objects marked `deprecated: true` with a `model_id` shall occur only under
 `audit`; their IDs shall not be referenced elsewhere, including context maps.
 Duplicate YAML mapping keys fail instead of accepting the last definition.
@@ -26,12 +29,16 @@ independent; checkout timestamps do not establish the date of model research.
 | Registry key | Source | Exact key path |
 |---|---|---|
 | `openai_primary` | User/project `.codex/config.toml` | top-level `model` |
-| `openai_primary` | User/project `.hermes/config.yaml` | top-level `model` |
+| `openai_primary` | User/project `.hermes/config.yaml` | `model.default`; scalar `model` for compatibility |
 | `claude_primary` | User/project `.claude/settings.json` | JSON `$.model` |
 
 Table 1. Explicit file bindings; these files are read, never executed.
 
-Project values override user values when the project file contains `model`.
+Project values override user values when the bound model key is present.
+For Hermes mappings, `model.default` supplies the configured ID; `model.provider`
+does not supply or override that ID. A project mapping without `default` retains
+the user default. An explicitly present invalid `default` fails. A non-empty
+scalar `model` remains supported for compatibility and has the same precedence.
 A malformed readable file fails, even when another file could supply a value.
 Claude settings declare only one configured default: `claude_strong`,
 `claude_balanced` and `claude_fast` have no independent live binding and report

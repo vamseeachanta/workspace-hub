@@ -86,6 +86,72 @@ def test_all_readable_match(registry, tmp_path):
     assert rows[-1] == ("INFO", "live: compared=3 not_evaluated=1")
 
 
+@pytest.mark.parametrize("model,status", [("gamma", "PASS"), ("beta", "FAIL")])
+def test_hermes_mapping_default(registry, tmp_path, model, status):
+    cfg = tmp_path / ".hermes/config.yaml"
+    cfg.parent.mkdir()
+    cfg.write_text(f"model:\n  default: {model}\n  provider: fixture-provider\n")
+    rows = evaluate(registry, tmp_path)
+    assert (status, f"openai_primary/hermes: live={model} registry=gamma") in rows
+
+
+@pytest.mark.parametrize("project_model", [
+    "model:\n  default: beta\n  provider: fixture-provider\n",
+    "model: beta\n",
+])
+def test_hermes_project_override(registry, tmp_path, project_model):
+    user, project = tmp_path / "user", tmp_path / "project"
+    for root, text in [
+        (user, "model:\n  default: gamma\n  provider: fixture-provider\n"),
+        (project, project_model),
+    ]:
+        cfg = root / ".hermes/config.yaml"
+        cfg.parent.mkdir(parents=True)
+        cfg.write_text(text)
+    rows = gate.evaluate(registry, user, project, date(2026, 10, 15), 14)
+    assert ("FAIL", "openai_primary/hermes: live=beta registry=gamma") in rows
+
+
+def test_hermes_provider_only_does_not_override_default(registry, tmp_path):
+    user, project = tmp_path / "user", tmp_path / "project"
+    for root, text in [
+        (user, "model:\n  default: gamma\n  provider: fixture-provider\n"),
+        (project, "model:\n  provider: another-provider\n"),
+    ]:
+        cfg = root / ".hermes/config.yaml"
+        cfg.parent.mkdir(parents=True)
+        cfg.write_text(text)
+    rows = gate.evaluate(registry, user, project, date(2026, 10, 15), 14)
+    assert ("PASS", "openai_primary/hermes: live=gamma registry=gamma") in rows
+
+
+@pytest.mark.parametrize("value", ["null", "false", "''", "[]", "{}"])
+def test_hermes_invalid_default_fails(value, tmp_path, registry):
+    cfg = tmp_path / ".hermes/config.yaml"
+    cfg.parent.mkdir()
+    cfg.write_text(f"model:\n  default: {value}\n  provider: fixture-provider\n")
+    assert ("FAIL", "openai_primary/hermes: invalid model value") in evaluate(registry, tmp_path)
+
+
+@pytest.mark.parametrize("model", ["alpha", "unused"])
+@pytest.mark.parametrize("value", [None, 0, -1, "unknown", True, False,
+                                  float("inf"), float("-inf"), float("nan"), [], {}])
+def test_invalid_context_capacity(registry, tmp_path, model, value):
+    """All context entries, including unused ones, need a positive finite number."""
+    registry["context_windows_k"][model] = value
+    rows = evaluate(registry, tmp_path)
+    assert ("FAIL", f"context_windows_k/{model}: positive finite number required") in rows
+    if model == "alpha":
+        assert ("PASS", "claude_primary: registry consistent") not in rows
+
+
+@pytest.mark.parametrize("value", [1, 0.5])
+def test_positive_context_capacity(registry, tmp_path, value):
+    registry["context_windows_k"]["alpha"] = value
+    registry["context_windows_k"]["unused"] = value
+    assert not any(s == "FAIL" for s, _ in evaluate(registry, tmp_path))
+
+
 @pytest.mark.parametrize("text,expected", [
     ('{"model":"future-generation"}', "unknown id future-generation"),
     ('{"model":"beta"}', "live=beta registry=alpha"),
