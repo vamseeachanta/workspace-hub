@@ -100,3 +100,10 @@ A cron job runs the dashboard and auto-creates issues when compliance drops belo
 - #1876 -- Enforce engineering workflow
 - #2017 -- Agent bypass resistance
 - #2012 -- Review backlog (4% compliance audit)
+
+## Daily alert evaluation
+
+The daily wrapper validates the dashboard report before publishing an alert.
+An empty reviewable set produces no alert; malformed or inconsistent evidence
+is reported as `NOT_EVALUATED`. See [Compliance alert evaluation](compliance-alerts.md)
+for the input contract, policy sources, worked examples and regression checks.
