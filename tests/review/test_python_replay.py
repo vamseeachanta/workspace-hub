@@ -227,3 +227,125 @@ def test_script_imports_sibling_helper(project, tmp_path):
     receipt = capture(project, tmp_path, production=["bin/run.py"])
     assert receipt["exact_current"], receipt["errors"]
     assert set(receipt["runs"]["production"]["sources"]) == {"bin/run.py", "bin/helper.py"}
+
+
+@pytest.mark.parametrize("layout", ["", "src/"])
+def test_qualified_json_coexists_with_standard_library(tmp_path, layout):
+    project = tmp_path / "layout-checkout"
+    write(project, "input.json", "{}")
+    write(project, layout + "sample/__init__.py", "")
+    write(project, layout + "sample/json.py", "VALUE = 13\n")
+    command = "import json, sample.json\nassert json.loads('13') == sample.json.VALUE\n"
+    write(project, "run.py", command)
+    receipt = capture(project, tmp_path, production=["run.py"], tests=["run.py"])
+    assert receipt["exact_current"], receipt["errors"]
+    for run in receipt["runs"].values():
+        assert run["exit_code"] == 0
+        assert layout + "sample/json.py" in run["sources"]
+        assert "json" in run["external_modules"]
+
+
+@pytest.mark.parametrize("layout", ["", "src/"])
+def test_qualified_json_still_rejects_foreign_package(tmp_path, layout):
+    project = tmp_path / "layout-checkout"
+    write(project, "input.json", "{}")
+    write(project, "run.py", "import sample.json\n")
+    write(project, layout + "sample/__init__.py", "")
+    write(project, layout + "sample/json.py", "VALUE = 13\n")
+    outside = tmp_path / "foreign"
+    write(outside, "sample/__init__.py", "")
+    write(outside, "sample/json.py", "VALUE = 13\n")
+    write(project, "test_run.py", f"import sys\nsys.path.insert(0, {str(outside)!r})\nimport sample.json\n")
+    receipt = capture(project, tmp_path, production=["run.py"])
+    assert receipt["runs"]["tests"]["exit_code"] == 0
+    assert not receipt["exact_current"]
+    assert "tests: project import outside checkout: sample.json" in receipt["errors"]
+
+
+def test_sibling_names_apply_only_to_the_script_context(project, tmp_path):
+    write(project, "bin/json.py", "VALUE = 13\n")
+    write(project, "test_run.py", "import json\nassert json.loads('13') == 13\n")
+    receipt = capture(project, tmp_path)
+    assert receipt["exact_current"], receipt["errors"]
+
+
+def test_script_context_rejects_foreign_sibling(project, tmp_path):
+    write(project, "bin/helper.py", "VALUE = 13\n")
+    outside = tmp_path / "foreign"
+    write(outside, "helper.py", "VALUE = 13\n")
+    write(project, "bin/run.py", f"import sys\nsys.path.insert(0, {str(outside)!r})\nimport helper\n")
+    receipt = capture(project, tmp_path, production=["bin/run.py"])
+    assert receipt["runs"]["production"]["exit_code"] == 0
+    assert "production: project import outside checkout: helper" in receipt["errors"]
+
+
+@pytest.mark.parametrize("environment_dir", [".venv", "venv"])
+def test_environment_dependency_is_external(project, tmp_path, environment_dir):
+    dependency = environment_dir + "/deps/vendor_dep.py"
+    write(project, dependency, "VALUE = 13\n")
+    command = (f"import sys\nsys.path.insert(0, {str(project / environment_dir / 'deps')!r})\n"
+               "import vendor_dep\nassert vendor_dep.VALUE == 13\n")
+    write(project, "run.py", command)
+    receipt = capture(project, tmp_path, production=["run.py"], tests=["run.py"])
+    assert receipt["exact_current"], receipt["errors"]
+    assert dependency not in receipt["checkout_sources"]
+    for run in receipt["runs"].values():
+        assert run["exit_code"] == 0
+        assert set(run["sources"]) == {"run.py"}
+        assert run["external_modules"]["vendor_dep"] == str(project / dependency)
+    assert not (tmp_path / "bundle/sources" / dependency).exists()
+
+
+@pytest.mark.parametrize("environment_dir", [".venv", "runtime"])
+def test_local_interpreter_dependency_versions(project, tmp_path, environment_dir):
+    environment = project / environment_dir
+    subprocess.run([sys.executable, "-m", "venv", "--without-pip", str(environment)], check=True)
+    executable = environment / "bin/python"
+    result = subprocess.run([str(executable), "-c",
+                             "import sysconfig; print(sysconfig.get_path('purelib'))"],
+                            capture_output=True, text=True, check=True)
+    library = Path(result.stdout.strip())
+    dependency = write(library, "vendor_dep.py", "VALUE = 13\n")
+    write(library, "synthetic_dependency-1.2.dist-info/METADATA",
+          "Metadata-Version: 2.1\nName: synthetic-dependency\nVersion: 1.2\n")
+    write(library, "synthetic_dependency-1.2.dist-info/top_level.txt", "vendor_dep\n")
+    write(project, "run.py", "import vendor_dep\nassert vendor_dep.VALUE == 13\n")
+    bundle = tmp_path / "bundle"
+    result = subprocess.run([str(executable), str(SCRIPT), "capture", "--root", str(project),
+                             "--bundle", str(bundle), "--production", '["run.py"]',
+                             "--tests", '["run.py"]'], capture_output=True, text=True, check=False)
+    receipt = json.loads((bundle / "receipt.json").read_text())
+    assert result.returncode == 0, receipt["errors"]
+    assert receipt["exact_current"]
+    assert dependency.relative_to(project).as_posix() not in receipt["checkout_sources"]
+    for run in receipt["runs"].values():
+        assert set(run["sources"]) == {"run.py"}
+        assert run["external_modules"]["vendor_dep"] == str(dependency)
+        assert run["external_versions"]["synthetic-dependency"] == "1.2"
+    pin = json.loads(result.stdout)["receipt_sha256"]
+    checked = subprocess.run([str(executable), str(SCRIPT), "verify", "--root", str(project),
+                              "--bundle", str(bundle), "--receipt-sha256", pin],
+                             capture_output=True, text=True, check=False)
+    assert checked.returncode == 0, checked.stdout
+
+
+def test_arbitrary_project_dependency_retains_closure_checks(project, tmp_path):
+    write(project, "lib/vendor_dep.py", "VALUE = 13\n")
+    write(project, "run.py", "import sys\nsys.path.insert(0, 'lib')\nimport vendor_dep\n")
+    receipt = capture(project, tmp_path, production=["run.py"], tests=["run.py"])
+    assert receipt["exact_current"], receipt["errors"]
+    assert "lib/vendor_dep.py" in receipt["sources"]
+    bundle = tmp_path / "bundle"
+    pin = hashlib.sha256((bundle / "receipt.json").read_bytes()).hexdigest()
+    write(project, "lib/vendor_dep.py", "VALUE = 17\n")
+    assert "checkout source drift" in tool().verify(project, bundle, pin)
+
+
+def test_environment_cannot_supply_foreign_project_package(project, tmp_path):
+    outside = project / ".venv/deps"
+    write(outside, "sample/__init__.py", "")
+    write(outside, "sample/helper.py", "VALUE = 7\n")
+    write(project, "test_run.py", f"import sys\nsys.path.insert(0, {str(outside)!r})\nimport sample.helper\n")
+    receipt = capture(project, tmp_path)
+    assert not receipt["exact_current"]
+    assert "tests: project import outside checkout: sample.helper" in receipt["errors"]

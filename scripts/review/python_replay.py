@@ -16,6 +16,7 @@ import os
 import runpy
 import subprocess
 import sys
+import sysconfig
 import threading
 from pathlib import Path
 
@@ -58,10 +59,25 @@ def inside(root, name):
     return path
 
 
+def dependency_roots():
+    """Interpreter installation roots, including environments with custom names."""
+    return {Path(sysconfig.get_path(key)).resolve() for key in ("purelib", "platlib")}
+
+
+def dependency_source(path, root, dependencies):
+    """Match interpreter libraries and the conventional environments scans exclude."""
+    if any(path.is_relative_to(directory) for directory in dependencies):
+        return True
+    return path.is_relative_to(root) and bool(
+        {".venv", "venv"}.intersection(path.relative_to(root).parts))
+
+
 def snapshot(root):
     files = {}
+    dependencies = dependency_roots()
     for directory, dirs, names in os.walk(root):
-        dirs[:] = sorted(d for d in dirs if d not in EXCLUDED)
+        dirs[:] = sorted(d for d in dirs if d not in EXCLUDED
+                         and not dependency_source((Path(directory) / d).resolve(), root, dependencies))
         for name in sorted(names):
             if name.endswith(".py"):
                 path = Path(directory) / name
@@ -71,23 +87,29 @@ def snapshot(root):
     return files
 
 
-def package_names(files):
-    """Recognize checkout modules in flat and conventional src layouts."""
+def package_names(files, command):
+    """Derive qualified owners from the search roots installed for this command."""
+    roots = {Path("."), Path("src")}
+    if command and not command[0].startswith("-"):
+        roots.add(Path(command[0]).parent)
     result = set()
     for name in files:
         source = Path(name)
-        result.add(source.stem if source.stem != "__init__" else source.parent.name)
-        parts = Path(name).parts
-        if parts[0] == "src":
-            parts = parts[1:]
-        if parts:
-            result.add(parts[0].removesuffix(".py"))
+        for search_root in roots:
+            if not source.is_relative_to(search_root):
+                continue
+            parts = source.relative_to(search_root).with_suffix("").parts
+            if parts[-1] == "__init__":
+                parts = parts[:-1]
+            if all(part.isidentifier() for part in parts):
+                result.update(".".join(parts[:end]) for end in range(1, len(parts) + 1))
     return result
 
 
 def worker(root, output, command, names):
     observed, external, errors = {}, {}, set()
     tool_path = Path(__file__).resolve()
+    dependencies = dependency_roots()
 
     def observe(filename, module):
         if not filename or filename.startswith("<"):
@@ -95,7 +117,7 @@ def worker(root, output, command, names):
         path = Path(filename).resolve()
         if path == tool_path:
             return
-        if path.is_relative_to(root):
+        if path.is_relative_to(root) and not dependency_source(path, root, dependencies):
             if path.suffix != ".py":
                 errors.add("non-source project module is unsupported")
             elif path.is_file():
@@ -119,7 +141,7 @@ def worker(root, output, command, names):
 
     def source_code(loader, fullname):
         path = Path(loader.path).resolve()
-        if path.is_relative_to(root):
+        if path.is_relative_to(root) and not dependency_source(path, root, dependencies):
             observe(str(path), fullname)
             return loader.source_to_code(loader.get_data(str(path)), str(path))
         return original_code(loader, fullname)
@@ -201,7 +223,7 @@ def capture(root, bundle, production, tests, inputs):
     for label, command in (("production", production), ("tests", tests)):
         inventory = bundle / f"{label}.inventory.json"
         invocation = [sys.executable, str(Path(__file__).resolve()), "_worker", str(root),
-                      str(inventory), json.dumps(command), json.dumps(sorted(package_names(before)))]
+                      str(inventory), json.dumps(command), json.dumps(sorted(package_names(before, command)))]
         with (bundle / f"{label}.stdout").open("wb") as stdout, (bundle / f"{label}.stderr").open("wb") as stderr:
             result = subprocess.run(invocation, cwd=root, env=environment(), stdout=stdout,
                                     stderr=stderr, check=False)

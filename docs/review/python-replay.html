@@ -21,7 +21,8 @@ current checkout. These observations support review of the executed Python paths
 they do not qualify numerical results or establish unexecuted-path coverage.</p>
 <h2>Revision history</h2>
 <table><tr><th>Revision</th><th>Date</th><th>Change and reason</th></tr>
-<tr><td>Initial</td><td>2026-10-22</td><td>Import-derived replay evidence replaces an unauthenticated filename inventory.</td></tr></table>
+<tr><td>Initial</td><td>2026-10-22</td><td>Import-derived replay evidence replaces an unauthenticated filename inventory.</td></tr>
+<tr><td>Import classification</td><td>2026-10-22</td><td>Scope module ownership to command search roots and keep interpreter dependencies outside project source inventories.</td></tr></table>
 <p>Table 1. Document revision history.</p>
 <h2>Scope and method</h2>
 <p>Each command runs sequentially in a fresh Python interpreter. Source-loader and
@@ -29,7 +30,10 @@ profile observations retain package initializers, function-local imports, dynami
 imports and modules removed from <code>sys.modules</code>. The final module table
 adds imported sources that contain no Python calls. Flat and conventional
 <code>src</code> layouts are recognized. Project module names observed outside the
-owning checkout refuse an exact-current observation.</p>
+owning checkout refuse an exact-current observation. Module ownership follows
+qualified names relative to the checkout and src search roots; sibling module
+names also apply relative to the parent directory of an executed script. Nested
+filenames do not claim unrelated top-level modules.</p>
 <p>All checkout Python source bytes and declared inputs are frozen before either
 command. Observed source digests are compared with this snapshot, and all checkout
 Python files, input bytes and Git HEAD are checked after each command. Observed
@@ -117,8 +121,14 @@ receipts can invalidate observation. Before/after hashing cannot exclude every
 transient edit restored between observations. Imports under an unrelated alias
 cannot reliably establish project ownership. Packaging layouts other than flat
 or conventional src layouts require separate qualification. Checkout scans exclude
-Git metadata, standard virtual environments, node_modules and bytecode caches;
-symlinked Python files outside the checkout are refused.</p>
+Git metadata, standard virtual environments, node_modules and bytecode caches.
+The interpreter's purelib and platlib dependency roots are also excluded, including
+checkout-local environments with custom names. Runtime observations apply the same
+dependency classification: these modules retain external paths and available
+versions, without requiring their bytes in the project snapshot. A dependency
+with a project module name still refuses exact-current observations. Arbitrary
+project source directories remain subject to closure checks. Dependency bytes and
+versions are not authenticated by project-source verification. Symlinked Python files outside the checkout are refused.</p>
 <p>Commands are not retried automatically. Each attempt requires a new bundle
 folder, preserving previous evidence. Bundles may contain sensitive paths and raw
 output; public distribution requires an independent content review. The executable
