@@ -23,10 +23,9 @@ LOG_FILE="${LOG_DIR}/daily-${DATE_COMPACT}.log"
 DASHBOARD_SCRIPT="${SCRIPT_DIR}/compliance-dashboard.sh"
 DRY_RUN="${DRY_RUN:-false}"
 
-# Alert thresholds
+# Alert thresholds: issue 4055, Thresholds table (2026-10-12).
 THRESHOLD_HIGH=50    # Below this: create issue with priority:high
 THRESHOLD_CRITICAL=30  # Below this: add priority:critical
-THRESHOLD_PASS=80    # At or above this: log as pass, no action
 
 mkdir -p "$LOG_DIR"
 
@@ -41,38 +40,27 @@ if [[ ! -x "$DASHBOARD_SCRIPT" ]]; then
     exit 1
 fi
 
-DASHBOARD_OUTPUT="$(bash "$DASHBOARD_SCRIPT" 2>&1)" || true
+DASHBOARD_STATUS=0
+DASHBOARD_OUTPUT="$(bash "$DASHBOARD_SCRIPT" 2>&1)" || DASHBOARD_STATUS=$?
 echo "$DASHBOARD_OUTPUT" >> "$LOG_FILE"
 
-# ── Parse compliance percentage from output ──────────────────────────────────
-# The dashboard outputs: "Compliance rate:    NN% (threshold: MM%)"
-COMPLIANCE_RATE="$(echo "$DASHBOARD_OUTPUT" | grep -oP 'Compliance rate:\s+\K[0-9]+' || echo "")"
-
-if [[ -z "$COMPLIANCE_RATE" ]]; then
-    # Try to parse from JSON output as fallback
-    COMPLIANCE_RATE="$(echo "$DASHBOARD_OUTPUT" | grep -oP '"compliance_rate":\s*\K[0-9]+' || echo "")"
+# Parse only the validated top-level report; nested drift events have verdicts too.
+# Contract: compliance-dashboard.sh, Main Analysis and Machine-readable output.
+if ! REPORT_FIELDS="$(printf '%s\n' "$DASHBOARD_OUTPUT" |
+    python3 "${SCRIPT_DIR}/compliance-alert-report.py" "$DASHBOARD_STATUS" 2>> "$LOG_FILE")"; then
+    log "ERROR: Dashboard report could not be validated; no compliance alert published"
+    exit 1
 fi
+IFS=$'\t' read -r TOTAL_COMMITS REVIEWED UNREVIEWED REVIEWABLE COMPLIANCE_RATE THRESHOLD_PASS VERDICT <<< "$REPORT_FIELDS"
 
-if [[ -z "$COMPLIANCE_RATE" ]]; then
-    # Check if there were no commits (which is fine)
-    if echo "$DASHBOARD_OUTPUT" | grep -q '"total_commits": *0\|No commits in window'; then
-        log "No commits in window — nothing to check"
-        exit 0
-    fi
-    log "WARNING: Could not parse compliance rate from dashboard output"
+# The dashboard defines an empty reviewable population as PASS, even at 0%.
+if [[ "$REVIEWABLE" -eq 0 ]]; then
+    log "No reviewable commits in window — nothing to check"
     exit 0
 fi
 
 log "Compliance rate: ${COMPLIANCE_RATE}%"
-
-# ── Parse additional details from JSON ───────────────────────────────────────
-TOTAL_COMMITS="$(echo "$DASHBOARD_OUTPUT" | grep -oP '"total_commits":\s*\K[0-9]+' || echo "?")"
-REVIEWED="$(echo "$DASHBOARD_OUTPUT" | grep -oP '"reviewed":\s*\K[0-9]+' || echo "?")"
-UNREVIEWED="$(echo "$DASHBOARD_OUTPUT" | grep -oP '"unreviewed":\s*\K[0-9]+' || echo "?")"
-VERDICT="$(echo "$DASHBOARD_OUTPUT" | grep -oP '"verdict":\s*"\K[^"]+' || echo "?")"
-
-# ── Threshold evaluation ─────────────────────────────────────────────────────
-if [[ "$COMPLIANCE_RATE" -ge "$THRESHOLD_PASS" ]]; then
+if [[ "$VERDICT" == "PASS" ]]; then
     log "PASS: Compliance at ${COMPLIANCE_RATE}% (>= ${THRESHOLD_PASS}%) — no action needed"
     exit 0
 fi
@@ -141,8 +129,8 @@ ${UNREVIEWED_SECTION:-No details available — check daily log}
 ### Thresholds
 | Range | Action |
 |-------|--------|
-| >= 80% | Pass — no action |
-| 50-79% | Medium priority issue |
+| >= ${THRESHOLD_PASS}% | Pass — no action |
+| >= ${THRESHOLD_HIGH}% and < ${THRESHOLD_PASS}% | Medium priority issue |
 | 30-49% | High priority issue |
 | < 30% | Critical — immediate action |
 
