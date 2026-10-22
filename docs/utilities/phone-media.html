@@ -21,6 +21,7 @@ is the default. Input and output directories shall be separate, non-overlapping 
 <table>
 <tr><th>Revision</th><th>Date</th><th>Change and purpose</th></tr>
 <tr><td>Initial</td><td>2026-10-22</td><td>Add copy-based organization and duplicate reporting while retaining source evidence.</td></tr>
+<tr><td>1</td><td>2026-10-22</td><td>Distinguish local and UTC video dates, expose copy conflicts, and reject directory aliases.</td></tr>
 </table>
 <p>Table 1. Document revisions.</p>
 <h2>Usage</h2>
@@ -30,18 +31,30 @@ required by the utility. Run from the repository root:</p>
 <pre>python scripts/utilities/phone_media.py phone-media organized-media &gt; plan.json
 python scripts/utilities/phone_media.py phone-media organized-media --apply &gt; result.json</pre>
 <p>Reports contain relative filenames, content hashes, date provenance, duplicate
-groups and warnings. Reports can contain personal filenames and shall remain with
+groups, warnings and a <code>conflicts</code> list of relative destinations and reasons.
+A dry run exits successfully even when that list is nonempty; inspect it before
+using <code>--apply</code>, which refuses conflicting destinations before any copy.
+Reports can contain personal filenames and shall remain with
 private archives rather than be committed to this public repository. No real
 archive is read or copied by the regression tests.</p>
 <h2>Method</h2>
 <ol>
 <li>Inventory HEIC, MOV, PNG, JPG, JPEG and AAE files, matching extensions without
 case sensitivity. Other extensions and directories outside each phone's
-<code>usb</code> tree are ignored. Scanned symlinks are rejected.</li>
+<code>usb</code> tree are ignored. Scanned symlinks and Windows reparse points
+(including junctions) are rejected before directory traversal. Destination
+aliases, including output ancestors, are also rejected.</li>
 <li>For each media file, read <code>DateTimeOriginal</code>, then
-<code>CreateDate</code>, then <code>MediaCreateDate</code> with ExifTool JSON output.
-The first valid calendar timestamp supplies the capture-local year and month.
-Offsets do not shift that month. Invalid values produce warnings. With no valid
+Keys <code>CreationDate</code>, then <code>CreateDate</code>, then
+<code>MediaCreateDate</code> with ExifTool UTF-8 JSON output.
+The first valid timestamp supplies the year and month. String dates retain
+their local calendar fields; offsets do not shift that month. Integer MOV
+<code>CreateDate</code> and <code>MediaCreateDate</code> fields are treated as UTC
+per the QuickTime specification and recorded as <code>CreateDate_utc</code> or
+<code>MediaCreateDate_utc</code> in <code>date_source</code>. They are not converted
+to the computer's timezone. Some cameras store local values in these fields;
+without an offset-bearing date the original capture-local month is unknown.
+Invalid values produce warnings. With no valid
 value, use file mtime interpreted in UTC, consistent across computer timezones.
 The acquisition workflow is responsible for establishing whether mtime represents
 capture time. Missing ExifTool produces explicit fallback warnings.</li>
@@ -60,7 +73,8 @@ resolutions or edits are not perceptual duplicates under this criterion.</li>
 exclusive file creation and verify the copied digest before preserving timestamps
 and mode with <code>copystat</code>. Identical existing destinations are reused.
 No existing file is overwritten. A partial or mismatched copy is retained for
-inspection and a later invocation refuses it.</li>
+inspection. Errors identify its relative destination and reason; a later dry run
+lists it in <code>conflicts</code>, and a later apply refuses it.</li>
 </ol>
 <p>Tag precedence, UTC fallback and pairing priority are declared application
 policies. No fitted coefficients or engineering acceptance limits are used.</p>
@@ -85,8 +99,14 @@ timezone policy, missing metadata, all requested extensions, sidecars, duplicate
 collisions, reruns, overwrite refusal, symlinks, CLI dry runs and a changed-source
 copy failure. Run:</p>
 <pre>python -m pytest tests/utilities/test_phone_media.py -q -p no:cacheprovider</pre>
+<p>A month-boundary regression uses a still dated 2024:02:29 20:00:00-06:00
+and a MOV dated 2024:03:01 02:00:00 in UTC. With Keys CreationDate matching the
+still, both media files and the AAE go into 2024/02. Without it, the MOV goes
+into 2024/03 with a UTC basis, the AAE follows the still into 2024/02, and the
+report warns that companions span months. Windows reparse attributes are
+simulated in portable tests; native junction behavior requires Windows testing.</p>
 <p>The source archive and destination shall remain quiescent during a run.
-Symlink checks and exclusive creation do not establish protection against hostile
+Alias checks and exclusive creation do not establish protection against hostile
 concurrent directory replacement. This utility is not a transactional snapshot:
 failures may leave completed copies and an inspection copy. It does not recover
 from an interrupted copy automatically. A successful run verifies copy bytes,
@@ -102,6 +122,9 @@ undated, retrieved 2026-10-22, HTTP 200: JSON output, tag selection, default dat
 format and end-of-options handling.</li>
 <li><a href="https://docs.python.org/3.11/library/hashlib.html">Python 3.11 hashlib</a>:
 complete-file hashing API. The installed Python API is exercised by the regression suite.</li>
+<li><a href="https://exiftool.org/TagNames/QuickTime.html">ExifTool QuickTime tags</a>,
+undated, retrieved 2026-10-22, HTTP 200: Keys CreationDate and integer timestamp
+UTC conventions, including the warning about cameras that store local values.</li>
 </ul>
 </body>
 </html>

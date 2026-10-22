@@ -4,6 +4,7 @@ import argparse
 import hashlib
 import json
 import shutil
+import stat
 import subprocess
 from collections import defaultdict
 from datetime import UTC, datetime
@@ -12,7 +13,7 @@ from pathlib import Path
 # Format scope: issue 3585. Tag priority is an explicit organizer policy, not
 # an assertion that filesystem or container dates always represent capture time.
 MEDIA = {".heic", ".mov", ".png", ".jpg", ".jpeg"}
-TAGS = ("DateTimeOriginal", "CreateDate", "MediaCreateDate")
+TAGS = ("DateTimeOriginal", "CreationDate", "CreateDate", "MediaCreateDate")
 
 
 def digest(path):
@@ -28,10 +29,18 @@ def read_metadata(path):
     No shell is used and no metadata-writing option is passed.
     """
     result = subprocess.run(
-        ["exiftool", "-j", "-s", *(f"-{tag}" for tag in TAGS), "--", str(path)],
+        [
+            "exiftool",
+            "-j",
+            "-s",
+            *(f"-Keys:{tag}" if tag == "CreationDate" else f"-{tag}" for tag in TAGS),
+            "--",
+            str(path),
+        ],
         check=True,
         capture_output=True,
         text=True,
+        encoding="utf-8",
     )
     records = json.loads(result.stdout)
     if (
@@ -58,10 +67,17 @@ def capture_month(path, reader, warnings, relative):
             continue
         try:
             # ExifTool's default date representation is YYYY:mm:dd HH:MM:SS.
-            # Optional fractions/offsets do not change the capture-local month.
+            # String dates retain their local month. Integer MOV dates use UTC
+            # per QuickTime, without conversion to the computer's timezone.
             stamp = str(value)
             date = datetime.strptime(stamp[:19], "%Y:%m:%d %H:%M:%S")
-            return date.strftime("%Y/%m"), tag
+            basis = tag
+            if path.suffix.lower() == ".mov" and tag in (
+                "CreateDate",
+                "MediaCreateDate",
+            ):
+                basis = f"{tag}_utc"
+            return date.strftime("%Y/%m"), basis
         except ValueError:
             warnings.append(f"{relative}: invalid {tag}")
     # UTC makes fallback independent of the computer's local timezone.
@@ -70,28 +86,44 @@ def capture_month(path, reader, warnings, relative):
     ), "mtime_utc"
 
 
+def reject_link(path, context):
+    """Reject aliases, including Windows junctions, before descending or copying."""
+    try:
+        info = path.lstat()
+    except FileNotFoundError:
+        return
+    if stat.S_ISLNK(info.st_mode):
+        raise ValueError(f"{context} symlink is not supported")
+    if getattr(info, "st_file_attributes", 0) & stat.FILE_ATTRIBUTE_REPARSE_POINT:
+        raise ValueError(f"{context} reparse point is not supported")
+
+
 def inventory(root):
     files = []
+
+    def visit(phone, usb, directory):
+        for path in sorted(directory.iterdir()):
+            reject_link(path, f"{path.relative_to(root).as_posix()}: source")
+            if path.is_dir():
+                visit(phone, usb, path)
+            elif path.is_file() and path.suffix.lower() in MEDIA | {".aae"}:
+                files.append((phone.name, usb, path))
+
     for phone in sorted(root.iterdir()):
-        if phone.is_symlink():
-            raise ValueError("source symlink is not supported")
+        reject_link(phone, f"{phone.name}: source")
+        if not phone.is_dir():
+            continue
         usb = phone / "usb"
-        if usb.is_symlink():
-            raise ValueError("source symlink is not supported")
+        reject_link(usb, f"{phone.name}/usb: source")
         if not usb.is_dir():
             continue
-        for path in sorted(usb.rglob("*")):
-            if path.is_symlink():
-                raise ValueError("source symlink is not supported")
-            if path.is_file() and path.suffix.lower() in MEDIA | {".aae"}:
-                files.append((phone.name, usb, path))
+        visit(phone, usb, usb)
     return files
 
 
 def check_destination(output, target):
     for path in (target, *target.parents):
-        if path.is_symlink():
-            raise ValueError("destination symlink is not supported")
+        reject_link(path, f"{target.relative_to(output).as_posix()}: destination")
         if path == output:
             break
 
@@ -110,6 +142,13 @@ def copy_verified(source, target, expected):
     shutil.copystat(source, target)
 
 
+def error_reason(exc):
+    """Keep native exception filenames out of command-line diagnostics."""
+    if isinstance(exc, OSError) and exc.filename is not None:
+        return exc.strerror or type(exc).__name__
+    return str(exc)
+
+
 def organize(root, output, *, apply=False, metadata_reader=read_metadata):
     root, output = Path(root).resolve(), Path(output).absolute()
     resolved_output = output.resolve()
@@ -122,8 +161,8 @@ def organize(root, output, *, apply=False, metadata_reader=read_metadata):
     if not root.is_dir():
         raise ValueError("input root must be a directory")
     # Reject output aliases before resolution could hide a symlink.
-    if any(p.is_symlink() for p in (output, *output.parents)):
-        raise ValueError("destination symlink is not supported")
+    for path in (output, *output.parents):
+        reject_link(path, "destination")
     entries = inventory(root)
     warnings, dates, companions = [], {}, defaultdict(list)
     for phone, usb, path in entries:
@@ -167,17 +206,29 @@ def organize(root, output, *, apply=False, metadata_reader=read_metadata):
         if path.suffix.lower() in MEDIA:
             groups[record["sha256"]].append(record)
     # Preflight every existing destination before any copies occur.
+    conflicts = []
     for record in records:
         target = output / record["destination"]
         if target.exists() and (
             not target.is_file() or digest(target) != record["sha256"]
         ):
-            raise FileExistsError("destination differs; no overwrite permitted")
+            conflicts.append(
+                {
+                    "destination": record["destination"],
+                    "reason": "destination differs; no overwrite permitted",
+                }
+            )
+    if apply and conflicts:
+        first = conflicts[0]
+        raise FileExistsError(f"{first['destination']}: {first['reason']}")
     if apply:
         for record in records:
             target = output / record["destination"]
             check_destination(output, target)
-            copy_verified(root / record["source"], target, record["sha256"])
+            try:
+                copy_verified(root / record["source"], target, record["sha256"])
+            except OSError as exc:
+                raise OSError(f"{record['destination']}: {error_reason(exc)}") from exc
     duplicates = [
         {"sha256": key, "files": [r["source"] for r in group]}
         for key, group in sorted(groups.items())
@@ -189,6 +240,7 @@ def organize(root, output, *, apply=False, metadata_reader=read_metadata):
         "files": records,
         "duplicates": duplicates,
         "warnings": warnings,
+        "conflicts": conflicts,
     }
 
 
@@ -203,7 +255,11 @@ def main(argv=None):
     try:
         report = organize(args.input, args.output, apply=args.apply)
     except (OSError, ValueError) as exc:
-        parser.exit(1, f"phone-media: {type(exc).__name__}; no files are deleted\n")
+        parser.exit(
+            1,
+            f"phone-media: {type(exc).__name__}: {error_reason(exc)}; "
+            "no files are deleted\n",
+        )
     print(json.dumps(report, indent=2, sort_keys=True))
     return 0
 
