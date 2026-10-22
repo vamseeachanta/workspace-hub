@@ -67,18 +67,27 @@ Extends `config/agents/provider-capabilities.yaml`'s `strategy_role` field by an
 4. [GATE 1] issue-planning-mode skill Step 1.5: reproduce-or-N/A
 5. Claude main session: draft plan against docs/plans/_template-issue-plan.md
 6. Claude main session: spec self-review (placeholder scan, internal consistency, scope, ambiguity)
-7. [GATE 2] user reviews draft
+7. [GATE 2] verify task scope and resolve missing domain decisions
 8. → walkthrough §C2 (adversarial review)
-9. [GATE 3] user approval at status:plan-approved
+9. [GATE 3] verify task authority and resolve blocking review findings
 10. Claude main session: implement (TDD)
 ```
 
 **Gate checkpoints (existing repo workflows, not new):**
 - `issue-planning-mode` skill: Steps 1, 1.5, 2, 3, 4, 5, 6
-- `require-plan-approval.sh` (pre-commit hook) — enforces `status:plan-approved` before writes outside safe paths
+- `require-plan-approval.sh` — retired compatibility entry point; no approval label or local marker is required for authorized implementation
 - `require-cross-review.sh` (pre-push hook) — enforces adversarial-review artifacts before push
 
 **Provider choice rationale:** The orchestrator owns the canonical plan text and GitHub state. Read-only resource-intelligence lanes may run in parallel when they reduce wall-clock time, but final planning authority is not delegated. Do not let subagents write the plan without main-session verification; Codex and Gemini remain review/read-only lanes unless a future tool contract proves otherwise.
+
+**Implementation authority:** [SHARED_SOUL.md#authorization](../../config/agents/SHARED_SOUL.md#authorization)
+governs the workflow. No separate user plan approval is required within the
+originating task request or standing authorization. Consequential actions require
+explicit approval matching the action and destination. Planning-only requests,
+missing domain decisions and blocking review findings still constrain the affected
+work. Historical approval labels remain maintainer-controlled records; labels,
+markers and handoffs do not authenticate authority. See the
+[worked example](implementation-authorization.md).
 
 ### §C2. Adversarial review (T1 / T2 / T3 depth scaling)
 
@@ -132,7 +141,7 @@ T3 (complex, full 3-of-3 with synthesis):
 | T1 review | Claude single-author r3 with transparent provenance. |
 | T2 review | Claude + Codex + Gemini (parallel via fanout). |
 | T3 review | All three independently → render-structured-review.py synthesis. |
-| Implementation writes | Parallel-first classification: `single-lane` for small/shared work; `parallel-worktree` only for plan-approved disjoint write surfaces; orchestrator verifies and serializes commits. |
+| Implementation writes | Classify execution by scope; isolate disjoint task-authorized write surfaces, verify outputs and serialize commits. |
 | Overnight batch work | Hermes — but preflight `pgrep -af 'git (rebase\|stash push\|commit\|merge\|reset\|checkout)'` first (`feedback_hermes_active_preflight_check`). |
 | Wiki/concept page first-drafting | Claude — never LinkedIn-only sourcing (`feedback_llm_wiki_concept_pages_need_public_references`). |
 | Recruiter / email triage | Claude main session — apply `feedback_recruiter_engagement` and `feedback_email_cross_noise` filters before drafting. |
@@ -144,12 +153,12 @@ T3 (complex, full 3-of-3 with synthesis):
 - **Don't dispatch Hermes during user's active git operations** — merge-race silent reverts (`feedback_merge_race_silent_revert`, `feedback_hermes_active_preflight_check`).
 - **Don't auto-cycle Codex MAJOR loops** beyond 3 rounds — surface consensus-vs-minority decision (`feedback_codex_sustained_MAJOR_loop`).
 - **Don't have subagents drive Chrome** — `mcp__claude-in-chrome__*` is session-scoped (`feedback_claude_in_chrome_session_scoped`).
-- **Don't run worktree-isolation for every agent** — use it only for write-capable, plan-approved, disjoint streams. Use `parallel-readonly` lanes for discovery/review to avoid worktree overhead.
+- **Don't run worktree-isolation for every agent** — use it only for write-capable, task-authorized, disjoint streams. Use `parallel-readonly` work for discovery/review to avoid worktree overhead.
 
 ### When to parallelize vs. serialize
 
-- **Parallelize**: independent provider reviews (T2/T3); read-only Resource Intel surveys; validation/review lanes; non-conflicting Bash + Read tool calls in one message; approved implementation streams with isolated worktrees and explicit path ownership.
-- **Serialize**: user approval, final plan synthesis, shared-file edits without one owner, commit/push/closeout, and git operations during Hermes activity (per preflight check).
+- **Parallelize**: independent provider reviews (T2/T3); read-only Resource Intel surveys; validation/review work; non-conflicting Bash + Read tool calls in one message; task-authorized implementation with isolated worktrees and explicit path ownership.
+- **Serialize**: consequential action approval, final plan synthesis, shared-file edits without one maintainer, commit/push/closeout, and git operations during Hermes activity (per preflight check).
 
 ### When single-author r3 is the right answer
 

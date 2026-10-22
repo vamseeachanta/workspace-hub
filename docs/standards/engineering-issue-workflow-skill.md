@@ -20,7 +20,13 @@ An issue is engineering-critical if it has ANY of:
 - Paths: `digitalmodel/`, `worldenergydata/`, `assetutilities/`
 - Topics: offshore engineering standards (DNV, API, ABS, ISO), OrcaFlex, metocean, cathodic protection
 
-Reference: `docs/standards/HARD-STOP-POLICY.md`
+Authority: [shared authorization](../../config/agents/SHARED_SOUL.md#authorization)
+and [risk policy](HARD-STOP-POLICY.md). No separate user plan approval is required
+for implementation within the originating task request or standing authorization.
+Consequential actions require explicit approval matching the action and destination.
+Labels, local markers, review verdicts and handoffs do not authenticate authority.
+The maintainer controls historical approval records; never self-apply
+`status:plan-approved`. See the [worked example](implementation-authorization.md).
 
 ## The Workflow (7 Steps)
 
@@ -28,9 +34,9 @@ Reference: `docs/standards/HARD-STOP-POLICY.md`
 STEP 1: Triage (first turn — classify issue)
 STEP 2: Resource Intelligence (automated — search standards, repo, documents)
 STEP 3: Write Plan (document what, how, tests, risks)
-STEP 4: ◆ HARD STOP — USER APPROVES PLAN ◆ (DO NOT SKIP)
+STEP 4: Adversarial Plan Review and Task Authority Check
 STEP 5: Implement (TDD: tests first, then code)
-STEP 6: Cross-Review (Codex + Gemini review implementation against approved plan)
+STEP 6: Cross-Review (review implementation against the current task and plan)
 STEP 7: Close (commit, push, close issue with summary)
 ```
 
@@ -39,7 +45,7 @@ STEP 7: Close (commit, push, close issue with summary)
 On first contact with an engineering issue:
 1. Read the **full issue body** — scope, acceptance criteria, references
 2. Classify complexity:
-   - **T1** (trivial): single-line fix, config, typo → brief plan, still requires approval
+   - **T1** (trivial): single-line fix, config, typo → brief plan and proportionate review
    - **T2** (standard): new module, multiple file changes, tests needed → full workflow
    - **T3** (complex): multi-module, architecture change, standards implementation → full workflow + subagents
 3. Identify what **standards, modules, test fixtures, and documents** are relevant
@@ -134,32 +140,31 @@ One sentence: what will be built or changed.
 ### Complexity: T1 | T2 | T3
 ```
 
-### STEP 4: ◆ HARD STOP — USER APPROVAL REQUIRED ◆
+### STEP 4: Adversarial Plan Review and Task Authority Check
 
-**STOP. Do NOT write any code. Do NOT create any files. Do NOT run any tests.**
+Obtain adversarial review under [the review policy](AI_REVIEW_ROUTING_POLICY.md)
+and resolve blocking findings before implementation. Verify the originating task
+request or standing authorization against the current scope; complexity changes
+planning and review depth without requiring another permission request.
 
-Wait for the user to respond with one of:
-- **APPROVE** / **GO** / **YES** → continue to Step 5
-- **REVISE** / **CHANGE** → user provides feedback, re-do Step 3
-- **REJECT** → ask what approach the user prefers
+Ask for missing scope-changing information, unresolved domain decisions or
+authority for an action outside the existing task. A planning-only request
+authorizes planning only. Pause the affected action while required information
+is pending; continue independent authorized work.
 
-**If the user says "just do it" or "go ahead" WITHOUT seeing the plan:**
-Present the plan first. Then wait. The approval must come AFTER seeing the plan.
-
-For **overnight/batch sessions** (user not present):
-- Write the plan as a **GitHub issue comment** before implementing
-- Implementation starts only after the plan comment is posted
-- User reviews results the next morning
+Batch scheduling, posting a plan and elapsed time do not grant authority. Reuse
+verified authorization within its unchanged scope. Preserve engineering basis,
+source rights, qualified inputs, acceptance criteria and security requirements.
 
 ### STEP 5: Implement (TDD)
 
-After user approval:
+After plan review and verification of task authority:
 
 1. **Tests FIRST** — write the test file, run it, confirm it FAILS
 2. **Implement** — minimum code to make tests pass
 3. **Run tests** — confirm they PASS
 4. **Full test suite** — `uv run pytest` on the affected repo, confirm no regressions
-5. **Self-review** — check the code against the approved plan
+5. **Self-review** — check the code against the current task scope and reviewed plan
 
 **Digitalmodel is a SEPARATE git repo** — commit from within `digitalmodel/` dir, NOT workspace-hub root.
 
@@ -170,7 +175,7 @@ After user approval:
 After implementation passes all tests:
 
 1. Route to **Codex AND Gemini**
-2. Each reviewer receives: the approved plan, the diff, test results, acceptance criteria
+2. Each reviewer receives: the reviewed plan, current task scope, the diff, test results, acceptance criteria
 3. Collect verdicts: APPROVE | MINOR | MAJOR
 4. If any MAJOR: present to user, fix, re-test
 5. If all APPROVE or MINOR (resolved): proceed to Step 7
@@ -188,9 +193,9 @@ After implementation passes all tests:
 ## Non-Critical Issues
 
 Issues WITHOUT engineering-critical labels:
-- Skip Steps 2-4 (resource intelligence, plan approval, hard stop)
+- Scale resource intelligence, planning and review to the actual effects and scope; label absence does not exempt protected changes
 - **TDD is still mandatory** — tests before implementation, always
-- Implement → commit → close
+- Verify task authority → implement → review → authorized closeout
 - User can request the full workflow by asking for it
 
 ---
@@ -207,7 +212,9 @@ Issues WITHOUT engineering-critical labels:
 
 **What happened:** User tells the agent to skip planning and go straight to code. Agent complies, producing code without context.
 
-**How to handle:** Show a brief plan first. The user can still approve quickly, but they must SEE the plan. "Here's what I'll do: [3 lines]. OK?" is sufficient.
+**How to handle:** State a proportionate plan and continue under the verified task
+authority after review. Ask only when missing context or an action outside that
+authority changes the next step.
 
 ### Thinking Work Is "Too Trivial" for a Plan
 
