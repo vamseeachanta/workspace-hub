@@ -1,0 +1,55 @@
+{
+  "manifest_version": 1,
+  "generated_at": "2026-10-22T00:00:00Z",
+  "generator": "scripts/workflow/generate_workflow_manifest.py",
+  "resolver": "deckhand/src/deckhand/capability_smoke.py",
+  "repos": [
+    {
+      "repo": "sample",
+      "status": "ok",
+      "schema_version": 2,
+      "registry_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    }
+  ],
+  "workflow_count": 2,
+  "workflows": [
+    {
+      "workflow_id": "sample:screen@1",
+      "routing_id": "sample:screen",
+      "repo": "sample",
+      "id": "screen",
+      "version": 1,
+      "status": "stable",
+      "latest": true,
+      "input": "examples/screen/input.json",
+      "outputs": ["report.html"],
+      "runtime": "offline",
+      "invocation": "python -m sample {input}",
+      "license_gated": false,
+      "request_schema": null,
+      "response_schema": null,
+      "result": {"kind": "files"},
+      "determinism": null
+    },
+    {
+      "workflow_id": "sample:screen@2",
+      "routing_id": "sample:screen",
+      "repo": "sample",
+      "id": "screen",
+      "version": 2,
+      "status": "experimental",
+      "latest": false,
+      "input": "examples/screen/input.json",
+      "outputs": ["report.html"],
+      "runtime": "offline",
+      "invocation": "python -m sample {input}",
+      "license_gated": false,
+      "request_schema": null,
+      "response_schema": null,
+      "result": {"kind": "files"},
+      "determinism": null
+    }
+  ],
+  "latest_by_routing_id": {"sample:screen": "sample:screen@1"},
+  "warnings": []
+}
