@@ -9,6 +9,7 @@ from pathlib import Path
 
 import pytest
 import yaml
+from scheduler_contract_fixtures import checkout_records
 
 REPO = Path(__file__).resolve().parents[2]
 CHECKER = REPO / "scripts/enforcement/check-scheduler-mutation-surfaces.py"
@@ -26,7 +27,7 @@ def load_checker():
 
 def current_contract():
     checker = load_checker()
-    records = checker.read_index_records(REPO)
+    records = checkout_records(checker, REPO)
     return checker, records, yaml.safe_load(REGISTRY.read_bytes())
 
 

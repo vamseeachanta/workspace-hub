@@ -16,7 +16,15 @@ MODULE_DIR = Path(__file__).resolve().parent
 if str(MODULE_DIR) not in sys.path:
     sys.path.insert(0, str(MODULE_DIR))
 
-from scheduler_mutation_contract import (  # noqa: E402
+from scheduler_mutation_attestations import (
+    derive_cron_classifier_branches,
+    evaluate_python,
+    evaluate_shell_guard,
+    evaluate_windows,
+    forensic_literal_lines,
+)
+from scheduler_mutation_consumers import CONSUMER_CONTRACT, validate_consumer_source
+from scheduler_mutation_contract import (
     ATT_SOURCES,
     Discovery,
     ValidationResult,
@@ -27,24 +35,17 @@ from scheduler_mutation_contract import (  # noqa: E402
     validate_closed_schema,
     validate_operation_contract,
 )
-from scheduler_mutation_discovery import (  # noqa: E402
+from scheduler_mutation_delegation import (
+    validate_delegation_graph,
+    validate_identity_inputs,
+)
+from scheduler_mutation_discovery import (
     derive_kanban_operations,
     derive_windows_task_operations,
     has_primitive_alias_call,
 )
-from scheduler_mutation_attestations import (  # noqa: E402
-    derive_cron_classifier_branches,
-    evaluate_python,
-    evaluate_shell_guard,
-    evaluate_windows,
-    forensic_literal_lines,
-)
-from scheduler_mutation_delegation import (  # noqa: E402
-    validate_delegation_graph,
-    validate_identity_inputs,
-)
-from scheduler_mutation_report import render_html  # noqa: E402
-from scheduler_mutation_wrapper_attestations import (  # noqa: E402
+from scheduler_mutation_report import render_html
+from scheduler_mutation_wrapper_attestations import (
     evaluate_wrapper_attestation,
 )
 
@@ -67,6 +68,7 @@ PRIMITIVE_PATTERNS = {
     "systemd-user-unit-write": (
         rb"\b(?:write_unit|remove_unit)[ \t]+",  # scheduler-mutation-forensic
         rb"(?:cat|printf)[^\n]*(?:\.config/systemd/user|SYSTEMD_USER_DIR)",  # scheduler-mutation-forensic
+        rb"\binstall[ \t]+[^\n]*\.config/systemd/user",  # scheduler-mutation-forensic
     ),  # scheduler-mutation-forensic
     "systemd-user-enable-disable": (
         rb"\b(?:run_systemctl|systemctl[ \t]+--user)[ \t]+(?:enable|disable)\b",  # scheduler-mutation-forensic
@@ -224,6 +226,13 @@ def _validate_surface(row, rows, statuses, discovery, records, errors):
     if path in rows:
         errors.append(f"duplicate surface: {path}")
     rows[path] = row
+    if row.get("kind") == "read-only-consumer":
+        consumer_errors = validate_consumer_source(path, row, records)
+        errors.extend(consumer_errors)
+        statuses[path] = "unverified" if consumer_errors else "read-only"
+        if path in discovery.transitive:
+            errors.append(f"{path}: read-only consumer cannot delegate mutation")
+        return
     operation_ids = [operation.get("id") for operation in row.get("operations", [])]
     if len(operation_ids) != len(set(operation_ids)):
         errors.append(f"{path}: duplicate operation id")
@@ -275,6 +284,12 @@ def _validate_transitive(path, row, statuses, discovery, records, errors):
 
 def _validate_global_sets(registry, rows, statuses, discovery, records, errors):
     direct = {path for path, row in rows.items() if row.get("kind") == "direct-owner"}
+    # Preserve conservative discovery. Only exact reviewed reader bytes may
+    # account for a direct candidate without claiming a mutation primitive.
+    consumers = {path for path, row in rows.items() if row.get("kind") == "read-only-consumer"}
+    direct |= consumers & discovery.direct
+    for path in sorted(consumers ^ set(CONSUMER_CONTRACT)):
+        errors.append(f"read-only inventory mismatch: {path}")
     transitive = {path for path, row in rows.items() if row.get("kind") == "transitive-entrypoint"}
     for path in sorted(discovery.direct ^ direct):
         errors.append(f"direct inventory mismatch: {path}")
@@ -350,6 +365,7 @@ def main(argv: list[str] | None = None) -> int:
         "direct": sorted(discovery.direct),
         "errors": result.errors,
         "input_digest": digest,
+        "read_only": sorted(path for path, status in result.statuses.items() if status == "read-only"),
         "status": "ok" if not result.errors else "error",
         "transitive": sorted(discovery.transitive),
     }

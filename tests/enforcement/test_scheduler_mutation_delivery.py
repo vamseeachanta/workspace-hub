@@ -1,13 +1,13 @@
 """Delivery tests for scheduler mutation HTML and CI wiring."""
 from __future__ import annotations
 
-import importlib.util
 import html
-import subprocess
+import importlib.util
 import sys
 from pathlib import Path
 
 import yaml
+from scheduler_contract_fixtures import checkout_records
 
 ROOT = Path(__file__).resolve().parents[2]
 CHECKER = ROOT / "scripts/enforcement/check-scheduler-mutation-surfaces.py"
@@ -31,7 +31,7 @@ def load_checker():
 
 def contract_inputs():
     checker = load_checker()
-    records = checker.read_index_records(ROOT)
+    records = checkout_records(checker, ROOT)
     registry = yaml.safe_load(records[checker.REGISTRY])
     discovery = checker.discover_mutation_surfaces(records)
     validation = checker.validate_registry(registry, discovery, records)
@@ -83,22 +83,15 @@ def test_html_is_deterministic_complete_and_linked():
         assert f'href="https://github.com/vamseeachanta/workspace-hub/issues/{issue}"' in text
 
 
-def test_cli_render_and_stale_check(tmp_path):
+def test_cli_render_and_stale_check(tmp_path, monkeypatch):
+    checker, records, *_ = contract_inputs()
+    monkeypatch.setattr(checker, "read_index_records", lambda _root: records)
     output = tmp_path / "audit.html"
-    render = subprocess.run(
-        [sys.executable, str(CHECKER), "--render-html", str(output)], cwd=ROOT
-    )
-    assert render.returncode == 0
+    assert checker.main(["--render-html", str(output)]) == 0
     assert output.is_file()
-    check = subprocess.run(
-        [sys.executable, str(CHECKER), "--check-html", str(output)], cwd=ROOT
-    )
-    assert check.returncode == 0
+    assert checker.main(["--check-html", str(output)]) == 0
     output.write_bytes(output.read_bytes().replace(b"data-input-digest=", b"data-stale-digest="))
-    stale = subprocess.run(
-        [sys.executable, str(CHECKER), "--check-html", str(output)], cwd=ROOT
-    )
-    assert stale.returncode != 0
+    assert checker.main(["--check-html", str(output)]) != 0
 
 
 def test_delivery_contract_is_in_digest_union():

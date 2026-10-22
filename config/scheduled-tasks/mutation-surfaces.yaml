@@ -268,6 +268,17 @@ surfaces:
     kind: direct-owner
     disposition_group: bundle-integrity-sentinel
     operations:
+      # Source: installer unit-copy commands; issue #3789 (2026).
+      - id: install:systemd-unit-write
+        primitive: systemd-user-unit-write
+        target_kind: systemd-user
+        scheduler_identity: local-user-systemd-bundle-verify-sentinel
+        execution_host_binding: physical-local
+        destructive: true
+        authority_branches:
+          - {id: literal-unit-files, mechanism: unknown, config_source: scripts/monitoring/bundle-sentinel-install/install.sh, destructive: true, strength: unknown}
+        transaction: *missing_transaction
+        attestations: []
       - id: install:systemd-enable
         primitive: systemd-user-enable-disable
         target_kind: systemd-user
@@ -278,6 +289,11 @@ surfaces:
           - {id: literal-unit-names, mechanism: unknown, config_source: scripts/monitoring/bundle-sentinel-install/install.sh, destructive: true, strength: unknown}
         transaction: *missing_transaction
         attestations: []
+
+  - path: scripts/operations/relocate-to-bulk.sh
+    kind: read-only-consumer
+    reads: [current-user-cron, systemd-system, systemd-user]
+    source_attestation: relocation-scheduler-reads-v1
 
   - path: scripts/install/disable-cnh-source-watch-timer.sh
     kind: direct-owner

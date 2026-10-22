@@ -5,7 +5,13 @@ import hashlib
 import struct
 from dataclasses import dataclass
 from typing import Any
+
+from scheduler_mutation_consumers import (
+    CONSUMER_DIGEST_SOURCES,
+    validate_consumer_schema,
+)
 from scheduler_mutation_delegation import validate_delegation_schema
+
 TX_FIELDS = (
     "lock",
     "baseline_snapshot",
@@ -47,7 +53,7 @@ SELECTION_CONDITIONS = {
 # and was at exactly 400 when #3784 needed to register a new surface.
 # Extracted rather than raising the cap — relaxing a guard to fit a change
 # under it is the failure the guard exists to prevent.
-from scheduler_mutation_dispositions import (  # noqa: E402
+from scheduler_mutation_dispositions import (
     DEFECT_CLASSES,
     DISPOSITION_CONTRACT,
 )
@@ -144,6 +150,7 @@ def digest_record_union(
         b"scripts/enforcement/scheduler_mutation_contract.py",
         # #3784: carries the pinned DISPOSITION_CONTRACT — must be digested.
         b"scripts/enforcement/scheduler_mutation_dispositions.py",
+        *CONSUMER_DIGEST_SOURCES,
         b"scripts/enforcement/scheduler_mutation_attestations.py",
         b"scripts/enforcement/scheduler_mutation_python_flow.py",
         b"scripts/enforcement/scheduler_mutation_discovery.py",
@@ -210,6 +217,10 @@ def _validate_surface(row: dict[str, Any], tracked_paths: set[bytes],
     path = row.get("path", "")
     errors: list[str] = []
     required = {"path", "kind"}
+    if row.get("kind") == "read-only-consumer":
+        if path.encode() not in tracked_paths:
+            errors.append(f"{path}: path is not tracked")
+        return errors + validate_consumer_schema(path, row)
     if not required <= set(row) or set(row) - allowed or row.get("kind") not in {
         "direct-owner",
         "transitive-entrypoint",

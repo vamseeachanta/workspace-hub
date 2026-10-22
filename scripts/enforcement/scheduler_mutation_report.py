@@ -62,8 +62,14 @@ def _render_row(surface, groups, validation):
                      for operation in surface.get("operations", []))
     if surface.get("delegation"):
         detail += _render_delegation(surface["delegation"])
+    if surface["kind"] == "read-only-consumer":
+        targets = ", ".join(html.escape(target) for target in surface["reads"])
+        evidence = html.escape(surface["source_attestation"])
+        detail = f"Scheduler reads: {targets}<br>Source attestation: {evidence}"
     path = html.escape(surface["path"], quote=True)
     disposition = f'<a href="{ISSUE_ROOT}/{issue}">#{issue}</a>' if issue else "resolved"
+    if surface["kind"] == "read-only-consumer":
+        disposition = "not applicable"
     return (f'<tr data-surface="{path}"><td><code>{path}</code></td>'
             f'<td>{html.escape(surface["kind"])}</td>'
             f'<td>{html.escape(validation.statuses[surface["path"]])}</td>'
@@ -85,7 +91,7 @@ def render_html(registry, discovery, validation, digest: str) -> bytes:
 {body}
 </tbody></table>
 <h2>Limitations</h2><ul><li>Issue coordinates are validated offline; live issue state is non-authoritative.</li><li>Windows runtime behavior is source-audited on Linux and requires Windows-capable migration verification.</li><li>Branch-protection registration is outside this artifact.</li></ul>
-<p>Discovered direct owners: {len(discovery.direct)}; transitive entrypoints: {len(discovery.transitive)}.</p>
+<p>Discovered direct candidates: {len(discovery.direct)}; transitive entrypoints: {len(discovery.transitive)}; reviewed read-only consumers: {sum(row['kind'] == 'read-only-consumer' for row in registry['surfaces'])}.</p>
 </body></html>
 """
     return document.encode("utf-8")
