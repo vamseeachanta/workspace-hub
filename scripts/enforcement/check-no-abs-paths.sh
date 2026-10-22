@@ -31,19 +31,29 @@ set -euo pipefail
 # Anchor REPO_ROOT to the script's own location (not the caller's cwd) so that
 # baseline keys are stable regardless of where the script is invoked from.
 SELF_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-REPO_ROOT="$(git -C "$SELF_DIR" rev-parse --show-toplevel 2>/dev/null || echo "$SELF_DIR")"
+# shellcheck source=scripts/lib/worktree-index.sh
+source "$SELF_DIR/../lib/worktree-index.sh"
+REPO_ROOT="$(worktree_git -C "$SELF_DIR" rev-parse --show-toplevel)"
 DEFAULT_BASELINE="${REPO_ROOT}/config/quality/no-abs-paths-baseline.txt"
 
 # ── Argument parsing ─────────────────────────────────────────────────────
 BASELINE=""
 BASELINE_EXPLICIT=0
 UPDATE_BASELINE=0
+# Git 2.43 git-ls-files / git-show: index and HEAD are distinct content states.
+# Default: materialized tracked files, index fallback ONLY for skip-worktree.
+# --staged: effective index blobs; --head: committed blobs. Positional paths
+# retain the legacy filesystem authority and cannot be mixed with blob modes.
+CONTENT_MODE=worktree
 declare -a POSITIONAL=()
 
 while (( $# > 0 )); do
   case "$1" in
     --baseline=*)      BASELINE="${1#*=}"; BASELINE_EXPLICIT=1; shift ;;
     --baseline)        BASELINE="${2:?--baseline requires a path}"; BASELINE_EXPLICIT=1; shift 2 ;;
+    --staged)         CONTENT_MODE=index; shift ;;
+    --head)           CONTENT_MODE=head; shift ;;
+    --worktree)       CONTENT_MODE=worktree; shift ;;
     --update-baseline) UPDATE_BASELINE=1; shift ;;
     --no-baseline)     BASELINE=""; BASELINE_EXPLICIT=1; shift ;;
     --)                shift; POSITIONAL+=("$@"); break ;;
@@ -59,17 +69,37 @@ fi
 
 # ── Collect the target file set ──────────────────────────────────────────
 declare -a TARGETS=()
+# Keep NUL bytes in a file, not command substitution, and check the producer.
+# The caller controls TMPDIR; this file contains paths only and is disposable.
+targets_file=$(mktemp)
+trap 'rm -f -- "$targets_file"' EXIT
 if (( ${#POSITIONAL[@]} == 0 )); then
-  while IFS= read -r f; do
+  worktree_index_preflight "$REPO_ROOT" >&2
+  unmerged=$(worktree_git -C "$REPO_ROOT" ls-files --unmerged) || exit 2
+  if [[ -n $unmerged ]]; then
+    echo 'check-no-abs-paths: unmerged index; content authority ambiguous' >&2
+    exit 2
+  fi
+  if [[ $CONTENT_MODE == head ]]; then
+    worktree_git -C "$REPO_ROOT" ls-tree -r -z --name-only HEAD > "$targets_file" || exit 2
+  else
+    worktree_git -C "$REPO_ROOT" ls-files --cached -z > "$targets_file" || exit 2
+  fi
+  while IFS= read -r -d '' f; do
     case "$f" in
       */tests/fixtures/*) continue ;;
+      *.sh|*.py) TARGETS+=("$REPO_ROOT/$f") ;;
     esac
-    TARGETS+=("$REPO_ROOT/$f")
-  done < <(cd "$REPO_ROOT" && git ls-files '*.sh' '*.py')
+  done < "$targets_file"
 else
+  if [[ $CONTENT_MODE != worktree ]]; then
+    echo 'check-no-abs-paths: positional paths require --worktree authority' >&2
+    exit 2
+  fi
   for arg in "${POSITIONAL[@]}"; do
     if [[ -d "$arg" ]]; then
-      while IFS= read -r f; do TARGETS+=("$f"); done < <(find "$arg" -type f \( -name '*.sh' -o -name '*.py' \))
+      find "$arg" -type f \( -name '*.sh' -o -name '*.py' \) -print0 > "$targets_file" || exit 2
+      while IFS= read -r -d '' f; do TARGETS+=("$f"); done < "$targets_file"
     elif [[ -f "$arg" ]]; then
       TARGETS+=("$arg")
     else
@@ -103,8 +133,31 @@ PATTERN='(/home/|/mnt/|/Users/|/opt/|[A-Z]:[\\/])'
 declare -a NEW_VIOLATIONS=()
 declare -a ALL_VIOLATIONS=()
 
+scanned=0
+fallback=0
 for file in "${TARGETS[@]}"; do
-  rel="$(to_repo_relative "$file")"
+  if [[ $file == "$REPO_ROOT/"* ]]; then
+    rel=${file#"$REPO_ROOT/"}
+  else
+    rel="$(to_repo_relative "$file")"
+  fi
+  authority=$CONTENT_MODE
+  if (( ${#POSITIONAL[@]} == 0 )) && [[ $authority == worktree && ! -f $file ]]; then
+    tag=$(worktree_git -C "$REPO_ROOT" ls-files -t -- ":(literal)$rel")
+    if [[ $tag == 'S '* ]]; then
+      authority=index
+      fallback=$((fallback + 1))
+    else
+      printf 'check-no-abs-paths: missing materialized target: %q\n' "$rel" >&2
+      exit 2
+    fi
+  fi
+  case "$authority" in
+    worktree) content=$(cat -- "$file") || exit 2 ;;
+    index) content=$(worktree_git -C "$REPO_ROOT" show ":$rel") || exit 2 ;;
+    head) content=$(worktree_git -C "$REPO_ROOT" show "HEAD:$rel") || exit 2 ;;
+  esac
+  scanned=$((scanned + 1))
   line_no=0
   while IFS= read -r line; do
     line_no=$((line_no + 1))
@@ -119,8 +172,10 @@ for file in "${TARGETS[@]}"; do
       printf '%s:%d: %s\n' "$rel" "$line_no" "$line"
       NEW_VIOLATIONS+=("$key")
     fi
-  done < "$file"
+  done <<< "$content"
 done
+printf 'check-no-abs-paths: authority=%s enumerated=%s scanned=%s object-fallback=%s\n' \
+  "$CONTENT_MODE" "${#TARGETS[@]}" "$scanned" "$fallback" >&2
 
 # ── --update-baseline: regenerate and exit 0 ────────────────────────────
 if (( UPDATE_BASELINE == 1 )); then
