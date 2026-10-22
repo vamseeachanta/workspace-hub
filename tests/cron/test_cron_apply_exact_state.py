@@ -16,6 +16,12 @@ sys.modules["cron_apply_exact_state"] = ca
 spec.loader.exec_module(ca)
 
 
+@pytest.fixture(autouse=True)
+def isolate_transaction_lock(monkeypatch, tmp_path):
+    """Fixture transactions must never create a lock in the user directory."""
+    monkeypatch.setattr(ca, "LOCKFILE", tmp_path / "transaction.lock")
+
+
 def _transaction_fixture(monkeypatch, tmp_path, reads, write_fn=None):
     monkeypatch.setattr(ca, "BACKUP_DIR", tmp_path / "backups")
     monkeypatch.setattr(ca.ct, "plan_cutover", lambda *_a, **_k: {

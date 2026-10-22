@@ -254,14 +254,14 @@ def test_preservation_attestation_proves_plan_reconstruction():
     assert checker.evaluate_attestation(name, records, source)
     body = records[source]
     mutations = (
-            body.replace(b'if line_class in ("ignore", "preserved_external"):\n            preserved.append(line)', b'if line_class in ("ignore", "preserved_external"):\n            continue', 1),
-            body.replace(b'elif line_class != "cataloged":\n            uncataloged.append(line)', b'elif line_class != "cataloged":\n            continue', 1),
-            body.replace(
-                b'before = [line for line in parsed["before"] if classify(line) != "cataloged"]',
-                b'before = []',
-                1,
-            ),
-            body.replace(b'return before + block + after', b'return block', 1),
+        body.replace(b'("before", "managed", "after")', b'("before", "after")', 1),
+        body.replace(b'if uncataloged:', b'if False:', 1),
+        body.replace(
+            b'before = [line for line in parsed["before"] if classify(line) != "cataloged"]',
+            b'before = []',
+            1,
+        ),
+        body.replace(b'block[:1] + managed + block[1:]', b'block', 1),
     )
     for mutated in mutations:
         changed = copy.deepcopy(records)
@@ -317,10 +317,10 @@ def test_3490_gap_is_linked_in_render_and_docs():
         ("new-machine-dry-run-v1", b'setup-cron.sh" --dry-run || true', b'setup-cron.sh" --dry-run'),
         ("new-machine-windows-v1", b'setup-cron.sh" || true\nelse', b'setup-cron.sh" --dry-run || true\nelse'),
         ("new-machine-windows-v1", b'setup-cron.sh" || true\nelse', b'setup-cron.sh"\nelse'),
-        ("harness-default-v1", b'out=$(bash "$installer" 2>&1) || true', b'out=$(bash "$installer" --dry-run 2>&1) || true'),
-        ("harness-default-v1", b'out=$(bash "$installer" 2>&1) || true', b'out=$(bash "$installer" 2>&1)'),
-        ("harness-dry-run-v1", b'bash "$installer" --dry-run 2>/dev/null', b'bash "$installer" 2>/dev/null'),
-        ("harness-dry-run-v1", b"| grep -cE '^[[:space:]]+[0-9*]' || true", b"| grep -cE '^[[:space:]]+[0-9*]'"),
+        ("harness-default-v1", b'"$installer" "${args[@]}"', b'"$installer" --dry-run'),
+        ("harness-default-v1", b'|| status=$?', b'|| true'),
+        ("harness-dry-run-v1", b'args+=(--dry-run)', b'args+=()'),
+        ("harness-dry-run-v1", b'sync_crontab || cron_status=$?', b'sync_crontab || true'),
     ],
 )
 def test_wrapper_attestations_reject_live_source_mutations(attestation, old, new):
@@ -450,8 +450,8 @@ WRAPPER_MUTATIONS = {
     ),
     b"scripts/cron/harness-update.sh": (
         "harness-default-v1",
-        b'out=$(bash "$installer" 2>&1) || true',
-        b'out=$(bash "$installer" 2>&1)',
+        b'|| status=$?',
+        b'|| true',
     ),
 }
 

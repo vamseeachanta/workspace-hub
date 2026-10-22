@@ -328,14 +328,16 @@ def run_cutover(machine_id: str, apply: bool, ts: str | None,
     if not roles and not selected:
         return {"status": "skip", "reason": f"{canonical_id} has no harness_profile.roles or machine-pinned cron tasks"}
     A, plan = _build_cutover(selection, classes, ownership, _read)
+    diagnostics = {key: plan.get(key, {} if key == "counts" else [])
+                   for key in ("line_classes", "counts", "replaced", "dropped")}
     if plan.get("abort_reason"):
         return {"status": "abort", "reason": plan["abort_reason"],
                 "uncataloged": plan.get("uncataloged", []), "conflicts": conflicts,
-                "machine": canonical_id}
+                "machine": canonical_id, **diagnostics}
 
     result = {"status": "planned", "preserved": plan.get("preserved", []),
               "conflicts": conflicts, "selected": [t["id"] for t in selected],
-              "machine": canonical_id}
+              "machine": canonical_id, **diagnostics}
     if not apply:
         result["status"] = "dry-run"
         result["new_text"] = plan["new_text"]

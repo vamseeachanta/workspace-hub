@@ -15,6 +15,7 @@ from __future__ import annotations
 
 import re
 import sys
+from collections import Counter
 from pathlib import Path
 
 THIS_DIR = Path(__file__).resolve().parent
@@ -182,39 +183,43 @@ def plan_cutover(
         catalog_commands, external_fingerprints, selected_task_ids,
         catalog_fingerprints, ownership_context,
     )
-    preserved, uncataloged = _classify_nonmanaged(parsed, classify)
+    line_classes = [
+        {"section": section, "line": line, "class": classify(line)}
+        for section in ("before", "managed", "after")
+        for line in parsed[section]
+    ]
+    preserved = [row["line"] for row in line_classes
+                 if row["class"] in ("ignore", "preserved_external")]
+    uncataloged = [row["line"] for row in line_classes
+                   if row["class"] not in ("ignore", "preserved_external", "cataloged")]
+    report = {
+        "preserved": preserved, "uncataloged": uncataloged, "conflicts": [],
+        "line_classes": line_classes, "counts": dict(Counter(
+            row["class"] for row in line_classes
+        )), "replaced": [], "dropped": [],
+    }
     if uncataloged:
-        return {
-            "new_text": None,
-            "preserved": preserved,
-            "uncataloged": uncataloged,
-            "conflicts": [],
-            "abort_reason": f"uncataloged live cron line(s): {uncataloged}",
-        }
+        return {**report, "new_text": None,
+                "abort_reason": f"uncataloged live cron line(s): {uncataloged}"}
 
     new_lines = _rebuild_lines(parsed, render_block(selected_tasks, roles), classify)
     new_text = "\n".join(new_lines)
     if parsed.get("_trailing_newline"):
         new_text += "\n"
 
-    return {
-        "new_text": new_text,
-        "preserved": preserved,
-        "uncataloged": [],
-        "conflicts": [],
-            "abort_reason": None,
-    }
-
-
-def _classify_nonmanaged(parsed, classify):
-    preserved, uncataloged = [], []
-    for line in list(parsed["before"]) + list(parsed["after"]):
-        line_class = classify(line)
-        if line_class in ("ignore", "preserved_external"):
-            preserved.append(line)
-        elif line_class != "cataloged":
-            uncataloged.append(line)
-    return preserved, uncataloged
+    # Count occurrences, so replacing duplicate identities cannot hide a drop.
+    # Intent uses exact lines; crontab(5), DESCRIPTION treats bodies as commands.
+    replaced = [row["line"] for row in line_classes if row["class"] == "cataloged"]
+    remaining = Counter(new_lines)
+    dropped = []
+    for row in line_classes:
+        line = row["line"]
+        if remaining[line]:
+            remaining[line] -= 1
+        else:
+            dropped.append(line)
+    return {**report, "new_text": new_text, "abort_reason": None,
+            "replaced": replaced, "dropped": dropped}
 
 
 def _line_classifier(commands, fingerprints, selected_ids, catalog_fps, ownership):
@@ -231,7 +236,10 @@ def _rebuild_lines(parsed, block, classify):
     if parsed["roles"] is None:
         return before + block
     after = [line for line in parsed["after"] if classify(line) != "cataloged"]
-    return before + block + after
+    managed = [line for line in parsed["managed"] if classify(line) != "cataloged"]
+    # Retain in-block comments, environment assignments and external commands
+    # in their original order; moving assignments changes subsequent cron jobs.
+    return before + block[:1] + managed + block[1:] + after
 
 
 if __name__ == "__main__":

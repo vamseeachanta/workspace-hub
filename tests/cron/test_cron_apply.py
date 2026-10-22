@@ -17,6 +17,12 @@ ca = importlib.util.module_from_spec(spec)
 sys.modules["cron_apply"] = ca
 spec.loader.exec_module(ca)
 
+
+@pytest.fixture(autouse=True)
+def isolate_transaction_lock(monkeypatch, tmp_path):
+    """Fixture transactions must never create a lock in the user directory."""
+    monkeypatch.setattr(ca, "LOCKFILE", tmp_path / "transaction.lock")
+
 DECKHAND = ("30 7 * * * cd /mnt/local-analysis/deckhand && uv run --with telethon python3 "
             "scripts/deckhand/member-audit-cron.py >> $HOME/.hermes/logs/member-audit.log 2>&1")
 

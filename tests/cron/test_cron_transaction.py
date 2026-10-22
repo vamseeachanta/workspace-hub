@@ -396,9 +396,17 @@ def test_plan_cutover_idempotent():
         catalog_commands=catalog, external_fingerprints=[EXTERNAL_FP],
     )
     assert plan1["abort_reason"] is None
+    ownership = {
+        "line_identities": {
+            "0 1 * * * run-a": {"source": "canonical-exact-line", "catalog_task_id": "a"},
+            "0 2 * * * run-b": {"source": "canonical-exact-line", "catalog_task_id": "b"},
+        },
+        "preservation_fingerprints": [{"fingerprint": EXTERNAL_FP}],
+    }
     plan2 = ct.plan_cutover(
         plan1["new_text"], tasks, ["worker"],
         catalog_commands=catalog, external_fingerprints=[EXTERNAL_FP],
+        ownership_context=ownership,
     )
     assert plan2["abort_reason"] is None
     assert plan1["new_text"] == plan2["new_text"]
@@ -417,13 +425,10 @@ def test_plan_cutover_existing_block_replaced_in_place():
         current, tasks, ["worker"],
         catalog_commands=["run-a"], external_fingerprints=[EXTERNAL_FP],
     )
-    assert plan["abort_reason"] is None
-    p = ct.parse_crontab(plan["new_text"])
-    assert p["managed"] == ["0 1 * * * run-a fresh"]
-    assert "MAILTO=ops@example.com" in p["before"]
-    assert EXTERNAL_LINE in p["after"]
-    # Stale cataloged line is gone.
-    assert "0 9 * * * stale-run-a" not in plan["new_text"]
+    # Substring similarity grants no authority to delete an unknown old line.
+    assert plan["abort_reason"] is not None
+    assert plan["new_text"] is None
+    assert plan["uncataloged"] == ["0 9 * * * stale-run-a"]
 
 
 def test_plan_cutover_accepts_existing_five_argument_callers_after_selected_task_ids_extension():

@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import ast
+import hashlib
 import re
 from typing import Callable
 
@@ -274,21 +275,21 @@ def _evaluate_transaction_attestation(name, tree, run):
     return evaluate_transaction(name, tree)
 
 
+# Exact AST pins bind the reviewed all-section whitelist, abort-before-render
+# order, occurrence diagnostics and rebuild retention together. Comments and
+# formatting do not grant authority. Tests reject section loss and masking.
+PRESERVATION_AST_SHA256 = {'plan_cutover': 'be282c7b3500068fdddc3fc0a8a6af5b465c4a96dd49bebd052a37b5481565dc', '_rebuild_lines': '54bd4e795f4cab47dfeb81d837e817d1a04187aaae6260061a72fb0bda694970'}
+
+
 def _preservation_shape(tree):
-    plan = _function(tree, "plan_cutover")
-    classify = _function(tree, "_classify_nonmanaged")
-    rebuild = _function(tree, "_rebuild_lines")
-    text = "\n".join(ast.unparse(fn) for fn in (plan, classify, rebuild) if fn)
-    required = (
-        "line_class in ('ignore', 'preserved_external')",
-        "preserved.append(line)", "line_class != 'cataloged'",
-        "uncataloged.append(line)",
-        "before = [line for line in parsed['before'] if classify(line) != 'cataloged']",
-        "after = [line for line in parsed['after'] if classify(line) != 'cataloged']",
-        "return before + block", "return before + block + after",
-        "_classify_nonmanaged(parsed, classify)", "_rebuild_lines(",
-    )
-    return all(token in text for token in required)
+    for name, expected in PRESERVATION_AST_SHA256.items():
+        function = _function(tree, name)
+        if function is None:
+            return False
+        actual = hashlib.sha256(ast.unparse(function).encode()).hexdigest()
+        if actual != expected:
+            return False
+    return True
 
 
 def _evaluate_cron_attestation(name, tree, records):

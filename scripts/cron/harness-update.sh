@@ -8,7 +8,7 @@
 # Cron:  Staggered per machine (see schedule-tasks.yaml)
 #        dev-primary: 01:15, dev-secondary: 01:45, win-*: 02:15
 #
-# Exit 0 always (individual tool failures are non-fatal to cron).
+# Tool failures are reported; cron reconciliation failures also set the exit status.
 # Failures are flagged in summary + notification.
 #
 # Issues: #1668 (parent), #1672 (Phase 1), #1673 (Phase 2),
@@ -613,19 +613,27 @@ send_notification() {
 # (never removes), so every nightly run converges each machine toward
 # schedule-tasks.yaml — closing the gap where a newly-added job (e.g. the
 # equality-matrix self-report) never reaches a machine's crontab. Respects
-# --dry-run. Non-fatal (cron contract is exit-0; failures are logged only).
+# --dry-run. Reconciliation status is recorded and returned to the caller.
 sync_crontab() {
   local installer="${WORKSPACE_HUB}/scripts/cron/setup-cron.sh"
-  [[ -f "$installer" ]] || { log "CRON" "setup-cron.sh absent — skip"; return; }
-  if [[ "$DRY_RUN" == "true" ]]; then
-    local n
-    n=$(bash "$installer" --dry-run 2>/dev/null | grep -cE '^[[:space:]]+[0-9*]' || true)
-    log "CRON" "dry-run: ${n} schedule-tasks.yaml entry/entries would be ensured"
-    return
+  local out status=0 args=()
+  if [[ ! -f "$installer" ]]; then
+    log "CRON" "cron_reconcile_status=1 reason=installer-absent"
+    record "Cron" "-" "-" "failed"
+    return 1
   fi
-  local out
-  out=$(bash "$installer" 2>&1) || true
-  log "CRON" "$(printf '%s\n' "$out" | grep -iE 'Installed|Replaced|already present' | tail -1)"
+  [[ "$DRY_RUN" == "true" ]] && args+=(--dry-run)
+  # Operational budget follows update_superpowers() in this script; override
+  # with a timeout(1) duration. GNU Coreutils timeout: exit status is propagated.
+  out=$(timeout "${CRON_RECONCILE_TIMEOUT:-60}" bash "$installer" "${args[@]}" 2>&1) || status=$?
+  log "CRON" "cron_reconcile_status=${status}"
+  if [[ "$status" -ne 0 ]]; then
+    log "CRON" "$out"
+    record "Cron" "-" "-" "failed"
+    return "$status"
+  fi
+  record "Cron" "-" "-" "reconciled"
+  return 0
 }
 
 # ── Main ─────────────────────────────────────────────────────────────────────
@@ -645,7 +653,8 @@ update_claude_code
 update_codex
 update_gemini
 
-sync_crontab
+cron_status=0
+sync_crontab || cron_status=$?
 
 print_summary
 send_notification
@@ -653,4 +662,4 @@ send_notification
 log ""; log "Completed at $(date '+%Y-%m-%dT%H:%M:%S')"
 find "$LOG_DIR" -name "harness-update-*.log" -mtime +30 -delete 2>/dev/null || true
 find "$LOG_DIR" -name "harness-update-transactions*.yaml" -mtime +90 -delete 2>/dev/null || true
-exit 0
+exit "$cron_status"
