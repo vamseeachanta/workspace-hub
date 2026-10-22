@@ -82,8 +82,11 @@ link_if_needed() {
     fi
 
     if [[ -L "${runtime_path}" ]]; then
-        local cur="$(readlink "${runtime_path}")"
-        if [[ "${cur}" == "${resolved}" ]]; then
+        # GNU Bash manual 5.3 (2025), Bash Conditional Expressions: -ef compares
+        # device/inode identity after following links. Equivalent relative or
+        # native path spellings must not
+        # cause recurring backups; equal file contents alone are insufficient.
+        if [[ "${runtime_path}" -ef "${resolved}" ]]; then
             echo "OK     ${runtime_path} → already points to ${repo_relative_target}"
             unchanged=$((unchanged + 1))
             return 0
