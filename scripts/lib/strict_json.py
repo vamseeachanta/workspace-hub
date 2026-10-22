@@ -95,11 +95,22 @@ def loads(data, *, max_bytes, max_depth, max_integer_digits):
 def read(stream, *, max_bytes, max_depth, max_integer_digits):
     """Read at most the caller byte budget plus one overflow-detection byte.
 
-    The caller owns stream trust, descriptor validation and blocking semantics.
+    Short reads are accumulated until EOF or overflow. A nonblocking no-data
+    result is rejected rather than treated as EOF. The caller owns stream trust,
+    descriptor validation and blocking semantics.
     """
     try:
         _limits(max_bytes, max_depth, max_integer_digits)
-        data = stream.read(max_bytes + 1)
+        data = bytearray()
+        while len(data) <= max_bytes:
+            remaining = max_bytes + 1 - len(data)
+            chunk = stream.read(remaining)
+            if type(chunk) is not bytes or len(chunk) > remaining:
+                raise InputError()
+            if not chunk:
+                break
+            data.extend(chunk)
+        data = bytes(data)
     except (OSError, ValueError, OverflowError, MemoryError, RecursionError):
         pass
     else:

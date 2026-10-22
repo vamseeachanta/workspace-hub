@@ -101,6 +101,20 @@ def assert_private_cli(parser, args, capsys):
     assert captured.err.endswith('boundary: error: invalid arguments\n')
 
 
+@pytest.mark.parametrize('positional', [True, False])
+def test_cli_explicit_program_name(positional, capsys):
+    parser = (SafeArgumentParser('boundary') if positional
+              else SafeArgumentParser(prog='boundary'))
+    assert parser.prog == 'boundary'
+    assert_private_cli(parser, ['--PRIVATE_SENTINEL'], capsys)
+
+
+def test_cli_default_program_name(monkeypatch):
+    import sys
+    monkeypatch.setattr(sys, 'argv', ['PRIVATE_SENTINEL'])
+    assert SafeArgumentParser().prog == 'command'
+
+
 @pytest.mark.parametrize('kind', ['unknown', 'value', 'exclusive'])
 def test_cli_no_reflection(kind, capsys):
     parser = SafeArgumentParser(prog='boundary')
@@ -210,6 +224,48 @@ def test_json_read_is_bounded():
             return b'{} '
     with pytest.raises(InputError):
         read(Stream(), max_bytes=2, max_depth=1, max_integer_digits=1)
+
+
+class ShortReadStream(BytesIO):
+    def read(self, count):
+        return super().read(min(count, 2))
+
+
+@pytest.mark.parametrize('raw,expected', [
+    (b'{"x":1}', {'x': 1}),
+    ('["\u00e9"]'.encode('utf-8'), ['\u00e9']),
+])
+def test_json_read_accumulates_short_reads(raw, expected):
+    stream = ShortReadStream(raw)
+    assert read(stream, max_bytes=len(raw), max_depth=1,
+                max_integer_digits=1) == expected
+    assert stream.tell() == len(raw)
+
+
+@pytest.mark.parametrize('raw,budget,consumed', [
+    (b'{}TRAILING', 32, 10),
+    (b'{} ', 2, 3),
+])
+def test_json_short_reads_reject_trailing_data_and_overflow(raw, budget, consumed):
+    stream = ShortReadStream(raw)
+    with pytest.raises(InputError) as caught:
+        read(stream, max_bytes=budget, max_depth=1, max_integer_digits=1)
+    assert stream.tell() == consumed
+    assert caught.value.__context__ is None
+
+
+@pytest.mark.parametrize('prefix', [b'', b'{}'])
+def test_json_read_rejects_nonblocking_no_data(prefix):
+    class Stream:
+        def __init__(self):
+            self.chunks = iter([prefix, None] if prefix else [None])
+
+        def read(self, count):
+            return next(self.chunks)
+
+    with pytest.raises(InputError) as caught:
+        read(Stream(), max_bytes=2, max_depth=1, max_integer_digits=1)
+    assert caught.value.__context__ is None
 
 
 def test_yaml_private_error():

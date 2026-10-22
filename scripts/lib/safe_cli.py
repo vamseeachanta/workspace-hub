@@ -12,7 +12,8 @@ class SafeArgumentParser(argparse.ArgumentParser):
 
     def __init__(self, *args, **kwargs):
         # Avoid argparse deriving prog from a caller-controlled executable path.
-        kwargs.setdefault('prog', 'command')
+        if not args and 'prog' not in kwargs:
+            kwargs['prog'] = 'command'
         kwargs['exit_on_error'] = True
         super().__init__(*args, **kwargs)
 
