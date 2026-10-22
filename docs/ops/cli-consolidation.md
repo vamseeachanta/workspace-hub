@@ -12,6 +12,7 @@ Windows npm layouts are unsupported and the command exits with status 2 there.
 | --- | --- | --- |
 | Initial | 2026-10-20 | Add metadata-only inventory and a dry-run procedure to distinguish duplicate installations from aliases. |
 | 1 | 2026-10-21 | Retain inferred user prefixes, count adjacent binaries separately, limit metadata claims and reject unsupported Windows layouts. |
+| 2 | 2026-10-22 | Detect Snap packages without launchers, group Snap aliases and add structured acceptance evidence without implying live completion. |
 
 ## Basis and scope
 
@@ -55,6 +56,78 @@ or mismatched metadata is reported as `UNKNOWN`. Snap versions are read from
 simple scalar fields in `meta/snap.yaml`; unsupported YAML remains unknown.
 Binary version strings are never extracted or executed. Unknown installations
 receive manual-review instructions rather than deletion commands.
+
+Snap installation roots are inspected even when their command wrappers are
+absent. A root with unreadable or mismatched metadata remains an unknown
+installation, so a missing launcher cannot hide a possible duplicate. Symlink
+chains through a tool's Snap wrapper share that tool's Snap identity. The chain
+is inspected before resolving the shared Snap executable, which does not
+identify an individual package. Relative links and link cycles are handled
+without executing their targets. Independent regular files remain separate.
+
+## Structured acceptance evidence
+
+```sh
+python3 scripts/maintenance/cli_consolidation_plan.py --format json
+```
+
+Both formats inspect the same bounded roots and use the same preferred-prefix
+selection. JSON contains `status`, a scope statement and a `tools` mapping keyed
+by `claude` and `codex`. Each tool includes `installation_count`,
+`preferred_identity` (or null), `checks` and `installations`. Each installation
+includes its identity, inferred kind, metadata version, discovered paths and
+supplied PATH winner (or null). Keep JSON output private: it contains local paths.
+
+The acceptance basis is issue 3964: one independent installation per command,
+canonical resolution in fresh shells and agreement with live latest metadata.
+No engineering equations, empirical coefficients or version constants apply.
+
+| Check | PASS | FAIL | NOT_EVALUATED |
+| --- | --- | --- | --- |
+| `bounded_uniqueness` | Exactly one discovered identity with recognized metadata | More than one identity, including unknown copies | No identity or a single unknown identity |
+| `preferred_user_npm` | Matching package in the preferred user prefix | Known copies exist, but none qualifies as user npm | Evidence absent or unknown without a qualifying user prefix |
+| `supplied_path` | First executable on supplied PATH belongs to the preferred package | A different installation wins while a preferred package exists | No winner or no qualified preferred package |
+| `latest_release` | Not produced | Not produced | Always; live registry and executable versions are not queried |
+| `fresh_shells` | Not produced | Not produced | Always; startup files, aliases and shell caches are not evaluated |
+| `functionality` | Not produced | Not produced | Always; installed commands are not executed |
+
+The report's overall status is `FAIL` when any local check fails, otherwise
+`NOT_EVALUATED`. It never reports overall `PASS`: even passing bounded checks
+do not establish live maintenance acceptance. The process exit status describes
+successful report generation, not acceptance. Consumers must read `status` and
+individual checks. Text output remains the default and retains its existing
+dry-run commands.
+
+### Worked structured example
+
+Use a synthetic user npm fixture and add a Codex Snap metadata root whose
+launcher is missing. For Codex, the inputs are a user npm package with metadata
+version `user-fixture`, a Snap package with version `snap-fixture`, and PATH
+selecting the user npm launcher. The method groups by installation identity,
+counts the distinct roots and compares the winning root with the preferred root.
+
+The independent hand calculation is: one npm root plus one Snap root gives two
+installations; two exceeds the issue's acceptance count of one. The selected
+root equals the preferred root. The resulting Codex summary is:
+
+```json
+{
+  "installation_count": 2,
+  "checks": {
+    "bounded_uniqueness": "FAIL",
+    "preferred_user_npm": "PASS",
+    "supplied_path": "PASS",
+    "latest_release": "NOT_EVALUATED",
+    "fresh_shells": "NOT_EVALUATED",
+    "functionality": "NOT_EVALUATED"
+  }
+}
+```
+
+The overall status is `FAIL`. A correct PATH does not establish uniqueness.
+`test_report_duplicate_fails_even_when_path_is_correct` constructs these inputs
+and asserts the independently counted outcome. The fixture versions are labels,
+not release claims. No package removal is performed by this example.
 
 ## Procedure and rollback
 

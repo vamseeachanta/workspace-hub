@@ -74,11 +74,30 @@ def prefixes_for(home: Path, system: Path, extra: list[Path]) -> list[Path]:
     return list(dict.fromkeys(p.absolute() for p in prefixes))
 
 
+def through_launcher(path: Path, launcher: Path) -> bool:
+    """Follow links lexically so the shared Snap runner does not erase identity."""
+    seen = set()
+    path = Path(os.path.abspath(path))
+    launcher = Path(os.path.abspath(launcher))
+    while path not in seen:
+        if path == launcher:
+            return True
+        seen.add(path)
+        try:
+            if not path.is_symlink():
+                return False
+            target = path.readlink()
+        except OSError:
+            return False
+        path = Path(os.path.abspath(target if target.is_absolute() else path.parent / target))
+    return False
+
+
 def classify(tool: str, path: Path, prefixes: list[Path], system: Path,
              home: Path) -> Installation:
     # Snap aliases share one shared executable: use the lexical command name.
     snap_bin = system / 'snap/bin'
-    if path.parent == snap_bin:
+    if through_launcher(path, snap_bin / tool):
         root = system / 'snap' / tool / 'current'
         version, name = snap_metadata(root, tool)
         return Installation(tool, 'snap (path inference)', version, root,
@@ -149,6 +168,16 @@ def inventory(home: Path, path_value: str, system: Path = Path('/'),
                 if key not in found:
                     row.paths.append(root)
                     found[key] = row
+    # Issue 3964 requires independent installs, not just visible commands.
+    # As with npm metadata, an installed Snap may have no working launcher.
+    for tool in PACKAGES:
+        root = system / 'snap' / tool / 'current'
+        if root.exists() or root.is_symlink():
+            row = classify(tool, system / 'snap/bin' / tool, prefixes, system, home)
+            key = (tool, row.identity)
+            if key not in found:
+                row.paths.append(root)
+                found[key] = row
     return list(found.values())
 
 
@@ -156,10 +185,69 @@ def q(value) -> str:
     return shlex.quote(str(value))
 
 
-def render(rows: list[Installation], home: Path, extra_prefixes=()) -> str:
+def preferred_installation(copies: list[Installation], home: Path,
+                           extra_prefixes=()) -> tuple[Installation | None, Path]:
+    """Share the existing preference order between text and JSON output."""
     preferred = [Path(p).absolute() for p in extra_prefixes
                  if Path(p).absolute().is_relative_to(home.absolute())]
     defaults = [home / '.npm-global', home / '.local', home / '.npm']
+    inferred = sorted(
+        (r for r in copies if r.prefix is not None
+         and r.kind == 'user npm (path inference)'
+         and r.prefix.is_relative_to(home.absolute())),
+        key=lambda r: r.winner is None,
+    )
+    candidates = [*preferred, *(r.prefix for r in inferred), *defaults]
+    keep = next((r for prefix in candidates for r in copies
+                 if r.prefix == prefix), None)
+    return keep, keep.prefix if keep else candidates[0]
+
+
+def report(rows: list[Installation], home: Path, extra_prefixes=()) -> dict:
+    """Describe bounded evidence, never certify live maintenance completion.
+
+    Acceptance count of one independent installation and fresh-shell/release
+    checks: repository issue 3964, Acceptance paragraph. No version is assumed.
+    """
+    tools = {}
+    for tool in PACKAGES:
+        copies = [row for row in rows if row.tool == tool]
+        keep, _ = preferred_installation(copies, home, extra_prefixes)
+        winner = next((row for row in copies if row.winner is not None), None)
+        known = bool(copies) and all(row.version != 'UNKNOWN' for row in copies)
+        uniqueness = ('FAIL' if len(copies) > 1 else
+                      'PASS' if len(copies) == 1 and known else 'NOT_EVALUATED')
+        checks = {
+            'bounded_uniqueness': uniqueness,
+            'preferred_user_npm': ('PASS' if keep else 'FAIL' if known else 'NOT_EVALUATED'),
+            'supplied_path': ('PASS' if winner is keep and keep is not None else
+                              'FAIL' if winner is not None and keep is not None else
+                              'NOT_EVALUATED'),
+            'latest_release': 'NOT_EVALUATED',
+            'fresh_shells': 'NOT_EVALUATED',
+            'functionality': 'NOT_EVALUATED',
+        }
+        tools[tool] = {
+            'installation_count': len(copies),
+            'preferred_identity': str(keep.identity) if keep else None,
+            'checks': checks,
+            'installations': [
+                {'identity': str(row.identity), 'kind': row.kind,
+                 'metadata_version': row.version,
+                 'paths': [str(path) for path in row.paths],
+                 'path_winner': str(row.winner) if row.winner else None}
+                for row in copies
+            ],
+        }
+    failed = any(value == 'FAIL' for tool in tools.values() for value in tool['checks'].values())
+    return {
+        'status': 'FAIL' if failed else 'NOT_EVALUATED',
+        'scope': 'Bounded filesystem metadata and supplied PATH only; paths are private.',
+        'tools': tools,
+    }
+
+
+def render(rows: list[Installation], home: Path, extra_prefixes=()) -> str:
     lines = ['DRY RUN ONLY: no commands are executed; no files are changed.',
              'path | inferred installation | metadata version | PATH winner']
     for row in rows:
@@ -168,16 +256,7 @@ def render(rows: list[Installation], home: Path, extra_prefixes=()) -> str:
                          f'{"yes" if row.winner == path else "no"}')
     for tool, package in PACKAGES.items():
         copies = [r for r in rows if r.tool == tool]
-        inferred = sorted(
-            (r for r in copies if r.prefix is not None
-             and r.kind == 'user npm (path inference)'
-             and r.prefix.is_relative_to(home.absolute())),
-            key=lambda r: r.winner is None,
-        )
-        candidates = [*preferred, *(r.prefix for r in inferred), *defaults]
-        keep = next((r for prefix in candidates for r in copies
-                     if r.prefix == prefix), None)
-        destination = keep.prefix if keep else candidates[0]
+        keep, destination = preferred_installation(copies, home, extra_prefixes)
         if keep:
             lines.append(f'KEEP {tool}: {keep.paths[0]}')
         else:
@@ -217,9 +296,14 @@ def main(argv=None) -> None:
     parser.add_argument('--path', default=os.environ.get('PATH', ''), help='PATH value to inspect')
     parser.add_argument('--npm-prefix', type=Path, action='append', default=[],
                         help='Additional npm prefix; first user prefix is preferred')
+    parser.add_argument('--format', choices=('text', 'json'), default='text',
+                        help='JSON includes bounded acceptance checks; neither format applies changes')
     args = parser.parse_args(argv)
     rows = inventory(args.home, args.path, args.system_root, args.npm_prefix)
-    print(render(rows, args.home.absolute(), args.npm_prefix))
+    if args.format == 'json':
+        print(json.dumps(report(rows, args.home.absolute(), args.npm_prefix), indent=2))
+    else:
+        print(render(rows, args.home.absolute(), args.npm_prefix))
 
 
 if __name__ == '__main__':
