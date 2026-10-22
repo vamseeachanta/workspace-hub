@@ -56,6 +56,11 @@ on:
         type: number
         required: false
         default: 10
+      enforce-contract:
+        description: "Enforce selector and nonempty-matrix contracts; false reports advisories."
+        type: boolean
+        required: false
+        default: false
       quarantine-file:
         description: "File of known-broken node-ids to --deselect (one per line, # comments)."
         type: string
@@ -70,6 +75,7 @@ jobs:
     outputs:
       matrix: ${{ steps.sel.outputs.matrix }}
       scope: ${{ steps.sel.outputs.scope }}
+      matrix-size: ${{ steps.sel.outputs.matrix-size }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
@@ -82,7 +88,108 @@ jobs:
           BASE_SHA: ${{ github.event.pull_request.base.sha }}
           PUSH_BEFORE: ${{ github.event.before }}
           SELECTOR: ${{ inputs.selector }}
+          ENFORCE_CONTRACT: ${{ inputs.enforce-contract }}
         run: |
+          # Generated helpers travel with this workflow, including in caller checkouts.
+          # BEGIN GENERATED: validate_selector_output.py
+          mkdir -p "$RUNNER_TEMP/domain-matrix-tools"
+          cat > "$RUNNER_TEMP/domain-matrix-tools/validate_selector_output.py" <<'DOMAIN_MATRIX_SCRIPT'
+          """Validate the line-based selector contract defined in issue #4227.
+
+          Names use an explicit ASCII allowlist suitable for check and artifact names.
+          The minimum include count is one, as required by the nonempty-matrix contract.
+          """
+
+          import argparse
+          import json
+          import re
+          from pathlib import Path
+
+
+          def unique_object(pairs):
+              result = {}
+              for key, value in pairs:
+                  if key in result:
+                      raise ValueError("duplicate JSON key")
+                  result[key] = value
+              return result
+
+
+          def reject_constant(_value):
+              raise ValueError("non-finite JSON value")
+
+
+          def validate(text: str) -> int:
+              """Return the include count, or raise ValueError/TypeError for a broken contract."""
+              outputs = {}
+              for line in text.splitlines():
+                  key, separator, value = line.partition("=")
+                  if separator and key in {"matrix", "scope"}:
+                      if key in outputs:
+                          raise ValueError("duplicate selector output")
+                      outputs[key] = value
+              if outputs.get("scope") not in {"full", "modules", "skip"}:
+                  raise ValueError("scope must be full, modules or skip")
+              if "matrix" not in outputs:
+                  raise ValueError("matrix output is required")
+              matrix = json.loads(
+                  outputs["matrix"], object_pairs_hook=unique_object, parse_constant=reject_constant,
+              )
+              if not isinstance(matrix, dict):
+                  raise TypeError("matrix must be an object")
+              include = matrix.get("include")
+              if not isinstance(include, list) or not include:
+                  raise ValueError("matrix.include must be a nonempty list")
+              for key, value in matrix.items():
+                  if key == "include":
+                      continue
+                  if key == "exclude":
+                      if not isinstance(value, list) or any(not isinstance(v, dict) for v in value):
+                          raise ValueError("matrix.exclude must be a list of objects")
+                  elif not isinstance(value, list) or not value:
+                      raise ValueError("matrix axes must be nonempty lists")
+              names = set()
+              for entry in include:
+                  if not isinstance(entry, dict):
+                      raise TypeError("include entries must be objects")
+                  name = entry.get("name")
+                  if not isinstance(name, str) or re.fullmatch(r"[A-Za-z0-9_.-]+", name) is None:
+                      raise ValueError("names must be nonempty ASCII letters, digits, underscores, dots or hyphens")
+                  if name in names:
+                      raise ValueError("include names must be unique")
+                  names.add(name)
+                  targets = entry.get("targets")
+                  if not isinstance(targets, str) or not targets.strip():
+                      raise ValueError("targets must be a nonempty string")
+                  if entry.get("mode") not in ("xdist", "seq"):
+                      raise ValueError("mode must be xdist or seq")
+              return len(include)
+
+
+          def main() -> int:
+              parser = argparse.ArgumentParser(description=__doc__)
+              parser.add_argument("selector_output", type=Path)
+              parser.add_argument("--github-output", type=Path)
+              parser.add_argument("--advisory", action="store_true")
+              args = parser.parse_args()
+              size = 0  # Fail closed until the contract has been validated (issue #4227).
+              failed = False
+              try:
+                  size = validate(args.selector_output.read_text(encoding="utf-8"))
+              except (ValueError, TypeError, OSError):
+                  # Do not echo untrusted selector text into an Actions annotation.
+                  print(("::warning::" if args.advisory else "::error::") + "invalid selector output contract")
+                  failed = True
+              if args.github_output:
+                  with args.github_output.open("a", encoding="utf-8") as output:
+                      output.write(f"matrix-size={size}\n")
+              return int(failed and not args.advisory)
+
+
+          if __name__ == "__main__":
+              raise SystemExit(main())
+          DOMAIN_MATRIX_SCRIPT
+          # END GENERATED: validate_selector_output.py
           # Stdlib only — no dependency install needed (keeps discovery fast).
           #
           # Resolve the changed-files set. On `pull_request` (the primary,
@@ -119,6 +226,12 @@ jobs:
           echo "Changed files:"; cat changed-files.txt
           python3 "$SELECTOR" \
             --emit-matrix --files-from changed-files.txt >> "$GITHUB_OUTPUT"
+          VALIDATION_FLAGS=()
+          if [ "$ENFORCE_CONTRACT" != "true" ]; then
+            VALIDATION_FLAGS=(--advisory)
+          fi
+          python3 "$RUNNER_TEMP/domain-matrix-tools/validate_selector_output.py" \
+            "$GITHUB_OUTPUT" --github-output "$GITHUB_OUTPUT" "${VALIDATION_FLAGS[@]}"
           echo "--- matrix ---"; grep '^matrix=' "$GITHUB_OUTPUT" || true
           echo "--- scope ---";  grep '^scope='  "$GITHUB_OUTPUT" || true
 
@@ -167,28 +280,68 @@ jobs:
           TEST_RUNNER: ${{ inputs.test-runner }}
           QUARANTINE_FILE: ${{ inputs.quarantine-file }}
         run: |
-          # Build --deselect args for quarantined tests (known-broken on main,
-          # tracked by issues). They still RUN but do not block, at test
-          # granularity (never whole shards). The quarantine file may list
-          # node-ids in EITHER form — `tests/`-prefixed or rootdir-relative
-          # (some repos set rootdir=tests/ in pytest.ini, which strips the
-          # leading `tests/`). We emit a --deselect for BOTH forms so a single
-          # line matches regardless of the caller's rootdir.
+          # BEGIN GENERATED: quarantine_args.py
+          mkdir -p "$RUNNER_TEMP/domain-matrix-tools"
+          cat > "$RUNNER_TEMP/domain-matrix-tools/quarantine_args.py" <<'DOMAIN_MATRIX_SCRIPT'
+          """Build the original workflow's quarantine arguments (issue #4227).
+
+          Preserve order, comments, xargs-style whitespace/quotes, and both prefix forms.
+          As with the original `while read` loop, an unterminated final line is ignored.
+          """
+
+          import argparse
+          import shlex
+          import sys
+          from pathlib import Path
+
+
+          def build_args(path: Path) -> list[str]:
+              if not path.is_file():
+                  return []
+              args = []
+              with path.open(encoding="utf-8", newline="") as source:
+                  for raw in source:
+                      if not raw.endswith("\n"):
+                          continue
+                      line = raw.partition("#")[0]
+                      try:
+                          lexer = shlex.shlex(line, posix=True)
+                          lexer.whitespace = " \t\n"  # xargs retains carriage returns in node-ids.
+                          lexer.whitespace_split = True
+                          lexer.commenters = ""
+                          line = " ".join(lexer)
+                      except ValueError:
+                          # The original xargs command fails to emit an unmatched quote.
+                          continue
+                      if not line:
+                          continue
+                      alternate = line.removeprefix("tests/") if line.startswith("tests/") else f"tests/{line}"
+                      args.extend(["--deselect", line, "--deselect", alternate])
+              return args
+
+
+          def main() -> int:
+              parser = argparse.ArgumentParser(description=__doc__)
+              parser.add_argument("quarantine_file", type=Path)
+              parser.add_argument("--null", action="store_true", help="Emit NUL-delimited array elements.")
+              options = parser.parse_args()
+              args = build_args(options.quarantine_file)
+              if options.null:
+                  for argument in args:
+                      sys.stdout.write(argument + "\0")
+              elif args:
+                  print(" ".join(args))
+              return 0
+
+
+          if __name__ == "__main__":
+              raise SystemExit(main())
+          DOMAIN_MATRIX_SCRIPT
+          # END GENERATED: quarantine_args.py
+          python3 "$RUNNER_TEMP/domain-matrix-tools/quarantine_args.py" \
+            "$QUARANTINE_FILE" --null > "$RUNNER_TEMP/domain-quarantine-args"
           DESELECT=()
-          if [ -f "$QUARANTINE_FILE" ]; then
-            while IFS= read -r raw; do
-              line="${raw%%#*}"
-              line="$(echo "$line" | xargs || true)"
-              [ -z "$line" ] && continue
-              DESELECT+=(--deselect "$line")
-              # Also emit the alternate rootdir-relative / tests-prefixed form.
-              if [ "${line#tests/}" != "$line" ]; then
-                DESELECT+=(--deselect "${line#tests/}")
-              else
-                DESELECT+=(--deselect "tests/${line}")
-              fi
-            done < "$QUARANTINE_FILE"
-          fi
+          mapfile -d '' -t DESELECT < "$RUNNER_TEMP/domain-quarantine-args"
           [ "${#DESELECT[@]}" -gt 0 ] && echo "Quarantine: ${DESELECT[*]}"
           XDIST=()
           [ "$MODE" = "xdist" ] && XDIST=(-n auto)
@@ -223,17 +376,63 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Aggregate domain results
+        env:
+          DISCOVER_RESULT: ${{ needs.discover.result }}
+          TEST_DOMAIN_RESULT: ${{ needs.test-domain.result }}
+          SCOPE: ${{ needs.discover.outputs.scope }}
+          MATRIX_SIZE: ${{ needs.discover.outputs.matrix-size }}
+          ENFORCE_CONTRACT: ${{ inputs.enforce-contract }}
         run: |
-          echo "discover:    ${{ needs.discover.result }}"
-          echo "test-domain: ${{ needs.test-domain.result }}"
-          echo "scope:       ${{ needs.discover.outputs.scope }}"
-          if [ "${{ needs.discover.result }}" != "success" ]; then
-            echo "::error::domain discovery failed"; exit 1
+          # BEGIN GENERATED: domain_matrix_aggregate.py
+          mkdir -p "$RUNNER_TEMP/domain-matrix-tools"
+          cat > "$RUNNER_TEMP/domain-matrix-tools/domain_matrix_aggregate.py" <<'DOMAIN_MATRIX_SCRIPT'
+          """Domain decision extracted from domain-matrix.yml; contract: issue #4227.
+
+          Exit codes follow the original workflow: zero passes, one fails. Scope is
+          informational. A positive matrix size is required by the new fail-closed rule.
+          """
+
+          import argparse
+
+
+          def decide(discover: str, test_domain: str, scope: str, matrix_size: int) -> tuple[int, str]:
+              """Require successful discovery, successful tests and a nonempty matrix."""
+              if discover != "success":
+                  return 1, "domain discovery failed"
+              if test_domain != "success":
+                  return 1, "one or more domain jobs failed — see the Domain * jobs"
+              if matrix_size <= 0:
+                  return 1, f"empty or invalid domain matrix (scope={scope!r})"
+              return 0, "All domains green ✅"
+
+
+          def main() -> int:
+              parser = argparse.ArgumentParser(description=__doc__)
+              parser.add_argument("discover")
+              parser.add_argument("test_domain")
+              parser.add_argument("scope")
+              parser.add_argument("matrix_size", type=int)
+              parser.add_argument("--advisory", action="store_true", help="Keep the original job-result gate.")
+              args = parser.parse_args()
+              code, message = decide(args.discover, args.test_domain, args.scope, args.matrix_size)
+              print(f"discover:    {args.discover}")
+              print(f"test-domain: {args.test_domain}")
+              print(f"scope:       {args.scope}")
+              print(f"matrix size: {args.matrix_size}")
+              print(("::warning::" if args.advisory else "::error::") + message if code else message)
+              if args.advisory:
+                  return int(args.discover != "success" or args.test_domain != "success")
+              return code
+
+
+          if __name__ == "__main__":
+              raise SystemExit(main())
+          DOMAIN_MATRIX_SCRIPT
+          # END GENERATED: domain_matrix_aggregate.py
+          AGGREGATE_FLAGS=()
+          if [ "$ENFORCE_CONTRACT" != "true" ]; then
+            AGGREGATE_FLAGS=(--advisory)
           fi
-          # test-domain is a matrix; its result is 'success' only when every
-          # domain job passed (fail-fast is off, so all run to completion).
-          if [ "${{ needs.test-domain.result }}" != "success" ]; then
-            echo "::error::one or more domain jobs failed — see the Domain * jobs"
-            exit 1
-          fi
-          echo "All domains green ✅"
+          python3 "$RUNNER_TEMP/domain-matrix-tools/domain_matrix_aggregate.py" \
+            "$DISCOVER_RESULT" "$TEST_DOMAIN_RESULT" "$SCOPE" "${MATRIX_SIZE:-0}" \
+            "${AGGREGATE_FLAGS[@]}"
