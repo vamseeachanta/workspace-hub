@@ -2,7 +2,7 @@
 
 Date: 2026-05-10 / 2026-05-11 run window
 Provider: Codex CLI swarm launched from workspace-hub
-Log: `logs/swarm-2-codex.jsonl`
+Log removed from the public tree: `logs/swarm-2-codex.jsonl`
 Status: completed (`turn.completed` observed in log)
 Artifact note: original worker-local artifact write failed; this report was recovered by Hermes from the worker's final log message during exit closeout.
 
