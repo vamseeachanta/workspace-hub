@@ -59,6 +59,7 @@ jobs:
           # Hub-level Python tests (no PYTHONPATH manipulation needed)
           uv run python -m pytest tests/test_deduplication_fix.py \
             tests/quality/test_gitleaks_config.py \
+            tests/phone_media \
             scripts/operations/tests/test_job_queue_windows.py \
             scripts/operations/tests/test_job_queue_cleanup_recent.py \
             tests/enforcement/test_check_codex_model_pin.py \

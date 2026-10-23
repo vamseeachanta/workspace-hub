@@ -1,0 +1,14 @@
+[Unit]
+Description=Verify the phone-media off-site archive
+OnFailure=phone-media-backup-alert.service
+
+[Service]
+Type=oneshot
+# Required, private configuration: no credentials or archive locations in this unit.
+EnvironmentFile=%h/.config/phone-media/backup.env
+ExecStart=/usr/bin/env python3 %h/.local/lib/phone-media/backup.py check --source ${PHONE_MEDIA_SOURCE} --remote ${PHONE_MEDIA_REMOTE} --timeout-seconds ${PHONE_MEDIA_TIMEOUT_SECONDS} --alert-command ${PHONE_MEDIA_ALERT_COMMAND}
+# Set a private drop-in above twice the configured deadline; see the procedure.
+TimeoutStartSec=1h
+TimeoutStopSec=10s
+UMask=0077
+NoNewPrivileges=true
