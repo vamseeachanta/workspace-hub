@@ -229,6 +229,29 @@ def test_script_imports_sibling_helper(project, tmp_path):
     assert set(receipt["runs"]["production"]["sources"]) == {"bin/run.py", "bin/helper.py"}
 
 
+@pytest.mark.parametrize("module_name", ["json", "logging", "pathlib", "threading"])
+@pytest.mark.parametrize("command", [["run.py"], ["-m", "run"]])
+def test_flat_module_matches_direct_execution(tmp_path, module_name, command):
+    project = tmp_path / "checkout"
+    write(project, "input.json", "{}")
+    write(project, module_name + ".py", "VALUE = 19\n")
+    write(project, "run.py",
+          f"import {module_name}\nprint(getattr({module_name}, 'VALUE', -1))\n")
+    direct = subprocess.run([sys.executable, *command], cwd=project,
+                            capture_output=True, check=True)
+    assert direct.stdout == b"19\n"
+    receipt = capture(project, tmp_path, production=command, tests=command)
+    for label, run in receipt["runs"].items():
+        assert (tmp_path / "bundle" / f"{label}.stdout").read_bytes() == direct.stdout
+        assert run["exit_code"] == 0
+        assert set(run["sources"]) == {"run.py", module_name + ".py"}
+        assert module_name not in run["external_modules"]
+    assert receipt["exact_current"], receipt["errors"]
+    bundle = tmp_path / "bundle"
+    pin = hashlib.sha256((bundle / "receipt.json").read_bytes()).hexdigest()
+    assert tool().verify(project, bundle, pin) == []
+
+
 @pytest.mark.parametrize("layout", ["", "src/"])
 def test_qualified_json_coexists_with_standard_library(tmp_path, layout):
     project = tmp_path / "layout-checkout"
@@ -300,7 +323,7 @@ def test_environment_dependency_is_external(project, tmp_path, environment_dir):
 def test_local_interpreter_dependency_versions(project, tmp_path, environment_dir):
     environment = project / environment_dir
     subprocess.run([sys.executable, "-m", "venv", "--without-pip", str(environment)], check=True)
-    executable = environment / "bin/python"
+    executable = environment / ("Scripts/python.exe" if sys.platform == "win32" else "bin/python")
     result = subprocess.run([str(executable), "-c",
                              "import sysconfig; print(sysconfig.get_path('purelib'))"],
                             capture_output=True, text=True, check=True)

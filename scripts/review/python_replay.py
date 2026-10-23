@@ -13,7 +13,6 @@ import importlib.metadata
 import json
 import logging
 import os
-import runpy
 import subprocess
 import sys
 import sysconfig
@@ -106,7 +105,7 @@ def package_names(files, command):
     return result
 
 
-def worker(root, output, command, names):
+def worker(root, output, command, names, startup_modules):
     observed, external, errors = {}, {}, set()
     tool_path = Path(__file__).resolve()
     dependencies = dependency_roots()
@@ -131,28 +130,43 @@ def worker(root, output, command, names):
                 errors.add(f"project import outside checkout: {module}")
             external[module] = str(path)
 
+    # Loader bookkeeping uses recorder libraries; target code executes after
+    # get_code returns and remains subject to profile and source observations.
+    instrumenting = False
+
     def profile(frame, event, arg):
-        if event == "call":
+        if event == "call" and not instrumenting:
             observe(frame.f_code.co_filename, frame.f_globals.get("__name__", ""))
 
     # SourceFileLoader normally accepts timestamp-valid bytecode. Compile actual
     # project source instead, so a stale .pyc cannot masquerade as reviewed bytes.
-    original_code = importlib.machinery.SourceFileLoader.get_code
+    source_loader = importlib.machinery.SourceFileLoader
+    original_code = source_loader.get_code
 
     def source_code(loader, fullname):
-        path = Path(loader.path).resolve()
-        if path.is_relative_to(root) and not dependency_source(path, root, dependencies):
-            observe(str(path), fullname)
-            return loader.source_to_code(loader.get_data(str(path)), str(path))
-        return original_code(loader, fullname)
+        nonlocal instrumenting
+        previous = instrumenting
+        instrumenting = True
+        try:
+            path = Path(loader.path).resolve()
+            if path.is_relative_to(root) and not dependency_source(path, root, dependencies):
+                observe(str(path), fullname)
+                return loader.source_to_code(loader.get_data(str(path)), str(path))
+            return original_code(loader, fullname)
+        finally:
+            instrumenting = previous
+
+    recording = True
 
     def audit(event, args):
+        if not recording:
+            return
         if event in {"subprocess.Popen", "os.system", "os.fork", "os.posix_spawn"}:
             errors.add("child process outside supported scope")
         if event == "import" and len(args) > 1 and args[1]:
             observe(str(args[1]), str(args[0]))
 
-    importlib.machinery.SourceFileLoader.get_code = source_code
+    source_loader.get_code = source_code
     original_thread = _thread.start_new_thread
 
     def start_thread(*args, **kwargs):
@@ -162,21 +176,38 @@ def worker(root, output, command, names):
     _thread.start_new_thread = start_thread
     threading._start_new_thread = start_thread
     sys.addaudithook(audit)
+    recorder_modules = sys.modules.copy()
+    recorder_path = sys.path[:]
+    # Keep recorder objects through their private references, but expose only
+    # interpreter startup modules to the target's import machinery.
+    sys.modules.clear()
+    sys.modules.update(startup_modules)
     sys.path.insert(0, str(root / "src"))
     sys.path.insert(0, str(root))
-    sys.setprofile(profile)
     exit_code = 0
     try:
         if len(command) >= 2 and command[0] == "-m":
             sys.argv = command[1:]
-            runpy.run_module(command[1], run_name="__main__", alter_sys=True)
+            sys.setprofile(profile)
+            target_runner = __import__("runpy")
+            target_runner.run_module(command[1], run_name="__main__", alter_sys=True)
         elif command and not command[0].startswith("-"):
             target = inside(root, command[0])
             if target.suffix != ".py":
                 raise ValueError("only Python source scripts or -m modules are supported")
             sys.argv = command[:]
             sys.path.insert(0, str(target.parent))
-            runpy.run_path(str(target), run_name="__main__")
+            main_module = type(sys)("__main__")
+            main_module.__file__ = str(target)
+            main_module.__package__ = None
+            main_module.__cached__ = None
+            sys.modules["__main__"] = main_module
+            # run_path imports helper modules before executing the script. Plain
+            # Python scripts do not, so load source directly in a fresh main.
+            loader = source_loader("__main__", str(target))
+            main_module.__loader__ = loader
+            sys.setprofile(profile)
+            loader.exec_module(main_module)
         else:
             raise ValueError("expected a Python script or -m module command")
     except SystemExit as exc:
@@ -187,10 +218,15 @@ def worker(root, output, command, names):
         exit_code = 1
     finally:
         sys.setprofile(None)
-        importlib.machinery.SourceFileLoader.get_code = original_code
+        recording = False
+        target_modules = list(sys.modules.items())
+        sys.modules.clear()
+        sys.modules.update(recorder_modules)
+        sys.path[:] = recorder_path
+        source_loader.get_code = original_code
         _thread.start_new_thread = original_thread
         threading._start_new_thread = original_thread
-        for name, module in list(sys.modules.items()):
+        for name, module in target_modules:
             observe(getattr(module, "__file__", None), name)
         distributions = importlib.metadata.packages_distributions()
         versions = {}
@@ -222,7 +258,14 @@ def capture(root, bundle, production, tests, inputs):
     runs, errors, sources = {}, [], {}
     for label, command in (("production", production), ("tests", tests)):
         inventory = bundle / f"{label}.inventory.json"
-        invocation = [sys.executable, str(Path(__file__).resolve()), "_worker", str(root),
+        # Snapshot the module table before loading any recorder dependencies.
+        bootstrap = ("import sys\nstartup = sys.modules.copy()\n"
+                     "sys.path[0] = sys.argv.pop(1)\nimport runpy\n"
+                     "sys.argv = sys.argv[1:]\n"
+                     "runpy.run_path(sys.argv[0], run_name='__main__', "
+                     "init_globals={'_STARTUP_MODULES': startup})")
+        tool_path = Path(__file__).resolve()
+        invocation = [sys.executable, "-c", bootstrap, str(tool_path.parent), str(tool_path), "_worker", str(root),
                       str(inventory), json.dumps(command), json.dumps(sorted(package_names(before, command)))]
         with (bundle / f"{label}.stdout").open("wb") as stdout, (bundle / f"{label}.stderr").open("wb") as stderr:
             result = subprocess.run(invocation, cwd=root, env=environment(), stdout=stdout,
@@ -300,7 +343,8 @@ def verify(root, bundle, receipt_sha256):
 
 def main():
     if len(sys.argv) > 1 and sys.argv[1] == "_worker":
-        return worker(Path(sys.argv[2]), Path(sys.argv[3]), json.loads(sys.argv[4]), json.loads(sys.argv[5]))
+        return worker(Path(sys.argv[2]), Path(sys.argv[3]), json.loads(sys.argv[4]),
+                      json.loads(sys.argv[5]), globals()["_STARTUP_MODULES"])
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("action", choices=["capture", "verify"])
     parser.add_argument("--root", required=True, type=Path)
