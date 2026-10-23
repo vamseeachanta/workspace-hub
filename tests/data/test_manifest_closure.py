@@ -81,6 +81,7 @@ def accept(bundle, **kwargs):
         encoded(manifest),
         encoded(contract),
         contract_sha256=digest(encoded(contract)),
+        manifest_sha256=digest(encoded(manifest)),
         root=root,
         view="working-tree",
         **kwargs,
@@ -97,6 +98,82 @@ def test_complete_example_returns_verified_bytes_and_separate_receipt(bundle):
     assert "manifest_sha256" not in bundle[2]
     with pytest.raises(TypeError):
         result.contents["original"] = b"replacement"
+
+
+@pytest.mark.parametrize("identifier", ["original", "records"])
+def test_manifest_pin_rejects_coordinated_payload_changes(
+    bundle, monkeypatch, identifier
+):
+    root, contract, manifest = bundle
+    pin = digest(encoded(manifest))
+    entry = next(item for item in manifest["files"] if item["id"] == identifier)
+    raw = (
+        b"changed original"
+        if identifier == "original"
+        else encoded(
+            [{"id": "a", "parent": "a", "value": 99}, {"id": "b", "parent": "a"}]
+        )
+    )
+    (root / entry["path"]).write_bytes(raw)
+    entry["sha256"] = digest(raw)
+
+    def unexpected_read(*args):
+        pytest.fail("payload read before manifest pin acceptance")
+
+    monkeypatch.setattr("data.manifest_closure._read", unexpected_read)
+    with pytest.raises(ClosureError, match="manifest digest mismatch"):
+        readback(
+            encoded(manifest),
+            encoded(contract),
+            contract_sha256=digest(encoded(contract)),
+            manifest_sha256=pin,
+            root=root,
+            view="working-tree",
+        )
+
+
+def test_correct_independent_manifest_pin_passes(bundle):
+    root, contract, manifest = bundle
+    pin = digest(encoded(manifest))
+    result = readback(
+        encoded(manifest),
+        encoded(contract),
+        contract_sha256=digest(encoded(contract)),
+        manifest_sha256=pin,
+        root=root,
+        view="working-tree",
+    )
+    assert result.receipt["integrity"] == "verified"
+    assert result.receipt["manifest_sha256"] == pin
+    assert result.contents["original"] == (root / "raw/input.txt").read_bytes()
+
+
+def test_missing_manifest_pin_fails_closed(bundle):
+    with pytest.raises(TypeError, match="manifest_sha256"):
+        readback(
+            encoded(bundle[2]),
+            encoded(bundle[1]),
+            contract_sha256=digest(encoded(bundle[1])),
+            root=bundle[0],
+            view="working-tree",
+        )
+
+
+@pytest.mark.parametrize("pin", [None, "", "bad", "0" * 64])
+def test_invalid_manifest_pin_fails_before_payload_read(bundle, monkeypatch, pin):
+    def unexpected_read(*args):
+        pytest.fail("payload read before manifest pin acceptance")
+
+    monkeypatch.setattr("data.manifest_closure._read", unexpected_read)
+    with pytest.raises(ClosureError, match="manifest digest"):
+        readback(
+            encoded(bundle[2]),
+            encoded(bundle[1]),
+            contract_sha256=digest(encoded(bundle[1])),
+            manifest_sha256=pin,
+            root=bundle[0],
+            view="working-tree",
+        )
 
 
 @pytest.mark.parametrize(
@@ -261,6 +338,7 @@ def test_duplicate_json_keys_rejected_at_every_level(bundle, document):
             raw_manifest,
             raw_contract,
             contract_sha256=digest(raw_contract),
+            manifest_sha256=digest(raw_manifest),
             root=root,
             view="working-tree",
         )
@@ -284,6 +362,7 @@ def test_contract_pin_prevents_redeclared_omissions(bundle):
             encoded(bundle[2]),
             encoded(bundle[1]),
             contract_sha256=pin,
+            manifest_sha256=digest(encoded(bundle[2])),
             root=bundle[0],
             view="working-tree",
         )
@@ -325,6 +404,7 @@ def test_retained_and_fresh_views_do_not_inherit_working_tree_acceptance(
         encoded(bundle[2]),
         encoded(bundle[1]),
         contract_sha256=digest(encoded(bundle[1])),
+        manifest_sha256=digest(encoded(bundle[2])),
         root=copy_root,
         view="fresh-checkout",
     )
@@ -337,6 +417,7 @@ def test_retained_and_fresh_views_do_not_inherit_working_tree_acceptance(
             encoded(bundle[1]),
             contract_sha256=digest(encoded(bundle[1])),
             root=copy_root,
+            manifest_sha256=digest(encoded(bundle[2])),
             view="retained-original",
         )
 
@@ -354,7 +435,8 @@ from data.manifest_closure import ClosureError, readback
 root = Path(sys.argv[1])
 try:
     readback((root / "manifest.json").read_bytes(), (root / "contract.json").read_bytes(),
-             contract_sha256=sys.argv[2], root=root, view="staged")
+             contract_sha256=sys.argv[2], manifest_sha256=sys.argv[3],
+             root=root, view="staged")
 except ClosureError:
     sys.exit(0)
 sys.exit(1)
@@ -366,7 +448,15 @@ sys.exit(1)
     }
     env["PYTHONPATH"] = str(Path(__file__).resolve().parents[2] / "scripts")
     result = subprocess.run(
-        [sys.executable, "-O", "-c", script, str(root), digest(encoded(bundle[1]))],
+        [
+            sys.executable,
+            "-O",
+            "-c",
+            script,
+            str(root),
+            digest(encoded(bundle[1])),
+            digest(encoded(bundle[2])),
+        ],
         env=env,
         capture_output=True,
         check=False,
@@ -407,6 +497,7 @@ def test_malformed_document_has_controlled_failure(bundle, raw):
             raw,
             encoded(bundle[1]),
             contract_sha256=digest(encoded(bundle[1])),
+            manifest_sha256=digest(raw),
             root=bundle[0],
             view="working-tree",
         )
@@ -426,6 +517,7 @@ def test_all_four_views_must_read_their_own_bytes(bundle, tmp_path):
                 encoded(bundle[2]),
                 encoded(bundle[1]),
                 contract_sha256=digest(encoded(bundle[1])),
+                manifest_sha256=digest(encoded(bundle[2])),
                 root=root,
                 view=view,
             ).receipt
@@ -438,6 +530,7 @@ def test_all_four_views_must_read_their_own_bytes(bundle, tmp_path):
             encoded(bundle[1]),
             contract_sha256=digest(encoded(bundle[1])),
             root=tmp_path / "staged",
+            manifest_sha256=digest(encoded(bundle[2])),
             view="staged",
         )
     accept(bundle)
@@ -454,6 +547,7 @@ def test_documented_example_and_cli_receipt(tmp_path):
     example = Path(__file__).parents[1] / "fixtures/data/manifest_closure"
     contract = (example / "contract.json").read_bytes()
     expected_pin = digest(contract)
+    manifest_pin = digest((example / "manifest.json").read_bytes())
     documentation = (
         Path(__file__).parents[2] / "docs/architecture/manifest-closure.html"
     ).read_text(encoding="utf-8")
@@ -463,6 +557,7 @@ def test_documented_example_and_cli_receipt(tmp_path):
     assert literal is not None
     assert expected_pin == literal.group(1)
     assert f"--contract-sha256 {expected_pin}" in documentation
+    assert f"--manifest-sha256 {manifest_pin}" in documentation
     assert b"\r" not in (example / "raw/input.txt").read_bytes()
     env = {
         k: v
@@ -480,6 +575,8 @@ def test_documented_example_and_cli_receipt(tmp_path):
         str(example / "contract.json"),
         "--contract-sha256",
         expected_pin,
+        "--manifest-sha256",
+        manifest_pin,
         "--view",
         "fresh-checkout",
     ]
@@ -496,3 +593,20 @@ def test_documented_example_and_cli_receipt(tmp_path):
     assert invalid.returncode != 0
     assert invalid.stdout == b""
     assert b"manifest closure failed" in invalid.stderr
+    command[command.index(digest(b"different contract"))] = expected_pin
+    command[command.index(manifest_pin)] = digest(b"different manifest")
+    invalid_manifest = subprocess.run(
+        command, capture_output=True, env=env, check=False
+    )
+    assert invalid_manifest.returncode != 0
+    assert invalid_manifest.stdout == b""
+    assert b"manifest closure failed" in invalid_manifest.stderr
+    del command[
+        command.index("--manifest-sha256") : command.index("--manifest-sha256") + 2
+    ]
+    missing_manifest = subprocess.run(
+        command, capture_output=True, env=env, check=False
+    )
+    assert missing_manifest.returncode != 0
+    assert missing_manifest.stdout == b""
+    assert b"--manifest-sha256" in missing_manifest.stderr

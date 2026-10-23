@@ -210,12 +210,14 @@ def readback(
     contract_raw: bytes,
     *,
     contract_sha256: str,
+    manifest_sha256: str,
     root: Path,
     view: str,
 ) -> Readback:
     """Validate one materialized byte view, then return those exact read bytes.
 
-    The caller pins the contract independently and materializes each view.
+    The caller pins both digests independently and materializes each view.
+    Deriving either pin from untrusted input during acceptance defeats the pin.
     A view label does not establish Git tracking or source/publication authority.
     Inputs must remain quiescent during readback; no atomic filesystem snapshot
     is claimed. Consume contents, rather than reopening mutable payload paths.
@@ -225,6 +227,11 @@ def readback(
         "invalid contract digest syntax",
     )
     _require(_digest(contract_raw) == contract_sha256, "contract digest mismatch")
+    _require(
+        isinstance(manifest_sha256, str) and _DIGEST.fullmatch(manifest_sha256),
+        "invalid manifest digest syntax",
+    )
+    _require(_digest(manifest_raw) == manifest_sha256, "manifest digest mismatch")
     _require(isinstance(view, str) and view in _VIEWS, "unknown byte view")
     contract, manifest = _json(contract_raw), _json(manifest_raw)
     expected = _inventory(contract, manifest=False)
@@ -275,6 +282,7 @@ def main(argv=None):
     parser.add_argument("--manifest", type=Path, required=True)
     parser.add_argument("--contract", type=Path, required=True)
     parser.add_argument("--contract-sha256", required=True)
+    parser.add_argument("--manifest-sha256", required=True)
     parser.add_argument("--root", type=Path, required=True)
     parser.add_argument("--view", choices=sorted(_VIEWS), required=True)
     args = parser.parse_args(argv)
@@ -283,13 +291,15 @@ def main(argv=None):
             args.manifest.read_bytes(),
             args.contract.read_bytes(),
             contract_sha256=args.contract_sha256,
+            manifest_sha256=args.manifest_sha256,
             root=args.root,
             view=args.view,
         )
     except (ClosureError, OSError, RuntimeError):
         # Do not disclose private paths or payload values in CLI diagnostics.
         print(
-            "manifest closure failed; check contract digest, inventory and payload evidence",
+            "manifest closure failed; check manifest and contract digests, "
+            "inventory and payload evidence",
             file=sys.stderr,
         )
         return 1

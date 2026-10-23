@@ -13,7 +13,8 @@ caption{caption-side:bottom;text-align:left;padding:.5rem}h1,h2{line-height:1.2}
 <h2>Summary</h2>
 <p>Hash agreement over listed files cannot establish completeness. The shared
 <code>scripts/data/manifest_closure.py</code> validator accepts a dataset only when
-its inventory equals an independently pinned contract, its payload hashes agree,
+its manifest digest matches an independent pin, its inventory equals an independently
+pinned contract, its payload hashes agree,
 and its declared record counts, primary keys and foreign keys pass. It returns
 the verified bytes and a separate versioned integrity receipt. No engineering
 thresholds or source-rights decisions are inferred.</p>
@@ -25,6 +26,8 @@ example so omitted files and rehashed invalid records cannot pass acceptance.</t
 path segments that Windows trims to prevent cross-platform digest and identity drift.</td></tr>
 <tr><td>3</td><td>2026-10-21</td><td>Remove the synthetic original's newline
 and update its manifest digest so the example survives checkout line-ending conversion.</td></tr>
+<tr><td>4</td><td>2026-10-23</td><td>Require an independent manifest digest pin
+before payload reads to reject coordinated manifest and payload changes.</td></tr>
 <caption>Table 1. Document revision history.</caption></table>
 <h2>Basis and method</h2>
 <p>The governing requirement is
@@ -37,9 +40,11 @@ This document defines the version-one protocol; version strings are protocol
 identifiers, not empirical coefficients. Counts and inventory are mandatory
 caller inputs. No physical equations or acceptance constants are introduced.</p>
 <ol>
-<li>Pin the contract SHA-256 through the consuming workflow's independently
-reviewed configuration. Computing the pin from an untrusted contract during
-acceptance defeats this boundary.</li>
+<li>Pin both the contract and manifest SHA-256 through the consuming workflow's
+independently reviewed configuration. Computing either pin from untrusted inputs
+during acceptance defeats this boundary. Require both pins and compare them with
+the supplied raw bytes before accepting any payload digest or reading payloads.
+A missing, malformed or mismatching pin fails closed without a receipt.</li>
 <li>Parse manifest and contract JSON with duplicate keys and non-finite numbers
 rejected. Require the exact documented fields and versions.</li>
 <li>Compare file ID sets for equality, then compare every role, path, format,
@@ -98,11 +103,17 @@ received private originals or Git retention.</p>
 It is computed from the committed contract bytes by the standard library
 SHA-256 implementation; the example test independently recomputes it. A consumer
 shall obtain a production pin from its reviewed configuration, not this example.</p>
+<p>The exact example manifest pin is
+<code>99f973cf43bf4ece5e35d8c49a46ffbc25d60430bc3781e458a39b2ad606e8ab</code>.
+It covers the committed manifest bytes, including its payload digests, and is
+independent of the manifest supplied during acceptance. The example test
+recomputes this documentation pin only to check the committed fixture.</p>
 <pre>python scripts/data/manifest_closure.py \
   --root tests/fixtures/data/manifest_closure \
   --manifest tests/fixtures/data/manifest_closure/manifest.json \
   --contract tests/fixtures/data/manifest_closure/contract.json \
   --contract-sha256 c77d245c1e6f361a596b8e3b799fa989b713314515ea0f060a61bfe92e3b6f93 \
+  --manifest-sha256 99f973cf43bf4ece5e35d8c49a46ffbc25d60430bc3781e458a39b2ad606e8ab \
   --view working-tree</pre>
 <p>On success, standard output contains a <code>manifest-closure-receipt/v1</code>
 object with <code>file_count: 2</code>, the manifest and contract digests, the view,
@@ -129,7 +140,7 @@ the others.</p>
 not provide an atomic filesystem snapshot or protection against a concurrent
 malicious filesystem writer. Receipt serialization and durable evidence storage
 are the consuming workflow's responsibility. Receipt equality or a matching
-contract pin establishes integrity only; independent source rights, retention,
+contract and manifest pins establish integrity only; independent source rights, retention,
 units, engineering qualification, task authority and publication authorization
 remain required. Existing manifests in other repositories need explicit adapters
 and independently reviewed contracts; no ecosystem-wide installation is claimed.</p>
