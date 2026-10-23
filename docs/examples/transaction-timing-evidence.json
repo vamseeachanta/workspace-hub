@@ -1,0 +1,62 @@
+{
+  "policy": {
+    "cap_s": 30,
+    "basis_ref": "synthetic-policy-v1",
+    "checkpoints": [
+      {
+        "name": "publish",
+        "boundary": "before first replacement",
+        "reserve_s": 10,
+        "required_io": []
+      },
+      {
+        "name": "status",
+        "boundary": "before final full-status scan",
+        "reserve_s": 10,
+        "required_io": [
+          "full-index"
+        ]
+      }
+    ]
+  },
+  "binding": {
+    "source_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "target_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "policy_sha256": "16d8ef3ac5ded4705022ac712a5a9b784d7701da6b166d7192dae75487235c59"
+  },
+  "runs": [
+    {
+      "run_ref": "synthetic-run",
+      "binding": {
+        "source_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "target_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "policy_sha256": "16d8ef3ac5ded4705022ac712a5a9b784d7701da6b166d7192dae75487235c59"
+      },
+      "kind": "measured",
+      "clock_ref": "synthetic-monotonic-clock",
+      "origin": "lock-acquired",
+      "checkpoints": [
+        {
+          "name": "publish",
+          "boundary": "before first replacement",
+          "elapsed_s": 5,
+          "io": []
+        },
+        {
+          "name": "status",
+          "boundary": "before final full-status scan",
+          "elapsed_s": 19,
+          "io": [
+            {
+              "name": "full-index",
+              "start_s": 16,
+              "end_s": 18,
+              "trace_ref": "synthetic-trace",
+              "operation": "full-index read"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
