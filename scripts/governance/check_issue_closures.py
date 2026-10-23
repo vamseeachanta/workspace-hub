@@ -15,25 +15,42 @@ be read is reported as NOT_EVALUATED instead of inferred.
 from __future__ import annotations
 
 import argparse
-from bisect import bisect_right
 import csv
-from dataclasses import dataclass
-from datetime import datetime, timedelta
+import hashlib
 import json
 import os
-from pathlib import Path
 import re
+import shlex
 import subprocess
 import sys
 import tempfile
+from bisect import bisect_right
+from dataclasses import dataclass
+from datetime import datetime, timedelta
+from pathlib import Path
 from typing import Iterable
 from urllib.parse import quote, urlsplit
 
-
-API_BUDGET = 500
+API_BUDGET = 500  # Issue 4073, plan item 3: maximum API calls per run.
 EVIDENCE_REF = re.compile(r"(?:\b(?=[0-9a-f]{7,40}\b)(?=[0-9a-f]*[a-f])[0-9a-f]{7,40}\b|(?<!\w)#(?P<issue>\d+)(?!\w)|(?<!\w)PR\s*#?(?P<pr>\d+)(?!\w))", re.I)
 PATH_REF = re.compile(r"(?<![\w/.:\\-])(?:scripts|tests|docs|reports|src|config)/[A-Za-z0-9._/\-]+")
 TEST_COUNT = re.compile(r"\b\d+\s+(?:passed|pass|failed|fail|skipped|skip|tests?)\b", re.I)
+# Procedure B.3 and E.4 require a command as well as a count. Match tools
+# only at the start of a command candidate, rather than anywhere in prose.
+TEST_COMMAND = re.compile(
+    r"(?:(?:python(?:3(?:\.\d+)?)?\s+-m\s+)?(?:pytest|unittest)"
+    r"|ctest|tox|nox|(?:npm|pnpm|yarn|cargo|go)\s+test)\b", re.IGNORECASE,
+)
+NON_EXECUTION = re.compile(
+    r"\b(?:not|never|wasn't|weren't|isn't|didn't|cannot|can't)\s+"
+    r"(?:(?:yet|been|actually|be)\s+)*(?:run|executed?|performed)\b"
+    r"|\b(?:execution|command|tests?)\s+(?:(?:is|are|was|were)\s+)?skipped\b",
+    re.IGNORECASE,
+)
+COMMAND_PROSE = re.compile(
+    r"(?:was|were|is|are|will|would|should|could|must|may|might|can|"
+    r"not|never|none|unavailable|skipped|pending|remains?)\b", re.IGNORECASE,
+)
 CHECKBOX = re.compile(r"^\s*-\s+\[(?P<mark>[ xX])\]\s*(?P<text>.*)$", re.M)
 ISSUE_REF = re.compile(r"(?<!\w)(?:(?P<repository>[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+))?#(?P<number>\d+)(?!\w)")
 URL_REF = re.compile(r"https://(?:api\.)?github\.com/(?:repos/)?(?P<repository>[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+)/(?P<kind>issues|pulls?)/(?P<number>\d+)\b")
@@ -126,6 +143,59 @@ def has_decision_text(text: str) -> bool:
     ))
 
 
+def has_test_command(text: str) -> bool:
+    """Recognize command claims, without authenticating their execution.
+
+    Statements, inline code, execution verbs and labels provide command
+    context. Negation applies to the whole clause, including quoted commands.
+    Unknown builders require a label and arguments or a script path.
+    """
+    for clause in re.split(r"[;\n]", text):
+        if NON_EXECUTION.search(clause):
+            continue
+        candidates = [(clause.strip(), False)]
+        candidates.extend(
+            (clause[match.end():].strip(), True)
+            for match in re.finditer(r"\b(?:command|builder|tests?)\s*:\s*", clause, re.IGNORECASE)
+        )
+        candidates.extend(
+            (clause[match.end():].strip(), False)
+            for match in re.finditer(r"\b(?:ran|executed)\s+", clause, re.IGNORECASE)
+        )
+        # Inline code naming a tool alone may just be a prose mention.
+        candidates.extend(
+            (match.group(1), False) for match in re.finditer(r"`([^`]+)`", clause)
+            if " " in match.group(1).strip()
+        )
+        for candidate, labelled in candidates:
+            candidate = candidate.replace("`", "").strip()
+            known = TEST_COMMAND.match(candidate)
+            if known:
+                if not COMMAND_PROSE.match(candidate[known.end():].lstrip()):
+                    return True
+                continue
+            if not labelled:
+                continue
+            # A result delimiter must not turn a lone labelled token into
+            # a command with arguments, e.g. "Command: none: 3 passed".
+            command = re.split(r":|\s+-\s+", candidate, maxsplit=1)[0]
+            command = TEST_COUNT.split(command, maxsplit=1)[0].strip()
+            try:
+                words = shlex.split(command)
+            except ValueError:
+                continue
+            if (not words or COMMAND_PROSE.fullmatch(words[0])
+                    or words[0].lower() in {"n/a", "na", "null", "unknown", "todo", "tbd"}):
+                continue
+            if COMMAND_PROSE.match(" ".join(words[1:])):
+                continue
+            if re.fullmatch(r"[\w./-]+", words[0]) and (
+                len(words) > 1 or words[0].startswith("./") or words[0].endswith((".sh", ".py"))
+            ):
+                return True
+    return False
+
+
 def evidence_status(issue: dict, *, allow_issue_reference: bool = True) -> tuple[bool, bool, list[str]]:
     evidence = closure_evidence_text(issue)
     reasons: list[str] = []
@@ -165,7 +235,7 @@ def evidence_status(issue: dict, *, allow_issue_reference: bool = True) -> tuple
         reasons.append("no cited path exists at the evidence revision")
     elif missing_paths:
         reasons.append("one or more cited paths do not exist at the evidence revision")
-    has_test = bool(TEST_COUNT.search(evidence))
+    has_test = bool(TEST_COUNT.search(evidence) and has_test_command(evidence))
     return not reasons, has_test, reasons
 
 
@@ -318,8 +388,14 @@ def evaluate_issue(issue: dict, closures: Iterable[dict] = ()) -> dict:
     }
 
 
+class ApiBudgetExceeded(RuntimeError):
+    """Collection is incomplete; this condition must not become absent evidence."""
+
+
 class GitHubReader:
     def __init__(self, cache_dir: Path | None = None, budget: int = API_BUDGET):
+        if not 0 <= budget <= API_BUDGET:
+            raise ValueError(f"API budget must be between 0 and {API_BUDGET}")
         if cache_dir is None:
             cache_dir = Path(tempfile.mkdtemp(prefix="closure-check-cache-"))
         self.cache_dir = cache_dir
@@ -328,12 +404,14 @@ class GitHubReader:
         self.cache_dir.mkdir(parents=True, exist_ok=True)
 
     def _cache_path(self, route: str) -> Path:
-        safe = re.sub(r"[^A-Za-z0-9_.-]+", "_", route.strip("/"))
-        return self.cache_dir / f"{safe}.json"
+        # Exact request identity avoids punctuation collisions and oversized
+        # GraphQL filenames. Legacy cache entries are deliberately not reused.
+        key = hashlib.sha256(route.encode("utf-8")).hexdigest()
+        return self.cache_dir / f"{key}.json"
 
     def _run_gh(self, args: list[str]) -> str:
         if self.calls >= self.budget:
-            raise RuntimeError("GitHub API budget exceeded")
+            raise ApiBudgetExceeded("GitHub API budget exceeded; collection incomplete")
         self.calls += 1
         result = subprocess.run(
             args,
@@ -360,26 +438,52 @@ class GitHubReader:
         if cached.exists():
             data = json.loads(cached.read_text(encoding="utf-8"))
             return list(data["items"]), data.get("total_count")
-        stdout = self._run_gh(["gh", "api", "--method", "GET", "--paginate", route])
         items: list[object] = []
         total_count: int | None = None
-        decoder = json.JSONDecoder()
-        index = 0
-        while index < len(stdout):
-            while index < len(stdout) and stdout[index].isspace():
-                index += 1
-            if index >= len(stdout):
-                break
-            page, index = decoder.raw_decode(stdout, index)
-            if isinstance(page, dict) and "items" in page:
-                total_count = page.get("total_count", total_count)
-                items.extend(page.get("items") or [])
+        seen = set()
+        while route:
+            if route in seen:
+                raise RuntimeError("pagination repeated a page; collection incomplete")
+            seen.add(route)
+            # One subprocess per response page: --paginate hides API calls and
+            # therefore cannot enforce the issue's per-run request ceiling.
+            stdout = self._run_gh(["gh", "api", "--method", "GET", "--include", route])
+            headers, separator, body = stdout.replace("\r\n", "\n").partition("\n\n")
+            if not separator:
+                raise RuntimeError("API response headers missing; collection incomplete")
+            page = json.loads(body)
+            if isinstance(page, dict):
+                if (not isinstance(page.get("items"), list)
+                        or type(page.get("total_count")) is not int
+                        or type(page.get("incomplete_results", False)) is not bool):
+                    raise TypeError("malformed search response; collection incomplete")
+                if page["total_count"] < 0:
+                    raise ValueError("malformed search count; collection incomplete")
+                if page.get("incomplete_results"):
+                    raise RuntimeError("GitHub search is incomplete")
+                total_count = page["total_count"]
+                items.extend(page["items"])
             elif isinstance(page, list):
                 items.extend(page)
             else:
-                items.append(page)
+                raise TypeError("malformed collection response; collection incomplete")
+            route = self._next_page(headers)
         cached.write_text(json.dumps({"total_count": total_count, "items": items}, indent=2) + "\n", encoding="utf-8", newline="\n")
         return items, total_count
+
+    @staticmethod
+    def _next_page(headers: str) -> str:
+        for line in headers.splitlines():
+            if not line.lower().startswith("link:"):
+                continue
+            match = re.search(r'<([^>]+)>;\s*rel="next"', line)
+            if not match:
+                continue
+            url = urlsplit(match.group(1))
+            if url.scheme != "https" or url.netloc != "api.github.com":
+                raise RuntimeError("untrusted pagination link")
+            return url.path.lstrip("/") + (f"?{url.query}" if url.query else "")
+        return ""
 
     def graphql(self, query: str) -> object:
         cached = self._cache_path(f"graphql/{query}")
@@ -392,6 +496,8 @@ class GitHubReader:
     def try_api(self, route: str) -> object | None:
         try:
             return self.api(route)
+        except ApiBudgetExceeded:
+            raise
         except RuntimeError:
             return None
 
@@ -432,6 +538,8 @@ def _body_edit_status(raw: dict, reader: GitHubReader, repo: str, number: int, c
     """
     try:
         data = reader.graphql(query)
+    except ApiBudgetExceeded:
+        raise
     except RuntimeError:
         return None
     issue = (((data.get("data") or {}).get("repository") or {}).get("issue") or {}) if isinstance(data, dict) else {}
@@ -514,6 +622,10 @@ def _neutral_issue(raw: dict, reader: GitHubReader, repo: str, *, collect_succes
         for item in comments if isinstance(item, dict)
     ]
     evidence = "\n".join([raw.get("body") or ""] + [item["body"] for item in neutral_comments])
+    # E.3 only consumes closing evidence. Body references still need state for
+    # E.5-E.7, but recursively collecting their delivery evidence cannot qualify
+    # a closing comment that never cites them.
+    evidence_refs = set(issue_references("\n".join(item["body"] for item in neutral_comments)))
     shas = {
         match.group(0) for match in EVIDENCE_REF.finditer(evidence)
         if not match.group(0).startswith("#") and not match.group(0).lower().startswith("pr")
@@ -531,7 +643,7 @@ def _neutral_issue(raw: dict, reader: GitHubReader, repo: str, *, collect_succes
         if isinstance(linked, dict):
             state = {"state": linked.get("state"), "state_reason": normalize_state_reason(linked.get("state_reason")), "is_pull_request": bool(linked.get("pull_request"))}
             successor_states[ref] = state
-            if (collect_successor_evidence and ref_repo.lower() == repo.lower()
+            if (collect_successor_evidence and ref in evidence_refs and ref_repo.lower() == repo.lower()
                     and str(state["state"]).lower() == "closed" and state["state_reason"] == "COMPLETED"
                     and not state["is_pull_request"]):
                 own_evidence = _neutral_issue(linked, reader, ref_repo, collect_successor_evidence=False)
