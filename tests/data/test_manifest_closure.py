@@ -257,6 +257,42 @@ def test_root_relative_paths_are_canonical(bundle, path):
         accept(bundle)
 
 
+@pytest.mark.parametrize("inventory", ["both", "manifest"])
+@pytest.mark.parametrize(
+    "paths",
+    [
+        ("raw/Input.txt", "raw/input.txt"),
+        ("raw/caf\u00e9.txt", "raw/cafe\u0301.txt"),
+        ("raw/CAF\u00c9.txt", "raw/cafe\u0301.txt"),
+    ],
+)
+def test_filesystem_equivalent_paths_fail_before_payload_read(
+    bundle, monkeypatch, inventory, paths
+):
+    root, contract, manifest = bundle
+    raw = (root / "raw/input.txt").read_bytes()
+    for document in (contract, manifest):
+        document["files"][0]["path"] = paths[0]
+    manifest["files"].append(
+        dict(manifest["files"][0], id="alias", path=paths[1])
+    )
+    if inventory == "both":
+        contract["files"].append(
+            dict(contract["files"][0], id="alias", path=paths[1])
+        )
+    reads = []
+
+    def simulated_alias_read(dataset_root, relative):
+        # Both spellings address the same bytes on the simulated filesystem.
+        reads.append(relative)
+        return raw if relative in paths else (dataset_root / relative).read_bytes()
+
+    monkeypatch.setattr("data.manifest_closure._read", simulated_alias_read)
+    with pytest.raises(ClosureError, match="filesystem-equivalent payload paths"):
+        accept(bundle)
+    assert reads == []
+
+
 @pytest.mark.parametrize(
     "path", ["raw/input.txt.", "raw/input.txt ", "raw./input.txt", "raw /input.txt"]
 )

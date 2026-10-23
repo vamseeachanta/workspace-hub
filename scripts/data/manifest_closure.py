@@ -12,6 +12,7 @@ import json
 import math
 import re
 import sys
+import unicodedata
 from collections.abc import Mapping
 from dataclasses import dataclass
 from pathlib import Path, PurePosixPath
@@ -104,7 +105,7 @@ def _inventory(document, *, manifest):
     _require(
         isinstance(files, list) and bool(files), "expected nonempty file inventory"
     )
-    result, paths = {}, set()
+    result, paths, identities = {}, set(), set()
     for entry in files:
         expected = _FILE_FIELDS | ({"sha256"} if manifest else set())
         _require(
@@ -116,6 +117,13 @@ def _inventory(document, *, manifest):
         _require(entry["id"] not in result, "duplicate file ID")
         _path(entry["path"])
         _require(entry["path"] not in paths, "duplicate file path")
+        # Reject portable aliases even when the current filesystem distinguishes them.
+        identity = unicodedata.normalize(
+            "NFC", unicodedata.normalize("NFC", entry["path"]).casefold()
+        )
+        _require(
+            identity not in identities, "filesystem-equivalent payload paths"
+        )
         _require(entry["format"] in ("bytes", "json-records"), "unsupported format")
         if entry["format"] == "bytes":
             _require(
@@ -136,6 +144,7 @@ def _inventory(document, *, manifest):
             )
         result[entry["id"]] = entry
         paths.add(entry["path"])
+        identities.add(identity)
     return result
 
 
