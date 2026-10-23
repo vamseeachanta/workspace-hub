@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Phone media organization</title>
+<style>
+body { max-width: 60rem; margin: 2rem auto; padding: 0 1rem; font: 1rem/1.6 sans-serif; }
+pre { overflow-x: auto; padding: 1rem; background: #f1f3f5; }
+table { border-collapse: collapse; width: 100%; }
+th, td { border: 1px solid #ccc; text-align: left; padding: .5rem; }
+</style>
+</head>
+<body>
+<h1>Phone media organization</h1>
+<p>The organizer copies supported files from <code>PHONE/usb/</code> archives into
+<code>YYYY/MM/PHONE/original-camera-folder/</code> destinations. Originals remain
+in place. Cross-phone byte duplicates are reported without deletion. A dry run
+is the default. Input and output directories shall be separate, non-overlapping trees.</p>
+<h2>Revision history</h2>
+<table>
+<tr><th>Revision</th><th>Date</th><th>Change and purpose</th></tr>
+<tr><td>Initial</td><td>2026-10-22</td><td>Add copy-based organization and duplicate reporting while retaining source evidence.</td></tr>
+<tr><td>1</td><td>2026-10-22</td><td>Distinguish local and UTC video dates, expose copy conflicts, and reject directory aliases.</td></tr>
+</table>
+<p>Table 1. Document revisions.</p>
+<h2>Usage</h2>
+<p>Python 3.11 or later is required for <code>hashlib.file_digest</code>. Install
+ExifTool separately for embedded metadata extraction. Python packages are not
+required by the utility. Run from the repository root:</p>
+<pre>python scripts/utilities/phone_media.py phone-media organized-media &gt; plan.json
+python scripts/utilities/phone_media.py phone-media organized-media --apply &gt; result.json</pre>
+<p>Reports contain relative filenames, content hashes, date provenance, duplicate
+groups, warnings and a <code>conflicts</code> list of relative destinations and reasons.
+A dry run exits successfully even when that list is nonempty; inspect it before
+using <code>--apply</code>, which refuses conflicting destinations before any copy.
+Reports can contain personal filenames and shall remain with
+private archives rather than be committed to this public repository. No real
+archive is read or copied by the regression tests.</p>
+<h2>Method</h2>
+<ol>
+<li>Inventory HEIC, MOV, PNG, JPG, JPEG and AAE files, matching extensions without
+case sensitivity. Other extensions and directories outside each phone's
+<code>usb</code> tree are ignored. Scanned symlinks and Windows reparse points
+(including junctions) are rejected before directory traversal. Destination
+aliases, including output ancestors, are also rejected.</li>
+<li>For each media file, read <code>DateTimeOriginal</code>, then
+Keys <code>CreationDate</code>, then <code>CreateDate</code>, then
+<code>MediaCreateDate</code> with ExifTool UTF-8 JSON output.
+The first valid timestamp supplies the year and month. String dates retain
+their local calendar fields; offsets do not shift that month. Integer MOV
+<code>CreateDate</code> and <code>MediaCreateDate</code> fields are treated as UTC
+per the QuickTime specification and recorded as <code>CreateDate_utc</code> or
+<code>MediaCreateDate_utc</code> in <code>date_source</code>. They are not converted
+to the computer's timezone. Some cameras store local values in these fields;
+without an offset-bearing date the original capture-local month is unknown.
+Invalid values produce warnings. With no valid
+value, use file mtime interpreted in UTC, consistent across computer timezones.
+The acquisition workflow is responsible for establishing whether mtime represents
+capture time. Missing ExifTool produces explicit fallback warnings.</li>
+<li>Match AAE sidecars to a same-directory, case-insensitive filename stem.
+Prefer a still image to a MOV, then lexical filename order if multiple stills
+match. Copy the sidecar into its selected companion's month and directory.
+Warn if companions span months. An orphan sidecar uses its own UTC mtime and
+produces a warning. An edited filename with a different stem is not inferred.</li>
+<li>Retain the phone and original relative directory below the calendar folder.
+This avoids camera-folder filename collisions and keeps original names unchanged.</li>
+<li>Compute SHA-256 over each complete file. A duplicate group is reported only
+when identical media digests occur in more than one phone directory. Sidecars are
+copied and hashed but excluded from duplicate groups. Different encodings,
+resolutions or edits are not perceptual duplicates under this criterion.</li>
+<li>Before copying, reject all existing destinations whose bytes differ. Use
+exclusive file creation and verify the copied digest before preserving timestamps
+and mode with <code>copystat</code>. Identical existing destinations are reused.
+No existing file is overwritten. A partial or mismatched copy is retained for
+inspection. Errors identify its relative destination and reason; a later dry run
+lists it in <code>conflicts</code>, and a later apply refuses it.</li>
+</ol>
+<p>Tag precedence, UTC fallback and pairing priority are declared application
+policies. No fitted coefficients or engineering acceptance limits are used.</p>
+<h2>Worked example</h2>
+<p>These inputs are synthetic. Both image files contain the same literal bytes;
+the sidecar contains distinct edit bytes.</p>
+<table>
+<tr><th>Input relative to archive</th><th>Metadata</th><th>Expected destination</th></tr>
+<tr><td>phone-a/usb/100APPLE/IMG.JPG</td><td>DateTimeOriginal = 2024:02:29 10:20:30</td><td>2024/02/phone-a/100APPLE/IMG.JPG</td></tr>
+<tr><td>phone-a/usb/100APPLE/img.AAE</td><td>Paired with IMG.JPG</td><td>2024/02/phone-a/100APPLE/img.AAE</td></tr>
+<tr><td>phone-b/usb/101APPLE/COPY.JPG</td><td>DateTimeOriginal = 2024:02:29 10:20:30</td><td>2024/02/phone-b/101APPLE/COPY.JPG</td></tr>
+</table>
+<p>Table 2. Hand-calculated calendar destinations.</p>
+<p>Reading the first four date digits gives year 2024; the next date field gives
+month 02. The sidecar inherits that pair. Equal image bytes yield equal SHA-256
+digests, so the two images form one cross-phone group; all three originals remain.
+With absent metadata and mtime zero, the Unix epoch definition gives 1970/01 in
+UTC. The tests write these expectations independently of the organizer.</p>
+<h2>Verification and limits</h2>
+<p>The synthetic regression suite covers calendar leap dates, invalid dates,
+timezone policy, missing metadata, all requested extensions, sidecars, duplicates,
+collisions, reruns, overwrite refusal, symlinks, CLI dry runs and a changed-source
+copy failure. Run:</p>
+<pre>python -m pytest tests/utilities/test_phone_media.py -q -p no:cacheprovider</pre>
+<p>A month-boundary regression uses a still dated 2024:02:29 20:00:00-06:00
+and a MOV dated 2024:03:01 02:00:00 in UTC. With Keys CreationDate matching the
+still, both media files and the AAE go into 2024/02. Without it, the MOV goes
+into 2024/03 with a UTC basis, the AAE follows the still into 2024/02, and the
+report warns that companions span months. Windows reparse attributes are
+simulated in portable tests; native junction behavior requires Windows testing.</p>
+<p>The source archive and destination shall remain quiescent during a run.
+Alias checks and exclusive creation do not establish protection against hostile
+concurrent directory replacement. This utility is not a transactional snapshot:
+failures may leave completed copies and an inspection copy. It does not recover
+from an interrupted copy automatically. A successful run verifies copy bytes,
+not backup redundancy, filesystem creation time, extended attributes or capture-date
+truth. Real-format ExifTool extraction requires an installed ExifTool and representative
+private media; adapter tests alone do not establish that integration.</p>
+<h2>Sources</h2>
+<ul>
+<li><a href="https://github.com/vamseeachanta/workspace-hub/issues/3585">Issue 3585</a>:
+format scope, calendar organization, original retention and cross-phone duplicate reporting.</li>
+<li><a href="https://exiftool.org/exiftool_pod.html">ExifTool application documentation</a>,
+undated, retrieved 2026-10-22, HTTP 200: JSON output, tag selection, default date
+format and end-of-options handling.</li>
+<li><a href="https://docs.python.org/3.11/library/hashlib.html">Python 3.11 hashlib</a>:
+complete-file hashing API. The installed Python API is exercised by the regression suite.</li>
+<li><a href="https://exiftool.org/TagNames/QuickTime.html">ExifTool QuickTime tags</a>,
+undated, retrieved 2026-10-22, HTTP 200: Keys CreationDate and integer timestamp
+UTC conventions, including the warning about cameras that store local values.</li>
+</ul>
+</body>
+</html>
