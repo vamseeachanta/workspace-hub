@@ -1,6 +1,6 @@
 # AI account usage (fleet)
 
-Generated 2026-10-23T15:13:34+00:00 by fleet-collector collect_account_usage_fleet. Percentages are USED; headroom = 100 - weekly used. Source of truth: `config/ai-tools/account-usage-latest.json`.
+Generated 2026-10-23T16:13:42+00:00 by fleet-collector collect_account_usage_fleet. Percentages are USED; headroom = 100 - weekly used. Source of truth: `config/ai-tools/account-usage-latest.json`.
 
 ## Recommendation
 
@@ -11,7 +11,7 @@ Generated 2026-10-23T15:13:34+00:00 by fleet-collector collect_account_usage_fle
 
 | account | provider | holder | 5h used | week used | headroom | resets | sampled on | source |
 |---|---|---|---|---|---|---|---|---|
-| claude-owner | claude | owner | 10% | 97% | 3% | 2026-10-24T13:59:59.736741+00:00 | gpu-claw | oauth-api |
+| claude-owner | claude | owner | 12% | 97% | 3% | 2026-10-24T14:00:00.151662+00:00 | gpu-claw | oauth-api |
 | claude-professional | claude | colleague |  |  |  |  |  | unavailable |
 | codex-owner | codex | owner |  | 31% | 69% | 2026-10-29T17:09:53+00:00 | fleet-collector | app-server-live |
 | codex-professional | codex | colleague |  |  |  |  |  | unavailable |
