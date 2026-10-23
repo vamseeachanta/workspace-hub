@@ -28,7 +28,9 @@ limits; it does not establish equivalent output quality or operational readiness
 <tbody><tr><td>Initial</td><td>2026-10-22</td><td>Explicit-criterion evaluation is
 added to distinguish measured comparisons from absent evidence.</td></tr>
 <tr><td>1</td><td>2026-10-22</td><td>Nested JSON errors, decimal boundaries,
-evidence hashes and external example storage are clarified following input review.</td></tr></tbody>
+evidence hashes and external example storage are clarified following input review.</td></tr>
+<tr><td>2</td><td>2026-10-23</td><td>Decimal criteria retain their precision
+through JSON loading so boundary comparisons use the supplied limits.</td></tr></tbody>
 <caption>Table 1. Document revision history.</caption>
 </table>
 <h2>Basis and scope</h2>
@@ -55,6 +57,9 @@ Both cohorts must meet minimum_sessions. All limits and their nonempty reference
 are required inputs. The multiplier must be positive, the clarification delta
 nonnegative and the sample minimum a positive integer. These are mathematical
 domain constraints, not calibrated policy values. Equality meets the upper limit.
+JSON decimal criteria are parsed exactly and reported as decimal strings; integer
+criteria remain JSON integers. API callers may supply exact decimal values using
+<code>decimal.Decimal</code>; precision already lost in a float cannot be recovered.
 Exact fractions drive comparisons; displayed rates are rounded to three decimal places.</p>
 <p>Counts must be nonnegative integers, excluding booleans. Each included session
 must carry token evidence for the selected model. Token counts without model turns

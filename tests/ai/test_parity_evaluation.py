@@ -299,3 +299,34 @@ def test_cli_evidence_hashes_loaded_bytes(tmp_path, capsys, criteria):
         "criteria": [hashlib.sha256(policy.read_bytes()).hexdigest()],
     }
     assert str(tmp_path) not in json.dumps(report)
+
+
+@pytest.mark.parametrize("key,lexeme,asks,metric,exit_code", [
+    ("verbosity_multiplier", "0.99999999999999999", 0, "tokens_per_turn", 1),
+    ("verbosity_multiplier", "1.00000000000000001", 0, "tokens_per_turn", 0),
+    ("clarification_delta", "0.99999999999999999", 1, "askuser_per_session", 1),
+    ("clarification_delta", "1.00000000000000001", 1, "askuser_per_session", 0),
+])
+def test_cli_preserves_decimal_criteria(tmp_path, capsys, key, lexeme, asks,
+                                       metric, exit_code):
+    """10*(1-10^-17)<10; 0+(1-10^-17)<1; opposite boundaries pass."""
+    current = tmp_path / "current"
+    baseline = tmp_path / "baseline"
+    current.mkdir()
+    baseline.mkdir()
+    (current / "sample.json").write_text(
+        json.dumps(digest(1, 10, asks)), encoding="utf-8", newline="\n")
+    (baseline / "sample.json").write_text(
+        json.dumps(digest(1, 10, model="reference")), encoding="utf-8", newline="\n")
+    policy = tmp_path / "criteria.json"
+    text = ('{"reference":"synthetic-boundary","minimum_sessions":1,'
+            '"verbosity_multiplier":1,"clarification_delta":0}')
+    original = '"verbosity_multiplier":1' if key == "verbosity_multiplier" else '"clarification_delta":0'
+    text = text.replace(original, f'"{key}":{lexeme}')
+    policy.write_text(text, encoding="utf-8", newline="\n")
+    assert pe.main([str(current), str(baseline), "--model", "candidate",
+                    "--baseline-model", "reference", "--criteria", str(policy)]) == exit_code
+    report = json.loads(capsys.readouterr().out)
+    assert report["metrics"][metric]["status"] == (
+        "REGRESSION" if exit_code else "WITHIN_LIMITS")
+    assert report["criteria"][key] == lexeme

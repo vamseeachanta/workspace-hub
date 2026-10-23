@@ -12,6 +12,7 @@ import argparse
 import hashlib
 import json
 import math
+from decimal import Decimal
 from fractions import Fraction
 from pathlib import Path
 
@@ -31,9 +32,10 @@ def validate_criteria(criteria):
         raise ValueError("minimum_sessions must be a positive integer")
     for key in ("verbosity_multiplier", "clarification_delta"):
         value = criteria[key]
-        if type(value) not in (int, float):
+        if type(value) not in (int, float, Decimal):
             raise ValueError(f"{key} must be numeric")
-        if isinstance(value, float) and not math.isfinite(value):
+        if ((isinstance(value, float) and not math.isfinite(value))
+                or (isinstance(value, Decimal) and not value.is_finite())):
             raise ValueError(f"{key} must be finite")
         if value < 0 or (key == "verbosity_multiplier" and value == 0):
             raise ValueError(f"{key} is outside its mathematical domain")
@@ -127,7 +129,8 @@ def evaluate_parity(current_digests, baseline_digests, model, baseline_model, cr
     states = {metric["status"] for metric in metrics.values()}
     status = ("REGRESSION" if "REGRESSION" in states else
               "NOT_EVALUATED" if "NOT_EVALUATED" in states else "WITHIN_LIMITS")
-    return {"status": status, "criteria": dict(criteria), "metrics": metrics,
+    return {"status": status, "criteria": {key: str(value) if isinstance(value, Decimal) else value
+                                     for key, value in criteria.items()}, "metrics": metrics,
             "samples": {"current": current["sessions"], "baseline": baseline["sessions"]}}
 
 
@@ -149,7 +152,7 @@ def read_object(path, evidence=None):
     try:
         payload = Path(path).read_bytes()
         result = json.loads(payload.decode("utf-8"), object_pairs_hook=_unique_object,
-                            parse_constant=_reject_constant)
+                            parse_constant=_reject_constant, parse_float=Decimal)
     except (OSError, ValueError, RecursionError) as exc:
         raise ValueError("input is unreadable or invalid JSON") from exc
     if not isinstance(result, dict):
