@@ -6,6 +6,8 @@ Criteria are explicit test inputs, not universal acceptance limits.
 import hashlib
 import importlib.util
 import json
+import subprocess
+import sys
 from pathlib import Path
 
 import pytest
@@ -330,3 +332,25 @@ def test_cli_preserves_decimal_criteria(tmp_path, capsys, key, lexeme, asks,
     assert report["metrics"][metric]["status"] == (
         "REGRESSION" if exit_code else "WITHIN_LIMITS")
     assert report["criteria"][key] == lexeme
+
+
+@pytest.mark.parametrize("target", ["cohort", "criteria"])
+@pytest.mark.parametrize("lexeme", ["1e9999999999999999999", "1e-9999999999999999999"])
+def test_cli_unsupported_decimal_is_error(tmp_path, criteria, target, lexeme):
+    """Unsupported decimal exponents are invalid evidence, never regressions."""
+    cohort = tmp_path / "cohort"
+    cohort.mkdir()
+    policy = tmp_path / "criteria.json"
+    policy.write_text(json.dumps(criteria), encoding="utf-8", newline="\n")
+    path = cohort / "sample.json" if target == "cohort" else policy
+    path.write_text('{"value":' + lexeme + '}', encoding="utf-8", newline="\n")
+    result = subprocess.run(
+        [sys.executable, str(SPEC.origin), str(cohort), str(cohort),
+         "--model", "candidate", "--baseline-model", "reference",
+         "--criteria", str(policy)],
+        capture_output=True, encoding="utf-8", check=False,
+    )
+    assert result.returncode == 2
+    assert result.stderr == ""
+    report = json.loads(result.stdout)
+    assert report == {"status": "ERROR", "reason": "input is unreadable or invalid JSON"}

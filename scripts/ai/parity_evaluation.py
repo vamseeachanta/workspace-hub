@@ -12,7 +12,7 @@ import argparse
 import hashlib
 import json
 import math
-from decimal import Decimal
+from decimal import Decimal, InvalidOperation
 from fractions import Fraction
 from pathlib import Path
 
@@ -153,7 +153,7 @@ def read_object(path, evidence=None):
         payload = Path(path).read_bytes()
         result = json.loads(payload.decode("utf-8"), object_pairs_hook=_unique_object,
                             parse_constant=_reject_constant, parse_float=Decimal)
-    except (OSError, ValueError, RecursionError) as exc:
+    except (OSError, ValueError, RecursionError, InvalidOperation) as exc:
         raise ValueError("input is unreadable or invalid JSON") from exc
     if not isinstance(result, dict):
         raise TypeError("input must be a JSON object")
