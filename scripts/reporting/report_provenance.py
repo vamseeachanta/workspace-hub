@@ -51,6 +51,10 @@ def _git(root, *args):
 
 def _path(value):
     value = _text(value, "source path")
+    try:
+        value.encode("utf-8", errors="strict")
+    except UnicodeError as exc:
+        raise ProvenanceError("invalid source path") from exc
     path = PurePosixPath(value)
     if (path.is_absolute() or path.as_posix() != value or ".." in path.parts
             or not path.parts or "\\" in value or ":" in value or "\x00" in value):
@@ -82,7 +86,8 @@ def _reader_link(url, repository_url, revision, path, scope):
     url = _text(url, "reader link")
     try:
         parsed = urlsplit(url)
-    except ValueError as exc:
+        decoded_path = unquote(parsed.path, encoding="utf-8", errors="strict")
+    except (ValueError, UnicodeError) as exc:
         raise ProvenanceError("invalid reader link") from exc
     expected = {
         "github.com": f"{repository_path}/blob/{revision}/{path}",
@@ -90,7 +95,7 @@ def _reader_link(url, repository_url, revision, path, scope):
     }
     if (parsed.scheme != "https" or parsed.query or parsed.fragment
             or parsed.netloc not in expected
-            or unquote(parsed.path) != expected[parsed.netloc]):
+            or decoded_path != expected[parsed.netloc]):
         raise ProvenanceError("reader link does not match pinned source")
 
 
@@ -136,11 +141,13 @@ def capture_source(repository, *, source_id, path, revision, byte_scope,
     else:
         candidate = root / path
         try:
-            # Reject symlinks at every component, even ones pointing inside root.
+            # Reject links at every component, even ones pointing inside root.
             current = root
             for component in PurePosixPath(path).parts:
                 current /= component
-                if current.is_symlink():
+                if (current.is_symlink()
+                        or getattr(current.lstat(), "st_file_attributes", 0)
+                        & stat.FILE_ATTRIBUTE_REPARSE_POINT):
                     raise ProvenanceError("checkout source must be a regular file")
             if not stat.S_ISREG(candidate.stat().st_mode):
                 raise ProvenanceError("checkout source must be a regular file")

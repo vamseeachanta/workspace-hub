@@ -11,8 +11,10 @@ import copy
 import hashlib
 import json
 import os
+import stat
 import subprocess
 from pathlib import Path
+from types import SimpleNamespace
 
 import pytest
 from report_provenance import (
@@ -264,10 +266,10 @@ def test_cli_pass_and_failure_exit_codes(source_repo, tmp_path):
     data = manifest(source_repo)
     for expected_code, digest in [(0, LF), (1, CRLF)]:
         data["sources"][0]["sha256"] = digest
-        path.write_text(json.dumps(data), encoding="utf-8")
+        path.write_text(json.dumps(data), encoding="utf-8", newline="\n")
         result = subprocess.run(
             [os.sys.executable, str(SCRIPT), str(path), "--repository", str(repo)],
-            capture_output=True, text=True, check=False,
+            capture_output=True, text=True, encoding="utf-8", check=False,
         )
         assert result.returncode == expected_code
         assert json.loads(result.stdout)["status"] == ("PASS" if expected_code == 0 else "FAIL")
@@ -356,3 +358,76 @@ def test_documented_worked_sidecar(source_repo):
     data["sources"][0]["sha256"] = CRLF
     assert check_manifest(data, source_repo[0])["status"] == "FAIL"
     assert data["prerequisites"][0]["status"] == "unmet"
+
+
+@pytest.mark.parametrize("prefix", [
+    "https://github.com/example/reference/blob/",
+    "https://raw.githubusercontent.com/example/reference/",
+])
+@pytest.mark.parametrize("encoded,valid", [("%FF", False), ("%EF%BF%BD", True)])
+def test_reader_path_requires_exact_utf8(source_repo, prefix, encoded, valid):
+    repo, _ = source_repo
+    blob = git(repo, "hash-object", "-w", "--stdin", data=b"abc\n").strip()
+    tree = git(repo, "mktree", data=(
+        b"100644 blob " + blob + b"\t" + "\ufffd.txt".encode("utf-8") + b"\n"
+    )).strip()
+    commit = (b"tree " + tree + b"\nauthor Fixture <fixture> 0 +0000\n"
+              b"committer Fixture <fixture> 0 +0000\n\nUnicode evidence\n")
+    revision = git(repo, "hash-object", "-t", "commit", "-w", "--stdin", data=commit)
+    revision = revision.decode("ascii").strip()
+    data = manifest(source_repo)
+    data["sources"][0].update(
+        path="\ufffd.txt", revision=revision,
+        reader_url=f"{prefix}{revision}/{encoded}.txt",
+    )
+    data["sources"][0].pop("git_blob_oid")
+    result = check_manifest(data, repo)
+    assert result["status"] == ("PASS" if valid else "FAIL")
+    if not valid:
+        assert result["sources"][0]["reason"] == "invalid reader link"
+
+
+@pytest.mark.parametrize("path", [chr(0xD800) + ".txt", chr(0xDFFF) + ".txt",
+                                  "a" + chr(0xDFFF) + chr(0xD800) + ".txt"])
+def test_surrogate_source_path_rejected_before_git(source_repo, monkeypatch, path):
+    def unexpected_git(*args):
+        pytest.fail("invalid source path reached Git")
+
+    monkeypatch.setattr("report_provenance._git", unexpected_git)
+    with pytest.raises(ProvenanceError, match="^invalid source path$"):
+        source(source_repo, path=path)
+
+
+@pytest.mark.parametrize("path", [chr(0xD800) + ".txt", chr(0xDFFF) + ".txt",
+                                  "a" + chr(0xDFFF) + chr(0xD800) + ".txt"])
+def test_surrogate_source_path_cli_json_failure(source_repo, tmp_path, path):
+    data = manifest(source_repo)
+    data["sources"][0]["path"] = path
+    manifest_path = tmp_path / "manifest.json"
+    manifest_path.write_text(json.dumps(data), encoding="utf-8", newline="\n")
+    result = subprocess.run(
+        [os.sys.executable, str(SCRIPT), str(manifest_path),
+         "--repository", str(source_repo[0])],
+        capture_output=True, text=True, encoding="utf-8", check=False,
+    )
+    assert result.returncode == 1
+    assert result.stderr == ""
+    observed = json.loads(result.stdout)
+    assert observed["status"] == "FAIL"
+    assert observed["sources"][0]["reason"] == "invalid source path"
+
+
+def test_checkout_junction_rejected(source_repo, monkeypatch):
+    repo, _ = source_repo
+    original_lstat = Path.lstat
+
+    def junction_lstat(self, **kwargs):
+        observed = original_lstat(self, **kwargs)
+        if self == repo / "evidence.txt":
+            return SimpleNamespace(st_mode=observed.st_mode,
+                                   st_file_attributes=stat.FILE_ATTRIBUTE_REPARSE_POINT)
+        return observed
+
+    monkeypatch.setattr(Path, "lstat", junction_lstat)
+    with pytest.raises(ProvenanceError, match="regular file"):
+        source(source_repo, "checkout-bytes")
