@@ -1,0 +1,29 @@
+{
+  "version": "manifest-closure-contract/v1",
+  "files": [
+    {
+      "id": "original",
+      "role": "retained-original",
+      "path": "raw/input.txt",
+      "format": "bytes",
+      "record_count": null,
+      "primary_key": null
+    },
+    {
+      "id": "records",
+      "role": "derived",
+      "path": "rows.json",
+      "format": "json-records",
+      "record_count": 2,
+      "primary_key": "id"
+    }
+  ],
+  "foreign_keys": [
+    {
+      "from_file": "records",
+      "field": "parent",
+      "to_file": "records",
+      "key": "id"
+    }
+  ]
+}
