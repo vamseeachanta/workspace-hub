@@ -64,6 +64,13 @@ jobs:
             tests/enforcement/test_check_codex_model_pin.py \
             -v --tb=short --noconftest
 
+      - name: Run byte-capture regression tests
+        run: |
+          uv run python -m pytest tests/quality/test_byte_capture_audit.py \
+            tests/readiness/test_byte_capture_preservation.py \
+            tests/readiness/test_sibling_sso_pointer_bytes.py \
+            -q -rA -p no:cacheprovider --basetemp="${RUNNER_TEMP}/byte-capture-tests"
+
       # CI smoke tests for #2532 regression guards (workspace_hub importability,
       # review-gate uv-decoupling). Runs on feature/** and PR pushes so a
       # regression is caught at push-time, not only at PR-open via enforcement-gate.
