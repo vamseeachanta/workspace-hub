@@ -110,6 +110,19 @@ shopt -u nullglob
 (( ${#_eq_local_evidence[@]} > 0 )) \
   || fail "no local equality evidence in ${EQ_LOCAL_DIR} — refusing to publish a silent no-op (run collect-equality.sh first; see #3702)"
 
+# Lock scope is the common Git directory, including linked checkouts.
+# PUBLISH_EQUALITY_LOCK=mkdir explicitly selects the portable implementation.
+# shellcheck source=scripts/readiness/lib/publish-lock.sh
+. "$SCRIPT_DIR/lib/publish-lock.sh"
+lock_root=$(git -C "$REPO_ROOT" rev-parse --path-format=absolute --git-common-dir) \
+  || fail "cannot resolve publication lock directory"
+acquire_publish_lock "$lock_root/equality-publish"; lock_rc=$?
+if (( lock_rc != 0 )); then
+  release_publish_lock || exit 1
+  exit "$lock_rc"
+fi
+publish_started=$SECONDS
+
 WT=""
 WT_REGISTERED=0
 cleanup() {
@@ -130,8 +143,9 @@ cleanup() {
   git -C "$REPO_ROOT" worktree prune >/dev/null 2>&1 || rc=1
   return "$rc"
 }
-best_effort_cleanup() { cleanup || true; }
+best_effort_cleanup() { cleanup || true; release_publish_lock || true; }
 trap best_effort_cleanup EXIT
+trap 'exit 1' HUP INT TERM
 
 # generated_at of an equality yaml ("" when absent/garbled) — ISO stamps compare lexically.
 gen_at() { awk -F'"' '/^generated_at:/{print $2; exit}' "$1" 2>/dev/null; }
@@ -233,5 +247,17 @@ while ! attempt; do
   attempt_number=$((attempt_number + 1))
 done
 cleanup || fail "publication ${PUBLISHED} completed but publisher worktree cleanup failed"
+if [[ "$PUBLISHED" != dry-run ]]; then
+  # Separate from fingerprint publication health; same validated serialization schema.
+  # Schema version 1: scripts/monitoring/equivalence_state.py, write_publish_health().
+  health_stamp=$(date -u +%Y-%m-%dT%H:%M:%SZ) || fail "cannot timestamp publication health"
+  health_tmp=$(mktemp "$EQ_LOCAL_DIR/.publish-health.XXXXXX") || fail "cannot prepare publication health"
+  if ! printf '{"schema_version":1,"ts":"%s","phase":"publish","duration_s":%s,"rc":0}\n' \
+    "$health_stamp" "$((SECONDS - publish_started))" > "$health_tmp" \
+    || ! mv -- "$health_tmp" "$EQ_LOCAL_DIR/publish-health.json"; then
+    fail "cannot record publication health"
+  fi
+fi
+release_publish_lock || fail "cannot release publication lock"
 trap - EXIT
 say "done (${PUBLISHED})"

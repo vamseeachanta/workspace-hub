@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import importlib.util
 import sys
+from datetime import datetime
 from pathlib import Path
 
 import pytest
@@ -22,6 +23,18 @@ assert spec is not None and spec.loader is not None
 bem = importlib.util.module_from_spec(spec)
 sys.modules["build_equality_matrix"] = bem  # register BEFORE exec (kebab-case import safety)
 spec.loader.exec_module(bem)
+
+
+@pytest.fixture(autouse=True)
+def fixed_render_clock(monkeypatch):
+    """Synthetic reports are collected at noon and rendered at the same fixed instant."""
+    class Clock(datetime):
+        @classmethod
+        def now(cls, tz=None):
+            return cls.fromisoformat("2026-10-22T12:00:00+00:00")
+
+    monkeypatch.setattr(bem, "datetime", Clock)
+    monkeypatch.setattr(bem.sys, "argv", ["build-equality-matrix.py"])
 
 
 # ── fixtures ────────────────────────────────────────────────────────────────
@@ -40,6 +53,7 @@ def _config(machines: dict) -> dict:
 
 def _report(machine: str, provenance: dict | None = None, **dims) -> dict:
     base = {
+        "generated_at": "2026-10-22T12:00:00Z",
         "machine": machine,
         "os": "linux",
         "status": "active",

@@ -55,13 +55,14 @@ if python3 -c '' >/dev/null 2>&1; then PY=python3
 elif python -c '' >/dev/null 2>&1; then PY=python
 else PY=python3; fi
 
-APPLY=0; STASH_DIRTY=0; DO_EQUALITY=0; AS_JSON=0
+APPLY=0; STASH_DIRTY=0; DO_EQUALITY=0; AS_JSON=0; NO_FETCH=0; INCOMPLETE=0
 for a in "$@"; do
   case "$a" in
     --apply) APPLY=1 ;;
     --stash-dirty) STASH_DIRTY=1 ;;
     --equality) DO_EQUALITY=1 ;;
     --json) AS_JSON=1 ;;
+    --no-fetch) NO_FETCH=1 ;;
     -h|--help) sed -n '2,40p' "$0"; exit 0 ;;
     *) echo "reconcile-ecosystem.sh: unknown arg '$a'" >&2; exit 2 ;;
   esac
@@ -120,6 +121,19 @@ discover_repos() {
 scan_repo() {
   local repo="$1" name; name="$(basename "$repo")"
   git -C "$repo" rev-parse --git-dir >/dev/null 2>&1 || return 0
+
+  # git-fetch 2.51.1, DESCRIPTION and --all: refresh remote-tracking refs before counts.
+  if [ "$NO_FETCH" = 0 ]; then
+    if ! git -C "$repo" remote get-url origin >/dev/null 2>&1 \
+      || ! git -C "$repo" fetch --all --prune --quiet </dev/null >/dev/null 2>&1; then
+      INCOMPLETE=1
+      add OPERATOR-ONLY "$name" "fetch failed — counts may use stale refs; scan incomplete" \
+        "git -C '$repo' fetch --all --prune"
+      echo "reconcile: [$name] fetch failed; counts may use stale refs" >&2
+    else
+      echo "reconcile: [$name] refs fetched at $(ts); ref observation age: 0" >&2
+    fi
+  fi
 
   # dirty
   local dirty; dirty=$(git -C "$repo" status --porcelain 2>/dev/null | grep -c . || true)
@@ -241,11 +255,33 @@ skills_repair_advice() {
 }
 
 equality_plan() {
-  command -v uv >/dev/null 2>&1 || { add OPERATOR-ONLY "$MACHINE" "uv missing — cannot read equality verdicts" "install uv"; return; }
-  local json verdicts; json=$(uv run --script "$BUILD_MATRIX" --json --machine "$MACHINE" 2>/dev/null </dev/null) || return
+  if ! command -v uv >/dev/null 2>&1; then
+    if [ -x "${HOME:-}/.local/bin/uv" ]; then
+      PATH="${HOME}/.local/bin:$PATH"; export PATH
+    else
+      echo "reconcile: cannot read equality verdicts: uv unavailable on PATH or user-level bin directory" >&2
+      return 1
+    fi
+  fi
+  local json verdicts
+  if ! json=$(uv run --script "$BUILD_MATRIX" --json --machine "$MACHINE" </dev/null); then
+    echo "reconcile: cannot read equality verdicts from matrix builder" >&2
+    return 1
+  fi
+  if ! verdicts=$("$PY" -c 'import json,re,sys
+d=json.load(sys.stdin); row=d[sys.argv[1]]
+if not isinstance(row,dict) or not row: raise ValueError("missing verdict map")
+if not all(isinstance(k,str) and isinstance(v,str) for k,v in row.items()):
+    raise ValueError("invalid verdict types")
+if not all(re.fullmatch("[a-z_:]+",k) and re.fullmatch("[A-Z-]+",v) for k,v in row.items()):
+    raise ValueError("invalid verdict names")
+for k,v in row.items(): print(json.dumps(k)+": "+json.dumps(v))
+' "$MACHINE" <<< "$json" 2>/dev/null); then
+    echo "reconcile: cannot read equality verdicts: missing or malformed matrix inputs" >&2
+    return 1
+  fi
   # parse "dim": "VERDICT" lines for this machine, map each non-OK to a fix.
   # here-string (not a pipe) so add() runs in THIS shell and PLAN persists.
-  verdicts=$(printf '%s\n' "$json" | grep -oE '"[a-z_:]+": "[A-Z-]+"')
   while IFS= read -r line; do
     [ -z "$line" ] && continue
     local dim verdict; dim=$(printf '%s' "$line" | sed -E 's/^"([^"]+)".*/\1/')
@@ -288,15 +324,23 @@ equality_plan() {
 }
 
 # ── run detection ────────────────────────────────────────────────────────────
+equality_plan || exit 1
+REF_STATUS=fetched
+if [ "$NO_FETCH" = 1 ]; then
+  REF_STATUS=not-fetched
+  echo "reconcile: NOT-FETCHED — counts come from possibly stale refs (--no-fetch)" >&2
+fi
 # Read the repo list into an array FIRST (no process-substitution on the scan loop —
 # inner git/guard calls would otherwise consume the loop's stdin and drop repos).
 mapfile -t REPOS < <(discover_repos)
 for repo in "${REPOS[@]}"; do scan_repo "$repo"; done
-equality_plan
+[ "$INCOMPLETE" = 0 ] || REF_STATUS=fetch-failed
 
 # ── output ───────────────────────────────────────────────────────────────────
 if [ "$AS_JSON" = 1 ]; then
-  printf '{"machine":"%s","destructive_ok":%s,"plan":[' "$MACHINE" "$DESTRUCTIVE_OK"
+  complete=true; [ "$INCOMPLETE" = 0 ] || complete=false
+  printf '{"machine":"%s","destructive_ok":%s,"complete":%s,"refs":"%s","plan":[' \
+    "$MACHINE" "$DESTRUCTIVE_OK" "$complete" "$REF_STATUS"
   first=1
   for row in "${PLAN[@]:-}"; do
     [ -z "$row" ] && continue
@@ -308,11 +352,13 @@ if [ "$AS_JSON" = 1 ]; then
     first=0
   done
   printf ']}\n'
-  exit 0
+  exit "$INCOMPLETE"
 fi
 
 echo "── ecosystem + equality reconcile · machine=$MACHINE · $(ts) ──"
 echo "   (default is read-only; pass --apply to run the AUTO-SAFE subset)"
+echo "   ref status: $REF_STATUS (fetch updates tracking refs only)"
+[ "$INCOMPLETE" = 0 ] || echo "   INCOMPLETE — fetch failures prevent an all-clear conclusion"
 for cls in AUTO-SAFE NEEDS-APPROVAL OPERATOR-ONLY; do
   n=0
   for row in "${PLAN[@]:-}"; do [ -n "$row" ] && [ "${row%%$'\t'*}" = "$cls" ] && n=$((n+1)); done
@@ -328,6 +374,7 @@ done
 
 # ── apply (AUTO-SAFE only) ───────────────────────────────────────────────────
 if [ "$APPLY" = 1 ]; then
+  [ "$INCOMPLETE" = 0 ] || exit 1
   echo
   echo "── applying AUTO-SAFE actions ──"
   rc=0
@@ -351,4 +398,4 @@ if [ "$APPLY" = 1 ]; then
   fi
   exit "$rc"
 fi
-exit 0
+exit "$INCOMPLETE"

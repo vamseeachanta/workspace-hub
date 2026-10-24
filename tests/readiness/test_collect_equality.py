@@ -8,10 +8,11 @@ depending on the host's real hardware.
 
 from __future__ import annotations
 
-import os
 import json
+import os
 import re
 import shlex
+import shutil
 import subprocess
 import sys
 import threading
@@ -293,6 +294,9 @@ def test_collect_atomic_failure_preserves_prior_report(tmp_path):
 
 
 def test_collect_keeps_old_report_visible_until_atomic_rename(tmp_path):
+    # Resolve the real command before the controlled PATH replaces it.
+    real_mv = shutil.which("mv")
+    assert real_mv is not None, "atomic rename fixture requires mv"
     ws = _fixture(tmp_path)
     out = ws / ".claude" / "state" / "equality-dev-primary.yaml"
     prior = 'generated_at: "prior"\nmachine: "dev-primary"\nsentinel: old\n'
@@ -306,7 +310,7 @@ def test_collect_keeps_old_report_visible_until_atomic_rename(tmp_path):
         "#!/usr/bin/env bash\n"
         f"touch {_bash_path(entered)!r}\n"
         f"while [[ ! -f {_bash_path(release)!r} ]]; do sleep 0.02; done\n"
-        "exec /usr/bin/mv \"$@\"\n"
+        f"exec {shlex.quote(_bash_path(Path(real_mv)))} \"$@\"\n"
     )
     fake_mv.chmod(0o755)
     proc = subprocess.Popen(
