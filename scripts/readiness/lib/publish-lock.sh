@@ -16,7 +16,10 @@ acquire_publish_lock() {
   [[ "$now" =~ ^[0-9]+$ ]] || return 1
   # Serialize acquisition and reclamation; a missing owner never permits takeover.
   mkdir "$PUBLISH_LOCK_DIR.guard" 2>/dev/null || {
-    [[ -d "$PUBLISH_LOCK_DIR.guard" ]] && return 75
+    if [[ -d "$PUBLISH_LOCK_DIR.guard" ]]; then
+      echo 'publish-equality: another publish in flight' >&2
+      return 75
+    fi
     echo 'publish-equality: cannot set up lock guard' >&2; return 1;
   }
   if ! mkdir "$PUBLISH_LOCK_DIR" 2>/dev/null; then

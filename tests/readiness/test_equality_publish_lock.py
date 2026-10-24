@@ -14,7 +14,7 @@ LIB = Path(__file__).resolve().parents[2] / 'scripts/readiness/lib/publish-lock.
 
 
 def command(path, body):
-    path.write_text('#!/usr/bin/env bash\n' + body)
+    path.write_text('#!/usr/bin/env bash\n' + body, encoding="utf-8", newline="\n")
     path.chmod(0o755)
 
 
@@ -38,7 +38,7 @@ def run(env, body='acquire_publish_lock "$LOCK" || exit $?\necho acquired\nrelea
 def owner(env, pid, stamp):
     path = Path(env['LOCK'] + '.d')
     path.mkdir()
-    (path / 'owner').write_text(f'{pid} {stamp}\n')
+    (path / 'owner').write_text(f'{pid} {stamp}\n', encoding="utf-8", newline="\n")
     return path
 
 
@@ -96,7 +96,7 @@ def test_flock_result_is_distinguished(lock_env, code, expected):
 
 def test_setup_failure_is_not_contention(lock_env):
     env, _ = lock_env
-    Path(env['LOCK'] + '.d').write_text('not a directory')
+    Path(env['LOCK'] + '.d').write_text('not a directory', encoding="utf-8", newline="\n")
     result = run(env)
     assert result.returncode == 1
 
@@ -106,4 +106,18 @@ def test_replaced_owner_is_preserved(lock_env):
     result = run(env, 'acquire_publish_lock "$LOCK" || exit $?\n'
                  'echo "1 10000" > "$LOCK.d/owner"\nrelease_publish_lock')
     assert result.returncode != 0
-    assert Path(env['LOCK'] + '.d/owner').read_text() == '1 10000\n'
+    assert Path(env['LOCK'] + '.d/owner').read_text(encoding="utf-8") == '1 10000\n'
+
+
+def test_preheld_guard_reports_contention_without_acquiring(lock_env):
+    env, _ = lock_env
+    guard = Path(env['LOCK'] + '.d.guard')
+    guard.mkdir()
+    marker = guard / 'marker'
+    marker.write_text('held', encoding="utf-8", newline="\n")
+    result = run(env)
+    assert result.returncode == 75
+    assert result.stderr.strip() == 'publish-equality: another publish in flight'
+    assert 'acquired' not in result.stdout
+    assert marker.read_text(encoding="utf-8") == 'held'
+    assert not Path(env['LOCK'] + '.d').exists()

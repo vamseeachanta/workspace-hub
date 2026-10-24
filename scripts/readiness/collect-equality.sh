@@ -422,7 +422,7 @@ import json, sys
 sys.path.insert(0, sys.argv[2])
 from equivalence_state import validate_publish_health
 try:
-    d = validate_publish_health(open(sys.argv[1]).read())
+    d = validate_publish_health(open(sys.argv[1], encoding="utf-8").read())
     print(d["ts"], d["duration_s"], d["rc"])
 except Exception:
     print("missing null null")
@@ -519,7 +519,13 @@ FULL="generated_at: \"${RUN_TS}\""$'\n'"${BODY}"
 # canonical payload = exclude volatile/meaningless fields (DC4/DG1)
 # CC2/GC2: anchor volatile-field exclusion to line start/indent so a value that merely
 # CONTAINS "job_count:"/"context_md_mtime:" can't drop its line from the hash.
-canonical() { printf '%s\n' "$1" | grep -vE '^(generated_at:)|^[[:space:]]*(headroom|context_md_mtime|job_count|checkout_sha):'; }
+canonical() {
+  printf '%s\n' "$1" | grep -vE '^(generated_at:)|^[[:space:]]*(headroom|context_md_mtime|job_count|checkout_sha):' || {
+    local rc=$?
+    # No retained lines means empty content; filter failures remain errors.
+    (( rc == 1 )) || return "$rc"
+  }
+}
 
 if [[ "$TO_STDOUT" == "1" ]]; then
   printf '%s\n' "$FULL"
