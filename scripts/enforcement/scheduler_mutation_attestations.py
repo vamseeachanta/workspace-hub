@@ -172,7 +172,7 @@ def forensic_literal_lines(body: bytes) -> set[int]:
         if isinstance(node, ast.AnnAssign) and not isinstance(node.annotation, ast.Name):
             continue
         value = node.value
-        if value is None:
+        if value is None or any(isinstance(child, ast.Call) for child in ast.walk(value)):
             continue
         try:
             ast.literal_eval(value)

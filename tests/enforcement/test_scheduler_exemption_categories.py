@@ -54,6 +54,8 @@ def test_original_binding_inventory_requires_review_to_expand():
     b'if run("crontab -"): PATTERN = "crontab -"  # scheduler-mutation-forensic\n',
     b'obj.value = "crontab -"  # scheduler-mutation-forensic\n',
     b'PATTERN = transform("crontab -")  # scheduler-mutation-forensic\n',
+    b'PATTERN = ("crontab -", set())  # scheduler-mutation-forensic\n',
+    b'PATTERN = {"crontab -": set()}  # scheduler-mutation-forensic\n',
     b'PATTERN: run("crontab -") = "crontab -"  # scheduler-mutation-forensic\n',
     b'PATTERN = ("crontab -" + value)  # scheduler-mutation-forensic\n',
     b'PATTERN = "crontab -"  # scheduler-mutation-forensic-extra\n',
@@ -128,3 +130,22 @@ def test_scheduler_uses_shared_exemption_contract(monkeypatch):
         ),
     )
     assert adapter(replace(good, body=BODY + b'run("crontab -")\n')) is False
+
+
+def test_exemption_helper_bytes_are_required_audit_digest_inputs():
+    checker = load_checker()
+    records = checker.read_index_records(checker.ROOT)
+    registry = yaml.safe_load(records[checker.REGISTRY])
+    source = b"scripts/enforcement/scanner_exemptions.py"
+    before = checker.input_digest(
+        records[checker.REGISTRY], checker.digest_record_union(registry, records)
+    )
+    changed = dict(records)
+    changed[source] += b"\n# synthetic digest probe\n"
+    after = checker.input_digest(
+        changed[checker.REGISTRY], checker.digest_record_union(registry, changed)
+    )
+    assert after != before
+    del changed[source]
+    with pytest.raises(KeyError, match="digest source missing"):
+        checker.digest_record_union(registry, changed)

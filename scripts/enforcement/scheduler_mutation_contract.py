@@ -142,6 +142,7 @@ def digest_record_union(
     paths = {
         b"scripts/enforcement/check-scheduler-mutation-surfaces.py",
         b"scripts/enforcement/scheduler_mutation_contract.py",
+        b"scripts/enforcement/scanner_exemptions.py",
         # #3784: carries the pinned DISPOSITION_CONTRACT — must be digested.
         b"scripts/enforcement/scheduler_mutation_dispositions.py",
         b"scripts/enforcement/scheduler_mutation_attestations.py",
