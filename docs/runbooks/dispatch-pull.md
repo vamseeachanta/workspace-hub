@@ -251,21 +251,20 @@ Statuses are distinct on purpose — they need different actions from you:
 | status | meaning | your move |
 |---|---|---|
 | `ran` | executed and the fence still held; marked done | nothing |
-| `failed` | `drain.py` exited nonzero; **not** marked done, stays claimable | read the job's `stderr.log` |
+| `failed` | execution or remote lease read failed; **not** marked done | read the recorded error |
 | `paused` | `.claude/dispatch/PAUSE` exists; the run stopped here | remove the sentinel when ready |
 | `no_command` | nothing bound in `commands.yaml` | bind it, or leave it — this is the standing state |
 | `wip_capped` | the router did not mark the card `wip_eligible` | routing question, not a dispatch one |
 | `run_capped` | past this run's `--max-cards` ceiling; never dropped | it will be reconsidered next run |
-| `skipped_held` | another host holds a fresh lease | nothing |
-| `lost_fence` | superseded mid-run; **not** marked done | expect a re-run |
+| `skipped_held` | lease unavailable or publication rejected | inspect `push_rc` before treating it as contention |
+| `lost_fence` | superseded before execution or completion; **not** marked done | inspect the current grant |
 
-`fetch_rc` / `push_rc` are in the summary because a failed lease sync leaves this
-host's claims invisible to the fleet — the [#3772](https://github.com/vamseeachanta/workspace-hub/issues/3772)
-failure mode, and otherwise indistinguishable from a quiet night.
+`fetch_rc` and `push_rc` report remote lease read and publication failures.
+A failed publication never permits execution. These fields retain failures
+even when a later operation succeeds.
 
-The loop exits nonzero **only** for a card that genuinely failed. `no_command` is
-a standing configuration gap across the backlog; alarming on it every poll would
-train you to ignore the exit code that reports a real break.
+The loop exits nonzero for execution failures or remote lease errors.
+Configuration deferrals such as `no_command` alone still return success.
 
 ### 3. Was the run refused before it started?
 
@@ -353,3 +352,79 @@ uv run python scripts/cron/validate-schedule.py
 `check-scheduler-mutation-surfaces.py` reads the **git index**, not the working
 tree (`check-scheduler-mutation-surfaces.py:88`). Stage your changes first or it
 will report the state you had before you edited anything.
+
+## Remote lease arbitration
+
+The pull entry point uses `RemoteGitRefLease`: it reads origin, publishes each
+candidate grant before execution, and checks the remote fencing token before
+execution and before recording completion. The shared namespace remains owned
+by `dispatch_lease.REF_PREFIX`. `GitRefLease` remains the local-process adapter.
+
+### Revision history
+
+| Revision | Date | Change and reason |
+|---|---|---|
+| 1 | 2026-10-22 | Added remote publication and fencing guidance because synchronization after execution cannot prevent duplicate work. |
+
+### Method and sources
+
+The original namespace mismatch is described in issue #3772.
+The namespace regression tests still acquire locally, push through the shared
+refspec, fetch in a second checkout, and assert refusal there. Matching namespace
+strings alone do not test execution ordering.
+
+The remote adapter reads the exact ref from origin with `ls-remote --exit-code`.
+A missing match has exit status `2`; communication errors deny acquisition.
+Source: [Git git-ls-remote manual, OPTIONS, --exit-code](https://git-scm.com/docs/git-ls-remote),
+last updated in Git 2.48.0, accessed 2026-10-22. Existing grants are fetched as
+objects without advancing local lease refs or `FETCH_HEAD`; the advertised
+commit supplies the lease state.
+
+Creation writes a candidate root commit. Renewal or reclaim writes a child of
+the observed remote tip. Each candidate is pushed as its exact commit to the
+exact lease ref. Competing roots are unrelated; competing updates are siblings.
+A normal branch push accepts an advance only when the destination is an ancestor
+of the candidate, so the later conflicting grant is refused. Source:
+[Git git-push manual, NOTE ABOUT FAST-FORWARDS](https://git-scm.com/docs/git-push#_note_about_fast_forwards),
+last updated in Git 2.55.0, accessed 2026-10-22. Pending candidates receive no local
+lease ref, so a rejected grant cannot later be swept into a wildcard push.
+
+The existing lease core defines expiry as `now - renewed_at > ttl_s`, creation
+at generation `1`, and reclaim as `old_generation + 1`. Source:
+[`dispatch_lease.py`, acquire and reclaim](../../scripts/operations/dispatch_lease.py).
+These are protocol definitions; no engineering coefficient or acceptance limit
+is introduced.
+
+### Worked example
+
+All times below are synthetic inputs, shared with
+[`test_dispatch_remote_lease.py`](../../tests/operations/test_dispatch_remote_lease.py).
+They are not recommended operational settings. The fixture provides a bare
+remote, two independent checkouts, one work item `task`, TTL `30` seconds, grant
+time `100`, contender time `101`, and reclaim time `131`.
+
+| Step | Method | Expected answer |
+|---|---|---|
+| Initial grant | First checkout reads absence, creates and publishes the root | Generation `1`; the grant is visible remotely before the executor starts |
+| Fresh contender | Second checkout reads origin; `101 - 100 = 1 <= 30` | Refused; the combined executor count remains `1` |
+| Simultaneous absent reads | Both prepare different roots; the first push succeeds | The later push is rejected; the combined executor count remains `1` |
+| Dead-holder reclaim | Supplied liveness callback returns false; `131 - 100 = 31 > 30` | Second checkout publishes generation `1 + 1 = 2` |
+| Old completion token | First checkout reads the replacement grant from origin | Old token rejected; completion is not recorded |
+| Remote unavailable | Read or object fetch fails | Failure recorded; no executor call |
+| Publication rejected | Candidate push fails | No executor call, no pending local lease ref, nonzero program result |
+
+The expected counts follow from the explicit sequence of grants and calls, and
+the boundary arithmetic is written independently in the test docstrings.
+
+### Limits
+
+Remote lease history must be append-only. Deleting refs, forcing updates or
+merging competing grants is outside this protocol. The pull entry point does
+not supply a dead-holder liveness callback, so it does not automatically reclaim
+expired grants. The example exercises reclaim with an injected callback.
+
+A fencing read observes a point in time. It cannot cancel an already running
+external effect or provide a transaction across that effect and Git. Long-running
+payloads need downstream fencing at their own side-effect boundary. The dispatch
+record claim remains an independent guard. No production activation or remote
+lease migration is performed by this change.
