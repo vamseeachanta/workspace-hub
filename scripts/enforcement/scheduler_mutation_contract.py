@@ -5,7 +5,9 @@ import hashlib
 import struct
 from dataclasses import dataclass
 from typing import Any
+
 from scheduler_mutation_delegation import validate_delegation_schema
+
 TX_FIELDS = (
     "lock",
     "baseline_snapshot",
@@ -47,7 +49,7 @@ SELECTION_CONDITIONS = {
 # and was at exactly 400 when #3784 needed to register a new surface.
 # Extracted rather than raising the cap — relaxing a guard to fit a change
 # under it is the failure the guard exists to prevent.
-from scheduler_mutation_dispositions import (  # noqa: E402
+from scheduler_mutation_dispositions import (
     DEFECT_CLASSES,
     DISPOSITION_CONTRACT,
 )
@@ -136,6 +138,20 @@ def input_digest(registry_bytes: bytes, records: dict[bytes, bytes]) -> str:
     return hashlib.sha256(data).hexdigest()
 
 
+PIN_TEST_SOURCES = {
+    b"tests/enforcement/scheduler_contract_fixtures.py",
+    b"tests/enforcement/pin_helpers.py",
+    b"tests/enforcement/test_pin_helpers.py",
+    b"tests/enforcement/test_wrapper_pin_reasons.py",
+    b"tests/enforcement/attestation_inventory.py",
+    b"tests/enforcement/test_attestation_inventory.py",
+    b"tests/enforcement/workflow_contracts.py",
+    b"tests/enforcement/test_workflow_contracts.py",
+    b"docs/reports/hash-pinned-attestation-audit.json",
+    b"tests/enforcement/fixtures/pinned-preview.sh",
+}
+
+
 def digest_record_union(
     registry: dict[str, Any], records: dict[bytes, bytes]
 ) -> dict[bytes, bytes]:
@@ -156,6 +172,7 @@ def digest_record_union(
         b".github/workflows/enforcement-gate.yml",
         b".github/workflows/scheduler-mutation-main.yml",
     }
+    paths.update(PIN_TEST_SOURCES)
     for row in registry["surfaces"]:
         paths.add(row["path"].encode())
         for operation in row.get("operations", []):

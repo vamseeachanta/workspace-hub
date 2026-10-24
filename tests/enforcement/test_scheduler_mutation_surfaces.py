@@ -2,17 +2,17 @@
 
 from __future__ import annotations
 
-import importlib.util
 import copy
-import os
+import importlib.util
 import json
+import os
 import subprocess
 import sys
 from pathlib import Path
 
 import pytest
 import yaml
-
+from scheduler_contract_fixtures import checkout_records
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 CHECKER = REPO_ROOT / "scripts/enforcement/check-scheduler-mutation-surfaces.py"
@@ -63,15 +63,11 @@ def test_current_mutation_inventory_is_registered():
     assert {row["path"] for row in registry["surfaces"]} == DIRECT | TRANSITIVE
 
 
-def test_cli_reports_machine_readable_failures_and_success():
-    completed = subprocess.run(
-        [sys.executable, str(CHECKER), "--json"],
-        cwd=REPO_ROOT,
-        text=True,
-        capture_output=True,
-    )
-    assert completed.returncode == 0, completed.stdout + completed.stderr
-    payload = json.loads(completed.stdout)
+def test_cli_reports_machine_readable_failures_and_success(monkeypatch, capsys):
+    checker, records, _registry = current_contract()
+    monkeypatch.setattr(checker, "read_index_records", lambda _root: records)
+    assert checker.main(["--json"]) == 0
+    payload = json.loads(capsys.readouterr().out)
     assert payload["direct"] == sorted(DIRECT)
     assert payload["transitive"] == sorted(TRANSITIVE)
     assert payload["errors"] == []
@@ -182,7 +178,7 @@ def test_cat_file_transport_requires_nul_mode(tmp_path):
 
 def current_contract():
     checker = load_checker()
-    records = checker.read_index_records(REPO_ROOT)
+    records = checkout_records(checker, REPO_ROOT)
     registry = yaml.safe_load(REGISTRY.read_bytes())
     return checker, records, registry
 
@@ -266,13 +262,14 @@ def test_true_transaction_guarantees_require_specific_attestations():
     assert any("pre_write_cas" in error for error in result.errors)
 
 
-def test_digest_uses_exact_plan_defined_union_and_cli_emits_it():
+def test_digest_uses_exact_plan_defined_union_and_cli_emits_it(monkeypatch, capsys):
     checker, records, registry = current_contract()
     selected = checker.digest_record_union(registry, records)
     assert b".github/workflows/enforcement-gate.yml" in selected
     assert b"scripts/enforcement/check-scheduler-mutation-surfaces.py" in selected
-    completed = subprocess.run([sys.executable, str(CHECKER), "--json"], cwd=REPO_ROOT, text=True, capture_output=True)
-    payload = json.loads(completed.stdout)
+    monkeypatch.setattr(checker, "read_index_records", lambda _root: records)
+    assert checker.main(["--json"]) == 0
+    payload = json.loads(capsys.readouterr().out)
     assert payload["input_digest"] == checker.input_digest(REGISTRY.read_bytes(), selected)
 
 
@@ -283,6 +280,30 @@ def test_index_bytes_win_over_dirty_worktree(tmp_path):
     subprocess.run(["git", "add", "tracked.sh"], cwd=tmp_path, check=True)
     path.write_text("dirty\n")
     assert load_checker().read_index_records(tmp_path)[b"tracked.sh"] == b"indexed\n"
+
+
+def test_real_cli_rejects_incomplete_index_and_accepts_complete_index():
+    """Before staging, new required digest inputs are absent; after staging, valid.
+
+    The process must read the actual index rather than silently using working
+    files. This keeps the real CLI transport covered alongside source snapshots.
+    """
+    checker = load_checker()
+    records = checker.read_index_records(REPO_ROOT)
+    missing = checker.digest_record_union.__globals__["PIN_TEST_SOURCES"] - records.keys()
+    completed = subprocess.run(
+        [sys.executable, str(CHECKER), "--json"], cwd=REPO_ROOT,
+        text=True, capture_output=True, check=False,
+    )
+    payload = json.loads(completed.stdout)
+    if missing:
+        assert completed.returncode == 1
+        assert payload["status"] == "error"
+        assert all(path.decode() in payload["errors"][0] for path in missing)
+    else:
+        assert completed.returncode == 0, payload
+        assert payload["status"] == "ok"
+        assert payload["errors"] == []
 
 
 def test_cat_file_transport_handles_odd_path_bytes(tmp_path):

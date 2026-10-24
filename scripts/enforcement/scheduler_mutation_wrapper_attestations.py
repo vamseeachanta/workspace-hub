@@ -101,28 +101,32 @@ exec uv run --script "$CRON_APPLY" "${APPLY_ARGS[@]}"'''
 
 
 def evaluate_wrapper_attestation(name: str, records: dict[bytes, bytes]) -> bool | None:
+    reason = wrapper_attestation_reason(name, records)
+    return None if reason is None else reason == "accepted"
+
+
+def wrapper_attestation_reason(name: str, records: dict[bytes, bytes]) -> str | None:
+    """Report provenance before semantics without changing the boolean contract."""
     if name in SETUP_ATTESTATIONS:
-        body = records.get(SETUP, b"")
-        if not _pinned(SETUP, records) or not _reachable_script(
-            body, b'exec uv run --script "$CRON_APPLY"'
-        ):
-            return False
-        return _setup_shape(body)
-    if name in NEW_MACHINE_ATTESTATIONS:
-        body = records.get(NEW_MACHINE, b"")
-        if not _pinned(NEW_MACHINE, records) or not _reachable_script(
-            body, b'bash "${WORKSPACE_HUB}/scripts/cron/setup-cron.sh"'
-        ):
-            return False
-        return _new_machine_shape(body)
-    if name in HARNESS_ATTESTATIONS:
-        body = records.get(HARNESS, b"")
-        if not _pinned(HARNESS, records) or not _reachable_script(
-            body, b"\nsync_crontab\n"
-        ):
-            return False
-        return _harness_shape(body)
-    return None
+        source, terminal, shape = SETUP, b'exec uv run --script "$CRON_APPLY"', _setup_shape
+    elif name in NEW_MACHINE_ATTESTATIONS:
+        source = NEW_MACHINE
+        terminal = b'bash "${WORKSPACE_HUB}/scripts/cron/setup-cron.sh"'
+        shape = _new_machine_shape
+    elif name in HARNESS_ATTESTATIONS:
+        source, terminal, shape = HARNESS, b"\nsync_crontab\n", _harness_shape
+    else:
+        return None
+    if not WRAPPER_SHA256.get(source):
+        return "missing-pin"
+    if source not in records:
+        return "missing-source"
+    if not _pinned(source, records):
+        return "stale-pin"
+    body = records[source]
+    if not _reachable_script(body, terminal):
+        return "unreachable"
+    return "accepted" if shape(body) else "source-shape"
 
 
 def _pinned(source: bytes, records: dict[bytes, bytes]) -> bool:
