@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en"><meta charset="utf-8"><title>Sparse worktree authority plan</title>
+<h1>Sparse worktree authority plan</h1>
+<p>The implementation will distinguish missing index initialization from valid sparse
+omission and will make content authority explicit before repository inspection.</p>
+<h2>Resource intelligence and scope</h2>
+<p>The work will address issues 3457, 3459 and 3460. Regression coverage will preserve
+the current policy retirement associated with 3523 and the existing root fix associated
+with 3179. It will not reinstate marker approval or alter independent hook-path wiring.
+Discovery changes in pull request 4132 and effective hook installation in pull request
+4190 will remain separate. The only installer change will replace its learning payload.
+Execution will use one serial track, with no external provider invocation.</p>
+<h2>Reproduction and independent oracles</h2>
+<p>Tests will create real temporary repositories and linked worktrees using Git plumbing.
+A fixture will contain two named leaves. An interrupted --no-checkout preparation will
+have zero index entries and will be rejected. Full, cone, non-cone and sparse-index
+preparations will retain both leaves and will pass. Tests will compare literal fixture
+contents and independently enumerated leaf counts, not values computed by the checker.</p>
+<h2>Artifact map and numbered slices</h2>
+<ol><li>A shell library and thin enforcement entry point will validate HEAD/index state.
+The storage checkout helper and shell review entry points will call it before inspection.</li>
+<li>Tests will confirm that sparse omission and tracked, untracked or absent markers
+will not reactivate the retired plan gate.</li>
+<li>The absolute-path scanner will define working-tree, index and HEAD modes, use
+NUL-delimited paths, distinguish sparse omission from missing files and report coverage.</li>
+<li>A durable installed learning payload will resolve the current commit and common
+directory. It will execute regular blobs from that snapshot, retain failure events and
+return success after commit. Tests will invoke the actual installed event shape.</li>
+<li>Testing peers will use structural roots. Real linked-worktree tests will exercise
+hook-like bindings with and without GIT_WORK_TREE and will preserve existing fixed peers.</li>
+<li>An HTML guide will tabulate authority by topology, present a worked example and
+inventory remaining root candidates with explicit limitations.</li></ol>
+<h2>Method and acceptance</h2>
+<p>The preflight will resolve a HEAD tree, count NUL-delimited tree and expanded-index
+leaves, reject a nonempty-tree/empty-index pair, and in fresh mode reject complete staged
+deletion. It will never repair or delete worktrees. Scanner tests will exercise staged
+content different from working bytes, missing targets, unmerged entries and unusual
+filenames. Learning tests will exercise missing, failing, edited and symlink helpers,
+legacy payload replacement, independent hook preservation and repeated failure counts.</p>
+<p>Targeted tests for every changed module, Ruff, shell syntax and ShellCheck will be
+attempted. Missing tools and proven baseline defects will be recorded separately.
+Required fixtures will run one command at a time. The final tree will remain uncommitted
+for publication by the runner. Independent provider review will remain a merge prerequisite.</p>
+<h2>Adversarial plan review and risks</h2>
+<p>The local review will challenge index expansion, hook-environment leakage, mutable
+helper execution, swallowed child failures, staged-versus-working confusion and unknown
+coverage. Countermeasures will be tested before acceptance. It will reject automatic
+repair, broad hook replacement and any reintroduction of retired marker policy.
+An absent or corrupt HEAD will fail closed rather than being assumed empty.
+A local review will not be represented as independent provider consensus.</p>
+<h2>Sources</h2>
+<p>The method will follow the public Git 2.43
+<a href="https://git-scm.com/docs/git-worktree/2.43.0">worktree</a>,
+<a href="https://git-scm.com/docs/git-sparse-checkout/2.43.0">sparse-checkout</a>,
+<a href="https://git-scm.com/docs/githooks/2.43.0">githooks</a>,
+<a href="https://git-scm.com/docs/git-ls-files/2.43.0">ls-files</a> and
+<a href="https://git-scm.com/docs/git-rev-parse/2.43.0">rev-parse</a> manuals.
+No engineering equation, coefficient or acceptance limit will be introduced.</p>
+</html>
