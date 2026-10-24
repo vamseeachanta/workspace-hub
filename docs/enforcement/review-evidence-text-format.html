@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Review evidence text format</title>
+<main>
+<h1>Review evidence text format</h1>
+<p>Commit-bound evidence is read with filename boundaries preserved and with
+either LF or CRLF line endings. This prevents a filename or text-file convention
+from discarding a valid binding. The existing warn-first migration remains unchanged.</p>
+<h2>Revision history</h2>
+<table>
+<thead><tr><th>Revision</th><th>Date</th><th>Change and reason</th></tr></thead>
+<tbody><tr><td>A</td><td>2026-10-22</td><td>Describe evidence parsing and a worked
+example so text formatting can be distinguished from review coverage.</td></tr></tbody>
+</table>
+<p>Table 1. Document revisions.</p>
+<h2>Inputs and method</h2>
+<p>The gate reads result files under <code>scripts/review/results/</code>, including
+the existing nested-file depth. Spaces and newlines in filenames remain part of
+the filename. A terminal carriage return is removed from each evidence record;
+other whitespace is retained and commit identifiers still require exact validation.
+Evidence order does not affect the union of valid bindings.</p>
+<pre>Reviewed-Commit: &lt;full-commit-id&gt;
+Reviewed-Range: &lt;oldest-full-commit-id&gt;..&lt;reviewed-full-commit-id&gt;</pre>
+<p>The range syntax above is inclusive of both named endpoints, as defined by the
+repository evidence contract; it differs from Git's exclusive-left revision syntax.</p>
+<h2>Worked example</h2>
+<p>Consider a linear history <code>M → A → B → E</code>. The remote default
+branch and remote topic tip both point to M. A and B change source files and have
+feature subjects. E changes only a review-result file. These are synthetic inputs.</p>
+<ol>
+<li>The checked set is the commits reachable from E minus the commits reachable
+from either remote tip: <code>{A, B, E}</code>. The existing evidence-only rule
+exempts E, leaving <code>{A, B}</code> requiring review.</li>
+<li>A result file containing only <code>Reviewed-Commit: A</code>, with A replaced
+by its full identifier, covers <code>{A}</code>. Set subtraction leaves
+<code>{B}</code>: reviewed = 1, unreviewed = 1. Strict evidence mode blocks.</li>
+<li>Adding <code>Reviewed-Range: A..B</code>, with both full identifiers, covers
+<code>{A, B}</code>. Nothing remains: reviewed = 2, unreviewed = 0. Strict evidence
+mode passes. A CRLF result file gives the same answer as an LF result file.</li>
+</ol>
+<p>The expected counts above are calculated directly from the enumerated sets,
+independently of the implementation. The executable example is
+<code>case_crlf_evidence</code> in
+<a href="../../scripts/enforcement/tests/test_require_review_on_push.sh">the gate tests</a>.
+<code>case_evidence_filename_boundaries</code> exercises a filename with a newline.</p>
+<h2>Sources and limits</h2>
+<p>The governing range, full-identifier, migration and exemption rules are recorded
+in <a href="review-gate-defects.md">Review gate defects, Evidence file format and
+Evidence mode</a>. The set arithmetic above introduces no engineering constants
+or external acceptance limits.</p>
+<p>The gate checks identifier coverage, not reviewer identity, review quality or
+authenticity. Result files may be outside the pushed tree under the existing
+contract. LF and CRLF support does not authorize approximate identifiers, trailing
+spaces, or reviews of rewritten commits. Filename enumeration errors and legacy
+mtime portability remain separate limitations. The migration default is not
+automatically changed by the date. Second-provider review remains required before merge.</p>
+</main>
+</html>

@@ -739,6 +739,57 @@ case_sigpipe_regression() {
   assert_rc "Commit-bound evidence passes without pipefail false negative" 0 "$rc" "$output"
 }
 
+case_evidence_filename_boundaries() {
+  # Independent oracle: one feature commit is named in the evidence, so strict
+  # mode has no unreviewed commits (docs/enforcement/review-gate-defects.md,
+  # Evidence file format). A filename separator cannot change that binding.
+  run_test "Evidence filenames preserve whitespace and newline boundaries"
+  init_pair filename_boundaries
+  local base head output rc=0
+  base="$(git rev-parse HEAD)"
+  add_commit "feat: filename evidence target" "src/filename.py"
+  head="$(git rev-parse HEAD)"
+  mkdir -p scripts/review/results
+  printf 'Reviewed-Commit: %s\n' "$head" > $'scripts/review/results/review notes\nfinal.txt'
+  output="$(REVIEW_GATE_EVIDENCE_MODE=strict run_gate "$head" "$base")" || rc=$?
+  assert_rc "Newline filename preserves commit-bound evidence" 0 "$rc" "$output"
+  assert_contains "Newline filename covers the feature commit" "Reviewed: 1, Unreviewed: 0" "$output"
+  # A generic result at the same path is legacy evidence only. The migration
+  # contract permits warn mode and denies strict mode for this same feature.
+  printf 'generic result\n' > $'scripts/review/results/review notes\nfinal.txt'
+  rc=0
+  output="$(REVIEW_GATE_EVIDENCE_MODE=warn run_gate "$head" "$base")" || rc=$?
+  assert_rc "Newline filename preserves legacy migration evidence" 0 "$rc" "$output"
+  assert_contains "Legacy newline result reports migration warning" "WOULD-REJECT" "$output"
+  rc=0
+  output="$(REVIEW_GATE_EVIDENCE_MODE=strict run_gate "$head" "$base")" || rc=$?
+  assert_rc "Newline filename does not turn legacy evidence into a binding" 1 "$rc" "$output"
+}
+
+case_crlf_evidence() {
+  # Independent hand calculation: A -> B are the only feature commits.
+  # Reviewed-Range A..B includes both endpoints by the repository's Evidence
+  # file format contract; Reviewed-Commit A alone leaves only B unreviewed.
+  run_test "CRLF evidence preserves exact commit and inclusive range bindings"
+  init_pair crlf_evidence
+  local base first head output rc=0
+  base="$(git rev-parse HEAD)"
+  add_commit "feat: first CRLF target" "src/first.py"
+  first="$(git rev-parse HEAD)"
+  add_commit "feat: second CRLF target" "src/second.py"
+  head="$(git rev-parse HEAD)"
+  mkdir -p scripts/review/results
+  printf 'Reviewed-Commit: %s\r\n' "$first" > scripts/review/results/crlf.txt
+  output="$(REVIEW_GATE_EVIDENCE_MODE=strict run_gate "$head" "$base")" || rc=$?
+  assert_rc "Partial CRLF evidence still blocks" 1 "$rc" "$output"
+  assert_contains "CRLF commit binding covers only the named commit" "Reviewed: 1, Unreviewed: 1" "$output"
+  printf 'Reviewed-Range: %s..%s\r\n' "$first" "$head" >> scripts/review/results/crlf.txt
+  rc=0
+  output="$(REVIEW_GATE_EVIDENCE_MODE=strict run_gate "$head" "$base")" || rc=$?
+  assert_rc "CRLF range evidence passes" 0 "$rc" "$output"
+  assert_contains "CRLF range covers both feature commits" "Reviewed: 2, Unreviewed: 0" "$output"
+}
+
 main() {
   echo "========================================"
   echo "Tests for require-review-on-push.sh"
@@ -785,6 +836,8 @@ main() {
   case_default_branch_absent_fallback_failure_blocks
   case_default_mode_line
   case_sigpipe_regression
+  case_evidence_filename_boundaries
+  case_crlf_evidence
 
   if [[ "${RUN_KNOWN_DEFECTS_FROM_MAIN:-1}" == "1" ]]; then
     run_test "Known-defects regression script is wired through the main test"
