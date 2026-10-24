@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en"><meta charset="utf-8"><title>Materializer recovery plan</title>
+<body><h1>Materializer recovery plan</h1>
+<p>The implementation will address issue 3858
+without installation, hook changes or changes to archived payloads.</p>
+<h2>Proposed slices</h2>
+<ol>
+<li>The filesystem helper will allocate exclusive per-attempt journal staging files.
+A failed save will leave its bytes intact; a retry will never parse, promote, overwrite
+or delete an earlier pending file.</li>
+<li>Rollback will allocate fresh restore staging from verified backup bytes and will
+retain existing staging evidence. Mixed apply will omit identical entries from the
+write set so their inode and modification time will remain unchanged.</li>
+<li>Controlled global/system Git config tests will establish exclusion independently
+of injected environment variables. Guidance will distinguish receipts, durability,
+Git modes, actual filesystem types and historical evidence sets.</li>
+</ol>
+<h2>Regression-first checks</h2>
+<p>New tests will first reproduce fixed-name collisions, interrupted journal publication,
+repeated interrupted rollback, changed backup bytes and mixed-apply identity replacement.
+Expected bytes will be literal inputs; expected metadata will be measured before apply.
+Existing materializer and filesystem suites will run with the new tests, followed by
+Ruff on touched Python files. No engineering coefficients or equations will apply.</p>
+<h2>Adversarial plan assessment</h2>
+<p>Defect-hunting will focus on accidental promotion of untrusted pending data,
+backup changes after preflight, candidate renumbering after partial rollback, changed
+destination bytes and accidental removal of evidence. Unique names alone will not
+establish ownership or authorization. Recovery will use a separately trusted receipt
+and verified preimage/postimage bytes; ambiguous evidence will remain retained.
+A lost authoritative receipt will require manual reconciliation. Concurrent writers
+will require external serialization; whole-transaction atomicity and directory
+power-loss durability will remain unestablished.</p>
+<p>Independent provider review will remain a pre-merge checkpoint because this task
+will prohibit other model calls. The final artifact review will inspect the exact
+diff for these failure classes and will not claim independent consensus.</p>
+</body></html>
