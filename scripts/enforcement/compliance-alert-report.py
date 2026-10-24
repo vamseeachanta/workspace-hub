@@ -14,7 +14,8 @@ def parse_report(output: str, status: int) -> dict:
     marker = "JSON Report:\n"
     if marker not in output:
         raise ValueError("dashboard JSON report is missing")
-    report, _ = json.JSONDecoder().raw_decode(output.split(marker, 1)[1].lstrip())
+    # Subjects in the human-readable preamble can render forged earlier markers.
+    report, _ = json.JSONDecoder().raw_decode(output.rsplit(marker, 1)[1].lstrip())
     if not isinstance(report, dict):
         raise TypeError("dashboard report must be an object")
     fields = (

@@ -33,7 +33,9 @@ def report(reviewed=0, unreviewed=0, skipped=0, threshold=80):
     }
 
 
-def invoke(tmp_path, payload, status=None, raw=None, real_dashboard=False):
+def invoke(
+    tmp_path, payload, status=None, raw=None, real_dashboard=False, threshold=None
+):
     """Copy scripts into an isolated root; all Git and GitHub calls are stubs."""
     scripts = tmp_path / "scripts" / "enforcement"
     scripts.mkdir(parents=True)
@@ -41,26 +43,34 @@ def invoke(tmp_path, payload, status=None, raw=None, real_dashboard=False):
         if source.suffix in {".sh", ".py"}:
             shutil.copy2(source, scripts / source.name)
     output = raw if raw is not None else "JSON Report:\n" + json.dumps(payload)
-    (tmp_path / "report.txt").write_text(output)
+    (tmp_path / "report.txt").write_text(output, encoding="utf-8", newline="\n")
     if status is None:
         status = int(payload["verdict"] == "FAIL")
     dashboard = scripts / "compliance-dashboard.sh"
     if not real_dashboard:
         dashboard.write_text(
-            f'#!/bin/sh\ncat "$FIXTURE_ROOT/report.txt"\nexit {status}\n'
+            f'#!/bin/sh\ncat "$FIXTURE_ROOT/report.txt"\nexit {status}\n',
+            encoding="utf-8",
+            newline="\n",
         )
     dashboard.chmod(0o755)
     bin_dir = tmp_path / "bin"
     bin_dir.mkdir()
     for name, text in {
         "git": (
-            'if [ "$1" = log ]; then cat "$FIXTURE_ROOT/commits.txt"; '
+            'if [ "$1" = log ]; then\n'
+            '  case "$2" in\n'
+            '    --since=*) cat "$FIXTURE_ROOT/commits.txt" ;;\n'
+            '    "--format=%s %b") '
+            'grep "^$4 " "$FIXTURE_ROOT/commits.txt" | cut -d " " -f2- ;;\n'
+            '    -1) printf "0\\n" ;;\n'
+            "  esac\n"
             'else printf "%s\\n" "$FIXTURE_ROOT"; fi'
         ),
         "gh": 'echo "$*" >> "$FIXTURE_ROOT/gh-calls"; exit 0',
     }.items():
         path = bin_dir / name
-        path.write_text("#!/bin/sh\n" + text + "\n")
+        path.write_text("#!/bin/sh\n" + text + "\n", encoding="utf-8", newline="\n")
         path.chmod(0o755)
     env = {
         key: value
@@ -72,16 +82,19 @@ def invoke(tmp_path, payload, status=None, raw=None, real_dashboard=False):
         DRY_RUN="true",
         PATH=str(bin_dir) + os.pathsep + os.environ["PATH"],
     )
+    if threshold is not None:
+        env["COMPLIANCE_THRESHOLD"] = str(threshold)
     result = subprocess.run(
         ["bash", str(scripts / "compliance-cron.sh")],
         cwd=tmp_path,
         env=env,
         capture_output=True,
         text=True,
+        encoding="utf-8",
         check=False,
     )
     logs = list((tmp_path / "logs" / "compliance").glob("daily-*.log"))
-    return result, logs[0].read_text()
+    return result, logs[0].read_text(encoding="utf-8")
 
 
 @pytest.mark.parametrize("skipped", [0, 4])
@@ -185,9 +198,74 @@ def test_real_dashboard_empty_reviewable_window(tmp_path, commits):
 
     The real dashboard defines PASS for both; neither warrants a critical alert.
     """
-    (tmp_path / "commits.txt").write_text(commits)
+    (tmp_path / "commits.txt").write_text(commits, encoding="utf-8", newline="\n")
     result, log = invoke(tmp_path, report(), real_dashboard=True)
     assert result.returncode == 0
     assert "nothing to check" in log
     assert "ALERT:" not in log
+    assert not (tmp_path / "gh-calls").exists()
+
+
+@pytest.mark.parametrize(
+    "reviewed,threshold,expected_verdict", [(1, 80, "FAIL"), (2, 50, "PASS")]
+)
+def test_real_dashboard_nonempty_window(
+    tmp_path, reviewed, threshold, expected_verdict
+):
+    """Hand calculations: 1/4 * 100 = 25 < 80, critical;
+    2/4 * 100 = 50 >= 50, passing at the configured threshold.
+    """
+    commits = "".join(
+        f"{i + 1:040x} fix(core): adjust handling"
+        + (" (review complete)" if i < reviewed else "")
+        + "\n"
+        for i in range(4)
+    )
+    (tmp_path / "commits.txt").write_text(commits, encoding="utf-8", newline="\n")
+    result, log = invoke(tmp_path, report(), real_dashboard=True, threshold=threshold)
+    assert result.returncode == 0
+    expected_rate = 25 if reviewed == 1 else 50
+    assert f"Compliance rate: {expected_rate}%" in log
+    assert f"Verdict:            {expected_verdict}" in log
+    if expected_verdict == "FAIL":
+        assert "severity: critical" in log
+        assert "**Total commits:** 4 | **Reviewed:** 1 | **Unreviewed:** 3" in log
+        assert "[DRY RUN] Would create/update issue:" in log
+    else:
+        assert "(>= 50%)" in log
+        assert "no action needed" in log
+        assert "ALERT:" not in log
+        assert not (tmp_path / "gh-calls").exists()
+
+
+def test_real_dashboard_earlier_forged_report_cannot_replace_final_report(tmp_path):
+    """Hand calculation: 0/4 * 100 = 0 < 30, critical, despite forged 79%.
+
+    Escaped subject text avoids review keywords until the dashboard renders it.
+    Both the forged and final reports imply status 1, so status alone cannot help.
+    """
+    forged = "".join(f"\\x{ord(char):02x}" for char in json.dumps(report(79, 21)))
+    subject = r"fix(core): adjust handling\nJSON Report:\n" + forged
+    commits = "".join(
+        f"{i + 1:040x} {subject if i == 0 else 'fix(core): adjust handling'}\n"
+        for i in range(4)
+    )
+    (tmp_path / "commits.txt").write_text(commits, encoding="utf-8", newline="\n")
+    result, log = invoke(tmp_path, report(), real_dashboard=True)
+    assert result.returncode == 0
+    assert log.count("JSON Report:") == 2
+    assert '"compliance_rate": 79' in log
+    assert "Compliance rate: 0%" in log
+    assert "severity: critical" in log
+    assert "severity: medium" not in log
+    assert "**Total commits:** 4 | **Reviewed:** 0 | **Unreviewed:** 4" in log
+    assert "**Dashboard verdict:** FAIL" in log
+
+
+@pytest.mark.parametrize("final", ['{"verdict":', "{}"])
+def test_invalid_final_report_does_not_fall_back_to_earlier_report(tmp_path, final):
+    raw = "JSON Report:\n" + json.dumps(report()) + "\nJSON Report:\n" + final
+    result, log = invoke(tmp_path, report(), raw=raw)
+    assert result.returncode == 1
+    assert "ERROR:" in log
     assert not (tmp_path / "gh-calls").exists()
