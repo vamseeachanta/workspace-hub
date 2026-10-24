@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<title>Compliance alert denominator handling</title>
+<main>
+<h1>Compliance alert denominator handling</h1>
+<p>The daily alert excludes windows without reviewable commits. A zero stored
+rate in an empty review population does not establish review noncompliance.
+For populated windows, the existing severity bands remain in effect.</p>
+<h2>Revision history</h2>
+<table>
+<tr><th>Revision</th><th>Date</th><th>Change and reason</th></tr>
+<tr><td>1</td><td>2026-10-22</td><td>Separate empty review populations from
+below-threshold compliance to prevent false critical alerts.</td></tr>
+</table>
+<p>Table 1. Document revision.</p>
+<h2>Scope and method</h2>
+<ol>
+<li>Slice 1: cron will inspect the reviewable population before applying the
+percentage thresholds.</li>
+<li>Slice 2: cron will parse and validate the top-level JSON report rather than
+scan human text and nested verdicts.</li>
+<li>Slice 3: dry runs will render the alert without contacting GitHub;
+regressions will cover empty populations, boundaries and invalid evidence.</li>
+</ol>
+<p>Source: repository issue 3814, alert and Thresholds table dated 2026-08-31;
+linked automation requirement in issue 2031. The executable rate definition is
+in <a href="../../scripts/enforcement/compliance-dashboard.sh">the dashboard</a>,
+“Calculate rates”; the alert thresholds are in
+<a href="../../scripts/enforcement/compliance-cron.sh">the cron wrapper</a>,
+“Alert thresholds”. These are repository policy values, not engineering constants.</p>
+<p>The count identities are total = skipped + reviewable and reviewable =
+reviewed + unreviewed. For reviewable &gt; 0, rate = floor(100 × reviewed /
+reviewable). The factor 100 expresses a dimensionless fraction as a percentage.
+For reviewable = 0 the fraction is undefined; the existing dashboard convention
+stores rate 0 and verdict PASS. Cron logs “No reviewable commits” and exits
+without an alert.</p>
+<h2>Worked example</h2>
+<p>Synthetic inputs reproducing the alert pattern: total = 7, skipped = 7,
+reviewed = 0, unreviewed = 0. Reviewable = 7 − 7 = 0. No percentage can be
+calculated, so the result is no compliance alert rather than critical severity.</p>
+<p>A populated synthetic example uses reviewed = 3, unreviewed = 2 and
+skipped = 7. Reviewable = 3 + 2 = 5; total = 12; rate = floor(100 × 3 / 5)
+= 60 %. The issue 3814 policy assigns medium severity to this rate.
+A drift event with verdict “pass” does not change the top-level FAIL verdict.</p>
+<h2>Validation and operation</h2>
+<p>The regression suite is <code>tests/enforcement/test_compliance_cron.py</code>.
+Its expected rates are documented independent hand calculations. It covers
+empty and all-skipped windows, percentage truncation, severity boundaries,
+compact and indented JSON, nested verdicts, invalid counts, partial output,
+execution errors, and a real dashboard empty-window handoff. GitHub is stubbed;
+an unexpected call fails the tests. No issue is published by the tests.</p>
+<p><code>DRY_RUN=true bash scripts/enforcement/compliance-cron.sh</code> writes
+the proposed alert to the normal daily log without GitHub authentication or
+publication. Real runs retain the existing weekly issue deduplication behavior.
+Malformed reports return exit 1 with an error; they are neither PASS evidence nor
+compliance alerts. The scheduler shall inspect the exit status and daily log.</p>
+<h2>Known limits and later work</h2>
+<p>Historical review completion is NOT_EVALUATED: no revision-bound review
+packets for the historical commits were supplied. The commit classification and
+review-detection heuristics are unchanged. A commit-message reference remains a
+heuristic rather than authenticated review evidence. The weekly report and
+scheduled deployments are outside this correction. Independent provider review
+and historical backlog disposition remain for the maintainers.</p>
+</main>
+</html>
