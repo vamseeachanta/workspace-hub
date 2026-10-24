@@ -1,8 +1,8 @@
 """Installer wiring in disposable roots; no live provider-loading assertion."""
-from pathlib import Path
 import os
 import shutil
 import subprocess
+from pathlib import Path
 
 import pytest
 
@@ -39,7 +39,8 @@ def installation(tmp_path):
     (user_root / ".claude/CLAUDE.md").symlink_to(
         repo / "config/agents/claude/SOUL.runtime.md")
     # Only the installer child receives this fixture HOME.
-    env = {key: os.environ[key] for key in ("SYSTEMROOT", "WINDIR", "TEMP", "TMP", "PATH")
+    env = {key: os.environ[key] for key in ("SYSTEMROOT", "WINDIR", "TEMP", "TMP", "PATH", "TMPDIR",
+                                             "PYTHONDONTWRITEBYTECODE", "UV_CACHE_DIR")
            if key in os.environ}
     env.update(HOME=user_root.as_posix(), MSYS="winsymlinks:nativestrict")
     env["PATH"] = str(Path(bash_executable()).parent) + os.pathsep + env.get("PATH", "")
@@ -51,7 +52,7 @@ def install(installation, cwd=None):
     assert user_root.resolve().parent == repo.resolve().parent
     assert user_root.is_dir() and not user_root.is_symlink()
     return subprocess.run([bash_executable(), str(repo / "scripts/agents/install-soul-runtime.sh")],
-                          cwd=cwd or user_root, env=env, capture_output=True,
+                          check=False, cwd=cwd or user_root, env=env, capture_output=True,
                           text=True, encoding="utf-8", timeout=30)
 
 
@@ -87,7 +88,7 @@ def test_fixture_installer_repeat_is_idempotent(installation):
 
 
 def test_fixture_installer_preserves_unknown_regular_file(installation):
-    repo, user_root, _ = installation
+    _repo, user_root, _ = installation
     original = user_root / ".claude/CLAUDE.md"
     original.unlink()
     original.write_bytes(b"Original fixture instructions\n")
@@ -166,7 +167,7 @@ def test_generation_tools_ignore_foreign_git_bindings(generation, script):
     env.update(GIT_DIR=(caller / ".git").as_posix(), GIT_WORK_TREE=caller.as_posix(),
                GIT_COMMON_DIR=(caller / ".git").as_posix())
     result = subprocess.run([bash_executable(), (repo / script).as_posix()], cwd=caller, env=env,
-                            capture_output=True, encoding="utf-8", timeout=150)
+                            check=False, capture_output=True, encoding="utf-8", timeout=150)
     assert tree_bytes(caller) == before, "Foreign Git files or metadata changed"
     assert tree_bytes(repo) == source_before, "Source fixture changed"
     assert result.returncode == 0, result.stdout + result.stderr
@@ -174,7 +175,7 @@ def test_generation_tools_ignore_foreign_git_bindings(generation, script):
 
 @pytest.mark.parametrize("dangling", [False, True])
 def test_fixture_installer_preserves_unmanaged_claude_symlink(installation, dangling):
-    repo, user_root, _ = installation
+    _repo, user_root, _ = installation
     legacy = user_root / ".claude/CLAUDE.md"
     legacy.unlink()
     target = user_root / "external-instructions.md"
@@ -188,3 +189,30 @@ def test_fixture_installer_preserves_unmanaged_claude_symlink(installation, dang
     assert not list(user_root.rglob("*.pre-install-backup.*"))
     if not dangling:
         assert target.read_bytes() == b"Unmanaged instructions\n"
+
+
+def test_fixture_installer_preserves_equivalent_relative_link(installation):
+    """A relative link resolves to the same inode; no backup or write is needed."""
+    repo, user_root, _ = installation
+    link = user_root / ".codex/AGENTS.md"
+    target = repo / "config/agents/codex/AGENTS.runtime.md"
+    link.symlink_to(os.path.relpath(target, link.parent))
+    before = os.readlink(link), link.lstat().st_mtime_ns
+    result = install(installation)
+    assert result.returncode == 0, result.stdout + result.stderr
+    assert (os.readlink(link), link.lstat().st_mtime_ns) == before
+    assert not list(link.parent.glob("AGENTS.md.pre-install-backup.*"))
+
+
+def test_fixture_installer_retargets_equal_content_wrong_link(installation):
+    """Equal bytes at a different inode must not establish target identity."""
+    repo, user_root, _ = installation
+    target = repo / "config/agents/codex/AGENTS.runtime.md"
+    other = user_root / "decoy.md"
+    other.write_bytes(target.read_bytes())
+    link = user_root / ".codex/AGENTS.md"
+    link.symlink_to(other)
+    result = install(installation)
+    assert result.returncode == 0, result.stdout + result.stderr
+    assert link.resolve() == target.resolve()
+    assert other.read_bytes() == target.read_bytes()
