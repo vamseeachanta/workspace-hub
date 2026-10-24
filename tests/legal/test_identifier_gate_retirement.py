@@ -1,6 +1,6 @@
 """Guard the owner-directed retirement without weakening secret checks."""
-from pathlib import Path
 import unittest
+from pathlib import Path
 
 import yaml
 
@@ -18,8 +18,19 @@ class RetirementTests(unittest.TestCase):
         self.assertNotIn('client-identifier-gate', ids)
         self.assertNotIn('email-fixture-redaction-check', ids)
 
+    def test_precommit_commands_cannot_hide_scanner_under_another_id(self):
+        """The retirement policy covers invocation, independently of hook ID."""
+        config = yaml.safe_load((ROOT / '.pre-commit-config.yaml').read_text())
+        for repo in config['repos']:
+            for hook in repo['hooks']:
+                with self.subTest(hook=hook['id']):
+                    self.assertNotIn('legal-sanity-scan', hook.get('entry', ''))
+                    self.assertNotIn('legal-sanity-scan', str(hook.get('args', [])))
+
     def test_ci_does_not_invoke_retired_scanners(self):
-        for path in (ROOT / '.github/workflows').glob('*.yml'):
+        paths = sorted((ROOT / '.github/workflows').glob('*.yml'))
+        paths += sorted((ROOT / '.github/workflows').glob('*.yaml'))
+        for path in paths:
             config = yaml.safe_load(path.read_text(encoding='utf-8')) or {}
             for job in config.get('jobs', {}).values():
                 for step in job.get('steps', []):
