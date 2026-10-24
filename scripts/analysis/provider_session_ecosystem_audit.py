@@ -9,6 +9,8 @@ import subprocess
 import sys
 from collections import Counter
 from datetime import datetime, timezone
+from decimal import Decimal
+from fractions import Fraction
 from pathlib import Path
 from typing import Iterable
 
@@ -737,6 +739,10 @@ def compute_python_hygiene_status(python3_rate: float, uv_rate: float) -> str:
 def compare_direction(current: float | None, previous: float | None, *, better_when_lower: bool, tolerance: float = 0.01) -> str:
     if current is None or previous is None:
         return "unavailable"
+    if any(isinstance(value, Decimal) for value in (current, previous, tolerance)):
+        # Python 3.11 Library Reference, fractions: exact rational conversion
+        # prevents rounded subtraction from changing the inclusive boundary.
+        current, previous, tolerance = map(Fraction, (current, previous, tolerance))
     delta = current - previous
     if abs(delta) <= tolerance:
         return "stable"

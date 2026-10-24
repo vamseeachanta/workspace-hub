@@ -8,6 +8,8 @@ from typing import Dict, Any, Optional
 from dataclasses import dataclass
 import logging
 import time
+from decimal import Decimal
+from fractions import Fraction
 
 logger = logging.getLogger(__name__)
 
@@ -165,8 +167,14 @@ class NumericalSolver(BaseSolver):
         Returns:
             True if within tolerance
         """
+        tolerance = self.accuracy_tolerance
+        if any(isinstance(value, Decimal) for value in (calculated, expected, tolerance)):
+            # Python 3.11 Library Reference, fractions: Fraction(Decimal) is
+            # exact. Preserve supplied values without Decimal context rounding;
+            # mixed floats retain their exact binary value, not decimal spelling.
+            calculated, expected, tolerance = map(Fraction, (calculated, expected, tolerance))
         if expected == 0:
-            return abs(calculated) < self.accuracy_tolerance
+            return abs(calculated) < tolerance
 
         relative_error = abs((calculated - expected) / expected)
-        return relative_error <= self.accuracy_tolerance
+        return relative_error <= tolerance

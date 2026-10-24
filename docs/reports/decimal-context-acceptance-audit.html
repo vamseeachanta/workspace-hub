@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<title>Decimal context acceptance comparison audit</title>
+<style>
+body { max-width: 72rem; margin: 2rem auto; padding: 0 1rem; font: 1rem/1.6 system-ui; color: #18202a; }
+table { border-collapse: collapse; width: 100%; } th, td { padding: .6rem; border: 1px solid #bbc; text-align: left; }
+code, pre { background: #f2f4f6; } caption { caption-side: bottom; text-align: left; }
+</style>
+<h1>Decimal context acceptance comparison audit</h1>
+<h2>Summary</h2>
+<p>Two inspected comparison routines can change their result when Decimal inputs
+are evaluated under a modified arithmetic context. Their Decimal paths now use
+exact rational arithmetic. Existing float paths and strict or inclusive comparator
+semantics are retained. The publication validator already uses exact construction
+and equality and requires no arithmetic correction. This is a bounded software
+audit for repository issue 3859, not numerical qualification of an analysis.</p>
+<h2>Revision history</h2>
+<table><tr><th>Revision</th><th>Date</th><th>Change and reason</th></tr>
+<tr><td>1</td><td>2026-10-22</td><td>Initial bounded inventory, comparison corrections
+and context regression matrix to prevent rounded boundary decisions.</td></tr>
+<caption>Table 1. Revision history.</caption></table>
+<h2>Scope and method</h2>
+<p>The base revision is <code>9ee5ccc5a15f974781e753c42248c4ca36f7a80c</code>.
+A tracked Python source search for <code>from decimal|import decimal</code> finds
+one production consumer and its tests at that revision: publication eligibility.
+A separate keyword search for Decimal, tolerance, threshold and isclose covers
+51 tracked Python files in <code>src</code>, <code>scripts/calculations</code> and
+<code>scripts/analysis</code>. Search coverage is not semantic inspection of all
+51 modules. The four modules below receive targeted source inspection.</p>
+<table><tr><th>Inspected module and routine</th><th>Finding</th><th>Disposition</th></tr>
+<tr><td><code>src/solvers/base.py</code>: NumericalSolver.verify_accuracy</td>
+<td>Decimal subtraction, division and absolute value can round or trap before
+comparison, including in the zero-reference branch.</td><td>Corrected and boundary-tested.</td></tr>
+<tr><td><code>scripts/analysis/provider_session_ecosystem_audit.py</code>: compare_direction</td>
+<td>Decimal subtraction can round across the stable boundary or raise a context trap.</td>
+<td>Corrected and boundary-tested.</td></tr>
+<tr><td><code>scripts/governance/publication_eligibility.py</code>: _lossless_float</td>
+<td>Finite decimal construction and equality are exact, without intermediate arithmetic.</td>
+<td>Unchanged; hostile-context round-trip regressions pass.</td></tr>
+<tr><td><code>scripts/calculations/pile_axial_capacity.py</code></td>
+<td>Float-based capacity arithmetic; no Decimal import or acceptance comparator.</td>
+<td>No change; formula qualification and float precision are outside this audit.</td></tr>
+<caption>Table 2. Actual source inspection coverage and dispositions.</caption></table>
+<p>Uninspected coverage includes sibling repositories, solver implementations,
+dynamically loaded code, non-Python calculations, and other acceptance routines.
+Import search alone misses Decimal values supplied through parameters, as the two
+corrected routines demonstrate. No repository-wide or ecosystem-wide independence
+claim follows from this inventory. The linked diagnostic correction and related
+campaign are reviewed as issue context only; no solver is imported or queried.</p>
+<h2>Proportionate plan and implementation slices</h2>
+<p>The plan will inventory actual consumers and caller-supplied numeric paths
+(slice 1), correct only the two demonstrated comparisons (slice 2), and add
+boundary/context regressions and this worked example (slice 3). Tests will
+challenge false acceptance, false rejection, ambient/default mutation, traps,
+zero-reference strictness and mixed binary/decimal inputs. Review will challenge
+coverage overclaims, accidental float conversion and reliance on mutable default
+contexts. Wider repository fixes will require separate inspection and review.</p>
+<h2>Comparison basis</h2>
+<p>The governing equations are the existing repository contracts:
+<code>abs((calculated - expected) / expected) &lt;= tolerance</code> for a nonzero
+reference, <code>abs(calculated) &lt; tolerance</code> for a zero reference, and
+<code>abs(current - previous) &lt;= tolerance</code> for trend stability.
+Sources: NumericalSolver.verify_accuracy and compare_direction at the base
+revision (2026). No new engineering coefficient or acceptance limit is introduced.</p>
+<p>When any operand or tolerance is Decimal, all comparison operands are converted
+to Fraction before arithmetic. Python 3.11 Library Reference,
+<a href="https://docs.python.org/3.11/library/fractions.html">fractions — Rational numbers</a>
+(retrieved 2026-10-22, HTTP 200), specifies exact conversion from Decimal and
+binary float. Mixed floats retain their binary value; converting through a string
+would change the supplied value. Finite rational arithmetic needs no Decimal
+context, mutable DefaultContext copy, precision estimate, rounding policy or
+exponent bound. Non-finite values have no finite rational representation and
+raise ValueError or OverflowError. The original float-only path is unchanged.</p>
+<h2>Worked example: diagnostic idle capacity</h2>
+<p>The inputs and criterion are from repository issue 3859 (2026): four logical
+cores, utilization 50.0001 percent, required idle capacity two core-equivalents.
+The percentage identity gives <code>idle = cores × (1 - utilization / 100)</code>.
+An independent hand calculation is:</p>
+<pre>idle = 4 × (100 - 50.0001) / 100
+     = 1999996 / 1000000
+     = 499999 / 250000 core-equivalents
+required - idle = 1 / 250000 core-equivalents
+idle &lt; required, so the operational criterion is not met.</pre>
+<p>The exact fractions retain the near-boundary distinction without reporting
+rounded display values as calculation inputs. This example does not install a
+resource policy here; its inputs are diagnostic issue evidence rather than
+engineering acceptance limits. The executable example is
+<code>test_worked_idle_example</code> in
+<code>tests/analysis/test_decimal_context_acceptance.py</code>.</p>
+<h2>Verification</h2>
+<p>The initial matrix produces 48 failures and 45 passes before the comparison
+corrections, then 93 passes after them. The expanded matrix contains 193 passing
+cases. It includes six context configurations: rounding down/up with traps,
+rounding down/up without traps, modified DefaultContext alone, and simultaneous
+ambient/default mutation. Precision, exponent bounds, clamp, capitalization,
+flags and every trap are modified. Ambient state is checked after each case;
+default state is restored in a finally block. Boundary cases cover both signs,
+strict/inclusive comparisons, mixed float operands, non-finite rejection and
+boundaries beyond the default decimal precision.
+Publication equality is checked with representable values and lossy tokens.</p>
+<p>The combined new and related module suites produce 314 passes and two
+pre-existing failures. Ruff reports 25 pre-existing diagnostics in the two
+production files and no diagnostics in the new test file. Base source readback
+confirms the unchanged failing logic and lint findings. File-level checks run
+on the uncommitted tree; commit hooks and publication belong to the subsequent
+maintainer-controlled handoff.</p>
+<h2>Baseline</h2>
+<p><code>tests/analysis/test_provider_session_ecosystem_audit.py:119</code>
+expects absolute alias normalization that the existing registry-backed resolver
+does not supply for the fixture. Line 1536 expects one wiki match although the
+unchanged prefix rule matches three inputs. Both assertions and the relevant
+resolver/rule implementations are present on the base revision; neither is
+changed here. Existing Ruff findings concern imports, deprecated typing,
+abstract pass statements, executable mode, nested conditions and timezone style.</p>
+<h2>Hooks that could not run</h2>
+<p>The hook framework is unavailable under the execution contract. Direct pytest
+and Ruff checks are used; the subsequent commit retains repository hooks.</p>
+<h2>Follow-up and limits</h2>
+<p>Independent provider plan/artifact review remains pending; this execution
+contract prohibits invoking another assistant. The maintainer will arrange that
+review before merge. Other acceptance routines and repositories remain outside
+the inspected set. No engineering qualification follows from test completion.
+Arbitrarily large decimal exponents can require large rational integers; this
+change adds no input-size policy. Callers remain responsible for bounded inputs,
+units and sourced criteria. No licensed standards or raw solver data are copied.</p>
+</html>
