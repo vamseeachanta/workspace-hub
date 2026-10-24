@@ -304,7 +304,7 @@ def test_history_append_preserves_existing_record(tmp_path):
     assert second == [first[0], {"timestamp": first[0]["timestamp"], "total": 0,
                                    "passed": 0, "failed": 0, "skipped": 0, "errors": 0, "pass_rate": 0.0}]
     import json
-    assert json.loads(history_path.read_text()) == second
+    assert json.loads(history_path.read_text(encoding="utf-8")) == second
 
 
 @pytest.mark.parametrize("payload", ["not json", "{}", '[{"passed": -1}]'])
@@ -312,10 +312,10 @@ def test_invalid_history_is_preserved(tmp_path, payload):
     """Invalid persisted evidence must remain unchanged for diagnosis."""
     dashboard = _import_dashboard()
     path = tmp_path / "history.json"
-    path.write_text(payload)
+    path.write_text(payload, encoding="utf-8", newline="\n")
     with pytest.raises((ValueError, TypeError)):
         dashboard.append_history(path, {}, datetime.now(UTC))
-    assert path.read_text() == payload
+    assert path.read_text(encoding="utf-8") == payload
 
 
 @pytest.mark.parametrize("current,warning", [(75, False), (74, True), (85, False)])
@@ -329,6 +329,33 @@ def test_trend_threshold(current, warning):
     assert ("WARNING" in report) == warning
     if warning:
         assert "6.0 percentage points" in report
+
+
+@pytest.mark.parametrize("current,warning", [(34, False), (33, False), (32, True)])
+def test_decimal_trend_threshold(tmp_path, current, warning):
+    """100*(83-34)/1000=4.9; (83-33)/10=5.0; (83-32)/10=5.1 points."""
+    dashboard = _import_dashboard()
+    path = tmp_path / "history.json"
+    for passed in (83, current):
+        packages = {"example": {"passed": passed, "failed": 1000 - passed,
+                                 "skipped": 0, "errors": 0, "total": 1000}}
+        records = dashboard.append_history(path, packages, datetime.now(UTC))
+    report = dashboard.generate_markdown_report({}, datetime.now(UTC), history=records)
+    assert ("WARNING" in report) == warning
+    if warning:
+        assert "5.1 percentage points" in report
+
+
+def test_all_exact_five_point_drops_do_not_warn():
+    """For 1000 outcomes, 50 fewer passes gives exactly 100*50/1000=5 points."""
+    dashboard = _import_dashboard()
+    for previous_passes in range(50, 1001):
+        records = [
+            {"timestamp": "earlier", "pass_rate": previous_passes / 10},
+            {"timestamp": "current", "pass_rate": (previous_passes - 50) / 10},
+        ]
+        report = dashboard.generate_markdown_report({}, datetime.now(UTC), history=records)
+        assert "WARNING" not in report, previous_passes
 
 
 def test_trend_contains_only_latest_eight_records():
@@ -363,10 +390,10 @@ def test_history_rejects_inconsistent_records(tmp_path, field, value):
     record[field] = value
     path = tmp_path / "history.json"
     original = json.dumps([record])
-    path.write_text(original)
+    path.write_text(original, encoding="utf-8", newline="\n")
     with pytest.raises((ValueError, TypeError)):
         dashboard.append_history(path, {}, datetime.now(UTC))
-    assert path.read_text() == original
+    assert path.read_text(encoding="utf-8") == original
 
 
 def test_history_failed_replace_preserves_previous_bytes(tmp_path):
@@ -403,7 +430,7 @@ def test_runner_timeout_is_visible(tmp_path):
     assert packages["example"]["errors"] == 1
 
 
-def test_main_persists_history_and_renders_trend(tmp_path):
+def test_main_persists_history_and_renders_trend(tmp_path, capsys):
     """Two complete mocked runs: 4/4=100.0%, then 3/4=75.0%, drop 25.0 points."""
     import json
 
@@ -415,9 +442,12 @@ def test_main_persists_history_and_renders_trend(tmp_path):
         dashboard.main()
         dashboard.main()
     directory = tmp_path / "docs/dashboards"
-    history = json.loads((directory / "test-health-history.json").read_text())
+    history = json.loads((directory / "test-health-history.json").read_text(encoding="utf-8"))
     assert [record["pass_rate"] for record in history] == [100.0, 75.0]
-    assert "25.0 percentage points" in (directory / "test-health-dashboard.md").read_text()
+    assert "25.0 percentage points" in (directory / "test-health-dashboard.md").read_text(encoding="utf-8")
+    assert "docs/dashboards/test-health-dashboard.md" in capsys.readouterr().out
+    for path in directory.iterdir():
+        assert b"\r" not in path.read_bytes()
 
 
 def test_empty_history_has_no_regression_warning():

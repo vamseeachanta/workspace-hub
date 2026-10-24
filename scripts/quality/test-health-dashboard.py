@@ -21,6 +21,7 @@ import subprocess
 import sys
 import tempfile
 from datetime import UTC, datetime
+from decimal import Decimal
 from pathlib import Path
 
 # ---------------------------------------------------------------------------
@@ -170,7 +171,7 @@ def append_history(path: Path, packages: dict, timestamp: datetime) -> list[dict
     validate_history(records)
     records.append(make_history_record(packages, timestamp))
     path.parent.mkdir(parents=True, exist_ok=True)
-    with tempfile.NamedTemporaryFile(mode="w", encoding="utf-8", dir=path.parent,
+    with tempfile.NamedTemporaryFile(mode="w", encoding="utf-8", newline="\n", dir=path.parent,
                                      prefix=path.name + ".", suffix=".partial",
                                      delete=False) as stream:
         json.dump(records, stream, indent=2, allow_nan=False)
@@ -293,7 +294,8 @@ def generate_markdown_report(
     if history:
         lines.extend(["## Recent Test Health", ""])
         if len(history) > 1:
-            drop = history[-2]["pass_rate"] - history[-1]["pass_rate"]
+            drop = (Decimal(str(history[-2]["pass_rate"]))
+                    - Decimal(str(history[-1]["pass_rate"])))
             if drop > REGRESSION_POINTS:
                 lines.extend([
                     f"> WARNING: Pass rate dropped by {drop:.1f} percentage points.",
@@ -425,13 +427,13 @@ def main() -> None:
 
     output_path = repo_root / "docs" / "dashboards" / "test-health-dashboard.md"
     output_path.parent.mkdir(parents=True, exist_ok=True)
-    output_path.write_text(md, encoding="utf-8")
+    output_path.write_text(md, encoding="utf-8", newline="\n")
 
     # Compute overall stats
     total_tests = sum(p.get("total", 0) for p in packages.values())
     total_passed = sum(p.get("passed", 0) for p in packages.values())
 
-    print(f"[test-health-dashboard] Dashboard written to {output_path}")
+    print(f"[test-health-dashboard] Dashboard written to {output_path.relative_to(repo_root).as_posix()}")
     print(f"[test-health-dashboard] Overall: {total_tests} outcomes, {total_passed} passed ({compute_pass_rate(total_passed, total_tests)}%)")
     print(f"[test-health-dashboard] Packages tested: {len(packages)}, Gaps: {len(gaps)}")
 
