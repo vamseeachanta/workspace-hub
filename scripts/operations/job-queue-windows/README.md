@@ -95,3 +95,32 @@ values illustrate the boundary; they are not measured disk availability.
 The reproducible storage comparison is documented in
 `docs/operations/job-queue-worktree-footprint.md`. No live queue installation or
 job execution is established by the stand-in tests or storage measurements.
+
+## Repository selection isolation
+
+The runner clears inherited `GIT_DIR`, `GIT_WORK_TREE` and `GIT_COMMON_DIR`
+before any Git command. Repository selection uses the configured clone and
+worktree paths even when a calling shell belongs to another repository. This
+also applies to deferred cleanup children. Authentication settings and the
+existing cleanup, publication, disk and activity guards remain in effect.
+The isolation matches `scripts/operations/job_queue_footprint.py` for these
+repository bindings and the generation/test isolation contract in `AGENTS.md`.
+Other Git environment settings are outside this bounded isolation guarantee.
+
+Worked example: a disposable queue specifies clone `clones/example-repo` and
+worktree `worktrees/example-repo-cxl-done`. A second disposable repository,
+`caller`, contains `retain.txt` and its own Git metadata. The subprocess receives
+each binding above pointed at `caller`, then all bindings together. The method
+runs `start`, `cleanup` and `cleanup-recent` separately, and compares SHA-256
+maps of every caller file and metadata file before and after each invocation.
+The expected answer follows from the configured paths: a start creates its
+branch in the configured clone; successful guarded cleanup removes only the
+configured finished worktree; the caller digest maps are equal. The synthetic
+disk probe allows admission; existing boundary tests establish the disk floor.
+No live queue is started by this example.
+
+Run `scripts/operations/tests/test_job_queue_environment.py` with pytest for
+this executable example. The test invokes the subprocess directly because the
+shared fixture helper already clears inherited repository bindings and would
+otherwise conceal the defect. Native Windows execution and review of integrated
+live scripts remain required before installation, as specified in `INSTALL.md`.
