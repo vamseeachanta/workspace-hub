@@ -27,9 +27,23 @@ import pytest
 ROOT = Path(__file__).resolve().parents[2]
 GITLEAKS = shutil.which("gitleaks")
 requires_gitleaks = pytest.mark.skipif(
-    GITLEAKS is None,
+    GITLEAKS is None and os.environ.get("REQUIRE_GITLEAKS") != "1",
     reason="NOT_EVALUATED: gitleaks binary absent; live detection requires Gitleaks",
 )
+
+
+def _require_supported_gitleaks(binary: str | None) -> None:
+    message = "live detection requires Gitleaks 8.21.2; provision the supported release"
+    if binary is None:
+        pytest.fail(message, pytrace=False)
+    result = subprocess.run([binary, "version"], capture_output=True, check=False)
+    if result.returncode != 0 or result.stdout.strip() != b"8.21.2":
+        pytest.fail(message, pytrace=False)
+
+
+@pytest.fixture
+def supported_gitleaks() -> None:
+    _require_supported_gitleaks(GITLEAKS)
 
 
 def _git(repo: Path, *args: str, data: bytes | None = None) -> bytes:
@@ -61,6 +75,7 @@ def _history_entry(repo: Path, content: bytes) -> None:
 @pytest.mark.parametrize("mode", ["staged", "history"])
 @pytest.mark.parametrize("positive", [False, True], ids=["benign", "positive"])
 @requires_gitleaks
+@pytest.mark.usefixtures("supported_gitleaks")
 def test_live_detection_and_empty_config_control(
     tmp_path: Path, mode: str, positive: bool,
 ) -> None:
@@ -86,7 +101,7 @@ def test_live_detection_and_empty_config_control(
     config = tmp_path / "repository.toml"
     config.write_bytes((ROOT / ".gitleaks.toml").read_bytes())
     empty = tmp_path / "empty.toml"
-    empty.write_text('title = "empty control"\n', encoding="utf-8")
+    empty.write_text('title = "empty control"\n', encoding="utf-8", newline="\n")
     rule_ids: dict[str, set[str]] = {}
     for label, selected in [("configured", config), ("empty", empty), ("builtin", None)]:
         enabled = label != "empty"
@@ -167,3 +182,32 @@ def test_fixture_setup_ignores_inherited_git_bindings(tmp_path: Path, monkeypatc
     after = {path.relative_to(caller): path.read_bytes()
              for path in caller.rglob("*") if path.is_file()}
     assert before == after
+
+
+@pytest.mark.parametrize("version, status", [
+    ("8.21.2", 0), ("8.30.1", 0), ("", 0), ("8.21.2", 2),
+])
+def test_supported_scanner_version_contract(monkeypatch, version: str, status: int) -> None:
+    def probe(*args, **kwargs):
+        return subprocess.CompletedProcess(args[0], status, version.encode(), b"")
+
+    monkeypatch.setattr(subprocess, "run", probe)
+    if version == "8.21.2" and status == 0:
+        _require_supported_gitleaks("gitleaks")
+    else:
+        with pytest.raises(pytest.fail.Exception, match="requires Gitleaks 8.21.2"):
+            _require_supported_gitleaks("gitleaks")
+
+
+def test_required_scanner_cannot_be_absent() -> None:
+    with pytest.raises(pytest.fail.Exception, match="requires Gitleaks 8.21.2"):
+        _require_supported_gitleaks(None)
+
+
+def test_ci_provisions_and_requires_supported_scanner() -> None:
+    workflow = (ROOT / ".github/workflows/baseline-check.yml").read_text(encoding="utf-8")
+    assert "gitleaks_8.21.2_linux_x64.tar.gz" in workflow
+    assert "sha256sum --check" in workflow
+    assert 'test "$(gitleaks version)" = "8.21.2"' in workflow
+    assert "REQUIRE_GITLEAKS: '1'" in workflow
+    assert workflow.index("Install supported Gitleaks") < workflow.index("Run Python tests")
