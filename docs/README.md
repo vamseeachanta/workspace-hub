@@ -91,6 +91,8 @@ docs/
 
 ### Standards & Compliance
 
+- [Engineering analysis criteria and dataset routing](standards/engineering-analysis-routing.html) - canonical criteria references, observation records and representative program mappings
+
 - [Algorithm Run Dataset Contract](architecture/algorithm-run-dataset-contract.yaml) - machine-readable public run-ledger invariants, ownership, records, and issue graph
 - [Algorithm Run Dataset Decision Manual](governance/2026-07-10-algorithm-run-dataset-decision-manual.html) - human-readable architecture, reporting, and promotion rules
 - [AI Review Routing Policy](standards/AI_REVIEW_ROUTING_POLICY.md) — provider roles, review defaults, Gemini trigger rules
