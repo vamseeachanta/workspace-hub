@@ -93,6 +93,64 @@ The compliance dashboard feeds into:
 
 A cron job runs the dashboard and auto-creates issues when compliance drops below threshold.
 
+### Daily alert interpretation
+
+The daily wrapper validates the current invocation's JSON report through
+`scripts/enforcement/compliance-alert.py`. It reads top-level metrics only;
+stage-prompt telemetry cannot supply a second verdict or count. Counts must be
+nonnegative integers and satisfy both partitions:
+
+```text
+reviewable = total_commits - skipped
+reviewable = reviewed + unreviewed
+rate = floor(100 * reviewed / reviewable), when reviewable > 0
+```
+
+The arithmetic source is
+[`compliance-dashboard.sh`](../../scripts/enforcement/compliance-dashboard.sh),
+the Calculate rates and Determine verdict sections (2026). The integer rate is
+retained for compatibility with saved daily reports. A zero reviewable count
+means compliance is `NOT_EVALUATED` by the alert wrapper. The dashboard's legacy
+numeric zero and passing verdict remain in its output; that pair is not evidence
+of a review failure.
+
+Alert severity follows issue #3940 (2026), Thresholds table: below 30% is critical,
+30% through 49% is high, 50% through 79% is medium, and at least 80% produces no
+alert. These alert limits remain independent of a custom dashboard threshold.
+The wrapper also verifies that the dashboard's verdict and exit status match its
+own threshold. Invalid JSON, contradictory metrics or an execution error return
+a nonzero status without posting a compliance alert. No saved daily report is
+used as a fallback.
+
+### Worked example: empty samples and genuine violations
+
+The following inputs are synthetic. Each answer is an independent hand
+calculation using the equations above and the issue #3940 severity table.
+
+| Total | Skipped | Reviewed | Method | Daily alert answer |
+|---|---|---|---|---|
+| 0 | 0 | 0 | Reviewable = 0 - 0 = 0; no denominator | NOT_EVALUATED; no alert |
+| 1 | 1 | 0 | Reviewable = 1 - 1 = 0; no denominator | NOT_EVALUATED; no alert |
+| 1 | 0 | 0 | Reviewable = 1; rate = floor(100 × 0 / 1) = 0% | Critical; one unreviewed item |
+| 4 | 1 | 2 | Reviewable = 3; rate = floor(200 / 3) = 66% | Medium; one unreviewed item |
+| 5 | 0 | 4 | Reviewable = 5; rate = floor(400 / 5) = 80% | No alert |
+
+This reproduces the distinction missing from the original alert: one skipped
+commit is an empty sample, whereas one unreviewed qualifying commit is a genuine
+zero-percent sample. Nested stage-prompt verdicts do not change either answer.
+
+Run an operational preview with `DRY_RUN=true bash
+scripts/enforcement/compliance-cron.sh`. The preview writes local reports and
+logs but makes no GitHub calls. The regression suite is
+`tests/enforcement/test_compliance_cron.py`; its disposable fixtures run the real
+dashboard and replace Git and GitHub commands with local test doubles.
+
+The historical alert is not a completed review audit. Commit-message keyword
+matching and existing review-file heuristics remain unchanged, and a passing
+metric does not authenticate independent review. Historical commits require
+separate inspection; deployment, issue closure and changes to weekly aggregation
+are not performed by this correction.
+
 ## Related
 
 - docs/methodology/enforcement-over-instruction.md (why this exists)
