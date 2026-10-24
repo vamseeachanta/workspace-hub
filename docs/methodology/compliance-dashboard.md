@@ -25,12 +25,70 @@ The compliance dashboard tracks whether AI agents (Claude, Codex, Gemini, Hermes
    - Skip: docs, chore, test, ci, style, sync, merge, revert, build, skill-only, email-only
    - Reviewable: feat, fix, refactor, perf, security
 3. **Check each reviewable commit for evidence**:
-   - Plan approval markers in `.planning/plan-approved/`
-   - Review files in `.planning/phases/*/REVIEWS.md`
-   - Review reports in `.claude/reports/*review*`
-   - Review keywords in commit messages
-4. **Calculate rate**: reviewed / reviewable * 100
+   - Review or provider keywords in commit messages (a legacy heuristic)
+   - Legacy lookup of matching short hashes in `.planning/**/REVIEWS.md`
+   - These heuristics do not authenticate independent review or approval
+4. **Calculate integer rate**: floor(reviewed / reviewable * 100)
 5. **Compare to threshold**: default 80%
+
+### Alert reliability
+
+Commit classification accepts scoped and unscoped subjects, including breaking
+change markers: `ci(build):`, `ci:`, `docs!:` and `docs(api)!:`. Ordinary merge and
+revert subjects are exempt too. The `feat(skill)`, `feat(email)` and `feat(wiki)`
+exemptions require a complete scope or a slash-separated subscope;
+`feat(skillful)` remains reviewable. Unknown subjects remain reviewable.
+
+The daily wrapper passes the dashboard's JSON section to
+`scripts/enforcement/compliance_report.py`. The parser validates nonnegative
+integer counts, count reconciliation, integer percentage and the top-level
+verdict. Duplicate JSON keys, missing fields, extra report sections and trailing
+payloads fail validation. Nested diagnostics cannot supply alert metrics.
+Dashboard errors and inconsistent exit statuses return an error instead of
+silently reporting compliance.
+
+When `reviewable = 0`, the percentage is undefined. The dashboard retains its
+legacy numeric `0` and `PASS` fields for existing consumers; the alert action is
+`not_evaluated`, logged as `NOT_EVALUATED`, and no issue is created. Otherwise the
+fixed alert bands are critical below 30%, high from 30% to below 50%, medium from
+50% to below 80%, and pass from 80%. These are repository policy from issue #3794,
+Thresholds table (2026-08-03), consistent with the monitoring request in #2031;
+they are not engineering acceptance limits. `COMPLIANCE_THRESHOLD` changes the
+dashboard verdict threshold, while the alert bands remain fixed.
+
+`DRY_RUN=true` prepares the alert locally without any GitHub calls, including
+authentication or issue searches. `COMPLIANCE_REPORTS_DIR` directs both dashboard
+JSON and cron logs to a supplied directory; the default remains `logs/compliance`.
+Test fixtures use this option to keep all output outside the checkout.
+
+### Worked alert example
+
+Inputs, from the original issue #3794 alert: total 10 commits, reviewed 2,
+unreviewed 1. The implied skipped count is `10 - 2 - 1 = 7`, and reviewable count
+is `2 + 1 = 3`. By the percentage method above, `floor(100 * 2 / 3) = 66`.
+The 80% dashboard threshold gives `FAIL`; the fixed alert bands give `medium`.
+This reproduces the count arithmetic without asserting that the historical
+review evidence was authenticated.
+
+```bash
+uv run --no-project python scripts/enforcement/compliance_report.py <<'JSON'
+JSON Report:
+{"total_commits":10,"skipped":7,"reviewable":3,"reviewed":2,"unreviewed":1,"compliance_rate":66,"threshold":80,"verdict":"FAIL","stage_prompt_drift":{"latest_event":{"verdict":"pass"}}}
+JSON
+```
+
+The tab-separated answer is `66`, `10`, `2`, `1`, `3`, `FAIL`, `medium`:
+rate, total, reviewed, unreviewed, reviewable, top-level verdict, alert action.
+The nested `pass` is diagnostic data and does not enter that answer.
+
+For a window containing only 6 exempt commits, the hand counts are skipped 6,
+reviewable 0, reviewed 0 and unreviewed 0. No ratio can be evaluated, so the alert
+action is `not_evaluated` rather than critical. This addresses the empty-window
+pattern recorded in the later updates on #3794.
+
+Historical cross-provider review, authenticated evidence and deployment of the
+updated scripts remain separate follow-up work. Regression tests cover these
+calculation and parsing paths without publishing alerts or invoking reviewers.
 
 ## Running the Dashboard
 
