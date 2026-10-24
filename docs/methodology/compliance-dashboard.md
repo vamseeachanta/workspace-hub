@@ -93,6 +93,14 @@ The compliance dashboard feeds into:
 
 A cron job runs the dashboard and auto-creates issues when compliance drops below threshold.
 
+The cron wrapper validates the dashboard's top-level JSON counts, percentage,
+verdict and exit status before classifying an alert. With no reviewable commits,
+the percentage is NOT_EVALUATED for alert purposes and no alert is issued.
+Malformed or inconsistent reports produce an ERROR and a nonzero exit instead.
+`DRY_RUN=true` renders a local preview without GitHub calls. The
+[alert interpretation and worked examples](compliance-alerts.html) describe the
+count identities, policy thresholds and historical evidence limitations.
+
 ## Related
 
 - docs/methodology/enforcement-over-instruction.md (why this exists)

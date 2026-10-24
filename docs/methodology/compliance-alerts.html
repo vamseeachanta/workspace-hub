@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Compliance alert interpretation</title>
+<style>
+body { font: 1rem/1.6 system-ui, sans-serif; max-width: 60rem; margin: 2rem auto; padding: 1rem; }
+table { border-collapse: collapse; width: 100%; }
+th, td { border: 1px solid #bbb; padding: .5rem; text-align: left; }
+code { background: #eee; padding: .15rem; }
+caption { caption-side: bottom; text-align: left; }
+</style>
+<main>
+<h1>Compliance alert interpretation</h1>
+<h2>Summary</h2>
+<p>A zero compliance rate requires the reviewable count to be interpreted.
+An empty review population is NOT_EVALUATED for alert purposes. A population
+containing unreviewed commits can produce a critical alert. The alert wrapper
+validates the dashboard JSON before applying the thresholds.</p>
+<h2>Revision history</h2>
+<table>
+<tr><th>Revision</th><th>Date</th><th>Change and reason</th></tr>
+<tr><td>1</td><td>2026-10-22</td><td>Document count validation and empty-population
+handling to distinguish missing reviews from an undefined percentage.</td></tr>
+<caption>Table 1. Initial documentation revision.</caption>
+</table>
+<h2>Inputs and method</h2>
+<p>The inputs are the top-level dashboard fields <code>total_commits</code>,
+<code>skipped</code>, <code>reviewable</code>, <code>reviewed</code>,
+<code>unreviewed</code>, <code>compliance_rate</code>, <code>threshold</code> and
+<code>verdict</code>, plus the dashboard exit status. Counts shall be nonnegative
+integers; booleans, missing counts and duplicate JSON keys are rejected.</p>
+<p>The count identities are total = skipped + reviewable and reviewable = reviewed
++ unreviewed. For a positive reviewable count, the integer percentage is
+floor(100 × reviewed / reviewable). These definitions are taken from
+<code>scripts/enforcement/compliance-dashboard.sh</code>, function <code>main</code>.
+The dashboard retains a numerical zero and PASS when the denominator is empty;
+the wrapper explicitly records NOT_EVALUATED and issues no alert.</p>
+<p>A malformed report, inconsistent count or verdict, or unexpected exit status
+produces a nonzero wrapper exit and an ERROR log entry. It does not produce a
+compliance alert. The scheduling system must surface the execution failure;
+an execution error is not evidence of a compliant population.</p>
+<h2>Worked examples</h2>
+<p>The examples are synthetic hand calculations based on the alert population
+reported in issue 3830 and the formula above. They are not historical review
+evidence.</p>
+<table>
+<tr><th>Case</th><th>Total</th><th>Skipped</th><th>Reviewed</th><th>Unreviewed</th><th>Calculation and answer</th></tr>
+<tr><td>Empty review population</td><td>7</td><td>7</td><td>0</td><td>0</td>
+<td>Reviewable = 7 − 7 = 0; division is undefined; NOT_EVALUATED; no alert.</td></tr>
+<tr><td>Missing reviews</td><td>7</td><td>0</td><td>0</td><td>7</td>
+<td>Reviewable = 7; floor(100 × 0 / 7) = 0%; critical alert.</td></tr>
+<tr><td>Pass boundary</td><td>5</td><td>0</td><td>4</td><td>1</td>
+<td>Reviewable = 5; floor(100 × 4 / 5) = 80%; no alert.</td></tr>
+<caption>Table 2. Independent arithmetic distinguishes zero from an empty denominator.</caption>
+</table>
+<p>The alert thresholds are those published in issue 3830, “Thresholds”, dated
+2026-09-07: below 30% critical; 30% to below 50% high; 50% to below 80% medium;
+80% or higher no alert. They are repository policy, not engineering acceptance
+limits. A configured dashboard threshold still governs its own PASS/FAIL verdict;
+alert severity uses the published alert thresholds.</p>
+<h2>Operation and tests</h2>
+<p><code>DRY_RUN=true bash scripts/enforcement/compliance-cron.sh</code> generates
+local logs and an alert preview, when applicable, without any GitHub calls.
+Without dry-run mode, the existing publication behavior remains enabled.
+The existing weekly issue deduplication is unchanged.</p>
+<p><code>tests/enforcement/test_compliance_cron.py</code> exercises the empty
+population, positive denominators, severity boundaries, nested drift verdicts,
+inconsistent and malformed reports, and exit status disagreement. Fixtures use
+disposable roots and stub external commands. Tests also execute the shipped
+dashboard for empty and all-skipped histories.</p>
+<h2>Limits and next evidence</h2>
+<p>Issue 3830 reports seven total commits, zero reviewed and zero unreviewed, with
+PASS. It omits the reviewable and skipped fields. The original daily JSON and
+commit window are required to establish the historical population. This change
+does not establish that historical reviews were completed or that bypasses did
+not occur. Commit classification and the dashboard's review-evidence heuristics
+are unchanged. Weekly report aggregation remains a separate consumer and is not
+changed by this correction.</p>
+<h2>Sources</h2>
+<ul>
+<li>Issue 3830, compliance alert, 2026-09-07: observed alert fields and severity thresholds.</li>
+<li>Issue 2031, automated compliance monitoring: daily alert and weekly reporting requirements.</li>
+<li><code>scripts/enforcement/compliance-dashboard.sh</code>, function <code>main</code>:
+count identities, integer percentages, empty-population sentinel and verdict.</li>
+</ul>
+</main>
+</html>

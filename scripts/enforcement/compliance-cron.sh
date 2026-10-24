@@ -23,7 +23,7 @@ LOG_FILE="${LOG_DIR}/daily-${DATE_COMPACT}.log"
 DASHBOARD_SCRIPT="${SCRIPT_DIR}/compliance-dashboard.sh"
 DRY_RUN="${DRY_RUN:-false}"
 
-# Alert thresholds
+# Alert thresholds: issue 3830, Thresholds (2026-09-07).
 THRESHOLD_HIGH=50    # Below this: create issue with priority:high
 THRESHOLD_CRITICAL=30  # Below this: add priority:critical
 THRESHOLD_PASS=80    # At or above this: log as pass, no action
@@ -41,36 +41,24 @@ if [[ ! -x "$DASHBOARD_SCRIPT" ]]; then
     exit 1
 fi
 
-DASHBOARD_OUTPUT="$(bash "$DASHBOARD_SCRIPT" 2>&1)" || true
+DASHBOARD_STATUS=0
+DASHBOARD_OUTPUT="$(bash "$DASHBOARD_SCRIPT" 2>&1)" || DASHBOARD_STATUS=$?
 echo "$DASHBOARD_OUTPUT" >> "$LOG_FILE"
 
-# ── Parse compliance percentage from output ──────────────────────────────────
-# The dashboard outputs: "Compliance rate:    NN% (threshold: MM%)"
-COMPLIANCE_RATE="$(echo "$DASHBOARD_OUTPUT" | grep -oP 'Compliance rate:\s+\K[0-9]+' || echo "")"
-
-if [[ -z "$COMPLIANCE_RATE" ]]; then
-    # Try to parse from JSON output as fallback
-    COMPLIANCE_RATE="$(echo "$DASHBOARD_OUTPUT" | grep -oP '"compliance_rate":\s*\K[0-9]+' || echo "")"
+# ── Read one validated top-level metric set, ignoring nested drift verdicts ───
+if ! METRICS="$(printf '%s\n' "$DASHBOARD_OUTPUT" |
+    python3 "${SCRIPT_DIR}/compliance_metrics.py" "$DASHBOARD_STATUS")"; then
+    log "ERROR: Dashboard metrics unavailable or inconsistent; no compliance alert issued"
+    exit 1
 fi
+IFS=$'\t' read -r TOTAL_COMMITS REVIEWABLE REVIEWED UNREVIEWED COMPLIANCE_RATE VERDICT <<< "$METRICS"
 
-if [[ -z "$COMPLIANCE_RATE" ]]; then
-    # Check if there were no commits (which is fine)
-    if echo "$DASHBOARD_OUTPUT" | grep -q '"total_commits": *0\|No commits in window'; then
-        log "No commits in window — nothing to check"
-        exit 0
-    fi
-    log "WARNING: Could not parse compliance rate from dashboard output"
+if [[ "$REVIEWABLE" -eq 0 ]]; then
+    log "No reviewable commits — compliance rate NOT_EVALUATED; no alert needed"
     exit 0
 fi
 
 log "Compliance rate: ${COMPLIANCE_RATE}%"
-
-# ── Parse additional details from JSON ───────────────────────────────────────
-TOTAL_COMMITS="$(echo "$DASHBOARD_OUTPUT" | grep -oP '"total_commits":\s*\K[0-9]+' || echo "?")"
-REVIEWED="$(echo "$DASHBOARD_OUTPUT" | grep -oP '"reviewed":\s*\K[0-9]+' || echo "?")"
-UNREVIEWED="$(echo "$DASHBOARD_OUTPUT" | grep -oP '"unreviewed":\s*\K[0-9]+' || echo "?")"
-VERDICT="$(echo "$DASHBOARD_OUTPUT" | grep -oP '"verdict":\s*"\K[^"]+' || echo "?")"
-
 # ── Threshold evaluation ─────────────────────────────────────────────────────
 if [[ "$COMPLIANCE_RATE" -ge "$THRESHOLD_PASS" ]]; then
     log "PASS: Compliance at ${COMPLIANCE_RATE}% (>= ${THRESHOLD_PASS}%) — no action needed"
@@ -96,25 +84,6 @@ WEEK_NUM="$(date +%V)"
 YEAR="$(date +%Y)"
 DEDUP_KEY="compliance-alert-${YEAR}-W${WEEK_NUM}"
 
-# Check gh authentication
-if ! command -v gh >/dev/null 2>&1; then
-    log "WARNING: gh CLI not available — skipping issue creation"
-    exit 0
-fi
-
-if ! gh auth status >/dev/null 2>&1; then
-    log "WARNING: gh CLI not authenticated — skipping issue creation"
-    exit 0
-fi
-
-# Search for existing open compliance alert this week
-EXISTING_ISSUE="$(gh issue list \
-    --state open \
-    --label "compliance-alert" \
-    --search "Compliance alert: W${WEEK_NUM}" \
-    --json number,title \
-    --jq '.[0].number' 2>/dev/null || true)"
-
 # ── Build unreviewed commits section ─────────────────────────────────────────
 UNREVIEWED_SECTION=""
 # Extract unreviewed commits from dashboard output (lines starting with "  - ")
@@ -130,7 +99,7 @@ ISSUE_TITLE="Compliance alert: W${WEEK_NUM} — ${COMPLIANCE_RATE}% (${SEVERITY}
 ISSUE_BODY="## Compliance Alert — ${DATE_ISO}
 
 **Compliance rate:** ${COMPLIANCE_RATE}% | **Severity:** ${SEVERITY}
-**Total commits:** ${TOTAL_COMMITS} | **Reviewed:** ${REVIEWED} | **Unreviewed:** ${UNREVIEWED}
+**Total commits:** ${TOTAL_COMMITS} | **Reviewable:** ${REVIEWABLE} | **Reviewed:** ${REVIEWED} | **Unreviewed:** ${UNREVIEWED}
 **Dashboard verdict:** ${VERDICT}
 
 ### Unreviewed Commits
@@ -162,6 +131,22 @@ if [[ "$DRY_RUN" == "true" ]]; then
     exit 0
 fi
 
+# A dry run above is offline: authentication and mutations are never attempted.
+if ! command -v gh >/dev/null 2>&1; then
+    log "WARNING: gh CLI not available — skipping issue creation"
+    exit 0
+fi
+if ! gh auth status >/dev/null 2>&1; then
+    log "WARNING: gh CLI not authenticated — skipping issue creation"
+    exit 0
+fi
+EXISTING_ISSUE="$(gh issue list \
+    --state open \
+    --label "compliance-alert" \
+    --search "Compliance alert: W${WEEK_NUM}" \
+    --json number,title \
+    --jq '.[0].number' 2>/dev/null || true)"
+
 # Ensure labels exist (idempotent)
 gh label create "compliance-alert" --description "Automated compliance threshold alert" --color "D93F0B" 2>/dev/null || true
 gh label create "priority:high" --description "High priority" --color "FF6600" 2>/dev/null || true
@@ -173,7 +158,7 @@ if [[ -n "$EXISTING_ISSUE" && "$EXISTING_ISSUE" != "null" ]]; then
     gh issue comment "$EXISTING_ISSUE" --body "## Update — ${DATE_ISO}
 
 **Compliance rate:** ${COMPLIANCE_RATE}% | **Severity:** ${SEVERITY}
-**Total:** ${TOTAL_COMMITS} | **Reviewed:** ${REVIEWED} | **Unreviewed:** ${UNREVIEWED}
+**Total:** ${TOTAL_COMMITS} | **Reviewable:** ${REVIEWABLE} | **Reviewed:** ${REVIEWED} | **Unreviewed:** ${UNREVIEWED}
 
 ${UNREVIEWED_SECTION:-No details available}" >/dev/null 2>&1
 
