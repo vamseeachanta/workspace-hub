@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Repository writer admission</title>
+<body>
+<h1>Repository writer admission</h1>
+<p>The preflight blocks a Codex writer while another writer uses the same
+repository. The decision is conditional on a complete current roster and a
+coordinator that serializes admission with registration.</p>
+<h2>Revision history</h2>
+<table>
+<tr><th>Revision</th><th>Date</th><th>Change and reason</th></tr>
+<tr><td>Initial</td><td>2026-10-22</td><td>Add a worked exclusion example
+so concurrent writers are identified before startup.</td></tr>
+</table>
+<p>Table 1. Document revisions.</p>
+<h2>Source and method</h2>
+<p>Source: issue 3829 (2026), repository writer serialization, and the
+<a href="../standards/PARALLEL_FIRST_EXECUTION.md#repository-writer-admission">execution
+standard</a>. No physical constants, timing thresholds or engineering acceptance
+limits are used.</p>
+<p>For each active record, conflict = same repository AND candidate writes AND
+active task writes AND (candidate is Codex OR active task is Codex). Admission
+requires no conflicts and a complete roster. This predicate does not establish
+path ownership for other combinations of providers.</p>
+<h2>Inputs</h2>
+<p>Save the following synthetic candidate as <code>candidate.json</code>:</p>
+<pre>{
+  "task": "change-b",
+  "repository": "example/repository",
+  "provider": "codex",
+  "access": "write"
+}</pre>
+<p>Save the current coordinator roster as <code>roster.json</code>:</p>
+<pre>{
+  "complete": true,
+  "active": [{
+    "task": "change-a",
+    "repository": "example/repository",
+    "provider": "claude",
+    "access": "write"
+  }]
+}</pre>
+<p>All records require exactly the four task fields shown. Repository keys are
+lowercase namespace/repository identifiers, without URL, checkout path or
+<code>.git</code> suffix. Every checkout of the same repository shall use the
+same key; renames and aliases shall be resolved by the coordinator. Task tokens
+and provider tokens contain lowercase letters, digits, underscores or hyphens
+and begin with a letter or digit. Recognized providers are <code>codex</code>,
+<code>claude</code>, <code>agy</code>, <code>gemini</code>, <code>hermes</code> and
+<code>other</code>; aliases are rejected. The coordinator shall identify Codex
+writers as <code>codex</code>, never <code>other</code>. Access is exactly <code>read</code> or
+<code>write</code>; a task that may later edit is a writer from startup.</p>
+<h2>Invocation and answer</h2>
+<pre>uv run --no-project python scripts/coordination/repo_write_admission.py \
+  --candidate candidate.json --roster roster.json</pre>
+<p>Independent evaluation: the repositories match; both access values are write;
+the candidate is Codex. Every term is true, so the answer is:</p>
+<pre>{"allowed": false, "blockers": ["change-a"], "status": "BLOCKED"}</pre>
+<p>The exit code is <code>1</code>. After the active writer and its children
+finish and integration is handed back, the coordinator removes that registration.
+For a fresh complete empty roster, no conflicts exist: the answer is
+<code>ALLOWED</code>, with an empty blocker list and exit code <code>0</code>.
+The coordinator then registers the candidate before starting it, within the same
+serialized scheduling operation.</p>
+<p>Changing the active access to <code>read</code>, or using a different repository,
+also removes this conflict. A second Codex writer remains blocked even in a
+different worktree or when it reuses the same task token.</p>
+<h2>Missing evidence and limitations</h2>
+<p>An incomplete roster, unreadable input, malformed JSON, duplicate JSON keys or
+invalid records yield <code>NOT_EVALUATED</code>, <code>allowed: false</code>, and
+exit code <code>2</code>. These exit codes are interface definitions, not measured
+acceptance limits. Input errors omit paths and excerpts from output.</p>
+<p>The completeness flag is a caller assertion. Freshness and identity cannot be
+verified by this pure helper. No expiry or automatic stale-registration removal
+is provided. Read-only tasks cannot escalate to writes without admission again.
+This preflight is optional tooling; existing launchers are not automatically
+wrapped, and independent callers require an existing atomic coordination backend.</p>
+</body>
+</html>
