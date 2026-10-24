@@ -25,7 +25,7 @@ def load_checker():
 def findings_for(tmp_path: Path, body: str) -> list[str]:
     checker = load_checker()
     path = tmp_path / "note.md"
-    path.write_text(body, encoding="utf-8")
+    path.write_text(body, encoding="utf-8", newline="\n")
     return checker.check(path)
 
 
@@ -33,7 +33,7 @@ def test_existing_self_test_counts_stay_exact(tmp_path: Path) -> None:
     checker = load_checker()
     for name, (body, expected) in checker.SELF_TEST.items():
         path = tmp_path / f"{name}.md"
-        path.write_text(body, encoding="utf-8")
+        path.write_text(body, encoding="utf-8", newline="\n")
         assert len(checker.check(path)) == expected, name
 
 
@@ -296,7 +296,7 @@ def test_worked_example_cli_reports_only_bare_claims(tmp_path: Path, capsys) -> 
         "Since the mill certificate is absent, the grade is not obviously correct.\n"
         "Manual pulls are safe now.\n"
         "The grade is not obviously correct.\n",
-        encoding="utf-8",
+        encoding="utf-8", newline="\n",
     )
     assert checker.main(["check-engineering-register.py", str(path)]) == 1
     output = capsys.readouterr().out
@@ -321,3 +321,54 @@ def test_bare_claims_remain_reported(tmp_path: Path, body: str, codes: list[str]
     assert len(findings) == len(codes)
     for finding, code in zip(findings, codes):
         assert f"[{code}]" in finding
+
+
+@pytest.mark.parametrize("code,claim", [
+    ("R3", "Manual pulls are safe now"),
+    ("R5", "The grade is not obviously correct"),
+])
+@pytest.mark.parametrize("criterion_first", [True, False])
+@pytest.mark.parametrize("excluded", ["url", "quotation"])
+@pytest.mark.parametrize("stop", [".", "?", "!"])
+def test_exclusions_preserve_sentence_boundaries(
+    tmp_path: Path, code: str, claim: str, criterion_first: bool,
+    excluded: str, stop: str,
+) -> None:
+    """Hand oracle: the adjacent sentence cannot justify the bare claim."""
+    ending = (
+        "https:" + "/" * 2 + "example.org/record" + stop
+        if excluded == "url" else '"the record is complete' + stop + '"'
+    )
+    reason = "The criterion is recorded at " + ending
+    parts = [reason, claim + "."] if criterion_first else [claim + " " + ending, reason]
+    findings = findings_for(tmp_path, "\n".join(parts))
+    assert len(findings) == 1
+    assert f"[{code}]" in findings[0]
+    assert f":{2 if criterion_first else 1}:" in findings[0]
+
+
+@pytest.mark.parametrize("claim,code", [
+    ("The result is safe", "R3"),
+    ("The result is not obviously correct", "R5"),
+])
+@pytest.mark.parametrize("token", ["codec", "tablet", "standardized", "limited", "basisless"])
+@pytest.mark.parametrize("token_first", [True, False])
+def test_criterion_prefixes_do_not_justify_claims(
+    tmp_path: Path, claim: str, code: str, token: str, token_first: bool,
+) -> None:
+    """Hand oracle: an unrelated word is not a named criterion."""
+    body = f"The {token} exists and {claim}." if token_first else f"{claim} with the {token}."
+    findings = findings_for(tmp_path, body)
+    assert len(findings) == 1
+    assert f"[{code}]" in findings[0]
+
+
+@pytest.mark.parametrize("token", [
+    "criterion", "criteria", "limit", "limits", "thresholds", "allowable",
+    "basis", "bases", "code", "codes", "standard", "standards", "Reference",
+    "references", "Table", "tables", "Section", "sections",
+])
+@pytest.mark.parametrize("claim", ["The result is safe", "The result is not obviously correct"])
+def test_complete_criterion_words_still_qualify(tmp_path: Path, token: str, claim: str) -> None:
+    """Hand oracle: an explicitly named criterion qualifies either rule."""
+    assert findings_for(tmp_path, f"The {token} governs and {claim}.") == []

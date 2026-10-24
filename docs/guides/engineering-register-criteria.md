@@ -9,12 +9,14 @@ described in issue #3835 (2026).
 
 | Revision | Date | Change and reason |
 | --- | --- | --- |
+| Correction | 2026-10-24 | Preserve sentence stops beside excluded text and require complete criterion words so adjacent reasons and unrelated prefixes cannot conceal bare claims. |
 | Initial | 2026-10-22 | Explain sentence-scoped criteria and a worked example so clause order does not conceal a supplied reason. |
 
 ## Method and scope
 
 The checker first blanks code, quotations, link targets and other excluded
-regions while preserving character offsets. It separates the remaining prose
+regions while preserving character offsets and terminal sentence stops, including
+stops inside closing quotations. Internal URL dots remain excluded. It separates the remaining prose
 at full stops, question marks, exclamation marks and blank paragraphs. Dots
 between digits in reference numbers and decimal values stay within the sentence,
 as does a soft line wrap.
@@ -26,10 +28,10 @@ original line numbers. Their existing following-clause explanation forms still
 apply: R3 accepts immediate explanatory punctuation or conjunctions; R5 accepts
 a following colon or long dash within the sentence.
 
-The criterion vocabulary is unchanged: named comparisons, references and reason
+The criterion vocabulary uses complete words and explicit singular/plural forms: named comparisons, references and reason
 markers such as `against`, `per`, `criterion`, `because` and `since`. Matching
-starts at word boundaries so `Table` inside `acceptable` cannot qualify the
-claim itself. The previous character windows no longer limit the distance between
+requires both word boundaries so `Table` inside `acceptable`, `code` inside
+`codec` and `Table` inside `tablet` cannot qualify a claim. The previous character windows no longer limit the distance between
 a claim and its criterion
 within a sentence. A criterion in either adjacent sentence does not qualify a
 bare claim.
@@ -86,5 +88,5 @@ split spans; Markdown list items without punctuation or blank lines can share a
 span. The vocabulary test recognises supplied wording, not whether a reason is
 technically valid or actually governs every claim in a compound sentence.
 These limits require reading the prose; the checker does not establish
-engineering acceptance. Locale-independent self-test fixture writing is tracked
-separately in issue #3834 and is outside this change.
+engineering acceptance. Self-test fixtures are written explicitly as UTF-8 with
+LF line endings; this does not establish behavior under every operating-system locale.

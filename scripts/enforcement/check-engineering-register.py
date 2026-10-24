@@ -51,7 +51,15 @@ _INLINE_QUOTE = re.compile(r"[\u201c\"](?:[^\u201d\"]|\n(?!\n)){0,400}[\u201d\"]
 def prose_only(text: str) -> str:
     """Blank non-prose regions, preserving offsets so line numbers stay true."""
     def blank(m: re.Match) -> str:
-        return re.sub(r"\S", " ", m.group(0))
+        region = m.group(0)
+        masked = re.sub(r"\S", " ", region)
+        # Keep a sentence stop at the edge of an excluded region, including
+        # one inside a closing quotation. Internal URL dots remain masked.
+        stop = re.search(r"[.!?](?=[\"\u201d'\u2019`]*\s*$)", region)
+        if stop:
+            pos = stop.start()
+            masked = masked[:pos] + region[pos] + masked[pos + 1:]
+        return masked
 
     out = _FRONTMATTER.sub(blank, text)
     fences = [m.start() for m in _FENCE.finditer(out)]
@@ -109,11 +117,11 @@ ADVICE_MODAL = re.compile(
 # (2026) also requires either clause order, bounded by the sentence rather than
 # by an arbitrary character window. These patterns identify candidate claims;
 # check() applies the same sentence-scoped criterion test to both R3 and R5.
-_CRITERION = (r"against|per\b|criteri|limit|threshold|allowable|basis|code|standard"
-              r"|because|since|as it|Reference|Table|Section|by design|in that")
-# A sentence-wide search also sees the claim: "Table" inside "acceptable"
-# cannot qualify that claim. Retain stems such as "criteri" at word starts.
-CRITERION = re.compile(rf"\b(?:{_CRITERION})", re.IGNORECASE)
+_CRITERION = (r"against|per|criterion|criteria|limits?|thresholds?|allowables?"
+              r"|basis|bases|codes?|standards?|because|since|as it|references?"
+              r"|tables?|sections?|by design|in that")
+# Match complete words, with supported singular/plural forms made explicit.
+CRITERION = re.compile(rf"\b(?:{_CRITERION})\b", re.IGNORECASE)
 # Conservative lexical boundaries, not a natural-language sentence tokenizer.
 # Blank paragraphs end scope; a single soft wrap does not (issue #3835, 2026).
 # A dot between digits stays within reference numbers such as Table 4.1 in the
@@ -221,7 +229,7 @@ def check(path: Path) -> list[str]:
     out: list[str] = []
 
     def report(pos: int, code: str, msg: str, hit: str) -> None:
-        out.append(f"{path}:{raw.count(chr(10), 0, pos) + 1}: [{code}] {msg} — {hit!r}")
+        out.append(f"{path.as_posix()}:{raw.count(chr(10), 0, pos) + 1}: [{code}] {msg} — {hit!r}")
 
     for rule in RULES:
         for m in rule.pattern.finditer(text):
@@ -314,7 +322,8 @@ def self_test() -> int:
     import tempfile
     failures = 0
     for name, (body, expected) in SELF_TEST.items():
-        with tempfile.NamedTemporaryFile("w", suffix=".md", delete=False) as fh:
+        with tempfile.NamedTemporaryFile(
+                "w", suffix=".md", delete=False, encoding="utf-8", newline="\n") as fh:
             fh.write(body)
             p = Path(fh.name)
         found = len(check(p))
