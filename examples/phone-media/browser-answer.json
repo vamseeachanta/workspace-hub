@@ -1,0 +1,35 @@
+{
+  "candidates": {
+    "immich": {
+      "checks": {
+        "heic_preview": "NOT_EVALUATED",
+        "exif_timeline": "NOT_EVALUATED",
+        "face_search": "NOT_EVALUATED",
+        "duplicate_review": "NOT_EVALUATED",
+        "family_access": "NOT_EVALUATED",
+        "originals_read_only": "NOT_EVALUATED",
+        "tailnet_only": "NOT_EVALUATED",
+        "restore_verified": "NOT_EVALUATED",
+        "resource_fit": "NOT_EVALUATED"
+      },
+      "version_recorded": false,
+      "decision": "NOT_EVALUATED"
+    },
+    "photoprism": {
+      "checks": {
+        "heic_preview": "NOT_EVALUATED",
+        "exif_timeline": "NOT_EVALUATED",
+        "face_search": "NOT_EVALUATED",
+        "duplicate_review": "NOT_EVALUATED",
+        "family_access": "NOT_EVALUATED",
+        "originals_read_only": "NOT_EVALUATED",
+        "tailnet_only": "FAIL",
+        "restore_verified": "NOT_EVALUATED",
+        "resource_fit": "NOT_EVALUATED"
+      },
+      "version_recorded": true,
+      "decision": "BLOCKED"
+    }
+  },
+  "eligible_candidates": []
+}
