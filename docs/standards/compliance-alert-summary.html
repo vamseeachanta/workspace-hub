@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<title>Compliance alert summary contract</title>
+<main>
+<h1>Compliance alert summary contract</h1>
+<p>An empty review window does not establish a compliance percentage. The daily
+alert wrapper suppresses threshold alerts when the validated reviewable count
+is zero. Missing or inconsistent summaries are errors, rather than passing
+observations.</p>
+<h2>Revision history</h2>
+<table><tr><th>Revision</th><th>Date</th><th>Change and reason</th></tr>
+<tr><td>1</td><td>2026-10-22</td><td>Define validated summary handling to prevent
+empty-window critical alerts.</td></tr></table>
+<h2>Inputs and method</h2>
+<p>The dashboard emits a top-level JSON object after <code>JSON Report:</code>.
+Required fields are <code>total_commits</code>, <code>skipped</code>,
+<code>reviewable</code>, <code>reviewed</code>, <code>unreviewed</code>,
+<code>compliance_rate</code>, <code>threshold</code> and <code>verdict</code>.
+Counts and percentages are nonnegative integers; booleans are rejected.</p>
+<p>The identities are total = skipped + reviewable and reviewable = reviewed +
+unreviewed. For a positive denominator, rate = floor(100 × reviewed / reviewable).
+These equations follow <code>scripts/enforcement/compliance-dashboard.sh</code>,
+<code>main()</code>, as inspected for this revision. The zero-denominator numeric
+placeholder remains zero for compatibility, but is not a measured rate.
+The dashboard verdict is checked against its own reported threshold.</p>
+<p>Alert boundaries remain those in
+issue 4105,
+Thresholds table, dated 2026-10-19: below 30% critical, from 30% to below 50% high,
+from 50% to below 80% medium, and at least 80% no alert. The dashboard execution
+contract is exit zero for PASS and exit one for FAIL; other exits are errors.
+Nested drift-event verdicts do not replace the summary verdict.</p>
+<h2>Worked examples</h2>
+<table><tr><th>Total</th><th>Skipped</th><th>Reviewed</th><th>Method</th><th>Answer</th></tr>
+<tr><td>0</td><td>0</td><td>0</td><td>Reviewable = 0 − 0 = 0;
+0/0 is undefined.</td><td>No threshold alert; compliance not evaluated.</td></tr>
+<tr><td>3</td><td>3</td><td>0</td><td>Reviewable = 3 − 3 = 0.</td>
+<td>No threshold alert, even though commits exist.</td></tr>
+<tr><td>10</td><td>0</td><td>3</td><td>floor(100 × 3 / 10) = 30%.</td>
+<td>High severity, at the lower high boundary.</td></tr>
+<tr><td>10</td><td>0</td><td>8</td><td>floor(100 × 8 / 10) = 80%.</td>
+<td>No alert, at the pass boundary.</td></tr></table>
+<p>Table 1. Synthetic counts and independent hand calculations exercise the
+published alert boundaries; no engineering constants are introduced.</p>
+<h2>Verification and limits</h2>
+<p><code>tests/enforcement/test_compliance_cron.py</code> runs copied scripts
+with isolated command doubles. GitHub calls are recorded locally and no remote
+operation is performed. The tests cover empty and excluded-only windows,
+threshold boundaries, nested verdicts, inconsistent counts, invalid types,
+missing JSON and execution errors.</p>
+<p>The existing dashboard commit classification and review-evidence heuristics
+are unchanged. This contract validates summary consistency, not the authenticity
+or completeness of review evidence. Weekly aggregation is unchanged. Existing
+alert issues are not closed automatically. Independent review and publication
+remain separate steps.</p>
+</main>
+</html>
