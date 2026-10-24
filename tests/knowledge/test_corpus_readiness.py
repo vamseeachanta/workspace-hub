@@ -168,7 +168,7 @@ def test_unknown_fields_fail_to_catch_misspellings(snapshot):
 ])
 def test_strict_json(tmp_path, raw):
     path = tmp_path / "snapshot.json"
-    path.write_text(raw, encoding="utf-8")
+    path.write_text(raw, encoding="utf-8", newline="\n")
     with pytest.raises(SnapshotError):
         load_snapshot(path)
 
@@ -179,10 +179,10 @@ def test_cli_aggregate_only_and_read_only(tmp_path, snapshot):
     row["source_id"] = "sensitive-source-canary"
     row["evidence"]["citation_ref"] = str(tmp_path / "not-opened-canary")
     path = tmp_path / "snapshot.json"
-    path.write_text(json.dumps(snapshot), encoding="utf-8")
+    path.write_text(json.dumps(snapshot), encoding="utf-8", newline="\n")
     before = path.read_bytes()
     result = subprocess.run([sys.executable, str(SCRIPT), str(path)],
-                            capture_output=True, text=True, check=False)
+                            capture_output=True, text=True, encoding="utf-8", check=False)
     assert result.returncode == 0
     assert result.stderr == ""
     assert "canary" not in result.stdout
@@ -192,21 +192,27 @@ def test_cli_aggregate_only_and_read_only(tmp_path, snapshot):
     assert sorted(p.name for p in tmp_path.iterdir()) == ["snapshot.json"]
 
 
-@pytest.mark.parametrize("kind", ["missing", "invalid", "encoding", "directory"])
+@pytest.mark.parametrize("kind", ["missing", "invalid", "encoding", "directory", "integer"])
 def test_cli_errors_are_redacted(tmp_path, kind):
     path = tmp_path / "sensitive-path-canary"
     if kind == "invalid":
-        path.write_text('{"sensitive-value-canary":', encoding="utf-8")
+        path.write_text('{"sensitive-value-canary":', encoding="utf-8", newline="\n")
+    elif kind == "integer":
+        # Exceed the explicit child-runtime limit without converting in this process.
+        path.write_text('{"schema_version":' + "7" * 5000 + '}',
+                        encoding="utf-8", newline="\n")
     elif kind == "encoding":
         path.write_bytes(b"\xff")
     elif kind == "directory":
         path.mkdir()
-    result = subprocess.run([sys.executable, str(SCRIPT), str(path)],
-                            capture_output=True, text=True, check=False)
+    result = subprocess.run([sys.executable, "-X", "int_max_str_digits=4300",
+                             str(SCRIPT), str(path)],
+                            capture_output=True, text=True, encoding="utf-8", check=False)
     assert result.returncode == 2
     assert result.stdout == ""
     assert "canary" not in result.stderr
     assert str(tmp_path) not in result.stderr
+    assert SCRIPT.as_posix() not in result.stderr
     assert "Traceback" not in result.stderr
 
 
@@ -251,6 +257,6 @@ def test_missing_row_fields_fail(snapshot, field):
 def test_nested_duplicate_json_key_is_rejected(tmp_path, snapshot):
     path = tmp_path / "snapshot.json"
     raw = json.dumps(snapshot).replace('"method_ref":', '"method_ref": null, "method_ref":', 1)
-    path.write_text(raw, encoding="utf-8")
+    path.write_text(raw, encoding="utf-8", newline="\n")
     with pytest.raises(SnapshotError, match="duplicate key"):
         load_snapshot(path)

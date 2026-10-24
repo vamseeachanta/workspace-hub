@@ -81,7 +81,9 @@ def load_snapshot(path: Path) -> dict:
         data = json.loads(path.read_text(encoding="utf-8"),
                           object_pairs_hook=_unique_object,
                           parse_constant=_reject_constant)
-    except (OSError, UnicodeError, json.JSONDecodeError, RecursionError) as exc:
+    except SnapshotError:
+        raise
+    except (OSError, ValueError, RecursionError) as exc:
         raise SnapshotError("snapshot could not be read as strict UTF-8 JSON") from exc
     _validate(data)
     return data
