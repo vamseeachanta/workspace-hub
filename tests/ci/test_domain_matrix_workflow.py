@@ -32,7 +32,7 @@ def repo(tmp_path):
 
 
 def workflow(repo):
-    return yaml.safe_load((repo / ".github/workflows/domain-matrix.yml").read_text())
+    return yaml.safe_load((repo / ".github/workflows/domain-matrix.yml").read_text(encoding="utf-8"))
 
 
 def step(config, job, name):
@@ -60,12 +60,14 @@ def test_job_identity_and_advisory_default(repo):
 
 
 def test_embedded_scripts_equal_sources(repo):
-    text = (repo / ".github/workflows/domain-matrix.yml").read_text()
+    text = (repo / ".github/workflows/domain-matrix.yml").read_text(encoding="utf-8")
     for name in SCRIPTS:
         block = text.split(f"# BEGIN GENERATED: {name}\n")[1].split(f"# END GENERATED: {name}")[0]
         embedded = block.split("<<'DOMAIN_MATRIX_SCRIPT'\n")[1].split("          DOMAIN_MATRIX_SCRIPT\n")[0]
         actual = "".join(line.removeprefix("          ") for line in embedded.splitlines(keepends=True))
-        assert actual == (repo / "scripts/ci" / name).read_text()
+        assert actual == (repo / "scripts/ci" / name).read_text(encoding="utf-8"), (
+            "Embedded source differs; run scripts/ci/embed_domain_matrix.py"
+        )
 
 
 def test_generator_check_and_regeneration(repo):
@@ -73,7 +75,7 @@ def test_generator_check_and_regeneration(repo):
     command = [sys.executable, str(generator), "--root", str(repo)]
     assert subprocess.run(command + ["--check"], capture_output=True, check=False).returncode == 0
     source = repo / "scripts/ci/quarantine_args.py"
-    source.write_text(source.read_text() + "\n# synthetic drift\n")
+    source.write_text(source.read_text(encoding="utf-8") + "\n# synthetic drift\n", encoding="utf-8", newline="\n")
     assert subprocess.run(command + ["--check"], capture_output=True, check=False).returncode == 1
     subprocess.run(command, capture_output=True, check=True)
     subprocess.run(command + ["--check"], capture_output=True, check=True)
@@ -100,11 +102,11 @@ def test_discover_in_caller_tree(repo, tmp_path, valid, enforce, expected):
     caller.mkdir()
     selector = caller / "select.py"
     matrix = {"include": [{"name": "core", "targets": "tests/core", "mode": "seq"}]} if valid else {}
-    selector.write_text(f"print('matrix={json.dumps(matrix)}')\nprint('scope=full')\n")
+    selector.write_text(f"print('matrix={json.dumps(matrix)}')\nprint('scope=full')\n", encoding="utf-8", newline="\n")
     binaries = tmp_path / "bin"
     binaries.mkdir()
     git = binaries / "git"
-    git.write_text('#!/bin/sh\nprintf "src/core.py\\n"\n')
+    git.write_text('#!/bin/sh\nprintf "src/core.py\\n"\n', encoding="utf-8", newline="\n")
     git.chmod(0o755)
     output = tmp_path / "output"
     result = execute(
@@ -113,20 +115,20 @@ def test_discover_in_caller_tree(repo, tmp_path, valid, enforce, expected):
         GITHUB_OUTPUT=str(output), PATH=str(binaries) + os.pathsep + os.environ["PATH"],
     )
     assert result.returncode == expected, result.stderr
-    assert f"matrix-size={1 if valid else 0}\n" in output.read_text()
+    assert f"matrix-size={1 if valid else 0}\n" in output.read_text(encoding="utf-8")
 
 
 @pytest.mark.parametrize("test_code,expected", [(0, 0), (5, 0), (1, 1)])
 def test_test_domain_quarantine_and_exit_codes(repo, tmp_path, test_code, expected):
     caller = tmp_path / "caller"
     caller.mkdir()
-    (caller / "quarantine.txt").write_text("tests/core/test_a.py::test_a\n")
+    (caller / "quarantine.txt").write_text("tests/core/test_a.py::test_a\n", encoding="utf-8", newline="\n")
     runner = caller / "runner.py"
     arguments = tmp_path / "arguments.json"
     runner.write_text(
         "import json, pathlib, sys\n"
-        f"pathlib.Path({str(arguments)!r}).write_text(json.dumps(sys.argv[1:]))\n"
-        f"raise SystemExit({test_code})\n"
+        f'pathlib.Path({str(arguments)!r}).write_text(json.dumps(sys.argv[1:]), encoding="utf-8", newline="\\n")\n'
+        f"raise SystemExit({test_code})\n", encoding="utf-8", newline="\n"
     )
     result = execute(
         repo, tmp_path, "test-domain", "Run domain tests (${{ matrix.name }})",
@@ -134,7 +136,7 @@ def test_test_domain_quarantine_and_exit_codes(repo, tmp_path, test_code, expect
         QUARANTINE_FILE="quarantine.txt",
     )
     assert result.returncode == expected, result.stderr
-    assert json.loads(arguments.read_text()) == [
+    assert json.loads(arguments.read_text(encoding="utf-8")) == [
         "tests/core", "-n", "auto", "--deselect", "tests/core/test_a.py::test_a",
         "--deselect", "core/test_a.py::test_a", "--tb=short", "--junitxml=test-results-core.xml",
     ]
@@ -154,3 +156,16 @@ def test_aggregate_in_caller_tree(repo, tmp_path, discover, test, size, enforce,
         TEST_DOMAIN_RESULT=test, SCOPE="modules", MATRIX_SIZE=size, ENFORCE_CONTRACT=enforce,
     )
     assert result.returncode == expected, result.stderr
+
+
+def test_hosted_contract_suite_is_blocking():
+    config = yaml.safe_load(
+        (ROOT / ".github/workflows/baseline-check.yml").read_text(encoding="utf-8")
+    )
+    job = config["jobs"]["test"]
+    contract = step(config, "test", "Run domain matrix contract tests")
+    assert not job.get("continue-on-error", False)
+    assert not contract.get("continue-on-error", False)
+    assert "if" not in contract
+    assert "uv run --no-project --with pytest --with pyyaml" in contract["run"]
+    assert "python -m pytest tests/ci/" in contract["run"]

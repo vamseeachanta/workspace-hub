@@ -44,7 +44,7 @@ def main() -> int:
             print("Embedded domain scripts are stale; run scripts/ci/embed_domain_matrix.py")
             return 1
     else:
-        path.write_text(expected, encoding="utf-8")
+        path.write_text(expected, encoding="utf-8", newline="\n")
     return 0
 
 

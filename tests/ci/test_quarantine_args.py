@@ -41,7 +41,7 @@ def sample(tmp_path):
     source = tmp_path / "quarantine.txt"
     source.write_text(
         "# comment\n\n  tests/unit/test_a.py::test_one   # trailing comment\n"
-        "unit/test_b.py::test_two \t\n"
+        "unit/test_b.py::test_two \t\n", encoding="utf-8", newline="\n"
     )
     return script, source
 
@@ -67,13 +67,15 @@ def test_absent(sample, tmp_path):
     '"tests/a.py::test\\b"\n', 'tests/a.py::test\\ spaced\n',
     'tests/a.py::test[unmatched\']\n', 'tests/a.py::test\r\n',
     '"tests/a.py::test  spaced"\n',
+    '"tests/a.py::test[double\\\\backslash]"\n',
+    '"tests/a.py::test[escaped\\\"quote]"\n',
 ])
 def test_matches_existing_bash(sample, content, monkeypatch):
     bash = shutil.which("bash")
     if bash is None:
         pytest.skip("bash is not on PATH; original-loop comparison unavailable")
     script, source = sample
-    source.write_text(content)
+    source.write_text(content, encoding="utf-8", newline="\n")
     monkeypatch.setenv("QUARANTINE_FILE", str(source))
     expected = subprocess.run([bash, "-c", BASH_ORACLE], capture_output=True, check=True)
     result = subprocess.run(

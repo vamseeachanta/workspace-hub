@@ -22,6 +22,8 @@ def build_args(path: Path) -> list[str]:
             try:
                 lexer = shlex.shlex(line, posix=True)
                 lexer.whitespace = " \t\n"  # xargs retains carriage returns in node-ids.
+                # xargs treats backslashes literally inside either quote style.
+                lexer.escapedquotes = ""
                 lexer.whitespace_split = True
                 lexer.commenters = ""
                 line = " ".join(lexer)
