@@ -15,6 +15,7 @@ import importlib.metadata
 import json
 import os
 import re
+import stat
 import subprocess
 import sys
 import tempfile
@@ -59,7 +60,7 @@ def install_guard(scratch: Path) -> None:
             "orcfxapi", "orcaflex", "orcawave", "aqwa", "ansys",
         }:
             raise PermissionError("collection guard denied external solver import")
-        if (event.startswith(("subprocess.", "os.exec", "os.spawn", "os.fork"))
+        if (event.startswith(("subprocess.", "os.exec", "os.spawn", "os.posix_spawn", "os.fork"))
                 or event in {"os.system", "socket.connect", "socket.bind", "socket.getaddrinfo"}):
             raise PermissionError("collection guard denied external operation")
         if event == "open":
@@ -109,7 +110,7 @@ def probe(root: Path, scratch: Path, result_path: Path, files: list[str]) -> int
             "error": "; ".join(sorted(set(recorder.errors))) if rc else ""}
     if data["collection_status"] == "NOT_GATING" and not data["error"]:
         data["error"] = "no tests collected" if not recorder.collected else "collection command failed"
-    result_path.write_text(json.dumps(data, sort_keys=True) + "\n", encoding="utf-8")
+    result_path.write_text(json.dumps(data, sort_keys=True) + "\n", encoding="utf-8", newline="\n")
     return 0
 
 
@@ -123,7 +124,7 @@ def collect_family(root: Path, files: list[str], scratch: Path, timeout: float,
                 "MARKDOWN_QA_ARTIFACTS_DIR": str(scratch / "markdown-artifacts"),
                 "MARKDOWN_QA_SESSIONFINISH_SENTINEL": str(scratch / "markdown-sentinel")})
     try:
-        with (scratch / "collection.log").open("w", encoding="utf-8") as log:
+        with (scratch / "collection.log").open("w", encoding="utf-8", newline="\n") as log:
             result = runner([sys.executable, "-I", str(SCRIPT), "probe", "--root", str(root),
                              "--scratch", str(scratch), "--result", str(result_path),
                              "--files", *files], cwd=root, env=env, stdout=log,
@@ -136,17 +137,26 @@ def collect_family(root: Path, files: list[str], scratch: Path, timeout: float,
     return json.loads(result_path.read_text(encoding="utf-8"))
 
 
+def is_link(path: Path) -> bool:
+    """Exclude symlinks and Windows reparse points, including junctions."""
+    return path.is_symlink() or bool(
+        getattr(path.lstat(), "st_file_attributes", 0) & stat.FILE_ATTRIBUTE_REPARSE_POINT)
+
+
 def input_digest(root: Path, inventory: dict, policy: dict, timeout: float) -> str:
     """Resume only when source, test, configuration and interpreter inputs agree."""
     digest = hashlib.sha256(json.dumps([inventory, policy, timeout, sys.version], sort_keys=True).encode())
     # Hash potential local imports, not just test modules. Symlink targets are not followed.
     paths = set()
     for directory in ("scripts", "src", "tests", "coordination", "config"):
-        for parent, dirs, files in os.walk(root / directory, followlinks=False):
+        target = root / directory
+        if not target.exists() or is_link(target):
+            continue
+        for parent, dirs, files in os.walk(target, followlinks=False):
             dirs[:] = sorted(d for d in dirs if d not in {".venv", "__pycache__", ".git"}
-                             and not (Path(parent) / d).is_symlink())
+                             and not is_link(Path(parent) / d))
             paths.update(Path(parent) / f for f in files
-                         if not (Path(parent) / f).is_symlink()
+                         if not is_link(Path(parent) / f)
                          and (Path(parent) / f).relative_to(root).as_posix()
                          != "config/ci/hub-test-health.json")
     paths.update(path for path in (root / "pyproject.toml", root / "pytest.ini") if path.exists())
@@ -212,8 +222,8 @@ def main() -> int:
     if scratch.is_relative_to(root):
         parser.error("Scratch must be outside the repository")
     scratch.mkdir(parents=True, exist_ok=True)
-    inventory = json.loads((root / "config/ci/hub-test-families.json").read_text())
-    policy = json.loads((root / "config/ci/hub-test-policy.json").read_text())
+    inventory = json.loads((root / "config/ci/hub-test-families.json").read_text(encoding="utf-8"))
+    policy = json.loads((root / "config/ci/hub-test-policy.json").read_text(encoding="utf-8"))
     digest = input_digest(root, inventory, policy, args.timeout_seconds)
     results = {}
     for family, files in sorted(inventory["families"].items()):
@@ -224,15 +234,15 @@ def main() -> int:
             row = collect_family(root, files, case, args.timeout_seconds)
             row.update({"digest": digest, "file_count": len(files),
                         "body_status": body_status(family, policy)})
-            cache.write_text(json.dumps(row, indent=2, sort_keys=True) + "\n")
+            cache.write_text(json.dumps(row, indent=2, sort_keys=True) + "\n", encoding="utf-8", newline="\n")
         results[family] = row
         print(f"{family}: {row['collection_status']} ({row['collected']})", flush=True)
     data = {"timeout_seconds": args.timeout_seconds, "environment": environment_versions(),
             "families": results}
-    (root / "config/ci/hub-test-health.json").write_text(json.dumps(data, indent=2, sort_keys=True) + "\n")
+    (root / "config/ci/hub-test-health.json").write_text(json.dumps(data, indent=2, sort_keys=True) + "\n", encoding="utf-8", newline="\n")
     target = root / "docs/ci/hub-test-family-health.md"
     target.parent.mkdir(parents=True, exist_ok=True)
-    target.write_text(render(data, policy), encoding="utf-8")
+    target.write_text(render(data, policy), encoding="utf-8", newline="\n")
     return 0
 
 
