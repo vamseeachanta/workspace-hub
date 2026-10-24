@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><title>Runtime deployment surfaces</title></head>
+<body>
+<h1>Runtime deployment surfaces</h1>
+<p>The deployment check compares supported installed symlinks with the corresponding
+<code>origin/main</code> runtime bytes. Reference artifacts are reported separately
+and do not contribute to deployment drift. Existing instructions are preserved
+when replacement cannot be staged or published.</p>
+<h2>Revision history</h2>
+<table><thead><tr><th>Revision</th><th>Date</th><th>Change and reason</th></tr></thead>
+<tbody><tr><td>Initial</td><td>2026-10-22</td><td>Issue 3833: distinguish deployment scope and preserve instructions during failed replacement.</td></tr></tbody></table>
+<p>Table 1. Revision history.</p>
+<h2>Supported surfaces and evidence</h2>
+<table><thead><tr><th>Provider</th><th>Destination relative to user root</th><th>Criterion</th></tr></thead>
+<tbody>
+<tr><td>Claude</td><td>Selected by runtime admission</td><td>Existing supported legacy or verified native symlink; no automatic migration.</td></tr>
+<tr><td>Codex</td><td><code>.codex/AGENTS.md</code></td><td>Symlink and bytes matching the authoritative runtime.</td></tr>
+<tr><td>Hermes</td><td><code>.hermes/SOUL.md</code></td><td>Symlink and bytes matching the authoritative runtime.</td></tr>
+<tr><td>Gemini</td><td><code>.gemini/GEMINI.md</code></td><td>NOT-DEPLOYED until issue 2719 Phase 6 integration lands.</td></tr>
+<tr><td>agy</td><td><code>.agy/SOUL.md</code></td><td>NOT-DEPLOYED: reference artifact only, per issue 3573.</td></tr>
+</tbody></table>
+<p>Table 2. Deployment scope from issue 3833 acceptance criteria and the installer's Phase 5 findings.</p>
+<p>Sources are the repository's
+<a href="../../scripts/agents/install-soul-runtime.sh">installer</a>,
+<a href="../../scripts/agents/claude_runtime_state.py">Claude admission helper</a>,
+<a href="../../config/agents/gemini/SOUL.delta.md">Gemini loader findings</a>, and
+<a href="../../config/agents/agy/SOUL.delta.md">agy reference-artifact contract</a>.
+No engineering constants, coefficients or numerical acceptance limits are introduced.</p>
+<h2>Method</h2>
+<p>The gate excludes intentionally undeployed providers before reading source or
+destination bytes. For deployed providers, absence is ABSENT; a regular file is
+UNLINKED even when its bytes match; a linked file is CURRENT when its content
+digest matches the origin blob and STALE otherwise. Claude admission failure is
+BLOCKED. Any deployed drift returns failure. This does not establish that a
+provider process has loaded the instructions.</p>
+<p>The installer creates a candidate symlink in a temporary directory beside the
+destination and verifies its transport before touching existing instructions.
+An existing file or link is copied to a timestamped backup, preserving symlink
+identity. Only then is the staged link renamed over the destination. A failed
+link, backup or rename reports NEEDS-ATTENTION and preserves the existing
+runtime; other providers continue. Directories are preserved and rejected.
+Backup-name collisions are refused. A failed publish may leave a verified backup.</p>
+<h2>Worked example</h2>
+<p>Inputs are synthetic: the origin blob contains <code>Authoritative fixture</code>
+with a trailing newline. Claude admission selects a link to identical bytes;
+Codex and Hermes also link to identical bytes. Neither excluded surface exists.</p>
+<p>The independent count is three current deployed surfaces, zero drifted and two
+not deployed. The exit status is zero. Replacing both non-Claude links with
+regular files leaves the bytes unchanged but produces two UNLINKED rows and
+one current row; the exit status is one. These expectations follow directly
+from the transport and exclusion criteria, without calculating them through the
+implementation under test.</p>
+<p>For replacement failure, start with the literal bytes <code>Prior instructions</code>
+plus a newline at a deployed destination. Simulate link denial or a copy-producing
+link tool. The expected answer is unchanged bytes at that destination, no backup
+created before successful staging, and a failure status. The tests also cover
+valid and dangling old links, an absent destination, backup failure and rename failure.</p>
+<pre>uv run --no-project --with pytest python -m pytest \
+  tests/enforcement/test_soul_deployment_drift.py -q -rA -p no:cacheprovider \
+  --basetemp="${TMPDIR:?}/soul-example-tests"
+bash scripts/enforcement/check-soul-deployment-drift.sh --self-test</pre>
+<p>The fixture suite runs in disposable user roots and intercepts system tools for
+failure cases. The self-test checks the exclusion policy without inspecting user
+configuration or fetching Git references.</p>
+<h2>Known limits</h2>
+<p>Gemini integration remains deferred to issue 2719 Phase 6; no agy loader is
+installed. The check continues to require deployed Claude, Codex and Hermes
+surfaces; a missing provider directory does not prove exemption. Native Windows
+replacement behavior and actual provider loading are not established by the
+synthetic tests. The older deployment-rule prose describing refreshed copies
+is superseded by the symlink criterion in issue 3833 and this implementation.</p>
+</body></html>

@@ -5,12 +5,11 @@
 #   Claude: validate and preserve its existing legacy or verified native link.
 #   ~/.hermes/SOUL.md   → config/agents/hermes/SOUL.runtime.md
 #   ~/.codex/AGENTS.md  → config/agents/codex/AGENTS.runtime.md   (replaces any broken-sed copy)
-#   ~/.codex/SOUL.md    → config/agents/codex/SOUL.runtime.md    (loader-pending; see Phase 5)
-#   ~/.gemini/SOUL.md   → config/agents/gemini/SOUL.runtime.md   (loader-pending; see Phase 5)
+#   Gemini and agy reference artifacts are not installed (issues 2719 and 3573).
 #
 # For non-Claude providers, pre-existing non-symlink files are backed up to
 #   <path>.pre-install-backup.<timestamp>
-# before being replaced — so a broken sed-derived ~/.codex/AGENTS.md
+# after replacement staging succeeds — so a broken sed-derived ~/.codex/AGENTS.md
 # is preserved for forensics, not silently overwritten.
 #
 # Source build: scripts/agents/build-soul-runtime.sh must have been run
@@ -61,8 +60,8 @@ create_link() {
     [[ -L "${runtime_path}" ]] && return 0
 
     # Native symlink unavailable (no Developer Mode / not elevated). Remove only a
-    # plain regular file we just created — pre-existing content was already backed
-    # up by the caller. NEVER touch a directory or reparse point: per
+    # plain regular file we just created at the staging path. Existing instructions
+    # remain untouched. NEVER touch a directory or reparse point: per
     # .claude/rules/windows-junction-restore-safety.md, recursive removal through a
     # junction follows the link and empties the target (#3571, 4,215 files lost).
     if [[ -f "${runtime_path}" && ! -L "${runtime_path}" && ! -d "${runtime_path}" ]]; then
@@ -93,15 +92,37 @@ link_if_needed() {
         fi
     fi
 
+    # Issue 3833: build and verify the replacement beside the destination before
+    # touching existing instructions. Same-directory rename avoids partial copies.
+    local stage_dir staged backup=""
+    if [[ -d "${runtime_path}" ]]; then
+        echo "NEEDS-ATTENTION ${runtime_path} — directory preserved; expected a file or symlink"
+        failed=$((failed + 1))
+        return 0
+    fi
+    if ! stage_dir="$(mktemp -d "${runtime_path%/*}/.soul-link.XXXXXXXX")"; then
+        echo "NEEDS-ATTENTION ${runtime_path} — could not stage replacement; existing runtime preserved"
+        failed=$((failed + 1))
+        return 0
+    fi
+    staged="${stage_dir}/runtime"
+    LINK_ERR=""
+    if ! create_link "${resolved}" "${staged}" || [[ ! -L "${staged}" ]]; then
+        echo "NEEDS-ATTENTION ${runtime_path} — native symlink not created; existing runtime preserved"
+        echo "                ln: ${LINK_ERR:-(no error text)}"
+        [[ -f "${staged}" && ! -L "${staged}" ]] && rm -f "${staged}"
+        rmdir "${stage_dir}"
+        failed=$((failed + 1))
+        return 0
+    fi
+
     if [[ -e "${runtime_path}" || -L "${runtime_path}" ]]; then
-        local backup="${runtime_path}.pre-install-backup.${TS}"
-        # Do not let one path abort the whole run (#3752). Under `set -e` a failed mv
-        # kills the installer outright and the remaining providers are never
-        # processed. Windows uses mandatory file locking, so a live Claude/Codex
-        # process holding this file makes that a routine event on a 6-hourly schedule.
-        if ! mv "${runtime_path}" "${backup}" 2>/dev/null; then
-            echo "NEEDS-ATTENTION ${runtime_path} — could not back up (file locked by a running provider?)"
-            echo "                Skipped so the remaining providers still get processed."
+        backup="${runtime_path}.pre-install-backup.${TS}"
+        # Never overwrite an earlier backup, including a dangling symlink.
+        if [[ -e "$backup" || -L "$backup" ]] || ! cp -P "${runtime_path}" "${backup}"; then
+            echo "NEEDS-ATTENTION ${runtime_path} — could not preserve backup; existing runtime retained"
+            rm -f "${staged}"
+            rmdir "${stage_dir}"
             failed=$((failed + 1))
             return 0
         fi
@@ -109,18 +130,15 @@ link_if_needed() {
         backed_up=$((backed_up + 1))
     fi
 
-    if create_link "${resolved}" "${runtime_path}"; then
+    if mv -f "${staged}" "${runtime_path}"; then
         echo "LINK   ${runtime_path} → ${resolved}"
         created=$((created + 1))
     else
-        echo "NEEDS-ATTENTION ${runtime_path} — native symlink not created."
-        echo "                ln: ${LINK_ERR:-(no error text)}"
-        echo "                Common cause is no Developer Mode / not elevated, but check the error above"
-        echo "                first — ACL denial, missing parent dir and path-length also land here."
-        echo "                No copy was left behind: a copy would silently drift from"
-        echo "                ${repo_relative_target} and nothing checks it."
+        echo "NEEDS-ATTENTION ${runtime_path} — replacement failed; existing runtime preserved"
+        rm -f "${staged}"
         failed=$((failed + 1))
     fi
+    rmdir "${stage_dir}"
 }
 
 # Claude admission is read-only (#1249). Migration requires a reviewed transaction;
@@ -161,8 +179,8 @@ fi
 # is created here. Workspace GEMINI.md integration is Phase 6 (adapter
 # de-duplication). config/agents/gemini/SOUL.runtime.md remains a built
 # reference artifact for review and future use.
-echo "SKIP   ~/.gemini/SOUL.md not created — Gemini CLI doesn't load SOUL.md (see Phase 5)"
-echo "SKIP   agy SOUL symlink not created — agy loads the GEMINI.md family, not SOUL.md; config/agents/agy/SOUL.runtime.md is a built reference artifact (#3573)"
+echo "SKIP   ~/.gemini/GEMINI.md not deployed — integration pending issue 2719 Phase 6"
+echo "SKIP   ~/.agy/SOUL.md not deployed — built reference artifact only (issue 3573)"
 
 echo
 echo "Summary: ${created} created, ${unchanged} unchanged, ${backed_up} backed-up, ${skipped} skipped, ${failed} needs-attention."
