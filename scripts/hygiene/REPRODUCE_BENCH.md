@@ -11,12 +11,12 @@ The config is a JSON object. Unknown fields are rejected.
 | Field | Type | Meaning |
 | --- | --- | --- |
 | `target_seconds` | positive finite number | Default 60 seconds: the maintainer's stated target in issue #4223. |
-| `repeats` | positive integer | Default 3, specified in the benchmark task, slice 1. |
+| `repeats` | positive integer | Configurable implementation default 3; provenance is unverified. |
 | `timeout_seconds` | positive finite number | Required subprocess wall-time limit; no inferred default. |
 | `clean_checkout` | boolean | Default true; a new committed tracked-file copy for every repeat. False reuses an isolated copy within each artifact. |
 | `history` | string | Optional JSONL output path, resolved relative to the config directory. Created if absent. |
 | `history_window` | positive integer | Required with `--compare history`; number of prior matching successful runs to consider. |
-| `regression_ratio` | positive finite number | Default 1.5, a maintainer setting from the task, slice 4. Growth strictly above baseline times this ratio is a regression. |
+| `regression_ratio` | positive finite number | Configurable implementation default 1.5; provenance is unverified. Growth strictly above baseline times this ratio is a regression. |
 
 The positivity constraints define valid measurements and counts, rather than
 performance acceptance limits. Explicit small targets and timeouts are useful
@@ -46,8 +46,9 @@ directories. The registry and snapshot use HEAD, so uncommitted edits are exclud
 
 ## Method and verdicts
 
-`git ls-files --cached -z` selects tracked paths, and HEAD supplies their bytes and
-executable modes through `git cat-file`. Each copy excludes Git metadata, ignored
+`git rev-parse HEAD` pins one revision. `git ls-tree -rz` selects its paths
+and executable modes; `git cat-file` supplies its bytes. Staged additions,
+deletions and edits do not affect the snapshot. Each copy excludes Git metadata, ignored
 files and untracked caches. The committed output is removed before every build,
 including warm repeats: a command that does nothing cannot pass. Preparation,
 copying, output hashing and report writing are excluded from the measurement.
@@ -116,13 +117,14 @@ subprocess.run(["git", "init", "-q", str(repo)], check=True, env=env)
 registry = []
 for name in ("alpha", "beta"):
     (repo / f"{name}.py").write_text(
-        f"from pathlib import Path; Path('{name}.txt').write_text('expected\\n')\n"
+        f"from pathlib import Path; Path('{name}.txt').write_bytes(b'expected\\n')\n",
+        encoding="utf-8", newline="\n"
     )
-    (repo / f"{name}.txt").write_text("expected\n")
+    (repo / f"{name}.txt").write_text("expected\n", encoding="utf-8", newline="\n")
     registry.append({"path": f"{name}.txt", "kind": "text",
                      "build": {"cwd": ".", "argv": [sys.executable, f"{name}.py"]},
                      "inputs": [f"{name}.py"]})
-(repo / "artifacts.registry.json").write_text(json.dumps(registry))
+(repo / "artifacts.registry.json").write_text(json.dumps(registry), encoding="utf-8", newline="\n")
 stream = b"commit refs/heads/example\ncommitter Example <example> 0 +0000\ndata 7\nexample\n"
 for file in sorted(repo.iterdir()):
     if file.is_file():
@@ -135,11 +137,11 @@ subprocess.run(["git", "-C", str(repo), "symbolic-ref", "HEAD", "refs/heads/exam
                check=True, env=env)
 subprocess.run(["git", "-C", str(repo), "read-tree", "HEAD"], check=True, env=env)
 settings = {"timeout_seconds": 5, "history": "bench-history.jsonl", "history_window": 2}
-(output / "bench.json").write_text(json.dumps(settings))
+(output / "bench.json").write_text(json.dumps(settings), encoding="utf-8", newline="\n")
 subprocess.run([sys.executable, "-I", os.environ["REPRODUCE_BENCH"],
                "--repo", str(repo), "--config", str(output / "bench.json"),
                "--out", str(output / "report.json"), "--compare", "history"], check=True)
-report = json.loads((output / "report.json").read_text())
+report = json.loads((output / "report.json").read_text(encoding="utf-8"))
 assert [a["verdict"] for a in report["artifacts"]] == ["PASS", "PASS"]
 print("PASS: two artifacts; JSON, HTML and history written")
 ```
@@ -223,9 +225,10 @@ child. No command text, environment values, stdout or stderr is included in repo
 
 - Issue #4223, benchmark requirement: committed rebuild, timing, JSON/HTML and
   the maintainer's 60-second target.
-- Issue #4222 and the supplied task specification (2026-10-22): registry format;
-  slices 1 through 5 specify the default three repeats, default regression ratio
-  1.5, phase ordering, history, example and acceptance tests.
+- Issue #4222 describes the registry requirement. The provenance of the
+  implementation defaults of three repeats and regression ratio 1.5 is unverified;
+  neither is established by the linked issues. Both remain configurable and
+  require a linked maintainer statement before attribution as approved criteria.
 - `scripts/benchmarks/perf-bench.sh`, `run_bench`: existing subprocess wall-time
   and append-only history convention; this implementation substitutes a monotonic
   standard-library timer and omits machine names.

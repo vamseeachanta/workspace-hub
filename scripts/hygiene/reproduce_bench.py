@@ -16,6 +16,7 @@ import platform
 import re
 import shutil
 import signal
+import stat
 import statistics
 import subprocess
 import tempfile
@@ -23,8 +24,8 @@ import time
 from datetime import UTC, datetime
 from pathlib import Path, PureWindowsPath
 
-# Issue #4223 and the task specification, slices 1/4 (2026-10-22).
-# These are maintainer settings, not universal performance acceptance criteria.
+# Issue #4223 establishes the 60-second target. Repeat and ratio defaults
+# have unverified provenance; callers can override them in the configuration.
 DEFAULT_TARGET = 60
 DEFAULT_REPEATS = 3
 DEFAULT_RATIO = 1.5
@@ -100,17 +101,14 @@ def git(repo, *args):
     )
 
 
-def tracked_entries(repo):
-    """Use ls-files to select tracked paths and HEAD to pin committed bytes."""
-    tracked = set(git(repo, "ls-files", "--cached", "-z").split(b"\0"))
+def tracked_entries(repo, revision="HEAD"):
+    """Select membership, bytes and modes from one committed tree."""
     entries = {}
-    for record in git(repo, "ls-tree", "-rz", "HEAD").split(b"\0"):
+    for record in git(repo, "ls-tree", "-rz", revision).split(b"\0"):
         if not record:
             continue
         meta, raw_path = record.split(b"\t", 1)
         mode, kind, digest = meta.split()
-        if raw_path not in tracked:
-            continue
         path = os.fsdecode(raw_path)
         relative_path(path)
         if kind != b"blob" or mode not in (b"100644", b"100755"):
@@ -167,7 +165,7 @@ def validate_registry(registry, entries):
     for item in registry:
         if not isinstance(item, dict):
             raise TypeError("artifact must be an object")
-        path = str(relative_path(item.get("path")))
+        path = relative_path(item.get("path")).as_posix()
         if path in seen or path not in entries:
             raise ValueError("artifact must be unique and committed")
         seen.add(path)
@@ -190,7 +188,7 @@ def validate_registry(registry, entries):
         if not isinstance(inputs, list):
             raise TypeError("artifact inputs must be a list")
         for name in inputs:
-            if str(relative_path(name)) not in entries:
+            if relative_path(name).as_posix() not in entries:
                 raise ValueError("artifact input must be committed")
         if "budget_seconds" in item:
             positive(item["budget_seconds"], "budget_seconds")
@@ -198,8 +196,8 @@ def validate_registry(registry, entries):
             {
                 **item,
                 "path": path,
-                "build": {**build, "cwd": str(relative_path(build["cwd"]))},
-                "inputs": [str(relative_path(name)) for name in inputs],
+                "build": {**build, "cwd": relative_path(build["cwd"]).as_posix()},
+                "inputs": [relative_path(name).as_posix() for name in inputs],
             }
         )
     return normalized
@@ -247,6 +245,20 @@ def outside_repository(path, repo):
     return path
 
 
+def regular_snapshot_output(output, checkout):
+    """Reject links and directory reparse points before accepting output bytes."""
+    for path in (output, *output.parents):
+        metadata = path.lstat()
+        if stat.S_ISLNK(metadata.st_mode) or (
+            getattr(metadata, "st_file_attributes", 0)
+            & stat.FILE_ATTRIBUTE_REPARSE_POINT
+        ):
+            return False
+        if path == checkout:
+            break
+    return output.is_file() and output.resolve().is_relative_to(checkout.resolve())
+
+
 def benchmark(
     repo,
     raw_config,
@@ -264,7 +276,8 @@ def benchmark(
         != repo
     ):
         raise ValueError("repo must name the repository root")
-    entries = tracked_entries(repo)
+    revision = git(repo, "rev-parse", "HEAD").decode("ascii").strip()
+    entries = tracked_entries(repo, revision)
     if registry is None:
         if "artifacts.registry.json" not in entries:
             raise ValueError("committed artifact registry is missing")
@@ -285,7 +298,7 @@ def benchmark(
     report = {
         "schema_version": SCHEMA_VERSION,
         "recorded_at": datetime.now(UTC).isoformat(),
-        "revision": git(repo, "rev-parse", "HEAD").decode().strip(),
+        "revision": revision,
         "machine": descriptors,
         "method": {
             name: config[name]
@@ -366,11 +379,7 @@ def benchmark(
                     status = "FAILED"
                 duration = clock() - start
                 actual = None
-                if (
-                    output.is_file()
-                    and not output.is_symlink()
-                    and output.resolve().is_relative_to(checkout)
-                ):
+                if output.is_file() and regular_snapshot_output(output, checkout):
                     actual = hashlib.sha256(output.read_bytes()).hexdigest()
                 if status == "PASS" and actual != expected:
                     status = "NOT_REPRODUCED"
@@ -460,7 +469,7 @@ def compare_history(report, history, *, window, ratio):
 def append_history(path, report):
     validate_report(report)
     Path(path).parent.mkdir(parents=True, exist_ok=True)
-    with Path(path).open("a", encoding="utf-8") as handle:
+    with Path(path).open("a", encoding="utf-8", newline="\n") as handle:
         handle.write(json.dumps(report, allow_nan=False, sort_keys=True) + "\n")
 
 
@@ -762,9 +771,11 @@ def main(argv=None):
         validate_report(report)
         output.parent.mkdir(parents=True, exist_ok=True)
         output.write_text(
-            json.dumps(report, indent=2, allow_nan=False) + "\n", encoding="utf-8"
+            json.dumps(report, indent=2, allow_nan=False) + "\n",
+            encoding="utf-8",
+            newline="\n",
         )
-        html_path.write_text(render_html(report), encoding="utf-8")
+        html_path.write_text(render_html(report), encoding="utf-8", newline="\n")
         if history_path:
             append_history(history_path, report)
         return exit_code(report)

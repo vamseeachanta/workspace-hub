@@ -40,12 +40,14 @@ def repository(tmp_path):
 def commit_fixture(repo, scripts, entries=None):
     """Fixture plumbing only: test repositories have no remotes or hooks."""
     for name, source in scripts.items():
-        (repo / name).write_text(source)
+        (repo / name).write_text(source, encoding="utf-8", newline="\n")
     if entries is None:
         entries = [entry(name) for name in scripts if name.endswith(".py")]
-    (repo / "artifacts.registry.json").write_text(json.dumps(entries))
+    (repo / "artifacts.registry.json").write_text(
+        json.dumps(entries), encoding="utf-8", newline="\n"
+    )
     for item in entries:
-        (repo / item["path"]).write_text("expected\n")
+        (repo / item["path"]).write_text("expected\n", encoding="utf-8", newline="\n")
     # Import synthetic fixture objects without configuring or overriding identity.
     stream = b"commit refs/heads/fixture\ncommitter Fixture <fixture> 0 +0000\ndata 7\nfixture\n"
     for file in sorted(repo.iterdir()):
@@ -82,7 +84,7 @@ def entry(script="build.py", **updates):
 
 
 def config(**updates):
-    # Task specification, slices 1 and 4: 60 s, 3 repeats, ratio 1.5.
+    # Tests override repeats to keep subprocess fixtures short.
     return {"timeout_seconds": 5, "repeats": 1, **updates}
 
 
@@ -94,17 +96,17 @@ def run(repo, tmp_path, **kwargs):
     "source,settings,verdict",
     [
         (
-            "from pathlib import Path; Path('build.txt').write_text('expected\\n')",
+            "from pathlib import Path; Path('build.txt').write_text('expected\\n', encoding=\"utf-8\", newline=\"\\n\")",
             {},
             "PASS",
         ),
         (
-            "import time; time.sleep(.12); from pathlib import Path; Path('build.txt').write_text('expected\\n')",
+            "import time; time.sleep(.12); from pathlib import Path; Path('build.txt').write_text('expected\\n', encoding=\"utf-8\", newline=\"\\n\")",
             {"target_seconds": 0.001},
             "SLOW",
         ),
         (
-            "from pathlib import Path; Path('build.txt').write_text('different')",
+            "from pathlib import Path; Path('build.txt').write_text('different', encoding=\"utf-8\", newline=\"\\n\")",
             {},
             "NOT_REPRODUCED",
         ),
@@ -132,7 +134,7 @@ def test_budget_overrides_target(repository, tmp_path):
     commit_fixture(
         repository,
         {
-            "build.py": "from pathlib import Path; Path('build.txt').write_text('expected\\n')"
+            "build.py": "from pathlib import Path; Path('build.txt').write_text('expected\\n', encoding=\"utf-8\", newline=\"\\n\")"
         },
         [entry(budget_seconds=5)],
     )
@@ -142,22 +144,24 @@ def test_budget_overrides_target(repository, tmp_path):
 
 
 def test_committed_snapshot_and_stale_cache(repository, tmp_path, monkeypatch):
-    source = "from pathlib import Path; assert not Path('stale').exists(); Path('build.txt').write_text('expected\\n')"
+    source = "from pathlib import Path; assert not Path('stale').exists(); Path('build.txt').write_text('expected\\n', encoding=\"utf-8\", newline=\"\\n\")"
     commit_fixture(repository, {"build.py": source})
-    (repository / "stale").write_text("ignored by tracked snapshot")
-    (repository / "build.py").write_text("raise SystemExit(8)")
+    (repository / "stale").write_text(
+        "ignored by tracked snapshot", encoding="utf-8", newline="\n"
+    )
+    (repository / "build.py").write_text(
+        "raise SystemExit(8)", encoding="utf-8", newline="\n"
+    )
     monkeypatch.setenv("GIT_DIR", str(tmp_path / "unrelated"))
     assert run(repository, tmp_path)["artifacts"][0]["verdict"] == "PASS"
-    assert (repository / "build.py").read_text() == "raise SystemExit(8)"
+    assert (repository / "build.py").read_text(
+        encoding="utf-8"
+    ) == "raise SystemExit(8)"
 
 
 @pytest.mark.parametrize("clean", [True, False])
 def test_repeat_isolation_and_removed_output(repository, tmp_path, clean):
-    source = (
-        "from pathlib import Path; p=Path('marker'); "
-        "Path('build.txt').write_text('expected\\n') if not p.exists() else None; "
-        "p.touch()"
-    )
+    source = "from pathlib import Path; p=Path('marker'); Path('build.txt').write_text('expected\\n', encoding=\"utf-8\", newline=\"\\n\") if not p.exists() else None; p.touch()"
     commit_fixture(repository, {"build.py": source})
     item = run(repository, tmp_path, repeats=2, clean_checkout=clean)["artifacts"][0]
     assert item["verdict"] == ("PASS" if clean else "NOT_REPRODUCED")
@@ -169,7 +173,9 @@ def fixed_runner(durations):
     ticks = iter(value for duration in durations for value in (0, duration))
 
     def runner(argv, *, cwd, **kwargs):
-        Path(cwd, argv[-1].replace(".py", ".txt")).write_text("expected\n")
+        Path(cwd, argv[-1].replace(".py", ".txt")).write_text(
+            "expected\n", encoding="utf-8", newline="\n"
+        )
         return subprocess.CompletedProcess(argv, 0)
 
     return runner, lambda: next(ticks)
@@ -299,7 +305,7 @@ def test_html_escaping(repository, tmp_path):
 
 def test_worked_example(tmp_path):
     """Guide example has 2 artifacts, 3 repeats each, so 6 successful builds."""
-    guide = MODULE.with_name("REPRODUCE_BENCH.md").read_text()
+    guide = MODULE.with_name("REPRODUCE_BENCH.md").read_text(encoding="utf-8")
     source = guide.split("```python\n", 1)[1].split("\n```", 1)[0]
     env = dict(os.environ, TMPDIR=str(tmp_path), REPRODUCE_BENCH=str(MODULE))
     result = subprocess.run(
@@ -313,7 +319,7 @@ def test_worked_example(tmp_path):
         result.stdout.strip() == "PASS: two artifacts; JSON, HTML and history written"
     )
     (root,) = tmp_path.glob("reproduce-example-*")
-    report = json.loads((root / "output/report.json").read_text())
+    report = json.loads((root / "output/report.json").read_text(encoding="utf-8"))
     bench.validate_report(report)
     assert len(report["artifacts"]) == 2
     assert sum(len(a["runs"]) for a in report["artifacts"]) == 6
@@ -324,7 +330,9 @@ def test_worked_example(tmp_path):
 
 def cli(repo, tmp_path, settings, *args):
     config_path = tmp_path / "bench.json"
-    config_path.write_text(json.dumps(config(**settings)))
+    config_path.write_text(
+        json.dumps(config(**settings)), encoding="utf-8", newline="\n"
+    )
     return subprocess.run(
         [
             sys.executable,
@@ -350,7 +358,7 @@ def test_cli_reports_history_and_regression(repository, tmp_path):
     commit_fixture(
         repository,
         {
-            "build.py": "from pathlib import Path; Path('build.txt').write_text('expected\\n')"
+            "build.py": "from pathlib import Path; Path('build.txt').write_text('expected\\n', encoding=\"utf-8\", newline=\"\\n\")"
         },
     )
     settings = {"history": "history.jsonl", "history_window": 2}
@@ -364,19 +372,21 @@ def test_cli_reports_history_and_regression(repository, tmp_path):
         "sum_medians_seconds": 0,
         "longest_single_artifact": {"path": "build.txt", "seconds": 0},
     }
-    (tmp_path / "history.jsonl").write_text(json.dumps(history[0]) + "\n")
+    (tmp_path / "history.jsonl").write_text(
+        json.dumps(history[0]) + "\n", encoding="utf-8", newline="\n"
+    )
     result = cli(repository, tmp_path, settings, "--compare", "history")
     assert result.returncode == 1
-    report = json.loads((tmp_path / "report.json").read_text())
+    report = json.loads((tmp_path / "report.json").read_text(encoding="utf-8"))
     assert report["artifacts"][0]["regression"]
     assert len(bench.read_history(tmp_path / "history.jsonl")) == 2
-    assert "REGRESSION" in (tmp_path / "report.html").read_text()
+    assert "REGRESSION" in (tmp_path / "report.html").read_text(encoding="utf-8")
 
 
 def test_cli_rejects_in_repo_outputs(repository, tmp_path):
     commit_fixture(repository, {"build.py": "pass"})
     settings = tmp_path / "bench.json"
-    settings.write_text(json.dumps(config()))
+    settings.write_text(json.dumps(config()), encoding="utf-8", newline="\n")
     before = git(repository, "status", "--porcelain")
     result = subprocess.run(
         [
@@ -415,7 +425,9 @@ def test_subprocess_output_is_never_captured(repository, tmp_path):
     result = cli(repository, tmp_path, {})
     assert result.returncode == 1
     assert not result.stdout and not result.stderr
-    assert "synthetic-sensitive-output" not in (tmp_path / "report.json").read_text()
+    assert "synthetic-sensitive-output" not in (tmp_path / "report.json").read_text(
+        encoding="utf-8"
+    )
 
 
 def test_schema_rejects_inconsistent_totals(repository, tmp_path):
@@ -449,7 +461,7 @@ def test_comparison_settings_recorded(repository, tmp_path):
 def test_cli_does_not_overwrite_config(repository, tmp_path):
     commit_fixture(repository, {"build.py": "pass"})
     settings = tmp_path / "bench.json"
-    settings.write_text(json.dumps(config()))
+    settings.write_text(json.dumps(config()), encoding="utf-8", newline="\n")
     original = settings.read_bytes()
     result = subprocess.run(
         [
@@ -495,7 +507,7 @@ def test_registry_dot_prefixes(repository, tmp_path):
     commit_fixture(
         repository,
         {
-            "build.py": "from pathlib import Path; Path('build.txt').write_text('expected\\n')"
+            "build.py": "from pathlib import Path; Path('build.txt').write_text('expected\\n', encoding=\"utf-8\", newline=\"\\n\")"
         },
     )
     registry = [entry(path="./build.txt", inputs=["./build.py"])]
@@ -521,3 +533,70 @@ def test_schema_rejects_invalid_timestamp(repository, tmp_path):
     report["recorded_at"] = "invalid"
     with pytest.raises((ValueError, TypeError)):
         bench.validate_report(report)
+
+
+@pytest.mark.parametrize("staged", ["deletion", "addition", "modification"])
+def test_snapshot_membership_ignores_index(repository, tmp_path, staged):
+    commit_fixture(
+        repository,
+        {
+            "build.py": "from pathlib import Path; Path('build.txt').write_bytes(b'expected\\n')"
+        },
+    )
+    revision = git(repository, "rev-parse", "HEAD").decode().strip()
+    if staged == "deletion":
+        git(
+            repository,
+            "rm",
+            "--cached",
+            "artifacts.registry.json",
+            "build.py",
+            "build.txt",
+        )
+    elif staged == "addition":
+        (repository / "uncommitted.txt").write_text(
+            "not committed", encoding="utf-8", newline="\n"
+        )
+        git(repository, "add", "uncommitted.txt")
+    else:
+        (repository / "artifacts.registry.json").write_text(
+            "[]", encoding="utf-8", newline="\n"
+        )
+        git(repository, "add", "artifacts.registry.json")
+    status_before = git(repository, "status", "--porcelain")
+    index_before = (repository / ".git/index").read_bytes()
+    report = run(repository, tmp_path)
+    assert report["revision"] == revision
+    assert report["artifacts"][0]["verdict"] == "PASS"
+    assert set(bench.tracked_entries(repository)) == {
+        "artifacts.registry.json",
+        "build.py",
+        "build.txt",
+    }
+    assert (repository / ".git/index").read_bytes() == index_before
+    assert git(repository, "status", "--porcelain") == status_before
+
+
+@pytest.mark.parametrize("linked", [False, True])
+def test_output_reparse_directory(repository, tmp_path, monkeypatch, linked):
+    """A rebuilt file beneath a reparse directory cannot establish reproduction."""
+    from types import SimpleNamespace
+
+    commit_fixture(repository, {"build.py": "pass"})
+    original = Path.lstat
+
+    def lstat(path, *args, **kwargs):
+        metadata = original(path, *args, **kwargs)
+        if linked and path.name == "0":
+            return SimpleNamespace(st_mode=metadata.st_mode, st_file_attributes=0x400)
+        return metadata
+
+    def runner(argv, *, cwd, timeout, env):
+        Path(cwd, "build.txt").write_bytes(b"expected\n")
+        return subprocess.CompletedProcess(argv, 0)
+
+    monkeypatch.setattr(Path, "lstat", lstat)
+    result = bench.benchmark(
+        repository, config(), temp_root=tmp_path / "builds", runner=runner
+    )
+    assert result["artifacts"][0]["verdict"] == ("NOT_REPRODUCED" if linked else "PASS")
