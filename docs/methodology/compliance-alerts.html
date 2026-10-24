@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Compliance alert interpretation</title>
+<style>
+body { max-width: 58rem; margin: 2rem auto; padding: 0 1rem; font: 1rem/1.6 system-ui, sans-serif; color: #172b3a; }
+table { border-collapse: collapse; width: 100%; }
+th, td { border: 1px solid #b7c6d0; padding: .5rem; text-align: left; }
+caption { caption-side: bottom; text-align: left; padding: .5rem 0; }
+code, pre { background: #edf2f5; }
+pre { padding: 1rem; overflow: auto; }
+</style>
+</head>
+<body>
+<h1>Compliance alert interpretation</h1>
+<h2>Summary</h2>
+<p>The daily alert consumes validated top-level dashboard JSON. An empty reviewable
+set is unevaluated; it does not establish failed review compliance. Invalid reports
+produce an error exit and no compliance issue. A valid measured shortfall retains
+the existing alert thresholds.</p>
+<h2>Revision history</h2>
+<table>
+<tr><th>Revision</th><th>Date</th><th>Change and reason</th></tr>
+<tr><td>1</td><td>2026-10-22</td><td>Define structured alert inputs and an empty-denominator example to prevent false critical alerts.</td></tr>
+<caption>Table 1. Document revision history.</caption>
+</table>
+<h2>Inputs and method</h2>
+<p>The report requires nonnegative integer counts for <code>total_commits</code>,
+<code>skipped</code>, <code>reviewable</code>, <code>reviewed</code>, and
+<code>unreviewed</code>. Counts shall satisfy both identities:</p>
+<pre>total_commits = skipped + reviewable
+reviewable = reviewed + unreviewed</pre>
+<p>For a positive denominator, the dashboard rate is
+<code>floor(100 * reviewed / reviewable)</code>. The percentage scale and rate
+basis follow the repository's <a href="compliance-dashboard.md">Compliance Dashboard
+Guide, How Compliance is Calculated</a>; integer truncation follows
+<code>scripts/enforcement/compliance-dashboard.sh</code>, Calculate rates.
+The reported threshold shall be an integer between zero and one hundred.</p>
+<p>The top-level verdict shall agree with that rate and threshold. The dashboard
+exit status shall be zero for PASS and one for FAIL. Other execution statuses,
+missing JSON, duplicate keys, inconsistent counts and invalid numeric types stop
+alert evaluation with an error. Human-readable rate lines and nested event verdicts
+are excluded from metric extraction.</p>
+<h2>Worked example</h2>
+<p>Inputs are synthetic counts chosen to reproduce the alert's empty-denominator
+condition; they are not a reconstruction of historical commit evidence.</p>
+<pre>{
+  "total_commits": 7,
+  "skipped": 7,
+  "reviewable": 0,
+  "reviewed": 0,
+  "unreviewed": 0,
+  "compliance_rate": 0,
+  "threshold": 80,
+  "verdict": "PASS"
+}</pre>
+<p>Both count identities hold: <code>7 = 7 + 0</code> and <code>0 = 0 + 0</code>.
+The denominator is zero, so the rate cannot be calculated. The legacy dashboard's
+numeric zero is retained for compatibility; the alert interprets it as
+<code>NO_REVIEWABLE</code>, logs that compliance is not evaluated, and creates no issue.
+This disposition does not assert that any commit has qualified review evidence.</p>
+<table>
+<tr><th>Reviewed (count)</th><th>Reviewable (count)</th><th>Rate (%)</th><th>Alert disposition</th></tr>
+<tr><td>0</td><td>1</td><td>0.0</td><td>Critical: a measured shortfall</td></tr>
+<tr><td>3</td><td>10</td><td>30.0</td><td>High</td></tr>
+<tr><td>1</td><td>2</td><td>50.0</td><td>Medium</td></tr>
+<tr><td>4</td><td>5</td><td>80.0</td><td>Pass: no alert</td></tr>
+<caption>Table 2. Hand-calculated examples using the alert threshold table in issue 3813, dated 2026-08-24.</caption>
+</table>
+<p>The thresholds remain unchanged: below 30% critical, from 30% to below 50% high,
+from 50% to below 80% medium, and at least 80% no alert. These are repository workflow
+criteria from that issue, not engineering acceptance limits from a standard.</p>
+<h2>Verification</h2>
+<p><code>tests/enforcement/test_compliance_cron.py</code> exercises the parser and
+wrapper in disposable repositories, with synthetic dashboard output and a GitHub
+sentinel. A real-dashboard empty-repository case checks producer compatibility.
+Dry runs return before any GitHub call, and malformed inputs cannot publish alerts.</p>
+<h2>Known limits and way forward</h2>
+<p>Commit classification and review-evidence heuristics are unchanged. Historical
+compliance, including the later unreviewed commit recorded in issue 3813, is not
+established by these regressions. Historical review artifacts shall be checked
+before resolving that issue. Weekly aggregation retains its existing zero-denominator
+presentation; this change addresses daily alerts only. A report-validation failure
+requires investigation of the local daily log rather than a misleading compliance
+percentage.</p>
+</body>
+</html>
