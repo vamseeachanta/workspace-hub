@@ -3,11 +3,15 @@
 Builds HTML sections from validated calculation data using the
 warm-parchment design system. Called by generate-calc-report.py.
 """
-import json
 import re
+import sys
 from datetime import date, datetime
 from html import escape as html_escape
+from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+
+from lib.script_json import script_json
 
 # ── Supported-claim guardrails ───────────────────────────────────────────────
 ILLUSTRATIVE_EXAMPLE_LINE = (
@@ -449,25 +453,25 @@ def _build_dataset_js(chart_type, ds):
     if chart_type in ("scatter", "log_log"):
         points = [{"x": p[0], "y": p[1]} for p in ds["data"]]
         return (
-            f'{{"label":{json.dumps(ds["label"])},'
-            f'"data":{json.dumps(points)},'
-            f'"borderColor":"{color}","backgroundColor":"{color}80",'
+            f'{{"label":{script_json(ds["label"])},'
+            f'"data":{script_json(points)},'
+            f'"borderColor":{script_json(color)},"backgroundColor":{script_json(color + "80")},'
             f'"showLine":true,"pointRadius":4}}'
         )
     elif chart_type == "bar":
         values = [p[1] for p in ds["data"]]
         return (
-            f'{{"label":{json.dumps(ds["label"])},'
-            f'"data":{json.dumps(values)},'
-            f'"backgroundColor":"{color}cc","borderColor":"{color}",'
+            f'{{"label":{script_json(ds["label"])},'
+            f'"data":{script_json(values)},'
+            f'"backgroundColor":{script_json(color + "cc")},"borderColor":{script_json(color)},'
             f'"borderWidth":1}}'
         )
     else:
         points = [{"x": p[0], "y": p[1]} for p in ds["data"]]
         return (
-            f'{{"label":{json.dumps(ds["label"])},'
-            f'"data":{json.dumps(points)},'
-            f'"borderColor":"{color}","fill":false,"tension":0.1}}'
+            f'{{"label":{script_json(ds["label"])},'
+            f'"data":{script_json(points)},'
+            f'"borderColor":{script_json(color)},"fill":false,"tension":0.1}}'
         )
 
 
@@ -506,7 +510,7 @@ def build_chart_scripts(charts):
                     },
                 },
             }
-            config = json.dumps(config_obj).replace(
+            config = script_json(config_obj).replace(
                 '"__DATASETS__"', f"[{datasets_str}]"
             )
         else:
@@ -515,18 +519,18 @@ def build_chart_scripts(charts):
             scales_js = (
                 f'"x":{{"type":"{x_t}",'
                 f'"title":{{"display":true,'
-                f'"text":{json.dumps(chart["x_label"])}}}}},'
+                f'"text":{script_json(chart["x_label"])}}}}},'
                 f'"y":{{"type":"{y_t}",'
                 f'"title":{{"display":true,'
-                f'"text":{json.dumps(chart["y_label"])}}}}}'
+                f'"text":{script_json(chart["y_label"])}}}}}'
             )
             config = (
-                f'{{"type":"{cjs_type}","data":{{"datasets":[{datasets_str}]}},'
+                f'{{"type":{script_json(cjs_type)},"data":{{"datasets":[{datasets_str}]}},'
                 f'"options":{{"responsive":true,"scales":{{{scales_js}}}}}}}'
             )
 
         scripts.append(
-            f'new Chart(document.getElementById("chart-{chart["id"]}"), '
+            f'new Chart(document.getElementById({script_json("chart-" + chart["id"])}), '
             f'{config});'
         )
 

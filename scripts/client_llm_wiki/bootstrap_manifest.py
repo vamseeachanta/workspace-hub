@@ -1,20 +1,37 @@
 """No-replace publication and independent attestation of render evidence."""
 from __future__ import annotations
-from dataclasses import dataclass
+
 import json
 import os
-from pathlib import Path
 import re
 import stat
+import sys
+from dataclasses import dataclass
+from pathlib import Path
 from typing import Any
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from lib import strict_json
+
 from . import bootstrap_attestation as attestation
 from .bootstrap_attestation import (
-    BootstrapManifestError, FIREWALL as _FIREWALL,
-    ManifestIdentity, identity as _identity, stable_digest as _stable_digest,
+    FIREWALL as _FIREWALL,
+)
+from .bootstrap_attestation import (
+    BootstrapManifestError,
+    ManifestIdentity,
+)
+from .bootstrap_attestation import (
+    identity as _identity,
+)
+from .bootstrap_attestation import (
+    stable_digest as _stable_digest,
 )
 from .bootstrap_git import BootstrapGitError, accepted_origins, validate_clone_git
 from .bootstrap_layout import BoundCloneLayout
 from .bootstrap_renderer import BoundClone, FileIdentity
+
+
 @dataclass(frozen=True, slots=True)
 class PersistedRenderManifest:
     bytes: bytes
@@ -239,17 +256,19 @@ def persist_render_manifest(
             if descriptor >= 0:
                 os.close(descriptor)
 def _strict_json(data: bytes) -> dict[str, Any]:
-    def pairs(items):
-        result: dict[str, Any] = {}
-        for key, value in items:
-            if key in result:
-                raise BootstrapManifestError("manifest contains duplicate keys")
-            result[key] = value
-        return result
-    payload = json.loads(data, object_pairs_hook=pairs)
-    if not isinstance(payload, dict):
-        raise BootstrapManifestError("manifest JSON must be an object")
-    return payload
+    # RFC 8259 sections 4/5/6: each opener and digit consumes a byte.
+    # Retain the existing byte budget as a loose structural/number ceiling;
+    # interpreter resource failures are normalized independently of that ceiling.
+    try:
+        payload = strict_json.loads(data, max_bytes=_MAX_MANIFEST_BYTES,
+                                     max_depth=_MAX_MANIFEST_BYTES, max_integer_digits=_MAX_MANIFEST_BYTES)
+    except strict_json.InputError:
+        pass
+    else:
+        if isinstance(payload, dict):
+            return payload
+    raise BootstrapManifestError("manifest is not strict JSON")
+
 def _read_claims(parent_fd: int, final: str) -> tuple[dict[str, Any], bytes]:
     descriptor = os.open(final, _FILE_FLAGS, dir_fd=parent_fd)
     try:

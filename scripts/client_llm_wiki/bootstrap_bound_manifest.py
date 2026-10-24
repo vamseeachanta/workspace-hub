@@ -1,15 +1,18 @@
 """Retained-descriptor manifest validation for scaffold finalization."""
 from __future__ import annotations
 
-from contextlib import contextmanager
-from dataclasses import dataclass
-import json
 import hashlib
 import os
-from pathlib import Path
-import stat
 import re
-from typing import Iterator
+import stat
+import sys
+from collections.abc import Iterator
+from contextlib import contextmanager
+from dataclasses import dataclass
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from lib import strict_json
 
 from . import bootstrap_attestation as attestation
 from .bootstrap_git import validate_clone_config
@@ -51,20 +54,18 @@ def _read(fd: int) -> bytes:
 
 
 def _strict_claims(data: bytes) -> dict:
-    def pairs(items):
-        value = {}
-        for key, item in items:
-            if key in value:
-                raise BoundManifestError("duplicate manifest key")
-            value[key] = item
-        return value
+    # RFC 8259 sections 4/5/6: each opener and digit consumes a byte.
+    # Retain the existing byte budget as a loose structural/number ceiling;
+    # interpreter resource failures are normalized independently of that ceiling.
     try:
-        claims = json.loads(data, object_pairs_hook=pairs)
-    except (json.JSONDecodeError, UnicodeError) as exc:
-        raise BoundManifestError("manifest is not strict JSON") from exc
-    if not isinstance(claims, dict):
-        raise BoundManifestError("manifest is not an object")
-    return claims
+        claims = strict_json.loads(data, max_bytes=_LIMIT,
+                                     max_depth=_LIMIT, max_integer_digits=_LIMIT)
+    except strict_json.InputError:
+        pass
+    else:
+        if isinstance(claims, dict):
+            return claims
+    raise BoundManifestError("manifest is not strict JSON")
 
 
 @contextmanager

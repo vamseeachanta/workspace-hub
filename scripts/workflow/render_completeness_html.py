@@ -16,6 +16,9 @@ import json
 import sys
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from lib.script_json import script_json
+
 _CSS = """
 body{margin:0;background:#0f1419;color:#e6edf3;font:15px/1.6 -apple-system,Segoe UI,Roboto,sans-serif}
 .wrap{max-width:920px;margin:0 auto;padding:30px 20px}
@@ -42,7 +45,7 @@ def render_html(result: dict, issue: int, title: str) -> str:
     )
     # Escape "<" as the JSON unicode escape so an evidence string can never break
     # out of HTML context (e.g. "</script>"/"<script>"); still valid + round-trippable JSON.
-    record_json = json.dumps(result, sort_keys=False).replace("<", "\\u003c")
+    record_json = script_json(result, sort_keys=False)
     return f"""<!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
