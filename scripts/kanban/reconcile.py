@@ -17,6 +17,7 @@ import difflib
 import io
 import json
 import os
+import stat
 import subprocess
 import sys
 from collections.abc import Callable
@@ -114,7 +115,7 @@ def yaml_rt() -> YAML:
 
 
 def write_yaml(path: Path, data: dict) -> None:
-    path.write_text(dump_yaml(data), encoding="utf-8")
+    path.write_text(dump_yaml(data), encoding="utf-8", newline="\n")
 
 
 def fetch_repo_issues(repo: str, *, page_size: int = GH_PAGE_SIZE, runner=None) -> list[dict]:
@@ -267,10 +268,22 @@ def validate_local_destinations(kanban_root: Path, entries: list[BoardEntry]) ->
             raise RuntimeError(refusal + ": generated board must stay inside boards/") from None
         if ".." in relative.parts or path.suffix != ".yaml":
             raise RuntimeError(refusal + ": invalid generated board path")
-        # Reject both file links and directory links, even when the resolved
-        # target would still be ignored. A link must not redirect private data.
-        if any(parent.is_symlink() for parent in (path, *path.parents)):
-            raise RuntimeError(refusal + ": symlink destination")
+        # Reject redirected ancestors and hard-linked outputs before fetching.
+        # Windows junctions are reparse points even when not symbolic links.
+        try:
+            for parent in (path, *path.parents):
+                try:
+                    metadata = parent.lstat()
+                except FileNotFoundError:
+                    continue  # Missing output directories may be created later.
+                if stat.S_ISLNK(metadata.st_mode) or (
+                    getattr(metadata, "st_file_attributes", 0) & stat.FILE_ATTRIBUTE_REPARSE_POINT
+                ):
+                    raise RuntimeError(refusal + ": symlink destination (or reparse point)")
+                if parent == path and metadata.st_nlink > 1:
+                    raise RuntimeError(refusal + ": hard-linked destination")
+        except OSError:
+            raise RuntimeError(refusal + ": destination inspection failed") from None
         checkout = next(
             (parent for parent in path.parents
              if (parent / ".git").is_file() or (parent / ".git/HEAD").is_file()), None
@@ -330,7 +343,7 @@ def validate_unmanifested_boards(kanban_root: Path, entries: list[BoardEntry]) -
     for path in sorted((kanban_root / "boards").glob("*.yaml")):
         if path in manifest_files:
             continue
-        rel_path = path.relative_to(kanban_root)
+        rel_path = path.relative_to(kanban_root).as_posix()
         cards = load_yaml(path).get("cards") or []
         if cards:
             raise RuntimeError(
@@ -511,7 +524,7 @@ def unified_diff(before: dict[Path, str], after: dict[Path, str], root: Path) ->
     for path in sorted(after):
         if before[path] == after[path]:
             continue
-        rel = path.relative_to(diff_root)
+        rel = path.relative_to(diff_root).as_posix()
         chunks.extend(
             difflib.unified_diff(
                 before[path].splitlines(keepends=True),
@@ -672,7 +685,7 @@ def reconcile_kanban(
     if write:
         for path in changed_files:
             path.parent.mkdir(parents=True, exist_ok=True)
-            path.write_text(after[path], encoding="utf-8")
+            path.write_text(after[path], encoding="utf-8", newline="\n")
     return ReconcileResult(
         changed=bool(changed_files),
         diff=unified_diff(before, after, kanban_root),

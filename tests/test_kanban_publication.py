@@ -8,9 +8,11 @@ from __future__ import annotations
 
 import importlib.util
 import os
+import stat
 import subprocess
 import sys
-from pathlib import Path
+from pathlib import Path, PureWindowsPath
+from types import SimpleNamespace
 
 import pytest
 
@@ -47,7 +49,7 @@ def live_issue(_repo, **_kwargs):
 def mock_checkout(mirror, monkeypatch, *, tracked=False, ignored=True, failure=None):
     """Emulate read-only Git answers; never create or change an index."""
     (mirror / ".git").mkdir()
-    (mirror / ".git/HEAD").write_text("ref: refs/heads/test\n", encoding="utf-8")
+    (mirror / ".git/HEAD").write_text("ref: refs/heads/test\n", encoding="utf-8", newline="\n")
     calls = []
 
     def run(cmd, **kwargs):
@@ -75,7 +77,7 @@ def test_unsafe_git_destination_refused_before_fetch(
     calls = mock_checkout(mirror, monkeypatch, tracked=tracked, ignored=ignored)
     board = mirror / "boards/repo-sample.yaml"
     board.parent.mkdir()
-    board.write_text("cards: []\n", encoding="utf-8")
+    board.write_text("cards: []\n", encoding="utf-8", newline="\n")
     before = board.read_bytes()
 
     def forbidden_fetch(_repo):
@@ -136,7 +138,7 @@ def test_symlink_destinations_are_refused(rc, mirror, tmp_path, symlink_kind):
     else:
         boards.mkdir()
         target = boards / "other.yaml" if symlink_kind == "internal" else outside / "other.yaml"
-        target.write_text("cards: []\n", encoding="utf-8")
+        target.write_text("cards: []\n", encoding="utf-8", newline="\n")
         (boards / "repo-sample.yaml").symlink_to(target)
 
     def forbidden_fetch(_repo):
@@ -206,7 +208,7 @@ def test_authored_board_without_repository_is_preserved(rc, mirror):
     rc.write_yaml(mirror / "manifest.yaml", doc)
     authored = mirror / "boards/authored.yaml"
     authored.parent.mkdir()
-    authored.write_text("cards:\n  - title: Synthetic authored theme\n", encoding="utf-8")
+    authored.write_text("cards:\n  - title: Synthetic authored theme\n", encoding="utf-8", newline="\n")
     before = authored.read_bytes()
     rc.reconcile_kanban(mirror, issue_fetcher=live_issue, dry_run=False)
     assert authored.read_bytes() == before
@@ -245,3 +247,116 @@ def test_default_root_is_anchored_to_script_checkout(rc, monkeypatch):
 
     monkeypatch.setattr(subprocess, "run", run)
     assert rc.repo_root() == ROOT
+
+
+@pytest.mark.parametrize("dry_run", [False, True])
+@pytest.mark.parametrize("tier", ["repo", "domain"])
+def test_hard_linked_destination_refused_before_fetch(
+    rc, mirror, dry_run, tier
+):
+    doc = rc.load_yaml(mirror / "manifest.yaml")
+    doc["manifest"]["boards"][0]["tier"] = tier
+    rc.write_yaml(mirror / "manifest.yaml", doc)
+    alias = mirror / "tracked.yaml"
+    alias.write_text("cards: []\n", encoding="utf-8", newline="\n")
+    board = mirror / "boards/repo-sample.yaml"
+    board.parent.mkdir()
+    board.hardlink_to(alias)
+    before = alias.read_bytes()
+    assert board.stat().st_nlink == 2
+    env = {key: value for key, value in os.environ.items() if not key.startswith("GIT_")}
+    (mirror / ".gitignore").write_text("boards/*.yaml\n", encoding="utf-8", newline="\n")
+    for args in (["init", "-q"], ["add", "--", "tracked.yaml"]):
+        subprocess.run(["git", *args], cwd=mirror, env=env, capture_output=True, check=True)
+    tracked = subprocess.run(
+        ["git", "ls-files", "--", "tracked.yaml"], cwd=mirror, env=env,
+        capture_output=True, text=True, check=True,
+    )
+    assert tracked.stdout.strip() == "tracked.yaml"
+    index_before = (mirror / ".git/index").read_bytes()
+
+    def forbidden_fetch(_repo):
+        pytest.fail("hard-linked destination reached issue fetch")
+
+    with pytest.raises(RuntimeError, match="hard-linked destination"):
+        rc.reconcile_kanban(mirror, issue_fetcher=forbidden_fetch, dry_run=dry_run)
+    assert alias.read_bytes() == before
+    assert board.read_bytes() == before
+    assert (mirror / ".git/index").read_bytes() == index_before
+
+
+@pytest.mark.parametrize("kind", ["file", "directory"])
+def test_reparse_destinations_refused_before_fetch(rc, mirror, monkeypatch, kind):
+    board = mirror / "boards/repo-sample.yaml"
+    redirect = board if kind == "file" else board.parent
+    original = Path.lstat
+
+    def lstat(path, *args, **kwargs):
+        if path == redirect:
+            return SimpleNamespace(
+                st_mode=stat.S_IFDIR, st_file_attributes=stat.FILE_ATTRIBUTE_REPARSE_POINT
+            )
+        return original(path, *args, **kwargs)
+
+    monkeypatch.setattr(Path, "lstat", lstat)
+
+    def forbidden_fetch(_repo):
+        pytest.fail("reparse destination reached issue fetch")
+
+    with pytest.raises(RuntimeError, match="symlink destination"):
+        rc.reconcile_kanban(mirror, issue_fetcher=forbidden_fetch)
+
+
+def test_destination_inspection_error_refuses_fetch(rc, mirror, monkeypatch):
+    board = mirror / "boards/repo-sample.yaml"
+    original = Path.lstat
+
+    def lstat(path, *args, **kwargs):
+        if path == board:
+            raise PermissionError("synthetic restricted diagnostic")
+        return original(path, *args, **kwargs)
+
+    monkeypatch.setattr(Path, "lstat", lstat)
+    with pytest.raises(RuntimeError, match="destination inspection failed") as exc:
+        rc.reconcile_kanban(mirror, issue_fetcher=lambda _: pytest.fail("unexpected fetch"))
+    assert "synthetic restricted diagnostic" not in str(exc.value)
+
+
+def test_yaml_writer_specifies_utf8_and_lf(rc, mirror, monkeypatch):
+    original = Path.write_text
+    calls = []
+
+    def write_text(path, data, **kwargs):
+        calls.append(kwargs)
+        return original(path, data, **kwargs)
+
+    monkeypatch.setattr(Path, "write_text", write_text)
+    rc.reconcile_kanban(mirror, issue_fetcher=live_issue, dry_run=False)
+    assert calls
+    assert all(call.get("encoding") == "utf-8" for call in calls)
+    assert all(call.get("newline") == "\n" for call in calls)
+
+
+def test_diff_paths_use_forward_slashes(rc, mirror, monkeypatch):
+    board = mirror / "boards/repo-sample.yaml"
+    monkeypatch.setattr(Path, "relative_to", lambda *_: PureWindowsPath("boards/repo-sample.yaml"))
+    diff = rc.unified_diff({board: ""}, {board: "cards: []\n"}, mirror)
+    assert "+++ b/boards/repo-sample.yaml\n" in diff
+    assert "\\" not in diff
+
+
+@pytest.mark.parametrize("cards", [[], [{"title": "Synthetic task"}]])
+def test_unmanifested_diagnostics_use_forward_slashes(rc, mirror, monkeypatch, capsys, cards):
+    board = mirror / "boards/other.yaml"
+    board.parent.mkdir()
+    rc.write_yaml(board, {"cards": cards})
+    monkeypatch.setattr(Path, "relative_to", lambda *_: PureWindowsPath("boards/other.yaml"))
+    if cards:
+        with pytest.raises(RuntimeError) as exc:
+            rc.validate_unmanifested_boards(mirror, [])
+        message = str(exc.value)
+    else:
+        rc.validate_unmanifested_boards(mirror, [])
+        message = capsys.readouterr().err
+    assert "boards/other.yaml" in message
+    assert "\\" not in message
