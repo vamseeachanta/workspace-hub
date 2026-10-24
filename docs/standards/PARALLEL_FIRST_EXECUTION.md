@@ -84,3 +84,33 @@ Status reports for parallel work should include:
 - `Verification:` exact commands/results run by the orchestrator
 - `Integration:` commit/push state or blocker
 - `Residual risk / future issues:` explicit list or `none`
+
+## Repository writer admission
+
+Source: issue 3829 (2026), repository writer serialization.
+
+A repository shall have at most one active write-capable Codex task. That task
+shall also be serialized against write-capable Claude subagents and other
+providers in the same repository. Separate branches and worktrees do not exempt
+a repository from this rule. Read-only discovery and review may run concurrently.
+Non-Codex writers remain subject to the existing path-ownership requirements.
+
+Before starting a writer, the coordinator shall inspect its complete active-work
+roster using the same canonical repository key for every checkout. It shall
+serialize admission checking, registration and startup as one scheduling operation.
+A blocked candidate shall remain queued until every conflicting writer has stopped
+and its edits have been handed back. Registration shall remain active through
+child writers and integration; a stopped parent alone does not establish release.
+Unknown activity or an incomplete roster shall prevent admission until resolved.
+
+The optional deterministic preflight is
+[`repo_write_admission.py`](../../scripts/coordination/repo_write_admission.py).
+It checks a supplied roster; it neither acquires a claim nor discovers running
+processes. An `ALLOWED` result is conditional on current, complete evidence and
+serialized registration. Two independent callers checking an empty roster can
+both obtain `ALLOWED`; invoking this helper alone does not prevent that race.
+Existing coordination backends retain responsibility for atomic registration.
+
+The [worked example](../examples/repository-writer-admission.html) defines input
+records, the conflict expression, output meanings and the handoff sequence.
+This standard does not establish automatic installation in existing launchers.
