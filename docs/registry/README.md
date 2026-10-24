@@ -23,6 +23,10 @@ uv run python scripts/workflow/generate_workflow_manifest.py --check
 
 ## How consumers read it
 
+For a read-only assessment of references and missing evidence, see the
+[offline workflow preflight](workflow-readiness.md). Its JSON and HTML reports
+distinguish declared metadata from live execution and delivery checks.
+
 1. Pick a `workflow_id` (`repo:id@version`) directly, OR resolve a `routing_id`
    (`repo:id`) to its latest-stable `workflow_id` via `latest_by_routing_id`.
 2. Feed the resolved ref to `capability_smoke.resolve_workflow()`, which uses the
