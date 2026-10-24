@@ -16,8 +16,7 @@ a CI gate) can discover and resolve a workflow without reading four registries.
 # Regenerate the committed manifest snapshot:
 uv run python scripts/workflow/generate_workflow_manifest.py --write
 
-# Stale-detection gate (exit 1 if any repo's live registry hash drifts from the
-# committed manifest; generated_at is excluded from the comparison):
+# Freshness gate (exit 1 on changed discovery content or unavailable evidence):
 uv run python scripts/workflow/generate_workflow_manifest.py --check
 ```
 
@@ -54,10 +53,19 @@ distinguish declared metadata from live execution and delivery checks.
 - Each `repos[]` entry carries `registry_sha256` (SHA-256 of the raw registry
   text) + best-effort `git_sha` + declared `schema_version` (recorded, never
   assumed — target is the v2 additive superset).
-- `--check` recomputes each repo's registry hash and **fails closed** (exit 1)
-  when any differs from the committed manifest, so a stale manifest is never
-  silently served. `generated_at` is excluded so a no-op regeneration is a no-op
-  diff.
+- `--check` compares registry hashes and the complete saved discovery content
+  with a fresh aggregation. Changed workflows, schemas, routing selections,
+  counts, warnings or generator metadata fail the check even if hashes match.
+  Missing or invalid manifests, duplicate JSON keys or identities, non-finite
+  JSON values and unavailable registries also return exit 1.
+- Comparison ignores repository, workflow and warning order, `generated_at`,
+  and best-effort `repos[].git_sha`. A commit unrelated to registry content does
+  not invalidate discovery. Generation still records a new timestamp.
+- Generation retains diagnostic entries for missing or invalid registries;
+  a matching diagnostic snapshot cannot pass the freshness check. Malformed
+  workflow collections or missing row identities invalidate their registry.
+- See the [worked freshness example](../guides/workflow-manifest-freshness.md)
+  for synthetic inputs, expected routing and an altered-content rejection.
 
 ## Notes
 
