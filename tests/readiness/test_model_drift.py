@@ -2,6 +2,9 @@
 
 import importlib.util
 import json
+import os
+import subprocess
+import sys
 from datetime import date
 from pathlib import Path
 
@@ -50,6 +53,73 @@ def test_alias_must_document_exact_keys(registry, tmp_path):
     assert not any(s == "FAIL" for s, _ in evaluate(registry, tmp_path))
 
 
+@pytest.mark.parametrize("aliases", [
+    {"alpha": None}, {"alpha": 1}, {"alpha": "a"},
+    {"alpha": {"a": "unexpected", "b": "unexpected"}},
+    {"alpha": ["a", 1]}, {"alpha": ["a", None]},
+    {"alpha": ["a", {}]}, {"alpha": ["a", ["b"]]},
+    {"alpha": ["a", "b", "b"]}, {"alpha": ["a", ""]},
+    {"alpha": ["a", " "]}, {"alpha": ["a"]},
+    {"alpha": ["a", "b", "extra"]},
+    {"alpha": ["a", "b"], "unused": None},
+    {"alpha": ["a", "b"], "unused": ["a", "b"]},
+    {"alpha": ["a", "b"], "beta": None},
+    {"alpha": ["a", "b"], "beta": ["a"]},
+    None, [],
+    {"alpha": ["b", "a"]},
+], ids=["null", "number", "string", "mapping", "mixed-number", "mixed-null",
+        "mixed-mapping", "mixed-list", "duplicate", "empty", "blank", "missing",
+        "extra", "unused-invalid", "unused-members", "single-invalid", "single-members",
+        "null-map", "list-map", "valid"])
+@pytest.mark.parametrize("runner", ["cli", "adapter"])
+def test_alias_schema_through_consumers(tmp_path, aliases, runner):
+    """Both consumers fail malformed declarations; list order is immaterial."""
+    registry = {"latest_models": {"a": "alpha", "b": "alpha", "c": "beta"},
+                "context_windows_k": {"alpha": 1, "beta": 1},
+                "model_aliases": aliases, "last_updated": "2026-10-01"}
+    validator = tmp_path / "scripts/readiness/model_drift.py"
+    validator.parent.mkdir(parents=True)
+    validator.write_bytes((ROOT / "scripts/readiness/model_drift.py").read_bytes())
+    source = tmp_path / "config/agents/model-registry.yaml"
+    source.parent.mkdir(parents=True)
+    source.write_text(gate.yaml.safe_dump(registry), encoding="utf-8", newline="\n")
+    env = dict(os.environ, WORKSPACE_HUB=tmp_path.as_posix(),
+               HOME=(tmp_path / "absent").as_posix())
+    env.pop("MODEL_REGISTRY_FILE", None)
+    env.pop("MODEL_REGISTRY_MAX_AGE_DAYS", None)
+    if runner == "cli":
+        command = [sys.executable, validator.as_posix(), "--registry", source.as_posix(),
+                   "--user-root", (tmp_path / "absent").as_posix(),
+                   "--project-root", tmp_path.as_posix(), "--today", "2026-10-15"]
+    else:
+        text = (ROOT / "scripts/readiness/nightly-readiness.sh").read_text(encoding="utf-8")
+        start = text.index("check_r_model_drift() {")
+        function = text[start:text.index("} ; check_r_model_drift || true", start) + 1]
+        script = ('declare -A check_results=() check_details=()\n'
+                  'log_pass() { echo "AGGREGATE_PASS"; }\n'
+                  'log_fail() { echo "AGGREGATE_FAIL"; }\n' + function +
+                  '\ncheck_r_model_drift')
+        command = ["bash", "-c", script]
+    proc = subprocess.run(command, env=env, text=True, encoding="utf-8",
+                          capture_output=True, check=False)
+    assert not proc.stderr
+    valid = aliases == {"alpha": ["b", "a"]}
+    if valid:
+        assert proc.returncode == 0
+        assert "FAIL" not in proc.stdout
+        assert "a: registry consistent" in proc.stdout
+        assert "b: registry consistent" in proc.stdout
+    else:
+        assert "FAIL" in proc.stdout
+        assert "model_aliases" in proc.stdout
+        assert "AGGREGATE_PASS" not in proc.stdout
+        assert "validator unavailable" not in proc.stdout
+        if runner == "cli":
+            assert proc.returncode == 1
+        else:
+            assert "AGGREGATE_FAIL" in proc.stdout
+
+
 def test_deprecated_reference(registry, tmp_path):
     registry["audit"] = {"old": {"model_id": "beta", "deprecated": True}}
     assert any(s == "FAIL" and "deprecated" in m for s, m in evaluate(registry, tmp_path))
@@ -80,7 +150,7 @@ def test_all_readable_match(registry, tmp_path):
     ]:
         target = tmp_path / directory / name
         target.parent.mkdir(exist_ok=True)
-        target.write_text(text)
+        target.write_text(text, encoding="utf-8", newline="\n")
     rows = evaluate(registry, tmp_path)
     assert not any(s == "FAIL" for s, _ in rows)
     assert rows[-1] == ("INFO", "live: compared=3 not_evaluated=1")
@@ -90,7 +160,7 @@ def test_all_readable_match(registry, tmp_path):
 def test_hermes_mapping_default(registry, tmp_path, model, status):
     cfg = tmp_path / ".hermes/config.yaml"
     cfg.parent.mkdir()
-    cfg.write_text(f"model:\n  default: {model}\n  provider: fixture-provider\n")
+    cfg.write_text(f"model:\n  default: {model}\n  provider: fixture-provider\n", encoding="utf-8", newline="\n")
     rows = evaluate(registry, tmp_path)
     assert (status, f"openai_primary/hermes: live={model} registry=gamma") in rows
 
@@ -107,7 +177,7 @@ def test_hermes_project_override(registry, tmp_path, project_model):
     ]:
         cfg = root / ".hermes/config.yaml"
         cfg.parent.mkdir(parents=True)
-        cfg.write_text(text)
+        cfg.write_text(text, encoding="utf-8", newline="\n")
     rows = gate.evaluate(registry, user, project, date(2026, 10, 15), 14)
     assert ("FAIL", "openai_primary/hermes: live=beta registry=gamma") in rows
 
@@ -120,7 +190,7 @@ def test_hermes_provider_only_does_not_override_default(registry, tmp_path):
     ]:
         cfg = root / ".hermes/config.yaml"
         cfg.parent.mkdir(parents=True)
-        cfg.write_text(text)
+        cfg.write_text(text, encoding="utf-8", newline="\n")
     rows = gate.evaluate(registry, user, project, date(2026, 10, 15), 14)
     assert ("PASS", "openai_primary/hermes: live=gamma registry=gamma") in rows
 
@@ -129,7 +199,7 @@ def test_hermes_provider_only_does_not_override_default(registry, tmp_path):
 def test_hermes_invalid_default_fails(value, tmp_path, registry):
     cfg = tmp_path / ".hermes/config.yaml"
     cfg.parent.mkdir()
-    cfg.write_text(f"model:\n  default: {value}\n  provider: fixture-provider\n")
+    cfg.write_text(f"model:\n  default: {value}\n  provider: fixture-provider\n", encoding="utf-8", newline="\n")
     assert ("FAIL", "openai_primary/hermes: invalid model value") in evaluate(registry, tmp_path)
 
 
@@ -161,7 +231,7 @@ def test_positive_context_capacity(registry, tmp_path, value):
 def test_claude_failure(registry, tmp_path, text, expected):
     cfg = tmp_path / ".claude/settings.json"
     cfg.parent.mkdir()
-    cfg.write_text(text)
+    cfg.write_text(text, encoding="utf-8", newline="\n")
     assert any(s == "FAIL" and expected in m for s, m in evaluate(registry, tmp_path))
 
 
@@ -175,7 +245,7 @@ def test_project_override_is_not_hidden_by_user(registry, tmp_path):
     for root, model in [(user, "alpha"), (project, "beta")]:
         cfg = root / ".claude/settings.json"
         cfg.parent.mkdir(parents=True)
-        cfg.write_text(json.dumps({"model": model}))
+        cfg.write_text(json.dumps({"model": model}), encoding="utf-8", newline="\n")
     rows = gate.evaluate(registry, user, project, date(2026, 10, 15), 14)
     assert any(s == "FAIL" and "live=beta registry=alpha" in m for s, m in rows)
 
@@ -192,9 +262,9 @@ def test_nightly_adapter_does_not_report_partial_pass(tmp_path):
     )
     (tmp_path / "config/agents/model-registry.yaml").write_text(
         'latest_models: {claude_primary: alpha, openai_primary: gamma}\n'
-        'context_windows_k: {alpha: 1, gamma: 1}\nlast_updated: "2026-10-01"\n'
-    )
-    text = (ROOT / "scripts/readiness/nightly-readiness.sh").read_text()
+        'context_windows_k: {alpha: 1, gamma: 1}\nlast_updated: "2026-10-01"\n',
+        encoding="utf-8", newline="\n")
+    text = (ROOT / "scripts/readiness/nightly-readiness.sh").read_text(encoding="utf-8")
     start = text.index("check_r_model_drift() {")
     function = text[start:text.index("} ; check_r_model_drift || true", start) + 1]
     script = ('declare -A check_results=() check_details=()\n'
@@ -214,7 +284,7 @@ def test_nightly_report_is_not_green_when_drift_is_unevaluated(tmp_path):
     import os
     import subprocess
 
-    text = (ROOT / "scripts/readiness/nightly-readiness.sh").read_text()
+    text = (ROOT / "scripts/readiness/nightly-readiness.sh").read_text(encoding="utf-8")
     start = text.index("_emit_harness_report() {")
     function = text[start:text.index("} ; _emit_harness_report || true", start) + 1]
     script = ('_resolve_workstation_key() { echo fixture; }\n'
@@ -223,7 +293,7 @@ def test_nightly_report_is_not_green_when_drift_is_unevaluated(tmp_path):
               'fail_count=0; pass_count=0; not_evaluated_count=1; RUN_TS=fixture\n' + function +
               '\n_emit_harness_report')
     subprocess.run(["bash", "-c", script], env=dict(os.environ, STATE_DIR=str(tmp_path)), check=True)
-    assert "overall: not_evaluated" in (tmp_path / "harness-readiness-fixture.yaml").read_text()
+    assert "overall: not_evaluated" in (tmp_path / "harness-readiness-fixture.yaml").read_text(encoding="utf-8")
 
 
 def test_worked_example_output(tmp_path):
@@ -241,7 +311,7 @@ def test_worked_example_output(tmp_path):
         "--registry", str(fixtures / "registry.yaml"), "--user-root", str(tmp_path / "empty"),
         "--project-root", str(project), "--today", "2026-10-15",
     ], capture_output=True, text=True, check=True)
-    doc = (ROOT / "docs/operations/model-drift.md").read_text()
+    doc = (ROOT / "docs/operations/model-drift.md").read_text(encoding="utf-8")
     expected = doc.split("```text\n", 1)[1].split("```", 1)[0]
     assert proc.stdout == expected
 

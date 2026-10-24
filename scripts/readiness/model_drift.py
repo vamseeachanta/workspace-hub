@@ -59,8 +59,20 @@ def consistency(registry):
     if not isinstance(latest, dict) or not latest or not isinstance(windows, dict):
         return [("FAIL", "registry: latest_models and context_windows_k must be maps")]
     aliases = registry.get("model_aliases", {})
-    aliases = aliases if isinstance(aliases, dict) else {}
     rows = []
+    if not isinstance(aliases, dict):
+        rows.append(("FAIL", "model_aliases: mapping required"))
+        aliases = {}
+    invalid_aliases = set()
+    for model, keys in aliases.items():
+        if (not isinstance(keys, list) or
+                any(not isinstance(key, str) or not key.strip() for key in keys) or
+                len(set(keys)) != len(keys)):
+            invalid_aliases.add(model)
+            rows.append(("FAIL", f"model_aliases/{model}: unique non-empty string list required"))
+        elif set(keys) != {key for key, value in latest.items() if value == model}:
+            invalid_aliases.add(model)
+            rows.append(("FAIL", f"model_aliases/{model}: exact binding membership required"))
     invalid_windows = set()
     for model, capacity in windows.items():
         if (type(capacity) not in (int, float) or capacity <= 0 or
@@ -78,9 +90,9 @@ def consistency(registry):
             rows.append(("FAIL", f"{key}: invalid context window for {model}"))
         elif model in deprecated:
             rows.append(("FAIL", f"{key}: deprecated id {model}"))
-        elif counts[model] > 1 and sorted(aliases.get(model, [])) != sorted(
-            k for k, v in latest.items() if v == model
-        ):
+        elif model in invalid_aliases:
+            rows.append(("FAIL", f"{key}: invalid model_aliases for {model}"))
+        elif counts[model] > 1 and model not in aliases:
             rows.append(("FAIL", f"{key}: shared id {model} requires documented model_aliases"))
         else:
             rows.append(("PASS", f"{key}: registry consistent"))
