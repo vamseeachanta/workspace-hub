@@ -2,25 +2,42 @@
 from __future__ import annotations
 
 import argparse
-from datetime import datetime, timezone
 import json
+import math
 import os
 import queue
 import sys
 import threading
 import time
+from datetime import datetime, timezone
 
+import metrics
 from adapters import ADAPTER_TYPES
 from adapters.base import AdapterError, tokenize
 from merge import ranked_merge
 from registry import RegistryError, load_registry
 from staleness import compute_index_status, stale_warnings
 
-import metrics
+
+def _emit_error(code: str, message: str, as_json: bool) -> None:
+    """Keep diagnostics readable and give machine callers a typed failure."""
+    if as_json:
+        print(json.dumps({"error": {"code": code, "message": message}}))
+    print(f"{code}: {message}", file=sys.stderr)
+
+
+class SearchArgumentParser(argparse.ArgumentParser):
+    json_errors = False
+
+    def error(self, message: str) -> None:
+        _emit_error("argument_error", message, self.json_errors)
+        # Preserve argparse's existing invalid-invocation exit status.
+        self.exit(2)
 
 
 def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(description="Search registered drive indexes.")
+    argv = list(sys.argv[1:] if argv is None else argv)
+    parser = SearchArgumentParser(description="Search registered drive indexes.")
     parser.add_argument("query")
     parser.add_argument("--domain")
     parser.add_argument("--drive")
@@ -31,14 +48,25 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--timeout-per-index", type=float, default=60.0)
     parser.add_argument("--session", default=None)  # #3340 metrics join key
     parser.add_argument("--caller", default="manual")  # #3340 integration-point attribution
+    # Select the envelope before full validation, including when --json follows
+    # the invalid argument. argparse still honors the end-of-options delimiter.
+    output_parser = SearchArgumentParser(add_help=False)
+    output_parser.json_errors = True
+    output_parser.add_argument("--json", action="store_true")
+    output, _ = output_parser.parse_known_args(argv)
+    parser.json_errors = output.json
     args = parser.parse_args(argv)
+    # Search counts and thread waits require strictly positive finite inputs.
+    if args.limit <= 0:
+        parser.error("--limit must be positive")
+    if not math.isfinite(args.timeout_per_index) or args.timeout_per_index <= 0:
+        parser.error("--timeout-per-index must be finite and positive")
     t_start = time.monotonic()
 
     try:
         registry = load_registry(args.registry)
     except RegistryError as exc:
-        print(f"registry error: {exc}", file=sys.stderr)
-        _emit(args.query, [], [], [], args.as_json)
+        _emit_error("registry_error", str(exc), args.as_json)
         return 2
 
     tokens = tokenize(args.query)
