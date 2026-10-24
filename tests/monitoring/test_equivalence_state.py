@@ -476,3 +476,109 @@ def test_same_role_machines_do_not_clobber_end_to_end(tmp_path):
     assert es.publish(str(work), "ace-win-2", fp2) is True
     boxes = es.collect(str(work))
     assert sorted(b["hostname"] for b in boxes) == ["licensed-win-1", "licensed-win-2"]
+    # Read back both independent entries through actual local Git objects.
+    assert es.verify_publish(str(work), json.loads(fp1)["machine_id"], fp1)
+    assert es.verify_publish(str(work), json.loads(fp2)["machine_id"], fp2)
+
+
+# Read-back contract: issue #3506 requires the fingerprint in the shared ref;
+# issue #3511 describes empty blobs and carriage-return-suffixed tree names.
+@pytest.mark.parametrize("fault", [
+    "absent-ref", "absent-key", "cr-name", "role-name", "symlink", "tree",
+    "unreadable", "empty", "invalid", "different-cycle", "crlf", "invalid-utf8",
+])
+def test_verify_publish_rejects_missing_or_changed_evidence(monkeypatch, fault):
+    """Hand check: exact sample.json bytes are necessary; each fault removes
+    one prerequisite, so no case can establish the requested publication.
+    Protocol modes and schema come from _commit_fingerprint/validate_fingerprint.
+    """
+    content = _fingerprint(machine_id="sample", hostname="sample")
+    parent = None if fault == "absent-ref" else SHA_A
+    name = {"cr-name": "sample.json\r", "role-name": "contribute-minimal.json"}.get(
+        fault, "sample.json")
+    mode = "120000" if fault == "symlink" else "100644"
+    kind = "tree" if fault == "tree" else "blob"
+    entries = {} if fault == "absent-key" else {name: (mode, kind, SHA_B)}
+    raw = content.encode()
+    if fault == "empty":
+        raw = b""
+    elif fault == "invalid":
+        raw = b"{}"
+    elif fault == "different-cycle":
+        raw = _fingerprint(machine_id="sample", hostname="sample",
+                           ts="2026-07-14T10:01:00+00:00").encode()
+    elif fault == "crlf":
+        content += "\n"
+        raw += b"\r\n"
+    elif fault == "invalid-utf8":
+        raw = b"\xff"
+    calls = []
+    monkeypatch.setattr(es, "_fetch_tip", lambda *_: parent)
+    monkeypatch.setattr(es, "_tree_entries", lambda *_: entries)
+
+    def read_blob(repo, *args, **kwargs):
+        calls.append((args, kwargs))
+        return types.SimpleNamespace(returncode=int(fault == "unreadable"),
+                                     stdout=raw, stderr=b"")
+
+    monkeypatch.setattr(es, "_git", read_blob)
+    with pytest.raises(es.StoreUnavailable):
+        es.verify_publish(".", "sample", content)
+    assert all(args == ("cat-file", "-p", SHA_B) for args, _ in calls)
+    assert all(kwargs == {"_text": False} for _, kwargs in calls)
+
+
+def test_verify_publish_returns_observed_tip_and_only_reads(monkeypatch):
+    """Hand check: key, regular blob and bytes all match, so return its tip.
+    The only allowed Git operations observe the remote and read its objects.
+    """
+    content = _fingerprint(machine_id="sample", hostname="sample")
+    calls = []
+
+    def git(repo, *args, **kwargs):
+        calls.append((args, kwargs))
+        outputs = {
+            "ls-remote": f"{SHA_A}\trefs/heads/equivalence-state\n",
+            "fetch": "",
+            "rev-parse": SHA_A + "\n",
+            "ls-tree": f"100644 blob {SHA_B}\tsample.json\0".encode(),
+            "cat-file": content.encode(),
+        }
+        return types.SimpleNamespace(returncode=0, stdout=outputs[args[0]], stderr="")
+
+    monkeypatch.setattr(es, "_git", git)
+    assert es.verify_publish(".", "sample", content) == SHA_A
+    assert [args[0] for args, _ in calls] == [
+        "ls-remote", "fetch", "rev-parse", "ls-tree", "cat-file",
+    ]
+    assert calls[-1][1] == {"_text": False}
+
+
+def test_verify_publish_rejects_input_identity_before_git(monkeypatch):
+    """Independent identity check: other != sample, so no remote read is valid."""
+    def no_git(*args, **kwargs):
+        raise AssertionError("invalid input must not invoke Git")
+
+    monkeypatch.setattr(es, "_git", no_git)
+    with pytest.raises(es.FingerprintValidationError):
+        es.verify_publish(".", "other", _fingerprint(machine_id="sample"))
+    with pytest.raises(es.FingerprintValidationError):
+        es.verify_publish(".", "sample", "{}")
+
+
+def test_verify_publish_cli_uses_explicit_remote_and_ref(tmp_path, monkeypatch, capsys):
+    """Explicit CLI arguments must reach the reader without any publication."""
+    fp = tmp_path / "fingerprint.json"
+    content = _fingerprint(machine_id="sample", hostname="sample")
+    fp.write_text(content, encoding="utf-8")
+    calls = []
+
+    def verify(*args, **kwargs):
+        calls.append((args, kwargs))
+        return SHA_A
+
+    monkeypatch.setattr(es, "verify_publish", verify)
+    assert es.main(["verify-publish", "--repo", ".", "--machine", "sample",
+                    "--file", str(fp), "--remote", "mirror", "--ref", "sample-state"]) == 0
+    assert calls == [((".", "sample", content), {"remote": "mirror", "ref": "sample-state"})]
+    assert capsys.readouterr().out.strip() == "verified"
