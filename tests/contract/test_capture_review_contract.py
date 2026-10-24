@@ -117,6 +117,55 @@ def test_complete_fixture_contract_passes():
     assert_comparison_contract(reference_compare, SPEC, cases())
 
 
+def test_contract_accepts_dictionary_reordering_without_value_changes():
+    def reordered(left, right, spec):
+        result = reference_compare(left, right, spec)
+        for record in (left, right, spec):
+            if isinstance(record, dict):
+                items = list(record.items())
+                record.clear()
+                record.update(reversed(items))
+        return result
+
+    assert_comparison_contract(reordered, SPEC, cases())
+
+
+@pytest.mark.parametrize("side", [0, 1])
+def test_contract_rejects_boolean_evidence_changed_to_integer(side):
+    def broken(left, right, spec):
+        result = reference_compare(left, right, spec)
+        (left, right)[side]["nodes"]["config"]["absent"] = 0
+        return result
+
+    with pytest.raises(AssertionError, match="mutated evidence"):
+        assert_comparison_contract(broken, SPEC, cases())
+
+
+@pytest.mark.parametrize("target", [0, 1, 2])
+@pytest.mark.parametrize("before, after", [
+    (False, 0),
+    ([{"value": False}], [{"value": 0.0}]),
+    ((False,), (0,)),
+    ({False: "value"}, {0: "value"}),
+    ({False}, {0}),
+    (frozenset({False}), frozenset({0})),
+])
+def test_contract_rejects_nested_type_mutation_in_each_input(target, before, after):
+    fixtures = cases()
+    control = deepcopy(VALID)
+    control["extra"] = before
+    fixtures[0] = ComparisonCase("qualified", control, control, "qualified")
+    specification = {**SPEC, "extra": before}
+
+    def broken(left, right, spec):
+        result = reference_compare(left, right, spec)
+        (left, right, spec)[target]["extra"] = deepcopy(after)
+        return result
+
+    with pytest.raises(AssertionError, match="mutated evidence"):
+        assert_comparison_contract(broken, specification, fixtures)
+
+
 @pytest.mark.parametrize("name", [case.name for case in cases() if ":" not in case.name])
 def test_case_inventory_cannot_be_silently_reduced(name):
     with pytest.raises(AssertionError, match="case inventory"):
@@ -142,7 +191,10 @@ def test_contract_catches_known_defect_classes(bug):
         assert_comparison_contract(broken, SPEC, cases())
 
 
-@pytest.mark.parametrize("kind", ["linked_root", "linked_ancestor", "missing_git", "linked_git", "redirected_git_file"])
+@pytest.mark.parametrize("kind", [
+    "linked_root", "linked_ancestor", "missing_git", "linked_git", "redirected_git_file",
+    "junction_root", "junction_ancestor", "junction_git",
+])
 def test_repository_rejection_precedes_every_subprocess(tmp_path, monkeypatch, kind):
     root = tmp_path / "repo"
     root.mkdir()
@@ -155,15 +207,23 @@ def test_repository_rejection_precedes_every_subprocess(tmp_path, monkeypatch, k
         link.symlink_to(tmp_path, target_is_directory=True)
         root = link / "repo"
     elif kind == "redirected_git_file":
-        (root / ".git").write_text("gitdir: ../unexpected\n", encoding="utf-8")
+        (root / ".git").write_text("gitdir: ../unexpected\n", encoding="utf-8", newline="\n")
     elif kind == "linked_git":
         (root / ".git").symlink_to(tmp_path, target_is_directory=True)
+    elif kind.startswith("junction_"):
+        (root / ".git").mkdir()
+        junction = {"junction_root": root, "junction_ancestor": tmp_path,
+                    "junction_git": root / ".git"}[kind]
+        monkeypatch.setattr(Path, "is_junction", lambda path: path == junction, raising=False)
 
     def reject(path):
         # Minimal fake collector: no Git is needed to reject fixture bindings.
-        if path.is_symlink() or any(p.is_symlink() for p in path.parents):
+        def linked(candidate):
+            return candidate.is_symlink() or getattr(candidate, "is_junction", lambda: False)()
+
+        if any(linked(candidate) for candidate in (path, *path.parents)):
             raise ValueError("linked root")
-        if not (path / ".git").is_dir() or (path / ".git").is_symlink():
+        if not (path / ".git").is_dir() or linked(path / ".git"):
             raise ValueError("invalid binding")
         raise AssertionError("fixture did not trigger rejection")
 

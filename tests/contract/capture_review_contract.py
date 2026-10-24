@@ -39,11 +39,32 @@ class ComparisonCase:
     expected: str
 
 
+def _same_typed_value(left, right):
+    """Compare fixture values recursively without numeric type coercion."""
+    if type(left) is not type(right):
+        return False
+    if isinstance(left, dict):
+        return len(left) == len(right) and all(
+            any(_same_typed_value(key, other_key) and _same_typed_value(value, other_value)
+                for other_key, other_value in right.items())
+            for key, value in left.items()
+        )
+    if isinstance(left, (list, tuple)):
+        return len(left) == len(right) and all(
+            _same_typed_value(value, other) for value, other in zip(left, right)
+        )
+    if isinstance(left, (set, frozenset)):
+        return len(left) == len(right) and all(
+            any(_same_typed_value(value, other) for other in right) for value in left
+        )
+    return left == right
+
+
 def _compare_without_mutation(compare, left, right, specification):
     inputs = deepcopy((left, right, specification))
     before = deepcopy(inputs)
     result = compare(*inputs)
-    assert inputs == before, "comparison mutated evidence or trusted specification"
+    assert _same_typed_value(inputs, before), "comparison mutated evidence or trusted specification"
     return result
 
 
