@@ -24,6 +24,7 @@ import subprocess
 from pathlib import Path
 
 import yaml
+from collector_support import bash_path, collector_env
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 SH = REPO_ROOT / "scripts" / "readiness" / "collect-equality.sh"
@@ -155,8 +156,8 @@ def _sh_stdout(env_extra: dict, tmp_path: Path, machine: str = "ace-win-1") -> d
         env["EQ_TEST_ENABLE_OS_OVERRIDE"] = "1"
     env.update(env_extra)
     res = subprocess.run(
-        ["bash", str(SH), "--stdout", "--machine", machine],
-        env=env, capture_output=True, text=True, timeout=60)
+        ["bash", bash_path(SH), "--stdout", "--machine", machine],
+        env=collector_env(env), capture_output=True, text=True, timeout=60, check=False)
     assert res.returncode == 0, res.stderr
     return yaml.safe_load(res.stdout)
 
@@ -263,7 +264,7 @@ def test_eq_os_override_ignored_without_test_flag(tmp_path):
     env = {"WORKSPACE_HUB": str(ws), "PATH": BASH_PATH, "HOME": str(tmp_path),
            "EQ_OS_OVERRIDE": "unknown"}  # deliberately NO test-enable flag
     res = subprocess.run(["bash", str(SH), "--stdout", "--machine", "ace-win-1"],
-                         env=env, capture_output=True, text=True, timeout=60)
+                         env=collector_env(env), capture_output=True, text=True, timeout=60, check=False)
     assert res.returncode == 0, res.stderr
     d = yaml.safe_load(res.stdout)
     assert d["os"] != "unknown"                                      # real OS, override ignored
