@@ -41,35 +41,32 @@ if [[ ! -x "$DASHBOARD_SCRIPT" ]]; then
     exit 1
 fi
 
-DASHBOARD_OUTPUT="$(bash "$DASHBOARD_SCRIPT" 2>&1)" || true
+DASHBOARD_STATUS=0
+DASHBOARD_OUTPUT="$(bash "$DASHBOARD_SCRIPT" 2>&1)" || DASHBOARD_STATUS=$?
 echo "$DASHBOARD_OUTPUT" >> "$LOG_FILE"
 
-# ── Parse compliance percentage from output ──────────────────────────────────
-# The dashboard outputs: "Compliance rate:    NN% (threshold: MM%)"
-COMPLIANCE_RATE="$(echo "$DASHBOARD_OUTPUT" | grep -oP 'Compliance rate:\s+\K[0-9]+' || echo "")"
-
-if [[ -z "$COMPLIANCE_RATE" ]]; then
-    # Try to parse from JSON output as fallback
-    COMPLIANCE_RATE="$(echo "$DASHBOARD_OUTPUT" | grep -oP '"compliance_rate":\s*\K[0-9]+' || echo "")"
+# Dashboard exit 1 is a valid FAIL verdict; other failures are operational errors.
+if [[ "$DASHBOARD_STATUS" -gt 1 ]]; then
+    log "ERROR: Dashboard execution failed (exit ${DASHBOARD_STATUS})"
+    exit 1
 fi
 
-if [[ -z "$COMPLIANCE_RATE" ]]; then
-    # Check if there were no commits (which is fine)
-    if echo "$DASHBOARD_OUTPUT" | grep -q '"total_commits": *0\|No commits in window'; then
-        log "No commits in window — nothing to check"
-        exit 0
-    fi
-    log "WARNING: Could not parse compliance rate from dashboard output"
+METRICS="$(printf '%s\n' "$DASHBOARD_OUTPUT" | python3 "${SCRIPT_DIR}/compliance_report.py")" || {
+    log "ERROR: Dashboard report is missing, malformed, or inconsistent"
+    exit 1
+}
+IFS=$'\t' read -r COMPLIANCE_RATE TOTAL_COMMITS REVIEWED UNREVIEWED VERDICT REVIEWABLE <<< "$METRICS"
+if [[ ( "$VERDICT" == "PASS" && "$DASHBOARD_STATUS" != 0 ) ||
+      ( "$VERDICT" == "FAIL" && "$DASHBOARD_STATUS" != 1 ) ]]; then
+    log "ERROR: Dashboard exit status disagrees with report verdict"
+    exit 1
+fi
+
+if [[ "$REVIEWABLE" -eq 0 ]]; then
+    log "No reviewable commits in window — nothing to check"
     exit 0
 fi
-
 log "Compliance rate: ${COMPLIANCE_RATE}%"
-
-# ── Parse additional details from JSON ───────────────────────────────────────
-TOTAL_COMMITS="$(echo "$DASHBOARD_OUTPUT" | grep -oP '"total_commits":\s*\K[0-9]+' || echo "?")"
-REVIEWED="$(echo "$DASHBOARD_OUTPUT" | grep -oP '"reviewed":\s*\K[0-9]+' || echo "?")"
-UNREVIEWED="$(echo "$DASHBOARD_OUTPUT" | grep -oP '"unreviewed":\s*\K[0-9]+' || echo "?")"
-VERDICT="$(echo "$DASHBOARD_OUTPUT" | grep -oP '"verdict":\s*"\K[^"]+' || echo "?")"
 
 # ── Threshold evaluation ─────────────────────────────────────────────────────
 if [[ "$COMPLIANCE_RATE" -ge "$THRESHOLD_PASS" ]]; then
