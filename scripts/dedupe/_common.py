@@ -6,6 +6,7 @@ Atomic replacement follows Python 3.11 os.replace documentation.
 
 import json
 import os
+import stat
 import tempfile
 from pathlib import Path
 
@@ -25,6 +26,7 @@ def atomic_write_output(destination, text):
     with tempfile.NamedTemporaryFile(
         mode="w",
         encoding="utf-8",
+        newline="\n",
         dir=destination.parent,
         prefix=destination.name + ".",
         suffix=".partial",
@@ -56,7 +58,12 @@ def distinct_outputs(outputs, inputs=(), roots=()):
             # An output outside a root may still be a hard link to scanned data.
             identity = output.stat()
             for root in roots:
-                for folder, _, names in os.walk(root, followlinks=False):
+                for folder, directories, names in os.walk(root, followlinks=False):
+                    directories[:] = [
+                        name for name in directories
+                        if not is_reparse_point((Path(folder) / name).lstat())
+                        and not (Path(folder) / name).is_symlink()
+                    ]
                     for name in names:
                         candidate = Path(folder) / name
                         info = candidate.stat(follow_symlinks=False)
@@ -65,6 +72,14 @@ def distinct_outputs(outputs, inputs=(), roots=()):
                             identity.st_ino,
                         ):
                             raise ValueError("output aliases scanned data")
+
+
+def is_reparse_point(info):
+    """Treat Windows junctions and other reparse points as links."""
+    return bool(
+        getattr(info, "st_file_attributes", 0)
+        & stat.FILE_ATTRIBUTE_REPARSE_POINT
+    )
 
 
 def read_json(path):
@@ -87,13 +102,13 @@ def validate_record(row):
         raise TypeError("file record must be an object")
     if not isinstance(row.get("label"), str) or not row["label"].strip():
         raise ValueError("invalid label")
+    # Manifest paths use POSIX separators; colons and backslashes are literal
+    # filename characters, never native paths to resolve on the reading system.
     path = row.get("path")
     if (
         not isinstance(path, str)
         or not path
         or path.startswith("/")
-        or "\\" in path
-        or ":" in path
         or "\0" in path
         or any(part in ("", ".", "..") for part in path.split("/"))
     ):

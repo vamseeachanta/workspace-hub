@@ -50,13 +50,16 @@ Configuration:
 
 - roots: nonempty ordered array of existing, nonoverlapping directories. Manifest
   root is the zero-based index in this array; path is relative to that root.
+  Manifest paths use forward slashes as separators; legal POSIX colons and
+  backslashes remain literal filename characters when read on other systems.
   Labels should uniquely identify a root configuration when merging inventories.
 - min_size_bytes: nonnegative integer, inclusive; default 0 includes empty files.
   A previous large-file survey used 200 MB; this is an example threshold only,
   not the default or a recommendation. Supply the desired byte count explicitly.
 - exclude: optional case-sensitive fnmatch globs on relative POSIX paths;
   default empty. A matched directory is pruned. An asterisk can match a slash.
-- follow_symlinks: only false is accepted. Symlinks and special files are skipped.
+- follow_symlinks: only false is accepted. Symlinks, directory junctions, other
+  reparse points and special files are skipped.
 
 Staged hashing:
 
@@ -67,9 +70,9 @@ Staged hashing:
 3. For collisions in both size and sample digest, hash the entire file with
    **1 MiB** reads (1024 × 1024 bytes), using SHA-256.
 
-The window and read chunk sizes are performance choices specified for this task,
-not correctness thresholds. Sampling can reject duplicates, but cannot prove
-them. SHA-256 follows [FIPS 180-4 (2015), section 6.2](https://doi.org/10.6028/NIST.FIPS.180-4);
+The window and read chunk sizes are application-selected performance defaults
+defined by this README, not correctness thresholds. Sampling can reject
+duplicates, but cannot prove them. SHA-256 follows [FIPS 180-4 (2015), section 6.2](https://doi.org/10.6028/NIST.FIPS.180-4);
 its 256-bit output is represented by 64 hexadecimal digits (256 / 4).
 The chunked hashlib read/update approach follows the existing
 scripts/data/document-index/cross-drive-dedup-audit.py helper. That helper's fixed
@@ -171,6 +174,9 @@ the expected digest. Compare both actual results to that digest immediately befo
 any independently authorized action. For roots on separate systems, run the two
 hashes at their respective roots and compare the results manually. The tool does
 not transfer files, execute commands or require sha256sum to generate a plan.
+Markdown commands containing line separators are withheld because Markdown
+readers can normalize filename characters. The exact command remains in JSON;
+inspect it without newline normalization before independent verification.
 
 ## Worked temporary-tree example
 
@@ -190,11 +196,13 @@ for label in ("A", "B"):
     for name in ("one", "two"):
         (root / name).write_bytes(b"abc")
     config = {"roots": [str(root)], "follow_symlinks": False}
-    (example / (label + ".config.json")).write_text(json.dumps(config))
+    (example / (label + ".config.json")).write_text(
+        json.dumps(config), encoding="utf-8", newline="\n"
+    )
 (example / "policy.json").write_text(json.dumps({
     "keep_preference": [{"labels": ["A", "B"]}, "shorter_path", "older_mtime"],
     "protect": []
-}))
+}), encoding="utf-8", newline="\n")
 PY
 example="$TMPDIR/dedupe-example"
 python -I scripts/dedupe/hash_inventory.py --config "$example/A.config.json" --label A --out "$example/A.manifest.jsonl" --cache "$example/A.cache.json"

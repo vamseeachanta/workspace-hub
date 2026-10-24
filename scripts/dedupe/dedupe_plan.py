@@ -243,11 +243,17 @@ def render_markdown(plan):
                     f"REMOVAL CANDIDATE: {display(row)}. Reason: {row['reason']}.",
                     f"Expected SHA-256 for both: {group['sha256']}",
                     "",
-                    # Indented code blocks keep arbitrary filenames out of Markdown syntax.
-                    *[
-                        "    " + part
-                        for part in row["verification_command"].splitlines()
-                    ],
+                    # Markdown readers normalize line separators, even in code.
+                    # Preserve the JSON command; withhold an unfaithful display.
+                    (
+                        "Verification command withheld: filename contains a line "
+                        "separator; inspect the JSON command without normalization."
+                        if any(
+                            char in row["verification_command"]
+                            for char in "\n\r\v\f\x1c\x1d\x1e\x85\u2028\u2029"
+                        )
+                        else "    " + row["verification_command"]
+                    ),
                 ]
             )
     lines.extend(["", f"Unverified groups excluded: {plan['unverified_groups']}.", ""])

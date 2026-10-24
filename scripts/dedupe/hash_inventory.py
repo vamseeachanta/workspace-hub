@@ -17,6 +17,7 @@ if __package__ in (None, ""):
         FORMAT_VERSION,
         atomic_write_output,
         distinct_outputs,
+        is_reparse_point,
         json_text,
         read_json,
         valid_digest,
@@ -26,12 +27,13 @@ else:
         FORMAT_VERSION,
         atomic_write_output,
         distinct_outputs,
+        is_reparse_point,
         json_text,
         read_json,
         valid_digest,
     )
 
-# Issue #4224 task specification, slices 1–2; performance choices, not correctness inputs.
+# README.md, Hash stages: application-selected performance defaults, not correctness limits.
 SAMPLE_BYTES = 64 * 1024
 CHUNK_BYTES = 1024 * 1024
 
@@ -55,7 +57,8 @@ def readonly_open(path, mode):
     # Python 3.11 os.open: optional platform flags; zero means unavailable.
     flags = os.O_RDONLY | getattr(os, "O_BINARY", 0)
     flags |= getattr(os, "O_NOFOLLOW", 0) | getattr(os, "O_NONBLOCK", 0)
-    if path.is_symlink() or not stat.S_ISREG(path.stat(follow_symlinks=False).st_mode):
+    info = path.stat(follow_symlinks=False)
+    if path.is_symlink() or is_reparse_point(info) or not stat.S_ISREG(info.st_mode):
         raise OSError("not a regular nonsymlink file")
     descriptor = os.open(path, flags)
     return os.fdopen(descriptor, mode)
@@ -80,7 +83,10 @@ def validate_config(config):
     if not isinstance(patterns, list) or not all(isinstance(p, str) for p in patterns):
         raise ValueError("exclude must be a list of globs")
     paths = [Path(r).absolute() for r in roots]
-    if any(p.is_symlink() or not p.is_dir() for p in paths):
+    if any(
+        p.is_symlink() or not p.is_dir() or is_reparse_point(p.lstat())
+        for p in paths
+    ):
         raise ValueError("roots must be existing nonsymlink directories")
     paths = [p.resolve() for p in paths]
     for index, root in enumerate(paths):
@@ -203,6 +209,8 @@ def inventory(
                                     "_signature": None,
                                 }
                             )
+                            continue
+                        if is_reparse_point(info):
                             continue
                         if stat.S_ISDIR(info.st_mode):
                             pending.append(Path(entry.path))

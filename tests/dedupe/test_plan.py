@@ -168,3 +168,25 @@ def test_duplicate_identity_or_conflicting_digest_rejected():
     b["sha256"] = "c" * 64
     with pytest.raises(ValueError):
         make_plan(groups(row("A", "a"), b), {})
+
+
+@pytest.mark.parametrize("separator", ["\r", "\n", "\u2028", "\u2029", "\x85"])
+def test_rendered_commands_with_line_separators_are_withheld(separator):
+    plan = make_plan(groups(row("A", "a"), row("B", "b" + separator + "copy")), {})
+    text = render_markdown(plan)
+    commands = [line[4:] for line in text.split("\n") if line.startswith("    ")]
+    assert commands == []
+    assert "Verification command withheld" in text
+    assert separator in plan["groups"][0]["candidates"][0]["verification_command"]
+
+
+@pytest.mark.parametrize("name", ["b space", "b'quote", "b\u00e9"])
+def test_rendered_commands_preserve_arguments(name):
+    import shlex
+
+    plan = make_plan(groups(row("A", "a"), row("B", name)), {})
+    text = render_markdown(plan)
+    command = "\n".join(
+        line[4:] for line in text.split("\n") if line.startswith("    ")
+    )
+    assert shlex.split(command) == ["sha256sum", "--", "${ROOT_1}/a", "${ROOT_2}/" + name]
