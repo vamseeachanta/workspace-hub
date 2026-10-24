@@ -24,9 +24,9 @@ def npm(prefix, tool, version='fixture-version'):
     package = {'claude': '@anthropic-ai/claude-code', 'codex': '@openai/codex'}[tool]
     root = prefix / 'lib/node_modules' / package
     root.mkdir(parents=True)
-    (root / 'package.json').write_text(json.dumps({'name': package, 'version': version}))
+    (root / 'package.json').write_text(json.dumps({'name': package, 'version': version}), encoding='utf-8', newline='\n')
     target = root / 'launcher'
-    target.write_text('#!/bin/sh\nexit 99\n')
+    target.write_text('#!/bin/sh\nexit 99\n', encoding='utf-8', newline='\n')
     target.chmod(0o755)
     (prefix / 'bin').mkdir(exist_ok=True)
     launcher = prefix / 'bin' / tool
@@ -96,7 +96,7 @@ def test_snap_wrappers_not_grouped_as_shared_snap_runner(planner, tmp_path):
     home, system = layout(tmp_path)
     snap_runner = system / 'usr/bin/snap'
     snap_runner.parent.mkdir(parents=True)
-    snap_runner.write_text('never run')
+    snap_runner.write_text('never run', encoding='utf-8', newline='\n')
     snap_runner.chmod(0o755)
     for tool in ('claude', 'codex'):
         wrapper = system / 'snap/bin' / tool
@@ -104,7 +104,7 @@ def test_snap_wrappers_not_grouped_as_shared_snap_runner(planner, tmp_path):
         wrapper.symlink_to(snap_runner)
         meta = system / 'snap' / tool / 'current/meta/snap.yaml'
         meta.parent.mkdir(parents=True)
-        meta.write_text(f'name: {tool}\nversion: "snap-fixture"\n')
+        meta.write_text(f'name: {tool}\nversion: "snap-fixture"\n', encoding='utf-8', newline='\n')
         npm(home / '.npm-global', tool)
     text = planner.render(inventory(planner, home, system, str(wrapper.parent)), home)
     assert text.count('snap-fixture') == 2
@@ -117,7 +117,7 @@ def test_invalid_metadata_is_unknown(planner, tmp_path, payload):
     home, system = layout(tmp_path)
     executable = npm(home / '.npm-global', 'codex')
     metadata = executable.resolve().parent / 'package.json'
-    metadata.write_text(payload)
+    metadata.write_text(payload, encoding='utf-8', newline='\n')
     rows = inventory(planner, home, system)
     assert rows[0].version == 'UNKNOWN'
     assert rows[0].prefix is None
@@ -129,7 +129,7 @@ def test_unknown_copy_not_removed(planner, tmp_path):
     npm(home / '.npm-global', 'codex')
     unknown = home / 'bin/codex'
     unknown.parent.mkdir()
-    unknown.write_text('#!/bin/sh\nexit 99\n')
+    unknown.write_text('#!/bin/sh\nexit 99\n', encoding='utf-8', newline='\n')
     unknown.chmod(0o755)
     text = planner.render(inventory(planner, home, system, str(unknown.parent)), home)
     assert 'MANUAL REVIEW' in text
@@ -160,13 +160,17 @@ def test_no_execution_network_or_writes(planner, tmp_path, monkeypatch, capsys, 
     original_open = builtins.open
     original_io_open = io.open
 
-    def read_only(file, mode='r', *args, **kwargs):
+    def read_only(file, mode='r', buffering=-1, encoding='utf-8',
+                  errors=None, newline=None, **kwargs):
         assert not any(flag in mode for flag in 'wax+')
-        return original_open(file, mode, *args, **kwargs)
+        return original_open(file, mode, buffering, encoding=None if 'b' in mode else encoding,
+                             errors=errors, newline=newline, **kwargs)
 
-    def io_read_only(file, mode='r', *args, **kwargs):
+    def io_read_only(file, mode='r', buffering=-1, encoding='utf-8',
+                     errors=None, newline=None, **kwargs):
         assert not any(flag in mode for flag in 'wax+')
-        return original_io_open(file, mode, *args, **kwargs)
+        return original_io_open(file, mode, buffering, encoding=None if 'b' in mode else encoding,
+                                errors=errors, newline=newline, **kwargs)
 
     monkeypatch.setattr(builtins, 'open', read_only)
     monkeypatch.setattr(io, 'open', io_read_only)
@@ -194,7 +198,7 @@ def test_non_executable_and_broken_link_not_path_winners(planner, tmp_path):
     home, system = layout(tmp_path)
     folder = home / 'bin'
     folder.mkdir()
-    (folder / 'codex').write_text('not executable')
+    (folder / 'codex').write_text('not executable', encoding='utf-8', newline='\n')
     (folder / 'claude').symlink_to(folder / 'absent')
     rows = inventory(planner, home, system, str(folder))
     assert all(row.winner is None for row in rows)
@@ -219,7 +223,7 @@ def test_regular_launcher_is_independent_of_adjacent_package(planner, tmp_path):
     home, system = layout(tmp_path)
     executable = npm(home / '.npm-global', 'claude')
     executable.unlink()
-    executable.write_text('#!/bin/sh\nexit 99\n')
+    executable.write_text('#!/bin/sh\nexit 99\n', encoding='utf-8', newline='\n')
     executable.chmod(0o755)
     rows = inventory(planner, home, system, str(executable.parent))
     assert len(rows) == 2
@@ -323,7 +327,7 @@ def snap(system, tool='codex'):
     root = system / 'snap' / tool / 'current'
     metadata = root / 'meta/snap.yaml'
     metadata.parent.mkdir(parents=True)
-    metadata.write_text(f'name: {tool}\nversion: snap-fixture\n')
+    metadata.write_text(f'name: {tool}\nversion: snap-fixture\n', encoding='utf-8', newline='\n')
     return root
 
 
@@ -346,7 +350,7 @@ def test_snap_alias_keeps_snap_identity(planner, tmp_path):
     root = snap(system)
     runner = system / 'usr/bin/snap'
     runner.parent.mkdir(parents=True)
-    runner.write_text('never run')
+    runner.write_text('never run', encoding='utf-8', newline='\n')
     runner.chmod(0o755)
     wrapper = system / 'snap/bin/codex'
     wrapper.parent.mkdir(parents=True)
@@ -364,12 +368,87 @@ def test_snap_alias_keeps_snap_identity(planner, tmp_path):
 def test_unknown_snap_metadata_remains_visible(planner, tmp_path):
     home, system = layout(tmp_path)
     root = snap(system)
-    (root / 'meta/snap.yaml').write_text('name: unexpected\nversion: fixture\n')
+    (root / 'meta/snap.yaml').write_text('name: unexpected\nversion: fixture\n', encoding='utf-8', newline='\n')
     rows = inventory(planner, home, system)
     assert len(rows) == 1
     assert rows[0].version == 'UNKNOWN'
     assert rows[0].snap_name is None
     assert 'sudo snap remove' not in planner.render(rows, home)
+
+
+@pytest.mark.parametrize('file_alias', [False, True])
+def test_snap_directory_alias_keeps_wrapper_identity(planner, tmp_path, file_alias):
+    """Directory alias -> tool wrapper -> shared runner is one package."""
+    home, system = layout(tmp_path)
+    root = snap(system)
+    runner = system / 'usr/bin/snap'
+    runner.parent.mkdir(parents=True)
+    runner.write_text('never run', encoding='utf-8', newline='\n')
+    runner.chmod(0o755)
+    wrapper = system / 'snap/bin/codex'
+    wrapper.parent.mkdir(parents=True)
+    wrapper.symlink_to(runner)
+    directory = home / 'bin'
+    directory.symlink_to(wrapper.parent, target_is_directory=True)
+    alias = directory / 'codex'
+    if file_alias:
+        alias = home / '.local/bin/codex'
+        alias.parent.mkdir(parents=True)
+        alias.symlink_to(directory / 'codex')
+    rows = inventory(planner, home, system, str(alias.parent))
+    assert len(rows) == 1
+    assert rows[0].identity == root
+    assert rows[0].winner == alias
+    assert {alias, directory / 'codex', wrapper} <= set(rows[0].paths)
+    checks = planner.report(rows, home)['tools']['codex']['checks']
+    assert checks['bounded_uniqueness'] == 'PASS'
+
+
+@pytest.mark.parametrize('output_format', ['text', 'json'])
+@pytest.mark.parametrize('launcher', [False, True])
+def test_invalid_utf8_snap_metadata_is_unknown(
+        planner, tmp_path, capsys, output_format, launcher):
+    """Unreadable metadata retains the package, without authorizing removal."""
+    home, system = layout(tmp_path)
+    npm(home / '.npm-global', 'codex')
+    root = snap(system)
+    (root / 'meta/snap.yaml').write_bytes(b'name: codex\nversion: \xff\n')
+    if launcher:
+        wrapper = system / 'snap/bin/codex'
+        wrapper.parent.mkdir(parents=True)
+        wrapper.write_text('never run', encoding='utf-8', newline='\n')
+        wrapper.chmod(0o755)
+    rows = inventory(planner, home, system)
+    unknown = next(row for row in rows if row.identity == root)
+    assert unknown.version == 'UNKNOWN'
+    assert unknown.snap_name is None
+    assert 'sudo snap remove' not in planner.render(rows, home)
+    planner.main(['--home', str(home), '--system-root', str(system), '--path', '',
+                  '--format', output_format])
+    output = capsys.readouterr().out
+    if output_format == 'text':
+        assert 'UNKNOWN' in output
+        assert 'sudo snap remove' not in output
+        assert 'MANUAL REVIEW codex:' in output
+    else:
+        codex = json.loads(output)['tools']['codex']
+        assert codex['installation_count'] == 2
+        assert codex['checks']['bounded_uniqueness'] == 'FAIL'
+        assert any(row['metadata_version'] == 'UNKNOWN' for row in codex['installations'])
+
+
+def test_report_paths_use_forward_slashes(planner):
+    from pathlib import PureWindowsPath
+
+    identity = PureWindowsPath('synthetic/package')
+    command = identity / 'bin/codex'
+    row = planner.Installation('codex', 'unknown', 'UNKNOWN', identity,
+                               paths=[command], winner=command)
+    result = planner.report([row], Path('synthetic'))['tools']['codex']['installations'][0]
+    assert result['identity'] == 'synthetic/package'
+    assert result['paths'] == ['synthetic/package/bin/codex']
+    assert result['path_winner'] == 'synthetic/package/bin/codex'
+    assert planner.q(command) == 'synthetic/package/bin/codex'
 
 
 def test_report_is_conservative_for_single_user_install(planner, tmp_path):
@@ -419,7 +498,7 @@ def test_report_incomplete_evidence_is_not_evaluated(planner, tmp_path, state):
     if state != 'missing':
         executable = npm(home / '.npm-global', 'codex')
         if state == 'unknown':
-            (executable.resolve().parent / 'package.json').write_text('{}')
+            (executable.resolve().parent / 'package.json').write_text('{}', encoding='utf-8', newline='\n')
     rows = inventory(planner, home, system)
     checks = planner.report(rows, home)['tools']['codex']['checks']
     assert checks['supplied_path'] == 'NOT_EVALUATED'
@@ -453,7 +532,7 @@ def test_snap_aliases_do_not_merge_independent_runner_copy(planner, tmp_path):
     snap(system)
     executable = home / 'bin/codex'
     executable.parent.mkdir()
-    executable.write_text('independent binary')
+    executable.write_text('independent binary', encoding='utf-8', newline='\n')
     rows = inventory(planner, home, system)
     assert len(rows) == 2
     assert planner.report(rows, home)['tools']['codex']['checks']['bounded_uniqueness'] == 'FAIL'
@@ -490,7 +569,7 @@ def test_documented_report_matches_hand_counted_example(planner, tmp_path):
     executable = npm(home / '.npm-global', 'codex', 'user-fixture')
     snap(system)
     guide = SCRIPT.parents[2] / 'docs/ops/cli-consolidation.md'
-    expected = json.loads(guide.read_text().split('```json\n')[1].split('```')[0])
+    expected = json.loads(guide.read_text(encoding='utf-8').split('```json\n')[1].split('```')[0])
     result = planner.report(inventory(planner, home, system, str(executable.parent)), home)
     codex = result['tools']['codex']
     assert {key: codex[key] for key in expected} == expected

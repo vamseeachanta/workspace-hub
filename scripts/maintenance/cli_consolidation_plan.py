@@ -12,7 +12,7 @@ import os
 import re
 import shlex
 from dataclasses import dataclass, field
-from pathlib import Path
+from pathlib import Path, PurePath
 
 PACKAGES = {'claude': '@anthropic-ai/claude-code', 'codex': '@openai/codex'}
 
@@ -53,7 +53,7 @@ def snap_metadata(root: Path, tool: str) -> tuple[str, str | None]:
     """Read simple scalar fields only; unsupported YAML remains unknown."""
     try:
         text = (root / 'meta/snap.yaml').read_text(encoding='utf-8')
-    except OSError:
+    except (OSError, UnicodeError):
         return 'UNKNOWN', None
     fields = {}
     for line in text.splitlines():
@@ -75,13 +75,16 @@ def prefixes_for(home: Path, system: Path, extra: list[Path]) -> list[Path]:
 
 
 def through_launcher(path: Path, launcher: Path) -> bool:
-    """Follow links lexically so the shared Snap runner does not erase identity."""
+    """Resolve parent links (including junctions), preserving the final wrapper."""
     seen = set()
     path = Path(os.path.abspath(path))
-    launcher = Path(os.path.abspath(launcher))
+    launcher = resolved(launcher.parent) / launcher.name
     while path not in seen:
+        path = resolved(path.parent) / path.name
         if path == launcher:
             return True
+        if path in seen:
+            return False
         seen.add(path)
         try:
             if not path.is_symlink():
@@ -182,7 +185,7 @@ def inventory(home: Path, path_value: str, system: Path = Path('/'),
 
 
 def q(value) -> str:
-    return shlex.quote(str(value))
+    return shlex.quote(value.as_posix() if isinstance(value, PurePath) else str(value))
 
 
 def preferred_installation(copies: list[Installation], home: Path,
@@ -229,13 +232,13 @@ def report(rows: list[Installation], home: Path, extra_prefixes=()) -> dict:
         }
         tools[tool] = {
             'installation_count': len(copies),
-            'preferred_identity': str(keep.identity) if keep else None,
+            'preferred_identity': keep.identity.as_posix() if keep else None,
             'checks': checks,
             'installations': [
-                {'identity': str(row.identity), 'kind': row.kind,
+                {'identity': row.identity.as_posix(), 'kind': row.kind,
                  'metadata_version': row.version,
-                 'paths': [str(path) for path in row.paths],
-                 'path_winner': str(row.winner) if row.winner else None}
+                 'paths': [path.as_posix() for path in row.paths],
+                 'path_winner': row.winner.as_posix() if row.winner else None}
                 for row in copies
             ],
         }
@@ -258,7 +261,7 @@ def render(rows: list[Installation], home: Path, extra_prefixes=()) -> str:
         copies = [r for r in rows if r.tool == tool]
         keep, destination = preferred_installation(copies, home, extra_prefixes)
         if keep:
-            lines.append(f'KEEP {tool}: {keep.paths[0]}')
+            lines.append(f'KEEP {tool}: {keep.paths[0].as_posix()}')
         else:
             lines.append(f'MISSING {tool}: metadata-matched preferred user npm installation')
         lines += [(f'INSTALL/UPDATE (maintainer review): npm install --global '
