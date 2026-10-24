@@ -35,7 +35,7 @@ def receipt():
             "selected": "python.exe", "selected_exists": True, "version": "3.12.0",
             "preferred_encoding": "UTF-8", "venv_cfg_present": None,
         },
-        "git": {"path": "git.exe", "version": "git version synthetic"},
+        "git": {"path": "git.exe", "version": "git version 2.47.0"},
         "gh": {"path": "gh.exe", "version": "gh version synthetic", "auth_ok": True,
                "auth_status_ok": False},
         "findings": [{"id": "GH_STALE_STORED_ACCOUNT", "severity": "info", "message": "synthetic"}],
@@ -128,6 +128,37 @@ def test_irrelevant_missing_capability_does_not_block():
     assert evaluate(data)["status"] == "not-ready"
 
 
+@pytest.mark.parametrize("version", [
+    "fatal: synthetic probe failure", "error: synthetic probe failure",
+    "git version synthetic", "git version 2", "git version 2.47.0\nfatal: synthetic",
+    "git version 2.47.0 failed", "prefix git version 2.47.0", "", None, 247,
+])
+def test_failed_git_version_cannot_report_ready(tmp_path, version):
+    data = receipt()
+    data["git"]["version"] = version
+    result = evaluate(data, required=("git",))
+    assert result["status"] == "not-ready"
+    assert result["failures"] == ["GIT_UNVERIFIED"]
+    path = tmp_path / "receipt.json"
+    path.write_text(json.dumps(data), encoding="utf-8", newline="\n")
+    response = run_cli(path, "--as-of", "2026-10-22T12:05:00Z",
+                       "--max-age-seconds", "600", "--require", "git")
+    assert response.returncode == 3
+    assert json.loads(response.stdout)["failures"] == ["GIT_UNVERIFIED"]
+    assert "synthetic" not in response.stdout
+
+
+@pytest.mark.parametrize("version", [
+    "git version 2.47.0", "git version 2.47.0.windows.1",
+    "git version 2.39.3 (Apple Git-146)", "git version 2.48.0-rc0",
+    "git version 2.47.GIT", "git version 2.47.0.123.gabcdef",
+])
+def test_successful_git_version_forms_report_ready(version):
+    data = receipt()
+    data["git"]["version"] = version
+    assert evaluate(data, required=("git",))["status"] == "ready"
+
+
 def test_error_findings_block_without_echoing_probe_text():
     data = receipt()
     data["findings"].append({"id": "SYNTHETIC", "severity": "error", "message": "private diagnostic"})
@@ -165,7 +196,7 @@ def run_cli(path, *args):
 
 def test_cli_uses_explicit_requirements_and_emits_only_summary(tmp_path):
     path = tmp_path / "receipt.json"
-    path.write_text(json.dumps(receipt()), encoding="utf-8")
+    path.write_text(json.dumps(receipt()), encoding="utf-8", newline="\n")
     r = run_cli(path, "--as-of", "2026-10-22T12:05:00Z", "--max-age-seconds", "600",
                 "--require", "python", "--require", "gh")
     assert r.returncode == 0, r.stderr
@@ -184,6 +215,15 @@ def test_cli_invalid_input_is_redacted_and_has_no_traceback(tmp_path, raw):
     assert not r.stdout and "Traceback" not in r.stderr
 
 
+def test_cli_accepts_collector_utf8_bom(tmp_path):
+    path = tmp_path / "receipt.json"
+    path.write_text("\ufeff" + json.dumps(receipt()), encoding="utf-8", newline="\n")
+    result = run_cli(path, "--as-of", "2026-10-22T12:05:00Z",
+                     "--max-age-seconds", "600", "--require", "git")
+    assert result.returncode == 0, result.stderr
+    assert json.loads(result.stdout)["status"] == "ready"
+
+
 def test_cli_needs_a_lifetime_and_capability(tmp_path):
     r = run_cli(tmp_path / "receipt.json")
     assert r.returncode == 2
@@ -198,7 +238,7 @@ def test_documented_receipt_example(tmp_path):
     guide = SCRIPT.parents[2] / "docs/standards/review-evidence-workflow.md"
     raw = guide.read_text(encoding="utf-8").split("```json\n", 1)[1].split("\n```", 1)[0]
     path = tmp_path / "receipt.json"
-    path.write_text(raw, encoding="utf-8")
+    path.write_text(raw, encoding="utf-8", newline="\n")
     for time, exit_code, status in [("12:05:00", 0, "ready"), ("12:10:00", 3, "not-ready")]:
         r = run_cli(path, "--as-of", f"2026-10-22T{time}Z", "--max-age-seconds", "600",
                     "--require", "python", "--require", "gh")

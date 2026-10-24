@@ -88,7 +88,16 @@ def evaluate(
             if not isinstance(encoding, str) or encoding.lower().replace("-", "") != "utf8":
                 failures.append("PYTHON_ENCODING_UNVERIFIED")
         else:
-            if not _nonempty(evidence.get("path")) or not _nonempty(evidence.get("version")):
+            version = evidence.get("version")
+            version_valid = _nonempty(version)
+            if capability == "git":
+                # The /1 collector retains diagnostics even when --version fails.
+                # Require a complete version response, not merely nonempty output.
+                version_valid = isinstance(version, str) and re.fullmatch(
+                    r"git version [0-9]+\.[0-9]+(?:\.[0-9A-Za-z]+)*"
+                    r"(?:-[0-9A-Za-z.]+)?(?: \(Apple Git-[0-9]+\))?", version
+                ) is not None
+            if not _nonempty(evidence.get("path")) or not version_valid:
                 failures.append(f"{capability.upper()}_UNVERIFIED")
             # The producer's authenticated API result is authoritative here; a
             # failed stored-account status probe alone does not reject active auth.
@@ -127,7 +136,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--as-of", help="comparison time with offset (default: current UTC)")
     args = parser.parse_args(argv)
     try:
-        receipt = json.loads(args.receipt.read_text(encoding="utf-8-sig"),
+        receipt = json.loads(args.receipt.read_text(encoding="utf-8").removeprefix("\ufeff"),
                              object_pairs_hook=_unique_object, parse_constant=_invalid_constant)
         result = evaluate(receipt, as_of=args.as_of or dt.datetime.now(dt.UTC).isoformat(),
                           max_age_seconds=args.max_age_seconds, required=args.require)
