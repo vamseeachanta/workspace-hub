@@ -67,6 +67,13 @@ codex_version_guard_check() {
   fi
 
   if [[ -n "$ceiling" ]] && ! _codex_lt "$base" "$ceiling"; then
+    # #3442 (2026-07-10): one 0.144.1 commit/prompt timeout was reported. It
+    # does not establish a failing version band or prompt-size threshold. Keep
+    # configured deny bands authoritative; otherwise monitor the diagnostic.
+    if [[ "$base" == "0.144.1" ]]; then
+      echo "OK ($ver — stdin regression reported in #3442; scope unverified; runtime signature monitoring required)"
+      return 0
+    fi
     echo "OK ($ver >= $ceiling — past whitelisted regression band)"
     return 0
   fi

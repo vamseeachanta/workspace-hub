@@ -221,21 +221,25 @@ EOF
   # valid structured-JSON review in ~135s (well under the 300s default).
   run_codex_exec() {
     local prompt_text="$1"
-    if command -v timeout >/dev/null 2>&1; then
-      timeout "$CODEX_TIMEOUT_SECONDS" "$CODEX_BIN" exec "$prompt_text" \
-        --skip-git-repo-check \
-        --output-schema "$schema_file" \
-        --output-last-message "$raw_file" </dev/null >/dev/null 2>"$err_file"
-    elif command -v perl >/dev/null 2>&1; then
-      perl -e 'alarm shift; exec @ARGV' "$CODEX_TIMEOUT_SECONDS" "$CODEX_BIN" exec "$prompt_text" \
-        --skip-git-repo-check \
-        --output-schema "$schema_file" \
-        --output-last-message "$raw_file" </dev/null >/dev/null 2>"$err_file"
-    else
+    # #3442: inspect stderr while exec runs; a post-timeout grep still consumes
+    # the entire deadline. The supervisor also isolates stdin and stops children.
+    python3 "${SCRIPT_DIR}/codex-exec-watch.py" \
+      --timeout "$CODEX_TIMEOUT_SECONDS" --stderr "$err_file" -- \
       "$CODEX_BIN" exec "$prompt_text" \
-        --skip-git-repo-check \
-        --output-schema "$schema_file" \
-        --output-last-message "$raw_file" </dev/null >/dev/null 2>"$err_file"
+      --skip-git-repo-check \
+      --output-schema "$schema_file" \
+      --output-last-message "$raw_file" </dev/null
+  }
+
+  stop_on_stdin_regression() {
+    # #3442: exit 7 is already mapped to unavailable by cross-review.sh. Inspect
+    # the diagnostic too: an unrelated CLI exit 7 must retain its usual handling.
+    if [[ "$exec_exit" -eq 7 ]] && grep -Eq \
+      $'^Reading additional input from stdin(\\.\\.\\.)?\r?$' "$err_file"; then
+      echo "# CODEX_STDIN_REGRESSION"
+      echo "# UNAVAILABLE: Codex exec emitted the stdin regression signature (#3442)."
+      echo "# No compact retry; compatibility scope remains unverified."
+      exit 7
     fi
   }
 
@@ -288,6 +292,7 @@ ${compact_text}
 
   exec_exit=0
   run_codex_exec "$prompt_for_run" || exec_exit=$?
+  stop_on_stdin_regression
 
   # One compact retry when full payload returns no usable output.
   if [[ "$exec_exit" -ne 0 || ! -s "$raw_file" ]]; then
@@ -304,6 +309,7 @@ ${compact_text}
     : > "$raw_file"
     exec_exit=0
     run_codex_exec "$COMPACT_PROMPT" || exec_exit=$?
+    stop_on_stdin_regression
   fi
 
   if [[ "$exec_exit" -ne 0 ]]; then
