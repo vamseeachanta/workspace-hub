@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Compliance alert interpretation</title>
+<style>
+body { font: 1rem/1.6 system-ui, sans-serif; max-width: 58rem; margin: 2rem auto; padding: 1rem; }
+table { border-collapse: collapse; width: 100%; }
+th, td { text-align: left; border: 1px solid #aaa; padding: .5rem; }
+code { background: #eee; padding: .1rem .3rem; }
+</style>
+<main>
+<h1>Compliance alert interpretation</h1>
+<p>The daily alert uses the dashboard's validated top-level JSON report. An empty
+reviewable population produces no alert. Missing or inconsistent evidence exits
+with an error and does not publish a compliance percentage as an alert.</p>
+<h2>Revision history</h2>
+<table>
+<tr><th>Revision</th><th>Date</th><th>Change and reason</th></tr>
+<tr><td>Initial</td><td>2026-10-22</td><td>Document empty-window handling and structured parsing to prevent false critical alerts.</td></tr>
+</table>
+<p>Table 1. Document revision history.</p>
+<h2>Inputs and method</h2>
+<p>The dashboard supplies total, skipped, reviewable, reviewed and unreviewed
+commit counts, the integer compliance rate, the configured threshold and the
+verdict. These inputs describe review monitoring; they are not engineering
+acceptance limits.</p>
+<pre>reviewable = total - skipped = reviewed + unreviewed
+rate = floor(100 × reviewed / reviewable), when reviewable &gt; 0
+verdict = FAIL when reviewable &gt; 0 and rate &lt; threshold; otherwise PASS</pre>
+<p>Source for the count partition, percentage scale, integer rounding, empty-window
+sentinel rate of zero and verdict equation:
+<a href="../../scripts/enforcement/compliance-dashboard.sh">compliance-dashboard.sh</a>,
+Main Analysis, Calculate rates and Determine verdict. The configured dashboard
+threshold is used; the cron wrapper does not impose a second passing threshold.</p>
+<p>The report parser checks integer types, nonnegative counts, count reconciliation,
+percentage bounds, the calculated rate, the verdict and the dashboard exit status.
+Nested stage-drift verdicts do not replace the top-level verdict. An empty window
+retains the dashboard's zero sentinel for compatibility; zero is not a measured
+compliance failure when the denominator is empty.</p>
+<h2>Worked example</h2>
+<p>Inputs: total = 30, skipped = 28, reviewed = 1, unreviewed = 1,
+threshold = 80%. These counts are synthetic. Independent hand calculation:
+reviewable = 30 − 28 = 2; rate = floor(100 × 1 / 2) = 50%.
+The rate is below the threshold, so the verdict is FAIL and the alert severity
+is medium. The total commit count is not the denominator.</p>
+<p>For total = skipped = reviewed = unreviewed = 0, reviewable = 0.
+Division is not performed, the verdict is PASS and no alert is published.
+The same disposition applies when all commits are skipped.</p>
+<p>Source for the default threshold and severity boundaries:
+<a href="../../scripts/enforcement/compliance-cron.sh">compliance-cron.sh</a>,
+Configuration and Threshold evaluation; the compliance alert issue's Thresholds
+table dated 2026-10-12 specifies critical below 30%, high from 30% to below 50%,
+medium from 50% to below 80%, and pass at or above 80%.
+These existing policy boundaries are preserved.</p>
+<h2>Verification and limits</h2>
+<p><a href="../../tests/enforcement/test_compliance_cron.py">Cron regression tests</a>
+exercise empty and skipped-only windows, severity boundaries, a configured
+threshold, nested verdicts, invalid reports, exit-status disagreement and the
+worked example. GitHub calls are stubbed; no production alert is posted by tests.</p>
+<p>Existing commit classification and review-evidence heuristics are unchanged.
+Historical alerts are not closed or rewritten automatically. Invalid reports
+require inspection of the daily log; no independent monitoring-error notification
+is introduced. A no-alert result does not establish that historical commits were
+reviewed. Weekly aggregation remains outside this correction.</p>
+</main>
+</html>
