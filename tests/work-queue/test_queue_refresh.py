@@ -196,7 +196,8 @@ class TestEdgeCases:
 
     def test_no_pipe_characters_unescaped_in_titles(self, queue_output: str):
         # Issue titles containing special chars should be safe in markdown tables
-        assert "Review solver queue bugs" in queue_output
+        assert "Review solver queue bugs" not in queue_output
+        assert "| #1830 | [withheld; see issue] |" in queue_output
 
 
 # ── Staleness detection tests ──────────────────────────────────────────

@@ -131,3 +131,15 @@ def test_retriage_handles_first_run(tmp_path):
     assert r.returncode == 0, r.stderr
     body = report.read_text()
     assert "first run" in body.lower() or "baseline" in body.lower()
+
+
+def test_new_candidate_prose_is_not_published(tmp_path):
+    """Hand calculation: one new reference produces one row with a fixed marker."""
+    text = "synthetic unpublished prose <tag> | injected row"
+    result, report = _run(tmp_path, None, {
+        "wh#1": {"state": "open", "new": True, "title": text},
+    })
+    assert result.returncode == 0
+    body = report.read_text()
+    assert text not in body
+    assert "| wh#1 | [withheld; see issue] | opened recently |" in body
