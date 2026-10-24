@@ -48,6 +48,8 @@ def test_active_workflow_references_keep_authority_and_review_separate(relative)
         "HARD STOP — USER APPROVAL REQUIRED",
         "approval must come AFTER seeing the plan",
         "After user approval:",
+        "The user must approve",
+        "user acknowledgment",
         "brief plan, still requires approval",
         "user approval at status:plan-approved",
         "enforces `status:plan-approved` before writes",

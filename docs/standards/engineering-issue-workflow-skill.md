@@ -206,7 +206,7 @@ Issues WITHOUT engineering-critical labels:
 
 **What happened:** 120+ engineering commits in 14 days, 542 commits since Mar 24, only 1 review artifact. The existing enforcement scripts (cross-review gate, review router, pre-push hook) all default to WARNING mode. Nobody blocked anything.
 
-**How to avoid:** This skill is the new baseline. The plan must be presented BEFORE implementation. The user must approve. If you're unsure whether an issue is engineering-critical, ASK — don't assume.
+**How to avoid:** Present a proportionate plan before implementation, resolve review findings and verify existing task authority. If missing context changes the engineering-critical classification or the next action, ask before proceeding.
 
 ### User Says "Just Implement It"
 
@@ -220,7 +220,7 @@ authority changes the next step.
 
 **What happened:** Agent decides a change is simple and skips the plan. Often the "simple" change was actually part of a larger system and broke something.
 
-**How to handle:** Even T1 trivial changes need at least a one-line plan statement and user acknowledgment. No exceptions.
+**How to handle:** Even T1 trivial changes require at least a one-line plan statement, proportionate review and verification of existing task authority before implementation. No separate user plan approval is required.
 
 ### Digitalmodel Is a Separate Git Repo
 
