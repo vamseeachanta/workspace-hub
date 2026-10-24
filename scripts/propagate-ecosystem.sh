@@ -65,7 +65,9 @@ create_directory_link() {
     if [[ "$PLATFORM" == "windows" ]]; then
         local wt; wt="$(to_win_path "$target")"
         local wl; wl="$(to_win_path "$link_name")"
-        cmd //c "mklink /J $wl $wt" > /dev/null 2>&1 || return $?
+        # MSYS2 Filesystem Paths, Automatic Unix -> Windows Path Conversion
+        # (retrieved 2026-10-22): exclude the switch, not filesystem arguments.
+        MSYS2_ARG_CONV_EXCL='/c' cmd /c "mklink /J \"$wl\" \"$wt\"" > /dev/null 2>&1 || return $?
         # Write marker as sibling file (not inside junction, which resolves to target)
         echo "ecosystem-link" > "$(dirname "$link_name")/.$(basename "$link_name")-link-marker" 2>/dev/null || true
     else
