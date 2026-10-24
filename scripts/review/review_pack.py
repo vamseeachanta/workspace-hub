@@ -1,6 +1,6 @@
 """Build evidence cards, read back human decisions and check issue eligibility.
 
-Requires jsonschema. The schema and the semantic checks together define v1.
+Requires jsonschema[format] and Pillow. The schema and the semantic checks together define v1.
 This tool neither runs solvers nor authenticates reviewers or publication rights.
 """
 
@@ -14,10 +14,14 @@ import html
 import json
 import math
 import sys
+import warnings
 from datetime import datetime
+from fractions import Fraction
+from io import BytesIO
 from pathlib import Path
 
 from jsonschema import Draft202012Validator, FormatChecker, ValidationError
+from PIL import Image, UnidentifiedImageError
 
 SCHEMA_PATH = Path(__file__).resolve().parents[2] / "config/schemas/human-review-pack-v1.schema.json"
 INDEPENDENT = {"closed-form", "measured", "cross-solver", "conservation"}
@@ -51,6 +55,8 @@ def _finite(value):
 
 
 def _validate(value, export=False):
+    if "date-time" not in FormatChecker.checkers:
+        raise ValueError("date-time checker unavailable; install jsonschema[format]")
     _finite(value)
     schema = load_json(SCHEMA_PATH)
     if export:
@@ -67,17 +73,26 @@ def _time(value):
 
 
 def _image(data):
-    formats = {"data:image/png;base64,": b"\x89PNG\r\n\x1a\n",
-               "data:image/jpeg;base64,": b"\xff\xd8\xff"}
-    for prefix, signature in formats.items():
-        if data.startswith(prefix):
-            try:
-                raw = base64.b64decode(data[len(prefix):], validate=True)
-            except (ValueError, binascii.Error):
-                break
-            if raw.startswith(signature) and len(raw) > len(signature):
-                return
-    raise ValueError("evidence must be an embedded PNG or JPEG")
+    formats = {"data:image/png;base64,": "PNG", "data:image/jpeg;base64,": "JPEG"}
+    for prefix, expected_format in formats.items():
+        if not data.startswith(prefix):
+            continue
+        try:
+            raw = base64.b64decode(data[len(prefix):], validate=True)
+            with warnings.catch_warnings():
+                warnings.simplefilter("error")
+                with Image.open(BytesIO(raw)) as image:
+                    if image.format != expected_format:
+                        raise ValueError("image format mismatch")
+                    image.verify()
+                # Verification and decoding exercise different format checks.
+                with Image.open(BytesIO(raw)) as image:
+                    image.load()
+            return
+        except (ValueError, binascii.Error, OSError, SyntaxError,
+                UnidentifiedImageError, Warning):
+            break
+    raise ValueError("evidence must be a complete PNG or JPEG")
 
 
 def validate_pack(pack):
@@ -118,8 +133,8 @@ def check_verdict(check):
             or check["qualification"] != "qualified"
             or _time(check["fixed_at"]) >= _time(check["run_started_at"])):
         return "not_evaluated"
-    return ("not_implausible" if abs(check["observed"] - check["expected"])
-            <= check["tolerance"] else "implausible")
+    return ("not_implausible" if abs(Fraction(str(check["observed"])) - Fraction(str(check["expected"])))
+            <= Fraction(str(check["tolerance"])) else "implausible")
 
 
 def _card_record(card):
@@ -294,11 +309,13 @@ def main(argv=None):
         inputs = [args.pack]
         if args.command != "build":
             inputs.append(args.decisions)
-        if args.command != "gate" and args.output.resolve() in {p.resolve() for p in inputs}:
+        if args.command != "gate" and any(
+                args.output.resolve() == path.resolve()
+                or (args.output.exists() and args.output.samefile(path)) for path in inputs):
             raise ValueError("output may not overwrite an input")
         pack = load_json(args.pack)
         if args.command == "build":
-            args.output.write_text(render_pack(pack), encoding="utf-8")
+            args.output.write_text(render_pack(pack), encoding="utf-8", newline="\n")
         else:
             record = ingest_decisions(pack, load_json(args.decisions))
             if args.command == "gate":
@@ -306,7 +323,7 @@ def main(argv=None):
                                   "pack_digest": record["pack_digest"]}))
                 return 0 if record["issuable"] else 2
             args.output.write_text(json.dumps(record, indent=2, allow_nan=False) + '\n',
-                                   encoding="utf-8")
+                                   encoding="utf-8", newline="\n")
     except (ValueError, OSError, OverflowError):
         # Paths and payload values may be private; diagnostics remain categorical.
         print("Review pack refused: invalid input, evidence, decision or output", file=sys.stderr)

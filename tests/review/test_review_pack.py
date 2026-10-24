@@ -160,7 +160,7 @@ def test_pending_rejected_and_flagged_results_never_issue(pack):
 def test_digest_is_key_order_independent_and_rejects_duplicate_json_keys(pack, tmp_path):
     assert rp.pack_digest(pack) == rp.pack_digest(dict(reversed(list(pack.items()))))
     path = tmp_path / "duplicate.json"
-    path.write_text('{"schema":"one","schema":"two"}', encoding="utf-8")
+    path.write_text('{"schema":"one","schema":"two"}', encoding="utf-8", newline="\n")
     with pytest.raises(ValueError, match="duplicate"):
         rp.load_json(path)
 
@@ -168,17 +168,17 @@ def test_digest_is_key_order_independent_and_rejects_duplicate_json_keys(pack, t
 def test_cli_build_readback_and_gate(pack, tmp_path):
     script = Path(rp.__file__)
     source, decisions = tmp_path / "pack.json", tmp_path / "decisions.json"
-    source.write_text(json.dumps(pack), encoding="utf-8")
-    decisions.write_text(json.dumps(exported(pack)), encoding="utf-8")
+    source.write_text(json.dumps(pack), encoding="utf-8", newline="\n")
+    decisions.write_text(json.dumps(exported(pack)), encoding="utf-8", newline="\n")
     for args in [("build", str(source), str(tmp_path / "review.html")),
                  ("ingest", str(source), str(decisions), str(tmp_path / "record.json")),
                  ("gate", str(source), str(decisions))]:
         run = subprocess.run([sys.executable, str(script), *args],
-                             check=False, capture_output=True, text=True)
+                             check=False, capture_output=True, text=True, encoding="utf-8")
         assert run.returncode == 0, run.stderr
-    decisions.write_text(json.dumps(exported(pack, "pending")), encoding="utf-8")
+    decisions.write_text(json.dumps(exported(pack, "pending")), encoding="utf-8", newline="\n")
     run = subprocess.run([sys.executable, str(script), "gate", str(source), str(decisions)],
-                         check=False, capture_output=True, text=True)
+                         check=False, capture_output=True, text=True, encoding="utf-8")
     assert run.returncode == 2
 
 
@@ -295,7 +295,7 @@ process.stdin.on('end', async () => {
     run = subprocess.run(["node", "-e", harness],
                          input=json.dumps({"script": script, "data": data,
                                            "unavailable": storage_unavailable}),
-                         check=False, capture_output=True, text=True)
+                         check=False, capture_output=True, text=True, encoding="utf-8")
     assert run.returncode == 0, run.stderr
     record = rp.ingest_decisions(pack, json.loads(run.stdout))
     assert record["issuable"]
@@ -306,9 +306,85 @@ process.stdin.on('end', async () => {
 def test_cli_refuses_input_overwrite_and_preserves_input(pack, tmp_path):
     source = tmp_path / "pack.json"
     original = json.dumps(pack)
-    source.write_text(original, encoding="utf-8")
+    source.write_text(original, encoding="utf-8", newline="\n")
     run = subprocess.run([sys.executable, rp.__file__, "build", str(source), str(source)],
-                         check=False, capture_output=True, text=True)
+                         check=False, capture_output=True, text=True, encoding="utf-8")
     assert run.returncode == 1
     assert source.read_text(encoding="utf-8") == original
+    assert "Traceback" not in run.stderr
+
+
+@pytest.mark.parametrize("field", ["fixed_at", "run_started_at", "reviewed_at"])
+@pytest.mark.parametrize("timestamp", ["2026-10-22", "2026-10-22T10:00:00",
+                                      "invalid", "2026-02-30T10:00:00Z"])
+def test_invalid_timestamps_refused(pack, field, timestamp):
+    data = exported(pack)
+    if field == "reviewed_at":
+        data[field] = timestamp
+    else:
+        pack["cards"][0]["checks"][0][field] = timestamp
+        data = exported(pack)
+    with pytest.raises(ValueError):
+        rp.ingest_decisions(pack, data)
+
+
+def test_missing_datetime_checker_refused(pack, monkeypatch):
+    monkeypatch.delitem(rp.FormatChecker.checkers, "date-time", raising=False)
+    with pytest.raises(ValueError, match="date-time"):
+        rp.validate_pack(pack)
+
+
+def test_large_mixed_numbers_preserve_independent_difference(pack):
+    check = pack["cards"][0]["checks"][0]
+    # Independent integer arithmetic: 10000000000000001 - 10000000000000000 = 1.
+    check.update(expected=1e16, observed=10000000000000001, tolerance=0)
+    record = rp.ingest_decisions(pack, exported(pack))
+    assert record["cards"][0]["checks"][0]["verdict"] == "implausible"
+    assert not record["issuable"]
+    check["tolerance"] = 1
+    assert rp.ingest_decisions(pack, exported(pack))["issuable"]
+
+
+@pytest.mark.parametrize("image_format", ["PNG", "JPEG"])
+@pytest.mark.parametrize("damage", ["signature", "truncated", "corrupt", "valid"])
+def test_raster_structure_required(pack, image_format, damage):
+    import base64
+    from io import BytesIO
+
+    from PIL import Image
+
+    buffer = BytesIO()
+    Image.new("RGB", (8, 8), "white").save(buffer, format=image_format)
+    raw = buffer.getvalue()
+    if damage == "signature":
+        raw = (b"\x89PNG\r\n\x1a\n" if image_format == "PNG" else b"\xff\xd8\xff") + b"x"
+    elif damage == "truncated":
+        raw = raw[:-10]
+    elif damage == "corrupt":
+        raw = raw[:20] + bytes([raw[20] ^ 255]) + raw[21:]
+    mime = "png" if image_format == "PNG" else "jpeg"
+    pack["cards"][0]["evidence"][0]["data"] = (
+        f"data:image/{mime};base64," + base64.b64encode(raw).decode("ascii"))
+    if damage == "valid":
+        assert rp.ingest_decisions(pack, exported(pack))["issuable"]
+    else:
+        with pytest.raises(ValueError):
+            rp.ingest_decisions(pack, exported(pack))
+
+
+@pytest.mark.parametrize("command,input_index", [("build", 0), ("ingest", 0), ("ingest", 1)])
+def test_cli_refuses_hardlink_output(pack, tmp_path, command, input_index):
+    source, decisions = tmp_path / "pack.json", tmp_path / "decisions.json"
+    source.write_text(json.dumps(pack), encoding="utf-8", newline="\n")
+    decisions.write_text(json.dumps(exported(pack)), encoding="utf-8", newline="\n")
+    inputs = [source] if command == "build" else [source, decisions]
+    originals = [path.read_bytes() for path in inputs]
+    output = tmp_path / "output"
+    output.hardlink_to(inputs[input_index])
+    args = [command, *map(str, inputs), str(output)]
+    run = subprocess.run([sys.executable, rp.__file__, *args],
+                         check=False, capture_output=True, text=True, encoding="utf-8")
+    assert run.returncode == 1
+    assert [path.read_bytes() for path in inputs] == originals
+    assert output.read_bytes() == originals[input_index]
     assert "Traceback" not in run.stderr

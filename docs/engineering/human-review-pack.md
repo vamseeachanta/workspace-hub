@@ -10,11 +10,22 @@ pending; a preparer's recommendation never sets acceptance.
 | Revision | Date | Change and reason |
 | --- | --- | --- |
 | 1 | 2026-10-22 | Define the card interface, read-back and explicit gate so evidence and human decisions travel together. |
+| 2 | 2026-10-24 | Refuse unchecked timestamps, corrupt images and input aliases, and retain numeric precision so invalid evidence cannot qualify. |
 
 ## Contract and sources
 
 The authoritative structural interface is
 [`human-review-pack-v1.schema.json`](../../config/schemas/human-review-pack-v1.schema.json).
+The Python validator requires a registered RFC 3339 date-time checker and
+rejects timestamps without a date, time and UTC offset. Raster evidence must pass
+both structural verification and pixel decoding with Pillow; this establishes
+decodability, not the engineering validity of its contents. Numeric discrepancies
+are compared as exact rational values of the supplied decimal representations,
+preserving integer differences when integers and floating-point values are mixed.
+Precision already lost before input reaches the validator cannot be recovered.
+Existing output files are checked for input aliases, including hardlinks, before
+writing; concurrent filesystem changes during a write are outside this guard.
+
 The Python validator adds unique identity, finite numbers, image restrictions,
 timestamp comparisons and surface conditions. The schema's `export` definition
 describes browser decision exports; calculated record fields are outputs only.
@@ -126,7 +137,7 @@ screenshot. The answer is `not_implausible`, review focus `candidate`, acceptanc
 `pending` until the human decides. The method qualification reference names the
 hand calculation and boundary probes; it does not qualify a solver.
 
-With `jsonschema` available, use the following commands. `OUTPUT_DIR` must point
+With `jsonschema[format]` and `Pillow` available, use the following commands. `OUTPUT_DIR` must point
 to an authorized output folder outside the repository. The Python environment
 must already satisfy its dependencies, or be supplied through `uv run`.
 
