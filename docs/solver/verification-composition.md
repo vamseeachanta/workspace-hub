@@ -10,6 +10,7 @@ all content checks pass. It neither loads a solver nor authenticates execution.
 | Revision | Date | Change and reason |
 |---|---|---|
 | Initial | 2026-10-22 | Added bounded composition checks and negative cases to prevent sub-check promotion. |
+| 2 | 2026-10-24 | Preserved decimal evidence in content comparisons to prevent rounding from hiding changed coordinates or out-of-range results. |
 
 ## Basis and scope
 
@@ -46,7 +47,7 @@ lineage. Editing or reformatting the evidence requires a new digest and review.
 | Check | Required contract | Failure or unknown |
 |---|---|---|
 | `binding` | Requirements input SHA-256 equals the actual input digest and the evidence input digest; requirements evidence SHA-256 equals the actual evidence digest; evidence kinds agree exactly. | A stale digest or mixed kind fails; absent binding fields are not evaluated. |
-| `domain` | Nonempty expected and observed full-domain mappings agree recursively in canonical JSON. | Every changed, missing or extra field fails; an absent domain is not evaluated. |
+| `domain` | Nonempty expected and observed full-domain mappings agree recursively with numeric types preserved. | Every changed, missing or extra field fails; an absent domain is not evaluated. |
 | `settings` | Complete nonempty snapshots have unique, strictly increasing nonnegative integer events and source references. The result binds the latest snapshot strictly before its event, whose full settings agree with requirements. | A superseding modification or stale snapshot reference fails; absent history/applicable snapshot is not evaluated. |
 | `criterion` | Explicit result identifier, quantity and unit agree. Finite numeric value is inside the supplied inclusive minimum/maximum interval, with a nonempty criterion source. | Wrong labels, inverted bounds and boolean/string values fail; absent bounds or fields are not evaluated. |
 
@@ -56,8 +57,14 @@ provided, including extra regions and connectivity; it cannot establish that an
 adapter actually extracted the entire model. Bounds, area, a pressure resultant
 or a loaded-edge subset alone are insufficient descriptors. Ordering of arrays
 is significant. Object key order is immaterial. Numeric representations remain
-exact: integer and float spellings are distinct; no tolerance or unit conversion
-is inferred. Unknown completeness requires separate `NOT_EVALUATED` qualification.
+exact: integer and decimal types are distinct; JSON decimal tokens are preserved
+through domain, settings and interval comparisons without binary-float rounding.
+Equal decimal values such as `2.0` and `2.000` compare equally. No tolerance or
+unit conversion is inferred. The existing finite binary-float magnitude range
+remains a validation restriction. Direct Python API floats are interpreted using
+their round-trip decimal spelling; precision lost before the call cannot be
+recovered. Use `read_record` for requirements supplied as JSON bytes. Unknown
+completeness requires separate `NOT_EVALUATED` qualification.
 
 Settings snapshots contain **all applicable settings**, not deltas. Never fill
 omitted fields from assumed defaults. A snapshot after the result cannot govern

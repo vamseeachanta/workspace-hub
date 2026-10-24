@@ -11,6 +11,7 @@ import argparse
 import hashlib
 import json
 import math
+from decimal import Decimal
 from pathlib import Path
 
 PASS = "PASS"
@@ -19,7 +20,9 @@ NOT_EVALUATED = "NOT_EVALUATED"
 
 
 def _finite(value):
-    return type(value) in (int, float) and (type(value) is int or math.isfinite(value))
+    # Retain the supported finite float magnitude range, without rounding decimals.
+    return type(value) in (int, float, Decimal) and (
+        type(value) is int or math.isfinite(value))
 
 
 def _validate_json(value):
@@ -31,9 +34,9 @@ def _validate_json(value):
     elif isinstance(value, list):
         for item in value:
             _validate_json(item)
-    elif value is not None and type(value) not in (str, bool, int, float):
+    elif value is not None and type(value) not in (str, bool, int, float, Decimal):
         raise ValueError("Unsupported JSON value")
-    elif type(value) is float and not math.isfinite(value):
+    elif type(value) in (float, Decimal) and not _finite(value):
         raise ValueError("Non-finite JSON number")
 
 
@@ -48,7 +51,7 @@ def _pairs(pairs):
 
 def read_record(raw):
     """Reject duplicates and non-finite values before evidence can lose meaning."""
-    value = json.loads(raw, object_pairs_hook=_pairs)
+    value = json.loads(raw, object_pairs_hook=_pairs, parse_float=Decimal)
     if not isinstance(value, dict):
         raise TypeError("Expected JSON object")
     _validate_json(value)
@@ -57,8 +60,16 @@ def read_record(raw):
 
 def _canonical(value):
     _validate_json(value)
-    return json.dumps(value, sort_keys=True, separators=(",", ":"),
-                      ensure_ascii=False, allow_nan=False)
+    if isinstance(value, dict):
+        return ("object", tuple((key, _canonical(item))
+                                for key, item in sorted(value.items())))
+    if isinstance(value, list):
+        return ("array", tuple(_canonical(item) for item in value))
+    if type(value) in (float, Decimal):
+        # Direct API floats have already lost their original JSON token; compare
+        # their round-trip decimal spelling with parsed decimal evidence.
+        return ("decimal", Decimal(str(value)))
+    return (type(value).__name__, value)
 
 
 def _text(value):
@@ -161,7 +172,10 @@ def _criterion(requirements, evidence):
                        for key in labels)):
         return FAIL
     lower, upper, value = criterion["minimum"], criterion["maximum"], result["value"]
-    if not all(_finite(number) for number in (lower, upper, value)) or lower > upper:
+    if not all(_finite(number) for number in (lower, upper, value)):
+        return FAIL
+    lower, upper, value = (Decimal(str(number)) for number in (lower, upper, value))
+    if lower > upper:
         return FAIL
     # Inclusive interval is caller-specified; no solver/standard limit is assumed.
     return PASS if lower <= value <= upper else FAIL

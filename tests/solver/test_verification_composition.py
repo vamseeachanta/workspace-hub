@@ -210,7 +210,7 @@ def test_worked_example_cli():
 
 def test_cli_parse_failure_does_not_echo_input(tmp_path):
     invalid = tmp_path / "invalid.json"
-    invalid.write_text('{"private_payload":')
+    invalid.write_text('{"private_payload":', encoding="utf-8", newline="\n")
     process = subprocess.run([sys.executable, str(SCRIPT), str(invalid), str(invalid),
                               str(invalid)], capture_output=True, text=True, check=False)
     assert process.returncode == 2
@@ -287,3 +287,64 @@ def test_cli_nonpassing_content_exit(case, tmp_path):
                              capture_output=True, text=True, check=False)
     assert process.returncode == 1
     assert json.loads(process.stdout)["checks"]["domain"] == "FAIL"
+
+
+@pytest.mark.parametrize("section,old,new,check", [
+    ("result", b'"value": 5', b'"value": 6.0000000000000001', "criterion"),
+    ("result", b'"value": 5', b'"value": 3.9999999999999999', "criterion"),
+    ("domain", b'[2.0, 0]', b'[2.0000000000000001, 0]', "domain"),
+    ("settings", b'"precision": 2.0', b'"precision": 2.0000000000000001', "settings"),
+])
+def test_decimal_evidence_is_not_rounded(case, section, old, new, check):
+    # Hand comparisons: 6 + 10^-16 > 6; 4 - 10^-16 < 4;
+    # 2 + 10^-16 != 2. These differences must survive JSON decoding.
+    requirements, source, evidence = case
+    if section == "domain":
+        requirements["domain"]["nodes"][1][0] = 2.0
+        evidence["domain"]["nodes"][1][0] = 2.0
+    elif section == "settings":
+        requirements["settings"]["precision"] = 2.0
+        evidence["settings_history"][0]["values"]["precision"] = 2.0
+    raw = encode(evidence)
+    assert old in raw
+    raw = raw.replace(old, new)
+    requirements["evidence_sha256"] = digest(raw)
+    report = api.compose(api.read_record(encode(requirements)), source, raw)
+    assert report["checks"]["binding"] == "PASS"
+    assert report["checks"][check] == "FAIL"
+    assert report["content_status"] == "FAIL"
+
+
+def test_decimal_requirements_are_not_rounded(case):
+    requirements, source, evidence = case
+    evidence["result"]["value"] = 6
+    raw = encode(evidence)
+    requirements["evidence_sha256"] = digest(raw)
+    required = encode(requirements).replace(b'"maximum": 6',
+                                            b'"maximum": 5.9999999999999999')
+    report = api.compose(api.read_record(required), source, raw)
+    assert report["checks"]["criterion"] == "FAIL"
+
+
+def test_exact_decimal_positive_case(case):
+    requirements, source, evidence = case
+    raw = encode(evidence).replace(b'"value": 5', b'"value": 5.0000000000000001')
+    requirements["evidence_sha256"] = digest(raw)
+    report = api.compose(api.read_record(encode(requirements)), source, raw)
+    assert report["content_status"] == "PASS"
+
+
+def test_decimal_and_integer_domain_types_remain_distinct(case):
+    case[2]["domain"]["nodes"][1][0] = 2.0
+    assert evaluate(case)["checks"]["domain"] == "FAIL"
+
+
+def test_equal_decimal_tokens_and_direct_api_floats(case):
+    requirements, source, evidence = case
+    requirements["domain"]["nodes"][1][0] = 2.0
+    evidence["domain"]["nodes"][1][0] = 2.0
+    requirements["criterion"].update(minimum=0.1, maximum=0.1)
+    evidence["result"]["value"] = 0.1
+    raw = encode(evidence).replace(b'[2.0, 0]', b'[2.000, 0]')
+    requirements["evidence_sha256"] = digest(raw)
+    assert api.compose(requirements, source, raw)["content_status"] == "PASS"
