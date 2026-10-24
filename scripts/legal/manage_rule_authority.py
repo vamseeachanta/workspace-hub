@@ -24,7 +24,8 @@ from rule_authority import (
 
 
 def _read(path, maximum=codec.MAX_DOC):
-    flags = os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0)
+    # POSIX.1-2024 open(), O_NONBLOCK: do not wait for a FIFO writer.
+    flags = os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0) | getattr(os, "O_NONBLOCK", 0)
     fd = os.open(path, flags)
     try:
         before = os.fstat(fd)

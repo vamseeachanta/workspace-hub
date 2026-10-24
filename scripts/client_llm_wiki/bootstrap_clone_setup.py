@@ -81,7 +81,9 @@ def _authorize_and_normalize(clone: BoundClone, repo_slug: str) -> None:
     if _require(clone, "status", "--porcelain=v1", "--untracked-files=all"):
         raise BootstrapGitError("new clone must be clean and empty")
     config_fd = os.open(
-        "config", os.O_RDWR | os.O_NOFOLLOW | os.O_CLOEXEC, dir_fd=clone.git_fd,
+        # POSIX.1-2024 open(), O_NONBLOCK: reject special files before parsing.
+        "config", os.O_RDWR | os.O_NOFOLLOW | os.O_CLOEXEC | os.O_NONBLOCK,
+        dir_fd=clone.git_fd,
     )
     try:
         parsed = validate_clone_config_for_head_binding(
@@ -98,7 +100,8 @@ def _strict_verify(clone: BoundClone, repo_slug: str) -> None:
     if (info.st_dev, info.st_ino, stat.S_IFMT(info.st_mode)) != expected:
         raise BootstrapGitError("new clone Git directory identity changed")
     config_fd = os.open(
-        "config", os.O_RDONLY | os.O_NOFOLLOW | os.O_CLOEXEC, dir_fd=clone.git_fd,
+        "config", os.O_RDONLY | os.O_NOFOLLOW | os.O_CLOEXEC | os.O_NONBLOCK,
+        dir_fd=clone.git_fd,
     )
     try:
         validate_clone_git(_bound_layout(clone, config_fd), repo_slug)

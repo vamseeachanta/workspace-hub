@@ -36,7 +36,8 @@ class BoundValidationContext:
 
 
 _DIR_FLAGS = os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW | os.O_CLOEXEC
-_FILE_FLAGS = os.O_RDONLY | os.O_NOFOLLOW | os.O_CLOEXEC
+# POSIX.1-2024 open(), O_NONBLOCK: validation must not wait on a FIFO.
+_FILE_FLAGS = os.O_RDONLY | os.O_NOFOLLOW | os.O_CLOEXEC | os.O_NONBLOCK
 _LIMIT = 8 * 1024 * 1024
 
 
