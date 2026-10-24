@@ -159,12 +159,32 @@ def forensic_literal_lines(body: bytes) -> set[int]:
         tree = ast.parse(body.decode())
     except (SyntaxError, UnicodeDecodeError):
         return set()
+    source_lines = body.splitlines()
     lines = set()
     for node in ast.walk(tree):
         if not isinstance(node, (ast.Assign, ast.AnnAssign)):
             continue
+        # Issue #3938 (2026): data literals cannot exempt executable neighbors,
+        # attribute setters, computed values or evaluated type annotations.
+        targets = node.targets if isinstance(node, ast.Assign) else [node.target]
+        if not all(isinstance(target, ast.Name) for target in targets):
+            continue
+        if isinstance(node, ast.AnnAssign) and not isinstance(node.annotation, ast.Name):
+            continue
         value = node.value
-        if value is None or any(isinstance(child, ast.Call) for child in ast.walk(value)):
+        if value is None:
+            continue
+        try:
+            ast.literal_eval(value)
+        except (ValueError, TypeError, SyntaxError):
+            continue
+        end_line = node.end_lineno
+        end_column = node.end_col_offset
+        if end_line is None or end_column is None:
+            continue
+        prefix = source_lines[node.lineno - 1][:node.col_offset].strip()
+        suffix = source_lines[end_line - 1][end_column:].strip()
+        if prefix or (suffix and not suffix.startswith(b"#")):
             continue
         for literal in (child for child in ast.walk(value) if isinstance(child, ast.Constant)):
             raw = literal.value

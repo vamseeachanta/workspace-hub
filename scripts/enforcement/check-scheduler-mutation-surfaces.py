@@ -16,6 +16,7 @@ MODULE_DIR = Path(__file__).resolve().parent
 if str(MODULE_DIR) not in sys.path:
     sys.path.insert(0, str(MODULE_DIR))
 
+from scanner_exemptions import ExemptionPolicy, exemption_applies
 from scheduler_mutation_contract import (  # noqa: E402
     ATT_SOURCES,
     Discovery,
@@ -58,6 +59,18 @@ DISCOVERY_HELPER = b"scripts/enforcement/scheduler_mutation_discovery.py"
 WRAPPER_ATTESTATIONS = b"scripts/enforcement/scheduler_mutation_wrapper_attestations.py"
 FORENSIC = {CHECKER, TEST, HARDENING_TEST, ATTESTATIONS, DISCOVERY_HELPER, WRAPPER_ATTESTATIONS}
 SENTINEL = b"scheduler-mutation-forensic"
+# Explicit original categories, per issue #3938 (2026). Never derive these
+# bindings from PRIMITIVE_PATTERNS: a newly added rule must not inherit them.
+FORENSIC_POLICIES = tuple(
+    ExemptionPolicy("scheduler-mutation-forensic", category, frozenset(FORENSIC), SENTINEL)
+    for category in (
+        "crontab-replace",
+        "systemd-user-unit-write",
+        "systemd-user-enable-disable",
+        "windows-task-set",
+        "windows-task-unregister-register",
+    )
+)
 PRIMITIVE_PATTERNS = {
     "crontab-replace": (
         rb"(?:^|[|;\(\s])(?:run_)?crontab[ \t]+-(?:[ \t]|$)",  # scheduler-mutation-forensic
@@ -146,15 +159,17 @@ def discover_mutation_surfaces(records: dict[bytes, bytes]) -> Discovery:
         found: set[str] = set()
         literal_lines = forensic_literal_lines(body) if raw in FORENSIC else set()
         for line_number, line in enumerate(body.splitlines(), 1):
-            forensic_literal = (
-                raw in FORENSIC
-                and SENTINEL in line
-                and line_number in literal_lines
-            )
-            if line.lstrip().startswith(b"#") or forensic_literal:
+            if line.lstrip().startswith(b"#"):
                 continue
             for primitive, patterns in PRIMITIVE_PATTERNS.items():
-                if any(re.search(pattern, line) for pattern in patterns):
+                if (
+                    any(re.search(pattern, line) for pattern in patterns)
+                    and not exemption_applies(
+                        FORENSIC_POLICIES,
+                        context_id="scheduler-mutation-forensic", rule_category=primitive,
+                        path=raw, line=line, structure_matches=line_number in literal_lines,
+                    )
+                ):
                     found.add(primitive)
         if found:
             direct.add(path)
