@@ -14,10 +14,12 @@ def isolated_git_environment(monkeypatch):
         monkeypatch.delenv(variable, raising=False)
 
 
-def test_json_mode_is_one_document_and_matches_saved_report(tmp_path):
+@pytest.mark.parametrize("separator", [" ", "\u2028", "\u2029", "\u0085"])
+def test_json_mode_is_one_document_and_matches_saved_report(tmp_path, separator):
     """One unreviewed commit: 0 / 1 * 100 = 0 (independent arithmetic)."""
     init_repo(tmp_path)
-    run(["git", "commit", "--allow-empty", "-m", 'fix(core): quote "and" slash \\'], tmp_path)
+    subject = f'fix(core): before{separator}after quote "and" slash \\'
+    run(["git", "commit", "--allow-empty", "-m", subject], tmp_path)
     result = run_dashboard(tmp_path, {"COMPLIANCE_FORMAT": "json"})
     assert result.returncode == 1
     payload = json.loads(result.stdout)
@@ -28,7 +30,7 @@ def test_json_mode_is_one_document_and_matches_saved_report(tmp_path):
             "hash": subprocess.check_output(
                 ["git", "rev-parse", "HEAD"], cwd=tmp_path, text=True
             ).strip(),
-            "subject": 'fix(core): quote "and" slash \\',
+            "subject": subject,
         }
     ]
 
@@ -51,5 +53,5 @@ def test_json_flag_and_external_output_directory(tmp_path):
     assert payload["reviewable"] == 0
     assert payload["unreviewed_commits"] == []
     assert payload["verdict"] == "PASS"
-    assert json.loads(next(reports.glob("compliance-*.json")).read_text()) == payload
+    assert json.loads(next(reports.glob("compliance-*.json")).read_text(encoding="utf-8")) == payload
     assert not (repo / "logs" / "compliance").exists()

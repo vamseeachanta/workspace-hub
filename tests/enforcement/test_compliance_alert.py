@@ -154,48 +154,59 @@ def cron(tmp_path):
         if source.exists():
             shutil.copyfile(source, scripts / name)
     dashboard = scripts / "compliance-dashboard.sh"
-    dashboard.write_text('#!/bin/sh\ncat "$TEST_REPORT"\nexit "$TEST_DASHBOARD_EXIT"\n')
+    dashboard.write_text(
+        '#!/bin/sh\ncat "$TEST_REPORT"\nexit "$TEST_DASHBOARD_EXIT"\n',
+        encoding="utf-8", newline="\n",
+    )
     dashboard.chmod(0o755)
     bin_dir = tmp_path / "bin"
     bin_dir.mkdir()
     git = bin_dir / "git"
-    git.write_text('#!/bin/sh\nprintf "%s\\n" "$TEST_REPO"\n')
+    git.write_text(
+        '#!/bin/sh\nprintf "%s\\n" "$TEST_REPO"\n',
+        encoding="utf-8", newline="\n",
+    )
     git.chmod(0o755)
     date = bin_dir / "date"
     date.write_text(
         '#!/bin/sh\ncase "$1" in\n'
         ' +%Y%m%d) echo 20260723;;\n +%Y-%m-%d) echo 2026-07-23;;\n'
         ' +%G-W%V) echo 2026-W30;;\n +%V) echo 30;;\n +%Y) echo 2026;;\n'
-        ' *) echo 2026-07-23T06:00:00+00:00;;\nesac\n'
+        ' *) echo 2026-07-23T06:00:00+00:00;;\nesac\n',
+        encoding="utf-8", newline="\n",
     )
     date.chmod(0o755)
     publisher = bin_dir / "gh"
     publisher.write_text(
         '#!/usr/bin/env python3\nimport json, os, sys\n'
-        'with open(os.environ["TEST_CALLS"], "a") as out:\n'
+        'with open(os.environ["TEST_CALLS"], "a", encoding="utf-8", newline="\\n") as out:\n'
         '    out.write(json.dumps(sys.argv[1:]) + "\\n")\n'
         'if sys.argv[1:3] == ["issue", os.environ.get("TEST_FAIL", "")]:\n'
         '    raise SystemExit(1)\n'
         'if sys.argv[1:3] == ["issue", "list"]:\n'
-        '    print(os.environ.get("TEST_EXISTING", ""))\n'
+        '    print(os.environ.get("TEST_EXISTING", ""))\n',
+        encoding="utf-8", newline="\n",
     )
     publisher.chmod(0o755)
     payload = tmp_path / "input.json"
     calls = tmp_path / "calls.jsonl"
     env = {
-        **os.environ, "PATH": f"{bin_dir}:{os.environ['PATH']}",
+        **os.environ, "HOME": str(tmp_path), "PATH": f"{bin_dir}:{os.environ['PATH']}",
         "TEST_REPO": str(tmp_path), "TEST_REPORT": str(payload),
         "TEST_CALLS": str(calls), "TEST_DASHBOARD_EXIT": "1",
         "COMPLIANCE_REPORTS_DIR": str(tmp_path / "reports"),
     }
 
     def invoke(data=None, **overrides):
-        payload.write_text(json.dumps(data if data is not None else report()))
+        payload.write_text(
+            json.dumps(data if data is not None else report()),
+            encoding="utf-8", newline="\n",
+        )
         result = subprocess.run(
             ["bash", str(scripts / "compliance-cron.sh")], env={**env, **overrides},
             text=True, capture_output=True, check=False,
         )
-        recorded = [json.loads(line) for line in calls.read_text().splitlines()] if calls.exists() else []
+        recorded = [json.loads(line) for line in calls.read_text(encoding="utf-8").splitlines()] if calls.exists() else []
         return result, recorded
 
     return invoke
@@ -291,7 +302,8 @@ def test_publisher_failure_is_not_reported_as_success(cron, command):
         assert not any(call[:2] == ["issue", "create"] for call in calls)
 
 
-def test_actual_dashboard_to_cron_dry_run(tmp_path):
+@pytest.mark.parametrize("separator", [" ", "\u2028", "\u2029", "\u0085"])
+def test_actual_dashboard_to_cron_dry_run(tmp_path, separator):
     """One unreviewed change gives floor(0 * 100 / 1) = 0, a critical alert.
 
     The nested drift verdict is pass but the compliance verdict remains FAIL.
@@ -305,10 +317,13 @@ def test_actual_dashboard_to_cron_dry_run(tmp_path):
     for name in ("compliance-cron.sh", "compliance-dashboard.sh", "compliance_alert.py"):
         shutil.copyfile(ROOT / "scripts/enforcement" / name, scripts / name)
     (scripts / "compliance-dashboard.sh").chmod(0o755)
-    run(["git", "commit", "--allow-empty", "-m", "fix(core): change"], tmp_path)
+    subject = f"fix(core): before{separator}after"
+    run(["git", "commit", "--allow-empty", "-m", subject], tmp_path)
     logs = tmp_path / "logs/hooks"
     logs.mkdir(parents=True)
-    (logs / "stage-prompt-drift-events.jsonl").write_text('{"verdict":"pass"}\n')
+    (logs / "stage-prompt-drift-events.jsonl").write_text(
+        '{"verdict":"pass"}\n', encoding="utf-8", newline="\n",
+    )
     output_dir = tmp_path / "reports"
     result = subprocess.run(
         ["bash", str(scripts / "compliance-cron.sh")], cwd=tmp_path,
@@ -316,9 +331,12 @@ def test_actual_dashboard_to_cron_dry_run(tmp_path):
         text=True, capture_output=True, check=False,
     )
     assert result.returncode == 0, result.stderr
-    log = next(output_dir.glob("daily-*.log")).read_text()
+    log = next(output_dir.glob("daily-*.log")).read_text(encoding="utf-8")
     assert "**Dashboard verdict:** FAIL\n" in log
     assert "**Severity:** critical" in log
+    assert subject in log
+    saved = json.loads(next(output_dir.glob("compliance-*.json")).read_text(encoding="utf-8"))
+    assert saved["unreviewed_commits"][0]["subject"] == subject
     assert "FAIL\npass" not in log
     assert "[DRY RUN]" in result.stdout
 

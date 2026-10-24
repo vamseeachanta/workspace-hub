@@ -281,7 +281,7 @@ main() {
   local backlog_json
   backlog_json="$(python3 -c '
 import json, sys
-rows = [line.split(" ", 1) for line in sys.stdin.read().splitlines() if line]
+rows = [line.split(" ", 1) for line in sys.stdin.read().split("\n") if line]
 print(json.dumps([{"hash": h, "subject": s} for h, s in rows]))
 ' <<< "$unreviewed_records")"
   
