@@ -16,6 +16,7 @@ import argparse
 import json
 import os
 import re
+import stat
 from fnmatch import fnmatch
 from pathlib import Path
 
@@ -49,6 +50,10 @@ def inventory(root: Path, extra_patterns=()) -> list[str]:
             path = base / name
             if path.is_symlink():
                 raise InventoryError(f"symlink-directory: {path.relative_to(root).as_posix()}")
+            if (getattr(os.path, "isjunction", lambda _path: False)(path)
+                    or getattr(path.lstat(), "st_file_attributes", 0)
+                    & stat.FILE_ATTRIBUTE_REPARSE_POINT):
+                raise InventoryError(f"linked-directory: {path.relative_to(root).as_posix()}")
         for name in files:
             path = base / name
             relative = path.relative_to(root).as_posix()
@@ -175,14 +180,6 @@ class CollectionAudit:
             self.skipped[path] = reason
 
     def pytest_collection_finish(self, session):
-        # Imports and hooks may generate new test-shaped files. Retain the
-        # initial inventory and add any new candidates before claiming coverage.
-        try:
-            self.candidates = sorted(set(self.candidates) | set(
-                inventory(self.root, self.config.getini("python_files")),
-            ))
-        except InventoryError as error:
-            self.errors.add(str(error))
         self.finished = True
 
     def write_report(self):
@@ -220,11 +217,20 @@ class CollectionAudit:
             "status": "FAIL" if errors or unresolved else "PASS",
             "files": files, "errors": sorted(errors),
         }
-        self.destination.write_text(json.dumps(self.report, indent=2) + "\n", encoding="utf-8")
+        self.destination.write_text(json.dumps(self.report, indent=2) + "\n",
+                                    encoding="utf-8", newline="\n")
 
     def pytest_sessionfinish(self, session, exitstatus):
         import pytest
 
+        # All collection-finish callbacks and wrapper teardowns have returned.
+        # Retain initial candidates even if hooks removed them from the tree.
+        try:
+            self.candidates = sorted(set(self.candidates) | set(
+                inventory(self.root, self.config.getini("python_files")),
+            ))
+        except InventoryError as error:
+            self.errors.add(str(error))
         self.write_report()
         # Preserve collection failures, interruptions, usage errors and failures
         # from execution. Only change a successful exit to signal a failed audit.

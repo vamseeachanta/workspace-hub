@@ -12,6 +12,7 @@ import os
 import subprocess
 import sys
 from pathlib import Path
+from types import SimpleNamespace
 
 import pytest
 
@@ -29,7 +30,7 @@ def audit():
 def write(root, relative, text):
     path = root / relative
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(text, encoding="utf-8")
+    path.write_text(text, encoding="utf-8", newline="\n")
     return path
 
 
@@ -55,7 +56,8 @@ def run_pytest(tmp_path, *, files=None, ini="", conftest="", args=(), collect_on
          *(["--audit-test-collection", str(report)] if enabled else []),
          *(["--collect-only"] if collect_only else []), "-q",
          "-p", "no:cacheprovider", *args],
-        cwd=root, env=env, text=True, capture_output=True, timeout=60, check=False,
+        cwd=root, env=env, text=True, encoding="utf-8", capture_output=True,
+        timeout=60, check=False,
     )
     if enabled:
         assert report.exists(), result.stdout + result.stderr
@@ -95,6 +97,24 @@ def test_inventory_rejects_linked_candidate(audit, tmp_path):
         audit.inventory(tmp_path)
 
 
+@pytest.mark.parametrize("detector", ["api", "attributes"])
+def test_inventory_does_not_follow_directory_junctions(audit, tmp_path, monkeypatch, detector):
+    linked = tmp_path / "linked"
+    linked.mkdir()
+    if detector == "api":
+        monkeypatch.setattr(audit.os.path, "isjunction", lambda path: path == linked,
+                            raising=False)
+    else:
+        monkeypatch.delattr(audit.os.path, "isjunction", raising=False)
+        original = Path.lstat
+        monkeypatch.setattr(Path, "lstat", lambda path: SimpleNamespace(
+            st_mode=original(path).st_mode,
+            st_file_attributes=0x400 if path == linked else 0,
+        ))
+    with pytest.raises(audit.InventoryError, match="linked-directory: linked"):
+        audit.inventory(tmp_path)
+
+
 def test_inventory_requires_existing_directory(audit, tmp_path):
     with pytest.raises(audit.InventoryError, match="not a directory"):
         audit.inventory(tmp_path / "missing")
@@ -113,7 +133,7 @@ def test_inventory_cli_never_imports_tests(tmp_path):
     write(tmp_path, "test_inert.py", "raise RuntimeError('must not import')\n")
     result = subprocess.run(
         [sys.executable, str(SCRIPT), "--inventory", str(tmp_path)],
-        text=True, capture_output=True, timeout=60, check=False,
+        text=True, encoding="utf-8", capture_output=True, timeout=60, check=False,
     )
     assert result.returncode == 0, result.stderr
     report = json.loads(result.stdout)
@@ -299,9 +319,41 @@ def test_generated_hidden_candidate_is_detected(tmp_path):
         "from pathlib import Path\ndef pytest_collection_modifyitems(items):\n"
         "    path = Path('legacy/test_generated.py')\n"
         "    path.parent.mkdir()\n"
-        "    path.write_text('def test_generated(): pass')\n")
+        "    path.write_text('def test_generated(): pass', encoding='utf-8', newline='\\n')\n")
     assert result.returncode == pytest.ExitCode.TESTS_FAILED
     assert rows(report)["legacy/test_generated.py"]["status"] == "not_collected"
+
+
+@pytest.mark.parametrize("decorator,teardown", [
+    ("", ""),
+    ("@pytest.hookimpl(trylast=True)\n", ""),
+    ("@pytest.hookimpl(hookwrapper=True)\n", "    yield\n"),
+    ("@pytest.hookimpl(wrapper=True, tryfirst=True)\n", "    yield\n"),
+])
+@pytest.mark.parametrize("collect_only", [True, False])
+def test_collection_finish_generated_candidate_fails(tmp_path, decorator, teardown, collect_only):
+    """Two candidates minus one observed file leaves the late file unresolved."""
+    result, report = run_pytest(tmp_path, collect_only=collect_only, conftest=
+        "import pytest\nfrom pathlib import Path\n" + decorator +
+        "def pytest_collection_finish(session):\n" + teardown +
+        "    Path('test_late.py').write_text(\n"
+        "        'def test_late(): pass\\n', encoding='utf-8', newline='\\n')\n")
+    assert result.returncode == pytest.ExitCode.TESTS_FAILED, result.stdout + result.stderr
+    assert report["status"] == "FAIL"
+    assert set(rows(report)) == {"tests/test_visible.py", "test_late.py"}
+    assert rows(report)["test_late.py"]["status"] == "not_collected"
+
+
+def test_initial_candidate_survives_removal_during_collection(tmp_path):
+    """An initially hidden candidate remains unresolved even after its removal."""
+    result, report = run_pytest(tmp_path, ini="testpaths = tests\n", files={
+        "tests/test_visible.py": "def test_ok(): pass\n",
+        "test_removed.py": "def test_removed(): pass\n",
+    }, conftest=
+        "from pathlib import Path\ndef pytest_collection_finish(session):\n"
+        "    Path('test_removed.py').unlink()\n")
+    assert result.returncode == pytest.ExitCode.TESTS_FAILED
+    assert rows(report)["test_removed.py"]["status"] == "not_collected"
 
 
 def test_parent_traversal_is_outside_the_audited_root(audit, tmp_path):

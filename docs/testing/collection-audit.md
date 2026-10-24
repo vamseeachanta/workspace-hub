@@ -20,8 +20,10 @@ The inventory traverses the on-disk tree below pytest's `rootdir` independently
 of `testpaths`, `norecursedirs`, `--ignore`, `--ignore-glob`, `collect_ignore`,
 `collect_ignore_glob`, and `pytest_ignore_collect`. Untracked and Git-ignored
 candidate files are included. Only directories named `.git` are pruned.
-The inventory is taken before and after collection; newly generated candidates
-are added without discarding the initial set.
+The inventory is taken before collection and reconciled at session finish, after
+all collection-finish callbacks and wrapper teardowns have returned. Newly
+generated candidates are added without discarding the initial set. When tests
+execute, candidates generated during execution are included in that final check.
 
 Let F be candidate files, C files with observed pytest items, and S files with
 observed, reasoned module skips. The unresolved set is `U = F - C - S`.
@@ -156,8 +158,9 @@ an observed item is not evidence that its test body passed.
 Use a serial, full-root collection command. Partial path selections are compared
 against the full inventory and normally fail. Distributed collection is not
 supported. A narrowed `rootdir` narrows the evidence scope; callers must use the
-repository root. Unreadable directories and directory symlinks fail explicitly
-instead of silently reducing coverage. Candidate file symlinks also fail.
+repository root. Unreadable directories, directory symlinks, and directory
+junctions fail explicitly instead of silently reducing coverage. Candidate file
+symlinks also fail.
 Configured patterns that hide conventional test files cannot narrow F.
 
 The three target checkouts are unavailable in this worktree. Their exhaustive
