@@ -32,7 +32,8 @@ import subprocess
 import sys
 from pathlib import Path
 
-import yaml
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from lib.strict_yaml import strict_yaml_load
 
 REPO = Path(__file__).resolve().parents[2]
 SKILLS_DIR = REPO / ".claude" / "skills"
@@ -75,7 +76,7 @@ def _strip_fenced_code(text: str) -> str:
 
 def _load_yaml(path: Path):
     with open(path) as fh:
-        return yaml.safe_load(fh) or {}
+        return strict_yaml_load(fh) or {}
 
 
 def _curated_ids() -> set[str]:

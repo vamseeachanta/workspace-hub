@@ -7,12 +7,14 @@ repository. Pull request URLs are deliberately ignored.
 """
 from __future__ import annotations
 
-import argparse
 import json
 import os
 import re
 import sys
 from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from lib.safe_cli import SafeArgumentParser
 
 ISSUE_URL_RE = re.compile(
     r"https://github\.com/([A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+)/issues/([1-9][0-9]*)"
@@ -65,7 +67,7 @@ def extract_references(text: str, default_repo: str) -> list[str]:
 
 
 def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(description=__doc__)
+    parser = SafeArgumentParser(description=__doc__)
     parser.add_argument("event_file", nargs="?", help="GitHub event JSON file, or '-' for stdin")
     parser.add_argument(
         "--repo",

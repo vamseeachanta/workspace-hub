@@ -3,13 +3,14 @@
 
 from __future__ import annotations
 
-import argparse
 import base64
 import os
 import stat
 import sys
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from lib.safe_cli import SafeArgumentParser
 from rule_authority import (
     audit,
     authority,
@@ -253,7 +254,7 @@ def _common(parser):
 
 
 def build_parser():
-    parser = argparse.ArgumentParser()
+    parser = SafeArgumentParser()
     sub = parser.add_subparsers(dest="command", required=True)
     validate = sub.add_parser("validate-public")
     _common(validate)
