@@ -184,6 +184,26 @@ def test_submodule_payload_still_requires_directory_provenance(checker, monkeypa
     ]
 
 
+@pytest.mark.parametrize("name", ["golden", "goldens", "baseline", "baselines"])
+@pytest.mark.parametrize("mode, kind", [("160000", "commit"), ("100644", "blob")])
+def test_terminal_directory_name_depends_on_git_mode(
+    checker, monkeypatch, tmp_path, name, mode, kind,
+):
+    """A terminal gitlink is a directory; a same-named regular file is not."""
+    path = f"tests/{name}"
+
+    def fake_git(repo, *args):
+        if args[0] == "rev-parse":
+            return b"pinned-tree\n"
+        return f"{mode} {kind} digest\t{path}\0".encode()
+
+    monkeypatch.setattr(checker, "git", fake_git)
+    entries = checker.snapshot(tmp_path, "HEAD")
+    assert entries == {path: (mode, "digest")}
+    expected = [("ERROR", path, "missing provenance.json")] if mode == "160000" else []
+    assert checker.audit(entries, lambda oid: pytest.fail("unexpected blob read")) == expected
+
+
 def test_blob_read_failure_is_operational_error(checker, monkeypatch, capsys):
     monkeypatch.setattr(checker, "snapshot", lambda *args: {
         "golden/provenance.json": ("100644", "unreadable"),
@@ -206,7 +226,7 @@ def test_worked_policy_example(checker):
     warnings and the CLI's success result is zero. No code-generated expected
     value, engineering coefficient or measured acceptance limit is used.
     """
-    text = (SCRIPT.parents[2] / "docs/standards/golden-provenance.md").read_text()
+    text = (SCRIPT.parents[2] / "docs/standards/golden-provenance.md").read_text(encoding="utf-8")
     payload = text.split("```json\n", 1)[1].split("```", 1)[0].encode()
     assert scan(checker, payload) == []
 

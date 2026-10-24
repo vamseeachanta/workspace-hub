@@ -63,9 +63,11 @@ def reject_constant(value):
 def audit(entries, read_blob) -> list[tuple[str, str, str]]:
     """Check every named directory using only records in the pinned Git tree."""
     directories = set()
-    for path in entries:
+    for path, (mode, _) in entries.items():
         parts = PurePosixPath(path).parts
-        for index, part in enumerate(parts[:-1]):
+        # Gitlinks represent directories even though ls-tree treats them as leaves.
+        directory_parts = parts if mode == "160000" else parts[:-1]
+        for index, part in enumerate(directory_parts):
             if part in DIRECTORIES:
                 directories.add("/".join(parts[:index + 1]))
 
