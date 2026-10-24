@@ -9,9 +9,13 @@ from __future__ import annotations
 import argparse
 import json
 import subprocess
+import sys
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
+from scripts.lib.issue_publication import public_issue_view
 
 WORKSPACE_HUB = Path(__file__).resolve().parents[2]
 WORK_QUEUE_PATH = WORKSPACE_HUB / "config" / "ai-tools" / "provider-work-queue.json"
@@ -83,7 +87,7 @@ def collect_candidates(work_queue: dict[str, Any]) -> list[dict[str, Any]]:
                 continue
             candidates.append(
                 {
-                    **issue,
+                    **public_issue_view(issue),
                     "target_label": f"ai:{LEGACY_PROVIDER_ALIASES.get(provider, provider)}",
                     "confidence": confidence,
                     "confidence_reasons": reasons,
@@ -95,6 +99,7 @@ def collect_candidates(work_queue: dict[str, Any]) -> list[dict[str, Any]]:
 
 
 def render_markdown(payload: dict[str, Any]) -> str:
+    payload = public_issue_view(payload)
     lines = [
         "# Provider autolabel candidates",
         "",
