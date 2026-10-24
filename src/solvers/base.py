@@ -33,6 +33,17 @@ class SolverResult:
         status = "✓ SUCCESS" if self.success else "✗ FAILED"
         return f"SolverResult({self.solver_name}, {status}, {self.execution_time_ms:.2f}ms)"
 
+    def qualify(self, criteria, *, output_units, assumptions=()):
+        """Qualify declared evidence separately from execution success.
+
+        No solver is invoked. Criteria require explicit references, units and
+        tolerances; missing evidence cannot produce an accepted report.
+        """
+        from .qualification import qualify_result
+
+        return qualify_result(self, criteria, output_units=output_units,
+                              assumptions=assumptions)
+
 
 class BaseSolver(ABC):
     """Base class for all mathematical solvers."""
