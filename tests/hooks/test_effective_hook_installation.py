@@ -64,9 +64,9 @@ def make_repo(tmp_path, hooks_path=None, worktree=False):
         '#!/usr/bin/env bash\n'
         'printf "%s\\n" "$@" > args.txt\n'
         'cat > refs.txt\n'
-        'exit "${FIXTURE_RESULT:-0}"\n'
-    )
-    (source / "track-skill-patches.sh").write_text("exit 0\n")
+        'exit "${FIXTURE_RESULT:-0}"\n',
+        encoding="utf-8", newline="\n")
+    (source / "track-skill-patches.sh").write_text("exit 0\n", encoding="utf-8", newline="\n")
     return repo
 
 
@@ -82,7 +82,7 @@ def run(script, repo, *args):
 
 def snapshot(path):
     return {
-        str(p.relative_to(path)): (p.read_bytes(), p.stat().st_mode)
+        p.relative_to(path).as_posix(): (p.read_bytes(), p.stat().st_mode)
         for p in path.rglob("*") if p.is_file()
     }
 
@@ -109,7 +109,7 @@ def test_installs_event_at_effective_path_and_git_dispatches(tmp_path, kind, chi
     # OID strings are tokens only: this stub never resolves objects.
     refs = "refs/heads/topic a refs/heads/topic b\n(delete) 0 refs/heads/old c\n"
     input_file = tmp_path / "push-input"
-    input_file.write_text(refs)
+    input_file.write_text(refs, encoding="utf-8", newline="\n")
     monkeypatch.setenv("FIXTURE_RESULT", child_status)  # Git: any nonzero status rejects.
     result = subprocess.run(
         ["git", "-C", str(repo), "hook", "run", "--to-stdin", str(input_file),
@@ -117,8 +117,8 @@ def test_installs_event_at_effective_path_and_git_dispatches(tmp_path, kind, chi
         capture_output=True, text=True, check=False,
     )
     assert (result.returncode == 0) == (child_status == "0")
-    assert (repo / "refs.txt").read_text() == refs
-    assert (repo / "args.txt").read_text() == "origin\ndestination with spaces\n"
+    assert (repo / "refs.txt").read_text(encoding="utf-8") == refs
+    assert (repo / "args.txt").read_text(encoding="utf-8") == "origin\ndestination with spaces\n"
 
 
 @pytest.mark.parametrize("existing", ["regular", "symlink", "directory", "managed-lookalike"])
@@ -130,18 +130,18 @@ def test_preserves_unknown_existing_hook(tmp_path, existing):
         target.mkdir()
     elif existing == "symlink":
         original = tmp_path / "original"
-        original.write_text(content)
+        original.write_text(content, encoding="utf-8", newline="\n")
         target.symlink_to(original)
     else:
         if existing == "managed-lookalike":
             content += "# Managed by install-all-hooks.sh\n"
-        target.write_text(content)
+        target.write_text(content, encoding="utf-8", newline="\n")
     result = run(INSTALL, repo)
     assert result.returncode != 0
     if existing == "directory":
         assert target.is_dir()
     else:
-        assert target.read_text() == content
+        assert target.read_text(encoding="utf-8") == content
     if existing == "symlink":
         assert target.is_symlink()
 
@@ -183,15 +183,16 @@ def test_enforcement_uses_effective_path(tmp_path, kind):
     (hooks / "pre-push").write_text(
         '#!/usr/bin/env bash\nREPO_ROOT="$(git rev-parse --show-toplevel)"\n'
         'OVERALL_EXIT=0\nPUSH_LINES=()\n'
-        '# <<INSTALL_HOOKS_EXTENSION_POINT>>\nexit "$OVERALL_EXIT"\n'
+        '# <<INSTALL_HOOKS_EXTENSION_POINT>>\nexit "$OVERALL_EXIT"\n',
+        encoding="utf-8", newline="\n",
     )
     source = repo / "scripts/enforcement"
     source.mkdir()
-    (source / "enforcement-env.sh").write_text("export FIXTURE_ENFORCEMENT=1\n")
+    (source / "enforcement-env.sh").write_text("export FIXTURE_ENFORCEMENT=1\n", encoding="utf-8", newline="\n")
     result = run(ENFORCE, repo)
     assert result.returncode == 0, result.stderr
-    assert (hooks / "enforcement-env").read_text() == "export FIXTURE_ENFORCEMENT=1\n"
-    text = (hooks / "pre-push").read_text()
+    assert (hooks / "enforcement-env").read_text(encoding="utf-8") == "export FIXTURE_ENFORCEMENT=1\n"
+    text = (hooks / "pre-push").read_text(encoding="utf-8")
     assert "--git-path hooks/enforcement-env" in text
     before = snapshot(hooks)
     assert run(ENFORCE, repo).returncode == 0
@@ -203,7 +204,8 @@ def test_enforcement_dry_run_preserves_dead_tail_and_modes(tmp_path):
     hooks = hook_dir(repo)
     (hooks / "pre-push").write_text(
         '#!/usr/bin/env bash\n# <<INSTALL_HOOKS_EXTENSION_POINT>>\nexit 0\n'
-        '# enforcement-env stranded below exit\n'
+        '# enforcement-env stranded below exit\n',
+        encoding="utf-8", newline="\n",
     )
     before = snapshot(hooks)
     result = run(ENFORCE, repo, "--dry-run")
@@ -215,11 +217,12 @@ def test_tracked_push_hook_sources_effective_environment(tmp_path):
     repo = make_repo(tmp_path, "custom hooks", worktree=True)
     hooks = hook_dir(repo)
     hooks.mkdir()
-    (hooks / "enforcement-env").write_text("export FIXTURE_ENFORCEMENT=present\n")
+    (hooks / "enforcement-env").write_text("export FIXTURE_ENFORCEMENT=present\n", encoding="utf-8", newline="\n")
     source = repo / "scripts/enforcement"
     source.mkdir()
     (source / "require-review-on-push.sh").write_text(
-        'test "${FIXTURE_ENFORCEMENT:-}" = present\n'
+        'test "${FIXTURE_ENFORCEMENT:-}" = present\n',
+        encoding="utf-8", newline="\n",
     )
     shutil.copy2(ROOT / "scripts/hooks/pre-push.sh", repo / "scripts/hooks/pre-push.sh")
     assert run(INSTALL, repo).returncode == 0
@@ -238,7 +241,7 @@ def test_setup_then_enforcement_keeps_managed_wrapper(tmp_path):
     repo = make_repo(tmp_path, "custom hooks")
     source = repo / "scripts/enforcement"
     source.mkdir()
-    (source / "enforcement-env.sh").write_text("export FIXTURE_ENFORCEMENT=1\n")
+    (source / "enforcement-env.sh").write_text("export FIXTURE_ENFORCEMENT=1\n", encoding="utf-8", newline="\n")
     setup = repo / "scripts/setup"
     setup.mkdir()
     shutil.copy2(INSTALL, setup / INSTALL.name)
@@ -254,8 +257,63 @@ def test_setup_then_enforcement_keeps_managed_wrapper(tmp_path):
 def test_enforcement_dry_run_preserves_nonexecutable_hook(tmp_path):
     repo = make_repo(tmp_path)
     target = hook_dir(repo) / "pre-push"
-    target.write_text('#!/bin/bash\n# <<INSTALL_HOOKS_EXTENSION_POINT>>\nexit 0\n')
+    target.write_text('#!/bin/bash\n# <<INSTALL_HOOKS_EXTENSION_POINT>>\nexit 0\n', encoding="utf-8", newline="\n")
     target.chmod(0o644)
     before = snapshot(hook_dir(repo))
     assert run(ENFORCE, repo, "--dry-run").returncode == 0
     assert snapshot(hook_dir(repo)) == before
+
+
+@pytest.mark.parametrize("event", ["pre-push", "pre-commit"])
+@pytest.mark.parametrize("kind", ["relative", "absolute", "worktree-relative"])
+@pytest.mark.parametrize("dry_run", [False, True])
+def test_upgrades_legacy_environment_lookup(tmp_path, event, kind, dry_run):
+    custom = tmp_path / "external hooks" if kind == "absolute" else "custom hooks"
+    repo = make_repo(tmp_path, custom, worktree=kind == "worktree-relative")
+    hooks = hook_dir(repo)
+    hooks.mkdir(parents=True)
+    source = repo / "scripts/enforcement"
+    source.mkdir()
+    (source / "enforcement-env.sh").write_text(
+        "export REVIEW_GATE_STRICT=1\n", encoding="utf-8", newline="\n",
+    )
+    legacy = 'ENFORCEMENT_ENV="${REPO_ROOT}/.git/hooks/enforcement-env"'
+    current = 'ENFORCEMENT_ENV="$(git rev-parse --git-path hooks/enforcement-env)"'
+    # The unrelated assignment and comment must survive an upgrade unchanged.
+    body = (
+        '#!/usr/bin/env bash\nREPO_ROOT="$(git rev-parse --show-toplevel)"\n'
+        'export PATH="$PATH"\nOVERALL_EXIT=0\nPUSH_LINES=()\n'
+        '# Keep this unrelated content.\nFIXTURE_VALUE=retained\n'
+        f'{legacy}\n'
+        'if [[ -f "$ENFORCEMENT_ENV" ]]; then source "$ENFORCEMENT_ENV"; fi\n'
+        '# An independently failing gate rejects only when strict mode is loaded.\n'
+        'if [[ "${REVIEW_GATE_STRICT:-0}" == 1 ]]; then OVERALL_EXIT=1; fi\n'
+        '# <<INSTALL_HOOKS_EXTENSION_POINT>>\nexit "$OVERALL_EXIT"\n'
+    )
+    target = hooks / event
+    target.write_text(body, encoding="utf-8", newline="\n")
+    target.chmod(0o755)
+    before = snapshot(hooks)
+    result = run(ENFORCE, repo, *(["--dry-run"] if dry_run else []))
+    assert result.returncode == 0, result.stderr
+    if dry_run:
+        assert snapshot(hooks) == before
+        return
+    upgraded = target.read_text(encoding="utf-8")
+    # Existing managed blocks are retained; only their lookup changes.
+    assert upgraded.startswith(body.replace(legacy, current).split(
+        '# <<INSTALL_HOOKS_EXTENSION_POINT>>'
+    )[0])
+    assert legacy not in upgraded
+    assert upgraded.count(current) == 1
+    assert os.access(target, os.X_OK)
+    env = os.environ.copy()
+    env.pop("REVIEW_GATE_STRICT", None)
+    gate = subprocess.run(
+        ["bash", str(target)], cwd=repo, env=env,
+        text=True, encoding="utf-8", capture_output=True, check=False,
+    )
+    assert gate.returncode == 1, "strict environment must propagate the gate rejection"
+    after = snapshot(hooks)
+    assert run(ENFORCE, repo).returncode == 0
+    assert snapshot(hooks) == after

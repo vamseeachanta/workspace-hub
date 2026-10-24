@@ -46,6 +46,37 @@ else
   log "SKIP: enforcement-env.sh not found at ${ENFORCEMENT_SRC}"
 fi
 
+# Upgrade the recognized managed lookup before marker-based idempotence checks.
+# Other assignments and hook content remain unchanged.
+migrate_environment_lookup() {
+  local hook="$1" tmp
+  local legacy='ENFORCEMENT_ENV="${REPO_ROOT}/.git/hooks/enforcement-env"'
+  local current='ENFORCEMENT_ENV="$(git rev-parse --git-path hooks/enforcement-env)"'
+  [[ -f "$hook" ]] || return 0
+  if ! grep -Fxq "$legacy" "$hook"; then
+    return 0
+  fi
+  if [[ "$DRY_RUN" == "1" ]]; then
+    log "DRY-RUN: Would migrate the managed environment lookup"
+    return 0
+  fi
+  tmp="$(mktemp)"
+  awk -v legacy="$legacy" -v current="$current" '
+    $0 == legacy { $0 = current }
+    { print }
+  ' "$hook" > "$tmp"
+  if ! bash -n "$tmp"; then
+    echo "FATAL: environment migration produced invalid bash — not written" >&2
+    rm -f "$tmp"; return 1
+  fi
+  cat "$tmp" > "$hook"
+  rm -f "$tmp"
+  log "OK: Migrated the managed environment lookup"
+}
+
+migrate_environment_lookup "${HOOKS_DIR}/pre-commit"
+migrate_environment_lookup "${HOOKS_DIR}/pre-push"
+
 # ── Step 2: Wire enforcement-env into pre-commit ────────────────────────
 PRE_COMMIT="${HOOKS_DIR}/pre-commit"
 
