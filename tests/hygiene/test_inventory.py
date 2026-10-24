@@ -41,7 +41,9 @@ def test_core_prunes_repositories_worktrees_cache_and_loop(tmp_path, inventory):
     (root / "repo" / ".git").mkdir(parents=True)
     (root / "repo" / "tracked").write_bytes(b"ignored")
     (root / "worktree").mkdir()
-    (root / "worktree" / ".git").write_text("gitdir: ../metadata")
+    (root / "worktree" / ".git").write_text(
+        "gitdir: ../metadata", encoding="utf-8", newline="\n"
+    )
     (root / "worktree" / "tracked").write_bytes(b"ignored")
     (root / "cache-output").mkdir()
     (root / "cache-output" / "artifact").write_bytes(b"ignored")
@@ -172,7 +174,7 @@ def test_custom_name_and_extension_table(tmp_path, inventory):
 
 
 def test_largest_twenty_and_tie_break(tmp_path, inventory):
-    """21 equal 1-byte files: top 20 are lexically first 20 (task slice 2)."""
+    """21 equal 1-byte files: top 20 are lexically first 20 (README convention)."""
     for index in range(21):
         (tmp_path / f"item{index:02}.md").write_bytes(b"x")
     totals = inventory.build_manifest(config(tmp_path), clock=lambda: FIXED)["totals"]
@@ -185,7 +187,9 @@ def test_manifest_determinism_and_root_as_given(tmp_path, inventory, monkeypatch
     monkeypatch.chdir(tmp_path)
     Path("tree").mkdir()
     Path("tree/a").write_bytes(b"abc")
-    Path("cfg.json").write_text(json.dumps(config("tree")))
+    Path("cfg.json").write_text(
+        json.dumps(config("tree")), encoding="utf-8", newline="\n"
+    )
     for output in ("first.json", "second.json"):
         assert (
             inventory.main(
@@ -194,7 +198,7 @@ def test_manifest_determinism_and_root_as_given(tmp_path, inventory, monkeypatch
             == 0
         )
     assert Path("first.json").read_bytes() == Path("second.json").read_bytes()
-    result = json.loads(Path("first.json").read_text())
+    result = json.loads(Path("first.json").read_text(encoding="utf-8"))
     assert result["schema"] == 1  # README Manifest format defines revision 1.
     assert result["root"] == "tree"
     assert result["generated_utc"] == "2026-01-03T00:00:00Z"
@@ -202,12 +206,12 @@ def test_manifest_determinism_and_root_as_given(tmp_path, inventory, monkeypatch
 
 @pytest.mark.parametrize("threshold,expected", [(0, 1), (1, 0), (2, 0)])
 def test_threshold_exit_codes(tmp_path, inventory, capsys, threshold, expected):
-    """One file exceeds 0, equals 1, is below 2; task slice 3 says 'exceed'."""
+    """One file exceeds 0, equals 1, is below 2; README defines a strict threshold."""
     root = tmp_path / "tree"
     root.mkdir()
     (root / "a").write_bytes(b"abc")
     cfg = tmp_path / "cfg.json"
-    cfg.write_text(json.dumps(config(root)))
+    cfg.write_text(json.dumps(config(root)), encoding="utf-8", newline="\n")
     out = tmp_path / "manifest.json"
     assert (
         inventory.main(
@@ -217,7 +221,7 @@ def test_threshold_exit_codes(tmp_path, inventory, capsys, threshold, expected):
         == expected
     )
     assert capsys.readouterr().out == "stray_files=1 bytes=3 repositories=0\n"
-    assert json.loads(out.read_text())["totals"]["count"] == 1
+    assert json.loads(out.read_text(encoding="utf-8"))["totals"]["count"] == 1
 
 
 def test_empty_root(tmp_path, inventory):
@@ -235,9 +239,11 @@ def test_empty_root(tmp_path, inventory):
 
 
 def test_missing_root_is_clear_error_exit_two(tmp_path, inventory, capsys):
-    """Task slice 3 specifies exit 2 for missing root, with no manifest."""
+    """README defines exit 2 for missing root, with no manifest."""
     cfg = tmp_path / "cfg.json"
-    cfg.write_text(json.dumps(config(tmp_path / "missing")))
+    cfg.write_text(
+        json.dumps(config(tmp_path / "missing")), encoding="utf-8", newline="\n"
+    )
     out = tmp_path / "manifest.json"
     assert inventory.main(["--config", str(cfg), "--out", str(out)]) == 2
     captured = capsys.readouterr()
@@ -250,7 +256,7 @@ def test_missing_root_is_clear_error_exit_two(tmp_path, inventory, capsys):
 def test_bad_config_does_not_publish_manifest(tmp_path, inventory, payload):
     """Three invalid inputs produce no output, rather than incomplete evidence."""
     cfg = tmp_path / "cfg.json"
-    cfg.write_text(payload)
+    cfg.write_text(payload, encoding="utf-8", newline="\n")
     out = tmp_path / "manifest.json"
     assert inventory.main(["--config", str(cfg), "--out", str(out)]) == 2
     assert not out.exists()
@@ -264,7 +270,7 @@ def test_direct_isolated_cli(tmp_path):
     root = tmp_path / "tree"
     root.mkdir()
     cfg = tmp_path / "cfg.json"
-    cfg.write_text(json.dumps(config(root)))
+    cfg.write_text(json.dumps(config(root)), encoding="utf-8", newline="\n")
     out = tmp_path / "manifest.json"
     result = subprocess.run(
         [
@@ -413,7 +419,7 @@ def test_git_failure_does_not_report_zero(tmp_path, inventory):
     """One invalid Git marker must cause an error, never false clean counters."""
     repo = tmp_path / "broken"
     repo.mkdir()
-    (repo / ".git").write_text("invalid marker")
+    (repo / ".git").write_text("invalid marker", encoding="utf-8", newline="\n")
     with pytest.raises(ValueError, match="Git"):
         inventory.build_manifest(config(tmp_path), clock=lambda: FIXED)
 
@@ -500,11 +506,11 @@ def test_output_cannot_overwrite_configuration_alias(tmp_path, inventory):
     root.mkdir()
     cfg = tmp_path / "cfg.json"
     payload = json.dumps(config(root))
-    cfg.write_text(payload)
+    cfg.write_text(payload, encoding="utf-8", newline="\n")
     alias = tmp_path / "alias.json"
     os.link(cfg, alias)
     assert inventory.main(["--config", str(cfg), "--out", str(alias)]) == 2
-    assert cfg.read_text() == payload
+    assert cfg.read_text(encoding="utf-8") == payload
 
 
 def test_output_symlink_and_negative_threshold(tmp_path, inventory):
@@ -512,7 +518,7 @@ def test_output_symlink_and_negative_threshold(tmp_path, inventory):
     root = tmp_path / "tree"
     root.mkdir()
     cfg = tmp_path / "cfg.json"
-    cfg.write_text(json.dumps(config(root)))
+    cfg.write_text(json.dumps(config(root)), encoding="utf-8", newline="\n")
     target = tmp_path / "target"
     target.write_bytes(b"abc")
     out = tmp_path / "out"
@@ -546,7 +552,7 @@ def test_symlink_root_loop_is_clear_cli_error(tmp_path, inventory, capsys):
     loop = tmp_path / "cycle"
     loop.symlink_to(loop)
     cfg = tmp_path / "cfg.json"
-    cfg.write_text(json.dumps(config(loop)))
+    cfg.write_text(json.dumps(config(loop)), encoding="utf-8", newline="\n")
     out = tmp_path / "out.json"
     assert inventory.main(["--config", str(cfg), "--out", str(out)]) == 2
     assert str(tmp_path) not in capsys.readouterr().err
@@ -560,7 +566,7 @@ def test_traversal_failure_preserves_previous_output(
     root = tmp_path / "tree"
     root.mkdir()
     cfg = tmp_path / "cfg.json"
-    cfg.write_text(json.dumps(config(root)))
+    cfg.write_text(json.dumps(config(root)), encoding="utf-8", newline="\n")
     out = tmp_path / "out.json"
     out.write_bytes(b"previous")
 
@@ -582,4 +588,44 @@ def test_repository_labels_are_sorted_with_external_roots(tmp_path, inventory):
     result = inventory.build_manifest(
         config(root, repos=["inside", str(external)]), clock=lambda: FIXED
     )
-    assert [row["path"] for row in result["repos"]] == [str(external), "inside"]
+    assert [row["path"] for row in result["repos"]] == [external.as_posix(), "inside"]
+
+
+@pytest.mark.parametrize("linked", [False, True])
+def test_automatic_enclosing_repository(tmp_path, inventory, linked):
+    """Nested root: zero stray files and one enclosing repo, including worktrees."""
+    repo = init_repo(tmp_path / "repo")
+    if linked:
+        commit(repo, "tracked", "2026-01-01T00:00:00Z")
+        linked_root = tmp_path / "linked"
+        git(repo, "worktree", "add", "--detach", str(linked_root))
+        repo = linked_root
+    nested = repo / "subdir" / "deeper"
+    nested.mkdir(parents=True)
+    (nested / "inside").write_bytes(b"abc")
+    result = inventory.build_manifest(config(nested, max_files=0), clock=lambda: FIXED)
+    assert result["files"] == []
+    assert result["totals"]["count"] == 0
+    assert [row["path"] for row in result["repos"]] == [repo.as_posix()]
+
+
+@pytest.mark.parametrize("follow", [False, True])
+def test_directory_junction_policy(tmp_path, inventory, monkeypatch, follow):
+    """A simulated junction follows the same policy as a directory symlink."""
+    alias = tmp_path / "alias"
+    alias.mkdir()
+    (alias / "inside").write_bytes(b"abc")
+    monkeypatch.setattr(Path, "is_junction", lambda path: path == alias, raising=False)
+    files, _ = inventory.scan(config(tmp_path, follow_symlinks=follow))
+    assert [row["path"] for row in files] == (["alias/inside"] if follow else [])
+
+
+def test_empty_ancestor_marker_is_not_repository(tmp_path, inventory):
+    """An empty ancestor marker has no Git HEAD: one stray remains visible."""
+    (tmp_path / ".git").mkdir()
+    nested = tmp_path / "nested"
+    nested.mkdir()
+    (nested / "stray").write_bytes(b"abc")
+    files, repos = inventory.scan(config(nested))
+    assert [row["path"] for row in files] == ["stray"]
+    assert repos == []

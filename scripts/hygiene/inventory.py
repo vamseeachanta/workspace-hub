@@ -33,6 +33,21 @@ def validate(config):
         raise ValueError("follow_symlinks must be boolean")
 
 
+def is_link(path):
+    """Treat directory junctions and other Windows reparse points as links."""
+    return (
+        path.is_symlink()
+        or getattr(path, "is_junction", lambda: False)()
+        or (
+            os.name == "nt"
+            and path.exists()
+            and bool(
+                path.lstat().st_file_attributes & stat.FILE_ATTRIBUTE_REPARSE_POINT
+            )
+        )
+    )
+
+
 def scan(config):
     """One deterministic traversal; no file content reads, including Git markers.
 
@@ -47,6 +62,15 @@ def scan(config):
     if any(not path.is_dir() for path in declared):
         raise ValueError("a configured repository directory does not exist")
     automatic = not declared
+    if automatic:
+        for ancestor in (root, *root.parents):
+            marker = ancestor / ".git"
+            # A root marker is queried even if malformed; ancestors must have
+            # an initialized Git directory or a worktree marker, not an empty dir.
+            if marker.is_file() or (
+                marker.is_dir() and (ancestor == root or (marker / "HEAD").is_file())
+            ):
+                return [], [ancestor]
     repos = set(declared)
     seen = set()
     files = []
@@ -97,7 +121,7 @@ def scan(config):
         directories = []
         for entry in children:
             path = Path(entry.path)
-            if entry.is_symlink():
+            if is_link(path):
                 if not follow:
                     continue
                 # Resolve loops and dangling links without opening their targets.
@@ -124,7 +148,7 @@ def scan(config):
     return sorted(files, key=lambda item: item["path"]), sorted(repos)
 
 
-# Extension lists are local conventions, not standards; task #4220, slice 2.
+# Extension lists are local conventions, not standards; see README Configuration.
 # Custom tables replace these defaults. No filename-based default is assumed.
 DEFAULT_CATEGORIES = {
     "script": {"extensions": [".py", ".sh", ".js", ".ps1", ".bat"]},
@@ -136,7 +160,7 @@ DEFAULT_CATEGORIES = {
     "build output": {"extensions": [".o", ".obj", ".so", ".dll", ".pyc"]},
     "unknown": {"extensions": []},
 }
-# Task #4220, slice 2 explicitly requests the 20 largest files.
+# Local display convention: retain at most 20 records per largest-file list.
 LARGEST_COUNT = 20
 # Format revision chosen here; README, Manifest format, defines schema 1.
 SCHEMA = 1
@@ -259,7 +283,7 @@ def build_manifest(config, *, clock=None):
     now = clock() if clock else datetime.now(UTC)
     if now.utcoffset() is None:
         raise ValueError("clock must return a timezone-aware datetime")
-    # Task #4220 slice 4 sets the default age at 24 hours.
+    # Local age convention: one day; callers can override unpushed_hours.
     hours = config.get("unpushed_hours", 24)
     if type(hours) not in (int, float) or hours < 0:
         raise ValueError("unpushed_hours must be a finite nonnegative number")
@@ -275,7 +299,7 @@ def build_manifest(config, *, clock=None):
         label = (
             path.relative_to(root).as_posix()
             if path.is_relative_to(root)
-            else str(path)
+            else path.as_posix()
         )
         states.append({"path": label, **repository_state(path, cutoff)})
     return {
@@ -289,7 +313,7 @@ def build_manifest(config, *, clock=None):
 
 
 def main(argv=None, *, clock=None):
-    # Exit codes follow task #4220 slice 3; README Exit codes defines threshold=1.
+    # README Exit codes defines threshold=1 and invalid/incomplete inventory=2.
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--config", type=Path, required=True)
     parser.add_argument("--out", type=Path, required=True)
@@ -299,7 +323,7 @@ def main(argv=None, *, clock=None):
         if args.fail_above is not None and args.fail_above < 0:
             raise ValueError("fail-above must be nonnegative")
         if (
-            args.out.is_symlink()
+            is_link(args.out)
             or args.out.resolve() == args.config.resolve()
             or (args.out.exists() and args.out.samefile(args.config))
         ):
@@ -311,7 +335,7 @@ def main(argv=None, *, clock=None):
         rendered = (
             json.dumps(manifest, indent=2, sort_keys=True, allow_nan=False) + "\n"
         )
-        args.out.write_text(rendered, encoding="utf-8")
+        args.out.write_text(rendered, encoding="utf-8", newline="\n")
     except json.JSONDecodeError:
         print("error: invalid configuration JSON", file=sys.stderr)
         return 2

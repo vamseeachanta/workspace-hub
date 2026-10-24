@@ -14,15 +14,17 @@ current working directory. Relative `repos` entries resolve against `root`.
 | Key | Type | Meaning |
 | --- | --- | --- |
 | `root` | required nonempty string | Directory to scan; recorded exactly as given. |
-| `repos` | list of directory strings, default empty | Roots to prune and query. If empty, discover `.git` directories and files, including worktrees, while walking. |
+| `repos` | list of directory strings, default empty | Roots to prune and query. If empty, discover `.git` directories and files, including worktrees; check enclosing repositories before walking. |
 | `cache_allow` | list of strings, default empty | Case-sensitive `fnmatchcase` patterns matched against directory names or root-relative POSIX paths. Matching directories are pruned. |
 | `max_files` | required nonnegative integer | Maximum stray regular files; exceeding it is an error, never a truncated successful inventory. |
 | `follow_symlinks` | boolean, default false | Follow links only within the resolved root. Directory identities prevent loops and repeated directory traversal. |
 | `categories` | optional object | Replaces the extension conventions below. Keys are category names; values contain `extensions` and/or `names` lists. |
 | `unpushed_hours` | finite nonnegative number, default 24 | Age threshold for locally reachable commits absent from locally recorded remote refs. |
 
-The age default, symlink default, largest-file count and threshold comparison are
-requirements of issue #4220's implementation specification, slices 1–4.
+The defaults of 24 hours, skipped links, 20 largest files and a strictly-greater
+threshold comparison are local implementation conventions defined by this document.
+Issue #4220 requests the inventory but does not specify these values; no accessible
+source for the previously cited implementation slices has been established.
 `max_files` is an input, rather than an assumed capacity or acceptance limit.
 A zero bound permits an empty inventory only.
 
@@ -55,7 +57,8 @@ base = Path(tempfile.mkdtemp(prefix="inventory-example-", dir=os.environ["TMPDIR
 root = base / "tree"
 (root / "notes").mkdir(parents=True)
 (root / "repo").mkdir()
-subprocess.run(["git", "init", "--quiet", str(root / "repo")], check=True)
+git_env = {key: value for key, value in os.environ.items() if not key.startswith("GIT_")}
+subprocess.run(["git", "init", "--quiet", str(root / "repo")], env=git_env, check=True)
 (root / "repo" / "inside.md").write_bytes(b"ignored")
 (root / ".cache").mkdir()
 (root / ".cache" / "cached").write_bytes(b"ignored")
@@ -65,7 +68,7 @@ os.utime(root / "notes" / "draft.md", (10, 10))
 # The bound is the hand-counted one-file example, not an operational default.
 (base / "cfg.json").write_text(json.dumps({
     "root": "tree", "repos": [], "cache_allow": [".cache"], "max_files": 1
-}), encoding="utf-8")
+}), encoding="utf-8", newline="\n")
 subprocess.run([
     sys.executable, "-I", str(scanner),
     "--config", "cfg.json", "--out", "manifest.json"
@@ -105,8 +108,8 @@ The repository has one untracked file and no commits or remote refs.
 This document defines the local schema revision `1`; it is a format identifier,
 not an externally standardized number. JSON object keys and file/repository
 lists are sorted. Files use root-relative POSIX paths. Repository paths are
-root-relative when possible; configured external repositories retain resolved
-paths. `root` retains its input spelling. `generated_utc` is an aware UTC ISO
+root-relative when possible; configured external and enclosing repositories retain
+resolved POSIX paths. `root` retains its input spelling. `generated_utc` is an aware UTC ISO
 timestamp; Python callers can supply `build_manifest(config, clock=callable)`
 or `main(arguments, clock=callable)` for reproducibility. The CLI uses UTC now.
 Identical metadata, configuration, repository state and clock produce identical
@@ -154,8 +157,8 @@ standard argparse diagnostics.
   responsibility. With an explicit list, unlisted repositories are scanned as
   ordinary directories. Automatic discovery does not descend into a discovered
   repository or cache, so nested repositories there are not queried separately.
-- Symlinks are skipped by default. When enabled, broken/looping links and links
-  outside the root are skipped; links into excluded directories are pruned.
+- Symlinks, directory junctions and other Windows reparse points are skipped by
+  default. When enabled, broken/looping links and links outside the root are skipped; links into excluded directories are pruned.
   Regular-file hard links are counted per directory entry. Special files are
   excluded. Directory aliases are traversed only once in lexical traversal order.
 - This is an observation, not an atomic filesystem snapshot. Concurrent changes
@@ -180,5 +183,5 @@ Sources (online editions retrieved 2026-10-22):
   `--all`, `--not`, `--remotes` and `%ct` define reachability and commit time.
 - Existing repository convention: `scripts/repositories/work_surface_inventory.py`
   recognizes both `.git` directories and worktree files and emits sorted JSON.
-- Issue #4220 and its implementation specification define the scope and defaults;
+- Issue #4220 defines the inventory scope. This document defines local defaults;
   independent hand calculations beside the tests and above define fixture totals.
