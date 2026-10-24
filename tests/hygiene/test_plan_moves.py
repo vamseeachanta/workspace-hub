@@ -137,8 +137,8 @@ def test_dry_run_tree_unchanged(tool, sample, tmp_path):
     """One file contains abc (3 bytes); only the external plan may change."""
     _, manifest, config = sample
     manifest_path, config_path = tmp_path / "m.json", tmp_path / "rules.json"
-    manifest_path.write_text(json.dumps(manifest))
-    config_path.write_text(json.dumps(config))
+    manifest_path.write_text(json.dumps(manifest), encoding="utf-8", newline="\n")
+    config_path.write_text(json.dumps(config), encoding="utf-8", newline="\n")
     out = tmp_path / "plan.json"
 
     def snapshot():
@@ -166,7 +166,7 @@ def test_dry_run_tree_unchanged(tool, sample, tmp_path):
         == 0
     )
     assert snapshot() == before
-    summary = json.loads(out.read_text())["summary"]
+    summary = json.loads(out.read_text(encoding="utf-8"))["summary"]
     assert summary["repos"] == {"alpha": {"count": 1, "bytes": 3}}
     assert summary["conflicts"] == summary["unmatched"] == 0
 
@@ -180,7 +180,7 @@ def reviewed(tool, sample, tmp_path):
 
 
 def events(log):
-    return [json.loads(line) for line in log.read_text().splitlines()]
+    return [json.loads(line) for line in log.read_text(encoding="utf-8").splitlines()]
 
 
 def test_apply_verified_copy_and_clock(tool, reviewed):
@@ -240,6 +240,84 @@ def test_interrupted_run_resumes(tool, reviewed, monkeypatch):
     before = log.read_bytes()
     tool.apply_plan(plan, log, token)
     assert log.read_bytes() == before
+
+
+@pytest.mark.parametrize("last_result", ["copied", "done"])
+def test_unterminated_log_refused_without_mutation(
+    tool, sample, tmp_path, monkeypatch, last_result
+):
+    """Missing LF must refuse before changing either move or the receipt log."""
+    root, manifest, config = sample
+    (root / "loose/b.txt").write_bytes(b"xyz")
+    manifest["files"].append({**manifest["files"][0], "path": "loose/b.txt"})
+    plan, log = tmp_path / "plan.json", tmp_path / "apply.jsonl"
+    tool.write_plan(tool.build_plan(manifest, config), plan)
+    token = tool.digest(plan)
+    append = tool.append_event
+
+    def interrupt(log_path, event):
+        append(log_path, event)
+        if event["result"] == last_result:
+            raise KeyboardInterrupt
+
+    with monkeypatch.context() as patch:
+        patch.setattr(tool, "append_event", interrupt)
+        with pytest.raises(KeyboardInterrupt):
+            tool.apply_plan(plan, log, token)
+    assert events(log)[-1]["result"] == last_result
+    raw = log.read_bytes()
+    assert raw.endswith(b"\n")
+    log.write_bytes(raw[:-1])
+
+    def snapshot():
+        return {
+            path.relative_to(root).as_posix(): (
+                path.stat().st_ino,
+                path.read_bytes() if path.is_file() else None,
+            )
+            for path in root.rglob("*")
+        }
+
+    before = snapshot()
+    with pytest.raises(tool.SafetyError, match="final newline"):
+        tool.apply_plan(plan, log, token)
+    assert log.read_bytes() == raw[:-1]
+    assert snapshot() == before
+    # After inspection, restoring exactly the missing LF permits resume and undo.
+    log.write_bytes(raw)
+    tool.apply_plan(plan, log, token)
+    undo = tmp_path / "undo.json"
+    tool.write_plan(tool.build_undo(log), undo)
+    tool.apply_plan(undo, tmp_path / "undo.jsonl", tool.digest(undo))
+    assert (root / "loose/a.txt").read_bytes() == b"abc"
+    assert (root / "loose/b.txt").read_bytes() == b"xyz"
+    assert not (root / "repos/alpha/docs/a.txt").exists()
+    assert not (root / "repos/alpha/docs/b.txt").exists()
+
+
+def test_append_event_refuses_unterminated_log(tool, tmp_path):
+    """An append must preserve an existing incomplete record without extending it."""
+    log = tmp_path / "apply.jsonl"
+    raw = b'{"result":"copied"}'
+    log.write_bytes(raw)
+    with pytest.raises(tool.SafetyError, match="final newline"):
+        tool.append_event(log, {"result": "done"})
+    assert log.read_bytes() == raw
+
+
+@pytest.mark.parametrize(
+    ("raw", "expected"),
+    [
+        (b"", []),
+        (b"{}\r\n", [{}]),
+        ('{"note":"\u2028"}\n'.encode("utf-8"), [{"note": "\u2028"}]),
+    ],
+)
+def test_log_uses_lf_record_boundaries(tool, tmp_path, raw, expected):
+    """Empty logs, CRLF and Unicode within JSON retain their record meaning."""
+    log = tmp_path / "apply.jsonl"
+    log.write_bytes(raw)
+    assert tool.read_events(log) == expected
 
 
 def test_interruption_after_source_removal_resumes(tool, reviewed, monkeypatch):
@@ -318,6 +396,35 @@ def test_symlink_parent_refused(tool, reviewed, tmp_path):
     assert (root / "loose/a.txt").exists()
 
 
+@pytest.mark.parametrize("dangling", [False, True])
+@pytest.mark.parametrize("location", ["root", "parent", "endpoint"])
+def test_directory_reparse_point_refused(tool, sample, monkeypatch, location, dangling):
+    """Directory reparse points must be refused even without a symlink flag."""
+    from types import SimpleNamespace
+
+    root, manifest, config = sample
+    target = {"root": root, "parent": root.parent, "endpoint": root / "loose"}[location]
+    original = Path.lstat
+
+    def reparse_stat(path, *args, **kwargs):
+        result = original(path, *args, **kwargs)
+        if path == target:
+            return SimpleNamespace(
+                st_mode=result.st_mode,
+                st_file_attributes=tool.stat.FILE_ATTRIBUTE_REPARSE_POINT,
+            )
+        return result
+
+    if dangling:
+        exists = Path.exists
+        monkeypatch.setattr(
+            Path, "exists", lambda path: False if path == target else exists(path)
+        )
+    monkeypatch.setattr(Path, "lstat", reparse_stat)
+    with pytest.raises(tool.SafetyError):
+        tool.build_plan(manifest, config)
+
+
 def test_log_cannot_be_source(tool, reviewed):
     """An append-only log must never append JSON into the original abc."""
     root, plan, _, token = reviewed
@@ -370,7 +477,9 @@ def test_lfs_stage_refused_before_move(tool, reviewed):
     root, plan, log, token = reviewed
     repo = root / "repos/alpha"
     git(repo, "init", "--quiet")
-    (repo / ".gitattributes").write_text("*.txt filter=lfs\n")
+    (repo / ".gitattributes").write_text(
+        "*.txt filter=lfs\n", encoding="utf-8", newline="\n"
+    )
     with pytest.raises(ValueError):
         tool.apply_plan(plan, log, token, git_add=True)
     assert (root / "loose/a.txt").exists()
@@ -447,7 +556,9 @@ def test_apply_cli_reports_lfs(tool, reviewed, capsys):
     root, plan, log, token = reviewed
     repo = root / "repos/alpha"
     git(repo, "init", "--quiet")
-    (repo / ".gitattributes").write_text("*.txt filter=lfs\n")
+    (repo / ".gitattributes").write_text(
+        "*.txt filter=lfs\n", encoding="utf-8", newline="\n"
+    )
     assert (
         tool.main(
             ["--apply", str(plan), "--log", str(log), "--confirm", token, "--git-add"]
@@ -523,7 +634,7 @@ def test_documented_example_end_to_end(tmp_path):
     The literal abc contains three ASCII bytes; after undo the sole stray file
     again contains those bytes and the repository destination is absent.
     """
-    document = SCRIPT.with_name("PLAN_MOVES.md").read_text()
+    document = SCRIPT.with_name("PLAN_MOVES.md").read_text(encoding="utf-8")
     commands = document.split("```sh\n", 1)[1].split("\n```", 1)[0]
     env = clean_git_env()
     env["EXAMPLE_DIR"] = str(tmp_path / "example")

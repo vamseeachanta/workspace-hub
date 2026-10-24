@@ -9,6 +9,7 @@ each file before removing its original name. Undo uses the same protocol.
 | Revision | Date | Change and reason |
 | --- | --- | --- |
 | 1 | 2026-10-22 | Add proposals, summaries, verified moves, staging and undo to preserve stray work files in repositories. |
+| 2 | 2026-10-24 | Refuse unterminated logs before resume, write text with UTF-8 and LF, and reject directory reparse points to preserve recovery boundaries. |
 
 ## Inputs and conventions
 
@@ -56,8 +57,8 @@ Configuration is a JSON object:
   only to the ignored count. An empty `rules` list is allowed.
 - Absolute paths, traversal, backslashes, colons, control characters, `.git`
   components (including case aliases), trailing dots or spaces, reserved device
-  names and symlinks in endpoints are refused. Repository directories must
-  exist. Destination parent directories may be created during apply.
+  names, symlinks and Windows reparse points are refused at endpoints and their
+  ancestors, including root ancestors and file reparse points. Repository directories must exist. Destination parent directories may be created during apply.
 
 The plan records `schema`, `kind`, `root`, `repos`, `entries` and `summary`.
 Each entry has `source`, `repo`, `dest`, `size`, `reason` and `status`. Matched
@@ -105,8 +106,8 @@ manifest = {
                "mtime": "2026-01-01T00:00:00Z", "category": "work"}],
 }
 rules = {"rules": [{"match": "loose", "repo": "notes", "dest": "docs"}]}
-(example / "manifest.json").write_text(json.dumps(manifest))
-(example / "rules.json").write_text(json.dumps(rules))
+(example / "manifest.json").write_text(json.dumps(manifest), encoding="utf-8", newline="\n")
+(example / "rules.json").write_text(json.dumps(rules), encoding="utf-8", newline="\n")
 PY
 git init --quiet "$EXAMPLE/tree/repos/notes"
 python -I "$TOOL" --manifest "$EXAMPLE/manifest.json" --config "$EXAMPLE/rules.json" --out "$EXAMPLE/plan.json"
@@ -165,10 +166,20 @@ Re-run the identical apply command and log to resume. A `copied` receipt permits
 finishing the removal after re-verification, including when interruption happened
 after removal but before `done`. `done` steps verify the destination and skip
 copying; a recreated source causes refusal. A log for a different plan is refused.
-A truncated log or a copy interrupted before its `copied` receipt requires manual
+A log whose final record lacks LF is refused before resume changes any files,
+even when that record contains complete JSON. A truncated log or a copy
+interrupted before its `copied` receipt requires manual
 inspection. The tool preserves both the log and any partial copy; it does not
-truncate or repair them. Flushes improve durability but do not provide a
-transaction spanning the filesystem and log across power loss.
+truncate or repair them. Preserve a copy of the log before manual inspection.
+Check the final record against the reviewed plan and the actual source and
+destination bytes. If inspection establishes that only the final LF is missing,
+append exactly one LF and repeat the original apply command before generating
+undo. Otherwise retain both copies and the log for further inspection.
+
+Logs use UTF-8 with LF record boundaries; existing CRLF records are readable.
+The writer also refuses to extend an unterminated record. Flushes improve
+durability but do not provide a transaction spanning the filesystem and log
+across power loss.
 
 Use exclusive access to the source tree, destination repositories and log during
 apply. Concurrent writers, symlink swaps, changing mounts and concurrent apply

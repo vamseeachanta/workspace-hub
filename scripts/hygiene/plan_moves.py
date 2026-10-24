@@ -67,6 +67,17 @@ def relative(value, *, directory=False):
     return value
 
 
+def is_link(path):
+    """Reject symlinks and Windows reparse points, including junctions."""
+    try:
+        info = path.lstat()
+    except (FileNotFoundError, NotADirectoryError):
+        return False
+    return stat.S_ISLNK(info.st_mode) or bool(
+        getattr(info, "st_file_attributes", 0) & stat.FILE_ATTRIBUTE_REPARSE_POINT
+    )
+
+
 def checked_path(root, value, *, directory=False):
     relative(value, directory=directory)
     path = root if value == "." else root.joinpath(*value.split("/"))
@@ -74,14 +85,19 @@ def checked_path(root, value, *, directory=False):
     current = root
     for part in path.relative_to(root).parts:
         current /= part
-        if current.is_symlink():
+        if is_link(current):
             raise SafetyError("symlinks are not permitted")
     return path
 
 
 def checked_root(value):
     root = Path(value)
-    if not root.is_absolute() or root.resolve() != root or not root.is_dir():
+    if (
+        not root.is_absolute()
+        or root.resolve() != root
+        or not root.is_dir()
+        or any(is_link(path) for path in (root, *root.parents))
+    ):
         raise SafetyError(
             "root must be an existing absolute directory without symlinks"
         )
@@ -266,7 +282,7 @@ def write_plan(plan, out, protected=()):
     if output.resolve() in paths:
         raise SafetyError("output would replace an input or move endpoint")
     # Exclusive creation avoids overwriting unrelated files, including symlinks.
-    with output.open("x", encoding="utf-8") as stream:
+    with output.open("x", encoding="utf-8", newline="\n") as stream:
         json.dump(plan, stream, indent=2, sort_keys=True)
         stream.write("\n")
 
@@ -309,8 +325,13 @@ def remove_verified_source(root, entry):
 
 
 def append_event(log, event):
-    with Path(log).open("a", encoding="utf-8") as stream:
-        stream.write(json.dumps(event, sort_keys=True) + "\n")
+    with Path(log).open("a+b") as stream:
+        stream.seek(0, os.SEEK_END)
+        if stream.tell():
+            stream.seek(-1, os.SEEK_END)
+            if stream.read(1) != b"\n":
+                raise SafetyError("log is missing its final newline")
+        stream.write((json.dumps(event, sort_keys=True) + "\n").encode("utf-8"))
         stream.flush()
         os.fsync(stream.fileno())
 
@@ -321,8 +342,11 @@ def read_events(log):
         return []
     if path.is_symlink() or not path.is_file():
         raise SafetyError("log must be a regular file")
-    # A torn final JSON line is refused rather than silently discarded.
-    return [parse_json(line) for line in path.read_text(encoding="utf-8").splitlines()]
+    # Refuse an unterminated record before any append or filesystem mutation.
+    raw = path.read_bytes()
+    if raw and not raw.endswith(b"\n"):
+        raise SafetyError("log is missing its final newline")
+    return [parse_json(line.decode("utf-8")) for line in raw.split(b"\n")[:-1]]
 
 
 def git_run(repo, args):
