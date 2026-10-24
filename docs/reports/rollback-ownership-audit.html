@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rollback ownership audit</title>
+<style>
+body { max-width: 78rem; margin: 2rem auto; padding: 0 1rem; font: 1rem/1.5 system-ui; color: #182633; }
+table { border-collapse: collapse; width: 100%; margin-top: 1rem; }
+th, td { border: 1px solid #aab7c4; padding: .6rem; text-align: left; vertical-align: top; }
+caption { caption-side: bottom; text-align: left; padding: .6rem 0; }
+code { overflow-wrap: anywhere; }
+.finding { border-left: .3rem solid #b34522; padding-left: 1rem; }
+</style>
+</head>
+<body>
+<h1>Rollback ownership audit</h1>
+<h2>Summary</h2>
+<p>The audit criterion is that a refused or unstarted action shall not acquire
+restoration authority from its presence in a batch snapshot. A started action may
+require recovery after a partial write. Issue 3868 defines this criterion and
+requires observation of untouched objects, rather than final bytes alone.</p>
+<p>The isolated suite passes 13 cases. It confirms started-action filtering in the
+sibling repair caller and reproduces unresolved ownership gaps in the materializer
+and two backup-only shell helpers. Passing characterization cases establish the
+presence of those gaps; they do not qualify the helpers for concurrent use.
+Production helpers are unchanged. Repairs require their own bounded review.</p>
+<h2>Revision history</h2>
+<table>
+<tr><th>Revision</th><th>Date</th><th>Change and reason</th></tr>
+<tr><td>Initial</td><td>2026-10-22</td><td>Add call-site inventory, sentinel regressions and repair dispositions for issue 3868.</td></tr>
+<caption>Revision history for this audit.</caption>
+</table>
+<h2>Scope and method</h2>
+<p>Slice 1 inventories rollback ownership in the agent, skill, readiness and cron
+transaction helpers. Slice 2 exercises refused and partial actions with disposable
+sentinels. Slice 3 records broader shell call sites, unresolved findings and the
+worked example below. These are audit slices, not production repairs.</p>
+<p>Discovery uses text searches for rollback, restoration and recovery under
+<code>scripts/</code>, followed by inspection of the call sites listed below.
+The inventory is bounded: unrelated archival restore, memory synchronization,
+anti-rollback policy validation and ordinary branch cleanup are not transaction
+recovery and are excluded. A text search does not establish exhaustive coverage
+of arbitrary undo logic. No live recovery, installation or solver is executed.</p>
+<table>
+<tr><th>Helper and caller</th><th>Ownership / started record</th><th>Audit disposition</th></tr>
+<tr><td><a href="../../scripts/readiness/repair-sibling-sso-flow.py">Sibling repair</a>: <code>_apply_repairable_actions → restore_owned_paths</code></td>
+<td><code>started</code> is appended after per-action validation; only that subset of backups reaches restoration.</td>
+<td>Regression-qualified for refusal between actions and failure after unlink. The raw restoration helper is unsafe without its caller's filtering; a negative control reproduces deletion of a foreign sentinel. Started-path concurrent replacement remains outside this qualification.</td></tr>
+<tr><td><a href="../../scripts/skills/materialize_profile.py">Materializer</a>: <code>rollback → rollback_candidates</code>; <a href="../../scripts/skills/materialize_profile_fs.py">filesystem helpers</a></td>
+<td><code>staged</code>, <code>replace-intent</code>, <code>written</code>; postimage digest; directory created flag and identity.</td>
+<td class="finding">Unresolved: intent precedes the final replacement check. A matching foreign postimage can be selected after replacement refuses. Staged-only matching bytes are refused. Directory removal is nonrecursive and identity-checked.</td></tr>
+<tr><td><a href="../../scripts/agents/claude_runtime_transaction.py">Runtime transaction</a>: <code>rollback</code>; <a href="../../scripts/agents/claude_native_pilot.py">pilot</a>: <code>rollback_trial</code>, <code>recover_pilot</code></td>
+<td><code>legacy_parked</code>, <code>native_record</code>, <code>created_rules</code>, phase and parent/link identity checks.</td>
+<td>Refused begin and rollback preserve a foreign native sentinel and legacy link in the audit fixture. Capture is not exercised by that case: captured records are seeded from actual temporary objects because capture separately rejects repository ancestors. Partial low-level move failures require separate investigation.</td></tr>
+<tr><td><a href="../../scripts/agents/claude_native_restore.py">Native restore</a>: <code>run → unwind</code></td>
+<td><code>moves</code> appended after rename; source, parent and destination checks before recovery.</td>
+<td>Inspected only. Failure between rename and append can leave recovery information incomplete. No Windows execution or qualification is claimed.</td></tr>
+<tr><td><a href="../../scripts/cron/cron_apply.py">Cron apply</a>: <code>_finish_exact → _rollback</code></td>
+<td>Initial write observation plus locked comparison of current bytes against the observed post-write state.</td>
+<td>Inspected only. A changed rollback observation aborts recovery. Identical concurrent bytes and attribution of unexpected initial post-write bytes remain limits of the cooperative protocol.</td></tr>
+<tr><td><a href="../../scripts/cron/harness-update.sh">Update helpers</a>: <code>rollback_git</code>, <code>rollback_npm</code>; <a href="../../scripts/cron/harness-update-windows.sh">companion update helper</a></td>
+<td>Prior revision/version and health-failure branches; no path-specific started or later-writer ownership token.</td>
+<td>Repair candidate: prior revision/version is not proof of exclusive ownership. Git recovery can discard concurrent changes. Inspected only; no package or Git mutation is executed.</td></tr>
+<tr><td><a href="../../scripts/development/ai-workflow/auto-fix-loop.sh">Fix loop</a>: <code>verify_fix → rollback_fix</code></td>
+<td>Backup existence; <code>apply_fix</code> return is not checked before verification/recovery.</td>
+<td class="finding">Isolated helper reproduces overwriting an unstarted foreign destination from an old backup. Repair should bind recovery to a started mutation and current owned postimage; a backup filename alone is insufficient.</td></tr>
+<tr><td><a href="../../scripts/operations/baseline-validation/hooks/baseline-auto-fix.sh">Baseline auto-fix</a>: syntax failure → <code>restore_backup</code></td>
+<td>Backup existence; recovery can run after validation even when no formatter succeeds.</td>
+<td class="finding">Isolated helper reproduces the same unowned overwrite. Caller-wide no-mutation and partial-mutation fault injection remains a repair prerequisite.</td></tr>
+<tr><td><a href="../../scripts/propagate-ecosystem.sh">Propagation</a>: failed link creation → backup move</td>
+<td>Previous move into a dated backup; no later-writer identity guard at restoration.</td>
+<td>Inspected only. An occupied destination may change move semantics or conflict with restoration; a bounded race fixture is still required.</td></tr>
+<tr><td><a href="../../scripts/install/disable-cnh-source-watch-timer.sh">Timer disable</a>: failed post-state → enable</td>
+<td>Baseline/apply comparison, followed by disable and post-state observation.</td>
+<td>Inspected only. Recovery enables without a rollback ownership comparison and may not reproduce every original state.</td></tr>
+<tr><td><a href="../../scripts/benchmarks/ntfs3-trial.sh">Filesystem trial</a>: explicit <code>rollback</code></td>
+<td>Backup existence and working-directory guard.</td>
+<td>Manual operation; no automatic started-action journal or later-writer comparison. System mutation is excluded from this audit's execution authority.</td></tr>
+<caption>Inspected call sites and the limits of the recorded ownership evidence.</caption>
+</table>
+<h2>Worked example: refusal between actions</h2>
+<p>Inputs: action A will replace a link whose original target is
+<code>original</code>; action B is initially absent. Both pass the initial batch
+validation. After A is changed, a concurrent writer creates B with bytes
+<code>concurrent sentinel\n</code> and native ownership becomes visible.</p>
+<p>Method: the second validation refuses B. The independent expected restoration
+set is <code>{A}</code>, because only A passed its last validation and entered
+mutation. A is restored to its original target. B retains its bytes, device,
+inode, mode and modification/change times. A spy records the exact restore set
+and path removals, detecting removal/recreation even if the final bytes match.</p>
+<p>Answer: all file, symlink and directory sentinel variants retain B, with only
+A passed to restoration. The partial-write variant fails after unlinking A and
+still restores A. The unsafe negative control passes the whole snapshot directly
+to restoration and deletes B, demonstrating that the fixture detects the defect.</p>
+<h2>Worked example: intent is not started mutation</h2>
+<p>Inputs: a materializer entry has absent preimage and planned bytes
+<code>postimage\n</code>. A staged payload exists. Method: after
+<code>replace-intent</code> is saved, the injected concurrent writer creates the
+destination with those same planned bytes. The real replacement helper refuses
+because the destination no longer matches the absent preimage.</p>
+<p>Answer: the staged payload remains untouched, yet
+<code>rollback_candidates</code> selects the foreign destination because intent
+and postimage digest match. This is an unresolved ownership defect, not a
+successful recovery. A repair must distinguish refused replacement from a
+replacement that began, while retaining recovery for an actual partial mutation.</p>
+<h2>Verification and sources</h2>
+<p><a href="../../tests/readiness/test_rollback_ownership_audit.py">The audit suite</a>
+contains the independent hand traces, negative controls and literal synthetic
+bytes used as expected values. No standards-derived constants, engineering
+coefficients or numerical acceptance limits are introduced; equations and
+published calculation examples are inapplicable to this filesystem audit.</p>
+<p>Executed: <code>python -m pytest tests/readiness/test_rollback_ownership_audit.py
+-q -rA -p no:cacheprovider</code>, with an external temporary directory and pytest
+and PyYAML supplied through uv: 13 passed. Executed:
+<code>ruff check tests/readiness/test_rollback_ownership_audit.py --no-cache</code>:
+passed. The commands run on the uncommitted tree. Production helpers are read-only
+inputs; their complete historical test suites are not claimed as executed.</p>
+<p>Issue 3868 supplies the acceptance criterion. Its linked issue 3062 currently
+has a broader skill/state cleanup scope; its current title does not independently
+establish rollback implementation history. The implementation links above are
+the source for each ownership claim. No external engineering data is consumed.</p>
+<h2>Follow-up and review limits</h2>
+<p>Issue 3868 remains open for triage of the materializer and backup-only findings,
+assignment of bounded repair issues and review of the inspected-only candidates.
+No issue or comment is created by this audit. Characterization assertions shall
+be changed into preservation assertions when the owning repair lands; they are
+not permanent acceptance of the unsafe behavior.</p>
+<p>Adversarial self-review checks source attribution, intent-versus-mutation,
+partial recovery and object identity. Independent second-provider review remains
+pending. No other model is invoked. No live state is restored and no production
+helper is changed.</p>
+<h2>Baseline</h2><p>None.</p>
+<h2>Hooks that could not run</h2><p>The hook framework is not invoked under the task contract; the runner will execute repository hooks during commit.</p>
+</body>
+</html>
