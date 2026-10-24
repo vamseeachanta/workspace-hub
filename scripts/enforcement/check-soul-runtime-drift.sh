@@ -140,7 +140,11 @@ check_autoload_wiring GEMINI.md "@config/agents/gemini/SOUL.runtime.md"
 if [[ "${drift_count}" -gt 0 ]]; then
     echo
     echo "DRIFT DETECTED: ${drift_count} artifact(s) out of sync."
-    echo "Fix: bash scripts/agents/build-soul-runtime.sh && git add config/agents/**/*.runtime.md"
+    # Bash printf %q preserves spaces and shell metacharacters in the verified root.
+    # Keep rebuild, staging and readback in one fail-closed target subshell.
+    printf -v repair_root '%q' "${REPO_ROOT}"
+    repair_outputs="config/agents/hermes/SOUL.runtime.md config/agents/claude/SOUL.runtime.md config/agents/codex/SOUL.runtime.md config/agents/codex/AGENTS.runtime.md config/agents/gemini/SOUL.runtime.md config/agents/agy/SOUL.runtime.md"
+    echo "Fix: (while IFS= read -r binding; do unset \"\$binding\"; done < <(git rev-parse --local-env-vars); cd -- ${repair_root} && bash scripts/agents/build-soul-runtime.sh && git add -- ${repair_outputs} && git diff --cached --stat -- ${repair_outputs})"
     exit 1
 fi
 
