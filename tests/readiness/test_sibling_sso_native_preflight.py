@@ -1,10 +1,12 @@
 from __future__ import annotations
 
 import importlib.util
+import os
 import subprocess
 from pathlib import Path
 
 import pytest
+from fixture_modes import assert_file_modes, prepare_file_mode
 
 
 def load_repair():
@@ -26,9 +28,17 @@ def git(repo: Path, *args: str) -> str:
 def commit_all(repo: Path, message: str = "fixture") -> None:
     git(repo, "add", "-A")
     git(repo, "commit", "-m", message)
+    if os.name != "nt":
+        assert_file_modes(repo, "AGENTS.md", executable=False)
 
 
 def native_repo(monkeypatch, tmp_path: Path):
+    # Fixture Git writes must never inherit bindings to the caller checkout.
+    for key in list(os.environ):
+        if key.startswith("GIT_"):
+            monkeypatch.delenv(key)
+    monkeypatch.setenv("GIT_CONFIG_NOSYSTEM", "1")
+    monkeypatch.setenv("GIT_CONFIG_GLOBAL", os.devnull)
     repair = load_repair()
     skill_root = tmp_path / "workspace-hub/.claude/skills"
     skill_root.mkdir(parents=True)
@@ -40,10 +50,13 @@ def native_repo(monkeypatch, tmp_path: Path):
     git(repo, "config", "user.email", "test@example.com")
     git(repo, "config", "user.name", "Test User")
     git(repo, "config", "core.autocrlf", "false")
+    if os.name != "nt":
+        git(repo, "config", "core.filemode", "true")
     (repo / ".agents/skills").mkdir(parents=True)
     (repo / "AGENTS.md").write_text(
         "# project\nContract: ../workspace-hub/AGENTS.md\n"
     )
+    prepare_file_mode(repo / "AGENTS.md", executable=False)
     monkeypatch.setattr(
         repair,
         "load_registry",
@@ -220,3 +233,56 @@ def test_apply_time_native_drift_blocks_on_preserved_codex_path(
     assert '"kind": "unsafe_owned_path"' in diagnostic
     assert (codex / "sentinel").read_bytes() == b"preserved\n"
     assert not (repo / ".gemini/skills").exists()
+
+
+@pytest.mark.skipif(os.name == "nt", reason="Requires native POSIX mode semantics")
+def test_native_owned_mode_drift_blocks_before_repair(monkeypatch, tmp_path, capsys):
+    """Changing only the committed 644 file to 755 makes the owned path dirty."""
+    repair, repo = native_repo(monkeypatch, tmp_path)
+    commit_all(repo)
+    prepare_file_mode(repo / "AGENTS.md", executable=True)
+
+    result, _ = build_and_apply(repair, repo)
+
+    assert result == 3
+    assert '"reason": "dirty_touched_paths"' in capsys.readouterr().err
+    assert not (repo / ".gemini/skills").exists()
+
+
+@pytest.mark.skipif(os.name == "nt", reason="Requires native POSIX mode semantics")
+@pytest.mark.parametrize("fail_verification", [False, True])
+def test_native_modes_survive_forward_and_recovery(monkeypatch, tmp_path, fail_verification):
+    """Clean 644 input permits repair; a post-write failure restores its preimage.
+
+    Expected statuses follow apply_manifest: 0 on success, 4 on rollback.
+    The old link and bytes are recorded independently before either transition.
+    """
+    repair, repo = native_repo(monkeypatch, tmp_path)
+    agents = repo / "AGENTS.md"
+    agents.write_text("# project\nContract: ../AGENTS.md\n")
+    link = repo / ".gemini/skills"
+    link.parent.mkdir()
+    old_target = "../../.claude/skills"
+    link.symlink_to(old_target, target_is_directory=True)
+    commit_all(repo)
+    before = agents.read_bytes(), agents.stat().st_mode, link.readlink()
+    if fail_verification:
+        original = repair.rewrite_agents_pointer
+
+        def fail_after_rewrite(*args):
+            original(*args)
+            raise RuntimeError("injected failure after owned file rewrite")
+
+        monkeypatch.setattr(repair, "rewrite_agents_pointer", fail_after_rewrite)
+
+    result, _ = build_and_apply(repair, repo)
+
+    assert result == (4 if fail_verification else 0)
+    if fail_verification:
+        assert (agents.read_bytes(), agents.stat().st_mode, link.readlink()) == before
+        assert_file_modes(repo, "AGENTS.md", executable=False)
+        assert scoped_status(repo, "AGENTS.md", ".gemini/skills") == ""
+    else:
+        assert "Contract: ../workspace-hub/AGENTS.md" in agents.read_text()
+        assert link.readlink().as_posix() == "../../workspace-hub/.claude/skills"
+        assert agents.stat().st_mode == before[1]
