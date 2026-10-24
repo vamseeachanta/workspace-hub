@@ -20,18 +20,18 @@ REPO_ROOT="$(git -C "$(dirname "${BASH_SOURCE[0]:-$0}")" rev-parse --show-toplev
 GUARD="${REPO_ROOT}/scripts/lib/worktree_guard.py"  # #3143 deny-by-default ownership guard
 source "${REPO_ROOT}/scripts/lib/tier1-repos.sh"
 TIER1_REPOS=(workspace-hub "${TIER1_PYTHON_REPOS[@]}")
-WORKSPACE_ROOT=/mnt/local-analysis/workspace-hub
-SIBLING_ROOT=/mnt/local-analysis
+WORKSPACE_ROOT="${CLEANUP_HUB_ROOT:-$REPO_ROOT}"
+SIBLING_ROOT="${CLEANUP_SIBLING_ROOT:-$(dirname "$WORKSPACE_ROOT")}"
 SAFE_BRANCH_RE='^(chore/auto-|bot/|claude-session/)'
 CLAUDE_AUTHOR_EMAIL='noreply@anthropic.com'
 REPORT_ISSUE=2652
-LOCK=/mnt/local-analysis/.daily-cleanup-lock
+LOCK="$SIBLING_ROOT/.daily-cleanup-lock"
 MAX_AUTO_MERGE_COMMITS=10
 ALLOWED_SIBLINGS=(workspace-hub .pnpm-store .Trash-1000 .cleanup-lock .cleanup-trash .daily-cleanup-lock)
 
 DATE=$(date -u +%Y-%m-%d)
 DATETIME=$(date -Iseconds)
-REPORT=$(mktemp /tmp/daily-cleanup-XXXXXX.md)
+REPORT=""  # Created only after coverage preflight succeeds.
 DRY_RUN=0
 
 # === Argument parsing ===
@@ -54,6 +54,24 @@ run() {
 }
 
 git_q() { GIT_OPTIONAL_LOCKS=0 git "$@"; }
+
+# === Coverage preflight: canonical registry, empirical sibling visit set ===
+# Keep scripts/lib/tier1-repos.sh as the only repository-list authority.
+if ! COVERAGE=$(python3 "$REPO_ROOT/scripts/lib/cleanup_runtime.py" coverage \
+    "$WORKSPACE_ROOT" "$SIBLING_ROOT" "${TIER1_REPOS_FILE:-$REPO_ROOT/config/tier1-python-repos.txt}" "${TIER1_REPOS[@]}"); then
+  printf 'Cleanup blocked: incomplete repository coverage: %s\n' "$COVERAGE" >&2
+  exit 1
+fi
+printf 'Repository coverage: %s\n' "$COVERAGE"
+AUTOMATION='{"configured":"unknown","liveness":"automation unavailable","reason":"NOT_EVALUATED: state and staleness bound required"}'
+if [[ -n "${CLEANUP_AUTOMATION_STATE:-}" && -n "${CLEANUP_AUTOMATION_MAX_AGE_SECONDS:-}" ]]; then
+  AUTOMATION=$(python3 "$REPO_ROOT/scripts/lib/cleanup_runtime.py" automation \
+      "$CLEANUP_AUTOMATION_STATE" "$CLEANUP_AUTOMATION_MAX_AGE_SECONDS") || exit 1
+fi
+printf 'Automation evidence: %s\n' "$AUTOMATION"
+REPORT=$(mktemp "${TMPDIR:?Set TMPDIR to an external scratch directory}/daily-cleanup-XXXXXX.md")
+ALLOWED_SIBLINGS+=("${TIER1_REPOS[@]}")
+VISITED=()
 
 # === Lock acquisition ===
 if [ -e "$LOCK" ]; then
@@ -83,7 +101,8 @@ fi
 {
   echo "## Daily cleanup — $DATE"
   echo ""
-  echo "Triggered: $DATETIME | host: $(hostname) | dry-run: $DRY_RUN | deferred: $DEFERRED"
+  echo "Triggered: $DATETIME | dry-run: $DRY_RUN | deferred: $DEFERRED"
+  printf "Coverage: %s\nAutomation: %s\n" "$COVERAGE" "$AUTOMATION"
   echo ""
 } > "$REPORT"
 
@@ -104,18 +123,20 @@ for repo in "${TIER1_REPOS[@]}"; do
   if [ "$repo" = "workspace-hub" ]; then
     REPO_DIR="$WORKSPACE_ROOT"
   else
-    REPO_DIR="$WORKSPACE_ROOT/$repo"
+    REPO_DIR="$SIBLING_ROOT/$repo"
   fi
 
   if [ ! -e "$REPO_DIR/.git" ]; then
     SURFACED+=("**$repo**: MISSING (not checked out on this machine)")
-    continue
+    echo "Coverage changed after preflight; cleanup stopped" >&2
+    exit 1
   fi
 
-  cd "$REPO_DIR" || { ERRORS+=("**$repo**: cd failed"); continue; }
+  cd "$REPO_DIR" || exit 1
+  VISITED+=("$repo")
 
   # --- Fetch quietly ---
-  if [ "$DEFERRED" = 0 ]; then
+  if [ "$DEFERRED" = 0 ] && [ "$DRY_RUN" = 0 ]; then
     if ! git_q fetch --quiet --prune origin 2>/dev/null; then
       ERRORS+=("**$repo**: fetch failed")
       continue
@@ -124,7 +145,7 @@ for repo in "${TIER1_REPOS[@]}"; do
 
   # --- 1. Orphan worktree prune ---
   if [ "$DEFERRED" = 0 ]; then
-    PRUNE_OUT=$(git_q worktree prune --expire=7.days --verbose 2>&1)
+    PRUNE_OUT=$(run "prune worktree metadata" git_q worktree prune --expire=7.days --verbose 2>&1)
     if [ -n "$PRUNE_OUT" ]; then
       AUTO_ACTIONS+=("**$repo**: worktree pruned — $(echo "$PRUNE_OUT" | wc -l) entries removed")
     fi
@@ -250,23 +271,22 @@ for entry in "$SIBLING_ROOT"/*; do
   SURFACED+=("**sibling-residue**: \`$entry\` ($size) — not on allowlist; investigate")
 done
 
-# === 8. Stale lock/trash dir GC ===
-if [ "$DEFERRED" = 0 ]; then
-  CLEANUP_LOCK=/mnt/local-analysis/.cleanup-lock
-  if [ -e "$CLEANUP_LOCK" ]; then
-    LOCK_AGE=$(($(date +%s) - $(stat -c %Y "$CLEANUP_LOCK")))
-    if [ "$LOCK_AGE" -gt 3600 ]; then
-      run "remove stale cleanup-lock (age=${LOCK_AGE}s)" rm -f "$CLEANUP_LOCK"
-      AUTO_ACTIONS+=("**system**: removed stale .cleanup-lock (age ${LOCK_AGE}s)")
-    fi
-  fi
-  CLEANUP_TRASH=/mnt/local-analysis/.cleanup-trash
-  if [ -d "$CLEANUP_TRASH" ]; then
-    OLD_COUNT=$(find "$CLEANUP_TRASH" -maxdepth 1 -mindepth 1 -mtime +7 -type d 2>/dev/null | wc -l)
-    if [ "$OLD_COUNT" -gt 0 ]; then
-      run "remove $OLD_COUNT cleanup-trash dirs older than 7d" find "$CLEANUP_TRASH" -maxdepth 1 -mindepth 1 -mtime +7 -type d -exec rm -rf {} +
-      AUTO_ACTIONS+=("**system**: removed $OLD_COUNT cleanup-trash dirs >7d old")
-    fi
+# === 8. Pinned staged-evidence gate: age never grants deletion ===
+if [ "${#VISITED[@]}" -ne "${#TIER1_REPOS[@]}" ]; then
+  echo "Coverage count mismatch; cleanup stopped" >&2
+  exit 1
+fi
+printf 'Visited repository set: %s\n' "${VISITED[*]}" >> "$REPORT"
+if [ "$DEFERRED" = 0 ] && [ -d "$SIBLING_ROOT/.cleanup-trash" ]; then
+  if [[ -n "${CLEANUP_VERIFICATION_ARTIFACT:-}" && -n "${CLEANUP_VERIFICATION_SHA256:-}" ]]; then
+    PURGE_ARGS=()
+    [ "$DRY_RUN" = 0 ] && PURGE_ARGS+=(--execute)
+    PURGE_RESULT=$(python3 "$REPO_ROOT/scripts/lib/cleanup_evidence.py" \
+        "$SIBLING_ROOT/.cleanup-trash" "$CLEANUP_VERIFICATION_ARTIFACT" \
+        "$CLEANUP_VERIFICATION_SHA256" "${PURGE_ARGS[@]}") || exit 1
+    SURFACED+=("**staged evidence**: $PURGE_RESULT")
+  else
+    SURFACED+=("**staged evidence**: retained; pinned verification artifact required")
   fi
 fi
 
