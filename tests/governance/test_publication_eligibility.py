@@ -44,7 +44,10 @@ def fixture(tmp_path):
 
 
 def write_export(bundle, stage, records):
-    content = json.dumps({'records': records}).encode()
+    # Independent public format: private original links never enter the stage.
+    public = [{key: row[key] for key in ('id', 'dependencies', 'payload')}
+              for row in records]
+    content = json.dumps({'records': public}).encode()
     (stage / 'export.json').write_bytes(content)
     bundle['files'] = [{'path': 'export.json', 'role': 'eligible_export',
                         'record_ids': [r['id'] for r in records],
@@ -74,6 +77,96 @@ def test_source_deferral_cascades_through_parent(tmp_path):
     # Public receipt contains no private/deferred identity or evidence locator.
     assert 'source' not in json.dumps(result)
     assert 'retention-record' not in json.dumps(result)
+
+
+def test_public_export_has_no_private_original_links(tmp_path):
+    """Hand projection removes only original_ids; four records remain eligible."""
+    bundle, stage = fixture(tmp_path)
+    original = bundle['originals'][0]
+    original['id'] = 'restricted-original-reference'
+    for row in bundle['records']:
+        row['original_ids'] = [original['id']]
+    write_export(bundle, stage, bundle['records'])
+    assert evaluate(bundle, stage)['status'] == 'eligible'
+    assert original['id'] not in (stage / 'export.json').read_text()
+    assert original['evidence_ref'] not in (stage / 'export.json').read_text()
+
+
+def test_private_links_in_staged_rows_are_rejected(tmp_path):
+    """Even reviewed bytes may not export the private provenance envelope."""
+    bundle, stage = fixture(tmp_path)
+    content = json.dumps({'records': bundle['records']}).encode()
+    (stage / 'export.json').write_bytes(content)
+    bundle['files'][0]['sha256'] = hashlib.sha256(content).hexdigest()
+    result = evaluate(bundle, stage)
+    assert result['errors'] == ['export_record_mismatch']
+
+
+@pytest.mark.parametrize('field', ['raw_sha256', 'archive_sha256'])
+def test_original_bytes_cannot_be_relabelled_as_export(tmp_path, field):
+    """Equal hashes identify the same known retained bytes, regardless of role."""
+    bundle, stage = fixture(tmp_path)
+    bundle['originals'][0][field] = bundle['files'][0]['sha256']
+    result = evaluate(bundle, stage)
+    assert result['status'] == 'blocked'
+    assert result['errors'] == ['retained_bytes_in_stage']
+
+
+def test_relationship_and_inherited_parent_closure(tmp_path):
+    """Hand closure: source defers entity, cost, relationship, inherited cost.
+
+    Independent and its independently sourced child survive: E has two members,
+    D has five. The relationship needs both an entity and an independent record;
+    a valid second dependency cannot compensate for the deferred entity.
+    """
+    bundle, stage = fixture(tmp_path)
+    bundle['records'].extend([
+        record('relationship', ['entity', 'independent']),
+        record('inherited', ['cost']), record('child', ['independent']),
+    ])
+    bundle['decisions'].update({key: approved() for key in
+                                ('relationship', 'inherited', 'child')})
+    bundle['decisions']['source']['decision'] = 'prohibited'
+    write_export(bundle, stage, [bundle['records'][3], bundle['records'][-1]])
+    assert evaluate(bundle, stage) == {
+        'status': 'eligible', 'counts': {'eligible': 2, 'deferred': 5, 'exported': 2},
+        'errors': [],
+    }
+
+
+def test_graph_order_does_not_change_closure(tmp_path):
+    """Reverse topological order still has four eligible graph members."""
+    bundle, stage = fixture(tmp_path)
+    bundle['records'].reverse()
+    write_export(bundle, stage, bundle['records'])
+    assert evaluate(bundle, stage)['counts'] == {
+        'eligible': 4, 'deferred': 0, 'exported': 4,
+    }
+
+
+def test_missing_dependency_defers_its_dependants(tmp_path):
+    """Absent root defers source, entity and cost; independent alone survives."""
+    bundle, stage = fixture(tmp_path)
+    bundle['records'][0]['dependencies'] = ['absent']
+    write_export(bundle, stage, [bundle['records'][-1]])
+    assert evaluate(bundle, stage)['counts'] == {
+        'eligible': 1, 'deferred': 3, 'exported': 1,
+    }
+
+
+def test_closure_across_export_files(tmp_path):
+    """Two exports partition the four-node graph; cross-file links stay valid."""
+    bundle, stage = fixture(tmp_path)
+    first_entry = copy.deepcopy(bundle['files'][0])
+    write_export(bundle, stage, bundle['records'][:2])
+    (stage / 'export.json').rename(stage / 'parents.json')
+    first_entry.update(bundle['files'][0], path='parents.json')
+    write_export(bundle, stage, bundle['records'][2:])
+    bundle['files'].append(first_entry)
+    assert evaluate(bundle, stage)['status'] == 'eligible'
+    # The known retained bytes match the second entry, so every file is checked.
+    bundle['originals'][0]['archive_sha256'] = first_entry['sha256']
+    assert evaluate(bundle, stage)['errors'] == ['retained_bytes_in_stage']
 
 
 def test_deferred_record_in_stage_blocks(tmp_path):
@@ -246,6 +339,12 @@ def test_documented_example(tmp_path):
     digest = example.build_example(output)
     # Synthetic approval injection is confined to this test, not the generator.
     bundle = pe.load_json((output / 'bundle.json').read_text())
+    staged = pe.load_json((output / 'stage/export.json').read_text())
+    assert staged == {'records': [{
+        'id': 'independent', 'dependencies': [],
+        'payload': {'note': 'synthetic example'},
+    }]}
+    assert bundle['records'][-1]['original_ids'] == ['synthetic-input']
     result = pe.validate_bundle(bundle, output / 'stage', digest, 'public-example')
     assert result == {'status': 'eligible', 'counts': {
         'eligible': 1, 'deferred': 3, 'exported': 1}, 'errors': []}
