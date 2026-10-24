@@ -18,15 +18,10 @@ REPO_ROOT="$(git -C "$SCRIPT_DIR" rev-parse --show-toplevel 2>/dev/null)" || {
 
 DATE_COMPACT="$(date +%Y%m%d)"
 DATE_ISO="$(date +%Y-%m-%d)"
-LOG_DIR="${REPO_ROOT}/logs/compliance"
+LOG_DIR="${COMPLIANCE_REPORTS_DIR:-${REPO_ROOT}/logs/compliance}"
 LOG_FILE="${LOG_DIR}/daily-${DATE_COMPACT}.log"
 DASHBOARD_SCRIPT="${SCRIPT_DIR}/compliance-dashboard.sh"
 DRY_RUN="${DRY_RUN:-false}"
-
-# Alert thresholds
-THRESHOLD_HIGH=50    # Below this: create issue with priority:high
-THRESHOLD_CRITICAL=30  # Below this: add priority:critical
-THRESHOLD_PASS=80    # At or above this: log as pass, no action
 
 mkdir -p "$LOG_DIR"
 
@@ -41,60 +36,52 @@ if [[ ! -x "$DASHBOARD_SCRIPT" ]]; then
     exit 1
 fi
 
-DASHBOARD_OUTPUT="$(bash "$DASHBOARD_SCRIPT" 2>&1)" || true
-echo "$DASHBOARD_OUTPUT" >> "$LOG_FILE"
-
-# ── Parse compliance percentage from output ──────────────────────────────────
-# The dashboard outputs: "Compliance rate:    NN% (threshold: MM%)"
-COMPLIANCE_RATE="$(echo "$DASHBOARD_OUTPUT" | grep -oP 'Compliance rate:\s+\K[0-9]+' || echo "")"
-
-if [[ -z "$COMPLIANCE_RATE" ]]; then
-    # Try to parse from JSON output as fallback
-    COMPLIANCE_RATE="$(echo "$DASHBOARD_OUTPUT" | grep -oP '"compliance_rate":\s*\K[0-9]+' || echo "")"
+# Use one machine-readable document; nested diagnostic verdicts are unrelated.
+DASHBOARD_STATUS=0
+DASHBOARD_OUTPUT="$(cd "$REPO_ROOT" && bash "$DASHBOARD_SCRIPT" --json)" || DASHBOARD_STATUS=$?
+printf '%s\n' "$DASHBOARD_OUTPUT" >> "$LOG_FILE"
+if [[ "$DASHBOARD_STATUS" -ne 0 && "$DASHBOARD_STATUS" -ne 1 ]]; then
+    log "ERROR: Dashboard execution failed (status ${DASHBOARD_STATUS})"
+    exit 1
 fi
 
-if [[ -z "$COMPLIANCE_RATE" ]]; then
-    # Check if there were no commits (which is fine)
-    if echo "$DASHBOARD_OUTPUT" | grep -q '"total_commits": *0\|No commits in window'; then
-        log "No commits in window — nothing to check"
-        exit 0
-    fi
-    log "WARNING: Could not parse compliance rate from dashboard output"
+# ISO week year is required at calendar-year boundaries.
+ISO_WEEK="$(date +%G-W%V)"
+ALERT_OUTPUT="$(printf '%s\n' "$DASHBOARD_OUTPUT" | python3 "${SCRIPT_DIR}/compliance_alert.py" \
+    --date "$DATE_ISO" --week "$ISO_WEEK")" || {
+    log "ERROR: Dashboard report validation failed"
+    exit 1
+}
+mapfile -t ALERT_LINES <<< "$ALERT_OUTPUT"
+ACTION="${ALERT_LINES[0]}"
+COMPLIANCE_RATE="${ALERT_LINES[1]}"
+
+# A FAIL report must exit 1; a PASS report must exit 0.
+if [[ ( "$ACTION" == "alert" && "$DASHBOARD_STATUS" -ne 1 ) ||
+      ( "$ACTION" == "no-alert" && "$DASHBOARD_STATUS" -ne 0 ) ]]; then
+    log "ERROR: Dashboard exit status disagrees with report verdict"
+    exit 1
+fi
+if [[ "$ACTION" == "no-alert" ]]; then
+    log "PASS: No alert required (compliance ${COMPLIANCE_RATE}%)"
     exit 0
 fi
 
-log "Compliance rate: ${COMPLIANCE_RATE}%"
+SEVERITY="${ALERT_LINES[2]}"
+PRIORITY_LABEL="${ALERT_LINES[3]}"
+ISSUE_TITLE="${ALERT_LINES[4]}"
+printf -v ISSUE_BODY '%s\n' "${ALERT_LINES[@]:5}"
 
-# ── Parse additional details from JSON ───────────────────────────────────────
-TOTAL_COMMITS="$(echo "$DASHBOARD_OUTPUT" | grep -oP '"total_commits":\s*\K[0-9]+' || echo "?")"
-REVIEWED="$(echo "$DASHBOARD_OUTPUT" | grep -oP '"reviewed":\s*\K[0-9]+' || echo "?")"
-UNREVIEWED="$(echo "$DASHBOARD_OUTPUT" | grep -oP '"unreviewed":\s*\K[0-9]+' || echo "?")"
-VERDICT="$(echo "$DASHBOARD_OUTPUT" | grep -oP '"verdict":\s*"\K[^"]+' || echo "?")"
-
-# ── Threshold evaluation ─────────────────────────────────────────────────────
-if [[ "$COMPLIANCE_RATE" -ge "$THRESHOLD_PASS" ]]; then
-    log "PASS: Compliance at ${COMPLIANCE_RATE}% (>= ${THRESHOLD_PASS}%) — no action needed"
-    exit 0
-fi
-
-# Compliance is below pass threshold — determine severity
-PRIORITY_LABEL="priority:medium"
-SEVERITY="medium"
-if [[ "$COMPLIANCE_RATE" -lt "$THRESHOLD_CRITICAL" ]]; then
-    PRIORITY_LABEL="priority:critical"
-    SEVERITY="critical"
-elif [[ "$COMPLIANCE_RATE" -lt "$THRESHOLD_HIGH" ]]; then
-    PRIORITY_LABEL="priority:high"
-    SEVERITY="high"
-fi
-
+DEDUP_KEY="compliance-alert-${ISO_WEEK}"
 log "ALERT: Compliance at ${COMPLIANCE_RATE}% — severity: ${SEVERITY}"
 
-# ── Deduplication: check for existing open compliance issue this week ────────
-# "This week" = same ISO week number
-WEEK_NUM="$(date +%V)"
-YEAR="$(date +%Y)"
-DEDUP_KEY="compliance-alert-${YEAR}-W${WEEK_NUM}"
+# Dry runs must work offline and must never invoke the publisher, including auth.
+if [[ "$DRY_RUN" == "true" ]]; then
+    log "[DRY RUN] Would create/update issue: $ISSUE_TITLE"
+    log "[DRY RUN] Labels: compliance-alert, ${PRIORITY_LABEL}"
+    printf '%s\n' "$ISSUE_BODY" >> "$LOG_FILE"
+    exit 0
+fi
 
 # Check gh authentication
 if ! command -v gh >/dev/null 2>&1; then
@@ -111,56 +98,12 @@ fi
 EXISTING_ISSUE="$(gh issue list \
     --state open \
     --label "compliance-alert" \
-    --search "Compliance alert: W${WEEK_NUM}" \
+    --search "${DEDUP_KEY} in:body" \
     --json number,title \
-    --jq '.[0].number' 2>/dev/null || true)"
-
-# ── Build unreviewed commits section ─────────────────────────────────────────
-UNREVIEWED_SECTION=""
-# Extract unreviewed commits from dashboard output (lines starting with "  - ")
-while IFS= read -r line; do
-    [[ -z "$line" ]] && continue
-    UNREVIEWED_SECTION="${UNREVIEWED_SECTION}${line}
-"
-done < <(echo "$DASHBOARD_OUTPUT" | grep -E '^\s+- [0-9a-f]' || true)
-
-# ── Create or update GitHub issue ────────────────────────────────────────────
-ISSUE_TITLE="Compliance alert: W${WEEK_NUM} — ${COMPLIANCE_RATE}% (${SEVERITY})"
-
-ISSUE_BODY="## Compliance Alert — ${DATE_ISO}
-
-**Compliance rate:** ${COMPLIANCE_RATE}% | **Severity:** ${SEVERITY}
-**Total commits:** ${TOTAL_COMMITS} | **Reviewed:** ${REVIEWED} | **Unreviewed:** ${UNREVIEWED}
-**Dashboard verdict:** ${VERDICT}
-
-### Unreviewed Commits
-\`\`\`
-${UNREVIEWED_SECTION:-No details available — check daily log}
-\`\`\`
-
-### Thresholds
-| Range | Action |
-|-------|--------|
-| >= 80% | Pass — no action |
-| 50-79% | Medium priority issue |
-| 30-49% | High priority issue |
-| < 30% | Critical — immediate action |
-
-### Recommended Actions
-- [ ] Run cross-review on unreviewed commits
-- [ ] Investigate bypass patterns
-- [ ] Address root cause if systemic
-
----
-*Auto-generated by \`scripts/enforcement/compliance-cron.sh\` (#2031)*
-*Dedup key: ${DEDUP_KEY}*"
-
-if [[ "$DRY_RUN" == "true" ]]; then
-    log "[DRY RUN] Would create/update issue: $ISSUE_TITLE"
-    log "[DRY RUN] Labels: compliance-alert, ${PRIORITY_LABEL}"
-    echo "$ISSUE_BODY" >> "$LOG_FILE"
-    exit 0
-fi
+    --jq '.[0].number' 2>/dev/null)" || {
+    log "ERROR: Failed to search for an existing compliance issue"
+    exit 1
+}
 
 # Ensure labels exist (idempotent)
 gh label create "compliance-alert" --description "Automated compliance threshold alert" --color "D93F0B" 2>/dev/null || true
@@ -170,12 +113,10 @@ gh label create "priority:medium" --description "Medium priority" --color "FBCA0
 
 if [[ -n "$EXISTING_ISSUE" && "$EXISTING_ISSUE" != "null" ]]; then
     # Update existing issue with new data
-    gh issue comment "$EXISTING_ISSUE" --body "## Update — ${DATE_ISO}
-
-**Compliance rate:** ${COMPLIANCE_RATE}% | **Severity:** ${SEVERITY}
-**Total:** ${TOTAL_COMMITS} | **Reviewed:** ${REVIEWED} | **Unreviewed:** ${UNREVIEWED}
-
-${UNREVIEWED_SECTION:-No details available}" >/dev/null 2>&1
+    gh issue comment "$EXISTING_ISSUE" --body "$ISSUE_BODY" >/dev/null 2>&1 || {
+        log "ERROR: Failed to update compliance issue"
+        exit 1
+    }
 
     # Update severity label if it changed
     gh issue edit "$EXISTING_ISSUE" --add-label "$PRIORITY_LABEL" >/dev/null 2>&1 || true
@@ -189,7 +130,8 @@ else
         --label "compliance-alert" \
         --label "$PRIORITY_LABEL" \
         2>&1)" || {
-        log "WARNING: Failed to create GitHub issue: $ISSUE_URL"
+        log "ERROR: Failed to create compliance issue"
+        exit 1
     }
 
     if [[ -n "$ISSUE_URL" && "$ISSUE_URL" == http* ]]; then

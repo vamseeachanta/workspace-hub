@@ -24,11 +24,10 @@ The compliance dashboard tracks whether AI agents (Claude, Codex, Gemini, Hermes
 2. **Classify each commit**:
    - Skip: docs, chore, test, ci, style, sync, merge, revert, build, skill-only, email-only
    - Reviewable: feat, fix, refactor, perf, security
-3. **Check each reviewable commit for evidence**:
-   - Plan approval markers in `.planning/plan-approved/`
-   - Review files in `.planning/phases/*/REVIEWS.md`
-   - Review reports in `.claude/reports/*review*`
-   - Review keywords in commit messages
+3. **Apply the existing review-evidence heuristic**:
+   - Match review-related keywords in the commit subject or body.
+   - Search for a matching hash prefix in `.planning/**/REVIEWS.md`.
+   - These checks are historical heuristics, not authenticated review evidence.
 4. **Calculate rate**: reviewed / reviewable * 100
 5. **Compare to threshold**: default 80%
 
@@ -100,3 +99,76 @@ A cron job runs the dashboard and auto-creates issues when compliance drops belo
 - #1876 -- Enforce engineering workflow
 - #2017 -- Agent bypass resistance
 - #2012 -- Review backlog (4% compliance audit)
+
+## Daily alert report contract
+
+The daily wrapper consumes `compliance-dashboard.sh --json`, which emits a single
+JSON object and saves the same object in the daily report. The default text mode
+remains available for interactive use. `COMPLIANCE_FORMAT=json` selects the same
+transport; `COMPLIANCE_REPORTS_DIR` sets the output directory for both scripts.
+The schema version is `1`. Reports add `unreviewed_commits`, an array of objects
+with full `hash` and `subject` fields; existing metric fields remain available.
+Hash lengths follow [Git 2.55.0, hash-function-transition, Object names](https://git-scm.com/docs/hash-function-transition),
+accessed 2026-10-22: SHA-1 and SHA-256 use 40 and 64 hexadecimal digits.
+
+`compliance_alert.py` validates the version, timestamp, nonnegative integer
+counters, count identities, integer rate, top-level verdict and complete backlog
+before preparing an alert. Booleans are not counts. The timestamp must include a
+timezone and have the same calendar date as the wrapper's run date. Invalid data
+or an inconsistent dashboard exit status fails the wrapper without publishing.
+Only the top-level `verdict` describes review compliance; nested stage prompt
+drift verdicts describe separate diagnostics.
+
+The source for the alert boundaries is issue #3596, **Thresholds** (2026): below
+30 percent is critical, below 50 percent is high, and the remaining failing range
+is medium. The dashboard's configured pass threshold is authoritative (default
+80 percent). An empty or all-skipped window has no review obligations and produces
+no alert even though its legacy numeric rate remains zero. The percentage uses
+integer truncation, consistent with the existing daily and weekly reports.
+
+Alerts use the ISO week year and number in a deduplication key. The search uses
+that key in the issue body, avoiding matches from another year. A failed search
+stops publication rather than creating a duplicate. New and updated alerts carry
+the same validated counts, full backlog hashes and limitations. Commit subjects
+are indented literal text so backticks cannot close a Markdown fence.
+
+### Worked example: the reported alert
+
+Inputs from issue #3596 (2026): total commits = 49, reviewed = 3, unreviewed = 13.
+The skipped count is obtained by subtraction rather than assumed:
+
+- Reviewable = reviewed + unreviewed = 3 + 13 = 16.
+- Skipped = total minus reviewable = 49 minus 16 = 33.
+- Rate = floor(100 × reviewed / reviewable) = floor(300 / 16) = 18 percent.
+- Since 18 is below the cited critical boundary of 30 percent, severity is critical.
+- With the default threshold of 80 percent, the compliance verdict is `FAIL`.
+
+A nested drift verdict of `pass` has no effect on that answer. For zero total
+commits, or four commits that are all skipped, reviewable is zero and the answer
+is **no alert**, rather than a critical alert about an undefined ratio.
+
+An offline exercise uses the normal wrapper with publication disabled:
+
+```bash
+DRY_RUN=true COMPLIANCE_REPORTS_DIR="$TMPDIR/compliance-example" \
+  bash scripts/enforcement/compliance-cron.sh
+```
+
+Dry-run prepares and logs the full alert without invoking any publishing command,
+including authentication. Tests use synthetic histories and a fake publisher to
+exercise creation, updates and failures; a separate test runs the actual dashboard
+through the actual wrapper in a disposable repository.
+
+### Qualification limits and follow-up
+
+These changes repair alert transport, validation and actionable backlog reporting.
+The review-evidence heuristic and commit classification remain unchanged. The
+heuristic can match ordinary review-related words or author attribution and can
+misclassify evidence; it does not establish that an independent review occurred.
+Review authenticity and bypass attribution are `NOT_EVALUATED`. No historical
+commit is certified, reviewed or exempted by this change, and no enforcement gate
+is changed. The weekly aggregator continues consuming the existing integer fields.
+
+Independent review of the historical backlog and replacement of heuristic evidence
+with a separately specified authenticated record remain follow-up work. A low rate
+alone is insufficient evidence that any contributor bypassed a gate.
