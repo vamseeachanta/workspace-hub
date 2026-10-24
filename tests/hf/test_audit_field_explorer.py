@@ -110,7 +110,7 @@ def test_external_digest_is_required_and_checked(case):
 
 def test_tampered_source_is_rejected(case):
     root, _ = case
-    (root / "detail.json").write_text("{}")
+    (root / "detail.json").write_text("{}", encoding="utf-8", newline="\n")
     with pytest.raises(AuditError, match="source_integrity"):
         audit(case)
 
@@ -203,7 +203,8 @@ def test_cli_emits_report_and_sanitizes_failures(case):
     success = subprocess.run(command, capture_output=True, text=True, check=False)
     assert success.returncode == 0
     assert json.loads(success.stdout) == expected
-    path.write_text("sensitive input must never appear in diagnostics")
+    path.write_text("sensitive input must never appear in diagnostics",
+                    encoding="utf-8", newline="\n")
     failure = subprocess.run(command, capture_output=True, text=True, check=False)
     assert failure.returncode == 1
     assert json.loads(failure.stdout) == {"integrity_status": "FAIL", "rule": "bundle_digest"}
@@ -221,6 +222,41 @@ def test_projection_distinguishes_boolean_from_numeric(case):
     resync_source(case, "field_detail")
     case[1]["fields"]["field_a"]["metric"] = True
     with pytest.raises(AuditError, match="source_projection"):
+        audit(case)
+
+
+@pytest.mark.parametrize("source_number,bundle_number,rejected", [
+    ("1e-400", "0.0", True),
+    ("1.0000000000000001", "1.0", True),
+    ("1e-400", "1e-400", True),
+    ("1e-9999999999999999999999999", "0.0", True),
+    ("0.1", "0.1", False),
+    ("1.2500", "1.25", False),
+    ("1e-300", "1e-300", False),
+])
+def test_raw_numeric_projection_is_lossless(case, source_number, bundle_number, rejected):
+    root, bundle = case
+    bundle["fields"]["field_a"]["metric"] = "number_token"
+    source = bundle["sources"][0]
+    detail = {"fields": bundle["fields"], "wells": bundle["wells"]}
+    raw = dump(detail).replace(b'"number_token"', source_number.encode("utf-8"))
+    (root / source["path"]).write_bytes(raw)
+    source.update(sha256=hashlib.sha256(raw).hexdigest(), bytes=len(raw))
+    raw = dump(bundle).replace(b'"number_token"', bundle_number.encode("utf-8"))
+    path = root / "bundle.json"
+    path.write_bytes(raw)
+    digest = hashlib.sha256(raw).hexdigest()
+    if rejected:
+        with pytest.raises(AuditError, match="strict_json"):
+            audit_bundle(path, root, digest)
+    else:
+        assert audit_bundle(path, root, digest)["integrity_status"] == "PASS"
+
+
+def test_source_junction_is_rejected(case, monkeypatch):
+    monkeypatch.setattr(Path, "is_junction", lambda path: path.name == "detail.json",
+                        raising=False)
+    with pytest.raises(AuditError, match="source_path"):
         audit(case)
 
 

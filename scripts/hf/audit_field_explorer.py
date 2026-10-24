@@ -13,6 +13,7 @@ import json
 import math
 import re
 from collections import Counter
+from decimal import Decimal, DecimalException
 from pathlib import Path, PurePosixPath
 
 
@@ -54,6 +55,9 @@ def _json(raw: bytes) -> dict:
     def finite(value):
         number = float(value)
         _require(math.isfinite(number), "strict_json")
+        # The comparator serializes floats; distinct decimal inputs must never
+        # collapse to the same serialized value through underflow or rounding.
+        _require(Decimal(value) == Decimal(str(number)), "strict_json")
         return number
 
     def constant(_value):
@@ -61,7 +65,7 @@ def _json(raw: bytes) -> dict:
 
     try:
         value = json.loads(raw, object_pairs_hook=pairs, parse_float=finite, parse_constant=constant)
-    except (ValueError, UnicodeError, RecursionError):
+    except (ValueError, UnicodeError, RecursionError, DecimalException):
         raise AuditError("strict_json") from None
     _require(isinstance(value, dict), "strict_json")
     return value
@@ -85,7 +89,8 @@ def _source_path(root: Path, value: object) -> Path:
     candidate = root
     for part in relative.parts:
         candidate = candidate / part
-        _require(not candidate.is_symlink(), "source_path")
+        _require(not candidate.is_symlink()
+                 and not getattr(candidate, "is_junction", lambda: False)(), "source_path")
     _require(candidate.resolve().is_relative_to(root), "source_path")
     return candidate
 

@@ -65,12 +65,17 @@ This tool performs no network requests and writes no files.
 
 For each declared source, the method checks exact byte count and SHA-256 equality.
 Paths must be normalized relative paths, contain only portable filename
-characters, remain under the selected root, and contain no symlink component.
+characters, remain under the selected root, and contain no symlink or directory
+junction component.
 Inputs must be regular files. Concurrent modification of the source directory is
 outside the local-input trust model; use an isolated snapshot directory.
 
 The parsed bundle must match the source projections, including values and JSON
 types. Duplicate JSON keys, non-finite numbers and invalid encodings fail closed.
+Fractional numbers must retain their exact decimal value when parsed and
+serialized by the float-based comparator; underflow and excess precision are
+rejected with `strict_json`, even when both inputs contain the same value.
+Equivalent decimal spellings such as `1.2500` and `1.25` remain supported.
 Each detail field's embedded ID must equal its map key. Each well must have a
 unique nonempty `api` and one existing `field_id`. Roll-up keys must refer to
 detail fields. Atlas catalog IDs and country names must be unique in their
