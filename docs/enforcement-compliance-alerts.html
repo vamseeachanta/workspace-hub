@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<title>Compliance alert interpretation</title>
+<main>
+<h1>Compliance alert interpretation</h1>
+<p>The daily alert consumes the dashboard's top-level JSON report. A window
+with no reviewable commits is reported as not applicable and creates no alert.
+Malformed or inconsistent evidence returns an error for diagnosis.</p>
+<h2>Revision history</h2>
+<table><tr><th>Revision</th><th>Date</th><th>Change and reason</th></tr>
+<tr><td>1</td><td>2026-10-22</td><td>Distinguish skipped-only windows from
+failed review rates and validate alert evidence.</td></tr></table>
+<p>Table 1. Document revision history.</p>
+<h2>Inputs and method</h2>
+<p>The report supplies total, skipped, reviewable, reviewed and unreviewed counts,
+compliance rate, threshold and verdict. All counts are nonnegative integers.
+The count identities are total = skipped + reviewable and
+reviewable = reviewed + unreviewed. For a nonzero denominator,
+rate = floor(100 × reviewed / reviewable), in percent. The producer defines these
+identities and the integer arithmetic in
+<a href="../scripts/enforcement/compliance-dashboard.sh">compliance-dashboard.sh</a>,
+“Calculate rates” and “Determine verdict” (2026).</p>
+<p>The producer retains a numeric zero and PASS for an empty denominator for
+compatibility. The alert consumer treats that case as not applicable. It checks
+the top-level verdict against the report threshold and checks the dashboard exit
+status before considering publication. Nested drift-event verdicts do not replace
+the compliance verdict.</p>
+<h2>Worked examples</h2>
+<table>
+<tr><th>Total</th><th>Skipped</th><th>Reviewed</th><th>Unreviewed</th><th>Calculation (%)</th><th>Disposition</th></tr>
+<tr><td>7</td><td>7</td><td>0</td><td>0</td><td>0 / (7 − 7): undefined</td><td>No alert; not applicable</td></tr>
+<tr><td>7</td><td>0</td><td>0</td><td>7</td><td>floor(100 × 0 / 7) = 0</td><td>Critical alert</td></tr>
+<tr><td>10</td><td>0</td><td>3</td><td>7</td><td>floor(100 × 3 / 10) = 30</td><td>High alert</td></tr>
+<tr><td>10</td><td>0</td><td>5</td><td>5</td><td>floor(100 × 5 / 10) = 50</td><td>Medium alert</td></tr>
+<tr><td>10</td><td>0</td><td>8</td><td>2</td><td>floor(100 × 8 / 10) = 80</td><td>No alert</td></tr>
+</table>
+<p>Table 2. Synthetic inputs and independent hand calculations. The first row
+reconstructs the count interpretation behind issue 3808; it does not certify
+historical commit review status.</p>
+<p>The alert severity boundaries (30%, 50% and the default pass threshold of 80%)
+come from issue 3808, “Thresholds” (2026), and the existing
+<a href="../scripts/enforcement/compliance-cron.sh">cron configuration</a>.
+The pass threshold now follows the validated dashboard threshold, including an
+explicit COMPLIANCE_THRESHOLD setting. These are repository workflow criteria,
+not engineering acceptance limits. No licensed standard or physical coefficient
+is used.</p>
+<h2>Reproduction</h2>
+<pre>uv run --no-project --with pytest python -m pytest tests/enforcement/test_compliance_cron.py tests/enforcement/test_compliance_dashboard.py -q -rA -p no:cacheprovider</pre>
+<p>The tests copy the consumer into disposable directories, supply synthetic
+reports and replace GitHub access with a recording stub. DRY_RUN=true permits
+inspection of the generated issue body in the daily log without querying or
+writing GitHub. Missing JSON, count disagreement, an inconsistent verdict or
+an unexpected exit status returns a nonzero status.</p>
+<h2>Limits and next action</h2>
+<p>The dashboard's existing commit classification and review-evidence heuristics
+are unchanged. Historical compliance and bypass claims are not established by
+these examples. The weekly report's empty-denominator display is outside this
+alert repair. The maintainer can inspect historical logs and arrange review of
+identified reviewable commits; this change does not retroactively review commits
+or close historical alerts. A second-provider review remains pending.</p>
+</main>
+</html>
