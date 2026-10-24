@@ -43,21 +43,21 @@ def test_golden(tmp_path, application, tail):
     """Base text; SIMPLE pressure is moved to fields and plain mode is explicit."""
     target = tmp_path / "fvSolution"
     load_module("fvsolution").write_fvsolution(target, {"application": application, "consistent": False})
-    assert target.read_text() == HEADER + tail
+    assert target.read_text(encoding="utf-8") == HEADER + tail
 
 
 def test_simplec_pressure_defect(tmp_path):
     """User Guide 6.3.2: SIMPLEC needs no pressure relaxation."""
     target = tmp_path / "fvSolution"
     load_module("fvsolution").write_fvsolution(target, {"application": "simpleFoam"})
-    relaxation = target.read_text().split("relaxationFactors", 1)[1]
+    relaxation = target.read_text(encoding="utf-8").split("relaxationFactors", 1)[1]
     assert " p " not in relaxation
 
 
 def generate(tmp_path, **settings):
     target = tmp_path / "fvSolution"
     load_module("fvsolution").write_fvsolution(target, {"application": "simpleFoam", **settings})
-    return target.read_text()
+    return target.read_text(encoding="utf-8")
 
 
 def test_simplec_default(tmp_path):
@@ -143,7 +143,7 @@ def test_comments_and_quoted_regex():
 def test_preflight_before_solver(tmp_path):
     """An invalid dictionary must fail even when no result files exist yet."""
     (tmp_path / "system").mkdir()
-    (tmp_path / "system" / "fvSolution").write_text('relaxationFactors { equations { p 0.3; } }')
+    (tmp_path / "system" / "fvSolution").write_text('relaxationFactors { equations { p 0.3; } }', encoding="utf-8", newline="\n")
     validator = load_module("validate-analysis")
     passed, issues = validator.validate_dictionaries(tmp_path)
     assert not passed
@@ -159,7 +159,7 @@ def test_missing_dictionaries(tmp_path):
 
 def test_shell_calls_writer_and_preflight_in_order():
     """Inspect the invocation contract without sourcing or running OpenFOAM."""
-    script = (SCRIPTS / "run-analysis.sh").read_text()
+    script = (SCRIPTS / "run-analysis.sh").read_text(encoding="utf-8")
     assert "from fvsolution import write_fvsolution" in script
     assert "--dictionaries-only" in script
     assert script.index("--dictionaries-only") < script.index("# Stage 3: Meshing")
@@ -168,7 +168,7 @@ def test_shell_calls_writer_and_preflight_in_order():
 
 def reference_relaxation(path):
     """Parse the committed reference block, not a duplicate of its numbers."""
-    text = path.read_text()
+    text = path.read_text(encoding="utf-8")
     assert re.search(r"\bconsistent\s+yes\s*;", text)
     start = text.index("relaxationFactors\n{")
     tail = text[start:].split("```", 1)[0].split("{%", 1)[0]
@@ -205,15 +205,15 @@ def generate_case(tmp_path, application="simpleFoam"):
     case = tmp_path / "case"
     (case / "system").mkdir(parents=True)
     config = tmp_path / "analysis.yaml"
-    config.write_text(yaml.safe_dump({"solver": {"application": application, "end_time": "END_INPUT"}, "flow": {}}))
-    script = (SCRIPTS / "run-analysis.sh").read_text()
+    config.write_text(yaml.safe_dump({"solver": {"application": application, "end_time": "END_INPUT"}, "flow": {}}), encoding="utf-8", newline="\n")
+    script = (SCRIPTS / "run-analysis.sh").read_text(encoding="utf-8")
     setup = script.split("# Stage 2: Case Setup", 1)[1]
     source = setup.split('python -c "', 1)[1].split('\n" 2>&1', 1)[0]
     source = source.replace('\\"', '"')
     for key, value in {"$ANALYSIS_YAML": config, "$RUN_DIR": case, "$SCRIPT_DIR": SCRIPTS}.items():
         source = source.replace(key, str(value))
     writer = tmp_path / "dictionary_writer.py"
-    writer.write_text(source)
+    writer.write_text(source, encoding="utf-8", newline="\n")
     result = subprocess.run([sys.executable, str(writer)], capture_output=True, text=True, check=False)
     assert result.returncode == 0, result.stderr
     return case
@@ -242,14 +242,14 @@ def test_algorithm_consistency(tmp_path, application, mutation, diagnostic):
     schemes = case / "system" / "fvSchemes"
     solution = case / "system" / "fvSolution"
     if mutation == "steady-ddt":
-        schemes.write_text(schemes.read_text().replace("Euler", "steadyState"))
+        schemes.write_text(schemes.read_text(encoding="utf-8").replace("Euler", "steadyState"), encoding="utf-8", newline="\n")
     elif mutation == "transient-ddt":
-        schemes.write_text(schemes.read_text().replace("steadyState", "Euler"))
+        schemes.write_text(schemes.read_text(encoding="utf-8").replace("steadyState", "Euler"), encoding="utf-8", newline="\n")
     elif mutation == "nested-scheme":
-        schemes.write_text('ddtSchemes { default { invalid value; } }')
+        schemes.write_text('ddtSchemes { default { invalid value; } }', encoding="utf-8", newline="\n")
     else:
-        solution.write_text(solution.read_text().replace("SIMPLE", "PISO") if application == "simpleFoam"
-                            else solution.read_text().replace("PISO", "SIMPLE"))
+        solution.write_text(solution.read_text(encoding="utf-8").replace("SIMPLE", "PISO") if application == "simpleFoam"
+                            else solution.read_text(encoding="utf-8").replace("PISO", "SIMPLE"), encoding="utf-8", newline="\n")
     passed, issues = load_module("validate-analysis").validate_dictionaries(case)
     assert not passed
     assert diagnostic in " ".join(issues)
@@ -267,11 +267,11 @@ def test_full_validation_includes_preflight(tmp_path):
     case = generate_case(tmp_path)
     (case / "0").mkdir()
     (case / "1").mkdir()
-    (case / "convergence-verdict.yaml").write_text("status: converged\n")
-    (case / "log.simpleFoam").write_text("End\n")
+    (case / "convergence-verdict.yaml").write_text("status: converged\n", encoding="utf-8", newline="\n")
+    (case / "log.simpleFoam").write_text("End\n", encoding="utf-8", newline="\n")
     assert load_module("validate-analysis").validate(str(case)) == (True, [])
     solution = case / "system" / "fvSolution"
-    solution.write_text(solution.read_text() + 'relaxationFactors { equations { p 0.3; } }')
+    solution.write_text(solution.read_text(encoding="utf-8") + 'relaxationFactors { equations { p 0.3; } }', encoding="utf-8", newline="\n")
     passed, issues = load_module("validate-analysis").validate(str(case))
     assert not passed
     assert any("duplicate" in issue for issue in issues)
@@ -280,7 +280,7 @@ def test_full_validation_includes_preflight(tmp_path):
 def test_worked_example(tmp_path):
     """Independent examples in the documentation must match actual writer tails."""
     doc = ROOT / "docs" / "engineering" / "openfoam" / "relaxation-dictionaries.md"
-    before, simplec, simple = re.findall(r"```text\n(.*?)```", doc.read_text(), re.DOTALL)
+    before, simplec, simple = re.findall(r"```text\n(.*?)```", doc.read_text(encoding="utf-8"), re.DOTALL)
     foam = load_module("foamdict")
     assert any("pressure" in issue for issue in foam.validate_fvsolution(before))
     assert any("SIMPLEC" in issue for issue in foam.validate_fvsolution(before))
@@ -311,7 +311,7 @@ def test_results_validation_regression(tmp_path, mutation, diagnostic):
     (case / "1").mkdir()
     if mutation != "no-verdict":
         status = "diverged" if mutation == "diverged" else "converged"
-        (case / "convergence-verdict.yaml").write_text(f"status: {status}\n")
+        (case / "convergence-verdict.yaml").write_text(f"status: {status}\n", encoding="utf-8", newline="\n")
     if mutation != "no-log":
         text = "End\n"
         if mutation == "fatal":
@@ -320,9 +320,9 @@ def test_results_validation_regression(tmp_path, mutation, diagnostic):
             text = "Starting\n"
         elif mutation == "continuity":
             text = "sum local = 1\nEnd\n"
-        (case / "log.simpleFoam").write_text(text)
+        (case / "log.simpleFoam").write_text(text, encoding="utf-8", newline="\n")
     if mutation == "mesh":
-        (case / "mesh-verdict.yaml").write_text("pass: false\nissues: [invalid]\n")
+        (case / "mesh-verdict.yaml").write_text("pass: false\nissues: [invalid]\n", encoding="utf-8", newline="\n")
     passed, issues = load_module("validate-analysis").validate(str(case))
     assert not passed
     assert diagnostic in " ".join(issues)
@@ -341,7 +341,7 @@ def test_dictionary_cli(tmp_path):
     assert result.returncode == 0
     assert "VALIDATION: PASS" in result.stdout
     path = case / "system" / "fvSolution"
-    path.write_text("relaxationFactors { equations { p 0.3; } }")
+    path.write_text("relaxationFactors { equations { p 0.3; } }", encoding="utf-8", newline="\n")
     result = subprocess.run(command, capture_output=True, text=True, check=False)
     assert result.returncode != 0
     assert "pressure" in result.stdout
@@ -350,7 +350,7 @@ def test_dictionary_cli(tmp_path):
 def test_ddt_field_override(tmp_path):
     case = generate_case(tmp_path, "pisoFoam")
     path = case / "system" / "fvSchemes"
-    path.write_text('ddtSchemes { default Euler; U steadyState; }')
+    path.write_text('ddtSchemes { default Euler; U steadyState; }', encoding="utf-8", newline="\n")
     passed, issues = load_module("validate-analysis").validate_dictionaries(case)
     assert not passed
     assert any("ddtSchemes.U" in issue for issue in issues)
@@ -387,3 +387,34 @@ def test_archived_skill_simplec_drift(tmp_path):
         expected_value = factors.get(field, factors['".*"'])
         actual_factors = actual["relaxationFactors"]["equations"]
         assert actual_factors.get(field, actual_factors['".*"']) == expected_value
+
+
+@pytest.mark.parametrize("section,key", [("equations", "U"), ("fields", "p")])
+@pytest.mark.parametrize("factor", [
+    "0.9 p 0.3", "not-a-number", "nan", "NaN", "inf", "-inf", "1e999",
+    "0.7 0.9", '"0.9"', "1_0",
+])
+def test_preflight_rejects_invalid_relaxation_factor(tmp_path, section, key, factor):
+    """Malformed, nonnumeric and non-finite leaves must block solver preflight."""
+    case = generate_case(tmp_path)
+    solution = case / "system" / "fvSolution"
+    solution.write_text(
+        'SIMPLE { consistent no; } relaxationFactors { '
+        f'{section} {{ {key} {factor}; }} }}', encoding="utf-8", newline="\n",
+    )
+    passed, issues = load_module("validate-analysis").validate_dictionaries(case)
+    assert not passed
+    assert any("finite numeric token" in issue for issue in issues)
+
+
+@pytest.mark.parametrize("section,key", [("equations", '".*"'), ("fields", "p")])
+@pytest.mark.parametrize("factor", ["0", "-0.3", "1.2", "+0.9", ".9", "9.", "9e-1", "-3E+2"])
+def test_preflight_accepts_finite_relaxation_factor(tmp_path, section, key, factor):
+    """Syntax accepts finite decimal/scientific values without suitability bounds."""
+    case = generate_case(tmp_path)
+    solution = case / "system" / "fvSolution"
+    solution.write_text(
+        'SIMPLE { consistent no; } relaxationFactors { '
+        f'{section} {{ {key} {factor}; }} }}', encoding="utf-8", newline="\n",
+    )
+    assert load_module("validate-analysis").validate_dictionaries(case) == (True, [])

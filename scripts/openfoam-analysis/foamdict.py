@@ -4,6 +4,7 @@ Supports nested dictionaries, scalar entries, quoted keys and C/C++ comments.
 Directives, substitutions and list dictionaries require a full OpenFOAM reader.
 Basis: OpenFOAM v2312 documentation, Under relaxation / Usage; User Guide 6.3.2.
 """
+import math
 import re
 
 
@@ -12,6 +13,7 @@ class DictionaryError(ValueError):
 
 
 TOKEN = re.compile(r'\s+|//[^\n]*|/\*.*?\*/|"(?:\\.|[^"\\])*"|[{};]|[^\s{};"/]+|/', re.DOTALL)
+NUMBER = re.compile(r'[+-]?(?:[0-9]+(?:\.[0-9]*)?|\.[0-9]+)(?:[eE][+-]?[0-9]+)?')
 
 
 def parse_dictionary(text: str) -> dict:
@@ -95,6 +97,9 @@ def relaxation_issues(solution: dict) -> list[str]:
             if isinstance(factor, dict):
                 issues.append(f"relaxation factor {key} must be scalar")
                 continue
+            if (not isinstance(factor, str) or not NUMBER.fullmatch(factor)
+                    or not math.isfinite(float(factor))):
+                issues.append(f"relaxation factor {key} must contain exactly one finite numeric token")
             if name in ("p", "p_rgh"):
                 if section != "fields":
                     issues.append(f"pressure {key} may only appear under fields")
