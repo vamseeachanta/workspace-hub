@@ -1,0 +1,12 @@
+[Unit]
+Description=Periodic repository hygiene
+
+[Timer]
+# Every-minute watchdog cadence: issue 3499, linked watchdog Design item 2 (2026).
+# Installation may override this cadence; max_age_seconds remains an explicit input.
+OnBootSec=60s
+OnUnitActiveSec=60s
+Unit=repo-hygiene.service
+
+[Install]
+WantedBy=timers.target

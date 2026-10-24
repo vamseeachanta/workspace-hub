@@ -1,0 +1,7 @@
+[Unit]
+Description=Repository synchronization and equality collection
+
+[Service]
+Type=oneshot
+EnvironmentFile=%h/.config/repo-hygiene/environment
+ExecStart=/usr/bin/env bash ${HYGIENE_CHECKOUT}/scripts/hygiene/maintain.sh

@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<title>Repository hygiene and equality reporting</title>
+<style>body{font:16px system-ui;max-width:65rem;margin:2rem auto;padding:0 1rem;line-height:1.5}pre{background:#eee;padding:1rem;overflow:auto}table{border-collapse:collapse}td,th{border:1px solid #aaa;padding:.4rem;text-align:left}</style>
+<h1>Repository hygiene and equality reporting</h1>
+<p>Manifest-driven synchronization advances clean checkouts only when the current
+commit is an ancestor of the fetched branch. Dirty trees, local-only commits,
+wrong branches, activity markers and failures remain visible without automatic
+recovery. Equality evidence carries public aliases, timestamps, flags and counts;
+private manifests retain checkout locations. Scratch inventory reports residue and
+does not delete data. This implements the software portion of issue 3499.</p>
+<h2>Revision history</h2>
+<table><tr><th>Revision</th><th>Date</th><th>Change and reason</th></tr>
+<tr><td>Initial</td><td>2026-10-22</td><td>Add sync, scheduling, reporting and a reproducible example to expose drift without destructive recovery.</td></tr></table>
+<h2>Inputs and method</h2>
+<p>Each installation supplies a private YAML manifest using
+<code>config/hygiene/manifest.example.yaml</code>. The example's timeout, freshness,
+size and age numbers are synthetic test inputs, not operational recommendations.
+All paths are relative to an explicitly supplied root and must resolve inside it.
+Repository IDs are public aliases; do not encode private names in them.
+The branch, activity marker, Git timeout, freshness limit and scratch criteria
+are required inputs. An empty scratch list reports <code>not_evaluated</code>.</p>
+<ol>
+<li>Validate the complete manifest before fetching. Acquire a status-file lock and
+then a common-Git-directory lock for each checkout. Lock contention reports busy.</li>
+<li>Check the activity marker, branch and tracked/untracked changes. Fetch the
+explicit branch from origin. Never switch branches, stash, reset, push or delete.</li>
+<li>Require the old HEAD to be an ancestor of the fetched object, recheck local
+state after the fetch, then merge with <code>--ff-only --no-autostash --no-overwrite-ignore</code>.
+Local-only and divergent commits report wedged. A Git failure is isolated to that
+repository so subsequent repositories still report.</li>
+<li>Write the completed snapshot through atomic replacement. A failed attempt
+preserves the last successful timestamp; only a successful update or already-current
+checkout refreshes it. Old or malformed evidence cannot grade healthy.</li>
+<li>Inventory regular scratch files without following symlinks. Sum file sizes;
+count files older than each configured age. Compare with the supplied size limit.
+An inaccessible root reports error. No cleanup is performed.</li>
+</ol>
+<p>Concurrency requires every process that modifies a managed checkout to acquire
+<code>repo-hygiene.lock</code> in its common Git directory, and execution routines
+to create the configured activity marker before starting. A marker is an extra
+refusal signal, not mutual exclusion. Non-cooperating writers cannot be protected
+by this service. Do not enroll active development checkouts or running software
+without that coordination. Git hooks remain enabled.</p>
+<h2>Equality collection and scheduling</h2>
+<p><code>scripts/hygiene/maintain.sh</code> invokes sync, collects equality through
+the existing collector and attaches the allowlisted status as
+<code>dimensions.repo_hygiene</code>. It collects even after sync refuses a checkout.
+A collector failure, including partial YAML followed by failure, preserves the
+previous equality file and returns failure. The combined YAML uses the existing
+publisher's input format; raw Git output and manifest paths are never attached.</p>
+<p>Configure these variables in a private environment file:</p>
+<pre>HYGIENE_CHECKOUT=&lt;repository checkout&gt;
+HYGIENE_ROOT=&lt;managed root&gt;
+HYGIENE_MANIFEST=&lt;private manifest&gt;
+HYGIENE_STATE=&lt;external state directory&gt;/repo-hygiene.json
+HYGIENE_EQUALITY_OUTPUT=&lt;equality input directory&gt;/equality-&lt;public alias&gt;.yaml
+HYGIENE_PUBLIC_ALIAS=&lt;existing public roster alias&gt;
+HYGIENE_COLLECT_TIMEOUT_SECONDS=&lt;collection timeout&gt;
+WORKSPACE_HUB=&lt;repository checkout&gt;
+TMPDIR=&lt;external temporary directory&gt;</pre>
+<p>Use the same equality input directory as the existing publisher's
+<code>EQ_STATE_DIR</code> configuration. Maintain the existing weekly and on-change
+publication routines. Choose freshness limits that cover collection and publication
+latency; a local collection alone is not evidence of remote publication. The service
+does not publish, enable itself or change an existing schedule.</p>
+<p>For Linux user services, place the supplied service and timer templates in the
+user service directory. Store the private environment in
+<code>.config/repo-hygiene/environment</code> beneath the user's directory.
+After reviewing paths, inputs, producer locks and existing schedules:</p>
+<pre>systemctl --user daemon-reload
+systemctl --user enable --now repo-hygiene.timer
+systemctl --user start repo-hygiene.service
+systemctl --user status repo-hygiene.service repo-hygiene.timer</pre>
+<p>The timer's every-minute cadence follows the watchdog design linked from issue
+3499; override it for each installation. For cron, source the same environment and
+invoke <code>bash "$HYGIENE_CHECKOUT/scripts/hygiene/maintain.sh"</code> on the
+approved schedule. Collection timeouts and repository locks prevent overlapping
+sync mutations. Both Python with PyYAML and the repository's interpreter resolver
+must work in the scheduler environment. The Python module also carries inline
+PyYAML dependency metadata for direct <code>uv run --script</code> use.</p>
+<p>The matrix adds a repository hygiene group, with per-repository last-success age,
+dirty/wedged flags, state and residue totals. Ages are recomputed when the matrix
+builds. Existing unreachable and stale-source precedence remains in force.
+Malformed/missing status reports missing evidence; future or expired snapshots
+report stale. A current dirty, wedged or failed attempt cannot inherit a healthy
+verdict from an earlier success. Repository aliases and every public field are
+validated before rendering.</p>
+<h2>Worked example</h2>
+<p>Construct a disposable origin with commit A. Clone it, append commit B to origin,
+and run sync on the clone. The ancestry graph is A → B, so A is an ancestor of B;
+the expected result is clone HEAD = B, status synced and wedged=false. Run again:
+HEAD remains B and no extra commit appears. Add local commit C to the clone while
+origin remains B: C is not an ancestor of B, so status wedged and HEAD remains C.
+The integration tests construct this graph independently using Git.</p>
+<p>For a synthetic snapshot at 2026-01-01T00:00:00Z and an input freshness limit of
+60 seconds, a build at 00:01:00Z has age = build time − snapshot time = 60.0 seconds;
+60 ≤ 60, so synchronized repositories pass. At 00:01:01Z, age = 61.0 seconds and
+61 &gt; 60, so the result is HYGIENE-STALE. A four-byte scratch file exceeds an input
+limit of three bytes. Its age of ten seconds exceeds an input limit of five
+seconds, yielding one expired file and attention. The file remains unchanged.</p>
+<pre>uv run --no-project --with pytest --with pyyaml python -m pytest \
+  tests/hygiene tests/readiness/test_build_equality_matrix.py \
+  -q -rA -p no:cacheprovider --basetemp="$TMPDIR/hygiene-tests"</pre>
+<h2>Sources and limits</h2>
+<ul>
+<li><a href="https://git-scm.com/docs/git-merge">Git merge documentation</a>,
+Git 2.43.0, fast-forward and --ff-only / --no-autostash / --no-overwrite-ignore semantics (retrieved 2026-10-22).</li>
+<li><a href="https://git-scm.com/docs/git-fetch">Git fetch documentation</a>,
+explicit refspecs and FETCH_HEAD (retrieved 2026-10-22).</li>
+<li><a href="https://git-scm.com/docs/git-rev-parse">Git rev-parse documentation</a>,
+object-format reporting (retrieved 2026-10-22).</li>
+<li>Issue 3499, scope and acceptance; its linked watchdog design, item 2 (2026),
+provides the timer cadence. Freshness and scratch acceptance limits are installation
+inputs. No physical equations, material coefficients or licensed standards apply.</li>
+</ul>
+<p>Installation across active nodes, Windows-native locking/scheduling, production
+publisher verification and a month without manual cleanup remain NOT_EVALUATED.
+The implementation uses POSIX locks. Scratch pruning requires an independently
+specified retention and rollup contract; reports do not authorize deletion.
+Repeated collection does not restart running applications. Second-provider review
+remains required before merge.</p>
+</html>
