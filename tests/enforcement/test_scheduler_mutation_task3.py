@@ -2,8 +2,8 @@
 
 from __future__ import annotations
 
-import copy
 import ast
+import copy
 import functools
 import hashlib
 import importlib.util
@@ -11,9 +11,9 @@ import json
 import sys
 from pathlib import Path
 
-import yaml
 import pytest
-
+import yaml
+from scheduler_contract_fixtures import checkout_records
 
 ROOT = Path(__file__).resolve().parents[2]
 CHECKER = ROOT / "scripts/enforcement/check-scheduler-mutation-surfaces.py"
@@ -33,7 +33,7 @@ def load_checker():
 @functools.cache
 def _contract_baseline():
     checker = load_checker()
-    records = checker.read_index_records(ROOT)
+    records = checkout_records(checker, ROOT)
     registry = yaml.safe_load(records[checker.REGISTRY])
     discovered = checker.discover_mutation_surfaces(records)
     return checker, records, registry, discovered
@@ -95,7 +95,7 @@ def test_cron_authority_is_exact_and_3475_is_resolved():
         }
     ]
     assert {group["issue"]["number"] for group in registry["disposition_groups"]} == {
-        3476, 3477, 3478, 3479
+        3476, 3477, 3478, 3479, 3792, 3982
     }
 
 

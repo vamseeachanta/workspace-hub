@@ -12,6 +12,11 @@ cron, systemd-user, and Windows Task Scheduler writers plus reviewed transitive
 entrypoints. Its checker derives status from tracked index bytes and does not
 authorize live scheduler changes.
 
+Reviewed scheduler readers use `kind: read-only-consumer`, declare their read
+targets and carry an exact source-byte attestation. They declare no mutation
+primitive or transaction. See the [reader contract and worked example](scheduler-read-only-consumers.md)
+for registration, evidence renewal and the distinct `read-only` status.
+
 Direct cron ownership is restricted to canonical and declared legacy exact
 lines. Transitive entrypoints declare their complete delegation chain,
 terminal operation, mode arguments, target, exit behavior, and source

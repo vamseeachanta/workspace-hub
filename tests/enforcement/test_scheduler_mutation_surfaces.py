@@ -2,17 +2,17 @@
 
 from __future__ import annotations
 
-import importlib.util
 import copy
-import os
+import importlib.util
 import json
+import os
 import subprocess
 import sys
 from pathlib import Path
 
 import pytest
 import yaml
-
+from scheduler_contract_fixtures import checkout_records
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 CHECKER = REPO_ROOT / "scripts/enforcement/check-scheduler-mutation-surfaces.py"
@@ -38,6 +38,7 @@ TRANSITIVE = {
     "scripts/setup/new-machine-setup.sh",
     "scripts/cron/harness-update.sh",
 }
+READ_ONLY = {"scripts/operations/relocate-to-bulk.sh"}
 
 
 def load_checker():
@@ -53,36 +54,61 @@ def test_current_mutation_inventory_is_registered():
     assert CHECKER.is_file(), "checker must exist"
     assert REGISTRY.is_file(), "registry must exist"
     checker = load_checker()
-    records = checker.read_index_records(REPO_ROOT)
+    records = checkout_records(checker, REPO_ROOT)
     discovered = checker.discover_mutation_surfaces(records)
     registry = yaml.safe_load(REGISTRY.read_bytes())
     result = checker.validate_registry(registry, discovered, records)
     assert result.errors == []
     assert discovered.direct == DIRECT
     assert discovered.transitive == TRANSITIVE
-    assert {row["path"] for row in registry["surfaces"]} == DIRECT | TRANSITIVE
+    assert {row["path"] for row in registry["surfaces"]} == DIRECT | TRANSITIVE | READ_ONLY
 
 
-def test_cli_reports_machine_readable_failures_and_success():
-    completed = subprocess.run(
-        [sys.executable, str(CHECKER), "--json"],
-        cwd=REPO_ROOT,
-        text=True,
-        capture_output=True,
-    )
-    assert completed.returncode == 0, completed.stdout + completed.stderr
-    payload = json.loads(completed.stdout)
+def test_cli_reports_machine_readable_failures_and_success(monkeypatch, capsys):
+    checker, records, _registry = current_contract()
+    monkeypatch.setattr(checker, "read_index_records", lambda _root: records)
+    assert checker.main(["--json"]) == 0
+    payload = json.loads(capsys.readouterr().out)
     assert payload["direct"] == sorted(DIRECT)
     assert payload["transitive"] == sorted(TRANSITIVE)
+    assert payload["read_only"] == sorted(READ_ONLY)
     assert payload["errors"] == []
     assert payload["status"] == "ok"
     assert len(payload["input_digest"]) == 64
 
 
+def test_production_cli_keeps_real_index_transport():
+    """The real subprocess must not silently use the unit-test snapshot.
+
+    Before staging, the index lacks the new contract, so fail-closed is the
+    expected answer. A complete staged or committed checkout must succeed and
+    report the registered reader. Successful snapshot semantics are tested
+    independently above; this test retains the production CLI boundary.
+    """
+    checker = load_checker()
+    records = checker.read_index_records(REPO_ROOT)
+    completed = subprocess.run(
+        [sys.executable, str(CHECKER), "--json"], cwd=REPO_ROOT,
+        capture_output=True, text=True, check=False,
+    )
+    payload = json.loads(completed.stdout)
+    if records[checker.REGISTRY] == REGISTRY.read_bytes():
+        assert completed.returncode == 0, payload
+        assert payload["read_only"] == sorted(READ_ONLY)
+        assert payload["errors"] == []
+    else:
+        assert completed.returncode != 0
+        assert payload["status"] == "error"
+        assert any(
+            "digest source missing" in error or "inventory mismatch" in error
+            or "primitive mismatch" in error for error in payload["errors"]
+        )
+
+
 @pytest.mark.parametrize("registry", [None, 7, ["not", "a", "mapping"]])
 def test_cli_reports_malformed_yaml_root_as_json(monkeypatch, capsys, registry):
     checker = load_checker()
-    records = checker.read_index_records(REPO_ROOT)
+    records = checkout_records(checker, REPO_ROOT)
     records[checker.REGISTRY] = yaml.safe_dump(registry).encode()
     monkeypatch.setattr(checker, "read_index_records", lambda _root: records)
     assert checker.main(["--json"]) == 1
@@ -103,7 +129,7 @@ def test_cli_reports_malformed_yaml_root_as_json(monkeypatch, capsys, registry):
 )
 def test_unregistered_mutation_surface_fails(path, body, kind):
     checker = load_checker()
-    records = checker.read_index_records(REPO_ROOT)
+    records = checkout_records(checker, REPO_ROOT)
     records[path] = body
     discovered = checker.discover_mutation_surfaces(records)
     registry = yaml.safe_load(REGISTRY.read_bytes())
@@ -182,7 +208,7 @@ def test_cat_file_transport_requires_nul_mode(tmp_path):
 
 def current_contract():
     checker = load_checker()
-    records = checker.read_index_records(REPO_ROOT)
+    records = checkout_records(checker, REPO_ROOT)
     registry = yaml.safe_load(REGISTRY.read_bytes())
     return checker, records, registry
 
@@ -266,13 +292,14 @@ def test_true_transaction_guarantees_require_specific_attestations():
     assert any("pre_write_cas" in error for error in result.errors)
 
 
-def test_digest_uses_exact_plan_defined_union_and_cli_emits_it():
+def test_digest_uses_exact_plan_defined_union_and_cli_emits_it(monkeypatch, capsys):
     checker, records, registry = current_contract()
     selected = checker.digest_record_union(registry, records)
     assert b".github/workflows/enforcement-gate.yml" in selected
     assert b"scripts/enforcement/check-scheduler-mutation-surfaces.py" in selected
-    completed = subprocess.run([sys.executable, str(CHECKER), "--json"], cwd=REPO_ROOT, text=True, capture_output=True)
-    payload = json.loads(completed.stdout)
+    monkeypatch.setattr(checker, "read_index_records", lambda _root: records)
+    assert checker.main(["--json"]) == 0
+    payload = json.loads(capsys.readouterr().out)
     assert payload["input_digest"] == checker.input_digest(REGISTRY.read_bytes(), selected)
 
 
