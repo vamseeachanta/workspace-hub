@@ -202,8 +202,8 @@ def test_unparseable_registry_is_warning(tmp_path):
     _make_repo(base, "repoB", "just a bare scalar string")
     m = gm.build_manifest(slugs=["repoA", "repoB"], resolve=_resolver_for(base))
     statuses = {r["repo"]: r["status"] for r in m["repos"]}
-    assert statuses["repoA"] == "unparseable-registry"
-    assert statuses["repoB"] == "unparseable-registry"
+    assert statuses["repoA"] == "invalid-registry"
+    assert statuses["repoB"] == "invalid-registry"
 
 
 def test_check_detects_stale_registry(tmp_path):
@@ -237,3 +237,204 @@ def test_output_is_deterministic_sorted(tmp_path):
     ids = [w["workflow_id"] for w in m1["workflows"]]
     assert ids == sorted(ids)
     assert json.dumps(m1["workflows"]) == json.dumps(m2["workflows"])  # order-independent of slug order
+
+
+# Issue #3450 states are logical expectations over controlled filesystem inputs.
+# No numerical engineering criteria apply; row counts are hand-counted fixtures.
+def test_missing_repository_is_distinct(tmp_path):
+    manifest = gm.build_manifest(slugs=["absent"], resolve=_resolver_for(tmp_path))
+    assert manifest["repos"][0]["status"] == "missing-repository"
+    assert manifest["repos"][0]["registry_sha256"] is None
+
+
+@pytest.mark.parametrize("text", [
+    "workflows: wrong-shape\n", "workflows: [null]\n",
+    "workflows: [{title: missing-id}]\n", "workflows: [{id: [bad]}]\n",
+])
+def test_invalid_registry_shape_is_not_aggregated(tmp_path, text):
+    _make_repo(tmp_path, "fixture", text)
+    manifest = gm.build_manifest(slugs=["fixture"], resolve=_resolver_for(tmp_path))
+    assert manifest["repos"][0]["status"] == "invalid-registry"
+    assert manifest["repos"][0]["registry_sha256"] is None
+    assert manifest["workflows"] == []
+
+
+@pytest.mark.parametrize("error", [PermissionError, UnicodeDecodeError])
+def test_unreadable_registry_is_invalid(tmp_path, monkeypatch, error):
+    repo = _make_repo(tmp_path, "fixture", REG_V1)
+    registry = repo / "docs/registry/workflows.yaml"
+    original = Path.read_text
+
+    def read(path, *args, **kwargs):
+        if path == registry:
+            if error is UnicodeDecodeError:
+                raise error("utf-8", b"x", 0, 1, "fixture")
+            raise error("fixture")
+        return original(path, *args, **kwargs)
+
+    monkeypatch.setattr(Path, "read_text", read)
+    manifest = gm.build_manifest(slugs=["fixture"], resolve=_resolver_for(tmp_path))
+    assert manifest["repos"][0]["status"] == "invalid-registry"
+
+
+def test_worked_example_partitions_observations(tmp_path, capsys):
+    """Independent truth table from issue #3450, derived without the generator.
+
+    Five synthetic repositories initially have identical REG_V1 bytes. Keep
+    one; append a YAML comment to another; remove the third repository via the
+    resolver; remove the fourth registry via the reader; invalidate the fifth
+    with a YAML scalar. Thus one unchanged + one drifted + three failures = five
+    observations. Null cannot establish digest equality or content difference.
+    No engineering coefficients or acceptance thresholds are used.
+    """
+    slugs = ["unchanged", "drifted", "absent", "no-registry", "invalid"]
+    for slug in slugs:
+        _make_repo(tmp_path, slug, REG_V1)
+    saved = tmp_path / "manifest.json"
+    gm.write_manifest(saved, slugs=slugs, resolve=_resolver_for(tmp_path))
+    (tmp_path / "drifted/docs/registry/workflows.yaml").write_text(REG_V1 + "# changed\n")
+    (tmp_path / "invalid/docs/registry/workflows.yaml").write_text("scalar\n")
+
+    def resolve(slug):
+        if slug == "absent":
+            raise FileNotFoundError("fixture")
+        if slug == "no-registry":
+            return _make_repo(tmp_path / "empty", slug)
+        return tmp_path / slug
+
+    report = gm.stale_report(saved, slugs=slugs, resolve=resolve)
+    states = {row["repo"]: row["status"] for row in report["repos"]}
+    assert states == {
+        "unchanged": "unchanged", "drifted": "drifted",
+        "absent": "missing-repository", "no-registry": "missing-registry",
+        "invalid": "invalid-registry",
+    }
+    assert gm.check_stale(saved, slugs=slugs, resolve=resolve) == 1
+    human = capsys.readouterr().err
+    assert "registries changed since manifest: ['drifted']" in human
+    for status in ("missing-repository", "missing-registry", "invalid-registry"):
+        assert status in human
+    assert "None" not in human
+
+
+@pytest.mark.parametrize("saved_hash", [None, "", "not-a-hash"])
+def test_invalid_saved_digest_never_becomes_drift(tmp_path, saved_hash):
+    _make_repo(tmp_path, "fixture", REG_V1)
+    saved = tmp_path / "manifest.json"
+    gm.write_manifest(saved, slugs=["fixture"], resolve=_resolver_for(tmp_path))
+    payload = json.loads(saved.read_text())
+    payload["repos"][0]["registry_sha256"] = saved_hash
+    saved.write_text(json.dumps(payload))
+    report = gm.stale_report(saved, slugs=["fixture"], resolve=_resolver_for(tmp_path))
+    assert report["repos"][0]["status"] == "invalid-registry"
+    assert report["repos"][0]["reason"] == "invalid-saved-observation"
+    assert gm.check_stale(saved, slugs=["fixture"], resolve=_resolver_for(tmp_path)) == 1
+
+
+def test_equal_null_hashes_do_not_pass(tmp_path):
+    slugs = ["absent"]
+    saved = tmp_path / "manifest.json"
+    gm.write_manifest(saved, slugs=slugs, resolve=_resolver_for(tmp_path))
+    assert gm.check_stale(saved, slugs=slugs, resolve=_resolver_for(tmp_path)) == 1
+
+
+def test_json_check_preserves_states(tmp_path, monkeypatch, capsys):
+    _make_repo(tmp_path, "fixture", REG_V1)
+    saved = tmp_path / "manifest.json"
+    gm.write_manifest(saved, slugs=["fixture"], resolve=_resolver_for(tmp_path))
+    report = gm.stale_report(saved, slugs=["fixture"], resolve=_resolver_for(tmp_path))
+    monkeypatch.setattr(gm, "stale_report", lambda *args, **kwargs: report)
+    assert gm.main(["--check", "--json", "--output", str(saved)]) == 0
+    output = capsys.readouterr()
+    assert json.loads(output.out)["repos"][0]["status"] == "unchanged"
+    assert output.err == ""
+
+
+def test_failure_entries_match_manifest_schema(tmp_path):
+    import jsonschema
+
+    schema = json.loads((SCRIPTS_WORKFLOW.parents[1] / "docs/registry/workflow-manifest.schema.json").read_text())
+    _make_repo(tmp_path, "empty")
+    _make_repo(tmp_path, "invalid", "scalar\n")
+    manifest = gm.build_manifest(slugs=["absent", "empty", "invalid"], resolve=_resolver_for(tmp_path))
+    jsonschema.validate(manifest, schema)
+
+
+@pytest.mark.parametrize("saved_text", ["null", "[]", "{bad", '{"repos": null}'])
+def test_invalid_saved_manifest_cannot_establish_freshness(tmp_path, saved_text):
+    _make_repo(tmp_path, "fixture", REG_V1)
+    saved = tmp_path / "manifest.json"
+    saved.write_text(saved_text)
+    report = gm.stale_report(saved, slugs=["fixture"], resolve=_resolver_for(tmp_path))
+    assert report["ok"] is False
+    assert report["repos"][0]["status"] == "invalid-registry"
+    assert report["repos"][0]["reason"] == "invalid-saved-observation"
+
+
+def test_membership_changes_are_unavailable_comparisons(tmp_path):
+    for slug in ("previous", "new"):
+        _make_repo(tmp_path, slug, REG_V1)
+    saved = tmp_path / "manifest.json"
+    gm.write_manifest(saved, slugs=["previous"], resolve=_resolver_for(tmp_path))
+    report = gm.stale_report(saved, slugs=["new"], resolve=_resolver_for(tmp_path))
+    assert {row["repo"]: (row["status"], row["reason"]) for row in report["repos"]} == {
+        "previous": ("missing-repository", "not-visited"),
+        "new": ("invalid-registry", "invalid-saved-observation"),
+    }
+
+
+def test_json_failure_reports_missing_repository(tmp_path, capsys):
+    saved = tmp_path / "manifest.json"
+    gm.write_manifest(saved, slugs=["absent"], resolve=_resolver_for(tmp_path))
+    assert gm.check_stale(saved, slugs=["absent"], resolve=_resolver_for(tmp_path), json_output=True) == 1
+    output = capsys.readouterr()
+    assert json.loads(output.out)["repos"][0]["status"] == "missing-repository"
+    assert output.err == ""
+
+
+def test_canonical_and_linked_manifest_classifications_agree(tmp_path, monkeypatch):
+    """Same sibling bytes imply equal observations, independent of tree depth."""
+    import os
+    import subprocess
+    from functools import partial
+
+    from lib.tier1_repos import resolve_tier1_repo_path
+
+    for name in ("REPO_ROOT", "TIER1_REPOS_BASE"):
+        monkeypatch.delenv(name, raising=False)
+    env = {key: value for key, value in os.environ.items() if not key.startswith("GIT_")}
+    canonical = tmp_path / "workspace/hub"
+    canonical.mkdir(parents=True)
+    subprocess.run(["git", "init", str(canonical)], env=env, check=True, capture_output=True)
+    linked = tmp_path / "worktrees/arbitrary/depth/hub"
+    subprocess.run(
+        ["git", "-C", str(canonical), "worktree", "add", "--orphan", "-b", "fixture-branch", str(linked)],
+        env=env, check=True, capture_output=True,
+    )
+    _make_repo(canonical.parent, "valid", REG_V1)
+    _make_repo(canonical.parent, "empty")
+    _make_repo(canonical.parent, "invalid", "scalar\n")
+    slugs = ["valid", "empty", "invalid", "absent"]
+    canonical_resolve = partial(resolve_tier1_repo_path, repo_root=canonical)
+    linked_resolve = partial(resolve_tier1_repo_path, repo_root=linked)
+    saved = tmp_path / "manifest.json"
+    gm.write_manifest(saved, slugs=slugs, resolve=canonical_resolve)
+    main_report = gm.stale_report(saved, slugs=slugs, resolve=canonical_resolve)
+    linked_report = gm.stale_report(saved, slugs=slugs, resolve=linked_resolve)
+    assert main_report == linked_report
+    assert {row["repo"]: row["status"] for row in linked_report["repos"]} == {
+        "valid": "unchanged", "empty": "missing-registry",
+        "invalid": "invalid-registry", "absent": "missing-repository",
+    }
+
+
+def test_repository_is_resolved_once_per_observation(tmp_path):
+    repo = _make_repo(tmp_path, "fixture", REG_V1)
+    calls = []
+
+    def resolve(slug):
+        calls.append(slug)
+        return repo
+
+    gm.build_manifest(slugs=["fixture"], resolve=resolve)
+    assert calls == ["fixture"]

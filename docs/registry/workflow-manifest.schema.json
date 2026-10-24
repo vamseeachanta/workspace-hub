@@ -33,7 +33,7 @@
           "repo": { "type": "string" },
           "status": {
             "type": "string",
-            "enum": ["ok", "missing-registry", "unparseable-registry"]
+            "enum": ["ok", "missing-repository", "missing-registry", "invalid-registry"]
           },
           "schema_version": {
             "type": ["integer", "null"],
@@ -41,7 +41,7 @@
           },
           "registry_sha256": {
             "type": ["string", "null"],
-            "description": "SHA-256 of the raw registry text. Null for non-ok repos. The --check stale gate compares only this set."
+            "description": "SHA-256 of the raw registry text. Null for non-ok repos. The stale gate compares only valid hashes from ok observations; failed observations remain distinct from drift."
           },
           "git_sha": { "type": ["string", "null"], "description": "Best-effort repo HEAD." },
           "row_count": { "type": "integer" }
