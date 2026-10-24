@@ -1,13 +1,14 @@
 """Delivery tests for scheduler mutation HTML and CI wiring."""
 from __future__ import annotations
 
-import importlib.util
 import html
-import subprocess
+import importlib.util
 import sys
 from pathlib import Path
 
 import yaml
+from scheduler_contract_fixtures import checkout_records
+from workflow_contracts import assert_scheduler_workflow
 
 ROOT = Path(__file__).resolve().parents[2]
 CHECKER = ROOT / "scripts/enforcement/check-scheduler-mutation-surfaces.py"
@@ -31,7 +32,7 @@ def load_checker():
 
 def contract_inputs():
     checker = load_checker()
-    records = checker.read_index_records(ROOT)
+    records = checkout_records(checker, ROOT)
     registry = yaml.safe_load(records[checker.REGISTRY])
     discovery = checker.discover_mutation_surfaces(records)
     validation = checker.validate_registry(registry, discovery, records)
@@ -83,22 +84,15 @@ def test_html_is_deterministic_complete_and_linked():
         assert f'href="https://github.com/vamseeachanta/workspace-hub/issues/{issue}"' in text
 
 
-def test_cli_render_and_stale_check(tmp_path):
+def test_cli_render_and_stale_check(tmp_path, monkeypatch):
+    checker, records, *_ = contract_inputs()
+    monkeypatch.setattr(checker, "read_index_records", lambda _root: records)
     output = tmp_path / "audit.html"
-    render = subprocess.run(
-        [sys.executable, str(CHECKER), "--render-html", str(output)], cwd=ROOT
-    )
-    assert render.returncode == 0
+    assert checker.main(["--render-html", str(output)]) == 0
     assert output.is_file()
-    check = subprocess.run(
-        [sys.executable, str(CHECKER), "--check-html", str(output)], cwd=ROOT
-    )
-    assert check.returncode == 0
+    assert checker.main(["--check-html", str(output)]) == 0
     output.write_bytes(output.read_bytes().replace(b"data-input-digest=", b"data-stale-digest="))
-    stale = subprocess.run(
-        [sys.executable, str(CHECKER), "--check-html", str(output)], cwd=ROOT
-    )
-    assert stale.returncode != 0
+    assert checker.main(["--check-html", str(output)]) != 0
 
 
 def test_delivery_contract_is_in_digest_union():
@@ -108,6 +102,9 @@ def test_delivery_contract_is_in_digest_union():
         b"tests/enforcement/test_scheduler_mutation_delivery.py",
         b".github/workflows/enforcement-gate.yml",
         b".github/workflows/scheduler-mutation-main.yml",
+        b"tests/enforcement/pin_helpers.py",
+        b"tests/enforcement/workflow_contracts.py",
+        b"docs/reports/hash-pinned-attestation-audit.json",
     )
     first = checker.input_digest(records[checker.REGISTRY], union)
     for source in digest_sources:
@@ -140,7 +137,7 @@ def test_rule_and_ops_define_scheduler_target_binding_contract():
 
 def test_enforcement_workflow_is_active_and_failure_propagating():
     workflow = yaml.load(WORKFLOW.read_text(), Loader=yaml.BaseLoader)
-    assert "pull_request" in workflow["on"]
+    assert_scheduler_workflow(workflow, "pull_request")
     job = workflow["jobs"]["scheduler-mutation-surfaces"]
     assert job["runs-on"] == "ubuntu-latest"
     assert job.get("continue-on-error") not in {"true", True}
@@ -162,9 +159,7 @@ def test_enforcement_workflow_is_active_and_failure_propagating():
 def test_main_push_scheduler_workflow_is_fail_closed():
     workflow_text = MAIN_WORKFLOW.read_text()
     workflow = yaml.load(workflow_text, Loader=yaml.BaseLoader)
-    push = workflow["on"]["push"]
-    assert set(push) == {"branches"}
-    assert push["branches"] == ["main"]
+    assert_scheduler_workflow(workflow, "push")
 
     job = workflow["jobs"]["scheduler-mutation-surfaces"]
     assert job["runs-on"] == "ubuntu-latest"
