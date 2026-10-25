@@ -21,6 +21,20 @@ ROOT = Path(__file__).resolve().parents[2]
 
 
 @pytest.fixture
+def windows_sentinel(monkeypatch, request):
+    """Emulate Windows text writes while generating the isolated fixtures."""
+    write_text = Path.write_text
+
+    def windows_write_text(path, data, *args, **kwargs):
+        kwargs.setdefault("newline", "\r\n")
+        return write_text(path, data, *args, **kwargs)
+
+    with monkeypatch.context() as patch:
+        patch.setattr(Path, "write_text", windows_write_text)
+        return request.getfixturevalue("sentinel")
+
+
+@pytest.fixture
 def sentinel(tmp_path):
     monitoring = tmp_path / "scripts" / "monitoring"
     library = tmp_path / "scripts" / "lib"
@@ -29,11 +43,12 @@ def sentinel(tmp_path):
     shutil.copyfile(ROOT / "scripts/monitoring/equivalence-sentinel.sh",
                     monitoring / "equivalence-sentinel.sh")
     (library / "python-resolver.sh").write_text(
-        f"PYTHON_CMD=({shlex.quote(sys.executable)})\n", encoding="utf-8")
+        f"PYTHON_CMD=({shlex.quote(sys.executable)})\n", encoding="utf-8", newline="\n")
     (monitoring / "equivalence-fingerprint.sh").write_text(
         '#!/usr/bin/env bash\n'
         'printf \'{"role":"contribute-minimal","machine_id":"sample"}\\n\' > "$2"\n',
         encoding="utf-8",
+        newline="\n",
     )
     (monitoring / "equivalence_state.py").write_text('''
 import json
@@ -80,7 +95,7 @@ def worst_severity(divs):
     binary.mkdir()
     # Force the script's documented cwd fallback; no Git repository is needed.
     git = binary / "git"
-    git.write_text("#!/usr/bin/env bash\nexit 1\n", encoding="utf-8")
+    git.write_text("#!/usr/bin/env bash\nexit 1\n", encoding="utf-8", newline="\n")
     git.chmod(0o755)
 
     def run(**overrides):
@@ -99,6 +114,23 @@ def worst_severity(divs):
         return result, events, health
 
     return run
+
+
+def test_generated_shell_fixtures_use_lf(windows_sentinel, tmp_path):
+    """Shell fixtures retain LF bytes even when text writes default to CRLF."""
+    for relative in (
+        "scripts/lib/python-resolver.sh",
+        "scripts/monitoring/equivalence-fingerprint.sh",
+        "bin/git",
+    ):
+        content = (tmp_path / relative).read_bytes()
+        assert b"\n" in content, relative
+        assert b"\r" not in content, relative
+
+    result, events, health = windows_sentinel()
+    assert result.returncode == 0, result.stderr
+    assert events == ["prepare", "publish", "verify-publish", "write-health", "collect"]
+    assert health["rc"] == 0
 
 
 @pytest.mark.parametrize("verify_rc", ["1", "2", "3"])
