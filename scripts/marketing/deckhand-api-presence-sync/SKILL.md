@@ -16,6 +16,7 @@ separate maintainer action.
 | Revision | Date | Change and reason |
 | --- | --- | --- |
 | Initial | 2026-10-22 | Restore the scheduled comparison after removal of its executable; require report evidence before public claims. |
+| 1 | 2026-10-24 | Use consistent private evidence for comparisons and advancement; distinguish unavailable evidence from a reviewed withdrawal. |
 
 ## Plan-lite and basis
 
@@ -133,8 +134,8 @@ Their differences give new = `{future}` and removed = `{old}`. The common
 identifier `screen` changes from roadmap to live_public. Evidence-backed public
 identifiers change from `{old}` to `{screen}`. Therefore one public addition and
 one withdrawal require review. Current public count is one; roadmap contributes
-zero. Without report evidence, current public count is zero and the claim is
-NOT_EVALUATED. These are hand-calculated set operations, not outputs reused as
+zero. Without report evidence, the evaluated public count is unavailable (null),
+and the comparison is NOT_EVALUATED. These are hand-calculated set operations, not outputs reused as
 test expectations. Tests encode additions, removals, promotion, demotion,
 unchanged reruns and independent count expectations.
 
@@ -153,10 +154,25 @@ changes schedules. The cron command only reports a delta; maintainers execute
 the review procedure when additions, withdrawals or metadata changes occur.
 No live scheduling or cross-repository publication is performed by this change.
 
-An evidence-free scheduled comparison intentionally reports no claimable paths;
-use the same reviewed evidence for both comparison and state advancement to
-avoid spurious evidence withdrawals. Evidence expiration is a review decision;
-there is no inferred age limit. An unchanged comparison needs no snapshot write.
+Set `DECKHAND_API_EVIDENCE` in the scheduler environment to the privately held
+reviewed-reports JSON file. The scheduled command supplies that file through
+`--evidence`; manual comparison and advancement use the same environment default,
+or an explicit `--evidence` override. Keep the file outside public version control.
+Configure the variable as an environment assignment in the installed crontab;
+shell profile exports alone do not configure cron. Confirm its value privately
+in the installation preview. No private location is stored in the declaration.
+
+Missing or unreadable evidence produces `claim_check: NOT_EVALUATED`, a stated
+reason and a null public count. Evidence-dependent additions, withdrawals and
+metadata changes are not inferred. Catalog removals and demotions still withdraw
+previously reviewed claims, and catalog changes are included in draft packets.
+Snapshot advancement requires an available evidence mapping and a matching review
+receipt. Malformed evidence fails closed. An available empty mapping explicitly
+records no reviewed claims and can produce withdrawals; it differs from an
+unavailable file. The comparison-level EVALUATED state means that the evidence
+mapping was read; each row still requires its own reviewed report to be claimable.
+A row without that proof remains NOT_EVALUATED. Evidence expiration is a review decision; there is no inferred
+age limit. An unchanged comparison needs no snapshot write.
 
 ## Sources
 

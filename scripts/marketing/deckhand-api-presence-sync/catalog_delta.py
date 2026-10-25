@@ -15,6 +15,7 @@ import hashlib
 import json
 import os
 import re
+import stat
 import sys
 import tempfile
 from pathlib import Path
@@ -147,7 +148,7 @@ def normalize_snapshot(snapshot):
                                evidence)
 
 
-def compute_delta(current, snapshot):
+def compute_delta(current, snapshot, *, evidence_available=True):
     current = normalize_snapshot(current)
     snapshot = normalize_snapshot(snapshot)
     before = {p["ref"]: p for p in snapshot["paths"]}
@@ -158,28 +159,41 @@ def compute_delta(current, snapshot):
     changed = [{"ref": r, "from": before[r]["status"], "to": after[r]["status"]}
                for r in common if before[r]["status"] != after[r]["status"]]
     eligible_before = {r for r, p in before.items() if p["claimable_public"]}
-    eligible_after = {r for r, p in after.items() if p["claimable_public"]}
+    catalog_withdrawals = {r for r in eligible_before
+                           if r not in after or after[r]["status"] != "live_public"}
+    eligible_after = {r for r, p in after.items() if p["claimable_public"]} if evidence_available else set()
+    evidence_fields = {"claimable_public", "claim_check", "public_report_url"}
+
+    def comparable(row):
+        return row if evidence_available else {k: v for k, v in row.items() if k not in evidence_fields}
     # Issue 3302: weekly additions/removals are set differences, counts are cardinalities.
-    return {"counts": {"current_total": len(after),
+    return {"claim_check": "EVALUATED" if evidence_available else "NOT_EVALUATED",
+            "claim_reason": ("The evidence mapping was read." if evidence_available
+                             else "Reviewed report evidence is unavailable."),
+            "counts": {"current_total": len(after),
                        "current_live_public": sum(p["status"] == "live_public" for p in after.values()),
-                       "claimable_public": len(eligible_after), "new": len(new),
+                       "claimable_public": len(eligible_after) if evidence_available else None, "new": len(new),
                        "removed": len(removed), "status_changed": len(changed),
                        "private_internal_count": current["private_internal_count"]},
             "new_paths": [after[r] for r in new],
             "new_live_public": [after[r] for r in sorted(eligible_after - eligible_before)],
             "new_roadmap": [after[r] for r in new if after[r]["status"] == "roadmap"],
             "removed_paths": [before[r] for r in removed], "status_changed": changed,
-            "metadata_changed": [r for r in common if before[r] != after[r]],
-            "withdrawn_public": [before[r] for r in sorted(eligible_before - eligible_after)]}
+            "metadata_changed": [r for r in common if comparable(before[r]) != comparable(after[r])],
+            "withdrawn_public": [before[r] for r in sorted(
+                eligible_before - eligible_after if evidence_available else catalog_withdrawals)]}
 
 
 def draft_packet(delta):
     additions = [{"ref": p["ref"], "public_report_url": p["public_report_url"]}
                  for p in delta["new_live_public"]]
     return {"publish_allowed": False, "public_additions": additions,
+            "claim_check": delta["claim_check"], "claim_reason": delta["claim_reason"],
             "public_count": delta["counts"]["claimable_public"],
             "withdrawals": [p["ref"] for p in delta["withdrawn_public"]],
             "review_metadata": delta["metadata_changed"],
+            "new_paths": delta["new_paths"], "removed_paths": delta["removed_paths"],
+            "status_changed": delta["status_changed"],
             "surfaces": {
                 "resume": "Draft recent-work bullets supported by each reviewed report.",
                 "linkedin": "Draft Featured links and About count; submit as a document for review.",
@@ -249,10 +263,15 @@ def read_yaml(path):
 
 def atomic_snapshot(path, value):
     """Replace only an existing snapshot; failed writes preserve previous state."""
-    if not path.is_file() or path.is_symlink():
+    if not path.is_file():
+        raise ValueError("snapshot update requires an existing regular file")
+    linked = any(p.is_symlink() or getattr(p, "is_junction", lambda: False)()
+                 or getattr(p.lstat(), "st_file_attributes", 0) & stat.FILE_ATTRIBUTE_REPARSE_POINT
+                 for p in (path, *path.absolute().parents))
+    if linked:
         raise ValueError("snapshot update requires an existing regular file")
     with tempfile.NamedTemporaryFile(mode="w", dir=path.parent, encoding="utf-8",
-                                     prefix=".snapshot-", delete=False) as stream:
+                                     newline="\n", prefix=".snapshot-", delete=False) as stream:
         temporary = Path(stream.name)
         json.dump(value, stream, indent=2, sort_keys=True)
         stream.write("\n")
@@ -270,7 +289,9 @@ def main(argv=None):
     parser.add_argument("--catalog", type=Path, default=Path(os.environ.get(
         "DECKHAND_CATALOG", sibling / "config/deckhand/routing/domain-workflows.yaml")))
     parser.add_argument("--snapshot", type=Path, default=HERE / "state/api-catalog-snapshot.json")
-    parser.add_argument("--evidence", type=Path, help="Privately held, reviewed public-report evidence")
+    parser.add_argument("--evidence", type=lambda value: Path(value) if value else None,
+                        default=os.environ.get("DECKHAND_API_EVIDENCE"),
+                        help="Private reviewed evidence; defaults to DECKHAND_API_EVIDENCE")
     mode = parser.add_mutually_exclusive_group()
     mode.add_argument("--emit-current", action="store_true")
     mode.add_argument("--draft-packet", action="store_true")
@@ -278,7 +299,11 @@ def main(argv=None):
     parser.add_argument("--review-receipt", type=Path)
     args = parser.parse_args(argv)
     try:
-        evidence = read_json(args.evidence) if args.evidence else {}
+        try:
+            evidence = mapping(read_json(args.evidence)) if args.evidence else None
+        except OSError:
+            evidence = None
+        evidence_available = evidence is not None
         source = args.source
         if source == "auto":
             source = "canonical" if args.canonical.exists() else "derive"
@@ -288,10 +313,12 @@ def main(argv=None):
             current = normalize_routing(read_yaml(args.catalog), evidence)
         current["source"] = source
         previous = read_json(args.snapshot) if args.snapshot.exists() else {"paths": []}
-        delta = compute_delta(current, previous)
+        delta = compute_delta(current, previous, evidence_available=evidence_available)
         output = current if args.emit_current else draft_packet(delta) if args.draft_packet else delta
         output = {**output, "current_digest": digest(current), "previous_digest": digest(previous)}
         if args.update_snapshot:
+            if not evidence_available:
+                raise ValueError("snapshot update requires available reviewed evidence")
             if not args.review_receipt:
                 raise ValueError("snapshot update requires a review receipt")
             validate_receipt(read_json(args.review_receipt), current, previous)
