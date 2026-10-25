@@ -30,22 +30,32 @@ def _intro_quotes(markdown: str) -> list[str]:
     blocks = []
     current = []
     fence = None
+    fence_quoted = False
     for line in markdown.splitlines():
+        stripped = line.lstrip()
+        quoted = stripped.startswith(">") and not line.startswith(("    ", "\t"))
+        # CommonMark 0.31.2, sections 5.1 and 4.5: a quoted fence ends
+        # when its containing quote ends, even without a closing marker.
+        if fence is not None and fence_quoted and not quoted:
+            fence = None
+        content = stripped[1:] if quoted else line
+        if quoted and content.startswith(" "):
+            content = content[1:]
         # CommonMark 0.31.2, section 4.4: four spaces mark indented code.
-        if line.startswith(("    ", "\t")):
+        if content.startswith(("    ", "\t")):
             if current:
                 blocks.append(" ".join(current))
                 current = []
             continue
-        stripped = line.lstrip()
-        content = stripped.removeprefix(">").lstrip()
         # CommonMark 0.31.2, section 4.5: fences have at least three markers.
-        marker = re.match(r"(`{3,}|~{3,})", content)
+        marker = re.match(r" {0,3}(`{3,}|~{3,})", content)
         if marker:
-            token = marker.group()
+            token = marker.group(1)
             if fence is None:
                 fence = token
-            elif token[0] == fence[0] and len(token) >= len(fence):
+                fence_quoted = quoted
+            elif (quoted == fence_quoted and token[0] == fence[0]
+                  and len(token) >= len(fence) and not content[marker.end():].strip()):
                 fence = None
             if current:
                 blocks.append(" ".join(current))
@@ -57,8 +67,8 @@ def _intro_quotes(markdown: str) -> list[str]:
         # Issue #3300 places the banner at the top, before any subsection.
         if re.match(r"#{2,6}\s", stripped):
             break
-        if stripped.startswith(">"):
-            current.append(stripped.removeprefix(">").strip())
+        if quoted:
+            current.append(content.strip())
         elif current:
             blocks.append(" ".join(current))
             current = []
@@ -68,6 +78,19 @@ def _intro_quotes(markdown: str) -> list[str]:
 
 
 def _is_catalog_link(text: str) -> bool:
+    # CommonMark 0.31.2, section 6.3: the destination, not the label,
+    # determines a link's target. Images do not provide a catalog link.
+    def destination(match: re.Match) -> str:
+        if match.group(1):
+            return " "
+        target = match.group(2).strip()
+        if target.startswith("<"):
+            return " " + target[1:].split(">", 1)[0] + " "
+        return " " + target.split(maxsplit=1)[0] + " " if target else " "
+
+    text = re.sub(r"(!?)\[(?:\\.|[^\]\\])*\]\(([^)\n]*)\)", destination, text)
+    # Unresolved/reference labels also cannot supply destination evidence.
+    text = re.sub(r"\[(?:\\.|[^\]\\])*\]", " ", text)
     for candidate in re.findall(r"https?://[^\s<>()]+", text):
         try:
             parsed = urlsplit(candidate.rstrip(".,;]"))

@@ -121,6 +121,33 @@ def test_markdown_catalog_link_and_redirect_host_are_supported():
     assert audit(all_readmes(text), catalog_status="live")["status"] == "PASS"
 
 
+@pytest.mark.parametrize("link", [
+    f"[{CATALOG_URL}](https://example.invalid/unrelated)",
+    f"![{CATALOG_URL}](https://example.invalid/image.png)",
+])
+def test_catalog_url_in_link_label_is_not_destination_evidence(link):
+    text = BANNER.replace(CATALOG_URL, link)
+    result = audit(all_readmes(text), catalog_status="live")
+    assert "catalog_link" in result["repositories"][0]["missing"]
+
+
+@pytest.mark.parametrize("indent", ["    ", "\t"])
+def test_indented_code_inside_quote_is_not_a_banner(indent):
+    text = BANNER.replace("> ", "> " + indent)
+    assert audit(all_readmes(text), catalog_status="live")["status"] == "FAIL"
+
+
+@pytest.mark.parametrize("fence", ["```", "~~~"])
+def test_unclosed_quoted_fence_ends_with_its_quote(fence):
+    text = f"# Example\n\n> {fence}markdown\n> sample\n\n" + BANNER
+    assert audit(all_readmes(text), catalog_status="live")["status"] == "PASS"
+
+
+def test_three_spaces_inside_quote_preserve_published_banner():
+    text = BANNER.replace("> ", ">    ")
+    assert audit(all_readmes(text), catalog_status="live")["status"] == "PASS"
+
+
 @pytest.mark.parametrize("kwargs", [{"catalog_status": "invented"},
                                     {"catalog_status": "live", "readmes": {"other": BANNER}}])
 def test_unknown_status_or_repository_is_rejected(kwargs):
@@ -131,7 +158,7 @@ def test_unknown_status_or_repository_is_rejected(kwargs):
 
 def run_cli(*args):
     return subprocess.run([sys.executable, str(SCRIPT), *args], check=False,
-                          capture_output=True, text=True)
+                          capture_output=True, text=True, encoding="utf-8")
 
 
 def test_cli_worked_example_and_read_only_files(tmp_path):
@@ -143,7 +170,7 @@ def test_cli_worked_example_and_read_only_files(tmp_path):
     rollout. Byte equality before and after establishes read-only operation.
     """
     readme = tmp_path / "README.md"
-    readme.write_text(BANNER)
+    readme.write_text(BANNER, encoding="utf-8", newline="\n")
     args = ["--readme", f"{REPOSITORIES[0]}={readme}"]
     for repo in REPOSITORIES[1:]:
         args.extend(["--readme", f"{repo}={readme}"])
@@ -153,7 +180,7 @@ def test_cli_worked_example_and_read_only_files(tmp_path):
     blocked = run_cli("--catalog-status", "historical", *args)
     assert blocked.returncode == 1
     assert json.loads(blocked.stdout)["status"] == "NOT_EVALUATED"
-    assert readme.read_text() == BANNER
+    assert readme.read_text(encoding="utf-8") == BANNER
 
 
 def test_cli_unreadable_file_is_reported_without_local_paths(tmp_path):
