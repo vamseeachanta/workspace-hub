@@ -173,7 +173,27 @@ def test_invalid_candidate_is_not_treated_as_absent(mod, tmp_path, candidate):
     repo = repository(tmp_path)
     result = mod.inspect(repo, timeout_seconds=30, candidates=[candidate])
     assert result["status"] == "NOT_EVALUATED"
-    assert result["candidates"][0]["status"] == "NOT_EVALUATED"
+    assert result["candidates"] == [{
+        "status": "NOT_EVALUATED", "reason": "invalid_candidate_path",
+    }]
+
+
+@pytest.mark.parametrize("drive,suffix", [
+    ("C", ""), ("C", "/"), ("C", "/archive"), ("C", "archive"),
+    ("c", "/archive"), ("c", "archive"), ("Z", "/archive/"), ("z", "archive"),
+])
+def test_windows_drive_candidates_are_rejected_on_every_platform(mod, tmp_path, drive, suffix):
+    repo = repository(tmp_path)
+    result = mod.inspect(repo, timeout_seconds=30, candidates=[f"{drive}:{suffix}"])
+    assert result["status"] == "NOT_EVALUATED"
+    assert result["candidates"] == [{
+        "status": "NOT_EVALUATED", "reason": "invalid_candidate_path",
+    }]
+
+
+@pytest.mark.parametrize("candidate", ["notes:archive", "archive/C:notes", "1:archive", "é:archive"])
+def test_repo_relative_colons_are_preserved(mod, candidate):
+    assert mod._candidate(candidate) == candidate
 
 
 def test_readonly_and_inherited_git_environment(mod, tmp_path, monkeypatch):
