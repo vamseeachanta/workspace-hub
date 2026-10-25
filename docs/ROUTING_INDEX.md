@@ -23,6 +23,10 @@ This is the curated workspace-hub routing surface for tier-1 issue execution. Us
 | Cross-repo coordination or tier-1 freshness | `workspace-hub` | `docs/standards/TIER1_INDEXING_CHECKLIST.md`, `docs/reports/tier-1-indexing-freshness-latest.md` | `tests/docs/test_tier1_indexing_contract.py`, freshness audit tests |
 | Large generated or raw artifacts | Owning repo plus bulk-artifact-store boundary | keep small curated references in repo; move large/generated outputs per `docs/standards/DATA_PLACEMENT.md` | data-placement checks named in the issue plan |
 
+## Engineering analysis criteria and lookup datasets
+
+[Engineering analysis routing](standards/engineering-analysis-routing.html) identifies the digitalmodel-owned criteria and common workflow, bounded discovery coverage, and evidence observations kept in existing issue/analysis records. Use it across programs and component or structural scales. Documentation reach does not establish analysis compliance or response readiness; no shared enforcement is installed by this route.
+
 ## Per-Repo Routing
 
 ### workspace-hub
