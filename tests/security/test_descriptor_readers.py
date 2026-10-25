@@ -256,12 +256,22 @@ def _real_clone_probe(kind: str, root: Path) -> None:
         'fetch = +refs/heads/*:refs/remotes/origin/*\n',
         encoding="utf-8", newline="\n",
     )
+    if kind == "tracking":
+        with config.open("a", encoding="utf-8", newline="\n") as stream:
+            stream.write('[branch "topic"]\nremote = origin\nmerge = refs/heads/topic\n')
+    elif kind == "include_fifo":
+        include = root / "included-config"
+        os.mkfifo(include, 0o600)
+        with config.open("a", encoding="utf-8", newline="\n") as stream:
+            stream.write(f'[include]\npath = "{include.as_posix()}"\n')
     original_config = config.read_bytes()
     calls = []
     original_run = setup._run
 
     def observed_run(clone, *args):
-        if kind == "preflight_replaced_fifo" and not calls:
+        if (kind == "preflight_replaced_fifo" and not calls) or (
+            kind == "status_replaced_fifo" and args[0] == "status"
+        ):
             config.rename(config.with_name("held-config"))
             os.mkfifo(config, 0o600)
         calls.append(args)
@@ -316,11 +326,17 @@ def _real_clone_probe(kind: str, root: Path) -> None:
     elif kind == "invalid":
         with config.open("a", encoding="utf-8", newline="\n") as stream:
             stream.write('[include]\npath = forbidden\n')
+        original_config = config.read_bytes()
 
-    if kind == "regular":
+    if kind in {"regular", "tracking"}:
         setup.bind_clone_to_main(target, "org/llm-wiki-example")
         assert (target / ".git" / "HEAD").read_text(encoding="utf-8") == "ref: refs/heads/main\n"
         assert ("status", "--porcelain=v1", "--untracked-files=all") in calls
+        assert config.read_bytes() == (
+            b'[core]\n\trepositoryformatversion = 0\n\tbare = false\n'
+            b'[remote "origin"]\n\turl = ' + origin.encode("utf-8")
+            + b'\n\tfetch = +refs/heads/*:refs/remotes/origin/*\n'
+        )
     else:
         with pytest.raises((OSError, git.BootstrapGitError)):
             setup.bind_clone_to_main(target, "org/llm-wiki-example")
@@ -330,22 +346,28 @@ def _real_clone_probe(kind: str, root: Path) -> None:
             assert config.read_bytes() == original_config
             assert (config.parent / "HEAD.lock").read_bytes() == b"existing lock"
             assert (config.parent / "HEAD").read_text(encoding="utf-8") == "ref: refs/heads/topic\n"
-        elif kind in {"replaced_fifo", "preflight_replaced_fifo", "replaced_regular"}:
+        elif kind in {
+            "replaced_fifo", "preflight_replaced_fifo", "status_replaced_fifo", "replaced_regular",
+        }:
             assert (target / ".git" / "HEAD").read_text(encoding="utf-8") == "ref: refs/heads/topic\n"
             if kind != "replaced_regular":
                 assert stat.S_ISFIFO(config.stat().st_mode)
             assert ("status", "--porcelain=v1", "--untracked-files=all") in calls
-        if kind in {"existing_ref", "dirty_index"}:
+        if kind in {"existing_ref", "dirty_index", "invalid", "include_fifo"}:
             assert config.read_bytes() == original_config
             assert (config.parent / "HEAD").read_text(encoding="utf-8") == "ref: refs/heads/topic\n"
+        if kind == "include_fifo":
+            assert stat.S_ISFIFO(include.stat().st_mode)
+            assert ("status", "--porcelain=v1", "--untracked-files=all") in calls
         if kind != "locked":
             assert not (config.parent / "HEAD.lock").exists()
 
 
 @pytest.mark.skipif(sys.platform != "linux", reason="descriptor and FIFO probes use Linux")
 @pytest.mark.parametrize("kind", [
-    "regular", "fifo", "preflight_replaced_fifo", "replaced_fifo", "replaced_regular",
-    "invalid", "commondir", "locked", "write_failure", "long_head", "existing_ref", "dirty_index",
+    "regular", "tracking", "fifo", "preflight_replaced_fifo", "status_replaced_fifo",
+    "replaced_fifo", "replaced_regular", "invalid", "include_fifo", "commondir", "locked",
+    "write_failure", "long_head", "existing_ref", "dirty_index",
 ])
 def test_clone_entrypoint_real_git(tmp_path, kind):
     from client_llm_wiki.bootstrap_git import isolated_env

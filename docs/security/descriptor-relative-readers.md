@@ -11,6 +11,7 @@ of every filesystem consumer or device driver. Refs #3439.
 | Revision | Date | Change and reason |
 | --- | --- | --- |
 | Initial | 2026-10-22 | Record the source inventory, prevent FIFO waits in hub readers, and document regression coverage. |
+| Update | 2026-10-25 | Describe clone preflight isolation and extend real-Git regression controls for replacement, includes and branch tracking. |
 
 ## Method and source
 
@@ -120,6 +121,25 @@ attempt to consume special-file bytes, config probes reject parser invocation,
 and rejection probes verify descriptor closure. The directory case for the tree
 scanner is excluded because directory traversal is intentional. Existing module
 tests cover valid files and lifecycle behavior.
+
+### Clone normalization preflight
+
+`bootstrap_clone_setup.py` opens config with nonblocking and no-follow flags and
+rejects non-regular descriptors before its first Git child. Git preflight runs
+against a temporary repository view that excludes local config and copies HEAD
+through a checked regular-file descriptor. This prevents a child from reopening
+a replaced config pathname or following config includes. Each Git operation
+retains the existing five-second timeout. Config parsing uses the held descriptor
+with includes disabled; normalization checks its identity before rewriting and
+before publishing HEAD. The HEAD lock spans validation and normalization.
+
+`test_clone_entrypoint_real_git` retains real preflight calls under the existing
+subprocess watchdog. Its controls cover regular config, valid transient branch
+tracking, an initial FIFO, replacements before the first preflight call and before
+`status`, and a regular config whose include points to a FIFO without a writer.
+The include is rejected without consuming it or changing config or HEAD. Valid
+branch tracking is normalized to the canonical config. These cases supplement
+the descriptor-level spies; they do not qualify every Git metadata file type.
 
 ## Limits and review
 
