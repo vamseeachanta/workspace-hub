@@ -11,12 +11,12 @@ The config is a JSON object. Unknown fields are rejected.
 | Field | Type | Meaning |
 | --- | --- | --- |
 | `target_seconds` | positive finite number | Default 60 seconds: the maintainer's stated target in issue #4223. |
-| `repeats` | positive integer | Configurable implementation default 3; provenance is unverified. |
+| `repeats` | positive integer | Required observation count; no inferred default. |
 | `timeout_seconds` | positive finite number | Required subprocess wall-time limit; no inferred default. |
 | `clean_checkout` | boolean | Default true; a new committed tracked-file copy for every repeat. False reuses an isolated copy within each artifact. |
 | `history` | string | Optional JSONL output path, resolved relative to the config directory. Created if absent. |
 | `history_window` | positive integer | Required with `--compare history`; number of prior matching successful runs to consider. |
-| `regression_ratio` | positive finite number | Configurable implementation default 1.5; provenance is unverified. Growth strictly above baseline times this ratio is a regression. |
+| `regression_ratio` | positive finite number | Required explicit criterion; no inferred default. Growth strictly above baseline times this ratio is a regression. |
 
 The positivity constraints define valid measurements and counts, rather than
 performance acceptance limits. Explicit small targets and timeouts are useful
@@ -70,7 +70,10 @@ Environment and user cache directories remain separate for every observation.
 | `FAILED` | A command fails to start or exits unsuccessfully. |
 | `TIMEOUT` | A subprocess exceeds the configured timeout. |
 
-All repeats run. Aggregate precedence is TIMEOUT, FAILED, NOT_REPRODUCED, then the
+All repeats run unless execution setup fails. Before copying or removing an output,
+the disposable root, checkout and output ancestors are inspected from the root
+outward. Symlinks, dangling links and directory reparse points abort setup with
+exit code 2; no completed report is emitted. Aggregate precedence is TIMEOUT, FAILED, NOT_REPRODUCED, then the
 median-based speed verdict. The total row sums artifact medians and identifies
 the longest single observed artifact. It does not claim end-to-end elapsed time.
 
@@ -94,8 +97,8 @@ export REPRODUCE_BENCH="$(git rev-parse --show-toplevel)/scripts/hygiene/reprodu
 ```
 
 The two artifacts below independently contain `expected` followed by a newline.
-Three repeats per artifact imply six builds. The demonstration timeout of five
-seconds and history window of two records are explicit example inputs, not
+Three repeats per artifact imply six builds. The demonstration repeat count,
+regression ratio, timeout of five seconds and history window of two records are explicit example inputs, not
 recommended limits. Git's import protocol creates a synthetic local revision
 without requiring configured identity or changing the tool's repository.
 
@@ -136,7 +139,8 @@ subprocess.run(["git", "-C", str(repo), "fast-import", "--quiet"],
 subprocess.run(["git", "-C", str(repo), "symbolic-ref", "HEAD", "refs/heads/example"],
                check=True, env=env)
 subprocess.run(["git", "-C", str(repo), "read-tree", "HEAD"], check=True, env=env)
-settings = {"timeout_seconds": 5, "history": "bench-history.jsonl", "history_window": 2}
+settings = {"timeout_seconds": 5, "repeats": 3, "regression_ratio": 1.5,
+            "history": "bench-history.jsonl", "history_window": 2}
 (output / "bench.json").write_text(json.dumps(settings), encoding="utf-8", newline="\n")
 subprocess.run([sys.executable, "-I", os.environ["REPRODUCE_BENCH"],
                "--repo", str(repo), "--config", str(output / "bench.json"),
@@ -225,10 +229,9 @@ child. No command text, environment values, stdout or stderr is included in repo
 
 - Issue #4223, benchmark requirement: committed rebuild, timing, JSON/HTML and
   the maintainer's 60-second target.
-- Issue #4222 describes the registry requirement. The provenance of the
-  implementation defaults of three repeats and regression ratio 1.5 is unverified;
-  neither is established by the linked issues. Both remain configurable and
-  require a linked maintainer statement before attribution as approved criteria.
+- Issue #4222 describes the registry requirement. Repeat count and regression
+  ratio require explicit configuration because neither is established by the
+  linked issues. The example settings are synthetic demonstration inputs.
 - `scripts/benchmarks/perf-bench.sh`, `run_bench`: existing subprocess wall-time
   and append-only history convention; this implementation substitutes a monotonic
   standard-library timer and omits machine names.

@@ -24,11 +24,9 @@ import time
 from datetime import UTC, datetime
 from pathlib import Path, PureWindowsPath
 
-# Issue #4223 establishes the 60-second target. Repeat and ratio defaults
-# have unverified provenance; callers can override them in the configuration.
+# Issue #4223 establishes the 60-second target. Other performance criteria
+# require explicit configuration rather than an unsupported policy default.
 DEFAULT_TARGET = 60
-DEFAULT_REPEATS = 3
-DEFAULT_RATIO = 1.5
 # Local report contract, version 1; see REPRODUCE_BENCH.md, "Report schema".
 SCHEMA_VERSION = 1
 VERDICTS = {"PASS", "SLOW", "NOT_REPRODUCED", "FAILED", "TIMEOUT"}
@@ -54,11 +52,12 @@ def parse_config(raw):
     }
     if raw.keys() - allowed:
         raise ValueError("unknown config field")
+    for name in ("repeats", "regression_ratio"):
+        if name not in raw:
+            raise ValueError(f"{name} requires explicit configuration")
     result = {
         "target_seconds": DEFAULT_TARGET,
-        "repeats": DEFAULT_REPEATS,
         "clean_checkout": True,
-        "regression_ratio": DEFAULT_RATIO,
         **raw,
     }
     for name in ("target_seconds", "timeout_seconds", "regression_ratio"):
@@ -245,18 +244,28 @@ def outside_repository(path, repo):
     return path
 
 
-def regular_snapshot_output(output, checkout):
-    """Reject links and directory reparse points before accepting output bytes."""
-    for path in (output, *output.parents):
-        metadata = path.lstat()
+def unlinked_snapshot_path(path, root):
+    """Inspect ancestors first, without following links into external content."""
+    relative = path.relative_to(root)
+    candidates = [root]
+    for part in relative.parts:
+        candidates.append(candidates[-1] / part)
+    for candidate in candidates:
+        try:
+            metadata = candidate.lstat()
+        except FileNotFoundError:
+            continue
         if stat.S_ISLNK(metadata.st_mode) or (
             getattr(metadata, "st_file_attributes", 0)
             & stat.FILE_ATTRIBUTE_REPARSE_POINT
         ):
             return False
-        if path == checkout:
-            break
-    return output.is_file() and output.resolve().is_relative_to(checkout.resolve())
+    return path.resolve().is_relative_to(root.resolve())
+
+
+def regular_snapshot_output(output, checkout):
+    """Reject links and directory reparse points before accepting output bytes."""
+    return unlinked_snapshot_path(output, checkout) and output.is_file()
 
 
 def benchmark(
@@ -336,9 +345,13 @@ def benchmark(
             root = Path(temporary)
             for index in range(config["repeats"]):
                 checkout = root / (str(index) if config["clean_checkout"] else "shared")
+                if not unlinked_snapshot_path(checkout, root):
+                    raise ValueError("linked snapshot path prevents copy or cleanup")
                 if not checkout.exists():
                     copy_snapshot(repo, entries, checkout)
                 output = checkout / item["path"]
+                if not unlinked_snapshot_path(output, root):
+                    raise ValueError("linked snapshot path prevents copy or cleanup")
                 # Remove the committed artifact every time: a no-op cannot reproduce it.
                 if output.is_symlink() or output.is_file():
                     output.unlink()
@@ -379,7 +392,7 @@ def benchmark(
                     status = "FAILED"
                 duration = clock() - start
                 actual = None
-                if output.is_file() and regular_snapshot_output(output, checkout):
+                if regular_snapshot_output(output, checkout):
                     actual = hashlib.sha256(output.read_bytes()).hexdigest()
                 if status == "PASS" and actual != expected:
                     status = "NOT_REPRODUCED"
@@ -546,10 +559,11 @@ def validate_report(report):
         report["method"],
         {"target_seconds", "repeats", "timeout_seconds", "clean_checkout"},
     )
-    parse_config(report["method"])
     comparison = report["comparison"]
     obj(comparison, {"enabled", "history_window", "regression_ratio"})
-    positive(comparison["regression_ratio"], "regression_ratio")
+    parse_config(
+        {**report["method"], "regression_ratio": comparison["regression_ratio"]}
+    )
     if type(comparison["enabled"]) is not bool:
         raise TypeError("comparison enabled must be boolean")
     window = comparison["history_window"]

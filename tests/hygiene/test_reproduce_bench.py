@@ -47,14 +47,15 @@ def commit_fixture(repo, scripts, entries=None):
         json.dumps(entries), encoding="utf-8", newline="\n"
     )
     for item in entries:
+        (repo / item["path"]).parent.mkdir(parents=True, exist_ok=True)
         (repo / item["path"]).write_text("expected\n", encoding="utf-8", newline="\n")
     # Import synthetic fixture objects without configuring or overriding identity.
     stream = b"commit refs/heads/fixture\ncommitter Fixture <fixture> 0 +0000\ndata 7\nfixture\n"
-    for file in sorted(repo.iterdir()):
-        if file.is_file():
+    for file in sorted(repo.rglob("*")):
+        if file.is_file() and ".git" not in file.relative_to(repo).parts:
             data = file.read_bytes()
             stream += (
-                f"M 100644 inline {json.dumps(file.name)}\ndata {len(data)}\n".encode()
+                f"M 100644 inline {json.dumps(file.relative_to(repo).as_posix())}\ndata {len(data)}\n".encode()
                 + data
                 + b"\n"
             )
@@ -85,7 +86,7 @@ def entry(script="build.py", **updates):
 
 def config(**updates):
     # Tests override repeats to keep subprocess fixtures short.
-    return {"timeout_seconds": 5, "repeats": 1, **updates}
+    return {"timeout_seconds": 5, "repeats": 1, "regression_ratio": 1.5, **updates}
 
 
 def run(repo, tmp_path, **kwargs):
@@ -584,15 +585,18 @@ def test_output_reparse_directory(repository, tmp_path, monkeypatch, linked):
 
     commit_fixture(repository, {"build.py": "pass"})
     original = Path.lstat
+    rebuilt = False
 
     def lstat(path, *args, **kwargs):
         metadata = original(path, *args, **kwargs)
-        if linked and path.name == "0":
+        if linked and rebuilt and path.name == "0":
             return SimpleNamespace(st_mode=metadata.st_mode, st_file_attributes=0x400)
         return metadata
 
     def runner(argv, *, cwd, timeout, env):
+        nonlocal rebuilt
         Path(cwd, "build.txt").write_bytes(b"expected\n")
+        rebuilt = True
         return subprocess.CompletedProcess(argv, 0)
 
     monkeypatch.setattr(Path, "lstat", lstat)
@@ -600,3 +604,109 @@ def test_output_reparse_directory(repository, tmp_path, monkeypatch, linked):
         repository, config(), temp_root=tmp_path / "builds", runner=runner
     )
     assert result["artifacts"][0]["verdict"] == ("NOT_REPRODUCED" if linked else "PASS")
+
+
+@pytest.mark.parametrize("location", ["checkout", "parent"])
+@pytest.mark.parametrize("directory_output", [False, True])
+def test_repeat_cleanup_rejects_linked_ancestors(
+    repository, tmp_path, monkeypatch, location, directory_output
+):
+    """Two repeats must preserve external bytes and directory contents."""
+    artifact = "build.txt" if location == "checkout" else "nested/build.txt"
+    commit_fixture(repository, {"build.py": "pass"}, [entry(path=artifact)])
+    external = tmp_path / "external"
+    external.mkdir()
+    protected = external / "build.txt"
+    if directory_output:
+        protected.mkdir()
+        protected = protected / "sentinel.txt"
+    protected.write_bytes(b"retained")
+    attempts = []
+    calls = []
+    original_unlink = Path.unlink
+    original_rmtree = bench.shutil.rmtree
+
+    def unlink(path, *args, **kwargs):
+        if path.resolve().is_relative_to(external):
+            attempts.append("unlink")
+            raise OSError("external cleanup intercepted")
+        return original_unlink(path, *args, **kwargs)
+
+    def rmtree(path, *args, **kwargs):
+        if Path(path).resolve().is_relative_to(external):
+            attempts.append("rmtree")
+            raise OSError("external cleanup intercepted")
+        return original_rmtree(path, *args, **kwargs)
+
+    def runner(argv, *, cwd, **kwargs):
+        calls.append(True)
+        parent = cwd if location == "checkout" else cwd / "nested"
+        parent.rename(parent.with_name(parent.name + "-saved"))
+        parent.symlink_to(external, target_is_directory=True)
+        return subprocess.CompletedProcess(argv, 0)
+
+    monkeypatch.setattr(Path, "unlink", unlink)
+    monkeypatch.setattr(bench.shutil, "rmtree", rmtree)
+    with pytest.raises(ValueError, match="linked snapshot path"):
+        bench.benchmark(
+            repository,
+            config(repeats=2, clean_checkout=False),
+            temp_root=tmp_path / "builds",
+            runner=runner,
+        )
+    assert calls == [True]
+    assert attempts == []
+    assert protected.read_bytes() == b"retained"
+    assert sorted(p.relative_to(external).as_posix() for p in external.rglob("*")) == (
+        ["build.txt", "build.txt/sentinel.txt"] if directory_output else ["build.txt"]
+    )
+
+
+@pytest.mark.parametrize("missing", ["repeats", "regression_ratio"])
+def test_explicit_performance_settings_required(missing):
+    settings = {"timeout_seconds": 5, "repeats": 3, "regression_ratio": 1.5}
+    del settings[missing]
+    with pytest.raises(ValueError, match=missing):
+        bench.parse_config(settings)
+
+
+def test_explicit_performance_settings_preserved():
+    settings = {"timeout_seconds": 5, "repeats": 4, "regression_ratio": 1.25}
+    result = bench.parse_config(settings)
+    assert result["repeats"] == 4
+    assert result["regression_ratio"] == 1.25
+
+
+@pytest.mark.parametrize("location", ["checkout", "parent"])
+def test_repeat_cleanup_rejects_reparse_ancestors(
+    repository, tmp_path, monkeypatch, location
+):
+    """Simulated junction metadata must stop reuse before any output deletion."""
+    from types import SimpleNamespace
+
+    artifact = "build.txt" if location == "checkout" else "nested/build.txt"
+    commit_fixture(repository, {"build.py": "pass"}, [entry(path=artifact)])
+    original = Path.lstat
+    marked = []
+
+    def lstat(path, *args, **kwargs):
+        metadata = original(path, *args, **kwargs)
+        if path in marked:
+            return SimpleNamespace(st_mode=metadata.st_mode, st_file_attributes=0x400)
+        return metadata
+
+    def runner(argv, *, cwd, **kwargs):
+        assert not marked, "linked checkout must not run again"
+        output = cwd / artifact
+        output.write_bytes(b"retained")
+        marked.append(cwd if location == "checkout" else output.parent)
+        return subprocess.CompletedProcess(argv, 0)
+
+    monkeypatch.setattr(Path, "lstat", lstat)
+    with pytest.raises(ValueError, match="linked snapshot path"):
+        bench.benchmark(
+            repository,
+            config(repeats=2, clean_checkout=False),
+            temp_root=tmp_path / "builds",
+            runner=runner,
+        )
