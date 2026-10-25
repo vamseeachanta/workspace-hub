@@ -89,26 +89,17 @@ with open(f'{case_dir}/system/fvSchemes', 'w') as f:
     f.write('interpolationSchemes { default linear; }\n')
     f.write('snGradSchemes { default corrected; }\n')
 
-# fvSolution
-with open(f'{case_dir}/system/fvSolution', 'w') as f:
-    f.write('FoamFile { version 2.0; format ascii; class dictionary; object fvSolution; }\n')
-    f.write('solvers {\n')
-    f.write('  p { solver GAMG; tolerance 1e-06; relTol 0.1; smoother GaussSeidel; }\n')
-    f.write('  pFinal { solver GAMG; tolerance 1e-06; relTol 0; smoother GaussSeidel; }\n')
-    f.write('  U { solver smoothSolver; smoother symGaussSeidel; tolerance 1e-05; relTol 0.1; }\n')
-    f.write('  UFinal { solver smoothSolver; smoother symGaussSeidel; tolerance 1e-05; relTol 0; }\n')
-    f.write('}\n')
-    if solver['application'] in ['simpleFoam']:
-        f.write('SIMPLE { nNonOrthogonalCorrectors 0; consistent yes; }\n')
-        relax = solver.get('relaxation', {})
-        f.write('relaxationFactors { equations {\n')
-        f.write(f'  U {relax.get(\"U\", 0.7)}; p {relax.get(\"p\", 0.3)};\n')
-        f.write('} }\n')
-    else:
-        f.write('PISO { nCorrectors 2; nNonOrthogonalCorrectors 0; pRefCell 0; pRefValue 0; }\n')
+# fvSolution: use the same writer exercised by the text-only tests.
+import sys
+sys.path.insert(0, '$SCRIPT_DIR')
+from fvsolution import write_fvsolution
+write_fvsolution(f'{case_dir}/system/fvSolution', solver)
 
 print('Case dicts generated')
 " 2>&1
+# Validate generated dictionary structure before meshing or solver execution.
+uv run --no-project --with PyYAML python "$SCRIPT_DIR/validate-analysis.py" \
+    "$RUN_DIR" --dictionaries-only
 echo "Case setup: OK"
 
 # Stage 3: Meshing
