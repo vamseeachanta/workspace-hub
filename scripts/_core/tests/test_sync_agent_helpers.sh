@@ -339,6 +339,142 @@ EOF
     rm -rf "$tmpdir"
 }
 
+run_existing_target_sync() (
+    local tmpdir="$1" ws_root="$2" home_root="$3" kind="$4"
+    shift 4
+    export HOME="$home_root" TMPDIR="$tmpdir/tmp"
+    export XDG_CONFIG_HOME="$home_root/.config" XDG_CACHE_HOME="$tmpdir/cache"
+    export PATH="$tmpdir/bin:$PATH"
+    export CLAUDE_MEMORY_SNAPSHOT_PRIVATE_CLONE="$tmpdir/no-snapshots"
+    unset GIT_DIR GIT_WORK_TREE GIT_COMMON_DIR
+
+    if [[ "$kind" == plain_file ]]; then
+        # The plain helper has no executable call site. Source the entire copied
+        # script with its real option parser, then invoke its retained definition.
+        export PLAIN_TEMPLATE="$ws_root/config/agents/hermes/plain.txt"
+        export PLAIN_TARGET="$home_root/.hermes/plain.txt"
+        bash -c '
+            sync_script="$1"
+            shift
+            source "$sync_script" "$@"
+            sync_hermes_plain_file "$PLAIN_TEMPLATE" "$PLAIN_TARGET" "Plain fixture"
+        ' bash "$ws_root/scripts/_core/sync-agent-configs.sh" "$@"
+    else
+        bash "$ws_root/scripts/_core/sync-agent-configs.sh" "$@"
+    fi
+)
+
+run_dry_run_existing_target_test() {
+    local kind="$1" tmpdir ws_root home_root target template label target_dir
+    tmpdir="$(mktemp -d)"
+    ws_root="$tmpdir/ws"
+    home_root="$tmpdir/user"
+    label="dry_run_existing_$kind"
+    make_workspace "$ws_root"
+    mkdir -p "$home_root/.hermes" "$home_root/.claude" "$tmpdir/tmp" "$tmpdir/bin"
+    # Refuse external visibility detection; no private snapshot source exists.
+    printf '#!/usr/bin/env bash\nexit 1\n' > "$tmpdir/bin/gh"
+    chmod +x "$tmpdir/bin/gh"
+
+    # Expected strings below are literal fixture inputs, independent of the
+    # implementation. Each template changes managed-before to managed-after.
+    case "$kind" in
+        yaml)
+            target="$home_root/.hermes/config.yaml"
+            template="$ws_root/config/agents/hermes/config.yaml.template"
+            cat > "$template" <<'EOF'
+model:
+  default: managed-after
+terminal:
+  backend: template-backend
+  cwd: template-directory
+EOF
+            cat > "$target" <<'EOF'
+# Keep this comment and the original formatting during dry-run.
+model: {default: managed-before}
+terminal:
+  backend: preserved-backend
+  cwd: preserved-directory
+unmanaged_note: yaml-unmanaged
+EOF
+            ;;
+        json)
+            if ! command -v jq >/dev/null; then
+                fail "$label requires jq to exercise the JSON merge"
+                return
+            fi
+            target="$home_root/.claude/settings.json"
+            template="$ws_root/config/agents/claude/settings.json"
+            printf '{"statusLine":{"type":"managed-after"}}\n' > "$template"
+            cat > "$target" <<'EOF'
+{ "statusLine": {"type": "managed-before", "unmanaged": "nested-unmanaged"},
+  "unmanaged_note": "json-unmanaged" }
+EOF
+            ;;
+        plain_file)
+            target="$home_root/.hermes/plain.txt"
+            template="$ws_root/config/agents/hermes/plain.txt"
+            printf 'managed-after\n' > "$template"
+            printf 'managed-before\nplain_file-unmanaged\n' > "$target"
+            ;;
+    esac
+    target_dir="$(dirname "$target")"
+    # Include hidden and nested siblings so residue cannot hide from the scan.
+    mkdir -p "$target_dir/unchanged-directory"
+    printf 'sibling sentinel\n' > "$target_dir/.unchanged-sibling"
+    cp "$target" "$tmpdir/before-target"
+    (cd "$target_dir" && find . -print | LC_ALL=C sort) > "$tmpdir/before-members"
+
+    if run_existing_target_sync "$tmpdir" "$ws_root" "$home_root" "$kind" --dry-run > "$tmpdir/dry-run.log" 2>&1; then
+        pass "$label command completed"
+    else
+        fail "$label command completed"
+        return
+    fi
+    if cmp -s "$tmpdir/before-target" "$target"; then
+        pass "$label preserves exact target bytes"
+    else
+        fail "$label preserves exact target bytes"
+    fi
+    if grep -Fq "$kind-unmanaged" "$target"; then
+        pass "$label preserves unmanaged values"
+    else
+        fail "$label preserves unmanaged values"
+    fi
+    (cd "$target_dir" && find . -print | LC_ALL=C sort) > "$tmpdir/after-members"
+    if cmp -s "$tmpdir/before-members" "$tmpdir/after-members"; then
+        pass "$label preserves directory membership without sibling residue"
+    else
+        fail "$label preserves directory membership without sibling residue"
+    fi
+
+    # Positive control: the same copied script and fixture must actually update
+    # the managed value when dry-run is omitted. This touches only the test tree.
+    if run_existing_target_sync "$tmpdir" "$ws_root" "$home_root" "$kind" > "$tmpdir/apply.log" 2>&1; then
+        pass "$label apply control completed"
+    else
+        fail "$label apply control completed"
+        return
+    fi
+    if ! cmp -s "$tmpdir/before-target" "$target" && grep -Fq managed-after "$target"; then
+        pass "$label apply control changes managed content"
+    else
+        fail "$label apply control changes managed content"
+    fi
+}
+
+run_dry_run_existing_yaml_test() {
+    run_dry_run_existing_target_test yaml
+}
+
+run_dry_run_existing_json_test() {
+    run_dry_run_existing_target_test json
+}
+
+run_dry_run_existing_plain_file_test() {
+    run_dry_run_existing_target_test plain_file
+}
+
 run_private_host_alias_resolution_test() {
     # workspace-hub is PUBLIC, so real OS hostnames were removed from
     # registry.yaml's hostname_aliases. That field was load-bearing: with no
@@ -672,6 +808,9 @@ run_invalid_yaml_create_test
 run_invalid_json_update_cleanup_test
 run_python3_fallback_to_uv_test
 run_dry_run_claude_memory_missing_target_count_test
+run_dry_run_existing_yaml_test
+run_dry_run_existing_json_test
+run_dry_run_existing_plain_file_test
 run_private_host_alias_resolution_test
 run_claude_memory_restores_from_private_clone_test
 run_claude_memory_never_restores_from_public_path_test
