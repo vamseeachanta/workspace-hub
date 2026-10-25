@@ -99,6 +99,31 @@ def test_metadata_requires_head(checker):
     assert set(checker.check_redirect(source)) >= {"canonical", "refresh", "robots"}
 
 
+@pytest.mark.parametrize("rules", [
+    ("canonical",), ("refresh",), ("robots",),
+    ("canonical", "refresh", "robots"),
+])
+@pytest.mark.parametrize("depth", [1, 2])
+def test_template_metadata_is_inert(checker, rules, depth):
+    source = STUB
+    for rule in rules:
+        element = next(line for line in STUB.splitlines() if (
+            f'rel="{rule}"' in line or f'name="{rule}"' in line
+            or f'http-equiv="{rule}"' in line
+        ))
+        source = source.replace(
+            element, "<template>" * depth + element + "</template>" * depth
+        )
+    # Inert metadata supplies none of the corresponding document requirements.
+    assert set(checker.check_redirect(source)) == set(rules)
+
+
+def test_active_metadata_after_template_still_qualifies(checker):
+    inert = STUB.split("<title>")[1].split("</head>")[0]
+    source = STUB.replace("<title>", f"<template><title>{inert}</template><title>", 1)
+    assert checker.check_redirect(source) == []
+
+
 def test_metadata_case_and_whitespace(checker):
     source = STUB.replace('rel="canonical"', 'rel="CANONICAL"')
     source = source.replace('http-equiv="refresh"', 'HTTP-EQUIV="Refresh"')
@@ -147,7 +172,7 @@ def make_sources(root):
     }.items():
         path = root / repo / relative
         path.parent.mkdir(parents=True)
-        path.write_text(STUB, encoding="utf-8")
+        path.write_text(STUB, encoding="utf-8", newline="\n")
 
 
 def run_cli(root, *args):
@@ -166,7 +191,7 @@ def test_cli_worked_example_and_read_only(tmp_path):
     """
     make_sources(tmp_path)
     deep = tmp_path / "worldenergydata/reports/capabilities/insights.html"
-    deep.write_text("<h1>Technical analysis</h1>", encoding="utf-8")
+    deep.write_text("<h1>Technical analysis</h1>", encoding="utf-8", newline="\n")
     before = {p: p.read_bytes() for p in tmp_path.rglob("*") if p.is_file()}
     result = run_cli(tmp_path)
     assert result.returncode == 0
@@ -188,7 +213,7 @@ def test_cli_missing_source_is_not_evaluated(tmp_path):
 def test_cli_drift_and_missing_link_input(tmp_path):
     make_sources(tmp_path)
     path = tmp_path / "digitalmodel/docs/api/capabilities/index.html"
-    path.write_text("<h1>Old capabilities</h1>", encoding="utf-8")
+    path.write_text("<h1>Old capabilities</h1>", encoding="utf-8", newline="\n")
     result = run_cli(tmp_path, "--links", str(tmp_path / "missing.md"))
     assert result.returncode != 0
     rows = json.loads(result.stdout)
@@ -200,7 +225,10 @@ def test_cli_drift_and_missing_link_input(tmp_path):
 def test_cli_link_file_reports_line_without_content(tmp_path):
     make_sources(tmp_path)
     path = tmp_path / "links.md"
-    path.write_text("Navigation\n[Capabilities](https://example.github.io/digitalmodel/capabilities/)\n")
+    path.write_text(
+        "Navigation\n[Capabilities](https://example.github.io/digitalmodel/capabilities/)\n",
+        encoding="utf-8", newline="\n",
+    )
     result = run_cli(tmp_path, "--links", str(path))
     assert result.returncode != 0
     row = json.loads(result.stdout)[-1]

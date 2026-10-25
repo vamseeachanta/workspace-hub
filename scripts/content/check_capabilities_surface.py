@@ -47,7 +47,8 @@ class RedirectParser(HTMLParser):
         values = dict(attrs)
         if len(values) != len(attrs):
             self.duplicate_attributes = True
-        in_head = any(t == "head" for t, _ in self.stack)
+        in_head = (any(t == "head" for t, _ in self.stack)
+                   and not any(t == "template" for t, _ in self.stack))
         in_body = any(t == "body" for t, _ in self.stack)
         style = re.sub(r"\s+", "", values.get("style") or "").lower()
         hidden = (
