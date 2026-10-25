@@ -6,6 +6,7 @@ on:
       - main
       - 'feature/**'
   pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
     branches:
       - main
   workflow_dispatch:
@@ -20,13 +21,18 @@ on:
           - commit
           - task
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event_name == 'pull_request' && format('pr-{0}', github.event.pull_request.number) || format('run-{0}', github.run_id) }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
 env:
   PYTHON_VERSION: '3.12'
 
 jobs:
   test:
     name: Run Tests
-    runs-on: ubuntu-latest
+    if: (github.event_name != 'pull_request' || github.event.pull_request.draft == false)
+    runs-on: ${{ vars.PR_GATE_RUNNER && fromJSON(vars.PR_GATE_RUNNER) || 'ubuntu-latest' }}
     timeout-minutes: 30
 
     steps:
@@ -106,7 +112,8 @@ jobs:
 
   lint:
     name: Code Quality
-    runs-on: ubuntu-latest
+    if: (github.event_name != 'pull_request' || github.event.pull_request.draft == false)
+    runs-on: ${{ vars.PR_GATE_RUNNER && fromJSON(vars.PR_GATE_RUNNER) || 'ubuntu-latest' }}
     timeout-minutes: 10
 
     steps:
@@ -135,7 +142,8 @@ jobs:
 
   governance:
     name: Governance Checks
-    runs-on: ubuntu-latest
+    if: (github.event_name != 'pull_request' || github.event.pull_request.draft == false)
+    runs-on: ${{ vars.PR_GATE_RUNNER && fromJSON(vars.PR_GATE_RUNNER) || 'ubuntu-latest' }}
     timeout-minutes: 10
 
     steps:
