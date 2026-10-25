@@ -1,19 +1,19 @@
 # AI account usage (fleet)
 
-Generated 2026-10-25T05:13:27+00:00 by fleet-collector collect_account_usage_fleet. Percentages are USED; headroom = 100 - weekly used. Source of truth: `config/ai-tools/account-usage-latest.json`.
+Generated 2026-10-25T06:13:29+00:00 by fleet-collector collect_account_usage_fleet. Percentages are USED; headroom = 100 - weekly used. Source of truth: `config/ai-tools/account-usage-latest.json`.
 
 ## Recommendation
 
-- **claude**: `claude-owner` (89.0% weekly headroom) on ace-linux-1, ace-linux-2, gpu-claw
-- **codex**: `codex-owner` (44.0% weekly headroom) on ace-linux-1, ace-linux-2, fleet-collector, gpu-claw
+- **claude**: `claude-owner` (88.0% weekly headroom) on ace-linux-1, ace-linux-2, gpu-claw
+- **codex**: `codex-owner` (100.0% weekly headroom) on ace-linux-1, ace-linux-2, fleet-collector, gpu-claw
 
 ## Accounts
 
 | account | provider | holder | 5h used | week used | headroom | resets | sampled on | source |
 |---|---|---|---|---|---|---|---|---|
-| claude-owner | claude | owner | 0% | 11% | 89% | 2026-10-31T14:00:00.174584+00:00 | gpu-claw | oauth-api |
+| claude-owner | claude | owner | 3% | 12% | 88% | 2026-10-31T13:59:59.615969+00:00 | gpu-claw | oauth-api |
 | claude-professional | claude | colleague |  |  |  |  |  | unavailable |
-| codex-owner | codex | owner |  | 56% | 44% | 2026-10-30T17:41:09+00:00 | fleet-collector | app-server-live |
+| codex-owner | codex | owner |  | 0% | 100% | 2026-11-01T06:10:35+00:00 | fleet-collector | app-server-live |
 | codex-professional | codex | colleague |  |  |  |  |  | unavailable |
 
 ## Hosts
@@ -21,7 +21,7 @@ Generated 2026-10-25T05:13:27+00:00 by fleet-collector collect_account_usage_fle
 | host | reachable | claude | codex | note |
 |---|---|---|---|---|
 | ace-linux-1 | yes | claude-owner | codex-owner |  |
-| ace-linux-2 | yes | claude-owner | codex-owner |  |
+| ace-linux-2 | yes | claude-owner | codex-owner | claude: access token expired; a Claude Code session on this host will refresh it |
 | gpu-claw | yes | claude-owner | codex-owner |  |
 | ace-win-2 | no | claude-owner | codex-owner | exit 255 |
 | ace-win-1 | no | claude-professional | codex-professional | exit 255 |
