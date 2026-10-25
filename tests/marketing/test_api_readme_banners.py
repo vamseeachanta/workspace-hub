@@ -121,6 +121,22 @@ def test_markdown_catalog_link_and_redirect_host_are_supported():
     assert audit(all_readmes(text), catalog_status="live")["status"] == "PASS"
 
 
+@pytest.mark.parametrize("suffix", [".", ";", ",", "]"])
+@pytest.mark.parametrize("angle", [False, True])
+def test_explicit_catalog_destination_punctuation_is_not_trimmed(suffix, angle):
+    target = CATALOG_URL + suffix
+    link = f"[Catalog](<{target}>)" if angle else f"[Catalog]({target})"
+    result = audit(all_readmes(BANNER.replace(CATALOG_URL, link)), catalog_status="live")
+    assert result["status"] == "FAIL"
+    assert "catalog_link" in result["repositories"][0]["missing"]
+
+
+@pytest.mark.parametrize("suffix", [".", ";", ",", "]"])
+def test_bare_catalog_url_sentence_punctuation_remains_supported(suffix):
+    text = BANNER.replace(CATALOG_URL, CATALOG_URL + suffix)
+    assert audit(all_readmes(text), catalog_status="live")["status"] == "PASS"
+
+
 @pytest.mark.parametrize("link", [
     f"[{CATALOG_URL}](https://example.invalid/unrelated)",
     f"![{CATALOG_URL}](https://example.invalid/image.png)",
@@ -174,6 +190,16 @@ def test_nested_quoted_fence_is_not_a_published_banner(fence, depth):
 def test_unsupported_nested_quote_cannot_supply_banner_evidence():
     text = BANNER.replace("> ", "> > ")
     assert audit(all_readmes(text), catalog_status="live")["status"] == "FAIL"
+
+
+@pytest.mark.parametrize("prefix", ["> > Nested paragraph\n", "> > > Nested paragraph\n"])
+def test_nested_quote_lazy_continuations_cannot_supply_banner_evidence(prefix):
+    quote = BANNER.split("\n\n", 1)[1].split("\n\n##", 1)[0]
+    text = "# Example\n\n" + prefix + quote + "\n"
+    assert audit(all_readmes(text), catalog_status="live")["status"] == "FAIL"
+    # A blank line ends the excluded block; an independent banner still passes.
+    assert audit(all_readmes(text + "\n" + BANNER),
+                 catalog_status="live")["status"] == "PASS"
 
 
 def test_three_spaces_inside_quote_preserve_published_banner():

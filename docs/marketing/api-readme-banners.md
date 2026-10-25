@@ -10,6 +10,7 @@ status. It does not establish current API availability or engineering validity.
 |---|---|---|
 | Initial | 2026-10-22 | Add a repeatable banner audit and a historical-catalog gate to prevent unsupported rollout claims. |
 | Correction | 2026-10-24 | Exclude nested quote containers and read balanced link destinations to prevent false banner matches. |
+| Correction 2 | 2026-10-25 | Preserve explicit destination punctuation and exclude nested quote continuations to prevent false banner matches. |
 
 ## Scope and sources
 
@@ -60,10 +61,13 @@ quotes cannot combine to satisfy one banner. Repository-specific lead wording
 and the truth of broader capability claims still require maintainer review.
 
 Only single-level quote containers are supported; nested quotes, including their
-fenced examples, are excluded and cannot join adjacent banner text. Catalog URL
+fenced examples and lazy paragraph continuations, are excluded until a blank
+line and cannot join adjacent banner text. This conservative boundary can omit
+otherwise eligible text within the same block. Catalog URL
 evidence comes from direct URLs or inline link destinations with balanced labels
 and parentheses. Link labels, image labels and image destinations cannot supply
-catalog evidence. Incomplete bracket constructs are excluded from that point
+catalog evidence. Explicit destinations retain punctuation exactly; only bare
+URLs have trailing sentence punctuation removed. Incomplete bracket constructs are excluded from that point
 onward; reference-style links are not resolved. The audit remains a limited text
 convention rather than a complete Markdown renderer.
 

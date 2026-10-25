@@ -31,6 +31,7 @@ def _intro_quotes(markdown: str) -> list[str]:
     current = []
     fence = None
     fence_quoted = False
+    nested_excluded = False
     for line in markdown.splitlines():
         stripped = line.lstrip()
         quoted = stripped.startswith(">") and not line.startswith(("    ", "\t"))
@@ -41,15 +42,20 @@ def _intro_quotes(markdown: str) -> list[str]:
         content = stripped[1:] if quoted else line
         if quoted and content.startswith(" "):
             content = content[1:]
-        # CommonMark 0.31.2, section 4.4: four spaces mark indented code.
-        if content.startswith(("    ", "\t")):
+        # CommonMark 0.31.2, example 251: lazy paragraph continuations
+        # stay nested even when subsequent lines omit the inner quote marker.
+        # Conservatively exclude the containing block until a blank line.
+        if not line.strip():
+            nested_excluded = False
+        if quoted and re.match(r" {0,3}>", content):
+            nested_excluded = True
+        if nested_excluded:
             if current:
                 blocks.append(" ".join(current))
                 current = []
             continue
-        # Nested quote containers are outside the single-level banner convention.
-        # Exclude their contents, including fences, and separate adjacent quotes.
-        if quoted and re.match(r" {0,3}>", content):
+        # CommonMark 0.31.2, section 4.4: four spaces mark indented code.
+        if content.startswith(("    ", "\t")):
             if current:
                 blocks.append(" ".join(current))
                 current = []
@@ -138,13 +144,16 @@ def _catalog_candidates(text: str) -> list[str]:
                 candidates.append(target[1:].split(">", 1)[0] if target.startswith("<")
                                   else target.split(maxsplit=1)[0])
             index = target_end + 1
-    return candidates + re.findall(r"https?://[^\s<>()]+", "".join(plain))
+    # Sentence punctuation can follow bare URLs; explicit destinations above
+    # retain every path character and must never receive this normalization.
+    return candidates + [url.rstrip(".,;]") for url in
+                         re.findall(r"https?://[^\s<>()]+", "".join(plain))]
 
 
 def _is_catalog_link(text: str) -> bool:
     for candidate in _catalog_candidates(text):
         try:
-            parsed = urlsplit(candidate.rstrip(".,;]"))
+            parsed = urlsplit(candidate)
         except ValueError:
             continue
         if (parsed.scheme == "https"
