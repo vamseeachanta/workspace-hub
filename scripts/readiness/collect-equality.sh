@@ -292,6 +292,32 @@ if [[ "$OS" != "windows" ]] && have crontab; then
   job_count=$(printf '%s\n' "$dump" | grep -cE '^[[:space:]]*[^[:space:]#]')  # non-blank, non-comment
   printf '%s' "$dump" | grep -q 'repository-sync\|repo-sync' && has_sync=true
   printf '%s' "$dump" | grep -q 'parity-review' && has_parity=true
+elif [[ "$OS" == "windows" ]]; then
+  job_count=unknown; has_sync=unknown; has_parity=unknown
+  if have schtasks; then
+    # MSYS2 Filesystem Paths, Process Arguments: '*' excludes every argument from
+    # path conversion. Scope it to this native command; later tools keep their settings.
+    # https://www.msys2.org/docs/filesystem-paths/
+    # Microsoft schtasks query: /fo csv /nh lists tasks without column headings.
+    # https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/schtasks-query
+    if tasks=$(MSYS2_ARG_CONV_EXCL='*' schtasks /query /fo csv /nh 2>&1); then
+      tasks=$(printf '%s' "$tasks" | tr -d '\r')
+      # Here-strings avoid an early grep exit causing SIGPIPE under pipefail.
+      # Count only CSV records; localized informational lines are not task rows.
+      job_count=$(grep -c '^"' <<< "$tasks")
+      has_sync=false; has_parity=false
+      # Match only the task-name column, never status text. PascalCase names are
+      # registered by scripts/windows/setup-scheduler-tasks.ps1; retain cron aliases.
+      grep -qiE '^"[^"]*(repository[-_ ]?sync|repo[-_ ]?sync|equality[-_ ]?report|ecosystem[-_ ]?reconcile)' <<< "$tasks" && has_sync=true
+      grep -qiE '^"[^"]*parity[-_ ]?review' <<< "$tasks" && has_parity=true
+    else
+      # Native diagnostics may contain private task names or paths. Report the exit
+      # status instead, and abort before emitting or replacing scheduler evidence.
+      task_rc=$?
+      printf 'collect-equality.sh: schtasks query failed (exit %s); evidence not written\n' "$task_rc" >&2
+      exit 1
+    fi
+  fi
 fi
 
 # ── 9. PROVENANCE — checkout freshness guard (#2851) ─────────────────────────
