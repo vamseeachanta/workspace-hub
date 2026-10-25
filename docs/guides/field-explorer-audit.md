@@ -10,6 +10,7 @@ to publish. The authoritative field registry remains in the data repository.
 | Revision | Date | Change and reason |
 | --- | --- | --- |
 | Initial | 2026-10-22 | Add an offline consistency audit so consumers can detect changed bytes and broken joins before using an export. |
+| 1 | 2026-10-25 | Remove an unnecessary unresolved issue reference so follow-up references remain actionable. |
 
 ## Scope and sources
 
@@ -146,6 +147,5 @@ repository; the consumer does not deduplicate or invent replacements.
 Later work remains regional ingest, cite-or-null play backfill, canonical
 registry federation, immutable publisher/readback, site selectors and panels,
 lifecycle/architecture/cost planes, and qualified commercial/engineering feeds.
-These span other repositories and are not completed by this audit. The linked
-hub issue #1842 could not be resolved through the issue API during discovery.
+These span other repositories and are not completed by this audit.
 Independent provider review remains required before merge.
