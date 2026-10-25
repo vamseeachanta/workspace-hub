@@ -124,6 +124,48 @@ def test_active_metadata_after_template_still_qualifies(checker):
     assert checker.check_redirect(source) == []
 
 
+@pytest.mark.parametrize("tag", ["template", "noscript", "a", "main"])
+def test_self_closing_nonvoid_markup_is_rejected(checker, tag):
+    source = STUB.replace('<link rel="canonical"', f'<{tag}/><link rel="canonical"')
+    source = source.replace("</head>", f"</{tag}></head>")
+    # HTML ignores the self-closing flag on non-void elements.
+    assert "markup" in checker.check_redirect(source)
+
+
+@pytest.mark.parametrize("tag", ["link", "meta", "br"])
+def test_self_closing_void_markup_still_qualifies(checker, tag):
+    source = STUB
+    if tag == "br":
+        source = source.replace("<main>", "<main><br/>")
+    else:
+        start = source.index(f"<{tag} ")
+        end = source.index(">", start)
+        source = source[:end] + "/" + source[end:]
+    assert checker.check_redirect(source) == []
+
+
+@pytest.mark.parametrize("rules", [
+    ("canonical",), ("refresh",), ("robots",),
+    ("canonical", "refresh", "robots"),
+])
+def test_head_noscript_metadata_is_rejected(checker, rules):
+    source = STUB
+    for rule in rules:
+        element = next(line for line in STUB.splitlines() if (
+            f'rel="{rule}"' in line or f'name="{rule}"' in line
+            or f'http-equiv="{rule}"' in line
+        ))
+        source = source.replace(element, f"<noscript>{element}</noscript>")
+    # Scripting-enabled parsing treats head noscript contents as raw text.
+    assert "markup" in checker.check_redirect(source)
+
+
+def test_head_noscript_with_active_metadata_is_still_rejected(checker):
+    # Reject the structure even when active metadata could mask inert copies.
+    source = STUB.replace("</head>", "<noscript>Fallback</noscript></head>")
+    assert "markup" in checker.check_redirect(source)
+
+
 def test_metadata_case_and_whitespace(checker):
     source = STUB.replace('rel="canonical"', 'rel="CANONICAL"')
     source = source.replace('http-equiv="refresh"', 'HTTP-EQUIV="Refresh"')

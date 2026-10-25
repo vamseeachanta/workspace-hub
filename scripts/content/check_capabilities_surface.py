@@ -25,6 +25,11 @@ SURFACES = {
 }
 # Source: the same stubs use an immediate (zero-delay) refresh.
 REFRESH = re.compile(r"0\s*;\s*url\s*=\s*(\S+)\s*", re.IGNORECASE)
+# HTML void elements alone acknowledge a self-closing flag.
+VOID_ELEMENTS = {
+    "area", "base", "br", "col", "embed", "hr", "img", "input", "link",
+    "meta", "param", "source", "track", "wbr",
+}
 URL = re.compile(r"https?://[^\s<>\"'`\[\]()]+", re.IGNORECASE)
 
 
@@ -39,16 +44,19 @@ class RedirectParser(HTMLParser):
         self.robots: list[set[str]] = []
         self.visible_link = False
         self.rich_content = False
-        self.duplicate_attributes = False
+        self.invalid_markup = False
         self.anchor_target: str | None = None
         self.anchor_text: list[str] = []
 
     def handle_starttag(self, tag, attrs):
         values = dict(attrs)
         if len(values) != len(attrs):
-            self.duplicate_attributes = True
+            self.invalid_markup = True
         in_head = (any(t == "head" for t, _ in self.stack)
                    and not any(t == "template" for t, _ in self.stack))
+        if in_head and tag == "noscript":
+            # Contents depend on scripting mode; never qualify that structure.
+            self.invalid_markup = True
         in_body = any(t == "body" for t, _ in self.stack)
         style = re.sub(r"\s+", "", values.get("style") or "").lower()
         hidden = (
@@ -78,12 +86,14 @@ class RedirectParser(HTMLParser):
         if tag == "a":
             self.anchor_target = values.get("href") if in_body and not hidden else None
             self.anchor_text = []
-        if tag not in {"meta", "link", "br", "img", "hr", "input", "embed", "source", "wbr"}:
+        if tag not in VOID_ELEMENTS:
             self.stack.append((tag, hidden))
 
     def handle_startendtag(self, tag, attrs):
+        if tag not in VOID_ELEMENTS:
+            self.invalid_markup = True
+        # Non-void elements remain open, as in HTML parsing.
         self.handle_starttag(tag, attrs)
-        self.handle_endtag(tag)
 
     def handle_endtag(self, tag):
         if tag == "a":
@@ -107,7 +117,7 @@ def check_redirect(markup: str) -> list[str]:
     parser.feed(markup)
     parser.close()
     failures = []
-    if parser.duplicate_attributes:
+    if parser.invalid_markup:
         failures.append("markup")
     if parser.canonicals != [CANONICAL]:
         failures.append("canonical")
