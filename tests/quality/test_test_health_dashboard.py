@@ -17,9 +17,9 @@ from __future__ import annotations
 import importlib
 import importlib.util
 import sys
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
-from unittest.mock import patch, MagicMock
+from unittest.mock import MagicMock, patch
 
 import pytest
 
@@ -176,7 +176,7 @@ class TestMarkdownReport:
             "reservoir": {"passed": 5, "failed": 0, "skipped": 0, "errors": 0, "total": 5},
             "fatigue": {"passed": 3, "failed": 2, "skipped": 1, "errors": 0, "total": 6},
         }
-        now = datetime(2026, 4, 2, 6, 0, 0, tzinfo=timezone.utc)
+        now = datetime(2026, 4, 2, 6, 0, 0, tzinfo=UTC)
         md = dashboard.generate_markdown_report(packages, now)
         # Must contain table header
         assert "Package" in md
@@ -188,7 +188,7 @@ class TestMarkdownReport:
 
     def test_report_contains_timestamp(self):
         dashboard = _import_dashboard()
-        now = datetime(2026, 4, 2, 6, 0, 0, tzinfo=timezone.utc)
+        now = datetime(2026, 4, 2, 6, 0, 0, tzinfo=UTC)
         md = dashboard.generate_markdown_report({}, now)
         assert "2026-04-02" in md
 
@@ -199,7 +199,7 @@ class TestMarkdownReport:
             "reservoir": {"passed": 5, "failed": 0, "skipped": 0, "errors": 0, "total": 5},
             "fatigue": {"passed": 0, "failed": 3, "skipped": 0, "errors": 0, "total": 3},
         }
-        now = datetime(2026, 4, 2, 6, 0, 0, tzinfo=timezone.utc)
+        now = datetime(2026, 4, 2, 6, 0, 0, tzinfo=UTC)
         md = dashboard.generate_markdown_report(packages, now)
         # Green check for all-pass, red X for failures
         assert "\u2705" in md or ":white_check_mark:" in md
@@ -245,9 +245,230 @@ class TestReportGapList:
         packages = {
             "reservoir": {"passed": 2, "failed": 0, "skipped": 0, "errors": 0, "total": 2},
         }
-        now = datetime(2026, 4, 2, 6, 0, 0, tzinfo=timezone.utc)
+        now = datetime(2026, 4, 2, 6, 0, 0, tzinfo=UTC)
         gaps = ["gis", "power"]
         md = dashboard.generate_markdown_report(packages, now, gaps=gaps)
         assert "gis" in md
         assert "power" in md
         assert "gap" in md.lower() or "Gap" in md or "zero test" in md.lower() or "0 tests" in md.lower()
+
+
+@pytest.mark.parametrize("word", ["error", "errors"])
+def test_parse_singular_and_plural_errors(word):
+    """A literal summary containing one error must record exactly one error."""
+    dashboard = _import_dashboard()
+    assert dashboard.parse_pytest_summary(f"1 {word} in 0.1s")["errors"] == 1
+
+
+@pytest.mark.parametrize("returncode", [1, 2, 3, 4, 5])
+def test_unsummarized_failed_process_is_visible(tmp_path, returncode):
+    """A failed process with no summary contributes one diagnostic error."""
+    dashboard = _import_dashboard()
+    (tmp_path / "digitalmodel/tests/example").mkdir(parents=True)
+    process = MagicMock(returncode=returncode, stdout="", stderr="cannot start")
+    with patch.object(dashboard.subprocess, "run", return_value=process):
+        packages = dashboard.run_pytest_per_package(tmp_path)
+    assert packages["example"]["errors"] == 1
+    assert packages["example"]["total"] == 1
+
+
+def test_runner_preserves_reported_failure_without_extra_error(tmp_path):
+    """Two passes plus one failure gives three outcomes, not four."""
+    dashboard = _import_dashboard()
+    (tmp_path / "digitalmodel/tests/example").mkdir(parents=True)
+    process = MagicMock(returncode=1, stdout="2 passed, 1 failed", stderr="")
+    with patch.object(dashboard.subprocess, "run", return_value=process):
+        packages = dashboard.run_pytest_per_package(tmp_path)
+    assert packages["example"]["total"] == 3
+    assert packages["example"]["errors"] == 0
+
+
+def test_skipped_only_package_is_not_green():
+    """Two skipped tests provide no passing-test evidence."""
+    dashboard = _import_dashboard()
+    packages = {"example": {"passed": 0, "failed": 0, "skipped": 2, "errors": 0, "total": 2}}
+    report = dashboard.generate_markdown_report(packages, datetime.now(UTC))
+    assert "| ⚠️ | example |" in report
+
+
+def test_history_append_preserves_existing_record(tmp_path):
+    """Hand calculation: 3 passes / (3 passes + 1 failure) * 100 = 75.0%."""
+    dashboard = _import_dashboard()
+    history_path = tmp_path / "history.json"
+    packages = {"example": {"passed": 3, "failed": 1, "skipped": 0, "errors": 0, "total": 4}}
+    now = datetime(2026, 10, 22, tzinfo=UTC)
+    first = dashboard.append_history(history_path, packages, now)
+    assert first == [{"timestamp": "2026-10-22T00:00:00+00:00", "total": 4,
+                          "passed": 3, "failed": 1, "skipped": 0, "errors": 0, "pass_rate": 75.0}]
+    second = dashboard.append_history(history_path, {}, now)
+    assert second == [first[0], {"timestamp": first[0]["timestamp"], "total": 0,
+                                   "passed": 0, "failed": 0, "skipped": 0, "errors": 0, "pass_rate": 0.0}]
+    import json
+    assert json.loads(history_path.read_text(encoding="utf-8")) == second
+
+
+@pytest.mark.parametrize("payload", ["not json", "{}", '[{"passed": -1}]'])
+def test_invalid_history_is_preserved(tmp_path, payload):
+    """Invalid persisted evidence must remain unchanged for diagnosis."""
+    dashboard = _import_dashboard()
+    path = tmp_path / "history.json"
+    path.write_text(payload, encoding="utf-8", newline="\n")
+    with pytest.raises((ValueError, TypeError)):
+        dashboard.append_history(path, {}, datetime.now(UTC))
+    assert path.read_text(encoding="utf-8") == payload
+
+
+@pytest.mark.parametrize("current,warning", [(75, False), (74, True), (85, False)])
+def test_trend_threshold(current, warning):
+    """Issue 1666 criterion 4: 80-75=5 does not warn; 80-74=6 warns."""
+    dashboard = _import_dashboard()
+    records = [{"timestamp": "earlier", "pass_rate": 80.0},
+               {"timestamp": "current", "pass_rate": float(current)}]
+    report = dashboard.generate_markdown_report(
+        {}, datetime.now(UTC), history=records)
+    assert ("WARNING" in report) == warning
+    if warning:
+        assert "6.0 percentage points" in report
+
+
+@pytest.mark.parametrize("current,warning", [(34, False), (33, False), (32, True)])
+def test_decimal_trend_threshold(tmp_path, current, warning):
+    """100*(83-34)/1000=4.9; (83-33)/10=5.0; (83-32)/10=5.1 points."""
+    dashboard = _import_dashboard()
+    path = tmp_path / "history.json"
+    for passed in (83, current):
+        packages = {"example": {"passed": passed, "failed": 1000 - passed,
+                                 "skipped": 0, "errors": 0, "total": 1000}}
+        records = dashboard.append_history(path, packages, datetime.now(UTC))
+    report = dashboard.generate_markdown_report({}, datetime.now(UTC), history=records)
+    assert ("WARNING" in report) == warning
+    if warning:
+        assert "5.1 percentage points" in report
+
+
+def test_all_exact_five_point_drops_do_not_warn():
+    """For 1000 outcomes, 50 fewer passes gives exactly 100*50/1000=5 points."""
+    dashboard = _import_dashboard()
+    for previous_passes in range(50, 1001):
+        records = [
+            {"timestamp": "earlier", "pass_rate": previous_passes / 10},
+            {"timestamp": "current", "pass_rate": (previous_passes - 50) / 10},
+        ]
+        report = dashboard.generate_markdown_report({}, datetime.now(UTC), history=records)
+        assert "WARNING" not in report, previous_passes
+
+
+def test_trend_contains_only_latest_eight_records():
+    """Issue 1666 criterion 3: nine records minus the oldest leaves eight."""
+    dashboard = _import_dashboard()
+    records = [{"timestamp": f"run-{i}", "pass_rate": 100.0} for i in range(9)]
+    report = dashboard.generate_markdown_report(
+        {}, datetime.now(UTC), history=records)
+    assert "run-0" not in report
+    assert all(f"run-{i}" in report for i in range(1, 9))
+
+
+def test_missing_test_tree_is_not_success(tmp_path):
+    """An unavailable test tree cannot supply a successful test run."""
+    dashboard = _import_dashboard()
+    with pytest.raises(FileNotFoundError):
+        dashboard.run_pytest_per_package(tmp_path)
+
+
+@pytest.mark.parametrize("field,value", [
+    ("total", 5), ("passed", -1), ("skipped", True),
+    ("pass_rate", float("nan")), ("pass_rate", 74.0),
+    ("timestamp", "2026-10-22"), ("timestamp", None),
+])
+def test_history_rejects_inconsistent_records(tmp_path, field, value):
+    """The independent 3/4=75.0% record rejects each corrupt field."""
+    import json
+
+    dashboard = _import_dashboard()
+    record = {"timestamp": "2026-10-22T00:00:00+00:00", "total": 4,
+              "passed": 3, "failed": 1, "errors": 0, "skipped": 0, "pass_rate": 75.0}
+    record[field] = value
+    path = tmp_path / "history.json"
+    original = json.dumps([record])
+    path.write_text(original, encoding="utf-8", newline="\n")
+    with pytest.raises((ValueError, TypeError)):
+        dashboard.append_history(path, {}, datetime.now(UTC))
+    assert path.read_text(encoding="utf-8") == original
+
+
+def test_history_failed_replace_preserves_previous_bytes(tmp_path):
+    """Atomic replacement failure must not truncate earlier observations."""
+    dashboard = _import_dashboard()
+    path = tmp_path / "history.json"
+    dashboard.append_history(path, {}, datetime.now(UTC))
+    original = path.read_bytes()
+    with (
+        patch.object(dashboard.os, "replace", side_effect=OSError("write denied")),
+        pytest.raises(OSError, match="write denied"),
+    ):
+        dashboard.append_history(path, {}, datetime.now(UTC))
+    assert path.read_bytes() == original
+
+
+@pytest.mark.parametrize("exception", [TimeoutError, OSError])
+def test_runner_launch_failure_is_visible(tmp_path, exception):
+    """One package that cannot launch supplies one diagnostic error."""
+    dashboard = _import_dashboard()
+    (tmp_path / "digitalmodel/tests/example").mkdir(parents=True)
+    with patch.object(dashboard.subprocess, "run", side_effect=exception("unavailable")):
+        packages = dashboard.run_pytest_per_package(tmp_path)
+    assert packages["example"]["errors"] == 1
+
+
+def test_runner_timeout_is_visible(tmp_path):
+    """A package timeout supplies one diagnostic error."""
+    dashboard = _import_dashboard()
+    (tmp_path / "digitalmodel/tests/example").mkdir(parents=True)
+    error = dashboard.subprocess.TimeoutExpired("pytest", timeout=1)
+    with patch.object(dashboard.subprocess, "run", side_effect=error):
+        packages = dashboard.run_pytest_per_package(tmp_path)
+    assert packages["example"]["errors"] == 1
+
+
+def test_main_persists_history_and_renders_trend(tmp_path, capsys):
+    """Two complete mocked runs: 4/4=100.0%, then 3/4=75.0%, drop 25.0 points."""
+    import json
+
+    dashboard = _import_dashboard()
+    dashboard.__file__ = str(tmp_path / "scripts/quality/test-health-dashboard.py")
+    first = {"example": {"passed": 4, "failed": 0, "skipped": 0, "errors": 0, "total": 4}}
+    second = {"example": {"passed": 3, "failed": 1, "skipped": 0, "errors": 0, "total": 4}}
+    with patch.object(dashboard, "run_pytest_per_package", side_effect=[first, second]):
+        dashboard.main()
+        dashboard.main()
+    directory = tmp_path / "docs/dashboards"
+    history = json.loads((directory / "test-health-history.json").read_text(encoding="utf-8"))
+    assert [record["pass_rate"] for record in history] == [100.0, 75.0]
+    assert "25.0 percentage points" in (directory / "test-health-dashboard.md").read_text(encoding="utf-8")
+    assert "docs/dashboards/test-health-dashboard.md" in capsys.readouterr().out
+    for path in directory.iterdir():
+        assert b"\r" not in path.read_bytes()
+
+
+def test_empty_history_has_no_regression_warning():
+    """No previous observation means no comparison can be established."""
+    dashboard = _import_dashboard()
+    assert "WARNING" not in dashboard.generate_markdown_report(
+        {}, datetime.now(UTC), history=[])
+
+
+def test_empty_source_inventory_does_not_claim_coverage():
+    """An empty inventory proves no package coverage claim."""
+    dashboard = _import_dashboard()
+    report = dashboard.generate_markdown_report({}, datetime.now(UTC), gaps=[])
+    assert "All source packages have tests" not in report
+    assert "supplied package inventory" in report
+
+
+def test_report_labels_diagnostic_counts_as_outcomes():
+    """One launch failure is one outcome; no collected test is established."""
+    dashboard = _import_dashboard()
+    packages = {"example": {"passed": 0, "failed": 0, "skipped": 0, "errors": 1, "total": 1}}
+    report = dashboard.generate_markdown_report(packages, datetime.now(UTC))
+    assert "Total outcomes | 1" in report
+    assert "diagnostic execution errors" in report
