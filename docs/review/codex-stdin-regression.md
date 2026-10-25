@@ -10,6 +10,7 @@ fails. Compatibility without the diagnostic remains unverified.
 | Revision | Date | Change and reason |
 | --- | --- | --- |
 | 1 | 2026-10-22 | Add bounded diagnostic handling and offline evidence because the reported stall could consume both review attempts. |
+| 2 | 2026-10-24 | Drain stderr through EOF after child exit and classify only complete lines or EOF tails to prevent missed diagnostics and false matches. |
 
 ## Evidence and scope
 
@@ -47,8 +48,11 @@ remain pending because assistant invocation was outside the permitted checks.
   attempt using Python's standard library and POSIX process groups. It discards
   stdout as the wrapper previously did and preserves stderr for classification.
 - An exact diagnostic line, with optional ellipsis and carriage return, ends the
-  attempt. Split writes, missing final newline and immediate exit are covered.
-  Quoted mentions inside other lines are not diagnostics.
+  attempt. Split writes and immediate exit are covered. An unterminated tail is
+  classified only at EOF; a read boundary does not establish a complete line.
+  Quoted mentions and diagnostic prefixes followed by other text are not diagnostics.
+  After child exit, stderr is drained through EOF before its exit code is accepted.
+  A descendant holding the pipe open remains subject to the configured deadline.
 - The diagnostic returns exit 7, the existing unavailable contract in
   [cross-review.sh](../../scripts/review/cross-review.sh). The wrapper emits
   `CODEX_STDIN_REGRESSION` and `UNAVAILABLE`, skips the compact retry and does not
@@ -62,9 +66,12 @@ remain pending because assistant invocation was outside the permitted checks.
 - Supervisor design choices are a 0.1-second polling interval, a 1-second TERM
   grace and reads of at most 65,536 bytes. These are implementation resource
   bounds chosen here, not measured compatibility thresholds or sourced physical
-  coefficients. Detection waits at most a polling interval under normal
-  scheduling, then stops the process group; a process ignoring TERM receives
+  coefficients. Once a line terminator or EOF establishes an exact match,
+  detection waits at most a polling interval under normal scheduling, then stops
+  the process group; a process ignoring TERM receives
   KILL after the grace. Scheduler delays are not a real-time guarantee.
+  An unterminated diagnostic on an open pipe waits for EOF or the configured
+  timeout; no inactivity-based line completion is inferred.
 - Process cleanup also runs on interruption and after the leader exits, so a
   descendant cannot continue solely because its leader finished first.
 

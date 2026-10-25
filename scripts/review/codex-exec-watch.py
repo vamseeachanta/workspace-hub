@@ -25,10 +25,10 @@ TERM_GRACE_SECONDS = 1
 READ_BYTES = 65536
 
 
-def scan(chunk: bytes, pending: bytes) -> tuple[bool, bytes]:
-    """Match a diagnostic line, including split writes and missing final newline."""
+def scan(chunk: bytes, pending: bytes, *, eof: bool = False) -> tuple[bool, bytes]:
+    """Match complete diagnostic lines, or the final unterminated tail at EOF."""
     lines = (pending + chunk).split(b"\n")
-    for line in lines:
+    for line in lines if eof else lines[:-1]:
         if line.rstrip(b"\r") in (SIGNATURE, SIGNATURE + b"..."):
             return True, b""
     tail = lines[-1]
@@ -78,14 +78,18 @@ def watch(command: list[str], timeout: float, stderr: Path) -> int:
                         chunk = os.read(key.fd, READ_BYTES)
                         if not chunk:
                             selector.unregister(key.fileobj)
+                            matched, pending = scan(b"", pending, eof=True)
+                            if matched:
+                                return UNAVAILABLE
                             continue
                         errors.write(chunk)
                         errors.flush()
                         matched, pending = scan(chunk, pending)
                         if matched:
                             return UNAVAILABLE
-                    # Drain stderr after a fast exit before accepting its code.
-                    if process.poll() is not None and not events:
+                    # Exit alone does not establish that the pipe has been drained.
+                    # Descendants holding it open remain bounded by the deadline.
+                    if process.poll() is not None and not selector.get_map():
                         code = process.returncode
                         return code if code >= 0 else 128 - code
                     if time.monotonic() >= deadline:

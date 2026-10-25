@@ -24,7 +24,7 @@ SIGNATURE = "Reading additional input from stdin..."  # Issue #3442 reproduction
 
 
 def executable(path, body):
-    path.write_text(body)
+    path.write_text(body, encoding="utf-8", newline="\n")
     path.chmod(0o755)
     return path
 
@@ -35,7 +35,10 @@ def harness(tmp_path):
     bins = tmp_path / "bin"
     bins.mkdir()
     diff = tmp_path / "diff.txt"
-    diff.write_text("diff --git a/example.py b/example.py\n+answer = 42\n")
+    diff.write_text(
+        "diff --git a/example.py b/example.py\n+answer = 42\n",
+        encoding="utf-8", newline="\n",
+    )
     executable(
         bins / "git",
         "#!/usr/bin/env bash\n"
@@ -65,8 +68,8 @@ assert sys.argv[1] == "exec"
 assert "--output-schema" in sys.argv
 assert sys.argv[2] != "-"
 capture = Path(os.environ["MOCK_CAPTURE"])
-calls = len(capture.read_text().splitlines()) if capture.exists() else 0
-with capture.open("a") as out:
+calls = len(capture.read_text(encoding="utf-8").splitlines()) if capture.exists() else 0
+with capture.open("a", encoding="utf-8", newline="\\n") as out:
     out.write(json.dumps({"prompt": sys.argv[2], "stdin": sys.stdin.read()}) + "\\n")
 mode = os.environ.get("MOCK_MODE", "success")
 if mode in ("retry", "retry_signature") and calls == 0:
@@ -83,7 +86,7 @@ if mode == "signature_child":
     child = subprocess.Popen([sys.executable, "-c",
         "import signal,time; signal.signal(signal.SIGTERM, signal.SIG_IGN); "
         "time.sleep(2); "
-        "from pathlib import Path; Path(__import__('sys').argv[1]).write_text('orphan')",
+        "from pathlib import Path; Path(__import__('sys').argv[1]).write_text('orphan', encoding='utf-8', newline='\\n')",
         os.environ["MOCK_ORPHAN"]])
     print("Reading additional input from stdin...", file=sys.stderr, flush=True)
     sys.exit(0)
@@ -94,7 +97,7 @@ if mode.startswith("signature"):
         sys.stderr.write("Reading additional input ")
         sys.stderr.flush()
         time.sleep(0.2)
-        sys.stderr.write("from stdin...")
+        sys.stderr.write("from stdin...\\n")
         sys.stderr.flush()
     elif mode == "signature_crlf":
         sys.stderr.write("Reading additional input from stdin...\\r\\n")
@@ -112,7 +115,8 @@ if mode == "quoted":
     print("Quoted diagnostic: Reading additional input from stdin...", file=sys.stderr)
 output = sys.argv[sys.argv.index("--output-last-message") + 1]
 Path(output).write_text(json.dumps({"verdict": "APPROVE", "summary": "synthetic",
-    "issues_found": [], "suggestions": [], "questions_for_author": []}))
+    "issues_found": [], "suggestions": [], "questions_for_author": []}),
+    encoding="utf-8", newline="\\n")
 """,
     )
     env = os.environ.copy()
@@ -142,7 +146,8 @@ def submit(
         # Hand count: 2,000 source lines, below the wrapper's existing argv cap.
         Path(env["MOCK_DIFF"]).write_text(
             "diff --git a/example.py b/example.py\n"
-            + "".join(f"+value_{i} = {i}\n" for i in range(2000))
+            + "".join(f"+value_{i} = {i}\n" for i in range(2000)),
+            encoding="utf-8", newline="\n",
         )
     args = ["bash", str(SUBMIT), "--commit", SHA, "--prompt", "Find defects."]
     if stdin == "held":
@@ -174,7 +179,7 @@ def submit(
             timeout=8,
         )
     capture = Path(env["MOCK_CAPTURE"])
-    calls = [json.loads(line) for line in capture.read_text().splitlines()]
+    calls = [json.loads(line) for line in capture.read_text(encoding="utf-8").splitlines()]
     return result, calls
 
 
@@ -316,4 +321,95 @@ def test_diagnostic_line_scanner(chunks, expected):
     for chunk in chunks:
         matched, pending = scan(chunk, pending)
         found |= matched
+    matched, _ = scan(b"", pending, eof=True)
+    found |= matched
     assert found is expected
+
+
+@pytest.mark.parametrize("suffix", [b" is disabled; continuing normally.\n", b"... detail\n"])
+def test_partial_diagnostic_with_suffix_is_not_matched(suffix):
+    scan = runpy.run_path(str(ROOT / "scripts/review/codex-exec-watch.py"))["scan"]
+    matched, pending = scan(b"Reading additional input from stdin", b"")
+    assert not matched
+    matched, pending = scan(suffix, pending)
+    assert not matched
+
+
+@pytest.mark.parametrize("ending", ["", "\n"])
+def test_exit_after_empty_select_drains_diagnostic(tmp_path, monkeypatch, ending):
+    """An empty select followed by child exit must still retain and classify stderr."""
+    module = runpy.run_path(str(ROOT / "scripts/review/codex-exec-watch.py"))
+    real_selector = module["selectors"].DefaultSelector
+    real_popen = subprocess.Popen
+    children = []
+
+    def launch(*args, **kwargs):
+        process = real_popen(*args, **kwargs)
+        children.append(process)
+        return process
+
+    class ExitBetweenSelectAndPoll(real_selector):
+        first = True
+
+        def select(self, timeout=None):
+            if self.first:
+                self.first = False
+                children[0].wait(timeout=3)
+                return []
+            return super().select(timeout)
+
+    monkeypatch.setattr(subprocess, "Popen", launch)
+    monkeypatch.setattr(module["selectors"], "DefaultSelector", ExitBetweenSelectAndPoll)
+    errors = tmp_path / "errors"
+    diagnostic = SIGNATURE + ending
+    result = module["watch"](
+        [sys.executable, "-c", f"import sys; sys.stderr.write({diagnostic!r})"],
+        3,
+        errors,
+    )
+    assert result == 7
+    assert errors.read_bytes() == diagnostic.encode("utf-8")
+
+
+def test_delayed_non_diagnostic_suffix_completes(tmp_path):
+    module = runpy.run_path(str(ROOT / "scripts/review/codex-exec-watch.py"))
+    marker = tmp_path / "success"
+    result = module["watch"](
+        [
+            sys.executable, "-c",
+            (
+                "import sys,time; from pathlib import Path; "
+                "sys.stderr.write('Reading additional input from stdin'); sys.stderr.flush(); "
+                "time.sleep(0.3); sys.stderr.write(' is disabled; continuing normally.\\n'); "
+                "Path(sys.argv[1]).write_text('success', encoding='utf-8', newline='\\n')"
+            ),
+            str(marker),
+        ],
+        3,
+        tmp_path / "errors",
+    )
+    assert result == 0
+    assert marker.read_text(encoding="utf-8") == "success"
+
+
+@pytest.mark.parametrize("diagnostic", [False, True])
+def test_inherited_stderr_retains_deadline(tmp_path, diagnostic):
+    """Leader exit is not EOF; an unclosed tail waits for the configured deadline."""
+    module = runpy.run_path(str(ROOT / "scripts/review/codex-exec-watch.py"))
+    prefix = SIGNATURE if diagnostic else "ordinary message"
+    result = module["watch"](
+        [
+            sys.executable, "-c",
+            (
+                "import subprocess,sys; "
+                "subprocess.Popen([sys.executable, '-c', 'import time; time.sleep(30)']); "
+                f"sys.stderr.write({prefix!r}); sys.stderr.flush()"
+            ),
+        ],
+        0.3,
+        tmp_path / "errors",
+    )
+    assert result == 124
+    assert (tmp_path / "errors").read_bytes() == (
+        prefix.encode("utf-8") + b"Codex exec timed out\n"
+    )
