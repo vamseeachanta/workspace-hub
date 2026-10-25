@@ -1,5 +1,11 @@
 name: Baseline Testing
 
+# PR_GATE_RUNNER: self-hosted-arm64 selects fixed ARM64 labels for trusted events.
+# Every other value or event uses ubuntu-latest; fork PRs always use hosted runners.
+# Enable only after ARM64 compatibility is established for these jobs.
+permissions:
+  contents: read
+
 on:
   push:
     branches:
@@ -31,14 +37,14 @@ env:
 jobs:
   test:
     name: Run Tests
-    if: (github.event_name != 'pull_request' || github.event.pull_request.draft == false)
-    runs-on: ${{ vars.PR_GATE_RUNNER && fromJSON(vars.PR_GATE_RUNNER) || 'ubuntu-latest' }}
+    runs-on: ${{ vars.PR_GATE_RUNNER == 'self-hosted-arm64' && ((github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository) || github.event_name == 'push' || github.event_name == 'workflow_dispatch') && fromJSON('["self-hosted","Linux","ARM64"]') || 'ubuntu-latest' }}
     timeout-minutes: 30
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
+          persist-credentials: false
           fetch-depth: 0
 
       - name: Setup Python
@@ -112,13 +118,14 @@ jobs:
 
   lint:
     name: Code Quality
-    if: (github.event_name != 'pull_request' || github.event.pull_request.draft == false)
-    runs-on: ${{ vars.PR_GATE_RUNNER && fromJSON(vars.PR_GATE_RUNNER) || 'ubuntu-latest' }}
+    runs-on: ${{ vars.PR_GATE_RUNNER == 'self-hosted-arm64' && ((github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository) || github.event_name == 'push' || github.event_name == 'workflow_dispatch') && fromJSON('["self-hosted","Linux","ARM64"]') || 'ubuntu-latest' }}
     timeout-minutes: 10
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          persist-credentials: false
 
       - name: Setup Python
         uses: actions/setup-python@v5
@@ -142,14 +149,14 @@ jobs:
 
   governance:
     name: Governance Checks
-    if: (github.event_name != 'pull_request' || github.event.pull_request.draft == false)
-    runs-on: ${{ vars.PR_GATE_RUNNER && fromJSON(vars.PR_GATE_RUNNER) || 'ubuntu-latest' }}
+    runs-on: ${{ vars.PR_GATE_RUNNER == 'self-hosted-arm64' && ((github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository) || github.event_name == 'push' || github.event_name == 'workflow_dispatch') && fromJSON('["self-hosted","Linux","ARM64"]') || 'ubuntu-latest' }}
     timeout-minutes: 10
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
+          persist-credentials: false
           fetch-depth: 0
 
       - name: Run governance checks (warn mode)
