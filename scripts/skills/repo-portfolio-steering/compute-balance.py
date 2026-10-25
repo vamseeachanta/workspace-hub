@@ -177,15 +177,29 @@ def compute_balance(
     """
     Compute harness/engineering balance from INDEX.md + optional signals file.
     Returns a dict with L1 (queue balance) and L2 (provider activity) data.
+
+    Counts must come from the explicit ##/### By Category table. If no
+    supported integer counts are parsed (including empty input or a missing
+    table), categories is empty, harness_status is UNAVAILABLE, and total,
+    both percentage fields and harness_budget are None (JSON null). No other
+    count source is inferred; provider activity and rankings remain available.
+    Explicit zero counts retain total and fractions of zero. For valid counts,
+    a harness fraction at or below the threshold is HEALTHY; above it is
+    OVER-INVESTED.
     """
     cats = _parse_category_counts(index_path)
-    total = sum(cats.values()) if cats else 1
-    harness_count = cats.get("harness", 0)
-    engineering_count = cats.get("engineering", 0)
-    harness_pct = harness_count / total if total else 0.0
-    engineering_pct = engineering_count / total if total else 0.0
-
-    harness_status = "HEALTHY" if harness_pct <= harness_threshold else "OVER-INVESTED"
+    if cats:
+        total = sum(cats.values())
+        harness_count = cats.get("harness", 0)
+        engineering_count = cats.get("engineering", 0)
+        harness_pct = harness_count / total if total else 0.0
+        engineering_pct = engineering_count / total if total else 0.0
+        harness_status = "HEALTHY" if harness_pct <= harness_threshold else "OVER-INVESTED"
+        harness_budget = _harness_budget(harness_pct)
+    else:
+        total = harness_pct = engineering_pct = None
+        harness_status = "UNAVAILABLE"
+        harness_budget = None
 
     signals = _load_signals(signals_path)
     provider_activity = signals.get("provider_activity") if signals else None
@@ -196,11 +210,11 @@ def compute_balance(
     return {
         "categories": cats,
         "total": total,
-        "harness_pct": round(harness_pct, 4),
-        "engineering_pct": round(engineering_pct, 4),
+        "harness_pct": round(harness_pct, 4) if harness_pct is not None else None,
+        "engineering_pct": round(engineering_pct, 4) if engineering_pct is not None else None,
         "harness_threshold": harness_threshold,
         "harness_status": harness_status,
-        "harness_budget": _harness_budget(harness_pct),
+        "harness_budget": harness_budget,
         "gtm_ranking": gtm,
         "next3": next3,
         "provider_activity": provider_activity,
