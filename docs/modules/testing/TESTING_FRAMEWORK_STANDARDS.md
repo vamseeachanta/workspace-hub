@@ -146,6 +146,224 @@ repository/
 
 ---
 
+## Python CLI and pytest-runner entrypoint review
+
+This section owns the Python CLI and pytest-runner import-path review contract.
+Reviewers shall verify the advertised entrypoint independently of a successful
+`python -m pytest` invocation. Resolving a repository root for file discovery
+alone does not make packages below that root importable.
+
+### Entrypoint contract
+
+A runner change shall state and test:
+
+- The supported invocation: direct script, module, installed console command,
+  or an explicit subset. Test each advertised form with its actual arguments;
+  importing a function or running `--help` alone is insufficient.
+- The import mechanism: installed package, explicit bootstrap before local
+  imports, or a documented required environment. For a standalone script that
+  promises no environment setup, unset `PYTHONPATH` in its subprocess test.
+  A root-level `scripts` package needs the root on the search path; a package
+  below `src` needs installation or that source directory. Derive either from
+  `__file__`, rather than assuming the caller's current directory.
+- The working-directory contract: whether relative input and output arguments
+  refer to the caller or the repository, and whether the runner changes cwd.
+  Test from the checkout and from an unrelated directory when supported. If
+  outside invocation is unsupported, verify the documented diagnostic instead
+  of silently broadening support.
+- Independent file discovery and importability: use a narrow disposable test
+  that imports a repository-local package during collection. Verify its origin
+  so an unrelated installed package cannot supply a false pass. Use both
+  collection and execution, and propagate pytest's failure status.
+- Isolation: remove inherited `PYTEST_ADDOPTS` and `PYTEST_PLUGINS`, disable
+  automatic third-party plugin loading in the disposable probe, and isolate
+  configuration. A caller's `conftest.py`, editable install, pytest `pythonpath`
+  option or prepend import mode must not repair the deliberately broken case.
+- Non-recursion: child tests shall target only the disposable sentinel file.
+  Never invoke an unbounded suite or include the contract test that launched
+  the child. A missing, skipped or unexecuted sentinel is not evidence of
+  entrypoint correctness.
+
+Python 3.11's [command-line interface, interface options][entrypoint-python]
+explains that script invocation adds the script's directory to `sys.path`,
+whereas `-m` adds the current directory. pytest 8.4's [import mechanisms][entrypoint-pytest]
+explains the additional path behavior of `python -m pytest` and that `importlib`
+mode does not change `sys.path`. Root discovery is not an import bootstrap.
+See also the local example in `tests/conftest.py`, which inserts source paths
+for collection; that setup does not establish a standalone CLI contract.
+
+### Disposable actual-CLI recipe and worked example
+
+Input: an interpreter with pytest available, a writable temporary parent selected
+by `TMPDIR`, and a positive subprocess watchdog supplied in
+`PROBE_TIMEOUT_SECONDS`. The watchdog is an execution budget selected by the
+caller, not an import-correctness acceptance limit. Save the following Python
+block as `probe_entrypoint.py` in scratch, then execute it with that interpreter,
+for example `uv run --no-project --with pytest python probe_entrypoint.py`.
+The recipe retains its disposable files under `TMPDIR` for inspection.
+
+Method: construct a checkout containing a root-level `scripts` package, one
+sentinel test, and two actual script entrypoints. Both entrypoints resolve the
+same absolute test target. Only the working entrypoint bootstraps imports.
+Invoke them from both cwd locations with `PYTHONPATH` unset, then compare with
+module invocation from the checkout. Finally, deliberately fail the sentinel
+body and verify status propagation. All child commands target that one test;
+none can collect this repository's contract tests.
+
+<!-- python-entrypoint-probe:start -->
+```python
+import json
+import os
+import subprocess
+import sys
+import tempfile
+from pathlib import Path
+
+import pytest
+
+budget = float(os.environ["PROBE_TIMEOUT_SECONDS"])
+assert budget > 0, "A positive subprocess watchdog is required"
+base = Path(tempfile.mkdtemp(prefix="python-entrypoint-"))
+repo = base / "checkout with spaces"
+package = repo / "scripts"
+tests = repo / "probe_tests"
+outside = base / "unrelated caller"
+for directory in (package, tests, outside):
+    directory.mkdir(parents=True)
+(package / "__init__.py").write_text("")
+(package / "entrypoint_probe_support.py").write_text('VALUE = "import-ok"\n')
+(repo / "pytest.ini").write_text("[pytest]\n")
+probe = tests / "test_import_probe.py"
+probe.write_text('''import os
+from pathlib import Path
+from scripts import entrypoint_probe_support as support
+
+assert "PYTHONPATH" not in os.environ
+assert "PYTEST_ADDOPTS" not in os.environ
+assert "PYTEST_PLUGINS" not in os.environ
+assert os.environ["PYTEST_DISABLE_PLUGIN_AUTOLOAD"] == "1"
+assert support.VALUE == "import-ok"
+assert Path(support.__file__).resolve() == (
+    Path(__file__).resolve().parent.parent
+    / "scripts" / "entrypoint_probe_support.py"
+)
+assert Path.cwd() == Path(os.environ["PROBE_EXPECTED_CWD"])
+print("ENTRYPOINT_SENTINEL")
+
+def test_sentinel():
+    print("ENTRYPOINT_TEST_BODY")
+    assert os.environ.get("PROBE_FAIL") != "yes"
+''')
+# Layout-derived root; root discovery by itself does not alter imports.
+common = '''from pathlib import Path
+import sys
+ROOT = Path(__file__).resolve().parent.parent
+'''
+# Python 3.11 interface options: prepend the local package's parent [1].
+bootstrap = 'sys.path.insert(0, str(ROOT))\n'
+body = '''import pytest
+raise SystemExit(pytest.main([
+    "-c", str(ROOT / "pytest.ini"), "--rootdir", str(ROOT),
+    "--import-mode=importlib", "-p", "no:cacheprovider", "-q", "-s",
+    str(ROOT / "probe_tests" / "test_import_probe.py"), *sys.argv[1:],
+]))
+'''
+(package / "good_runner.py").write_text(common + bootstrap + body)
+(package / "broken_runner.py").write_text(common + body)
+
+env = os.environ.copy()
+for key in ("PYTHONPATH", "PYTEST_ADDOPTS", "PYTEST_PLUGINS", "PROBE_FAIL"):
+    env.pop(key, None)
+env["PYTEST_DISABLE_PLUGIN_AUTOLOAD"] = "1"
+env["PYTHONDONTWRITEBYTECODE"] = "1"
+results = {}
+
+
+def invoke(name, command, cwd, expected, fail=False):
+    child_env = dict(env, PROBE_EXPECTED_CWD=str(cwd))
+    if fail:
+        child_env["PROBE_FAIL"] = "yes"
+    completed = subprocess.run(
+        command, cwd=cwd, env=child_env, capture_output=True,
+        text=True, timeout=budget, check=False,
+    )
+    output = completed.stdout + completed.stderr
+    # pytest 8.4, Exit codes [3]: compare public enum members, not guessed codes.
+    assert completed.returncode == expected, (name, completed.returncode, output)
+    seen = "ENTRYPOINT_SENTINEL" in output
+    body_seen = "ENTRYPOINT_TEST_BODY" in output
+    import_error = "ModuleNotFoundError" in output and "scripts" in output
+    assert seen == (expected != pytest.ExitCode.INTERRUPTED), (name, output)
+    assert body_seen == (name.endswith("-run")
+                         and expected != pytest.ExitCode.INTERRUPTED), (name, output)
+    if expected == pytest.ExitCode.INTERRUPTED:
+        assert import_error, (name, output)
+    results[name] = {
+        "outcome": pytest.ExitCode(completed.returncode).name,
+        "sentinel_seen": seen,
+        "test_body_seen": body_seen,
+        "import_error": import_error,
+    }
+
+
+for location, cwd in (("checkout", repo), ("outside", outside)):
+    for operation, extra in (("collect", ["--collect-only"]), ("run", [])):
+        for kind, expected in (("good", pytest.ExitCode.OK),
+                               ("broken", pytest.ExitCode.INTERRUPTED)):
+            invoke(
+                f"{kind}-{location}-{operation}",
+                [sys.executable, str(package / f"{kind}_runner.py"), *extra],
+                cwd, expected,
+            )
+    invoke(
+        f"failing-{location}-run",
+        [sys.executable, str(package / "good_runner.py")],
+        cwd, pytest.ExitCode.TESTS_FAILED, fail=True,
+    )
+# Python 3.11 -m adds cwd [1]; this never exercises broken_runner.py.
+invoke(
+    "module-checkout-collect",
+    [sys.executable, "-m", "pytest", "-c", str(repo / "pytest.ini"),
+     "--rootdir", str(repo), "--import-mode=importlib", "-p", "no:cacheprovider",
+     "-q", "-s", "--collect-only", str(probe)],
+    repo, pytest.ExitCode.OK,
+)
+print(json.dumps(results, sort_keys=True))
+```
+<!-- python-entrypoint-probe:end -->
+
+Answer: the recipe prints JSON only after checking every expected status and
+sentinel observation, including a separate marker from the executed test body.
+Expected values follow directly from the synthetic layout
+and the cited path and exit-code contracts, without a numerical calculation:
+
+| Command and cwd | Operation | Expected outcome | Reason |
+|---|---|---|---|
+| Working script, checkout or unrelated caller | Collect and run | `OK`, sentinel observed | Bootstrap supplies the root; absolute discovery target and caller cwd checks succeed. |
+| Broken script, checkout or unrelated caller | Collect and run | `INTERRUPTED`, import error, sentinel absent | Root discovery supplies a file target, while importlib mode leaves the package unavailable. |
+| Module invocation, checkout | Collect | `OK`, sentinel observed | `-m` supplies cwd, masking the missing runner bootstrap. |
+| Working script, either caller, deliberately false test | Run | `TESTS_FAILED`, sentinel observed | Import succeeds, the test fails, and the runner propagates pytest's result. |
+
+The automated regression is
+`tests/docs/test_python_runner_entrypoint_contract.py`. It executes this exact
+block, including the broken cases, in scratch. This is qualification of the
+review recipe, not evidence that any existing runner is broken or that all
+entrypoint forms work. Apply the recipe's method to the actual changed CLI in
+its documented installation environment; isolated mode (`-I`), console scripts,
+`src` layouts and platform-specific wrappers need their own supported-form tests.
+
+Sources, retrieved 2026-10-22:
+
+1. [Python 3.11 documentation, Command line and environment, Interface options][entrypoint-python].
+2. [pytest 8.4 documentation, pytest import mechanisms and sys.path/PYTHONPATH][entrypoint-pytest].
+3. [pytest 8.4 documentation, Exit codes][entrypoint-exits].
+
+[entrypoint-python]: https://docs.python.org/3.11/using/cmdline.html#interface-options
+[entrypoint-pytest]: https://docs.pytest.org/en/8.4.x/explanation/pythonpath.html
+[entrypoint-exits]: https://docs.pytest.org/en/8.4.x/reference/exit-codes.html
+
+---
+
 ## Testing Levels
 
 ### 1. Unit Tests
