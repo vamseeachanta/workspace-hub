@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Reporting adoption evidence example</title>
+<style>
+body { font: 1rem/1.6 system-ui, sans-serif; max-width: 64rem; margin: auto; padding: 1.5rem; color: #203040; }
+table { border-collapse: collapse; width: 100%; }
+th, td { border: 1px solid #8798a5; padding: .6rem; text-align: left; vertical-align: top; }
+caption { caption-side: bottom; text-align: left; }
+code { overflow-wrap: anywhere; }
+pre { white-space: pre-wrap; overflow-wrap: anywhere; }
+@media print { body { padding: 0; color: black; } tr { break-inside: avoid; } }
+</style>
+</head>
+<body>
+<h1>Reporting adoption evidence example</h1>
+<p>The supplied records contain three synthetic targets: one saved document, one queued notice and one unreachable recipient. The local audit verifies one snapshot and one receipt. Actual adoption remains NOT_EVALUATED. These records demonstrate the method and contain no operational delivery evidence.</p>
+<h2 id="history">Revision history</h2>
+<table>
+<thead><tr><th>Revision</th><th>Date</th><th>Change and reason</th></tr></thead>
+<tbody><tr><td>Initial</td><td>2026-10-22</td><td>A reproducible example was added to distinguish evidence consistency from adoption.</td></tr></tbody>
+<caption>Table 1. Revision history.</caption>
+</table>
+<h2 id="inputs">Inputs</h2>
+<p>The <a href="../../examples/reporting/adoption/manifest.json">manifest</a> pins the existing reporting draft, revision P6, by SHA-256. It records the inventory at 11:00 UTC and is evaluated at 12:00 UTC on 22 October 2026. The times are synthetic inputs, with no freshness threshold implied.</p>
+<table>
+<thead><tr><th>Target alias</th><th>Reported state</th><th>Supplied evidence</th></tr></thead>
+<tbody>
+<tr><td>target-a</td><td>saved</td><td>The local standard file is reused as a synthetic target snapshot; it does not represent an installed copy.</td></tr>
+<tr><td>target-b</td><td>queued</td><td>A <a href="../../examples/reporting/adoption/queued.json">synthetic queue receipt</a> at 10:00 UTC carries the same revision and digest; no installed snapshot is supplied.</td></tr>
+<tr><td>target-c</td><td>unreachable</td><td>A recorded synthetic access gap; no snapshot or receipt.</td></tr>
+</tbody>
+<caption>Table 2. The complete synthetic population.</caption>
+</table>
+<h2 id="method">Method</h2>
+<p>The <a href="../standards/reporting-adoption-evidence.md">evidence contract</a> applies the distinctions in <a href="../standards/engineering-reporting-conventions-proposed.html#adoption">section 10 of the reporting draft</a>. Every supplied snapshot is hashed and compared with the pinned standard bytes. Each receipt is compared with its target alias, reported state, revision and digest, then its observation time is checked against the inventory time. Missing evidence is retained as NOT_EVALUATED. No engineering equations or acceptance coefficients are involved.</p>
+<pre><code>uv run --no-project python scripts/reporting/audit_reporting_adoption.py \
+  examples/reporting/adoption/manifest.json --root . \
+  --as-of 2026-10-22T12:00:00Z</code></pre>
+<h2 id="answer">Answer and independent check</h2>
+<p>By hand enumeration, the population is target-a plus target-b plus target-c, giving three targets. Only target-a supplies snapshot bytes, giving one verified snapshot. Only target-b supplies a receipt, giving one verified receipt. These are counts of different evidence types and are not added together as an adoption count.</p>
+<pre><code>counts:
+  targets: 3
+  snapshots_verified: 1
+  receipts_verified: 1
+reported_states:
+  saved: 1
+  queued: 1
+  unreachable: 1
+  all remaining states: 0
+ecosystem_adoption: NOT_EVALUATED</code></pre>
+<p>This excerpt omits per-target output for brevity. Each target's adoption field is NOT_EVALUATED, including a target whose supplied receipt might report adopted. A consistent self-reported receipt cannot authenticate use.</p>
+<h2 id="limits">Limitations and next action</h2>
+<p>The population and receipt contents are caller-supplied. Receipt authenticity, omitted recipients, installed loader selection, current use, source rights and engineering acceptance are outside the method. The example is a static software demonstration rather than a formal engineering analysis. It requires no solver, browser, remote service or model calculation.</p>
+<p>Operational use requires an authorized target inventory, independent inspection of installed references and revision-bound acknowledgement. The existing standard remains a review draft; this example does not activate shared instructions or a proposed pilot.</p>
+</body>
+</html>
