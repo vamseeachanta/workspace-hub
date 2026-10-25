@@ -1,7 +1,7 @@
 # docs/lessons/
 
-Source-attributed practitioner lessons, internal retrospectives and reference captures from external material
-(LinkedIn posts, articles, talks). Each note records the **source URL, author where applicable, date captured,
+Source-attributed practitioner lessons and reference captures from external material
+(LinkedIn posts, articles, talks), plus internal retrospectives. Each note records the **source URL, author where applicable, date captured,
 and distilled takeaways** — raw practitioner knowledge, lighter-weight than the curated
 `knowledge/wikis/` corpus (no frontmatter/provenance ceremony).
 
