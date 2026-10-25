@@ -273,9 +273,26 @@ def test_duplicate_nested_json_key_is_rejected(snapshot, tmp_path):
 @pytest.mark.parametrize("opening,closing", [("[", "]"), ('{"value":', "}")])
 @pytest.mark.parametrize("output_format", ["json", "html"])
 def test_cli_rejects_deep_json_with_sanitized_error(tmp_path, opening, closing, output_format):
-    # Both decoder recursion paths must follow Contract v1's invalid-input exit.
+    # Decoder limits vary; decoding or validation must reject this invalid root.
     text = opening * 1200 + "0" + closing * 1200
     result = run_cli(tmp_path, text, "--format", output_format)
     assert result.returncode == 2
     assert result.stdout == ""
-    assert result.stderr == "snapshot: unreadable or invalid JSON\n"
+    assert result.stderr in {
+        "snapshot: unreadable or invalid JSON\n",
+        "snapshot: incorrect fields\n",
+    }
+
+
+def test_load_snapshot_sanitizes_decoder_recursion(module, tmp_path, monkeypatch):
+    source = tmp_path / "snapshot.json"
+    source.write_text("{}", encoding="utf-8", newline="\n")
+
+    def fail_decode(*args, **kwargs):
+        raise RecursionError("untrusted decoder detail")
+
+    monkeypatch.setattr(module.json, "loads", fail_decode)
+    with pytest.raises(module.SnapshotError) as error:
+        module.load_snapshot(source)
+    assert str(error.value) == "snapshot: unreadable or invalid JSON"
+    assert isinstance(error.value.__cause__, RecursionError)
