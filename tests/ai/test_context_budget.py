@@ -73,6 +73,31 @@ def test_explicit_prose_bound():
     }
 
 
+@pytest.mark.parametrize("window,prose,bound,share", [
+    (300, 1, 0.4, 0.3),
+    (3000, 1, 0.1, 0.0),
+    (1000, 7, 0.7, 0.7),
+    (300, 0, 0.0, 0.0),
+    (300, 300, 100.0, 100.0),
+])
+def test_prose_upper_bound_rounds_up(window, prose, bound, share):
+    """Hand bounds: 100/300=1/3 -> 0.4; 100/3000=1/30 -> 0.1.
+
+    Exact boundaries: 700/1000=0.7; 0/300=0; 30000/300=100.
+    Descriptive shares keep nearest rounding, including 0.3 and 0.0.
+    """
+    result = budget.summarize({
+        "source": "Synthetic upper-bound arithmetic",
+        "window_tokens": window,
+        "harness_tokens": {"instructions": prose},
+        "message_tokens": 0,
+        "tool_output_tokens": 0,
+        "auto_loaded_prose_tokens": prose,
+    })
+    assert result["prose_saving"]["upper_bound_window_pct"] == bound
+    assert result["harness_window_pct"] == share
+
+
 def test_zero_harness_does_not_invent_ratio(observation):
     """Hand calculation: H=0; B/H is undefined, not zero or infinity."""
     observation["harness_tokens"] = {"instructions": 0}
@@ -151,7 +176,7 @@ def test_cli_matches_documented_example():
         capture_output=True, text=True, check=True,
     )
     report = json.loads(process.stdout)
-    assert report == budget.summarize(json.loads(example.read_text()))
+    assert report == budget.summarize(json.loads(example.read_text(encoding="utf-8")))
     assert report["harness_window_pct"] == 3.6
     assert report["tool_output_window_pct"] == 16.6
     assert report["prose_saving"]["status"] == "NOT_EVALUATED"
@@ -162,7 +187,7 @@ def test_cli_matches_documented_example():
 ])
 def test_cli_rejects_bad_input_without_echoing_payload(tmp_path, raw):
     path = tmp_path / "observation.json"
-    path.write_text(raw)
+    path.write_text(raw, encoding="utf-8", newline="\n")
     process = subprocess.run(
         [sys.executable, str(SCRIPT), str(path)], capture_output=True, text=True,
         check=False,

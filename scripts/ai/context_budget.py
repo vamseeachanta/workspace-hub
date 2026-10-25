@@ -61,7 +61,9 @@ def summarize(observation: object) -> dict:
         prose = _count(observation["auto_loaded_prose_tokens"])
         if prose > harness:
             raise ValueError("auto-loaded prose exceeds harness total")
-        saving = {"status": "EVALUATED", "upper_bound_window_pct": _percent(prose, window)}
+        # Ceiling in tenths of a percent preserves the bound without float drift.
+        upper_tenths = (1000 * prose + window - 1) // window
+        saving = {"status": "EVALUATED", "upper_bound_window_pct": upper_tenths / 10}
     return {
         "source": observation["source"],
         "window_tokens": window,
