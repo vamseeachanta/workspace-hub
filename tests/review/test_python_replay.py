@@ -21,7 +21,7 @@ def tool():
 def write(root, name, text):
     path = root / name
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(text, encoding="utf-8")
+    path.write_text(text, encoding="utf-8", newline="\n")
     return path
 
 
@@ -78,7 +78,7 @@ def test_dynamic_import_removed_from_sys_modules_is_retained(project, tmp_path):
 
 
 def test_source_change_during_run_refuses_current(project, tmp_path):
-    write(project, "test_run.py", "from pathlib import Path\nPath('sample/helper.py').write_text('VALUE = 8\\n')\n")
+    write(project, "test_run.py", "from pathlib import Path\nPath('sample/helper.py').write_text('VALUE = 8\\n', encoding='utf-8', newline='\\n')\n")
     receipt = capture(project, tmp_path)
     assert not receipt["exact_current"]
     assert any("source drift" in error for error in receipt["errors"])
@@ -115,9 +115,9 @@ def test_receipt_edit_cannot_remove_inventory_entry(project, tmp_path):
     capture(project, tmp_path)
     bundle = tmp_path / "bundle"
     pin = hashlib.sha256((bundle / "receipt.json").read_bytes()).hexdigest()
-    receipt = json.loads((bundle / "receipt.json").read_text())
+    receipt = json.loads((bundle / "receipt.json").read_text(encoding="utf-8"))
     receipt["sources"].pop("sample/helper.py")
-    (bundle / "receipt.json").write_text(json.dumps(receipt))
+    (bundle / "receipt.json").write_text(json.dumps(receipt), encoding="utf-8", newline="\n")
     assert tool().verify(project, bundle, pin) == ["receipt digest mismatch"]
 
 
@@ -169,7 +169,7 @@ def test_actual_pytest_command_is_retained(project, tmp_path):
 
 def test_transient_source_change_at_import_is_rejected(project, tmp_path):
     """The helper changes 7 to 8 for execution, then restores its original bytes."""
-    write(project, "test_run.py", "from pathlib import Path\np = Path('sample/helper.py')\nold = p.read_bytes()\np.write_text('VALUE = 8\\n')\nimport sample.helper\np.write_bytes(old)\n")
+    write(project, "test_run.py", "from pathlib import Path\np = Path('sample/helper.py')\nold = p.read_bytes()\np.write_text('VALUE = 8\\n', encoding='utf-8', newline='\\n')\nimport sample.helper\np.write_bytes(old)\n")
     receipt = capture(project, tmp_path)
     assert not receipt["exact_current"]
     assert any("source drift: sample/helper.py" in error for error in receipt["errors"])
@@ -337,7 +337,7 @@ def test_local_interpreter_dependency_versions(project, tmp_path, environment_di
     result = subprocess.run([str(executable), str(SCRIPT), "capture", "--root", str(project),
                              "--bundle", str(bundle), "--production", '["run.py"]',
                              "--tests", '["run.py"]'], capture_output=True, text=True, check=False)
-    receipt = json.loads((bundle / "receipt.json").read_text())
+    receipt = json.loads((bundle / "receipt.json").read_text(encoding="utf-8"))
     assert result.returncode == 0, receipt["errors"]
     assert receipt["exact_current"]
     assert dependency.relative_to(project).as_posix() not in receipt["checkout_sources"]
@@ -372,3 +372,35 @@ def test_environment_cannot_supply_foreign_project_package(project, tmp_path):
     receipt = capture(project, tmp_path)
     assert not receipt["exact_current"]
     assert "tests: project import outside checkout: sample.helper" in receipt["errors"]
+
+
+@pytest.mark.parametrize("pythonpath", [False, True])
+@pytest.mark.parametrize("command", [["run.py"], ["-m", "run"]])
+def test_shutdown_import_matches_direct_execution(tmp_path, monkeypatch, pythonpath, command):
+    project = tmp_path / "checkout"
+    write(project, "input.json", "{}")
+    write(project, "helper.py", "print(23)\n")
+    write(project, "run.py", "import atexit\ndef finish():\n    import helper\natexit.register(finish)\n")
+    if pythonpath:
+        monkeypatch.setenv("PYTHONPATH", str(project))
+    else:
+        monkeypatch.delenv("PYTHONPATH", raising=False)
+    direct = subprocess.run([sys.executable, *command], cwd=project,
+                            capture_output=True, check=True)
+    assert direct.stdout == b"23\n"
+    receipt = capture(project, tmp_path, production=command, tests=command)
+    for label, run in receipt["runs"].items():
+        assert (tmp_path / "bundle" / f"{label}.stdout").read_bytes() == direct.stdout
+        assert (tmp_path / "bundle" / f"{label}.stderr").read_bytes() == direct.stderr
+        assert set(run["sources"]) == {"run.py", "helper.py"}
+    assert receipt["exact_current"], receipt["errors"]
+    bundle = tmp_path / "bundle"
+    pin = hashlib.sha256((bundle / "receipt.json").read_bytes()).hexdigest()
+    assert tool().verify(project, bundle, pin) == []
+
+
+def test_shutdown_callback_error_refuses_current(project, tmp_path):
+    write(project, "test_run.py", "import atexit\ndef finish():\n    raise ValueError('callback failed')\natexit.register(finish)\n")
+    receipt = capture(project, tmp_path)
+    assert not receipt["exact_current"]
+    assert any("shutdown callback failed" in error for error in receipt["errors"])

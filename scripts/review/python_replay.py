@@ -7,6 +7,7 @@ from __future__ import annotations
 
 import _thread
 import argparse
+import atexit
 import hashlib
 import importlib.machinery
 import importlib.metadata
@@ -37,7 +38,7 @@ def digest(data):
 
 
 def save_json(path, value):
-    path.write_text(json.dumps(value, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    path.write_text(json.dumps(value, indent=2, sort_keys=True) + "\n", encoding="utf-8", newline="\n")
 
 
 def environment():
@@ -128,7 +129,7 @@ def worker(root, output, command, names, startup_modules):
             top = module.split(".")[0]
             if top in names:
                 errors.add(f"project import outside checkout: {module}")
-            external[module] = str(path)
+            external[module] = path.as_posix()
 
     # Loader bookkeeping uses recorder libraries; target code executes after
     # get_code returns and remains subject to profile and source observations.
@@ -180,6 +181,9 @@ def worker(root, output, command, names, startup_modules):
     recorder_path = sys.path[:]
     # Keep recorder objects through their private references, but expose only
     # interpreter startup modules to the target's import machinery.
+    # Recorder dependencies can register their own shutdown callbacks (logging,
+    # for example). They must not execute as part of the observed target.
+    atexit._clear()
     sys.modules.clear()
     sys.modules.update(startup_modules)
     sys.path.insert(0, str(root / "src"))
@@ -217,6 +221,20 @@ def worker(root, output, command, names, startup_modules):
         logging.getLogger(__name__).exception("replay command failed")
         exit_code = 1
     finally:
+        # CPython otherwise runs these after the inventory has been serialized.
+        # Preserve the target module table, search paths and observation hooks
+        # until callbacks finish, including imports executed only at shutdown.
+        original_unraisable = sys.unraisablehook
+
+        def shutdown_error(unraisable):
+            errors.add("shutdown callback failed")
+            original_unraisable(unraisable)
+
+        sys.unraisablehook = shutdown_error
+        try:
+            atexit._run_exitfuncs()
+        finally:
+            sys.unraisablehook = original_unraisable
         sys.setprofile(None)
         recording = False
         target_modules = list(sys.modules.items())
