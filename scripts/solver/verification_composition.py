@@ -11,7 +11,7 @@ import argparse
 import hashlib
 import json
 import math
-from decimal import Decimal
+from decimal import Decimal, DecimalException
 from pathlib import Path
 
 PASS = "PASS"
@@ -51,7 +51,10 @@ def _pairs(pairs):
 
 def read_record(raw):
     """Reject duplicates and non-finite values before evidence can lose meaning."""
-    value = json.loads(raw, object_pairs_hook=_pairs, parse_float=Decimal)
+    try:
+        value = json.loads(raw, object_pairs_hook=_pairs, parse_float=Decimal)
+    except DecimalException:
+        raise ValueError("Invalid decimal number") from None
     if not isinstance(value, dict):
         raise TypeError("Expected JSON object")
     _validate_json(value)

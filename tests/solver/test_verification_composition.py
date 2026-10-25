@@ -218,6 +218,31 @@ def test_cli_parse_failure_does_not_echo_input(tmp_path):
     assert "invalid.json" not in process.stderr
 
 
+@pytest.mark.parametrize("token", ["1e9999999999999999999", "1e-9999999999999999999"])
+def test_unrepresentable_decimal_record_raises_value_error(token):
+    with pytest.raises(ValueError, match="Invalid decimal number"):
+        api.read_record('{"value":' + token + '}')
+
+
+@pytest.mark.parametrize("record", ["requirements", "evidence"])
+@pytest.mark.parametrize("token", ["1e9999999999999999999", "1e-9999999999999999999"])
+def test_cli_invalid_decimal_record_uses_generic_error(case, tmp_path, record, token):
+    requirements, source, evidence = case
+    raw = encode(evidence)
+    requirements["evidence_sha256"] = digest(raw)
+    paths = [tmp_path / name for name in ("requirements.json", "input.txt", "evidence.json")]
+    payloads = [encode(requirements), source, raw]
+    index = 0 if record == "requirements" else 2
+    payloads[index] = ('{"private_payload":' + token + '}').encode("utf-8")
+    for path, payload in zip(paths, payloads):
+        path.write_bytes(payload)
+    process = subprocess.run([sys.executable, str(SCRIPT), *map(str, paths)],
+                             capture_output=True, text=True, encoding="utf-8", check=False)
+    assert process.returncode == 2
+    assert process.stdout == ""
+    assert process.stderr == "Invalid or unreadable composition record\n"
+
+
 def test_unrecognized_evidence_label_is_not_echoed(case):
     case[2]["evidence_kind"] = "untrusted input label"
     report = evaluate(case)
