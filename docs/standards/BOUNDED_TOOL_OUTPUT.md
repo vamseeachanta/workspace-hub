@@ -13,6 +13,7 @@ output as the larger opportunity; it does not justify deleting repository rules.
 | Revision | Date | Change and reason |
 |---|---|---|
 | Initial | 2026-10-22 | Add bounded-output guidance and reproducible context accounting to distinguish observations from estimates. |
+| 1 | 2026-10-25 | Round the theoretical harness bound upward so it contains the reported share. |
 
 ## Command guidance
 
@@ -59,8 +60,9 @@ issue's headline rounds tool output to 17%; this guide uses one decimal place.
 The issue describes repo-level context optimisation as a roughly 1% lever.
 Treat that as its scoped assessment, not a universal ceiling or measured saving:
 the table does not separately measure removable auto-loaded prose. All harness
-content together provides a 3.6% theoretical bound in this observation; removing
-it is neither a recommendation nor evidence of a productivity improvement.
+content together provides a 3.7% theoretical upper bound in this observation
+(rounded upward); removing it is neither a recommendation nor evidence of a
+productivity improvement.
 
 Do not delete `.claude/rules/` content, split shared instructions, or archive
 skills based on file counts or bytes. Registered, loaded tokens and loader
