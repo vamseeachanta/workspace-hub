@@ -21,11 +21,11 @@ import generate_workflow_manifest as gm  # noqa: E402
 def _make_repo(base: Path, slug: str, registry_text: str | None = None) -> Path:
     repo = base / slug
     repo.mkdir(parents=True, exist_ok=True)
-    (repo / "pyproject.toml").write_text("", encoding="utf-8")  # repo marker
+    (repo / "pyproject.toml").write_text("", encoding="utf-8", newline="\n")  # repo marker
     if registry_text is not None:
         regdir = repo / "docs" / "registry"
         regdir.mkdir(parents=True, exist_ok=True)
-        (regdir / "workflows.yaml").write_text(registry_text, encoding="utf-8")
+        (regdir / "workflows.yaml").write_text(registry_text, encoding="utf-8", newline="\n")
     return repo
 
 
@@ -213,7 +213,7 @@ def test_check_detects_stale_registry(tmp_path):
     gm.write_manifest(manifest_path, slugs=["repoB"], resolve=_resolver_for(base))
     # mutate the registry
     (base / "repoB" / "docs" / "registry" / "workflows.yaml").write_text(
-        REG_V2 + "\n  - id: delta\n    input: i\n    runtime: offline\n", encoding="utf-8"
+        REG_V2 + "\n  - id: delta\n    input: i\n    runtime: offline\n", encoding="utf-8", newline="\n"
     )
     rc = gm.check_stale(manifest_path, slugs=["repoB"], resolve=_resolver_for(base))
     assert rc == 1
@@ -259,6 +259,42 @@ def test_invalid_registry_shape_is_not_aggregated(tmp_path, text):
     assert manifest["workflows"] == []
 
 
+@pytest.mark.parametrize("date", ["2026-99-99", "2026-02-30"])
+def test_invalid_yaml_date_preserves_failure_and_continues(tmp_path, capsys, date):
+    slugs = ["invalid", "valid"]
+    resolve = _resolver_for(tmp_path)
+    for slug in slugs:
+        _make_repo(tmp_path, slug, REG_V1)
+    saved = tmp_path / "manifest.json"
+    gm.write_manifest(saved, slugs=slugs, resolve=resolve)
+    _make_repo(tmp_path, "invalid", f"updated: {date}\nworkflows: []\n")
+
+    manifest = gm.build_manifest(slugs=slugs, resolve=resolve)
+    assert manifest["repos"][0] == {
+        "repo": "invalid", "status": "invalid-registry", "registry_sha256": None,
+    }
+    assert manifest["repos"][1]["status"] == "ok"
+    assert [row["workflow_id"] for row in manifest["workflows"]] == ["valid:gamma@1"]
+    assert manifest["warnings"] == [
+        "invalid: invalid-registry",
+        "valid: missing top-level 'invocation' (pre-#3295 registry); invocation emitted null",
+    ]
+    assert gm.check_stale(saved, slugs=slugs, resolve=resolve) == 1
+    human = capsys.readouterr()
+    assert human.out == ""
+    assert "UNAVAILABLE: invalid: invalid-registry" in human.err
+    assert "UNCHANGED: valid" in human.err
+    assert gm.check_stale(saved, slugs=slugs, resolve=resolve, json_output=True) == 1
+    output = capsys.readouterr()
+    report = json.loads(output.out)
+    assert report["ok"] is False
+    assert {row["repo"]: row["status"] for row in report["repos"]} == {
+        "invalid": "invalid-registry", "valid": "unchanged",
+    }
+    assert report["repos"][0]["registry_sha256"] is None
+    assert output.err == ""
+
+
 @pytest.mark.parametrize("error", [PermissionError, UnicodeDecodeError])
 def test_unreadable_registry_is_invalid(tmp_path, monkeypatch, error):
     repo = _make_repo(tmp_path, "fixture", REG_V1)
@@ -292,8 +328,10 @@ def test_worked_example_partitions_observations(tmp_path, capsys):
         _make_repo(tmp_path, slug, REG_V1)
     saved = tmp_path / "manifest.json"
     gm.write_manifest(saved, slugs=slugs, resolve=_resolver_for(tmp_path))
-    (tmp_path / "drifted/docs/registry/workflows.yaml").write_text(REG_V1 + "# changed\n")
-    (tmp_path / "invalid/docs/registry/workflows.yaml").write_text("scalar\n")
+    (tmp_path / "drifted/docs/registry/workflows.yaml").write_text(
+        REG_V1 + "# changed\n", encoding="utf-8", newline="\n",
+    )
+    (tmp_path / "invalid/docs/registry/workflows.yaml").write_text("scalar\n", encoding="utf-8", newline="\n")
 
     def resolve(slug):
         if slug == "absent":
@@ -322,9 +360,9 @@ def test_invalid_saved_digest_never_becomes_drift(tmp_path, saved_hash):
     _make_repo(tmp_path, "fixture", REG_V1)
     saved = tmp_path / "manifest.json"
     gm.write_manifest(saved, slugs=["fixture"], resolve=_resolver_for(tmp_path))
-    payload = json.loads(saved.read_text())
+    payload = json.loads(saved.read_text(encoding="utf-8"))
     payload["repos"][0]["registry_sha256"] = saved_hash
-    saved.write_text(json.dumps(payload))
+    saved.write_text(json.dumps(payload), encoding="utf-8", newline="\n")
     report = gm.stale_report(saved, slugs=["fixture"], resolve=_resolver_for(tmp_path))
     assert report["repos"][0]["status"] == "invalid-registry"
     assert report["repos"][0]["reason"] == "invalid-saved-observation"
@@ -350,10 +388,20 @@ def test_json_check_preserves_states(tmp_path, monkeypatch, capsys):
     assert output.err == ""
 
 
+def test_write_diagnostic_uses_portable_path(monkeypatch, capsys):
+    from pathlib import PureWindowsPath
+
+    monkeypatch.setattr(gm, "write_manifest", lambda path: PureWindowsPath("output", "manifest.json"))
+    assert gm.main(["--write"]) == 0
+    assert capsys.readouterr().out == "wrote workflow manifest to output/manifest.json\n"
+
+
 def test_failure_entries_match_manifest_schema(tmp_path):
     import jsonschema
 
-    schema = json.loads((SCRIPTS_WORKFLOW.parents[1] / "docs/registry/workflow-manifest.schema.json").read_text())
+    schema = json.loads(
+        (SCRIPTS_WORKFLOW.parents[1] / "docs/registry/workflow-manifest.schema.json").read_text(encoding="utf-8")
+    )
     _make_repo(tmp_path, "empty")
     _make_repo(tmp_path, "invalid", "scalar\n")
     manifest = gm.build_manifest(slugs=["absent", "empty", "invalid"], resolve=_resolver_for(tmp_path))
@@ -364,7 +412,7 @@ def test_failure_entries_match_manifest_schema(tmp_path):
 def test_invalid_saved_manifest_cannot_establish_freshness(tmp_path, saved_text):
     _make_repo(tmp_path, "fixture", REG_V1)
     saved = tmp_path / "manifest.json"
-    saved.write_text(saved_text)
+    saved.write_text(saved_text, encoding="utf-8", newline="\n")
     report = gm.stale_report(saved, slugs=["fixture"], resolve=_resolver_for(tmp_path))
     assert report["ok"] is False
     assert report["repos"][0]["status"] == "invalid-registry"

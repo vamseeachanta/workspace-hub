@@ -94,7 +94,7 @@ def _registry_observation(repo_slug, resolve):
         return (repo_path, None, None, "invalid-registry")
     try:
         parsed = yaml.safe_load(raw)
-    except yaml.YAMLError:
+    except (yaml.YAMLError, ValueError):
         return (repo_path, raw, None, "invalid-registry")
     if not isinstance(parsed, dict):
         return (repo_path, raw, None, "invalid-registry")
@@ -212,7 +212,7 @@ def write_manifest(path=None, slugs=None, resolve=resolve_tier1_repo_path) -> Pa
     path = Path(path) if path is not None else default_manifest_path()
     path.parent.mkdir(parents=True, exist_ok=True)
     manifest = build_manifest(slugs=slugs, resolve=resolve)
-    with path.open("w", encoding="utf-8") as fp:
+    with path.open("w", encoding="utf-8", newline="\n") as fp:
         json.dump(manifest, fp, indent=2, sort_keys=False)
         fp.write("\n")
     return path
@@ -304,7 +304,7 @@ def main(argv=None) -> int:
     if args.check:
         return check_stale(args.output, json_output=args.json)
     path = write_manifest(args.output)
-    print(f"wrote workflow manifest to {path}")
+    print(f"wrote workflow manifest to {path.as_posix()}")
     return 0
 
 
