@@ -165,7 +165,7 @@ def test_references_are_relative_logical_locators(module, snapshot, reference):
 
 def run_cli(tmp_path, text, *args):
     source = tmp_path / "snapshot.json"
-    source.write_text(text, encoding="utf-8")
+    source.write_text(text, encoding="utf-8", newline="\n")
     return subprocess.run([sys.executable, str(SCRIPT), str(source), *args],
                           capture_output=True, text=True, check=False)
 
@@ -268,3 +268,14 @@ def test_duplicate_nested_json_key_is_rejected(snapshot, tmp_path):
     result = run_cli(tmp_path, text)
     assert result.returncode == 2
     assert not result.stdout
+
+
+@pytest.mark.parametrize("opening,closing", [("[", "]"), ('{"value":', "}")])
+@pytest.mark.parametrize("output_format", ["json", "html"])
+def test_cli_rejects_deep_json_with_sanitized_error(tmp_path, opening, closing, output_format):
+    # Both decoder recursion paths must follow Contract v1's invalid-input exit.
+    text = opening * 1200 + "0" + closing * 1200
+    result = run_cli(tmp_path, text, "--format", output_format)
+    assert result.returncode == 2
+    assert result.stdout == ""
+    assert result.stderr == "snapshot: unreadable or invalid JSON\n"

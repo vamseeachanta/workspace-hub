@@ -204,7 +204,7 @@ def load_snapshot(path: Path) -> dict:
     try:
         text = path.read_text(encoding="utf-8")
         data = json.loads(text, object_pairs_hook=_pairs, parse_constant=_nonfinite)
-    except (OSError, UnicodeError, ValueError) as exc:
+    except (OSError, UnicodeError, ValueError, RecursionError) as exc:
         raise SnapshotError("snapshot: unreadable or invalid JSON") from exc
     return validate(data)
 
