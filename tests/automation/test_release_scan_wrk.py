@@ -258,3 +258,77 @@ class TestDryRun:
         assert len(new_files) == 0
         # State file unchanged
         assert state_file.read_text() == original_state
+
+
+@pytest.mark.parametrize("writer", ["update_state", "_touch_scan_timestamp"])
+def test_state_writer_utf8_round_trip(mod, tmp_path, monkeypatch, writer):
+    """RFC 3629 section 3 gives the literal UTF-8 bytes for U+2192."""
+    state = tmp_path / "state.yaml"
+    state.write_bytes(b"notes: '\xe2\x86\x92'\nlast_seen_version: {}\n")
+    helper = mod.atomic_write_utf8
+    receipts = []
+
+    def record(path, content):
+        receipt = helper(path, content)
+        receipts.append(receipt)
+        return receipt
+
+    monkeypatch.setattr(mod, "atomic_write_utf8", record)
+    if writer == "update_state":
+        mod.update_state(state, [{"provider": "synthetic", "new": "→"}])
+    else:
+        mod._touch_scan_timestamp(state)
+    actual = state.read_bytes()
+    assert b"\xe2\x86\x92" in actual
+    assert yaml.safe_load(actual.decode("utf-8"))["notes"] == "→"
+    assert receipts
+    assert set(tmp_path.iterdir()) == {state}
+
+
+@pytest.mark.parametrize("writer", ["update_state", "_touch_scan_timestamp"])
+def test_state_serialization_failure_preserves_bytes(mod, tmp_path, monkeypatch, writer):
+    state = tmp_path / "state.yaml"
+    before = b"notes: original\n"
+    state.write_bytes(before)
+
+    def fail_serialization(*args, **kwargs):
+        raise ValueError("injected serialization failure")
+
+    monkeypatch.setattr(mod.yaml, "dump", fail_serialization)
+    with pytest.raises(ValueError, match="serialization failure"):
+        if writer == "update_state":
+            mod.update_state(state, [])
+        else:
+            mod._touch_scan_timestamp(state)
+    assert state.read_bytes() == before
+    assert set(tmp_path.iterdir()) == {state}
+
+
+def test_new_state_serialization_failure_creates_nothing(mod, tmp_path, monkeypatch):
+    state = tmp_path / "absent" / "state.yaml"
+
+    def fail_serialization(*args, **kwargs):
+        raise ValueError("injected serialization failure")
+
+    monkeypatch.setattr(mod.yaml, "dump", fail_serialization)
+    with pytest.raises(ValueError, match="serialization failure"):
+        mod.update_state(state, [])
+    assert not list(tmp_path.iterdir())
+
+
+def test_direct_script_import_from_other_directory(tmp_path):
+    """Exercise script-style utility import without executing a scan."""
+    import subprocess
+
+    environment = dict(os.environ)
+    environment.pop("PYTHONPATH", None)
+    result = subprocess.run(
+        [sys.executable, str(SRC / "release_scan_wrk.py"), "--help"],
+        cwd=tmp_path,
+        env=environment,
+        capture_output=True,
+        text=True,
+        check=True,
+    )
+    assert "--versions" in result.stdout
+    assert not list(tmp_path.iterdir())
