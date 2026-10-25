@@ -10,6 +10,30 @@ matrix still require validation on the target workstation.
 | Revision | Date | Change and reason |
 | --- | --- | --- |
 | Initial | 2026-10-22 | Add exact read-back verification to reject missing or corrupt publication evidence. |
+| Follow-up | 2026-10-25 | Record the bounded scope, affected files, checks and execution limits. |
+
+## Plan-lite
+
+The bounded change will verify the published fingerprint before the sentinel
+records successful publish health. It will preserve the existing schema,
+publication protocol and failure-code precedence.
+
+Affected files:
+
+- `scripts/monitoring/equivalence_state.py` will provide exact read-back verification
+  and preserve UTF-8 bytes at the Git process boundary.
+- `scripts/monitoring/equivalence-sentinel.sh` will verify publication before
+  recording success or collecting comparison inputs.
+- `tests/monitoring/test_equivalence_state.py` and
+  `tests/monitoring/test_equivalence_sentinel.py` will exercise corrupt or missing
+  publication, process ordering and Windows text-mode emulation.
+- This document will record the method, operator sequence and remaining limits.
+
+Validation will run both focused test modules, shell syntax, whitespace,
+engineering-register and secret checks. Read-back will establish only the fetched
+snapshot. Windows text-mode emulation will not establish native Windows Python
+with Git Bash execution or live scheduled-task acceptance; both will require
+separate operational evidence.
 
 ## Method and sources
 
