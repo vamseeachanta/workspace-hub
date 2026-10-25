@@ -18,47 +18,49 @@ import fetch_from_api as api
 
 
 @pytest.mark.parametrize(
-    "source,endpoint,params",
+    "source,endpoint,params,expected_code",
     [
-        (None, "Production", None),
-        ([], "Production", None),
-        ({}, "Production", None),
-        ("", "Production", None),
-        ("unknown", "Production", None),
-        ("bsee", None, None),
-        ("bsee", [], None),
-        ("bsee", "", None),
-        ("bsee", "   ", None),
-        ("bsee", "Production\x00", None),
-        ("bsee", "Production\n", None),
-        ("bsee", "https://example.invalid/records", None),
-        ("bsee", "//example.invalid/records", None),
-        ("bsee", "../records", None),
-        ("bsee", "records/../other", None),
-        ("bsee", "records/./other", None),
-        ("bsee", "records//other", None),
-        ("bsee", "records\\other", None),
-        ("bsee", "records?query=value", None),
-        ("bsee", "records#fragment", None),
-        ("bsee", "%2e%2e/other", None),
-        ("bsee", "Production", []),
-        ("bsee", "Production", "year=value"),
-        ("bsee", "Production", {None: "value"}),
-        ("bsee", "Production", {"": "value"}),
-        ("bsee", "Production", {"field": []}),
-        ("bsee", "Production", {"field": {}}),
-        ("bsee", "Production", {"field": float("nan")}),
-        ("bsee", "Production", {"field": float("inf")}),
-        ("bsee", "Production", {"field": "value\x00"}),
+        (None, "Production", None, "UNKNOWN_SOURCE"),
+        ([], "Production", None, "UNKNOWN_SOURCE"),
+        ({}, "Production", None, "UNKNOWN_SOURCE"),
+        ("", "Production", None, "UNKNOWN_SOURCE"),
+        ("unknown", "Production", None, "UNKNOWN_SOURCE"),
+        ("bsee", None, None, "INVALID_ENDPOINT"),
+        ("bsee", [], None, "INVALID_ENDPOINT"),
+        ("bsee", "", None, "INVALID_ENDPOINT"),
+        ("bsee", "   ", None, "INVALID_ENDPOINT"),
+        ("bsee", "Production\x00", None, "INVALID_ENDPOINT"),
+        ("bsee", "Production\n", None, "INVALID_ENDPOINT"),
+        ("bsee", "https://example.invalid/records", None, "INVALID_ENDPOINT"),
+        ("bsee", "//example.invalid/records", None, "INVALID_ENDPOINT"),
+        ("bsee", "../records", None, "INVALID_ENDPOINT"),
+        ("bsee", "records/../other", None, "INVALID_ENDPOINT"),
+        ("bsee", "records/./other", None, "INVALID_ENDPOINT"),
+        ("bsee", "records//other", None, "INVALID_ENDPOINT"),
+        ("bsee", "records\\other", None, "INVALID_ENDPOINT"),
+        ("bsee", "records?query=value", None, "INVALID_ENDPOINT"),
+        ("bsee", "records#fragment", None, "INVALID_ENDPOINT"),
+        ("bsee", "%2e%2e/other", None, "INVALID_ENDPOINT"),
+        ("bsee", "Production", [], "INVALID_PARAMS"),
+        ("bsee", "Production", "year=value", "INVALID_PARAMS"),
+        ("bsee", "Production", {None: "value"}, "INVALID_PARAMS"),
+        ("bsee", "Production", {"": "value"}, "INVALID_PARAMS"),
+        ("bsee", "Production", {"field": []}, "INVALID_PARAMS"),
+        ("bsee", "Production", {"field": {}}, "INVALID_PARAMS"),
+        ("bsee", "Production", {"field": float("nan")}, "INVALID_PARAMS"),
+        ("bsee", "Production", {"field": float("inf")}, "INVALID_PARAMS"),
+        ("bsee", "Production", {"field": "value\x00"}, "INVALID_PARAMS"),
     ],
 )
 def test_malformed_context_has_identical_status_and_execution_errors(
-    source, endpoint, params, tmp_path
+    source, endpoint, params, expected_code, tmp_path
 ):
     """All paths reject the same context; expected fetch and write counts are zero."""
     fetcher = Mock()
     output = tmp_path / "not-created"
     status = api.source_status(source, endpoint, params=params)
+    # Literal codes follow the pure contract, independently of shared validation.
+    assert status["reason_codes"] == [expected_code]
     assert status["syntax_validation"] == "FAILED"
     assert status["requirements_satisfied"] is False
     assert status["routable_now"] is False
@@ -72,7 +74,7 @@ def test_malformed_context_has_identical_status_and_execution_errors(
     ):
         with pytest.raises(api.SourceContextError) as error:
             execute()
-        assert error.value.code == status["reason_codes"][0]
+        assert error.value.code == expected_code
     fetcher.assert_not_called()
     assert not output.exists()
 
