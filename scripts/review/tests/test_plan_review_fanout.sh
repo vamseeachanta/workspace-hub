@@ -158,7 +158,7 @@ test_claude_invocation_uses_path_reference() {
 }
 
 test_codex_invocation_inlines_plan_body() {
-  run_test "codex is invoked with INLINE plan body in argv and closed stdin"
+  run_test "codex receives the complete plan through finite stdin"
 
   local td; td="$(mktemp -d)"
   run_wrapper_under_mocks "$td" >/dev/null 2>&1 || true
@@ -170,15 +170,15 @@ test_codex_invocation_inlines_plan_body() {
   fi
 
   if ! grep -qF "$FIXTURE_FIRST_LINE" "$cap"; then
-    fail "codex argv missing inline plan body"
+    fail "codex stdin missing plan body"
   elif ! grep -qF -- '--- PLAN' "$cap"; then
-    fail "codex argv missing '--- PLAN' delimiter"
-  elif grep -q '^ARGV: exec -$' "$cap"; then
-    fail "codex invocation must not use stdin sentinel 'exec -' (known hang path)"
+    fail "codex stdin missing '--- PLAN' delimiter"
+  elif ! grep -q '^ARGV: exec -$' "$cap"; then
+    fail "codex invocation must use stdin sentinel 'exec -' (#3462)"
   elif grep -qF -- '--no-interactive' "$cap"; then
     fail "codex invocation passes removed flag '--no-interactive' (codex-cli >=0.124.0 rejects it)"
   else
-    pass "codex invoked with argv inline plan body + delimiter, no removed flags"
+    pass "codex invoked with stdin plan body and delimiter, no removed flags"
   fi
   rm -rf "$td"
 }
@@ -222,8 +222,8 @@ test_agy_runs_from_temp_cwd() {
   fi
 
   local pwd_line; pwd_line="$(grep '^PWD:' "$cap" || true)"
-  if [[ "$pwd_line" == PWD:\ /tmp* ]]; then
-    pass "agy cwd was under /tmp ($pwd_line)"
+  if [[ "$pwd_line" == "PWD: ${TMPDIR:-/tmp}"/* ]]; then
+    pass "agy cwd was under the configured temporary directory"
   else
     fail "agy cwd was not a temp dir" "$pwd_line"
   fi
