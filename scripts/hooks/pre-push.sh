@@ -226,7 +226,9 @@ done
 # sourcing this afterwards (or not at all) leaves the review gate ADVISORY.
 # It sat below the terminal exit for months and never ran, which is why #1839's
 # strict-mode default has not actually been in force. See #3781.
-ENFORCEMENT_ENV="${REPO_ROOT}/.git/hooks/enforcement-env"
+# Resolve with Git: core.hooksPath and linked worktrees can redirect hooks.
+# Source: git-scm.com/docs/githooks, DESCRIPTION (accessed 2026-10-22).
+ENFORCEMENT_ENV="$(git rev-parse --git-path hooks/enforcement-env)"
 if [[ -f "${ENFORCEMENT_ENV}" ]]; then
     source "${ENFORCEMENT_ENV}"
 fi
