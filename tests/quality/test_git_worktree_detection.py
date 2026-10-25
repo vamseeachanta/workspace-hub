@@ -57,7 +57,7 @@ def layouts(tmp_path: Path) -> dict[str, Path]:
     ordinary.mkdir()
     malformed = tmp_path / "malformed"
     malformed.mkdir()
-    (malformed / ".git").write_text("not a gitfile\n")
+    (malformed / ".git").write_text("not a gitfile\n", encoding="utf-8", newline="\n")
     empty = tmp_path / "empty metadata"
     (empty / ".git").mkdir(parents=True)
     dangling = tmp_path / "dangling"
@@ -142,7 +142,7 @@ def test_resolver_with_git_metadata(
     target = layouts[kind]
     # Invalid metadata must not be disguised by the source-export fallback.
     if kind in {"malformed", "empty", "dangling"}:
-        (target / "pyproject.toml").write_text("[project]\nname = 'fixture'\n")
+        (target / "pyproject.toml").write_text("[project]\nname = 'fixture'\n", encoding="utf-8", newline="\n")
     hub = tmp_path / "hub"
     hub.mkdir()
     expected = kind in {"clone", "linked", "separate"}
@@ -175,7 +175,7 @@ def test_python_probe_fails_closed_without_git(layouts: dict[str, Path], monkeyp
 
 def test_content_index_direct_invocation(layouts: dict[str, Path], tmp_path: Path) -> None:
     """Only the linked root is inside this scan; no counts from the implementation."""
-    (layouts["linked"] / "README.md").write_text("# Fixture\n")
+    (layouts["linked"] / "README.md").write_text("# Fixture\n", encoding="utf-8", newline="\n")
     output_json = tmp_path / "index.json"
     output_md = tmp_path / "index.md"
     result = subprocess.run(
@@ -184,12 +184,12 @@ def test_content_index_direct_invocation(layouts: dict[str, Path], tmp_path: Pat
         cwd=tmp_path, env=clean_git_env(), text=True, capture_output=True, check=False,
     )
     assert result.returncode == 0, result.stderr
-    assert json.loads(output_json.read_text()) == {
+    assert json.loads(output_json.read_text(encoding="utf-8")) == {
         str(layouts["linked"]): {
             "disciplines": [], "project_files": [], "key_docs": ["README.md"],
         }
     }
-    assert output_md.read_text().startswith("<!-- tier1-raw-inventory-banner:")
+    assert output_md.read_text(encoding="utf-8").startswith("<!-- tier1-raw-inventory-banner:")
 
 
 @pytest.mark.parametrize("override", [False, True])
@@ -200,14 +200,49 @@ def test_tier1_list_direct_invocation(tmp_path: Path, override: bool) -> None:
     env.pop("TIER1_REPOS_FILE", None)
     if override:
         source = tmp_path / "repos.txt"
-        source.write_text("# Fixture\nexample-repo\n")
+        source.write_text("# Fixture\nexample-repo\n", encoding="utf-8", newline="\n")
         env["TIER1_REPOS_FILE"] = str(source)
     else:
         source = ROOT / "config/tier1-python-repos.txt"
-    expected = [line.split("#")[0].strip() for line in source.read_text().splitlines()]
+    expected = [line.split("#")[0].strip() for line in source.read_text(encoding="utf-8").splitlines()]
     result = subprocess.run(
         [sys.executable, str(ROOT / "scripts/lib/tier1_repos.py")],
         cwd=tmp_path, env=env, text=True, capture_output=True, check=False,
     )
     assert result.returncode == 0, result.stderr
     assert result.stdout.splitlines() == [line for line in expected if line]
+
+
+@pytest.mark.parametrize("bindings", [
+    ("GIT_DIR",), ("GIT_WORK_TREE",), ("GIT_COMMON_DIR",),
+    ("GIT_DIR", "GIT_WORK_TREE", "GIT_COMMON_DIR", "GIT_INDEX_FILE"),
+])
+def test_shell_fixture_initialization_isolates_git_bindings(
+    tmp_path: Path, bindings: tuple[str, ...],
+) -> None:
+    """Eight resolver assertions must pass without touching caller files or metadata."""
+    caller = tmp_path / "caller"
+    git("init", "-q", caller)
+    (caller / "sentinel.txt").write_text("preserve\n", encoding="utf-8", newline="\n")
+    metadata = caller / ".git"
+
+    def snapshot():
+        return {
+            path.relative_to(caller).as_posix(): path.read_bytes()
+            for path in caller.rglob("*") if path.is_file()
+        }
+
+    before = snapshot()
+    values = {
+        "GIT_DIR": metadata, "GIT_COMMON_DIR": metadata,
+        "GIT_WORK_TREE": caller, "GIT_INDEX_FILE": metadata / "fixture-index",
+    }
+    env = clean_git_env()
+    env.update({name: str(values[name]) for name in bindings})
+    result = subprocess.run(
+        ["bash", str(ROOT / "tests/quality/test_tier1_repo_resolver.sh")],
+        cwd=caller, env=env, text=True, encoding="utf-8", capture_output=True, check=False,
+    )
+    assert snapshot() == before, "caller files or metadata changed"
+    assert result.returncode == 0, "resolver fixture suite failed with inherited bindings"
+    assert "PASS=8 FAIL=0" in result.stdout
