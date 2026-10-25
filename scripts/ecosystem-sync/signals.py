@@ -142,21 +142,30 @@ def detect_new_case_study(
 
 
 def _extract_section(markdown: str, heading: str) -> str:
-    """Return body of `## <heading>` section, up to next `## ` or EOF."""
+    """Return body of an unfenced `## <heading>`, up to next unfenced `## ` or EOF."""
     lines = markdown.splitlines()
     start = None
+    fence = ""
     for i, line in enumerate(lines):
-        if line.strip() == f"## {heading}":
-            start = i + 1
-            break
-    if start is None:
-        return ""
-    end = len(lines)
-    for j in range(start, len(lines)):
-        if lines[j].startswith("## "):
-            end = j
-            break
-    return "\n".join(lines[start:end]).strip()
+        # CommonMark, Fenced code blocks (section 4.5): at least three markers,
+        # at most three leading spaces; Tabs (section 2.2): four-column stops.
+        match = re.match(r"^ {0,3}(`{3,}|~{3,})(.*)$", line.expandtabs(4))
+        if fence:
+            # Closers use the same marker, at least the opener's length,
+            # and only trailing spaces or tabs (CommonMark section 4.5).
+            if (match and match[1][0] == fence[0]
+                    and len(match[1]) >= len(fence) and not match[2].strip(" \t")):
+                fence = ""
+            continue
+        if match and (match[1][0] == "~" or "`" not in match[2]):
+            fence = match[1]
+            continue
+        if start is None:
+            if line.strip() == f"## {heading}":
+                start = i + 1
+        elif line.startswith("## "):
+            return "\n".join(lines[start:i]).strip()
+    return "\n".join(lines[start:]).strip() if start is not None else ""
 
 
 def _hash_section(body: str) -> str:
