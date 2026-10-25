@@ -131,6 +131,20 @@ def test_catalog_url_in_link_label_is_not_destination_evidence(link):
     assert "catalog_link" in result["repositories"][0]["missing"]
 
 
+@pytest.mark.parametrize("prefix", ["", "!"])
+def test_catalog_url_in_nested_label_is_not_destination_evidence(prefix):
+    link = f"{prefix}[Catalog [details] {CATALOG_URL}](https://example.invalid/unrelated)"
+    result = audit(all_readmes(BANNER.replace(CATALOG_URL, link)), catalog_status="live")
+    assert result["status"] == "FAIL"
+    assert "catalog_link" in result["repositories"][0]["missing"]
+
+
+def test_nested_label_with_legitimate_catalog_destination_passes():
+    link = f"[Catalog [details]]({CATALOG_URL})"
+    assert audit(all_readmes(BANNER.replace(CATALOG_URL, link)),
+                 catalog_status="live")["status"] == "PASS"
+
+
 @pytest.mark.parametrize("indent", ["    ", "\t"])
 def test_indented_code_inside_quote_is_not_a_banner(indent):
     text = BANNER.replace("> ", "> " + indent)
@@ -141,6 +155,25 @@ def test_indented_code_inside_quote_is_not_a_banner(indent):
 def test_unclosed_quoted_fence_ends_with_its_quote(fence):
     text = f"# Example\n\n> {fence}markdown\n> sample\n\n" + BANNER
     assert audit(all_readmes(text), catalog_status="live")["status"] == "PASS"
+
+
+@pytest.mark.parametrize("fence", ["```", "~~~"])
+@pytest.mark.parametrize("depth", [2, 3])
+def test_nested_quoted_fence_is_not_a_published_banner(fence, depth):
+    quote = BANNER.split("\n\n", 1)[1].split("\n\n##", 1)[0]
+    prefix = "> " * depth
+    text = "# Example\n\n" + prefix + fence + "markdown\n" + "\n".join(
+        prefix + line[2:] for line in quote.splitlines()
+    ) + "\n" + prefix + fence + "\n"
+    assert audit(all_readmes(text), catalog_status="live")["status"] == "FAIL"
+    # A later independent introduction must remain eligible.
+    assert audit(all_readmes(text + "\n" + BANNER),
+                 catalog_status="live")["status"] == "PASS"
+
+
+def test_unsupported_nested_quote_cannot_supply_banner_evidence():
+    text = BANNER.replace("> ", "> > ")
+    assert audit(all_readmes(text), catalog_status="live")["status"] == "FAIL"
 
 
 def test_three_spaces_inside_quote_preserve_published_banner():

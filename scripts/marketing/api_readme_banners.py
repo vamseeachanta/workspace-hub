@@ -47,6 +47,13 @@ def _intro_quotes(markdown: str) -> list[str]:
                 blocks.append(" ".join(current))
                 current = []
             continue
+        # Nested quote containers are outside the single-level banner convention.
+        # Exclude their contents, including fences, and separate adjacent quotes.
+        if quoted and re.match(r" {0,3}>", content):
+            if current:
+                blocks.append(" ".join(current))
+                current = []
+            continue
         # CommonMark 0.31.2, section 4.5: fences have at least three markers.
         marker = re.match(r" {0,3}(`{3,}|~{3,})", content)
         if marker:
@@ -77,21 +84,65 @@ def _intro_quotes(markdown: str) -> list[str]:
     return blocks
 
 
-def _is_catalog_link(text: str) -> bool:
+def _balanced_end(text: str, start: int) -> int | None:
+    """Locate a balanced label or destination, respecting escaped delimiters."""
+    opening = text[start]
+    closing = {"[": "]", "(": ")"}[opening]
+    depth = 1
+    index = start + 1
+    while index < len(text):
+        char = text[index]
+        if char == "\\":
+            index += 2
+            continue
+        if char == opening:
+            depth += 1
+        elif char == closing:
+            depth -= 1
+            if depth == 0:
+                return index
+        index += 1
+    return None
+
+
+def _catalog_candidates(text: str) -> list[str]:
     # CommonMark 0.31.2, section 6.3: the destination, not the label,
     # determines a link's target. Images do not provide a catalog link.
-    def destination(match: re.Match) -> str:
-        if match.group(1):
-            return " "
-        target = match.group(2).strip()
-        if target.startswith("<"):
-            return " " + target[1:].split(">", 1)[0] + " "
-        return " " + target.split(maxsplit=1)[0] + " " if target else " "
+    candidates = []
+    plain = []
+    index = 0
+    while index < len(text):
+        if text[index] == "\\":
+            plain.append(text[index:index + 2])
+            index += 2
+            continue
+        image = text.startswith("![", index)
+        label_start = index + int(image)
+        if text[label_start] != "[":
+            plain.append(text[index])
+            index += 1
+            continue
+        label_end = _balanced_end(text, label_start)
+        # Incomplete constructs cannot expose their labels as URL evidence.
+        if label_end is None:
+            break
+        index = label_end + 1
+        plain.append(" ")
+        # Unresolved/reference labels cannot supply destination evidence either.
+        if index < len(text) and text[index] == "(":
+            target_end = _balanced_end(text, index)
+            if target_end is None:
+                break
+            target = text[index + 1:target_end].strip()
+            if not image and target:
+                candidates.append(target[1:].split(">", 1)[0] if target.startswith("<")
+                                  else target.split(maxsplit=1)[0])
+            index = target_end + 1
+    return candidates + re.findall(r"https?://[^\s<>()]+", "".join(plain))
 
-    text = re.sub(r"(!?)\[(?:\\.|[^\]\\])*\]\(([^)\n]*)\)", destination, text)
-    # Unresolved/reference labels also cannot supply destination evidence.
-    text = re.sub(r"\[(?:\\.|[^\]\\])*\]", " ", text)
-    for candidate in re.findall(r"https?://[^\s<>()]+", text):
+
+def _is_catalog_link(text: str) -> bool:
+    for candidate in _catalog_candidates(text):
         try:
             parsed = urlsplit(candidate.rstrip(".,;]"))
         except ValueError:

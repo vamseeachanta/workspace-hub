@@ -9,6 +9,7 @@ status. It does not establish current API availability or engineering validity.
 | Revision | Date | Change and reason |
 |---|---|---|
 | Initial | 2026-10-22 | Add a repeatable banner audit and a historical-catalog gate to prevent unsupported rollout claims. |
+| Correction | 2026-10-24 | Exclude nested quote containers and read balanced link destinations to prevent false banner matches. |
 
 ## Scope and sources
 
@@ -57,6 +58,14 @@ Markdown emphasis and code delimiters do not affect matching. Fenced examples
 and text below a subsection cannot satisfy the introduction requirement. Separate
 quotes cannot combine to satisfy one banner. Repository-specific lead wording
 and the truth of broader capability claims still require maintainer review.
+
+Only single-level quote containers are supported; nested quotes, including their
+fenced examples, are excluded and cannot join adjacent banner text. Catalog URL
+evidence comes from direct URLs or inline link destinations with balanced labels
+and parentheses. Link labels, image labels and image destinations cannot supply
+catalog evidence. Incomplete bracket constructs are excluded from that point
+onward; reference-style links are not resolved. The audit remains a limited text
+convention rather than a complete Markdown renderer.
 
 Supply `--catalog-status live`, `historical` or `unverified` based on independent
 inspection. There is no default and no HTTP-status inference. This input is a
