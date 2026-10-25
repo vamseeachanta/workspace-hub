@@ -66,6 +66,10 @@ jobs:
             tests/enforcement/test_check_codex_model_pin.py \
             -v --tb=short --noconftest
 
+      - name: Run domain matrix contract tests
+        run: |
+          uv run --no-project --with pytest --with pyyaml python -m pytest tests/ci/ -v --tb=short
+
       # CI smoke tests for #2532 regression guards (workspace_hub importability,
       # review-gate uv-decoupling). Runs on feature/** and PR pushes so a
       # regression is caught at push-time, not only at PR-open via enforcement-gate.
