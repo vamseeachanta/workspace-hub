@@ -43,6 +43,21 @@ def test_invalid_pointer_is_missing_evidence(change):
                                   datetime(2026, 10, 2, tzinfo=UTC)) == "MISSING-EVIDENCE"
 
 
+@pytest.mark.parametrize("offset", ["+00:60", "+01:99", "-00:60", "-01:99", "+24:00", "-24:00"])
+def test_public_verdict_rejects_invalid_timezone_offset(offset):
+    p = pointer() | {"updated_at": "2026-10-01T00:00:00" + offset}
+    assert bem.machine_map_verdict({"machine_map": p}, 86400,
+                                  datetime(2026, 10, 2, tzinfo=UTC)) == "MISSING-EVIDENCE"
+
+
+@pytest.mark.parametrize("offset", ["Z", "+00:00", "-00:00", "+23:59", "-23:59"])
+def test_public_verdict_accepts_valid_timezone_offset(offset):
+    # At Oct 2 midnight these observations are between 60 and 172740 seconds old.
+    p = pointer() | {"updated_at": "2026-10-01T00:00:00" + offset}
+    assert bem.machine_map_verdict({"machine_map": p}, 172740,
+                                  datetime(2026, 10, 2, tzinfo=UTC)) == "MAP-FRESH"
+
+
 def test_map_row_is_registered_and_not_compared_to_peers():
     assert "machine_map" in bem.DISPLAY_DIMS
     assert sum(dims.count("machine_map") for _, _, dims in bem.GROUPS) == 1
@@ -63,12 +78,12 @@ def test_collector_emits_only_pointer_fields(tmp_path):
     admin = tmp_path / "private"
     maps = admin / "machine-ecosystem/machines"
     maps.mkdir(parents=True)
-    (admin / "machine-ecosystem/private.json").write_text('{"visibility":"private"}')
+    (admin / "machine-ecosystem/private.json").write_text('{"visibility":"private"}', encoding="utf-8", newline="\n")
     report = {"schema_version": 1, "machine": "compute", "role": "executor",
               "source": "seeded-manual", "updated_at": pointer()["updated_at"],
               "data_sources": [{"name": "private-source", "reachable": True}],
               "services": [], "auth_surfaces": {"gh": False}}
-    (maps / "compute.yaml").write_text(json.dumps(report))
+    (maps / "compute.yaml").write_text(json.dumps(report), encoding="utf-8", newline="\n")
     result = subprocess.run(["bash", str(scripts / "collect-equality.sh"),
                              "--stdout", "--machine", "compute"],
                             env={**os.environ, "WORKSPACE_HUB": str(ws),

@@ -8,9 +8,11 @@ import hashlib
 import importlib.util
 import json
 import os
+import stat
 import subprocess
 import sys
 from pathlib import Path
+from types import SimpleNamespace
 
 import pytest
 
@@ -34,7 +36,7 @@ def record(source="self-report"):
 def private_root(tmp_path):
     root = tmp_path / "private"
     (root / "machine-ecosystem").mkdir(parents=True)
-    (root / "machine-ecosystem/private.json").write_text('{"visibility":"private"}')
+    (root / "machine-ecosystem/private.json").write_text('{"visibility":"private"}', encoding="utf-8", newline="\n")
     return root
 
 
@@ -78,6 +80,22 @@ def test_schema_rejects_ambiguous_records(mutate):
         mm.validate_map(r)
 
 
+@pytest.mark.parametrize("offset", ["+00:60", "+01:99", "-00:60", "-01:99", "+24:00", "-24:00"])
+def test_record_rejects_invalid_timezone_offset(offset):
+    r = record()
+    r["updated_at"] = "2026-10-01T00:00:00" + offset
+    with pytest.raises(ValueError):
+        mm.validate_map(r)
+
+
+@pytest.mark.parametrize("offset", ["Z", "+00:00", "-00:00", "+23:59", "-23:59"])
+def test_record_accepts_valid_timezone_offset(offset):
+    # RFC 3339 (2002), section 5.6: offset hours 00..23 and minutes 00..59.
+    r = record()
+    r["updated_at"] = "2026-10-01T00:00:00" + offset
+    assert mm.validate_map(r) == r
+
+
 def test_private_destination_and_symlink_escape(tmp_path):
     with pytest.raises(ValueError):
         mm.write_map(ROOT, record())
@@ -90,13 +108,42 @@ def test_private_destination_and_symlink_escape(tmp_path):
     assert not list(outside.iterdir())
 
 
+@pytest.mark.parametrize("relative", ["machine-ecosystem", "machine-ecosystem/private.json",
+                                     "machine-ecosystem/machines"])
+def test_private_destination_rejects_junctions(tmp_path, monkeypatch, relative):
+    root = private_root(tmp_path)
+    target = root / relative
+    # Emulate the Windows junction predicate on platforms without junctions.
+    monkeypatch.setattr(Path, "is_junction", lambda path: path == target, raising=False)
+    with pytest.raises(ValueError):
+        mm.write_map(root, record())
+
+
+def test_private_destination_rejects_reparse_point_without_junction_api(tmp_path, monkeypatch):
+    root = private_root(tmp_path)
+    target = root / "machine-ecosystem/machines"
+    target.mkdir()
+    original_lstat = Path.lstat
+    mode = target.lstat().st_mode
+    monkeypatch.delattr(Path, "is_junction", raising=False)
+
+    def lstat(path, *args, **kwargs):
+        if path == target:
+            return SimpleNamespace(st_mode=mode, st_file_attributes=stat.FILE_ATTRIBUTE_REPARSE_POINT)
+        return original_lstat(path, *args, **kwargs)
+
+    monkeypatch.setattr(Path, "lstat", lstat)
+    with pytest.raises(ValueError):
+        mm.write_map(root, record())
+
+
 def test_projection_fails_closed_without_leaking(tmp_path):
     root = private_root(tmp_path)
     assert mm.project(None, "compute") == mm.ABSENT
     assert mm.project(root, "compute") == mm.ABSENT
     maps = root / "machine-ecosystem/machines"
     maps.mkdir()
-    (maps / "compute.yaml").write_text('{"updated_at":"private-detail"}')
+    (maps / "compute.yaml").write_text('{"updated_at":"private-detail"}', encoding="utf-8", newline="\n")
     assert mm.project(root, "compute") == mm.ABSENT
     with pytest.raises(ValueError):
         mm.project(root, "../escape")
@@ -159,7 +206,7 @@ def test_seed_and_private_matrix_coverage(tmp_path):
 def test_cli_wrapper_and_seed_do_not_print_private_content(tmp_path):
     root = private_root(tmp_path)
     seed = root / "machine-ecosystem/seed.json"
-    seed.write_text(json.dumps(record("seeded-manual")))
+    seed.write_text(json.dumps(record("seeded-manual")), encoding="utf-8", newline="\n")
     wrapper = ROOT / "scripts/readiness/collect-machine-map.sh"
     env = {**os.environ, "MACHINE_MAP_ADMIN_ROOT": str(root), "MACHINE_MAP_PYTHON": sys.executable}
     res = subprocess.run(["bash", str(wrapper), "seed", "--input", str(seed)],
@@ -176,7 +223,7 @@ def test_cli_wrapper_and_seed_do_not_print_private_content(tmp_path):
 def test_cli_invalid_private_input_has_sanitized_error(tmp_path, body):
     root = private_root(tmp_path)
     source = root / "machine-ecosystem/input.json"
-    source.write_text(body)
+    source.write_text(body, encoding="utf-8", newline="\n")
     result = subprocess.run([sys.executable, str(SCRIPT), "seed", "--input", str(source)],
                             env={**os.environ, "MACHINE_MAP_ADMIN_ROOT": str(root)},
                             capture_output=True, text=True, check=False)
@@ -193,7 +240,7 @@ def test_worked_example(tmp_path):
     pointer = example.run(output)
     assert pointer["present"] is True
     assert example.run(output) == pointer
-    html = (output / "machine-ecosystem/matrix.html").read_text()
+    html = (output / "machine-ecosystem/matrix.html").read_text(encoding="utf-8")
     assert "seeded-manual" in html and "MISSING-EVIDENCE" in html
 
 
@@ -213,9 +260,9 @@ def test_projection_refuses_wrong_identity_and_duplicate_fields(tmp_path):
     path = root / "machine-ecosystem/machines/compute.yaml"
     r = record()
     r["machine"] = "portable"
-    path.write_text(json.dumps(r))
+    path.write_text(json.dumps(r), encoding="utf-8", newline="\n")
     assert mm.project(root, "compute") == mm.ABSENT
-    path.write_text('{"machine":"compute","machine":"portable"}')
+    path.write_text('{"machine":"compute","machine":"portable"}', encoding="utf-8", newline="\n")
     assert mm.project(root, "compute") == mm.ABSENT
 
 
@@ -225,7 +272,7 @@ def test_cli_invalid_probe_rows_have_sanitized_error(tmp_path, services):
     config = {"role": "executor", "probe_timeout_seconds": 1, "data_sources": [],
               "services": services, "auth_surfaces": []}
     source = root / "machine-ecosystem/probes.json"
-    source.write_text(json.dumps(config))
+    source.write_text(json.dumps(config), encoding="utf-8", newline="\n")
     result = subprocess.run([sys.executable, str(SCRIPT), "collect", "--machine", "compute", "--input", str(source)],
                             env={**os.environ, "MACHINE_MAP_ADMIN_ROOT": str(root)},
                             capture_output=True, text=True, check=False)

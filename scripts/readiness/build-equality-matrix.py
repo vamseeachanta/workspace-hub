@@ -531,7 +531,7 @@ def machine_map_verdict(report: dict, max_age_seconds=None, now: datetime | None
     stamp = pointer["updated_at"]
     # RFC 3339 (2002), §5.6: full date, time and explicit offset are required.
     if not isinstance(stamp, str) or not re.fullmatch(
-        r"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})", stamp
+        r"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-](?:[01]\d|2[0-3]):[0-5]\d)", stamp
     ):
         return "MISSING-EVIDENCE"
     try:
@@ -946,12 +946,12 @@ function copyGenPrompt(btn){{
 
     REPORTS.mkdir(parents=True, exist_ok=True)
     out = REPORTS / f"{date.today().isoformat()}-machine-equality-matrix.html"
-    out.write_text(html, encoding="utf-8")
+    out.write_text(html, encoding="utf-8", newline="\n")
     # Stable (undated) alias so GitHub Pages serves a fixed "latest" URL that never
     # changes as the dated reports roll over (published by scripts/build_pages.py).
     latest = REPORTS / "machine-equality-matrix.html"
-    latest.write_text(html, encoding="utf-8")
-    print(f"wrote {out} (+ {latest.name} alias) ({reporting}/{active} active reporting)")
+    latest.write_text(html, encoding="utf-8", newline="\n")
+    print(f"wrote {out.as_posix()} (+ {latest.name} alias) ({reporting}/{active} active reporting)")
     if "--open" in sys.argv:
         import webbrowser
         webbrowser.open(out.as_uri())

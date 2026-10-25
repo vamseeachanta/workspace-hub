@@ -14,6 +14,7 @@ import math
 import os
 import re
 import shutil
+import stat
 import subprocess
 import tempfile
 from datetime import UTC, datetime
@@ -35,8 +36,9 @@ def slug(value):
 
 
 def timestamp(value):
+    # RFC 3339 (2002), section 5.6: offset hours 00..23 and minutes 00..59.
     if not isinstance(value, str) or not re.fullmatch(
-        r"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})", value
+        r"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-](?:[01]\d|2[0-3]):[0-5]\d)", value
     ):
         raise ValueError("invalid observation timestamp")
     dt = datetime.fromisoformat(value)
@@ -106,12 +108,23 @@ def private_area(root):
     if root == PUBLIC_ROOT or root.is_relative_to(PUBLIC_ROOT) or PUBLIC_ROOT.is_relative_to(root):
         raise ValueError("private destination overlaps public repository")
     area = root / "machine-ecosystem"
-    if area.is_symlink() or not area.is_dir():
+    if is_link(area) or not area.is_dir():
         raise ValueError("private destination is not initialized")
     marker = area / "private.json"
-    if marker.is_symlink() or read_json(marker) != {"visibility": "private"}:
+    if is_link(marker) or read_json(marker) != {"visibility": "private"}:
         raise ValueError("private destination acknowledgement is required")
     return area
+
+
+def is_link(path):
+    if path.is_symlink() or getattr(path, "is_junction", lambda: False)():
+        return True
+    try:
+        # Python 3.11 lacks is_junction; reject all Windows reparse points.
+        attributes = getattr(path.lstat(), "st_file_attributes", 0)
+    except FileNotFoundError:
+        return False
+    return bool(attributes & stat.FILE_ATTRIBUTE_REPARSE_POINT)
 
 
 def safe_target(area, relative):
@@ -119,7 +132,7 @@ def safe_target(area, relative):
     # Refuse every symlink component, even one that currently resolves inside the root.
     current = target
     while current != area:
-        if current.is_symlink():
+        if is_link(current):
             raise ValueError("inventory destination contains a symlink")
         current = current.parent
     if not target.resolve().is_relative_to(area):
