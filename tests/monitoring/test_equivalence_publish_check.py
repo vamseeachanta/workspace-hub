@@ -18,6 +18,7 @@ from datetime import UTC, datetime
 from pathlib import Path
 
 import pytest
+import yaml
 
 ROOT = Path(__file__).resolve().parents[2]
 MODULE = ROOT / "scripts/monitoring/equivalence_publish_check.py"
@@ -94,6 +95,7 @@ def test_observed_remote_absence_is_a_failure_not_missing_capture():
     ("health", health(ts="2026-10-22T10:59:59Z")),
     ("health", health(duration_s=float("nan"))),
     ("report", report(machine="other")),
+    ("report", report(generated_at="2026-10-22T11:01:00")),
     ("report", report(generated_at="2026-10-22T11:00:01Z")),
     ("report", report(generated_at="2026-10-22T13:00:00Z")),
     ("report", report(dimensions=[])),
@@ -234,7 +236,7 @@ def test_cli_checks_yaml_and_does_not_modify_inputs(tmp_path, monkeypatch, capsy
                            "    last_publish_at: '2026-10-22T11:00:02Z'\n" +
                            "    last_publish_duration_s: 2\n    last_publish_rc: 0\n")):
         paths[name] = tmp_path / name
-        paths[name].write_text(content)
+        paths[name].write_text(content, encoding="utf-8", newline="\n")
     before = {name: path.read_bytes() for name, path in paths.items()}
     monkeypatch.setattr(check, "read_published", lambda *args: (fingerprint(), "a" * 40))
     rc = check.main([
@@ -309,10 +311,10 @@ def test_cli_invalid_capture_fails_with_redacted_output(tmp_path, monkeypatch, c
                                                       filename, content):
     paths = {"local": tmp_path / "local", "health": tmp_path / "health",
              "report": tmp_path / "report"}
-    paths["local"].write_text(fingerprint())
-    paths["health"].write_text(health())
-    paths["report"].write_text(json.dumps(report()))
-    paths[filename].write_text(content)
+    paths["local"].write_text(fingerprint(), encoding="utf-8", newline="\n")
+    paths["health"].write_text(health(), encoding="utf-8", newline="\n")
+    paths["report"].write_text(json.dumps(report()), encoding="utf-8", newline="\n")
+    paths[filename].write_text(content, encoding="utf-8", newline="\n")
     monkeypatch.setattr(check, "read_published", lambda *args: (fingerprint(), "a" * 40))
     result = check.main([
         "--repo", str(tmp_path), "--machine", "example", "--state-ref", "refs/example",
@@ -322,3 +324,40 @@ def test_cli_invalid_capture_fails_with_redacted_output(tmp_path, monkeypatch, c
     output = capsys.readouterr().out
     assert result == 1 and json.loads(output)["status"] == "FAIL"
     assert str(tmp_path) not in output
+
+
+@pytest.mark.parametrize("timezone", ["UTC0", "EST5", "JST-9"])
+def test_collector_timestamp_is_utc_and_consumable(tmp_path, timezone):
+    """The actual collector must emit UTC even when local time differs.
+
+    Equal fingerprint, receipt, report and evaluation times give an age of
+    zero seconds, independently of the diagnostic implementation.
+    """
+    env = {key: value for key, value in os.environ.items()
+           if not key.startswith("GIT_")}
+    env.update(WORKSPACE_HUB=tmp_path.as_posix(), HOME=tmp_path.as_posix(),
+               PATH=os.pathsep.join(("/usr/bin", "/bin")), TZ=timezone,
+               EQ_PUBLIC_HOST="example")
+    before = datetime.now(UTC).replace(microsecond=0)
+    result = subprocess.run(
+        ["bash", (ROOT / "scripts/readiness/collect-equality.sh").as_posix(),
+         "--stdout", "--machine", "example"],
+        env=env, capture_output=True, text=True, encoding="utf-8", timeout=60, check=False,
+    )
+    after = datetime.now(UTC)
+    assert result.returncode == 0, "collector did not complete"
+    evidence = yaml.safe_load(result.stdout)
+    stamp = evidence["generated_at"]
+    assert stamp.endswith("Z"), "collector generation time must name UTC"
+    generated = datetime.fromisoformat(stamp)
+    assert before <= generated <= after
+    fp = fingerprint(ts=stamp)
+    receipt = health(ts=stamp)
+    # Only generation time is under test; unrelated collected dimensions are
+    # replaced with a constructed matching receipt, never treated as evidence.
+    evidence["dimensions"] = report()["dimensions"]
+    evidence["dimensions"]["publish_health"]["last_publish_at"] = stamp
+    assessment = assess(published=fp, local=fp, health=receipt,
+                        report=evidence, now=generated)
+    assert assessment["status"] == "PASS"
+    assert assessment["checks"]["matrix_publish_health"]["code"] == "PUBLISH-OK"

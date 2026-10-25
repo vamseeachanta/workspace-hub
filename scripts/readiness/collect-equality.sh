@@ -16,7 +16,7 @@ set -uo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" 2>/dev/null && pwd)"
 WS="${WORKSPACE_HUB:-$(cd "${SCRIPT_DIR}/../.." 2>/dev/null && pwd)}"
 STATE_DIR="${WS}/.claude/state"
-RUN_TS="$(date +%Y-%m-%dT%H:%M:%S 2>/dev/null)"
+RUN_TS="$(date -u +%Y-%m-%dT%H:%M:%SZ 2>/dev/null)"
 
 MACHINE=""; TO_STDOUT=0
 for ((i=1; i<=$#; i++)); do
@@ -417,7 +417,7 @@ import json, sys
 sys.path.insert(0, sys.argv[2])
 from equivalence_state import validate_publish_health
 try:
-    d = validate_publish_health(open(sys.argv[1]).read())
+    d = validate_publish_health(open(sys.argv[1], encoding="utf-8").read())
     print(d["ts"], d["duration_s"], d["rc"])
 except Exception:
     print("missing null null")
