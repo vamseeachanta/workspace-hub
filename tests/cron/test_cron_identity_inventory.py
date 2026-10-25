@@ -1,14 +1,15 @@
 """Task 2 deterministic cron identity inventory tests."""
 from __future__ import annotations
 
-import json
+import hashlib
 import importlib.util
+import json
 import subprocess
 import sys
 from pathlib import Path
 
-import yaml
 import pytest
+import yaml
 
 ROOT = Path(__file__).resolve().parents[2]
 SCRIPT = ROOT / "scripts/cron/build-cron-identity-inventory.py"
@@ -43,7 +44,7 @@ def fixture_paths(tmp_path: Path, tasks: list[dict], classes: object | None = No
 
 
 def write_yaml(path: Path, value: object) -> None:
-    path.write_text(yaml.safe_dump(value), encoding="utf-8")
+    path.write_text(yaml.safe_dump(value), encoding="utf-8", newline="\n")
 
 
 def test_inventory_is_deterministic_alias_safe_and_check_bound(tmp_path):
@@ -67,12 +68,12 @@ def test_inventory_is_deterministic_alias_safe_and_check_bound(tmp_path):
     assert subprocess.run(command, cwd=ROOT).returncode == 0
     first = output.read_bytes()
     payload = json.loads(first)
-    assert payload["machines"] == ["linux-a"]
+    assert payload["machines"] == ["linux-scheduler-" + hashlib.sha256(b"linux-a").hexdigest()]
     assert payload["unsupported"] == []
     assert payload["collisions"] == []
     assert first.endswith(b"\n")
     assert subprocess.run(command + ["--check"], cwd=ROOT).returncode == 0
-    catalog.write_text(catalog.read_text() + "\n", encoding="utf-8")
+    catalog.write_text(catalog.read_text(encoding="utf-8") + "\n", encoding="utf-8", newline="\n")
     assert subprocess.run(command + ["--check"], cwd=ROOT).returncode != 0
 
 
@@ -168,7 +169,7 @@ def test_malformed_state_classes_fail_without_traceback(tmp_path, malformed):
     task = {"id": "one", "scheduler": "cron", "schedule": "0 1 * * *",
             "command": "echo one", "machines": ["linux-a"], "roles": []}
     _catalog, state_classes, output, command = fixture_paths(tmp_path, [task])
-    state_classes.write_text(yaml.safe_dump(malformed), encoding="utf-8")
+    state_classes.write_text(yaml.safe_dump(malformed), encoding="utf-8", newline="\n")
     completed = subprocess.run(command, cwd=ROOT, text=True, capture_output=True)
     assert completed.returncode != 0
     assert not output.exists()
@@ -216,7 +217,7 @@ def test_inventory_rejects_duplicate_task_ids_in_write_and_check_modes(tmp_path)
     assert completed.returncode != 0
     assert "duplicate task id" in completed.stderr
     assert not output.exists()
-    output.write_text("{}\n", encoding="utf-8")
+    output.write_text("{}\n", encoding="utf-8", newline="\n")
     checked = subprocess.run(command + ["--check"], cwd=ROOT, text=True, capture_output=True)
     assert checked.returncode != 0
     assert "duplicate task id" in checked.stderr
@@ -261,3 +262,55 @@ def test_inventory_rejects_runtime_incompatible_fingerprint_types(
     assert completed.returncode != 0
     assert "fingerprint" in completed.stderr
     assert not output.exists()
+
+
+@pytest.mark.parametrize("section", ["identities", "unsupported", "collisions"])
+def test_inventory_uses_public_aliases_in_every_machine_field(tmp_path, section):
+    generator = load_generator()
+    catalog, classes, _output, _command = fixture_paths(tmp_path, [{
+        "id": "one", "scheduler": "cron", "schedule": "0 1 * * *",
+        "command": "echo one", "machines": ["linux-a"], "roles": [],
+    }])
+    registry = tmp_path / "registry.yaml"
+    if section == "unsupported":
+        data = yaml.safe_load(registry.read_text(encoding="utf-8"))
+        data["machines"]["linux-a"].pop("workspace_root")
+        write_yaml(registry, data)
+    elif section == "collisions":
+        data = yaml.safe_load(catalog.read_text(encoding="utf-8"))
+        data["tasks"].append(dict(data["tasks"][0], id="two"))
+        write_yaml(catalog, data)
+    payload = generator.build(catalog, registry, classes)
+    assert payload[section]
+    assert b"linux-a" not in generator.render(payload)
+    assert {row["machine_id"] for row in payload[section]} == set(payload["machines"])
+
+
+def test_inventory_alias_validation_rejects_unknown_machine_fields():
+    sys.path.insert(0, str(ROOT / "scripts/enforcement"))
+    from scheduler_mutation_delegation import _validate_inventory_bytes
+
+    alias = "linux-scheduler-" + hashlib.sha256(b"linux-a").hexdigest()
+    inventory = {"machines": [alias], "identities": [{"machine_id": alias}],
+                 "unsupported": [], "collisions": []}
+    records = {b"config/workstations/registry.yaml": yaml.safe_dump({
+        "machines": {"linux-a": {"os": "linux"}}
+    }).encode("utf-8")}
+    for section in ("machines", "identities", "unsupported", "collisions"):
+        candidate = json.loads(json.dumps(inventory))
+        if section == "machines":
+            candidate[section] = ["unknown"]
+        else:
+            candidate[section] = [{"machine_id": "unknown"}]
+        records[b"docs/reports/issue-3475-command-identity-inventory.json"] = (
+            load_generator().render(candidate)
+        )
+        errors = []
+        _validate_inventory_bytes(records, errors)
+        assert any("public machine alias" in error for error in errors), section
+    records[b"docs/reports/issue-3475-command-identity-inventory.json"] = (
+        load_generator().render(inventory)
+    )
+    errors = []
+    _validate_inventory_bytes(records, errors)
+    assert errors == []

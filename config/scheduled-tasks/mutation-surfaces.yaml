@@ -394,4 +394,4 @@ resolved_dispositions:
     # Provisional: owner to confirm digest re-affirmation at merge; owner approval for the report-only ace-linux-1 registration: board card O17 (2026-10-09T16:55Z).
     # Input digest refreshed for the weekly catalog evidence argument (#3302).
     # The existing disposition and scheduler mutation authority are unchanged.
-    source_digest: a6ba7bc868be9e01c40f50b4c8fe643b9d2f57178fa11dacfb1fb5e2a2e5a92f
+    source_digest: 2274b1e7f4427fb0e03c5d15aa5055e7b8644c2db5c3b7e2458e97495a1f3c54

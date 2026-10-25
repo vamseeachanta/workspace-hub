@@ -106,6 +106,18 @@ def _validate_inventory_bytes(records, errors):
     canonical = (json.dumps(inventory, sort_keys=True, separators=(",", ":"), ensure_ascii=False) + "\n").encode()
     if raw != canonical:
         errors.append("identity inventory is not canonical/stale")
+    registry = yaml.safe_load(records[b"config/workstations/registry.yaml"])
+    expected = [
+        "linux-scheduler-" + hashlib.sha256(machine.encode("utf-8")).hexdigest()
+        for machine, row in sorted(registry["machines"].items())
+        if row.get("os") == "linux"
+    ]
+    if inventory.get("machines") != expected:
+        errors.append("identity inventory public machine alias list mismatch")
+    for section in ("identities", "unsupported", "collisions"):
+        for row in inventory.get(section, []):
+            if "machine_id" in row and row["machine_id"] not in expected:
+                errors.append(f"identity inventory public machine alias mismatch in {section}")
     return inventory
 
 

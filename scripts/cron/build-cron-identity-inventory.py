@@ -90,12 +90,18 @@ def build(catalog_path: Path, registry_path: Path, classes_path: Path) -> dict:
                             "error": "legacy variant is not bound in a canonical Linux context"})
     union = [catalog_path, registry_path, classes_path, *SOURCE_PATHS]
     return {"schema_version": 1, "input_digest": input_digest(union),
-            "machines": machines, "identities": rows,
+            "machines": [public_machine_alias(machine) for machine in machines], "identities": rows,
             "unsupported": unsupported, "collisions": collisions}
+
+
+def public_machine_alias(machine_id: str) -> str:
+    """Keep registry identity stable without publishing its identifying value."""
+    return "linux-scheduler-" + hashlib.sha256(machine_id.encode("utf-8")).hexdigest()
 
 
 def _build_machine(catalog, registry, classes, machine_id, rows, unsupported,
                    collisions, bound_legacy):
+    alias = public_machine_alias(machine_id)
     workspace_root = (registry.get("machines") or {}).get(machine_id, {}).get(
         "workspace_root"
     )
@@ -104,19 +110,19 @@ def _build_machine(catalog, registry, classes, machine_id, rows, unsupported,
             catalog, registry, classes, machine_id,
             workspace_hub=workspace_root or "/", fail_on_collision=False,
         )
-    except (KeyError, TypeError, ValueError) as exc:
-        unsupported.append({"machine_id": machine_id, "error": str(exc)})
+    except (KeyError, TypeError, ValueError):
+        unsupported.append({"machine_id": alias, "error": "ownership context could not be built"})
         return
     if context["selected_tasks"] and not workspace_root:
         unsupported.append({
-            "machine_id": machine_id,
+            "machine_id": alias,
             "error": "selected cron tasks require registry workspace_root",
         })
         return
     collision_lines = {item["line"] for item in context["identity_collisions"]}
     for collision in context["identity_collisions"]:
         collisions.append({
-            "machine_id": machine_id, "task_ids": collision["task_ids"],
+            "machine_id": alias, "task_ids": collision["task_ids"],
             "line_sha256": hashlib.sha256(collision["line"].encode()).hexdigest(),
         })
     for task_id, lines in sorted(context["canonical_exact_lines"].items()):
@@ -125,7 +131,7 @@ def _build_machine(catalog, registry, classes, machine_id, rows, unsupported,
         for line in lines:
             rows.append({
                 "canonical_line_sha256": hashlib.sha256(line.encode()).hexdigest(),
-                "legacy_variant_ids": sorted(variants), "machine_id": machine_id,
+                "legacy_variant_ids": sorted(variants), "machine_id": alias,
                 "task_id": task_id, "unique": line not in collision_lines,
             })
 
@@ -163,7 +169,7 @@ def inventory_mismatch_summary(current: bytes, generated: bytes) -> str:
         if current_row != generated_row:
             return (
                 f"inventory body mismatch at identities[{index}]: "
-                f"expected {generated_row!r} but found {current_row!r}"
+                "row content differs"
             )
     return "inventory body mismatch: bytes differ after canonical JSON comparison"
 
@@ -187,7 +193,7 @@ def main(argv: list[str] | None = None) -> int:
         current = args.output.read_bytes() if args.output.is_file() else b""
         stale = current != generated
         if stale:
-            print(f"ERROR: stale identity inventory: {args.output}", file=sys.stderr)
+            print(f"ERROR: stale identity inventory: {args.output.as_posix()}", file=sys.stderr)
             print(
                 "ERROR: expected input_digest "
                 f"{payload['input_digest']} but found {rendered_input_digest(current)}",
