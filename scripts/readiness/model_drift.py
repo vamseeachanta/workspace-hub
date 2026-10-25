@@ -23,6 +23,10 @@ def unique_mapping(loader, node):
     pairs = loader.construct_pairs(node, deep=True)
     result = {}
     for key, value in pairs:
+        try:
+            hash(key)
+        except TypeError:
+            raise ValueError("unsupported mapping key") from None
         if key in result:
             raise ValueError("duplicate mapping key")
         result[key] = value

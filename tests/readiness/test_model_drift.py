@@ -67,10 +67,12 @@ def test_alias_must_document_exact_keys(registry, tmp_path):
     {"alpha": ["a", "b"], "beta": ["a"]},
     None, [],
     {"alpha": ["b", "a"]},
+    "? [alpha]\n: [a, b]",
+    "? {id: alpha}\n: [a, b]",
 ], ids=["null", "number", "string", "mapping", "mixed-number", "mixed-null",
         "mixed-mapping", "mixed-list", "duplicate", "empty", "blank", "missing",
         "extra", "unused-invalid", "unused-members", "single-invalid", "single-members",
-        "null-map", "list-map", "valid"])
+        "null-map", "list-map", "valid", "sequence-key", "mapping-key"])
 @pytest.mark.parametrize("runner", ["cli", "adapter"])
 def test_alias_schema_through_consumers(tmp_path, aliases, runner):
     """Both consumers fail malformed declarations; list order is immaterial."""
@@ -82,7 +84,13 @@ def test_alias_schema_through_consumers(tmp_path, aliases, runner):
     validator.write_bytes((ROOT / "scripts/readiness/model_drift.py").read_bytes())
     source = tmp_path / "config/agents/model-registry.yaml"
     source.parent.mkdir(parents=True)
-    source.write_text(gate.yaml.safe_dump(registry), encoding="utf-8", newline="\n")
+    if isinstance(aliases, str):
+        registry.pop("model_aliases")
+        text = gate.yaml.safe_dump(registry) + "model_aliases:\n"
+        text += "".join(f"  {line}\n" for line in aliases.splitlines())
+    else:
+        text = gate.yaml.safe_dump(registry)
+    source.write_text(text, encoding="utf-8", newline="\n")
     env = dict(os.environ, WORKSPACE_HUB=tmp_path.as_posix(),
                HOME=(tmp_path / "absent").as_posix())
     env.pop("MODEL_REGISTRY_FILE", None)
@@ -111,7 +119,8 @@ def test_alias_schema_through_consumers(tmp_path, aliases, runner):
         assert "b: registry consistent" in proc.stdout
     else:
         assert "FAIL" in proc.stdout
-        assert "model_aliases" in proc.stdout
+        expected = "registry: malformed YAML" if isinstance(aliases, str) else "model_aliases"
+        assert expected in proc.stdout
         assert "AGGREGATE_PASS" not in proc.stdout
         assert "validator unavailable" not in proc.stdout
         if runner == "cli":
@@ -271,7 +280,7 @@ def test_nightly_adapter_does_not_report_partial_pass(tmp_path):
               'log_pass() { echo "AGGREGATE_PASS"; }\n'
               'log_fail() { echo "AGGREGATE_FAIL"; }\n' + function +
               '\ncheck_r_model_drift\nprintf "%s" "${check_results[R-MODEL-DRIFT]}"')
-    env = dict(os.environ, WORKSPACE_HUB=str(tmp_path), HOME=str(tmp_path / "absent"))
+    env = dict(os.environ, WORKSPACE_HUB=tmp_path.as_posix(), HOME=(tmp_path / "absent").as_posix())
     env.pop("MODEL_REGISTRY_FILE", None)
     proc = subprocess.run(["bash", "-c", script], env=env, text=True, capture_output=True, check=True)
     assert "compared=0 not_evaluated=3" in proc.stdout
