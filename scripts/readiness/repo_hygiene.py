@@ -15,6 +15,7 @@ import json
 import math
 import os
 import re
+import stat
 import subprocess
 import sys
 import tempfile
@@ -115,7 +116,7 @@ def under(root, value):
 def load_manifest(path, root):
     import yaml
     try:
-        policy = yaml.safe_load(path.read_text())
+        policy = yaml.safe_load(path.read_text(encoding="utf-8"))
         if type(policy["schema_version"]) is not int or policy["schema_version"] != 1:
             raise ValueError("unsupported schema")
         for key in ("git_timeout_seconds", "max_age_seconds"):
@@ -171,7 +172,7 @@ def locked(path):
     # Lock in common Git dir coordinates duplicate manifests and linked worktrees.
     # No lock file is removed: unlinking would allow concurrent locks on different inodes.
     import fcntl
-    with path.open("a") as handle:
+    with path.open("a", encoding="utf-8", newline="\n") as handle:
         fcntl.flock(handle, fcntl.LOCK_EX | fcntl.LOCK_NB)
         yield
 
@@ -227,8 +228,13 @@ def sync_repo(root, entry, timeout, previous, now):
                     git(repo, timeout, "rev-parse", "HEAD") != row["head"] or
                     git(repo, timeout, "symbolic-ref", "--quiet", "--short", "HEAD") != entry["branch"]):
                 return row
-            git(repo, timeout, "merge", "--ff-only", "--no-autostash", "--no-overwrite-ignore", "--no-edit", target)
+            git(repo, timeout, "merge", "--no-squash", "--ff-only", "--no-autostash", "--no-overwrite-ignore", "--no-edit", target)
             row["head"] = git(repo, timeout, "rev-parse", "HEAD")
+            if git(repo, timeout, "status", "--porcelain=v1", "--untracked-files=all"):
+                row.update(status="dirty", dirty=True)
+                return row
+            if row["head"] != target:
+                return row
             row.update(status="synced", last_success_at=now)
     except BlockingIOError:
         row["status"] = "busy"
@@ -241,6 +247,10 @@ def walk_error(error):
     raise error
 
 
+def is_link(path):
+    return path.is_symlink() or getattr(os.path, "isjunction", lambda _: False)(path)
+
+
 def scratch_status(root, entries, now):
     result = {"status": "clear" if entries else "not_evaluated", "bytes": 0, "expired_files": 0}
     try:
@@ -251,14 +261,16 @@ def scratch_status(root, entries, now):
                 continue
             total = 0
             for base, dirs, files in os.walk(path, followlinks=False, onerror=walk_error):
-                dirs[:] = [d for d in dirs if not (Path(base) / d).is_symlink()]
+                dirs[:] = [d for d in dirs if not is_link(Path(base) / d)]
                 for name in files:
                     item = Path(base) / name
-                    if item.is_symlink():
+                    if is_link(item):
                         continue
-                    stat = item.stat()
-                    total += stat.st_size
-                    if now - stat.st_mtime > entry["max_age_seconds"]:
+                    info = item.stat(follow_symlinks=False)
+                    if not stat.S_ISREG(info.st_mode):
+                        continue
+                    total += info.st_size
+                    if now - info.st_mtime > entry["max_age_seconds"]:
                         result["expired_files"] += 1
             result["bytes"] += total
             if (total > entry["max_bytes"] or result["expired_files"]) and result["status"] != "error":
@@ -270,7 +282,7 @@ def scratch_status(root, entries, now):
 
 def read_status(path):
     try:
-        return public_status(json.loads(path.read_text()))
+        return public_status(json.loads(path.read_text(encoding="utf-8")))
     except (OSError, ValueError):
         return None
 
@@ -278,7 +290,7 @@ def read_status(path):
 def atomic_write(path, text):
     path.parent.mkdir(parents=True, exist_ok=True)
     # Same-directory atomic replacement: readers see complete old or new JSON after restart.
-    with tempfile.NamedTemporaryFile(mode="w", dir=path.parent, prefix=".repo-sync-", delete=False) as handle:
+    with tempfile.NamedTemporaryFile(mode="w", dir=path.parent, prefix=".repo-sync-", delete=False, encoding="utf-8", newline="\n") as handle:
         handle.write(text)
         handle.flush()
         os.fsync(handle.fileno())
