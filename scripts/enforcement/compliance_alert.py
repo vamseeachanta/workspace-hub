@@ -66,7 +66,7 @@ def validate_report(report: dict, run_date: str) -> None:
             raise ValueError("duplicate backlog hash")
         hashes.add(commit)
         if not isinstance(subject, str) or not subject.strip() or any(
-            ord(char) < 32 or ord(char) == 127 for char in subject
+            (ord(char) < 32 and char != "\t") or ord(char) == 127 for char in subject
         ):
             raise ValueError("invalid backlog subject")
 

@@ -14,7 +14,7 @@ def isolated_git_environment(monkeypatch):
         monkeypatch.delenv(variable, raising=False)
 
 
-@pytest.mark.parametrize("separator", [" ", "\u2028", "\u2029", "\u0085"])
+@pytest.mark.parametrize("separator", [" ", "\t", "\u2028", "\u2029", "\u0085"])
 def test_json_mode_is_one_document_and_matches_saved_report(tmp_path, separator):
     """One unreviewed commit: 0 / 1 * 100 = 0 (independent arithmetic)."""
     init_repo(tmp_path)

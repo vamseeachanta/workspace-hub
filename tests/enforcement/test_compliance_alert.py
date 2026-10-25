@@ -129,6 +129,14 @@ def test_invalid_backlog_entry_is_rejected(alert_module, field):
         build(alert_module, payload)
 
 
+@pytest.mark.parametrize("codepoint", [*range(9), *range(10, 32), 127])
+def test_backlog_subject_rejects_other_control_characters(alert_module, codepoint):
+    payload = report()
+    payload["unreviewed_commits"][0]["subject"] = f"fix(core): before{chr(codepoint)}after"
+    with pytest.raises(ValueError, match="invalid backlog subject"):
+        build(alert_module, payload)
+
+
 def test_duplicate_backlog_hash_is_rejected(alert_module):
     payload = report()
     payload["unreviewed_commits"][1] = copy.deepcopy(payload["unreviewed_commits"][0])
@@ -302,7 +310,7 @@ def test_publisher_failure_is_not_reported_as_success(cron, command):
         assert not any(call[:2] == ["issue", "create"] for call in calls)
 
 
-@pytest.mark.parametrize("separator", [" ", "\u2028", "\u2029", "\u0085"])
+@pytest.mark.parametrize("separator", [" ", "\t", "\u2028", "\u2029", "\u0085"])
 def test_actual_dashboard_to_cron_dry_run(tmp_path, separator):
     """One unreviewed change gives floor(0 * 100 / 1) = 0, a critical alert.
 
