@@ -50,7 +50,7 @@ def test_same_size_different_head(tmp_path):
 
 
 def test_equal_samples_different_middle(tmp_path):
-    boundary = 65536  # Issue #4224 sampling window, a performance choice.
+    boundary = 65536  # README.md, Staged hashing: application-selected window.
     root = tree(
         tmp_path,
         {

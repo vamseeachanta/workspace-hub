@@ -237,23 +237,27 @@ def render_markdown(plan):
         for row in group["retained"]:
             lines.append(f"Retain: {display(row)}. Reason: {row['reason']}.")
         for row in group["candidates"]:
+            command = row["verification_command"]
+            # Preserve exact JSON commands when Markdown cannot represent them.
+            if any(0xD800 <= ord(char) <= 0xDFFF for char in command):
+                command_display = (
+                    "Verification command withheld: filename contains a surrogate "
+                    "code point; inspect the byte-preserving JSON command."
+                )
+            elif any(char in command for char in "\n\r\v\f\x1c\x1d\x1e\x85\u2028\u2029"):
+                command_display = (
+                    "Verification command withheld: filename contains a line "
+                    "separator; inspect the JSON command without normalization."
+                )
+            else:
+                command_display = "    " + command
             lines.extend(
                 [
                     "",
                     f"REMOVAL CANDIDATE: {display(row)}. Reason: {row['reason']}.",
                     f"Expected SHA-256 for both: {group['sha256']}",
                     "",
-                    # Markdown readers normalize line separators, even in code.
-                    # Preserve the JSON command; withhold an unfaithful display.
-                    (
-                        "Verification command withheld: filename contains a line "
-                        "separator; inspect the JSON command without normalization."
-                        if any(
-                            char in row["verification_command"]
-                            for char in "\n\r\v\f\x1c\x1d\x1e\x85\u2028\u2029"
-                        )
-                        else "    " + row["verification_command"]
-                    ),
+                    command_display,
                 ]
             )
     lines.extend(["", f"Unverified groups excluded: {plan['unverified_groups']}.", ""])

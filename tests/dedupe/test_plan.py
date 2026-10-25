@@ -190,3 +190,81 @@ def test_rendered_commands_preserve_arguments(name):
         line[4:] for line in text.split("\n") if line.startswith("    ")
     )
     assert shlex.split(command) == ["sha256sum", "--", "${ROOT_1}/a", "${ROOT_2}/" + name]
+
+
+@pytest.mark.parametrize("codepoint", [0xD800, 0xDBFF, 0xDC00, 0xDCFF, 0xDFFF])
+def test_rendered_commands_with_surrogates_are_withheld(codepoint):
+    surrogate = chr(codepoint)
+    plan = make_plan(groups(row("A", "a"), row("B", "b" + surrogate)), {})
+    text = render_markdown(plan)
+    text.encode("utf-8")
+    assert not any(line.startswith("    ") for line in text.split("\n"))
+    assert "Verification command withheld" in text
+    assert "surrogate" in text
+    assert surrogate in plan["groups"][0]["candidates"][0]["verification_command"]
+
+
+@pytest.mark.parametrize("keep_non_utf8", [True, False])
+def test_non_utf8_filename_cli_pipeline(tmp_path, keep_non_utf8):
+    import json
+    import os
+    import shlex
+    import subprocess
+    import sys
+    from pathlib import Path
+
+    if os.name != "posix":
+        pytest.skip("requires POSIX byte filenames")
+    root = tmp_path / "input"
+    root.mkdir()
+    raw_name = b"b\xff"
+    name = os.fsdecode(raw_name)
+    other = "z" if keep_non_utf8 else "a"
+    for filename in (name, other):
+        (root / filename).write_bytes(b"abc")
+    before = {os.fsencode(p.name): p.read_bytes() for p in root.iterdir()}
+    package = Path(__file__).resolve().parents[2] / "scripts" / "dedupe"
+
+    def cli(script, *args):
+        process = subprocess.run(
+            [sys.executable, "-I", str(package / script), *map(str, args)],
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        assert process.returncode == 0, process.stderr
+
+    config = tmp_path / "config.json"
+    config.write_text(json.dumps({"roots": [str(root)]}), encoding="utf-8")
+    manifest = tmp_path / "manifest.jsonl"
+    cli("hash_inventory.py", "--config", config, "--label", "A", "--out", manifest)
+    header = json.loads(manifest.read_text(encoding="utf-8").splitlines()[0])
+    assert header["complete"] is True
+    merged = tmp_path / "groups.json"
+    cli("merge_manifests.py", manifest, "--out", merged)
+    assert json.loads(merged.read_text(encoding="utf-8"))["totals"]["verified"] == {
+        "groups": 1,
+        "files": 2,
+        "bytes_reclaimable": 3,
+    }
+    policy = tmp_path / "policy.json"
+    policy.write_text("{}", encoding="utf-8")
+    markdown = tmp_path / "plan.md"
+    plan_json = tmp_path / "plan.json"
+    cli(
+        "dedupe_plan.py", merged, "--policy", policy, "--out", markdown,
+        "--out-json", plan_json,
+    )
+    plan = json.loads(plan_json.read_text(encoding="utf-8"))
+    group = plan["groups"][0]
+    keep, candidate = group["keep"], group["candidates"][0]
+    assert os.fsencode((keep if keep_non_utf8 else candidate)["path"]) == raw_name
+    assert shlex.split(candidate["verification_command"]) == [
+        "sha256sum", "--",
+        "${ROOT_1}/" + keep["path"],
+        "${ROOT_1}/" + candidate["path"],
+    ]
+    text = markdown.read_text(encoding="utf-8")
+    assert "Verification command withheld" in text and "surrogate" in text
+    assert not any(line.startswith("    ") for line in text.split("\n"))
+    assert {os.fsencode(p.name): p.read_bytes() for p in root.iterdir()} == before
