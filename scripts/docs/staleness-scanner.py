@@ -20,6 +20,7 @@ import os
 import re
 import subprocess
 import sys
+from collections.abc import Iterable
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
@@ -125,7 +126,7 @@ def classify_staleness(modified_date: datetime, now: datetime | None = None) -> 
 
 
 def classify_file(filepath: str, now: datetime | None = None) -> dict | None:
-    """Analyze a single .md file and return its classification dict.
+    """Analyze a single document and return its classification dict.
 
     Returns None if the file does not exist.
     """
@@ -186,16 +187,38 @@ def classify_file(filepath: str, now: datetime | None = None) -> dict | None:
     }
 
 
-def scan_directory(directory: str) -> list[str]:
-    """Recursively find all .md files in a directory.
+def scan_directory(
+    directory: str, extensions: Iterable[str] = (".md",),
+) -> list[str]:
+    """Recursively find files with explicitly selected, case-sensitive suffixes.
 
-    Returns empty list if directory doesn't exist.
+    Markdown is the default; opt into YAML with extensions=(".yaml", ".yml")
+    or include ".md" for mixed discovery. Only these suffixes are supported.
+    Repeated suffixes are allowed; returned paths are sorted and unique.
+    Raises ValueError for an empty selection, a bare string, or invalid suffixes,
+    even if the directory is missing. No YAML parsing is performed.
+    Returns an empty list if the directory is empty or doesn't exist.
     """
+    error = "extensions must be a nonempty iterable of .md, .yaml or .yml suffixes"
+    if isinstance(extensions, (str, bytes)) or not isinstance(extensions, Iterable):
+        raise ValueError(error)
+    selected = tuple(extensions)
+    if not selected or any(
+        not isinstance(ext, str) or ext not in {".md", ".yaml", ".yml"}
+        for ext in selected
+    ):
+        raise ValueError(error)
+
     dir_path = Path(directory)
     if not dir_path.exists():
         return []
 
-    return sorted(str(p) for p in dir_path.rglob("*.md"))
+    return sorted({
+        str(path)
+        for ext in set(selected)
+        for path in dir_path.rglob(f"*{ext}")
+        if path.is_file()
+    })
 
 
 def build_yaml_report(entries: list[dict], now: datetime | None = None) -> dict:
