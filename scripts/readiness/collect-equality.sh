@@ -431,7 +431,7 @@ fi
 # matrix consumer.
 td_status="not-ready"; td_ready=0; td_total=0; td_blocked="[]"; td_stale="[]"; td_missing="[]"
 if [[ "${#PYTHON_CMD[@]}" -gt 0 ]]; then
-  td_json="$("${PYTHON_CMD[@]}" - "$WS" <<'PY' 2>/dev/null || true
+  td_json="$("${PYTHON_CMD[@]}" - "$WS" "$MACHINE" <<'PY' 2>/dev/null || true
 import json
 import sys
 from pathlib import Path
@@ -442,7 +442,7 @@ from workspace_hub.workstations import task_dispatch
 
 registry = task_dispatch.load_registry(ws / "config" / "workstations" / "registry.yaml")
 evidence = task_dispatch.load_route_evidence_dir(ws / ".claude" / "state" / "task-dispatch")
-print(json.dumps(task_dispatch.task_dispatch_summary(registry, evidence)))
+print(json.dumps(task_dispatch.task_dispatch_summary(registry, evidence, source=sys.argv[2])))
 PY
 )"
   if [[ -n "$td_json" ]] && have jq; then

@@ -1,7 +1,8 @@
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from datetime import UTC, datetime
+from math import isfinite
 from pathlib import Path
 from typing import Any, Iterable
 
@@ -20,8 +21,9 @@ REQUIRED_ROUTE_CHECKS = frozenset(
     }
 )
 
-CLIENT_NAME_MARKERS = ("client-",)
-DISPATCH_ORDER = ("dev-primary", "dev-secondary", "gpu-claw", "ace-win-1", "ace-win-2")
+CLIENT_PREFIX_MARKERS = ("client-",)
+RouteKey = tuple[str, str]
+EvidenceKey = tuple[str, str, str, str, str]
 
 
 @dataclass(frozen=True)
@@ -33,6 +35,8 @@ class DispatchRecord:
     providers: tuple[str, ...]
     shell: str
     scheduled_task_path: str | None
+    evidence_freshness_hours: float = 24.0
+    provider_identities: dict[str, tuple[str, str]] = field(default_factory=dict)
 
 
 @dataclass(frozen=True)
@@ -70,6 +74,21 @@ def dispatch_records(registry: dict[str, Any]) -> list[DispatchRecord]:
         scheduled_task_path = task_dispatch.get("scheduled_task_path")
         if os_name == "windows" and not scheduled_task_path:
             raise ValueError(f"{machine} Windows task_dispatch.scheduled_task_path missing")
+        freshness = task_dispatch.get("evidence_freshness_hours", 24.0)
+        if not _valid_window(freshness):
+            raise ValueError("task_dispatch.evidence_freshness_hours must be finite and positive")
+        # These are non-secret identity references, never credentials. Missing
+        # deployment mappings remain unverified rather than inferred from aliases.
+        identities = task_dispatch.get("provider_identities") or {}
+        qualified = {}
+        if isinstance(identities, dict):
+            for provider in providers:
+                identity = identities.get(provider)
+                if isinstance(identity, dict) and all(
+                    isinstance(identity.get(name), str) and identity[name].strip()
+                    for name in ("account", "configuration")
+                ):
+                    qualified[provider] = (identity["account"], identity["configuration"])
         records.append(
             DispatchRecord(
                 machine=machine,
@@ -79,10 +98,12 @@ def dispatch_records(registry: dict[str, Any]) -> list[DispatchRecord]:
                 providers=providers,
                 shell=shell,
                 scheduled_task_path=scheduled_task_path,
+                evidence_freshness_hours=float(freshness),
+                provider_identities=qualified,
             )
         )
-    order = {machine: index for index, machine in enumerate(DISPATCH_ORDER)}
-    return sorted(records, key=lambda record: order.get(record.machine, len(order)))
+    # YAML mapping order is the registry ordering contract.
+    return records
 
 
 def directed_routes(records: Iterable[DispatchRecord]) -> list[DirectedRoute]:
@@ -127,16 +148,49 @@ def validate_harness_config(harness: dict[str, Any], registry: dict[str, Any]) -
 
 def route_verdicts(
     records: Iterable[DispatchRecord],
-    evidence: dict[tuple[str, str], dict[str, Any]],
+    evidence: dict[EvidenceKey, dict[str, Any]],
     *,
+    source: str | None = None,
     now: datetime | None = None,
-    max_age_hours: float = 24.0,
-) -> dict[tuple[str, str], str]:
+    max_age_hours: float | None = None,
+) -> dict[RouteKey, str]:
+    """Require every target provider's intended account/configuration per pair.
+
+    Receipt keys are (source, target, provider, account, configuration). Registry
+    task_dispatch.provider_identities maps each provider to non-secret account
+    and configuration references. Changing either invalidates old receipts.
+    Both endpoint freshness policies apply; an explicit cap can only tighten them.
+    """
+    records = list(records)
+    by_machine = {record.machine: record for record in records}
     now = now or datetime.now(UTC)
-    verdicts: dict[tuple[str, str], str] = {}
+    if max_age_hours is not None and not _valid_window(max_age_hours):
+        raise ValueError("max_age_hours must be finite and positive")
+    verdicts: dict[RouteKey, str] = {}
     for route in directed_routes(records):
-        key = (route.source, route.target)
-        verdicts[key] = route_verdict(evidence.get(key), now=now, max_age_hours=max_age_hours)
+        if source is not None and route.source != source:
+            continue
+        origin, target = by_machine[route.source], by_machine[route.target]
+        window = min(origin.evidence_freshness_hours, target.evidence_freshness_hours)
+        if max_age_hours is not None:
+            window = min(window, max_age_hours)
+        provider_verdicts = []
+        for provider in target.providers:
+            identity = target.provider_identities.get(provider)
+            if identity is None:
+                provider_verdicts.append("MISSING-EVIDENCE")
+                continue
+            key = (route.source, route.target, provider, *identity)
+            row = evidence.get(key)
+            if not isinstance(row, dict) or _evidence_key(row) != key:
+                provider_verdicts.append("MISSING-EVIDENCE")
+                continue
+            provider_verdicts.append(route_verdict(row, now=now, max_age_hours=window))
+        verdicts[(route.source, route.target)] = next(
+            (status for status in ("BLOCKED", "NOT-READY", "STALE-EVIDENCE", "MISSING-EVIDENCE")
+             if status in provider_verdicts),
+            "READY",
+        )
     return verdicts
 
 
@@ -157,6 +211,8 @@ def route_verdict(
     if stamp is None:
         return "MISSING-EVIDENCE"
     now = now or datetime.now(UTC)
+    if now.utcoffset() is None or not _valid_window(max_age_hours):
+        return "MISSING-EVIDENCE"
     age_h = (now - stamp).total_seconds() / 3600.0
     if age_h < 0:
         return "MISSING-EVIDENCE"
@@ -172,13 +228,14 @@ def route_verdict(
 
 def task_dispatch_summary(
     registry: dict[str, Any],
-    evidence: dict[tuple[str, str], dict[str, Any]],
+    evidence: dict[EvidenceKey, dict[str, Any]],
     *,
+    source: str | None = None,
     now: datetime | None = None,
-    max_age_hours: float = 24.0,
+    max_age_hours: float | None = None,
 ) -> dict[str, Any]:
     records = dispatch_records(registry)
-    verdicts = route_verdicts(records, evidence, now=now, max_age_hours=max_age_hours)
+    verdicts = route_verdicts(records, evidence, source=source, now=now, max_age_hours=max_age_hours)
     total = len(verdicts)
     ready = sum(1 for verdict in verdicts.values() if verdict == "READY")
     blocked = _routes_with(verdicts, "BLOCKED")
@@ -194,34 +251,55 @@ def task_dispatch_summary(
     }
 
 
-def load_route_evidence_dir(path: str | Path) -> dict[tuple[str, str], dict[str, Any]]:
+def load_route_evidence_dir(path: str | Path) -> dict[EvidenceKey, dict[str, Any]]:
     evidence_dir = Path(path)
-    evidence: dict[tuple[str, str], dict[str, Any]] = {}
+    evidence: dict[EvidenceKey, dict[str, Any]] = {}
+    seen: set[EvidenceKey] = set()
     if not evidence_dir.exists():
         return evidence
     for route_file in sorted(evidence_dir.glob("*.yaml")) + sorted(evidence_dir.glob("*.yml")):
-        _load_route_file(route_file, evidence)
+        _load_route_file(route_file, evidence, seen)
     return evidence
 
 
-def find_public_repo_forbidden_names(registry: dict[str, Any]) -> list[str]:
+def find_client_prefix_markers(registry: dict[str, Any]) -> list[str]:
     findings: list[str] = []
     for record in dispatch_records(registry):
         for value in (record.hostname, record.ssh_alias, *record.providers):
             lower = value.lower()
-            if any(marker in lower for marker in CLIENT_NAME_MARKERS):
+            if any(marker in lower for marker in CLIENT_PREFIX_MARKERS):
                 findings.append(f"{record.machine}:{value}")
     return findings
 
 
-def _load_route_file(path: Path, evidence: dict[tuple[str, str], dict[str, Any]]) -> None:
+def _evidence_key(payload: dict[str, Any]) -> EvidenceKey | None:
+    values = tuple(payload.get(name) for name in
+                   ("source", "target", "provider", "account", "configuration"))
+    if all(isinstance(value, str) and value.strip() for value in values):
+        return values
+    return None
+
+
+def _load_route_file(
+    path: Path, evidence: dict[EvidenceKey, dict[str, Any]], seen: set[EvidenceKey]
+) -> None:
     payload = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
     if not isinstance(payload, dict):
         return
-    source = payload.get("source")
-    target = payload.get("target")
-    if isinstance(source, str) and isinstance(target, str):
-        evidence[(source, target)] = payload
+    key = _evidence_key(payload)
+    if key is None:
+        return
+    if key in seen:
+        # Ambiguous duplicate receipts never become ready by filename order.
+        evidence.pop(key, None)
+    else:
+        evidence[key] = payload
+        seen.add(key)
+
+
+def _valid_window(value: Any) -> bool:
+    return (isinstance(value, (int, float)) and not isinstance(value, bool)
+            and isfinite(value) and value > 0)
 
 
 def _parse_timestamp(value: Any) -> datetime | None:
@@ -231,8 +309,8 @@ def _parse_timestamp(value: Any) -> datetime | None:
         parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
     except ValueError:
         return None
-    if parsed.tzinfo is None:
-        parsed = parsed.replace(tzinfo=UTC)
+    if parsed.utcoffset() is None:
+        return None
     return parsed.astimezone(UTC)
 
 
