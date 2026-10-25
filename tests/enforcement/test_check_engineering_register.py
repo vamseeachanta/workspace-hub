@@ -372,3 +372,52 @@ def test_criterion_prefixes_do_not_justify_claims(
 def test_complete_criterion_words_still_qualify(tmp_path: Path, token: str, claim: str) -> None:
     """Hand oracle: an explicitly named criterion qualifies either rule."""
     assert findings_for(tmp_path, f"The {token} governs and {claim}.") == []
+
+
+@pytest.mark.parametrize("code,claim", [
+    ("R3", "The result is safe"),
+    ("R5", "The result is not obviously correct"),
+])
+@pytest.mark.parametrize("criterion_first", [True, False])
+@pytest.mark.parametrize("stop", [".", "?", "!"])
+def test_parenthesized_urls_preserve_sentence_boundaries(
+    tmp_path: Path, code: str, claim: str, criterion_first: bool, stop: str,
+) -> None:
+    """Hand oracle: an adjacent criterion cannot qualify either bare claim."""
+    url = "https:" + "/" * 2 + "example.org/record" + stop + ")"
+    reason = "(The criterion is recorded at " + url
+    parts = [reason, claim + "."] if criterion_first else ["(" + claim + " " + url, reason]
+    findings = findings_for(tmp_path, "\n".join(parts))
+    assert len(findings) == 1
+    assert f"[{code}]" in findings[0]
+    assert f":{2 if criterion_first else 1}:" in findings[0]
+
+
+@pytest.mark.parametrize("claim", [
+    "The result is safe", "The result is not obviously correct",
+])
+@pytest.mark.parametrize("criterion_first", [True, False])
+@pytest.mark.parametrize("token", [".", "?", "!", "criterion."])
+@pytest.mark.parametrize("ticks", ["`", "``"])
+def test_inline_code_punctuation_does_not_split_prose(
+    tmp_path: Path, claim: str, criterion_first: bool, token: str, ticks: str,
+) -> None:
+    """Hand oracle: literal code cannot separate a claim from its reason."""
+    literal = ticks + token + ticks
+    body = (
+        f"Because the validator rejects other names ending in {literal}, {claim}."
+        if criterion_first else
+        f"{claim} for names ending in {literal} because the validator rejects other names."
+    )
+    assert findings_for(tmp_path, body) == []
+
+
+@pytest.mark.parametrize("code,claim", [
+    ("R3", "The result is safe"),
+    ("R5", "The result is not obviously correct"),
+])
+def test_inline_code_criterion_stays_excluded(tmp_path: Path, code: str, claim: str) -> None:
+    """Hand oracle: code vocabulary cannot justify a bare prose claim."""
+    findings = findings_for(tmp_path, f"{claim} for the token `criterion.`.")
+    assert len(findings) == 1
+    assert f"[{code}]" in findings[0]

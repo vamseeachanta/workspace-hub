@@ -9,14 +9,17 @@ described in issue #3835 (2026).
 
 | Revision | Date | Change and reason |
 | --- | --- | --- |
+| Boundary correction | 2026-10-25 | Preserve prose stops before URL closing parentheses and exclude literal inline-code punctuation to keep reasons in the correct sentence. |
 | Correction | 2026-10-24 | Preserve sentence stops beside excluded text and require complete criterion words so adjacent reasons and unrelated prefixes cannot conceal bare claims. |
 | Initial | 2026-10-22 | Explain sentence-scoped criteria and a worked example so clause order does not conceal a supplied reason. |
 
 ## Method and scope
 
 The checker first blanks code, quotations, link targets and other excluded
-regions while preserving character offsets and terminal sentence stops, including
-stops inside closing quotations. Internal URL dots remain excluded. It separates the remaining prose
+regions while preserving character offsets. Prose exclusions retain terminal
+sentence stops, including stops inside closing quotations and URL closing
+parentheses. Inline code and link targets remain entirely blank so their literal
+punctuation cannot split prose sentences. Internal URL dots remain excluded. It separates the remaining prose
 at full stops, question marks, exclamation marks and blank paragraphs. Dots
 between digits in reference numbers and decimal values stay within the sentence,
 as does a soft line wrap.

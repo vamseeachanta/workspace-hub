@@ -51,11 +51,14 @@ _INLINE_QUOTE = re.compile(r"[\u201c\"](?:[^\u201d\"]|\n(?!\n)){0,400}[\u201d\"]
 def prose_only(text: str) -> str:
     """Blank non-prose regions, preserving offsets so line numbers stay true."""
     def blank(m: re.Match) -> str:
+        return re.sub(r"\S", " ", m.group(0))
+
+    def blank_prose(m: re.Match) -> str:
         region = m.group(0)
-        masked = re.sub(r"\S", " ", region)
+        masked = blank(m)
         # Keep a sentence stop at the edge of an excluded region, including
         # one inside a closing quotation. Internal URL dots remain masked.
-        stop = re.search(r"[.!?](?=[\"\u201d'\u2019`]*\s*$)", region)
+        stop = re.search(r"[.!?](?=[\"\u201d'\u2019`)]*\s*$)", region)
         if stop:
             pos = stop.start()
             masked = masked[:pos] + region[pos] + masked[pos + 1:]
@@ -67,8 +70,11 @@ def prose_only(text: str) -> str:
         end = out.find("\n", b)
         end = len(out) if end == -1 else end
         out = out[:a] + re.sub(r"\S", " ", out[a:end]) + out[end:]
-    for pat in (_INLINE, _LINK, _URL, _INLINE_QUOTE, _QUOTE, _QUOTED_ITEM, _SUPPRESSED):
+    # Code and link targets contain literal punctuation, not prose stops.
+    for pat in (_INLINE, _LINK):
         out = pat.sub(blank, out)
+    for pat in (_URL, _INLINE_QUOTE, _QUOTE, _QUOTED_ITEM, _SUPPRESSED):
+        out = pat.sub(blank_prose, out)
     return out
 
 
