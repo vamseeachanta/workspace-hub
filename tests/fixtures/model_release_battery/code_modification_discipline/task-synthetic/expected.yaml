@@ -1,0 +1,38 @@
+schema_version: '1.0'
+class: code_modification_discipline
+task_id: task-synthetic
+scope: synthetic-offline
+rules_ref: tests/fixtures/model_release_battery/README.md
+required_sections:
+- Edit Safety
+- Path Handling
+required_assertions:
+- imports_preserved
+- repository_relative_paths
+path_set:
+- tests/docs/test_workspace_hub_model_release_readiness.py
+verdict: null
+numerical_assertions: []
+max_output_tokens: 1024
+rule_sources:
+- path: .claude/rules/coding-style.md
+  section: '## Edit Safety'
+  quote: confirm imports not mangled, no duplicate definitions, no deleted adjacent code
+  supports:
+  - required_sections
+  - required_assertions
+  basis: Edit Safety projects the named rule section; preserve imports as that section requires.
+- path: .claude/rules/coding-style.md
+  section: '## Path Handling'
+  quote: 'In scripts: use relative paths'
+  supports:
+  - required_sections
+  - required_assertions
+  basis: Path Handling projects the named rule section and requires portable relative paths.
+- path: AGENTS.md
+  section: '## Required controls'
+  quote: The user's task request authorizes implementation within scope;
+  supports:
+  - path_set
+  basis: The synthetic task restricts intended edits to its allowed test file; reading a rule
+    does not authorize editing it.

@@ -1,0 +1,12 @@
+schema_version: '1.0'
+class: adversarial_review
+task_id: task-synthetic
+scope: synthetic-offline
+rules_ref: tests/fixtures/model_release_battery/README.md
+read_budget_tokens: 4096
+prompt: Review a synthetic plan that proposes implementing a new rule immediately without
+  any tests. All claimed source paths have been retrieved; the missing tests are the sole
+  implementation blocker. Apply the review prompt output sections and the mandatory TDD rule.
+  For this task use MAJOR for an implementation blocker. Use missing_tests_block_implementation
+  as the canonical finding assertion. Return sections, assertions, paths (empty) and verdict.
+allowed_paths: []

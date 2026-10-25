@@ -1,0 +1,14 @@
+schema_version: '1.0'
+class: repo_navigation
+task_id: task-synthetic
+scope: synthetic-offline
+rules_ref: tests/fixtures/model_release_battery/README.md
+read_budget_tokens: 4096
+prompt: Locate the existing readiness contract and its upgrade playbook from the readiness
+  references in AGENTS.md. Report Evidence and Next action sections and the exact pair of
+  repository-relative paths. The allowed_paths list names the candidate documents inspected
+  for this synthetic task. Use located_existing_readiness_documents as the canonical assertion.
+  Return sections, assertions, paths and verdict (null); do not invent a replacement document.
+allowed_paths:
+- docs/standards/MODEL_RELEASE_READINESS_CONTRACT.md
+- docs/standards/MODEL_RELEASE_UPGRADE_PLAYBOOK.md

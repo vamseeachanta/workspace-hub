@@ -1,0 +1,13 @@
+schema_version: '1.0'
+class: adversarial_review
+task_id: class-rubric
+scope: synthetic-offline
+rules_ref: tests/fixtures/model_release_battery/README.md
+checks:
+- required_sections
+- required_assertions
+- verdict
+points_per_check: 1
+max_score: 3
+acceptance: all_checks
+semantics_ref: tests/fixtures/model_release_battery/README.md#scoring
