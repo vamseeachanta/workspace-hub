@@ -163,8 +163,6 @@ def _exercise(reader: str, kind: str, root: Path) -> None:
                 clone.git_id.inode = (root / ".git").stat().st_ino
                 clone_setup._strict_verify(clone, "")
             elif reader == "clone_normalize":
-                clone_setup._require = lambda *args: "refs/heads/main" if args[1] == "symbolic-ref" else ""
-                clone_setup._run = lambda *args: SimpleNamespace(returncode=1)
                 clone_setup._authorize_and_normalize(clone, "")
             elif reader == "packed_refs":
                 finalizer._reject_replacements(clone)
@@ -199,7 +197,7 @@ def test_nonregular_rejected_before_read(tmp_path, reader, kind):
         pytest.skip("tree scanner intentionally accepts directories")
     result = subprocess.run(
         [sys.executable, __file__, reader, kind, str(tmp_path)],
-        capture_output=True, text=True, timeout=5, check=False,
+        capture_output=True, text=True, encoding="utf-8", timeout=5, check=False,
     )
     assert result.returncode == 0, result.stderr
 
@@ -240,5 +238,128 @@ def test_size_boundary(tmp_path, reader):
         read(len(b"ab"))
 
 
+def _real_clone_probe(kind: str, root: Path) -> None:
+    from client_llm_wiki import bootstrap_clone_setup as setup
+    from client_llm_wiki import bootstrap_git as git
+
+    target = root / "clone"
+    env = git.isolated_env()
+    subprocess.run(
+        [git.trusted_executable("git"), "init", "--initial-branch=topic", str(target)],
+        env=env, check=True, capture_output=True,
+    )
+    config = target / ".git" / "config"
+    origin = min(git.accepted_origins("org/llm-wiki-example"))
+    config.write_text(
+        '[core]\nrepositoryformatversion = 0\nbare = false\n'
+        f'[remote "origin"]\nurl = {origin}\n'
+        'fetch = +refs/heads/*:refs/remotes/origin/*\n',
+        encoding="utf-8", newline="\n",
+    )
+    original_config = config.read_bytes()
+    calls = []
+    original_run = setup._run
+
+    def observed_run(clone, *args):
+        if kind == "preflight_replaced_fifo" and not calls:
+            config.rename(config.with_name("held-config"))
+            os.mkfifo(config, 0o600)
+        calls.append(args)
+        return original_run(clone, *args)
+
+    setup._run = observed_run
+    if kind == "fifo":
+        config.rename(config.with_name("held-config"))
+        os.mkfifo(config, 0o600)
+    elif kind in {"replaced_fifo", "replaced_regular"}:
+        original_validate = setup.validate_clone_config_for_head_binding
+
+        def replace_config(*args):
+            config.rename(config.with_name("held-config"))
+            if kind == "replaced_regular":
+                config.write_bytes(original_config)
+            else:
+                os.mkfifo(config, 0o600)
+            return original_validate(*args)
+
+        setup.validate_clone_config_for_head_binding = replace_config
+    elif kind in {"existing_ref", "dirty_index"}:
+        command = [git.trusted_executable("git"), "-C", target.as_posix()]
+        blob = subprocess.run(
+            [*command, "hash-object", "-w", "--stdin"], input=b"synthetic\n",
+            env=env, capture_output=True, check=True, timeout=5,
+        ).stdout.strip().decode("ascii")
+        if kind == "existing_ref":
+            (config.parent / "refs" / "heads" / "topic").write_text(
+                blob + "\n", encoding="utf-8", newline="\n",
+            )
+        else:
+            subprocess.run(
+                [*command, "update-index", "--add", "--cacheinfo", f"100644,{blob},input"],
+                env=env, capture_output=True, check=True, timeout=5,
+            )
+    elif kind == "write_failure":
+        original_write = setup.os.write
+
+        def failed_write(fd, payload):
+            if payload == b"ref: refs/heads/main\n":
+                raise OSError("injected symbolic ref write failure")
+            return original_write(fd, payload)
+
+        setup.os.write = failed_write
+    elif kind == "long_head":
+        (config.parent / "HEAD").write_bytes(b"x" * (os.pathconf(config.parent, "PC_PATH_MAX") + 1))
+    elif kind == "locked":
+        (config.parent / "HEAD.lock").write_bytes(b"existing lock")
+    elif kind == "commondir":
+        (config.parent / "commondir").write_text(".\n", encoding="utf-8", newline="\n")
+    elif kind == "invalid":
+        with config.open("a", encoding="utf-8", newline="\n") as stream:
+            stream.write('[include]\npath = forbidden\n')
+
+    if kind == "regular":
+        setup.bind_clone_to_main(target, "org/llm-wiki-example")
+        assert (target / ".git" / "HEAD").read_text(encoding="utf-8") == "ref: refs/heads/main\n"
+        assert ("status", "--porcelain=v1", "--untracked-files=all") in calls
+    else:
+        with pytest.raises((OSError, git.BootstrapGitError)):
+            setup.bind_clone_to_main(target, "org/llm-wiki-example")
+        if kind == "fifo":
+            assert not calls, "preflight ran before special-file rejection"
+        elif kind == "locked":
+            assert config.read_bytes() == original_config
+            assert (config.parent / "HEAD.lock").read_bytes() == b"existing lock"
+            assert (config.parent / "HEAD").read_text(encoding="utf-8") == "ref: refs/heads/topic\n"
+        elif kind in {"replaced_fifo", "preflight_replaced_fifo", "replaced_regular"}:
+            assert (target / ".git" / "HEAD").read_text(encoding="utf-8") == "ref: refs/heads/topic\n"
+            if kind != "replaced_regular":
+                assert stat.S_ISFIFO(config.stat().st_mode)
+            assert ("status", "--porcelain=v1", "--untracked-files=all") in calls
+        if kind in {"existing_ref", "dirty_index"}:
+            assert config.read_bytes() == original_config
+            assert (config.parent / "HEAD").read_text(encoding="utf-8") == "ref: refs/heads/topic\n"
+        if kind != "locked":
+            assert not (config.parent / "HEAD.lock").exists()
+
+
+@pytest.mark.skipif(sys.platform != "linux", reason="descriptor and FIFO probes use Linux")
+@pytest.mark.parametrize("kind", [
+    "regular", "fifo", "preflight_replaced_fifo", "replaced_fifo", "replaced_regular",
+    "invalid", "commondir", "locked", "write_failure", "long_head", "existing_ref", "dirty_index",
+])
+def test_clone_entrypoint_real_git(tmp_path, kind):
+    from client_llm_wiki.bootstrap_git import isolated_env
+
+    result = subprocess.run(
+        [sys.executable, __file__, "real_clone", kind, tmp_path.as_posix()],
+        env={**isolated_env(), "PYTHONDONTWRITEBYTECODE": "1"},
+        capture_output=True, text=True, encoding="utf-8", timeout=5, check=False,
+    )
+    assert result.returncode == 0, result.stderr
+
+
 if __name__ == "__main__":
-    _exercise(sys.argv[1], sys.argv[2], Path(sys.argv[3]))
+    if sys.argv[1] == "real_clone":
+        _real_clone_probe(sys.argv[2], Path(sys.argv[3]))
+    else:
+        _exercise(sys.argv[1], sys.argv[2], Path(sys.argv[3]))
