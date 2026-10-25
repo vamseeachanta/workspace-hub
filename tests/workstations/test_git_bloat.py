@@ -108,6 +108,26 @@ def test_index_and_head_both_protect_live_paths(mod, tmp_path):
     ]
 
 
+def test_subdirectory_candidates_match_root_index_paths(mod, tmp_path):
+    repo = repository(tmp_path)
+    nested = repo / "nested"
+    nested.mkdir()
+    git(repo, "read-tree", "HEAD")
+    oid = git(repo, "hash-object", "-w", "--stdin", data=b"staged").strip().decode()
+    for path in ("staged-only.txt", "nested/inside.txt"):
+        git(repo, "update-index", "--add", "--cacheinfo", "100644", oid, path)
+    candidates = ["staged-only.txt", "nested/inside.txt", "nested", "inside.txt"]
+    before = files_snapshot(repo)
+    root = mod.inspect(repo, timeout_seconds=30, candidates=candidates)
+    selected = mod.inspect(nested, timeout_seconds=30, candidates=candidates)
+    assert root["status"] == selected["status"] == "EVALUATED"
+    assert [row["status"] for row in root["candidates"]] == [
+        "BLOCKED_LIVE_PATH", "BLOCKED_LIVE_PATH", "BLOCKED_LIVE_PATH", "ABSENT_FROM_TIPS",
+    ]
+    assert selected["candidates"] == root["candidates"]
+    assert before == files_snapshot(repo)
+
+
 def test_annotated_tag_and_gitlink_are_protected(mod, tmp_path):
     repo = repository(tmp_path)
     oid = git(repo, "rev-parse", "retained").strip()
@@ -192,7 +212,7 @@ def test_incomplete_object_graph_is_not_zero_or_reclaim(mod, tmp_path, kind):
     elif kind == "promisor-marker":
         (repo / ".git/objects/pack/fixture.promisor").touch()
     else:
-        (repo / ".git/objects/info/alternates").write_text(str(tmp_path / "missing-store"))
+        (repo / ".git/objects/info/alternates").write_text(str(tmp_path / "missing-store"), encoding="utf-8", newline="\n")
     result = mod.inspect(repo, timeout_seconds=30, reachable=True, candidates=["absent"])
     assert result["status"] == "NOT_EVALUATED"
     assert result["reachable"]["status"] == "NOT_EVALUATED"

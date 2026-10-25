@@ -70,7 +70,8 @@ def _snapshot(repo: Path, timeout_seconds: int) -> tuple[bytes, bytes, bytes]:
         _git(repo, ["for-each-ref", "--format=%(refname) %(objectname)"], timeout_seconds),
         # Git ls-files manual, --stage: include mode, object ID and conflict stage
         # so content-only index changes invalidate the same observation too.
-        _git(repo, ["ls-files", "--stage", "-z"], timeout_seconds),
+        # --full-name keeps root-relative output; :/ also selects the whole index.
+        _git(repo, ["ls-files", "--stage", "--full-name", "-z", "--", ":/"], timeout_seconds),
     )
 
 
