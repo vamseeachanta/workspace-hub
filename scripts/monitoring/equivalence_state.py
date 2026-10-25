@@ -29,7 +29,7 @@ from equivalence_schema import (
 
 DEFAULT_REF = "equivalence-state"
 
-# Pre-#3516 blobs were keyed by ROLE — two same-role boxes (ace-win-1/2, both
+# Pre-#3516 blobs were keyed by ROLE — two same-role boxes (both
 # contribute-minimal) would silently clobber each other. Blobs are now keyed by
 # registry machine id; these legacy names are self-cleaned on each publish.
 LEGACY_ROLE_NAMES = {"full", "contribute", "contribute-minimal", "none", "unknown"}
@@ -43,7 +43,7 @@ def resolve_identity(registry_path, hostname):
     unregistered boxes can never share a blob name (#3516)."""
     fallback = (f"unknown-{hostname}", "unknown")
     try:
-        with open(registry_path) as fh:
+        with open(registry_path, encoding="utf-8") as fh:
             text = fh.read()
         try:
             import yaml
@@ -262,10 +262,12 @@ def _drop_own_legacy(repo, entries, name, own_host):
 
 
 def _commit_fingerprint(repo, entries, name, content, machine, parent):
-    hashed = _git(repo, "hash-object", "-w", "--stdin", _input=content)
+    hashed = _git(repo, "hash-object", "-w", "--stdin",
+                  _input=content.encode("utf-8"), _text=False)
     if hashed.returncode != 0:
-        raise StoreUnavailable(f"hash-object failed: {hashed.stderr.strip()[:200]}")
-    entries[name] = ("100644", "blob", hashed.stdout.strip())
+        stderr = hashed.stderr.decode("utf-8", errors="replace")
+        raise StoreUnavailable(f"hash-object failed: {stderr.strip()[:200]}")
+    entries[name] = ("100644", "blob", hashed.stdout.decode("ascii").strip())
     tree_input = b"".join(
         f"{mode} {kind} {sha}\t".encode("ascii")
         + entry.encode("utf-8", errors="surrogateescape") + b"\0"
