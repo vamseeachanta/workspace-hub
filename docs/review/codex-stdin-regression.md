@@ -11,6 +11,7 @@ fails. Compatibility without the diagnostic remains unverified.
 | --- | --- | --- |
 | 1 | 2026-10-22 | Add bounded diagnostic handling and offline evidence because the reported stall could consume both review attempts. |
 | 2 | 2026-10-24 | Drain stderr through EOF after child exit and classify only complete lines or EOF tails to prevent missed diagnostics and false matches. |
+| 3 | 2026-10-25 | Record repeated offline test counts and baseline limitations so validation claims distinguish executed tests from real CLI compatibility. |
 
 ## Evidence and scope
 
@@ -36,8 +37,8 @@ not qualify later releases automatically.
 The offline tests vary content and input independently. They establish wrapper
 behavior, not the upstream cause or real CLI compatibility. A live matrix must
 record the exact version, prompt digest and byte count, input state, exit code,
-diagnostic and elapsed time. Real CLI comparisons and independent provider review
-remain pending because assistant invocation was outside the permitted checks.
+diagnostic and elapsed time. Real CLI comparisons remain pending because
+assistant invocation was outside the permitted checks.
 
 ## Method and contracts
 
@@ -105,6 +106,24 @@ uv run --no-project --with pytest python -m pytest \
   tests/review/test_codex_stdin_regression.py -q -rA -p no:cacheprovider
 ```
 
+## Offline validation
+
+The 2026-10-25 run on POSIX produced the following counts before this
+documentation update; the executable code and test assertions were unchanged.
+
+| Command | Passed | Failed | Scope and limitation |
+| --- | --- | --- | --- |
+| `python -m pytest tests/review/test_codex_stdin_regression.py -q -rA -p no:cacheprovider` | 35 | 0 | Injected executables, stderr scanning, exit races, retry contracts and process-group cleanup. |
+| `bash tests/review/test-submit-scripts.sh` | 54 | 5 | All failures were in the existing T01, T02 and T04 Claude-wrapper input-validation assertions when that CLI was absent. |
+| `bash scripts/review/tests/test_codex_version_guard.sh` | 14 | 0 | Injected version probes and pinning controls; no installed assistant was invoked. |
+
+The five shell failures reflect the unchanged CLI-discovery branch in
+`scripts/review/submit-to-claude.sh`, which runs before file, commit and compact
+input validation. The same branch and failing assertions are present on main.
+These results do not establish a fully passing shell suite or real CLI
+compatibility. The regression and version-guard counts remain 35 and 14;
+no tests were added, skipped or relaxed.
+
 ## Limits and later checks
 
 The monitor requires Python 3 and POSIX process-group support. Native Windows
@@ -113,5 +132,5 @@ this change covers the structured submit path used by cross-review, not every
 direct CLI caller. It detects the recorded stderr line, not silent stalls or a
 diagnostic emitted only on stdout. Silent stalls retain the configured deadline.
 No engineering equations or standards-derived constants apply to this harness.
-Independent review and real-version small/full-diff comparisons remain required
-before declaring the upstream regression resolved.
+Real-version small/full-diff comparisons remain required before declaring the
+upstream regression resolved.
