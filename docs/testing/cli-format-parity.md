@@ -11,6 +11,7 @@ rows in each advertised format.
 | --- | --- | --- |
 | Initial | 2026-10-22 | Add option parity contracts and structured validation errors to detect format-dependent behavior. |
 | Issue review | 2026-10-25 | Add subprocess grouping, argument forwarding and empty-input contracts for normal issue review. |
+| Issue review scope | 2026-10-26 | Record the bounded plan and acceptance criteria for the issue-review contracts. |
 
 ## Bounded command inventory
 
@@ -102,6 +103,24 @@ records this independent calculation. Search's test docstring independently
 defines the set intersections: land contains alpha and beta; marine contains
 gamma; filtering land by marine yields no rows. Equal fixture text makes the
 documented canonical-path tie breaker determine the limited result, alpha.
+
+## Plan-lite: normal issue review
+
+The scope will remain limited to
+`scripts/knowledge/tests/test_review_open_issues_format_parity.py` and this guide.
+The tests will use synthetic issues and an executable stub, with expected issue
+identities, memberships and counts derived independently of the command.
+Acceptance will require correct category, priority and label grouping in table,
+YAML and JSON; exact repository and limit forwarding; explicit empty-input
+representations; CSV rejection before fetching; and all 37 existing and added
+tests passing. These checks will cover local argument forwarding rather than
+server-side limiting or issue-hygiene auditing.
+
+The offline acceptance command will be run with an external scratch directory:
+
+```sh
+uv run --offline --no-project --with pytest --with pyyaml python -m pytest scripts/knowledge/tests/test_review_open_issues.py scripts/knowledge/tests/test_review_open_issues_format_parity.py -q -rA -p no:cacheprovider --basetemp="$TMPDIR/issue-review-contracts"
+```
 
 ## Running and extending the contracts
 
