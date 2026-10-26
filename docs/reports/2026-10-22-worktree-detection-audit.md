@@ -10,6 +10,7 @@ changes and tests; this audit does not claim ecosystem-wide remediation.
 | Revision | Date | What changed and why |
 | --- | --- | --- |
 | Initial | 2026-10-22 | Inventory live repositories and correct shared discovery to accept linked worktrees. |
+| 1 | 2026-10-25 | Refresh verification counts to include inherited-binding isolation and caller preservation cases. |
 
 ## Basis and observed coverage
 
@@ -259,10 +260,11 @@ invalid and dangling markers, inherited Git bindings, precedence, source exports
 and direct indexing. Expected outcomes follow the hand-derived decision table
 in `tests/quality/test_git_worktree_detection.py`, not the implementation.
 Existing resolver fixtures now initialize real metadata instead of making
-empty directories. The focused Python suites pass with 83 passed and one
-optional private-data test skipped; 54 passing cases are in the new regression
-module. The existing shell suites pass with 8 resolver, 7 consumer-layout and
-38 quality assertions. Shell syntax and the documentation register check pass.
+empty directories. On 2026-10-25, the focused Python suites pass with 87 passed
+and one optional private-data test skipped; 58 passing cases are in the new
+regression module. The existing shell suites pass with 8 resolver, 7
+consumer-layout and 38 quality assertions. Shell syntax and the documentation
+register check pass.
 The initial regression run recorded 31 failures and 16 passes before the
 implementation; a subsequent standalone-command regression was also reproduced
 before correction. These counts are observations of the test runs, not
