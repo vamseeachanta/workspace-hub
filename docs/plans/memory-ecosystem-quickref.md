@@ -69,3 +69,24 @@ bash scripts/memory/check-memory-drift.sh  # see what's missing
 | `.claude/memory/topics/` | Mirrored Claude auto-memory feedback files |
 | `.claude/memory/templates/` | agents-template.md — baseline content for bridge injection |
 | `logs/upkeep/` | Daily health reports |
+
+## Scratch-only health report
+
+Run from the repository root with a writable `TMPDIR`; no services or Git writes.
+Keep this reference below 100 lines (issues/1919). The week is the reporter's fixture example.
+
+```bash
+(
+set -eu
+: "${TMPDIR:?Set TMPDIR to a writable scratch directory}"
+scratch="$(mktemp -d "$TMPDIR/memory-health-example.XXXXXX")"
+export MEMORY_HEALTH_DIRS="$scratch/memory"
+export MEMORY_HEALTH_OUT_DIR="$scratch/reports"
+export MEMORY_HEALTH_WEEK="2026-W16" # scripts/cron/memory-health-report.sh
+export REPO_ROOT="$PWD"
+mkdir -p "$MEMORY_HEALTH_DIRS"
+printf '%s\n' 'Synthetic topic for the health report.' > "$MEMORY_HEALTH_DIRS/synthetic-topic.md"
+bash scripts/cron/memory-health-report.sh
+cat "$MEMORY_HEALTH_OUT_DIR/memory-health-$MEMORY_HEALTH_WEEK.md"
+)
+```
