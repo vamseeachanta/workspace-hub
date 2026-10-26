@@ -261,8 +261,9 @@ def test_inventory_permutation_stability(inventory_truth_table):
     assert baseline["repositories"] == expected
     baseline_json = json.dumps(baseline).encode("utf-8")
     baseline_markdown = module.render_markdown(baseline).encode("utf-8")
-    # All six profile-block permutations exercise each input independently and
-    # together; configured entries are rebuilt as unordered sets.
+    # The 216 loop iterations cover six declared-map and six observed-map
+    # profile-block orders, repeated while configured names are rebuilt as sets.
+    # Distinct configured set iteration orders are not guaranteed.
     orders = tuple(permutations(_PROFILE_CASES))
 
     def ordered_names(names, order):
