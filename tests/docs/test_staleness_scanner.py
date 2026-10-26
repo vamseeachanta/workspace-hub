@@ -63,7 +63,7 @@ class TestDetectsStaleFiles:
     def test_fresh_file_detected_as_fresh(self, tmp_path: Path):
         """A file modified 10 days ago should be FRESH."""
         md_file = tmp_path / "recent.md"
-        md_file.write_text("# Recent doc\n")
+        md_file.write_text("# Recent doc\n", encoding="utf-8", newline="\n")
 
         git_date = _make_date(10)
 
@@ -79,7 +79,7 @@ class TestDetectsStaleFiles:
     def test_stale_file_detected_as_stale(self, tmp_path: Path):
         """A file modified 120 days ago should be STALE."""
         md_file = tmp_path / "old.md"
-        md_file.write_text("# Old doc\n")
+        md_file.write_text("# Old doc\n", encoding="utf-8", newline="\n")
 
         git_date = _make_date(120)
 
@@ -95,7 +95,7 @@ class TestDetectsStaleFiles:
     def test_moderate_file_detected_as_moderate(self, tmp_path: Path):
         """A file modified 50 days ago should be MODERATE."""
         md_file = tmp_path / "moderate.md"
-        md_file.write_text("# Moderate doc\n")
+        md_file.write_text("# Moderate doc\n", encoding="utf-8", newline="\n")
 
         git_date = _make_date(50)
 
@@ -221,7 +221,7 @@ class TestHandlesMissingFiles:
     def test_git_returns_empty_for_untracked(self, tmp_path: Path):
         """If git log returns empty, fall back to content date stamps."""
         md_file = tmp_path / "untracked.md"
-        md_file.write_text("# Untracked\nUpdated: 2026-03-01\n")
+        md_file.write_text("# Untracked\nUpdated: 2026-03-01\n", encoding="utf-8", newline="\n")
 
         with patch.object(
             staleness_scanner,
@@ -249,7 +249,7 @@ def mixed_documents(tmp_path: Path) -> Path:
         "z.md", "a.yaml", "nested/b.yml", "nested/a.md",
         "notes.txt", "config.json", "archive.yaml.bak", "UPPER.YAML",
     ):
-        (tmp_path / relative).write_text("fixture\n")
+        (tmp_path / relative).write_text("fixture\n", encoding="utf-8", newline="\n")
     (tmp_path / "directory.yaml").mkdir()
     return tmp_path
 
@@ -257,8 +257,8 @@ def mixed_documents(tmp_path: Path) -> Path:
 def test_scan_yaml_is_opt_in(mixed_documents: Path):
     """Default discovery retains just the original Markdown file set."""
     expected_markdown = [
-        str(mixed_documents / "nested/a.md"),
-        str(mixed_documents / "z.md"),
+        (mixed_documents / "nested/a.md").as_posix(),
+        (mixed_documents / "z.md").as_posix(),
     ]
     assert staleness_scanner.scan_directory(str(mixed_documents)) == expected_markdown
     assert staleness_scanner.scan_directory(
@@ -266,16 +266,32 @@ def test_scan_yaml_is_opt_in(mixed_documents: Path):
     ) == expected_markdown
     assert staleness_scanner.scan_directory(
         str(mixed_documents), extensions=(".yaml", ".yml")
-    ) == [str(mixed_documents / "a.yaml"), str(mixed_documents / "nested/b.yml")]
+    ) == [(mixed_documents / "a.yaml").as_posix(), (mixed_documents / "nested/b.yml").as_posix()]
+
+
+@pytest.mark.parametrize("suffix", [".md", ".yaml", ".yml"])
+def test_scan_filters_case_insensitive_glob_results(tmp_path: Path, monkeypatch, suffix):
+    """Exact suffix selection also holds when globbing ignores case."""
+    lower = tmp_path / f"lower{suffix}"
+    upper = tmp_path / f"upper{suffix.upper()}"
+    directory = tmp_path / f"directory{suffix}"
+    lower.touch()
+    upper.touch()
+    directory.mkdir()
+    monkeypatch.setattr(Path, "rglob", lambda self, pattern: iter((upper, directory, lower)))
+
+    assert staleness_scanner.scan_directory(
+        str(tmp_path), extensions=(suffix,)
+    ) == [lower.as_posix()]
 
 
 def test_scan_mixed_extensions_is_sorted_unique(mixed_documents: Path):
     """Repeated selectors and input order cannot duplicate or reorder files."""
     expected = [
-        str(mixed_documents / "a.yaml"),
-        str(mixed_documents / "nested/a.md"),
-        str(mixed_documents / "nested/b.yml"),
-        str(mixed_documents / "z.md"),
+        (mixed_documents / "a.yaml").as_posix(),
+        (mixed_documents / "nested/a.md").as_posix(),
+        (mixed_documents / "nested/b.yml").as_posix(),
+        (mixed_documents / "z.md").as_posix(),
     ]
     for extensions in (
         (".yml", ".md", ".yaml", ".md", ".yaml"),
@@ -339,13 +355,13 @@ def test_yaml_fixtures_use_existing_date_precedence_and_report_counts(
     expected = {}
     for name, content, mtime_age, git_date, source, age, status in fixtures:
         path = tmp_path / name
-        path.write_text(content)
+        path.write_text(content, encoding="utf-8", newline="\n")
         timestamp = _make_date(mtime_age).timestamp()
         os.utime(path, (timestamp, timestamp))
-        git_dates[str(path)] = git_date
+        git_dates[path.as_posix()] = git_date
         expected[name] = (source, age, status)
-    (tmp_path / "ignored.txt").write_text("Updated: 2026-01-02\n")
-    (tmp_path / "ignored.md").write_text("Updated: 2026-01-02\n")
+    (tmp_path / "ignored.txt").write_text("Updated: 2026-01-02\n", encoding="utf-8", newline="\n")
+    (tmp_path / "ignored.md").write_text("Updated: 2026-01-02\n", encoding="utf-8", newline="\n")
     monkeypatch.setattr(staleness_scanner, "REPO_ROOT", tmp_path)
     with patch.object(
         staleness_scanner, "get_git_last_modified",

@@ -174,9 +174,9 @@ def classify_file(filepath: str, now: datetime | None = None) -> dict | None:
 
     # Make path relative to repo root if possible
     try:
-        rel_path = str(path.relative_to(REPO_ROOT))
+        rel_path = path.relative_to(REPO_ROOT).as_posix()
     except ValueError:
-        rel_path = str(path)
+        rel_path = path.as_posix()
 
     return {
         "file": rel_path,
@@ -214,10 +214,10 @@ def scan_directory(
         return []
 
     return sorted({
-        str(path)
+        path.as_posix()
         for ext in set(selected)
         for path in dir_path.rglob(f"*{ext}")
-        if path.is_file()
+        if path.suffix in selected and path.is_file()
     })
 
 
@@ -389,8 +389,8 @@ def main() -> int:
 
     # Write dashboard
     DASHBOARD_PATH.parent.mkdir(parents=True, exist_ok=True)
-    DASHBOARD_PATH.write_text(dashboard_md)
-    print(f"\n  Dashboard written to: {DASHBOARD_PATH.relative_to(REPO_ROOT)}")
+    DASHBOARD_PATH.write_text(dashboard_md, encoding="utf-8", newline="\n")
+    print(f"\n  Dashboard written to: {DASHBOARD_PATH.relative_to(REPO_ROOT).as_posix()}")
 
     return 0
 
