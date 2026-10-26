@@ -54,8 +54,42 @@ def compute_confidence(provider: str, issue: dict[str, Any]) -> tuple[float, lis
         score += 0.35
         reasons.append("strong-claude-language-match")
     elif routing_reason == "research/triage/audit language" and provider == "agy":
-        score += 0.35
-        reasons.append("strong-agy-language-match")
+        import re
+
+        title = str(issue.get("title", "")).lower()
+        text = f"{title}\n{issue.get('body', '')}".lower()
+        scout_first = re.match(
+            r"^\s*(?:scout|recon(?:naissance)?|research)[ -]first\b", title
+        ) is not None
+        research_intent = scout_first or re.search(
+            r"\b(?:research|recon|reconnaissance|audit|triage|investigate)\b", text
+        ) is not None
+        mixed_intent = bool(
+            {"implementation", "strategy"}.intersection(issue.get("work_type") or [])
+        ) or re.search(
+            r"\b(?:implement(?:ation|ing|ed)?|fix(?:es|ing)?|cod(?:e|ing)|"
+            r"build(?:ing)?|add(?:ing)?|refactor(?:ing)?|repair(?:ing)?|"
+            r"deploy(?:ment|ing)?|integrat(?:e|ion|ing)|updat(?:e|ing)|"
+            r"patch(?:ing)?|writ(?:e|ing|eback)|creat(?:e|ing)|"
+            r"normaliz(?:e|ing)|prepar(?:e|ing)|cleanup|bounded|artifact|"
+            r"regression|validator|tests?|scripts?|feat(?:ure)?)\b",
+            text,
+        ) is not None
+        ready = issue.get("execution_ready") is True
+        if not ready:
+            reasons.append("research-not-execution-ready")
+        if not research_intent:
+            reasons.append("research-intent-ambiguous")
+        if mixed_intent and not scout_first:
+            reasons.append("mixed-implementation-not-scout-first")
+        if ready and research_intent and (not mixed_intent or scout_first):
+            score += 0.35  # Existing strong language-match weight (Refs #2253).
+            reasons.extend(["strong-agy-language-match", "research-ready"])
+            if scout_first:
+                reasons.append("explicit-scout-first")
+        else:
+            score += 0.10  # Existing weak-heuristic-match weight (Refs #2253).
+            reasons.append("weak-heuristic-match")
     elif routing_reason.startswith("existing "):
         score = 0.0
         reasons.append("already-labeled")
