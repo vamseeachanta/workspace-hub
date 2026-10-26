@@ -10,6 +10,23 @@ engineering readiness, source rights, freshness or answer quality.
 | Revision | Date | Change and reason |
 | --- | --- | --- |
 | Initial | 2026-10-25 | Synthetic source lookup and negative controls are specified to make discovery independently testable. |
+| 1 | 2026-10-26 | Scope, acceptance checks and limits are consolidated in Plan-lite for review. |
+
+## Plan-lite
+
+The pack will cover synthetic source-key and wiki-key discovery, an absent key,
+and a broken source mapping that retains its wiki match. Its two affected paths
+will be `docs/document-intelligence/weekly-review-query-pack.md` and
+`scripts/knowledge/tests/test_weekly_review_query_pack.py`.
+
+Acceptance will require the three pack tests and the two existing tests in
+`scripts/knowledge/tests/test_phase4_tools.py` to pass without failures or skips.
+The checks will execute the documented example against temporary stores and
+assert literal identities, empty results and the retained-wiki mapping gap.
+
+The scope will remain synthetic discovery. It will not establish live weekly-review
+integration, freshness, source qualification, answer quality or general join
+validation. The remaining questions below will stay explicitly unanswered.
 
 ## Questions and answer contract
 
