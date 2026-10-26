@@ -12,6 +12,8 @@ import json
 import os
 from pathlib import Path
 import socket
+import stat
+from types import SimpleNamespace
 import subprocess
 import sys
 
@@ -106,7 +108,7 @@ def test_inventory_never_changes_input_bytes(tmp_path):
 
 @pytest.mark.parametrize("kind", ["file-link", "directory-link", "broken-link", "hard-link",
                                  "fifo", "socket", "excluded-link", "excluded-fifo"])
-def test_manifest_rejects_links_and_special_files(tmp_path, kind):
+def test_manifest_rejects_links_and_special_files(tmp_path, kind, monkeypatch):
     root = tree(tmp_path / "bundle", ["abc.txt"])
     suspect = root / "suspect"
     sock = None
@@ -122,7 +124,8 @@ def test_manifest_rejects_links_and_special_files(tmp_path, kind):
         os.mkfifo(suspect)
     else:
         sock = socket.socket(socket.AF_UNIX)
-        sock.bind(str(suspect))
+        monkeypatch.chdir(root)
+        sock.bind(suspect.name)
     try:
         with pytest.raises(bundle.ManifestError):
             bundle.inventory(root, exclude_output=suspect if kind.startswith("excluded") else None)
@@ -264,9 +267,9 @@ def test_cli_subcommands_and_exit_codes(tmp_path):
     assert json.loads(result.stdout) == expected("a.txt")
     assert str(root) not in result.stdout
     before = tmp_path / "before.json"
-    before.write_text(result.stdout, encoding="utf-8")
+    before.write_text(result.stdout, encoding="utf-8", newline="\n")
     after = tmp_path / "after.json"
-    after.write_text(json.dumps(expected("b.txt")), encoding="utf-8")
+    after.write_text(json.dumps(expected("b.txt")), encoding="utf-8", newline="\n")
     noop = cli("compare", before, before)
     assert noop.returncode == 0
     assert json.loads(noop.stdout) == {"added": [], "removed": [], "changed": []}
@@ -289,7 +292,7 @@ def test_cli_subcommands_and_exit_codes(tmp_path):
 @pytest.mark.parametrize("kind", ["link", "fifo", "hard-link", "directory"])
 def test_compare_rejects_non_regular_manifest_inputs(tmp_path, kind):
     good = tmp_path / "good.json"
-    good.write_text(json.dumps(expected()), encoding="utf-8")
+    good.write_text(json.dumps(expected()), encoding="utf-8", newline="\n")
     suspect = tmp_path / "suspect.json"
     if kind == "link":
         suspect.symlink_to(good)
@@ -322,3 +325,85 @@ def test_compare_delimiter_paths():
                                     expected('quote".txt', '雪.txt')) == {
         "added": ['quote".txt'], "removed": ['tab\tline\n.txt'], "changed": [],
     }
+
+
+def test_inventory_deeper_than_python_recursion_limit(tmp_path):
+    root = tmp_path / "bundle"
+    root.mkdir()
+    directories = [root]
+    try:
+        # 1,050 directories exceed Python's default 1,000-frame recursion limit.
+        for _ in range(1050):
+            child = directories[-1] / "d"
+            child.mkdir()
+            directories.append(child)
+        payload = directories[-1] / "abc.txt"
+        payload.write_bytes(b"abc")
+        result = cli("inventory", root)
+        assert result.returncode == 0
+        assert result.stderr == ""
+        assert json.loads(result.stdout) == expected("d/" * 1050 + "abc.txt")
+        assert payload.read_bytes() == b"abc"
+    finally:
+        # Iterative fixture cleanup also avoids recursive test-runner removal.
+        payload = directories[-1] / "abc.txt"
+        if payload.exists():
+            payload.unlink()
+        for directory in reversed(directories):
+            directory.rmdir()
+
+
+@pytest.mark.parametrize("fail", [False, True])
+def test_inventory_closes_directory_descriptors(tmp_path, monkeypatch, fail):
+    root = tree(tmp_path / "bundle", ["a/b/abc.txt", "z/abc.txt"])
+    active = set()
+    open_directory = bundle._open_directory
+    close = os.close
+    file_digest = bundle._file_digest
+
+    def tracked_open(*args, **kwargs):
+        descriptor = open_directory(*args, **kwargs)
+        active.add(descriptor)
+        return descriptor
+
+    def tracked_close(descriptor):
+        active.remove(descriptor)
+        close(descriptor)
+
+    def checked_digest(*args):
+        if fail:
+            raise OSError("synthetic read failure")
+        return file_digest(*args)
+
+    monkeypatch.setattr(bundle, "_open_directory", tracked_open)
+    monkeypatch.setattr(bundle.os, "close", tracked_close)
+    monkeypatch.setattr(bundle, "_file_digest", checked_digest)
+    if fail:
+        with pytest.raises(bundle.ManifestError, match="bundle input unavailable"):
+            bundle.inventory(root)
+    else:
+        assert bundle.inventory(root) == expected("a/b/abc.txt", "z/abc.txt")
+    assert active == set()
+
+
+@pytest.mark.parametrize("boundary", ["root", "child"])
+def test_inventory_rejects_directory_reparse_points(tmp_path, monkeypatch, boundary):
+    root = tree(tmp_path / "bundle", ["sub/abc.txt"])
+    reparse = SimpleNamespace(st_mode=stat.S_IFDIR,
+                              st_file_attributes=stat.FILE_ATTRIBUTE_REPARSE_POINT)
+    if boundary == "root":
+        lstat = Path.lstat
+
+        def observed_lstat(path, *args, **kwargs):
+            return reparse if path == root else lstat(path, *args, **kwargs)
+
+        monkeypatch.setattr(Path, "lstat", observed_lstat)
+    else:
+        observed_stat = os.stat
+
+        def observed_child(path, *args, **kwargs):
+            return reparse if path == "sub" else observed_stat(path, *args, **kwargs)
+
+        monkeypatch.setattr(bundle.os, "stat", observed_child)
+    with pytest.raises(bundle.ManifestError, match="links"):
+        bundle.inventory(root)

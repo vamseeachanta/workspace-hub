@@ -147,11 +147,17 @@ def _directory(path):
     try:
         for part in path.parts[1:]:
             current /= part
-            if not stat.S_ISDIR(current.lstat().st_mode):
+            info = current.lstat()
+            if not stat.S_ISDIR(info.st_mode) or _reparse_point(info):
                 raise ManifestError("directory must not contain links or special files")
     except OSError as exc:
         raise ManifestError("directory input unavailable") from exc
     return path
+
+
+def _reparse_point(info):
+    # Windows junctions and other reparse points are links at the boundary.
+    return bool(getattr(info, "st_file_attributes", 0) & stat.FILE_ATTRIBUTE_REPARSE_POINT)
 
 
 def _open_directory(path, *, dir_fd=None):
@@ -204,33 +210,40 @@ def inventory(root, *, exclude_output=None):
     excluded = Path(exclude_output).absolute() if exclude_output is not None else None
     entries = []
 
-    def visit(directory_fd, prefix):
-        with os.scandir(directory_fd) as listing:
-            names = sorted(entry.name for entry in listing)
-        for name in names:
+    # Each frame owns a directory descriptor and its remaining sorted names.
+    # Retain ancestors for no-follow, descriptor-relative descent without using
+    # Python call frames; siblings are opened only when visited.
+    stack = []
+    try:
+        stack.append((_open_directory(root), "", None))
+        while stack:
+            directory_fd, prefix, names = stack[-1]
+            if names is None:
+                with os.scandir(directory_fd) as listing:
+                    names = iter(sorted(entry.name for entry in listing))
+                stack[-1] = (directory_fd, prefix, names)
+            name = next(names, None)
+            if name is None:
+                stack.pop()
+                os.close(directory_fd)
+                continue
             relative = _relative_path(f"{prefix}/{name}" if prefix else name)
             info = os.stat(name, dir_fd=directory_fd, follow_symlinks=False)
+            if _reparse_point(info):
+                raise ManifestError("directory must not contain links or special files")
             if stat.S_ISDIR(info.st_mode):
-                child_fd = _open_directory(name, dir_fd=directory_fd)
-                try:
-                    visit(child_fd, relative)
-                finally:
-                    os.close(child_fd)
+                stack.append((_open_directory(name, dir_fd=directory_fd), relative, None))
             else:
                 _regular(info)  # Even an excluded output cannot hide a link or FIFO.
                 if root / relative == excluded:
                     continue
                 size, digest = _file_digest(directory_fd, name)
                 entries.append({"path": relative, "size": size, "sha256": digest})
-
-    try:
-        root_fd = _open_directory(root)
-        try:
-            visit(root_fd, "")
-        finally:
-            os.close(root_fd)
     except OSError as exc:
         raise ManifestError("bundle input unavailable") from exc
+    finally:
+        for directory_fd, _, _ in reversed(stack):
+            os.close(directory_fd)
     return {"schema": SCHEMA, "files": sorted(entries, key=lambda entry: entry["path"])}
 
 
