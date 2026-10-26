@@ -1,6 +1,6 @@
 """Execute the terminal report against synthetic cron data, without host probes.
 
-Count oracles follow the issue's example: two jobs with counters two and three
+Independent synthetic hand calculation: two jobs with counters two and three
 have five historical completions (2 + 3 = 5), regardless of current state.
 """
 
