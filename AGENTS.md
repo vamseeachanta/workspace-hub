@@ -2,7 +2,7 @@
 > Shared identity and authority: config/agents/SHARED_SOUL.md; provider runtimes inherit this contract.
 ## Retrieval and planning
 - Consult docs/ and existing code; track meaningful work with GitHub issues and proportionate plans.
-- Authority routing: docs/standards/HARD-STOP-POLICY.md and config/agents/SHARED_SOUL.md; guide: docs/plans/README.md; readiness: docs/standards/MODEL_RELEASE_READINESS_CONTRACT.md and docs/standards/MODEL_RELEASE_UPGRADE_PLAYBOOK.md.
+- Authority routing: docs/standards/HARD-STOP-POLICY.md and config/agents/SHARED_SOUL.md; guide: docs/plans/README.md; readiness: docs/standards/MODEL_RELEASE_READINESS_CONTRACT.md and docs/standards/MODEL_RELEASE_UPGRADE_PLAYBOOK.md; smoke schema/interface: docs/standards/MODEL_RELEASE_SMOKE_RUNNER_CONTRACT.md.
 ## Required controls
 - The user's task request authorizes implementation within scope; no separate plan approval is required, including substantial work.
 - Verify standing authorization or task scope; consequential actions require explicit authorization for the action and destination.

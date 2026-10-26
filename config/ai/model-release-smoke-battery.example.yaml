@@ -1,0 +1,12 @@
+# Synthetic structure-only example; references are illustrative, not supplied files.
+# Format identifiers are declared in MODEL_RELEASE_SMOKE_RUNNER_CONTRACT.md.
+schema_version: 1
+battery_id: synthetic-smoke
+fixture_root: synthetic-fixtures
+execution:
+  interface: adapter-v1
+  adapter_id: synthetic-adapter
+cases:
+  - case_id: synthetic-case
+    input_ref: inputs/request.txt
+    expected_result_ref: expected/response.json
