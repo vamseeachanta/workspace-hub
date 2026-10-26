@@ -3,6 +3,7 @@
 
 Default behavior is dry-run: generate a candidate list and optional report.
 Use --apply for conservative live labeling of only high-confidence issues.
+Add --comment to explain newly applied labels in bounded single-writer use.
 """
 from __future__ import annotations
 
@@ -127,19 +128,95 @@ def gh_issue_edit_add_label(issue_number: int, label: str) -> None:
     )
 
 
-def build_payload(work_queue: dict[str, Any], apply_mode: bool, limit: int) -> dict[str, Any]:
+def gh_issue_records(issue_number: int, resource: str, field: str) -> list[str]:
+    """Read every page and reject incomplete deduplication evidence."""
+    result = subprocess.run(
+        ["gh", "api", "--paginate", "--slurp",
+         f"repos/{{owner}}/{{repo}}/issues/{issue_number}/{resource}"],
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    pages = json.loads(result.stdout)
+    if not isinstance(pages, list) or not pages or any(
+        not isinstance(page, list) for page in pages
+    ):
+        raise ValueError(f"Incomplete issue {resource} read")
+    records = []
+    for page in pages:
+        for record in page:
+            if not isinstance(record, dict) or not isinstance(record.get(field), str):
+                raise ValueError(f"Incomplete issue {resource} read")
+            records.append(record[field])
+    return records
+
+
+def explanation_marker(issue_number: int, label: str) -> str:
+    """Keep the issue and label binding stable across runs in this repository."""
+    return f"<!-- provider-autolabel:issue={issue_number};label={label} -->"
+
+
+def render_explanation(item: dict[str, Any]) -> str:
+    """Publish fixed routing evidence only, without arbitrary queue metadata."""
+    item = public_issue_view(item)
+    # These are the strong language matches in compute_confidence, not free prose.
+    routing_reason = item.get("routing_reason")
+    if routing_reason not in (
+        "implementation/test/fix language",
+        "strategy/workflow/architecture language",
+        "research/triage/audit language",
+    ):
+        routing_reason = "unavailable"
+    provider_priority = item.get("provider_priority")
+    if provider_priority not in ("highest", "high"):
+        provider_priority = "unavailable"
+    ready = "yes" if item.get("execution_ready") else "no"
+    return (
+        f"Automated provider label applied: `{item['target_label']}`.\n\n"
+        f"- Confidence: {item['confidence']:.2f}\n"
+        f"- Routing reason: {routing_reason}\n"
+        f"- Provider priority: {provider_priority}\n"
+        f"- Execution-ready: {ready}\n\n"
+        f"{explanation_marker(item['number'], item['target_label'])}"
+    )
+
+
+def gh_issue_comment(issue_number: int, body: str) -> None:
+    subprocess.run(
+        ["gh", "issue", "comment", str(issue_number), "--body", body],
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+
+
+def build_payload(
+    work_queue: dict[str, Any], apply_mode: bool, limit: int, comment: bool = False,
+) -> dict[str, Any]:
     candidates = collect_candidates(work_queue)
     eligible = [item for item in candidates if item["eligible"]]
     applied: list[dict[str, Any]] = []
 
     if apply_mode:
         for item in eligible[:limit]:
+            labels = gh_issue_records(item["number"], "labels", "name")
+            if has_provider_label({"labels": labels}):
+                continue
+            if comment:
+                bodies = gh_issue_records(item["number"], "comments", "body")
+                marker = explanation_marker(item["number"], item["target_label"])
+                if any(marker in body for body in bodies):
+                    continue
+            # Complete all deduplication reads before either write. A label
+            # failure raises here, so it can never produce an explanation.
             gh_issue_edit_add_label(item["number"], item["target_label"])
             applied.append({
                 "number": item["number"],
                 "target_label": item["target_label"],
                 "confidence": item["confidence"],
             })
+            if comment:
+                gh_issue_comment(item["number"], render_explanation(item))
 
     return {
         "generated_at": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
@@ -157,12 +234,18 @@ def main() -> None:
     parser.add_argument("--output-json", default=str(DEFAULT_JSON_OUT))
     parser.add_argument("--output-md", default=str(DEFAULT_MD_OUT))
     parser.add_argument("--apply", action="store_true")
+    parser.add_argument(
+        "--comment", action="store_true",
+        help="explain newly applied labels (requires --apply; single writer only)",
+    )
     parser.add_argument("--limit", type=int, default=3, help="max labels to apply in one run")
     parser.add_argument("--json-only", action="store_true")
     args = parser.parse_args()
 
     work_queue = load_json(Path(args.work_queue))
-    payload = build_payload(work_queue, apply_mode=args.apply, limit=args.limit)
+    payload = build_payload(
+        work_queue, apply_mode=args.apply, limit=args.limit, comment=args.comment,
+    )
 
     json_out = Path(args.output_json)
     json_out.parent.mkdir(parents=True, exist_ok=True)
