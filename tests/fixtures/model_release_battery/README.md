@@ -14,6 +14,26 @@ fixture conformance, not a model's readiness or real workflow performance.
 | Revision | Date | Change and reason |
 |---|---|---|
 | Initial | 2026-10-25 | Add synthetic tasks and reproducible offline semantics to establish a bounded comparison basis. |
+| 1 | 2026-10-26 | Add the bounded implementation plan and acceptance checks so the comparison scope is explicit. |
+
+## Plan-lite
+
+The fixture scope will remain `tests/fixtures/model_release_battery/`, with one
+synthetic task and one rubric per class. Conformance will be checked by
+`tests/model_release/test_fixture_corpus.py` together with the existing
+`tests/docs/test_workspace_hub_model_release_readiness.py` suite, using the
+command in [Validation and limits](#validation-and-limits).
+
+Acceptance will require both suites to pass, including layout, independent rule
+projections, hand-counted scores, response normalization, malformed-response
+rejection, budget limits and truncation identity checks. Markdown register,
+secret, publication-text and diff whitespace checks will also be required.
+
+The bounded risks will remain synthetic coverage and textual rule drift: one
+task per class will not establish model readiness, and source-excerpt agreement
+will not establish semantic sufficiency. The drift policy will govern baseline
+refreshes. Production runners, live comparisons and CI integration will remain
+outside this scope.
 
 ## Layout and scope
 
