@@ -132,7 +132,11 @@ def test_plan_summary_is_order_independent(tool, mixed_inventory):
             totals = summary["repos"].setdefault(repo, {"count": 0, "bytes": 0})
             totals["count"] += 1
             totals["bytes"] += len(content)
+    expected_entry_count = sum(
+        classification[0] != "ignored" for classification in expected.values()
+    )
     original = tool.build_plan(manifest, config)
+    assert len(original["entries"]) == expected_entry_count
     keyed = {entry["source"]: entry for entry in original["entries"]}
     classifications = {
         source: (entry["status"], entry["repo"]) for source, entry in keyed.items()
@@ -153,6 +157,7 @@ def test_plan_summary_is_order_independent(tool, mixed_inventory):
         permuted = deepcopy(manifest)
         permuted["files"] = deepcopy(ordering)
         plan = tool.build_plan(permuted, config)
+        assert len(plan["entries"]) == expected_entry_count
         assert {entry["source"]: entry for entry in plan["entries"]} == keyed
         assert plan["summary"] == summary
 
