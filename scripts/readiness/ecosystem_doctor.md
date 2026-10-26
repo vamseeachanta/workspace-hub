@@ -5,6 +5,27 @@ snapshot. It does not import or execute the inventory producer or the installati
 doctor. Collection, repair, subprocesses, network access and provider tools are
 outside this adapter. The broader doctor issue remains open for other adapters.
 
+## Plan-lite
+
+- Scope: normalize aggregate claims from an existing repository inventory
+  snapshot and render versioned human and JSON results without running probes.
+- Affected files: `scripts/readiness/ecosystem_doctor.py` implements normalization,
+  loading and rendering; `scripts/readiness/ecosystem_doctor.md` defines the
+  schema, count relationships, exit contract and limits;
+  `tests/readiness/test_ecosystem_doctor.py` checks the adapter contract.
+- Acceptance checks: run
+  `uv run --no-project --with pytest python -m pytest tests/readiness/test_ecosystem_doctor.py -q -rA -p no:cacheprovider`
+  with a scratch test directory. Confirm independent expected counts, rejection
+  of invalid evidence, agreement between output formats, deterministic rendering,
+  sanitized diagnostics, allowlisted fields and unchanged source bytes. Run the
+  applicable model-ID sourcing, engineering-register, whitespace, secret and
+  public-text checks, and confirm the changed files are neither ignored nor
+  LFS tracked.
+- Exclusions: collection, repair, live readiness, provenance, freshness, row
+  consistency, input-size bounds, executing probes, timeout observations and the
+  remaining adapters. Healthy repository coverage still leaves the overall
+  result unavailable.
+
 ## Schema
 
 The result schema starts at `schema_version: 1`, defined by this document. A result
