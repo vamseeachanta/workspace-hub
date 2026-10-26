@@ -10,7 +10,7 @@ from __future__ import annotations
 
 import os
 from collections.abc import Callable
-from pathlib import Path
+from pathlib import Path, PurePath, PurePosixPath, PureWindowsPath
 
 import pytest
 import yaml
@@ -18,15 +18,21 @@ import yaml
 from workspace_hub.workstations.resolver import WorkstationPathResolver
 
 
-@pytest.fixture
-def roots(tmp_path: Path) -> dict[str, str]:
+def fixture_roots(tmp_path: PurePath) -> dict[str, str]:
+    # Strip the native anchor before adding the synthetic drive and aliases.
+    drive_tail = PurePosixPath("/", *tmp_path.relative_to(tmp_path.anchor).parts, "drive")
     return {
         "registered": (tmp_path / "registered").as_posix(),
         "alias": (tmp_path / "alias").as_posix(),
         "external": (tmp_path / "external").as_posix(),
-        "drive_tail": (tmp_path / "drive").as_posix(),
-        "drive_backslashes": str(tmp_path / "drive").replace("/", "\\"),
+        "drive_tail": drive_tail.as_posix(),
+        "drive_backslashes": drive_tail.as_posix().replace("/", "\\"),
     }
+
+
+@pytest.fixture
+def roots(tmp_path: Path, request: pytest.FixtureRequest) -> dict[str, str]:
+    return fixture_roots(getattr(request, "param", tmp_path))
 
 
 @pytest.fixture
@@ -54,6 +60,7 @@ def rewrite(
             }
         ),
         encoding="utf-8",
+        newline="\n",
     )
     resolver = WorkstationPathResolver.from_registry_path(registry_path)
     current_root = tmp_path / "unrelated-checkout"
@@ -239,3 +246,13 @@ def test_drive_letter_casing_and_separator_variants(
 ) -> None:
     """Drive aliases normalize to a literal suffix without asserting access."""
     assert rewrite(raw.format_map(roots)) == expected
+
+
+@pytest.mark.parametrize("roots", [PureWindowsPath("Q:/temporary/coherence")], indirect=True)
+@pytest.mark.parametrize("alias", ["r", "R"])
+def test_native_windows_temporary_root_drive_aliases(
+    alias: str, roots: dict[str, str], rewrite: Callable[[str | None], str]
+) -> None:
+    """Native temporary drives must not become part of synthetic drive tails."""
+    assert rewrite(f"/{alias}{roots['drive_tail']}/docs/report.md") == "docs/report.md"
+    assert roots["drive_tail"] == "/temporary/coherence/drive"
