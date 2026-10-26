@@ -1,10 +1,58 @@
 """Literal verdict regressions for issue #1736.
 
-Alias inventory: issue #1736, "Observed Verdict Strings".
-Canonical-label basis: scripts/review/normalize-verdicts.sh, explicit-header
-mapping and severity rules; tests/review/test_verdict_normalization.py provides
-existing REQUEST_CHANGES, changes-requested, REVISION NEEDED and No findings
-examples. Expected labels below are independent literals, never parser output.
+Independent expectation specification (compatibility scope)
+=========================================================
+This specification defines the expected results for this test module. It is a
+reviewable test oracle, authored separately from the parser's control flow;
+no expectation is obtained by running or inspecting a parser branch at runtime.
+Issue #1736 supplies the alias inventory, not the mappings. The mappings below
+specify the retained compatibility behavior, not the proposed enum migration.
+The independently specified examples here are the basis for the literal cases.
+
+C1: Alias expectations (complete review, no severity tags)
+    Input spelling(s)                                      Expected label
+    APPROVE, APPROVED, PASS, No findings, no_findings         APPROVE
+    MINOR                                                   MINOR
+    MAJOR, REVISION NEEDED, REVISE, REJECT                    MAJOR
+    changes-requested, changes_requested                     MAJOR
+    Request changes, REQUEST_CHANGES, REQUEST-CHANGES         MAJOR
+    CONDITIONAL_PASS, CONDITIONAL-PASS, CONDITIONAL PASS      CONDITIONAL_PASS
+    NO_OUTPUT, NO OUTPUT                                    NO_OUTPUT
+    PENDING                                                 ERROR
+    PENDING expresses no completed decision, so a complete review with only
+    that label is an error; it must not be accepted as an approval or new enum.
+    REJECT retains MAJOR compatibility rather than introducing a new label.
+
+C2: Header forms
+    Verdict: aPpRoVe; Verdict = APPROVE; ### Verdict: APPROVE;
+    **Verdict:** APPROVE; ### **Verdict:** APPROVE -> APPROVE individually.
+    Case and these presentation forms must not alter the decision.
+
+C3: Header precedence
+    An explicit header determines the label despite verdict words in prose.
+    Example: ### Verdict: MINOR with conditional_pass in the summary -> MINOR.
+    Apply C1 equally to APPROVE, MINOR, MAJOR, REJECT, CONDITIONAL_PASS and
+    NO_OUTPUT when the surrounding prose mentions competing verdict words.
+
+C4: Templates
+    A pipe-separated option list is not a decision. A complete review containing
+    only Verdict: APPROVE | MINOR | MAJOR -> INVALID_OUTPUT (also for the
+    REQUEST_CHANGES/REJECT options and Markdown header/bold presentation).
+    A real APPROVE header before or after an option list -> APPROVE.
+
+C5: Repeated headers
+    The final non-template explicit decision supersedes earlier decisions:
+    REJECT then APPROVE -> APPROVE; APPROVE then REJECT -> MAJOR.
+
+C6: Empty input
+    Empty or whitespace-only text -> ERROR because no decision is supplied.
+
+C7: Severity
+    For REQUEST_CHANGES, REQUEST-CHANGES and Request changes, P1 or P2 -> MAJOR;
+    P3 alone -> MINOR; P3 plus P1/P2 -> MAJOR regardless of tag case; an untagged
+    finding -> MAJOR. Blocking findings must dominate presentation findings.
+
+Each case cites C1-C7 below; all expected labels remain literal constants.
 """
 from __future__ import annotations
 
@@ -19,9 +67,7 @@ NORMALIZER = (
     / "scripts" / "review" / "normalize-verdicts.sh"
 )
 
-# Every distinct alias in the issue's observed list. PENDING has no supported
-# mapping: a complete review passes structural validation and falls back to ERROR
-# (normalize-verdicts.sh, final validation branch). It is not a new enum member.
+# Oracle: C1; every distinct alias in the issue's observed list.
 ISSUE_VERDICT_ALIASES = (
     ("APPROVE", "APPROVE"),
     ("MINOR", "MINOR"),
@@ -36,8 +82,7 @@ ISSUE_VERDICT_ALIASES = (
     ("PENDING", "ERROR"),
 )
 
-# Remaining spellings from normalize-verdicts.sh's explicit-header case table.
-# In particular, REJECT remains MAJOR; this suite does not migrate the vocabulary.
+# Oracle: C1; remaining compatibility spellings, including REJECT -> MAJOR.
 COMPATIBILITY_ALIASES = (
     ("REQUEST-CHANGES", "MAJOR"),
     ("REJECT", "MAJOR"),
@@ -73,7 +118,7 @@ def _review(
 
 def _normalize(tmp_path: Path, review: str) -> str:
     review_file = tmp_path / "review.md"
-    review_file.write_text(review, encoding="utf-8")
+    review_file.write_text(review, encoding="utf-8", newline="\n")
     result = subprocess.run(
         ["bash", str(NORMALIZER), str(review_file)],
         check=True,
@@ -94,7 +139,7 @@ def test_documented_compatibility_alias_matrix(tmp_path, alias, expected):
     assert _normalize(tmp_path, _review(f"### Verdict: {alias}")) == f"{expected}\n"
 
 
-# Header forms follow normalize-verdicts.sh's explicit-header expression.
+# Oracle: C2; presentation and case must preserve the explicit decision.
 @pytest.mark.parametrize(
     "header",
     (
@@ -109,8 +154,7 @@ def test_explicit_header_forms(tmp_path, header):
     assert _normalize(tmp_path, _review(header)) == "APPROVE\n"
 
 
-# The explicit-header precedence contract applies even when fallback keywords
-# such as conditional_pass occur in prose before and after the selected verdict.
+# Oracle: C3; prose before and after a header must not override its decision.
 @pytest.mark.parametrize(
     "alias, expected",
     (
@@ -133,8 +177,7 @@ def test_explicit_verdict_beats_body_mentions(tmp_path, alias, expected):
     assert _normalize(tmp_path, review) == f"{expected}\n"
 
 
-# Pipe-separated templates are ignored by both the explicit-header selector and
-# structural validator. A complete template alone is INVALID_OUTPUT, not a vote.
+# Oracle: C4; option lists alone supply no decision; real headers still count.
 @pytest.mark.parametrize(
     "headers, expected",
     (
@@ -155,7 +198,7 @@ def test_template_options_do_not_count_as_verdict(tmp_path, headers, expected):
     assert _normalize(tmp_path, _review(headers)) == f"{expected}\n"
 
 
-# The selector retains the last explicit non-template verdict header.
+# Oracle: C5; a later real decision supersedes an earlier one.
 @pytest.mark.parametrize(
     "headers, expected",
     (
@@ -167,15 +210,13 @@ def test_last_explicit_header_wins(tmp_path, headers, expected):
     assert _normalize(tmp_path, _review(headers)) == f"{expected}\n"
 
 
-# Empty/whitespace input is ERROR in normalize-verdicts.sh's initial guard.
+# Oracle: C6; absent decisions must produce ERROR.
 @pytest.mark.parametrize("review", ("", " \t\n\n"))
 def test_empty_input_is_error(tmp_path, review):
     assert _normalize(tmp_path, review) == "ERROR\n"
 
 
-# P1/P2 map to MAJOR, P3 alone to MINOR; P1/P2 take precedence over P3.
-# Source: normalize-verdicts.sh's severity branch, also exercised for P1/P2 in
-# test_verdict_normalization.py. Untagged requests retain the MAJOR default.
+# Oracle: C7; blocking severity dominates presentation severity.
 @pytest.mark.parametrize("alias", ("REQUEST_CHANGES", "REQUEST-CHANGES", "Request changes"))
 @pytest.mark.parametrize(
     "issues, expected",
