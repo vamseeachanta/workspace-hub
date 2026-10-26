@@ -276,3 +276,66 @@ def test_collect_candidates_marks_only_high_confidence_items_eligible() -> None:
     assert 1 in eligible_numbers
     assert 2 in eligible_numbers
     assert 3 not in eligible_numbers
+
+
+@pytest.mark.parametrize("action", [
+    "remove obsolete adapters", "removes obsolete adapters",
+    "removing obsolete adapters", "removed obsolete adapters",
+    "migrate the database", "migrates the database",
+    "migrating the database", "migrated the database",
+    "migration of the database",
+])
+def test_queue_summary_removal_and_migration_are_ineligible(action):
+    queue_path = MODULE_PATH.with_name("provider-work-queue.py")
+    queue_spec = importlib.util.spec_from_file_location("provider_queue", queue_path)
+    queue_module = importlib.util.module_from_spec(queue_spec)
+    queue_spec.loader.exec_module(queue_module)
+    summary = queue_module.issue_summary({
+        "number": 1,
+        "title": f"Research options then {action}",
+        "labels": [{"name": "status:plan-approved"}, {"name": "priority:high"}],
+        "url": "",
+        "updatedAt": "2026-10-26T00:00:00Z",
+    }, {"recommendations": [
+        {"provider": "agy", "priority": "highest", "status": "available"},
+    ]})
+    assert summary["suggested_provider"] == "agy"
+    assert summary["work_type"] == ["research"]
+    candidate = research_candidate(summary)
+    # Ready .35 + priority .15 + weak .10 + highest .10 = .70.
+    assert candidate["confidence"] == 0.70
+    assert candidate["eligible"] is False
+    assert "mixed-implementation-not-scout-first" in candidate["confidence_reasons"]
+
+
+def test_report_writes_use_utf8_lf_and_posix_diagnostics(monkeypatch, capsys):
+    writes = []
+    class OutputPath:
+        def __init__(self, value):
+            self.value = value
+            self.parent = self
+
+        def mkdir(self, **kwargs):
+            pass
+
+        def write_text(self, text, *, encoding, newline=None):
+            writes.append((encoding, newline))
+
+        def as_posix(self):
+            return "output/report"
+
+        def __str__(self):
+            return "unexpected separator"
+
+    monkeypatch.setattr(module, "Path", OutputPath)
+    monkeypatch.setattr(module, "load_json", lambda path: {})
+    monkeypatch.setattr(module, "build_payload", lambda *args, **kwargs: {
+        "generated_at": "2026-10-26", "apply_mode": False,
+        "threshold": 0.90, "candidates": [], "applied": [],
+    })
+    monkeypatch.setattr(module.sys, "argv", ["provider-autolabel"])
+    module.main()
+    assert writes == [("utf-8", "\n"), ("utf-8", "\n")]
+    assert capsys.readouterr().out.splitlines() == [
+        "JSON → output/report", "Markdown → output/report",
+    ]

@@ -70,6 +70,7 @@ def compute_confidence(provider: str, issue: dict[str, Any]) -> tuple[float, lis
             r"\b(?:implement(?:ation|ing|ed)?|fix(?:es|ing)?|cod(?:e|ing)|"
             r"build(?:ing)?|add(?:ing)?|refactor(?:ing)?|repair(?:ing)?|"
             r"deploy(?:ment|ing)?|integrat(?:e|ion|ing)|updat(?:e|ing)|"
+            r"remov(?:e[ds]?|ing)|migrat(?:e[ds]?|ing|ion)|"
             r"patch(?:ing)?|writ(?:e|ing|eback)|creat(?:e|ing)|"
             r"normaliz(?:e|ing)|prepar(?:e|ing)|cleanup|bounded|artifact|"
             r"regression|validator|tests?|scripts?|feat(?:ure)?)\b",
@@ -200,14 +201,14 @@ def main() -> None:
 
     json_out = Path(args.output_json)
     json_out.parent.mkdir(parents=True, exist_ok=True)
-    json_out.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
-    print(f"JSON → {json_out}")
+    json_out.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8", newline="\n")
+    print(f"JSON → {json_out.as_posix()}")
 
     if not args.json_only:
         md_out = Path(args.output_md)
         md_out.parent.mkdir(parents=True, exist_ok=True)
-        md_out.write_text(render_markdown(payload) + "\n", encoding="utf-8")
-        print(f"Markdown → {md_out}")
+        md_out.write_text(render_markdown(payload) + "\n", encoding="utf-8", newline="\n")
+        print(f"Markdown → {md_out.as_posix()}")
 
     if payload["applied"]:
         print("Applied labels:")
