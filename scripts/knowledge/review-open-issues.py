@@ -168,11 +168,16 @@ ACTIVE_ROUTING_RE = re.compile(
     r"^\s*(?:[-*]\s+)?(?P<source_role>parent|umbrella|child)(?: issue)?\s+"
     r"#(?P<source>\d+)\s+(?:(?:still|currently)\s+)?"
     r"(?:routes (?:work )?through|depends on|is blocked by|awaits)\s+"
-    r"(?P<target_role>parent|umbrella|child)(?: issue)?\s+#(?P<target>\d+)\b",
+    r"(?P<target_role>parent|umbrella|child)(?: issue)?\s+#(?P<target>\d+)\s*\.?\s*",
     re.IGNORECASE,
 )
-NEGATED_OVERLAP_RE = re.compile(
-    r"\b(?:not|no)\s+(?:duplicates?|overlap)\b|\bdistinct\s+(?:scope|siblings)\b",
+# Only complete affirmative clauses can support a merge recommendation.
+OVERLAP_REFS = r"#\d+(?:(?:\s*,\s*|\s+and\s+)#\d+)+"
+AFFIRMATIVE_OVERLAP_RE = re.compile(
+    rf"(?:duplicate(?: / overlap)? cluster:\s*{OVERLAP_REFS}"
+    r"(?:\s+target (?:the )?same (?:gate|component|scope|paths?))?"
+    rf"|{OVERLAP_REFS}\s+(?:are duplicates|overlap)"
+    rf"|(?:structural )?overlap between {OVERLAP_REFS})\s*\.?\s*",
     re.IGNORECASE,
 )
 
@@ -243,7 +248,7 @@ def _finding(category, recommendation, issues, evidence,
         "recommendation": recommendation,
         "confidence": confidence,
         "issues": sorted(int(issue) for issue in issues),
-        "artifact": str(artifact) if artifact is not None else None,
+        "artifact": Path(artifact).as_posix() if artifact is not None else None,
         "evidence": _snippet(evidence),
     }
 
@@ -259,14 +264,18 @@ def _line_findings_from_overlap_audit(issues, overlap_audit_text):
         lower = line.lower()
         if not refs:
             continue
-        if (
-            len(refs) >= 2
-            and ("duplicate" in lower or "overlap" in lower)
-            and not NEGATED_OVERLAP_RE.search(line)
-            and any(state_by_issue[ref] == "OPEN" for ref in refs)
-        ):
-            findings.append(_finding(
-                "duplicate", "merge", refs, line, confidence="medium"))
+        for clause in re.split(r";|(?<=[.!?])\s+", line):
+            if not AFFIRMATIVE_OVERLAP_RE.fullmatch(clause.strip()):
+                continue
+            clause_refs = [
+                ref for ref in _issue_refs(clause) if ref in state_by_issue
+            ]
+            if len(clause_refs) >= 2 and any(
+                state_by_issue[ref] == "OPEN" for ref in clause_refs
+            ):
+                findings.append(_finding(
+                    "duplicate", "merge", clause_refs, clause,
+                    confidence="medium"))
         if (
             len(refs) == 1
             and state_by_issue[refs[0]] == "OPEN"
@@ -289,7 +298,7 @@ def _active_routing_findings(text, state_by_issue, artifact):
     """
     findings = []
     for sentence in re.split(r"\n|(?<=[.!?])\s+", text):
-        match = ACTIVE_ROUTING_RE.search(sentence)
+        match = ACTIVE_ROUTING_RE.fullmatch(sentence)
         if not match:
             continue
         source = int(match.group("source"))
