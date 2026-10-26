@@ -1,3 +1,11 @@
+"""Resolve workspace paths from registry records.
+
+Records with a canonical ``workspace_root`` may also declare an optional
+``workspace_root_aliases`` list of strings. Aliases use the canonical root's
+platform normalization and component boundaries, with the canonical root matched
+first. Non-list alias fields and non-string or blank entries are ignored.
+"""
+
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -114,14 +122,24 @@ class WorkstationPathResolver:
         root = str(machine.workspace_root or "").strip()
         if not root:
             return ()
-        prefixes = {root, root.rstrip("/\\")}
-        if machine.os.lower() == "windows":
-            normalized = root.replace("\\", "/")
-            prefixes.add(normalized)
-            drive, _, tail = normalized.partition(":/")
-            if drive and tail:
-                prefixes.add(f"/{drive.lower()}/{tail}")
-        return tuple(filter(None, prefixes))
+        roots = [root]
+        aliases = machine.raw.get("workspace_root_aliases", [])
+        if isinstance(aliases, list):
+            roots.extend(
+                alias.strip()
+                for alias in aliases
+                if isinstance(alias, str) and alias.strip()
+            )
+        prefixes: list[str] = []
+        for root in roots:
+            prefixes.extend((root, root.rstrip("/\\")))
+            if machine.os.lower() == "windows":
+                normalized = root.replace("\\", "/")
+                prefixes.append(normalized)
+                drive, _, tail = normalized.partition(":/")
+                if drive and tail:
+                    prefixes.append(f"/{drive.lower()}/{tail}")
+        return tuple(dict.fromkeys(filter(None, prefixes)))
 
     @staticmethod
     def _normalize_for_matching(value: str) -> str:
