@@ -1,5 +1,6 @@
 from datetime import datetime, timezone
 from pathlib import Path
+import os
 import subprocess
 
 import pytest
@@ -125,3 +126,57 @@ def test_lightweight_and_cutoff_boundaries(git_tags, tagger, commit, fresh):
 def test_malformed_or_unavailable_dates_skip_tag(git_tags, tagger, commit):
     git_tags({"v1.0.0": (tagger, commit), "v1.1.0": ("", RECENT)})
     assert [s.payload["tag"] for s in _detect()] == ["v1.1.0"]
+
+
+@pytest.mark.parametrize("commit_date,tagger_date,fresh", [
+    (OLD, RECENT, True),
+    (RECENT, OLD, False),
+    (RECENT, None, True),
+    (OLD, None, False),
+])
+def test_release_dates_with_real_git(tmp_path, monkeypatch, commit_date,
+                                     tagger_date, fresh):
+    """Exercise Git output parsing with independent commit and tagger dates."""
+    # Confine every Git operation to the disposable repository, including when
+    # callers export Git bindings or have signing, hooks or templates configured.
+    for key in tuple(os.environ):
+        if key.startswith("GIT_"):
+            monkeypatch.delenv(key)
+    monkeypatch.setenv("GIT_CONFIG_NOSYSTEM", "1")
+    monkeypatch.setenv("GIT_CONFIG_GLOBAL", os.devnull)
+    for role in ("AUTHOR", "COMMITTER"):
+        monkeypatch.setenv(f"GIT_{role}_NAME", "Test fixture")
+        monkeypatch.setenv(f"GIT_{role}_EMAIL", "fixture" + "@" + "example.invalid")
+        monkeypatch.setenv(f"GIT_{role}_DATE", commit_date)
+
+    repo = tmp_path / "release-repo"
+    repo.mkdir()
+
+    def git(*args):
+        return subprocess.run(
+            ["git", "-C", str(repo), *args],
+            capture_output=True, text=True, check=True, timeout=30,
+        ).stdout.strip()
+
+    git("init", "--quiet", "--template=")
+    assert Path(git("rev-parse", "--show-toplevel")) == repo.resolve()
+    git("commit", "--quiet", "--allow-empty", "-m", "release fixture")
+    if tagger_date is None:
+        git("tag", "v1.0.0")
+    else:
+        monkeypatch.setenv("GIT_COMMITTER_DATE", tagger_date)
+        git("tag", "--annotate", "v1.0.0", "-m", "release fixture")
+    assert git("cat-file", "-t", "refs/tags/v1.0.0") == (
+        "commit" if tagger_date is None else "tag"
+    )
+    assert git("log", "-1", "--format=%cI", "v1.0.0") == commit_date
+
+    state = RepoState(last_sync_utc="2026-04-01T00:00:00Z",
+                      last_commit_sha="", last_seen_tags=[])
+    found = detect_release_tag("demo", repo, state)
+    assert [signal.payload["tag"] for signal in found] == (
+        ["v1.0.0"] if fresh else []
+    )
+    if fresh:
+        assert found[0].dedupe_key == "release:demo:v1.0.0"
+        assert "release fixture" in found[0].body
