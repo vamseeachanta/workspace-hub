@@ -8,22 +8,22 @@
           "resets_at": null
         },
         "five_hour": {
-          "pct": 3.0,
-          "resets_at": "2026-10-26T16:00:00.233437+00:00"
+          "pct": 7.0,
+          "resets_at": "2026-10-26T16:00:00.020839+00:00"
         },
         "iguana_necktie": {
           "pct": 6.0,
           "resets_at": "2026-11-05T07:59:00+00:00"
         },
         "seven_day": {
-          "pct": 41.0,
-          "resets_at": "2026-10-31T14:00:00.233459+00:00"
+          "pct": 42.0,
+          "resets_at": "2026-10-31T14:00:00.020862+00:00"
         }
       },
-      "captured_at": "2026-10-26T12:13:15+00:00",
+      "captured_at": "2026-10-26T13:13:39+00:00",
       "fingerprint": "78d7e174f2d1",
-      "five_hour_pct": 3.0,
-      "headroom_pct": 59.0,
+      "five_hour_pct": 7.0,
+      "headroom_pct": 58.0,
       "holder": "owner",
       "hosts": [
         "ace-linux-1",
@@ -40,8 +40,8 @@
       "sampled_on": "gpu-claw",
       "source": "oauth-api",
       "tier": "default_claude_max_20x",
-      "week_pct": 41.0,
-      "week_resets_at": "2026-10-31T14:00:00.233459+00:00"
+      "week_pct": 42.0,
+      "week_resets_at": "2026-10-31T14:00:00.020862+00:00"
     },
     "claude-professional": {
       "access": "limited",
@@ -57,10 +57,10 @@
     "codex-owner": {
       "access": "full",
       "buckets": null,
-      "captured_at": "2026-10-26T12:13:15+00:00",
+      "captured_at": "2026-10-26T13:13:49+00:00",
       "fingerprint": "78d7e174f2d1",
       "five_hour_pct": null,
-      "headroom_pct": 87.0,
+      "headroom_pct": 85.0,
       "holder": "owner",
       "hosts": [
         "ace-linux-1",
@@ -76,10 +76,10 @@
         "fleet-collector",
         "gpu-claw"
       ],
-      "sampled_on": "gpu-claw",
+      "sampled_on": "fleet-collector",
       "source": "app-server-live",
       "tier": "pro",
-      "week_pct": 13,
+      "week_pct": 15,
       "week_resets_at": "2026-11-02T06:08:18+00:00"
     },
     "codex-professional": {
@@ -94,7 +94,7 @@
       "source": "unavailable"
     }
   },
-  "generated_at": "2026-10-26T12:13:34+00:00",
+  "generated_at": "2026-10-26T13:13:54+00:00",
   "generated_by": "fleet-collector collect_account_usage_fleet",
   "hosts": {
     "ace-linux-1": {
@@ -102,19 +102,22 @@
         "claude": "claude-owner",
         "codex": "codex-owner"
       },
-      "captured_at": "2026-10-26T12:13:11+00:00",
+      "captured_at": "2026-10-26T13:13:36+00:00",
       "fingerprints": {
         "claude": "78d7e174f2d1",
         "codex": "78d7e174f2d1"
       },
-      "reachable": true
+      "reachable": true,
+      "unavailable": {
+        "claude": "access token expired; a Claude Code session on this host will refresh it"
+      }
     },
     "ace-linux-2": {
       "accounts": {
         "claude": "claude-owner",
         "codex": "codex-owner"
       },
-      "captured_at": "2026-10-26T12:13:14+00:00",
+      "captured_at": "2026-10-26T13:13:38+00:00",
       "fingerprints": {
         "claude": "78d7e174f2d1",
         "codex": "78d7e174f2d1"
@@ -144,7 +147,7 @@
       "accounts": {
         "codex": "codex-owner"
       },
-      "captured_at": "2026-10-26T12:13:26+00:00",
+      "captured_at": "2026-10-26T13:13:49+00:00",
       "fingerprints": {
         "codex": "78d7e174f2d1"
       },
@@ -158,7 +161,7 @@
         "claude": "claude-owner",
         "codex": "codex-owner"
       },
-      "captured_at": "2026-10-26T12:13:15+00:00",
+      "captured_at": "2026-10-26T13:13:39+00:00",
       "fingerprints": {
         "claude": "78d7e174f2d1",
         "codex": "78d7e174f2d1"
@@ -173,7 +176,7 @@
   "recommendation": {
     "claude": {
       "account": "claude-owner",
-      "headroom_pct": 59.0,
+      "headroom_pct": 58.0,
       "hosts": [
         "ace-linux-1",
         "ace-linux-2",
@@ -182,7 +185,7 @@
     },
     "codex": {
       "account": "codex-owner",
-      "headroom_pct": 87.0,
+      "headroom_pct": 85.0,
       "hosts": [
         "ace-linux-1",
         "ace-linux-2",
@@ -192,7 +195,5 @@
     }
   },
   "schema_version": 1,
-  "warnings": [
-    "fleet-collector: codex sample's weekly window reset at 2026-09-26T13:42:52+00:00; ignored"
-  ]
+  "warnings": []
 }
