@@ -5,6 +5,18 @@ ecosystem audit sections of logs/orchestrator/README.md and the Canonical
 operator sequence / Provider-specific notes in the portability topic. The short
 rule and topic-file convention come from KNOWLEDGE.md, Session Log Ecosystem /
 Topic Files. Counts, capture dates, and operational output are outside scope.
+
+Plan-lite
+---------
+Scope will remain this single test file and the three guidance surfaces above.
+Acceptance will require three guidance contracts and eight isolated negative
+controls to pass, with the source guidance unchanged. Coverage will remain
+documentation-only; exporters, providers, and audits will not be executed.
+Offline verification will use an external temporary directory:
+
+    uv run --offline --no-project --with pytest python -m pytest \
+        tests/memory/test_session_log_portability_contract.py -q -rA \
+        -p no:cacheprovider --basetemp="$TMPDIR/portability-tests"
 """
 from pathlib import Path
 import re
