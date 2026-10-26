@@ -191,7 +191,17 @@ def test_windows_drive_candidates_are_rejected_on_every_platform(mod, tmp_path, 
     }]
 
 
-@pytest.mark.parametrize("candidate", ["notes:archive", "archive/C:notes", "1:archive", "é:archive"])
+@pytest.mark.parametrize("drive", "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz")
+def test_all_ascii_drive_prefixes_are_rejected(mod, drive):
+    for suffix in ("", "archive", "/archive"):
+        with pytest.raises(ValueError, match="^invalid_candidate_path$"):
+            mod._candidate(f"{drive}:{suffix}")
+
+
+@pytest.mark.parametrize("candidate", [
+    "notes:archive", "archive/C:notes", "1:archive", "é:archive",
+    "0:archive", "Ω:archive", "Ａ:archive", "archive/é:notes",
+])
 def test_repo_relative_colons_are_preserved(mod, candidate):
     assert mod._candidate(candidate) == candidate
 

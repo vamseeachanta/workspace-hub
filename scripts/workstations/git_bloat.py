@@ -12,7 +12,7 @@ import json
 import os
 import subprocess
 import sys
-from pathlib import Path, PureWindowsPath
+from pathlib import Path
 
 # Importing the local metadata helper must not write bytecode to the checkout.
 sys.dont_write_bytecode = True
@@ -78,7 +78,9 @@ def _snapshot(repo: Path, timeout_seconds: int) -> tuple[bytes, bytes, bytes]:
 def _candidate(value: str) -> str:
     # Literal repo-relative paths only: filter patterns are outside this contract.
     path = value.removesuffix("/")
-    if (not path or path.startswith("/") or PureWindowsPath(path).drive or "\\" in path
+    # Only ASCII letters introduce Windows drives; pathlib differs by version.
+    drive = len(path) >= 2 and path[0] in "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz" and path[1] == ":"
+    if (not path or path.startswith("/") or drive or "\\" in path
             or any(part in {"", ".", ".."} for part in path.split("/"))
             or any(ord(char) < 32 or char in "*?[]" for char in path)):
         raise ValueError("invalid_candidate_path")
