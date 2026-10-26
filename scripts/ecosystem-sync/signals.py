@@ -33,6 +33,7 @@ def detect_release_tag(
     """Signal 1: new semver tags not seen before, filtered to non-noise, <90 days old."""
     tags_out = _git(repo_path, "tag", "-l")
     all_tags = [t.strip() for t in tags_out.splitlines() if t.strip()]
+    # Freshness policy: issues/2416 retains the 90-day cutoff.
     cutoff = datetime.now(timezone.utc) - timedelta(days=90)
     signals: list[Signal] = []
     known = set(state.last_seen_tags)
@@ -44,11 +45,16 @@ def detect_release_tag(
             continue
         if not SEMVER_RE.match(tag):
             continue
-        # Check tag age
+        # Annotated releases age from tagging, independently of commit age.
         try:
-            ts_out = _git(repo_path, "log", "-1", "--format=%cI", tag)
-            tag_date = datetime.fromisoformat(ts_out.strip())
-            if tag_date < cutoff:
+            ts_out = _git(
+                repo_path, "for-each-ref", "--format=%(taggerdate:iso-strict)",
+                f"refs/tags/{tag}",
+            ).strip()
+            if not ts_out:  # Lightweight tags have no tagger date.
+                ts_out = _git(repo_path, "log", "-1", "--format=%cI", tag).strip()
+            tag_date = datetime.fromisoformat(ts_out)
+            if tag_date.tzinfo is None or tag_date < cutoff:
                 continue
         except (subprocess.CalledProcessError, ValueError):
             continue
