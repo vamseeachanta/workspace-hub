@@ -45,6 +45,8 @@ def _navigation_text(text: str) -> str:
     lines = []
     fence = None
     for line in text.splitlines():
+        if fence is None and re.match(r"^(?: {4}| {0,3}\t)", line):
+            continue
         marker = re.match(r"^\s*(?P<fence>`{3,}|~{3,})", line)
         if marker:
             token = marker["fence"]
@@ -86,7 +88,12 @@ def _assert_local_link(root: Path, source: str, href: str, *, section=None) -> N
     text = _navigation_text(page.read_text(encoding="utf-8"))
     if section is not None:
         text = _section(text, section)
-    links = re.findall(r"(?<!!)\[[^\]\n]+\]\(([^)\s]+)\)", text)
+    links = []
+    for match in re.finditer(r"(?<!!)\[[^\]\n]+\]\(([^)\s]+)\)", text):
+        prefix = text[:match.start()]
+        # An odd number of backslashes escapes the opening bracket.
+        if (len(prefix) - len(prefix.rstrip("\\"))) % 2 == 0:
+            links.append(match[1])
     assert href in links, f"Missing link in {source}: {href}"
     route = urlsplit(href)
     assert not (route.scheme or route.netloc or route.query), "Expected local route"
@@ -121,9 +128,9 @@ def test_checker_accepts_relative_link_and_local_anchors(tmp_path):
     docs.mkdir()
     (docs / "index.md").write_text(
         "# Index\n[Target](../target.md#local-heading)\n[Here](#index)\n",
-        encoding="utf-8",
+        encoding="utf-8", newline="\n",
     )
-    (tmp_path / "target.md").write_text("## Local heading!\n", encoding="utf-8")
+    (tmp_path / "target.md").write_text("## Local heading!\n", encoding="utf-8", newline="\n")
     _assert_local_link(tmp_path, "docs/index.md", "../target.md#local-heading")
     _assert_local_link(tmp_path, "docs/index.md", "#index")
 
@@ -136,24 +143,30 @@ def test_checker_accepts_relative_link_and_local_anchors(tmp_path):
     "~~~markdown\n[Target](target.md)\n~~~\n",
     "Example: `[Target](target.md)`\n",
     "![Target](target.md)\n",
+    "    [Target](target.md)\n",
+    "\t[Target](target.md)\n",
+    "  \t[Target](target.md)\n",
+    "    ```\n    [Target](target.md)\n    ```\n",
+    r"\[Target](target.md)",
+    r"\\\[Target](target.md)",
 ])
 def test_checker_detects_removed_backlink(tmp_path, text):
-    (tmp_path / "index.md").write_text(text, encoding="utf-8")
-    (tmp_path / "target.md").write_text("# Target\n", encoding="utf-8")
+    (tmp_path / "index.md").write_text(text, encoding="utf-8", newline="\n")
+    (tmp_path / "target.md").write_text("# Target\n", encoding="utf-8", newline="\n")
     with pytest.raises(AssertionError, match="Missing link"):
         _assert_local_link(tmp_path, "index.md", "target.md")
 
 
 def test_checker_detects_nonexistent_local_target(tmp_path):
-    (tmp_path / "index.md").write_text("[Missing](missing.md)\n", encoding="utf-8")
+    (tmp_path / "index.md").write_text("[Missing](missing.md)\n", encoding="utf-8", newline="\n")
     with pytest.raises(AssertionError, match="Missing destination"):
         _assert_local_link(tmp_path, "index.md", "missing.md")
 
 
 @pytest.mark.parametrize("href", ["target.md#absent", "#absent"])
 def test_checker_detects_broken_local_anchor(tmp_path, href):
-    (tmp_path / "index.md").write_text(f"# Index\n[Link]({href})\n", encoding="utf-8")
-    (tmp_path / "target.md").write_text("## Present\n", encoding="utf-8")
+    (tmp_path / "index.md").write_text(f"# Index\n[Link]({href})\n", encoding="utf-8", newline="\n")
+    (tmp_path / "target.md").write_text("## Present\n", encoding="utf-8", newline="\n")
     with pytest.raises(AssertionError, match="Broken local anchor"):
         _assert_local_link(tmp_path, "index.md", href)
 
@@ -162,9 +175,9 @@ def test_checker_detects_reading_order_link_moved_to_another_section(tmp_path):
     (tmp_path / "index.md").write_text(
         "## Reading Order for Newcomers\nNo route.\n"
         "## Architecture\n[Target](target.md)\n",
-        encoding="utf-8",
+        encoding="utf-8", newline="\n",
     )
-    (tmp_path / "target.md").write_text("# Target\n", encoding="utf-8")
+    (tmp_path / "target.md").write_text("# Target\n", encoding="utf-8", newline="\n")
     with pytest.raises(AssertionError, match="Missing link"):
         _assert_local_link(tmp_path, "index.md", "target.md", section="Reading Order for Newcomers")
 
@@ -175,6 +188,20 @@ def test_checker_detects_reading_order_link_moved_to_another_section(tmp_path):
     ("//example.invalid/target.md", "Expected local route"),
 ])
 def test_checker_rejects_routes_outside_local_contract(tmp_path, href, reason):
-    (tmp_path / "index.md").write_text(f"[Link]({href})\n", encoding="utf-8")
+    (tmp_path / "index.md").write_text(f"[Link]({href})\n", encoding="utf-8", newline="\n")
     with pytest.raises(AssertionError, match=reason):
         _assert_local_link(tmp_path, "index.md", href)
+
+
+@pytest.mark.parametrize("text", [
+    "[Target](target.md)\n",
+    "- [Target](target.md)\n",
+    "  - [Target](target.md)\n",
+    "1. [Target](target.md)\n",
+    r"\\[Target](target.md)",
+    "    ```\n\n[Target](target.md)\n",
+])
+def test_checker_accepts_visible_backlink(tmp_path, text):
+    (tmp_path / "index.md").write_text(text, encoding="utf-8", newline="\n")
+    (tmp_path / "target.md").write_text("# Target\n", encoding="utf-8", newline="\n")
+    _assert_local_link(tmp_path, "index.md", "target.md")
