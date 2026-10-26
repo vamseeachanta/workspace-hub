@@ -12,7 +12,7 @@ REPO_ROOT = Path(__file__).parents[2]
 SKILL_PATH = REPO_ROOT / ".claude/skills/workspace-hub/repo-portfolio-steering/SKILL.md"
 COMPUTE_PY = REPO_ROOT / "scripts/skills/repo-portfolio-steering/compute-balance.py"
 
-# Synthetic arithmetic example from issue #2420: one harness item and three
+# Local synthetic arithmetic fixture: one harness item and three
 # engineering items give total 4, harness fraction 1/4 = 0.25 and engineering
 # fraction 3/4 = 0.75. Expected results are hand-calculated, not read from code.
 CATEGORY_TABLE = textwrap.dedent("""\
@@ -145,7 +145,7 @@ def test_harness_threshold_default(tmp_path):
 
 # -- AC-3b: custom harness threshold ------------------------------------------
 
-# Synthetic boundary 0.25 from issue #2420, with thresholds 0.05 below/above.
+# Local synthetic boundary 0.25, with thresholds 0.05 below/above.
 @pytest.mark.parametrize("threshold, expected", [
     (0.20, "OVER-INVESTED"),
     (0.25, "HEALTHY"),
