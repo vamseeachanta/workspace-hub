@@ -396,6 +396,65 @@ def test_history_rejects_inconsistent_records(tmp_path, field, value):
     assert path.read_text(encoding="utf-8") == original
 
 
+def test_history_normalizes_offset_across_date_boundary(tmp_path):
+    """Synthetic counts: 3 passes + 1 failure = 4; 3/4 * 100 = 75.0%."""
+    import json
+
+    dashboard = _import_dashboard()
+    path = tmp_path / "history.json"
+    packages = {"example": {"passed": 3, "failed": 1, "skipped": 0, "errors": 0, "total": 4}}
+    # Synthetic instant: Jan 1 00:15 minus offset 02:30 = Dec 31 21:45
+    # in the preceding year, so the literal UTC expectation is independent.
+    timestamp = datetime.fromisoformat("2026-01-01T00:15:00+02:30")
+    expected = [{"timestamp": "2025-12-31T21:45:00+00:00", "total": 4,
+                 "passed": 3, "failed": 1, "skipped": 0, "errors": 0, "pass_rate": 75.0}]
+
+    assert dashboard.append_history(path, packages, timestamp) == expected
+    assert json.loads(path.read_text(encoding="utf-8")) == expected
+
+
+def test_naive_timestamp_preserves_history(tmp_path, monkeypatch):
+    """Synthetic seed: 3 + 1 = 4 outcomes; 3/4 * 100 = 75.0%."""
+    dashboard = _import_dashboard()
+    path = tmp_path / "history.json"
+    # Arbitrary UTC seed date; whitespace makes byte preservation observable.
+    original = (b'[\n {"timestamp": "2026-01-01T00:00:00+00:00", "total": 4, '
+                b'"passed": 3, "failed": 1, "skipped": 0, "errors": 0, "pass_rate": 75.0}\n]\n')
+    path.write_bytes(original)
+    replace = MagicMock()
+    # Same arbitrary seed date without timezone information must be rejected.
+    timestamp = datetime.fromisoformat("2026-01-01T00:00:00")
+    with monkeypatch.context() as local:
+        local.setattr(dashboard.os, "replace", replace)
+        with pytest.raises(ValueError, match="timezone"):
+            dashboard.append_history(path, {}, timestamp)
+
+    replace.assert_not_called()
+    assert path.read_bytes() == original
+
+
+def test_fsync_failure_preserves_history(tmp_path, monkeypatch):
+    """Synthetic seed: 3 + 1 = 4 outcomes; 3/4 * 100 = 75.0%."""
+    dashboard = _import_dashboard()
+    path = tmp_path / "history.json"
+    # Arbitrary UTC seed date; whitespace makes byte preservation observable.
+    original = (b'[\n {"timestamp": "2026-01-01T00:00:00+00:00", "total": 4, '
+                b'"passed": 3, "failed": 1, "skipped": 0, "errors": 0, "pass_rate": 75.0}\n]\n')
+    path.write_bytes(original)
+    fsync = MagicMock(side_effect=OSError("simulated fsync failure"))
+    replace = MagicMock()
+    timestamp = datetime.fromisoformat("2026-01-01T00:00:00+00:00")
+    with monkeypatch.context() as local:
+        local.setattr(dashboard.os, "fsync", fsync)
+        local.setattr(dashboard.os, "replace", replace)
+        with pytest.raises(OSError, match="simulated fsync failure"):
+            dashboard.append_history(path, {}, timestamp)
+
+    fsync.assert_called_once()
+    replace.assert_not_called()
+    assert path.read_bytes() == original
+
+
 def test_history_failed_replace_preserves_previous_bytes(tmp_path):
     """Atomic replacement failure must not truncate earlier observations."""
     dashboard = _import_dashboard()
