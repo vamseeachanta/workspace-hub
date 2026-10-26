@@ -1,10 +1,7 @@
-from pathlib import Path
 from scripts.ecosystem_sync.signals import (
     detect_readme_capability_diff, _extract_section, _hash_section
 )
 from scripts.ecosystem_sync.state import RepoState
-
-FIXTURE = Path(__file__).parent / "fixtures" / "repos" / "repo-with-readme"
 
 
 def test_extract_section_basic():
@@ -23,21 +20,21 @@ def test_hash_section_ignores_trailing_whitespace():
     assert a == b
 
 
-def test_diff_fires_on_changed_hash():
+def test_diff_fires_on_changed_hash(readme_repo):
     state = RepoState(
         last_sync_utc="2026-04-20T00:00:00Z",
         last_commit_sha="",
         last_readme_hash={"Capabilities": "sha256:wrong"},
     )
     sigs = detect_readme_capability_diff(
-        "digitalmodel", FIXTURE, state, sections=["Capabilities"]
+        "digitalmodel", readme_repo, state, sections=["Capabilities"]
     )
     assert len(sigs) == 1
     assert sigs[0].kind == "readme-diff"
 
 
-def test_diff_no_fire_when_hash_matches():
-    md = (FIXTURE / "README.md").read_text()
+def test_diff_no_fire_when_hash_matches(readme_repo):
+    md = (readme_repo / "README.md").read_text()
     current = _hash_section(_extract_section(md, "Capabilities"))
     state = RepoState(
         last_sync_utc="2026-04-20T00:00:00Z",
@@ -45,16 +42,16 @@ def test_diff_no_fire_when_hash_matches():
         last_readme_hash={"Capabilities": current},
     )
     sigs = detect_readme_capability_diff(
-        "digitalmodel", FIXTURE, state, sections=["Capabilities"]
+        "digitalmodel", readme_repo, state, sections=["Capabilities"]
     )
     assert sigs == []
 
 
-def test_missing_section_is_silent():
+def test_missing_section_is_silent(readme_repo):
     state = RepoState(
         last_sync_utc="2026-04-20T00:00:00Z", last_commit_sha="",
     )
     sigs = detect_readme_capability_diff(
-        "digitalmodel", FIXTURE, state, sections=["Nonexistent Heading"]
+        "digitalmodel", readme_repo, state, sections=["Nonexistent Heading"]
     )
     assert sigs == []
