@@ -10,6 +10,7 @@ Tests cover:
   - Markdown output format (table, top-10, entry points, mermaid)
 """
 
+import ast
 import json
 import os
 import sys
@@ -28,12 +29,12 @@ def sample_repo(tmp_path):
     """Create a minimal repo structure with src/ layout for testing."""
     src = tmp_path / "src" / "mypackage"
     src.mkdir(parents=True)
-    (src / "__init__.py").write_text("")
+    (src / "__init__.py").write_text("", encoding="utf-8", newline="\n")
 
     # Package alpha: 3 files, 2 classes, 3 functions, has __all__, has tests
     alpha = src / "alpha"
     alpha.mkdir(parents=True)
-    (alpha / "__init__.py").write_text('__all__ = ["AlphaEngine", "run_alpha"]\n')
+    (alpha / "__init__.py").write_text('__all__ = ["AlphaEngine", "run_alpha"]\n', encoding="utf-8", newline="\n")
     (alpha / "engine.py").write_text(textwrap.dedent("""\
         \"\"\"Alpha engine module.\"\"\"
 
@@ -46,41 +47,41 @@ def sample_repo(tmp_path):
 
         def run_alpha():
             pass
-    """))
+    """), encoding="utf-8", newline="\n")
     (alpha / "utils.py").write_text(textwrap.dedent("""\
         def helper_one():
             pass
 
         def helper_two():
             pass
-    """))
+    """), encoding="utf-8", newline="\n")
 
     # Package beta: 1 file, 0 classes, 1 function, no __all__, no tests
     beta = src / "beta"
     beta.mkdir(parents=True)
-    (beta / "__init__.py").write_text("")
+    (beta / "__init__.py").write_text("", encoding="utf-8", newline="\n")
     (beta / "core.py").write_text(textwrap.dedent("""\
         def beta_main():
             pass
-    """))
+    """), encoding="utf-8", newline="\n")
 
     # Package gamma: empty (GAP) — only __init__.py
     gamma = src / "gamma"
     gamma.mkdir(parents=True)
-    (gamma / "__init__.py").write_text("")
+    (gamma / "__init__.py").write_text("", encoding="utf-8", newline="\n")
 
     # Tests for alpha only
     tests_dir = tmp_path / "tests" / "alpha"
     tests_dir.mkdir(parents=True)
-    (tests_dir / "test_engine.py").write_text("def test_alpha(): pass\n")
+    (tests_dir / "test_engine.py").write_text("def test_alpha(): pass\n", encoding="utf-8", newline="\n")
 
     # Entry points — __main__.py inside the top-level namespace package
-    (src / "__main__.py").write_text("print('hello')\n")
+    (src / "__main__.py").write_text("print('hello')\n", encoding="utf-8", newline="\n")
 
     # Scripts directory
     scripts = tmp_path / "scripts"
     scripts.mkdir()
-    (scripts / "run_pipeline.py").write_text("#!/usr/bin/env python\n")
+    (scripts / "run_pipeline.py").write_text("#!/usr/bin/env python\n", encoding="utf-8", newline="\n")
 
     return tmp_path
 
@@ -90,8 +91,8 @@ def sample_repo_no_src(tmp_path):
     """Create a repo without src/ layout — packages at root."""
     pkg = tmp_path / "mypkg"
     pkg.mkdir()
-    (pkg / "__init__.py").write_text('__all__ = ["Thing"]\n')
-    (pkg / "thing.py").write_text("class Thing:\n    pass\n")
+    (pkg / "__init__.py").write_text('__all__ = ["Thing"]\n', encoding="utf-8", newline="\n")
+    (pkg / "thing.py").write_text("class Thing:\n    pass\n", encoding="utf-8", newline="\n")
     return tmp_path
 
 
@@ -272,7 +273,7 @@ def api_repo(tmp_path):
         from .definitions import Widget as PublicWidget, _private
         import collections as utilities
         __all__ = ["utilities", "_private", "PublicWidget", "PublicWidget"]
-    '''))
+    '''), encoding="utf-8", newline="\n")
     (package / "definitions.py").write_text(textwrap.dedent('''\
         from collections import Counter
         CONSTANT = "not a definition"
@@ -293,11 +294,12 @@ def api_repo(tmp_path):
 
         def _private():
             pass
-    '''))
-    (package / "empty.py").write_text('__all__ = []\ndef hidden(): pass\n')
+    '''), encoding="utf-8", newline="\n")
+    (package / "empty.py").write_text('__all__ = []\ndef hidden(): pass\n', encoding="utf-8", newline="\n")
     (package / "tuple_exports.py").write_text(
         '__all__: tuple = ("_kept", "Visible")\n'
-        'class Visible: pass\ndef _kept(): pass\ndef omitted(): pass\n'
+        'class Visible: pass\ndef _kept(): pass\ndef omitted(): pass\n',
+        encoding="utf-8", newline="\n",
     )
     return tmp_path
 
@@ -353,7 +355,7 @@ def test_default_public_definitions(api_repo):
 def test_dynamic_exports_unresolved(tmp_path, source):
     package = tmp_path / "example"
     package.mkdir()
-    (package / "__init__.py").write_text(source + '\nclass Visible: pass\n')
+    (package / "__init__.py").write_text(source + '\nclass Visible: pass\n', encoding="utf-8", newline="\n")
     module = api_by_path(tmp_path)["example/__init__.py"]
     assert module["status"] == "unresolved"
     assert module["exports"] is None
@@ -361,7 +363,7 @@ def test_dynamic_exports_unresolved(tmp_path, source):
 
 
 def test_invalid_source_unresolved(api_repo):
-    (api_repo / "example" / "broken.py").write_text('def broken(:\n')
+    (api_repo / "example" / "broken.py").write_text('def broken(:\n', encoding="utf-8", newline="\n")
     modules = api_by_path(api_repo)
     assert modules["example/broken.py"] == {
         "path": "example/broken.py",
@@ -378,11 +380,11 @@ def test_scan_does_not_import(api_repo):
     sentinel = api_repo / "executed"
     (api_repo / "example" / "sentinel.py").write_text(textwrap.dedent('''\
         from pathlib import Path
-        Path(__file__).parents[1].joinpath("executed").write_text("imported")
+        Path(__file__).parents[1].joinpath("executed").write_text("imported", encoding="utf-8", newline="\\n")
         raise RuntimeError("scanned code must not execute")
         __all__ = ["safe"]
         def safe(): pass
-    '''))
+    '''), encoding="utf-8", newline="\n")
     report = scan_repo(api_repo)
     assert "`safe`" in report
     assert not sentinel.exists()
@@ -391,7 +393,7 @@ def test_scan_does_not_import(api_repo):
 def test_api_order_and_report_are_deterministic(api_repo):
     from repo_architecture_scanner import discover_packages, scan_repo
 
-    (api_repo / "example" / "z_dynamic.py").write_text('__all__ = compute()\n')
+    (api_repo / "example" / "z_dynamic.py").write_text('__all__ = compute()\n', encoding="utf-8", newline="\n")
     first = discover_packages(api_repo)
     assert first == discover_packages(api_repo)
     package, = first
@@ -415,10 +417,10 @@ def test_scan_excludes_linked_sources(tmp_path):
     repo.mkdir()
     outside = tmp_path / "other"
     outside.mkdir()
-    (outside / "__init__.py").write_text('class Outside: pass\n')
+    (outside / "__init__.py").write_text('class Outside: pass\n', encoding="utf-8", newline="\n")
     package = repo / "example"
     package.mkdir()
-    (package / "__init__.py").write_text('class Local: pass\n')
+    (package / "__init__.py").write_text('class Local: pass\n', encoding="utf-8", newline="\n")
     (package / "linked.py").symlink_to(outside / "__init__.py")
     (repo / "linked").symlink_to(outside, target_is_directory=True)
     packages = discover_packages(repo)
@@ -454,7 +456,8 @@ def test_legacy_counts_are_preserved(api_repo):
 
 def test_last_literal_assignment_wins(api_repo):
     (api_repo / "example" / "__init__.py").write_text(
-        '__all__ = ["old"]\n__all__ = ("current",)\n'
+        '__all__ = ["old"]\n__all__ = ("current",)\n',
+        encoding="utf-8", newline="\n",
     )
     module = api_by_path(api_repo)["example/__init__.py"]
     assert module["status"] == "literal"
@@ -468,7 +471,7 @@ def test_comments_and_nested_bindings_do_not_declare_exports(api_repo):
             __all__ = ["local_only"]
         class Container:
             __all__ = ["class_only"]
-    '''))
+    '''), encoding="utf-8", newline="\n")
     module = api_by_path(api_repo)["example/__init__.py"]
     assert module["status"] == "default"
     assert module["exports"] == ["Container", "visible"]
@@ -497,11 +500,11 @@ def test_nested_checkouts_are_not_scanned(api_repo, git_marker):
     nested.mkdir()
     marker = nested / ".git"
     if git_marker == "file":
-        marker.write_text("synthetic checkout marker")
+        marker.write_text("synthetic checkout marker", encoding="utf-8", newline="\n")
     else:
         marker.mkdir()
-    (nested / "__init__.py").write_text('class Outside: pass\n')
-    (nested / "__main__.py").write_text('raise RuntimeError("not executed")\n')
+    (nested / "__init__.py").write_text('class Outside: pass\n', encoding="utf-8", newline="\n")
+    (nested / "__main__.py").write_text('raise RuntimeError("not executed")\n', encoding="utf-8", newline="\n")
     assert "Outside" not in scan_repo(api_repo)
     assert "other_checkout" not in scan_repo(api_repo)
 
@@ -522,11 +525,90 @@ def test_special_roots_do_not_enter_nested_checkouts(tmp_path, root_name):
     root = tmp_path / root_name
     package = root / "example"
     package.mkdir(parents=True)
-    (root / ".git").write_text("synthetic checkout marker")
-    (root / "run.py").write_text("raise RuntimeError('not executed')\n")
-    (package / "__init__.py").write_text("class Outside: pass\n")
+    (root / ".git").write_text("synthetic checkout marker", encoding="utf-8", newline="\n")
+    (root / "run.py").write_text("raise RuntimeError('not executed')\n", encoding="utf-8", newline="\n")
+    (package / "__init__.py").write_text("class Outside: pass\n", encoding="utf-8", newline="\n")
     other = root / "another"
     other.mkdir()
-    (other / "__init__.py").write_text("")
+    (other / "__init__.py").write_text("", encoding="utf-8", newline="\n")
     assert discover_packages(tmp_path) == []
     assert "run.py" not in scan_repo(tmp_path)
+
+
+STRING_BINDINGS = [
+    'try:\n    pass\nexcept ValueError as __all__:\n    pass',
+    'match value:\n    case __all__:\n        pass',
+    'match value:\n    case [*__all__]:\n        pass',
+    'match value:\n    case {"key": item, **__all__}:\n        pass',
+    'match value:\n    case [item] as __all__:\n        pass',
+]
+
+
+@pytest.mark.parametrize("binding", STRING_BINDINGS)
+@pytest.mark.parametrize("prefix", ['', '__all__ = ["Visible"]\n'])
+def test_string_export_bindings_unresolved(tmp_path, binding, prefix):
+    from repo_architecture_scanner import _public_api
+
+    assert _public_api(prefix + binding, "example.py") == {
+        "path": "example.py", "exports": None,
+        "status": "unresolved", "reason": "dynamic __all__",
+    }
+
+
+@pytest.mark.parametrize("binding", STRING_BINDINGS)
+@pytest.mark.parametrize("scope", ['def local():', 'async def local():', 'class Local:'])
+def test_local_string_bindings_preserve_module_exports(binding, scope):
+    from repo_architecture_scanner import _public_api
+
+    source = '__all__ = ["Visible"]\n' + scope + '\n' + textwrap.indent(binding, '    ')
+    assert _public_api(source, "example.py") == {
+        "path": "example.py", "exports": ["Visible"],
+        "status": "literal", "reason": None,
+    }
+
+
+@pytest.mark.parametrize("relative", ["src", "scripts", "example", "example/nested"])
+def test_directory_junctions_are_excluded(tmp_path, monkeypatch, relative):
+    from repo_architecture_scanner import scan_repo
+
+    target = tmp_path / relative
+    target.mkdir(parents=True)
+    (target / "__init__.py").write_text("class JunctionOnly: pass\n", encoding="utf-8", newline="\n")
+    (target / "__main__.py").write_text("", encoding="utf-8", newline="\n")
+    if relative == "example/nested":
+        (target.parent / "__init__.py").write_text("", encoding="utf-8", newline="\n")
+    monkeypatch.setattr(Path, "is_junction", lambda path: path == target, raising=False)
+    report = scan_repo(tmp_path)
+    assert "JunctionOnly" not in report
+    assert relative + "/__main__.py" not in report
+
+
+def test_text_io_explicit_utf8_and_lf():
+    import repo_architecture_scanner as scanner
+
+    for path in (Path(scanner.__file__), Path(__file__)):
+        tree = ast.parse(path.read_text(encoding="utf-8"))
+        calls = [node for node in ast.walk(tree) if isinstance(node, ast.Call)]
+        for call in calls:
+            if not isinstance(call.func, ast.Attribute):
+                continue
+            if call.func.attr not in {"read_text", "write_text"}:
+                continue
+            keywords = {kw.arg: kw.value for kw in call.keywords}
+            assert ast.literal_eval(keywords["encoding"]) == "utf-8"
+            if call.func.attr == "write_text":
+                assert ast.literal_eval(keywords["newline"]) == "\n"
+
+
+def test_report_written_as_utf8_lf(tmp_path):
+    from repo_architecture_scanner import scan_repo
+
+    package = tmp_path / "example"
+    package.mkdir()
+    (package / "__init__.py").write_text('class Café: pass\n', encoding="utf-8", newline="\n")
+    output = tmp_path / "reports"
+    report = scan_repo(tmp_path, output)
+    payload = (output / (tmp_path.name + "-architecture.md")).read_bytes()
+    assert payload == report.encode("utf-8")
+    assert b"\r\n" not in payload
+    assert "Café" in report

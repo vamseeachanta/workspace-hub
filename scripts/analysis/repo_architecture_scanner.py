@@ -22,12 +22,17 @@ from pathlib import Path
 from typing import Any
 
 
+def _is_link(path: Path) -> bool:
+    """Treat directory junctions as links on runtimes that expose them."""
+    return path.is_symlink() or getattr(path, "is_junction", lambda: False)()
+
+
 def _python_files(root: Path):
     """Yield sorted source paths without following links or nested checkouts."""
-    if root.is_symlink():
+    if _is_link(root):
         return
     for path in sorted(root.iterdir()):
-        if path.is_symlink():
+        if _is_link(path):
             continue
         if path.is_dir():
             if path.name != ".git" and not (path / ".git").exists():
@@ -41,6 +46,11 @@ def _export_references(node: ast.AST):
     if isinstance(node, ast.Name) and node.id == "__all__":
         yield node
     elif isinstance(node, ast.alias) and (node.asname or node.name) == "__all__":
+        yield node
+    elif isinstance(node, (ast.ExceptHandler, ast.MatchAs, ast.MatchStar)):
+        if node.name == "__all__":
+            yield node
+    elif isinstance(node, ast.MatchMapping) and node.rest == "__all__":
         yield node
     scoped = isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef))
     if scoped and node.name == "__all__":
@@ -130,18 +140,18 @@ def discover_packages(repo_path: Path) -> list[dict[str, Any]]:
 
     # Determine where packages live
     src_dir = repo_path / "src"
-    if src_dir.is_symlink() or (src_dir / ".git").exists():
+    if _is_link(src_dir) or (src_dir / ".git").exists():
         return []
     if src_dir.is_dir():
         # In src layout, look one level deeper if there's a single namespace package
         subdirs = [d for d in src_dir.iterdir()
                    if d.is_dir()
-                   and not d.is_symlink()
+                   and not _is_link(d)
                    and not (d / ".git").exists()
                    and not d.name.startswith((".", "_"))
                    and not d.name.endswith((".egg-info", ".dist-info"))]
         if (len(subdirs) == 1 and (subdirs[0] / "__init__.py").exists()
-                and not (subdirs[0] / "__init__.py").is_symlink()):
+                and not _is_link(subdirs[0] / "__init__.py")):
             # Single namespace package — scan its children as the top-level packages
             search_root = subdirs[0]
         else:
@@ -152,7 +162,7 @@ def discover_packages(repo_path: Path) -> list[dict[str, Any]]:
     # Find test directories
     tests_root = repo_path / "tests"
     test_dirs = set()
-    if (tests_root.is_dir() and not tests_root.is_symlink()
+    if (tests_root.is_dir() and not _is_link(tests_root)
             and not (tests_root / ".git").exists()):
         for d in tests_root.iterdir():
             if d.is_dir() and not d.name.startswith("."):
@@ -162,11 +172,11 @@ def discover_packages(repo_path: Path) -> list[dict[str, Any]]:
     for entry in sorted(search_root.iterdir()):
         if not entry.is_dir():
             continue
-        if entry.is_symlink() or (entry / ".git").exists():
+        if _is_link(entry) or (entry / ".git").exists():
             continue
         if entry.name.startswith((".", "_")):
             continue
-        if not (entry / "__init__.py").exists() or (entry / "__init__.py").is_symlink():
+        if not (entry / "__init__.py").exists() or _is_link(entry / "__init__.py"):
             continue
 
         # Count .py files
@@ -180,7 +190,7 @@ def discover_packages(repo_path: Path) -> list[dict[str, Any]]:
         for pyf in py_files:
             relative_path = pyf.relative_to(repo_path).as_posix()
             try:
-                content = pyf.read_text(errors="replace")
+                content = pyf.read_text(errors="replace", encoding="utf-8")
             except (OSError, UnicodeDecodeError):
                 api.append({"path": relative_path, "exports": None,
                             "status": "unresolved", "reason": "unreadable source"})
@@ -197,7 +207,7 @@ def discover_packages(repo_path: Path) -> list[dict[str, Any]]:
         has_all = False
         if init_file.exists():
             try:
-                init_content = init_file.read_text(errors="replace")
+                init_content = init_file.read_text(errors="replace", encoding="utf-8")
                 has_all = "__all__" in init_content
             except (OSError, UnicodeDecodeError):
                 pass
@@ -207,7 +217,7 @@ def discover_packages(repo_path: Path) -> list[dict[str, Any]]:
 
         packages.append({
             "name": entry.name,
-            "path": str(entry),
+            "path": entry.as_posix(),
             "py_files": py_file_count,
             "classes": class_count,
             "functions": func_count,
@@ -236,28 +246,28 @@ def find_entry_points(repo_path: Path) -> list[str]:
             continue
         if not _skip_venv(main_file):
             try:
-                entry_points.append(str(main_file.relative_to(repo_path)))
+                entry_points.append(main_file.relative_to(repo_path).as_posix())
             except ValueError:
-                entry_points.append(str(main_file))
+                entry_points.append(main_file.as_posix())
 
     # Find scripts/*.py (top-level only, skip deep legacy trees)
     scripts_dir = repo_path / "scripts"
-    if (scripts_dir.is_dir() and not scripts_dir.is_symlink()
+    if (scripts_dir.is_dir() and not _is_link(scripts_dir)
             and not (scripts_dir / ".git").exists()):
         for script in sorted(scripts_dir.glob("*.py")):
-            if not script.is_symlink() and not _skip_venv(script):
+            if not _is_link(script) and not _skip_venv(script):
                 try:
-                    entry_points.append(str(script.relative_to(repo_path)))
+                    entry_points.append(script.relative_to(repo_path).as_posix())
                 except ValueError:
-                    entry_points.append(str(script))
+                    entry_points.append(script.as_posix())
 
     # Check pyproject.toml for [project.scripts]
     pyproject = repo_path / "pyproject.toml"
-    if pyproject.exists() and not pyproject.is_symlink():
+    if pyproject.exists() and not _is_link(pyproject):
         try:
-            content = pyproject.read_text(errors="replace")
+            content = pyproject.read_text(errors="replace", encoding="utf-8")
             if "[project.scripts]" in content:
-                entry_points.append(f"{pyproject} [project.scripts]")
+                entry_points.append(f"{pyproject.as_posix()} [project.scripts]")
         except (OSError, UnicodeDecodeError):
             pass
 
@@ -385,9 +395,9 @@ def scan_repo(repo_path: Path, output_dir: Path | None = None) -> str:
     # Extract CLI commands from pyproject.toml if present
     cli_commands: list[str] = []
     pyproject = repo_path / "pyproject.toml"
-    if pyproject.exists() and not pyproject.is_symlink():
+    if pyproject.exists() and not _is_link(pyproject):
         try:
-            content = pyproject.read_text(errors="replace")
+            content = pyproject.read_text(errors="replace", encoding="utf-8")
             in_scripts = False
             for line in content.splitlines():
                 if line.strip() == "[project.scripts]":
@@ -409,8 +419,8 @@ def scan_repo(repo_path: Path, output_dir: Path | None = None) -> str:
         output_dir = Path(output_dir)
         output_dir.mkdir(parents=True, exist_ok=True)
         out_file = output_dir / f"{repo_name}-architecture.md"
-        out_file.write_text(md)
-        print(f"Written: {out_file}")
+        out_file.write_text(md, encoding="utf-8", newline="\n")
+        print(f"Written: {out_file.as_posix()}")
 
     return md
 
@@ -425,7 +435,7 @@ def main():
 
     repo = Path(args.repo_path)
     if not repo.is_dir():
-        print(f"Error: {repo} is not a directory", file=sys.stderr)
+        print(f"Error: {repo.as_posix()} is not a directory", file=sys.stderr)
         sys.exit(1)
 
     output_dir = Path(args.output_dir) if args.output_dir else Path("docs/architecture")
