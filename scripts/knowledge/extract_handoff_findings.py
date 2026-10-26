@@ -19,9 +19,9 @@ FINDING_HEADINGS = (
     "finding", "lesson", "decision", "discover", "open item",
     "key technical", "pattern", "outcome", "what was completed",
 )
-HEADING = re.compile(r"^ {0,3}(#{1,6})[ \t]+(.*?)(?:[ \t]+#+)?[ \t]*$")
+HEADING = re.compile(r"^ {0,3}(#{1,6})(?:[ \t]+(.*?)(?:[ \t]+#+)?)?[ \t]*$")
 FENCE = re.compile(r"^ {0,3}(`{3,}|~{3,})(.*)$")
-BULLET = re.compile(r"^( *)(?:[-+*]|[0-9]{1,9}[.)])[ \t]+(.*)$")
+BULLET = re.compile(r"^( *)(?:[-+*]|[0-9]{1,9}[.)])(?:[ \t]+|$)(.*)$")
 ISSUE = re.compile(r"(?<![\w#])#([1-9][0-9]*)\b")
 
 
@@ -52,9 +52,11 @@ def _finding_bullets(text):
                     fence = None
             continue
         if marker:
-            if bullet:
-                yield "".join(bullet).rstrip("\r\n")
-            bullet, indent, fence = [], None, marker[1]
+            if indent is None or len(content) - len(content.lstrip(" ")) <= indent:
+                if bullet:
+                    yield "".join(bullet).rstrip("\r\n")
+                bullet, indent = [], None
+            fence = marker[1]
             continue
         heading = HEADING.match(content)
         if heading:
@@ -64,7 +66,7 @@ def _finding_bullets(text):
             level = len(heading[1])
             while sections and sections[-1][0] >= level:
                 sections.pop()
-            sections.append((level, any(word in heading[2].lower()
+            sections.append((level, any(word in (heading[2] or "").lower()
                                         for word in FINDING_HEADINGS)))
             continue
         if not any(finding for _, finding in sections):
@@ -75,12 +77,13 @@ def _finding_bullets(text):
                 yield "".join(bullet).rstrip("\r\n")
             indent = len(item[1])
             bullet = [line[item.start(2):]] if item[2].strip() else []
-        elif bullet and content.strip() and len(content) - len(content.lstrip(" ")) > indent:
+        elif indent is not None and content.strip() and len(content) - len(content.lstrip(" ")) > indent:
             bullet.append(line)
         elif bullet and not content.strip():
             bullet.append(line)
-        elif bullet:
-            yield "".join(bullet).rstrip("\r\n")
+        elif indent is not None:
+            if bullet:
+                yield "".join(bullet).rstrip("\r\n")
             bullet, indent = [], None
     if bullet:
         yield "".join(bullet).rstrip("\r\n")

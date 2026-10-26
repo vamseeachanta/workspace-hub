@@ -127,3 +127,40 @@ def test_handoff_fences_and_heading_boundaries():
 def test_handoff_invalid_utf8_rejected():
     with pytest.raises(UnicodeDecodeError):
         extract_handoff_findings(b"\xff", SOURCE)
+
+
+@pytest.mark.parametrize("marker", ["-", "1."])
+def test_handoff_fenced_example_preserves_enclosing_item(marker):
+    text = (
+        f"## Findings\n{marker} Preserve the lesson.\n"
+        "  ```text\n  Example for #456.\n  ```\n"
+        "  Critical continuation for #123.\n"
+    )
+    assert extract_handoff_findings(text, SOURCE) == [
+        expected(text, "Preserve the lesson.\n"
+                 "  Critical continuation for #123.", "123", "present")
+    ]
+
+
+@pytest.mark.parametrize("heading", ["##", "## ", "   ##\t"])
+def test_handoff_empty_heading_ends_findings(heading):
+    text = f"## Findings\n- Actual lesson.\n{heading}\n- Unrelated.\n"
+    assert extract_handoff_findings(text, SOURCE) == [
+        expected(text, "Actual lesson.")
+    ]
+
+
+@pytest.mark.parametrize("marker", ["-", "- ", "1.", "1. "])
+def test_handoff_empty_marker_accepts_first_indented_paragraph(marker):
+    text = f"## Findings\n{marker}\n  Actual lesson for #123.\n"
+    assert extract_handoff_findings(text, SOURCE) == [
+        expected(text, "  Actual lesson for #123.", "123", "present")
+    ]
+
+
+@pytest.mark.parametrize("marker", ["-", "- ", "1.", "1. "])
+def test_handoff_truly_empty_item_is_omitted(marker):
+    text = f"## Findings\n{marker}\n\n- Actual lesson.\n"
+    assert extract_handoff_findings(text, SOURCE) == [
+        expected(text, "Actual lesson.")
+    ]
