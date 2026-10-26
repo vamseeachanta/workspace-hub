@@ -18,9 +18,12 @@ Related: GitHub issue #1570
 
 import argparse
 import json
+import os
 import re
 import sys
+import tempfile
 from collections import Counter
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
@@ -344,6 +347,54 @@ def generate_json_output(packages: list[dict[str, Any]]) -> str:
     return json.dumps(data, indent=2, default=str)
 
 
+def archive_snapshot(
+    json_str: str,
+    history_dir: Path,
+    *,
+    observed_at: datetime | None = None,
+) -> Path:
+    """Archive generated JSON without replacing any earlier observation.
+
+    Names use UTC calendar fields and microseconds. Identical bytes at the same
+    observation name are a no-op; differing bytes raise FileExistsError. A
+    complete temporary file is hard-linked into place so partial writes and
+    concurrent name reuse cannot replace published evidence. The filesystem
+    must support hard links within the history directory.
+    """
+    observation = observed_at if observed_at is not None else datetime.now(timezone.utc)
+    if observation.utcoffset() is None:
+        raise ValueError("Archive observation time must include a timezone")
+    stamp = observation.astimezone(timezone.utc).strftime("%Y%m%dT%H%M%S.%fZ")
+    history_dir = Path(history_dir)
+    history_dir.mkdir(parents=True, exist_ok=True)
+    archive = history_dir / f"module-status-matrix-{stamp}.json"
+    payload = json_str.encode("utf-8")
+
+    def check_existing() -> Path:
+        if archive.read_bytes() != payload:
+            raise FileExistsError(
+                f"Archive observation {archive.name} already exists with different contents"
+            )
+        return archive
+
+    if archive.exists():
+        return check_existing()
+
+    temporary = None
+    try:
+        with tempfile.NamedTemporaryFile(mode="wb", dir=history_dir, delete=False) as stream:
+            temporary = Path(stream.name)
+            stream.write(payload)
+        try:
+            os.link(temporary, archive)
+        except FileExistsError:
+            return check_existing()
+    finally:
+        if temporary is not None:
+            temporary.unlink()
+    return archive
+
+
 def main():
     parser = argparse.ArgumentParser(
         description="Cross-repo module status matrix"
@@ -358,6 +409,12 @@ def main():
         "-o", "--output-dir",
         default=None,
         help="Output directory for reports",
+    )
+    parser.add_argument(
+        "--history-dir",
+        type=Path,
+        default=None,
+        help="Archive generated JSON observations here before updating reports (opt-in)",
     )
     args = parser.parse_args()
 
@@ -380,11 +437,17 @@ def main():
             previous_snapshot = None
 
     md = generate_markdown(packages, previous_snapshot)
+    json_str = generate_json_output(packages)
+    if args.history_dir is not None:
+        try:
+            archive_snapshot(json_str, args.history_dir)
+        except (OSError, ValueError) as exc:
+            parser.error(f"Could not archive observation: {exc}")
+
     md_file = output_dir / "module-status-matrix.md"
     md_file.write_text(md)
     print(f"Written: {md_file}")
 
-    json_str = generate_json_output(packages)
     json_file.write_text(json_str)
     print(f"Written: {json_file}")
 
