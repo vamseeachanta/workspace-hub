@@ -29,6 +29,8 @@ def _git(*args: str) -> subprocess.CompletedProcess:
     # and optional metadata writes; preserve the caller's selected index.
     env = os.environ.copy()
     env.update(GIT_NO_LAZY_FETCH="1", GIT_NO_REPLACE_OBJECTS="1", GIT_OPTIONAL_LOCKS="0")
+    # The root pathspec uses Git magic even when the caller requests literals.
+    env["GIT_LITERAL_PATHSPECS"] = "0"
     try:
         return subprocess.run(["git", *args], env=env, capture_output=True, check=False)
     except OSError as error:

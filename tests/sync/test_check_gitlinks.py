@@ -70,7 +70,7 @@ def _run(repository, cwd=None):
     repo, env = repository
     return subprocess.run(
         [sys.executable, str(SCRIPT)], cwd=cwd or repo, env=env,
-        capture_output=True, text=True,
+        capture_output=True, text=True, encoding="utf-8",
     )
 
 
@@ -179,6 +179,22 @@ def test_invocation_from_subdirectory_checks_whole_index(repository):
     assert _unmapped(result) == {"modules/stale"}
 
 
+@pytest.mark.parametrize("nested", [False, True])
+@pytest.mark.parametrize("mapped", [False, True])
+def test_inherited_literal_pathspecs_checks_selected_index(repository, nested, mapped):
+    repo, env = repository
+    gitlinks = {"modules/stale"}
+    _index(repository, gitlinks, _metadata(*gitlinks) if mapped else None)
+    cwd = repo / "nested" if nested else repo
+    cwd.mkdir(exist_ok=True)
+    env["GIT_LITERAL_PATHSPECS"] = "1"
+    before = _snapshot(repo)
+    result = _run(repository, cwd=cwd)
+    assert result.returncode == (0 if mapped else 1), result.stderr
+    assert _unmapped(result) == (set() if mapped else gitlinks)
+    assert _snapshot(repo) == before
+
+
 @pytest.mark.parametrize("metadata, expected_status", [
     (None, 1), (_metadata("modules/stale"), 0), (b"[broken\n", 2),
 ])
@@ -209,7 +225,7 @@ def test_git_failure_is_nonzero(tmp_path):
     result = subprocess.run(
         [sys.executable, str(SCRIPT)], cwd=tmp_path,
         env={key: value for key, value in os.environ.items() if not key.startswith("GIT_")},
-        capture_output=True, text=True,
+        capture_output=True, text=True, encoding="utf-8",
     )
     assert result.returncode == 2
     assert "error:" in result.stderr
