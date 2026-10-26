@@ -1,5 +1,17 @@
 """Small, independent vectors for the bounded JSON public contract.
 
+Plan-lite
+Scope: the tests will cover UTF-8 byte budgets, signed integer widths,
+container depths, short reads, bounded overflow consumption and sanitized
+errors through loads() and read(), using small independent literal vectors.
+Acceptance: the 62 cases in this module and the 69 existing input-boundary
+cases will pass; byte, digit, depth and stream counts will match their literal
+expectations; the required test file and ignore exception will remain visible
+to Git. Resource failures will be exercised with synthetic exceptions.
+Exclusions: production loaders, public interfaces, production limit choices,
+gates and workflows will remain unchanged. Actual memory exhaustion and
+process termination will not be exercised.
+
 Basis: scripts/lib/strict_json.py module, loads() and read() docstrings;
 RFC 8259 sections 4/5 (containers), 6 (numbers), 7 (strings), 8.1 (UTF-8)
 and 9 (caller-selected limits). All budgets and chunk sizes below are test
