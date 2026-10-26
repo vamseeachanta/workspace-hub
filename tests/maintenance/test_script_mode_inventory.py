@@ -233,3 +233,33 @@ def test_help_describes_read_only_review_candidates():
     assert b"repository" in result.stdout
     assert b"review" in result.stdout.lower()
     assert b"read-only" in result.stdout.lower()
+
+
+@pytest.mark.parametrize("inherited_restriction", [None, "0", "1"])
+def test_missing_promisor_blob_fails_without_fetching(repo, tmp_path, inherited_restriction):
+    # git-upload-pack allows an explicit object request in this local-only fixture.
+    # The control proves the missing blob is fetchable, rather than unreachable.
+    source = tmp_path / "source"
+    source.mkdir()
+    git(source, "init", "--quiet", "--template=")
+    git(source, "config", "uploadpack.allowAnySHA1InWant", "true")
+    content = b"#!/bin/sh\nexit\n"
+    oid = git(source, "hash-object", "-w", "--stdin", data=content).strip()
+    stage_records(repo, [("100644", "0", "available", b":\n")])
+    git(repo, "config", "remote.origin.url", source.as_posix())
+    git(repo, "config", "remote.origin.promisor", "true")
+    git(repo, "update-index", "--add", "--info-only", "--cacheinfo",
+        "100644", oid.decode("ascii"), "missing")
+    before = snapshot(repo), snapshot(source)
+    env = git_environment()
+    if inherited_restriction is not None:
+        env["GIT_NO_LAZY_FETCH"] = inherited_restriction
+    result = invoke(repo, env=env)
+    after = snapshot(repo), snapshot(source)
+    # Preserve the control even when the regression assertions fail on old code.
+    control = git(repo, "cat-file", "blob", oid.decode("ascii"))
+    assert control == content
+    assert result.returncode != 0
+    assert result.stdout == b""
+    assert b"cannot read Git index or indexed blob" in result.stderr
+    assert after == before

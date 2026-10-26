@@ -28,7 +28,9 @@ class InventoryError(Exception):
 def _git(repository, *args):
     # An explicit repository must not inherit another caller's index or objects.
     env = {key: value for key, value in os.environ.items() if not key.startswith("GIT_")}
-    env.update(GIT_OPTIONAL_LOCKS="0", GIT_NO_REPLACE_OBJECTS="1")
+    env.update(
+        GIT_OPTIONAL_LOCKS="0", GIT_NO_REPLACE_OBJECTS="1", GIT_NO_LAZY_FETCH="1"
+    )
     try:
         return subprocess.run(
             ["git", "-c", "core.fsmonitor=false", "-C", str(repository), *args],
