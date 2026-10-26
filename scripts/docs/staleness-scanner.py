@@ -4,6 +4,8 @@
 Walks all .md files under docs/, gets last git commit date for each,
 classifies into FRESH (<30 days), MODERATE (30-90 days), STALE (>90 days).
 Also checks for inline date stamps (e.g., "Updated: YYYY-MM-DD").
+Use --include-yaml to also discover .yaml/.yml files. A nondefault --root
+requires an explicit --dashboard destination.
 
 Outputs:
   - YAML report to stdout
@@ -16,6 +18,7 @@ Ref: GH #1568
 """
 from __future__ import annotations
 
+import argparse
 import os
 import re
 import subprocess
@@ -124,10 +127,13 @@ def classify_staleness(modified_date: datetime, now: datetime | None = None) -> 
         return "FRESH"
 
 
-def classify_file(filepath: str, now: datetime | None = None) -> dict | None:
-    """Analyze a single .md file and return its classification dict.
+def classify_file(
+    filepath: str, now: datetime | None = None, repo_root: str | None = None,
+) -> dict | None:
+    """Analyze a single file and return its classification dict.
 
     Returns None if the file does not exist.
+    repo_root selects the Git working directory for scans outside this repository.
     """
     if now is None:
         now = datetime.now(timezone.utc)
@@ -140,7 +146,7 @@ def classify_file(filepath: str, now: datetime | None = None) -> dict | None:
 
     # Try git date first
     date_source = "git"
-    git_date_str = get_git_last_modified(filepath, repo_root=str(REPO_ROOT))
+    git_date_str = get_git_last_modified(filepath, repo_root=repo_root or str(REPO_ROOT))
 
     if git_date_str:
         try:
@@ -186,8 +192,8 @@ def classify_file(filepath: str, now: datetime | None = None) -> dict | None:
     }
 
 
-def scan_directory(directory: str) -> list[str]:
-    """Recursively find all .md files in a directory.
+def scan_directory(directory: str, include_yaml: bool = False) -> list[str]:
+    """Recursively find .md files, optionally including .yaml and .yml files.
 
     Returns empty list if directory doesn't exist.
     """
@@ -195,7 +201,8 @@ def scan_directory(directory: str) -> list[str]:
     if not dir_path.exists():
         return []
 
-    return sorted(str(p) for p in dir_path.rglob("*.md"))
+    patterns = ("*.md", "*.yaml", "*.yml") if include_yaml else ("*.md",)
+    return sorted(str(p) for pattern in patterns for p in dir_path.rglob(pattern))
 
 
 def build_yaml_report(entries: list[dict], now: datetime | None = None) -> dict:
@@ -325,22 +332,35 @@ def generate_markdown_dashboard(report: dict) -> str:
 # ---------------------------------------------------------------------------
 
 
-def main() -> int:
+def main(argv: list[str] | None = None) -> int:
     """Run the doc staleness scanner."""
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--root", type=Path, default=DOCS_DIR,
+                        help="Directory to scan recursively (default: docs/)")
+    parser.add_argument("--include-yaml", action="store_true",
+                        help="Also discover .yaml and .yml files")
+    parser.add_argument("--dashboard", type=Path,
+                        help="Dashboard destination (required with a nondefault root)")
+    args = parser.parse_args(argv)
+    root = args.root.resolve()
+    if root != DOCS_DIR.resolve() and args.dashboard is None:
+        parser.error("--dashboard is required with a nondefault --root")
+    dashboard_path = args.dashboard if args.dashboard is not None else DASHBOARD_PATH
     now = datetime.now(timezone.utc)
 
     print(f"\n  Doc Staleness Scanner")
     print(f"  {'='*40}")
-    print(f"  Scanning docs/ for .md files...")
+    extensions = ".md, .yaml and .yml" if args.include_yaml else ".md"
+    print(f"  Scanning {args.root} for {extensions} files...")
 
-    # Find all .md files under docs/
-    md_files = scan_directory(str(DOCS_DIR))
-    print(f"  Found {len(md_files)} markdown files.")
+    files = scan_directory(str(root), include_yaml=args.include_yaml)
+    file_kind = "markdown/YAML" if args.include_yaml else "markdown"
+    print(f"  Found {len(files)} {file_kind} files.")
 
     # Classify each file
     entries = []
-    for filepath in md_files:
-        result = classify_file(filepath, now=now)
+    for filepath in files:
+        result = classify_file(filepath, now=now, repo_root=str(root))
         if result:
             entries.append(result)
 
@@ -365,9 +385,13 @@ def main() -> int:
     dashboard_md = generate_markdown_dashboard(report)
 
     # Write dashboard
-    DASHBOARD_PATH.parent.mkdir(parents=True, exist_ok=True)
-    DASHBOARD_PATH.write_text(dashboard_md)
-    print(f"\n  Dashboard written to: {DASHBOARD_PATH.relative_to(REPO_ROOT)}")
+    dashboard_path.parent.mkdir(parents=True, exist_ok=True)
+    dashboard_path.write_text(dashboard_md)
+    try:
+        display_path = dashboard_path.relative_to(REPO_ROOT)
+    except ValueError:
+        display_path = dashboard_path
+    print(f"\n  Dashboard written to: {display_path}")
 
     return 0
 
