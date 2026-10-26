@@ -131,23 +131,28 @@ def gh_issue_edit_add_label(issue_number: int, label: str) -> None:
 def gh_issue_records(issue_number: int, resource: str, field: str) -> list[str]:
     """Read every page and reject incomplete deduplication evidence."""
     result = subprocess.run(
-        ["gh", "api", "--paginate", "--slurp",
+        ["gh", "api", "--paginate",
          f"repos/{{owner}}/{{repo}}/issues/{issue_number}/{resource}"],
         check=True,
         capture_output=True,
         text=True,
     )
-    pages = json.loads(result.stdout)
-    if not isinstance(pages, list) or not pages or any(
-        not isinstance(page, list) for page in pages
-    ):
+    # --paginate emits consecutive JSON values. Decode each complete page;
+    # --slurp is unavailable in older supported GitHub CLI installations.
+    decoder = json.JSONDecoder()
+    stream = result.stdout.strip()
+    if not stream:
         raise ValueError(f"Incomplete issue {resource} read")
     records = []
-    for page in pages:
+    while stream:
+        page, end = decoder.raw_decode(stream)
+        if not isinstance(page, list):
+            raise ValueError(f"Incomplete issue {resource} read")
         for record in page:
             if not isinstance(record, dict) or not isinstance(record.get(field), str):
                 raise ValueError(f"Incomplete issue {resource} read")
             records.append(record[field])
+        stream = stream[end:].lstrip()
     return records
 
 
@@ -249,14 +254,14 @@ def main() -> None:
 
     json_out = Path(args.output_json)
     json_out.parent.mkdir(parents=True, exist_ok=True)
-    json_out.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
-    print(f"JSON → {json_out}")
+    json_out.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8", newline="\n")
+    print(f"JSON → {json_out.as_posix()}")
 
     if not args.json_only:
         md_out = Path(args.output_md)
         md_out.parent.mkdir(parents=True, exist_ok=True)
-        md_out.write_text(render_markdown(payload) + "\n", encoding="utf-8")
-        print(f"Markdown → {md_out}")
+        md_out.write_text(render_markdown(payload) + "\n", encoding="utf-8", newline="\n")
+        print(f"Markdown → {md_out.as_posix()}")
 
     if payload["applied"]:
         print("Applied labels:")

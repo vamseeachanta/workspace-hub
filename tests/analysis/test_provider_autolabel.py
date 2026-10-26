@@ -117,7 +117,9 @@ def github(monkeypatch):
             self.calls.append(args)
             if args[1] == "api":
                 kind = args[-1].rsplit("/", 1)[-1]
-                assert "--paginate" in args and "--slurp" in args
+                assert "--paginate" in args
+                if "--slurp" in args:
+                    raise subprocess.CalledProcessError(1, args, stderr="unknown flag: --slurp")
                 if self.failure == kind:
                     raise subprocess.CalledProcessError(1, args)
                 assert kind in ("labels", "comments")
@@ -127,7 +129,7 @@ def github(monkeypatch):
                 else:
                     response = self.comments
                 raw = self.bad_response if kind == self.bad_resource else None
-                return subprocess.CompletedProcess(args, 0, raw or json.dumps(response))
+                return subprocess.CompletedProcess(args, 0, raw if raw is not None else "\n".join(json.dumps(page) for page in response))
             if args[1:3] == ["issue", "edit"]:
                 if self.failure == "label":
                     raise subprocess.CalledProcessError(1, args)
@@ -203,7 +205,7 @@ def test_dedup_read_failure_posts_nothing(work_queue, github, failure):
 
 
 @pytest.mark.parametrize("resource", ["labels", "comments"])
-@pytest.mark.parametrize("response", ["not json", "null", "[]", "[{}]", "[[{}]]", "[[null]]"])
+@pytest.mark.parametrize("response", ["not json", "null", "", "[{}]", "[[{}]]", "[[null]]", "[]\nnot json", "[]\nnull"])
 def test_invalid_dedup_response_posts_nothing(work_queue, github, response, resource):
     github.bad_response = response
     github.bad_resource = resource
@@ -275,7 +277,7 @@ def test_cli_with_fixture_queue_and_stubbed_gh(work_queue, github, monkeypatch, 
     queue = tmp_path / "queue.json"
     output_json = tmp_path / "candidates.json"
     output_md = tmp_path / "candidates.md"
-    queue.write_text(json.dumps(work_queue), encoding="utf-8")
+    queue.write_text(json.dumps(work_queue), encoding="utf-8", newline="\n")
     monkeypatch.setattr(sys, "argv", [
         str(MODULE_PATH), "--work-queue", str(queue),
         "--output-json", str(output_json), "--output-md", str(output_md), *flags,
@@ -350,3 +352,18 @@ def test_explanations_for_other_eligible_providers(work_queue, github, provider,
     assert f"Confidence: {confidence}" in body
     assert f"Routing reason: {reason}" in body
     assert f"Provider priority: {priority}" in body
+
+
+@pytest.mark.parametrize("comment", [False, True])
+def test_apply_compatible_with_cli_without_slurp(work_queue, github, comment):
+    payload = module.build_payload(work_queue, apply_mode=True, limit=1, comment=comment)
+    assert len(payload["applied"]) == 1
+    assert len(writes(github)) == (2 if comment else 1)
+    assert all("--slurp" not in call for call in github.calls)
+
+
+@pytest.mark.parametrize("resource,field", [("labels", "name"), ("comments", "body")])
+def test_paginated_stream_accepts_whitespace_and_empty_pages(github, resource, field):
+    github.bad_resource = resource
+    github.bad_response = ' \n[]\n [{"' + field + '": "café"}] \n[] \n'
+    assert module.gh_issue_records(2, resource, field) == ["café"]
