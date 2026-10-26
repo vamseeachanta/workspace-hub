@@ -663,6 +663,10 @@ def build_migration_debt_summary(provider_summaries: dict[str, dict]) -> dict:
 def _recorded_debt_metric(row: dict, key: str, summary: dict | None = None) -> int | float | None:
     if (summary or {}).get("source") in {"missing_log_directory", "empty_log_directory"}:
         return None
+    if summary:
+        records = summary.get("post_records")
+        if type(records) not in (int, float) or not math.isfinite(records) or records <= 0:
+            return None
     value = row.get(key)
     return value if type(value) in (int, float) and math.isfinite(value) else None
 
@@ -2630,10 +2634,10 @@ def main() -> int:
     markdown = render_markdown(audit)
 
     args.json_output.parent.mkdir(parents=True, exist_ok=True)
-    args.json_output.write_text(json.dumps(audit, indent=2) + "\n", encoding="utf-8")
+    args.json_output.write_text(json.dumps(audit, indent=2) + "\n", encoding="utf-8", newline="\n")
 
     args.markdown_output.parent.mkdir(parents=True, exist_ok=True)
-    args.markdown_output.write_text(markdown + "\n", encoding="utf-8")
+    args.markdown_output.write_text(markdown + "\n", encoding="utf-8", newline="\n")
 
     if args.stdout:
         print(markdown)

@@ -38,7 +38,7 @@ def test_classify_read_target_for_symbolic_skill_name(tmp_path: Path) -> None:
 def test_classify_read_target_for_repo_relative_path(tmp_path: Path) -> None:
     target = tmp_path / "docs" / "report.md"
     target.parent.mkdir(parents=True)
-    target.write_text("ok", encoding="utf-8")
+    target.write_text("ok", encoding="utf-8", newline="\n")
 
     normalized, scope, exists = module.classify_read_target("docs/report.md", tmp_path)
 
@@ -119,7 +119,7 @@ def test_classify_read_target_keeps_transient_worktree_and_tmp_paths_in_external
 def test_classify_read_target_uses_repo_alias_for_absolute_workspace_path(tmp_path: Path) -> None:
     target = tmp_path / "docs" / "report.md"
     target.parent.mkdir(parents=True)
-    target.write_text("ok", encoding="utf-8")
+    target.write_text("ok", encoding="utf-8", newline="\n")
 
     normalized, scope, exists = module.classify_read_target(
         "/mnt/workspace-hub/docs/report.md", tmp_path
@@ -133,7 +133,7 @@ def test_classify_read_target_uses_repo_alias_for_absolute_workspace_path(tmp_pa
 def test_classify_read_target_normalizes_windows_workspace_path(tmp_path: Path) -> None:
     target = tmp_path / "docs" / "report.md"
     target.parent.mkdir(parents=True)
-    target.write_text("ok", encoding="utf-8")
+    target.write_text("ok", encoding="utf-8", newline="\n")
 
     normalized, scope, exists = module.classify_read_target(
         r"D:\workspace-hub\docs\report.md", tmp_path
@@ -147,7 +147,7 @@ def test_classify_read_target_normalizes_windows_workspace_path(tmp_path: Path) 
 def test_classify_read_target_normalizes_uppercase_msys_windows_workspace_path(tmp_path: Path) -> None:
     target = tmp_path / "docs" / "report.md"
     target.parent.mkdir(parents=True)
-    target.write_text("ok", encoding="utf-8")
+    target.write_text("ok", encoding="utf-8", newline="\n")
 
     normalized, scope, exists = module.classify_read_target(
         "/D/workspace-hub/docs/report.md", tmp_path
@@ -200,7 +200,7 @@ def test_summarize_raw_provider_tracks_symbolic_and_python3(tmp_path: Path) -> N
     logs_dir.mkdir(parents=True)
     existing = repo_root / "docs" / "keep.md"
     existing.parent.mkdir(parents=True)
-    existing.write_text("hi", encoding="utf-8")
+    existing.write_text("hi", encoding="utf-8", newline="\n")
 
     records = [
         {"hook": "post", "tool": "Read", "file": "github-issues", "repo": "workspace-hub"},
@@ -212,7 +212,7 @@ def test_summarize_raw_provider_tracks_symbolic_and_python3(tmp_path: Path) -> N
         {"hook": "pre", "tool": "Read", "file": "docs/missing.md", "repo": "workspace-hub"},
     ]
     (logs_dir / "session_20260410.jsonl").write_text(
-        "\n".join(json.dumps(r) for r in records), encoding="utf-8"
+        "\n".join(json.dumps(r) for r in records), encoding="utf-8", newline="\n"
     )
 
     summary = module.summarize_raw_provider("hermes", logs_dir, repo_root)
@@ -239,7 +239,7 @@ def test_summarize_raw_provider_treats_skill_view_reads_as_symbolic(tmp_path: Pa
         }
     ]
     (logs_dir / "session_20260410.jsonl").write_text(
-        "\n".join(json.dumps(r) for r in records), encoding="utf-8"
+        "\n".join(json.dumps(r) for r in records), encoding="utf-8", newline="\n"
     )
 
     summary = module.summarize_raw_provider("hermes", logs_dir, repo_root)
@@ -263,7 +263,7 @@ def test_summarize_raw_provider_excludes_non_repo_artifact_reads_from_missing_re
         {"hook": "post", "tool": "Read", "file": "digitalmodel/specs/module-registry.yaml", "repo": "workspace-hub"},
     ]
     (logs_dir / "session_20260410.jsonl").write_text(
-        "\n".join(json.dumps(r) for r in records), encoding="utf-8"
+        "\n".join(json.dumps(r) for r in records), encoding="utf-8", newline="\n"
     )
 
     summary = module.summarize_raw_provider("codex", logs_dir, repo_root)
@@ -302,7 +302,7 @@ def test_build_provider_audit_prefers_raw_claude_logs_when_present(tmp_path: Pat
     claude_dir.mkdir(parents=True)
     records = [{"hook": "post", "tool": "Bash", "cmd": "python3 -c \"print(1)\"", "repo": "workspace-hub"}]
     (claude_dir / "session_20260410.jsonl").write_text(
-        "\n".join(json.dumps(r) for r in records), encoding="utf-8"
+        "\n".join(json.dumps(r) for r in records), encoding="utf-8", newline="\n"
     )
 
     audit = module.build_provider_audit(repo_root=repo_root, logs_root=logs_root)
@@ -321,7 +321,7 @@ def test_build_provider_audit_includes_recent_activity_since_previous_audit(tmp_
     analysis_dir.mkdir(parents=True)
     (analysis_dir / "provider-session-ecosystem-audit.json").write_text(
         json.dumps({"generated_at": "2026-04-10T00:00:00Z"}),
-        encoding="utf-8",
+        encoding="utf-8", newline="\n",
     )
     records = [
         {
@@ -366,7 +366,7 @@ def test_build_provider_audit_includes_recent_activity_since_previous_audit(tmp_
         },
     ]
     (claude_dir / "session_20260410.jsonl").write_text(
-        "\n".join(json.dumps(r) for r in records), encoding="utf-8"
+        "\n".join(json.dumps(r) for r in records), encoding="utf-8", newline="\n"
     )
 
     audit = module.build_provider_audit(repo_root=repo_root, logs_root=logs_root)
@@ -437,7 +437,7 @@ def test_build_activity_window_summary_includes_last_24h_and_last_7d(tmp_path: P
         },
     ]
     (claude_dir / "session_20260410.jsonl").write_text(
-        "\n".join(json.dumps(r) for r in records), encoding="utf-8"
+        "\n".join(json.dumps(r) for r in records), encoding="utf-8", newline="\n"
     )
 
     provider_summaries = {
@@ -618,13 +618,13 @@ def test_build_provider_audit_exposes_executive_actions_block(tmp_path: Path) ->
         }
     ]
     (claude_dir / "session_20260410.jsonl").write_text(
-        "\n".join(json.dumps(r) for r in records), encoding="utf-8"
+        "\n".join(json.dumps(r) for r in records), encoding="utf-8", newline="\n"
     )
     analysis_dir = repo_root / "analysis"
     analysis_dir.mkdir(parents=True)
     (analysis_dir / "provider-session-ecosystem-audit.json").write_text(
         json.dumps({"generated_at": "2026-04-10T00:00:00Z", "providers": {"claude": {"post_records": 0, "sessions": 0, "missing_repo_reads": 0, "source": "raw_logs"}}}),
-        encoding="utf-8",
+        encoding="utf-8", newline="\n",
     )
 
     audit = module.build_provider_audit(repo_root=repo_root, logs_root=logs_root)
@@ -1055,9 +1055,9 @@ def test_build_provider_audit_counts_claude_unique_runtime_sessions_when_present
     ]
     target = repo_root / "docs" / "keep.md"
     target.parent.mkdir(parents=True)
-    target.write_text("ok", encoding="utf-8")
+    target.write_text("ok", encoding="utf-8", newline="\n")
     (claude_dir / "session_20260410.jsonl").write_text(
-        "\n".join(json.dumps(r) for r in records), encoding="utf-8"
+        "\n".join(json.dumps(r) for r in records), encoding="utf-8", newline="\n"
     )
 
     audit = module.build_provider_audit(repo_root=repo_root, logs_root=logs_root)
@@ -1091,9 +1091,9 @@ def test_build_provider_audit_consumes_gemini_export_jsonl(tmp_path: Path) -> No
     ]
     target = repo_root / "docs" / "keep.md"
     target.parent.mkdir(parents=True)
-    target.write_text("ok", encoding="utf-8")
+    target.write_text("ok", encoding="utf-8", newline="\n")
     (gemini_dir / "session_20260410.jsonl").write_text(
-        "\n".join(json.dumps(r) for r in records), encoding="utf-8"
+        "\n".join(json.dumps(r) for r in records), encoding="utf-8", newline="\n"
     )
 
     audit = module.build_provider_audit(repo_root=repo_root, logs_root=logs_root)
@@ -1681,7 +1681,7 @@ def test_summarize_claude_precomputed_exposes_non_repo_artifact_schema_defaults(
         "top_missing_repo_reads": [{"path": "docs/missing.md", "count": 2}],
     }
     path = tmp_path / "claude-audit.json"
-    path.write_text(json.dumps(payload), encoding="utf-8")
+    path.write_text(json.dumps(payload), encoding="utf-8", newline="\n")
 
     summary = module.summarize_claude_precomputed(path)
 
@@ -1747,7 +1747,7 @@ def test_json_summary_exposes_recent_and_corpus_scope_notes(tmp_path: Path) -> N
     analysis_dir.mkdir(parents=True)
     (analysis_dir / "provider-session-ecosystem-audit.json").write_text(
         json.dumps({"generated_at": "2026-04-10T00:00:00Z", "providers": {}}),
-        encoding="utf-8",
+        encoding="utf-8", newline="\n",
     )
 
     audit = module.build_provider_audit(repo_root=repo_root, logs_root=logs_root)
@@ -1768,7 +1768,7 @@ def _build_debt_fixture_audit(
     logs = repo / "logs"
     provider_logs = logs / "sample"
     provider_logs.mkdir(parents=True)
-    (provider_logs / "session_fixture.jsonl").write_text("", encoding="utf-8")
+    (provider_logs / "session_fixture.jsonl").write_text("", encoding="utf-8", newline="\n")
     monkeypatch.setattr(module, "PROVIDERS", ("sample",))
     monkeypatch.setattr(
         module,
@@ -1786,7 +1786,7 @@ def _build_debt_fixture_audit(
         analysis = repo / "analysis"
         analysis.mkdir()
         (analysis / "provider-session-ecosystem-audit.json").write_text(
-            json.dumps(previous), encoding="utf-8"
+            json.dumps(previous), encoding="utf-8", newline="\n"
         )
     return module.build_provider_audit(repo_root=repo, logs_root=logs)
 
@@ -1934,3 +1934,43 @@ def test_debt_delta_unavailable_corpus_is_not_zero_debt(
     row = audit["executive_summary"]["provider_interpretation_summary"]["providers"][0]
     assert row["debt_trend"] == "unavailable"
     assert "unavailable |" in module.render_markdown(audit)
+
+
+@pytest.mark.parametrize("empty_snapshot", ["current", "previous"])
+def test_debt_delta_real_empty_raw_log_is_unavailable(tmp_path, monkeypatch, empty_snapshot):
+    repo = tmp_path / "repo"
+    logs = repo / "logs"
+    provider_logs = logs / "sample"
+    provider_logs.mkdir(parents=True)
+    (provider_logs / "session_empty.jsonl").write_text("", encoding="utf-8", newline="\n")
+    monkeypatch.setattr(module, "PROVIDERS", ("sample",))
+    monkeypatch.setattr(module, "load_github_issue_index", lambda *_: [])
+    empty = module.build_provider_audit(repo_root=repo, logs_root=logs)
+    assert empty["providers"]["sample"]["source"] == "raw_logs"
+    assert empty["providers"]["sample"]["post_records"] == 0
+    # Hand calculation for the populated endpoint: 10 / 500 * 1000 = 20 per 1k.
+    populated_summary = {"source": "raw_logs", "post_records": 500,
+                         "missing_repo_read_remediation_hints": [{"total_count": 10}]}
+    populated = {"providers": {"sample": populated_summary}, "executive_summary": {
+        "migration_debt": module.build_migration_debt_summary({"sample": populated_summary})}}
+    current, previous = (empty, populated) if empty_snapshot == "current" else (populated, empty)
+    debt = current["executive_summary"]["migration_debt"]
+    comparison = module.build_migration_debt_snapshot_comparison(
+        debt, current["providers"], previous, "2026-04-11T00:00:00Z")
+    metrics = comparison["providers"]["sample"]
+    other = "previous" if empty_snapshot == "current" else "current"
+    assert metrics["volume"] == {empty_snapshot: None, other: 10, "delta": None}
+    assert metrics["density"] == {empty_snapshot: None, other: 20.0, "delta": None}
+    interpretation = module.build_provider_interpretation_summary(
+        current["providers"], debt, {}, {}, previous, {}, [])
+    assert interpretation["providers"][0]["debt_trend"] == "unavailable"
+
+
+@pytest.mark.parametrize("records", [None, False, -1, "500", float("nan"), float("inf")])
+def test_recorded_debt_metric_rejects_invalid_record_availability(records):
+    summary = {"source": "raw_logs", "post_records": records}
+    assert module._recorded_debt_metric({"reads": 0}, "reads", summary) is None
+
+
+def test_recorded_debt_metric_requires_raw_record_availability():
+    assert module._recorded_debt_metric({"reads": 0}, "reads", {"source": "raw_logs"}) is None
