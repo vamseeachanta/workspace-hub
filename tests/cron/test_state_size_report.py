@@ -1,8 +1,9 @@
 """Tests for scripts/cron/state-size-report.sh — TDD per #2070 plan."""
 
 import os
-import shutil
+import shlex
 import subprocess
+import sys
 from pathlib import Path
 
 import pytest
@@ -239,13 +240,28 @@ def test_size_report_default_week_from_fixed_date(tmp_path, fixed_date, expected
     repo = _make_repo_with_state_files(tmp_path, {})
     tools = tmp_path / "tools"
     tools.mkdir()
+    # Reject native date delegation, including GNU-only --date clock injection.
+    real_date = tools / "system-date"
+    real_date.write_text("#!/usr/bin/env bash\nexit 99\n")
+    real_date.chmod(0o755)
     date = tools / "date"
-    # Keep the real formatter, replacing only the clock with a fixed instant.
-    date.write_text('#!/usr/bin/env bash\nexec "$REAL_DATE" --date="$FIXED_DATE" "$@"\n')
+    # Use Python calendar arithmetic so neither GNU nor BSD date is required.
+    # Check the requested format and UTC rather than masking a helper regression.
+    date.write_text(
+        f"#!/usr/bin/env bash\nexec {shlex.quote(sys.executable)} - \"$@\" <<'PY'\n"
+        "import os\n"
+        "import sys\n"
+        "from datetime import datetime\n"
+        "assert sys.argv[1:] == ['+%Y-W%V'], sys.argv[1:]\n"
+        "assert os.environ['TZ'] == 'UTC'\n"
+        "clock = datetime.strptime(os.environ['FIXED_DATE'], '%Y-%m-%d %H:%M:%S UTC')\n"
+        "print(f'{clock.year:04d}-W{clock.isocalendar().week:02d}')\n"
+        "PY\n"
+    )
     date.chmod(0o755)
     r, _ = _run(repo, {
         "STATE_REPORT_WEEK": None, "TZ": "UTC", "FIXED_DATE": fixed_date,
-        "REAL_DATE": shutil.which("date"),
+        "REAL_DATE": str(real_date),
         "PATH": str(tools) + os.pathsep + os.environ["PATH"],
     })
     report = repo / "out" / f"state-size-{expected_week}.md"
