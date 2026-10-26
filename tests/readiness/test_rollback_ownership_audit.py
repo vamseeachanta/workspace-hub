@@ -99,11 +99,80 @@ def test_refused_second_action_never_enters_restore(
     assert second.lstat() == snapshots[0][1]
 
 
+def test_middle_refusal_preserves_unstarted_tail(
+    repair, monkeypatch, tmp_path, capsys
+):
+    """Acceptance trace for issue 3868: start A, refuse B, never start C.
+
+    Independently enumerate recovery as [A]: only A passed validation and began
+    mutation. Removal visits A for the original unlink and A for rollback.
+    B and C retain inode, mode, modification/change timestamps and bytes.
+    C is an instruction-pointer file in the disposable root only.
+    """
+    repo = tmp_path / "repo"
+    first, second = repo / ".gemini/skills", repo / ".codex/skills"
+    tail = repo / "AGENTS.md"
+    first.parent.mkdir(parents=True)
+    second.parent.mkdir()
+    first.symlink_to("original")
+    tail.write_bytes(b"Contract: ../AGENTS.md\n")
+    before_tail = record(tail)
+    verified, refused, removed, restored = [], {}, [], []
+    original_remove, original_restore = repair.remove_path, repair.restore_owned_paths
+
+    def verify(path, target):
+        assert path == first
+        assert path.readlink() == Path(target) == Path("replacement")
+        verified.append(path)
+        return {"status": "pass"}
+
+    def classify(_repo):
+        if not verified:
+            return "absent"
+        # Preflight has finished. Create B inside its next validation, directly
+        # before native ownership makes that validation refuse the action.
+        second.write_bytes(b"foreign middle sentinel\n")
+        refused[second] = record(second)
+        return "native"
+
+    def remove(path):
+        removed.append(path)
+        original_remove(path)
+
+    def restore(backups):
+        restored.append(list(backups))
+        original_restore(backups)
+
+    monkeypatch.setattr(repair, "verify_symlink", verify)
+    monkeypatch.setattr(repair, "classify_native_root", classify)
+    monkeypatch.setattr(repair, "remove_path", remove)
+    monkeypatch.setattr(repair, "restore_owned_paths", restore)
+    actions = [{"kind": "rewrite_symlink", "path": str(path), "target": "replacement"}
+               for path in (first, second)]
+    actions.append({"kind": "rewrite_agents_pointer", "path": str(tail),
+                    "from": "../AGENTS.md", "to": "../replacement/AGENTS.md"})
+
+    repair._apply_repairable_actions("fixture", actions, repo)
+
+    assert "stale Codex action" in capsys.readouterr().err
+    assert verified == [first]
+    assert set(refused) == {second}
+    assert restored == [[str(first)]]
+    assert removed == [first, first]
+    for untouched in (second, tail):
+        assert untouched not in removed
+        assert all(str(untouched) not in batch for batch in restored)
+    assert first.readlink() == Path("original")
+    assert record(second) == refused[second]
+    assert record(tail) == before_tail
+
+
 def test_partial_started_action_is_restored(repair, monkeypatch, tmp_path):
     """Hand trace: unlink A, fail creating its replacement; restore old A.
 
-    The write need not finish to own partial recovery; validation alone is not
-    sufficient. A later, unstarted B must never be restored.
+    This is a positive acceptance control: the write need not finish to own
+    partial recovery; validation alone is not sufficient. A later, unstarted B
+    must never be restored.
     """
     repo = tmp_path / "repo"
     first, second = repo / ".gemini/skills", repo / ".codex/skills"
@@ -111,11 +180,14 @@ def test_partial_started_action_is_restored(repair, monkeypatch, tmp_path):
     first.symlink_to("original")
     monkeypatch.setattr(repair, "classify_native_root", lambda _repo: "absent")
     symlink_to = Path.symlink_to
-    restored = []
+    restored, failed_after_unlink = [], []
     original_restore = repair.restore_owned_paths
 
     def fail(path, target, *args, **kwargs):
         if target == "replacement":
+            assert path == first
+            assert not path.exists() and not path.is_symlink()
+            failed_after_unlink.append(path)
             raise OSError("injected after unlink")
         return symlink_to(path, target, *args, **kwargs)
 
@@ -128,6 +200,7 @@ def test_partial_started_action_is_restored(repair, monkeypatch, tmp_path):
     actions = [{"kind": "rewrite_symlink", "path": str(path), "target": "replacement"}
                for path in (first, second)]
     assert repair._apply_repairable_actions("fixture", actions, repo) == 4
+    assert failed_after_unlink == [first]
     assert first.readlink() == Path("original")
     assert restored == [str(first)]
     assert not second.exists()
