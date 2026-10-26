@@ -30,8 +30,11 @@ github_read_pr() {
         github_error 'Cannot detect the repository; run from a GitHub checkout and retry.'
         return 1
     fi
-    # An empty selection lets gh resolve the PR for the current branch.
-    if ! payload=$(gh pr view "${selection[@]}" --repo "$repository" --json "$fields" 2>/dev/null); then
+    # Current-branch discovery requires the checkout context without --repo.
+    if ((${#selection[@]})); then
+        selection+=(--repo "$repository")
+    fi
+    if ! payload=$(gh pr view "${selection[@]}" --json "$fields" 2>/dev/null); then
         github_error 'Cannot read the PR; check its number, current branch and repository access, then retry.'
         return 1
     fi

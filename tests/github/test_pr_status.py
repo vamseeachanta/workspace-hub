@@ -41,7 +41,7 @@ from pathlib import Path
 import sys
 
 args = sys.argv[1:]
-with Path(os.environ["GH_STUB_LOG"]).open("a") as stream:
+with Path(os.environ["GH_STUB_LOG"]).open("a", encoding="utf-8", newline="\\n") as stream:
     stream.write(json.dumps(args) + "\\n")
 if args == ["auth", "status"]:
     sys.exit(1 if os.environ.get("GH_STUB_FAIL") == "auth" else 0)
@@ -52,7 +52,10 @@ if args == ["repo", "view", "--json", "nameWithOwner", "--jq", ".nameWithOwner"]
     sys.exit(0)
 fields = "number,state,statusCheckRollup,reviewDecision,reviewRequests,reviews"
 allowed = ["--repo", "maintainer/repository", "--json", fields]
-if args in (["pr", "view", *allowed], ["pr", "view", "1308", *allowed]):
+if args[:2] == ["pr", "view"] and "--repo" in args and args[2].startswith("--"):
+    print("argument required when using the --repo flag", file=sys.stderr)
+    sys.exit(1)
+if args in (["pr", "view", "--json", fields], ["pr", "view", "1308", *allowed]):
     if os.environ.get("GH_STUB_FAIL") == "pr":
         print("upstream diagnostic must remain private", file=sys.stderr)
         sys.exit(1)
@@ -60,7 +63,7 @@ if args in (["pr", "view", *allowed], ["pr", "view", "1308", *allowed]):
     sys.exit(0)
 print("refused: command is outside the read-only allowlist", file=sys.stderr)
 sys.exit(2)
-'''
+''', encoding="utf-8", newline="\n"
     )
     binary.chmod(0o755)  # POSIX executable permissions for the disposable stub.
     log = tmp_path / "calls.jsonl"
@@ -89,7 +92,7 @@ def run_status(gh_stub, *args, response=None, failure=None):
 
 
 def calls(gh_stub):
-    return [json.loads(line) for line in gh_stub[1].read_text().splitlines()]
+    return [json.loads(line) for line in gh_stub[1].read_text(encoding="utf-8").splitlines()]
 
 
 def test_explicit_pr_status(gh_stub):
@@ -109,7 +112,7 @@ def test_default_branch_status(gh_stub):
     assert result.stdout == EXPECTED
     assert len(result.stdout.splitlines()) == 2
     assert calls(gh_stub)[-1] == [
-        "pr", "view", "--repo", "maintainer/repository", "--json", FIELDS,
+        "pr", "view", "--json", FIELDS,
     ]
 
 
@@ -151,10 +154,10 @@ def test_no_github_writes(gh_stub):
         ["pr", "view", "1308", "--repo", "maintainer/repository", "--json", FIELDS],
         ["auth", "status"],
         ["repo", "view", "--json", "nameWithOwner", "--jq", ".nameWithOwner"],
-        ["pr", "view", "--repo", "maintainer/repository", "--json", FIELDS],
+        ["pr", "view", "--json", FIELDS],
         ["auth", "status"],
         ["repo", "view", "--json", "nameWithOwner", "--jq", ".nameWithOwner"],
-        ["pr", "view", "--repo", "maintainer/repository", "--json", FIELDS],
+        ["pr", "view", "--json", FIELDS],
     ]
     assert calls(gh_stub) == expected
 
