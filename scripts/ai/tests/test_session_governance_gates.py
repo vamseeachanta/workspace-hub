@@ -12,17 +12,62 @@ from __future__ import annotations
 import hashlib
 import json
 import os
+import shutil
 import subprocess
 import sys
 import tempfile
 from pathlib import Path
 
 import pytest
+import yaml
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
 REVIEW_GATE_SH = REPO_ROOT / "scripts" / "enforcement" / "require-review-on-push.sh"
 SESSION_GOV_HOOK = REPO_ROOT / ".claude" / "hooks" / "session-governor-check.sh"
 ERROR_TRACKER_HOOK = REPO_ROOT / ".claude" / "hooks" / "error-loop-tracker.sh"
+GOVERNANCE_POLICY = REPO_ROOT / "scripts" / "workflow" / "governance-checkpoints.yaml"
+
+
+@pytest.fixture(autouse=True)
+def isolated_workspace(tmp_path, monkeypatch):
+    """Keep unchanged hook dependencies, state and audit logs in a disposable root."""
+    source_root = REPO_ROOT
+    root = tmp_path / "workspace"
+    sources = (
+        REVIEW_GATE_SH,
+        SESSION_GOV_HOOK,
+        ERROR_TRACKER_HOOK,
+        source_root / "scripts" / "workflow" / "session_governor.py",
+        GOVERNANCE_POLICY,
+    )
+    for source in sources:
+        target = root / source.relative_to(source_root)
+        target.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(source, target)
+
+    # Git bindings and user configuration must not redirect audit writes or identity.
+    for name in list(os.environ):
+        if name.startswith("GIT_"):
+            monkeypatch.delenv(name)
+    for name in ("HOME", "TMPDIR", "XDG_CONFIG_HOME", "XDG_CACHE_HOME"):
+        directory = root / name.lower()
+        directory.mkdir()
+        monkeypatch.setenv(name, str(directory))
+    monkeypatch.setenv("GIT_CONFIG_NOSYSTEM", "1")
+    monkeypatch.setenv("GIT_CONFIG_GLOBAL", os.devnull)
+    monkeypatch.setenv("GIT_CEILING_DIRECTORIES", str(root.parent))
+    monkeypatch.setenv("WORKSPACE_HUB", str(root))
+    # The governor subprocess needs the same Python dependencies as this test run.
+    monkeypatch.setenv("PATH", str(Path(sys.executable).parent) + os.pathsep + os.environ["PATH"])
+    monkeypatch.setenv("VIRTUAL_ENV", sys.prefix)
+    monkeypatch.setenv("UV_PYTHON", sys.executable)
+    for name in ("REVIEW_GATE_SH", "SESSION_GOV_HOOK", "ERROR_TRACKER_HOOK", "GOVERNANCE_POLICY"):
+        source = globals()[name]
+        monkeypatch.setitem(globals(), name, root / source.relative_to(source_root))
+    monkeypatch.setitem(globals(), "REPO_ROOT", root)
+    yield root
+    for source in sources:
+        assert (root / source.relative_to(source_root)).read_bytes() == source.read_bytes()
 
 
 # ---------------------------------------------------------------------------
@@ -59,6 +104,21 @@ def run_error_tracker(tool_input: dict, env_extra: dict | None = None) -> subpro
         cwd=str(REPO_ROOT),
         env=env,
     )
+
+
+def assert_tracker_resets_on_success(payload: dict) -> None:
+    """Issue #2078: success must replace a nonzero counter with an existing zero."""
+    state_dir = REPO_ROOT / ".claude" / "state" / "session-governor"
+    state_dir.mkdir(parents=True, exist_ok=True)
+    counter_file = state_dir / "consecutive-error-count"
+    # Two synthetic prior failures give a nonzero seed; a success leaves no errors.
+    counter_file.write_text("2")
+    (state_dir / "last-error-hash").write_text("abc123")
+    result = run_error_tracker(payload, env_extra={"WORKSPACE_HUB": str(REPO_ROOT)})
+    assert result.returncode == 0, f"Tracker hook failed: {result.stderr}"
+    assert counter_file.is_file(), "Expected counter file to exist after success"
+    count_val = counter_file.read_text().strip()
+    assert count_val == "0", f"Expected counter=0 after success, got {count_val!r}"
 
 
 # ---------------------------------------------------------------------------
@@ -229,45 +289,36 @@ class TestSessionCounterHook:
         """At the ceiling, the hook must emit a JSON block decision on stdout."""
         state_dir = REPO_ROOT / ".claude" / "state" / "session-governor"
         state_dir.mkdir(parents=True, exist_ok=True)
+        # subprocess.run starts Bash as a child of this Python process; Bash sets PPID.
+        counter_file = state_dir / f"tool-call-count-{os.getpid()}"
+        policy = yaml.safe_load(GOVERNANCE_POLICY.read_text())
+        threshold = next(
+            checkpoint["threshold"]
+            for checkpoint in policy["checkpoints"]
+            if checkpoint["id"] == "tool-call-ceiling"
+        )
+        # governance-checkpoints.yaml supplies the ceiling; one hook call adds one.
+        counter_file.write_text(str(threshold - 1))
+        env = os.environ.copy()
+        env["WORKSPACE_HUB"] = str(REPO_ROOT)
+        result = subprocess.run(
+            ["bash", str(SESSION_GOV_HOOK)],
+            input='{"tool_name":"Bash","tool_input":{"command":"ls"}}',
+            capture_output=True,
+            text=True,
+            timeout=30,
+            cwd=str(REPO_ROOT),
+            env=env,
+        )
 
-        # Use a synthetic PPID that won't collide with real sessions
-        fake_ppid = "99999999"
-        counter_file = state_dir / f"tool-call-count-{fake_ppid}"
-
-        try:
-            # Set counter to threshold value to trigger STOP
-            import re
-            content = SESSION_GOV_HOOK.read_text()
-            threshold_match = re.search(r"THRESHOLD=(\d+)", content)
-            assert threshold_match, "THRESHOLD not found in hook"
-            threshold = int(threshold_match.group(1))
-            # Write a count just below threshold so the next call hits ceiling
-            counter_file.write_text(str(threshold - 1))
-
-            env = os.environ.copy()
-            env["WORKSPACE_HUB"] = str(REPO_ROOT)
-            env["PPID"] = fake_ppid
-
-            result = subprocess.run(
-                ["bash", str(SESSION_GOV_HOOK)],
-                input='{"tool_name":"Bash","tool_input":{"command":"ls"}}',
-                capture_output=True,
-                text=True,
-                timeout=30,
-                cwd=str(REPO_ROOT),
-                env=env,
-            )
-
-            # Hook always exits 0 (blocking via JSON decision, not exit code)
-            assert result.returncode == 0
-            # At ceiling, should emit {"decision":"block"} on stdout
-            if result.stdout.strip():
-                decision = json.loads(result.stdout.strip())
-                assert decision.get("decision") == "block", (
-                    f"Expected block decision at ceiling, got: {decision}"
-                )
-        finally:
-            counter_file.unlink(missing_ok=True)
+        # Hook always exits 0 (blocking via JSON decision, not exit code).
+        assert result.returncode == 0, f"Hook failed: {result.stderr}"
+        assert result.stdout.strip(), f"Expected nonempty stdout at ceiling. stderr={result.stderr}"
+        decision = json.loads(result.stdout)
+        assert decision.get("decision") == "block", (
+            f"Expected block decision at ceiling, got: {decision}"
+        )
+        assert counter_file.read_text().strip() == str(threshold)
 
 
 # ---------------------------------------------------------------------------
@@ -291,11 +342,10 @@ class TestErrorLoopTrackerDedup:
 
     def test_error_tracker_resets_on_success(self):
         """Successful tool call must reset the consecutive error counter to 0."""
-        content = ERROR_TRACKER_HOOK.read_text()
-        # The hook must write '0' to the error count file on success
-        assert '"0" > "$ERROR_COUNT_FILE"' in content or "echo 0 >" in content, (
-            "Hook must reset consecutive error count to 0 on successful tool call"
-        )
+        assert_tracker_resets_on_success({
+            "tool_name": "Bash",
+            "tool_response": {"is_error": False, "exit_code": 0},
+        })
 
     def test_error_tracker_increments_on_same_error(self):
         """Same error repeated must increment the counter, not reset."""
@@ -310,20 +360,8 @@ class TestErrorLoopTrackerDedup:
 
     def test_error_tracker_success_payload_resets_counter(self):
         """Run tracker with a non-error payload and verify counter resets."""
-        state_dir = REPO_ROOT / ".claude" / "state" / "session-governor"
-        state_dir.mkdir(parents=True, exist_ok=True)
-        counter_file = state_dir / "consecutive-error-count"
-        hash_file = state_dir / "last-error-hash"
-
-        # Pre-set counter to simulate prior errors
-        counter_file.write_text("2")
-        hash_file.write_text("abc123")
-
-        env = {"WORKSPACE_HUB": str(REPO_ROOT)}
-        env.update({k: v for k, v in os.environ.items()})
-
-        # Send a success payload (no is_error flag, no error patterns)
-        success_payload = {
+        # Send a success payload without an is_error flag or error patterns.
+        assert_tracker_resets_on_success({
             "tool_name": "Bash",
             "tool_input": {"command": "echo hello"},
             "tool_response": {
@@ -331,14 +369,7 @@ class TestErrorLoopTrackerDedup:
                 "stdout": "hello",
                 "stderr": "",
             },
-        }
-        result = run_error_tracker(success_payload, env_extra={"WORKSPACE_HUB": str(REPO_ROOT)})
-        assert result.returncode == 0, f"Tracker hook failed: {result.stderr}"
-
-        # Counter should be reset to 0
-        if counter_file.exists():
-            count_val = counter_file.read_text().strip()
-            assert count_val == "0", f"Expected counter=0 after success, got {count_val!r}"
+        })
 
     def test_error_tracker_state_directory_convention(self):
         """State directory path must follow the session-governor convention."""
@@ -352,3 +383,42 @@ class TestErrorLoopTrackerDedup:
         assert "last-error-hash" in content, (
             "error-loop-tracker.sh must maintain 'last-error-hash' state file for dedup"
         )
+
+
+class TestAssertionRegressions:
+    """Broken hook responses must fail the behavioral tests, even after exit success."""
+
+    @pytest.mark.parametrize(
+        ("stdout", "message"),
+        [
+            ("", "nonempty stdout"),
+            (" \n", "nonempty stdout"),
+            ('{"decision":"allow"}', "Expected block decision"),
+        ],
+        ids=["empty", "whitespace", "allow"],
+    )
+    def test_stop_assertion_rejects_nonblocking_output(self, monkeypatch, stdout, message):
+        def silent_success(command, **kwargs):
+            # Exit zero is successful completion under the Bash hook protocol.
+            return subprocess.CompletedProcess(command, 0, stdout=stdout, stderr="")
+
+        monkeypatch.setattr(subprocess, "run", silent_success)
+        with pytest.raises(AssertionError, match=message):
+            TestSessionCounterHook().test_governor_hook_emits_block_on_stop()
+
+    @pytest.mark.parametrize(
+        "test_name",
+        ["test_error_tracker_resets_on_success", "test_error_tracker_success_payload_resets_counter"],
+        ids=["explicit-success", "success-payload"],
+    )
+    @pytest.mark.parametrize("outcome", ["missing", "unreset"])
+    def test_reset_assertion_rejects_invalid_counter(self, monkeypatch, test_name, outcome):
+        def unchanged_counter(command, **kwargs):
+            if outcome == "missing":
+                counter = REPO_ROOT / ".claude" / "state" / "session-governor" / "consecutive-error-count"
+                counter.rename(counter.with_suffix(".removed"))
+            return subprocess.CompletedProcess(command, 0, stdout="", stderr="")
+
+        monkeypatch.setattr(subprocess, "run", unchanged_counter)
+        with pytest.raises(AssertionError, match="counter.*(exist|after success)"):
+            getattr(TestErrorLoopTrackerDedup(), test_name)()
