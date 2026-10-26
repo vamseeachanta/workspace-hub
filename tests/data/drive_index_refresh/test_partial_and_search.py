@@ -37,6 +37,67 @@ def test_one_scan_error_keeps_rows_and_records_partial(builder, profile, monkeyp
     assert logged[-1]["reason"] == "access denied"
 
 
+@pytest.mark.parametrize("batch_size", [1, 100])
+@pytest.mark.parametrize("log_failure", ["open", "write"])
+def test_diagnostic_log_failure_keeps_rows_and_reports_errors(
+    builder, profile, monkeypatch, capsys, batch_size, log_failure,
+):
+    from contextlib import contextmanager
+    from pathlib import Path
+
+    valid = profile.roots[0] / "alpha.txt"
+    blocked = profile.roots[0] / "blocked"
+    log_path = profile.db.parent / "refresh-errors.jsonl"
+    original_open = Path.open
+
+    def scan(root, excludes):
+        if root == profile.roots[0]:
+            yield valid
+            yield builder.ScanError(blocked, PermissionError("scan denied"))
+
+    class UnwritableLog:
+        def write(self, text):
+            raise OSError("diagnostic write denied")
+
+    @contextmanager
+    def failed_write():
+        yield UnwritableLog()
+
+    def open_log(path, mode="r", *args, **kwargs):
+        if path == log_path and mode == "a":
+            if log_failure == "open":
+                raise PermissionError("diagnostic open denied")
+            return failed_write()
+        return original_open(path, mode, *args, **kwargs)
+
+    with monkeypatch.context() as patch:
+        patch.setattr(builder, "iter_files", scan)
+        patch.setattr(Path, "open", open_log)
+        stats = builder.metadata_pass(profile, batch_size=batch_size, prune=True)
+
+    assert stats["errors"] == 1
+    assert stats["rows_added"] == 1
+    assert rows(profile.db, "SELECT file_name, status FROM assets") == [("alpha.txt", "active")]
+    assert rows(profile.db, "SELECT value FROM scan_state WHERE key='errors'") == [("1",)]
+    assert rows(profile.db, "SELECT rowid FROM assets_fts WHERE assets_fts MATCH 'alpha'")
+    payload = state(profile)
+    assert payload["status"] == "partial"
+    assert payload["error_count"] == 1
+    assert payload["scan_errors"] == [{"path": str(blocked), "reason": "scan denied"}]
+    reason = f"diagnostic {log_failure} denied"
+    assert payload["logging_error_count"] == 1
+    assert payload["logging_errors"] == [{"path": str(log_path), "reason": reason}]
+    assert "diagnostic log error" in payload["error"]
+    stderr = capsys.readouterr().err
+    assert f"scan error: {blocked}: scan denied" in stderr
+    assert f"diagnostic log error: {log_path}: {reason}" in stderr
+
+    builder.metadata_pass(profile, batch_size=batch_size, incremental=True, prune=True)
+    assert state(profile)["status"] == "ok"
+    assert state(profile)["logging_error_count"] == 0
+    assert state(profile)["logging_errors"] == []
+
+
 @pytest.mark.parametrize("failure", ["walk", "stat"])
 def test_scan_error_preserves_unseen_existing_rows(builder, profile, monkeypatch, failure):
     builder.metadata_pass(profile, batch_size=2)

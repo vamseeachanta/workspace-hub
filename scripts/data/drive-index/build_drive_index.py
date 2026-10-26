@@ -310,15 +310,22 @@ def metadata_pass(
     batch: list[tuple[Any, ...]] = []
     stats = {"files": 0, "errors": 0, "skipped": 0, "rows_added": 0, "rows_updated": 0, "rows_pruned": 0}
     scan_errors: list[dict[str, str]] = []
+    logging_errors: list[dict[str, str]] = []
     pending_kinds: dict[str, str] = {}
 
     def record_error(path: Path | str, error: Exception) -> None:
         detail = {"path": sanitize_text(str(path)), "reason": sanitize_text(str(error))}
         scan_errors.append(detail)
         stats["errors"] += 1
-        with (profile.db.parent / "refresh-errors.jsonl").open("a", encoding="utf-8") as log:
-            log.write(json.dumps({"scan_date": scan_date, **detail}) + "\n")
         print(f"scan error: {detail['path']}: {detail['reason']}", file=sys.stderr)
+        log_path = profile.db.parent / "refresh-errors.jsonl"
+        try:
+            with log_path.open("a", encoding="utf-8") as log:
+                log.write(json.dumps({"scan_date": scan_date, **detail}) + "\n")
+        except OSError as exc:
+            log_detail = {"path": sanitize_text(str(log_path)), "reason": sanitize_text(str(exc))}
+            logging_errors.append(log_detail)
+            print(f"diagnostic log error: {log_detail['path']}: {log_detail['reason']}", file=sys.stderr)
 
     def row_error(row: tuple[Any, ...], error: sqlite3.Error) -> None:
         path = row[ASSET_COLUMNS.index("file_path")]
@@ -389,9 +396,15 @@ def metadata_pass(
                 "rows_updated": stats["rows_updated"],
                 "rows_pruned": stats["rows_pruned"],
                 "duration_s": stats["duration_s"],
-                "error": f"{stats['errors']} scan error(s)" if stats["errors"] else None,
+                "error": (
+                    f"{stats['errors']} scan error(s)"
+                    + (f"; {len(logging_errors)} diagnostic log error(s)" if logging_errors else "")
+                    if stats["errors"] else None
+                ),
                 "error_count": stats["errors"],
                 "scan_errors": scan_errors,
+                "logging_error_count": len(logging_errors),
+                "logging_errors": logging_errors,
             },
         )
         return stats

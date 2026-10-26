@@ -41,6 +41,8 @@ prefix; `DRIVE_INDEX_CAD_ROOT` overrides that root. CAD output is placed in
 `_cad-index` under the selected root. The builder receives `--raw` for the scan
 TSV, `--dedup` for the directory containing the optional deletion log and GLB
 manifest, and `--out` for the readability TSV.
+Success and failure status use the same `refresh-state.json` under the selected
+root's `_cad-index` directory; failures do not update another root's state.
 
 ## Refresh status and scan errors
 
@@ -56,6 +58,12 @@ manifest, and `--out` for the readability TSV.
 records each affected path and reason. The same details are appended to
 `refresh-errors.jsonl` with the scan timestamp and emitted to standard error.
 The JSON state describes the latest run; the log retains earlier errors.
+If the diagnostic log cannot be opened or written, successful asset writes are
+still committed. The scan error and diagnostic I/O failure are emitted to
+standard error. `logging_error_count` and `logging_errors` record diagnostic
+failures separately from `error_count` and `scan_errors` in the latest state;
+the `error` summary includes both counts. A subsequent complete refresh clears
+the latest diagnostic failures.
 These local diagnostics contain source paths and require the same access
 controls as the database.
 
