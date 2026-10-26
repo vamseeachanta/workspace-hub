@@ -41,6 +41,7 @@ repository probes, gates and publication consumers remains separate work.
 from __future__ import annotations
 
 import json
+import math
 import sys
 from collections.abc import Mapping
 
@@ -132,11 +133,18 @@ def _reject_constant(value: str) -> None:
     raise ValueError("Nonfinite JSON number")
 
 
+def _finite_float(value: str) -> float:
+    number = float(value)
+    if not math.isfinite(number):
+        raise ValueError("Nonfinite JSON number")
+    return number
+
+
 def main() -> int:
     """Run the offline stdin/stdout interface; never echo malformed input."""
     try:
         rows = json.load(sys.stdin, object_pairs_hook=_unique_object,
-                         parse_constant=_reject_constant)
+                         parse_constant=_reject_constant, parse_float=_finite_float)
         result = classify_rows(rows)
         output = json.dumps(result, sort_keys=True, ensure_ascii=True, allow_nan=False)
     except (ValueError, RecursionError):

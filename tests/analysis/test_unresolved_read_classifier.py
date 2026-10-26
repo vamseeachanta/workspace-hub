@@ -185,6 +185,40 @@ def test_cli_rejects_invalid_input_without_partial_output(payload, tmp_path):
     assert completed.stderr == "Invalid input: expected a JSON array of read rows.\n"
 
 
+@pytest.mark.parametrize("number", ["1e999", "-1e999"])
+@pytest.mark.parametrize("value_template", [
+    "NUMBER", '{"nested":NUMBER}', '[NUMBER]', '{"nested":[NUMBER]}',
+])
+def test_cli_rejects_numeric_overflow_at_any_depth(number, value_template, tmp_path):
+    value = value_template.replace("NUMBER", number)
+    payload = ('[{"provider":"alpha","target":"docs/example.md",'
+               '"evidence":{"alias_resolves":' + value + '}}]')
+    completed = subprocess.run(
+        [sys.executable, str(MODULE_PATH)], input=payload,
+        text=True, capture_output=True, cwd=tmp_path,
+    )
+    assert completed.returncode != 0
+    assert completed.stdout == ""
+    assert completed.stderr == "Invalid input: expected a JSON array of read rows.\n"
+
+
+@pytest.mark.parametrize("number", ["1e308", "-1e308", "1e-999", "-1e-999"])
+def test_cli_keeps_finite_numbers_as_invalid_evidence(number, tmp_path):
+    payload = ('[{"provider":"alpha","target":"docs/example.md",'
+               '"evidence":{"alias_resolves":' + number + '}}]')
+    completed = subprocess.run(
+        [sys.executable, str(MODULE_PATH)], input=payload,
+        text=True, capture_output=True, cwd=tmp_path,
+    )
+    assert completed.returncode == 0
+    assert completed.stderr == ""
+    assert json.loads(completed.stdout) == {
+        "rows": [{"provider": "alpha", "target": "docs/example.md",
+                  "bucket": "unknown-needs-review", "reason_code": "UNKNOWN_NEEDS_REVIEW"}],
+        "bucket_counts": {"alpha": {"unknown-needs-review": 1}},
+    }
+
+
 @pytest.mark.parametrize("candidate", [
     None, {}, {"provider": "", "target": "docs/example.md"},
     {"provider": "alpha", "target": None},
