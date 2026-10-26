@@ -5,9 +5,13 @@ Usage:
     uv run python scripts/skills/convert-agent-to-skill.py --input <agent-path> --output <skills-dir>
     uv run python scripts/skills/convert-agent-to-skill.py --batch <agents-dir> --output <skills-dir> [--include a,b,c]
     uv run python scripts/skills/convert-agent-to-skill.py --input <agent-path> --output <skills-dir> --dry-run
+    uv run python scripts/skills/convert-agent-to-skill.py --batch <agents-dir> --output <skills-dir> --pending-only --dry-run
 
 Converts Claude Code agent markdown files (with optional YAML frontmatter) into
 Hermes-compatible SKILL.md format with proper frontmatter and category inference.
+With --pending-only, select missing or byte-different generated drafts. Combine
+with --dry-run to preview without writes; omit --dry-run to create or update only
+selected drafts. Existing drafts are still skipped by default.
 """
 
 from __future__ import annotations
@@ -174,6 +178,7 @@ def convert_single_file(
     input_path: Path,
     output_dir: Path,
     dry_run: bool = False,
+    pending_only: bool = False,
 ) -> Path | None:
     """Convert a single agent .md file to SKILL.md.
 
@@ -194,11 +199,13 @@ def convert_single_file(
     skill_dir = output_dir / name
     skill_file = skill_dir / "SKILL.md"
 
-    if skill_file.exists() and not dry_run:
+    if skill_file.exists() and not dry_run and not pending_only:
         log.info("  SKIP (exists): %s", skill_file)
         return None
 
     skill_content = build_skill_content(name, category, description, body)
+    if pending_only and not is_pending_draft(skill_file, skill_content):
+        return None
 
     if dry_run:
         log.info("  DRY-RUN: would write %s (%d bytes)", skill_file, len(skill_content))
@@ -214,6 +221,7 @@ def convert_directory(
     input_dir: Path,
     output_dir: Path,
     dry_run: bool = False,
+    pending_only: bool = False,
 ) -> list[Path]:
     """Convert a directory-based agent to a single SKILL.md.
 
@@ -256,11 +264,13 @@ def convert_directory(
     skill_dir = output_dir / name
     skill_file = skill_dir / "SKILL.md"
 
-    if skill_file.exists() and not dry_run:
+    if skill_file.exists() and not dry_run and not pending_only:
         log.info("  SKIP (exists): %s", skill_file)
         return []
 
     skill_content = build_skill_content(name, category, description, combined_body)
+    if pending_only and not is_pending_draft(skill_file, skill_content):
+        return []
 
     if dry_run:
         log.info("  DRY-RUN: would write %s (%d bytes, %d source files)",
@@ -273,18 +283,31 @@ def convert_directory(
     return [skill_file]
 
 
+def is_pending_draft(skill_file: Path, skill_content: str) -> bool:
+    """Report missing or changed drafts by rendered bytes, independent of mtime."""
+    if not skill_file.exists():
+        log.info("  MISSING: %s", skill_file)
+        return True
+    if skill_file.read_bytes() != skill_content.encode("utf-8"):
+        log.info("  CHANGED: %s", skill_file)
+        return True
+    log.info("  SKIP (up to date): %s", skill_file)
+    return False
+
+
 def convert_agent(
     input_path: Path,
     output_dir: Path,
     dry_run: bool = False,
+    pending_only: bool = False,
 ) -> list[Path]:
     """Convert a single agent (file or directory) to SKILL.md."""
     if input_path.is_file():
-        result = convert_single_file(input_path, output_dir, dry_run)
+        result = convert_single_file(input_path, output_dir, dry_run, pending_only)
         return [result] if result else []
 
     if input_path.is_dir():
-        return convert_directory(input_path, output_dir, dry_run)
+        return convert_directory(input_path, output_dir, dry_run, pending_only)
 
     log.warning("Path not found: %s", input_path)
     return []
@@ -295,12 +318,16 @@ def batch_convert(
     output_dir: Path,
     include: set[str] | None = None,
     dry_run: bool = False,
+    pending_only: bool = False,
 ) -> list[Path]:
     """Convert all agents in a directory tree.
 
     Processes:
     - Top-level .md files as single-file agents
     - Top-level directories as directory-based agents
+
+    pending_only selects missing or byte-different drafts and permits updating
+    those drafts. dry_run previews the same selection without writing anything.
     """
     created: list[Path] = []
 
@@ -334,7 +361,7 @@ def batch_convert(
             continue
 
         log.info("Converting: %s", entry)
-        results = convert_agent(entry, output_dir, dry_run)
+        results = convert_agent(entry, output_dir, dry_run, pending_only)
         created.extend(results)
 
     return created
@@ -371,6 +398,11 @@ def main() -> int:
         action="store_true",
         help="Preview conversions without writing files",
     )
+    parser.add_argument(
+        "--pending-only",
+        action="store_true",
+        help="Select missing or content-changed drafts; use --dry-run for a read-only preview",
+    )
 
     args = parser.parse_args()
 
@@ -383,13 +415,15 @@ def main() -> int:
 
     if args.batch:
         log.info("Batch converting: %s -> %s", args.batch, args.output)
-        created = batch_convert(args.batch, args.output, include_set, args.dry_run)
+        created = batch_convert(args.batch, args.output, include_set, args.dry_run,
+                                args.pending_only)
     else:
         log.info("Converting: %s -> %s", args.input, args.output)
-        created = convert_agent(args.input, args.output, args.dry_run)
+        created = convert_agent(args.input, args.output, args.dry_run, args.pending_only)
 
     log.info("\n=== Summary ===")
-    log.info("Skills created: %d", len(created))
+    label = "Skills pending" if args.pending_only and args.dry_run else "Skills created"
+    log.info("%s: %d", label, len(created))
     for p in created:
         log.info("  %s", p)
 
