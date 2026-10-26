@@ -10,6 +10,7 @@ rows in each advertised format.
 | Revision | Date | Change and reason |
 | --- | --- | --- |
 | Initial | 2026-10-22 | Add option parity contracts and structured validation errors to detect format-dependent behavior. |
+| Issue review | 2026-10-25 | Add subprocess grouping, argument forwarding and empty-input contracts for normal issue review. |
 
 ## Bounded command inventory
 
@@ -20,8 +21,9 @@ a repository-wide or cross-repository coverage claim.
 | --- | --- | --- | --- |
 | `scripts/ai/wrk_cost_report.py` | Table, CSV | Positional filter, input file, CSV selector; empty selection and unsupported JSON | `tests/ai/test_cost_cli_format_parity.py` |
 | `scripts/data/drive-index-search/search.py` | Tab-separated text, JSON | Registry, query, domain, drive, repeated index, limit; invalid timeout and unsupported CSV | `tests/data/drive_index_search/test_format_parity.py` |
+| `scripts/knowledge/review-open-issues.py` (normal mode) | Table, YAML, JSON | Category, priority and label grouping; repository and limit forwarding; empty input and unsupported CSV | `scripts/knowledge/tests/test_review_open_issues_format_parity.py` |
 
-Neither command advertises a detail option. CSV is rejected by search and JSON
+None of these commands advertises a detail option. CSV is rejected by search and JSON
 is rejected by cost reporting. No extra format is inferred from another command.
 The linked provider-routing example (worldenergydata issue #924)
 motivates these contracts; its package is outside this repository's write scope.
@@ -56,6 +58,20 @@ The source of the registry schema and exit behavior is the command and
 `scripts/data/drive-index-search/registry.py`. Positive limits and timeouts are
 CLI input constraints, not sourced engineering acceptance limits. There are no
 engineering equations, coefficients or acceptance constants in this change.
+
+Issue review runs as a subprocess with a synthetic `gh` executable on an isolated
+executable search path. Every advertised format is parsed and checked against
+independent expected issue numbers, titles, group membership, group counts and
+the overall total. Category grouping and its existing `label` alias use the
+`cat:` prefix; priority grouping uses `priority:`. The example crosses priorities
+and categories so an ignored grouping option changes the expected memberships.
+The fixture and hand calculation are recorded in the test module's docstring.
+Only generated timestamps are removed from structured output checks. Empty YAML
+currently renders `groups: null`, which is asserted explicitly. CSV is rejected
+before the executable stub is called. Repository and limit tests check exact
+forwarded arguments; they do not emulate server-side limiting. No authentication
+or live GitHub access is required. These contracts do not change normal-mode JSON
+validation or cover the separate issue-hygiene audit.
 
 ## Worked example
 
@@ -93,6 +109,17 @@ documented canonical-path tie breaker determine the limited result, alpha.
 uv run --no-project --with pytest --with pyyaml python -m pytest tests/ai/test_cost_cli_format_parity.py tests/data/drive_index_search/test_format_parity.py -q -rA -p no:cacheprovider
 ```
 
+Run the existing issue-review suite and the additional subprocess contracts with:
+
+```sh
+uv run --no-project --with pytest --with pyyaml python -m pytest scripts/knowledge/tests/test_review_open_issues.py scripts/knowledge/tests/test_review_open_issues_format_parity.py -q -rA -p no:cacheprovider
+```
+
+On 2026-10-25 the baseline command, selecting only
+`scripts/knowledge/tests/test_review_open_issues.py`, passed 15 tests. The combined
+command above passed 37 tests: the original 15 and 22 additional cases. These
+counts are observed pytest results, not a coverage percentage.
+
 Set pytest's `--basetemp` to a new directory under the chosen scratch root when
 test artifacts must stay outside the worktree. Search fixtures direct invocation
 metrics to scratch and require no live indexes or network. The broader existing
@@ -107,6 +134,6 @@ Exercise missing arguments and invalid values with the machine-readable selector
 both before and after the invalid argument. Keep fixture oracles independent of
 the implementation and document any hand calculation in the test docstring.
 
-Later coverage includes the issue-review command's table/YAML/JSON grouping and
-consumer packages with detail options. Those commands are not claimed as tested
-by this bounded change. Independent provider review remains required before merge.
+Later coverage includes consumer packages with detail options. Those packages
+are not claimed as tested by these bounded contracts. Independent provider
+review remains required before merge.
