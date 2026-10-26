@@ -21,6 +21,17 @@ slash-command wiring are deferred.
 
 Input failures emit only an incomplete JSON error, never partial totals or file
 contents. A complete report, including an over-budget report, exits successfully.
+
+Plan-lite
+---------
+Scope: a standalone standard-library CLI for explicit UTF-8 snapshot manifests,
+strict validation, byte and lexical-unit counts, and supplied-budget subtraction.
+Validation command (with an isolated pytest temporary directory when needed):
+    uv run --no-project --with pytest python -m pytest tests/analysis/test_context_budget.py -q -rA -p no:cacheprovider
+The tests check literal hand counts, input failures, and CLI output independently
+of the implementation's calculations.
+Deferred: provider-token accounting, live context discovery, model-token
+percentages, recommendations, and slash-command integration.
 """
 
 import argparse
