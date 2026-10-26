@@ -185,7 +185,7 @@ def convert_single_file(
     Returns the output path if written, or None if skipped.
     """
     if input_path.name in SKIP_FILES:
-        log.info("  SKIP (excluded file): %s", input_path)
+        log.info("  SKIP (excluded file): %s", input_path.as_posix())
         return None
 
     content = input_path.read_text(encoding="utf-8", errors="replace")
@@ -200,7 +200,7 @@ def convert_single_file(
     skill_file = skill_dir / "SKILL.md"
 
     if skill_file.exists() and not dry_run and not pending_only:
-        log.info("  SKIP (exists): %s", skill_file)
+        log.info("  SKIP (exists): %s", skill_file.as_posix())
         return None
 
     skill_content = build_skill_content(name, category, description, body)
@@ -208,12 +208,12 @@ def convert_single_file(
         return None
 
     if dry_run:
-        log.info("  DRY-RUN: would write %s (%d bytes)", skill_file, len(skill_content))
+        log.info("  DRY-RUN: would write %s (%d bytes)", skill_file.as_posix(), len(skill_content))
         return skill_file
 
     skill_dir.mkdir(parents=True, exist_ok=True)
-    skill_file.write_text(skill_content, encoding="utf-8")
-    log.info("  CREATED: %s", skill_file)
+    skill_file.write_text(skill_content, encoding="utf-8", newline="\n")
+    log.info("  CREATED: %s", skill_file.as_posix())
     return skill_file
 
 
@@ -229,7 +229,7 @@ def convert_directory(
     """
     md_files = sorted(input_dir.glob("**/*.md"))
     if not md_files:
-        log.info("  SKIP (no .md files): %s", input_dir)
+        log.info("  SKIP (no .md files): %s", input_dir.as_posix())
         return []
 
     # README.md goes first
@@ -238,7 +238,7 @@ def convert_directory(
 
     ordered = readme_files + other_files
     if not ordered:
-        log.info("  SKIP (only excluded files): %s", input_dir)
+        log.info("  SKIP (only excluded files): %s", input_dir.as_posix())
         return []
 
     # Parse the first file for metadata
@@ -251,7 +251,7 @@ def convert_directory(
         content = f.read_text(encoding="utf-8", errors="replace")
         _, body = parse_frontmatter(content)
         if body.strip():
-            rel = f.relative_to(input_dir)
+            rel = f.relative_to(input_dir).as_posix()
             bodies.append(f"\n\n---\n\n## Source: {rel}\n\n{body}")
 
     combined_body = "\n".join(bodies)
@@ -265,7 +265,7 @@ def convert_directory(
     skill_file = skill_dir / "SKILL.md"
 
     if skill_file.exists() and not dry_run and not pending_only:
-        log.info("  SKIP (exists): %s", skill_file)
+        log.info("  SKIP (exists): %s", skill_file.as_posix())
         return []
 
     skill_content = build_skill_content(name, category, description, combined_body)
@@ -274,24 +274,24 @@ def convert_directory(
 
     if dry_run:
         log.info("  DRY-RUN: would write %s (%d bytes, %d source files)",
-                 skill_file, len(skill_content), len(ordered))
+                 skill_file.as_posix(), len(skill_content), len(ordered))
         return [skill_file]
 
     skill_dir.mkdir(parents=True, exist_ok=True)
-    skill_file.write_text(skill_content, encoding="utf-8")
-    log.info("  CREATED: %s (%d source files)", skill_file, len(ordered))
+    skill_file.write_text(skill_content, encoding="utf-8", newline="\n")
+    log.info("  CREATED: %s (%d source files)", skill_file.as_posix(), len(ordered))
     return [skill_file]
 
 
 def is_pending_draft(skill_file: Path, skill_content: str) -> bool:
     """Report missing or changed drafts by rendered bytes, independent of mtime."""
     if not skill_file.exists():
-        log.info("  MISSING: %s", skill_file)
+        log.info("  MISSING: %s", skill_file.as_posix())
         return True
     if skill_file.read_bytes() != skill_content.encode("utf-8"):
-        log.info("  CHANGED: %s", skill_file)
+        log.info("  CHANGED: %s", skill_file.as_posix())
         return True
-    log.info("  SKIP (up to date): %s", skill_file)
+    log.info("  SKIP (up to date): %s", skill_file.as_posix())
     return False
 
 
@@ -309,7 +309,7 @@ def convert_agent(
     if input_path.is_dir():
         return convert_directory(input_path, output_dir, dry_run, pending_only)
 
-    log.warning("Path not found: %s", input_path)
+    log.warning("Path not found: %s", input_path.as_posix())
     return []
 
 
@@ -332,7 +332,7 @@ def batch_convert(
     created: list[Path] = []
 
     if not agents_dir.is_dir():
-        log.error("Agents directory not found: %s", agents_dir)
+        log.error("Agents directory not found: %s", agents_dir.as_posix())
         return created
 
     # Process top-level entries
@@ -360,7 +360,7 @@ def batch_convert(
             log.info("  SKIP (excluded file): %s", entry.name)
             continue
 
-        log.info("Converting: %s", entry)
+        log.info("Converting: %s", entry.as_posix())
         results = convert_agent(entry, output_dir, dry_run, pending_only)
         created.extend(results)
 
@@ -414,18 +414,18 @@ def main() -> int:
         include_set = {s.strip() for s in args.include.split(",")}
 
     if args.batch:
-        log.info("Batch converting: %s -> %s", args.batch, args.output)
+        log.info("Batch converting: %s -> %s", args.batch.as_posix(), args.output.as_posix())
         created = batch_convert(args.batch, args.output, include_set, args.dry_run,
                                 args.pending_only)
     else:
-        log.info("Converting: %s -> %s", args.input, args.output)
+        log.info("Converting: %s -> %s", args.input.as_posix(), args.output.as_posix())
         created = convert_agent(args.input, args.output, args.dry_run, args.pending_only)
 
     log.info("\n=== Summary ===")
     label = "Skills pending" if args.pending_only and args.dry_run else "Skills created"
     log.info("%s: %d", label, len(created))
     for p in created:
-        log.info("  %s", p)
+        log.info("  %s", p.as_posix())
 
     return 0
 
