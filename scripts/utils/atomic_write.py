@@ -78,7 +78,18 @@ class ConcurrentChangeError(AtomicWriteError):
     """An observed destination change prevented replacement."""
 
 
-def _stage(path: Path, data: bytes, mode: int | None) -> Path:
+def _cleanup(temporary: Path, receipt: dict) -> None:
+    """Retain cleanup evidence without masking the primary failure."""
+    try:
+        temporary.unlink(missing_ok=True)
+    except OSError as error:
+        receipt.setdefault("cleanup_errors", []).append({
+            "error": type(error).__name__,
+            "retained_path": temporary.as_posix(),
+        })
+
+
+def _stage(path: Path, data: bytes, mode: int | None, receipt: dict) -> Path:
     """Fully write and sync a sibling; remove it if staging fails."""
     fd, name = tempfile.mkstemp(dir=path.parent, prefix=f".{path.name}.", suffix=".tmp")
     temporary = Path(name)
@@ -98,7 +109,7 @@ def _stage(path: Path, data: bytes, mode: int | None) -> Path:
             os.close(fd)
         return temporary
     except BaseException:
-        temporary.unlink(missing_ok=True)
+        _cleanup(temporary, receipt)
         raise
 
 
@@ -121,7 +132,7 @@ def _recover(path: Path, before: _Snapshot | None, staged: _Snapshot, receipt: d
         if not _owns(current, staged):
             receipt["recovery"] = "refused"
             return
-        temporary = _stage(path, before.data, before.mode)
+        temporary = _stage(path, before.data, before.mode, receipt)
         if _snapshot(path) != current:
             receipt["recovery"] = "refused"
             return
@@ -137,7 +148,7 @@ def _recover(path: Path, before: _Snapshot | None, staged: _Snapshot, receipt: d
         receipt["recovery_error"] = type(error).__name__
     finally:
         if temporary is not None:
-            temporary.unlink(missing_ok=True)
+            _cleanup(temporary, receipt)
 
 
 def atomic_write_utf8(path: Path | str, content: str) -> dict:
@@ -146,7 +157,9 @@ def atomic_write_utf8(path: Path | str, content: str) -> dict:
     The parent directory must exist. UnicodeEncodeError propagates before any
     filesystem access. Initial snapshot errors propagate without mutation.
     Later I/O failures raise AtomicWriteError with before/attempted/restored
-    digest receipts and the in-memory original. A successful receipt additionally
+    digest receipts and the in-memory original. Cleanup failures add error types
+    and retained sibling paths to cleanup_errors without masking that exception.
+    A successful receipt additionally
     has written_sha. Recovery is attempted after readback failure only, and only
     if the installed inode, bytes and mode still match. Observed unrelated bytes
     are retained. This does not eliminate the check-to-replace race.
@@ -155,7 +168,7 @@ def atomic_write_utf8(path: Path | str, content: str) -> dict:
     path = Path(path)
     before = _snapshot(path)
     receipt = {
-        "path": str(path),
+        "path": path.as_posix(),
         "before_sha": _sha(before.data) if before is not None else None,
         "attempted_sha": _sha(data),
         "written_sha": None,
@@ -164,7 +177,7 @@ def atomic_write_utf8(path: Path | str, content: str) -> dict:
     }
     temporary = None
     try:
-        temporary = _stage(path, data, before.mode if before is not None else None)
+        temporary = _stage(path, data, before.mode if before is not None else None, receipt)
         staged = _snapshot(temporary)
         if staged is None or staged.data != data:
             raise OSError("staging readback mismatch")
@@ -187,4 +200,4 @@ def atomic_write_utf8(path: Path | str, content: str) -> dict:
         raise AtomicWriteError("atomic replacement failed", receipt, before) from error
     finally:
         if temporary is not None:
-            temporary.unlink(missing_ok=True)
+            _cleanup(temporary, receipt)

@@ -51,7 +51,7 @@ def test_unicode_round_trip(target):
     assert_only_target(target, expected)
     assert target.read_text(encoding="utf-8") == "→ café 中"
     assert receipt == {
-        "path": str(target),
+        "path": target.as_posix(),
         "before_sha": digest(BEFORE),
         "attempted_sha": digest(expected),
         "written_sha": digest(expected),
@@ -375,3 +375,57 @@ def test_staged_mode_mismatch_preserves_target(target, monkeypatch):
         atomic.atomic_write_utf8(target, "replacement")
     assert_only_target(target)
     assert stat.S_IMODE(target.stat().st_mode) == MODE
+
+
+@pytest.mark.parametrize("phase", ["replacement", "staging", "recovery"])
+def test_cleanup_failure_preserves_primary_receipt(target, monkeypatch, phase):
+    if phase == "recovery":
+        state = inject_readback_failure(target, monkeypatch)
+        replace = atomic.os.replace
+
+        def fail_replace(source, destination):
+            if state["installed"]:
+                raise PermissionError("injected replacement failure")
+            replace(source, destination)
+    else:
+        def fail_replace(source, destination):
+            raise PermissionError("injected replacement failure")
+
+    def fail_write(*args):
+        raise OSError("injected staging failure")
+
+    def fail_cleanup(*args, **kwargs):
+        raise PermissionError("injected cleanup failure")
+
+    with monkeypatch.context() as faults:
+        faults.setattr(atomic.os, "replace", fail_replace)
+        faults.setattr(Path, "unlink", fail_cleanup)
+        if phase == "staging":
+            faults.setattr(atomic.os, "write", fail_write)
+        with pytest.raises(atomic.AtomicWriteError) as failure:
+            atomic.atomic_write_utf8(target, "replacement")
+
+    error = failure.value
+    receipt = error.receipt
+    assert error.before_bytes == BEFORE
+    assert error.before_mode == MODE
+    assert receipt["before_sha"] == digest(BEFORE)
+    assert receipt["attempted_sha"] == digest(ATTEMPTED)
+    assert receipt["written_sha"] is None
+    assert receipt["restored_sha"] is None
+    assert isinstance(error.__cause__, OSError)
+    retained = set(target.parent.iterdir()) - {target}
+    assert len(retained) == 1
+    sibling = retained.pop()
+    assert receipt["cleanup_errors"] == [
+        {"error": "PermissionError", "retained_path": sibling.as_posix()}
+    ]
+    if phase == "recovery":
+        assert receipt["recovery"] == "failed"
+        assert receipt["recovery_error"] == "PermissionError"
+    expected = ATTEMPTED if phase == "recovery" else BEFORE
+    assert target.read_bytes() == expected
+    assert stat.S_IMODE(target.stat().st_mode) == MODE
+    assert sibling.read_bytes() == (
+        b"" if phase == "staging" else BEFORE if phase == "recovery" else ATTEMPTED
+    )
