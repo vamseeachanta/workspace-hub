@@ -10,6 +10,7 @@ not establish a production orchestrator or change operational policy.
 | Revision | Date | Change and reason |
 |---|---|---|
 | Initial | 2026-10-25 | Compare the issue-listed patterns and add a reproducible checkpoint example. |
+| 1 | 2026-10-26 | Clarify that the coordinator counter limits successful starts, because failed starts do not increment it. |
 
 ## Selection guide
 
@@ -59,8 +60,9 @@ Current [authorization policy](../standards/HARD-STOP-POLICY.md) and
   is an in-memory attempted prefix; durable restart and recovery are gaps.
   The operational [coordinator `run_once`](../../scripts/dispatch/coordinator_loop.py)
   is a related bounded iteration entry point, not this retry algorithm. It limits
-  starts per invocation and records failed starts; it can perform external actions
-  and is not invoked by the teaching example.
+  successful starts per invocation and records failed starts. Failed-start
+  attempts are not bounded by that counter. It can perform external actions and
+  is not invoked by the teaching example.
 
 ## Recursive decomposition
 
