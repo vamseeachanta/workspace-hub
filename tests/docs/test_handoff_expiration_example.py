@@ -120,6 +120,18 @@ def test_missing_reference_is_not_no_issue(run_recipe):
     assert run_recipe([item]) == [expected("unknown")]
 
 
+@pytest.mark.parametrize("missing", [
+    ("issue_state",), ("closed_at",), ("issue_state", "closed_at"),
+])
+def test_missing_unlinked_metadata_does_not_use_fallback(run_recipe, missing):
+    item = row(
+        handoff_at="2027-11-30T06:00:00Z", issue_ref=None, issue_state=None,
+    )
+    for key in missing:
+        del item[key]
+    assert run_recipe([item]) == [expected("unknown")]
+
+
 def test_offset_is_normalized_to_utc(run_recipe):
     # Same independent leap-year sum as the closed-issue case; +02:00 means
     # 14:00 local is 12:00 UTC, so the expected UTC instant remains unchanged.

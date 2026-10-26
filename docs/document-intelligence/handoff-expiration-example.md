@@ -13,6 +13,7 @@ and a calculation without changing either policy or any live handoff.
 | Revision | Date | Change and reason |
 |---|---|---|
 | Initial | 2026-10-26 | Add synthetic inputs and a runnable recipe to demonstrate computable advisory dates. |
+| 1 | 2026-10-26 | Require explicit unlinked metadata so missing fields cannot produce an advisory date. |
 
 ## Policy basis and scope
 
@@ -49,7 +50,8 @@ closed_at: null
 | `closed_at` | Supplied closure timestamp with timezone; `null` if absent or unknown. |
 
 All input rows include these fields. Missing keys are treated as unknown.
-Only explicit `issue_ref: null` selects the no-issue fallback. A missing,
+The no-issue fallback requires explicit `null` values for `issue_ref`,
+`issue_state` and `closed_at`. A missing,
 blank or malformed reference does not establish absence of linkage.
 
 | Output field | Meaning |
@@ -128,6 +130,8 @@ def expiration(row):
     issue_state = row.get("issue_state")
     closed_at = row.get("closed_at")
     if issue_ref is None:
+        if not {"issue_state", "closed_at"}.issubset(row):
+            return result
         if issue_state is not None or closed_at is not None:
             result["state"] = "conflicting_metadata"
             return result
@@ -193,7 +197,7 @@ Run `uv run --no-project --with pytest python -m pytest tests/docs/test_handoff_
 with temporary output directed to supplied scratch. The starting focused-test
 count was zero because the test file did not exist. The test uses explicit UTC
 dates and checks both the documented rows and additional uncertain inputs.
-The ending focused-test count is 25 passing cases.
+The ending focused-test count is 28 passing cases, including missing unlinked metadata fields.
 
 Workflow-wide template adoption, issue-state retrieval, metadata migration,
 freshness checks and cleanup automation remain follow-up work. This example
