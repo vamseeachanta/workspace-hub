@@ -258,6 +258,77 @@ PY
     rm -rf "$tmpdir"
 }
 
+run_invalid_yaml_update_cleanup_test() {
+    local invalid_form tmpdir ws_root home_root hermes_cfg hermes_dir template output
+    for invalid_form in malformed rendered; do
+        tmpdir="$(mktemp -d)"
+        ws_root="$tmpdir/ws"
+        if [[ "$invalid_form" == rendered ]]; then
+            # A single quote breaks the template's quoted scalar after expansion.
+            ws_root="$tmpdir/ws'quoted"
+        fi
+        home_root="$tmpdir/home"
+        hermes_dir="$home_root/.hermes"
+        hermes_cfg="$hermes_dir/config.yaml"
+        template="$ws_root/config/agents/hermes/config.yaml.template"
+
+        make_workspace "$ws_root"
+        mkdir -p "$hermes_dir"
+        # Literal fixture is the byte oracle, including comments and quoting.
+        cat > "$tmpdir/expected.yaml" <<'EOF'
+# Preserve this comment and the exact scalar spelling.
+terminal:
+  backend: 'local'
+  cwd: '.'
+skills:
+  external_dirs: []
+EOF
+        cp "$tmpdir/expected.yaml" "$hermes_cfg"
+        printf 'preserve\n' > "$hermes_dir/.sentinel"
+
+        if [[ "$invalid_form" == malformed ]]; then
+            # Same malformed input as run_invalid_yaml_create_test.
+            printf 'skills: [\n' > "$template"
+        else
+            # Valid YAML before rendering; the inserted quote leaves it invalid.
+            cat > "$template" <<'EOF'
+skills:
+  external_dirs:
+    - '__WS_HUB_PATH__/.claude/skills'
+EOF
+        fi
+
+        # Compare all immediate entries, including hidden and non-file entries.
+        find "$hermes_dir" -mindepth 1 -maxdepth 1 -printf '%f\0' | LC_ALL=C sort -z > "$tmpdir/entries.before"
+        if output="$(HOME="$home_root" bash "$ws_root/scripts/_core/sync-agent-configs.sh" 2>&1)"; then
+            fail "invalid_yaml_update_cleanup $invalid_form should fail"
+        else
+            pass "invalid_yaml_update_cleanup $invalid_form fails"
+        fi
+
+        if grep -Fq 'YAML validation failed for Hermes config' <<< "$output"; then
+            pass "invalid_yaml_update_cleanup $invalid_form reaches YAML validation"
+        else
+            fail "invalid_yaml_update_cleanup $invalid_form reaches YAML validation"
+        fi
+
+        if cmp -s "$tmpdir/expected.yaml" "$hermes_cfg"; then
+            pass "invalid_yaml_update_cleanup $invalid_form preserves target bytes"
+        else
+            fail "invalid_yaml_update_cleanup $invalid_form preserves target bytes"
+        fi
+
+        find "$hermes_dir" -mindepth 1 -maxdepth 1 -printf '%f\0' | LC_ALL=C sort -z > "$tmpdir/entries.after"
+        if cmp -s "$tmpdir/entries.before" "$tmpdir/entries.after"; then
+            pass "invalid_yaml_update_cleanup $invalid_form preserves entries and leaves no temp files"
+        else
+            fail "invalid_yaml_update_cleanup $invalid_form preserves entries and leaves no temp files"
+        fi
+
+        rm -rf "$tmpdir"
+    done
+}
+
 run_python3_fallback_to_uv_test() {
     local tmpdir ws_root home_root fake_bin hermes_cfg uv_path
     tmpdir="$(mktemp -d)"
@@ -670,6 +741,7 @@ run_invalid_json_create_test
 run_invalid_json_create_without_jq_test
 run_invalid_yaml_create_test
 run_invalid_json_update_cleanup_test
+run_invalid_yaml_update_cleanup_test
 run_python3_fallback_to_uv_test
 run_dry_run_claude_memory_missing_target_count_test
 run_private_host_alias_resolution_test
