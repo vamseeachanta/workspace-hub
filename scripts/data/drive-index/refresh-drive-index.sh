@@ -73,15 +73,18 @@ if ! flock -n 9; then
 fi
 trap 'fail "$TARGET" "line $LINENO: $BASH_COMMAND"' ERR
 
+run_python() {
+  if [[ -x "$UV" ]]; then
+    "$UV" run --with pyyaml "$PY" "$@"
+  else
+    "$PY" "$@"
+  fi
+}
+
 run_builder() {
   local drive="$1"
-  if [[ -x "$UV" ]]; then
-    "$UV" run --with pyyaml "$PY" "$REPO_ROOT/scripts/data/drive-index/build_drive_index.py" \
-      --drive "$drive" --incremental --prune
-  else
-    "$PY" "$REPO_ROOT/scripts/data/drive-index/build_drive_index.py" \
-      --drive "$drive" --incremental --prune
-  fi
+  run_python "$REPO_ROOT/scripts/data/drive-index/build_drive_index.py" \
+    --drive "$drive" --incremental --prune
 }
 
 case "$TARGET" in
@@ -94,15 +97,21 @@ case "$TARGET" in
     output="$(run_builder dde)"
     ;;
   cad)
-    mkdir -p /mnt/ace/_cad-index  # abs-path-allowed
+    cad_root="${DRIVE_INDEX_CAD_ROOT:-}"
+    if [[ -z "$cad_root" ]]; then
+      cad_root="$(run_python -c 'import sys, yaml; print(yaml.safe_load(open(sys.argv[1]))["drives"]["ace"]["canonical_prefix"])' \
+        "$REPO_ROOT/scripts/data/drive-index/drive-index-config.yaml")"
+    fi
+    cad_dir="$cad_root/_cad-index"
+    mkdir -p "$cad_dir"
     "$PY" "$REPO_ROOT/scripts/data/drive-index/cad/scan_cad_raw.py" \
-      --root /mnt/ace --out /mnt/ace/_cad-index/cad-raw.tsv  # abs-path-allowed
+      --root "$cad_root" --out "$cad_dir/cad-raw.tsv"
     "$PY" "$REPO_ROOT/scripts/data/drive-index/cad/build_cad_index.py" \
-      --raw /mnt/ace/_cad-index/cad-raw.tsv \  # abs-path-allowed
-      --dedup /mnt/ace/_cad-index/dedup \  # abs-path-allowed
-      --out /mnt/ace/_cad-index/cad-readability-index.tsv  # abs-path-allowed
-    printf '{"index_id":"cad_readability","status":"ok"}\n' > /mnt/ace/_cad-index/refresh-state.json.tmp  # abs-path-allowed
-    mv /mnt/ace/_cad-index/refresh-state.json.tmp /mnt/ace/_cad-index/refresh-state.json  # abs-path-allowed
+      --raw "$cad_dir/cad-raw.tsv" \
+      --dedup "$cad_dir/dedup" \
+      --out "$cad_dir/cad-readability-index.tsv"
+    printf '{"index_id":"cad_readability","status":"ok"}\n' > "$cad_dir/refresh-state.json.tmp"
+    mv "$cad_dir/refresh-state.json.tmp" "$cad_dir/refresh-state.json"
     output="cad refresh complete"
     ;;
 esac
