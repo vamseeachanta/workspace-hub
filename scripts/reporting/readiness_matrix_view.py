@@ -186,6 +186,8 @@ def main(argv: list[str] | None = None) -> int:
         evidence = _read_json(args.evidence)
         renderer = render_json if args.format == "json" else render_html
         content = renderer(registry, evidence)
+        # Reject unpaired surrogates before exclusive creation reserves the path.
+        content.encode("utf-8")
         with args.output.open("x", encoding="utf-8", newline="\n") as output:
             output.write(content)
     except (OSError, ValueError, RecursionError):

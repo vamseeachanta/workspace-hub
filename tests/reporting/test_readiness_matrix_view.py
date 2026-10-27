@@ -227,8 +227,8 @@ def test_invalid_summaries_are_rejected(registry, bad):
 def _inputs(tmp_path, registry, evidence):
     registry_path = tmp_path / "synthetic-registry.json"
     evidence_path = tmp_path / "synthetic-evidence.json"
-    registry_path.write_text(json.dumps(registry), encoding="utf-8")
-    evidence_path.write_text(json.dumps(evidence), encoding="utf-8")
+    registry_path.write_text(json.dumps(registry), encoding="utf-8", newline="\n")
+    evidence_path.write_text(json.dumps(evidence), encoding="utf-8", newline="\n")
     return registry_path, evidence_path
 
 
@@ -252,9 +252,9 @@ def test_cli_generates_only_explicit_output_and_preserves_caller(
     metadata = caller / ".git"
     metadata.mkdir(parents=True)
     sentinel = metadata / "HEAD"
-    sentinel.write_text("caller metadata\n", encoding="utf-8")
+    sentinel.write_text("caller metadata\n", encoding="utf-8", newline="\n")
     marker = caller / "keep.txt"
-    marker.write_text("caller file\n", encoding="utf-8")
+    marker.write_text("caller file\n", encoding="utf-8", newline="\n")
     paths = (registry_path, evidence_path, sentinel, marker)
     before = {path: _snapshot(path) for path in paths}
     monkeypatch.chdir(caller)
@@ -274,10 +274,10 @@ def test_cli_generates_only_explicit_output_and_preserves_caller(
 def test_cli_never_overwrites_caller_files(tmp_path, registry, evidence, target, capsys):
     registry_path, evidence_path = _inputs(tmp_path, registry, evidence)
     original = tmp_path / "keep.txt"
-    original.write_text("preserve\n", encoding="utf-8")
+    original.write_text("preserve\n", encoding="utf-8", newline="\n")
     output = tmp_path / "matrix.json"
     if target == "existing":
-        output.write_text("existing\n", encoding="utf-8")
+        output.write_text("existing\n", encoding="utf-8", newline="\n")
     elif target == "registry":
         output = registry_path
     elif target == "evidence":
@@ -297,7 +297,7 @@ def test_cli_never_overwrites_caller_files(tmp_path, registry, evidence, target,
 @pytest.mark.parametrize("raw", ['{"batch": {}, "batch": {}}', '{"value": NaN}', '[', '[]'])
 def test_cli_rejects_ambiguous_or_invalid_input(tmp_path, registry, evidence, raw):
     registry_path, evidence_path = _inputs(tmp_path, registry, evidence)
-    registry_path.write_text(raw, encoding="utf-8")
+    registry_path.write_text(raw, encoding="utf-8", newline="\n")
     output = tmp_path / "matrix.json"
     assert view.main(_args(registry_path, evidence_path, output)) == 1
     assert not output.exists()
@@ -305,10 +305,44 @@ def test_cli_rejects_ambiguous_or_invalid_input(tmp_path, registry, evidence, ra
 
 def test_cli_invalid_evidence_leaves_no_output(tmp_path, registry, evidence):
     registry_path, evidence_path = _inputs(tmp_path, registry, evidence)
-    evidence_path.write_text('{"batch": {"status": "ready"}}', encoding="utf-8")
+    evidence_path.write_text(
+        '{"batch": {"status": "ready"}}', encoding="utf-8", newline="\n"
+    )
     output = tmp_path / "matrix.json"
     assert view.main(_args(registry_path, evidence_path, output)) == 1
     assert not output.exists()
+
+
+@pytest.mark.parametrize("format_name", ["json", "html"])
+@pytest.mark.parametrize("surrogate", ["\ud800", "\udfff"])
+@pytest.mark.parametrize("field", ["role", "task_classes", "evidence_refs"])
+def test_cli_surrogates_leave_no_output(
+    tmp_path, registry, evidence, format_name, surrogate, field, capsys
+):
+    if field == "role":
+        registry[surrogate] = registry.pop("review")
+    elif field == "task_classes":
+        registry["batch"][field] = [surrogate]
+    else:
+        evidence["batch"]["verification_refs"].append(surrogate)
+    registry_path, evidence_path = _inputs(tmp_path, registry, evidence)
+    output = tmp_path / f"matrix.{format_name}"
+    assert view.main(_args(registry_path, evidence_path, output, format_name)) == 1
+    assert not output.exists()
+    assert capsys.readouterr().out == "view generation failed\n"
+    # Corrected input can reuse the destination without removing caller data.
+    registry_path, evidence_path = _inputs(tmp_path, {}, {})
+    assert view.main(_args(registry_path, evidence_path, output, format_name)) == 0
+
+
+@pytest.mark.parametrize("format_name", ["json", "html"])
+def test_cli_valid_unicode_is_preserved(tmp_path, registry, evidence, format_name):
+    text = "\u03bb\U0001f680"
+    registry["batch"]["task_classes"] = [text]
+    registry_path, evidence_path = _inputs(tmp_path, registry, evidence)
+    output = tmp_path / f"matrix.{format_name}"
+    assert view.main(_args(registry_path, evidence_path, output, format_name)) == 0
+    assert text in output.read_text(encoding="utf-8")
 
 
 def test_cli_dangling_symlink_is_preserved(tmp_path, registry, evidence):
