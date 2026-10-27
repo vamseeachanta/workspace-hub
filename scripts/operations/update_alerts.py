@@ -77,7 +77,13 @@ def _valid_ack(value: object) -> bool:
 
 
 def _distinct_paths(events: Path, acknowledgements: Path) -> None:
-    if events.resolve() == acknowledgements.resolve() or (
+    try:
+        resolved_events = events.resolve()
+        resolved_acknowledgements = acknowledgements.resolve()
+    except (OSError, RuntimeError):
+        # Python versions differ in the exception used for a symlink loop.
+        raise ValueError("journal path resolution failed") from None
+    if resolved_events == resolved_acknowledgements or (
         events.exists() and acknowledgements.exists() and events.samefile(acknowledgements)
     ):
         raise ValueError("journal paths must be distinct")

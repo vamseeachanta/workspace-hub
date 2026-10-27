@@ -35,7 +35,7 @@ ACK_AT = "2026-01-02T00:00:00Z"
 def journals(tmp_path):
     events = tmp_path / "notifications.jsonl"
     acknowledgements = tmp_path / "acknowledgements.jsonl"
-    events.write_text(json.dumps(FAILURE) + "\n", encoding="utf-8")
+    events.write_text(json.dumps(FAILURE) + "\n", encoding="utf-8", newline="\n")
     return events, acknowledgements
 
 
@@ -68,14 +68,14 @@ def test_event_journal_is_preserved(journals):
     alert, = pending(journals)
     alerts.acknowledge(*journals, alert["id"], ACK_AT)
     assert journals[0].read_bytes() == before
-    assert json.loads(journals[1].read_text()) == {
+    assert json.loads(journals[1].read_text(encoding="utf-8")) == {
         "id": alert["id"], "acknowledged_at": ACK_AT,
     }
 
 
 def test_repeated_ingestion_uses_content_identity(journals):
     original, = pending(journals)
-    with journals[0].open("a", encoding="utf-8") as stream:
+    with journals[0].open("a", encoding="utf-8", newline="\n") as stream:
         stream.write(json.dumps(FAILURE, sort_keys=True, indent=None) + "\n")
     assert pending(journals) == [original]
     alerts.acknowledge(*journals, original["id"], ACK_AT)
@@ -85,7 +85,7 @@ def test_repeated_ingestion_uses_content_identity(journals):
 def test_distinct_failures_sharing_a_job_label(journals):
     first, = pending(journals)
     other = dict(FAILURE, failure="synthetic rollback rejected", rollback="manual review required")
-    with journals[0].open("a", encoding="utf-8") as stream:
+    with journals[0].open("a", encoding="utf-8", newline="\n") as stream:
         stream.write(json.dumps(other) + "\n")
     first_again, second = pending(journals)
     assert first_again == first
@@ -97,7 +97,7 @@ def test_distinct_failures_sharing_a_job_label(journals):
 
 def test_success_does_not_clear_a_failure(journals):
     alert, = pending(journals)
-    with journals[0].open("a", encoding="utf-8") as stream:
+    with journals[0].open("a", encoding="utf-8", newline="\n") as stream:
         stream.write(json.dumps(dict(FAILURE, status="pass")) + "\n")
     assert pending(journals) == [alert]
 
@@ -112,16 +112,21 @@ def test_empty_journals_and_missing_acknowledgements(journals):
 
 @pytest.mark.parametrize("record", [
     b"not-json", b"[]", b"null", b"{}", b"\xff", b"",
-    b'{"job":"update-check","status":"unknown","ts":"fixed"}',
-    b'{"job":"update-check","status":"fail","ts":"fixed","tool":[]}',
-    b'{"job":"update-check","status":"fail","ts":"fixed","failure":NaN}',
-    b'{"job":"update-check","status":"pass","status":"fail","ts":"fixed"}',
+    json.dumps(dict(FAILURE, status="unknown")).encode("utf-8"),
+    json.dumps(dict(FAILURE, ts="invalid")).encode("utf-8"),
+    *[json.dumps(dict(FAILURE, **{field: []})).encode("utf-8")
+      for field in ("source", "tool", "failure", "rollback", "details")],
+    *[json.dumps(dict(FAILURE, extra=value)).encode("utf-8")
+      for value in (float("nan"), float("inf"), float("-inf"))],
+    # The duplicate has the same value: only duplicate-key rejection invalidates it.
+    ('{"job":"update-check",' + json.dumps(FAILURE)[1:]).encode("utf-8"),
 ])
 def test_malformed_records_are_explicit_without_payloads(journals, record):
+    original = pending(journals)
     with journals[0].open("ab") as stream:
         stream.write(record + b"\n")
     view = alerts.read_pending(*journals)
-    assert len(view["pending"]) == 1
+    assert view["pending"] == original
     assert view["diagnostic_count"] == 1
     assert view["diagnostics"] == [
         {"journal": "notifications", "line": 2, "reason": "invalid event"},
@@ -130,7 +135,7 @@ def test_malformed_records_are_explicit_without_payloads(journals, record):
 
 def test_malformed_acknowledgements_cannot_hide_alerts(journals):
     alert, = pending(journals)
-    journals[1].write_text(json.dumps({"id": alert["id"]}) + "\n", encoding="utf-8")
+    journals[1].write_text(json.dumps({"id": alert["id"]}) + "\n", encoding="utf-8", newline="\n")
     view = alerts.read_pending(*journals)
     assert view["pending"] == [alert]
     assert view["diagnostics"] == [
@@ -208,7 +213,7 @@ def test_cli_reports_safe_io_errors(tmp_path):
 
 
 def test_cli_malformed_records_exit_nonzero(journals):
-    journals[0].write_text("sensitive-placeholder\n", encoding="utf-8")
+    journals[0].write_text("sensitive-placeholder\n", encoding="utf-8", newline="\n")
     result = subprocess.run(
         [sys.executable, str(SCRIPT), "--notifications", str(journals[0]),
          "--acknowledgements", str(journals[1]), "pending"],
@@ -233,7 +238,7 @@ def test_legacy_writer_fields_are_supported(journals):
         "source": "maintenance", "job": "update-check", "status": "fail",
         "ts": "2026-01-01T00:00:00Z", "details": "synthetic failure",
     }
-    journals[0].write_text(json.dumps(event) + "\n", encoding="utf-8")
+    journals[0].write_text(json.dumps(event) + "\n", encoding="utf-8", newline="\n")
     alert, = pending(journals)
     assert alert["event"] == event
     assert "rollback" not in alert["event"]
@@ -242,7 +247,7 @@ def test_legacy_writer_fields_are_supported(journals):
 def test_changed_timestamp_is_a_distinct_failure(journals):
     first, = pending(journals)
     later = dict(FAILURE, ts="2026-01-02T00:00:00Z")
-    with journals[0].open("a", encoding="utf-8") as stream:
+    with journals[0].open("a", encoding="utf-8", newline="\n") as stream:
         stream.write(json.dumps(later) + "\n")
     alerts.acknowledge(*journals, first["id"], ACK_AT)
     remaining, = pending(journals)
@@ -260,7 +265,7 @@ def test_diagnostics_are_bounded(journals):
 
 
 def test_success_only_journal_has_no_alerts(journals):
-    journals[0].write_text(json.dumps(dict(FAILURE, status="pass")) + "\n", encoding="utf-8")
+    journals[0].write_text(json.dumps(dict(FAILURE, status="pass")) + "\n", encoding="utf-8", newline="\n")
     assert pending(journals) == []
 
 
@@ -271,7 +276,7 @@ def test_success_only_journal_has_no_alerts(journals):
 ])
 def test_invalid_acknowledgement_records_are_explicit(journals, bad_record):
     original = pending(journals)
-    journals[1].write_text(bad_record + "\n", encoding="utf-8")
+    journals[1].write_text(bad_record + "\n", encoding="utf-8", newline="\n")
     view = alerts.read_pending(*journals)
     assert view["pending"] == original
     assert view["diagnostic_count"] == 1
@@ -281,7 +286,7 @@ def test_invalid_acknowledgement_records_are_explicit(journals, bad_record):
 def test_acknowledgement_replay_survives_event_reformatting(journals):
     alert, = pending(journals)
     alerts.acknowledge(*journals, alert["id"], ACK_AT)
-    journals[0].write_text(json.dumps(FAILURE, sort_keys=True) + "\n", encoding="utf-8")
+    journals[0].write_text(json.dumps(FAILURE, sort_keys=True) + "\n", encoding="utf-8", newline="\n")
     assert pending(journals) == []
 
 
@@ -291,3 +296,33 @@ def test_cli_requires_explicit_paths():
     assert result.returncode == 2
     assert result.stdout == ""
     assert result.stderr == "error: invalid arguments; use --help\n"
+
+
+@pytest.mark.parametrize("role", ["notifications", "acknowledgements"])
+@pytest.mark.parametrize("command", ["pending", "ack"])
+def test_cli_contains_symlink_resolution_errors(journals, role, command):
+    identity = pending(journals)[0]["id"]
+    journals[1].write_text(
+        json.dumps({"id": "sha256:" + "a" * 64, "acknowledged_at": ACK_AT}) + "\n",
+        encoding="utf-8", newline="\n",
+    )
+    before = [path.read_bytes() for path in journals]
+    index = 0 if role == "notifications" else 1
+    original = journals[index]
+    preserved = original.with_suffix(".preserved")
+    original.rename(preserved)
+    original.symlink_to(original.name)
+    args = [sys.executable, str(SCRIPT), "--notifications", str(journals[0]),
+            "--acknowledgements", str(journals[1]), command]
+    if command == "ack":
+        args += [identity, "--at", ACK_AT]
+    result = subprocess.run(args, capture_output=True, text=True, encoding="utf-8")
+    assert result.returncode == 1
+    assert result.stdout == ""
+    assert "Traceback" not in result.stderr
+    assert str(original) not in result.stderr
+    assert result.stderr == "error: journal path resolution failed\n"
+    assert original.is_symlink()
+    assert original.readlink() == Path(original.name)
+    assert preserved.read_bytes() == before[index]
+    assert journals[1 - index].read_bytes() == before[1 - index]
