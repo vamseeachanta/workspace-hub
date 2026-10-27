@@ -10,6 +10,37 @@ generation, integration and publication authority remain outside this slice.
 | Revision | Date | What changed and why |
 | --- | --- | --- |
 | Initial | 2026-10-26 | Defined the standalone contract and synthetic examples for consumers. |
+| Editorial | 2026-10-27 | Added Plan-lite scope, acceptance criteria and validation commands to make the structural boundary explicit. |
+
+## Plan-lite
+
+The standalone slice will cover three paths:
+
+- `config/reporting/weekly-review-run.schema.json` will define the versioned
+  structural contract.
+- `docs/examples/weekly-review-run-format.md` will document the contract,
+  synthetic examples, compatibility and consumer responsibilities.
+- `tests/reporting/test_weekly_review_run_schema.py` will exercise independent
+  literal vectors and the documented example validator.
+
+Structural acceptance will require the exact version `1.0.0`, closed objects,
+required fields, declared types and enums, nonblank text, RFC3339 timestamps
+with format assertions enabled, and rejection of identical duplicate records.
+The examples will include valid minimal and degraded artifacts and targeted
+invalid version and status cases. Evidence integrity, timestamp ordering,
+identifier uniqueness, reference resolution and publication permission will
+remain consumer responsibilities.
+
+Validation will run from the repository root with cached dependencies; temporary
+test output will use separate scratch directories through `--basetemp`:
+
+```bash
+uv run --offline --no-project --with pytest --with pyyaml --with 'jsonschema[format-nongpl]' python -m pytest tests/reporting/test_weekly_review_run_schema.py -q -rA -p no:cacheprovider --basetemp="$TMPDIR/weekly-review-focused"
+uv run --offline --no-project --with pytest --with pyyaml --with 'jsonschema[format-nongpl]' python -m pytest tests/analysis/test_readiness_bundle_schema.py -q -rA -p no:cacheprovider --basetemp="$TMPDIR/weekly-review-readiness"
+uv run --offline --no-project python scripts/enforcement/check-engineering-register.py docs/examples/weekly-review-run-format.md
+bash scripts/enforcement/check-model-id-sourcing.sh config/reporting/weekly-review-run.schema.json
+git diff --check
+```
 
 ## Contract and numeric basis
 
