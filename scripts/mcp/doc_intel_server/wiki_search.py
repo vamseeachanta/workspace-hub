@@ -92,41 +92,63 @@ def _child(parent: int, name: str, device: int, *, directory: bool):
 
 
 def _pages(directory: int, prefix: str, device: int):
+    # Each frame owns only its child context; the caller owns the initial fd.
+    # Keep ancestors pinned to preserve no-follow/device checks during descent.
+    stack = [(directory, prefix, None, None)]
     try:
-        names = os.listdir(directory)
-    except OSError:
-        return
-    for name in names:
-        if not _visible(name):
-            continue
-        try:
-            info = os.stat(name, dir_fd=directory, follow_symlinks=False)
-        except OSError:
-            continue
-        relative = f"{prefix}/{name}"
-        if stat.S_ISDIR(info.st_mode):
-            with _child(directory, name, device, directory=True) as child:
-                if child is not None:
-                    yield from _pages(child, relative, device)
-        elif stat.S_ISREG(info.st_mode) and Path(name).suffix.casefold() == ".md":
-            with _child(directory, name, device, directory=False) as child:
-                if child is None:
-                    continue
+        while stack:
+            current, current_prefix, names, context = stack[-1]
+            if names is None:
                 try:
-                    # Read at most the size observed on the pinned regular file.
-                    # Remaining bytes, rather than a tuning constant, bound reads.
-                    remaining = os.fstat(child).st_size
-                    chunks = []
-                    while remaining:
-                        chunk = os.read(child, remaining)
-                        if not chunk:
-                            break
-                        chunks.append(chunk)
-                        remaining -= len(chunk)
-                    text = b"".join(chunks).decode("utf-8", errors="replace")
+                    names = iter(os.listdir(current))
                 except OSError:
-                    continue
-                yield relative, text
+                    names = iter(())
+                stack[-1] = (current, current_prefix, names, context)
+            name = next(names, None)
+            if name is None:
+                stack.pop()
+                if context is not None:
+                    context.__exit__(None, None, None)
+                continue
+            if not _visible(name):
+                continue
+            try:
+                info = os.stat(name, dir_fd=current, follow_symlinks=False)
+            except OSError:
+                continue
+            relative = f"{current_prefix}/{name}"
+            if stat.S_ISDIR(info.st_mode):
+                context = _child(current, name, device, directory=True)
+                child = context.__enter__()
+                if child is None:
+                    context.__exit__(None, None, None)
+                else:
+                    stack.append((child, relative, None, context))
+            elif stat.S_ISREG(info.st_mode) and Path(name).suffix.casefold() == ".md":
+                with _child(current, name, device, directory=False) as child:
+                    if child is None:
+                        continue
+                    try:
+                        # Read at most the size observed on the pinned regular file.
+                        # Remaining bytes, rather than a tuning constant, bound reads.
+                        remaining = os.fstat(child).st_size
+                        chunks = []
+                        while remaining:
+                            chunk = os.read(child, remaining)
+                            if not chunk:
+                                break
+                            chunks.append(chunk)
+                            remaining -= len(chunk)
+                        text = b"".join(chunks).decode("utf-8", errors="replace")
+                    except OSError:
+                        continue
+                    yield relative, text
+    finally:
+        # Generator closure and unexpected failures release every pinned child.
+        while stack:
+            context = stack.pop()[3]
+            if context is not None:
+                context.__exit__(None, None, None)
 
 
 def _excerpt(text: str, start: int, budget: int) -> str:

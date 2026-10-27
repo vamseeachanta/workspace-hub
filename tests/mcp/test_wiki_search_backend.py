@@ -13,6 +13,7 @@ from __future__ import annotations
 import importlib.util
 import os
 import stat
+import sys
 from collections import Counter
 from pathlib import Path
 from types import SimpleNamespace
@@ -31,7 +32,7 @@ wiki_search = BACKEND.wiki_search
 def page(root, relative, content):
     target = root / relative
     target.parent.mkdir(parents=True, exist_ok=True)
-    target.write_text(content, encoding="utf-8")
+    target.write_text(content, encoding="utf-8", newline="\n")
     return target
 
 
@@ -369,3 +370,66 @@ def test_read_only_preserves_bytes_entries_and_metadata(tmp_path, monkeypatch):
     assert search(root, "missing") == []
     assert search(root, top_k=0) == []
     assert snapshot(tmp_path) == before
+
+
+@pytest.mark.parametrize("mode", ["search", "close", "error"])
+def test_deep_tree_closes_descriptors(tmp_path, monkeypatch, mode):
+    shallow = page(tmp_path, "ocean/wiki/shallow.md", "tide")
+    # Exceed the interpreter limit without changing it; short names keep the
+    # synthetic tree below the filesystem path-length limit.
+    depth = sys.getrecursionlimit() + 10
+    directories = [os.open(shallow.parent, os.O_RDONLY | os.O_DIRECTORY)]
+    try:
+        for _ in range(depth):
+            os.mkdir("d", dir_fd=directories[-1])
+            directories.append(os.open("d", os.O_RDONLY | os.O_DIRECTORY,
+                                       dir_fd=directories[-1]))
+        if mode == "close":
+            os.link(shallow, "deep.md", dst_dir_fd=directories[-1])
+        real_open, real_close = os.open, os.close
+        opened, closed = [], []
+
+        def track_open(*args, **kwargs):
+            fd = real_open(*args, **kwargs)
+            opened.append(fd)
+            return fd
+
+        def track_close(fd):
+            closed.append(fd)
+            return real_close(fd)
+
+        with monkeypatch.context() as patch:
+            patch.setattr(os, "open", track_open)
+            patch.setattr(os, "close", track_close)
+            if mode == "search":
+                # One shallow matching page remains available beyond deep descent.
+                assert [row["page"] for row in search(tmp_path, top_k=1)] == [
+                    "ocean/wiki/shallow.md"]
+            else:
+                deepest = os.fstat(directories[-1]).st_ino
+                real_listdir = os.listdir
+
+                def deepest_entries(fd):
+                    if os.fstat(fd).st_ino == deepest and mode == "error":
+                        raise RuntimeError("synthetic enumeration failure")
+                    # Descend before yielding the shallow result.
+                    return sorted(real_listdir(fd))
+
+                patch.setattr(os, "listdir", deepest_entries)
+                pages = BACKEND._pages(directories[0], "ocean/wiki",
+                                       os.fstat(directories[0]).st_dev)
+                if mode == "error":
+                    with pytest.raises(RuntimeError, match="synthetic enumeration failure"):
+                        list(pages)
+                else:
+                    assert next(pages)[0].endswith("/deep.md")
+                    pages.close()
+            assert Counter(opened) == Counter(closed)
+    finally:
+        # Iterative fixture teardown avoids recursion in temporary-tree cleanup.
+        if mode == "close":
+            os.unlink("deep.md", dir_fd=directories[-1])
+        while len(directories) > 1:
+            os.close(directories.pop())
+            os.rmdir("d", dir_fd=directories[-1])
+        os.close(directories.pop())
