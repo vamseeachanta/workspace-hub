@@ -7,6 +7,17 @@ No expected result is calculated from the wrapper's implementation.
 
 All wrapper commands, including utility commands, resolve to audited stubs. Only
 this test driver uses read-only Git to compare the real checkout before/after.
+
+Plan-lite
+---------
+Scope: this regression module only; production code will remain unchanged.
+Acceptance: duplicate/error counters and exclusive publication messages will
+match the independent expectations above; unexpected stub calls will fail.
+Verification: the following command will run the 15 synthetic regression cases,
+with <scratch> replaced by a temporary directory outside the checkout:
+UV_OFFLINE=1 uv run --no-project --with pytest python -m pytest tests/knowledge/test_wiki_ingest_cron_status.py -q -rA -p no:cacheprovider --basetemp=<scratch>
+Limit: synthetic helpers do not validate actual ingest, remote publication or
+scheduler integration.
 """
 
 from __future__ import annotations
