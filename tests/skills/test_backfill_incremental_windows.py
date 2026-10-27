@@ -5,6 +5,12 @@ specified by #3138 and exercised in test_backfill_skill_invocations.py. Dates
 below are invented fixture values, not observations from retained transcripts.
 Expected keys and filenames are written explicitly, independently of the parser.
 
+Plan-lite: the proposed test-only scope will cover overlapping windows, an
+appended transcript, and an identical rerun. Assertions will compare explicit
+literal keys and filenames, retained output prefixes, and complete snapshots.
+The focused check will run both backfill test modules with an external basetemp:
+    uv run --no-project --with pytest --with pyyaml --with jsonschema python -m pytest tests/skills/test_backfill_skill_invocations.py tests/skills/test_backfill_incremental_windows.py -q -rA -p no:cacheprovider --basetemp="$TMPDIR/../bt-focused"
+
 Hand calculation for the overlapping example: the first May window admits the
 May 1 alpha row and the May 2 alpha/beta rows (three keys). The next window
 retains those rows and adds the May 3 row plus a distinct secondary-source key
