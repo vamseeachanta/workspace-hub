@@ -1,8 +1,12 @@
 """Offline argv contract for the publisher's sparse-checkout boundary.
 
-Expected tokens are transcribed from scripts/readiness/publish-equality.sh,
-attempt(), at the sparse-checkout call. This tests argument construction only;
-the conversion below is deliberately synthetic, not native MSYS behavior.
+Independent basis: issue #3562, Problem, Scope and Evidence. Its observed
+relative pattern `.claude/state/` materialized evidence, reports and readiness
+files; its scope permits relative tokens without changing publication behavior.
+The expected directories below map those three artifact groups to repository
+locations. Each uses the demonstrated relative directory form and trailing slash.
+The literals are fixed from that requirement, not read from the publisher.
+This tests argument construction only; conversion is synthetic, not native MSYS.
 """
 
 from __future__ import annotations
@@ -19,7 +23,7 @@ import pytest
 # Root traversal and subprocess timeout follow test_publish_equality.py's harness.
 SCRIPT = Path(__file__).resolve().parents[2] / "scripts/readiness/publish-equality.sh"
 TIMEOUT = 120
-# Independent literal oracle: publish-equality.sh, attempt(), sparse-checkout set.
+# Literal oracle derived from issue #3562 as documented above.
 SPARSE_ARGS = [
     "sparse-checkout", "set", "--no-cone",
     ".claude/state/", "docs/reports/", "scripts/readiness/",
@@ -58,7 +62,7 @@ elif raw[:2] == ["-C", repo] and command[:1] == ["worktree"]:
             kind = "bootstrap"
 elif raw[:1] == ["-C"] and raw[1].startswith(wt_root) and command[:1] == ["sparse-checkout"]:
     kind = "stop"
-with open(os.environ["ARGV_LOG"], "a", encoding="utf-8") as log:
+with open(os.environ["ARGV_LOG"], "a", encoding="utf-8", newline="\n") as log:
     log.write(json.dumps({"raw": raw, "converted": converted, "kind": kind}) + "\n")
 if kind == "bootstrap":
     if command == ["rev-parse", "--show-toplevel"]:
@@ -79,18 +83,18 @@ def probe(tmp_path, request):
     state = root / "evidence"
     state.mkdir()
     # Only existence is inspected before sparse-checkout; no evidence is copied.
-    (state / "equality-test.yaml").write_text("", encoding="utf-8")
+    (state / "equality-test.yaml").write_text("", encoding="utf-8", newline="\n")
     temp = root / "temporary files"
     temp.mkdir()
     bindir = root / "bin"
     bindir.mkdir()
     git = bindir / "git"
-    git.write_text(f"#!{sys.executable}\n" + GIT_STUB, encoding="utf-8")
+    git.write_text(f"#!{sys.executable}\n" + GIT_STUB, encoding="utf-8", newline="\n")
     # Permission bits: user rwx (7), group rx (5), others rx (5).
     git.chmod(0o755)
     # Do not query the real host, read identity files or invoke notification code.
     hostname = bindir / "hostname"
-    hostname.write_text("#!/bin/sh\nprintf '%s\\n' test\n", encoding="utf-8")
+    hostname.write_text("#!/bin/sh\nprintf '%s\\n' test\n", encoding="utf-8", newline="\n")
     hostname.chmod(0o755)
     log = root / "argv.jsonl"
     # An allowlisted environment excludes inherited Git bindings, shell startup
@@ -118,7 +122,7 @@ def probe(tmp_path, request):
         # One attempt, no delay: deliberately fail at sparse-checkout, then exit.
         assert result.returncode == 1, result
         assert "could not publish" in result.stderr
-        records = [json.loads(line) for line in log.read_text().splitlines()]
+        records = [json.loads(line) for line in log.read_text(encoding="utf-8").splitlines()]
         assert [record["kind"] for record in records] == [
             "bootstrap", "bootstrap", "bootstrap", "bootstrap",
             "stop", "bootstrap", "bootstrap",
@@ -164,7 +168,7 @@ def test_sparse_tokens_survive_simulated_conversion(probe):
         capture_output=True, text=True, timeout=TIMEOUT,
     )
     assert result.returncode == 1
-    control = json.loads(log.read_text().splitlines()[-1])
+    control = json.loads(log.read_text(encoding="utf-8").splitlines()[-1])
     assert control["kind"] == "stop"
     assert control["raw"] == ["-C", worktree, *slash_args]
     assert control["converted"][2:] == [
@@ -189,6 +193,6 @@ def test_sparse_tokens_survive_simulated_conversion(probe):
             capture_output=True, text=True, timeout=TIMEOUT,
         )
         assert rejected.returncode == 1
-        record = json.loads(guard_log.read_text().splitlines()[-1])
+        record = json.loads(guard_log.read_text(encoding="utf-8").splitlines()[-1])
         assert record["kind"] == "forbidden"
         assert record["raw"][2:] == command
