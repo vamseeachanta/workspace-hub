@@ -101,7 +101,8 @@ def test_evaluate_preserves_inputs():
     limits = {
         "max_total_bytes": 20,
         "max_file_bytes": 5,
-        "exceptions": {"data/a": 7},
+        # Nonlexical order exposes in-place sorting; data/z is absent from entries.
+        "exceptions": {"data/z": 8, "data/a": 7},
     }
     entries_before = deepcopy(entries)
     limits_before = deepcopy(limits)
