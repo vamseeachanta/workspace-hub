@@ -3,6 +3,14 @@
 
 Usage: cadence_retention.py --report-root REPORTS --config CONFIG.json
 
+Plan-lite
+---------
+Scope: a read-only planning core with explicit configuration and deterministic
+JSON output. Validation: independent boundary tests cover retention counts,
+period ordering, invalid inputs, unsafe paths and unchanged fixture metadata.
+Limits: archival execution, production configuration rollout and scheduling are
+outside this slice; any future executor must revalidate its inputs and paths.
+
 Configuration is an object containing only a ``reports`` array. Each registration
 has exactly ``pattern``, ``cadence`` and ``keep`` fields, for example::
 
