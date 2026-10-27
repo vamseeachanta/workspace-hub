@@ -133,3 +133,55 @@ def test_global_safe_load_behavior_unchanged(tmp_path):
     source = "setting: original\nsetting: replacement\n"
     assert_rejected_before_caching(tmp_path, source)
     assert yaml.safe_load(source) == {"setting": "replacement"}
+
+
+@pytest.mark.parametrize(
+    "source",
+    [
+        "true: original\nyes: replacement\n",
+        "1: original\n0x1: replacement\n",
+        ".nan: original\n.NaN: replacement\n",
+        "null: original\n~: replacement\n",
+    ],
+    ids=["boolean", "integer", "nan", "null"],
+)
+def test_duplicate_resolved_scalar_key_rejected(tmp_path, source):
+    assert_rejected_before_caching(tmp_path, source)
+
+
+def test_distinct_typed_keys_load(tmp_path):
+    config_file = tmp_path / "config.yaml"
+    config_file.write_text('1: numeric\n"1": text\n', encoding="utf-8")
+
+    assert ConfigLoader().load(config_file) == {1: "numeric", "1": "text"}
+
+
+def test_recursive_alias_loads(tmp_path):
+    config_file = tmp_path / "config.yaml"
+    config_file.write_text("section: &section {self: *section}\n", encoding="utf-8")
+
+    config = ConfigLoader().load(config_file)
+
+    assert set(config) == {"section"}
+    assert set(config["section"]) == {"self"}
+    assert config["section"]["self"] is config["section"]
+
+
+def test_disjoint_chained_merges_load(tmp_path):
+    config_file = tmp_path / "config.yaml"
+    config_file.write_text(
+        "base: &base {left: original}\n"
+        "middle: &middle {<<: *base, right: replacement}\n"
+        "section: {<<: *middle, local: retained}\n",
+        encoding="utf-8",
+    )
+
+    assert ConfigLoader().load(config_file) == {
+        "base": {"left": "original"},
+        "middle": {"left": "original", "right": "replacement"},
+        "section": {
+            "left": "original",
+            "right": "replacement",
+            "local": "retained",
+        },
+    }
