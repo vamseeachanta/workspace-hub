@@ -49,6 +49,13 @@ import yaml
 SCHEMA_VERSION = "1.1.3"
 
 
+class ValueDumper(yaml.SafeDumper):
+    """Serialize validated acyclic metadata independently of shared identity."""
+
+    def ignore_aliases(self, data):
+        return True
+
+
 class UniqueKeyLoader(yaml.SafeLoader):
     pass
 
@@ -159,12 +166,12 @@ def seed_registry(rows: list[dict], *, generated: str, repo_root: Path) -> str:
         "assets": sorted(rows, key=lambda row: row["asset_key"]),
     }
     try:
-        text = yaml.safe_dump(document, sort_keys=True, allow_unicode=True)
+        text = yaml.dump(document, Dumper=ValueDumper, sort_keys=True, allow_unicode=True)
     except yaml.YAMLError as exc:
         raise ValueError("rows must contain YAML-compatible metadata") from exc
     with tempfile.TemporaryDirectory(prefix="accessibility-seed-") as temporary:
         path = Path(temporary) / "registry.yaml"
-        path.write_text(text, encoding="utf-8")
+        path.write_text(text, encoding="utf-8", newline="\n")
         errors = validator.validate(path)
     if errors:
         raise ValueError("; ".join(errors))
@@ -179,7 +186,9 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--output", required=True, type=Path)
     args = parser.parse_args(argv)
     try:
-        if args.inventory.resolve() == args.output.resolve():
+        if args.inventory.resolve() == args.output.resolve() or (
+            args.output.exists() and args.output.samefile(args.inventory)
+        ):
             raise ValueError("output must differ from inventory")
         with args.inventory.open(encoding="utf-8") as stream:
             inventory = yaml.load(stream, Loader=UniqueKeyLoader)
@@ -188,7 +197,7 @@ def main(argv: list[str] | None = None) -> int:
         text = seed_registry(
             inventory["rows"], generated=args.generated, repo_root=args.repo_root
         )
-        args.output.write_text(text, encoding="utf-8")
+        args.output.write_text(text, encoding="utf-8", newline="\n")
     except (OSError, ValueError, yaml.YAMLError) as exc:
         print(f"Cannot seed registry: {exc}", file=sys.stderr)
         return 1  # CLI failure status, matching the existing validator.

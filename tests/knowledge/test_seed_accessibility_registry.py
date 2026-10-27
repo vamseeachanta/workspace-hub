@@ -40,7 +40,7 @@ def seeder():
 def rows(tmp_path):
     """Hand count: one map plus one registry equals two distinct assets."""
     (tmp_path / "maps").mkdir()
-    (tmp_path / "maps/example.md").write_text("Synthetic map\n", encoding="utf-8")
+    (tmp_path / "maps/example.md").write_text("Synthetic map\n", encoding="utf-8", newline="\n")
     (tmp_path / "catalog").mkdir()
     return [
         {
@@ -87,7 +87,10 @@ def test_seed_output_passes_existing_validator(seeder, rows, tmp_path, monkeypat
     validator = load_module(VALIDATOR)
     monkeypatch.setattr(validator, "REPO_ROOT", tmp_path)
     registry = tmp_path / "generated.yaml"
-    registry.write_text(seeder.seed_registry(rows, generated=GENERATED, repo_root=tmp_path))
+    registry.write_text(
+        seeder.seed_registry(rows, generated=GENERATED, repo_root=tmp_path),
+        encoding="utf-8", newline="\n",
+    )
     assert validator.validate(registry) == []
 
 
@@ -184,28 +187,28 @@ def invoke_cli(tmp_path, inventory, *extra):
     return subprocess.run(
         [sys.executable, str(SCRIPT), "--inventory", str(inventory),
          "--output", str(tmp_path / "generated.yaml"), "--repo-root", str(tmp_path), *extra],
-        capture_output=True, text=True, env=env, check=False,
+        capture_output=True, text=True, encoding="utf-8", env=env, check=False,
     )
 
 
 def test_cli_seeds_only_supplied_rows(rows, tmp_path):
     inventory = tmp_path / "inventory.yaml"
-    inventory.write_text(yaml.safe_dump({"rows": rows}), encoding="utf-8")
+    inventory.write_text(yaml.safe_dump({"rows": rows}), encoding="utf-8", newline="\n")
     # An unrelated file is not an inventory row.
-    (tmp_path / "unlisted.md").write_text("Unlisted\n", encoding="utf-8")
+    (tmp_path / "unlisted.md").write_text("Unlisted\n", encoding="utf-8", newline="\n")
     result = invoke_cli(tmp_path, inventory, "--generated", GENERATED)
     assert result.returncode == 0, result.stderr
     output = (tmp_path / "generated.yaml").read_bytes()
     document = yaml.safe_load(output)
     assert document["assets"] == sorted(rows, key=lambda row: row["asset_key"])
-    inventory.write_text(yaml.safe_dump({"rows": rows[::-1]}), encoding="utf-8")
+    inventory.write_text(yaml.safe_dump({"rows": rows[::-1]}), encoding="utf-8", newline="\n")
     assert invoke_cli(tmp_path, inventory, "--generated", GENERATED).returncode == 0
     assert (tmp_path / "generated.yaml").read_bytes() == output
 
 
 def test_cli_requires_time(rows, tmp_path):
     inventory = tmp_path / "inventory.yaml"
-    inventory.write_text(yaml.safe_dump({"rows": rows}), encoding="utf-8")
+    inventory.write_text(yaml.safe_dump({"rows": rows}), encoding="utf-8", newline="\n")
     result = invoke_cli(tmp_path, inventory)
     assert result.returncode != 0
     assert "--generated" in result.stderr
@@ -234,10 +237,52 @@ def test_cli_invalid_input_preserves_output(rows, tmp_path, problem):
         text = yaml.safe_dump({"rows": rows}) + "rows: []\n"
     else:
         text = yaml.safe_dump({"assets": rows})
-    inventory.write_text(text, encoding="utf-8")
+    inventory.write_text(text, encoding="utf-8", newline="\n")
     result = invoke_cli(tmp_path, inventory, "--generated", GENERATED)
     assert result.returncode != 0
     expected_error = {"missing-provenance": "provenance",
                       "duplicate-field": "duplicate", "wrong-root": "rows"}[problem]
     assert expected_error in result.stderr
     assert output.read_bytes() == b"Existing output\n"
+
+
+def test_cli_hard_link_preserves_inventory_and_output(rows, tmp_path):
+    inventory = tmp_path / "inventory.yaml"
+    output = tmp_path / "generated.yaml"
+    original = yaml.safe_dump({"rows": rows}).encode("utf-8")
+    inventory.write_bytes(original)
+    output.hardlink_to(inventory)
+    result = invoke_cli(tmp_path, inventory, "--generated", GENERATED)
+    assert result.returncode != 0
+    assert "output must differ from inventory" in result.stderr
+    assert inventory.read_bytes() == original
+    assert output.read_bytes() == original
+
+
+@pytest.mark.parametrize("metadata", [{"label": "example"}, ["example"]])
+def test_seed_alias_topology_is_byte_identical(seeder, rows, tmp_path, metadata):
+    for row in rows:
+        row["fields"] = metadata
+    independent = [copy.deepcopy(row) for row in rows]
+    assert rows == independent
+    assert seeder.seed_registry(rows, generated=GENERATED, repo_root=tmp_path) == (
+        seeder.seed_registry(independent, generated=GENERATED, repo_root=tmp_path)
+    )
+
+
+def test_cli_yaml_anchors_are_byte_identical_to_copies(rows, tmp_path):
+    inventory = tmp_path / "inventory.yaml"
+    shared = {"label": "example"}
+    for row in rows:
+        row["fields"] = shared
+    anchored = yaml.safe_dump({"rows": rows})
+    assert "&id" in anchored and "*id" in anchored
+    inventory.write_text(anchored, encoding="utf-8", newline="\n")
+    result = invoke_cli(tmp_path, inventory, "--generated", GENERATED)
+    assert result.returncode == 0, result.stderr
+    output = (tmp_path / "generated.yaml").read_bytes()
+    independent = [copy.deepcopy(row) for row in rows]
+    inventory.write_text(yaml.safe_dump({"rows": independent}), encoding="utf-8", newline="\n")
+    result = invoke_cli(tmp_path, inventory, "--generated", GENERATED)
+    assert result.returncode == 0, result.stderr
+    assert (tmp_path / "generated.yaml").read_bytes() == output
