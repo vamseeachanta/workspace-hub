@@ -65,12 +65,22 @@ def _visible_lines(text: str) -> list[str]:
     """Mask code/comments without moving physical source lines."""
     # Consume outer constructs first: a comment marker inside code is literal,
     # and code delimiters inside a comment cannot begin a new code block.
-    tokens = re.compile(r"^ {0,3}(?:`{3,}|~{3,})[^\n]*|^(?: {4}|\t)[^\n]*|<!--|`+", re.M)
+    boundary = (r"^ {0,3}(?:#{1,6}(?:[ \t]+[^\n]*|$)|(?:`{3,}|~{3,})[^\n]*|"
+                r"(?:[-*_][ \t]*){3,})$|^[ \t]*\r?\n|^[ \t]+\r?$")
+    tokens = re.compile(
+        r"^ {0,3}#{1,6}(?:[ \t]+|$)|^ {0,3}(?:`{3,}|~{3,})[^\n]*|"
+        r"^ {0,3}(?:[-*_][ \t]*){3,}$|^[ \t]*\r?\n|^[ \t]+\r?$|"
+        r"^(?: {4}|\t)[^\n]*|<!--|`+", re.M)
+    paragraph = False
+    paragraph_floor = 0
     masked = []
     position = 0  # Python string offsets begin at zero.
     while match := tokens.search(text, position):
         start, end = match.span()
-        masked.append(text[position:start])
+        gap = text[position:start]
+        masked.append(gap)
+        if text[max(position, paragraph_floor):start].strip():
+            paragraph = True
         token = match.group()
         opening = FENCE.fullmatch(token.rstrip("\r"))
         if opening and not (opening[1].startswith("`") and "`" in opening[2]):
@@ -78,18 +88,42 @@ def _visible_lines(text: str) -> list[str]:
             closing = re.compile(rf"^ {{0,3}}{marker}{{{len(opening[1])},}}[ \t]*\r?$", re.M)
             close = closing.search(text, end)
             end = close.end() if close else len(text)
+            paragraph = False
         elif token == "<!--":
             close = re.search(r"-->", text[end:])
             end = end + close.end() if close else len(text)
         elif re.fullmatch(r"`+", token):
-            # Equal runs close a span; unmatched runs stay literal text.
-            close = re.compile(rf"(?<!`){re.escape(token)}(?!`)").search(text, end)
+            # CommonMark 0.31.2, sections 2.4 and 6.1: escaped openers
+            # are literal; equal runs close spans only inside the same block.
+            slashes = len(text[:start]) - len(text[:start].rstrip("\\"))
+            block = re.compile(boundary, re.M).search(text, end)
+            limit = block.start() if block else len(text)
+            if start < paragraph_floor:
+                limit = min(limit, paragraph_floor - 1)
+            close = (None if slashes % 2 else
+                     re.compile(rf"(?<!`){re.escape(token)}(?!`)").search(text, end, limit))
+            paragraph |= start >= paragraph_floor
             if close is None:
                 masked.append(token)
                 position = end
                 continue
             end = close.end()
-        elif not token.startswith(("    ", "\t")):
+        elif re.fullmatch(r" {0,3}#{1,6}(?:[ \t]+|$)", token):
+            # A heading ends a paragraph but its inline code is still masked.
+            newline = text.find("\n", end)
+            paragraph_floor = newline + 1 if newline >= 0 else len(text) + 1
+            masked.append(token)
+            paragraph = False
+            position = end
+            continue
+        elif re.fullmatch(boundary, token, re.M):
+            masked.append(token)
+            paragraph = False
+            position = end
+            continue
+        elif paragraph or not token.startswith(("    ", "\t")):
+            # CommonMark 0.31.2, section 4.4: indentation cannot interrupt
+            # an existing paragraph, including its successive continuations.
             masked.append(token)
             position = end
             continue
@@ -147,7 +181,7 @@ def _references(line: str, definitions: dict, repository: str) -> set[str]:
     def destination(value):
         match = URL.match(value)
         if match:
-            repo = repository if match[1].casefold() == repository.casefold() else match[1]
+            repo = repository if match[1].casefold() == repository.casefold() else match[1].casefold()
             issues.add(_issue_url(repo, match[2]))
 
     def inline(match):

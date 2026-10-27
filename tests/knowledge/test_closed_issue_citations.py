@@ -33,7 +33,7 @@ def checker():
 def run_report(checker, tmp_path, text, snapshot=None, **kwargs):
     doc = tmp_path / "docs" / "note.md"
     doc.parent.mkdir(exist_ok=True)
-    doc.write_text(text, encoding="utf-8")
+    doc.write_text(text, encoding="utf-8", newline="\n")
     return checker.report(
         [doc], root=tmp_path, repository=REPOSITORY,
         snapshot=snapshot if snapshot is not None else {"#17": {"state": "closed"}},
@@ -138,15 +138,15 @@ def test_closed_without_promotion_has_action(checker, tmp_path):
 def test_cross_repository_number_does_not_reuse_local_state(checker, tmp_path):
     other = "https://github.com/OTHER/REPO/issues/17"
     ref, = run_report(checker, tmp_path, f"# Basis\n{other}\n")["references"]
-    assert ref["issue"] == other
+    assert ref["issue"] == other.lower()
     assert ref["state"] == "unknown"
 
 
 def test_snapshot_and_input_order_are_irrelevant(checker, tmp_path):
     a = tmp_path / "a.md"
     b = tmp_path / "b.md"
-    a.write_text("# Basis\n#17 #18\n", encoding="utf-8")
-    b.write_text("# Basis\n#18\n", encoding="utf-8")
+    a.write_text("# Basis\n#17 #18\n", encoding="utf-8", newline="\n")
+    b.write_text("# Basis\n#18\n", encoding="utf-8", newline="\n")
     snapshot = {"#17": {"state": "closed"}, "#18": {"state": "open"}}
     options = dict(root=tmp_path, repository=REPOSITORY, domain_sections=["Basis"])
     first = checker.report([b, a, a], snapshot=snapshot, **options)
@@ -171,7 +171,7 @@ def test_invalid_snapshot_is_rejected(checker, tmp_path, snapshot):
 
 def test_explicit_scope_required_and_must_match(checker, tmp_path):
     doc = tmp_path / "note.md"
-    doc.write_text("# Basis\n#17\n", encoding="utf-8")
+    doc.write_text("# Basis\n#17\n", encoding="utf-8", newline="\n")
     for sections in ([], ["Missing"]):
         with pytest.raises(ValueError):
             checker.report([doc], root=tmp_path, repository=REPOSITORY,
@@ -185,7 +185,7 @@ def test_outside_root_and_non_markdown_rejected(checker, tmp_path):
     root = tmp_path / "root"
     root.mkdir()
     doc = tmp_path / "note.md"
-    doc.write_text("# Basis\n#17\n", encoding="utf-8")
+    doc.write_text("# Basis\n#17\n", encoding="utf-8", newline="\n")
     with pytest.raises(ValueError):
         checker.report([doc], root=root, repository=REPOSITORY, snapshot={}, domain_sections=["Basis"])
     with pytest.raises(ValueError):
@@ -196,8 +196,8 @@ def test_outside_root_and_non_markdown_rejected(checker, tmp_path):
 def cli(tmp_path, snapshot_text, text="# Basis\n#17\n"):
     doc = tmp_path / "note.md"
     snapshot = tmp_path / "snapshot.json"
-    doc.write_text(text, encoding="utf-8")
-    snapshot.write_text(snapshot_text, encoding="utf-8")
+    doc.write_text(text, encoding="utf-8", newline="\n")
+    snapshot.write_text(snapshot_text, encoding="utf-8", newline="\n")
     before = (doc.read_bytes(), snapshot.read_bytes())
     proc = subprocess.run(
         [sys.executable, str(SCRIPT), "--root", str(tmp_path), "--repository", REPOSITORY,
@@ -265,3 +265,38 @@ def test_explicit_full_url_snapshot_key(checker, tmp_path):
     })["references"]
     assert ref["status"] == "warning"
     assert ref["remediation_link"] == PROMOTED
+
+
+@pytest.mark.parametrize("text,lines", [
+    ("# Basis\nA literal ` delimiter.\n\nSee #17.\n\nLater `code`.\n", [4]),
+    ("# Basis\nEscaped \\` #17 `code`.\n", [2]),
+    ("# Basis\nA literal ` delimiter.\n## Child\nSee #17 `code`.\n", [4]),
+    ("# Basis\nA literal ` delimiter.\n~~~\n#17\n~~~\nSee #17 `code`.\n", [6]),
+    ("# Basis\nA literal ` delimiter.\n---\nSee #17 `code`.\n", [4]),
+    ("# Basis\n## Child `hidden #17`\n    hidden #17\nSee #17.\n", [4]),
+    ("# Basis\nA paragraph\n    citing #17.\n", [3]),
+    ("# Basis\nA paragraph\n    continued\n    citing #17.\n", [4]),
+    ("# Basis\nA paragraph\n\n    hidden #17\nVisible #17.\n", [5]),
+    ("# Basis\nA `multiline\n    hidden #17` span.\nSee #17.\n", [4]),
+    ("# Basis\nEscaped \\\\`hidden #17` and #17.\n", [2]),
+])
+def test_block_boundaries_and_escaped_backticks(checker, tmp_path, text, lines):
+    refs = run_report(checker, tmp_path, text)["references"]
+    assert [(r["line"], r["status"]) for r in refs] == [
+        (line, "warning") for line in lines
+    ]
+
+
+@pytest.mark.parametrize("aliases", [
+    "{upper} {lower}",
+    "[first]({upper}) [second]({lower})",
+    "[first][a] [second][b]\n\n[a]: {upper}\n[b]: {lower}",
+])
+def test_cross_repository_case_aliases_are_one_issue(checker, tmp_path, aliases):
+    lower = "https://github.com/other/repo/issues/17"
+    upper = "https://github.com/OTHER/REPO/issues/17"
+    text = "# Basis\n" + aliases.format(upper=upper, lower=lower) + "\n"
+    ref, = run_report(checker, tmp_path, text, {lower: {"state": "closed"}})["references"]
+    assert (ref["line"], ref["issue"].casefold(), ref["status"]) == (2, lower, "warning")
+    reversed_text = text.replace(upper, "ALIAS").replace(lower, upper).replace("ALIAS", lower)
+    assert run_report(checker, tmp_path, reversed_text, {lower: {"state": "closed"}})["references"] == [ref]
