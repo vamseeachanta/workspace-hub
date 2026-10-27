@@ -27,6 +27,7 @@ from html.parser import HTMLParser
 import os
 from pathlib import Path
 import re
+import stat
 from urllib.parse import unquote, urlsplit
 
 
@@ -66,6 +67,17 @@ def _has_control(value: str) -> bool:
     return any(not char.isprintable() for char in value)
 
 
+def _is_link(path: Path) -> bool:
+    """Reject symlinks, junctions and other Windows reparse points."""
+    if path.is_symlink() or getattr(path, "is_junction", lambda: False)():
+        return True
+    try:
+        attributes = getattr(path.lstat(), "st_file_attributes", 0)
+    except FileNotFoundError:
+        return False
+    return bool(attributes & stat.FILE_ATTRIBUTE_REPARSE_POINT)
+
+
 def _local_target(root: Path, source: Path, target: str):
     """Return (path, fragment, failure); None path means an ignored remote URL."""
     if _has_control(target) or "\\" in target:
@@ -93,17 +105,21 @@ def _local_target(root: Path, source: Path, target: str):
 
     current = source.parent
     # Inspect before normalizing: alias/../page still traverses the alias.
-    for component in path.split("/"):
+    components = path.split("/")
+    for position, component in enumerate(components):
         if component in {"", "."}:
             continue
         current = current.parent if component == ".." else current / component
         if not current.is_relative_to(root):
             return None, "", "escaped-target"
-        if current.is_symlink():
+        if _is_link(current):
             return None, "", "symlinked-target"
+        # Every slash requires a directory, including before a parent component.
+        if position < len(components) - 1 and not current.is_dir():
+            return None, "", "missing-target"
     if current.is_dir():
         current = current / "index.html"
-        if current.is_symlink():
+        if _is_link(current):
             return None, "", "symlinked-target"
     if not current.is_file():
         return None, "", "missing-target"
@@ -119,7 +135,7 @@ def check_bundle(root: str | Path) -> list[NavigationIssue]:
     rejected when referenced. Diagnostics contain no absolute filesystem paths.
     """
     root = Path(root).absolute()
-    if any(p.is_symlink() for p in (root, *root.parents)):
+    if any(_is_link(p) for p in (root, *root.parents)):
         return [NavigationIssue(".", "", "symlinked-root")]
     if not root.is_dir():
         return [NavigationIssue(".", "", "invalid-root")]
@@ -138,14 +154,14 @@ def check_bundle(root: str | Path) -> list[NavigationIssue]:
         parent = Path(directory)
         for name in sorted(dirs):
             path = parent / name
-            if path.is_symlink():
+            if _is_link(path):
                 issue(path, "", "symlinked-target")
-        dirs[:] = sorted(name for name in dirs if not (parent / name).is_symlink())
+        dirs[:] = sorted(name for name in dirs if not _is_link(parent / name))
         for name in sorted(files):
             path = parent / name
             if path.suffix.lower() not in {".html", ".htm"}:
                 continue
-            if path.is_symlink():
+            if _is_link(path):
                 issue(path, "", "symlinked-target")
                 continue
             try:
