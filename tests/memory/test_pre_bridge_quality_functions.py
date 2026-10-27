@@ -7,7 +7,7 @@ Rule citations in scripts/memory/pre-bridge-quality.sh:
 * lines 45-47 and 62: wc counts newline characters and bytes, respectively.
 * lines 71-72: headroom is limit minus bytes.
 
-Fixture calculations below are independent, hand-counted ASCII examples.
+Fixture calculations below use hand-counted ASCII and UTF-8 byte sequences.
 Shell exit values use the conventional zero for success and one for failure.
 """
 
@@ -132,7 +132,8 @@ def harness(tmp_path: Path):
         "PATH": str(tools),
         "HOME": str(tmp_path),
         "TMPDIR": str(tmp_path),
-        "LC_ALL": "C",
+        # A UTF-8 locale makes wc -m count characters, distinct from wc -c.
+        "LC_ALL": "C.UTF-8",
         "SENTINEL": str(record),
         "PYTHONDONTWRITEBYTECODE": "1",
     }
@@ -198,6 +199,8 @@ def test_missing_and_empty_memory_scores(
 # 10*90/100 = 9; 11*90/100 = 9 after truncation. At 9 there is no warning;
 # 10/10 and 11/11 warn. Scores: 100-5 = 95; 100-20 = 80.
 # Literal headroom examples: 10-0 = 10, 10-8 = 2, 10-9 = 1, 11-9 = 2.
+# UTF-8 U+00E9 is one character encoded as two bytes C3 A9, without LF:
+# 2 > cap 1; the over-limit penalty gives 100-20 = 80.
 @pytest.mark.parametrize(
     ("content", "limit", "score", "criticals", "warnings", "logs"),
     [
@@ -211,11 +214,12 @@ def test_missing_and_empty_memory_scores(
         (b"abcdefghij", 11, 95, [], ["sample approaching limit: 10/11"], []),
         (b"abcdefghijk", 11, 95, [], ["sample approaching limit: 11/11"], []),
         (b"abcdefghijkl", 11, 80, ["sample exceeds limit: 12/11 chars"], [], []),
+        (b"\xc3\xa9", 1, 80, ["sample exceeds limit: 2/1 chars"], [], []),
     ],
     ids=[
         "missing", "empty", "below-warning", "equal-warning-threshold", "equal-cap",
         "above-cap", "equal-rounded-threshold", "above-rounded-threshold",
-        "equal-second-cap", "above-second-cap",
+        "equal-second-cap", "above-second-cap", "utf8-byte-count-above-cap",
     ],
 )
 def test_char_limit_boundaries(
