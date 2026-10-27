@@ -6,6 +6,14 @@ for normalization (normalize_cmd), substring counters (summarize_raw_provider),
 and ratio thresholds (compute_python_hygiene_status). These tests characterize
 those APIs; substring counters are not an execution-aware compliance measure.
 All counts below are hand calculations from literal synthetic records.
+
+Plan-lite
+---------
+Scope: keep this slice limited to synthetic characterization of existing APIs.
+Acceptance: run this module with no failures or skips, then run it with the
+existing audit suite and compare failures against the unchanged baseline.
+Known limits: quoted mentions can increment substring counters, and missing
+rates remain unknown; these cases do not establish runtime-policy compliance.
 """
 from __future__ import annotations
 
