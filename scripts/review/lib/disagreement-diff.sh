@@ -16,7 +16,7 @@ ISSUE="${3:?issue-num required}"
 extract_verdict() {
   local file="$1"
   awk '
-    /^## Verdict/ { in_verdict=1; next }
+    tolower($0) ~ /^## verdict[[:space:]]*$/ { in_verdict=1; next }
     in_verdict && /^## / { exit }
     in_verdict && NF { print; exit }
   ' "$file"
@@ -26,7 +26,7 @@ extract_verdict() {
 extract_findings() {
   local file="$1"
   awk '
-    /^## Findings/ { in_findings=1; next }
+    tolower($0) ~ /^## findings[[:space:]]*$/ { in_findings=1; next }
     in_findings && /^## / { in_findings=0 }
     in_findings { print }
   ' "$file"
