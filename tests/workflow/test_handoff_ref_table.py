@@ -124,6 +124,24 @@ def test_ambiguous_or_unnamed_ref_refused(stdout, stderr):
         table.render_table(ROWS, ROOT, run=ambiguous)
 
 
+@pytest.mark.parametrize("ref", ["HEAD", "FETCH_HEAD", "ORIG_HEAD", "MERGE_HEAD"])
+def test_pseudoref_input_refused_even_when_git_resolves_a_named_branch(ref):
+    def attached(argv, **kwargs):
+        # Attached HEAD resolves symbolically to a branch, not to HEAD.
+        response = "refs/heads/example" if argv[-1] == ref else FIRST_ID
+        return subprocess.CompletedProcess(argv, 0, response + "\n", "")
+
+    with pytest.raises(table.RefTableError):
+        table.render_table([{"issue": 1, "ref": ref}], ROOT, run=attached)
+
+
+def test_fully_qualified_uppercase_branch_is_accepted():
+    ref = "refs/heads/HEAD"
+    assert f"`{FIRST_ID}`" in table.render_table(
+        [{"issue": 1, "ref": ref}], ROOT, run=GitResponses({ref: FIRST_ID}),
+    )
+
+
 def test_non_commit_ref_refused():
     git = GitResponses()
 
@@ -217,7 +235,7 @@ def test_empty_list_renders_header_without_git():
 
 def test_cli_reads_explicit_json_and_prints_table(monkeypatch, tmp_path, capsys):
     source = tmp_path / "rows.json"
-    source.write_text(json.dumps(ROWS), encoding="utf-8")
+    source.write_text(json.dumps(ROWS), encoding="utf-8", newline="\n")
     git = GitResponses()
     monkeypatch.setattr(table.subprocess, "run", git)
     assert table.main([str(source), "--repo", str(ROOT)]) == 0
@@ -227,7 +245,7 @@ def test_cli_reads_explicit_json_and_prints_table(monkeypatch, tmp_path, capsys)
 @pytest.mark.parametrize("text", ["not JSON", '{"issue":1}', '[{"issue":1,"issue":2}]'])
 def test_cli_rejects_invalid_json_without_git(monkeypatch, tmp_path, capsys, text):
     source = tmp_path / "invalid.json"
-    source.write_text(text, encoding="utf-8")
+    source.write_text(text, encoding="utf-8", newline="\n")
     git = GitResponses()
     monkeypatch.setattr(table.subprocess, "run", git)
     assert table.main([str(source), "--repo", str(ROOT)]) != 0
@@ -241,7 +259,7 @@ def test_cli_failure_never_prints_partial_table_or_git_diagnostics(
     monkeypatch, tmp_path, capsys,
 ):
     source = tmp_path / "rows.json"
-    source.write_text(json.dumps(ROWS), encoding="utf-8")
+    source.write_text(json.dumps(ROWS), encoding="utf-8", newline="\n")
     monkeypatch.setattr(table.subprocess, "run", GitResponses({FIRST_REF: FIRST_ID}))
     assert table.main([str(source), "--repo", str(ROOT)]) != 0
     captured = capsys.readouterr()

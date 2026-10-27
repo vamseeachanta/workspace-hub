@@ -17,6 +17,11 @@ from pathlib import Path
 
 # Git hash-function-transition, Object names: SHA-1 has 40 hexadecimal digits;
 # SHA-256 has 64. git rev-parse --verify emits a full object name.
+# gitrevisions, SPECIFYING REVISIONS: special top-level revision names.
+_PSEUDOREFS = {
+    "HEAD", "FETCH_HEAD", "ORIG_HEAD", "MERGE_HEAD", "REBASE_HEAD",
+    "REVERT_HEAD", "CHERRY_PICK_HEAD", "BISECT_HEAD", "AUTO_MERGE",
+}
 _COMMIT_ID = re.compile(r"(?:[0-9a-f]{40}|[0-9a-f]{64})")
 _HEADER = "| Issue | Local ref | Commit ID |\n| --- | --- | --- |\n"
 
@@ -29,7 +34,7 @@ def _valid_ref(ref):
     # git check-ref-format, DESCRIPTION: named refs exclude revision syntax,
     # controls, empty components, leading dots and components ending in .lock.
     return (
-        isinstance(ref, str) and bool(ref) and ref != "@"
+        isinstance(ref, str) and bool(ref) and ref != "@" and ref not in _PSEUDOREFS
         and not ref.startswith("-") and not ref.endswith(".")
         and ".." not in ref and "@{" not in ref
         and not any(char.isspace() or ord(char) < ord(" ")
