@@ -17,7 +17,7 @@ permissions:
 jobs:
   no-abs-paths-report:
     name: Absolute-Path Guard Report
-    runs-on: ubuntu-latest
+    runs-on: ${{ github.event.pull_request.head.repo.fork && 'ubuntu-latest' || fromJSON('["self-hosted","Linux"]') }}
     timeout-minutes: 10
     steps:
       - name: Checkout code
