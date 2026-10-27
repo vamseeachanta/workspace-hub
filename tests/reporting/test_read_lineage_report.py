@@ -188,7 +188,7 @@ def test_malformed_or_unapproved_fields_are_not_silently_dropped(observation):
 
 def test_cli_file_and_stdin_emit_the_same_inventory(tmp_path, traces):
     source = tmp_path / "traces.json"
-    source.write_text(json.dumps(traces), encoding="utf-8")
+    source.write_text(json.dumps(traces), encoding="utf-8", newline="\n")
     original = source.read_bytes()
     file_run = subprocess.run([sys.executable, "-I", str(SCRIPT), str(source)],
                               capture_output=True, text=True, cwd=tmp_path, check=True)
@@ -216,3 +216,15 @@ def test_cli_missing_file_does_not_expose_caller_path(tmp_path):
     assert result.returncode != 0
     assert result.stdout == ""
     assert result.stderr == "invalid lineage input\n"
+
+
+@pytest.mark.parametrize("argument_kind", ["extra_filename", "unknown_option"])
+def test_cli_argument_errors_do_not_expose_caller_path(tmp_path, argument_kind):
+    caller_path = (tmp_path / "input.json").as_posix()
+    arguments = (["input.json", caller_path] if argument_kind == "extra_filename"
+                 else ["--unknown=" + caller_path])
+    result = subprocess.run([sys.executable, "-I", str(SCRIPT), *arguments],
+                            capture_output=True, text=True, cwd=tmp_path)
+    assert result.returncode == 2
+    assert result.stdout == ""
+    assert result.stderr == "invalid lineage arguments\n"

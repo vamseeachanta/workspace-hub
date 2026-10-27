@@ -144,8 +144,14 @@ def _invalid_constant(value: str) -> None:
     raise ValueError("non-finite input")
 
 
+class _ArgumentParser(argparse.ArgumentParser):
+    def error(self, message: str) -> None:
+        """Reject malformed arguments without disclosing caller-supplied text."""
+        self.exit(2, "invalid lineage arguments\n")
+
+
 def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(prog="read_lineage_report.py", description=__doc__)
+    parser = _ArgumentParser(prog="read_lineage_report.py", description=__doc__)
     parser.add_argument("input", nargs="?", help="JSON trace array; omit to read stdin")
     args = parser.parse_args(argv)
     try:
