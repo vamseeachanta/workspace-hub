@@ -109,6 +109,109 @@ def sample_dm_repo(tmp_path):
     return tmp_path
 
 
+@pytest.fixture
+def promotion_repo(tmp_path):
+    """Build independent target and control packages with hand-counted metrics."""
+    # Policy: issues/1662; scripts/analysis/module_status_matrix.py:81-95.
+    # Each package has four source files (including __init__.py), three with
+    # module docstrings: 3 / 4 * 100 = 75%. The documented engine has one
+    # docstring plus 20 assignment lines, so it exceeds the tiny-file cutoff.
+    sources = {
+        "__init__.py": '"""Synthetic package."""\n',
+        "engine.py": '"""Synthetic engine."""\n' + "\n".join(
+            f"VALUE_{index} = {index}" for index in range(20)
+        ) + "\n",
+        "api.py": '"""Synthetic interface."""\n',
+        "settings.py": "ENABLED = True\n",
+    }
+    # Five literal test filenames keep the target and development control at
+    # equality. Only the production control starts with the sixth test file.
+    test_names = (
+        "test_alpha.py", "test_beta.py", "test_gamma.py",
+        "test_delta.py", "test_epsilon.py",
+    )
+    for name in ("target_pkg", "development_control", "production_control"):
+        source_dir = tmp_path / "src" / "synthetic" / name
+        source_dir.mkdir(parents=True)
+        for filename, content in sources.items():
+            (source_dir / filename).write_text(content)
+        test_dir = tmp_path / "tests" / name
+        test_dir.mkdir(parents=True)
+        for filename in test_names:
+            (test_dir / filename).write_text("def test_example(): pass\n")
+    (tmp_path / "src" / "synthetic" / "__init__.py").write_text("")
+    (tmp_path / "tests" / "production_control" / "test_zeta.py").write_text(
+        "def test_example(): pass\n"
+    )
+    return tmp_path
+
+
+# Strict production policy: issues/1662;
+# scripts/analysis/module_status_matrix.py:81-95. Each row varies one metric
+# immediately below, at, or above its threshold; the other metrics qualify.
+@pytest.mark.parametrize(
+    "file_count,test_count,docstring_pct,expected",
+    [
+        pytest.param(4, 4, 51, "DEVELOPMENT", id="tests-below"),
+        pytest.param(4, 5, 51, "DEVELOPMENT", id="tests-equal"),
+        pytest.param(4, 6, 51, "PRODUCTION", id="tests-above"),
+        pytest.param(2, 6, 51, "DEVELOPMENT", id="sources-below"),
+        pytest.param(3, 6, 51, "DEVELOPMENT", id="sources-equal"),
+        pytest.param(4, 6, 51, "PRODUCTION", id="sources-above"),
+        pytest.param(4, 6, 49, "DEVELOPMENT", id="docstrings-below"),
+        pytest.param(4, 6, 50, "DEVELOPMENT", id="docstrings-equal"),
+        pytest.param(4, 6, 51, "PRODUCTION", id="docstrings-above"),
+    ],
+)
+def test_production_thresholds_are_strict(
+    file_count, test_count, docstring_pct, expected,
+):
+    """Equality at any production threshold remains development."""
+    from module_status_matrix import _classify_maturity
+
+    assert _classify_maturity(
+        file_count=file_count,
+        test_count=test_count,
+        docstring_pct=docstring_pct,
+        all_files_tiny=False,
+        only_init=False,
+    ) == expected
+
+
+def test_added_test_changes_only_target_maturity(promotion_repo):
+    """Adding the sixth test promotes only the intended synthetic package."""
+    from module_status_matrix import scan_packages
+
+    before = {pkg["name"]: pkg for pkg in scan_packages(promotion_repo)}
+    (promotion_repo / "tests" / "target_pkg" / "test_zeta.py").write_text(
+        "def test_example(): pass\n"
+    )
+    after = {pkg["name"]: pkg for pkg in scan_packages(promotion_repo)}
+
+    # Hand counts from promotion_repo, independent of the scanner: four source
+    # files, three documented (75%), five tests before and six after addition.
+    # Policy: issues/1662; scripts/analysis/module_status_matrix.py:81-95.
+    def metrics(packages):
+        return {
+            name: (pkg["file_count"], pkg["test_count"],
+                   pkg["docstring_pct"], pkg["status"])
+            for name, pkg in packages.items()
+        }
+
+    assert metrics(before) == {
+        "target_pkg": (4, 5, 75, "DEVELOPMENT"),
+        "development_control": (4, 5, 75, "DEVELOPMENT"),
+        "production_control": (4, 6, 75, "PRODUCTION"),
+    }
+    assert metrics(after) == {
+        "target_pkg": (4, 6, 75, "PRODUCTION"),
+        "development_control": (4, 5, 75, "DEVELOPMENT"),
+        "production_control": (4, 6, 75, "PRODUCTION"),
+    }
+    for name in ("development_control", "production_control"):
+        assert after[name] == before[name]
+
+
 class TestPackageScanning:
     def test_discovers_all_packages(self, sample_dm_repo):
         from module_status_matrix import scan_packages
