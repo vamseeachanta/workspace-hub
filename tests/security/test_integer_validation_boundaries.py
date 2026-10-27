@@ -10,6 +10,16 @@ Hand counts: '12' has two digits, '123' three, '1234' four, '0' and '1' one each
 A minus sign adds no digits. Expected signed integers below are literal values,
 independent of the decoder. Budgets three and one are synthetic caller choices;
 zero is an invalid budget, and boolean/float budgets must not act as integers.
+
+Plan-lite:
+Scope stays within this test file, with no production changes. The oracle uses
+independent hand-counted digits and literal expected integers. Each case runs
+in a disposable subprocess that restores its interpreter guard before exit.
+Acceptance command (join the wrapped lines; use a fresh temporary directory):
+    uv run --no-project --with pytest --with pyyaml python -m pytest
+    tests/security/test_input_boundaries.py
+    tests/security/test_integer_validation_boundaries.py
+    -q -rA -p no:cacheprovider --basetemp=<temporary-directory>
 """
 import json
 import subprocess
