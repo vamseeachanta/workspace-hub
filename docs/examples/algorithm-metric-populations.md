@@ -14,6 +14,7 @@ qualification and provides no engineering acceptance or publication decision.
 | Revision | Date | What changed and why |
 | --- | --- | --- |
 | Initial | 2026-10-26 | Added synthetic records and literal population expectations to demonstrate exact-key filtering and exclusions. |
+| 1 | 2026-10-27 | Added Plan-lite scope, verification and exclusions to make the example boundary explicit. |
 
 ## Scope and input basis
 
@@ -31,6 +32,19 @@ the filter does not authenticate recorded statuses, evaluate quality rules,
 validate definitions or replay evidence. The algorithm and metric identifiers
 are synthetic. The same metric suffix on different algorithms implies no
 comparison or equivalence.
+
+## Plan-lite
+
+The example will select observations by the exact algorithm, metric identifier,
+definition version and unit tuple, retaining stable exclusion reasons.
+Literal-oracle tests will check independently enumerated memberships from the
+synthetic record table, including key partitions, exclusion precedence and the
+distinction between zero, null and `NA`.
+
+Verification will run the example tests alongside the existing contract tests.
+Production validation, status authentication, complete schema conformance,
+numerical qualification and real-data comparison will remain outside this slice;
+resolved bindings and unique observation identifiers will remain input assumptions.
 
 ## Synthetic record table
 
