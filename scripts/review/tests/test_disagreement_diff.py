@@ -15,7 +15,13 @@ import pytest
 RENDERER = Path(__file__).resolve().parent.parent / "lib/disagreement-diff.sh"
 DATE = "2026-04-17"
 ISSUE = "8888"
-HEADING_CASES = [("Verdict", "Findings"), ("VERDICT", "FINDINGS"), ("verdict", "findings")]
+HEADING_CASES = [
+    ("Verdict", "Findings"),
+    ("VERDICT", "FINDINGS"),
+    ("verdict", "findings"),
+    ("vErDiCt ", "fInDiNgS\t"),
+    ("VeRdIcT\t ", "FiNdInGs \t"),
+]
 
 
 def render(tmp_path, reviews):
@@ -73,6 +79,20 @@ def test_missing_or_inexact_verdict_heading_stays_unknown(tmp_path, heading):
     report = render(tmp_path, {"alpha": f"{heading}\nMAJOR\n\n## Findings\n(none)\n"})
     assert "| alpha | UNKNOWN |" in report
     assert "| alpha | MAJOR |" not in report
+
+
+@pytest.mark.parametrize(
+    "heading",
+    ["", "Findings", "Text mentions ## Findings", "## Findingsology", "## FINDINGS notes"],
+)
+def test_missing_or_inexact_findings_heading_has_no_findings(tmp_path, heading):
+    report = render(
+        tmp_path,
+        {"alpha": f"## Verdict\nMINOR\n\n{heading}\n- Alpha finding\n"},
+    )
+    assert "| alpha | MINOR |" in report
+    assert "- Alpha finding" not in report
+    assert "### alpha\n\n(no findings unique to this provider)\n" in report
 
 
 @pytest.mark.parametrize("verdict_heading,findings_heading", HEADING_CASES)
