@@ -62,9 +62,12 @@ def filter_fixture(tmp_path):
         for provider in PROVIDERS
     }
 
-    def run():
+    def run(raw_usage=None):
         for provider, values in usage.items():
-            (config / f"{provider}_usage.json").write_text(json.dumps(values))
+            (config / f"{provider}_usage.json").write_text(
+                (raw_usage or {}).get(provider, json.dumps(values)),
+                encoding="utf-8", newline="\n"
+            )
         result = subprocess.run(
             [
                 str(tools / "bash"), "--noprofile", "--norc", "-c",
@@ -75,6 +78,7 @@ def filter_fixture(tmp_path):
             env={"PATH": str(tools), "CONFIG_DIR": str(config)},
             capture_output=True,
             text=True,
+            encoding="utf-8",
             # Synthetic execution bound; no provider command may be run.
             timeout=10,
         )
@@ -115,3 +119,31 @@ def test_empty_availability_without_bc(filter_fixture):
         usage[provider][field] = limit
     # Equality leaves no remaining capacity for any provider.
     assert run() == []
+
+
+@pytest.mark.parametrize("provider", PROVIDERS)
+@pytest.mark.parametrize(
+    "field", ("requests_percent", "tokens_percent", "cost_today", "daily_budget")
+)
+@pytest.mark.parametrize(
+    "invalid", ("missing", None, "", "invalid", "0.5", True, [], {}, -1,
+                float("inf"), float("nan")),
+)
+def test_invalid_quota_excludes_only_affected_provider(
+    filter_fixture, provider, field, invalid
+):
+    usage, run = filter_fixture
+    if invalid == "missing":
+        del usage[provider][field]
+    else:
+        usage[provider][field] = invalid
+    assert run() == [name for name in PROVIDERS if name != provider]
+
+
+@pytest.mark.parametrize("provider", PROVIDERS)
+def test_multiple_quota_documents_fail_closed(filter_fixture, provider):
+    usage, run = filter_fixture
+    invalid = dict(usage[provider])
+    del invalid["daily_budget"]
+    records = json.dumps(invalid) + "\n" + json.dumps(usage[provider])
+    assert run({provider: records}) == [name for name in PROVIDERS if name != provider]
