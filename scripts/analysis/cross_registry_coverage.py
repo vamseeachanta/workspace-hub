@@ -26,9 +26,12 @@ No paths are resolved, opened or normalized except the explicit CLI file paths.
 from __future__ import annotations
 
 import argparse
+from contextlib import ExitStack
 import html
 import json
 from pathlib import Path
+from shutil import copy2
+from tempfile import TemporaryDirectory
 
 import yaml
 
@@ -251,6 +254,42 @@ def render_markdown(report: dict) -> str:
     return "\n".join(lines) + "\n"
 
 
+def _publish_reports(outputs):
+    """Stage the pair and retain backups until both replacements succeed.
+
+    Each replacement is atomic on its destination filesystem. The pair is not
+    atomic to concurrent readers, and rollback requires filesystem access to
+    remain available; abrupt process termination cannot be rolled back here.
+    """
+    with ExitStack() as cleanup:
+        staged = []
+        for destination, text in outputs:
+            if destination.is_dir():
+                raise IsADirectoryError("report destination must be a file")
+            directory = Path(cleanup.enter_context(TemporaryDirectory(
+                prefix=".coverage-", dir=destination.parent,
+            )))
+            pending = directory / "pending"
+            pending.write_text(text, encoding="utf-8")
+            backup = directory / "previous"
+            if destination.exists() or destination.is_symlink():
+                copy2(destination, backup, follow_symlinks=False)
+            staged.append((destination, pending, backup))
+
+        published = []
+        try:
+            for destination, pending, backup in staged:
+                pending.replace(destination)
+                published.append((destination, backup))
+        except OSError:
+            for destination, backup in reversed(published):
+                if backup.exists() or backup.is_symlink():
+                    backup.replace(destination)
+                else:
+                    destination.unlink()
+            raise
+
+
 def main(argv=None) -> int:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--registry", required=True, type=Path)
@@ -269,8 +308,9 @@ def main(argv=None) -> int:
         report = build_report(load_registry(args.registry), load_counted_reads(args.counted_reads))
         json_text = json.dumps(report, ensure_ascii=False, indent=2, allow_nan=False) + "\n"
         markdown_text = render_markdown(report)
-        args.json_output.write_text(json_text, encoding="utf-8")
-        args.markdown_output.write_text(markdown_text, encoding="utf-8")
+        _publish_reports([
+            (args.json_output, json_text), (args.markdown_output, markdown_text),
+        ])
     except (OSError, ValueError) as error:
         # Do not echo input values, source excerpts or filesystem locators.
         parser.error(f"invalid input or output ({type(error).__name__}); no coverage claim made")

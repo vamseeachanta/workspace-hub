@@ -347,3 +347,95 @@ def test_cli_entrypoint_rejects_invalid_input_without_writing_reports(registry, 
     assert "no coverage claim made" in result.stderr
     assert not json_path.exists()
     assert not markdown_path.exists()
+
+
+@pytest.mark.parametrize("existing_json", [False, True])
+def test_cli_preserves_outputs_when_markdown_destination_is_directory(
+    reporter, registry, snapshot, tmp_path, existing_json,
+):
+    registry_path = tmp_path / "registry.json"
+    reads_path = tmp_path / "reads.json"
+    json_path = tmp_path / "report.json"
+    markdown_path = tmp_path / "report.md"
+    registry_path.write_text(json.dumps(registry), encoding="utf-8")
+    reads_path.write_text(json.dumps(snapshot), encoding="utf-8")
+    previous_json = b"previous JSON report\r\n"
+    if existing_json:
+        json_path.write_bytes(previous_json)
+    markdown_path.mkdir()
+    previous_markdown = markdown_path / "previous.md"
+    previous_markdown.write_bytes(b"previous Markdown report\r\n")
+
+    with pytest.raises(SystemExit) as error:
+        reporter.main([
+            "--registry", str(registry_path), "--counted-reads", str(reads_path),
+            "--json-output", str(json_path), "--markdown-output", str(markdown_path),
+        ])
+
+    assert error.value.code == 2
+    if existing_json:
+        assert json_path.read_bytes() == previous_json
+    else:
+        assert not json_path.exists()
+    assert markdown_path.is_dir()
+    assert list(markdown_path.iterdir()) == [previous_markdown]
+    assert previous_markdown.read_bytes() == b"previous Markdown report\r\n"
+    assert sorted(path.name for path in tmp_path.iterdir()) == sorted([
+        "registry.json", "reads.json", "report.md", *(["report.json"] if existing_json else []),
+    ])
+
+
+@pytest.mark.parametrize("existing_json, existing_markdown", [
+    (False, False), (False, True), (True, False), (True, True),
+])
+@pytest.mark.parametrize("failure", ["stage", "replace", None])
+def test_cli_report_pair_publication(
+    reporter, registry, snapshot, tmp_path, monkeypatch,
+    existing_json, existing_markdown, failure,
+):
+    registry_path = tmp_path / "registry.json"
+    reads_path = tmp_path / "reads.json"
+    json_path = tmp_path / "report.json"
+    markdown_path = tmp_path / "report.md"
+    registry_path.write_text(json.dumps(registry), encoding="utf-8")
+    reads_path.write_text(json.dumps(snapshot), encoding="utf-8")
+    previous = {json_path: b"previous JSON\r\n", markdown_path: b"previous Markdown\r\n"}
+    for path, exists in [(json_path, existing_json), (markdown_path, existing_markdown)]:
+        if exists:
+            path.write_bytes(previous[path])
+    before = {path.name: path.read_bytes() for path in tmp_path.iterdir()}
+    report = reporter.build_report(registry, snapshot)
+    markdown = reporter.render_markdown(report)
+    write_text = Path.write_text
+    replace = Path.replace
+
+    def fail_markdown_write(path, text, *args, **kwargs):
+        if text == markdown:
+            raise OSError("synthetic staging failure")
+        return write_text(path, text, *args, **kwargs)
+
+    def fail_markdown_replace(path, target):
+        if target == markdown_path:
+            raise OSError("synthetic publication failure")
+        return replace(path, target)
+
+    if failure == "stage":
+        monkeypatch.setattr(Path, "write_text", fail_markdown_write)
+    elif failure == "replace":
+        monkeypatch.setattr(Path, "replace", fail_markdown_replace)
+    argv = [
+        "--registry", str(registry_path), "--counted-reads", str(reads_path),
+        "--json-output", str(json_path), "--markdown-output", str(markdown_path),
+    ]
+    if failure:
+        with pytest.raises(SystemExit) as error:
+            reporter.main(argv)
+        assert error.value.code == 2
+        assert {path.name: path.read_bytes() for path in tmp_path.iterdir()} == before
+    else:
+        assert reporter.main(argv) == 0
+        assert json.loads(json_path.read_text(encoding="utf-8")) == report
+        assert markdown_path.read_text(encoding="utf-8") == markdown
+        assert sorted(path.name for path in tmp_path.iterdir()) == [
+            "reads.json", "registry.json", "report.json", "report.md",
+        ]
