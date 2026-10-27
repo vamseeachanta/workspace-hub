@@ -9,6 +9,7 @@ import json
 import os
 import subprocess
 import sys
+from copy import deepcopy
 from pathlib import Path
 
 import pytest
@@ -56,6 +57,61 @@ def test_exact_exception_has_own_cap_and_still_counts_toward_total():
     assert guard.evaluate({"data/a": 7, "b": 4}, limits)["status"] == "BLOCK"
     assert guard.evaluate({"data/a": 8}, limits)["status"] == "BLOCK"
     assert guard.evaluate({"data/ab": 7}, limits)["status"] == "BLOCK"
+
+
+def test_multi_violation_report_is_order_independent():
+    """Full reports follow path order, including exact-path exception decisions."""
+    # Hand-calculated fixture bytes, not storage recommendations:
+    # 9 + 7 + 6 + 7 + 5 = 34 > total cap 30 across five entries.
+    # Ordinary cap 5: alpha 6 > 5, data/ab 7 > 5, zeta 9 > 5;
+    # within 5 == 5 passes. Exact exception data/a 7 == 7 passes,
+    # but its cap does not apply to data/ab despite the shared prefix.
+    entries = {"zeta": 9, "data/a": 7, "alpha": 6, "data/ab": 7, "within": 5}
+    limits = {
+        "max_total_bytes": 30,
+        "max_file_bytes": 5,
+        "exceptions": {"data/a": 7},
+    }
+    expected = {
+        "status": "BLOCK",
+        "total_bytes": 34,
+        "max_total_bytes": 30,
+        "file_count": 5,
+        "total_exceeded": True,
+        "violations": [
+            {"path": "alpha", "size_bytes": 6, "limit_bytes": 5},
+            {"path": "data/ab", "size_bytes": 7, "limit_bytes": 5},
+            {"path": "zeta", "size_bytes": 9, "limit_bytes": 5},
+        ],
+    }
+    for items in (entries.items(), reversed(entries.items()), sorted(entries.items())):
+        result = guard.evaluate(dict(items), limits)
+        assert result == expected
+        assert [item["path"] for item in result["violations"]] == [
+            "alpha", "data/ab", "zeta",
+        ]
+
+
+def test_evaluate_preserves_inputs():
+    """Repeated evaluation preserves entries and the nested exception policy."""
+    # Independent fixture arithmetic: 9 + 7 + 6 = 22 > total cap 20.
+    # Ordinary cap 5 rejects zeta 9 > 5 and alpha 6 > 5;
+    # the exact exception permits data/a 7 == 7. These are fixture caps only.
+    entries = {"zeta": 9, "data/a": 7, "alpha": 6}
+    limits = {
+        "max_total_bytes": 20,
+        "max_file_bytes": 5,
+        "exceptions": {"data/a": 7},
+    }
+    entries_before = deepcopy(entries)
+    limits_before = deepcopy(limits)
+    for _ in ("first", "repeat"):
+        guard.evaluate(entries, limits)
+        assert entries == entries_before
+        assert limits == limits_before
+        assert list(entries) == list(entries_before)
+        assert list(limits) == list(limits_before)
+        assert list(limits["exceptions"]) == list(limits_before["exceptions"])
 
 
 def test_empty_tree_and_zero_caps():
