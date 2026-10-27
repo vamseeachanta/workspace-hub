@@ -126,3 +126,15 @@ Fixtures use only synthetic labels and relative paths. Expected values follow
 literal examples or direct enumeration, rather than values calculated by the
 parser under test. No provider CLI, network, scheduler or package operation is
 part of parsing or its tests. Pytest itself is supplied by the test environment.
+
+## Plan-lite
+
+- Scope will remain limited to the supplied-evidence parser and deterministic
+  formatter in `plugin_inventory.py`, this accepted-input contract and the
+  synthetic offline suite in `tests/maintenance/test_plugin_inventory.py`.
+- Acceptance will require the focused regression command above to pass, including
+  distinct plugin scopes, deterministic ordering and rule-only diagnostics.
+  Literal expected outputs and cross-format comparisons will check the contract;
+  direct file checks will cover syntax, register, secrets and whitespace.
+- Live collection, provider-release compatibility and scheduled parity-report
+  integration will require separate work; this slice will not establish them.
