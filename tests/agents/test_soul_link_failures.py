@@ -1,6 +1,14 @@
 """Issue #3513: simulated Windows refusal preserves isolated runtime fixtures.
 
 This covers shell detection and copy/failure emulation, not Windows objects.
+Plan-lite:
+- Scope: test-only coverage of existing refusal behavior in disposable roots.
+- Acceptance: all 8 refusal cases and all 20 combined installer cases pass;
+  repeated refusal preserves instruction and backup bytes, exact directory
+  entries, and empty staging directories.
+- Limitation: simulated Windows detection and link behavior on Linux do not
+  establish actual Windows object behavior.
+
 Expected bytes and directory entries below are handwritten fixture contracts.
 Numeric basis: parents[2] ascends tests/agents to the repository; shell status
 0 means success and 1 means failure; ln -s takes SOURCE and DEST as arguments
