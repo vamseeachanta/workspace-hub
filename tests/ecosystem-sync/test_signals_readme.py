@@ -1,3 +1,5 @@
+import hashlib
+
 from scripts.ecosystem_sync.signals import (
     detect_readme_capability_diff, _extract_section, _hash_section
 )
@@ -34,12 +36,13 @@ def test_diff_fires_on_changed_hash(readme_repo):
 
 
 def test_diff_no_fire_when_hash_matches(readme_repo):
-    md = (readme_repo / "README.md").read_text()
-    current = _hash_section(_extract_section(md, "Capabilities"))
+    # Literal normalized fixture bytes keep the oracle independent of the detector.
+    normalized = b"- thing one\n- thing two"
+    expected_hash = "sha256:" + hashlib.sha256(normalized).hexdigest()
     state = RepoState(
         last_sync_utc="2026-04-20T00:00:00Z",
         last_commit_sha="",
-        last_readme_hash={"Capabilities": current},
+        last_readme_hash={"Capabilities": expected_hash},
     )
     sigs = detect_readme_capability_diff(
         "digitalmodel", readme_repo, state, sections=["Capabilities"]
