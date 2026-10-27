@@ -46,7 +46,8 @@ def require_success(result, repo):
 def row(path):
     repo = Path(path).resolve()
     status = require_success(
-        git(repo, "status", "--porcelain=v1", "-z", "--untracked-files=all"), repo
+        git(repo, "status", "--porcelain=v1", "-z", "--untracked-files=all",
+            "--ignore-submodules=none"), repo
     )
     # git-status(1), Porcelain Format Version 1: XY is two bytes; -z uses
     # NUL-delimited records, with an extra source-path record for renames/copies.
@@ -93,6 +94,7 @@ def row(path):
 
     if uncommitted or untracked:
         label = "dirty (unknown upstream)" if upstream.returncode else "dirty"
+    branch = branch.replace("%", "%25").replace("|", "%7C")
     return repo.name, branch, ahead, behind, uncommitted, untracked, label
 
 
@@ -118,7 +120,8 @@ branch, but may use another remote or a local branch. No assumption about the
 remote name or branch name is made. These counts reflect the last locally
 available upstream state and may be stale. An unresolved upstream, including
 an absent tracking reference or an unborn branch, produces `?` in both columns,
-never fabricated zero counts. Detached HEAD is shown as `(detached)`.
+never fabricated zero counts. Detached HEAD is shown as `(detached)`. Branch names encode `%` as `%25`
+and `|` as `%7C` to preserve table columns without ambiguous literal escapes.
 
 Status precedence is explicit: any tracked or untracked change produces
 `dirty`, even when the branch is ahead, behind or diverged. Counts remain
@@ -155,9 +158,12 @@ manuals: `git-status(1)` sections *Porcelain Format Version 1* and
 *Submodules*; `git-rev-list(1)` options `--left-right` and `--count`;
 `git-symbolic-ref(1)` section *Exit status*; `git-rev-parse(1)` options
 `--verify`, `--quiet` and upstream revision syntax; and `git(1)` environment
-variable `GIT_OPTIONAL_LOCKS`. Submodule changes are tracked entries in the
+variable `GIT_OPTIONAL_LOCKS`. The `--ignore-submodules=none` override includes submodule changes even when
+repository settings would hide them. Submodule changes are tracked entries in the
 containing repository; list a submodule explicitly to inspect its own commits
 and untracked files. The tests also enumerate dirty precedence combinations,
 rename source records, detached and unborn branches, read failures, inherited
 Git bindings and rejection of write commands. They execute the exact fence in
-a temporary directory without invoking real Git or changing source fixtures.
+a temporary directory against simulated Git responses. Additional real-Git
+fixtures check tracked and untracked submodule changes with an ignore setting;
+source fixtures and repository metadata remain unchanged during the example run.

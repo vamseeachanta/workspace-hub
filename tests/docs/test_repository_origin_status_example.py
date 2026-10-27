@@ -67,7 +67,7 @@ import sys
 from pathlib import Path
 
 args = sys.argv[1:]
-with open(os.environ["QUERY_LOG"], "a") as log:
+with open(os.environ["QUERY_LOG"], "a", encoding="utf-8", newline="\n") as log:
     log.write(json.dumps(args) + "\n")
 allowed_env = {"GIT_OPTIONAL_LOCKS": "0", "GIT_TERMINAL_PROMPT": "0"}
 assert {k: v for k, v in os.environ.items() if k.startswith("GIT_")} == allowed_env
@@ -75,9 +75,10 @@ assert args[:1] == ["-C"], "repository must be an explicit argument"
 repo = Path(args[1])
 assert repo.is_absolute(), "repository must be resolved independently of caller cwd"
 query = args[2:]
-fixtures = json.loads(Path(os.environ["FIXTURES"]).read_text())
+fixtures = json.loads(Path(os.environ["FIXTURES"]).read_text(encoding="utf-8"))
 case = fixtures[repo.name]
-if query == ["status", "--porcelain=v1", "-z", "--untracked-files=all"]:
+if query == ["status", "--porcelain=v1", "-z", "--untracked-files=all",
+             "--ignore-submodules=none"]:
     reply = case["status"]
 elif query == ["symbolic-ref", "--quiet", "--short", "HEAD"]:
     reply = case["branch"] + "\n"
@@ -101,14 +102,14 @@ sys.stdout.write(reply)
 
 
 def documented_program():
-    blocks = re.findall(r"^```python\n(.*?)^```$", EXAMPLE.read_text(), re.M | re.S)
+    blocks = re.findall(r"^```python\n(.*?)^```$", EXAMPLE.read_text(encoding="utf-8"), re.M | re.S)
     (program,) = blocks  # exactly the runnable Python fence, without rewriting
     return program
 
 
 def snapshot(directory):
     return {
-        str(path.relative_to(directory)): path.read_bytes()
+        path.relative_to(directory).as_posix(): path.read_bytes()
         for path in directory.rglob("*")
         if path.is_file() and path.name != "queries.jsonl"
     }
@@ -119,7 +120,7 @@ def sandbox(tmp_path):
     executable_dir = tmp_path / "fake tools"
     executable_dir.mkdir()
     fake = executable_dir / "git"
-    fake.write_text(f"#!{sys.executable}\n" + FAKE_GIT)
+    fake.write_text(f"#!{sys.executable}\n" + FAKE_GIT, encoding="utf-8", newline="\n")
     fake.chmod(0o755)  # chmod(1): executable by the user, group and others
     fixtures = {}
     repos = []
@@ -129,8 +130,8 @@ def sandbox(tmp_path):
         metadata = repo / ".git"
         metadata.mkdir(parents=True)
         for filename in ("HEAD", "index", "config"):
-            (metadata / filename).write_text("preserve metadata\n")
-        (repo / "source.txt").write_text("preserve source\n")
+            (metadata / filename).write_text("preserve metadata\n", encoding="utf-8", newline="\n")
+        (repo / "source.txt").write_text("preserve source\n", encoding="utf-8", newline="\n")
         fixtures[name] = {
             "status": status,
             "branch": "(detached)" if name == "detached" else "topic/example",
@@ -138,9 +139,9 @@ def sandbox(tmp_path):
         }
         repos.append(repo)
     fixture_file = tmp_path / "fixtures.json"
-    fixture_file.write_text(json.dumps(fixtures))
+    fixture_file.write_text(json.dumps(fixtures), encoding="utf-8", newline="\n")
     program = tmp_path / "repository_origin_status.py"
-    program.write_text(documented_program())
+    program.write_text(documented_program(), encoding="utf-8", newline="\n")
     env = os.environ.copy()
     env.update({
         "PATH": str(executable_dir) + os.pathsep + env.get("PATH", ""),
@@ -192,11 +193,12 @@ def test_verbatim_example_rows(result, name, status, local_ids, remote_ids, expe
 
 def test_only_expected_read_queries(sandbox, result):
     directory, _, repos, env = sandbox
-    queries = [json.loads(line) for line in Path(env["QUERY_LOG"]).read_text().splitlines()]
+    queries = [json.loads(line) for line in Path(env["QUERY_LOG"]).read_text(encoding="utf-8").splitlines()]
     expected = []
     for repo, case in zip(repos, CASES):
         commands = [
-            ["status", "--porcelain=v1", "-z", "--untracked-files=all"],
+            ["status", "--porcelain=v1", "-z", "--untracked-files=all",
+             "--ignore-submodules=none"],
             ["symbolic-ref", "--quiet", "--short", "HEAD"],
             ["rev-parse", "--verify", "--quiet", "@{upstream}"],
         ]
@@ -225,9 +227,9 @@ def test_fake_git_rejects_write_operations(sandbox, operation):
 def test_query_failure_is_not_reported_as_clean(sandbox, operation):
     _, _, repos, env = sandbox
     fixture_file = Path(env["FIXTURES"])
-    fixtures = json.loads(fixture_file.read_text())
+    fixtures = json.loads(fixture_file.read_text(encoding="utf-8"))
     fixtures["workspace-hub"]["fail"] = operation
-    fixture_file.write_text(json.dumps(fixtures))
+    fixture_file.write_text(json.dumps(fixtures), encoding="utf-8", newline="\n")
     before = snapshot(sandbox[0])
     output = execute(sandbox, repos[:1])
     assert output.returncode != 0
@@ -239,3 +241,83 @@ def test_requires_explicit_repository_list(sandbox):
     output = execute(sandbox, [])
     assert output.returncode != 0
     assert "usage:" in output.stderr.lower()
+
+
+
+def test_branch_delimiter_is_encoded(sandbox):
+    _, _, repos, env = sandbox
+    fixture_file = Path(env["FIXTURES"])
+    fixtures = json.loads(fixture_file.read_text(encoding="utf-8"))
+    fixtures["workspace-hub"]["branch"] = "topic|example"
+    fixture_file.write_text(json.dumps(fixtures), encoding="utf-8", newline="\n")
+    output = execute(sandbox, repos[:1])
+    assert output.returncode == 0, output.stderr
+    assert output.stdout.splitlines() == [
+        HEADER, "workspace-hub | topic%7Cexample | 0 | 0 | 0 | 0 | clean",
+    ]
+
+
+@pytest.mark.parametrize("change", ["tracked", "untracked"])
+def test_real_git_submodule_ignore_cannot_hide_changes(tmp_path, change):
+    # Disposable Git objects avoid commits or configuration changes in the caller.
+    env = {k: v for k, v in os.environ.items() if not k.startswith("GIT_")}
+    env.update(GIT_OPTIONAL_LOCKS="0", GIT_TERMINAL_PROMPT="0")
+
+    def git(repo, *args, data=None):
+        result = subprocess.run(
+            ["git", "-C", str(repo), *args], input=data, env=env,
+            capture_output=True, check=True, timeout=QUERY_TIMEOUT_SECONDS,
+        )
+        return result.stdout.strip().decode("utf-8")
+
+    def record_tree(repo):
+        tree = git(repo, "write-tree")
+        # git-commit-tree(1), Commit Information: literal synthetic object metadata.
+        raw = (f"tree {tree}\nauthor Fixture <> 0 +0000\n"
+               "committer Fixture <> 0 +0000\n\nFixture\n")
+        oid = git(repo, "hash-object", "-t", "commit", "-w", "--stdin",
+                  data=raw.encode("utf-8"))
+        git(repo, "update-ref", "HEAD", oid)
+        return oid
+
+    repo = tmp_path / "parent"
+    repo.mkdir()
+    git(repo, "init", "--initial-branch=main")
+    module = repo / "module"
+    module.mkdir()
+    git(module, "init", "--initial-branch=main")
+    (module / "tracked.txt").write_text("initial\n", encoding="utf-8", newline="\n")
+    git(module, "add", "tracked.txt")
+    child_oid = record_tree(module)
+    (repo / ".gitmodules").write_text(
+        '[submodule "module"]\n\tpath = module\n\turl = ../unused\n',
+        encoding="utf-8", newline="\n",
+    )
+    git(repo, "add", ".gitmodules")
+    git(repo, "update-index", "--add", "--cacheinfo", f"160000,{child_oid},module")
+    record_tree(repo)
+    config = repo / ".git/config"
+    config.write_text(
+        config.read_text(encoding="utf-8")
+        + '[submodule "module"]\n\tignore = all\n'
+        + '[branch "main"]\n\tremote = .\n\tmerge = refs/heads/main\n',
+        encoding="utf-8", newline="\n",
+    )
+    changed = "tracked.txt" if change == "tracked" else "extra.txt"
+    (module / changed).write_text("changed\n", encoding="utf-8", newline="\n")
+    # Positive control: the repository setting really suppresses this change.
+    assert git(repo, "status", "--porcelain=v1") == ""
+    assert git(repo, "status", "--porcelain=v1", "--ignore-submodules=none") == "M module"
+    program = tmp_path / "example.py"
+    program.write_text(documented_program(), encoding="utf-8", newline="\n")
+    before = snapshot(repo)
+    output = subprocess.run(
+        [sys.executable, str(program), str(repo)], env=env,
+        text=True, encoding="utf-8", capture_output=True,
+        timeout=QUERY_TIMEOUT_SECONDS,
+    )
+    assert output.returncode == 0, output.stderr
+    assert output.stdout.splitlines() == [
+        HEADER, "parent | main | 0 | 0 | 1 | 0 | dirty",
+    ]
+    assert snapshot(repo) == before
