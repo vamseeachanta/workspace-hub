@@ -13,6 +13,31 @@ execution controls and replay data. Where the older plan describes embedding a
 scheme-version field in each object, the current contract specifies the domain
 prefix below; this example follows that contract.
 
+## Plan-lite
+
+Scope will remain one offline, standard-library example of algorithm-version and
+run identities over fabricated inputs within the restricted byte profile below.
+Production admission, input-set construction and full JCS support will remain
+outside this example.
+
+Before merge, review will confirm these implementation steps:
+
+1. Select the immutable version fields and explicit replay bindings required by
+   the current contract, excluding observations and outputs.
+2. Canonicalize the restricted values and hash the domain-prefixed bytes, with
+   independent literal-byte oracles and single-field mutation cases.
+3. Check offline command-line execution and the focused example and contract
+   suites using the commands below. Temporary test output will stay outside the
+   repository in an existing temporary directory.
+
+```sh
+uv run --offline --no-project python examples/algorithm_runs/identity_example.py
+uv run --offline --no-project --with pytest --with pyyaml --with jsonschema \
+  python -m pytest tests/architecture/test_run_identity_example.py \
+  tests/architecture/test_algorithm_run_dataset_contract.py \
+  -q -rA -p no:cacheprovider --basetemp="$TMPDIR/bt-identity"
+```
+
 ## Byte profile
 
 Only plain dictionaries with ASCII string keys, ordered lists, strings and
