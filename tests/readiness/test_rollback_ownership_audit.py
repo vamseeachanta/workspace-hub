@@ -152,7 +152,7 @@ def test_middle_refusal_preserves_unstarted_tail(
     actions.append({"kind": "rewrite_agents_pointer", "path": str(tail),
                     "from": "../AGENTS.md", "to": "../replacement/AGENTS.md"})
 
-    repair._apply_repairable_actions("fixture", actions, repo)
+    assert repair._apply_repairable_actions("fixture", actions, repo) == 4
 
     assert "stale Codex action" in capsys.readouterr().err
     assert verified == [first]
