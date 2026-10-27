@@ -170,7 +170,7 @@ def test_cli_dry_run_writes_no_files(tmp_path, cannot_fit):
     before = {p.name: p.read_bytes() for p in tmp_path.iterdir()}
     run = subprocess.run(
         [sys.executable, str(SCRIPT), str(index), "--dry-run", "--byte-budget", str(budget)],
-        capture_output=True, text=True, cwd=tmp_path,
+        capture_output=True, text=True, encoding="utf-8", cwd=tmp_path,
     )
     assert run.returncode == (1 if cannot_fit else 0), run.stderr
     report = json.loads(run.stdout)
@@ -185,7 +185,7 @@ def test_cli_rejects_invalid_input_without_writes(tmp_path, contents, budget):
     index.write_bytes(contents)
     run = subprocess.run(
         [sys.executable, str(SCRIPT), str(index), "--dry-run", "--byte-budget", budget],
-        capture_output=True, text=True, cwd=tmp_path,
+        capture_output=True, text=True, encoding="utf-8", cwd=tmp_path,
     )
     assert run.returncode == 2
     assert run.stdout == ""
@@ -221,3 +221,36 @@ def test_metadata_and_html_blocks_are_not_entries(protected):
     source = protected + '- [A](a.md) — abcdef\n'
     result = shorten_index(source, len(expected.encode("utf-8")))
     assert result.text == expected
+
+
+@pytest.mark.parametrize("opening,closing", [
+    ("<?instruction", "?>"),
+    ("<![CDATA[", "]]>"),
+])
+@pytest.mark.parametrize("ending", ["\n", "\r\n"])
+@pytest.mark.parametrize("same_line", [False, True])
+def test_delimited_html_preserves_literals_and_releases_following_entry(
+    opening, closing, ending, same_line,
+):
+    lines = ([opening + closing] if same_line else [
+        opening, "", "- [Example](example.md) — keep literal", "", closing,
+    ])
+    protected = ending.join(lines) + ending
+    expected = protected + "- [A](a.md) — a" + ending
+    source = protected + "- [A](a.md) — abcdef" + ending
+    result = shorten_index(source, len(expected.encode("utf-8")))
+    assert result.status == "shortened"
+    assert result.text.encode("utf-8") == expected.encode("utf-8")
+    assert result.output_bytes == len(expected.encode("utf-8"))
+
+
+@pytest.mark.parametrize("opening", ["<?instruction", "<![CDATA["])
+@pytest.mark.parametrize("ending", ["\n", "\r\n"])
+def test_unclosed_delimited_html_remains_immutable(opening, ending):
+    source = ending.join([
+        opening, "", "- [Example](example.md) — keep literal", "",
+    ])
+    result = shorten_index(source, len(source.encode("utf-8")) - 1)
+    assert result.status == "cannot-fit"
+    assert result.text.encode("utf-8") == source.encode("utf-8")
+    assert result.minimum_bytes == len(source.encode("utf-8"))

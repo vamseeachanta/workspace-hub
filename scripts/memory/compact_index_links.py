@@ -128,10 +128,15 @@ def _parts(text: str) -> list[tuple[str, str, str]]:
             parts.append((line, "", ""))
         elif body.lstrip().startswith("<"):
             # Conservatively retain HTML blocks (CommonMark, #html-blocks).
-            # Literal blocks can contain blank lines; other tags end at a blank.
+            # Comments, instructions and literal blocks use explicit terminators.
+            # See https://spec.commonmark.org/0.31.2/#html-blocks.
             literal = _HTML_LITERAL.match(body)
             if body.lstrip().startswith("<!--"):
                 html_until = "-->"
+            elif body.lstrip().startswith("<?"):
+                html_until = "?>"
+            elif body.lstrip().startswith("<![CDATA["):
+                html_until = "]]>"
             elif literal:
                 html_until = "</" + literal[1].lower() + ">"
             else:
