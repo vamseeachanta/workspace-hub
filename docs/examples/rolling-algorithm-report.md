@@ -12,6 +12,25 @@ defines their applicability and the separation of failed runs from analysis.
 | Revision | Date | Change and reason |
 | --- | --- | --- |
 | Initial | 2026-10-26 | Added an executable synthetic layout to demonstrate the existing section contract. |
+| 1 | 2026-10-27 | Added explicit scope and verification instructions to make the example boundary reproducible. |
+
+## Plan-lite
+
+The example will remain limited to the pure HTML renderer in
+`examples/algorithm_runs/rolling_report_example.py`, this documentation and the
+structural tests in `tests/architecture/test_rolling_report_example.py`.
+Verification will cover mandatory sections, optional-section applicability,
+failed-run exclusion, text escaping, restricted artifact links and deterministic
+rendering, together with the existing report contract suite:
+
+```sh
+uv run --no-project --with pytest --with pyyaml --with jsonschema python -m pytest tests/architecture/test_rolling_report_example.py tests/architecture/test_algorithm_run_dataset_contract.py -q -rA -p no:cacheprovider --basetemp="$TMPDIR/rolling-report-tests"
+```
+
+The command will use an unused temporary directory outside the repository.
+Immutable data and revision binding, artifact content verification, publication
+and acceptance will remain deferred to a separate integration. Fixture links will
+remain illustrative references rather than shipped artifacts.
 
 ## Run the example
 
