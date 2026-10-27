@@ -11,6 +11,20 @@ Its evidence mechanisms follow [boundary policy Section 7.4](durable-vs-transien
 | Revision | Date | Change and reason |
 | --- | --- | --- |
 | Initial | 2026-10-26 | Define the supplied evidence shape and conservative status rules so missing and conflicting trails remain visible. |
+| 1 | 2026-10-27 | State the reporting scope, three deliverables and verification plan so the delivery boundary is explicit. |
+
+## Plan-lite
+
+Scope: report explicitly supplied promotion evidence and retain its locators.
+The three deliverables are the standard-library reporter
+`scripts/knowledge/promotion_trail_report.py`, its literal synthetic tests in
+`tests/knowledge/test_promotion_trail_report.py`, and this input-format and
+limitations document.
+
+Verification: run the focused tests, compare the documented example with its
+hand-classified rows, and run the applicable file-level checks. Page discovery,
+referenced-page inspection and authentication of promotion authority, source
+identities or reuse rights are excluded.
 
 ## Supplied evidence shape
 
