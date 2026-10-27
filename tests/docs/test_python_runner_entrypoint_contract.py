@@ -30,7 +30,8 @@ def documented_recipe():
     return section.split("```python\n", maxsplit=1)[1].split("```", maxsplit=1)[0]
 
 
-# Issue #3837 requests zero and a negative budget; by hand, -1 = 0 - 1.
+# Positive-budget contract: docs/modules/testing/TESTING_FRAMEWORK_STANDARDS.md:225.
+# Zero is the boundary; independently, the negative case is -1 = 0 - 1.
 @pytest.mark.parametrize("budget", ["0", "-1"])
 def test_recipe_rejects_nonpositive_watchdog(monkeypatch, capsys, budget):
     """The standard's recipe requires a positive budget before scratch creation.
