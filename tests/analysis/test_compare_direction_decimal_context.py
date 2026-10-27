@@ -11,6 +11,20 @@ precision 2 discards boundary digits; precision 12 retains them. Bounds -9..9
 admit the differences, while -1..0 makes them subnormal. Rounding up and down
 can move a boundary outward or inward; half-even adds a third rounding mode.
 All traps are either disabled or enabled, including Inexact and Subnormal.
+
+Plan-lite
+---------
+Scope: comparison-only checks in
+tests/analysis/test_compare_direction_decimal_context.py. Validation will use
+synthetic operands, literal expected directions and restored Decimal contexts.
+
+Offline validation (supply --basetemp with an external temporary directory):
+uv run --offline --no-project --with pytest --with pyyaml python -m pytest \
+tests/analysis/test_compare_direction_decimal_context.py -q -rA -p no:cacheprovider
+
+Acceptance: all 240 cases will pass without skips, both context fixtures will
+restore caller state, and production code and acceptance thresholds will remain
+unchanged. Existing-suite failures will be reported separately with their basis.
 """
 
 from __future__ import annotations
