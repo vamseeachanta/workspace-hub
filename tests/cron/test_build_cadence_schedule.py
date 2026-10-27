@@ -67,9 +67,9 @@ Cadence is unspecified where the catalog does not declare it.
 
 def run_cli(tmp_path, catalog=CATALOG, *, registry=REGISTRY, shell=True):
     source = tmp_path / "input.yaml"
-    source.write_text(catalog, encoding="utf-8")
+    source.write_text(catalog, encoding="utf-8", newline="\n")
     registry_path = tmp_path / "registry.yaml"
-    registry_path.write_text(registry, encoding="utf-8")
+    registry_path.write_text(registry, encoding="utf-8", newline="\n")
     output = tmp_path / "index.md"
     command = ["bash", str(ENTRYPOINT)] if shell else [sys.executable, str(RENDERER)]
     # The wrapper uses the already provisioned interpreter; no tool downloads.
@@ -109,8 +109,8 @@ def test_aliases_match_shared_renderer(tmp_path, monkeypatch):
         assert cron_render.effective_schedule(task, context) == "23 4 * * *"
     result, output = run_cli(tmp_path)
     assert result.returncode == 0, result.stderr
-    assert "| alpha | nightly | cron | primary | 23 4 * * * |" in output.read_text()
-    assert "| alternate |" not in output.read_text()
+    assert "| alpha | nightly | cron | primary | 23 4 * * * |" in output.read_text(encoding="utf-8")
+    assert "| alternate |" not in output.read_text(encoding="utf-8")
 
 
 def test_commands_are_not_executed_or_copied(tmp_path):
@@ -152,7 +152,7 @@ def test_invalid_catalog_leaves_no_successful_index(tmp_path, catalog, error):
     assert error in result.stderr
     assert "# Cadence schedule" not in result.stdout
     assert not output.exists()
-    output.write_text("previous output\n", encoding="utf-8")
+    output.write_text("previous output\n", encoding="utf-8", newline="\n")
     result, output = run_cli(tmp_path, catalog)
     assert result.returncode != 0
     assert output.read_text(encoding="utf-8") == "previous output\n"
@@ -167,6 +167,53 @@ def test_invalid_registry_fails_before_output(tmp_path, registry):
     assert result.returncode != 0
     assert "registry" in result.stderr.lower()
     assert not output.exists()
+
+
+@pytest.mark.parametrize("left, right", [
+    ({"hostname_aliases": ["shared"]}, {"hostname_aliases": [" SHARED "]}),
+    ({"hostname": "shared"}, {"hostname": " SHARED "}),
+    ({"hostname": "shared"}, {"hostname_aliases": [" SHARED "]}),
+    ({"hostname_aliases": [" SECONDARY "]}, {}),
+    ({"hostname": " SECONDARY "}, {}),
+])
+@pytest.mark.parametrize("reverse", [False, True])
+def test_registry_token_collisions_preserve_output(tmp_path, left, right, reverse):
+    machines = {"primary": left, "secondary": right}
+    if reverse:
+        machines = dict(reversed(machines.items()))
+    registry = yaml.safe_dump({"machines": machines}, sort_keys=False)
+    output = tmp_path / "index.md"
+    previous = b"previous output\n"
+    output.write_bytes(previous)
+    result, output = run_cli(tmp_path, registry=registry)
+    assert result.returncode != 0
+    assert "registry token collision" in result.stderr
+    assert output.read_bytes() == previous
+
+
+@pytest.mark.parametrize("reverse", [False, True])
+def test_registry_canonical_id_collisions_preserve_output(tmp_path, reverse):
+    machines = {"primary": {}, " PRIMARY ": {}}
+    if reverse:
+        machines = dict(reversed(machines.items()))
+    output = tmp_path / "index.md"
+    output.write_bytes(b"previous output\n")
+    result, output = run_cli(
+        tmp_path, registry=yaml.safe_dump({"machines": machines}, sort_keys=False),
+    )
+    assert result.returncode != 0
+    assert "registry token collision" in result.stderr
+    assert output.read_bytes() == b"previous output\n"
+
+
+def test_registry_repeated_tokens_for_same_target_are_allowed(tmp_path):
+    registry = yaml.safe_load(REGISTRY)
+    registry["machines"]["primary"]["hostname_aliases"] += [
+        " PRIMARY ", " TARGET-PRIMARY ", " ALTERNATE ",
+    ]
+    result, output = run_cli(tmp_path, registry=yaml.safe_dump(registry))
+    assert result.returncode == 0, result.stderr
+    assert output.read_text(encoding="utf-8") == EXPECTED
 
 
 def test_missing_input_fails_without_output(tmp_path):
@@ -185,16 +232,16 @@ def test_missing_input_fails_without_output(tmp_path):
 def test_empty_catalog_and_markdown_escaping(tmp_path):
     result, output = run_cli(tmp_path, "tasks: []")
     assert result.returncode == 0, result.stderr
-    assert "| Task | Cadence | Scheduler | Target | Schedule |" in output.read_text()
+    assert "| Task | Cadence | Scheduler | Target | Schedule |" in output.read_text(encoding="utf-8")
     data = {"tasks": [{"id": "a|<b>", "cadence": "one\ntwo", "schedule": "* * * * *"}]}
     result, output = run_cli(tmp_path, yaml.safe_dump(data))
     assert result.returncode == 0, result.stderr
-    assert "| a&#124;&lt;b&gt; | one<br>two | cron | unspecified | * * * * * |" in output.read_text()
+    assert "| a&#124;&lt;b&gt; | one<br>two | cron | unspecified | * * * * * |" in output.read_text(encoding="utf-8")
 
 
 def test_input_cannot_be_overwritten(tmp_path):
     source = tmp_path / "input.yaml"
-    source.write_text(CATALOG, encoding="utf-8")
+    source.write_text(CATALOG, encoding="utf-8", newline="\n")
     result = subprocess.run(
         [sys.executable, str(RENDERER), "--input", str(source), "--output", str(source)],
         capture_output=True, text=True, check=False,
@@ -222,7 +269,7 @@ tasks:
     result, output = run_cli(tmp_path, catalog, registry=registry)
     assert result.returncode == 0, result.stderr
     # Manual precedence: requested input token precedes the remaining aliases.
-    assert "| alpha | unspecified | cron | primary | 31 5 * * * |" in output.read_text()
+    assert "| alpha | unspecified | cron | primary | 31 5 * * * |" in output.read_text(encoding="utf-8")
 
 
 def test_conflicting_alias_rows_are_rejected(tmp_path):
@@ -262,4 +309,4 @@ def test_cron_macro_is_preserved(tmp_path):
     catalog = "tasks: [{id: alpha, schedule: '@daily'}]"
     result, output = run_cli(tmp_path, catalog)
     assert result.returncode == 0, result.stderr
-    assert "| alpha | unspecified | cron | unspecified | @daily |" in output.read_text()
+    assert "| alpha | unspecified | cron | unspecified | @daily |" in output.read_text(encoding="utf-8")

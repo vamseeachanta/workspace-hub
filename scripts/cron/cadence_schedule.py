@@ -20,7 +20,7 @@ from typing import Any
 
 import yaml
 
-from cron_render import build_context, effective_schedule
+from cron_render import build_context, effective_schedule, machine_tokens
 
 
 ROOT = Path(__file__).resolve().parents[2]  # scripts/cron is two levels below root.
@@ -78,6 +78,7 @@ def _validate_registry(registry: dict[str, Any]) -> None:
     machines = registry.get("machines", {})
     if not isinstance(machines, dict):
         raise ValueError("registry machines must be a mapping")
+    token_targets: dict[str, str] = {}
     for key, entry in machines.items():
         _text(key, "registry target")
         if not isinstance(entry, dict):
@@ -89,6 +90,11 @@ def _validate_registry(registry: dict[str, Any]) -> None:
             raise ValueError("registry hostname_aliases must be a list")
         for alias in aliases:
             _text(alias, "registry alias")
+        # Match resolver normalization, allowing repetition within one target.
+        for token in machine_tokens(key, entry):
+            if token in token_targets and token_targets[token] != key:
+                raise ValueError("registry token collision across targets")
+            token_targets[token] = key
 
 
 def _validate_tasks(catalog: dict[str, Any]) -> list[dict[str, Any]]:
@@ -178,7 +184,7 @@ def main(argv: list[str] | None = None) -> int:
             raise ValueError("output must differ from input and registry")
         result = render_index(_load(args.input, "input"), _load(args.registry, "registry"))
         args.output.parent.mkdir(parents=True, exist_ok=True)
-        args.output.write_text(result, encoding="utf-8")
+        args.output.write_text(result, encoding="utf-8", newline="\n")
     except (ValueError, OSError, UnicodeError) as exc:
         # Validation errors are contextual but do not echo catalog values or paths.
         # Unexpected programming errors retain their traceback for diagnosis.
