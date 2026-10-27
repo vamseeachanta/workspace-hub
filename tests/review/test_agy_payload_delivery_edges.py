@@ -4,6 +4,16 @@ Issue #3896 supplies the 41,000-byte regression size. The cap and failure
 statuses are declared in scripts/review/submit-to-agy.sh: AGY_MAX_BYTES,
 emit_invalid_output, the payload write guard, and the receipt check. These
 tests measure local Bash delivery; native Windows behavior is unmeasured.
+
+Plan-lite
+---------
+Scope: keep this slice test-only; production transport remains unchanged.
+Acceptance: independently constructed input bytes arrive completely by file;
+the cap allows equality and rejects an input one byte above it; a payload write
+failure and a successful reader without a receipt both produce INVALID_OUTPUT
+with the declared nonzero exit status.
+Validation: run this module and tests/ai/test_run_agent_agy.py offline, using
+local executable fixtures and temporary directories outside the repository.
 """
 
 from __future__ import annotations
