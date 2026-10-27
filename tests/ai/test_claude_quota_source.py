@@ -92,7 +92,7 @@ def snapshot_shell(tmp_path):
 
     def run(payload, function="get_claude_oauth_entry"):
         if payload is not None:
-            snapshot.write_text(payload, encoding="utf-8")
+            snapshot.write_text(payload, encoding="utf-8", newline="\n")
         result = subprocess.run(
             [bash, "--noprofile", "--norc", "-c", shell, "snapshot-test",
              str(PROVIDERS), function],

@@ -66,6 +66,14 @@ jobs:
         run: |
           uv sync --frozen --group dev
 
+      - name: Run authoritative quota source tests
+        shell: bash
+        run: |
+          command -v bash
+          command -v jq
+          uv run --no-project --with pytest python -m pytest \
+            tests/ai/test_claude_quota_source.py -q -rA -p no:cacheprovider
+
       - name: Run Python tests
         run: |
           # Hub-level Python tests (no PYTHONPATH manipulation needed)
