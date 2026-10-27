@@ -9,6 +9,7 @@ acceptance, source rights, execution provenance or remote publication.
 | Revision | Date | Change and reason |
 | --- | --- | --- |
 | Initial | 2026-10-22 | Define scoped byte checks and prerequisite retention to prevent false source mismatches and silent loss of unresolved requirements. |
+| Decoder boundary | 2026-10-26 | Document the detached decoder-error contract and deterministic regression strategy without changing acceptance rules. |
 
 ## Method and sources
 
@@ -159,6 +160,26 @@ Run the executable worked-example regression:
 uv run --no-project --with pytest --with PyYAML python -m pytest \
   tests/reporting/test_report_provenance.py -k documented_worked_sidecar -q
 ```
+
+## Plan-lite: manifest decoding
+
+Production changes are confined to `load_manifest`. Decoder `ValueError`
+(including syntax and encoding errors), `RecursionError`, `OverflowError` and
+`MemoryError` become `ProvenanceError` with the message
+`invalid or ambiguous JSON manifest`. Raising after the handler leaves neither
+an explicit cause nor an implicit decoder exception context on that error.
+
+The regression strategy injects resource errors deterministically and checks
+the public message, detached cause and context, and formatted traceback.
+Malformed syntax and UTF-8, duplicate keys, non-finite constants and bounded
+nesting exercise rejection; literal valid-input oracles exercise string, bytes
+and bytearray inputs. The executable cases are in
+`tests/reporting/test_manifest_decoder_boundary.py`; the existing provenance
+suite checks that source and prerequisite behavior remains unchanged.
+
+Duplicate-key and non-finite-token rejection and valid-input acceptance remain
+unchanged. No input-size or numeric limits are added. These tests do not exhaust
+memory, bound decoder work or guarantee recovery from actual memory exhaustion.
 
 ## Coverage and limits
 
