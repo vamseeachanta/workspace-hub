@@ -6,6 +6,10 @@ data/document-index/freshness-cadences.yaml, status_vocabulary and
 source_of_truth_precedence, defines the shared status names and distinguishes
 measured scanner age from expected per-asset cadence. These fixtures retain
 scanner thresholds; they do not apply or change registry cadence policy.
+
+Git timestamp lookups are mocked throughout this module. External-root cases
+cover routing and dashboard isolation using ordinary temporary directories;
+separate-repository Git integration remains untested.
 """
 from __future__ import annotations
 
@@ -27,6 +31,7 @@ NOW = datetime.fromisoformat("2026-04-02T00:00:00+00:00")
 
 @pytest.fixture
 def scanner(monkeypatch, tmp_path):
+    """Load the scanner with a fixed clock and mocked Git timestamp lookups."""
     spec = importlib.util.spec_from_file_location(
         "staleness_yaml_discovery", REPO_ROOT / "scripts/docs/staleness-scanner.py"
     )
@@ -127,6 +132,7 @@ def test_yaml_age_threshold_boundaries(scanner, stamp, age, status):
 
 @pytest.mark.parametrize("external", [False, True])
 def test_yaml_cli_writes_only_requested_dashboard(scanner, tmp_path, capsys, external):
+    """Check mocked root routing and writes without creating a Git repository."""
     root = (tmp_path if external else scanner.REPO_ROOT) / "registries"
     root.mkdir()
     registry = root / "registry.yml"
