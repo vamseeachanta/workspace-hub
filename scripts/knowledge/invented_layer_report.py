@@ -85,9 +85,11 @@ def _blocks(text: str, file: str) -> str:
     fence = None
     section = subsection = ""
     lines = []
+    paragraph = False
     for line in text.splitlines(keepends=True):
         marker = FENCE.match(line)
         if fence is not None:
+            paragraph = False
             if marker and marker[1][0] == fence[0] and len(marker[1]) >= len(fence):
                 if not marker[2].strip():
                     fence = None
@@ -95,9 +97,14 @@ def _blocks(text: str, file: str) -> str:
             continue
         if marker and not (marker[1].startswith("`") and "`" in marker[2]):
             fence = marker[1]
+            paragraph = False
             lines.append(_blank(line))
             continue
-        if re.match(r"^ {0,3}>", line) or line.startswith(("    ", "\t")):
+        if re.match(r"^ {0,3}>", line):
+            paragraph = False
+            lines.append(_blank(line))
+            continue
+        if not paragraph and line.startswith(("    ", "\t")):
             lines.append(_blank(line))
             continue
         heading = HEADING.match(line)
@@ -108,17 +115,37 @@ def _blocks(text: str, file: str) -> str:
                 section = subsection = heading[2]
             elif level == 3:
                 subsection = heading[2]
+        paragraph = bool(line.strip()) and heading is None
         lines.append(_blank(line) if _definition_row(line, file, section, subsection) else line)
     return "".join(lines)
 
 
 def _inline_code(text: str) -> str:
-    """Match exact backtick run lengths, including code spans across lines."""
-    # A blank line ends a Markdown paragraph. Blanked fenced blocks therefore
-    # cannot let unmatched backticks suppress a later paragraph's prose.
-    return "".join(
-        _code_spans(part) for part in re.split(r"(\n[ \t\r]*\n)", text)
-    )
+    """Keep multiline spans within the supported Markdown block boundaries.
+
+    CommonMark 0.31.2 sections 3.1, 4.1, 4.2, 4.5 and 5.2 give
+    block structure precedence over inline parsing.
+    """
+    parts = []
+    pending = []
+    for line in text.splitlines(keepends=True):
+        boundary = bool(
+            HEADING.match(line)
+            or re.match(r"^ {0,3}(?:[-+*]|[0-9]{1,9}[.)])[ \t]+", line)
+            or re.match(
+                r"^ {0,3}(?:=+|-+|(?:\*[ \t]*){3,}|(?:_[ \t]*){3,})[ \t]*$",
+                line.rstrip(),
+            )
+        )
+        if boundary or not line.strip():
+            parts.append(_code_spans("".join(pending)))
+            pending = []
+        if HEADING.match(line) or not line.strip():
+            parts.append(_code_spans(line))
+        else:
+            pending.append(line)
+    parts.append(_code_spans("".join(pending)))
+    return "".join(parts)
 
 
 def _code_spans(text: str) -> str:
@@ -174,6 +201,48 @@ def _balanced_end(text: str, start: int, opening: str, closing: str) -> int | No
     return None
 
 
+def _valid_link(text: str) -> bool:
+    """Validate destination and optional title, CommonMark 0.31.2 section 6.3."""
+    text = text.strip()
+    if not text:
+        return True
+    if text.startswith("<"):
+        destination = re.match(r"<(?:\\.|[^<>\n\\])*>", text)
+        if destination is None:
+            return False
+        end = destination.end()
+    else:
+        end = 0
+        while end < len(text) and not text[end].isspace():
+            char = text[end]
+            if char == "\\":
+                if end + 1 < len(text) and text[end + 1].isspace():
+                    return False
+                end += 2
+                continue
+            if char in "<>" or ord(char) < 32:
+                return False
+            if char == "(":
+                nested_end = _balanced_end(text, end, "(", ")")
+                if nested_end is None or re.search(r"\s", text[end:nested_end]):
+                    return False
+                end = nested_end
+                continue
+            if char == ")":
+                return False
+            end += 1
+    remainder = text[end:]
+    if not remainder:
+        return True
+    if not remainder[0].isspace():
+        return False
+    title = remainder.strip()
+    return bool(re.fullmatch(
+        r"\"(?:\\.|[^\"\\])*\"|'(?:\\.|[^'\\])*'|\((?:\\.|[^()\\])*\)",
+        title,
+    ))
+
+
 def _links(text: str) -> str:
     references = {" ".join(m[1].split()).casefold() for m in REFERENCE.finditer(text)}
     text = REFERENCE.sub(lambda match: _blank(match[0]), text)
@@ -192,7 +261,9 @@ def _links(text: str) -> str:
             continue
         end = None
         if text[label_end:label_end + 1] == "(":
-            end = _balanced_end(text, label_end, "(", ")")
+            candidate = _balanced_end(text, label_end, "(", ")")
+            if candidate is not None and _valid_link(text[label_end + 1:candidate - 1]):
+                end = candidate
         elif text[label_end:label_end + 1] == "[":
             ref_end = _balanced_end(text, label_end, "[", "]")
             if ref_end is not None:

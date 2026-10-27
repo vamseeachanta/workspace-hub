@@ -162,9 +162,9 @@ def test_files_are_explicit_sorted_relative_and_unchanged(detector, tmp_path):
     first = docs / "a.md"
     last = docs / "z.md"
     ignored = docs / "unsupplied.md"
-    first.write_text("hybrid layer\n", encoding="utf-8")
-    last.write_text("# Heading\nL3-adjacent\n", encoding="utf-8")
-    ignored.write_text("hybrid layer\n", encoding="utf-8")
+    first.write_text("hybrid layer\n", encoding="utf-8", newline="\n")
+    last.write_text("# Heading\nL3-adjacent\n", encoding="utf-8", newline="\n")
+    ignored.write_text("hybrid layer\n", encoding="utf-8", newline="\n")
     before = {path: path.read_bytes() for path in docs.iterdir()}
     assert detector.scan_files([last, first, first], root=tmp_path) == [
         finding(1, "docs/a.md"), finding(2, "docs/z.md")
@@ -176,7 +176,7 @@ def test_file_outside_explicit_root_is_rejected(detector, tmp_path):
     root = tmp_path / "root"
     root.mkdir()
     outside = tmp_path / "outside.md"
-    outside.write_text("hybrid layer", encoding="utf-8")
+    outside.write_text("hybrid layer", encoding="utf-8", newline="\n")
     with pytest.raises(ValueError, match="root"):
         detector.scan_files([outside], root=root)
 
@@ -189,7 +189,7 @@ def test_text_source_must_be_relative(detector, source):
 
 def test_cli_reports_json_without_modifying_input(tmp_path):
     target = tmp_path / "notes.md"
-    target.write_text("hybrid layer\n", encoding="utf-8")
+    target.write_text("hybrid layer\n", encoding="utf-8", newline="\n")
     result = subprocess.run(
         [sys.executable, str(SCRIPT), "--root", str(tmp_path), str(target)],
         text=True, capture_output=True, check=False,
@@ -246,7 +246,7 @@ def test_symlink_outside_root_is_rejected(detector, tmp_path):
     root = tmp_path / "root"
     root.mkdir()
     outside = tmp_path / "outside.md"
-    outside.write_text("hybrid layer", encoding="utf-8")
+    outside.write_text("hybrid layer", encoding="utf-8", newline="\n")
     alias = root / "alias.md"
     alias.symlink_to(outside)
     with pytest.raises(ValueError, match="root"):
@@ -262,3 +262,38 @@ def test_cli_input_error_does_not_expose_absolute_paths(tmp_path):
     assert result.returncode == 2  # argparse's documented usage-error status
     assert result.stdout == ""
     assert str(tmp_path) not in result.stderr
+
+
+@pytest.mark.parametrize("indent", ["    ", "\t"])
+def test_indented_paragraph_continuation_is_prose(detector, indent):
+    text = f"This artifact is a\n{indent}hybrid layer.\n"
+    assert detector.scan_text(text, "notes.md") == [finding(2)]
+
+
+def test_indented_code_after_blank_line_is_excluded(detector):
+    text = "Paragraph.\n\n    hybrid layer\n\nL3-adjacent\n"
+    assert detector.scan_text(text, "notes.md") == [finding(5)]
+
+
+@pytest.mark.parametrize("boundary", ["# A", "## A", "- A", "> A", "---\nA"])
+def test_code_span_cannot_cross_block_boundary(detector, boundary):
+    text = f"Unmatched ` marker.\n{boundary} hybrid layer ending with `\n"
+    line = 3 if "\n" in boundary else 2
+    expected = [] if boundary.startswith(">") else [finding(line)]
+    assert detector.scan_text(text, "notes.md") == expected
+
+
+@pytest.mark.parametrize("target", [
+    "not a valid destination", "guide.md extra", "<broken destination", r"guide\ name.md",
+    'guide.md "title" trailing', "guide<bad>.md",
+])
+def test_invalid_inline_link_remains_prose(detector, target):
+    assert detector.scan_text(f"[hybrid layer]({target})", "notes.md") == [finding(1)]
+
+
+@pytest.mark.parametrize("target", [
+    "guide.md", "guide_(draft).md", "<guide with spaces.md>",
+    'guide.md "a title"', "guide.md 'a title'", "guide.md (a title)", "",
+])
+def test_valid_inline_link_is_excluded(detector, target):
+    assert detector.scan_text(f"[hybrid layer]({target})", "notes.md") == []
