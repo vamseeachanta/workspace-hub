@@ -4,6 +4,11 @@ Scope: issue #2156, structural validation only; no real registry payloads.
 The schema version example is from issue #2136's implementation summary.
 Diagnostic indices are hand-counted: the first asset is 0, the duplicate is 1.
 Expected diagnostics are literal assertions, independent of validator constants.
+
+Plan-lite:
+    Scope will remain this single synthetic fixture suite for the existing
+    validator. Validation will run this suite and the adjacent index metadata
+    suite. Cross-registry coherence and CI selection will remain deferred.
 """
 
 from __future__ import annotations
