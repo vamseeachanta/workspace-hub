@@ -28,10 +28,12 @@ SCHEMA_VERSION = 1
 _TIMESTAMP = re.compile(r"(?!0000)[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z")
 _PAYLOAD_KEYS = {"schema_version", "source_ref", "comments"}
 _COMMENT_KEYS = {"quote", "section", "source_ref", "comment", "timestamp"}
+# Explicit blank characters shared with JavaScript; see Format in the guide.
+_BLANK = re.compile(r"[\u0009-\u000d\u001c-\u0020\u0085\u00a0\u1680\u2000-\u200a\u2028\u2029\u202f\u205f\u3000\ufeff]*")
 
 
 def _substantive(value: object) -> bool:
-    return isinstance(value, str) and bool(value.strip())
+    return isinstance(value, str) and _BLANK.fullmatch(value) is None
 
 
 def validate_payload(payload: object, source_ref: str | None = None) -> dict:
@@ -154,16 +156,18 @@ _SCRIPT = r'''
   const source = embedded.payload.source_ref;
   const exactKeys = (value, keys) => value !== null && typeof value === "object" &&
     !Array.isArray(value) && Object.keys(value).sort().join(",") === keys.sort().join(",");
+  const substantive = value => typeof value === "string" &&
+    !/^[\u0009-\u000d\u001c-\u0020\u0085\u00a0\u1680\u2000-\u200a\u2028\u2029\u202f\u205f\u3000\ufeff]*$/.test(value);
   // Mirrors html_review_layer.md, Format: all fields required; no unknown keys.
   function validate(value) {
     if (!exactKeys(value, ["schema_version", "source_ref", "comments"]) ||
         value.schema_version !== 1 || value.source_ref !== source ||
-        typeof value.source_ref !== "string" || !value.source_ref.trim() ||
+        !substantive(value.source_ref) ||
         !Array.isArray(value.comments)) throw Error("Invalid review payload or source reference.");
     for (const item of value.comments) {
       if (!exactKeys(item, ["quote", "section", "source_ref", "comment", "timestamp"]) ||
           !Object.values(item).every(field => typeof field === "string") ||
-          !(item.quote.trim() || item.section.trim()) || !item.comment.trim() ||
+          !(substantive(item.quote) || substantive(item.section)) || !substantive(item.comment) ||
           item.source_ref !== source ||
           !/^(?!0000)[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$/.test(item.timestamp)) {
         throw Error("Invalid comment record.");
@@ -206,7 +210,7 @@ _SCRIPT = r'''
   function sectionFor(element) {
     const section = element.closest("section, article, main, [id]") || document.body;
     const heading = section.querySelector("h1, h2, h3, h4, h5, h6");
-    return section.id || (heading && heading.textContent.trim()) || document.title || "Document";
+    return section.id || (heading && substantive(heading.textContent) && heading.textContent) || document.title || "Document";
   }
   function select(value) {
     target = value;
@@ -222,7 +226,7 @@ _SCRIPT = r'''
         range.intersectsNode(root)) return;
     const element = range.startContainer.nodeType === Node.ELEMENT_NODE ?
       range.startContainer : range.startContainer.parentElement;
-    if (element && selection.toString().trim()) {
+    if (element && substantive(selection.toString())) {
       select({quote: selection.toString(), section: sectionFor(element)});
     }
   }
@@ -261,7 +265,7 @@ _SCRIPT = r'''
   control("form").addEventListener("submit", event => {
     event.preventDefault();
     const comment = control("text").value;
-    if (!editingTarget || !comment.trim()) return;
+    if (!editingTarget || !substantive(comment)) return;
     // Format uses UTC seconds; Date supplies milliseconds which are removed.
     const timestamp = new Date().toISOString().replace(/\.[0-9]{3}Z$/, "Z");
     const next = {...payload, comments: [...payload.comments,

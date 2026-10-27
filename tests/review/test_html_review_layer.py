@@ -234,7 +234,7 @@ def test_repeated_injection_is_refused(paths):
     assert not output.exists()
 
 
-@pytest.mark.parametrize("reference", ["", " \t", None])
+@pytest.mark.parametrize("reference", ["", " \t", "\ufeff", "\x85", "\x1c", None])
 def test_empty_source_reference_refused(paths, reference):
     with pytest.raises(ValueError):
         layer.inject(*paths, source_ref=reference)
@@ -285,17 +285,81 @@ def test_controls_inline_print_hidden_and_no_network_resources(paths):
 
 def test_cli_copy_and_invalid_import(paths, tmp_path):
     fixture = tmp_path / "comments.json"
-    fixture.write_text(EXAMPLE_JSON, encoding="utf-8")
+    fixture.write_text(EXAMPLE_JSON, encoding="utf-8", newline="\n")
     command = [sys.executable, str(ROOT / "scripts/review/html_review_layer.py"),
                str(paths[0]), str(paths[1]), "--source-ref", "reports/example.html",
                "--comments", str(fixture)]
-    result = subprocess.run(command, capture_output=True, text=True)
+    result = subprocess.run(command, capture_output=True, text=True, encoding="utf-8")
     assert result.returncode == 0, result.stderr
     assert paths[0].read_bytes() == SOURCE
     assert b'id="hrl-root"' in paths[1].read_bytes()
-    fixture.write_text('{"unexpected":true}', encoding="utf-8")
+    fixture.write_text('{"unexpected":true}', encoding="utf-8", newline="\n")
     command[3] = str(tmp_path / "invalid.html")
-    result = subprocess.run(command, capture_output=True, text=True)
+    result = subprocess.run(command, capture_output=True, text=True, encoding="utf-8")
     assert result.returncode != 0
     assert not (tmp_path / "invalid.html").exists()
     assert paths[0].read_bytes() == SOURCE
+
+
+# The explicit blank set includes Python/ECMAScript whitespace and the BOM.
+BLANK_CODEPOINTS = (
+    *range(0x09, 0x0E), *range(0x1C, 0x21), 0x85, 0xA0, 0x1680,
+    *range(0x2000, 0x200B), 0x2028, 0x2029, 0x202F, 0x205F, 0x3000, 0xFEFF,
+)
+
+
+def whitespace_vectors():
+    for text, accepted in [
+        ("", False),
+        *((chr(codepoint), False) for codepoint in BLANK_CODEPOINTS),
+        ("".join(map(chr, BLANK_CODEPOINTS)), False),
+        ("\u200b", True), ("\u180e", True), ("\x00", True),
+        ("\ufeffText\x85", True),
+    ]:
+        for field in ("source_ref", "comment", "quote", "section"):
+            payload = copy.deepcopy(EXAMPLE)
+            if field == "source_ref":
+                payload["source_ref"] = text
+                payload["comments"][0]["source_ref"] = text
+            else:
+                payload["comments"][0][field] = text
+                if field in ("quote", "section"):
+                    other = "section" if field == "quote" else "quote"
+                    payload["comments"][0][other] = ""
+            yield payload, accepted
+
+
+@pytest.mark.parametrize("runtime", ["python", "javascript"])
+def test_shared_whitespace_contract(runtime):
+    vectors = list(whitespace_vectors())
+    if runtime == "python":
+        results = []
+        for payload, _ in vectors:
+            try:
+                assert layer.loads_payload(layer.dumps_payload(payload)) == payload
+            except ValueError:
+                results.append(False)
+            else:
+                results.append(True)
+    else:
+        # Execute the shipped validator, without a browser or replacement logic.
+        validator = "  const exactKeys" + layer._SCRIPT.split("  const exactKeys", 1)[1]
+        validator = validator.split("  let payload =", 1)[0]
+        program = validator + """
+const fs = require("node:fs");
+const vectors = JSON.parse(fs.readFileSync(0, "utf8"));
+let source;
+const results = vectors.map(value => {
+  source = value.source_ref;
+  try {
+    return JSON.stringify(validate(value)) === JSON.stringify(value);
+  } catch { return false; }
+});
+process.stdout.write(JSON.stringify(results));
+"""
+        result = subprocess.run(
+            ["node", "-e", program], input=json.dumps([p for p, _ in vectors]),
+            capture_output=True, text=True, encoding="utf-8", check=True,
+        )
+        results = json.loads(result.stdout)
+    assert results == [accepted for _, accepted in vectors]

@@ -53,6 +53,11 @@ All shown keys are required; additional keys are refused. The root is an object,
 are strings. `quote` or `section` must be nonblank; either may be empty when the
 other is supplied. `comment` must be nonblank. Each record's `source_ref` must
 equal the root reference. String contents are preserved, including whitespace.
+Blank means empty or composed entirely of these code points in both validators:
+`U+0009–U+000D`, `U+001C–U+0020`, `U+0085`, `U+00A0`, `U+1680`,
+`U+2000–U+200A`, `U+2028–U+2029`, `U+202F`, `U+205F`, `U+3000`, and
+`U+FEFF`. Other characters are substantive, including `U+200B` and `U+180E`.
+This explicit set avoids differences between runtime whitespace definitions.
 Timestamps are valid calendar times in the exact UTC form
 `YYYY-MM-DDTHH:MM:SSZ`, using years `0001` through `9999`, whole seconds and no
 leap seconds. These choices define the format, rather than engineering values.
@@ -83,4 +88,6 @@ cross-repository rollout, producer integration or publication operation.
 Focused checks are synthetic, offline Python checks of byte preservation,
 alias refusal, insertion structure, payload validation and round trips,
 script-data escaping, print rules, CLI behavior and absence of added resource
-references. They do not execute the inline JavaScript or test browser behavior.
+references. Shared acceptance/rejection vectors also execute the shipped
+JavaScript validator with Node.js and check Python round trips. Browser behavior
+is not tested.
