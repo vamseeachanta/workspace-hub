@@ -125,14 +125,19 @@ def test_original_retention_requires_private_raw_and_manifest(source_class):
         assert list(validator().iter_errors(broken)), key
 
 
-@pytest.mark.parametrize("residency", ["private_git", "public_git", "external"])
-def test_licensed_original_never_routes_into_git(residency):
+@pytest.mark.parametrize("residency", ["private_git", "licensed_location", "external"])
+def test_licensed_original_may_live_in_private_storage(residency):
     item = descriptor()
     item["source_class"] = "licensed_standard_original"
-    item["storage"] = {"residency": residency, "source_ref": "fixture:licensed-location", "raw_copy_allowed": False}
-    assert list(validator().iter_errors(item))
-    item["storage"]["residency"] = "licensed_location"
+    item["storage"] = {"residency": residency, "source_ref": "fixture:licensed-location"}
     validator().validate(item)
+
+
+def test_licensed_original_never_routes_into_public_git():
+    item = descriptor()
+    item["source_class"] = "licensed_standard_original"
+    item["storage"] = {"residency": "public_git", "source_ref": "fixture:licensed-location"}
+    assert list(validator().iter_errors(item))
 
 
 def test_schema_closes_projection_and_unknown_properties():
@@ -189,8 +194,8 @@ def test_policy_consumers_resolve_authority_and_remove_blanket_permissions():
     assert "ingest acceptance remains blocked" in residence
     assert "required-original exception" in residence
     rule = paths[2].read_text(encoding="utf-8")
-    assert "raw_copy_allowed: false" in rule
-    assert "source-specific rights" in rule
+    assert "No rights checks" in rule
+    assert "raw_copy_allowed: false" not in rule
     assert "unrestricted within copyright fair use" not in rule
     assert "when in doubt, route private" not in rule
 
@@ -219,18 +224,6 @@ def test_conformance_candidates_do_not_claim_future_observations():
     assert {"future_observation", "unknown_catalog_member", "malformed_lineage", "owner_slug"} <= {
         case["id"] for case in schema["x-conformance"]
     }
-
-
-@pytest.mark.parametrize("extra", [
-    {"raw_path": "data/fixture/raw/original.pdf"}, {"ignore_exception": True},
-    {"raw_digest": "sha256:" + "c" * 64}, {"raw_copy_allowed": True},
-])
-def test_licensed_location_cannot_hide_git_copy_metadata(extra):
-    item = descriptor()
-    item["source_class"] = "licensed_standard_original"
-    item["storage"] = {"residency": "licensed_location", "source_ref": "fixture:source",
-                       "raw_copy_allowed": False, **extra}
-    assert list(validator().iter_errors(item))
 
 
 def test_licensed_derivative_requires_lineage_before_ready():
@@ -269,14 +262,14 @@ def test_explicit_md5_can_be_read_without_claiming_ready():
 
 
 @pytest.mark.parametrize("required", [
-    "Reading authorization does not grant storage authorization.",
-    "Existing source-specific restrictions take precedence",
-    "metadata-only extraction remains metadata-only",
-    "Public outputs cite clause numbers only",
+    "Lift all the blockers.",
+    "No rights checks and no \"metadata-only\" limit.",
+    "originals may be kept in private Git",
+    "Kept out of public repos and pages: the original PDFs",
+    "Every job checks which CFR applies and cites the section.",
 ])
-def test_internal_standards_use_preserves_operation_and_storage_boundaries(required):
+def test_standards_rule_records_maintainer_ruling(required):
     rule = (ROOT / ".claude/rules/codes-standards-data-routing.md").read_text(encoding="utf-8")
-    section = rule.split("(27 Oct 2026)", 1)[1].split("## Interpretation", 1)[0]
+    section = rule.split("## Maintainer ruling (28 Oct 2026)", 1)[1].split("## Placement", 1)[0]
     assert required in section
-    assert "the source-specific authorization the checks above require" not in section
-    assert "the copies stay in private repositories" not in section
+    assert "metadata-only extraction remains metadata-only" not in rule

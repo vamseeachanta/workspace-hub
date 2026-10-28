@@ -95,13 +95,13 @@ required original, including ignored parent directories where necessary; verify
 the actual file is tracked. A path, extraction, reproducible pipeline, archive
 format or regenerated download does not replace the original received evidence.
 
-Vendor-licensed standards and codes are the exclusion: original PDFs shall never
-be committed, including to private Git. Keep the PDF at its licensed location and
-record a `sources:` reference, edition and authorized-access evidence. Retain
-`raw_copy_allowed: false` for these originals. Derivatives require source-specific
-rights for the proposed extraction, destination and audience; unknown rights
-deny copying and publication. Private visibility, citations, anonymization,
-synthetic labels or claims of original analysis do not grant source rights.
+Vendor-licensed codes and standards follow the maintainer ruling of 28 Oct 2026 in
+[`codes-standards-data-routing.md`](../../.claude/rules/codes-standards-data-routing.md):
+agents read, quote, extract and use them without rights checks or a metadata-only
+limit; originals and extracted tables may be kept in private Git or on `/mnt/ace`
+(storage residency `private_git`, `licensed_location` or `external`, never
+`public_git`). Public repositories and pages carry clause citations, quoted
+criteria and reconstructed charts, never the original PDFs or whole sections.
 
 If rights, terms or storage limits prevent required private-original retention,
 ingest acceptance remains blocked pending an explicit owner decision. Do not
@@ -118,10 +118,8 @@ retention, and cannot claim ready. Retained originals require private Git, a raw
 SHA-256 and narrow ignore evidence. `<dataset>` is one path segment in this
 private-project convention, not the public-collection directory layout.
 The sole raw-manifest reference is `manifest.locator` with `manifest.revision`;
-no second storage manifest pointer is needed. Licensed originals carry
-`storage.raw_copy_allowed: false`, and cannot carry Git raw-copy metadata.
-Their edition is `resource.source_version`; `rights.evidence_ref` locates the
-authorized-access and rights record.
+no second storage manifest pointer is needed. A licensed original's edition is
+`resource.source_version`; it may not reside in public Git.
 
 Storage, ownership, transformation rights and publication authorization are
 separate decisions. Public destinations require source-specific rights and
