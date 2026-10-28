@@ -154,6 +154,9 @@ def approve(root, path, approval_ref="approval-ref-001", date="2026-10-13"):
 
 
 def run_cli(args, root):
+    # Synthetic fixture policy: no free-space floor unless the test supplies one.
+    if args[0] == "run-once":
+        args = [args[0], "--min-free-bytes", "0", *args[1:]]
     env = os.environ.copy()
     env["PYTHONDONTWRITEBYTECODE"] = "1"
     return subprocess.run(
@@ -167,6 +170,9 @@ def run_cli(args, root):
 
 
 def popen_runner(args, root):
+    # Match run_cli's isolated disk policy; the explicit low-disk test overrides it.
+    if args[0] == "run-once":
+        args = [args[0], "--min-free-bytes", "0", *args[1:]]
     env = os.environ.copy()
     env["PYTHONDONTWRITEBYTECODE"] = "1"
     return subprocess.Popen(
@@ -1292,3 +1298,106 @@ def test_register_reports_readback_cleanup_result(work_area, delete_exit_code, e
     assert done.returncode == delete_exit_code, done.stdout + done.stderr
     assert expected in done.stdout
     assert "findstr" not in register_batch_text().lower()
+
+
+@pytest.mark.parametrize("field,value", [
+    ("expected_hours", float("nan")),
+    ("max_hours", float("inf")),
+    ("max_hours", True),
+    ("retry.max_attempts", 1.5),
+    ("retry.max_attempts", True),
+    ("retry.backoff_minutes", float("nan")),
+    ("retry.backoff_minutes", float("inf")),
+    ("licence_exit_codes", [0]),
+])
+def test_numeric_limits_are_finite_and_attempts_integral(root, fake_checkout, runner, field, value):
+    """Issue contract: finite duration, whole attempts, and zero means success."""
+    path, manifest = make_manifest(root, fake_checkout)
+    target = manifest
+    if "." in field:
+        parent, field = field.split(".")
+        target = manifest[parent]
+    target[field] = value
+    assert runner.validate_manifest_data(manifest, path)
+
+
+def test_exhausted_crash_attempt_is_not_restarted(root, fake_checkout):
+    """Hand calculation: two recorded starts minus a two-start budget = zero left."""
+    path, _ = make_manifest(root, fake_checkout)
+    approve(root, path)
+    state = root / "state" / "example-campaign"
+    state.mkdir()
+    (state / "attempts.txt").write_text("2\n", encoding="utf-8")
+    assert run_cli(["run-once"], root).returncode == 0
+    assert not (root / "progress").exists()
+    result = (root / "done" / "example-campaign.result").read_text(encoding="utf-8")
+    assert result.startswith("FAILED\t")
+    assert "attempts-exhausted" in result
+    assert (state / "attempts.txt").read_text(encoding="utf-8") == "2\n"
+
+
+def test_repository_campaign_root_is_refused_without_writes(fake_checkout):
+    """Issue boundary: neither approval state nor runner logs belong in a repository."""
+    checkout, _ = fake_checkout
+    root = checkout / "campaigns"
+    before = snapshot(checkout)
+    result = run_cli(["run-once"], root)
+    assert result.returncode != 0
+    assert "outside repositories" in result.stderr
+    assert snapshot(checkout) == before
+
+
+def test_repository_approval_symlink_is_refused(root, fake_checkout):
+    """An external name does not move repository-owned approval bytes outside it."""
+    checkout, _ = fake_checkout
+    approvals = checkout / "approvals.tsv"
+    approvals.write_text("", encoding="utf-8")
+    try:
+        (root / "approvals.tsv").symlink_to(approvals)
+    except OSError:
+        pytest.skip("symlink creation is unavailable")
+    before = snapshot(checkout)
+    result = run_cli(["run-once"], root)
+    assert result.returncode != 0
+    assert "outside repositories" in result.stderr
+    assert snapshot(checkout) == before
+
+
+def test_linked_worktree_root_is_refused_without_writes(root, work_area):
+    """Git's gitdir marker identifies a linked checkout without a metadata directory."""
+    checkout = work_area / "linked-checkout"
+    checkout.mkdir()
+    metadata = work_area / "metadata"
+    metadata.mkdir()
+    (metadata / "HEAD").write_text("a" * 40 + "\n", encoding="utf-8")
+    (checkout / ".git").write_text(f"gitdir: {metadata}\n", encoding="utf-8")
+    before = snapshot(checkout)
+    result = run_cli(["run-once"], checkout / "campaigns")
+    assert result.returncode != 0
+    assert "outside repositories" in result.stderr
+    assert snapshot(checkout) == before
+
+
+def test_empty_metadata_directory_is_not_a_checkout(work_area, runner):
+    """A directory name without Git HEAD or a gitdir record is insufficient evidence."""
+    (work_area / ".git").mkdir()
+    assert not runner.repository_contains(work_area / "campaigns")
+
+
+def test_exhausted_crash_preserves_completed_case(root, fake_checkout):
+    """Hand calculation: one retained case of two stays one; two of two starts used."""
+    path, manifest = make_manifest(root, fake_checkout)
+    approve(root, path)
+    progress = Path(manifest["progress"]["glob"]).parent
+    progress.mkdir(parents=True)
+    completed = progress / "case-0.done"
+    completed.write_text("retained case\n", encoding="utf-8")
+    before = snapshot(progress)
+    state = root / "state" / "example-campaign"
+    state.mkdir()
+    (state / "attempts.txt").write_text("2\n", encoding="utf-8")
+    assert run_cli(["run-once"], root).returncode == 0
+    fields = (root / "done" / "example-campaign.result").read_text(encoding="utf-8").splitlines()[0].split("\t")
+    assert fields[0] == "FAILED"
+    assert fields[2:] == ["1", "2"]
+    assert snapshot(progress) == before
