@@ -90,4 +90,7 @@ def test_cli_annotations_match_strict_and_advisory_modes(cli_case):
         assert annotation in result.stdout
         other_annotation = "::error::" if advisory else "::warning::"
         assert other_annotation not in result.stdout + result.stderr
+    else:
+        assert "::warning::" not in result.stdout + result.stderr
+        assert "::error::" not in result.stdout + result.stderr
     assert "Traceback" not in result.stdout + result.stderr
