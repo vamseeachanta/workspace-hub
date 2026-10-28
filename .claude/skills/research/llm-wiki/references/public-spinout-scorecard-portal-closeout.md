@@ -4,7 +4,7 @@ Use when maximizing a public `llm-wiki` repository that was spun out of a privat
 
 ## Problem shape
 
-- The public repo should be improved without copying private raw files, vendor PDFs, vendor-derivative text, credentials, or private mount paths.
+- The public repo should be improved without copying private raw files, original vendor PDFs or whole sections of standards, credentials, or private mount paths. Cited quotes, values and reconstructed charts from codes and standards are fine (owner ruling 28 Oct 2026, `.claude/rules/codes-standards-data-routing.md`).
 - Some issues may be approval-gated (`status:plan-review`); do not execute them without explicit user approval.
 - The public repo is the artifact/content storehouse; pipeline/orchestration usually remains in `workspace-hub` or another control-plane repo.
 
@@ -61,7 +61,7 @@ If generated prose mentions a private source root, replace with generic wording 
   - commit hash,
   - changed artifacts,
   - validation evidence,
-  - raw-data/vendor-derivative boundary statement,
+  - raw-data boundary statement (no original PDFs or whole sections of standards),
   - what remains in the approval queue.
 - Do not close broad umbrella issues unless the whole scope is complete; evidence comments can close the loop for incremental deliverables.
 

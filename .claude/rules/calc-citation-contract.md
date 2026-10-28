@@ -12,7 +12,7 @@
 4. Validation is **fail-closed at calc time** per #2481 D2: a missing wiki page or frontmatter mismatch raises `CitationResolutionError` with the `code_id` in the message so operators can retarget.
 5. Resolver is **direct file read** for v1 per #2481 D3. Migrate to MCP `wiki_search` when [#2400](https://github.com/vamseeachanta/workspace-hub/issues/2400) ships; the schema doesn't change.
 6. Citations emit to a **sidecar**, not the primary numeric payload — preserves downstream-consumer compatibility.
-7. Do NOT cite wiki pages under `knowledge/wikis/*/wiki/sources/` — those are vendor-derivative deny-list per the governance doc #2482. Cite the standards-page (under `standards/`) the sources-page references, or the methodology/concept page under `concepts/`.
+7. Cite the most specific page that carries the clause (standards, sources or concepts page); the #2482 deny-list is retired by the owner's 28 Oct 2026 ruling (`.claude/rules/codes-standards-data-routing.md`).
 8. **Sidecar must declare source sibling** (per [`.claude/rules/wiki-sibling-routing.md`](wiki-sibling-routing.md) Layer 4, #2778). Every `Citation` sidecar carries:
    - `source_sibling:` **(required)** — `"generic"` (sourced from `vamseeachanta/llm-wiki`) or a client slug (e.g., `"mkt-a"` when sourced from `vamseeachanta/llm-wiki-mkt-a`).
    - `source_project:` **(optional)** — populated when the citation is project-scoped (e.g., `"proj-a"` for content under `llm-wiki-mkt-a/projects/proj-a/`); `null` for client-level or generic citations.

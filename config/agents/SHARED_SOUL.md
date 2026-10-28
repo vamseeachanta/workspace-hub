@@ -193,11 +193,10 @@ reader who cannot reach the source cannot check it, and a single external path i
 not a copy. Add an explicit `.gitignore` exception so build-output rules cannot
 swallow evidence.
 
-One carve-out, and it is a licensing constraint rather than a storage preference:
-**vendor-licensed standards and codes are never committed.** The raw PDF stays at
-its licensed location and is referenced by a `sources:` field, per
-`.claude/rules/codes-standards-data-routing.md`. Derived data from those standards
-may live in the private wiki; the document itself may not.
+Codes and standards we hold may be committed to private repositories (large files
+in the ACE data store) per `.claude/rules/codes-standards-data-routing.md` (owner
+ruling 28 Oct 2026); only public repositories and pages exclude original PDFs and
+whole sections.
 
 ## Engineering register — documents, chat, email, agent output
 

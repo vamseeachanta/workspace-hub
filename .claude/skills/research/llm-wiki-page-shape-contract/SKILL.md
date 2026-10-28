@@ -248,7 +248,7 @@ A page that fails the gate is either (a) re-routed to a private wiki, or
 Run before writing a single line of wiki content.
 
 - [ ] Source class is in the routing table above (else: file as candidate per [#2374](https://github.com/vamseeachanta/workspace-hub/issues/2374))
-- [ ] Data-layer boundary check passes ([#2727](https://github.com/vamseeachanta/workspace-hub/issues/2727)): no vendor-derivative, no client material to public wiki, no raw API dumps
+- [ ] Data-layer boundary check passes ([#2727](https://github.com/vamseeachanta/workspace-hub/issues/2727)): no original standards PDFs or whole sections and no client material to public wiki, no raw API dumps (cited standards quotes and values are fine, per the owner's ruling of 28 Oct 2026)
 - [ ] Target wiki domain is decided (engineering / marine / naval / process / drilling / geotech / trends / ...) — see `wikis/` for current domain list
 - [ ] Target page type is decided (concept / entity / summary / standards / methodology)
 - [ ] If standards page: code_id frontmatter triple resolved via [#2471](https://github.com/vamseeachanta/workspace-hub/issues/2471)

@@ -47,16 +47,22 @@ rights or readiness. Use `drive-file-search` for a bounded specific-file lookup.
 
 ## Source rights and authority
 
-This skill authorizes discovery only. Source rights, source ownership and publication
-permission are separate. Do not infer copying rights from private repository visibility.
+Codes and standards we hold may be read, copied and kept in any private repository
+or the ACE data store, per `.claude/rules/codes-standards-data-routing.md` (owner
+ruling 28 Oct 2026); only original PDFs and whole sections stay off public
+repositories and pages. The rights wording below applies to client and other
+third-party material only.
+
+For that material, this skill authorizes discovery only. Source rights, source
+ownership and publication permission are separate. Do not infer copying rights from
+private repository visibility.
 
 Consult `docs/architecture/agent-data-handling-contract.md` in workspace-hub when
 present. If absent or contradictory, report the gap and retain explicit session
 requirements; do not invent replacement policy. The supplied raw-evidence rule
 requires client-supplied/measured originals in the owning private repository under
 `data/<dataset>/raw/`, with SHA-256 digests and an extraction manifest. This lookup
-does not perform that ingest. Vendor-licensed standards originals remain outside
-Git at their licensed location; only permitted derivatives may be retained.
+does not perform that ingest.
 
 Treat `ACE_SHARE_ROOT` precedent as restricted discovery metadata until its rights
 and owner are established. Keep client names, raw paths and restricted content out
