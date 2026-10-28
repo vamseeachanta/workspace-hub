@@ -1,20 +1,20 @@
 # AI account usage (fleet)
 
-Generated 2026-10-28T05:13:28+00:00 by fleet-collector collect_account_usage_fleet. Percentages are USED; headroom = 100 - weekly used. Source of truth: `config/ai-tools/account-usage-latest.json`.
+Generated 2026-10-28T06:13:39+00:00 by fleet-collector collect_account_usage_fleet. Percentages are USED; headroom = 100 - weekly used. Source of truth: `config/ai-tools/account-usage-latest.json`.
 
 ## Recommendation
 
 - **claude**: `claude-owner` (45.0% weekly headroom) on ace-linux-1, ace-linux-2, gpu-claw
-- **codex**: `codex-owner` (12.0% weekly headroom) on ace-linux-1, ace-linux-2, fleet-collector, gpu-claw
+- **codex**: `codex-professional` (85.0% weekly headroom) on ace-win-1
 
 ## Accounts
 
 | account | provider | holder | 5h used | week used | headroom | resets | sampled on | source |
 |---|---|---|---|---|---|---|---|---|
-| claude-owner | claude | owner | 2% | 55% | 45% | 2026-10-31T14:00:00.334445+00:00 | gpu-claw | oauth-api |
+| claude-owner | claude | owner | 2% | 55% | 45% | 2026-10-31T14:00:00.180180+00:00 | gpu-claw | oauth-api |
 | claude-professional | claude | colleague |  |  |  |  |  | unavailable |
-| codex-owner | codex | owner |  | 88% | 12% | 2026-11-02T06:08:18+00:00 | fleet-collector | app-server-live |
-| codex-professional | codex | colleague |  |  |  |  |  | unavailable |
+| codex-owner | codex | owner |  | 90% | 10% | 2026-11-02T06:08:18+00:00 | fleet-collector | app-server-live |
+| codex-professional | codex | colleague |  | 15% | 85% | 2026-11-03T22:04:33+00:00 | ace-win-1 | app-server-live |
 
 ## Hosts
 
@@ -24,5 +24,5 @@ Generated 2026-10-28T05:13:28+00:00 by fleet-collector collect_account_usage_fle
 | ace-linux-2 | yes | claude-owner | codex-owner | claude: access token expired; a Claude Code session on this host will refresh it |
 | gpu-claw | yes | claude-owner | codex-owner |  |
 | ace-win-2 | no | claude-owner | codex-owner | exit 255 |
-| ace-win-1 | no | claude-professional | codex-professional | exit 255 |
+| ace-win-1 | yes | claude-professional | codex-professional | claude: access token expired; a Claude Code session on this host will refresh it |
 | fleet-collector | yes |  | codex-owner | claude: credentials file has no accessToken |
