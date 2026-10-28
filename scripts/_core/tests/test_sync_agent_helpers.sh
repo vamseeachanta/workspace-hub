@@ -117,7 +117,7 @@ import sys
 import yaml
 cfg_path = pathlib.Path(sys.argv[1])
 ws_root = sys.argv[2]
-with cfg_path.open() as fh:
+with cfg_path.open(encoding="utf-8") as fh:
     data = yaml.safe_load(fh)
 terminal = data.get('terminal', {})
 if terminal.get('backend') != 'remote':
@@ -238,7 +238,7 @@ EOF
 import json
 import pathlib
 import sys
-with pathlib.Path(sys.argv[1]).open() as fh:
+with pathlib.Path(sys.argv[1]).open(encoding="utf-8") as fh:
     data = json.load(fh)
 if data.get('ok') is not True:
     raise SystemExit(1)
@@ -256,6 +256,104 @@ PY
     fi
 
     rm -rf "$tmpdir"
+}
+
+snapshot_directory_entries() {
+    python3 - "$1" <<'PYTHON'
+import os
+import sys
+
+for name in sorted(os.listdir(os.fsencode(sys.argv[1]))):
+    sys.stdout.buffer.write(name + b"\0")
+PYTHON
+}
+
+run_directory_snapshot_test() {
+    local tmpdir entries
+    tmpdir="$(mktemp -d)"
+    entries="$tmpdir/entries"
+    mkdir -p "$entries/directory"
+    touch "$entries/plain" "$entries/"$'line\nbreak' "$entries/.hidden"
+    printf '.hidden\0directory\0line\nbreak\0plain\0' > "$tmpdir/expected"
+
+    if snapshot_directory_entries "$entries" > "$tmpdir/actual" \
+        && cmp -s "$tmpdir/expected" "$tmpdir/actual"; then
+        pass "directory_snapshot preserves sorted hidden, directory and newline names"
+    else
+        fail "directory_snapshot preserves sorted hidden, directory and newline names"
+    fi
+    rm -rf "$tmpdir"
+}
+
+run_invalid_yaml_update_cleanup_test() {
+    local invalid_form tmpdir ws_root home_root hermes_cfg hermes_dir template output
+    for invalid_form in malformed rendered; do
+        tmpdir="$(mktemp -d)"
+        ws_root="$tmpdir/ws"
+        if [[ "$invalid_form" == rendered ]]; then
+            # A single quote breaks the template's quoted scalar after expansion.
+            ws_root="$tmpdir/ws'quoted"
+        fi
+        home_root="$tmpdir/home"
+        hermes_dir="$home_root/.hermes"
+        hermes_cfg="$hermes_dir/config.yaml"
+        template="$ws_root/config/agents/hermes/config.yaml.template"
+
+        make_workspace "$ws_root"
+        mkdir -p "$hermes_dir"
+        # Literal fixture is the byte oracle, including comments and quoting.
+        cat > "$tmpdir/expected.yaml" <<'EOF'
+# Preserve this comment and the exact scalar spelling.
+terminal:
+  backend: 'local'
+  cwd: '.'
+skills:
+  external_dirs: []
+EOF
+        cp "$tmpdir/expected.yaml" "$hermes_cfg"
+        printf 'preserve\n' > "$hermes_dir/.sentinel"
+
+        if [[ "$invalid_form" == malformed ]]; then
+            # Same malformed input as run_invalid_yaml_create_test.
+            printf 'skills: [\n' > "$template"
+        else
+            # Valid YAML before rendering; the inserted quote leaves it invalid.
+            cat > "$template" <<'EOF'
+skills:
+  external_dirs:
+    - '__WS_HUB_PATH__/.claude/skills'
+EOF
+        fi
+
+        # Compare all immediate entries, including hidden and non-file entries.
+        snapshot_directory_entries "$hermes_dir" > "$tmpdir/entries.before"
+        if output="$(HOME="$home_root" bash "$ws_root/scripts/_core/sync-agent-configs.sh" 2>&1)"; then
+            fail "invalid_yaml_update_cleanup $invalid_form should fail"
+        else
+            pass "invalid_yaml_update_cleanup $invalid_form fails"
+        fi
+
+        if grep -Fq 'YAML validation failed for Hermes config' <<< "$output"; then
+            pass "invalid_yaml_update_cleanup $invalid_form reaches YAML validation"
+        else
+            fail "invalid_yaml_update_cleanup $invalid_form reaches YAML validation"
+        fi
+
+        if cmp -s "$tmpdir/expected.yaml" "$hermes_cfg"; then
+            pass "invalid_yaml_update_cleanup $invalid_form preserves target bytes"
+        else
+            fail "invalid_yaml_update_cleanup $invalid_form preserves target bytes"
+        fi
+
+        snapshot_directory_entries "$hermes_dir" > "$tmpdir/entries.after"
+        if cmp -s "$tmpdir/entries.before" "$tmpdir/entries.after"; then
+            pass "invalid_yaml_update_cleanup $invalid_form preserves entries and leaves no temp files"
+        else
+            fail "invalid_yaml_update_cleanup $invalid_form preserves entries and leaves no temp files"
+        fi
+
+        rm -rf "$tmpdir"
+    done
 }
 
 run_python3_fallback_to_uv_test() {
@@ -294,7 +392,7 @@ import sys
 import yaml
 cfg_path = pathlib.Path(sys.argv[1])
 ws_root = sys.argv[2]
-with cfg_path.open() as fh:
+with cfg_path.open(encoding="utf-8") as fh:
     data = yaml.safe_load(fh)
 if data.get('terminal', {}).get('backend') != 'remote':
     raise SystemExit(1)
@@ -806,6 +904,8 @@ run_invalid_json_create_test
 run_invalid_json_create_without_jq_test
 run_invalid_yaml_create_test
 run_invalid_json_update_cleanup_test
+run_directory_snapshot_test
+run_invalid_yaml_update_cleanup_test
 run_python3_fallback_to_uv_test
 run_dry_run_claude_memory_missing_target_count_test
 run_dry_run_existing_yaml_test
