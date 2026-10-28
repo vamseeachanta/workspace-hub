@@ -9,6 +9,7 @@ import ctypes
 import datetime as dt
 import hashlib
 import json
+import math
 import os
 import re
 import shutil
@@ -113,6 +114,14 @@ def env_name_looks_like_credential(name: str) -> bool:
     return any(token in CREDENTIAL_TOKENS for token in tokens)
 
 
+def finite_number(value: object) -> bool:
+    """JSON limits are finite numbers, excluding Python's boolean integer subtype."""
+    try:
+        return type(value) in (int, float) and math.isfinite(value)
+    except OverflowError:
+        return False
+
+
 def validate_manifest_data(data: dict, path: Path) -> list[str]:
     errors: list[str] = []
     for field in sorted(REQUIRED_FIELDS):
@@ -150,9 +159,9 @@ def validate_manifest_data(data: dict, path: Path) -> list[str]:
         errors.append("env name looks like a credential")
     expected = data.get("expected_hours")
     max_hours = data.get("max_hours")
-    if not isinstance(expected, (int, float)) or expected <= 0:
+    if not finite_number(expected) or expected <= 0:
         errors.append("expected_hours must be positive")
-    if not isinstance(max_hours, (int, float)) or max_hours <= 0:
+    if not finite_number(max_hours) or max_hours <= 0:
         errors.append("max_hours must be positive")
     if isinstance(expected, (int, float)) and isinstance(max_hours, (int, float)) and max_hours < expected:
         errors.append("max_hours must be greater than or equal to expected_hours")
@@ -166,15 +175,17 @@ def validate_manifest_data(data: dict, path: Path) -> list[str]:
             if not isinstance(progress.get("total"), int) or progress.get("total") <= 0:
                 errors.append("progress.total must be a positive integer")
     licence_codes = data.get("licence_exit_codes")
-    if not isinstance(licence_codes, list) or not all(isinstance(code, int) and code >= 0 for code in licence_codes):
-        errors.append("licence_exit_codes must be a list of non-negative integers")
+    if not isinstance(licence_codes, list) or not all(type(code) is int and code > 0 for code in licence_codes):
+        errors.append("licence_exit_codes must be a list of positive integers")
     retry = data.get("retry")
     if not isinstance(retry, dict):
         errors.append("retry must be an object")
     else:
         for field in ("max_attempts", "backoff_minutes"):
-            if not isinstance(retry.get(field), (int, float)) or retry.get(field) < 0:
-                errors.append(f"retry.{field} must be a non-negative number")
+            if not finite_number(retry.get(field)) or retry.get(field) < 0:
+                errors.append(f"retry.{field} must be a finite non-negative number")
+        if type(retry.get("max_attempts")) is not int:
+            errors.append("retry.max_attempts must be an integer")
         if retry.get("max_attempts") == 0:
             errors.append("retry.max_attempts must be positive")
         if "licence_tries_per_day" in retry and (
@@ -631,6 +642,11 @@ def eligible_campaigns(root: Path, min_free_bytes: int) -> tuple[list[dict], boo
         if next_try and next_try > now:
             continue
         manifest = item["manifest"]
+        # Issue contract: crashed starts count against the declared attempt budget.
+        if read_attempts(root, campaign_id) >= manifest["retry"]["max_attempts"]:
+            done, total = count_progress(manifest)
+            write_result(root, campaign_id, "FAILED", done, total, "reason: attempts-exhausted")
+            continue
         failed_after = [dep for dep in manifest["after"] if dep in failed_ids]
         if failed_after:
             append_runner_log(root, campaign_id, f"after dependency failed: {', '.join(failed_after)}")
@@ -1037,8 +1053,24 @@ def command_task_definition(args: argparse.Namespace) -> int:
     return 0
 
 
+def repository_contains(path: Path) -> bool:
+    resolved = path.resolve()
+    for parent in (resolved, *resolved.parents):
+        metadata = parent / ".git"
+        if (metadata / "HEAD").is_file():
+            return True
+        if metadata.is_file() and metadata.read_text(encoding="utf-8").startswith("gitdir:"):
+            return True
+    return False
+
+
 def command_run_once(args: argparse.Namespace) -> int:
     root = Path(args.root)
+    # Issue contract: approval records and execution state stay outside repositories.
+    # Refuse before any write, including fault logging through main().
+    if repository_contains(root) or repository_contains(root / "approvals.tsv"):
+        print("campaign root and approvals.tsv must be outside repositories", file=sys.stderr)
+        return 2
     for folder in ("approved", "state", "done"):
         (root / folder).mkdir(parents=True, exist_ok=True)
     lock = RunnerLock(root)
