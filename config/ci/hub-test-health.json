@@ -1,0 +1,698 @@
+{
+  "environment": {
+    "packages": {
+      "PyYAML": "6.0.3",
+      "Pygments": "2.21.0",
+      "iniconfig": "2.3.1",
+      "packaging": "26.3",
+      "pip": "26.2.1",
+      "pluggy": "1.7.0",
+      "pytest": "9.1.1",
+      "setuptools": "84.0.0"
+    },
+    "python": "3.11.17"
+  },
+  "families": {
+    "coordination/tests": {
+      "body_status": "NOT_EVALUATED",
+      "collected": 13,
+      "collection_status": "NOT_GATING",
+      "digest": "1e4f1475db869e6a4b8762db9e158827ea1511ca68b2cd41d3f0678b16863d35",
+      "error": "ModuleNotFoundError: No module named 'coordination.schemas'; ImportError; ModuleNotFoundError: No module named 'pydantic'; ImportError; ValidationError",
+      "file_count": 8
+    },
+    "scripts/ai/tests": {
+      "body_status": "NOT_EVALUATED",
+      "collected": 98,
+      "collection_status": "COLLECTABLE",
+      "digest": "1e4f1475db869e6a4b8762db9e158827ea1511ca68b2cd41d3f0678b16863d35",
+      "error": "",
+      "file_count": 7
+    },
+    "scripts/cron/tests": {
+      "body_status": "NOT_EVALUATED",
+      "collected": 72,
+      "collection_status": "COLLECTABLE",
+      "digest": "1e4f1475db869e6a4b8762db9e158827ea1511ca68b2cd41d3f0678b16863d35",
+      "error": "",
+      "file_count": 3
+    },
+    "scripts/data/tests": {
+      "body_status": "NOT_EVALUATED",
+      "collected": 602,
+      "collection_status": "NOT_GATING",
+      "digest": "1e4f1475db869e6a4b8762db9e158827ea1511ca68b2cd41d3f0678b16863d35",
+      "error": "ModuleNotFoundError: No module named 'bs4'; ImportError; ModuleNotFoundError: No module named 'dagster'; ImportError; ModuleNotFoundError: No module named 'jsonschema'; ImportError",
+      "file_count": 49
+    },
+    "scripts/gtm/tests": {
+      "body_status": "NOT_EVALUATED",
+      "collected": 85,
+      "collection_status": "NOT_GATING",
+      "digest": "1e4f1475db869e6a4b8762db9e158827ea1511ca68b2cd41d3f0678b16863d35",
+      "error": "ModuleNotFoundError: No module named 'jsonschema'; ImportError",
+      "file_count": 3
+    },
+    "scripts/knowledge/tests": {
+      "body_status": "NOT_EVALUATED",
+      "collected": 97,
+      "collection_status": "COLLECTABLE",
+      "digest": "1e4f1475db869e6a4b8762db9e158827ea1511ca68b2cd41d3f0678b16863d35",
+      "error": "",
+      "file_count": 9
+    },
+    "scripts/legal/tests": {
+      "body_status": "NOT_EVALUATED",
+      "collected": 203,
+      "collection_status": "NOT_GATING",
+      "digest": "1e4f1475db869e6a4b8762db9e158827ea1511ca68b2cd41d3f0678b16863d35",
+      "error": "AttributeError",
+      "file_count": 18
+    },
+    "scripts/memory/tests": {
+      "body_status": "NOT_EVALUATED",
+      "collected": 87,
+      "collection_status": "COLLECTABLE",
+      "digest": "1e4f1475db869e6a4b8762db9e158827ea1511ca68b2cd41d3f0678b16863d35",
+      "error": "",
+      "file_count": 6
+    },
+    "scripts/monitoring/tests": {
+      "body_status": "NOT_EVALUATED",
+      "collected": 6,
+      "collection_status": "COLLECTABLE",
+      "digest": "1e4f1475db869e6a4b8762db9e158827ea1511ca68b2cd41d3f0678b16863d35",
+      "error": "",
+      "file_count": 1
+    },
+    "scripts/operations/tests": {
+      "body_status": "NOT_EVALUATED",
+      "collected": 276,
+      "collection_status": "COLLECTABLE",
+      "digest": "1e4f1475db869e6a4b8762db9e158827ea1511ca68b2cd41d3f0678b16863d35",
+      "error": "",
+      "file_count": 5
+    },
+    "scripts/pipelines/tests": {
+      "body_status": "NOT_EVALUATED",
+      "collected": 40,
+      "collection_status": "COLLECTABLE",
+      "digest": "1e4f1475db869e6a4b8762db9e158827ea1511ca68b2cd41d3f0678b16863d35",
+      "error": "",
+      "file_count": 1
+    },
+    "scripts/quality/tests": {
+      "body_status": "NOT_EVALUATED",
+      "collected": 27,
+      "collection_status": "COLLECTABLE",
+      "digest": "1e4f1475db869e6a4b8762db9e158827ea1511ca68b2cd41d3f0678b16863d35",
+      "error": "",
+      "file_count": 3
+    },
+    "scripts/skills/tests": {
+      "body_status": "NOT_EVALUATED",
+      "collected": 136,
+      "collection_status": "COLLECTABLE",
+      "digest": "1e4f1475db869e6a4b8762db9e158827ea1511ca68b2cd41d3f0678b16863d35",
+      "error": "",
+      "file_count": 10
+    },
+    "scripts/testing/tests": {
+      "body_status": "NOT_EVALUATED",
+      "collected": 41,
+      "collection_status": "COLLECTABLE",
+      "digest": "1e4f1475db869e6a4b8762db9e158827ea1511ca68b2cd41d3f0678b16863d35",
+      "error": "",
+      "file_count": 3
+    },
+    "scripts/utilities/tests": {
+      "body_status": "NOT_EVALUATED",
+      "collected": 0,
+      "collection_status": "NOT_GATING",
+      "digest": "1e4f1475db869e6a4b8762db9e158827ea1511ca68b2cd41d3f0678b16863d35",
+      "error": "ModuleNotFoundError: No module named 'magic'; ImportError",
+      "file_count": 2
+    },
+    "scripts/workflow/tests": {
+      "body_status": "NOT_EVALUATED",
+      "collected": 23,
+      "collection_status": "COLLECTABLE",
+      "digest": "1e4f1475db869e6a4b8762db9e158827ea1511ca68b2cd41d3f0678b16863d35",
+      "error": "",
+      "file_count": 2
+    },
+    "tests/agents": {
+      "body_status": "NOT_EVALUATED",
+      "collected": 4,
+      "collection_status": "COLLECTABLE",
+      "digest": "1e4f1475db869e6a4b8762db9e158827ea1511ca68b2cd41d3f0678b16863d35",
+      "error": "",
+      "file_count": 1
+    },
+    "tests/ai": {
+      "body_status": "NOT_EVALUATED",
+      "collected": 179,
+      "collection_status": "COLLECTABLE",
+      "digest": "1e4f1475db869e6a4b8762db9e158827ea1511ca68b2cd41d3f0678b16863d35",
+      "error": "",
+      "file_count": 20
+    },
+    "tests/analysis": {
+      "body_status": "NOT_EVALUATED",
+      "collected": 177,
+      "collection_status": "NOT_GATING",
+      "digest": "1e4f1475db869e6a4b8762db9e158827ea1511ca68b2cd41d3f0678b16863d35",
+      "error": "ModuleNotFoundError: No module named 'jsonschema'; ImportError",
+      "file_count": 14
+    },
+    "tests/animations": {
+      "body_status": "NOT_EVALUATED",
+      "collected": 0,
+      "collection_status": "NOT_GATING",
+      "digest": "1e4f1475db869e6a4b8762db9e158827ea1511ca68b2cd41d3f0678b16863d35",
+      "error": "ModuleNotFoundError: No module named 'numpy'; ImportError",
+      "file_count": 1
+    },
+    "tests/architecture": {
+      "body_status": "NOT_EVALUATED",
+      "collected": 35,
+      "collection_status": "NOT_GATING",
+      "digest": "1e4f1475db869e6a4b8762db9e158827ea1511ca68b2cd41d3f0678b16863d35",
+      "error": "ModuleNotFoundError: No module named 'jsonschema'; ImportError",
+      "file_count": 6
+    },
+    "tests/audits": {
+      "body_status": "NOT_EVALUATED",
+      "collected": 12,
+      "collection_status": "COLLECTABLE",
+      "digest": "1e4f1475db869e6a4b8762db9e158827ea1511ca68b2cd41d3f0678b16863d35",
+      "error": "",
+      "file_count": 1
+    },
+    "tests/automation": {
+      "body_status": "NOT_EVALUATED",
+      "collected": 17,
+      "collection_status": "COLLECTABLE",
+      "digest": "1e4f1475db869e6a4b8762db9e158827ea1511ca68b2cd41d3f0678b16863d35",
+      "error": "",
+      "file_count": 1
+    },
+    "tests/blender": {
+      "body_status": "NOT_EVALUATED",
+      "collected": 0,
+      "collection_status": "NOT_GATING",
+      "digest": "1e4f1475db869e6a4b8762db9e158827ea1511ca68b2cd41d3f0678b16863d35",
+      "error": "SyntaxError",
+      "file_count": 1
+    },
+    "tests/ci": {
+      "body_status": "EVALUATED",
+      "collected": 58,
+      "collection_status": "COLLECTABLE",
+      "digest": "1e4f1475db869e6a4b8762db9e158827ea1511ca68b2cd41d3f0678b16863d35",
+      "error": "",
+      "file_count": 5
+    },
+    "tests/ci_smoke": {
+      "body_status": "NOT_EVALUATED",
+      "collected": 17,
+      "collection_status": "COLLECTABLE",
+      "digest": "1e4f1475db869e6a4b8762db9e158827ea1511ca68b2cd41d3f0678b16863d35",
+      "error": "",
+      "file_count": 3
+    },
+    "tests/client_llm_wiki": {
+      "body_status": "NOT_EVALUATED",
+      "collected": 264,
+      "collection_status": "NOT_GATING",
+      "digest": "1e4f1475db869e6a4b8762db9e158827ea1511ca68b2cd41d3f0678b16863d35",
+      "error": "ModuleNotFoundError: No module named 'ruamel'; ImportError",
+      "file_count": 20
+    },
+    "tests/config": {
+      "body_status": "NOT_EVALUATED",
+      "collected": 11,
+      "collection_status": "COLLECTABLE",
+      "digest": "1e4f1475db869e6a4b8762db9e158827ea1511ca68b2cd41d3f0678b16863d35",
+      "error": "",
+      "file_count": 3
+    },
+    "tests/contract": {
+      "body_status": "NOT_EVALUATED",
+      "collected": 8,
+      "collection_status": "COLLECTABLE",
+      "digest": "1e4f1475db869e6a4b8762db9e158827ea1511ca68b2cd41d3f0678b16863d35",
+      "error": "",
+      "file_count": 2
+    },
+    "tests/coordination": {
+      "body_status": "NOT_EVALUATED",
+      "collected": 51,
+      "collection_status": "COLLECTABLE",
+      "digest": "1e4f1475db869e6a4b8762db9e158827ea1511ca68b2cd41d3f0678b16863d35",
+      "error": "",
+      "file_count": 9
+    },
+    "tests/cron": {
+      "body_status": "NOT_EVALUATED",
+      "collected": 313,
+      "collection_status": "COLLECTABLE",
+      "digest": "1e4f1475db869e6a4b8762db9e158827ea1511ca68b2cd41d3f0678b16863d35",
+      "error": "",
+      "file_count": 32
+    },
+    "tests/curation": {
+      "body_status": "NOT_EVALUATED",
+      "collected": 127,
+      "collection_status": "COLLECTABLE",
+      "digest": "1e4f1475db869e6a4b8762db9e158827ea1511ca68b2cd41d3f0678b16863d35",
+      "error": "",
+      "file_count": 5
+    },
+    "tests/data": {
+      "body_status": "NOT_EVALUATED",
+      "collected": 792,
+      "collection_status": "NOT_GATING",
+      "digest": "1e4f1475db869e6a4b8762db9e158827ea1511ca68b2cd41d3f0678b16863d35",
+      "error": "ModuleNotFoundError: No module named 'bs4'; ImportError; ModuleNotFoundError: No module named 'pandas'; ImportError; ModuleNotFoundError: No module named 'requests'; ImportError",
+      "file_count": 72
+    },
+    "tests/data_sources": {
+      "body_status": "NOT_EVALUATED",
+      "collected": 7,
+      "collection_status": "COLLECTABLE",
+      "digest": "1e4f1475db869e6a4b8762db9e158827ea1511ca68b2cd41d3f0678b16863d35",
+      "error": "",
+      "file_count": 1
+    },
+    "tests/dispatch": {
+      "body_status": "NOT_EVALUATED",
+      "collected": 318,
+      "collection_status": "NOT_GATING",
+      "digest": "1e4f1475db869e6a4b8762db9e158827ea1511ca68b2cd41d3f0678b16863d35",
+      "error": "PermissionError; collection guard denied an import-time effect",
+      "file_count": 29
+    },
+    "tests/docs": {
+      "body_status": "NOT_EVALUATED",
+      "collected": 202,
+      "collection_status": "NOT_GATING",
+      "digest": "1e4f1475db869e6a4b8762db9e158827ea1511ca68b2cd41d3f0678b16863d35",
+      "error": "ModuleNotFoundError: No module named 'bs4'; ImportError",
+      "file_count": 16
+    },
+    "tests/document-intelligence": {
+      "body_status": "NOT_EVALUATED",
+      "collected": 50,
+      "collection_status": "COLLECTABLE",
+      "digest": "1e4f1475db869e6a4b8762db9e158827ea1511ca68b2cd41d3f0678b16863d35",
+      "error": "",
+      "file_count": 5
+    },
+    "tests/document_intelligence": {
+      "body_status": "NOT_EVALUATED",
+      "collected": 3,
+      "collection_status": "COLLECTABLE",
+      "digest": "1e4f1475db869e6a4b8762db9e158827ea1511ca68b2cd41d3f0678b16863d35",
+      "error": "",
+      "file_count": 1
+    },
+    "tests/ecosystem-sync": {
+      "body_status": "NOT_EVALUATED",
+      "collected": 34,
+      "collection_status": "COLLECTABLE",
+      "digest": "1e4f1475db869e6a4b8762db9e158827ea1511ca68b2cd41d3f0678b16863d35",
+      "error": "",
+      "file_count": 10
+    },
+    "tests/email": {
+      "body_status": "NOT_EVALUATED",
+      "collected": 107,
+      "collection_status": "COLLECTABLE",
+      "digest": "1e4f1475db869e6a4b8762db9e158827ea1511ca68b2cd41d3f0678b16863d35",
+      "error": "",
+      "file_count": 8
+    },
+    "tests/enforcement": {
+      "body_status": "NOT_EVALUATED",
+      "collected": 767,
+      "collection_status": "COLLECTABLE",
+      "digest": "1e4f1475db869e6a4b8762db9e158827ea1511ca68b2cd41d3f0678b16863d35",
+      "error": "",
+      "file_count": 47
+    },
+    "tests/fleet": {
+      "body_status": "NOT_EVALUATED",
+      "collected": 106,
+      "collection_status": "COLLECTABLE",
+      "digest": "1e4f1475db869e6a4b8762db9e158827ea1511ca68b2cd41d3f0678b16863d35",
+      "error": "",
+      "file_count": 4
+    },
+    "tests/gis": {
+      "body_status": "NOT_EVALUATED",
+      "collected": 0,
+      "collection_status": "NOT_GATING",
+      "digest": "1e4f1475db869e6a4b8762db9e158827ea1511ca68b2cd41d3f0678b16863d35",
+      "error": "no tests collected",
+      "file_count": 2
+    },
+    "tests/governance": {
+      "body_status": "NOT_EVALUATED",
+      "collected": 586,
+      "collection_status": "NOT_GATING",
+      "digest": "1e4f1475db869e6a4b8762db9e158827ea1511ca68b2cd41d3f0678b16863d35",
+      "error": "ModuleNotFoundError: No module named 'jsonschema'; ImportError",
+      "file_count": 13
+    },
+    "tests/gtm": {
+      "body_status": "NOT_EVALUATED",
+      "collected": 16,
+      "collection_status": "NOT_GATING",
+      "digest": "1e4f1475db869e6a4b8762db9e158827ea1511ca68b2cd41d3f0678b16863d35",
+      "error": "ModuleNotFoundError: No module named 'requests'; ImportError",
+      "file_count": 6
+    },
+    "tests/hf": {
+      "body_status": "NOT_EVALUATED",
+      "collected": 27,
+      "collection_status": "COLLECTABLE",
+      "digest": "1e4f1475db869e6a4b8762db9e158827ea1511ca68b2cd41d3f0678b16863d35",
+      "error": "",
+      "file_count": 1
+    },
+    "tests/hooks": {
+      "body_status": "NOT_EVALUATED",
+      "collected": 64,
+      "collection_status": "COLLECTABLE",
+      "digest": "1e4f1475db869e6a4b8762db9e158827ea1511ca68b2cd41d3f0678b16863d35",
+      "error": "",
+      "file_count": 9
+    },
+    "tests/install": {
+      "body_status": "NOT_EVALUATED",
+      "collected": 7,
+      "collection_status": "COLLECTABLE",
+      "digest": "1e4f1475db869e6a4b8762db9e158827ea1511ca68b2cd41d3f0678b16863d35",
+      "error": "",
+      "file_count": 1
+    },
+    "tests/knowledge": {
+      "body_status": "NOT_EVALUATED",
+      "collected": 1440,
+      "collection_status": "NOT_GATING",
+      "digest": "1e4f1475db869e6a4b8762db9e158827ea1511ca68b2cd41d3f0678b16863d35",
+      "error": "ModuleNotFoundError: No module named 'digitalmodel.citations'; ImportError",
+      "file_count": 23
+    },
+    "tests/learnings": {
+      "body_status": "NOT_EVALUATED",
+      "collected": 24,
+      "collection_status": "COLLECTABLE",
+      "digest": "1e4f1475db869e6a4b8762db9e158827ea1511ca68b2cd41d3f0678b16863d35",
+      "error": "",
+      "file_count": 1
+    },
+    "tests/legal": {
+      "body_status": "NOT_EVALUATED",
+      "collected": 262,
+      "collection_status": "NOT_GATING",
+      "digest": "1e4f1475db869e6a4b8762db9e158827ea1511ca68b2cd41d3f0678b16863d35",
+      "error": "PermissionError; collection guard denied an import-time effect",
+      "file_count": 13
+    },
+    "tests/maintenance": {
+      "body_status": "NOT_EVALUATED",
+      "collected": 37,
+      "collection_status": "COLLECTABLE",
+      "digest": "1e4f1475db869e6a4b8762db9e158827ea1511ca68b2cd41d3f0678b16863d35",
+      "error": "",
+      "file_count": 4
+    },
+    "tests/memory": {
+      "body_status": "NOT_EVALUATED",
+      "collected": 89,
+      "collection_status": "COLLECTABLE",
+      "digest": "1e4f1475db869e6a4b8762db9e158827ea1511ca68b2cd41d3f0678b16863d35",
+      "error": "",
+      "file_count": 7
+    },
+    "tests/monitoring": {
+      "body_status": "NOT_EVALUATED",
+      "collected": 61,
+      "collection_status": "COLLECTABLE",
+      "digest": "1e4f1475db869e6a4b8762db9e158827ea1511ca68b2cd41d3f0678b16863d35",
+      "error": "",
+      "file_count": 3
+    },
+    "tests/openfoam": {
+      "body_status": "NOT_EVALUATED",
+      "collected": 13,
+      "collection_status": "COLLECTABLE",
+      "digest": "1e4f1475db869e6a4b8762db9e158827ea1511ca68b2cd41d3f0678b16863d35",
+      "error": "",
+      "file_count": 1
+    },
+    "tests/operations": {
+      "body_status": "NOT_EVALUATED",
+      "collected": 536,
+      "collection_status": "NOT_GATING",
+      "digest": "1e4f1475db869e6a4b8762db9e158827ea1511ca68b2cd41d3f0678b16863d35",
+      "error": "PermissionError; collection guard denied an import-time effect",
+      "file_count": 25
+    },
+    "tests/permissions": {
+      "body_status": "NOT_EVALUATED",
+      "collected": 4,
+      "collection_status": "COLLECTABLE",
+      "digest": "1e4f1475db869e6a4b8762db9e158827ea1511ca68b2cd41d3f0678b16863d35",
+      "error": "",
+      "file_count": 1
+    },
+    "tests/portability": {
+      "body_status": "NOT_EVALUATED",
+      "collected": 5,
+      "collection_status": "COLLECTABLE",
+      "digest": "1e4f1475db869e6a4b8762db9e158827ea1511ca68b2cd41d3f0678b16863d35",
+      "error": "",
+      "file_count": 1
+    },
+    "tests/preflight": {
+      "body_status": "NOT_EVALUATED",
+      "collected": 31,
+      "collection_status": "COLLECTABLE",
+      "digest": "1e4f1475db869e6a4b8762db9e158827ea1511ca68b2cd41d3f0678b16863d35",
+      "error": "",
+      "file_count": 6
+    },
+    "tests/promoted": {
+      "body_status": "NOT_EVALUATED",
+      "collected": 256,
+      "collection_status": "COLLECTABLE",
+      "digest": "1e4f1475db869e6a4b8762db9e158827ea1511ca68b2cd41d3f0678b16863d35",
+      "error": "",
+      "file_count": 13
+    },
+    "tests/quality": {
+      "body_status": "NOT_EVALUATED",
+      "collected": 156,
+      "collection_status": "COLLECTABLE",
+      "digest": "1e4f1475db869e6a4b8762db9e158827ea1511ca68b2cd41d3f0678b16863d35",
+      "error": "",
+      "file_count": 10
+    },
+    "tests/readiness": {
+      "body_status": "NOT_EVALUATED",
+      "collected": 593,
+      "collection_status": "COLLECTABLE",
+      "digest": "1e4f1475db869e6a4b8762db9e158827ea1511ca68b2cd41d3f0678b16863d35",
+      "error": "",
+      "file_count": 31
+    },
+    "tests/reporting": {
+      "body_status": "NOT_EVALUATED",
+      "collected": 246,
+      "collection_status": "COLLECTABLE",
+      "digest": "1e4f1475db869e6a4b8762db9e158827ea1511ca68b2cd41d3f0678b16863d35",
+      "error": "",
+      "file_count": 5
+    },
+    "tests/repositories": {
+      "body_status": "NOT_EVALUATED",
+      "collected": 11,
+      "collection_status": "COLLECTABLE",
+      "digest": "1e4f1475db869e6a4b8762db9e158827ea1511ca68b2cd41d3f0678b16863d35",
+      "error": "",
+      "file_count": 1
+    },
+    "tests/review": {
+      "body_status": "NOT_EVALUATED",
+      "collected": 58,
+      "collection_status": "COLLECTABLE",
+      "digest": "1e4f1475db869e6a4b8762db9e158827ea1511ca68b2cd41d3f0678b16863d35",
+      "error": "",
+      "file_count": 4
+    },
+    "tests/root": {
+      "body_status": "NOT_EVALUATED",
+      "collected": 219,
+      "collection_status": "COLLECTABLE",
+      "digest": "1e4f1475db869e6a4b8762db9e158827ea1511ca68b2cd41d3f0678b16863d35",
+      "error": "",
+      "file_count": 14
+    },
+    "tests/scripts": {
+      "body_status": "NOT_EVALUATED",
+      "collected": 18,
+      "collection_status": "COLLECTABLE",
+      "digest": "1e4f1475db869e6a4b8762db9e158827ea1511ca68b2cd41d3f0678b16863d35",
+      "error": "",
+      "file_count": 1
+    },
+    "tests/semiconductor": {
+      "body_status": "NOT_EVALUATED",
+      "collected": 9,
+      "collection_status": "COLLECTABLE",
+      "digest": "1e4f1475db869e6a4b8762db9e158827ea1511ca68b2cd41d3f0678b16863d35",
+      "error": "",
+      "file_count": 1
+    },
+    "tests/session": {
+      "body_status": "NOT_EVALUATED",
+      "collected": 54,
+      "collection_status": "COLLECTABLE",
+      "digest": "1e4f1475db869e6a4b8762db9e158827ea1511ca68b2cd41d3f0678b16863d35",
+      "error": "",
+      "file_count": 2
+    },
+    "tests/skills": {
+      "body_status": "NOT_EVALUATED",
+      "collected": 318,
+      "collection_status": "NOT_GATING",
+      "digest": "1e4f1475db869e6a4b8762db9e158827ea1511ca68b2cd41d3f0678b16863d35",
+      "error": "PermissionError; collection guard denied an import-time effect",
+      "file_count": 39
+    },
+    "tests/solver": {
+      "body_status": "NOT_EVALUATED",
+      "collected": 110,
+      "collection_status": "COLLECTABLE",
+      "digest": "1e4f1475db869e6a4b8762db9e158827ea1511ca68b2cd41d3f0678b16863d35",
+      "error": "",
+      "file_count": 6
+    },
+    "tests/standards": {
+      "body_status": "NOT_EVALUATED",
+      "collected": 18,
+      "collection_status": "COLLECTABLE",
+      "digest": "1e4f1475db869e6a4b8762db9e158827ea1511ca68b2cd41d3f0678b16863d35",
+      "error": "",
+      "file_count": 3
+    },
+    "tests/state": {
+      "body_status": "NOT_EVALUATED",
+      "collected": 6,
+      "collection_status": "COLLECTABLE",
+      "digest": "1e4f1475db869e6a4b8762db9e158827ea1511ca68b2cd41d3f0678b16863d35",
+      "error": "",
+      "file_count": 1
+    },
+    "tests/strategic": {
+      "body_status": "NOT_EVALUATED",
+      "collected": 30,
+      "collection_status": "COLLECTABLE",
+      "digest": "1e4f1475db869e6a4b8762db9e158827ea1511ca68b2cd41d3f0678b16863d35",
+      "error": "",
+      "file_count": 1
+    },
+    "tests/subsea": {
+      "body_status": "NOT_EVALUATED",
+      "collected": 41,
+      "collection_status": "NOT_GATING",
+      "digest": "1e4f1475db869e6a4b8762db9e158827ea1511ca68b2cd41d3f0678b16863d35",
+      "error": "ModuleNotFoundError: No module named 'digitalmodel.subsea.pipeline.free_span.weibull_current'; ImportError; ModuleNotFoundError: No module named 'numpy'; ImportError",
+      "file_count": 4
+    },
+    "tests/sync": {
+      "body_status": "NOT_EVALUATED",
+      "collected": 5,
+      "collection_status": "COLLECTABLE",
+      "digest": "1e4f1475db869e6a4b8762db9e158827ea1511ca68b2cd41d3f0678b16863d35",
+      "error": "",
+      "file_count": 1
+    },
+    "tests/team_summary": {
+      "body_status": "NOT_EVALUATED",
+      "collected": 12,
+      "collection_status": "COLLECTABLE",
+      "digest": "1e4f1475db869e6a4b8762db9e158827ea1511ca68b2cd41d3f0678b16863d35",
+      "error": "",
+      "file_count": 1
+    },
+    "tests/telegram_dispatch": {
+      "body_status": "NOT_EVALUATED",
+      "collected": 26,
+      "collection_status": "COLLECTABLE",
+      "digest": "1e4f1475db869e6a4b8762db9e158827ea1511ca68b2cd41d3f0678b16863d35",
+      "error": "",
+      "file_count": 2
+    },
+    "tests/testing": {
+      "body_status": "NOT_EVALUATED",
+      "collected": 27,
+      "collection_status": "COLLECTABLE",
+      "digest": "1e4f1475db869e6a4b8762db9e158827ea1511ca68b2cd41d3f0678b16863d35",
+      "error": "",
+      "file_count": 1
+    },
+    "tests/tmux": {
+      "body_status": "NOT_EVALUATED",
+      "collected": 63,
+      "collection_status": "COLLECTABLE",
+      "digest": "1e4f1475db869e6a4b8762db9e158827ea1511ca68b2cd41d3f0678b16863d35",
+      "error": "",
+      "file_count": 5
+    },
+    "tests/unit": {
+      "body_status": "NOT_EVALUATED",
+      "collected": 376,
+      "collection_status": "NOT_GATING",
+      "digest": "1e4f1475db869e6a4b8762db9e158827ea1511ca68b2cd41d3f0678b16863d35",
+      "error": "ModuleNotFoundError: No module named 'networkx'; ImportError; ModuleNotFoundError: No module named 'numpy'; ImportError; ModuleNotFoundError: No module named 'sqlalchemy'; ImportError",
+      "file_count": 20
+    },
+    "tests/work-queue": {
+      "body_status": "NOT_EVALUATED",
+      "collected": 167,
+      "collection_status": "COLLECTABLE",
+      "digest": "1e4f1475db869e6a4b8762db9e158827ea1511ca68b2cd41d3f0678b16863d35",
+      "error": "",
+      "file_count": 14
+    },
+    "tests/workflow": {
+      "body_status": "NOT_EVALUATED",
+      "collected": 162,
+      "collection_status": "COLLECTABLE",
+      "digest": "1e4f1475db869e6a4b8762db9e158827ea1511ca68b2cd41d3f0678b16863d35",
+      "error": "",
+      "file_count": 11
+    },
+    "tests/workstations": {
+      "body_status": "NOT_EVALUATED",
+      "collected": 220,
+      "collection_status": "COLLECTABLE",
+      "digest": "1e4f1475db869e6a4b8762db9e158827ea1511ca68b2cd41d3f0678b16863d35",
+      "error": "",
+      "file_count": 10
+    },
+    "tests/worktree_guard": {
+      "body_status": "NOT_EVALUATED",
+      "collected": 9,
+      "collection_status": "COLLECTABLE",
+      "digest": "1e4f1475db869e6a4b8762db9e158827ea1511ca68b2cd41d3f0678b16863d35",
+      "error": "",
+      "file_count": 2
+    }
+  },
+  "timeout_seconds": 30.0
+}
