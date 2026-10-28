@@ -1,0 +1,13 @@
+{
+  "comment": "PR fast gate (owner ruling 2026-10-28). A changed path that no family rule maps (rule unmapped-code) would select every family, which takes about 30 minutes; the fast gate runs these core contract families for such paths instead, and the daily main-full-run.yml runs every family. Measured on ace-linux-1, 2026-10-28: about 45 s together.",
+  "unmapped_fallback": [
+    "tests/ci",
+    "tests/ci_smoke",
+    "tests/config",
+    "tests/contract",
+    "tests/lib",
+    "tests/quality",
+    "tests/root",
+    "tests/workflow"
+  ]
+}

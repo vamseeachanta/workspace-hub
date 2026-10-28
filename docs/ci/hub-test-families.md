@@ -10,6 +10,43 @@ Existing checks and branch protection are unchanged.
 | Revision | Date | Change and reason |
 |---|---|---|
 | 1 | 2026-10-22 | Add directory inventory, explanations and conservative advisory execution. |
+| 2 | 2026-10-28 | Owner ruling: the family selection becomes the required PR fast gate; the full run moves to a daily main run; failing-on-main tests are quarantined. |
+
+## Fast gate, daily full run and quarantine (revision 2)
+
+Owner ruling 2026-10-28: the required pull-request check is the fast gate only,
+and the full suite runs once a day on main.
+
+- `.github/workflows/pr-fast-gate.yml` (check `Fast Gate`) runs in one job:
+  `scripts/ci/lint_changed.py` (ruff fatal rules `E9,F63,F7,F82` on changed
+  Python files; findings already present at the merge base are reported, new
+  ones fail) and `scripts/ci/hub_family_run.py --select-base`, which runs the
+  families selected by the rules below in the project environment, one pytest
+  process per family. A changed path that no rule maps (`unmapped-code`) adds
+  the core families in `config/ci/fast-gate.json` rather than all families,
+  which take about 30 minutes; every family still runs daily. It replaces the
+  advisory `hub-tests-by-family.yml`. The
+  body-review allowlist in `config/ci/hub-test-policy.json` gated that advisory
+  matrix only; the fast gate runs every selected family on our runners, the
+  same exposure the daily full run already has.
+- `.github/workflows/main-full-run.yml` is `workflow_dispatch` only. Our cron
+  starts it once every 24 h with
+  `gh workflow run main-full-run.yml --repo vamseeachanta/workspace-hub --ref main`;
+  there is no GitHub `schedule:` trigger. It runs every family (`--all`), the
+  generated-artifact currency checks (this inventory, cron identity inventory,
+  scheduler registry and audit HTML, schedule catalog, skill index, SKILL.md
+  frontmatter) and marker-label parity plus retired queue paths over the
+  commits of the last 25 h.
+- `tests/quarantine.txt` lists tests that fail on main, one node id per line
+  with its reason and tracking issue. The root `conftest.py` marks each one
+  `xfail(strict=False)`; a listed file that fails to import is reported as
+  skipped. A node id without `[parameter]` covers every parametrization.
+  Fixing a test means removing its line and ticking it on the tracking issue.
+
+The inventory is regenerated in memory by `hub_family_run.py`, so a new test
+file is covered on its first PR; the committed inventory's currency is checked
+daily. `Enforcement Gate` is unchanged, because its scheduler job is a digested
+scheduler-mutation surface; its jobs are not required checks.
 
 ## Inventory and mapping
 

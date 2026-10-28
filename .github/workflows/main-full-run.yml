@@ -1,0 +1,174 @@
+name: Main full run
+
+# Once-a-day run on main (owner ruling 2026-10-28). Started by our own cron with
+#   gh workflow run main-full-run.yml --repo vamseeachanta/workspace-hub --ref main
+# and never by a GitHub `schedule:` trigger. Pull requests run only the fast
+# gate (pr-fast-gate.yml). This workflow holds what the fast gate leaves out:
+# every hub test family, the generated-artifact currency checks, and the
+# governance checks over what landed since the previous run. Tests listed in
+# tests/quarantine.txt run as xfail(strict=False), so green means green.
+
+on:
+  workflow_dispatch:
+    inputs:
+      since_hours:
+        description: 'Governance window: commits on main from the last N hours'
+        required: false
+        default: '25'
+        type: string
+
+permissions:
+  contents: read
+  issues: read
+
+concurrency:
+  group: main-full-run-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  full-suite:
+    name: Full suite (all hub test families)
+    runs-on: ${{ github.event.pull_request.head.repo.fork && 'ubuntu-latest' || fromJSON('["self-hosted","Linux"]') }}
+    timeout-minutes: 180
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
+        with:
+          enable-cache: true
+          prune-cache: false
+
+      - name: Install project environment
+        run: uv sync --frozen --group dev
+
+      - name: Run every hub test family
+        run: >-
+          uv run python -I scripts/ci/hub_family_run.py --all
+          --scratch "$RUNNER_TEMP/full-run"
+          --junit-dir "$RUNNER_TEMP/full-run-junit"
+          --json "$RUNNER_TEMP/full-run-families.json"
+
+      # Former baseline-check.yml step kept verbatim in intent: these modules
+      # are also exercised without the tests/conftest.py bootstrap.
+      - name: Run no-conftest regression set
+        if: always()
+        run: |
+          uv run python -m pytest tests/test_deduplication_fix.py \
+            tests/quality/test_gitleaks_config.py \
+            tests/phone_media \
+            scripts/operations/tests/test_job_queue_windows.py \
+            scripts/operations/tests/test_job_queue_cleanup_recent.py \
+            scripts/operations/tests/test_job_queue_environment.py \
+            tests/enforcement/test_check_codex_model_pin.py \
+            -q --tb=short --noconftest -p no:cacheprovider
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: main-full-run-junit
+          path: |
+            ${{ runner.temp }}/full-run-junit
+            ${{ runner.temp }}/full-run-families.json
+          if-no-files-found: warn
+
+  currency:
+    name: Generated-artifact currency
+    runs-on: ${{ github.event.pull_request.head.repo.fork && 'ubuntu-latest' || fromJSON('["self-hosted","Linux"]') }}
+    timeout-minutes: 30
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
+        with:
+          enable-cache: true
+          prune-cache: false
+
+      - name: Install project environment
+        run: uv sync --frozen --group dev
+
+      # Every step runs even after an earlier failure, so one run reports every
+      # stale artifact; the job fails if any step failed.
+      - name: Hub test inventory is current
+        if: always()
+        run: python -I scripts/ci/hub_test_inventory.py --check
+
+      - name: Cron identity inventory is current
+        if: always()
+        run: uv run python scripts/cron/build-cron-identity-inventory.py --check
+
+      - name: Scheduler mutation registry is current
+        if: always()
+        run: uv run python scripts/enforcement/check-scheduler-mutation-surfaces.py
+
+      - name: Scheduler mutation audit HTML is current
+        if: always()
+        run: >-
+          uv run python scripts/enforcement/check-scheduler-mutation-surfaces.py
+          --check-html docs/reports/2026-07-11-issue-3470-scheduler-mutation-safety.html
+
+      - name: Scheduled-task catalog schema
+        if: always()
+        run: uv run python scripts/cron/validate-schedule.py
+
+      - name: Skill index is current
+        if: always()
+        run: uv run python scripts/enforcement/check-skill-index-coherence.py
+
+      - name: SKILL.md frontmatter
+        if: always()
+        run: UV_CACHE_DIR=.claude/state/uv-cache bash scripts/skills/validate-skills.sh
+
+  governance:
+    name: Governance over the last day of main
+    runs-on: ${{ github.event.pull_request.head.repo.fork && 'ubuntu-latest' || fromJSON('["self-hosted","Linux"]') }}
+    timeout-minutes: 20
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Resolve the window base on main
+        id: window
+        env:
+          SINCE_HOURS: ${{ inputs.since_hours || '25' }}
+        run: |
+          case "$SINCE_HOURS" in (''|*[!0-9]*) echo "since_hours must be an integer" >&2; exit 2;; esac
+          base="$(git rev-list -1 --before="${SINCE_HOURS} hours ago" HEAD)"
+          if [ -z "$base" ]; then base="$(git rev-list --max-parents=0 HEAD | tail -1)"; fi
+          echo "base=$base" >> "$GITHUB_OUTPUT"
+          echo "Governance window: ${base}..HEAD (${SINCE_HOURS} h)" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Marker-label parity
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          BASE: ${{ steps.window.outputs.base }}
+        run: bash scripts/enforcement/check-marker-label-parity.sh --strict --base-ref "$BASE" --head-ref HEAD
+
+      - name: Retired queue paths
+        if: always()
+        env:
+          BASE: ${{ steps.window.outputs.base }}
+        run: python3 scripts/enforcement/check-retired-queue-paths.py --base-ref "$BASE" --head-ref HEAD

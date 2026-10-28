@@ -372,11 +372,17 @@ def test_validate_skills_derives_uv_cache_default(tmp_path: Path) -> None:
     assert f"UV_CACHE_DIR={expected}" in log.read_text(encoding="utf-8")
 
 
-def test_skills_validation_workflow_includes_new_paths() -> None:
+def test_skills_validation_runs_in_the_daily_main_run() -> None:
+    # Pull requests run only pr-fast-gate.yml (owner ruling 2026-10-28); the
+    # validator runs daily in main-full-run.yml and this module runs with its family.
     workflow = (REPO_ROOT / ".github" / "workflows" / "skills-validation.yml").read_text(
         encoding="utf-8"
     )
+    main_run = (REPO_ROOT / ".github" / "workflows" / "main-full-run.yml").read_text(
+        encoding="utf-8"
+    )
 
-    assert workflow.count("scripts/lib/uv-resolver.sh") == 2
-    assert workflow.count("scripts/lib/uv-env.sh") == 2
-    assert workflow.count("tests/cron/test_skill_validation_uv_resolution.py") >= 3
+    assert "pull_request:" not in workflow
+    assert "scripts/skills/validate-skills.sh" in workflow
+    assert "scripts/skills/validate-skills.sh" in main_run
+    assert "tests/cron/test_skill_validation_uv_resolution.py" in workflow
