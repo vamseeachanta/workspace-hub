@@ -1,8 +1,10 @@
 """Task 2 deterministic cron identity inventory tests."""
 from __future__ import annotations
 
+import hashlib
 import json
 import importlib.util
+import re
 import subprocess
 import sys
 from pathlib import Path
@@ -67,13 +69,119 @@ def test_inventory_is_deterministic_alias_safe_and_check_bound(tmp_path):
     assert subprocess.run(command, cwd=ROOT).returncode == 0
     first = output.read_bytes()
     payload = json.loads(first)
-    assert payload["machines"] == ["linux-a"]
+    assert payload["machines"] == [hashlib.sha256(b"cron-machine:linux-a").hexdigest()[:12]]
     assert payload["unsupported"] == []
     assert payload["collisions"] == []
     assert first.endswith(b"\n")
     assert subprocess.run(command + ["--check"], cwd=ROOT).returncode == 0
     catalog.write_text(catalog.read_text() + "\n", encoding="utf-8")
     assert subprocess.run(command + ["--check"], cwd=ROOT).returncode != 0
+
+
+def test_public_machine_keys_are_opaque_stable_and_distinct(tmp_path):
+    generator = load_generator()
+    catalog, classes, output, command = fixture_paths(tmp_path, [{
+        "id": "one", "scheduler": "cron", "schedule": "0 1 * * *",
+        "command": "echo one", "machines": ["linux-a", "linux-b"], "roles": [],
+    }])
+    registry = tmp_path / "registry.yaml"
+    data = yaml.safe_load(registry.read_text(encoding="utf-8"))
+    data["machines"]["linux-b"] = {
+        "os": "linux", "workspace_root": str(tmp_path / "declared"),
+        "harness_profile": {"roles": []},
+    }
+    write_yaml(registry, data)
+
+    assert subprocess.run(command, cwd=ROOT).returncode == 0
+    first = output.read_bytes()
+    assert subprocess.run(command, cwd=ROOT).returncode == 0
+    assert output.read_bytes() == first
+    assert all(key.encode() not in first for key in data["machines"])
+    payload = json.loads(first)
+    expected = [hashlib.sha256(f"cron-machine:{key}".encode()).hexdigest()[:12]
+                for key in sorted(data["machines"])]
+    assert payload["machines"] == expected
+    assert len(set(expected)) == 2
+    assert all(re.fullmatch(r"[0-9a-f]{12}", key) for key in expected)
+    assert [row["machine_id"] for row in payload["identities"]] == expected
+
+    # Registry insertion order must not affect the published keys or row order.
+    data["machines"] = dict(reversed(list(data["machines"].items())))
+    write_yaml(registry, data)
+    reordered = generator.build(catalog, registry, classes)
+    assert reordered["machines"] == expected
+    assert reordered["identities"] == payload["identities"]
+
+
+def test_public_projection_preserves_ownership_legacy_and_collisions(tmp_path):
+    tasks = [{
+        "id": task_id, "scheduler": "cron", "schedule": "0 1 * * *",
+        "command": "echo same", "machines": ["alias-a"], "roles": [],
+    } for task_id in ("one", "two")]
+    tasks.append({
+        "id": "excluded", "scheduler": "cron", "schedule": "0 2 * * *",
+        "command": "echo excluded", "machines": ["elsewhere"], "roles": [],
+    })
+    classes = {"preserved_external": [], "preserved_local": [{
+        "owner": "local", "catalog_task_id": "one",
+        "legacy_exact_lines": [{"id": "old", "line": "0 2 * * * echo old"}],
+    }]}
+    _catalog, _classes, output, command = fixture_paths(tmp_path, tasks, classes)
+    assert subprocess.run(command, cwd=ROOT).returncode == 1
+    payload = json.loads(output.read_bytes())
+    key = hashlib.sha256(b"cron-machine:linux-a").hexdigest()[:12]
+    line_hash = hashlib.sha256(b"0 1 * * * echo same").hexdigest()
+    # These rows are the pre-projection generator's results for this fixture,
+    # with only the canonical machine key replaced at the public boundary.
+    assert payload["machines"] == [key]
+    assert payload["identities"] == [{
+        "canonical_line_sha256": line_hash,
+        "legacy_variant_ids": variants, "machine_id": key,
+        "task_id": task_id, "unique": False,
+    } for task_id, variants in (("one", ["old"]), ("two", []))]
+    assert payload["collisions"] == [{
+        "machine_id": key, "task_ids": ["one", "two"], "line_sha256": line_hash,
+    }]
+    assert payload["unsupported"] == []
+    assert b"linux-a" not in output.read_bytes()
+
+
+@pytest.mark.parametrize("failure", ["missing-root", "invalid-role"])
+def test_public_machine_keys_cover_unsupported_rows(tmp_path, failure):
+    task = {
+        "id": "one", "scheduler": "cron", "schedule": "0 1 * * *",
+        "command": "echo one", "machines": ["linux-a"], "roles": [],
+    }
+    if failure == "invalid-role":
+        task["roles"] = [{"unsupported": "mapping"}]
+    _catalog, _classes, output, command = fixture_paths(tmp_path, [task])
+    registry = tmp_path / "registry.yaml"
+    data = yaml.safe_load(registry.read_text(encoding="utf-8"))
+    if failure == "missing-root":
+        del data["machines"]["linux-a"]["workspace_root"]
+        write_yaml(registry, data)
+    assert subprocess.run(command, cwd=ROOT).returncode == 1
+    payload = json.loads(output.read_bytes())
+    assert payload["identities"] == []
+    assert payload["collisions"] == []
+    assert len(payload["unsupported"]) == 1
+    assert payload["unsupported"][0]["machine_id"] == payload["machines"][0]
+    assert all(key.encode() not in output.read_bytes() for key in data["machines"])
+
+
+def test_public_machine_key_collision_fails_closed(tmp_path, monkeypatch):
+    generator = load_generator()
+    catalog, classes, _output, _command = fixture_paths(tmp_path, [{
+        "id": "one", "scheduler": "cron", "schedule": "0 1 * * *",
+        "command": "echo one", "machines": [], "roles": [],
+    }])
+    registry = tmp_path / "registry.yaml"
+    write_yaml(registry, {"machines": {
+        key: {"os": "linux"} for key in ("linux-a", "linux-b")
+    }})
+    monkeypatch.setattr(generator, "public_machine_key", lambda key: "0" * 12)
+    with pytest.raises(ValueError, match="public machine key collision"):
+        generator.build(catalog, registry, classes)
 
 
 def test_inventory_uses_registry_workspace_not_checkout_environment(tmp_path, monkeypatch):

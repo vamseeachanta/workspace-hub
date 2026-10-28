@@ -58,6 +58,11 @@ def input_digest(paths: list[Path]) -> str:
     return digest.hexdigest()
 
 
+def public_machine_key(machine_id: str) -> str:
+    """Return a stable public key without exposing the canonical registry key."""
+    return hashlib.sha256(f"cron-machine:{machine_id}".encode("utf-8")).hexdigest()[:12]
+
+
 def build(catalog_path: Path, registry_path: Path, classes_path: Path) -> dict:
     catalog = yaml.safe_load(catalog_path.read_text(encoding="utf-8"))
     registry = yaml.safe_load(registry_path.read_text(encoding="utf-8"))
@@ -88,9 +93,18 @@ def build(catalog_path: Path, registry_path: Path, classes_path: Path) -> dict:
     for task_id, variant_id in sorted(declared_legacy - bound_legacy):
         unsupported.append({"task_id": task_id, "variant_id": variant_id,
                             "error": "legacy variant is not bound in a canonical Linux context"})
+    # Keep canonical keys throughout ownership and collision calculations;
+    # project machine references only at the public output boundary.
+    public_keys = {machine_id: public_machine_key(machine_id) for machine_id in machines}
+    if len(set(public_keys.values())) != len(public_keys):
+        raise ValueError("public machine key collision")
+    for collection in (rows, unsupported, collisions):
+        for row in collection:
+            if "machine_id" in row:
+                row["machine_id"] = public_keys[row["machine_id"]]
     union = [catalog_path, registry_path, classes_path, *SOURCE_PATHS]
     return {"schema_version": 1, "input_digest": input_digest(union),
-            "machines": machines, "identities": rows,
+            "machines": [public_keys[machine_id] for machine_id in machines], "identities": rows,
             "unsupported": unsupported, "collisions": collisions}
 
 

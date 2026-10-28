@@ -141,10 +141,11 @@ def test_fixture_inventory_uses_declared_root(
         f'0 1 * * * "{root}/scripts/run.sh" '
         f'>> "{root}/logs/quality/cron-wrapper.log" 2>&1'
     )
-    assert payload["machines"] == ["target"]
+    public_key = hashlib.sha256(b"cron-machine:target").hexdigest()[:12]
+    assert payload["machines"] == [public_key]
     assert payload["identities"] == [{
         "canonical_line_sha256": hashlib.sha256(expected_line.encode()).hexdigest(),
-        "legacy_variant_ids": [], "machine_id": "target",
+        "legacy_variant_ids": [], "machine_id": public_key,
         "task_id": "probe", "unique": True,
     }]
     assert payload["unsupported"] == []
