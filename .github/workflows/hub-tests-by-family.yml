@@ -19,7 +19,7 @@ jobs:
   discover:
     name: Discover hub test families
     if: ${{ !github.event.pull_request.draft }}
-    runs-on: ubuntu-latest
+    runs-on: ${{ github.event.pull_request.head.repo.fork && 'ubuntu-latest' || fromJSON('["self-hosted","Linux"]') }}
     timeout-minutes: 10
     outputs:
       matrix: ${{ steps.select.outputs.matrix }}
@@ -43,7 +43,7 @@ jobs:
     name: Hub family ${{ matrix.family }}
     needs: discover
     if: ${{ needs.discover.outputs.required == 'true' && !github.event.pull_request.draft }}
-    runs-on: ubuntu-latest
+    runs-on: ${{ github.event.pull_request.head.repo.fork && 'ubuntu-latest' || fromJSON('["self-hosted","Linux"]') }}
     timeout-minutes: 30
     strategy:
       fail-fast: false
@@ -68,7 +68,7 @@ jobs:
     name: Hub test aggregate
     needs: [discover, test-family]
     if: ${{ always() && !github.event.pull_request.draft }}
-    runs-on: ubuntu-latest
+    runs-on: ${{ github.event.pull_request.head.repo.fork && 'ubuntu-latest' || fromJSON('["self-hosted","Linux"]') }}
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
