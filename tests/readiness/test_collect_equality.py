@@ -9,6 +9,7 @@ depending on the host's real hardware.
 from __future__ import annotations
 
 import json
+import os
 import shlex
 import subprocess
 import sys
@@ -16,9 +17,11 @@ import threading
 import time
 from pathlib import Path
 
+import pytest
 import yaml
 from collector_support import (
     BASH_PATH,
+    REPO,
     SCRIPT,
     _fixture,
     collector_env,
@@ -26,6 +29,51 @@ from collector_support import (
 from collector_support import (
     bash_path as _bash_path,
 )
+
+
+@pytest.fixture(autouse=True)
+def _isolate_collector_processes(tmp_path, monkeypatch):
+    """Keep relative stub output and external tool discovery inside the fixture."""
+    root_before = _directory_snapshot(REPO)
+    monkeypatch.chdir(tmp_path)
+    bindir = tmp_path / "offline-tools"
+    bindir.mkdir()
+    called = tmp_path / "external-tool-called"
+    # Empty scheduler output is a successful query of an empty synthetic schedule.
+    for name in ("crontab", "schtasks", "gh", "uv", "claude", "codex", "hermes", "gemini"):
+        tool = bindir / name
+        body = "exit 0\n" if name in ("crontab", "schtasks") else "exit 1\n"
+        if name in ("claude", "codex", "hermes", "gemini"):
+            body = f"touch {shlex.quote(_bash_path(called))}\n" + body
+        tool.write_text("#!/usr/bin/env bash\n" + body, encoding="utf-8", newline="\n")
+        tool.chmod(0o755)  # POSIX permission bits: u=rwx (7), g=rx and o=rx (5).
+    original = collector_env
+
+    def offline_env(env, *, stub_dirs=()):
+        return original(env, stub_dirs=(*stub_dirs, bindir))
+
+    monkeypatch.setitem(globals(), "collector_env", offline_env)
+    yield
+    assert not called.exists(), "a provider executable was invoked"
+    assert _directory_snapshot(REPO) == root_before
+
+
+def _directory_snapshot(root):
+    """Detect new root entries and changes to existing root files."""
+    return {path.name: None if path.is_dir() else path.read_bytes()
+            for path in root.iterdir()}
+
+
+def _fixture_snapshot(root):
+    return {str(path.relative_to(root)): None if path.is_dir() else path.read_bytes()
+            for path in root.rglob("*")}
+
+
+def _assert_parent_environment_unchanged(before):
+    changed = {name for name in before.keys() | os.environ.keys()
+               if before.get(name) != os.environ.get(name)}
+    # A failure reports names only; environment values may contain credentials.
+    assert not changed, "parent environment changed"
 
 
 def _run(ws: Path, *args: str) -> dict:
@@ -65,7 +113,8 @@ def test_collect_publish_health_uses_working_resolver_and_exact_schema(tmp_path)
     bin_dir = _uv_stub(tmp_path)
     res = subprocess.run(
         ["bash", _bash_path(SCRIPT), "--stdout", "--machine", "machine-a"],
-        env=collector_env({"WORKSPACE_HUB": _bash_path(ws), "PATH": f"{_bash_path(bin_dir)}:{BASH_PATH}"}),
+        env=collector_env({"WORKSPACE_HUB": _bash_path(ws), "PATH": BASH_PATH},
+                          stub_dirs=(bin_dir,)),
         capture_output=True, text=True, timeout=60,
      check=False)
     assert res.returncode == 0, res.stderr
@@ -91,7 +140,8 @@ def test_collect_invalid_publish_health_emits_no_partial_tuple(tmp_path):
     bin_dir = _uv_stub(tmp_path)
     res = subprocess.run(
         ["bash", _bash_path(SCRIPT), "--stdout", "--machine", "machine-a"],
-        env=collector_env({"WORKSPACE_HUB": _bash_path(ws), "PATH": f"{_bash_path(bin_dir)}:{BASH_PATH}"}),
+        env=collector_env({"WORKSPACE_HUB": _bash_path(ws), "PATH": BASH_PATH},
+                          stub_dirs=(bin_dir,)),
         capture_output=True, text=True, timeout=60,
      check=False)
     assert res.returncode == 0, res.stderr
@@ -331,6 +381,121 @@ def test_collect_keeps_old_report_visible_until_atomic_rename(tmp_path):
 SOLVER_NAMES = {"orcaflex", "orcawave", "aqwa", "ansys"}
 STATUS_ENUM = {"licensed", "present", "absent", "unknown"}
 EVIDENCE_ENUM = {"import", "env", "root", "absent", "unknown"}
+
+
+def _expected_solver_rows(present=False):
+    # Independent truth table from probe-solvers.sh's documented output contract:
+    # blocked imports + empty roots -> absent; an explicit directory -> present/env.
+    return [{"name": name,
+             "status": "present" if present and name == "orcawave" else "absent",
+             "evidence": "env" if present and name == "orcawave" else "absent"}
+            for name in ("orcaflex", "orcawave", "aqwa", "ansys")]
+
+
+def test_solver_discovery_fixture_ignores_ambient_environment(tmp_path, monkeypatch):
+    ws = _fixture(tmp_path)
+    ambient = tmp_path / "ambient installation"
+    ambient.mkdir()
+    ambient_bin = ambient / "bin"
+    ambient_bin.mkdir()
+    called = tmp_path / "solver-or-interpreter-called"
+    imported = tmp_path / "sdk-imported"
+    for name in ("python", "python3", "OrcaFlex", "OrcaWave", "aqwa", "ansys"):
+        tool = ambient_bin / name
+        tool.write_text(
+            "#!/usr/bin/env bash\n"
+            f"touch {shlex.quote(_bash_path(called))}\nexit 1\n",
+            encoding="utf-8", newline="\n")
+        tool.chmod(0o755)  # POSIX permission bits: u=rwx (7), g=rx and o=rx (5).
+    (ambient / "OrcFxAPI.py").write_text(
+        f"from pathlib import Path\nPath({str(imported)!r}).touch()\n",
+        encoding="utf-8")
+    (ambient / "ansys" / "v252").mkdir(parents=True)  # Version token example in probe-solvers.sh.
+    startup = ambient / "startup.sh"
+    startup.write_text(f"touch {shlex.quote(_bash_path(called))}\n",
+                       encoding="utf-8", newline="\n")
+    for name, value in {
+        "PATH": f"{_bash_path(ambient_bin)}:{BASH_PATH}",
+        "HOME": str(ambient), "PYTHONPATH": str(ambient),
+        "ORCAWAVE_PATH": str(ambient), "TEST_INSTALL_ROOT": str(ambient),
+        "BASH_ENV": str(startup), "TMPDIR": str(ambient),
+    }.items():
+        monkeypatch.setenv(name, value)
+    parent_before = dict(os.environ)
+    fixture_before = _fixture_snapshot(ws)
+
+    # Ambient discovery variables are not fixture inputs.
+    assert _run(ws)["dimensions"]["solvers"] == _expected_solver_rows()
+    # Even a supplied leading interpreter and importable synthetic SDK stay blocked.
+    explicit = {"WORKSPACE_HUB": str(ws), "PATH": os.environ["PATH"],
+                "PYTHONPATH": str(ambient), "TEST_INSTALL_ROOT": str(ambient)}
+    explicit_before = dict(explicit)
+    res = subprocess.run(
+        ["bash", _bash_path(SCRIPT), "--stdout", "--machine", "fixture"],
+        env=collector_env(explicit), capture_output=True, text=True,
+        timeout=60, check=False)  # Collector subprocess budget used throughout this suite.
+    assert res.returncode == 0, res.stderr
+    assert yaml.safe_load(res.stdout)["dimensions"]["solvers"] == _expected_solver_rows()
+    assert explicit == explicit_before
+    _assert_parent_environment_unchanged(parent_before)
+    assert _fixture_snapshot(ws) == fixture_before
+    assert not called.exists()
+    assert not imported.exists()
+
+
+@pytest.mark.parametrize("order", [(False, True, False), (True, False, True)],
+                         ids=["absent-present-absent", "present-absent-present"])
+@pytest.mark.parametrize("platform", ["linux", "windows"])
+def test_solver_discovery_fixture_is_order_independent(tmp_path, order, platform):
+    ws = _fixture(tmp_path)
+    install = tmp_path / "synthetic installation"
+    install.mkdir()
+    report = ws / ".claude" / "state" / "equality-fixture.yaml"
+    fixture_before = _fixture_snapshot(ws)
+    env = {"WORKSPACE_HUB": str(ws), "PATH": BASH_PATH,
+           "EQ_TEST_ENABLE_OS_OVERRIDE": "1", "EQ_OS_OVERRIDE": platform}
+    parent_before = dict(os.environ)
+    for present in order:
+        inputs = dict(env)
+        if present:
+            inputs["ORCAWAVE_PATH"] = str(install)
+        res = subprocess.run(
+            ["bash", _bash_path(SCRIPT), "--machine", "fixture"],
+            env=collector_env(inputs), capture_output=True, text=True,
+            timeout=60, check=False)  # Collector subprocess budget used throughout this suite.
+        assert res.returncode == 0, res.stderr
+        data = yaml.safe_load(report.read_text())
+        assert data["os"] == platform
+        assert data["dimensions"]["solvers"] == _expected_solver_rows(present)
+        after = _fixture_snapshot(ws)
+        assert after.pop(str(report.relative_to(ws)))
+        assert after == fixture_before
+        assert "ORCAWAVE_PATH" not in env
+        _assert_parent_environment_unchanged(parent_before)
+
+
+def test_collect_relative_stub_outputs_stay_temporary(tmp_path):
+    ws = _fixture(tmp_path)
+    bindir = tmp_path / "relative-output-tools"
+    bindir.mkdir()
+    hostname = bindir / "hostname"
+    hostname.write_text(
+        "#!/usr/bin/env bash\n"
+        "printf '%s\\n' called >> collector-counter\n"
+        "pwd > collector-path\nprintf '%s\\n' fixture\n",
+        encoding="utf-8", newline="\n")
+    hostname.chmod(0o755)  # POSIX permission bits: u=rwx (7), g=rx and o=rx (5).
+    before = _fixture_snapshot(ws)
+    res = subprocess.run(
+        ["bash", _bash_path(SCRIPT), "--stdout", "--machine", "fixture"],
+        env=collector_env({"WORKSPACE_HUB": str(ws), "PATH": BASH_PATH},
+                          stub_dirs=(bindir,)),
+        capture_output=True, text=True,
+        timeout=60, check=False)  # Collector subprocess budget used throughout this suite.
+    assert res.returncode == 0, res.stderr
+    assert (tmp_path / "collector-counter").read_text().splitlines() == ["called"]
+    assert (tmp_path / "collector-path").read_text().strip() == _bash_path(tmp_path)
+    assert _fixture_snapshot(ws) == before
 
 
 def test_collect_emits_schema_v4(tmp_path):
