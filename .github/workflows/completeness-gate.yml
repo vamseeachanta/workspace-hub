@@ -15,7 +15,7 @@ permissions:
 
 jobs:
   enforce-completeness:
-    runs-on: ubuntu-latest
+    runs-on: ${{ github.event.pull_request.head.repo.fork && 'ubuntu-latest' || fromJSON('["self-hosted","Linux"]') }}
     # Only gate issues that (a) closed as COMPLETED and (b) explicitly OPTED IN via the
     # `gate:completeness` label. Opt-in rollout: existing issues + duplicate/won't-fix
     # closes are untouched. The runner re-checks opt-in + status:plan-approved (defence in
