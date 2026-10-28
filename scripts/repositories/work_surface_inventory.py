@@ -5,10 +5,12 @@ from __future__ import annotations
 
 import argparse
 import json
+import sys
 from pathlib import Path
 from typing import Any
 
-import yaml
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from lib.strict_yaml import strict_yaml_load
 
 PROFILES = {"code", "knowledge", "control-product"}
 SENSITIVITIES = {
@@ -17,15 +19,21 @@ SENSITIVITIES = {
 
 
 def load_declared_repositories(path: Path) -> dict[str, dict[str, Any]]:
-    data = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
+    data = strict_yaml_load(path.read_text(encoding="utf-8"))
+    if data is None:
+        data = {}
+    if not isinstance(data, dict) or not isinstance(data.get("repos", []), list):
+        raise ValueError("invalid inventory declarations")
     declared: dict[str, dict[str, Any]] = {}
     for raw in data.get("repos", []):
+        if not isinstance(raw, dict):
+            raise ValueError("invalid inventory declaration")
         name = raw.get("repo")
         if not isinstance(name, str) or not name or name in declared:
             raise ValueError(f"invalid or duplicate repository name: {name!r}")
-        if raw.get("profile") not in PROFILES:
+        if not isinstance(raw.get("profile"), str) or raw["profile"] not in PROFILES:
             raise ValueError(f"invalid profile for {name}")
-        if raw.get("sensitivity") not in SENSITIVITIES:
+        if not isinstance(raw.get("sensitivity"), str) or raw["sensitivity"] not in SENSITIVITIES:
             raise ValueError(f"invalid sensitivity for {name}")
         if not isinstance(raw.get("mcp_required"), bool):
             raise ValueError(f"mcp_required must be boolean for {name}")
@@ -34,8 +42,14 @@ def load_declared_repositories(path: Path) -> dict[str, dict[str, Any]]:
 
 
 def load_machine_repositories(path: Path, machine: str) -> set[str]:
-    data = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
+    data = strict_yaml_load(path.read_text(encoding="utf-8"))
+    if data is None:
+        data = {}
+    if not isinstance(data, dict) or not isinstance(data.get("machines", {}), dict):
+        raise ValueError("invalid inventory configuration")
     record = data.get("machines", {}).get(machine, {})
+    if not isinstance(record, dict) or not isinstance(record.get("repos", []), list):
+        raise ValueError("invalid inventory configuration record")
     return {name for name in record.get("repos", []) if isinstance(name, str)}
 
 
@@ -203,7 +217,11 @@ def main() -> int:
     parser.add_argument("--markdown-output", type=Path, default=root / "docs/WORKSPACE_HUB_REPOSITORY_OVERVIEW.md")
     parser.add_argument("--check", action="store_true")
     args = parser.parse_args()
-    inventory = build_inventory(args.mission_map, args.workstations, args.workspace_root, args.machine)
+    try:
+        inventory = build_inventory(args.mission_map, args.workstations, args.workspace_root, args.machine)
+    except (OSError, ValueError):
+        print("invalid inventory input", file=sys.stderr)
+        return 1
     json_text = json.dumps(inventory, indent=2, sort_keys=True) + "\n"
     ok_json = write_or_check(args.json_output, json_text, args.check)
     ok_md = write_or_check(args.markdown_output, render_markdown(inventory), args.check)
