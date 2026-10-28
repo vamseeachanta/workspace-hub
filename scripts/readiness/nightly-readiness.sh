@@ -493,13 +493,19 @@ check_r_hooks() {
   local missing=()
   # Extract literal script paths from hook commands (skip variable-expanded paths)
   while IFS= read -r hook_path; do
+    # Native jq may emit CRLF even when the JSON itself is valid.
+    hook_path="${hook_path//$'\r'/}"
     [[ -z "$hook_path" ]] && continue
     # Skip paths containing shell variable expansions — cannot resolve statically
     [[ "$hook_path" == *'${'* ]] && continue
     [[ "$hook_path" == *'$('* ]] && continue
     local abs_path="${hook_path}"
     [[ "${hook_path}" != /* ]] && abs_path="${WORKSPACE_HUB}/${hook_path}"
-    [[ -f "$abs_path" ]] || missing+=("$hook_path")
+    if [[ ! -f "$abs_path" ]]; then
+      local escaped_path
+      printf -v escaped_path '%q' "$hook_path"
+      missing+=("$escaped_path")
+    fi
   done < <(jq -r '.. | strings | select(test("bash ")) | split("bash ")[1]
                    | split(" ")[0] | select(length > 0)
                    | select(startswith("-") | not)

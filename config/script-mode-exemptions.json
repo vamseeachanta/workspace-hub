@@ -1,0 +1,3 @@
+{
+  "scripts/review/lib/codex-version-guard.sh": "Sourced function library; direct execution does not perform the guard."
+}
