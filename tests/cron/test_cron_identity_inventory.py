@@ -44,7 +44,7 @@ def fixture_paths(tmp_path: Path, tasks: list[dict], classes: object | None = No
 
 
 def write_yaml(path: Path, value: object) -> None:
-    path.write_text(yaml.safe_dump(value), encoding="utf-8")
+    path.write_text(yaml.safe_dump(value), encoding="utf-8", newline="\n")
 
 
 def public_key(kind: str, value: str) -> str:
@@ -54,7 +54,7 @@ def public_key(kind: str, value: str) -> str:
 def projection_fixture(tmp_path):
     machines = {
         key: {"hostname": host, "hostname_aliases": [alias], "os": "linux",
-              "workspace_root": str(tmp_path / key),
+              "workspace_root": (tmp_path / key).as_posix(),
               "harness_profile": {"roles": []}}
         for key, host, alias in (
             ("synthetic-alpha", "synthetic-host-alpha", "synthetic-alias-alpha"),
@@ -97,7 +97,7 @@ def test_public_machine_keys_are_stable_unique_and_canonical(tmp_path):
     expanded = dict(machines)
     expanded["synthetic-gamma"] = {
         "hostname": "synthetic-host-gamma", "os": "linux",
-        "workspace_root": str(tmp_path / "gamma"), "harness_profile": {"roles": []},
+        "workspace_root": (tmp_path / "gamma").as_posix(), "harness_profile": {"roles": []},
     }
     write_yaml(paths[1], {"machines": expanded})
     second = generator.build(*paths)
@@ -105,39 +105,67 @@ def test_public_machine_keys_are_stable_unique_and_canonical(tmp_path):
     assert set(expected) < set(second["machines"])
 
 
+# Independent vectors: OpenSSL `printf %s INPUT | openssl dgst -sha256`,
+# with no newline in INPUT; take the first 12 hexadecimal digest characters.
+# Inputs are the literal domain-prefixed strings shown below. Expected rows
+# are enumerated by hand: two tasks share one exact line on one synthetic
+# machine; only the first task has the declared legacy variant.
+@pytest.mark.parametrize(("kind", "value", "expected"), [
+    ("machine", "synthetic-alpha", "dd1e55cf4a15"),
+    ("task", "first", "f973414233d7"),
+    ("task", "second", "42f684a9dec6"),
+    ("legacy", "previous", "5559690bad68"),
+])
+def test_fixed_openssl_key_vectors(kind, value, expected):
+    assert load_generator()._opaque_key(kind, value) == expected
+
+
 def test_projection_preserves_canonical_ownership_legacy_and_collisions(tmp_path):
     generator = load_generator()
-    paths, machines, _labels = projection_fixture(tmp_path)
-    catalog, registry, classes = [yaml.safe_load(path.read_text()) for path in paths]
-    expected_rows, expected_collisions = [], []
-    for machine_id in sorted(machines):
-        context = generator.build_ownership_context(
-            catalog, registry, classes, machine_id,
-            workspace_hub=machines[machine_id]["workspace_root"], fail_on_collision=False,
-        )
-        collision_lines = {row["line"] for row in context["identity_collisions"]}
-        for task_id, lines in sorted(context["canonical_exact_lines"].items()):
-            variants = context["legacy_exact_lines"].get(task_id, [])
-            for line in lines:
-                expected_rows.append({
-                    "machine_id": public_key("machine", machine_id),
-                    "task_id": public_key("task", task_id),
-                    "canonical_line_sha256": hashlib.sha256(line.encode()).hexdigest(),
-                    "legacy_variant_ids": [public_key("legacy", v["id"])
-                                           for v in sorted(variants, key=lambda v: v["id"])],
-                    "unique": line not in collision_lines,
-                })
-        for collision in context["identity_collisions"]:
-            expected_collisions.append({
-                "machine_id": public_key("machine", machine_id),
-                "task_ids": [public_key("task", task_id) for task_id in collision["task_ids"]],
-                "line_sha256": hashlib.sha256(collision["line"].encode()).hexdigest(),
-            })
+    paths = [tmp_path / name for name in ("catalog.yaml", "registry.yaml", "classes.yaml")]
+    write_yaml(paths[0], {"tasks": [
+        {"id": task, "scheduler": "cron", "schedule": "0 1 * * *",
+         "command": "echo shared", "machines": ["synthetic-alpha"], "roles": []}
+        for task in ("first", "second")
+    ]})
+    write_yaml(paths[1], {"machines": {"synthetic-alpha": {
+        "os": "linux", "workspace_root": tmp_path.as_posix(),
+        "harness_profile": {"roles": []},
+    }}})
+    write_yaml(paths[2], {"preserved_external": [], "preserved_local": [{
+        "owner": "local", "catalog_task_id": "first",
+        "legacy_exact_lines": [{"id": "previous", "line": "0 2 * * * echo previous"}],
+    }]})
+    # OpenSSL hashes the literal UTF-8 bytes `0 1 * * * echo shared`,
+    # without a newline. No production renderer or context supplies this oracle.
+    line_digest = "a29c194d96f271388af22c094615f47230cba690f328028773e28a01d24db801"
     payload = generator.build(*paths)
-    assert expected_collisions  # The fixture exercises actual collisions.
-    assert payload["identities"] == expected_rows
-    assert payload["collisions"] == expected_collisions
+    assert payload["machines"] == ["dd1e55cf4a15"]
+    assert payload["identities"] == [
+        {"machine_id": "dd1e55cf4a15", "task_id": "f973414233d7",
+         "canonical_line_sha256": line_digest,
+         "legacy_variant_ids": ["5559690bad68"], "unique": False},
+        {"machine_id": "dd1e55cf4a15", "task_id": "42f684a9dec6",
+         "canonical_line_sha256": line_digest,
+         "legacy_variant_ids": [], "unique": False},
+    ]
+    assert payload["collisions"] == [{
+        "machine_id": "dd1e55cf4a15",
+        "task_ids": ["f973414233d7", "42f684a9dec6"],
+        "line_sha256": line_digest,
+    }]
     assert payload["unsupported"] == []
+
+
+@pytest.mark.parametrize("kind", ["machine", "task", "legacy"])
+def test_opaque_collisions_fail_closed_for_each_kind(tmp_path, monkeypatch, kind):
+    generator = load_generator()
+    paths, _machines, _labels = projection_fixture(tmp_path)
+    original = generator._opaque_key
+    monkeypatch.setattr(generator, "_opaque_key", lambda domain, value:
+                        "000000000000" if domain == kind else original(domain, value))
+    with pytest.raises(ValueError, match=f"opaque {kind} key collision"):
+        generator.build(*paths)
 
 
 def test_projection_covers_unbound_legacy_and_unsupported_errors(tmp_path, monkeypatch):
@@ -183,7 +211,7 @@ def test_inventory_is_deterministic_alias_safe_and_check_bound(tmp_path):
     assert payload["collisions"] == []
     assert first.endswith(b"\n")
     assert subprocess.run(command + ["--check"], cwd=ROOT).returncode == 0
-    catalog.write_text(catalog.read_text() + "\n", encoding="utf-8")
+    catalog.write_text(catalog.read_text(encoding="utf-8") + "\n", encoding="utf-8", newline="\n")
     assert subprocess.run(command + ["--check"], cwd=ROOT).returncode != 0
 
 
@@ -280,7 +308,7 @@ def test_malformed_state_classes_fail_without_traceback(tmp_path, malformed):
     task = {"id": "one", "scheduler": "cron", "schedule": "0 1 * * *",
             "command": "echo one", "machines": ["linux-a"], "roles": []}
     _catalog, state_classes, output, command = fixture_paths(tmp_path, [task])
-    state_classes.write_text(yaml.safe_dump(malformed), encoding="utf-8")
+    state_classes.write_text(yaml.safe_dump(malformed), encoding="utf-8", newline="\n")
     completed = subprocess.run(command, cwd=ROOT, text=True, capture_output=True)
     assert completed.returncode != 0
     assert not output.exists()
@@ -328,7 +356,7 @@ def test_inventory_rejects_duplicate_task_ids_in_write_and_check_modes(tmp_path)
     assert completed.returncode != 0
     assert "duplicate task id" in completed.stderr
     assert not output.exists()
-    output.write_text("{}\n", encoding="utf-8")
+    output.write_text("{}\n", encoding="utf-8", newline="\n")
     checked = subprocess.run(command + ["--check"], cwd=ROOT, text=True, capture_output=True)
     assert checked.returncode != 0
     assert "duplicate task id" in checked.stderr

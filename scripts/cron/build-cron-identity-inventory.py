@@ -98,7 +98,24 @@ def build(catalog_path: Path, registry_path: Path, classes_path: Path) -> dict:
 
 
 def _opaque_key(kind: str, value: str) -> str:
-    """Use fixed, domain-separated labels; never depend on local state or order."""
+    """Return a selected display format, not an authentication identifier.
+
+    SHA-256 is defined by FIPS 180-4 (August 2015), section 6.2, SHA-256:
+    https://doi.org/10.6028/NIST.FIPS.180-4
+    The format selects 12 lowercase hex characters (48 bits) from the digest
+    of UTF-8 `cron-{kind}:{value}`, without a trailing newline. Truncation and
+    domain labels are application choices, not requirements of the standard.
+    For each of machine, task and legacy independently, the design envelope
+    is at most 1,000 distinct values per inventory, with accidental-collision
+    probability below 1e-8 (pair-count bound n*(n-1)/(2*2**48), assuming uniform
+    outputs). This envelope is a sizing assumption, not an enforced count cap.
+    Acceptance permits zero observed collisions: projection rejects distinct
+    values sharing a key within any kind, including unsupported references.
+    A collision requires a versioned format change and inventory regeneration;
+    never resolve it by order-dependent suffixes. Cross-kind equality is allowed
+    because field names identify the kind. These keys do not conceal guessable
+    inputs, and the probability bound does not cover adversarial selection.
+    """
     return hashlib.sha256(f"cron-{kind}:{value}".encode("utf-8")).hexdigest()[:12]
 
 
@@ -118,6 +135,15 @@ def _public_inventory(payload: dict, registry: dict) -> dict:
     kinds = {"task_id": "task", "task_ids": "task",
              "variant_id": "legacy", "legacy_variant_ids": "legacy"}
 
+    seen = {kind: {} for kind in ("machine", "task", "legacy")}
+
+    def checked_key(kind, value):
+        key = _opaque_key(kind, value)
+        previous = seen[kind].setdefault(key, value)
+        if previous != value:
+            raise ValueError(f"opaque {kind} key collision")
+        return key
+
     def project(value, field=""):
         if isinstance(value, dict):
             return {key: project(item, key) for key, item in value.items()}
@@ -127,7 +153,7 @@ def _public_inventory(payload: dict, registry: dict) -> dict:
             if field in {"machines", "machine_id"}:
                 return keys[value]
             if field in kinds:
-                return _opaque_key(kinds[field], value)
+                return checked_key(kinds[field], value)
             if field == "error":
                 return pattern.sub(lambda match: labels[match.group()], value)
         return value
@@ -225,7 +251,7 @@ def main(argv: list[str] | None = None) -> int:
         current = args.output.read_bytes() if args.output.is_file() else b""
         stale = current != generated
         if stale:
-            print(f"ERROR: stale identity inventory: {args.output}", file=sys.stderr)
+            print(f"ERROR: stale identity inventory: {args.output.as_posix()}", file=sys.stderr)
             print(
                 "ERROR: expected input_digest "
                 f"{payload['input_digest']} but found {rendered_input_digest(current)}",
