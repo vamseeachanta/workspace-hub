@@ -3,6 +3,7 @@
 # dependencies = ["pytest", "requests"]
 # ///
 """Tests for fetch_from_api.py — REST API fetcher for BSEE/EIA/IMO."""
+
 import json
 import os
 import sys
@@ -20,7 +21,6 @@ from fetch_from_api import (
     get_api_registry,
     paginate_results,
 )
-
 
 # ---------------------------------------------------------------------------
 # build_api_url
@@ -46,12 +46,14 @@ def test_build_imo_url():
 
 
 def test_build_unknown_source_raises():
-    with pytest.raises(ValueError, match="Unknown source"):
+    with pytest.raises(ValueError, match="UNKNOWN_SOURCE"):
         build_api_url("unknown", endpoint="test")
 
 
 def test_build_url_with_multiple_params():
-    url = build_api_url("bsee", endpoint="WellProduction", params={"year": "2024", "state": "LA"})
+    url = build_api_url(
+        "bsee", endpoint="WellProduction", params={"year": "2024", "state": "LA"}
+    )
     assert "year=2024" in url
     assert "state=LA" in url
 
