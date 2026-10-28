@@ -323,6 +323,7 @@ machines:
     hostname_aliases: []
     os: linux
     role: gpu-executor
+    # Clone complete; legacy inline pending note superseded (#3507, 2026-07-23).
     workspace_root: /home/undi/ws/workspace-hub   # relocation-plan target (HANDOVER.md on box); clone pending
     tier1_repo_root: /home/undi/ws
     repo_layout: sibling
@@ -334,7 +335,7 @@ machines:
     capabilities:
       agent_clis: [claude]
       languages: [python3, bash]
-      tools: [git, gh, npm]                        # uv NOT installed yet — onboarding step
+      tools: [git, gh, npm, uv]  # Installed tooling confirmed in #3507 (2026-07-23).
       gpu: nvidia-rtx3090-x2
     storage:
       local: /home/undi
@@ -343,11 +344,12 @@ machines:
     repos:
       - digitalmodel
     notes: >
-      GPU executor (2x RTX 3090, 64 GiB, 8 cores; Ubuntu 24.04). First Linux
-      executor of the fleet-dispatch ladder (deckhand#557). Equivalence
-      onboarding PENDING: workspace-hub clone (relocation plan step 2), uv
-      install, sentinel cron. Registered with schedule_variant contribute-minimal
-      so the publish-health matrix row (#3502) shows the gap until onboarded.
+      Equivalence onboarding complete (#3507 completion comment, 2026-07-23):
+      workspace-hub clone complete; uv installed; managed cron active;
+      machine-keyed sentinel publication confirmed. The contribute-minimal
+      schedule variant is retained. This historical completion record does
+      not establish current readiness; outstanding findings remain separate
+      (#3594 confirmation comment, 2026-07-29).
 
   macbook-portable:
     hostname: Vamsees-MacBook-Air
