@@ -63,6 +63,14 @@ publish_start="$(date +%s)"
 "${PYTHON_CMD[@]}" "$MON/equivalence_state.py" publish --repo "$REPO_ROOT" --machine "$machine" --file "$fp_local" 2>&1 \
   | sed -e 's/^/[publish] /' -e 's/ERROR: directory not found:/SKIP (absent sibling):/'
 publish_rc="${PIPESTATUS[0]}"
+# Issue #3506: healthy publication requires the exact fingerprint in the shared
+# ref. Read back before recording success; a push acknowledgement alone cannot
+# detect the absent or corrupt evidence described in issue #3511.
+if [ "$publish_rc" -eq 0 ]; then
+  "${PYTHON_CMD[@]}" "$MON/equivalence_state.py" verify-publish \
+    --repo "$REPO_ROOT" --machine "$machine" --file "$fp_local"
+  publish_rc=$?
+fi
 publish_dur="$(( $(date +%s) - publish_start ))"
 health_rc="$publish_rc"; [ "$health_rc" -gt 4 ] && health_rc=3
 write_health publish "$publish_dur" "$health_rc" || exit 4

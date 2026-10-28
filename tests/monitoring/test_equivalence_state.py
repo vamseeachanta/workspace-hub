@@ -7,6 +7,7 @@ cycle and the push never lands (see #3500 / #3198). These tests pin that the
 push subprocess env carries ``GIT_PRE_PUSH_SKIP=1`` (and nothing else does).
 """
 import importlib.util
+import io
 import json
 import os
 import types
@@ -28,8 +29,8 @@ def _fingerprint(**overrides):
     data = {
         "fingerprint_version": 1,
         "role": "contribute-minimal",
-        "hostname": "licensed-win-2",
-        "machine_id": "ace-win-2",
+        "hostname": "sample-b",
+        "machine_id": "sample-b",
         "ts": "2026-07-14T10:00:00+00:00",
         "clone_head": "abcdef1",
         "behind_origin": 0,
@@ -58,7 +59,7 @@ def _fingerprint(**overrides):
 
 def test_validate_cli_accepts_exact_v1_without_git(tmp_path, monkeypatch):
     fp = tmp_path / "fingerprint.json"
-    fp.write_text(_fingerprint())
+    fp.write_text(_fingerprint(), encoding="utf-8", newline="\n")
 
     def git_must_not_run(*_args, **_kwargs):
         raise AssertionError("validation must not invoke git")
@@ -73,7 +74,7 @@ def test_publish_rejects_invalid_fingerprint_before_git(monkeypatch):
 
     monkeypatch.setattr(es.subprocess, "run", git_must_not_run)
     with pytest.raises(es.FingerprintValidationError):
-        es.publish("/fake/repo", "ace-win-2", "{}")
+        es.publish(".", "sample-b", "{}")
 
 
 def test_schema_rejects_wrong_types_versions_keys_and_nonfinite_values():
@@ -111,23 +112,23 @@ def test_publish_rejects_machine_mismatch_before_git(monkeypatch):
 
     monkeypatch.setattr(es.subprocess, "run", git_must_not_run)
     with pytest.raises(es.FingerprintValidationError, match="does not match"):
-        es.publish("/fake/repo", "ace-win-1", _fingerprint())
+        es.publish(".", "sample-a", _fingerprint())
 
 
 def test_prepare_fingerprint_uses_only_publish_phase_health(tmp_path):
     fp = tmp_path / "fingerprint.json"
     health = tmp_path / "publish-health.json"
-    fp.write_text(_fingerprint())
+    fp.write_text(_fingerprint(), encoding="utf-8", newline="\n")
     health.write_text(json.dumps({
         "schema_version": 1,
         "ts": "2026-07-14T10:00:00+00:00",
         "phase": "fingerprint",
         "duration_s": 900,
         "rc": 3,
-    }))
+    }), encoding="utf-8", newline="\n")
 
     es.prepare_fingerprint(str(fp), str(health))
-    assert json.loads(fp.read_text())["last_publish_duration_s"] is None
+    assert json.loads(fp.read_text(encoding="utf-8"))["last_publish_duration_s"] is None
 
     health.write_text(json.dumps({
         "schema_version": 1,
@@ -135,39 +136,39 @@ def test_prepare_fingerprint_uses_only_publish_phase_health(tmp_path):
         "phase": "publish",
         "duration_s": 4.5,
         "rc": 0,
-    }))
+    }), encoding="utf-8", newline="\n")
     es.prepare_fingerprint(str(fp), str(health))
-    assert json.loads(fp.read_text())["last_publish_duration_s"] == 4.5
+    assert json.loads(fp.read_text(encoding="utf-8"))["last_publish_duration_s"] == 4.5
 
 
 def test_prepare_failure_preserves_generated_fingerprint(tmp_path, monkeypatch):
     fp = tmp_path / "fingerprint.json"
     health = tmp_path / "publish-health.json"
     original = _fingerprint()
-    fp.write_text(original)
+    fp.write_text(original, encoding="utf-8", newline="\n")
     health.write_text(json.dumps({
         "schema_version": 1,
         "ts": "2026-07-14T10:01:00+00:00",
         "phase": "publish",
         "duration_s": 4.5,
         "rc": 0,
-    }))
+    }), encoding="utf-8", newline="\n")
     monkeypatch.setattr(es.os, "replace", lambda *_args: (_ for _ in ()).throw(OSError("stop")))
 
     with pytest.raises(OSError, match="stop"):
         es.prepare_fingerprint(str(fp), str(health))
-    assert fp.read_text() == original
+    assert fp.read_text(encoding="utf-8") == original
 
 
 def test_write_health_replace_failure_preserves_prior_record(tmp_path, monkeypatch):
     health = tmp_path / "publish-health.json"
     prior = '{"prior":"complete"}\n'
-    health.write_text(prior)
+    health.write_text(prior, encoding="utf-8", newline="\n")
     monkeypatch.setattr(es.os, "replace", lambda *_args: (_ for _ in ()).throw(OSError("stop")))
 
     with pytest.raises(OSError, match="stop"):
         es.write_publish_health(str(health), "publish", 2.0, 0)
-    assert health.read_text() == prior
+    assert health.read_text(encoding="utf-8") == prior
 
 
 @pytest.mark.parametrize("field,value", [
@@ -213,7 +214,9 @@ class GitRecorder:
         if sub == "ls-tree":
             return ok
         if sub in ("hash-object", "mktree", "commit-tree"):
-            return types.SimpleNamespace(returncode=0, stdout=SHA_B + "\n", stderr="")
+            output = SHA_B + "\n"
+            return types.SimpleNamespace(returncode=0, stdout=output if text else output.encode("ascii"),
+                                         stderr="" if text else b"")
         return ok  # fetch, push, ...
 
     def push_calls(self):
@@ -226,7 +229,7 @@ class GitRecorder:
 def _run_publish(monkeypatch, parent_exists):
     rec = GitRecorder(parent_exists)
     monkeypatch.setattr(es.subprocess, "run", rec)
-    assert es.publish("/fake/repo", "ace-win-2", _fingerprint()) is True
+    assert es.publish(".", "sample-b", _fingerprint()) is True
     return rec
 
 
@@ -283,7 +286,7 @@ def test_publish_retries_bounded_cas_race(monkeypatch):
         return real_run(argv, input=input, **kw)
 
     monkeypatch.setattr(es.subprocess, "run", race_once)
-    assert es.publish("/fake/repo", "ace-win-2", _fingerprint(), retries=2) is True
+    assert es.publish(".", "sample-b", _fingerprint(), retries=2) is True
     assert attempts == 2
 
 
@@ -298,7 +301,7 @@ def test_publish_reports_exhausted_cas_race(monkeypatch):
         return real_run(argv, input=input, **kw)
 
     monkeypatch.setattr(es.subprocess, "run", always_race)
-    assert es.publish("/fake/repo", "ace-win-2", _fingerprint(), retries=2) is False
+    assert es.publish(".", "sample-b", _fingerprint(), retries=2) is False
     assert len(rec.push_calls()) == 2
 
 
@@ -309,7 +312,7 @@ class TreeRecorder(GitRecorder):
 
     def __init__(self, tree):
         super().__init__(parent_exists=True)
-        self.tree = tree  # {"full.json": '{"hostname": "ace-linux-1", ...}'}
+        self.tree = tree  # {"full.json": '{"hostname": "sample-c", ...}'}
         self._sha_to_name = {f"sha{i}": n for i, n in enumerate(sorted(tree))}
 
     def __call__(self, argv, input=None, capture_output=None, text=None, env=None):
@@ -348,16 +351,16 @@ def test_publish_keys_blob_by_machine_id(monkeypatch):
 
     monkeypatch.setattr(es.subprocess, "run", spy)
     assert es.publish(
-        "/fake/repo", "gpu-claw",
-        _fingerprint(machine_id="gpu-claw", hostname="gpu-claw"),
+        ".", "sample-e",
+        _fingerprint(machine_id="sample-e", hostname="sample-e"),
     ) is True
-    assert b"gpu-claw.json\0" in captured["mktree_in"]
+    assert b"sample-e.json\0" in captured["mktree_in"]
 
 
 def test_publish_preserves_unrelated_and_cr_suffixed_entries(monkeypatch):
     rec = TreeRecorder({
         "notes.txt": "operator note",
-        "ace-win-1.json\r": '{"hostname": "malformed-name"}',
+        "sample-a.json\r": '{"hostname": "malformed-name"}',
     })
     captured = {}
     real_run = rec.__call__
@@ -368,9 +371,9 @@ def test_publish_preserves_unrelated_and_cr_suffixed_entries(monkeypatch):
         return real_run(argv, input=input, **kw)
 
     monkeypatch.setattr(es.subprocess, "run", spy)
-    assert es.publish("/fake/repo", "ace-win-2", _fingerprint()) is True
+    assert es.publish(".", "sample-b", _fingerprint()) is True
     assert b"notes.txt\0" in captured["mktree_in"]
-    assert b"ace-win-1.json\r\0" in captured["mktree_in"]
+    assert b"sample-a.json\r\0" in captured["mktree_in"]
 
 
 def test_publish_preserves_modes_subtrees_and_symlinks(monkeypatch):
@@ -390,7 +393,7 @@ def test_publish_preserves_modes_subtrees_and_symlinks(monkeypatch):
         return real_run(argv, input=input, **kw)
 
     monkeypatch.setattr(es.subprocess, "run", spy)
-    assert es.publish("/fake/repo", "ace-win-2", _fingerprint()) is True
+    assert es.publish(".", "sample-b", _fingerprint()) is True
     assert b"100755 blob " + b"c" * 40 + b"\tnotes.sh\0" in captured["mktree_in"]
     assert b"120000 blob " + b"d" * 40 + b"\tlink\0" in captured["mktree_in"]
     assert b"040000 tree " + b"e" * 40 + b"\tdir\0" in captured["mktree_in"]
@@ -408,24 +411,24 @@ def test_ls_tree_failure_blocks_all_mutating_git_plumbing(monkeypatch):
 
     monkeypatch.setattr(es.subprocess, "run", fail_tree)
     with pytest.raises(es.StoreUnavailable, match="ls-tree"):
-        es.publish("/fake/repo", "ace-win-2", _fingerprint())
+        es.publish(".", "sample-b", _fingerprint())
     assert not any(call[0][3] in {"hash-object", "mktree", "commit-tree", "push"}
                    for call in rec.calls)
 
 
 def test_collect_rejects_poisoned_json_entry(monkeypatch):
-    rec = TreeRecorder({"ace-win-1.json": "[]"})
+    rec = TreeRecorder({"sample-a.json": "[]"})
     monkeypatch.setattr(es.subprocess, "run", rec)
     with pytest.raises(es.StoreUnavailable, match="invalid fingerprint entry"):
-        es.collect("/fake/repo")
+        es.collect(".")
 
 
 def test_publish_self_cleans_own_legacy_role_blob(monkeypatch):
     """A box republishing under its machine-id must drop ITS old role-named blob
     (migration is self-cleaning), while leaving other boxes' legacy blobs alone."""
     rec = TreeRecorder({
-        "full.json": '{"hostname": "ace-linux-1"}',
-        "contribute.json": '{"hostname": "ace-linux-2"}',
+        "full.json": '{"hostname": "sample-c"}',
+        "contribute.json": '{"hostname": "sample-d"}',
     })
     captured = {}
     real_run = rec.__call__
@@ -437,11 +440,11 @@ def test_publish_self_cleans_own_legacy_role_blob(monkeypatch):
 
     monkeypatch.setattr(es.subprocess, "run", spy)
     assert es.publish(
-        "/fake/repo", "dev-primary",
-        _fingerprint(machine_id="dev-primary", hostname="ace-linux-1", role="full"),
+        ".", "sample-primary",
+        _fingerprint(machine_id="sample-primary", hostname="sample-c", role="full"),
     ) is True
     tree_in = captured["mktree_in"]
-    assert b"dev-primary.json\0" in tree_in       # new machine-keyed blob
+    assert b"sample-primary.json\0" in tree_in       # new machine-keyed blob
     assert b"full.json\0" not in tree_in          # own legacy blob dropped
     assert b"contribute.json\0" in tree_in        # other box's legacy blob kept
 
@@ -450,13 +453,14 @@ def test_resolve_identity_from_registry(tmp_path):
     reg = tmp_path / "registry.yaml"
     reg.write_text(
         "machines:\n"
-        "  dev-primary:\n    hostname: ace-linux-1\n    hostname_aliases: [vamsee-linux1]\n"
+        "  sample-primary:\n    hostname: sample-c\n    hostname_aliases: [sample-alias]\n"
         "    schedule_variant: full\n"
-        "  gpu-claw:\n    hostname: gpu-claw\n    schedule_variant: contribute-minimal\n"
+        "  sample-e:\n    hostname: sample-e\n    schedule_variant: contribute-minimal\n",
+        encoding="utf-8", newline="\n",
     )
-    assert es.resolve_identity(str(reg), "gpu-claw") == ("gpu-claw", "contribute-minimal")
-    assert es.resolve_identity(str(reg), "ace-linux-1") == ("dev-primary", "full")
-    assert es.resolve_identity(str(reg), "VAMSEE-LINUX1") == ("dev-primary", "full")
+    assert es.resolve_identity(str(reg), "sample-e") == ("sample-e", "contribute-minimal")
+    assert es.resolve_identity(str(reg), "sample-c") == ("sample-primary", "full")
+    assert es.resolve_identity(str(reg), "SAMPLE-ALIAS") == ("sample-primary", "full")
     # unknown host: collision-safe fallback, never a shared name
     assert es.resolve_identity(str(reg), "mystery-box") == ("unknown-mystery-box", "unknown")
     assert es.resolve_identity(str(tmp_path / "nope.yaml"), "x") == ("unknown-x", "unknown")
@@ -470,9 +474,159 @@ def test_same_role_machines_do_not_clobber_end_to_end(tmp_path):
     sp.run(["git", "init", "-q", "--bare", str(origin)], check=True)
     sp.run(["git", "init", "-q", str(work)], check=True)
     sp.run(["git", "-C", str(work), "remote", "add", "origin", str(origin)], check=True)
-    fp1 = _fingerprint(machine_id="ace-win-1", hostname="licensed-win-1")
-    fp2 = _fingerprint(machine_id="ace-win-2", hostname="licensed-win-2")
-    assert es.publish(str(work), "ace-win-1", fp1) is True
-    assert es.publish(str(work), "ace-win-2", fp2) is True
+    fp1 = _fingerprint(machine_id="sample-a", hostname="sample-a")
+    fp2 = _fingerprint(machine_id="sample-b", hostname="sample-b")
+    assert es.publish(str(work), "sample-a", fp1) is True
+    assert es.publish(str(work), "sample-b", fp2) is True
     boxes = es.collect(str(work))
-    assert sorted(b["hostname"] for b in boxes) == ["licensed-win-1", "licensed-win-2"]
+    assert sorted(b["hostname"] for b in boxes) == ["sample-a", "sample-b"]
+    # Read back both independent entries through actual local Git objects.
+    assert es.verify_publish(str(work), json.loads(fp1)["machine_id"], fp1)
+    assert es.verify_publish(str(work), json.loads(fp2)["machine_id"], fp2)
+
+
+# Read-back contract: issue #3506 requires the fingerprint in the shared ref;
+# issue #3511 describes empty blobs and carriage-return-suffixed tree names.
+@pytest.mark.parametrize("fault", [
+    "absent-ref", "absent-key", "cr-name", "role-name", "symlink", "tree",
+    "unreadable", "empty", "invalid", "different-cycle", "crlf", "invalid-utf8",
+])
+def test_verify_publish_rejects_missing_or_changed_evidence(monkeypatch, fault):
+    """Hand check: exact sample.json bytes are necessary; each fault removes
+    one prerequisite, so no case can establish the requested publication.
+    Protocol modes and schema come from _commit_fingerprint/validate_fingerprint.
+    """
+    content = _fingerprint(machine_id="sample", hostname="sample")
+    parent = None if fault == "absent-ref" else SHA_A
+    name = {"cr-name": "sample.json\r", "role-name": "contribute-minimal.json"}.get(
+        fault, "sample.json")
+    mode = "120000" if fault == "symlink" else "100644"
+    kind = "tree" if fault == "tree" else "blob"
+    entries = {} if fault == "absent-key" else {name: (mode, kind, SHA_B)}
+    raw = content.encode()
+    if fault == "empty":
+        raw = b""
+    elif fault == "invalid":
+        raw = b"{}"
+    elif fault == "different-cycle":
+        raw = _fingerprint(machine_id="sample", hostname="sample",
+                           ts="2026-07-14T10:01:00+00:00").encode()
+    elif fault == "crlf":
+        content += "\n"
+        raw += b"\r\n"
+    elif fault == "invalid-utf8":
+        raw = b"\xff"
+    calls = []
+    monkeypatch.setattr(es, "_fetch_tip", lambda *_: parent)
+    monkeypatch.setattr(es, "_tree_entries", lambda *_: entries)
+
+    def read_blob(repo, *args, **kwargs):
+        calls.append((args, kwargs))
+        return types.SimpleNamespace(returncode=int(fault == "unreadable"),
+                                     stdout=raw, stderr=b"")
+
+    monkeypatch.setattr(es, "_git", read_blob)
+    with pytest.raises(es.StoreUnavailable):
+        es.verify_publish(".", "sample", content)
+    assert all(args == ("cat-file", "-p", SHA_B) for args, _ in calls)
+    assert all(kwargs == {"_text": False} for _, kwargs in calls)
+
+
+def test_verify_publish_returns_observed_tip_and_only_reads(monkeypatch):
+    """Hand check: key, regular blob and bytes all match, so return its tip.
+    The only allowed Git operations observe the remote and read its objects.
+    """
+    content = _fingerprint(machine_id="sample", hostname="sample")
+    calls = []
+
+    def git(repo, *args, **kwargs):
+        calls.append((args, kwargs))
+        outputs = {
+            "ls-remote": f"{SHA_A}\trefs/heads/equivalence-state\n",
+            "fetch": "",
+            "rev-parse": SHA_A + "\n",
+            "ls-tree": f"100644 blob {SHA_B}\tsample.json\0".encode(),
+            "cat-file": content.encode(),
+        }
+        return types.SimpleNamespace(returncode=0, stdout=outputs[args[0]], stderr="")
+
+    monkeypatch.setattr(es, "_git", git)
+    assert es.verify_publish(".", "sample", content) == SHA_A
+    assert [args[0] for args, _ in calls] == [
+        "ls-remote", "fetch", "rev-parse", "ls-tree", "cat-file",
+    ]
+    assert calls[-1][1] == {"_text": False}
+
+
+def test_verify_publish_rejects_input_identity_before_git(monkeypatch):
+    """Independent identity check: other != sample, so no remote read is valid."""
+    def no_git(*args, **kwargs):
+        raise AssertionError("invalid input must not invoke Git")
+
+    monkeypatch.setattr(es, "_git", no_git)
+    with pytest.raises(es.FingerprintValidationError):
+        es.verify_publish(".", "other", _fingerprint(machine_id="sample"))
+    with pytest.raises(es.FingerprintValidationError):
+        es.verify_publish(".", "sample", "{}")
+
+
+def test_verify_publish_cli_uses_explicit_remote_and_ref(tmp_path, monkeypatch, capsys):
+    """Explicit CLI arguments must reach the reader without any publication."""
+    fp = tmp_path / "fingerprint.json"
+    content = _fingerprint(machine_id="sample", hostname="sample")
+    fp.write_text(content, encoding="utf-8", newline="\n")
+    calls = []
+
+    def verify(*args, **kwargs):
+        calls.append((args, kwargs))
+        return SHA_A
+
+    monkeypatch.setattr(es, "verify_publish", verify)
+    assert es.main(["verify-publish", "--repo", ".", "--machine", "sample",
+                    "--file", str(fp), "--remote", "mirror", "--ref", "sample-state"]) == 0
+    assert calls == [((".", "sample", content), {"remote": "mirror", "ref": "sample-state"})]
+    assert capsys.readouterr().out.strip() == "verified"
+
+
+@pytest.mark.parametrize("pipe_encoding", ["utf-8", "cp1252"])
+def test_multiline_publish_verifies_through_windows_text_pipe(
+    tmp_path, monkeypatch, pipe_encoding,
+):
+    """Windows text stdin translates LF and uses the active locale encoding.
+
+    Binary stdin must preserve both LF and UTF-8 for the independent reader.
+    Real Git objects establish that publication and verification agree.
+    """
+    for key in ("GIT_DIR", "GIT_WORK_TREE", "GIT_COMMON_DIR", "GIT_INDEX_FILE",
+                "GIT_OBJECT_DIRECTORY", "GIT_ALTERNATE_OBJECT_DIRECTORIES"):
+        monkeypatch.delenv(key, raising=False)
+    real_run = es.subprocess.run
+    remote = tmp_path / "origin.git"
+    work = tmp_path / "work"
+    real_run(["git", "init", "-q", "--bare", str(remote)], check=True)
+    real_run(["git", "init", "-q", str(work)], check=True)
+    real_run(["git", "-C", str(work), "remote", "add", "origin", str(remote)], check=True)
+    transported = []
+
+    def windows_pipe(argv, input=None, text=False, **kwargs):
+        if isinstance(input, str) and text:
+            with io.BytesIO() as raw, io.TextIOWrapper(
+                raw, encoding=pipe_encoding, newline="\r\n", write_through=True,
+            ) as pipe:
+                pipe.write(input)
+                input = raw.getvalue()
+        if argv[3] == "hash-object":
+            transported.append(input)
+        result = real_run(argv, input=input, text=False, **kwargs)
+        if text:
+            result.stdout = result.stdout.decode(pipe_encoding)
+            result.stderr = result.stderr.decode(pipe_encoding)
+        return result
+
+    monkeypatch.setattr(es.subprocess, "run", windows_pipe)
+    content = json.dumps(json.loads(_fingerprint(machine_id="sample", hostname="sample",
+                                               harness_version="caf\u00e9")),
+                         indent=1, ensure_ascii=False) + "\n"
+    assert es.publish(str(work), "sample", content) is True
+    assert es.verify_publish(str(work), "sample", content)
+    assert transported == [content.encode("utf-8")]
