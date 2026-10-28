@@ -4,6 +4,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import math
 import re
 import subprocess
 import sys
@@ -656,6 +657,60 @@ def build_migration_debt_summary(provider_summaries: dict[str, dict]) -> dict:
         "highest_density_provider": ranked[0]["provider"] if ranked else None,
         "highest_volume_provider": max(ranked, key=lambda item: item["known_migration_debt_reads"])["provider"] if ranked else None,
         "scope_note": "Migration-debt figures are based on remediation-mapped entries from each provider's top missing repo reads.",
+    }
+
+
+def _recorded_debt_metric(row: dict, key: str, summary: dict | None = None) -> int | float | None:
+    if (summary or {}).get("source") in {"missing_log_directory", "empty_log_directory"}:
+        return None
+    if summary:
+        records = summary.get("post_records")
+        if type(records) not in (int, float) or not math.isfinite(records) or records <= 0:
+            return None
+    value = row.get(key)
+    return value if type(value) in (int, float) and math.isfinite(value) else None
+
+
+def build_migration_debt_snapshot_comparison(
+    migration_debt: dict, provider_summaries: dict[str, dict],
+    previous_audit: dict | None, generated_at: str,
+) -> dict:
+    """Compare recorded debt metrics without substituting zero for absent history."""
+    previous = previous_audit if isinstance(previous_audit, dict) else {}
+    prior_rows = previous.get("executive_summary", {}).get("migration_debt", {}).get("ranked_providers", [])
+    prior_by_provider = {
+        row.get("provider"): row for row in prior_rows
+        if isinstance(row, dict) and row.get("provider")
+    }
+    previous_providers = previous.get("providers", {})
+    providers = {}
+    for row in migration_debt.get("ranked_providers", []):
+        provider = row["provider"]
+        prior = prior_by_provider.get(provider, {})
+        metrics = {}
+        for name, key in (
+            ("volume", "known_migration_debt_reads"),
+            ("density", "known_migration_debt_per_1k_records"),
+        ):
+            current = _recorded_debt_metric(row, key, provider_summaries.get(provider))
+            previous_value = _recorded_debt_metric(prior, key, previous_providers.get(provider))
+            delta = current - previous_value if current is not None and previous_value is not None else None
+            if name == "density" and delta is not None:
+                # Match the two decimal places recorded by build_migration_debt_summary.
+                delta = round(delta, 2)
+            metrics[name] = {"current": current, "previous": previous_value, "delta": delta}
+        providers[provider] = metrics
+    return {
+        "current_generated_at": generated_at,
+        "previous_generated_at": previous.get("generated_at"),
+        "delta_convention": "current - previous",
+        "units": {"volume": "reads", "density": "reads per 1k records"},
+        "scope_note": (
+            "Recorded snapshot-to-snapshot changes, not event-time activity or a fixed weekly interval. "
+            "Figures cover remediation-mapped entries from each provider's top missing repo reads; "
+            "corpus changes can affect both volume and density. Missing metrics are unavailable."
+        ),
+        "providers": providers,
     }
 
 
@@ -1879,10 +1934,8 @@ def build_provider_interpretation_summary(
             round(previous_missing_repo_reads * 1000 / previous_post_records, 2) if previous_post_records else None
         )
         previous_debt = previous_migration_by_provider.get(provider, {})
-        previous_debt_density = (
-            float(previous_debt.get("known_migration_debt_per_1k_records", 0) or 0)
-            if previous_debt
-            else None
+        previous_debt_density = _recorded_debt_metric(
+            previous_debt, "known_migration_debt_per_1k_records", previous_provider,
         )
         previous_recent = previous_recent_by_provider.get(provider, {}) if isinstance(previous_recent_by_provider, dict) else {}
         previous_activity_status = compute_activity_status(
@@ -1901,7 +1954,11 @@ def build_provider_interpretation_summary(
             else "unavailable"
         )
 
-        debt_trend = compare_direction(debt_density, previous_debt_density, better_when_lower=True)
+        debt_trend = compare_direction(
+            _recorded_debt_metric(debt, "known_migration_debt_per_1k_records", summary),
+            previous_debt_density,
+            better_when_lower=True,
+        )
         drift_trend = compare_direction(
             missing_repo_reads_per_1k_records,
             previous_missing_repo_reads_per_1k_records,
@@ -2154,6 +2211,9 @@ def build_provider_audit(repo_root: Path = REPO_ROOT, logs_root: Path = LOGS_ROO
     rolling_windows = build_activity_window_summary(provider_summaries, logs_root, repo_root, generated_at)
     corpus_change = build_corpus_change_summary(provider_summaries, previous_audit, recent_activity)
     migration_debt = build_migration_debt_summary(provider_summaries)
+    migration_debt["snapshot_comparison"] = build_migration_debt_snapshot_comparison(
+        migration_debt, provider_summaries, previous_audit, generated_at,
+    )
     provider_interpretation = build_provider_interpretation_summary(
         provider_summaries,
         migration_debt,
@@ -2237,6 +2297,35 @@ def render_markdown(audit: dict) -> str:
                 f"- Unmapped missing repo reads remain for: {', '.join(f'`{provider}`' for provider in unmapped)}; this looks more like general path drift than known migration debt."
             )
         lines.append(f"- Scope note: {migration_debt.get('scope_note', '')}")
+        lines.append("")
+
+    comparison = migration_debt.get("snapshot_comparison", {})
+    if comparison:
+        lines.append("## Migration debt since previous audit")
+        current_timestamp = comparison.get("current_generated_at") or "unavailable"
+        previous_timestamp = comparison.get("previous_generated_at") or "unavailable"
+        lines.append(f"- Recorded audit interval: `{previous_timestamp}` to `{current_timestamp}`.")
+        lines.append("- Delta = current - previous; negative means less recorded debt, positive means more, zero means unchanged.")
+        lines.append(f"- Scope note: {comparison.get('scope_note', '')}")
+        lines.extend([
+            "",
+            "| Provider | Metric | Current | Previous | Delta |",
+            "| --- | --- | ---: | ---: | ---: |",
+        ])
+        for provider, metrics in comparison.get("providers", {}).items():
+            for name in ("volume", "density"):
+                values = []
+                for field in ("current", "previous", "delta"):
+                    value = metrics.get(name, {}).get(field)
+                    if value is None:
+                        values.append("unavailable")
+                    elif name == "density":
+                        # Use one decimal for displayed comparisons; JSON retains snapshot precision.
+                        values.append(format(value, "+.1f" if field == "delta" else ".1f"))
+                    else:
+                        values.append(format(value, "+" if field == "delta" else ""))
+                unit = comparison["units"][name]
+                lines.append(f"| `{provider}` | {name} ({unit}) | {' | '.join(values)} |")
         lines.append("")
 
     interpretation_summary = audit.get("executive_summary", {}).get("provider_interpretation_summary", {})
@@ -2545,10 +2634,10 @@ def main() -> int:
     markdown = render_markdown(audit)
 
     args.json_output.parent.mkdir(parents=True, exist_ok=True)
-    args.json_output.write_text(json.dumps(audit, indent=2) + "\n", encoding="utf-8")
+    args.json_output.write_text(json.dumps(audit, indent=2) + "\n", encoding="utf-8", newline="\n")
 
     args.markdown_output.parent.mkdir(parents=True, exist_ok=True)
-    args.markdown_output.write_text(markdown + "\n", encoding="utf-8")
+    args.markdown_output.write_text(markdown + "\n", encoding="utf-8", newline="\n")
 
     if args.stdout:
         print(markdown)
