@@ -29,7 +29,16 @@ registry_ctx_k() {
   local reg; reg="$(_model_registry_path)"
   local val=""
   if [[ -f "$reg" ]]; then
-    val="$(sed -n -E "s/^[[:space:]]+${model}:[[:space:]]*([0-9]+).*/\1/p" "$reg" | head -1)"
+    local line
+    while IFS= read -r line || [[ -n "$line" ]]; do
+      [[ "$line" =~ ^[[:space:]]+ ]] || continue
+      line="${line#"${BASH_REMATCH[0]}"}"
+      # Quote the key so brackets, dots and other pattern characters are literal.
+      [[ "$line" == "$model":* ]] || continue
+      [[ "${line#"$model":}" =~ ^[[:space:]]*([0-9]+) ]] || continue
+      val="${BASH_REMATCH[1]}"
+      break
+    done < "$reg"
   fi
   echo "${val:-$fallback}"
 }
