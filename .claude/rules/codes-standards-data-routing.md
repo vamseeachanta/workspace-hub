@@ -19,8 +19,8 @@ source-and-destination checks, the 27 Oct 2026 direction and every
 - No rights checks and no "metadata-only" limit. Legacy `extraction_policy` and
   `raw_copy_allowed` fields do not gate any operation.
 - Copies, and tables extracted as data files, may sit in any private repo or on
-  `/mnt/ace`. They can be copied between them and into job specs. Licensed
-  originals may be kept in private Git, with large files on `/mnt/ace`.
+  the ACE data store (`${ACE_DATA_ROOT}`). They can be copied between them and into job specs.
+  Licensed originals may be kept in private Git, with large files in the ACE data store.
 
 ### Reports, client deliverables, website and newsletters
 
