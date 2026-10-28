@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import math
 import os
 import re
 import subprocess
@@ -35,6 +36,8 @@ DEFAULT_STATE_DIR = Path(".claude/state/skill-autoresearch")
 DEFAULT_RESULTS_FILE = DEFAULT_STATE_DIR / "results.jsonl"
 DEFAULT_LEGACY_SKILL_RESULTS_TSV = DEFAULT_STATE_DIR / "results.tsv"
 DEFAULT_TIME_BUDGET_SECONDS = 180
+# Issue #2418's bounded controller task preserves single-attempt execution.
+DEFAULT_ITERATIONS = 1
 
 
 class Evaluation:
@@ -79,6 +82,38 @@ class AttemptOutcome:
 
 class CandidateUnavailable(RuntimeError):
     pass
+
+
+class IterationSummary:
+    def __init__(self, target: Target, outcomes: list[AttemptOutcome], stop_reason: str, elapsed_s: float):
+        self.target = target
+        self.outcomes = outcomes
+        self.stop_reason = stop_reason
+        self.elapsed_s = elapsed_s
+
+    @property
+    def attempted(self) -> int:
+        return len(self.outcomes)
+
+    @property
+    def kept(self) -> int:
+        return sum(outcome.result == "kept" for outcome in self.outcomes)
+
+    @property
+    def reverted(self) -> int:
+        return sum(outcome.result.startswith("revert-") for outcome in self.outcomes)
+
+    def as_dict(self) -> dict:
+        return {
+            "record_type": "iteration-summary",
+            "target_type": self.target.target_type,
+            "target_path": self.target.relative_path,
+            "attempted": self.attempted,
+            "kept": self.kept,
+            "reverted": self.reverted,
+            "stop_reason": self.stop_reason,
+            "elapsed_s": self.elapsed_s,
+        }
 
 
 def git_root(start: Path) -> Path:
@@ -484,6 +519,69 @@ def run_attempt(
     return outcome
 
 
+def run_iterations(
+    target: Target,
+    evaluator: Callable[[Path], Evaluation],
+    candidate_provider: Callable[[Target, Evaluation], str],
+    results_file: Path,
+    commit_callback: Callable[[Path, str], None] | None,
+    dry_run: bool,
+    legacy_skill_results_tsv: Path | None = None,
+    *,
+    iterations: int = DEFAULT_ITERATIONS,
+    time_budget: float = DEFAULT_TIME_BUDGET_SECONDS,
+    clock: Callable[[], float] | None = None,
+) -> IterationSummary:
+    """Compound kept content within a per-target attempt and elapsed budget.
+
+    Issue #2418 defines the stop conditions; DEFAULT_ITERATIONS and
+    DEFAULT_TIME_BUDGET_SECONDS supply the conservative existing defaults.
+    The elapsed budget admits attempts only: callbacks already running are not
+    interrupted. The caller remains responsible for candidate timeouts.
+    run_attempt retains the should_keep predicate, rollback, commit callback and
+    per-attempt JSONL/legacy TSV artifacts. The summary is returned to callers;
+    the CLI emits it as JSON on stdout without changing those artifact schemas.
+    """
+    if isinstance(iterations, bool) or not isinstance(iterations, int) or iterations < DEFAULT_ITERATIONS:
+        raise ValueError("iterations must be a positive integer")
+    if not math.isfinite(time_budget) or time_budget < 0:
+        raise ValueError("time_budget must be finite and nonnegative")
+
+    clock = clock if clock is not None else time.monotonic
+    start = clock()
+    outcomes: list[AttemptOutcome] = []
+    stop_reason = "attempt-cap"
+    for _ in range(iterations):
+        if clock() - start >= time_budget:
+            stop_reason = "elapsed-budget"
+            break
+        outcome = run_attempt(
+            target,
+            evaluator,
+            candidate_provider,
+            results_file,
+            commit_callback,
+            dry_run,
+            legacy_skill_results_tsv,
+        )
+        outcomes.append(outcome)
+        if outcome.result == "kept":
+            continue
+        if outcome.result in {"dry-run", "no-candidate"}:
+            stop_reason = outcome.result
+        elif (
+            outcome.result == "revert-critical"
+            or outcome.after.warnings > outcome.before.warnings
+            or outcome.after.criticals > outcome.before.criticals
+        ):
+            stop_reason = "regression"
+        else:
+            stop_reason = "no-improvement"
+        break
+
+    return IterationSummary(target, outcomes, stop_reason, clock() - start)
+
+
 def run_git(root: Path, args: list[str], check: bool = True) -> subprocess.CompletedProcess[str]:
     return subprocess.run(
         ["git", "-C", str(root), *args],
@@ -568,13 +666,25 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     )
     parser.add_argument("--dry-run", action="store_true", help="Evaluate and report candidates without rewriting files.")
     parser.add_argument("--max-attempts", type=int, default=int(os.environ.get("MAX_ATTEMPTS", "5")))
-    parser.add_argument("--time-budget", type=int, default=DEFAULT_TIME_BUDGET_SECONDS)
+    parser.add_argument(
+        "--iterations", type=int, default=DEFAULT_ITERATIONS,
+        help="Maximum attempts per target; repeated improvement is opt-in (default: %(default)s).",
+    )
+    parser.add_argument(
+        "--time-budget", type=int, default=DEFAULT_TIME_BUDGET_SECONDS,
+        help="Per-target elapsed admission budget and per-candidate timeout in seconds.",
+    )
     parser.add_argument("--branch", default=None, help="Autoresearch branch name.")
     parser.add_argument("--no-branch", action="store_true", help="Do not create/switch branches before applying changes.")
     parser.add_argument("--results-file", default=None, help="JSONL result artifact path.")
     parser.add_argument("--legacy-skill-results-tsv", default=None, help="Optional legacy skill TSV result artifact.")
     parser.add_argument("--skill-eval-script", default=None, help="Optional skill-eval script path.")
-    return parser.parse_args(argv)
+    args = parser.parse_args(argv)
+    if args.iterations < DEFAULT_ITERATIONS:
+        parser.error("--iterations must be a positive integer")
+    if args.time_budget < 0:
+        parser.error("--time-budget must be nonnegative")
+    return args
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -622,7 +732,7 @@ def main(argv: list[str] | None = None) -> int:
                 provider = lambda current_target, before: default_candidate_provider(
                     current_target, before, time_budget=args.time_budget
                 )
-                outcome = run_attempt(
+                summary = run_iterations(
                     target,
                     evaluator=evaluators[target.target_type],
                     candidate_provider=provider,
@@ -630,12 +740,16 @@ def main(argv: list[str] | None = None) -> int:
                     commit_callback=commit_callback,
                     dry_run=False,
                     legacy_skill_results_tsv=legacy_tsv,
+                    iterations=args.iterations,
+                    time_budget=args.time_budget,
                 )
-                print(
-                    f"  {outcome.result}: {target.relative_path} "
-                    f"warnings {outcome.before.warnings}->{outcome.after.warnings}, "
-                    f"criticals {outcome.before.criticals}->{outcome.after.criticals}"
-                )
+                for outcome in summary.outcomes:
+                    print(
+                        f"  {outcome.result}: {target.relative_path} "
+                        f"warnings {outcome.before.warnings}->{outcome.after.warnings}, "
+                        f"criticals {outcome.before.criticals}->{outcome.after.criticals}"
+                    )
+                print(json.dumps(summary.as_dict(), sort_keys=True))
     finally:
         if original_branch:
             restore_branch(root, original_branch, stashed)
