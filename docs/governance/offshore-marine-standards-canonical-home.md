@@ -90,7 +90,7 @@ Per [aces-#4](https://github.com/vamseeachanta/aceengineer-strategy/issues/4) v2
 
 ## 6. Verbatim-Text Threshold
 
-Per F3 patch in plan: **30 consecutive whitespace-tokenized, case-folded, punctuation-stripped tokens.** Source plaintext fixtures live at `tests/standards/fixtures/source-text/<code-id>.txt` (gitignored — fixtures are sourced from licensed PDFs we own access to, never committed). Smoke test SKIPs cleanly if fixture absent.
+Codes and standards follow the owner's ruling of 28 Oct 2026 (`.claude/rules/codes-standards-data-routing.md`): no internal gates; outward work quotes with citations and reconstructs charts; only original PDFs and whole sections stay off public surfaces. The earlier 30-token verbatim threshold is retired; this public repository still carries no original PDFs or whole sections.
 
 ## 7. Open Items Locked at Phase 2 Execution Time
 

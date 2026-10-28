@@ -95,7 +95,7 @@ Public `workspace-hub` contains generic standards, reusable tools and synthetic 
 
 Private reports, project plans, handoffs, review comments and supplied particulars remain in the owning private repository. Authorized client editions may carry required document identifiers; hosted copies follow the existing redaction and destination rules.
 
-Publication requires authority for the destination and content. Local save, commit, publication, delivery and acknowledgement are distinct states. Licensed standards originals remain at their licensed locations.
+Publication requires authority for the destination and content. Local save, commit, publication, delivery and acknowledgement are distinct states. Codes and standards follow the owner's ruling of 28 Oct 2026 (`.claude/rules/codes-standards-data-routing.md`): no internal gates; outward work quotes with citations and reconstructs charts; only original PDFs and whole sections stay off public surfaces.
 
 ## 3.6 Verification before handing a page to the owner
 

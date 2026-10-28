@@ -4,7 +4,7 @@ This contract defines how workspace-hub separates data inputs, wiki corpora, gen
 
 ## Authority and actual visibility
 
-The [agent data handling contract](agent-data-handling-contract.md) governs original retention, source rights and readiness. Client-supplied and measured originals belong in the owning private repository under `data/<dataset>/raw/`, with SHA-256 manifest evidence. Vendor-licensed standards originals never enter Git; source-specific rights separately govern derivatives.
+The [agent data handling contract](agent-data-handling-contract.md) governs original retention, source rights and readiness. Client-supplied and measured originals belong in the owning private repository under `data/<dataset>/raw/`, with SHA-256 manifest evidence. Codes and standards follow the owner's ruling of 28 Oct 2026 (`.claude/rules/codes-standards-data-routing.md`): no internal gates; outward work quotes with citations and reconstructs charts; only original PDFs and whole sections stay off public surfaces. Source-specific rights govern derivatives of client and other third-party material.
 
 `llm-wiki-private` and `llm-wiki-public` are logical residency/publication classes, not claims about a checkout. The 2026-09-12 visibility observation identifies `llm-wiki` as private; verify actual destination visibility and audience at use time. A public surface requires separately authorized provisioning and source rights.
 
