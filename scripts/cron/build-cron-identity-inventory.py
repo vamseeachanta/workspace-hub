@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import re
 import struct
 import sys
 from pathlib import Path
@@ -89,9 +90,49 @@ def build(catalog_path: Path, registry_path: Path, classes_path: Path) -> dict:
         unsupported.append({"task_id": task_id, "variant_id": variant_id,
                             "error": "legacy variant is not bound in a canonical Linux context"})
     union = [catalog_path, registry_path, classes_path, *SOURCE_PATHS]
-    return {"schema_version": 1, "input_digest": input_digest(union),
-            "machines": machines, "identities": rows,
-            "unsupported": unsupported, "collisions": collisions}
+    return _public_inventory({
+        "schema_version": 1, "input_digest": input_digest(union),
+        "machines": machines, "identities": rows,
+        "unsupported": unsupported, "collisions": collisions,
+    }, registry)
+
+
+def _opaque_key(kind: str, value: str) -> str:
+    """Use fixed, domain-separated labels; never depend on local state or order."""
+    return hashlib.sha256(f"cron-{kind}:{value}".encode("utf-8")).hexdigest()[:12]
+
+
+def _public_inventory(payload: dict, registry: dict) -> dict:
+    """Project only after canonical ownership, legacy binding and collisions."""
+    machines = registry["machines"]
+    keys = {key: _opaque_key("machine", key) for key in machines}
+    if len(set(keys.values())) != len(keys):
+        raise ValueError("opaque machine key collision")
+    labels = {}
+    for key, machine in machines.items():
+        for label in [key, machine.get("hostname"), *(machine.get("hostname_aliases") or [])]:
+            if label:
+                labels[label] = keys[key]
+    pattern = re.compile("|".join(re.escape(label) for label in
+                                  sorted(labels, key=lambda label: (-len(label), label))))
+    kinds = {"task_id": "task", "task_ids": "task",
+             "variant_id": "legacy", "legacy_variant_ids": "legacy"}
+
+    def project(value, field=""):
+        if isinstance(value, dict):
+            return {key: project(item, key) for key, item in value.items()}
+        if isinstance(value, list):
+            return [project(item, field) for item in value]
+        if isinstance(value, str):
+            if field in {"machines", "machine_id"}:
+                return keys[value]
+            if field in kinds:
+                return _opaque_key(kinds[field], value)
+            if field == "error":
+                return pattern.sub(lambda match: labels[match.group()], value)
+        return value
+
+    return project(payload)
 
 
 def _build_machine(catalog, registry, classes, machine_id, rows, unsupported,
@@ -161,10 +202,7 @@ def inventory_mismatch_summary(current: bytes, generated: bytes) -> str:
         )
     for index, (current_row, generated_row) in enumerate(zip(current_rows, generated_rows)):
         if current_row != generated_row:
-            return (
-                f"inventory body mismatch at identities[{index}]: "
-                f"expected {generated_row!r} but found {current_row!r}"
-            )
+            return f"inventory body mismatch at identities[{index}]"
     return "inventory body mismatch: bytes differ after canonical JSON comparison"
 
 

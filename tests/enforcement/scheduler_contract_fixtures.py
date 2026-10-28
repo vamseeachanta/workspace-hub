@@ -16,6 +16,16 @@ def checkout_records(checker, root: Path):
         _INDEX_SNAPSHOTS[root] = checker.read_index_records(root)
     records = dict(_INDEX_SNAPSHOTS[root])
     paths = [
+        root / "config/scheduled-tasks/mutation-surfaces.yaml",
+        root / "config/scheduled-tasks/schedule-tasks.yaml",
+        root / "config/workstations/registry.yaml",
+        root / "config/workstations/harness-state-classes.yaml",
+        root / "docs/reports/issue-3475-command-identity-inventory.json",
+        root / "scripts/cron/build-cron-identity-inventory.py",
+        root / "scripts/cron/cron_render.py",
+        root / "scripts/cron/cron_transaction.py",
+        root / "scripts/cron/cron_line_model.py",
+        root / "scripts/cron/cron_identity.py",
         root / "docs/reports/hash-pinned-attestation-audit.json",
         root / "tests/enforcement/pin_helpers.py",
         root / "tests/enforcement/attestation_inventory.py",

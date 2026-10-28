@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import json
+import hashlib
 import importlib.util
 import subprocess
 import sys
@@ -46,6 +47,116 @@ def write_yaml(path: Path, value: object) -> None:
     path.write_text(yaml.safe_dump(value), encoding="utf-8")
 
 
+def public_key(kind: str, value: str) -> str:
+    return hashlib.sha256(f"cron-{kind}:{value}".encode()).hexdigest()[:12]
+
+
+def projection_fixture(tmp_path):
+    machines = {
+        key: {"hostname": host, "hostname_aliases": [alias], "os": "linux",
+              "workspace_root": str(tmp_path / key),
+              "harness_profile": {"roles": []}}
+        for key, host, alias in (
+            ("synthetic-alpha", "synthetic-host-alpha", "synthetic-alias-alpha"),
+            ("synthetic-beta", "synthetic-host-beta", "synthetic-alias-beta"),
+        )
+    }
+    labels = [label for key, row in machines.items()
+              for label in (key, row["hostname"], *row["hostname_aliases"])]
+    tasks = [{"id": f"task-{label}", "scheduler": "cron",
+              "schedule": "0 1 * * *", "command": "echo shared",
+              "machines": list(machines), "roles": []} for label in labels]
+    classes = {"preserved_external": [], "preserved_local": [{
+        "owner": "local", "catalog_task_id": task["id"],
+        "legacy_exact_lines": [{"id": f"legacy-{label}",
+                                "line": f"0 2 * * * echo legacy-{index}"}],
+    } for index, (task, label) in enumerate(zip(tasks, labels))]}
+    paths = [tmp_path / name for name in ("catalog.yaml", "registry.yaml", "classes.yaml")]
+    for path, data in zip(paths, ({"tasks": tasks}, {"machines": machines}, classes)):
+        write_yaml(path, data)
+    return paths, machines, labels
+
+
+def test_public_inventory_contains_no_registry_names_in_any_string(tmp_path):
+    generator = load_generator()
+    paths, _machines, labels = projection_fixture(tmp_path)
+    raw = generator.render(generator.build(*paths)).decode()
+    assert all(label not in raw for label in labels)
+
+
+def test_public_machine_keys_are_stable_unique_and_canonical(tmp_path):
+    generator = load_generator()
+    paths, machines, _labels = projection_fixture(tmp_path)
+    first = generator.build(*paths)
+    assert generator.render(first) == generator.render(generator.build(*paths))
+    expected = [public_key("machine", key) for key in sorted(machines)]
+    assert first["machines"] == expected
+    assert len(set(expected)) == len(machines)
+    assert {row["machine_id"] for row in first["identities"]} == set(expected)
+    # Adding a registry entry must not renumber existing machines or tasks.
+    expanded = dict(machines)
+    expanded["synthetic-gamma"] = {
+        "hostname": "synthetic-host-gamma", "os": "linux",
+        "workspace_root": str(tmp_path / "gamma"), "harness_profile": {"roles": []},
+    }
+    write_yaml(paths[1], {"machines": expanded})
+    second = generator.build(*paths)
+    assert second["identities"] == first["identities"]
+    assert set(expected) < set(second["machines"])
+
+
+def test_projection_preserves_canonical_ownership_legacy_and_collisions(tmp_path):
+    generator = load_generator()
+    paths, machines, _labels = projection_fixture(tmp_path)
+    catalog, registry, classes = [yaml.safe_load(path.read_text()) for path in paths]
+    expected_rows, expected_collisions = [], []
+    for machine_id in sorted(machines):
+        context = generator.build_ownership_context(
+            catalog, registry, classes, machine_id,
+            workspace_hub=machines[machine_id]["workspace_root"], fail_on_collision=False,
+        )
+        collision_lines = {row["line"] for row in context["identity_collisions"]}
+        for task_id, lines in sorted(context["canonical_exact_lines"].items()):
+            variants = context["legacy_exact_lines"].get(task_id, [])
+            for line in lines:
+                expected_rows.append({
+                    "machine_id": public_key("machine", machine_id),
+                    "task_id": public_key("task", task_id),
+                    "canonical_line_sha256": hashlib.sha256(line.encode()).hexdigest(),
+                    "legacy_variant_ids": [public_key("legacy", v["id"])
+                                           for v in sorted(variants, key=lambda v: v["id"])],
+                    "unique": line not in collision_lines,
+                })
+        for collision in context["identity_collisions"]:
+            expected_collisions.append({
+                "machine_id": public_key("machine", machine_id),
+                "task_ids": [public_key("task", task_id) for task_id in collision["task_ids"]],
+                "line_sha256": hashlib.sha256(collision["line"].encode()).hexdigest(),
+            })
+    payload = generator.build(*paths)
+    assert expected_collisions  # The fixture exercises actual collisions.
+    assert payload["identities"] == expected_rows
+    assert payload["collisions"] == expected_collisions
+    assert payload["unsupported"] == []
+
+
+def test_projection_covers_unbound_legacy_and_unsupported_errors(tmp_path, monkeypatch):
+    generator = load_generator()
+    paths, _machines, labels = projection_fixture(tmp_path)
+    def unsupported(*args, **kwargs):
+        raise ValueError("unsupported " + " ".join(labels))
+    monkeypatch.setattr(generator, "build_ownership_context", unsupported)
+    payload = generator.build(*paths)
+    assert payload["unsupported"]
+    assert all(label not in generator.render(payload).decode() for label in labels)
+    unbound = [row for row in payload["unsupported"] if "variant_id" in row]
+    assert len(unbound) == len(labels)
+    assert {(row["task_id"], row["variant_id"]) for row in unbound} == {
+        (public_key("task", "task-" + label), public_key("legacy", "legacy-" + label))
+        for label in labels
+    }
+
+
 def test_inventory_is_deterministic_alias_safe_and_check_bound(tmp_path):
     catalog = tmp_path / "catalog.yaml"
     registry = tmp_path / "registry.yaml"
@@ -67,7 +178,7 @@ def test_inventory_is_deterministic_alias_safe_and_check_bound(tmp_path):
     assert subprocess.run(command, cwd=ROOT).returncode == 0
     first = output.read_bytes()
     payload = json.loads(first)
-    assert payload["machines"] == ["linux-a"]
+    assert payload["machines"] == [public_key("machine", "linux-a")]
     assert payload["unsupported"] == []
     assert payload["collisions"] == []
     assert first.endswith(b"\n")
@@ -160,7 +271,8 @@ def test_unbound_legacy_variant_is_named_and_fails(tmp_path):
     assert subprocess.run(command, cwd=ROOT).returncode != 0
     unsupported = json.loads(output.read_bytes())["unsupported"]
     assert unsupported == [{"error": "legacy variant is not bound in a canonical Linux context",
-                            "task_id": "other", "variant_id": "old"}]
+                            "task_id": public_key("task", "other"),
+                            "variant_id": public_key("legacy", "old")}]
 
 
 @pytest.mark.parametrize("malformed", [None, 7, ["not", "a", "mapping"]])

@@ -53,7 +53,7 @@ def test_current_mutation_inventory_is_registered():
     assert CHECKER.is_file(), "checker must exist"
     assert REGISTRY.is_file(), "registry must exist"
     checker = load_checker()
-    records = checker.read_index_records(REPO_ROOT)
+    records = checkout_records(checker, REPO_ROOT)
     discovered = checker.discover_mutation_surfaces(records)
     registry = yaml.safe_load(REGISTRY.read_bytes())
     result = checker.validate_registry(registry, discovered, records)

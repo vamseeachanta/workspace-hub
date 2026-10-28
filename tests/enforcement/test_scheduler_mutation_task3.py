@@ -45,6 +45,25 @@ def current_contract():
     return checker, dict(records), copy.deepcopy(registry), copy.deepcopy(discovered)
 
 
+def test_contract_snapshot_reads_matching_working_identity_inputs():
+    checker = load_checker()
+    records = checkout_records(checker, ROOT)
+    paths = [
+        "config/scheduled-tasks/mutation-surfaces.yaml",
+        "config/scheduled-tasks/schedule-tasks.yaml",
+        "config/workstations/registry.yaml",
+        "config/workstations/harness-state-classes.yaml",
+        "docs/reports/issue-3475-command-identity-inventory.json",
+        "scripts/cron/build-cron-identity-inventory.py",
+        "scripts/cron/cron_render.py",
+        "scripts/cron/cron_transaction.py",
+        "scripts/cron/cron_line_model.py",
+        "scripts/cron/cron_identity.py",
+    ]
+    for path in paths:
+        assert records[path.encode()] == (ROOT / path).read_bytes(), path
+
+
 def by_path(registry):
     return {row["path"]: row for row in registry["surfaces"]}
 
