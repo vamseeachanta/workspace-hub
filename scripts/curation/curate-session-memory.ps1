@@ -155,11 +155,11 @@ if ($null -ne $bashForSkills) {
 
 # ── 2. refresh THIS box's equality column (Windows collector + matrix build) ──
 $collector = (Join-Path $ScriptDir '..\readiness\collect-equality.ps1')
-if ([string]::IsNullOrWhiteSpace($Machine)) {
-    & $collector
-} else {
-    & $collector -Machine $Machine
-}
+# The collector calls exit; isolate it so curation can finish and report failures.
+$collectorArguments = @('-NoProfile', '-File', $collector)
+if (-not [string]::IsNullOrWhiteSpace($Machine)) { $collectorArguments += @('-Machine', $Machine) }
+$childPowerShell = (Get-Process -Id $PID).Path
+& $childPowerShell @collectorArguments
 if ($LASTEXITCODE -ne 0) { Fail 'collect-equality.ps1 failed' }
 
 $matrix = (Join-Path $RepoRoot 'scripts/readiness/build-equality-matrix.py')

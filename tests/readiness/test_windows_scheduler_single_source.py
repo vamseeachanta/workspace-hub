@@ -102,7 +102,7 @@ def test_setup_whatif_renders_equivalence_sentinel_for_each_windows_host(machine
     assert result.returncode == 0, result.stderr
     assert r"\Claude\EquivalenceSentinel" in result.stdout
     assert "every 6h at minute 17" in result.stdout
-    assert "scripts/windows/equivalence-sentinel.ps1" in result.stdout
+    assert "scripts/windows/equivalence-sentinel.ps1" in re.sub(r"\\+", "/", result.stdout)
     assert "-WorkspaceRoot" in result.stdout
     assert "-GitBashPath" in result.stdout
 
@@ -219,12 +219,12 @@ def test_setup_whatif_renders_equality_report_as_weekly_monday():
     assert result.returncode == 0, result.stderr
     assert r"\Claude\EqualityReport" in result.stdout
     assert "weekly Monday 04:30" in result.stdout
-    assert "scripts/windows/equality-report.ps1" in result.stdout
+    assert "scripts/windows/equality-report.ps1" in re.sub(r"\\+", "/", result.stdout)
     assert r"\Claude\SessionCuration" in result.stdout
     assert "every 6h at minute 47" in result.stdout
     assert r"\Claude\EcosystemReconcile" in result.stdout
     assert "daily 05:15" in result.stdout
-    assert "scripts/windows/reconcile-ecosystem.ps1" in result.stdout
+    assert "scripts/windows/reconcile-ecosystem.ps1" in re.sub(r"\\+", "/", result.stdout)
 
 
 def test_wrapper_invokes_collector_builder_and_state_sync():
