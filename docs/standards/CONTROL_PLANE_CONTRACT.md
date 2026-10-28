@@ -50,6 +50,7 @@ See also:
 - [AI Review Routing Policy](AI_REVIEW_ROUTING_POLICY.md) — provider roles and review defaults.
 - [MODEL_RELEASE_READINESS_CONTRACT.md](MODEL_RELEASE_READINESS_CONTRACT.md) — workspace-hub readiness dimensions for new provider/model releases.
 - [MODEL_RELEASE_UPGRADE_PLAYBOOK.md](MODEL_RELEASE_UPGRADE_PLAYBOOK.md) — workspace-hub upgrade steps split by provider-owned vs repo-owned drift.
+- [MODEL_RELEASE_SMOKE_RUNNER_CONTRACT.md](MODEL_RELEASE_SMOKE_RUNNER_CONTRACT.md) — strict battery schema and future runner interface; no runner implementation.
 
 ## Reading Order for AI Agents
 

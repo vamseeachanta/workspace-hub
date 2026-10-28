@@ -1,0 +1,6 @@
+{
+  "comment": "Advisory rollout for issue #4228 (2026). Collection is not evidence that executing bodies is free of external effects. Only the synthetic CI harness has been evaluated for this rollout.",
+  "body_evaluated": ["tests/ci"],
+  "not_evaluated_reason": "Body effects have not been reviewed; network, scheduler and external-tool families remain collection-only.",
+  "timeout_basis": "The collection timeout is a required command input, not an inferred acceptance limit. Workflow budgets follow the existing baseline-check.yml job budgets."
+}

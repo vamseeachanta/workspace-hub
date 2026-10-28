@@ -1,0 +1,85 @@
+name: Hub tests by family (advisory)
+
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize, reopened, ready_for_review]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: hub-test-families-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+# Budgets follow baseline-check.yml (2026): setup 10 minutes, tests 30 minutes.
+# Matrix fan-out is limited by the rollout's four-worker budget, documented in
+# docs/ci/hub-test-families.md. Existing check names and protection stay unchanged.
+jobs:
+  discover:
+    name: Discover hub test families
+    if: ${{ !github.event.pull_request.draft }}
+    runs-on: ${{ github.event.pull_request.head.repo.fork && 'ubuntu-latest' || fromJSON('["self-hosted","Linux"]') }}
+    timeout-minutes: 10
+    outputs:
+      matrix: ${{ steps.select.outputs.matrix }}
+      required: ${{ steps.select.outputs.required }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Check inventory drift
+        run: python -I scripts/ci/hub_test_inventory.py --check
+      - name: Select eligible families
+        id: select
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: python -I scripts/ci/hub_test_workflow.py plan --base "$BASE_SHA" --head HEAD >> "$GITHUB_OUTPUT"
+
+  test-family:
+    name: Hub family ${{ matrix.family }}
+    needs: discover
+    if: ${{ needs.discover.outputs.required == 'true' && !github.event.pull_request.draft }}
+    runs-on: ${{ github.event.pull_request.head.repo.fork && 'ubuntu-latest' || fromJSON('["self-hosted","Linux"]') }}
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix: ${{ fromJSON(needs.discover.outputs.matrix) }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: astral-sh/setup-uv@v7
+      - name: Run evaluated family
+        env:
+          FAMILY: ${{ matrix.family }}
+          PYTHONDONTWRITEBYTECODE: '1'
+        run: >-
+          uv run --no-project --with pytest --with pyyaml python -I
+          scripts/ci/hub_test_workflow.py run --family "$FAMILY"
+          --scratch "$RUNNER_TEMP/hub-family"
+
+  aggregate:
+    name: Hub test aggregate
+    needs: [discover, test-family]
+    if: ${{ always() && !github.event.pull_request.draft }}
+    runs-on: ${{ github.event.pull_request.head.repo.fork && 'ubuntu-latest' || fromJSON('["self-hosted","Linux"]') }}
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Require discovery and every needed family result
+        env:
+          DISCOVER: ${{ needs.discover.result }}
+          FAMILY: ${{ needs.test-family.result }}
+          REQUIRED: ${{ needs.discover.outputs.required }}
+        run: >-
+          python -I scripts/ci/hub_test_workflow.py aggregate
+          --discover "$DISCOVER" --family "$FAMILY" --required "$REQUIRED"

@@ -526,6 +526,8 @@ This section identifies where future work is needed to enforce the boundary poli
 | `added` | ISO date | When the page was first created | As defined by the wiki's `CLAUDE.md` |
 | `under-revision` | boolean (optional) | Marks an unstable-but-promoted finding per Section 7.1 soft-signal rule | Optional, per Section 7.1 |
 
+[Runnable synthetic mappings](../../examples/knowledge/promotion_frontmatter.py) illustrate artifact references while keeping `sources` and `last_updated` separate.
+
 Children may not override or weaken the parent baseline floor. Where a wiki's `CLAUDE.md` requires fields this policy does not list, those wiki-specific fields take precedence.
 
 **Scope of this policy's frontmatter recommendations:** The engineering wiki (`knowledge/wikis/engineering/`) is the primary target for the L6→L3 and L5→L3 promotion flows defined in Section 7 and is the surface for which these recommendations are most concretely grounded. Domain wikis (`maritime-law`, `naval-architecture`, `marine-engineering`) have their own `CLAUDE.md` schemas and may adopt or decline these recommendations on a per-wiki basis. The parent baseline floor binds universally; this policy's additional fields are recommendations.

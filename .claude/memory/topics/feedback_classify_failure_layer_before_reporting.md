@@ -45,6 +45,10 @@ read of a peer's `~/.ssh/config`.
   fingerprint (`HostKeyAlias`) so a path/IP change is not misread as an identity or
   auth failure. Never store bare overlay IPs in configs/scripts — they rot silently
   and mimic auth failures.
+- **The same layering applies to an identifier leak.** A leaked client identifier
+  or host name sits in several layers at once: the tree, commit messages, PR text
+  and issue text. Remediation is reported per layer, and a tree-only fix is not a
+  closed leak. See item 6 of `.claude/rules/report-audience-and-surface.md`.
 
 **Related:** `feedback_absence_of_signal_reads_as_success` (a missing signal reads
 greener than a failing one — this is its reachability sibling); the "Verify coverage

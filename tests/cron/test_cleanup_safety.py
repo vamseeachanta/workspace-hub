@@ -194,6 +194,64 @@ def test_manifest_roundtrip_archive_and_sidecar(tmp_path):
         archive.verify(tree, result["archive"], result["manifest"], result["sidecar"])
 
 
+@pytest.mark.parametrize("case", [
+    "duplicate-decoded-names", "reversed-order", "invalid-base64",
+    "unsupported-schema", "json-whitespace", "canonical-control",
+])
+def test_manifest_reader_rejects_noncanonical_records(tmp_path, case):
+    """Protocol v1: docs/operations/cleanup-safety.html, Archive protocol.
+
+    One record per entry requires unique decoded names in byte order; base64
+    must decode, and JSON must use the specified compact serialization.
+    Metadata, schema 1 and the abc digest below are the literal Worked example;
+    schema 0 is unsupported because it differs from the specified version.
+    Lg== decodes to b'.', and cGF5bG9hZA== to b'payload', independently of the
+    manifest writer. Only the named rule is changed in each malformed case.
+    """
+    archive = load("cleanup_archive")
+    header = b'{"path_encoding":"base64","schema":1}\n'
+    directory = (
+        b'{"device":1,"inode":10,"kind":"directory","mode":493,"mtime_ns":0,'
+        b'"path_b64":"Lg==","size":32}\n'
+    )
+    payload = (
+        b'{"device":1,"inode":11,"kind":"file","mode":420,"mtime_ns":0,'
+        b'"path_b64":"cGF5bG9hZA==","sha256":'
+        b'"ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad",'
+        b'"size":3}\n'
+    )
+    canonical = header + directory + payload
+    manifests = {
+        "duplicate-decoded-names": header + directory + directory + payload,
+        "reversed-order": header + payload + directory,
+        "invalid-base64": header + directory.replace(b'Lg==', b'!!!!') + payload,
+        "unsupported-schema": canonical.replace(b'"schema":1', b'"schema":0'),
+        "json-whitespace": canonical.replace(b'"schema":1', b'"schema": 1'),
+        "canonical-control": canonical,
+    }
+    source = tmp_path / "source"
+    source.mkdir()
+    (source / "payload").write_bytes(b"abc")
+    manifest = tmp_path / "manifest.jsonl"
+    manifest.write_bytes(manifests[case])
+
+    def recorded_bytes():
+        return {path.relative_to(tmp_path): path.read_bytes() if path.is_file() else None
+                for path in tmp_path.rglob("*")}
+
+    before = recorded_bytes()
+    try:
+        if case == "canonical-control":
+            rows = archive.read_manifest(manifest)
+            assert [base64.b64decode(row["path_b64"], validate=True)
+                    for row in rows] == [b".", b"payload"]
+        else:
+            with pytest.raises(ValueError):
+                archive.read_manifest(manifest)
+    finally:
+        assert recorded_bytes() == before
+
+
 def test_interrupted_manifest_has_no_final(tmp_path, monkeypatch):
     archive = load("cleanup_archive")
     tree, _ = odd_tree(tmp_path)

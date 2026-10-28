@@ -11,6 +11,7 @@ Ref: GH #1568
 """
 from __future__ import annotations
 
+import os
 import sys
 import textwrap
 from datetime import datetime, timedelta, timezone
@@ -62,7 +63,7 @@ class TestDetectsStaleFiles:
     def test_fresh_file_detected_as_fresh(self, tmp_path: Path):
         """A file modified 10 days ago should be FRESH."""
         md_file = tmp_path / "recent.md"
-        md_file.write_text("# Recent doc\n")
+        md_file.write_text("# Recent doc\n", encoding="utf-8", newline="\n")
 
         git_date = _make_date(10)
 
@@ -78,7 +79,7 @@ class TestDetectsStaleFiles:
     def test_stale_file_detected_as_stale(self, tmp_path: Path):
         """A file modified 120 days ago should be STALE."""
         md_file = tmp_path / "old.md"
-        md_file.write_text("# Old doc\n")
+        md_file.write_text("# Old doc\n", encoding="utf-8", newline="\n")
 
         git_date = _make_date(120)
 
@@ -94,7 +95,7 @@ class TestDetectsStaleFiles:
     def test_moderate_file_detected_as_moderate(self, tmp_path: Path):
         """A file modified 50 days ago should be MODERATE."""
         md_file = tmp_path / "moderate.md"
-        md_file.write_text("# Moderate doc\n")
+        md_file.write_text("# Moderate doc\n", encoding="utf-8", newline="\n")
 
         git_date = _make_date(50)
 
@@ -220,7 +221,7 @@ class TestHandlesMissingFiles:
     def test_git_returns_empty_for_untracked(self, tmp_path: Path):
         """If git log returns empty, fall back to content date stamps."""
         md_file = tmp_path / "untracked.md"
-        md_file.write_text("# Untracked\nUpdated: 2026-03-01\n")
+        md_file.write_text("# Untracked\nUpdated: 2026-03-01\n", encoding="utf-8", newline="\n")
 
         with patch.object(
             staleness_scanner,
@@ -237,3 +238,149 @@ class TestHandlesMissingFiles:
         missing = tmp_path / "nonexistent"
         files = staleness_scanner.scan_directory(str(missing))
         assert files == []
+
+
+@pytest.fixture
+def mixed_documents(tmp_path: Path) -> Path:
+    """Synthetic local files; no live registries are read."""
+    nested = tmp_path / "nested"
+    nested.mkdir()
+    for relative in (
+        "z.md", "a.yaml", "nested/b.yml", "nested/a.md",
+        "notes.txt", "config.json", "archive.yaml.bak", "UPPER.YAML",
+    ):
+        (tmp_path / relative).write_text("fixture\n", encoding="utf-8", newline="\n")
+    (tmp_path / "directory.yaml").mkdir()
+    return tmp_path
+
+
+def test_scan_yaml_is_opt_in(mixed_documents: Path):
+    """Default discovery retains just the original Markdown file set."""
+    expected_markdown = [
+        (mixed_documents / "nested/a.md").as_posix(),
+        (mixed_documents / "z.md").as_posix(),
+    ]
+    assert staleness_scanner.scan_directory(str(mixed_documents)) == expected_markdown
+    assert staleness_scanner.scan_directory(
+        str(mixed_documents), extensions=(".md",)
+    ) == expected_markdown
+    assert staleness_scanner.scan_directory(
+        str(mixed_documents), extensions=(".yaml", ".yml")
+    ) == [(mixed_documents / "a.yaml").as_posix(), (mixed_documents / "nested/b.yml").as_posix()]
+
+
+@pytest.mark.parametrize("suffix", [".md", ".yaml", ".yml"])
+def test_scan_filters_case_insensitive_glob_results(tmp_path: Path, monkeypatch, suffix):
+    """Exact suffix selection also holds when globbing ignores case."""
+    lower = tmp_path / f"lower{suffix}"
+    upper = tmp_path / f"upper{suffix.upper()}"
+    directory = tmp_path / f"directory{suffix}"
+    lower.touch()
+    upper.touch()
+    directory.mkdir()
+    monkeypatch.setattr(Path, "rglob", lambda self, pattern: iter((upper, directory, lower)))
+
+    assert staleness_scanner.scan_directory(
+        str(tmp_path), extensions=(suffix,)
+    ) == [lower.as_posix()]
+
+
+def test_scan_mixed_extensions_is_sorted_unique(mixed_documents: Path):
+    """Repeated selectors and input order cannot duplicate or reorder files."""
+    expected = [
+        (mixed_documents / "a.yaml").as_posix(),
+        (mixed_documents / "nested/a.md").as_posix(),
+        (mixed_documents / "nested/b.yml").as_posix(),
+        (mixed_documents / "z.md").as_posix(),
+    ]
+    for extensions in (
+        (".yml", ".md", ".yaml", ".md", ".yaml"),
+        [".yaml", ".yml", ".md"],
+        {".md", ".yaml", ".yml"},
+        iter((".yml", ".yaml", ".md")),
+    ):
+        assert staleness_scanner.scan_directory(
+            str(mixed_documents), extensions=extensions
+        ) == expected
+
+
+@pytest.mark.parametrize(
+    "extensions",
+    [
+        None, ".yaml", b".yaml", (), ("",), ("yaml",), ("*.yaml",),
+        (".txt",), (".YAML",), ("../.yaml",), (".md", None),
+        ([".yaml"],), (".md", ".json"),
+    ],
+)
+def test_scan_rejects_invalid_extensions(tmp_path: Path, extensions):
+    """Malformed or unsupported selections fail even for missing roots."""
+    for directory in (tmp_path, tmp_path / "missing"):
+        with pytest.raises(ValueError, match="extensions"):
+            staleness_scanner.scan_directory(str(directory), extensions=extensions)
+
+
+@pytest.mark.parametrize("extensions", [(".md",), (".yaml", ".yml"), (".md", ".yaml", ".yml")])
+def test_scan_empty_or_missing_directories(tmp_path: Path, extensions):
+    for directory in (tmp_path, tmp_path / "missing"):
+        assert staleness_scanner.scan_directory(
+            str(directory), extensions=extensions
+        ) == []
+
+
+def test_yaml_fixtures_use_existing_date_precedence_and_report_counts(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch,
+):
+    """Exercise discovery through reporting using the existing fixed NOW.
+
+    Policy: scripts/docs/staleness-scanner.py::classify_staleness, cited by
+    GH #1568 and TestFreshnessThresholds above: FRESH <30, MODERATE 30-89,
+    STALE >=90 days. Independent boundary examples: 29, 30 and 90 days.
+    Hand count below: one git-fresh, two content-moderate, two filesystem-stale.
+    """
+    # Conflicting evidence makes each precedence decision observable.
+    # NOW - 29 days = March 4; NOW - 30 = March 3; NOW - 90 = January 2.
+    fixtures = [
+        ("git.yaml", "Updated: 2026-01-02\n", 90,
+         "2026-03-04T00:00:00+00:00", "git", 29, "FRESH"),
+        ("content.yml", "Updated: 2026-03-03\n", 29,
+         None, "content", 30, "MODERATE"),
+        ("filesystem.yaml", "value: [deliberately unclosed\n", 90,
+         None, "filesystem", 90, "STALE"),
+        ("invalid-git.yml", "Updated: 2026-03-03\n", 29,
+         "invalid", "content", 30, "MODERATE"),
+        ("invalid-content.yaml", "Updated: 2026-02-30\n", 90,
+         None, "filesystem", 90, "STALE"),
+    ]
+    git_dates = {}
+    expected = {}
+    for name, content, mtime_age, git_date, source, age, status in fixtures:
+        path = tmp_path / name
+        path.write_text(content, encoding="utf-8", newline="\n")
+        timestamp = _make_date(mtime_age).timestamp()
+        os.utime(path, (timestamp, timestamp))
+        git_dates[path.as_posix()] = git_date
+        expected[name] = (source, age, status)
+    (tmp_path / "ignored.txt").write_text("Updated: 2026-01-02\n", encoding="utf-8", newline="\n")
+    (tmp_path / "ignored.md").write_text("Updated: 2026-01-02\n", encoding="utf-8", newline="\n")
+    monkeypatch.setattr(staleness_scanner, "REPO_ROOT", tmp_path)
+    with patch.object(
+        staleness_scanner, "get_git_last_modified",
+        side_effect=lambda filepath, **kwargs: git_dates[filepath],
+    ), patch.object(yaml, "safe_load", side_effect=AssertionError("YAML parsing is unnecessary")):
+        files = staleness_scanner.scan_directory(
+            str(tmp_path), extensions=(".yaml", ".yml")
+        )
+        entries = [staleness_scanner.classify_file(path, now=NOW) for path in files]
+        report = staleness_scanner.build_yaml_report(entries, now=NOW)
+
+    assert {
+        entry["file"]: (entry["date_source"], entry["age_days"], entry["status"])
+        for entry in report["files"]
+    } == expected
+    assert report["generated_at"] == NOW.isoformat()
+    # Five explicit fixtures: one fresh + two moderate + two stale = five total.
+    assert report["summary"] == {"total": 5, "FRESH": 1, "MODERATE": 2, "STALE": 2}
+    assert [entry["file"] for entry in report["files"]] == [
+        "filesystem.yaml", "invalid-content.yaml", "content.yml", "invalid-git.yml", "git.yaml",
+    ]
+    assert yaml.safe_load(yaml.safe_dump(report)) == report

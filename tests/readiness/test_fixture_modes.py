@@ -96,3 +96,121 @@ def test_mode_check_ignores_foreign_git_bindings(tmp_path, monkeypatch):
     monkeypatch.setenv("GIT_INDEX_FILE", str(foreign / ".git/index"))
     assert_file_modes(repo, "AGENTS.md", executable=False)
     assert {p.relative_to(foreign): p.read_bytes() for p in foreign.rglob("*") if p.is_file()} == before
+
+
+@pytest.fixture(
+    params=["space name.sh", "tab\tname.sh", "line\nname.sh", "-leading.sh", "nested/control.sh"],
+    ids=["space", "tab", "newline", "leading-dash", "nested"],
+)
+def unusual_name(request):
+    return request.param
+
+
+@pytest.fixture(
+    # Independent permission and index literals from the module's Git citation.
+    params=[(False, 0o644, "100644"), (True, 0o755, "100755")],
+    ids=["nonexecutable", "executable"],
+)
+def native_mode(request):
+    return request.param
+
+
+def commit_unusual_file(repo, relative, executable):
+    path = repo / relative
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text("#!/bin/sh\nexit 0\n")
+    prepare_file_mode(path, executable=executable)
+    commit_all(repo)
+    return path
+
+
+def assert_unusual_index_record(repo, relative, indexed):
+    blob = git(repo, "hash-object", "--", relative).strip()
+    # Handwritten stage-zero record: mode, blob, stage, TAB, verbatim name, NUL.
+    # Mode and stage follow the module's Git index-format citation.
+    assert git(repo, "ls-files", "--stage", "-z", "--", relative) == (
+        f"{indexed} {blob} 0\t{relative}\0"
+    )
+
+
+def test_unusual_names_have_clean_physical_and_index_modes(
+    tmp_path, monkeypatch, unusual_name, native_mode
+):
+    executable, physical, indexed = native_mode
+    _, repo = native_repo(monkeypatch, tmp_path)
+    path = commit_unusual_file(repo, unusual_name, executable)
+
+    assert stat.S_IMODE(path.stat().st_mode) == physical
+    assert git(repo, "config", "--get", "core.filemode").strip() == "true"
+    assert_unusual_index_record(repo, unusual_name, indexed)
+    assert git(
+        repo, "status", "--porcelain=v1", "-z", "--untracked-files=all", "--", unusual_name
+    ) == ""
+    assert_file_modes(repo, unusual_name, executable=executable)
+
+
+@pytest.mark.parametrize("mismatch", ["physical", "index", "content"])
+def test_unusual_name_mismatch_is_rejected(
+    tmp_path, monkeypatch, unusual_name, native_mode, mismatch
+):
+    executable, physical, indexed = native_mode
+    _, repo = native_repo(monkeypatch, tmp_path)
+    path = commit_unusual_file(repo, unusual_name, executable)
+    assert_file_modes(repo, unusual_name, executable=executable)
+    blob = git(repo, "hash-object", "--", unusual_name).strip()
+    expected_index = indexed
+
+    if mismatch == "physical":
+        # Invert only executability, using the cited permission literals.
+        path.chmod(0o644 if executable else 0o755)
+        expected_error = "physical mode mismatch"
+    elif mismatch == "index":
+        git(repo, "update-index", "--chmod=-x" if executable else "--chmod=+x", "--", unusual_name)
+        expected_index = "100644" if executable else "100755"
+        expected_error = "index mode mismatch"
+    else:
+        path.write_text("#!/bin/sh\nexit 1\n")
+        expected_error = "owned path is dirty"
+
+    assert git(repo, "config", "--get", "core.filemode").strip() == "true"
+    assert git(repo, "ls-files", "--stage", "-z", "--", unusual_name) == (
+        f"{expected_index} {blob} 0\t{unusual_name}\0"
+    )
+    if mismatch != "physical":
+        assert stat.S_IMODE(path.stat().st_mode) == physical
+    # Porcelain v1: index-only chmod is staged AND differs from physical mode;
+    # physical-only chmod and changed content have only an unstaged modification.
+    status = "MM" if mismatch == "index" else " M"
+    assert git(
+        repo, "status", "--porcelain=v1", "-z", "--untracked-files=all", "--", unusual_name
+    ) == f"{status} {unusual_name}\0"
+    with pytest.raises(AssertionError, match=expected_error):
+        assert_file_modes(repo, unusual_name, executable=executable)
+
+
+@pytest.mark.parametrize("kind", ["symlink", "missing"])
+def test_nonregular_fixture_refused(tmp_path, monkeypatch, unusual_name, native_mode, kind):
+    executable, physical, _indexed = native_mode
+    _, repo = native_repo(monkeypatch, tmp_path)
+    path = repo / unusual_name
+    path.parent.mkdir(parents=True, exist_ok=True)
+    target = repo / "regular-target.sh"
+    target.write_text("#!/bin/sh\nexit 0\n")
+    target.chmod(physical)
+    if kind == "symlink":
+        path.symlink_to(os.path.relpath(target, path.parent))
+    commit_all(repo)
+    before = target.read_bytes(), stat.S_IMODE(target.stat().st_mode)
+
+    with pytest.raises(AssertionError, match="expected regular fixture file"):
+        prepare_file_mode(path, executable=not executable)
+    with pytest.raises(AssertionError, match="expected regular fixture file"):
+        assert_file_modes(repo, unusual_name, executable=executable)
+
+    assert (target.read_bytes(), stat.S_IMODE(target.stat().st_mode)) == before
+    assert path.is_symlink() == (kind == "symlink")
+    assert path.exists() == (kind == "symlink")
+    assert git(repo, "config", "--get", "core.filemode").strip() == "true"
+    assert git(
+        repo, "status", "--porcelain=v1", "-z", "--untracked-files=all", "--", unusual_name
+    ) == ""

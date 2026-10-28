@@ -19,7 +19,8 @@ class BoundCloneLayout:
 
 
 _DIRECTORY_FLAGS = os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW | os.O_CLOEXEC
-_FILE_FLAGS = os.O_RDONLY | os.O_NOFOLLOW | os.O_CLOEXEC
+# POSIX.1-2024 open(), O_NONBLOCK: validate type before consuming bytes.
+_FILE_FLAGS = os.O_RDONLY | os.O_NOFOLLOW | os.O_CLOEXEC | os.O_NONBLOCK
 
 
 def _open_directory(name: str | Path, *, dir_fd: int | None = None) -> int:

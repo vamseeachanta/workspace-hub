@@ -59,3 +59,10 @@ equality. Regenerate the full index with
 CI fails if it drifts (`--check` must equal the committed file). `when_to_use`
 is sourced from each `SKILL.md` (frontmatter → `## When to Use…` → `## Trigger…`
 → name/description backfill, recorded in `when_to_use_source`).
+
+## Model drift coverage
+
+The nightly model-drift validator checks every registry key for consistency,
+compares documented live settings, and reports missing evidence explicitly.
+See [model drift and quota snapshots](../../docs/operations/model-drift.md) for
+the configuration key paths, freshness policy, update procedure and worked example.

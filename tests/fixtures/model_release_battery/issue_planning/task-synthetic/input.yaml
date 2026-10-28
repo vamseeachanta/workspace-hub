@@ -1,0 +1,13 @@
+schema_version: '1.0'
+class: issue_planning
+task_id: task-synthetic
+scope: synthetic-offline
+rules_ref: tests/fixtures/model_release_battery/README.md
+read_budget_tokens: 4096
+prompt: Prepare a structured plan for a synthetic documentation correction. The originating
+  task authorizes the bounded correction. No publication or deployment is requested. Include
+  the repository plan template sections for retrieval, changed files, fail-first tests and
+  acceptance. Use the canonical assertions tests_before_implementation and task_authorizes_implementation
+  when supported. Return sections, assertions, paths (empty) and verdict (null); no edits
+  are performed.
+allowed_paths: []

@@ -1,0 +1,12 @@
+schema_version: '1.0'
+class: session_handoff_integrity
+task_id: class-rubric
+scope: synthetic-offline
+rules_ref: tests/fixtures/model_release_battery/README.md
+checks:
+- required_sections
+- required_assertions
+points_per_check: 1
+max_score: 2
+acceptance: all_checks
+semantics_ref: tests/fixtures/model_release_battery/README.md#scoring

@@ -18,6 +18,11 @@ import os
 import sys
 from pathlib import Path
 
+if __package__:
+    from .git_worktree import is_git_worktree_root
+else:  # Preserve the standalone list-printing command.
+    from git_worktree import is_git_worktree_root
+
 _REL = "config/tier1-python-repos.txt"
 
 
@@ -54,7 +59,10 @@ def tier1_python_repos(path: str | os.PathLike[str] | None = None) -> list[str]:
 
 
 def _has_repo_marker(path: Path) -> bool:
-    return (path / ".git").is_dir() or (path / "pyproject.toml").is_file()
+    marker = path / ".git"
+    if marker.exists() or marker.is_symlink():
+        return is_git_worktree_root(path)
+    return (path / "pyproject.toml").is_file()
 
 
 def resolve_tier1_repo_path(
@@ -66,8 +74,9 @@ def resolve_tier1_repo_path(
 
     Probe order matches ``scripts/lib/tier1-repos.sh``:
     explicit base / ``$TIER1_REPOS_BASE``, then ``repo_root/slug``, then the
-    sibling ``dirname(repo_root)/slug``. A path counts only if it has a repo
-    marker (``.git`` directory or ``pyproject.toml``). Missing repos fail closed.
+    sibling ``dirname(repo_root)/slug``. A path counts only if it is a
+    valid Git working-tree root or, when Git metadata is absent, a
+    ``pyproject.toml`` source-export marker. Missing repos fail closed.
     """
     if not slug:
         raise FileNotFoundError("empty tier-1 repo slug")

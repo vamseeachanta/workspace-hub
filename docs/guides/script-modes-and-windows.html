@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<title>Script modes and Windows portability</title>
+<style>
+body { max-width: 70em; margin: 2em auto; padding: 1em; font-family: sans-serif; line-height: 1.5; }
+table { border-collapse: collapse; } td, th { border: 1px solid #aaa; padding: .5em; }
+code, pre { background: #eee; } pre { padding: 1em; overflow: auto; }
+</style>
+<h1>Script modes and Windows portability</h1>
+<h2>Summary</h2>
+<p>Index modes and physical permissions are independent observations. A script
+intended for direct execution has a shebang and Git mode <code>100755</code>.
+Interpreter invocation tolerates a lost physical execute bit. The read-only audit
+reports indexed content, including content that differs from the working tree.</p>
+<h2>Revision history</h2>
+<table><tr><th>Revision</th><th>Date</th><th>Change and reason</th></tr>
+<tr><td>Initial</td><td>2026-10-22</td><td>Document index inspection, helper invocation
+and native argument preservation to prevent checkout-dependent failures.</td></tr></table>
+<p>Table 1. Document revision history.</p>
+<h2>Mode policy and audit</h2>
+<p>Git 2.44.0 <a href="https://git-scm.com/docs/git-ls-files/2.44.0">git-ls-files,
+<code>--stage</code></a> defines mode, object, stage and path output.
+<a href="https://git-scm.com/docs/git-update-index/2.44.0">git-update-index,
+<code>--chmod</code></a> defines executable index changes. These sources govern
+the mode literals and fixture setup below. They were retrieved on 2026-10-22.</p>
+<pre>python3 scripts/enforcement/audit_script_modes.py --format table
+python3 scripts/enforcement/audit_script_modes.py --format json
+python3 scripts/enforcement/audit_script_modes.py --check \
+  --exemptions config/script-mode-exemptions.json</pre>
+<p>The default output is JSON. Table output escapes line breaks, tabs, carriage
+returns and pipes. Symlinks and submodules are excluded. Unmerged entries are an
+error. The audit reads indexed blobs and never changes files or Git metadata.
+Shebangs with binary payloads are included.</p>
+<p>The guard returns <code>0</code> when no unexempted non-executable shebang
+remains, <code>1</code> when one remains, and <code>2</code> for invalid input or a
+Git read error. These are the command's defined interface values.
+Executable files without shebangs are reported for investigation; they do not
+block the guard because executable binaries need no shebang.</p>
+<p>Exemptions name exact repository-relative paths and explain why execution is
+intentionally disabled. Wildcards, parent traversal and empty reasons are errors.
+An existing sourced review library is the initial exemption. Baseline failures
+are not automatically exempted. Repository-wide guard enrollment will follow
+review and repair of the existing mode inventory.</p>
+<h2>Worked three-file fixture</h2>
+<p>The following commands will be run only inside a disposable repository. Each
+mode is assigned explicitly, so the expected result is independent of umask and
+filesystem executable-bit detection.</p>
+<pre>git init example
+cd example
+printf '#!/bin/sh\ntrue\n' &gt; 'needs exec.sh'
+printf '#!/bin/sh\ntrue\n' &gt; run.sh
+printf 'plain text\n' &gt; plain.txt
+git add -- 'needs exec.sh' run.sh plain.txt
+git update-index --chmod=-x -- 'needs exec.sh'
+git update-index --chmod=+x -- run.sh plain.txt
+git ls-files --stage</pre>
+<p>Hand calculation: the non-executable shebang contributes one finding; the
+executable shebang contributes none; executable plain text contributes one.
+Thus the audit emits two findings, and the unexempted guard returns <code>1</code>.</p>
+<table><tr><th>Path</th><th>Index mode</th><th>Finding</th></tr>
+<tr><td>needs exec.sh</td><td>100644</td><td>shebang_without_exec</td></tr>
+<tr><td>plain.txt</td><td>100755</td><td>exec_without_shebang</td></tr></table>
+<p>Table 2. Expected audit table from independently assigned fixture modes.</p>
+<p>A reasoned exemption for <code>needs exec.sh</code> changes the guard result to
+<code>0</code>. Adding a new non-executable shebang changes it back to
+<code>1</code>; an invalid wildcard exemption returns <code>2</code>.
+These cases are exercised in <code>tests/enforcement/test_script_modes.py</code>.</p>
+<h2>Calling helpers and reading settings</h2>
+<p>Use <code>bash "$VALIDATOR"</code> for Bash helpers and
+<code>python3 "$RENDERER"</code> for Python helpers. The review submitters already
+render through <code>uv run --no-project python</code>, which also avoids execute-bit
+dependence. A correct Git mode remains useful for direct callers; interpreter
+invocation does not repair index or physical modes.</p>
+<p>The readiness hook check removes carriage returns from extracted jq values
+before testing paths. Missing paths use Bash <code>printf '%q'</code> escaping,
+making control characters visible. The regression isolates the production
+function and supplies CRLF settings and CRLF jq output without probing services.</p>
+<h2>Native command argument inventory</h2>
+<p>The <a href="https://www.msys2.org/docs/filesystem-paths/">MSYS2 Filesystem Paths</a>
+page, “Automatic Unix → Windows Path Conversion”, retrieved 2026-10-22,
+documents conversion for native executables and semicolon-separated argument
+prefix exclusions in <code>MSYS2_ARG_CONV_EXCL</code>.</p>
+<table><tr><th>Call</th><th>Argument meaning</th><th>Disposition</th></tr>
+<tr><td>scripts/propagate-ecosystem.sh: cmd</td><td>Literal /c switch; Windows
+filenames inside a quoted mklink command</td><td>Exclude /c for this invocation;
+convert filenames explicitly and quote them.</td></tr>
+<tr><td>scripts/skills/tests/test_resync_skill_links.sh: cmd.exe</td><td>Literal /c
+and /J; filenames already converted by cygpath</td><td>Existing call-local
+exclusion retained.</td></tr>
+<tr><td>scripts/operations/storage/job_checkout.sh: sparse-checkout</td><td>Cone
+directory names loaded from a profile</td><td>Existing relative profile names
+require no slash-token exclusion.</td></tr>
+<tr><td>scripts/readiness/publish-equality.sh: sparse-checkout</td><td>Non-cone
+patterns</td><td>Already relative; publication behavior remains unchanged.</td></tr>
+<tr><td>scripts/lib/reparse_guard.sh: fsutil and PowerShell</td><td>Actual filesystem
+paths</td><td>Explicit cygpath conversion retained; no token exclusion needed.</td></tr>
+</table>
+<p>Table 3. Focused inventory from sparse-checkout, slash-dot and native switch searches.</p>
+<p>The fake native executable verifies the literal switch, quoted command string
+and call-local environment. It does not reproduce the MSYS runtime's conversion
+algorithm or establish native Windows execution. Existing relative sparse
+patterns and filesystem-path conversions are not rewritten.</p>
+<h2>Known limits</h2>
+<p>The baseline index contains 1,254 non-executable shebangs and six executable
+files without shebangs. These counts refer to the inspected index before staging
+the renderer mode repair. Of the findings, 122 are under paths excluded from this
+contribution's staging manifest. A repository-wide repair and guard enrollment
+remain pending. No broad exemption list is introduced to hide this inventory.</p>
+<p>Native Windows execution and independent provider review remain unverified.</p>
+</html>

@@ -1,0 +1,124 @@
+# Algorithm metric populations
+
+The [offline example](../../examples/algorithm_runs/metric_population_example.py)
+selects synthetic observations by an exact algorithm, metric identifier,
+definition version and unit tuple. It demonstrates record filtering under the
+[existing contract](../architecture/algorithm-run-dataset-contract.yaml),
+`metrics`, and its
+[definition and observation design](../plans/2026-07-11-issue-3432-algorithm-metric-definition-observation-contract.md),
+“Metric Observation” and “Units + null / not-applicable”. It is not numerical
+qualification and provides no engineering acceptance or publication decision.
+
+## Revision history
+
+| Revision | Date | What changed and why |
+| --- | --- | --- |
+| Initial | 2026-10-26 | Added synthetic records and literal population expectations to demonstrate exact-key filtering and exclusions. |
+| 1 | 2026-10-27 | Added Plan-lite scope, verification and exclusions to make the example boundary explicit. |
+
+## Scope and input basis
+
+Only the recorded status `succeeded_validated_reproducible` is eligible, as
+specified by `metrics.eligible_run_statuses` in the existing contract. The other
+run status strings below are illustrative exclusion labels, not schema additions.
+Quality states `valid`, `invalid`, `missing` and `not_applicable`, with `null`
+and the explicit `NA` sentinel, follow the linked definition and observation
+design. A successful run with invalid observations is still excluded from the
+corresponding metric population.
+
+These records are a denormalized, prepared projection, not complete contract
+records or real data. Run and definition bindings are assumed resolved upstream;
+the filter does not authenticate recorded statuses, evaluate quality rules,
+validate definitions or replay evidence. The algorithm and metric identifiers
+are synthetic. The same metric suffix on different algorithms implies no
+comparison or equivalence.
+
+## Plan-lite
+
+The example will select observations by the exact algorithm, metric identifier,
+definition version and unit tuple, retaining stable exclusion reasons.
+Literal-oracle tests will check independently enumerated memberships from the
+synthetic record table, including key partitions, exclusion precedence and the
+distinction between zero, null and `NA`.
+
+Verification will run the example tests alongside the existing contract tests.
+Production validation, status authentication, complete schema conformance,
+numerical qualification and real-data comparison will remain outside this slice;
+resolved bindings and unique observation identifiers will remain input assumptions.
+
+## Synthetic record table
+
+This table is the authored fixture source, including every numeric value, version
+identifier and unit in the example and its tests. Values `0` and `2` are arbitrary
+synthetic length values; they are not measured
+or standards-derived. In particular, `2 cm` and `2 m` are distinct literal inputs;
+no conversion is performed. Version strings `1.0.0` and `2.0.0` are arbitrary
+fixture identifiers, not versions of a numerical algorithm.
+
+Each observation has the run identifier `run-` followed by its observation
+identifier. `eligible` abbreviates `succeeded_validated_reproducible` only in
+this table. Every row supplies every key field; no omitted field is inferred.
+
+| Observation identifier | Algorithm | Metric identifier | Definition version | Units | Run status | Quality state | Value | Outcome for the default key |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| zero | alpha | alpha/extent | 1.0.0 | m | eligible | valid | 0 | included |
+| positive | alpha | alpha/extent | 1.0.0 | m | eligible | valid | 2 | included |
+| invalid-success | alpha | alpha/extent | 1.0.0 | m | succeeded_invalid | valid | 2 | run_not_eligible |
+| non-reproducible | alpha | alpha/extent | 1.0.0 | m | succeeded_non_reproducible | valid | 2 | run_not_eligible |
+| failed | alpha | alpha/extent | 1.0.0 | m | failed_reproducible | valid | 2 | run_not_eligible |
+| rejected | alpha | alpha/extent | 1.0.0 | m | rejected | valid | 2 | run_not_eligible |
+| invalid-observation | alpha | alpha/extent | 1.0.0 | m | eligible | invalid | 2 | observation_invalid |
+| null | alpha | alpha/extent | 1.0.0 | m | eligible | missing | null | observation_missing |
+| not-applicable | alpha | alpha/extent | 1.0.0 | m | eligible | not_applicable | NA | observation_not_applicable |
+| other-version | alpha | alpha/extent | 2.0.0 | m | eligible | valid | 2 | definition_version_mismatch |
+| other-units | alpha | alpha/extent | 1.0.0 | cm | eligible | valid | 2 | units_mismatch |
+| other-metric | alpha | alpha/span | 1.0.0 | m | eligible | valid | 2 | metric_mismatch |
+| other-algorithm | beta | beta/extent | 1.0.0 | m | eligible | valid | 2 | algorithm_mismatch |
+
+The literal expected populations, independently enumerated from that table, are:
+
+| Key: algorithm, metric, definition version, units | Expected observation identifier set |
+| --- | --- |
+| alpha, alpha/extent, 1.0.0, m (default) | {zero, positive} |
+| alpha, alpha/extent, 2.0.0, m | {other-version} |
+| alpha, alpha/extent, 1.0.0, cm | {other-units} |
+| alpha, alpha/span, 1.0.0, m | {other-metric} |
+| beta, beta/extent, 1.0.0, m | {other-algorithm} |
+
+No expected set is generated by the code under test. The tests also probe an
+unknown run status, an unknown quality state, and a `valid` observation carrying
+`null` or `NA`; each is excluded. Numerical zero remains eligible.
+
+## Selection and stable reasons
+
+`select_population(records, key)` returns the original included observations and
+an excluded identifier-to-reason mapping. Observation identifiers must be unique
+in the prepared input. A record gets the first applicable reason in this order:
+run status; observation quality; inconsistent null or `NA` value; algorithm;
+metric identifier; definition version; units. This precedence makes a reason
+stable when multiple fields differ or input order changes. Unknown statuses are
+excluded. Reasons describe selection only and are not new normative error codes.
+
+Excluded records remain in the original input for inspection. Ineligible runs
+remain available for health reporting; neither failure values nor null or
+not-applicable states become population values. Historical definition versions
+and exact unit strings are retained. The example never substitutes a newer
+version, normalizes unit aliases, compares unlike keys or computes statistics.
+
+## Run and verify offline
+
+After the test dependencies are available, neither command needs network access:
+
+```bash
+python examples/algorithm_runs/metric_population_example.py
+python -m pytest tests/architecture/test_metric_population_example.py tests/architecture/test_algorithm_run_dataset_contract.py -q -rA -p no:cacheprovider
+```
+
+The example uses only the standard library and prints the default population
+and all exclusion reasons as JSON. Its subprocess test executes from an
+unrelated temporary directory with isolated Python imports. The focused tests
+check literal memberships, all key partitions, state distinctions, exclusion
+precedence, preservation of original inputs and agreement with the existing
+eligible-status contract. They do not establish numerical correctness, production
+eligibility or complete schema conformance. Normative schemas, numerical
+algorithms, public eligibility gates and real datasets remain unchanged.
