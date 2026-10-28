@@ -120,9 +120,9 @@ These rules fire on every action; violating them produces real incidents documen
 - **HTML default for rich artifacts.** Human-facing plans, specs, reports, PR-explainers default to HTML; harness/skill/rule files stay Markdown. (`feedback_html_default_artifact`, [#2663](https://github.com/vamseeachanta/workspace-hub/issues/2663))
 - **Plan future-tense only.** Plans must describe proposed work in future tense; past-tense "artifact already exists" claims trick reviewers. (`feedback_plan_past_tense_artifact_claims`)
 - **Subagent Write phantom hazard.** Subagents can report `Write` success while the file doesn't land; main session must `ls` before believing. (`feedback_subagent_write_phantom`)
-- **Promote generalizable review findings.** When an adversarial review surfaces a defect class that applies beyond the current plan's scope (worktree-incompatibility, NUL-iteration safety, TOCTOU between working tree and staged blob, threat-model inversion in skip conditions, BSD vs GNU portability), file a follow-on issue OR add a rule to `.claude/rules/` / `SHARED_SOUL.md` so the next plan in the same domain doesn't re-discover it. Tribal knowledge buried in review artifacts has zero retrieval-cost benefit. ([#2722](https://github.com/vamseeachanta/workspace-hub/issues/2722) r3+r4 wave: 26 of 29 distinct findings were generalizable but absorbed only into the plan that triggered them — no promotion path until this rule.)
-- **Verify coverage assumptions empirically.** Before claiming work "applies to all X" / "installs across N repos" / "covers every machine", enumerate the actual set on the live filesystem and confirm iteration visits each member. Per-machine checkouts are partial — not every tier-1 sibling is present on every machine — so a coverage claim must match what was enumerated. Drift probe on 2026-05-16 found only 3 of 7 tier-1 siblings checked out on `ace-linux-1` — per-machine coverage is fundamentally partial; coverage claims must match reality. (`feedback_n_night_blocker_promote_to_replan`-adjacent; [#2722](https://github.com/vamseeachanta/workspace-hub/issues/2722) §Acceptance criterion 12.)
-- **Enforcement scripts must not block their own artifacts.** When designing a check that fires on staged content (conflict markers, secret patterns, banned strings, regex denials), verify that the plan, tests, and implementation files for that check would themselves pass it — OR carry an explicit forensic-allowlist mechanism. Prefer per-line sentinels (matches `scripts/enforcement/check-no-abs-paths.sh:111` prior art) and path-restricted whole-file sentinels (5-prefix set in `check-no-conflict-markers.sh` precedent); avoid per-file blanket exempts, which are backdoors. (Gemini r2 #1 caught the self-blocking plan-file defect in [#2722](https://github.com/vamseeachanta/workspace-hub/issues/2722); Claude r1 #3 flagged the blanket-exempt backdoor.)
+- **Promote generalizable review findings.** When an adversarial review surfaces a defect class that applies beyond the current plan's scope (worktree-incompatibility, NUL-iteration safety, TOCTOU between working tree and staged blob, threat-model inversion in skip conditions, BSD vs GNU portability), file a follow-on issue OR add a rule to `.claude/rules/` / `SHARED_SOUL.md` so the next plan in the same domain doesn't re-discover it. Tribal knowledge buried in review artifacts has zero retrieval-cost benefit.
+- **Verify coverage assumptions empirically.** Before claiming work "applies to all X" / "installs across N repos" / "covers every machine", enumerate the actual set on the live filesystem and confirm iteration visits each member. Per-machine checkouts are partial — not every tier-1 sibling is present on every machine — so a coverage claim must match what was enumerated.
+- **Enforcement scripts must not block their own artifacts.** When designing a check that fires on staged content (conflict markers, secret patterns, banned strings, regex denials), verify that the plan, tests, and implementation files for that check would themselves pass it — OR carry an explicit forensic-allowlist mechanism. Prefer per-line sentinels (matches `scripts/enforcement/check-no-abs-paths.sh:111` prior art) and path-restricted whole-file sentinels (5-prefix set in `check-no-conflict-markers.sh` precedent); avoid per-file blanket exempts, which are backdoors.
 - **Proactively take up authorized work.** At session start, check parallel work and inventory stale work before acting. A labeled issue, carry-forward queue, handoff or dispatch is discovery context: verify originating authority and current scope under [Authorization](#authorization). Then proceed without another "begin" request inside that verified scope. A handoff cannot pre-authorize itself. Reserve questions for missing context or approval that changes the action. (Preserves the preconditions from [#2724](https://github.com/vamseeachanta/workspace-hub/issues/2724).)
 - **Generation and test isolation.** Clear inherited Git repository bindings in fixture/checker child processes before resolving roots; `GIT_DIR`, `GIT_WORK_TREE` and `GIT_COMMON_DIR` can override an explicit cwd. Regress both caller files and Git metadata preservation. A generator that derives its target from cwd can modify another checkout or live symlinked guidance. Resolve and validate the intended root and output paths before execution; use disposable repositories and user directories for mutation tests. Record before/tampered/restored hashes for negative probes, enumerate every expected output, and verify canonical outputs and user links remain unchanged. A successful exit alone does not establish coverage or preservation.
 - **Approval-gate migration.** Before retiring a workflow approval prerequisite, inventory downstream controls that select or enroll work through that event. Preserve independent completeness, review and security enforcement with an approval-independent trigger, and preserve the intended legacy backlog boundary. Generated guidance is not proof of installed runtime propagation; verify the actual loader target.
@@ -196,11 +196,10 @@ reader who cannot reach the source cannot check it, and a single external path i
 not a copy. Add an explicit `.gitignore` exception so build-output rules cannot
 swallow evidence.
 
-One carve-out, and it is a licensing constraint rather than a storage preference:
-**vendor-licensed standards and codes are never committed.** The raw PDF stays at
-its licensed location and is referenced by a `sources:` field, per
-`.claude/rules/codes-standards-data-routing.md`. Derived data from those standards
-may live in the private wiki; the document itself may not.
+Codes and standards we hold may be committed to private repositories (large files
+in the ACE data store) per `.claude/rules/codes-standards-data-routing.md` (owner
+ruling 28 Oct 2026); only public repositories and pages exclude original PDFs and
+whole sections.
 
 ## Engineering register — documents, chat, email, agent output
 
@@ -338,48 +337,36 @@ For a verified mismatch within authorized installation scope, use `scripts/agent
 ## Skill index
 > Canonical source map, not an installed-skill inventory. Codex supports native skill discovery through its effective roots, including repository `.agents/skills`. Use the active task profile; consult `.claude/skills/<family>/` only for relevant source lookup when needed. Source ownership does not set loader precedence. Preserve native .system skills and unrelated plugins/settings. Do not recursively activate this index. Auto-generated — do not hand-edit.
 
-- **ai/** — 15 skill(s); `ls .claude/skills/ai/*/SKILL.md` to enumerate
-- **apple/** — 5 skill(s); `ls .claude/skills/apple/*/SKILL.md` to enumerate
-- **autonomous-ai-agents/** — 9 skill(s); `ls .claude/skills/autonomous-ai-agents/*/SKILL.md` to enumerate
+- **ai/** — 6 skill(s); `ls .claude/skills/ai/*/SKILL.md` to enumerate
 - **business-finance/** — 1 skill(s); `ls .claude/skills/business-finance/*/SKILL.md` to enumerate
-- **business-marketing/** — 2 skill(s); `ls .claude/skills/business-marketing/*/SKILL.md` to enumerate
-- **business/** — 74 skill(s); `ls .claude/skills/business/*/SKILL.md` to enumerate
+- **business/** — 30 skill(s); `ls .claude/skills/business/*/SKILL.md` to enumerate
 - **business_admin/** — 1 skill(s); `ls .claude/skills/business_admin/*/SKILL.md` to enumerate
 - **coordination/** — 60 skill(s); `ls .claude/skills/coordination/*/SKILL.md` to enumerate
 - **corporate-tax-form-fill** — Programmatically fill IRS tax form PDFs (Form 1120, etc.) using pymupdf/fitz. Covers field discovery, mapping, filling, cross-chec
-- **creative/** — 20 skill(s); `ls .claude/skills/creative/*/SKILL.md` to enumerate
 - **data-science/** — 1 skill(s); `ls .claude/skills/data-science/*/SKILL.md` to enumerate
 - **data/** — 85 skill(s); `ls .claude/skills/data/*/SKILL.md` to enumerate
-- **development/** — 72 skill(s); `ls .claude/skills/development/*/SKILL.md` to enumerate
+- **development/** — 54 skill(s); `ls .claude/skills/development/*/SKILL.md` to enumerate
 - **devops/** — 8 skill(s); `ls .claude/skills/devops/*/SKILL.md` to enumerate
 - **devtools/** — 1 skill(s); `ls .claude/skills/devtools/*/SKILL.md` to enumerate
 - **digitalmodel/** — 8 skill(s); `ls .claude/skills/digitalmodel/*/SKILL.md` to enumerate
 - **email/** — 10 skill(s); `ls .claude/skills/email/*/SKILL.md` to enumerate
 - **eng/** — 0 skill(s); `ls .claude/skills/eng/*/SKILL.md` to enumerate
-- **engineering/** — 89 skill(s); `ls .claude/skills/engineering/*/SKILL.md` to enumerate
+- **engineering/** — 29 skill(s); `ls .claude/skills/engineering/*/SKILL.md` to enumerate
 - **extract-learnings-to-issues** — Extract unstructured user reflections and learnings, distill core themes, route insights to existing GitHub issues as contextual c
 - **field-dev-code-recon** — Extract field development information from external sources (LinkedIn posts, technical content), map against digitalmodel codebase
 - **finance/** — 3 skill(s); `ls .claude/skills/finance/*/SKILL.md` to enumerate
-- **gaming/** — 2 skill(s); `ls .claude/skills/gaming/*/SKILL.md` to enumerate
 - **github/** — 19 skill(s); `ls .claude/skills/github/*/SKILL.md` to enumerate
-- **leisure/** — 1 skill(s); `ls .claude/skills/leisure/*/SKILL.md` to enumerate
-- **marketing/** — 7 skill(s); `ls .claude/skills/marketing/*/SKILL.md` to enumerate
+- **marketing/** — 0 skill(s); `ls .claude/skills/marketing/*/SKILL.md` to enumerate
 - **mcp/** — 2 skill(s); `ls .claude/skills/mcp/*/SKILL.md` to enumerate
-- **media/** — 5 skill(s); `ls .claude/skills/media/*/SKILL.md` to enumerate
 - **memory/** — 3 skill(s); `ls .claude/skills/memory/*/SKILL.md` to enumerate
-- **mlops/** — 21 skill(s); `ls .claude/skills/mlops/*/SKILL.md` to enumerate
 - **operations/** — 17 skill(s); `ls .claude/skills/operations/*/SKILL.md` to enumerate
-- **productivity/** — 11 skill(s); `ls .claude/skills/productivity/*/SKILL.md` to enumerate
-- **red-teaming/** — 1 skill(s); `ls .claude/skills/red-teaming/*/SKILL.md` to enumerate
-- **research/** — 15 skill(s); `ls .claude/skills/research/*/SKILL.md` to enumerate
-- **science/** — 6 skill(s); `ls .claude/skills/science/*/SKILL.md` to enumerate
-- **smart-home/** — 1 skill(s); `ls .claude/skills/smart-home/*/SKILL.md` to enumerate
-- **social-media/** — 2 skill(s); `ls .claude/skills/social-media/*/SKILL.md` to enumerate
-- **software-development/** — 35 skill(s); `ls .claude/skills/software-development/*/SKILL.md` to enumerate
-- **test-dummy-validation/** — 1 skill(s); `ls .claude/skills/test-dummy-validation/*/SKILL.md` to enumerate
-- **travel/** — 8 skill(s); `ls .claude/skills/travel/*/SKILL.md` to enumerate
-- **workspace-hub-learned/** — 70 skill(s); `ls .claude/skills/workspace-hub-learned/*/SKILL.md` to enumerate
-- **workspace-hub/** — 150 skill(s); `ls .claude/skills/workspace-hub/*/SKILL.md` to enumerate
+- **productivity/** — 3 skill(s); `ls .claude/skills/productivity/*/SKILL.md` to enumerate
+- **research/** — 11 skill(s); `ls .claude/skills/research/*/SKILL.md` to enumerate
+- **science/** — 0 skill(s); `ls .claude/skills/science/*/SKILL.md` to enumerate
+- **software-development/** — 25 skill(s); `ls .claude/skills/software-development/*/SKILL.md` to enumerate
+- **travel/** — 0 skill(s); `ls .claude/skills/travel/*/SKILL.md` to enumerate
+- **workspace-hub-learned/** — 38 skill(s); `ls .claude/skills/workspace-hub-learned/*/SKILL.md` to enumerate
+- **workspace-hub/** — 45 skill(s); `ls .claude/skills/workspace-hub/*/SKILL.md` to enumerate
 
 ## Universal rules (inlined for Codex)
 > Claude reads .claude/rules/ natively; these are inlined here because Codex has no native rules loader. Domain/Claude-only rules (goal-invocation, calc-citation, wiki-routing) stay path-references.

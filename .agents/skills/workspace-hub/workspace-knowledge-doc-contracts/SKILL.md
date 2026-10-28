@@ -37,20 +37,20 @@ Promotion rule: domain knowledge defaults to public `llm-wiki` **only when the s
 
 Recommended D-L2 storage pattern: use a hybrid local staging layout — shared local roots for public/domain staging, and separate local roots per client/project to prevent cross-client mixing and simplify backup, deletion, audit, and access-control.
 
-Public `llm-wiki` eligible examples: public BSEE/SODIR/NPD/NOAA/NDBC data, public academic-paper summaries with citations, public engineering concept pages, public tool/data-source guides, and standards metadata that does not copy licensed text.
+Public `llm-wiki` eligible examples: public BSEE/SODIR/NPD/NOAA/NDBC data, public academic-paper summaries with citations, public engineering concept pages, public tool/data-source guides, and standards pages that quote clauses, values, equations and criteria with citations and reconstruct charts (never original PDFs or whole sections), per the owner's ruling of 28 Oct 2026 (`.claude/rules/codes-standards-data-routing.md`).
 
-Private or metadata-only examples: client reports/data/decks/workbooks, project assumptions, non-public vendor docs, licensed standards text/clause extraction, screenshots/figures from restricted sources, and anything derived from confidential files even when rewritten generically.
+Private or metadata-only examples: client reports/data/decks/workbooks, project assumptions, non-public vendor docs, screenshots/figures from restricted client or third-party sources, and anything derived from confidential files even when rewritten generically. Codes and standards we hold are not metadata-only: full extraction goes into the private wiki (owner ruling 28 Oct 2026).
 
 ## Metadata-only LLM-wiki execution for large/sensitive corpora
 
-Use this sub-pattern when an approved plan promotes a large or sensitive corpus (external-drive archives, standards libraries, training decks, client/project files) into LLM-wiki pages without copying raw data:
+Use this sub-pattern when an approved plan promotes a large or sensitive corpus (external-drive archives, standards libraries, training decks, client/project files) into LLM-wiki pages without copying raw data. Standards libraries are not in this sub-pattern; they get full extraction (see step 3):
 
-1. **Gate first**: verify task/standing authority, current reviewed scope and resolved blockers before writing wiki pages. Separate plan approval, labels and local markers are not prerequisites; source rights remain required.
+1. **Gate first**: verify task/standing authority, current reviewed scope and resolved blockers before writing wiki pages. Separate plan approval, labels and local markers are not prerequisites; source rights remain required for client and other third-party material (codes and standards need none, per the owner's ruling of 28 Oct 2026).
 2. **RED test first**: add focused tests that initially fail for expected page existence and boundary fields: `extraction_policy`, `raw_copy_allowed: false`, `ocr_allowed: false` where applicable, source-of-record absolute paths, and index/log updates.
 3. **Create pointer/shell pages, not extraction dumps**:
-   - standards/spec libraries use `extraction_policy: metadata-only`; no clauses, copied standards text, or detailed licensed titles.
+   - standards/spec libraries get full extraction (clauses, tables, equations, figures) into the private wiki, per the owner's ruling of 28 Oct 2026 (`.claude/rules/codes-standards-data-routing.md`); no `extraction_policy` or `raw_copy_allowed` fields.
    - training/client corpora use `extraction_policy: metadata-first`; curated summaries only; no full deck text, speaker notes, OCR output, screenshots, figures, or raw bytes.
-   - standards resolver stubs use public metadata only (`code_id`, `publisher`, `revision` or explicit unverified/deferred marker, `revision_source`, `verified_on`, `public_url`).
+   - standards resolver stubs carry (`code_id`, `publisher`, `revision` or explicit unverified/deferred marker, `revision_source`, `verified_on`, `public_url`).
 4. **Update discoverability surfaces**: update `wiki/index.md`, `wiki/log.md`, and parent source-catalog cross-links so new pages are not orphaned.
 5. **Verify broadly**: run targeted pytest, `scripts/knowledge/tests/test_llm_wiki.py`, `llm_wiki.py lint/status` for affected domains, and a raw-data guard such as `git show --name-only --format='' HEAD | grep -E 'knowledge/wikis/.*/raw/|\.(pdf|pptx|ppt|xlsx|xls|docx|doc|png|jpg|jpeg|dwf|db)$' || true`.
 6. **Force-add intentionally ignored wiki files**: workspace-hub may ignore `knowledge/wikis/*`; use `git add -f` only for intended wiki pages/tests/reports and check targeted `git status` to avoid unrelated provider/report churn.

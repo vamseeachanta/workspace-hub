@@ -86,7 +86,9 @@ def test_licensed_private_storage_needs_no_rights_record(source_class, readiness
     del item["rights"]
     for key in ("resource", "stable_projection"):
         item[key]["rights_revision"] = deepcopy(UNKNOWN)
-    assert validator().is_valid(item) == (residency in PRIVATE_RESIDENCIES)
+    allowed = PRIVATE_RESIDENCIES + (
+        ["public_git"] if source_class == "licensed_standard_derivative" else [])
+    assert validator().is_valid(item) == (residency in allowed)
 
 
 @pytest.mark.parametrize("source_class", LICENSED_CLASSES)
@@ -233,6 +235,13 @@ def test_licensed_original_may_live_in_private_storage(residency):
     item = descriptor()
     item["source_class"] = "licensed_standard_original"
     item["storage"] = {"residency": residency, "source_ref": "fixture:licensed-location"}
+    validator().validate(item)
+
+
+def test_licensed_derivative_may_route_into_public_git():
+    # Owner ruling 28 Oct 2026 (.claude/rules/codes-standards-data-routing.md):
+    # cited quotes, values and reconstructed charts may go to public repositories.
+    item = licensed_descriptor("licensed_standard_derivative", "public_git")
     validator().validate(item)
 
 

@@ -151,7 +151,7 @@ rsync -aHAXn --info=progress2 --stats \
   /mnt/ace/<repo>/<domain>/_from_<source-label>/
 ```
 
-Final copy only after dry-run review, source/destination rights checks and task authority are established:
+Final copy only after dry-run review, task authority and, for client and other third-party material, source/destination rights checks are established (codes and standards need no rights check, per the owner's ruling of 28 Oct 2026 in `.claude/rules/codes-standards-data-routing.md`):
 
 ```bash
 rsync -aHAX --info=progress2 --stats \

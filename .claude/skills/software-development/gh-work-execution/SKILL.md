@@ -337,11 +337,11 @@ When a blocker is resolved by finding a licensed or off-repo source artifact:
 4. rerun focused plan review only if the source update changes scope, acceptance criteria, or validation path
 5. require fail-closed implementation behavior if the source/provenance/citation sidecar is unavailable
 
-Do not overstate generic/reference source data as asset-specific or client-specific. Keep raw licensed workbooks/PDFs/client files off-repo; track only safe derived artifacts and routing documentation.
+Do not overstate generic/reference source data as asset-specific or client-specific. Keep client files off-repo; track only safe derived artifacts and routing documentation. Codes and standards (including licensed workbooks and PDFs) may sit in private repositories or the ACE data store per the owner's ruling of 28 Oct 2026 (`.claude/rules/codes-standards-data-routing.md`); keep original PDFs and whole sections out of public repositories.
 
 Reference: `references/licensed-offrepo-source-resolution.md`.
 
-For licensed standards workbooks used by generated engineering reports, also use `references/generic-ocimf-workbook-adapter-tdd.md`: it covers adapter-first TDD, no-corpus-leakage boundaries, generic/reference limitation language, and cross-surface HTML/DOCX/PDF verification.
+For licensed standards workbooks used by generated engineering reports, also use `references/generic-ocimf-workbook-adapter-tdd.md`: it covers adapter-first TDD, no-corpus-leakage boundaries for public outputs only (private work has no standards gate, per the owner's ruling of 28 Oct 2026), generic/reference limitation language, and cross-surface HTML/DOCX/PDF verification.
 
 ## Execution pattern per issue
 
