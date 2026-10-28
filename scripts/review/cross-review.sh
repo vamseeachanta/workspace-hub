@@ -220,15 +220,16 @@ count_wrk_codex_reviews() {
 }
 
 # Run Claude Opus as a substitute for Codex; writes verdict to result_file
+# Invoke shell submitters through Bash so dispatch does not require execute bits.
 run_opus_as_codex_sub() {
   local result_file="$1"
   local opus_exit=0
   local header="# Codex-slot: Claude Opus fallback (${CODEX_OPUS_MODEL})\n"
   if [[ -n "$COMMIT_SHA" ]]; then
-    CLAUDE_MODEL="$CODEX_OPUS_MODEL" "${SCRIPT_DIR}/submit-to-claude.sh" \
+    CLAUDE_MODEL="$CODEX_OPUS_MODEL" bash "${SCRIPT_DIR}/submit-to-claude.sh" \
       --commit "$COMMIT_SHA" --prompt "$PROMPT" > "$result_file" 2>&1 || opus_exit=$?
   else
-    CLAUDE_MODEL="$CODEX_OPUS_MODEL" "${SCRIPT_DIR}/submit-to-claude.sh" \
+    CLAUDE_MODEL="$CODEX_OPUS_MODEL" bash "${SCRIPT_DIR}/submit-to-claude.sh" \
       --file "$CONTENT_FILE" --prompt "$PROMPT" > "$result_file" 2>&1 || opus_exit=$?
   fi
   # Prepend fallback header without overwriting the verdict body
@@ -283,9 +284,9 @@ submit_review() {
     claude)
       local claude_exit=0
       if [[ -n "$COMMIT_SHA" ]]; then
-        "${SCRIPT_DIR}/submit-to-claude.sh" --commit "$COMMIT_SHA" --prompt "$PROMPT" > "$result_file" 2>&1 || claude_exit=$?
+        bash "${SCRIPT_DIR}/submit-to-claude.sh" --commit "$COMMIT_SHA" --prompt "$PROMPT" > "$result_file" 2>&1 || claude_exit=$?
       else
-        "${SCRIPT_DIR}/submit-to-claude.sh" --file "$CONTENT_FILE" --prompt "$PROMPT" > "$result_file" 2>&1 || claude_exit=$?
+        bash "${SCRIPT_DIR}/submit-to-claude.sh" --file "$CONTENT_FILE" --prompt "$PROMPT" > "$result_file" 2>&1 || claude_exit=$?
       fi
       if [[ "$claude_exit" -eq 124 ]]; then
         # Watchdog timeout — preserve the WATCHDOG log before overwriting result_file
@@ -340,9 +341,9 @@ submit_review() {
 
       local codex_exit=0
       if [[ -n "$COMMIT_SHA" ]]; then
-        "${SCRIPT_DIR}/submit-to-codex.sh" --commit "$COMMIT_SHA" --prompt "$PROMPT" > "$result_file" 2>&1 || codex_exit=$?
+        bash "${SCRIPT_DIR}/submit-to-codex.sh" --commit "$COMMIT_SHA" --prompt "$PROMPT" > "$result_file" 2>&1 || codex_exit=$?
       else
-        "${SCRIPT_DIR}/submit-to-codex.sh" --file "$CONTENT_FILE" --prompt "$PROMPT" > "$result_file" 2>&1 || codex_exit=$?
+        bash "${SCRIPT_DIR}/submit-to-codex.sh" --file "$CONTENT_FILE" --prompt "$PROMPT" > "$result_file" 2>&1 || codex_exit=$?
       fi
       # Incompatible Codex version (exit 7) → graceful UNAVAILABLE, no Opus fallback.
       if [[ $codex_exit -eq 7 ]] || grep -q "^# CODEX_INCOMPATIBLE_VERSION" "$result_file" 2>/dev/null; then
