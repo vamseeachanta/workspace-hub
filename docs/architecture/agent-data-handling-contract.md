@@ -67,8 +67,8 @@ and consumer readiness require separate verified implementation evidence.
   successful machine check shall not establish fleet-wide readiness.
 - Existing catalogs remain the discovery authority. Record ownership and consumer
   relationships there; do not create a second allocation registry. Original
-  retention, licensed-standard exclusions and private/public boundaries below
-  remain binding. Migration shall preserve originals and verify copied evidence
+  retention, the public-surface exclusion for standards originals and
+  private/public boundaries below remain binding. Migration shall preserve originals and verify copied evidence
   before any backup or publication claim.
 
 The reference `digitalmodel:data/dataset-allocation-ledger.json` remains unresolved
@@ -127,14 +127,19 @@ Licensed originals require `storage.source_ref` and may reside in `private_git`,
 `licensed_location` or `external` storage, including when marked `retained`,
 without `storage.raw_path`, `storage.raw_digest` or `storage.ignore_exception`.
 A licensed original's edition is `resource.source_version`.
-Licensed derivatives use the same three storage residencies and require nonempty
-lineage in both `resource.derived_from` and `stable_projection.derived_from`
-when ready. Both licensed source classes reject `public_git` and `unavailable`
-storage residency in every readiness state.
+Licensed derivatives may use those three storage residencies or `public_git`
+(cited quotes, values, equations, criteria and reconstructed charts only) and
+require nonempty lineage in both `resource.derived_from` and
+`stable_projection.derived_from` when ready. Licensed originals reject
+`public_git`; both licensed source classes reject `unavailable` storage residency
+in every readiness state.
 
-Storage, ownership, transformation rights and publication authorization are
-separate decisions. Public destinations require source-specific rights and
-audience approval, including private contributions embedded in public sources.
+Codes and standards follow the owner's ruling of 28 Oct 2026 (`.claude/rules/codes-standards-data-routing.md`): no internal gates; outward work quotes with citations and reconstructs charts; only original PDFs and whole sections stay off public surfaces.
+
+For client and other third-party material, storage, ownership, transformation
+rights and publication authorization are separate decisions. Public destinations
+for that material require source-specific rights and audience approval, including
+private contributions embedded in public sources.
 Restricted locators, credentials and raw private payloads do not belong in public
 receipts. Use authorized opaque evidence references and private owner manifests.
 Saving locally does not establish backup, Git tracking or publication; verify
@@ -160,8 +165,8 @@ Required observation groups include owner-relative manifest locator/revision,
 access status, timestamps, source vintage, freshness criterion, qualification
 evidence and limitations. Other source classes also require a `rights` record
 containing status, evidence, operations, destinations, check time and expiry.
-For `licensed_standard_original` and `licensed_standard_derivative` held in the
-three permitted private storage residencies, the entire `rights` record and each
+For `licensed_standard_original` and `licensed_standard_derivative` held in their
+permitted storage residencies, the entire `rights` record and each
 of its fields are optional. Supplied fields retain their schema types, but no
 rights status, evidence, operation/destination eligibility, check time or expiry
 gates internal use or readiness. Both twelve-field projections still include

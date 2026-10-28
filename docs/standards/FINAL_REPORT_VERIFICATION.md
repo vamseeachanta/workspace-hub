@@ -10,8 +10,9 @@ deliverable; their existence does not make them commit, CI or ingestion gates.
 
 Verification moves to the final report and its actual outgoing bundle. This is
 a manual review requirement, not a new script or automatic receipt gate.
-Secret scanning, access controls, source-specific rights and engineering
-qualification remain independent requirements. Repository/publication permissions
+Secret scanning, access controls, source-specific rights for material other than
+codes and standards, and engineering qualification remain independent requirements.
+Codes and standards follow the owner's ruling of 28 Oct 2026 (`.claude/rules/codes-standards-data-routing.md`): no internal gates; outward work quotes with citations and reconstructs charts; only original PDFs and whole sections stay off public surfaces. Repository/publication permissions
 are not expanded by retiring identifier checks.
 
 ## Review the outgoing bundle

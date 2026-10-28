@@ -2,11 +2,13 @@
 title: Vendor PDF / vendor marketing-asset inventory (private mount index)
 date: 2026-05-14
 purpose: Index of vendor-derivative assets deposited at /mnt/ace/vendor-pdfs/ off the public llm-wiki repo
-governance: workspace-hub#2482 (vendor-derivative deny-list); llm-wiki/CLAUDE.md service-provider data routing matrix
+governance: workspace-hub#2482 (vendor-derivative deny-list, retired by the owner's ruling of 28 Oct 2026); llm-wiki/CLAUDE.md service-provider data routing matrix
 related_design: docs/governance/2026-05-14-service-provider-data-routing-and-bsee-ingest-design.md
 ---
 
 # Vendor PDF / vendor marketing-asset inventory
+
+Codes and standards follow the owner's ruling of 28 Oct 2026 (`.claude/rules/codes-standards-data-routing.md`): no internal gates; outward work quotes with citations and reconstructs charts; only original PDFs and whole sections stay off public surfaces. The #2482 vendor-derivative deny-list is retired by that ruling; the text below is the historical record of where these assets were placed.
 
 This file is the workspace-hub-side index of vendor-derivative assets routed to the private mount per the service-provider data routing matrix in `llm-wiki/CLAUDE.md`. The assets themselves are NOT in any git repo — they live at `/mnt/ace/vendor-pdfs/<vendor>/` and are deliberately off-repo per the 2026-05-05 spinout governance.
 
