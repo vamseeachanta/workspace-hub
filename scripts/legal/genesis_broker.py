@@ -46,7 +46,8 @@ def open_verified_bundle(members: dict[str, tuple[str, str]]) -> dict[str, int]:
 
 
 def open_nofollow(path: str, mode: int = 0o600, max_size: int = 16384) -> int:
-    fd = os.open(path, os.O_RDONLY | os.O_NOFOLLOW)
+    # POSIX.1-2024 open(), O_NONBLOCK: fstat must precede any special-file read.
+    fd = os.open(path, os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)
     st = os.fstat(fd)
     if (not stat.S_ISREG(st.st_mode) or st.st_uid != os.getuid()
             or stat.S_IMODE(st.st_mode) != mode or st.st_nlink != 1

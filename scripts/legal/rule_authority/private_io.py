@@ -78,7 +78,9 @@ def read_private_file(path, maximum):
     parent_fd, identity = _private_directory(target.parent)
     file_fd = None
     try:
-        file_fd = os.open(target.name, os.O_RDONLY | _NOFOLLOW, dir_fd=parent_fd)
+        # POSIX.1-2024 open(), O_NONBLOCK: validate before a FIFO can block.
+        file_fd = os.open(target.name, os.O_RDONLY | _NOFOLLOW | os.O_NONBLOCK,
+                          dir_fd=parent_fd)
         before = os.fstat(file_fd)
         if (
             not stat.S_ISREG(before.st_mode)
@@ -399,12 +401,15 @@ def verify_complete_transaction(directory, key):
         payloads = {}
         for name in names:
             try:
-                child = os.open(name, os.O_RDONLY | _NOFOLLOW, dir_fd=fd)
-                info = os.fstat(child)
-                if not stat.S_ISREG(info.st_mode):
-                    raise OSError("not-regular")
-                with os.fdopen(child, "rb") as stream:
-                    data = stream.read()
+                child = os.open(name, os.O_RDONLY | _NOFOLLOW | os.O_NONBLOCK, dir_fd=fd)
+                try:
+                    info = os.fstat(child)
+                    if not stat.S_ISREG(info.st_mode):
+                        raise OSError("not-regular")
+                    with os.fdopen(child, "rb", closefd=False) as stream:
+                        data = stream.read()
+                finally:
+                    os.close(child)
             except OSError as exc:
                 raise AuthorityError("filesystem") from exc
             payloads[name] = data
@@ -445,10 +450,16 @@ def cleanup_incomplete(parent, transaction_id):
         entries = os.listdir(child_fd)
         if "marker" not in entries:
             raise AuthorityError("filesystem")
-        marker_fd = os.open("marker", os.O_RDONLY | _NOFOLLOW, dir_fd=child_fd)
-        with os.fdopen(marker_fd, "rb") as stream:
-            if stream.read() != b"incomplete\n":
+        marker_fd = os.open("marker", os.O_RDONLY | _NOFOLLOW | os.O_NONBLOCK,
+                            dir_fd=child_fd)
+        try:
+            if not stat.S_ISREG(os.fstat(marker_fd).st_mode):
                 raise AuthorityError("filesystem")
+            with os.fdopen(marker_fd, "rb", closefd=False) as stream:
+                if stream.read() != b"incomplete\n":
+                    raise AuthorityError("filesystem")
+        finally:
+            os.close(marker_fd)
         for entry in entries:
             os.unlink(entry, dir_fd=child_fd)
         os.fsync(child_fd)
