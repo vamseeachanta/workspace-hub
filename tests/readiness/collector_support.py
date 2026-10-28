@@ -59,6 +59,14 @@ def collector_env(env: dict[str, str], *, stub_dirs: tuple[Path, ...] = ()) -> d
         path = bindir / name
         path.write_text(stub, encoding="utf-8", newline="\n")
         path.chmod(0o755)
+    # Provenance tests use this helper directly, without the serialization suite's
+    # autouse guard. Default to an empty synthetic schedule and unavailable tools;
+    # explicit stub_dirs retain precedence for tests with controlled tool output.
+    for name in ("crontab", "schtasks", "gh", "uv", "claude", "codex", "hermes", "gemini"):
+        path = bindir / name
+        body = "exit 0\n" if name in ("crontab", "schtasks") else "exit 1\n"
+        path.write_text("#!/usr/bin/env bash\n" + body, encoding="utf-8", newline="\n")
+        path.chmod(0o755)  # POSIX executable permissions, as for the interpreter shims.
     startup = scratch / "startup.sh"
     startup.write_text(
         f'source {shlex.quote(bash_path(PROBE_LIB))}\n'
