@@ -12,8 +12,10 @@ import json
 import os
 import re
 import shutil
+import site
 import subprocess
 import sys
+import sysconfig
 import tomllib
 import zipfile
 from email.parser import Parser
@@ -179,7 +181,9 @@ def run_smoke(scratch, uv):
         [environments["runtime"], "-I", "-B", "-c", probe, json.dumps(configuration)],
         scratch, environment,
     ))
-    (scratch / "report.json").write_text(json.dumps(report, indent=True) + "\n", encoding="utf-8")
+    (scratch / "report.json").write_text(
+        json.dumps(report, indent=True) + "\n", encoding="utf-8", newline="\n",
+    )
     return report
 
 
@@ -299,14 +303,16 @@ if __name__ != "__main__":
             root = tmp_path / "purelib"
             package = root / EXAMPLE
             package.mkdir(parents=True)
-            (package / "__init__.py").write_text("", encoding="utf-8")
+            (package / "__init__.py").write_text("", encoding="utf-8", newline="\n")
             (package / "entry.py").write_text(
                 "from . import nested\n"
                 "def exercise():\n"
                 "    from . import lazy\n"
-                "    return nested.VALUE, lazy.VALUE\n", encoding="utf-8",
+                "    return nested.VALUE, lazy.VALUE\n", encoding="utf-8", newline="\n",
             )
-            (package / "lazy.py").write_text("VALUE = 'lazy'\n", encoding="utf-8")
+            (package / "lazy.py").write_text(
+                "VALUE = 'lazy'\n", encoding="utf-8", newline="\n",
+            )
             if placement == "inside":
                 nested_parent = package
             else:
@@ -314,7 +320,7 @@ if __name__ != "__main__":
                 nested_parent = tmp_path / outside / EXAMPLE
                 nested_parent.mkdir(parents=True)
             nested = nested_parent / "nested.py"
-            nested.write_text("VALUE = 'nested'\n", encoding="utf-8")
+            nested.write_text("VALUE = 'nested'\n", encoding="utf-8", newline="\n")
             if placement == "symlink":
                 # An unsupported symlink operation is an acceptance error, never a skip.
                 (package / "nested.py").symlink_to(nested)
@@ -342,7 +348,9 @@ if __name__ != "__main__":
                 assert Path(sys.modules[name].__file__).resolve() == file
             other_root = tmp_path / "unrelated"
             other_root.mkdir()
-            (other_root / (EXAMPLE + "_extra.py")).write_text("", encoding="utf-8")
+            (other_root / (EXAMPLE + "_extra.py")).write_text(
+                "", encoding="utf-8", newline="\n",
+            )
             monkeypatch.syspath_prepend(str(other_root))
             return {"root": root, "expected": expected, "inventory": inventory}
 
