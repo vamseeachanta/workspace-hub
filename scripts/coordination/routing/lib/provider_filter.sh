@@ -40,7 +40,7 @@ filter_available_providers() {
     local codex_usage=$(cat "$CONFIG_DIR/codex_usage.json")
     local codex_req_percent=$(echo "$codex_usage" | jq -r '.requests_percent')
     local codex_tok_percent=$(echo "$codex_usage" | jq -r '.tokens_percent')
-    if (( $(echo "$codex_req_percent < 85" | bc -l) )) && (( $(echo "$codex_tok_percent < 90" | bc -l) )); then
+    if awk -v requests="$codex_req_percent" -v tokens="$codex_tok_percent" 'BEGIN { exit !(requests < 85 && tokens < 90) }'; then
         available_providers+=("codex")
     fi
 
@@ -48,7 +48,7 @@ filter_available_providers() {
     local gemini_usage=$(cat "$CONFIG_DIR/gemini_usage.json")
     local gemini_req_percent=$(echo "$gemini_usage" | jq -r '.requests_percent')
     local gemini_tok_percent=$(echo "$gemini_usage" | jq -r '.tokens_percent')
-    if (( $(echo "$gemini_req_percent < 80" | bc -l) )) && (( $(echo "$gemini_tok_percent < 85" | bc -l) )); then
+    if awk -v requests="$gemini_req_percent" -v tokens="$gemini_tok_percent" 'BEGIN { exit !(requests < 80 && tokens < 85) }'; then
         available_providers+=("gemini")
     fi
 
@@ -56,7 +56,7 @@ filter_available_providers() {
     local claude_usage=$(cat "$CONFIG_DIR/claude_usage.json")
     local claude_req_percent=$(echo "$claude_usage" | jq -r '.requests_percent')
     local claude_tok_percent=$(echo "$claude_usage" | jq -r '.tokens_percent')
-    if (( $(echo "$claude_req_percent < 80" | bc -l) )) && (( $(echo "$claude_tok_percent < 80" | bc -l) )); then
+    if awk -v requests="$claude_req_percent" -v tokens="$claude_tok_percent" 'BEGIN { exit !(requests < 80 && tokens < 80) }'; then
         available_providers+=("claude")
     fi
 
@@ -68,7 +68,7 @@ filter_available_providers() {
         local usage_file="$CONFIG_DIR/${provider}_usage.json"
         local cost_today=$(cat "$usage_file" | jq -r '.cost_today')
         local daily_budget=$(cat "$usage_file" | jq -r '.daily_budget')
-        if (( $(echo "$cost_today < $daily_budget" | bc -l) )); then
+        if awk -v cost="$cost_today" -v budget="$daily_budget" 'BEGIN { exit !(cost < budget) }'; then
             final_available+=("$provider")
         fi
     done

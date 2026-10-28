@@ -12,6 +12,40 @@ from datetime import datetime
 logger = logging.getLogger(__name__)
 
 
+class _UniqueKeySafeLoader(yaml.SafeLoader):
+    """Reject duplicate keys before safe mapping construction."""
+
+    def flatten_mapping(self, node):
+        # Merge directives disappear during flattening, so check them first.
+        merge_seen = False
+        for key_node, _ in node.value:
+            if key_node.tag == "tag:yaml.org,2002:merge":
+                if merge_seen:
+                    raise yaml.constructor.ConstructorError(
+                        "while constructing a mapping", node.start_mark,
+                        "found duplicate key (<<)", key_node.start_mark,
+                    )
+                merge_seen = True
+
+        # Include inherited keys, even for inline and chained merge sources.
+        super().flatten_mapping(node)
+        keys = set()
+        for key_node, _ in node.value:
+            key = self.construct_object(key_node)
+            try:
+                if key in keys:
+                    raise yaml.constructor.ConstructorError(
+                        "while constructing a mapping", node.start_mark,
+                        "found duplicate key", key_node.start_mark,
+                    )
+                keys.add(key)
+            except TypeError as error:
+                raise yaml.constructor.ConstructorError(
+                    "while constructing a mapping", node.start_mark,
+                    "found unhashable key", key_node.start_mark,
+                ) from error
+
+
 class ConfigLoader:
     """Load and parse unified YAML configuration files."""
 
@@ -58,7 +92,7 @@ class ConfigLoader:
         # Load from file
         try:
             with open(config_path, 'r') as f:
-                config = yaml.safe_load(f)
+                config = yaml.load(f, Loader=_UniqueKeySafeLoader)
 
             if config is None:
                 config = {}

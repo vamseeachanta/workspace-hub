@@ -1,7 +1,7 @@
 """Tests for PipelineOrchestrator — extract→transform→load chain."""
 
 from pathlib import Path
-from unittest.mock import MagicMock
+from unittest.mock import MagicMock, call
 
 import pandas as pd
 import pytest
@@ -53,7 +53,94 @@ def manifest(tmp_path):
     return ManifestManager(tmp_path / "manifest.yaml")
 
 
+@pytest.fixture(params=["extract", "transform", "load"])
+def failed_stage(request, tmp_path):
+    raw = [{"value": "sample"}]
+    df = pd.DataFrame(raw)
+    extractor = _make_extractor(raw_data=raw)
+    transformer = _make_transformer(df=df)
+    loader = _make_loader(out_path=tmp_path / "unused-output.csv")
+    stage_calls = MagicMock()
+    for stage, component in (
+        ("extract", extractor),
+        ("transform", transformer),
+        ("load", loader),
+    ):
+        spy = MagicMock(wraps=getattr(component, stage))
+        setattr(component, stage, spy)
+        stage_calls.attach_mock(spy, stage)
+
+    failure = RuntimeError(f"{request.param} failed")
+    getattr(stage_calls, request.param).side_effect = failure
+    # Contract: stop at the failing phase; these sequences are hand-written.
+    expected_calls = {
+        "extract": [call.extract(force_refresh=True)],
+        "transform": [
+            call.extract(force_refresh=True),
+            call.transform(raw),
+        ],
+        "load": [
+            call.extract(force_refresh=True),
+            call.transform(raw),
+            call.load(df),
+        ],
+    }[request.param]
+    return extractor, transformer, loader, stage_calls, failure, expected_calls
+
+
+@pytest.fixture
+def checkpoint_files(tmp_path):
+    # Synthetic prior success: record_count is 1 by hand-counting the single row
+    # in failed_stage. Literal bytes avoid using production serializers as oracles.
+    state_bytes = (
+        b'{"pipeline_name": "test_pipe", "last_value": "previous-success", '
+        b'"record_count": 1, "run_at": "previous-success"}\n'
+    )
+    manifest_bytes = (
+        b"# Preserve this formatting as well as the checkpoint values.\n"
+        b"pipelines:\n"
+        b"  test_pipe:\n"
+        b"    source_url: synthetic-source\n"
+        b"    refresh_cadence: daily\n"
+        b"    last_run: previous-success\n"
+        b"    record_count: 1\n"
+        b"    output_path: previous-output.csv\n"
+    )
+    state_path = tmp_path / "state" / "test_pipe.json"
+    state_path.parent.mkdir()
+    manifest_path = tmp_path / "manifest.yaml"
+    state_path.write_bytes(state_bytes)
+    manifest_path.write_bytes(manifest_bytes)
+    return (state_path, state_bytes), (manifest_path, manifest_bytes)
+
+
 class TestPipelineOrchestrator:
+    def test_failed_stage_preserves_checkpoint(
+        self, state, manifest, failed_stage, checkpoint_files
+    ):
+        """Checkpoint isolation excludes rollback of external loader mutations."""
+        extractor, transformer, loader, stage_calls, failure, expected_calls = (
+            failed_stage
+        )
+        orch = PipelineOrchestrator(
+            extractor=extractor,
+            transformer=transformer,
+            loader=loader,
+            state=state,
+            manifest=manifest,
+            pipeline_name="test_pipe",
+            source_url="synthetic-source",
+            refresh_cadence="daily",
+        )
+
+        with pytest.raises(RuntimeError) as caught:
+            orch.run(force_refresh=True)
+
+        assert caught.value is failure
+        assert stage_calls.mock_calls == expected_calls
+        for path, fixture_bytes in checkpoint_files:
+            assert path.read_bytes() == fixture_bytes
+
     def test_run_executes_full_etl_chain(self, state, manifest):
         raw = [{"x": 10}]
         df = pd.DataFrame(raw)

@@ -100,6 +100,62 @@ def test_generated_advice_binds_root_and_preserves_foreign_cwd(tmp_path, native,
     assert (root / ".gemini/skills").read_text() == "indexed sentinel\n"
 
 
+@pytest.mark.parametrize("native", [False, True])
+@pytest.mark.parametrize("name", [
+    'target;touch "${INJECTION_SENTINEL}";#',
+    'target$(touch "${INJECTION_SENTINEL}")root',
+    "target[ab]",
+])
+def test_advice_quotes_shell_metacharacters_in_target_root(tmp_path, native, name):
+    # Names are literal argv data; either payload can only touch this scratch file.
+    injected = tmp_path / "injected"
+    root, env = fixture_repo(tmp_path, name)
+    env["INJECTION_SENTINEL"] = str(injected)
+    preserved = []
+    if native:
+        native_root = root / ".agents/skills"
+        native_root.mkdir(parents=True)
+        native_sentinel = native_root / "keep"
+        native_sentinel.write_bytes(b"native sentinel\n")
+        preserved.extend([native_root, native_sentinel, root / ".codex/skills"])
+
+    foreign = tmp_path / "foreign"
+    sentinel_roots = [foreign]
+    if name == "target[ab]":
+        # Hand expansion: [ab] matches either sibling, never the literal target.
+        sentinel_roots.extend([tmp_path / "targeta", tmp_path / "targetb"])
+    for sentinel_root in sentinel_roots:
+        for provider in (".codex", ".gemini"):
+            path = sentinel_root / provider / "skills"
+            path.parent.mkdir(parents=True)
+            path.write_bytes(b"foreign sentinel\n")
+            preserved.append(path)
+    before = {path: (path.stat(), path.read_bytes() if path.is_file() else None)
+              for path in preserved}
+    caller_cwd = Path.cwd()
+    advice = skills_advice(root, env)
+    # Observe cwd in the same shell after the generated subshell returns.
+    observed_advice = dict(advice, command=advice["command"] + ' && printf "%s\\n" "$PWD"')
+    result = execute_advice(observed_advice, foreign, env)
+    assert result.returncode == 0, result.stderr  # POSIX successful exit status.
+    assert result.stdout == str(foreign) + "\n"
+    assert Path.cwd() == caller_cwd
+    assert not injected.exists()
+    for path, (identity, content) in before.items():
+        assert os.path.samestat(identity, path.stat()), path
+        if content is not None:
+            assert path.read_bytes() == content, path
+
+    # Hand trace of fixture_repo's index: Gemini is always selected; Codex is
+    # selected only without native skills. Only selected adapters get index bytes.
+    expected = {
+        ".codex/skills": b"working sentinel\n" if native else b"indexed sentinel\n",
+        ".gemini/skills": b"indexed sentinel\n",
+    }
+    for relative, content in expected.items():
+        assert (root / relative).read_bytes() == content
+
+
 def test_advice_never_expands_initial_provider_set(tmp_path):
     root, env = fixture_repo(tmp_path)
     (root / ".agents/skills").mkdir(parents=True)

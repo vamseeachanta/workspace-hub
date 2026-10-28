@@ -639,6 +639,206 @@ def test_an_api_failure_refuses_rather_than_returning_an_empty_snapshot():
         RC.fetch_labels("owner/name", fetch=lambda repo: None)
 
 
+@pytest.fixture
+def issue_label_api(tmp_path, monkeypatch):
+    """Independent example: a terminal record, absent from open discovery.
+
+    One correct label implies no write; no label implies one addition; a wrong
+    label implies its removal and the terminal label's addition. Expectations
+    below follow these set differences, without calling projection helpers.
+    The API stub accepts only reads and preserves REST pagination boundaries.
+    """
+    _done(tmp_path)
+    state = {
+        "open": {},
+        "pages": {ISSUE: [[{"name": "dispatch:done"}]]},
+        "errors": set(),
+        "raw": {},
+        "calls": [],
+        "sweeps": [],
+        "reports": [],
+    }
+
+    def fetch_open(repo):
+        state["sweeps"].append(repo)
+        return state["open"]
+
+    def gh(args, **kwargs):
+        state["calls"].append(args)
+        endpoints = {
+            f"repos/{issue.replace('#', '/issues/')}/labels": issue
+            for issue in state["pages"]
+        }
+        assert args[0] == "api", "only label reads are permitted"
+        assert args[2:] == ["--paginate"]
+        issue = endpoints[args[1]]
+        pages = state["pages"][issue]
+        stdout = ("\n".join(json.dumps(page) for page in pages)
+                  if isinstance(pages, list) else json.dumps(pages))
+        return subprocess.CompletedProcess(
+            args, returncode=int(issue in state["errors"]),
+            stdout=state["raw"].get(issue, stdout), stderr="lookup unavailable")
+
+    reconcile = RC.reconcile
+
+    def observe(*args, **kwargs):
+        report = reconcile(*args, **kwargs)
+        state["reports"].append(report)
+        return report
+
+    monkeypatch.setattr(ROUTE, "fetch_open_issues", fetch_open)
+    monkeypatch.setattr(ROUTE, "gh", gh)
+    monkeypatch.setattr(RC, "reconcile", observe)
+    monkeypatch.setattr(RC, "apply", _boom)
+    monkeypatch.setattr(RC, "ensure_labels", _boom)
+    monkeypatch.setattr(R, "write_record", _boom)
+    return state
+
+
+def _live_reconcile(root):
+    repo, _ = ISSUE.rsplit("#", maxsplit=1)
+    return RC.main(["--records", str(root), "--repo", repo])
+
+
+def test_closed_correct_label_is_in_sync(tmp_path, issue_label_api):
+    before = {p.name: p.read_bytes() for p in tmp_path.iterdir()}
+    assert _live_reconcile(tmp_path) == 0
+    report, = issue_label_api["reports"]
+    assert [f.issue for f in report.of_kind(RC.IN_SYNC)] == [ISSUE]
+    assert report.of_kind(RC.LABEL_MISSING) == []
+    assert report.label_writes == []
+    assert report.record_writes == []
+    assert issue_label_api["calls"], "closed issues need an independent lookup"
+    assert {p.name: p.read_bytes() for p in tmp_path.iterdir()} == before
+
+
+def test_closed_missing_label_still_drifts(tmp_path, issue_label_api):
+    issue_label_api["pages"][ISSUE] = [[]]
+    assert _live_reconcile(tmp_path) == 0
+    report, = issue_label_api["reports"]
+    assert [f.issue for f in report.of_kind(RC.LABEL_MISSING)] == [ISSUE]
+    outcome, = report.label_writes
+    assert outcome.add == ("dispatch:done",)
+    assert outcome.remove == ()
+    assert issue_label_api["calls"], "empty labels must be authoritative"
+
+
+def test_closed_wrong_label_retains_record_authority(tmp_path, issue_label_api):
+    issue_label_api["pages"][ISSUE] = [[{"name": "dispatch:ready"}]]
+    assert _live_reconcile(tmp_path) == 0
+    report, = issue_label_api["reports"]
+    assert [f.issue for f in report.of_kind(RC.DRIFT)] == [ISSUE]
+    outcome, = report.label_writes
+    assert outcome.add == ("dispatch:done",)
+    assert outcome.remove == ("dispatch:ready",)
+    assert outcome.record["state"] == "done"
+
+
+@pytest.mark.parametrize("pages", [
+    None, {}, [], [None], [{}], [[{}]], [[{"name": None}]],
+    [[{"name": ""}]], [[{"name": "dispatch:done"}], None],
+    [[{"name": "dispatch:done"}], [{"name": "dispatch:ready"}, {}]],
+])
+def test_incomplete_issue_lookup_refuses(tmp_path, issue_label_api, pages, capsys):
+    issue_label_api["pages"][ISSUE] = pages
+    with pytest.raises(RuntimeError, match="refusing"):
+        _live_reconcile(tmp_path)
+    assert issue_label_api["reports"] == []
+    assert "planned:" not in capsys.readouterr().out
+
+
+@pytest.mark.parametrize("visible_in_open_sweep", [False, True])
+def test_unknown_or_unreadable_issue_refuses(
+        tmp_path, issue_label_api, visible_in_open_sweep, capsys):
+    if visible_in_open_sweep:
+        issue_label_api["open"][ISSUE.rsplit("#", maxsplit=1)[1]] = {"dispatch:done"}
+    issue_label_api["errors"].add(ISSUE)
+    with pytest.raises(RuntimeError, match="refusing"):
+        _live_reconcile(tmp_path)
+    assert issue_label_api["reports"] == []
+    assert "planned:" not in capsys.readouterr().out
+
+
+def test_failed_second_issue_refuses_the_whole_plan(tmp_path, issue_label_api):
+    _done(tmp_path, issue=OTHER)
+    issue_label_api["pages"][OTHER] = [[]]
+    issue_label_api["errors"].add(OTHER)
+    with pytest.raises(RuntimeError, match="refusing"):
+        _live_reconcile(tmp_path)
+    assert issue_label_api["reports"] == []
+
+
+def test_recordless_open_issue_sweep_is_preserved(tmp_path, issue_label_api):
+    repo, number = ISSUE.rsplit("#", maxsplit=1)
+    # The synthetic next issue has no record; only discovery can find it.
+    orphan_number = str(int(number) + 1)
+    issue_label_api["open"][orphan_number] = {"dispatch:active"}
+    assert _live_reconcile(tmp_path) == 0
+    report, = issue_label_api["reports"]
+    assert [f.issue for f in report.of_kind(RC.ORPHAN_LABEL)] == [f"{repo}#{orphan_number}"]
+    assert issue_label_api["sweeps"] == [repo]
+    assert report.label_writes == []
+
+
+def test_record_label_lookup_uses_every_page(tmp_path, issue_label_api):
+    issue_label_api["pages"][ISSUE] = [
+        [{"name": "domain:example"}], [{"name": "dispatch:done"}],
+    ]
+    assert _live_reconcile(tmp_path) == 0
+    report, = issue_label_api["reports"]
+    assert [f.issue for f in report.of_kind(RC.IN_SYNC)] == [ISSUE]
+    assert report.label_writes == []
+
+
+def test_record_labels_override_stale_open_discovery(tmp_path, issue_label_api):
+    issue_label_api["open"][ISSUE.rsplit("#", maxsplit=1)[1]] = {"dispatch:ready"}
+    assert _live_reconcile(tmp_path) == 0
+    report, = issue_label_api["reports"]
+    assert report.label_writes == []
+    assert [f.issue for f in report.of_kind(RC.IN_SYNC)] == [ISSUE]
+
+
+def test_live_reconcile_refuses_a_record_missing_from_the_snapshot(
+        tmp_path, issue_label_api, monkeypatch):
+    # A newly visible record must not inherit an authoritative empty label set.
+    monkeypatch.setattr(RC, "fetch_labels", lambda *args, **kwargs: {})
+    with pytest.raises(RuntimeError, match="refusing"):
+        _live_reconcile(tmp_path)
+    assert issue_label_api["reports"] == []
+
+
+def test_record_lookup_respects_each_records_repository(tmp_path, issue_label_api):
+    _done(tmp_path, issue=OTHER)
+    issue_label_api["pages"][OTHER] = [[{"name": "dispatch:done"}]]
+    assert _live_reconcile(tmp_path) == 0
+    report, = issue_label_api["reports"]
+    assert {f.issue for f in report.of_kind(RC.IN_SYNC)} == {ISSUE, OTHER}
+    assert report.label_writes == []
+    assert {call[1] for call in issue_label_api["calls"]} == {
+        f"repos/{issue.replace('#', '/issues/')}/labels" for issue in (ISSUE, OTHER)
+    }
+
+
+@pytest.mark.parametrize("stdout", [
+    "", "not json", "[", "[] trailing", '[{"name":"dispatch:done"}]\n[',
+])
+def test_invalid_paginated_json_refuses(tmp_path, issue_label_api, stdout):
+    issue_label_api["raw"][ISSUE] = stdout
+    with pytest.raises(RuntimeError, match="refusing"):
+        _live_reconcile(tmp_path)
+    assert issue_label_api["reports"] == []
+
+
+def test_issue_transport_failure_refuses(tmp_path, issue_label_api, monkeypatch):
+    def unavailable(*args, **kwargs):
+        raise OSError("issue reader unavailable")
+
+    monkeypatch.setattr(ROUTE, "gh", unavailable)
+    with pytest.raises(RuntimeError, match="refusing"):
+        _live_reconcile(tmp_path)
+    assert issue_label_api["reports"] == []
+
+
 def test_the_cli_dry_run_prints_drift_and_never_calls_gh(tmp_path, trapped, capsys):
     """End to end through argument parsing, which is where a gate gets bypassed."""
     _done(tmp_path)
@@ -1040,6 +1240,10 @@ def test_the_live_repo_cli_path_creates_no_labels(tmp_path, monkeypatch, capsys)
     """
     monkeypatch.setattr(RC, "ensure_labels", _boom)
     monkeypatch.setattr(RC, "existing_labels", _boom)
+    monkeypatch.setattr(
+        ROUTE, "gh", lambda args, **kwargs: subprocess.CompletedProcess(
+            args, returncode=0,
+            stdout=json.dumps([{"name": "dispatch:ready"}]), stderr=""))
     monkeypatch.setattr(ROUTE, "fetch_open_issues",
                         lambda repo: {"1885": {"dispatch:ready"}}, raising=False)
     _done(tmp_path)

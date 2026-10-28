@@ -3,6 +3,7 @@
 import importlib.util
 import json
 import os
+from contextlib import contextmanager
 from datetime import UTC, datetime
 from pathlib import Path
 
@@ -202,6 +203,146 @@ def test_manifest_determinism_and_root_as_given(tmp_path, inventory, monkeypatch
     assert result["schema"] == 1  # README Manifest format defines revision 1.
     assert result["root"] == "tree"
     assert result["generated_utc"] == "2026-01-03T00:00:00Z"
+
+
+@pytest.mark.parametrize(
+    "names",
+    [
+        ("stray file.txt", "nested dir/stray file.txt"),
+        ("stray\tfile.txt", "nested\tdir/stray\tfile.txt"),
+        ("stray\nfile.txt", "nested\ndir/stray\nfile.txt"),
+        ("café.txt", "資料/cafe\u0301.txt"),
+    ],
+    ids=["spaces", "tabs", "newlines", "unicode"],
+)
+def test_inventory_literal_filenames(tmp_path, inventory, names):
+    """Literal names survive; payloads b'ab' and b'cde' give 2+3=5 bytes."""
+    first, second = names
+    for name, payload in ((first, b"ab"), (second, b"cde")):
+        path = tmp_path / name
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_bytes(payload)
+
+    result = inventory.build_manifest(config(tmp_path), clock=lambda: FIXED)
+
+    expected_sizes = {first: 2, second: 3}
+    assert [(row["path"], row["size"]) for row in result["files"]] == sorted(
+        expected_sizes.items()
+    )
+    assert result["totals"]["count"] == 2
+    assert result["totals"]["bytes"] == 5
+    assert result["totals"]["categories"]["document"]["bytes"] == 5
+
+
+@pytest.mark.parametrize(
+    "repos", [[], ["repo"]], ids=["automatic", "declared"]
+)
+def test_inventory_prefix_siblings_are_not_excluded(tmp_path, inventory, repos):
+    """Exact exclusions leave four siblings: b'a'+b'bc'+b'def'+b'ghij'=10 bytes."""
+    (tmp_path / "repo" / ".git").mkdir(parents=True)
+    (tmp_path / "repo" / "hidden.txt").write_bytes(b"excluded repository")
+    (tmp_path / "cache").mkdir()
+    (tmp_path / "cache" / "hidden.txt").write_bytes(b"excluded cache")
+    for directory, payload in (
+        ("cache copy", b"a"),
+        ("cache.old", b"bc"),
+        ("repo copy", b"def"),
+        ("repo.old", b"ghij"),
+    ):
+        (tmp_path / directory).mkdir()
+        (tmp_path / directory / "keep.txt").write_bytes(payload)
+
+    files, repositories = inventory.scan(
+        config(tmp_path, repos=repos, cache_allow=["cache"])
+    )
+
+    assert [(row["path"], row["size"]) for row in files] == [
+        ("cache copy/keep.txt", 1),
+        ("cache.old/keep.txt", 2),
+        ("repo copy/keep.txt", 3),
+        ("repo.old/keep.txt", 4),
+    ]
+    assert sum(row["size"] for row in files) == 10
+    assert repositories == [tmp_path / "repo"]
+
+
+@pytest.mark.parametrize("order", ["reverse", "rotated"])
+def test_inventory_traversal_order_is_stable(tmp_path, inventory, monkeypatch, order):
+    """Reverse and one-position rotation preserve manifests and all tree bytes.
+
+    Five stray payloads have 3+2+2+1+2=10 bytes; excluded bytes do not count.
+    Equal-size files in separate directories also exercise largest-file ties.
+    """
+    root = tmp_path / "tree"
+    root.mkdir()
+    for name, payload in (
+        ("z.txt", b"abc"),
+        ("alpha/b.txt", b"de"),
+        ("alpha/a.txt", b"fg"),
+        ("beta/c.txt", b"h"),
+        ("beta/a.txt", b"ij"),
+        ("cache/hidden.txt", b"excluded cache"),
+    ):
+        path = root / name
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_bytes(payload)
+    for name in ("repo-z", "repo-a"):
+        repo = init_repo(root / name)
+        (repo / "hidden.txt").write_bytes(b"excluded repository")
+    cfg = config(root, cache_allow=["cache"])
+    original_scandir = os.scandir
+
+    def snapshot():
+        return {
+            path.relative_to(root).as_posix(): (
+                None if path.is_dir() else path.read_bytes()
+            )
+            for path in root.rglob("*")
+        }
+
+    def manifest_with_order(permutation):
+        observed = {}
+
+        @contextmanager
+        def controlled_scandir(directory):
+            with original_scandir(directory) as entries:
+                children = sorted(entries, key=lambda entry: entry.name)
+                if permutation == "reverse":
+                    children.reverse()
+                elif permutation == "rotated":
+                    children = children[1:] + children[:1]
+                observed[Path(directory).relative_to(root).as_posix()] = tuple(
+                    entry.name for entry in children
+                )
+                yield iter(children)
+
+        with monkeypatch.context() as patch:
+            patch.setattr(inventory.os, "scandir", controlled_scandir)
+            result = inventory.build_manifest(cfg, clock=lambda: FIXED)
+        return result, observed
+
+    before = snapshot()
+    forward, forward_order = manifest_with_order("forward")
+    assert snapshot() == before
+    varied, varied_order = manifest_with_order(order)
+    assert snapshot() == before
+
+    assert set(forward_order) == set(varied_order) == {".", "alpha", "beta"}
+    assert all(forward_order[path] != varied_order[path] for path in forward_order)
+    assert varied == forward
+    assert json.dumps(varied, ensure_ascii=False) == json.dumps(
+        forward, ensure_ascii=False
+    )
+    assert [(row["path"], row["size"]) for row in forward["files"]] == [
+        ("alpha/a.txt", 2),
+        ("alpha/b.txt", 2),
+        ("beta/a.txt", 2),
+        ("beta/c.txt", 1),
+        ("z.txt", 3),
+    ]
+    assert forward["totals"]["count"] == 5
+    assert forward["totals"]["bytes"] == 10
+    assert [row["path"] for row in forward["repos"]] == ["repo-a", "repo-z"]
 
 
 @pytest.mark.parametrize("threshold,expected", [(0, 1), (1, 0), (2, 0)])

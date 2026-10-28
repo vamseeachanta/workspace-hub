@@ -5,6 +5,12 @@ start, query, or license-check a licensed solver. Python 3.11 or newer is
 required by the repository; the runner uses only standard-library features
 available in Python 3.10 and newer.
 
+## Revision history
+
+| Revision | Date | Change and reason |
+| --- | --- | --- |
+| 1 | 2026-10-20 | Approval storage, numeric validation and crash retry limits are checked before another driver starts. |
+
 ## Folder Layout
 
 The campaign root is selected by `--root`, then `SOLVER_CAMPAIGN_ROOT`, then the
@@ -85,6 +91,13 @@ they do not scan `requested/`, start git, or append approval records.
 
 ## Approval
 
+The campaign root and the resolved `approvals.tsv` target must be outside Git
+checkouts. `run-once` refuses repository-owned locations before creating state,
+lock files or logs. Both ordinary checkouts and linked worktrees are recognized.
+An empty directory named `.git` alone does not establish a checkout. This is a
+placement check, not an operating-system access boundary: the root and its
+contents must be controlled by the maintainer, without concurrent path changes.
+
 A person approves a campaign by adding a line to `approvals.tsv`. Changing a
 manifest changes its digest and requires a new approval line. A line whose
 approval reference is `policy` does not approve anything in this release.
@@ -93,6 +106,33 @@ Approving a manifest approves that manifest only. The driver inherits the
 runner's environment, the registering account's Python user site, and any other
 process state available to that account. Approval of a manifest is not approval
 of those inherited inputs.
+
+## Limits and worked retry example
+
+The source of these state rules is the
+[campaign runner requirement](https://github.com/vamseeachanta/workspace-hub/issues/4066),
+under Approval gate, Resilience and Limits of the runner. No physical equations,
+standards-derived coefficients or engineering acceptance limits are introduced.
+Durations and retry delays must be finite numbers; booleans are refused.
+`retry.max_attempts` must be a positive integer. Licence exit codes must be
+positive integers because zero denotes driver success.
+
+Inputs for a synthetic example are `retry.max_attempts = 2`, a recorded attempt
+count of `2`, no live recorded driver, and an unchanged approved manifest. The
+remaining start budget is calculated as the declared maximum minus recorded
+starts: `2 - 2 = 0`. The next invocation writes `FAILED` with reason
+`attempts-exhausted` and does not start a driver. Completed case files and the
+recorded attempt count remain unchanged. This also applies when the last start
+ended in a crash before a terminal result was written. Below the maximum, the
+existing driver is restarted and remains responsible for skipping completed
+cases. A licence-unavailable exit restores the preceding attempt count and uses
+the existing next-try delay instead.
+
+The regression test `test_exhausted_crash_attempt_is_not_restarted` supplies
+these inputs independently and checks the result and absence of driver output.
+The repository-root and approval-symlink tests compare checkout snapshots before
+and after refusal. Numeric rejection tests use synthetic invalid inputs; they
+are format and state-machine checks, not qualified engineering results.
 
 ## States
 

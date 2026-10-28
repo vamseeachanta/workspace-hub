@@ -18,7 +18,19 @@ mkdir -p "$MB/hub"
 export REPO_ROOT="$MB/hub"
 unset TIER1_REPOS_BASE 2>/dev/null || true
 
-mkdir -p "$MB/hub/nestedrepo/.git" "$MB/siblingrepo/.git" "$MB/hub/emptyrepo"
+# Initialize each fixture independently, even when invoked from a Git hook.
+fixture_git_init() (
+    local bindings name
+    bindings="$(git rev-parse --local-env-vars)" || return 1
+    while IFS= read -r name; do
+        unset "$name" || return 1
+    done <<< "$bindings"
+    git init -q "$1"
+)
+
+mkdir -p "$MB/hub/emptyrepo"
+fixture_git_init "$MB/hub/nestedrepo"
+fixture_git_init "$MB/siblingrepo"
 
 eq "nested layout resolves"   "$(resolve_tier1_repo_path nestedrepo)"  "$MB/hub/nestedrepo"
 eq "sibling layout resolves"  "$(resolve_tier1_repo_path siblingrepo)" "$MB/siblingrepo"
@@ -31,11 +43,12 @@ mkdir -p "$MB/pyrepo"; : > "$MB/pyrepo/pyproject.toml"
 eq "pyproject.toml marker resolves" "$(resolve_tier1_repo_path pyrepo)" "$MB/pyrepo"
 
 # explicit TIER1_REPOS_BASE wins
-mkdir -p "$MB/extbase/basedrepo/.git"
+fixture_git_init "$MB/extbase/basedrepo"
 TIER1_REPOS_BASE="$MB/extbase" eq "TIER1_REPOS_BASE resolves" "$(TIER1_REPOS_BASE="$MB/extbase" resolve_tier1_repo_path basedrepo)" "$MB/extbase/basedrepo"
 
 # both layouts present -> nested-first + stderr warning
-mkdir -p "$MB/hub/dup/.git" "$MB/dup/.git"
+fixture_git_init "$MB/hub/dup"
+fixture_git_init "$MB/dup"
 eq "both-present picks nested" "$(resolve_tier1_repo_path dup 2>/dev/null)" "$MB/hub/dup"
 if resolve_tier1_repo_path dup 2>&1 >/dev/null | grep -q "multiple layouts"; then ok "both-present warns on stderr"; else bad "both-present warns on stderr"; fi
 
