@@ -2,6 +2,10 @@
 
 SHA-256 is defined by FIPS 180-4 (2015), section 6.2. No digest literal is
 treated as a semantic oracle: the fixture accepts only the original source.
+Restoration follows the ``assert_semantic_rejection`` helper contract: restore
+pins even on failure. Restoration digest literals were independently calculated
+with sha256sum over the exact byte fixtures; restored mappings use pre-call values.
+The unrelated sentinel hashes the ASCII word 'unrelated' followed by a newline.
 """
 from __future__ import annotations
 
@@ -58,6 +62,95 @@ def test_helper_repins_restores_and_uses_mutated_bytes(tmp_path, monkeypatch):
     )
     assert pins == before
     assert (tmp_path / "fixture.sh").read_bytes() == b"bypass\n"
+
+
+@pytest.mark.parametrize("error_type", [AssertionError, RuntimeError])
+def test_pin_restored_when_evaluator_raises(tmp_path, monkeypatch, error_type):
+    """An evaluator failure propagates after restoring the entire literal mapping."""
+    source = b"fixture.sh"
+    original = b"allowed\n"
+    mutated = b"bypass\n"
+    # SHA-256 basis and independent digest calculation: module docstring above.
+    before = {
+        b"fixture.sh": "fda0c6dbbd27bb4682f2931877d6c3e6b408e65b07feb9b4c1e9cc29b1a2cda2",
+        b"unrelated.sh": "f641f022503420433a082e885647810297b74db84e34a743976893e73e7e20cc",
+    }
+    refreshed = "d6b3d516f611c5f2000142c5305e48a80683c9cb6f82912b08b741b07a0b8b1a"
+    pins = dict(before)
+    error = error_type("mutated evaluator failure")
+
+    def evaluate(records):
+        if records[source] == original:
+            assert pins == before
+            return "accepted"
+        assert records == {source: mutated}
+        assert pins == {**before, source: refreshed}
+        raise error
+
+    with pytest.raises(error_type, match="mutated evaluator failure") as caught:
+        assert_semantic_rejection(
+            tmp_path, monkeypatch, source, original, lambda _body: mutated,
+            pins, evaluate, "source-shape",
+        )
+    assert caught.value is error
+    assert pins == before
+
+
+@pytest.mark.parametrize("error_type", [AssertionError, RuntimeError])
+def test_nested_repin_restores_outer_pin(tmp_path, monkeypatch, error_type):
+    """Inner failure restores the active outer pin; outer failure restores all pins."""
+    outer_source = b"outer.sh"
+    inner_source = b"inner.sh"
+    outer_original = b"allowed\n"
+    outer_mutated = b"bypass\n"
+    inner_original = b"inner allowed\n"
+    inner_mutated = b"inner bypass\n"
+    # SHA-256 basis and independent digest calculation: module docstring above.
+    before = {
+        b"outer.sh": "fda0c6dbbd27bb4682f2931877d6c3e6b408e65b07feb9b4c1e9cc29b1a2cda2",
+        b"inner.sh": "1ef73706bb2e4f2cdd354b7858ae1d8cee39bff14a20b319ba517b2530bc0177",
+        b"unrelated.sh": "f641f022503420433a082e885647810297b74db84e34a743976893e73e7e20cc",
+    }
+    outer_digest = "d6b3d516f611c5f2000142c5305e48a80683c9cb6f82912b08b741b07a0b8b1a"
+    inner_digest = "b788d43988bf806372f01ff1639d161517faafe0716db4b02051d1c17a625f56"
+    pins = dict(before)
+    inner_error = error_type("inner evaluator failure")
+    outer_error = error_type("outer evaluator failure")
+
+    def evaluate_outer(records):
+        if records[outer_source] == outer_original:
+            assert pins == before
+            return "accepted"
+        assert records == {outer_source: outer_mutated}
+        assert pins == {**before, outer_source: outer_digest}
+        outer_refreshed = pins[outer_source]
+        outer_pins = dict(pins)
+
+        def evaluate_inner(inner_records):
+            if inner_records[inner_source] == inner_original:
+                assert pins == outer_pins
+                return "accepted"
+            assert inner_records == {inner_source: inner_mutated}
+            assert pins == {**outer_pins, inner_source: inner_digest}
+            raise inner_error
+
+        with pytest.raises(error_type, match="inner evaluator failure") as caught_inner:
+            assert_semantic_rejection(
+                tmp_path, monkeypatch, inner_source, inner_original,
+                lambda _body: inner_mutated, pins, evaluate_inner, "source-shape",
+            )
+        assert caught_inner.value is inner_error
+        assert pins == outer_pins
+        assert pins[outer_source] == outer_refreshed
+        raise outer_error
+
+    with pytest.raises(error_type, match="outer evaluator failure") as caught_outer:
+        assert_semantic_rejection(
+            tmp_path, monkeypatch, outer_source, outer_original,
+            lambda _body: outer_mutated, pins, evaluate_outer, "source-shape",
+        )
+    assert caught_outer.value is outer_error
+    assert pins == before
 
 
 def test_noop_mutation_is_rejected(tmp_path, monkeypatch):
