@@ -209,6 +209,63 @@ Revisions made based on review:
 
 ---
 
+## Retention
+
+<!-- Replace #NNN with this plan's issue reference. Record the current issue
+     state and an explicit closure date; an open issue has no fixed expiry. -->
+
+**Basis:** [Boundary policy, Section 8.1](../document-intelligence/durable-vs-transient-knowledge-boundary.md#81-retention-schedule)
+(#2209): plan files are retained for the issue lifetime plus 30 days, then
+intended for archive. These counts are **advisory pending #2237**; no conformance
+check should enforce them as hard failures. The lifecycle trigger is issue
+closure; reopening the issue removes the fixed archive-eligibility date.
+Eligibility does not authorize deletion or perform an archive operation.
+
+Plan files are distinct from governance markers: `.planning/plan-approved/`
+and `.planning/verified/` remain **permanent for closed issues** under the same
+policy. The plan calculation below does not apply to those markers.
+
+Synthetic metadata example (the closure date is illustrative, not a live issue):
+
+```json
+{
+  "issue": "#NNN",
+  "artifact_class": "plan",
+  "issue_state": "closed",
+  "closed_on": "2024-01-31",
+  "retention_days": 30,
+  "retention_basis": "../document-intelligence/durable-vs-transient-knowledge-boundary.md#81-retention-schedule",
+  "retention_status": "advisory",
+  "disposition": "archive"
+}
+```
+
+Load the JSON above with `metadata = json.loads(...)` using the standard-library
+`json` module, then run this standard-library Python example. The 30-day value
+comes from the cited plan-files row, not a separate retention rule.
+
+```python
+from datetime import date, timedelta
+
+
+def plan_archive_eligible_on(metadata):
+    if metadata["issue_state"] != "closed" or metadata["closed_on"] is None:
+        return None
+    closed_on = date.fromisoformat(metadata["closed_on"])
+    return (closed_on + timedelta(days=metadata["retention_days"])).isoformat()
+
+
+archive_eligible_on = plan_archive_eligible_on(metadata)
+```
+
+The synthetic result is `"2024-03-01"`: after January ends, February contributes
+29 days in this leap year and March contributes one day. For an open issue,
+use `"issue_state": "open"` and `"closed_on": null`; the result is `None`,
+with no fixed expiry. A reopened issue also returns `None` even if a previous
+closure date remains in the metadata.
+
+---
+
 ## Risks and Open Questions
 
 - **Risk:** X depends on Y which is not yet implemented — verify Y exists before starting
