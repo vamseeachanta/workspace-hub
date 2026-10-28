@@ -255,6 +255,87 @@ def _rewrite_manifest(path, edit):
     path.write_text(json.dumps(saved), encoding="utf-8")
 
 
+@pytest.fixture
+def saved_nested_schema_manifest(tmp_path):
+    """Synthetic JSON example: object keys are unordered; nested arrays are ordered.
+
+    Only repo/workflow collections have identity-based order independence.
+    The unit numeric enum value equals True in Python, but JSON scalar types
+    differ. The response enum declares first before second by construction.
+    REG_V1 contributes the sole workflow (index zero); versions come from it.
+    Fresh/stale exit values follow docs/guides/workflow-manifest-freshness.md.
+    """
+    registry_text = REG_V1 + """\
+    request_schema:
+      type: object
+      properties:
+        amount:
+          type: number
+          enum: [1]
+    response_schema:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [first, second]
+"""
+    repo = _make_repo(tmp_path, "repoA", registry_text)
+    registry = repo / "docs" / "registry" / "workflows.yaml"
+    source_bytes = registry.read_bytes()
+    path = tmp_path / "manifest.json"
+    resolve = _resolver_for(tmp_path)
+    gm.write_manifest(path, slugs=["repoA"], resolve=resolve)
+    recorded_repos = json.loads(path.read_text(encoding="utf-8"))["repos"]
+    assert gm.check_stale(path, slugs=["repoA"], resolve=resolve) == 0
+    yield path, resolve
+    assert registry.read_bytes() == source_bytes
+    assert json.loads(path.read_text(encoding="utf-8"))["repos"] == recorded_repos
+
+
+def test_nested_schema_scalar_type_change_is_stale(saved_nested_schema_manifest, capsys):
+    path, resolve = saved_nested_schema_manifest
+
+    def edit(saved):
+        amount = saved["workflows"][0]["request_schema"]["properties"]["amount"]
+        amount["enum"][0] = True
+
+    _rewrite_manifest(path, edit)
+    assert gm.check_stale(path, slugs=["repoA"], resolve=resolve) == 1
+    assert capsys.readouterr().err == "STALE: discovery content differs from current registries\n"
+
+
+def test_nested_schema_array_order_change_is_stale(saved_nested_schema_manifest, capsys):
+    path, resolve = saved_nested_schema_manifest
+
+    def edit(saved):
+        status = saved["workflows"][0]["response_schema"]["properties"]["status"]
+        status["enum"].reverse()
+
+    _rewrite_manifest(path, edit)
+    assert gm.check_stale(path, slugs=["repoA"], resolve=resolve) == 1
+    assert capsys.readouterr().err == "STALE: discovery content differs from current registries\n"
+
+
+def test_nested_schema_object_key_order_is_fresh(saved_nested_schema_manifest, capsys):
+    path, resolve = saved_nested_schema_manifest
+
+    def reverse_object_keys(value):
+        if isinstance(value, dict):
+            return {key: reverse_object_keys(item) for key, item in reversed(value.items())}
+        if isinstance(value, list):
+            return [reverse_object_keys(item) for item in value]
+        return value
+
+    def edit(saved):
+        workflow = saved["workflows"][0]
+        for field in ("request_schema", "response_schema"):
+            workflow[field] = reverse_object_keys(workflow[field])
+
+    _rewrite_manifest(path, edit)
+    assert gm.check_stale(path, slugs=["repoA"], resolve=resolve) == 0
+    assert capsys.readouterr().err == ""
+
+
 @pytest.mark.parametrize("field,value", [
     ("input", "examples/replaced.yml"),
     ("invocation", "unexpected {input}"),
