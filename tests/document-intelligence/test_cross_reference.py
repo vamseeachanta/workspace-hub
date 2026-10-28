@@ -8,6 +8,7 @@ Issue: #1613
 """
 
 import copy
+from itertools import permutations
 from pathlib import Path
 
 import pytest
@@ -215,6 +216,162 @@ class TestMatchingAlgorithm:
         matched_online_ids = {m["online_id"] for m in matches}
         assert "dnv_rp_c205" in matched_online_ids
         assert "api_rp_2sk" in matched_online_ids
+
+
+@pytest.fixture
+def exact_title_score():
+    """Hand calculation: identical 'alpha guide' has 11 matching characters.
+
+    The similarity is matching characters / identical string length = 11 / 11.
+    This also gives the exact acceptance boundary without using the matcher.
+    """
+    normalized_title = "alpha guide"
+    matching_characters = len(normalized_title)
+    return matching_characters / len(normalized_title)
+
+
+class TestSyntheticMappingInvariants:
+    """Exercise mappings with fresh literal data and independent expected sets."""
+
+    @pytest.mark.parametrize(
+        "online_ids, expected_pairs, expected_matched_online_ids",
+        [
+            (
+                ("online_a", "online_b"),
+                {("online_a", "ledger_a")},
+                {"online_a"},
+            ),
+            (
+                ("online_b", "online_a"),
+                {("online_b", "ledger_a")},
+                {"online_b"},
+            ),
+        ],
+    )
+    def test_competing_exact_matches_use_ledger_once(
+        self, exact_title_score, online_ids, expected_pairs,
+        expected_matched_online_ids,
+    ):
+        mod = _import_cross_ref()
+        online = [
+            {"id": entry_id, "name": " ALPHA-Guide "}
+            for entry_id in online_ids
+        ]
+        ledger = [{"id": "ledger_a", "title": "alpha guide"}]
+
+        assert mod.title_similarity(" ALPHA-Guide ", "alpha guide") == exact_title_score
+        matches = mod.find_matches(online, ledger, threshold=exact_title_score)
+
+        assert len(matches) == len(expected_pairs)
+        assert {(m["online_id"], m["ledger_id"]) for m in matches} == expected_pairs
+        assert [m["ledger_id"] for m in matches] == ["ledger_a"]
+        assert {m["similarity"] for m in matches} == {exact_title_score}
+        expected_online_only = {"online_a", "online_b"} - expected_matched_online_ids
+        expected_local_only = {"ledger_a"} - {"ledger_a"}
+        assert {
+            e["id"] for e in mod.find_online_only(online, matches)
+        } == expected_online_only
+        assert {
+            e["id"] for e in mod.find_local_only(ledger, matches)
+        } == expected_local_only
+
+    def test_disjoint_exact_matches_are_order_independent(self, exact_title_score):
+        mod = _import_cross_ref()
+        online = [
+            {"id": "online_a", "name": " ALPHA-Guide "},
+            {"id": "online_b", "name": "BETA_Notes"},
+            {"id": "online_gap", "name": "gamma checklist"},
+        ]
+        ledger = [
+            {"id": "ledger_b", "title": "beta notes"},
+            {"id": "ledger_gap", "title": "delta handbook"},
+            {"id": "ledger_a", "title": "alpha guide"},
+        ]
+        # Hand calculation for the other exact pair: 'beta notes' gives 10 / 10.
+        expected_pairs = {("online_a", "ledger_a"), ("online_b", "ledger_b")}
+        expected_online_only = {
+            "online_a", "online_b", "online_gap",
+        } - {"online_a", "online_b"}
+        expected_local_only = {
+            "ledger_a", "ledger_b", "ledger_gap",
+        } - {"ledger_a", "ledger_b"}
+
+        for online_order in permutations(online):
+            for ledger_order in permutations(ledger):
+                matches = mod.find_matches(
+                    list(online_order), list(ledger_order), threshold=exact_title_score,
+                )
+                assert len(matches) == len(expected_pairs)
+                assert {
+                    (m["online_id"], m["ledger_id"]) for m in matches
+                } == expected_pairs
+                assert {m["similarity"] for m in matches} == {exact_title_score}
+                assert {
+                    e["id"] for e in mod.find_online_only(online_order, matches)
+                } == expected_online_only
+                assert {
+                    e["id"] for e in mod.find_local_only(ledger_order, matches)
+                } == expected_local_only
+
+    @pytest.mark.parametrize("empty_side", ["online", "ledger", "both"])
+    def test_empty_registry_side(self, exact_title_score, empty_side):
+        mod = _import_cross_ref()
+        online = [] if empty_side in {"online", "both"} else [
+            {"id": "online_a", "name": "alpha guide"},
+        ]
+        ledger = [] if empty_side in {"ledger", "both"} else [
+            {"id": "ledger_a", "title": "alpha guide"},
+        ]
+        expected_online_ids = set() if empty_side in {"online", "both"} else {"online_a"}
+        expected_ledger_ids = set() if empty_side in {"ledger", "both"} else {"ledger_a"}
+        expected_matched_ids = set()
+
+        matches = mod.find_matches(online, ledger, threshold=exact_title_score)
+
+        assert matches == []
+        assert {
+            e["id"] for e in mod.find_online_only(online, matches)
+        } == expected_online_ids - expected_matched_ids
+        assert {
+            e["id"] for e in mod.find_local_only(ledger, matches)
+        } == expected_ledger_ids - expected_matched_ids
+
+    def test_matching_does_not_mutate_inputs(self, exact_title_score):
+        mod = _import_cross_ref()
+        online = [
+            {"id": "online_gap", "name": "gamma checklist", "tags": ["draft"]},
+            {"id": "online_a", "name": " ALPHA-Guide ", "tags": ["ready"]},
+        ]
+        ledger = [
+            {
+                "id": "ledger_gap", "title": "delta handbook",
+                "details": {"state": "draft"},
+            },
+            {
+                "id": "ledger_a", "title": "alpha guide",
+                "details": {"state": "ready"},
+            },
+        ]
+        original_online = copy.deepcopy(online)
+        original_ledger = copy.deepcopy(ledger)
+        expected_pairs = {("online_a", "ledger_a")}
+        expected_online_only = {"online_gap", "online_a"} - {"online_a"}
+        expected_local_only = {"ledger_gap", "ledger_a"} - {"ledger_a"}
+
+        matches = mod.find_matches(online, ledger, threshold=exact_title_score)
+
+        assert len(matches) == len(expected_pairs)
+        assert {(m["online_id"], m["ledger_id"]) for m in matches} == expected_pairs
+        assert online == original_online
+        assert ledger == original_ledger
+        assert {
+            e["id"] for e in mod.find_online_only(online, matches)
+        } == expected_online_only
+        assert {
+            e["id"] for e in mod.find_local_only(ledger, matches)
+        } == expected_local_only
+        assert online == original_online
+        assert ledger == original_ledger
 
 
 class TestGapDetection:
