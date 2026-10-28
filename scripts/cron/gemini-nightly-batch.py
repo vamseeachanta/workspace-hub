@@ -51,11 +51,11 @@ def log(msg: str, level: str = "INFO") -> None:
     print(f"[gemini-batch] {ts} {level}: {msg}", flush=True)
 
 
-def run_cmd(cmd: str, check: bool = True, capture: bool = True) -> subprocess.CompletedProcess:
-    """Run a shell command with error handling."""
+def run_cmd(cmd: list[str], check: bool = True, capture: bool = True) -> subprocess.CompletedProcess:
+    """Run an argument list without a shell, with error handling."""
     result = subprocess.run(
         cmd,
-        shell=True,
+        shell=False,
         capture_output=capture,
         text=True,
         cwd=WORKSPACE_HUB,
@@ -71,10 +71,11 @@ def fetch_gemini_issues() -> list[dict]:
     labels = ["ai:agy", "agent:agy", "agent:gemini"]
     by_number: dict[int, dict] = {}
     for label in labels:
-        cmd = (
-            f'gh issue list --label "{label}" --state open '
-            '--json number,title,labels,body,createdAt --limit 50'
-        )
+        cmd = [
+            "gh", "issue", "list", "--label", label, "--state", "open",
+            # Preserve the existing issue-list limit.
+            "--json", "number,title,labels,body,createdAt", "--limit", "50",
+        ]
         result = run_cmd(cmd)
         if result.returncode != 0:
             log(f"Failed to fetch issues for {label} from GitHub", "ERROR")
@@ -185,7 +186,7 @@ def process_local_issue(issue: dict, dry_run: bool = False) -> dict:
         )
 
     # Post comment
-    comment_cmd = f'gh issue comment {number} -b "{triage_comment}"'
+    comment_cmd = ["gh", "issue", "comment", str(number), "-b", triage_comment]
     result = run_cmd(comment_cmd, check=False)
 
     return {
@@ -220,7 +221,7 @@ def process_router_issue(issue: dict, dry_run: bool = False) -> dict:
         f"- Task prompt prepared in /tmp/gemini-task-{number}.txt\n"
     )
 
-    comment_cmd = f'gh issue comment {number} -b "{triage_comment}"'
+    comment_cmd = ["gh", "issue", "comment", str(number), "-b", triage_comment]
     result = run_cmd(comment_cmd, check=False)
 
     return {
