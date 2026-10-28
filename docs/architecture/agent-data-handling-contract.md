@@ -98,28 +98,39 @@ format or regenerated download does not replace the original received evidence.
 Vendor-licensed codes and standards follow the maintainer ruling of 28 Oct 2026 in
 [`codes-standards-data-routing.md`](../../.claude/rules/codes-standards-data-routing.md):
 agents read, quote, extract and use them without rights checks or a metadata-only
-limit; originals and extracted tables may be kept in private Git or on `/mnt/ace`
-(storage residency `private_git`, `licensed_location` or `external`, never
+limit; originals and extracted tables may be kept in private Git or in
+private storage outside Git (storage residency `private_git`, `licensed_location`
+or `external`, never
 `public_git`). Public repositories and pages carry clause citations, quoted
 criteria and reconstructed charts, never the original PDFs or whole sections.
 
-If rights, terms or storage limits prevent required private-original retention,
-ingest acceptance remains blocked pending an explicit owner decision. Do not
-silently substitute off-repository storage or weaken the licensed-original
-exclusion. The [residence policy](../DATA_RESIDENCE_POLICY.md) regeneration and
+If rights, terms or storage limits prevent required client-supplied or measured
+private-original retention, ingest acceptance remains blocked pending an explicit
+maintainer decision. Do not
+silently substitute off-repository storage for those originals. The
+[residence policy](../DATA_RESIDENCE_POLICY.md) regeneration and
 size rules apply only after this required-original exception is evaluated.
 Received originals are exempt from the lean data-placement rule; that rule
 applies to derived, generated and regenerable files after the original-retention
 requirement is satisfied.
 
-For original-retention observations, `storage.retention_status` is `retained`
-or `required_pending`. Pending records expose blocked ingest; they do not satisfy
+For client-supplied and measured original-retention observations,
+`storage.retention_status` is `retained` or `required_pending`.
+Pending records expose blocked ingest; they do not satisfy
 retention, and cannot claim ready. Retained originals require private Git, a raw
 SHA-256 and narrow ignore evidence. `<dataset>` is one path segment in this
 private-project convention, not the public-collection directory layout.
 The sole raw-manifest reference is `manifest.locator` with `manifest.revision`;
-no second storage manifest pointer is needed. A licensed original's edition is
-`resource.source_version`; it may not reside in public Git.
+no second storage manifest pointer is needed. These private-raw retention
+requirements apply only to `client_original` and `measured_original`.
+Licensed originals require `storage.source_ref` and may reside in `private_git`,
+`licensed_location` or `external` storage, including when marked `retained`,
+without `storage.raw_path`, `storage.raw_digest` or `storage.ignore_exception`.
+A licensed original's edition is `resource.source_version`.
+Licensed derivatives use the same three storage residencies and require nonempty
+lineage in both `resource.derived_from` and `stable_projection.derived_from`
+when ready. Both licensed source classes reject `public_git` and `unavailable`
+storage residency in every readiness state.
 
 Storage, ownership, transformation rights and publication authorization are
 separate decisions. Public destinations require source-specific rights and
@@ -146,11 +157,21 @@ Sidecar OCR does not change source identity; rewritten source bytes do. Source
 identity and derived-output integrity hashes must retain their distinct scopes.
 
 Required observation groups include owner-relative manifest locator/revision,
-rights evidence and allowed operations/destinations, access status, timestamps,
-source vintage, freshness criterion, qualification evidence and limitations.
+access status, timestamps, source vintage, freshness criterion, qualification
+evidence and limitations. Other source classes also require a `rights` record
+containing status, evidence, operations, destinations, check time and expiry.
+For `licensed_standard_original` and `licensed_standard_derivative` held in the
+three permitted private storage residencies, the entire `rights` record and each
+of its fields are optional. Supplied fields retain their schema types, but no
+rights status, evidence, operation/destination eligibility, check time or expiry
+gates internal use or readiness. Both twelve-field projections still include
+`rights_revision`, which may use the unknown sentinel for these licensed classes
+even when ready. For other ready source classes it must be a substantive string.
 `readiness_status` is `unverified | partial | ready | unavailable`.
-A `ready` claim requires known catalog identity, source-specific rights, available
-access, qualified units, governing intended-use criterion and inspection evidence.
+A `ready` claim requires known catalog identity, available access, qualified
+units, governing intended-use criterion and inspection evidence. Source-specific
+rights requirements apply only to other source classes: permitted status,
+substantive evidence, known expiry and nonempty operations and destinations.
 Catalog presence or a promoted summary alone is insufficient. Validators shall enable format assertions with `jsonschema[format-nongpl]`
 (or an equivalent RFC3339 checker); missing format support is a validation error.
 Schema validation
@@ -159,16 +180,18 @@ field equality or evidence integrity; the live consumer must verify those facts.
 
 `source_vintage` is distinct from retrieval/verification time. Refreshing a stale
 observation does not qualify the source. Compare RFC3339 instants: source_vintage
-<= observed_at <= as_of; verified_at and rights.checked_at <= as_of; both rights
-and freshness valid_until > as_of. A future observation is not current evidence. Unreachable sources may retain useful
-limited-purpose derivatives, with limitations, but cannot bypass current rights,
-access, intended-use or freshness checks. Unknown required dependencies deny reuse.
+<= observed_at <= as_of; verified_at <= as_of; freshness.valid_until > as_of.
+For source classes other than licensed standards held privately, also require
+rights.checked_at <= as_of and rights.valid_until > as_of. A future observation
+is not current evidence. Unreachable sources may retain useful limited-purpose
+derivatives, with limitations, but cannot bypass access, intended-use, freshness
+or applicable rights checks. Unknown required dependencies deny reuse.
 
 Unknown scalar evidence uses `{"state":"unknown","reason":"..."}`;
 inapplicable identity/unit evidence uses
 `{"state":"not_applicable","reason":"..."}`. Reasons must be nonempty.
 True zero is numerical, outside this string-valued projection; it is not unknown.
-Inapplicable values cannot replace content digests or rights evidence. The separate
+Inapplicable values cannot replace content digests or required rights evidence. The separate
 `digest_scope` literals `unknown` and `not-applicable` deny content-bearing reuse.
 
 ## Stable projection and shared conformance contract
@@ -195,8 +218,11 @@ leaves are rejected. Ordered observation arrays retain order; set arrays
 `resource_descriptor_sha256` hashes the complete normalized descriptor observation
 including its projection, with neither output hash embedded in that observation.
 `resource_stable_sha256` hashes only the stable projection. A changed observation
-time changes the first digest, not the second. Changed rights/source/criteria
-revision or failed current eligibility invalidates affected reuse.
+time changes the first digest, not the second. Changed source/criteria revisions,
+applicable rights revisions or failed current eligibility invalidate affected
+reuse. Optional rights metadata remains part of the descriptor hash, and
+`rights_revision` remains part of the stable projection hash for every class;
+neither hash establishes a rights requirement for licensed standards held privately.
 
 The sole planned production canonicalizer is workflow-owned
 `scripts/governance/workflow_receipt.py`; it is not implemented by this slice.

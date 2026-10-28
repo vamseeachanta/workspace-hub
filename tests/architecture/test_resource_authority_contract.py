@@ -18,6 +18,8 @@ FIELDS = {
 STAMP = "2026-09-12T12:00:00Z"
 UNKNOWN = {"state": "unknown", "reason": "not inspected"}
 NA = {"state": "not_applicable", "reason": "not a document"}
+LICENSED_CLASSES = ["licensed_standard_original", "licensed_standard_derivative"]
+PRIVATE_RESIDENCIES = ["private_git", "licensed_location", "external"]
 
 
 def descriptor():
@@ -61,6 +63,107 @@ def assign(obj, path, value):
     for part in parts[:-1]:
         obj = obj[part]
     obj[parts[-1]] = value
+
+
+def licensed_descriptor(source_class, residency="external"):
+    item = descriptor()
+    item["source_class"] = source_class
+    item["storage"] = {"residency": residency}
+    if source_class == "licensed_standard_original":
+        item["storage"]["source_ref"] = "fixture:licensed-location"
+    else:
+        for key in ("resource", "stable_projection"):
+            item[key]["derived_from"] = ["sha256:" + "c" * 64]
+    return item
+
+
+@pytest.mark.parametrize("source_class", LICENSED_CLASSES)
+@pytest.mark.parametrize("readiness", ["unverified", "partial", "ready", "unavailable"])
+@pytest.mark.parametrize("residency", PRIVATE_RESIDENCIES + ["public_git", "unavailable"])
+def test_licensed_private_storage_needs_no_rights_record(source_class, readiness, residency):
+    item = licensed_descriptor(source_class, residency)
+    item["readiness_status"] = readiness
+    del item["rights"]
+    for key in ("resource", "stable_projection"):
+        item[key]["rights_revision"] = deepcopy(UNKNOWN)
+    assert validator().is_valid(item) == (residency in PRIVATE_RESIDENCIES)
+
+
+@pytest.mark.parametrize("source_class", LICENSED_CLASSES)
+@pytest.mark.parametrize("path,value", [
+    ("rights", {}), ("rights.status", "unknown"), ("rights.status", "denied"),
+    ("rights.evidence_ref", UNKNOWN), ("rights.valid_until", UNKNOWN),
+    ("rights.valid_until", "2020-01-01T00:00:00Z"),
+    ("rights.operations", []), ("rights.destinations", []),
+])
+def test_optional_licensed_rights_metadata_does_not_gate_ready(source_class, path, value):
+    item = licensed_descriptor(source_class)
+    assign(item, path, deepcopy(value))
+    validator().validate(item)
+
+
+@pytest.mark.parametrize("source_class", LICENSED_CLASSES)
+@pytest.mark.parametrize("path,value", [
+    ("verified_at", UNKNOWN), ("access_status", "partial"),
+    ("manifest.revision", UNKNOWN), ("freshness.source_vintage", UNKNOWN),
+    ("freshness.valid_until", UNKNOWN), ("freshness.basis", UNKNOWN),
+    ("qualification.criterion", UNKNOWN), ("qualification.evidence_ref", UNKNOWN),
+    ("qualification.catalog_resolution", "unknown"), ("source_status", "unreachable"),
+    ("resource.content_digest", UNKNOWN), ("stable_projection.content_digest", UNKNOWN),
+    ("resource.units.ratio", UNKNOWN), ("stable_projection.units.ratio", UNKNOWN),
+    ("resource.intended_use", UNKNOWN), ("stable_projection.intended_use", UNKNOWN),
+    ("resource.criteria_revision", UNKNOWN), ("stable_projection.criteria_revision", UNKNOWN),
+    ("resource.derived_from", UNKNOWN), ("stable_projection.derived_from", UNKNOWN),
+])
+def test_licensed_exception_preserves_engineering_qualification(source_class, path, value):
+    item = licensed_descriptor(source_class)
+    del item["rights"]
+    # Establish an otherwise valid descriptor before testing each independent guard.
+    validator().validate(item)
+    assign(item, path, deepcopy(value))
+    assert list(validator().iter_errors(item)), path
+
+
+@pytest.mark.parametrize("source_class", [
+    "public_collection", "curated_knowledge", "computational_derivative",
+    "client_original", "measured_original",
+])
+@pytest.mark.parametrize("missing", ["rights", "status", "evidence_ref", "valid_until"])
+def test_other_source_classes_still_require_rights(source_class, missing):
+    item = descriptor()
+    item["source_class"] = source_class
+    if source_class in {"client_original", "measured_original"}:
+        item["storage"] = {
+            "residency": "private_git", "raw_path": "data/fixture/raw/input.zip",
+            "raw_digest": "sha256:" + "b" * 64, "retention_status": "retained",
+            "ignore_exception": True,
+        }
+    validator().validate(item)
+    if missing == "rights":
+        del item["rights"]
+    else:
+        del item["rights"][missing]
+    assert list(validator().iter_errors(item)), missing
+
+
+@pytest.mark.parametrize("source_class", ["client_original", "measured_original"])
+@pytest.mark.parametrize("residency", PRIVATE_RESIDENCIES)
+def test_retained_client_and_measured_originals_require_private_raw_evidence(source_class, residency):
+    item = descriptor()
+    item.update(source_class=source_class, readiness_status="unverified")
+    item["storage"] = {
+        "residency": residency, "source_ref": "fixture:source", "retention_status": "retained",
+    }
+    assert list(validator().iter_errors(item))
+
+
+@pytest.mark.parametrize("residency", PRIVATE_RESIDENCIES)
+def test_retained_licensed_original_needs_source_reference_without_private_raw_evidence(residency):
+    item = licensed_descriptor("licensed_standard_original", residency)
+    item["storage"]["retention_status"] = "retained"
+    validator().validate(item)
+    del item["storage"]["source_ref"]
+    assert list(validator().iter_errors(item))
 
 
 def test_valid_synthetic_descriptor():
