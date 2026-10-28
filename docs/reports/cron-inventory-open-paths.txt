@@ -1,0 +1,1687 @@
+OPEN
+
+.agents/skills/_archive/engineering/workflows/gmsh-openfoam-orcaflex/quick-invocation/SKILL.md
+.agents/skills/ai/durable-provider-throughput-dispatch/SKILL.md
+.agents/skills/ai/hermes-model-switching/SKILL.md
+.agents/skills/ai/provider-[term removed]-quota-operations/references/workstation-aware-provider-orchestration.md
+.agents/skills/coordination/[host removed]-control-surface/SKILL.md
+.agents/skills/coordination/comprehensive-learning-wrapper/SKILL.md
+.agents/skills/coordination/issue-planning-mode/references/per-machine-repo-placement-outcome-contract.md
+.agents/skills/coordination/licensed-machine-prompt-orchestration/SKILL.md
+.agents/skills/coordination/memory-bridge-operation/SKILL.md
+.agents/skills/coordination/overnight-worktree-agent-waves/SKILL.md
+.agents/skills/coordination/workstation-aware-provider-orchestration/SKILL.md
+.agents/skills/data/document-index-pipeline/SKILL.md
+.agents/skills/data/documents/pdf/SKILL.md
+.agents/skills/data/engineering/orcaflex-enrichment/SKILL.md
+.agents/skills/data/excel-workbook-to-python-cowork/SKILL.md
+.agents/skills/data/excel-workbook-to-python-v2/SKILL.md
+.agents/skills/data/office/xlsx-to-python/SKILL.md
+.agents/skills/devops/agent-learnings-portability/SKILL.md
+.agents/skills/devops/hermes-ecosystem-integration/SKILL.md
+.agents/skills/devops/hermes-local-configuration/references/hermes-windows-setup.md
+.agents/skills/devops/hermes-windows-setup/SKILL.md
+.agents/skills/email/gmail-headless-oauth/SKILL.md
+.agents/skills/email/gmail-operations/references/gmail-headless-oauth.md
+.agents/skills/github/engineering-solver-domain-recon/SKILL.md
+.agents/skills/github/github-issue-lifecycle-operations/references/gh-work-execution.md
+.agents/skills/github/issue-portfolio-triage/SKILL.md
+.agents/skills/operations/automation/cron-job-management/SKILL.md
+.agents/skills/operations/devops/perf-tuning/SKILL.md
+.agents/skills/software-development/gh-work-execution/SKILL.md
+.agents/skills/software-development/gsd-operational-audit/SKILL.md
+.agents/skills/workspace-hub/comprehensive-learning/SKILL.md
+.agents/skills/workspace-hub/comprehensive-learning/references/pipeline-detail.md
+.agents/skills/workspace-hub/digitalmodel-orcawave-orcaflex-workflow/SKILL.md
+.agents/skills/workspace-hub/ecosystem-terminology/SKILL.md
+.agents/skills/workspace-hub/orcawave-orcaflex-readiness-audit/SKILL.md
+.agents/skills/workspace-hub/remote-desktop/SKILL.md
+.claude/_archive/2026-10-09-l8/.claude/skills/business-marketing/deckhand-api-presence-sync/SKILL.md
+.claude/_archive/2026-10-09-l8/.claude/skills/software-development/multi-machine-ai-readiness-and-issue-triage/references/baseline-inventory-first.md
+.claude/agents/cfd-[term removed]-operator.md
+.claude/agents/orcaflex-specialist.md
+.claude/commands/reconcile-ecosystem.md
+.claude/commands/whats-next.md
+.claude/dispatch/_leader-state.yaml
+.claude/dispatch/[host removed].yaml
+.claude/dispatch/[host removed].yaml
+.claude/dispatch/[host removed].yaml
+.claude/dispatch/[host removed].yaml
+.claude/dispatch/[host removed].yaml
+.claude/dispatch/records/[host removed]-deckhand#33.json
+.claude/dispatch/records/[host removed]-workspace-hub#3757.json
+.claude/dispatch/records/[host removed]-workspace-hub#3759.json
+.claude/docs/archive-horizon-followups.md
+.claude/docs/file-structure-skills-map.md
+.claude/docs/multi-machine-setup.md
+.claude/docs/permission-model.md
+.claude/docs/permissions-extend.md
+.claude/docs/roadmap-2026-h1.md
+.claude/memory/KNOWLEDGE.md
+.claude/memory/agents.md
+.claude/memory/claude-auto-memory.md
+.claude/memory/context.md
+.claude/memory/kanban/SCHEMA.yaml
+.claude/memory/kanban/manifest.yaml
+.claude/memory/kanban/routing-rules.yaml
+.claude/memory/templates/agents-template.md
+.claude/memory/topics/INDEX.md
+.claude/memory/topics/ai-orchestration.md
+.claude/memory/topics/cfd-execution-box.md
+.claude/memory/topics/feedback_3provider_review_wrappers_env_workarounds.md
+.claude/memory/topics/feedback_claude_desktop_agent_mode_embeds_cli.md
+.claude/memory/topics/feedback_codex_bootstrap_untracked_sed_origin.md
+.claude/memory/topics/feedback_codex_sandbox_write_blocked.md
+.claude/memory/topics/feedback_dev_primary_equality_green_is_self_healing.md
+.claude/memory/topics/feedback_dispatch_deterministic_scripts_only.md
+.claude/memory/topics/feedback_equality_wedge_vs_drift_recovery.md
+.claude/memory/topics/feedback_fetch_remote_before_resolving_issue.md
+.claude/memory/topics/feedback_g1_landing_worktree_destruction_and_push_gate.md
+.claude/memory/topics/feedback_machine_identity_is_logical_alias_565.md
+.claude/memory/topics/feedback_merge_is_not_done_until_branch_and_worktree_gone.md
+.claude/memory/topics/feedback_multi_[term removed]_swarm.md
+.claude/memory/topics/feedback_ntfs3_symlink_intxlnk.md
+.claude/memory/topics/feedback_ntfs_dirty_volume_mount_path.md
+.claude/memory/topics/feedback_parallel_[term removed]_staged_change_bleedthrough.md
+.claude/memory/topics/feedback_queue_git_tracked.md
+.claude/memory/topics/feedback_x11vnc_vs_tigervnc_headless.md
+.claude/memory/topics/reference_ace_win_1_equality_evidence_stale.md
+.claude/memory/topics/reference_crossprovider_feed_activity_2026_07.md
+.claude/memory/topics/[term removed]-log-portability.md
+.claude/rules/merge-cleanup.md
+.claude/rules/model-routing.md
+.claude/rules/windows-junction-restore-safety.md
+.claude/skills/SKILLS_SUMMARY.html
+.claude/skills/SKILLS_SUMMARY.md
+.claude/skills/_archive/engineering/workflows/gmsh-openfoam-orcaflex/quick-invocation/SKILL.md
+.claude/skills/ai/durable-provider-throughput-dispatch/SKILL.md
+.claude/skills/ai/hermes-model-switching/SKILL.md
+.claude/skills/ai/provider-[term removed]-quota-operations/references/workstation-aware-provider-orchestration.md
+.claude/skills/coordination/[host removed]-control-surface/SKILL.md
+.claude/skills/coordination/[host removed]-control-surface/references/multi-machine-hermes-gateway-probe.md
+.claude/skills/coordination/comprehensive-learning-wrapper/SKILL.md
+.claude/skills/coordination/issue-planning-mode/references/per-machine-repo-placement-outcome-contract.md
+.claude/skills/coordination/licensed-machine-prompt-orchestration/SKILL.md
+.claude/skills/coordination/memory-bridge-operation/SKILL.md
+.claude/skills/coordination/overnight-worktree-agent-waves/SKILL.md
+.claude/skills/coordination/workstation-aware-provider-orchestration/SKILL.md
+.claude/skills/coordination/workstation-aware-provider-orchestration/references/per-machine-throughput-[term removed]-issues.md
+.claude/skills/data/document-index-pipeline/SKILL.md
+.claude/skills/data/documents/pdf/SKILL.md
+.claude/skills/data/drive-file-search/references/mock-envelope.json
+.claude/skills/data/engineering/orcaflex-enrichment/SKILL.md
+.claude/skills/data/excel-workbook-to-python-cowork/SKILL.md
+.claude/skills/data/excel-workbook-to-python-v2/SKILL.md
+.claude/skills/data/office/xlsx-to-python/SKILL.md
+.claude/skills/devops/agent-learnings-portability/SKILL.md
+.claude/skills/devops/hermes-ecosystem-integration/SKILL.md
+.claude/skills/devops/hermes-kanban-readability/SKILL.md
+.claude/skills/devops/hermes-local-configuration/references/hermes-windows-setup.md
+.claude/skills/devops/hermes-windows-setup/SKILL.md
+.claude/skills/digitalmodel/digitalmodel-orcawave-orcaflex-proof-workflows/references/orcawave-orcaflex-readiness-audit.md
+.claude/skills/email/gmail-headless-oauth/SKILL.md
+.claude/skills/email/gmail-operations/references/gmail-headless-oauth.md
+.claude/skills/github/engineering-solver-domain-recon/SKILL.md
+.claude/skills/github/github-issue-lifecycle-operations/references/gh-work-execution.md
+.claude/skills/github/github-issues/references/machine-repo-placement-decision-issues.md
+.claude/skills/github/issue-portfolio-triage/SKILL.md
+.claude/skills/memory/hermes-memory-bridge/SKILL.md
+.claude/skills/operations/automation/cron-job-management/SKILL.md
+.claude/skills/operations/devops/hardware-assessment/SKILL.md
+.claude/skills/operations/devops/perf-tuning/SKILL.md
+.claude/skills/operations/telegram-hermes-bot/SKILL.md
+.claude/skills/operations/telegram-hermes-bot/references/multi-machine-dispatch.md
+.claude/skills/operations/telegram-hermes-bot/references/systemd-unit-template.md
+.claude/skills/software-development/gh-work-execution-checklist/references/sso-verification-interruption.md
+.claude/skills/software-development/gh-work-execution/SKILL.md
+.claude/skills/software-development/gsd-operational-audit/SKILL.md
+.claude/skills/workspace-hub/comprehensive-learning/SKILL.md
+.claude/skills/workspace-hub/comprehensive-learning/references/pipeline-detail.md
+.claude/skills/workspace-hub/digitalmodel-orcawave-orcaflex-workflow/SKILL.md
+.claude/skills/workspace-hub/ecosystem-equivalence-reconcile/SKILL.md
+.claude/skills/workspace-hub/ecosystem-terminology/SKILL.md
+.claude/skills/workspace-hub/orcawave-orcaflex-readiness-audit/SKILL.md
+.claude/skills/workspace-hub/remote-desktop/SKILL.md
+.claude/skills/workspace-hub/remote-desktop/references/[host removed]-vnc-live-check-2026-05-05.md
+.claude/skills/workspace-hub/repo-structure/references/repo-placement-and-relocation-audit.md
+.claude/state/candidates/drift-skill-candidates.yaml
+.claude/state/candidates/hermes-pattern-candidates.md
+.claude/state/corrections/[term removed]_20260130.jsonl
+.claude/state/corrections/[term removed]_20260202.jsonl
+.claude/state/corrections/[term removed]_20260210.jsonl
+.claude/state/corrections/[term removed]_20260220.jsonl
+.claude/state/corrections/[term removed]_20260221.jsonl
+.claude/state/corrections/[term removed]_20260222.jsonl
+.claude/state/corrections/[term removed]_20260223.jsonl
+.claude/state/corrections/[term removed]_20260224.jsonl
+.claude/state/corrections/[term removed]_20260225.jsonl
+.claude/state/corrections/[term removed]_20260227.jsonl
+.claude/state/corrections/[term removed]_20260301.jsonl
+.claude/state/corrections/[term removed]_20260302.jsonl
+.claude/state/corrections/[term removed]_20260303.jsonl
+.claude/state/corrections/[term removed]_20260304.jsonl
+.claude/state/corrections/[term removed]_20260305.jsonl
+.claude/state/corrections/[term removed]_20260306.jsonl
+.claude/state/corrections/[term removed]_20260307.jsonl
+.claude/state/corrections/[term removed]_20260308.jsonl
+.claude/state/corrections/[term removed]_20260309.jsonl
+.claude/state/corrections/[term removed]_20260310.jsonl
+.claude/state/corrections/[term removed]_20260311.jsonl
+.claude/state/corrections/[term removed]_20260312.jsonl
+.claude/state/corrections/[term removed]_20260313.jsonl
+.claude/state/corrections/[term removed]_20260314.jsonl
+.claude/state/corrections/[term removed]_20260315.jsonl
+.claude/state/corrections/[term removed]_20260316.jsonl
+.claude/state/corrections/[term removed]_20260317.jsonl
+.claude/state/corrections/[term removed]_20260318.jsonl
+.claude/state/corrections/[term removed]_20260319.jsonl
+.claude/state/corrections/[term removed]_20260320.jsonl
+.claude/state/corrections/[term removed]_20260322.jsonl
+.claude/state/corrections/[term removed]_20260323.jsonl
+.claude/state/corrections/[term removed]_20260325.jsonl
+.claude/state/corrections/[term removed]_20260326.jsonl
+.claude/state/corrections/[term removed]_20260409.jsonl
+.claude/state/corrections/[term removed]_20260412.jsonl
+.claude/state/corrections/[term removed]_20260426.jsonl
+.claude/state/corrections/[term removed]_20260427.jsonl
+.claude/state/corrections/[term removed]_20260514.jsonl
+.claude/state/cross-agent-memory.yaml
+.claude/state/equality-[host removed].yaml
+.claude/state/equality-[host removed].yaml
+.claude/state/equality-[host removed].yaml
+.claude/state/equality-[host removed].yaml
+.claude/state/equality-[host removed].yaml
+.claude/state/harness-readiness-[host removed].yaml
+.claude/state/hermes-insights.yaml
+.claude/state/learning-reports/2026-03-25-1155.md
+.claude/state/memory-freshness-[host removed].json
+.claude/state/memory-freshness-[host removed].json
+.claude/state/memory-freshness-[host removed].json
+.claude/state/memory-freshness-[host removed].json
+.claude/state/memory-freshness-[host removed].json
+.claude/state/patterns/corrections_2026-02-22_07-19-29.json
+.claude/state/patterns/corrections_2026-02-22_07-27-05.json
+.claude/state/patterns/corrections_2026-02-22_09-29-00.json
+.claude/state/reflect-history/analysis_2026-02-22_07-19-29.json
+.claude/state/reflect-history/analysis_2026-02-22_07-27-05.json
+.claude/state/reflect-history/analysis_2026-02-22_09-29-00.json
+.claude/state/[term removed]-curation-[host removed].json
+.claude/state/[term removed]-curation-[host removed].json
+.claude/state/[term removed]-curation-[host removed].json
+.claude/state/[term removed]-curation-[host removed].json
+.claude/state/[term removed]-curation-digest-[host removed].md
+.claude/state/[term removed]-curation-digest-[host removed].md
+.claude/state/[term removed]-curation-digest-[host removed].md
+.claude/state/[term removed]-curation-digest-[host removed].md
+.claude/state/[term removed]-curation-digest-[host removed].md
+.claude/state/[term removed]-curation-[host removed].json
+.claude/state/[term removed]-signals/ai-readiness.jsonl
+.claude/state/[term removed]-signals/network-mounts.jsonl
+.claude/state/skill-currency-[host removed].json
+.claude/state/skill-currency-[host removed].json
+.claude/state/skill-currency-[host removed].json
+.claude/state/skill-currency-[host removed].json
+.claude/state/skill-currency-[host removed].json
+.claude/state/skill-drift-report-[host removed].json
+.claude/state/skill-drift-report-[host removed].json
+.claude/state/skill-drift-report-[host removed].json
+.claude/state/skill-drift-report-[host removed].json
+.claude/state/skill-drift-report-[host removed].json
+.claude/state/skill-link-health-[host removed].json
+.claude/state/skill-link-health-[host removed].json
+.claude/state/skill-link-health-[host removed].json
+.claude/state/skill-link-health-[host removed].json
+.claude/state/skill-link-health-[host removed].json
+.claude/state/skill-scores.yaml
+.claude/work-queue/done/workspace-hub-1311.md
+.claude/work-queue/pending/WRK-5015.md
+.codex/agents/orcaflex-specialist.toml
+.env.example
+.gemini/commands/reconcile-ecosystem.toml
+.github/ISSUE_TEMPLATE/wrk-item.yml
+.gitignore
+.hermes/plans/2026-04-13_094815-core-engineering-portability-plan.md
+.legal-identifier-gate.yaml
+.nightly-results/2026-04-26-terminal-2-2475-summary.md
+.planning/PROJECT.md
+.planning/REQUIREMENTS.md
+.planning/ROADMAP.md
+.planning/a3-[host removed]-breezy-fox.md
+.planning/active/2026-05-21-data-execution-results/claude-exec-backbone.md
+.planning/active/2775/claude-plan-hardening.md
+.planning/active/2775/claude-plan-patch-prompt.md
+.planning/active/2775/plan-revision-notes.md
+.planning/active/2775/r2-review-prompt.md
+.planning/archive/audit/skill-eval-2026-03-16-final.json
+.planning/archive/audit/skill-eval-2026-03-16.json
+.planning/archive/audit/skill-tiers-2026-03-16.yaml
+.planning/archive/capability-map/research-briefs/pipeline.yaml
+.planning/archive/data-sources/client-b.yaml
+.planning/archive/data-sources/client-d.yaml
+.planning/archive/data-sources/digitalmodel.yaml
+.planning/archive/data-sources/lng-a.yaml
+.planning/archive/modules/INDEX.md
+.planning/archive/modules/bright-seeking-wren.md
+.planning/archive/modules/cozy-humming-beacon.md
+.planning/archive/modules/dapper-stargazing-willow.md
+.planning/archive/modules/greedy-weaving-lampson.md
+.planning/archive/modules/hardware-inventory/aceengineer-01.md
+.planning/archive/modules/hardware-inventory/aceengineer-02.md
+.planning/archive/modules/hardware-inventory/dev-env-setup.md
+.planning/archive/modules/hardware-inventory/[host removed].md
+.planning/archive/modules/hardware-inventory/hardware-assessment-licensed-windows-host-20260220.json
+.planning/archive/modules/hardware-inventory/[host removed].md
+.planning/archive/modules/hardware-inventory/[host removed].md
+.planning/archive/modules/hardware-inventory/maintenance/hardware-assessment-[host removed]-20260202-post.json
+.planning/archive/modules/hardware-inventory/maintenance/hardware-assessment-[host removed]-20260202-pre.json
+.planning/archive/modules/hardware-inventory/maintenance/system-changelog-[host removed]-20260202.json
+.planning/archive/modules/hardware-inventory/maintenance/system-update-[host removed]-20260202.json
+.planning/archive/modules/hardware-inventory/manifests/[host removed].yml
+.planning/archive/modules/hardware-inventory/manifests/[host removed].yml
+.planning/archive/modules/hardware-inventory/manifests/[host removed].yml
+.planning/archive/modules/hardware-inventory/manifests/[host removed].yml
+.planning/archive/modules/hobbies-long-term-plan.md
+.planning/archive/modules/jaunty-sparking-hollerith.md
+.planning/archive/modules/optimized-gathering-tome.md
+.planning/archive/modules/quiet-soaring-truffle.md
+.planning/archive/modules/recursive-sauteeing-wombat.md
+.planning/archive/modules/resilient-hopping-crayon.md
+.planning/archive/modules/robust-popping-wadler.md
+.planning/archive/modules/serene-discovering-scroll.md
+.planning/archive/modules/snappy-hopping-sifakis.md
+.planning/archive/modules/terminal-ux/cross-machine-audit.md
+.planning/archive/modules/terminal-ux/wrk228-qa-output.html
+.planning/archive/modules/tidy-baking-cake.md
+.planning/archive/modules/warm-stargazing-brook.md
+.planning/archive/modules/wrk-050-hardware-assessment-script.md
+.planning/archive/modules/wrk-1384-local-analysis-relocation.md
+.planning/archive/modules/wrk-380-gmsh-openfoam-orcaflex-pipeline.md
+.planning/archive/modules/wrk-5015-solver-queue-infrastructure.md
+.planning/archive/modules/wrk-github-numbering-unification/plan.md
+.planning/archive/online-resources/catalog.yaml
+.planning/archive/online-resources/the-well-evaluation.md
+.planning/handoffs/2026-04-21-doc-intel-[term removed]-4-handoff.md
+.planning/intel/elements-to-llm-wiki/loop-2026-05-08/gap-C-code.md
+.planning/milestones/v1.0-phases/05-nightly-research-automation/05-02-PLAN.md
+.planning/nested-sparking-dawn.md
+.planning/phases/07-solver-verification-gate/07-01-PLAN.md
+.planning/phases/07-solver-verification-gate/07-01-SUMMARY.md
+.planning/phases/07-solver-verification-gate/07-02-PLAN.md
+.planning/phases/07-solver-verification-gate/07-02-SUMMARY.md
+.planning/phases/07-solver-verification-gate/07-03-PLAN.md
+.planning/phases/07-solver-verification-gate/07-CONTEXT.md
+.planning/phases/07-solver-verification-gate/07-DISCUSSION-LOG.md
+.planning/phases/07-solver-verification-gate/07-RESEARCH.md
+.planning/phases/07-solver-verification-gate/07-VALIDATION.md
+.planning/plan-approved/2646.md
+.planning/plan-approved/2738.md
+.planning/plan-approved/2739.md
+.planning/plan-approved/2754.md
+.planning/plan-approved/2766.md
+.planning/prompts/[term removed]-handoff-2026-04-01-ai-orchestration.md
+.planning/prompts/[term removed]-handoff-2026-04-01-cron-hardening.md
+.planning/quick/2026-04-21-issue-2269-rewrite-report.md
+.planning/quick/2026-04-23-issue-2456-plan.md
+.planning/quick/2026-04-30-plan-2550-codex-postpatch.raw
+.planning/quick/2026-04-30-plan-2550-postpatch-review-prompt.md
+.planning/quick/2269-approval-sync.md
+.planning/quick/2269-execution-start.md
+.planning/quick/2269-exit-comment.md
+.planning/quick/2269-exit-handoff.md
+.planning/quick/2269-landed-progress.md
+.planning/quick/2269-progress-update.md
+.planning/quick/260326-m07-add-a-gh-issue-to-install-and-configure-/260326-m07-PLAN.md
+.planning/quick/260331-rmt-refresh-ecosystem-vision-documents-with-/260331-rmt-PLAN.md
+.planning/quick/final-plan-queue-audit.md
+.planning/quick/plan-2455-draft.md
+.planning/quick/recommendation-comments/2269.md
+.planning/quick/rereview-2269-claude.out
+.planning/quick/rereview-2269-codex.out
+.planning/quick/rereview-2269-prompt.md
+.planning/quick/rereview2-2269-claude.out
+.planning/quick/rereview2-2269-codex.out
+.planning/quick/rereview2-2269-prompt.md
+.planning/quick/rereview3-2269-claude.out
+.planning/quick/rereview3-2269-codex.out
+.planning/quick/rereview3-2269-gemini.out
+.planning/quick/rereview3-2269-prompt.md
+.planning/quick/review-1963-codex.out
+.planning/quick/review-1963-prompt.md
+.planning/quick/review-2229-codex.out
+.planning/quick/review-2229-gemini.out
+.planning/quick/review-2229-prompt.md
+.planning/quick/review-2460-r2-claude.out
+.planning/quick/review-2554-codex.out
+.planning/quick/review-2554-prompt.md
+.planning/quick/review-2728-2729-implementation-codex-rerun.out
+.planning/quick/review-2728-2729-implementation-codex.out
+.planning/quick/review-2728-2729-implementation-prompt.md
+.planning/quick/review-2728-2729-implementation-rerun-prompt.md
+.planning/quick/review-2738-implementation-codex-rerun2.out
+.planning/quick/review-2738-implementation-codex.out
+.planning/quick/review-2738-implementation-gemini-rerun2.out
+.planning/quick/review-2738-implementation-gemini.out
+.planning/quick/review-2738-implementation-prompt.md
+.planning/quick/review-2738-implementation-rerun-prompt.md
+.planning/quick/review-2766-r4-compact-prompt.md
+.planning/quick/review-2766-r5-compact-prompt.md
+.planning/quick/review-2766-r6-compact-prompt.md
+.planning/quick/review-77-implementation-gemini-rerun.out
+.planning/research/2026-03-29-synthesis.md
+.planning/research/2026-04-02-competitor-market.md
+.planning/research/2026-04-03-synthesis.md
+.planning/research/2026-04-04-skill-design.md
+.planning/research/2026-04-07-python-ecosystem.md
+.planning/research/2026-04-10-synthesis.md
+.planning/research/2026-04-17-synthesis.md
+.planning/research/2026-04-24-synthesis.md
+.planning/research/2026-05-05-python-ecosystem.md
+.planning/research/2026-05-06-ai-tooling.md
+.planning/research/2026-05-08-synthesis.md
+.planning/research/2026-05-14-competitor-market.md
+.planning/research/2026-05-15-synthesis.md
+.planning/research/2026-05-16-skill-design.md
+.planning/research/2026-05-20-ai-tooling.md
+.planning/research/2026-05-21-competitor-market.md
+.planning/research/2026-05-22-synthesis.md
+.planning/research/2026-07-15-ai-tooling.md
+.planning/research/2026-07-16-competitor-market.md
+.planning/research/2026-07-21-python-ecosystem.md
+.planning/research/2026-07-22-ai-tooling.md
+.planning/research/2026-07-23-competitor-market.md
+.planning/research/ARCHITECTURE.md
+.planning/research/FEATURES.md
+.planning/research/PITFALLS.md
+.planning/research/SUMMARY.md
+.planning/skills/capability-assessment-wrk-624-skills.md
+.planning/skills/skill-knowledge-map.md
+.planning/terminal-prompts.md
+.planning/you-are-claude-code-eager-treasure.md
+.planning/you-are-claude-code-shiny-boole.md
+.planning/you-are-claude-code-typed-harp.md
+admin/it/chrome-claude-setup.md
+admin/it/windows-setup-pending.md
+analysis/2026-06-13-fable5-opus-parity-learning.md
+analysis/3095-epic-closeout.md
+analysis/cross-agent-audit-20260402/phase-a-baseline.md
+analysis/cross-agent-audit-20260402/phase-a-data/analysis_results.json
+analysis/cross-agent-audit-20260402/phase-a-data/bash_cmds_claude.csv
+analysis/cross-agent-audit-20260402/phase-a-data/read_files_claude.csv
+analysis/cross-agent-audit-20260402/phase-a-data/read_files_combined.csv
+analysis/cross-agent-audit-20260402/phase-a-data/read_files_hermes.csv
+analysis/cross-agent-audit-20260402/phase-a-data/write_files_claude.csv
+analysis/cross-agent-audit-20260402/phase-a-data/write_files_combined.csv
+analysis/cross-agent-audit-20260402/phase-b-data/skill_catalog.json
+analysis/cross-agent-audit-20260402/phase-f-memory-dedup.md
+analysis/issue-label-summary-20260409.txt
+analysis/provider-[term removed]-ecosystem-audit.json
+assets/WRK-655/wrk-655-resource-intelligence-review.html
+assets/WRK-657/wrk-657-plan-review-draft.html
+assets/WRK-657/wrk-657-plan-review-final.html
+assets/WRK-659/wrk-659-claude_orchestrator-summary.html
+assets/WRK-659/wrk-659-plan-review-draft.html
+assets/WRK-659/wrk-659-summary.html
+assets/WRK-664/wrk-664-multi-workstation-contract-review.html
+assets/WRK-669/wrk-669-claude-orchestrator-summary.html
+assets/WRK-671/claim-evidence.yaml
+assets/WRK-671/variation-test-results.md
+assets/WRK-671/verify-gate-evidence.txt
+assets/WRK-671/verify-output.txt
+assets/WRK-671/wrk-671-plan-review-draft.html
+assets/WRK-687/plan-review-draft.html
+compute-program/STATUS.md
+config/agents/SHARED_SOUL.md
+config/agents/agy/SOUL.runtime.md
+config/agents/claude/SOUL.runtime.md
+config/agents/codex/AGENTS.runtime.md
+config/agents/codex/MEMORY.runtime.md
+config/agents/codex/SOUL.runtime.md
+config/agents/codex/state-snapshots/history.jsonl
+config/agents/gemini/MEMORY.runtime.md
+config/agents/gemini/SOUL.delta.md
+config/agents/gemini/SOUL.runtime.md
+config/agents/hermes/SOUL.runtime.md
+config/agents/hermes/memories/MEMORY.md.snapshot
+config/agents/hermes/memories/USER.md.snapshot
+config/agents/hermes/telegram-multihost.example.yaml
+config/agents/host-role-routing.yaml
+config/agents/provider-capabilities.yaml
+config/agents/skill-index-full.yaml
+config/agents/user-profile.yaml
+config/ai-tools/account-usage-latest.json
+config/ai-tools/ai-accounts.yaml
+config/ai-tools/continuous-planning-pipeline.json
+config/ai-tools/mcp-servers.yaml
+config/ai-tools/provider-autolabel-candidates.json
+config/ai-tools/provider-routing-policy.yaml
+config/ai_agents/ai-tools-status.yaml
+config/ai_agents/status/[host removed].yaml
+config/ai_agents/status/[host removed].yaml
+config/drive-index-registry.yml
+config/[term removed]-ssh-hosts.yml
+config/machine-baselines/0a36d305.md
+config/machine-baselines/0a36d305.yaml
+config/machine-baselines/README.md
+config/mission/workflow-inventory.yaml
+config/public-surface-host-denylist.txt
+config/quality/no-abs-paths-baseline.txt
+config/scheduled-tasks/mutation-surfaces.yaml
+config/scheduled-tasks/schedule-tasks.yaml
+config/tabby/INTERNET_ACCESS_SUMMARY.md
+config/tabby/QUICK_REFERENCE.md
+config/tmux/autoattach.sh
+config/tmux/start-[term removed].sh
+config/tmux/tmux-autosave.service
+config/tmux/tmux.conf
+config/workstations/harness-roles.yaml
+config/workstations/harness-state-classes.yaml
+config/workstations/lean-core-profile.example.yaml
+config/workstations/registry.yaml
+data/document-index/coverage-audit.yaml
+data/document-index/llm-wiki-external-source-priority-queue.yaml
+data/document-index/mounted-source-registry.yaml
+data/document-index/online-resource-registry.yaml
+data/document-index/shards/shard-03.json
+data/document-index/shards/shard-04.json
+data/document-index/shards/shard-05.json
+data/document-index/summary-extraction-plan.yaml
+data/open-issues-2026-04-08.json
+docs/BUSINESS_BRAIN.md
+docs/DATA_RESIDENCE_POLICY.md
+docs/architecture/data-boundary-violations-and-gaps.md
+docs/architecture/data-source-inventory.md
+docs/architecture/execution-routing-policy-view.md
+docs/architecture/solver-queue.md
+docs/assessments/hull-library-audit.md
+docs/dashboards/doc-freshness-dashboard.md
+docs/design/email-as-queue-workflow.md
+docs/document-intelligence/CLAUDE-CODE-EXCEL-CONVERSION-PROMPT.md
+docs/document-intelligence/batch-definitions.json
+docs/document-intelligence/data-intelligence-map.md
+docs/document-intelligence/dde-drive-catalog.md
+docs/document-intelligence/engineering-documentation-map.md
+docs/document-intelligence/intelligence-accessibility-map.md
+docs/document-intelligence/mount-drive-knowledge-map.md
+docs/document-intelligence/resource-intelligence-action-plan.md
+docs/document-intelligence/standards-codes-provenance-reuse-contract.md
+docs/ecosystem/idea-compass-links.md
+docs/ecosystem/windows-skill-junction-git-trap.md
+docs/engineering/portability/ENGINEERING_DELIVERY_CHECKLIST.md
+docs/engineering/portability/MACHINE_ROLES.md
+docs/engineering/portability/PORTABILITY_CONTRACT.md
+docs/engineering/portability/blender-headless-baseline-workflow.md
+docs/engineering/portability/openfoam-v2312-baseline-workflow.md
+docs/governance/2026-05-20-client-llm-wiki-feature-and-mkt-a-instance-design.md
+docs/governance/2026-05-25-domain-dispatch-architecture.html
+docs/gtm/outreach-candidate-briefs-2026-04-28.md
+docs/gtm/overnight-client-ready-material-2026-04-28.md
+docs/handoffs/2026-04-12-mkt-a-wiki-exit-handoff.md
+docs/handoffs/2026-04-20-aceengineer-ecosystem-sync-exit-handoff.md
+docs/handoffs/2026-04-23-planwave10-reconciliation.md
+docs/handoffs/2026-04-24-orcawave-orcaflex-approved-next-wave-exit.md
+docs/handoffs/2026-04-26-[term removed]-close-handoff.md
+docs/handoffs/2026-04-28-issue-2538-ace2-gis-timelapse-exit.md
+docs/handoffs/2026-04-28-repo-mission-business-brain-exit.md
+docs/handoffs/2026-04-29-fresh-[term removed]-exit-prompt.md
+docs/handoffs/[term removed]-2026-04-11-windows-claude-parity-exit.md
+docs/handoffs/[term removed]-2026-04-12-hermes-parity-exit.md
+docs/handoffs/[term removed]-2026-04-13-superpowers-windows-parity-exit.md
+docs/handoffs/[term removed]-2026-04-15-repo-ecosystem-followup-exit.md
+docs/handoffs/[term removed]-handoff-terminal5-2026-04-02.md
+docs/maps/digitalmodel-orcawave-orcaflex-operator-map.md
+docs/methodology/compound-engineering.md
+docs/methodology/multi-agent-parity.md
+docs/modules/ai/PROVIDER_CREDIT_CONTROL_PLANE.md
+docs/ops/2026-05-04-multimachine-baseline-inventory.md
+docs/ops/[host removed]-handoff-runbook.md
+docs/ops/drive-layout-migration.yaml
+docs/ops/fea-install-[host removed].md
+docs/ops/hermes-weekly-cross-machine-parity-checklist.md
+docs/ops/linux-cron-issue-orchestration.md
+docs/ops/machine-identity.md
+docs/ops/machine-inventory.md
+docs/ops/mount-map.yaml
+docs/ops/ollama-assessment.md
+docs/ops/pull-dispatch-no-ssh.md
+docs/ops/remote-linux-access.md
+docs/ops/scheduled-tasks.md
+docs/ops/telegram-hermes-coordinator/implementation-notes.html
+docs/ops/telegram-hermes-desktop-smoke-checklist.md
+docs/ops/telegram-hermes-multimachine-control-plane.md
+docs/ops/telegram-venue-contract.md
+docs/ops/update-machine-equivalence-prompt.md
+docs/ops/windows-host-cutover.md
+docs/orchestrator-consistency/README.md
+docs/plans/2026-03-09-wrk-1058-docs-quality-checks.md
+docs/plans/2026-04-01-data-intelligence-feature-plan.md
+docs/plans/2026-04-01-orcawave-orcaflex-intensive-plan.md
+docs/plans/2026-04-01-overnight-5-terminal-prompts.md
+docs/plans/2026-04-02-night-overnight-5-terminal-prompts.md
+docs/plans/2026-04-02-overnight-3-terminal-prompts.md
+docs/plans/2026-04-02-overnight-5-terminal-prompts.md
+docs/plans/2026-04-03-overnight-5-terminal-prompts.md
+docs/plans/2026-04-09-overnight-5-terminal-prompts.md
+docs/plans/2026-04-11-claude-windows-parity-package-4-prompt.md
+docs/plans/2026-04-11-claude-windows-parity-package-5-prompt.md
+docs/plans/2026-04-11-issue-2136-intelligence-accessibility-registry-with-machine-reachability.md
+docs/plans/2026-04-11-issue-2225-mkt-a-codes-source-registration-and-initial-indexing.md
+docs/plans/2026-04-11-windows-parity-pr-description.md
+docs/plans/2026-04-12-issue-2239-automate-weekly-hermes-cross-machine-parity-review.md
+docs/plans/2026-04-12-issue-2239-implementation-prompt.md
+docs/plans/2026-04-12-issue-2240-implementation-prompt.md
+docs/plans/2026-04-12-issue-2240-macos-hermes-parity-install-config-and-tool-alignment.md
+docs/plans/2026-04-12-issue-2245-mkt-a-summary-classification-unblock.md
+docs/plans/2026-04-13-issue-2229-[host removed]-live-validation.md
+docs/plans/2026-04-15-20-issue-adversarial-planning-review-pack.md
+docs/plans/2026-04-15-issue-2269-openfoam-v2312-baseline-workflow-and-validation.md
+docs/plans/2026-04-15-issue-2292-queue-refresh-evidence-and-cron-execution.md
+docs/plans/2026-04-16-issue-2270-blender-headless-baseline-workflow-and-smoke-render-validation.md
+docs/plans/2026-04-16-issue-2272-repeatable-openfoam-and-blender-smoke-verification.md
+docs/plans/2026-04-17-issue-2322-rule-promotion.md
+docs/plans/2026-04-17-issue-2323-cross-ai-review-fanout.md
+docs/plans/2026-04-17-issue-2324-memory-md-curation.md
+docs/plans/2026-04-19-aceengineer-ecosystem-sync-design.md
+docs/plans/2026-04-20-aceengineer-ecosystem-sync-deploy-readiness-checklist.md
+docs/plans/2026-04-20-aceengineer-ecosystem-sync-enforcement-promotion-procedure.md
+docs/plans/2026-04-20-aceengineer-ecosystem-sync-hermes-handover.md
+docs/plans/2026-04-20-aceengineer-ecosystem-sync-operator-command-bundle.sh
+docs/plans/2026-04-20-aceengineer-ecosystem-sync-operator-runbook.md
+docs/plans/2026-04-20-aceengineer-ecosystem-sync-plan.md
+docs/plans/2026-04-20-aceengineer-ecosystem-sync-review.md
+docs/plans/2026-04-20-aceengineer-ecosystem-sync-stage2-authorization.md
+docs/plans/2026-04-20-issue-2017-plan.md
+docs/plans/2026-04-20-issue-2392-wiki-coverage-gap-detector.md
+docs/plans/2026-04-20-issue-2403-embeddings-model-selection-spike.md
+docs/plans/2026-04-22-issue-2458-orcawave-multibody-benchmark-fixture.md
+docs/plans/2026-04-22-issue-2465-daily-tier1-indexing-freshness-audit.md
+docs/plans/2026-04-23-issue-2454-c03-fpso-semantic-proof.md
+docs/plans/2026-04-23-issue-2455-rigid-jumper-plet-to-plem-semantic-proof.md
+docs/plans/2026-04-23-issue-2456-lazy-wave-riser-semantic-proof.md
+docs/plans/2026-04-23-issue-2475-licensed-load-run-proof-protocol.md
+docs/plans/2026-04-24-issue-500-orcawave-mesh-preflight-auto-copy.md
+docs/plans/2026-04-24-issue-515-semantic-equivalence-yaml-strict.md
+docs/plans/2026-04-27-issue-2519-future-issue-handoff.md
+docs/plans/2026-04-27-issue-2519-hermes-workstation-orchestration-handoff.md
+docs/plans/2026-04-29-issue-2370-closed-issue-promotion-ledger.md
+docs/plans/2026-04-29-issue-2550-interaction-limit-renewal-scheduled-task.md
+docs/plans/2026-05-02-issue-2479-codex-version-guard.md
+docs/plans/2026-05-02-issue-2523-hermes-preflight.md
+docs/plans/2026-05-02-issue-2532-ci-guard-repair.md
+docs/plans/2026-05-02-issue-2563-telegram-hermes.md
+docs/plans/2026-05-03-issue-2617-followup.md
+docs/plans/2026-05-04-issue-2641-multimachine-solver-inbox-ingestion.md
+docs/plans/2026-05-06-issue-2551-security-audit-public-repos-branch-protection.md
+docs/plans/2026-05-11-kanban-slice-engineering-data-standards-planning-packets.md
+docs/plans/2026-05-12-issue-2665-provider-credit-approval-dashboard-dispatch-gates.md
+docs/plans/2026-05-13-issue-1583-hermes-config-parity-plan.md
+docs/plans/2026-05-13-issue-2548-control-plane-machine-inventory.md
+docs/plans/2026-05-13-issue-2646-[host removed]-handoff-runbook.md
+docs/plans/2026-05-13-issue-2702-routing-layer-audit-plan.md
+docs/plans/2026-05-14-issue-2708-orcaflex-live-validation.md
+docs/plans/2026-05-14-issue-2709-aqwa-runner-adapter.md
+docs/plans/2026-05-14-issue-2710-solver-submit-ux.md
+docs/plans/2026-05-16-issue-2720-multi-machine-telegram-dispatch-sync-control-plane.md
+docs/plans/2026-05-16-issue-2722-pre-commit-conflict-marker-hook.md
+docs/plans/2026-05-16-issue-2724-soul-must-fire-rules-from-2722-review.md
+docs/plans/2026-05-17-issue-2728-execution-layer-contracts-routing.md
+docs/plans/2026-05-18-issue-2738-[host removed]-telegram-dispatch-coordinator.md
+docs/plans/2026-05-18-issue-2739-[host removed]-telegram-dispatch-worker.md
+docs/plans/2026-05-18-issue-2740-linux-cron-orchestration-readiness-gates.md
+docs/plans/2026-05-19-issue-2731-data-repo-location-contract.md
+docs/plans/2026-05-19-issue-2751-cross-platform-harness-setup.md
+docs/plans/2026-05-19-issue-2754-[host removed]-throughput-[term removed]-tier1-baseline.md
+docs/plans/2026-05-19-issue-2758-agent-runtime-folder-architecture-contract.md
+docs/plans/2026-05-20-issue-2755-[host removed]-secondary-linux-worker-baseline.md
+docs/plans/2026-05-20-issue-2756-[host removed]-solver-status-[term removed]-baseline.md
+docs/plans/2026-05-20-issue-2763-gsd-researcher-hermes-agent-migration.md
+docs/plans/2026-05-20-issue-2766-[host removed]-checkout-normalization.md
+docs/plans/2026-05-20-issue-2770-[host removed]-placement-decision.md
+docs/plans/2026-05-20-issue-2771-[host removed]-placement-decision.md
+docs/plans/2026-05-20-issue-2772-[host removed]-placement-decision.md
+docs/plans/2026-05-20-issue-2773-[host removed]-placement-decision.md
+docs/plans/2026-05-21-issue-2775-workspace-hub-sibling-sso-flow.md
+docs/plans/2026-05-26-2813-route-[term removed]-rollout.md
+docs/plans/2026-05-26-issue-2801-machine-equality.md
+docs/plans/2026-05-26-issue-2822-codex-worktree-dispatch.md
+docs/plans/2026-05-27-issue-2814-fix-stale-context-layout.md
+docs/plans/2026-05-28-issue-2841-readback-skills-rules-weeklycheck.md
+docs/plans/2026-05-28-issue-2847-leader-failover.md
+docs/plans/2026-05-28-issue-2851-freshness-guard.md
+docs/plans/2026-05-28-issue-2860-hermes-consistency-probe.md
+docs/plans/2026-05-28-issue-2864-soul-clobber.md
+docs/plans/2026-05-30-issues-2816-2815-windows-equality-collector.md
+docs/plans/2026-06-03-issue-2880-codex-yolo-defaults-sync.md
+docs/plans/2026-06-08-issue-2967-epic-consistent-experience-dynamic-workflows.md
+docs/plans/2026-06-08-issue-2968-role-overlay-reconciler.md
+docs/plans/2026-06-08-issue-2969-cron-catalog-role-tagging.md
+docs/plans/2026-06-08-issue-2970-dispatch-provider-routing.md
+docs/plans/2026-06-08-issue-2971-telegram-venue-consistency.md
+docs/plans/2026-06-08-issue-2972-equality-matrix-fix.md
+docs/plans/2026-06-10-issue-2889-provider-harness-parity.md
+docs/plans/2026-06-10-issue-3034-quota-cache-staleness.md
+docs/plans/2026-06-11-issue-2026-email-state-tracking.md
+docs/plans/2026-06-12-issue-3041-repo-ecosystem-hygiene-audit.md
+docs/plans/2026-06-13-issue-3057-cron-hygiene-hardening.md
+docs/plans/2026-06-14-issue-1579-ace-data-source-coverage.md
+docs/plans/2026-06-15-issue-3127-checkall-sibling-layout.md
+docs/plans/2026-06-17-issue-3184-harness-install-doctor.md
+docs/plans/2026-06-17-issue-3187-git-lock-reaper-return-to-main.md
+docs/plans/2026-06-17-issue-3189-memory-bridge-codex-gemini.md
+docs/plans/2026-06-17-issue-3192-routing-config-cost-policy.md
+docs/plans/2026-06-18-issue-3206-gemini-parity-memory-surface.md
+docs/plans/2026-06-26-3251-resync-skills-no-freeze-at-link.md
+docs/plans/2026-06-27-3252-auto-graduate-correction-candidates.md
+docs/plans/2026-06-27-3253-hermes-pattern-promotion.md
+docs/plans/2026-06-27-3254-recurring-drift-skill-update-candidates.md
+docs/plans/2026-06-27-3256-adaptive-threshold-gemini-detection.md
+docs/plans/2026-07-02-issue-3334-dde-drive-index.md
+docs/plans/2026-07-02-issue-3335-drive-index-query-cli.md
+docs/plans/2026-07-02-issue-3336-index-freshness-automation.md
+docs/plans/2026-07-02-issue-3337-canonical-path-normalization.md
+docs/plans/2026-07-02-issue-3338-drive-file-search-skill.md
+docs/plans/2026-07-02-issue-3339-drive-file-nudge-hook.md
+docs/plans/2026-07-02-issue-3340-drive-search-usage-playbook.md
+docs/plans/2026-07-06-issue-3384-bridge-commit-self-stash.md
+docs/plans/2026-07-07-issue-3397-readiness-hooks-crlf-normalization.md
+docs/plans/2026-07-07-issue-3398-tier1-legal-sanity-precommit.md
+docs/plans/2026-07-08-issue-2003-worldenergydata-bsee-test-skip.md
+docs/plans/2026-07-08-issue-3368-ci-classifier-memory-compaction.md
+docs/plans/2026-07-09-issue-3403-voice-dictation-vnc-contract.md
+docs/plans/2026-07-11-issue-3347-cron-installer-convergence.md
+docs/plans/2026-07-11-issue-3463-cron-singleton-runtime-health.md
+docs/plans/2026-07-11-issue-3475-cron-semantic-ownership.md
+docs/plans/2026-07-14-issue-3511-windows-equivalence-sentinel.md
+docs/plans/2026-07-14-issue-3524-rdp-microphone-redirection.md
+docs/plans/2026-07-14-issue-3525-claude-remote-worker-discovery.md
+docs/plans/2026-07-14-issue-3544-phase-a-authority-activation-correction.md
+docs/plans/2026-07-15-issue-3438-wheel-smoke-module-provenance.md
+docs/plans/2026-07-15-issue-3548-remote-linux-access-runbook.md
+docs/plans/2026-07-16-issue-3549-registry-connection-helpers.md
+docs/plans/2026-07-16-issue-3554-windows-equality-publisher.md
+docs/plans/2026-07-17-issue-3571-equality-host-identity-junction-flock.md
+docs/plans/2026-07-18-issue-3582-windows-cron-cim-collection.md
+docs/plans/2026-07-22-issue-3592-equality-dimension-reclassification.md
+docs/plans/2026-07-29-issue-3593-[host removed]-cron-authority-model.md
+docs/plans/2026-07-30-issue-3702-equality-artifacts-out-of-tree.md
+docs/plans/2026-07-30-issue-3707-cron-upkeep-clockwork.md
+docs/plans/2026-07-30-issue-3708-crontab-reapply-path.md
+docs/plans/2026-07-30-issue-3709-managed-block-classification-v2.md
+docs/plans/2026-07-30-issue-3709-managed-block-classification-v3.md
+docs/plans/2026-07-30-issue-3709-managed-block-classification-v4.md
+docs/plans/2026-07-30-issue-3709-managed-block-classification-v5.md
+docs/plans/2026-07-30-issue-3709-managed-block-classification-v6.md
+docs/plans/2026-07-30-issue-3709-managed-block-classification.md
+docs/plans/2026-07-30-issue-3711-host-independent-identity-inventory.md
+docs/plans/2026-08-03-issue-3788-reconcile-open-only-snapshot.md
+docs/plans/2026-08-05-issue-3728-cron-identity-inventory-regeneration.md
+docs/plans/2026-08-12-issue-3703-reconcile-ecosystem-uv-path.md
+docs/plans/2026-08-12-issue-3705-sync-protected-branch.md
+docs/plans/2026-08-26-issue-3698-ci-gate-hygiene-three-fixes.md
+docs/plans/2026-09-09-issue-3579-equality-gemini-agy-rename.md
+docs/plans/2026-09-16-issue-3834-engineering-register-self-test-encoding.md
+docs/plans/2026-09-25-digitalmodel-2170-hullprod-curvature-screening.html
+docs/plans/2026-09-25-issue-3894-simulation-study-workflow.md
+docs/plans/2026-09-26-[term removed]-ai-account-usage-and-collector-cron.md
+docs/plans/2026-09-28-issue-3925-engineering-reporting.md
+docs/plans/2026-10-07-workspace-hub-[term removed]-decisions.html
+docs/plans/2026-10-08-objective-first-working-style.md
+docs/plans/2026-10-09-rewire-l8-prune-inventory.csv
+docs/plans/2026-10-09-rewire-l8-prune-keep-list.md
+docs/plans/2568-turning-circle-estimator-plan.md
+docs/plans/README.md
+docs/plans/agent-swarm-audits/2026-05-10/logs/swarm-1-codex.jsonl
+docs/plans/agent-swarm-audits/2026-05-10/logs/swarm-2-codex.jsonl
+docs/plans/agent-swarm-audits/2026-05-10/logs/swarm-3-codex.jsonl
+docs/plans/agent-swarm-audits/2026-05-10/logs/swarm-4-codex.jsonl
+docs/plans/agent-swarm-audits/2026-05-10/logs/swarm-5-codex.jsonl
+docs/plans/claude-ops-2026-04-10-052749/results/1899.md
+docs/plans/claude-ops-2026-04-10-052749/results/1974.md
+docs/plans/claude-ops-2026-04-10-052749/results/2055.md
+docs/plans/[host removed]-execution-guide.md
+docs/plans/[host removed]-orcawave-orcaflex-prompts.md
+docs/plans/[host removed]-semantic-proof-load-run-prompt.md
+docs/plans/[host removed]-[term removed]-2-prompt.md
+docs/plans/[host removed]-[term removed]-3-prompts.md
+docs/plans/machine-prompts/2026-04-27/README.md
+docs/plans/machine-prompts/2026-04-27/[host removed]-continuous-parallel-work-prompt.md
+docs/plans/machine-prompts/2026-04-27/[host removed]-continuous-parallel-work-prompt.md
+docs/plans/machine-prompts/2026-04-27/execution/[host removed]-execute-now.md
+docs/plans/machine-prompts/2026-04-27/execution/[host removed]-execute-now.md
+docs/plans/machine-prompts/2026-04-27/execution/orchestration-readiness-interactive-handoff.md
+docs/plans/machine-prompts/2026-05-19/[host removed]-control-plane-dispatch-ledger.md
+docs/plans/memory-bridge-architecture.md
+docs/plans/memory-ecosystem-quickref.md
+docs/plans/overnight-10-issue-loop.md
+docs/plans/overnight-exit-2026-04-06.md
+docs/plans/overnight-gemini-2026-04-06-report.md
+docs/plans/overnight-prompts-2026-04-07.md
+docs/plans/overnight-prompts/2026-04-02-night/terminal-5-solver-hardening.md
+docs/plans/overnight-prompts/2026-04-02/terminal-1-claude-baseline-skillgaps.md
+docs/plans/overnight-prompts/2026-04-02/terminal-2-hermes-skills-corrections-memory.md
+docs/plans/overnight-prompts/2026-04-02/terminal-3-codex-routing-repoaudit.md
+docs/plans/overnight-prompts/2026-04-02/terminal-4-hermes-agent-to-skill-conversion.md
+docs/plans/overnight-prompts/2026-04-04/terminal-3-conference-index-dde-migrate.md
+docs/plans/overnight-prompts/2026-04-09-10claude-stage2/results/terminal-5-architecture-patterns-execution-pack.md
+docs/plans/overnight-prompts/2026-04-09-10claude-stage2/results/terminal-8-subsea-cost-execution-pack.md
+docs/plans/overnight-prompts/2026-04-09-10claude/results/terminal-6-governance-phase3-infrastructure.md
+docs/plans/overnight-prompts/2026-04-09-claude-stage3/results/terminal-2-gh-command-pack.md
+docs/plans/overnight-prompts/2026-04-09-claude-stage3/results/terminal-4-priority-matrix.md
+docs/plans/overnight-prompts/2026-04-09-claude-stage3/results/terminal-5-next-wave-prompts.md
+docs/plans/overnight-prompts/2026-04-28-12h-continuation/ace1-control-reconciler.md
+docs/plans/overnight-prompts/2026-04-28-12h-continuation/ace1-gtm-packager.md
+docs/plans/overnight-prompts/2026-04-28-12h-continuation/ace1-plan-review-hardener.md
+docs/plans/overnight-prompts/2026-04-28-12h-continuation/ace2-digitalmodel-overflow.md
+docs/plans/overnight-prompts/2026-04-28-12h-continuation/ace2-knowledge-docintel-overflow.md
+docs/plans/overnight-prompts/2026-04-28-12h-continuation/ace2-review-and-gsd.md
+docs/plans/overnight-prompts/2026-04-28-12h-continuation/generated/ace1-plan-codex-review-2370-feed11.md
+docs/plans/overnight-prompts/2026-04-28-12h-continuation/generated/ace1-plan-draft-2370-feed8.md
+docs/plans/overnight-prompts/2026-04-28-12h-continuation/generated/ace1-plan-draft-2375-feed13.md
+docs/plans/overnight-prompts/2026-04-28-12h-continuation/generated/ace1-plan-gemini-review-2370-feed12.md
+docs/plans/overnight-prompts/2026-04-28-12h-continuation/generated/ace1-plan-micropatch-2374-feed20.md
+docs/plans/overnight-prompts/2026-04-28-12h-continuation/generated/ace1-plan-patch-2370-feed10.md
+docs/plans/overnight-prompts/2026-04-28-12h-continuation/generated/ace1-plan-patch-2374-feed18.md
+docs/plans/overnight-prompts/2026-04-28-12h-continuation/generated/ace1-plan-patch-2378-feed4.md
+docs/plans/overnight-prompts/2026-04-28-12h-continuation/generated/ace1-plan-patch-2510-feed7.md
+docs/plans/overnight-prompts/2026-04-28-12h-continuation/generated/ace1-plan-polish-2378-feed6.md
+docs/plans/overnight-prompts/2026-04-28-12h-continuation/generated/ace1-plan-rereview-2374-feed19.md
+docs/plans/overnight-prompts/2026-04-28-12h-continuation/generated/ace1-plan-review-2370-feed9.md
+docs/plans/overnight-prompts/2026-04-28-12h-continuation/generated/ace1-plan-review-2374-feed17.md
+docs/plans/overnight-prompts/2026-04-28-12h-continuation/generated/ace1-plan-review-2378-feed5.md
+docs/plans/overnight-prompts/2026-04-28-12h-continuation/launch-ace2-remote.sh
+docs/plans/overnight-prompts/2026-04-28-12h-continuation/master-dispatch-ledger.md
+docs/plans/overnight-prompts/2026-04-28-12h-continuation/results/ace1-control-reconciler.md
+docs/plans/overnight-prompts/2026-04-28-12h-continuation/results/ace1-gtm-packager.md
+docs/plans/overnight-prompts/2026-04-28-12h-continuation/results/ace1-plan-codex-review-2370-feed11.md
+docs/plans/overnight-prompts/2026-04-28-12h-continuation/results/ace1-plan-crossreview-readiness-2374-feed21.md
+docs/plans/overnight-prompts/2026-04-28-12h-continuation/results/ace1-plan-draft-2370-feed8.md
+docs/plans/overnight-prompts/2026-04-28-12h-continuation/results/ace1-plan-draft-2375-feed13.md
+docs/plans/overnight-prompts/2026-04-28-12h-continuation/results/ace1-plan-draft-2378-feed2.md
+docs/plans/overnight-prompts/2026-04-28-12h-continuation/results/ace1-plan-gemini-review-2370-feed12.md
+docs/plans/overnight-prompts/2026-04-28-12h-continuation/results/ace1-plan-micropatch-2374-feed20.md
+docs/plans/overnight-prompts/2026-04-28-12h-continuation/results/ace1-plan-patch-2370-feed10.md
+docs/plans/overnight-prompts/2026-04-28-12h-continuation/results/ace1-plan-patch-2374-feed16.md
+docs/plans/overnight-prompts/2026-04-28-12h-continuation/results/ace1-plan-patch-2374-feed18.md
+docs/plans/overnight-prompts/2026-04-28-12h-continuation/results/ace1-plan-patch-2375-feed15.md
+docs/plans/overnight-prompts/2026-04-28-12h-continuation/results/ace1-plan-patch-2378-feed4.md
+docs/plans/overnight-prompts/2026-04-28-12h-continuation/results/ace1-plan-patch-2510-feed7.md
+docs/plans/overnight-prompts/2026-04-28-12h-continuation/results/ace1-plan-polish-2378-feed6.md
+docs/plans/overnight-prompts/2026-04-28-12h-continuation/results/ace1-plan-rereview-2374-feed19.md
+docs/plans/overnight-prompts/2026-04-28-12h-continuation/results/ace1-plan-review-2370-feed9.md
+docs/plans/overnight-prompts/2026-04-28-12h-continuation/results/ace1-plan-review-2374-feed17.md
+docs/plans/overnight-prompts/2026-04-28-12h-continuation/results/ace1-plan-review-2375-feed14.md
+docs/plans/overnight-prompts/2026-04-28-12h-continuation/results/ace1-plan-review-2378-feed3.md
+docs/plans/overnight-prompts/2026-04-28-12h-continuation/results/ace1-plan-review-2378-feed5.md
+docs/plans/overnight-prompts/2026-04-28-12h-continuation/results/ace1-plan-review-hardener.md
+docs/plans/overnight-prompts/2026-04-28-12h-continuation/results/github-command-pack.md
+docs/plans/overnight-prompts/2026-04-28-12h-continuation/results/[term removed]-monitor-latest.md
+docs/plans/overnight-prompts/2026-04-28-12h-continuation/results/next-dispatch-queue.md
+docs/plans/overnight-prompts/2026-04-28-12h-continuation/results/plan-review-command-pack.md
+docs/plans/overnight-prompts/2026-04-28-night-both-machines/ace1-claude-control-plane-synthesis.md
+docs/plans/overnight-prompts/2026-04-28-night-both-machines/ace1-codex-approved-recovery.md
+docs/plans/overnight-prompts/2026-04-28-night-both-machines/ace1-gemini-recon-batch-no-tools.md
+docs/plans/overnight-prompts/2026-04-28-night-both-machines/ace1-gemini-recon-batch.md
+docs/plans/overnight-prompts/2026-04-28-night-both-machines/ace2-claude-adversarial-review.md
+docs/plans/overnight-prompts/2026-04-28-night-both-machines/ace2-codex-digitalmodel-approved.md
+docs/plans/overnight-prompts/2026-04-28-night-both-machines/ace2-knowledge-docintel-approved.md
+docs/plans/overnight-prompts/2026-04-28-night-both-machines/launch-ace1-local.sh
+docs/plans/overnight-prompts/2026-04-28-night-both-machines/launch-ace2-remote.sh
+docs/plans/overnight-prompts/2026-04-28-night-both-machines/master-dispatch-ledger.md
+docs/plans/overnight-prompts/2026-04-28-night-both-machines/results/gemini-batch-summary.md
+docs/plans/overnight-prompts/2026-04-29-credit-burn-approval-readiness/ace2-execution-queue-scout.md
+docs/plans/overnight-prompts/2026-04-29-credit-burn-approval-readiness/ace2-plan-draft-next5.md
+docs/plans/overnight-prompts/2026-04-29-credit-burn-approval-readiness/results/approval-pack-additional-5.md
+docs/plans/overnight-prompts/2026-04-29-next-wave-autofeed/ace2-approved-scout.md
+docs/plans/overnight-prompts/2026-04-29-next-wave-autofeed/ace2-blocker-prep.md
+docs/plans/overnight-prompts/2026-04-29-next-wave-autofeed/approval-synthesis-10.md
+docs/plans/overnight-prompts/2026-04-29-next-wave-autofeed/autofeed-fix-and-queue.md
+docs/plans/overnight-prompts/2026-04-29-next-wave-autofeed/generated/gh-comment-2554-nextwave.md
+docs/plans/overnight-prompts/2026-04-29-next-wave-autofeed/generated/gh-comment-2555-nextwave.md
+docs/plans/overnight-prompts/2026-04-29-next-wave-autofeed/generated/nextwave-followup-approval-synthesis-gtm-20260429-1736.md
+docs/plans/overnight-prompts/2026-04-29-next-wave-autofeed/generated/nextwave-followup-blocker-packet-2557-20260429-1559.md
+docs/plans/overnight-prompts/2026-04-29-next-wave-autofeed/generated/nextwave-followup-label-conflict-triage-20260429-1422.md
+docs/plans/overnight-prompts/2026-04-29-next-wave-autofeed/generated/nextwave-followup-plan-patch-2550-20260429-1310.md
+docs/plans/overnight-prompts/2026-04-29-next-wave-autofeed/generated/nextwave-followup-plan-patch-2552-20260429-1310.md
+docs/plans/overnight-prompts/2026-04-29-next-wave-autofeed/generated/nextwave-followup-plan-patch-2554-20260429-1446.md
+docs/plans/overnight-prompts/2026-04-29-next-wave-autofeed/generated/nextwave-followup-plan-patch-2555-20260429-1446.md
+docs/plans/overnight-prompts/2026-04-29-next-wave-autofeed/generated/nextwave-followup-plan-patch-2555-consistency-20260429-1535.md
+docs/plans/overnight-prompts/2026-04-29-next-wave-autofeed/generated/nextwave-followup-plan-patch-2555-standards-20260429-1649.md
+docs/plans/overnight-prompts/2026-04-29-next-wave-autofeed/generated/nextwave-followup-plan-patch-2556-20260429-1356.md
+docs/plans/overnight-prompts/2026-04-29-next-wave-autofeed/generated/nextwave-followup-plan-patch-2556-file-existence-20260429-1649.md
+docs/plans/overnight-prompts/2026-04-29-next-wave-autofeed/generated/nextwave-followup-plan-patch-2557-20260429-1356.md
+docs/plans/overnight-prompts/2026-04-29-next-wave-autofeed/generated/nextwave-followup-plan-rereview-2550-20260429-1333.md
+docs/plans/overnight-prompts/2026-04-29-next-wave-autofeed/generated/nextwave-followup-plan-rereview-2552-20260429-1333.md
+docs/plans/overnight-prompts/2026-04-29-next-wave-autofeed/generated/nextwave-followup-plan-rereview-2554-20260429-1511.md
+docs/plans/overnight-prompts/2026-04-29-next-wave-autofeed/generated/nextwave-followup-plan-rereview-2555-20260429-1511.md
+docs/plans/overnight-prompts/2026-04-29-next-wave-autofeed/generated/nextwave-followup-plan-rereview-2555-consistency-20260429-1624.md
+docs/plans/overnight-prompts/2026-04-29-next-wave-autofeed/generated/nextwave-followup-plan-rereview-2555-standards-20260429-1712.md
+docs/plans/overnight-prompts/2026-04-29-next-wave-autofeed/generated/nextwave-followup-plan-rereview-2556-20260429-1559.md
+docs/plans/overnight-prompts/2026-04-29-next-wave-autofeed/generated/nextwave-followup-plan-rereview-2556-file-existence-20260429-1712.md
+docs/plans/overnight-prompts/2026-04-29-next-wave-autofeed/generated/nextwave-followup-plan-rereview-2556-post-r3-20260429-r1.md
+docs/plans/overnight-prompts/2026-04-29-next-wave-autofeed/generated/nextwave-followup-plan-review-2550-20260429-1246.md
+docs/plans/overnight-prompts/2026-04-29-next-wave-autofeed/generated/nextwave-followup-plan-review-2552-20260429-1246.md
+docs/plans/overnight-prompts/2026-04-29-next-wave-autofeed/generated/safe-autofeed-cron-prompt.md
+docs/plans/overnight-prompts/2026-04-29-next-wave-autofeed/gtm-review-2554-2555.md
+docs/plans/overnight-prompts/2026-04-29-next-wave-autofeed/gtm-review-2556-2557.md
+docs/plans/overnight-prompts/2026-04-29-next-wave-autofeed/launch-ace2-remote.sh
+docs/plans/overnight-prompts/2026-04-29-next-wave-autofeed/results/ace2-approved-scout.md
+docs/plans/overnight-prompts/2026-04-29-next-wave-autofeed/results/ace2-blocker-prep.md
+docs/plans/overnight-prompts/2026-04-29-next-wave-autofeed/results/autofeed-policy-and-next-queue.md
+docs/plans/overnight-prompts/2026-04-29-next-wave-autofeed/results/gtm-review-2554-2555.md
+docs/plans/overnight-prompts/2026-04-29-next-wave-autofeed/results/gtm-review-2556-2557.md
+docs/plans/overnight-prompts/2026-04-29-next-wave-autofeed/results/nextwave-followup-approval-synthesis-gtm-20260429-1736.md
+docs/plans/overnight-prompts/2026-04-29-next-wave-autofeed/results/nextwave-followup-blocker-packet-2557-20260429-1559.md
+docs/plans/overnight-prompts/2026-04-29-next-wave-autofeed/results/nextwave-followup-label-conflict-triage-20260429-1422.md
+docs/plans/overnight-prompts/2026-04-29-next-wave-autofeed/results/nextwave-followup-plan-patch-2550-20260429-1310.md
+docs/plans/overnight-prompts/2026-04-29-next-wave-autofeed/results/nextwave-followup-plan-patch-2552-20260429-1310.md
+docs/plans/overnight-prompts/2026-04-29-next-wave-autofeed/results/nextwave-followup-plan-patch-2554-20260429-1446.md
+docs/plans/overnight-prompts/2026-04-29-next-wave-autofeed/results/nextwave-followup-plan-patch-2554-summaryfix-20260429-r1.md
+docs/plans/overnight-prompts/2026-04-29-next-wave-autofeed/results/nextwave-followup-plan-patch-2555-20260429-1446.md
+docs/plans/overnight-prompts/2026-04-29-next-wave-autofeed/results/nextwave-followup-plan-patch-2555-consistency-20260429-1535.md
+docs/plans/overnight-prompts/2026-04-29-next-wave-autofeed/results/nextwave-followup-plan-patch-2555-inline-rationale-20260429-r1.md
+docs/plans/overnight-prompts/2026-04-29-next-wave-autofeed/results/nextwave-followup-plan-patch-2555-standards-20260429-1649.md
+docs/plans/overnight-prompts/2026-04-29-next-wave-autofeed/results/nextwave-followup-plan-patch-2556-20260429-1356.md
+docs/plans/overnight-prompts/2026-04-29-next-wave-autofeed/results/nextwave-followup-plan-patch-2556-file-existence-20260429-1649.md
+docs/plans/overnight-prompts/2026-04-29-next-wave-autofeed/results/nextwave-followup-plan-patch-2556-outline-demo-paths-20260429-r1.md
+docs/plans/overnight-prompts/2026-04-29-next-wave-autofeed/results/nextwave-followup-plan-patch-2557-20260429-1356.md
+docs/plans/overnight-prompts/2026-04-29-next-wave-autofeed/results/nextwave-followup-plan-rereview-2550-20260429-1333.md
+docs/plans/overnight-prompts/2026-04-29-next-wave-autofeed/results/nextwave-followup-plan-rereview-2552-20260429-1333.md
+docs/plans/overnight-prompts/2026-04-29-next-wave-autofeed/results/nextwave-followup-plan-rereview-2554-20260429-1511.md
+docs/plans/overnight-prompts/2026-04-29-next-wave-autofeed/results/nextwave-followup-plan-rereview-2555-20260429-1511.md
+docs/plans/overnight-prompts/2026-04-29-next-wave-autofeed/results/nextwave-followup-plan-rereview-2555-consistency-20260429-1624.md
+docs/plans/overnight-prompts/2026-04-29-next-wave-autofeed/results/nextwave-followup-plan-rereview-2555-standards-20260429-1712.md
+docs/plans/overnight-prompts/2026-04-29-next-wave-autofeed/results/nextwave-followup-plan-rereview-2556-20260429-1559.md
+docs/plans/overnight-prompts/2026-04-29-next-wave-autofeed/results/nextwave-followup-plan-rereview-2556-file-existence-20260429-1712.md
+docs/plans/overnight-prompts/2026-04-29-next-wave-autofeed/results/nextwave-followup-plan-rereview-2556-post-r3-20260429-r1.md
+docs/plans/overnight-prompts/2026-04-29-next-wave-autofeed/results/nextwave-followup-plan-review-2550-20260429-1246.md
+docs/plans/overnight-prompts/2026-04-29-next-wave-autofeed/results/nextwave-followup-plan-review-2552-20260429-1246.md
+docs/plans/overnight-prompts/2026-04-29-next-wave-autofeed/results/nextwave-followup-post-r1-readiness-synthesis-20260429-r1.md
+docs/plans/overnight-prompts/2026-04-29-next-wave-autofeed/results/nextwave-followup-readiness-2550-2552-20260429-r1.md
+docs/plans/overnight-prompts/2026-04-29-next-wave-autofeed/results/nextwave-followup-report-spec-2557-regen-20260429-r1.md
+docs/plans/overnight-prompts/2026-04-29-weekly-gtm-targets/results/issue-2554-summary.md
+docs/reports/2026-04-03-orcawave-orcaflex-[term removed]-report.md
+docs/reports/2026-04-04-[host removed]-[term removed]-3-report.md
+docs/reports/2026-04-04-orcawave-orcaflex-exit-report.md
+docs/reports/2026-04-09-system-health-fixes.md
+docs/reports/2026-04-11-[term removed]-log-portability-transfer.md
+docs/reports/2026-04-15-issue-2292-installed-crontab-probe.md
+docs/reports/2026-04-15-overnight-planning-review-results.md
+docs/reports/2026-04-15-[term removed]-exit-handoff-plan-review-queue.md
+docs/reports/2026-04-16-[term removed]-exit-handoff-phase4-followups.md
+docs/reports/2026-04-27-issue-2519-[host removed]-readiness-probe.md
+docs/reports/2026-05-06-tier1-approval-state-audit.md
+docs/reports/2026-05-06-tier1-kanban-portfolio-review.md
+docs/reports/2026-05-08-tier1-approval-state-audit.md
+docs/reports/2026-05-20-data-execution-results-kanban.md
+docs/reports/2026-05-20-workspace-hub-root-harness-worktree-review.md
+docs/reports/2026-05-21-data-execution-results-execution-plan.md
+docs/reports/2026-05-24-kanban-ecosystem-adversarial-review.html
+docs/reports/2026-05-25-harness-flow-paths.html
+docs/reports/2026-05-25-kanban-ecosystem-recommendations.md
+docs/reports/2026-05-25-[term removed]-completeness-scorecard.html
+docs/reports/2026-05-26-2802-completeness-scorecard.html
+docs/reports/2026-05-26-2804-completeness-scorecard.html
+docs/reports/2026-05-26-codex-under-claude-pilot.md
+docs/reports/2026-05-26-completeness-ranking-plan-approved.html
+docs/reports/2026-05-26-kanban-readability-completeness-scorecard.html
+docs/reports/2026-05-26-machine-equality-matrix.html
+docs/reports/2026-05-31-[host removed]-data-availability-readiness.md
+docs/reports/2026-05-31-machine-equality-matrix.html
+docs/reports/2026-06-08-machine-equality-matrix.html
+docs/reports/2026-06-13-3057-completeness.html
+docs/reports/2026-06-14-issue-2026-implementation-notes.html
+docs/reports/2026-06-15-machine-equality-matrix.html
+docs/reports/2026-06-17-3184-completeness.html
+docs/reports/2026-06-17-3187-completeness.html
+docs/reports/2026-06-22-machine-equality-matrix.html
+docs/reports/2026-06-23-machine-equality-matrix.html
+docs/reports/2026-06-24-machine-equality-matrix.html
+docs/reports/2026-06-25-machine-equality-matrix.html
+docs/reports/2026-06-26-machine-equality-matrix.html
+docs/reports/2026-06-27-machine-equality-matrix.html
+docs/reports/2026-06-28-machine-equality-matrix.html
+docs/reports/2026-06-29-machine-equality-matrix.html
+docs/reports/2026-06-30-machine-equality-matrix.html
+docs/reports/2026-07-02-machine-equality-matrix.html
+docs/reports/2026-07-03-machine-equality-matrix.html
+docs/reports/2026-07-04-machine-equality-matrix.html
+docs/reports/2026-07-05-machine-equality-matrix.html
+docs/reports/2026-07-06-machine-equality-matrix.html
+docs/reports/2026-07-07-machine-equality-matrix.html
+docs/reports/2026-07-08-machine-equality-matrix.html
+docs/reports/2026-07-09-machine-equality-matrix.html
+docs/reports/2026-07-10-machine-equality-matrix.html
+docs/reports/2026-07-11-machine-equality-matrix.html
+docs/reports/2026-07-12-machine-equality-matrix.html
+docs/reports/2026-07-13-cross-provider-[term removed]-memory-reconciliation.html
+docs/reports/2026-07-13-machine-equality-matrix.html
+docs/reports/2026-07-14-issue-3511-windows-equivalence-sentinel-plan.html
+docs/reports/2026-07-14-machine-equality-matrix.html
+docs/reports/2026-07-15-machine-equality-matrix.html
+docs/reports/2026-07-16-issue-3554-windows-equality-publisher-plan.html
+docs/reports/2026-07-16-machine-equality-matrix.html
+docs/reports/2026-07-17-machine-equality-matrix.html
+docs/reports/2026-07-18-machine-equality-matrix.html
+docs/reports/2026-07-19-machine-equality-matrix.html
+docs/reports/2026-07-20-machine-equality-matrix.html
+docs/reports/2026-07-21-machine-equality-matrix.html
+docs/reports/2026-07-22-machine-equality-matrix.html
+docs/reports/2026-07-23-machine-equality-matrix.html
+docs/reports/2026-07-24-machine-equality-matrix.html
+docs/reports/2026-07-25-machine-equality-matrix.html
+docs/reports/2026-07-26-machine-equality-matrix.html
+docs/reports/2026-07-27-machine-equality-matrix.html
+docs/reports/2026-07-28-machine-equality-matrix.html
+docs/reports/2026-07-29-machine-equality-matrix.html
+docs/reports/2026-07-30-machine-equality-matrix.html
+docs/reports/2026-07-31-machine-equality-matrix.html
+docs/reports/2026-08-01-machine-equality-matrix.html
+docs/reports/2026-08-02-machine-equality-matrix.html
+docs/reports/2026-08-03-machine-equality-matrix.html
+docs/reports/2026-08-04-machine-equality-matrix.html
+docs/reports/2026-08-05-machine-equality-matrix.html
+docs/reports/2026-08-06-machine-equality-matrix.html
+docs/reports/2026-08-07-machine-equality-matrix.html
+docs/reports/2026-08-08-machine-equality-matrix.html
+docs/reports/2026-08-09-machine-equality-matrix.html
+docs/reports/2026-08-10-machine-equality-matrix.html
+docs/reports/2026-08-11-machine-equality-matrix.html
+docs/reports/2026-08-12-machine-equality-matrix.html
+docs/reports/2026-08-13-machine-equality-matrix.html
+docs/reports/2026-08-14-machine-equality-matrix.html
+docs/reports/2026-08-15-machine-equality-matrix.html
+docs/reports/2026-08-16-machine-equality-matrix.html
+docs/reports/2026-08-17-machine-equality-matrix.html
+docs/reports/2026-08-18-machine-equality-matrix.html
+docs/reports/2026-08-19-machine-equality-matrix.html
+docs/reports/2026-08-20-machine-equality-matrix.html
+docs/reports/2026-08-21-machine-equality-matrix.html
+docs/reports/2026-08-22-machine-equality-matrix.html
+docs/reports/2026-08-23-machine-equality-matrix.html
+docs/reports/2026-08-24-machine-equality-matrix.html
+docs/reports/2026-08-25-machine-equality-matrix.html
+docs/reports/2026-08-26-machine-equality-matrix.html
+docs/reports/2026-08-27-machine-equality-matrix.html
+docs/reports/2026-08-28-machine-equality-matrix.html
+docs/reports/2026-08-29-machine-equality-matrix.html
+docs/reports/2026-08-30-machine-equality-matrix.html
+docs/reports/2026-08-31-machine-equality-matrix.html
+docs/reports/2026-09-01-machine-equality-matrix.html
+docs/reports/2026-09-02-machine-equality-matrix.html
+docs/reports/2026-09-03-machine-equality-matrix.html
+docs/reports/2026-09-04-machine-equality-matrix.html
+docs/reports/2026-09-05-machine-equality-matrix.html
+docs/reports/2026-09-06-machine-equality-matrix.html
+docs/reports/2026-09-07-machine-equality-matrix.html
+docs/reports/2026-09-08-machine-equality-matrix.html
+docs/reports/2026-09-09-machine-equality-matrix.html
+docs/reports/2026-09-10-machine-equality-matrix.html
+docs/reports/2026-09-11-agent-ecosystem-inventory.json
+docs/reports/2026-09-11-agent-ecosystem-review.html
+docs/reports/2026-09-11-machine-equality-matrix.html
+docs/reports/2026-09-12-issue-3615-risk-instruction-alignment-evidence.json
+docs/reports/2026-09-12-machine-equality-matrix.html
+docs/reports/2026-09-13-machine-equality-matrix.html
+docs/reports/2026-09-14-machine-equality-matrix.html
+docs/reports/2026-09-15-machine-equality-matrix.html
+docs/reports/2026-09-16-machine-equality-matrix.html
+docs/reports/2026-09-17-machine-equality-matrix.html
+docs/reports/2026-09-18-machine-equality-matrix.html
+docs/reports/2026-09-19-machine-equality-matrix.html
+docs/reports/2026-09-20-machine-equality-matrix.html
+docs/reports/2026-09-21-machine-equality-matrix.html
+docs/reports/2026-09-22-machine-equality-matrix.html
+docs/reports/2026-09-23-machine-equality-matrix.html
+docs/reports/2026-09-24-machine-equality-matrix.html
+docs/reports/2026-09-25-machine-equality-matrix.html
+docs/reports/2026-09-26-machine-equality-matrix.html
+docs/reports/2026-09-27-machine-equality-matrix.html
+docs/reports/2026-09-28-engineering-reporting-coverage.json
+docs/reports/2026-09-28-engineering-reporting-p2.json
+docs/reports/2026-09-28-machine-equality-matrix.html
+docs/reports/2026-09-29-machine-equality-matrix.html
+docs/reports/2026-09-30-machine-equality-matrix.html
+docs/reports/2026-10-01-machine-equality-matrix.html
+docs/reports/2026-10-02-machine-equality-matrix.html
+docs/reports/2026-10-03-machine-equality-matrix.html
+docs/reports/2026-10-04-machine-equality-matrix.html
+docs/reports/2026-10-05-machine-equality-matrix.html
+docs/reports/2026-10-06-machine-equality-matrix.html
+docs/reports/2026-10-07-machine-equality-matrix.html
+docs/reports/2026-10-08-machine-equality-matrix.html
+docs/reports/2026-10-09-[term removed]-state.md
+docs/reports/2026-10-09-machine-equality-matrix.html
+docs/reports/2026-10-10-machine-equality-matrix.html
+docs/reports/2026-10-11-machine-equality-matrix.html
+docs/reports/2026-10-12-machine-equality-matrix.html
+docs/reports/2026-10-13-machine-equality-matrix.html
+docs/reports/2026-10-14-machine-equality-matrix.html
+docs/reports/2026-10-15-machine-equality-matrix.html
+docs/reports/2026-10-16-machine-equality-matrix.html
+docs/reports/2026-10-17-machine-equality-matrix.html
+docs/reports/2026-10-18-machine-equality-matrix.html
+docs/reports/2026-10-19-machine-equality-matrix.html
+docs/reports/2026-10-20-machine-equality-matrix.html
+docs/reports/2026-10-21-machine-equality-matrix.html
+docs/reports/2026-10-22-machine-equality-matrix.html
+docs/reports/2026-10-23-machine-equality-matrix.html
+docs/reports/2026-10-24-machine-equality-matrix.html
+docs/reports/2026-10-25-machine-equality-matrix.html
+docs/reports/2026-10-26-machine-equality-matrix.html
+docs/reports/2026-10-27-machine-equality-matrix.html
+docs/reports/2026-10-28-machine-equality-matrix.html
+docs/reports/2566-naval-arch-ci-validation.md
+docs/reports/2568-plan-r1-adversarial-review.md
+docs/reports/[host removed]-tier1-checkout-normalization.html
+docs/reports/ai-account-usage.md
+docs/reports/batch-pack-3-tier-a-engineering-software-profiles.md
+docs/reports/compliance-weekly-20260720.md
+docs/reports/digitalmodel-orcawave-orcaflex-engineering-assessment.md
+docs/reports/digitalmodel-orcawave-orcaflex-issue-reconciliation.md
+docs/reports/[term removed]-harness-status.md
+docs/reports/[term removed]-snapshots/2026-10-11.json
+docs/reports/[term removed]-snapshots/2026-10-12.json
+docs/reports/[term removed]-snapshots/2026-10-13.json
+docs/reports/[term removed]-snapshots/2026-10-14.json
+docs/reports/[term removed]-snapshots/2026-10-15.json
+docs/reports/[term removed]-snapshots/2026-10-16.json
+docs/reports/[term removed]-snapshots/2026-10-17.json
+docs/reports/[term removed]-snapshots/2026-10-18.json
+docs/reports/[term removed]-snapshots/2026-10-19.json
+docs/reports/[term removed]-snapshots/2026-10-20.json
+docs/reports/[term removed]-snapshots/2026-10-21.json
+docs/reports/[term removed]-snapshots/2026-10-22.json
+docs/reports/[term removed]-snapshots/2026-10-23.json
+docs/reports/[term removed]-snapshots/2026-10-24.json
+docs/reports/[term removed]-snapshots/2026-10-25.json
+docs/reports/[term removed]-snapshots/2026-10-26.json
+docs/reports/[term removed]-snapshots/2026-10-27.json
+docs/reports/[term removed]-snapshots/latest.json
+docs/reports/gtm/2026-04-29-vessel-contractor-outreach-matrix-scaffold.md
+docs/reports/gtm/2026-04-29-vessel-contractor-send-tracker-schema.md
+docs/reports/kanban/2026-05-09-five-hour-swarm-recommendations.json
+docs/reports/kanban/2026-05-09-five-hour-swarm-recommendations.md
+docs/reports/kanban/2026-05-10-w0-live-state-approval-audit.md
+docs/reports/kanban/2026-05-10-w0-reconciliation-closeout.md
+docs/reports/kanban/2026-05-11-tier1-subagent-planning-wave.md
+docs/reports/machine-equality-matrix.html
+docs/reports/memory-curation-2026-04.md
+docs/reports/provider-autolabel-candidates.md
+docs/reports/provider-[term removed]-ecosystem-audit.md
+docs/reports/repo-hygiene-triage-2026-03-31.md
+docs/reports/root-artifact-classification-2026-03-31.md
+docs/research/capytaine-bem-eval.md
+docs/research/claude-desktop-linux-eval.md
+docs/research/cli-anything-blender-openfoam-eval.md
+docs/research/docling-eval.md
+docs/research/engineering-capability-map.md
+docs/research/hermes-memory-audit.md
+docs/research/marker-eval.md
+docs/research/mystran-eval.md
+docs/research/openfoam-dict-patterns.md
+docs/research/openfoam-python-ecosystem.md
+docs/research/openfoam-tutorials.md
+docs/research/openfoam-version-landscape.md
+docs/research/openfoam-wrk047-refresh.md
+docs/research/weis-floating-wind-eval.md
+docs/resources/hydrodynamics-resources.md
+docs/roadmaps/orcawave-orcaflex-capability-roadmap.md
+docs/runbooks/dispatch-pull.md
+docs/runbooks/perf-tuning.md
+docs/runbooks/telegram-hermes-gateway-vscode-commands.md
+docs/runbooks/telegram-hermes-mobile.md
+docs/runbooks/windows-rdp-microphone.md
+docs/runbooks/windows-remote-exec.md
+docs/[term removed]-exits/jumper-installation-analysis-20260405.md
+docs/[term removed]-exits/jumper-installation-analysis-part2-20260405.md
+docs/[term removed]-exits/jumper-installation-complete-20260405.md
+docs/[term removed]-handoffs/2026-04-29-night-batch-exit.md
+docs/[term removed]-handoffs/2026-04-30-telegram-hermes-mobile-access-handoff.md
+docs/[term removed]-handoffs/2026-05-05-[host removed]-readiness-exit-handoff.md
+docs/[term removed]-handoffs/2026-05-10-cron-daily-report-exit-handoff.md
+docs/[term removed]-handoffs/2026-05-11-tier1-kanban-closeout.md
+docs/[term removed]-handoffs/2026-05-16-conflict-marker-hook-and-soul-rules-exit.md
+docs/[term removed]-handoffs/2026-05-16-gate-recon-and-codex-tty-discovery-exit.md
+docs/[term removed]-handoffs/2026-05-16-issue-2719-cross-provider-soul-exit.md
+docs/[term removed]-handoffs/2026-05-16-solver-queue-planning-wave-exit.md
+docs/[term removed]-handoffs/2026-05-16-soul-ecosystem-followup-entry.md
+docs/[term removed]-handoffs/2026-05-17-issue-2720-multimachine-telegram-hermes-exit.md
+docs/[term removed]-handoffs/2026-05-17-soul-ecosystem-completion-exit.md
+docs/[term removed]-handoffs/2026-05-17-soul-rules-approval-and-followups-entry.md
+docs/[term removed]-handoffs/2026-05-18-devakrishna-tennis-track-exit.md
+docs/[term removed]-handoffs/2026-05-18-final-exit-closeout.md
+docs/[term removed]-handoffs/2026-05-18-hermes-workspace-cleanup-exit.md
+docs/[term removed]-handoffs/2026-05-18-telegram-hermes-machine-connectivity-exit.md
+docs/[term removed]-handoffs/2026-05-19-cross-platform-harness-and-hermes-memory-audit-exit.md
+docs/[term removed]-handoffs/2026-05-19-mnt-analysis-cleanup-cron-establishment-exit.md
+docs/[term removed]-handoffs/2026-05-19-mnt-analysis-sibling-clones-pending-2758-exit.md
+docs/[term removed]-handoffs/2026-05-20-digitalmodel-616-ocimf-polar-viz-shipped-exit.md
+docs/[term removed]-handoffs/2026-05-20-exit-llm-wiki-conversion-skills-and-ocimf-handoff.md
+docs/[term removed]-handoffs/2026-05-20-travel-planning-github-issues-exit.md
+docs/[term removed]-handoffs/2026-05-23-linkedin-naval-arch-wiki-ingest-exit.md
+docs/[term removed]-handoffs/2026-05-23-vnc-[host removed]-stale-x11vnc-fix.md
+docs/[term removed]-handoffs/2026-05-25-domain-dispatch-phase-a-b.md
+docs/[term removed]-handoffs/2026-05-25-ecosystem-consolidation-and-crash-recovery.md
+docs/[term removed]-handoffs/2026-05-25-kanban-ecosystem-adversarial-review-and-runaway-containment.md
+docs/[term removed]-handoffs/2026-05-26-claude-orchestrator-handoff-2802.md
+docs/[term removed]-handoffs/2026-05-26-codex-under-claude-[term removed]-exit.md
+docs/[term removed]-handoffs/2026-05-26-completeness-gate-arc-handoff.md
+docs/[term removed]-handoffs/2026-05-26-kanban-readability-[term removed]-close.md
+docs/[term removed]-handoffs/2026-05-26-[term removed]-exit-handoff.md
+docs/[term removed]-handoffs/2026-05-28-orchestrator-consistency-handoff.md
+docs/[term removed]-handoffs/2026-05-29-orchestrator-consistency-closeout.md
+docs/[term removed]-handoffs/2026-05-29-orchestrator-consistency-handoff.md
+docs/[term removed]-handoffs/2026-05-30-codex-yolo-defaults-exit.md
+docs/[term removed]-handoffs/2026-05-30-machine-equality-family-continuation.md
+docs/[term removed]-handoffs/2026-05-31-2815-2816-[term removed]-b-windows-equality-exit.md
+docs/[term removed]-handoffs/2026-05-31-[host removed]-data-readiness-exit.md
+docs/[term removed]-handoffs/2026-05-31-harness-update-native-and-repo-housekeeping-exit.md
+docs/[term removed]-handoffs/2026-05-31-kanban-reorg-complete-exit.md
+docs/[term removed]-handoffs/2026-06-01-deckhand-chatbot-board-exit-handoff.md
+docs/[term removed]-handoffs/2026-06-04-[host removed]-nvidia-hold-drift-fix.md
+docs/[term removed]-handoffs/2026-06-04-statusline-pipefail-fix-rollout.md
+docs/[term removed]-handoffs/2026-06-06-collide-review-llm-wiki-outreach-mapping.md
+docs/[term removed]-handoffs/2026-06-07-gtm-routine-review-and-pat-rotation-prep.md
+docs/[term removed]-handoffs/2026-06-09-epic-2967-consistent-experience-delivered.md
+docs/[term removed]-handoffs/2026-06-09-epic-2998-windows-no-ssh-progress.md
+docs/[term removed]-handoffs/2026-06-09-epic-2998-windows-rollout-entry-prompt.md
+docs/[term removed]-handoffs/2026-06-09-statusline-weekly-reset-rollout.md
+docs/[term removed]-handoffs/2026-06-10-handoff-[term removed]-system-quota-truth.md
+docs/[term removed]-handoffs/2026-06-11-handoff-prometheus-flywheel-hygiene.md
+docs/[term removed]-handoffs/2026-06-11-provider-skills-rework.md
+docs/[term removed]-handoffs/2026-06-13-orcawave-canonical-spec-diffraction-wave.md
+docs/[term removed]-handoffs/2026-06-14-agy-gemini-statusline-rollout.md
+docs/[term removed]-handoffs/2026-06-14-email-queue-attention-exit.md
+docs/[term removed]-handoffs/2026-06-15-cron-parity-completion-prompt.md
+docs/[term removed]-handoffs/2026-06-15-pii-3098-ctaB-remainder-handover.md
+docs/[term removed]-handoffs/2026-06-15-public-repo-pii-epic-3095-exit.md
+docs/[term removed]-handoffs/2026-06-16-cron-deckhand-ratchet-reporoot-arc.md
+docs/[term removed]-handoffs/2026-06-16-omnigent-provider-machine-equivalence.md
+docs/[term removed]-handoffs/2026-06-16-pii-epic-3095-closeout-and-3169-guard.md
+docs/[term removed]-handoffs/2026-06-17-provider-neutrality-batch-handover.md
+docs/[term removed]-handoffs/2026-06-17-repo-ecosystem-sync-and-3187-lock-reaper.md
+docs/[term removed]-handoffs/2026-06-19-3058-self-enforcing-invariants-[term removed].md
+docs/[term removed]-handoffs/2026-06-25-ecosystem-reconcile-and-equality-equivalence.md
+docs/[term removed]-handoffs/2026-06-27-reconcile-[term removed]-commit-equivalence.md
+docs/[term removed]-handoffs/2026-06-28-[host removed]-reconcile-preserve-tooling.md
+docs/[term removed]-handoffs/2026-06-28-reconcile-[host removed]-equality-and-pii.md
+docs/[term removed]-handoffs/2026-06-30-reconcile-[host removed]-equality-and-matrix-color-coding.md
+docs/[term removed]-handoffs/2026-07-02-[host removed]-equality-bringup-[term removed].md
+docs/[term removed]-handoffs/2026-07-02-handoff-equality-matrix-always-committed.md
+docs/[term removed]-handoffs/2026-07-02-handoff-international-fdas-epic-subsea7-deck.md
+docs/[term removed]-handoffs/2026-07-04-[host removed]-equality-reconcile-exit.md
+docs/[term removed]-handoffs/2026-07-04-ffs-wave-guards-and-brand.md
+docs/[term removed]-handoffs/2026-07-06-handoff-memory-bridge-3384.md
+docs/[term removed]-handoffs/2026-07-06-handoff-reconcile-[host removed].md
+docs/[term removed]-handoffs/2026-07-06-handoff-wed-drilldown-dm-ia-epic.md
+docs/[term removed]-handoffs/2026-07-06-repo-ecosystem-cleanup.md
+docs/[term removed]-handoffs/2026-07-06-wo-april-2026-validation-complete.md
+docs/[term removed]-handoffs/2026-07-07-handoff-dm-1456-section-onepagers.md
+docs/[term removed]-handoffs/2026-07-08-[host removed]-equality-reconcile-exit.md
+docs/[term removed]-handoffs/2026-07-08-reconcile-[host removed]-exit.md
+docs/[term removed]-handoffs/2026-07-09-[host removed]-ecosystem-reconcile-entry-prompt.md
+docs/[term removed]-handoffs/2026-07-09-handoff-doctor-cleanup-and-harness-checkup-dimension.md
+docs/[term removed]-handoffs/2026-07-09-voice-dictation-pipewire-exit-handoff.md
+docs/[term removed]-handoffs/2026-07-10-[host removed]-ecosystem-reconcile-exit.md
+docs/[term removed]-handoffs/2026-07-10-equality-reconcile-ecosystem-sync-exit.md
+docs/[term removed]-handoffs/2026-07-11-cfd-sloshing-hf-exit.md
+docs/[term removed]-handoffs/2026-07-11-handoff-machine-equivalence-and-crossprovider-memory.md
+docs/[term removed]-handoffs/2026-07-13-[host removed]-machine-equivalence-reconcile-exit.md
+docs/[term removed]-handoffs/2026-07-13-codex-yolo-config-exit.md
+docs/[term removed]-handoffs/2026-07-13-[term removed]-dispatch-[host removed]-smoke.md
+docs/[term removed]-handoffs/2026-07-13-handoff-[term removed]-publish-health-hardening.md
+docs/[term removed]-handoffs/2026-07-14-[host removed]-equivalence-scheduler-exit.md
+docs/[term removed]-handoffs/2026-07-14-[host removed]-equivalence-plan-review-exit.md
+docs/[term removed]-handoffs/2026-07-14-cfd-prerequisites-exit.md
+docs/[term removed]-handoffs/2026-07-14-claude-windows-worker-due-diligence-exit.html
+docs/[term removed]-handoffs/2026-07-14-issue-3511-windows-equivalence-exit.md
+docs/[term removed]-handoffs/2026-07-14-rdp-microphone-[host removed]-[host removed]-exit.md
+docs/[term removed]-handoffs/2026-07-14-rdp-microphone-implementation-ready.md
+docs/[term removed]-handoffs/2026-07-15-issue-3525-claude-worker-discovery-exit.md
+docs/[term removed]-handoffs/2026-07-15-ssh-undi-wireguard-diagnosis-exit.md
+docs/[term removed]-handoffs/2026-07-18-handoff-3573-agy-provider-swap.md
+docs/[term removed]-handoffs/2026-07-18-handoff-vnc-[host removed]-headless.md
+docs/[term removed]-handoffs/2026-07-19-handoff-3589-phone-media-extraction.md
+docs/[term removed]-handoffs/2026-07-23-handoff-equality-reconcile-3592.md
+docs/[term removed]-handoffs/2026-07-23-handoff-[host removed]-equivalence-onboarding.md
+docs/[term removed]-handoffs/2026-07-23-handoff-machine-equivalence-reconcile-3591.md
+docs/[term removed]-handoffs/2026-07-26-handoff-orcaflex-l2-dispatch-prep.md
+docs/[term removed]-handoffs/2026-07-27-handoff-repo-sync-uv-path-outage.md
+docs/[term removed]-handoffs/2026-07-30-exit-machine-equivalence-and-cron-upkeep.md
+docs/[term removed]-handoffs/2026-07-30-handoff-cron-upkeep-chain-to-[host removed].md
+docs/[term removed]-handoffs/2026-08-01-dispatch-records-and-hostname-sweep.md
+docs/[term removed]-handoffs/2026-08-02-[term removed]-worksurface-cleanup.md
+docs/[term removed]-handoffs/2026-08-03-ext4-migration-and-gate-repairs.md
+docs/[term removed]-handoffs/2026-08-03-tmux-[term removed]-rollout-exit.md
+docs/[term removed]-handoffs/2026-08-18-handoff-kcs-fine-grid-cfd-[term removed].md
+docs/[term removed]-handoffs/2026-08-20-handoff-kcs-resistance-and-client-onboarding.md
+docs/[term removed]-handoffs/2026-09-27-simulation-workflow-and-review-pack.md
+docs/[term removed]-handoffs/2026-10-01-handoff-hull-curvature-forms-digital-twin-codex.md
+docs/[term removed]-handoffs/2026-10-06-3936-deckhand-information-exit.html
+docs/[term removed]-handoffs/2026-10-07-[term removed]-consolidation.md
+docs/[term removed]/2026-04-24-gmail-stream-handoff.md
+docs/[term removed]/2026-04-27-gmail-inbox-manageability-stream.md
+docs/[term removed]/2026-04-30-claude-plan-review-hardening-2-rerun.md
+docs/[term removed]/2026-04-30-claude-plan-review-hardening-2-result.md
+docs/[term removed]/2026-04-30-provider-autofeed-111336-claude-recovery-governance-1.md
+docs/[term removed]/2026-05-01-vscode-install-handoff.md
+docs/[term removed]/2026-05-04-handover-2626-readme-row-and-gemini-review.md
+docs/[term removed]/2026-05-04-handover-from-plan-review-queue.md
+docs/[term removed]/2026-05-08-llm-wiki-completeness-loop.md
+docs/[term removed]/2026-05-10-kinect-v1-bringup-handoff.md
+docs/[term removed]/2026-05-11-issue-515-program-closeout.md
+docs/[term removed]/2026-05-15-hermes-delegate-codex-trace.md
+docs/[term removed]/2026-05-15-next-[term removed]-prompts.md
+docs/[term removed]/2026-05-25-hermes-kanban-dashboard-purge-and-dispatch-design.html
+docs/[term removed]/2026-05-31-kanban-phase1-complete-handoff.md
+docs/[term removed]/archives/2026-05-24-mnt-local-analysis-conservative-cleanup.manifest.tsv
+docs/[term removed]/bulk-comment-retry-targets.json
+docs/setup/EXISTING_MACHINE_AUDIT.md
+docs/setup/FRESH_MACHINE_SETUP.md
+docs/setup/MACHINE_REGISTRY.md
+docs/setup/README.md
+docs/solver/README.md
+docs/solver/orcawave-orcaflex-native-load-run-proof-protocol.md
+docs/solver/templates/semantic-proof-evidence-manifest.yaml
+docs/standards/COORDINATOR_PROTOCOL.md
+docs/standards/TIER1_INDEXING_FRESHNESS_AUDIT.md
+docs/standards/canonical-drive-references.md
+docs/superpowers/plans/2026-03-25-nightly-gsd-researcher.md
+docs/superpowers/specs/2026-03-25-nightly-gsd-researcher-design.md
+docs/superpowers/specs/2026-07-15-3549-registry-connection-helpers-design.md
+docs/workstations/repository-clone-profiles.md
+knowledge/wikis/engineering/raw/papers/2026-05-06-ai-tooling.md
+licensed-run/README.md
+licensed-run/agent_poll.bat
+licensed-run/setup_verify.bat
+logs/orchestrator/README.md
+notes/agent-work-queue.md
+notes/gatepass-weekly-summary.html
+queue/completed/20260401T005201Z-test01/20260401T005201Z-test01.yaml
+queue/completed/20260401T021707Z-test01/20260401T021707Z-test01.yaml
+queue/completed/wamit-val-ellipsoid-v2/wamit-val-ellipsoid-v2.yaml
+queue/completed/wamit-val-ellipsoid/wamit-val-ellipsoid.yaml
+queue/completed/wamit-val-test01-v2/wamit-val-test01-v2.yaml
+queue/completed/wamit-val-test01/wamit-val-test01.yaml
+queue/failed/20260401T005235Z-orcawave_001_ship_raos_rev2/20260401T005235Z-orcawave_001_ship_raos_rev2.yaml
+queue/failed/wamit-val-hemisphere/wamit-val-hemisphere.yaml
+queue/failed/wamit-val-hemisphere/wamit-val-hemisphere/wamit-val-hemisphere.yaml
+queue/job-schema.yaml
+scripts/_core/tests/test_sync_agent_helpers.sh
+scripts/agents/install-soul-runtime.sh
+scripts/ai/dispatch_leader.py
+scripts/ai/provider-dispatch-loop.py
+scripts/ai/provider_route.py
+scripts/benchmarks/results.tsv
+scripts/blender/smoke-render.py
+scripts/classify_shard04.py
+scripts/cron/commit-learning-artifacts.sh
+scripts/cron/comprehensive-learning-nightly.sh
+scripts/cron/consistency-weekly-check.sh
+scripts/cron/cron_apply.py
+scripts/cron/crontab-template.sh
+scripts/cron/dispatch-leader-watch.sh
+scripts/cron/dispatch-pull-cron.sh
+scripts/cron/harness-update.sh
+scripts/cron/memory-backup.sh
+scripts/cron/repo-ecosystem-hygiene-audit.sh
+scripts/cron/setup-cron.sh
+scripts/cron/tests/test_gsd_researcher_nightly.sh
+scripts/cron/tests/test_repo_ecosystem_hygiene_audit.py
+scripts/cron/tests/test_validate_schedule.py
+scripts/cron/validate-schedule.py
+scripts/cron/weekly-hermes-parity-review.sh
+scripts/curation/audit_skill_currency.py
+scripts/curation/curate-[term removed]-memory.ps1
+scripts/curation/curate_[term removed]_memory.py
+scripts/curation/graduate_corrections.py
+scripts/data/doc_intelligence/references/docling-benchmark-2026-03-17.yaml
+scripts/data/document-index/build-capability-map.py
+scripts/data/document-index/calc-examples-mapper.py
+scripts/data/document-index/config.yaml
+scripts/data/document-index/launch-batch.sh
+scripts/data/document-index/migrate-canonical-paths.py
+scripts/data/document-index/naval-arch-intelligence.py
+scripts/data/document-index/phase-a-index.py
+scripts/data/document-index/phase-b-astm-validate.py
+scripts/data/document-index/phase-f-gap-wrk-generator.py
+scripts/data/document-index/provenance.py
+scripts/data/document-index/summarise-worker.py
+scripts/data/document-index/tests/test_provenance.py
+scripts/data/drive-index-search/pathnorm.py
+scripts/data/orcaflex/README.md
+scripts/data/orcaflex/_archive/anonymize-import.py
+scripts/data/orcaflex/dat-to-yaml.py
+scripts/data/orcaflex/enrich-and-clean.py
+scripts/dispatch/coordinator_loop.py
+scripts/dispatch/dispatch.py
+scripts/dispatch/overnight-2026-05-13/00-tonight-issue-2702-routing-audit.sh
+scripts/dispatch/overnight-2026-05-13/[label removed]-issue-1583.sh
+scripts/dispatch/overnight-2026-05-13/README.md
+scripts/dispatch/route.py
+scripts/domain-tag/generate-index-entries.py
+scripts/enforcement/check-gh-auth.sh
+scripts/enforcement/scheduler_mutation_wrapper_attestations.py
+scripts/[term removed]/collect_account_usage_[term removed].py
+scripts/[term removed]/[term removed]_snapshot_labels.py
+scripts/[term removed]/[term removed]-sweep.sh
+scripts/[term removed]/populate-hf-token.sh
+scripts/knowledge/tests/test_update_github_issue.py
+scripts/learning/comprehensive-learning.sh
+scripts/legal/tests/test_rule_authority_genesis_approval.py
+scripts/legal/verify_rule_authority_genesis_approval.py
+scripts/maintenance/git-lock-reaper.sh
+scripts/maintenance/harness-install-doctor.sh
+scripts/maintenance/return-to-main-guard.sh
+scripts/maintenance/update-model-ids.sh
+scripts/memory/bridge-hermes-claude.sh
+scripts/memory/extract_hermes_patterns.py
+scripts/memory/tests/test_bridge_commit.py
+scripts/monitoring/bundle-sentinel-install/install.sh
+scripts/monitoring/cron-health-check.sh
+scripts/monitoring/equivalence_compare.py
+scripts/monitoring/tests/test_cron_health_check.sh
+scripts/monitoring/tests/test_equivalence_compare.py
+scripts/monitoring/tests/test_equivalence_sentinel.sh
+scripts/operations/Surface-Inventory.ps1
+scripts/operations/agent-execution/README.md
+scripts/operations/agent-execution/ace2-readiness.sh
+scripts/operations/agent-execution/launch-ace1-control-plane.sh
+scripts/operations/agent-execution/launch-ace2-overflow-worker.sh
+scripts/operations/connection/.fuse_hidden0002aeb10000414f
+scripts/operations/connection/.fuse_hidden0002aeb100013f84
+scripts/operations/connection/connect-workspace-tailscale.ps1
+scripts/operations/connection/connect-workspace-tailscale.sh
+scripts/operations/connection/ssh-[host removed].sh
+scripts/operations/connection/vnc-[host removed].sh
+scripts/operations/dispatch_pull.py
+scripts/operations/relocate-to-bulk.sh
+scripts/operations/sanitize-machine-names.sh
+scripts/operations/system/fix-kvm-display-[host removed].sh
+scripts/operations/system/openfoam_parallel_processing.md
+scripts/operations/system/ssh-helpers.sh
+scripts/operations/workstation-collect.sh
+scripts/operations/workstation-dispatch.sh
+scripts/operations/workstation-offload.sh
+scripts/operations/workstation-remote-agent.sh
+scripts/operations/wrk-294-[host removed].sh
+scripts/operations/wrk-294-finish.sh
+scripts/permissions/merge-audit-results.py
+scripts/pipelines/stubs/__init__.py
+scripts/pipelines/stubs/stub_orcaflex.py
+scripts/productivity/sections/ai-usage-summary.sh
+scripts/productivity/sections/summary-header.sh
+scripts/productivity/sections/wrk-health.sh
+scripts/quality/dep-health.sh
+scripts/readiness/ai-agent-versions.yaml
+scripts/readiness/build-equality-matrix.py
+scripts/readiness/check-network-mounts.sh
+scripts/readiness/collect-equality.ps1
+scripts/readiness/collect-equality.sh
+scripts/readiness/compare-harness-state.sh
+scripts/readiness/gap-actions/[host removed]/00-current-gaps.sh
+scripts/readiness/gap-actions/[host removed]/01-refresh-curation-and-matrix.sh
+scripts/readiness/gap-actions/[host removed]/02-merge-reviewed-prs-preflight.sh
+scripts/readiness/gap-actions/[host removed]/03-install-windows-sentinel.sh
+scripts/readiness/gap-actions/[host removed]/04-run-equivalence-sentinel.sh
+scripts/readiness/gap-actions/[host removed]/05-hermes-surface-preflight.sh
+scripts/readiness/gap-actions/[host removed]/06-license-probe-preflight.sh
+scripts/readiness/gap-actions/[host removed]/07-closeout-3506.sh
+scripts/readiness/harness-config.yaml
+scripts/readiness/harness_reconcile.py
+scripts/readiness/hermes-consistency-check.sh
+scripts/readiness/lib/machine-identity.sh
+scripts/readiness/nightly-readiness.sh
+scripts/readiness/publish-equality.sh
+scripts/readiness/reconcile-ecosystem.sh
+scripts/readiness/refresh-equality-matrix.ps1
+scripts/readiness/repair-sibling-sso-flow.py
+scripts/readiness/telegram_hermes_readiness.py
+scripts/repositories/work_surface_inventory.py
+scripts/repository_sync
+scripts/review/results/2026-07-08-plan-3403-claude-r2.md
+scripts/review/results/2026-07-08-plan-3403-claude-r4.md
+scripts/review/results/2026-07-08-plan-3403-claude-r5.md
+scripts/review/results/2026-07-08-plan-3403-claude-r6.md
+scripts/review/results/2026-07-08-plan-3403-claude-r7.md
+scripts/review/results/2026-07-08-plan-3403-claude-r8.md
+scripts/review/results/2026-07-08-plan-3403-claude-r9.md
+scripts/review/results/2026-07-08-plan-3403-codex-r9.md
+scripts/review/results/2026-07-08-plan-3403-disagreement-r4.md
+scripts/review/results/2026-07-08-plan-3403-disagreement-r9.md
+scripts/review/results/2026-07-11-plan-3347-claude.md
+scripts/review/results/2026-07-14-impl-3524-codex-r1.md
+scripts/review/results/2026-07-14-impl-3524-codex-r2.md
+scripts/review/results/2026-07-14-impl-3524-codex-r3.md
+scripts/review/results/2026-07-14-impl-3524-codex-r4.md
+scripts/review/results/2026-07-14-plan-3511-codex-r1.md
+scripts/review/results/2026-07-14-plan-3511-codex-r2.md
+scripts/review/results/2026-07-14-plan-3511-codex.md
+scripts/review/results/2026-07-14-plan-3524-claude-r1.md
+scripts/review/results/2026-07-14-plan-3524-claude-r2.md
+scripts/review/results/2026-07-14-plan-3524-codex-r1.md
+scripts/review/results/2026-07-14-plan-3524-disagreement-r1.md
+scripts/review/results/2026-07-14-plan-3524-disagreement-r2.md
+scripts/review/results/2026-07-14-plan-3525-codex-inline-final.md
+scripts/review/results/2026-07-14-plan-3525-codex.md
+scripts/review/results/2026-07-14-plan-3525-disagreement.md
+scripts/review/results/2026-07-15-plan-3548-claude-r1.md
+scripts/review/results/2026-07-15-plan-3548-claude-r3.md
+scripts/review/results/2026-07-15-plan-3548-claude-r4.md
+scripts/review/results/2026-07-15-plan-3548-claude-r5.md
+scripts/review/results/2026-07-15-plan-3548-disagreement-r3.md
+scripts/review/results/2026-07-15-plan-3548-disagreement-r4.md
+scripts/review/results/2026-07-16-plan-3549-claude-round1.md
+scripts/review/results/2026-07-16-plan-3549-claude-round2.md
+scripts/review/results/2026-07-16-plan-3549-claude-round3.md
+scripts/review/results/2026-07-16-plan-3549-codex-round3.md
+scripts/review/results/2026-07-16-plan-3549-disagreement-round3.md
+scripts/review/results/2026-07-22-plan-3592-claude.md
+scripts/review/results/2026-07-30-plan-3702-claude-r1.md
+scripts/review/results/2026-07-30-plan-3702-codex-r2.md
+scripts/review/results/2026-07-30-plan-3707-claude-r2.md
+scripts/review/results/2026-07-30-plan-3707-codex-r1.md
+scripts/review/results/2026-07-30-plan-3708-claude-r2.md
+scripts/review/results/2026-07-30-plan-3709-claude-r2.md
+scripts/review/results/2026-07-30-plan-3709-v2-verification-log.md
+scripts/review/results/2026-07-30-plan-3709-v3-codex-r2.md
+scripts/review/results/2026-07-30-plan-3709-v3-verification-log.md
+scripts/review/results/2026-07-30-plan-3709-v4-verification-log.md
+scripts/review/results/2026-07-30-plan-3709-v5-verification-log.md
+scripts/review/results/2026-07-30-plan-3711-codex-r2.md
+scripts/review/results/2026-07-30-plan-3711-prototype/README.md
+scripts/review/results/2026-07-30-plan-3711-prototype/proto_3711.py
+scripts/review/results/2026-07-30-plan-3711-prototype/proto_ef.py
+scripts/review/results/2026-07-30-plan-3711-verification-log.md
+scripts/[term removed]/refresh-context.sh
+scripts/setup/aggregate-machine-status.sh
+scripts/setup/canonical-drive-links.sh
+scripts/setup/deploy-tmux.sh
+scripts/setup/engineering-suite-install.sh
+scripts/setup/lib/emit-machine-status.sh
+scripts/setup/mystran-build-linux.sh
+scripts/setup/new-machine-setup.sh
+scripts/setup/nfs-ace-drive.sh
+scripts/setup/nfs-dde-drive.sh
+scripts/skills/description-violations.jsonl
+scripts/skills/resync-skill-links.sh
+scripts/solver/README.md
+scripts/solver/process-queue.py
+scripts/solver/retry_handler.py
+scripts/solver/setup-scheduler.ps1
+scripts/solver/validate_xlsx_against_owr.py
+scripts/sync/README-sync-ecosystem.md
+scripts/sync/sync-ecosystem.ps1
+scripts/sync/sync-ecosystem.sh
+scripts/sync/sync-machine-branch.sh
+scripts/tmux/tmux-autosave.sh
+scripts/windows/README.md
+scripts/windows/enable-remote-exec.ps1
+scripts/windows/equality-report.ps1
+scripts/windows/rdp-microphone.ps1
+scripts/windows/reconcile-ecosystem.ps1
+scripts/windows/schedule-equivalence-tasks.sh
+scripts/windows/setup-scheduler-tasks.ps1
+scripts/workflow/[term removed]_review_sanitize.py
+scripts/workstations/check-tier1-repo-baseline.py
+scripts/workstations/clone_profile.py
+state/reflect-history/2026-03-24.md
+state/reflect-history/2026-03-31.md
+state/reflect-history/2026-04-01.md
+state/reflect-history/2026-04-03.md
+state/reflect-history/2026-04-06.md
+state/reflect-history/2026-04-27.md
+state/reflect-history/2026-04-28.md
+state/reflect-history/2026-05-05.md
+state/reflect-history/2026-05-14.md
+state/reflect-history/2026-05-19.md
+state/reflect-history/2026-05-20.md
+state/reflect-history/2026-05-21.md
+state/reflect-history/2026-05-31.md
+state/reflect-history/2026-07-08.md
+state/reflect-history/2026-07-09.md
+state/reflect-history/2026-07-12.md
+state/reflect-history/2026-07-15.md
+state/reflect-history/2026-07-18.md
+state/reflect-history/2026-07-22.md
+state/terminal-monitoring/[term removed].jsonl
+teams-bot-issue2/issue3_evidence.txt
+tests/ai/test_dispatch_leader.py
+tests/ai/test_provider_dispatch_loop.py
+tests/ai/test_provider_kanban.py
+tests/ai/test_provider_route.py
+tests/architecture/test_execution_layer_contract.py
+tests/automation/test_release_scan_wrk.py
+tests/blender/test_verify_blender_baseline.py
+tests/cron/fixtures/README.md
+tests/cron/fixtures/ace1-crontab-2026-07-30.txt
+tests/cron/fixtures/ace2-crontab-2026-07-30.txt
+tests/cron/test_a1_preserved.py
+tests/cron/test_commit_learning_artifacts_redaction.py
+tests/cron/test_cron_apply.py
+tests/cron/test_cron_apply_exact_state.py
+tests/cron/test_cron_audit.py
+tests/cron/test_cron_render.py
+tests/cron/test_cron_transaction.py
+tests/cron/test_dispatch_pull_schedule.py
+tests/cron/test_setup_cron.py
+tests/curation/test_audit_harness_checkup.py
+tests/curation/test_audit_memory_freshness.py
+tests/curation/test_detect_skill_drift.py
+tests/curation/test_graduate_corrections.py
+tests/data/document-index/test_canonical_migration.py
+tests/data/document-index/test_enrich_cli.py
+tests/data/document-index/test_phase_e2_rules.py
+tests/data/drive_index_refresh/test_schedule_and_wrapper.py
+tests/data/drive_index_search/test_merge_and_normalize.py
+tests/data/drive_index_search/test_pathnorm_canonical.py
+tests/dispatch/test_ai_provider_axis.py
+tests/dispatch/test_chain_ran_is_not_succeeded.py
+tests/dispatch/test_claim_protocol.py
+tests/dispatch/test_claim_rejected_push_undo.py
+tests/dispatch/test_coordinator_loop.py
+tests/dispatch/test_dispatch_records.py
+tests/dispatch/test_label_axis_cardinality.py
+tests/dispatch/test_live_issue_source.py
+tests/dispatch/test_mirror_drift.py
+tests/dispatch/test_queue_omits_issue_titles.py
+tests/dispatch/test_queue_staleness.py
+tests/dispatch/test_reconcile.py
+tests/dispatch/test_route_capacity.py
+tests/dispatch/test_route_card_title.py
+tests/dispatch/test_route_coverage.py
+tests/dispatch/test_route_glob.py
+tests/dispatch/test_route_[term removed].py
+tests/dispatch/test_route_quota_gate.py
+tests/dispatch/test_routing_rules_capability_truth.py
+tests/dispatch/test_shared_tenancy_cap.py
+tests/dispatch/test_traceability_chain.py
+tests/dispatch/test_write_preserves_cardinality.py
+tests/docs/test_remote_linux_access_contract.py
+tests/docs/test_scheduled_tasks_docs.py
+tests/docs/test_tier1_indexing_freshness_audit.py
+tests/email/test_email_queue_contract_artifacts.py
+tests/enforcement/test_check_canonical_drive_paths.py
+tests/enforcement/test_check_public_surface.py
+tests/fixtures/ai/provider_kanban/workstations.json
+tests/fixtures/architecture/data_source_inventory.yaml
+tests/fixtures/architecture/execution_manifest.yaml
+tests/fixtures/readiness/invalid-access-mode.yaml
+tests/fixtures/readiness/invalid-timestamp.yaml
+tests/fixtures/readiness/linux-valid.yaml
+tests/fixtures/readiness/windows-valid.yaml
+tests/[term removed]/test_account_usage_[term removed].py
+tests/[term removed]/test_account_usage_labels.py
+tests/[term removed]/test_[term removed]_snapshot_daily.py
+tests/[term removed]/test_[term removed]_snapshot_labels.py
+tests/legal/test_check_identifiers.py
+tests/maintenance/test_update_model_ids_self_exclusion.py
+tests/memory/test_context_md_bridge_sync.py
+tests/memory/test_extract_hermes_patterns.py
+tests/monitoring/test_cron_health_script.py
+tests/monitoring/test_equivalence_compare.py
+tests/openfoam/test_verify_openfoam_baseline.py
+tests/operations/test_dispatch_pull_executor.py
+tests/operations/test_dispatch_pull_pacing.py
+tests/operations/test_dispatch_pull_pause.py
+tests/operations/test_dispatch_select.py
+tests/operations/test_linux_cron_issue_orchestration.py
+tests/operations/test_workstation_dispatch_wiring.py
+tests/portability/test_smoke_verification.py
+tests/preflight/fixtures/auth-invalid.txt
+tests/preflight/fixtures/clean-repo.txt
+tests/preflight/fixtures/reachable.txt
+tests/preflight/fixtures/tool-missing.txt
+tests/preflight/test_classify.py
+tests/preflight/test_cli.py
+tests/preflight/test_render.py
+tests/readiness/fixtures/equality-[host removed].sample.yaml
+tests/readiness/fixtures/rdp-microphone/duplicate-capture.rdp
+tests/readiness/test_build_equality_matrix.py
+tests/readiness/test_collect_equality.py
+tests/readiness/test_collect_equality_ps1_schema.py
+tests/readiness/test_equality_tree_cleanliness.py
+tests/readiness/test_harness_reconcile_windows.py
+tests/readiness/test_publish_equality.py
+tests/readiness/test_rdp_microphone_ps1_contract.py
+tests/readiness/test_rdp_microphone_ps1_native.py
+tests/readiness/test_reconcile_ecosystem.py
+tests/readiness/test_registry_sso_completeness.py
+tests/readiness/test_[term removed]_curation_freshness.py
+tests/readiness/test_sibling_agents_contract.py
+tests/readiness/test_sibling_sso_repair_dry_run.py
+tests/readiness/test_sibling_sso_topology.py
+tests/readiness/test_skill_currency.py
+tests/readiness/test_sync_agent_configs_sso.py
+tests/readiness/test_telegram_hermes_readiness.py
+tests/readiness/test_telegram_hermes_readiness_tier1_baseline.py
+tests/readiness/test_windows_scheduler_single_source.py
+tests/repositories/fixtures/work_surface_inventory/workstations.yaml
+tests/repositories/test_work_surface_inventory.py
+tests/[term removed]/test_write_wrk_state.py
+tests/setup/test_aggregate_machine_status.sh
+tests/statusline/test_quota_staleness.bats
+tests/telegram_dispatch/test_dispatch_policy.py
+tests/telegram_dispatch/test_redaction.py
+tests/test_relabel.py
+tests/test_wrk687_lifecycle.sh
+tests/tmux/test_deploy_tmux.py
+tests/tmux/test_setup_tmux_autosave_timer.py
+tests/tmux/test_tmux_autoattach.py
+tests/tmux/test_tmux_autosave.py
+tests/tmux/test_tmux_conf_and_launcher.py
+tests/unit/test_generate_html_review.py
+tests/unit/test_infer_category.py
+tests/work-queue/test-harness-readiness.sh
+tests/work-queue/test-weekly-hermes-parity-review.sh
+tests/work-queue/test_engine_integration.sh
+tests/work-queue/test_whats_next.bats
+tests/work-queue/test_wrk_progress.sh
+tests/workflow/test_[term removed]_review_sanitize.py
+tests/workstations/test_ace_win_alias_backcompat.py
+tests/workstations/test_check_tier1_repo_baseline.py
+tests/workstations/test_clone_profile.py
+tests/workstations/test_dev_secondary_ground_truth.py
+tests/workstations/test_dispatch.py
+tests/workstations/test_handoff_and_status.py
+tests/workstations/test_machine_path_resolver.py
+tests/workstations/test_registry.py

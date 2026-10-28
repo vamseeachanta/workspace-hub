@@ -67,7 +67,7 @@ def test_inventory_is_deterministic_alias_safe_and_check_bound(tmp_path):
     assert subprocess.run(command, cwd=ROOT).returncode == 0
     first = output.read_bytes()
     payload = json.loads(first)
-    assert payload["machines"] == ["linux-a"]
+    assert payload["machines"] == [load_generator().public_key("machine", "linux-a")]
     assert payload["unsupported"] == []
     assert payload["collisions"] == []
     assert first.endswith(b"\n")
@@ -159,8 +159,10 @@ def test_unbound_legacy_variant_is_named_and_fails(tmp_path):
     _catalog, _classes, output, command = fixture_paths(tmp_path, [task], classes)
     assert subprocess.run(command, cwd=ROOT).returncode != 0
     unsupported = json.loads(output.read_bytes())["unsupported"]
+    generator = load_generator()
     assert unsupported == [{"error": "legacy variant is not bound in a canonical Linux context",
-                            "task_id": "other", "variant_id": "old"}]
+                            "task_id": generator.public_key("task", "other"),
+                            "variant_id": generator.public_key("legacy", "old")}]
 
 
 @pytest.mark.parametrize("malformed", [None, 7, ["not", "a", "mapping"]])

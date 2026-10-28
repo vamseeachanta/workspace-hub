@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import re
 import struct
 import sys
 from pathlib import Path
@@ -58,6 +59,49 @@ def input_digest(paths: list[Path]) -> str:
     return digest.hexdigest()
 
 
+def public_key(kind: str, value: str) -> str:
+    """Stable, domain-separated public identifier; canonical keys stay internal."""
+    return kind + "-" + hashlib.sha256(f"cron-{kind}:{value}".encode()).hexdigest()
+
+
+def _public_error(message: str, registry: dict) -> str:
+    labels = set()
+    for key, machine in (registry.get("machines") or {}).items():
+        labels.add(key)
+        labels.update(machine.get("hostname_aliases") or [])
+        if machine.get("hostname"):
+            labels.add(machine["hostname"])
+    if not labels:
+        return message
+    pattern = "|".join(re.escape(label) for label in sorted(labels, key=lambda x: (-len(x), x)))
+    return re.sub(pattern, "[machine]", message, flags=re.IGNORECASE)
+
+
+def _public_inventory(payload: dict, registry: dict) -> dict:
+    """Project only after canonical ownership, legacy binding and collisions.
+
+    All task and legacy IDs are opaque, including IDs with embedded machine
+    labels. Diagnostics retain their explanation without registry names.
+    """
+    kinds = {"machines": "machine", "machine_id": "machine",
+             "task_id": "task", "task_ids": "task",
+             "variant_id": "legacy", "legacy_variant_ids": "legacy"}
+
+    def project(value, field=None):
+        if isinstance(value, dict):
+            return {key: project(item, key) for key, item in value.items()}
+        if isinstance(value, list):
+            return [project(item, field) for item in value]
+        if isinstance(value, str):
+            if field in kinds:
+                return public_key(kinds[field], value)
+            if field == "error":
+                return _public_error(value, registry)
+        return value
+
+    return project(payload)
+
+
 def build(catalog_path: Path, registry_path: Path, classes_path: Path) -> dict:
     catalog = yaml.safe_load(catalog_path.read_text(encoding="utf-8"))
     registry = yaml.safe_load(registry_path.read_text(encoding="utf-8"))
@@ -89,9 +133,11 @@ def build(catalog_path: Path, registry_path: Path, classes_path: Path) -> dict:
         unsupported.append({"task_id": task_id, "variant_id": variant_id,
                             "error": "legacy variant is not bound in a canonical Linux context"})
     union = [catalog_path, registry_path, classes_path, *SOURCE_PATHS]
-    return {"schema_version": 1, "input_digest": input_digest(union),
-            "machines": machines, "identities": rows,
-            "unsupported": unsupported, "collisions": collisions}
+    return _public_inventory({
+        "schema_version": 1, "input_digest": input_digest(union),
+        "machines": machines, "identities": rows,
+        "unsupported": unsupported, "collisions": collisions,
+    }, registry)
 
 
 def _build_machine(catalog, registry, classes, machine_id, rows, unsupported,
@@ -161,10 +207,7 @@ def inventory_mismatch_summary(current: bytes, generated: bytes) -> str:
         )
     for index, (current_row, generated_row) in enumerate(zip(current_rows, generated_rows)):
         if current_row != generated_row:
-            return (
-                f"inventory body mismatch at identities[{index}]: "
-                f"expected {generated_row!r} but found {current_row!r}"
-            )
+            return f"inventory body mismatch at identities[{index}]"
     return "inventory body mismatch: bytes differ after canonical JSON comparison"
 
 

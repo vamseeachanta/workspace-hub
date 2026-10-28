@@ -141,11 +141,11 @@ def test_fixture_inventory_uses_declared_root(
         f'0 1 * * * "{root}/scripts/run.sh" '
         f'>> "{root}/logs/quality/cron-wrapper.log" 2>&1'
     )
-    assert payload["machines"] == ["target"]
+    assert payload["machines"] == [inventory.public_key("machine", "target")]
     assert payload["identities"] == [{
         "canonical_line_sha256": hashlib.sha256(expected_line.encode()).hexdigest(),
-        "legacy_variant_ids": [], "machine_id": "target",
-        "task_id": "probe", "unique": True,
+        "legacy_variant_ids": [], "machine_id": inventory.public_key("machine", "target"),
+        "task_id": inventory.public_key("task", "probe"), "unique": True,
     }]
     assert payload["unsupported"] == []
     assert payload["collisions"] == []
