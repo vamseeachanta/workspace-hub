@@ -666,3 +666,8 @@ scripts/review/results/*
 # Fleet snapshot wrapper scratch files must never be tracked in the public repo.
 docs/reports/fleet-snapshots/.latest.*
 docs/reports/fleet-snapshots/.fleet-label-*.tmp
+
+# Keep only the bounded JSON test deliverable from the ignored library tree.
+!/tests/lib/
+/tests/lib/*
+!/tests/lib/test_strict_json_boundaries.py
