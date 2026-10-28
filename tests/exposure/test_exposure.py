@@ -198,3 +198,18 @@ def test_source_mutation_cannot_change_snapshot():
     parsed = RegistryRecord.from_dict(data)
     data["fields"]["region"]["value"] = "Synthetic Hull Zephyr"
     assert expose(parsed, "newsletter")["fields"]["region"] == "broad coastal region"
+
+
+@pytest.mark.parametrize(
+    "identity", ["V-0107", "v_0107", "Ｖ ０１０７", "C-0004", "c_0005"]
+)
+@pytest.mark.parametrize("construction", ["factory", "direct"])
+def test_codenames_reject_registry_identifiers(identity, construction):
+    data = record_data()
+    data["fields"]["design"]["client_id"] = "C-0005"
+    data["fields"]["name"]["codename"] = "bulk carrier A " + identity
+    with pytest.raises(ExposureError, match="Invalid registry record"):
+        if construction == "factory":
+            RegistryRecord.from_dict(data)
+        else:
+            expose(RegistryRecord(json.dumps(data)), "newsletter")

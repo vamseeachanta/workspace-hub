@@ -59,6 +59,18 @@ def _json_value(value: Any) -> bool:
     return False
 
 
+def _identifiers(data: dict[str, Any]) -> tuple[str, ...]:
+    return tuple(
+        identity
+        for identity in (
+            data["id"],
+            data.get("client_id"),
+            *(item.get("client_id") for item in data["fields"].values()),
+        )
+        if identity is not None
+    )
+
+
 def _validate_field(item: Any) -> None:
     _require(type(item) is dict)
     _require(set(item) <= {"value", "exposure_class", "kind", "codename", "client_id"})
@@ -89,6 +101,12 @@ def _validate_record(data: Any) -> None:
             isinstance(name, str) and re.fullmatch(r"[a-z][a-z0-9_]*", name) is not None
         )
         _validate_field(item)
+    identifiers = tuple(_fold(identity) for identity in _identifiers(data))
+    for item in fields.values():
+        if item.get("kind") == "name":
+            _require(
+                not any(identity in _fold(item["codename"]) for identity in identifiers)
+            )
     if "singling_out" not in data:
         return
     review = data["singling_out"]
@@ -148,7 +166,7 @@ def forbidden_names(
         for text in _strings(item["value"])
         if text
     )
-    return names + sensitive
+    return names + sensitive + _identifiers(data)
 
 
 def _strings(value: Any) -> Iterator[str]:

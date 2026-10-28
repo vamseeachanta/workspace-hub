@@ -196,3 +196,49 @@ def test_refusal_never_emits_partial_json(registry_path, capsys):
         == 2
     )
     assert not capsys.readouterr().out
+
+
+@pytest.mark.parametrize(
+    "identity", ["V-0107", "v_0107", "Ｖ ０１０７", "C-0004", "c_0005"]
+)
+def test_identifier_codename_refusal_has_no_partial_json(
+    registry_path, capsys, identity
+):
+    data = record_data()
+    data["fields"]["design"]["client_id"] = "C-0005"
+    data["fields"]["name"]["codename"] = "bulk carrier A " + identity
+    registry_path.write_text(json.dumps({"schema_version": 1, "records": [data]}))
+    assert (
+        main(
+            [
+                "--registry", str(registry_path), "--id", "V-0107",
+                "--surface", "newsletter",
+            ]
+        )
+        == 2
+    )
+    result = capsys.readouterr()
+    assert result.out == ""
+    assert result.err == (
+        "Exposure refused: check surface, recipient and private registry policy.\n"
+    )
+
+
+def test_codename_cannot_copy_another_registry_identity(registry_path, capsys):
+    first = record_data()
+    second = record_data()
+    second["id"] = "V-0108"
+    first["fields"]["name"]["codename"] = "bulk carrier A v_0108"
+    registry_path.write_text(
+        json.dumps({"schema_version": 1, "records": [first, second]})
+    )
+    assert (
+        main(
+            [
+                "--registry", str(registry_path), "--id", "V-0107",
+                "--surface", "newsletter",
+            ]
+        )
+        == 2
+    )
+    assert capsys.readouterr().out == ""
