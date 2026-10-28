@@ -1,6 +1,6 @@
 # setup-scheduler-tasks.ps1
 # Registers all \Claude\ Windows Scheduled Tasks for workspace-hub on this workstation.
-# Run as Administrator: powershell -ExecutionPolicy Bypass -File setup-scheduler-tasks.ps1
+# Run as Administrator: powershell -NoProfile -File setup-scheduler-tasks.ps1
 #
 # Tasks registered:
 #   \Claude\ContextManagementDaily     - daily context file health check
@@ -19,7 +19,7 @@
 [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidUsingWriteHost', '', Justification='Operator-facing scheduler installer uses console output.')]
 param(
     [string]$WorkspaceRoot = "",
-    [switch]$WhatIf,
+    [Alias('DryRun')][switch]$WhatIf,
     [switch]$Remove,
     [switch]$EquivalenceOnly,
     [string]$MachineIdOverride = ""
@@ -36,30 +36,13 @@ if ($MachineIdOverride -and (-not $WhatIf -or $Remove)) {
 }
 
 if ([string]::IsNullOrWhiteSpace($WorkspaceRoot)) {
-    $WorkspaceRoot = (Resolve-Path (Join-Path $PSScriptRoot "..\..")).Path
+    $WorkspaceRoot = (Resolve-Path -LiteralPath (Join-Path $PSScriptRoot "..\..")).Path
 }
+$WorkspaceRoot = (Resolve-Path -LiteralPath $WorkspaceRoot).Path
 $TaskPath = "\Claude\"
 $RemoveMode = $Remove
 
-function Resolve-GitBash {
-    $candidates = New-Object System.Collections.Generic.List[string]
-    $gitCommand = (Get-Command git -ErrorAction SilentlyContinue).Source
-    if ($gitCommand) {
-        $gitRoot = Split-Path -Parent (Split-Path -Parent $gitCommand)
-        $candidates.Add((Join-Path $gitRoot 'bin\bash.exe'))
-        $candidates.Add((Join-Path $gitRoot 'usr\bin\bash.exe'))
-    }
-    $candidates.Add('C:\Program Files\Git\bin\bash.exe')
-    $candidates.Add('C:\Program Files\Git\usr\bin\bash.exe')
-    $candidates.Add('C:\Program Files (x86)\Git\bin\bash.exe')
-    $candidates.Add("$env:LOCALAPPDATA\Programs\Git\bin\bash.exe")
-    foreach ($candidate in ($candidates | Select-Object -Unique)) {
-        if (-not $candidate -or -not (Test-Path $candidate)) { continue }
-        $uname = (& $candidate -c 'uname -s' 2>$null)
-        if ($uname -match '^(MINGW|MSYS|CYGWIN)') { return $candidate }
-    }
-    return $null
-}
+. "$PSScriptRoot/scheduler-actions.ps1"
 
 $GitBash = Resolve-GitBash
 
@@ -187,7 +170,8 @@ function Register-ClaudeTask {
         [Parameter(Mandatory=$true)][string]$ScriptPath,
         [Parameter(ParameterSetName="Daily", Mandatory=$true)][string]$DailyAt,
         [Parameter(ParameterSetName="Cron", Mandatory=$true)][string]$CronSchedule,
-        [string]$TaskArguments = "",
+        [string[]]$ScriptArguments = @(),
+        [string]$LogPattern = "",
         [switch]$PowerShell
     )
 
@@ -219,29 +203,20 @@ function Register-ClaudeTask {
     }
     $triggerSummary = Format-TriggerSpec -Spec $triggerSpec
 
-    if ($PowerShell) {
-        $actionArgs = if ($TaskArguments) {
-            "-NoProfile -ExecutionPolicy Bypass -File `"$ScriptPath`" $TaskArguments"
-        } else {
-            "-NoProfile -ExecutionPolicy Bypass -File `"$ScriptPath`""
-        }
-        $action = New-ScheduledTaskAction -Execute "powershell.exe" -Argument $actionArgs -WorkingDirectory $WorkspaceRoot
-        $execSummary = "powershell.exe $actionArgs"
-    } else {
-        $actionArgs = if ($TaskArguments) { "-c `"$ScriptPath $TaskArguments`"" } else { "-c `"$ScriptPath`"" }
-        $action = New-ScheduledTaskAction -Execute $GitBash -Argument $actionArgs -WorkingDirectory $WorkspaceRoot
-        $execSummary = "$GitBash $actionArgs"
-    }
-
-    $trigger = ConvertTo-TaskTrigger -Spec $triggerSpec
-    $settings = Get-DefaultTaskSetting
-    $principal = New-ScheduledTaskPrincipal -UserId $env:USERNAME -LogonType S4U -RunLevel Limited
+    $definition = New-RepoTaskDefinition -Name $Name -ScriptPath $ScriptPath `
+        -ScriptArguments $ScriptArguments -GitBashPath $GitBash `
+        -LogPattern $LogPattern -PowerShell:$PowerShell
 
     if ($WhatIf) {
         Write-Host "  [WhatIf] Would register: $fullName at $triggerSummary"
-        Write-Host "           Exec: $execSummary"
+        Write-Output ($definition | Select-Object *, @{Name='Schedule'; Expression={$triggerSummary}} | ConvertTo-Json -Compress -Depth 5)
         return
     }
+
+    $action = New-ScheduledTaskAction -Execute $definition.Execute -Argument $definition.Arguments -WorkingDirectory $definition.WorkingDirectory
+    $trigger = ConvertTo-TaskTrigger -Spec $triggerSpec
+    $settings = Get-DefaultTaskSetting
+    $principal = New-ScheduledTaskPrincipal -UserId $env:USERNAME -LogonType S4U -RunLevel Limited
 
     $existing = Get-ScheduledTask -TaskName $Name -TaskPath $TaskPath -ErrorAction SilentlyContinue
     if ($existing) {
@@ -304,7 +279,7 @@ if (-not $EquivalenceOnly) {
     Register-ClaudeTask `
         -Name "ContextManagementDaily" `
         -Description "Daily context file health check and improvement suggestions" `
-        -ScriptPath "scripts/coordination/context/daily_context_check.bat" `
+        -ScriptPath "scripts/coordination/context/daily_context_check.sh" `
         -DailyAt "06:00AM"
 
     Register-ClaudeTask `
@@ -323,13 +298,15 @@ if (-not $EquivalenceOnly) {
         -Name "RepoSync" `
         -Description "Nightly workspace-hub git pull and submodule sync" `
         -ScriptPath "scripts/windows/repo-sync-daily.sh" `
+        -LogPattern "logs/repository-sync-*.log" `
         -DailyAt "11:30PM"
 
     Register-ClaudeTask `
         -Name "MemoryBridgeSync" `
         -Description "Refresh repo-tracked memory outputs; commits and pushes (#1918)" `
         -ScriptPath "scripts/memory/bridge-hermes-claude.sh" `
-        -TaskArguments "--commit" `
+        -LogPattern "logs/orchestrator/memory-bridge/hermes-claude-*.log" `
+        -ScriptArguments @('--commit') `
         -DailyAt "04:30AM"
 
     # HarnessUpdate — native AI CLI updater (claude/codex/gemini; hermes skipped on Windows).
@@ -337,6 +314,7 @@ if (-not $EquivalenceOnly) {
         -Name "HarnessUpdate" `
         -Description "Daily AI harness update via native updaters (claude/codex/gemini). #2920" `
         -ScriptPath "scripts/maintenance/update-harness-tools.sh" `
+        -LogPattern "logs/maintenance/update-harness-tools-*.log" `
         -DailyAt "02:15AM"
 }
 
@@ -345,7 +323,8 @@ if ($equalityTask.Machines -contains $currentMachine) {
         -Name "EqualityReport" `
         -Description $equalityTask.Description `
         -ScriptPath "scripts/windows/equality-report.ps1" `
-        -TaskArguments "-Machine $currentMachine" `
+        -LogPattern "logs/quality/equality-*.log" `
+        -ScriptArguments @('-Machine', $currentMachine) `
         -CronSchedule $equalityTask.Schedule `
         -PowerShell
 } else {
@@ -357,7 +336,8 @@ if ($curationTask.Machines -contains $currentMachine) {
         -Name "SessionCuration" `
         -Description $curationTask.Description `
         -ScriptPath "scripts/curation/curate-session-memory.ps1" `
-        -TaskArguments "-Machine $currentMachine" `
+        -LogPattern "logs/monitoring/session-curation-*.log" `
+        -ScriptArguments @('-Machine', $currentMachine) `
         -CronSchedule $curationTask.Schedule `
         -PowerShell
 }
@@ -367,7 +347,8 @@ if ($reconcileTask.Machines -contains $currentMachine) {
         -Name "EcosystemReconcile" `
         -Description $reconcileTask.Description `
         -ScriptPath "scripts/windows/reconcile-ecosystem.ps1" `
-        -TaskArguments "-Machine $currentMachine" `
+        -LogPattern "logs/quality/reconcile-*.log" `
+        -ScriptArguments @('-Machine', $currentMachine) `
         -CronSchedule $reconcileTask.Schedule `
         -PowerShell
 }
@@ -377,6 +358,7 @@ if ($hygieneTask.Machines -contains $currentMachine) {
         -Name "RepoHygieneAutoSafe" `
         -Description $hygieneTask.Description `
         -ScriptPath "scripts/cron/repo-hygiene-auto-safe.sh" `
+        -LogPattern "logs/quality/repo-hygiene-auto-safe-*.log" `
         -CronSchedule $hygieneTask.Schedule
 }
 
@@ -384,8 +366,9 @@ if ($sentinelTask.Machines -contains $currentMachine) {
     Register-ClaudeTask `
         -Name "EquivalenceSentinel" `
         -Description $sentinelTask.Description `
-        -ScriptPath $sentinelScript `
-        -TaskArguments "-WorkspaceRoot `"$WorkspaceRoot`" -GitBashPath `"$GitBash`"" `
+        -ScriptPath $sentinelTask.WindowsScript `
+        -LogPattern "logs/monitoring/equivalence-sentinel-*.log" `
+        -ScriptArguments @('-WorkspaceRoot', $WorkspaceRoot, '-GitBashPath', $GitBash) `
         -CronSchedule $sentinelTask.Schedule `
         -PowerShell
 }

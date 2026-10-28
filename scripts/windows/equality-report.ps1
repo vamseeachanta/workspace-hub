@@ -385,7 +385,7 @@ try {
     $env:EQ_REPORT_DIR = (Join-Path $WorkspaceRoot "docs\reports")
 
     Invoke-Checked -File "powershell" -Arguments @(
-        "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", $collector, "-Machine", $machine) `
+        "-NoProfile", "-File", $collector, "-Machine", $machine) `
         -FailureMessage "collect-equality.ps1 failed"
     # PS 5.1 defaults python file reads to cp1252; force UTF-8 so the matrix
     # build doesn't crash on non-ASCII state-yaml content (#2998).

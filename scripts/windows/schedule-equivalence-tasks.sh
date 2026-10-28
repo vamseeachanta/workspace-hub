@@ -69,7 +69,7 @@ command -v cygpath >/dev/null 2>&1 || {
 
 installer="$(cygpath -w "$REPO_ROOT/scripts/windows/setup-scheduler-tasks.ps1")"
 workspace="$(cygpath -w "$REPO_ROOT")"
-args=(-NoProfile -ExecutionPolicy Bypass -File "$installer" -WorkspaceRoot "$workspace" -EquivalenceOnly)
+args=(-NoProfile -File "$installer" -WorkspaceRoot "$workspace" -EquivalenceOnly)
 [[ $WHAT_IF -eq 1 ]] && args+=(-WhatIf -MachineIdOverride "$MACHINE")
 
 powershell.exe "${args[@]}"

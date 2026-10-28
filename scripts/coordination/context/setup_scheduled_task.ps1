@@ -1,11 +1,29 @@
 # setup_scheduled_task.ps1 - Create Windows scheduled task for daily context check
-# Run as Administrator: powershell -ExecutionPolicy Bypass -File setup_scheduled_task.ps1
+# Run as Administrator: powershell -NoProfile -File setup_scheduled_task.ps1
+
+[CmdletBinding()]
+param(
+    [string]$WorkspaceRoot = '',
+    [Alias('DryRun')][switch]$WhatIf
+)
+$ErrorActionPreference = 'Stop'
+Set-StrictMode -Version Latest
 
 $TaskName = "ContextManagementDaily"
 $TaskPath = "\Claude\"
 $Description = "Daily context file health check and improvement suggestions"
-$WorkspaceRoot = "D:\workspace-hub"
-$ScriptPath = "$WorkspaceRoot\scripts\context\daily_context_check.bat"
+if (-not $WorkspaceRoot) { $WorkspaceRoot = Join-Path $PSScriptRoot '../../..' }
+$WorkspaceRoot = (Resolve-Path -LiteralPath $WorkspaceRoot).Path
+. (Join-Path $WorkspaceRoot 'scripts/windows/scheduler-yaml.ps1')
+. (Join-Path $WorkspaceRoot 'scripts/windows/scheduler-actions.ps1')
+$bash = Resolve-GitBash
+if (-not $bash -and -not $WhatIf) { throw 'Git Bash was not found.' }
+$definition = New-RepoTaskDefinition -Name $TaskName `
+    -ScriptPath 'scripts/coordination/context/daily_context_check.sh' -GitBashPath $bash
+if ($WhatIf) {
+    Write-Output ($definition | Select-Object *, @{Name='Schedule'; Expression={'daily 06:00'}} | ConvertTo-Json -Compress -Depth 5)
+    return
+}
 
 # Check if running as admin
 $currentPrincipal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
@@ -20,14 +38,14 @@ Write-Host "=========================================="
 Write-Host ""
 
 # Remove existing task if present
-$existingTask = Get-ScheduledTask -TaskName $TaskName -ErrorAction SilentlyContinue
+$existingTask = Get-ScheduledTask -TaskName $TaskName -TaskPath $TaskPath -ErrorAction SilentlyContinue
 if ($existingTask) {
     Write-Host "Removing existing task..."
-    Unregister-ScheduledTask -TaskName $TaskName -Confirm:$false
+    Unregister-ScheduledTask -TaskName $TaskName -TaskPath $TaskPath -Confirm:$false
 }
 
 # Create the action
-$Action = New-ScheduledTaskAction -Execute $ScriptPath -WorkingDirectory $WorkspaceRoot
+$Action = New-ScheduledTaskAction -Execute $definition.Execute -Argument $definition.Arguments -WorkingDirectory $definition.WorkingDirectory
 
 # Create the trigger (daily at 6:00 AM)
 $Trigger = New-ScheduledTaskTrigger -Daily -At 6:00AM
@@ -61,7 +79,7 @@ try {
     Write-Host "  Name: $TaskName"
     Write-Host "  Path: $TaskPath"
     Write-Host "  Schedule: Daily at 6:00 AM"
-    Write-Host "  Script: $ScriptPath"
+    Write-Host "  Script: $($definition.ScriptPath)"
     Write-Host ""
     Write-Host "To run manually:"
     Write-Host "  schtasks /run /tn `"\Claude\$TaskName`""
@@ -78,7 +96,7 @@ catch {
 }
 
 # Verify task was created
-$task = Get-ScheduledTask -TaskName $TaskName -ErrorAction SilentlyContinue
+$task = Get-ScheduledTask -TaskName $TaskName -TaskPath $TaskPath -ErrorAction SilentlyContinue
 if ($task) {
     Write-Host "Verification: Task exists and is ready." -ForegroundColor Green
 }

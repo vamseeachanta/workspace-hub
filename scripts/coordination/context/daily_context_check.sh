@@ -4,8 +4,8 @@
 
 set -e
 
-WORKSPACE_ROOT="${WORKSPACE_ROOT:-D:/workspace-hub}"
-SCRIPT_DIR="$(dirname "$0")"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+export WORKSPACE_ROOT="${WORKSPACE_ROOT:-$(cd "$SCRIPT_DIR/../../.." && pwd)}"
 REPORT_DIR="$WORKSPACE_ROOT/.claude/reports"
 DATE=$(date '+%Y-%m-%d')
 REPORT_FILE="$REPORT_DIR/context-health-$DATE.md"
@@ -33,7 +33,7 @@ EOF
 
 # Run validation
 echo "Running size validation..."
-"$SCRIPT_DIR/validate_context.sh" >> "$REPORT_FILE" 2>&1 || true
+bash "$SCRIPT_DIR/validate_context.sh" >> "$REPORT_FILE" 2>&1 || true
 
 cat >> "$REPORT_FILE" << EOF
 
@@ -45,7 +45,7 @@ EOF
 
 # Run pattern analysis
 echo "Running pattern analysis..."
-"$SCRIPT_DIR/analyze_patterns.sh" 7 >> "$REPORT_FILE" 2>&1 || true
+bash "$SCRIPT_DIR/analyze_patterns.sh" 7 >> "$REPORT_FILE" 2>&1 || true
 
 cat >> "$REPORT_FILE" << EOF
 
@@ -57,7 +57,7 @@ EOF
 
 # Generate improvement suggestions
 echo "Generating improvements..."
-"$SCRIPT_DIR/improve_context.sh" --dry-run >> "$REPORT_FILE" 2>&1 || true
+bash "$SCRIPT_DIR/improve_context.sh" --dry-run >> "$REPORT_FILE" 2>&1 || true
 
 cat >> "$REPORT_FILE" << EOF
 
