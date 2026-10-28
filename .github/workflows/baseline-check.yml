@@ -66,6 +66,10 @@ jobs:
         run: |
           uv sync --frozen --group dev
 
+      - name: Run Gemini usage evidence tests
+        run: |
+          uv run --no-project --with pytest python -m pytest tests/ai/test_gemini_usage.py -q
+
       - name: Run Python tests
         run: |
           # Hub-level Python tests (no PYTHONPATH manipulation needed)
