@@ -9,6 +9,8 @@ import subprocess
 import sys
 from pathlib import Path
 
+import pytest
+
 REPO_ROOT = Path(__file__).resolve().parents[2]
 SCRIPT = REPO_ROOT / "scripts" / "cron" / "hermes-session-export.sh"
 
@@ -181,3 +183,130 @@ def test_hermes_export_subprocess_exports_records_and_correction_file(tmp_path: 
 
     uv_args = uv_log.read_text(encoding="utf-8").splitlines()
     assert uv_args[:4] == ["run", "--no-project", "python", "-"]
+
+
+def _isolated_exporter(tmp_path: Path) -> tuple[Path, Path, dict[str, str], Path]:
+    repo = tmp_path / "repo-under-test"
+    script_dir = repo / "scripts" / "cron"
+    script_dir.mkdir(parents=True)
+    shutil.copy2(SCRIPT, script_dir / SCRIPT.name)
+    home = tmp_path / "user-config"
+    inputs = home / ".hermes" / "sessions"
+    inputs.mkdir(parents=True)
+    fake_bin, uv_log = _write_fake_uv(tmp_path)
+    env = os.environ.copy()
+    for key in ("GIT_DIR", "GIT_WORK_TREE", "GIT_COMMON_DIR"):
+        env.pop(key, None)
+    env["HOME"] = str(home)
+    env["PATH"] = f"{fake_bin}{os.pathsep}{env['PATH']}"
+    env["UV_ARGS_FILE"] = str(uv_log)
+    return repo, inputs, env, uv_log
+
+
+def _run_isolated_exporter(repo: Path, env: dict[str, str], dry_run: bool = False):
+    args = ["bash", "-euo", "pipefail", str(repo / "scripts" / "cron" / SCRIPT.name)]
+    if dry_run:
+        args.append("--dry-run")
+    return subprocess.run(args, cwd=repo, env=env, capture_output=True, text=True, check=False)
+
+
+# Counts below are hand calculated from each synthetic input set: one unsupported
+# file yields zero exports and one skip; adding one valid file yields one export.
+# The date and terminal mapping use the existing subprocess fixture above.
+@pytest.mark.parametrize("dry_run", [False, True], ids=["export", "dry-run"])
+def test_undated_filename_is_skipped(tmp_path: Path, dry_run: bool) -> None:
+    repo, inputs, env, uv_log = _isolated_exporter(tmp_path)
+    (inputs / "session_000_undated.json").write_text("{}", encoding="utf-8")
+
+    result = _run_isolated_exporter(repo, env, dry_run)
+
+    assert result.returncode == 0, result.stderr
+    assert "Hermes session export: 0 exported, 1 skipped" in result.stdout
+    output = repo / "logs" / "orchestrator" / "hermes"
+    assert not list(output.rglob("*.jsonl"))
+    assert not (output / ".last-export-ts").exists()
+    assert not uv_log.exists()
+
+
+@pytest.mark.parametrize("dry_run", [False, True], ids=["export", "dry-run"])
+def test_mixed_filenames_export_valid_session(tmp_path: Path, dry_run: bool) -> None:
+    repo, inputs, env, uv_log = _isolated_exporter(tmp_path)
+    # This sorts before the dated input, so continuing the loop is required.
+    (inputs / "session_000_undated.json").write_text("{}", encoding="utf-8")
+    (inputs / "session_20260410_140000_abc.json").write_text(
+        json.dumps({
+            "messages": [{
+                "role": "assistant",
+                "tool_calls": [{
+                    "function": {
+                        "name": "terminal",
+                        "arguments": json.dumps({"command": "true"}),
+                    },
+                }],
+            }],
+        }),
+        encoding="utf-8",
+    )
+    output = repo / "logs" / "orchestrator" / "hermes"
+    output.mkdir(parents=True)
+    state = output / ".last-export-ts"
+    # Zero is an epoch sentinel earlier than these newly created fixture files.
+    state.write_text("0\n", encoding="utf-8")
+
+    result = _run_isolated_exporter(repo, env, dry_run)
+
+    assert result.returncode == 0, result.stderr
+    assert "Hermes session export: 1 exported, 1 skipped" in result.stdout
+    if dry_run:
+        assert "[dry-run] Would export" in result.stdout
+        assert not list(output.rglob("*.jsonl"))
+        assert state.read_text(encoding="utf-8") == "0\n"
+        assert not uv_log.exists()
+    else:
+        records = [
+            json.loads(line)
+            for line in (output / "session_20260410.jsonl").read_text(encoding="utf-8").splitlines()
+        ]
+        # Exactly one terminal call was supplied; no correction or other output.
+        assert len(records) == 1
+        assert records[0]["tool"] == "Bash"
+        assert records[0]["hermes_tool"] == "terminal"
+        assert records[0]["cmd"] == "true"
+        assert records[0]["ts"] == ""
+        assert list(output.rglob("*.jsonl")) == [output / "session_20260410.jsonl"]
+        assert state.read_text(encoding="utf-8").strip().isdigit()
+        assert state.read_text(encoding="utf-8") != "0\n"
+        assert uv_log.read_text(encoding="utf-8").splitlines()[:4] == [
+            "run", "--no-project", "python", "-"
+        ]
+
+
+# Characterize existing conversion semantics: invalid JSON exits successfully,
+# while non-iterable messages raise an error. The shell suppresses both errors,
+# but only successful conversion advances the export count and timestamp.
+@pytest.mark.parametrize(
+    ("payload", "exported"),
+    [("{", 1), ('{"messages": null}', 0)],
+    ids=["invalid-json", "invalid-messages"],
+)
+def test_malformed_dated_input_preserves_existing_behavior(
+    tmp_path: Path, payload: str, exported: int
+) -> None:
+    repo, inputs, env, uv_log = _isolated_exporter(tmp_path)
+    (inputs / "session_20260410_140000_abc.json").write_text(payload, encoding="utf-8")
+    output = repo / "logs" / "orchestrator" / "hermes"
+    output.mkdir(parents=True)
+    state = output / ".last-export-ts"
+    state.write_text("0\n", encoding="utf-8")
+
+    result = _run_isolated_exporter(repo, env)
+
+    assert result.returncode == 0, result.stderr
+    assert f"Hermes session export: {exported} exported, 0 skipped" in result.stdout
+    assert not list(output.rglob("*.jsonl"))
+    assert uv_log.exists()
+    if exported:
+        assert state.read_text(encoding="utf-8").strip().isdigit()
+        assert state.read_text(encoding="utf-8") != "0\n"
+    else:
+        assert state.read_text(encoding="utf-8") == "0\n"
