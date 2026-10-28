@@ -1,6 +1,8 @@
 """CLI decoder regressions for issue #3446; all inputs are synthetic.
 
-The issue specifies 16384 nested arrays around the eight-character SENTINEL:
+A locally selected synthetic fixture uses 16384 nested arrays around the
+eight-character SENTINEL; a raw-decoder RecursionError assertion establishes
+its adequacy before the CLI envelope is tested:
 2 * 16384 bracket bytes + 8 string bytes + 2 quotes = 32778 ASCII bytes.
 These are finite test safety parameters, not production limits. The 30-second
 child timeout is a test safety budget; expiration fails rather than rejects.
@@ -61,7 +63,7 @@ bench.git = forbidden
 if mode == "valid":
     report = loads((root / "stand-in.json").read_text(encoding="utf-8"))
     settings = loads((root / "settings.json").read_text(encoding="utf-8"))
-    config_path.write_text(json.dumps(settings), encoding="utf-8")
+    config_path.write_text(json.dumps(settings), encoding="utf-8", newline="\n")
 
     def stand_in(repo_arg, config_arg, *, anonymise_host):
         assert repo_arg == repo
@@ -93,7 +95,7 @@ else:
         payload = '{"timeout_seconds": 5, "repeats": 1, "regression_ratio": 1.5}'
     else:
         raise AssertionError("unknown test mode")
-    config_path.write_text(payload, encoding="utf-8")
+    config_path.write_text(payload, encoding="utf-8", newline="\n")
 
     def decoder(text):
         assert text == payload
@@ -193,9 +195,11 @@ def test_valid_tiny_config_keeps_report_status(tmp_path):
         for item in report["artifacts"]
     )
     expected_status = 0
-    (tmp_path / "stand-in.json").write_text(json.dumps(report), encoding="utf-8")
+    (tmp_path / "stand-in.json").write_text(
+        json.dumps(report), encoding="utf-8", newline="\n"
+    )
     (tmp_path / "settings.json").write_text(
-        json.dumps(existing.config(repeats=3)), encoding="utf-8"
+        json.dumps(existing.config(repeats=3)), encoding="utf-8", newline="\n"
     )
     result = run_child(tmp_path, "valid")
     assert result.returncode == expected_status
