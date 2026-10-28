@@ -69,7 +69,11 @@ def run(root: Path, families: dict[str, list[str]], scratch: Path, junit_dir: Pa
     rows = []
     for family, paths in families.items():
         slug = family.replace("/", "_")
+        # -c/--rootdir pin the hub configuration, so a nested project file (for
+        # example coordination/pyproject.toml) cannot move rootdir away from the
+        # root conftest.py that applies the quarantine, and node ids stay repo-relative.
         cmd = [sys.executable, "-m", "pytest", "-q", "-rfE", "-p", "no:cacheprovider",
+               "-c", str(root / "pyproject.toml"), "--rootdir", str(root),
                "--basetemp", str(scratch / slug), *extra]
         if junit_dir is not None:
             junit_dir.mkdir(parents=True, exist_ok=True)
@@ -109,6 +113,8 @@ def main() -> int:
     parser.add_argument("--junit-dir", type=Path)
     parser.add_argument("--json", type=Path, help="Write per-family results here")
     parser.add_argument("--plan-only", action="store_true", help="Print the selection and exit")
+    parser.add_argument("--only", action="append", default=[], metavar="FAMILY",
+                        help="Restrict the run to these families (repeatable); for local reruns")
     parser.add_argument("pytest_args", nargs="*", help="Extra pytest arguments (after --)")
     args = parser.parse_args()
     root = args.root.resolve()
@@ -116,6 +122,9 @@ def main() -> int:
     if scratch.is_relative_to(root):
         parser.exit(2, "Scratch must be outside the repository\n")
     families, reason = plan(root, None if args.all else args.select_base, args.head)
+    if args.only:
+        families = {name: paths for name, paths in families.items() if name in args.only}
+        reason += f"; restricted to {len(families)} by --only"
     print(reason, flush=True)
     if args.plan_only:
         print(json.dumps(sorted(families), indent=1))

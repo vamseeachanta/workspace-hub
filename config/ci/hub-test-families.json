@@ -54,6 +54,7 @@
       "scripts/data/doc_intelligence/tests/test_pattern_detector.py",
       "scripts/data/doc_intelligence/tests/test_prose_input_parser.py",
       "scripts/data/doc_intelligence/tests/test_run_poc_v2.py",
+      "scripts/data/doc_intelligence/tests/test_source_context_parity.py",
       "scripts/data/doc_intelligence/tests/test_table_quality.py",
       "scripts/data/doc_intelligence/tests/test_test_generator_v2.py",
       "scripts/data/doc_intelligence/tests/test_validate_confidence.py",
@@ -72,6 +73,7 @@
       "scripts/data/llm-wiki/tests/markdown_qa/test_session_hook_regression.py",
       "scripts/data/llm-wiki/tests/test_e2e_smoke.py",
       "scripts/data/llm-wiki/tests/test_resolve_wiki_path.py",
+      "scripts/data/llm-wiki/tests/test_search_modes.py",
       "scripts/data/og-standards/tests/test_pipeline_fixes.py",
       "scripts/data/og-standards/tests/test_rename.py"
     ],
@@ -83,13 +85,16 @@
     "scripts/knowledge/tests": [
       "scripts/knowledge/tests/test_doc_key_lookup_mcp.py",
       "scripts/knowledge/tests/test_elements_wave_wiki_outputs.py",
+      "scripts/knowledge/tests/test_extract_handoff_findings.py",
       "scripts/knowledge/tests/test_field_development_unblock_2112.py",
       "scripts/knowledge/tests/test_llm_wiki.py",
       "scripts/knowledge/tests/test_phase4_tools.py",
       "scripts/knowledge/tests/test_review_open_issues.py",
+      "scripts/knowledge/tests/test_review_open_issues_format_parity.py",
       "scripts/knowledge/tests/test_synthesize_archive.py",
       "scripts/knowledge/tests/test_update_github_issue.py",
-      "scripts/knowledge/tests/test_weekly_governance_check.py"
+      "scripts/knowledge/tests/test_weekly_governance_check.py",
+      "scripts/knowledge/tests/test_weekly_review_query_pack.py"
     ],
     "scripts/legal/tests": [
       "scripts/legal/tests/test_check_client_pii.py",
@@ -106,6 +111,7 @@
       "scripts/legal/tests/test_rule_authority_codec.py",
       "scripts/legal/tests/test_rule_authority_genesis_approval.py",
       "scripts/legal/tests/test_rule_authority_genesis_launcher.py",
+      "scripts/legal/tests/test_rule_authority_integer_bounds.py",
       "scripts/legal/tests/test_rule_authority_private_io.py",
       "scripts/legal/tests/test_rule_authority_promotion.py",
       "scripts/legal/tests/test_rule_authority_protection.py",
@@ -116,6 +122,7 @@
       "scripts/memory/tests/test_build_topics_index.py",
       "scripts/memory/tests/test_curate_readback_slice.py",
       "scripts/memory/tests/test_distill_poison_handling.py",
+      "scripts/memory/tests/test_knowledge_budget_boundaries.py",
       "scripts/memory/tests/test_recall.py",
       "scripts/memory/tests/test_resolve_auto_memory.py"
     ],
@@ -124,6 +131,7 @@
     ],
     "scripts/operations/tests": [
       "scripts/operations/tests/test_job_queue_cleanup_recent.py",
+      "scripts/operations/tests/test_job_queue_environment.py",
       "scripts/operations/tests/test_job_queue_footprint.py",
       "scripts/operations/tests/test_job_queue_publication.py",
       "scripts/operations/tests/test_job_queue_windows.py",
@@ -136,6 +144,9 @@
       "scripts/quality/tests/test_check_complexity_ratchet.py",
       "scripts/quality/tests/test_check_config_drift.py",
       "scripts/quality/tests/test_quality_gap_report.py"
+    ],
+    "scripts/review/tests": [
+      "scripts/review/tests/test_plan_review_transport.py"
     ],
     "scripts/skills/tests": [
       "scripts/skills/tests/test_audit_coverage.py",
@@ -158,18 +169,29 @@
       "scripts/utilities/doc-to-context/tests/test_parsers.py",
       "scripts/utilities/doc-to-context/tests/test_scalability.py"
     ],
+    "scripts/utils/tests": [
+      "scripts/utils/tests/test_atomic_write.py"
+    ],
     "scripts/workflow/tests": [
       "scripts/workflow/tests/test_flywheel_closeout.py",
-      "scripts/workflow/tests/test_generate_workflow_manifest.py"
+      "scripts/workflow/tests/test_generate_workflow_manifest.py",
+      "scripts/workflow/tests/test_workflow_readiness.py"
     ],
     "tests/agents": [
-      "tests/agents/test_mcp_materialize.py"
+      "tests/agents/test_audit_agents_routing.py",
+      "tests/agents/test_codex_brief.py",
+      "tests/agents/test_mcp_materialize.py",
+      "tests/agents/test_soul_link_failures.py"
     ],
     "tests/ai": [
       "tests/ai/test_approve_provider_plan.py",
       "tests/ai/test_build_orca_kanban.py",
       "tests/ai/test_build_skill_index.py",
+      "tests/ai/test_context_budget.py",
+      "tests/ai/test_cost_cli_format_parity.py",
       "tests/ai/test_dispatch_leader.py",
+      "tests/ai/test_gemini_usage.py",
+      "tests/ai/test_model_registry_reader.py",
       "tests/ai/test_overnight_batch_planner_prompt.py",
       "tests/ai/test_overnight_planner_cost_ceiling.py",
       "tests/ai/test_parity_metrics.py",
@@ -178,6 +200,7 @@
       "tests/ai/test_provider_kanban.py",
       "tests/ai/test_provider_kanban_server.py",
       "tests/ai/test_provider_route.py",
+      "tests/ai/test_quota_snapshot.py",
       "tests/ai/test_routing_resolver.py",
       "tests/ai/test_run_agent.py",
       "tests/ai/test_run_agent_agy.py",
@@ -191,16 +214,27 @@
       "tests/analysis/test_architecture_scanner.py",
       "tests/analysis/test_claude_session_ecosystem_audit.py",
       "tests/analysis/test_collision_detection.py",
+      "tests/analysis/test_compare_direction_decimal_context.py",
+      "tests/analysis/test_context_budget.py",
       "tests/analysis/test_continuous_planning_pipeline.py",
       "tests/analysis/test_credit_utilization_tracker.py",
+      "tests/analysis/test_cross_registry_coverage.py",
+      "tests/analysis/test_decimal_context_acceptance.py",
+      "tests/analysis/test_linux_readiness_examples.py",
       "tests/analysis/test_module_status_matrix.py",
       "tests/analysis/test_provider_autolabel.py",
       "tests/analysis/test_provider_routing_scorecard.py",
       "tests/analysis/test_provider_session_ecosystem_audit.py",
       "tests/analysis/test_provider_work_queue.py",
+      "tests/analysis/test_python_runtime_audit_boundaries.py",
+      "tests/analysis/test_readiness_bundle_extension_contract.py",
       "tests/analysis/test_readiness_bundle_schema.py",
       "tests/analysis/test_repo_architecture_scanner.py",
+      "tests/analysis/test_scheduler_parity_report.py",
+      "tests/analysis/test_session_corpus_summary.py",
       "tests/analysis/test_stage_prompt_drift_check.py",
+      "tests/analysis/test_unresolved_read_baseline.py",
+      "tests/analysis/test_unresolved_read_classifier.py",
       "tests/analysis/test_weighted_scoring.py"
     ],
     "tests/animations": [
@@ -211,8 +245,11 @@
       "tests/architecture/test_data_layer_contract.py",
       "tests/architecture/test_execution_layer_contract.py",
       "tests/architecture/test_layer_boundary_architecture_contract.py",
+      "tests/architecture/test_metric_population_example.py",
       "tests/architecture/test_report_layer_contract.py",
-      "tests/architecture/test_resource_authority_contract.py"
+      "tests/architecture/test_resource_authority_contract.py",
+      "tests/architecture/test_rolling_report_example.py",
+      "tests/architecture/test_run_identity_example.py"
     ],
     "tests/audits": [
       "tests/audits/test_online_resource_registry_audit.py"
@@ -225,13 +262,20 @@
     ],
     "tests/ci": [
       "tests/ci/local_ci/test_local_ci.py",
+      "tests/ci/test_domain_matrix_aggregate.py",
+      "tests/ci/test_domain_matrix_workflow.py",
       "tests/ci/test_hub_test_health.py",
       "tests/ci/test_hub_test_inventory.py",
       "tests/ci/test_hub_test_select.py",
-      "tests/ci/test_hub_test_workflow.py"
+      "tests/ci/test_hub_test_workflow.py",
+      "tests/ci/test_quarantine_args.py",
+      "tests/ci/test_test_quarantine.py",
+      "tests/ci/test_validate_selector_output.py"
     ],
     "tests/ci_smoke": [
       "tests/ci_smoke/test_ci_workflows_use_uv.py",
+      "tests/ci_smoke/test_module_provenance.py",
+      "tests/ci_smoke/test_pr_gate_runner_contract.py",
       "tests/ci_smoke/test_review_gate_no_uv_dependency.py",
       "tests/ci_smoke/test_workspace_hub_importable.py"
     ],
@@ -262,7 +306,11 @@
       "tests/config/test_routing_config_observed_behavior.py",
       "tests/config/test_user_profile_and_review_policy.py"
     ],
+    "tests/content": [
+      "tests/content/test_check_capabilities_surface.py"
+    ],
     "tests/contract": [
+      "tests/contract/test_capture_review_contract.py",
       "tests/contract/test_citation_sidecar_schema_extensions.py",
       "tests/contract/test_planning_template_required_fields.py"
     ],
@@ -273,6 +321,9 @@
       "tests/coordination/test_objective_intake.py",
       "tests/coordination/test_objective_sync.py",
       "tests/coordination/test_orchestrate_and_provider_filter_cost_ceiling.py",
+      "tests/coordination/test_provider_filter_portability.py",
+      "tests/coordination/test_repo_write_admission.py",
+      "tests/coordination/test_task_complexity_tier.py",
       "tests/coordination/test_tier_router_cost_aligned.py",
       "tests/coordination/test_tier_router_cost_ceiling.py",
       "tests/coordination/test_tier_table_no_drift.py"
@@ -280,7 +331,11 @@
     "tests/cron": [
       "tests/cron/test_a1_preserved.py",
       "tests/cron/test_broken_windows_sweep.py",
+      "tests/cron/test_build_cadence_schedule.py",
       "tests/cron/test_cadence_common.py",
+      "tests/cron/test_cadence_retention_plan.py",
+      "tests/cron/test_cadence_smoke.py",
+      "tests/cron/test_cleanup_safety.py",
       "tests/cron/test_codex_session_export.py",
       "tests/cron/test_commit_learning_artifacts_redaction.py",
       "tests/cron/test_control_plane_drift.py",
@@ -292,8 +347,11 @@
       "tests/cron/test_cron_identity_task2.py",
       "tests/cron/test_cron_process_response_docs.py",
       "tests/cron/test_cron_render.py",
+      "tests/cron/test_cron_render_unset_workspace.py",
+      "tests/cron/test_cron_renderer_boundaries.py",
       "tests/cron/test_cron_runtime.py",
       "tests/cron/test_cron_transaction.py",
+      "tests/cron/test_declared_root_invariance.py",
       "tests/cron/test_dispatch_pull_schedule.py",
       "tests/cron/test_ecosystem_rework_retriage.py",
       "tests/cron/test_external_doc_reingest.py",
@@ -306,6 +364,7 @@
       "tests/cron/test_memory_health_report.py",
       "tests/cron/test_provider_session_ecosystem_audit_wrapper.py",
       "tests/cron/test_provider_utilization_refresh.py",
+      "tests/cron/test_queue_refresh_wrapper.py",
       "tests/cron/test_setup_cron.py",
       "tests/cron/test_skill_validation_uv_resolution.py",
       "tests/cron/test_skills_curation.py",
@@ -368,13 +427,16 @@
       "tests/data/document-index/test_validate_index_metadata.py",
       "tests/data/drive_index/test_build_drive_index.py",
       "tests/data/drive_index/test_document_index_deprecation.py",
+      "tests/data/drive_index_refresh/test_cad_readiness.py",
       "tests/data/drive_index_refresh/test_cad_rebuild.py",
       "tests/data/drive_index_refresh/test_incremental_refresh.py",
+      "tests/data/drive_index_refresh/test_partial_and_search.py",
       "tests/data/drive_index_refresh/test_registry_freshness.py",
       "tests/data/drive_index_refresh/test_schedule_and_wrapper.py",
       "tests/data/drive_index_refresh/test_staleness_cli.py",
       "tests/data/drive_index_search/test_adapters.py",
       "tests/data/drive_index_search/test_cli.py",
+      "tests/data/drive_index_search/test_format_parity.py",
       "tests/data/drive_index_search/test_merge_and_normalize.py",
       "tests/data/drive_index_search/test_metrics_3340.py",
       "tests/data/drive_index_search/test_pathnorm_canonical.py",
@@ -386,14 +448,25 @@
       "tests/data/pipeline/test_pipeline.py",
       "tests/data/pipeline/test_state.py",
       "tests/data/pipeline/test_yfinance_prices.py",
+      "tests/data/test_accessibility_registry_fixtures.py",
       "tests/data/test_ace_resource_audit.py",
       "tests/data/test_build_online_resource_registry.py",
+      "tests/data/test_cabledyn_catalog.py",
+      "tests/data/test_cross_link_gap_delta.py",
       "tests/data/test_download_and_catalog.py",
       "tests/data/test_generate_domain_resource_views.py",
+      "tests/data/test_manifest_closure.py",
       "tests/data/test_research_domain.py"
     ],
     "tests/data_sources": [
       "tests/data_sources/test_ecosystem_data_sources_801.py"
+    ],
+    "tests/dedupe": [
+      "tests/dedupe/test_inventory.py",
+      "tests/dedupe/test_merge.py",
+      "tests/dedupe/test_plan.py",
+      "tests/dedupe/test_resume.py",
+      "tests/dedupe/test_safety.py"
     ],
     "tests/dispatch": [
       "tests/dispatch/test_ai_provider_axis.py",
@@ -429,10 +502,21 @@
     "tests/docs": [
       "tests/docs/test_banned_stale_references.py",
       "tests/docs/test_drive_search_playbook_3340.py",
+      "tests/docs/test_engineering_analysis_routing.py",
+      "tests/docs/test_gemini_workflow_links.py",
+      "tests/docs/test_handoff_expiration_example.py",
+      "tests/docs/test_handoff_expiration_examples.py",
+      "tests/docs/test_intelligence_entry_points.py",
       "tests/docs/test_issue_3525_claude_remote_worker_report.py",
       "tests/docs/test_issue_planning_workflow_onboarding.py",
       "tests/docs/test_legacy_reference_allowlist.py",
+      "tests/docs/test_memory_quickref_example.py",
+      "tests/docs/test_model_release_smoke_schema.py",
+      "tests/docs/test_plan_retention_examples.py",
+      "tests/docs/test_python_runner_entrypoint_contract.py",
+      "tests/docs/test_readiness_followup_policy_example.py",
       "tests/docs/test_remote_linux_access_contract.py",
+      "tests/docs/test_repository_origin_status_example.py",
       "tests/docs/test_repository_overview_current.py",
       "tests/docs/test_scheduled_tasks_docs.py",
       "tests/docs/test_semiconductor_kb.py",
@@ -441,6 +525,8 @@
       "tests/docs/test_tier1_indexing_contract.py",
       "tests/docs/test_tier1_indexing_freshness_audit.py",
       "tests/docs/test_tier1_routing_hygiene.py",
+      "tests/docs/test_uv_workflow_contract_example.py",
+      "tests/docs/test_wiki_stub_disposition.py",
       "tests/docs/test_work_queue_policy_consistency.py",
       "tests/docs/test_workspace_hub_model_release_readiness.py"
     ],
@@ -478,11 +564,13 @@
     ],
     "tests/enforcement": [
       "tests/enforcement/test_agent_bootstrap_surfaces_receive_constraints.py",
+      "tests/enforcement/test_attestation_inventory.py",
       "tests/enforcement/test_check_brand_drift.py",
       "tests/enforcement/test_check_canonical_drive_paths.py",
       "tests/enforcement/test_check_codex_model_pin.py",
       "tests/enforcement/test_check_engineering_register.py",
       "tests/enforcement/test_check_gh_auth.py",
+      "tests/enforcement/test_check_golden_provenance.py",
       "tests/enforcement/test_check_marker_label_parity.py",
       "tests/enforcement/test_check_memory_index_size.py",
       "tests/enforcement/test_check_model_id_sourcing.py",
@@ -504,48 +592,63 @@
       "tests/enforcement/test_client_wiki_registry.py",
       "tests/enforcement/test_client_wiki_registry_hardening.py",
       "tests/enforcement/test_client_wiki_registry_security.py",
+      "tests/enforcement/test_compliance_cron.py",
       "tests/enforcement/test_compliance_dashboard.py",
       "tests/enforcement/test_extract_pr_issue_references.py",
       "tests/enforcement/test_install_hooks_stage_prompt_drift.py",
       "tests/enforcement/test_issue_1249_generator_and_claude_gate.py",
       "tests/enforcement/test_no_abs_paths_ci_report.py",
+      "tests/enforcement/test_pin_helpers.py",
       "tests/enforcement/test_python_function_lengths.py",
       "tests/enforcement/test_require_plan_approval.py",
       "tests/enforcement/test_require_stage_prompt_drift.py",
+      "tests/enforcement/test_runtime_repair_advice.py",
       "tests/enforcement/test_scheduler_mutation_delivery.py",
       "tests/enforcement/test_scheduler_mutation_hardening.py",
       "tests/enforcement/test_scheduler_mutation_surfaces.py",
       "tests/enforcement/test_scheduler_mutation_task3.py",
+      "tests/enforcement/test_script_modes.py",
       "tests/enforcement/test_script_reference_integrity.py",
       "tests/enforcement/test_shell_test_guards.py",
       "tests/enforcement/test_skill_graph_integrity.py",
       "tests/enforcement/test_soul_auto_load.py",
+      "tests/enforcement/test_soul_deployment_drift.py",
       "tests/enforcement/test_soul_runtime_locale.py",
       "tests/enforcement/test_stage_prompt_drift_status.py",
       "tests/enforcement/test_sync_knowledge_work_adaptations.py",
-      "tests/enforcement/test_validate_skills_frontmatter.py"
+      "tests/enforcement/test_validate_skills_frontmatter.py",
+      "tests/enforcement/test_workflow_contracts.py",
+      "tests/enforcement/test_wrapper_pin_reasons.py"
     ],
     "tests/fleet": [
       "tests/fleet/test_account_usage_fleet.py",
       "tests/fleet/test_account_usage_labels.py",
       "tests/fleet/test_fleet_snapshot_daily.py",
+      "tests/fleet/test_fleet_snapshot_daily_guard.py",
       "tests/fleet/test_fleet_snapshot_labels.py"
     ],
     "tests/gis": [
       "tests/gis/test_google_earth_engine.py",
       "tests/gis/test_python_gis_ecosystem.py"
     ],
+    "tests/github": [
+      "tests/github/test_pr_status.py"
+    ],
     "tests/governance": [
       "tests/governance/test_2471_citation_scope.py",
+      "tests/governance/test_authorization_guidance_routes.py",
       "tests/governance/test_check_issue_closures.py",
+      "tests/governance/test_closure_reader_limits.py",
       "tests/governance/test_closure_records.py",
       "tests/governance/test_consumer_adapter_boundaries.py",
       "tests/governance/test_consumer_event.py",
       "tests/governance/test_ecosystem_authorization.py",
       "tests/governance/test_ecosystem_authorization_parity.py",
+      "tests/governance/test_evidence_classification.py",
       "tests/governance/test_evidence_threshold_eligibility.py",
       "tests/governance/test_implementation_authorization.py",
       "tests/governance/test_publication_eligibility.py",
+      "tests/governance/test_recurring_retention_plan.py",
       "tests/governance/test_risk_authorization_contract.py",
       "tests/governance/test_workflow_decision.py",
       "tests/governance/test_workflow_receipt.py"
@@ -559,6 +662,7 @@
       "tests/gtm/test_tos_review_doc.py"
     ],
     "tests/hf": [
+      "tests/hf/test_audit_field_explorer.py",
       "tests/hf/test_save_results_to_hf.py"
     ],
     "tests/hooks": [
@@ -566,11 +670,20 @@
       "tests/hooks/test_check_state_file_size_prepush.py",
       "tests/hooks/test_config_protection_hook.py",
       "tests/hooks/test_drive_file_nudge_3339.py",
+      "tests/hooks/test_effective_hook_installation.py",
       "tests/hooks/test_install_hooks_extension_point.py",
       "tests/hooks/test_pre_push.py",
       "tests/hooks/test_session_logger.py",
       "tests/hooks/test_state_size_settings_wiring.py",
       "tests/hooks/test_stop_hooks.py"
+    ],
+    "tests/hygiene": [
+      "tests/hygiene/test_build_commands.py",
+      "tests/hygiene/test_build_commands_docs.py",
+      "tests/hygiene/test_inventory.py",
+      "tests/hygiene/test_plan_moves.py",
+      "tests/hygiene/test_readme.py",
+      "tests/hygiene/test_reproduce_bench.py"
     ],
     "tests/install": [
       "tests/install/test_disable_cnh_source_watch_timer.py"
@@ -578,6 +691,8 @@
     "tests/knowledge": [
       "tests/knowledge/test_asset_management_wiki.py",
       "tests/knowledge/test_batch_pack_2.py",
+      "tests/knowledge/test_closed_issue_citations.py",
+      "tests/knowledge/test_corpus_readiness.py",
       "tests/knowledge/test_embeddings_spike.py",
       "tests/knowledge/test_engineering_pipeline_expansion.py",
       "tests/knowledge/test_engineering_riser_expansion.py",
@@ -591,6 +706,7 @@
       "tests/knowledge/test_engineering_standards_nace.py",
       "tests/knowledge/test_engineering_standards_norsok.py",
       "tests/knowledge/test_engineering_wiki_gap_audit_artifact.py",
+      "tests/knowledge/test_invented_layer_report.py",
       "tests/knowledge/test_inventory_readiness.py",
       "tests/knowledge/test_lng_projects_expansion.py",
       "tests/knowledge/test_marine_engineering_audit_artifact.py",
@@ -598,7 +714,11 @@
       "tests/knowledge/test_naval_architecture_expansion.py",
       "tests/knowledge/test_ocimf_tandem_no_raw_pdf_text.py",
       "tests/knowledge/test_ocimf_tandem_promotion.py",
-      "tests/knowledge/test_wiki_health_cron_paths.py"
+      "tests/knowledge/test_promotion_frontmatter_example.py",
+      "tests/knowledge/test_promotion_trail_report.py",
+      "tests/knowledge/test_seed_accessibility_registry.py",
+      "tests/knowledge/test_wiki_health_cron_paths.py",
+      "tests/knowledge/test_wiki_ingest_cron_status.py"
     ],
     "tests/learnings": [
       "tests/learnings/test_adapt_correction_threshold.py"
@@ -613,32 +733,59 @@
       "tests/legal/test_check_numeric_text.py",
       "tests/legal/test_gmail_identifier_retirement.py",
       "tests/legal/test_identifier_gate_retirement.py",
+      "tests/legal/test_issue_publication.py",
+      "tests/legal/test_named_scanner_retirement.py",
       "tests/legal/test_public_redaction.py",
       "tests/legal/test_retired_scanner_callers.py",
       "tests/legal/test_swept_json_files_parse.py",
       "tests/legal/test_workflow_identifier_retirement.py"
     ],
+    "tests/lib": [
+      "tests/lib/test_script_json_roundtrip.py",
+      "tests/lib/test_strict_json_boundaries.py"
+    ],
     "tests/maintenance": [
       "tests/maintenance/test_cli_consolidation_plan.py",
+      "tests/maintenance/test_plugin_inventory.py",
       "tests/maintenance/test_review_audit_script.py",
+      "tests/maintenance/test_script_mode_inventory.py",
+      "tests/maintenance/test_transient_retention_plan.py",
       "tests/maintenance/test_update_harness_tools_deckhand_optin.py",
       "tests/maintenance/test_update_model_ids_self_exclusion.py"
     ],
+    "tests/marketing": [
+      "tests/marketing/test_api_readme_banners.py"
+    ],
+    "tests/mcp": [
+      "tests/mcp/test_wiki_search_backend.py"
+    ],
     "tests/memory": [
+      "tests/memory/test_compact_index_links.py",
       "tests/memory/test_compact_memory.py",
       "tests/memory/test_context_md_bridge_sync.py",
       "tests/memory/test_curate_memory.py",
       "tests/memory/test_eval_memory_quality.py",
       "tests/memory/test_extract_hermes_patterns.py",
       "tests/memory/test_kanban_load.py",
-      "tests/memory/test_scope_repo_memory.py"
+      "tests/memory/test_local_memory_backup.py",
+      "tests/memory/test_portability_guidance_health.py",
+      "tests/memory/test_pre_bridge_quality_functions.py",
+      "tests/memory/test_scope_repo_memory.py",
+      "tests/memory/test_session_log_portability_contract.py"
+    ],
+    "tests/model_release": [
+      "tests/model_release/test_fixture_corpus.py"
     ],
     "tests/monitoring": [
+      "tests/monitoring/test_clock_replay.py",
       "tests/monitoring/test_cron_health_script.py",
+      "tests/monitoring/test_cron_shell_failures.py",
       "tests/monitoring/test_equivalence_compare.py",
+      "tests/monitoring/test_equivalence_sentinel.py",
       "tests/monitoring/test_equivalence_state.py"
     ],
     "tests/openfoam": [
+      "tests/openfoam/test_run_analysis_fvsolution.py",
       "tests/openfoam/test_verify_openfoam_baseline.py"
     ],
     "tests/operations": [
@@ -654,22 +801,36 @@
       "tests/operations/test_dispatch_pull_executor.py",
       "tests/operations/test_dispatch_pull_pacing.py",
       "tests/operations/test_dispatch_pull_pause.py",
+      "tests/operations/test_dispatch_remote_lease.py",
       "tests/operations/test_dispatch_select.py",
       "tests/operations/test_git_ref_lease.py",
+      "tests/operations/test_heartbeat_summary.py",
+      "tests/operations/test_lease_restart_visibility.py",
       "tests/operations/test_linux_cron_issue_orchestration.py",
       "tests/operations/test_merge_when_clean.py",
+      "tests/operations/test_notification_summary.py",
       "tests/operations/test_pause_memory_publishers.py",
+      "tests/operations/test_personal_operations.py",
       "tests/operations/test_relabel_agent_to_ai_script.py",
       "tests/operations/test_relabel_status_to_dispatch.py",
       "tests/operations/test_repo_sync_cleanup_audit.py",
+      "tests/operations/test_session_exit_preview.py",
+      "tests/operations/test_ssh_access_plan.py",
       "tests/operations/test_sync_canonical_labels.py",
+      "tests/operations/test_update_alerts.py",
       "tests/operations/test_venue_absence_detector.py",
       "tests/operations/test_venue_audit.py",
       "tests/operations/test_venue_lease.py",
-      "tests/operations/test_workstation_dispatch_wiring.py"
+      "tests/operations/test_workstation_dispatch_wiring.py",
+      "tests/operations/test_ws.py"
     ],
     "tests/permissions": [
       "tests/permissions/test_audit_bash_commands.py"
+    ],
+    "tests/phone_media": [
+      "tests/phone_media/test_backup.py",
+      "tests/phone_media/test_evaluate_browser.py",
+      "tests/phone_media/test_sync_decision.py"
     ],
     "tests/portability": [
       "tests/portability/test_smoke_verification.py"
@@ -680,7 +841,11 @@
       "tests/preflight/test_classify.py",
       "tests/preflight/test_cli.py",
       "tests/preflight/test_redact.py",
-      "tests/preflight/test_render.py"
+      "tests/preflight/test_render.py",
+      "tests/preflight/test_validate_agent_preflight.py"
+    ],
+    "tests/productivity": [
+      "tests/productivity/test_research_highlights.py"
     ],
     "tests/promoted": [
       "tests/promoted/naval-architecture/test_designprinciplesshipsmarinestructures_examples.py",
@@ -705,6 +870,7 @@
       "tests/quality/test_cross_repo_dependency_check.py",
       "tests/quality/test_doc_staleness_scanner.py",
       "tests/quality/test_ecosystem_ci_audit.py",
+      "tests/quality/test_git_worktree_detection.py",
       "tests/quality/test_gitleaks_config.py",
       "tests/quality/test_test_health_dashboard.py",
       "tests/quality/test_tier1_repo_path_resolver_py.py"
@@ -712,22 +878,33 @@
     "tests/readiness": [
       "tests/readiness/test_build_equality_matrix.py",
       "tests/readiness/test_collect_equality.py",
+      "tests/readiness/test_collect_equality_provenance.py",
       "tests/readiness/test_collect_equality_ps1_schema.py",
+      "tests/readiness/test_collect_equality_windows_scheduler.py",
+      "tests/readiness/test_collector_isolation.py",
+      "tests/readiness/test_ecosystem_doctor.py",
       "tests/readiness/test_equality_matrix_cron_deps.py",
       "tests/readiness/test_equality_tree_cleanliness.py",
+      "tests/readiness/test_fixture_modes.py",
       "tests/readiness/test_harness_reconcile.py",
       "tests/readiness/test_harness_reconcile_windows.py",
       "tests/readiness/test_hermes_config_sibling_paths.py",
       "tests/readiness/test_memory_freshness_verdict.py",
+      "tests/readiness/test_model_drift.py",
       "tests/readiness/test_nightly_readiness_hook_static_and_telegram.py",
       "tests/readiness/test_nightly_readiness_r_skills.py",
+      "tests/readiness/test_probe_solvers.py",
       "tests/readiness/test_provider_harness_parity.py",
+      "tests/readiness/test_provider_key_compatibility.py",
       "tests/readiness/test_publish_equality.py",
       "tests/readiness/test_publish_health_verdict.py",
+      "tests/readiness/test_publish_sparse_arguments.py",
       "tests/readiness/test_rdp_microphone_ps1_contract.py",
       "tests/readiness/test_rdp_microphone_ps1_native.py",
       "tests/readiness/test_reconcile_ecosystem.py",
       "tests/readiness/test_registry_sso_completeness.py",
+      "tests/readiness/test_rollback_ownership_audit.py",
+      "tests/readiness/test_scheduler_native_arguments.py",
       "tests/readiness/test_session_curation_freshness.py",
       "tests/readiness/test_sibling_agents_contract.py",
       "tests/readiness/test_sibling_sso_native_preflight.py",
@@ -740,22 +917,46 @@
       "tests/readiness/test_sync_agent_configs_sso.py",
       "tests/readiness/test_telegram_hermes_readiness.py",
       "tests/readiness/test_telegram_hermes_readiness_tier1_baseline.py",
+      "tests/readiness/test_windows_harness_install_doctor.py",
       "tests/readiness/test_windows_scheduler_single_source.py"
     ],
     "tests/reporting": [
+      "tests/reporting/test_asset_reachability.py",
+      "tests/reporting/test_audit_calc_methodology.py",
+      "tests/reporting/test_bundle_manifest.py",
       "tests/reporting/test_calc_report_producers.py",
       "tests/reporting/test_calc_report_schema_v2.py",
       "tests/reporting/test_calc_report_supported_claims.py",
       "tests/reporting/test_calc_report_validation.py",
-      "tests/reporting/test_generate_calc_report.py"
+      "tests/reporting/test_ecosystem_scorecard_delta.py",
+      "tests/reporting/test_generate_calc_report.py",
+      "tests/reporting/test_manifest_decoder_boundary.py",
+      "tests/reporting/test_promotion_recovery_plan.py",
+      "tests/reporting/test_publication_navigation.py",
+      "tests/reporting/test_read_lineage_report.py",
+      "tests/reporting/test_readiness_matrix_view.py",
+      "tests/reporting/test_report_provenance.py",
+      "tests/reporting/test_suppression_clear_candidates.py",
+      "tests/reporting/test_tool_delta.py",
+      "tests/reporting/test_unresolved_read_cohorts.py",
+      "tests/reporting/test_weekly_history.py",
+      "tests/reporting/test_weekly_renderer.py",
+      "tests/reporting/test_weekly_review_run_schema.py"
     ],
     "tests/repositories": [
       "tests/repositories/test_work_surface_inventory.py"
     ],
     "tests/review": [
+      "tests/review/test_agy_payload_delivery_edges.py",
       "tests/review/test_attest_plan_claims.py",
       "tests/review/test_build_review_packet.py",
+      "tests/review/test_dispatcher_shell_invocation.py",
+      "tests/review/test_html_review_layer.py",
+      "tests/review/test_python_replay.py",
+      "tests/review/test_review_pack.py",
+      "tests/review/test_script_portability.py",
       "tests/review/test_session_digest.py",
+      "tests/review/test_verdict_alias_matrix.py",
       "tests/review/test_verdict_normalization.py"
     ],
     "tests/root": [
@@ -767,15 +968,23 @@
       "tests/test_deduplication_fix.py",
       "tests/test_docling_integration.py",
       "tests/test_domain_coverage.py",
+      "tests/test_kanban_publication.py",
       "tests/test_kanban_reconcile.py",
       "tests/test_path_invoked_scripts_executable.py",
       "tests/test_preexisting_inventory.py",
       "tests/test_reconcile_size_report.py",
       "tests/test_relabel.py",
-      "tests/test_render_brochure_charts.py"
+      "tests/test_render_brochure_charts.py",
+      "tests/test_result_precision.py"
     ],
     "tests/scripts": [
       "tests/scripts/cron/test_tier1_indexing_freshness.py"
+    ],
+    "tests/security": [
+      "tests/security/test_contributor_response_examples.py",
+      "tests/security/test_descriptor_readers.py",
+      "tests/security/test_input_boundaries.py",
+      "tests/security/test_integer_validation_boundaries.py"
     ],
     "tests/semiconductor": [
       "tests/semiconductor/test_package_fem_benchmark.py"
@@ -784,7 +993,14 @@
       "tests/session/test_aggregate_drift_candidates.py",
       "tests/session/test_write_wrk_state.py"
     ],
+    "tests/session-analysis": [
+      "tests/session-analysis/test_count_normalization.py",
+      "tests/session-analysis/test_ingest_fixture_portability.py",
+      "tests/session-analysis/test_session_event_compatibility.py"
+    ],
     "tests/skills": [
+      "tests/skills/test_autoresearch_iterations.py",
+      "tests/skills/test_backfill_incremental_windows.py",
       "tests/skills/test_backfill_skill_invocations.py",
       "tests/skills/test_comprehensive_learning_smoke.py",
       "tests/skills/test_cross_review_policy_smoke.py",
@@ -792,12 +1008,14 @@
       "tests/skills/test_dark_intelligence_workflow.py",
       "tests/skills/test_doc_extraction_skill.py",
       "tests/skills/test_drive_file_search_skill.py",
+      "tests/skills/test_duplicate_skill_detector.py",
       "tests/skills/test_generate_skills_index.py",
       "tests/skills/test_gsd_usage_tracking.py",
       "tests/skills/test_issue_2290_dedup_regression.py",
       "tests/skills/test_knowledge_and_digitalmodel_skills.py",
       "tests/skills/test_materialize_profile.py",
       "tests/skills/test_materialize_profile_fs.py",
+      "tests/skills/test_materialize_profile_recovery.py",
       "tests/skills/test_merge_submodule_propagation.py",
       "tests/skills/test_new_workflow_skills.py",
       "tests/skills/test_reparse_guard.py",
@@ -819,7 +1037,9 @@
       "tests/skills/test_skill_universe_parity.py",
       "tests/skills/test_skill_usage_report_discoverability.py",
       "tests/skills/test_skill_usage_report_filters.py",
+      "tests/skills/test_transaction_timing_evidence.py",
       "tests/skills/test_update_portfolio_signals.py",
+      "tests/skills/test_usage_demotion_boundaries.py",
       "tests/skills/test_usage_report_invocation_demotion.py",
       "tests/skills/test_weekly_skills_audit.py",
       "tests/skills/test_weekly_skills_audit_policy.py",
@@ -831,12 +1051,14 @@
       "tests/solver/test_queue_health.py",
       "tests/solver/test_result_watcher.py",
       "tests/solver/test_results_dashboard.py",
-      "tests/solver/test_retry_logic.py"
+      "tests/solver/test_retry_logic.py",
+      "tests/solver/test_verification_composition.py"
     ],
     "tests/standards": [
       "tests/standards/test_ingest_standards.py",
       "tests/standards/test_integration.py",
-      "tests/standards/test_query_logic.py"
+      "tests/standards/test_query_logic.py",
+      "tests/standards/test_reporting_adoption.py"
     ],
     "tests/state": [
       "tests/state/test_rotate_cost_tracking.py"
@@ -851,6 +1073,7 @@
       "tests/subsea/pipeline/test_weibull_current.py"
     ],
     "tests/sync": [
+      "tests/sync/test_check_gitlinks.py",
       "tests/sync/test_sync_cadence_helper.py"
     ],
     "tests/team_summary": [
@@ -861,6 +1084,7 @@
       "tests/telegram_dispatch/test_redaction.py"
     ],
     "tests/testing": [
+      "tests/testing/test_collection_audit.py",
       "tests/testing/test_parse_pytest_output.py"
     ],
     "tests/tmux": [
@@ -878,6 +1102,7 @@
       "tests/unit/test_build_session_gate_analysis.py",
       "tests/unit/test_circle.py",
       "tests/unit/test_config_loader.py",
+      "tests/unit/test_config_loader_duplicates.py",
       "tests/unit/test_config_manager.py",
       "tests/unit/test_execute_gate_variations.py",
       "tests/unit/test_generate_html_review.py",
@@ -887,10 +1112,17 @@
       "tests/unit/test_models_base.py",
       "tests/unit/test_permissions_model.py",
       "tests/unit/test_session_signal_coverage_audit.py",
+      "tests/unit/test_solver_qualification.py",
       "tests/unit/test_solvers_registry.py",
       "tests/unit/test_specs_index.py",
       "tests/unit/test_update_stage_evidence.py",
       "tests/unit/test_verify_gate_evidence.py"
+    ],
+    "tests/upkeep": [
+      "tests/upkeep/test_health_check_cron_counts.py"
+    ],
+    "tests/utilities": [
+      "tests/utilities/test_phone_media.py"
     ],
     "tests/work-queue": [
       "tests/work-queue/test_engine_integration.py",
@@ -910,9 +1142,12 @@
     ],
     "tests/workflow": [
       "tests/workflow/test_build_session_review.py",
+      "tests/workflow/test_build_session_review_cli_privacy.py",
+      "tests/workflow/test_checkpoint_loop_example.py",
       "tests/workflow/test_completeness_gate_check.py",
       "tests/workflow/test_completeness_score.py",
       "tests/workflow/test_gated_workflow_templates.py",
+      "tests/workflow/test_handoff_ref_table.py",
       "tests/workflow/test_label_authority.py",
       "tests/workflow/test_plan_approval_gate_check.py",
       "tests/workflow/test_plan_approval_gate_check_r7.py",
@@ -928,17 +1163,21 @@
       "tests/workstations/test_core_equivalence.py",
       "tests/workstations/test_dev_secondary_ground_truth.py",
       "tests/workstations/test_dispatch.py",
+      "tests/workstations/test_git_bloat.py",
       "tests/workstations/test_handoff_and_status.py",
       "tests/workstations/test_machine_path_resolver.py",
+      "tests/workstations/test_path_bridge_fixtures.py",
       "tests/workstations/test_registry.py",
-      "tests/workstations/test_repo_footprint.py"
+      "tests/workstations/test_repo_footprint.py",
+      "tests/workstations/test_resolver_coherence_cases.py",
+      "tests/workstations/test_workspace_root_aliases.py"
     ],
     "tests/worktree_guard": [
       "tests/worktree_guard/test_worktree_guard.py",
       "tests/worktree_guard/test_worktree_guard_cli.py"
     ]
   },
-  "file_count": 767,
+  "file_count": 974,
   "pattern": "test_*.py",
   "schema_version": 1
 }

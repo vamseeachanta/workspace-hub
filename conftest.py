@@ -7,7 +7,9 @@ XPASS once fixed), but it cannot turn a run red. One entry per line::
     <node id>  # <reason> (#<tracking issue>)
 
 A node id without a ``[parameter]`` suffix covers every parametrization; a bare
-file path covers every test in that file. Remove an entry when its test is fixed;
+file path covers every test in that file. A reason starting ``skip:`` skips the
+test instead; it is reserved for tests that break the runner itself. Remove an
+entry when its test is fixed;
 the tracking issue lists every entry. A listed *file* that fails to import is
 reported as skipped rather than as a collection error; a module that needs an
 optional package should still skip itself with ``pytest.importorskip``.
@@ -75,5 +77,9 @@ def pytest_collection_modifyitems(config, items):
         return
     for item in items:
         reason = quarantine_reason(_repo_nodeid(config, item.path, item.nodeid), entries)
-        if reason:
+        if reason and reason.startswith("skip:"):
+            # Reserved for tests that break the runner itself (for example by
+            # closing pytest's own file descriptors); they cannot run as xfail.
+            item.add_marker(pytest.mark.skip(reason=f"quarantine: {reason}"))
+        elif reason:
             item.add_marker(pytest.mark.xfail(reason=f"quarantine: {reason}", strict=False))
