@@ -16,9 +16,12 @@
 #   STATE_REPORT_REPO_ROOT  — override repo root (for tests)
 set -uo pipefail
 
-REPO_ROOT="${STATE_REPORT_REPO_ROOT:-$(git rev-parse --show-toplevel 2>/dev/null || pwd)}"
+source "$(dirname "${BASH_SOURCE[0]}")/lib/cadence-common.sh"
+# Preserve the report-specific override rather than inheriting generic REPO_ROOT.
+REPO_ROOT="${STATE_REPORT_REPO_ROOT:-}"
+cadence_init_repo_root
 OUT_DIR="${STATE_REPORT_OUT_DIR:-${REPO_ROOT}/docs/reports}"
-WEEK="${STATE_REPORT_WEEK:-$(date +%Y-W%V)}"
+WEEK="${STATE_REPORT_WEEK:-$(cadence_period weekly)}"
 WARN_MB="${STATE_SIZE_WARN_MB:-50}"
 BLOCK_MB="${STATE_SIZE_BLOCK_MB:-75}"
 
@@ -44,20 +47,12 @@ TOTAL_MB=$(( TOTAL_BYTES / 1048576 ))
 LARGEST_MB=$(head -1 "$TMP" 2>/dev/null | awk '{print int($1/1048576)}')
 LARGEST_MB="${LARGEST_MB:-0}"
 
-# Health
-if (( LARGEST_MB > BLOCK_MB )); then
-    STATUS="RED"
-elif (( LARGEST_MB > WARN_MB )); then
-    STATUS="YELLOW"
-else
-    STATUS="GREEN"
-fi
+# Health: strict greater-than bands follow lib/cadence-common.sh's contract.
+STATUS="$(compute_status_band "$LARGEST_MB" "$WARN_MB" "$BLOCK_MB")"
 
 {
-    echo "# State-file size report — $WEEK"
-    echo
-    echo "**Status:** $STATUS — largest tracked file is ${LARGEST_MB}MB (warn ${WARN_MB}MB, block ${BLOCK_MB}MB)."
-    echo
+    emit_report_header "State-file size report" "$WEEK" "$STATUS" \
+        "largest tracked file is ${LARGEST_MB}MB (warn ${WARN_MB}MB, block ${BLOCK_MB}MB)."
     echo "Total tracked under .claude/state/: $TOTAL_FILES files, ${TOTAL_MB}MB."
     echo
     echo "## Top 10 largest tracked files"
@@ -67,11 +62,10 @@ fi
     head -10 "$TMP" | while IFS=$'\t' read -r bytes path; do
         mb=$(( bytes / 1048576 ))
         flag=""
-        if (( mb > BLOCK_MB )); then
-            flag="🔴 OVER BLOCK"
-        elif (( mb > WARN_MB )); then
-            flag="🟡 over warn"
-        fi
+        case "$(compute_status_band "$mb" "$WARN_MB" "$BLOCK_MB")" in
+            RED) flag="🔴 OVER BLOCK" ;;
+            YELLOW) flag="🟡 over warn" ;;
+        esac
         printf "| %d | \`%s\` | %s |\n" "$mb" "$path" "$flag"
     done
     echo
