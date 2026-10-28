@@ -266,3 +266,17 @@ def test_explicit_md5_can_be_read_without_claiming_ready():
     for key in ("resource", "stable_projection"):
         item[key]["doc_key"] = "md5:" + "a" * 32
     validator().validate(item)
+
+
+@pytest.mark.parametrize("required", [
+    "Reading authorization does not grant storage authorization.",
+    "Existing source-specific restrictions take precedence",
+    "metadata-only extraction remains metadata-only",
+    "Public outputs cite clause numbers only",
+])
+def test_internal_standards_use_preserves_operation_and_storage_boundaries(required):
+    rule = (ROOT / ".claude/rules/codes-standards-data-routing.md").read_text(encoding="utf-8")
+    section = rule.split("(27 Oct 2026)", 1)[1].split("## Interpretation", 1)[0]
+    assert required in section
+    assert "the source-specific authorization the checks above require" not in section
+    assert "the copies stay in private repositories" not in section

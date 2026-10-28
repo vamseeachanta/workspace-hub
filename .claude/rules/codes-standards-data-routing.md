@@ -34,13 +34,26 @@ Private visibility does not grant reproduction, extraction or publication rights
    prevent required retention, ingest acceptance remains blocked pending an owner
    decision; do not silently substitute an external pointer.
 
-## Owner ruling for internal use (27 Oct 2026)
+## Maintainer direction for internal use (27 Oct 2026)
 
-The owner authorizes agents to read and use standards copies already held in private
-ecosystem repositories for internal engineering work. For that internal use this ruling is
-the source-specific authorization the checks above require; agents do not pause on
-standards rights for it. Public outputs cite clause numbers only, never text, tables or
-figures, and the copies stay in private repositories.
+The maintainer authorizes internal reading and engineering interpretation of
+standards copies already accessible within the private ecosystem. This direction
+permits consulting the source and producing original engineering analysis; it does
+not grant blanket permission to extract, reproduce or redistribute source content.
+Existing source-specific restrictions take precedence over this general direction:
+metadata-only extraction remains metadata-only, and other operations require their
+own source-specific rights evidence. Unknown rights do not authorize extraction.
+
+Reading authorization does not grant storage authorization. Copies at a licensed
+location may be referenced from private repositories without retaining the original
+in Git. The governing contract and descriptor schema remain unchanged: licensed
+originals require `licensed_location` and `raw_copy_allowed: false`; `private_git`
+is rejected. Any original already retained in Git remains an unresolved storage
+exception requiring a separate disposition; internal reading does not certify its
+retention. This direction authorizes no copying, migration or deletion of originals.
+
+Public outputs cite clause numbers only, never source text, tables or figures.
+Private access does not authorize publication of the copies or their contents.
 
 ## Interpretation, synthetic material and calculations
 
