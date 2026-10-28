@@ -13,13 +13,14 @@ import time
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any, Iterable
+from typing import Any, Callable, Iterable
 
 import yaml
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 DEFAULT_CONFIG = SCRIPT_DIR / "drive-index-config.yaml"
 HASH_CHUNK_SIZE = 65536
+FTS_COLUMNS = ["title", "description", "anonymized_title", "file_path", "file_name"]
 
 ASSET_COLUMNS = (
     "id asset_type file_path file_name file_extension file_size content_hash "
@@ -102,21 +103,33 @@ def load_profile(config_path: Path, drive: str, db_override: Path | None = None)
     )
 
 
-def open_db(path: Path) -> sqlite3.Connection:
+def open_db(path: Path, *, rebuild_fts: bool = False) -> sqlite3.Connection:
     path.parent.mkdir(parents=True, exist_ok=True)
     conn = sqlite3.connect(path)
     conn.execute("PRAGMA journal_mode=WAL")
     conn.execute("PRAGMA synchronous=NORMAL")
-    conn.execute(CREATE_ASSETS_SQL)
-    conn.execute(
-        "CREATE VIRTUAL TABLE IF NOT EXISTS assets_fts USING fts5("
-        "title, description, anonymized_title, content=assets, content_rowid=rowid)"
-    )
-    conn.execute(
-        "CREATE TABLE IF NOT EXISTS scan_state ("
-        "key TEXT PRIMARY KEY, value TEXT, updated_at TEXT NOT NULL)"
-    )
-    conn.commit()
+    try:
+        # Keep schema replacement and rebuilding atomic for existing databases.
+        conn.execute("BEGIN")
+        conn.execute(CREATE_ASSETS_SQL)
+        columns = [row[1] for row in conn.execute("PRAGMA table_info(assets_fts)")]
+        if columns != FTS_COLUMNS:
+            conn.execute("DROP TABLE IF EXISTS assets_fts")
+            conn.execute(
+                f"CREATE VIRTUAL TABLE assets_fts USING fts5({', '.join(FTS_COLUMNS)}, "
+                "content=assets, content_rowid=rowid)"
+            )
+        if columns != FTS_COLUMNS or rebuild_fts:
+            conn.execute("INSERT INTO assets_fts(assets_fts) VALUES('rebuild')")
+        conn.execute(
+            "CREATE TABLE IF NOT EXISTS scan_state ("
+            "key TEXT PRIMARY KEY, value TEXT, updated_at TEXT NOT NULL)"
+        )
+        conn.commit()
+    except Exception:
+        conn.rollback()
+        conn.close()
+        raise
     return conn
 
 
@@ -151,12 +164,13 @@ def root_for_path(path: Path, profile: Profile) -> Path:
     raise ValueError(f"{path} is outside profile roots")
 
 
-def iter_files(root: Path, excludes: set[str]) -> Iterable[Path]:
-    def walk(current: Path) -> Iterable[Path]:
+def iter_files(root: Path, excludes: set[str]) -> Iterable[Path | ScanError]:
+    def walk(current: Path) -> Iterable[Path | ScanError]:
         try:
-            entries = sorted(os.scandir(current), key=lambda e: sanitize_text(e.name))
+            with os.scandir(current) as scanner:
+                entries = sorted(scanner, key=lambda e: sanitize_text(e.name))
         except OSError as exc:
-            yield ScanError(current, exc)  # type: ignore[misc]
+            yield ScanError(current, exc)
             return
         for entry in entries:
             name = sanitize_text(entry.name)
@@ -169,7 +183,7 @@ def iter_files(root: Path, excludes: set[str]) -> Iterable[Path]:
                 elif entry.is_file(follow_symlinks=False):
                     yield Path(entry.path)
             except OSError as exc:
-                yield ScanError(Path(entry.path), exc)  # type: ignore[misc]
+                yield ScanError(Path(entry.path), exc)
 
     yield from walk(root)
 
@@ -252,7 +266,11 @@ def execute_many(conn: sqlite3.Connection, rows: list[tuple[Any, ...]]) -> None:
     conn.executemany(UPSERT_SQL, rows)
 
 
-def write_batch(conn: sqlite3.Connection, rows: list[tuple[Any, ...]]) -> int:
+def write_batch(
+    conn: sqlite3.Connection,
+    rows: list[tuple[Any, ...]],
+    on_error: Callable[[tuple[Any, ...], sqlite3.Error], None] | None = None,
+) -> int:
     try:
         execute_many(conn, rows)
         return 0
@@ -261,8 +279,10 @@ def write_batch(conn: sqlite3.Connection, rows: list[tuple[Any, ...]]) -> int:
         for row in rows:
             try:
                 conn.execute(UPSERT_SQL, row)
-            except sqlite3.Error:
+            except sqlite3.Error as exc:
                 errors += 1
+                if on_error is not None:
+                    on_error(row, exc)
         return errors
 
 
@@ -289,11 +309,40 @@ def metadata_pass(
     seen: set[str] = set()
     batch: list[tuple[Any, ...]] = []
     stats = {"files": 0, "errors": 0, "skipped": 0, "rows_added": 0, "rows_updated": 0, "rows_pruned": 0}
+    scan_errors: list[dict[str, str]] = []
+    logging_errors: list[dict[str, str]] = []
+    pending_kinds: dict[str, str] = {}
+
+    def record_error(path: Path | str, error: Exception) -> None:
+        detail = {"path": sanitize_text(str(path)), "reason": sanitize_text(str(error))}
+        scan_errors.append(detail)
+        stats["errors"] += 1
+        print(f"scan error: {detail['path']}: {detail['reason']}", file=sys.stderr)
+        log_path = profile.db.parent / "refresh-errors.jsonl"
+        try:
+            with log_path.open("a", encoding="utf-8") as log:
+                log.write(json.dumps({"scan_date": scan_date, **detail}) + "\n")
+        except OSError as exc:
+            log_detail = {"path": sanitize_text(str(log_path)), "reason": sanitize_text(str(exc))}
+            logging_errors.append(log_detail)
+            print(f"diagnostic log error: {log_detail['path']}: {log_detail['reason']}", file=sys.stderr)
+
+    def row_error(row: tuple[Any, ...], error: sqlite3.Error) -> None:
+        path = row[ASSET_COLUMNS.index("file_path")]
+        stats[pending_kinds[path]] -= 1
+        record_error(path, error)
+
+    def flush_batch() -> None:
+        write_batch(conn, batch, on_error=row_error)
+        conn.commit()
+        batch.clear()
+        pending_kinds.clear()
+
     try:
         for root in profile.roots:
             for item in iter_files(root, profile.excludes):
                 if isinstance(item, ScanError):
-                    stats["errors"] += 1
+                    record_error(item.path, item.error)
                     continue
                 try:
                     row = row_for_file(item, profile, scan_date)
@@ -303,26 +352,24 @@ def metadata_pass(
                     if incremental and state and state[1] and state[0] == "active":
                         stats["skipped"] += 1
                     else:
-                        if state is None:
-                            stats["rows_added"] += 1
-                        else:
-                            stats["rows_updated"] += 1
+                        kind = "rows_added" if state is None else "rows_updated"
+                        stats[kind] += 1
+                        pending_kinds[row[ASSET_COLUMNS.index("file_path")]] = kind
                         batch.append(row)
-                except OSError:
-                    stats["errors"] += 1
+                except OSError as exc:
+                    record_error(item, exc)
                 if len(batch) >= batch_size:
-                    stats["errors"] += write_batch(conn, batch)
-                    conn.commit()
+                    flush_batch()
                     set_state(conn, "files_seen", stats["files"])
                     conn.commit()
-                    batch.clear()
                 if limit is not None and stats["files"] >= limit:
                     break
             if limit is not None and stats["files"] >= limit:
                 break
         if batch:
-            stats["errors"] += write_batch(conn, batch)
-        if prune:
+            flush_batch()
+        # Unseen rows are not evidence of removal when traversal was incomplete.
+        if prune and not stats["errors"] and limit is None:
             stats["rows_pruned"] = mark_removed(conn, profile, seen)
         conn.execute("INSERT INTO assets_fts(assets_fts) VALUES('rebuild')")
         stats["duration_seconds"] = int(time.monotonic() - start)
@@ -340,13 +387,24 @@ def metadata_pass(
                 "host": os.uname().nodename if hasattr(os, "uname") else "",
                 "started_at": started_at,
                 "finished_at": finished_at,
-                "status": "failed" if stats["errors"] else "ok",
+                "status": (
+                    "ok" if not stats["errors"] else
+                    "partial" if stats["rows_added"] + stats["rows_updated"] else "failed"
+                ),
                 "row_count": stats["row_count"],
                 "rows_added": stats["rows_added"],
                 "rows_updated": stats["rows_updated"],
                 "rows_pruned": stats["rows_pruned"],
                 "duration_s": stats["duration_s"],
-                "error": f"{stats['errors']} scan error(s)" if stats["errors"] else None,
+                "error": (
+                    f"{stats['errors']} scan error(s)"
+                    + (f"; {len(logging_errors)} diagnostic log error(s)" if logging_errors else "")
+                    if stats["errors"] else None
+                ),
+                "error_count": stats["errors"],
+                "scan_errors": scan_errors,
+                "logging_error_count": len(logging_errors),
+                "logging_errors": logging_errors,
             },
         )
         return stats
@@ -456,9 +514,13 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--prune", action="store_true")
     parser.add_argument("--batch-size", type=int, default=2000)
     parser.add_argument("--reconcile", action="store_true")
+    parser.add_argument("--rebuild-fts", action="store_true", help="Rebuild full-text search from stored rows without scanning")
     parser.add_argument("--limit", type=int)
     args = parser.parse_args(argv)
     profile = load_profile(args.config, args.drive, args.db)
+    if args.rebuild_fts:
+        open_db(profile.db, rebuild_fts=True).close()
+        return 0
     if args.reconcile:
         return reconcile(profile)
     if args.hash == "incremental":
