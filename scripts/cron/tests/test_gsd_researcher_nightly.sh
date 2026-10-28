@@ -68,7 +68,7 @@ setup_workspace() {
   local ws="$TMP_ROOT/ws"
   local bindir="$TMP_ROOT/bin"
   rm -rf "$ws" "$bindir"
-  mkdir -p "$ws/scripts/cron" "$ws/scripts/lib" "$ws/scripts" "$ws/.planning/research" "$ws/logs/research" "$ws/logs/notifications" "$bindir"
+  mkdir -p "$ws/scripts/cron/lib" "$ws/scripts/lib" "$ws/scripts" "$ws/.planning/research" "$ws/logs/research" "$ws/logs/notifications" "$bindir"
   cp "$SOURCE_SCRIPT" "$ws/scripts/cron/gsd-researcher-nightly.sh"
   chmod +x "$ws/scripts/cron/gsd-researcher-nightly.sh"
 
@@ -91,6 +91,13 @@ ws_variant() {
 }
 EOF
   chmod +x "$ws/scripts/lib/workstation-lib.sh"
+
+  cat > "$ws/scripts/cron/lib/git-safe.sh" <<'EOF'
+git_safe_init() { :; }
+git_safe_pull() { :; }
+git_safe_commit() { :; }
+git_safe_push() { :; }
+EOF
 
   cat > "$ws/scripts/notify.sh" <<'EOF'
 #!/usr/bin/env bash
@@ -187,6 +194,8 @@ count=0
 count=$((count + 1))
 printf '%s' "$count" > "$COUNT_FILE"
 mode="${MOCK_CLAUDE_MODE:-valid}"
+if [[ "$mode" == "timeout" ]]; then exit 124; fi
+if [[ "$mode" == "empty" ]]; then exit 0; fi
 if [[ "$mode" == "timeout-then-valid" && "$count" -eq 1 ]]; then
   exit 1
 fi
@@ -243,9 +252,11 @@ run_script() {
   local ws="$1"
   shift
   PATH="$TMP_ROOT/bin:$PATH" \
+  HOME="$TMP_ROOT/home" \
   MOCK_GIT_LOG="$TMP_ROOT/git.log" \
   MOCK_CLAUDE_COUNT_FILE="$TMP_ROOT/claude.count" \
-  bash "$ws/scripts/cron/gsd-researcher-nightly.sh" "$@"
+  env -u GIT_DIR -u GIT_WORK_TREE -u GIT_COMMON_DIR -u GIT_INDEX_FILE \
+    bash "$ws/scripts/cron/gsd-researcher-nightly.sh" "$@"
 }
 
 echo "--- Test 1: Script exists ---"
@@ -274,19 +285,27 @@ CLAUDE_CALLS=$(cat "$TMP_ROOT/claude.count" 2>/dev/null || echo "0")
 assert_eq "saturday claude calls" "1" "$CLAUDE_CALLS"
 assert_file_exists "saturday skill-design output written" "$WS/.planning/research/2026-04-05-skill-design.md"
 
-echo "--- Test 3: Claude failure retries with reduced path to success ---"
+echo "--- Test 3: CLI failure stops without retrying ---"
 WS=$(setup_workspace)
 : > "$TMP_ROOT/git.log"
 rm -f "$TMP_ROOT/claude.count"
 OUTPUT_FILE="$WS/.planning/research/2026-04-02-ai-tooling.md"
 OUTPUT=$(MOCK_DAY_NUM=3 MOCK_DATE=2026-04-02 MOCK_CLAUDE_MODE=timeout-then-valid run_script "$WS" 2>&1)
-assert_eq "timeout-then-valid exit code" "0" "$?"
-assert_file_exists "output file written after retry" "$OUTPUT_FILE"
+assert_eq "failed call exit code" "1" "$?"
+assert_not_exists "failed call writes no output" "$OUTPUT_FILE"
 CLAUDE_CALLS=$(cat "$TMP_ROOT/claude.count" 2>/dev/null || echo "0")
-assert_eq "claude called twice after failure" "2" "$CLAUDE_CALLS"
-RESEARCH_CONTENT=$(cat "$OUTPUT_FILE")
-assert_contains "retry output has recommendations" "## Recommended Actions" "$RESEARCH_CONTENT"
+assert_eq "failed call is not retried" "1" "$CLAUDE_CALLS"
+assert_contains "failure log includes status and retry policy" "CLI failure (rc=1, timeout=300s, retries=0)" "$(cat "$WS/logs/research/2026-04-02.log")"
 
+for mode in timeout empty; do
+  WS=$(setup_workspace)
+  rm -f "$TMP_ROOT/claude.count"
+  OUTPUT=$(MOCK_DAY_NUM=3 MOCK_DATE=2026-04-02 MOCK_CLAUDE_MODE="$mode" run_script "$WS" 2>&1)
+  assert_eq "$mode exits with failure" "1" "$?"
+  assert_eq "$mode is not retried" "1" "$(cat "$TMP_ROOT/claude.count")"
+  assert_contains "$mode is classified" "CLI $mode" "$(cat "$WS/logs/research/2026-04-02.log")"
+  assert_not_exists "$mode writes no research" "$WS/.planning/research/2026-04-02-ai-tooling.md"
+done
 
 echo "--- Test 4: Synthesis output is accepted without false retry ---"
 WS=$(setup_workspace)

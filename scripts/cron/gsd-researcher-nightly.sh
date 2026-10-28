@@ -268,7 +268,7 @@ validate_output() {
 
 run_claude() {
     local context="$1"
-    echo "$context" | timeout "$TIME_BUDGET" claude -p "$PROMPT" \
+    printf '%s\n' "$context" | timeout --kill-after=10s "$TIME_BUDGET" claude -p "$PROMPT" \
         --model "$MODEL" \
         --tools "Read,WebSearch" \
         --allowedTools "Read WebSearch" \
@@ -293,17 +293,18 @@ if ! command -v claude >/dev/null 2>&1; then
     exit 1
 fi
 
-log "Calling claude (timeout=${TIME_BUDGET}s, model=${MODEL}, budget=\$${BUDGET})..."
-RESULT=$(run_claude "$CONTEXT") || RESULT=""
-if [[ -z "$RESULT" ]]; then
-    log "WARNING: primary claude call failed or timed out — retrying once with reduced context"
-    REDUCED_CONTEXT=$(build_reduced_context "$CONTEXT")
-    RESULT=$(run_claude "$REDUCED_CONTEXT") || RESULT=""
-    if [[ -z "$RESULT" ]]; then
-        log "ERROR: claude call failed or timed out after retry"
-        bash "${WS_HUB}/scripts/notify.sh" cron gsd-researcher fail "claude timeout or error after retry" || true
-        exit 1
-    fi
+log "Calling claude (timeout=${TIME_BUDGET}s, kill-after=10s, retries=0, model=${MODEL}, budget=\$${BUDGET})..."
+RESULT=$(run_claude "$CONTEXT")
+CALL_RC=$?
+if [[ "$CALL_RC" -ne 0 || -z "${RESULT//[[:space:]]/}" ]]; then
+    case "$CALL_RC" in
+        124|137) FAILURE="CLI timeout" ;;
+        0) FAILURE="CLI empty output" ;;
+        *) FAILURE="CLI failure" ;;
+    esac
+    log "ERROR: ${FAILURE} (rc=${CALL_RC}, timeout=${TIME_BUDGET}s, retries=0); stopping; inspect preceding CLI diagnostics"
+    bash "${WS_HUB}/scripts/notify.sh" cron gsd-researcher fail "${FAILURE}, rc=${CALL_RC}; no retry" || true
+    exit 1
 fi
 
 # ── Write output ─────────────────────────────────────────────────────────────

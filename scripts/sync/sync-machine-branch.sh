@@ -25,6 +25,20 @@ MSG="chore(sync): auto-sync $(date +%F)"
 log() { echo "[machine-sync] $*"; }
 die() { echo "[machine-sync] ERROR: $*" >&2; exit 1; }
 
+# Inspect Git blob sizes, including historical versions awaiting publication.
+# Reject before creating another commit; existing history is left for recovery.
+check_blob_sizes() {
+  git cat-file --batch-check='%(objectname) %(objecttype) %(objectsize)' |
+    awk '
+      $2 == "blob" && $3 > 104857600 {
+        print "[machine-sync] ERROR: blob exceeds GitHub 100 MiB limit: " $1 " (bytes=" $3 ")" > "/dev/stderr"
+        bad=1
+      }
+      NF != 3 {bad=1}
+      END {exit bad ? 1 : 0}
+    '
+}
+
 [ -d "${REPO}/.git" ] || die "not a git repo: ${REPO}"
 cd "$REPO" || die "cannot cd to ${REPO}"
 
@@ -38,6 +52,9 @@ if [ "${behind:-0}" -gt 0 ] 2>/dev/null; then
   die "local ${BRANCH} is ${behind} behind origin/${BRANCH} — aborting (freshness guard)"
 fi
 log "fresh: ${BRANCH} at $(git rev-parse --short HEAD)"
+
+git rev-list --objects HEAD --not --remotes=origin | check_blob_sizes ||
+  die "pending history cannot be published; preserve this checkout and recover on a fresh branch without oversized generated state"
 
 # Mirror the live checkout's tracked modifications (read-only there) into this
 # machine checkout. Same scope as the old `git add -u` auto-sync: tracked files
@@ -59,7 +76,9 @@ else
   log "no live hub checkout found; committing machine-checkout state only"
 fi
 
-git add -u
+git add -u || die "cannot stage tracked state"
+git ls-files --format='%(objectname)' | check_blob_sizes ||
+  die "staged state cannot be published; no commit or push attempted"
 if ! git diff --cached --quiet; then
   git commit -m "$MSG" || die "git commit failed"
   log "committed $(git rev-parse --short HEAD) — ${MSG}"
