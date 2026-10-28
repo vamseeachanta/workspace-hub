@@ -268,6 +268,8 @@ validate_output() {
 
 run_claude() {
     local context="$1"
+    # Operational policy: allow 10 seconds for termination cleanup, then force
+    # exit so a call ignoring TERM cannot keep the scheduled job running.
     printf '%s\n' "$context" | timeout --kill-after=10s "$TIME_BUDGET" claude -p "$PROMPT" \
         --model "$MODEL" \
         --tools "Read,WebSearch" \

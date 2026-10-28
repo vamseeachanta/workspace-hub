@@ -27,6 +27,8 @@ die() { echo "[machine-sync] ERROR: $*" >&2; exit 1; }
 
 # Inspect Git blob sizes, including historical versions awaiting publication.
 # Reject before creating another commit; existing history is left for recovery.
+# GitHub blocks files larger than 100 MiB (100 * 1024 * 1024 bytes):
+# https://docs.github.com/en/repositories/working-with-files/managing-large-files/about-large-files-on-github#file-size-limits
 check_blob_sizes() {
   git cat-file --batch-check='%(objectname) %(objecttype) %(objectsize)' |
     awk '
@@ -53,7 +55,7 @@ if [ "${behind:-0}" -gt 0 ] 2>/dev/null; then
 fi
 log "fresh: ${BRANCH} at $(git rev-parse --short HEAD)"
 
-git rev-list --objects HEAD --not --remotes=origin | check_blob_sizes ||
+git rev-list --objects --no-object-names HEAD --not --remotes=origin | check_blob_sizes ||
   die "pending history cannot be published; preserve this checkout and recover on a fresh branch without oversized generated state"
 
 # Mirror the live checkout's tracked modifications (read-only there) into this
