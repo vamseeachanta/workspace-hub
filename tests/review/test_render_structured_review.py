@@ -3,6 +3,16 @@
 The review objects and literal Markdown expectations below are synthetic test
 examples authored together. No expected result is obtained from the renderer,
 provider output, existing fixtures, submitters, or validators.
+
+Scope is limited to this test file; the renderer is exercised unchanged.
+Two valid examples across four representations provide eight exact-output cases.
+Eleven invalid examples across three representations provide 33 rejection cases.
+Acceptance requires successful status, literal Markdown equality and no stderr
+for valid input. Rejection requires nonzero status, no stdout and a diagnostic.
+
+Offline command (direct temporary files to external scratch with --basetemp):
+uv run --offline --no-project --with pytest python -m pytest
+tests/review/test_render_structured_review.py -q -rA -p no:cacheprovider
 """
 
 from __future__ import annotations
