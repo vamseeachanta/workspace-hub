@@ -9,6 +9,7 @@ import os
 import subprocess
 import sys
 from datetime import datetime, timedelta, timezone
+from itertools import permutations
 from pathlib import Path
 
 import pytest
@@ -126,6 +127,109 @@ def test_future_scanned_at_skipped():
     ]
     out = evaluate_recurring(entries, now=NOW, window_days=14, recur_days=3)
     assert out == []  # only 2 valid days
+
+
+def test_recurrence_inclusive_cutoff():
+    # Interval contract: scripts/session/aggregate_drift_candidates.py:137-148.
+    # Hand calculation with NOW: June 27 07:00 minus 14 days = June 13 07:00.
+    # Both endpoints and June 20 give exactly the required 3 UTC dates.
+    expected_dates = {"2026-06-13", "2026-06-20", "2026-06-27"}
+    entries = [
+        rec("2026-06-13T07:00:00Z", log="evidence-cutoff", provider="synthetic", python_runtime=1),
+        rec("2026-06-20T07:00:00Z", log="evidence-middle", provider="synthetic", python_runtime=1),
+        rec("2026-06-27T07:00:00Z", log="evidence-now", provider="synthetic", python_runtime=1),
+    ]
+    out = evaluate_recurring(
+        entries, now=NOW, window_days=DEFAULT_WINDOW_DAYS, recur_days=DEFAULT_RECUR_DAYS,
+    )
+    assert [row["drift_class"] for row in out] == ["python_runtime"]
+    row, = out
+    assert row["distinct_days"] == len(expected_dates)
+    # One identifier and one violation per literal date in this synthetic example.
+    assert row["distinct_sessions"] == len(expected_dates)
+    assert row["total_violations"] == len(expected_dates)
+    assert row["first_seen"] == "2026-06-13T07:00:00Z"
+    assert row["last_seen"] == "2026-06-27T07:00:00Z"
+
+
+def test_recurrence_adjacent_out_of_window_samples():
+    # scripts/session/aggregate_drift_candidates.py:137-148 excludes times strictly
+    # before cutoff or after NOW. These literal neighbours differ by one second,
+    # the producer's timestamp precision (same module:100-114).
+    cutoff = rec("2026-06-13T07:00:00Z", log="evidence-cutoff", provider="synthetic", python_runtime=1)
+    middle = rec("2026-06-20T07:00:00Z", log="evidence-middle", provider="synthetic", python_runtime=1)
+    current = rec("2026-06-27T07:00:00Z", log="evidence-now", provider="synthetic", python_runtime=1)
+    before = rec("2026-06-13T06:59:59Z", log="evidence-before", provider="synthetic", python_runtime=1)
+    after = rec("2026-06-27T07:00:01Z", log="evidence-after", provider="synthetic", python_runtime=1)
+    # Hand calculation: June 27 minus 14 days is June 13, both at 07:00 UTC.
+    # Only cutoff, middle and current belong; neighbouring times add no evidence.
+    expected_dates = {"2026-06-13", "2026-06-20", "2026-06-27"}
+    out = evaluate_recurring(
+        [before, cutoff, middle, current, after], now=NOW,
+        window_days=DEFAULT_WINDOW_DAYS, recur_days=DEFAULT_RECUR_DAYS,
+    )
+    assert [row["drift_class"] for row in out] == ["python_runtime"]
+    row, = out
+    assert row["distinct_days"] == len(expected_dates)
+    assert row["distinct_sessions"] == len(expected_dates)
+    assert row["total_violations"] == len(expected_dates)
+    assert row["providers"] == {"synthetic": len(expected_dates)}
+    assert row["first_seen"] == "2026-06-13T07:00:00Z"
+    assert row["last_seen"] == "2026-06-27T07:00:00Z"
+    # Without each endpoint only June 20 plus one endpoint remain: 2 < 3 dates.
+    # An adjacent excluded sample must not supply the missing recurrence date.
+    for entries in ([before, middle, current], [cutoff, middle, after]):
+        assert evaluate_recurring(
+            entries, now=NOW, window_days=DEFAULT_WINDOW_DAYS, recur_days=DEFAULT_RECUR_DAYS,
+        ) == []
+
+
+def _synthetic_recurrence_records():
+    # Independent example for permutation/merge contracts (core:137-185, 191-225):
+    # June 13, June 20 (twice), June 27 are 3 dates within the 14-day window.
+    # Four distinct identifiers each affect both classes; 2 + 3 + 5 + 7 = 17
+    # violations per class. Provider counts are synthetic-a:2, synthetic-b:2.
+    return [
+        rec("2026-06-13T07:00:00Z", log="evidence-alpha", provider="synthetic-a",
+            python_runtime=2, file_placement=2),
+        rec("2026-06-20T08:00:00Z", log="evidence-beta", provider="synthetic-b",
+            python_runtime=3, file_placement=3),
+        rec("2026-06-20T09:00:00Z", log="evidence-gamma", provider="synthetic-a",
+            python_runtime=5, file_placement=5),
+        rec("2026-06-27T07:00:00Z", log="evidence-delta", provider="synthetic-b",
+            python_runtime=7, file_placement=7),
+    ]
+
+
+def _assert_synthetic_recurrence_evidence(out):
+    # Literal oracle, hand-calculated in _synthetic_recurrence_records above.
+    expected_dates = {"2026-06-13", "2026-06-20", "2026-06-27"}
+    assert sorted(row["drift_class"] for row in out) == ["file_placement", "python_runtime"]
+    for row in out:
+        assert row["distinct_days"] == len(expected_dates)
+        assert row["distinct_sessions"] == 4
+        assert row["total_violations"] == 17
+        assert row["providers"] == {"synthetic-a": 2, "synthetic-b": 2}
+        assert row["last_seen"] == "2026-06-27T07:00:00Z"
+        assert row["window_days"] == DEFAULT_WINDOW_DAYS
+
+
+def test_recurrence_permutation_and_duplicate_invariance():
+    entries = _synthetic_recurrence_records()
+    expected = evaluate_recurring(
+        entries, now=NOW, window_days=DEFAULT_WINDOW_DAYS, recur_days=DEFAULT_RECUR_DAYS,
+    )
+    _assert_synthetic_recurrence_evidence(expected)
+    for row in expected:
+        assert row["first_seen"] == "2026-06-13T07:00:00Z"
+    # Exhaust all 4! = 24 input orders. A second copy in the same or reverse
+    # order retains the exact same identifier/count/timestamp for each record.
+    for ordering in permutations(entries):
+        for corpus in (ordering, ordering + ordering, ordering + ordering[::-1]):
+            actual = evaluate_recurring(
+                corpus, now=NOW, window_days=DEFAULT_WINDOW_DAYS, recur_days=DEFAULT_RECUR_DAYS,
+            )
+            assert actual == expected
 
 
 def test_distinct_session_dedup_max_count():
@@ -312,6 +416,49 @@ def test_first_seen_preserved_on_refresh():
                            machine="m", window_days=14, recur_days=3)
     row = by_class(doc["candidates"])["python_runtime"]
     assert row["first_seen"] == "2026-05-01T07:00:00Z"  # sticky older value
+
+
+def test_repeated_merge_is_semantically_idempotent():
+    entries = _synthetic_recurrence_records()
+    fresh = evaluate_recurring(
+        entries, now=NOW, window_days=DEFAULT_WINDOW_DAYS, recur_days=DEFAULT_RECUR_DAYS,
+    )
+    # June 1 precedes the independently calculated June 13 cutoff: first_seen
+    # must remain historical for both untriaged and human-triaged rows.
+    first_seen = "2026-06-01T07:00:00Z"
+    observed_at = "2026-06-27T07:00:00Z"  # the same injected NOW on every merge
+    for human_status in ("dismissed", "promoted"):
+        existing = {"candidates": [
+            {"drift_class": "python_runtime", "status": "candidate",
+             "active": False, "first_seen": first_seen},
+            {"drift_class": "file_placement", "status": human_status,
+             "active": False, "first_seen": first_seen},
+        ]}
+        merged = merge_candidates(
+            existing, fresh, now_iso=observed_at, machine="",
+            window_days=DEFAULT_WINDOW_DAYS, recur_days=DEFAULT_RECUR_DAYS,
+        )
+        _assert_synthetic_recurrence_evidence(merged["candidates"])
+        assert merged["generated_at"] == observed_at
+        assert merged["recur_days"] == DEFAULT_RECUR_DAYS
+        assert by_class(merged["candidates"])["python_runtime"]["status"] == "candidate"
+        assert by_class(merged["candidates"])["file_placement"]["status"] == human_status
+        for row in merged["candidates"]:
+            assert row["first_seen"] == first_seen
+            assert row["active"] is True
+        # Repeat with the same evidence, then reordered exact duplicates. Whole
+        # document equality includes meaning, historical dates and human status;
+        # the literal class list above also rejects duplicate candidate rows.
+        for corpus in (entries, entries[::-1] + entries):
+            repeated_fresh = evaluate_recurring(
+                corpus, now=NOW, window_days=DEFAULT_WINDOW_DAYS, recur_days=DEFAULT_RECUR_DAYS,
+            )
+            repeated = merge_candidates(
+                merged, repeated_fresh, now_iso=observed_at, machine="",
+                window_days=DEFAULT_WINDOW_DAYS, recur_days=DEFAULT_RECUR_DAYS,
+            )
+            assert repeated == merged
+            merged = repeated
 
 
 # ─── Thin CLI ─────────────────────────────────────────────────────────────────
