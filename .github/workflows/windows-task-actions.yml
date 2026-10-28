@@ -1,0 +1,22 @@
+name: Windows scheduled task actions
+
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize, reopened, ready_for_review]
+
+permissions:
+  contents: read
+
+jobs:
+  windows-task-actions:
+    name: Windows task preview and execution
+    runs-on: windows-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Exercise disposable task actions
+        shell: powershell
+        run: |
+          $scratch = Join-Path $env:RUNNER_TEMP ([guid]::NewGuid().ToString())
+          & ./tests/readiness/windows-task-actions.ps1 -ScratchDirectory $scratch

@@ -92,12 +92,13 @@ $WorkspaceRoot = $root
 $child = Join-Path $root 'scripts/child.ps1'
 $powershell = Get-TaskPowerShell
 foreach ($code in @(0, 7)) {
-    @"
+    $childText = @"
 param([string]`$Value)
 Write-Output `$Value
 [Console]::Error.WriteLine('child diagnostic')
 exit $code
-"@ | Set-Content -LiteralPath $child -Encoding utf8
+"@
+    [IO.File]::WriteAllText($child, $childText.Replace("`r`n", "`n") + "`n", [Text.UTF8Encoding]::new($false))
     $argument = "argument with spaces and 'quotes'"
     $definition = New-RepoTaskDefinition -Name "child-$code" -ScriptPath 'scripts/child.ps1' `
         -PowerShell -ScriptArguments @('-Value', $argument)
@@ -114,11 +115,12 @@ exit $code
 $bash = Resolve-GitBash
 Assert-True (-not [string]::IsNullOrWhiteSpace($bash)) 'Git Bash is needed for the shell execution test.'
 $child = Join-Path $root 'scripts/child.sh'
-@'
+$childText = @'
 printf '%s\n' "$1"
 printf '%s\n' 'shell diagnostic' >&2
 exit 3
-'@ | Set-Content -LiteralPath $child -Encoding ascii
+'@
+[IO.File]::WriteAllText($child, $childText.Replace("`r`n", "`n") + "`n", [Text.UTF8Encoding]::new($false))
 $definition = New-RepoTaskDefinition -Name 'shell-child' -ScriptPath 'scripts/child.sh' `
     -GitBashPath $bash -ScriptArguments @("shell argument with spaces and 'quotes'")
 $encoded = ($definition.Arguments -split ' -Definition ')[1]
@@ -131,3 +133,4 @@ Assert-True ($text.Contains("shell argument with spaces and 'quotes'")) 'Shell a
 Assert-True ($text.Contains('shell diagnostic')) 'Shell stderr was lost.'
 Assert-True ($text.Contains('ERROR: exit=3')) 'Collector cannot recognize a failed shell task.'
 Write-Output 'PASS: task previews, quoting, logging, and native exit status.'
+exit 0

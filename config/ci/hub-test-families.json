@@ -740,7 +740,8 @@
       "tests/readiness/test_sync_agent_configs_sso.py",
       "tests/readiness/test_telegram_hermes_readiness.py",
       "tests/readiness/test_telegram_hermes_readiness_tier1_baseline.py",
-      "tests/readiness/test_windows_scheduler_single_source.py"
+      "tests/readiness/test_windows_scheduler_single_source.py",
+      "tests/readiness/test_windows_task_actions.py"
     ],
     "tests/reporting": [
       "tests/reporting/test_calc_report_producers.py",
@@ -938,7 +939,7 @@
       "tests/worktree_guard/test_worktree_guard_cli.py"
     ]
   },
-  "file_count": 767,
+  "file_count": 768,
   "pattern": "test_*.py",
   "schema_version": 1
 }
