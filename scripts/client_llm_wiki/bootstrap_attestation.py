@@ -20,7 +20,8 @@ class _Budget:
     members: int = 0
     path_bytes: int = 0
 _DIR_FLAGS = os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW | os.O_CLOEXEC
-_FILE_FLAGS = os.O_RDONLY | os.O_NOFOLLOW | os.O_CLOEXEC
+# POSIX.1-2024 open(), O_NONBLOCK: a read FIFO must not wait for a writer.
+_FILE_FLAGS = os.O_RDONLY | os.O_NOFOLLOW | os.O_CLOEXEC | os.O_NONBLOCK
 MAX_RENDER_BYTES = 64 * 1024 * 1024
 MAX_MEMBERS = 8192
 MAX_PATH_BYTES = 1024 * 1024
@@ -43,6 +44,10 @@ def read_digest(descriptor: int, limit: int) -> tuple[int, str, bytes]:
         digest.update(chunk)
         chunks.append(chunk)
 def stable_digest(descriptor: int, before: os.stat_result, limit: int) -> tuple[int, str, bytes]:
+    if not stat.S_ISREG(before.st_mode):
+        raise BootstrapManifestError("file descriptor is not regular")
+    if before.st_size > limit:
+        raise BootstrapManifestError("bounded file read exceeded")
     size, digest, data = read_digest(descriptor, limit)
     after = os.fstat(descriptor)
     stable = (
