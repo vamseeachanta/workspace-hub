@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Model-release smoke battery",
+  "description": "Structure only. Format identifiers and cardinalities are declared in docs/standards/MODEL_RELEASE_SMOKE_RUNNER_CONTRACT.md, Battery format; they are not performance thresholds.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "battery_id", "fixture_root", "execution", "cases"],
+  "properties": {
+    "schema_version": {
+      "description": "Declared format identifier; see the contract's Battery format section.",
+      "type": "integer",
+      "const": 1
+    },
+    "battery_id": {"$ref": "#/$defs/identity"},
+    "fixture_root": {"$ref": "#/$defs/relative_path"},
+    "execution": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["interface", "adapter_id"],
+      "properties": {
+        "interface": {
+          "description": "Declared adapter interface identifier, not an executable command.",
+          "type": "string",
+          "const": "adapter-v1"
+        },
+        "adapter_id": {"$ref": "#/$defs/identity"}
+      }
+    },
+    "cases": {
+      "description": "The contract requires a nonempty battery and rejects duplicate case objects. Unique case identities also require a future semantic check.",
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["case_id", "input_ref", "expected_result_ref"],
+        "properties": {
+          "case_id": {"$ref": "#/$defs/identity"},
+          "input_ref": {"$ref": "#/$defs/relative_path"},
+          "expected_result_ref": {"$ref": "#/$defs/relative_path"}
+        }
+      }
+    }
+  },
+  "$defs": {
+    "identity": {
+      "description": "Lowercase ASCII words or digits separated by single hyphens, starting with a letter. The final assertion rejects trailing newlines as well as other trailing characters.",
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*(?![\\s\\S])"
+    },
+    "relative_path": {
+      "description": "Literal slash-separated relative path. Segments start and end with ASCII letters, digits, underscores or hyphens; internal dots are allowed. No decoding or expansion is permitted. Runtime containment remains mandatory under Path boundary in the contract.",
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_-](?:[A-Za-z0-9._-]*[A-Za-z0-9_-])?(?:/[A-Za-z0-9_-](?:[A-Za-z0-9._-]*[A-Za-z0-9_-])?)*(?![\\s\\S])"
+    }
+  }
+}

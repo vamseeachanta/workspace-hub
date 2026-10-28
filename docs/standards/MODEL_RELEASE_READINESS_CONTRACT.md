@@ -67,6 +67,11 @@ Prefer machine-readable encodings over free-form prose wherever a rule has a bin
 - Rules with an enumerable scope → table/list in a standard.
 - Prose is acceptable only for motivation, rationale, or gray areas the script/table cannot express. **Every prose block MUST sit next to the machine-readable rule it explains, not replace it.**
 
+The [smoke runner contract](MODEL_RELEASE_SMOKE_RUNNER_CONTRACT.md) defines strict
+battery inputs, fixture references and future result states. Its synthetic example
+is validated structurally; missing or invalid execution evidence is incomplete,
+never a pass. Runner implementation and scoring integration remain out of scope.
+
 ### 4. Prompt-Pack Portability
 
 Any prompt, skill, or workflow the workspace-hub ships MUST be portable across providers and machines.
