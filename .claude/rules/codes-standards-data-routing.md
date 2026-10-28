@@ -34,6 +34,14 @@ Private visibility does not grant reproduction, extraction or publication rights
    prevent required retention, ingest acceptance remains blocked pending an owner
    decision; do not silently substitute an external pointer.
 
+## Owner ruling for internal use (27 Oct 2026)
+
+The owner authorizes agents to read and use standards copies already held in private
+ecosystem repositories for internal engineering work. For that internal use this ruling is
+the source-specific authorization the checks above require; agents do not pause on
+standards rights for it. Public outputs cite clause numbers only, never text, tables or
+figures, and the copies stay in private repositories.
+
 ## Interpretation, synthetic material and calculations
 
 Synthetic fixtures and original analysis must retain their provenance, limitations
