@@ -78,7 +78,26 @@ class WorkstationPathResolver:
             identifiers.update(filter(None, machine.identifiers))
         return sorted(identifiers)
 
-    def rewrite_workspace_path(self, raw_path: str | None, current_repo_root: Path) -> str:
+    def rewrite_workspace_path(
+        self, raw_path: str | None, current_repo_root: Path, *, anchored: bool = False
+    ) -> str:
+        """Normalize a known workspace prefix, optionally anchoring to this checkout.
+
+        By default, return the recognized suffix (or "." for an exact root),
+        leaving callers responsible for selecting a checkout. Callers that need
+        a local absolute path can explicitly pass ``anchored=True`` to resolve
+        the suffix under ``current_repo_root``; an exact root returns that
+        resolved checkout root. No consumers are opted in automatically.
+
+        Native POSIX, Windows drive paths and MSYS drive prefixes in either
+        letter case share the registry's existing prefix matching. In anchored
+        mode, raise ValueError if the resolved suffix escapes the checkout,
+        including through a symlink. This is a resolution-time containment check,
+        not a guarantee against subsequent filesystem changes.
+
+        Empty input returns "" and unrecognized paths retain their stripped
+        text in either mode; anchoring does not validate unknown paths.
+        """
         text = str(raw_path or "").strip()
         if not text:
             return ""
@@ -87,6 +106,11 @@ class WorkstationPathResolver:
             suffix = self._workspace_suffix(text, machine)
             if suffix is None:
                 continue
+            if anchored:
+                candidate = (current_repo_root / suffix).resolve()
+                if not candidate.is_relative_to(current_repo_root):
+                    raise ValueError("Anchored workspace path escapes the current repository root")
+                return str(candidate)
             if not suffix:
                 return "."
             # This shared normalizer intentionally strips only known machine
