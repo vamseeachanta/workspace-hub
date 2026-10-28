@@ -13,6 +13,18 @@ from pathlib import Path
 
 from catalog_sources import records
 
+# Software tuning basis, not engineering coefficients or calibrated relevance:
+# 20 hits keep the default response compact; the 1000-hit ceiling bounds response
+# memory. SQLite FTS5 snippet() permits 1..64 tokens; 32 gives local context,
+# with a separate 320-character ceiling for long tokens. Title/body/locator BM25
+# weights 5/1/1 prefer title matches; these are initial heuristics, not measured
+# quality claims. SQLite FTS5 reference: https://sqlite.org/fts5.html
+DEFAULT_LIMIT = 20
+MAX_LIMIT = 1000
+EXCERPT_TOKENS = 32
+EXCERPT_CHARS = 320
+BM25_WEIGHTS = (5.0, 1.0, 1.0)
+
 
 class CatalogError(ValueError):
     """Configuration or catalog failure that cannot be reported as a search miss."""
@@ -28,6 +40,11 @@ def private_path(path):
 
 def build(config):
     target = private_path(config["database"])
+    for source in config["sources"]:
+        root = Path(source["path"]).resolve()
+        if (target == root or (root.is_dir() and target.is_relative_to(root))
+                or (target.exists() and root.is_file() and target.samefile(root))):
+            raise CatalogError("catalog output must not overlap configured inputs")
     target.parent.mkdir(parents=True, exist_ok=True, mode=0o700)
     descriptor, name = tempfile.mkstemp(prefix=".catalog-", suffix=".db", dir=target.parent)
     os.close(descriptor)
@@ -59,11 +76,11 @@ def build(config):
         temporary.unlink(missing_ok=True)
 
 
-def find(path, query, *, domain=None, source=None, exposure=None, limit=20):
+def find(path, query, *, domain=None, source=None, exposure=None, limit=DEFAULT_LIMIT):
     path = private_path(path)
     if not path.is_file():
         raise CatalogError("catalog missing; build it before searching")
-    if not 0 <= limit <= 1000:
+    if type(limit) is not int or not 0 <= limit <= MAX_LIMIT:
         raise CatalogError("limit must be between 0 and 1000")
     tokens = re.findall(r"[^\W_]+", query, re.UNICODE)
     if not tokens or limit == 0:
@@ -75,16 +92,16 @@ def find(path, query, *, domain=None, source=None, exposure=None, limit=20):
         if value is not None:
             conditions.append(f"r.{key} = ?")
             values.append(value)
-    sql = ("SELECT r.metadata, snippet(search, 1, '', '', ' … ', 32) FROM search "
+    sql = ("SELECT r.metadata, snippet(search, 1, '', '', ' … ', ?) FROM search "
            "JOIN records r ON r.rowid = search.rowid WHERE " + " AND ".join(conditions)
-           + " ORDER BY bm25(search, 5.0, 1.0, 1.0), r.source, r.id, r.locator LIMIT ?")
+           + " ORDER BY bm25(search, ?, ?, ?), r.source, r.id, r.locator LIMIT ?")
     try:
         with closing(sqlite3.connect(path.as_uri() + "?mode=ro", uri=True)) as conn:
             results = []
-            for metadata, excerpt in conn.execute(sql, (*values, limit)):
+            for metadata, excerpt in conn.execute(sql, (EXCERPT_TOKENS, *values, *BM25_WEIGHTS, limit)):
                 result = json.loads(metadata)
                 result.pop("body", None)
-                result["excerpt"] = excerpt[:320]
+                result["excerpt"] = excerpt[:EXCERPT_CHARS]
                 results.append(result)
             return results
     except sqlite3.Error as exc:

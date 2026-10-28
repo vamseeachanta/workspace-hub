@@ -51,11 +51,15 @@ def load_config(path):
     return data
 
 
+def is_link(path):
+    return path.is_symlink() or getattr(path, "is_junction", lambda: False)()
+
+
 def read_input(path, root):
-    if path.is_symlink() or not path.resolve().is_relative_to(root.resolve()):
+    if is_link(path) or not path.resolve().is_relative_to(root.resolve()):
         raise ValueError("source symlink or path outside configured root")
     # Reject intermediate symlink directories, including ones that point inward.
-    if any(p.is_symlink() for p in (path, *path.parents) if p != root.parent):
+    if any(is_link(p) for p in (path, *path.parents)):
         raise ValueError("source symlink requires a direct configured root")
     return path.read_bytes()
 
@@ -128,7 +132,7 @@ def standards_rows(source, data, locator):
 
 
 def page_rows(source, raw, locator):
-    content = raw.decode("utf-8")
+    content = raw.decode("utf-8").replace("\r\n", "\n").replace("\r", "\n")
     metadata = {}
     warnings = []
     if content.startswith("---\n"):
