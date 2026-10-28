@@ -1,0 +1,36 @@
+schema_version: '1.0'
+class: issue_planning
+task_id: task-synthetic
+scope: synthetic-offline
+rules_ref: tests/fixtures/model_release_battery/README.md
+required_sections:
+- Resource Intelligence Summary
+- Files to Change
+- TDD Test List
+- Acceptance Criteria
+required_assertions:
+- tests_before_implementation
+- task_authorizes_implementation
+path_set: null
+verdict: null
+numerical_assertions: []
+max_output_tokens: 1024
+rule_sources:
+- path: docs/plans/_template-issue-plan.md
+  section: '## TDD Test List'
+  quote: '## Acceptance Criteria'
+  supports:
+  - required_sections
+  basis: The named sections project the inspected plan template into a small structured answer.
+- path: AGENTS.md
+  section: '## Required controls'
+  quote: 'TDD: tests before implementation.'
+  supports:
+  - required_assertions
+  basis: Tests precede implementation under the mandatory TDD rule.
+- path: AGENTS.md
+  section: '## Required controls'
+  quote: The user's task request authorizes implementation within scope; no separate plan approval is required,
+  supports:
+  - required_assertions
+  basis: The originating task permits bounded implementation without a separate plan approval.
