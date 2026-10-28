@@ -276,6 +276,106 @@ def test_comparator_crash_does_not_count_as_rejection():
         assert_comparison_contract(crash, SPEC, cases())
 
 
+def test_original_fixtures_survive_mutating_comparator_exception():
+    # Source: the literal SPEC, VALID and hand-classified cases above.
+    specification, fixtures = deepcopy((SPEC, cases()))
+    specification["extra"] = {"values": [{"flag": False}]}
+    expected_specification, expected_fixtures = deepcopy((specification, fixtures))
+
+    def broken(left, right, spec):
+        left["nodes"]["config"]["absent"] = 0
+        right["repositories"]["repo"]["ignored"].append("changed")
+        right["repositories"]["repo"]["untracked"].append({"changed": []})
+        spec["extra"]["values"][0]["flag"] = 0
+        spec["extra"]["values"].append({"changed": []})
+        raise RuntimeError("comparison crashed after nested mutation")
+
+    def assert_unchanged(actual, expected):
+        # Equality alone would accept the False-to-integer mutation above.
+        assert type(actual) is type(expected)
+        assert actual == expected
+        if isinstance(expected, dict):
+            assert_unchanged(tuple(actual.items()), tuple(expected.items()))
+        elif isinstance(expected, (list, tuple)):
+            for actual_item, expected_item in zip(actual, expected):
+                assert_unchanged(actual_item, expected_item)
+        elif isinstance(expected, ComparisonCase):
+            for field in ("name", "left", "right", "expected"):
+                assert_unchanged(getattr(actual, field), getattr(expected, field))
+
+    with pytest.raises(RuntimeError, match="comparison crashed after nested mutation"):
+        assert_comparison_contract(broken, specification, fixtures)
+
+    assert_unchanged(specification, expected_specification)
+    assert_unchanged(fixtures, expected_fixtures)
+    assert_comparison_contract(reference_compare, specification, fixtures)
+    assert_unchanged(specification, expected_specification)
+    assert_unchanged(fixtures, expected_fixtures)
+
+
+def test_each_comparison_receives_fresh_mutable_inputs():
+    # Source: SPEC and VALID above; extra aliases do not change their conditions.
+    specification, fixtures = deepcopy((SPEC, cases()))
+    originals = [specification]
+    for case in fixtures:
+        for record in (case.left, case.right):
+            if isinstance(record, dict) and all(record is not item for item in originals):
+                originals.append(record)
+    for record in originals:
+        sentinel = {"values": [False]}
+        record["extra"] = {"sentinel": sentinel, "alias": sentinel}
+    expected_fixtures = deepcopy(fixtures)
+    # Hand-derived from the literal specification and qualified control, with
+    # the independently chosen, condition-neutral sentinel added above.
+    expected_specification = {
+        "identity": "fixture", "digest": "expected", "ignored": "cache",
+        "extra": {"sentinel": {"values": [False]}, "alias": {"values": [False]}},
+    }
+    expected_control = {
+        "identity": "fixture",
+        "nodes": {"config": {"digest": "expected", "mode": "regular", "absent": False}},
+        "repositories": {"repo": {"ignored": ["cache"], "untracked": []}},
+        "extra": {"sentinel": {"values": [False]}, "alias": {"values": [False]}},
+    }
+    invocations = []
+
+    def recording_compare(left, right, spec):
+        for record in (left, right, spec):
+            if isinstance(record, dict):
+                extra = record["extra"]
+                assert extra["sentinel"] is extra["alias"]
+                assert extra["sentinel"] == {"values": [False]}
+                assert extra["sentinel"]["values"][0] is False
+        # Retain actual references so identity checks cannot pass through reuse
+        # of addresses belonging to garbage-collected copies.
+        invocations.append((left, right, spec))
+        return reference_compare(left, right, spec)
+
+    assert_comparison_contract(recording_compare, specification, fixtures)
+    assert invocations
+
+    def mutable_ids(value):
+        if isinstance(value, dict):
+            return {id(value)}.union(*(mutable_ids(item) for item in value.values()))
+        if isinstance(value, (list, tuple)):
+            nested = set().union(*(mutable_ids(item) for item in value))
+            return nested | {id(value)} if isinstance(value, list) else nested
+        return set()
+
+    original_ids = mutable_ids(originals)
+    seen_ids = set(original_ids)
+    for invocation in invocations:
+        current_ids = mutable_ids(invocation)
+        assert current_ids.isdisjoint(seen_ids)
+        seen_ids.update(current_ids)
+    sentinel_ids = {id(record["extra"]["sentinel"]) for record in originals}
+    assert len(sentinel_ids) == len(originals)
+    assert specification == expected_specification
+    control = next(case.left for case in fixtures if case.name == "qualified")
+    assert control == expected_control
+    assert fixtures == expected_fixtures
+
+
 @pytest.mark.parametrize("name", ["absence", "digest", "metadata", "ignore", "untracked"])
 def test_each_condition_counterexample_detects_its_own_bypass(name):
     target = next(c.left for c in cases() if c.name == name)
