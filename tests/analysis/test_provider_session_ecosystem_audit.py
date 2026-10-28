@@ -4,11 +4,20 @@ import importlib.util
 import json
 from pathlib import Path
 
+import pytest
+
 MODULE_PATH = Path(__file__).resolve().parents[2] / "scripts" / "analysis" / "provider_session_ecosystem_audit.py"
 spec = importlib.util.spec_from_file_location("provider_session_ecosystem_audit", MODULE_PATH)
 module = importlib.util.module_from_spec(spec)
 assert spec.loader is not None
 spec.loader.exec_module(module)
+
+
+@pytest.fixture(autouse=True)
+def isolate_audit_inputs(monkeypatch, tmp_path: Path) -> None:
+    """Keep audit tests independent of saved artifacts and network issue lookup."""
+    monkeypatch.setattr(module, "CLAUDE_PRECOMPUTED", tmp_path / "absent.json")
+    monkeypatch.setattr(module, "load_github_issue_index", lambda repo_root: [])
 
 
 def test_script_bootstraps_src_package_imports() -> None:
@@ -29,7 +38,7 @@ def test_classify_read_target_for_symbolic_skill_name(tmp_path: Path) -> None:
 def test_classify_read_target_for_repo_relative_path(tmp_path: Path) -> None:
     target = tmp_path / "docs" / "report.md"
     target.parent.mkdir(parents=True)
-    target.write_text("ok", encoding="utf-8")
+    target.write_text("ok", encoding="utf-8", newline="\n")
 
     normalized, scope, exists = module.classify_read_target("docs/report.md", tmp_path)
 
@@ -110,7 +119,7 @@ def test_classify_read_target_keeps_transient_worktree_and_tmp_paths_in_external
 def test_classify_read_target_uses_repo_alias_for_absolute_workspace_path(tmp_path: Path) -> None:
     target = tmp_path / "docs" / "report.md"
     target.parent.mkdir(parents=True)
-    target.write_text("ok", encoding="utf-8")
+    target.write_text("ok", encoding="utf-8", newline="\n")
 
     normalized, scope, exists = module.classify_read_target(
         "/mnt/workspace-hub/docs/report.md", tmp_path
@@ -124,7 +133,7 @@ def test_classify_read_target_uses_repo_alias_for_absolute_workspace_path(tmp_pa
 def test_classify_read_target_normalizes_windows_workspace_path(tmp_path: Path) -> None:
     target = tmp_path / "docs" / "report.md"
     target.parent.mkdir(parents=True)
-    target.write_text("ok", encoding="utf-8")
+    target.write_text("ok", encoding="utf-8", newline="\n")
 
     normalized, scope, exists = module.classify_read_target(
         r"D:\workspace-hub\docs\report.md", tmp_path
@@ -138,7 +147,7 @@ def test_classify_read_target_normalizes_windows_workspace_path(tmp_path: Path) 
 def test_classify_read_target_normalizes_uppercase_msys_windows_workspace_path(tmp_path: Path) -> None:
     target = tmp_path / "docs" / "report.md"
     target.parent.mkdir(parents=True)
-    target.write_text("ok", encoding="utf-8")
+    target.write_text("ok", encoding="utf-8", newline="\n")
 
     normalized, scope, exists = module.classify_read_target(
         "/D/workspace-hub/docs/report.md", tmp_path
@@ -191,7 +200,7 @@ def test_summarize_raw_provider_tracks_symbolic_and_python3(tmp_path: Path) -> N
     logs_dir.mkdir(parents=True)
     existing = repo_root / "docs" / "keep.md"
     existing.parent.mkdir(parents=True)
-    existing.write_text("hi", encoding="utf-8")
+    existing.write_text("hi", encoding="utf-8", newline="\n")
 
     records = [
         {"hook": "post", "tool": "Read", "file": "github-issues", "repo": "workspace-hub"},
@@ -203,7 +212,7 @@ def test_summarize_raw_provider_tracks_symbolic_and_python3(tmp_path: Path) -> N
         {"hook": "pre", "tool": "Read", "file": "docs/missing.md", "repo": "workspace-hub"},
     ]
     (logs_dir / "session_20260410.jsonl").write_text(
-        "\n".join(json.dumps(r) for r in records), encoding="utf-8"
+        "\n".join(json.dumps(r) for r in records), encoding="utf-8", newline="\n"
     )
 
     summary = module.summarize_raw_provider("hermes", logs_dir, repo_root)
@@ -230,7 +239,7 @@ def test_summarize_raw_provider_treats_skill_view_reads_as_symbolic(tmp_path: Pa
         }
     ]
     (logs_dir / "session_20260410.jsonl").write_text(
-        "\n".join(json.dumps(r) for r in records), encoding="utf-8"
+        "\n".join(json.dumps(r) for r in records), encoding="utf-8", newline="\n"
     )
 
     summary = module.summarize_raw_provider("hermes", logs_dir, repo_root)
@@ -254,7 +263,7 @@ def test_summarize_raw_provider_excludes_non_repo_artifact_reads_from_missing_re
         {"hook": "post", "tool": "Read", "file": "digitalmodel/specs/module-registry.yaml", "repo": "workspace-hub"},
     ]
     (logs_dir / "session_20260410.jsonl").write_text(
-        "\n".join(json.dumps(r) for r in records), encoding="utf-8"
+        "\n".join(json.dumps(r) for r in records), encoding="utf-8", newline="\n"
     )
 
     summary = module.summarize_raw_provider("codex", logs_dir, repo_root)
@@ -293,7 +302,7 @@ def test_build_provider_audit_prefers_raw_claude_logs_when_present(tmp_path: Pat
     claude_dir.mkdir(parents=True)
     records = [{"hook": "post", "tool": "Bash", "cmd": "python3 -c \"print(1)\"", "repo": "workspace-hub"}]
     (claude_dir / "session_20260410.jsonl").write_text(
-        "\n".join(json.dumps(r) for r in records), encoding="utf-8"
+        "\n".join(json.dumps(r) for r in records), encoding="utf-8", newline="\n"
     )
 
     audit = module.build_provider_audit(repo_root=repo_root, logs_root=logs_root)
@@ -312,7 +321,7 @@ def test_build_provider_audit_includes_recent_activity_since_previous_audit(tmp_
     analysis_dir.mkdir(parents=True)
     (analysis_dir / "provider-session-ecosystem-audit.json").write_text(
         json.dumps({"generated_at": "2026-04-10T00:00:00Z"}),
-        encoding="utf-8",
+        encoding="utf-8", newline="\n",
     )
     records = [
         {
@@ -357,7 +366,7 @@ def test_build_provider_audit_includes_recent_activity_since_previous_audit(tmp_
         },
     ]
     (claude_dir / "session_20260410.jsonl").write_text(
-        "\n".join(json.dumps(r) for r in records), encoding="utf-8"
+        "\n".join(json.dumps(r) for r in records), encoding="utf-8", newline="\n"
     )
 
     audit = module.build_provider_audit(repo_root=repo_root, logs_root=logs_root)
@@ -428,7 +437,7 @@ def test_build_activity_window_summary_includes_last_24h_and_last_7d(tmp_path: P
         },
     ]
     (claude_dir / "session_20260410.jsonl").write_text(
-        "\n".join(json.dumps(r) for r in records), encoding="utf-8"
+        "\n".join(json.dumps(r) for r in records), encoding="utf-8", newline="\n"
     )
 
     provider_summaries = {
@@ -609,13 +618,13 @@ def test_build_provider_audit_exposes_executive_actions_block(tmp_path: Path) ->
         }
     ]
     (claude_dir / "session_20260410.jsonl").write_text(
-        "\n".join(json.dumps(r) for r in records), encoding="utf-8"
+        "\n".join(json.dumps(r) for r in records), encoding="utf-8", newline="\n"
     )
     analysis_dir = repo_root / "analysis"
     analysis_dir.mkdir(parents=True)
     (analysis_dir / "provider-session-ecosystem-audit.json").write_text(
         json.dumps({"generated_at": "2026-04-10T00:00:00Z", "providers": {"claude": {"post_records": 0, "sessions": 0, "missing_repo_reads": 0, "source": "raw_logs"}}}),
-        encoding="utf-8",
+        encoding="utf-8", newline="\n",
     )
 
     audit = module.build_provider_audit(repo_root=repo_root, logs_root=logs_root)
@@ -1046,9 +1055,9 @@ def test_build_provider_audit_counts_claude_unique_runtime_sessions_when_present
     ]
     target = repo_root / "docs" / "keep.md"
     target.parent.mkdir(parents=True)
-    target.write_text("ok", encoding="utf-8")
+    target.write_text("ok", encoding="utf-8", newline="\n")
     (claude_dir / "session_20260410.jsonl").write_text(
-        "\n".join(json.dumps(r) for r in records), encoding="utf-8"
+        "\n".join(json.dumps(r) for r in records), encoding="utf-8", newline="\n"
     )
 
     audit = module.build_provider_audit(repo_root=repo_root, logs_root=logs_root)
@@ -1082,9 +1091,9 @@ def test_build_provider_audit_consumes_gemini_export_jsonl(tmp_path: Path) -> No
     ]
     target = repo_root / "docs" / "keep.md"
     target.parent.mkdir(parents=True)
-    target.write_text("ok", encoding="utf-8")
+    target.write_text("ok", encoding="utf-8", newline="\n")
     (gemini_dir / "session_20260410.jsonl").write_text(
-        "\n".join(json.dumps(r) for r in records), encoding="utf-8"
+        "\n".join(json.dumps(r) for r in records), encoding="utf-8", newline="\n"
     )
 
     audit = module.build_provider_audit(repo_root=repo_root, logs_root=logs_root)
@@ -1672,7 +1681,7 @@ def test_summarize_claude_precomputed_exposes_non_repo_artifact_schema_defaults(
         "top_missing_repo_reads": [{"path": "docs/missing.md", "count": 2}],
     }
     path = tmp_path / "claude-audit.json"
-    path.write_text(json.dumps(payload), encoding="utf-8")
+    path.write_text(json.dumps(payload), encoding="utf-8", newline="\n")
 
     summary = module.summarize_claude_precomputed(path)
 
@@ -1738,7 +1747,7 @@ def test_json_summary_exposes_recent_and_corpus_scope_notes(tmp_path: Path) -> N
     analysis_dir.mkdir(parents=True)
     (analysis_dir / "provider-session-ecosystem-audit.json").write_text(
         json.dumps({"generated_at": "2026-04-10T00:00:00Z", "providers": {}}),
-        encoding="utf-8",
+        encoding="utf-8", newline="\n",
     )
 
     audit = module.build_provider_audit(repo_root=repo_root, logs_root=logs_root)
@@ -1749,3 +1758,219 @@ def test_json_summary_exposes_recent_and_corpus_scope_notes(tmp_path: Path) -> N
     assert audit["executive_summary"]["corpus_change_since_previous_audit"]["scope_note"] == (
         "Snapshot-to-snapshot corpus deltas reflect export additions/removals/reclassification and should be interpreted separately from event-time recent activity."
     )
+
+
+def _build_debt_fixture_audit(
+    tmp_path, monkeypatch, reads, records, previous, current_source="raw_logs",
+):
+    """Use synthetic summary counts and a prior artifact, without a real corpus."""
+    repo = tmp_path / "repo"
+    logs = repo / "logs"
+    provider_logs = logs / "sample"
+    provider_logs.mkdir(parents=True)
+    (provider_logs / "session_fixture.jsonl").write_text("", encoding="utf-8", newline="\n")
+    monkeypatch.setattr(module, "PROVIDERS", ("sample",))
+    monkeypatch.setattr(
+        module,
+        "summarize_raw_provider",
+        lambda *args: {
+            "source": current_source,
+            "post_records": records,
+            "missing_repo_reads": reads,
+            "missing_repo_read_remediation_hints": [
+                {"rule_id": "example", "total_count": reads}
+            ],
+        },
+    )
+    if previous is not None:
+        analysis = repo / "analysis"
+        analysis.mkdir()
+        (analysis / "provider-session-ecosystem-audit.json").write_text(
+            json.dumps(previous), encoding="utf-8", newline="\n"
+        )
+    return module.build_provider_audit(repo_root=repo, logs_root=logs)
+
+
+@pytest.mark.parametrize(
+    "reads,records,prior_reads,prior_density,volume_delta,density_delta",
+    [
+        # Hand calculations: density = reads * 1000 / records; delta = current - previous.
+        # Current 6/500 -> 12; prior 10/500 -> 20; differences -4 reads, -8 per 1k.
+        pytest.param(6, 500, 10, 20.0, -4, -8.0, id="improvement"),
+        # Prior 2/500 -> 4; current 6/500 -> 12; differences +4 reads, +8 per 1k.
+        pytest.param(6, 500, 2, 4.0, 4, 8.0, id="regression"),
+        # Equal 6/500 snapshots -> zero differences, with measured debt still present.
+        pytest.param(6, 500, 6, 12.0, 0, 0.0, id="equality"),
+        # Recorded zeros are available: 0/500 -> 0 at both snapshots.
+        pytest.param(0, 500, 0, 0.0, 0, 0.0, id="recorded-zero"),
+        # Prior 10/1000 -> 10; current 6/500 -> 12: less volume, greater density.
+        pytest.param(6, 500, 10, 10.0, -4, 2.0, id="opposing-directions"),
+        # Prior 617/50000 -> 12.34; current 6/500 -> 12; difference -0.34 per 1k.
+        pytest.param(6, 500, 617, 12.34, -611, -0.34, id="fractional-density"),
+    ],
+)
+def test_debt_delta_reports_signed_volume_and_density(
+    tmp_path, monkeypatch, reads, records, prior_reads, prior_density,
+    volume_delta, density_delta,
+) -> None:
+    # A synthetic prior timestamp does not establish a fixed weekly interval.
+    previous = {
+        "generated_at": "2026-04-10T00:00:00Z",
+        "executive_summary": {"migration_debt": {"ranked_providers": [{
+            "provider": "sample",
+            "known_migration_debt_reads": prior_reads,
+            "known_migration_debt_per_1k_records": prior_density,
+        }]}},
+    }
+    audit = _build_debt_fixture_audit(tmp_path, monkeypatch, reads, records, previous)
+    comparison = json.loads(json.dumps(audit))["executive_summary"]["migration_debt"]["snapshot_comparison"]
+    current_density = 0.0 if reads == 0 else 12.0  # Hand calculations above.
+    assert comparison["providers"]["sample"] == {
+        "volume": {"current": reads, "previous": prior_reads, "delta": volume_delta},
+        "density": {"current": current_density, "previous": prior_density, "delta": density_delta},
+    }
+    assert comparison["current_generated_at"] == audit["generated_at"]
+    assert comparison["previous_generated_at"] == previous["generated_at"]
+    assert comparison["delta_convention"] == "current - previous"
+    assert comparison["units"] == {"volume": "reads", "density": "reads per 1k records"}
+    markdown = module.render_markdown(audit)
+    assert "## Migration debt since previous audit" in markdown
+    assert f"`{previous['generated_at']}` to `{audit['generated_at']}`" in markdown
+    assert "Delta = current - previous" in markdown
+    assert "negative means less recorded debt" in markdown
+    assert "snapshot-to-snapshot" in markdown
+    assert "not event-time activity" in markdown
+    assert "week-over-week" not in markdown
+    assert f"| `sample` | volume (reads) | {reads} | {prior_reads} | {volume_delta:+d} |" in markdown
+    assert f"| `sample` | density (reads per 1k records) | {current_density:.1f} | {prior_density:.1f} | {density_delta:+.1f} |" in markdown
+
+
+@pytest.mark.parametrize(
+    "history,prior_volume,prior_density",
+    [
+        pytest.param(None, None, None, id="no-prior-audit"),
+        pytest.param({}, None, None, id="absent-summary"),
+        pytest.param({"ranked_providers": []}, None, None, id="absent-provider"),
+        pytest.param({"ranked_providers": [{"provider": "sample"}]}, None, None, id="absent-metrics"),
+        pytest.param({"ranked_providers": [{
+            "provider": "sample", "known_migration_debt_reads": None,
+            "known_migration_debt_per_1k_records": None,
+        }]}, None, None, id="null-metrics"),
+        # A recorded zero volume does not supply an absent density metric.
+        pytest.param({"ranked_providers": [{
+            "provider": "sample", "known_migration_debt_reads": 0,
+        }]}, 0, None, id="volume-only"),
+        pytest.param({"ranked_providers": [{
+            "provider": "sample", "known_migration_debt_per_1k_records": 20.0,
+        }]}, None, 20.0, id="density-only"),
+    ],
+)
+def test_debt_delta_missing_history_is_unavailable(
+    tmp_path, monkeypatch, history, prior_volume, prior_density,
+) -> None:
+    previous = None if history is None else {"executive_summary": {"migration_debt": history}}
+    # Independent fixture calculation: 6 reads / 500 records * 1000 = 12 per 1k.
+    audit = _build_debt_fixture_audit(tmp_path, monkeypatch, 6, 500, previous)
+    comparison = audit["executive_summary"]["migration_debt"]["snapshot_comparison"]
+    metrics = comparison["providers"]["sample"]
+    assert metrics["volume"] == {"current": 6, "previous": prior_volume, "delta": None if prior_volume is None else 6}
+    assert metrics["density"] == {"current": 12.0, "previous": prior_density, "delta": None if prior_density is None else -8.0}
+    markdown = module.render_markdown(audit)
+    assert "unavailable" in markdown
+    volume_cells = "unavailable | unavailable" if prior_volume is None else "0 | +6"
+    density_cells = "unavailable | unavailable" if prior_density is None else "20.0 | -8.0"
+    assert f"| `sample` | volume (reads) | 6 | {volume_cells} |" in markdown
+    assert f"| `sample` | density (reads per 1k records) | 12.0 | {density_cells} |" in markdown
+    row = audit["executive_summary"]["provider_interpretation_summary"]["providers"][0]
+    assert row["debt_trend"] == ("unavailable" if prior_density is None else "improving")
+
+
+def test_debt_delta_main_writes_fixture_backed_outputs(tmp_path, monkeypatch) -> None:
+    # Independent fixture calculation: 6/500 * 1000 = 12; 6 - 10 = -4; 12 - 20 = -8.
+    previous = {"generated_at": "2026-04-10T00:00:00Z", "executive_summary": {
+        "migration_debt": {"ranked_providers": [{
+            "provider": "sample", "known_migration_debt_reads": 10,
+            "known_migration_debt_per_1k_records": 20.0,
+        }]},
+    }}
+    audit = _build_debt_fixture_audit(tmp_path, monkeypatch, 6, 500, previous)
+    monkeypatch.setattr(module, "build_provider_audit", lambda: audit)
+    json_output = tmp_path / "output" / "audit.json"
+    markdown_output = tmp_path / "output" / "audit.md"
+    monkeypatch.setattr(module.sys, "argv", [
+        "audit", "--json-output", str(json_output),
+        "--markdown-output", str(markdown_output),
+    ])
+    assert module.main() == 0
+    written = json.loads(json_output.read_text(encoding="utf-8"))
+    metrics = written["executive_summary"]["migration_debt"]["snapshot_comparison"]["providers"]["sample"]
+    assert metrics["volume"] == {"current": 6, "previous": 10, "delta": -4}
+    assert metrics["density"] == {"current": 12.0, "previous": 20.0, "delta": -8.0}
+    assert "| `sample` | volume (reads) | 6 | 10 | -4 |" in markdown_output.read_text(encoding="utf-8")
+
+
+@pytest.mark.parametrize("source", ["missing_log_directory", "empty_log_directory"])
+@pytest.mark.parametrize("missing_snapshot", ["current", "previous"])
+def test_debt_delta_unavailable_corpus_is_not_zero_debt(
+    tmp_path, monkeypatch, source, missing_snapshot,
+) -> None:
+    # Hand calculation: 6/500 * 1000 = 12; unavailable counts are not measured zeros.
+    previous = {
+        "providers": {"sample": {"source": source if missing_snapshot == "previous" else "raw_logs"}},
+        "executive_summary": {"migration_debt": {"ranked_providers": [{
+            "provider": "sample", "known_migration_debt_reads": 0,
+            "known_migration_debt_per_1k_records": 0.0,
+        }]}},
+    }
+    audit = _build_debt_fixture_audit(
+        tmp_path, monkeypatch, 6, 500, previous,
+        current_source=source if missing_snapshot == "current" else "raw_logs",
+    )
+    metrics = audit["executive_summary"]["migration_debt"]["snapshot_comparison"]["providers"]["sample"]
+    assert metrics["volume"][missing_snapshot] is None
+    assert metrics["density"][missing_snapshot] is None
+    assert metrics["volume"]["delta"] is None
+    assert metrics["density"]["delta"] is None
+    row = audit["executive_summary"]["provider_interpretation_summary"]["providers"][0]
+    assert row["debt_trend"] == "unavailable"
+    assert "unavailable |" in module.render_markdown(audit)
+
+
+@pytest.mark.parametrize("empty_snapshot", ["current", "previous"])
+def test_debt_delta_real_empty_raw_log_is_unavailable(tmp_path, monkeypatch, empty_snapshot):
+    repo = tmp_path / "repo"
+    logs = repo / "logs"
+    provider_logs = logs / "sample"
+    provider_logs.mkdir(parents=True)
+    (provider_logs / "session_empty.jsonl").write_text("", encoding="utf-8", newline="\n")
+    monkeypatch.setattr(module, "PROVIDERS", ("sample",))
+    monkeypatch.setattr(module, "load_github_issue_index", lambda *_: [])
+    empty = module.build_provider_audit(repo_root=repo, logs_root=logs)
+    assert empty["providers"]["sample"]["source"] == "raw_logs"
+    assert empty["providers"]["sample"]["post_records"] == 0
+    # Hand calculation for the populated endpoint: 10 / 500 * 1000 = 20 per 1k.
+    populated_summary = {"source": "raw_logs", "post_records": 500,
+                         "missing_repo_read_remediation_hints": [{"total_count": 10}]}
+    populated = {"providers": {"sample": populated_summary}, "executive_summary": {
+        "migration_debt": module.build_migration_debt_summary({"sample": populated_summary})}}
+    current, previous = (empty, populated) if empty_snapshot == "current" else (populated, empty)
+    debt = current["executive_summary"]["migration_debt"]
+    comparison = module.build_migration_debt_snapshot_comparison(
+        debt, current["providers"], previous, "2026-04-11T00:00:00Z")
+    metrics = comparison["providers"]["sample"]
+    other = "previous" if empty_snapshot == "current" else "current"
+    assert metrics["volume"] == {empty_snapshot: None, other: 10, "delta": None}
+    assert metrics["density"] == {empty_snapshot: None, other: 20.0, "delta": None}
+    interpretation = module.build_provider_interpretation_summary(
+        current["providers"], debt, {}, {}, previous, {}, [])
+    assert interpretation["providers"][0]["debt_trend"] == "unavailable"
+
+
+@pytest.mark.parametrize("records", [None, False, -1, "500", float("nan"), float("inf")])
+def test_recorded_debt_metric_rejects_invalid_record_availability(records):
+    summary = {"source": "raw_logs", "post_records": records}
+    assert module._recorded_debt_metric({"reads": 0}, "reads", summary) is None
+
+
+def test_recorded_debt_metric_requires_raw_record_availability():
+    assert module._recorded_debt_metric({"reads": 0}, "reads", {"source": "raw_logs"}) is None
