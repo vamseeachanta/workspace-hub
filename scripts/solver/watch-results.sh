@@ -49,9 +49,24 @@ set_pull_failure_count() {
 
 sync_repo() {
     local output
-    if output=$(cd "${REPO_ROOT}" && git pull --ff-only origin main 2>&1); then
+    if output=$(cd "${REPO_ROOT}" && LC_ALL=C git pull --ff-only origin main 2>&1); then
         set_pull_failure_count 0
         return 0
+    fi
+
+    # This refusal needs human disposition, not repeated pulls. Keep every file.
+    if [[ "$output" == *"untracked working tree files would be overwritten by merge:"* ]]; then
+        local paths
+        paths=$(printf '%s\n' "$output" | awk '
+            /untracked working tree files would be overwritten by merge:/ { listing=1; next }
+            listing && /^Please move or remove/ { exit }
+            listing { sub(/^\t/, ""); print }
+        ')
+        log "ERROR: untracked file collision; pull stopped; preserve and compare these paths:"
+        printf '%s\n' "$paths"
+        printf '[%s] untracked file collision; pull stopped:\n%s\n' \
+            "$(date -u +%Y-%m-%dT%H:%M:%SZ)" "$paths" >> "${PULL_FAILURE_LOG}"
+        return 1
     fi
 
     # A non-fast-forward (transient divergence of workspace-hub main, common under

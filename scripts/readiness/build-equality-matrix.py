@@ -17,8 +17,10 @@ hardcoded, M1). Run: uv run --script scripts/readiness/build-equality-matrix.py 
 """
 from __future__ import annotations
 
+import argparse
 import json
 import math
+import os
 import re
 import sys
 from collections import Counter
@@ -723,6 +725,19 @@ def equivalence_section(vmap: dict, machines: list[str], roster: dict,
     return "".join(cards)
 
 
+def resolve_paths(argv: list[str]) -> tuple[Path, Path]:
+    """Match the shell generation seam; publishing supplies explicit paths."""
+    parser = argparse.ArgumentParser(add_help=False)
+    parser.add_argument("--state-dir")
+    parser.add_argument("--out-dir")
+    args, _ = parser.parse_known_args(argv)
+    base = Path(os.environ.get("XDG_STATE_HOME") or Path.home() / ".local/state")
+    root = base / "workspace-hub/equality"
+    state = Path(args.state_dir or os.environ.get("EQ_STATE_DIR") or root)
+    reports = Path(args.out_dir or os.environ.get("EQ_REPORT_DIR") or root / "reports")
+    return state, reports
+
+
 def main() -> None:
     config = yaml.safe_load(CONFIG.read_text(encoding="utf-8")) if CONFIG.exists() else {}
     roster = load_roster(config)
@@ -873,4 +888,5 @@ function copyGenPrompt(btn){{
 
 
 if __name__ == "__main__":
+    STATE, REPORTS = resolve_paths(sys.argv[1:])
     main()
