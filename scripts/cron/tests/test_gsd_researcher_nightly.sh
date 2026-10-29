@@ -211,6 +211,10 @@ case "$mode" in
     printf 'opaque diagnostic content\n' >&2
     exit 1 ;;
   hang) exec sleep 5 ;;
+  ignore-term)
+    trap '' TERM
+    exec sleep 5 ;;
+  exit-137) exit 137 ;;
   empty) exit 0 ;;
   tail)
     for ((i=0; i<12; i++)); do
@@ -356,6 +360,26 @@ LOG=$(cat "$WS/logs/research/2026-04-02.log")
 assert_contains "timeout distinguished" "claude timed out after 300s (exit 124)" "$LOG"
 assert_eq "timeout retried once" "2" "$(cat "$TMP_ROOT/claude.count")"
 assert_not_exists "timeout output not saved" "$WS/.planning/research/2026-04-02-ai-tooling.md"
+
+echo "--- Test 6b: TERM-ignoring CLI requires forced termination ---"
+WS=$(setup_workspace)
+rm -f "$TMP_ROOT/claude.count"
+OUTPUT=$(MOCK_DAY_NUM=3 MOCK_CLAUDE_MODE=ignore-term run_script "$WS" 2>&1)
+assert_eq "forced termination fails after retry" "1" "$?"
+LOG=$(cat "$WS/logs/research/2026-04-02.log")
+assert_contains "forced termination status and uncertainty logged" "claude exited 137 (SIGKILL/forced kill; possible timeout escalation)" "$LOG"
+assert_eq "forced termination retried once" "2" "$(cat "$TMP_ROOT/claude.count")"
+assert_eq "forced termination is not a proven timeout" "0" "$(printf '%s' "$LOG" | grep -c 'timed out' || true)"
+assert_not_exists "forced termination output not saved" "$WS/.planning/research/2026-04-02-ai-tooling.md"
+
+echo "--- Test 6c: Status 137 alone does not establish timeout escalation ---"
+WS=$(setup_workspace)
+rm -f "$TMP_ROOT/claude.count"
+OUTPUT=$(MOCK_DAY_NUM=3 MOCK_CLAUDE_MODE=exit-137 run_script "$WS" 2>&1)
+assert_eq "synthetic status 137 fails after retry" "1" "$?"
+LOG=$(cat "$WS/logs/research/2026-04-02.log")
+assert_contains "status 137 keeps possible-timeout qualification" "claude exited 137 (SIGKILL/forced kill; possible timeout escalation)" "$LOG"
+assert_eq "synthetic status 137 is not a proven timeout" "0" "$(printf '%s' "$LOG" | grep -c 'timed out' || true)"
 
 echo "--- Test 7: Empty successful output is diagnosed ---"
 WS=$(setup_workspace)

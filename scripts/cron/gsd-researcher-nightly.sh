@@ -269,6 +269,8 @@ validate_output() {
 
 # Never echo arbitrary CLI stderr: it can contain credentials, paths or prompts.
 # Summarize each of the final ten lines using fixed, non-sensitive categories.
+# Operational policy for #4471: inspect at most 16,384 bytes and ten lines to
+# bound diagnostic processing and log volume; these are local policy choices.
 log_claude_stderr() {
     local line summary
     while IFS= read -r line || [[ -n "$line" ]]; do
@@ -294,6 +296,8 @@ run_claude() (
         return 1
     }
     trap 'rm -f "$stderr_file"' EXIT
+    # Operational policy for #4471: allow five seconds for TERM cleanup before
+    # KILL so a TERM-ignoring CLI cannot stall the scheduled run indefinitely.
     printf '%s\n' "$context" | timeout --kill-after=5s "$TIME_BUDGET" claude -p "$PROMPT" \
         --model "$MODEL" \
         --tools "Read,WebSearch" \
@@ -304,8 +308,12 @@ run_claude() (
     statuses=("${PIPESTATUS[@]}")
     status=${statuses[1]}
     # Preserve the CLI/timeout status even if the context writer gets SIGPIPE.
+    # GNU coreutils timeout, "Exit status" (timeout --help): 124 means timeout;
+    # 137 means KILL of the command or timeout itself, not proof of a deadline.
     if [[ "$status" -eq 124 ]]; then
         log "ERROR: claude timed out after ${TIME_BUDGET}s (exit 124)"
+    elif [[ "$status" -eq 137 ]]; then
+        log "ERROR: claude exited 137 (SIGKILL/forced kill; possible timeout escalation)"
     else
         log "claude exited $status"
     fi
