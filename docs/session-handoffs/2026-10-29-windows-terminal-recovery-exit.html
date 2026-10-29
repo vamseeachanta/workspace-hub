@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Windows Terminal recovery handoff — 2026-10-29</title>
+<style>
+body{max-width:900px;margin:36px auto;padding:0 24px;font:16px/1.55 system-ui,sans-serif;color:#172235}
+h1,h2{line-height:1.2}h2{margin-top:30px}code{overflow-wrap:anywhere}li{margin:8px 0}
+.status{padding:16px;background:#edf5f0;border-left:4px solid #287346}
+</style>
+</head>
+<body>
+<h1>Windows Terminal recovery handoff</h1>
+<p>Recorded 2026-10-29. The target is the Windows RDS host identified in the originating chat. Physical hostname, account identifiers, process identifiers and raw diagnostics remain local.</p>
+<p class="status"><strong>Terminal access was restored through a separate Microsoft portable installation.</strong> The user confirmed a working PowerShell prompt. The original Store Terminal problem remains unresolved; this handoff does not establish repair of that installation.</p>
+
+<h2>Authority and execution boundary</h2>
+<p>The originating user requested diagnosis, team consultation, terminal repair, and this exit record. Explicit permission was received to open a test window. The active RDS work was to be preserved. No host reboot, sign-out, existing-process termination, Store package reset, PATH change, default-terminal change or security-setting change was performed. Future consequential actions require authority verified from the originating session; this handoff does not grant it.</p>
+
+<h2>Findings and qualification</h2>
+<ul>
+<li>Three diagnostic reviewers assessed host health, Terminal evidence and session continuity. At approximately 04:51 CDT, available RAM was about 195 GiB, committed memory was 18%, and sampled CPU load was 8%. Resource exhaustion was not established.</li>
+<li>Windows servicing reboot flags were present after approximately 65 days of uptime. A maintenance restart remained appropriate after work was checkpointed; those flags did not establish an immediate reboot requirement.</li>
+<li>The installed Terminal version was 1.24.11911.0. Its update to 1.24.12741.0 failed with 0x80073D02 because package resources remained in use. A causal link between that failed update and the opening failure was not established.</li>
+<li>The initial shell ran in session 0, while the interactive user session was session 7. A zero window handle observed across sessions was insufficient evidence of a hung UI. A subsequent hidden inspection inside session 7 also found no visible main window.</li>
+<li>A new-window launch using the existing Store installation returned launcher exit code 0 but did not produce the shell startup receipt. Exit code alone therefore did not meet the recovery criterion.</li>
+<li>The data volume had approximately 21.2 GiB free, or 1.19%, at the time of measurement. No storage cleanup was attempted; restarting would not resolve this capacity condition.</li>
+</ul>
+
+<h2>Changes and verification</h2>
+<p>Microsoft's stable 1.25.2733.0 x64 ZIP was downloaded from its official release. SHA-256 matched <code>bf3ef2012f6c44d8340a4c58125acc9498d19b580f9890dc043cdf831852e796</code>; the executable's Microsoft signature reported Valid. The <code>.portable</code> marker was created before launch. Only <code>settings.json</code> was copied; original runtime state and saved layouts were excluded.</p>
+<p>The full portable executable was launched in session 7 with PowerShell <code>-NoProfile</code>. At 05:00 CDT, a nonzero window handle, the title “Terminal recovery test”, and a shell-generated receipt established startup. The user then confirmed a working prompt. At 05:01:47 CDT, all 13 baseline Claude, Codex and OpenConsole process identities matched their recorded identifiers and creation times; the original Terminal remained present. Original settings retained the same SHA-256. Process preservation does not establish continued progress or completion of every existing workload.</p>
+<p>A subsequent process check during exit preparation found the recovery Terminal, its PowerShell shell and the original Terminal still present. That check established process presence only; the earlier shell receipt and user confirmation establish functional startup.</p>
+<ul>
+<li>Desktop entry: <strong>Windows Terminal (Recovery)</strong>. It opens PowerShell without loading a shell profile.</li>
+<li>Application root: <code>%LOCALAPPDATA%\Programs\WindowsTerminal-Recovery-1.25.2733.0</code>; executable: <code>terminal-1.25.2733.0\WindowsTerminal.exe</code>.</li>
+<li>Local evidence: <code>diagnostics\terminal-recovery-verification-20261029.json</code>, SHA-256 <code>12520049e3742f5afd425792ce0f27f450b08c9693a0e0bc08416772769d9476</code>. Four companion diagnostic JSON receipts remain beside it. These files were read back; no backup or remote publication of them was established.</li>
+<li>The portable installation does not update automatically. Existing Store aliases and shortcuts were preserved and may still encounter the original failure.</li>
+</ul>
+
+<h2>Next checkpoint and ownership</h2>
+<ol>
+<li>Use the recovery shortcut for terminal access. Recheck the local receipt and current process state before relying on this handoff in a later session.</li>
+<li>Identify the intact workload and verify its saved checkpoint and native output. Account for the other logged-on sessions before any disruptive maintenance.</li>
+<li>After matching authorization is established, close the original Terminal in a controlled way and complete its Store update; consider a host servicing restart only after affected work is preserved.</li>
+<li>Verify the normal Terminal shortcut opens a working shell before retiring the recovery installation. Transfer any changed portable settings deliberately.</li>
+</ol>
+<p>The diagnosing session is preparing to exit. No continuing execution owner, background watcher or automatic maintenance schedule was installed. Ownership has not been transferred to another session; a successor must acknowledge the handoff before assuming execution ownership.</p>
+
+<h2>Repository and cleanup disposition</h2>
+<p>The canonical workspace-hub checkout remained on main at <code>5a075f688db7fc4fbff9c837bae279ed61f4ddf0</code>, with eight modified files under <code>.claude/state/</code>, untracked <code>.claude/state/session-signals/2026-09-25.jsonl</code> and <code>make_review_copy.py</code>, and one autostash. After fetching, main was 0 commits ahead and 1,125 behind <code>5fb670f9cacb1c4c2144bbb610211775ef36080e</code>. Those unrelated changes were preserved. Existing sibling checkouts and stale worktree registrations were not pruned.</p>
+<p>The publication unit is this HTML file only, on <code>chore/terminal-recovery-handoff-20261029</code>, based on the fetched revision above in an isolated worktree. No changes to main or merge are authorized by this exit record. Commit and remote-ref verification belong to the accompanying exit response.</p>
+<ul>
+<li><strong>CLEAN:</strong> temporary inspection/launch tasks were unregistered; 13 temporary test/archive files and the cleanup helper were removed. No test scheduler remains.</li>
+<li><strong>EXPECTED:</strong> recovery application, desktop shortcut, five local diagnostic receipts, the earlier local preflight receipt and this handoff. The handoff branch is retained for review.</li>
+<li><strong>UNEXPECTED relative to this task, preserved:</strong> canonical-checkout dirty state, autostash and stale worktree registrations. Their ownership was not established; broad workspace cleanup is not claimed.</li>
+</ul>
+
+<h2>Outgoing-bundle review</h2>
+<p>Audience: repository readers. Destination: the requested handoff branch in workspace-hub. Exact bundle: this HTML file; the committed blob identifies its final bytes. Raw receipts, executable binaries, account names, physical-host identity and other users' session details are excluded. The source is task-scoped local observation plus Microsoft documentation; engineering/workload qualification is limited as stated above. No passwords, credentials, tokens or secret environment values are included. The final file requires disclosure and secret-pattern review before push. No email or chat message was sent to others; external actions were limited to official software retrieval, documentation/GitHub reads, and the requested sanitized handoff publication.</p>
+<p>References: <a href="https://learn.microsoft.com/en-us/windows/terminal/distributions">Microsoft Terminal distribution types</a>; <a href="https://learn.microsoft.com/en-us/windows/terminal/command-line-arguments">Terminal command-line arguments</a>; <a href="https://learn.microsoft.com/en-us/windows/win32/appxpkg/troubleshooting">App package error reference</a>; <a href="https://github.com/microsoft/terminal/releases/tag/v1.25.2733.0">Official release</a>.</p>
+</body>
+</html>
