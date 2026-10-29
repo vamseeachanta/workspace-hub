@@ -22,7 +22,7 @@ NEW_MACHINE_ATTESTATIONS = {
 HARNESS_ATTESTATIONS = {"harness-default-v1", "harness-dry-run-v1"}
 WRAPPER_SHA256 = {
     SETUP: "1a5e5573d00d17c4a820a831549fb92a2dad100b5fbab5572afcefadd57c84c1",
-    NEW_MACHINE: "5120de77dcec9349fc2b24f5d6889d53c88f357efcf4ca4874479471a9a53d5c",
+    NEW_MACHINE: "8484ad7bc7370546d5544704720343448371f9ab584203255b26a1dc2196338c",
     HARNESS: "a698b7a44194ef92dfbdf9a4d0e5b5550b21ceadb86de2055f634f59b8a1d0c8",
 }
 SETUP_PROTECTED_PREFIX = b'''#!/usr/bin/env bash
@@ -163,7 +163,11 @@ def _new_machine_shape(body: bytes) -> bool:
   log "Skipped (--no-cron flag)."
 elif [[ "$DRY_RUN" == "true" ]]; then
   dry "bash scripts/cron/setup-cron.sh --dry-run"
-  bash "${WORKSPACE_HUB}/scripts/cron/setup-cron.sh" --dry-run || true
+  bash "${WORKSPACE_HUB}/scripts/cron/setup-cron.sh" --dry-run || {
+    CRON_PREVIEW_STATUS=$?
+    log "ERROR: Cron preview failed (status ${CRON_PREVIEW_STATUS})." >&2
+    exit "$CRON_PREVIEW_STATUS"
+  }
 elif [[ "$WH_OS" == "windows" ]]; then
   log "Windows detected \xe2\x80\x94 printing Task Scheduler instructions:"
   bash "${WORKSPACE_HUB}/scripts/cron/setup-cron.sh" || true

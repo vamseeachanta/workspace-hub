@@ -1,6 +1,6 @@
 """Isolated onboarding-preview contract for issue #3490.
 
-The issue specifies arbitrary protocol statuses: zero succeeds and seven fails.
+Zero denotes success; seven is a locally chosen synthetic nonzero sentinel.
 Only Bash and read-only filesystem utilities are real; all mutating commands
 and sibling setup scripts reject execution inside a disposable fixture tree.
 """
@@ -16,13 +16,13 @@ import subprocess
 
 REPO = Path(__file__).resolve().parent.parent.parent
 SETUP = REPO / "scripts" / "setup" / "new-machine-setup.sh"
-SUCCESS = 0  # Issue #3490: successful stub completion.
-FAILURE = 7  # Issue #3490: deliberately failed preview, also used for rejection.
+SUCCESS = 0  # Successful stub completion.
+FAILURE = 7  # Synthetic nonzero sentinel, also used for rejection.
 
 
 def _executable(path: Path, source: str) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(source, encoding="utf-8")
+    path.write_text(source, encoding="utf-8", newline="\n")
     path.chmod(path.stat().st_mode | stat.S_IXUSR)
 
 
@@ -62,7 +62,7 @@ def _run_preview(tmp_path: Path, status: int, *flags: str):
     _executable(bin_dir / "date", "#!/bin/bash\necho fixture-date\n")
 
     rejected = tmp_path / "rejected-calls"
-    rejected.write_text("", encoding="utf-8")
+    rejected.write_text("", encoding="utf-8", newline="\n")
     reject_script = (
         '#!/bin/bash\nprintf "%s\\n" "$0 $*" >> "$REJECTED_CALLS"\n'
         'exit "$REJECT_STATUS"\n'
@@ -88,7 +88,7 @@ def _run_preview(tmp_path: Path, status: int, *flags: str):
         _executable(workspace / script, reject_script)
 
     cron_calls = tmp_path / "cron-calls"
-    cron_calls.write_text("", encoding="utf-8")
+    cron_calls.write_text("", encoding="utf-8", newline="\n")
     _executable(
         workspace / "scripts" / "cron" / "setup-cron.sh",
         '#!/bin/bash\nset -eu\n'

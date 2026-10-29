@@ -223,7 +223,7 @@ surfaces:
       terminal: {path: scripts/cron/cron_apply.py, operation: reconcile-current-user-crontab}
       modes:
         - {id: default-linux, mutation_mode: destructive, args: [setup-cron], target: physical-local, exit: propagate, source_attestation: new-machine-default-v1}
-        - {id: dry-run-preview, mutation_mode: non-mutating, args: [setup-cron, --dry-run], target: physical-local, exit: swallow-3490, source_attestation: new-machine-dry-run-v1}
+        - {id: dry-run-preview, mutation_mode: non-mutating, args: [setup-cron, --dry-run], target: physical-local, exit: propagate, source_attestation: new-machine-dry-run-v1}
         - {id: windows-skip, mutation_mode: non-mutating, args: [setup-cron], target: platform-selected, exit: swallow-3490, source_attestation: new-machine-windows-v1}
 
   - path: scripts/cron/harness-update.sh

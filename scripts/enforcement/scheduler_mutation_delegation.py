@@ -21,7 +21,7 @@ EXPECTED_MODES = {
     ],
     "scripts/setup/new-machine-setup.sh": [
         ("default-linux", "destructive", ["setup-cron"], "physical-local", "propagate", "new-machine-default-v1"),
-        ("dry-run-preview", "non-mutating", ["setup-cron", "--dry-run"], "physical-local", "swallow-3490", "new-machine-dry-run-v1"),
+        ("dry-run-preview", "non-mutating", ["setup-cron", "--dry-run"], "physical-local", "propagate", "new-machine-dry-run-v1"),
         ("windows-skip", "non-mutating", ["setup-cron"], "platform-selected", "swallow-3490", "new-machine-windows-v1"),
     ],
     "scripts/cron/harness-update.sh": [
