@@ -62,11 +62,14 @@ assert_not_exists() {
 }
 
 TMP_ROOT=$(mktemp -d)
+export HOME="$TMP_ROOT/home"
+mkdir -p "$HOME"
+unset GIT_DIR GIT_WORK_TREE GIT_COMMON_DIR GIT_INDEX_FILE
 trap 'rm -rf "$TMP_ROOT"' EXIT
 
 setup_workspace() {
   local ws="$TMP_ROOT/ws"
-  local bindir="$TMP_ROOT/bin"
+  local bindir="$HOME/.local/bin"
   rm -rf "$ws" "$bindir"
   mkdir -p "$ws/scripts/cron" "$ws/scripts/lib" "$ws/scripts" "$ws/.planning/research" "$ws/logs/research" "$ws/logs/notifications" "$bindir"
   cp "$SOURCE_SCRIPT" "$ws/scripts/cron/gsd-researcher-nightly.sh"
@@ -91,6 +94,13 @@ ws_variant() {
 }
 EOF
   chmod +x "$ws/scripts/lib/workstation-lib.sh"
+  mkdir -p "$ws/scripts/cron/lib"
+  cat > "$ws/scripts/cron/lib/git-safe.sh" <<'EOF'
+git_safe_init() { :; }
+git_safe_pull() { :; }
+git_safe_commit() { :; }
+git_safe_push() { :; }
+EOF
 
   cat > "$ws/scripts/notify.sh" <<'EOF'
 #!/usr/bin/env bash
@@ -104,7 +114,7 @@ EOF
   cat > "$bindir/date" <<'EOF'
 #!/usr/bin/env bash
 set -euo pipefail
-if [[ "${1:-}" == "+%u" ]]; then
+if [[ "${1:-}" == "-u" && "${2:-}" == "+%u" ]]; then
   printf '%s\n' "${MOCK_DAY_NUM:-3}"
   exit 0
 fi
@@ -116,6 +126,10 @@ if [[ "${1:-}" == "-u" && "${2:-}" == "+%H:%M:%S" ]]; then
   printf '%s\n' "06:35:00"
   exit 0
 fi
+if [[ "${1:-}" == "-u" && "${2:-}" == "+%Y-%m-%dT%H:%M:%SZ" ]]; then
+  printf '%s\n' "${MOCK_DATE:-2026-04-02}T06:35:00Z"
+  exit 0
+fi
 if [[ "${1:-}" == "-d" ]]; then
   printf '%s\n' "1743552000"
   exit 0
@@ -124,16 +138,14 @@ exec /bin/date "$@"
 EOF
   chmod +x "$bindir/date"
 
-  cat > "$bindir/hostname" <<'EOF'
+  cat > "$bindir/timeout" <<'EOF'
 #!/usr/bin/env bash
-set -euo pipefail
-if [[ "${1:-}" == "-s" ]]; then
-  printf '%s\n' "ace-linux-1"
-else
-  printf '%s\n' "ace-linux-1"
-fi
+# Keep the real timeout process, but shorten waits for the hanging fake CLI.
+if [[ "${1:-}" == --kill-after=* ]]; then shift; fi
+shift
+exec /usr/bin/timeout --kill-after=1s 0.5 "$@"
 EOF
-  chmod +x "$bindir/hostname"
+  chmod +x "$bindir/timeout"
 
   cat > "$bindir/flock" <<'EOF'
 #!/usr/bin/env bash
@@ -165,7 +177,7 @@ EOF
   cat > "$bindir/git" <<'EOF'
 #!/usr/bin/env bash
 set -euo pipefail
-LOG_FILE="${MOCK_GIT_LOG:-/tmp/mock-git.log}"
+LOG_FILE="${MOCK_GIT_LOG:?}"
 printf '%s\n' "$*" >> "$LOG_FILE"
 case "${1:-}" in
   status|add|diff|commit|pull|push|read-tree)
@@ -181,12 +193,31 @@ EOF
   cat > "$bindir/claude" <<'EOF'
 #!/usr/bin/env bash
 set -euo pipefail
-COUNT_FILE="${MOCK_CLAUDE_COUNT_FILE:-/tmp/mock-claude-count}"
+COUNT_FILE="${MOCK_CLAUDE_COUNT_FILE:?}"
 count=0
 [[ -f "$COUNT_FILE" ]] && count=$(cat "$COUNT_FILE")
 count=$((count + 1))
 printf '%s' "$count" > "$COUNT_FILE"
 mode="${MOCK_CLAUDE_MODE:-valid}"
+if [[ "$mode" == "early-fail" ]]; then
+  printf 'Error: unrecognized option\n' >&2
+  exit 2
+fi
+cat >/dev/null
+case "$mode" in
+  fail)
+    printf 'partial output must not be accepted\n'
+    printf 'Error: authentication required\n' >&2
+    printf 'opaque diagnostic content\n' >&2
+    exit 1 ;;
+  hang) exec sleep 5 ;;
+  empty) exit 0 ;;
+  tail)
+    for ((i=0; i<12; i++)); do
+      printf 'Error: workspace has not been trusted\n' >&2
+    done
+    exit 2 ;;
+esac
 if [[ "$mode" == "timeout-then-valid" && "$count" -eq 1 ]]; then
   exit 1
 fi
@@ -242,7 +273,7 @@ EOF
 run_script() {
   local ws="$1"
   shift
-  PATH="$TMP_ROOT/bin:$PATH" \
+  PATH="$HOME/.local/bin:$PATH" \
   MOCK_GIT_LOG="$TMP_ROOT/git.log" \
   MOCK_CLAUDE_COUNT_FILE="$TMP_ROOT/claude.count" \
   bash "$ws/scripts/cron/gsd-researcher-nightly.sh" "$@"
@@ -300,6 +331,64 @@ CLAUDE_CALLS=$(cat "$TMP_ROOT/claude.count" 2>/dev/null || echo "0")
 assert_eq "synthesis claude calls" "1" "$CLAUDE_CALLS"
 SYNTHESIS_CONTENT=$(cat "$OUTPUT_FILE")
 assert_contains "synthesis contains action table" "## Action Table" "$SYNTHESIS_CONTENT"
+
+
+echo "--- Test 5: Failed exits retain status and redact stderr ---"
+WS=$(setup_workspace)
+rm -f "$TMP_ROOT/claude.count"
+OUTPUT=$(MOCK_DAY_NUM=3 MOCK_CLAUDE_MODE=fail run_script "$WS" 2>&1)
+assert_eq "failure exits nonzero" "1" "$?"
+LOG=$(cat "$WS/logs/research/2026-04-02.log")
+assert_contains "exact CLI exit logged" "claude exited 1" "$LOG"
+assert_contains "authentication diagnostic" "stderr: authentication or sign-in required" "$LOG"
+assert_contains "unknown stderr withheld" "stderr: details withheld" "$LOG"
+assert_eq "raw stderr is not logged" "0" "$(printf '%s' "$LOG" | grep -c 'opaque diagnostic content' || true)"
+assert_eq "failure is not timeout" "0" "$(printf '%s' "$LOG" | grep -c 'timed out' || true)"
+assert_eq "failure retried once" "2" "$(cat "$TMP_ROOT/claude.count")"
+assert_not_exists "failed partial output not saved" "$WS/.planning/research/2026-04-02-ai-tooling.md"
+
+echo "--- Test 6: Real timeout terminates the fake CLI ---"
+WS=$(setup_workspace)
+rm -f "$TMP_ROOT/claude.count"
+OUTPUT=$(MOCK_DAY_NUM=3 MOCK_CLAUDE_MODE=hang run_script "$WS" 2>&1)
+assert_eq "timeout exits nonzero" "1" "$?"
+LOG=$(cat "$WS/logs/research/2026-04-02.log")
+assert_contains "timeout distinguished" "claude timed out after 300s (exit 124)" "$LOG"
+assert_eq "timeout retried once" "2" "$(cat "$TMP_ROOT/claude.count")"
+assert_not_exists "timeout output not saved" "$WS/.planning/research/2026-04-02-ai-tooling.md"
+
+echo "--- Test 7: Empty successful output is diagnosed ---"
+WS=$(setup_workspace)
+rm -f "$TMP_ROOT/claude.count"
+OUTPUT=$(MOCK_DAY_NUM=3 MOCK_CLAUDE_MODE=empty run_script "$WS" 2>&1)
+assert_eq "empty output fails after retry" "1" "$?"
+LOG=$(cat "$WS/logs/research/2026-04-02.log")
+assert_contains "successful CLI exit logged" "claude exited 0" "$LOG"
+assert_contains "empty output diagnosis" "empty output" "$LOG"
+
+echo "--- Test 8: Stderr tail is bounded and trust errors are classified ---"
+WS=$(setup_workspace)
+rm -f "$TMP_ROOT/claude.count"
+OUTPUT=$(MOCK_DAY_NUM=3 MOCK_CLAUDE_MODE=tail run_script "$WS" 2>&1)
+assert_eq "exit two fails" "1" "$?"
+assert_eq "captured stdout remains empty" "" "$OUTPUT"
+LOG=$(cat "$WS/logs/research/2026-04-02.log")
+assert_contains "exit two preserved" "claude exited 2" "$LOG"
+assert_eq "ten stderr lines per attempt" "20" "$(printf '%s' "$LOG" | grep -c 'stderr: workspace trust required' || true)"
+assert_eq "every log line marks UTC" "0" "$(printf '%s\n' "$LOG" | grep -vcE '^\[gsd-researcher\] [0-9T:Z-]+Z ' || true)"
+assert_eq "stderr scratch removed" "0" "$(find "$TMPDIR" -maxdepth 1 -name 'gsd-stderr.*' | wc -l | tr -d ' ')"
+
+
+echo "--- Test 9: Early CLI exit wins over context writer SIGPIPE ---"
+WS=$(setup_workspace)
+rm -f "$TMP_ROOT/claude.count"
+printf '%300000s' x > "$WS/.planning/PROJECT.md"
+OUTPUT=$(MOCK_DAY_NUM=3 MOCK_CLAUDE_MODE=early-fail run_script "$WS" 2>&1)
+assert_eq "early failure exits nonzero" "1" "$?"
+LOG=$(cat "$WS/logs/research/2026-04-02.log")
+assert_contains "early CLI status preserved" "claude exited 2" "$LOG"
+assert_eq "writer SIGPIPE is not CLI status" "0" "$(printf '%s' "$LOG" | grep -c 'claude exited 141' || true)"
+assert_contains "option error classified" "stderr: unrecognized CLI option" "$LOG"
 
 
 echo "--- Summary ---"
