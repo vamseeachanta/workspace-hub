@@ -101,6 +101,7 @@ SIMPLE_RELAXATION = b'''{
 '''
 
 
+@pytest.mark.parametrize("output_newline", ["\n", "\r\n"], ids=["lf", "crlf"])
 @pytest.mark.parametrize("consistent,mode,expected", [
     pytest.param(True, "yes", SIMPLEC_RELAXATION, id="simplec-boolean"),
     pytest.param("yes", "yes", SIMPLEC_RELAXATION, id="simplec-string"),
@@ -108,7 +109,7 @@ SIMPLE_RELAXATION = b'''{
     pytest.param("no", "no", SIMPLE_RELAXATION, id="simple-string"),
 ])
 def test_explicit_factor_placement_preserves_inputs(
-    tmp_path, write_fvsolution, consistent, mode, expected,
+    tmp_path, write_fvsolution, consistent, mode, expected, output_newline, monkeypatch,
 ):
     """Echo arbitrary caller fractions with issue #3811 topology and stable bytes."""
     factors = {"U": 0.5, "k": 0.25, "epsilon": 0.125, "omega": 0.0625}
@@ -118,16 +119,26 @@ def test_explicit_factor_placement_preserves_inputs(
     original_solver = deepcopy(solver)
     targets = (tmp_path / "first", tmp_path / "repeated")
     generated = []
+    original_open = Path.open
+
+    def open_output(path, mode="r", *args, **kwargs):
+        if path in targets and mode == "w":
+            return original_open(path, mode, encoding="utf-8", newline=output_newline)
+        return original_open(path, mode, *args, **kwargs)
+
+    monkeypatch.setattr(Path, "open", open_output)
 
     for target in targets:
         write_fvsolution(target, solver)
         assert solver == original_solver
         raw = target.read_bytes()
+        assert (b"\r\n" in raw) == (output_newline == "\r\n")
         text = raw.decode("utf-8")
         assert f"consistent {mode};" in text
         # Compare the entire relaxation tail, including braces and namespace
         # membership: extra pressure, fields or equation entries must fail.
-        prefix, relaxation = raw.split(b"\nrelaxationFactors ")
+        normalized = raw.replace(b"\r\n", b"\n")
+        prefix, relaxation = normalized.split(b"\nrelaxationFactors ")
         assert prefix
         assert relaxation == expected
         generated.append(raw)
