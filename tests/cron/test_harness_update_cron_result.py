@@ -1,6 +1,6 @@
 """Isolated sync_crontab result contract for issue #3479.
 
-The issue specifies synthetic installer statuses 0 (success) and 7 (failure).
+Status 0 denotes shell success; 7 is a synthetic nonzero fixture status.
 Fixture schedule text is synthetic: two matching lines imply a count of two
 by direct enumeration, independent of the helper's output-counting code.
 """
@@ -44,7 +44,7 @@ def _run_sync(
     cron_dir = root / "scripts/cron"
     cron_dir.mkdir(parents=True)
     command_log = root / "installer-commands.txt"
-    command_log.write_text("", encoding="utf-8")
+    command_log.write_text("", encoding="utf-8", newline="\n")
     if present:
         (cron_dir / "setup-cron.sh").write_text(
             'printf "installer" >> "$COMMAND_LOG"\n'
@@ -53,7 +53,7 @@ def _run_sync(
             'printf "%s" "$INSTALLER_STDOUT"\n'
             'printf "%s" "$INSTALLER_STDERR" >&2\n'
             'exit "$INSTALLER_STATUS"\n',
-            encoding="utf-8",
+            encoding="utf-8", newline="\n",
         )
 
     # Any scheduler call is intercepted; neither state nor unrelated files may change.
@@ -67,7 +67,7 @@ def _run_sync(
     scheduler_command = bin_dir / "crontab"
     scheduler_command.write_text(
         '#!/usr/bin/env bash\nprintf "unexpected scheduler call" > "$SCHEDULER_STATE"\n',
-        encoding="utf-8",
+        encoding="utf-8", newline="\n",
     )
     scheduler_command.chmod(scheduler_command.stat().st_mode | 0o111)
     # Use only fixture inputs and system tools, without inherited repository bindings.
