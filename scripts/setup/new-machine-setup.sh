@@ -193,7 +193,11 @@ if [[ "$NO_CRON" == "true" ]]; then
   log "Skipped (--no-cron flag)."
 elif [[ "$DRY_RUN" == "true" ]]; then
   dry "bash scripts/cron/setup-cron.sh --dry-run"
-  bash "${WORKSPACE_HUB}/scripts/cron/setup-cron.sh" --dry-run || true
+  bash "${WORKSPACE_HUB}/scripts/cron/setup-cron.sh" --dry-run || {
+    CRON_PREVIEW_STATUS=$?
+    log "ERROR: Cron preview failed (status ${CRON_PREVIEW_STATUS})." >&2
+    exit "$CRON_PREVIEW_STATUS"
+  }
 elif [[ "$WH_OS" == "windows" ]]; then
   log "Windows detected — printing Task Scheduler instructions:"
   bash "${WORKSPACE_HUB}/scripts/cron/setup-cron.sh" || true
