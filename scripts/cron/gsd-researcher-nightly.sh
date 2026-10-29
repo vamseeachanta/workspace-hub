@@ -15,12 +15,13 @@
 # Usage: bash scripts/cron/gsd-researcher-nightly.sh [--dry-run]
 
 set -uo pipefail
+export TZ=UTC
 export PATH="${HOME}/.local/bin:${HOME}/.npm-global/bin:${HOME}/.cargo/bin:/usr/local/bin:${PATH}"
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 WS_HUB="$(cd "${SCRIPT_DIR}/../.." && pwd)"
 DATE=$(date -u +%Y-%m-%d)
-DAY_NUM=$(date +%u)  # 1=Mon, 7=Sun
+DAY_NUM=$(date -u +%u)  # 1=Mon, 7=Sun
 TIME_BUDGET=300
 DRY_RUN=false
 LOG_DIR="${WS_HUB}/logs/research"
@@ -34,7 +35,7 @@ done
 mkdir -p "$LOG_DIR" "$OUTPUT_DIR"
 LOG_FILE="${LOG_DIR}/${DATE}.log"
 
-log() { echo "[gsd-researcher] $(date -u +%H:%M:%S) $*" >> "$LOG_FILE"; }
+log() { echo "[gsd-researcher] $(date -u +%Y-%m-%dT%H:%M:%SZ) $*" >> "$LOG_FILE"; }
 
 # ── Hostname guard (reads from workstation registry) ─────────────────────────
 source "${WS_HUB}/scripts/lib/workstation-lib.sh"
@@ -266,16 +267,59 @@ validate_output() {
     return 0
 }
 
-run_claude() {
-    local context="$1"
-    echo "$context" | timeout "$TIME_BUDGET" claude -p "$PROMPT" \
+# Never echo arbitrary CLI stderr: it can contain credentials, paths or prompts.
+# Summarize each of the final ten lines using fixed, non-sensitive categories.
+# Operational policy for #4471: inspect at most 16,384 bytes and ten lines to
+# bound diagnostic processing and log volume; these are local policy choices.
+log_claude_stderr() {
+    local line summary
+    while IFS= read -r line || [[ -n "$line" ]]; do
+        case "${line,,}" in
+            *"not been trusted"*|*"workspace trust"*) summary="workspace trust required" ;;
+            *"permission allow rule"*|*"permissions.allow"*) summary="permission configuration warning" ;;
+            *"sign in"*|*"sign-in"*|*"authentication"*|*"not logged in"*) summary="authentication or sign-in required" ;;
+            *"unknown option"*|*"unrecognized option"*) summary="unrecognized CLI option" ;;
+            *"budget"*) summary="budget diagnostic" ;;
+            *"rate limit"*|*"quota"*) summary="rate or quota diagnostic" ;;
+            *) summary="details withheld" ;;
+        esac
+        log "stderr: $summary"
+    done < <(tail -c 16384 "$1" | tail -n 10)
+}
+
+run_claude() (
+    local context="$1" stderr_file status
+    local -a statuses
+    umask 077
+    stderr_file=$(mktemp "${TMPDIR:-$LOG_DIR}/gsd-stderr.XXXXXX") || {
+        log "ERROR: cannot create CLI stderr capture"
+        return 1
+    }
+    trap 'rm -f "$stderr_file"' EXIT
+    # Operational policy for #4471: allow five seconds for TERM cleanup before
+    # KILL so a TERM-ignoring CLI cannot stall the scheduled run indefinitely.
+    printf '%s\n' "$context" | timeout --kill-after=5s "$TIME_BUDGET" claude -p "$PROMPT" \
         --model "$MODEL" \
         --tools "Read,WebSearch" \
         --allowedTools "Read WebSearch" \
         --max-budget-usd "$BUDGET" \
         --no-session-persistence \
-        2>>"$LOG_FILE"
-}
+        2>"$stderr_file"
+    statuses=("${PIPESTATUS[@]}")
+    status=${statuses[1]}
+    # Preserve the CLI/timeout status even if the context writer gets SIGPIPE.
+    # GNU coreutils timeout, "Exit status" (timeout --help): 124 means timeout;
+    # 137 means KILL of the command or timeout itself, not proof of a deadline.
+    if [[ "$status" -eq 124 ]]; then
+        log "ERROR: claude timed out after ${TIME_BUDGET}s (exit 124)"
+    elif [[ "$status" -eq 137 ]]; then
+        log "ERROR: claude exited 137 (SIGKILL/forced kill; possible timeout escalation)"
+    else
+        log "claude exited $status"
+    fi
+    log_claude_stderr "$stderr_file"
+    return "$status"
+)
 
 build_reduced_context() {
     local base_context="$1"
@@ -296,12 +340,12 @@ fi
 log "Calling claude (timeout=${TIME_BUDGET}s, model=${MODEL}, budget=\$${BUDGET})..."
 RESULT=$(run_claude "$CONTEXT") || RESULT=""
 if [[ -z "$RESULT" ]]; then
-    log "WARNING: primary claude call failed or timed out — retrying once with reduced context"
+    log "WARNING: primary claude call failed or returned empty output — retrying once with reduced context"
     REDUCED_CONTEXT=$(build_reduced_context "$CONTEXT")
     RESULT=$(run_claude "$REDUCED_CONTEXT") || RESULT=""
     if [[ -z "$RESULT" ]]; then
-        log "ERROR: claude call failed or timed out after retry"
-        bash "${WS_HUB}/scripts/notify.sh" cron gsd-researcher fail "claude timeout or error after retry" || true
+        log "ERROR: claude call failed or returned empty output after retry"
+        bash "${WS_HUB}/scripts/notify.sh" cron gsd-researcher fail "claude failure or empty output after retry" || true
         exit 1
     fi
 fi
