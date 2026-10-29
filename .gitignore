@@ -40,6 +40,9 @@ downloads/
 eggs/
 .eggs/
 lib/
+!/tests/lib/
+/tests/lib/*
+!/tests/lib/test_script_json_roundtrip.py
 !scripts/agents/lib/
 !scripts/coordination/routing/lib/
 !scripts/setup/lib/

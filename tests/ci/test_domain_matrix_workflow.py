@@ -169,3 +169,28 @@ def test_hosted_contract_suite_is_blocking():
     assert "if" not in contract
     assert "uv run --no-project --with pytest --with pyyaml" in contract["run"]
     assert "python -m pytest tests/ci/" in contract["run"]
+
+
+def test_baseline_regressions_run_before_broader_collection():
+    config = yaml.safe_load(
+        (ROOT / ".github/workflows/baseline-check.yml").read_text(encoding="utf-8")
+    )
+    job = config["jobs"]["test"]
+    assert "if" not in job
+    assert not job.get("continue-on-error", False)
+    steps = job["steps"]
+    broader = next(i for i, item in enumerate(steps) if item.get("name") == "Run Python tests")
+    commands = {
+        "Run Gemini usage evidence tests":
+            "uv run --no-project --with pytest python -m pytest tests/ai/test_gemini_usage.py -q",
+        "Run script JSON regression tests":
+            "uv run python -m pytest tests/lib/test_script_json_roundtrip.py -v --tb=short",
+    }
+    for name, command in commands.items():
+        matches = [(i, item) for i, item in enumerate(steps) if item.get("name") == name]
+        assert len(matches) == 1
+        index, regression = matches[0]
+        assert index < broader
+        assert "if" not in regression
+        assert not regression.get("continue-on-error", False)
+        assert regression["run"].strip() == command
