@@ -1,20 +1,20 @@
 # AI account usage (fleet)
 
-Generated 2026-10-29T11:13:23+00:00 by fleet-collector collect_account_usage_fleet. Percentages are USED; headroom = 100 - weekly used. Source of truth: `config/ai-tools/account-usage-latest.json`.
+Generated 2026-10-29T12:13:34+00:00 by fleet-collector collect_account_usage_fleet. Percentages are USED; headroom = 100 - weekly used. Source of truth: `config/ai-tools/account-usage-latest.json`.
 
 ## Recommendation
 
-- **claude**: `claude-owner` (13.0% weekly headroom) on ace-linux-1, ace-linux-2, gpu-claw
-- **codex**: `codex-owner` (62.0% weekly headroom) on ace-linux-1, ace-linux-2, fleet-collector, gpu-claw
+- **claude**: `claude-owner` (11.0% weekly headroom) on ace-linux-1, ace-linux-2, gpu-claw
+- **codex**: `codex-owner` (60.0% weekly headroom) on ace-linux-1, ace-linux-2, fleet-collector, gpu-claw
 
 ## Accounts
 
 | account | provider | holder | 5h used | week used | headroom | resets | sampled on | source |
 |---|---|---|---|---|---|---|---|---|
-| claude-owner | claude | owner | 38% | 87% | 13% | 2026-10-31T14:00:01.001115+00:00 | gpu-claw | oauth-api |
+| claude-owner | claude | owner | 48% | 89% | 11% | 2026-10-31T14:00:00.167726+00:00 | gpu-claw | oauth-api |
 | claude-professional | claude | colleague |  |  |  |  |  | unavailable |
-| codex-owner | codex | owner |  | 38% | 62% | 2026-11-04T06:35:47+00:00 | fleet-collector | app-server-live |
-| codex-professional | codex | colleague |  | 72% | 28% | 2026-11-04T06:40:53+00:00 | ace-win-1 | app-server-live |
+| codex-owner | codex | owner |  | 40% | 60% | 2026-11-04T06:35:47+00:00 | fleet-collector | app-server-live |
+| codex-professional | codex | colleague |  | 75% | 25% | 2026-11-04T06:40:53+00:00 | ace-win-1 | app-server-live |
 
 ## Hosts
 
