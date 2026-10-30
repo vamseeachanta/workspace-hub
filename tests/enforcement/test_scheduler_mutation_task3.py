@@ -81,7 +81,7 @@ def test_cron_authority_is_exact_and_3475_is_resolved():
         "cron-canonical-legacy-exact-authority-v1",
     } <= set(operation["attestations"])
 
-    inventory_digest = json.loads(INVENTORY.read_text())["input_digest"]
+    inventory_digest = json.loads(INVENTORY.read_text(encoding="utf-8"))["input_digest"]
     assert registry["resolved_dispositions"] == [
         {
             "issue": 3475,
@@ -129,7 +129,8 @@ def test_transitive_surfaces_are_closed_delegations_with_visible_gaps():
     assert result.statuses["scripts/setup/new-machine-setup.sh"] == "compliant"
     assert result.statuses["scripts/cron/harness-update.sh"] == "migration-required"
     new_modes = rows["scripts/setup/new-machine-setup.sh"]["delegation"]["modes"]
-    assert any(mode["exit"] == "swallow-3490" for mode in new_modes)
+    assert next(mode for mode in new_modes if mode["id"] == "dry-run-preview")["exit"] == "propagate"
+    assert next(mode for mode in new_modes if mode["id"] == "windows-skip")["exit"] == "swallow-3490"
     harness_modes = rows["scripts/cron/harness-update.sh"]["delegation"]["modes"]
     assert any(mode["exit"] == "swallow-3479" for mode in harness_modes)
 
@@ -220,7 +221,7 @@ EXPECTED_MODES = {
     ],
     "scripts/setup/new-machine-setup.sh": [
         {"id": "default-linux", "mutation_mode": "destructive", "args": ["setup-cron"], "target": "physical-local", "exit": "propagate", "source_attestation": "new-machine-default-v1"},
-        {"id": "dry-run-preview", "mutation_mode": "non-mutating", "args": ["setup-cron", "--dry-run"], "target": "physical-local", "exit": "swallow-3490", "source_attestation": "new-machine-dry-run-v1"},
+        {"id": "dry-run-preview", "mutation_mode": "non-mutating", "args": ["setup-cron", "--dry-run"], "target": "physical-local", "exit": "propagate", "source_attestation": "new-machine-dry-run-v1"},
         {"id": "windows-skip", "mutation_mode": "non-mutating", "args": ["setup-cron"], "target": "platform-selected", "exit": "swallow-3490", "source_attestation": "new-machine-windows-v1"},
     ],
     "scripts/cron/harness-update.sh": [
@@ -281,7 +282,7 @@ def test_enforcement_modules_extract_responsibilities_and_bound_functions():
     production = list((ROOT / "scripts/enforcement").glob("scheduler_mutation*.py"))
     production.append(CHECKER)
     for path in set(production):
-        tree = ast.parse(path.read_text())
+        tree = ast.parse(path.read_text(encoding="utf-8"))
         for node in ast.walk(tree):
             if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
                 assert node.end_lineno - node.lineno + 1 <= 50, (path, node.name)
@@ -313,8 +314,10 @@ def test_3490_gap_is_linked_in_render_and_docs():
         ("setup-windows-skip-v1", b'if [[ "$MACHINE_OS" == "windows" ]]', b'if [[ "$MACHINE_OS" != "windows" ]]'),
         ("setup-windows-skip-v1", b'echo "This machine uses Windows Task Scheduler; Linux cron reconciliation is skipped."\n  exit 0', b'echo "This machine uses Windows Task Scheduler; Linux cron reconciliation is skipped."\n  exit 2'),
         ("new-machine-default-v1", b'bash "${WORKSPACE_HUB}/scripts/cron/setup-cron.sh"\nfi', b'bash "${WORKSPACE_HUB}/scripts/cron/setup-cron.sh" || true\nfi'),
-        ("new-machine-dry-run-v1", b'setup-cron.sh" --dry-run || true', b'setup-cron.sh" || true'),
-        ("new-machine-dry-run-v1", b'setup-cron.sh" --dry-run || true', b'setup-cron.sh" --dry-run'),
+        ("new-machine-dry-run-v1", b'setup-cron.sh" --dry-run || {', b'setup-cron.sh" || {'),
+        ("new-machine-dry-run-v1", b'setup-cron.sh" --dry-run || {', b'setup-cron.sh" --dry-run || true || {'),
+        ("new-machine-dry-run-v1", b'exit "$CRON_PREVIEW_STATUS"', b'exit 1'),
+        ("new-machine-dry-run-v1", b'CRON_PREVIEW_STATUS=$?', b'CRON_PREVIEW_STATUS=0'),
         ("new-machine-windows-v1", b'setup-cron.sh" || true\nelse', b'setup-cron.sh" --dry-run || true\nelse'),
         ("new-machine-windows-v1", b'setup-cron.sh" || true\nelse', b'setup-cron.sh"\nelse'),
         ("harness-default-v1", b'out=$(bash "$installer" 2>&1) || true', b'out=$(bash "$installer" --dry-run 2>&1) || true'),
@@ -663,3 +666,20 @@ def test_transaction_attestations_reject_dead_safe_path_with_unsafe_live_path(
         assert not checker.evaluate_attestation(
             attestation, records, b"scripts/cron/cron_apply.py"
         )
+
+
+def test_preview_attestation_accepts_propagation_and_rejects_swallowing(monkeypatch):
+    checker, records, registry, _discovered = current_contract()
+    source = b"scripts/setup/new-machine-setup.sh"
+    wrapper = sys.modules["scheduler_mutation_wrapper_attestations"]
+    # Refresh provenance so each verdict tests the exit contract itself.
+    monkeypatch.setitem(wrapper.WRAPPER_SHA256, source, hashlib.sha256(records[source]).hexdigest())
+    assert checker.evaluate_attestation("new-machine-dry-run-v1", records, source)
+    delegation = by_path(registry)[source.decode()]["delegation"]
+    validate = sys.modules["scheduler_mutation_delegation"].validate_delegation_schema
+    preview = next(mode for mode in delegation["modes"]
+                   if mode["id"] == "dry-run-preview")
+    preview["exit"] = "propagate"
+    assert validate(source.decode(), delegation) == []
+    preview["exit"] = "swallow-3490"
+    assert validate(source.decode(), delegation)
