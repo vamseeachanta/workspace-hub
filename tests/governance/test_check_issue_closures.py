@@ -411,6 +411,69 @@ def test_report_writers_emit_csv_markdown_and_auditor_agreement(tmp_path):
         shutil.rmtree(directory, ignore_errors=True)
 
 
+@pytest.fixture
+def csv_writer_offline(monkeypatch):
+    def forbidden(*args, **kwargs):
+        raise AssertionError("CSV report writing attempted external input or a process")
+
+    for name in ("GitHubReader", "collect_live", "load_fixture", "load_auditor"):
+        monkeypatch.setattr(checker, name, forbidden)
+    monkeypatch.setattr(checker.subprocess, "run", forbidden)
+    monkeypatch.setattr(checker.subprocess, "Popen", forbidden)
+
+
+@pytest.mark.parametrize("reason, quoted_field", [
+    ("evidence present, tests passed", '"evidence present, tests passed"'),
+    ('evidence says "complete"', '"evidence says ""complete"""'),
+    ("first line\nsecond line", '"first line\nsecond line"'),
+    ("first line\r\nsecond line", '"first line\r\nsecond line"'),
+    ("caf\u00e9 \u2014 \u6e2c\u8a66", "caf\u00e9 \u2014 \u6e2c\u8a66"),
+], ids=["comma", "double-quote", "lf", "crlf", "unicode"])
+def test_csv_reason_roundtrip_with_delimiters(tmp_path, csv_writer_offline, reason, quoted_field):
+    # Independent synthetic example: one issue numbered 1 and one rule numbered 1.
+    # RFC 4180 section 2, points 5-7: quote delimiters and double embedded quotes.
+    # https://www.rfc-editor.org/rfc/rfc4180#section-2
+    # The report contract uses LF record endings and UTF-8 text.
+    evaluations = [{
+        "repository": "fixture", "number": 1, "verdict": "WARN",
+        "rules": [{"rule": 1, "verdict": "PASS", "reason": reason}],
+    }]
+    target = tmp_path / "closures.csv"
+    checker.write_csv(target, evaluations, {1: "DONE"})
+
+    with target.open(encoding="utf-8", newline="") as stream:
+        reader = csv.DictReader(stream)
+        rows = list(reader)
+        assert reader.fieldnames == [
+            "repository", "issue", "verdict", "rule", "rule_verdict", "reason", "auditor_class",
+        ]
+    assert rows == [{
+        "repository": "fixture", "issue": "1", "verdict": "WARN", "rule": "1",
+        "rule_verdict": "PASS", "reason": reason, "auditor_class": "DONE",
+    }]
+    # Hand-quoted literals fix both record endings outside the field and its data.
+    expected = (
+        "repository,issue,verdict,rule,rule_verdict,reason,auditor_class\n"
+        f"fixture,1,WARN,1,PASS,{quoted_field},DONE\n"
+    )
+    assert target.read_bytes() == expected.encode("utf-8")
+
+
+def test_csv_empty_evaluations_write_only_header(tmp_path, csv_writer_offline):
+    target = tmp_path / "closures.csv"
+    checker.write_csv(target, [])
+
+    with target.open(encoding="utf-8", newline="") as stream:
+        reader = csv.DictReader(stream)
+        assert list(reader) == []
+        assert reader.fieldnames == [
+            "repository", "issue", "verdict", "rule", "rule_verdict", "reason", "auditor_class",
+        ]
+    assert target.read_bytes() == (
+        b"repository,issue,verdict,rule,rule_verdict,reason,auditor_class\n"
+    )
+
+
 def test_cli_fixture_mode_is_read_only(monkeypatch, tmp_path):
     def forbidden(*args, **kwargs):
         raise AssertionError("network or process call attempted")
