@@ -3,7 +3,6 @@
 
 from __future__ import annotations
 
-import argparse
 import fnmatch
 import json
 import math
@@ -13,6 +12,10 @@ import subprocess
 import sys
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
+
+if __package__ in (None, ""):
+    sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
+from scripts.lib.safe_cli import SafeArgumentParser
 
 
 def validate(config):
@@ -314,7 +317,11 @@ def build_manifest(config, *, clock=None):
 
 def main(argv=None, *, clock=None):
     # README Exit codes defines threshold=1 and invalid/incomplete inventory=2.
-    parser = argparse.ArgumentParser(description=__doc__)
+    parser = SafeArgumentParser(
+        prog="inventory.py",
+        usage="%(prog)s [-h] --config CONFIG --out OUT [--fail-above FAIL_ABOVE]",
+        description=__doc__,
+    )
     parser.add_argument("--config", type=Path, required=True)
     parser.add_argument("--out", type=Path, required=True)
     parser.add_argument("--fail-above", type=int)

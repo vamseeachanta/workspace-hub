@@ -229,7 +229,9 @@ rows.append(("codex", codex_model, ctx_label(codex_model), f"effort={codex_effor
 
 # ── Agy (Antigravity, Gemini-backed — routed third lane since #3573) ─────────
 agy_cfg   = read_json(home / ".gemini/antigravity-cli/settings.json")
-agy_model = (agy_cfg.get("model") or {}).get("name") or str(agy_cfg.get("model") or "not set")
+agy_setting = agy_cfg.get("model")
+agy_model = (agy_setting.get("name") if isinstance(agy_setting, dict)
+             else agy_setting if isinstance(agy_setting, str) else None) or "not set"
 rows.append(("agy", agy_model, ctx_label(agy_model), "—", "~/.gemini/antigravity-cli/settings.json"))
 
 print("| Provider | Model | Context | Effort/Thinking | Config Source |")
