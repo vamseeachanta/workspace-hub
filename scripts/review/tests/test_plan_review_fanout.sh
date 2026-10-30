@@ -404,8 +404,8 @@ test_agy_unavailable_does_not_abort_codex() {
 }
 
 
-test_codex_stderr_review_is_promoted_to_artifact() {
-  run_test "codex structured review emitted on stderr is promoted to canonical artifact"
+test_stderr_only_structured_review_is_unavailable() {
+  run_test "successful stderr-only APPROVE review is UNAVAILABLE with INVALID_OUTPUT"
 
   local td; td="$(mktemp -d)"
   MOCK_CODEX_STDERR_REVIEW=1 run_wrapper_under_mocks "$td" >/dev/null 2>&1 || true
@@ -414,12 +414,62 @@ test_codex_stderr_review_is_promoted_to_artifact() {
   codex_art="$(ls "$td/results/"*-plan-9999-codex.md 2>/dev/null | head -1)"
   if [[ -z "$codex_art" ]]; then
     fail "codex artifact missing"
-  elif ! grep -qF 'Mock finding from codex' "$codex_art"; then
-    fail "stderr review was not promoted into canonical artifact" "$(head -20 "$codex_art")"
+  elif ! grep -q '^UNAVAILABLE .*INVALID_OUTPUT: empty provider output' "$codex_art"; then
+    fail "stderr-only review did not fail closed" "$(head -20 "$codex_art")"
+  elif ! grep -qx 'Diagnostic: INVALID_OUTPUT' "$codex_art"; then
+    fail "stderr-only review missing INVALID_OUTPUT metadata"
+  elif grep -qE '^APPROVE$|Mock finding from codex' "$codex_art"; then
+    fail "stderr review leaked into canonical artifact"
   elif [[ -e "${codex_art}.err" ]]; then
-    fail "stderr review sidecar should not remain after promotion"
+    fail "stderr review sidecar should not remain after normalization"
   else
-    pass "codex stderr review promoted to canonical artifact"
+    pass "stderr-only review rejected with INVALID_OUTPUT"
+  fi
+  rm -rf "$td"
+}
+
+test_valid_stdout_ignores_conflicting_stderr() {
+  run_test "valid stdout review controls verdict despite conflicting stderr prompt echo"
+
+  local td; td="$(mktemp -d)"
+  MOCK_CODEX_CONFLICTING_STDERR=1 run_wrapper_under_mocks "$td" >/dev/null 2>&1 || true
+
+  local codex_art verdict
+  codex_art="$(ls "$td/results/"*-plan-9999-codex.md 2>/dev/null | head -1)"
+  if [[ -z "$codex_art" ]]; then
+    fail "codex artifact missing"
+  else
+    verdict="$(awk '/^## Verdict$/ { found=1; next } found && NF { print; exit }' "$codex_art")"
+    # Expected verdict and markers are literal fixtures in mocks/codex.
+    if [[ "$verdict" != MAJOR ]] || ! grep -qF 'Mock finding from codex' "$codex_art"; then
+      fail "stdout review did not control the canonical verdict"
+    elif grep -qE '^APPROVE$|STDERR_PROMPT_ECHO_ONLY' "$codex_art"; then
+      fail "conflicting stderr prompt echo leaked into canonical artifact"
+    elif ! grep -qx 'Diagnostic: NONE' "$codex_art"; then
+      fail "valid stdout review acquired a failure diagnostic"
+    else
+      pass "stdout alone controls the verdict and findings"
+    fi
+  fi
+  rm -rf "$td"
+}
+
+test_malformed_stdout_is_unavailable() {
+  run_test "successful malformed stdout remains UNAVAILABLE with INVALID_OUTPUT"
+
+  local td; td="$(mktemp -d)"
+  MOCK_CODEX_MALFORMED=1 run_wrapper_under_mocks "$td" >/dev/null 2>&1 || true
+
+  local codex_art
+  codex_art="$(ls "$td/results/"*-plan-9999-codex.md 2>/dev/null | head -1)"
+  if [[ -z "$codex_art" ]]; then
+    fail "codex artifact missing"
+  elif ! grep -q '^UNAVAILABLE .*INVALID_OUTPUT: provider did not return structured review sections' "$codex_art"; then
+    fail "malformed stdout did not fail closed"
+  elif ! grep -qx 'Diagnostic: INVALID_OUTPUT' "$codex_art"; then
+    fail "malformed stdout missing INVALID_OUTPUT metadata"
+  else
+    pass "malformed stdout rejected with INVALID_OUTPUT"
   fi
   rm -rf "$td"
 }
@@ -819,7 +869,9 @@ test_agy_runs_from_temp_cwd
 test_writes_claude_artifact
 test_parallel_execution
 test_agy_unavailable_does_not_abort_codex
-test_codex_stderr_review_is_promoted_to_artifact
+test_stderr_only_structured_review_is_unavailable
+test_valid_stdout_ignores_conflicting_stderr
+test_malformed_stdout_is_unavailable
 test_empty_provider_output_becomes_unavailable_stub
 test_provider_timeout_becomes_unavailable_stub
 test_partial_stderr_timeout_becomes_unavailable_stub
