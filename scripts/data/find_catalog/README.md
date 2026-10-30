@@ -53,6 +53,10 @@ configured source, including zero entries; advertised catalog totals are not
 used. Missing inputs, malformed structured manifests, duplicate record keys and
 digest mismatches abort a rebuild. The previous catalog remains unchanged.
 
+Energy manifests require a `modules` mapping. Each module requires a `datasets`
+list of mappings, each with a nonempty string `path`. Explicit `modules: {}` or
+`datasets: []` collections are valid empty inputs; missing keys are malformed.
+
 Page search reads Markdown directly and has no graph dependency. This restores
 keyword discovery through `find` even when an older wiki query surface gates
 `pages search` on a graph artifact. It does not claim that the separate wiki CLI

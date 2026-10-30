@@ -84,9 +84,16 @@ def row(source, identity, locator, title, body="", *, domain=None, units=None,
 
 
 def energy_rows(source, data, locator):
-    modules = data.get("modules", {})
+    if not isinstance(data, dict) or not isinstance(data.get("modules"), dict):
+        raise ValueError("energy catalog requires a modules mapping")
+    modules = data["modules"]
     for module_id, module in modules.items():
-        for item in module.get("datasets", []):
+        if not isinstance(module, dict) or not isinstance(module.get("datasets"), list):
+            raise ValueError("energy catalog modules require a datasets list")
+        for item in module["datasets"]:
+            if (not isinstance(item, dict) or not isinstance(item.get("path"), str)
+                    or not item["path"].strip()):
+                raise ValueError("energy catalog datasets require a nonempty path string")
             path = item["path"]
             yield row(source, item.get("id", item.get("dataset_id", path)), path,
                       item.get("name", path), [item.get("description"), item.get("columns"), module_id],

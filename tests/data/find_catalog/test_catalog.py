@@ -112,6 +112,50 @@ def test_failed_import_leaves_previous_database_unchanged(fixture):
     assert Path(config["database"]).read_bytes() == before
 
 
+@pytest.mark.parametrize("manifest", [
+    None, [], "catalog", {},
+    {"modules": None}, {"modules": []}, {"modules": "modules"},
+    {"modules": {"ocean": None}}, {"modules": {"ocean": []}},
+    {"modules": {"ocean": "module"}}, {"modules": {"ocean": {}}},
+    {"modules": {"ocean": {"datasets": None}}},
+    {"modules": {"ocean": {"datasets": {}}}},
+    {"modules": {"ocean": {"datasets": "datasets"}}},
+    {"modules": {"ocean": {"datasets": [None]}}},
+    {"modules": {"ocean": {"datasets": ["dataset"]}}},
+    {"modules": {"ocean": {"datasets": [{}]}}},
+    {"modules": {"ocean": {"datasets": [{"path": None}]}}},
+    {"modules": {"ocean": {"datasets": [{"path": " "}]}}},
+    {"modules": {"ocean": {"datasets": [{"path": []}]}}},
+    {"modules": {"ocean": {"datasets": [{"path": "waves.csv"}]}, "wind": {}}},
+])
+def test_malformed_energy_manifest_preserves_previous_catalog(fixture, manifest):
+    config = load_config(fixture)
+    config["sources"] = config["sources"][:1]
+    assert store.build(config) == {"energy": 1}
+    database = config["database"]
+    before = database.read_bytes()
+    config["sources"][0]["path"].write_text(yaml.safe_dump(manifest), encoding="utf-8")
+    with pytest.raises(ValueError, match="energy catalog"):
+        list(records(config))
+    with pytest.raises(ValueError, match="energy catalog"):
+        store.build(config)
+    assert database.read_bytes() == before
+    assert [hit["id"] for hit in store.find(database, "Wave")] == ["waves-01"]
+
+
+@pytest.mark.parametrize("manifest", [
+    {"modules": {}}, {"modules": {"ocean": {"datasets": []}}},
+])
+def test_explicitly_empty_energy_manifest_replaces_stale_records(fixture, manifest):
+    config = load_config(fixture)
+    config["sources"] = config["sources"][:1]
+    assert store.build(config) == {"energy": 1}
+    config["sources"][0]["path"].write_text(yaml.safe_dump(manifest), encoding="utf-8")
+    assert list(records(config)) == []
+    assert store.build(config) == {"energy": 0}
+    assert store.find(config["database"], "Wave") == []
+
+
 def test_output_in_any_git_tree_or_symlink_rejected(fixture, tmp_path):
     config = load_config(fixture)
     repo = tmp_path / "public"
