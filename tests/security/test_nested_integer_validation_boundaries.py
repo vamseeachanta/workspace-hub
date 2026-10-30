@@ -12,6 +12,14 @@ three. Root object, outer array and inner object give a maximum depth of three.
 Each byte allowance is the UTF-8 length of its independently written literal.
 Expected structures are literal values, never produced by the parser under test.
 
+Plan-lite: scope is this test file. The oracle uses the independent literal
+structures and hand counts above. Disposable interpreters isolate guard changes.
+Acceptance runs this file and test_integer_validation_boundaries.py together:
+uv run --no-project --with pytest python -m pytest
+tests/security/test_integer_validation_boundaries.py
+tests/security/test_nested_integer_validation_boundaries.py
+-q -rA -p no:cacheprovider --basetemp="$SCRATCH/bt-combined"
+
 Python documents zero as disabling the integer-string guard; no large integer
 is constructed and no production integer ceiling is inferred:
 https://docs.python.org/3/library/stdtypes.html#integer-string-conversion-length-limitation
