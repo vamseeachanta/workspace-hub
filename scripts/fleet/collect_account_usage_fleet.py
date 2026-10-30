@@ -25,7 +25,7 @@ pattern. Fail closed: a missing map, a config value that is not a label, or an
 output that would carry a physical name writes nothing and exits 2.
 Diagnostics never print a machine name.
 
-Exit 0 when at least one host answered, 1 when none did (nothing published),
+Exit 0 when a current status document is produced, including failed probes;
 2 on a configuration or labelling error (nothing published).
 
 Usage:
@@ -180,6 +180,7 @@ def assert_publishable(text: str, table: dict[str, str]) -> None:
 def run_probe(label: str, host: dict, ssh_timeout: int, probe_src: bytes,
               table: dict[str, str] | None = None) -> dict:
     """Return the probe record for one host, or a record with reachable=False."""
+    probed_at = now().isoformat()
     if host.get("local"):
         cmd = [sys.executable, str(PROBE), "--json", "--host", label]
         stdin = None
@@ -191,11 +192,11 @@ def run_probe(label: str, host: dict, ssh_timeout: int, probe_src: bytes,
             # names hosts by label; resolve them from the private map, or do not
             # probe at all.
             if table is None:
-                return {"host": label, "reachable": False, "note": "ssh labels unresolved (no label map)"}
+                return {"host": label, "reachable": False, "probed_at": probed_at, "note": "ssh labels unresolved (no label map)"}
             try:
                 base = resolve_ssh_argv(ssh_spec, table)
             except fsl.LabelError:
-                return {"host": label, "reachable": False, "note": "ssh labels unresolved"}
+                return {"host": label, "reachable": False, "probed_at": probed_at, "note": "ssh labels unresolved"}
         else:
             base = ["ssh", "-o", "BatchMode=yes", "-o", f"ConnectTimeout={ssh_timeout}",
                     "-o", "StrictHostKeyChecking=accept-new", ssh_spec]
@@ -212,22 +213,38 @@ def run_probe(label: str, host: dict, ssh_timeout: int, probe_src: bytes,
     try:
         proc = subprocess.run(cmd, input=stdin, capture_output=True, timeout=ssh_timeout + 40)
     except subprocess.TimeoutExpired:
-        return {"host": label, "reachable": False, "note": "timeout"}
+        return {"host": label, "reachable": False, "probed_at": probed_at, "note": "timeout"}
     except OSError as exc:
-        return {"host": label, "reachable": False, "note": f"{type(exc).__name__}"}
+        return {"host": label, "reachable": False, "probed_at": probed_at, "note": f"{type(exc).__name__}"}
     text = proc.stdout.decode(errors="replace").strip()
     start = text.find("{")
     if proc.returncode != 0 or start < 0:
         # ssh stderr is not kept: it names the resolved physical host
         # ("Permanently added '<host>'", "Could not resolve hostname <host>").
-        return {"host": label, "reachable": False, "note": f"exit {proc.returncode}"}
+        return {"host": label, "reachable": False, "probed_at": probed_at, "note": f"exit {proc.returncode}"}
     try:
         rec = json.loads(text[start:])
     except ValueError:
-        return {"host": label, "reachable": False, "note": "unparseable probe output"}
+        return {"host": label, "reachable": False, "probed_at": probed_at, "note": "unparseable probe output"}
     rec["host"] = label
+    rec["probed_at"] = probed_at
     rec["reachable"] = True
     return rec
+
+
+def usage_status(probe: dict) -> str:
+    """Normalize both current and legacy probe output without exposing diagnostics."""
+    status = probe.get("status")
+    if status in {"auth-expired", "unreachable", "not-reported"}:
+        return status
+    error = str(probe.get("error", "")).lower()
+    if probe.get("token_expired") or "http 401" in error or (
+        "expired" in error and ("oauth" in error or "token" in error)
+    ):
+        return "auth-expired"
+    if probe.get("source", "unavailable") != "unavailable" and headroom(probe) is not None:
+        return "ok"
+    return "not-reported"
 
 
 def headroom(sample: dict | None) -> float | None:
@@ -264,12 +281,27 @@ def aggregate(cfg: dict, records: list[dict], at: dt.datetime | None = None) -> 
     margin = float(policy.get("switch_margin_pct", 15))
     warnings: list[str] = []
 
+    observations: dict[str, list[dict]] = {a: [] for a in cfg["accounts"]}
     hosts_out: dict[str, dict] = {}
     samples: dict[str, list[dict]] = {a: [] for a in cfg["accounts"]}
     for label, host_cfg in cfg["hosts"].items():
         rec = next((r for r in records if r.get("host") == label), None)
         entry = {"reachable": bool(rec and rec.get("reachable")),
                  "accounts": {p: host_cfg.get(p) for p in PROVIDERS if host_cfg.get(p)}}
+        entry["providers"] = {}
+        for prov in PROVIDERS:
+            acct = host_cfg.get(prov)
+            if not acct:
+                continue
+            probe = ((rec or {}).get("providers") or {}).get(prov) or {}
+            status = usage_status(probe) if entry["reachable"] else (
+                "unreachable" if rec else "not-reported")
+            observation = {
+                "status": status,
+                "probed_at": (rec or {}).get("probed_at") or (rec or {}).get("captured_at"),
+            }
+            entry["providers"][prov] = observation
+            observations[acct].append(observation)
         if rec and not rec.get("reachable"):
             entry["note"] = rec.get("note")
         if rec and rec.get("reachable"):
@@ -288,13 +320,16 @@ def aggregate(cfg: dict, records: list[dict], at: dt.datetime | None = None) -> 
                         warnings.append(f"{label}: {prov} is logged in but ai-accounts.yaml maps no account")
                     continue
                 expected_fp = (cfg["accounts"][acct] or {}).get("fingerprint")
+                observation = entry["providers"][prov]
                 if fp and expected_fp and fp != expected_fp:
+                    observation["status"] = "not-reported"
                     warnings.append(f"{label}: {prov} fingerprint {fp} differs from {acct} ({expected_fp})")
                     continue
-                if probe.get("source", "unavailable") == "unavailable":
+                if observation["status"] != "ok":
                     continue
                 cap = parse_iso(rec.get("captured_at"))
-                if cap and at - cap > max_age:
+                if not cap or at - cap > max_age:
+                    observation["status"] = "not-reported"
                     warnings.append(f"{label}: {prov} sample is older than {max_age}")
                     continue
                 # A session-log fallback can carry a weekly window that rolled over
@@ -303,6 +338,7 @@ def aggregate(cfg: dict, records: list[dict], at: dt.datetime | None = None) -> 
                 # that no longer exists, so it is not a sample at all.
                 reset = parse_iso(probe.get("week_resets_at"))
                 if reset and reset < at:
+                    observation["status"] = "not-reported"
                     warnings.append(f"{label}: {prov} sample's weekly window reset at {reset.isoformat()}; ignored")
                     continue
                 samples[acct].append({**probe, "host": label, "captured_at": rec.get("captured_at")})
@@ -316,7 +352,15 @@ def aggregate(cfg: dict, records: list[dict], at: dt.datetime | None = None) -> 
         if len(fps) > 1:
             warnings.append(f"{acct}: hosts report different fingerprints {fps}; check ai-accounts.yaml")
         best = max(samples[acct], key=sample_rank, default=None)
+        observed = observations[acct]
+        # A working peer can supply quota; failed peers remain explicit under hosts.
+        failure = next((o for o in observed if o["status"] == "auth-expired"), None)
+        failure = failure or next((o for o in observed if o["status"] == "unreachable"), None)
+        failure = failure or next(iter(observed), {})
+        times = [o["probed_at"] for o in observed if parse_iso(o.get("probed_at"))]
         row = {
+            "status": "ok" if best else failure.get("status", "not-reported"),
+            "probed_at": max(times, key=parse_iso) if times else None,
             "provider": meta.get("provider"),
             "holder": meta.get("holder"),
             "access": meta.get("access"),
@@ -385,14 +429,14 @@ def render_md(agg: dict) -> str:
         else:
             lines.append(f"- **{prov}**: {rec.get('reason')}")
     lines += ["", "## Accounts", "",
-              "| account | provider | holder | 5h used | week used | headroom | resets | sampled on | source |",
-              "|---|---|---|---|---|---|---|---|---|"]
+              "| account | provider | holder | 5h used | week used | headroom | resets | sampled on | source | status | probed at |",
+              "|---|---|---|---|---|---|---|---|---|---|---|"]
     for name, r in agg["accounts"].items():
         def pct(v):
             return "" if v is None else f"{v:g}%"
         lines.append(f"| {name} | {r['provider']} | {r.get('holder','')} | {pct(r.get('five_hour_pct'))} | "
                      f"{pct(r.get('week_pct'))} | {pct(r.get('headroom_pct'))} | {r.get('week_resets_at') or ''} | "
-                     f"{r.get('sampled_on') or ''} | {r.get('source')} |")
+                     f"{r.get('sampled_on') or ''} | {r.get('source')} | {r['status']} | {r.get('probed_at') or 'not probed'} |")
     lines += ["", "## Hosts", "", "| host | reachable | claude | codex | note |", "|---|---|---|---|---|"]
     for label, h in agg["hosts"].items():
         acc = h.get("accounts", {})
@@ -447,16 +491,19 @@ def main(argv: list[str] | None = None) -> int:
     reachable = [r for r in records if r.get("reachable")]
     if args.dry_run:
         sys.stdout.write(out_text)
-        return 0 if reachable else 1
+        return 0
     if not reachable:
-        sys.stderr.write("no host answered; leaving the published files untouched\n")
-        return 1
+        sys.stderr.write("no host answered; publishing explicit seat statuses\n")
     args.out.parent.mkdir(parents=True, exist_ok=True)
     args.out.write_text(out_text, encoding="utf-8")
     args.md.parent.mkdir(parents=True, exist_ok=True)
     args.md.write_text(md_text, encoding="utf-8")
+    for seat, row in agg["accounts"].items():
+        sys.stderr.write(f"seat {seat}: {row['status']}; probed_at={row['probed_at'] or 'not probed'}\n")
     for prov, rec in agg["recommendation"].items():
-        sys.stderr.write(f"recommend {prov}: {rec.get('account')} {rec.get('headroom_pct')}% on {rec.get('hosts')}\n")
+        detail = (f"{rec['account']} {rec['headroom_pct']}% weekly headroom"
+                  if rec.get("account") else rec["reason"])
+        sys.stderr.write(f"recommend {prov}: {detail}\n")
     return 0
 
 
