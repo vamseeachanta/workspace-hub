@@ -18,9 +18,13 @@ Scope: tests/security/test_nested_integer_validation_boundaries.py only.
 Oracle: independently written literal structures and the hand counts above.
 Isolation: disposable interpreters contain guard changes; both child restoration
 and unchanged parent settings are asserted, including on refusal paths.
+Matrix: three entry points times two guard states give six accepted boundary
+cases, twelve positive/negative refusals and six accepted quoted-string cases:
+24 nested cases, or 58 together with the 34 scalar cases.
 Acceptance: run both scalar and nested modules with this single shell command;
-SCRATCH names an existing temporary directory outside the repository:
-uv run --no-project --with pytest python -m pytest tests/security/test_integer_validation_boundaries.py tests/security/test_nested_integer_validation_boundaries.py -q -rA -p no:cacheprovider --basetemp="$SCRATCH/bt-combined"
+UV_BIN names the configured uv executable and SCRATCH an existing temporary
+directory outside the repository. Offline execution requires cached pytest:
+"$UV_BIN" run --offline --no-project --with pytest python -m pytest tests/security/test_integer_validation_boundaries.py tests/security/test_nested_integer_validation_boundaries.py -q -rA -p no:cacheprovider --basetemp="$SCRATCH/bt-combined"
 
 Python documents zero as disabling the integer-string guard; no large integer
 is constructed and no production integer ceiling is inferred:
