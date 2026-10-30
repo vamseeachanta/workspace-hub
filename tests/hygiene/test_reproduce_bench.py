@@ -12,6 +12,7 @@ import json
 import os
 import subprocess
 import sys
+from html.parser import HTMLParser
 from pathlib import Path
 
 import pytest
@@ -234,6 +235,123 @@ def test_report_and_schema(repository, tmp_path):
         mutate(broken)
         with pytest.raises((ValueError, TypeError)):
             bench.validate_report(broken)
+
+
+@pytest.fixture
+def four_repeat_report(repository, tmp_path):
+    """Issue #4223 synthetic case: two artifacts, four repeats = eight calls.
+
+    Clock differences are [7,1,5,3] and [12,2,8,4] seconds; explicit budgets
+    are 4 and 5 seconds. These are arithmetic inputs, not measured performance.
+    """
+    commit_fixture(
+        repository,
+        {"first.py": "pass", "second.py": "pass"},
+        [entry("first.py", budget_seconds=4), entry("second.py", budget_seconds=5)],
+    )
+    runner, clock = fixed_runner([7, 1, 5, 3, 12, 2, 8, 4])
+    calls = []
+
+    def recording_runner(argv, **kwargs):
+        calls.append(list(argv))
+        return runner(argv, **kwargs)
+
+    report = bench.benchmark(
+        repository,
+        config(repeats=4),
+        temp_root=tmp_path / "builds",
+        runner=recording_runner,
+        clock=clock,
+    )
+    return report, calls
+
+
+def test_four_repeat_report_uses_even_medians(four_repeat_report):
+    """Hand calculation: [1,3,5,7] -> 1, (3+5)/2=4, 7;
+    [2,4,8,12] -> 2, (4+8)/2=6, 12. Sum 4+6=10; longest is second at 12.
+    """
+    report, calls = four_repeat_report
+    assert calls == [
+        [sys.executable, "first.py"],
+        [sys.executable, "first.py"],
+        [sys.executable, "first.py"],
+        [sys.executable, "first.py"],
+        [sys.executable, "second.py"],
+        [sys.executable, "second.py"],
+        [sys.executable, "second.py"],
+        [sys.executable, "second.py"],
+    ]
+    assert len(calls) == 8
+    assert report["method"]["repeats"] == 4
+    first, second = report["artifacts"]
+    assert [first["path"], second["path"]] == ["first.txt", "second.txt"]
+    assert [run["seconds"] for run in first["runs"]] == [7, 1, 5, 3]
+    assert [run["seconds"] for run in second["runs"]] == [12, 2, 8, 4]
+    for item in (first, second):
+        assert len(item["runs"]) == 4
+        assert [run["phase"] for run in item["runs"]] == [
+            "cold", "warm", "warm", "warm"
+        ]
+        assert all(run["status"] == "PASS" for run in item["runs"])
+    assert first["timing"] == {
+        "min_seconds": 1,
+        "median_seconds": 4,
+        "max_seconds": 7,
+    }
+    assert second["timing"] == {
+        "min_seconds": 2,
+        "median_seconds": 6,
+        "max_seconds": 12,
+    }
+    assert report["totals"] == {
+        "sum_medians_seconds": 10,
+        "longest_single_artifact": {"path": "second.txt", "seconds": 12},
+    }
+    bench.validate_report(json.loads(json.dumps(report)))
+
+
+def test_four_repeat_verdicts_use_median_budget_boundary(four_repeat_report):
+    """Hand calculation: median 4 equals budget 4 (PASS) despite max 7;
+    median 6 exceeds budget 5 (SLOW), so the report exit is nonzero.
+    """
+    report, _ = four_repeat_report
+    assert [
+        (item["path"], item["budget_seconds"], item["verdict"])
+        for item in report["artifacts"]
+    ] == [("first.txt", 4, "PASS"), ("second.txt", 5, "SLOW")]
+    assert bench.exit_code(report) != 0
+
+    class Rows(HTMLParser):
+        """Collect row text without depending on styling or nested markup."""
+
+        def __init__(self):
+            super().__init__()
+            self.rows = []
+            self.row = None
+
+        def handle_starttag(self, tag, attrs):
+            if tag == "tr":
+                self.row = []
+
+        def handle_data(self, data):
+            if self.row is not None and data.strip():
+                self.row.append(data.strip())
+
+        def handle_endtag(self, tag):
+            if tag == "tr" and self.row is not None:
+                self.rows.append(self.row)
+                self.row = None
+
+    page = Rows()
+    page.feed(bench.render_html(report))
+    pairs = {
+        (path, verdict)
+        for row in page.rows
+        for path in ("first.txt", "second.txt")
+        for verdict in ("PASS", "SLOW")
+        if path in row and verdict in row
+    }
+    assert pairs == {("first.txt", "PASS"), ("second.txt", "SLOW")}
 
 
 @pytest.mark.parametrize(
