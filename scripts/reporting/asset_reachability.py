@@ -71,13 +71,21 @@ def _regular_file(root, value):
 
 def _read(root, locator):
     candidate = _regular_file(root, locator)
-    # O_NOFOLLOW protects the final open on supporting systems. O_NOATIME avoids
-    # access-time updates on Linux; permission failures remain unresolved.
-    flags = os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0) | getattr(os, "O_NOATIME", 0)
-    with os.fdopen(os.open(candidate, flags), "rb") as stream:
-        if not stat.S_ISREG(os.fstat(stream.fileno()).st_mode):
+    # O_NONBLOCK prevents a substituted FIFO from waiting before fstat (#3439).
+    # O_NOFOLLOW protects the final open; O_NOATIME avoids Linux access-time
+    # updates. Missing flags contribute zero, preserving platform fallbacks.
+    flags = (os.O_RDONLY | getattr(os, "O_NONBLOCK", 0)
+             | getattr(os, "O_NOFOLLOW", 0) | getattr(os, "O_NOATIME", 0))
+    descriptor = os.open(candidate, flags)
+    try:
+        if not stat.S_ISREG(os.fstat(descriptor).st_mode):
             raise ReachabilityError("manifest is not a regular file")
-        return load_manifest(stream.read())
+        with os.fdopen(descriptor, "rb") as stream:
+            descriptor = None
+            return load_manifest(stream.read())
+    finally:
+        if descriptor is not None:
+            os.close(descriptor)
 
 
 def _document(value, schema, fields):
