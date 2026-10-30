@@ -1,10 +1,10 @@
-"""Producer/verifier integration using the independent example in issue #4222.
+"""Producer/verifier integration using a locally defined synthetic example.
 
 Hand projection: alpha precedes beta; alpha's supplied pass covers build and
 test, sorted in that order. Beta has no observation, so it stays unverified
 with no evidence references. Both roles permit empty CLI requirements. The full
 expected mapping below is literal, never obtained from the producer's functions.
-Two verifier runs establish repeatability as required by that issue. Exit codes
+Two verifier runs are a locally chosen repeatability check. Exit codes
 follow BUILD_COMMANDS.md, Findings and exit codes. All writes use tmp_path or the
 external temporary root supplied to pytest, never the working repository.
 """
@@ -29,7 +29,7 @@ EVIDENCE = "synthetic-evidence.json"
 ARTIFACTS = "artifacts.registry.json"
 OUTPUTS = {"json": "docs/reports/matrix.json", "html": "docs/reports/matrix.html"}
 
-# Independent hand calculation from the synthetic inputs in issue #4222.
+# Independent hand calculation from the locally defined synthetic inputs.
 EXPECTED = {
     "rows": [
         {
@@ -203,7 +203,7 @@ def test_matrix_artifacts_match_independent_projection(matrix_repo):
 
 
 def test_declared_matrix_outputs_rebuild_without_source_changes(matrix_repo):
-    # Exactly two consecutive runs, per issue #4222's repeatability requirement.
+    # Two consecutive runs are a locally chosen repeatability check.
     for _ in range(2):
         _verify_preserving(matrix_repo)
 

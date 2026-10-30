@@ -12,6 +12,7 @@ issue #4222; it does not enroll repositories or change publication workflows.
 | --- | --- | --- |
 | 1 | 2026-10-22 | Define registry, verification and suggestion interfaces so artifact rebuild commands can be checked. |
 | 2 | 2026-10-28 | Add synthetic matrix producer integration coverage to check independent projections, repeatability and per-artifact rebuild failures. |
+| 3 | 2026-10-29 | Clarify that the synthetic example and repeatability check are locally defined, rather than requirements of the source issue. |
 
 ## Registry
 
@@ -185,8 +186,11 @@ checking byte preservation of source files, inputs, references and Git metadata,
 including the index. Changing alpha's observation rejects both stale references;
 replacing either command with a successful no-output fixture rejects only that
 artifact while the other command remains a positive control. Child diagnostics
-are excluded from verifier output. The examples follow issue #4222 and use the
-existing registry schema and strict byte comparisons without normalisation.
+are excluded from verifier output. These locally defined synthetic inputs
+exercise the convention requested in issue #4222; the two rebuilds are a chosen
+repeatability check. They use the existing registry schema and strict byte
+comparisons without normalisation. Exit semantics follow this document's
+Findings and exit codes section.
 
 This coverage establishes producer/verifier integration only. Repository-wide
 artifact enrollment, live evidence authenticity, readiness and publication
