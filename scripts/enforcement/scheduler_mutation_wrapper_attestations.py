@@ -23,7 +23,7 @@ HARNESS_ATTESTATIONS = {"harness-default-v1", "harness-dry-run-v1"}
 WRAPPER_SHA256 = {
     SETUP: "1a5e5573d00d17c4a820a831549fb92a2dad100b5fbab5572afcefadd57c84c1",
     NEW_MACHINE: "5120de77dcec9349fc2b24f5d6889d53c88f357efcf4ca4874479471a9a53d5c",
-    HARNESS: "a698b7a44194ef92dfbdf9a4d0e5b5550b21ceadb86de2055f634f59b8a1d0c8",
+    HARNESS: "be6d0b2fa0771002423e0a698a03b2c37b9471bc9f07f2c8cb0cf215d9730607",
 }
 SETUP_PROTECTED_PREFIX = b'''#!/usr/bin/env bash
 # setup-cron.sh \xe2\x80\x94 compatibility entrypoint for transactional cron reconciliation.
@@ -177,14 +177,32 @@ def _harness_shape(body: bytes) -> bool:
     block = b'''sync_crontab() {
   local installer="${WORKSPACE_HUB}/scripts/cron/setup-cron.sh"
   [[ -f "$installer" ]] || { log "CRON" "setup-cron.sh absent \xe2\x80\x94 skip"; return; }
+  local out status
   if [[ "$DRY_RUN" == "true" ]]; then
+    if out=$(bash "$installer" --dry-run 2>&1); then
+      status=0
+    else
+      status=$?
+    fi
+    # Preserve the nonfatal contract, but report failures before counting output.
+    if [[ "$status" -ne 0 ]]; then
+      log "CRON" "dry-run failed (exit ${status}); inspect setup-cron.sh diagnostics: ${out}"
+      return 0
+    fi
     local n
-    n=$(bash "$installer" --dry-run 2>/dev/null | grep -cE '^[[:space:]]+[0-9*]' || true)
+    n=$(printf '%s\\n' "$out" | grep -cE '^[[:space:]]+[0-9*]' || true)
     log "CRON" "dry-run: ${n} schedule-tasks.yaml entry/entries would be ensured"
     return
   fi
-  local out
-  out=$(bash "$installer" 2>&1) || true
+  if out=$(bash "$installer" 2>&1); then
+    status=0
+  else
+    status=$?
+  fi
+  if [[ "$status" -ne 0 ]]; then
+    log "CRON" "apply failed (exit ${status}); inspect setup-cron.sh diagnostics: ${out}"
+    return 0
+  fi
   log "CRON" "$(printf '%s\\n' "$out" | grep -iE 'Installed|Replaced|already present' | tail -1)"
 }'''
     return block in body and body.count(b"sync_crontab\n") == 1
