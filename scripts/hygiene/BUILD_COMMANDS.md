@@ -11,6 +11,8 @@ issue #4222; it does not enroll repositories or change publication workflows.
 | Revision | Date | What changed and why |
 | --- | --- | --- |
 | 1 | 2026-10-22 | Define registry, verification and suggestion interfaces so artifact rebuild commands can be checked. |
+| 2 | 2026-10-28 | Add synthetic matrix producer integration coverage to check independent projections, repeatability and per-artifact rebuild failures. |
+| 3 | 2026-10-29 | Clarify that the synthetic example and repeatability check are locally defined, rather than requirements of the source issue. |
 
 ## Registry
 
@@ -166,6 +168,33 @@ bytes, invoke the verifier on a clean checkout of that revision. This tool does
 not authenticate commits or fetch history. The repository root must be supplied
 for Git operations. Deleted tracked files, symlinks and submodules prevent a
 tracked export rather than silently changing the build basis.
+
+## Integration coverage
+
+`tests/hygiene/test_build_commands_matrix_integration.py` exercises an exact copy
+of `scripts/reporting/readiness_matrix_view.py` through its CLI in disposable Git
+repositories. Explicit synthetic JSON inputs define roles `alpha` and `beta`:
+alpha requires `checks/build` and `checks/test` and supplies a `pass` observation
+covering both; beta requires `checks/review` and supplies no observation. Both
+have nonempty task and authentication expectations and empty CLI requirements.
+The JSON reference and parsed HTML cells are compared against literal expected
+rows, including beta's `unverified` status and empty evidence references, before
+the verifier runs.
+
+Separate argv declarations rebuild the JSON and HTML outputs twice with `--run`,
+checking byte preservation of source files, inputs, references and Git metadata,
+including the index. Changing alpha's observation rejects both stale references;
+replacing either command with a successful no-output fixture rejects only that
+artifact while the other command remains a positive control. Child diagnostics
+are excluded from verifier output. These locally defined synthetic inputs
+exercise the convention requested in issue #4222; the two rebuilds are a chosen
+repeatability check. They use the existing registry schema and strict byte
+comparisons without normalisation. Exit semantics follow this document's
+Findings and exit codes section.
+
+This coverage establishes producer/verifier integration only. Repository-wide
+artifact enrollment, live evidence authenticity, readiness and publication
+remain outside the demonstrated scope; the existing publication limits apply.
 
 ## Suggestions
 
