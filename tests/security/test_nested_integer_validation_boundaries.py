@@ -12,13 +12,15 @@ three. Root object, outer array and inner object give a maximum depth of three.
 Each byte allowance is the UTF-8 length of its independently written literal.
 Expected structures are literal values, never produced by the parser under test.
 
-Plan-lite: scope is this test file. The oracle uses the independent literal
-structures and hand counts above. Disposable interpreters isolate guard changes.
-Acceptance runs this file and test_integer_validation_boundaries.py together:
-uv run --no-project --with pytest python -m pytest
-tests/security/test_integer_validation_boundaries.py
-tests/security/test_nested_integer_validation_boundaries.py
--q -rA -p no:cacheprovider --basetemp="$SCRATCH/bt-combined"
+Plan-lite
+---------
+Scope: tests/security/test_nested_integer_validation_boundaries.py only.
+Oracle: independently written literal structures and the hand counts above.
+Isolation: disposable interpreters contain guard changes; both child restoration
+and unchanged parent settings are asserted, including on refusal paths.
+Acceptance: run both scalar and nested modules with this single shell command;
+SCRATCH names an existing temporary directory outside the repository:
+uv run --no-project --with pytest python -m pytest tests/security/test_integer_validation_boundaries.py tests/security/test_nested_integer_validation_boundaries.py -q -rA -p no:cacheprovider --basetemp="$SCRATCH/bt-combined"
 
 Python documents zero as disabling the integer-string guard; no large integer
 is constructed and no production integer ceiling is inferred:
