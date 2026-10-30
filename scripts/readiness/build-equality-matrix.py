@@ -631,14 +631,15 @@ def verdict_for(dim: str, machine: str, reports: dict, baselines: dict,
 
 
 # ── load + render ────────────────────────────────────────────────────────────
-def load_reports() -> dict[str, dict]:
+def load_reports(state_dirs: list[Path] | None = None) -> dict[str, dict]:
     out = {}
-    for f in sorted(STATE.glob("equality-*.yaml")):
-        machine = f.stem[len("equality-"):]
-        try:
-            out[machine] = yaml.safe_load(f.read_text(encoding="utf-8")) or {}
-        except yaml.YAMLError as e:
-            out[machine] = {"_error": str(e)}
+    for state in [STATE] if state_dirs is None else state_dirs:
+        for f in sorted(state.glob("equality-*.yaml")):
+            machine = f.stem[len("equality-"):]
+            try:
+                out[machine] = yaml.safe_load(f.read_text(encoding="utf-8")) or {}
+            except yaml.YAMLError as e:
+                out[machine] = {"_error": str(e)}
     return out
 
 
@@ -738,12 +739,22 @@ def resolve_paths(argv: list[str]) -> tuple[Path, Path]:
     return state, reports
 
 
-def main() -> None:
+def resolve_input_paths(argv: list[str]) -> list[Path]:
+    """Explicit publication inputs replace default repository and local layers."""
+    parser = argparse.ArgumentParser(add_help=False)
+    parser.add_argument("--state-dir")
+    args, _ = parser.parse_known_args(argv)
+    if args.state_dir:
+        return [Path(args.state_dir)]
+    return [REPO / ".claude" / "state", resolve_paths(argv)[0]]
+
+
+def main(state_dirs: list[Path] | None = None) -> None:
     config = yaml.safe_load(CONFIG.read_text(encoding="utf-8")) if CONFIG.exists() else {}
     roster = load_roster(config)
     baselines = load_baselines(config)
     probed = (config.get("tier1_repos") or TIER1_DEFAULT)
-    reports = load_reports()
+    reports = load_reports(state_dirs)
 
     machines = list(roster)
     # Compute every verdict once (cells + rollups both consume it).
@@ -876,12 +887,12 @@ function copyGenPrompt(btn){{
 
     REPORTS.mkdir(parents=True, exist_ok=True)
     out = REPORTS / f"{date.today().isoformat()}-machine-equality-matrix.html"
-    out.write_text(html, encoding="utf-8")
+    out.write_text(html, encoding="utf-8", newline="\n")
     # Stable (undated) alias so GitHub Pages serves a fixed "latest" URL that never
     # changes as the dated reports roll over (published by scripts/build_pages.py).
     latest = REPORTS / "machine-equality-matrix.html"
-    latest.write_text(html, encoding="utf-8")
-    print(f"wrote {out} (+ {latest.name} alias) ({reporting}/{active} active reporting)")
+    latest.write_text(html, encoding="utf-8", newline="\n")
+    print(f"wrote {out.as_posix()} (+ {latest.name} alias) ({reporting}/{active} active reporting)")
     if "--open" in sys.argv:
         import webbrowser
         webbrowser.open(out.as_uri())
@@ -889,4 +900,4 @@ function copyGenPrompt(btn){{
 
 if __name__ == "__main__":
     STATE, REPORTS = resolve_paths(sys.argv[1:])
-    main()
+    main(resolve_input_paths(sys.argv[1:]))
