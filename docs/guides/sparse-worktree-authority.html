@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en"><meta charset="utf-8"><title>Sparse worktree content authority</title>
+<style>body{font:16px system-ui;max-width:72rem;margin:2rem auto;padding:1rem;line-height:1.5}table{border-collapse:collapse;width:100%}td,th{border:1px solid #aaa;padding:.6rem;text-align:left}pre{background:#eee;padding:1rem;overflow:auto}caption{caption-side:bottom;text-align:left}</style>
+<h1>Sparse worktree content authority</h1>
+<p>The index preflight rejects an uninitialized index when HEAD contains tracked leaves.
+Sparse omission is valid when the index retains its entries. Content checks distinguish
+working files, the effective index and the committed tree. No engineering constants are used.</p>
+<h2>Revision history</h2>
+<table><tr><th>Revision</th><th>Date</th><th>Change and reason</th></tr>
+<tr><td>Initial</td><td>2026-10-22</td><td>Define sparse content authority and interrupted-initialization checks.</td></tr>
+<caption>Table 1. Document revisions.</caption></table>
+<h2>Topology and authority</h2>
+<table><tr><th>Tool or gate</th><th>Full checkout</th><th>Sparse checkout</th><th>Linked worktree</th><th>Authority and disposition</th></tr>
+<tr><td>Index preflight</td><td>HEAD and index leaves</td><td>Includes skip-worktree leaves</td><td>Private index, shared objects</td><td>Nonempty HEAD plus empty index fails, exit 1. With --fresh, deletion of every HEAD leaf also fails. Git errors fail closed. Empty committed trees pass; unborn HEAD is unavailable, exit 2.</td></tr>
+<tr><td>Absolute-path scanner, default / --worktree</td><td>Materialized tracked targets</td><td>Index blobs for omitted skip-worktree targets</td><td>Current worktree index</td><td>Missing ordinary targets fail, exit 2. Coverage reports enumerated, scanned and fallback counts.</td></tr>
+<tr><td>Scanner --staged</td><td colspan="3">All tracked shell/Python index blobs, including new staged content; unstaged bytes do not affect results.</td><td>Index; unmerged stages fail closed.</td></tr>
+<tr><td>Scanner --head</td><td colspan="3">Committed shell/Python blobs, including paths removed from the index.</td><td>HEAD tree. Positional filesystem arguments cannot be combined with blob modes.</td></tr>
+<tr><td>Scanner with explicit files/directories</td><td colspan="3">Requested filesystem files; directory traversal is NUL-delimited.</td><td>Working tree; existing baseline and per-line exception semantics remain.</td></tr>
+<tr><td>Plan-marker compatibility gate</td><td colspan="3">Retired; does not inspect STATE.md or grant approval through markers.</td><td>Current policy retirement is preserved. Task authority is established outside this compatibility entry point.</td></tr>
+<tr><td>Installed post-commit learning payload</td><td>Committed helper, even if checkout bytes differ</td><td>Committed helper need not be materialized</td><td>Common-directory log, active-worktree execution context</td><td>One pinned HEAD commit and regular blob modes. Missing/failed helpers append a counted failure event; hook exits 0.</td></tr>
+<tr><td>Testing entry points</td><td colspan="3">Script directory plus its fixed parent relationship.</td><td>Structural root; inherited hook Git variables cannot select the root.</td></tr>
+<caption>Table 2. Visibility and authority are separate from filesystem presence.</caption></table>
+<p>Scanner findings use exit 1; a completed scan without new findings uses exit 0.
+A preflight refusal happens before ordinary scanner or review inspection. The preflight
+is non-mutating and never repairs indexes, removes locks or deletes worktrees.</p>
+<h2>Worked example</h2>
+<p>Basis: two independently enumerated leaves, <code>keep/a.txt</code> and
+<code>omit/b.txt</code>. Each contains the literal text <code>fixture</code>.
+A prepared full index represents both leaves. A cone containing only <code>keep</code>
+omits the second file but retains its index entry with the skip-worktree tag.
+The Git 2.43 worktree and sparse-checkout manuals define these states.</p>
+<pre>git init example
+cd example
+mkdir keep omit
+printf 'fixture\n' &gt; keep/a.txt
+printf 'fixture\n' &gt; omit/b.txt
+git add .
+git commit -m fixture
+# Run the checker from an existing checkout of this tooling:
+git worktree add --detach --no-checkout ../interrupted
+bash "$TOOLS/scripts/enforcement/check-worktree-index.sh" ../interrupted
+# exit 1: empty index with nonempty HEAD; recreate after ownership checks.
+# Use a separate destination; do not repair or delete the interrupted worktree.
+git worktree add --detach ../prepared
+git -C ../prepared sparse-checkout set --cone keep
+bash "$TOOLS/scripts/enforcement/check-worktree-index.sh" ../prepared --fresh
+# worktree-index: head=2 index=2 skip-worktree=1 OK
+# exit 0</pre>
+<p>The example requires a configured fixture commit identity and <code>TOOLS</code>
+pointing at this tooling checkout. The regression fixture uses commit-tree in a
+disposable repository, avoiding installed commit hooks. Its expected counts follow
+from the two named leaves, independently of the checker implementation.</p>
+<h2>Integration and limitations</h2>
+<p>The checkout helper checks the resulting index after checkout and before size reporting.
+The shell plan/artifact review entry points check their current repository before
+argument processing and broad inspection. The standalone checker accepts an explicit root.
+Other creation paths, including readiness publication and local CI, retain their existing
+contracts; no coverage of every worktree creator is claimed.</p>
+<p>The enforcement installer embeds the learning entry point in the installed post-commit
+file. Only the learning payload changes here. Effective hooks-path resolution and
+pre-push event installation remain separate work. Legacy generated learning calls are
+replaced without removing independent hook steps. No live hooks are installed by the tests.</p>
+<p>Learning failures are recorded in the Git common directory as
+<code>post-commit-learning-failures.log</code>; each failed invocation adds one event.
+The diagnostic reports the observed event count. Concurrent append order is not a
+transactional sequence. Helper output is retained in <code>post-commit-learning-output.log</code>.
+If the common directory cannot be resolved or written, stderr reports the loss and
+persistence/counting is not established. Optional learning steps absent from the pinned
+commit retain their existing skip behavior. Learning side effects beyond dispatch are
+not qualified by these fixtures.</p>
+<p>Linux execution is tested. Other platforms are not evaluated. Existing scanner
+requirements, including Bash associative arrays and the optional realpath-based
+baseline-key conversion for explicit external files, remain. The report wrapper's
+line-oriented finding format has not been qualified for newline filenames; the scanner
+itself enumerates and scans those paths. Independent provider review remains pending.</p>
+<h2>Root-resolution audit</h2>
+<p><code>run-all-tests.sh</code> and <code>run-benchmarks.sh</code> already use structural
+roots and are preserved. The same resolution is added to
+<code>run-cross-repo-integration.sh</code> and <code>refresh-fixtures.sh</code>.
+<code>scripts/lib/tier1-repos.sh</code> already anchors its configuration to its source location.
+The scanner clears inherited repository bindings for explicit-root Git queries.</p>
+<p>The bounded audit of testing entry points and enforcement shell scripts found the
+following remaining Git-root candidates. Their presence identifies review work, not a
+proven failure: <code>check-soul-runtime-drift.sh</code>,
+<code>check-soul-deployment-drift.sh</code>, <code>report-no-abs-paths.sh</code>,
+<code>install-hooks.sh</code>, <code>upgrade-enforcement.sh</code>,
+<code>correction-to-skill-candidates.sh</code>, <code>stage-prompt-drift-status.sh</code>,
+<code>compliance-weekly-report.sh</code>, <code>smoke-test-escalation.sh</code>,
+<code>compliance-dashboard.sh</code>, <code>check-harness-file-size.sh</code>,
+<code>compliance-cron.sh</code>, <code>require-tdd-pairing.sh</code>,
+<code>check-marker-label-parity.sh</code>, <code>require-stage-prompt-drift.sh</code>,
+<code>require-review-on-push.sh</code> and <code>check-canonical-drive-paths.sh</code>.
+Additional phase-gate candidates <code>require-plan-review.sh</code>,
+<code>require-cross-review.sh</code> and <code>require-verify-artifacts.sh</code> are
+subject to the same preflight while their existing review requirements remain. Migration must not reactivate retired marker approval.</p>
+<h2>Sources</h2>
+<ul><li><a href="https://git-scm.com/docs/git-worktree/2.43.0">Git 2.43 git-worktree</a>, DETAILS and --no-checkout.</li>
+<li><a href="https://git-scm.com/docs/git-sparse-checkout/2.43.0">Git 2.43 git-sparse-checkout</a>, INTERNALS and sparse index.</li>
+<li><a href="https://git-scm.com/docs/githooks/2.43.0">Git 2.43 githooks</a>, DESCRIPTION and post-commit.</li>
+<li><a href="https://git-scm.com/docs/git-ls-files/2.43.0">Git 2.43 git-ls-files</a>, -z, -t and --sparse.</li>
+<li><a href="https://git-scm.com/docs/git-rev-parse/2.43.0">Git 2.43 git-rev-parse</a>, repository-local environment and common directory.</li></ul>
+<p>These public pages were retrieved on 2026-10-22 with HTTP 200 responses.
+Saved responses and retrieval metadata are retained outside the repository.
+The installed Git version at the time of testing is 2.43.0.</p>
+</html>
