@@ -85,6 +85,8 @@ M .claude/skills/workspace-hub/comprehensive-learning/references/exit-handoff-cl
 ?? docs/sessions/2026-05-10-kinect-v1-bringup-handoff.md
 ```
 
+The five referenced JSONL logs were removed from the public tree. The status snapshot above preserves the original observation.
+
 Final post-push proof is expected in the chat closeout response because embedding a post-push commit hash inside this file would itself require another commit and make the embedded hash stale.
 
 ## Branch/worktree disposition
