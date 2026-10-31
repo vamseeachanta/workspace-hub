@@ -44,7 +44,7 @@ The historical `feedback_codex_needs_pushed_artifact` entry describes a restrict
 
 ## Adversarial Review Posture
 
-- Sustained-MAJOR loop hazard: if Codex returns MAJOR for 3+ rounds while Claude/Gemini land at MINOR by v3, surface as consensus-vs-minority — do not auto-cycle blindly. (`feedback_codex_sustained_major_loop`)
+- Sustained-MAJOR loop hazard: if Codex returns MAJOR for 2+ rounds while Claude/Gemini land at MINOR by v2, surface as consensus-vs-minority — do not auto-cycle blindly. (`feedback_codex_sustained_major_loop`)
 - Codex reviews via GitHub connector when local shell is blocked. Connector-derived evidence (file existence, line contents, link resolution) MUST be locally re-verified before applying as a fix. (`feedback_cross_provider_review_payoff`, `feedback_r1_review_trust_hazard`)
 - Codex review iteration cap: 3 per WRK/non-WRK plan; `submit-to-codex.sh` enforces via `review-iteration.yaml` for WRK-scoped work.
 
@@ -71,7 +71,7 @@ Beyond the SHARED_SOUL.md Hard Gates, Codex sessions additionally enforce:
 
 1. **Every implementation task maps to a WRK-* in `.claude/work-queue/`** OR a GitHub issue per the broader workspace `feedback_no_reserved_wrk_ids` rule. Codex's `submit-to-codex.sh` Stage-5 gate validates WRK evidence when `--wrk-id` is supplied.
 2. **Workflow lifecycle skills are mandatory**: `.claude/skills/workspace-hub/work-queue-workflow/SKILL.md` + `.claude/skills/workspace-hub/workflow-gatepass/SKILL.md` for WRK-mode work.
-3. **Coding style guardrails**: max 400 lines/file, max 50 lines/function, snake_case Python, camelCase JS — see `.claude/rules/coding-style.md`.
+3. **Coding style guardrails**: snake_case Python, camelCase JS — see `.claude/rules/coding-style.md`.
 4. **Git workflow**: conventional commits, branch prefixes (`feature/`, `bugfix/`, `chore/`). Merges are governed by [`.claude/rules/merge-authorization.md`](../../../.claude/rules/merge-authorization.md) and [`merge-cleanup.md`](../../../.claude/rules/merge-cleanup.md).
 5. **Worktrees, not clones**: start a task with `git worktree add` from the canonical checkout; never make a full second clone at the workspace root. Remove the worktree and local branch once the PR merges. Bulky solver output goes to `/mnt/ace` with a manifest, not into Git. See [`.claude/rules/workstation-hygiene.md`](../../../.claude/rules/workstation-hygiene.md) (2026-10-07: eight full clones filled a 475 GB drive).
 
