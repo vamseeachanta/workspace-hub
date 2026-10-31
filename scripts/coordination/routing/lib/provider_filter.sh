@@ -29,6 +29,15 @@ if ! declare -F _resolver >/dev/null 2>&1; then
     }
 fi
 
+# Reject incomplete, nonnumeric, negative or non-finite quota records before
+# awk can interpret an invalid value as text or zero.
+_provider_usage_valid() {
+    jq -se 'length == 1 and (.[0] | type == "object" and
+        ([.requests_percent, .tokens_percent, .cost_today, .daily_budget]
+        | all(.[]; type == "number" and isfinite and . >= 0)))' \
+        >/dev/null 2>&1
+}
+
 # --- Function: filter_available_providers ---
 #
 # @return: JSON array of available provider names
@@ -40,7 +49,8 @@ filter_available_providers() {
     local codex_usage=$(cat "$CONFIG_DIR/codex_usage.json")
     local codex_req_percent=$(echo "$codex_usage" | jq -r '.requests_percent')
     local codex_tok_percent=$(echo "$codex_usage" | jq -r '.tokens_percent')
-    if awk -v requests="$codex_req_percent" -v tokens="$codex_tok_percent" 'BEGIN { exit !(requests < 85 && tokens < 90) }'; then
+    if _provider_usage_valid <<< "$codex_usage" &&
+        awk -v requests="$codex_req_percent" -v tokens="$codex_tok_percent" 'BEGIN { exit !(requests < 85 && tokens < 90) }'; then
         available_providers+=("codex")
     fi
 
@@ -48,7 +58,8 @@ filter_available_providers() {
     local gemini_usage=$(cat "$CONFIG_DIR/gemini_usage.json")
     local gemini_req_percent=$(echo "$gemini_usage" | jq -r '.requests_percent')
     local gemini_tok_percent=$(echo "$gemini_usage" | jq -r '.tokens_percent')
-    if awk -v requests="$gemini_req_percent" -v tokens="$gemini_tok_percent" 'BEGIN { exit !(requests < 80 && tokens < 85) }'; then
+    if _provider_usage_valid <<< "$gemini_usage" &&
+        awk -v requests="$gemini_req_percent" -v tokens="$gemini_tok_percent" 'BEGIN { exit !(requests < 80 && tokens < 85) }'; then
         available_providers+=("gemini")
     fi
 
@@ -56,7 +67,8 @@ filter_available_providers() {
     local claude_usage=$(cat "$CONFIG_DIR/claude_usage.json")
     local claude_req_percent=$(echo "$claude_usage" | jq -r '.requests_percent')
     local claude_tok_percent=$(echo "$claude_usage" | jq -r '.tokens_percent')
-    if awk -v requests="$claude_req_percent" -v tokens="$claude_tok_percent" 'BEGIN { exit !(requests < 80 && tokens < 80) }'; then
+    if _provider_usage_valid <<< "$claude_usage" &&
+        awk -v requests="$claude_req_percent" -v tokens="$claude_tok_percent" 'BEGIN { exit !(requests < 80 && tokens < 80) }'; then
         available_providers+=("claude")
     fi
 
@@ -66,9 +78,12 @@ filter_available_providers() {
     local final_available=()
     for provider in "${available_providers[@]}"; do
         local usage_file="$CONFIG_DIR/${provider}_usage.json"
-        local cost_today=$(cat "$usage_file" | jq -r '.cost_today')
-        local daily_budget=$(cat "$usage_file" | jq -r '.daily_budget')
-        if awk -v cost="$cost_today" -v budget="$daily_budget" 'BEGIN { exit !(cost < budget) }'; then
+        local usage cost_today daily_budget
+        usage=$(cat "$usage_file")
+        cost_today=$(echo "$usage" | jq -r '.cost_today')
+        daily_budget=$(echo "$usage" | jq -r '.daily_budget')
+        if _provider_usage_valid <<< "$usage" &&
+            awk -v cost="$cost_today" -v budget="$daily_budget" 'BEGIN { exit !(cost < budget) }'; then
             final_available+=("$provider")
         fi
     done
