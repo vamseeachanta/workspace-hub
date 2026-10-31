@@ -44,7 +44,7 @@ The historical `feedback_codex_needs_pushed_artifact` entry describes a restrict
 
 ## Adversarial Review Posture
 
-- Sustained-MAJOR loop hazard: if Codex returns MAJOR for 3+ rounds while Claude/Gemini land at MINOR by v3, surface as consensus-vs-minority — do not auto-cycle blindly. (`feedback_codex_sustained_major_loop`)
+- Sustained-MAJOR loop hazard: if Codex returns MAJOR for 2+ rounds while Claude/Gemini land at MINOR by v2, surface as consensus-vs-minority — do not auto-cycle blindly. (`feedback_codex_sustained_major_loop`)
 - Codex reviews via GitHub connector when local shell is blocked. Connector-derived evidence (file existence, line contents, link resolution) MUST be locally re-verified before applying as a fix. (`feedback_cross_provider_review_payoff`, `feedback_r1_review_trust_hazard`)
 - Codex review iteration cap: 3 per WRK/non-WRK plan; `submit-to-codex.sh` enforces via `review-iteration.yaml` for WRK-scoped work.
 

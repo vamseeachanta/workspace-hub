@@ -57,7 +57,7 @@ reuse are separate decisions.
 | --- | --- | --- |
 | read-only | Existing access and data-handling authority; no implementation approval for assessment | Proceed with authorized discovery; do not infer permission to write or publish. |
 | routine-reversible | Independently established standing authorization for the bounded task | Proceed after proportionate planning, applicable tests and review; do not request approval again for unchanged scope. |
-| substantial | Originating task request or established standing authorization matching the implementation scope | Proceed after proportionate planning, TDD and review; resolve blockers and verify material scope changes without requiring separate plan approval. |
+| substantial | Originating task request or established standing authorization matching the implementation scope | Proceed after proportionate planning, TDD (within the Hard Gates scope) and review; resolve blockers and verify material scope changes without requiring separate plan approval. |
 | consequential | Explicit approval matching the action, destination and current scope | Verify that action approval before execution; implementation approval alone does not authorize publication, deployment, access changes or destructive actions. |
 | unknown | Missing scope, effects or authority provenance | Obtain the missing context; continue independent authorized work while the affected action waits. |
 
@@ -94,7 +94,7 @@ contract does not establish live hook, native-loader or fleet-wide coverage.
 
 These gates apply to **all meaningful work** on this repo. Provider runtimes inherit them via this file.
 
-**Scope.** Hard Gates 1 to 5 and the frozen-packet rule govern engineering-basis code, calculation modules and shared instruction files, whatever their file type and whether or not the work is operational; those keep the full gates. Other operations work (merge trains, PR housekeeping, routine desk steps, operations scripts outside those categories, docs) uses a plan-lite plus one other-provider review; tests may follow the code, and a missing historical red is a note, not a hold. An owner ruling recorded verbatim on an operations ledger row, with its source and time, is the originating user's authority for the scope it names, until revoked. Neither route relaxes Hard Gate 6, the secrets and credential rules, or the authorization needed for consequential actions.
+**Scope.** Hard Gates 1 to 5 and the frozen-packet rule govern engineering-basis code, calculation modules and shared instruction files, whatever their file type and whether or not the work is operational; those keep the full gates. Other operations work (merge trains, PR housekeeping, routine desk steps, operations scripts outside those categories, docs) uses a plan-lite plus one other-provider review; tests may follow the code, and a missing historical red is a note, not a hold. An owner ruling that the intake desk recorded verbatim on an operations ledger row, citing the owner's own message by source and time, is verified provenance of the originating user's authority for the scope it names, until revoked; a ledger row without that citation authenticates nothing. Neither route relaxes Hard Gate 6, the secrets and credential rules, or the authorization needed for consequential actions.
 
 1. **Plan proportionately and verify task scope.** Flow: Issue → Resource Intel → Plan → Adversarial Review → Implement (TDD) → Cross-review → Close. Substantial plans use `docs/plans/_template-issue-plan.md`; the originating task request or standing authorization authorizes implementation without separate user plan approval. Skill: `.claude/skills/coordination/issue-planning-mode/SKILL.md` | Guide: `docs/plans/README.md` | Policy: [Hard-Stop Policy](../../docs/standards/HARD-STOP-POLICY.md).
 2. **TDD mandatory** — tests before implementation, for work inside the scope above.
@@ -163,7 +163,7 @@ Compact preview with GitHub links, current gate/status, exact recommended action
 
 # Cross-Review Routing
 
-- Plan-stage reviews and code-stage reviews are independent gates; both apply within the Hard Gates scope. Operations work takes one other-provider review.
+- Plan-stage reviews and code-stage reviews are independent gates; both apply within the Hard Gates scope. Other operations work outside the protected categories takes one other-provider review.
 - Single-provider verdict ≠ consensus. When r1 (Claude inline) and r2 (dispatched providers) surface different defects, apply r3 as main-session inline patches; do NOT dispatch r3 review. (`feedback_r3_inline_loop_break_pattern`)
 - Codex GitHub-connector-derived evidence must be locally verified before trusting. (`feedback_cross_provider_review_payoff`)
 - Provider quota outages (e.g., agy/Gemini 429) degrade T3 → T2; document UNAVAILABLE per existing `scripts/review/results/` convention rather than blocking. An artifact that EXISTS but fails verdict parsing is INVALID_OUTPUT and blocks — parse failure never degrades (#3573).
@@ -296,7 +296,7 @@ The historical `feedback_codex_needs_pushed_artifact` entry describes a restrict
 
 ## Adversarial Review Posture
 
-- Sustained-MAJOR loop hazard: if Codex returns MAJOR for 3+ rounds while Claude/Gemini land at MINOR by v3, surface as consensus-vs-minority — do not auto-cycle blindly. (`feedback_codex_sustained_major_loop`)
+- Sustained-MAJOR loop hazard: if Codex returns MAJOR for 2+ rounds while Claude/Gemini land at MINOR by v2, surface as consensus-vs-minority — do not auto-cycle blindly. (`feedback_codex_sustained_major_loop`)
 - Codex reviews via GitHub connector when local shell is blocked. Connector-derived evidence (file existence, line contents, link resolution) MUST be locally re-verified before applying as a fix. (`feedback_cross_provider_review_payoff`, `feedback_r1_review_trust_hazard`)
 - Codex review iteration cap: 3 per WRK/non-WRK plan; `submit-to-codex.sh` enforces via `review-iteration.yaml` for WRK-scoped work.
 
