@@ -6,7 +6,13 @@
 
 set -euo pipefail
 
-REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# shellcheck source=scripts/lib/worktree-index.sh
+source "$SCRIPT_DIR/../lib/worktree-index.sh"
+REPO_ROOT="$(worktree_git rev-parse --show-toplevel)"
+worktree_index_preflight "$REPO_ROOT" >&2
+unset GIT_DIR GIT_WORK_TREE GIT_COMMON_DIR GIT_INDEX_FILE GIT_PREFIX
+unset GIT_OBJECT_DIRECTORY GIT_ALTERNATE_OBJECT_DIRECTORIES
 STRICT_MODE=false
 PHASE_NUM=""
 
