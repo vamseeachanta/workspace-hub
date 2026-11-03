@@ -1,20 +1,20 @@
 # AI account usage (fleet)
 
-Generated 2026-11-03T00:16:54+00:00 by fleet-collector collect_account_usage_fleet. Percentages are USED; headroom = 100 - weekly used. Source of truth: `config/ai-tools/account-usage-latest.json`.
+Generated 2026-11-03T01:14:14+00:00 by fleet-collector collect_account_usage_fleet. Percentages are USED; headroom = 100 - weekly used. Source of truth: `config/ai-tools/account-usage-latest.json`.
 
 ## Recommendation
 
-- **claude**: `claude-owner` (80.0% weekly headroom) on ace-linux-1, ace-linux-2, ace-win-2, gpu-claw -- within 15 pts of claude-professional: stay on whichever host you are on
+- **claude**: `claude-owner` (80.0% weekly headroom) on ace-linux-1, ace-linux-2, ace-win-2 -- within 15 pts of claude-professional: stay on whichever host you are on
 - **codex**: `codex-professional` (98.0% weekly headroom) on ace-win-1
 
 ## Accounts
 
 | account | provider | holder | 5h used | week used | headroom | resets | sampled on | source | status | probed at |
 |---|---|---|---|---|---|---|---|---|---|---|
-| claude-owner | claude | owner |  | 20% | 80% | 2026-11-07T14:00:00.087571+00:00 | ace-win-2 | oauth-api | ok | 2026-11-03T00:16:42+00:00 |
-| claude-professional | claude | colleague |  | 20% | 80% | 2026-11-07T07:59:59.589874+00:00 | ace-win-1 | oauth-api | ok | 2026-11-03T00:16:46+00:00 |
-| codex-owner | codex | owner |  | 86% | 14% | 2026-11-04T06:35:47+00:00 | ace-win-2 | app-server-live | ok | 2026-11-03T00:16:52+00:00 |
-| codex-professional | codex | colleague |  | 2% | 98% | 2026-11-08T11:32:57+00:00 | ace-win-1 | app-server-live | ok | 2026-11-03T00:16:46+00:00 |
+| claude-owner | claude | owner |  | 20% | 80% | 2026-11-07T14:00:00.354420+00:00 | ace-win-2 | oauth-api | ok | 2026-11-03T01:14:00+00:00 |
+| claude-professional | claude | colleague |  | 20% | 80% | 2026-11-07T08:00:00.324892+00:00 | ace-win-1 | oauth-api | ok | 2026-11-03T01:14:05+00:00 |
+| codex-owner | codex | owner |  | 87% | 13% | 2026-11-04T06:35:47+00:00 | ace-win-2 | app-server-live | ok | 2026-11-03T01:14:11+00:00 |
+| codex-professional | codex | colleague |  | 2% | 98% | 2026-11-08T11:32:57+00:00 | ace-win-1 | app-server-live | ok | 2026-11-03T01:14:05+00:00 |
 
 ## Hosts
 
@@ -22,7 +22,7 @@ Generated 2026-11-03T00:16:54+00:00 by fleet-collector collect_account_usage_fle
 |---|---|---|---|---|
 | ace-linux-1 | yes | claude-owner | codex-owner |  |
 | ace-linux-2 | yes | claude-owner | codex-owner |  |
-| gpu-claw | yes | claude-owner | codex-owner |  |
+| gpu-claw | no | claude-owner | codex-owner | exit 255 |
 | ace-win-2 | yes | claude-owner | codex-owner |  |
 | ace-win-1 | yes | claude-professional | codex-professional |  |
 | fleet-collector | yes |  | codex-owner | claude: credentials file has no accessToken |
