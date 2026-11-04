@@ -87,6 +87,8 @@ M .claude/skills/workspace-hub/comprehensive-learning/references/exit-handoff-cl
 
 The five referenced JSONL logs were removed from the public tree. The status snapshot above preserves the original observation.
 
+Issue linkage is not applicable to the removal record: no separate GitHub issue was supplied, and the pull request is its tracking record.
+
 Final post-push proof is expected in the chat closeout response because embedding a post-push commit hash inside this file would itself require another commit and make the embedded hash stale.
 
 ## Branch/worktree disposition
