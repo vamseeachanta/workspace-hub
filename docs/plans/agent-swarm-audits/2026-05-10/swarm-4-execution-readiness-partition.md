@@ -17,5 +17,5 @@ Artifact note: original worker-local artifact write failed; this report was reco
 ## Verification notes
 
 - Process exited before closeout check.
-- Worker log exists under `docs/plans/agent-swarm-audits/2026-05-10/logs/`.
+- The worker log was removed from the public tree; the final message is retained in `logs/swarm-4-last-message.txt`.
 - The concise final result is also copied to `logs/swarm-4-last-message.txt` for easier inspection.
