@@ -1,6 +1,6 @@
 # AI account usage (fleet)
 
-Generated 2026-11-05T15:13:34+00:00 by fleet-collector collect_account_usage_fleet. Percentages are USED; headroom = 100 - weekly used. Source of truth: `config/ai-tools/account-usage-latest.json`.
+Generated 2026-11-05T16:13:40+00:00 by fleet-collector collect_account_usage_fleet. Percentages are USED; headroom = 100 - weekly used. Source of truth: `config/ai-tools/account-usage-latest.json`.
 
 ## Recommendation
 
@@ -11,10 +11,10 @@ Generated 2026-11-05T15:13:34+00:00 by fleet-collector collect_account_usage_fle
 
 | account | provider | holder | 5h used | week used | headroom | resets | sampled on | source | status | probed at |
 |---|---|---|---|---|---|---|---|---|---|---|
-| claude-owner | claude | owner |  | 58% | 42% | 2026-11-07T14:00:00.373447+00:00 | ace-win-2 | oauth-api | ok | 2026-11-05T15:13:22+00:00 |
-| claude-professional | claude | colleague |  | 33% | 67% | 2026-11-07T08:00:00.393472+00:00 | ace-win-1 | oauth-api | ok | 2026-11-05T15:13:26+00:00 |
-| codex-owner | codex | owner |  | 28% | 72% | 2026-11-11T06:35:56+00:00 | ace-win-2 | app-server-live | ok | 2026-11-05T15:13:31+00:00 |
-| codex-professional | codex | colleague |  | 10% | 90% | 2026-11-08T11:32:57+00:00 | ace-win-1 | app-server-live | ok | 2026-11-05T15:13:26+00:00 |
+| claude-owner | claude | owner |  | 59% | 41% | 2026-11-07T13:59:59.890653+00:00 | ace-win-2 | oauth-api | ok | 2026-11-05T16:13:28+00:00 |
+| claude-professional | claude | colleague |  | 33% | 67% | 2026-11-07T07:59:59.821814+00:00 | ace-win-1 | oauth-api | ok | 2026-11-05T16:13:32+00:00 |
+| codex-owner | codex | owner |  | 29% | 71% | 2026-11-11T06:35:56+00:00 | ace-win-2 | app-server-live | ok | 2026-11-05T16:13:37+00:00 |
+| codex-professional | codex | colleague |  | 10% | 90% | 2026-11-08T11:32:57+00:00 | ace-win-1 | app-server-live | ok | 2026-11-05T16:13:32+00:00 |
 
 ## Hosts
 
@@ -22,7 +22,7 @@ Generated 2026-11-05T15:13:34+00:00 by fleet-collector collect_account_usage_fle
 |---|---|---|---|---|
 | ace-linux-1 | yes | claude-owner | codex-owner |  |
 | ace-linux-2 | yes | claude-owner | codex-owner |  |
-| gpu-claw | yes | claude-owner | codex-owner |  |
+| gpu-claw | no | claude-owner | codex-owner | exit 255 |
 | ace-win-2 | yes | claude-owner | codex-owner |  |
 | ace-win-1 | yes | claude-professional | codex-professional |  |
 | fleet-collector | yes |  | codex-owner | claude: credentials file has no accessToken |
