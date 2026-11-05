@@ -617,14 +617,32 @@ send_notification() {
 sync_crontab() {
   local installer="${WORKSPACE_HUB}/scripts/cron/setup-cron.sh"
   [[ -f "$installer" ]] || { log "CRON" "setup-cron.sh absent — skip"; return; }
+  local out status
   if [[ "$DRY_RUN" == "true" ]]; then
+    if out=$(bash "$installer" --dry-run 2>&1); then
+      status=0
+    else
+      status=$?
+    fi
+    # Preserve the nonfatal contract, but report failures before counting output.
+    if [[ "$status" -ne 0 ]]; then
+      log "CRON" "dry-run failed (exit ${status}); inspect setup-cron.sh diagnostics: ${out}"
+      return 0
+    fi
     local n
-    n=$(bash "$installer" --dry-run 2>/dev/null | grep -cE '^[[:space:]]+[0-9*]' || true)
+    n=$(printf '%s\n' "$out" | grep -cE '^[[:space:]]+[0-9*]' || true)
     log "CRON" "dry-run: ${n} schedule-tasks.yaml entry/entries would be ensured"
     return
   fi
-  local out
-  out=$(bash "$installer" 2>&1) || true
+  if out=$(bash "$installer" 2>&1); then
+    status=0
+  else
+    status=$?
+  fi
+  if [[ "$status" -ne 0 ]]; then
+    log "CRON" "apply failed (exit ${status}); inspect setup-cron.sh diagnostics: ${out}"
+    return 0
+  fi
   log "CRON" "$(printf '%s\n' "$out" | grep -iE 'Installed|Replaced|already present' | tail -1)"
 }
 
