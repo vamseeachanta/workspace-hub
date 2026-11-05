@@ -89,6 +89,8 @@ The five referenced JSONL logs were removed from the public tree. The status sna
 
 Related cleanup: #3097 covers generated artifacts and raw session-log removal from the public tree.
 
+The removal includes five session logs and their five obsolete identifier-gate exclusions. The parser inventory decreases from 13 entries to nine. The audit reports, final messages, process rows and captured status block are retained; the deleted logs remain reachable in Git history.
+
 Final post-push proof is expected in the chat closeout response because embedding a post-push commit hash inside this file would itself require another commit and make the embedded hash stale.
 
 ## Branch/worktree disposition
