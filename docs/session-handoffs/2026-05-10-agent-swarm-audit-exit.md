@@ -17,7 +17,7 @@ Task-specific artifacts are under `docs/plans/agent-swarm-audits/2026-05-10/`:
 - `launch_codex_swarms.sh`
 - `logs/codex-swarm-pids.txt`
 - recovered reports: `swarm-1-live-state-gate-audit.md` through `swarm-5-learning-transfer.md`
-- raw logs: `logs/swarm-*-codex.jsonl`
+- raw logs removed from the public tree: `logs/swarm-*-codex.jsonl`
 - concise recovered final messages: `logs/swarm-*-last-message.txt`
 
 ## Swarm status at closeout
@@ -87,7 +87,7 @@ M .claude/skills/workspace-hub/comprehensive-learning/references/exit-handoff-cl
 
 The five referenced JSONL logs were removed from the public tree. The status snapshot above preserves the original observation.
 
-Issue linkage is not applicable to the removal record: no separate GitHub issue was supplied, and the pull request is its tracking record.
+Related cleanup: #3097 covers generated artifacts and raw session-log removal from the public tree.
 
 Final post-push proof is expected in the chat closeout response because embedding a post-push commit hash inside this file would itself require another commit and make the embedded hash stale.
 

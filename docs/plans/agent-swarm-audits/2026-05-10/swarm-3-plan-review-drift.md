@@ -18,4 +18,3 @@ Artifact note: original worker-local artifact write failed; this report was reco
 
 - Process exited before closeout check.
 - The worker log was removed from the public tree; the final message is retained in `logs/swarm-3-last-message.txt`.
-- The concise final result is also copied to `logs/swarm-3-last-message.txt` for easier inspection.
