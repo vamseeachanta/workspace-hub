@@ -41,5 +41,5 @@ Run a follow-on planning-only swarm to create issue-ready evidence packets for `
 ## Verification notes
 
 - Process exited before closeout check.
-- Worker log exists under `docs/plans/agent-swarm-audits/2026-05-10/logs/`.
+- The worker log was removed from the public tree; the final message is retained in `logs/swarm-2-last-message.txt`.
 - The concise final result is also copied to `logs/swarm-2-last-message.txt` for easier inspection.
