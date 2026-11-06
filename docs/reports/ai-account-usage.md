@@ -1,20 +1,20 @@
 # AI account usage (fleet)
 
-Generated 2026-11-06T11:13:31+00:00 by fleet-collector collect_account_usage_fleet. Percentages are USED; headroom = 100 - weekly used. Source of truth: `config/ai-tools/account-usage-latest.json`.
+Generated 2026-11-06T12:13:29+00:00 by fleet-collector collect_account_usage_fleet. Percentages are USED; headroom = 100 - weekly used. Source of truth: `config/ai-tools/account-usage-latest.json`.
 
 ## Recommendation
 
-- **claude**: `claude-professional` (53.0% weekly headroom) on ace-win-1
+- **claude**: `claude-professional` (52.0% weekly headroom) on ace-win-1
 - **codex**: `codex-professional` (89.0% weekly headroom) on ace-win-1
 
 ## Accounts
 
 | account | provider | holder | 5h used | week used | headroom | resets | sampled on | source | status | probed at |
 |---|---|---|---|---|---|---|---|---|---|---|
-| claude-owner | claude | owner |  | 65% | 35% | 2026-11-07T14:00:00.935046+00:00 | ace-win-2 | oauth-api | ok | 2026-11-06T11:13:17+00:00 |
-| claude-professional | claude | colleague |  | 47% | 53% | 2026-11-07T07:59:59.962837+00:00 | ace-win-1 | oauth-api | ok | 2026-11-06T11:13:21+00:00 |
-| codex-owner | codex | owner |  | 44% | 56% | 2026-11-11T06:35:56+00:00 | ace-win-2 | app-server-live | ok | 2026-11-06T11:13:28+00:00 |
-| codex-professional | codex | colleague |  | 11% | 89% | 2026-11-08T11:32:57+00:00 | ace-win-1 | app-server-live | ok | 2026-11-06T11:13:21+00:00 |
+| claude-owner | claude | owner |  | 65% | 35% | 2026-11-07T13:59:59.819610+00:00 | ace-win-2 | oauth-api | ok | 2026-11-06T12:13:18+00:00 |
+| claude-professional | claude | colleague |  | 48% | 52% | 2026-11-07T08:00:00.491286+00:00 | ace-win-1 | oauth-api | ok | 2026-11-06T12:13:22+00:00 |
+| codex-owner | codex | owner |  | 46% | 54% | 2026-11-11T06:35:56+00:00 | ace-win-2 | app-server-live | ok | 2026-11-06T12:13:26+00:00 |
+| codex-professional | codex | colleague |  | 11% | 89% | 2026-11-08T11:32:57+00:00 | ace-win-1 | app-server-live | ok | 2026-11-06T12:13:22+00:00 |
 
 ## Hosts
 
