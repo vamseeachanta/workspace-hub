@@ -18,7 +18,9 @@
 #      cd assethold && uv run python -m pytest tests/ --noconftest -q
 
 set -euo pipefail
-REPO_ROOT="$(git rev-parse --show-toplevel)"
+# Structural root is independent of inherited hook repository bindings.
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
 DRY_RUN=true
 REPO="assethold"
 
