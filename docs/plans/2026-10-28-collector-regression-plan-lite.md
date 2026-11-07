@@ -24,12 +24,41 @@ uv run --no-project --with pytest --with PyYAML python -m pytest tests/readiness
 git diff --check
 ```
 
-The collector, provenance and shared-helper consumer suites will retain all 77
-cases without failures or skips. Direct file checks will cover Python syntax,
+Linux validation will require all 77 collector, provenance and shared-helper
+consumer cases to pass without skips. Direct file checks will cover Python syntax,
 the engineering register, secrets, publication identifiers and Git LFS attributes.
 Hosted check failures will be examined against current main before assigning
-them to this change. Native Windows and macOS behavior will remain unverified
-by Linux execution.
+them to this change. Linux execution will not establish native Windows or macOS
+behavior. The Windows failures below will remain active regression tests, with
+no skip markers or production collector changes in this pull request.
+
+## Observed platform limits
+
+The review at `17bb80ff` reports that #3821 reproduces on Windows with Git Bash
+and Python 3.12. On 7 November 2026, the merge with main `19da5845` failed four
+excluded-volatility cases (`checkout_sha`, `headroom`, `context_md_mtime` and
+`job_count`) and the stable-capability rewrite case. Their report comparisons
+found an additional change in `generated_at`. The targeted rerun at 10:00–10:02
+UTC recorded 5 failed and 1 passed; only the `generated_at` volatility case passed.
+These observations supersede the earlier claim that #3821 was not reproduced.
+
+The same review records these full readiness-suite results on Windows:
+
+| Tree | Failed | Passed | Skipped | Errors |
+| --- | ---: | ---: | ---: | ---: |
+| Main `19da5845` | 317 | 531 | 80 | 8 |
+| Merge with `17bb80ff` | 130 | 726 | 80 | 8 |
+
+The review attributes 192 formerly failing cases to the shared fixture's
+isolation of ambient scheduler, authentication and provider commands. Those
+modules now exercise synthetic command outcomes rather than installed services;
+explicit fixture stubs retain precedence. This coverage does not establish live
+service availability. The counts above are review evidence, not a local rerun.
+
+The 29 October hosted Fast Gate recorded 23 failures. Byte-identical modules on
+main do not establish a passing main run, because main did not run that family.
+The `batch:broke-tests` label will remain until the maintainers read a fresh Fast
+Gate result on current main. No label will be changed by this update.
 
 ## Description update
 
