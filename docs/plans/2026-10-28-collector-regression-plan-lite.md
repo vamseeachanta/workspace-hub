@@ -55,7 +55,7 @@ Native Windows and macOS were not run. Windows remote access was reachable, but
 approved remote scratch and cache locations were not configured. Post-fix Windows
 behavior and reproduction of #3821 therefore remain unestablished.
 
-The same review records these full readiness-suite results on Windows:
+The review at `17bb80ff` records these full readiness-suite results on Windows:
 
 | Tree | Failed | Passed | Skipped | Errors |
 | --- | ---: | ---: | ---: | ---: |
