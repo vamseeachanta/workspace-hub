@@ -14,6 +14,14 @@ import shutil
 from pathlib import Path
 from concurrent.futures import ThreadPoolExecutor, as_completed
 import time
+import sys
+
+# Direct execution and file-based imports need the repository root on sys.path.
+if not __package__:
+    # This file is in scripts/automation, two directories below the root.
+    sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
+
+from scripts.utils.atomic_write import atomic_write_utf8
 
 # All commands to propagate
 ALL_COMMANDS = [
@@ -161,8 +169,12 @@ def sync_and_propagate_repo(repo_name: str) -> tuple:
     except Exception as e:
         return (repo_name, False, f"Error: {str(e)}")
 
-def create_command_links(repo_path: Path):
-    """Create symbolic links or aliases for slash commands."""
+def create_command_links(repo_path: Path, *, render_launcher=str.format):
+    """Render a launcher, atomically write UTF-8, and return the writer receipt.
+
+    The pure renderer accepts the template and command mappings. Writer failures
+    propagate unchanged; its documented check-to-replace race still applies.
+    """
     commands_dir = repo_path / ".agent-os" / "commands"
     
     # Command mappings
@@ -207,13 +219,16 @@ if len(sys.argv) > 1:
 """
     
     launcher_path = repo_path / "agos"
-    launcher_path.write_text(
-        launcher_content.format(
+    receipt = atomic_write_utf8(
+        launcher_path,
+        render_launcher(
+            launcher_content,
             commands=str(list(command_map.keys())),
             command_map=str(command_map)
         )
     )
     launcher_path.chmod(0o755)
+    return receipt
 
 def main():
     """Main execution."""

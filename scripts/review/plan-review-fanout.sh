@@ -130,13 +130,8 @@ normalize_provider_output() {
     return 0
   fi
 
-  # Some CLIs stream the substantive review to stderr/session output while
-  # leaving stdout empty. Promote stderr only after a successful provider exit
-  # and only when it contains the minimum structured review sections.
-  if [[ ! -s "$out" && -s "$err" ]] && grep -q '^## Verdict' "$err" && grep -q '^## Findings' "$err" && grep -q '^## Blockers' "$err"; then
-    mv "$err" "$out"
-  fi
-
+  # Only stdout can supply a final review. Stderr may contain prompt echoes or
+  # progress messages, even when they look like a complete structured review.
   if [[ ! -s "$out" ]]; then
     failure_category="INVALID_OUTPUT"
     write_unavailable "$prov" "0" "INVALID_OUTPUT: empty provider output" "$out"

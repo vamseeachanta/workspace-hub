@@ -793,7 +793,7 @@ def main(argv=None):
         if history_path:
             append_history(history_path, report)
         return exit_code(report)
-    except (ValueError, TypeError, OSError, subprocess.SubprocessError):
+    except (ValueError, TypeError, OSError, RecursionError, subprocess.SubprocessError):
         # Exception text may include paths, commands, or data. Do not echo it.
         parser.exit(
             2,

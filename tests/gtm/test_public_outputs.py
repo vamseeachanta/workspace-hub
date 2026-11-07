@@ -177,7 +177,7 @@ def _refresh_fixture(tmp_path: Path):
     return bash, env, work, git
 
 
-def test_weekly_refresh_commits_only_the_scan_directory(tmp_path):
+def test_weekly_refresh_skips_dirty_index_without_touching_it(tmp_path):
     bash, env, work, git = _refresh_fixture(tmp_path)
     (work / "unrelated.txt").write_text("staged elsewhere\n", encoding="utf-8")
     git("add", "unrelated.txt")
@@ -185,7 +185,8 @@ def test_weekly_refresh_commits_only_the_scan_directory(tmp_path):
                        capture_output=True, text=True)
     assert r.returncode == 0, r.stdout + r.stderr
     pushed = git("ls-tree", "-r", "--name-only", "origin/main").stdout.split()
-    assert f"{SCAN_DIR}/dashboard.md" in pushed
+    assert "SKIP: working tree or index is dirty" in r.stdout
+    assert f"{SCAN_DIR}/dashboard.md" not in pushed
     assert "unrelated.txt" not in pushed
     assert "unrelated.txt" in git("diff", "--cached", "--name-only").stdout
 
@@ -197,7 +198,8 @@ def test_weekly_refresh_stops_when_main_cannot_be_checked_out(tmp_path):
     git("worktree", "add", "-q", str(tmp_path / "other"), "main")  # main is busy elsewhere
     r = subprocess.run([bash, "scripts/gtm/weekly-scan-refresh.sh"], cwd=work, env=env,
                        capture_output=True, text=True)
-    assert r.returncode != 0
+    assert r.returncode == 0
+    assert "SKIP: current branch is not main" in r.stdout
     git("fetch", "-q", "origin")
     assert git("rev-parse", "origin/main").stdout.strip() == before
 
@@ -207,8 +209,59 @@ def test_weekly_refresh_stops_when_main_cannot_be_updated(tmp_path):
     git("remote", "set-url", "origin", str(tmp_path / "absent.git"))
     r = subprocess.run([bash, "scripts/gtm/weekly-scan-refresh.sh"], cwd=work, env=env,
                        capture_output=True, text=True)
-    assert r.returncode != 0
+    assert r.returncode == 0
+    assert "SKIP: fetch failed" in r.stdout
     assert git("log", "--oneline", "-1").stdout.split()[1] == "init"
+
+
+def test_weekly_refresh_skips_local_commits_without_changing_head(tmp_path):
+    bash, env, work, git = _refresh_fixture(tmp_path)
+    (work / "README.md").write_text("local change\n")
+    git("add", "README.md")
+    git("commit", "-q", "-m", "local")
+    before = git("rev-parse", "HEAD").stdout
+    r = subprocess.run([bash, "scripts/gtm/weekly-scan-refresh.sh"], cwd=work, env=env,
+                       capture_output=True, text=True)
+    assert r.returncode == 0, r.stderr
+    assert "SKIP: main has local or diverged commits" in r.stdout
+    assert git("rev-parse", "HEAD").stdout == before
+    assert not (work / SCAN_DIR).exists()
+
+
+def test_weekly_refresh_scans_clean_up_to_date_main(tmp_path):
+    bash, env, work, git = _refresh_fixture(tmp_path)
+    r = subprocess.run([bash, "scripts/gtm/weekly-scan-refresh.sh"], cwd=work, env=env,
+                       capture_output=True, text=True)
+    assert r.returncode == 0, r.stdout + r.stderr
+    assert f"{SCAN_DIR}/dashboard.md" in git("ls-tree", "-r", "--name-only", "origin/main").stdout
+
+
+@pytest.mark.parametrize("state", ["behind", "diverged", "locked"])
+def test_weekly_refresh_fast_forward_or_preserve_checkout(tmp_path, state):
+    bash, env, work, git = _refresh_fixture(tmp_path)
+    git("checkout", "-q", "-b", "remote-side")
+    (work / "README.md").write_text("remote change\n")
+    git("add", "README.md")
+    git("commit", "-q", "-m", "remote")
+    git("push", "-q", "origin", "HEAD:main")
+    git("checkout", "-q", "main")
+    if state == "diverged":
+        (work / "README.md").write_text("local change\n")
+        git("add", "README.md")
+        git("commit", "-q", "-m", "local")
+    if state == "locked":
+        (work / ".git/index.lock").write_text("held\n")
+    before = git("rev-parse", "HEAD").stdout
+    r = subprocess.run([bash, "scripts/gtm/weekly-scan-refresh.sh"], cwd=work, env=env,
+                       capture_output=True, text=True)
+    assert r.returncode == 0, r.stdout + r.stderr
+    if state == "behind":
+        assert git("rev-parse", "HEAD").stdout != before
+        assert (work / SCAN_DIR / "dashboard.md").exists()
+    else:
+        assert "SKIP:" in r.stdout
+        assert git("rev-parse", "HEAD").stdout == before
+        assert not (work / SCAN_DIR).exists()
 
 
 def test_contact_dedup_report_is_not_ignored_but_other_email_reports_are():

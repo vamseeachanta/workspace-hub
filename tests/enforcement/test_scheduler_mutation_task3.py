@@ -81,7 +81,7 @@ def test_cron_authority_is_exact_and_3475_is_resolved():
         "cron-canonical-legacy-exact-authority-v1",
     } <= set(operation["attestations"])
 
-    inventory_digest = json.loads(INVENTORY.read_text())["input_digest"]
+    inventory_digest = json.loads(INVENTORY.read_text(encoding="utf-8"))["input_digest"]
     assert registry["resolved_dispositions"] == [
         {
             "issue": 3475,
@@ -281,7 +281,7 @@ def test_enforcement_modules_extract_responsibilities_and_bound_functions():
     production = list((ROOT / "scripts/enforcement").glob("scheduler_mutation*.py"))
     production.append(CHECKER)
     for path in set(production):
-        tree = ast.parse(path.read_text())
+        tree = ast.parse(path.read_text(encoding="utf-8"))
         for node in ast.walk(tree):
             if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
                 assert node.end_lineno - node.lineno + 1 <= 50, (path, node.name)
@@ -317,9 +317,13 @@ def test_3490_gap_is_linked_in_render_and_docs():
         ("new-machine-dry-run-v1", b'setup-cron.sh" --dry-run || true', b'setup-cron.sh" --dry-run'),
         ("new-machine-windows-v1", b'setup-cron.sh" || true\nelse', b'setup-cron.sh" --dry-run || true\nelse'),
         ("new-machine-windows-v1", b'setup-cron.sh" || true\nelse', b'setup-cron.sh"\nelse'),
-        ("harness-default-v1", b'out=$(bash "$installer" 2>&1) || true', b'out=$(bash "$installer" --dry-run 2>&1) || true'),
-        ("harness-default-v1", b'out=$(bash "$installer" 2>&1) || true', b'out=$(bash "$installer" 2>&1)'),
-        ("harness-dry-run-v1", b'bash "$installer" --dry-run 2>/dev/null', b'bash "$installer" 2>/dev/null'),
+        ("harness-default-v1", b'if out=$(bash "$installer" 2>&1); then', b'if out=$(bash "$installer" --dry-run 2>&1); then'),
+        ("harness-default-v1", b'  else\n    status=$?\n  fi\n  if [[ "$status"', b'  else\n    status=0\n  fi\n  if [[ "$status"'),
+        ("harness-dry-run-v1", b'bash "$installer" --dry-run 2>&1', b'bash "$installer" 2>&1'),
+        ("harness-default-v1", b'  if [[ "$status" -ne 0 ]]; then', b'  if [[ "$status" -eq 0 ]]; then'),
+        ("harness-dry-run-v1", b'      return 0\n    fi\n    local n', b'      return 1\n    fi\n    local n'),
+        ("harness-dry-run-v1", b'    else\n      status=$?', b'    else\n      status=0'),
+        ("harness-default-v1", b'  [[ -f "$installer" ]]', b'  [[ -d "$installer" ]]'),
         ("harness-dry-run-v1", b"| grep -cE '^[[:space:]]+[0-9*]' || true", b"| grep -cE '^[[:space:]]+[0-9*]'"),
     ],
 )
@@ -327,6 +331,7 @@ def test_wrapper_attestations_reject_live_source_mutations(attestation, old, new
     checker, records, _registry, _discovered = current_contract()
     source = checker.attestation_source(attestation)
     body = records[source]
+    assert checker.evaluate_attestation(attestation, records, source)
     mutated = body.replace(old, new, 1)
     assert mutated != body, (attestation, old)
     _reject_wrapper_mutation(tmp_path, monkeypatch, checker, records, source,
@@ -443,7 +448,7 @@ WRAPPER_MUTATIONS = {
     ),
     b"scripts/cron/harness-update.sh": (
         "harness-default-v1",
-        b'out=$(bash "$installer" 2>&1) || true',
+        b'if out=$(bash "$installer" 2>&1); then',
         b'out=$(bash "$installer" 2>&1)',
     ),
 }

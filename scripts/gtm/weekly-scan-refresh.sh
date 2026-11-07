@@ -24,12 +24,17 @@ echo "=== GTM Weekly Scan Refresh ==="
 echo "Date: $(date -u +'%Y-%m-%d %H:%M:%S UTC')"
 echo "Repo: $REPO_ROOT"
 
-# 1. Ensure we're on main and up to date. Stop if either fails: the job must
-#    never commit onto another branch or push a stale main.
+# 1. A scheduled scan may only advance a clean main by fast-forward. Leave
+#    dirty, ahead, diverged, locked or unavailable checkouts for the maintainer.
 cd "$REPO_ROOT"
 SCAN_DIR="docs/strategy/gtm/job-market-scan"
-git checkout main || { echo "ERROR: cannot check out main; stopping"; exit 1; }
-git pull --ff-only origin main || { echo "ERROR: cannot update main from origin; stopping"; exit 1; }
+skip() { echo "SKIP: $*; no scan or publication attempted"; exit 0; }
+[[ "$(git symbolic-ref --short -q HEAD)" == "main" ]] || skip "current branch is not main"
+tree_status=$(git status --porcelain) || skip "cannot inspect working tree"
+[[ -z "$tree_status" ]] || skip "working tree or index is dirty"
+git fetch origin main || skip "fetch failed"
+git merge-base --is-ancestor HEAD origin/main || skip "main has local or diverged commits"
+git merge --ff-only origin/main || skip "fast-forward failed (check locks and local changes)"
 
 # 2. Create log directory
 mkdir -p "$REPO_ROOT/logs/gtm"

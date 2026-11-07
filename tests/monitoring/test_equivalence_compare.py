@@ -3,6 +3,9 @@ import importlib.util
 import json
 import os
 from datetime import datetime, timedelta, timezone
+from itertools import permutations
+
+import pytest
 
 _SPEC = importlib.util.spec_from_file_location(
     "equivalence_compare",
@@ -73,6 +76,34 @@ def test_clone_far_behind_is_warning_and_threshold_respected():
     assert d2["severity"] == ec.INFO
 
 
+def test_clone_lag_exact_threshold():
+    # Synthetic history: four missing commits; omitting the last leaves three.
+    # Existing protocol: equivalence_compare.compare(), rule 4 declares WARNING
+    # at >= behind_warn and INFO below it. This is not a production threshold.
+    behind_warn = 4
+    for lag, expected in ((3, ec.INFO), (4, ec.WARNING)):
+        divs = ec.compare([_fp("contribute", behind_origin=lag)], behind_warn=behind_warn)
+        assert [(d["code"], d["severity"], d["boxes"]) for d in divs] == [
+            ("clone-behind-origin", expected, {"contribute": lag}),
+        ]
+
+
+@pytest.mark.parametrize(
+    "severities, expected",
+    [
+        ((ec.INFO,), ec.INFO),
+        ((ec.INFO, ec.WARNING), ec.WARNING),
+        ((ec.INFO, ec.WARNING, ec.CRITICAL), ec.CRITICAL),
+    ],
+)
+def test_worst_severity_independent_of_input_order(severities, expected):
+    # Existing report protocol: CRITICAL outranks WARNING, which outranks INFO
+    # (equivalence_compare module severity declaration). Do not use compare()'s sort.
+    for ordered in permutations(severities):
+        divs = [{"severity": severity} for severity in ordered]
+        assert ec.worst_severity(divs) == expected
+
+
 def test_hub_learning_cron_stale_is_warning_only_on_full_role():
     stale = {"comprehensive-learning-nightly": 100.0, "session-analysis": 8.0}
     # stale cron on the hub (full) -> WARNING
@@ -140,6 +171,49 @@ def test_main_exit_codes(tmp_path):
     # introduce a registry divergence -> exit 2 (CRITICAL)
     (tmp_path / "contribute.json").write_text(json.dumps(_fp("contribute", registry_sha256="f00d" * 16)))
     assert ec.main([str(tmp_path)]) == 2
+
+
+def test_main_info_exit_status(tmp_path, capsys):
+    (tmp_path / "full.json").write_text(json.dumps(_fp("full")))
+    (tmp_path / "contribute.json").write_text(
+        json.dumps(_fp("contribute", harness_install="native"))
+    )
+    # Existing CLI protocol: equivalence_compare.main() returns 0 for INFO-only.
+    assert ec.main([str(tmp_path), "--json"]) == 0
+    report = json.loads(capsys.readouterr().out)
+    assert [(d["code"], d["severity"]) for d in report["divergences"]] == [
+        ("harness-install-mismatch", ec.INFO),
+    ]
+
+
+def test_main_warning_exit_status(tmp_path, capsys):
+    (tmp_path / "full.json").write_text(json.dumps(_fp("full")))
+    (tmp_path / "contribute.json").write_text(
+        json.dumps(_fp("contribute", harness_version="synthetic-other"))
+    )
+    # Existing CLI protocol: equivalence_compare.main() returns 1 for WARNING.
+    assert ec.main([str(tmp_path)]) == 1
+    assert capsys.readouterr().out.splitlines() == [
+        "equivalence: 2 box(es), 1 divergence(s)",  # Hand count: pair, version mismatch only.
+        "  [WARNING] harness-version-mismatch: claude harness version differs across boxes",
+    ]
+
+
+def test_main_mixed_findings_retain_critical_status(tmp_path, capsys):
+    (tmp_path / "full.json").write_text(json.dumps(_fp("full")))
+    (tmp_path / "contribute.json").write_text(
+        json.dumps(_fp("contribute", registry_sha256="synthetic-other-registry",
+                       harness_version="synthetic-other", harness_install="native"))
+    )
+    # Existing CLI protocol: equivalence_compare.main() returns 2 for CRITICAL,
+    # even when the report also contains WARNING and INFO findings.
+    assert ec.main([str(tmp_path), "--json"]) == 2
+    report = json.loads(capsys.readouterr().out)
+    assert [(d["code"], d["severity"]) for d in report["divergences"]] == [
+        ("registry-divergence", ec.CRITICAL),
+        ("harness-version-mismatch", ec.WARNING),
+        ("harness-install-mismatch", ec.INFO),
+    ]
 
 
 def test_load_dir_skips_malformed(tmp_path):

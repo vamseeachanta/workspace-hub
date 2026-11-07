@@ -34,7 +34,8 @@ else
     echo "pull: not fast-forwardable (dirty or diverged); publishing from $(git rev-parse --short HEAD)"
 fi
 
-# 2. Collect + aggregate. Exit 1 = no host answered; exit 2 = configuration or
+# 2. Collect + aggregate, including explicit failed-seat statuses and probe times.
+#    Exit 2 = configuration or
 #    labelling error (owner decision H01: the private fleet label map at
 #    $FLEET_LABEL_MAP or ~/.config/workspace-hub/fleet-label-map.txt is
 #    required, and output carrying a physical host name is refused). Either
@@ -43,10 +44,7 @@ hosts_arg=()
 [[ -n "${FLEET_HOSTS:-}" ]] && hosts_arg=(--hosts "${FLEET_HOSTS}")
 rc=0
 python3 scripts/fleet/collect_account_usage_fleet.py --out "${OUT}" --md "${MD}" "${hosts_arg[@]}" || rc=$?
-if (( rc == 1 )); then
-    echo "collect: no host answered; nothing published"
-    exit 1
-elif (( rc != 0 )); then
+if (( rc != 0 )); then
     echo "collect: refused (exit ${rc}: config or label map); nothing published" >&2
     exit "${rc}"
 fi

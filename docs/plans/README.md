@@ -578,3 +578,7 @@ Add one row per plan:
 ## Reporting convention consolidation
 
 - [Issue 3925: engineering reporting conventions and verified adoption](2026-09-28-issue-3925-engineering-reporting.md) — review draft P3, 2026-09-30; shared-instruction adoption pending.
+
+## Bounded selector test plan
+
+- [Saved-diff selector CLI: Plan-lite](2026-10-28-selector-saved-diff-cli-plan-lite.md) — saved-diff scope, literal expectations and offline validation.

@@ -6,6 +6,7 @@ materialize_profile_schema.py. No engineering coefficients or limits apply.
 import importlib
 import json
 import subprocess
+from unittest.mock import Mock
 
 import pytest
 from test_materialize_profile import apply, module, report, write
@@ -51,6 +52,39 @@ def test_interrupted_journal_write_can_be_retried(tmp_path, monkeypatch):
     fs.save_journal(tmp_path, {"status": "rolled-back"})
     assert all(p.read_bytes() == raw for p, raw in residue.items())
     assert json.loads((tmp_path / "journal.json").read_bytes())["status"] == "rolled-back"
+
+
+def test_journal_fsync_failure_preserves_published_receipt(tmp_path, monkeypatch):
+    """Issue 3858 hand trace: failed file fsync precedes publication by rename.
+
+    Literal receipts below define the expected bytes independently. The prior
+    publication stays authoritative; retry must retain failed staging evidence.
+    This establishes neither directory durability nor whole-transaction atomicity.
+    """
+    fs.save_journal(tmp_path, {"status": "prior"})
+    journal = tmp_path / "journal.json"
+    assert journal.read_bytes() == b'{\n  "status": "prior"\n}\n'
+    replace = Mock(wraps=fs.os.replace)
+    monkeypatch.setattr(fs.os, "replace", replace)
+    interrupted = Mock(side_effect=OSError("injected file fsync failure"))
+
+    with monkeypatch.context() as failure:
+        failure.setattr(fs.os, "fsync", interrupted)
+        with pytest.raises(OSError, match="injected file fsync failure"):
+            fs.save_journal(tmp_path, {"status": "interrupted"})
+
+    interrupted.assert_called_once()
+    replace.assert_not_called()
+    assert journal.read_bytes() == b'{\n  "status": "prior"\n}\n'
+    staged, = tmp_path.glob("journal-*.payload")
+    assert staged.read_bytes() == b'{\n  "status": "interrupted"\n}\n'
+    assert set(tmp_path.iterdir()) == {journal, staged}
+
+    fs.save_journal(tmp_path, {"status": "final"})
+    replace.assert_called_once()
+    assert journal.read_bytes() == b'{\n  "status": "final"\n}\n'
+    assert staged.read_bytes() == b'{\n  "status": "interrupted"\n}\n'
+    assert set(tmp_path.iterdir()) == {journal, staged}
 
 
 def test_repeated_rollback_preserves_staging_and_backup_evidence(setup, monkeypatch):

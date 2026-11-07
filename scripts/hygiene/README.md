@@ -145,8 +145,10 @@ Use `--fail-above 0` to enforce an empty stray-file inventory. The threshold
 counts every regular file outside excluded directories, including logs and
 unknown extensions. It does not include dirty files inside repositories.
 Git failures are errors, rather than invented zero counters. Error diagnostics
-suppress filesystem paths and raw Git messages. Argument-parser errors use the
-standard argparse diagnostics.
+suppress filesystem paths and raw Git messages. Argument-parser errors print
+static usage followed by `inventory.py: error: invalid arguments` to stderr and
+exit with status `2`, without echoing rejected values or the caller's program path.
+This parser policy does not apply to application diagnostics after parsing.
 
 ## Limits and sources
 

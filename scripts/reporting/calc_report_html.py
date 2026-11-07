@@ -477,6 +477,8 @@ def _build_dataset_js(chart_type, ds):
 
 def build_chart_scripts(charts):
     """Build Chart.js initialization scripts for each chart."""
+    from json import loads
+
     if not charts:
         return ""
 
@@ -500,7 +502,7 @@ def build_chart_scripts(charts):
                 "type": "bar",
                 "data": {
                     "labels": labels,
-                    "datasets": "__DATASETS__",
+                    "datasets": loads(f"[{datasets_str}]"),
                 },
                 "options": {
                     "responsive": True,
@@ -510,9 +512,7 @@ def build_chart_scripts(charts):
                     },
                 },
             }
-            config = script_json(config_obj).replace(
-                '"__DATASETS__"', f"[{datasets_str}]"
-            )
+            config = script_json(config_obj)
         else:
             x_t = "logarithmic" if x_scale == "log" else "linear"
             y_t = "logarithmic" if y_scale == "log" else "linear"

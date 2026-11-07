@@ -526,7 +526,9 @@ def main(argv: list[str] | None = None) -> int:
     if args.hash == "incremental":
         print(hash_incremental(profile, args.batch_size, args.limit))
     else:
-        print(metadata_pass(profile, batch_size=args.batch_size, limit=args.limit, incremental=args.incremental, prune=args.prune))
+        stats = metadata_pass(profile, batch_size=args.batch_size, limit=args.limit, incremental=args.incremental, prune=args.prune)
+        print(stats)
+        return 1 if stats["errors"] else 0
     return 0
 
 
