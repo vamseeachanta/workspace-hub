@@ -1,27 +1,27 @@
 # AI account usage (fleet)
 
-Generated 2026-11-10T12:13:47+00:00 by fleet-collector collect_account_usage_fleet. Percentages are USED; headroom = 100 - weekly used. Source of truth: `config/ai-tools/account-usage-latest.json`.
+Generated 2026-11-10T13:14:11+00:00 by fleet-collector collect_account_usage_fleet. Percentages are USED; headroom = 100 - weekly used. Source of truth: `config/ai-tools/account-usage-latest.json`.
 
 ## Recommendation
 
-- **claude**: `claude-owner` (92.0% weekly headroom) on ace-linux-1, ace-linux-2, ace-win-2, gpu-claw -- within 15 pts of claude-professional: stay on whichever host you are on
+- **claude**: `claude-owner` (91.0% weekly headroom) on ace-linux-1, ace-linux-2, ace-win-2, gpu-claw -- within 15 pts of claude-professional: stay on whichever host you are on
 - **codex**: `codex-professional` (100.0% weekly headroom) on ace-win-1
 
 ## Accounts
 
 | account | provider | holder | 5h used | week used | headroom | resets | sampled on | source | status | probed at |
 |---|---|---|---|---|---|---|---|---|---|---|
-| claude-owner | claude | owner |  | 8% | 92% | 2026-11-14T14:00:00.236940+00:00 | ace-win-2 | oauth-api | ok | 2026-11-10T12:13:36+00:00 |
-| claude-professional | claude | colleague |  | 14% | 86% | 2026-11-14T07:59:59.808113+00:00 | ace-win-1 | oauth-api | ok | 2026-11-10T12:13:39+00:00 |
-| codex-owner | codex | owner |  | 91% | 9% | 2026-11-11T06:35:56+00:00 | ace-win-2 | app-server-live | ok | 2026-11-10T12:13:45+00:00 |
-| codex-professional | codex | colleague |  | 0% | 100% | 2026-11-17T04:51:09+00:00 | ace-win-1 | app-server-live | ok | 2026-11-10T12:13:39+00:00 |
+| claude-owner | claude | owner |  | 9% | 91% | 2026-11-14T14:00:00.183285+00:00 | ace-win-2 | oauth-api | ok | 2026-11-10T13:13:56+00:00 |
+| claude-professional | claude | colleague |  | 14% | 86% | 2026-11-14T08:00:00.449735+00:00 | ace-win-1 | oauth-api | ok | 2026-11-10T13:14:01+00:00 |
+| codex-owner | codex | owner |  | 92% | 8% | 2026-11-11T06:35:56+00:00 | ace-win-2 | app-server-live | ok | 2026-11-10T13:14:07+00:00 |
+| codex-professional | codex | colleague |  | 0% | 100% | 2026-11-17T04:51:09+00:00 | ace-win-1 | app-server-live | ok | 2026-11-10T13:14:01+00:00 |
 
 ## Hosts
 
 | host | reachable | claude | codex | note |
 |---|---|---|---|---|
 | ace-linux-1 | yes | claude-owner | codex-owner |  |
-| ace-linux-2 | yes | claude-owner | codex-owner |  |
+| ace-linux-2 | yes | claude-owner | codex-owner | claude: access token expired; a Claude Code session on this host will refresh it |
 | gpu-claw | yes | claude-owner | codex-owner |  |
 | ace-win-2 | yes | claude-owner | codex-owner |  |
 | ace-win-1 | yes | claude-professional | codex-professional |  |
