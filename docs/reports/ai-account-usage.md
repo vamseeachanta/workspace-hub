@@ -1,20 +1,20 @@
 # AI account usage (fleet)
 
-Generated 2026-11-11T05:14:02+00:00 by fleet-collector collect_account_usage_fleet. Percentages are USED; headroom = 100 - weekly used. Source of truth: `config/ai-tools/account-usage-latest.json`.
+Generated 2026-11-11T06:14:09+00:00 by fleet-collector collect_account_usage_fleet. Percentages are USED; headroom = 100 - weekly used. Source of truth: `config/ai-tools/account-usage-latest.json`.
 
 ## Recommendation
 
-- **claude**: `claude-owner` (84.0% weekly headroom) on ace-linux-1, ace-linux-2, ace-win-2, gpu-claw -- within 15 pts of claude-professional: stay on whichever host you are on
+- **claude**: `claude-owner` (83.0% weekly headroom) on ace-linux-1, ace-linux-2, ace-win-2, gpu-claw -- within 15 pts of claude-professional: stay on whichever host you are on
 - **codex**: `codex-professional` (98.0% weekly headroom) on ace-win-1
 
 ## Accounts
 
 | account | provider | holder | 5h used | week used | headroom | resets | sampled on | source | status | probed at |
 |---|---|---|---|---|---|---|---|---|---|---|
-| claude-owner | claude | owner |  | 16% | 84% | 2026-11-14T14:00:00.935009+00:00 | ace-win-2 | oauth-api | ok | 2026-11-11T05:13:49+00:00 |
-| claude-professional | claude | colleague |  | 18% | 82% | 2026-11-14T07:59:59.592773+00:00 | ace-win-1 | oauth-api | ok | 2026-11-11T05:13:54+00:00 |
-| codex-owner | codex | owner |  | 95% | 5% | 2026-11-11T06:35:56+00:00 | ace-win-2 | app-server-live | ok | 2026-11-11T05:13:59+00:00 |
-| codex-professional | codex | colleague |  | 2% | 98% | 2026-11-17T04:51:09+00:00 | ace-win-1 | app-server-live | ok | 2026-11-11T05:13:54+00:00 |
+| claude-owner | claude | owner |  | 17% | 83% | 2026-11-14T14:00:00.326375+00:00 | ace-win-2 | oauth-api | ok | 2026-11-11T06:13:56+00:00 |
+| claude-professional | claude | colleague |  | 19% | 81% | 2026-11-14T07:59:59.930579+00:00 | ace-win-1 | oauth-api | ok | 2026-11-11T06:14:00+00:00 |
+| codex-owner | codex | owner |  | 96% | 4% | 2026-11-11T06:35:56+00:00 | ace-win-2 | app-server-live | ok | 2026-11-11T06:14:06+00:00 |
+| codex-professional | codex | colleague |  | 2% | 98% | 2026-11-17T04:51:09+00:00 | ace-win-1 | app-server-live | ok | 2026-11-11T06:14:00+00:00 |
 
 ## Hosts
 
