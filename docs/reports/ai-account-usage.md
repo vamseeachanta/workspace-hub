@@ -1,20 +1,20 @@
 # AI account usage (fleet)
 
-Generated 2026-11-11T20:13:54+00:00 by fleet-collector collect_account_usage_fleet. Percentages are USED; headroom = 100 - weekly used. Source of truth: `config/ai-tools/account-usage-latest.json`.
+Generated 2026-11-11T21:14:00+00:00 by fleet-collector collect_account_usage_fleet. Percentages are USED; headroom = 100 - weekly used. Source of truth: `config/ai-tools/account-usage-latest.json`.
 
 ## Recommendation
 
-- **claude**: `claude-owner` (79.0% weekly headroom) on ace-linux-1, ace-linux-2, ace-win-2, gpu-claw -- within 15 pts of claude-professional: stay on whichever host you are on
+- **claude**: `claude-professional` (79.0% weekly headroom) on ace-win-1 -- within 15 pts of claude-owner: stay on whichever host you are on
 - **codex**: `codex-owner` (97.0% weekly headroom) on ace-linux-1, ace-linux-2, ace-win-2, fleet-collector, gpu-claw -- within 15 pts of codex-professional: stay on whichever host you are on
 
 ## Accounts
 
 | account | provider | holder | 5h used | week used | headroom | resets | sampled on | source | status | probed at |
 |---|---|---|---|---|---|---|---|---|---|---|
-| claude-owner | claude | owner |  | 21% | 79% | 2026-11-14T14:00:00.796126+00:00 | ace-win-2 | oauth-api | ok | 2026-11-11T20:13:41+00:00 |
-| claude-professional | claude | colleague |  | 21% | 79% | 2026-11-14T07:59:59.758464+00:00 | ace-win-1 | oauth-api | ok | 2026-11-11T20:13:46+00:00 |
-| codex-owner | codex | owner |  | 3% | 97% | 2026-11-18T06:36:36+00:00 | ace-win-2 | app-server-live | ok | 2026-11-11T20:13:51+00:00 |
-| codex-professional | codex | colleague |  | 3% | 97% | 2026-11-17T04:51:09+00:00 | ace-win-1 | app-server-live | ok | 2026-11-11T20:13:46+00:00 |
+| claude-owner | claude | owner |  | 22% | 78% | 2026-11-14T14:00:00.658671+00:00 | ace-win-2 | oauth-api | ok | 2026-11-11T21:13:47+00:00 |
+| claude-professional | claude | colleague |  | 21% | 79% | 2026-11-14T07:59:59.874710+00:00 | ace-win-1 | oauth-api | ok | 2026-11-11T21:13:52+00:00 |
+| codex-owner | codex | owner |  | 3% | 97% | 2026-11-18T06:36:36+00:00 | ace-win-2 | app-server-live | ok | 2026-11-11T21:13:57+00:00 |
+| codex-professional | codex | colleague |  | 3% | 97% | 2026-11-17T04:51:09+00:00 | ace-win-1 | app-server-live | ok | 2026-11-11T21:13:52+00:00 |
 
 ## Hosts
 
