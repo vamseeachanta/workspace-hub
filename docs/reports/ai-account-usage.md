@@ -1,20 +1,20 @@
 # AI account usage (fleet)
 
-Generated 2026-11-12T20:14:09+00:00 by fleet-collector collect_account_usage_fleet. Percentages are USED; headroom = 100 - weekly used. Source of truth: `config/ai-tools/account-usage-latest.json`.
+Generated 2026-11-12T21:14:08+00:00 by fleet-collector collect_account_usage_fleet. Percentages are USED; headroom = 100 - weekly used. Source of truth: `config/ai-tools/account-usage-latest.json`.
 
 ## Recommendation
 
 - **claude**: `claude-professional` (69.0% weekly headroom) on ace-win-1
-- **codex**: `codex-professional` (89.0% weekly headroom) on ace-win-1
+- **codex**: `codex-professional` (88.0% weekly headroom) on ace-win-1
 
 ## Accounts
 
 | account | provider | holder | 5h used | week used | headroom | resets | sampled on | source | status | probed at |
 |---|---|---|---|---|---|---|---|---|---|---|
-| claude-owner | claude | owner |  | 82% | 18% | 2026-11-14T14:00:00.152741+00:00 | ace-win-2 | oauth-api | ok | 2026-11-12T20:13:54+00:00 |
-| claude-professional | claude | colleague |  | 31% | 69% | 2026-11-14T07:59:59.555742+00:00 | ace-win-1 | oauth-api | ok | 2026-11-12T20:13:59+00:00 |
-| codex-owner | codex | owner |  | 37% | 63% | 2026-11-18T06:36:36+00:00 | ace-win-2 | app-server-live | ok | 2026-11-12T20:14:06+00:00 |
-| codex-professional | codex | colleague |  | 11% | 89% | 2026-11-17T04:51:09+00:00 | ace-win-1 | app-server-live | ok | 2026-11-12T20:13:59+00:00 |
+| claude-owner | claude | owner |  | 82% | 18% | 2026-11-14T13:59:59.808911+00:00 | ace-win-2 | oauth-api | ok | 2026-11-12T21:13:54+00:00 |
+| claude-professional | claude | colleague |  | 31% | 69% | 2026-11-14T08:00:00.397977+00:00 | ace-win-1 | oauth-api | ok | 2026-11-12T21:13:59+00:00 |
+| codex-owner | codex | owner |  | 39% | 61% | 2026-11-18T06:36:36+00:00 | ace-win-2 | app-server-live | ok | 2026-11-12T21:14:05+00:00 |
+| codex-professional | codex | colleague |  | 12% | 88% | 2026-11-17T04:51:09+00:00 | ace-win-1 | app-server-live | ok | 2026-11-12T21:13:59+00:00 |
 
 ## Hosts
 
