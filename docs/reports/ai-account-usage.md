@@ -1,20 +1,20 @@
 # AI account usage (fleet)
 
-Generated 2026-11-12T15:14:13+00:00 by fleet-collector collect_account_usage_fleet. Percentages are USED; headroom = 100 - weekly used. Source of truth: `config/ai-tools/account-usage-latest.json`.
+Generated 2026-11-12T16:14:12+00:00 by fleet-collector collect_account_usage_fleet. Percentages are USED; headroom = 100 - weekly used. Source of truth: `config/ai-tools/account-usage-latest.json`.
 
 ## Recommendation
 
-- **claude**: `claude-professional` (74.0% weekly headroom) on ace-win-1
-- **codex**: `codex-professional` (93.0% weekly headroom) on ace-win-1
+- **claude**: `claude-professional` (73.0% weekly headroom) on ace-win-1
+- **codex**: `codex-professional` (92.0% weekly headroom) on ace-win-1
 
 ## Accounts
 
 | account | provider | holder | 5h used | week used | headroom | resets | sampled on | source | status | probed at |
 |---|---|---|---|---|---|---|---|---|---|---|
-| claude-owner | claude | owner |  | 58% | 42% | 2026-11-14T14:00:00.200067+00:00 | ace-win-2 | oauth-api | ok | 2026-11-12T15:13:55+00:00 |
-| claude-professional | claude | colleague |  | 26% | 74% | 2026-11-14T07:59:59.959660+00:00 | ace-win-1 | oauth-api | ok | 2026-11-12T15:14:00+00:00 |
-| codex-owner | codex | owner |  | 25% | 75% | 2026-11-18T06:36:36+00:00 | ace-win-2 | app-server-live | ok | 2026-11-12T15:14:10+00:00 |
-| codex-professional | codex | colleague |  | 7% | 93% | 2026-11-17T04:51:09+00:00 | ace-win-1 | app-server-live | ok | 2026-11-12T15:14:00+00:00 |
+| claude-owner | claude | owner |  | 64% | 36% | 2026-11-14T13:59:59.971702+00:00 | ace-win-2 | oauth-api | ok | 2026-11-12T16:13:45+00:00 |
+| claude-professional | claude | colleague |  | 27% | 73% | 2026-11-14T07:59:59.529001+00:00 | ace-win-1 | oauth-api | ok | 2026-11-12T16:14:01+00:00 |
+| codex-owner | codex | owner |  | 26% | 74% | 2026-11-18T06:36:36+00:00 | ace-win-2 | app-server-live | ok | 2026-11-12T16:14:08+00:00 |
+| codex-professional | codex | colleague |  | 8% | 92% | 2026-11-17T04:51:09+00:00 | ace-win-1 | app-server-live | ok | 2026-11-12T16:14:01+00:00 |
 
 ## Hosts
 
