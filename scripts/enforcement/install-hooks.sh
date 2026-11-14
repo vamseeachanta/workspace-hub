@@ -16,6 +16,7 @@
 
 set -euo pipefail
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
 cd "$REPO_ROOT"
 HOOKS_DIR="$(git rev-parse --path-format=absolute --git-path hooks)"
@@ -321,7 +322,7 @@ fi
 POST_COMMIT="${HOOKS_DIR}/post-commit"
 
 if [[ -f "$POST_COMMIT" ]]; then
-  if grep -q "post-commit-learnings" "$POST_COMMIT" 2>/dev/null; then
+  if grep -q '^learning_dispatch() {' "$POST_COMMIT"; then
     log "OK: learning pipeline already wired into post-commit"
   else
     if [[ "$DRY_RUN" == "1" ]]; then
@@ -331,18 +332,25 @@ if [[ -f "$POST_COMMIT" ]]; then
       # The post-commit has: exit 0 \n\n# Track skill...\nbash scripts/hooks/...
       # We need to replace that with: learning pipeline call \n exit 0
 
+      # Only the learning payload changes here; effective-path/event installation
+      # remains a separate contract. Never leave an empty learning invocation.
+      [[ -s "$SCRIPT_DIR/../hooks/post-commit-learning-dispatch.sh" ]] || {
+        log "ERROR: post-commit learning payload unavailable"
+        exit 1
+      }
       # Create a temporary file with the fix
       tmpfile="$(mktemp)"
 
       # Process the file: find the "exit 0" that precedes dead code, replace it
-      awk '
+      awk -v learning_payload="$SCRIPT_DIR/../hooks/post-commit-learning-dispatch.sh" '
+        $0 == "bash \"${REPO_ROOT}/scripts/hooks/post-commit-learnings.sh\" || true" { next }
         /^exit 0$/ {
           # Check if next lines are dead code (track-skill-patches)
           if (!printed_learning) {
             print ""
             print "# ── Post-commit learning pipeline (#2027) ────────────────────────────"
-            print "REPO_ROOT=\"$(git rev-parse --show-toplevel 2>/dev/null || pwd)\""
-            print "bash \"${REPO_ROOT}/scripts/hooks/post-commit-learnings.sh\" || true"
+            while ((getline payload_line < learning_payload) > 0) print payload_line
+            close(learning_payload)
             print ""
             print "exit 0"
             printed_learning = 1

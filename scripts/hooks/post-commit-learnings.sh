@@ -1,28 +1,34 @@
 #!/usr/bin/env bash
-# post-commit-learnings.sh — Post-commit learning extraction pipeline hook
-# Issue: #2027
-#
-# Runs after each commit to:
-# 1. Track skill modifications (existing #1719 pipeline)
-# 2. Extract learnings from the commit (extract-learnings.sh)
-#
-# Wire into .git/hooks/post-commit by adding (BEFORE exit 0):
-#   REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
-#   bash "${REPO_ROOT}/scripts/hooks/post-commit-learnings.sh" || true
-#
-# Or run standalone:
-#   bash scripts/hooks/post-commit-learnings.sh
-
+# Learning pipeline, invoked by the installed post-commit learning entry point.
+# Git 2.43 git-cat-file: execute only regular blobs from the pinned commit.
+# Optional absent steps retain their previous skip semantics. A failing present
+# step is returned to the entry point, which records the lost invocation.
 set -euo pipefail
 
-REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
+pipeline_git() (
+    unset GIT_DIR GIT_WORK_TREE GIT_COMMON_DIR GIT_INDEX_FILE GIT_PREFIX
+    unset GIT_OBJECT_DIRECTORY GIT_ALTERNATE_OBJECT_DIRECTORIES
+    git "$@"
+)
 
-# Track skill modifications for learning pipeline (#1719)
-if [[ -f "${REPO_ROOT}/scripts/hooks/track-skill-patches.sh" ]]; then
-  bash "${REPO_ROOT}/scripts/hooks/track-skill-patches.sh" 2>/dev/null || true
-fi
-
-# Extract learnings from commit (#2027)
-if [[ -f "${REPO_ROOT}/scripts/learnings/extract-learnings.sh" ]]; then
-  bash "${REPO_ROOT}/scripts/learnings/extract-learnings.sh" HEAD > /tmp/post-commit-learnings.log 2>&1 || true
-fi
+root=${1:-$(pipeline_git rev-parse --show-toplevel)}
+snapshot=${2:-$(pipeline_git -C "$root" rev-parse --verify 'HEAD^{commit}')}
+failed=0
+for step in scripts/hooks/track-skill-patches.sh scripts/learnings/extract-learnings.sh; do
+    mode=$(pipeline_git -C "$root" ls-tree "$snapshot" -- "$step")
+    [[ -n $mode ]] || continue
+    case "$mode" in
+        '100644 blob '*|'100755 blob '*) ;;
+        *) echo "post-commit: non-regular learning step refused: $step" >&2; failed=1; continue ;;
+    esac
+    if ! payload=$(pipeline_git -C "$root" cat-file blob "$snapshot:$step"); then
+        failed=1
+        continue
+    fi
+    # Preserve active-worktree context while keeping executable bytes immutable.
+    if ! (cd "$root" && bash -c "$payload" "$step" "$snapshot"); then
+        echo "post-commit: learning step failed: $step" >&2
+        failed=1
+    fi
+done
+exit "$failed"

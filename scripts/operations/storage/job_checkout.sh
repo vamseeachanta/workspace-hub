@@ -107,5 +107,8 @@ else
     git -C "$dest" sparse-checkout disable
 fi
 git -C "$dest" checkout
+# shellcheck source=scripts/lib/worktree-index.sh
+source "$script_dir/../../lib/worktree-index.sh"
+worktree_index_preflight "$dest" --fresh
 checkout_kb=$(du -sk -- "$dest" | awk '{print $1}')
 printf 'checkout_kb=%s mode=%s profile=%s location=ok\n' "$checkout_kb" "$mode" "${profile:-none}"
