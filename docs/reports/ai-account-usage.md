@@ -1,20 +1,20 @@
 # AI account usage (fleet)
 
-Generated 2026-11-16T05:14:01+00:00 by fleet-collector collect_account_usage_fleet. Percentages are USED; headroom = 100 - weekly used. Source of truth: `config/ai-tools/account-usage-latest.json`.
+Generated 2026-11-16T06:14:05+00:00 by fleet-collector collect_account_usage_fleet. Percentages are USED; headroom = 100 - weekly used. Source of truth: `config/ai-tools/account-usage-latest.json`.
 
 ## Recommendation
 
-- **claude**: `claude-owner` (74.0% weekly headroom) on ace-linux-1, ace-linux-2, ace-win-2, gpu-claw -- within 15 pts of claude-professional: stay on whichever host you are on
-- **codex**: `codex-owner` (97.0% weekly headroom) on ace-linux-1, ace-linux-2, ace-win-2, fleet-collector, gpu-claw
+- **claude**: `claude-owner` (72.0% weekly headroom) on ace-linux-1, ace-linux-2, ace-win-2, gpu-claw -- within 15 pts of claude-professional: stay on whichever host you are on
+- **codex**: `codex-owner` (96.0% weekly headroom) on ace-linux-1, ace-linux-2, ace-win-2, fleet-collector, gpu-claw
 
 ## Accounts
 
 | account | provider | holder | 5h used | week used | headroom | resets | sampled on | source | status | probed at |
 |---|---|---|---|---|---|---|---|---|---|---|
-| claude-owner | claude | owner |  | 26% | 74% | 2026-11-21T13:59:59.604425+00:00 | ace-win-2 | oauth-api | ok | 2026-11-16T05:13:47+00:00 |
-| claude-professional | claude | colleague |  | 26% | 74% | 2026-11-21T08:00:00.238335+00:00 | ace-win-1 | oauth-api | ok | 2026-11-16T05:13:51+00:00 |
-| codex-owner | codex | owner |  | 3% | 97% | 2026-11-23T02:49:02+00:00 | ace-win-2 | app-server-live | ok | 2026-11-16T05:13:58+00:00 |
-| codex-professional | codex | colleague |  | 34% | 66% | 2026-11-17T04:51:09+00:00 | ace-win-1 | app-server-live | ok | 2026-11-16T05:13:51+00:00 |
+| claude-owner | claude | owner |  | 28% | 72% | 2026-11-21T14:00:00.009854+00:00 | ace-win-2 | oauth-api | ok | 2026-11-16T06:13:52+00:00 |
+| claude-professional | claude | colleague |  | 28% | 72% | 2026-11-21T07:59:59.790784+00:00 | ace-win-1 | oauth-api | ok | 2026-11-16T06:13:55+00:00 |
+| codex-owner | codex | owner |  | 4% | 96% | 2026-11-23T02:49:02+00:00 | ace-win-2 | app-server-live | ok | 2026-11-16T06:14:02+00:00 |
+| codex-professional | codex | colleague |  | 36% | 64% | 2026-11-17T04:51:09+00:00 | ace-win-1 | app-server-live | ok | 2026-11-16T06:13:55+00:00 |
 
 ## Hosts
 
