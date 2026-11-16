@@ -1,35 +1,39 @@
 {
-  "generated_at": "2026-11-16T12:14:45.158633+00:00",
+  "generated_at": "2026-11-16T12:16:10.461568+00:00",
   "generated_by": "muse-vm fleet-daily-collector",
   "date": "2026-11-16",
-  "origin_main": "9a95fbb05",
+  "origin_main": "0101c2a74",
   "fleet_size": 8,
-  "reporting": 5,
+  "reporting": 6,
   "report": {
-    "latest_snapshot": "2026-11-15",
-    "stale_days": 1
+    "latest_snapshot": "2026-11-16",
+    "stale_days": 0
   },
   "machines": [
     {
       "name": "muse-vm",
       "reachable": true,
       "branch": "main",
-      "head": "a932e1b53",
-      "behind": 24,
+      "head": "0101c2a74",
+      "behind": 0,
       "ahead": 0,
       "dirty": 0
     },
     {
       "name": "ace-linux-1",
-      "reachable": false,
-      "note": "ssh_unreachable"
+      "reachable": true,
+      "branch": "main",
+      "head": "e6dbffcfc9",
+      "behind": 5,
+      "ahead": 1,
+      "dirty": 218
     },
     {
       "name": "ace-linux-2",
       "reachable": true,
       "branch": "main",
       "head": "0c63abbb7",
-      "behind": 1727,
+      "behind": 1728,
       "ahead": 0,
       "dirty": 0
     },
@@ -38,7 +42,7 @@
       "reachable": true,
       "branch": "main",
       "head": "820d266fe",
-      "behind": 624,
+      "behind": 625,
       "ahead": 0,
       "dirty": 5
     },
@@ -47,7 +51,7 @@
       "reachable": true,
       "branch": "main",
       "head": "b8e945e60",
-      "behind": 9,
+      "behind": 10,
       "ahead": 0,
       "dirty": 44
     },
@@ -56,7 +60,7 @@
       "reachable": true,
       "branch": "main",
       "head": "5a075f688",
-      "behind": 1717,
+      "behind": 1718,
       "ahead": 0,
       "dirty": 10
     },
