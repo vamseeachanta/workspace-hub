@@ -1,20 +1,20 @@
 # AI account usage (fleet)
 
-Generated 2026-11-17T21:14:13+00:00 by fleet-collector collect_account_usage_fleet. Percentages are USED; headroom = 100 - weekly used. Source of truth: `config/ai-tools/account-usage-latest.json`.
+Generated 2026-11-17T22:14:01+00:00 by fleet-collector collect_account_usage_fleet. Percentages are USED; headroom = 100 - weekly used. Source of truth: `config/ai-tools/account-usage-latest.json`.
 
 ## Recommendation
 
-- **claude**: `claude-owner` (89.0% weekly headroom) on ace-linux-1, ace-linux-2, ace-win-2, gpu-claw
+- **claude**: `claude-owner` (86.0% weekly headroom) on ace-linux-1, ace-linux-2, ace-win-2, gpu-claw
 - **codex**: `codex-professional` (94.0% weekly headroom) on ace-win-1
 
 ## Accounts
 
 | account | provider | holder | 5h used | week used | headroom | resets | sampled on | source | status | probed at |
 |---|---|---|---|---|---|---|---|---|---|---|
-| claude-owner | claude | owner |  | 11% | 89% | 2026-11-21T14:00:00.778314+00:00 | ace-win-2 | oauth-api | ok | 2026-11-17T21:13:54+00:00 |
-| claude-professional | claude | colleague |  | 51% | 49% | 2026-11-21T07:59:59.990678+00:00 | ace-win-1 | oauth-api | ok | 2026-11-17T21:13:59+00:00 |
-| codex-owner | codex | owner |  | 63% | 37% | 2026-11-23T02:49:02+00:00 | ace-win-2 | app-server-live | ok | 2026-11-17T21:14:10+00:00 |
-| codex-professional | codex | colleague |  | 6% | 94% | 2026-11-24T13:11:16+00:00 | ace-win-1 | app-server-live | ok | 2026-11-17T21:13:59+00:00 |
+| claude-owner | claude | owner |  | 14% | 86% | 2026-11-21T14:00:00.280071+00:00 | ace-win-2 | oauth-api | ok | 2026-11-17T22:13:48+00:00 |
+| claude-professional | claude | colleague |  | 51% | 49% | 2026-11-21T08:00:00.345544+00:00 | ace-win-1 | oauth-api | ok | 2026-11-17T22:13:51+00:00 |
+| codex-owner | codex | owner |  | 64% | 36% | 2026-11-23T02:49:02+00:00 | ace-win-2 | app-server-live | ok | 2026-11-17T22:13:58+00:00 |
+| codex-professional | codex | colleague |  | 6% | 94% | 2026-11-24T13:11:16+00:00 | ace-win-1 | app-server-live | ok | 2026-11-17T22:13:51+00:00 |
 
 ## Hosts
 
