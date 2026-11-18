@@ -75,7 +75,7 @@ while :; do
   case "$status" in
     CLEAN)
       if [ "$DO_MERGE" -eq 1 ]; then
-        echo "[$ts] PR #$PR CLEAN — merging (authorized per-PR, merge-authorization.md)."
+        echo "[$ts] PR #$PR CLEAN — merged at reviewed head (merge-authorization.md)."
         # A server-side mismatch must fail this run, never adopt a newer head.
         gh pr merge "$PR" "${REPO_ARGS[@]}" --squash --delete-branch \
           --match-head-commit "$observed_head"
