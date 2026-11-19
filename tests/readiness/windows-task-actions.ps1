@@ -45,6 +45,7 @@ $files = @($expected.Values) + @(
     'scripts/windows/scheduler-actions.ps1',
     'scripts/windows/run-scheduled-task.ps1',
     'scripts/coordination/context/setup_scheduled_task.ps1',
+    'scripts/coordination/context/daily_context_check.bat',
     'config/scheduled-tasks/schedule-tasks.yaml'
 )
 foreach ($relative in $files) {
@@ -88,7 +89,7 @@ $contextDefinition = $context[0] | ConvertFrom-Json
 Assert-True ($contextDefinition.ScriptPath -eq (Join-Path $root $expected.ContextManagementDaily)) 'Context installers disagree.'
 
 # The runner starts only disposable child scripts, including a nonzero result.
-$WorkspaceRoot = $root
+# Leave the ambient workspace pointed at the source checkout.
 $child = Join-Path $root 'scripts/child.ps1'
 $powershell = Get-TaskPowerShell
 foreach ($code in @(0, 7)) {
@@ -100,7 +101,7 @@ exit $code
 "@
     [IO.File]::WriteAllText($child, $childText.Replace("`r`n", "`n") + "`n", [Text.UTF8Encoding]::new($false))
     $argument = "argument with spaces and 'quotes'"
-    $definition = New-RepoTaskDefinition -Name "child-$code" -ScriptPath 'scripts/child.ps1' `
+    $definition = New-RepoTaskDefinition -WorkspaceRoot $root -Name "child-$code" -ScriptPath 'scripts/child.ps1' `
         -PowerShell -ScriptArguments @('-Value', $argument)
     $encoded = ($definition.Arguments -split ' -Definition ')[1]
     & $powershell -NoProfile -File (Join-Path $root 'scripts/windows/run-scheduled-task.ps1') -Definition $encoded
@@ -121,7 +122,7 @@ printf '%s\n' 'shell diagnostic' >&2
 exit 3
 '@
 [IO.File]::WriteAllText($child, $childText.Replace("`r`n", "`n") + "`n", [Text.UTF8Encoding]::new($false))
-$definition = New-RepoTaskDefinition -Name 'shell-child' -ScriptPath 'scripts/child.sh' `
+$definition = New-RepoTaskDefinition -WorkspaceRoot $root -Name 'shell-child' -ScriptPath 'scripts/child.sh' `
     -GitBashPath $bash -ScriptArguments @("shell argument with spaces and 'quotes'")
 $encoded = ($definition.Arguments -split ' -Definition ')[1]
 & $powershell -NoProfile -File (Join-Path $root 'scripts/windows/run-scheduled-task.ps1') -Definition $encoded
@@ -132,5 +133,15 @@ $text = Get-Content -LiteralPath $logs[0].FullName -Raw
 Assert-True ($text.Contains("shell argument with spaces and 'quotes'")) 'Shell arguments were lost.'
 Assert-True ($text.Contains('shell diagnostic')) 'Shell stderr was lost.'
 Assert-True ($text.Contains('ERROR: exit=3')) 'Collector cannot recognize a failed shell task.'
+# Exercise the compatibility entry point from outside the copied repository.
+$batchChild = Join-Path $root $expected.ContextManagementDaily
+$batchText = @'
+[[ -f scripts/coordination/context/daily_context_check.bat ]] || exit 1
+[[ "$PWD" -ef "$(cygpath -u "$WORKSPACE_ROOT")" ]] || exit 2
+exit 9
+'@
+[IO.File]::WriteAllText($batchChild, $batchText.Replace("`r`n", "`n") + "`n", [Text.UTF8Encoding]::new($false))
+& (Join-Path $root 'scripts/coordination/context/daily_context_check.bat')
+Assert-True ($LASTEXITCODE -eq 9) 'Batch entry point lost its working directory, root or exit status.'
 Write-Output 'PASS: task previews, quoting, logging, and native exit status.'
 exit 0

@@ -33,6 +33,21 @@ def test_shared_action_is_absolute_and_policy_preserving():
     assert "return $full" in resolver
 
 
+def test_definition_requires_explicit_workspace_root():
+    helper = (WINDOWS / "scheduler-actions.ps1").read_text(encoding="utf-8")
+    definition = helper.split("function New-RepoTaskDefinition {", 1)[1]
+    assert "[Parameter(Mandatory=$true)][string]$WorkspaceRoot" in definition.split("$script = ", 1)[0]
+    for path in (WINDOWS / "setup-scheduler-tasks.ps1", CONTEXT / "setup_scheduled_task.ps1"):
+        text = path.read_text(encoding="utf-8")
+        assert "New-RepoTaskDefinition -WorkspaceRoot $WorkspaceRoot" in text
+
+
+def test_git_bash_resolution_checks_literal_files():
+    helper = (WINDOWS / "scheduler-actions.ps1").read_text(encoding="utf-8")
+    resolver = helper.split("function Get-TaskPowerShell", 1)[0]
+    assert "Test-Path -LiteralPath $candidate -PathType Leaf" in resolver
+
+
 def test_runner_captures_output_and_exit_code():
     text = (WINDOWS / "run-scheduled-task.ps1").read_text(encoding="utf-8")
     assert "Set-Location -LiteralPath" in text

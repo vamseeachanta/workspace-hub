@@ -203,7 +203,7 @@ function Register-ClaudeTask {
     }
     $triggerSummary = Format-TriggerSpec -Spec $triggerSpec
 
-    $definition = New-RepoTaskDefinition -Name $Name -ScriptPath $ScriptPath `
+    $definition = New-RepoTaskDefinition -WorkspaceRoot $WorkspaceRoot -Name $Name -ScriptPath $ScriptPath `
         -ScriptArguments $ScriptArguments -GitBashPath $GitBash `
         -LogPattern $LogPattern -PowerShell:$PowerShell
 

@@ -12,7 +12,7 @@ function Resolve-GitBash {
     $candidates.Add('C:\Program Files (x86)\Git\bin\bash.exe')
     $candidates.Add("$env:LOCALAPPDATA\Programs\Git\bin\bash.exe")
     foreach ($candidate in ($candidates | Select-Object -Unique)) {
-        if (-not $candidate -or -not (Test-Path $candidate)) { continue }
+        if (-not $candidate -or -not (Test-Path -LiteralPath $candidate -PathType Leaf)) { continue }
         $uname = (& $candidate -c 'uname -s' 2>$null)
         if ($uname -match '^(MINGW|MSYS|CYGWIN)') { return $candidate }
     }
@@ -29,6 +29,7 @@ function Get-TaskPowerShell {
 
 function New-RepoTaskDefinition {
     param(
+        [Parameter(Mandatory=$true)][string]$WorkspaceRoot,
         [Parameter(Mandatory=$true)][string]$Name,
         [Parameter(Mandatory=$true)][string]$ScriptPath,
         [string[]]$ScriptArguments = @(),

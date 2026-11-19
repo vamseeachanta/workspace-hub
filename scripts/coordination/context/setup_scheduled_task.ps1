@@ -18,7 +18,7 @@ $WorkspaceRoot = (Resolve-Path -LiteralPath $WorkspaceRoot).Path
 . (Join-Path $WorkspaceRoot 'scripts/windows/scheduler-actions.ps1')
 $bash = Resolve-GitBash
 if (-not $bash -and -not $WhatIf) { throw 'Git Bash was not found.' }
-$definition = New-RepoTaskDefinition -Name $TaskName `
+$definition = New-RepoTaskDefinition -WorkspaceRoot $WorkspaceRoot -Name $TaskName `
     -ScriptPath 'scripts/coordination/context/daily_context_check.sh' -GitBashPath $bash
 if ($WhatIf) {
     Write-Output ($definition | Select-Object *, @{Name='Schedule'; Expression={'daily 06:00'}} | ConvertTo-Json -Compress -Depth 5)
