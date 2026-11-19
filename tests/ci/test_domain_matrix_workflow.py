@@ -175,6 +175,10 @@ def test_baseline_regressions_run_before_broader_collection():
     config = yaml.safe_load(
         (ROOT / ".github/workflows/baseline-check.yml").read_text(encoding="utf-8")
     )
+    triggers = config.get("on", config.get(True))
+    pull_request = triggers["pull_request"]
+    assert "main" in pull_request["branches"]
+    assert {"opened", "synchronize"} <= set(pull_request["types"])
     job = config["jobs"]["test"]
     assert "if" not in job
     assert not job.get("continue-on-error", False)
