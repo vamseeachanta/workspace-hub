@@ -187,14 +187,12 @@ def test_main_push_scheduler_workflow_is_fail_closed():
     assert "set +e" not in workflow_text
 
 
-def test_merge_rule_requires_clean_helper_and_landed_validation():
+def test_merge_rule_names_the_helper_bound_to_the_reviewed_head():
+    # Rules review r4 pick 39 (20 Nov 2026): the merge script is the rule; its checks live in the script.
     rule = MERGE_RULE.read_text()
     for phrase in (
-        "Explicit user authorization never waives",
-        "`mergeStateStatus == CLEAN`",
-        "`scripts/operations/merge-when-clean.sh --merge`",
-        "`git fetch origin main`",
-        "actual landed `origin/main`",
-        "changed-domain generated-artifact checks",
+        "`scripts/operations/merge-when-clean.sh --merge <PR> --expected-head <reviewed head>`",
+        "Never push to `main` directly",
+        "## Direct-main exemptions",
     ):
         assert phrase in rule

@@ -11,16 +11,15 @@
 # feedback_dependabot_merge_no_rebase_trust_clean.
 #
 # DEFAULT IS WATCH-ONLY: it prints the merge command when the PR goes CLEAN.
-# --merge actually merges, and per .claude/rules/merge-authorization.md that
-# flag may only be passed with an explicit, per-PR human authorization
-# (non-sticky: one authorized run never covers the next PR).
+# --merge actually merges, and only together with --expected-head set to the
+# independently reviewed head (.claude/rules/merge-authorization.md).
 #
 # Usage:
 #   merge-when-clean.sh <pr-number> [--repo owner/name] [--merge]
 #                       [--interval SECONDS] [--timeout MINUTES] [--once]
 #                       [--expected-head LOWERCASE_40_HEX_SHA]
-# Every actual merge is bound to the queried head. --expected-head additionally
-# refuses a head that differs from the independently reviewed commit identity.
+# Every actual merge is bound to the queried head. --expected-head (required
+# with --merge) refuses a head that differs from the reviewed commit identity.
 #
 # Exit codes: 0 merged or CLEAN reported | 2 conflict (DIRTY, needs human)
 #             3 timed out | 4 PR closed without merge | 5 usage/gh/head error
@@ -48,6 +47,8 @@ while [ $# -gt 0 ]; do
 done
 
 [ -n "$PR" ] || { echo "usage: merge-when-clean.sh <pr-number> [--repo owner/name] [--merge] [--interval s] [--timeout min] [--once] [--expected-head SHA]" >&2; exit 5; }
+[ "$DO_MERGE" -eq 0 ] || [ -n "$EXPECTED_HEAD" ] || {
+  echo "--merge requires --expected-head <reviewed head>" >&2; exit 5; }
 REPO_ARGS=()
 [ -n "$REPO" ] && REPO_ARGS=(--repo "$REPO")
 
@@ -75,7 +76,7 @@ while :; do
   case "$status" in
     CLEAN)
       if [ "$DO_MERGE" -eq 1 ]; then
-        echo "[$ts] PR #$PR CLEAN — merging (authorized per-PR, merge-authorization.md)."
+        echo "[$ts] PR #$PR CLEAN — merged at reviewed head (merge-authorization.md)."
         # A server-side mismatch must fail this run, never adopt a newer head.
         gh pr merge "$PR" "${REPO_ARGS[@]}" --squash --delete-branch \
           --match-head-commit "$observed_head"

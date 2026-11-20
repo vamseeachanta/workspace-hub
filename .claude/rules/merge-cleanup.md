@@ -1,6 +1,6 @@
 # Merge cleanup — a merge is not done until its branch and worktree are gone
 
-**When to apply:** every merge to `main`, in any repo of the ecosystem — whether the agent verified it and handed the human the command, or the human ran it. Also at session close, as a sweep.
+**When to apply:** every merge to `main`, in any repo of the ecosystem — whether the merge helper ran it or a person did. Also at session close, as a sweep.
 
 **Why:** cleanup deferred is cleanup never done, and the residue is not inert. Measured on `ace-linux-1`, 2026-07-30: **44 remote branches already merged into `origin/main`**, and **17 git worktrees**, two of them holding branches that merged weeks earlier. Three of the 44 were merged in that same session and left behind — the debt accrues fastest from the person who best knows the branch is dead.
 
