@@ -136,7 +136,8 @@ find_dcim() {
   command -v gio >/dev/null || { echo "gio not found (sudo apt install gvfs-backends gvfs-fuse)" >&2; return 1; }
   : "${DBUS_SESSION_BUS_ADDRESS:=unix:path=/run/user/$(id -u)/bus}"
   export DBUS_SESSION_BUS_ADDRESS
-  local gvfs="/run/user/$(id -u)/gvfs" ids
+  local gvfs ids
+  gvfs="/run/user/$(id -u)/gvfs"
   if [ -z "$UDID" ]; then
     ids="$( { ls "$gvfs" 2>/dev/null | sed -n 's/^afc:host=\([^,]*\).*/\1/p'
               gio mount -li 2>/dev/null | grep -o 'afc://[^/ ]*' | sed 's#afc://##'; } \

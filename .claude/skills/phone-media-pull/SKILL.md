@@ -24,8 +24,12 @@ Issues: #3584 (pull), #3586 (Drive capacity and checks), epic #3589.
 
 ## Steps with the owner
 
+The commands below use the canonical checkout on ace-linux-1
+(`/mnt/ace/ws/workspace-hub`). Confirm it holds the script
+(`ls scripts/phone_media/phone_pull.sh`); if not, it is behind `origin/main`.
+
 1. **Dry run first if the script changed** (no phone needed):
-   `ssh ace-linux-1 'cd ~/workspace-hub && scripts/phone_media/phone_pull.sh --dry-run --simulate-drive-missing 1'`
+   `ssh ace-linux-1 'cd /mnt/ace/ws/workspace-hub && scripts/phone_media/phone_pull.sh --dry-run --simulate-drive-missing 1'`
    Expect one file on the not-safe list.
 2. **Ask the owner to prepare the phone** (one message, all items):
    - Plug it into ace-linux-1 with a data cable (not a charge-only cable).
@@ -41,7 +45,7 @@ Issues: #3584 (pull), #3586 (Drive capacity and checks), epic #3589.
    - The archive folder name for this phone (`iphone-<name>`, lowercase).
 3. **Run it** (long: about 1 minute per 1.4 GB over USB; run in the background
    and watch `reports/run-*/rsync.log`):
-   `ssh ace-linux-1 'cd ~/workspace-hub && scripts/phone_media/phone_pull.sh --phone iphone-<name>'`
+   `ssh ace-linux-1 'cd /mnt/ace/ws/workspace-hub && scripts/phone_media/phone_pull.sh --phone iphone-<name>'`
    Add `--youtube-plan` for the YouTube list, `--jpeg` for JPEG copies of HEIC,
    `--hash-phone` to re-read and hash every phone file (slower, strongest).
 4. **Read the outcome** from the terminal: preflight (space on /mnt/ace >= 2x
