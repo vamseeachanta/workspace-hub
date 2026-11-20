@@ -207,7 +207,7 @@ step_verify() {
   local extra=()
   [ "$HASH_PHONE" = 1 ] && extra+=(--hash-phone)
   "$PY" "$HELPER" verify --map "$RUN/pull-map.json" --phone-dir "$DCIM" \
-    --local-dir "$USB" --manifest "$RUN/manifest.tsv" "${extra[@]}"
+    --local-dir "$USB" --manifest "$RUN/manifest.tsv" --inventory "$RUN/phone-scan.json" "${extra[@]}"
   local rc=$?
   echo "manifest: $RUN/manifest.tsv"
   return $rc
@@ -249,7 +249,7 @@ step_backup() {
 
 step_safe_list() {
   echo "== safe-to-delete list"
-  local args=(--phone "$PHONE" --manifest "$RUN/manifest.tsv" --out-dir "$REPORTS"
+  local args=(--phone "$PHONE" --manifest "$RUN/manifest.tsv" --out-dir "$REPORTS" --local-dir "$USB"
               --stamp "$STAMP")
   [ -f "$RUN/check-size.txt" ] && args+=(--size-check "$RUN/check-size.txt")
   [ -f "$RUN/check-hash.txt" ] && args+=(--hash-check "$RUN/check-hash.txt" --hash-log "$RUN/check-hash.log")

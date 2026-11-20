@@ -58,7 +58,10 @@ def scan(root: Path) -> list[dict]:
     files and dot folders (rsync temp files, iOS internals) and symlinks."""
     root = Path(root)
     out = []
-    for dirpath, dirnames, filenames in os.walk(root, followlinks=False):
+    def fail(error: OSError) -> None:  # an unreadable folder must not vanish
+        raise error
+
+    for dirpath, dirnames, filenames in os.walk(root, followlinks=False, onerror=fail):
         dirnames[:] = sorted(d for d in dirnames if not d.startswith("."))
         for name in sorted(filenames):
             if name.startswith("."):
@@ -219,7 +222,16 @@ def exif_dates(paths: list[Path]) -> dict[str, str]:
 
 
 def verify(pull_map: list[dict], phone_dir: Path, local_dir: Path,
-           hash_phone: bool = False, use_exif: bool = True) -> list[dict]:
+           hash_phone: bool = False, use_exif: bool = True,
+           inventory: list[dict] | None = None) -> list[dict]:
+    """inventory: the preflight phone scan. Any file in it that the pull map
+    lacks is added as a failed row (no date), so it can never be counted as
+    backed up and no date range covering it is offered."""
+    seen = {r["phone_path"] for r in pull_map}
+    pull_map = list(pull_map) + [
+        {"phone_path": e["rel"], "size": e["size"], "local_path": None,
+         "how": "missing_from_pull_scan"}
+        for e in (inventory or []) if e["rel"] not in seen]
     kinds = classify([r["phone_path"] for r in pull_map])
     locals_ = [local_dir / r["local_path"] for r in pull_map if r.get("local_path")]
     dates = exif_dates(locals_) if use_exif else {}
@@ -295,8 +307,46 @@ def hash_state(hash_marks: dict | None, hash_log: Path | None) -> str:
     return "checked"
 
 
+def photos_item(rel: str) -> tuple[str, str]:
+    """Key of the Photos-app item a DCIM file belongs to: same folder, same
+    stem, with the iOS edit (IMG_E1234) and original-sidecar (IMG_O1234)
+    prefixes folded in. A Live Photo's HEIC, its MOV and its AAE share one key."""
+    p = Path(rel)
+    stem = re.sub(r"^(IMG_)[EO](\d+)$", r"\1\2", p.stem, flags=re.IGNORECASE)
+    return p.parent.as_posix(), stem.lower()
+
+
+def recheck_local(manifest: list[dict], local_dir: Path) -> list[dict]:
+    """Re-hash archive files against the manifest before trusting a Drive
+    check (a resumed run may follow later changes to the archive)."""
+    out = []
+    for r in manifest:
+        if r["status"] == "ok":
+            lp = Path(local_dir) / r["local_path"]
+            if not lp.is_file() or lp.stat().st_size != r["size"] or sha256(lp) != r["sha256"]:
+                r = {**r, "status": "archive_changed_since_verify"}
+        out.append(r)
+    return out
+
+
 def safe_to_delete(manifest: list[dict], size_marks: dict | None,
                    hash_marks: dict | None, hstate: str) -> tuple[list, list]:
+    """A file is safe only when it and every other file of the same Photos
+    item (Live Photo clip, edit render, AAE sidecar) passed every check."""
+    safe, unsafe = _file_level(manifest, size_marks, hash_marks, hstate)
+    bad_items = {photos_item(r["phone_path"]): r["phone_path"] for r in unsafe}
+    keep = []
+    for r in safe:
+        item = photos_item(r["phone_path"])
+        if item in bad_items:
+            unsafe.append({**r, "reason": "same_photos_item_not_safe"})
+        else:
+            keep.append(r)
+    return keep, unsafe
+
+
+def _file_level(manifest: list[dict], size_marks: dict | None,
+                hash_marks: dict | None, hstate: str) -> tuple[list, list]:
     safe, unsafe = [], []
     for r in manifest:
         lp = r["local_path"]
@@ -554,6 +604,7 @@ def main(argv=None) -> int:
     s.add_argument("--manifest", type=Path, required=True)
     s.add_argument("--hash-phone", action="store_true")
     s.add_argument("--no-exif", action="store_true")
+    s.add_argument("--inventory", type=Path, help="preflight phone scan JSON")
 
     s = sub.add_parser("safe-list")
     s.add_argument("--phone", required=True)
@@ -563,6 +614,8 @@ def main(argv=None) -> int:
     s.add_argument("--hash-log", type=Path)
     s.add_argument("--out-dir", type=Path, required=True)
     s.add_argument("--stamp", required=True)
+    s.add_argument("--local-dir", type=Path, required=True,
+                   help="archive usb folder; files are re-hashed against the manifest")
 
     s = sub.add_parser("youtube-plan")
     s.add_argument("--manifest", type=Path, required=True)
@@ -587,7 +640,12 @@ def main(argv=None) -> int:
     a = ap.parse_args(argv)
 
     if a.cmd == "scan":
-        rows = scan(a.source)
+        try:
+            rows = scan(a.source)
+        except OSError as error:  # no paths in terminal output
+            print(f"phone folder could not be read ({type(error).__name__}); unlock "
+                  "the phone, keep it unlocked and rerun", file=sys.stderr)
+            return 3
         write_json(a.out, rows)
         total = sum(r["size"] for r in rows)
         print(f"phone DCIM: {len(rows)} files, {fmt_gb(total)}")
@@ -610,7 +668,12 @@ def main(argv=None) -> int:
         return 0 if res["local_ok"] else 4
 
     if a.cmd == "reconcile":
-        rows = reconcile(a.phone_dir, a.local_dir)
+        try:
+            rows = reconcile(a.phone_dir, a.local_dir)
+        except OSError as error:  # an unreadable folder fails the run
+            print(f"reconcile stopped: a phone folder could not be read "
+                  f"({type(error).__name__}); unlock the phone and rerun", file=sys.stderr)
+            return 9
         write_json(a.out, rows)
         hows = {}
         for r in rows:
@@ -620,7 +683,10 @@ def main(argv=None) -> int:
 
     if a.cmd == "verify":
         pull_map = json.loads(a.map.read_text(encoding="utf-8"))
-        rows = verify(pull_map, a.phone_dir, a.local_dir, a.hash_phone, not a.no_exif)
+        inventory = (json.loads(a.inventory.read_text(encoding="utf-8"))
+                     if a.inventory else None)
+        rows = verify(pull_map, a.phone_dir, a.local_dir, a.hash_phone, not a.no_exif,
+                      inventory)
         write_manifest(rows, a.manifest)
         bad = [r for r in rows if r["status"] != "ok"]
         print(f"verify: {len(rows) - len(bad)} of {len(rows)} files match the phone "
@@ -628,7 +694,7 @@ def main(argv=None) -> int:
         return 0 if not bad else 6
 
     if a.cmd == "safe-list":
-        manifest = read_manifest(a.manifest)
+        manifest = recheck_local(read_manifest(a.manifest), a.local_dir)
         size_marks = parse_combined(a.size_check)
         hash_marks = parse_combined(a.hash_check)
         hstate = hash_state(hash_marks, a.hash_log)

@@ -257,9 +257,10 @@ def test_dry_run_end_to_end(tmp_path):
                           "--youtube-min-mb", "0.2"],
                          capture_output=True, text=True, env=env, timeout=300, check=False)
     out = res.stdout + res.stderr
-    # 8 fake phone files; the first (sorted) is dropped from the fake Drive.
-    assert "Safe to delete: 7 files" in out, out
-    assert "NOT safe (kept off the list): 1 files" in out, out
+    # 8 fake phone files; IMG_0001.HEIC is dropped from the fake Drive, which
+    # also holds back its Live Photo clip IMG_0001.MOV (same Photos item).
+    assert "Safe to delete: 6 files" in out, out
+    assert "NOT safe (kept off the list): 2 files" in out, out
     assert "YouTube plan (not run): 2 videos" in out, out
     reports = tmp_path / "arch/iphone-dryrun/reports"
     [not_safe] = list(reports.glob("not-safe-*.tsv"))
@@ -290,3 +291,66 @@ def test_dry_run_refuses_live_root():
                          capture_output=True, text=True, timeout=60, check=False)
     assert res.returncode != 0
     assert "refuses the live archive root" in res.stderr
+
+
+# ------------------------------------------- review findings (PR #4490)
+@pytest.mark.skipif(sys.platform == "win32" or os.geteuid() == 0,
+                    reason="needs POSIX permissions as a normal user")
+def test_scan_fails_closed_on_unreadable_folder(pp, tmp_path):
+    put(tmp_path / "100APPLE/IMG_1.JPG", b"a")
+    locked = tmp_path / "101APPLE"
+    put(locked / "IMG_2.JPG", b"b")
+    locked.chmod(0)
+    try:
+        with pytest.raises(OSError):
+            pp.scan(tmp_path)
+    finally:
+        locked.chmod(0o755)
+
+
+def test_verify_accounts_for_whole_inventory(pp, tmp_path):
+    phone, local = tmp_path / "DCIM", tmp_path / "usb"
+    put(phone / "A/1.JPG", b"12345")
+    put(local / "A/1.JPG", b"12345")
+    pull_map = [{"phone_path": "A/1.JPG", "size": 5, "local_path": "A/1.JPG", "how": "same"}]
+    inventory = [{"rel": "A/1.JPG", "size": 5, "mtime": 0},
+                 {"rel": "B/2.HEIC", "size": 9, "mtime": 0}]
+    rows = {r["phone_path"]: r for r in pp.verify(pull_map, phone, local, use_exif=False,
+                                                  inventory=inventory)}
+    assert rows["B/2.HEIC"]["status"] == "not_copied:missing_from_pull_scan"
+    assert rows["B/2.HEIC"]["captured"] == ""
+    manifest = list(rows.values())
+    marks = {"A/1.JPG": "="}
+    safe, unsafe = pp.safe_to_delete(manifest, marks, marks, "checked")
+    assert [r["phone_path"] for r in safe] == ["A/1.JPG"]
+    assert pp.cutoff(manifest, unsafe) is None  # no date range offered
+
+
+def test_live_photo_item_is_safe_only_as_a_whole(pp):
+    manifest = [row("A/IMG_0001.HEIC"), row("A/IMG_0001.MOV", "live_clip"),
+                row("A/IMG_E0001.HEIC"), row("A/IMG_O0001.AAE", "sidecar"),
+                row("A/IMG_0002.HEIC")]
+    ok = {r["local_path"]: "=" for r in manifest}
+    missing_clip = {**ok, "A/IMG_0001.MOV": "+"}
+    safe, unsafe = pp.safe_to_delete(manifest, missing_clip, ok, "checked")
+    assert [r["phone_path"] for r in safe] == ["A/IMG_0002.HEIC"]
+    reasons = {r["phone_path"]: r["reason"] for r in unsafe}
+    assert reasons["A/IMG_0001.MOV"] == "drive_size:missing_on_drive"
+    assert {reasons[k] for k in ("A/IMG_0001.HEIC", "A/IMG_E0001.HEIC",
+                                 "A/IMG_O0001.AAE")} == {"same_photos_item_not_safe"}
+    assert len(pp.safe_to_delete(manifest, ok, ok, "checked")[0]) == 5
+
+
+def test_resumed_safe_list_rechecks_archive_bytes(pp, tmp_path):
+    good = put(tmp_path / "A/1.JPG", b"original")
+    put(tmp_path / "A/2.JPG", b"original")
+    digest = pp.sha256(good)
+    manifest = [{**row("A/1.JPG", size=8), "sha256": digest},
+                {**row("A/2.JPG", size=8), "sha256": digest}]
+    (tmp_path / "A/2.JPG").write_bytes(b"changed!")  # same size, new bytes
+    rows = {r["phone_path"]: r for r in pp.recheck_local(manifest, tmp_path)}
+    assert rows["A/1.JPG"]["status"] == "ok"
+    assert rows["A/2.JPG"]["status"] == "archive_changed_since_verify"
+    marks = {"A/1.JPG": "=", "A/2.JPG": "="}
+    safe, _ = pp.safe_to_delete(list(rows.values()), marks, marks, "checked")
+    assert [r["phone_path"] for r in safe] == ["A/1.JPG"]
