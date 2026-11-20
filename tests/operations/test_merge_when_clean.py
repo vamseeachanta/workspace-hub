@@ -70,10 +70,15 @@ def merges(calls):
     return [call for call in calls if call[:2] == ["pr", "merge"]]
 
 
-@pytest.mark.parametrize("explicit", [False, True])
-def test_clean_merge_binds_server_head(harness, explicit):
-    args = ["--merge"] + (["--expected-head", HEAD] if explicit else [])
-    result, calls = invoke(harness, *args)
+def test_merge_without_expected_head_stops_before_gh(harness):
+    result, calls = invoke(harness, "--merge")
+    assert result.returncode == 5
+    assert "--merge requires --expected-head" in result.stderr
+    assert not calls
+
+
+def test_clean_merge_binds_server_head(harness):
+    result, calls = invoke(harness, "--merge", "--expected-head", HEAD)
     assert result.returncode == 0, result.stderr
     merge = merges(calls)
     assert len(merge) == 1
@@ -101,15 +106,13 @@ def test_invalid_expected_head_stops_before_gh(harness, arguments):
 
 @pytest.mark.parametrize("head", ["", "null", "bad", "A" * 40, "1" * 39])
 def test_invalid_observed_head_never_merges(harness, head):
-    result, calls = invoke(harness, "--merge", OBSERVED_HEAD=head)
+    result, calls = invoke(harness, "--merge", "--expected-head", HEAD, OBSERVED_HEAD=head)
     assert result.returncode != 0
     assert not merges(calls)
 
 
-@pytest.mark.parametrize("explicit", [False, True])
-def test_server_race_refusal_is_not_retried(harness, explicit):
-    args = ["--merge"] + (["--expected-head", HEAD] if explicit else [])
-    result, calls = invoke(harness, *args, MERGE_RC="7")
+def test_server_race_refusal_is_not_retried(harness):
+    result, calls = invoke(harness, "--merge", "--expected-head", HEAD, MERGE_RC="7")
     assert result.returncode != 0
     assert len(merges(calls)) == 1
     assert merges(calls)[0][-2:] == ["--match-head-commit", HEAD]
@@ -128,13 +131,13 @@ def test_watch_only_prints_bound_command_without_merging(harness, explicit):
 @pytest.mark.parametrize("status,code", [
     ("BLOCKED", 0), ("BEHIND", 0), ("UNSTABLE", 0), ("UNKNOWN", 0), ("DIRTY", 2)])
 def test_nonclean_once_never_merges(harness, status, code):
-    result, calls = invoke(harness, "--merge", MERGE_STATE=status)
+    result, calls = invoke(harness, "--merge", "--expected-head", HEAD, MERGE_STATE=status)
     assert result.returncode == code
     assert not merges(calls)
 
 
 @pytest.mark.parametrize("state,code", [("MERGED", 0), ("CLOSED", 4)])
 def test_terminal_pr_state_preserved(harness, state, code):
-    result, calls = invoke(harness, "--merge", PR_STATE=state)
+    result, calls = invoke(harness, "--merge", "--expected-head", HEAD, PR_STATE=state)
     assert result.returncode == code
     assert not merges(calls)

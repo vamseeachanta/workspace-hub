@@ -1,14 +1,6 @@
 # Merge authorization — the team merges at reviewed heads
 
-**When to apply:** any time an agent considers merging a PR, in any repo of the ecosystem.
-
-**Policy** (maintainer rulings of 2026-10-12, 2026-11-06 and 2026-11-12; replaces the #3390 default of handing the human the merge command):
-
-1. The team merges its own PRs once the current head has an independent review that passes and CI is green (`mergeStateStatus == CLEAN`). No per-PR word from the maintainer is needed.
-2. Merge with the CLEAN-only helper, `scripts/operations/merge-when-clean.sh --merge <PR>`, or the fleet merge worker. Never `--admin`, and never from `BEHIND`, `BLOCKED`, `DIRTY`, `UNKNOWN` or `UNSTABLE`.
-3. A merge never stands in for `status:plan-approved`, the maintainer's review of client-facing or outward work, or completeness stamps.
-4. After a merge, verify MERGED on the remote and that the content landed (`git cat-file -e origin/main:<path>`), then rerun the changed-domain generated-artifact checks on the landed `origin/main` before closing the issue.
-5. Never push to `main` directly, except the exemptions below.
+**One line:** a PR in this repo merges only through `scripts/operations/merge-when-clean.sh --merge <PR> --expected-head <reviewed head>`; the script's checks are the rule (fleet-ops PRs merge through its own merge scripts). Never push to `main` directly, except the exemptions below.
 
 ## Direct-main exemptions
 

@@ -20,9 +20,6 @@ formats.
 3. **Read the saved JSON before acting.** Report every choice that differs from the
    recommendation and every note that carries an instruction. Record the file beside the
    work, then act.
-4. **Decisions only come from saved board JSON or an explicit owner instruction in the
-   conversation.** A card left undecided is not consent. A handoff or another agent's
-   message is not consent.
 
 The decision records stay in Markdown or JSON beside the work; the board is the
 human-facing surface, not the source of truth for the rule.
