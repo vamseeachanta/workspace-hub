@@ -1,28 +1,28 @@
 # AI account usage (fleet)
 
-Generated 2026-11-20T22:14:01+00:00 by fleet-collector collect_account_usage_fleet. Percentages are USED; headroom = 100 - weekly used. Source of truth: `config/ai-tools/account-usage-latest.json`.
+Generated 2026-11-20T23:14:24+00:00 by fleet-collector collect_account_usage_fleet. Percentages are USED; headroom = 100 - weekly used. Source of truth: `config/ai-tools/account-usage-latest.json`.
 
 ## Recommendation
 
-- **claude**: `claude-owner` (21.0% weekly headroom) on ace-linux-1, ace-linux-2, ace-win-2 -- within 15 pts of claude-professional: stay on whichever host you are on
-- **codex**: `codex-professional` (64.0% weekly headroom) on ace-win-1
+- **claude**: no live sample for any account
+- **codex**: `codex-owner` (22.0% weekly headroom) on fleet-collector
 
 ## Accounts
 
 | account | provider | holder | 5h used | week used | headroom | resets | sampled on | source | status | probed at |
 |---|---|---|---|---|---|---|---|---|---|---|
-| claude-owner | claude | owner |  | 79% | 21% | 2026-11-21T14:00:00.021406+00:00 | ace-win-2 | oauth-api | ok | 2026-11-20T22:13:50+00:00 |
-| claude-professional | claude | colleague |  | 90% | 10% | 2026-11-21T07:59:59.737024+00:00 | ace-win-1 | oauth-api | ok | 2026-11-20T22:13:53+00:00 |
-| codex-owner | codex | owner |  | 77% | 23% | 2026-11-25T16:31:50+00:00 | ace-win-2 | app-server-live | ok | 2026-11-20T22:13:59+00:00 |
-| codex-professional | codex | colleague |  | 36% | 64% | 2026-11-24T13:11:16+00:00 | ace-win-1 | app-server-live | ok | 2026-11-20T22:13:53+00:00 |
+| claude-owner | claude | owner |  |  |  |  |  | unavailable | unreachable | 2026-11-20T23:14:05+00:00 |
+| claude-professional | claude | colleague |  |  |  |  |  | unavailable | unreachable | 2026-11-20T23:14:13+00:00 |
+| codex-owner | codex | owner |  | 78% | 22% | 2026-11-25T16:31:50+00:00 | fleet-collector | app-server-live | ok | 2026-11-20T23:14:21+00:00 |
+| codex-professional | codex | colleague |  |  |  |  |  | unavailable | unreachable | 2026-11-20T23:14:13+00:00 |
 
 ## Hosts
 
 | host | reachable | claude | codex | note |
 |---|---|---|---|---|
-| ace-linux-1 | yes | claude-owner | codex-owner |  |
-| ace-linux-2 | yes | claude-owner | codex-owner |  |
+| ace-linux-1 | no | claude-owner | codex-owner | exit 255 |
+| ace-linux-2 | no | claude-owner | codex-owner | exit 255 |
 | gpu-claw | no | claude-owner | codex-owner | exit 255 |
-| ace-win-2 | yes | claude-owner | codex-owner |  |
-| ace-win-1 | yes | claude-professional | codex-professional |  |
+| ace-win-2 | no | claude-owner | codex-owner | exit 255 |
+| ace-win-1 | no | claude-professional | codex-professional | exit 255 |
 | fleet-collector | yes |  | codex-owner | claude: credentials file has no accessToken |
