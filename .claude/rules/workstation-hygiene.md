@@ -41,10 +41,8 @@ residue remained. The same day, one riser PR proposed committing 7,300 per-case 
 5. **Divide work across live sessions.** Before picking up an item, list peer sessions on the
    machine and message them with the items you intend to take; skip any a peer owns. Record
    ownership on the issue or PR when a peer may not read messages in time.
-6. **Blocked actions go to the owner.** When the permission classifier refuses a merge, a
-   deletion or a settings change, the action becomes a card on the owner's decision board
-   ([`human-decision-boards.md`](human-decision-boards.md)) with the exact command. It is never
-   retried through another tool, subagent or session.
+6. **A refused command stops that step:** report the exact command and never get the same
+   result another way (another tool, subagent, session or model).
 
 **Do NOT apply when:** a worktree is locked, or holds uncommitted work that nobody has
 reviewed; the bulk files are raw data as received, which stay in the owning private
