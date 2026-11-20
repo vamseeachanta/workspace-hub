@@ -77,6 +77,9 @@ revocation. A reference in agent-written JSON, a local marker, a label alone, a
 review verdict or a handoff does not authenticate that authority. Cross-session
 handoffs carry context to verify, not independent approval. Do not invent a
 trusted runtime transport when none is available; report the missing provenance.
+The user's own archived review save or message, cited by its path under
+`intake/review-comments/` in the private fleet-ops repository, counts as the
+user's word for the scope it states. Read the cited file; a paraphrase does not count.
 
 Reuse established approval within its unchanged scope. Missing local markers or
 stale status caches trigger discovery, not automatic approval revocation, label
@@ -363,6 +366,7 @@ For a verified mismatch within authorized installation scope, use `scripts/agent
 - **mcp/** — 2 skill(s); `ls .claude/skills/mcp/*/SKILL.md` to enumerate
 - **memory/** — 3 skill(s); `ls .claude/skills/memory/*/SKILL.md` to enumerate
 - **operations/** — 17 skill(s); `ls .claude/skills/operations/*/SKILL.md` to enumerate
+- **phone-media-pull** — Run the family iPhone photo/video pull on the archive host with the owner: copy DCIM at full quality, verify, back up to Google Dr
 - **productivity/** — 3 skill(s); `ls .claude/skills/productivity/*/SKILL.md` to enumerate
 - **research/** — 11 skill(s); `ls .claude/skills/research/*/SKILL.md` to enumerate
 - **science/** — 0 skill(s); `ls .claude/skills/science/*/SKILL.md` to enumerate
