@@ -11,6 +11,12 @@ set -euo pipefail
 MAX_REVIEW_ITERATIONS=3
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+# Refuse interrupted preparation before review metadata or broad Git inspection.
+# shellcheck source=scripts/lib/worktree-index.sh
+source "$SCRIPT_DIR/../lib/worktree-index.sh"
+worktree_index_preflight "$PWD" >&2
+unset GIT_DIR GIT_WORK_TREE GIT_COMMON_DIR GIT_INDEX_FILE GIT_PREFIX
+unset GIT_OBJECT_DIRECTORY GIT_ALTERNATE_OBJECT_DIRECTORIES
 PROMPTS_DIR="${SCRIPT_DIR}/prompts"
 RESULTS_DIR="${SCRIPT_DIR}/results"
 mkdir -p "$RESULTS_DIR"

@@ -3,7 +3,9 @@
 # WRK-1091: cross-repo integration test gate for workspace-hub
 set -euo pipefail
 
-REPO_ROOT="$(git -C "$(dirname "$0")" rev-parse --show-toplevel)"
+# Structural root is independent of inherited hook repository bindings.
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
 GRAPH_FILE="${REPO_ROOT}/config/deps/cross-repo-graph.yaml"
 BYPASS_LOG="${REPO_ROOT}/logs/hooks/pre-push-bypass.jsonl"
 

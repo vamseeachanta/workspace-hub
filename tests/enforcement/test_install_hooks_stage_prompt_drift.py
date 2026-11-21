@@ -20,6 +20,9 @@ def make_repo(tmp_path: Path) -> Path:
     scripts_dir.mkdir(parents=True)
 
     subprocess.run(["git", "init"], cwd=repo, check=True, capture_output=True, text=True)
+    (repo / "scripts/hooks").mkdir(parents=True)
+    shutil.copy2(REPO_ROOT / "scripts/hooks/post-commit-learning-dispatch.sh",
+                 repo / "scripts/hooks/post-commit-learning-dispatch.sh")
     shutil.copy2(SOURCE_SCRIPT, scripts_dir / "install-hooks.sh")
     shutil.copy2(SOURCE_ENV, scripts_dir / "enforcement-env.sh")
     shutil.copy2(SOURCE_DRIFT, scripts_dir / "require-stage-prompt-drift.sh")
