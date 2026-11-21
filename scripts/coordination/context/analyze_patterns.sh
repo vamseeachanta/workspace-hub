@@ -47,7 +47,7 @@ for repo_path in "$WORKSPACE_ROOT"/*/; do
     repo=$(basename "$repo_path")
 
     if [ -d "$repo_path/.git" ]; then
-        ((REPOS_ANALYZED++))
+        REPOS_ANALYZED=$((REPOS_ANALYZED + 1))
 
         cd "$repo_path"
 

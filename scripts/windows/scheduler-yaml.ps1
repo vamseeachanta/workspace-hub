@@ -92,5 +92,5 @@ function Resolve-RepoTaskScript {
         -not (Test-Path -LiteralPath $full -PathType Leaf)) {
         throw "Windows task script is missing or escapes the workspace: $RelativePath"
     }
-    return $RelativePath
+    return $full
 }

@@ -918,7 +918,8 @@
       "tests/readiness/test_telegram_hermes_readiness.py",
       "tests/readiness/test_telegram_hermes_readiness_tier1_baseline.py",
       "tests/readiness/test_windows_harness_install_doctor.py",
-      "tests/readiness/test_windows_scheduler_single_source.py"
+      "tests/readiness/test_windows_scheduler_single_source.py",
+      "tests/readiness/test_windows_task_actions.py"
     ],
     "tests/reporting": [
       "tests/reporting/test_asset_reachability.py",
@@ -1177,7 +1178,7 @@
       "tests/worktree_guard/test_worktree_guard_cli.py"
     ]
   },
-  "file_count": 974,
+  "file_count": 975,
   "pattern": "test_*.py",
   "schema_version": 1
 }

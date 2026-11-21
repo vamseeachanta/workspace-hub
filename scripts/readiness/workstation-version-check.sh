@@ -3,7 +3,7 @@
 # Runs on Windows workstation via Git Bash / MINGW64.
 # Appends a ## Readiness section to logs/daily/YYYY-MM-DD.md.
 # Exit codes: 0 = all pass, 1 = one or more checks failed.
-set -uo pipefail
+set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 WORKSPACE_HUB="${WORKSPACE_HUB:-$(cd "${SCRIPT_DIR}/../.." && pwd)}"
@@ -25,7 +25,7 @@ echo "=== Workstation Version Check: ${TODAY} ==="
 # Expected: v252 (R25.2). Warn if not present; list all found versions.
 # ─────────────────────────────────────────────────────────────────────────────
 check_ansys() {
-  local ansys_root="/c/Program Files/ANSYS Inc"
+  local ansys_root="${ANSYS_ROOT:-/c/Program Files/ANSYS Inc}"
   local expected_ver="v252"
   if [[ ! -d "$ansys_root" ]]; then
     log_fail "R-ANSYS: ANSYS not found at '$ansys_root'"
@@ -55,7 +55,7 @@ check_ansys || true
 # Expected: 11.6. Warn if not present; confirm OrcaFlex64.exe reachable.
 # ─────────────────────────────────────────────────────────────────────────────
 check_orcaflex() {
-  local orcaflex_root="/c/Program Files (x86)/Orcina/OrcaFlex"
+  local orcaflex_root="${ORCAFLEX_ROOT:-/c/Program Files (x86)/Orcina/OrcaFlex}"
   local expected_ver="11.6"
   if [[ ! -d "$orcaflex_root" ]]; then
     log_fail "R-ORCAFLEX: OrcaFlex not found at '$orcaflex_root'"
@@ -85,10 +85,14 @@ check_orcaflex || true
 # ─────────────────────────────────────────────────────────────────────────────
 mkdir -p "$(dirname "$DAILY_LOG")"
 
-# Remove any existing Readiness section before re-appending (idempotent)
+# Replace only Readiness, retaining any later sections in the daily log.
 if [[ -f "$DAILY_LOG" ]]; then
-  # Strip from '## Readiness' to end of file if already present
-  sed -i '/^## Readiness$/,$ { /^## Readiness$/d; /^.*$/d }' "$DAILY_LOG" 2>/dev/null || true
+  existing=$(awk '
+    /^## Readiness$/ { skip=1; next }
+    /^## / { skip=0 }
+    !skip { print }
+  ' "$DAILY_LOG")
+  printf '%s\n' "$existing" > "$DAILY_LOG"
 fi
 
 {
