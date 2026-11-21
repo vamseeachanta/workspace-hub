@@ -148,7 +148,10 @@ prepare_claude_private_snapshot_repo() {
   verify_claude_private_snapshot_target_path || return 1
   if [[ ! -d "$CLAUDE_MEMORY_SNAPSHOT_PRIVATE_CLONE/.git" ]]; then
     mkdir -p "$(dirname "$CLAUDE_MEMORY_SNAPSHOT_PRIVATE_CLONE")"
-    gh repo clone "$CLAUDE_MEMORY_SNAPSHOT_REPO" "$CLAUDE_MEMORY_SNAPSHOT_PRIVATE_CLONE" -- --quiet
+    # Partial clone by default; ECOSYSTEM_FULL_CLONE=1 makes a full clone.
+    local clone_filter=(--filter=blob:none)
+    [[ "${ECOSYSTEM_FULL_CLONE:-0}" == 1 ]] && clone_filter=()
+    gh repo clone "$CLAUDE_MEMORY_SNAPSHOT_REPO" "$CLAUDE_MEMORY_SNAPSHOT_PRIVATE_CLONE" -- --quiet ${clone_filter[@]+"${clone_filter[@]}"}
   fi
   verify_claude_private_snapshot_repo || return 1
   if ! $DRY_RUN && git -C "$CLAUDE_MEMORY_SNAPSHOT_PRIVATE_CLONE" remote get-url origin >/dev/null 2>&1; then
