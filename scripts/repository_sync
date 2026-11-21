@@ -338,7 +338,12 @@ clone_repo() {
 
     echo -e "${BLUE}→ Cloning $repo_name...${NC}"
 
-    if git clone "$url" "$repo_path" 2>/dev/null; then
+    # Partial clone by default: full history, file contents fetched on demand.
+    # ECOSYSTEM_FULL_CLONE=1 makes a full clone for a caller that needs every object.
+    local clone_filter=(--filter=blob:none)
+    [[ "${ECOSYSTEM_FULL_CLONE:-0}" == 1 ]] && clone_filter=()
+
+    if git clone ${clone_filter[@]+"${clone_filter[@]}"} "$url" "$repo_path" 2>/dev/null; then
         echo -e "${GREEN}✓ Successfully cloned $repo_name${NC}"
         return 0
     else
