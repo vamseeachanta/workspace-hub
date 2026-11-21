@@ -44,13 +44,17 @@ claims and serialize shared integration through the shared lifecycle.
   Read current metadata and coverage gaps rather than assuming historical counts,
   field completeness or mounted-drive availability.
 - Apply `docs/architecture/agent-data-handling-contract.md` and the calc-citation
-  contract to source-qualified inputs and standards-derived constants. Preserve
-  source rights, raw-evidence retention and licensed-original exclusions.
+  contract to source-qualified inputs and standards-derived constants. Read the
+  clause from our copy of the code or standard and implement the formula with the
+  standard, edition and clause cited (owner ruling 28 Oct 2026,
+  `.claude/rules/codes-standards-data-routing.md`). Preserve raw-evidence retention
+  and the source rights of client and other third-party material.
 - If the user requests raw context preservation before coding, establish the
   authorized owner and retention route first. Preserve verified source references,
   source pages, concept anchors and extraction/comparison summaries as permitted;
-  record anchors in the plan and issue within posting authority. Do not copy raw
-  licensed/private payloads into a wiki merely because the old workflow did so.
+  record anchors in the plan and issue within posting authority. Codes and
+  standards may be copied into the private wiki or the ACE data store; keep client
+  and other private payloads with their authorized owner.
 
 ## Engineering plan and implementation checks
 

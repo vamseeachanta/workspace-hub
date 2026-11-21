@@ -307,6 +307,133 @@ def test_history_append_preserves_existing_record(tmp_path):
     assert json.loads(history_path.read_text(encoding="utf-8")) == second
 
 
+@pytest.mark.parametrize("package_maps,expected_counts", [
+    (
+        [
+            {"combined": {"passed": 7, "failed": 2, "skipped": 3, "errors": 1, "total": 13}},
+            {
+                "alpha": {"passed": 5, "failed": 0, "skipped": 2, "errors": 0, "total": 7},
+                "beta": {"passed": 2, "failed": 2, "skipped": 1, "errors": 1, "total": 6},
+            },
+            {
+                "passes": {"passed": 7, "failed": 0, "skipped": 0, "errors": 0, "total": 7},
+                "failures": {"passed": 0, "failed": 2, "skipped": 0, "errors": 0, "total": 2},
+                "skips": {"passed": 0, "failed": 0, "skipped": 3, "errors": 0, "total": 3},
+                "diagnostics": {"passed": 0, "failed": 0, "skipped": 0, "errors": 1, "total": 1},
+            },
+        ],
+        {"passed": 7, "failed": 2, "skipped": 3, "errors": 1, "total": 13, "pass_rate": 53.8},
+    ),
+    (
+        [
+            {},
+            {"empty": {"passed": 0, "failed": 0, "skipped": 0, "errors": 0, "total": 0}},
+            {
+                "alpha": {"passed": 0, "failed": 0, "skipped": 0, "errors": 0, "total": 0},
+                "beta": {"passed": 0, "failed": 0, "skipped": 0, "errors": 0, "total": 0},
+            },
+        ],
+        {"passed": 0, "failed": 0, "skipped": 0, "errors": 0, "total": 0, "pass_rate": 0.0},
+    ),
+    (
+        [
+            {"combined": {"passed": 0, "failed": 0, "skipped": 6, "errors": 0, "total": 6}},
+            {
+                "alpha": {"passed": 0, "failed": 0, "skipped": 4, "errors": 0, "total": 4},
+                "beta": {"passed": 0, "failed": 0, "skipped": 2, "errors": 0, "total": 2},
+            },
+        ],
+        {"passed": 0, "failed": 0, "skipped": 6, "errors": 0, "total": 6, "pass_rate": 0.0},
+    ),
+], ids=["mixed", "empty", "skipped-only"])
+def test_history_aggregation_is_partition_invariant(tmp_path, package_maps, expected_counts):
+    """Issue 3663 synthetic examples; expected values are hand calculations.
+
+    Mixed: (5+2, 0+2, 2+1, 0+1) = (7, 2, 3, 1), total 13;
+    100*7/13 rounds to 53.8%. Skipped-only: 4+2=6, 100*0/6=0.0%.
+    Empty sums are zero; the no-outcomes convention gives 0.0%.
+    Stored examples: 3/(3+1)*100=75.0%; 0/2*100=0.0%.
+    Dates are fixed synthetic observations, including a repeated instant.
+    """
+    import json
+
+    dashboard = _import_dashboard()
+    previous = [
+        {"timestamp": "2026-10-21T00:00:00+00:00", "total": 4,
+         "passed": 3, "failed": 1, "skipped": 0, "errors": 0, "pass_rate": 75.0},
+        {"timestamp": "2026-10-22T00:00:00+00:00", "total": 2,
+         "passed": 0, "failed": 0, "skipped": 2, "errors": 0, "pass_rate": 0.0},
+    ]
+    expected = {"timestamp": "2026-10-22T00:00:00+00:00", **expected_counts}
+    now = datetime.fromisoformat("2026-10-22T00:00:00+00:00")
+    for index, packages in enumerate(package_maps):
+        for order, ordered in enumerate((packages, dict(reversed(packages.items())))):
+            assert dashboard.make_history_record(ordered, now) == expected
+            path = tmp_path / f"history-{index}-{order}.json"
+            path.write_text(json.dumps(previous), encoding="utf-8", newline="\n")
+            assert dashboard.append_history(path, ordered, now) == [*previous, expected]
+            assert json.loads(path.read_text(encoding="utf-8")) == [*previous, expected]
+
+
+@pytest.mark.parametrize("timestamp", [
+    "2026-10-22T00:15:00+00:00",
+    "2026-10-22T05:45:00+05:30",
+    "2026-10-21T17:15:00-07:00",
+])
+def test_history_equivalent_offsets_normalize_to_utc(tmp_path, timestamp):
+    """Issue 3663 synthetic instants: 05:45-05:30=00:15 UTC;
+    prior-day 17:15+07:00=00:15 UTC. Counts: 2+1+1+1=5; 100*2/5=40.0%.
+    """
+    import json
+
+    dashboard = _import_dashboard()
+    packages = {"example": {"passed": 2, "failed": 1, "skipped": 1, "errors": 1, "total": 5}}
+    expected = {"timestamp": "2026-10-22T00:15:00+00:00", "total": 5,
+                "passed": 2, "failed": 1, "skipped": 1, "errors": 1, "pass_rate": 40.0}
+    instant = datetime.fromisoformat(timestamp)
+    assert dashboard.make_history_record(packages, instant) == expected
+    path = tmp_path / "history.json"
+    assert dashboard.append_history(path, packages, instant) == [expected]
+    assert json.loads(path.read_text(encoding="utf-8")) == [expected]
+
+
+@pytest.mark.parametrize("field", ["passed", "failed", "skipped", "errors", "total"])
+@pytest.mark.parametrize("value", [True, False, -1])
+def test_invalid_new_observation_preserves_history_bytes(tmp_path, field, value):
+    """Issue 3663 synthetic counts: 2+2+2+2=8, 100*2/8=25.0%.
+
+    True, False and -1 are invalid counts. A companion contributes 2 per
+    outcome, masking -1 in aggregate (2-1=1); bools also sum as integers.
+    Outcome mutations have matching totals; bool totals match 1 or 0 passes.
+    The stored examples use 3/4*100=75.0% and 0/2*100=0.0%.
+    Fixed dates and whitespace are synthetic preservation evidence.
+    """
+    dashboard = _import_dashboard()
+    path = tmp_path / "history.json"
+    original = (
+        '[ {"timestamp": "2026-10-20T00:00:00+00:00", "total": 4, '
+        '"passed": 3, "failed": 1, "skipped": 0, "errors": 0, "pass_rate": 75.0},\n'
+        '  {"timestamp": "2026-10-21T00:00:00+00:00", "total": 2, '
+        '"passed": 0, "failed": 0, "skipped": 2, "errors": 0, "pass_rate": 0.0} ]\n'
+    ).encode("utf-8")
+    path.write_bytes(original)
+    counts = {"passed": 2, "failed": 2, "skipped": 2, "errors": 2, "total": 8}
+    if field == "total" and type(value) is bool:
+        counts = {"passed": int(value), "failed": 0, "skipped": 0, "errors": 0, "total": value}
+    else:
+        counts[field] = value
+        if field != "total":
+            counts["total"] = sum(counts[key] for key in ("passed", "failed", "skipped", "errors"))
+    packages = {
+        "valid": {"passed": 2, "failed": 2, "skipped": 2, "errors": 2, "total": 8},
+        "invalid": counts,
+    }
+    with pytest.raises(ValueError):
+        dashboard.append_history(
+            path, packages, datetime.fromisoformat("2026-10-22T00:00:00+00:00"))
+    assert path.read_bytes() == original
+
+
 @pytest.mark.parametrize("payload", ["not json", "{}", '[{"passed": -1}]'])
 def test_invalid_history_is_preserved(tmp_path, payload):
     """Invalid persisted evidence must remain unchanged for diagnosis."""
@@ -394,6 +521,65 @@ def test_history_rejects_inconsistent_records(tmp_path, field, value):
     with pytest.raises((ValueError, TypeError)):
         dashboard.append_history(path, {}, datetime.now(UTC))
     assert path.read_text(encoding="utf-8") == original
+
+
+def test_history_normalizes_offset_across_date_boundary(tmp_path):
+    """Synthetic counts: 3 passes + 1 failure = 4; 3/4 * 100 = 75.0%."""
+    import json
+
+    dashboard = _import_dashboard()
+    path = tmp_path / "history.json"
+    packages = {"example": {"passed": 3, "failed": 1, "skipped": 0, "errors": 0, "total": 4}}
+    # Synthetic instant: Jan 1 00:15 minus offset 02:30 = Dec 31 21:45
+    # in the preceding year, so the literal UTC expectation is independent.
+    timestamp = datetime.fromisoformat("2026-01-01T00:15:00+02:30")
+    expected = [{"timestamp": "2025-12-31T21:45:00+00:00", "total": 4,
+                 "passed": 3, "failed": 1, "skipped": 0, "errors": 0, "pass_rate": 75.0}]
+
+    assert dashboard.append_history(path, packages, timestamp) == expected
+    assert json.loads(path.read_text(encoding="utf-8")) == expected
+
+
+def test_naive_timestamp_preserves_history(tmp_path, monkeypatch):
+    """Synthetic seed: 3 + 1 = 4 outcomes; 3/4 * 100 = 75.0%."""
+    dashboard = _import_dashboard()
+    path = tmp_path / "history.json"
+    # Arbitrary UTC seed date; whitespace makes byte preservation observable.
+    original = (b'[\n {"timestamp": "2026-01-01T00:00:00+00:00", "total": 4, '
+                b'"passed": 3, "failed": 1, "skipped": 0, "errors": 0, "pass_rate": 75.0}\n]\n')
+    path.write_bytes(original)
+    replace = MagicMock()
+    # Same arbitrary seed date without timezone information must be rejected.
+    timestamp = datetime.fromisoformat("2026-01-01T00:00:00")
+    with monkeypatch.context() as local:
+        local.setattr(dashboard.os, "replace", replace)
+        with pytest.raises(ValueError, match="timezone"):
+            dashboard.append_history(path, {}, timestamp)
+
+    replace.assert_not_called()
+    assert path.read_bytes() == original
+
+
+def test_fsync_failure_preserves_history(tmp_path, monkeypatch):
+    """Synthetic seed: 3 + 1 = 4 outcomes; 3/4 * 100 = 75.0%."""
+    dashboard = _import_dashboard()
+    path = tmp_path / "history.json"
+    # Arbitrary UTC seed date; whitespace makes byte preservation observable.
+    original = (b'[\n {"timestamp": "2026-01-01T00:00:00+00:00", "total": 4, '
+                b'"passed": 3, "failed": 1, "skipped": 0, "errors": 0, "pass_rate": 75.0}\n]\n')
+    path.write_bytes(original)
+    fsync = MagicMock(side_effect=OSError("simulated fsync failure"))
+    replace = MagicMock()
+    timestamp = datetime.fromisoformat("2026-01-01T00:00:00+00:00")
+    with monkeypatch.context() as local:
+        local.setattr(dashboard.os, "fsync", fsync)
+        local.setattr(dashboard.os, "replace", replace)
+        with pytest.raises(OSError, match="simulated fsync failure"):
+            dashboard.append_history(path, {}, timestamp)
+
+    fsync.assert_called_once()
+    replace.assert_not_called()
+    assert path.read_bytes() == original
 
 
 def test_history_failed_replace_preserves_previous_bytes(tmp_path):

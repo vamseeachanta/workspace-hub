@@ -51,7 +51,7 @@ Heavy text counts: any tracked file over 1 MB that is not source code needs a st
 
 ## Originals
 
-Client originals stay committed in the owning private repo. Only derived, generated and regenerable files move. Vendor-licensed standards and codes still follow the licensed-location exclusion in the agent data-handling contract and are not committed to Git.
+Client originals stay committed in the owning private repo. Only derived, generated and regenerable files move. Codes and standards follow the owner's ruling of 28 Oct 2026 (`.claude/rules/codes-standards-data-routing.md`): no internal gates; outward work quotes with citations and reconstructs charts; only original PDFs and whole sections stay off public surfaces.
 
 ## Repository Manifest
 

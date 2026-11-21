@@ -68,6 +68,72 @@ def test_boundaries_and_original_evidence():
 
 
 @pytest.mark.parametrize(
+    "monotonic_offset,wall_offset", [(0, 10**20), (10**20, 0), (10**20, 10**21)]
+)
+@pytest.mark.parametrize(
+    "now,expected_age,expected_verdict",
+    [(220, 10, "PASS"), (221, 11, "FAIL")],
+    ids=["valid", "stale"],
+)
+def test_epoch_translation_preserves_replay_verdict(
+    monotonic_offset, wall_offset, now, expected_age, expected_verdict
+):
+    """Source: docs/monitoring/clock-domain-audit.html, Replay contract/example.
+
+    Independently, (end+k)-(start+k)=end-start and
+    (now+j)-(observed+j)=now-observed. The example's durations are
+    110-100=10 and 120-110=10; latest age is 220-210=10 (PASS), or
+    221-210=11>10 (stale FAIL). Epoch shifts preserve these literal answers.
+    Synthetic nonnegative k and j differ: zero leaves one origin unchanged;
+    10**20 and 10**21 exceed binary64's exact consecutive-integer range
+    (through 2**53). The contract requires integer nanoseconds to avoid
+    floating-point loss. Intervals are durations, so they are not shifted;
+    the inclusive [10,10] duration bounds and maximum age 10 stay unchanged.
+    """
+    source = packet()
+    source["now"]["value_ns"] = now
+    shifted = copy.deepcopy(source)
+    for sample in shifted["samples"]:
+        for key in ("start", "end"):
+            sample[key]["value_ns"] += monotonic_offset
+        sample["observed_at"]["value_ns"] += wall_offset
+    shifted["now"]["value_ns"] += wall_offset
+
+    for candidate in (source, shifted):
+        answer = load().replay(candidate)
+        assert answer["replay_status"] == expected_verdict
+        assert answer["durations_ns"] == [10, 10]
+        assert answer["age_ns"] == expected_age
+
+
+def test_replay_evidence_is_deeply_independent():
+    """Source: docs/monitoring/clock-domain-audit.html, deep-copy contract.
+
+    The worked example/packet supplies first start 100, now 220, and age
+    limit 10. Synthetic mutations use 100-1=99 then 100-2=98 for start,
+    220+1=221 then 220+2=222 for now, and 10+1=11 then 10+2=12 for
+    the limit. These are copy-isolation probes, not acceptance criteria.
+    Index zero selects the first sample. All expected values are literals.
+    """
+    source = packet()
+    evidence = load().replay(source)["evidence"]
+
+    evidence["samples"][0]["start"]["value_ns"] = 99
+    evidence["now"]["value_ns"] = 221
+    evidence["criteria"]["max_age_ns"] = 11
+    assert source["samples"][0]["start"]["value_ns"] == 100
+    assert source["now"]["value_ns"] == 220
+    assert source["criteria"]["max_age_ns"] == 10
+
+    source["samples"][0]["start"]["value_ns"] = 98
+    source["now"]["value_ns"] = 222
+    source["criteria"]["max_age_ns"] = 12
+    assert evidence["samples"][0]["start"]["value_ns"] == 99
+    assert evidence["now"]["value_ns"] == 221
+    assert evidence["criteria"]["max_age_ns"] == 11
+
+
+@pytest.mark.parametrize(
     "field,value",
     [
         ("domain", "wall"),

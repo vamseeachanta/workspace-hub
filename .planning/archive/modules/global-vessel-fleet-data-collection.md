@@ -82,7 +82,7 @@ src/worldenergydata/vessel_fleet/
 │   └── construction/               # Marine contractor configs
 │       ├── heerema.py              # Sleipnir, Thialf, Balder (crane vessels)
 │       ├── allseas.py              # Pioneering Spirit, Solitaire (pipelay + heavy-lift)
-│       ├── client-d_vessels.py       # Castorone, S7000 (pipelay + crane)
+│       ├── client-d_vessels.py       # pipelay vessel B, crane vessel A (pipelay + crane)
 │       ├── subsea7.py              # Seven Borealis, Seven Vega (pipelay + SURF)
 │       ├── installation-contractor.py            # Amazon, DLV 2000 (derrick lay + pipelay)
 │       ├── boskalis.py             # Boka Vanguard, Fjord (heavy transport + crane)

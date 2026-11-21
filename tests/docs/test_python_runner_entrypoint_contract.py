@@ -11,6 +11,7 @@ import json
 import os
 import subprocess
 import sys
+import tempfile
 from pathlib import Path
 
 import pytest
@@ -27,6 +28,61 @@ def documented_recipe():
     assert START in text, "The canonical testing standard needs the CLI recipe"
     section = text.split(START, maxsplit=1)[1].split(END, maxsplit=1)[0]
     return section.split("```python\n", maxsplit=1)[1].split("```", maxsplit=1)[0]
+
+
+# Positive-budget contract: docs/modules/testing/TESTING_FRAMEWORK_STANDARDS.md:225.
+# Zero is the boundary; independently, the negative case is -1 = 0 - 1.
+@pytest.mark.parametrize("budget", ["0", "-1"])
+def test_recipe_rejects_nonpositive_watchdog(monkeypatch, capsys, budget):
+    """The standard's recipe requires a positive budget before scratch creation.
+
+    Source: TESTING_FRAMEWORK_STANDARDS.md, disposable actual-CLI recipe input
+    contract. Refusal follows its assertion, independently of elapsed time.
+    """
+    recipe = compile(documented_recipe(), "<documented entrypoint recipe>", "exec")
+
+    def unexpected_side_effect(*args, **kwargs):
+        pytest.fail("Nonpositive watchdog reached scratch construction or child launch")
+
+    with monkeypatch.context() as isolated:
+        isolated.setenv("PROBE_TIMEOUT_SECONDS", budget)
+        isolated.setattr(tempfile, "mkdtemp", unexpected_side_effect)
+        isolated.setattr(subprocess, "run", unexpected_side_effect)
+        with pytest.raises(
+            AssertionError, match="^A positive subprocess watchdog is required$"
+        ):
+            exec(recipe, {})
+
+    assert capsys.readouterr().out == ""
+
+
+def test_recipe_propagates_child_timeout(tmp_path, monkeypatch, capsys):
+    """The standard emits result JSON only after every child invocation succeeds.
+
+    Source: TESTING_FRAMEWORK_STANDARDS.md, disposable actual-CLI recipe input
+    contract and answer. An injected timeout must escape without success JSON.
+    """
+    recipe = compile(documented_recipe(), "<documented entrypoint recipe>", "exec")
+    timeouts = []
+
+    def child_timeout(command, **kwargs):
+        # Supplied literal matches example_results' test watchdog, not an
+        # operational criterion or an elapsed-time acceptance threshold.
+        assert kwargs["timeout"] == 30
+        error = subprocess.TimeoutExpired(command, timeout=30)
+        timeouts.append(error)
+        raise error
+
+    with monkeypatch.context() as isolated:
+        isolated.setenv("PROBE_TIMEOUT_SECONDS", "30")
+        isolated.setattr(tempfile, "tempdir", str(tmp_path))
+        isolated.setattr(subprocess, "run", child_timeout)
+        with pytest.raises(subprocess.TimeoutExpired) as caught:
+            exec(recipe, {})
+
+    # The first synthetic child aborts the recipe with the original exception.
+    assert timeouts == [caught.value]
+    assert capsys.readouterr().out == ""
 
 
 @pytest.fixture(scope="module")

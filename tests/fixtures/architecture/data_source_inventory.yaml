@@ -116,19 +116,17 @@ sources:
   source_registry_kind: mounted_source_registry
   registry_ref: data/document-index/mounted-source-registry.yaml
   allowed_artifacts:
-  - metadata ledgers
+  - full text, tables, figures and equations
+  - extracted data sets
   - citation references
-  - derived non-sensitive abstracts when permitted
   forbidden_artifacts:
-  - raw PDFs
-  - licensed standards text
-  - bulk extracted text
-  retention_rule: mounted source remains outside git
-  publication_rule: No public llm-wiki promotion unless source is public and license-cleared.
+  - original PDFs or whole sections on public surfaces
+  retention_rule: mounted source; copies may also sit in private Git or the ACE data store
+  publication_rule: 'Codes and standards follow the owner''s ruling of 28 Oct 2026 (`.claude/rules/codes-standards-data-routing.md`): no internal gates; outward work quotes with citations and reconstructs charts; only original PDFs and whole sections stay off public surfaces.'
   provenance: mounted-source registry entry ace_standards_local plus per-domain source metadata
   license_posture: licensed_reference
   sensitivity: licensed_reference
-  promotion_gate: legal/license review + source-class separation
+  promotion_gate: none internally (owner ruling 28 Oct 2026)
   output_residency: llm-wiki-private
   runtime_probe:
     command: test -d /mnt/ace/docs/_standards

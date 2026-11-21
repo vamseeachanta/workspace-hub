@@ -17,8 +17,10 @@ hardcoded, M1). Run: uv run --script scripts/readiness/build-equality-matrix.py 
 """
 from __future__ import annotations
 
+import argparse
 import json
 import math
+import os
 import re
 import sys
 from collections import Counter
@@ -272,6 +274,57 @@ def freshness_verdict(report: dict, now: datetime | None = None) -> str:
     return "CURATED-EXPIRED"
 
 
+def _same_evidence(left, right) -> bool:
+    """Compare aliases without conflating booleans with integer counts."""
+    if type(left) is not type(right):
+        return False
+    if isinstance(left, dict):
+        return (left.keys() == right.keys()
+                and all(_same_evidence(left[key], right[key]) for key in left))
+    if isinstance(left, list):
+        return (len(left) == len(right)
+                and all(_same_evidence(a, b) for a, b in zip(left, right)))
+    return left == right
+
+
+def _legacy_provider_record(record):
+    """Copy capability records and retain the existing reason vocabulary (#3579)."""
+    if not isinstance(record, dict):
+        return record
+    out = dict(record)
+    for capability in CAPABILITIES:
+        cap = record.get(capability)
+        if isinstance(cap, dict) and cap.get("reason") == "agy_skill_dispatch_unsupported":
+            out[capability] = {**cap, "reason": "gemini_skill_dispatch_unsupported"}
+    return out
+
+
+def _legacy_provider_keys(fields, *, skill_fields: bool = False) -> dict | None:
+    """Dual-read #3579 aliases into legacy display keys, without changing input.
+
+    Equivalent duplicates are accepted; a conflict invalidates this evidence
+    block. Skill fields may be split across families during the dual-read window.
+    Policy declarations and writers retain their existing keys.
+    """
+    if not isinstance(fields, dict):
+        return None
+    out = dict(fields)
+    if not skill_fields:
+        for key in ("gemini", "agy"):
+            if key in out:
+                out[key] = _legacy_provider_record(out[key])
+    replacements = ([key for key in out if isinstance(key, str) and key.startswith("agy_")]
+                    if skill_fields else ["agy"])
+    for key in replacements:
+        if key not in out:
+            continue
+        legacy = "gemini_" + key[len("agy_"):] if skill_fields else "gemini"
+        if legacy in out and not _same_evidence(out[legacy], out[key]):
+            return None
+        out[legacy] = out.pop(key)
+    return out
+
+
 # ── skill-currency verdict (cross-provider skill drift vs canonical; #3249) ──
 def skill_currency_verdict(report: dict) -> str:
     """Map the audit FACTS (emitted by audit_skill_currency.py) to a verdict. Precedence:
@@ -279,8 +332,9 @@ def skill_currency_verdict(report: dict) -> str:
     EXPECTED-DIVERGENCE (only allowlisted provider-specific families differ) > SKILLS-CURRENT.
     Fail-closed (MISSING-EVIDENCE) when the audit couldn't read the tree or a count is garbled —
     an unreadable surface must never grade green."""
-    sc = report.get("dimensions", {}).get("skill_currency")
-    if not isinstance(sc, dict):
+    sc = _legacy_provider_keys(report.get("dimensions", {}).get("skill_currency"),
+                               skill_fields=True)
+    if sc is None:
         return "MISSING-EVIDENCE"
     if not isinstance(sc.get("audited_at"), str):
         return "MISSING-EVIDENCE"
@@ -440,7 +494,8 @@ def extract_value(dim: str, report: dict):
     if dim == "python_cmd":
         return d.get("harness", {}).get("python_cmd")
     if dim == "harness":
-        return json.dumps(d.get("harness", {}).get("providers", {}), sort_keys=True)
+        providers = _legacy_provider_keys(d.get("harness", {}).get("providers", {}))
+        return json.dumps(providers, sort_keys=True) if providers is not None else None
     if dim == "skills":
         return d.get("skills", {}).get("repo_skill_count")
     if dim == "kanban":
@@ -519,6 +574,10 @@ def provider_row_verdict(dim: str, report: dict) -> str:
     if not isinstance(harness, dict) or harness.get("schema_version") != 1:
         return "MISSING-EVIDENCE"
     providers = harness.get("providers") or {}
+    if provider == "gemini":
+        providers = _legacy_provider_keys(providers)
+        if providers is None:
+            return "MISSING-EVIDENCE"
     return provider_capability_verdict(
         provider, capability, providers.get(provider), providers.get("claude"))
 
@@ -556,6 +615,8 @@ def verdict_for(dim: str, machine: str, reports: dict, baselines: dict,
         return publish_health_verdict(rep)
     if dim in COLD_DIMS:
         return cold_verdict(dim, rep, baselines.get(machine), probed_repos)
+    if dim == "harness" and extract_value(dim, rep) is None:
+        return "MISSING-EVIDENCE"
     # Stale peers are EXCLUDED from the uniform value list so a stale report can never
     # manufacture a false EQUAL/DIVERGES/NO-MAJORITY for the fresh machines (A2/BC4).
     fresh = [m for m in roster
@@ -570,14 +631,15 @@ def verdict_for(dim: str, machine: str, reports: dict, baselines: dict,
 
 
 # ── load + render ────────────────────────────────────────────────────────────
-def load_reports() -> dict[str, dict]:
+def load_reports(state_dirs: list[Path] | None = None) -> dict[str, dict]:
     out = {}
-    for f in sorted(STATE.glob("equality-*.yaml")):
-        machine = f.stem[len("equality-"):]
-        try:
-            out[machine] = yaml.safe_load(f.read_text(encoding="utf-8")) or {}
-        except yaml.YAMLError as e:
-            out[machine] = {"_error": str(e)}
+    for state in [STATE] if state_dirs is None else state_dirs:
+        for f in sorted(state.glob("equality-*.yaml")):
+            machine = f.stem[len("equality-"):]
+            try:
+                out[machine] = yaml.safe_load(f.read_text(encoding="utf-8")) or {}
+            except yaml.YAMLError as e:
+                out[machine] = {"_error": str(e)}
     return out
 
 
@@ -664,12 +726,35 @@ def equivalence_section(vmap: dict, machines: list[str], roster: dict,
     return "".join(cards)
 
 
-def main() -> None:
+def resolve_paths(argv: list[str]) -> tuple[Path, Path]:
+    """Match the shell generation seam; publishing supplies explicit paths."""
+    parser = argparse.ArgumentParser(add_help=False)
+    parser.add_argument("--state-dir")
+    parser.add_argument("--out-dir")
+    args, _ = parser.parse_known_args(argv)
+    base = Path(os.environ.get("XDG_STATE_HOME") or Path.home() / ".local/state")
+    root = base / "workspace-hub/equality"
+    state = Path(args.state_dir or os.environ.get("EQ_STATE_DIR") or root)
+    reports = Path(args.out_dir or os.environ.get("EQ_REPORT_DIR") or root / "reports")
+    return state, reports
+
+
+def resolve_input_paths(argv: list[str]) -> list[Path]:
+    """Explicit publication inputs replace default repository and local layers."""
+    parser = argparse.ArgumentParser(add_help=False)
+    parser.add_argument("--state-dir")
+    args, _ = parser.parse_known_args(argv)
+    if args.state_dir:
+        return [Path(args.state_dir)]
+    return [REPO / ".claude" / "state", resolve_paths(argv)[0]]
+
+
+def main(state_dirs: list[Path] | None = None) -> None:
     config = yaml.safe_load(CONFIG.read_text(encoding="utf-8")) if CONFIG.exists() else {}
     roster = load_roster(config)
     baselines = load_baselines(config)
     probed = (config.get("tier1_repos") or TIER1_DEFAULT)
-    reports = load_reports()
+    reports = load_reports(state_dirs)
 
     machines = list(roster)
     # Compute every verdict once (cells + rollups both consume it).
@@ -802,16 +887,17 @@ function copyGenPrompt(btn){{
 
     REPORTS.mkdir(parents=True, exist_ok=True)
     out = REPORTS / f"{date.today().isoformat()}-machine-equality-matrix.html"
-    out.write_text(html, encoding="utf-8")
+    out.write_text(html, encoding="utf-8", newline="\n")
     # Stable (undated) alias so GitHub Pages serves a fixed "latest" URL that never
     # changes as the dated reports roll over (published by scripts/build_pages.py).
     latest = REPORTS / "machine-equality-matrix.html"
-    latest.write_text(html, encoding="utf-8")
-    print(f"wrote {out} (+ {latest.name} alias) ({reporting}/{active} active reporting)")
+    latest.write_text(html, encoding="utf-8", newline="\n")
+    print(f"wrote {out.as_posix()} (+ {latest.name} alias) ({reporting}/{active} active reporting)")
     if "--open" in sys.argv:
         import webbrowser
         webbrowser.open(out.as_uri())
 
 
 if __name__ == "__main__":
-    main()
+    STATE, REPORTS = resolve_paths(sys.argv[1:])
+    main(resolve_input_paths(sys.argv[1:]))

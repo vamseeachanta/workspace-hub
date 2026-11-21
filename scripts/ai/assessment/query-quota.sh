@@ -34,7 +34,9 @@ is_cache_fresh() {
 
 write_cache()      { mkdir -p "$(dirname "$CACHE_FILE")"; echo "$1" > "$CACHE_FILE"; }
 read_cache()       { cat "$CACHE_FILE" 2>/dev/null; }
-write_repo_quota() { mkdir -p "$(dirname "$REPO_QUOTA_FILE")"; echo "$1" | jq '.' > "$REPO_QUOTA_FILE"; }
+write_repo_quota() {
+    printf '%s\n' "$1" | python3 "${REPO_ROOT}/scripts/ai/quota_snapshot.py" "$REPO_QUOTA_FILE"
+}
 
 # ── Usage ─────────────────────────────────────────────────────────────────────
 usage() {
@@ -76,9 +78,9 @@ main() {
 
     if [[ -z "$data" ]]; then
         local claude_data codex_data gemini_data
-        claude_data=$(query_claude  2>/dev/null || echo '{"provider":"claude","pct_remaining":null}')
-        codex_data=$(query_codex   2>/dev/null || echo '{"provider":"codex","pct_remaining":null}')
-        gemini_data=$(query_gemini 2>/dev/null || echo '{"provider":"gemini","pct_remaining":null}')
+        claude_data=$(query_claude 2>/dev/null) || { echo "quota refresh: Claude collection failed" >&2; return 1; }
+        codex_data=$(query_codex 2>/dev/null) || { echo "quota refresh: Codex collection failed" >&2; return 1; }
+        gemini_data=$(query_gemini 2>/dev/null) || { echo "quota refresh: Gemini collection failed" >&2; return 1; }
 
         data=$(jq -n \
             --arg ts "$(date -Iseconds)" \

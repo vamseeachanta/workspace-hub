@@ -9,6 +9,8 @@ import subprocess
 import sys
 from pathlib import Path
 
+import pytest
+
 REPO_ROOT = Path(__file__).resolve().parents[2]
 SCRIPT = REPO_ROOT / "scripts" / "cron" / "gemini-session-export.sh"
 NIGHTLY = REPO_ROOT / "scripts" / "cron" / "comprehensive-learning-nightly.sh"
@@ -176,3 +178,154 @@ def test_gemini_export_subprocess_exports_one_record_and_dedupes_on_rerun(tmp_pa
     assert second.returncode == 0, f"stdout: {second.stdout}\nstderr: {second.stderr}"
     assert "Gemini session export: 0 records exported from 1 matching sessions, 0 skipped" in second.stdout
     assert output_file.read_text(encoding="utf-8").splitlines() == lines
+
+
+# Issue #2201 supplies these tool semantics. Inputs and expected fields are
+# independent synthetic examples; the date reuses the smoke fixture above.
+@pytest.mark.parametrize(
+    ("tool_call", "expected_fields"),
+    [
+        pytest.param(
+            {
+                "id": "interaction",
+                "name": "ask_user",
+                "args": {"question": "Which directory should be inspected?"},
+                "result": [{"functionResponse": {"response": {}}}],
+            },
+            {"tool": "ask_user", "gemini_tool": "ask_user"},
+            id="unmapped-interaction",
+        ),
+        pytest.param(
+            {
+                "id": "help",
+                "name": "cli_help",
+                "args": {
+                    "question": "How can tools be listed?",
+                    "dir_path": "docs",
+                },
+                "result": [
+                    {"functionResponse": {"response": {"error": "Help topic unavailable"}}}
+                ],
+            },
+            {
+                "tool": "ToolSearch",
+                "gemini_tool": "cli_help",
+                "query": "How can tools be listed?",
+                "search_root": "docs",
+                "error": "Help topic unavailable",
+            },
+            id="help-location-and-error",
+        ),
+        pytest.param(
+            {
+                "id": "investigation",
+                "name": "codebase_investigator",
+                "args": {
+                    "objective": "Trace configuration loading",
+                    "dir_path": "src/config",
+                },
+                "result": [
+                    {"functionResponse": {"response": {"error": "Investigation incomplete"}}}
+                ],
+            },
+            {
+                "tool": "ToolSearch",
+                "gemini_tool": "codebase_investigator",
+                "query": "Trace configuration loading",
+                "search_root": "src/config",
+                "error": "Investigation incomplete",
+            },
+            id="investigation-objective-location-and-error",
+        ),
+    ],
+)
+def test_gemini_export_subprocess_preserves_tool_semantics_and_dedupes(
+    tmp_path: Path, tool_call: dict, expected_fields: dict
+) -> None:
+    repo = tmp_path / "repo-under-test"
+    script_path = repo / "scripts" / "cron" / SCRIPT.name
+    script_path.parent.mkdir(parents=True)
+    shutil.copy2(SCRIPT, script_path)
+
+    home = tmp_path / "home"
+    fake_bin, uv_log = _write_fake_uv(tmp_path)
+    # Restrict executable discovery to the harness and required utilities.
+    # No inherited credentials, configuration environment or provider CLI PATH.
+    bash = shutil.which("bash")
+    assert bash is not None
+    for utility in ("dirname", "mkdir"):
+        executable = shutil.which(utility)
+        assert executable is not None
+        (fake_bin / utility).symlink_to(executable)
+    (fake_bin / "python3").symlink_to(sys.executable)
+    env = {
+        "HOME": str(home),
+        "PATH": str(fake_bin),
+        "UV_ARGS_FILE": str(uv_log),
+        "TMPDIR": str(tmp_path),
+        "PYTHONDONTWRITEBYTECODE": "1",
+    }
+    if "UV_CACHE_DIR" in os.environ:
+        env["UV_CACHE_DIR"] = os.environ["UV_CACHE_DIR"]
+
+    repo_hash = hashlib.sha256(str(repo.resolve()).encode("utf-8")).hexdigest()
+    chats_dir = home / ".gemini" / "tmp" / repo.name / "chats"
+    chats_dir.mkdir(parents=True)
+    fixture_file = chats_dir / "session-fixture.json"
+    fixture_file.write_text(
+        json.dumps(
+            {
+                "projectHash": repo_hash,
+                "sessionId": repo.name,
+                "messages": [
+                    {
+                        "type": "gemini",
+                        "timestamp": "2026-04-10T14:02:00Z",
+                        "toolCalls": [tool_call],
+                    }
+                ],
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    def export() -> subprocess.CompletedProcess:
+        result = subprocess.run(
+            [bash, str(script_path)],
+            cwd=repo,
+            env=env,
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        assert result.returncode == 0, f"stdout: {result.stdout}\nstderr: {result.stderr}"
+        return result
+
+    export()
+    output_dir = repo / "logs" / "orchestrator" / "gemini"
+    [output_file] = output_dir.glob("session_*.jsonl")
+    output_bytes = output_file.read_bytes()
+    # Each fixture declares one tool call, so exactly one output is expected.
+    [record] = [json.loads(line) for line in output_bytes.splitlines()]
+    for field, expected in expected_fields.items():
+        assert record[field] == expected
+    if tool_call["name"] == "ask_user":
+        assert "query" not in record
+        assert "search_root" not in record
+        assert "error" not in record
+    assert record["tool_call_id"] == tool_call["id"]
+    assert record["native_session_file"] == str(fixture_file)
+
+    state_file = output_dir / ".export-state.json"
+    state_bytes = state_file.read_bytes()
+    state = json.loads(state_bytes)
+    assert state["sessions"][repo.name]["exported_tool_call_ids"] == [tool_call["id"]]
+    assert uv_log.read_text(encoding="utf-8").splitlines() == [
+        "run", "--no-project", "python", "-",
+        str(repo), str(home / ".gemini" / "tmp"), str(output_dir),
+        str(state_file), "false", "false",
+    ]
+
+    export()
+    assert output_file.read_bytes() == output_bytes
+    assert state_file.read_bytes() == state_bytes

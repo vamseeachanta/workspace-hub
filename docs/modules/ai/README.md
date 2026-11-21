@@ -54,6 +54,7 @@ All AI agents (Claude, OpenAI, Factory.ai) must:
 
 ## Related Documentation
 
+- [Intelligence landing page](../../document-intelligence/README.md) - Architecture and local reading order
 - [Development Workflow](../workflow/) - Workflow phases and guidelines
 - [Standards](../standards/) - Coding and compliance standards
 - [Automation Module](../modules/automation/) - AI agent orchestration details

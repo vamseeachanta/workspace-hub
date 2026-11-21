@@ -17,8 +17,73 @@ Related: GitHub issue #1569
 import argparse
 import re
 import sys
+from collections.abc import Iterable, Iterator, Mapping
 from pathlib import Path
 from typing import Any
+
+
+def find_dependency_cycles(graph: Mapping[str, Iterable[str]]) -> list[list[str]]:
+    """Return sorted cyclic strongly connected groups of string node names.
+
+    Each value contains the node's outgoing dependency names. Referenced-only
+    nodes are included as sinks with no outgoing edges. The mapping and its
+    adjacency containers are not modified; iterators are consumed once.
+
+    Members are sorted within each group and groups are sorted lexicographically.
+    A group contains mutually reachable nodes, including singleton self-loops;
+    groups are not an enumeration of every elementary cycle. Analysis uses only
+    the supplied graph, without importing source modules or scanning files.
+    """
+    adjacency = {node: tuple(neighbors) for node, neighbors in graph.items()}
+    reverse: dict[str, list[str]] = {node: [] for node in adjacency}
+    for node, neighbors in adjacency.items():
+        for neighbor in neighbors:
+            reverse.setdefault(neighbor, []).append(node)
+    for node in reverse:
+        adjacency.setdefault(node, ())
+
+    # Record DFS finishing order, using explicit frames rather than recursion.
+    visited: set[str] = set()
+    finished: list[str] = []
+    for node in adjacency:
+        if node in visited:
+            continue
+        visited.add(node)
+        stack: list[tuple[str, Iterator[str]]] = [(node, iter(adjacency[node]))]
+        while stack:
+            current, neighbors = stack[-1]
+            for neighbor in neighbors:
+                if neighbor not in visited:
+                    visited.add(neighbor)
+                    stack.append((neighbor, iter(adjacency[neighbor])))
+                    break
+            else:
+                finished.append(current)
+                stack.pop()
+
+    # In reverse finishing order, reverse edges reach exactly one component.
+    visited.clear()
+    groups: list[list[str]] = []
+    for node in reversed(finished):
+        if node in visited:
+            continue
+        component = []
+        pending = [node]
+        visited.add(node)
+        while pending:
+            current = pending.pop()
+            component.append(current)
+            for neighbor in reverse[current]:
+                if neighbor not in visited:
+                    visited.add(neighbor)
+                    pending.append(neighbor)
+
+        # By mutual reachability, multiple members imply a cycle. A singleton
+        # (cardinality one) is cyclic only when it has an explicit self-edge.
+        if len(component) > 1 or node in adjacency[node]:
+            groups.append(sorted(component))
+
+    return sorted(groups)
 
 
 def discover_packages(repo_path: Path) -> list[dict[str, Any]]:

@@ -257,7 +257,8 @@ def _verify_bound_clone(
     _verify_named_git(clone)
     try:
         config_fd = os.open(
-            "config", os.O_RDONLY | os.O_NOFOLLOW | os.O_CLOEXEC,
+            # POSIX.1-2024 open(), O_NONBLOCK: do not wait on a FIFO.
+            "config", os.O_RDONLY | os.O_NOFOLLOW | os.O_CLOEXEC | os.O_NONBLOCK,
             dir_fd=clone.git_fd,
         )
         try:

@@ -44,7 +44,8 @@ class _ExpectedRender:
     memberships: dict[str, list[str]]
     metadata: dict[str, Any]
 _DIR_FLAGS = os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW | os.O_CLOEXEC
-_FILE_FLAGS = os.O_RDONLY | os.O_NOFOLLOW | os.O_CLOEXEC
+# POSIX.1-2024 open(), O_NONBLOCK: reject special files before reading.
+_FILE_FLAGS = os.O_RDONLY | os.O_NOFOLLOW | os.O_CLOEXEC | os.O_NONBLOCK
 _CREATE_FLAGS = os.O_RDWR | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW | os.O_CLOEXEC
 _MAX_MANIFEST_BYTES = 8 * 1024 * 1024
 _OID = re.compile(r"(?:[0-9a-f]{40}|[0-9a-f]{64})")

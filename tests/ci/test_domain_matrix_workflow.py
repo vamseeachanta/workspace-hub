@@ -5,6 +5,7 @@ workflow. Synthetic caller trees contain no helper checkout. Script equality is
 checked directly, independently of the embedding generator's implementation.
 """
 
+import importlib.util
 import json
 import os
 import shutil
@@ -171,30 +172,33 @@ def test_hosted_contract_suite_is_blocking():
     assert "python -m pytest tests/ci/" in contract["run"]
 
 
-def test_baseline_regressions_run_before_broader_collection():
-    config = yaml.safe_load(
-        (ROOT / ".github/workflows/baseline-check.yml").read_text(encoding="utf-8")
+def test_gemini_evidence_suite_runs_in_the_pull_request_gate():
+    """PRs to main run touched families through pr-fast-gate.yml.
+
+    baseline-check.yml is manual on main, so the Gemini evidence suite reaches
+    pull requests only through the fast gate's family selection.
+    """
+    gate = yaml.safe_load(
+        (ROOT / ".github/workflows/pr-fast-gate.yml").read_text(encoding="utf-8")
     )
-    triggers = config.get("on", config.get(True))
-    pull_request = triggers["pull_request"]
+    pull_request = gate.get("on", gate.get(True))["pull_request"]
     assert "main" in pull_request["branches"]
     assert {"opened", "synchronize"} <= set(pull_request["types"])
-    job = config["jobs"]["test"]
-    assert "if" not in job
-    assert not job.get("continue-on-error", False)
-    steps = job["steps"]
-    broader = next(i for i, item in enumerate(steps) if item.get("name") == "Run Python tests")
-    commands = {
-        "Run Gemini usage evidence tests":
-            "uv run --no-project --with pytest python -m pytest tests/ai/test_gemini_usage.py -q",
-        "Run script JSON regression tests":
-            "uv run python -m pytest tests/lib/test_script_json_roundtrip.py -v --tb=short",
-    }
-    for name, command in commands.items():
-        matches = [(i, item) for i, item in enumerate(steps) if item.get("name") == name]
-        assert len(matches) == 1
-        index, regression = matches[0]
-        assert index < broader
-        assert "if" not in regression
-        assert not regression.get("continue-on-error", False)
-        assert regression["run"].strip() == command
+    steps = gate["jobs"]["fast-gate"]["steps"]
+    run = next(step for step in steps if step.get("name") == "Test touched families")
+    assert "if" not in run and not run.get("continue-on-error", False)
+    assert "scripts/ci/hub_family_run.py" in run["run"]
+
+    spec = importlib.util.spec_from_file_location(
+        "hub_select_gemini", ROOT / "scripts/ci/hub_test_select.py"
+    )
+    select = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(select)
+    families = select.load_families(ROOT / "config/ci/hub-test-families.json")
+    rules = select.load_rules(ROOT / "config/ci/hub-test-rules.json")
+    for changed in (
+        "scripts/ai/assessment/gemini-usage.py",
+        "tests/ai/test_gemini_usage.py",
+    ):
+        result = select.select([("M", changed)], families, rules)
+        assert "tests/ai/test_gemini_usage.py" in result["files"], changed

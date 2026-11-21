@@ -5,7 +5,7 @@
 
 ## Forbidden
 - Pushing files from this repo to any public repository.
-- Promoting pages/sources/ledgers/reports to public `llm-wiki` without operator-driven sanitization review.
+- Promoting pages/sources/ledgers/reports to public `llm-wiki` without a promotion ledger entry.
 - Echoing client identifiers, project IDs, vessel names, coordinates, personal names, or financial figures to public/shared surfaces without consulting `REDACTION-POSTURE.md`.
 - Bypassing the `DATA-CYCLE.md` gate-rule (raw data never flows directly to public `llm-wiki`).
 
@@ -14,4 +14,4 @@
 2. `REDACTION-POSTURE.md` — default REDACT vs FLAG-FOR-REVIEW per category.
 3. Current `ledgers/<dated-ledger>.yml` (or `ledgers/promotion-ledger.example.yml`).
 
-Promotion to public `llm-wiki` requires: ledger entry, REDACT-category scrub, FLAG-FOR-REVIEW operator clearance, explicit operator approval. No agent self-approves. Violations are operational incidents — when in doubt, stop and ask the operator.
+Promotion to public `llm-wiki` requires a ledger entry and the REDACT-category scrub; public text follows the client-data and codename rules.

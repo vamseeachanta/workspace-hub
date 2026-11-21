@@ -165,7 +165,7 @@ def capture_source(repository, *, source_id, path, revision, byte_scope,
 
 
 def load_manifest(raw):
-    """Parse JSON without silently discarding duplicate keys or NaN values."""
+    """Parse unambiguous JSON; decoder failures raise a detached ProvenanceError."""
     def pairs(items):
         result = {}
         for key, value in items:
@@ -179,8 +179,10 @@ def load_manifest(raw):
 
     try:
         return json.loads(raw, object_pairs_hook=pairs, parse_constant=invalid_constant)
-    except (ValueError, UnicodeError) as exc:
-        raise ProvenanceError("invalid or ambiguous JSON manifest") from exc
+    except (ValueError, RecursionError, OverflowError, MemoryError):
+        pass
+    # Raise outside the handler: even "from None" retains decoder input in context.
+    raise ProvenanceError("invalid or ambiguous JSON manifest")
 
 
 def _indexed(items, key, label):

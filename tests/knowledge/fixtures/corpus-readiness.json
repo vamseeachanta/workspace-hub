@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "format_families": ["markdown", "csv", "pdf"],
+  "sources": [
+    {
+      "owner_repo": "synthetic-catalog",
+      "source_id": "synthetic-source-a",
+      "dataset_id": "synthetic-dataset-a",
+      "format_family": "markdown",
+      "route": "public_llm_wiki",
+      "privacy": "public",
+      "processing_status": "extracted",
+      "evidence": {
+        "method_ref": "synthetic:method-a",
+        "fidelity_ref": "synthetic:fidelity-a",
+        "citation_ref": "synthetic:citation-a",
+        "rights_ref": "synthetic:rights-a"
+      }
+    },
+    {
+      "owner_repo": "synthetic-catalog",
+      "source_id": "synthetic-source-b",
+      "dataset_id": "synthetic-dataset-b",
+      "format_family": "markdown",
+      "route": "private_sidecar",
+      "privacy": "restricted",
+      "processing_status": "summarized",
+      "evidence": {
+        "method_ref": "synthetic:method-b",
+        "fidelity_ref": null,
+        "citation_ref": null,
+        "rights_ref": "synthetic:rights-b"
+      }
+    },
+    {
+      "owner_repo": "synthetic-catalog",
+      "source_id": "synthetic-source-c",
+      "dataset_id": "synthetic-dataset-c",
+      "format_family": "csv",
+      "route": "public_llm_wiki",
+      "privacy": "restricted",
+      "processing_status": "promoted",
+      "evidence": {
+        "method_ref": "synthetic:method-c",
+        "fidelity_ref": "synthetic:fidelity-c",
+        "citation_ref": "synthetic:citation-c",
+        "rights_ref": "synthetic:rights-c"
+      }
+    }
+  ]
+}

@@ -20,6 +20,7 @@ import os
 import re
 import subprocess
 import sys
+from datetime import datetime, timezone
 from unittest.mock import patch
 
 import pytest
@@ -198,6 +199,131 @@ class TestEdgeCases:
         # Issue titles containing special chars should be safe in markdown tables
         assert "Review solver queue bugs" not in queue_output
         assert "| #1830 | [withheld; see issue] |" in queue_output
+
+
+# Focus cap source: issues/2052, default five high-priority issues per agent.
+# Independent synthetic example: high issues are 11, 13, 14, 17, 18, 19;
+# medium 1, low 2 and unlabelled 3 are excluded. Repeated 11 counts once.
+# Thus default selects 11, 13, 14, 17, 18; cap two selects 11, 13;
+# cap six or twenty selects all six; zero selects none. IDs are fixture data.
+FOCUS_ISSUES = [
+    _make_issue(19, "Synthetic final task", ["priority:high"]),
+    _make_issue(2, "Synthetic low task", ["priority:low"]),
+    _make_issue(17, "Synthetic later task", ["priority:high"]),
+    _make_issue(11, "Synthetic first task", ["priority:high"]),
+    _make_issue(1, "Synthetic medium task", ["priority:medium"]),
+    _make_issue(18, "Synthetic next task", ["priority:high"]),
+    _make_issue(14, "Synthetic middle task", ["priority:high"]),
+    _make_issue(3, "Synthetic unlabelled task", []),
+    _make_issue(13, "Synthetic second task", ["priority:high"]),
+    _make_issue(11, "Synthetic first task", ["priority:high"]),
+]
+# Fixed synthetic clock, independent of the system clock.
+FOCUS_NOW = datetime(2026, 10, 15, tzinfo=timezone.utc)
+
+
+@pytest.fixture
+def focus_module(monkeypatch):
+    import importlib
+
+    monkeypatch.syspath_prepend(os.path.join(REPO_ROOT, "scripts"))
+    mod = importlib.import_module("refresh-agent-work-queue")
+    monkeypatch.setattr(mod, "LANES", [
+        {"name": "Test", "key": "TEST", "label": "queue:test", "role": "Testing"},
+    ])
+    return mod
+
+
+def _focus_numbers(markdown):
+    return re.findall(r"^\d+\. #(\d+)\b", markdown, re.MULTILINE)
+
+
+class TestWeeklyFocus:
+    def test_default_cap_and_table_preservation(self, focus_module):
+        queries = []
+
+        def query(labels):
+            queries.append(labels)
+            return FOCUS_ISSUES
+
+        output = focus_module.generate_queue_markdown(query_fn=query, now=FOCUS_NOW)
+        assert queries == ["dispatch:ready,queue:test"]
+        assert _focus_numbers(output) == ["11", "13", "14", "17", "18"]
+        # Existing table keeps every row, ascending, including the repeated 11.
+        assert re.findall(r"^\| \d+ \| #(\d+) \|", output, re.MULTILINE) == [
+            "1", "2", "3", "11", "11", "13", "14", "17", "18", "19",
+        ]
+        assert output.index("### This Week's Focus") > output.index("| 10 | #19 |")
+        assert "Last refresh: 2026-10-15T00:00:00Z" in output
+
+    @pytest.mark.parametrize(("cap", "expected"), [
+        (2, ["11", "13"]),
+        (0, []),
+        (20, ["11", "13", "14", "17", "18", "19"]),
+    ])
+    def test_configured_cap(self, focus_module, cap, expected):
+        output = focus_module.generate_queue_markdown(
+            query_fn=lambda _: FOCUS_ISSUES, now=FOCUS_NOW, focus_limit=cap,
+        )
+        assert _focus_numbers(output) == expected
+
+    def test_deterministic_ties_and_no_duplicates(self, focus_module):
+        def render(issues):
+            return focus_module.generate_queue_markdown(
+                query_fn=lambda _: issues, now=FOCUS_NOW, focus_limit=6,
+            )
+
+        output = render(FOCUS_ISSUES)
+        assert output == render(FOCUS_ISSUES)
+        assert output == render(list(reversed(FOCUS_ISSUES)))
+        assert _focus_numbers(output) == ["11", "13", "14", "17", "18", "19"]
+
+    @pytest.mark.parametrize("issues", [[], FOCUS_ISSUES[1:2]])
+    def test_empty_focus(self, focus_module, issues):
+        output = focus_module.generate_queue_markdown(
+            query_fn=lambda _: issues, now=FOCUS_NOW,
+        )
+        assert "### This Week's Focus\n\n_No high-priority issues._" in output
+        assert _focus_numbers(output) == []
+        if not issues:
+            assert "| # | Issue | Title |" not in output
+
+    def test_reasons_keep_publication_boundary(self, focus_module):
+        issue = _make_issue(11, "Unpublishable synthetic title", [
+            "priority:high", "sensitive:unpublishable-metadata",
+        ])
+        output = focus_module.generate_queue_markdown(
+            query_fn=lambda _: [issue], now=FOCUS_NOW,
+        )
+        assert "Unpublishable synthetic title" not in output
+        assert "unpublishable-metadata" not in output
+        assert (
+            "1. #11 — [withheld; see issue] — High priority: needs attention this week."
+        ) in output
+
+    def test_cap_applies_to_each_section(self, focus_module, monkeypatch):
+        monkeypatch.setattr(focus_module, "LANES", [
+            {"name": "First", "key": "FIRST", "label": "queue:first", "role": "Testing"},
+            {"name": "Second", "key": "SECOND", "label": "queue:second", "role": "Testing"},
+        ])
+        output = focus_module.generate_queue_markdown(
+            query_fn=lambda _: FOCUS_ISSUES, now=FOCUS_NOW, focus_limit=2,
+        )
+        # Each independent fixture query selects 11, 13 by the example above.
+        assert _focus_numbers(output) == ["11", "13", "11", "13"]
+
+    def test_negative_cap_rejected(self, focus_module):
+        # A count below zero is invalid; zero is the documented disable value.
+        with pytest.raises(ValueError, match="non-negative"):
+            focus_module.generate_queue_markdown(
+                query_fn=lambda _: FOCUS_ISSUES, now=FOCUS_NOW, focus_limit=-1,
+            )
+
+    def test_command_line_cap(self, focus_module, monkeypatch, capsys):
+        monkeypatch.setattr(sys, "argv", [SCRIPT, "--dry-run", "--focus-limit", "2"])
+        monkeypatch.setattr(focus_module, "gh_query_issues", lambda _: FOCUS_ISSUES)
+        focus_module.main()
+        assert _focus_numbers(capsys.readouterr().out) == ["11", "13"]
 
 
 # ── Staleness detection tests ──────────────────────────────────────────
