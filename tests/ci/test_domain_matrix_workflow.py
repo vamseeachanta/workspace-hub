@@ -5,6 +5,7 @@ workflow. Synthetic caller trees contain no helper checkout. Script equality is
 checked directly, independently of the embedding generator's implementation.
 """
 
+import importlib.util
 import json
 import os
 import shutil
@@ -169,3 +170,38 @@ def test_hosted_contract_suite_is_blocking():
     assert "if" not in contract
     assert "uv run --no-project --with pytest --with pyyaml" in contract["run"]
     assert "python -m pytest tests/ci/" in contract["run"]
+
+
+def test_gemini_evidence_suite_runs_in_the_pull_request_gate():
+    """PRs to main run touched families through pr-fast-gate.yml.
+
+    baseline-check.yml is manual on main, so the Gemini evidence suite reaches
+    pull requests only through the fast gate's family selection.
+    """
+    gate = yaml.safe_load(
+        (ROOT / ".github/workflows/pr-fast-gate.yml").read_text(encoding="utf-8")
+    )
+    pull_request = gate.get("on", gate.get(True))["pull_request"]
+    assert "main" in pull_request["branches"]
+    assert {"opened", "synchronize"} <= set(pull_request["types"])
+    steps = gate["jobs"]["fast-gate"]["steps"]
+    run = next(step for step in steps if step.get("name") == "Test touched families")
+    assert "if" not in run and not run.get("continue-on-error", False)
+    assert "scripts/ci/hub_family_run.py" in run["run"]
+
+    spec = importlib.util.spec_from_file_location(
+        "hub_select_gemini", ROOT / "scripts/ci/hub_test_select.py"
+    )
+    select = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(select)
+    families = select.load_families(ROOT / "config/ci/hub-test-families.json")
+    rules = select.load_rules(ROOT / "config/ci/hub-test-rules.json")
+    for changed in (
+        "scripts/ai/assessment/gemini-usage.py",
+        "tests/ai/test_gemini_usage.py",
+    ):
+        result = select.select([("M", changed)], families, rules)
+        # The runner replaces unmapped-code's full selection with core families,
+        # which exclude the evidence suite even though the selector lists it.
+        assert result["paths"][0]["rule"] != "unmapped-code", changed
+        assert "tests/ai/test_gemini_usage.py" in result["files"], changed

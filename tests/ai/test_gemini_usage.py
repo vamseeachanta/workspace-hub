@@ -1,7 +1,7 @@
 """Synthetic evidence-reader examples for issue #3087; no live quota discovery.
 
 Fixture basis (hand-authored, not measured usage): the clock is fixed at noon
-UTC on 2026-01-15, and snapshots are captured at 10:00 that day. Their age is
+UTC on 2026-01-15, and timeline snapshots are captured at 10:00 that day. Their age is
 therefore two hours, below the explicitly configured 48-hour freshness limit.
 Window examples use 20% and 70% remaining, or a 35% tie; the lower percentage
 binds and ties prefer weekly, as required by the issue's evidence-reader scope.
@@ -124,6 +124,27 @@ def test_legacy_flat_binding_window(reader, capsys, weekly, five_hour, window, r
     }
 
 
+@pytest.mark.parametrize(
+    "timestamp,stale",
+    [
+        pytest.param({"captured_at": "2026-01-13T12:00:00Z"}, False, id="exactly-48-hours"),
+        pytest.param({"captured_at": "2026-01-13T11:59:59Z"}, True, id="one-second-over"),
+        pytest.param({}, True, id="missing-timestamp"),
+        pytest.param({"captured_at": "invalid"}, True, id="malformed-timestamp"),
+    ],
+)
+def test_snapshot_freshness(reader, capsys, timestamp, stale):
+    _, snapshot, _ = reader
+    snapshot.write_text(
+        json.dumps({**timestamp, "gemini": {"weekly_pct_avail": 20}}),
+        encoding="utf-8",
+    )
+    result = read_result(reader, capsys)
+    assert result["source"] == "manual-snapshot"
+    assert result["captured_at"] == timestamp.get("captured_at")
+    assert result["stale"] is stale
+
+
 @pytest.mark.parametrize("contents", [None, '{"gemini":'], ids=["absent", "invalid-json"])
 def test_missing_evidence_is_unavailable(reader, capsys, contents):
     _, snapshot, _ = reader
@@ -156,7 +177,7 @@ NEWEST = ("2026-01-15T11-30-00-000Z", "1h24m")
         pytest.param([SAME_TIME], True, 20, 30, "weekly", "manual-snapshot", id="equal-time"),
         pytest.param([EXPIRES_NOW], True, 20, 30, "weekly", "manual-snapshot", id="reset-now"),
         pytest.param([NEWEST, NEWER, OLDER], True, 0, 0.9, "five_hour", "429-throttle",
-                     id="latest-active-regardless-of-file-order"),
+                     id="latest-of-multiple-active-errors"),
         pytest.param([EXPIRED, OLDER], True, 20, 30, "weekly", "manual-snapshot",
                      id="expired-newer-does-not-revive-older"),
         pytest.param([NEWER], False, 0, 1.3, "five_hour", "429-throttle",
