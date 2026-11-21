@@ -201,4 +201,7 @@ def test_gemini_evidence_suite_runs_in_the_pull_request_gate():
         "tests/ai/test_gemini_usage.py",
     ):
         result = select.select([("M", changed)], families, rules)
+        # The runner replaces unmapped-code's full selection with core families,
+        # which exclude the evidence suite even though the selector lists it.
+        assert result["paths"][0]["rule"] != "unmapped-code", changed
         assert "tests/ai/test_gemini_usage.py" in result["files"], changed
