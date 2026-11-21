@@ -47,6 +47,10 @@
 | MAJOR-C | Action reopened **every** completed/uncompleted close (Claude#1) | Action gated to `state_reason == 'completed'`; runner skips issues lacking `status:plan-approved`. |
 | MINOR | weight/coverage validation, empty-checklist free pass, prefix-boundary, empty-owners opaque | Fail-closed input validation; empty checklist penalised; path-boundary prefix match; explicit empty-owners config error. |
 
+## Update, rules review r5 (owner, 20 Nov 2026)
+
+The verified label is no longer owner-only. Any authorized applier (`COMPLETENESS_OWNERS` or `COMPLETENESS_REVIEWERS`) who did not write the work may apply it. The runner reads the closing PR or commit author and merged linked PRs from GraphQL and denies a label applied by one of those logins. Where several agents share one login, the record must name `work_by` and a different `verified_by`. The gate still applies only to enrolled issues.
+
 ## Approach (as-built)
 1. `scripts/workflow/completeness_score.py` — classify (`code`|`evidence`); `code` reuses #1629 snapshot (SHA-bound, fail-closed) + changed-code coverage + evidence-linked checklist; `evidence` weighted ratio. Emits `CompletenessResult` (incl. `issue_number`, `generated_at`).
 2. Persistence — computed result via `hermes kanban complete --metadata` + issue-body ```completeness {json}``` stamp.

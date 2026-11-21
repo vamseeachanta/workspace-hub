@@ -20,7 +20,7 @@ def _record(pct=95, cls="code", issue=2798, **extra):
 def _eval(**kw):
     base = dict(record=_record(), labels=[VERIFIED], label_actor="vamseeachanta",
                 closing_actor="hermes-bot", authorized_appliers=OWNERS,
-                expected_issue=2798, body_verified_fresh=True)
+                expected_issue=2798, body_verified_fresh=True, work_authors={"pr-author"})
     base.update(kw)
     return gate.evaluate_close(**base)
 
@@ -131,7 +131,77 @@ def test_closure_guidance_preserves_approval_independent_enrollment():
     text = (Path(__file__).resolve().parents[2] / ".claude/rules/completeness-before-close.md").read_text(encoding="utf-8")
     assert "gate:completeness-v2" in text
     assert "historical" in text
-    assert "owner-only `status:completeness-verified`" in text
+    assert "owner-only `status:completeness-verified`" not in text
+    assert "did not write the work" in text
+    assert "`work_by`" in text and "`verified_by`" in text
+
+
+# ---- verifier did not write the work (rules review r5, card A) ----
+
+def test_reviewer_who_is_not_the_author_may_verify():
+    d = _eval(label_actor="reviewer", authorized_appliers={"vamseeachanta", "reviewer"},
+              work_authors={"vamseeachanta"})
+    assert d.allowed is True
+
+
+def test_denies_labeler_who_authored_the_closing_pr_without_named_verifier():
+    d = _eval(work_authors={"vamseeachanta"})
+    assert d.allowed is False and "author of the closing PR or commit" in d.reason
+
+
+def test_author_check_is_case_insensitive():
+    assert _eval(work_authors={"VamseeAchanta"}).allowed is False
+
+
+def test_shared_login_passes_when_record_names_a_separate_verifier():
+    rec = _record(work_by="claude-worker", verified_by="codex-reviewer")
+    assert _eval(record=rec, work_authors={"vamseeachanta"}).allowed is True
+
+
+def test_shared_login_denies_when_verifier_is_the_author():
+    rec = _record(work_by="claude-worker", verified_by="Claude-Worker")
+    assert _eval(record=rec, work_authors={"vamseeachanta"}).allowed is False
+
+
+def test_shared_login_denies_when_only_one_field_is_named():
+    assert _eval(record=_record(verified_by="codex-reviewer"), work_authors={"vamseeachanta"}).allowed is False
+
+
+def test_unknown_author_needs_named_verifier():
+    assert _eval(work_authors=set()).allowed is False
+    assert _eval(work_authors=None).allowed is False
+    rec = _record(work_by="claude-worker", verified_by="codex-reviewer")
+    assert _eval(record=rec, work_authors=set()).allowed is True
+
+
+def test_unauthorized_labeler_still_denied_even_if_not_the_author():
+    d = _eval(label_actor="random-contributor", work_authors={"vamseeachanta"})
+    assert d.allowed is False and "unauthorized" in d.reason
+
+
+def test_work_authors_from_pr_closer_commit_closer_and_merged_links():
+    node = {
+        "timelineItems": {"nodes": [{"closer": {"author": {"login": "pr-author"}}}]},
+        "closedByPullRequestsReferences": {"nodes": [
+            {"state": "MERGED", "author": {"login": "linked-author"}},
+            {"state": "OPEN", "author": {"login": "open-author"}},
+            {"state": "CLOSED", "author": {"login": "closed-author"}},
+        ]},
+    }
+    assert gate.work_authors_from(node) == {"pr-author", "linked-author"}
+    commit = {"timelineItems": {"nodes": [{"closer": {"author": {"user": {"login": "committer"}}}}]}}
+    assert gate.work_authors_from(commit) == {"committer"}
+
+
+def test_work_authors_from_manual_close_or_missing_data_is_empty():
+    assert gate.work_authors_from({"timelineItems": {"nodes": [{"closer": None}]}}) == set()
+    assert gate.work_authors_from(None) == set()
+    assert gate.work_authors_from({"timelineItems": {"nodes": [{"closer": {"author": None}}]}}) == set()
+
+
+def test_workflow_passes_reviewer_appliers_variable():
+    workflow = Path(__file__).resolve().parents[2] / ".github/workflows/completeness-gate.yml"
+    assert "COMPLETENESS_REVIEWERS: ${{ vars.COMPLETENESS_REVIEWERS }}" in workflow.read_text(encoding="utf-8")
 
 
 # ---- body-freshness helper (fix #5: anchor on lastEditedAt, not updatedAt) ----
