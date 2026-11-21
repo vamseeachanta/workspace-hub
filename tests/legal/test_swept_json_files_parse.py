@@ -28,10 +28,6 @@ SWEPT = [
     ".claude/state/corrections/session_20260512.jsonl",
     ".claude/state/corrections/session_20260518.jsonl",
     "config/agents/codex/state-snapshots/history.jsonl",
-    "docs/plans/agent-swarm-audits/2026-05-10/logs/swarm-1-codex.jsonl",
-    "docs/plans/agent-swarm-audits/2026-05-10/logs/swarm-2-codex.jsonl",
-    "docs/plans/agent-swarm-audits/2026-05-10/logs/swarm-3-codex.jsonl",
-    "docs/plans/agent-swarm-audits/2026-05-10/logs/swarm-4-codex.jsonl",
 ]
 
 _BASES = ["origin/fix/c19-private-config-behaviour", "fix/c19-private-config-behaviour",
@@ -90,5 +86,6 @@ def test_changed_json_file_parses(rel):
 
 
 def test_swept_list_is_non_empty():
-    assert len(SWEPT) == 13
+    # Four historical session logs were removed from the public tree.
+    assert len(SWEPT) == 9
     assert all((REPO_ROOT / p).exists() for p in SWEPT)
