@@ -40,6 +40,7 @@ The historical `feedback_codex_needs_pushed_artifact` entry describes a restrict
 ## Known CLI Regressions
 
 - **CLI 0.124, 0.130** — periodic upstream regressions in `codex exec` stdin handling. Symptoms: `UNAVAILABLE (codex CLI failed, rc=0: Reading additional input from stdin)`. (`feedback_codex_cli_0_124_upstream_regression`)
+- **CLI 0.144.1** — issue #3442 records a commit/prompt submit timeout on 2026-07-10 with the same stdin diagnostic; prompt size and inherited input state were not recorded. Universal failure is NOT_EVALUATED. The submit wrapper now monitors stderr, returns `UNAVAILABLE` through exit 7 and skips compact retry on that signature; offline small/full synthetic-diff and input-state tests qualify the wrapper only. See [evidence and worked example](../../../docs/review/codex-stdin-regression.md). (`feedback_codex_cli_0_144_stdin_regression`)
 - Check `codex --version` against `feedback_codex_cli_*` memory files before assuming a new bug.
 
 ## Adversarial Review Posture
