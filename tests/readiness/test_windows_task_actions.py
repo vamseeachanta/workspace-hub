@@ -3,6 +3,8 @@ from pathlib import Path
 import os
 import subprocess
 
+import pytest
+
 ROOT = Path(__file__).resolve().parents[2]
 WINDOWS = ROOT / "scripts/windows"
 CONTEXT = ROOT / "scripts/coordination/context"
@@ -94,18 +96,24 @@ def _copy_context(tmp_path):
     return root, scripts
 
 
-def test_context_derives_and_exports_root_from_script(tmp_path):
+@pytest.mark.parametrize("equivalent_spelling", [False, True])
+def test_context_derives_and_exports_root_from_script(tmp_path, equivalent_spelling):
     root, scripts = _copy_context(tmp_path)
+    if equivalent_spelling:
+        root = root / ".." / root.name
     for name in ("validate_context.sh", "analyze_patterns.sh", "improve_context.sh"):
-        (scripts / name).write_text('printf "ROOT=%s\\n" "$WORKSPACE_ROOT"\n', encoding="utf-8", newline="\n")
+        (scripts / name).write_text(
+            '[[ "$WORKSPACE_ROOT" -ef "$EXPECTED_WORKSPACE_ROOT" ]] || exit 1\n'
+            'printf "ROOT_OK\\n"\n', encoding="utf-8", newline="\n")
     env = dict(os.environ)
     env.pop("WORKSPACE_ROOT", None)
+    env["EXPECTED_WORKSPACE_ROOT"] = str(root)
     result = subprocess.run(["bash", str(scripts / "daily_context_check.sh")],
                             cwd=tmp_path, env=env, text=True, capture_output=True)
     assert result.returncode == 0, result.stderr
     reports = list((root / ".claude/reports").glob("context-health-*.md"))
     assert len(reports) == 1
-    assert reports[0].read_text(encoding="utf-8").count(f"ROOT={root}") == 3
+    assert reports[0].read_text(encoding="utf-8").splitlines().count("ROOT_OK") == 3
 
 
 def test_pattern_analysis_survives_first_repository(tmp_path):
@@ -187,6 +195,13 @@ def test_windows_ci_executes_behavioral_harness_for_draft_updates():
     assert "continue-on-error" not in job
     assert "continue-on-error" not in run
     assert "if" not in run
+    python_run = next(step for step in steps if "python -m pytest" in step.get("run", ""))
+    assert any(step.get("uses") == "actions/setup-python@v5" for step in steps)
+    assert "test_context_derives_and_exports_root_from_script" in python_run["run"]
+    assert "--basetemp" in python_run["run"]
+    assert "$env:RUNNER_TEMP" in python_run["run"]
+    assert "if" not in python_run
+    assert "continue-on-error" not in python_run
 
 
 def test_behavioral_harness_reports_success_after_expected_child_failures():
