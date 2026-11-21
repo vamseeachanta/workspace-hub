@@ -11,6 +11,7 @@ from __future__ import annotations
 import json
 import os
 import shlex
+import shutil
 import subprocess
 import sys
 import threading
@@ -25,6 +26,7 @@ from collector_support import (
     SCRIPT,
     _fixture,
     collector_env,
+    native_path,
 )
 from collector_support import (
     bash_path as _bash_path,
@@ -65,7 +67,7 @@ def _directory_snapshot(root):
 
 
 def _fixture_snapshot(root):
-    return {str(path.relative_to(root)): None if path.is_dir() else path.read_bytes()
+    return {path.relative_to(root).as_posix(): None if path.is_dir() else path.read_bytes()
             for path in root.rglob("*")}
 
 
@@ -93,8 +95,8 @@ def _uv_stub(tmp_path: Path) -> Path:
     uv.write_text(
         "#!/usr/bin/env bash\n"
         "[[ \"$1 $2 $3\" == 'run --no-project python' ]] || exit 2\n"
-        f"shift 3\nexec {python} \"$@\"\n"
-    )
+        f"shift 3\nexec {python} \"$@\"\n",
+        encoding="utf-8", newline="\n")
     uv.chmod(0o755)
     return bin_dir
 
@@ -109,7 +111,7 @@ def test_collect_publish_health_uses_working_resolver_and_exact_schema(tmp_path)
         "phase": "publish",
         "duration_s": 2.5,
         "rc": 0,
-    }))
+    }), encoding="utf-8", newline="\n")
     bin_dir = _uv_stub(tmp_path)
     res = subprocess.run(
         ["bash", _bash_path(SCRIPT), "--stdout", "--machine", "machine-a"],
@@ -136,7 +138,7 @@ def test_collect_invalid_publish_health_emits_no_partial_tuple(tmp_path):
         "phase": "publish",
         "duration_s": True,
         "rc": 0,
-    }))
+    }), encoding="utf-8", newline="\n")
     bin_dir = _uv_stub(tmp_path)
     res = subprocess.run(
         ["bash", _bash_path(SCRIPT), "--stdout", "--machine", "machine-a"],
@@ -176,7 +178,7 @@ def test_collect_public_host_replaces_private_hostname(tmp_path):
     bin_dir = tmp_path / "bin"
     bin_dir.mkdir()
     hostname = bin_dir / "hostname"
-    hostname.write_text("#!/usr/bin/env bash\nprintf '%s\\n' private-box-07\n")
+    hostname.write_text("#!/usr/bin/env bash\nprintf '%s\\n' private-box-07\n", encoding="utf-8", newline="\n")
     hostname.chmod(0o755)
     res = subprocess.run(
         ["bash", _bash_path(SCRIPT), "--stdout", "--machine", "machine-a"],
@@ -193,7 +195,7 @@ def test_collect_host_defaults_to_os_hostname_without_public_host(tmp_path):
     bin_dir = tmp_path / "bin"
     bin_dir.mkdir()
     hostname = bin_dir / "hostname"
-    hostname.write_text("#!/usr/bin/env bash\nprintf '%s\\n' linux-box\n")
+    hostname.write_text("#!/usr/bin/env bash\nprintf '%s\\n' linux-box\n", encoding="utf-8", newline="\n")
     hostname.chmod(0o755)
     res = subprocess.run(
         ["bash", _bash_path(SCRIPT), "--stdout", "--machine", "machine-a"],
@@ -208,7 +210,7 @@ def test_collect_windows_autodetect_unknown_host_fails_closed(tmp_path):
     bin_dir = tmp_path / "bin"
     bin_dir.mkdir()
     hostname = bin_dir / "hostname"
-    hostname.write_text("#!/usr/bin/env bash\nprintf '%s\\n' unknown-win\n")
+    hostname.write_text("#!/usr/bin/env bash\nprintf '%s\\n' unknown-win\n", encoding="utf-8", newline="\n")
     hostname.chmod(0o755)
     res = subprocess.run(
         ["bash", _bash_path(SCRIPT), "--stdout"],
@@ -245,10 +247,10 @@ def test_collect_sources_readiness_value(tmp_path):
     # m1: readiness_overall SOURCED from the fixture file; file not modified
     ws = _fixture(tmp_path)
     rf = ws / ".claude" / "state" / "harness-readiness-machine-a.yaml"
-    before = rf.read_text()
+    before = rf.read_text(encoding="utf-8")
     d = _run(ws)
     assert d["dimensions"]["harness"]["readiness_overall"] == "fail"
-    assert rf.read_text() == before                      # collector did not touch it
+    assert rf.read_text(encoding="utf-8") == before                      # collector did not touch it
 
 
 def test_collect_behavior_typed_groups(tmp_path):
@@ -281,15 +283,218 @@ def test_collect_yaml_injection_escaped(tmp_path):
     assert d["machine"] == 'evil"label: injected'   # value preserved, not injected as structure
 
 
+def _report_snapshot(out):
+    """Bytes and metadata independently detect a replacement, even within one clock tick."""
+    stat = out.stat()
+    return out.read_bytes(), stat.st_ino, stat.st_mtime_ns
+
+
+def _assert_controlled_report_times(report, env):
+    assert report["generated_at"] == env["TEST_REPORT_TIME"] + "Z"
+    assert report["dimensions"]["memory"]["context_md_mtime"] == env["TEST_CONTEXT_TIME"]
+
+
+def _publish_report(ws, env):
+    result = subprocess.run(
+        ["bash", _bash_path(SCRIPT), "--machine", "machine-a"],
+        env=collector_env(env, stub_dirs=(ws.parent / "report-tools",)),
+        capture_output=True, text=True, timeout=60, check=False)
+    assert result.returncode == 0, result.stderr
+    return ws / ".claude" / "state" / "equality-machine-a.yaml"
+
+
+def _controlled_report_fixture(tmp_path):
+    # Reuse the provenance suite's disposable Git tree and isolated Git commands.
+    from test_collect_equality_provenance import _git_fixture
+
+    ws = _git_fixture(tmp_path)
+    tools = tmp_path / "report-tools"
+    tools.mkdir()
+    real_date = _resolve_utility("date", collector_env(_atomic_write_env(ws)))
+    date = tools / "date"
+    date.write_text(
+        "#!/usr/bin/env bash\n"
+        'original_args=("$@")\n'
+        'if [[ "${1:-}" == -u ]]; then shift; fi\n'
+        'case "${1:-}" in\n'
+        '  +%Y-%m-%dT%H:%M:%S) printf "%s\\n" "$TEST_REPORT_TIME"; exit 0;;\n'
+        '  +%Y-%m-%dT%H:%M:%SZ) printf "%sZ\\n" "$TEST_REPORT_TIME"; exit 0;;\n'
+        'esac\n'
+        'if [[ "${1:-}" == -r && "${3:-}" == +%Y-%m-%dT%H:%M:%S ]]; then\n'
+        '  printf "%s\\n" "$TEST_CONTEXT_TIME"; exit 0\n'
+        'fi\n'
+        'for arg in "$@"; do\n'
+        '  if [[ "$arg" == +%Y-%m-%dT* ]]; then\n'
+        '    printf "%s\\n" "unsupported report timestamp format" >&2; exit 64\n'
+        '  fi\n'
+        'done\n'
+        f'exec {shlex.quote(real_date)} "${{original_args[@]}}"\n',
+        encoding="utf-8", newline="\n")
+    date.chmod(0o755)  # POSIX executable permissions, as in the isolation fixture.
+    tasks = tools / "schtasks"
+    tasks.write_text('#!/usr/bin/env bash\nprintf "%s\\n" "$TEST_TASKS"\n',
+                     encoding="utf-8", newline="\n")
+    tasks.chmod(0o755)
+    env = _atomic_write_env(ws, tools)
+    env.update(
+        # Existing double-gated compute seam: this exercises serialization, not Windows.
+        EQ_TEST_ENABLE_OS_OVERRIDE="1", EQ_OS_OVERRIDE="windows",
+        # Independent synthetic example: two cores, one GiB total, half available,
+        # and eight GiB disk space (one GiB = 1024 MiB).
+        EQ_CORES="2", EQ_RAM_TOTAL_MIB="1024", EQ_RAM_AVAIL_MIB="512",
+        EQ_DISK_AVAIL_GB="8", EQ_GPU_MODEL="none",
+        # Distinct ISO calendar dates supply deterministic volatile values.
+        TEST_REPORT_TIME="2026-01-01T00:00:00", TEST_CONTEXT_TIME="2025-12-31T00:00:00",
+        TEST_TASKS="",
+    )
+    return ws, env
+
+
+@pytest.mark.parametrize("utc", [False, True])
+@pytest.mark.parametrize("suffix", ["", "Z"])
+def test_controlled_report_date_formats(tmp_path, utc, suffix):
+    ws, env = _controlled_report_fixture(tmp_path)
+    args = (["-u"] if utc else []) + ["+%Y-%m-%dT%H:%M:%S" + suffix]
+    result = subprocess.run(
+        ["bash", _bash_path(ws.parent / "report-tools" / "date"), *args],
+        env=collector_env(env), capture_output=True, text=True, timeout=60, check=False)
+    assert result.returncode == 0, result.stderr
+    assert result.stdout == env["TEST_REPORT_TIME"] + suffix + "\n"
+
+
+@pytest.mark.parametrize("utc", [False, True])
+@pytest.mark.parametrize("time_format", ["+%Y-%m-%dT%H:%M", "+%Y-%m-%dT%H:%M:%S%z"])
+def test_controlled_report_date_rejects_unknown_formats(tmp_path, utc, time_format):
+    ws, env = _controlled_report_fixture(tmp_path)
+    args = (["-u"] if utc else []) + [time_format]
+    result = subprocess.run(
+        ["bash", _bash_path(ws.parent / "report-tools" / "date"), *args],
+        env=collector_env(env), capture_output=True, text=True, timeout=60, check=False)
+    assert result.returncode == 64
+    assert "unsupported report timestamp format" in result.stderr
+    assert not result.stdout
+
+
+@pytest.mark.parametrize("utc", [False, True])
+def test_controlled_report_context_date(tmp_path, utc):
+    ws, env = _controlled_report_fixture(tmp_path)
+    args = (["-u"] if utc else []) + ["-r", _bash_path(ws / ".claude" / "memory" / "context.md"),
+                                    "+%Y-%m-%dT%H:%M:%S"]
+    result = subprocess.run(
+        ["bash", _bash_path(ws.parent / "report-tools" / "date"), *args],
+        env=collector_env(env), capture_output=True, text=True, timeout=60, check=False)
+    assert result.returncode == 0, result.stderr
+    assert result.stdout == env["TEST_CONTEXT_TIME"] + "\n"
+
+
+@pytest.mark.parametrize("utc", [False, True])
+def test_controlled_report_date_preserves_passthrough_args(tmp_path, monkeypatch, utc):
+    real_date = tmp_path / "real-date"
+    real_date.write_text('#!/usr/bin/env bash\nprintf "%s\\n" "$@"\n',
+                         encoding="utf-8", newline="\n")
+    real_date.chmod(0o755)
+    monkeypatch.setitem(globals(), "_resolve_utility", lambda name, env: _bash_path(real_date))
+    ws, env = _controlled_report_fixture(tmp_path)
+    args = (["-u"] if utc else []) + ["+%s"]
+    result = subprocess.run(
+        ["bash", _bash_path(ws.parent / "report-tools" / "date"), *args],
+        env=collector_env(env), capture_output=True, text=True, timeout=60, check=False)
+    assert result.returncode == 0, result.stderr
+    assert result.stdout.splitlines() == args
+
+
+def _mark_report(out):
+    # POSIX epoch zero is a deliberate marker: any publication changes the mtime,
+    # even if generated_at is fixed and the filesystem has coarse clock resolution.
+    os.utime(out, ns=(0, 0))
+    return _report_snapshot(out)
+
+
 def test_collect_commit_on_change_idempotent(tmp_path):
-    # D1/DC4: two runs with no real change must not rewrite (hash excludes volatile + generated_at)
-    ws = _fixture(tmp_path)
-    out = ws / ".claude" / "state" / "equality-machine-a.yaml"
-    env = {"WORKSPACE_HUB": str(ws), "PATH": "/usr/bin:/bin:/usr/local/bin"}
-    subprocess.run(["bash", _bash_path(SCRIPT), "--machine", "machine-a"], env=collector_env(env), timeout=60, check=True)
-    first_mtime = out.stat().st_mtime_ns
-    subprocess.run(["bash", _bash_path(SCRIPT), "--machine", "machine-a"], env=collector_env(env), timeout=60, check=True)
-    assert out.stat().st_mtime_ns == first_mtime         # unchanged content → not rewritten
+    ws, env = _controlled_report_fixture(tmp_path)
+    out = _publish_report(ws, env)
+    before = _mark_report(out)
+    _assert_controlled_report_times(yaml.safe_load(before[0]), env)
+    _publish_report(ws, env)
+    assert _report_snapshot(out) == before
+
+
+@pytest.mark.parametrize("changed", ["checkout_sha", "generated_at", "headroom",
+                                     "context_md_mtime", "job_count"])
+def test_collect_excluded_volatility_does_not_rewrite(tmp_path, changed):
+    # Exclusion contract: collect-equality.sh's emit comment and the original
+    # docs/plans/2026-05-26-issue-2801-machine-equality.md, canonical payload section.
+    from test_collect_equality_provenance import _git
+
+    ws, env = _controlled_report_fixture(tmp_path)
+    out = _publish_report(ws, env)
+    before = _mark_report(out)
+    original = yaml.safe_load(before[0])
+    _assert_controlled_report_times(original, env)
+    if changed == "checkout_sha":
+        _git(ws, "commit", "-q", "--allow-empty", "-m", "advance revision")
+        _git(ws, "update-ref", "refs/remotes/origin/main", "HEAD")
+    elif changed == "generated_at":
+        env["TEST_REPORT_TIME"] = "2026-01-02T00:00:00"
+    elif changed == "headroom":
+        # Half of the initial synthetic example's available RAM and disk.
+        env.update(EQ_RAM_AVAIL_MIB="256", EQ_DISK_AVAIL_GB="4")
+    elif changed == "context_md_mtime":
+        env["TEST_CONTEXT_TIME"] = "2026-01-02T00:00:00"
+    else:
+        # One synthetic CSV task, with neither stable scheduler capability set.
+        env["TEST_TASKS"] = '"synthetic-task","ready"'
+
+    candidate = subprocess.run(
+        ["bash", _bash_path(SCRIPT), "--stdout", "--machine", "machine-a"],
+        env=collector_env(env, stub_dirs=(ws.parent / "report-tools",)),
+        capture_output=True, text=True, timeout=60, check=False)
+    assert candidate.returncode == 0, candidate.stderr
+    current = yaml.safe_load(candidate.stdout)
+    _assert_controlled_report_times(current, env)
+    # Remove only the independently specified changing field, and require all
+    # meaningful siblings (including freshness and scheduler flags) to stay equal.
+    def take_changed(report):
+        if changed == "checkout_sha":
+            return report["provenance"].pop(changed)
+        if changed == "generated_at":
+            return report.pop(changed)
+        dimension = {"headroom": "compute", "context_md_mtime": "memory",
+                     "job_count": "scheduler"}[changed]
+        return report["dimensions"][dimension].pop(changed)
+
+    assert take_changed(current) != take_changed(original)
+    assert current == original
+    _publish_report(ws, env)
+    assert _report_snapshot(out) == before
+
+
+def test_collect_stable_capability_change_rewrites(tmp_path):
+    ws, env = _controlled_report_fixture(tmp_path)
+    out = _publish_report(ws, env)
+    before = _mark_report(out)
+    original = yaml.safe_load(before[0])
+    _assert_controlled_report_times(original, env)
+    # Independent positive control: double the synthetic two-core capability.
+    env["EQ_CORES"] = "4"
+    _publish_report(ws, env)
+    after = _report_snapshot(out)
+    current = yaml.safe_load(after[0])
+    _assert_controlled_report_times(current, env)
+    assert after[0] != before[0]
+    assert after[2] != before[2]
+    assert current["dimensions"]["compute"]["static"]["cores"] == 4
+    original["dimensions"]["compute"]["static"]["cores"] = 4
+    assert current == original
+
+
+def _resolve_utility(name, env):
+    """Ask Bash before adding an interception directory; never recurse into a stub."""
+    result = subprocess.run(["bash", "-c", 'command -v -- "$1"', "_", name],
+                            env=env, capture_output=True, text=True, timeout=60, check=True)
+    utility = result.stdout.strip()
+    assert utility, f"utility not found: {name}"
+    return utility
 
 
 def _atomic_write_env(ws: Path, bindir: Path | None = None) -> dict[str, str]:
@@ -305,26 +510,44 @@ def test_collect_atomic_failure_preserves_prior_report(tmp_path):
     ws = _fixture(tmp_path)
     out = ws / ".claude" / "state" / "equality-machine-a.yaml"
     prior = 'generated_at: "prior"\nmachine: "machine-a"\nsentinel: old\n'
-    out.write_text(prior)
+    out.write_text(prior, encoding="utf-8", newline="\n")
+    before = _report_snapshot(out)
     bindir = tmp_path / "bin"
     bindir.mkdir()
     fake_mv = bindir / "mv"
-    fake_mv.write_text("#!/usr/bin/env bash\nexit 19\n")
+    fake_mv.write_text("#!/usr/bin/env bash\nexit 19\n", encoding="utf-8", newline="\n")
     fake_mv.chmod(0o755)
     res = subprocess.run(
         ["bash", _bash_path(SCRIPT), "--machine", "machine-a"],
         env=collector_env(_atomic_write_env(ws, bindir)), capture_output=True, text=True, timeout=60,
      check=False)
     assert res.returncode != 0
-    assert out.read_text() == prior
+    assert "could not publish report atomically" in res.stderr
+    assert _report_snapshot(out) == before
     assert not list(out.parent.glob(".equality-machine-a.yaml.tmp.*"))
 
 
-def test_collect_keeps_old_report_visible_until_atomic_rename(tmp_path):
+@pytest.mark.parametrize("spaced_utility_path", [False, True])
+def test_collect_keeps_old_report_visible_until_atomic_rename(tmp_path, spaced_utility_path):
     ws = _fixture(tmp_path)
     out = ws / ".claude" / "state" / "equality-machine-a.yaml"
     prior = 'generated_at: "prior"\nmachine: "machine-a"\nsentinel: old\n'
-    out.write_text(prior)
+    out.write_text(prior, encoding="utf-8", newline="\n")
+    # Discover the genuine utility before the blocking stub enters PATH.
+    discovery_env = collector_env(_atomic_write_env(ws))
+    real_mv = _resolve_utility("mv", discovery_env)
+    if spaced_utility_path:
+        utilities = tmp_path / "move tools' directory"
+        utilities.mkdir()
+        source = native_path(real_mv)
+        # Bash may omit the executable suffix that native filesystem APIs require.
+        if not source.is_file():
+            source = source.with_name(source.name + ".exe")
+        shutil.copy2(source, utilities / source.name)
+        discovery_env["PATH"] = f"{_bash_path(utilities)}:{discovery_env['PATH']}"
+        real_mv = _resolve_utility("mv", discovery_env)
+        assert " " in real_mv and "'" in real_mv
+        assert native_path(real_mv).parent == utilities
     bindir = tmp_path / "bin"
     bindir.mkdir()
     entered = tmp_path / "mv-entered"
@@ -332,10 +555,10 @@ def test_collect_keeps_old_report_visible_until_atomic_rename(tmp_path):
     fake_mv = bindir / "mv"
     fake_mv.write_text(
         "#!/usr/bin/env bash\n"
-        f"touch {_bash_path(entered)!r}\n"
-        f"while [[ ! -f {_bash_path(release)!r} ]]; do sleep 0.02; done\n"
-        "exec /usr/bin/mv \"$@\"\n"
-    )
+        f"touch {shlex.quote(_bash_path(entered))}\n"
+        f"while [[ ! -f {shlex.quote(_bash_path(release))} ]]; do sleep 0.02; done\n"
+        f'exec {shlex.quote(real_mv)} "$@"\n',
+        encoding="utf-8", newline="\n")
     fake_mv.chmod(0o755)
     proc = subprocess.Popen(
         ["bash", _bash_path(SCRIPT), "--machine", "machine-a"],
@@ -345,29 +568,42 @@ def test_collect_keeps_old_report_visible_until_atomic_rename(tmp_path):
     observations: list[str] = []
     read_errors: list[Exception] = []
     stop_reader = threading.Event()
+    prior_seen = threading.Event()
+    published_seen = threading.Event()
 
     def read_continuously() -> None:
         while not stop_reader.is_set():
             try:
-                observations.append(out.read_text())
+                content = out.read_text(encoding="utf-8")
+                observations.append(content)
+                (prior_seen if content == prior else published_seen).set()
             except Exception as exc:  # surfaced below; never swallowed as a pass
                 read_errors.append(exc)
             time.sleep(0.001)
 
     reader = threading.Thread(target=read_continuously)
     reader.start()
-    deadline = time.time() + 30
-    while not entered.exists() and time.time() < deadline:
-        time.sleep(0.02)
-    assert entered.exists(), proc.communicate(timeout=5)
-    assert out.read_text() == prior
-    release.touch()
-    stdout, stderr = proc.communicate(timeout=60)
-    time.sleep(0.02)
-    stop_reader.set()
-    reader.join(timeout=5)
+    try:
+        deadline = time.monotonic() + 30
+        while not entered.exists() and time.monotonic() < deadline:
+            time.sleep(0.02)
+        assert entered.exists(), "collector did not reach the rename barrier"
+        assert out.read_text(encoding="utf-8") == prior
+        assert prior_seen.wait(timeout=5)
+        release.touch()
+        stdout, stderr = proc.communicate(timeout=60)
+        assert published_seen.wait(timeout=5)
+    finally:
+        # Always release a failed assertion's barrier and join its reader.
+        release.touch()
+        try:
+            if proc.poll() is None:
+                proc.communicate(timeout=60)
+        finally:
+            stop_reader.set()
+            reader.join(timeout=5)
     assert proc.returncode == 0, (stdout, stderr)
-    final = out.read_text()
+    final = out.read_text(encoding="utf-8")
     parsed = yaml.safe_load(final)
     assert parsed["machine"] == "machine-a"
     assert "dimensions" in parsed
@@ -409,7 +645,7 @@ def test_solver_discovery_fixture_ignores_ambient_environment(tmp_path, monkeypa
         tool.chmod(0o755)  # POSIX permission bits: u=rwx (7), g=rx and o=rx (5).
     (ambient / "OrcFxAPI.py").write_text(
         f"from pathlib import Path\nPath({str(imported)!r}).touch()\n",
-        encoding="utf-8")
+        encoding="utf-8", newline="\n")
     (ambient / "ansys" / "v252").mkdir(parents=True)  # Version token example in probe-solvers.sh.
     startup = ambient / "startup.sh"
     startup.write_text(f"touch {shlex.quote(_bash_path(called))}\n",
@@ -464,7 +700,7 @@ def test_solver_discovery_fixture_is_order_independent(tmp_path, order, platform
             env=collector_env(inputs), capture_output=True, text=True,
             timeout=60, check=False)  # Collector subprocess budget used throughout this suite.
         assert res.returncode == 0, res.stderr
-        data = yaml.safe_load(report.read_text())
+        data = yaml.safe_load(report.read_text(encoding="utf-8"))
         assert data["os"] == platform
         assert data["dimensions"]["solvers"] == _expected_solver_rows(present)
         after = _fixture_snapshot(ws)
@@ -493,8 +729,8 @@ def test_collect_relative_stub_outputs_stay_temporary(tmp_path):
         capture_output=True, text=True,
         timeout=60, check=False)  # Collector subprocess budget used throughout this suite.
     assert res.returncode == 0, res.stderr
-    assert (tmp_path / "collector-counter").read_text().splitlines() == ["called"]
-    assert (tmp_path / "collector-path").read_text().strip() == _bash_path(tmp_path)
+    assert (tmp_path / "collector-counter").read_text(encoding="utf-8").splitlines() == ["called"]
+    assert (tmp_path / "collector-path").read_text(encoding="utf-8").strip() == _bash_path(tmp_path)
     assert _fixture_snapshot(ws) == before
 
 
@@ -618,12 +854,12 @@ def test_collect_solvers_canonical_hash_includes_block(tmp_path):
     out = ws / ".claude" / "state" / "equality-machine-a.yaml"
     env = {"WORKSPACE_HUB": str(ws), "PATH": "/usr/bin:/bin:/usr/local/bin"}
     subprocess.run(["bash", _bash_path(SCRIPT), "--machine", "machine-a"], env=collector_env(env), timeout=60, check=True)
-    text = out.read_text().replace(
+    text = out.read_text(encoding="utf-8").replace(
         "{name: orcaflex, status: absent", "{name: orcaflex, status: licensed")
-    out.write_text(text)
+    out.write_text(text, encoding="utf-8", newline="\n")
     subprocess.run(["bash", _bash_path(SCRIPT), "--machine", "machine-a"], env=collector_env(env), timeout=60, check=True)
     # real collection differs from the tampered file → rewritten back to absent
-    assert "{name: orcaflex, status: absent" in out.read_text()
+    assert "{name: orcaflex, status: absent" in out.read_text(encoding="utf-8")
 
 
 def test_collect_commit_on_change_detects_real_drift(tmp_path):
@@ -634,17 +870,17 @@ def test_collect_commit_on_change_detects_real_drift(tmp_path):
     env = {"WORKSPACE_HUB": str(ws), "PATH": "/usr/bin:/bin:/usr/local/bin"}
     subprocess.run(["bash", _bash_path(SCRIPT), "--machine", "machine-a"], env=collector_env(env), timeout=60, check=True)
     # tamper a meaningful field in the committed file; real collection differs → must rewrite
-    text = out.read_text().replace("hermes_home: absent", "hermes_home: present")
-    out.write_text(text)
+    text = out.read_text(encoding="utf-8").replace("hermes_home: absent", "hermes_home: present")
+    out.write_text(text, encoding="utf-8", newline="\n")
     subprocess.run(["bash", _bash_path(SCRIPT), "--machine", "machine-a"], env=collector_env(env), timeout=60, check=True)
-    assert "hermes_home: absent" in out.read_text()      # rewritten back to the real value
+    assert "hermes_home: absent" in out.read_text(encoding="utf-8")      # rewritten back to the real value
 
 
 def test_collect_kanban_queue_order_is_byte_sorted(tmp_path):
     # LC_ALL=C: '_leader-state' sorts FIRST (byte order, matching Git Bash on Windows).
     # Locale collation buried it mid-list, so the same queue set graded DIVERGES across OSes.
     ws = _fixture(tmp_path)
-    (ws / ".claude" / "dispatch" / "_leader-state.yaml").write_text("x")
+    (ws / ".claude" / "dispatch" / "_leader-state.yaml").write_text("x", encoding="utf-8", newline="\n")
     d = _run(ws)
     assert d["dimensions"]["kanban"]["dispatch_queues"] == "_leader-state,machine-a,multi"
 
@@ -669,7 +905,7 @@ def test_collect_harness_checkup_passthrough(tmp_path):
         "version_current": True, "install_method": "npm-global", "duplicate_installs": 0,
         "settings_parse_ok": True, "broken_agents": 0, "unused_skills": 23, "unused_plugins": 8,
         "default_mode": "auto", "auto_mode_default": True,
-    }))
+    }), encoding="utf-8", newline="\n")
     d = _run(ws)["dimensions"]["harness_checkup"]
     assert d["cc_version"] == "2.1.205" and d["cc_latest"] == "2.1.205"
     assert d["version_current"] is True and d["auto_mode_default"] is True
@@ -687,8 +923,39 @@ def test_collect_harness_checkup_type_gated(tmp_path):
         "version_current": "yes",          # wrong type → null
         "duplicate_installs": "lots",       # wrong type → null
         "settings_parse_ok": True,          # correct bool passes through
-    }))
+    }), encoding="utf-8", newline="\n")
     d = _run(ws)["dimensions"]["harness_checkup"]
     assert d["version_current"] is None
     assert d["duplicate_installs"] is None
     assert d["settings_parse_ok"] is True
+
+
+def test_shared_environment_blocks_ambient_external_tools(tmp_path):
+    """The provenance helper must also isolate scheduler, auth and provider commands."""
+    from collector_support import collector_env as shared_env
+
+    ws = _fixture(tmp_path)
+    ambient = tmp_path / "ambient-tools"
+    ambient.mkdir()
+    called = tmp_path / "ambient-called"
+    for name in ("crontab", "schtasks", "gh", "uv", "claude", "codex", "hermes", "gemini"):
+        tool = ambient / name
+        tool.write_text(
+            f"#!/usr/bin/env bash\ntouch {shlex.quote(_bash_path(called))}\n",
+            encoding="utf-8", newline="\n")
+        tool.chmod(0o755)
+    command = ["bash", "-c", 'crontab -l; schtasks /query; gh auth status; uv --version; '
+               'claude --version; codex --version; hermes --version; gemini --version']
+    control_env = shared_env(_atomic_write_env(ws))
+    control_env["PATH"] = f"{_bash_path(ambient)}:{BASH_PATH}"
+    control = subprocess.run(command, env=control_env, capture_output=True, text=True,
+                             timeout=60, check=False)
+    assert control.returncode == 0, control.stderr
+    assert called.exists(), "synthetic external tools did not execute"
+    called.unlink()
+    env = shared_env(_atomic_write_env(ws, ambient))
+    # Only synthetic executables could run even if isolation regresses.
+    result = subprocess.run(
+        command, env=env, capture_output=True, text=True, timeout=60, check=False)
+    assert not called.exists(), "shared helper reached an ambient external tool"
+    assert result.returncode != 0
