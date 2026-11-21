@@ -6,12 +6,13 @@
 
 **Routing table:**
 
-| Lane | Use for | Do NOT use for |
-|---|---|---|
-| **Fable 5** | Orchestration, planning, forensic verification (git archaeology, memory-vs-reality reconciliation), epic curation, r2+/T2 adversarial reviews — short, high-leverage phases | Implementation marathons (quota); browser automation (safeguard-fallback risk in screenshot loops) |
-| **Opus 4.8** | Implementation marathons, merge/CI mechanics (rulesets, merge-when-CLEAN), browser automation. **Automatic fallback whenever Fable is unavailable** (quota or safeguard) — a policy, not an incident | Burning 1M-context on crawl/scan work a cheaper lane can do |
-| **Codex** | Sanctioned for **grunt/heavy marathon implementation lanes too**, not just review (owner directive 2026-07-06). Also r1 reviews via `submit-to-codex.sh` | Anything when codex weekly quota <10% (per `lane:codex` label); never trust its self-report — verify the artifact exists on the remote |
-| **Sonnet / Haiku** | Crawls, scans, read-only fan-out, r1 hygiene reviews | Final synthesis or gate decisions |
+| Lane | Use for |
+|---|---|
+| **Codex** | Routine implementation and fix rounds; first reviews of Claude work |
+| **Claude (Opus, Fable)** | Review of Codex work, client and outward text, decisions, high-impact analysis; Fable for client engineering reviews and heavy-comment rounds |
+| **Agy (Gemini)** | Plain-English edit pass and review only |
+
+Model ids come from the live CLI config, never from this file.
 
 **Operational corollaries (from the same audit):**
 
