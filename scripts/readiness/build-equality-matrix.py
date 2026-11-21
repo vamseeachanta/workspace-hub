@@ -17,8 +17,10 @@ hardcoded, M1). Run: uv run --script scripts/readiness/build-equality-matrix.py 
 """
 from __future__ import annotations
 
+import argparse
 import json
 import math
+import os
 import re
 import sys
 from collections import Counter
@@ -629,14 +631,15 @@ def verdict_for(dim: str, machine: str, reports: dict, baselines: dict,
 
 
 # ── load + render ────────────────────────────────────────────────────────────
-def load_reports() -> dict[str, dict]:
+def load_reports(state_dirs: list[Path] | None = None) -> dict[str, dict]:
     out = {}
-    for f in sorted(STATE.glob("equality-*.yaml")):
-        machine = f.stem[len("equality-"):]
-        try:
-            out[machine] = yaml.safe_load(f.read_text(encoding="utf-8")) or {}
-        except yaml.YAMLError as e:
-            out[machine] = {"_error": str(e)}
+    for state in [STATE] if state_dirs is None else state_dirs:
+        for f in sorted(state.glob("equality-*.yaml")):
+            machine = f.stem[len("equality-"):]
+            try:
+                out[machine] = yaml.safe_load(f.read_text(encoding="utf-8")) or {}
+            except yaml.YAMLError as e:
+                out[machine] = {"_error": str(e)}
     return out
 
 
@@ -723,12 +726,35 @@ def equivalence_section(vmap: dict, machines: list[str], roster: dict,
     return "".join(cards)
 
 
-def main() -> None:
+def resolve_paths(argv: list[str]) -> tuple[Path, Path]:
+    """Match the shell generation seam; publishing supplies explicit paths."""
+    parser = argparse.ArgumentParser(add_help=False)
+    parser.add_argument("--state-dir")
+    parser.add_argument("--out-dir")
+    args, _ = parser.parse_known_args(argv)
+    base = Path(os.environ.get("XDG_STATE_HOME") or Path.home() / ".local/state")
+    root = base / "workspace-hub/equality"
+    state = Path(args.state_dir or os.environ.get("EQ_STATE_DIR") or root)
+    reports = Path(args.out_dir or os.environ.get("EQ_REPORT_DIR") or root / "reports")
+    return state, reports
+
+
+def resolve_input_paths(argv: list[str]) -> list[Path]:
+    """Explicit publication inputs replace default repository and local layers."""
+    parser = argparse.ArgumentParser(add_help=False)
+    parser.add_argument("--state-dir")
+    args, _ = parser.parse_known_args(argv)
+    if args.state_dir:
+        return [Path(args.state_dir)]
+    return [REPO / ".claude" / "state", resolve_paths(argv)[0]]
+
+
+def main(state_dirs: list[Path] | None = None) -> None:
     config = yaml.safe_load(CONFIG.read_text(encoding="utf-8")) if CONFIG.exists() else {}
     roster = load_roster(config)
     baselines = load_baselines(config)
     probed = (config.get("tier1_repos") or TIER1_DEFAULT)
-    reports = load_reports()
+    reports = load_reports(state_dirs)
 
     machines = list(roster)
     # Compute every verdict once (cells + rollups both consume it).
@@ -861,16 +887,17 @@ function copyGenPrompt(btn){{
 
     REPORTS.mkdir(parents=True, exist_ok=True)
     out = REPORTS / f"{date.today().isoformat()}-machine-equality-matrix.html"
-    out.write_text(html, encoding="utf-8")
+    out.write_text(html, encoding="utf-8", newline="\n")
     # Stable (undated) alias so GitHub Pages serves a fixed "latest" URL that never
     # changes as the dated reports roll over (published by scripts/build_pages.py).
     latest = REPORTS / "machine-equality-matrix.html"
-    latest.write_text(html, encoding="utf-8")
-    print(f"wrote {out} (+ {latest.name} alias) ({reporting}/{active} active reporting)")
+    latest.write_text(html, encoding="utf-8", newline="\n")
+    print(f"wrote {out.as_posix()} (+ {latest.name} alias) ({reporting}/{active} active reporting)")
     if "--open" in sys.argv:
         import webbrowser
         webbrowser.open(out.as_uri())
 
 
 if __name__ == "__main__":
-    main()
+    STATE, REPORTS = resolve_paths(sys.argv[1:])
+    main(resolve_input_paths(sys.argv[1:]))

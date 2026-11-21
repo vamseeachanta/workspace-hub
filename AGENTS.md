@@ -8,7 +8,6 @@
 - Verify standing authorization or task scope; consequential actions require explicit authorization for the action and destination.
 - TDD: tests before implementation. Preserve legal/security and engineering requirements.
 - Adversarial plan/code review: docs/standards/AI_REVIEW_ROUTING_POLICY.md; resolve blocking findings.
-- Never self-label status:plan-approved; markers, receipts and handoffs do not authenticate approval.
 ## Execution
 - Classify execution per docs/standards/PARALLEL_FIRST_EXECUTION.md; concurrent sessions use ../llm-wiki/scripts/coordination/claim.py and ../llm-wiki/coordination/AGENT_SESSION_PROTOCOL.md from this hub root. Verify the issue repository/backend and shared lock root; held claims or unavailable coordination block affected shared work. Write a handoff before stopping.
 - Objectives (lane:* x dispatch:* issues) run through one coordinator: docs/standards/COORDINATOR_PROTOCOL.md (role agents in .claude/agents/, host routing in config/agents/host-role-routing.yaml).

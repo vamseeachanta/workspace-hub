@@ -10,7 +10,9 @@ Hardening:
   enrollment neither authenticates task authority nor grants implementation approval;
 - computes ``body_verified_fresh`` = verified-label applied at/after the issue body's
   last edit, so editing the body after verification invalidates the label (Codex#1);
-- binds via ``expected_issue``; threshold comes from server-side config, not the record.
+- binds via ``expected_issue``; threshold comes from server-side config, not the record;
+- authorized appliers are COMPLETENESS_OWNERS plus COMPLETENESS_REVIEWERS (repo variables),
+  and the labeler must not be an author of the closing PR or commit (rules review r5).
 """
 from __future__ import annotations
 
@@ -22,7 +24,7 @@ import sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from completeness_gate_check import (  # noqa: E402
     OPT_IN_LABEL, PLAN_APPROVED_LABEL, VERIFIED_LABEL,
-    body_is_fresh, evaluate_close, gate_applies,
+    body_is_fresh, evaluate_close, gate_applies, work_authors_from,
 )
 from label_authority import gh_json, parse_iso, verified_label_event  # noqa: E402
 
@@ -56,7 +58,8 @@ def main() -> int:
               f"— gate not applicable, ALLOW", file=sys.stderr)
         return 0
 
-    owners = {a.strip() for a in os.environ.get("COMPLETENESS_OWNERS", "").split(",") if a.strip()}
+    owners = {a.strip() for var in ("COMPLETENESS_OWNERS", "COMPLETENESS_REVIEWERS")
+              for a in os.environ.get(var, "").split(",") if a.strip()}
     if not owners:
         print(f"[completeness-gate] issue #{issue}: CONFIG ERROR — opted-in but COMPLETENESS_OWNERS "
               "repo variable is unset; set it (comma-separated logins).", file=sys.stderr)
@@ -68,7 +71,11 @@ def main() -> int:
     # itself bumps updatedAt past the label and would falsely fail freshness (fix #5).
     owner, name = repo.split("/", 1)
     ts = gh_json("api", "graphql", "-f", f'query={{repository(owner:"{owner}",name:"{name}")'
-                  f'{{issue(number:{issue}){{lastEditedAt createdAt}}}}}}') or {}
+                  f'{{issue(number:{issue}){{lastEditedAt createdAt '
+                  'timelineItems(itemTypes:[CLOSED_EVENT],last:1){nodes{... on ClosedEvent{closer{'
+                  '... on PullRequest{author{login}} ... on Commit{author{user{login}}}}}}} '
+                  'closedByPullRequestsReferences(first:20,includeClosedPrs:true){nodes{state author{login}}}'
+                  '}}}') or {}
     issue_ts = (((ts.get("data") or {}).get("repository") or {}).get("issue")) or {}
     body_verified_fresh = body_is_fresh(
         label_at, parse_iso(issue_ts.get("lastEditedAt")), parse_iso(issue_ts.get("createdAt")))
@@ -79,6 +86,7 @@ def main() -> int:
         closing_actor=closing_actor, authorized_appliers=owners,
         expected_issue=issue, body_verified_fresh=body_verified_fresh,
         require_separate_closer=require_separate,
+        work_authors=work_authors_from(issue_ts),
     )
     print(f"[completeness-gate] issue #{issue}: "
           f"{'ALLOW' if decision.allowed else 'DENY'} — {decision.reason}", file=sys.stderr)

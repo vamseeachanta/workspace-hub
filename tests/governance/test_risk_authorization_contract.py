@@ -66,7 +66,7 @@ def test_shared_mandatory_controls_remain_explicit():
     for invariant in ["TDD mandatory", "Adversarial review at BOTH stages",
                       "Never self-label", "docs/standards/FINAL_REPORT_VERIFICATION.md",
                       "Security baseline", "Pre-completion cleanup audit gate",
-                      "vendor-licensed standards and codes are never committed"]:
+                      "Codes and standards we hold may be committed to private repositories"]:
         assert invariant in text
 
 

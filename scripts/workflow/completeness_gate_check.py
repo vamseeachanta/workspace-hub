@@ -13,6 +13,11 @@ advisory pre-flight. Code-review fixes (Claude + Codex impl review, 2026-05-25):
   (computed by the runner from label-event time vs issue body-edit time) must hold,
   so editing the body after verification invalidates the label.
 - **Unknown class fails closed** rather than defaulting a threshold.
+- **The verifier did not write the work** (rules review r5, card A): the verified label
+  may be applied by any authorized reviewer, not only the owner, provided the labeler is
+  not an author of the closing PR or commit. When the labeler's login is one of those
+  authors (several agents can act through one login), the login cannot show who wrote
+  the work, so the record must name a separate verifier (``work_by`` != ``verified_by``).
 """
 from __future__ import annotations
 
@@ -56,6 +61,47 @@ def gate_applies(labels: list[str], opt_in_label: str = OPT_IN_LABEL,
         "gate:completeness-v2" in labels or plan_approved_label in labels)
 
 
+def work_authors_from(issue_node: dict | None) -> set[str]:
+    """Logins that wrote the work: the closing PR or commit author, plus merged linked PRs.
+
+    ``issue_node`` is the GraphQL issue object with ``timelineItems`` (last CLOSED_EVENT,
+    its ``closer``) and ``closedByPullRequestsReferences``. Missing data gives an empty set,
+    which the separation check treats as "author unknown".
+    """
+    authors: set[str] = set()
+    node = issue_node or {}
+    for ev in ((node.get("timelineItems") or {}).get("nodes") or []):
+        closer = (ev or {}).get("closer") or {}
+        login = ((closer.get("author") or {}).get("login")  # PullRequest
+                 or ((closer.get("author") or {}).get("user") or {}).get("login"))  # Commit
+        if login:
+            authors.add(login)
+    for pr in ((node.get("closedByPullRequestsReferences") or {}).get("nodes") or []):
+        if (pr or {}).get("state") == "MERGED":
+            login = (pr.get("author") or {}).get("login")
+            if login:
+                authors.add(login)
+    return authors
+
+
+def verifier_is_separate(label_actor: str | None, work_authors: set[str] | None,
+                         record: dict) -> GateDecision:
+    """Whether the verified label came from someone who did not write the work."""
+    authors = {a.lower() for a in (work_authors or set()) if a}
+    actor = (label_actor or "").lower()
+    if authors and actor and actor not in authors:
+        return GateDecision(True, f"labeler {label_actor!r} is not an author of the closing PR or commit")
+    work_by = str(record.get("work_by") or "").strip().lower()
+    verified_by = str(record.get("verified_by") or "").strip().lower()
+    if work_by and verified_by and work_by != verified_by:
+        return GateDecision(True, f"record names verifier {verified_by!r} separate from author {work_by!r}")
+    where = (f"labeler {label_actor!r} is an author of the closing PR or commit" if authors
+             else "no closing PR or commit author was found")
+    return GateDecision(
+        False, f"{where}, and the record does not name a separate verifier "
+               "(work_by and verified_by must both be set and differ)")
+
+
 def evaluate_close(
     record: dict | None,
     labels: list[str],
@@ -67,6 +113,7 @@ def evaluate_close(
     class_thresholds: dict[str, int] | None = None,
     verified_label: str = VERIFIED_LABEL,
     require_separate_closer: bool = False,
+    work_authors: set[str] | None = None,
 ) -> GateDecision:
     thresholds = class_thresholds or DEFAULT_THRESHOLDS
 
@@ -86,7 +133,7 @@ def evaluate_close(
     threshold = thresholds[cls]
 
     if verified_label not in labels:
-        return GateDecision(False, f"required owner label {verified_label!r} is absent")
+        return GateDecision(False, f"required verified label {verified_label!r} is absent")
 
     if label_actor is None or label_actor not in authorized_appliers:
         return GateDecision(
@@ -94,11 +141,15 @@ def evaluate_close(
             f"verified label applied by unauthorized actor {label_actor!r}; "
             f"must be one of {sorted(authorized_appliers)}")
 
-    # Separation-of-duties is OPT-IN (teams), not default. The authorized-appliers check
-    # above already guarantees an authorized owner applied the verified label — that IS the
-    # human gate. Requiring a *different* closer makes the gate unsatisfiable for a solo
-    # operator (always both verifier and closer). Teams that want separation set
-    # COMPLETENESS_REQUIRE_SEPARATE_CLOSER=1.
+    # The reviewer who applies the label must not have written the work (r5 card A).
+    separation = verifier_is_separate(label_actor, work_authors, record)
+    if not separation.allowed:
+        return separation
+
+    # Verifier-versus-closer separation stays OPT-IN. The check above already keeps the
+    # verifier apart from the author of the work; requiring a *different* closer as well
+    # makes the gate unsatisfiable for one login that both verifies and closes. Teams that
+    # want it set COMPLETENESS_REQUIRE_SEPARATE_CLOSER=1.
     if require_separate_closer and label_actor == closing_actor:
         return GateDecision(
             False, f"verifier and closer are the same actor {label_actor!r} and separate-closer is "

@@ -30,12 +30,12 @@ def _run(command: list[str], **kwargs) -> subprocess.CompletedProcess[str]:
     )
 
 
-def test_workflow_runs_guard_report_on_main_prs_and_pushes() -> None:
+def test_workflow_runs_guard_report_on_manual_dispatch() -> None:
+    # Pull requests run only pr-fast-gate.yml (owner ruling 2026-10-28).
     data = yaml.safe_load(WORKFLOW.read_text(encoding="utf-8"))
     triggers = data.get("on", data.get(True))
 
-    assert triggers["pull_request"]["branches"] == ["main"]
-    assert triggers["push"]["branches"] == ["main"]
+    assert set(triggers) == {"workflow_dispatch"}
     assert data["permissions"] == {"contents": "read"}
 
     job = data["jobs"]["no-abs-paths-report"]

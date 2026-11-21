@@ -59,31 +59,41 @@ def test_aggregate_allows_only_intentional_empty_selection(workflow_module, tmp_
     assert not workflow_module.aggregate_ok("success", "cancelled", False)
 
 
-def test_workflow_safety_properties(tmp_path):
-    target = tmp_path / "workflow.yml"
-    target.write_bytes((ROOT / ".github/workflows/hub-tests-by-family.yml").read_bytes())
-    workflow = yaml.safe_load(target.read_text())
+def test_fast_gate_workflow_safety_properties():
+    """The required PR gate replaced hub-tests-by-family.yml (owner ruling 2026-10-28)."""
+    assert not (ROOT / ".github/workflows/hub-tests-by-family.yml").exists()
+    workflow = yaml.safe_load((ROOT / ".github/workflows/pr-fast-gate.yml").read_text())
     trigger = workflow.get("on", workflow.get(True))
-    assert "pull_request" in trigger
+    assert set(trigger) == {"pull_request"}
     assert "ready_for_review" in trigger["pull_request"]["types"]
     assert workflow["permissions"] == {"contents": "read"}
     assert "pull_request.number" in workflow["concurrency"]["group"]
     assert workflow["concurrency"]["cancel-in-progress"] is True
     jobs = workflow["jobs"]
-    for job in jobs.values():
-        assert job["timeout-minutes"] > 0
-        assert not job.get("continue-on-error", False)
-    assert "draft" in jobs["discover"]["if"]
-    aggregate = jobs["aggregate"]
-    assert aggregate["name"] == "Hub test aggregate"
-    assert "always()" in aggregate["if"]
-    assert "draft" in aggregate["if"]
-    assert set(aggregate["needs"]) == {"discover", "test-family"}
-    assert jobs["test-family"]["strategy"]["fail-fast"] is False
-    assert "required == 'true'" in jobs["test-family"]["if"]
-    for job in jobs.values():
-        for step in job.get("steps", []):
-            assert not step.get("continue-on-error", False)
+    assert list(jobs) == ["fast-gate"]
+    job = jobs["fast-gate"]
+    assert job["name"] == "Fast Gate"
+    assert job["timeout-minutes"] > 0
+    assert "head.repo.fork && 'ubuntu-latest'" in job["runs-on"]
+    assert not job.get("continue-on-error", False)
+    runs = " ".join(step.get("run", "") for step in job["steps"])
+    assert "scripts/ci/lint_changed.py" in runs
+    assert "scripts/ci/hub_family_run.py --select-base" in runs
+    for step in job["steps"]:
+        assert not step.get("continue-on-error", False)
+        assert "if" not in step
+
+
+def test_main_full_run_is_dispatch_only():
+    """The daily full run is started by our cron, never by a GitHub schedule."""
+    workflow = yaml.safe_load((ROOT / ".github/workflows/main-full-run.yml").read_text())
+    trigger = workflow.get("on", workflow.get(True))
+    assert set(trigger) == {"workflow_dispatch"}
+    runs = " ".join(step.get("run", "") for job in workflow["jobs"].values() for step in job["steps"])
+    assert "scripts/ci/hub_family_run.py --all" in runs
+    for check in ("hub_test_inventory.py --check", "build-cron-identity-inventory.py --check",
+                  "--check-html", "check-skill-index-coherence.py", "check-marker-label-parity.sh"):
+        assert check in runs
 
 
 def test_invalid_status_cannot_pass(workflow_module, tmp_path):

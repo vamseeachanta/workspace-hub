@@ -1,0 +1,76 @@
+name: PR Fast Gate
+
+# Required pull-request gate (owner ruling 2026-10-28): lint plus the tests of
+# the hub test families the PR touches, minutes not hours. One job, so a PR
+# needs one runner slot. The full suite and the generated-artifact currency
+# checks run once a day on main in main-full-run.yml. Tests listed in
+# tests/quarantine.txt run as xfail(strict=False) through the root conftest.py.
+# Fork PRs stay on GitHub-hosted runners; same-repo PRs use our runners.
+
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize, reopened, ready_for_review]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pr-fast-gate-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  fast-gate:
+    name: Fast Gate
+    runs-on: ${{ github.event.pull_request.head.repo.fork && 'ubuntu-latest' || fromJSON('["self-hosted","Linux"]') }}
+    timeout-minutes: 30
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
+        with:
+          enable-cache: true
+          # Shared self-hosted cache: concurrent post-job prunes have failed jobs.
+          prune-cache: false
+
+      # The checkout is the PR merge commit: HEAD^1 is the base tip it merged
+      # into, so HEAD^1...HEAD is exactly this PR's change. The event's
+      # base.sha can be older than that tip on synchronize events.
+      - name: Resolve the PR base
+        id: base
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: |
+          if git rev-parse --verify -q HEAD^2 >/dev/null; then
+            echo "sha=$(git rev-parse HEAD^1)" >> "$GITHUB_OUTPUT"
+          else
+            echo "sha=$BASE_SHA" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Lint changed Python files (new fatal findings fail)
+        env:
+          BASE: ${{ steps.base.outputs.sha }}
+        run: >-
+          uv run --no-project --with ruff==0.8.6 python -I
+          scripts/ci/lint_changed.py --base "$BASE" --head HEAD
+
+      - name: Install project environment
+        run: uv sync --frozen --group dev
+
+      - name: Test touched families
+        env:
+          BASE: ${{ steps.base.outputs.sha }}
+        run: >-
+          uv run python -I scripts/ci/hub_family_run.py
+          --select-base "$BASE" --head HEAD
+          --scratch "$RUNNER_TEMP/fast-gate"

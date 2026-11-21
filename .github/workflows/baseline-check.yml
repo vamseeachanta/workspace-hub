@@ -6,15 +6,9 @@ name: Baseline Testing
 permissions:
   contents: read
 
+# Pull requests run only pr-fast-gate.yml; the daily main-full-run.yml covers this
+# workflow's tests (owner ruling 2026-10-28). Kept for manual dispatch.
 on:
-  push:
-    branches:
-      - main
-      - 'feature/**'
-  pull_request:
-    types: [opened, synchronize, reopened, ready_for_review]
-    branches:
-      - main
   workflow_dispatch:
     inputs:
       test_suite:

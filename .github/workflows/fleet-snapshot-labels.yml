@@ -4,15 +4,9 @@ name: Fleet Snapshot Labels
 # label only. The dated-snapshot writer on the collector VM pushes straight to
 # main, so this run is detection, not prevention: a red run on its push means a
 # raw machine name reached this public repository.
+# Pull requests run only pr-fast-gate.yml (owner ruling 2026-10-28); the
+# path-limited push trigger stays because it is leak detection on main.
 on:
-  pull_request:
-    branches:
-      - main
-    paths:
-      - 'docs/reports/fleet-snapshots/**'
-      - 'scripts/fleet/fleet_snapshot_labels.py'
-      - 'tests/fleet/test_fleet_snapshot_labels.py'
-      - '.github/workflows/fleet-snapshot-labels.yml'
   push:
     branches:
       - main
