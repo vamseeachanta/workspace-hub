@@ -20,16 +20,15 @@
 |----------|------|-------|
 | **Claude Code** | Default orchestrator | Task framing, planning, routing decisions, repo-facing workflow |
 | **Codex** | Default coding worker & adversarial reviewer | Bounded implementation, test writing, refactors, diff review |
-| **Gemini** | Default adversarial reviewer | Architecture review, large-context research, high-stakes synthesis, plan & code review |
+| **Gemini (Agy)** | Optional extra reviewer | Architecture review, large-context research, high-stakes synthesis, plan & code review |
 
 ## Review Defaults
 
-- **Three-agent adversarial review by default**: Claude, Codex, and Gemini all review plan-stage and code/artifact-stage work unless the user explicitly scopes the review lane down.
+- **Second-provider review by default**: work written by Claude is reviewed by Codex and work written by Codex by Claude, one review per head. Agy (Gemini) is an optional extra reader.
 - **Claude remains the orchestrator**: Claude frames work, sequences execution, and synthesizes the combined review result.
 - **Codex remains the default implementation worker** for bounded coding, tests, and refactors.
-- **Gemini is no longer trigger-only** in this repository policy; it participates by default as the third adversarial reviewer because the user's stated preference is all-agent cross-review at both stages.
-- Plans get adversarial review by ALL agents by default.
-- Code and deliverable artifacts get adversarial review by ALL agents before completion by default.
+- Plans get a second-provider review by default.
+- Code and deliverable artifacts get a second-provider review before completion by default.
 
 ## Optional Review Reduction Rules
 
