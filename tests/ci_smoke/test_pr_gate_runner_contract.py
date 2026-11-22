@@ -125,13 +125,22 @@ def _pr_context(repository, head, token):
     return context
 
 
+@pytest.mark.parametrize("filename", ["pr-fast-gate.yml", "enforcement-gate.yml"])
 @pytest.mark.parametrize("token", [None, "", "ubuntu-latest", "self-hosted-arm64", "self-hosted"])
 @pytest.mark.parametrize("head", [HUB, "someone/fork", ""])
-def test_fast_gate_runner_switch(token, head):
-    document = yaml.safe_load((ROOT / ".github/workflows/pr-fast-gate.yml").read_text())
+def test_fast_gate_runner_switch(filename, token, head):
+    document = yaml.safe_load((ROOT / ".github/workflows" / filename).read_text())
     expected = SELF_HOSTED if head == HUB and token == "self-hosted" else "ubuntu-latest"
     for job in document["jobs"].values():
         assert evaluate(job["runs-on"], _pr_context(HUB, head, token)) == expected
+
+
+def test_enforcement_gate_is_pull_request_only():
+    """The hosted default is only safe because the workflow has no push/schedule trigger."""
+    document = yaml.load(
+        (ROOT / ".github/workflows/enforcement-gate.yml").read_text(), Loader=yaml.BaseLoader
+    )
+    assert set(document["on"]) == {"pull_request"}
 
 
 @pytest.mark.parametrize("token", [None, "", "self-hosted"])

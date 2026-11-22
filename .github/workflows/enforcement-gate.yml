@@ -3,6 +3,15 @@ name: Enforcement Gate
 # PR-level enforcement of review gate and plan approval.
 # Mirrors local pre-push/pre-commit gates in CI so reviewers see compliance status.
 # Issue: #2028 | Related: #1839 (governance), #2047 (strict mode)
+# Runner: GitHub-hosted ubuntu-latest for every PR (public repository, free
+# minutes), same switch as pr-fast-gate.yml (#4517). Same-repo PRs go back to
+# the self-hosted Linux runners only when the repository variable WH_PR_RUNNER
+# is "self-hosted":
+#   gh variable set WH_PR_RUNNER --body self-hosted -R vamseeachanta/workspace-hub
+# Fork PRs always stay on ubuntu-latest. Moved off self-hosted on 2026-11-22:
+# these ~2 min jobs queued a median ~100 min (p90 ~390 min) on the two
+# self-hosted runners. This file is a scheduler-mutation digest input, so the
+# HTML audit was regenerated with --render-html in the same change.
 
 on:
   pull_request:
@@ -13,7 +22,7 @@ on:
 jobs:
   scheduler-mutation-surfaces:
     name: Scheduler Mutation Surface Guard
-    runs-on: ${{ github.event.pull_request.head.repo.fork && 'ubuntu-latest' || fromJSON('["self-hosted","Linux"]') }}
+    runs-on: ${{ (github.event.pull_request.head.repo.full_name == github.repository && vars.WH_PR_RUNNER == 'self-hosted') && fromJSON('["self-hosted","Linux"]') || 'ubuntu-latest' }}
     timeout-minutes: 5
     steps:
       - name: Checkout code
@@ -51,7 +60,7 @@ jobs:
 
   stage-prompt-drift:
     name: Stage Prompt Drift Guard
-    runs-on: ${{ github.event.pull_request.head.repo.fork && 'ubuntu-latest' || fromJSON('["self-hosted","Linux"]') }}
+    runs-on: ${{ (github.event.pull_request.head.repo.full_name == github.repository && vars.WH_PR_RUNNER == 'self-hosted') && fromJSON('["self-hosted","Linux"]') || 'ubuntu-latest' }}
     timeout-minutes: 10
 
     steps:
@@ -116,7 +125,7 @@ jobs:
 
   review-evidence:
     name: Review Evidence Check
-    runs-on: ${{ github.event.pull_request.head.repo.fork && 'ubuntu-latest' || fromJSON('["self-hosted","Linux"]') }}
+    runs-on: ${{ (github.event.pull_request.head.repo.full_name == github.repository && vars.WH_PR_RUNNER == 'self-hosted') && fromJSON('["self-hosted","Linux"]') || 'ubuntu-latest' }}
     timeout-minutes: 10
 
     steps:
@@ -166,7 +175,7 @@ jobs:
   plan-approval:
     # Preserve the required-check name while retiring the implementation gate.
     name: Plan Approval Check
-    runs-on: ${{ github.event.pull_request.head.repo.fork && 'ubuntu-latest' || fromJSON('["self-hosted","Linux"]') }}
+    runs-on: ${{ (github.event.pull_request.head.repo.full_name == github.repository && vars.WH_PR_RUNNER == 'self-hosted') && fromJSON('["self-hosted","Linux"]') || 'ubuntu-latest' }}
     timeout-minutes: 10
     steps:
       - name: Checkout code
@@ -186,7 +195,7 @@ jobs:
     # using the owner's token from the owner. The PR's own script/workflow run on
     # opened, synchronize, and reopened events only; this is advisory until the
     # owner makes it a required status check.
-    runs-on: ${{ github.event.pull_request.head.repo.fork && 'ubuntu-latest' || fromJSON('["self-hosted","Linux"]') }}
+    runs-on: ${{ (github.event.pull_request.head.repo.full_name == github.repository && vars.WH_PR_RUNNER == 'self-hosted') && fromJSON('["self-hosted","Linux"]') || 'ubuntu-latest' }}
     timeout-minutes: 10
     steps:
       - name: Checkout code
@@ -223,7 +232,7 @@ jobs:
 
   retired-queue-paths:
     name: Retired Queue Path Check
-    runs-on: ${{ github.event.pull_request.head.repo.fork && 'ubuntu-latest' || fromJSON('["self-hosted","Linux"]') }}
+    runs-on: ${{ (github.event.pull_request.head.repo.full_name == github.repository && vars.WH_PR_RUNNER == 'self-hosted') && fromJSON('["self-hosted","Linux"]') || 'ubuntu-latest' }}
     timeout-minutes: 5
     steps:
       - name: Checkout code
@@ -242,7 +251,7 @@ jobs:
     # config/agents/model-registry.yaml vs the grandfathered baseline. ADVISORY
     # first (does not fail the build) per the #3060 plan; promote to --enforce
     # once trusted by flipping the run line below.
-    runs-on: ${{ github.event.pull_request.head.repo.fork && 'ubuntu-latest' || fromJSON('["self-hosted","Linux"]') }}
+    runs-on: ${{ (github.event.pull_request.head.repo.full_name == github.repository && vars.WH_PR_RUNNER == 'self-hosted') && fromJSON('["self-hosted","Linux"]') || 'ubuntu-latest' }}
     timeout-minutes: 5
     steps:
       - name: Checkout code
@@ -267,7 +276,7 @@ jobs:
     # (c) the full index is freshly regenerable (no diff). (b) authored-but-
     # backfilled is advisory (stderr only). Runs red in PR checks on drift;
     # becomes merge-blocking once added to the protected-branch ruleset.
-    runs-on: ${{ github.event.pull_request.head.repo.fork && 'ubuntu-latest' || fromJSON('["self-hosted","Linux"]') }}
+    runs-on: ${{ (github.event.pull_request.head.repo.full_name == github.repository && vars.WH_PR_RUNNER == 'self-hosted') && fromJSON('["self-hosted","Linux"]') || 'ubuntu-latest' }}
     timeout-minutes: 5
     steps:
       - name: Checkout code
@@ -291,7 +300,7 @@ jobs:
 
   compliance-dashboard:
     name: Compliance Dashboard
-    runs-on: ${{ github.event.pull_request.head.repo.fork && 'ubuntu-latest' || fromJSON('["self-hosted","Linux"]') }}
+    runs-on: ${{ (github.event.pull_request.head.repo.full_name == github.repository && vars.WH_PR_RUNNER == 'self-hosted') && fromJSON('["self-hosted","Linux"]') || 'ubuntu-latest' }}
     timeout-minutes: 10
 
     steps:
