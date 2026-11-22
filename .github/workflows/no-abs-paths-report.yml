@@ -3,13 +3,10 @@ name: Absolute-Path Guard Report
 # Staged rollout documented in docs/enforcement/no-abs-paths-guard.md.
 # The workflow mode line below is the only CI switch for the blocking stage.
 
+# Pull requests run only pr-fast-gate.yml; the daily main-full-run.yml covers this
+# workflow's tests (owner ruling 2026-10-28). Kept for manual dispatch.
 on:
-  pull_request:
-    branches:
-      - main
-  push:
-    branches:
-      - main
+  workflow_dispatch:
 
 permissions:
   contents: read

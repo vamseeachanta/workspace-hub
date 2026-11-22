@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Behavioral parity evidence evaluation</title>
+<style>
+body { max-width: 58rem; margin: 2rem auto; padding: 0 1rem;
+       font: 1rem/1.6 system-ui, sans-serif; color: #182536; background: #fff; }
+h1, h2 { line-height: 1.2; }
+pre { padding: 1rem; background: #edf2f7; overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; }
+th, td { text-align: left; border: 1px solid #8b98a6; padding: .5rem; }
+caption { caption-side: bottom; text-align: left; margin-top: .5rem; }
+</style>
+</head>
+<body>
+<h1>Behavioral parity evidence evaluation</h1>
+<h2>Summary</h2>
+<p>The evaluator compares reported token and clarification counts against explicit,
+caller-supplied criteria. A missing cohort, insufficient samples, a zero reference
+token rate or ambiguous tool attribution cannot establish parity. A result of
+<code>WITHIN_LIMITS</code> applies only to the two measured rates and the supplied
+limits; it does not establish equivalent output quality or operational readiness.</p>
+<h2>Revision history</h2>
+<table>
+<thead><tr><th>Revision</th><th>Date</th><th>Change and reason</th></tr></thead>
+<tbody><tr><td>Initial</td><td>2026-10-22</td><td>Explicit-criterion evaluation is
+added to distinguish measured comparisons from absent evidence.</td></tr>
+<tr><td>1</td><td>2026-10-22</td><td>Nested JSON errors, decimal boundaries,
+evidence hashes and external example storage are clarified following input review.</td></tr>
+<tr><td>2</td><td>2026-10-23</td><td>Decimal criteria retain their precision
+through JSON loading so boundary comparisons use the supplied limits.</td></tr></tbody>
+<caption>Table 1. Document revision history.</caption>
+</table>
+<h2>Basis and scope</h2>
+<p>The definitions follow the repository's
+<a href="../../scripts/ai/parity_metrics.py">behavioral metric definitions</a>
+(2026, functions <code>metrics_from_digests</code> and <code>compare_to_baseline</code>),
+under initiative 3669 and its instrumentation issue 3061. The accepted input shape
+comes from <a href="../../scripts/ai/transcript-digest.py">the existing digest extractor</a>
+(2026, function <code>digest</code>). These are count identities, not empirical
+coefficients from a standard. No external numerical acceptance limit is adopted.</p>
+<p>The existing aggregator and sentinel retain their behavior. The new
+<a href="../../scripts/ai/parity_evaluation.py">evaluator</a> is an explicit CLI/API
+entry point. Scheduling, provider adapters, task-profile matching, memory portability,
+quality scoring, pricing, credentials and gateway deployment remain outside this slice.</p>
+<h2>Method</h2>
+<p>For each selected model, T = sum(output tokens) / sum(model turns).
+For single-model sessions, A = sum(AskUserQuestion calls) / session count.
+These are the same weighted token rate and session mean defined in the repository
+metric source cited above. A tool absent from a present histogram represents zero
+calls; an absent histogram is invalid evidence.</p>
+<p>The token criterion is T(current) ≤ T(reference) × verbosity_multiplier.
+The clarification criterion is A(current) ≤ A(reference) + clarification_delta.
+Both cohorts must meet minimum_sessions. All limits and their nonempty reference
+are required inputs. The multiplier must be positive, the clarification delta
+nonnegative and the sample minimum a positive integer. These are mathematical
+domain constraints, not calibrated policy values. Equality meets the upper limit.
+JSON decimal criteria are parsed exactly and reported as decimal strings; integer
+criteria remain JSON integers. API callers may supply exact decimal values using
+<code>decimal.Decimal</code>; precision already lost in a float cannot be recovered.
+Exact fractions drive comparisons; displayed rates are rounded to three decimal places.</p>
+<p>Counts must be nonnegative integers, excluding booleans. Each included session
+must carry token evidence for the selected model. Token counts without model turns
+are invalid. Tool totals in a session with multiple active models cannot be
+attributed to a selected model, so clarification remains unevaluated even when
+tokens can be evaluated. Other models do not add selected-model samples.</p>
+<table>
+<thead><tr><th>Status</th><th>Criterion</th><th>CLI exit</th></tr></thead>
+<tbody>
+<tr><td>WITHIN_LIMITS</td><td>Both rates meet the supplied limits.</td><td>0</td></tr>
+<tr><td>REGRESSION</td><td>At least one evaluated rate exceeds its limit.</td><td>1</td></tr>
+<tr><td>NOT_EVALUATED</td><td>No regression is established and at least one rate lacks evidence.</td><td>2</td></tr>
+<tr><td>ERROR</td><td>Input cannot be read or violates the input contract.</td><td>2</td></tr>
+</tbody>
+<caption>Table 2. Process exit conventions and report status interpretation.</caption>
+</table>
+<p>A regression remains visible alongside an unevaluated metric; inspect every
+metric status. The criteria reference records caller provenance but does not
+verify its authority or the suitability of the selected limits.</p>
+<h2>Worked example: synthetic counts</h2>
+<p>The following quantities are deliberately synthetic inputs, not provider
+measurements. Save each object from the current and reference arrays into its own
+JSON file in separate cohort folders. Save the criteria object separately, outside
+both folders. The tests execute these same documented inputs.</p>
+<h3>Current cohort</h3>
+<pre id="example-current">[
+  {"turns_by_model":{"candidate":4},"out_tokens_by_model":{"candidate":40},"tool_histogram":{"AskUserQuestion":0}},
+  {"turns_by_model":{"candidate":6},"out_tokens_by_model":{"candidate":120},"tool_histogram":{"AskUserQuestion":2}}
+]</pre>
+<h3>Reference cohort</h3>
+<pre id="example-baseline">[
+  {"turns_by_model":{"reference":2},"out_tokens_by_model":{"reference":20},"tool_histogram":{"AskUserQuestion":0}},
+  {"turns_by_model":{"reference":8},"out_tokens_by_model":{"reference":60},"tool_histogram":{"AskUserQuestion":0}}
+]</pre>
+<h3>Explicit example criteria</h3>
+<pre id="example-criteria">{
+  "reference":"synthetic-example-v1",
+  "minimum_sessions":2,
+  "verbosity_multiplier":2,
+  "clarification_delta":1
+}</pre>
+<p>By independent hand calculation, T(current) = (40 + 120) / (4 + 6) = 16.0
+and T(reference) = (20 + 60) / (2 + 8) = 8.0 tokens/turn.
+The token limit is 8.0 × 2.0 = 16.0 tokens/turn.
+A(current) = (0 + 2) / 2 = 1.0 and A(reference) = (0 + 0) / 2 = 0.0 calls/session.
+The clarification limit is 0.0 + 1.0 = 1.0 calls/session. Each cohort has two
+sessions, meeting the example minimum. Both rates equal their limits;
+the answer is <code>WITHIN_LIMITS</code>, exit 0.</p>
+<p>Set <code>PARITY_EVIDENCE_DIR</code> to a dedicated directory outside the
+checkout before saving inputs or running the example. Real digests may contain
+private transcript metadata; they shall not be stored in the public checkout.</p>
+<pre>uv run --no-project python scripts/ai/parity_evaluation.py \
+  "$PARITY_EVIDENCE_DIR/current" "$PARITY_EVIDENCE_DIR/reference" \
+  --model candidate --baseline-model reference \
+  --criteria "$PARITY_EVIDENCE_DIR/criteria.json"</pre>
+<p>Only immediate <code>*.json</code> files are loaded. Dedicated cohort folders
+are required: a criteria file or report in a cohort folder is not a digest.
+Malformed files, duplicate JSON keys and non-finite counts or criteria are rejected,
+not silently skipped. The JSON report excludes input filenames and transcript text. Successful loading
+records the compared model labels and SHA-256 of the exact bytes parsed, including
+each cohort file in sorted filename order and the criteria file. These hashes
+identify supplied evidence; they do not authenticate its source.</p>
+<h2>Verification and limitations</h2>
+<p>The <a href="../../tests/ai/test_parity_evaluation.py">focused tests</a> contain
+independent arithmetic expectations for the worked example, threshold equality,
+small exceedances, missing samples, mixed-model attribution and invalid input.
+CLI tests cover all exit dispositions. Existing metric tests are run alongside them.</p>
+<p>The result assumes honest, complete, nonduplicated, task-comparable digests.
+A reported zero can be an extractor artifact; transcript completeness, dataset
+identity, freshness and sampling bias are not verified here. Session means do not
+establish causality, statistical significance, task completion or equivalent quality.
+The legacy extractor is provider-specific. No provider-neutral collection or
+scheduled deployment is claimed. Source data remains in its authoritative repository;
+this tool does not collect transcripts, copy memory or authenticate evidence.</p>
+<p>Public disclosure covers this code, synthetic tests and this guide only.
+No live transcript, credential, licensed source or private measurement is included.
+Second-provider review remains a separate prerequisite before merge.</p>
+</body>
+</html>

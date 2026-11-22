@@ -16,7 +16,16 @@ import sys
 from pathlib import Path
 
 import pytest
-from phone_media.evaluate_browser import REQUIREMENTS, evaluate, load_assessment
+
+# scripts/ is on sys.path only through tests/conftest.py; a --noconftest run
+# (or any run without that bootstrap) skips this module cleanly instead of
+# failing collection.
+_evaluate_browser = pytest.importorskip(
+    "phone_media.evaluate_browser", reason="scripts/phone_media is not importable here"
+)
+REQUIREMENTS = _evaluate_browser.REQUIREMENTS
+evaluate = _evaluate_browser.evaluate
+load_assessment = _evaluate_browser.load_assessment
 
 SCRIPT = Path(__file__).resolve().parents[2] / "scripts/phone_media/evaluate_browser.py"
 

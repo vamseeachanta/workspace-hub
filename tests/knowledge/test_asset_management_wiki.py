@@ -15,8 +15,9 @@ engineering / integrity asset-management wiki:
 - ``index.md`` carries a Scope-boundary block distinguishing engineering
   asset management (in scope) from financial / portfolio asset management
   (NOT in scope).
-- No concept page cites ``wiki/sources/`` or contains the deny-list
-  slug-tokens (``casa-grande``, ``assethold``) per #2482.
+- No concept page contains the personal-data slug-tokens (``casa-grande``,
+  ``assethold``). The #2482 ``wiki/sources/`` citation ban is retired by the
+  owner's 28 Oct 2026 ruling (.claude/rules/codes-standards-data-routing.md).
 - At least 8 of 12 concept pages link to a ``wiki/standards/<code-id>.md``
   page, and every such link resolves on disk.
 - Index Concepts/Standards table row counts equal filesystem counts.
@@ -40,7 +41,7 @@ INDEX_PATH = WIKI_ROOT / "index.md"
 REQUIRED_FRONTMATTER_FIELDS = ("title", "tags", "added", "last_updated")
 REQUIRED_STANDARDS_FIELDS = ("code_id", "publisher", "revision", "Sanctioned-by")
 
-# Per #2482 vendor-derivative deny-list (strengthened per r1 review m5).
+# Personal-data slug-tokens kept out of concept pages (r1 review m5).
 DENYLIST_SLUG_TOKENS = ("casa-grande", "assethold")
 
 # Per memory ``project_wiki_standards_path_decision.md`` plus #2615:
@@ -191,22 +192,20 @@ def test_scope_boundary_disclaimer_text() -> None:
 
 
 # ---------------------------------------------------------------------------
-# Vendor-derivative deny-list (#2482) — strengthened per r1 review m5
+# Personal-data slug-tokens (r1 review m5). The #2482 wiki/sources/ citation
+# ban is retired by the owner's 28 Oct 2026 ruling.
 # ---------------------------------------------------------------------------
 
 
-def test_no_vendor_derivative_citation_in_concept_pages() -> None:
-    """No concept page links to ``wiki/sources/`` AND no concept-page body
-    contains the deny-list slug-tokens (``casa-grande``, ``assethold``).
+def test_no_personal_data_tokens_in_concept_pages() -> None:
+    """No concept-page body contains the personal-data slug-tokens
+    (``casa-grande``, ``assethold``).
     """
     for page in _concept_pages():
         text = page.read_text(encoding="utf-8")
-        assert "wiki/sources/" not in text and "/sources/" not in text, (
-            f"{page.name}: concept page must NOT cite wiki/sources/* per #2482"
-        )
         for token in DENYLIST_SLUG_TOKENS:
             assert token not in text, (
-                f"{page.name}: deny-listed slug-token {token!r} found per #2482"
+                f"{page.name}: personal-data slug-token {token!r} found"
             )
 
 

@@ -33,13 +33,6 @@ Drift between layers 2 and 3 is surfaced nightly by the `R-MODEL-DRIFT` check in
 | `ai-agents-registry.json` | legacy agent registry (dormant automation only) | discouraged |
 | `user-profile.yaml` | owner profile/subscriptions | yes |
 
-## Provider quick truth (2026-06-11)
-
-- **Claude** — interactive sessions (Claude Code, Max). Fable 5 / Opus 4.8 / Sonnet 4.6 / Haiku 4.5.
-- **Codex** — review lane + delegation target; CLI runs the model in `~/.codex/config.toml` (gpt-5.5).
-- **Hermes** — automation engine; runs gpt-5.5 via the openai-codex provider. NOT a Claude wrapper.
-- **Gemini** — third review lane; 2.5-pro is the dependable primary (3.1-pro-preview quota-starved on Pro plan).
-
 ## Skill index — two artifacts (#3190 / #3208)
 
 The skill catalogue exists in two complementary forms; they are kept coherent by

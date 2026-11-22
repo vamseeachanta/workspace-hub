@@ -46,7 +46,7 @@ while IFS= read -r domain; do
         repo="$(jq -r --arg d "$domain" '.domains[$d].repo_home // ""' "$MAP" 2>/dev/null)"
         prec="$(jq -r --arg d "$domain" '.domains[$d].has_ace_share_precedent' "$MAP" 2>/dev/null)"
         extra=""
-        [[ "$prec" == "true" ]] && extra=" Latent ACE_SHARE precedent exists (metadata-only)."
+        [[ "$prec" == "true" ]] && extra=" Latent ACE_SHARE precedent exists; read it."
         echo "[ecosystem-data] This looks like **${domain}** work (home: ${repo:-?}). We likely already have data — see llm-wiki \`data/domain-database-index.yml\` and invoke the \`ecosystem-data-sources\` skill for sources + the domain-database issue.${extra}"
         echo "$domain" >> "$STATE" 2>/dev/null || true
         exit 0

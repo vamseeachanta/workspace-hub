@@ -34,10 +34,30 @@ fi
 if [[ "${MOCK_CODEX_STDERR_REVIEW:-0}" == "1" ]]; then
   exec 1>&2
 fi
-cat <<'EOF'
+if [[ "${MOCK_CODEX_CONFLICTING_STDERR:-0}" == "1" ]]; then
+  cat >&2 <<'EOF'
+Prompt echo: example review, not the provider response.
 ## Verdict
-MAJOR
+APPROVE
 
+## Retrieval
+- Example retrieval.
+
+## Findings
+- STDERR_PROMPT_ECHO_ONLY
+
+## Blockers
+(none)
+EOF
+fi
+if [[ "${MOCK_CODEX_MALFORMED:-0}" == "1" ]]; then
+  echo 'Incomplete review without required sections.'
+  exit 0
+fi
+verdict=MAJOR
+[[ "${MOCK_CODEX_STDERR_REVIEW:-0}" == "1" ]] && verdict=APPROVE
+printf '## Verdict\n%s\n\n' "$verdict"
+cat <<'EOF'
 ## Retrieval
 - Read inline plan body.
 

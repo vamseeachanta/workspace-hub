@@ -78,6 +78,7 @@
       "scripts/data/og-standards/tests/test_rename.py"
     ],
     "scripts/gtm/tests": [
+      "scripts/gtm/tests/test_delivery_readiness.py",
       "scripts/gtm/tests/test_demo_06_mooring_screening.py",
       "scripts/gtm/tests/test_prospect_adapter.py",
       "scripts/gtm/tests/test_prospect_demo_sop.py"
@@ -146,6 +147,7 @@
       "scripts/quality/tests/test_quality_gap_report.py"
     ],
     "scripts/review/tests": [
+      "scripts/review/tests/test_disagreement_diff.py",
       "scripts/review/tests/test_plan_review_transport.py"
     ],
     "scripts/skills/tests": [
@@ -194,6 +196,7 @@
       "tests/ai/test_model_registry_reader.py",
       "tests/ai/test_overnight_batch_planner_prompt.py",
       "tests/ai/test_overnight_planner_cost_ceiling.py",
+      "tests/ai/test_parity_evaluation.py",
       "tests/ai/test_parity_metrics.py",
       "tests/ai/test_parity_sentinel.py",
       "tests/ai/test_provider_dispatch_loop.py",
@@ -230,6 +233,7 @@
       "tests/analysis/test_readiness_bundle_extension_contract.py",
       "tests/analysis/test_readiness_bundle_schema.py",
       "tests/analysis/test_repo_architecture_scanner.py",
+      "tests/analysis/test_review_artifact_boundary_matrix.py",
       "tests/analysis/test_scheduler_parity_report.py",
       "tests/analysis/test_session_corpus_summary.py",
       "tests/analysis/test_stage_prompt_drift_check.py",
@@ -255,7 +259,11 @@
       "tests/audits/test_online_resource_registry_audit.py"
     ],
     "tests/automation": [
+      "tests/automation/test_command_launcher_atomic_write.py",
       "tests/automation/test_release_scan_wrk.py"
+    ],
+    "tests/benchmark": [
+      "tests/benchmark/test_fleet_solver_bench.py"
     ],
     "tests/blender": [
       "tests/blender/test_verify_blender_baseline.py"
@@ -263,16 +271,20 @@
     "tests/ci": [
       "tests/ci/local_ci/test_local_ci.py",
       "tests/ci/test_domain_matrix_aggregate.py",
+      "tests/ci/test_domain_matrix_aggregate_cli.py",
       "tests/ci/test_domain_matrix_workflow.py",
       "tests/ci/test_hub_test_health.py",
       "tests/ci/test_hub_test_inventory.py",
       "tests/ci/test_hub_test_select.py",
+      "tests/ci/test_hub_test_select_cli.py",
       "tests/ci/test_hub_test_workflow.py",
       "tests/ci/test_quarantine_args.py",
+      "tests/ci/test_test_quarantine.py",
       "tests/ci/test_validate_selector_output.py"
     ],
     "tests/ci_smoke": [
       "tests/ci_smoke/test_ci_workflows_use_uv.py",
+      "tests/ci_smoke/test_installed_wheel_provenance.py",
       "tests/ci_smoke/test_module_provenance.py",
       "tests/ci_smoke/test_pr_gate_runner_contract.py",
       "tests/ci_smoke/test_review_gate_no_uv_dependency.py",
@@ -358,12 +370,16 @@
       "tests/cron/test_gemini_nightly_batch.py",
       "tests/cron/test_gemini_session_export.py",
       "tests/cron/test_git_safe_adoption.py",
+      "tests/cron/test_harness_update_cron_result.py",
+      "tests/cron/test_harness_update_rollback_contract.py",
       "tests/cron/test_hermes_session_export.py",
+      "tests/cron/test_machine_sync_blob_guard.py",
       "tests/cron/test_mcp_re_eval.py",
       "tests/cron/test_memory_health_report.py",
       "tests/cron/test_provider_session_ecosystem_audit_wrapper.py",
       "tests/cron/test_provider_utilization_refresh.py",
       "tests/cron/test_queue_refresh_wrapper.py",
+      "tests/cron/test_report_and_bridge_failures.py",
       "tests/cron/test_setup_cron.py",
       "tests/cron/test_skill_validation_uv_resolution.py",
       "tests/cron/test_skills_curation.py",
@@ -428,6 +444,7 @@
       "tests/data/drive_index/test_document_index_deprecation.py",
       "tests/data/drive_index_refresh/test_cad_readiness.py",
       "tests/data/drive_index_refresh/test_cad_rebuild.py",
+      "tests/data/drive_index_refresh/test_configured_refresh.py",
       "tests/data/drive_index_refresh/test_incremental_refresh.py",
       "tests/data/drive_index_refresh/test_partial_and_search.py",
       "tests/data/drive_index_refresh/test_registry_freshness.py",
@@ -440,6 +457,7 @@
       "tests/data/drive_index_search/test_metrics_3340.py",
       "tests/data/drive_index_search/test_pathnorm_canonical.py",
       "tests/data/drive_index_search/test_registry.py",
+      "tests/data/find_catalog/test_catalog.py",
       "tests/data/pipeline/test_base.py",
       "tests/data/pipeline/test_bsee_wells.py",
       "tests/data/pipeline/test_eia_production.py",
@@ -461,6 +479,7 @@
       "tests/data_sources/test_ecosystem_data_sources_801.py"
     ],
     "tests/dedupe": [
+      "tests/dedupe/test_hash_chunk_boundaries.py",
       "tests/dedupe/test_inventory.py",
       "tests/dedupe/test_merge.py",
       "tests/dedupe/test_plan.py",
@@ -500,6 +519,7 @@
     ],
     "tests/docs": [
       "tests/docs/test_banned_stale_references.py",
+      "tests/docs/test_byte_preservation_audit_example.py",
       "tests/docs/test_drive_search_playbook_3340.py",
       "tests/docs/test_engineering_analysis_routing.py",
       "tests/docs/test_gemini_workflow_links.py",
@@ -513,6 +533,7 @@
       "tests/docs/test_model_release_smoke_schema.py",
       "tests/docs/test_plan_retention_examples.py",
       "tests/docs/test_python_runner_entrypoint_contract.py",
+      "tests/docs/test_python_runner_entrypoint_late_failure.py",
       "tests/docs/test_readiness_followup_policy_example.py",
       "tests/docs/test_remote_linux_access_contract.py",
       "tests/docs/test_repository_origin_status_example.py",
@@ -619,12 +640,17 @@
       "tests/enforcement/test_workflow_contracts.py",
       "tests/enforcement/test_wrapper_pin_reasons.py"
     ],
+    "tests/exposure": [
+      "tests/exposure/test_cli.py",
+      "tests/exposure/test_exposure.py"
+    ],
     "tests/fleet": [
       "tests/fleet/test_account_usage_fleet.py",
       "tests/fleet/test_account_usage_labels.py",
       "tests/fleet/test_fleet_snapshot_daily.py",
       "tests/fleet/test_fleet_snapshot_daily_guard.py",
-      "tests/fleet/test_fleet_snapshot_labels.py"
+      "tests/fleet/test_fleet_snapshot_labels.py",
+      "tests/fleet/test_usage_status.py"
     ],
     "tests/gis": [
       "tests/gis/test_google_earth_engine.py",
@@ -679,10 +705,14 @@
     "tests/hygiene": [
       "tests/hygiene/test_build_commands.py",
       "tests/hygiene/test_build_commands_docs.py",
+      "tests/hygiene/test_build_commands_matrix_integration.py",
       "tests/hygiene/test_inventory.py",
+      "tests/hygiene/test_inventory_cli_privacy.py",
+      "tests/hygiene/test_inventory_hardlinks.py",
       "tests/hygiene/test_plan_moves.py",
       "tests/hygiene/test_readme.py",
-      "tests/hygiene/test_reproduce_bench.py"
+      "tests/hygiene/test_reproduce_bench.py",
+      "tests/hygiene/test_reproduce_bench_json_errors.py"
     ],
     "tests/install": [
       "tests/install/test_disable_cnh_source_watch_timer.py"
@@ -695,15 +725,6 @@
       "tests/knowledge/test_embeddings_spike.py",
       "tests/knowledge/test_engineering_pipeline_expansion.py",
       "tests/knowledge/test_engineering_riser_expansion.py",
-      "tests/knowledge/test_engineering_standards_abs.py",
-      "tests/knowledge/test_engineering_standards_api.py",
-      "tests/knowledge/test_engineering_standards_asme.py",
-      "tests/knowledge/test_engineering_standards_aws.py",
-      "tests/knowledge/test_engineering_standards_bsi.py",
-      "tests/knowledge/test_engineering_standards_dnv.py",
-      "tests/knowledge/test_engineering_standards_iso_19900.py",
-      "tests/knowledge/test_engineering_standards_nace.py",
-      "tests/knowledge/test_engineering_standards_norsok.py",
       "tests/knowledge/test_engineering_wiki_gap_audit_artifact.py",
       "tests/knowledge/test_invented_layer_report.py",
       "tests/knowledge/test_inventory_readiness.py",
@@ -711,7 +732,6 @@
       "tests/knowledge/test_marine_engineering_audit_artifact.py",
       "tests/knowledge/test_maritime_law_expansion.py",
       "tests/knowledge/test_naval_architecture_expansion.py",
-      "tests/knowledge/test_ocimf_tandem_no_raw_pdf_text.py",
       "tests/knowledge/test_ocimf_tandem_promotion.py",
       "tests/knowledge/test_promotion_frontmatter_example.py",
       "tests/knowledge/test_promotion_trail_report.py",
@@ -744,6 +764,7 @@
       "tests/lib/test_strict_json_boundaries.py"
     ],
     "tests/maintenance": [
+      "tests/maintenance/test_claude_plugin_audit.py",
       "tests/maintenance/test_cli_consolidation_plan.py",
       "tests/maintenance/test_plugin_inventory.py",
       "tests/maintenance/test_review_audit_script.py",
@@ -780,10 +801,12 @@
       "tests/monitoring/test_cron_health_script.py",
       "tests/monitoring/test_cron_shell_failures.py",
       "tests/monitoring/test_equivalence_compare.py",
+      "tests/monitoring/test_equivalence_publish_check.py",
       "tests/monitoring/test_equivalence_sentinel.py",
       "tests/monitoring/test_equivalence_state.py"
     ],
     "tests/openfoam": [
+      "tests/openfoam/test_fvsolution_input_preservation.py",
       "tests/openfoam/test_run_analysis_fvsolution.py",
       "tests/openfoam/test_verify_openfoam_baseline.py"
     ],
@@ -829,6 +852,7 @@
     "tests/phone_media": [
       "tests/phone_media/test_backup.py",
       "tests/phone_media/test_evaluate_browser.py",
+      "tests/phone_media/test_phone_pull.py",
       "tests/phone_media/test_sync_decision.py"
     ],
     "tests/portability": [
@@ -885,9 +909,11 @@
       "tests/readiness/test_equality_matrix_cron_deps.py",
       "tests/readiness/test_equality_tree_cleanliness.py",
       "tests/readiness/test_fixture_modes.py",
+      "tests/readiness/test_fixture_modes_index_states.py",
       "tests/readiness/test_harness_reconcile.py",
       "tests/readiness/test_harness_reconcile_windows.py",
       "tests/readiness/test_hermes_config_sibling_paths.py",
+      "tests/readiness/test_matrix_output_seam.py",
       "tests/readiness/test_memory_freshness_verdict.py",
       "tests/readiness/test_model_drift.py",
       "tests/readiness/test_nightly_readiness_hook_static_and_telegram.py",
@@ -920,13 +946,16 @@
       "tests/readiness/test_windows_scheduler_single_source.py"
     ],
     "tests/reporting": [
+      "tests/reporting/test_assembled_bundle_integrity.py",
       "tests/reporting/test_asset_reachability.py",
+      "tests/reporting/test_asset_reachability_fifo_race.py",
       "tests/reporting/test_audit_calc_methodology.py",
       "tests/reporting/test_bundle_manifest.py",
       "tests/reporting/test_calc_report_producers.py",
       "tests/reporting/test_calc_report_schema_v2.py",
       "tests/reporting/test_calc_report_supported_claims.py",
       "tests/reporting/test_calc_report_validation.py",
+      "tests/reporting/test_chart_script_json.py",
       "tests/reporting/test_ecosystem_scorecard_delta.py",
       "tests/reporting/test_generate_calc_report.py",
       "tests/reporting/test_manifest_decoder_boundary.py",
@@ -936,14 +965,18 @@
       "tests/reporting/test_readiness_matrix_view.py",
       "tests/reporting/test_report_provenance.py",
       "tests/reporting/test_suppression_clear_candidates.py",
+      "tests/reporting/test_suppression_renewal_report.py",
       "tests/reporting/test_tool_delta.py",
       "tests/reporting/test_unresolved_read_cohorts.py",
       "tests/reporting/test_weekly_history.py",
+      "tests/reporting/test_weekly_publication_reruns.py",
+      "tests/reporting/test_weekly_publication_smoke.py",
       "tests/reporting/test_weekly_renderer.py",
       "tests/reporting/test_weekly_review_run_schema.py"
     ],
     "tests/repositories": [
-      "tests/repositories/test_work_surface_inventory.py"
+      "tests/repositories/test_work_surface_inventory.py",
+      "tests/repositories/test_work_surface_inventory_yaml.py"
     ],
     "tests/review": [
       "tests/review/test_agy_payload_delivery_edges.py",
@@ -952,6 +985,7 @@
       "tests/review/test_dispatcher_shell_invocation.py",
       "tests/review/test_html_review_layer.py",
       "tests/review/test_python_replay.py",
+      "tests/review/test_render_structured_review.py",
       "tests/review/test_review_pack.py",
       "tests/review/test_script_portability.py",
       "tests/review/test_session_digest.py",
@@ -983,7 +1017,8 @@
       "tests/security/test_contributor_response_examples.py",
       "tests/security/test_descriptor_readers.py",
       "tests/security/test_input_boundaries.py",
-      "tests/security/test_integer_validation_boundaries.py"
+      "tests/security/test_integer_validation_boundaries.py",
+      "tests/security/test_nested_integer_validation_boundaries.py"
     ],
     "tests/semiconductor": [
       "tests/semiconductor/test_package_fem_benchmark.py"
@@ -1051,7 +1086,8 @@
       "tests/solver/test_result_watcher.py",
       "tests/solver/test_results_dashboard.py",
       "tests/solver/test_retry_logic.py",
-      "tests/solver/test_verification_composition.py"
+      "tests/solver/test_verification_composition.py",
+      "tests/solver/test_watcher_collision.py"
     ],
     "tests/standards": [
       "tests/standards/test_ingest_standards.py",
@@ -1151,6 +1187,7 @@
       "tests/workflow/test_plan_approval_gate_check.py",
       "tests/workflow/test_plan_approval_gate_check_r7.py",
       "tests/workflow/test_render_completeness_html.py",
+      "tests/workflow/test_session_close_report.py",
       "tests/workflow/test_session_review_derive.py",
       "tests/workflow/test_session_review_page_hook.py",
       "tests/workflow/test_session_review_sanitize.py"
@@ -1176,7 +1213,7 @@
       "tests/worktree_guard/test_worktree_guard_cli.py"
     ]
   },
-  "file_count": 973,
+  "file_count": 1006,
   "pattern": "test_*.py",
   "schema_version": 1
 }

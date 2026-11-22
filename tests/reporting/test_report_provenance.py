@@ -30,6 +30,15 @@ CRLF = "552bab6864c7a7b69a502ed1854b9245c0e1a30f008aaa0b281da62585fdb025"
 REPOSITORY_URL = "https://github.com/example/reference"
 SCRIPT = Path(__file__).resolve().parents[2] / "scripts/reporting/report_provenance.py"
 
+# Synthetic byte oracles: spell out each newline form without text conversion.
+# Expected digests are independently computed with hashlib over these literals.
+NEWLINE_BYTES = {
+    "lf": b"abc\nxyz\n",
+    "crlf": b"abc\r\nxyz\r\n",
+    "mixed": b"abc\r\nxyz\n",
+    "no-final-newline": b"abc\nxyz",
+}
+
 
 def git(repo, *args, data=None):
     env = {key: value for key, value in os.environ.items() if not key.startswith("GIT_")}
@@ -40,7 +49,7 @@ def git(repo, *args, data=None):
 
 
 @pytest.fixture
-def source_repo(tmp_path):
+def source_repo(tmp_path, request):
     """Create disposable Git objects without configuring an identity or hooks.
 
     Git mktree accepts mode/type/object/tab/path records (Git mktree manual).
@@ -50,7 +59,8 @@ def source_repo(tmp_path):
     repo = tmp_path / "source"
     repo.mkdir()
     git(repo, "init")
-    blob = git(repo, "hash-object", "-w", "--stdin", data=b"abc\n").strip()
+    blob_bytes = getattr(request, "param", b"abc\n")
+    blob = git(repo, "hash-object", "-w", "--stdin", data=blob_bytes).strip()
     tree = git(repo, "mktree", data=b"100644 blob " + blob + b"\tevidence.txt\n").strip()
     commit = (
         b"tree " + tree + b"\nauthor Fixture <fixture> 0 +0000\n"
@@ -100,6 +110,81 @@ def test_checkout_and_blob_are_distinct_exact_bytes(source_repo):
     assert source(source_repo)["sha256"] == LF
     assert source(source_repo, "checkout-bytes")["sha256"] == CRLF
     assert (repo / "evidence.txt").read_bytes() == before
+
+
+@pytest.mark.parametrize(
+    "source_repo,blob_bytes",
+    [(payload, payload) for payload in NEWLINE_BYTES.values()],
+    ids=NEWLINE_BYTES, indirect=["source_repo"],
+)
+@pytest.mark.parametrize("checkout_bytes", NEWLINE_BYTES.values(), ids=NEWLINE_BYTES)
+def test_provenance_newline_scope_matrix(source_repo, blob_bytes, checkout_bytes):
+    """Each scope hashes its literal representation, including mixed endings.
+
+    These synthetic comparisons establish byte handling, not engineering
+    evidence acceptance. No Git attributes or text normalization are applied.
+    """
+    repo, revision = source_repo
+    checkout_path = repo / "evidence.txt"
+    checkout_path.write_bytes(checkout_bytes)
+    expected_bytes = {
+        "git-blob-bytes": blob_bytes,
+        "checkout-bytes": checkout_bytes,
+    }
+    entries = []
+    for scope, payload in expected_bytes.items():
+        entry = source(source_repo, scope, source_id=scope)
+        assert entry["byte_scope"] == scope
+        assert entry["sha256"] == hashlib.sha256(payload).hexdigest(), scope
+        entries.append(entry)
+
+    # Check the locally available representation named by the reader permalink.
+    published, checkout = entries
+    assert published["reader_url"] == f"{REPOSITORY_URL}/blob/{revision}/evidence.txt"
+    assert git(repo, "cat-file", "blob", f"{revision}:evidence.txt") == blob_bytes
+    assert "reader_url" not in checkout
+    record = manifest(source_repo)
+    record["sources"] = entries
+    result = check_manifest(record, repo)
+    assert result["status"] == "PASS"
+    assert {item["source_id"]: item["status"] for item in result["sources"]} == {
+        scope: "PASS" for scope in expected_bytes
+    }
+    assert checkout_path.read_bytes() == checkout_bytes
+
+
+def test_checkout_drift_preserves_blob_claim(source_repo):
+    """A local edit invalidates checkout bytes while the pinned blob still passes."""
+    repo, revision = source_repo
+    record = manifest(source_repo)
+    published, = record["sources"]
+    checkout = source(source_repo, "checkout-bytes", source_id="checkout")
+    record["sources"].append(checkout)
+    assert published["byte_scope"] == "git-blob-bytes"
+    assert published["sha256"] == hashlib.sha256(b"abc\n").hexdigest(), "git-blob-bytes"
+    assert checkout["byte_scope"] == "checkout-bytes"
+    assert checkout["sha256"] == hashlib.sha256(b"abc\r\n").hexdigest(), "checkout-bytes"
+    assert published["reader_url"] == f"{REPOSITORY_URL}/blob/{revision}/evidence.txt"
+    assert "reader_url" not in checkout
+    before = copy.deepcopy(record)
+    assert check_manifest(record, repo)["status"] == "PASS"
+
+    # Remove only the checkout newline; the Git objects and claims stay intact.
+    (repo / "evidence.txt").write_bytes(b"abc")
+    current_checkout = source(source_repo, "checkout-bytes")
+    assert current_checkout["sha256"] == hashlib.sha256(b"abc").hexdigest(), "checkout-bytes"
+    assert current_checkout["sha256"] != hashlib.sha256(b"abc\r\n").hexdigest(), "checkout-bytes drift"
+    assert source(source_repo) == published
+    assert git(repo, "cat-file", "blob", f"{revision}:evidence.txt") == b"abc\n"
+    assert check_manifest({**record, "sources": [published]}, repo)["status"] == "PASS"
+    result = check_manifest(record, repo)
+    assert result["status"] == "FAIL"
+    assert {item["source_id"]: item for item in result["sources"]} == {
+        "input": {"source_id": "input", "status": "PASS"},
+        "checkout": {"source_id": "checkout", "status": "FAIL", "reason": "digest mismatch"},
+    }
+    assert record == before
+    assert (repo / "evidence.txt").read_bytes() == b"abc"
 
 
 def test_rfc_sha256_vector(source_repo):

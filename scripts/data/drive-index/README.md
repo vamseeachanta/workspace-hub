@@ -36,6 +36,11 @@ Select a drive key from the configuration and confirm its roots and database
 before running. The scheduled shell entry point accepts the same drive key:
 `bash scripts/data/drive-index/refresh-drive-index.sh <configured-drive>`.
 The shell entry point also accepts `cad` for the CAD readability index.
+`DRIVE_INDEX_CONFIG` selects an external profile file for the wrapper and its
+builder. The database and failure-state destination come from that same
+profile. This permits a scheduled runner to use corrected local roots without
+embedding private paths in the repository. The selected profile must retain
+every intended source; a missing root is reported as a coverage failure.
 Its scan root defaults to the primary document profile's configured canonical
 prefix; `DRIVE_INDEX_CAD_ROOT` overrides that root. CAD output is placed in
 `_cad-index` under the selected root. The builder receives `--raw` for the scan
@@ -71,8 +76,10 @@ Pruning is suppressed for the entire refresh when any error occurs, or when
 `--limit` restricts traversal. Previously indexed files in unreadable folders
 remain active. Resolve the recorded errors and run a complete refresh to resume
 pruning. Existing rows remain available after a failed scan. Scan errors are
-reported through the state file; the metadata command still exits successfully
-after committing its results, so check `status` before treating a scan as complete.
+reported through the state file and a nonzero metadata-command exit. Successful
+rows are committed before exit; the wrapper records a failure notification and
+retains the builder's detailed diagnostics. Check `status` before treating a
+scan as complete.
 
 ## Search migration without rescanning
 
