@@ -13,7 +13,7 @@
 - Objectives (lane:* x dispatch:* issues) run through one coordinator: docs/standards/COORDINATOR_PROTOCOL.md (role agents in .claude/agents/, host routing in config/agents/host-role-routing.yaml).
 - Isolate disjoint write lanes per docs/standards/SUBAGENT_CONTEXT_ISOLATION.md; verify outputs and serialize integration/commit/push/closeout.
 - Use uv run for Python. Commit/push within authorization; use isolated worktrees for parallel work.
-- Git path to main: branch → PR → merge per .claude/rules/merge-authorization.md. Never push to or rewrite main except the registered exemptions in .claude/rules/merge-authorization.md; --force-with-lease only on your own PR branch or the dedicated CAS state refs (equivalence-state, dispatch-leader-state); never bypass hooks (--no-verify, core.hooksPath) except an explicitly user-authorized recovery documented in the repo-sync skill.
+- Git path to main: branch → PR → merge per .claude/rules/merge-authorization.md. Never push to or rewrite main except the registered exemptions in .claude/rules/merge-authorization.md; --force-with-lease only on the dedicated CAS state refs (equivalence-state, dispatch-leader-state); never bypass hooks (--no-verify, core.hooksPath) except an explicitly user-authorized recovery documented in the repo-sync skill.
 ## Data and closeout
 - Follow docs/architecture/agent-data-handling-contract.md before discovering, saving or using data.
 - Keep secrets out of code; verify results and run the pre-completion cleanup audit before closeout.
