@@ -3,10 +3,10 @@
 
 ## Hard Gates (per AGENTS.md)
 - Follow [shared task authority](../SHARED_SOUL.md#authorization): Issue → Resource Intel → Plan → Adversarial Review → verify task scope → Implement (TDD) → Cross-review → authorized Close. No separate user plan approval is required; the originating task request or standing authorization covers implementation within scope.
-- Consequential actions require explicit approval matching the action and destination. Planning-only requests and unresolved domain decisions limit implementation scope; labels, markers and handoffs do not authenticate authority. Never self-apply `status:plan-approved`; preserve historical approval records.
+- Irreversible steps are the team's call with the safeguards in [shared task authority](../SHARED_SOUL.md#authorization); client-facing messages and spending stay with the owner. Planning-only requests and unresolved domain decisions limit implementation scope; labels, markers and handoffs do not authenticate authority. Never self-apply `status:plan-approved`; preserve historical approval records.
 - TDD mandatory — tests before implementation; no exceptions.
 - Adversarial review at both plan and code stages (T1/T2/T3 = 1/2/3 providers; scale to scope).
-- Cross-review default 3-agent (Claude + Codex + Gemini) per AGENTS.md AI Review Policy.
+- Cross-review default 3-agent (Claude + Codex + Gemini) per AGENTS.md AI Review Policy. Reviews are advisory; PRs merge on green required checks.
 - Calc citation contract: `.claude/rules/calc-citation-contract.md` — standards-derived constants emit a `Citation` sidecar; fail-closed at calc time.
 - `/goal` invocation: consult catalog [#2695](https://github.com/vamseeachanta/workspace-hub/issues/2695) before invoking (`.claude/rules/goal-invocation.md`).
 

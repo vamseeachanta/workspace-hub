@@ -21,4 +21,4 @@ When a green PR won't merge with "N of N required status checks are expected" an
 4. **Durable fix (owner/admin, out-of-band — do NOT change rulesets autonomously; security-gate change routes to human per [[feedback_agent_cannot_enable_security_gate_bypass]]):** add the admin role to the ruleset's Bypass list (then `--admin` works), OR flip `strict_required_status_checks_policy` to false (the required checks re-run on main post-merge anyway, so strict adds little on a fast-moving main).
 5. wed main cadence 2026-07-04 was ~28-32 min between commits → the loop wins in 1-2 cycles. On a truly fast main, prefer the ruleset bypass.
 
-Related: [[project_ecosystem_review_2026_07_04]], [[feedback_agent_can_verify_but_not_self_merge_pr]], [[feedback_dev_primary_equality_green_is_self_healing]]
+Related: [[project_ecosystem_review_2026_07_04]], `.claude/rules/merge-authorization.md`, [[feedback_dev_primary_equality_green_is_self_healing]]

@@ -156,7 +156,7 @@ STEP 1: Issue Intake          — read, classify, announce
 STEP 2: Resource Intelligence — search all knowledge sources, map artifact locations, identify gaps and follow-ups
 STEP 3: Draft the Plan        — pseudocode, file map, tests, acceptance criteria, follow-up issues
 STEP 4: Adversarial Review    — Claude + Codex + Gemini review the plan
-STEP 5: Authority Boundary    — verify existing authority; seek required owner approval
+STEP 5: Authority Boundary    — verify existing authority; only client sends and spending go to the owner
 ```
 
 ## STEP 1 — Issue intake
