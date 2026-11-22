@@ -11,8 +11,9 @@ One item produces zero executor/completion calls when held; without publication,
 that same item produces one of each. These counts follow from the fixture.
 
 The local bare-remote pattern follows test_dispatch_remote_lease.py:repos.
-All Git mutations use temporary repositories; existing Git identity configuration
-is required and is never changed. No real executor or hosted remote is used.
+All Git mutations use temporary repositories; Git identity configuration is
+never changed; hosts without one get a process-local identity via environment.
+No real executor or hosted remote is used.
 """
 from __future__ import annotations
 
@@ -69,6 +70,14 @@ def repos(tmp_path, monkeypatch):
         "GIT_OBJECT_DIRECTORY", "GIT_ALTERNATE_OBJECT_DIRECTORIES", "GIT_NAMESPACE",
     ):
         monkeypatch.delenv(key, raising=False)
+    # Lease writes run `git commit-tree`, which needs an identity. Hosted CI
+    # runners have none; supply a process-local one only when git cannot
+    # resolve one, so configured hosts keep their identity and no config changes.
+    if subprocess.run(["git", "var", "GIT_COMMITTER_IDENT"],
+                      capture_output=True, text=True, cwd=tmp_path).returncode != 0:
+        for role in ("AUTHOR", "COMMITTER"):
+            monkeypatch.setenv(f"GIT_{role}_NAME", "lease-test")
+            monkeypatch.setenv(f"GIT_{role}_EMAIL", "lease-test@example.invalid")
     remote = tmp_path / "remote.git"
     remote.mkdir()
     _git(remote, "init", "-q", "--bare")

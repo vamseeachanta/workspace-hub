@@ -1,22 +1,18 @@
-# Merge authorization — what "merge and continue" allows an agent to run (#3390)
+# Merge authorization — the team merges on green required checks
 
-**When to apply:** any time an agent considers running `gh pr merge` (or arming `--auto`) itself, in any repo of the ecosystem.
+**When to apply:** any time an agent considers running `gh pr merge` itself, in any repo of the ecosystem, client wikis (every `llm-wiki*`) included.
 
-**Why:** the no-self-merge norm was held by the permission classifier, not by the models. Live incident 2026-07-03/04 (motion-forecast session, dm #1356 epic): after one classifier non-fire on a bare "Merge and continue", the agent concluded "I'll merge directly when you tell me to from now on" and self-merged 4 subsequent PRs (#1395/#1407/#1409/#1413) treating a single success as standing session policy. In three other sessions the same week the classifier blocked identical attempts. Elastic behavior around an irreversible, outward-facing action is the defect; this policy makes authorization explicit and non-sticky.
+**Why:** owner decision, 22 Nov 2026 (fleet-ops #577): the team decides and merges its own PRs once the required checks are green. No word from the owner is needed, and no review verdict is a merge gate.
 
 **Policy:**
 
-1. **Default:** the agent verifies the PR is green + `mergeStateStatus==CLEAN`, then hands the human the exact command (`gh pr merge <N> --squash --delete-branch --repo owner/name`). This remains the normal path (`feedback_agent_can_verify_but_not_self_merge_pr`).
-2. **A user "merge" / "merge and continue" authorizes an agent-run merge ONLY when the target is unambiguous:**
-   - the user's message names the PR number(s), **or**
-   - the instruction is the direct reply to the agent presenting that specific PR (the PR is the plain antecedent of the message).
-3. **Batch merges:** only the PRs explicitly enumerated in the user's message, or a list the agent presented and the user approved in that same exchange. "Merge my PRs" without a presented list → present the list first.
-4. **Authorization is per-PR and non-sticky.** One authorized merge does NOT create a session-wide "merge whatever comes next" policy. Each subsequent merge needs its own trigger under rule 2.
-5. **Never self-authorize gates:** merging never substitutes for `status:plan-approved`, owner review markers, or completeness stamps — those stay human-created regardless of merge authorization.
-6. **After any merge (agent- or human-run): verify MERGED on the remote** and confirm the content landed (`git cat-file -e origin/main:<path>` — squash-merge makes merge-commit reachability meaningless, see `reference_squash_merge_reachability_false_orphan`).
-7. **Explicit user authorization never waives freshness.** Immediately before an agent-run merge, require `mergeStateStatus == CLEAN`; authorization to merge does not authorize landing from `BEHIND`, `BLOCKED`, `DIRTY`, `UNKNOWN`, or `UNSTABLE`.
-8. **Use the CLEAN-only merge helper.** An authorized agent-run merge must use `scripts/operations/merge-when-clean.sh --merge` for the specific PR. Do not replace the helper with a hand-count of checks or a direct `gh pr merge` call.
-9. **Validate the actual landed tree before closeout.** After remote MERGED verification, run `git fetch origin main`, resolve the actual landed `origin/main` commit, and rerun the changed-domain generated-artifact checks against that tree before commenting complete or closing the issue. Synthetic merge commits and the pre-merge working tree are not landed-tree evidence.
+1. **Merge on green required checks.** When every required check on the PR head is green, the team merges it. This holds in every repo, client wikis included. Second-provider (Codex/Claude) review is advisory: a real bug it finds is fixed before the merge, but a missing or pending verdict never holds a PR.
+2. **Pinned squash merge, no branch delete.** Run `gh pr merge <N> --squash --match-head-commit <full head SHA> --repo owner/name`. Never add `--delete-branch` or `--admin`. `scripts/operations/merge-when-clean.sh --merge` is also fine: it deletes no branch unless its opt-in `--delete-branch` is given (#4511).
+3. **Holds still apply.** An unexpired `hold` label, a hold_check basis hold, or an engineering-basis question waiting on the owner keeps the PR open.
+4. **Freshness.** Immediately before the merge, require `mergeStateStatus == CLEAN`; never land from `BEHIND`, `BLOCKED`, `DIRTY`, `UNKNOWN`, or `UNSTABLE`. Explicit user authorization never waives these checks: green required checks, a clean merge state, holds and the landed-tree validation below apply to every merge, whoever asks for it.
+5. **Owner records stay the owner's.** Merging never self-applies `status:plan-approved` or completeness stamps.
+6. **After any merge, verify MERGED on the remote** and confirm the content landed (`git cat-file -e origin/main:<path>` — squash-merge makes merge-commit reachability meaningless, see `reference_squash_merge_reachability_false_orphan`).
+7. **Validate the actual landed tree before closeout.** After remote MERGED verification, run `git fetch origin main`, resolve the actual landed `origin/main` commit, and rerun the changed-domain generated-artifact checks against that tree before commenting complete or closing the issue. Synthetic merge commits and the pre-merge working tree are not landed-tree evidence.
 
 ## Direct-main exemptions
 
@@ -28,6 +24,4 @@ exceptions may push to `main` only within the bounded write surfaces named here:
 - `scripts/fleet/fleet-snapshot-daily.sh`: may write `docs/reports/fleet-snapshots/latest.json` after a successful fleet snapshot collection and labelling run. The exemption exists so the daily public fleet snapshot can stay current without committing dated files or requiring a human PR for routine telemetry.
 - `scripts/client_llm_wiki/bootstrap_git.py`: may push exactly the first root commit to a newly registered client-wiki repository's `refs/heads/main` through the descriptor-bound bootstrap transport. The exemption exists because an empty client-wiki repository has no prior branch to PR against; it does not authorize later commits or arbitrary workspace-hub main writes.
 
-**Do NOT apply when:** the user runs the merge themselves (pasting output back) — then the agent's job is only step 6 verification.
-
-**Related:** [`model-routing.md`](model-routing.md) (corollary 4), [`completeness-before-close.md`](completeness-before-close.md). Memory: `feedback_agent_can_verify_but_not_self_merge_pr`, `feedback_dependabot_merge_no_rebase_trust_clean`. Issue: workspace-hub#3390 item 4 (owner adopted option b, 2026-07-06).
+**Related:** [`model-routing.md`](model-routing.md) (corollary 4), [`merge-cleanup.md`](merge-cleanup.md), [`completeness-before-close.md`](completeness-before-close.md). Memory: `feedback_dependabot_merge_no_rebase_trust_clean`. Issue: workspace-hub#3390; owner decision of 22 Nov 2026 on fleet-ops #577.

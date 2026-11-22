@@ -74,7 +74,6 @@ entry below is historical; its former bot promotion claim no longer applies.
 - [Document discovered data sources as GH data issues](feedback_document_discovered_data_sources_as_issues.md) — side-finds → `cat:data` issues
 - [Avoid "A&CE" branding](feedback_avoid_ace_branding.md) — use "AceEngineer"
 - [wed PR titles: conventional types only](feedback_wed_pr_title_conventional_types_only.md) — `data(cost):` FAILS Validate-PR-Title; use `feat/fix/docs(...)`, ≤80 chars
-- [Agent can verify but NOT self-merge its own PR](feedback_agent_can_verify_but_not_self_merge_pr.md) — hand human the merge line (exceptions: digitalmodel, explicit "merge")
 - [Epic wrap-up → open issues + parallel agents](feedback_epic_wrapup_issues_then_parallel_agents.md) — no dangling lists; ~3 lanes; worktrees sequential
 - [Squash-merge breaks stacked PRs](feedback_squash_merge_breaks_stacked_prs.md) — spine squash auto-closes children; shared lanes → ONE integration PR
 - [--delete-branch auto-closes stacked child PR](feedback_delete_branch_closes_stacked_child_pr.md) — merge parent WITHOUT delete → retarget child → merge → delete last
