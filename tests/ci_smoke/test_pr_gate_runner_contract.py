@@ -47,8 +47,9 @@ def evaluate(expression, context):
                 result = visit(value)
             return result
         if isinstance(node, ast.Compare):
-            assert len(node.ops) == 1 and isinstance(node.ops[0], ast.Eq)
-            return visit(node.left).casefold() == visit(node.comparators[0]).casefold()
+            assert len(node.ops) == 1 and isinstance(node.ops[0], (ast.Eq, ast.NotEq))
+            equal = visit(node.left).casefold() == visit(node.comparators[0]).casefold()
+            return equal if isinstance(node.ops[0], ast.Eq) else not equal
         if isinstance(node, ast.Call):
             assert isinstance(node.func, ast.Name) and node.func.id == "fromJSON"
             assert len(node.args) == 1 and not node.keywords
@@ -105,3 +106,49 @@ def test_gates_and_checkout_security(workflow):
                 assert step["with"]["persist-credentials"] is False
     text = (ROOT / ".github/workflows" / filename).read_text()
     assert re.search(r"^#.*PR_GATE_RUNNER.*self-hosted-arm64", text, re.MULTILINE)
+
+
+# WH_PR_RUNNER: workspace-hub PR gates run on GitHub-hosted runners unless the
+# repository variable is "self-hosted" (rollback). Fork PRs are always hosted.
+HUB = "vamseeachanta/workspace-hub"
+SELF_HOSTED = ["self-hosted", "Linux"]
+
+
+def _pr_context(repository, head, token):
+    context = {
+        "github.event_name": "pull_request",
+        "github.repository": repository,
+        "github.event.pull_request.head.repo.full_name": head,
+    }
+    if token is not None:
+        context["vars.WH_PR_RUNNER"] = token
+    return context
+
+
+@pytest.mark.parametrize("token", [None, "", "ubuntu-latest", "self-hosted-arm64", "self-hosted"])
+@pytest.mark.parametrize("head", [HUB, "someone/fork", ""])
+def test_fast_gate_runner_switch(token, head):
+    document = yaml.safe_load((ROOT / ".github/workflows/pr-fast-gate.yml").read_text())
+    expected = SELF_HOSTED if head == HUB and token == "self-hosted" else "ubuntu-latest"
+    for job in document["jobs"].values():
+        assert evaluate(job["runs-on"], _pr_context(HUB, head, token)) == expected
+
+
+@pytest.mark.parametrize("token", [None, "", "self-hosted"])
+@pytest.mark.parametrize("event,repository,head,expected", [
+    ("pull_request", HUB, HUB, "switch"),
+    ("pull_request", HUB, "someone/fork", "ubuntu-latest"),
+    ("pull_request", "example/caller", "example/caller", SELF_HOSTED),
+    ("pull_request", "example/caller", "someone/fork", "ubuntu-latest"),
+    ("push", "example/caller", "", SELF_HOSTED),
+    ("workflow_dispatch", HUB, "", SELF_HOSTED),
+])
+def test_public_surface_guard_runner_switch(token, event, repository, head, expected):
+    """Only workspace-hub's own PRs follow WH_PR_RUNNER; callers keep their routing."""
+    document = yaml.safe_load((ROOT / ".github/workflows/public-surface-guard.yml").read_text())
+    if expected == "switch":
+        expected = SELF_HOSTED if token == "self-hosted" else "ubuntu-latest"
+    context = _pr_context(repository, head, token)
+    context["github.event_name"] = event
+    for job in document["jobs"].values():
+        assert evaluate(job["runs-on"], context) == expected

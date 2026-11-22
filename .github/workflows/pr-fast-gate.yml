@@ -5,7 +5,13 @@ name: PR Fast Gate
 # needs one runner slot. The full suite and the generated-artifact currency
 # checks run once a day on main in main-full-run.yml. Tests listed in
 # tests/quarantine.txt run as xfail(strict=False) through the root conftest.py.
-# Fork PRs stay on GitHub-hosted runners; same-repo PRs use our runners.
+# Runner: GitHub-hosted ubuntu-latest for every PR (the repository is public,
+# so hosted minutes are free). Same-repo PRs go back to the self-hosted Linux
+# runners only when the repository variable WH_PR_RUNNER is "self-hosted":
+#   gh variable set WH_PR_RUNNER --body self-hosted -R vamseeachanta/workspace-hub
+# Fork PRs always stay on ubuntu-latest. Moved off self-hosted on 2026-11-22:
+# queue waits of hours, a disk-guard pre-job hook that held jobs for 30 min, and
+# slow checkout/uv/test steps ran the job into timeout-minutes (CANCELLED).
 
 on:
   pull_request:
@@ -22,7 +28,7 @@ concurrency:
 jobs:
   fast-gate:
     name: Fast Gate
-    runs-on: ${{ github.event.pull_request.head.repo.fork && 'ubuntu-latest' || fromJSON('["self-hosted","Linux"]') }}
+    runs-on: ${{ (github.event.pull_request.head.repo.full_name == github.repository && vars.WH_PR_RUNNER == 'self-hosted') && fromJSON('["self-hosted","Linux"]') || 'ubuntu-latest' }}
     timeout-minutes: 30
     steps:
       - name: Checkout code
