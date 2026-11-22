@@ -3,7 +3,7 @@
 
 ---
 name: feedback-merge-is-not-done-until-branch-and-worktree-gone
-description: "Every merge to main must be paired with deleting the remote branch, the local branch, and the worktree — and `git branch --merged` under-reports because squash rewrites SHAs"
+description: "Every merge to main is followed by clearing the worktree; deleting a branch is a separate step with a bundle and a fleet-ops #577 log — and `git branch --merged` under-reports because squash rewrites SHAs"
 metadata: 
   node_type: memory
   type: feedback
@@ -19,9 +19,9 @@ The cost is not disk. A stale branch is **indistinguishable from an in-flight on
 
 **How to apply:**
 
-1. `gh pr merge <N> --squash --delete-branch` — kills the remote branch atomically.
-2. `--delete-branch` does **not** touch the local branch or worktree. `git worktree remove <path>` first (a branch checked out in a worktree cannot be deleted), then `git branch -d`.
-3. Sweep periodically: `git fetch --prune`, `git branch -r --merged origin/main`, `git worktree list`.
+1. Merge with the pinned squash of `.claude/rules/merge-authorization.md`, without `--delete-branch` (owner rule, 22 Nov 2026).
+2. `git worktree remove <path>` once the worktree is inspected (step 5).
+3. Deleting a branch is an irreversible step: log it on fleet-ops #577 and keep a bundle first. Sweep for candidates periodically: `git fetch --prune`, `git branch -r --merged origin/main`, `git worktree list`.
 4. **`--merged` UNDER-reports.** It tests ancestry; squash-merge rewrites SHAs, so squash-merged branches never appear. What it lists is safe to delete — **its silence proves nothing**. Verify omissions by content. See [[reference_squash_merge_reachability_false_orphan]].
 5. **Never remove a worktree without checking `git status --porcelain` and `git ls-files --others --exclude-standard`.** Archive anything uncommitted before `--force`. The 2026-07-30 sweep found an untracked draft in a merged worktree; it was safely superseded, but that was established by diffing, not assumed.
 6. Respect `locked` worktrees — a lock is a deliberate opt-out.
@@ -35,4 +35,4 @@ The cost is not disk. A stale branch is **indistinguishable from an in-flight on
    restricted clones ask the server with `git ls-remote --heads origin <branch>` instead.
 10. **Scope the sweep away from live refs.** Before a fleet-wide pass, list what a parallel session is pushing (`gh pr list --json updatedAt`, worktree mtimes) and put those branches/worktrees on an explicit protected list. Deleting under a running session is the one failure mode this rule can cause that it cannot undo.
 
-Codified as `.claude/rules/merge-cleanup.md` (workspace-hub PR #3719). Governs what follows a merge; [[feedback_agent_can_verify_but_not_self_merge_pr]] governs who may run it.
+Codified as `.claude/rules/merge-cleanup.md` (workspace-hub PR #3719). Governs what follows a merge; `.claude/rules/merge-authorization.md` governs the merge itself.

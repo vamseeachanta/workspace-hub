@@ -10,8 +10,11 @@ Planning depth, permission and verification evidence are separate decisions.
 Bounded routine reversible work may proceed under independently established
 standing authorization, with proportionate planning, TDD and applicable review.
 Substantial implementation is authorized by the originating task request or
-standing authorization; no separate user plan approval is required. Consequential actions require explicit approval matching
-the action and destination. Missing scope, effects or provenance requires context
+standing authorization; no separate user plan approval is required. Irreversible
+steps are the team's call, taken with the safeguards in SHARED_SOUL.md: log the step
+on fleet-ops #577 before running it, back up first, keep the machine reachable and
+never put tokens or secrets anywhere. Client-facing emails and messages, and spending
+money, stay with the owner. Missing scope, effects or provenance requires context
 before the affected action proceeds; independent authorized work may continue.
 
 This policy is not an approval service. A label, marker, review verdict, receipt
@@ -31,8 +34,8 @@ not exempt a change from evaluation.
 Changes to engineering basis, qualified inputs, approval/security controls,
 shared instructions or deployment configuration require substantive scrutiny.
 Harness, infrastructure and documentation changes require proportionate planning
-and review, without a separate plan-approval prerequisite. Publication, deployment, access changes and destructive actions require
-matching consequential-action authority. Qualified engineering inputs, licensing,
+and review, without a separate plan-approval prerequisite. Publication, deployment, access changes and destructive actions follow the
+irreversible-step safeguards above. Qualified engineering inputs, licensing,
 acceptance criteria and security requirements remain applicable.
 
 ## Plan and execute without repeated approval
@@ -41,7 +44,7 @@ acceptance criteria and security requirements remain applicable.
 2. Prepare proportionate planning and resource intelligence; obtain adversarial review.
 3. Verify authority appropriate to the current risk and scope. The task request authorizes implementation; do not stop for separate plan approval. Do not implement the affected work while a required decision is pending.
 4. Follow TDD, verify results and obtain code/artifact review.
-5. Reassess material scope changes and consequential actions; verify completeness and perform authorized closeout.
+5. Reassess material scope changes and irreversible steps; verify completeness and perform authorized closeout.
 
 Plans identify the intended change, affected paths, tests, acceptance criteria and
 risks. Substantial plans use `docs/plans/_template-issue-plan.md`; human-facing rich
@@ -62,16 +65,15 @@ Do not request approval again for unchanged scope with verified current authorit
 
 Batch scheduling, elapsed time, posting a plan and handoffs do not grant authority.
 Unattended bounded work may proceed under independently verified standing
-authorization; substantial implementation follows task authority; consequential actions require explicit authorization for the action and destination; implementation authority alone does not cover them. Reuse authorization already given.
+authorization; substantial implementation follows task authority; irreversible steps follow the safeguards above; owner-held items wait for the owner. Reuse authorization already given.
 Urgency, configuration changes and short duration provide no automatic waiver of
 TDD, review, security or data requirements.
 
 ## Review and enforcement boundaries
 
-Plan and code/artifact reviews are independent gates. Apply
-`docs/standards/AI_REVIEW_ROUTING_POLICY.md`; scale depth without automatically
-waiving review for small changes. A blocking finding pauses affected work until
-resolved. The finding itself neither grants nor revokes user authorization;
+Plan and code/artifact reviews are advisory, not merge gates; PRs merge on green
+required checks. Apply `docs/standards/AI_REVIEW_ROUTING_POLICY.md`; scale depth
+to scope. A real bug a review finds is fixed before the work closes. The finding itself neither grants nor revokes user authorization;
 material scope changes require matching task authority, not a second plan-approval ceremony.
 
 Existing hooks and CI may use legacy marker heuristics and partial tool coverage.

@@ -185,8 +185,27 @@ def test_failed_child_is_backed_off_without_starving_next_job(tmp_path):
     assert "retry cleanup" not in again.stdout
 
 
+def gnu_timeout_available():
+    # Ask bash, so this is the `timeout` run-job.sh resolves (not timeout.exe).
+    try:
+        version = subprocess.run(["bash", "-c", "timeout --version"], capture_output=True,
+                                 text=True, timeout=10).stdout
+    except (OSError, subprocess.SubprocessError):
+        return False
+    return "GNU coreutils" in version.partition("\n")[0]
+
+
 @pytest.mark.parametrize("dry_run", [False, True])
 def test_stalled_remote_probe_is_bounded_and_next_entry_runs(tmp_path, monkeypatch, dry_run):
+    # The stalled probe ignores SIGTERM, so only `timeout --kill-after` SIGKILL
+    # escalation bounds it. uutils timeout (rust-coreutils, the default
+    # `timeout` on GitHub's ubuntu-26.04 image) never delivers that SIGKILL:
+    # uucore's send_signal_group returns early when it cannot set SIGKILL to
+    # SIG_IGN, so the probe runs its full 60 s. The fleet's runners and Git
+    # Bash ship GNU timeout, where the escalation works and this test applies.
+    if not gnu_timeout_available():
+        pytest.skip("needs GNU coreutils timeout: uutils timeout does not "
+                    "deliver --kill-after SIGKILL to the process group")
     queue, _, _, wt, config = retain_recent(tmp_path)
     age_worktree(wt)
     age_retry(queue)

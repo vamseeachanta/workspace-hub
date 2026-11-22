@@ -29,6 +29,7 @@
 - **Codex remains the default implementation worker** for bounded coding, tests, and refactors.
 - Plans get a second-provider review by default.
 - Code and deliverable artifacts get a second-provider review before completion by default.
+- **Reviews are advisory.** No review verdict is a merge gate: PRs merge on green required checks (`.claude/rules/merge-authorization.md`). Real bugs a review finds still get fixed.
 
 ## Optional Review Reduction Rules
 
@@ -48,9 +49,9 @@ A narrower review set is allowed only when the user explicitly asks for it or wh
    a. Self-execute (trivial/orchestration work)
    b. Route bounded implementation to Codex (and optionally parallel workers)
 3. Before completion, Claude routes review:
-   a. Default: Claude + Codex + Gemini all review
+   a. Default: the other provider reviews (Codex for Claude work, Claude for Codex work); Gemini is optional
    b. If one reviewer is waived, record the reason explicitly
-4. Resolve review findings before marking complete
+4. Fix the real bugs the review finds; merge on green required checks
 ```
 
 ## Legacy Surfaces
@@ -67,7 +68,9 @@ New workflow logic belongs in `.claude/` (skills, rules, hooks) with thin adapte
 
 ## Enforcement
 
-This policy is enforced at **Level 3 — Hook** (strongest). Promotion history:
+The hook below predates the advisory rule and still blocks `gh pr create` without
+review evidence. It conflicts with the merge-on-green rule and is listed for removal;
+removing it needs a code and test change. Promotion history:
 
 | Level | Status | Artifact |
 |-------|--------|----------|

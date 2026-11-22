@@ -25,4 +25,4 @@ metadata:
 
 **Systemic fix filed:** worldenergydata#822 (repo pre-commit) + workspace-hub#3382 (ecosystem rollout + this rule).
 
-Related: [[project_ecosystem_review_2026_07_04]], [[feedback_dependabot_merge_no_rebase_trust_clean]], [[feedback_agent_can_verify_but_not_self_merge_pr]]
+Related: [[project_ecosystem_review_2026_07_04]], [[feedback_dependabot_merge_no_rebase_trust_clean]], `.claude/rules/merge-authorization.md`
