@@ -22,11 +22,17 @@ permissions:
   contents: read
   pull-requests: write
 
+# Runner: workspace-hub's own pull requests use GitHub-hosted ubuntu-latest
+# (public repository, free minutes) unless the repository variable
+# WH_PR_RUNNER is "self-hosted"; same rollback switch as pr-fast-gate.yml.
+# Fork PRs use ubuntu-latest. Other repositories calling this workflow keep
+# their previous routing (self-hosted for their own PRs and non-PR events).
+
 jobs:
   blocking-public-surface:
     name: Blocking IP, Hostname, and Secret Guard
     if: github.event.repository.private == false
-    runs-on: ${{ github.event.pull_request.head.repo.fork && 'ubuntu-latest' || fromJSON('["self-hosted","Linux"]') }}
+    runs-on: ${{ (github.event_name == 'pull_request' && (github.event.pull_request.head.repo.full_name != github.repository || (github.repository == 'vamseeachanta/workspace-hub' && vars.WH_PR_RUNNER != 'self-hosted'))) && 'ubuntu-latest' || fromJSON('["self-hosted","Linux"]') }}
     timeout-minutes: 10
     steps:
       - name: Checkout target repository
@@ -66,7 +72,7 @@ jobs:
   warn-client-identifiers:
     name: Warn-Only Client Identifier Guard
     if: github.event.repository.private == false
-    runs-on: ${{ github.event.pull_request.head.repo.fork && 'ubuntu-latest' || fromJSON('["self-hosted","Linux"]') }}
+    runs-on: ${{ (github.event_name == 'pull_request' && (github.event.pull_request.head.repo.full_name != github.repository || (github.repository == 'vamseeachanta/workspace-hub' && vars.WH_PR_RUNNER != 'self-hosted'))) && 'ubuntu-latest' || fromJSON('["self-hosted","Linux"]') }}
     timeout-minutes: 10
     continue-on-error: true
     steps:
