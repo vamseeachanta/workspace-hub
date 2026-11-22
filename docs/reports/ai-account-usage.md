@@ -1,20 +1,20 @@
 # AI account usage (fleet)
 
-Generated 2026-11-22T08:14:09+00:00 by fleet-collector collect_account_usage_fleet. Percentages are USED; headroom = 100 - weekly used. Source of truth: `config/ai-tools/account-usage-latest.json`.
+Generated 2026-11-22T09:14:21+00:00 by fleet-collector collect_account_usage_fleet. Percentages are USED; headroom = 100 - weekly used. Source of truth: `config/ai-tools/account-usage-latest.json`.
 
 ## Recommendation
 
 - **claude**: `claude-professional` (98.0% weekly headroom) on ace-win-1
-- **codex**: `codex-professional` (54.0% weekly headroom) on ace-win-1
+- **codex**: `codex-professional` (53.0% weekly headroom) on ace-win-1
 
 ## Accounts
 
 | account | provider | holder | 5h used | week used | headroom | resets | sampled on | source | status | probed at |
 |---|---|---|---|---|---|---|---|---|---|---|
-| claude-owner | claude | owner |  | 17% | 83% | 2026-11-28T13:59:59.813543+00:00 | ace-win-2 | oauth-api | ok | 2026-11-22T08:13:56+00:00 |
-| claude-professional | claude | colleague |  | 2% | 98% | 2026-11-28T08:00:00.214707+00:00 | ace-win-1 | oauth-api | ok | 2026-11-22T08:13:59+00:00 |
-| codex-owner | codex | owner |  | 100% | 0% | 2026-11-25T16:31:50+00:00 | ace-win-2 | app-server-live | ok | 2026-11-22T08:14:05+00:00 |
-| codex-professional | codex | colleague |  | 46% | 54% | 2026-11-24T13:11:16+00:00 | ace-win-1 | app-server-live | ok | 2026-11-22T08:13:59+00:00 |
+| claude-owner | claude | owner |  | 19% | 81% | 2026-11-28T14:00:00.155650+00:00 | ace-win-2 | oauth-api | ok | 2026-11-22T09:13:44+00:00 |
+| claude-professional | claude | colleague |  | 2% | 98% | 2026-11-28T07:59:59.895139+00:00 | ace-win-1 | oauth-api | ok | 2026-11-22T09:13:48+00:00 |
+| codex-owner | codex | owner |  | 100% | 0% | 2026-11-25T16:31:50+00:00 | fleet-collector | app-server-live | ok | 2026-11-22T09:14:18+00:00 |
+| codex-professional | codex | colleague |  | 47% | 53% | 2026-11-24T13:11:16+00:00 | ace-win-1 | app-server-live | ok | 2026-11-22T09:13:48+00:00 |
 
 ## Hosts
 
