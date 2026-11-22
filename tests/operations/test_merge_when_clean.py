@@ -78,8 +78,21 @@ def test_clean_merge_binds_server_head(harness, explicit):
     merge = merges(calls)
     assert len(merge) == 1
     assert merge[0] == ["pr", "merge", "123", "--repo", "fixture/owned",
-                        "--squash", "--delete-branch", "--match-head-commit", HEAD]
+                        "--squash", "--match-head-commit", HEAD]
     assert any("headRefOid" in argument for call in calls for argument in call)
+
+
+@pytest.mark.parametrize("delete", [False, True])
+def test_branch_delete_is_opt_in(harness, delete):
+    """F2: branch deletes are owner-run, so gh's --delete-branch is opt-in only."""
+    result, calls = invoke(harness, "--merge", *(["--delete-branch"] if delete else []))
+    assert result.returncode == 0, result.stderr
+    merge = merges(calls)
+    assert len(merge) == 1
+    assert ("--delete-branch" in merge[0]) is delete
+    watch, _ = invoke(harness, *(["--delete-branch"] if delete else []))
+    assert watch.returncode == 0, watch.stderr
+    assert ("--delete-branch" in watch.stdout) is delete
 
 
 def test_expected_head_mismatch_refuses(harness):

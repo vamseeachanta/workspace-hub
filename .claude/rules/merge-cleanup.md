@@ -8,9 +8,9 @@ The cost is not disk. It is that a stale branch is indistinguishable from an in-
 
 **How to apply:**
 
-1. **Merge with `--delete-branch`.** `gh pr merge <N> --squash --delete-branch` removes the remote branch atomically. This is the default; the exceptions below are the only reasons to skip it.
-2. **Then remove the local branch and any worktree** — `--delete-branch` does neither. `git worktree remove <path>` first (a branch checked out in a worktree cannot be deleted), then `git branch -d <name>`.
-3. **Sweep periodically**, because step 1 gets skipped:
+1. **Merge without `--delete-branch`.** `gh pr merge <N> --squash` keeps the head branch, so stacked PRs can be retargeted to main (`gh pr edit <child> --base main`). Under the repo footprint plan (F2), branch deletes are owner-run steps taken only after the archive is re-verified; `scripts/operations/merge-when-clean.sh` therefore deletes nothing unless its opt-in `--delete-branch` is given.
+2. **Then remove the worktree** (after the inspection in step 6): `git worktree remove <path>`. The remote and local branch deletes wait for the F2 branch clean-up.
+3. **Sweep periodically** to report candidates for that owner-run clean-up:
    ```bash
    git fetch --prune
    git branch -r --merged origin/main | grep -v 'origin/main\|HEAD'   # candidates
