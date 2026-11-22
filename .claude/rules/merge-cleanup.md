@@ -1,6 +1,6 @@
-# Merge cleanup — a merge is not done until its worktree is gone and its branch is listed for the F2 clean-up
+# Merge cleanup — clear the worktree after a merge; delete branches only with a backup
 
-**When to apply:** every merge to `main`, in any repo of the ecosystem — whether the agent verified it and handed the human the command, or the human ran it. Also at session close, as a sweep.
+**When to apply:** every merge to `main`, in any repo of the ecosystem. Also at session close, as a sweep.
 
 **Why:** cleanup deferred is cleanup never done, and the residue is not inert. Measured on `ace-linux-1`, 2026-07-30: **44 remote branches already merged into `origin/main`**, and **17 git worktrees**, two of them holding branches that merged weeks earlier. Three of the 44 were merged in that same session and left behind — the debt accrues fastest from the person who best knows the branch is dead.
 
@@ -8,9 +8,9 @@ The cost is not disk. It is that a stale branch is indistinguishable from an in-
 
 **How to apply:**
 
-1. **Merge without `--delete-branch`.** `gh pr merge <N> --squash` keeps the head branch, so stacked PRs can be retargeted to main (`gh pr edit <child> --base main`). Under the repo footprint plan (F2), branch deletes are owner-run steps taken only after the archive is re-verified; `scripts/operations/merge-when-clean.sh` therefore deletes nothing unless its opt-in `--delete-branch` is given.
-2. **Then remove the worktree** (after the inspection in step 6): `git worktree remove <path>`. The remote and local branch deletes wait for the F2 branch clean-up.
-3. **Sweep periodically** to report candidates for that owner-run clean-up:
+1. **Merge without `--delete-branch`.** The merge is the pinned squash of [`merge-authorization.md`](merge-authorization.md); it never deletes the branch, so stacked PRs can be retargeted to main (`gh pr edit <child> --base main`).
+2. **Then remove the worktree** once it has been inspected (step 6): `git worktree remove <path>`.
+3. **Deleting a branch is a separate irreversible step.** Log it on fleet-ops #577 before running it and keep a bundle of the branch first (`git bundle create <file> <branch>`). Sweep for candidates periodically:
    ```bash
    git fetch --prune
    git branch -r --merged origin/main | grep -v 'origin/main\|HEAD'   # candidates

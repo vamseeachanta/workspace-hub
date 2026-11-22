@@ -3,14 +3,14 @@
 
 ---
 name: cross-review-finds-what-self-review-misses
-description: "Code-stage adversarial cross-review consistently finds defects that the implementing session's self-review misses — never skip the cross-review gate post-implementation, even when feeling confident"
+description: "Code-stage adversarial cross-review consistently finds defects that the implementing session's self-review misses — run the advisory cross-review post-implementation and fix the real bugs it finds, even when feeling confident; it is not a merge gate"
 metadata: 
   node_type: memory
   type: feedback
   originSessionId: 301086a5-63fe-4d73-a934-dd43ff2f9c0d
 ---
 
-Cross-review at the code stage catches defects that the implementing session's self-review reliably misses. Never skip the cross-review gate, even when implementation feels solid.
+Cross-review at the code stage catches defects that the implementing session's self-review reliably misses. Run it even when implementation feels solid and fix the real bugs it finds; the review is advisory and does not gate the merge.
 
 **Why:** 2026-05-21 close-out of digitalmodel#617 + worldenergydata#429: implementation landed feeling clean — tests passing, plan acceptance criteria met, end-to-end live-resolver verification successful. Dispatched 4 parallel code-reviewer subagents (2 per issue, different focus angles). Both verdicts came back **MAJOR**, not the expected MINOR. Findings the implementing session had not surfaced:
 
