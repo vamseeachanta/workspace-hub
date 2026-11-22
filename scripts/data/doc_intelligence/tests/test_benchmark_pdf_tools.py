@@ -107,6 +107,7 @@ class TestReadabilityClassification:
         assert ratio >= 0.8, f"Expected machine-readable, got ratio {ratio}"
 
 
+@pytest.mark.skipif(not os.path.isdir("/mnt/local-analysis/workspace-hub"), reason="needs the /mnt/local-analysis/workspace-hub checkout (Linux workstation only)")
 class TestBenchmarkOutput:
     """Test that benchmark produces valid structured output."""
 
