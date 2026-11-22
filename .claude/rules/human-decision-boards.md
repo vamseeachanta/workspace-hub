@@ -1,6 +1,6 @@
 # Human decisions on local HTML decision boards — agent rule
 
-**A decision that needs the owner and has more than one card of context goes on a local HTML decision board with the recommendation marked. A single short question may be asked in chat.**
+**The team decides everything else; the owner decides only client-facing emails and messages, spending money, and items he is already holding. When one of those has more than one card of context it goes on a local HTML decision board with the recommendation marked. A single short question may be asked in chat.**
 
 **Why:** the owner decides at their own pace with sources and trade-offs side by side.
 Questions asked in chat lose their context, get answered piecemeal, and leave no record.

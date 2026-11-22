@@ -16,4 +16,4 @@ The dry run reads the GitHub issue, extracts the Objective fields, classifies th
 - Choose `single-lane`, `parallel-readonly`, or `parallel-worktree`.
 - Launch lanes in one batch only after lane contracts exist.
 - Own integration, push, PR, issue comments, and closeout.
-- Keep TDD, hard-stop policy, data handling, and cross-review gates intact.
+- Keep TDD, hard-stop policy and data handling intact; run the advisory cross-review and fix the real bugs it finds.
