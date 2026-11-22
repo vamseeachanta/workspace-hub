@@ -1,6 +1,7 @@
 """Regression contracts for unattended task actions; no scheduler is mutated."""
 from pathlib import Path
 import os
+import shutil
 import subprocess
 
 import pytest
@@ -8,6 +9,10 @@ import pytest
 ROOT = Path(__file__).resolve().parents[2]
 WINDOWS = ROOT / "scripts/windows"
 CONTEXT = ROOT / "scripts/coordination/context"
+# On Windows, CreateProcess searches System32 before PATH, so a bare "bash"
+# resolves to the WSL launcher even when Git Bash leads PATH. shutil.which
+# follows PATH order.
+BASH = shutil.which("bash") or "bash"
 
 
 def test_preview_precedes_scheduler_objects():
@@ -108,7 +113,7 @@ def test_context_derives_and_exports_root_from_script(tmp_path, equivalent_spell
     env = dict(os.environ)
     env.pop("WORKSPACE_ROOT", None)
     env["EXPECTED_WORKSPACE_ROOT"] = str(root)
-    result = subprocess.run(["bash", str(scripts / "daily_context_check.sh")],
+    result = subprocess.run([BASH, str(scripts / "daily_context_check.sh")],
                             cwd=tmp_path, env=env, text=True, capture_output=True)
     assert result.returncode == 0, result.stderr
     reports = list((root / ".claude/reports").glob("context-health-*.md"))
@@ -120,7 +125,7 @@ def test_pattern_analysis_survives_first_repository(tmp_path):
     root, scripts = _copy_context(tmp_path)
     (root / "sample/.git").mkdir(parents=True)
     env = dict(os.environ, WORKSPACE_ROOT=str(root))
-    result = subprocess.run(["bash", str(scripts / "analyze_patterns.sh"), "7"],
+    result = subprocess.run([BASH, str(scripts / "analyze_patterns.sh"), "7"],
                             cwd=tmp_path, env=env, text=True, capture_output=True)
     assert result.returncode == 0, result.stderr
     assert "repos_analyzed: 1" in (root / ".claude/state/context-patterns.yaml").read_text(encoding="utf-8")
@@ -140,7 +145,7 @@ def test_workstation_readiness_preserves_following_sections(tmp_path):
     (orca / "OrcaFlex64.exe").touch()
     env = dict(os.environ, WORKSPACE_HUB=str(root), ANSYS_ROOT=str(ansys.parent),
                ORCAFLEX_ROOT=str(orca.parent))
-    result = subprocess.run(["bash", str(ROOT / "scripts/readiness/workstation-version-check.sh")],
+    result = subprocess.run([BASH, str(ROOT / "scripts/readiness/workstation-version-check.sh")],
                             env=env, text=True, capture_output=True)
     assert result.returncode == 0, result.stdout + result.stderr
     text = report.read_text(encoding="utf-8")
@@ -153,7 +158,7 @@ def test_workstation_missing_installations_still_fail(tmp_path):
     env = dict(os.environ, WORKSPACE_HUB=str(tmp_path / "repository"),
                ANSYS_ROOT=str(tmp_path / "missing analysis"),
                ORCAFLEX_ROOT=str(tmp_path / "missing dynamics"))
-    result = subprocess.run(["bash", str(ROOT / "scripts/readiness/workstation-version-check.sh")],
+    result = subprocess.run([BASH, str(ROOT / "scripts/readiness/workstation-version-check.sh")],
                             env=env, text=True, capture_output=True)
     assert result.returncode == 1
     assert "2/2 checks failed" in result.stdout
