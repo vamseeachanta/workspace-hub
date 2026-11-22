@@ -1,11 +1,6 @@
 # Human decisions on local HTML decision boards — agent rule
 
-**Every decision that needs the owner goes on a local HTML decision board, with the
-agent's recommendation marked. This includes engineering choices, scope choices, merge
-and publication approvals, review rounds and session control (closing sessions, deleting
-folders). Agents do not ask for decisions in chat or through prompt tools
-(`AskUserQuestion`, Codex `request_user_input`). Chat names the board and lists which
-cards are new.**
+**A decision that needs the owner and has more than one card of context goes on a local HTML decision board with the recommendation marked. A single short question may be asked in chat.**
 
 **Why:** the owner decides at their own pace with sources and trade-offs side by side.
 Questions asked in chat lose their context, get answered piecemeal, and leave no record.

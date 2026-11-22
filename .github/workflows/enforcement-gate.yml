@@ -13,7 +13,7 @@ on:
 jobs:
   scheduler-mutation-surfaces:
     name: Scheduler Mutation Surface Guard
-    runs-on: ubuntu-latest
+    runs-on: ${{ github.event.pull_request.head.repo.fork && 'ubuntu-latest' || fromJSON('["self-hosted","Linux"]') }}
     timeout-minutes: 5
     steps:
       - name: Checkout code
@@ -51,7 +51,7 @@ jobs:
 
   stage-prompt-drift:
     name: Stage Prompt Drift Guard
-    runs-on: ubuntu-latest
+    runs-on: ${{ github.event.pull_request.head.repo.fork && 'ubuntu-latest' || fromJSON('["self-hosted","Linux"]') }}
     timeout-minutes: 10
 
     steps:
@@ -116,7 +116,7 @@ jobs:
 
   review-evidence:
     name: Review Evidence Check
-    runs-on: ubuntu-latest
+    runs-on: ${{ github.event.pull_request.head.repo.fork && 'ubuntu-latest' || fromJSON('["self-hosted","Linux"]') }}
     timeout-minutes: 10
 
     steps:
@@ -166,7 +166,7 @@ jobs:
   plan-approval:
     # Preserve the required-check name while retiring the implementation gate.
     name: Plan Approval Check
-    runs-on: ubuntu-latest
+    runs-on: ${{ github.event.pull_request.head.repo.fork && 'ubuntu-latest' || fromJSON('["self-hosted","Linux"]') }}
     timeout-minutes: 10
     steps:
       - name: Checkout code
@@ -186,7 +186,7 @@ jobs:
     # using the owner's token from the owner. The PR's own script/workflow run on
     # opened, synchronize, and reopened events only; this is advisory until the
     # owner makes it a required status check.
-    runs-on: ubuntu-latest
+    runs-on: ${{ github.event.pull_request.head.repo.fork && 'ubuntu-latest' || fromJSON('["self-hosted","Linux"]') }}
     timeout-minutes: 10
     steps:
       - name: Checkout code
@@ -223,7 +223,7 @@ jobs:
 
   retired-queue-paths:
     name: Retired Queue Path Check
-    runs-on: ubuntu-latest
+    runs-on: ${{ github.event.pull_request.head.repo.fork && 'ubuntu-latest' || fromJSON('["self-hosted","Linux"]') }}
     timeout-minutes: 5
     steps:
       - name: Checkout code
@@ -242,7 +242,7 @@ jobs:
     # config/agents/model-registry.yaml vs the grandfathered baseline. ADVISORY
     # first (does not fail the build) per the #3060 plan; promote to --enforce
     # once trusted by flipping the run line below.
-    runs-on: ubuntu-latest
+    runs-on: ${{ github.event.pull_request.head.repo.fork && 'ubuntu-latest' || fromJSON('["self-hosted","Linux"]') }}
     timeout-minutes: 5
     steps:
       - name: Checkout code
@@ -267,7 +267,7 @@ jobs:
     # (c) the full index is freshly regenerable (no diff). (b) authored-but-
     # backfilled is advisory (stderr only). Runs red in PR checks on drift;
     # becomes merge-blocking once added to the protected-branch ruleset.
-    runs-on: ubuntu-latest
+    runs-on: ${{ github.event.pull_request.head.repo.fork && 'ubuntu-latest' || fromJSON('["self-hosted","Linux"]') }}
     timeout-minutes: 5
     steps:
       - name: Checkout code
@@ -291,7 +291,7 @@ jobs:
 
   compliance-dashboard:
     name: Compliance Dashboard
-    runs-on: ubuntu-latest
+    runs-on: ${{ github.event.pull_request.head.repo.fork && 'ubuntu-latest' || fromJSON('["self-hosted","Linux"]') }}
     timeout-minutes: 10
 
     steps:

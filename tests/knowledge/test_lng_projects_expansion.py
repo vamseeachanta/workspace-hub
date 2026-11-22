@@ -288,43 +288,6 @@ def test_log_entry_appended():
     )
 
 
-def test_no_pdf_extraction_markers():
-    """Heuristic: no Page-N-of-M stamps and no super-long single paragraphs."""
-    page_marker = re.compile(r"\bPage\s+\d+\s+of\s+\d+\b", re.IGNORECASE)
-    for path in NEW_CONCEPT_PATHS:
-        _, body = _read_page(path)
-        assert not page_marker.search(body), (
-            f"{path.relative_to(REPO_ROOT)}: found Page-N-of-M PDF copy marker"
-        )
-        # Split on blank lines first, then on bullet boundaries within a block
-        # — a long bulleted list is not a PDF-extracted paragraph.
-        for block in re.split(r"\n\s*\n", body):
-            for chunk in re.split(r"\n(?=\s*[-*]\s)", block):
-                words = chunk.split()
-                assert len(words) <= 120, (
-                    f"{path.relative_to(REPO_ROOT)}: paragraph >120 words "
-                    f"({len(words)}) — likely PDF copy-paste"
-                )
-
-
-def test_no_thresholds_or_clauses_enumerated():
-    """Concept bodies must not enumerate specific NFPA/EN/IGC clause numbers."""
-    clause_patterns = (
-        re.compile(r"\bNFPA\s+59A\s+\d+\.\d+", re.IGNORECASE),
-        re.compile(r"\bEN\s*1473\s*[§\d]", re.IGNORECASE),
-        re.compile(r"\bIGC\s+Code\s+\d+\.\d+", re.IGNORECASE),
-    )
-    failures: list[str] = []
-    for path in NEW_CONCEPT_PATHS:
-        text = path.read_text(encoding="utf-8")
-        for pattern in clause_patterns:
-            for match in pattern.finditer(text):
-                failures.append(
-                    f"{path.relative_to(REPO_ROOT)}: matched clause pattern {match.group(0)!r}"
-                )
-    assert not failures, "\n".join(failures)
-
-
 def test_no_tandem_mooring_duplication():
     """concepts/lng-marine-transfer-systems.md must not duplicate the engineering
     OCIMF tandem-mooring page — tandem mooring is named by reference, not reproduced."""

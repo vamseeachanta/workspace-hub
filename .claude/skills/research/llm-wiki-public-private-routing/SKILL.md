@@ -31,9 +31,14 @@ Read `docs/architecture/agent-data-handling-contract.md` for ownership, original
 retention, source-specific rights and publication boundaries. The residence/layer
 policies and `.claude/rules/codes-standards-data-routing.md` complement that contract.
 Do not infer destination visibility from a repository name or older public-wiki text.
-Check the actual destination and current source rights for the proposed operation.
+Check the actual destination for the proposed operation.
 
-If the authority or rights evidence is missing or conflicting, identify the gap.
+Codes and standards need no rights check, per the owner's ruling of 28 Oct 2026
+(`.claude/rules/codes-standards-data-routing.md`): licensed originals may sit in
+private Git or the ACE data store, and only original PDFs and whole sections stay off
+public surfaces. The rights checks below apply to client and other third-party material.
+
+If the authority or rights evidence for that material is missing or conflicting, identify the gap.
 Metadata discovery may continue within existing access; copying and publication
 must not proceed on an assumed entitlement. This skill grants no external action.
 
@@ -52,11 +57,13 @@ must not proceed on an assumed entitlement. This skill grants no external action
   data are evidenced and the governing source/destination contract permits use.
 - Keep private locators, credentials and restricted source content out of public
   pages, filenames, commit messages and receipts. Use authorized opaque references.
-- Vendor-licensed originals remain outside Git, including private Git. Permitted
-  derivatives and private measured-original retention follow the canonical contract;
-  a generic standards citation is not a publication license.
+- Codes and standards: licensed originals may sit in private Git or the ACE data
+  store; public outputs quote with citations and reconstruct charts, and original PDFs
+  and whole sections stay off public surfaces (owner ruling 28 Oct 2026).
+  Private measured-original retention follows the canonical contract.
 
-Record owner, intended destination/audience, source-rights evidence, remaining gaps
+Record owner, intended destination/audience, source-rights evidence (client and
+third-party material), remaining gaps
 and any abstraction decision. A routing assessment is not publication approval.
 Consult an existing private `public-name-exception-approved.yaml` decision ledger
 before repeating a resolved question. Reuse a recorded decision only when current

@@ -117,7 +117,7 @@ import sys
 import yaml
 cfg_path = pathlib.Path(sys.argv[1])
 ws_root = sys.argv[2]
-with cfg_path.open() as fh:
+with cfg_path.open(encoding="utf-8") as fh:
     data = yaml.safe_load(fh)
 terminal = data.get('terminal', {})
 if terminal.get('backend') != 'remote':
@@ -238,7 +238,7 @@ EOF
 import json
 import pathlib
 import sys
-with pathlib.Path(sys.argv[1]).open() as fh:
+with pathlib.Path(sys.argv[1]).open(encoding="utf-8") as fh:
     data = json.load(fh)
 if data.get('ok') is not True:
     raise SystemExit(1)
@@ -256,6 +256,104 @@ PY
     fi
 
     rm -rf "$tmpdir"
+}
+
+snapshot_directory_entries() {
+    python3 - "$1" <<'PYTHON'
+import os
+import sys
+
+for name in sorted(os.listdir(os.fsencode(sys.argv[1]))):
+    sys.stdout.buffer.write(name + b"\0")
+PYTHON
+}
+
+run_directory_snapshot_test() {
+    local tmpdir entries
+    tmpdir="$(mktemp -d)"
+    entries="$tmpdir/entries"
+    mkdir -p "$entries/directory"
+    touch "$entries/plain" "$entries/"$'line\nbreak' "$entries/.hidden"
+    printf '.hidden\0directory\0line\nbreak\0plain\0' > "$tmpdir/expected"
+
+    if snapshot_directory_entries "$entries" > "$tmpdir/actual" \
+        && cmp -s "$tmpdir/expected" "$tmpdir/actual"; then
+        pass "directory_snapshot preserves sorted hidden, directory and newline names"
+    else
+        fail "directory_snapshot preserves sorted hidden, directory and newline names"
+    fi
+    rm -rf "$tmpdir"
+}
+
+run_invalid_yaml_update_cleanup_test() {
+    local invalid_form tmpdir ws_root home_root hermes_cfg hermes_dir template output
+    for invalid_form in malformed rendered; do
+        tmpdir="$(mktemp -d)"
+        ws_root="$tmpdir/ws"
+        if [[ "$invalid_form" == rendered ]]; then
+            # A single quote breaks the template's quoted scalar after expansion.
+            ws_root="$tmpdir/ws'quoted"
+        fi
+        home_root="$tmpdir/home"
+        hermes_dir="$home_root/.hermes"
+        hermes_cfg="$hermes_dir/config.yaml"
+        template="$ws_root/config/agents/hermes/config.yaml.template"
+
+        make_workspace "$ws_root"
+        mkdir -p "$hermes_dir"
+        # Literal fixture is the byte oracle, including comments and quoting.
+        cat > "$tmpdir/expected.yaml" <<'EOF'
+# Preserve this comment and the exact scalar spelling.
+terminal:
+  backend: 'local'
+  cwd: '.'
+skills:
+  external_dirs: []
+EOF
+        cp "$tmpdir/expected.yaml" "$hermes_cfg"
+        printf 'preserve\n' > "$hermes_dir/.sentinel"
+
+        if [[ "$invalid_form" == malformed ]]; then
+            # Same malformed input as run_invalid_yaml_create_test.
+            printf 'skills: [\n' > "$template"
+        else
+            # Valid YAML before rendering; the inserted quote leaves it invalid.
+            cat > "$template" <<'EOF'
+skills:
+  external_dirs:
+    - '__WS_HUB_PATH__/.claude/skills'
+EOF
+        fi
+
+        # Compare all immediate entries, including hidden and non-file entries.
+        snapshot_directory_entries "$hermes_dir" > "$tmpdir/entries.before"
+        if output="$(HOME="$home_root" bash "$ws_root/scripts/_core/sync-agent-configs.sh" 2>&1)"; then
+            fail "invalid_yaml_update_cleanup $invalid_form should fail"
+        else
+            pass "invalid_yaml_update_cleanup $invalid_form fails"
+        fi
+
+        if grep -Fq 'YAML validation failed for Hermes config' <<< "$output"; then
+            pass "invalid_yaml_update_cleanup $invalid_form reaches YAML validation"
+        else
+            fail "invalid_yaml_update_cleanup $invalid_form reaches YAML validation"
+        fi
+
+        if cmp -s "$tmpdir/expected.yaml" "$hermes_cfg"; then
+            pass "invalid_yaml_update_cleanup $invalid_form preserves target bytes"
+        else
+            fail "invalid_yaml_update_cleanup $invalid_form preserves target bytes"
+        fi
+
+        snapshot_directory_entries "$hermes_dir" > "$tmpdir/entries.after"
+        if cmp -s "$tmpdir/entries.before" "$tmpdir/entries.after"; then
+            pass "invalid_yaml_update_cleanup $invalid_form preserves entries and leaves no temp files"
+        else
+            fail "invalid_yaml_update_cleanup $invalid_form preserves entries and leaves no temp files"
+        fi
+
+        rm -rf "$tmpdir"
+    done
 }
 
 run_python3_fallback_to_uv_test() {
@@ -294,7 +392,7 @@ import sys
 import yaml
 cfg_path = pathlib.Path(sys.argv[1])
 ws_root = sys.argv[2]
-with cfg_path.open() as fh:
+with cfg_path.open(encoding="utf-8") as fh:
     data = yaml.safe_load(fh)
 if data.get('terminal', {}).get('backend') != 'remote':
     raise SystemExit(1)
@@ -337,6 +435,142 @@ EOF
     fi
 
     rm -rf "$tmpdir"
+}
+
+run_existing_target_sync() (
+    local tmpdir="$1" ws_root="$2" home_root="$3" kind="$4"
+    shift 4
+    export HOME="$home_root" TMPDIR="$tmpdir/tmp"
+    export XDG_CONFIG_HOME="$home_root/.config" XDG_CACHE_HOME="$tmpdir/cache"
+    export PATH="$tmpdir/bin:$PATH"
+    export CLAUDE_MEMORY_SNAPSHOT_PRIVATE_CLONE="$tmpdir/no-snapshots"
+    unset GIT_DIR GIT_WORK_TREE GIT_COMMON_DIR
+
+    if [[ "$kind" == plain_file ]]; then
+        # The plain helper has no executable call site. Source the entire copied
+        # script with its real option parser, then invoke its retained definition.
+        export PLAIN_TEMPLATE="$ws_root/config/agents/hermes/plain.txt"
+        export PLAIN_TARGET="$home_root/.hermes/plain.txt"
+        bash -c '
+            sync_script="$1"
+            shift
+            source "$sync_script" "$@"
+            sync_hermes_plain_file "$PLAIN_TEMPLATE" "$PLAIN_TARGET" "Plain fixture"
+        ' bash "$ws_root/scripts/_core/sync-agent-configs.sh" "$@"
+    else
+        bash "$ws_root/scripts/_core/sync-agent-configs.sh" "$@"
+    fi
+)
+
+run_dry_run_existing_target_test() {
+    local kind="$1" tmpdir ws_root home_root target template label target_dir
+    tmpdir="$(mktemp -d)"
+    ws_root="$tmpdir/ws"
+    home_root="$tmpdir/user"
+    label="dry_run_existing_$kind"
+    make_workspace "$ws_root"
+    mkdir -p "$home_root/.hermes" "$home_root/.claude" "$tmpdir/tmp" "$tmpdir/bin"
+    # Refuse external visibility detection; no private snapshot source exists.
+    printf '#!/usr/bin/env bash\nexit 1\n' > "$tmpdir/bin/gh"
+    chmod +x "$tmpdir/bin/gh"
+
+    # Expected strings below are literal fixture inputs, independent of the
+    # implementation. Each template changes managed-before to managed-after.
+    case "$kind" in
+        yaml)
+            target="$home_root/.hermes/config.yaml"
+            template="$ws_root/config/agents/hermes/config.yaml.template"
+            cat > "$template" <<'EOF'
+model:
+  default: managed-after
+terminal:
+  backend: template-backend
+  cwd: template-directory
+EOF
+            cat > "$target" <<'EOF'
+# Keep this comment and the original formatting during dry-run.
+model: {default: managed-before}
+terminal:
+  backend: preserved-backend
+  cwd: preserved-directory
+unmanaged_note: yaml-unmanaged
+EOF
+            ;;
+        json)
+            if ! command -v jq >/dev/null; then
+                fail "$label requires jq to exercise the JSON merge"
+                return
+            fi
+            target="$home_root/.claude/settings.json"
+            template="$ws_root/config/agents/claude/settings.json"
+            printf '{"statusLine":{"type":"managed-after"}}\n' > "$template"
+            cat > "$target" <<'EOF'
+{ "statusLine": {"type": "managed-before", "unmanaged": "nested-unmanaged"},
+  "unmanaged_note": "json-unmanaged" }
+EOF
+            ;;
+        plain_file)
+            target="$home_root/.hermes/plain.txt"
+            template="$ws_root/config/agents/hermes/plain.txt"
+            printf 'managed-after\n' > "$template"
+            printf 'managed-before\nplain_file-unmanaged\n' > "$target"
+            ;;
+    esac
+    target_dir="$(dirname "$target")"
+    # Include hidden and nested siblings so residue cannot hide from the scan.
+    mkdir -p "$target_dir/unchanged-directory"
+    printf 'sibling sentinel\n' > "$target_dir/.unchanged-sibling"
+    cp "$target" "$tmpdir/before-target"
+    (cd "$target_dir" && find . -print | LC_ALL=C sort) > "$tmpdir/before-members"
+
+    if run_existing_target_sync "$tmpdir" "$ws_root" "$home_root" "$kind" --dry-run > "$tmpdir/dry-run.log" 2>&1; then
+        pass "$label command completed"
+    else
+        fail "$label command completed"
+        return
+    fi
+    if cmp -s "$tmpdir/before-target" "$target"; then
+        pass "$label preserves exact target bytes"
+    else
+        fail "$label preserves exact target bytes"
+    fi
+    if grep -Fq "$kind-unmanaged" "$target"; then
+        pass "$label preserves unmanaged values"
+    else
+        fail "$label preserves unmanaged values"
+    fi
+    (cd "$target_dir" && find . -print | LC_ALL=C sort) > "$tmpdir/after-members"
+    if cmp -s "$tmpdir/before-members" "$tmpdir/after-members"; then
+        pass "$label preserves directory membership without sibling residue"
+    else
+        fail "$label preserves directory membership without sibling residue"
+    fi
+
+    # Positive control: the same copied script and fixture must actually update
+    # the managed value when dry-run is omitted. This touches only the test tree.
+    if run_existing_target_sync "$tmpdir" "$ws_root" "$home_root" "$kind" > "$tmpdir/apply.log" 2>&1; then
+        pass "$label apply control completed"
+    else
+        fail "$label apply control completed"
+        return
+    fi
+    if ! cmp -s "$tmpdir/before-target" "$target" && grep -Fq managed-after "$target"; then
+        pass "$label apply control changes managed content"
+    else
+        fail "$label apply control changes managed content"
+    fi
+}
+
+run_dry_run_existing_yaml_test() {
+    run_dry_run_existing_target_test yaml
+}
+
+run_dry_run_existing_json_test() {
+    run_dry_run_existing_target_test json
+}
+
+run_dry_run_existing_plain_file_test() {
+    run_dry_run_existing_target_test plain_file
 }
 
 run_private_host_alias_resolution_test() {
@@ -670,8 +904,13 @@ run_invalid_json_create_test
 run_invalid_json_create_without_jq_test
 run_invalid_yaml_create_test
 run_invalid_json_update_cleanup_test
+run_directory_snapshot_test
+run_invalid_yaml_update_cleanup_test
 run_python3_fallback_to_uv_test
 run_dry_run_claude_memory_missing_target_count_test
+run_dry_run_existing_yaml_test
+run_dry_run_existing_json_test
+run_dry_run_existing_plain_file_test
 run_private_host_alias_resolution_test
 run_claude_memory_restores_from_private_clone_test
 run_claude_memory_never_restores_from_public_path_test

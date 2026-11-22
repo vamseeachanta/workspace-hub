@@ -144,10 +144,14 @@ def _reject_replacements(bound: BoundCloneLayout) -> None:
         finally:
             os.close(replace)
     try:
-        packed = os.open("packed-refs", os.O_RDONLY | os.O_NOFOLLOW, dir_fd=bound.git_fd)
+        # POSIX.1-2024 open(), O_NONBLOCK: inspect type before reading refs.
+        packed = os.open("packed-refs", os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK,
+                         dir_fd=bound.git_fd)
     except FileNotFoundError:
         return
     try:
+        if not stat.S_ISREG(os.fstat(packed).st_mode):
+            raise BootstrapFinalizerError("packed refs must be a regular file")
         data = os.read(packed, 8 * 1024 * 1024 + 1)
     finally:
         os.close(packed)

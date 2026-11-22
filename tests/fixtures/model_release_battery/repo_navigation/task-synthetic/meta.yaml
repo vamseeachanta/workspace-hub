@@ -1,0 +1,15 @@
+schema_version: '1.0'
+class: repo_navigation
+task_id: task-synthetic
+scope: synthetic-offline
+rules_ref: tests/fixtures/model_release_battery/README.md
+input_budget_tokens: 4096
+output_budget_tokens: 1024
+budget_unit: utf8_bytes_as_token_upper_bound
+budget_basis_ref: tests/fixtures/model_release_battery/README.md#design-constants
+truncation_bytes:
+- 256
+- 500
+synthetic: true
+provenance: invented-from-repository-rules
+rules_revision: 663933cca5e298d0bb9976342835d8807f086b66

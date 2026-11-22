@@ -65,6 +65,11 @@ These drifts require a plan, tests, and explicit cross-review per [AI_REVIEW_ROU
 
 ## Prompt-Pack Portability Checks
 
+For smoke-battery structure, use the schema and synthetic example linked from the
+[smoke runner contract](MODEL_RELEASE_SMOKE_RUNNER_CONTRACT.md). Validate inputs
+before future execution; classify missing or invalid evidence as incomplete,
+never pass. This contract does not supply a runner or scoring integration.
+
 Every new prompt, skill, or workflow MUST satisfy these before merge:
 
 - Uses repo-relative paths resolved from `$(git rev-parse --show-toplevel)` or `${REPO_ROOT}`; no absolute paths outside tool-required parameters.

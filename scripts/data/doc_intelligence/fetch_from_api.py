@@ -6,13 +6,17 @@
 
 Handles auth (API keys via env vars), pagination, and rate limiting.
 """
+
 import argparse
 import json
+import math
 import os
-import time
+import re
+from collections.abc import Callable, Generator
+from copy import deepcopy
 from pathlib import Path
-from typing import Any, Callable, Generator
-from urllib.parse import urlencode, urljoin
+from typing import Any
+from urllib.parse import urlencode
 
 # ---------------------------------------------------------------------------
 # Registry
@@ -60,7 +64,99 @@ def get_api_registry() -> dict[str, dict]:
     Returns:
         {source: {base_url, auth_type, auth_env_var, endpoints: [...]}}
     """
-    return {source: dict(info) for source, info in _API_REGISTRY.items()}
+    return deepcopy(_API_REGISTRY)
+
+
+class SourceContextError(ValueError):
+    """A stable validation code that never includes supplied source values."""
+
+    def __init__(self, code: str):
+        self.code = code
+        super().__init__(code)
+
+
+def _plain_text(value: Any) -> bool:
+    return (
+        isinstance(value, str)
+        and bool(value.strip())
+        and all(character.isprintable() for character in value)
+    )
+
+
+def validate_source_context(
+    source: str,
+    endpoint: str,
+    params: dict | None = None,
+    api_key: str | None = None,
+) -> None:
+    """Validate request syntax/types without environment, filesystem or network I/O.
+
+    Contract: docs/document-intelligence/source-context-validation.md, issue #3445.
+    Endpoints are literal relative segments; one leading slash remains accepted
+    for compatibility with build_api_url. Registry endpoints are examples, not an
+    exhaustive capability allowlist. No API availability or authorization is proved.
+    """
+    if not isinstance(source, str) or source not in _API_REGISTRY:
+        raise SourceContextError("UNKNOWN_SOURCE")
+    if (
+        not isinstance(endpoint, str)
+        or re.fullmatch(r"/?[A-Za-z0-9_.-]+(?:/[A-Za-z0-9_.-]+)*", endpoint) is None
+        or any(segment in {".", ".."} for segment in endpoint.split("/"))
+    ):
+        raise SourceContextError("INVALID_ENDPOINT")
+    if params is not None:
+        if not isinstance(params, dict):
+            raise SourceContextError("INVALID_PARAMS")
+        for key, value in params.items():
+            if not _plain_text(key):
+                raise SourceContextError("INVALID_PARAMS")
+            if isinstance(value, str):
+                # Empty query values are valid; control characters are not.
+                valid = all(character.isprintable() for character in value)
+            else:
+                valid = type(value) in (int, bool) or (
+                    type(value) is float and math.isfinite(value)
+                )
+            if not valid:
+                raise SourceContextError("INVALID_PARAMS")
+        try:
+            # Apply the runtime encoder's representability checks in every path.
+            urlencode(params)
+        except (ValueError, TypeError, UnicodeError, OverflowError) as exc:
+            raise SourceContextError("INVALID_PARAMS") from exc
+    if api_key is not None and not _plain_text(api_key):
+        raise SourceContextError("INVALID_API_KEY")
+
+
+def source_status(
+    source: str,
+    endpoint: str,
+    params: dict | None = None,
+    api_key: str | None = None,
+) -> dict:
+    """Offline preflight only: I/O validation is always explicitly deferred.
+
+    requirements_satisfied means syntax/type preconditions only. routable_now
+    remains false until execution performs I/O; this function neither reads
+    credentials nor claims server access, response validity or capability support.
+    """
+    try:
+        validate_source_context(source, endpoint, params=params, api_key=api_key)
+    except SourceContextError as exc:
+        return {
+            "syntax_validation": "FAILED",
+            "requirements_satisfied": False,
+            "routable_now": False,
+            "io_validation": "NOT_EVALUATED",
+            "reason_codes": [exc.code],
+        }
+    return {
+        "syntax_validation": "PASSED",
+        "requirements_satisfied": True,
+        "routable_now": False,
+        "io_validation": "NOT_EVALUATED",
+        "reason_codes": ["IO_VALIDATION_DEFERRED"],
+    }
 
 
 # ---------------------------------------------------------------------------
@@ -86,19 +182,15 @@ def build_api_url(
         Full URL string with query params.
 
     Raises:
-        ValueError: If source is not recognised.
+        SourceContextError: If the shared source syntax/type contract fails.
     """
-    if source not in _API_REGISTRY:
-        raise ValueError(
-            f"Unknown source '{source}'. "
-            f"Known sources: {list(_API_REGISTRY.keys())}"
-        )
+    validate_source_context(source, endpoint, params=params, api_key=api_key)
 
     base_url = _API_REGISTRY[source]["base_url"]
-    # Ensure base ends with / so urljoin appends correctly
+    # Preserve the registry base path when appending the validated endpoint.
     if not base_url.endswith("/"):
         base_url += "/"
-    # Strip leading slash from endpoint to avoid urljoin swallowing the path
+    # A single leading slash remains accepted by the source contract.
     url = base_url + endpoint.lstrip("/")
 
     query: dict[str, str] = {}
@@ -191,8 +283,7 @@ def fetch_api_data(
     Returns:
         Response data (parsed JSON dict/list).
     """
-    if source not in _API_REGISTRY:
-        raise ValueError(f"Unknown source '{source}'")
+    validate_source_context(source, endpoint, params=params)
 
     registry_entry = _API_REGISTRY[source]
 
@@ -218,7 +309,7 @@ def fetch_api_data(
 def _default_fetcher(url: str) -> Any:
     """Default HTTP fetcher using requests."""
     try:
-        import requests  # noqa: PLC0415
+        import requests
     except ImportError as exc:
         raise ImportError("requests is required: uv add requests") from exc
 
@@ -249,8 +340,13 @@ def main() -> None:
     parser = argparse.ArgumentParser(
         description="REST API fetcher for BSEE, EIA, and IMO GISIS"
     )
-    parser.add_argument("--source", choices=list(_API_REGISTRY.keys()), help="API source")
+    parser.add_argument("--source", help="API source")
     parser.add_argument("--endpoint", help="Endpoint path")
+    parser.add_argument(
+        "--status",
+        action="store_true",
+        help="Validate syntax offline; defer I/O checks",
+    )
     parser.add_argument(
         "--params",
         default="",
@@ -271,42 +367,54 @@ def main() -> None:
         print(json.dumps(registry, indent=2))
         return
 
-    if not args.source or not args.endpoint:
-        parser.error("--source and --endpoint are required unless --list-sources is set")
-
     params: dict | None = None
-    if args.params:
-        pairs = [p.strip() for p in args.params.split(",") if "=" in p]
-        params = dict(kv.split("=", 1) for kv in pairs)
+    try:
+        if args.params:
+            pairs = [pair.strip().split("=", 1) for pair in args.params.split(",")]
+            if any(len(pair) != 2 or not pair[0].strip() for pair in pairs):
+                raise SourceContextError("INVALID_PARAMS")
+            params = dict(pairs)
+        if args.status:
+            print(json.dumps(source_status(args.source, args.endpoint, params=params)))
+            return
+        validate_source_context(args.source, args.endpoint, params=params)
+    except SourceContextError as exc:
+        parser.error(exc.code)
 
-    if args.max_pages > 1:
-        # Use pagination
-        api_key: str | None = None
-        env_var = _API_REGISTRY[args.source].get("auth_env_var")
-        if env_var:
-            api_key = os.environ.get(env_var)
-        base_url = build_api_url(args.source, args.endpoint, params=params, api_key=api_key)
-        all_records: list = []
-        for page in paginate_results(
-            _default_fetcher,
-            base_url,
-            max_pages=args.max_pages,
-        ):
-            all_records.extend(page if isinstance(page, list) else [page])
+    try:
+        if args.max_pages > 1:
+            # Use pagination
+            api_key: str | None = None
+            env_var = _API_REGISTRY[args.source].get("auth_env_var")
+            if env_var:
+                api_key = os.environ.get(env_var)
+            base_url = build_api_url(
+                args.source, args.endpoint, params=params, api_key=api_key
+            )
+            all_records: list = []
+            for page in paginate_results(
+                _default_fetcher,
+                base_url,
+                max_pages=args.max_pages,
+            ):
+                all_records.extend(page if isinstance(page, list) else [page])
 
-        if args.output_dir:
-            _save_response(all_records, args.source, args.endpoint, args.output_dir)
+            if args.output_dir:
+                _save_response(all_records, args.source, args.endpoint, args.output_dir)
+            else:
+                print(json.dumps(all_records, indent=2))
         else:
-            print(json.dumps(all_records, indent=2))
-    else:
-        result = fetch_api_data(
-            args.source,
-            args.endpoint,
-            params=params,
-            output_dir=args.output_dir,
-        )
-        if not args.output_dir:
-            print(json.dumps(result, indent=2))
+            result = fetch_api_data(
+                args.source,
+                args.endpoint,
+                params=params,
+                output_dir=args.output_dir,
+            )
+            if not args.output_dir:
+                print(json.dumps(result, indent=2))
+
+    except SourceContextError as exc:
+        parser.error(exc.code)
 
 
 if __name__ == "__main__":

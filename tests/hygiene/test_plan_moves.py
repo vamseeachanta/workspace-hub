@@ -9,6 +9,7 @@ import importlib.util
 import json
 import subprocess
 import sys
+from copy import deepcopy
 from pathlib import Path
 
 import pytest
@@ -49,6 +50,139 @@ def sample(tmp_path):
     }
     config = {"rules": [{"match": "loose", "repo": "alpha", "dest": "docs"}]}
     return root, manifest, config
+
+
+@pytest.fixture
+def mixed_inventory(sample):
+    """Issue #4221 synthetic inventory; expectations classify literal payloads."""
+    root, manifest, config = sample
+    payloads = {
+        "loose/a.txt": b"abc",
+        "notes/b.txt": b"notes",
+        "unmatched.bin": b"unmatched",
+        "ignored/skip.txt": b"ignored bytes",
+        "loose/first/shared.txt": b"first",
+        "loose/second/shared.txt": b"second",
+        "loose/occupied.txt": b"source",
+    }
+    expected = {
+        "loose/a.txt": ("ready", "alpha"),
+        "notes/b.txt": ("ready", "beta"),
+        "unmatched.bin": ("unmatched", None),
+        "ignored/skip.txt": ("ignored", None),
+        "loose/first/shared.txt": ("conflict", "alpha"),
+        "loose/second/shared.txt": ("conflict", "alpha"),
+        "loose/occupied.txt": ("conflict", "alpha"),
+    }
+    template = manifest["files"][0]
+    manifest["files"] = []
+    for source, content in payloads.items():
+        path = root / source
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_bytes(content)
+        manifest["files"].append({**template, "path": source, "size": len(content)})
+    destination = root / "repos/alpha/docs/occupied.txt"
+    destination.parent.mkdir(parents=True)
+    destination.write_bytes(b"retain destination bytes")
+    config["ignore"] = ["ignored/*"]
+    config["rules"].append({"match": "notes", "repo": "beta", "dest": "notes"})
+    return root, manifest, config, payloads, expected
+
+
+def inventory_snapshot(root):
+    return {
+        path.relative_to(root).as_posix(): (
+            path.is_dir(),
+            None if path.is_dir() else path.read_bytes(),
+        )
+        for path in root.rglob("*")
+    }
+
+
+def test_plan_is_input_and_tree_preserving(tool, mixed_inventory):
+    """Repeated build_plan calls preserve nested inputs and every tree byte."""
+    root, manifest, config, _, _ = mixed_inventory
+    inputs_before = deepcopy((manifest, config))
+    tree_before = inventory_snapshot(root)
+    first = tool.build_plan(manifest, config)
+    assert (manifest, config) == inputs_before
+    assert inventory_snapshot(root) == tree_before
+    first_before = deepcopy(first)
+    repeated = tool.build_plan(manifest, config)
+    assert repeated == first_before
+    assert first == first_before
+    assert (manifest, config) == inputs_before
+    assert inventory_snapshot(root) == tree_before
+
+
+def test_plan_summary_is_order_independent(tool, mixed_inventory):
+    """Fixture enumeration supplies counts and bytes, including conflict bytes."""
+    _, manifest, config, payloads, expected = mixed_inventory
+    # Zero initializes empty counters; each fixture member contributes one count.
+    summary = {"repos": {}, "bytes": 0, "conflicts": 0, "unmatched": 0, "ignored": 0}
+    for source, content in payloads.items():
+        status, repo = expected[source]
+        if status == "ignored":
+            summary["ignored"] += 1
+            continue
+        summary["bytes"] += len(content)
+        summary["conflicts"] += status == "conflict"
+        summary["unmatched"] += status == "unmatched"
+        if repo is not None:
+            totals = summary["repos"].setdefault(repo, {"count": 0, "bytes": 0})
+            totals["count"] += 1
+            totals["bytes"] += len(content)
+    expected_entry_count = sum(
+        classification[0] != "ignored" for classification in expected.values()
+    )
+    original = tool.build_plan(manifest, config)
+    assert len(original["entries"]) == expected_entry_count
+    keyed = {entry["source"]: entry for entry in original["entries"]}
+    classifications = {
+        source: (entry["status"], entry["repo"]) for source, entry in keyed.items()
+    }
+    assert classifications == {
+        source: classification
+        for source, classification in expected.items()
+        if classification[0] != "ignored"
+    }
+    assert original["summary"] == summary
+    files = manifest["files"]
+    # Reverse, lexical order, and a one-member rotation retain the rule order.
+    for ordering in (
+        list(reversed(files)),
+        sorted(files, key=lambda item: item["path"]),
+        files[1:] + files[:1],
+    ):
+        permuted = deepcopy(manifest)
+        permuted["files"] = deepcopy(ordering)
+        plan = tool.build_plan(permuted, config)
+        assert len(plan["entries"]) == expected_entry_count
+        assert {entry["source"]: entry for entry in plan["entries"]} == keyed
+        assert plan["summary"] == summary
+
+
+def test_plan_rule_order_remains_significant(tool, mixed_inventory):
+    """Reversing overlapping rules changes the first match for loose/a.txt."""
+    _, manifest, config, _, _ = mixed_inventory
+    config["rules"].append({"match": "loose", "repo": "beta", "dest": "alternate"})
+    reversed_config = deepcopy(config)
+    reversed_config["rules"].reverse()
+    for rules, expected_repo, expected_dest in (
+        (config, "alpha", "repos/alpha/docs/a.txt"),
+        (reversed_config, "beta", "repos/beta/alternate/a.txt"),
+    ):
+        plan = tool.build_plan(manifest, rules)
+        entry = next(
+            item for item in plan["entries"] if item["source"] == "loose/a.txt"
+        )
+        # Index zero is the first matching rule in each independently ordered list.
+        assert (entry["repo"], entry["dest"], entry["reason"], entry["status"]) == (
+            expected_repo,
+            expected_dest,
+            0,
+            "ready",
+        )
 
 
 def test_first_match_wins(tool, sample):

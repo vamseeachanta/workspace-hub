@@ -6,14 +6,14 @@
 # local hook cannot intercept the `gh issue close` REST call).
 #
 # Gives fast local feedback before you attempt to close an issue: does it carry
-# a valid computed completeness record + owner verified label that would pass the
+# a valid computed completeness record + reviewer verified label that would pass the
 # server-side gate?
 #
 # Usage:
 #   scripts/enforcement/check-completeness-before-close.sh <issue-number>
 #
 # Bypass: COMPLETENESS_ALLOW=1 (logged to stderr). Use sparingly.
-# Config:  COMPLETENESS_OWNERS=comma,separated,logins  CLOSING_ACTOR=<you>
+# Config:  COMPLETENESS_OWNERS / COMPLETENESS_REVIEWERS=comma,separated,logins  CLOSING_ACTOR=<you>
 set -euo pipefail
 
 issue="${1:-}"
