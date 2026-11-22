@@ -3,6 +3,7 @@
 
 import json
 import os
+import shutil
 import subprocess
 import tempfile
 from pathlib import Path
@@ -63,6 +64,7 @@ class TestPypdfium2Extraction:
         assert len(full_text) > 50
 
 
+@pytest.mark.skipif(shutil.which("pdftotext") is None, reason="pdftotext (poppler-utils) is not installed on this runner")
 class TestPdftotext:
     """Test pdftotext subprocess baseline."""
 
