@@ -33,8 +33,11 @@ needs_bash = pytest.mark.skipif(_bash() is None, reason="no POSIX bash")
 
 
 def _env(tmp_path: Path, full: bool) -> dict[str, str]:
+    # Object-store bindings are cleared too, so fixture commits can never land in
+    # a caller's object directory.
     env = {k: v for k, v in os.environ.items()
            if k not in ("GIT_DIR", "GIT_WORK_TREE", "GIT_COMMON_DIR", "GIT_INDEX_FILE",
+                        "GIT_OBJECT_DIRECTORY", "GIT_ALTERNATE_OBJECT_DIRECTORIES",
                         "ECOSYSTEM_FULL_CLONE")}
     env["HOME"] = str(tmp_path / "home")
     env["GIT_CONFIG_GLOBAL"] = os.devnull
@@ -72,11 +75,13 @@ def _recording_gh(tmp_path: Path, env: dict[str, str]) -> Path:
     gh.write_text(
         "#!/usr/bin/env bash\n"
         "if [[ \"$1\" == repo && \"$2\" == view ]]; then echo PRIVATE; exit 0; fi\n"
-        f"if [[ \"$1\" == repo && \"$2\" == clone ]]; then printf '%s\\n' \"$@\" > '{record.as_posix()}'; exit 1; fi\n"
+        "if [[ \"$1\" == repo && \"$2\" == clone ]]; then printf '%s\\n' \"$@\" > \"$FAKE_GH_RECORD\"; exit 1; fi\n"
         "exit 1\n",
         encoding="utf-8",
     )
     gh.chmod(0o755)
+    # The record path travels in the environment, so quoting in the temp path is harmless.
+    env["FAKE_GH_RECORD"] = str(record)
     env["PATH"] = f"{fake_bin.as_posix()}{os.pathsep}{env['PATH']}"
     return record
 
@@ -146,7 +151,9 @@ def test_private_snapshot_clone_is_partial_unless_opted_out(tmp_path, full):
 
 @needs_bash
 @pytest.mark.parametrize("full", [False, True])
-def test_team_summary_clone_is_partial_unless_opted_out(tmp_path, full):
+def test_team_summary_clone_stays_full(tmp_path, full):
+    # The refresh agent runs `git show <sha>` on each change, possibly without
+    # network access, so this job keeps its unfiltered --depth 200 clone in both modes.
     env = _env(tmp_path, full)
     record = _recording_gh(tmp_path, env)
     subprocess.run([_bash(), str(ROOT / "scripts" / "reports" / "team-summary-refresh.sh"),
@@ -155,4 +162,4 @@ def test_team_summary_clone_is_partial_unless_opted_out(tmp_path, full):
     args = record.read_text(encoding="utf-8").split()
     assert args[:3] == ["repo", "clone", "vamseeachanta/llm-wiki-democlient"]
     assert "--depth" in args
-    assert ("--filter=blob:none" in args) is (not full)
+    assert not any(a.startswith("--filter") for a in args)

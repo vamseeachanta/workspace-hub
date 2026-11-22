@@ -31,11 +31,7 @@ WORK="$(mktemp -d)"
 trap 'rm -rf "$WORK"' EXIT
 
 echo "[team-summary] $(date -Is) client=$CLIENT ref=$REF agent=$AGENT"
-# The change window reads commit and tree history only, so file contents are fetched
-# on demand (partial clone). ECOSYSTEM_FULL_CLONE=1 makes a full clone.
-CLONE_FILTER=(--filter=blob:none)
-[[ "${ECOSYSTEM_FULL_CLONE:-0}" == 1 ]] && CLONE_FILTER=()
-gh repo clone "$REPO" "$WORK/wiki" -- -q --branch "$REF" --depth 200 ${CLONE_FILTER[@]+"${CLONE_FILTER[@]}"}
+gh repo clone "$REPO" "$WORK/wiki" -- -q --branch "$REF" --depth 200
 cd "$WORK/wiki"
 
 [[ -f "$DIR/summary.yml" ]] || { echo "[team-summary] FAIL: no $DIR/summary.yml in $REPO@$REF"; exit 1; }
