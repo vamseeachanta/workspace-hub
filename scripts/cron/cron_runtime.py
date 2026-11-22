@@ -12,6 +12,7 @@ import fcntl
 import json
 import os
 import signal
+import stat
 import subprocess
 import sys
 import time
@@ -19,7 +20,6 @@ from pathlib import Path
 from typing import Any
 
 import yaml
-
 
 CONTENTION_EXIT = 75
 
@@ -102,13 +102,16 @@ def _open_append_beneath(root: Path, relative: Path) -> int:
 
 def _read_json(path: Path, *, dir_fd: int | None = None) -> dict[str, Any] | None:
     try:
-        if dir_fd is None:
-            text = path.read_text(encoding="utf-8")
-        else:
-            flags = os.O_RDONLY | (os.O_NOFOLLOW if hasattr(os, "O_NOFOLLOW") else 0)
-            fd = os.open(path.name, flags, dir_fd=dir_fd)
-            with os.fdopen(fd, encoding="utf-8") as handle:
+        # POSIX.1-2024 open(), O_NONBLOCK: fstat before consuming state bytes.
+        flags = os.O_RDONLY | os.O_NONBLOCK | getattr(os, "O_NOFOLLOW", 0)
+        fd = os.open(path if dir_fd is None else path.name, flags, dir_fd=dir_fd)
+        try:
+            if not stat.S_ISREG(os.fstat(fd).st_mode):
+                return {"_invalid": True}
+            with os.fdopen(fd, encoding="utf-8", closefd=False) as handle:
                 text = handle.read()
+        finally:
+            os.close(fd)
         value = json.loads(text)
     except FileNotFoundError:
         return None

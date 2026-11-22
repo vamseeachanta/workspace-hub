@@ -218,6 +218,19 @@ _score_simple_indicators() {
     else echo "-0.5"; fi
 }
 
+# --- Keyword complexity classification (issues/121) ---
+# Independent of weighted scoring; complex keywords take precedence.
+_classify_complexity_tier() {
+    local text="$1"
+    if [[ "$text" =~ architecture|cross-repo|security|design ]]; then
+        echo "complex"
+    elif [[ "$text" =~ format|config|rename|copy|update-doc|scaffold ]]; then
+        echo "routine"
+    else
+        echo "standard"
+    fi
+}
+
 # --- Tier classification ---
 _classify_tier() {
     local score="$1"
@@ -291,11 +304,13 @@ _determine_provider() {
 
 # --- Main classifier function ---
 # @param $1: Task description (string)
-# @return: JSON with tier, confidence, dimensions, primary_provider
+# @return: JSON with tier, complexity_tier, confidence, dimensions, primary_provider
 classify_task() {
     local task_description="$1"
     local task_lower
     task_lower=$(echo "$task_description" | tr '[:upper:]' '[:lower:]')
+
+    local complexity_tier; complexity_tier=$(_classify_complexity_tier "$task_lower")
 
     # Score each dimension
     local d_reasoning; d_reasoning=$(_score_reasoning_depth "$task_lower")
@@ -334,6 +349,7 @@ classify_task() {
     # Build JSON output
     jq -n \
         --arg tier "$tier" \
+        --arg complexity_tier "$complexity_tier" \
         --arg confidence "$confidence" \
         --arg score "$weighted_sum" \
         --arg provider "$provider" \
@@ -349,6 +365,7 @@ classify_task() {
         --arg d_simple "$d_simple" \
         '{
             tier: $tier,
+            complexity_tier: $complexity_tier,
             confidence: ($confidence | tonumber),
             weighted_score: ($score | tonumber),
             primary_provider: $provider,

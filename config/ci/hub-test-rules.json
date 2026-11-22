@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "comment": "First matching rule wins. Targets are intersected with the inventory. Empty code matches fall back to all families. Basis: issue #4228 (2026).",
+  "rules": [
+    {
+      "id": "skills",
+      "comment": "Skill content and skill tooling select the skills contracts, including Markdown skill definitions.",
+      "pattern": "^(?:\\.claude/skills/|scripts/skills/).+",
+      "families": ["tests/skills", "scripts/skills/tests"]
+    },
+    {
+      "id": "contracts",
+      "comment": "Configuration and workflow changes select configuration, enforcement and CI contracts.",
+      "pattern": "^(?:config/|\\.github/workflows/).+",
+      "families": ["tests/config", "tests/contract", "tests/enforcement", "tests/ci", "tests/ci_smoke", "tests/workflow", "tests/quality", "scripts/ci/tests"]
+    },
+    {
+      "id": "documentation",
+      "comment": "Documentation-only paths select no families. Test fixtures and executable documentation tools do not match.",
+      "pattern": "^(?!tests/|scripts/.*/tests/|coordination/tests/)(?i:.*\\.(?:md|rst|txt)|docs/.*\\.(?:html|css|png|svg|jpg))$",
+      "families": []
+    },
+    {
+      "id": "root-test",
+      "comment": "Root test modules belong to their own family.",
+      "pattern": "^tests/test_[^/]+\\.py$",
+      "families": ["tests/root"]
+    },
+    {
+      "id": "test-area",
+      "comment": "Tests and fixtures within an area select that test family.",
+      "pattern": "^tests/(?P<area>[^/]+)/.+",
+      "families": ["tests/{area}"]
+    },
+    {
+      "id": "script-area",
+      "comment": "A script area selects both its hub tests and embedded script tests, including nested tools.",
+      "pattern": "^scripts/(?P<area>[^/]+)/.+",
+      "families": ["tests/{area}", "scripts/{area}/tests"]
+    },
+    {
+      "id": "coordination",
+      "comment": "Coordination code selects embedded tests and hub coordination contracts.",
+      "pattern": "^coordination/.+",
+      "families": ["coordination/tests", "tests/coordination"]
+    },
+    {
+      "id": "unmapped-code",
+      "comment": "Any unclassified path selects every family; new code areas cannot silently lose coverage.",
+      "pattern": "^.+$",
+      "families": ["*"]
+    }
+  ]
+}

@@ -45,6 +45,18 @@ def safe_child(root, name):
     return child
 
 
+def absolute_context(value):
+    """Validate native path identity before resolve can supply missing context.
+
+    Issue 3865 requires absolute context identity; use the native pathlib rule
+    as in claude_probe_read_guard.require_absolute_clean. On Windows a root
+    without a drive, or a drive without a root, is not absolute.
+    """
+    if not isinstance(value, str) or not value or not Path(value).is_absolute():
+        raise ValueError("Receipt requires an absolute context path")
+    return Path(value)
+
+
 def verify_receipt(user_root, source):
     receipt_path = user_root / "workspace-soul-verification.json"
     if receipt_path.is_symlink() or receipt_path.stat().st_size > 2_000_000:
@@ -54,14 +66,14 @@ def verify_receipt(user_root, source):
         raise ValueError("Malformed native receipt")
     if receipt.get("schema_version") != 1 or receipt.get("evidence_class") != "live-provider":
         raise ValueError("Live-provider evidence receipt required")
-    if Path(receipt["home"]).resolve() != user_root.parent.resolve():
+    if absolute_context(receipt["home"]).resolve() != user_root.parent.resolve():
         raise ValueError("Receipt home mismatch")
-    if Path(receipt["source"]).resolve() != source.resolve():
+    if absolute_context(receipt["source"]).resolve() != source.resolve():
         raise ValueError("Receipt source mismatch")
     if receipt["source_sha256"] != digest(source):
         raise ValueError("Runtime content changed since verification")
     datetime.fromisoformat(receipt["observed_at"].replace("Z", "+00:00"))
-    cli = Path(receipt["provider_cli"])
+    cli = absolute_context(receipt["provider_cli"])
     if not cli.is_absolute() or digest(cli) != receipt["provider_sha256"]:
         raise ValueError("Provider binary changed since verification")
     if receipt["provider_version"] != provider_version(cli):
@@ -99,7 +111,7 @@ def verify_files(receipt, user_root):
     from claude_native_probe import project_state
     from claude_native_restore import recovery_reference
 
-    evidence_root = Path(receipt["evidence_root"])
+    evidence_root = absolute_context(receipt["evidence_root"])
     if not evidence_root.is_absolute() or not evidence_root.is_dir():
         raise ValueError("Evidence root unavailable")
     authority = safe_child(evidence_root, "verification-receipt.json")
@@ -111,12 +123,12 @@ def verify_files(receipt, user_root):
         raise ValueError("Evidence and protected-state bindings required")
     if not protected_matches(receipt, user_root):
         raise ValueError("Protected configuration or discovery set changed")
-    project = Path(receipt["project_root"])
+    project = absolute_context(receipt["project_root"])
     if project.resolve() != Path(receipt["source"]).resolve().parents[3]:
         raise ValueError("Governed project differs from the canonical source repository")
     if project_state(project) != receipt["project_protected"]:
         raise ValueError("Governed project settings changed")
-    if recovery_reference(Path(receipt["recovery"]["journal"])) != receipt["recovery"]:
+    if recovery_reference(absolute_context(receipt["recovery"]["journal"])) != receipt["recovery"]:
         raise ValueError("Recovery evidence changed")
     for entry in evidence:
         path = safe_child(evidence_root, entry["path"])

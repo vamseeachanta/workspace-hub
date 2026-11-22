@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<title>Readiness receipt provenance and context audit</title>
+<style>
+body { max-width: 70rem; margin: 2rem auto; padding: 0 1rem; font: 1rem/1.5 sans-serif; }
+table { border-collapse: collapse; width: 100%; }
+th, td { border: 1px solid #777; padding: .6rem; text-align: left; vertical-align: top; }
+caption { caption-side: bottom; text-align: left; }
+code { overflow-wrap: anywhere; }
+</style>
+<main>
+<h1>Readiness receipt provenance and context audit</h1>
+<h2>Summary</h2>
+<p>The native runtime receipt consumer accepts relative source and user-root
+identities when the caller's working directory completes them. The repair rejects
+relative context fields before resolution. Provenance rejection, exact version
+comparison and project/source binding remain required. Synthetic tests establish
+these software behaviours; live execution and source authenticity are not
+established by this audit.</p>
+<h2>Revision history</h2>
+<table><tr><th>Revision</th><th>Date</th><th>Change and reason</th></tr>
+<tr><td>Initial</td><td>2026-10-22</td><td>Audit receipt consumers and require absolute
+native context identities to prevent dependence on the caller's working directory.</td></tr>
+<caption>Revision history for this analysis.</caption></table>
+<h2>Scope and method</h2>
+<p>Issue 3865
+is the governing defect criterion. Slice 1 inventories the bounded consumers below;
+slice 2 repairs native context identity; slice 3 adds adversarial regression cases
+and this worked example. The related issues
+3498,
+3606 and
+3847
+provide context, without extending this repair into private rendering or solver parsers.</p>
+<p>The source audit follows receipt entry points, byte comparisons and final verdicts.
+It does not enumerate every repository or establish installed enforcement.
+There are no engineering equations, empirical coefficients or numeric acceptance
+limits in this identity repair.</p>
+<table>
+<tr><th>Consumer</th><th>Finding</th><th>Disposition</th></tr>
+<tr><td><code>scripts/agents/claude_runtime_state.py</code></td>
+<td>Receipt home and source fields can borrow cwd through resolve. Other context
+fields also require explicit absolute identity. Evidence class must equal
+<code>live-provider</code>; version and project bindings are exact comparisons.</td>
+<td>Validate home, source, executable, evidence root, project root and recovery
+journal before resolution. Preserve existing byte and protected-state checks.</td></tr>
+<tr><td><code>scripts/governance/workflow_receipt.py</code></td>
+<td>Matching keys and evidence hashes yield only
+<code>candidate-pending-live-validation</code>. Source provenance is outside that
+pure comparator's authenticated knowledge.</td>
+<td>No promotion to live qualification is implemented. Existing provisional
+and invalid outcomes remain intact.</td></tr>
+<tr><td><code>scripts/analysis/readiness_bundle_schema.py</code></td>
+<td>Schema validation checks shape and declared enums; it does not authenticate
+source writer, live execution or workspace identity. A well-shaped fixture can
+therefore validate.</td><td>Structural acceptance is not a readiness receipt.
+No live qualification may be inferred from an empty validation error list.</td></tr>
+<tr><td><code>scripts/readiness/build-equality-matrix.py</code></td>
+<td>Freshness checks use declared provenance and dimensions. These are report
+claims rather than authenticated execution evidence.</td>
+<td>No general source authentication is established. The private renderer defect
+is outside the inspected public implementation.</td></tr>
+<caption>Bounded source audit; coverage is limited to the named consumers.</caption>
+</table>
+<h2>Worked example: identity before resolution</h2>
+<p><strong>Inputs:</strong> a disposable temporary directory T contains
+<code>repo/config/agents/claude/SOUL.runtime.md</code> and a matching synthetic
+receipt. The recorded source is changed from the absolute T-prefixed path to
+<code>repo/config/agents/claude/SOUL.runtime.md</code>. Both receipt copies are
+rewritten identically, and cwd is set to T. No live provider is called.</p>
+<p><strong>Method:</strong> by path concatenation, cwd plus the relative source
+resolves to the original file. Its digest is unchanged. That proves file equality,
+while the recorded path still depends on cwd. The absolute-path predicate is
+therefore evaluated before resolve.</p>
+<p><strong>Answer:</strong> the previous consumer reports
+<code>NATIVE_VERIFIED</code>; the repaired consumer reports <code>BLOCKED</code>.
+The test <code>test_relative_context_cannot_borrow_callers_directory</code>
+records this independent derivation. Fully absolute synthetic controls continue
+to exercise the accepted software branch, without claiming real native execution.</p>
+<h2>Adversarial verification</h2>
+<p>Regression cases cover relative context fields, Windows drive-relative and
+root-only paths, fully qualified drive and UNC paths, POSIX roots, malformed
+identity types, source classes contradicted by a caller's live role, version
+lookalikes and another project with equal protected settings. Pure path flavours
+exercise Windows syntax without claiming a Windows filesystem run.</p>
+<p>Existing workflow receipt tests retain provisional comparison results and
+reject changed governing keys. Existing native tests retain byte, executable,
+protected configuration, recovery and replica binding checks.</p>
+<p>The focused check completed with 168 passing tests. The expanded check completed
+with 189 passing tests, 8 skips and 36 failures from existing scratch-placement
+and tool-launch constraints. Ruff reports six existing findings on unchanged
+lines; the added validation and test cases introduce no reported findings.</p>
+<h2>Sources and criteria</h2>
+<ul>
+<li>Issue 3865, linked above: provenance shall constrain caller role and absolute
+context shall exclude drive-relative paths.</li>
+<li><code>scripts/agents/claude_probe_read_guard.py:require_absolute_clean</code>:
+existing native <code>Path.is_absolute</code> validation precedent.</li>
+<li><code>scripts/agents/claude_native_pilot.py:publish_receipt</code>: existing
+receipt field names and live evidence class contract.</li>
+<li><code>docs/architecture/agent-data-handling-contract.md</code>: hashes establish
+byte identity; caller references cannot authenticate permissions or access.</li>
+</ul>
+<h2>Review and known limits</h2>
+<p>Plan defect review identifies the masking risk: changing only one receipt copy
+would fail the digest check without exercising context validation. Regression
+fixtures update both copies. Artifact review checks each context field, native
+path semantics and the retained provisional workflow result. Independent provider
+review remains pending; no external assistant is invoked by this change.</p>
+<p>A caller able to fabricate both receipt and evidence can still forge claims.
+This repair does not create an execution attestation service, authenticate
+arbitrary manifests, change data ownership or qualify live readiness. Historical
+relative receipts will require fresh absolute context evidence.</p>
+<h2>Follow-up</h2>
+<p>Issue 3865 remains the checkpoint for private renderer review and any additional
+consumer audit. Broader authentication changes require a separately bounded
+contract. No whole-ecosystem readiness claim is made.</p>
+</main>
+</html>

@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Engineering result precision contract</title>
+<style>
+body{font-family:system-ui,sans-serif;max-width:65rem;margin:2rem auto;padding:0 1rem;line-height:1.6;color:#182830}
+table{border-collapse:collapse;width:100%;margin:1rem 0}th,td{border:1px solid #aab6bc;padding:.6rem;text-align:left;vertical-align:top}
+code{background:#edf1f3;padding:.1rem .25rem}a{color:#164e85}@media print{body{max-width:none;margin:0}}
+</style></head>
+<body>
+<h1>Engineering result precision contract</h1>
+<h2>Summary</h2>
+<p>The optional <code>scripts/reporting/result_precision.py</code> helper retains evidence for native storage, recovery,
+serialization and accumulation separately. It evaluates inclusive limits using supplied absolute error bounds and exact
+arithmetic on decimal inputs. Missing evidence produces <code>NOT_EVALUATED</code>; an interval crossing a limit produces
+<code>INDETERMINATE</code>. Display rounding never changes acceptance. This contract does not establish solver accuracy,
+mesh convergence, physical validation or continuum error.</p>
+<h2>Revision history</h2>
+<table><caption>Table 1. Contract revision</caption><tr><th>Revision</th><th>Date</th><th>Change and reason</th></tr>
+<tr><td>Initial</td><td>2026-10-22</td><td>Define separate precision evidence and bounded acceptance to prevent display digits from qualifying results.</td></tr></table>
+<h2>Scope and interface</h2>
+<p>See precision issue 3850.
+Slice 1 defines the per-quantity records and missing-evidence disposition. Slice 2 propagates conservative error bounds
+through exact linear combinations, without assuming statistical independence. Slice 3 separates display formatting from
+acceptance and supplies tested worked examples. The helper is opt-in; existing report generators and external solver
+adapters do not automatically use it.</p>
+<table><caption>Table 2. Required evidence</caption><tr><th>Record</th><th>Meaning and caller responsibility</th></tr>
+<tr><td>Quantity identity</td><td>Name, unit, serialized decimal value, source evidence locator, producing release and extraction location or region.</td></tr>
+<tr><td>Native storage</td><td>Actual representation and release-specific evidence. Text width or a later double conversion cannot recover lost native information.</td></tr>
+<tr><td>Recovery</td><td>Operation such as averaging, extrapolation or integration, with its own error bound and evidence. Storage error must already be scaled into the recovered quantity's units.</td></tr>
+<tr><td>Serialization</td><td>Format and export or parse loss, independently of storage representation. More printed digits do not establish more supported digits.</td></tr>
+<tr><td>Accumulation</td><td>Upstream algorithm and numerical accumulation error. The helper's own rational arithmetic adds no rounding to the supplied decimal values.</td></tr>
+<tr><td>Criterion</td><td>Limit as a decimal string, exact matching unit, inclusive comparator and governing evidence. No engineering limit or tolerance is built in.</td></tr></table>
+<p>Every stage contains a description, evidence locator and nonnegative absolute error bound in the quantity's unit.
+An explicit zero requires evidence of exactness within the stated model. An unknown bound is <code>None</code>, not zero.
+Descriptions or evidence that are blank, missing stages or missing identity fields deny acceptance. Negative bounds,
+non-finite numbers, binary float inputs, incompatible units and unsupported comparators raise an error.
+Evidence strings are declarations to be independently checked; the helper does not authenticate them or fetch sources.
+All four contributions must cover distinct additive errors relative to the same target quantity. A contribution already
+included elsewhere must be documented and accounted for without inventing a zero. Shared or duplicated errors may
+conservatively be counted more than once.</p>
+<h2>Method</h2>
+<p>The bounded-error model assumes a serialized value x and a target value x* such that
+|x − x*| ≤ B. For each quantity, B = B<sub>native</sub> + B<sub>recovery</sub> +
+B<sub>serialization</sub> + B<sub>accumulation</sub>. This follows by writing the total discrepancy as the sum of the
+four stage discrepancies and applying the triangle inequality. For an exact linear combination
+<strong>y = Σ w<sub>i</sub>x<sub>i</sub></strong>, the bound is
+<strong>B<sub>y</sub> = Σ |w<sub>i</sub>| B<sub>i</sub></strong>: since
+|Σ w<sub>i</sub>δ<sub>i</sub>| ≤ Σ |w<sub>i</sub>| |δ<sub>i</sub>| and |δ<sub>i</sub>| ≤ B<sub>i</sub>,
+this is a conservative enclosure, including correlated errors. These equations are derived here from the stated
+absolute-bound assumptions; they contain no empirical constants.</p>
+<p>Weights must be exact dimensionless inputs, with all terms in identical units. Coefficient uncertainty, nonlinear
+recovery, conversion of native component errors and spatial recovery validity require separately qualified bounds.
+The helper does not infer them. Rational accumulation is exact for the supplied decimal strings; it cannot restore
+information lost before serialization. Statistical standard uncertainty and covariance propagation are different models;
+<a href="https://www.nist.gov/pml/nist-technical-note-1297/nist-tn-1297-5-combined-standard-uncertainty">NIST TN 1297
+(1994), section 5</a> describes combined standard uncertainty. No probability coverage is claimed by this interval method.</p>
+<table><caption>Table 3. Inclusive threshold dispositions, derived by interval containment</caption>
+<tr><th>Disposition</th><th>Upper limit y ≤ L</th><th>Lower limit y ≥ L</th></tr>
+<tr><td>PASS</td><td>y + B ≤ L</td><td>y − B ≥ L</td></tr>
+<tr><td>FAIL</td><td>y − B &gt; L</td><td>y + B &lt; L</td></tr>
+<tr><td>INDETERMINATE</td><td colspan="2">Neither the whole interval meets nor the whole interval fails the limit.</td></tr>
+<tr><td>NOT_EVALUATED</td><td colspan="2">A required bound, evidence record or identity field is unavailable.</td></tr></table>
+<p>PASS qualifies only the stated numerical interval and criterion. It does not qualify physical adequacy or overall
+engineering acceptance. Bounds exclude unprovided solver, discretization, modelling and continuum errors.
+The returned object retains contributing quantities, criterion, reasons, exact value and endpoints. No file is overwritten.</p>
+<p>Display uses decimal nearest-even rounding, as defined by
+<a href="https://docs.python.org/3.11/library/decimal.html#decimal.ROUND_HALF_EVEN">Python 3.11 decimal documentation,
+ROUND_HALF_EVEN</a>. Exact integer quotient and remainder arithmetic avoids double rounding. The caller explicitly chooses
+decimal places. <code>rounding_sensitive</code> means the nominal limit decision differs when made on displayed text;
+it does not describe interval overlap. Display digits remain a presentation choice, never evidence of accuracy.</p>
+<h2>Worked examples</h2>
+<p>Run <code>python -m examples.reporting.result_precision</code> from the repository root. The executable example returns
+inputs with stage evidence, method and answer. All inputs below are synthetic assumptions for hand calculations,
+not published solver results or engineering acceptance limits.</p>
+<table><caption>Table 4. Independent hand calculations</caption>
+<tr><th>Inputs</th><th>Method</th><th>Answer and implication</th></tr>
+<tr><td>x₁ = 3 N, B₁ = 0.1 N; x₂ = 4 N, B₂ = 0.2 N. Weights 2 and −1. Upper limit 2.2 N.</td>
+<td>y = 2 × 3 − 4 = 2 N; B = |2| × 0.1 + |−1| × 0.2 = 0.4 N.</td>
+<td>[1.6, 2.4] N crosses 2.2 N: INDETERMINATE. Display: 2.0 N.</td></tr>
+<tr><td>x = 10.04 N; B = 0 N assumed exact in this synthetic model. Upper limit 10 N. Display to one decimal place.</td>
+<td>10.04 &gt; 10, while nearest-even display is 10.0 N.</td>
+<td>FAIL; rounding_sensitive is true. The fixed decimal register intentionally exposes the lost distinction.</td></tr>
+<tr><td>The same decimal value with unknown native storage bound.</td><td>Adding printed zeros supplies no bound.</td>
+<td>NOT_EVALUATED at any display precision.</td></tr></table>
+<h2>Sources and applicability</h2>
+<p>The <a href="https://ansyshelp.ansys.com/public/Views/Secured/corp/v252/en/mech_beta/ds_data_xlt_results.html">Ansys
+2025 R2 results-translator reference</a> distinguishes default elemental and nodal storage representations. This supports
+keeping storage and export records separate; its approximate error statement is not used as a bound or acceptance
+criterion. Installed-release settings and per-quantity applicability require direct evidence. The public page was
+retrieved successfully; no licensed solver was started or queried.</p>
+<p>Numeric fixture inputs and expected values are derived in test docstrings. No standards-derived material constant,
+safety factor, storage error estimate or acceptance tolerance is supplied by this implementation.</p>
+<h2>Verification and limitations</h2>
+<p><code>tests/test_result_precision.py</code> checks hand-derived intervals, inclusive limits, missing evidence, false
+precision, nearest-even ties, signed weights, cancellation, unit mismatches, invalid numbers and the executable example.
+External adapter integration, native evidence authentication, nonlinear propagation, statistical covariance, uncertain
+weights and physical error qualification remain follow-up work. Independent provider review remains required before merge.</p>
+</body></html>

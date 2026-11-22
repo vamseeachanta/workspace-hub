@@ -4,16 +4,22 @@
 Run with python -B in the prepared uv environment. Report writes stdout only.
 Receipts describe operations, never authenticated permission. Six replacements
 are journaled individually; no whole-set atomicity or hostile-race claim is made.
+Recovery contract: docs/guides/foundation-materializer-recovery.html.
 """
 import argparse
 import json
-import os
-from pathlib import Path
 import subprocess
+from pathlib import Path
 
 import materialize_profile_fs as fs
-from materialize_profile_schema import (PAYLOADS, ROOTS, collisions, profile_entries,
-                                        git_read, repository_top)
+from materialize_profile_schema import (
+    PAYLOADS,
+    ROOTS,
+    collisions,
+    git_read,
+    profile_entries,
+    repository_top,
+)
 
 
 def report(source_root, source_revision, profile, target_root, provider, transaction_dir):
@@ -85,6 +91,8 @@ def stage(source, target, transaction, receipt):
         before = fs.preimage(fs.within(target, entry["target"]))
         if before != entry["preimage"]:
             raise ValueError("destination changed before staging")
+        if before == entry["sha256"]:
+            continue  # Preserve individual identical entries during mixed apply.
         if before is not None:
             prior = fs.within(target, entry["target"]).read_bytes()
             if fs.digest(prior) != before:
@@ -161,14 +169,16 @@ def rollback(receipt, source_root, target_root, transaction_dir):
     candidates = rollback_candidates(receipt, target, transaction)
     receipt["status"] = "rollback-intent"
     fs.save_journal(transaction, receipt)
-    for index, (entry, destination, backup) in enumerate(candidates):
+    for entry, destination, backup in candidates:
         if fs.preimage(destination) != entry["sha256"]:
             raise ValueError("rollback concurrent change")
         if entry["preimage"] is None:
             destination.unlink()
         else:
-            staged = transaction / f"rollback-{index:04d}.payload"
-            fs.durable_file(staged, fs.checked(backup).read_bytes())
+            raw = fs.checked(backup).read_bytes()
+            if fs.digest(raw) != entry["preimage"]:
+                raise ValueError("rollback backup changed before staging")
+            staged = fs.stage_attempt(transaction, "rollback", raw)
             fs.replace_payload(staged, destination, entry["sha256"])
         if fs.preimage(destination) != entry["preimage"]:
             raise ValueError("rollback readback mismatch")

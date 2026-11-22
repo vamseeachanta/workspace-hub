@@ -1,13 +1,14 @@
 name: Baseline Testing
 
+# PR_GATE_RUNNER: self-hosted-arm64 selects fixed ARM64 labels for trusted events.
+# Every other value or event uses ubuntu-latest; fork PRs always use hosted runners.
+# Enable only after ARM64 compatibility is established for these jobs.
+permissions:
+  contents: read
+
+# Pull requests run only pr-fast-gate.yml; the daily main-full-run.yml covers this
+# workflow's tests (owner ruling 2026-10-28). Kept for manual dispatch.
 on:
-  push:
-    branches:
-      - main
-      - 'feature/**'
-  pull_request:
-    branches:
-      - main
   workflow_dispatch:
     inputs:
       test_suite:
@@ -20,19 +21,24 @@ on:
           - commit
           - task
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event_name == 'pull_request' && format('pr-{0}', github.event.pull_request.number) || format('run-{0}', github.run_id) }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
 env:
   PYTHON_VERSION: '3.12'
 
 jobs:
   test:
     name: Run Tests
-    runs-on: ubuntu-latest
+    runs-on: ${{ vars.PR_GATE_RUNNER == 'self-hosted-arm64' && ((github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository) || github.event_name == 'push' || github.event_name == 'workflow_dispatch') && fromJSON('["self-hosted","Linux","ARM64"]') || 'ubuntu-latest' }}
     timeout-minutes: 30
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
+          persist-credentials: false
           fetch-depth: 0
 
       - name: Setup Python
@@ -54,15 +60,25 @@ jobs:
         run: |
           uv sync --frozen --group dev
 
+      - name: Run script JSON regression tests
+        run: |
+          uv run python -m pytest tests/lib/test_script_json_roundtrip.py -v --tb=short
+
       - name: Run Python tests
         run: |
           # Hub-level Python tests (no PYTHONPATH manipulation needed)
           uv run python -m pytest tests/test_deduplication_fix.py \
             tests/quality/test_gitleaks_config.py \
+            tests/phone_media \
             scripts/operations/tests/test_job_queue_windows.py \
             scripts/operations/tests/test_job_queue_cleanup_recent.py \
+            scripts/operations/tests/test_job_queue_environment.py \
             tests/enforcement/test_check_codex_model_pin.py \
             -v --tb=short --noconftest
+
+      - name: Run domain matrix contract tests
+        run: |
+          uv run --no-project --with pytest --with pyyaml python -m pytest tests/ci/ -v --tb=short
 
       # CI smoke tests for #2532 regression guards (workspace_hub importability,
       # review-gate uv-decoupling). Runs on feature/** and PR pushes so a
@@ -104,12 +120,14 @@ jobs:
 
   lint:
     name: Code Quality
-    runs-on: ubuntu-latest
+    runs-on: ${{ vars.PR_GATE_RUNNER == 'self-hosted-arm64' && ((github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository) || github.event_name == 'push' || github.event_name == 'workflow_dispatch') && fromJSON('["self-hosted","Linux","ARM64"]') || 'ubuntu-latest' }}
     timeout-minutes: 10
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          persist-credentials: false
 
       - name: Setup Python
         uses: actions/setup-python@v5
@@ -133,13 +151,14 @@ jobs:
 
   governance:
     name: Governance Checks
-    runs-on: ubuntu-latest
+    runs-on: ${{ vars.PR_GATE_RUNNER == 'self-hosted-arm64' && ((github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository) || github.event_name == 'push' || github.event_name == 'workflow_dispatch') && fromJSON('["self-hosted","Linux","ARM64"]') || 'ubuntu-latest' }}
     timeout-minutes: 10
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
+          persist-credentials: false
           fetch-depth: 0
 
       - name: Run governance checks (warn mode)

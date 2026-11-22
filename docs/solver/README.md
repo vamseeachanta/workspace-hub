@@ -151,3 +151,9 @@ Cron entries are declared in `config/scheduled-tasks/schedule-tasks.yaml`:
 - #1654 — Retry logic with exponential backoff
 - #1650 — Batch manifest validation CLI
 - #1648 — Watch-results cron + JSONL dashboard
+
+## Offline evidence composition
+
+[Verification evidence composition](verification-composition.md) defines complete
+declared-domain comparison, applicable settings, source binding and explicit
+result criteria, with a synthetic worked example and qualification limits.

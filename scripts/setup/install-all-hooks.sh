@@ -1,53 +1,64 @@
 #!/usr/bin/env bash
-# install-all-hooks.sh — idempotent git hook installer (WRK-312)
-# Copies all scripts/hooks/* to .git/hooks/ and makes them executable.
-# Run once per machine to bootstrap; post-merge/post-rewrite keep hooks
-# current on every subsequent git pull (merge or rebase).
-#
-# Usage:
-#   bash scripts/setup/install-all-hooks.sh           # verbose
-#   bash scripts/setup/install-all-hooks.sh --quiet   # silent (used by hooks)
-#
-# Platform: bash required (Linux, macOS, Git Bash / MINGW64 on Windows)
-# PowerShell is NOT supported.
+# Install standard Git event wrappers at Git's effective hook path (#3852).
+# Protocol: https://git-scm.com/docs/githooks (DESCRIPTION, pre-push),
+# accessed 2026-10-22. Helper filenames are not Git events.
+# Usage: bash scripts/setup/install-all-hooks.sh [--quiet] [--dry-run|--check]
+# Existing foreign hooks are preserved; composition requires maintainer review.
 set -euo pipefail
 
 QUIET=0
-[[ "${1:-}" == "--quiet" ]] && QUIET=1
-
-REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null)" || {
-  echo "install-all-hooks: must be run inside a git repository" >&2
-  exit 2
-}
-
-HOOKS_SRC="${REPO_ROOT}/scripts/hooks"
-HOOKS_DST="${REPO_ROOT}/.git/hooks"
-
-[[ -d "$HOOKS_SRC" ]] || { echo "install-all-hooks: $HOOKS_SRC not found" >&2; exit 2; }
-mkdir -p "$HOOKS_DST"
-
-installed=0
-skipped=0
-
-for src in "$HOOKS_SRC"/*; do
-  [[ -f "$src" ]] || continue
-  name="$(basename "$src")"
-  dst="${HOOKS_DST}/${name}"
-
-  # Skip if already identical regular file (avoid unnecessary mtime changes).
-  # Use -L on cmp to read through symlinks for content comparison, but only
-  # skip when dst is a plain file — symlinks must always be replaced.
-  if [[ -f "$dst" ]] && [[ ! -L "$dst" ]] && cmp -s "$src" "$dst"; then
-    skipped=$((skipped + 1))
-    continue
-  fi
-
-  # Remove dst first so symlinks are replaced with regular files, not written through.
-  rm -f "$dst"
-  cp "$src" "$dst"
-  chmod +x "$dst"
-  installed=$((installed + 1))
-  [[ "$QUIET" -eq 0 ]] && echo "  installed: $name"
+MODE=install
+for arg in "$@"; do
+  case "$arg" in
+    --quiet) QUIET=1 ;;
+    --dry-run|--check)
+      [[ "$MODE" == install ]] || { echo "Choose one mode" >&2; exit 2; }
+      MODE="${arg#--}" ;;
+    *) echo "Unknown option: $arg" >&2; exit 2 ;;
+  esac
 done
 
-[[ "$QUIET" -eq 0 ]] && echo "install-all-hooks: ${installed} installed, ${skipped} unchanged"
+REPO_ROOT="$(git rev-parse --show-toplevel)" || exit 2
+cd "$REPO_ROOT"
+# Let Git resolve core.hooksPath and shared worktree metadata, including spaces.
+HOOKS_DST="$(git rev-parse --path-format=absolute --git-path hooks)"
+SOURCE="scripts/hooks/pre-push.sh"
+TARGET="${HOOKS_DST}/pre-push"
+
+# Resolve the source at invocation time, so a shared hook uses the invoking
+# worktree's code. exec preserves arguments, ref-line stdin and exit status.
+wrapper() {
+  cat <<'HOOK'
+#!/usr/bin/env bash
+# Managed by scripts/setup/install-all-hooks.sh; Git pre-push protocol only.
+set -euo pipefail
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+exec bash "${REPO_ROOT}/scripts/hooks/pre-push.sh" "$@"
+HOOK
+}
+
+[[ -f "$SOURCE" ]] || { echo "Missing source: $SOURCE" >&2; exit 1; }
+if [[ -e "$TARGET" || -L "$TARGET" ]]; then
+  if [[ -L "$TARGET" || ! -f "$TARGET" ]] || ! cmp -s <(wrapper) "$TARGET"; then
+    echo "Existing pre-push preserved; review composition before installation" >&2
+    exit 1
+  fi
+  if [[ -x "$TARGET" ]]; then
+    [[ "$QUIET" == 1 ]] || echo "pre-push: current at effective hook path"
+    exit 0
+  fi
+elif [[ "$MODE" == check ]]; then
+  echo "pre-push: missing at effective hook path" >&2
+  exit 1
+fi
+
+case "$MODE" in
+  check) echo "pre-push: not executable" >&2; exit 1 ;;
+  dry-run) [[ "$QUIET" == 1 ]] || echo "Would install executable pre-push at effective hook path" ;;
+  install)
+    mkdir -p "$HOOKS_DST"
+    wrapper > "$TARGET"
+    chmod +x "$TARGET"
+    [[ "$QUIET" == 1 ]] || echo "Installed pre-push at effective hook path"
+    ;;
+esac

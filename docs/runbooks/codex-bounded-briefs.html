@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bounded Codex briefs</title>
+<style>
+body { font-family: system-ui, sans-serif; max-width: 56rem; margin: 2rem auto; padding: 0 1rem; line-height: 1.6; }
+pre { background: #f4f5f6; padding: 1rem; overflow: auto; }
+table { border-collapse: collapse; width: 100%; }
+th, td { border: 1px solid #bbb; padding: .5rem; text-align: left; }
+</style>
+</head>
+<body>
+<main>
+<h1>Bounded Codex briefs</h1>
+<p>A brief is checked for explicit scope, exact owned file names, verification
+commands and stop conditions before instructions are rendered. Preservation
+constraints accompany every rendered brief. This preparation addresses
+issue 3828, “Codex config runs with approval never and full access”;
+it does not establish runtime isolation or authenticate task authority.</p>
+<h2>Revision history</h2>
+<table>
+<tr><th>Revision</th><th>Date</th><th>Change and reason</th></tr>
+<tr><td>Initial</td><td>2026-10-22</td><td>Add brief preparation and an example to make write scope explicit before execution.</td></tr>
+</table>
+<p>Table 1. Revision history.</p>
+<h2>Method and inputs</h2>
+<p>The standalone helper
+<a href="../../scripts/agents/codex_brief.py">scripts/agents/codex_brief.py</a>
+reads JSON and renders Markdown to standard output. It neither starts Codex nor
+runs the proposed checks. Existing execution entry points are unchanged; adoption
+requires an explicit preparation step.</p>
+<table>
+<tr><th>Input</th><th>Required content</th></tr>
+<tr><td><code>objective</code></td><td>Nonempty single-line description of the intended result.</td></tr>
+<tr><td><code>scope</code></td><td>Nonempty list of specific proposed changes.</td></tr>
+<tr><td><code>owned_files</code></td><td>Nonempty list of unique, exact repository-relative file names.</td></tr>
+<tr><td><code>checks</code></td><td>Nonempty list of verification commands or procedures.</td></tr>
+<tr><td><code>stop_conditions</code></td><td>Nonempty list of conditions requiring a report before affected work continues.</td></tr>
+</table>
+<p>Table 2. Brief fields; unknown fields and duplicate JSON keys are rejected.</p>
+<p>Absolute paths, traversal components, Git metadata components, glob patterns,
+backslashes, drive prefixes and noncanonical path spellings are rejected.
+Owned files may describe proposed new files. Their existence is not checked.
+The format deliberately lists files rather than granting an entire directory.</p>
+<h2>Worked example: parser correction</h2>
+<p>The illustrative task is to return an empty list for an empty document.
+The complete input is
+<a href="../examples/codex-bounded-brief.json">codex-bounded-brief.json</a>.
+The example names <code>src/parser.py</code> and
+<code>tests/test_parser.py</code> as the only proposed write targets.
+These are fictional example files; the example does not assert that they exist
+in this repository.</p>
+<pre><code>python scripts/agents/codex_brief.py docs/examples/codex-bounded-brief.json</code></pre>
+<p>The method checks the required fields, validates the owned file names, then
+renders the objective, scope, file list, verification and stop conditions before
+the fixed preservation constraints. The expected answer includes:</p>
+<pre><code>## Scope
+- Return an empty list for an empty document.
+
+## Owned files
+- src/parser.py
+- tests/test_parser.py
+
+## Verification
+- python -m pytest tests/test_parser.py -q</code></pre>
+<p>The preservation section prohibits deletion of data, overwriting unrelated
+work, history rewriting, publication and runtime-permission changes. The
+example's verification command is rendered as text; it is not executed.
+An input with <code>../other.py</code> instead of an owned file is rejected,
+produces no brief and returns failure. Expected outcomes are derived directly
+from the contract cases, without numerical calculations or engineering constants.</p>
+<h2>Preparation before execution</h2>
+<ol>
+<li>Read the target repository instructions and verify the originating task authority.</li>
+<li>Inspect the effective approval and sandbox settings. The issue describes a
+no-prompt, broad-access configuration; that observation shall not be treated as
+a universal current runtime setting.</li>
+<li>Inspect existing changes and concurrent work, then fill the JSON fields with
+concrete task scope. Preserve unrelated changes.</li>
+<li>Run the helper and inspect the complete rendered brief. Reject placeholder,
+contradictory or overly broad prose even when syntax validation passes.</li>
+<li>Supply the reviewed output through the existing authorized execution route.
+Keep independent filesystem isolation, secret controls and review requirements.</li>
+<li>Require check results and a change summary. A scope expansion, conflicting
+change or missing authority stops affected work for clarification.</li>
+</ol>
+<h2>Verification</h2>
+<pre><code>uv run --no-project --with pytest python -m pytest tests/agents/test_codex_brief.py -q -rA -p no:cacheprovider
+uv run --no-project --with ruff ruff check scripts/agents/codex_brief.py tests/agents/test_codex_brief.py --no-cache</code></pre>
+<p>The tests exercise required fields, invalid types and paths, duplicate keys,
+complete rendering, unchanged input, invalid-input diagnostics, and the worked
+example. The CLI test supplies a nonexistent command and verifies that it is
+rendered without execution or additional files.</p>
+<h2>Limits and source basis</h2>
+<p>Syntactic validation cannot establish that prose is specific, authorized or
+non-destructive. Check strings are untrusted text and shall not be evaluated by
+this helper. Markdown rendering is not sanitization for a web application.
+Path validation is lexical: directories, symlinks, filesystem aliases and later
+file changes require independent inspection and runtime controls. No claim is
+made that a listed path is physically confined to the repository.</p>
+<p>The governing source is issue 3828, section “Fix/workaround”: explicit scope,
+non-destructive constraints and owned paths before execution. The repository's
+<a href="../../config/agents/codex/SOUL.delta.md">Codex provider instructions</a>
+require inspection of actual sandbox capabilities, while
+<a href="../../config/agents/SHARED_SOUL.md">the shared authorization contract</a>
+distinguishes task authority from consequential publication authority.
+No standards-derived values, coefficients or acceptance limits are used.
+Independent provider review and execution-route integration remain outside
+this standalone preparation utility.</p>
+</main>
+</body>
+</html>

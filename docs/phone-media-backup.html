@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Phone-media off-site capacity and verification</title>
+<style>
+body { font: 1rem/1.6 system-ui, sans-serif; max-width: 72rem; margin: auto; padding: 2rem; color: #182b3a; }
+table { border-collapse: collapse; width: 100%; }
+th, td { border: 1px solid #adb9c2; padding: .5rem; text-align: left; }
+caption { caption-side: bottom; text-align: left; }
+pre { overflow-x: auto; padding: 1rem; background: #edf2f5; }
+code { overflow-wrap: anywhere; }
+</style>
+</head>
+<body>
+<h1>Phone-media off-site capacity and verification</h1>
+<h2>Summary</h2>
+<p>The capacity calculator compares a required projection with measured free bytes.
+The verification wrapper compares all archive contents with a configured remote,
+and the user timer schedules a weekly comparison. No upload, deletion, purchase,
+remote configuration change or timer installation is performed by these files.</p>
+<p>Current capacity and delivery of live alerts are <strong>NOT_EVALUATED</strong>:
+current quota measurements, the next import size, retention policy, remote access
+and a tested notification adapter are not supplied. Acceptance before another
+large import requires the measurements and deployment evidence below.</p>
+<h2>Revision history</h2>
+<table><caption>Table 1. Revision history of the capacity and verification procedure.</caption>
+<thead><tr><th>Revision</th><th>Date</th><th>Change and reason</th></tr></thead>
+<tbody><tr><td>1</td><td>2026-10-22</td><td>Capacity arithmetic, weekly verification templates
+and deployment procedure are added to expose insufficient capacity and backup drift.</td></tr>
+<tr><td>2</td><td>2026-10-22</td><td>Bound tree inspection and comparison together, add a
+service failure alert and finite backstop, preserve the password helper, reject dot
+prefix segments and correct table markup and deployment qualifications.</td></tr></tbody></table>
+<h2>Scope and capacity decision</h2>
+<p>Slice 1 supplies input-driven capacity arithmetic. Slice 2 supplies read-only
+verification with bounded execution and failure notification. Slice 3 supplies
+weekly user-timer templates, deployment checks and this worked example.
+Archive extraction, organization, incremental upload and browsing remain outside
+this change; the existing extraction handoff is historical context, not current
+capacity evidence.</p>
+<table><caption>Table 2. Capacity options and evidence needed for a selection.</caption>
+<thead><tr><th>Option</th><th>Basis and required evidence</th><th>Disposition</th></tr></thead>
+<tbody>
+<tr><td>Expand the existing Drive tier</td><td>Preserves the existing remote arrangement.
+Obtain the current quota, proposed additional capacity, price and intended retention.</td>
+<td>Preferred first option for evaluation because no archive migration is required;
+purchase and sufficient capacity are not established.</td></tr>
+<tr><td>Use another off-site remote</td><td>Obtain quota, price, download charges,
+retention requirements and restore evidence. Configure the candidate privately;
+repeat the same capacity calculation and content check.</td><td>Alternative if the existing
+tier cannot meet the entered projection and budget. No provider is selected without evidence.</td></tr>
+</tbody></table>
+<p>The maintainer selects and provisions the tier before the next large import.
+A calculation that fits is insufficient evidence of a verified backup or of a
+purchased tier. Historical free-space values shall not be reused as measurements.</p>
+<h2>Inputs, method and worked answer</h2>
+<p>Run <code>rclone about REMOTE: --json</code> privately for account quota and free
+bytes (<a href="https://rclone.org/commands/rclone_about/">rclone about, Synopsis and JSON output</a>,
+retrieved 2026-10-22). Record the observation time and remote identity in a private
+operations record. If free space is absent, capacity is NOT_EVALUATED; never substitute
+zero or subtract folder usage from an unknown account quota. Measure the next import
+in bytes and supply growth, months and a free-space reserve as explicit policy inputs.
+The account quota may also be consumed by unrelated uploads.</p>
+<p>Byte accounting gives <code>required = next + growth_per_month × months + reserve</code>
+and <code>headroom = free − required</code>. These are independently derived additions
+of incoming and reserved bytes, not a fitted engineering equation. The rclone about
+reference establishes that the free-space unit is bytes. All five values are required,
+nonnegative integers; no growth, reserve or planning horizon is assumed.</p>
+<pre><code>python3 scripts/phone_media/backup.py plan \
+  --free-bytes 150 --next-bytes 100 --growth-bytes-per-month 10 \
+  --months 3 --reserve-bytes 20</code></pre>
+<p>This is a synthetic arithmetic example, not an archive measurement: required =
+100 + 10 × 3 + 20 = 150 bytes. Headroom = 150 − 150 = 0 bytes, so the projection
+is READY at equality. With 149 free bytes it is BLOCKED by a 1-byte shortfall.
+The boundary expectations are written independently in the test docstrings.
+Integer arithmetic preserves byte precision for large quotas. A READY result exits
+successfully; BLOCKED exits unsuccessfully. Missing or negative inputs are rejected.</p>
+<h2>Verification and notification contract</h2>
+<p>The wrapper executes <code>rclone check SOURCE REMOTE --download --checkers 1 --transfers 1</code>.
+The <a href="https://rclone.org/commands/rclone_check/">rclone check, Synopsis and Options</a>
+(retrieved 2026-10-22) states that check does not alter either side and that download
+compares content on the fly. Destination-only files also count as drift: one-way
+comparison and size-only comparison are not enabled. The single checker and transfer
+are explicit resource choices, not capacity coefficients.</p>
+<p>Missing or empty source trees, unreadable directories, links and special entries
+fail before rclone runs. Unreadable file contents are reported as rclone errors.
+This avoids treating an unavailable archive as a successful empty backup.
+Ambient global <code>RCLONE_*</code> options are removed from the child environment
+so inherited filters cannot narrow coverage; <code>RCLONE_CONFIG</code> and
+<code>RCLONE_CONFIG_*</code> settings are preserved for private remote configuration.
+<code>RCLONE_PASSWORD_COMMAND</code> is also retained for encrypted configurations,
+as documented under <a href="https://rclone.org/docs/#configuration-encryption">rclone,
+Configuration Encryption</a> (retrieved 2026-10-22). Remote prefixes must contain a
+nonempty archive path without <code>.</code> or <code>..</code> segments.
+Global bandwidth and filter settings are deliberately not inherited.</p>
+<p>A configured positive, finite timeout supplies one monotonic budget for tree
+inspection in a child process and the subsequent comparison. The notification
+adapter receives a separate budget of the same length. Expiry kills the child
+without waiting indefinitely for it to exit. Process startup and uninterruptible
+kernel I/O can still outlast a Python timeout; the service therefore also requires
+a finite backstop above twice the configured deadline, with a shutdown grace period.
+The template starts with a one-hour backstop and a ten-second shutdown grace period;
+set the private drop-in below before enabling it.</p>
+<p>Drift, rclone errors, timeouts and unavailable executables produce a nonzero exit
+and invoke the adapter with one generic message argument. Adapter failure is logged
+and cannot turn the verification green. An invalid deadline fails without attempting
+an unbounded alert. <code>OnFailure=phone-media-backup-alert.service</code> invokes
+an independent adapter configuration for service failures, including missing check
+configuration, Python startup failure and the service backstop. This alert unit
+requires no Python interpreter and has its own one-minute deadline. Ordinary failures
+can produce both wrapper and service alerts; adapters should deduplicate them.
+Missing alert configuration or an unavailable adapter still prevents delivery and
+must be checked during deployment. A process stuck in kernel I/O may remain until
+that I/O recovers; no userspace timeout can guarantee its removal.</p>
+<p>Full-content download can consume the archive's entire remote byte size each week.
+Choose the deadline and evaluate bandwidth and download costs before enabling it.
+Verification reads a live tree: pause imports, organization and uploads during a
+check, or point both ends at the same immutable archive snapshot. The tree preflight
+is not an atomic snapshot. Mount identity and restore usability are not established
+by a passing comparison; verify the intended source before enabling the timer.
+Rclone may log private filenames to the user journal; restrict access and keep those
+logs out of public reports.</p>
+<h2>Private deployment procedure</h2>
+<ol>
+<li>Install Python and rclone, configure the selected remote privately, and obtain
+capacity evidence. No remote credentials belong in these repository files.</li>
+<li>Install the script and templates as user files:
+<pre><code>install -d "$HOME/.local/lib/phone-media" "$HOME/.config/phone-media" "$HOME/.config/systemd/user"
+install -m 600 scripts/phone_media/backup.py "$HOME/.local/lib/phone-media/backup.py"
+install -m 600 config/phone-media/phone-media-backup-alert.service "$HOME/.config/systemd/user/"
+install -m 600 config/phone-media/phone-media-backup-check.service "$HOME/.config/systemd/user/"
+install -m 600 config/phone-media/phone-media-backup-check.timer "$HOME/.config/systemd/user/"</code></pre>
+Create a private <code>$HOME/.config/phone-media/backup.env</code>, mode 600, with
+these four required assignments. Replace each placeholder; quote values containing
+spaces. Systemd EnvironmentFile syntax applies; shell variable expansion is not performed.
+<pre><code>PHONE_MEDIA_SOURCE="ARCHIVE_DIRECTORY"
+PHONE_MEDIA_REMOTE="CONFIGURED_REMOTE:ARCHIVE_PREFIX"
+PHONE_MEDIA_TIMEOUT_SECONDS="POSITIVE_SECONDS"
+PHONE_MEDIA_ALERT_COMMAND="NOTIFICATION_EXECUTABLE"</code></pre>
+The source and notification executable shall be absolute local locations supplied
+privately. The adapter accepts one message argument and returns success only after
+notification delivery is accepted. It may wrap an existing authorized messaging or
+monitoring tool; it shall not embed credentials in repository content. No adapter
+is supplied because no notification destination is authorized here.
+Separately create <code>$HOME/.config/phone-media/alert.env</code>, mode 600, containing
+<code>PHONE_MEDIA_ALERT_COMMAND="NOTIFICATION_EXECUTABLE"</code>. The service failure
+alert must be able to start even when <code>backup.env</code> is absent or invalid.
+Use an adapter that delivers within the alert unit's one-minute budget.</li>
+<li>Set a private check-service drop-in with <code>systemctl --user edit
+phone-media-backup-check.service</code>:
+<pre><code>[Service]
+TimeoutStartSec=BACKSTOP_SECONDSs</code></pre>
+Replace <code>BACKSTOP_SECONDS</code> with a finite number strictly greater than twice
+<code>PHONE_MEDIA_TIMEOUT_SECONDS</code>, allowing additional process startup time.
+The ten-second shutdown grace period follows this backstop. Recalculate the drop-in
+whenever the verification deadline changes. Systemd does not expand the environment
+variable inside <code>TimeoutStartSec=</code>; supply the computed value directly.
+See <a href="https://www.freedesktop.org/software/systemd/man/latest/systemd.service.html#TimeoutStartSec=">systemd.service,
+TimeoutStartSec and TimeoutStopSec</a> and
+<a href="https://www.freedesktop.org/software/systemd/man/latest/systemd.unit.html#OnFailure=">systemd.unit,
+OnFailure</a> (retrieved 2026-10-22).</li>
+<li>Test the adapter directly with a test message and confirm receipt. Then run a
+manual check with the configured archive and remote. Separately use a disposable
+nonempty source and an intentionally nonexistent remote prefix to force failure;
+confirm the nonzero exit, failed service status and received notification. Do not
+mutate or delete production media to simulate drift. Also start the alert unit
+directly and confirm receipt. With a temporary private test override, point the
+check service's environment file at a nonexistent test file, then separately make
+its startup executable unavailable. Each must fail the check service and deliver
+the independent alert. Restore the normal private settings after each probe.
+Finally force a slow check against disposable test data with a short test backstop;
+confirm failure, the independent alert and a later successful activation. These
+checks establish actual failure delivery; repository tests do not start user units.</li>
+<li>Once capacity and failure delivery are confirmed, activate:
+<pre><code>systemctl --user daemon-reload
+systemctl --user start phone-media-backup-check.service
+systemctl --user status phone-media-backup-check.service
+journalctl --user -u phone-media-backup-check.service
+systemctl --user enable --now phone-media-backup-check.timer
+systemctl --user list-timers phone-media-backup-check.timer</code></pre>
+Record the next activation and last successful comparison privately. A running timer
+is not a passed comparison. A user manager must remain available for unattended work;
+any account-lingering change requires separate deployment authorization.</li>
+</ol>
+<p><a href="https://www.freedesktop.org/software/systemd/man/latest/systemd.timer.html">systemd.timer,
+OnCalendar and Persistent</a> (retrieved 2026-10-22) governs calendar scheduling and
+catch-up after inactivity. The weekly cadence comes from the backup-capacity issue;
+<code>Persistent=true</code> catches a missed activation when the timer returns.
+The service is a oneshot, so the same service is not started concurrently by its timer.</p>
+<h2>Acceptance and limits</h2>
+<ul>
+<li>Before another large import: measured quota and the selected tier meet the
+entered projection; the maintainer records the selected tier and the evidence.</li>
+<li>Before unattended scheduling: a full-content manual comparison passes,
+an induced failure produces a received alert, and the next weekly trigger is visible.</li>
+<li>Tests use simulated external tools and synthetic byte counts. No production
+media, live quota, remote comparison or alert receipt is claimed by repository tests.</li>
+<li>Independent second-provider review remains required before merge. Live tier
+selection, notification integration and timer activation remain deployment work.</li>
+</ul>
+</body>
+</html>

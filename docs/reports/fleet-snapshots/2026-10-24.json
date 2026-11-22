@@ -1,0 +1,70 @@
+{
+  "generated_at": "2026-10-24T11:13:23.044840+00:00",
+  "generated_by": "muse-vm fleet-daily-collector",
+  "date": "2026-10-24",
+  "origin_main": "dee4aae5b",
+  "fleet_size": 8,
+  "reporting": 4,
+  "report": {
+    "latest_snapshot": "2026-10-23",
+    "stale_days": 1
+  },
+  "machines": [
+    {
+      "name": "muse-vm",
+      "reachable": true,
+      "branch": "main",
+      "head": "4689152f1",
+      "behind": 29,
+      "ahead": 0,
+      "dirty": 0
+    },
+    {
+      "name": "ace-linux-1",
+      "reachable": true,
+      "branch": "main",
+      "head": "93dbebf3f9",
+      "behind": 299,
+      "ahead": 1,
+      "dirty": 127
+    },
+    {
+      "name": "ace-linux-2",
+      "reachable": true,
+      "branch": "main",
+      "head": "0c63abbb7",
+      "behind": 426,
+      "ahead": 0,
+      "dirty": 0
+    },
+    {
+      "name": "gpu-claw",
+      "reachable": true,
+      "branch": "main",
+      "head": "5a075f688",
+      "behind": 416,
+      "ahead": 0,
+      "dirty": 4
+    },
+    {
+      "name": "acma-ws014",
+      "reachable": false,
+      "note": "ssh_unreachable"
+    },
+    {
+      "name": "acma-hou-rds02",
+      "reachable": false,
+      "note": "ssh_unreachable"
+    },
+    {
+      "name": "macbook-air",
+      "reachable": false,
+      "note": "ssh_unreachable"
+    },
+    {
+      "name": "spark-a681",
+      "reachable": false,
+      "note": "ssh_unreachable"
+    }
+  ]
+}

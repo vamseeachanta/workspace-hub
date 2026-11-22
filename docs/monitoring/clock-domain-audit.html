@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<title>Runtime clock-domain audit and replay</title>
+<style>
+body { max-width: 76rem; margin: 2rem auto; padding: 0 1rem; font: 1rem/1.6 sans-serif; }
+table { border-collapse: collapse; width: 100%; } th, td { border: 1px solid #aaa; padding: .5rem; text-align: left; }
+pre { overflow: auto; padding: 1rem; background: #eee; }
+</style>
+<h1>Runtime clock-domain audit and replay</h1>
+<p>The inspected paths use monotonic clocks for local deadlines and wall clocks for
+persisted freshness. The audit identifies evidence gaps; it does not establish that
+all collectors are free of mixed-clock comparisons. An offline replay now requires
+explicit clock origins, domains, resolutions and acceptance limits before comparing
+values. A replay PASS establishes only agreement with the supplied replay criteria;
+it provides no admission, capacity qualification or reservation.</p>
+<h2>Revision history</h2>
+<table><tr><th>Revision</th><th>Date</th><th>Change and reason</th></tr>
+<tr><td>1</td><td>2026-10-22</td><td>Issue 3860: record bounded discovery and add explicit-domain replay to expose unsupported time comparisons.</td></tr></table>
+<p>Table 1. Initial issue of the audit.</p>
+<h2>Plan and scope</h2>
+<p>Slice 1 will provide a pure offline validator with original-evidence retention.
+Slice 2 will exercise domain and resolution mismatch, backward movement, duration
+boundaries, stale and future samples. Slice 3 will document inspected collectors,
+discovery gaps and a reproducible worked example. Independent provider review will
+precede changes to operational collectors. No solver will be invoked.</p>
+<h2>Inspected paths</h2>
+<p>The discovery searches covered Python and shell files under <code>scripts/</code>
+for monotonic, performance-counter, integer-nanosecond and wall-clock calls, followed
+by inspection of the following runtime and telemetry consumers at the task base.</p>
+<table><tr><th>Path and symbol</th><th>Time basis</th><th>Finding and disposition</th></tr>
+<tr><td><code>scripts/cron/cron_runtime.py: _active_record, inspect_runtime</code></td><td>Wall seconds for starts, results and contention.</td><td>Elapsed time is truncated to integer seconds and negative elapsed is clamped to zero. A backward wall jump can therefore appear within budget. No monotonic origin or epoch-change evidence is persisted. Operational correction is deferred.</td></tr>
+<tr><td><code>scripts/dispatch/drain.py: deadline and heartbeat loops</code></td><td>Injected monotonic clock for local deadlines; UTC datetime for records.</td><td>Inspected loops subtract readings from the same injected local clock. Persisted record age is separate. No mixed subtraction was found in those loops.</td></tr>
+<tr><td><code>scripts/dispatch/records.py: is_expired, clock_skew_detected</code></td><td>UTC heartbeat and current UTC datetime.</td><td>Future heartbeat is deliberately not expired; a separate skew check exists. Replay does not replace these liveness semantics.</td></tr>
+<tr><td><code>scripts/operations/dispatch_lease.py: _is_expired, reclaim, verify_token</code></td><td>Caller-injected numeric now and renewed_at.</td><td>No clock metadata validates the injection. Expiry alone grants no execution: reclaim also checks liveness and compare-and-swap; side effects require fencing. These controls remain unchanged.</td></tr>
+<tr><td><code>scripts/monitoring/equivalence_compare.py: compare</code> and <code>equivalence-fingerprint.sh</code></td><td>Wall datetimes for observation age; wall seconds versus filesystem modification time for reported ages.</td><td>Fingerprint age is relative to the newest peer, not current time; all peers can therefore be old without a relative-age warning. Reported ages and timestamps have different representations; no monotonic duration is subtracted from a wall timestamp in the inspected code. Clock-origin/uncertainty qualification is absent.</td></tr>
+<tr><td><code>scripts/operations/solver-campaign/campaign_runner.py</code> and <code>scripts/solver/process-queue.py</code></td><td>Monotonic duration subtraction.</td><td>Search results show local elapsed-time accounting; deeper execution and licensed interfaces were not exercised. No qualification claim is made.</td></tr>
+</table>
+<p>Table 2. Bounded collector and validator inventory; findings describe inspected code, not runtime measurements.</p>
+<h2>Discovery gaps and review</h2>
+<p>Other repositories, dynamic imports, external collectors, remote telemetry,
+non-Python embedded programs and operational clock adjustments have not been
+exhaustively audited. The related correction was inspected through its public
+commit diff; its test counts are historical evidence, not tests executed here.
+No failed observation from that correction is copied or rewritten into new admission
+evidence. Independent provider review has not been performed in this implementation
+session and remains required before wider implementation.</p>
+<h2>Replay contract</h2>
+<p>Input is one JSON object with <code>criteria</code>, <code>now</code> and a nonempty
+<code>samples</code> array. Each sample has <code>start</code>, <code>end</code>,
+<code>interval</code> and <code>observed_at</code>. Each reading has integer
+<code>value_ns</code>, domain <code>wall</code> or <code>monotonic</code>, a nonempty
+<code>clock_id</code>, and positive integer <code>resolution_ns</code>. The interval
+is a duration tagged with its originating clock, rather than an absolute reading.</p>
+<p>The equations are <code>duration = end - start</code> and
+<code>age = now - latest observed_at</code>. Source: Python 3.13 time documentation,
+<code>monotonic_ns()</code>, <code>time_ns()</code> and <code>get_clock_info()</code>.
+The monotonic reference is undefined: only differences within a common reference
+are meaningful. Clock IDs shall distinguish origin/reset boundaries; the label
+alone cannot authenticate provenance. Integer nanoseconds avoid floating-point
+serialization loss. The replay accepts nonnegative integer readings and explicit
+positive integer resolution metadata. Resolution does not imply that ticks are
+divisible by that value: Python does not guarantee alignment to the clock epoch.
+The integer-resolution schema cannot represent fractional-nanosecond resolution;
+such evidence requires a future schema rather than rounding. Matching resolution
+does not establish measurement accuracy or an uncertainty margin around limits.</p>
+<p>Criteria <code>min_duration_ns</code>, <code>max_duration_ns</code> and
+<code>max_age_ns</code> are required nonnegative integer inputs. No operational
+constant or tolerance is supplied. Duration limits and latest-observation freshness
+are inclusive. Every observation shall be no later than now; observation order
+shall not move backward. Earlier samples may be older than the freshness limit:
+freshness applies to the latest sample only. Duration windows may have gaps but
+shall not overlap. Thus this replay does not certify gapless capacity coverage.</p>
+<p>Endpoint and interval clock domain, origin and resolution shall match across
+all samples. Freshness uses wall readings with a common origin and resolution.
+There is no wall-to-monotonic subtraction. Mixed origins or resolutions return
+<code>NOT_EVALUATED</code>; no implicit conversion or tolerance repairs them.
+A future extension will require a separately reviewed conversion and uncertainty
+bound before allowing such comparisons. Comparable readings violating criteria
+return <code>FAIL</code>. Missing/invalid evidence returns
+<code>NOT_EVALUATED</code>. A gap may mask additional violations; neither result
+qualifies admission. Supplied limits are replay criteria, not approved operational
+criteria. Sampling simultaneity and source authenticity cannot be established by
+this schema alone.</p>
+<p>The result retains a deep copy of the parsed input as <code>evidence</code>;
+it neither edits source files nor clamps, rounds or repairs observations. JSON
+whitespace is not retained; original raw evidence shall be retained separately by
+its authoritative collector. Duplicate keys and non-finite JSON constants are
+rejected before replay. CLI exit codes are zero for PASS, one for evaluated or
+unevaluated non-pass, and two for malformed JSON.</p>
+<h2>Worked example</h2>
+<p>All following numbers are synthetic illustrative inputs. Independent hand
+calculation: first duration = 110 − 100 = 10 ns; second duration = 120 − 110 = 10 ns;
+latest age = 220 − 210 = 10 ns. Both durations equal the inclusive bounds [10, 10] ns;
+age equals the supplied maximum of 10 ns. The second start equals the first end.
+The result is PASS. Increasing now to 221 gives age 11 ns and FAIL. Changing only
+the interval clock resolution to 2 ns gives NOT_EVALUATED, even when ticks appear
+numerically comparable.</p>
+<pre>python scripts/monitoring/clock_replay.py &lt; evidence.json</pre>
+<pre>{
+  "criteria": {"min_duration_ns": 10, "max_duration_ns": 10, "max_age_ns": 10},
+  "now": {"value_ns": 220, "domain": "wall", "clock_id": "synthetic-epoch", "resolution_ns": 1},
+  "samples": [{
+    "start": {"value_ns": 100, "domain": "monotonic", "clock_id": "synthetic-origin", "resolution_ns": 1},
+    "end": {"value_ns": 110, "domain": "monotonic", "clock_id": "synthetic-origin", "resolution_ns": 1},
+    "interval": {"value_ns": 10, "domain": "monotonic", "clock_id": "synthetic-origin", "resolution_ns": 1},
+    "observed_at": {"value_ns": 210, "domain": "wall", "clock_id": "synthetic-epoch", "resolution_ns": 1}
+  }]
+}</pre>
+<p>The one-sample JSON example returns durations_ns [10], age_ns 10, replay_status
+PASS, an empty reasons array and the parsed input under evidence. The test fixture
+extends it to two adjacent samples, with the same independently calculated result.</p>
+<h2>Sources and verification</h2>
+<p><a href="https://docs.python.org/3.13/library/time.html#time.monotonic">Python 3.13 time documentation</a>,
+2024 edition, sections monotonic, monotonic_ns, time_ns and get_clock_info:
+public response inspected on 2026-10-22, HTTP 200. Existing repository symbols in
+Table 2 supply operational semantics; no thresholds have been changed.</p>
+<p><code>tests/monitoring/test_clock_replay.py</code> contains synthetic hand calculations
+for every expected duration, age and boundary disposition. An initial failing run
+preceded implementation. Lint and final test results are recorded in the change
+handoff. Operational integration, cross-origin conversion and independent provider
+review remain follow-up work under issue 3860.</p>
+</html>

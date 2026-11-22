@@ -3,9 +3,10 @@
 from __future__ import annotations
 
 import os
-from pathlib import Path
 import re
+import stat
 import subprocess
+from pathlib import Path
 from typing import Mapping
 
 from .bootstrap_layout import BoundCloneLayout
@@ -102,6 +103,8 @@ def push_command(git_fd: int, repo_slug: str, object_id: str) -> list[str]:
 
 
 def _read_config(bound: BoundCloneLayout) -> list[tuple[str, str]]:
+    if not stat.S_ISREG(os.fstat(bound.config_fd).st_mode):
+        raise BootstrapGitError("held clone config is not a regular file")
     command = [
         trusted_executable("git"), "config", "--file", f"/proc/self/fd/{bound.config_fd}",
         "--null", "--list", "--no-includes",

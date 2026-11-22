@@ -610,7 +610,7 @@ orcaflex_models:
   path: /mnt/remote/dev-secondary/dde/Orcaflex/611 the pipelay client S Lay Installation
   description: >
     S-lay pipelay installation analysis model library for two pipeline projects.
-    BigFoot1 (170 files) and Quetzal (436 files) contain vessel-specific S-lay
+    SubprojA (170 files) and SubprojB (436 files) contain vessel-specific S-lay
     configurations including abandonment & recovery, pull-in, and weight-matching
     load cases. Reference/ (3 files) provides a clean base model.
     Key inputs for DNV-OS-F101 pipelay stress and buckle initiation checks.
@@ -618,14 +618,14 @@ orcaflex_models:
   standards: [DNV-OS-F101, DNV-RP-F110]
   host: dev-secondary
   file_count: 1514
-  portability: direct
+  portability: aliased  # subproject names are display aliases; the real source paths are not recorded here
   subprojects:
-    - name: BigFoot1
-      path: /mnt/remote/dev-secondary/dde/Orcaflex/611 the pipelay client S Lay Installation/BigFoot1/Latest
+    - name: SubprojA
+      path: /mnt/remote/dev-secondary/dde/Orcaflex/611 the pipelay client S Lay Installation/SubprojA/Latest
       description: S-lay configuration — Abandonment & Recovery, Pull-in, weight matching
-    - name: Quetzal
-      path: /mnt/remote/dev-secondary/dde/Orcaflex/611 the pipelay client S Lay Installation/Quetzal
-      description: Quetzal pipeline S-lay — multiple water depths and load cases
+    - name: SubprojB
+      path: /mnt/remote/dev-secondary/dde/Orcaflex/611 the pipelay client S Lay Installation/SubprojB
+      description: SubprojB pipeline S-lay — multiple water depths and load cases
     - name: Reference
       path: /mnt/remote/dev-secondary/dde/Orcaflex/611 the pipelay client S Lay Installation/Reference
       description: Reference base model — 3 files, clean starting point

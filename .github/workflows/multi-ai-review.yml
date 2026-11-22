@@ -22,7 +22,7 @@ on:
 jobs:
   cross-review-info:
     name: Cross-Review Instructions
-    runs-on: ubuntu-latest
+    runs-on: ${{ github.event.pull_request.head.repo.fork && 'ubuntu-latest' || fromJSON('["self-hosted","Linux"]') }}
     timeout-minutes: 5
 
     steps:

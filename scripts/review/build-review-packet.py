@@ -52,10 +52,22 @@ def _fence(text: str) -> str:
     return "`" * max(3, longest + 1)
 
 
+def _unique_object(pairs: list[tuple[str, object]]) -> dict:
+    # RFC 8259 (2017), section 4: duplicate names have unpredictable interpretation.
+    result = {}
+    for key, value in pairs:
+        if key in result:
+            raise ValueError("duplicate JSON object name")
+        result[key] = value
+    return result
+
+
 def build(args: argparse.Namespace) -> int:
     root = Path.cwd().resolve()
     out_path, manifest_path = Path(args.out).resolve(), Path(args.manifest).resolve()
     inputs = {(root / p).resolve() for p in args.paths}
+    if len(inputs) != len(args.paths):
+        return _fail(1, "duplicate reviewed input; each resolved path must be unique")
     if out_path == manifest_path:
         return _fail(1, "--out and --manifest must be different files")
     if out_path in inputs or manifest_path in inputs:
@@ -147,7 +159,7 @@ def build(args: argparse.Namespace) -> int:
 
 def verify(args: argparse.Namespace) -> int:
     try:
-        manifest = json.loads(Path(args.manifest).read_text(encoding="utf-8"))
+        manifest = json.loads(Path(args.manifest).read_text(encoding="utf-8"), object_pairs_hook=_unique_object)
     except (OSError, ValueError) as exc:
         return _fail(1, f"cannot read manifest: {exc}")
     files = manifest.get("files") if isinstance(manifest, dict) else None
@@ -159,22 +171,32 @@ def verify(args: argparse.Namespace) -> int:
                 isinstance(f.get("sha256"), str) and re.fullmatch(r"[0-9a-f]{64}", f["sha256"]) for f in files)):
         return _fail(1, "manifest entries need unique string paths and 64-hex sha256 digests")
     root = Path.cwd().resolve()
-    changed, missing = [], []
+    changed, missing, resolved_paths = [], [], set()
     for f in files:
         p = (root / f["path"]).resolve()
         try:
             p.relative_to(root)
         except ValueError:
             return _fail(1, f"manifest path {f['path']!r} is outside the packet root {root}")
+        if p in resolved_paths:
+            return _fail(1, "duplicate resolved path in manifest")
+        resolved_paths.add(p)
         if not p.is_file():
             missing.append(f["path"])
-        elif hashlib.sha256(p.read_bytes()).hexdigest() != f["sha256"]:
-            changed.append(f["path"])
+        else:
+            data = p.read_bytes()
+            if hashlib.sha256(data).hexdigest() != f["sha256"] or len(data) != f.get("bytes"):
+                changed.append(f["path"])
     # The packet is what the reviewer read, so its bytes are always checked; a manifest without
     # the packet digest cannot vouch for a verdict.
     packet_digest = manifest.get("packet_sha256")
     if not (isinstance(packet_digest, str) and re.fullmatch(r"[0-9a-f]{64}", packet_digest)):
         return _fail(1, "manifest does not pin the packet (packet_sha256 missing or not 64-hex)")
+    # These fields are emitted by the review-packet/1 producer above. Counts are
+    # nonnegative byte lengths, not booleans (bool is an int subclass in Python).
+    counts = [manifest.get("packet_bytes"), *(f.get("bytes") for f in files)]
+    if manifest.get("digest_domain") != "raw-bytes" or any(type(n) is not int or n < 0 for n in counts):
+        return _fail(1, "manifest needs the raw-bytes domain and nonnegative integer byte counts")
     packet_ref = args.packet or manifest.get("packet_path")
     if not (isinstance(packet_ref, str) and packet_ref):
         return _fail(1, "manifest records no packet_path; pass --packet with the packet that was sent")
@@ -182,7 +204,9 @@ def verify(args: argparse.Namespace) -> int:
     if not pp.is_file():
         packet_state = "missing"
     else:
-        packet_state = "match" if hashlib.sha256(pp.read_bytes()).hexdigest() == packet_digest else "mismatch"
+        packet_data = pp.read_bytes()
+        packet_state = ("match" if hashlib.sha256(packet_data).hexdigest() == packet_digest
+                        and len(packet_data) == manifest["packet_bytes"] else "mismatch")
     status = "changed" if changed or missing or packet_state in ("missing", "mismatch") else "unchanged"
     print(json.dumps({"status": status, "changed": changed, "missing": missing, "packet": packet_state,
                       "files": len(files)}))
@@ -202,7 +226,12 @@ def main(argv: list[str] | None = None) -> int:
     v.add_argument("--manifest", required=True)
     v.add_argument("--packet", help="packet file that was sent to the reviewer (default: the manifest's packet_path)")
     args = ap.parse_args(argv)
-    return build(args) if args.cmd == "build" else verify(args)
+    try:
+        return build(args) if args.cmd == "build" else verify(args)
+    except (OSError, ValueError, RuntimeError):
+        # Unreadable files, invalid path strings and symlink loops are input errors.
+        # Do not expose environment-derived paths or diagnostic text here.
+        return _fail(1, "cannot read or resolve packet inputs or outputs")
 
 
 if __name__ == "__main__":

@@ -30,11 +30,26 @@ _tier1_repos_resolve_file() {
     printf '%s' "${root:+${root}/config/tier1-python-repos.txt}"
 }
 
+# Equivalent to scripts/lib/git_worktree.py:is_git_worktree_root.
+# Source: Git rev-parse reference (accessed 2026-10-22), --local-env-vars,
+# --is-inside-work-tree and --show-prefix: https://git-scm.com/docs/git-rev-parse
+# A subshell isolates unsets from callers, including hooks with Git bindings.
+is_git_worktree_root() (
+    local candidate="$1" bindings name probe
+    [[ -d "$candidate" && -e "$candidate/.git" ]] || return 1
+    bindings="$(git rev-parse --local-env-vars 2>/dev/null)" || return 1
+    while IFS= read -r name; do
+        unset "$name" || return 1
+    done <<< "$bindings"
+    probe="$(git -C "$candidate" rev-parse --is-inside-work-tree --show-prefix 2>/dev/null)" || return 1
+    [[ "$probe" == true ]]
+)
+
 # Resolve a tier-1 repo slug to its on-disk path, tolerating nested OR sibling
 # layout (#3127). Probe order: $TIER1_REPOS_BASE, then nested ($REPO_ROOT/<slug>),
 # then sibling ($(dirname realpath REPO_ROOT)/<slug>). A candidate counts ONLY if
-# it carries a repo marker (.git dir or pyproject.toml) — bare/empty dirs are
-# rejected. Prints the first marker-bearing candidate and returns 0; warns to
+# it is a valid Git working-tree root, or has pyproject.toml with no Git metadata
+# (the source-export fallback). Prints the first qualifying candidate; warns to
 # stderr when a slug resolves at more than one DISTINCT layout (silent stale-copy
 # guard); returns 1 with no output when none qualifies (fail-closed).
 resolve_tier1_repo_path() {
@@ -48,7 +63,11 @@ resolve_tier1_repo_path() {
         # de-dup (base may equal nested; nested may equal sibling at filesystem root)
         case " ${seen[*]} " in *" $c "*) continue ;; esac
         seen+=("$c")
-        if [[ -d "$c/.git" || -f "$c/pyproject.toml" ]]; then found+=("$c"); fi
+        if [[ -e "$c/.git" || -L "$c/.git" ]]; then
+            if is_git_worktree_root "$c"; then found+=("$c"); fi
+        elif [[ -f "$c/pyproject.toml" ]]; then
+            found+=("$c")
+        fi
     done
     [[ "${#found[@]}" -eq 0 ]] && return 1
     if [[ "${#found[@]}" -gt 1 ]]; then

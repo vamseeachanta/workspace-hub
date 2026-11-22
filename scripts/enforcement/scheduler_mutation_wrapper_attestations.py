@@ -23,7 +23,7 @@ HARNESS_ATTESTATIONS = {"harness-default-v1", "harness-dry-run-v1"}
 WRAPPER_SHA256 = {
     SETUP: "1a5e5573d00d17c4a820a831549fb92a2dad100b5fbab5572afcefadd57c84c1",
     NEW_MACHINE: "5120de77dcec9349fc2b24f5d6889d53c88f357efcf4ca4874479471a9a53d5c",
-    HARNESS: "a698b7a44194ef92dfbdf9a4d0e5b5550b21ceadb86de2055f634f59b8a1d0c8",
+    HARNESS: "be6d0b2fa0771002423e0a698a03b2c37b9471bc9f07f2c8cb0cf215d9730607",
 }
 SETUP_PROTECTED_PREFIX = b'''#!/usr/bin/env bash
 # setup-cron.sh \xe2\x80\x94 compatibility entrypoint for transactional cron reconciliation.
@@ -101,28 +101,32 @@ exec uv run --script "$CRON_APPLY" "${APPLY_ARGS[@]}"'''
 
 
 def evaluate_wrapper_attestation(name: str, records: dict[bytes, bytes]) -> bool | None:
+    reason = wrapper_attestation_reason(name, records)
+    return None if reason is None else reason == "accepted"
+
+
+def wrapper_attestation_reason(name: str, records: dict[bytes, bytes]) -> str | None:
+    """Report provenance before semantics without changing the boolean contract."""
     if name in SETUP_ATTESTATIONS:
-        body = records.get(SETUP, b"")
-        if not _pinned(SETUP, records) or not _reachable_script(
-            body, b'exec uv run --script "$CRON_APPLY"'
-        ):
-            return False
-        return _setup_shape(body)
-    if name in NEW_MACHINE_ATTESTATIONS:
-        body = records.get(NEW_MACHINE, b"")
-        if not _pinned(NEW_MACHINE, records) or not _reachable_script(
-            body, b'bash "${WORKSPACE_HUB}/scripts/cron/setup-cron.sh"'
-        ):
-            return False
-        return _new_machine_shape(body)
-    if name in HARNESS_ATTESTATIONS:
-        body = records.get(HARNESS, b"")
-        if not _pinned(HARNESS, records) or not _reachable_script(
-            body, b"\nsync_crontab\n"
-        ):
-            return False
-        return _harness_shape(body)
-    return None
+        source, terminal, shape = SETUP, b'exec uv run --script "$CRON_APPLY"', _setup_shape
+    elif name in NEW_MACHINE_ATTESTATIONS:
+        source = NEW_MACHINE
+        terminal = b'bash "${WORKSPACE_HUB}/scripts/cron/setup-cron.sh"'
+        shape = _new_machine_shape
+    elif name in HARNESS_ATTESTATIONS:
+        source, terminal, shape = HARNESS, b"\nsync_crontab\n", _harness_shape
+    else:
+        return None
+    if not WRAPPER_SHA256.get(source):
+        return "missing-pin"
+    if source not in records:
+        return "missing-source"
+    if not _pinned(source, records):
+        return "stale-pin"
+    body = records[source]
+    if not _reachable_script(body, terminal):
+        return "unreachable"
+    return "accepted" if shape(body) else "source-shape"
 
 
 def _pinned(source: bytes, records: dict[bytes, bytes]) -> bool:
@@ -173,14 +177,32 @@ def _harness_shape(body: bytes) -> bool:
     block = b'''sync_crontab() {
   local installer="${WORKSPACE_HUB}/scripts/cron/setup-cron.sh"
   [[ -f "$installer" ]] || { log "CRON" "setup-cron.sh absent \xe2\x80\x94 skip"; return; }
+  local out status
   if [[ "$DRY_RUN" == "true" ]]; then
+    if out=$(bash "$installer" --dry-run 2>&1); then
+      status=0
+    else
+      status=$?
+    fi
+    # Preserve the nonfatal contract, but report failures before counting output.
+    if [[ "$status" -ne 0 ]]; then
+      log "CRON" "dry-run failed (exit ${status}); inspect setup-cron.sh diagnostics: ${out}"
+      return 0
+    fi
     local n
-    n=$(bash "$installer" --dry-run 2>/dev/null | grep -cE '^[[:space:]]+[0-9*]' || true)
+    n=$(printf '%s\\n' "$out" | grep -cE '^[[:space:]]+[0-9*]' || true)
     log "CRON" "dry-run: ${n} schedule-tasks.yaml entry/entries would be ensured"
     return
   fi
-  local out
-  out=$(bash "$installer" 2>&1) || true
+  if out=$(bash "$installer" 2>&1); then
+    status=0
+  else
+    status=$?
+  fi
+  if [[ "$status" -ne 0 ]]; then
+    log "CRON" "apply failed (exit ${status}); inspect setup-cron.sh diagnostics: ${out}"
+    return 0
+  fi
   log "CRON" "$(printf '%s\\n' "$out" | grep -iE 'Installed|Replaced|already present' | tail -1)"
 }'''
     return block in body and body.count(b"sync_crontab\n") == 1

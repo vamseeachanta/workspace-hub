@@ -5,7 +5,7 @@
 # Idempotent: safe to run multiple times.
 #
 # What it does:
-# 1. Copies enforcement-env.sh to .git/hooks/enforcement-env
+# 1. Copies enforcement-env.sh to the effective Git hook directory
 # 2. Wires enforcement-env sourcing into pre-commit (if not already present)
 # 3. Wires stage-prompt drift guard into pre-push (if not already present)
 # 4. Wires post-commit-learnings.sh into post-commit (fixes dead code after exit 0)
@@ -17,6 +17,8 @@
 set -euo pipefail
 
 REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
+cd "$REPO_ROOT"
+HOOKS_DIR="$(git rev-parse --path-format=absolute --git-path hooks)"
 DRY_RUN=0
 
 for arg in "$@"; do
@@ -29,22 +31,54 @@ log() { echo "[install-hooks] $1"; }
 
 # ── Step 1: Install enforcement-env ─────────────────────────────────────
 ENFORCEMENT_SRC="${REPO_ROOT}/scripts/enforcement/enforcement-env.sh"
-ENFORCEMENT_DST="${REPO_ROOT}/.git/hooks/enforcement-env"
+ENFORCEMENT_DST="${HOOKS_DIR}/enforcement-env"
 
 if [[ -f "$ENFORCEMENT_SRC" ]]; then
   if [[ "$DRY_RUN" == "1" ]]; then
-    log "DRY-RUN: Would copy enforcement-env.sh -> .git/hooks/enforcement-env"
+    log "DRY-RUN: Would copy enforcement-env.sh to the effective hook directory"
   else
+    mkdir -p "$HOOKS_DIR"
     cp "$ENFORCEMENT_SRC" "$ENFORCEMENT_DST"
     chmod 644 "$ENFORCEMENT_DST"
-    log "OK: Installed enforcement-env to .git/hooks/"
+    log "OK: Installed enforcement-env to the effective hook directory"
   fi
 else
   log "SKIP: enforcement-env.sh not found at ${ENFORCEMENT_SRC}"
 fi
 
+# Upgrade the recognized managed lookup before marker-based idempotence checks.
+# Other assignments and hook content remain unchanged.
+migrate_environment_lookup() {
+  local hook="$1" tmp
+  local legacy='ENFORCEMENT_ENV="${REPO_ROOT}/.git/hooks/enforcement-env"'
+  local current='ENFORCEMENT_ENV="$(git rev-parse --git-path hooks/enforcement-env)"'
+  [[ -f "$hook" ]] || return 0
+  if ! grep -Fxq "$legacy" "$hook"; then
+    return 0
+  fi
+  if [[ "$DRY_RUN" == "1" ]]; then
+    log "DRY-RUN: Would migrate the managed environment lookup"
+    return 0
+  fi
+  tmp="$(mktemp)"
+  awk -v legacy="$legacy" -v current="$current" '
+    $0 == legacy { $0 = current }
+    { print }
+  ' "$hook" > "$tmp"
+  if ! bash -n "$tmp"; then
+    echo "FATAL: environment migration produced invalid bash — not written" >&2
+    rm -f "$tmp"; return 1
+  fi
+  cat "$tmp" > "$hook"
+  rm -f "$tmp"
+  log "OK: Migrated the managed environment lookup"
+}
+
+migrate_environment_lookup "${HOOKS_DIR}/pre-commit"
+migrate_environment_lookup "${HOOKS_DIR}/pre-push"
+
 # ── Step 2: Wire enforcement-env into pre-commit ────────────────────────
-PRE_COMMIT="${REPO_ROOT}/.git/hooks/pre-commit"
+PRE_COMMIT="${HOOKS_DIR}/pre-commit"
 
 if [[ -f "$PRE_COMMIT" ]]; then
   if grep -q "enforcement-env" "$PRE_COMMIT" 2>/dev/null; then
@@ -57,7 +91,7 @@ if [[ -f "$PRE_COMMIT" ]]; then
       sed -i '/^export PATH=/a\
 \
 # Source enforcement environment (#2027)\
-ENFORCEMENT_ENV="${REPO_ROOT}/.git/hooks/enforcement-env"\
+ENFORCEMENT_ENV="$(git rev-parse --git-path hooks/enforcement-env)"\
 if [[ -f "${ENFORCEMENT_ENV}" ]]; then\
   source "${ENFORCEMENT_ENV}"\
 fi' "$PRE_COMMIT"
@@ -75,7 +109,7 @@ fi
 # past the end: the hook terminates in an unconditional `exit`, and anything
 # below it never runs. Four blocks sat there for months while this script
 # logged "OK: Wired ..." for each (#3781).
-PRE_PUSH="${REPO_ROOT}/.git/hooks/pre-push"
+PRE_PUSH="${HOOKS_DIR}/pre-push"
 SENTINEL='# <<INSTALL_HOOKS_EXTENSION_POINT>>'
 
 # Everything above the sentinel — the reachable region of the hook.
@@ -143,14 +177,21 @@ strip_dead_tail() {
   ' "$PRE_PUSH" > "${PRE_PUSH}.tmp" && mv "${PRE_PUSH}.tmp" "$PRE_PUSH"
 }
 
-if [[ -f "$PRE_PUSH" ]]; then
+# The setup wrapper delegates to the tracked script, which already contains
+# these gates. Do not inject shell blocks into the wrapper or duplicate gates.
+if [[ -f "${REPO_ROOT}/scripts/setup/install-all-hooks.sh" ]] \
+   && bash "${REPO_ROOT}/scripts/setup/install-all-hooks.sh" --check --quiet >/dev/null 2>&1; then
+  log "OK: managed pre-push delegates to the tracked enforcement chain"
+elif [[ -f "$PRE_PUSH" ]]; then
   # Detect the #3781 state: enforcement present, but below the terminal exit.
   if grep -q "INSTALL_HOOKS_EXTENSION_POINT" "$PRE_PUSH" 2>/dev/null \
      && [[ -n "$(awk '/^exit([[:space:]]|$)/{f=NR} END{print (f?f:"")}' "$PRE_PUSH")" ]] \
      && awk '/^exit([[:space:]]|$)/{seen=1; next} seen' "$PRE_PUSH" \
         | grep -qE "enforcement-env|scripts/enforcement/|scripts/sync/|\.claude/hooks/"; then
     log "WARN: enforcement found below the terminal exit (#3781) — removing the dead tail"
-    strip_dead_tail
+    if [[ "$DRY_RUN" == "0" ]]; then
+      strip_dead_tail
+    fi
   fi
 
   _blk="$(mktemp -d)"
@@ -159,7 +200,7 @@ if [[ -f "$PRE_PUSH" ]]; then
 
 # ── Enforcement environment (installed by install-hooks.sh #2128) ──────
 # MUST precede gates whose strictness it sets (#3781).
-ENFORCEMENT_ENV="${REPO_ROOT}/.git/hooks/enforcement-env"
+ENFORCEMENT_ENV="$(git rev-parse --git-path hooks/enforcement-env)"
 if [[ -f "${ENFORCEMENT_ENV}" ]]; then
   source "${ENFORCEMENT_ENV}"
 fi
@@ -206,7 +247,9 @@ EOF
   insert_block "sync-cadence-helper.sh"            "${_blk}/cadence" "cadence-helper sync check" || _install_rc=$?
 
   rm -rf "$_blk"
-  chmod +x "$PRE_PUSH"
+  if [[ "$DRY_RUN" == "0" ]]; then
+    chmod +x "$PRE_PUSH"
+  fi
   [[ $_install_rc -eq 0 ]] || exit $_install_rc
 else
   log "SKIP: pre-push hook not found"
@@ -275,7 +318,7 @@ EOF
 fi
 
 # ── Step 4: Wire learning pipeline into post-commit ─────────────────────
-POST_COMMIT="${REPO_ROOT}/.git/hooks/post-commit"
+POST_COMMIT="${HOOKS_DIR}/post-commit"
 
 if [[ -f "$POST_COMMIT" ]]; then
   if grep -q "post-commit-learnings" "$POST_COMMIT" 2>/dev/null; then
@@ -330,7 +373,7 @@ fi
 log ""
 log "Enforcement hook chain:"
 log "  pre-commit -> enforcement-env -> plan-approval-gate"
-log "  pre-push -> enforcement-env -> review-gate -> stage-prompt-drift-gate"
+log "  pre-push -> enforcement-env -> review-gate -> state-size -> cadence"
 log "  post-commit -> auto-push -> learning pipeline -> extract-learnings"
 log ""
 if [[ "$DRY_RUN" == "1" ]]; then

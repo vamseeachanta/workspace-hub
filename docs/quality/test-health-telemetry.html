@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Test-health history and outcome telemetry</title>
+<style>
+body { font-family: system-ui, sans-serif; max-width: 60rem; margin: 2rem auto; padding: 0 1rem; line-height: 1.6; }
+table { border-collapse: collapse; width: 100%; }
+th, td { border: 1px solid #aaa; padding: .4rem; text-align: left; }
+pre { overflow-x: auto; padding: 1rem; background: #eee; }
+code { overflow-wrap: anywhere; }
+</style>
+</head>
+<body>
+<h1>Test-health history and outcome telemetry</h1>
+<p>The existing dashboard records each completed observation and displays recent
+pass-rate changes. Missing execution evidence and skipped-only packages do not
+receive a passing badge. This bounded change advances initiative 3671 through
+the test-health telemetry branch; it does not establish initiative completion.</p>
+<h2>Revision history</h2>
+<table>
+<tr><th>Revision</th><th>Date</th><th>Change and reason</th></tr>
+<tr><td>Initial</td><td>2026-10-22</td><td>Add persisted summaries, recent trends and failure diagnostics so missing evidence cannot appear as passing tests.</td></tr>
+</table>
+<p>Table 1. Document revision history.</p>
+<h2>Inputs and source basis</h2>
+<p><code>scripts/quality/test-health-dashboard.py</code> consumes the existing
+<code>digitalmodel/tests/</code> target beneath its resolved repository root.
+The input is pytest summary output, process return status and the optional
+<code>docs/dashboards/test-health-history.json</code> file. No solver is launched
+by the worked example or its regression tests. A live dashboard run executes the
+target's tests and requires separate verification of their dependencies.</p>
+<p>Source: issue 1666, “Test health dashboard: add historical trend tracking and
+coverage delta detection”, acceptance criteria 2–4, read on 2026-10-22.
+Criterion 2 specifies timestamp, total, passed, failed, errors, skipped and
+pass_rate. Criterion 3 specifies the latest eight observations. Criterion 4
+specifies a warning for a drop greater than five percent. This implementation
+interprets a difference between percentage-valued pass rates as percentage points;
+the warning states that unit explicitly. There are no standards-derived physical
+constants or engineering acceptance limits in this calculation.</p>
+<h2>Method and outputs</h2>
+<p>Total outcomes equal passed + failed + skipped + errors. Pass rate (%) equals
+100 × passed / total, rounded to one decimal place. With no outcomes the stored
+rate is 0.0%; it does not establish a successful run. A nonzero process exit with
+no reported failures or errors contributes one diagnostic error; a timeout or
+launch failure also contributes one diagnostic error. These are execution
+outcomes; launch and collection diagnostics do not establish individual test cases. Singular and plural
+pytest error summaries are both recognised.</p>
+<p>The history stores all observations in append order. The dashboard shows the
+latest eight and compares the current stored, rounded pass rate with the previous
+stored rate. A drop strictly greater than 5.0 percentage points emits a warning;
+a drop exactly equal to 5.0 does not. Skipped-only packages carry a warning badge.
+Malformed history, negative or nonintegral counts, contradictory totals,
+inconsistent rates and timestamps without a timezone are rejected before writing.
+An unavailable test tree raises an error rather than producing empty success.</p>
+<p>A history update is written to a sibling temporary file, flushed and atomically
+replaced. Earlier bytes remain intact if validation or replacement fails.
+Timestamps are stored in UTC. A single writer is required; concurrent updates
+are not merged. Failed replacements can retain a diagnostic partial file.</p>
+<h2>Worked example: inputs, method and answer</h2>
+<table>
+<tr><th>Observation</th><th>Passed</th><th>Failed</th><th>Skipped</th><th>Errors</th><th>Total</th><th>Pass rate (%)</th></tr>
+<tr><td>Earlier</td><td>4</td><td>0</td><td>0</td><td>0</td><td>4</td><td>100.0</td></tr>
+<tr><td>Current</td><td>3</td><td>1</td><td>0</td><td>0</td><td>4</td><td>75.0</td></tr>
+</table>
+<p>Table 2. Synthetic test outcomes; the expected values are calculated independently.</p>
+<p>Earlier: 100 × 4 / 4 = 100.0%. Current: 100 × 3 / (3 + 1) = 75.0%.
+The difference is 100.0 − 75.0 = 25.0 percentage points. Because 25.0 &gt; 5.0,
+the expected answer is a regression warning. The independent calculations are
+also written in the test docstrings.</p>
+<pre><code>python -m pytest tests/quality/test_test_health_dashboard.py -q -p no:cacheprovider</code></pre>
+<p>The test <code>test_main_persists_history_and_renders_trend</code> runs the full
+history-to-dashboard integration twice with these synthetic inputs in a disposable
+directory, reads back both generated files and checks the expected warning.
+Other tests check threshold equality, no prior history, the latest-eight boundary,
+corrupt evidence preservation, launch failures and replacement failures.</p>
+<h2>Known limits and later slices</h2>
+<p>A pass-rate trend is not source coverage. Changes in collected cases, skipped
+cases or diagnostic errors change the denominator and may prevent meaningful
+comparison between runs. Historical identity does not yet pin the source revision,
+environment or test selection. No comparison of equivalent source coverage is
+established. The warning is advisory; no merge gate or scheduling policy is changed.</p>
+<p>The existing source-package discovery is retained. A source package appearing in
+the test-directory inventory does not prove test coverage of every module. A
+missing source inventory cannot establish complete coverage. Runtime history and
+Markdown output are generated on demand; this change publishes no live-suite
+results and does not execute a complete target-repository suite.</p>
+<p>The dashboard and history are separate files, not one transactional publication.
+A dashboard write failure after a history update leaves an observation without a
+matching rendered dashboard. Reruns append observations rather than deduplicating
+runs. Broader repository anatomy, duplicate consolidation, suite repair,
+scheduling, source coverage, baseline budgets and gate enforcement remain under
+the parent initiative and its linked epics.</p>
+</body>
+</html>

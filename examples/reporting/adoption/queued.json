@@ -1,0 +1,7 @@
+{
+  "target": "target-b",
+  "status": "queued",
+  "revision": "P6",
+  "sha256": "b037055859dad5b9f047d7ef7af8303c3e057c8114d4e85fa2465527d1a78118",
+  "observed_at": "2026-10-22T10:00:00Z"
+}

@@ -7,6 +7,18 @@ AI capabilities across different use cases.
 
 ## Scripts
 
+### `context_budget.py`
+
+Accounts for an explicit context observation, with tool results nested inside
+messages. Reports unmeasured prose savings as `NOT_EVALUATED`.
+
+```bash
+uv run --no-project python scripts/ai/context_budget.py docs/examples/context-budget.json
+```
+
+See [bounded tool output guidance](../../docs/standards/BOUNDED_TOOL_OUTPUT.md)
+for the input schema, method, worked example and limits of the reported evidence.
+
 ### `observed_exposure_report.py`
 
 Measures observed AI automation rate per WRK category by reading

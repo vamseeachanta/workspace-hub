@@ -18,6 +18,12 @@ from pathlib import Path
 
 import yaml
 
+if __package__ in (None, ""):
+    # Python tutorial, Modules / The Module Search Path: prepend the repo root.
+    sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
+
+from scripts.utils.atomic_write import atomic_write_utf8
+
 PROVIDERS = ("claude", "codex", "gemini")
 
 STATE_REL = Path("config") / "ai-tools" / "release-scan-state.yaml"
@@ -123,9 +129,8 @@ capture any relevant WRK items for new features or breaking changes.
 def update_state(state_path: Path, changes: list[dict[str, str]]) -> None:
     """Update state file with new versions and timestamp."""
     if state_path.exists():
-        data = yaml.safe_load(state_path.read_text()) or {}
+        data = yaml.safe_load(state_path.read_text(encoding="utf-8")) or {}
     else:
-        state_path.parent.mkdir(parents=True, exist_ok=True)
         data = {}
     versions = data.get("last_seen_version", {}) or {}
     for c in changes:
@@ -133,17 +138,19 @@ def update_state(state_path: Path, changes: list[dict[str, str]]) -> None:
     data["last_seen_version"] = versions
     data["last_scan_at"] = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
     data["last_scan_by"] = "nightly"
-    state_path.write_text(yaml.dump(data, default_flow_style=False))
+    content = yaml.dump(data, default_flow_style=False, allow_unicode=True)
+    state_path.parent.mkdir(parents=True, exist_ok=True)
+    atomic_write_utf8(state_path, content)
 
 
 def _touch_scan_timestamp(state_path: Path) -> None:
     """Update last_scan_at/last_scan_by without changing versions."""
     if not state_path.exists():
         return
-    data = yaml.safe_load(state_path.read_text()) or {}
+    data = yaml.safe_load(state_path.read_text(encoding="utf-8")) or {}
     data["last_scan_at"] = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
     data["last_scan_by"] = "nightly"
-    state_path.write_text(yaml.dump(data, default_flow_style=False))
+    atomic_write_utf8(state_path, yaml.dump(data, default_flow_style=False, allow_unicode=True))
 
 
 def _get_next_id(workspace_root: Path, title: str = "auto-captured WRK") -> str:

@@ -64,10 +64,36 @@ fi
 # =========================================================================
 CRON_JSON="${HOME}/.hermes/cron/jobs.json"
 if [[ -f "${CRON_JSON}" ]]; then
-    job_count="$(python3 -c "import json; d=json.load(open('${CRON_JSON}')); print(len(d))" 2>/dev/null || echo 0)"
-    scheduled="$(python3 -c "import json; d=json.load(open('${CRON_JSON}')); print(len([j for j in d if j.get('state')=='scheduled']))" 2>/dev/null || echo 0)"
-    completed="$(python3 -c "import json; d=json.load(open('${CRON_JSON}')); print(len([j for j in d if j.get('state')=='completed']))" 2>/dev/null || echo 0)"
-    pass "Cron (${job_count} jobs)" "${scheduled} scheduled (${completed} completed)"
+    # #2132: count the array entries and historical repeat.completed counters.
+    if cron_counts="$(python3 - "${CRON_JSON}" 2>/dev/null <<'PY'
+import json
+import sys
+
+with open(sys.argv[1], encoding="utf-8") as source:
+    jobs = json.load(source)
+if not isinstance(jobs, list):
+    raise ValueError("Expected a jobs array")
+
+completed = 0  # Missing counters contribute zero, as required by #2132.
+for job in jobs:
+    if not isinstance(job, dict):
+        raise ValueError("Expected a job object")
+    repeat = job.get("repeat", {})
+    if not isinstance(repeat, dict):
+        raise ValueError("Expected a repeat object")
+    count = repeat.get("completed", 0)
+    if type(count) is not int or count < 0:
+        raise ValueError("Expected a nonnegative integer completion counter")
+    completed += count
+
+print(len(jobs), completed)
+PY
+    )"; then
+        read -r job_count completed <<< "${cron_counts}"
+        pass "Cron (${job_count} jobs)" "${completed} total completions"
+    else
+        warn "Cron (unavailable)" "Unable to read valid cron job counts"
+    fi
 else
     fail "Cron (no jobs.json)" "No cron configuration found"
 fi

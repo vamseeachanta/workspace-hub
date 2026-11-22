@@ -10,23 +10,81 @@ Hardening:
   enrollment neither authenticates task authority nor grants implementation approval;
 - computes ``body_verified_fresh`` = verified-label applied at/after the issue body's
   last edit, so editing the body after verification invalidates the label (Codex#1);
-- binds via ``expected_issue``; threshold comes from server-side config, not the record.
+- binds via ``expected_issue``; threshold comes from server-side config, not the record;
+- authorized appliers are COMPLETENESS_OWNERS plus COMPLETENESS_REVIEWERS (repo variables),
+  and the labeler must not be an author of the closing PR or commit (rules review r5).
 """
 from __future__ import annotations
 
 import json
 import os
 import re
+import subprocess
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from completeness_gate_check import (  # noqa: E402
     OPT_IN_LABEL, PLAN_APPROVED_LABEL, VERIFIED_LABEL,
-    body_is_fresh, evaluate_close, gate_applies,
+    body_is_fresh, evaluate_close, gate_applies, work_authors_from,
 )
 from label_authority import gh_json, parse_iso, verified_label_event  # noqa: E402
 
 _RECORD_RE = re.compile(r"```completeness\s*(\{.*?\})\s*```", re.DOTALL)
+
+
+# Keep nested first pages bounded. Most closes need one query; only an unfinished
+# connection is fetched again, using its own parent ID and cursor.
+def _page_of(fields):
+    return " { totalCount pageInfo { hasNextPage endCursor } nodes { " + fields + " } }"
+
+
+_AUTHORS = _page_of("user { login }")
+_COMMIT = "id authors(first:10)" + _AUTHORS
+_COMMITS = _page_of("commit { " + _COMMIT + " }")
+_PR = "id author { login } commits(first:50)" + _COMMITS
+_LINKS = _page_of("state " + _PR)
+
+_ISSUE_QUERY = """
+query($owner: String!, $name: String!, $issue: Int!) {
+  repository(owner: $owner, name: $name) {
+    issue(number: $issue) {
+      id closed lastEditedAt createdAt
+      timelineItems(itemTypes:[CLOSED_EVENT], last:1) {
+        nodes { ... on ClosedEvent { closer {
+          __typename ... on PullRequest { %(pr)s } ... on Commit { %(commit)s }
+        } } }
+      }
+      closedByPullRequestsReferences(first:20, includeClosedPrs:true) %(links)s
+    }
+  }
+}
+""" % {"pr": _PR, "commit": _COMMIT, "links": _LINKS}
+
+
+def _graphql(query, *variables):
+    try:
+        response = gh_json("api", "graphql", "-f", "query=" + query, *variables) or {}
+    except subprocess.CalledProcessError as error:
+        print(f"[completeness-gate] GraphQL read failed: {error.stderr}", file=sys.stderr)
+        return {}
+    return {} if response.get("errors") else response.get("data") or {}
+
+
+def _next_page(parent_id, field, cursor):
+    parent_type, arguments, selection = {
+        "closedByPullRequestsReferences": ("Issue", "includeClosedPrs:true,", _LINKS),
+        "commits": ("PullRequest", "", _COMMITS),
+        "authors": ("Commit", "", _AUTHORS),
+    }[field]
+    query = ("query($id: ID!, $cursor: String!) { node(id:$id) { ... on "
+             + parent_type + " { " + field + "(" + arguments + "first:100, after:$cursor)"
+             + selection + " } } }")
+    return _graphql(query, "-f", "id=" + parent_id, "-f", "cursor=" + cursor)["node"][field]
+
+
+def _configured_logins(*variables):
+    return {login.strip() for variable in variables
+            for login in os.environ.get(variable, "").split(",") if login.strip()}
 
 
 def _parse_record(body: str) -> dict | None:
@@ -56,7 +114,7 @@ def main() -> int:
               f"— gate not applicable, ALLOW", file=sys.stderr)
         return 0
 
-    owners = {a.strip() for a in os.environ.get("COMPLETENESS_OWNERS", "").split(",") if a.strip()}
+    owners = _configured_logins("COMPLETENESS_OWNERS", "COMPLETENESS_REVIEWERS")
     if not owners:
         print(f"[completeness-gate] issue #{issue}: CONFIG ERROR — opted-in but COMPLETENESS_OWNERS "
               "repo variable is unset; set it (comma-separated logins).", file=sys.stderr)
@@ -67,9 +125,8 @@ def main() -> int:
     # Freshness anchors on the BODY edit time (lastEditedAt), NOT updatedAt — the close
     # itself bumps updatedAt past the label and would falsely fail freshness (fix #5).
     owner, name = repo.split("/", 1)
-    ts = gh_json("api", "graphql", "-f", f'query={{repository(owner:"{owner}",name:"{name}")'
-                  f'{{issue(number:{issue}){{lastEditedAt createdAt}}}}}}') or {}
-    issue_ts = (((ts.get("data") or {}).get("repository") or {}).get("issue")) or {}
+    context = _graphql(_ISSUE_QUERY, "-f", f"owner={owner}", "-f", f"name={name}", "-F", f"issue={issue}")
+    issue_ts = (context.get("repository") or {}).get("issue") or {}
     body_verified_fresh = body_is_fresh(
         label_at, parse_iso(issue_ts.get("lastEditedAt")), parse_iso(issue_ts.get("createdAt")))
 
@@ -79,6 +136,8 @@ def main() -> int:
         closing_actor=closing_actor, authorized_appliers=owners,
         expected_issue=issue, body_verified_fresh=body_verified_fresh,
         require_separate_closer=require_separate,
+        work_authors=work_authors_from(issue_ts, _next_page),
+        shared_logins=_configured_logins("COMPLETENESS_SHARED_LOGINS"),
     )
     print(f"[completeness-gate] issue #{issue}: "
           f"{'ALLOW' if decision.allowed else 'DENY'} — {decision.reason}", file=sys.stderr)

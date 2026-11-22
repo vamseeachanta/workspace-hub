@@ -27,6 +27,10 @@ owning issue. Do not copy a point-in-time value into this runbook.
 
 ## Architecture
 
+For evidence-based selection of a compute access alternative, use the
+[private compute SSH access procedure](compute-ssh-access.md). It records
+unverified capabilities explicitly and does not change the rollout sequence.
+
 The canonical design separates two layers:
 
 - **Tailscale transport** supplies encrypted, private reachability and MagicDNS.

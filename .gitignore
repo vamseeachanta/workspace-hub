@@ -49,6 +49,7 @@ lib/
 !scripts/improve/lib/
 !scripts/readiness/lib/
 !scripts/lib/
+!/tests/lib/
 !scripts/review/lib/
 !scripts/work-queue/lib/
 # GSD bin/lib — runtime libraries needed across machines
@@ -660,6 +661,14 @@ scripts/review/results/*
 # Machine-local topic file; kept out of version control
 .claude/memory/topics/network_machines.md
 
+# Cleanup evidence contains exact local names; publish sanitized summaries only.
+/cleanup-output/
+
 # Fleet snapshot wrapper scratch files must never be tracked in the public repo.
 docs/reports/fleet-snapshots/.latest.*
 docs/reports/fleet-snapshots/.fleet-label-*.tmp
+
+# Keep only the bounded JSON test deliverable from the ignored library tree.
+!/tests/lib/
+/tests/lib/*
+!/tests/lib/test_strict_json_boundaries.py

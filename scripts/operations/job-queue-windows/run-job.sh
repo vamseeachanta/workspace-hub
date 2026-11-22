@@ -1,6 +1,11 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# Repository selection follows explicit configured paths, not the caller's Git
+# bindings. See the generation/test isolation contract in AGENTS.md and the
+# same isolation in scripts/operations/job_queue_footprint.py.
+unset GIT_DIR GIT_WORK_TREE GIT_COMMON_DIR
+
 DEFAULT_WORKTREE_KEEP_MINUTES=60
 
 cmd="${1:-start}"

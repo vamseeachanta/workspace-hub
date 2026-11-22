@@ -9,6 +9,27 @@
 
 ---
 
+## Plan-lite
+
+The repair will prefix six shell submitter calls with `bash`: two direct
+Claude calls, two Claude substitute calls and two Codex calls. Quoted paths,
+arguments, substitute-model forwarding and existing failure handling will remain
+part of the acceptance criteria.
+
+The offline regression matrix will use
+`tests/review/test_dispatcher_shell_invocation.py` with stand-in submitters.
+Five routes (Claude, Codex, Agy, review-limit substitution and quota substitution)
+and two input shapes (file and commit) will cover success with execute bits
+cleared, success with tracked modes, and synthetic failure propagation. Two
+standalone checks will cover direct permission failure and the shell call sites:
+`5 × 2 × 3 + 2 = 32` cases. Existing committed-mode checks (47 cases) and the
+path guard (four cases) will bring the bounded regression total to 83 cases.
+Shell syntax and model-ID sourcing will also be checked.
+
+The repair will exclude live provider calls, provider policy changes, executable
+mode changes, workflow or hook changes and completion of the broader issue.
+Offline fixtures will establish invocation and argument behavior only.
+
 ## Resource Intelligence Summary
 
 ### Existing repo code

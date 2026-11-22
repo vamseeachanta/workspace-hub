@@ -1,4 +1,5 @@
 import importlib.util, sys
+import math
 from pathlib import Path
 import pytest
 
@@ -41,6 +42,81 @@ def test_numeric_stats_reports_min_max_nulls():
     import pandas as pd
     lines = srhf.numeric_stats("t", pd.DataFrame({"v": [1.0, 2.0, None]}))
     assert any("min=1.0" in l and "max=2.0" in l and "nulls=1" in l for l in lines)
+
+
+@pytest.fixture
+def signed_numeric_frame():
+    import pandas as pd
+
+    # Authored example: [-2, 0, 4, null]. Independent hand calculation:
+    # finite count = 3; sum = -2 + 0 + 4 = 2; mean = 2 / 3;
+    # negative count = 1 (zero is not negative); null count = 1;
+    # min = -2; max = 4.
+    return pd.DataFrame({"v": [-2, 0, 4, None]})
+
+
+def _parse_numeric_stats(lines):
+    """Read summary numbers without depending on their textual float spelling."""
+    stats = {}
+    for line in lines:
+        column, fields = line.strip().split(": ", 1)
+        assert column not in stats, f"duplicate summary for {column}"
+        stats[column] = {
+            key: float(value)
+            for key, value in (field.split("=") for field in fields.split())
+        }
+    return stats
+
+
+def test_numeric_stats_signed_mean_and_negative_count(signed_numeric_frame):
+    stats = _parse_numeric_stats(srhf.numeric_stats("t", signed_numeric_frame))
+
+    assert set(stats) == {"t.v"}
+    # Expected values come from the fixture's hand calculation, not the tool.
+    assert stats["t.v"] == pytest.approx({
+        "min": -2, "max": 4, "mean": 2 / 3, "neg": 1, "nulls": 1,
+    })
+
+
+def test_numeric_stats_mixed_frame_includes_only_numeric_columns(signed_numeric_frame):
+    frame = signed_numeric_frame.copy()
+    # Text counterparts to the authored example must not become numeric columns.
+    frame["numeric_text"] = ["-2", "0", "4", None]
+    frame["label"] = ["negative", "zero", "positive", None]
+
+    stats = _parse_numeric_stats(srhf.numeric_stats("t", frame))
+
+    assert set(stats) == {"t.v"}
+
+
+def test_numeric_stats_empty_float_column():
+    import pandas as pd
+
+    frame = pd.DataFrame({
+        "empty": pd.Series(dtype="float64"),
+        "text": pd.Series(dtype="object"),
+    })
+    stats = _parse_numeric_stats(srhf.numeric_stats("t", frame))
+
+    assert set(stats) == {"t.empty"}
+    assert set(stats["t.empty"]) == {"min", "max", "mean", "neg", "nulls"}
+    # No observations: extrema and mean are undefined; both counts are zero.
+    for field in ("min", "max", "mean"):
+        assert math.isnan(stats["t.empty"][field])
+    assert stats["t.empty"]["neg"] == 0
+    assert stats["t.empty"]["nulls"] == 0
+
+
+def test_numeric_stats_text_only_frame_excludes_all_columns():
+    import pandas as pd
+
+    # Numeric-looking strings repeat the authored example but remain text.
+    frame = pd.DataFrame({
+        "numeric_text": ["-2", "0", "4", None],
+        "label": ["negative", "zero", "positive", None],
+    })
+
+    assert srhf.numeric_stats("t", frame) == []
 
 
 def test_card_note_appears_in_card():

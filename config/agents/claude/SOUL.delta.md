@@ -57,4 +57,3 @@ Claude Code supports output-style adapters (`/output-style` switches voice). Cur
 ## Quota and Cost
 
 - Claude Max base + overage quota pools are consumed by main-session work. Subagents use the same pool.
-- The user explicitly tracks "zero waste" across Anthropic Max base + Anthropic Max overage + OpenAI pools. Brain/hands delegation to Hermes routes execution-heavy work away from main-session Claude when appropriate. See `goal-invocation.md` Step 4.5.

@@ -127,14 +127,26 @@ fi
 codex_skills="${HOME}/.codex/skills"
 if [[ ! -d "${HOME}/.codex" ]]; then
     record SKIP "codex-skills" "~/.codex not present on this box"
-elif [[ -L "${codex_skills}" ]]; then
-    record NEEDS-ATTENTION "codex-skills" "is a symlink → likely shadows native .system; expected a real dir"
-elif [[ -d "${codex_skills}/.system" ]]; then
-    record OK "codex-skills" "native .system present; workspace skills served from repo"
-elif [[ -d "${codex_skills}" ]]; then
-    record SKIP "codex-skills" "real dir, no .system (Codex may not have seeded system skills yet)"
+elif [[ ! -f "${REPO_ROOT}/scripts/lib/reparse_guard.sh" ]]; then
+    record NEEDS-ATTENTION "codex-skills" "reparse guard unavailable; skills left untouched"
 else
-    record SKIP "codex-skills" "absent (Codex CLI will create on next run)"
+    # Shared guard contract: symlinks and NTFS junctions both require attention;
+    # an unavailable Windows probe is not evidence of an ordinary directory.
+    # shellcheck source=../lib/reparse_guard.sh
+    source "${REPO_ROOT}/scripts/lib/reparse_guard.sh"
+    is_reparse_point "${codex_skills}"
+    reparse_status=$?
+    if (( reparse_status == 0 )); then
+        record NEEDS-ATTENTION "codex-skills" "is a symlink or junction; expected a real dir"
+    elif (( reparse_status != 1 )); then
+        record NEEDS-ATTENTION "codex-skills" "reparse status undetermined; skills left untouched"
+    elif [[ -d "${codex_skills}/.system" ]]; then
+        record OK "codex-skills" "native .system present; workspace skills served from repo"
+    elif [[ -d "${codex_skills}" ]]; then
+        record SKIP "codex-skills" "real dir, no .system (Codex may not have seeded system skills yet)"
+    else
+        record SKIP "codex-skills" "absent (Codex CLI will create on next run)"
+    fi
 fi
 
 # ── 3. Deferred items — report only, never force ──────────────────────────────
