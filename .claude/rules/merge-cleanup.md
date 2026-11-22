@@ -1,4 +1,4 @@
-# Merge cleanup — a merge is not done until its branch and worktree are gone
+# Merge cleanup — a merge is not done until its worktree is gone and its branch is listed for the F2 clean-up
 
 **When to apply:** every merge to `main`, in any repo of the ecosystem — whether the agent verified it and handed the human the command, or the human ran it. Also at session close, as a sweep.
 
