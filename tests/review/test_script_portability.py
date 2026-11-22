@@ -35,7 +35,7 @@ def clone_review_fixture(tmp_path, helper_mode):
     stream = bytearray(b"commit refs/heads/main\ncommitter Fixture <fixture> "
                        b"1700000000 +0000\ndata 7\nfixture\n")
     helpers = ("validate-review-output.sh", "render-structured-review.py")
-    for name in (*helpers, "lib/codex-version-guard.sh",
+    for name in (*helpers, "lib/codex-version-guard.sh", "codex-exec-watch.py",
                  "submit-to-codex.sh", "submit-to-claude.sh", "submit-to-gemini.sh"):
         mode = "100755" if name in helpers and helper_mode == 0o755 else "100644"
         content = (ROOT / "scripts/review" / name).read_bytes()
