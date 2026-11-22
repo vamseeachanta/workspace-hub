@@ -74,7 +74,10 @@ def test_fast_gate_workflow_safety_properties():
     job = jobs["fast-gate"]
     assert job["name"] == "Fast Gate"
     assert job["timeout-minutes"] > 0
-    assert "head.repo.fork && 'ubuntu-latest'" in job["runs-on"]
+    # Hosted by default; WH_PR_RUNNER=self-hosted rolls same-repo PRs back
+    # (routing evaluated in tests/ci_smoke/test_pr_gate_runner_contract.py).
+    assert "vars.WH_PR_RUNNER == 'self-hosted'" in job["runs-on"]
+    assert job["runs-on"].rstrip("} ").endswith("|| 'ubuntu-latest'")
     assert not job.get("continue-on-error", False)
     runs = " ".join(step.get("run", "") for step in job["steps"])
     assert "scripts/ci/lint_changed.py" in runs
