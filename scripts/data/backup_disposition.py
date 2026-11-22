@@ -32,6 +32,9 @@ ELEVATED_THRESHOLD = 0.85
 HIGH_THRESHOLD = 0.95
 DESTRUCTIVE_KINDS = frozenset({"move", "delete", "archive", "compress", "merge", "tar"})
 ALLOWED_KINDS = frozenset({"retain", "report_only"})
+# Roots that hold source data; Phase A reports must never be written under them.
+# Module-level so tests can pin an explicit set; production default is unchanged.
+DATA_ROOTS: tuple[Path, ...] = (Path("/mnt/ace"),)
 
 
 class DestructiveActionBlocked(RuntimeError):
@@ -300,9 +303,10 @@ def _validated_output_path(output_path: Path | str) -> Path:
     # residency check, then write to that resolved path. Validating one path and
     # returning another (the un-resolved input) is a TOCTOU/symlink-escape hole.
     resolved = output.expanduser().resolve(strict=False)
-    mnt_ace = Path("/mnt/ace").resolve(strict=False)
-    if resolved == mnt_ace or mnt_ace in resolved.parents:
-        raise OutputResidencyBlocked("Phase A reports must not be written to data roots.")
+    for data_root in DATA_ROOTS:
+        root = Path(data_root).resolve(strict=False)
+        if resolved == root or root in resolved.parents:
+            raise OutputResidencyBlocked("Phase A reports must not be written to data roots.")
     # Containment is enforced for every input — absolute, relative, or symlinked.
     # A relative path resolves against cwd; a symlink component resolves to its
     # real target; either way the final target must live inside the repo/worktree.

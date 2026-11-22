@@ -30,6 +30,21 @@ def _backup_and_active(tmp_path: Path) -> tuple[Path, Path]:
     return backup, active
 
 
+@pytest.fixture
+def isolated_data_roots(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> Path:
+    """Pin the data-root guard to an explicit root that excludes ``tmp_path``.
+
+    On ace1 self-hosted runners pytest's temp folder lives under ``/mnt/ace``,
+    the production data root, so report-writing tests that target ``tmp_path``
+    would (correctly) be blocked by the guard. Tests that exercise the happy
+    path or the repo-containment rule configure a dedicated data root instead,
+    making them independent of where the runner's temp folder is.
+    """
+    data_root = tmp_path / "configured-data-root"
+    monkeypatch.setattr(module, "DATA_ROOTS", (data_root,))
+    return data_root
+
+
 def test_fully_redundant_backup_is_classified_against_active_tree(tmp_path: Path) -> None:
     backup, active = _backup_and_active(tmp_path)
     _write(backup / "engineering" / "model.dat", "payload-a")
@@ -235,7 +250,9 @@ def test_rendered_report_redacts_client_names_and_raw_paths(tmp_path: Path) -> N
     assert "/mnt/ace" not in rendered
 
 
-def test_write_disposition_report_creates_redacted_markdown(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+def test_write_disposition_report_creates_redacted_markdown(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, isolated_data_roots: Path
+) -> None:
     backup, active = _backup_and_active(tmp_path)
     _write(backup / "Confidential" / "private.xlsx", "payload")
     _write(active / "Confidential" / "private.xlsx", "payload")
@@ -258,12 +275,14 @@ def test_write_disposition_report_creates_redacted_markdown(tmp_path: Path, monk
     assert "private.xlsx" not in rendered
 
 
-def test_write_disposition_report_rejects_absolute_output_outside_repo(tmp_path: Path) -> None:
+def test_write_disposition_report_rejects_absolute_output_outside_repo(
+    tmp_path: Path, isolated_data_roots: Path
+) -> None:
     backup, active = _backup_and_active(tmp_path)
     _write(backup / "f.txt", "x")
     _write(active / "f.txt", "x")
 
-    with pytest.raises(module.OutputResidencyBlocked):
+    with pytest.raises(module.OutputResidencyBlocked, match="inside the current repo"):
         module.write_disposition_report(
             backup_root=backup,
             active_root=active,
@@ -288,8 +307,34 @@ def test_write_disposition_report_rejects_mnt_ace_output_target(tmp_path: Path) 
         )
 
 
-def test_write_disposition_report_rejects_relative_output_escaping_repo(
+def test_default_data_roots_cover_mnt_ace() -> None:
+    assert module.DATA_ROOTS == (Path("/mnt/ace"),)
+
+
+def test_write_disposition_report_rejects_output_under_configured_data_root(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    # The guard must still fire for any configured data root, even when the
+    # output would otherwise satisfy the repo-containment rule (cwd == root).
+    backup, active = _backup_and_active(tmp_path)
+    _write(backup / "f.txt", "x")
+    _write(active / "f.txt", "x")
+    monkeypatch.setattr(module, "DATA_ROOTS", (tmp_path,))
+    monkeypatch.chdir(tmp_path)
+
+    with pytest.raises(module.OutputResidencyBlocked, match="data roots"):
+        module.write_disposition_report(
+            backup_root=backup,
+            active_root=active,
+            mount_path=tmp_path,
+            output_path=Path("out") / "issue-2769-report.md",
+            disk_usage_fn=lambda p: module.DiskUsageTriple(total=100, used=40, free=60),
+        )
+    assert not (tmp_path / "out" / "issue-2769-report.md").exists()
+
+
+def test_write_disposition_report_rejects_relative_output_escaping_repo(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, isolated_data_roots: Path
 ) -> None:
     # Regression for #2769 cross-review MAJOR: a relative path that resolves
     # outside the repo/worktree must be blocked, not just absolute paths.
@@ -300,7 +345,7 @@ def test_write_disposition_report_rejects_relative_output_escaping_repo(
     _write(active / "f.txt", "x")
     monkeypatch.chdir(repo)
 
-    with pytest.raises(module.OutputResidencyBlocked):
+    with pytest.raises(module.OutputResidencyBlocked, match="inside the current repo"):
         module.write_disposition_report(
             backup_root=backup,
             active_root=active,
@@ -311,7 +356,7 @@ def test_write_disposition_report_rejects_relative_output_escaping_repo(
 
 
 def test_write_disposition_report_rejects_symlinked_output_dir(
-    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, isolated_data_roots: Path
 ) -> None:
     # Regression for #2769 cross-review MAJOR: a symlink inside the repo that
     # points outside it must not be a write-through escape (TOCTOU/symlink).
@@ -325,7 +370,7 @@ def test_write_disposition_report_rejects_symlinked_output_dir(
     _write(active / "f.txt", "x")
     monkeypatch.chdir(repo)
 
-    with pytest.raises(module.OutputResidencyBlocked):
+    with pytest.raises(module.OutputResidencyBlocked, match="inside the current repo"):
         module.write_disposition_report(
             backup_root=backup,
             active_root=active,
@@ -367,7 +412,9 @@ def test_parse_blocked_by_accepts_github_issue_dependency_identifier() -> None:
     ]
 
 
-def test_cli_writes_redacted_metadata_only_report(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+def test_cli_writes_redacted_metadata_only_report(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, isolated_data_roots: Path
+) -> None:
     backup, active = _backup_and_active(tmp_path)
     _write(backup / "ClientStuff" / "data.dat", "payload")
     _write(active / "ClientStuff" / "data.dat", "payload")
