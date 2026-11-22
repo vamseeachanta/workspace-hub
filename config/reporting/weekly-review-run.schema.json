@@ -1,0 +1,136 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "urn:weekly-review-run:1.0.0",
+  "title": "Weekly review run artifact",
+  "description": "Standalone structural contract for a single weekly review; validation establishes no live readiness or publication authority.",
+  "$comment": "Version and nonempty-text bounds are contract choices defined in docs/examples/weekly-review-run-format.md. Draft 7 follows docs/modules/ai/readiness-evidence-bundle.schema.yaml; canonical readiness checks remain there.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "metadata",
+    "readiness",
+    "settings_routing",
+    "freshness",
+    "accessibility",
+    "findings"
+  ],
+  "definitions": {
+    "text": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "evidence_refs": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "$ref": "#/definitions/text" }
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source_ref", "source_revision", "producer"],
+      "properties": {
+        "source_ref": { "$ref": "#/definitions/text" },
+        "source_revision": { "$ref": "#/definitions/text" },
+        "producer": { "$ref": "#/definitions/text" }
+      }
+    },
+    "finding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "category", "severity", "summary"],
+      "properties": {
+        "id": { "$ref": "#/definitions/text" },
+        "category": {
+          "type": "string",
+          "enum": ["readiness", "settings_routing", "freshness", "accessibility"]
+        },
+        "severity": {
+          "type": "string",
+          "enum": ["info", "warning", "critical"]
+        },
+        "summary": { "$ref": "#/definitions/text" },
+        "recommendation": { "$ref": "#/definitions/text" },
+        "evidence_refs": { "$ref": "#/definitions/evidence_refs" }
+      }
+    },
+    "follow_on_ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["finding_id", "kind", "ref"],
+      "properties": {
+        "finding_id": { "$ref": "#/definitions/text" },
+        "kind": { "type": "string", "enum": ["issue", "artifact"] },
+        "ref": { "$ref": "#/definitions/text" }
+      }
+    }
+  },
+  "properties": {
+    "schema_version": { "type": "string", "const": "1.0.0" },
+    "metadata": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["run_id", "period_start", "period_end", "generated_at", "provenance"],
+      "properties": {
+        "run_id": { "$ref": "#/definitions/text" },
+        "period_start": { "$ref": "#/definitions/timestamp" },
+        "period_end": { "$ref": "#/definitions/timestamp" },
+        "generated_at": { "$ref": "#/definitions/timestamp" },
+        "provenance": { "$ref": "#/definitions/provenance" }
+      }
+    },
+    "readiness": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status"],
+      "properties": {
+        "status": { "type": "string", "enum": ["ready", "degraded", "blocked", "unknown"] },
+        "evidence_refs": { "$ref": "#/definitions/evidence_refs" }
+      }
+    },
+    "settings_routing": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "baseline_ref"],
+      "properties": {
+        "status": { "type": "string", "enum": ["consistent", "drifted", "unknown"] },
+        "baseline_ref": { "$ref": "#/definitions/text" },
+        "evidence_refs": { "$ref": "#/definitions/evidence_refs" }
+      }
+    },
+    "freshness": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "criteria_ref"],
+      "properties": {
+        "status": { "type": "string", "enum": ["current", "stale", "unknown"] },
+        "criteria_ref": { "$ref": "#/definitions/text" },
+        "evidence_refs": { "$ref": "#/definitions/evidence_refs" }
+      }
+    },
+    "accessibility": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status"],
+      "properties": {
+        "status": { "type": "string", "enum": ["accessible", "partial", "inaccessible", "unknown"] },
+        "evidence_refs": { "$ref": "#/definitions/evidence_refs" }
+      }
+    },
+    "findings": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "$ref": "#/definitions/finding" }
+    },
+    "follow_on_refs": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "$ref": "#/definitions/follow_on_ref" }
+    }
+  }
+}

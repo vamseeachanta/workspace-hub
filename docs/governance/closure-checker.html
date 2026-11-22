@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Read-only issue closure checker</title>
+<style>
+body { max-width: 65rem; margin: 2rem auto; padding: 0 1rem; color: #172535; font: 1rem/1.6 system-ui, sans-serif; }
+table { border-collapse: collapse; width: 100%; } th, td { text-align: left; vertical-align: top; border: 1px solid #aab5c0; padding: .6rem; }
+pre { white-space: pre-wrap; background: #eef2f5; padding: 1rem; }
+caption { caption-side: bottom; text-align: left; padding: .5rem 0; }
+</style>
+<h1>Read-only issue closure checker</h1>
+<p>The existing checker evaluates the ten closure rules and produces per-rule CSV
+and a Markdown summary. This change bounds individual API requests, preserves
+exact query identity in cache filenames, and requires a command alongside a test
+count. Results describe the evidence available at collection time, not delivery
+certification. No GitHub write is performed.</p>
+<h2>Revision history</h2>
+<table><tr><th>Revision</th><th>Date</th><th>Change and reason</th></tr>
+<tr><td>Initial</td><td>2026-10-22</td><td>Request accounting and command evidence are documented to expose incomplete collection and count-only evidence.</td></tr>
+<tr><td>1</td><td>2026-10-22</td><td>Command contexts, non-execution rejection and collection response shapes are specified to prevent absent evidence from passing.</td></tr>
+<caption>Revision history.</caption></table>
+<h2>Sources and method</h2>
+<p><a href="issue-closing-procedure.md">Issue-closing procedure</a>, sections B.3
+and E.4, requires a test command with a count. Issue 4073, plan item 3, supplies
+the ceiling of 500 API calls per run. These are workflow criteria; no engineering
+coefficients or physical equations apply. Request arithmetic is C = R + G, where
+R is the number of uncached REST response pages and G is the number of uncached
+GraphQL requests. Failed requests also consume budget. Cache hits consume none.</p>
+<p>Each pagination page is requested separately through an explicit GET. The
+response Link header selects the next page, restricted to the public API origin.
+A repeated page, incomplete search result, malformed response or exhausted budget
+raises an error instead of saving a complete list. Budget exhaustion propagates
+through optional evidence reads. Collection responses must be JSON lists or
+search envelopes with list-valued <code>items</code>, a nonnegative integer
+<code>total_count</code> and, when present, a Boolean <code>incomplete_results</code>.
+An unknown object or scalar response is rejected before caching. Body references
+retain successor-state lookups,
+but only references in closing comments trigger recursive delivery-evidence reads.
+Cache filenames use SHA-256 of the exact request
+string; this digest identifies a request, not the integrity or freshness of its
+response. Legacy punctuation-based cache entries are not reused.</p>
+<p>Common test tools must appear in command context: at a statement's start,
+in inline code, after an execution verb, or after a <code>Tests:</code>,
+<code>Command:</code> or <code>Builder:</code> label. Labelled custom builders
+require arguments or a script path. Placeholder values and explicit non-execution
+within the same clause are rejected, including negation around inline code.
+For example, <code>pytest was not run; 3 tests remain.</code> and
+<code>Command: none; 3 passed</code> both fail rule 4. A count alone also fails.
+This is a lexical text check; commands are never executed by the checker,
+and their claimed results are not independently authenticated.</p>
+<h2>Usage</h2>
+<pre>python scripts/governance/check_issue_closures.py --fixture docs/governance/examples/closure-command-evidence.json --csv &lt;output&gt;.csv --markdown &lt;output&gt;.md
+python scripts/governance/check_issue_closures.py --repo &lt;repository&gt; --issue &lt;number&gt; --cache-dir &lt;cache&gt; --csv &lt;output&gt;.csv --markdown &lt;output&gt;.md
+python scripts/governance/check_issue_closures.py --repo &lt;repository&gt; --closed-from YYYY-MM-DD --closed-to YYYY-MM-DD --auditor &lt;classification&gt;.csv --cache-dir &lt;cache&gt; --csv &lt;output&gt;.csv --markdown &lt;output&gt;.md</pre>
+<p>The auditor CSV columns are <code>number,auditor_class</code>. Classes are
+<code>DONE</code>, <code>PARTLY DONE</code> and <code>CLOSED WITHOUT DELIVERY</code>.
+Agreement is matched classifications divided by supplied classifications for
+collected issues. It is not an estimate for uncollected issues.</p>
+<h2>Worked examples</h2>
+<table><tr><th>Input</th><th>Independent method</th><th>Answer</th></tr>
+<tr><td>Two linked response pages; budget two.</td><td>One uncached request per page: 1 + 1 = 2.</td><td>Both pages return; replay costs zero requests.</td></tr>
+<tr><td>Two linked response pages; budget one.</td><td>The first page consumes the only request.</td><td>ApiBudgetExceeded before the second request; no complete list is cached.</td></tr>
+<tr><td>Example issue 1: “3 passed”.</td><td>Procedure E.4 requires both a command and a count; the command is absent.</td><td>Rule 4 FAIL.</td></tr>
+<tr><td>Example issue 2: “Command: custom-builder --check; 3 passed”.</td><td>The explicit command and count satisfy the two text requirements.</td><td>Rule 4 PASS; overall FAIL because resolving revision and path evidence are absent.</td></tr>
+<caption>Synthetic inputs and independently derived answers, also exercised in regression tests.</caption></table>
+<p><a href="examples/closure-command-evidence.json">The complete synthetic input</a>
+is retained for offline replay. Exit 1 is expected because both incomplete
+closures fail rule 3. No synthetic case is presented as a public issue observation.</p>
+<h2>Live observation and manual comparison</h2>
+<p>A read-only search for digitalmodel issues closed on 2026-07-27 returned 42
+issues at the time of collection on 2026-10-22. The initial bounded invocation
+stopped at 500 requests after saving five complete issue observations. After
+body-only reference expansion was removed, collection resumed from saved
+responses and digest-checked observations: all 42 issues completed with 284
+additional requests. Neither invocation exceeded its request ceiling. The first
+five observations were retained rather than fetched again.</p>
+<p>Manual inspection classified each closing comment as lacking the resolving
+revision or pull request required by B.1. The checker returned 42 FAIL, zero WARN
+and zero PASS: agreement is 42 divided by 42, or 100.0 %. This compares overall
+classifications only, not every rule or the actual delivery of the underlying
+work. The manual comparison was performed with the checker results visible;
+it is not a blinded or independent-provider audit.</p>
+<p><a href="examples/closure-date-audit.csv">The compact comparison</a> records
+issue numbers, manual classifications, checker outcomes, the manual criterion
+and SHA-256 digests of the closing comment text. Raw responses and complete
+observations are retained outside the repository; they are not published by
+this change. The search response digest is
+<code>8537c05e78f7234dead6e60bd8941eb4de2c07ca962a5a2af782bcafb8fba7c8</code>.
+The public case URLs are formed from the repository being audited and the
+recorded issue numbers. Source comments can subsequently change; the digest
+identifies the text read during this collection.</p>
+<h2>Known limits</h2>
+<p>Collection currently evaluates the final closure represented by each issue;
+historical reopen and close cycles are not separate report rows. Review reads
+still inspect one page, and all related merged pull requests are checked rather
+than only the closing pull request. Existing neutralized public-case fixtures
+are regression models, not byte-for-byte API archives. Optional API errors other
+than budget exhaustion may still appear as absent evidence. Body edits and
+successor state are read at collection time, not reconstructed at closure time.
+Cached responses have no expiry; use a separate cache directory for a fresh
+observation. Independent provider review remains required before merge.</p>
+</html>

@@ -16,6 +16,13 @@ You are an **adversarial reviewer**. Your job is to find what is wrong, missing,
 
 6. **Silence is failure.** If you have no concrete finding, explicitly say the plan was reviewed against [list checks] and none found — do not return an empty review. An empty review is a failure, not an implicit APPROVE.
 
+## Python runner plans
+
+For Python CLI or pytest-runner changes, verify the supported invocation,
+import setup, working directory and actual subprocess evidence against the
+[canonical entrypoint review contract](../../docs/modules/testing/TESTING_FRAMEWORK_STANDARDS.md#python-cli-and-pytest-runner-entrypoint-review).
+A passing module-invoked suite alone does not establish script-entrypoint imports.
+
 ## Output shape
 
 Return exactly these sections:

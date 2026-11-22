@@ -15,11 +15,8 @@
 # because no check looked past the repository.
 #
 # For Claude, admission additionally requires a verified supported symlink.
-# Other providers remain TRANSPORT-AGNOSTIC BY DESIGN. It compares CONTENT, so a symlink, a copy and a
-# hard link are all acceptable and all equally checked. That matters on Windows
-# accounts without symlink privilege, where install-soul-runtime.sh refuses to
-# leave a copy precisely because a copy "would rot invisibly" — with this gate,
-# it no longer rots invisibly, and the transport becomes a detail.
+# All installable providers require symlinks. Matching copy bytes do not establish
+# the installer's supported transport; copies are reported as UNLINKED.
 #
 # Usage:
 #   check-soul-deployment-drift.sh            # human-readable table
@@ -62,6 +59,27 @@ PROVIDERS=(
     "agy:config/agents/agy/SOUL.runtime.md:.agy/SOUL.md"
 )
 
+# Issue 3833: Gemini integration is pending Phase 6 of issue 2719;
+# agy has a reference artifact only (issue 3573), not this loader surface.
+not_deployed_reason() {
+    case "$1" in
+        gemini) echo "integration pending: issue 2719 Phase 6" ;;
+        agy) echo "reference artifact only: issue 3573" ;;
+        *) return 1 ;;
+    esac
+}
+
+if [[ "$SELF_TEST" -eq 1 ]]; then
+    for provider in gemini agy; do
+        not_deployed_reason "$provider" >/dev/null || exit 1
+    done
+    for provider in claude codex hermes; do
+        if not_deployed_reason "$provider" >/dev/null; then exit 1; fi
+    done
+    echo "PASS: intentionally not deployed providers excluded; deployed providers retained"
+    exit 0
+fi
+
 REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null)" || {
     echo "ERROR: not inside a git checkout. Run from workspace-hub." >&2; exit 2; }
 
@@ -74,7 +92,7 @@ BEHIND="$(git -C "${REPO_ROOT}" rev-list --count HEAD..origin/main 2>/dev/null |
 HEAD_SHA="$(git -C "${REPO_ROOT}" rev-parse --short HEAD 2>/dev/null || echo '?')"
 ORIGIN_SHA="$(git -C "${REPO_ROOT}" rev-parse --short origin/main 2>/dev/null || echo '?')"
 
-drift=0; absent=0; current=0
+drift=0; absent=0; current=0; not_deployed=0
 [[ "${QUIET}" -eq 0 ]] && {
     printf '%-9s %-11s %-9s %s\n' PROVIDER STATE TRANSPORT DESTINATION
     printf '%-9s %-11s %-9s %s\n' --------- ----------- --------- -----------
@@ -82,6 +100,11 @@ drift=0; absent=0; current=0
 
 for entry in "${PROVIDERS[@]}"; do
     IFS=: read -r name runtime_rel dest_rel <<< "${entry}"
+    if reason="$(not_deployed_reason "$name")"; then
+        [[ "$QUIET" -eq 0 ]] && printf '%-9s %-11s %-9s %s (%s)\n' "$name" "NOT-DEPLOYED" "-" "~/${dest_rel}" "$reason"
+        not_deployed=$((not_deployed + 1))
+        continue
+    fi
     dest="${HOME}/${dest_rel}"
     display_dest="~/${dest_rel}"
 
@@ -108,6 +131,8 @@ for entry in "${PROVIDERS[@]}"; do
 
     if [[ ! -e "${dest}" ]]; then
         state=ABSENT; transport="-"; absent=$((absent + 1)); drift=$((drift + 1))
+    elif [[ ! -L "${dest}" ]]; then
+        state=UNLINKED; transport="copy"; drift=$((drift + 1))
     else
         if [[ -L "${dest}" ]]; then transport="symlink"; else transport="copy"; fi
         got="$(sha256_of "${dest}")"
@@ -119,7 +144,7 @@ done
 
 if [[ "${QUIET}" -eq 0 ]]; then
     echo
-    echo "${current} current, ${drift} drifted (${absent} absent)"
+    echo "${current} current, ${drift} drifted (${absent} absent), ${not_deployed} not deployed"
     echo "checkout ${HEAD_SHA}, origin/main ${ORIGIN_SHA}, behind by ${BEHIND} commit(s)"
     if [[ "${BEHIND}" != "0" && "${BEHIND}" != "?" && "${drift}" -eq 0 ]]; then
         echo "  The checkout is behind on other paths; the agent runtimes match origin."
@@ -133,8 +158,9 @@ if [[ "${QUIET}" -eq 0 ]]; then
         echo "Preserve local work; reconcile the baseline before any scoped installation."
         echo "Current config/agents changes (read-only):"
         git -C "${REPO_ROOT}" status --short -- config/agents
-        echo "For providers other than Claude, a copy is accepted by this"
-        echo "content check. Claude requires verified loader admission and a symlink."
+        echo "Installable providers require a native symlink; copies require replacement."
+        echo "Claude additionally requires verified loader admission."
+        echo "The installer preserves existing instructions if replacement cannot be linked."
     fi
 fi
 

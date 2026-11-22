@@ -29,7 +29,7 @@ from equivalence_schema import (
 
 DEFAULT_REF = "equivalence-state"
 
-# Pre-#3516 blobs were keyed by ROLE — two same-role boxes (ace-win-1/2, both
+# Pre-#3516 blobs were keyed by ROLE — two same-role boxes (both
 # contribute-minimal) would silently clobber each other. Blobs are now keyed by
 # registry machine id; these legacy names are self-cleaned on each publish.
 LEGACY_ROLE_NAMES = {"full", "contribute", "contribute-minimal", "none", "unknown"}
@@ -43,7 +43,7 @@ def resolve_identity(registry_path, hostname):
     unregistered boxes can never share a blob name (#3516)."""
     fallback = (f"unknown-{hostname}", "unknown")
     try:
-        with open(registry_path) as fh:
+        with open(registry_path, encoding="utf-8") as fh:
             text = fh.read()
         try:
             import yaml
@@ -215,6 +215,35 @@ def collect(repo, *, remote="origin", ref=DEFAULT_REF):
     return fps
 
 
+def verify_publish(repo, machine, content, *, remote="origin", ref=DEFAULT_REF):
+    """Read back the exact machine-keyed blob; return the observed remote tip.
+
+    Issue #3506 requires presence in the shared ref, beyond a successful push.
+    Read bytes to expose the text-mode corruption described in issue #3511.
+    This observes one fetched snapshot; it cannot guarantee future availability.
+    """
+    fingerprint = validate_fingerprint(content)
+    if fingerprint["machine_id"] != machine:
+        raise FingerprintValidationError("machine_id does not match the verification key")
+    parent = _fetch_tip(repo, remote, ref)
+    if parent is None:
+        raise StoreUnavailable("published fingerprint ref is absent")
+    entry = _tree_entries(repo, parent).get(f"{machine}.json")
+    # Exact regular-file mode and blob type are the _commit_fingerprint contract.
+    if entry is None or entry[:2] != ("100644", "blob"):
+        raise StoreUnavailable("published fingerprint key is absent or is not a regular blob")
+    observed = _git(repo, "cat-file", "-p", entry[2], _text=False)
+    if observed.returncode != 0:
+        raise StoreUnavailable("published fingerprint blob could not be read")
+    try:
+        validate_fingerprint(observed.stdout)
+    except (FingerprintValidationError, UnicodeError) as exc:
+        raise StoreUnavailable("published fingerprint blob is invalid") from exc
+    if observed.stdout != content.encode("utf-8"):
+        raise StoreUnavailable("published fingerprint differs from the current local fingerprint")
+    return parent
+
+
 def _drop_own_legacy(repo, entries, name, own_host):
     if not own_host:
         return
@@ -233,10 +262,12 @@ def _drop_own_legacy(repo, entries, name, own_host):
 
 
 def _commit_fingerprint(repo, entries, name, content, machine, parent):
-    hashed = _git(repo, "hash-object", "-w", "--stdin", _input=content)
+    hashed = _git(repo, "hash-object", "-w", "--stdin",
+                  _input=content.encode("utf-8"), _text=False)
     if hashed.returncode != 0:
-        raise StoreUnavailable(f"hash-object failed: {hashed.stderr.strip()[:200]}")
-    entries[name] = ("100644", "blob", hashed.stdout.strip())
+        stderr = hashed.stderr.decode("utf-8", errors="replace")
+        raise StoreUnavailable(f"hash-object failed: {stderr.strip()[:200]}")
+    entries[name] = ("100644", "blob", hashed.stdout.decode("ascii").strip())
     tree_input = b"".join(
         f"{mode} {kind} {sha}\t".encode("ascii")
         + entry.encode("utf-8", errors="surrogateescape") + b"\0"
@@ -293,6 +324,7 @@ def _argument_parser():
     ap = argparse.ArgumentParser(description="Publish/collect equivalence fingerprints via git ref")
     ap.add_argument("cmd", choices=[
         "publish", "collect", "resolve-identity", "validate", "prepare", "write-health",
+        "verify-publish",
     ])
     ap.add_argument("--repo", default=".")
     ap.add_argument("--machine", help="machine id for publish blob name (#3516)")
@@ -332,6 +364,14 @@ def _run_command(a, ap):
         if not a.health or a.phase is None or a.duration is None or a.rc is None:
             ap.error("write-health requires --health, --phase, --duration, and --rc")
         write_publish_health(a.health, a.phase, a.duration, a.rc)
+        return 0
+    if a.cmd == "verify-publish":
+        if not a.machine or not a.file:
+            ap.error("verify-publish requires --machine and --file")
+        with open(a.file, encoding="utf-8") as handle:
+            content = handle.read()
+        verify_publish(a.repo, a.machine, content, remote=a.remote, ref=a.ref)
+        print("verified")
         return 0
     if a.cmd == "publish":
         key = a.machine or a.role

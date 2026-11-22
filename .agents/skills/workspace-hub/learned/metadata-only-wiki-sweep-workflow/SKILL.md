@@ -10,6 +10,8 @@ metadata:
 
 # Metadata-Only Wiki Sweep Workflow
 
+Codes and standards are not a metadata-only case: per the owner's ruling of 28 Oct 2026 (`.claude/rules/codes-standards-data-routing.md`) they get full extraction (clauses, tables, equations, figures) into the private wiki. Use this pattern only for client or other third-party material whose extraction is not yet cleared.
+
 Use this when creating stub documentation for large document collections without making content claims. (1) Verify plan approval before execution. (2) Inventory all target directories and extract PDF metadata using `pdfinfo` for safe header-only reading when feasible. (3) Apply parent-centric grouping: merge fragment documents (page scans, figures, sections) into parent document entries rather than creating proliferating stubs. (4) Generate stubs with explicit "do not claim" sections listing what content verification hasn't occurred. (5) Validate stubs with regex checks for prohibited claim language ("normative", "shall", "must", "requires that") in actual content areas, excluding constraint headers.
 
 ## Large mixed-directory fallback (learned in Wave 4)

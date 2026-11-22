@@ -48,7 +48,13 @@ if [[ $# -gt 0 ]]; then
 fi
 
 cd "${HUB}"
-echo "== fleet-snapshot-daily ${STAMP} (${HUB}) =="
+echo "== fleet-snapshot-daily ${STAMP} =="
+
+# Issue #4027: inspect mutable publication state only while holding the same
+# lock as the hourly writer. A local edit made while waiting must be rechecked.
+mkdir -p "$(dirname "${LOCK_PATH}")"
+exec 9>"${LOCK_PATH}"
+flock 9
 
 branch="$(git symbolic-ref --quiet --short HEAD || true)"
 if [[ "${branch}" != "main" ]]; then
@@ -66,6 +72,11 @@ if [[ -z "${FLEET_SNAPSHOT_SOURCE:-}" && -z "${FLEET_SNAPSHOT_COLLECT_CMD:-}" ]]
 fi
 
 mkdir -p "$(dirname "${SNAPSHOT}")"
+if [[ -e "${SNAPSHOT}" || -L "${SNAPSHOT}" ]] \
+    && ! git ls-files --error-unmatch -- "${SNAPSHOT_REL}" >/dev/null 2>&1; then
+    echo "snapshot: untracked latest.json exists; refusing to overwrite" >&2
+    exit 2
+fi
 if ! git diff --quiet -- "${SNAPSHOT_REL}" || ! git diff --cached --quiet -- "${SNAPSHOT_REL}"; then
     echo "snapshot: ${SNAPSHOT_REL} has local changes; refusing to overwrite" >&2
     exit 2
@@ -82,9 +93,10 @@ if git remote get-url origin >/dev/null 2>&1; then
     fi
 fi
 
-mkdir -p "$(dirname "${LOCK_PATH}")"
-exec 9>"${LOCK_PATH}"
-flock 9
+snapshot_tracked=0
+if git ls-files --error-unmatch -- "${SNAPSHOT_REL}" >/dev/null 2>&1; then
+    snapshot_tracked=1
+fi
 
 TMP_DIR="$(mktemp -d "${TMPDIR:-/tmp}/fleet-snapshot-daily.XXXXXX")"
 chmod 0700 "${TMP_DIR}"
@@ -97,7 +109,12 @@ cleanup() {
     rc=$?
     if (( rc != 0 && installed == 1 && committed == 0 )); then
         git reset -q HEAD -- "${SNAPSHOT_REL}" 2>/dev/null || true
-        git checkout -- "${SNAPSHOT_REL}" 2>/dev/null || true
+        if (( snapshot_tracked == 1 )); then
+            git checkout -- "${SNAPSHOT_REL}" 2>/dev/null || true
+        else
+            # Restore absence only for output created by this invocation.
+            rm -f -- "${SNAPSHOT}"
+        fi
     fi
     rm -rf "${TMP_DIR}"
     if [[ -n "${INSTALL_TMP}" ]]; then

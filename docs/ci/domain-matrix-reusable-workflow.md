@@ -4,6 +4,12 @@ Shared "modular per-domain CI" scaffolding, hosted in `workspace-hub` so
 `worldenergydata`, `assetutilities`, `assethold` (and `digitalmodel`) stop
 maintaining near-identical copies of the same three jobs.
 
+## Revision history
+
+| Revision | Date | Change and reason |
+|----------|------|-------------------|
+| Initial contract tests | 2026-10-22 | Extract decisions, specify selector outputs and add advisory validation to protect callers. |
+
 - Workflow: [`.github/workflows/domain-matrix.yml`](../../.github/workflows/domain-matrix.yml)
 - Epic: worldenergydata#526 · P4: worldenergydata#530
 - Reference implementation: worldenergydata#531
@@ -43,6 +49,7 @@ discover  ->  test-domain (matrix, fail-fast: false)  ->  aggregate
 | `install-cmd` | `uv sync --all-extras` | Dependency install command per domain job. |
 | `test-runner` | `uv run --with pytest-xdist pytest` | Command prefix used to run pytest on the shard targets. |
 | `max-parallel` | `10` | Bound on the matrix fan-out (core changes can be many domains). |
+| `enforce-contract` | `false` | Report selector and empty-matrix advisories; set to `true` to enforce after review. |
 | `quarantine-file` | `scripts/ci/quarantine.txt` | Known-broken node-ids to `--deselect` (one per line, `#` comments). |
 
 ## Minimal caller example
@@ -174,3 +181,131 @@ layouts differ (`src/worldenergydata/<m>/` vs `src/assetutilities/...`, distinct
 core paths, distinct always-on sets). The selector is the single source of truth
 for *that repo's* file -> target mapping; the reusable workflow only needs it to
 emit `matrix=<json>` and `scope=<str>` to `$GITHUB_OUTPUT` using the stdlib.
+
+## Tested aggregate decision
+
+The stdlib helper [domain_matrix_aggregate.py](../../scripts/ci/domain_matrix_aggregate.py)
+returns a status and message. Its strict decision is:
+
+`pass = (discover == success) AND (test-domain == success) AND (matrix-size > 0)`.
+
+This is a direct conjunction of the original workflow's job-result checks and
+the nonempty-matrix requirement in issue #4227 (2026). There are no empirical
+coefficients or engineering acceptance limits. Exit statuses retain the original
+workflow convention: `0` for pass, `1` for failure.
+
+For a positive matrix size, the independent hand-written truth table is:
+
+| discover \ test-domain | success | failure | cancelled | skipped |
+|------------------------|---------|---------|-----------|---------|
+| success | pass | fail | fail | fail |
+| failure | fail | fail | fail | fail |
+| cancelled | fail | fail | fail | fail |
+| skipped | fail | fail | fail | fail |
+
+The same table applies separately to scopes `full`, `modules`, `skip`, and the
+empty scope. Scope is diagnostic; `skip` does not waive either job-result check.
+A matrix size of zero fails every strict case. An absent count becomes zero;
+a negative count also fails. Non-integer CLI input is rejected.
+
+The reusable workflow defaults to **advisory mode** (`enforce-contract: false`):
+selector violations and empty matrices produce warnings, while the aggregate
+retains its original job-result gate. Set `enforce-contract: true` only after the
+maintainer checks both callers. An invalid matrix can still fail GitHub's own
+matrix expansion, as before; advisory validation does not override GitHub.
+
+## Selector output contract
+
+The caller's selector writes single-line outputs:
+
+```text
+matrix={"include":[{"name":"core","targets":"tests/core","mode":"seq"}]}
+scope=modules
+```
+
+[validate_selector_output.py](../../scripts/ci/validate_selector_output.py) checks:
+
+- Exactly one `matrix` and one `scope` output; unrelated output keys are ignored.
+- Strict JSON: no duplicate object keys or non-finite numbers.
+- A matrix object with a nonempty `include` list of objects. Additional matrix
+  axes must be nonempty lists; `exclude`, when present, is a list of objects.
+- Each include entry has a unique nonempty `name`, containing only ASCII letters,
+  digits, `_`, `.` and `-`. This explicit allowlist protects check names.
+- Each entry has a nonempty string `targets` and `mode` equal to `xdist` or `seq`.
+- `scope` is exactly `full`, `modules` or `skip`.
+
+These are the local contract requirements of issue #4227. Callers should emit
+include-only shard matrices; the diagnostic `matrix-size` is the number of
+validated include entries, not a Cartesian-product job count. The workflow
+continues to read `matrix.name`, `matrix.targets`, and `matrix.mode`.
+An invalid contract records `matrix-size=0`, with no untrusted payload in the
+validation annotation. Multiline output syntax is outside this line-based contract.
+
+## Worked example: inputs, method and answer
+
+Inputs are the selector output above, discovery `success`, and test-domain
+`success`. The validator counts the single include object by hand: matrix size
+is `1`. The aggregate evaluates `true AND true AND (1 > 0)`, so the answer is
+status `0` and `All domains green`. Scope `modules` supplies context only.
+
+Run the helpers against an output file containing those literal inputs:
+
+```bash
+python3 scripts/ci/validate_selector_output.py selector-output.txt
+python3 scripts/ci/domain_matrix_aggregate.py success success modules 1
+```
+
+Changing the include list to `[]` fails validation. With size `0`, strict
+aggregation returns status `1`; advisory aggregation warns and retains the
+original success result if both jobs succeeded. These expected answers are
+independent Boolean calculations, not values copied from the implementation.
+
+## Quarantine compatibility
+
+[quarantine_args.py](../../scripts/ci/quarantine_args.py) preserves line order,
+comments, blank lines, trailing whitespace, quote handling and both node-id
+prefix forms. A missing file emits no arguments. Each selected node-id emits
+its original form and its alternate `tests/`-prefixed or root-relative form.
+As in the original Bash `while read` loop, an unterminated final line is ignored.
+NUL-delimited output preserves argument boundaries when loaded into the Bash
+array. Tests compare fixture output with the original loop executed locally;
+that comparison reports a clear skip if Bash is unavailable.
+
+## Workflow delivery and rollback
+
+The workflow executes in the caller's checkout, where these helpers do not
+exist. Their text is embedded into each relevant run step, then written under
+`RUNNER_TEMP` at runtime. This makes the helper revision identical to the reusable
+workflow revision without fetching a moving branch.
+
+The [GitHub Contexts reference](https://docs.github.com/en/actions/reference/workflows-and-actions/contexts)
+(accessed 2026-10-22) does not document `github.job_workflow_sha`; therefore this
+implementation uses the specified embedding fallback. The reference documents
+`job.workflow_sha` separately; no undocumented context is assumed.
+
+After changing a helper, regenerate and check the embedded text:
+
+```bash
+python3 scripts/ci/embed_domain_matrix.py
+python3 scripts/ci/embed_domain_matrix.py --check
+```
+
+Static tests parse the YAML and compare embedded source bytes independently of
+the generator. Offline shell tests run the embedded steps inside synthetic
+caller trees without a tools checkout. Job ids, job names, `if: always()`, and
+both aggregate dependencies remain unchanged.
+
+Rollback requires reverting only `.github/workflows/domain-matrix.yml` to its
+previous revision. The helpers and tests can remain because the previous
+workflow does not invoke them. No caller edit or check-name migration is needed.
+
+Before enabling enforcement, the two callers pinned at `@main` must check:
+
+- Representative selectors for full, module and skip selections satisfy the
+  contract, including unique safe names and a nonempty include list.
+- Required check names still end with `Aggregate domain results`, and failed,
+  cancelled or skipped domain jobs fail the aggregate.
+- Quarantined node-ids match both rootdir forms; pytest's no-tests exit continues
+  to pass for a shard.
+- Advisory output shows the expected include count and no contract warnings
+  for representative valid selections.

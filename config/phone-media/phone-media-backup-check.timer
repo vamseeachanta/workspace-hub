@@ -1,0 +1,13 @@
+[Unit]
+Description=Weekly phone-media off-site verification
+
+[Timer]
+# Weekly cadence is required by the linked backup-capacity issue.
+# Persistent catches a missed calendar activation after the user manager restarts.
+# Source: systemd.timer, OnCalendar and Persistent (retrieved 2026-10-22).
+OnCalendar=weekly
+Persistent=true
+Unit=phone-media-backup-check.service
+
+[Install]
+WantedBy=timers.target

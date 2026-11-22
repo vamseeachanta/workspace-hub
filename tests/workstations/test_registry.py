@@ -148,6 +148,58 @@ class TestRegistryStructure:
 # ---------------------------------------------------------------------------
 
 
+class TestCompletedOnboarding:
+    """Historical record checks, rather than probes of a remote installation.
+
+    Basis: #3507 completion comment (2026-07-23), confirmed by #3594
+    (2026-07-29). The expected facts below are transcribed from that evidence;
+    no expected result is generated from the registry under test.
+    """
+
+    @pytest.fixture
+    def executor(self, machines: dict) -> dict:
+        matches = [m for m in machines.values() if m["role"] == "gpu-executor"]
+        assert len(matches) == 1, "Expected a unique GPU executor record"
+        return matches[0]
+
+    def test_installed_tools(self, executor: dict) -> None:
+        """#3594 requests adding uv while preserving git, gh and npm."""
+        assert {"git", "gh", "npm", "uv"} <= set(executor["capabilities"]["tools"])
+
+    @pytest.mark.parametrize(
+        "fact",
+        [
+            "workspace-hub clone complete",
+            "uv installed",
+            "managed cron active",
+            "machine-keyed sentinel publication confirmed",
+        ],
+    )
+    def test_completed_facts(self, executor: dict, fact: str) -> None:
+        """Each expected fact is recorded in #3507 (2026-07-23)."""
+        assert fact in executor["notes"].lower()
+
+    def test_notes_do_not_claim_onboarding_pending(self, executor: dict) -> None:
+        """#3594 identifies these pending claims as obsolete."""
+        notes = executor["notes"].lower()
+        assert "pending" not in notes
+        assert "until onboarded" not in notes
+        assert "#3507" in notes
+        assert "2026-07-23" in notes
+
+    def test_existing_layout_and_schedule_preserved(self, executor: dict) -> None:
+        """#3507 records a sibling clone and contribute-minimal enrollment.
+
+        Independent path construction: checkout = tier-one root / repository
+        name. No filesystem access or remote readiness claim is required.
+        """
+        assert executor["repo_layout"] == "sibling"
+        assert Path(executor["workspace_root"]) == (
+            Path(executor["tier1_repo_root"]) / "workspace-hub"
+        )
+        assert executor["schedule_variant"] == "contribute-minimal"
+
+
 class TestRegistryCrossReference:
     @staticmethod
     def _all_registry_identifiers(machines: dict) -> set[str]:

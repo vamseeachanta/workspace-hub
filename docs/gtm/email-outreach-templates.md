@@ -223,7 +223,7 @@ Use these as starting points — verify against current fleet data before sendin
 | Subsea7 | Seven Borealis, construction vessel A — heavy lift + pipelay | Active in GoM and North Sea deepwater |
 | Allseas | Pioneering Spirit — largest installation vessel | Ultra-heavy lift, platform removal |
 | Heerema | Sleipnir, Thialf — semi-sub crane vessels | Deepwater heavy lift campaigns |
-| client-d | Castorone, S7000 — pipelay + heavy lift | West Africa, Middle East installation |
+| client-d | pipelay vessel B, crane vessel A — pipelay + heavy lift | West Africa, Middle East installation |
 | an installation contractor | Amazon, DLV 2000 — deepwater pipelay | GoM deepwater pipelay focus |
 | TechnipFMC | Deep Energy, Deep Blue — flex/rigid pipelay | Subsea tiebacks, deepwater flex pipe |
 | Boskalis | Various — offshore wind + subsea | Growing offshore wind installation |

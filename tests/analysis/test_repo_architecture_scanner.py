@@ -15,6 +15,7 @@ import os
 import sys
 import tempfile
 import textwrap
+from copy import deepcopy
 from pathlib import Path
 
 import pytest
@@ -258,3 +259,92 @@ class TestEntryPointDiscovery:
         entry_points = find_entry_points(sample_repo)
         script_files = [e for e in entry_points if "scripts" in e.lower() or "run_pipeline" in e]
         assert len(script_files) >= 1
+
+
+def test_dependency_cycles_empty_and_dag():
+    from repo_architecture_scanner import find_dependency_cycles
+
+    # Hand calculation: no edges in the empty graph; no return paths in the
+    # chain or diamond. The referenced-only sink has no outgoing edges.
+    assert find_dependency_cycles({}) == []
+    assert find_dependency_cycles({"alpha": ["beta"], "beta": ["sink"]}) == []
+    assert find_dependency_cycles({
+        "root": ["left", "right"],
+        "left": ["sink"],
+        "right": ["sink"],
+        "isolated": [],
+    }) == []
+
+
+def test_dependency_cycles_self_loop():
+    from repo_architecture_scanner import find_dependency_cycles
+
+    # Hand calculation: only loop reaches itself by a nonempty path;
+    # isolated and the referenced-only sink cannot return to themselves.
+    assert find_dependency_cycles({
+        "loop": ["loop", "sink"],
+        "isolated": [],
+    }) == [["loop"]]
+
+
+def test_dependency_cycles_mutually_reachable_group():
+    from repo_architecture_scanner import find_dependency_cycles
+
+    # Hand calculation: alpha <-> beta and alpha <-> gamma make all members
+    # mutually reachable. These overlapping cycles form one group, rather
+    # than separate elementary cycles. There is no return path from sink.
+    assert find_dependency_cycles({
+        "gamma": ["alpha"],
+        "alpha": ["gamma", "beta", "sink"],
+        "beta": ["alpha"],
+    }) == [["alpha", "beta", "gamma"]]
+
+
+def test_dependency_cycles_disjoint_components():
+    from repo_architecture_scanner import find_dependency_cycles
+
+    # Hand calculation: alpha <-> beta and delta -> epsilon -> zeta -> delta
+    # are separate mutually reachable groups. beta -> delta has no return
+    # path, so it cannot merge them. loop is cyclic by its self-edge alone.
+    assert find_dependency_cycles({
+        "zeta": ["delta"],
+        "epsilon": ["zeta"],
+        "delta": ["epsilon"],
+        "beta": ["alpha", "delta"],
+        "alpha": ["beta"],
+        "loop": ["loop"],
+        "upstream": ["alpha"],
+        "isolated": [],
+    }) == [["alpha", "beta"], ["delta", "epsilon", "zeta"], ["loop"]]
+
+
+def test_dependency_cycles_order_invariant():
+    from repo_architecture_scanner import find_dependency_cycles
+
+    # Hand calculation: alpha <-> beta and loop -> loop are the only cyclic
+    # groups. sink has no outgoing edges. Reordering keys or edges changes
+    # none of these reachability relations, including the duplicate edge.
+    graph = {
+        "loop": ["loop", "sink"],
+        "beta": ["sink", "alpha", "alpha"],
+        "alpha": ["beta", "sink"],
+    }
+    reordered = {
+        "alpha": ["sink", "beta"],
+        "beta": ["alpha", "alpha", "sink"],
+        "loop": ["sink", "loop"],
+    }
+    expected = [["alpha", "beta"], ["loop"]]
+    assert find_dependency_cycles(graph) == expected
+    assert find_dependency_cycles(reordered) == expected
+
+
+def test_dependency_cycles_input_immutable():
+    from repo_architecture_scanner import find_dependency_cycles
+
+    # Hand calculation: alpha <-> beta is cyclic; sink cannot return.
+    # Preserve both the mapping and its mutable adjacency lists.
+    graph = {"beta": ["sink", "alpha"], "alpha": ["beta"]}
+    original = deepcopy(graph)
+    assert find_dependency_cycles(graph) == [["alpha", "beta"]]
+    assert graph == original

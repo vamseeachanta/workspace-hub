@@ -81,3 +81,36 @@ A skill that wants to "sync all repos" should dispatch by OS:
 Detection example: PowerShell available / `$IsWindows` true → use the `.ps1`; otherwise the `.sh`.
 Both exit non-zero only when a repo had a hard failure (commit/push), so a skill can gate on exit code.
 Both print a final `Done. ok=N warn=N fail=N` line for parsing.
+
+## Read-only gitlink diagnostic
+
+From the repository to inspect, run the standalone diagnostic:
+
+```bash
+python3 scripts/sync/check_gitlinks.py
+```
+
+The command compares gitlinks in the current Git index with submodule `path`
+declarations in the indexed `.gitmodules` blob. Unstaged or untracked
+`.gitmodules` contents do not affect the result. Git parses the configuration;
+include directives are not followed. NUL-delimited Git output preserves path
+boundaries, including spaces and non-ASCII text. Reported paths are JSON-quoted
+so embedded newlines and tabs remain unambiguous. The complete index is checked
+even when the command is invoked by script path from a subdirectory.
+
+Exit statuses form the command contract:
+
+| Status | Meaning |
+|---|---|
+| `0` | Every gitlink has a declaration, including absent metadata with no gitlinks. |
+| `1` | At least one gitlink has no matching declaration; each unmapped path is reported. |
+| `2` | Git read failure, malformed metadata, duplicate path or declaration, empty path, unmerged relevant index entries, or a non-regular metadata entry. |
+
+Extra declarations without gitlinks are permitted. Duplicate declarations are
+errors even when no gitlinks exist. The check does not validate URLs or require
+the referenced commit objects or submodule checkouts to exist.
+
+Lazy fetching, object replacements and optional Git locks are disabled.
+Only index and object reads are performed: the command does not repair metadata,
+stage or remove paths, initialize submodules, fetch, or run either sync driver.
+It is not connected to a gate. Any repair policy remains a separate decision.

@@ -2,8 +2,8 @@
 """Reconcile GitHub issues into the kanban board tree.
 
 Correctness path: fetch each active manifest repo once, then make the board
-YAMLs match GitHub's issue set. Dry-run mode prints the exact diff and does not
-write board files.
+YAMLs match GitHub's issue set. Dry-run mode reports changes without writing
+board files; --show-diff explicitly includes potentially private card content.
 
 The boards are local files (owner decision S01): they are git-ignored, a board
 missing on this machine is created from its manifest entry, and nothing
@@ -16,14 +16,15 @@ import copy
 import difflib
 import io
 import json
+import os
+import stat
 import subprocess
 import sys
+from collections.abc import Callable
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Callable
 
 from ruamel.yaml import YAML
-
 
 GH_PAGE_SIZE = 100
 
@@ -70,15 +71,18 @@ class BoardEntry:
 
 
 def repo_root() -> Path:
+    root = Path(__file__).resolve().parents[2]
     out = subprocess.run(
         ["git", "rev-parse", "--show-toplevel"],
+        cwd=root,
+        env={key: value for key, value in os.environ.items() if not key.startswith("GIT_")},
         capture_output=True,
         text=True,
         check=False,
     )
     if out.returncode == 0:
         return Path(out.stdout.strip())
-    return Path(__file__).resolve().parents[2]
+    return root
 
 
 def _coerce_int(value, default: int = 0) -> int:
@@ -111,7 +115,7 @@ def yaml_rt() -> YAML:
 
 
 def write_yaml(path: Path, data: dict) -> None:
-    path.write_text(dump_yaml(data), encoding="utf-8")
+    path.write_text(dump_yaml(data), encoding="utf-8", newline="\n")
 
 
 def fetch_repo_issues(repo: str, *, page_size: int = GH_PAGE_SIZE, runner=None) -> list[dict]:
@@ -243,6 +247,72 @@ def active_repos(entries: list[BoardEntry]) -> list[str]:
     return sorted(repos)
 
 
+def validate_local_destinations(kanban_root: Path, entries: list[BoardEntry]) -> None:
+    """Refuse publishable generated outputs before fetching issue content.
+
+    Basis: docs/architecture/agent-data-handling-contract.md, "Original
+    retention, rights and publication", and the generated-board .gitignore
+    rules. Authored entries without a repository are preserved separately.
+    No repository visibility lookup or publication permission is inferred.
+    """
+    root = kanban_root.absolute()
+    env = {key: value for key, value in os.environ.items() if not key.startswith("GIT_")}
+    for entry in entries:
+        if not entry.repo and entry.tier not in {"repo", "domain"}:
+            continue
+        path = entry.file.absolute()
+        refusal = "kanban local-only destination check failed"
+        try:
+            relative = path.relative_to(root / "boards")
+        except ValueError:
+            raise RuntimeError(refusal + ": generated board must stay inside boards/") from None
+        if ".." in relative.parts or path.suffix != ".yaml":
+            raise RuntimeError(refusal + ": invalid generated board path")
+        # Reject redirected ancestors and hard-linked outputs before fetching.
+        # Windows junctions are reparse points even when not symbolic links.
+        try:
+            for parent in (path, *path.parents):
+                try:
+                    metadata = parent.lstat()
+                except FileNotFoundError:
+                    continue  # Missing output directories may be created later.
+                if stat.S_ISLNK(metadata.st_mode) or (
+                    getattr(metadata, "st_file_attributes", 0) & stat.FILE_ATTRIBUTE_REPARSE_POINT
+                ):
+                    raise RuntimeError(refusal + ": symlink destination (or reparse point)")
+                if parent == path and metadata.st_nlink > 1:
+                    raise RuntimeError(refusal + ": hard-linked destination")
+        except OSError:
+            raise RuntimeError(refusal + ": destination inspection failed") from None
+        checkout = next(
+            (parent for parent in path.parents
+             if (parent / ".git").is_file() or (parent / ".git/HEAD").is_file()), None
+        )
+        if checkout is None:
+            continue  # Standalone local mirrors do not have a publication index.
+        rel = path.relative_to(checkout).as_posix()
+
+        def git(*args: str, rel=rel, checkout=checkout, refusal=refusal) -> subprocess.CompletedProcess:
+            try:
+                return subprocess.run(
+                    ["git", *args, "--", rel],
+                    cwd=checkout, env=env, capture_output=True, text=True, check=False,
+                )
+            except OSError:
+                raise RuntimeError(refusal + ": Git inspection unavailable") from None
+
+        tracked = git("--literal-pathspecs", "ls-files", "-z")
+        if tracked.returncode != 0:
+            raise RuntimeError(refusal + ": Git index inspection failed")
+        if tracked.stdout:
+            raise RuntimeError(refusal + ": generated board is tracked")
+        # Git check-ignore manual, EXIT STATUS (accessed 2026-10-22):
+        # https://git-scm.com/docs/git-check-ignore — zero means a path is ignored.
+        ignored = git("check-ignore", "--no-index", "-q")
+        if ignored.returncode != 0:
+            raise RuntimeError(refusal + ": generated board must be ignored by Git")
+
+
 def new_board(entry: BoardEntry) -> dict:
     """An empty board for a manifest entry whose file does not exist yet. It keeps
     the manifest metadata the loader uses: workspace_path sets the Hermes board
@@ -273,7 +343,7 @@ def validate_unmanifested_boards(kanban_root: Path, entries: list[BoardEntry]) -
     for path in sorted((kanban_root / "boards").glob("*.yaml")):
         if path in manifest_files:
             continue
-        rel_path = path.relative_to(kanban_root)
+        rel_path = path.relative_to(kanban_root).as_posix()
         cards = load_yaml(path).get("cards") or []
         if cards:
             raise RuntimeError(
@@ -454,7 +524,7 @@ def unified_diff(before: dict[Path, str], after: dict[Path, str], root: Path) ->
     for path in sorted(after):
         if before[path] == after[path]:
             continue
-        rel = path.relative_to(diff_root)
+        rel = path.relative_to(diff_root).as_posix()
         chunks.extend(
             difflib.unified_diff(
                 before[path].splitlines(keepends=True),
@@ -574,6 +644,7 @@ def reconcile_kanban(
     size_limit: int = DEFAULT_BOARD_SIZE_LIMIT,
 ) -> ReconcileResult:
     entries = load_manifest_entries(kanban_root)
+    validate_local_destinations(kanban_root, entries)
     validate_unmanifested_boards(kanban_root, entries)
     repos = active_repos(entries)
     if repo_filter:
@@ -614,7 +685,7 @@ def reconcile_kanban(
     if write:
         for path in changed_files:
             path.parent.mkdir(parents=True, exist_ok=True)
-            path.write_text(after[path], encoding="utf-8")
+            path.write_text(after[path], encoding="utf-8", newline="\n")
     return ReconcileResult(
         changed=bool(changed_files),
         diff=unified_diff(before, after, kanban_root),
@@ -628,6 +699,10 @@ def reconcile_kanban(
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--dry-run", action="store_true")
+    parser.add_argument(
+        "--show-diff", action="store_true",
+        help="print card content diffs (may contain private issue text; local use only)",
+    )
     parser.add_argument("--repo", help="limit reconciliation to one active owner/repo")
     parser.add_argument(
         "--page-size",
@@ -681,8 +756,10 @@ def main(argv: list[str] | None = None) -> int:
         allow_shrink_repos=set(args.allow_shrink),
         size_limit=args.size_limit,
     )
-    if result.diff:
+    if result.diff and args.show_diff:
         print(result.diff, end="")
+    elif result.changed:
+        print(f"kanban reconcile: {len(result.changed_files)} board file(s) changed")
     else:
         print("kanban reconcile: no changes")
     if args.dry_run:

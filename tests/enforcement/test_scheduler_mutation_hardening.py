@@ -9,6 +9,8 @@ from pathlib import Path
 
 import pytest
 import yaml
+from pin_helpers import assert_semantic_rejection
+from scheduler_contract_fixtures import checkout_records
 
 REPO = Path(__file__).resolve().parents[2]
 CHECKER = REPO / "scripts/enforcement/check-scheduler-mutation-surfaces.py"
@@ -26,7 +28,7 @@ def load_checker():
 
 def current_contract():
     checker = load_checker()
-    records = checker.read_index_records(REPO)
+    records = checkout_records(checker, REPO)
     return checker, records, yaml.safe_load(REGISTRY.read_bytes())
 
 
@@ -238,12 +240,23 @@ def test_branch_strength_requires_source_attestation_and_duplicate_ids_fail():
     assert any("branch" in error for error in validate_changed(mutate).errors)
 
 
-def test_wrapper_call_form_and_local_guard_are_source_attested():
-    def mutate(_checker, records, _registry):
-        source = b"scripts/cron/setup-cron.sh"
-        records[source] = records[source].replace(b'exec uv run --script "$CRON_APPLY"', b'echo "$CRON_APPLY"')
+def test_wrapper_call_form_and_local_guard_are_source_attested(tmp_path, monkeypatch):
+    checker, records, registry = current_contract()
+    wrappers = sys.modules["scheduler_mutation_wrapper_attestations"]
+    source = wrappers.SETUP
 
-    assert any("call" in error or "guard" in error for error in validate_changed(mutate).errors)
+    def evaluate(changed):
+        if changed[source] != records[source]:
+            result = checker.validate_registry(registry, checker.discover_mutation_surfaces(changed), changed)
+            assert any("call" in error or "guard" in error for error in result.errors)
+            assert not checker.evaluate_attestation("setup-default-apply-v1", changed, source)
+        return wrappers.wrapper_attestation_reason("setup-default-apply-v1", changed)
+
+    assert_semantic_rejection(
+        tmp_path, monkeypatch, source, records[source],
+        lambda body: body.replace(b'exec uv run --script "$CRON_APPLY"', b'echo "$CRON_APPLY"'),
+        wrappers.WRAPPER_SHA256, evaluate, "unreachable", records=records,
+    )
 
 
 def test_production_sentinel_and_raw_systemd_writer_cannot_bypass_discovery():

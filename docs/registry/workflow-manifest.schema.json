@@ -15,7 +15,7 @@
     },
     "generated_at": {
       "type": "string",
-      "description": "ISO-8601 UTC generation timestamp. EXCLUDED from --check stale comparison."
+      "description": "ISO-8601 UTC generation timestamp. Excluded from freshness comparison; generation still updates it."
     },
     "generator": { "type": "string", "const": "scripts/workflow/generate_workflow_manifest.py" },
     "resolver": {
@@ -41,9 +41,9 @@
           },
           "registry_sha256": {
             "type": ["string", "null"],
-            "description": "SHA-256 of the raw registry text. Null for non-ok repos. The --check stale gate compares only this set."
+            "description": "SHA-256 of the raw registry text. Null for non-ok repos. Freshness compares this digest and the complete discovery payload; non-ok evidence cannot pass."
           },
-          "git_sha": { "type": ["string", "null"], "description": "Best-effort repo HEAD." },
+          "git_sha": { "type": ["string", "null"], "description": "Best-effort repo HEAD; excluded from discovery freshness comparison." },
           "row_count": { "type": "integer" }
         }
       }

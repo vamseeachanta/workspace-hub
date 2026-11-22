@@ -1,0 +1,419 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Engineering analysis evidence observation",
+  "description": "Optional record shape for existing issue/analysis records; not a registry or an acceptance gate. Evidence requirements derive from ENG-ANALYSIS-CRITERIA Revision 1 (2026), AC-08 to AC-12. SHA-256 syntax follows docs/architecture/agent-data-handling-contract.md. Validation cannot authenticate review, resolve references or establish compliance.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "observed_at",
+    "subject",
+    "criteria",
+    "workflow",
+    "routing",
+    "compliance",
+    "dataset",
+    "limitations"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1"
+    },
+    "observed_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "subject": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "owner_repo",
+        "record_ref",
+        "program",
+        "component_family"
+      ],
+      "properties": {
+        "owner_repo": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "record_ref": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_.-]+:[A-Za-z0-9_./#-]+$"
+        },
+        "program": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "component_family": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        }
+      }
+    },
+    "criteria": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "owner_repo",
+        "locator",
+        "revision",
+        "source_revision",
+        "document_id"
+      ],
+      "properties": {
+        "owner_repo": {
+          "const": "digitalmodel"
+        },
+        "locator": {
+          "const": "docs/standards/analysis-parametric-lookup-criteria.html"
+        },
+        "revision": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "source_revision": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$"
+        },
+        "document_id": {
+          "const": "ENG-ANALYSIS-CRITERIA"
+        }
+      }
+    },
+    "workflow": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "owner_repo",
+        "locator",
+        "revision",
+        "source_revision"
+      ],
+      "properties": {
+        "owner_repo": {
+          "const": "digitalmodel"
+        },
+        "locator": {
+          "const": "docs/standards/engineering-analysis-workflow.html"
+        },
+        "revision": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "source_revision": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$"
+        }
+      }
+    },
+    "routing": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "entry_point_ref",
+        "evidence_ref",
+        "reason",
+        "entry_point_revision"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "NOT_EVALUATED",
+            "DOCUMENTED",
+            "UNREACHABLE"
+          ]
+        },
+        "entry_point_ref": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_.-]+:[A-Za-z0-9_./#-]+$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "evidence_ref": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_.-]+:[A-Za-z0-9_./#-]+$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "entry_point_revision": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "enum": [
+                  "DOCUMENTED"
+                ]
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "entry_point_ref": {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9_.-]+:[A-Za-z0-9_./#-]+$"
+              },
+              "evidence_ref": {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9_.-]+:[A-Za-z0-9_./#-]+$"
+              },
+              "entry_point_revision": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "compliance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "analysis_revision",
+        "evidence_refs",
+        "reason"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "NOT_EVALUATED",
+            "PARTIAL",
+            "DEMONSTRATED"
+          ]
+        },
+        "analysis_revision": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "evidence_refs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9_.-]+:[A-Za-z0-9_./#-]+$"
+          },
+          "uniqueItems": true
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "enum": [
+                  "PARTIAL",
+                  "DEMONSTRATED"
+                ]
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "analysis_revision": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S"
+              },
+              "evidence_refs": {
+                "minItems": 1
+              }
+            }
+          }
+        }
+      ]
+    },
+    "dataset": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "owner_repo",
+        "dataset_id",
+        "revision",
+        "manifest_ref",
+        "content_digest",
+        "catalog_ref"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "NOT_EVALUATED",
+            "REFERENCED"
+          ]
+        },
+        "owner_repo": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "dataset_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "revision": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "manifest_ref": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_.-]+:[A-Za-z0-9_./#-]+$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "content_digest": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^sha256:[0-9a-f]{64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "catalog_ref": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_.-]+:[A-Za-z0-9_./#-]+$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "enum": [
+                  "REFERENCED"
+                ]
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "owner_repo": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S"
+              },
+              "dataset_id": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S"
+              },
+              "revision": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S"
+              },
+              "manifest_ref": {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9_.-]+:[A-Za-z0-9_./#-]+$"
+              },
+              "content_digest": {
+                "type": "string",
+                "pattern": "^sha256:[0-9a-f]{64}$"
+              },
+              "catalog_ref": {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9_.-]+:[A-Za-z0-9_./#-]+$"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "limitations": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "\\S"
+      },
+      "uniqueItems": true
+    }
+  }
+}

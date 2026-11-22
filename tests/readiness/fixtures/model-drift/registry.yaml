@@ -1,0 +1,8 @@
+# Synthetic worked-example inputs; capacities do not describe a provider.
+last_updated: "2026-10-01"
+latest_models:
+  claude_primary: example-alpha
+  claude_strong: example-beta
+context_windows_k:
+  example-alpha: 1
+  example-beta: 1

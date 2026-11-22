@@ -75,6 +75,9 @@ change in a 6-month window. Use `git log --follow -p <file>` to check churn.
 
 ## Related
 
+- [Bounded tool output and measured context budgets](standards/BOUNDED_TOOL_OUTPUT.md)
+  — prefer focused inventory and file reads; issue #3717's roughly 1% repo-level
+  context lever is an observation-specific assessment, not a universal limit.
 - `scripts/quality/check_config_drift.py --repo workspace-hub` — current harness drift/line-limit check
 - `.claude/rules/coding-style.md §Agent Harness Files` — hard limit policy
 - WRK-1111 — implementation WRK for this pipeline

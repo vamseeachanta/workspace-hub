@@ -1,0 +1,33 @@
+schema_version: '1.0'
+class: adversarial_review
+task_id: task-synthetic
+scope: synthetic-offline
+rules_ref: tests/fixtures/model_release_battery/README.md
+required_sections:
+- Verdict
+- Retrieval
+- Findings
+- Blockers
+required_assertions:
+- missing_tests_block_implementation
+path_set: null
+verdict: MAJOR
+numerical_assertions: []
+max_output_tokens: 1024
+rule_sources:
+- path: scripts/review/plan-review-prompt.md
+  section: '## Output shape'
+  quote: 'Return exactly these sections:'
+  supports:
+  - required_sections
+  - verdict
+  basis: The output shape requires Verdict, Retrieval, Findings and Blockers; the task maps
+    a mandatory unresolved implementation blocker to MAJOR.
+- path: AGENTS.md
+  section: '## Required controls'
+  quote: 'TDD: tests before implementation.'
+  supports:
+  - required_assertions
+  - verdict
+  basis: The plan explicitly omits mandatory tests; implementation must wait for this blocker
+    to be resolved.

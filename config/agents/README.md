@@ -33,13 +33,6 @@ Drift between layers 2 and 3 is surfaced nightly by the `R-MODEL-DRIFT` check in
 | `ai-agents-registry.json` | legacy agent registry (dormant automation only) | discouraged |
 | `user-profile.yaml` | owner profile/subscriptions | yes |
 
-## Provider quick truth (2026-06-11)
-
-- **Claude** — interactive sessions (Claude Code, Max). Fable 5 / Opus 4.8 / Sonnet 4.6 / Haiku 4.5.
-- **Codex** — review lane + delegation target; CLI runs the model in `~/.codex/config.toml` (gpt-5.5).
-- **Hermes** — automation engine; runs gpt-5.5 via the openai-codex provider. NOT a Claude wrapper.
-- **Gemini** — third review lane; 2.5-pro is the dependable primary (3.1-pro-preview quota-starved on Pro plan).
-
 ## Skill index — two artifacts (#3190 / #3208)
 
 The skill catalogue exists in two complementary forms; they are kept coherent by
@@ -59,3 +52,10 @@ equality. Regenerate the full index with
 CI fails if it drifts (`--check` must equal the committed file). `when_to_use`
 is sourced from each `SKILL.md` (frontmatter → `## When to Use…` → `## Trigger…`
 → name/description backfill, recorded in `when_to_use_source`).
+
+## Model drift coverage
+
+The nightly model-drift validator checks every registry key for consistency,
+compares documented live settings, and reports missing evidence explicitly.
+See [model drift and quota snapshots](../../docs/operations/model-drift.md) for
+the configuration key paths, freshness policy, update procedure and worked example.

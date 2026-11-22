@@ -81,6 +81,9 @@ ERROR_PATTERNS=(
     "ModuleNotFoundError"
     "Permission denied"
     "Traceback"
+    # Issue #2291: shell source, numeric location, command, exact diagnostic.
+    # Anchor the complete line so prose mentioning "not found" stays healthy.
+    "^[^[:space:]:]+:[[:space:]]+(line[[:space:]]+)?[0-9]+:[[:space:]]+[^[:space:]:]+:[[:space:]]+not found[[:space:]]*$"
     "command not found"
     "No such file or directory"
 )

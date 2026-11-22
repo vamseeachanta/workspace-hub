@@ -160,6 +160,26 @@ ISSUE_REF_RE = re.compile(r"#(\d+)")
 PATH_RE = re.compile(r"`([^`\n]+)`")
 ACTION_RE = re.compile(r"\b(close|merge|refine|refresh|verify|implement)\b",
                        re.IGNORECASE)
+GENERATED_RE = re.compile(
+    r"^\s*(?:\*\*)?generated(?:_at| at)?(?:\*\*)?\s*:(?:\*\*)?\s*"
+    r"(?P<value>.*?)\s*$", re.IGNORECASE | re.MULTILINE,
+)
+ACTIVE_ROUTING_RE = re.compile(
+    r"^\s*(?:[-*]\s+)?(?P<source_role>parent|umbrella|child)(?: issue)?\s+"
+    r"#(?P<source>\d+)\s+(?:(?:still|currently)\s+)?"
+    r"(?:routes (?:work )?through|depends on|is blocked by|awaits)\s+"
+    r"(?P<target_role>parent|umbrella|child)(?: issue)?\s+#(?P<target>\d+)\s*\.?\s*",
+    re.IGNORECASE,
+)
+# Only complete affirmative clauses can support a merge recommendation.
+OVERLAP_REFS = r"#\d+(?:(?:\s*,\s*|\s+and\s+)#\d+)+"
+AFFIRMATIVE_OVERLAP_RE = re.compile(
+    rf"(?:duplicate(?: / overlap)? cluster:\s*{OVERLAP_REFS}"
+    r"(?:\s+target (?:the )?same (?:gate|component|scope|paths?))?"
+    rf"|{OVERLAP_REFS}\s+(?:are duplicates|overlap)"
+    rf"|(?:structural )?overlap between {OVERLAP_REFS})\s*\.?\s*",
+    re.IGNORECASE,
+)
 
 
 def _issue_state_index(issues):
@@ -174,12 +194,41 @@ def _issue_refs(text):
     return sorted({int(match) for match in ISSUE_REF_RE.findall(text)})
 
 
+def _parse_timestamp(value):
+    """Parse an explicit ISO timestamp; absent, invalid or naive means unknown."""
+    if not isinstance(value, str):
+        return None
+    try:
+        instant = datetime.fromisoformat(value.strip().replace("Z", "+00:00"))
+        if instant.tzinfo is None or instant.utcoffset() is None:
+            return None
+        return instant.astimezone(timezone.utc)
+    except (ValueError, OverflowError):
+        return None
+
+
+def _generation_timestamp(text):
+    """Read explicit generation headers, never filesystem modification time.
+
+    Missing, invalid and conflicting metadata cannot support a stale finding.
+    Equivalent headers expressed in different offsets describe the same instant.
+    """
+    instants = {
+        _parse_timestamp(match.group("value").strip("\"'"))
+        for match in GENERATED_RE.finditer(text)
+    }
+    if len(instants) == 1 and None not in instants:
+        return instants.pop()
+    return None
+
+
 def _artifact_record(path):
     artifact_path = Path(path)
     text = artifact_path.read_text(encoding="utf-8", errors="replace")
     return {
         "path": artifact_path,
         "text": text,
+        "generated_at": _generation_timestamp(text),
         "issue_refs": _issue_refs(text),
         "actions": {m.lower() for m in ACTION_RE.findall(text)},
     }
@@ -199,7 +248,7 @@ def _finding(category, recommendation, issues, evidence,
         "recommendation": recommendation,
         "confidence": confidence,
         "issues": sorted(int(issue) for issue in issues),
-        "artifact": str(artifact) if artifact is not None else None,
+        "artifact": Path(artifact).as_posix() if artifact is not None else None,
         "evidence": _snippet(evidence),
     }
 
@@ -215,13 +264,18 @@ def _line_findings_from_overlap_audit(issues, overlap_audit_text):
         lower = line.lower()
         if not refs:
             continue
-        if (
-            len(refs) >= 2
-            and ("duplicate" in lower or "overlap" in lower)
-            and any(state_by_issue[ref] == "OPEN" for ref in refs)
-        ):
-            findings.append(_finding(
-                "duplicate", "merge", refs, line, confidence="medium"))
+        for clause in re.split(r";|(?<=[.!?])\s+", line):
+            if not AFFIRMATIVE_OVERLAP_RE.fullmatch(clause.strip()):
+                continue
+            clause_refs = [
+                ref for ref in _issue_refs(clause) if ref in state_by_issue
+            ]
+            if len(clause_refs) >= 2 and any(
+                state_by_issue[ref] == "OPEN" for ref in clause_refs
+            ):
+                findings.append(_finding(
+                    "duplicate", "merge", clause_refs, clause,
+                    confidence="medium"))
         if (
             len(refs) == 1
             and state_by_issue[refs[0]] == "OPEN"
@@ -235,31 +289,63 @@ def _line_findings_from_overlap_audit(issues, overlap_audit_text):
     return findings
 
 
+def _active_routing_findings(text, state_by_issue, artifact):
+    """Require a same-sentence, present-tense parent/child route to closed work.
+
+    Supported statements start with an explicit role and issue reference, then
+    an affirmative routing verb and the other role/reference. History, negation,
+    hypothetical routes and unrelated references are not routing evidence.
+    """
+    findings = []
+    for sentence in re.split(r"\n|(?<=[.!?])\s+", text):
+        match = ACTIVE_ROUTING_RE.fullmatch(sentence)
+        if not match:
+            continue
+        source = int(match.group("source"))
+        target = int(match.group("target"))
+        source_is_child = match.group("source_role").lower() == "child"
+        target_is_child = match.group("target_role").lower() == "child"
+        if (
+            source_is_child != target_is_child
+            and state_by_issue.get(source) == "OPEN"
+            and state_by_issue.get(target) == "CLOSED"
+        ):
+            findings.append(_finding(
+                "parent-child-drift", "verify", [source, target],
+                sentence, confidence="medium", artifact=artifact,
+            ))
+    return findings
+
+
 def _artifact_findings(issues, artifact_paths, repo_root):
     state_by_issue = _issue_state_index(issues)
+    closed_at_by_issue = {
+        int(issue["number"]): _parse_timestamp(issue.get("closedAt"))
+        for issue in issues if "number" in issue
+    }
     findings = []
     root = Path(repo_root) if repo_root else Path.cwd()
     for path in artifact_paths or []:
         record = _artifact_record(path)
         refs = [ref for ref in record["issue_refs"] if ref in state_by_issue]
-        closed_refs = [ref for ref in refs if state_by_issue[ref] == "CLOSED"]
-        if closed_refs and record["actions"]:
+        generated_at = record["generated_at"]
+        stale_refs = [
+            ref for ref in refs
+            if state_by_issue[ref] == "CLOSED"
+            and generated_at is not None
+            and closed_at_by_issue[ref] is not None
+            and generated_at < closed_at_by_issue[ref]
+        ]
+        if stale_refs and record["actions"]:
             findings.append(_finding(
-                "stale-artifact", "refresh", closed_refs,
+                "stale-artifact", "refresh", stale_refs,
                 f"Artifact action {sorted(record['actions'])} references "
-                f"closed issue(s) {closed_refs}.",
+                f"issue(s) closed after artifact generation: {stale_refs}.",
                 confidence="high", artifact=record["path"]))
 
-        lower = record["text"].lower()
-        if len(refs) >= 2 and closed_refs and (
-            "child" in lower or "parent" in lower or "route" in lower
-            or "depends" in lower or "dependency" in lower
-        ):
-            findings.append(_finding(
-                "parent-child-drift", "verify", refs,
-                "Artifact still describes parent/child routing while at "
-                f"least one referenced issue is closed: {closed_refs}.",
-                confidence="medium", artifact=record["path"]))
+        findings.extend(_active_routing_findings(
+            record["text"], state_by_issue, record["path"],
+        ))
 
         for line in record["text"].splitlines():
             line_lower = line.lower()
@@ -324,7 +410,10 @@ def audit_issue_hygiene(issues, artifact_paths=None, repo_root=None,
     """Return deterministic issue-hygiene findings.
 
     Duplicate findings intentionally require structural overlap-audit evidence;
-    title similarity alone is not enough for v1.
+    title similarity alone is not enough for v1. A missing finding is not proof
+    of freshness: stale-artifact findings require known generation and closure
+    instants, with generation strictly earlier than closure. Parent/child drift
+    requires an explicit active route from an open issue to a closed issue.
     """
     findings = []
     findings.extend(_artifact_findings(issues, artifact_paths or [], repo_root))

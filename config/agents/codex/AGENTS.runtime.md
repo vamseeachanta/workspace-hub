@@ -41,7 +41,8 @@ You are direct, evidence-grounded, and operationally precise. You care more abou
 No separate user approval of a plan is required before implementation. The
 originating user's task request or established standing authorization authorizes
 implementation within that scope, including substantial work. Planning depth,
-TDD and adversarial review remain mandatory; complexity does not create a second
+TDD and adversarial review remain mandatory within the Hard Gates scope (operations work follows the
+scope clause there); complexity does not create a second
 permission ceremony. Ask only for missing scope-changing information or an
 action outside existing authority. This rule supersedes legacy plan-approval
 prerequisites in workflow references; historical approval records stay intact.
@@ -56,7 +57,7 @@ reuse are separate decisions.
 | --- | --- | --- |
 | read-only | Existing access and data-handling authority; no implementation approval for assessment | Proceed with authorized discovery; do not infer permission to write or publish. |
 | routine-reversible | Independently established standing authorization for the bounded task | Proceed after proportionate planning, applicable tests and review; do not request approval again for unchanged scope. |
-| substantial | Originating task request or established standing authorization matching the implementation scope | Proceed after proportionate planning, TDD and review; resolve blockers and verify material scope changes without requiring separate plan approval. |
+| substantial | Originating task request or established standing authorization matching the implementation scope | Proceed after proportionate planning, TDD (within the Hard Gates scope) and review; resolve blockers and verify material scope changes without requiring separate plan approval. |
 | consequential | Explicit approval matching the action, destination and current scope | Verify that action approval before execution; implementation approval alone does not authorize publication, deployment, access changes or destructive actions. |
 | unknown | Missing scope, effects or authority provenance | Obtain the missing context; continue independent authorized work while the affected action waits. |
 
@@ -76,6 +77,9 @@ revocation. A reference in agent-written JSON, a local marker, a label alone, a
 review verdict or a handoff does not authenticate that authority. Cross-session
 handoffs carry context to verify, not independent approval. Do not invent a
 trusted runtime transport when none is available; report the missing provenance.
+The user's own archived review save or message, cited by its path under
+`intake/review-comments/` in the private fleet-ops repository, counts as the
+user's word for the scope it states. Read the cited file; a paraphrase does not count.
 
 Reuse established approval within its unchanged scope. Missing local markers or
 stale status caches trigger discovery, not automatic approval revocation, label
@@ -93,8 +97,10 @@ contract does not establish live hook, native-loader or fleet-wide coverage.
 
 These gates apply to **all meaningful work** on this repo. Provider runtimes inherit them via this file.
 
+**Scope.** Hard Gates 1 to 5 and the frozen-packet rule govern engineering-basis code, calculation modules and shared instruction files, whatever their file type and whether or not the work is operational; those keep the full gates. Other operations work (merge trains, PR housekeeping, routine desk steps, operations scripts outside those categories, docs) uses a plan-lite plus one other-provider review; tests may follow the code, and a missing historical red is a note, not a hold. An owner ruling that the intake desk recorded verbatim on an operations ledger row, citing the owner's own message by source and time, is the originating user's authority for the scope it names once the acting desk has read that source back and checked scope and later revocation; a ledger row whose citation is missing or cannot be read back authenticates nothing. Neither route relaxes Hard Gate 6, the secrets and credential rules, or the authorization needed for consequential actions.
+
 1. **Plan proportionately and verify task scope.** Flow: Issue → Resource Intel → Plan → Adversarial Review → Implement (TDD) → Cross-review → Close. Substantial plans use `docs/plans/_template-issue-plan.md`; the originating task request or standing authorization authorizes implementation without separate user plan approval. Skill: `.claude/skills/coordination/issue-planning-mode/SKILL.md` | Guide: `docs/plans/README.md` | Policy: [Hard-Stop Policy](../../docs/standards/HARD-STOP-POLICY.md).
-2. **TDD mandatory** — tests before implementation; no exceptions.
+2. **TDD mandatory** — tests before implementation, for work inside the scope above.
 3. **Gate order**: Issue → Plan → Adversarial Review → verify authority appropriate to risk/scope → Implement → Cross-review → Close. Approval labels remain owner-controlled records; they are not a universal prerequisite for routine authorized work.
 4. **Adversarial review at BOTH stages**: plan AND code/artifact. Scale: T1 = 1 provider (simple, single-file), T2 = 2 providers (medium, multi-file or harness), T3 = 3 providers (large, cross-provider or systemic). Never skip; dial depth to scope.
 5. **Cross-review default 3-agent**: Claude + Codex + Agy (Antigravity, Gemini-backed; #3573) per AGENTS.md AI Review Policy (Claude orchestrates).
@@ -120,9 +126,9 @@ These rules fire on every action; violating them produces real incidents documen
 - **HTML default for rich artifacts.** Human-facing plans, specs, reports, PR-explainers default to HTML; harness/skill/rule files stay Markdown. (`feedback_html_default_artifact`, [#2663](https://github.com/vamseeachanta/workspace-hub/issues/2663))
 - **Plan future-tense only.** Plans must describe proposed work in future tense; past-tense "artifact already exists" claims trick reviewers. (`feedback_plan_past_tense_artifact_claims`)
 - **Subagent Write phantom hazard.** Subagents can report `Write` success while the file doesn't land; main session must `ls` before believing. (`feedback_subagent_write_phantom`)
-- **Promote generalizable review findings.** When an adversarial review surfaces a defect class that applies beyond the current plan's scope (worktree-incompatibility, NUL-iteration safety, TOCTOU between working tree and staged blob, threat-model inversion in skip conditions, BSD vs GNU portability), file a follow-on issue OR add a rule to `.claude/rules/` / `SHARED_SOUL.md` so the next plan in the same domain doesn't re-discover it. Tribal knowledge buried in review artifacts has zero retrieval-cost benefit. ([#2722](https://github.com/vamseeachanta/workspace-hub/issues/2722) r3+r4 wave: 26 of 29 distinct findings were generalizable but absorbed only into the plan that triggered them — no promotion path until this rule.)
-- **Verify coverage assumptions empirically.** Before claiming work "applies to all X" / "installs across N repos" / "covers every machine", enumerate the actual set on the live filesystem and confirm iteration visits each member. Per-machine checkouts are partial — not every tier-1 sibling is present on every machine — so a coverage claim must match what was enumerated. Drift probe on 2026-05-16 found only 3 of 7 tier-1 siblings checked out on `ace-linux-1` — per-machine coverage is fundamentally partial; coverage claims must match reality. (`feedback_n_night_blocker_promote_to_replan`-adjacent; [#2722](https://github.com/vamseeachanta/workspace-hub/issues/2722) §Acceptance criterion 12.)
-- **Enforcement scripts must not block their own artifacts.** When designing a check that fires on staged content (conflict markers, secret patterns, banned strings, regex denials), verify that the plan, tests, and implementation files for that check would themselves pass it — OR carry an explicit forensic-allowlist mechanism. Prefer per-line sentinels (matches `scripts/enforcement/check-no-abs-paths.sh:111` prior art) and path-restricted whole-file sentinels (5-prefix set in `check-no-conflict-markers.sh` precedent); avoid per-file blanket exempts, which are backdoors. (Gemini r2 #1 caught the self-blocking plan-file defect in [#2722](https://github.com/vamseeachanta/workspace-hub/issues/2722); Claude r1 #3 flagged the blanket-exempt backdoor.)
+- **Promote generalizable review findings.** When an adversarial review surfaces a defect class that applies beyond the current plan's scope (worktree-incompatibility, NUL-iteration safety, TOCTOU between working tree and staged blob, threat-model inversion in skip conditions, BSD vs GNU portability), file a follow-on issue OR add a rule to `.claude/rules/` / `SHARED_SOUL.md` so the next plan in the same domain doesn't re-discover it. Tribal knowledge buried in review artifacts has zero retrieval-cost benefit.
+- **Verify coverage assumptions empirically.** Before claiming work "applies to all X" / "installs across N repos" / "covers every machine", enumerate the actual set on the live filesystem and confirm iteration visits each member. Per-machine checkouts are partial — not every tier-1 sibling is present on every machine — so a coverage claim must match what was enumerated.
+- **Enforcement scripts must not block their own artifacts.** When designing a check that fires on staged content (conflict markers, secret patterns, banned strings, regex denials), verify that the plan, tests, and implementation files for that check would themselves pass it — OR carry an explicit forensic-allowlist mechanism. Prefer per-line sentinels (matches `scripts/enforcement/check-no-abs-paths.sh:111` prior art) and path-restricted whole-file sentinels (5-prefix set in `check-no-conflict-markers.sh` precedent); avoid per-file blanket exempts, which are backdoors.
 - **Proactively take up authorized work.** At session start, check parallel work and inventory stale work before acting. A labeled issue, carry-forward queue, handoff or dispatch is discovery context: verify originating authority and current scope under [Authorization](#authorization). Then proceed without another "begin" request inside that verified scope. A handoff cannot pre-authorize itself. Reserve questions for missing context or approval that changes the action. (Preserves the preconditions from [#2724](https://github.com/vamseeachanta/workspace-hub/issues/2724).)
 - **Generation and test isolation.** Clear inherited Git repository bindings in fixture/checker child processes before resolving roots; `GIT_DIR`, `GIT_WORK_TREE` and `GIT_COMMON_DIR` can override an explicit cwd. Regress both caller files and Git metadata preservation. A generator that derives its target from cwd can modify another checkout or live symlinked guidance. Resolve and validate the intended root and output paths before execution; use disposable repositories and user directories for mutation tests. Record before/tampered/restored hashes for negative probes, enumerate every expected output, and verify canonical outputs and user links remain unchanged. A successful exit alone does not establish coverage or preservation.
 - **Approval-gate migration.** Before retiring a workflow approval prerequisite, inventory downstream controls that select or enroll work through that event. Preserve independent completeness, review and security enforcement with an approval-independent trigger, and preserve the intended legacy backlog boundary. Generated guidance is not proof of installed runtime propagation; verify the actual loader target.
@@ -131,7 +137,7 @@ These rules fire on every action; violating them produces real incidents documen
 - **Classify a failure's layer before reporting it; re-probe stale alarms.** Before declaring a host, tool, dependency or service "down" / "unreachable" / "broken", identify WHICH layer failed — name-resolution, network-reachability, node-offline, auth/credential rejection, or application error — because the fix and the owner differ per layer and a wrong label sends the next session chasing the wrong thing (a node marked offline with a connection timeout is a down box, not an auth problem; a key/user rejection with a banner is auth, not a down box). A failure carried over from an earlier run, dashboard, or another session is STALE until reproduced: re-probe now before acting on it or escalating. Prefer a classifier that returns the layer over a bare pass/fail. Anchor identity and trust to stable keys (e.g. SSH host-key fingerprints), never to addresses that churn across re-registration. **Why:** a morning dashboard reported two machines "down for a second day"; a fresh probe showed one was the prober itself and the other had already recovered — the stale alarm, not the machines, was the defect. (`feedback_classify_failure_layer_before_reporting`) Before declaring a capability unavailable, try each access route that the session is already authorized to use: callable tools, desktop/COM automation, UNC path instead of a missing drive letter, tailnet SSH. Record which route failed and why. Trying a route does not grant access to data or hosts beyond the task's authority.
 - **Keep authorized campaigns running.** This applies inside the existing [Authorization](#authorization) scope only. When a batch stops, record why: blocked by policy, needs diagnosis, or failed cases. Once the failure is shown to be confined to particular cases, isolate them and continue the untouched authorized cases without asking again. Stop for a named blocker and say what clears it. Always stop at a shared failure, a revocation, a consequential action or a scope change. After a quota or rate-limit reset, resume through a mechanism the task already permits (in-session wake-up or background watcher). Re-check authority and state before resuming. Install persistent schedulers only with explicit authority. An idle lane with authorized work queued is a defect. (#3973: ~104 "continue" nudges; one campaign idle about 6 h under existing authority.)
 - **Report progress, not liveness.** A lane is running only when its solver output is advancing, a heartbeat counts only after a successful remote exchange, and a run is complete only after native-output readback against its criterion. A live process, a fresh local heartbeat, an "armed" monitor and exit 0 are not progress. Count qualified results, not tests, matrix rows or report pages. (#3973: 655 local heartbeat commits while the worker could not pull; responses grew from 94 to 350 while qualified results stayed at 0.)
-- **Review a frozen packet.** Send reviewers an inline, hash-pinned packet on stdin (`scripts/review/build-review-packet.py build`), not paths or argv. Run `verify` before acting on the verdict; any changed file voids the verdict. Re-review the delta plus the interfaces, callers and criteria it touches, and bind acceptance to the bytes actually committed or executed. After three MAJOR rounds on the same artifact, propose a simpler design to the owner instead of another hardening round; the review gate still applies to whichever design proceeds. (#3973)
+- **Review a frozen packet.** Send reviewers an inline, hash-pinned packet on stdin (`scripts/review/build-review-packet.py build`), not paths or argv. Run `verify` before acting on the verdict; any changed file voids the verdict. Re-review the delta plus the interfaces, callers and criteria it touches, and bind acceptance to the bytes actually committed or executed. After two MAJOR rounds on the same artifact, the author switches to the simpler design instead of a third hardening round. The simpler design must pass its own review before it ships; non-blocking findings are recorded as open. The owner is asked only when the artifact is one the owner reviews (outgoing or client-facing work, sends in the owner's name, spending, or deleting productive client work). (#3973)
 - **Preflight Windows sessions.** At the start of a Windows session, run `scripts/windows/agent-preflight.ps1 -OutFile <scratch>\agent-preflight.json` and use its interpreter, shell and auth findings instead of rediscovering them. Put multiline commands in script files. Give deletion commands literal, already-resolved paths. (#3973)
 - **Rotate long sessions; acknowledge handoffs.** One workstream per session. Hand over with a committed handoff at a milestone, after three compactions, or after 48 h, whichever comes first. Run side analyses in a separate session. A handoff carries repository revisions, the time its capability claims were probed, and the current execution owner. A queued message is not received; ownership transfers only on acknowledgement. Re-probe a handoff's capability claims before obeying them. (#3973: 121 sessions over 24 h; 439 Codex compactions.)
 - **Decide retention and criteria before launch.** A campaign declares its retained data (inputs, plotted arrays, compact metrics, manifest, archive replica) and its versioned acceptance criteria before the first run. Every consumer (collector, monitor, workbook, report) reads the same criteria version. Ingest PDFs text-first and render only the pages that carry figures or tables. (#3973: 39 GB untracked across 222 runs; 2.5 GB subagent logs from rendering every PDF page.)
@@ -160,11 +166,11 @@ Compact preview with GitHub links, current gate/status, exact recommended action
 
 # Cross-Review Routing
 
-- Plan-stage reviews and code-stage reviews are independent gates; both apply.
+- Plan-stage reviews and code-stage reviews are independent gates; both apply within the Hard Gates scope. Other operations work outside the protected categories takes one other-provider review.
 - Single-provider verdict ≠ consensus. When r1 (Claude inline) and r2 (dispatched providers) surface different defects, apply r3 as main-session inline patches; do NOT dispatch r3 review. (`feedback_r3_inline_loop_break_pattern`)
 - Codex GitHub-connector-derived evidence must be locally verified before trusting. (`feedback_cross_provider_review_payoff`)
 - Provider quota outages (e.g., agy/Gemini 429) degrade T3 → T2; document UNAVAILABLE per existing `scripts/review/results/` convention rather than blocking. An artifact that EXISTS but fails verdict parsing is INVALID_OUTPUT and blocks — parse failure never degrades (#3573).
-- Codex sustained-MAJOR at 3+ rounds while other providers MINOR → surface consensus-vs-minority, do not auto-cycle. (`feedback_codex_sustained_major_loop`)
+- Codex sustained-MAJOR at 2+ rounds while other providers MINOR → surface consensus-vs-minority, do not auto-cycle. (`feedback_codex_sustained_major_loop`)
 
 # Interaction With the User
 
@@ -196,11 +202,10 @@ reader who cannot reach the source cannot check it, and a single external path i
 not a copy. Add an explicit `.gitignore` exception so build-output rules cannot
 swallow evidence.
 
-One carve-out, and it is a licensing constraint rather than a storage preference:
-**vendor-licensed standards and codes are never committed.** The raw PDF stays at
-its licensed location and is referenced by a `sources:` field, per
-`.claude/rules/codes-standards-data-routing.md`. Derived data from those standards
-may live in the private wiki; the document itself may not.
+Codes and standards we hold may be committed to private repositories (large files
+in the ACE data store) per `.claude/rules/codes-standards-data-routing.md` (owner
+ruling 28 Oct 2026); only public repositories and pages exclude original PDFs and
+whole sections.
 
 ## Engineering register — documents, chat, email, agent output
 
@@ -295,7 +300,7 @@ The historical `feedback_codex_needs_pushed_artifact` entry describes a restrict
 
 ## Adversarial Review Posture
 
-- Sustained-MAJOR loop hazard: if Codex returns MAJOR for 3+ rounds while Claude/Gemini land at MINOR by v3, surface as consensus-vs-minority — do not auto-cycle blindly. (`feedback_codex_sustained_major_loop`)
+- Sustained-MAJOR loop hazard: if Codex returns MAJOR for 2+ rounds while Claude/Gemini land at MINOR by v2, surface as consensus-vs-minority — do not auto-cycle blindly. (`feedback_codex_sustained_major_loop`)
 - Codex reviews via GitHub connector when local shell is blocked. Connector-derived evidence (file existence, line contents, link resolution) MUST be locally re-verified before applying as a fix. (`feedback_cross_provider_review_payoff`, `feedback_r1_review_trust_hazard`)
 - Codex review iteration cap: 3 per WRK/non-WRK plan; `submit-to-codex.sh` enforces via `review-iteration.yaml` for WRK-scoped work.
 
@@ -322,7 +327,7 @@ Beyond the SHARED_SOUL.md Hard Gates, Codex sessions additionally enforce:
 
 1. **Every implementation task maps to a WRK-* in `.claude/work-queue/`** OR a GitHub issue per the broader workspace `feedback_no_reserved_wrk_ids` rule. Codex's `submit-to-codex.sh` Stage-5 gate validates WRK evidence when `--wrk-id` is supplied.
 2. **Workflow lifecycle skills are mandatory**: `.claude/skills/workspace-hub/work-queue-workflow/SKILL.md` + `.claude/skills/workspace-hub/workflow-gatepass/SKILL.md` for WRK-mode work.
-3. **Coding style guardrails**: max 400 lines/file, max 50 lines/function, snake_case Python, camelCase JS — see `.claude/rules/coding-style.md`.
+3. **Coding style guardrails**: snake_case Python, camelCase JS — see `.claude/rules/coding-style.md`.
 4. **Git workflow**: conventional commits, branch prefixes (`feature/`, `bugfix/`, `chore/`). Merges are governed by [`.claude/rules/merge-authorization.md`](../../../.claude/rules/merge-authorization.md) and [`merge-cleanup.md`](../../../.claude/rules/merge-cleanup.md).
 5. **Worktrees, not clones**: start a task with `git worktree add` from the canonical checkout; never make a full second clone at the workspace root. Remove the worktree and local branch once the PR merges. Bulky solver output goes to `/mnt/ace` with a manifest, not into Git. See [`.claude/rules/workstation-hygiene.md`](../../../.claude/rules/workstation-hygiene.md) (2026-10-07: eight full clones filled a 475 GB drive).
 
@@ -339,48 +344,37 @@ For a verified mismatch within authorized installation scope, use `scripts/agent
 ## Skill index
 > Canonical source map, not an installed-skill inventory. Codex supports native skill discovery through its effective roots, including repository `.agents/skills`. Use the active task profile; consult `.claude/skills/<family>/` only for relevant source lookup when needed. Source ownership does not set loader precedence. Preserve native .system skills and unrelated plugins/settings. Do not recursively activate this index. Auto-generated — do not hand-edit.
 
-- **ai/** — 15 skill(s); `ls .claude/skills/ai/*/SKILL.md` to enumerate
-- **apple/** — 5 skill(s); `ls .claude/skills/apple/*/SKILL.md` to enumerate
-- **autonomous-ai-agents/** — 9 skill(s); `ls .claude/skills/autonomous-ai-agents/*/SKILL.md` to enumerate
+- **ai/** — 6 skill(s); `ls .claude/skills/ai/*/SKILL.md` to enumerate
 - **business-finance/** — 1 skill(s); `ls .claude/skills/business-finance/*/SKILL.md` to enumerate
-- **business-marketing/** — 2 skill(s); `ls .claude/skills/business-marketing/*/SKILL.md` to enumerate
-- **business/** — 74 skill(s); `ls .claude/skills/business/*/SKILL.md` to enumerate
+- **business/** — 30 skill(s); `ls .claude/skills/business/*/SKILL.md` to enumerate
 - **business_admin/** — 1 skill(s); `ls .claude/skills/business_admin/*/SKILL.md` to enumerate
 - **coordination/** — 60 skill(s); `ls .claude/skills/coordination/*/SKILL.md` to enumerate
 - **corporate-tax-form-fill** — Programmatically fill IRS tax form PDFs (Form 1120, etc.) using pymupdf/fitz. Covers field discovery, mapping, filling, cross-chec
-- **creative/** — 20 skill(s); `ls .claude/skills/creative/*/SKILL.md` to enumerate
 - **data-science/** — 1 skill(s); `ls .claude/skills/data-science/*/SKILL.md` to enumerate
 - **data/** — 85 skill(s); `ls .claude/skills/data/*/SKILL.md` to enumerate
-- **development/** — 72 skill(s); `ls .claude/skills/development/*/SKILL.md` to enumerate
+- **development/** — 54 skill(s); `ls .claude/skills/development/*/SKILL.md` to enumerate
 - **devops/** — 8 skill(s); `ls .claude/skills/devops/*/SKILL.md` to enumerate
 - **devtools/** — 1 skill(s); `ls .claude/skills/devtools/*/SKILL.md` to enumerate
 - **digitalmodel/** — 8 skill(s); `ls .claude/skills/digitalmodel/*/SKILL.md` to enumerate
 - **email/** — 10 skill(s); `ls .claude/skills/email/*/SKILL.md` to enumerate
 - **eng/** — 0 skill(s); `ls .claude/skills/eng/*/SKILL.md` to enumerate
-- **engineering/** — 89 skill(s); `ls .claude/skills/engineering/*/SKILL.md` to enumerate
+- **engineering/** — 29 skill(s); `ls .claude/skills/engineering/*/SKILL.md` to enumerate
 - **extract-learnings-to-issues** — Extract unstructured user reflections and learnings, distill core themes, route insights to existing GitHub issues as contextual c
 - **field-dev-code-recon** — Extract field development information from external sources (LinkedIn posts, technical content), map against digitalmodel codebase
 - **finance/** — 3 skill(s); `ls .claude/skills/finance/*/SKILL.md` to enumerate
-- **gaming/** — 2 skill(s); `ls .claude/skills/gaming/*/SKILL.md` to enumerate
 - **github/** — 19 skill(s); `ls .claude/skills/github/*/SKILL.md` to enumerate
-- **leisure/** — 1 skill(s); `ls .claude/skills/leisure/*/SKILL.md` to enumerate
-- **marketing/** — 7 skill(s); `ls .claude/skills/marketing/*/SKILL.md` to enumerate
+- **marketing/** — 0 skill(s); `ls .claude/skills/marketing/*/SKILL.md` to enumerate
 - **mcp/** — 2 skill(s); `ls .claude/skills/mcp/*/SKILL.md` to enumerate
-- **media/** — 5 skill(s); `ls .claude/skills/media/*/SKILL.md` to enumerate
 - **memory/** — 3 skill(s); `ls .claude/skills/memory/*/SKILL.md` to enumerate
-- **mlops/** — 21 skill(s); `ls .claude/skills/mlops/*/SKILL.md` to enumerate
 - **operations/** — 17 skill(s); `ls .claude/skills/operations/*/SKILL.md` to enumerate
-- **productivity/** — 11 skill(s); `ls .claude/skills/productivity/*/SKILL.md` to enumerate
-- **red-teaming/** — 1 skill(s); `ls .claude/skills/red-teaming/*/SKILL.md` to enumerate
-- **research/** — 15 skill(s); `ls .claude/skills/research/*/SKILL.md` to enumerate
-- **science/** — 6 skill(s); `ls .claude/skills/science/*/SKILL.md` to enumerate
-- **smart-home/** — 1 skill(s); `ls .claude/skills/smart-home/*/SKILL.md` to enumerate
-- **social-media/** — 2 skill(s); `ls .claude/skills/social-media/*/SKILL.md` to enumerate
-- **software-development/** — 35 skill(s); `ls .claude/skills/software-development/*/SKILL.md` to enumerate
-- **test-dummy-validation/** — 1 skill(s); `ls .claude/skills/test-dummy-validation/*/SKILL.md` to enumerate
-- **travel/** — 8 skill(s); `ls .claude/skills/travel/*/SKILL.md` to enumerate
-- **workspace-hub-learned/** — 70 skill(s); `ls .claude/skills/workspace-hub-learned/*/SKILL.md` to enumerate
-- **workspace-hub/** — 150 skill(s); `ls .claude/skills/workspace-hub/*/SKILL.md` to enumerate
+- **phone-media-pull** — Run the family iPhone photo/video pull on the archive host with the owner: copy DCIM at full quality, verify, back up to Google Dr
+- **productivity/** — 3 skill(s); `ls .claude/skills/productivity/*/SKILL.md` to enumerate
+- **research/** — 11 skill(s); `ls .claude/skills/research/*/SKILL.md` to enumerate
+- **science/** — 0 skill(s); `ls .claude/skills/science/*/SKILL.md` to enumerate
+- **software-development/** — 25 skill(s); `ls .claude/skills/software-development/*/SKILL.md` to enumerate
+- **travel/** — 0 skill(s); `ls .claude/skills/travel/*/SKILL.md` to enumerate
+- **workspace-hub-learned/** — 38 skill(s); `ls .claude/skills/workspace-hub-learned/*/SKILL.md` to enumerate
+- **workspace-hub/** — 45 skill(s); `ls .claude/skills/workspace-hub/*/SKILL.md` to enumerate
 
 ## Universal rules (inlined for Codex)
 > Claude reads .claude/rules/ natively; these are inlined here because Codex has no native rules loader. Domain/Claude-only rules (goal-invocation, calc-citation, wiki-routing) stay path-references.

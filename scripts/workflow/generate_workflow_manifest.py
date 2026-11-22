@@ -69,8 +69,8 @@ def load_registry(repo_slug, resolve=resolve_tier1_repo_path):
     """Return ``(raw_text, parsed_dict|None, error|None)``.
 
     ``error`` is ``"missing-registry"`` (no file / unresolvable repo) or
-    ``"unparseable-registry"`` (invalid YAML or non-dict top-level). Robustness
-    contract per wed#450.
+    ``"unparseable-registry"`` (unreadable text, invalid YAML, collection or
+    row identity). Robustness contract per wed#450.
     """
     try:
         repo_path = resolve(repo_slug)
@@ -79,13 +79,21 @@ def load_registry(repo_slug, resolve=resolve_tier1_repo_path):
     reg = Path(repo_path) / "docs" / "registry" / "workflows.yaml"
     if not reg.is_file():
         return (None, None, "missing-registry")
-    raw = reg.read_text(encoding="utf-8")
+    try:
+        raw = reg.read_text(encoding="utf-8")
+    except (OSError, UnicodeError):
+        return (None, None, "unparseable-registry")
     try:
         parsed = yaml.safe_load(raw)
     except Exception:
         return (raw, None, "unparseable-registry")
     if not isinstance(parsed, dict):
         return (raw, None, "unparseable-registry")
+    if parsed.get("workflows") is not None and not isinstance(parsed["workflows"], list):
+        return (raw, None, "unparseable-registry")
+    for row in parsed.get("workflows") or []:
+        if not isinstance(row, dict) or not isinstance(row.get("id"), str) or not row["id"]:
+            return (raw, None, "unparseable-registry")
     return (raw, parsed, None)
 
 
@@ -142,7 +150,7 @@ def latest_by_routing_id(workflows) -> dict:
 
 
 def build_manifest(slugs=None, resolve=resolve_tier1_repo_path) -> dict:
-    slugs = list(slugs) if slugs is not None else tier1_python_repos()
+    slugs = sorted(set(slugs if slugs is not None else tier1_python_repos()))
     repos: list[dict] = []
     workflows: list[dict] = []
     warnings: list[str] = []
@@ -202,19 +210,80 @@ def write_manifest(path=None, slugs=None, resolve=resolve_tier1_repo_path) -> Pa
     return path
 
 
+def _unique_json_object(pairs):
+    """Reject duplicate keys before the JSON decoder discards evidence."""
+    result = {}
+    for key, value in pairs:
+        if key in result:
+            raise ValueError("duplicate JSON key")
+        result[key] = value
+    return result
+
+
+def _reject_json_constant(value):
+    raise ValueError("non-finite JSON value")
+
+
+def _comparison_payload(manifest) -> str:
+    """Compare discovery meaning, excluding only observation metadata.
+
+    The manifest schema defines repo/workflow identities; the registry README
+    defines timestamp and best-effort commit provenance. Neither observation
+    field changes discovery meaning. JSON comparison preserves scalar types
+    (Python equality would otherwise equate True and 1).
+    """
+    if not isinstance(manifest, dict) or not isinstance(manifest.get("generated_at"), str):
+        raise TypeError("invalid manifest observation")
+    payload = {key: value for key, value in manifest.items() if key != "generated_at"}
+    # Repo and workflow collections are sets by their schema-defined identities.
+    for collection, identity in (("repos", "repo"), ("workflows", "workflow_id")):
+        rows = payload.get(collection)
+        if not isinstance(rows, list):
+            raise TypeError("invalid manifest collection")
+        normalized = []
+        seen = set()
+        for row in rows:
+            if not isinstance(row, dict) or not isinstance(row.get(identity), str):
+                raise TypeError("invalid manifest identity")
+            if row[identity] in seen:
+                raise ValueError("duplicate manifest identity")
+            seen.add(row[identity])
+            if collection == "repos":
+                if row.get("status") != "ok":
+                    raise ValueError("registry evidence unavailable")
+                if row.get("git_sha") is not None and not isinstance(row["git_sha"], str):
+                    raise TypeError("invalid commit observation")
+                row = {key: value for key, value in row.items() if key != "git_sha"}
+            normalized.append(row)
+        payload[collection] = sorted(normalized, key=lambda row: row[identity])
+    warnings = payload.get("warnings")
+    if not isinstance(warnings, list) or not all(isinstance(item, str) for item in warnings):
+        raise ValueError("invalid manifest warnings")
+    payload["warnings"] = sorted(warnings)
+    return json.dumps(payload, sort_keys=True, ensure_ascii=False, allow_nan=False)
+
+
 def check_stale(manifest_path=None, slugs=None, resolve=resolve_tier1_repo_path) -> int:
-    """Return 1 if any repo's live registry hash drifts from the committed
-    manifest (fail closed; never silently serve stale), else 0. ``generated_at``
-    is excluded from the comparison."""
+    """Fail closed on changed discovery data or unavailable registry evidence.
+
+    Compare hashes and all registry-derived content. Ignore collection order,
+    ``generated_at`` and best-effort ``git_sha`` observation metadata only.
+    """
     manifest_path = Path(manifest_path) if manifest_path is not None else default_manifest_path()
-    saved = json.loads(manifest_path.read_text(encoding="utf-8"))
-    fresh = build_manifest(slugs=slugs, resolve=resolve)
-    saved_h = {r["repo"]: r.get("registry_sha256") for r in saved.get("repos", [])}
-    fresh_h = {r["repo"]: r.get("registry_sha256") for r in fresh.get("repos", [])}
-    drift = sorted(s for s in saved_h if saved_h[s] != fresh_h.get(s))
-    drift += sorted(s for s in fresh_h if s not in saved_h)
-    if drift:
-        print(f"STALE: registries changed since manifest: {drift}", file=sys.stderr)
+    try:
+        saved = json.loads(
+            manifest_path.read_text(encoding="utf-8"),
+            object_pairs_hook=_unique_json_object,
+            parse_constant=_reject_json_constant,
+        )
+        fresh = build_manifest(slugs=slugs, resolve=resolve)
+        matches = _comparison_payload(saved) == _comparison_payload(fresh)
+    except (OSError, UnicodeError, TypeError, ValueError):
+        # Never print decoder errors: they may include source values or paths.
+        print("STALE: manifest or registry evidence is invalid or unavailable", file=sys.stderr)
+        return 1
+    if not matches:
+        print("STALE: discovery content differs from current registries", file=sys.stderr)
         return 1
     return 0
 
@@ -222,7 +291,7 @@ def check_stale(manifest_path=None, slugs=None, resolve=resolve_tier1_repo_path)
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description="Generate or check the ecosystem workflow manifest (#3284).")
     ap.add_argument("--write", action="store_true", help="regenerate the manifest (default)")
-    ap.add_argument("--check", action="store_true", help="stale-detection gate: exit 1 on registry drift")
+    ap.add_argument("--check", action="store_true", help="exit 1 on discovery drift or unavailable evidence")
     ap.add_argument("--output", default=None, help="manifest path override")
     args = ap.parse_args(argv)
 

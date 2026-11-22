@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en"><meta charset="utf-8"><title>Foundation materializer recovery</title>
+<style>body{font:16px/1.5 system-ui;max-width:65rem;margin:2rem auto;padding:0 1rem}
+table{border-collapse:collapse}td,th{border:1px solid #aaa;padding:.5rem;text-align:left}
+caption{caption-side:bottom;text-align:left}pre{white-space:pre-wrap}</style>
+<body><h1>Foundation materializer recovery</h1>
+<h2>Summary</h2>
+<p>Interrupted journal and restore staging no longer reserve a fixed filename needed
+by the next rollback attempt. Each new attempt creates an exclusive staging file;
+existing residue is retained. Recovery uses an operator-trusted receipt, bound roots,
+matching destination bytes and verified backup bytes. A filename is not evidence
+of ownership, and receipts do not authenticate permission. This is the bounded
+recovery contract for issue 3858.</p>
+<h2>Revision history</h2>
+<table><tr><th>Revision</th><th>Date</th><th>Change and reason</th></tr>
+<tr><td>1</td><td>2026-10-22</td><td>Recovery staging and evidence boundaries are documented
+so interrupted attempts can be retried without overwriting residue.</td></tr></table>
+<caption>Table 1. Guide revision history.</caption>
+<h2>Inputs and method</h2>
+<p>The entry point is <code>scripts/skills/materialize_profile.py</code>. Report mode
+requires explicit source root, source revision, Foundation profile, target root,
+provider and an external transaction directory on the destination volume. Its JSON
+manifest binds the actual source bytes, profile and destination preimages. Apply
+requires that exact manifest and roots. The existing Foundation profile is the
+payload boundary; no arbitrary profile expansion is supported.</p>
+<p>Before recovery, stop competing writers through external coordination and retain
+the entire transaction directory. Load a separately trusted receipt or the last
+trusted <code>journal.json</code>. Never select the newest pending file as authority:
+it may be partial, stale or unrelated. If the authoritative receipt is missing or
+cannot be trusted, automatic recovery is NOT_EVALUATED; reconcile the transaction
+manually without deleting the evidence.</p>
+<pre>python -B scripts/skills/materialize_profile.py --rollback \
+  --source-root "$SOURCE_ROOT" --target-root "$TARGET_ROOT" \
+  --transaction-dir "$TRANSACTION_ROOT" --manifest "$TRUSTED_RECEIPT"</pre>
+<p>The environment must supply the utility's dependencies. All root variables denote
+explicit absolute paths chosen outside discovery subtrees for transaction storage.
+This command performs rollback, not forward completion of interrupted apply.
+A new apply after rollback requires a fresh report and a new transaction directory.</p>
+<table><tr><th>Observed destination</th><th>Recovery disposition</th></tr>
+<tr><td>Equals recorded preimage, including recorded absence</td><td>Already restored;
+skip replacement.</td></tr>
+<tr><td>Equals postimage with replace-intent or written state</td><td>Restore verified
+backup bytes, or remove the transaction-created file when its preimage was absent.</td></tr>
+<tr><td>Differs from both</td><td>Reject before rollback writes; preserve the later writer.</td></tr>
+<tr><td>Backup missing, linked or digest-mismatched</td><td>Reject restoration; retain evidence.</td></tr>
+</table><caption>Table 2. Equality is evaluated on actual bytes through the existing digest guards.</caption>
+<p>Backup bytes are checked during candidate selection and again after reading them
+for staging. Replacement rechecks the destination immediately before mutation.
+Already restored entries need no staging, so retry does not depend on candidate
+numbering from an earlier attempt. Only recorded, identity-matching empty directories
+are removed; foreign children prevent directory cleanup.</p>
+<h2>Worked example</h2>
+<p>The executable example is
+<code>tests/skills/test_materialize_profile_recovery.py::test_repeated_rollback_preserves_staging_and_backup_evidence</code>.
+Two selected skill files initially contain literal valid frontmatter plus
+<code>original</code>. Apply installs the synthetic profile bytes. Existing
+<code>journal.pending</code> and <code>rollback-0000.payload</code> contain unrelated
+literal bytes. Rollback is interrupted at the second replacement after a restore
+file has been staged.</p>
+<p>On retry with the saved receipt, the first restored file equals its preimage and
+is skipped. The remaining file equals its postimage, so verified original bytes
+are copied into a fresh exclusive staging file and restored. The answer is both
+original files restored byte for byte, all original backups and interrupted
+staging unchanged, and a <code>rolled-back</code> receipt. A further retry has the
+same result. Expected bytes are the explicit example inputs, not values produced
+by the implementation under test.</p>
+<h2>Residue and durability</h2>
+<table><tr><th>Artifact</th><th>Disposition</th></tr>
+<tr><td>journal.json</td><td>Last successfully published receipt; operator trust remains required.</td></tr>
+<tr><td>journal.pending; journal-*.payload</td><td>Retained historical or interrupted
+journal staging; never read or promoted by recovery.</td></tr>
+<tr><td>rollback-*.payload</td><td>Retained interrupted restore staging; never reused.</td></tr>
+<tr><td>*.preimage; numbered apply *.payload</td><td>Backup and staged source evidence;
+retained unless a staged payload was consumed by replacement.</td></tr>
+</table><caption>Table 3. Retained evidence is expected residue, not an automatic cleanup authorization.</caption>
+<p>Each new staging file is flushed and file-fsynced before replacement. Exclusive
+creation guards name collisions; random names do not authenticate ownership. No
+existing pending or restore file is overwritten. Successful journal replacement
+publishes that attempt's receipt. Directory fsync, crash persistence of directory
+entries, whole-transaction atomicity and hostile concurrent-writer protection are
+not established. A storage or permission failure can still prevent recovery;
+unique staging removes fixed-name collisions, not these constraints.</p>
+<p>A whole-set reapply is a validated no-op. In a mixed apply, entries whose current
+bytes already equal source bytes are omitted from the write set; their inode and
+modification time are preserved by the utility. This does not promise preservation
+of unrelated access metadata or protection from another writer. Rollback retains
+those pre-existing identical files.</p>
+<h2>Evidence boundaries</h2>
+<ul>
+<li>Git mode <code>120000</code> records a tracked symlink. A checkout with symlink
+materialization disabled may hold regular path-file bytes instead. Record both
+<code>git ls-files -s -- .codex/skills</code> and no-follow filesystem type; neither
+observation alone establishes native discovery. The materializer rejects indexed
+symlinks in the destination skills subtree even if their working bytes are regular.</li>
+<li>Historical evidence in
+<code>docs/reports/2026-09-11-agent-foundation-evidence.json</code> records omitted
+family-nested project skills and a corrected flat fixture. That is a measured
+layout limitation, not a universal numeric traversal depth. A quantitative depth
+threshold is NOT_EVALUATED from the available public record. Native traversal
+repair and fresh native-provider probes remain outside this recovery change.</li>
+<li>Issue 3858 distinguishes a historical 15-file source digest from a 23-item review
+packet. These are different sets; a source digest does not cover packet-only
+receipts or instructions. Exact historical membership and digest reproduction
+are not established here. New review evidence must enumerate both sets, record
+revision and raw-byte digest per member, and identify any excluded packet item.</li>
+<li>Test-byte normalization requires recorded provenance: raw input digest, declared
+transformation, transformed digest and the exact bytes reviewed/executed. The
+profile permits only explicitly declared <code>crlf-to-lf</code> comparison; apply
+preserves source bytes and destination digests cover actual bytes. Historical
+normalization must not silently be treated as raw-byte equivalence. This change
+introduces no test-byte normalization.</li>
+<li>The optional mock-envelope reference remains excluded by
+<code>config/skills/profiles/foundation.yaml</code>; its absence is a declared
+profile limitation. Recovery does not install missing examples or dependencies.</li>
+</ul>
+<h2>Checks and review limits</h2>
+<p>The materializer, filesystem and recovery regression suites exercise byte guards,
+interrupted publication, interrupted rollback, identical-entry metadata and real
+controlled global/system Git configuration exclusion. The latter first confirms
+that a control Git invocation reads the supplied configuration marker, then confirms
+that the production isolated reader cannot see it. Configuration bytes remain
+unchanged. Synthetic fixtures do not qualify installed runtime behavior.</p>
+<p>The plan assessment and artifact inspection are local defect-hunting checks.
+Independent reciprocal provider review remains required before merge; it is not
+claimed by this guide. No live installation, hook repair or broad closure is included.</p>
+</body></html>

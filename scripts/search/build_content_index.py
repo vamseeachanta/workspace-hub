@@ -1,8 +1,13 @@
-import os
-import json
 import argparse
-from pathlib import Path
+import json
+import os
+import sys
 from datetime import datetime
+from pathlib import Path
+
+# Direct script invocation must resolve the shared helper from its own checkout.
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
+from scripts.lib.git_worktree import is_git_worktree_root
 
 RAW_INVENTORY_SENTINEL = "<!-- tier1-raw-inventory-banner: preserve; see docs/plans/2026-04-22-issue-2464 -->"
 
@@ -13,7 +18,7 @@ DEFAULT_RAW_INVENTORY_BANNER = """<!-- tier1-raw-inventory-banner: preserve; see
 
 
 def is_repo_root(path: Path) -> bool:
-    return (path / ".git").is_dir()
+    return is_git_worktree_root(path)
 
 
 def preserved_raw_inventory_banner(output_md: Path) -> str:

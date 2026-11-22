@@ -1,0 +1,26 @@
+{
+  "schema": "report-provenance-v1",
+  "report_id": "synthetic-evidence",
+  "revision": "initial",
+  "repository_url": "https://github.com/example/reference",
+  "sources": [
+    {
+      "source_id": "published-input",
+      "path": "evidence.txt",
+      "revision": "807cc14f170e9c0076e83d8943dfc3187747f9b0",
+      "byte_scope": "git-blob-bytes",
+      "sha256": "edeaaff3f1774ad2888673770c6d64097e391bc362d7d6fb34982ddf0efd18cb",
+      "reader_url": "https://github.com/example/reference/blob/807cc14f170e9c0076e83d8943dfc3187747f9b0/evidence.txt"
+    },
+    {
+      "source_id": "checkout-input",
+      "path": "evidence.txt",
+      "revision": "807cc14f170e9c0076e83d8943dfc3187747f9b0",
+      "byte_scope": "checkout-bytes",
+      "sha256": "552bab6864c7a7b69a502ed1854b9245c0e1a30f008aaa0b281da62585fdb025"
+    }
+  ],
+  "prerequisites": [
+    {"id": "qualified-quantity", "status": "unmet"}
+  ]
+}

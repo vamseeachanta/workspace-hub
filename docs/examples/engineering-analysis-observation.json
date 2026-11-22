@@ -1,0 +1,51 @@
+{
+  "schema_version": "1",
+  "observed_at": "2026-10-22T00:00:00Z",
+  "subject": {
+    "owner_repo": "digitalmodel",
+    "record_ref": "digitalmodel:issues/2117",
+    "program": "hand calculation",
+    "component_family": "lifting connection"
+  },
+  "criteria": {
+    "owner_repo": "digitalmodel",
+    "document_id": "ENG-ANALYSIS-CRITERIA",
+    "locator": "docs/standards/analysis-parametric-lookup-criteria.html",
+    "revision": "1",
+    "source_revision": "df3a42386c6edb1acf47653b52d9b091f54a8940"
+  },
+  "workflow": {
+    "owner_repo": "digitalmodel",
+    "locator": "docs/standards/engineering-analysis-workflow.html",
+    "revision": "1",
+    "source_revision": "df3a42386c6edb1acf47653b52d9b091f54a8940"
+  },
+  "routing": {
+    "status": "DOCUMENTED",
+    "entry_point_ref": "digitalmodel:docs/README.md",
+    "evidence_ref": "digitalmodel:issues/2117#issuecomment-5654689367",
+    "reason": "The pinned workflow references the criteria; the issue records the requested scope. This is a historical documentation observation.",
+    "entry_point_revision": "df3a42386c6edb1acf47653b52d9b091f54a8940"
+  },
+  "compliance": {
+    "status": "NOT_EVALUATED",
+    "analysis_revision": null,
+    "evidence_refs": [],
+    "reason": "No current reviewed analysis package was inspected. The historical route does not establish benchmark acceptance."
+  },
+  "dataset": {
+    "status": "NOT_EVALUATED",
+    "owner_repo": null,
+    "dataset_id": null,
+    "revision": null,
+    "manifest_ref": null,
+    "content_digest": null,
+    "catalog_ref": null
+  },
+  "limitations": [
+    "Worked classification example, not a live benchmark acceptance record.",
+    "No dataset, numerical result, solver execution or intended-use readiness was inspected.",
+    "The observation date records source inspection, not current default-branch deployment.",
+    "The timestamp is illustrative; the pinned source content was inspected on the stated date."
+  ]
+}

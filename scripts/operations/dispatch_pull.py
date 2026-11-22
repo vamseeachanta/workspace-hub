@@ -91,7 +91,7 @@ def claim_run(
       * acquire the lease (or, if expired and `liveness_fn` says the holder is dead,
         `reclaim` it — acquire never steals an expired lease);
       * if it can't be obtained (held fresh by another host) -> ``skipped_held``;
-      * else run ``executor(item)``; on success, fence-check with ``verify_token``:
+      * fence-check before ``executor(item)`` and again on success:
           - still ours -> ``mark_done(item)`` (if given), status ``ran``;
           - superseded mid-run -> status ``lost_fence`` (NOT marked done);
         an executor exception -> status ``failed`` (NOT marked done -> retried later).
@@ -139,15 +139,24 @@ def claim_run(
             sleep_fn(delay_s)
         name = name_of(item)
         tok = token_fn()
-        blob = acquire(git, name, holder, ttl_s, now_fn(), tok)
-        if blob is None and liveness_fn is not None:
-            blob = reclaim(git, name, holder, ttl_s, now_fn(), tok, liveness_fn)
-        if blob is None:
-            emit({"id": item["id"], "status": "skipped_held"})
-            continue
-        attempted += 1
         try:
+            blob = acquire(git, name, holder, ttl_s, now_fn(), tok)
+            if blob is None and liveness_fn is not None:
+                blob = reclaim(git, name, holder, ttl_s, now_fn(), tok, liveness_fn)
+            if blob is None:
+                emit({"id": item["id"], "status": "skipped_held"})
+                continue
+            if not verify_token(git, name, tok):
+                emit({"id": item["id"], "status": "lost_fence"})
+                continue
+            attempted += 1
             executor(item)
+            if verify_token(git, name, tok):
+                if mark_done is not None:
+                    mark_done(item)
+                emit({"id": item["id"], "status": "ran"})
+            else:
+                emit({"id": item["id"], "status": "lost_fence"})
         except FleetPaused as exc:
             # STOP, do not `continue`. The operator set the sentinel; every
             # remaining card would refuse identically, and recording each as a
@@ -158,12 +167,6 @@ def claim_run(
         except Exception as exc:  # noqa: BLE001 — record and keep going; item stays claimable
             emit({"id": item["id"], "status": "failed", "error": str(exc)})
             continue
-        if verify_token(git, name, tok):
-            if mark_done is not None:
-                mark_done(item)
-            emit({"id": item["id"], "status": "ran"})
-        else:
-            emit({"id": item["id"], "status": "lost_fence"})
     return out
 
 
@@ -598,7 +601,7 @@ def main(argv=None) -> int:
         return 0
 
     dispatch_file = repo / ".claude" / "dispatch" / f"{mid}.yaml"
-    git_lease = _load("git_ref_lease", _HERE / "git_ref_lease.py").GitRefLease(repo)
+    git_lease = _load("git_ref_lease", _HERE / "git_ref_lease.py").RemoteGitRefLease(repo)
     holder = f"{mid}:{os.getpid()}:{uuid.uuid4().hex[:8]}"  # unique (the #2991 fix)
 
     bindings = load_command_bindings(Path(args.commands) if args.commands
@@ -613,7 +616,6 @@ def main(argv=None) -> int:
         log_path = Path(args.log_dir) / log_path.name
     log = RunLog(log_path, run_id=run_id, machine=mid)
 
-    fetch = _fetch_lease_refs(repo)
     items = _read_ready_cards(dispatch_file)
     runnable, deferred = partition_runnable(items, bindings)
     print(f"--- dispatch-pull {mid}: {len(items)} ready, {len(runnable)} runnable, "
@@ -630,7 +632,6 @@ def main(argv=None) -> int:
         max_cards=args.max_cards, delay_s=args.delay, sleep_fn=time.sleep,
         on_outcome=log.card,
     )
-    push = _push_lease_refs(repo)
 
     # Deferrals are printed with the runs, not summarised away: a card nobody has
     # bound must be as visible as one that ran, or the queue silently stalls at
@@ -640,22 +641,21 @@ def main(argv=None) -> int:
               + (f"  — {o['reason']}" if o.get("reason") else "")
               + (f"  — {o['error']}" if o.get("error") else ""))
 
-    # The line that answers "what happened last night". `fetch_rc`/`push_rc` are
-    # in it because a sync that failed leaves this host's leases invisible to the
-    # fleet — the #3772 failure mode, reachable again transiently (offline host,
-    # rejected push) and otherwise indistinguishable from a quiet night.
+    # Per-grant publication and remote fencing happen before execution, rather
+    # than relying on a bulk push after the work has already run (#3772).
     summary = log.summary(deferred + outcomes, apply=bool(args.apply),
                           max_cards=args.max_cards, delay_s=args.delay,
-                          ready=len(items), fetch_rc=fetch.returncode,
-                          push_rc=push.returncode)
+                          ready=len(items), fetch_rc=git_lease.fetch_rc,
+                          push_rc=git_lease.push_rc)
     print(f"--- summary {summary['counts']} of {summary['total']} "
-          f"(fetch rc {fetch.returncode}, push rc {push.returncode}) "
+          f"(fetch rc {git_lease.fetch_rc}, push rc {git_lease.push_rc}) "
           f"-> {log.path} ---")
 
-    # Nonzero only for a drain that actually failed. `no_command` is a standing
-    # configuration gap across a 1300-card backlog; alarming on it every poll
-    # would train the operator to ignore the exit code that reports a real break.
-    return 1 if any(o["status"] == "failed" for o in outcomes) else 0
+    # A failed publication is also an unsuccessful run, even when acquisition
+    # returned None. Configuration deferrals alone still return success.
+    unsuccessful = (git_lease.fetch_rc or git_lease.push_rc
+                    or any(o["status"] == "failed" for o in outcomes))
+    return 1 if unsuccessful else 0
 
 
 if __name__ == "__main__":  # pragma: no cover

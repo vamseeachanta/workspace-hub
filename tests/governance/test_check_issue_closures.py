@@ -3,20 +3,18 @@ from __future__ import annotations
 
 import csv
 import json
-from pathlib import Path
 import re
 import shutil
 import subprocess
 import sys
+from pathlib import Path
 
 import pytest
-
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "scripts/governance"))
 
 import check_issue_closures as checker
-
 
 FIXTURE = ROOT / "tests/governance/fixtures/issue-closure-cases.json"
 
@@ -214,13 +212,19 @@ def test_paginated_search_fails_when_total_exceeds_items(monkeypatch, tmp_path):
         checker.collect_live("org/repo", tmp_path, closed_from="2026-01-01", closed_to="2026-01-02")
 
 
-def test_paginated_search_decodes_concatenated_object_pages(monkeypatch, tmp_path):
+def test_paginated_search_decodes_individually_counted_object_pages(monkeypatch, tmp_path):
     page1 = {"total_count": 101, "items": [{"number": number} for number in range(1, 101)]}
     page2 = {"total_count": 101, "items": [{"number": 101}]}
 
     def fake_run(argv, **kwargs):
-        assert "--paginate" in argv
-        return subprocess.CompletedProcess(argv, 0, stdout=json.dumps(page1) + json.dumps(page2), stderr="")
+        assert "--include" in argv
+        assert "--paginate" not in argv
+        if "page=2" in argv[-1]:
+            stdout = "HTTP/2.0 200 OK\n\n" + json.dumps(page2)
+        else:
+            stdout = ('HTTP/2.0 200 OK\nLink: <https://api.github.com/search/issues?page=2>; rel="next"\n\n'
+                      + json.dumps(page1))
+        return subprocess.CompletedProcess(argv, 0, stdout=stdout, stderr="")
 
     monkeypatch.setattr(checker.subprocess, "run", fake_run)
     reader = checker.GitHubReader(tmp_path)
@@ -357,8 +361,8 @@ def test_reader_uses_get_pagination_and_read_only_graphql(monkeypatch, tmp_path)
 
     def fake_run(argv, **kwargs):
         calls.append(argv)
-        if "--paginate" in argv:
-            return subprocess.CompletedProcess(argv, 0, stdout='[{"id":1}]\n', stderr="")
+        if "--include" in argv:
+            return subprocess.CompletedProcess(argv, 0, stdout='HTTP/2.0 200 OK\n\n[{"id":1}]\n', stderr="")
         return subprocess.CompletedProcess(argv, 0, stdout='{"ok":true}', stderr="")
 
     monkeypatch.setattr(checker.subprocess, "run", fake_run)
@@ -405,6 +409,69 @@ def test_report_writers_emit_csv_markdown_and_auditor_agreement(tmp_path):
         assert "Auditor agreement" in text
     finally:
         shutil.rmtree(directory, ignore_errors=True)
+
+
+@pytest.fixture
+def csv_writer_offline(monkeypatch):
+    def forbidden(*args, **kwargs):
+        raise AssertionError("CSV report writing attempted external input or a process")
+
+    for name in ("GitHubReader", "collect_live", "load_fixture", "load_auditor"):
+        monkeypatch.setattr(checker, name, forbidden)
+    monkeypatch.setattr(checker.subprocess, "run", forbidden)
+    monkeypatch.setattr(checker.subprocess, "Popen", forbidden)
+
+
+@pytest.mark.parametrize("reason, quoted_field", [
+    ("evidence present, tests passed", '"evidence present, tests passed"'),
+    ('evidence says "complete"', '"evidence says ""complete"""'),
+    ("first line\nsecond line", '"first line\nsecond line"'),
+    ("first line\r\nsecond line", '"first line\r\nsecond line"'),
+    ("caf\u00e9 \u2014 \u6e2c\u8a66", "caf\u00e9 \u2014 \u6e2c\u8a66"),
+], ids=["comma", "double-quote", "lf", "crlf", "unicode"])
+def test_csv_reason_roundtrip_with_delimiters(tmp_path, csv_writer_offline, reason, quoted_field):
+    # Independent synthetic example: one issue numbered 1 and one rule numbered 1.
+    # RFC 4180 section 2, points 5-7: quote delimiters and double embedded quotes.
+    # https://www.rfc-editor.org/rfc/rfc4180#section-2
+    # The report contract uses LF record endings and UTF-8 text.
+    evaluations = [{
+        "repository": "fixture", "number": 1, "verdict": "WARN",
+        "rules": [{"rule": 1, "verdict": "PASS", "reason": reason}],
+    }]
+    target = tmp_path / "closures.csv"
+    checker.write_csv(target, evaluations, {1: "DONE"})
+
+    with target.open(encoding="utf-8", newline="") as stream:
+        reader = csv.DictReader(stream)
+        rows = list(reader)
+        assert reader.fieldnames == [
+            "repository", "issue", "verdict", "rule", "rule_verdict", "reason", "auditor_class",
+        ]
+    assert rows == [{
+        "repository": "fixture", "issue": "1", "verdict": "WARN", "rule": "1",
+        "rule_verdict": "PASS", "reason": reason, "auditor_class": "DONE",
+    }]
+    # Hand-quoted literals fix both record endings outside the field and its data.
+    expected = (
+        "repository,issue,verdict,rule,rule_verdict,reason,auditor_class\n"
+        f"fixture,1,WARN,1,PASS,{quoted_field},DONE\n"
+    )
+    assert target.read_bytes() == expected.encode("utf-8")
+
+
+def test_csv_empty_evaluations_write_only_header(tmp_path, csv_writer_offline):
+    target = tmp_path / "closures.csv"
+    checker.write_csv(target, [])
+
+    with target.open(encoding="utf-8", newline="") as stream:
+        reader = csv.DictReader(stream)
+        assert list(reader) == []
+        assert reader.fieldnames == [
+            "repository", "issue", "verdict", "rule", "rule_verdict", "reason", "auditor_class",
+        ]
+    assert target.read_bytes() == (
+        b"repository,issue,verdict,rule,rule_verdict,reason,auditor_class\n"
+    )
 
 
 def test_cli_fixture_mode_is_read_only(monkeypatch, tmp_path):
@@ -692,5 +759,6 @@ def test_completed_issue_reference_cycle_is_bounded(monkeypatch):
     reader = FakeReader({"repos/o/r/issues/1": raw})
     monkeypatch.setattr(checker, "_body_edit_status", lambda *args: False)
     result = checker._neutral_issue(raw, reader, "o/r")
-    assert reader.api_routes.count("repos/o/r/issues/1") == 2
+    # A body-only cycle needs state, not recursive closing-comment evidence.
+    assert reader.api_routes.count("repos/o/r/issues/1") == 1
     assert checker.check_evidence_reference(result).verdict == "FAIL"

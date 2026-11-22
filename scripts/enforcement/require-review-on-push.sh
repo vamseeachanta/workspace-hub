@@ -110,12 +110,12 @@ check_review_results() {
   local results_dir="${REPO_ROOT}/scripts/review/results"
   local file
   if [[ -d "$results_dir" ]]; then
-    while IFS= read -r file; do
+    while IFS= read -r -d '' file; do
       [[ -z "$file" ]] && continue
       if grep -qv '^Reviewed-' "$file"; then
         return 0
       fi
-    done < <(find "$results_dir" -maxdepth 2 -type f -newermt "$TODAY 00:00:00" 2>/dev/null)
+    done < <(find "$results_dir" -maxdepth 2 -type f -newermt "$TODAY 00:00:00" -print0 2>/dev/null)
   fi
   return 1
 }
@@ -281,7 +281,9 @@ load_commit_bound_evidence() {
   local file line_no line field value start end display_file
 
   if [[ -d "$results_dir" ]]; then
-    while IFS= read -r file; do
+    # NUL delimiters preserve filenames independently of evidence line endings.
+    # No ordering is required: coverage is the union of the valid bindings.
+    while IFS= read -r -d '' file; do
       [[ -z "$file" ]] && continue
       display_file="${file#${REPO_ROOT}/}"
       if [[ ! -r "$file" ]]; then
@@ -292,6 +294,8 @@ load_commit_bound_evidence() {
       line_no=0
       while IFS= read -r line || [[ -n "$line" ]]; do
         line_no=$((line_no + 1))
+        # Accept LF and CRLF records without relaxing commit-id validation.
+        line="${line%$'\r'}"
         case "$line" in
           Reviewed-Commit:*)
             field="Reviewed-Commit"
@@ -321,7 +325,7 @@ load_commit_bound_evidence() {
             ;;
         esac
       done < "$file"
-    done < <(find "$results_dir" -maxdepth 2 -type f 2>/dev/null | LC_ALL=C sort)
+    done < <(find "$results_dir" -maxdepth 2 -type f -print0 2>/dev/null)
   fi
 
   printf -v "$result_var" '%s' "$reviewed"

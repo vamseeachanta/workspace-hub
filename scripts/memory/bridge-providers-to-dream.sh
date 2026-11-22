@@ -23,8 +23,33 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-REPO_ROOT="$(git -C "$SCRIPT_DIR" rev-parse --show-toplevel 2>/dev/null || echo "/mnt/local-analysis/workspace-hub")"
+REPO_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
 DISTILLER="${SCRIPT_DIR}/distill-provider-sessions.py"
+
+# Resolve without invoking the CLI. Cron may omit user-installed binaries from
+# PATH. Search an explicit override, PATH, then the native and npm user installs.
+# No machine-specific installation path is assumed; invalid overrides fail closed.
+if [[ -n "${CLAUDE_BIN:-}" ]]; then
+  CLAUDE_BIN=$(command -v -- "$CLAUDE_BIN") || {
+    echo "[bridge-to-dream] ERROR: CLI unavailable: invalid CLAUDE_BIN" >&2
+    exit 127
+  }
+else
+  CLAUDE_BIN=$(command -v claude 2>/dev/null || true)
+  if [[ -z "$CLAUDE_BIN" ]]; then
+    for candidate in "$HOME/.local/bin/claude" "$HOME/.npm-global/bin/claude"; do
+      if [[ -f "$candidate" && -x "$candidate" ]]; then
+        CLAUDE_BIN="$candidate"
+        break
+      fi
+    done
+  fi
+fi
+if [[ -z "$CLAUDE_BIN" || ! -f "$CLAUDE_BIN" || ! -x "$CLAUDE_BIN" ]]; then
+  echo "[bridge-to-dream] ERROR: CLI unavailable in PATH or user install locations" >&2
+  exit 127
+fi
+export CLAUDE_BIN
 
 LOG_DIR="${REPO_ROOT}/logs/orchestrator/memory-bridge"
 mkdir -p "$LOG_DIR"

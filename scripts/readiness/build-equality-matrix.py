@@ -17,8 +17,10 @@ hardcoded, M1). Run: uv run --script scripts/readiness/build-equality-matrix.py 
 """
 from __future__ import annotations
 
+import argparse
 import json
 import math
+import os
 import re
 import sys
 from collections import Counter
@@ -26,6 +28,16 @@ from datetime import date, datetime, timezone
 from pathlib import Path
 
 import yaml
+
+# Standalone invocation and importlib-based callers share the same sibling modules.
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import equality_actions
+
+OK_VERDICTS = equality_actions.OK_VERDICTS
+ROLLUP_SEVERITY = equality_actions.ROLLUP_SEVERITY
+remediate = equality_actions.remediate
+rollup_verdict = equality_actions.rollup_verdict
+
 
 REPO = Path(__file__).resolve().parents[2]
 STATE = REPO / ".claude" / "state"
@@ -262,6 +274,57 @@ def freshness_verdict(report: dict, now: datetime | None = None) -> str:
     return "CURATED-EXPIRED"
 
 
+def _same_evidence(left, right) -> bool:
+    """Compare aliases without conflating booleans with integer counts."""
+    if type(left) is not type(right):
+        return False
+    if isinstance(left, dict):
+        return (left.keys() == right.keys()
+                and all(_same_evidence(left[key], right[key]) for key in left))
+    if isinstance(left, list):
+        return (len(left) == len(right)
+                and all(_same_evidence(a, b) for a, b in zip(left, right)))
+    return left == right
+
+
+def _legacy_provider_record(record):
+    """Copy capability records and retain the existing reason vocabulary (#3579)."""
+    if not isinstance(record, dict):
+        return record
+    out = dict(record)
+    for capability in CAPABILITIES:
+        cap = record.get(capability)
+        if isinstance(cap, dict) and cap.get("reason") == "agy_skill_dispatch_unsupported":
+            out[capability] = {**cap, "reason": "gemini_skill_dispatch_unsupported"}
+    return out
+
+
+def _legacy_provider_keys(fields, *, skill_fields: bool = False) -> dict | None:
+    """Dual-read #3579 aliases into legacy display keys, without changing input.
+
+    Equivalent duplicates are accepted; a conflict invalidates this evidence
+    block. Skill fields may be split across families during the dual-read window.
+    Policy declarations and writers retain their existing keys.
+    """
+    if not isinstance(fields, dict):
+        return None
+    out = dict(fields)
+    if not skill_fields:
+        for key in ("gemini", "agy"):
+            if key in out:
+                out[key] = _legacy_provider_record(out[key])
+    replacements = ([key for key in out if isinstance(key, str) and key.startswith("agy_")]
+                    if skill_fields else ["agy"])
+    for key in replacements:
+        if key not in out:
+            continue
+        legacy = "gemini_" + key[len("agy_"):] if skill_fields else "gemini"
+        if legacy in out and not _same_evidence(out[legacy], out[key]):
+            return None
+        out[legacy] = out.pop(key)
+    return out
+
+
 # ── skill-currency verdict (cross-provider skill drift vs canonical; #3249) ──
 def skill_currency_verdict(report: dict) -> str:
     """Map the audit FACTS (emitted by audit_skill_currency.py) to a verdict. Precedence:
@@ -269,8 +332,9 @@ def skill_currency_verdict(report: dict) -> str:
     EXPECTED-DIVERGENCE (only allowlisted provider-specific families differ) > SKILLS-CURRENT.
     Fail-closed (MISSING-EVIDENCE) when the audit couldn't read the tree or a count is garbled —
     an unreadable surface must never grade green."""
-    sc = report.get("dimensions", {}).get("skill_currency")
-    if not isinstance(sc, dict):
+    sc = _legacy_provider_keys(report.get("dimensions", {}).get("skill_currency"),
+                               skill_fields=True)
+    if sc is None:
         return "MISSING-EVIDENCE"
     if not isinstance(sc.get("audited_at"), str):
         return "MISSING-EVIDENCE"
@@ -430,7 +494,8 @@ def extract_value(dim: str, report: dict):
     if dim == "python_cmd":
         return d.get("harness", {}).get("python_cmd")
     if dim == "harness":
-        return json.dumps(d.get("harness", {}).get("providers", {}), sort_keys=True)
+        providers = _legacy_provider_keys(d.get("harness", {}).get("providers", {}))
+        return json.dumps(providers, sort_keys=True) if providers is not None else None
     if dim == "skills":
         return d.get("skills", {}).get("repo_skill_count")
     if dim == "kanban":
@@ -509,6 +574,10 @@ def provider_row_verdict(dim: str, report: dict) -> str:
     if not isinstance(harness, dict) or harness.get("schema_version") != 1:
         return "MISSING-EVIDENCE"
     providers = harness.get("providers") or {}
+    if provider == "gemini":
+        providers = _legacy_provider_keys(providers)
+        if providers is None:
+            return "MISSING-EVIDENCE"
     return provider_capability_verdict(
         provider, capability, providers.get(provider), providers.get("claude"))
 
@@ -546,6 +615,8 @@ def verdict_for(dim: str, machine: str, reports: dict, baselines: dict,
         return publish_health_verdict(rep)
     if dim in COLD_DIMS:
         return cold_verdict(dim, rep, baselines.get(machine), probed_repos)
+    if dim == "harness" and extract_value(dim, rep) is None:
+        return "MISSING-EVIDENCE"
     # Stale peers are EXCLUDED from the uniform value list so a stale report can never
     # manufacture a false EQUAL/DIVERGES/NO-MAJORITY for the fresh machines (A2/BC4).
     fresh = [m for m in roster
@@ -560,14 +631,15 @@ def verdict_for(dim: str, machine: str, reports: dict, baselines: dict,
 
 
 # ── load + render ────────────────────────────────────────────────────────────
-def load_reports() -> dict[str, dict]:
+def load_reports(state_dirs: list[Path] | None = None) -> dict[str, dict]:
     out = {}
-    for f in sorted(STATE.glob("equality-*.yaml")):
-        machine = f.stem[len("equality-"):]
-        try:
-            out[machine] = yaml.safe_load(f.read_text(encoding="utf-8")) or {}
-        except yaml.YAMLError as e:
-            out[machine] = {"_error": str(e)}
+    for state in [STATE] if state_dirs is None else state_dirs:
+        for f in sorted(state.glob("equality-*.yaml")):
+            machine = f.stem[len("equality-"):]
+            try:
+                out[machine] = yaml.safe_load(f.read_text(encoding="utf-8")) or {}
+            except yaml.YAMLError as e:
+                out[machine] = {"_error": str(e)}
     return out
 
 
@@ -601,117 +673,6 @@ GROUPS = [
     ("publish-health", "Publish health — equivalence fingerprint publish landing fast on every box",
         ["publish_health"]),
 ]
-
-# Worst-of severity for the collapsed group rollup. Higher = more operator attention.
-# A group's rollup cell shows the worst verdict among its dims for that machine; an
-# all-good group collapses to a single green "OK" so a clean box reads at a glance.
-ROLLUP_SEVERITY = {
-    "BELOW-BASELINE": 6, "DIVERGES": 6, "CURATED-EXPIRED": 6, "SKILLS-DRIFTED": 6, "MEMORY-EXPIRED": 6,
-    "CHECKUP-BROKEN": 6, "PUBLISH-GATED": 6,
-    "MISSING-BASELINE": 5, "NO-MAJORITY": 5, "CURATED-STALE": 5, "SKILLS-INDEX-STALE": 5, "MEMORY-STALE": 5,
-    "SKILL-LINKS-DRIFTED": 5, "CHECKUP-DRIFTED": 5, "PUBLISH-STALE": 5,
-    "MISSING-EVIDENCE": 4, "PENDING": 4,
-    "STALE-CHECKOUT": 3,
-    "EXPECTED-DIFF": 1, "EXPECTED-DIVERGENCE": 1, "UNREACHABLE": 1, "ABSENT": 1,
-    "CONFORMS": 0, "EQUAL": 0, "PARITY": 0, "CURATED-FRESH": 0, "SKILLS-CURRENT": 0, "MEMORY-FRESH": 0,
-    "SKILL-LINKS-OK": 0, "CHECKUP-OK": 0, "PUBLISH-OK": 0,
-}
-
-
-def rollup_verdict(verdicts: list[str]) -> tuple[str, str]:
-    """(label, css_class) for a group's per-machine rollup cell. Unknown verdicts grade
-    at MISSING-EVIDENCE severity (fail-soft, never silently 'OK')."""
-    if not verdicts:
-        return ("n/a", "na")
-    worst = max(verdicts, key=lambda v: ROLLUP_SEVERITY.get(v, 4))
-    if ROLLUP_SEVERITY.get(worst, 4) == 0:
-        return ("OK", "ok")
-    return (worst, worst.lower())
-
-
-# ── remediation playbook (verdict → action) — keep in sync with the verdict→fix table in
-#    .claude/skills/workspace-hub/ecosystem-equivalence-reconcile/SKILL.md + reconcile-ecosystem.sh
-OK_VERDICTS = {"CONFORMS", "EQUAL", "PARITY", "EXPECTED-DIFF", "EXPECTED-DIVERGENCE",
-               "UNREACHABLE", "ABSENT", "CURATED-FRESH", "SKILLS-CURRENT", "MEMORY-FRESH",
-               "SKILL-LINKS-OK", "CHECKUP-OK", "PUBLISH-OK"}
-
-
-def remediate(dim: str, verdict: str) -> tuple[str, str, bool] | None:
-    """(action, owner, by_design) for a non-OK cell; None if the cell needs no action.
-    by_design=True means the cell can't/shouldn't reach green — it's expected, not a defect."""
-    if verdict in OK_VERDICTS:
-        return None
-    is_provider = dim.startswith("harness:")
-    if verdict == "MISSING-EVIDENCE":
-        if is_provider:
-            return ("capability not detected — or no Claude baseline on this host "
-                    "(a Hermes-only box grades provider rows MISSING-EVIDENCE by design)",
-                    "by-design / operator", True)
-        return ("no fresh report on this box — run the collector "
-                "(equality-matrix-cron.sh; equality-report.ps1 on Windows)", "this box", False)
-    if verdict == "STALE-CHECKOUT":
-        return ("checkout dirty / behind / stale ref — clean the tree, git fetch origin main, re-collect",
-                "this box", False)
-    if verdict == "BELOW-BASELINE":
-        if dim == "solvers":
-            return ("solver licence probe emits 'present', baseline wants 'licensed' — "
-                    "Windows licence-probe follow-up", "operator (Windows)", True)
-        if dim == "data_access":
-            return ("a required tier-1 repo isn't cloned here — clone the missing sibling", "this box", False)
-        if dim == "compute":
-            return ("under the declared cores/ram/gpu floor — upgrade box or retune harness-config floor",
-                    "operator", False)
-        return ("below the declared baseline — inspect this box's equality report", "operator", False)
-    if verdict in ("DIVERGES", "NO-MAJORITY"):
-        if is_provider:
-            return ("capability diverges from the Claude baseline — refresh the report; "
-                    "if persistent, install/repair that provider on this box", "this box", False)
-        if dim == "skills":
-            return ("skills count differs — usually a tracked symlink materialized as a text file; "
-                    "git config core.symlinks true, then rm + git checkout the symlink paths", "this box", False)
-        if dim in ("harness", "behavior"):
-            return ("runtime/config drift — rebuild + install the soul runtime, then re-collect", "this box", False)
-        if dim == "scheduler":
-            return ("cron jobs differ — reconcile via setup-cron.sh --check, then re-collect", "this box", False)
-        return ("differs from peers — OFTEN a stale-peer artifact; refresh ALL machines' reports first, "
-                "then reconcile any genuine config drift", "all boxes", False)
-    if verdict == "MISSING-BASELINE":
-        return ("no declared baseline for this dim — add one in harness-config.yaml", "operator", False)
-    if verdict in ("CURATED-STALE", "CURATED-EXPIRED"):
-        return ("session analysis + memory curation is stale (>12h orange / >24h red) — run "
-                "the collector (bash scripts/curation/curate-session-memory.sh; "
-                "curate-session-memory.ps1 on Windows) or repair the every-6h cron", "this box", False)
-    if verdict == "SKILLS-DRIFTED":
-        return ("a provider's skill families UNEXPECTEDLY differ from canonical — reconcile via "
-                "scripts/propagate-ecosystem.sh, or if the difference is intended, allowlist it in "
-                "harness-config.yaml expected_skill_divergence", "this box", False)
-    if verdict == "SKILLS-INDEX-STALE":
-        return ("the skills index has dangling entries (paths no longer in the tree) — regenerate "
-                ".claude/skills-index.yaml (skills-curation cron / generator)", "this box", False)
-    if verdict in ("MEMORY-STALE", "MEMORY-EXPIRED"):
-        return ("memory surfaces are stale (>36h orange / >72h red) — run the memory bridge "
-                "(scripts/memory/bridge-hermes-claude.sh) or repair its cron", "this box", False)
-    if verdict == "SKILL-LINKS-DRIFTED":
-        return ("shared-skill links are missing/broken on ecosystem repos (froze at link time) — "
-                "re-sync via scripts/skills/resync-skill-links.sh --apply (or propagate-ecosystem.sh "
-                "--skills-only)", "this box", False)
-    if verdict == "CHECKUP-BROKEN":
-        return ("harness hygiene is broken — a settings file fails to parse, there are duplicate "
-                "claude installs, or an agent def is broken/colliding; run /doctor on this box and "
-                "apply its fixes", "this box", False)
-    if verdict == "CHECKUP-DRIFTED":
-        return ("harness hygiene drift — behind the latest release, auto mode isn't the default, or "
-                "unused skills/plugins have accumulated; run /doctor (claude update; set auto default; "
-                "prune unused extensions)", "this box", False)
-    if verdict == "PUBLISH-GATED":
-        return ("last equivalence publish failed or took gate-length time (>60s) — the #3500 "
-                "pre-push RUN_ALL deadlock signature; check the pre-push hook and publish bypass",
-                "this box", False)
-    if verdict == "PUBLISH-STALE":
-        return ("no equivalence publish in >26h — run equivalence-sentinel.sh and inspect its cron logs",
-                "this box", False)
-    return ("investigate this cell's report", "operator", False)
-
 
 def _short_dim(dim: str) -> str:
     return dim[len("harness:"):] if dim.startswith("harness:") else dim
@@ -765,12 +726,35 @@ def equivalence_section(vmap: dict, machines: list[str], roster: dict,
     return "".join(cards)
 
 
-def main() -> None:
+def resolve_paths(argv: list[str]) -> tuple[Path, Path]:
+    """Match the shell generation seam; publishing supplies explicit paths."""
+    parser = argparse.ArgumentParser(add_help=False)
+    parser.add_argument("--state-dir")
+    parser.add_argument("--out-dir")
+    args, _ = parser.parse_known_args(argv)
+    base = Path(os.environ.get("XDG_STATE_HOME") or Path.home() / ".local/state")
+    root = base / "workspace-hub/equality"
+    state = Path(args.state_dir or os.environ.get("EQ_STATE_DIR") or root)
+    reports = Path(args.out_dir or os.environ.get("EQ_REPORT_DIR") or root / "reports")
+    return state, reports
+
+
+def resolve_input_paths(argv: list[str]) -> list[Path]:
+    """Explicit publication inputs replace default repository and local layers."""
+    parser = argparse.ArgumentParser(add_help=False)
+    parser.add_argument("--state-dir")
+    args, _ = parser.parse_known_args(argv)
+    if args.state_dir:
+        return [Path(args.state_dir)]
+    return [REPO / ".claude" / "state", resolve_paths(argv)[0]]
+
+
+def main(state_dirs: list[Path] | None = None) -> None:
     config = yaml.safe_load(CONFIG.read_text(encoding="utf-8")) if CONFIG.exists() else {}
     roster = load_roster(config)
     baselines = load_baselines(config)
     probed = (config.get("tier1_repos") or TIER1_DEFAULT)
-    reports = load_reports()
+    reports = load_reports(state_dirs)
 
     machines = list(roster)
     # Compute every verdict once (cells + rollups both consume it).
@@ -903,16 +887,17 @@ function copyGenPrompt(btn){{
 
     REPORTS.mkdir(parents=True, exist_ok=True)
     out = REPORTS / f"{date.today().isoformat()}-machine-equality-matrix.html"
-    out.write_text(html, encoding="utf-8")
+    out.write_text(html, encoding="utf-8", newline="\n")
     # Stable (undated) alias so GitHub Pages serves a fixed "latest" URL that never
     # changes as the dated reports roll over (published by scripts/build_pages.py).
     latest = REPORTS / "machine-equality-matrix.html"
-    latest.write_text(html, encoding="utf-8")
-    print(f"wrote {out} (+ {latest.name} alias) ({reporting}/{active} active reporting)")
+    latest.write_text(html, encoding="utf-8", newline="\n")
+    print(f"wrote {out.as_posix()} (+ {latest.name} alias) ({reporting}/{active} active reporting)")
     if "--open" in sys.argv:
         import webbrowser
         webbrowser.open(out.as_uri())
 
 
 if __name__ == "__main__":
-    main()
+    STATE, REPORTS = resolve_paths(sys.argv[1:])
+    main(resolve_input_paths(sys.argv[1:]))

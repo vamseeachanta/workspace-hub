@@ -62,8 +62,11 @@ for session_file in "$HERMES_SESSIONS"/session_*.json; do
 
   # Extract date from filename: session_YYYYMMDD_HHMMSS_hash.json
   basename=$(basename "$session_file" .json)
-  session_date=$(echo "$basename" | grep -oE '[0-9]{8}' | head -1)
-  [[ -z "$session_date" ]] && continue
+  session_date=$(echo "$basename" | grep -oE '[0-9]{8}' | head -1 || true)
+  if [[ -z "$session_date" ]]; then
+    skipped=$((skipped + 1))
+    continue
+  fi
 
   output_file="${OUTPUT_DIR}/session_${session_date}.jsonl"
   corrections_file="${CORRECTIONS_DIR}/session_${session_date}.jsonl"

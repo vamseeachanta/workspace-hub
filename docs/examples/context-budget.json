@@ -1,0 +1,13 @@
+{
+  "source": "Issue #3717, Measured, not estimated (2026); rounded reported counts",
+  "window_tokens": 1000000,
+  "harness_tokens": {
+    "system_prompt": 5500,
+    "system_tools": 14000,
+    "memory_files": 8800,
+    "skills": 7500,
+    "custom_agents": 314
+  },
+  "message_tokens": 776200,
+  "tool_output_tokens": 165500
+}

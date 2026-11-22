@@ -132,7 +132,8 @@ def claude_identity(config_dir: Path) -> tuple[str | None, dict]:
 
 
 def probe_claude(config_dir: Path, timeout: float, live: bool) -> dict:
-    out: dict = {"provider": "claude", "config_dir": str(config_dir), "source": "unavailable"}
+    out: dict = {"provider": "claude", "config_dir": str(config_dir), "source": "unavailable",
+                 "status": "not-reported", "probed_at": now_iso()}
     fp, meta = claude_identity(config_dir)
     out["fingerprint"] = fp
     out.update(meta)
@@ -153,6 +154,7 @@ def probe_claude(config_dir: Path, timeout: float, live: bool) -> dict:
     expires = oauth.get("expiresAt")
     if expires and float(expires) / 1000.0 < time.time():
         out["error"] = "access token expired; a Claude Code session on this host will refresh it"
+        out["status"] = "auth-expired"
         out["token_expired"] = True
         return out
     if not live:
@@ -172,10 +174,12 @@ def probe_claude(config_dir: Path, timeout: float, live: bool) -> dict:
         with urllib.request.urlopen(req, timeout=timeout) as resp:
             body = json.loads(resp.read().decode())
     except urllib.error.HTTPError as exc:
+        out["status"] = "auth-expired" if exc.code == 401 else "unreachable"
         out["error"] = f"http {exc.code}"
         return out
     except (urllib.error.URLError, socket.timeout, ValueError, OSError) as exc:
-        out["error"] = f"{type(exc).__name__}: {exc}"
+        out["status"] = "unreachable"
+        out["error"] = "usage endpoint unavailable"
         return out
 
     buckets = {}
@@ -195,6 +199,7 @@ def probe_claude(config_dir: Path, timeout: float, live: bool) -> dict:
     out["five_hour_pct"] = (buckets.get("five_hour") or {}).get("pct")
     out["week_pct"] = (buckets.get("seven_day") or {}).get("pct")
     out["week_resets_at"] = (buckets.get("seven_day") or {}).get("resets_at")
+    out["status"] = "ok" if out["week_pct"] is not None else "not-reported"
     out["source"] = "oauth-api"
     out.pop("error", None)
     return out
@@ -340,7 +345,8 @@ def codex_from_sessions(codex_home: Path, max_files: int = 20) -> dict | None:
 
 
 def probe_codex(codex_home: Path, timeout: float, live: bool) -> dict:
-    out: dict = {"provider": "codex", "codex_home": str(codex_home), "source": "unavailable"}
+    out: dict = {"provider": "codex", "codex_home": str(codex_home), "source": "unavailable",
+                 "status": "not-reported", "probed_at": now_iso()}
     fp, meta = codex_identity(codex_home)
     out["fingerprint"] = fp
     out.update({k: v for k, v in meta.items() if v is not None})
@@ -354,6 +360,7 @@ def probe_codex(codex_home: Path, timeout: float, live: bool) -> dict:
         out["error"] = "no live app-server answer and no session log with rate_limits"
         return out
     out.update(data)
+    out["status"] = "ok" if out.get("week_pct") is not None else "not-reported"
     out.pop("error", None)
     return out
 

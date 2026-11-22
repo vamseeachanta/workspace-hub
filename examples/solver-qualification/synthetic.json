@@ -1,0 +1,23 @@
+{
+  "result": {
+    "success": true,
+    "solver_name": "synthetic",
+    "result_data": {"force": 16.0}
+  },
+  "criteria": [
+    {
+      "quantity": "force",
+      "expected": 16.0,
+      "units": "N",
+      "relative_tolerance": 0.0,
+      "absolute_tolerance": 1.0,
+      "reference": "Synthetic independent hand calculation: 8 N/m * 2 m = 16 N",
+      "tolerance_basis": "Synthetic example input: inclusive absolute difference <= 1 N; no relative allowance"
+    }
+  ],
+  "output_units": {"force": "N"},
+  "assumptions": [
+    {"name": "stiffness", "value": "8 N/m", "basis": "Synthetic example input"},
+    {"name": "extension", "value": "2 m", "basis": "Synthetic example input"}
+  ]
+}

@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Phone-media incremental sync decision</title>
+<style>
+body { font-family: system-ui, sans-serif; max-width: 72rem; margin: auto; padding: 2rem; line-height: 1.6; color: #182536; }
+h1, h2 { color: #12466b; } table { border-collapse: collapse; width: 100%; }
+th, td { border: thin solid #bbc8d2; padding: .6rem; text-align: left; vertical-align: top; }
+pre { background: #eef3f7; padding: 1rem; overflow: auto; } code { overflow-wrap: anywhere; }
+caption { caption-side: bottom; text-align: left; margin: .5rem 0; }
+a { color: #124f85; } .notice { border-left: thick solid #b06a00; padding: 1rem; background: #fff7e9; }
+</style>
+</head>
+<body>
+<h1>Phone-media incremental sync decision</h1>
+<h2>Summary</h2>
+<p>The decision aid compares periodic USB imports, PhotoSync Autotransfer to WebDAV,
+and an icloudpd server-side pull. It evaluates supplied prerequisites without accessing
+media, accounts, networks or services. The maintainer's final choice remains open.
+For manual imports, USB is the first option to evaluate because it reuses the existing
+bulk-import method without a new transfer entitlement. If automatic transfer is required,
+evaluate PhotoSync first; cloud pull also requires account-access and authentication decisions.</p>
+<p class="notice">No live prerequisites are established by this document. A result of
+<code>READY_FOR_TRIAL</code> means only that caller-supplied facts permit a proposed trial.
+It does not establish a working transfer, an original-quality archive or an off-site backup.
+Existing inbox and WebDAV services remain unchanged.</p>
+<h2>Revision history</h2>
+<table><thead><tr><th>Revision</th><th>Date</th><th>Change and reason</th></tr></thead>
+<tbody><tr><td>Initial</td><td>2026-10-22</td><td>Add the decision table, tested aid and trial procedure to make missing evidence visible before selection.</td></tr></tbody>
+<caption>Revision history for this decision guide.</caption></table>
+<h2>Scope and evidence</h2>
+<p>Issue 3587 defines the three alternatives and reserves the decision for the maintainer.
+The existing extraction handoff describes a successful historical USB workflow, not
+current device or service readiness. Separate work covers bulk imports, organization,
+backup capacity and a media browser. This aid neither changes those workflows nor installs a scheduler.</p>
+<p>The implementation is <code>scripts/operations/phone_media_sync.py</code>.
+Source pages were read on 2026-10-22. They are capability references rather than current
+observations of the intended destination. App price, entitlement terms and authentication
+refresh intervals are intentionally unspecified; confirm current terms before selection.</p>
+<h2>Prerequisites</h2>
+<p>Each JSON fact accepts <code>true</code>, <code>false</code> or <code>null</code>.
+Omitted facts mean unknown. Set a fact only after the corresponding observation or
+maintainer preference is recorded in a private operational record. Do not place personal
+media, credentials, destination addresses or device identities in this public repository.</p>
+<table><thead><tr><th>Candidate</th><th>Required facts</th><th>Basis and required observation</th></tr></thead><tbody>
+<tr><td>USB</td><td><code>automation_required=false</code>, <code>usb_access=true</code>, <code>manual_accepted=true</code></td>
+<td>Issue 3587 and the existing USB/AFC runbook: manual periodic import. Confirm the unlocked device exposes the complete DCIM source and that a repeat import habit is accepted.</td></tr>
+<tr><td>PhotoSync</td><td><code>photosync_entitlement=true</code>, <code>actual_size_confirmed=true</code>, <code>webdav_verified=true</code>, <code>autotransfer_tested=true</code></td>
+<td><a href="https://www.photosync-app.com/home">Vendor overview, NAS and Autotransfer sections</a>, plus the issue's Actual Size constraint.
+Confirm the installed entitlement supports the intended automatic transfer, set Photo Transfer Size to Actual Size, and test the intended WebDAV destination and trigger on the actual device.
+The overview distinguishes iOS triggers from Android triggers; Wi-Fi association alone is not proof of an iOS background trigger.</td></tr>
+<tr><td>icloudpd</td><td><code>icloud_photos_enabled=true</code>, <code>icloud_web_access=true</code>, <code>adp_enabled=false</code>, <code>reauth_accepted=true</code></td>
+<td><a href="https://github.com/icloud-photos-downloader/icloud_photos_downloader/blob/master/README.md">Upstream README, prerequisites, Features and authentication</a>.
+Confirm that the intended library is present in iCloud Photos, web data access is enabled, and recurring authentication is accepted.
+ADP enabled blocks this option. The aid does not recommend disabling ADP to obtain compatibility.</td></tr>
+<tr><td>Every proposed trial</td><td><code>backup_capacity_verified=true</code></td>
+<td>The separate capacity issue gates further ingestion. Confirm capacity against the actual expected incoming data and retention plan; a historical free-space figure is insufficient.</td></tr>
+</tbody><caption>Candidate prerequisites and independent capacity gate; all facts are caller assertions.</caption></table>
+<p>No purchase is performed. <code>photosync_entitlement</code> means confirmed access to
+required features, not permission to buy them. <code>reauth_accepted</code> records a
+maintenance preference, not a successful login.</p>
+<h2>Method and states</h2>
+<p>The method uses a Boolean conjunction over each candidate's prerequisite table.
+A known contradiction gives <code>BLOCKED</code>, even when other facts are missing.
+Otherwise any missing prerequisite gives <code>NOT_EVALUATED</code>; all matching facts
+give <code>ELIGIBLE</code>. This truth table is the method's definition, rather than an
+empirical coefficient or a numerical engineering limit.</p>
+<p>Without <code>--select</code>, the decision remains <code>AWAITING_SELECTION</code>,
+even if a candidate is eligible. With explicit selection, the decision becomes
+<code>PROPOSED</code>, <code>NEEDS_INPUT</code> or <code>BLOCKED</code>.
+Trial readiness additionally requires confirmed backup capacity. Known failed capacity
+blocks the trial; unknown capacity leaves it <code>NOT_EVALUATED</code>.
+The selected method remains a proposal, not activation authority.</p>
+<p>The command writes JSON to standard output only. A successful process exit means the
+input was evaluated, including blocked or incomplete results; inspect the JSON statuses.
+Malformed JSON, duplicate keys, non-Boolean facts and unknown fields are rejected.
+No commands are generated or executed for importing media.</p>
+<h2>Worked example</h2>
+<p>The example is synthetic. Its inputs represent an available USB source, accepted
+manual operation, no automation requirement and confirmed capacity. They are not measurements.</p>
+<pre><code>python scripts/operations/phone_media_sync.py \
+  docs/operations/examples/phone-media-usb-facts.json --select usb</code></pre>
+<p><a href="examples/phone-media-usb-facts.json">phone-media-usb-facts.json</a> supplies:</p>
+<pre><code>{
+  "automation_required": false,
+  "usb_access": true,
+  "manual_accepted": true,
+  "backup_capacity_verified": true
+}</code></pre>
+<p>Independent hand evaluation: no automation requirement matches manual USB;
+USB access and manual acceptance both match. Therefore USB is <code>ELIGIBLE</code>.
+Explicit selection makes the decision <code>PROPOSED</code>; confirmed capacity gives
+<code>READY_FOR_TRIAL</code>. PhotoSync and cloud pull remain <code>NOT_EVALUATED</code>
+because their prerequisites were not supplied. No best-option claim follows from this example.</p>
+<p>If capacity is omitted, USB remains proposed but trial readiness is
+<code>NOT_EVALUATED</code>. If automation is required, USB is <code>BLOCKED</code>.
+These expected outcomes are derived from the table independently in the tests.</p>
+<h2>Trial and ongoing import procedure</h2>
+<ol>
+<li>Record the maintainer's selected method, evidence date, prerequisites and destination
+in a private operational record. Leave unknown facts unset. Preserve existing services.</li>
+<li>Confirm capacity and a distinct archive namespace for the source device. Before USB
+copying, inspect a dry run with <code>rsync --archive --ignore-existing --itemize-changes --dry-run -- "$USB_DCIM/" "$ARCHIVE/"</code>.
+Both variables must identify verified local directories. The aid does not execute this command.
+Do not use deletion or source-removal options.</li>
+<li>For USB, <code>--ignore-existing</code> preserves existing destination files but also skips
+same-name collisions, including changed content. Review those collisions separately by
+content digest; do not infer completeness from a quiet repeat run. The default rsync quick
+check uses size and modification time, not a full content audit.
+See <a href="https://download.samba.org/pub/rsync/rsync.1">rsync manual, DESCRIPTION,
+--ignore-existing, --dry-run and --checksum</a>.</li>
+<li>For PhotoSync, transfer representative originals and associated files to the verified
+WebDAV destination. Check original dimensions and content integrity using originals when
+available, plus video, Live Photo and sidecar behavior. File counts alone do not establish
+original quality. Confirm a repeat automatic trigger imports new items without losing old ones.</li>
+<li>For cloud pull, use copy mode only. The upstream README distinguishes default copy
+from sync with local deletion and move with cloud deletion; deletion modes are outside this
+procedure. Test authentication and original-media behavior before unattended operation.
+Keep credentials in the existing private secret store.</li>
+<li>Repeat with new media and an interrupted transfer. Record counts, bytes and digest
+comparisons, and investigate every missing, changed or colliding item before acceptance.
+Confirm that deleting a source item does not remove an archive item. Do not delete real
+media for a trial; use disposable synthetic fixtures to test that behavior.</li>
+<li>Verify the off-site copy independently under the capacity and backup procedure.
+Record the accepted interval and authentication recovery process. Only then arrange
+ongoing operation through the separately authorized service workflow.</li>
+</ol>
+<h2>Checks and limits</h2>
+<p>The tests exercise every alternative, failed and missing prerequisites, ADP exclusion,
+manual-versus-automatic requirements, capacity states, explicit selection, duplicate keys,
+invalid inputs, a read-only CLI and the worked fixture. Expected values come from hand
+Boolean evaluations in the tests, not outputs copied from the implementation.</p>
+<p>Live imports, account access, destination reachability, entitlement verification,
+original-quality verification and off-site backup remain NOT_EVALUATED. The maintainer's
+final selection and independent provider review remain pending. The guide does not claim
+to close the decision issue.</p>
+</body>
+</html>

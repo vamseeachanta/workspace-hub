@@ -13,6 +13,11 @@ advisory pre-flight. Code-review fixes (Claude + Codex impl review, 2026-05-25):
   (computed by the runner from label-event time vs issue body-edit time) must hold,
   so editing the body after verification invalidates the label.
 - **Unknown class fails closed** rather than defaulting a threshold.
+- **The verifier did not write the work** (rules review r5, card A): the verified label
+  may be applied by any authorized reviewer, not only the owner, provided the labeler is
+  not an author of the closing PR or commit. When the labeler's login is one of those
+  authors, only a configured shared login may name a distinct verifier in the record.
+  Incomplete author evidence denies closure even for a shared login.
 """
 from __future__ import annotations
 
@@ -56,6 +61,99 @@ def gate_applies(labels: list[str], opt_in_label: str = OPT_IN_LABEL,
         "gate:completeness-v2" in labels or plan_approved_label in labels)
 
 
+def _all_nodes(parent, field, next_page):
+    """Read a connection to its end, or discard the entire author result."""
+    page = parent[field]
+    total = page["totalCount"]
+    if type(total) is not int or total < 0:
+        raise ValueError("missing connection count")
+    nodes = []
+    cursors = set()
+    while True:
+        batch = page["nodes"]
+        if not isinstance(batch, list) or page["totalCount"] != total:
+            raise ValueError("incomplete connection")
+        nodes.extend(batch)
+        info = page["pageInfo"]
+        if info["hasNextPage"] is False and len(nodes) == total:
+            return nodes
+        cursor = info["endCursor"]
+        if (info["hasNextPage"] is not True or not batch or len(nodes) >= total
+                or not isinstance(cursor, str) or not cursor or cursor in cursors or next_page is None):
+            raise ValueError("incomplete pagination")
+        cursors.add(cursor)
+        page = next_page(parent["id"], field, cursor)
+
+
+def _commit_authors(commit, next_page):
+    authors = _all_nodes(commit, "authors", next_page)
+    if not authors:
+        raise ValueError("missing commit authors")
+    return {author["user"]["login"] for author in authors}
+
+
+def _pr_authors(pr, next_page):
+    commits = _all_nodes(pr, "commits", next_page)
+    if not commits:
+        raise ValueError("missing PR commits")
+    authors = {pr["author"]["login"]}
+    for node in commits:
+        authors.update(_commit_authors(node["commit"], next_page))
+    return authors
+
+
+def work_authors_from(issue_node: dict | None, next_page=None) -> set[str] | None:
+    """Resolve the close event and every merged closing reference as one body of evidence."""
+    if issue_node is None:
+        return None
+    authors = set()
+    try:
+        events = issue_node["timelineItems"]["nodes"]
+        if not isinstance(events, list) or (issue_node["closed"] and not events):
+            return None
+        for event in events:
+            closer = event["closer"]
+            if closer is None:  # A manual close can still have merged references.
+                continue
+            if closer["__typename"] == "PullRequest":
+                authors.update(_pr_authors(closer, next_page))
+            elif closer["__typename"] == "Commit":
+                authors.update(_commit_authors(closer, next_page))
+            else:
+                return None
+
+        for pr in _all_nodes(issue_node, "closedByPullRequestsReferences", next_page):
+            if pr["state"] == "MERGED":
+                authors.update(_pr_authors(pr, next_page))
+            elif pr["state"] not in ("OPEN", "CLOSED"):
+                return None
+    except (KeyError, TypeError, ValueError):
+        return None
+    return authors if authors and all(_identity(a) for a in authors) else None
+
+
+def _identity(value) -> str:
+    return value.strip().casefold() if isinstance(value, str) else ""
+
+
+def verifier_is_separate(label_actor: str | None, work_authors: set[str] | None,
+                         record: dict, shared_logins: set[str] | None = None) -> GateDecision:
+    """Whether the verified label came from someone who did not write the work."""
+    authors = {_identity(a) for a in work_authors or ()}
+    actor = _identity(label_actor)
+    if not authors or "" in authors or not actor:
+        return GateDecision(False, "incomplete author or labeler evidence")
+    if actor not in authors:
+        return GateDecision(True, f"labeler {label_actor!r} is not an author of the closing PR or commit")
+    if actor not in {_identity(login) for login in shared_logins or ()}:
+        return GateDecision(False, f"labeler {label_actor!r} is an author of the closing PR or commit")
+    work_by = _identity(record.get("work_by"))
+    verified_by = _identity(record.get("verified_by"))
+    if work_by and verified_by and work_by != verified_by:
+        return GateDecision(True, f"record names verifier {verified_by!r} separate from author {work_by!r}")
+    return GateDecision(False, "shared login requires distinct nonempty work_by and verified_by strings")
+
+
 def evaluate_close(
     record: dict | None,
     labels: list[str],
@@ -67,6 +165,8 @@ def evaluate_close(
     class_thresholds: dict[str, int] | None = None,
     verified_label: str = VERIFIED_LABEL,
     require_separate_closer: bool = False,
+    work_authors: set[str] | None = None,
+    shared_logins: set[str] | None = None,
 ) -> GateDecision:
     thresholds = class_thresholds or DEFAULT_THRESHOLDS
 
@@ -86,7 +186,7 @@ def evaluate_close(
     threshold = thresholds[cls]
 
     if verified_label not in labels:
-        return GateDecision(False, f"required owner label {verified_label!r} is absent")
+        return GateDecision(False, f"required verified label {verified_label!r} is absent")
 
     if label_actor is None or label_actor not in authorized_appliers:
         return GateDecision(
@@ -94,11 +194,15 @@ def evaluate_close(
             f"verified label applied by unauthorized actor {label_actor!r}; "
             f"must be one of {sorted(authorized_appliers)}")
 
-    # Separation-of-duties is OPT-IN (teams), not default. The authorized-appliers check
-    # above already guarantees an authorized owner applied the verified label — that IS the
-    # human gate. Requiring a *different* closer makes the gate unsatisfiable for a solo
-    # operator (always both verifier and closer). Teams that want separation set
-    # COMPLETENESS_REQUIRE_SEPARATE_CLOSER=1.
+    # The reviewer who applies the label must not have written the work (r5 card A).
+    separation = verifier_is_separate(label_actor, work_authors, record, shared_logins)
+    if not separation.allowed:
+        return separation
+
+    # Verifier-versus-closer separation stays OPT-IN. The check above already keeps the
+    # verifier apart from the author of the work; requiring a *different* closer as well
+    # makes the gate unsatisfiable for one login that both verifies and closes. Teams that
+    # want it set COMPLETENESS_REQUIRE_SEPARATE_CLOSER=1.
     if require_separate_closer and label_actor == closing_actor:
         return GateDecision(
             False, f"verifier and closer are the same actor {label_actor!r} and separate-closer is "

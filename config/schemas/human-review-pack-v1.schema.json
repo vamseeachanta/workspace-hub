@@ -1,0 +1,92 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Human engineering review pack",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "title", "surface", "revision", "disclosure", "cards"],
+  "properties": {
+    "schema": {"const": "human-review-pack/1"},
+    "title": {"$ref": "#/$defs/text"},
+    "revision": {"$ref": "#/$defs/text"},
+    "surface": {"enum": ["internal", "client-deliverable", "hosted"]},
+    "disclosure": {
+      "type": "object", "additionalProperties": false,
+      "required": ["status", "reference"],
+      "properties": {
+        "status": {"enum": ["unreviewed", "cleared", "restricted"]},
+        "reference": {"type": "string"}
+      }
+    },
+    "cards": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/card"}}
+  },
+  "$defs": {
+    "text": {"type": "string", "minLength": 1, "pattern": "\\S"},
+    "time": {"type": "string", "format": "date-time"},
+    "decision": {"enum": ["pending", "accepted", "accepted_with_note", "queried", "rejected"]},
+    "verdict": {"enum": ["implausible", "not_implausible", "not_evaluated"]},
+    "evidence": {
+      "type": "object", "additionalProperties": false,
+      "required": ["caption", "data", "source_ref", "identifier_status"],
+      "properties": {
+        "caption": {"$ref": "#/$defs/text"},
+        "data": {"$ref": "#/$defs/text"},
+        "source_ref": {"$ref": "#/$defs/text"},
+        "identifier_status": {"enum": ["absent", "redacted", "present", "unreviewed"]}
+      }
+    },
+    "check": {
+      "type": "object", "additionalProperties": false,
+      "required": ["quantity", "expectation", "comparator", "independent", "expected", "observed", "units", "tolerance", "criterion_source", "fixed_at", "run_started_at", "qualification", "qualification_ref", "governing_case"],
+      "properties": {
+        "quantity": {"$ref": "#/$defs/text"},
+        "expectation": {"$ref": "#/$defs/text"},
+        "comparator": {"enum": ["closed-form", "measured", "cross-solver", "conservation", "archived-run", "none"]},
+        "independent": {"type": "boolean"},
+        "expected": {"type": ["number", "null"]},
+        "observed": {"type": ["number", "null"]},
+        "units": {"$ref": "#/$defs/text"},
+        "tolerance": {"type": ["number", "null"], "minimum": 0},
+        "criterion_source": {"$ref": "#/$defs/text"},
+        "fixed_at": {"$ref": "#/$defs/time"},
+        "run_started_at": {"$ref": "#/$defs/time"},
+        "qualification": {"enum": ["qualified", "not_evaluated"]},
+        "qualification_ref": {"$ref": "#/$defs/text"},
+        "governing_case": {"$ref": "#/$defs/text"}
+      }
+    },
+    "card": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "title", "recommendation", "rationale", "evidence", "checks"],
+      "properties": {
+        "id": {"type": "string", "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_-]*$"},
+        "title": {"$ref": "#/$defs/text"},
+        "recommendation": {"$ref": "#/$defs/decision"},
+        "rationale": {"$ref": "#/$defs/text"},
+        "evidence": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/evidence"}},
+        "checks": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/check"}}
+      }
+    },
+    "export": {
+      "type": "object", "additionalProperties": false,
+      "required": ["schema", "pack_digest", "reviewer_ref", "reviewed_at", "decisions"],
+      "properties": {
+        "schema": {"const": "human-review-decisions/1"},
+        "pack_digest": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+        "reviewer_ref": {"$ref": "#/$defs/text"},
+        "reviewed_at": {"$ref": "#/$defs/time"},
+        "decisions": {
+          "type": "array", "minItems": 1,
+          "items": {
+            "type": "object", "additionalProperties": false,
+            "required": ["card_id", "decision", "note"],
+            "properties": {
+              "card_id": {"$ref": "#/$defs/text"},
+              "decision": {"$ref": "#/$defs/decision"},
+              "note": {"type": "string"}
+            }
+          }
+        }
+      }
+    }
+  }
+}

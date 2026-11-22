@@ -372,12 +372,14 @@ def reconcile_issue(record: dict, labels=(), now=None) -> Outcome:
                    findings=tuple(findings))
 
 
-def reconcile(records_root, labels_by_issue=None, now=None) -> Report:
+def reconcile(records_root, labels_by_issue=None, now=None, *, require_complete=False) -> Report:
     """Reconcile every record under `records_root`. READ-ONLY.
 
     `labels_by_issue` maps `owner/repo#123` -> the issue's current label names.
     Injected rather than fetched so this function has no network surface at all;
     `fetch_labels()` is the production adapter.
+    Live callers require complete coverage: a record absent from the snapshot
+    must refuse the pass rather than masquerade as an unlabelled issue.
     """
     labels_by_issue = dict(labels_by_issue or {})
     root = Path(records_root)
@@ -397,6 +399,10 @@ def reconcile(records_root, labels_by_issue=None, now=None) -> Report:
                 f"{type(exc).__name__}: {exc} — left exactly as it is"))
             continue
         seen.add(record["issue"])
+        if require_complete and record["issue"] not in labels_by_issue:
+            raise RuntimeError(
+                f"no label lookup for {record['issue']} — refusing to reconcile "
+                "against an incomplete snapshot")
         outcome = reconcile_issue(record, labels_by_issue.get(record["issue"], ()),
                                   now=now)
         outcomes.append(outcome)
@@ -706,12 +712,53 @@ def format_report(report: Report, armed: bool = False) -> str:
 # ---------------------------------------------------------------------------
 
 
-def fetch_labels(repo: str, fetch=None) -> dict[str, set[str]]:
+def _fetch_issue_labels(issue: str, gh_fn=None) -> set[str]:
+    """Read a record's issue regardless of open/closed state. Never write.
+
+    As documented by `gh api --help`, --paginate follows every response page.
+    Decode each page's JSON array without requiring newer output flags. An
+    absent response is refused; an explicit empty array means no labels.
+    There is no fixed label-count cap in this adapter.
+    """
+    repo, number = split_issue(issue)
+    gh_fn = gh_fn or route.gh
+    refusal = f"could not fetch complete labels for {issue} — refusing to reconcile"
+    try:
+        result = gh_fn(["api", f"repos/{repo}/issues/{number}/labels",
+                        "--paginate"])
+    except OSError as exc:
+        raise RuntimeError(refusal) from exc
+    if result.returncode != 0:
+        raise RuntimeError(refusal)
+    try:
+        remaining = result.stdout.strip()
+        pages = []
+        decoder = json.JSONDecoder()
+        while remaining:
+            page, end = decoder.raw_decode(remaining)
+            pages.append(page)
+            remaining = remaining[end:].lstrip()
+    except (ValueError, AttributeError) as exc:
+        raise RuntimeError(refusal) from exc
+    if not pages or any(not isinstance(page, list) for page in pages):
+        raise RuntimeError(refusal)
+    labels = set()
+    for page in pages:
+        for label in page:
+            if (not isinstance(label, dict)
+                    or not isinstance(label.get("name"), str) or not label["name"]):
+                raise RuntimeError(refusal)
+            labels.add(label["name"])
+    return labels
+
+
+def fetch_labels(repo: str, fetch=None, *, records_root=None, gh_fn=None) -> dict[str, set[str]]:
     """Live labels keyed the way records are: `owner/repo#123`.
 
-    Returns {} and says so rather than {} silently when the API fails — an empty
-    snapshot read as "no labels anywhere" would propose adding a label to every
-    issue in the repo.
+    Open discovery remains the sweep for recordless labels. Every readable
+    record gets an independent, authoritative issue-label lookup, including
+    closed issues and records belonging to another repository. API failures
+    refuse the whole pass rather than propose writes from an unknown state.
     """
     fetch = fetch or route.fetch_open_issues
     snapshot = fetch(repo)
@@ -720,7 +767,18 @@ def fetch_labels(repo: str, fetch=None) -> dict[str, set[str]]:
             f"could not fetch open issues for {repo} (rate limit?) — refusing to "
             f"reconcile against an empty snapshot, which would look like every "
             f"issue had lost its label")
-    return {f"{repo}#{number}": set(labels) for number, labels in snapshot.items()}
+    labels_by_issue = {f"{repo}#{number}": set(labels) for number, labels in snapshot.items()}
+    if records_root is not None:
+        issues = set()
+        for path in sorted(Path(records_root).glob("*.json")):
+            try:
+                issues.add(records.read_record(path)["issue"])
+            except (ValueError, OSError):
+                # reconcile() reports unreadable records without projecting them.
+                continue
+        for issue in sorted(issues):
+            labels_by_issue[issue] = _fetch_issue_labels(issue, gh_fn=gh_fn)
+    return labels_by_issue
 
 
 def load_labels_json(path) -> dict[str, set[str]]:
@@ -760,8 +818,8 @@ def main(argv=None) -> int:
         ap.error("one of --labels-json / --repo is required")
 
     labels = (load_labels_json(args.labels_json) if args.labels_json
-              else fetch_labels(args.repo))
-    report = reconcile(args.records, labels)
+              else fetch_labels(args.repo, records_root=args.records))
+    report = reconcile(args.records, labels, require_complete=bool(args.repo))
 
     # The report is printed BEFORE the gate is consulted. Drift is a finding, and
     # a finding that only appears once someone has armed writes is a finding

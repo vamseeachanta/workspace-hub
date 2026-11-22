@@ -3,6 +3,7 @@
 # Usage: bash scripts/enforcement/check-codex-model-pin.sh [--help]
 # Exit codes: 0 = no unexpected pins; 1 = pin, invalid TOML or stale exception;
 # 2 = usage error. Requires Git and Python with standard-library tomllib.
+# Policy and examples: docs/operations/codex-model-pin-checker.md
 set -euo pipefail
 
 if [[ $# -eq 1 && ( "$1" == --help || "$1" == -h ) ]]; then
@@ -64,12 +65,19 @@ try:
         '.codex/agents/*.toml', 'config/agents/codex/*.toml',
     ]).decode().split('\0')
     failed = False
+    allowed = []
     # Every exception must name a tracked matching configuration.
     for name in sorted(set(ALLOWLIST).difference(names)):
         print(f'check-codex-model-pin: {name}: stale allowlist entry (not tracked)')
         failed = True
     for name in filter(None, names):
-        text = (root / name).read_text(encoding='utf-8')
+        try:
+            text = (root / name).read_text(encoding='utf-8')
+        except (OSError, UnicodeError):
+            print(f'check-codex-model-pin: {name}: cannot read UTF-8 configuration',
+                  file=sys.stderr)
+            failed = True
+            continue
         try:
             # TOML v1.0.0, Keys and Table: decoded keys identify root entries.
             # https://toml.io/en/v1.0.0#keys
@@ -86,14 +94,21 @@ try:
             found = list(pins(text)) or [('?', '<parsed root assignment>')]
         if name in ALLOWLIST:
             if found:
-                print(f'check-codex-model-pin: ALLOW {name}')
+                allowed.append((name, config['model']))
             else:
-                print(f'check-codex-model-pin: {name}: stale allowlist entry')
+                print(f'check-codex-model-pin: {name}: stale allowlist entry '
+                      '(no root model key)')
                 failed = True
         else:
             for number, value in found:
-                print(f'check-codex-model-pin: {name}:{number}: model = {value}')
+                print(f'check-codex-model-pin: {name}:{number}: model = {value} '
+                      '(unexpected top-level pin)')
                 failed = True
+    print('check-codex-model-pin: Allowlisted pin inventory:')
+    for name, value in allowed:
+        print(f'  ALLOW {name}: model = {value!r}')
+    if not allowed:
+        print('  (none)')
     if not failed:
         print('check-codex-model-pin: PASS (no unexpected top-level model pins)')
     sys.exit(1 if failed else 0)
