@@ -2064,6 +2064,12 @@ skills:
   name: telegram-hermes-bot
   when_to_use: "- User asks to \"set up Telegram on Hermes\", \"add mobile control to Hermes\",\n  \"install a bot that talks to Hermes\"\n- User wants to add a second host to the same brand of bot (e.g.,\n  `@AceEngineerBot` on a backup machine)\n- User wants to create a sibling bot for a different identity (e.g., a\n  project-scoped bot) using the same hardening pattern\n- After a `hermes update` if the systemd unit appears to have lost the\n  `EnvironmentFile=` directive (drop-in survives by design — see §3.4)\n- When token rotation is needed (BotFather `/revoke` workflow + safe edit)\n- To audit an existing Telegram-Hermes deployment against the hardening\n  checklist before declaring it production-ready"
   when_to_use_source: frontmatter
+- description: 'Run the family iPhone photo/video pull on the archive host with the owner: copy DCIM at full quality, verify, back up to Google Drive, and produce a verified safe-to-delete list. Never deletes on the phone.'
+  family: phone-media-pull
+  id: phone-media-pull
+  name: phone-media-pull
+  when_to_use: 'phone-media-pull Run the family iPhone photo/video pull on the archive host with the owner: copy DCIM at full quality, verify, back up to Google Drive, and produce a verified safe-to-delete list. Never deletes on the phone. phone-media-pull'
+  when_to_use_source: backfill
 - description: Compact the current conversation into a handoff document for another agent to pick up.
   family: productivity
   id: productivity/handoff
