@@ -6,7 +6,7 @@
 
 **Policy:**
 
-1. **Default:** the agent verifies the PR is green + `mergeStateStatus==CLEAN`, then hands the human the exact command (`gh pr merge <N> --squash --delete-branch --repo owner/name`). This remains the normal path (`feedback_agent_can_verify_but_not_self_merge_pr`).
+1. **Default:** the agent verifies the PR is green + `mergeStateStatus==CLEAN`, then hands the human the exact command (`gh pr merge <N> --squash --repo owner/name`). The head branch is kept: under the repo footprint plan (F2), branch deletes are owner-run steps taken only after the archive is re-verified, so neither this command nor `merge-when-clean.sh` deletes the branch by default (the helper's `--delete-branch` is opt-in). This remains the normal path (`feedback_agent_can_verify_but_not_self_merge_pr`).
 2. **A user "merge" / "merge and continue" authorizes an agent-run merge ONLY when the target is unambiguous:**
    - the user's message names the PR number(s), **or**
    - the instruction is the direct reply to the agent presenting that specific PR (the PR is the plain antecedent of the message).
