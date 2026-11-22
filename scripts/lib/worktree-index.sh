@@ -56,6 +56,13 @@ worktree_index_preflight() (
         echo 'worktree-index: HEAD tree unavailable; inspection refused' >&2
         return 2
     fi
+    # ls-tree, ls-files and diff are scoped to the current directory; a caller
+    # passing a subdirectory (cross-review.sh passes $PWD) must still count the
+    # whole tree, so resolve the worktree top level first.
+    if ! root=$("$git_read" -C "$root" rev-parse --show-toplevel); then
+        echo 'worktree-index: worktree top level unavailable; inspection refused' >&2
+        return 2
+    fi
     head_count=$("$git_read" -C "$root" ls-tree -r -z --name-only HEAD | tr -cd '\000' | wc -c | tr -d ' ') || return 2
     index_count=$("$git_read" -C "$root" ls-files --cached -z | tr -cd '\000' | wc -c | tr -d ' ') || return 2
     if ((head_count > 0 && index_count == 0)); then

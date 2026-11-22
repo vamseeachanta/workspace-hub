@@ -87,6 +87,23 @@ def test_full_primary(repo):
     assert preflight(repo).returncode == 0
 
 
+def test_interrupted_no_checkout_is_refused_from_subdirectory(repo, tmp_path):
+    # An untracked subdirectory must not narrow the counts to an empty subtree.
+    wt = tmp_path / "interrupted"
+    git(repo, "worktree", "add", "--detach", "--no-checkout", str(wt))
+    scratch = wt / "scratch"
+    scratch.mkdir()
+    result = preflight(scratch)
+    assert result.returncode == 1
+    assert "empty index" in result.stderr
+
+
+def test_valid_worktree_from_subdirectory_counts_whole_tree(repo):
+    result = preflight(repo / "keep")
+    assert result.returncode == 0, result.stderr
+    assert "head=2 index=2" in result.stdout
+
+
 def test_fresh_whole_tree_deletion_with_added_entry(repo, tmp_path):
     wt = tmp_path / "linked"
     git(repo, "worktree", "add", "--detach", str(wt))
