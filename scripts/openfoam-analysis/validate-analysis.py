@@ -15,9 +15,17 @@ Exit codes:
     0 = all checks pass
     1 = validation failed (prints diagnostics)
 """
+import argparse
 import re
 import sys
 from pathlib import Path
+
+from foamdict import (
+    DictionaryError,
+    algorithm_issues,
+    parse_dictionary,
+    relaxation_issues,
+)
 
 try:
     import yaml
@@ -26,12 +34,35 @@ except ImportError:
     sys.exit(1)
 
 
+def validate_dictionaries(case_dir: str | Path) -> tuple[bool, list[str]]:
+    """Preflight generated dictionaries without requiring solver results."""
+    case = Path(case_dir)
+    issues = []
+    dictionaries = {}
+    for name in ("fvSolution", "fvSchemes", "controlDict"):
+        path = case / "system" / name
+        try:
+            dictionaries[name] = parse_dictionary(path.read_text())
+        except (OSError, DictionaryError) as error:
+            issues.append(f"{name}: {error}")
+    if "fvSolution" in dictionaries:
+        issues.extend(relaxation_issues(dictionaries["fvSolution"]))
+    if len(dictionaries) == len(("fvSolution", "fvSchemes", "controlDict")):
+        issues.extend(algorithm_issues(
+            dictionaries["fvSolution"], dictionaries["fvSchemes"], dictionaries["controlDict"]
+        ))
+    return not issues, issues
+
+
 def validate(case_dir: str) -> tuple[bool, list[str]]:
     case = Path(case_dir)
     issues = []
 
     if not case.is_dir():
         return False, [f"Case directory does not exist: {case}"]
+
+    _, dictionary_issues = validate_dictionaries(case)
+    issues.extend(dictionary_issues)
 
     # 1. Check mesh verdict
     mesh_verdict = case / "mesh-verdict.yaml"
@@ -97,19 +128,20 @@ def validate(case_dir: str) -> tuple[bool, list[str]]:
 
 
 if __name__ == "__main__":
-    if len(sys.argv) != 2:
-        print(f"Usage: {sys.argv[0]} <case-dir>")
-        sys.exit(1)
-
-    passed, issues = validate(sys.argv[1])
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("case_dir")
+    parser.add_argument("--dictionaries-only", action="store_true")
+    args = parser.parse_args()
+    check = validate_dictionaries if args.dictionaries_only else validate
+    passed, issues = check(args.case_dir)
 
     if passed:
         print("VALIDATION: PASS")
-        print(f"  Case: {sys.argv[1]}")
+        print(f"  Case: {args.case_dir}")
         sys.exit(0)
     else:
         print("VALIDATION: FAIL")
-        print(f"  Case: {sys.argv[1]}")
+        print(f"  Case: {args.case_dir}")
         for issue in issues:
             print(f"  - {issue}")
         sys.exit(1)

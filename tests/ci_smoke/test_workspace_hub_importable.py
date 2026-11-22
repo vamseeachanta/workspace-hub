@@ -21,6 +21,8 @@ from pathlib import Path
 
 import pytest
 
+from .test_module_provenance import _assert_module_provenance
+
 REPO_ROOT = Path(__file__).resolve().parents[2]
 SRC_DIR = REPO_ROOT / "src"
 RESOLVER_REL = Path("src/workspace_hub/workstations/resolver.py")
@@ -55,6 +57,8 @@ def test_workspace_hub_resolver_importable_with_pythonpath_src():
         "If a colliding workspace_hub package is now earlier on sys.path, the namespace package "
         "resolution has shifted and this test catches the drift before the PR-time CI failure."
     )
+
+    _assert_module_provenance("workspace_hub", SRC_DIR)
 
 
 @pytest.mark.parametrize("caller_path", CALLER_PATHS, ids=[p.name for p in CALLER_PATHS])

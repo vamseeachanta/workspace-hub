@@ -33,6 +33,7 @@ def detect_release_tag(
     """Signal 1: new semver tags not seen before, filtered to non-noise, <90 days old."""
     tags_out = _git(repo_path, "tag", "-l")
     all_tags = [t.strip() for t in tags_out.splitlines() if t.strip()]
+    # Freshness policy: issues/2416 retains the 90-day cutoff.
     cutoff = datetime.now(timezone.utc) - timedelta(days=90)
     signals: list[Signal] = []
     known = set(state.last_seen_tags)
@@ -44,11 +45,16 @@ def detect_release_tag(
             continue
         if not SEMVER_RE.match(tag):
             continue
-        # Check tag age
+        # Annotated releases age from tagging, independently of commit age.
         try:
-            ts_out = _git(repo_path, "log", "-1", "--format=%cI", tag)
-            tag_date = datetime.fromisoformat(ts_out.strip())
-            if tag_date < cutoff:
+            ts_out = _git(
+                repo_path, "for-each-ref", "--format=%(taggerdate:iso-strict)",
+                f"refs/tags/{tag}",
+            ).strip()
+            if not ts_out:  # Lightweight tags have no tagger date.
+                ts_out = _git(repo_path, "log", "-1", "--format=%cI", tag).strip()
+            tag_date = datetime.fromisoformat(ts_out)
+            if tag_date.tzinfo is None or tag_date < cutoff:
                 continue
         except (subprocess.CalledProcessError, ValueError):
             continue
@@ -122,7 +128,7 @@ def detect_new_case_study(
         preview = ""
         if abs_path.exists():
             try:
-                preview = "\n".join(abs_path.read_text().splitlines()[:40])
+                preview = "\n".join(abs_path.read_text(encoding="utf-8").splitlines()[:40])
             except (UnicodeDecodeError, OSError):
                 preview = "(binary or unreadable)"
         signals.append(Signal(
@@ -142,21 +148,54 @@ def detect_new_case_study(
 
 
 def _extract_section(markdown: str, heading: str) -> str:
-    """Return body of `## <heading>` section, up to next `## ` or EOF."""
+    """Return body of an unfenced `## <heading>`, up to next unfenced `## ` or EOF."""
     lines = markdown.splitlines()
     start = None
+    fence = ""
+    list_indents = [0]
+    fence_indent = 0
     for i, line in enumerate(lines):
-        if line.strip() == f"## {heading}":
-            start = i + 1
-            break
-    if start is None:
-        return ""
-    end = len(lines)
-    for j in range(start, len(lines)):
-        if lines[j].startswith("## "):
-            end = j
-            break
-    return "\n".join(lines[start:end]).strip()
+        expanded = line.expandtabs(4)
+        indent = len(expanded) - len(expanded.lstrip(" "))
+        # CommonMark 0.31.2 sections 4.5 and 5.2: a fence ends with its
+        # containing list item, even without an explicit closing fence.
+        if fence and expanded.strip() and indent < fence_indent:
+            fence = ""
+        if not fence:
+            if expanded.strip():
+                while indent < list_indents[-1]:
+                    list_indents.pop()
+            content = expanded[list_indents[-1]:]
+            # List content begins after its marker and one to four spaces.
+            # Repeat for nested markers on the same line (section 5.2).
+            while True:
+                item = re.match(r"^ {0,3}(?:[-+*]|[0-9]{1,9}[.)]) {1,4}(?=\S)", content)
+                if not item:
+                    break
+                list_indents.append(list_indents[-1] + item.end())
+                content = content[item.end():]
+        else:
+            content = expanded[fence_indent:]
+        # CommonMark, Fenced code blocks (section 4.5): at least three markers,
+        # at most three leading spaces; Tabs (section 2.2): four-column stops.
+        match = re.match(r"^ {0,3}(`{3,}|~{3,})(.*)$", content)
+        if fence:
+            # Closers use the same marker, at least the opener's length,
+            # and only trailing spaces or tabs (CommonMark section 4.5).
+            if (match and match[1][0] == fence[0]
+                    and len(match[1]) >= len(fence) and not match[2].strip(" \t")):
+                fence = ""
+            continue
+        if match and (match[1][0] == "~" or "`" not in match[2]):
+            fence = match[1]
+            fence_indent = list_indents[-1]
+            continue
+        if start is None:
+            if line.strip() == f"## {heading}":
+                start = i + 1
+        elif line.startswith("## "):
+            return "\n".join(lines[start:i]).strip()
+    return "\n".join(lines[start:]).strip() if start is not None else ""
 
 
 def _hash_section(body: str) -> str:
@@ -172,7 +211,7 @@ def detect_readme_capability_diff(
     if not readme_path.exists():
         return []
     try:
-        md = readme_path.read_text()
+        md = readme_path.read_text(encoding="utf-8")
     except (UnicodeDecodeError, OSError):
         return []
     signals: list[Signal] = []

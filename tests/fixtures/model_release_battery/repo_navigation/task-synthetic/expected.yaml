@@ -1,0 +1,32 @@
+schema_version: '1.0'
+class: repo_navigation
+task_id: task-synthetic
+scope: synthetic-offline
+rules_ref: tests/fixtures/model_release_battery/README.md
+required_sections:
+- Evidence
+- Next action
+required_assertions:
+- located_existing_readiness_documents
+path_set:
+- docs/standards/MODEL_RELEASE_READINESS_CONTRACT.md
+- docs/standards/MODEL_RELEASE_UPGRADE_PLAYBOOK.md
+verdict: null
+numerical_assertions: []
+max_output_tokens: 1024
+rule_sources:
+- path: AGENTS.md
+  section: '## Retrieval and planning'
+  quote: Consult docs/ and existing code;
+  supports:
+  - required_assertions
+  - path_set
+  basis: The readiness references in this section point to the inspected existing contract
+    and companion playbook; return that exact pair.
+- path: config/agents/SHARED_SOUL.md
+  section: '# Response Shapes'
+  quote: 'Return: (1) current state, (2) evidence, (3) gap/blocker, (4) recommended next action.'
+  supports:
+  - required_sections
+  basis: Evidence and next action project the default response shape onto this bounded retrieval
+    task.

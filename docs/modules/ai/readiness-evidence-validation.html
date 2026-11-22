@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Readiness evidence validation</title>
+<style>
+body { max-width: 58rem; margin: 2rem auto; padding: 0 1rem; font-family: sans-serif; line-height: 1.5; }
+pre { overflow-x: auto; background: #f4f4f4; padding: 1rem; }
+table { border-collapse: collapse; } td, th { border: 1px solid #999; padding: .5rem; }
+</style>
+<h1>Readiness evidence validation</h1>
+<p>Summary: local validation rejects ambiguous or contradictory readiness evidence.
+A successful result establishes structural and internal consistency only. It does
+not establish current reachability, authenticated access, licence availability,
+security posture or execution readiness.</p>
+<h2>Revision history</h2>
+<table><tr><th>Revision</th><th>Date</th><th>Change and reason</th></tr>
+<tr><td>1</td><td>2026-10-22</td><td>Define consistency checks and a local example to prevent contradictory evidence acceptance.</td></tr></table>
+<p>Table 1. Validation contract history.</p>
+<h2>Basis and scope</h2>
+<p>The existing <a href="readiness-evidence-bundle.schema.yaml">readiness evidence
+schema, version 1.0</a> defines the required fields, status vocabulary and canonical
+checks. This companion contract defines additional consistency requirements;
+these requirements are local validation policy, not externally sourced engineering limits.
+The work advances the operations initiative through its readiness evidence epic.</p>
+<h2>Method and acceptance criteria</h2>
+<ol>
+<li>UTF-8 YAML must parse without duplicate mapping keys. Merge overrides are
+rejected as duplicates. Schema validation runs before consistency checks.</li>
+<li>Check identifiers must be unique, including additional check types.</li>
+<li>For each supplied count, count(status) equals the number of rows with that
+status; total equals the number of check rows. Omitted counts remain optional.</li>
+<li>The access-mode check transport must equal the declared access mode.</li>
+<li>Reported capacity usage must not exceed reported total capacity. No utilisation
+threshold or licence availability is inferred from capacity.</li>
+<li>A ready verdict must have reachable access and no warn, fail or error rows.
+Skipped rows remain allowed by the existing schema. Other verdicts are not recomputed.</li>
+</ol>
+<p>These rules apply to every bundle validated through the library. Previously
+accepted contradictory bundles now fail. Missing checks, invalid timestamps and
+invalid field types continue to fail under the existing schema. Evidence age,
+platform deployment and whether a skipped check is applicable are NOT_EVALUATED:
+no freshness limit, platform observation or task-specific applicability criterion
+is supplied by this validator. The schema currently supports Linux and Windows;
+macOS support is not established.</p>
+<h2>Worked example: synthetic inputs</h2>
+<p>The following complete input is synthetic and contains no observation of a real
+machine. Identity fields are withheld placeholders. Save the block as
+<code>example.yaml</code> in a private working directory.</p>
+<pre id="worked-example">schema_version: "1.0"
+machine:
+  id: withheld
+  hostname: withheld
+  user: withheld
+  os: linux
+collected_at: "2026-10-22T00:00:00Z"
+source_writer:
+  name: synthetic-example
+  version: "1"
+  entrypoint: example
+access:
+  mode: local_no_ssh
+  reachable: true
+checks:
+  - id: access-mode
+    name: Access
+    status: pass
+    summary: Synthetic access observation
+    evidence: {transport: local_no_ssh}
+  - id: workspace-root
+    name: Workspace
+    status: pass
+    summary: Synthetic workspace observation
+    evidence: {path: .}
+  - id: ai-cli
+    name: Command availability
+    status: pass
+    summary: Synthetic command observation
+    evidence: {claude: true, codex: true}
+  - id: licensed-tools
+    name: Optional tools
+    status: skip
+    summary: Tools excluded from the synthetic task
+    evidence: {required: false}
+overall:
+  verdict: ready
+  summary: Internally consistent synthetic evidence
+  counts: {total: 4, pass: 3, warn: 0, fail: 0, error: 0, skip: 1}
+</pre>
+<p>Independent hand calculation: the access, workspace and command rows each
+contribute one pass, giving 1 + 1 + 1 = 3 passes. The remaining row contributes
+one skip, so total = 3 + 1 = 4. All other counts are zero. The transport strings
+are equal, access is true and there are no warning or failed rows. Expected
+answer: valid is true and error_count is zero. Changing total alone to 5 produces
+exactly one count mismatch, because 5 differs from the four enumerated rows.
+All numbers in this example are synthetic inputs or direct enumeration results.</p>
+<h2>Local command</h2>
+<pre>uv run --no-project --with pyyaml --with jsonschema python scripts/analysis/readiness_bundle_schema.py example.yaml</pre>
+<p>Successful validation returns exit code zero; invalid evidence returns a nonzero
+code. Standard output is JSON containing only <code>valid</code> and
+<code>error_count</code>. Evidence paths and values are omitted from CLI validation
+diagnostics. Library errors retain detailed schema messages and may contain private
+values; they belong in access-controlled logs. Validation never rewrites evidence.
+Use a trusted schema and suitably bounded local files; this command is not a
+sandbox or resource-isolated parser for arbitrarily large hostile documents.</p>
+<h2>Remaining work</h2>
+<p>Live writers, schedule parity, registry-wide collection, licensed-tool adapters,
+remote-access changes and independent review remain separate acceptance work.
+No live probe or licensed tool is invoked by this implementation.</p>
+</html>

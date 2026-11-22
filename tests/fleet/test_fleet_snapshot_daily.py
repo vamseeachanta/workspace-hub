@@ -4,9 +4,9 @@ from __future__ import annotations
 
 import json
 import os
-import signal
 import shlex
 import shutil
+import signal
 import subprocess
 import time
 from pathlib import Path
@@ -47,9 +47,20 @@ def _snapshot(name: str = "phys-box-a") -> dict:
 
 def _run(cmd: list[str], cwd: Path, **kwargs) -> subprocess.CompletedProcess:
     check = kwargs.pop("check", False)
+    kwargs["env"] = _test_env(kwargs.pop("env", {}))
     return subprocess.run(
         cmd, check=check, cwd=cwd, text=True, capture_output=True, **kwargs
     )
+
+
+def _test_env(overrides: dict[str, str]) -> dict[str, str]:
+    """Preserve scratch settings without inheriting caller repository bindings."""
+    env = {
+        key: value for key, value in os.environ.items()
+        if key not in {"GIT_DIR", "GIT_WORK_TREE", "GIT_COMMON_DIR", "GIT_INDEX_FILE"}
+        and not key.startswith("FLEET_")
+    }
+    return env | overrides
 
 
 def _start_daily_writer(
@@ -62,12 +73,12 @@ def _start_daily_writer(
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
         start_new_session=True,
-        env={
+        env=_test_env({
             "FLEET_HUB": str(repo),
             "FLEET_LABEL_MAP": str(map_path),
             "FLEET_SNAPSHOT_COLLECT_CMD": collect_cmd,
             "FLEET_NO_PUSH": "1",
-        },
+        }),
     )
 
 

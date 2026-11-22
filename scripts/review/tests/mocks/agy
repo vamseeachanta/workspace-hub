@@ -2,6 +2,10 @@
 # Mock agy CLI — captures argv + pwd + env + stdin, emits canned review.
 # Extra: supports ${MOCK_AGY_FAIL:-0}=1 to simulate quota/outage (exit 1, no stdout).
 set -u
+if [[ "${1:-}" == "--version" ]]; then
+  echo 'agy 1.0.0'  # Synthetic version fixture, not a supported-version limit.
+  exit 0
+fi
 [[ -n "${MOCK_SLEEP_S:-}" ]] && sleep "$MOCK_SLEEP_S"
 capture="${PLAN_REVIEW_CAPTURE_DIR:-/tmp}/agy.capture"
 if [[ -n "${MOCK_AGY_ARG_MAX:-}" ]]; then

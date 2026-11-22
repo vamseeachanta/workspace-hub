@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Capture snapshot review contract</title>
+<style>
+body { max-width: 68rem; margin: 2rem auto; padding: 0 1rem; font: 1rem/1.6 system-ui; color: #202124; }
+code, pre { background: #f3f4f5; } pre { padding: 1rem; overflow: auto; }
+table { border-collapse: collapse; width: 100%; } th, td { border: 1px solid #aaa; padding: .5rem; text-align: left; }
+caption { caption-side: bottom; text-align: left; padding-top: .5rem; }
+</style>
+</head>
+<body>
+<main>
+<h1>Capture snapshot review contract</h1>
+<p>Repository-path validation shall precede repository commands. Snapshot completeness and satisfaction of the trusted specification shall precede equality qualification. The executable assertions in <code>tests/contract/capture_review_contract.py</code> implement a reusable review test contract; they do not collect records, introduce a persistence schema or establish runtime readiness.</p>
+<h2>Revision history</h2>
+<table>
+<tr><th>Revision</th><th>Date</th><th>Change and reason</th></tr>
+<tr><td>Initial</td><td>2026-10-22</td><td>Add inventory, reusable assertions and a worked example to prevent incomplete or condition-violating evidence from qualifying through equality.</td></tr>
+<caption>Revision history of this review contract.</caption>
+</table>
+<h2>Basis and inventory</h2>
+<p>The source is issue 3874, “Fail closed on incomplete capture snapshots and repository-path validation order”, including its condition-counterexample comment dated 2026-09-16. The linked issues 3062 and 3606 provide historical context; their current bodies do not specify a public persistence-record schema. No numerical engineering coefficient, standard-derived constant or engineering acceptance equation is required.</p>
+<p>The inventory covers the tracked scripts and tests in the inspected repository revision. Searches included capture, snapshot, persistence, comparison and specification-binding terms. The provisional persistence comparator described in the issue is absent from this checkout. This observation does not establish its absence from other repositories or private artifacts.</p>
+<table>
+<tr><th>Existing surface</th><th>Observed responsibility</th><th>Disposition for this change</th></tr>
+<tr><td><code>scripts/client_llm_wiki/bootstrap_snapshot.py</code></td><td>Captures committed template objects with descriptor-bound Git calls and object parsing. <code>_bind_template</code> opens the root; <code>_open_gitdir</code> discovers Git metadata through an initial Git invocation.</td><td>Relevant root-binding review candidate. The initial invocation alone does not establish a vulnerability; the caller's trust model, ancestor handling and supported linked worktrees require bounded assessment. No caller change or qualification is made here.</td></tr>
+<tr><td><code>scripts/agents/claude_runtime_state.py</code></td><td>Inspects runtime files and receipts using its existing authority and format.</td><td>Related evidence consumer, without the scoped persistence comparator. Its receipt format remains authoritative.</td></tr>
+<tr><td><code>scripts/knowledge/validate_inventory_readiness.py</code></td><td>Validates inventory-readiness records and evidence groups.</td><td>A different schema and purpose; no capture equality API is inferred.</td></tr>
+<tr><td><code>scripts/analysis/provider_session_ecosystem_audit.py</code></td><td>Builds an analysis of recorded provider activity.</td><td>An audit surface, without the provisional persistence comparison API.</td></tr>
+<caption>Scoped inventory; no existing collector is replaced or silently enrolled.</caption>
+</table>
+<h2>Review gates</h2>
+<ol>
+<li><strong>Root and bindings:</strong> establish the intended physical root, ancestors and permitted Git metadata paths without invoking Git. Reject prohibited links, absent metadata and redirected bindings before reading repository configuration. A legitimate linked worktree requires explicit validation of its pointer and common directory; it shall not be rejected solely because its <code>.git</code> entry is a file.</li>
+<li><strong>Completeness:</strong> validate identity, intended member sets, every required nested field and exact types against the trusted specification and owning schema. A record's own member list or specification digest cannot supply missing intended membership.</li>
+<li><strong>Conditions:</strong> independently evaluate each declared absence, content digest, metadata, required ignore-entry and untracked-selection condition against each complete record. Unsupported conditions shall remain explicitly not evaluated and shall not qualify.</li>
+<li><strong>Equality:</strong> compare only records that pass the preceding gates. Two complete, condition-satisfying records may still differ. Missing, incomplete, failed, different and qualified dispositions shall remain distinguishable.</li>
+</ol>
+<p>Review shall hunt for counterexamples rather than assume acceptance: identical empty identities; omitted nodes or repositories; empty nested records; wrong container and scalar types; correctly bound but violated conditions; validation of one argument only; and commands issued before root rejection. A review verdict shall bind the actual adapter, callers, specification, fixture bytes and execution environment. Changed bytes require review of the affected delta and interfaces.</p>
+<h2>Executable test contract</h2>
+<p><code>assert_repository_rejection(capture, root, monkeypatch, rejection)</code> intercepts both <code>subprocess.run</code> and <code>subprocess.Popen</code>. It records attempted launches before raising, and requires an explicit caller-specific rejection with no attempted subprocess. An unrelated crash or silent return fails the test. Run it separately for a linked root, linked ancestor, missing Git binding, linked Git metadata and redirected Git pointer. Supply a positive control for each legitimate repository form in the caller's own tests.</p>
+<p>The interception covers standard Python subprocess entry points during the assertion only. Native bindings, previously cached launcher references, direct operating-system execution and external processes require caller-specific spies or isolation. These assertions alone do not establish freedom from filesystem races; descriptor binding and race fixtures remain caller responsibilities. Fixture processes shall clear inherited Git bindings before repository discovery and preserve caller files and Git metadata.</p>
+<p><code>assert_comparison_contract(compare, specification, cases)</code> accepts an adapter returning the test dispositions below. The adapter shall translate existing result enums or explicit validation exceptions, without duplicating validation or converting arbitrary crashes into expected rejection. Fixture authors supply the intended specification independently from the snapshots. Inputs are copied for each invocation and checked for mutation.</p>
+<table>
+<tr><th>Case category</th><th>Required disposition</th><th>Independent basis</th></tr>
+<tr><td><code>qualified</code></td><td>qualified</td><td>Complete identical control satisfies all supplied conditions.</td></tr>
+<tr><td><code>missing</code></td><td>missing</td><td>Required snapshot evidence is absent.</td></tr>
+<tr><td><code>empty_identity</code>, <code>missing_node</code>, <code>missing_repository</code>, <code>missing_nested_field</code>, <code>wrong_type</code></td><td>incomplete</td><td>Required evidence cannot be established from the owning schema and intended membership.</td></tr>
+<tr><td><code>absence</code>, <code>digest</code>, <code>metadata</code>, <code>ignore</code>, <code>untracked</code></td><td>failed</td><td>Complete evidence contradicts a supported declared condition.</td></tr>
+<tr><td><code>different</code></td><td>different</td><td>Both records qualify individually but differ in a comparison-relevant observation.</td></tr>
+<caption>Required fixture categories and review dispositions from issue 3874.</caption>
+</table>
+<p>The helper requires the complete category inventory and rejects duplicate names, unknown categories and contradictory expected dispositions. Use <code>category:field</code> names to enumerate every required field and type of the actual schema. The minimal category set is not exhaustive schema coverage. Every missing, incomplete or failed fixture is tested identically against itself, against the qualified control, and in both argument orders. The different-record control must contain distinct records, and each must qualify against itself before comparison. A <code>right</code> value of <code>None</code> repeats <code>left</code>; a missing-evidence case uses <code>left=None</code>.</p>
+<pre>from capture_review_contract import assert_comparison_contract, assert_repository_rejection
+
+# Caller-owned fixtures and adapters; no production schema is created here.
+assert_comparison_contract(compare_adapter, trusted_specification, review_cases)
+assert_repository_rejection(collect_adapter, invalid_root, monkeypatch, CaptureError)</pre>
+<p>When importing outside this test directory, add <code>tests/contract</code> to the test import path explicitly. Keep these assertions out of production dependencies. Caller adoption shall be tracked under its owning issue and bounded plan, with independent exact review; issue 3874 supplies the reusable contract, not blanket authority to modify every collector.</p>
+<h2>Worked synthetic example</h2>
+<p>The executable example is <code>tests/contract/test_capture_review_contract.py</code>. All tokens below are synthetic literal evidence, not measured values or real content hashes. The test-only comparator illustrates the assertions; it is not a new production comparator.</p>
+<pre>Trusted specification:
+  identity: fixture
+  digest: expected
+  ignored: cache
+Intended membership:
+  nodes: config
+  repositories: repo
+Complete snapshot:
+  identity: fixture
+  nodes:
+    config: {digest: expected, mode: regular, absent: false}
+  repositories:
+    repo: {ignored: [cache], untracked: []}</pre>
+<p><strong>Method and answer:</strong> by direct inspection, the complete snapshot has the intended identity and members, every required field and type, a present regular node with the expected digest, the required ignore entry and no selected untracked records. Two copies therefore return <code>qualified</code>. Removing <code>nodes.config.digest</code> leaves a required field unknown; two copies return <code>incomplete</code>. Keeping the record complete but changing the digest to <code>other</code> violates the trusted condition; two copies return <code>failed</code>. Adding a distinct observation to one otherwise qualifying record yields <code>different</code>. Absent records yield <code>missing</code>. Each expected result is written independently in the fixture table and test docstring.</p>
+<p>The same procedure changes absence to true, metadata to a link, required ignore membership to empty, and untracked selection to a nonempty list. Each complete counterexample returns <code>failed</code>, even when both records are identical. Tests deliberately substitute equality-only, shallow, condition-skipping, one-sided and mutating implementations and require the assertions to detect them.</p>
+<h2>Verification and limits</h2>
+<pre>uv run --no-project --with pytest python -m pytest tests/contract/test_capture_review_contract.py -q -rA -p no:cacheprovider
+uv run --no-project --with ruff ruff check tests/contract/capture_review_contract.py tests/contract/test_capture_review_contract.py</pre>
+<p>Run with temporary directories and caches outside the checkout. No live generator, runtime configuration or collector is changed by this contract. No production caller adoption, cryptographic attestation, source authenticity or cross-environment readiness is established by synthetic fixture success. Independent review and caller-specific integration remain required before production qualification.</p>
+</main>
+</body>
+</html>

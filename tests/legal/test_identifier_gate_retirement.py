@@ -1,6 +1,7 @@
 """Guard the owner-directed retirement without weakening secret checks."""
-from pathlib import Path
+
 import unittest
+from pathlib import Path
 
 import yaml
 
@@ -30,7 +31,9 @@ class RetirementTests(unittest.TestCase):
                         self.assertNotIn('scripts/legal/check_identifiers.py', command)
 
     def test_scanner_is_removed_not_replaced_with_fake_pass(self):
-        self.assertFalse((ROOT / 'scripts/legal/legal-sanity-scan.sh').exists())
+        scanner = ROOT / 'scripts/legal/legal-sanity-scan.sh'
+        self.assertFalse(scanner.is_symlink(), 'retired scanner link remains')
+        self.assertFalse(scanner.exists())
 
     def test_generators_do_not_reinstall_retired_gate(self):
         paths = ['scripts/skills/fix-coverage-gaps.py',

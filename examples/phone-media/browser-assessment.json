@@ -1,0 +1,29 @@
+{
+  "candidates": {
+    "immich": {
+      "version": null,
+      "checks": {
+        "heic_preview": {
+          "status": "PASS",
+          "kind": "documentation",
+          "reference": "immich-supported-formats"
+        },
+        "restore_verified": {
+          "status": "NOT_EVALUATED",
+          "kind": "observed",
+          "reference": "synthetic-restore-pending"
+        }
+      }
+    },
+    "photoprism": {
+      "version": "synthetic-release",
+      "checks": {
+        "tailnet_only": {
+          "status": "FAIL",
+          "kind": "observed",
+          "reference": "synthetic-public-access-detected"
+        }
+      }
+    }
+  }
+}

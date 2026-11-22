@@ -1,0 +1,4 @@
+path	format	ecosystem	readability	read_tool	glb	name_description	project	size	mtime
+part-a.step	step	Synthetic	unverified	unverified	preview.glb	Synthetic part	Synthetic	10	unknown
+part-b.step	step	Synthetic	unverified	unverified		Synthetic part	Synthetic	20	unknown
+mesh.stl	stl	Synthetic	unverified	unverified		Synthetic mesh	Synthetic	5	unknown

@@ -3,13 +3,14 @@
 
 from __future__ import annotations
 
-import argparse
 import base64
 import os
 import stat
 import sys
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from lib.safe_cli import SafeArgumentParser
 from rule_authority import (
     audit,
     authority,
@@ -24,7 +25,8 @@ from rule_authority import (
 
 
 def _read(path, maximum=codec.MAX_DOC):
-    flags = os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0)
+    # POSIX.1-2024 open(), O_NONBLOCK: do not wait for a FIFO writer.
+    flags = os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0) | getattr(os, "O_NONBLOCK", 0)
     fd = os.open(path, flags)
     try:
         before = os.fstat(fd)
@@ -253,7 +255,7 @@ def _common(parser):
 
 
 def build_parser():
-    parser = argparse.ArgumentParser()
+    parser = SafeArgumentParser()
     sub = parser.add_subparsers(dest="command", required=True)
     validate = sub.add_parser("validate-public")
     _common(validate)

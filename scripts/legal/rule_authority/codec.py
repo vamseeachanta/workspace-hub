@@ -7,9 +7,14 @@ import json
 import re
 import uuid
 
-
 MAX_DOC = 2 * 1024 * 1024
 MAX_MAP = 24 * 1024
+# Normative rule-authority contract (2026), sections 1 and 2:
+# docs/plans/evidence/2026-07-13-issue-3522-rule-authority-contract.md.
+# Generations are unsigned 64-bit; all other integer fields have smaller caps.
+# This magnitude ceiling is a wire safety check; field validators remain stricter.
+MAX_INTEGER = 2**64 - 1
+_MAX_INTEGER_DIGITS = len(str(MAX_INTEGER))
 HEX64 = re.compile(r"[0-9a-f]{64}")
 OID = re.compile(r"[0-9a-f]{40,64}")
 PHASE_A_KEY_ID = re.compile(
@@ -21,7 +26,44 @@ class AuthorityError(ValueError):
     """Fixed-category error that never embeds private input."""
 
 
+def _integer_bounds(value):
+    if not -MAX_INTEGER <= value <= MAX_INTEGER:
+        raise AuthorityError("schema")
+
+
+def _bounded_integers(value):
+    """Check integer leaves before encoding; leave cycle rejection to JSON."""
+    stack = [value]
+    seen = set()
+    while stack:
+        item = stack.pop()
+        if isinstance(item, int):
+            _integer_bounds(item)
+        elif isinstance(item, (dict, list, tuple)):
+            identity = id(item)
+            if identity in seen:
+                continue
+            seen.add(identity)
+            if isinstance(item, dict):
+                # JSON can also encode integer keys; bound them before coercion.
+                stack.extend(item.keys())
+                stack.extend(item.values())
+            else:
+                stack.extend(item)
+
+
+def _parse_integer(token):
+    # JSON supplies a decimal integer token, with at most a leading minus.
+    # Reject excessive width before int(), independently of CPython's guard.
+    if len(token.lstrip("-")) > _MAX_INTEGER_DIGITS:
+        raise AuthorityError("schema")
+    value = int(token)
+    _integer_bounds(value)
+    return value
+
+
 def canonical_bytes(value: object) -> bytes:
+    _bounded_integers(value)
     try:
         encoded = json.dumps(
             value,
@@ -57,9 +99,12 @@ def parse_canonical(data: bytes, maximum: int = MAX_DOC):
         value = json.loads(
             text,
             object_pairs_hook=_pairs,
+            parse_int=_parse_integer,
             parse_float=lambda _: (_ for _ in ()).throw(AuthorityError("schema")),
         )
-    except (UnicodeError, json.JSONDecodeError, AuthorityError) as exc:
+    except AuthorityError:
+        raise
+    except (UnicodeError, json.JSONDecodeError) as exc:
         raise AuthorityError("schema") from exc
     if canonical_bytes(value) != data:
         raise AuthorityError("schema")

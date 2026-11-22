@@ -246,7 +246,7 @@ while [[ "$attempt" -le "$CLAUDE_RETRIES" ]]; do
 
   if [[ "$exit_code" -eq 0 ]] \
     && [[ "$render_exit" -eq 0 ]] \
-    && [[ "$("$VALIDATOR" "$rendered_file")" == "VALID" ]]; then
+    && [[ "$(bash "$VALIDATOR" "$rendered_file")" == "VALID" ]]; then
     cat "$rendered_file"
     ( [[ -n "$ORCH_LOG_FILE" ]] && cat "$rendered_file" >> "$ORCH_LOG_FILE" ) 2>/dev/null || true
     exit 0

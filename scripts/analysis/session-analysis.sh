@@ -233,7 +233,7 @@ fi
 # Agent candidates: skill candidates with high occurrence counts (>= 5)
 if [[ -f "${PENDING_REVIEWS_DIR}/skill-candidates.jsonl" ]] && command -v jq &>/dev/null; then
     n_agent=$(jq 'select(.occurrences >= 5) | .tool_sequence' \
-        "${PENDING_REVIEWS_DIR}/skill-candidates.jsonl" 2>/dev/null | wc -l | tr -d ' ' || echo 0)
+        "${PENDING_REVIEWS_DIR}/skill-candidates.jsonl" 2>/dev/null | wc -l | tr -d '[:space:]' || echo 0)
     candidate_counts[agent]="${n_agent}"
 fi
 

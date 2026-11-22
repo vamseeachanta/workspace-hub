@@ -24,7 +24,6 @@ Payload schema (all fields optional except slug+date+title):
 """
 from __future__ import annotations
 
-import argparse
 import datetime
 import html
 import json
@@ -35,6 +34,9 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import session_review_sanitize as sani  # noqa: E402
+
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+from lib.safe_cli import SafeArgumentParser  # noqa: E402
 
 REPO = "https://github.com/vamseeachanta/workspace-hub"
 
@@ -312,7 +314,8 @@ def derive_payload_from_git(base: str, repo_root: Path, *, slug=None, title=None
 
 
 def main(argv: list[str]) -> int:
-    p = argparse.ArgumentParser(description="Render a lean session-review page.")
+    p = SafeArgumentParser(prog="build_session_review.py",
+                           description="Render a lean session-review page.")
     p.add_argument("payload", nargs="?", help="payload JSON path (manual mode)")
     p.add_argument("--from-git", action="store_true",
                    help="derive the payload from the session's git footprint")

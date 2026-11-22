@@ -65,7 +65,8 @@ try:
     print(v.get('state', 'unknown'))
     print(v.get('days_since_activity', -1))
     print(v.get('commits', 0))
-    print(v.get('title', ''))
+    # Issue prose is not needed for state classification (issue 3768).
+    print('')
 except Exception:
     print('unknown'); print(-1); print(0); print('')
 "
@@ -85,13 +86,12 @@ except Exception:
         esac
         local json
         json=$(timeout 15 gh issue view "$num" --repo "$repo" \
-            --json state,updatedAt,title 2>/dev/null || echo "{}")
+            --json state,updatedAt 2>/dev/null || echo "{}")
         python3 -c "
 import json, sys, datetime
 try:
     d = json.loads('''$json''')
     state = d.get('state', 'unknown').lower()
-    title = d.get('title', '')
     updated = d.get('updatedAt', '')
     if updated:
         dt = datetime.datetime.fromisoformat(updated.replace('Z', '+00:00'))
@@ -101,7 +101,7 @@ try:
     print(state)
     print(days)
     print(0)  # commit count deferred — separate gh API
-    print(title)
+    print('')
 except Exception:
     print('unknown'); print(-1); print(0); print('')
 "
@@ -158,13 +158,14 @@ fi
 if [[ -n "$STATES_FILE" && -f "$STATES_FILE" ]]; then
     python3 -c "
 import json, sys
+sys.path.insert(0, '${SCRIPT_DIR}/../..')
+from scripts.lib.issue_publication import WITHHELD
 with open('$STATES_FILE') as f: d = json.load(f)
 with open('$TMP_REFS') as f: existing = {ln.strip() for ln in f if ln.strip()}
 for ref, v in d.items():
     if ref in existing: continue
     if not v.get('new'): continue
-    title = v.get('title', '')
-    print(f'| {ref} | {title} | opened recently |')
+    print(f'| {ref} | {WITHHELD} | opened recently |')
 " >> "$TMP_NEW"
 fi
 

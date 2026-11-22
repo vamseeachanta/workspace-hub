@@ -21,7 +21,7 @@ client-facing HTML, limited PDFs, and chatbot surfaces are not automatic data-la
 ## Deny-by-default examples
 
 - Private D-L1 source → public llm-wiki: deny.
-- Licensed standards PDF text → public llm-wiki: deny unless only cited, non-reproduced facts are used and legal/source review passes.
+- Codes and standards → public llm-wiki: Codes and standards follow the owner's ruling of 28 Oct 2026 (`.claude/rules/codes-standards-data-routing.md`): no internal gates; outward work quotes with citations and reconstructs charts; only original PDFs and whole sections stay off public surfaces.
 - Public BSEE/API metadata → public llm-wiki: allow only after source/license/freshness checks.
 - Client raw data → `<client-private-wiki-root>`: allow only as private derivative with access controls and sanitization.
 

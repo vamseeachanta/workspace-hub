@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CAD catalog evidence summary</title>
+<style>
+body { max-width: 58rem; margin: 2rem auto; padding: 0 1rem;
+       font: 1rem/1.6 system-ui, sans-serif; color: #182633; }
+table { border-collapse: collapse; width: 100%; }
+th, td { border: 1px solid #abb8c4; padding: .5rem; text-align: left; }
+pre { overflow: auto; background: #eef2f5; padding: 1rem; }
+caption { caption-side: bottom; text-align: left; }
+</style>
+<h1>CAD catalog evidence summary</h1>
+<p>The inventory report validates catalog structure and summarizes file counts,
+supplied byte sizes and GLB references by format. Reader suggestions remain
+unverified. The synthetic example contains three records totaling 35 bytes;
+readability, conversion, geometry fidelity and manufacturing acceptance remain
+<code>NOT_EVALUATED</code>.</p>
+<h2>Revision history</h2>
+<table>
+<tr><th>Revision</th><th>Date</th><th>Change and reason</th></tr>
+<tr><td>1</td><td>2026-10-22</td><td>Added catalog evidence reporting to distinguish
+inventory observations from qualified CAD conversion.</td></tr>
+<caption>Table 1. Initial document issue.</caption>
+</table>
+<h2>Scope and method</h2>
+<p>This is a bounded contribution to the CAD/CAM manufacturing initiative.
+The implementation has three slices: strict inventory validation, aggregate
+evidence reporting and a tested synthetic example. Existing discovery work is
+reused; no archive is scanned and no geometry or solver software is started.</p>
+<p>The input schema and suggested-tool mapping are defined by
+<a href="../../scripts/data/drive-index/cad/build_cad_index.py">the existing builder</a>,
+symbols <code>HEADER</code> and <code>READ</code>. This repository source establishes
+compatibility and routing hints only; it is not an external capability citation.</p>
+<p>For each format, N is the number of rows, B = sum(size) in bytes and L is the
+number of nonempty GLB-reference cells. These are counting identities; no physical
+equations, coefficients, acceptance limits or standards-derived values are used.
+All example numbers are synthetic inputs, not measured engineering data.</p>
+<h2>Worked example</h2>
+<p>From the repository root, run the standard-library CLI:</p>
+<pre>python scripts/data/drive-index/cad/report_cad_readiness.py \
+  --inventory examples/cad/readiness-inventory.tsv</pre>
+<p>The fixture supplies two STEP rows of 10 and 20 bytes and one STL row of
+5 bytes. One STEP row supplies a GLB reference. Hand calculation gives STEP:
+N = 2, B = 10 + 20 = 30, L = 1; STL: N = 1, B = 5, L = 0.
+Total: N = 3, B = 30 + 5 = 35, L = 1.</p>
+<table>
+<tr><th>Format</th><th>Files</th><th>Supplied size (bytes)</th><th>GLB references</th></tr>
+<tr><td>STEP</td><td>2</td><td>30</td><td>1</td></tr>
+<tr><td>STL</td><td>1</td><td>5</td><td>0</td></tr>
+<tr><td>Total</td><td>3</td><td>35</td><td>1</td></tr>
+<caption>Table 2. Independently counted synthetic example results.</caption>
+</table>
+<h2>Validation and provenance</h2>
+<p>The exact builder header is required. Wrong column counts, blank or duplicate
+paths, unrecognized formats and sizes other than nonnegative decimal integers
+are rejected. Format identifiers are case-sensitive, as emitted by the builder.
+Quoted TSV cells are supported. Duplicate paths use exact textual comparison;
+aliases and case variants are not deduplicated. Zero size is retained as zero.</p>
+<p>The command reads the inventory once and hashes those same bytes with SHA-256.
+No source models or referenced GLB files are opened. Output goes to standard
+output only after the complete inventory validates. Errors return a nonzero exit
+status without printing raw cells or paths. Reports contain format identifiers,
+trusted builder tool hints, counts, limitations and the inventory digest; supplied
+names, paths, descriptions, project labels and readability claims are omitted.</p>
+<p>Tests cover the hand counts, input preservation, schema and numeric rejection,
+duplicate rejection, quoted fields, error disclosure, the shipped fixture and the
+scanner-to-builder-to-report pipeline. The pipeline uses synthetic text files;
+it verifies catalog plumbing, not valid STEP geometry.</p>
+<h2>Limitations and way forward</h2>
+<p>Catalog metadata does not establish archive completeness, current file size,
+freshness, installed tools, readability, licensing or conversion success. A GLB
+reference is not proof of an artifact. Large inventories are held in memory for
+digest binding and duplicate detection; bounded-memory streaming is future work.</p>
+<p>Qualification requires source-byte digests, units, converter and version,
+source rights, conversion logs and explicit intended-use criteria. Neither
+dimensional fidelity nor manufacturing acceptance can be calculated from this
+catalog. Those results remain <code>NOT_EVALUATED</code> until the evidence is
+available and reviewed. Private strategy, archive qualification, geometry
+adapters and market demonstrations remain with the initiative's linked work.</p>
+</html>

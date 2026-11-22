@@ -268,3 +268,100 @@ def test_malformed_receipt_is_explicitly_blocked(runtime, value):
     (home / ".claude/rules/workspace-soul.md").symlink_to(source)
     (home / ".claude/workspace-soul-verification.json").write_text(json.dumps(value))
     assert module.inspect_runtime(repo, home)["state"] == "BLOCKED"
+
+
+@pytest.mark.parametrize("field", ["home", "source", "project_root"])
+def test_relative_context_cannot_borrow_callers_directory(runtime, tmp_path, monkeypatch, field):
+    """Issue 3865: stripping the temporary root preserves resolution, not identity.
+
+    Hand derivation: cwd / relative == original absolute path. The receipt must
+    nevertheless be BLOCKED because its recorded identity depends on cwd.
+    Both receipt copies are updated so a replica mismatch cannot mask the defect.
+    """
+    module, repo, home, _ = runtime
+    state, receipt = native_fixture(runtime, tmp_path)
+    receipt[field] = str(Path(receipt[field]).relative_to(tmp_path))
+    monkeypatch.chdir(tmp_path)
+    state.write_text(json.dumps(receipt))
+    (tmp_path / "evidence/verification-receipt.json").write_bytes(state.read_bytes())
+    assert module.inspect_runtime(repo, home)["state"] == "BLOCKED"
+
+
+@pytest.mark.parametrize("flavour,value,accepted", [
+    ("windows", "C:context", False),
+    ("windows", "C:", False),
+    ("windows", "\\context", False),
+    ("windows", "C:/context", True),
+    ("windows", "//server/share/context", True),
+    ("posix", "/context", True),
+    ("posix", "context", False),
+    ("posix", "C:context", False),
+])
+def test_absolute_context_path_flavours(runtime, monkeypatch, flavour, value, accepted):
+    """Root plus drive is required for Windows; POSIX requires a root.
+
+    Expected cases follow pathlib.PurePath.is_absolute semantics, also used by
+    scripts/agents/claude_probe_read_guard.py:require_absolute_clean.
+    Pure flavours exercise both platforms without reading a foreign filesystem.
+    """
+    from pathlib import PurePosixPath, PureWindowsPath
+    module, _, _, _ = runtime
+    monkeypatch.setattr(module, "Path", PureWindowsPath if flavour == "windows" else PurePosixPath)
+    if accepted:
+        assert module.absolute_context(value).is_absolute()
+    else:
+        with pytest.raises(ValueError, match="absolute context"):
+            module.absolute_context(value)
+
+
+@pytest.mark.parametrize("evidence_class", ["synthetic", "fixture-only", "seeded-manual", None])
+def test_manifest_cannot_promote_nonlive_receipt(runtime, tmp_path, evidence_class):
+    """Issue 3865 requires source provenance to constrain the caller's role claim."""
+    module, repo, home, _ = runtime
+    state, receipt = native_fixture(runtime, tmp_path)
+    receipt["evidence_class"] = evidence_class
+    receipt["role"] = "live-provider"
+    state.write_text(json.dumps(receipt))
+    (tmp_path / "evidence/verification-receipt.json").write_bytes(state.read_bytes())
+    assert module.inspect_runtime(repo, home)["state"] == "BLOCKED"
+
+
+def test_runtime_version_lookalike_is_not_exact_identity(runtime, tmp_path, monkeypatch):
+    """Appending a suffix changes identity even when the original is a substring."""
+    module, repo, home, _ = runtime
+    native_fixture(runtime, tmp_path)
+    monkeypatch.setattr(module, "provider_version", lambda cli: "fixture-version-extra")
+    assert module.inspect_runtime(repo, home)["state"] == "BLOCKED"
+
+
+def test_other_project_with_same_protected_state_is_not_same_context(runtime, tmp_path):
+    """Equal settings cannot substitute for the project bound to the source."""
+    module, repo, home, _ = runtime
+    state, receipt = native_fixture(runtime, tmp_path)
+    other = tmp_path / "other-repo"
+    other.mkdir()
+    receipt["project_root"] = str(other)
+    state.write_text(json.dumps(receipt))
+    (tmp_path / "evidence/verification-receipt.json").write_bytes(state.read_bytes())
+    assert module.inspect_runtime(repo, home)["state"] == "BLOCKED"
+
+
+@pytest.mark.parametrize("field", ["provider_cli", "evidence_root", "journal"])
+def test_all_receipt_contexts_are_validated_before_resolution(runtime, tmp_path, monkeypatch, field):
+    """Each context is absolute independently of byte equality and cwd."""
+    module, repo, home, _ = runtime
+    state, receipt = native_fixture(runtime, tmp_path)
+    container = receipt["recovery"] if field == "journal" else receipt
+    container[field] = str(Path(container[field]).relative_to(tmp_path))
+    monkeypatch.chdir(tmp_path)
+    state.write_text(json.dumps(receipt))
+    (tmp_path / "evidence/verification-receipt.json").write_bytes(state.read_bytes())
+    assert module.inspect_runtime(repo, home)["state"] == "BLOCKED"
+
+
+@pytest.mark.parametrize("value", [None, [], {}, True, ""])
+def test_malformed_absolute_context_is_rejected(runtime, value):
+    """Unknown or empty identity cannot be completed from caller context."""
+    module, _, _, _ = runtime
+    with pytest.raises(ValueError, match="absolute context"):
+        module.absolute_context(value)

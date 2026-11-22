@@ -168,7 +168,7 @@ def _ensure_log_dir(command: str, log: Any) -> str:
     log_dir = log.rsplit("/", 1)[0]
     if "mkdir -p" in command and log_dir in command:
         return command
-    return f"mkdir -p $WORKSPACE_HUB/{log_dir} && {command}"
+    return f'mkdir -p "$WORKSPACE_HUB/{log_dir}" && {command}'
 
 
 def render_task(task: dict[str, Any], context: dict[str, Any]) -> dict[str, Any]:

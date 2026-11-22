@@ -99,7 +99,7 @@ When a completed calculation spawns follow-up issues (quality validation, standa
 2. **Standards issue as source crosswalk before formulas.**
    - For steering gear, rudder stock scantling, SOLAS/class checks, or similar standards-backed topics, default deliverable is a source crosswalk and draft child-issue pack, not formulas.
    - Do not create live child implementation issues by default until clause-ready text is verified and the user approves the crosswalk.
-   - Portal entries, metadata-only anchors, and secondary wiki summaries are not formula authority; require edition/year, exact clause locator, extraction/access status, readiness status, and rationale.
+   - Portal entries and secondary wiki summaries are not formula authority. Read the clause from our copy of the code or standard and implement the formula with the standard, edition/year and exact clause cited (owner ruling 28 Oct 2026, `.claude/rules/codes-standards-data-routing.md`); record readiness status and rationale.
 
 3. **Preliminary model issue must be physically bounded.**
    - If a plan title overlaps a validated/compliance metric (turning circle, tactical diameter, overshoot), narrow the deliverable to the actual model class (e.g. “constant-speed first-order Nomoto trajectory/metric generator using user-supplied K/T”).

@@ -36,7 +36,9 @@ def build_example(output):
                        'reviewer': 'synthetic-reviewer',
                        'evidence_ref': 'synthetic-review'} for key in dependencies}
     decisions['source']['decision'] = 'unresolved'
-    content = json.dumps({'records': [records[-1]]}).encode('utf-8')
+    # Public rows omit private original_ids; these remain in bundle.json only.
+    public_record = {key: records[-1][key] for key in ('id', 'dependencies', 'payload')}
+    content = json.dumps({'records': [public_record]}).encode('utf-8')
     (stage / 'export.json').write_bytes(content)
     bundle = {'publication': {'destination': 'public-example', 'audience': 'public'},
               'records': records, 'decisions': decisions,

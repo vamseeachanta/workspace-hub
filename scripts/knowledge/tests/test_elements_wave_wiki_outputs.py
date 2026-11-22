@@ -9,7 +9,9 @@ def read(path: Path) -> str:
     return path.read_text(encoding="utf-8")
 
 
-def test_2543_lng_a_codes_metadata_pages_exist_and_are_no_extraction():
+def test_2543_lng_a_codes_source_pages_exist():
+    # Metadata-only, raw_copy_allowed and no-raw-text asserts retired by the
+    # owner's 28 Oct 2026 ruling (.claude/rules/codes-standards-data-routing.md).
     pages = [
         ENG_STD / "sources/lng_a-codes-specs-faceted-index.md",
         ENG_STD / "sources/lng_a-techstreet-drop.md",
@@ -19,13 +21,10 @@ def test_2543_lng_a_codes_metadata_pages_exist_and_are_no_extraction():
     for page in pages:
         assert page.exists(), page
         text = read(page)
-        assert "extraction_policy: metadata-only" in text
-        assert "raw_copy_allowed: false" in text
         assert "/mnt/ace/lng_a/codes" in text
-        assert "No raw standards text" in text or "no raw standards text" in text.lower()
 
 
-def test_2543_bv_stub_is_public_metadata_only_if_present():
+def test_2543_bv_stub_has_resolver_fields_if_present():
     page = ENG_STD / "standards/bv-ship-offshore-rules.md"
     if not page.exists():
         deferred = ENG_STD / "sources/lng_a-codes-specs-faceted-index.md"
@@ -34,7 +33,6 @@ def test_2543_bv_stub_is_public_metadata_only_if_present():
     text = read(page)
     for field in ["code_id:", "publisher:", "revision:", "revision_source:", "verified_on:", "public_url:"]:
         assert field in text
-    assert "clause" not in text.lower()
 
 
 def test_2542_lng_a_university_metadata_pages_exist_without_fulltext_or_ocr():

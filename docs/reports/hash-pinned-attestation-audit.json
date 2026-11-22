@@ -1,0 +1,233 @@
+{
+  "scope": "Enforcement attestation entrypoints, source-pin references and local callers; includes unpinned structural and baseline-digest controls.",
+  "tests": [
+    {
+      "module": "tests/enforcement/test_issue_1249_generator_and_claude_gate.py",
+      "test": "test_gate_excludes_only_named_non_active_classes",
+      "before": "baseline digest recomputed for baseline mutations; separate digest failure retained",
+      "verdict": "baseline-gate"
+    },
+    {
+      "module": "tests/enforcement/test_issue_1249_generator_and_claude_gate.py",
+      "test": "test_gate_fails_closed_on_digest_root_or_symlink_ambiguity",
+      "before": "baseline digest recomputed for baseline mutations; separate digest failure retained",
+      "verdict": "baseline-gate"
+    },
+    {
+      "module": "tests/enforcement/test_issue_1249_generator_and_claude_gate.py",
+      "test": "test_gate_ignores_inherited_foreign_git_bindings",
+      "before": "baseline digest recomputed for baseline mutations; separate digest failure retained",
+      "verdict": "baseline-gate"
+    },
+    {
+      "module": "tests/enforcement/test_issue_1249_generator_and_claude_gate.py",
+      "test": "test_gate_rejects_ignored_new_claude",
+      "before": "baseline digest recomputed for baseline mutations; separate digest failure retained",
+      "verdict": "baseline-gate"
+    },
+    {
+      "module": "tests/enforcement/test_issue_1249_generator_and_claude_gate.py",
+      "test": "test_gate_rejects_new_or_changed_active_claude",
+      "before": "baseline digest recomputed for baseline mutations; separate digest failure retained",
+      "verdict": "baseline-gate"
+    },
+    {
+      "module": "tests/enforcement/test_issue_1249_generator_and_claude_gate.py",
+      "test": "test_gate_rejects_symlink_ambiguity",
+      "before": "baseline digest recomputed for baseline mutations; separate digest failure retained",
+      "verdict": "baseline-gate"
+    },
+    {
+      "module": "tests/enforcement/test_issue_1249_generator_and_claude_gate.py",
+      "test": "test_gate_rejects_symlinked_parent_escape",
+      "before": "baseline digest recomputed for baseline mutations; separate digest failure retained",
+      "verdict": "baseline-gate"
+    },
+    {
+      "module": "tests/enforcement/test_issue_1249_generator_and_claude_gate.py",
+      "test": "test_gate_rejects_unsafe_baseline_paths",
+      "before": "baseline digest recomputed for baseline mutations; separate digest failure retained",
+      "verdict": "baseline-gate"
+    },
+    {
+      "module": "tests/enforcement/test_issue_1249_generator_and_claude_gate.py",
+      "test": "test_gate_reports_matching_baseline",
+      "before": "baseline digest recomputed for baseline mutations; separate digest failure retained",
+      "verdict": "baseline-gate"
+    },
+    {
+      "module": "tests/enforcement/test_pin_helpers.py",
+      "test": "test_always_rejecting_evaluator_is_not_semantic_evidence",
+      "before": "new fixture",
+      "verdict": "helper-self-check"
+    },
+    {
+      "module": "tests/enforcement/test_pin_helpers.py",
+      "test": "test_helper_refuses_source_outside_temporary_root",
+      "before": "new fixture",
+      "verdict": "helper-self-check"
+    },
+    {
+      "module": "tests/enforcement/test_pin_helpers.py",
+      "test": "test_helper_repins_restores_and_uses_mutated_bytes",
+      "before": "new fixture",
+      "verdict": "helper-self-check"
+    },
+    {
+      "module": "tests/enforcement/test_pin_helpers.py",
+      "test": "test_noop_mutation_is_rejected",
+      "before": "new fixture",
+      "verdict": "helper-self-check"
+    },
+    {
+      "module": "tests/enforcement/test_pin_helpers.py",
+      "test": "test_vacuous_fixture_is_rejected",
+      "before": "new fixture",
+      "verdict": "helper-self-check"
+    },
+    {
+      "module": "tests/enforcement/test_pin_helpers.py",
+      "test": "test_worked_example",
+      "before": "new fixture",
+      "verdict": "helper-self-check"
+    },
+    {
+      "module": "tests/enforcement/test_scheduler_mutation_hardening.py",
+      "test": "test_prewrite_and_rollback_reject_conditional_abort_fallthrough",
+      "before": "not hash-pinned",
+      "verdict": "unpinned-structural"
+    },
+    {
+      "module": "tests/enforcement/test_scheduler_mutation_hardening.py",
+      "test": "test_python_host_guard_rejects_conditional_return_fallthrough",
+      "before": "not hash-pinned",
+      "verdict": "unpinned-structural"
+    },
+    {
+      "module": "tests/enforcement/test_scheduler_mutation_hardening.py",
+      "test": "test_transaction_attestations_reject_entire_dead_lock",
+      "before": "not hash-pinned",
+      "verdict": "unpinned-structural"
+    },
+    {
+      "module": "tests/enforcement/test_scheduler_mutation_hardening.py",
+      "test": "test_transaction_attestations_reject_reorder_decoy_and_wrong_scope",
+      "before": "not hash-pinned",
+      "verdict": "unpinned-structural"
+    },
+    {
+      "module": "tests/enforcement/test_scheduler_mutation_hardening.py",
+      "test": "test_transaction_attestations_reject_semantic_inversions",
+      "before": "not hash-pinned",
+      "verdict": "unpinned-structural"
+    },
+    {
+      "module": "tests/enforcement/test_scheduler_mutation_hardening.py",
+      "test": "test_windows_attestations_reject_dead_scope_decoys",
+      "before": "not hash-pinned",
+      "verdict": "unpinned-structural"
+    },
+    {
+      "module": "tests/enforcement/test_scheduler_mutation_hardening.py",
+      "test": "test_wrapper_call_form_and_local_guard_are_source_attested",
+      "before": "aggregate registry rejection; refreshed-pin semantic reason not isolated",
+      "verdict": "refreshed-semantic"
+    },
+    {
+      "module": "tests/enforcement/test_scheduler_mutation_hardening.py",
+      "test": "test_wrapper_guard_must_precede_mutation_exec_and_reject_decoy",
+      "before": "not hash-pinned",
+      "verdict": "unpinned-structural"
+    },
+    {
+      "module": "tests/enforcement/test_scheduler_mutation_surfaces.py",
+      "test": "test_closed_attestation_evaluators_reject_mutated_source_shapes",
+      "before": "not hash-pinned",
+      "verdict": "unpinned-structural"
+    },
+    {
+      "module": "tests/enforcement/test_scheduler_mutation_task3.py",
+      "test": "test_preservation_attestation_proves_plan_reconstruction",
+      "before": "not hash-pinned",
+      "verdict": "unpinned-structural"
+    },
+    {
+      "module": "tests/enforcement/test_scheduler_mutation_task3.py",
+      "test": "test_setup_attestation_rejects_self_pinned_control_scope_bypasses",
+      "before": "re-pinned before evaluation",
+      "verdict": "refreshed-semantic"
+    },
+    {
+      "module": "tests/enforcement/test_scheduler_mutation_task3.py",
+      "test": "test_setup_attestation_rejects_self_pinned_semantic_bypasses",
+      "before": "re-pinned before evaluation",
+      "verdict": "refreshed-semantic"
+    },
+    {
+      "module": "tests/enforcement/test_scheduler_mutation_task3.py",
+      "test": "test_setup_self_pinned_baseline_accepts_registry_os_gate",
+      "before": "re-pinned before evaluation",
+      "verdict": "positive-control"
+    },
+    {
+      "module": "tests/enforcement/test_scheduler_mutation_task3.py",
+      "test": "test_setup_wrapper_pin_matches_exact_staged_blob",
+      "before": "provenance only",
+      "verdict": "provenance"
+    },
+    {
+      "module": "tests/enforcement/test_scheduler_mutation_task3.py",
+      "test": "test_transaction_attestations_reject_dead_safe_path_with_unsafe_live_path",
+      "before": "not hash-pinned",
+      "verdict": "unpinned-structural"
+    },
+    {
+      "module": "tests/enforcement/test_scheduler_mutation_task3.py",
+      "test": "test_transaction_attestations_reject_mutually_exclusive_evidence",
+      "before": "not hash-pinned",
+      "verdict": "unpinned-structural"
+    },
+    {
+      "module": "tests/enforcement/test_scheduler_mutation_task3.py",
+      "test": "test_wrapper_attestations_reject_dead_scope_and_fragment_decoys",
+      "before": "vacuous: stale pin could reject before semantic evaluation",
+      "verdict": "refreshed-semantic"
+    },
+    {
+      "module": "tests/enforcement/test_scheduler_mutation_task3.py",
+      "test": "test_wrapper_attestations_reject_live_source_mutations",
+      "before": "re-pinned before evaluation",
+      "verdict": "refreshed-semantic"
+    },
+    {
+      "module": "tests/enforcement/test_scheduler_mutation_task3.py",
+      "test": "test_wrapper_attestations_reject_self_refreshed_reachability_bypass",
+      "before": "re-pinned before evaluation",
+      "verdict": "refreshed-semantic"
+    },
+    {
+      "module": "tests/enforcement/test_scheduler_mutation_task3.py",
+      "test": "test_wrapper_digest_pins_are_exact_complete_and_fail_closed",
+      "before": "provenance only",
+      "verdict": "provenance"
+    },
+    {
+      "module": "tests/enforcement/test_wrapper_pin_reasons.py",
+      "test": "test_provenance_reasons_are_separate",
+      "before": "new coverage",
+      "verdict": "provenance"
+    },
+    {
+      "module": "tests/enforcement/test_wrapper_pin_reasons.py",
+      "test": "test_refreshed_setup_mutation_has_semantic_reason",
+      "before": "new coverage",
+      "verdict": "refreshed-semantic"
+    },
+    {
+      "module": "tests/enforcement/test_wrapper_pin_reasons.py",
+      "test": "test_setup_committed_and_working_bytes_match_pin",
+      "before": "new coverage",
+      "verdict": "positive-control"
+    }
+  ]
+}

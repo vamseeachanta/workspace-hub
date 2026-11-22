@@ -18,6 +18,9 @@ from datetime import datetime, timezone, timedelta
 from pathlib import Path
 from typing import Any
 
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
+from scripts.lib.issue_publication import public_issue_view
+
 WORKSPACE_HUB = Path(__file__).resolve().parents[2]
 DEFAULT_JSON_OUT = WORKSPACE_HUB / "config" / "ai-tools" / "continuous-planning-pipeline.json"
 DEFAULT_MD_OUT = WORKSPACE_HUB / "docs" / "reports" / "continuous-planning-pipeline.md"
@@ -56,7 +59,7 @@ def load_json(path: Path) -> Any:
 
 
 def dumps_json(snapshot: dict[str, Any]) -> str:
-    return json.dumps(snapshot, indent=2, sort_keys=True) + "\n"
+    return json.dumps(public_issue_view(snapshot), indent=2, sort_keys=True) + "\n"
 
 
 def sha256_file(path: Path) -> str:
@@ -369,7 +372,7 @@ def classify_issue(
     plan_rel = str(plan_path.relative_to(root)) if plan_path else None
     return {
         "number": number,
-        "title": str(issue.get("title", "")),
+        "title": public_issue_view(issue).get("title", ""),
         "url": str(issue.get("url", "")),
         "labels": labels,
         "lane": lane,
@@ -496,6 +499,7 @@ def top_actions(snapshot: dict[str, Any]) -> list[dict[str, Any]]:
 
 
 def render_markdown(snapshot: dict[str, Any]) -> str:
+    snapshot = public_issue_view(snapshot)
     lines = [
         "# Continuous planning pipeline",
         "",

@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<title>Phase-specific transaction timing evidence</title>
+<style>
+body { max-width: 64em; margin: 2em auto; padding: 0 1em;
+       font-family: system-ui, sans-serif; line-height: 1.5; }
+table { border-collapse: collapse; } th, td { border: 1px solid #bbb; padding: .5em; }
+caption { caption-side: bottom; text-align: left; } code { overflow-wrap: anywhere; }
+</style>
+<h1>Phase-specific transaction timing evidence</h1>
+<h2>Summary</h2>
+<p>A total transaction envelope cannot establish that each repeated reserve guard
+can be reached. This read-only evaluator compares cumulative elapsed time at each
+exact checkpoint with its own available allowance. Measurements, additive estimates
+and unresolved evidence have separate dispositions. No installation readiness or
+permission is established by the result.</p>
+<h2>Revision history</h2>
+<table><tr><th>Revision</th><th>Date</th><th>Change and reason</th></tr>
+<tr><td>Initial</td><td>2026-10-22</td><td>Phase evidence assessment and synthetic example
+were added to prevent total-envelope substitution.</td></tr>
+<caption>Revision history for this guidance.</caption></table>
+<h2>Scope and source</h2>
+<p>Issue 3878
+(2026), proposed acceptance, supplies the checkpoint-specific evidence requirement.
+The linked cleanup issue 3062
+and ecosystem issue 3815
+provide context rather than timing limits. No engineering standard, empirical
+coefficient or default transaction cap is introduced here.</p>
+<p>Slice 1 compares checkpoint elapsed times. Slice 2 retains bound traced I/O and
+separates measured evidence from estimates and missing coverage. Slice 3 supplies
+the CLI, negative cases and the worked example. The existing materializer has no
+repeated-reserve timing guard in this checkout; live instrumentation and integration
+remain with the bounded transaction workstream. Runtime guards, failure states and
+recovery code are unchanged.</p>
+<h2>Input contract and boundaries</h2>
+<p>The JSON example is <a href="examples/transaction-timing-evidence.json">the complete
+input packet</a>. All times are seconds. A separately established policy declares
+<code>cap_s</code>, a versioned <code>basis_ref</code>, and ordered checkpoints. Each
+checkpoint declares a unique name, an exact boundary description, <code>reserve_s</code>
+and the names of required full-index I/O operations. There is no inferred checkpoint
+set. A policy omitting a real guard cannot establish complete coverage.</p>
+<p>Elapsed time starts at successful lock acquisition, not process launch, lock wait
+or a complete forward measurement. A checkpoint is sampled immediately before its
+named guard, before any subsequent operation. The phase interval starts at lock
+acquisition for the first checkpoint and at the preceding checkpoint thereafter.
+I/O spans use the same clock and must be contained in that interval. An operation
+crossing a checkpoint requires separately traced segments. The final full-status
+scan occurs after the example's final checkpoint and cannot be charged as elapsed
+time before that checkpoint. Any later guard must be declared separately.</p>
+<p>Each run carries a stable evidence reference, clock reference, origin, evidence
+kind and binding. The expected binding contains lowercase SHA-256 digests for source,
+target and policy; every run must match it exactly. Source and target digests should
+identify retained manifests describing the actual revision, root identity and state
+being assessed. Private root locators belong in those controlled manifests, not in
+public examples. Traces carry an operation and evidence reference. Raw input evidence
+is retained in the output, alongside derived durations.</p>
+<p>The policy digest covers UTF-8 JSON with sorted keys, compact separators,
+ASCII escaping and non-finite values rejected. Limits and boundaries therefore
+cannot change under the same policy binding. Freeze the policy before measurement;
+a digest supplied by a caller does not prove when it was frozen. Unfavorable results
+must not be repaired by tuning allowances. A separately authorized policy revision
+requires a new binding and new qualification evidence.</p>
+<h2>Method and dispositions</h2>
+<p>For checkpoint <em>j</em>, allowance = cap − reserve<sub>j</sub>,
+margin = allowance − elapsed<sub>j</sub>, and traced I/O duration = end − start.
+These are arithmetic definitions implementing issue 3878 acceptance (2026), not
+fitted equations. Each reserve is applied independently against the cap; reserves
+are neither summed nor successively subtracted. I/O spans are reported individually
+and not summed because overlapping operations can double-count time.</p>
+<table><tr><th>Disposition</th><th>Criterion</th></tr>
+<tr><td>PASS</td><td>Complete, bound measured evidence; every checkpoint has positive margin.</td></tr>
+<tr><td>FAIL</td><td>A complete measured run contains a checkpoint at or above its allowance.</td></tr>
+<tr><td>ESTIMATED</td><td>Complete additive-estimate evidence has a basis reference;
+comparisons are displayed but cannot establish measured success or failure.</td></tr>
+<tr><td>NOT_EVALUATED</td><td>Evidence is absent, malformed, unbound, out of order,
+non-finite, or missing required traces.</td></tr>
+<caption>Evidence dispositions; zero margin fails the strict available-time criterion.</caption></table>
+<p>Aggregate precedence is FAIL, NOT_EVALUATED, ESTIMATED, PASS. No runs yields
+NOT_EVALUATED. A failing complete run cannot be averaged away. Incomplete runs retain
+partial checkpoint output for diagnosis but remain NOT_EVALUATED. A total duration
+field is retained only as evidence and is never used for a checkpoint comparison.</p>
+<h2>Worked example: synthetic arithmetic only</h2>
+<p>The example uses an assumed cap of 30 s and independent reserves of 10 s at both
+guards. These are chosen test inputs, not operational allowances. At publish,
+elapsed = 5 s; at final status, elapsed = 19 s. The traced full-index read runs from
+16 s to 18 s, within the second phase. Source and target digests and trace references
+are synthetic placeholders. The label <code>measured</code> exercises that code path;
+it does not turn this fixture into a real measurement.</p>
+<table><tr><th>Checkpoint</th><th>Allowance (s)</th><th>Elapsed (s)</th><th>Margin (s)</th></tr>
+<tr><td>Before first replacement</td><td>30 − 10 = 20</td><td>5</td><td>20 − 5 = 15</td></tr>
+<tr><td>Before final full-status scan</td><td>30 − 10 = 20</td><td>19</td><td>20 − 19 = 1</td></tr>
+<caption>Independent hand calculation; the traced I/O duration is 18 − 16 = 2 s.</caption></table>
+<p>The answer is PASS for evidence arithmetic, with runtime readiness
+NOT_ESTABLISHED. Replacing the final elapsed input with 21 s gives margin −1 s
+and FAIL, even if the complete forward total is 28 s, below the 30 s cap. Supplying
+only that total yields NOT_EVALUATED, whether the total is below or above the cap.
+Using <code>additive_estimate</code> with a nonempty <code>basis_ref</code> yields
+ESTIMATED for either final elapsed value.</p>
+<h2>Execution and verification</h2>
+<pre><code>python -B scripts/skills/transaction_timing_evidence.py docs/examples/transaction-timing-evidence.json</code></pre>
+<p>The CLI reads its input and writes JSON to standard output. It writes no files,
+acquires no lock, and executes no transaction or external command. Exit status is
+zero for PASS, one for other evidence dispositions and two for an invalid packet
+or read error. Duplicate JSON keys are rejected. Tests in
+<code>tests/skills/test_transaction_timing_evidence.py</code> give hand-calculated
+expectations and cover reserve failures, missing phases, binding drift, policy
+changes, estimates, invalid times, I/O coverage and CLI behavior.</p>
+<h2>Limitations and next checkpoint</h2>
+<p>Reference existence, trace bytes, clock accuracy, source/target manifest contents,
+policy precommitment and full live guard coverage are not verified by this utility.
+No machine timing was measured. Tests cannot qualify a deployment. The transaction
+workstream must retain actual phase measurements and traced full-index I/O, bind
+them to source and target manifests and a previously frozen policy, and preserve
+runtime reserve guards and recovery behavior. Independent provider review remains
+required before integration.</p>
+</html>
