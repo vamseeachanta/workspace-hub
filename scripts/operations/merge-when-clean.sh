@@ -18,9 +18,14 @@
 # Usage:
 #   merge-when-clean.sh <pr-number> [--repo owner/name] [--merge]
 #                       [--interval SECONDS] [--timeout MINUTES] [--once]
-#                       [--expected-head LOWERCASE_40_HEX_SHA]
+#                       [--expected-head LOWERCASE_40_HEX_SHA] [--delete-branch]
 # Every actual merge is bound to the queried head. --expected-head additionally
 # refuses a head that differs from the independently reviewed commit identity.
+#
+# The head branch is KEPT by default. Under the repo footprint plan (F2), branch
+# deletes are owner-run steps taken only after the archive is re-verified, and
+# a kept head lets stacked PRs be retargeted to main. --delete-branch (opt-in)
+# passes gh's --delete-branch, in the merge and in the printed watch-only command.
 #
 # Exit codes: 0 merged or CLEAN reported | 2 conflict (DIRTY, needs human)
 #             3 timed out | 4 PR closed without merge | 5 usage/gh/head error
@@ -29,11 +34,13 @@
 set -euo pipefail
 
 PR="" REPO="" DO_MERGE=0 INTERVAL=60 TIMEOUT_MIN=120 ONCE=0 EXPECTED_HEAD=""
+DELETE_BRANCH=0
 
 while [ $# -gt 0 ]; do
   case "$1" in
     --repo)     REPO="$2"; shift 2 ;;
     --merge)    DO_MERGE=1; shift ;;
+    --delete-branch) DELETE_BRANCH=1; shift ;;
     --interval) INTERVAL="$2"; shift 2 ;;
     --timeout)  TIMEOUT_MIN="$2"; shift 2 ;;
     --once)     ONCE=1; shift ;;
@@ -47,9 +54,11 @@ while [ $# -gt 0 ]; do
   esac
 done
 
-[ -n "$PR" ] || { echo "usage: merge-when-clean.sh <pr-number> [--repo owner/name] [--merge] [--interval s] [--timeout min] [--once] [--expected-head SHA]" >&2; exit 5; }
+[ -n "$PR" ] || { echo "usage: merge-when-clean.sh <pr-number> [--repo owner/name] [--merge] [--interval s] [--timeout min] [--once] [--expected-head SHA] [--delete-branch]" >&2; exit 5; }
 REPO_ARGS=()
 [ -n "$REPO" ] && REPO_ARGS=(--repo "$REPO")
+DELETE_ARGS=()
+[ "$DELETE_BRANCH" -eq 1 ] && DELETE_ARGS=(--delete-branch)
 
 deadline=$(( $(date +%s) + TIMEOUT_MIN * 60 ))
 
@@ -77,7 +86,7 @@ while :; do
       if [ "$DO_MERGE" -eq 1 ]; then
         echo "[$ts] PR #$PR CLEAN — merging (authorized per-PR, merge-authorization.md)."
         # A server-side mismatch must fail this run, never adopt a newer head.
-        gh pr merge "$PR" "${REPO_ARGS[@]}" --squash --delete-branch \
+        gh pr merge "$PR" "${REPO_ARGS[@]}" --squash "${DELETE_ARGS[@]}" \
           --match-head-commit "$observed_head"
         # verify MERGED on the remote — do not trust the exit code alone
         for _ in 1 2 3 4 5; do
@@ -88,7 +97,7 @@ while :; do
         echo "merge command ran but PR #$PR is not MERGED on remote — investigate." >&2; exit 5
       else
         echo "[$ts] PR #$PR is CLEAN. Watch-only mode — run:"
-        echo "  gh pr merge $PR --squash --delete-branch ${REPO:+--repo $REPO} --match-head-commit $observed_head"
+        echo "  gh pr merge $PR --squash ${DELETE_ARGS[*]:+${DELETE_ARGS[*]} }${REPO:+--repo $REPO} --match-head-commit $observed_head"
         exit 0
       fi ;;
     DIRTY)

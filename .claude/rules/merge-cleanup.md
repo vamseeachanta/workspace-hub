@@ -8,7 +8,7 @@ The cost is not disk. It is that a stale branch is indistinguishable from an in-
 
 **How to apply:**
 
-1. **Merge without `--delete-branch`.** The merge is the pinned squash of [`merge-authorization.md`](merge-authorization.md); it never deletes the branch.
+1. **Merge without `--delete-branch`.** The merge is the pinned squash of [`merge-authorization.md`](merge-authorization.md); it never deletes the branch, so stacked PRs can be retargeted to main (`gh pr edit <child> --base main`).
 2. **Then remove the worktree** once it has been inspected (step 6): `git worktree remove <path>`.
 3. **Deleting a branch is a separate irreversible step.** Log it on fleet-ops #577 before running it and keep a bundle of the branch first (`git bundle create <file> <branch>`). Sweep for candidates periodically:
    ```bash

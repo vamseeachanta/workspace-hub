@@ -7,7 +7,7 @@
 **Policy:**
 
 1. **Merge on green required checks.** When every required check on the PR head is green, the team merges it. This holds in every repo, client wikis included. Second-provider (Codex/Claude) review is advisory: a real bug it finds is fixed before the merge, but a missing or pending verdict never holds a PR.
-2. **Pinned squash merge, no branch delete.** Run `gh pr merge <N> --squash --match-head-commit <full head SHA> --repo owner/name`. Never add `--delete-branch` or `--admin`. Do not use `scripts/operations/merge-when-clean.sh --merge`: it still passes `--delete-branch`.
+2. **Pinned squash merge, no branch delete.** Run `gh pr merge <N> --squash --match-head-commit <full head SHA> --repo owner/name`. Never add `--delete-branch` or `--admin`. `scripts/operations/merge-when-clean.sh --merge` is also fine: it deletes no branch unless its opt-in `--delete-branch` is given (#4511).
 3. **Holds still apply.** An unexpired `hold` label, a hold_check basis hold, or an engineering-basis question waiting on the owner keeps the PR open.
 4. **Freshness.** Immediately before the merge, require `mergeStateStatus == CLEAN`; never land from `BEHIND`, `BLOCKED`, `DIRTY`, `UNKNOWN`, or `UNSTABLE`. Explicit user authorization never waives these checks: green required checks, a clean merge state, holds and the landed-tree validation below apply to every merge, whoever asks for it.
 5. **Owner records stay the owner's.** Merging never self-applies `status:plan-approved` or completeness stamps.
