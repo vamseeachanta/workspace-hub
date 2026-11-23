@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ecosystem status review</title>
+<style>
+:root {
+  --bg: #ffffff; --fg: #1d2330; --muted: #5b6474; --line: #d9dee7;
+  --head: #f3f5f9; --accent: #1f5fa8; --warn-bg: #fff6e5; --warn-line: #e0a526;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #14171d; --fg: #e4e8ef; --muted: #9aa3b2; --line: #2e3542;
+    --head: #1c2129; --accent: #7fb0ea; --warn-bg: #2a2416; --warn-line: #b9861c;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #14171d; --fg: #e4e8ef; --muted: #9aa3b2; --line: #2e3542;
+  --head: #1c2129; --accent: #7fb0ea; --warn-bg: #2a2416; --warn-line: #b9861c;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--fg);
+  font: 16px/1.55 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+main { max-width: 1040px; margin: 0 auto; padding: 24px 16px 64px; }
+h1 { font-size: 1.6rem; margin: 0 0 4px; }
+h2 { font-size: 1.25rem; margin: 36px 0 8px; border-bottom: 1px solid var(--line); padding-bottom: 6px; }
+h3 { font-size: 1.05rem; margin: 24px 0 6px; }
+p.lede, .note { color: var(--muted); }
+a { color: var(--accent); }
+code { font: 0.9em ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+.scroll { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; margin: 8px 0; font-size: 0.93rem; }
+th, td { border: 1px solid var(--line); padding: 6px 8px; text-align: left; vertical-align: top; }
+th { background: var(--head); }
+td.unknown { color: var(--muted); font-style: italic; }
+.incident { background: var(--warn-bg); border-left: 4px solid var(--warn-line); padding: 10px 14px; margin: 10px 0; }
+.rule { border: 1px dashed var(--accent); padding: 10px 14px; margin: 10px 0; }
+</style>
+</head>
+<body>
+<main>
+<h1>Ecosystem status review</h1>
+<p class="lede">The fleet's status page for decisions any machine can make from it. Each section names its sources and dates; what is not known is marked unknown.</p>
+
+<section id="machines">
+<h2>How machines run, and known failure points</h2>
+
+<h3 id="machines-table">Machines</h3>
+<p>Most machines run headless: a terminal session, kept in tmux and reached over SSH. Roles come from <code>config/agents/host-role-routing.yaml</code> (updated 9 Oct 2026) and from the migration work on fleet-ops #577 (23 Nov 2026). Reachability was tested from ace-linux-2 on 23 Nov 2026 where marked.</p>
+<div class="scroll">
+<table>
+<thead><tr><th>Machine (fleet id)</th><th>OS</th><th>How it runs</th><th>Role</th><th>How to reach it</th></tr></thead>
+<tbody>
+<tr><td>ace-linux-1 (dev-primary)</td><td>Linux</td><td>Headless, terminal sessions</td><td>Lane runner: Codex and Claude lanes, heavy builds; serves the shared archive store to other machines over NFS</td><td><code>ssh ace-linux-1</code> (connects, tested 23 Nov)</td></tr>
+<tr><td>ace-linux-2 (dev-secondary)</td><td>Linux</td><td>Headless, terminal sessions</td><td>Lane runner; migration rollout and writing rounds (23 Nov)</td><td><code>ssh ace-linux-2</code> (alias not tested from another machine)</td></tr>
+<tr><td>gpu-claw</td><td>Linux</td><td>Headless, terminal sessions</td><td>Compute: CFD and simulation jobs; also ran rollout sessions on 23 Nov</td><td><code>ssh gpu-claw</code> (connects, tested 23 Nov)</td></tr>
+<tr><td>RDS02</td><td>Windows, Git Bash shell</td><td>Headless: tmux over SSH</td><td>Intake (planned, see open items)</td><td><code>ssh rds02</code> (connects, tested 23 Nov); desk: <code>ssh -t rds02 tmux attach -t intake</code></td></tr>
+<tr><td>WS014</td><td>Windows</td><td>Desktop app</td><td>Intake desk until the 23 Nov incident; holds verified archives used by the rollout</td><td class="unknown">unknown</td></tr>
+<tr><td>ace-win-2</td><td>Windows</td><td class="unknown">unknown</td><td>Coordinator, admin and document work; licensed-solver host (registry, 9 Oct)</td><td class="unknown">unknown</td></tr>
+<tr><td>ace-win-1</td><td>Windows</td><td class="unknown">unknown</td><td>Licensed-solver tool runner on separate AI accounts; no AI lanes</td><td>Licensed work only through the scheduled-task dispatch path</td></tr>
+<tr><td>WS003</td><td>Windows</td><td class="unknown">unknown</td><td>Migration rollout (23 Nov)</td><td class="unknown">unknown</td></tr>
+<tr><td>mac</td><td>macOS</td><td class="unknown">unknown</td><td class="unknown">unknown (listed in the rollout targets)</td><td class="unknown">unknown</td></tr>
+</tbody>
+</table>
+</div>
+<p class="note">Not established: which machine hosts the manager desk (ENG-01) and the existing intake desk today; which machines hold review tabs; whether WS014 or WS003 is the same machine as ace-win-1 or ace-win-2.</p>
+
+<h3 id="incident-2026-11-23">Incident, 23 Nov 2026, about 11:38Z</h3>
+<div class="incident">
+<p>WS014's desktop app showed "Couldn't connect to Claude, ERR_TIMED_OUT" and kept retrying. The WS014 intake desk stalled for as long as the app could not connect. Headless sessions on other machines kept working through the same period.</p>
+</div>
+
+<h3 id="decision-rule">Decision rule</h3>
+<div class="rule">
+<p><strong>Intake and long-running desks run headless, in tmux over SSH</strong>: on a Linux machine, or on RDS02 (Windows, Git Bash). RDS02 takes intake through <code>~/bin/rds02-intake.sh</code> on ace-linux-2.</p>
+<p><strong>Desktop machines are for review tabs and anything that needs a screen</strong>, not for critical desks.</p>
+</div>
+
+<h3 id="failure-points">Known failure points</h3>
+<div class="scroll">
+<table>
+<thead><tr><th>Failure point</th><th>Effect</th><th>What to do</th></tr></thead>
+<tbody>
+<tr><td>Desktop app loses its connection</td><td>The desk on that machine stalls until the app reconnects (23 Nov incident)</td><td>Run critical desks headless; use the desktop app only for review tabs</td></tr>
+<tr><td>Cross-session messages without delivery confirmation</td><td>A message can be accepted and never read</td><td>Post decisions and results on the fleet-ops issue; the issue is the record</td></tr>
+<tr><td>A network mount that looks like a local folder</td><td>Deleting through the mount deletes the files on the machine that owns the disk and frees nothing locally</td><td>Check which machine owns a path (<code>findmnt -T</code>, <code>readlink -f</code>) before removing anything</td></tr>
+<tr><td>A session's permission check refuses a crontab or scheduler edit</td><td>A writer keeps running until someone with the right access pauses it</td><td>Post the exact command as needs-owner; the owner runs pauses</td></tr>
+</tbody>
+</table>
+</div>
+
+<h3 id="open-items">Open items</h3>
+<div class="scroll">
+<table>
+<thead><tr><th>Item</th><th>State</th><th>Next step</th></tr></thead>
+<tbody>
+<tr><td>RDS02 intake desk start</td><td>Script <code>~/bin/rds02-intake.sh</code> on ace-linux-2 is ready; it parses, and <code>ssh rds02</code> connects. It has not been run.</td><td>Run it, then attach once with <code>ssh -t rds02 tmux attach -t intake</code> and type <code>/remote-control</code></td></tr>
+<tr><td>Writer pause, gpu-claw</td><td>The repository-sync cron pause is posted on fleet-ops #577 (comment 7098883328) as needs-owner. Script <code>~/bin/writer-pause.sh</code> on ace-linux-2 shows the command and runs it only on a yes.</td><td>The owner runs <code>~/bin/writer-pause.sh</code></td></tr>
+<tr><td>Writer pause, ace-linux-1</td><td>No pause command for ace-linux-1 is posted in comment 7098883328.</td><td>Post the ace-linux-1 command on fleet-ops #577, then add it to <code>writer-pause.sh</code></td></tr>
+</tbody>
+</table>
+</div>
+</section>
+</main>
+</body>
+</html>
