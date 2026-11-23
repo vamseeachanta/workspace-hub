@@ -1,0 +1,90 @@
+{
+  "extraction_date": "2026-01-26T04:45:52Z",
+  "source_file": null,
+  "total_commits": 12,
+  "repos_analyzed": 3,
+  "commit_patterns": {
+    "by_type": {
+      "chore": null,
+      "other": null,
+      "refactor": null
+    },
+    "corrections": 0,
+    "correction_rate": 0
+  },
+  "repo_patterns": {
+    "by_activity": [
+      {
+        "repo": "OGManufacturing",
+        "commits": 4
+      },
+      {
+        "repo": "aceengineer-admin",
+        "commits": 4
+      },
+      {
+        "repo": "aceengineer-website",
+        "commits": 4
+      }
+    ],
+    "active_repos": 3,
+    "most_active": "aceengineer-website"
+  },
+  "file_patterns": {
+    "total_files_changed": 102,
+    "total_insertions": 214,
+    "total_deletions": 24589,
+    "avg_files_per_commit": 9,
+    "large_commits": 2
+  },
+  "author_patterns": {
+    "by_author": [
+      {
+        "author": "Vamsee Achanta",
+        "commits": 12
+      }
+    ],
+    "unique_authors": 1
+  },
+  "cross_repo_patterns": [
+    {
+      "message": "Update: Batch commit from repository_sync",
+      "repos": [
+        "OGManufacturing",
+        "aceengineer-admin",
+        "aceengineer-website"
+      ],
+      "count": 3
+    },
+    {
+      "repos": [
+        "OGManufacturing",
+        "aceengineer-admin",
+        "aceengineer-website"
+      ],
+      "count": 3
+    },
+    {
+      "message": "refactor: Migrate CLAUDE.md to inheritance model",
+      "repos": [
+        "OGManufacturing",
+        "aceengineer-admin",
+        "aceengineer-website"
+      ],
+      "count": 3
+    },
+    {
+      "message": "chore: Sync and update configurations",
+      "repos": [
+        "OGManufacturing",
+        "aceengineer-admin"
+      ],
+      "count": 2
+    }
+  ],
+  "workflow_indicators": {
+    "conventional_commits_rate": 75,
+    "has_scoped_commits": false,
+    "batch_operations": 3
+  }
+}

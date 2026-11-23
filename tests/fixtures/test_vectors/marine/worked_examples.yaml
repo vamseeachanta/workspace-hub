@@ -1,0 +1,4316 @@
+metadata:
+  domain: marine
+  generated_by: scripts/curate_worked_examples.py
+  generated_at: '2026-04-01T23:50:13.507933+00:00'
+  issue: '#1294 (WRK-1370)'
+  total_vectors: 235
+  source: data/doc-intelligence/worked_examples.jsonl
+test_vectors:
+- id: WE-B-0018
+  source:
+    book: Introduction-to-Naval-Architecture-Comstock-1942
+    example_number: p153
+    extraction: deep
+  description: 'We will choose a propeller for the example
+
+    ship. In Chapter I this ship is said'
+  domain: marine
+  topic: general
+  expected_output:
+    value: 9.6
+    unit: knots
+  input_count: 17
+  quality_score: 100
+  quality_tier: gold
+- id: WE-B-0020
+  source:
+    book: Introduction-to-Naval-Architecture-Comstock-1942
+    example_number: '2'
+    extraction: deep
+  description: (a) Yes. (b) No. (c) Yes, either the fore¬
+  domain: marine
+  topic: general
+  expected_output:
+    value: 1.66
+    unit: ft
+  input_count: 32
+  quality_score: 100
+  quality_tier: gold
+- id: WE-B-0021
+  source:
+    book: Introduction-to-Naval-Architecture-Comstock-1942
+    example_number: '3'
+    extraction: deep
+  description: Stability flooded
+  domain: marine
+  topic: stability
+  expected_output:
+    value: 1.66
+    unit: ft
+  input_count: 31
+  quality_score: 100
+  quality_tier: gold
+- id: WE-B-0023
+  source:
+    book: Introduction-to-Naval-Architecture-Comstock-1942
+    example_number: p151
+    extraction: deep
+  description: 'We will choose a propeller for the example
+
+    ship. In Chapter I this ship is said'
+  domain: marine
+  topic: general
+  expected_output:
+    value: 9.6
+    unit: knots
+  input_count: 27
+  quality_score: 100
+  quality_tier: gold
+- id: WE-B-0026
+  source:
+    book: Introduction-to-Naval-Architecture-Tupper-1996
+    example_number: '7.2'
+    extraction: deep
+  description: 'The midship section of a steel ship has the following particulars: Cross-section'
+  domain: marine
+  topic: general
+  expected_output:
+    value: 58.0
+    unit: m4
+  input_count: 11
+  quality_score: 100
+  quality_tier: gold
+- id: WE-B-0027
+  source:
+    book: Introduction-to-Naval-Architecture-Tupper-1996
+    example_number: '8.1'
+    extraction: deep
+  description: To illustrate the use of a model in calculating ship resistance a worked example
+  domain: marine
+  topic: resistance
+  expected_output:
+    value: 1025.0
+    unit: kg/m3
+  input_count: 14
+  quality_score: 100
+  quality_tier: gold
+- id: WE-B-0031
+  source:
+    book: Introduction-to-Naval-Architecture-Tupper-1996
+    example_number: '7.1'
+    extraction: deep
+  description: Consider a vessel of constant rectangular cross section, 140m long, 20m beam and
+  domain: marine
+  topic: general
+  expected_output:
+    value: 79.0
+    unit: MNm
+  input_count: 12
+  quality_score: 100
+  quality_tier: gold
+- id: WE-B-0033
+  source:
+    book: Marine-Hydrodynamics-Newman-2018
+    example_number: '4'
+    extraction: deep
+  description: 6. What is the ideal angle of attack for a flat plate?
+  domain: marine
+  topic: structural
+  expected_output:
+    value: 10.0
+    unit: degrees
+  input_count: 12
+  quality_score: 100
+  quality_tier: gold
+- id: WE-B-0036
+  source:
+    book: Principles-of-Naval-Architecture-SecondRevision-Vol1
+    example_number: p128
+    extraction: deep
+  description: Assume that just enough the effects of the vertical location of the changes. Off
+  domain: marine
+  topic: general
+  expected_output:
+    value: 6.5
+    unit: m
+  input_count: 18
+  quality_score: 100
+  quality_tier: gold
+- id: WE-B-0037
+  source:
+    book: Principles-of-Naval-Architecture-SecondRevision-Vol1
+    example_number: p126
+    extraction: deep
+  description: Assume that just enough the effects of the vertical location of the changes. Off
+  domain: marine
+  topic: general
+  expected_output:
+    value: 6.5
+    unit: m
+  input_count: 11
+  quality_score: 100
+  quality_tier: gold
+- id: WE-B-0040
+  source:
+    book: Ship-Hydrostatics-and-Stability-2ndEd
+    example_number: '2.8'
+    extraction: deep
+  description: INPUT ----- Water density .......................... 1.025 t/mˆ3
+  domain: marine
+  topic: general
+  expected_output:
+    value: 2880000.0
+    unit: m^4
+  input_count: 14
+  quality_score: 100
+  quality_tier: gold
+- id: WE-B-0047
+  source:
+    book: Ship-Hydrostatics-and-Stability-Biran
+    example_number: '5.1'
+    extraction: deep
+  description: Plot in one figure the righting-arm curves and the tangents in origin of the Shi
+  domain: marine
+  topic: stability
+  expected_output:
+    value: 2.1
+    unit: m
+  input_count: 11
+  quality_score: 100
+  quality_tier: gold
+- id: WE-B-0048
+  source:
+    book: Ship-Hydrostatics-and-Stability-Biran
+    example_number: '5.2'
+    extraction: deep
+  description: Draw the curve of statical stability of the Ship Lido 9 for a displacement in se
+  domain: marine
+  topic: hydrostatics
+  expected_output:
+    value: 2.1
+    unit: m
+  input_count: 14
+  quality_score: 100
+  quality_tier: gold
+- id: WE-B-0049
+  source:
+    book: Ship-Hydrostatics-and-Stability-Biran
+    example_number: '6.1'
+    extraction: deep
+  description: Wind pressure
+  domain: marine
+  topic: general
+  expected_output:
+    value: 0.5144
+    unit: m/s
+  input_count: 25
+  quality_score: 100
+  quality_tier: gold
+- id: WE-B-0050
+  source:
+    book: Ship-Hydrostatics-and-Stability-Biran
+    example_number: '6.3'
+    extraction: deep
+  description: Critical draught of grounded ship
+  domain: marine
+  topic: general
+  expected_output:
+    value: 4.92
+    unit: m
+  input_count: 11
+  quality_score: 100
+  quality_tier: gold
+- id: WE-B-0057
+  source:
+    book: Ship-Hydrostatics-and-Stability-Biran
+    example_number: '10.2'
+    extraction: deep
+  description: are calculated
+  domain: marine
+  topic: general
+  expected_output:
+    value: 0.846
+    unit: m
+  input_count: 56
+  quality_score: 100
+  quality_tier: gold
+- id: WE-B-0058
+  source:
+    book: Ship-Hydrostatics-and-Stability-Biran
+    example_number: '10.1'
+    extraction: deep
+  description: illustrates a MATLAB function that automatically checks the
+  domain: marine
+  topic: general
+  expected_output:
+    value: 2943.0
+    unit: m3
+  input_count: 56
+  quality_score: 100
+  quality_tier: gold
+- id: WE-B-0068
+  source:
+    book: Ship-Hydrostatics-and-Stability-Biran
+    example_number: '6.4'
+    extraction: deep
+  description: Once, it was not unusual to see that a ship carrying timber on deck sailed
+  domain: marine
+  topic: general
+  expected_output:
+    value: 5.5
+    unit: m
+  input_count: 18
+  quality_score: 100
+  quality_tier: gold
+- id: WE-B-0069
+  source:
+    book: Ship-Hydrostatics-and-Stability-Biran
+    example_number: '6.2'
+    extraction: deep
+  description: Dynamical stability
+  domain: marine
+  topic: stability
+  expected_output:
+    value: 4.92
+    unit: m
+  input_count: 90
+  quality_score: 100
+  quality_tier: gold
+- id: WE-B-0073
+  source:
+    book: Ship-Hydrostatics-and-Stability-Biran
+    example_number: '85'
+    extraction: deep
+  description: for machinery
+  domain: marine
+  topic: general
+  expected_output:
+    value: 1.5
+    unit: m
+  input_count: 22
+  quality_score: 100
+  quality_tier: gold
+- id: WE-B-0082
+  source:
+    book: Theoretical-Naval-Architecture-Attwood-1899
+    example_number: p102
+    extraction: deep
+  description: 'A vessel of 14,000 tons displacement has a metacentric
+
+    heightof 3^feet. Then, if'
+  domain: marine
+  topic: hydrostatics
+  expected_output:
+    value: 8506.0
+    unit: ft
+  input_count: 10
+  quality_score: 100
+  quality_tier: gold
+- id: WE-B-0086
+  source:
+    book: Theoretical-Naval-Architecture-Attwood-1899
+    example_number: p149
+    extraction: deep
+  description: 'A vessel floatsat adraught of 16'' 5$" forward, 23'' i" aft,
+
+    the normal trim being'
+  domain: marine
+  topic: stability
+  expected_output:
+    value: 5447.0
+    unit: ton
+  input_count: 20
+  quality_score: 100
+  quality_tier: gold
+- id: WE-B-0096
+  source:
+    book: Theoretical-Naval-Architecture-Attwood-1899
+    example_number: p23
+    extraction: deep
+  description: 'Tofind theareaof a figure bounded bya plane curve and
+
+    tworadii90 apart,thelength'
+  domain: marine
+  topic: general
+  expected_output:
+    value: 147.0
+    unit: cubic inches
+  input_count: 31
+  quality_score: 100
+  quality_tier: gold
+- id: WE-B-0097
+  source:
+    book: Theoretical-Naval-Architecture-Attwood-1899
+    example_number: p25
+    extraction: deep
+  description: 'A coal-bunker has sections 17'' 6" apart, and the areas of
+
+    thesesectionsare98, 12'
+  domain: marine
+  topic: general
+  expected_output:
+    value: 147.0
+    unit: cubic inches
+  input_count: 28
+  quality_score: 100
+  quality_tier: gold
+- id: WE-B-0112
+  source:
+    book: Theoretical-Naval-Architecture-Attwood-1899
+    example_number: p100
+    extraction: deep
+  description: 'A vessel of 14,000 tons displacement has a metacentric
+
+    heightof 3^feet. Then, if'
+  domain: marine
+  topic: hydrostatics
+  expected_output:
+    value: 8506.0
+    unit: ft
+  input_count: 16
+  quality_score: 100
+  quality_tier: gold
+- id: WE-B-0113
+  source:
+    book: Theoretical-Naval-Architecture-Attwood-1899
+    example_number: p101
+    extraction: deep
+  description: 'A vessel of 14,000 tons displacement has a metacentric
+
+    heightof 3^feet. Then, if'
+  domain: marine
+  topic: hydrostatics
+  expected_output:
+    value: 8506.0
+    unit: ft
+  input_count: 15
+  quality_score: 100
+  quality_tier: gold
+- id: WE-B-0121
+  source:
+    book: Theoretical-Naval-Architecture-Attwood-1899
+    example_number: p147
+    extraction: deep
+  description: 'A vessel floatsat adraught of 16'' 5$" forward, 23'' i" aft,
+
+    the normal trim being'
+  domain: marine
+  topic: stability
+  expected_output:
+    value: 5447.0
+    unit: ton
+  input_count: 29
+  quality_score: 100
+  quality_tier: gold
+- id: WE-B-0122
+  source:
+    book: Theoretical-Naval-Architecture-Attwood-1899
+    example_number: p148
+    extraction: deep
+  description: 'A vessel floatsat adraught of 16'' 5$" forward, 23'' i" aft,
+
+    the normal trim being'
+  domain: marine
+  topic: stability
+  expected_output:
+    value: 5447.0
+    unit: ton
+  input_count: 23
+  quality_score: 100
+  quality_tier: gold
+- id: WE-B-0130
+  source:
+    book: USNA-EN400-Principles-Ship-Performance-2020
+    example_number: '1.1'
+    extraction: deep
+  description: An object has a mass of 1 slug
+  domain: marine
+  topic: general
+  expected_output:
+    value: 32.17
+    unit: lb
+  input_count: 10
+  quality_score: 100
+  quality_tier: gold
+- id: WE-B-0133
+  source:
+    book: USNA-EN400-Principles-Ship-Performance-2020
+    example_number: '1.5'
+    extraction: deep
+  description: Calculate the second moment of area of the rectangle about the x-axis
+  domain: marine
+  topic: structural
+  expected_output:
+    value: 64.0
+    unit: ft2
+  input_count: 10
+  quality_score: 100
+  quality_tier: gold
+- id: WE-B-0134
+  source:
+    book: USNA-EN400-Principles-Ship-Performance-2020
+    example_number: '2.1'
+    extraction: deep
+  description: Calculate the buoyant force being experienced by a small boat with a submerged
+  domain: marine
+  topic: general
+  expected_output:
+    value: 143570.0
+    unit: ft3
+  input_count: 16
+  quality_score: 100
+  quality_tier: gold
+- id: WE-B-0135
+  source:
+    book: USNA-EN400-Principles-Ship-Performance-2020
+    example_number: '2.3'
+    extraction: deep
+  description: The offsets for the 16-ft waterline of a particular ship with five stations are given
+  domain: marine
+  topic: general
+  expected_output:
+    value: 10523.0
+    unit: ft2
+  input_count: 12
+  quality_score: 100
+  quality_tier: gold
+- id: WE-B-0136
+  source:
+    book: USNA-EN400-Principles-Ship-Performance-2020
+    example_number: '2.4'
+    extraction: deep
+  description: The offsets for station 5 of a particular ship are given below
+  domain: marine
+  topic: general
+  expected_output:
+    value: 556.0
+    unit: ft2
+  input_count: 11
+  quality_score: 100
+  quality_tier: gold
+- id: WE-B-0137
+  source:
+    book: USNA-EN400-Principles-Ship-Performance-2020
+    example_number: '2.5'
+    extraction: deep
+  description: The full sectional areas for a particular ship are given below
+  domain: marine
+  topic: general
+  expected_output:
+    value: 33383.0
+    unit: ft3
+  input_count: 12
+  quality_score: 100
+  quality_tier: gold
+- id: WE-B-0139
+  source:
+    book: USNA-EN400-Principles-Ship-Performance-2020
+    example_number: '3.1'
+    extraction: deep
+  description: Calculate the submerged volume of a DDG51 floating at a draft of 21.0 ft and
+  domain: marine
+  topic: hydrostatics
+  expected_output:
+    value: 8640.0
+    unit: LT
+  input_count: 13
+  quality_score: 100
+  quality_tier: gold
+- id: WE-B-0140
+  source:
+    book: USNA-EN400-Principles-Ship-Performance-2020
+    example_number: '3.2'
+    extraction: deep
+  description: An FFG-7 class frigate has an initial displacement of 4092 LT and an initial
+  domain: marine
+  topic: hydrostatics
+  expected_output:
+    value: 18.5
+    unit: ft
+  input_count: 12
+  quality_score: 100
+  quality_tier: gold
+- id: WE-B-0142
+  source:
+    book: USNA-EN400-Principles-Ship-Performance-2020
+    example_number: '3.4'
+    extraction: deep
+  description: A ship undergoes an inclining experiment resulting in a graph of “the tangent of
+  domain: marine
+  topic: stability
+  expected_output:
+    value: 18.82
+    unit: ft
+  input_count: 15
+  quality_score: 100
+  quality_tier: gold
+- id: WE-B-0143
+  source:
+    book: USNA-EN400-Principles-Ship-Performance-2020
+    example_number: '3.5'
+    extraction: deep
+  description: An FFG7 is originally at a draft of 16.25 ft in level trim. 100 LT are removed
+  domain: marine
+  topic: hydrostatics
+  expected_output:
+    value: 15.42
+    unit: ft
+  input_count: 30
+  quality_score: 100
+  quality_tier: gold
+- id: WE-B-0144
+  source:
+    book: USNA-EN400-Principles-Ship-Performance-2020
+    example_number: '4.1'
+    extraction: deep
+  description: Statical Stability Curve
+  domain: marine
+  topic: stability
+  expected_output:
+    value: 23.84
+    unit: ft
+  input_count: 19
+  quality_score: 100
+  quality_tier: gold
+- id: WE-B-0145
+  source:
+    book: USNA-EN400-Principles-Ship-Performance-2020
+    example_number: '4.2'
+    extraction: deep
+  description: Statical Stability Curve
+  domain: marine
+  topic: stability
+  expected_output:
+    value: 0.4
+    unit: ft
+  input_count: 22
+  quality_score: 100
+  quality_tier: gold
+- id: WE-B-0147
+  source:
+    book: USNA-EN400-Principles-Ship-Performance-2020
+    example_number: '4.3'
+    extraction: deep
+  description: An FFG-7 displacing 3992 LT and of length 408 ft has KG = 18.5 ft, TCG = 0 ft
+  domain: marine
+  topic: general
+  expected_output:
+    value: 16.88
+    unit: ft
+  input_count: 25
+  quality_score: 100
+  quality_tier: gold
+- id: WE-B-0148
+  source:
+    book: USNA-EN400-Principles-Ship-Performance-2020
+    example_number: '4.4'
+    extraction: deep
+  description: An FFG-7 class ship displacing 4092 LT has KG=18.9 ft and KM=22.49 ft
+  domain: marine
+  topic: general
+  expected_output:
+    value: 2.84
+    unit: ft
+  input_count: 10
+  quality_score: 100
+  quality_tier: gold
+- id: WE-B-0149
+  source:
+    book: USNA-EN400-Principles-Ship-Performance-2020
+    example_number: '4.5'
+    extraction: deep
+  description: The FFG-7 in Example 4.4 has a righting arm of 1.33 feet at a heeling angle of
+  domain: marine
+  topic: stability
+  expected_output:
+    value: 0.6
+    unit: ft
+  input_count: 11
+  quality_score: 100
+  quality_tier: gold
+- id: WE-B-0153
+  source:
+    book: USNA-EN400-Principles-Ship-Performance-2020
+    example_number: '7.1'
+    extraction: deep
+  description: Model testing has determined that a ship has an EHP of 30,000 HP at a speed of
+  domain: marine
+  topic: general
+  expected_output:
+    value: 42860.0
+    unit: HP
+  input_count: 21
+  quality_score: 100
+  quality_tier: gold
+- id: WE-B-0157
+  source:
+    book: USNA-EN400-Principles-Ship-Performance-2020
+    example_number: '10.1'
+    extraction: deep
+  description: The 8000LT USS Hardluck is submerging in Long Island Sound to
+  domain: marine
+  topic: general
+  expected_output:
+    value: 7979.0
+    unit: LT
+  input_count: 14
+  quality_score: 100
+  quality_tier: gold
+- id: WE-B-0038
+  source:
+    book: Principles-of-Naval-Architecture-SecondRevision-Vol1
+    example_number: p127
+    extraction: deep
+  description: Assume that just enough the effects of the vertical location of the changes. Off
+  domain: marine
+  topic: general
+  expected_output:
+    value: 6.5
+    unit: m
+  input_count: 9
+  quality_score: 95
+  quality_tier: gold
+- id: WE-B-0155
+  source:
+    book: USNA-EN400-Principles-Ship-Performance-2020
+    example_number: '7.4'
+    extraction: deep
+  description: A new type of destroyer is undergoing model testing in the tow tank
+  domain: marine
+  topic: general
+  expected_output:
+    value: 12.02
+    unit: ft
+  input_count: 9
+  quality_score: 95
+  quality_tier: gold
+- id: WE-B-0158
+  source:
+    book: USNA-EN400-Principles-Ship-Performance-2020
+    example_number: '10.2'
+    extraction: deep
+  description: An 8000LT submarine exits the Gulf Stream where water is 85°F and
+  domain: marine
+  topic: general
+  expected_output:
+    value: 8025.0
+    unit: LT
+  input_count: 7
+  quality_score: 95
+  quality_tier: gold
+- id: WE-B-0146
+  source:
+    book: USNA-EN400-Principles-Ship-Performance-2020
+    example_number: '4'
+    extraction: deep
+  description: '21'
+  domain: marine
+  topic: general
+  expected_output:
+    value: 4.5
+    unit: degrees
+  input_count: 10
+  quality_score: 90
+  quality_tier: gold
+- id: WE-B-0017
+  source:
+    book: Introduction-to-Naval-Architecture-Comstock-1942
+    example_number: '4'
+    extraction: deep
+  description: 83^ inches (10,000 pounds per square inch =
+  domain: marine
+  topic: general
+  expected_output:
+    value: 3535.0
+    unit: pounds per inch of weld
+  input_count: 20
+  quality_score: 85
+  quality_tier: gold
+- id: WE-B-0019
+  source:
+    book: Introduction-to-Naval-Architecture-Comstock-1942
+    example_number: '1'
+    extraction: deep
+  description: Sound- Sound- Sound- Sound- Sound- Sound¬
+  domain: marine
+  topic: general
+  expected_output:
+    value: 3535.0
+    unit: pounds per inch of weld
+  input_count: 75
+  quality_score: 85
+  quality_tier: gold
+- id: WE-B-0022
+  source:
+    book: Introduction-to-Naval-Architecture-Comstock-1942
+    example_number: '5'
+    extraction: deep
+  description: (a) 10,000 -f- 10.4 = 960 tons.
+  domain: marine
+  topic: general
+  expected_output:
+    value: 2.13
+    unit: tons per foot
+  input_count: 31
+  quality_score: 85
+  quality_tier: gold
+- id: WE-B-0024
+  source:
+    book: Introduction-to-Naval-Architecture-Comstock-1942
+    example_number: p152
+    extraction: deep
+  description: 'We will choose a propeller for the example
+
+    ship. In Chapter I this ship is said'
+  domain: marine
+  topic: general
+  expected_output:
+    value: 1550.0
+    unit: 'it will be
+
+      found that substantially the same results are obtained'
+  input_count: 41
+  quality_score: 85
+  quality_tier: gold
+- id: WE-B-0025
+  source:
+    book: Introduction-to-Naval-Architecture-Comstock-1942
+    example_number: '6'
+    extraction: deep
+  description: 'Yes. Drafts with forepeak filled: (about) 11'
+  domain: marine
+  topic: hydrostatics
+  expected_output:
+    value: 3535.0
+    unit: pounds per inch of weld
+  input_count: 30
+  quality_score: 85
+  quality_tier: gold
+- id: WE-B-0028
+  source:
+    book: Introduction-to-Naval-Architecture-Tupper-1996
+    example_number: '4.1'
+    extraction: deep
+  description: A ship of mass 5000 tonnes, 98m long, floats at draughts of 5.5 m forward and 6
+  domain: marine
+  topic: general
+  expected_output:
+    value: 10055.0
+    unit: Anewtons
+  input_count: 12
+  quality_score: 85
+  quality_tier: gold
+- id: WE-B-0029
+  source:
+    book: Introduction-to-Naval-Architecture-Tupper-1996
+    example_number: '4.2'
+    extraction: deep
+  description: Just before entering drydock a ship of 5000 tonnes mass floats at draughts of 2
+  domain: marine
+  topic: general
+  expected_output:
+    value: 2.7
+    unit: m aft of amidships
+  input_count: 14
+  quality_score: 85
+  quality_tier: gold
+- id: WE-B-0032
+  source:
+    book: Introduction-to-Naval-Architecture-Tupper-1996
+    example_number: '7.3'
+    extraction: deep
+  description: Bending moment response operators (M/h) for a range of encounter frequencies are
+  domain: marine
+  topic: structural
+  expected_output:
+    value: 0.926
+    unit: X
+  input_count: 24
+  quality_score: 85
+  quality_tier: gold
+- id: WE-B-0034
+  source:
+    book: Marine-Hydrodynamics-Newman-2018
+    example_number: '7'
+    extraction: deep
+  description: (124–128). Since the wave amplitude A is a first-order quantity, the surface int
+  domain: marine
+  topic: dynamics
+  expected_output:
+    value: 1.0
+    unit: j
+  input_count: 24
+  quality_score: 85
+  quality_tier: gold
+- id: WE-B-0042
+  source:
+    book: Ship-Hydrostatics-and-Stability-Biran
+    example_number: '2.4'
+    extraction: deep
+  description: Figure 2.16(b) shows a cone floating top-up. Noting by F^ the freeboard, that is
+  domain: marine
+  topic: hydrostatics
+  expected_output:
+    value: 7.0
+    unit: w
+  input_count: 17
+  quality_score: 85
+  quality_tier: gold
+- id: WE-B-0043
+  source:
+    book: Ship-Hydrostatics-and-Stability-Biran
+    example_number: '2.6'
+    extraction: deep
+  description: B and M curves of Lido 9
+  domain: marine
+  topic: general
+  expected_output:
+    value: 6.0
+    unit: are shown in
+  input_count: 22
+  quality_score: 85
+  quality_tier: gold
+- id: WE-B-0044
+  source:
+    book: Ship-Hydrostatics-and-Stability-Biran
+    example_number: '2.9'
+    extraction: deep
+  description: An offshore platform
+  domain: marine
+  topic: general
+  expected_output:
+    value: 4.0
+    unit: TTb^
+  input_count: 10
+  quality_score: 85
+  quality_tier: gold
+- id: WE-B-0056
+  source:
+    book: Ship-Hydrostatics-and-Stability-Biran
+    example_number: '9.2'
+    extraction: deep
+  description: 5ai7 s/w/i in longitudinal waves
+  domain: marine
+  topic: dynamics
+  expected_output:
+    value: 1.0
+    unit: that is forces
+  input_count: 13
+  quality_score: 85
+  quality_tier: gold
+- id: WE-B-0059
+  source:
+    book: Ship-Hydrostatics-and-Stability-Biran
+    example_number: '11.1'
+    extraction: deep
+  description: Analysis of the flooding calculations of a simple barge
+  domain: marine
+  topic: general
+  expected_output:
+    value: 0.823
+    unit: Lrm
+  input_count: 20
+  quality_score: 85
+  quality_tier: gold
+- id: WE-B-0061
+  source:
+    book: Ship-Hydrostatics-and-Stability-Biran
+    example_number: '2.1'
+    extraction: deep
+  description: Melting ice cube
+  domain: marine
+  topic: general
+  expected_output:
+    value: 12.0
+    unit: T
+  input_count: 19
+  quality_score: 85
+  quality_tier: gold
+- id: WE-B-0062
+  source:
+    book: Ship-Hydrostatics-and-Stability-Biran
+    example_number: '2.7'
+    extraction: deep
+  description: Catamaran stability
+  domain: marine
+  topic: stability
+  expected_output:
+    value: 4.0
+    unit: TTb^
+  input_count: 27
+  quality_score: 85
+  quality_tier: gold
+- id: WE-B-0072
+  source:
+    book: Ship-Hydrostatics-and-Stability-Biran
+    example_number: '9.1'
+    extraction: deep
+  description: Parametric resonance in ship stability
+  domain: marine
+  topic: stability
+  expected_output:
+    value: 1.0
+    unit: that is forces
+  input_count: 12
+  quality_score: 85
+  quality_tier: gold
+- id: WE-B-0076
+  source:
+    book: Theoretical-Naval-Architecture-Attwood-1899
+    example_number: p17
+    extraction: deep
+  description: 'A curvi-
+
+    linear area has ordinatesatacommondistanceapart of2feet, thelengths
+
+    bei'
+  domain: marine
+  topic: general
+  expected_output:
+    value: 2.0
+    unit: EF
+  input_count: 14
+  quality_score: 85
+  quality_tier: gold
+- id: WE-B-0080
+  source:
+    book: Theoretical-Naval-Architecture-Attwood-1899
+    example_number: p68
+    extraction: deep
+  description: 'A coal-bunker has sections 17'' 6" apart, and the areas of
+
+    these sections, commen'
+  domain: marine
+  topic: general
+  expected_output:
+    value: 11452.0
+    unit: X
+  input_count: 15
+  quality_score: 85
+  quality_tier: gold
+- id: WE-B-0084
+  source:
+    book: Theoretical-Naval-Architecture-Attwood-1899
+    example_number: p114
+    extraction: deep
+  description: 'lighter is in the form of a box, 120 feet long, 30 feet
+
+    broad, andfloatsat adrau'
+  domain: marine
+  topic: general
+  expected_output:
+    value: 75.0
+    unit: f
+  input_count: 16
+  quality_score: 85
+  quality_tier: gold
+- id: WE-B-0085
+  source:
+    book: Theoretical-Naval-Architecture-Attwood-1899
+    example_number: p135
+    extraction: deep
+  description: 'A vessel has a compartmentof the double bottom at the
+
+    middleline, 60feetlongand'
+  domain: marine
+  topic: general
+  expected_output:
+    value: 5.0
+    unit: X
+  input_count: 10
+  quality_score: 85
+  quality_tier: gold
+- id: WE-B-0091
+  source:
+    book: Theoretical-Naval-Architecture-Attwood-1899
+    example_number: p15
+    extraction: deep
+  description: 'A curvi-
+
+    linear area has ordinatesatacommondistanceapart of2feet, thelengths
+
+    bei'
+  domain: marine
+  topic: general
+  expected_output:
+    value: 2.0
+    unit: EF
+  input_count: 19
+  quality_score: 85
+  quality_tier: gold
+- id: WE-B-0092
+  source:
+    book: Theoretical-Naval-Architecture-Attwood-1899
+    example_number: p16
+    extraction: deep
+  description: 'A curvi-
+
+    linear area has ordinatesatacommondistanceapart of2feet, thelengths
+
+    bei'
+  domain: marine
+  topic: general
+  expected_output:
+    value: 117.0
+    unit: X f
+  input_count: 21
+  quality_score: 85
+  quality_tier: gold
+- id: WE-B-0108
+  source:
+    book: Theoretical-Naval-Architecture-Attwood-1899
+    example_number: p66
+    extraction: deep
+  description: 'Findtheareaand positionofcentreofgravityofaquadrant
+
+    of a circle with reference t'
+  domain: marine
+  topic: general
+  expected_output:
+    value: 11452.0
+    unit: X
+  input_count: 30
+  quality_score: 85
+  quality_tier: gold
+- id: WE-B-0109
+  source:
+    book: Theoretical-Naval-Architecture-Attwood-1899
+    example_number: p67
+    extraction: deep
+  description: 'Findtheareaand positionofcentreofgravityofaquadrant
+
+    of a circle with reference t'
+  domain: marine
+  topic: general
+  expected_output:
+    value: 11452.0
+    unit: X
+  input_count: 21
+  quality_score: 85
+  quality_tier: gold
+- id: WE-B-0114
+  source:
+    book: Theoretical-Naval-Architecture-Attwood-1899
+    example_number: p106
+    extraction: deep
+  description: 'Two squaresof sidea arejoined to form a rectangle. The
+
+    I ofeachsquareabout the c'
+  domain: marine
+  topic: general
+  expected_output:
+    value: 2.0
+    unit: a
+  input_count: 10
+  quality_score: 85
+  quality_tier: gold
+- id: WE-B-0115
+  source:
+    book: Theoretical-Naval-Architecture-Attwood-1899
+    example_number: p107
+    extraction: deep
+  description: 'Two squaresof sidea arejoined to form a rectangle. The
+
+    I ofeachsquareabout the c'
+  domain: marine
+  topic: general
+  expected_output:
+    value: 2.0
+    unit: a
+  input_count: 15
+  quality_score: 85
+  quality_tier: gold
+- id: WE-B-0116
+  source:
+    book: Theoretical-Naval-Architecture-Attwood-1899
+    example_number: p109
+    extraction: deep
+  description: 'Having NgNiven the moment of inertia of the triangle in
+
+    Fig. 52about theaxis thr'
+  domain: marine
+  topic: structural
+  expected_output:
+    value: 280.0
+    unit: x
+  input_count: 19
+  quality_score: 85
+  quality_tier: gold
+- id: WE-B-0117
+  source:
+    book: Theoretical-Naval-Architecture-Attwood-1899
+    example_number: p112
+    extraction: deep
+  description: 'lighter is in the form of a box, 120 feet long, 30 feet
+
+    broad, andfloatsat adrau'
+  domain: marine
+  topic: general
+  expected_output:
+    value: 75.0
+    unit: f
+  input_count: 22
+  quality_score: 85
+  quality_tier: gold
+- id: WE-B-0118
+  source:
+    book: Theoretical-Naval-Architecture-Attwood-1899
+    example_number: p113
+    extraction: deep
+  description: 'lighter is in the form of a box, 120 feet long, 30 feet
+
+    broad, andfloatsat adrau'
+  domain: marine
+  topic: general
+  expected_output:
+    value: 75.0
+    unit: f
+  input_count: 23
+  quality_score: 85
+  quality_tier: gold
+- id: WE-B-0119
+  source:
+    book: Theoretical-Naval-Architecture-Attwood-1899
+    example_number: p133
+    extraction: deep
+  description: 'A vessel has a compartmentof the double bottom at the
+
+    middleline, 60feetlongand'
+  domain: marine
+  topic: general
+  expected_output:
+    value: 5.0
+    unit: X
+  input_count: 17
+  quality_score: 85
+  quality_tier: gold
+- id: WE-B-0120
+  source:
+    book: Theoretical-Naval-Architecture-Attwood-1899
+    example_number: p134
+    extraction: deep
+  description: 'A vessel has a compartmentof the double bottom at the
+
+    middleline, 60feetlongand'
+  domain: marine
+  topic: general
+  expected_output:
+    value: 5.0
+    unit: X
+  input_count: 48
+  quality_score: 85
+  quality_tier: gold
+- id: WE-B-0126
+  source:
+    book: Theoretical-Naval-Architecture-Attwood-1899
+    example_number: p222
+    extraction: deep
+  description: '-Find the horse-power which must be transmitted through
+
+    a tow-ropein order to to'
+  domain: marine
+  topic: general
+  expected_output:
+    value: 332.0
+    unit: Effective
+  input_count: 33
+  quality_score: 85
+  quality_tier: gold
+- id: WE-B-0127
+  source:
+    book: Theoretical-Naval-Architecture-Attwood-1899
+    example_number: p223
+    extraction: deep
+  description: '-Find the horse-power which must be transmitted through
+
+    a tow-ropein order to to'
+  domain: marine
+  topic: general
+  expected_output:
+    value: 332.0
+    unit: Effective
+  input_count: 29
+  quality_score: 85
+  quality_tier: gold
+- id: WE-B-0132
+  source:
+    book: USNA-EN400-Principles-Ship-Performance-2020
+    example_number: '1.4'
+    extraction: deep
+  description: A beam 25 ft in length is supported at both ends as shown below
+  domain: marine
+  topic: general
+  expected_output:
+    value: 200.0
+    unit: lb the reaction force at
+  input_count: 19
+  quality_score: 85
+  quality_tier: gold
+- id: WE-B-0138
+  source:
+    book: USNA-EN400-Principles-Ship-Performance-2020
+    example_number: '2.6'
+    extraction: deep
+  description: The offsets for the 16-ft waterline of a particular ship with five stations are given
+  domain: marine
+  topic: general
+  expected_output:
+    value: 25.1
+    unit: ft aft of midships
+  input_count: 15
+  quality_score: 85
+  quality_tier: gold
+- id: WE-B-0141
+  source:
+    book: USNA-EN400-Principles-Ship-Performance-2020
+    example_number: '3.3'
+    extraction: deep
+  description: An FFG 7 ship has a displacement of 4092 LT, and an initial transverse center of
+  domain: marine
+  topic: hydrostatics
+  expected_output:
+    value: 1.61
+    unit: 'ft to starboard of centerline
+
+      new'
+  input_count: 15
+  quality_score: 85
+  quality_tier: gold
+- id: WE-B-0154
+  source:
+    book: USNA-EN400-Principles-Ship-Performance-2020
+    example_number: '7.2'
+    extraction: deep
+  description: A ship 250 feet in length is traveling at 15 knots in salt water ℛat 𝑛𝑛 59°F (ν =
+  domain: marine
+  topic: general
+  expected_output:
+    value: 4.949
+    unit: x
+  input_count: 17
+  quality_score: 85
+  quality_tier: gold
+- id: WE-B-0156
+  source:
+    book: USNA-EN400-Principles-Ship-Performance-2020
+    example_number: '8.1'
+    extraction: deep
+  description: A ship traveling at 20 knots on a course of 120 degrees is encountering waves
+  domain: marine
+  topic: dynamics
+  expected_output:
+    value: 0.38
+    unit: 'rad /s
+
+      e'
+  input_count: 17
+  quality_score: 85
+  quality_tier: gold
+- id: WE-B-0159
+  source:
+    book: USNA-EN400-Principles-Ship-Performance-2020
+    example_number: '10.3'
+    extraction: deep
+  description: A submerged submarine weighs 7200 LT with KB = 15 ft, KG = 13.5 ft
+  domain: marine
+  topic: general
+  expected_output:
+    value: 12000.0
+    unit: lb pumped from
+  input_count: 10
+  quality_score: 85
+  quality_tier: gold
+- id: WE-B-0001
+  source:
+    book: DNV-RP-C205-Environmental-Conditions-Loads-2007
+    example_number: '100'
+    extraction: deep
+  description: year value for H and the
+  domain: marine
+  topic: general
+  expected_output:
+    value: 2922.0
+  input_count: 31
+  quality_score: 80
+  quality_tier: gold
+- id: WE-B-0030
+  source:
+    book: Introduction-to-Naval-Architecture-Tupper-1996
+    example_number: '4.4'
+    extraction: deep
+  description: Using the tabulated values of GZ from the previous example, determine the dynami
+  domain: marine
+  topic: general
+  expected_output:
+    value: 5.924
+    unit: Influence of wind on stability
+  input_count: 6
+  quality_score: 80
+  quality_tier: gold
+- id: WE-B-0039
+  source:
+    book: Ship-Hydrostatics-and-Stability-2ndEd
+    example_number: '125'
+    extraction: deep
+  description: 5.7 Exercises 125 5.1 Introduction Chapter4dealtwithhullpropertiescalculatedasfu
+  domain: marine
+  topic: general
+  expected_output:
+    value: 3.0
+  input_count: 48
+  quality_score: 80
+  quality_tier: gold
+- id: WE-B-0041
+  source:
+    book: Ship-Hydrostatics-and-Stability-Biran
+    example_number: '2.3'
+    extraction: deep
+  description: Figure 2. 1 6(a) shows a cone floating top-down in water. The diameter of the ba
+  domain: marine
+  topic: general
+  expected_output:
+    value: 0.2267
+  input_count: 10
+  quality_score: 80
+  quality_tier: gold
+- id: WE-B-0045
+  source:
+    book: Ship-Hydrostatics-and-Stability-Biran
+    example_number: '3.1'
+    extraction: deep
+  description: In this example, we consider the integral { L
+  domain: marine
+  topic: general
+  expected_output:
+    value: 2.57
+  input_count: 22
+  quality_score: 80
+  quality_tier: gold
+- id: WE-B-0046
+  source:
+    book: Ship-Hydrostatics-and-Stability-Biran
+    example_number: '4.1'
+    extraction: deep
+  description: the displacement of geometrically similar hulls
+  domain: marine
+  topic: hydrostatics
+  expected_output:
+    value: 3.0
+  input_count: 16
+  quality_score: 80
+  quality_tier: gold
+- id: WE-B-0052
+  source:
+    book: Ship-Hydrostatics-and-Stability-Biran
+    example_number: '7.1'
+    extraction: deep
+  description: Least-squares fit of the results of an inclining experiment
+  domain: marine
+  topic: stability
+  expected_output:
+    value: 62547.7106
+  input_count: 15
+  quality_score: 80
+  quality_tier: gold
+- id: WE-B-0053
+  source:
+    book: Ship-Hydrostatics-and-Stability-Biran
+    example_number: '8.2'
+    extraction: deep
+  description: Application of the IMO weather criterion for cargo and pas-
+  domain: marine
+  topic: general
+  expected_output:
+    value: 0.824
+  input_count: 33
+  quality_score: 80
+  quality_tier: gold
+- id: WE-B-0054
+  source:
+    book: Ship-Hydrostatics-and-Stability-Biran
+    example_number: '8.3'
+    extraction: deep
+  description: The 1MO turning criterion
+  domain: marine
+  topic: general
+  expected_output:
+    value: 26251.0
+  input_count: 36
+  quality_score: 80
+  quality_tier: gold
+- id: WE-B-0055
+  source:
+    book: Ship-Hydrostatics-and-Stability-Biran
+    example_number: '8.5'
+    extraction: deep
+  description: The turning criterion of the US Navy
+  domain: marine
+  topic: general
+  expected_output:
+    value: 0.15
+  input_count: 37
+  quality_score: 80
+  quality_tier: gold
+- id: WE-B-0060
+  source:
+    book: Ship-Hydrostatics-and-Stability-Biran
+    example_number: '13.1'
+    extraction: deep
+  description: Cubic Bezier curve
+  domain: marine
+  topic: general
+  expected_output:
+    value: 3.0
+  input_count: 11
+  quality_score: 80
+  quality_tier: gold
+- id: WE-B-0063
+  source:
+    book: Ship-Hydrostatics-and-Stability-Biran
+    example_number: '3.2'
+    extraction: deep
+  description: Find the trapezoidal multipliers corresponding to integration over the set of st
+  domain: marine
+  topic: general
+  expected_output:
+    value: 2.0
+  input_count: 15
+  quality_score: 80
+  quality_tier: gold
+- id: WE-B-0064
+  source:
+    book: Ship-Hydrostatics-and-Stability-Biran
+    example_number: '3.3'
+    extraction: deep
+  description: Find the Simpson's multipliers corresponding to integration over the set of stat
+  domain: marine
+  topic: general
+  expected_output:
+    value: 2.0
+  input_count: 14
+  quality_score: 80
+  quality_tier: gold
+- id: WE-B-0065
+  source:
+    book: Ship-Hydrostatics-and-Stability-Biran
+    example_number: '4.6'
+    extraction: deep
+  description: Using the data of Ship Lido 9 plot a figure in which you can verify the property
+  domain: marine
+  topic: general
+  expected_output:
+    value: 4.0
+  input_count: 14
+  quality_score: 80
+  quality_tier: gold
+- id: WE-B-0070
+  source:
+    book: Ship-Hydrostatics-and-Stability-Biran
+    example_number: '8.1'
+    extraction: deep
+  description: Application of the IMO general requirements for cargo and
+  domain: marine
+  topic: general
+  expected_output:
+    value: 0.824
+  input_count: 132
+  quality_score: 80
+  quality_tier: gold
+- id: WE-B-0071
+  source:
+    book: Ship-Hydrostatics-and-Stability-Biran
+    example_number: '8.4'
+    extraction: deep
+  description: and redo the calculations assuming a wind speed of
+  domain: marine
+  topic: general
+  expected_output:
+    value: 0.15
+  input_count: 68
+  quality_score: 80
+  quality_tier: gold
+- id: WE-B-0074
+  source:
+    book: Ship-Hydrostatics-and-Stability-Biran
+    example_number: '12.1'
+    extraction: deep
+  description: Simulating a Frahm vibration absorber
+  domain: marine
+  topic: general
+  expected_output:
+    value: 100.0
+  input_count: 24
+  quality_score: 80
+  quality_tier: gold
+- id: WE-B-0075
+  source:
+    book: Theoretical-Naval-Architecture-Attwood-1899
+    example_number: p11
+    extraction: deep
+  description: 'Anarmourplateis of the form of atrapezoid with parallel
+
+    sides 8'' 3" and 8'' 9" lo'
+  domain: marine
+  topic: structural
+  expected_output:
+    value: 11.0
+  input_count: 17
+  quality_score: 80
+  quality_tier: gold
+- id: WE-B-0077
+  source:
+    book: Theoretical-Naval-Architecture-Attwood-1899
+    example_number: p24
+    extraction: deep
+  description: 'Tofind theareaof a figure bounded bya plane curve and
+
+    tworadii90 apart,thelength'
+  domain: marine
+  topic: general
+  expected_output:
+    value: 9.0
+  input_count: 16
+  quality_score: 80
+  quality_tier: gold
+- id: WE-B-0079
+  source:
+    book: Theoretical-Naval-Architecture-Attwood-1899
+    example_number: p38
+    extraction: deep
+  description: 'A vesselhastobe400feetlong,42feetbeam, 17feetdraught,
+
+    and 13\knotsspeed. Whatwou'
+  domain: marine
+  topic: general
+  expected_output:
+    value: 3.0
+  input_count: 24
+  quality_score: 80
+  quality_tier: gold
+- id: WE-B-0081
+  source:
+    book: Theoretical-Naval-Architecture-Attwood-1899
+    example_number: p71
+    extraction: deep
+  description: 'A vessel 13'' 3" mean draught has her C.B. 5-34 feet below
+
+    J~/ \V LJ
+
+    Here theprop'
+  domain: marine
+  topic: general
+  expected_output:
+    value: 8.0
+  input_count: 16
+  quality_score: 80
+  quality_tier: gold
+- id: WE-B-0087
+  source:
+    book: Theoretical-Naval-Architecture-Attwood-1899
+    example_number: p199
+    extraction: deep
+  description: 'The beams of a deck are 3 feet apart, and weigh 22 Ib.s.
+
+    perfoot run ; the deckp'
+  domain: marine
+  topic: general
+  expected_output:
+    value: 7.0
+  input_count: 24
+  quality_score: 80
+  quality_tier: gold
+- id: WE-B-0088
+  source:
+    book: Theoretical-Naval-Architecture-Attwood-1899
+    example_number: p260
+    extraction: deep
+  description: 'A rudder is 243^ square feet in area, and the centre of
+
+    pressureisestimated tobe'
+  domain: marine
+  topic: general
+  expected_output:
+    value: 15.0
+  input_count: 25
+  quality_score: 80
+  quality_tier: gold
+- id: WE-B-0089
+  source:
+    book: Theoretical-Naval-Architecture-Attwood-1899
+    example_number: p9
+    extraction: deep
+  description: 'Anarmourplateis of the form of atrapezoid with parallel
+
+    sides 8'' 3" and 8'' 9" lo'
+  domain: marine
+  topic: structural
+  expected_output:
+    value: 11.0
+  input_count: 25
+  quality_score: 80
+  quality_tier: gold
+- id: WE-B-0090
+  source:
+    book: Theoretical-Naval-Architecture-Attwood-1899
+    example_number: p10
+    extraction: deep
+  description: 'Anarmourplateis of the form of atrapezoid with parallel
+
+    sides 8'' 3" and 8'' 9" lo'
+  domain: marine
+  topic: structural
+  expected_output:
+    value: 3.0
+  input_count: 27
+  quality_score: 80
+  quality_tier: gold
+- id: WE-B-0093
+  source:
+    book: Theoretical-Naval-Architecture-Attwood-1899
+    example_number: p18
+    extraction: deep
+  description: 'A cur-
+
+    vilinear area has ordinates at a common distance apart of 2 feet, the
+
+    len'
+  domain: marine
+  topic: general
+  expected_output:
+    value: 103.0
+  input_count: 24
+  quality_score: 80
+  quality_tier: gold
+- id: WE-B-0094
+  source:
+    book: Theoretical-Naval-Architecture-Attwood-1899
+    example_number: p19
+    extraction: deep
+  description: 'A cur-
+
+    vilinear area has ordinates at a common distance apart of 2 feet, the
+
+    len'
+  domain: marine
+  topic: general
+  expected_output:
+    value: 22.0
+  input_count: 27
+  quality_score: 80
+  quality_tier: gold
+- id: WE-B-0095
+  source:
+    book: Theoretical-Naval-Architecture-Attwood-1899
+    example_number: p22
+    extraction: deep
+  description: 'Tofind theareaof a figure bounded bya plane curve and
+
+    tworadii90 apart,thelength'
+  domain: marine
+  topic: general
+  expected_output:
+    value: 9.0
+  input_count: 20
+  quality_score: 80
+  quality_tier: gold
+- id: WE-B-0098
+  source:
+    book: Theoretical-Naval-Architecture-Attwood-1899
+    example_number: p34
+    extraction: deep
+  description: 'The midship section of a vessel is 68 feet broad at its
+
+    broadestpart, andthedrau'
+  domain: marine
+  topic: general
+  expected_output:
+    value: 1768.0
+  input_count: 17
+  quality_score: 80
+  quality_tier: gold
+- id: WE-B-0099
+  source:
+    book: Theoretical-Naval-Architecture-Attwood-1899
+    example_number: p35
+    extraction: deep
+  description: 'The midship section of a vessel is 68 feet broad at its
+
+    broadestpart, andthedrau'
+  domain: marine
+  topic: general
+  expected_output:
+    value: 59.0
+  input_count: 29
+  quality_score: 80
+  quality_tier: gold
+- id: WE-B-0100
+  source:
+    book: Theoretical-Naval-Architecture-Attwood-1899
+    example_number: p37
+    extraction: deep
+  description: 'A vesselhastobe400feetlong,42feetbeam, 17feetdraught,
+
+    and 13\knotsspeed. Whatwou'
+  domain: marine
+  topic: general
+  expected_output:
+    value: 3.0
+  input_count: 37
+  quality_score: 80
+  quality_tier: gold
+- id: WE-B-0101
+  source:
+    book: Theoretical-Naval-Architecture-Attwood-1899
+    example_number: p59
+    extraction: deep
+  description: 'A midship section has semi-ordinates, l'' 6" apart, com-
+
+    mencing at the L.W.L., o'
+  domain: marine
+  topic: general
+  expected_output:
+    value: 3.0
+  input_count: 24
+  quality_score: 80
+  quality_tier: gold
+- id: WE-B-0102
+  source:
+    book: Theoretical-Naval-Architecture-Attwood-1899
+    example_number: p60
+    extraction: deep
+  description: 'A midship section has semi-ordinates, l'' 6" apart, com-
+
+    mencing at the L.W.L., o'
+  domain: marine
+  topic: general
+  expected_output:
+    value: 3.0
+  input_count: 31
+  quality_score: 80
+  quality_tier: gold
+- id: WE-B-0103
+  source:
+    book: Theoretical-Naval-Architecture-Attwood-1899
+    example_number: p61
+    extraction: deep
+  description: 'The semi-ordinates of the loadwater-plane of avessel 395
+
+    feet long are, commenci'
+  domain: marine
+  topic: general
+  expected_output:
+    value: 1.0
+  input_count: 34
+  quality_score: 80
+  quality_tier: gold
+- id: WE-B-0104
+  source:
+    book: Theoretical-Naval-Architecture-Attwood-1899
+    example_number: p62
+    extraction: deep
+  description: 'The semi-ordinates of the loadwater-plane of avessel 395
+
+    feet long are, commenci'
+  domain: marine
+  topic: general
+  expected_output:
+    value: 1.0
+  input_count: 28
+  quality_score: 80
+  quality_tier: gold
+- id: WE-B-0105
+  source:
+    book: Theoretical-Naval-Architecture-Attwood-1899
+    example_number: p63
+    extraction: deep
+  description: 'An athwartshipcoal-bunker is6 feet long in a fore-and-aft
+
+    direction. Itis bounde'
+  domain: marine
+  topic: general
+  expected_output:
+    value: 1.0
+  input_count: 26
+  quality_score: 80
+  quality_tier: gold
+- id: WE-B-0106
+  source:
+    book: Theoretical-Naval-Architecture-Attwood-1899
+    example_number: p64
+    extraction: deep
+  description: 'An athwartshipcoal-bunker is6 feet long in a fore-and-aft
+
+    direction. Itis bounde'
+  domain: marine
+  topic: general
+  expected_output:
+    value: 7.0
+  input_count: 22
+  quality_score: 80
+  quality_tier: gold
+- id: WE-B-0107
+  source:
+    book: Theoretical-Naval-Architecture-Attwood-1899
+    example_number: p65
+    extraction: deep
+  description: 'An athwartshipcoal-bunker is6 feet long in a fore-and-aft
+
+    direction. Itis bounde'
+  domain: marine
+  topic: general
+  expected_output:
+    value: 7.0
+  input_count: 23
+  quality_score: 80
+  quality_tier: gold
+- id: WE-B-0110
+  source:
+    book: Theoretical-Naval-Architecture-Attwood-1899
+    example_number: p69
+    extraction: deep
+  description: 'Theunderwaterportion of avessel is divided by transverse
+
+    sections 10feetapartoft'
+  domain: marine
+  topic: general
+  expected_output:
+    value: 8.0
+  input_count: 29
+  quality_score: 80
+  quality_tier: gold
+- id: WE-B-0111
+  source:
+    book: Theoretical-Naval-Architecture-Attwood-1899
+    example_number: p70
+    extraction: deep
+  description: 'Theunderwaterportion of avessel is divided by transverse
+
+    sections 10feetapartoft'
+  domain: marine
+  topic: general
+  expected_output:
+    value: 8.0
+  input_count: 32
+  quality_score: 80
+  quality_tier: gold
+- id: WE-B-0123
+  source:
+    book: Theoretical-Naval-Architecture-Attwood-1899
+    example_number: p151
+    extraction: deep
+  description: 'A vessel 300 feet long and 2200 tons displacement has a
+
+    longitudinal metacentric'
+  domain: marine
+  topic: hydrostatics
+  expected_output:
+    value: 14.0
+  input_count: 30
+  quality_score: 80
+  quality_tier: gold
+- id: WE-B-0124
+  source:
+    book: Theoretical-Naval-Architecture-Attwood-1899
+    example_number: p197
+    extraction: deep
+  description: 'The beams of a deck are 3 feet apart, and weigh 22 Ib.s.
+
+    perfoot run ; the deckp'
+  domain: marine
+  topic: general
+  expected_output:
+    value: 7.0
+  input_count: 39
+  quality_score: 80
+  quality_tier: gold
+- id: WE-B-0125
+  source:
+    book: Theoretical-Naval-Architecture-Attwood-1899
+    example_number: p198
+    extraction: deep
+  description: 'The beams of a deck are 3 feet apart, and weigh 22 Ib.s.
+
+    perfoot run ; the deckp'
+  domain: marine
+  topic: general
+  expected_output:
+    value: 7.0
+  input_count: 39
+  quality_score: 80
+  quality_tier: gold
+- id: WE-B-0128
+  source:
+    book: Theoretical-Naval-Architecture-Attwood-1899
+    example_number: p258
+    extraction: deep
+  description: 'A rudder is 243^ square feet in area, and the centre of
+
+    pressureisestimated tobe'
+  domain: marine
+  topic: general
+  expected_output:
+    value: 15.0
+  input_count: 34
+  quality_score: 80
+  quality_tier: gold
+- id: WE-B-0129
+  source:
+    book: Theoretical-Naval-Architecture-Attwood-1899
+    example_number: p259
+    extraction: deep
+  description: 'A rudder is 243^ square feet in area, and the centre of
+
+    pressureisestimated tobe'
+  domain: marine
+  topic: general
+  expected_output:
+    value: 15.0
+  input_count: 33
+  quality_score: 80
+  quality_tier: gold
+- id: WE-B-0131
+  source:
+    book: USNA-EN400-Principles-Ship-Performance-2020
+    example_number: '1.3'
+    extraction: deep
+  description: Given the following values of the density of fresh water, find its density at a
+  domain: marine
+  topic: general
+  expected_output:
+    value: 1.93776
+  input_count: 11
+  quality_score: 80
+  quality_tier: gold
+- id: WE-B-0150
+  source:
+    book: USNA-EN400-Principles-Ship-Performance-2020
+    example_number: '5.1'
+    extraction: deep
+  description: A particular mooring line with a diameter of 1.00 inch is under a load of 25,000
+  domain: marine
+  topic: general
+  expected_output:
+    value: 31800.0
+  input_count: 10
+  quality_score: 80
+  quality_tier: gold
+- id: WE-B-0151
+  source:
+    book: USNA-EN400-Principles-Ship-Performance-2020
+    example_number: '5.2'
+    extraction: deep
+  description: Find the strain in a 75 foot cable experiencing an elongation of one inch
+  domain: marine
+  topic: lifting
+  expected_output:
+    value: 1.11
+    unit: x10
+  input_count: 8
+  quality_score: 80
+  quality_tier: gold
+- id: WE-B-0152
+  source:
+    book: USNA-EN400-Principles-Ship-Performance-2020
+    example_number: '5.3'
+    extraction: deep
+  description: Stress-Strain Diagram
+  domain: marine
+  topic: structural
+  expected_output:
+    value: 72890.0
+  input_count: 25
+  quality_score: 80
+  quality_tier: gold
+- id: WE-B-0160
+  source:
+    book: USNA-EN400-Principles-Ship-Performance-2020
+    example_number: '10.4'
+    extraction: deep
+  description: A submarine weighs 7200 LT and has zero trim
+  domain: marine
+  topic: stability
+  expected_output:
+    value: 12000.0
+    unit: lb pumped from
+  input_count: 8
+  quality_score: 80
+  quality_tier: gold
+- id: WE-B-0035
+  source:
+    book: Marine-Hydrodynamics-Newman-2018
+    example_number: '13'
+    extraction: deep
+  description: )
+  domain: marine
+  topic: general
+  expected_output:
+    value: 1.0
+    unit: /r
+  input_count: 14
+  quality_score: 75
+  quality_tier: silver
+- id: WE-B-0051
+  source:
+    book: Ship-Hydrostatics-and-Stability-Biran
+    example_number: '7'
+    extraction: deep
+  description: 1)
+  domain: marine
+  topic: general
+  expected_output:
+    value: 3.45
+    unit: 'F
+
+      where the results are in m'
+  input_count: 18
+  quality_score: 75
+  quality_tier: silver
+- id: WE-B-0066
+  source:
+    book: Ship-Hydrostatics-and-Stability-Biran
+    example_number: '4.7'
+    extraction: deep
+  description: Show that affine transformations leave the coefficients of form unchanged. In ma
+  domain: marine
+  topic: general
+  expected_output:
+    value: 4.0
+  input_count: 9
+  quality_score: 75
+  quality_tier: silver
+- id: WE-B-0067
+  source:
+    book: Ship-Hydrostatics-and-Stability-Biran
+    example_number: '4.8'
+    extraction: deep
+  description: Show that for affine hulls, the metacentric radius, BM, behaves like B2/T. Stati
+  domain: marine
+  topic: hydrostatics
+  expected_output:
+    value: 4.0
+  input_count: 8
+  quality_score: 75
+  quality_tier: silver
+- id: WE-B-0078
+  source:
+    book: Theoretical-Naval-Architecture-Attwood-1899
+    example_number: p36
+    extraction: deep
+  description: 'The midship section of a vessel is 68 feet broad at its
+
+    broadestpart, andthedrau'
+  domain: marine
+  topic: general
+  expected_output:
+    value: 1768.0
+  input_count: 8
+  quality_score: 75
+  quality_tier: silver
+- id: WE-B-0083
+  source:
+    book: Theoretical-Naval-Architecture-Attwood-1899
+    example_number: p108
+    extraction: deep
+  description: 'Two squaresof sidea arejoined to form a rectangle. The
+
+    I ofeachsquareabout the c'
+  domain: marine
+  topic: general
+  expected_output:
+    value: 2.0
+    unit: a
+  input_count: 3
+  quality_score: 75
+  quality_tier: silver
+- id: EN400-1.1
+  source:
+    book: USNA-EN400-Principles-Ship-Performance-2020
+    example_number: '1.1'
+    chapter: 1
+    page: 17
+  description: Example 1.1 An object has a mass of 1 slug. Calculate its corresponding weight. Weight = (mass) × (acceleration)
+    Weight
+  domain: marine
+  topic: engineering-fundamentals
+  extracted_values:
+  - value: 1.0
+    unit: slug
+  - value: 1.0
+    unit: slug
+  - value: 32.17
+    unit: ft
+  - value: 1.0
+    unit: lb
+  - value: 32.17
+    unit: ft
+  - value: 32.17
+    unit: lb
+  - value: 3.0
+    unit: lb
+  quality_score: 75
+  quality_tier: gold
+- id: EN400-1.2
+  source:
+    book: USNA-EN400-Principles-Ship-Performance-2020
+    example_number: '1.2'
+    chapter: 1
+    page: 17
+  description: Example 1.2 A ship floating in salt water has a displaced volume of 4,000 ft3. Calculate the ship’s weight
+    in long tons.
+  domain: marine
+  topic: engineering-fundamentals
+  extracted_values:
+  - value: 4000.0
+    unit: ft
+  quality_score: 75
+  quality_tier: gold
+- id: EN400-1.3
+  source:
+    book: USNA-EN400-Principles-Ship-Performance-2020
+    example_number: '1.3'
+    chapter: 1
+    page: 21
+  description: Example 1.3 Given the following values of the density of fresh water, find its density at a temperature of
+    62.7°F. Tempe
+  domain: marine
+  topic: engineering-fundamentals
+  extracted_values:
+  - value: 62.7
+    unit: °F
+  - value: 62.7
+    unit: °F
+  - value: 62.7
+    unit: °F
+  - value: 62.0
+    unit: °F
+  - value: 62.7
+    unit: °F
+  - value: 62.0
+    unit: °F
+  - value: 63.0
+    unit: °F
+  - value: 62.0
+    unit: °F
+  - value: 63.0
+    unit: °F
+  - value: 62.0
+    unit: °F
+  - value: 62.7
+    unit: °F
+  - value: 2.0
+    unit: lb
+  - value: 62.7
+    unit: °F
+  - value: 4.0
+    unit: ft
+  - value: 62.7
+    unit: °F
+  quality_score: 75
+  quality_tier: gold
+- id: EN400-1.4
+  source:
+    book: USNA-EN400-Principles-Ship-Performance-2020
+    example_number: '1.4'
+    chapter: 1
+    page: 26
+  description: Example 1.4 A beam 25 ft in length is supported at both ends as shown below. One end of the beam is pinned
+    (fixed) in pl
+  domain: marine
+  topic: engineering-fundamentals
+  extracted_values:
+  - value: 25.0
+    unit: ft
+  - value: 1000.0
+    unit: lb
+  - value: 20.0
+    unit: ft
+  - value: 20.0
+    unit: ft
+  - value: 1000.0
+    unit: lb
+  - value: 25.0
+    unit: ft
+  - value: 20.0
+    unit: ft
+  - value: 1000.0
+    unit: lb
+  - value: 25.0
+    unit: ft
+  - value: 1000.0
+    unit: lb
+  - value: 1000.0
+    unit: lb
+  - value: 20.0
+    unit: ft
+  - value: 25.0
+    unit: ft
+  - value: 1000.0
+    unit: lb
+  - value: 20.0
+    unit: ft
+  - value: 800.0
+    unit: lb
+  - value: 800.0
+    unit: lb
+  - value: 25.0
+    unit: ft
+  - value: 1000.0
+    unit: lb
+  - value: 1000.0
+    unit: lb
+  quality_score: 75
+  quality_tier: gold
+- id: EN400-1.5
+  source:
+    book: USNA-EN400-Principles-Ship-Performance-2020
+    example_number: '1.5'
+    chapter: 1
+    page: 33
+  description: Example 1.5 Calculate the second moment of area of the rectangle about the x-axis. y y 10 ft c 4 ft x c 16
+    ft 9 ft x Fig
+  domain: marine
+  topic: engineering-fundamentals
+  extracted_values:
+  - value: 10.0
+    unit: ft
+  - value: 4.0
+    unit: ft
+  - value: 16.0
+    unit: ft
+  - value: 9.0
+    unit: ft
+  - value: 16.0
+    unit: ft
+  - value: 4.0
+    unit: ft
+  - value: 64.0
+    unit: ft
+  quality_score: 75
+  quality_tier: gold
+- id: EN400-2.1
+  source:
+    book: USNA-EN400-Principles-Ship-Performance-2020
+    example_number: '2.1'
+    chapter: 2
+    page: 49
+  description: Example 2.1 Calculate the buoyant force being experienced by a small boat with a submerged volume of 20 ft3
+    when floatin
+  domain: marine
+  topic: hull-form-geometry
+  extracted_values:
+  - value: 20.0
+    unit: ft
+  - value: 1.99
+    unit: lb
+  - value: 1.99
+    unit: lbs
+  - value: 2.0
+    unit: ft
+  - value: 32.17
+    unit: ft
+  - value: 20.0
+    unit: ft
+  - value: 1280.0
+    unit: lb
+  quality_score: 75
+  quality_tier: gold
+- id: EN400-2.2
+  source:
+    book: USNA-EN400-Principles-Ship-Performance-2020
+    example_number: '2.2'
+    chapter: 2
+    page: 49
+  description: Example 2.2 What is the submerged volume of a ship experiencing a buoyant force of 4000 LT floating in fresh
+    water? (ρ =
+  domain: marine
+  topic: hull-form-geometry
+  extracted_values:
+  - value: 4000.0
+    unit: LT
+  - value: 1.94
+    unit: lb
+  - value: 1.0
+    unit: LT
+  - value: 2240.0
+    unit: lb
+  - value: 4000.0
+    unit: LT
+  - value: 2240.0
+    unit: lb
+  - value: 2.0
+    unit: ft
+  - value: 32.17
+    unit: ft
+  - value: 143570.0
+    unit: ft
+  quality_score: 75
+  quality_tier: gold
+- id: EN400-2.3
+  source:
+    book: USNA-EN400-Principles-Ship-Performance-2020
+    example_number: '2.3'
+    chapter: 2
+    page: 70
+  description: Example 2.3 The offsets for the 16-ft waterline of a particular ship with five stations are given below. The
+    length betw
+  domain: marine
+  topic: hull-form-geometry
+  extracted_values:
+  - value: 0.39
+    unit: ft
+  - value: 12.92
+    unit: ft
+  - value: 20.97
+    unit: ft
+  - value: 21.71
+    unit: ft
+  - value: 12.58
+    unit: ft
+  - value: 326.4
+    unit: ft
+  - value: 81.6
+    unit: ft
+  - value: 81.6
+    unit: ft
+  - value: 10523.0
+    unit: ft
+  quality_score: 75
+  quality_tier: gold
+- id: EN400-2.4
+  source:
+    book: USNA-EN400-Principles-Ship-Performance-2020
+    example_number: '2.4'
+    chapter: 2
+    page: 72
+  description: Example 2.4 The offsets for station 5 of a particular ship are given below. Compute the sectional area for
+    station 5 up
+  domain: marine
+  topic: hull-form-geometry
+  extracted_values:
+  - value: 0.0
+    unit: ft
+  - value: 4.0
+    unit: ft
+  - value: 8.0
+    unit: ft
+  - value: 12.0
+    unit: ft
+  - value: 16.0
+    unit: ft
+  - value: 0.58
+    unit: ft
+  - value: 14.48
+    unit: ft
+  - value: 19.91
+    unit: ft
+  - value: 21.88
+    unit: ft
+  - value: 22.59
+    unit: ft
+  - value: 4.0
+    unit: ft
+  - value: 556.0
+    unit: ft
+  quality_score: 75
+  quality_tier: gold
+- id: EN400-2.5
+  source:
+    book: USNA-EN400-Principles-Ship-Performance-2020
+    example_number: '2.5'
+    chapter: 2
+    page: 74
+  description: Example 2.5 The full sectional areas for a particular ship are given below. Compute the submerged volume at
+    the 16 foot
+  domain: marine
+  topic: hull-form-geometry
+  extracted_values:
+  - value: 16.0
+    unit: ft
+  - value: 140.0
+    unit: ft
+  - value: 35.0
+    unit: ft
+  - value: 35.0
+    unit: ft
+  - value: 33383.0
+    unit: ft
+  quality_score: 75
+  quality_tier: gold
+- id: EN400-2.6
+  source:
+    book: USNA-EN400-Principles-Ship-Performance-2020
+    example_number: '2.6'
+    chapter: 2
+    page: 76
+  description: Example 2.6 The offsets for the 16-ft waterline of a particular ship with five stations are given below. The
+    length betw
+  domain: marine
+  topic: hull-form-geometry
+  extracted_values:
+  - value: 0.39
+    unit: ft
+  - value: 12.92
+    unit: ft
+  - value: 20.97
+    unit: ft
+  - value: 21.71
+    unit: ft
+  - value: 12.58
+    unit: ft
+  quality_score: 75
+  quality_tier: gold
+- id: EN400-3.1
+  source:
+    book: USNA-EN400-Principles-Ship-Performance-2020
+    example_number: '3.1'
+    chapter: 3
+    page: 100
+  description: Example 3.1 Calculate the submerged volume of a DDG51 floating at a draft of 21.0 ft and level trim in sea
+    water. (ρ= 1.
+  domain: marine
+  topic: hydrostatics
+  extracted_values:
+  - value: 21.0
+    unit: ft
+  - value: 1.99
+    unit: lb
+  - value: 32.17
+    unit: ft
+  - value: 1.0
+    unit: LT
+  - value: 2240.0
+    unit: lb
+  - value: 21.0
+    unit: ft
+  - value: 60.0
+    unit: LT
+  - value: 8640.0
+    unit: LT
+  - value: 8640.0
+    unit: LT
+  quality_score: 75
+  quality_tier: gold
+- id: EN400-3.2
+  source:
+    book: USNA-EN400-Principles-Ship-Performance-2020
+    example_number: '3.2'
+    chapter: 3
+    page: 107
+  description: Example 3.2 An FFG-7 class frigate has an initial displacement of 4092 LT and an initial vertical location
+    of the center
+  domain: marine
+  topic: hydrostatics
+  extracted_values:
+  - value: 4092.0
+    unit: LT
+  - value: 200.0
+    unit: LT
+  - value: 75.0
+    unit: LT
+  - value: 18.9
+    unit: ft
+  - value: 4092.0
+    unit: LT
+  - value: 20.0
+    unit: ft
+  - value: 75.0
+    unit: LT
+  - value: 10.0
+    unit: ft
+  - value: 200.0
+    unit: LT
+  - value: 4092.0
+    unit: LT
+  - value: 75.0
+    unit: LT
+  - value: 200.0
+    unit: LT
+  - value: 77839.0
+    unit: ft
+  - value: 18.5
+    unit: ft
+  - value: 4217.0
+    unit: LT
+  - value: 200.0
+    unit: LT
+  - value: 75.0
+    unit: LT
+  quality_score: 75
+  quality_tier: gold
+- id: EN400-3.3
+  source:
+    book: USNA-EN400-Principles-Ship-Performance-2020
+    example_number: '3.3'
+    chapter: 3
+    page: 110
+  description: Example 3.3 An FFG 7 ship has a displacement of 4092 LT, and an initial transverse center of gravity 2 feet
+    starboard of
+  domain: marine
+  topic: hydrostatics
+  extracted_values:
+  - value: 4092.0
+    unit: LT
+  - value: 75.0
+    unit: LT
+  - value: 50.0
+    unit: LT
+  - value: 2.0
+    unit: ft
+  - value: 4092.0
+    unit: LT
+  - value: 75.0
+    unit: LT
+  - value: 20.0
+    unit: ft
+  - value: 10.0
+    unit: ft
+  - value: 15.0
+    unit: ft
+  - value: 50.0
+    unit: LT
+  - value: 4092.0
+    unit: LT
+  - value: 75.0
+    unit: LT
+  - value: 75.0
+    unit: LT
+  - value: 50.0
+    unit: LT
+  - value: 2.0
+    unit: ft
+  - value: 4092.0
+    unit: LT
+  - value: 75.0
+    unit: LT
+  - value: 20.0
+    unit: ft
+  - value: 10.0
+    unit: ft
+  - value: 15.0
+    unit: ft
+  quality_score: 75
+  quality_tier: gold
+- id: EN400-3.4
+  source:
+    book: USNA-EN400-Principles-Ship-Performance-2020
+    example_number: '3.4'
+    chapter: 3
+    page: 122
+  description: Example 3.4 A ship undergoes an inclining experiment resulting in a graph of “the tangent of the list angle”
+    versus “the
+  domain: marine
+  topic: hydrostatics
+  extracted_values:
+  - value: 28591.0
+    unit: ft
+  - value: 7986.0
+    unit: LT
+  - value: 22.47
+    unit: ft
+  - value: 50.0
+    unit: LT
+  - value: 28591.0
+    unit: LT
+  - value: 7986.0
+    unit: LT
+  - value: 3.58
+    unit: ft
+  - value: 22.47
+    unit: ft
+  - value: 3.58
+    unit: ft
+  - value: 18.89
+    unit: ft
+  - value: 18.89
+    unit: ft
+  - value: 7986.0
+    unit: LT
+  - value: 30.0
+    unit: ft
+  - value: 50.0
+    unit: LT
+  - value: 7986.0
+    unit: LT
+  - value: 50.0
+    unit: LT
+  - value: 150856.0
+    unit: LT
+  - value: 1500.0
+    unit: LT
+  - value: 18.82
+    unit: ft
+  - value: 7936.0
+    unit: LT
+  quality_score: 75
+  quality_tier: gold
+- id: EN400-3.5
+  source:
+    book: USNA-EN400-Principles-Ship-Performance-2020
+    example_number: '3.5'
+    chapter: 3
+    page: 130
+  description: Example 3.5 DDG51 has a mean draft of 20.75 ft and is trimming 1.5 ft by the stern. What is the displacement?
+    Draft (T)
+  domain: marine
+  topic: hydrostatics
+  extracted_values:
+  - value: 20.75
+    unit: ft
+  - value: 1.5
+    unit: ft
+  - value: 1.0
+    unit: ft
+  - value: 20.75
+    unit: ft
+  - value: 8443.0
+    unit: LT
+  - value: 31.1
+    unit: LT
+  - value: 31.1
+    unit: LT
+  - value: 1.5
+    unit: ft
+  - value: 46.7
+    unit: LT
+  - value: 8443.0
+    unit: LT
+  - value: 46.7
+    unit: LT
+  - value: 8490.0
+    unit: LT
+  quality_score: 75
+  quality_tier: gold
+- id: EN400-4.1
+  source:
+    book: USNA-EN400-Principles-Ship-Performance-2020
+    example_number: '4.1'
+    chapter: 4
+    page: 153
+  description: Example 4.1 Draw the intact statical stability curve for the DDG51 assuming a displacement of 8600 LT and a
+    vertical cen
+  domain: marine
+  topic: stability
+  extracted_values:
+  - value: 8600.0
+    unit: LT
+  - value: 23.84
+    unit: ft
+  - value: 20.0
+    unit: degrees
+  - value: 1.95
+    unit: ft
+  - value: 8600.0
+    unit: LT
+  - value: 23.84
+    unit: ft
+  - value: 23.84
+    unit: ft
+  quality_score: 75
+  quality_tier: gold
+- id: EN400-4.2
+  source:
+    book: USNA-EN400-Principles-Ship-Performance-2020
+    example_number: '4.2'
+    chapter: 4
+    page: 157
+  description: Example 4.2 For a DDG51 with a displacement of 8600 LT, a vertical location of the center of gravity of 23.84
+    ft from th
+  domain: marine
+  topic: stability
+  extracted_values:
+  - value: 8600.0
+    unit: LT
+  - value: 23.84
+    unit: ft
+  quality_score: 75
+  quality_tier: gold
+- id: EN400-4.3
+  source:
+    book: USNA-EN400-Principles-Ship-Performance-2020
+    example_number: '4.3'
+    chapter: 4
+    page: 163
+  description: Example 4.3 An FFG-7 displacing 3992 LT and of length 408 ft has KG = 18.5 ft, TCG = 0 ft. It is floating in
+    sea-water a
+  domain: marine
+  topic: stability
+  extracted_values:
+  - value: 3992.0
+    unit: LT
+  - value: 408.0
+    unit: ft
+  - value: 18.5
+    unit: ft
+  - value: 0.0
+    unit: ft
+  - value: 16.0
+    unit: ft
+  - value: 33.0
+    unit: LT
+  - value: 793.4
+    unit: LT
+  - value: 24.03
+    unit: ft
+  - value: 6400.0
+    unit: ft
+  - value: 6.6
+    unit: ft
+  - value: 30.0
+    unit: ft
+  quality_score: 75
+  quality_tier: gold
+- id: EN400-4.4
+  source:
+    book: USNA-EN400-Principles-Ship-Performance-2020
+    example_number: '4.4'
+    chapter: 4
+    page: 170
+  description: Example 4.4 An FFG-7 class ship displacing 4092 LT has KG=18.9 ft and KM=22.49 ft. There is a tank filled with
+    fuel oil
+  domain: marine
+  topic: stability
+  extracted_values:
+  - value: 4092.0
+    unit: LT
+  - value: 18.9
+    unit: ft
+  - value: 22.49
+    unit: ft
+  - value: 1.5924
+    unit: lb
+  - value: 30.0
+    unit: ft
+  - value: 60.0
+    unit: ft
+  - value: 1.9905
+    unit: lb
+  - value: 4092.0
+    unit: LT
+  - value: 2240.0
+    unit: lb
+  - value: 143143.0
+    unit: ft
+  - value: 1.9905
+    unit: lb
+  - value: 32.17
+    unit: ft
+  - value: 60.0
+    unit: ft
+  - value: 30.0
+    unit: ft
+  - value: 135000.0
+    unit: ft
+  - value: 1.5924
+    unit: lb
+  - value: 135000.0
+    unit: ft
+  - value: 0.75
+    unit: ft
+  - value: 1.9905
+    unit: lb
+  - value: 143143.0
+    unit: ft
+  quality_score: 75
+  quality_tier: gold
+- id: EN400-4.5
+  source:
+    book: USNA-EN400-Principles-Ship-Performance-2020
+    example_number: '4.5'
+    chapter: 4
+    page: 171
+  description: Example 4.5 The FFG-7 in
+  domain: marine
+  topic: stability
+  extracted_values:
+  - value: 7.0
+    unit: in
+  quality_score: 75
+  quality_tier: gold
+- id: EN400-5.1
+  source:
+    book: USNA-EN400-Principles-Ship-Performance-2020
+    example_number: '5.1'
+    chapter: 5
+    page: 194
+  description: Example 5.1 A particular mooring line with a diameter of 1.00 inch is under a load of 25,000 lbs. Find the
+    normal stress
+  domain: marine
+  topic: materials
+  extracted_values:
+  - value: 1.0
+    unit: in
+  - value: 25000.0
+    unit: lbs
+  quality_score: 75
+  quality_tier: gold
+- id: EN400-5.2
+  source:
+    book: USNA-EN400-Principles-Ship-Performance-2020
+    example_number: '5.2'
+    chapter: 5
+    page: 195
+  description: 'Example 5.2 Find the strain in a 75 foot cable experiencing an elongation of one inch. Solution: e(ft) 1in
+    (1ft/12in) St'
+  domain: marine
+  topic: materials
+  extracted_values:
+  - value: 1.0
+    unit: in
+  - value: 1.0
+    unit: ft
+  - value: 12.0
+    unit: in
+  - value: 3.0
+    unit: ft
+  - value: 75.0
+    unit: ft
+  quality_score: 75
+  quality_tier: gold
+- id: EN400-5.3
+  source:
+    book: USNA-EN400-Principles-Ship-Performance-2020
+    example_number: '5.3'
+    chapter: 5
+    page: 198
+  description: Example 5.3 A tensile test specimen having a diameter of 0.505 in and a gauge length of 2.000 in was tested
+    to fracture-
+  domain: marine
+  topic: materials
+  extracted_values:
+  - value: 0.505
+    unit: in
+  - value: 2.0
+    unit: in
+  - value: 0.425
+    unit: in
+  quality_score: 75
+  quality_tier: gold
+- id: EN400-7.1
+  source:
+    book: USNA-EN400-Principles-Ship-Performance-2020
+    example_number: '7.1'
+    chapter: 7
+    page: 253
+  description: Example 7.1 Model testing has determined that a ship has an EHP of 30,000 HP at a speed of 19 knots. Assuming
+    a propulsi
+  domain: marine
+  topic: resistance-powering
+  extracted_values:
+  - value: 30000.0
+    unit: HP
+  - value: 19.0
+    unit: knots
+  - value: 19.0
+    unit: knots
+  - value: 30000.0
+    unit: HP
+  - value: 42860.0
+    unit: HP
+  - value: 43000.0
+    unit: HP
+  - value: 19.0
+    unit: knots
+  quality_score: 75
+  quality_tier: gold
+- id: EN400-7.2
+  source:
+    book: USNA-EN400-Principles-Ship-Performance-2020
+    example_number: '7.2'
+    chapter: 7
+    page: 260
+  description: Example 7.2 A ship 250 feet in length is traveling at 15 knots in salt water ℛat 𝑛𝑛 59°F (ν = 1.2791x10-5 ft2/sec).
+    Calc
+  domain: marine
+  topic: resistance-powering
+  extracted_values:
+  - value: 15.0
+    unit: knots
+  - value: 59.0
+    unit: °F
+  - value: 5.0
+    unit: ft
+  - value: 250.0
+    unit: ft
+  - value: 5.0
+    unit: ft
+  quality_score: 75
+  quality_tier: gold
+- id: EN400-7.3
+  source:
+    book: USNA-EN400-Principles-Ship-Performance-2020
+    example_number: '7.3'
+    chapter: 7
+    page: 261
+  description: Example 7.3 A model 5 feet in length is being towed at a speed of 5 ft/sec in fresh water at 59°F (ν = 1.092
+    x 10-5 ft2/
+  domain: marine
+  topic: resistance-powering
+  extracted_values:
+  - value: 5.0
+    unit: ft
+  - value: 59.0
+    unit: °F
+  - value: 5.0
+    unit: ft
+  - value: 5.0
+    unit: ft
+  quality_score: 75
+  quality_tier: gold
+- id: EN400-7.4
+  source:
+    book: USNA-EN400-Principles-Ship-Performance-2020
+    example_number: '7.4'
+    chapter: 7
+    page: 275
+  description: Example 7.4 A new type of destroyer is undergoing model testing in the tow tank. The ship has a length of 435
+    feet and t
+  domain: marine
+  topic: resistance-powering
+  extracted_values:
+  - value: 35.0
+    unit: knots
+  - value: 35.0
+    unit: knots
+  - value: 35.0
+    unit: knots
+  - value: 59.08
+    unit: ft
+  - value: 59.08
+    unit: ft
+  - value: 18.0
+    unit: ft
+  - value: 12.02
+    unit: ft
+  - value: 435.0
+    unit: ft
+  - value: 35.0
+    unit: knots
+  - value: 12.02
+    unit: ft
+  quality_score: 75
+  quality_tier: gold
+- id: EN400-8.1
+  source:
+    book: USNA-EN400-Principles-Ship-Performance-2020
+    example_number: '8.1'
+    chapter: 8
+    page: 308
+  description: Example 8.1 A ship traveling at 20 knots on a course of 120 degrees is encountering waves coming from the north
+    with a w
+  domain: marine
+  topic: seakeeping
+  extracted_values:
+  - value: 20.0
+    unit: knots
+  - value: 120.0
+    unit: degrees
+  - value: 1.689
+    unit: ft
+  - value: 180.0
+    unit: degrees
+  - value: 120.0
+    unit: degrees
+  - value: 60.0
+    unit: degrees
+  - value: 1.689
+    unit: ft
+  - value: 33.78
+    unit: ft
+  - value: 33.78
+    unit: ft
+  - value: 32.17
+    unit: ft
+  - value: 6.0
+    unit: degrees
+  quality_score: 75
+  quality_tier: gold
+- id: EN400-10.1
+  source:
+    book: USNA-EN400-Principles-Ship-Performance-2020
+    example_number: '10.1'
+    chapter: 10
+    page: 349
+  description: Example 10.1 The 8000LT USS Hardluck is submerging in Long Island Sound to conduct a “Tiger Cruise”. The water
+    temperatu
+  domain: marine
+  topic: submarines
+  extracted_values:
+  - value: 8000.0
+    unit: LT
+  - value: 1.935
+    unit: lb
+  - value: 1.9861
+    unit: lb
+  - value: 8000.0
+    unit: LT
+  - value: 2240.0
+    unit: lb
+  - value: 1.9861
+    unit: lb
+  - value: 32.17
+    unit: ft
+  - value: 280470.0
+    unit: ft
+  - value: 1.935
+    unit: lb
+  - value: 901.9861
+    unit: lb
+  - value: 1.981
+    unit: lb
+  - value: 1.981
+    unit: lb
+  - value: 32.17
+    unit: ft
+  - value: 280470.0
+    unit: ft
+  - value: 107.0
+    unit: lb
+  - value: 7979.0
+    unit: LT
+  - value: 8000.0
+    unit: LT
+  - value: 7979.0
+    unit: LT
+  - value: 21.0
+    unit: LT
+  quality_score: 75
+  quality_tier: gold
+- id: EN400-10.2
+  source:
+    book: USNA-EN400-Principles-Ship-Performance-2020
+    example_number: '10.2'
+    chapter: 10
+    page: 350
+  description: Example 10.2 An 8000LT submarine exits the Gulf Stream where water is 85°F and enters 65°F water. How much
+    water will th
+  domain: marine
+  topic: submarines
+  extracted_values:
+  - value: 8000.0
+    unit: LT
+  - value: 85.0
+    unit: °F
+  - value: 65.0
+    unit: °F
+  - value: 85.0
+    unit: °F
+  - value: 1.9827
+    unit: lb
+  - value: 65.0
+    unit: °F
+  - value: 1.989
+    unit: lb
+  - value: 8000.0
+    unit: LT
+  - value: 2240.0
+    unit: lb
+  - value: 1.9827
+    unit: lb
+  - value: 32.17
+    unit: ft
+  - value: 280950.0
+    unit: ft
+  - value: 1.989
+    unit: lb
+  - value: 32.17
+    unit: ft
+  - value: 280950.0
+    unit: ft
+  - value: 107.0
+    unit: lb
+  - value: 8025.0
+    unit: LT
+  - value: 25.0
+    unit: LT
+  - value: 25.0
+    unit: LT
+  quality_score: 75
+  quality_tier: gold
+- id: EN400-10.3
+  source:
+    book: USNA-EN400-Principles-Ship-Performance-2020
+    example_number: '10.3'
+    chapter: 10
+    page: 355
+  description: Example 10.3 A submerged submarine weighs 7200 LT with KB = 15 ft, KG = 13.5 ft. A piece of machinery weighing
+    6 LT is m
+  domain: marine
+  topic: submarines
+  extracted_values:
+  - value: 7200.0
+    unit: LT
+  - value: 15.0
+    unit: ft
+  - value: 13.5
+    unit: ft
+  - value: 6.0
+    unit: LT
+  - value: 10.0
+    unit: ft
+  - value: 13.0
+    unit: ft
+  - value: 6.0
+    unit: LT
+  - value: 23.0
+    unit: ft
+  - value: 7200.0
+    unit: LT
+  - value: 1.5
+    unit: ft
+  quality_score: 75
+  quality_tier: gold
+- id: EN400-10.4
+  source:
+    book: USNA-EN400-Principles-Ship-Performance-2020
+    example_number: '10.4'
+    chapter: 10
+    page: 356
+  description: Example 10.4 A submarine weighs 7200 LT and has zero trim. KB = 15 ft, KG = 13.5 ft. 40 submariners weighing
+    200 lb each
+  domain: marine
+  topic: submarines
+  extracted_values:
+  - value: 7200.0
+    unit: LT
+  - value: 15.0
+    unit: ft
+  - value: 13.5
+    unit: ft
+  - value: 200.0
+    unit: lb
+  - value: 300.0
+    unit: ft
+  - value: 200.0
+    unit: ft
+  - value: 200.0
+    unit: lb
+  - value: 300.0
+    unit: ft
+  - value: 1.0
+    unit: LT
+  - value: 2240.0
+    unit: lb
+  - value: 7200.0
+    unit: LT
+  - value: 1.5
+    unit: ft
+  - value: 200.0
+    unit: lb
+  - value: 300.0
+    unit: ft
+  - value: 200.0
+    unit: ft
+  - value: 12000.0
+    unit: lb
+  quality_score: 75
+  quality_tier: gold
+- id: WE-B-0002
+  source:
+    book: Design-Principles-Ships-Marine-Structures
+    example_number: '15.1'
+    extraction: deep
+  description: 1 Problem Formulation
+  domain: marine
+  topic: general
+  expected_output:
+    value: 1.0
+  input_count: 2
+  quality_score: 70
+  quality_tier: silver
+- id: WE-A-0035
+  source:
+    document: Principles-of-Naval-Architecture-SecondRevision-Vol2-Resistance-Propulsion.pdf
+    page: 200
+  description: by savitsky (1964) should be used. the flap moment about the trailing edge of the flap
+  domain: marine
+  topic: hydrostatics
+  extracted_parameters:
+    b:
+      value: 7.5
+      unit: m
+    fi:
+      value: 15.0
+      unit: deg
+    V:
+      value: 905.0
+      unit: kN
+    LCG:
+      value: 10.0
+      unit: m
+  extracted_results:
+  - name: b
+    value: 7.5
+    unit: m
+  - name: fi
+    value: 15.0
+    unit: deg
+  - name: H F
+    value: 0.0424
+    unit: SFLF
+  - name: V
+    value: 90.0
+    unit: m3
+  - name: LCG
+    value: 10.0
+    unit: m
+  quality_score: 60
+  raw_text_length: 3856
+  quality_tier: gold
+- id: WE-A-0029
+  source:
+    document: Principles-of-Naval-Architecture-SecondRevision-Vol1.pdf
+    page: 143
+  description: trim was produced by movement
+  domain: marine
+  topic: hydrostatics
+  extracted_parameters:
+    LBP:
+      value: 161.0
+      unit: m
+    draft:
+      value: 7.92
+      unit: m
+  extracted_results:
+  - name: For t
+    value: 1.0
+    unit: cm
+  - name: LBP
+    value: 161.0
+    unit: m
+  - name: 'longitudinal center of
+
+      Trim'
+    value: 8.38
+    unit: ''
+  - name: '886'
+    value: 82.4
+    unit: t
+  quality_score: 56
+  raw_text_length: 3613
+  quality_tier: gold
+- id: WE-A-0032
+  source:
+    document: Principles-of-Naval-Architecture-SecondRevision-Vol2-Resistance-Propulsion.pdf
+    page: 116
+  description: by
+  domain: marine
+  topic: resistance
+  extracted_parameters:
+    hull:
+      value: 112.6
+      unit: m
+    '77':
+      value: 6.05
+      unit: m
+    knots:
+      value: 4.115
+      unit: m
+  extracted_results:
+  - name: sectional area of hull
+    value: 112.6
+    unit: m
+  - name: '77'
+    value: 6.05
+    unit: m
+  - name: 0 5
+    value: 1.69
+    unit: were
+  - name: 8 knots
+    value: 4.115
+    unit: m
+  quality_score: 53
+  raw_text_length: 2275
+  quality_tier: gold
+- id: WE-A-0028
+  source:
+    document: Principles-of-Naval-Architecture-SecondRevision-Vol1.pdf
+    page: 125
+  description: by is small in comparison to the assumption in the formula
+  domain: marine
+  topic: hydrostatics
+  extracted_parameters:
+    i:
+      value: 4.15
+      unit: m
+    '15':
+      value: 30.5
+      unit: m
+    t:
+      value: 0.04
+      unit: m
+  extracted_results:
+  - name: '3'
+    value: 3.5
+    unit: i
+  - name: J i
+    value: 4.15
+    unit: m4
+  - name: Total ilS
+    value: 26.3
+    unit: '4'
+  - name: '15'
+    value: 30.5
+    unit: m
+  - name: 't
+
+      Displacement'
+    value: 741.0
+    unit: t
+  quality_score: 52
+  raw_text_length: 2746
+  quality_tier: gold
+- id: WE-A-0003
+  source:
+    document: DNV-RP-H103-Marine-Operations-2010.pdf
+    page: 79
+  description: by the lift off operation itself is a simple operation since the relative
+  domain: marine
+  topic: hydrostatics
+  extracted_parameters:
+    l:
+      value: 80.0
+      unit: m
+    b:
+      value: 4.0
+      unit: m
+    h:
+      value: 10.0
+      unit: m
+  extracted_results:
+  - name: T
+    value: 2.0
+    unit: π
+  - name: 'and is being
+
+      ting n'
+    value: 2.0
+    unit: ''
+  - name: n
+    value: 1.0
+    unit: ''
+  - name: n
+    value: 2.0
+    unit: ''
+  quality_score: 49
+  raw_text_length: 4965
+  quality_tier: gold
+- id: WE-A-0016
+  source:
+    document: Introduction-to-Naval-Architecture-Tupper-1996.pdf
+    page: 205
+  description: '8.1'
+  domain: marine
+  topic: resistance
+  extracted_parameters:
+    area:
+      value: 3300.0
+      unit: m
+    water:
+      value: 1025.0
+      unit: kg
+  extracted_results:
+  - name: Block coefficient
+    value: 0.65
+    unit: Midship
+  - name: area coefficient
+    value: 0.98
+    unit: Wetted
+  - name: surface area
+    value: 3300.0
+    unit: m2
+  - name: Density of sea water
+    value: 1025.0
+    unit: kg
+  quality_score: 49
+  raw_text_length: 582
+  quality_tier: gold
+- id: WE-A-0069
+  source:
+    document: Ship-Hydrostatics-and-Stability-Biran.pdf
+    page: 212
+  description: 8.5 - the turning criterion of the us navy
+  domain: marine
+  topic: stability
+  extracted_parameters:
+    KG:
+      value: 5.0
+      unit: m
+    '5144':
+      value: 5.35
+      unit: m
+  extracted_results:
+  - name: KG
+    value: 5.0
+    unit: m
+  - name: 'that is
+
+      V'
+    value: 0.65
+    unit: x
+  - name: '5144'
+    value: 5.35
+    unit: ms
+  - name: '5 times the waterline
+
+      length
+
+      R'
+    value: 2.0
+    unit: ''
+  - name: '302'
+    value: 0.15
+    unit: ''
+  quality_score: 48
+  raw_text_length: 2037
+  quality_tier: gold
+- id: WE-A-0011
+  source:
+    document: Handbook-Offshore-Engineering-Chakrabarti-2005.pdf
+    page: 323
+  description: h, 213 h, = 41.7 ft and,
+  domain: marine
+  topic: dynamics
+  extracted_parameters:
+    MLLW:
+      value: 50.2
+      unit: N
+    ft:
+      value: 15.2
+      unit: ft
+  extracted_results:
+  - name: Deck height above MLLW
+    value: 50.2
+    unit: Note
+  - name: 35 ft
+    value: 15.2
+    unit: ft
+  - name: '4'
+    value: 25.0
+    unit: kip
+  - name: '4'
+    value: 2097.0
+    unit: kip
+  - name: Qll
+    value: 0.35
+    unit: k
+  quality_score: 47
+  raw_text_length: 1481
+  quality_tier: gold
+- id: WE-A-0046
+  source:
+    document: Principles-of-Naval-Architecture-SecondRevision-Vol2-Resistance-Propulsion.pdf
+    page: 403
+  description: in figs. 65 and 66. these charts
+  domain: marine
+  topic: lifting
+  extracted_parameters:
+    a:
+      value: 0.8
+      unit: m
+  extracted_results:
+  - name: For a
+    value: 1.0
+    unit: ''
+  - name: With the mean line a
+    value: 0.8
+    unit: ''
+  quality_score: 47
+  raw_text_length: 2217
+  quality_tier: gold
+- id: WE-A-0084
+  source:
+    document: Theoretical-Naval-Architecture-Attwood-1899.pdf
+    page: 152
+  description: by this approximaterule.
+  domain: marine
+  topic: hydrostatics
+  extracted_results:
+  - name: 9 i
+    value: 68.0
+    unit: ''
+  quality_score: 47
+  raw_text_length: 1534
+  quality_tier: gold
+- id: WE-A-0062
+  source:
+    document: Principles-of-Naval-Architecture-Vol2-Resistance-Propulsion-Vibration.pdf
+    page: 309
+  description: of the preceding subsection that a significant
+  domain: marine
+  topic: resistance
+  extracted_results:
+  - name: R
+    value: 0.2
+    unit: ''
+  - name: D
+    value: 1.024
+    unit: at
+  - name: R
+    value: 0.7
+    unit: and
+  - name: for i
+    value: 3.0
+    unit: was
+  - name: 'It
+
+      The force coefficient of'
+    value: 0.152
+    unit: from
+  quality_score: 45
+  raw_text_length: 4696
+  quality_tier: gold
+- id: WE-A-0054
+  source:
+    document: Principles-of-Naval-Architecture-Vol2-Resistance-Propulsion-Vibration.pdf
+    page: 115
+  description: by savitsky (1964) should be used. the flap moment about the trailing edge of the flap
+  domain: marine
+  topic: hydrostatics
+  extracted_parameters:
+    L:
+      value: 25.0
+      unit: m
+    b:
+      value: 7.5
+      unit: m
+    LCG:
+      value: 10.0
+      unit: m
+  extracted_results:
+  - name: L
+    value: 25.0
+    unit: m
+  - name: b
+    value: 7.5
+    unit: m
+  - name: LCG
+    value: 10.0
+    unit: m
+  quality_score: 44
+  raw_text_length: 3191
+  quality_tier: gold
+- id: WE-A-0058
+  source:
+    document: Principles-of-Naval-Architecture-Vol2-Resistance-Propulsion-Vibration.pdf
+    page: 220
+  description: in figs. 65 and 66. these charts
+  domain: marine
+  topic: resistance
+  extracted_parameters:
+    a:
+      value: 0.8
+      unit: m
+  extracted_results:
+  - name: For a
+    value: 1.0
+    unit: ''
+  - name: With the mean line a
+    value: 0.8
+    unit: ''
+  - name: a
+    value: 0.8
+    unit: mean
+  quality_score: 43
+  raw_text_length: 1948
+  quality_tier: gold
+- id: WE-A-0023
+  source:
+    document: Offshore-Hydromechanics-2001.pdf
+    page: 447
+  description: in equation 11.3, can be ob-
+  domain: marine
+  topic: dynamics
+  extracted_results:
+  - name: can be obtained by putting Y
+    value: 50.0
+    unit: 50years
+  - name: ³
+    value: 12.0
+    unit: ''
+  - name: 'Byplottingtheseprobabilities
+
+      1'
+    value: 3.0
+    unit: for
+  - name: Thus F H
+    value: 1.0
+    unit: '1'
+  quality_score: 41
+  raw_text_length: 1816
+  quality_tier: gold
+- id: WE-A-0098
+  source:
+    document: USNA-EN400-Principles-Ship-Performance-2020.pdf
+    page: 21
+  description: 1.3 given the following values of the density of fresh water, find its density at a
+  domain: marine
+  topic: general
+  extracted_results:
+  - name: ρ
+    value: 62.7
+    unit: ''
+  - name: ρ
+    value: 1.9379
+    unit: ''
+  - name: 's2
+
+      ρ'
+    value: 1.93776
+    unit: '62'
+  quality_score: 41
+  raw_text_length: 1296
+  quality_tier: gold
+- id: WE-A-0082
+  source:
+    document: Theoretical-Naval-Architecture-Attwood-1899.pdf
+    page: 114
+  description: case, and knowing the
+  domain: marine
+  topic: hydrostatics
+  extracted_results:
+  - name: 120 X 30 X 10
+    value: 36.0
+    unit: ''
+  - name: K
+    value: 2.0
+    unit: ''
+  - name: '000'
+    value: 75.0
+    unit: ''
+  quality_score: 40
+  raw_text_length: 2298
+  quality_tier: gold
+- id: WE-A-0063
+  source:
+    document: Ship-Hydrostatics-and-Stability-Biran.pdf
+    page: 65
+  description: by
+  domain: marine
+  topic: hydrostatics
+  quality_score: 39
+  raw_text_length: 1490
+  quality_tier: silver
+- id: WE-A-0103
+  source:
+    document: USNA-EN400-Principles-Ship-Performance-2020.pdf
+    page: 195
+  description: the units of in/in or ft/ft.
+  domain: marine
+  topic: lifting
+  quality_score: 39
+  raw_text_length: 1154
+  quality_tier: silver
+- id: WE-A-0061
+  source:
+    document: Principles-of-Naval-Architecture-Vol2-Resistance-Propulsion-Vibration.pdf
+    page: 306
+  description: that alternating
+  domain: marine
+  topic: resistance
+  extracted_results:
+  - name: 'C
+
+      B'
+    value: 0.6
+    unit: ''
+  - name: 'The same
+
+      calculation for q'
+    value: 3.0
+    unit: was
+  - name: 'are plotted
+
+      for q'
+    value: 3.0
+    unit: 'on'
+  - name: 29 and for q
+    value: 4.0
+    unit: 'on'
+  - name: 1 for q
+    value: 3.0
+    unit: and
+  quality_score: 38
+  raw_text_length: 3689
+  quality_tier: silver
+- id: WE-A-0007
+  source:
+    document: Handbook-Offshore-Engineering-Chakrabarti-2005.pdf
+    page: 98
+  description: of the linear velocity profiles for a finite and infinite water depth (deepwater) is
+  domain: marine
+  topic: hydrostatics
+  extracted_parameters:
+    d:
+      value: 100.0
+      unit: ft
+    H:
+      value: 20.0
+      unit: ft
+    y:
+      value: 0.0
+      unit: ft
+  extracted_results:
+  - name: d
+    value: 100.0
+    unit: ft
+  - name: H
+    value: 20.0
+    unit: ft
+  - name: T
+    value: 10.0
+    unit: s
+  - name: y
+    value: 0.0
+    unit: ft
+  quality_score: 37
+  raw_text_length: 1941
+  quality_tier: silver
+- id: WE-A-0010
+  source:
+    document: Handbook-Offshore-Engineering-Chakrabarti-2005.pdf
+    page: 252
+  description: implicit failure probability in design equations
+  domain: marine
+  topic: resistance
+  extracted_results:
+  - name: Vs
+    value: 0.15
+    unit: ''
+  - name: ys
+    value: 1.5
+    unit: ''
+  - name: a typical Bs
+    value: 0.8
+    unit: for
+  - name: BR
+    value: 1.1
+    unit: and
+  quality_score: 37
+  raw_text_length: 2187
+  quality_tier: silver
+- id: WE-A-0048
+  source:
+    document: Principles-of-Naval-Architecture-SecondRevision-Vol2-Resistance-Propulsion.pdf
+    page: 530
+  description: here myi s the vertical moment, about the transverse the majority of low speed marine diesels currently
+  domain: marine
+  topic: structural
+  extracted_results:
+  - name: With M
+    value: 6.0
+    unit: and
+  - name: km
+    value: 1.0
+    unit: ''
+  - name: J T me M
+    value: 3.0
+    unit: ''
+  - name: IMy21
+    value: 3.464
+    unit: M
+  quality_score: 37
+  raw_text_length: 3778
+  quality_tier: silver
+- id: WE-A-0067
+  source:
+    document: Ship-Hydrostatics-and-Stability-Biran.pdf
+    page: 130
+  description: by
+  domain: marine
+  topic: hydrostatics
+  quality_score: 37
+  raw_text_length: 2279
+  quality_tier: silver
+- id: WE-A-0008
+  source:
+    document: Handbook-Offshore-Engineering-Chakrabarti-2005.pdf
+    page: 113
+  description: by
+  domain: marine
+  topic: resistance
+  quality_score: 36
+  raw_text_length: 2099
+  quality_tier: silver
+- id: WE-A-0030
+  source:
+    document: Principles-of-Naval-Architecture-SecondRevision-Vol1.pdf
+    page: 261
+  description: by equation (18). see fig. 15. equa-
+  domain: marine
+  topic: general
+  extracted_results:
+  - name: nL
+    value: 1.0
+    unit: ''
+  - name: 14 for nL
+    value: 10.0
+    unit: ''
+  quality_score: 36
+  raw_text_length: 2559
+  quality_tier: silver
+- id: WE-A-0015
+  source:
+    document: Introduction-to-Naval-Architecture-Tupper-1996.pdf
+    page: 67
+  description: a
+  domain: marine
+  topic: hydrostatics
+  quality_score: 35
+  raw_text_length: 1807
+  quality_tier: silver
+- id: WE-A-0020
+  source:
+    document: Marine-Hydrodynamics-Newman-2018.pdf
+    page: 267
+  description: in problem 4.
+  domain: marine
+  topic: stability
+  extracted_parameters:
+    α:
+      value: 10.0
+      unit: deg
+  extracted_results:
+  - name: 'at
+
+      α'
+    value: 5.0
+    unit: degrees
+  - name: what is C at α
+    value: 10.0
+    unit: degrees
+  quality_score: 35
+  raw_text_length: 2458
+  quality_tier: silver
+- id: WE-A-0027
+  source:
+    document: Principles-of-Naval-Architecture-SecondRevision-Vol1.pdf
+    page: 46
+  description: ordinates.
+  domain: marine
+  topic: structural
+  extracted_results:
+  - name: taking the axis at x
+    value: 0.0
+    unit: ''
+  - name: k3
+    value: 3.0
+    unit: ''
+  - name: n
+    value: 3.0
+    unit: ''
+  quality_score: 35
+  raw_text_length: 4453
+  quality_tier: silver
+- id: WE-A-0052
+  source:
+    document: Principles-of-Naval-Architecture-Vol2-Resistance-Propulsion-Vibration.pdf
+    page: 57
+  description: by
+  domain: marine
+  topic: resistance
+  extracted_parameters:
+    is:
+      value: 968.3
+      unit: m
+  extracted_results:
+  - name: the hydraulic radius is
+    value: 968.3
+    unit: m2
+  quality_score: 35
+  raw_text_length: 1726
+  quality_tier: silver
+- id: WE-A-0051
+  source:
+    document: Principles-of-Naval-Architecture-SecondRevision-Vol3-Motions-Controllability.pdf
+    page: 64
+  description: by
+  domain: marine
+  topic: dynamics
+  extracted_parameters:
+    p:
+      value: 180.0
+      unit: deg
+  extracted_results:
+  - name: 'i
+
+      2 functions at time'
+    value: 0.0
+    unit: ''
+  - name: '2'
+    value: 7.0
+    unit: '2'
+  - name: with p
+    value: 180.0
+    unit: deg
+  quality_score: 34
+  raw_text_length: 4209
+  quality_tier: silver
+- id: WE-A-0088
+  source:
+    document: Theoretical-Naval-Architecture-Attwood-1899.pdf
+    page: 249
+  description: a vesselof3290tonshasan i.h.p. of2500on trialat 14knots. what
+  domain: marine
+  topic: hydrostatics
+  extracted_results:
+  - name: The ratioofthedisplacement
+    value: 3.0
+    unit: ''
+  - name: '7'
+    value: 3.0
+    unit: ''
+  - name: '3'
+    value: 1.0
+    unit: '9'
+  quality_score: 34
+  raw_text_length: 1896
+  quality_tier: silver
+- id: WE-A-0049
+  source:
+    document: Principles-of-Naval-Architecture-SecondRevision-Vol3-Motions-Controllability.pdf
+    page: 46
+  description: expressions for the dif-
+  domain: marine
+  topic: stability
+  extracted_parameters:
+    p:
+      value: 180.0
+      unit: deg
+  extracted_results:
+  - name: d l j
+    value: 1.0
+    unit: ''
+  - name: dx j
+    value: 1.0
+    unit: ''
+  - name: p
+    value: 180.0
+    unit: deg
+  - name: nepk zd l j
+    value: 1.0
+    unit: ''
+  - name: j
+    value: 1.0
+    unit: ''
+  quality_score: 33
+  raw_text_length: 3169
+  quality_tier: silver
+- id: WE-A-0080
+  source:
+    document: Theoretical-Naval-Architecture-Attwood-1899.pdf
+    page: 90
+  description: by mr. a. blechynden,
+  domain: marine
+  topic: hydrostatics
+  extracted_results:
+  - name: Then m
+    value: 0.0
+    unit: ''
+  quality_score: 32
+  raw_text_length: 1609
+  quality_tier: silver
+- id: WE-A-0101
+  source:
+    document: USNA-EN400-Principles-Ship-Performance-2020.pdf
+    page: 107
+  description: 'a new center of gravity, qualitatively check your answer. for example:'
+  domain: marine
+  topic: hydrostatics
+  quality_score: 32
+  raw_text_length: 2160
+  quality_tier: silver
+- id: WE-A-0013
+  source:
+    document: Introduction-to-Naval-Architecture-Comstock-1942.pdf
+    page: 71
+  description: ship are
+  domain: marine
+  topic: hydrostatics
+  quality_score: 30
+  raw_text_length: 1825
+  quality_tier: silver
+- id: WE-A-0014
+  source:
+    document: Introduction-to-Naval-Architecture-Tupper-1996.pdf
+    page: 10
+  description: Acknowledgements Many of the figures and most of the worked examples in this book are from Muckle's Naval Architecture
+    w
+  domain: marine
+  topic: general
+  quality_score: 30
+  raw_text_length: 474
+  quality_tier: silver
+- id: WE-A-0031
+  source:
+    document: Principles-of-Naval-Architecture-SecondRevision-Vol1.pdf
+    page: 263
+  description: set of data. indeed, better fits to this par-
+  domain: marine
+  topic: structural
+  quality_score: 30
+  raw_text_length: 2730
+  quality_tier: silver
+- id: WE-A-0066
+  source:
+    document: Ship-Hydrostatics-and-Stability-Biran.pdf
+    page: 121
+  description: lines. the simplest transformation is that in
+  domain: marine
+  topic: hydrostatics
+  quality_score: 30
+  raw_text_length: 2531
+  quality_tier: silver
+- id: WE-A-0074
+  source:
+    document: Theoretical-Naval-Architecture-Attwood-1899.pdf
+    page: 19
+  description: by
+  domain: marine
+  topic: hydrostatics
+  quality_score: 30
+  raw_text_length: 1465
+  quality_tier: silver
+- id: WE-A-0076
+  source:
+    document: Theoretical-Naval-Architecture-Attwood-1899.pdf
+    page: 63
+  description: the position of the c.g. of thewholewater-plane, we take
+  domain: marine
+  topic: hydrostatics
+  extracted_results:
+  - name: e 6
+    value: 2.0
+    unit: '1'
+  - name: Oi
+    value: 308.0
+    unit: ''
+  - name: 1 3
+    value: 1.0
+    unit: '3'
+  quality_score: 30
+  raw_text_length: 1211
+  quality_tier: silver
+- id: WE-A-0092
+  source:
+    document: Theoretical-Naval-Architecture-Attwood-1899.pdf
+    page: 282
+  description: ofsuch curves for
+  domain: marine
+  topic: hydrostatics
+  quality_score: 30
+  raw_text_length: 721
+  quality_tier: silver
+- id: WE-A-0104
+  source:
+    document: USNA-EN400-Principles-Ship-Performance-2020.pdf
+    page: 307
+  description: wave
+  domain: marine
+  topic: dynamics
+  extracted_results:
+  - name: µ
+    value: 0.0
+    unit: ''
+  - name: 'Wave Direction
+
+      µ'
+    value: 135.0
+    unit: ''
+  - name: µ
+    value: 90.0
+    unit: ''
+  - name: µ
+    value: 180.0
+    unit: ''
+  - name: µ
+    value: 0.0
+    unit: ''
+  quality_score: 30
+  raw_text_length: 1685
+  quality_tier: silver
+- id: WE-A-0060
+  source:
+    document: Principles-of-Naval-Architecture-Vol2-Resistance-Propulsion-Vibration.pdf
+    page: 299
+  description: here m y is the vertical moment, about the transverse the majority of low speed marine diesels currently
+  domain: marine
+  topic: structural
+  extracted_results:
+  - name: With M
+    value: 6.0
+    unit: and
+  - name: k
+    value: 1.0
+    unit: ''
+  quality_score: 29
+  raw_text_length: 3521
+  quality_tier: bronze
+- id: WE-A-0033
+  source:
+    document: Principles-of-Naval-Architecture-SecondRevision-Vol2-Resistance-Propulsion.pdf
+    page: 142
+  description: for three different values of
+  domain: marine
+  topic: hydrostatics
+  extracted_results:
+  - name: is obtained Fn
+    value: 0.6
+    unit: ''
+  - name: The models all had a Cp
+    value: 0.56
+    unit: ''
+  quality_score: 28
+  raw_text_length: 3842
+  quality_tier: bronze
+- id: WE-A-0034
+  source:
+    document: Principles-of-Naval-Architecture-SecondRevision-Vol2-Resistance-Propulsion.pdf
+    page: 168
+  description: for three different values of
+  domain: marine
+  topic: hydrostatics
+  extracted_results:
+  - name: is obtained Fn
+    value: 0.6
+    unit: ''
+  - name: The models all had a Cp
+    value: 0.56
+    unit: ''
+  quality_score: 28
+  raw_text_length: 3842
+  quality_tier: bronze
+- id: WE-A-0009
+  source:
+    document: Handbook-Offshore-Engineering-Chakrabarti-2005.pdf
+    page: 241
+  description: inspection plan (inspection method, frequency of inspection)
+  domain: marine
+  topic: resistance
+  quality_score: 27
+  raw_text_length: 3535
+  quality_tier: bronze
+- id: WE-A-0019
+  source:
+    document: Marine-Hydrodynamics-Newman-2018.pdf
+    page: 126
+  description: by thompson (1967).
+  domain: marine
+  topic: hydrostatics
+  quality_score: 27
+  raw_text_length: 2340
+  quality_tier: bronze
+- id: WE-A-0047
+  source:
+    document: Principles-of-Naval-Architecture-SecondRevision-Vol2-Resistance-Propulsion.pdf
+    page: 438
+  description: in these columns, together with the
+  domain: marine
+  topic: general
+  extracted_results:
+  - name: '78'
+    value: 4.792
+    unit: ''
+  quality_score: 26
+  raw_text_length: 1760
+  quality_tier: bronze
+- id: WE-A-0079
+  source:
+    document: Theoretical-Naval-Architecture-Attwood-1899.pdf
+    page: 75
+  description: the volume of displacement between no. i and no. 6
+  domain: marine
+  topic: hydrostatics
+  extracted_results:
+  - name: is therefore
+    value: 1951.0
+    unit: ''
+  - name: '153'
+    value: 87.0
+    unit: ''
+  quality_score: 26
+  raw_text_length: 2116
+  quality_tier: bronze
+- id: WE-A-0094
+  source:
+    document: Theoretical-Naval-Architecture-Attwood-1899.pdf
+    page: 285
+  description: below, find
+  domain: marine
+  topic: hydrostatics
+  extracted_results:
+  - name: tan 10
+    value: 0.0
+    unit: ''
+  - name: 'I944
+
+      tan 12'
+    value: 0.0
+    unit: ''
+  - name: '2126
+
+      tan 13'
+    value: 0.0
+    unit: ''
+  quality_score: 26
+  raw_text_length: 1457
+  quality_tier: bronze
+- id: WE-A-0050
+  source:
+    document: Principles-of-Naval-Architecture-SecondRevision-Vol3-Motions-Controllability.pdf
+    page: 50
+  description: iner-type hull. note that most of the stations are fairly
+  domain: marine
+  topic: hydrostatics
+  quality_score: 25
+  raw_text_length: 2640
+  quality_tier: bronze
+- id: WE-A-0064
+  source:
+    document: Ship-Hydrostatics-and-Stability-Biran.pdf
+    page: 68
+  description: by
+  domain: marine
+  topic: hydrostatics
+  quality_score: 25
+  raw_text_length: 756
+  quality_tier: bronze
+- id: WE-A-0065
+  source:
+    document: Ship-Hydrostatics-and-Stability-Biran.pdf
+    page: 110
+  description: the vertical coordinate of the centre
+  domain: marine
+  topic: hydrostatics
+  quality_score: 25
+  raw_text_length: 1807
+  quality_tier: bronze
+- id: WE-A-0070
+  source:
+    document: Ship-Hydrostatics-and-Stability-Biran.pdf
+    page: 324
+  description: load case, the naval architect, or the ship master, performed the
+  domain: marine
+  topic: hydrostatics
+  quality_score: 25
+  raw_text_length: 1826
+  quality_tier: bronze
+- id: WE-A-0099
+  source:
+    document: USNA-EN400-Principles-Ship-Performance-2020.pdf
+    page: 43
+  description: problems using archimedes’ principle
+  domain: marine
+  topic: hydrostatics
+  quality_score: 25
+  raw_text_length: 1660
+  quality_tier: bronze
+- id: WE-A-0107
+  source:
+    document: Warship-Naval-Submarines-9.pdf
+    page: 260
+  description: a solution satisfying the objective and externally framed solution, it was decided to reduce the
+  domain: marine
+  topic: hydrostatics
+  quality_score: 25
+  raw_text_length: 3181
+  quality_tier: bronze

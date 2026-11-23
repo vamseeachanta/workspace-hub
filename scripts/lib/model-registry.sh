@@ -1,0 +1,61 @@
+#!/usr/bin/env bash
+# Shared reader for config/agents/model-registry.yaml latest_models keys.
+# Dependency-free (grep/sed only) so it works in hooks, cron, and minimal shells.
+# Per behavior-contract.yaml > model_versioning: scripts MUST read model IDs from
+# the registry instead of hardcoding them. (workspace-hub #3038)
+#
+# Usage:
+#   source "$(git rev-parse --show-toplevel)/scripts/lib/model-registry.sh"
+#   model="$(registry_model claude_primary)"          # -> claude-fable-5
+#   model="$(registry_model openai_primary gpt-9.9)"  # with fallback default
+
+_MODEL_REGISTRY_FILE="${MODEL_REGISTRY_FILE:-}"
+
+_model_registry_path() {
+  if [[ -n "$_MODEL_REGISTRY_FILE" && -f "$_MODEL_REGISTRY_FILE" ]]; then
+    echo "$_MODEL_REGISTRY_FILE"; return 0
+  fi
+  local root
+  root="$(git rev-parse --show-toplevel 2>/dev/null)" || root="${WORKSPACE_HUB:-/mnt/local-analysis/workspace-hub}"
+  local candidate="${root}/config/agents/model-registry.yaml"
+  [[ -f "$candidate" ]] || candidate="${WORKSPACE_HUB:-/mnt/local-analysis/workspace-hub}/config/agents/model-registry.yaml"
+  echo "$candidate"
+}
+
+# registry_ctx_k <model-id> [fallback]
+# Echoes the context window in K tokens from the context_windows_k map.
+registry_ctx_k() {
+  local model="$1" fallback="${2:-128}"
+  local reg; reg="$(_model_registry_path)"
+  local val=""
+  if [[ -f "$reg" ]]; then
+    local line
+    while IFS= read -r line || [[ -n "$line" ]]; do
+      [[ "$line" =~ ^[[:space:]]+ ]] || continue
+      line="${line#"${BASH_REMATCH[0]}"}"
+      # Quote the key so brackets, dots and other pattern characters are literal.
+      [[ "$line" == "$model":* ]] || continue
+      [[ "${line#"$model":}" =~ ^[[:space:]]*([0-9]+) ]] || continue
+      val="${BASH_REMATCH[1]}"
+      break
+    done < "$reg"
+  fi
+  echo "${val:-$fallback}"
+}
+
+# registry_model <latest_models key> [fallback]
+# Echoes the model id; falls back (and warns on stderr) if key/file missing.
+registry_model() {
+  local key="$1" fallback="${2:-}"
+  local reg; reg="$(_model_registry_path)"
+  local val=""
+  if [[ -f "$reg" ]]; then
+    # Match lines like:   claude_primary: "claude-fable-5"   # comment
+    val="$(sed -n -E "s/^[[:space:]]+${key}:[[:space:]]*\"([^\"]+)\".*/\1/p" "$reg" | head -1)"
+  fi
+  if [[ -z "$val" ]]; then
+    echo "[model-registry] WARN: key '${key}' not found in ${reg}; using fallback '${fallback}'" >&2
+    val="$fallback"
+  fi
+  echo "$val"
+}

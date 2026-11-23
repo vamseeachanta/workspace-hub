@@ -1,0 +1,22 @@
+version: 1
+wrk_id: WRK-1009
+skill_name: repo-sync
+skill_path: .claude/skills/workspace-hub/repo-sync/SKILL.md
+evals:
+- eval_id: rs-cap-01
+  eval_type: capability
+  description: Core sections documented for repo-sync
+  checks:
+    required_sections:
+    - '## Usage'
+    - '## Implementation'
+    - '## What It Does'
+    - '## Important Notes'
+    - '## Iron Law'
+- eval_id: rs-proc-01
+  eval_type: procedural
+  description: Additional documentation sections for repo-sync
+  checks:
+    required_sections:
+    - '## Rationalization Defense'
+    - '## Red Flags'

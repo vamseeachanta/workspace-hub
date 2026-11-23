@@ -1,0 +1,28 @@
+================================================================================
+Diffraction Analysis Results Summary
+================================================================================
+Vessel: test01_unit_box
+Analysis Tool: OrcaWave
+Water Depth: 100.0 m
+Created: 2026-04-03
+================================================================================
+
+Frequency Coverage:
+  Count: 50
+  Range: 0.1000 - 5.0000 rad/s
+  Periods: 1.26 - 62.83 s
+
+Heading Coverage:
+  Count: 2
+  Range: 0.0 - 27.0 deg
+
+Generated Files:
+  - test01_unit_box_vessel_type.yml
+  - test01_unit_box_raos.csv
+  - test01_unit_box_added_mass.csv
+  - test01_unit_box_damping.csv
+  - test01_unit_box_hydrodynamics.xlsx
+
+================================================================================
+Ready for OrcaFlex import
+================================================================================

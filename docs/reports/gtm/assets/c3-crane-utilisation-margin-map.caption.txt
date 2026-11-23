@@ -1,0 +1,7 @@
+C3: Crane-Utilisation Margin Map
+Headline: Mudmat-L-200te at 1500 m: Large CSV at 20.6% crane utilisation vs Medium CSV at 71.5% — same GO decision, different margin.
+Caption: Crane-utilisation margin for mudmat installation screening at 1500 m water depth. Citations inherited from CSV/HLV source: DNV-RP-H103, DNV-ST-N001, DNV-OS-H101. Vessel parameters are representative classes only; not measured telemetry or exact specifications of any named vessel.
+Disclosure: Vessel parameters are representative classes only; not measured telemetry or exact specifications of any named vessel.
+Data inputs:
+- digitalmodel/examples/demos/gtm/results/structure_comparison_matrix.json
+- digitalmodel/examples/demos/gtm/data/csv_hlv_vessels.json

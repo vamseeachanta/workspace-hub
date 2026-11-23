@@ -1,0 +1,149 @@
+# Stage prompt drift check — 2026-04-10
+
+Flags work-queue stage prompt artifacts that were referenced by Claude logs but no longer exist and have no evidence/index replacement.
+
+## Summary
+- packages_scanned: 34
+- issues_found: 33
+- write_evidence_stubs: true
+
+## Drift issues
+- `WRK-1010` — stages: 2 | missing prompts: 1
+  - missing prompt: `.claude/work-queue/assets/WRK-1010/stage-2-prompt.md` (reads=1)
+  - replacement evidence: none
+  - remediation: add a summary artifact under `.claude/work-queue/assets/WRK-1010/evidence/` (for example `gate-evidence-summary.md`) before deleting the prompt artifact
+- `WRK-1016` — stages: 2, 3 | missing prompts: 2
+  - missing prompt: `.claude/work-queue/assets/WRK-1016/stage-2-prompt.md` (reads=1)
+  - missing prompt: `.claude/work-queue/assets/WRK-1016/stage-3-prompt.md` (reads=1)
+  - replacement evidence: none
+  - remediation: add a summary artifact under `.claude/work-queue/assets/WRK-1016/evidence/` (for example `gate-evidence-summary.md`) before deleting the prompt artifact
+- `WRK-1030` — stages: 2 | missing prompts: 1
+  - missing prompt: `.claude/work-queue/assets/WRK-1030/stage-2-prompt.md` (reads=1)
+  - replacement evidence: none
+  - remediation: add a summary artifact under `.claude/work-queue/assets/WRK-1030/evidence/` (for example `gate-evidence-summary.md`) before deleting the prompt artifact
+- `WRK-1059` — stages: 4 | missing prompts: 1
+  - missing prompt: `.claude/work-queue/assets/WRK-1059/stage-4-prompt.md` (reads=1)
+  - replacement evidence: none
+  - remediation: add a summary artifact under `.claude/work-queue/assets/WRK-1059/evidence/` (for example `gate-evidence-summary.md`) before deleting the prompt artifact
+- `WRK-1064` — stages: 3, 4 | missing prompts: 2
+  - missing prompt: `.claude/work-queue/assets/WRK-1064/stage-3-prompt.md` (reads=1)
+  - missing prompt: `.claude/work-queue/assets/WRK-1064/stage-4-prompt.md` (reads=1)
+  - replacement evidence: none
+  - remediation: add a summary artifact under `.claude/work-queue/assets/WRK-1064/evidence/` (for example `gate-evidence-summary.md`) before deleting the prompt artifact
+- `WRK-1067` — stages: 6 | missing prompts: 1
+  - missing prompt: `.claude/work-queue/assets/WRK-1067/stage-6-prompt.md` (reads=1)
+  - replacement evidence: none
+  - remediation: add a summary artifact under `.claude/work-queue/assets/WRK-1067/evidence/` (for example `gate-evidence-summary.md`) before deleting the prompt artifact
+- `WRK-1068` — stages: 2 | missing prompts: 1
+  - missing prompt: `.claude/work-queue/assets/WRK-1068/stage-2-prompt.md` (reads=1)
+  - replacement evidence: none
+  - remediation: add a summary artifact under `.claude/work-queue/assets/WRK-1068/evidence/` (for example `gate-evidence-summary.md`) before deleting the prompt artifact
+- `WRK-1069` — stages: 4 | missing prompts: 1
+  - missing prompt: `.claude/work-queue/assets/WRK-1069/stage-4-prompt.md` (reads=1)
+  - replacement evidence: none
+  - remediation: add a summary artifact under `.claude/work-queue/assets/WRK-1069/evidence/` (for example `gate-evidence-summary.md`) before deleting the prompt artifact
+- `WRK-1071` — stages: 2 | missing prompts: 1
+  - missing prompt: `.claude/work-queue/assets/WRK-1071/stage-2-prompt.md` (reads=1)
+  - replacement evidence: none
+  - remediation: add a summary artifact under `.claude/work-queue/assets/WRK-1071/evidence/` (for example `gate-evidence-summary.md`) before deleting the prompt artifact
+- `WRK-1074` — stages: 13 | missing prompts: 1
+  - missing prompt: `.claude/work-queue/assets/WRK-1074/stage-13-prompt.md` (reads=1)
+  - replacement evidence: none
+  - remediation: add a summary artifact under `.claude/work-queue/assets/WRK-1074/evidence/` (for example `gate-evidence-summary.md`) before deleting the prompt artifact
+- `WRK-1075` — stages: 10 | missing prompts: 1
+  - missing prompt: `.claude/work-queue/assets/WRK-1075/stage-10-prompt.md` (reads=1)
+  - replacement evidence: none
+  - remediation: add a summary artifact under `.claude/work-queue/assets/WRK-1075/evidence/` (for example `gate-evidence-summary.md`) before deleting the prompt artifact
+- `WRK-1090` — stages: 10 | missing prompts: 1
+  - missing prompt: `.claude/work-queue/assets/WRK-1090/stage-10-prompt.md` (reads=1)
+  - replacement evidence: none
+  - remediation: add a summary artifact under `.claude/work-queue/assets/WRK-1090/evidence/` (for example `gate-evidence-summary.md`) before deleting the prompt artifact
+- `WRK-1091` — stages: 2 | missing prompts: 1
+  - missing prompt: `.claude/work-queue/assets/WRK-1091/stage-2-prompt.md` (reads=1)
+  - replacement evidence: none
+  - remediation: add a summary artifact under `.claude/work-queue/assets/WRK-1091/evidence/` (for example `gate-evidence-summary.md`) before deleting the prompt artifact
+- `WRK-1097` — stages: 2 | missing prompts: 1
+  - missing prompt: `.claude/work-queue/assets/WRK-1097/stage-2-prompt.md` (reads=1)
+  - replacement evidence: none
+  - remediation: add a summary artifact under `.claude/work-queue/assets/WRK-1097/evidence/` (for example `gate-evidence-summary.md`) before deleting the prompt artifact
+- `WRK-1112` — stages: 3, 4 | missing prompts: 2
+  - missing prompt: `.claude/work-queue/assets/WRK-1112/stage-3-prompt.md` (reads=1)
+  - missing prompt: `.claude/work-queue/assets/WRK-1112/stage-4-prompt.md` (reads=1)
+  - replacement evidence: none
+  - remediation: add a summary artifact under `.claude/work-queue/assets/WRK-1112/evidence/` (for example `gate-evidence-summary.md`) before deleting the prompt artifact
+- `WRK-1155` — stages: 4 | missing prompts: 1
+  - missing prompt: `.claude/work-queue/assets/WRK-1155/stage-4-prompt.md` (reads=1)
+  - replacement evidence: none
+  - remediation: add a summary artifact under `.claude/work-queue/assets/WRK-1155/evidence/` (for example `gate-evidence-summary.md`) before deleting the prompt artifact
+- `WRK-1156` — stages: 2, 4 | missing prompts: 2
+  - missing prompt: `.claude/work-queue/assets/WRK-1156/stage-2-prompt.md` (reads=1)
+  - missing prompt: `.claude/work-queue/assets/WRK-1156/stage-4-prompt.md` (reads=1)
+  - replacement evidence: none
+  - remediation: add a summary artifact under `.claude/work-queue/assets/WRK-1156/evidence/` (for example `gate-evidence-summary.md`) before deleting the prompt artifact
+- `WRK-1183` — stages: 2 | missing prompts: 1
+  - missing prompt: `.claude/work-queue/assets/WRK-1183/stage-2-prompt.md` (reads=1)
+  - replacement evidence: none
+  - remediation: add a summary artifact under `.claude/work-queue/assets/WRK-1183/evidence/` (for example `gate-evidence-summary.md`) before deleting the prompt artifact
+- `WRK-1295` — stages: 2 | missing prompts: 1
+  - missing prompt: `.claude/work-queue/assets/WRK-1295/stage-2-prompt.md` (reads=1)
+  - replacement evidence: none
+  - remediation: add a summary artifact under `.claude/work-queue/assets/WRK-1295/evidence/` (for example `gate-evidence-summary.md`) before deleting the prompt artifact
+- `WRK-1321` — stages: 2 | missing prompts: 1
+  - missing prompt: `.claude/work-queue/assets/WRK-1321/stage-2-prompt.md` (reads=1)
+  - replacement evidence: none
+  - remediation: add a summary artifact under `.claude/work-queue/assets/WRK-1321/evidence/` (for example `gate-evidence-summary.md`) before deleting the prompt artifact
+- `WRK-1337` — stages: 8 | missing prompts: 1
+  - missing prompt: `.claude/work-queue/assets/WRK-1337/stage-8-prompt.md` (reads=1)
+  - replacement evidence: none
+  - remediation: add a summary artifact under `.claude/work-queue/assets/WRK-1337/evidence/` (for example `gate-evidence-summary.md`) before deleting the prompt artifact
+- `WRK-5082` — stages: 4 | missing prompts: 1
+  - missing prompt: `.claude/work-queue/assets/WRK-5082/stage-4-prompt.md` (reads=1)
+  - replacement evidence: none
+  - remediation: add a summary artifact under `.claude/work-queue/assets/WRK-5082/evidence/` (for example `gate-evidence-summary.md`) before deleting the prompt artifact
+- `WRK-5097` — stages: 2 | missing prompts: 1
+  - missing prompt: `.claude/work-queue/assets/WRK-5097/stage-2-prompt.md` (reads=1)
+  - replacement evidence: none
+  - remediation: add a summary artifact under `.claude/work-queue/assets/WRK-5097/evidence/` (for example `gate-evidence-summary.md`) before deleting the prompt artifact
+- `WRK-5106` — stages: 2 | missing prompts: 1
+  - missing prompt: `.claude/work-queue/assets/WRK-5106/stage-2-prompt.md` (reads=1)
+  - replacement evidence: none
+  - remediation: add a summary artifact under `.claude/work-queue/assets/WRK-5106/evidence/` (for example `gate-evidence-summary.md`) before deleting the prompt artifact
+- `WRK-5107` — stages: 6 | missing prompts: 1
+  - missing prompt: `.claude/work-queue/assets/WRK-5107/stage-6-prompt.md` (reads=1)
+  - replacement evidence: none
+  - remediation: add a summary artifact under `.claude/work-queue/assets/WRK-5107/evidence/` (for example `gate-evidence-summary.md`) before deleting the prompt artifact
+- `WRK-5110` — stages: 10 | missing prompts: 1
+  - missing prompt: `.claude/work-queue/assets/WRK-5110/stage-10-prompt.md` (reads=1)
+  - replacement evidence: none
+  - remediation: add a summary artifact under `.claude/work-queue/assets/WRK-5110/evidence/` (for example `gate-evidence-summary.md`) before deleting the prompt artifact
+- `WRK-658` — stages: 2 | missing prompts: 1
+  - missing prompt: `.claude/work-queue/assets/WRK-658/stage-2-prompt.md` (reads=1)
+  - replacement evidence: none
+  - remediation: add a summary artifact under `.claude/work-queue/assets/WRK-658/evidence/` (for example `gate-evidence-summary.md`) before deleting the prompt artifact
+- `workspace-hub-1291` — stages: 4 | missing prompts: 1
+  - missing prompt: `.claude/work-queue/assets/workspace-hub-1291/stage-4-prompt.md` (reads=1)
+  - replacement evidence: none
+  - remediation: add a summary artifact under `.claude/work-queue/assets/workspace-hub-1291/evidence/` (for example `gate-evidence-summary.md`) before deleting the prompt artifact
+- `workspace-hub-1357` — stages: 2 | missing prompts: 1
+  - missing prompt: `.claude/work-queue/assets/workspace-hub-1357/stage-2-prompt.md` (reads=1)
+  - replacement evidence: none
+  - remediation: add a summary artifact under `.claude/work-queue/assets/workspace-hub-1357/evidence/` (for example `gate-evidence-summary.md`) before deleting the prompt artifact
+- `workspace-hub-1363` — stages: 2 | missing prompts: 1
+  - missing prompt: `.claude/work-queue/assets/workspace-hub-1363/stage-2-prompt.md` (reads=1)
+  - replacement evidence: none
+  - remediation: add a summary artifact under `.claude/work-queue/assets/workspace-hub-1363/evidence/` (for example `gate-evidence-summary.md`) before deleting the prompt artifact
+- `workspace-hub-1384` — stages: 2 | missing prompts: 1
+  - missing prompt: `.claude/work-queue/assets/workspace-hub-1384/stage-2-prompt.md` (reads=1)
+  - replacement evidence: none
+  - remediation: add a summary artifact under `.claude/work-queue/assets/workspace-hub-1384/evidence/` (for example `gate-evidence-summary.md`) before deleting the prompt artifact
+- `workspace-hub-1405` — stages: 2, 6, 8 | missing prompts: 3
+  - missing prompt: `.claude/work-queue/assets/workspace-hub-1405/stage-2-prompt.md` (reads=1)
+  - missing prompt: `.claude/work-queue/assets/workspace-hub-1405/stage-6-prompt.md` (reads=1)
+  - missing prompt: `.claude/work-queue/assets/workspace-hub-1405/stage-8-prompt.md` (reads=1)
+  - replacement evidence: none
+  - remediation: add a summary artifact under `.claude/work-queue/assets/workspace-hub-1405/evidence/` (for example `gate-evidence-summary.md`) before deleting the prompt artifact
+- `workspace-hub-225` — stages: 18 | missing prompts: 1
+  - missing prompt: `.claude/work-queue/assets/workspace-hub-225/stage-18-prompt.md` (reads=1)
+  - replacement evidence: none
+  - remediation: add a summary artifact under `.claude/work-queue/assets/workspace-hub-225/evidence/` (for example `gate-evidence-summary.md`) before deleting the prompt artifact
+

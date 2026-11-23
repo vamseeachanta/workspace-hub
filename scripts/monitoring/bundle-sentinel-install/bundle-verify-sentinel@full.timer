@@ -1,0 +1,11 @@
+[Unit]
+Description=Weekly full SHA-256 verification of /mnt/ace relocation bundles
+
+[Timer]
+# Sunday 03:40 — reads ~57 GB, so keep it off the weekday working window.
+OnCalendar=Sun *-*-* 03:40:00
+Persistent=true
+RandomizedDelaySec=900
+
+[Install]
+WantedBy=timers.target

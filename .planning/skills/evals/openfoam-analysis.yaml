@@ -1,0 +1,23 @@
+version: 1
+wrk_id: WRK-1009
+skill_name: openfoam-analysis
+skill_path: .claude/skills/engineering/cfd/openfoam/analysis/SKILL.md
+evals:
+- eval_id: oa-cap-01
+  eval_type: capability
+  description: Core sections documented for openfoam-analysis
+  checks:
+    required_sections:
+    - '## Quick Start'
+    - '## Workflow Stages'
+    - '## Script Reference'
+    - '## Integration with Calculation Methodology'
+    - '## Analysis Templates'
+- eval_id: oa-proc-01
+  eval_type: procedural
+  description: Key commands documented for openfoam-analysis
+  checks:
+    required_commands:
+    - uv run --no-project python scripts/openfoam-analysis/generate-calc-yaml.py my-analysis.yaml
+    - uv run --no-project python scripts/reporting/generate-calc-report.py my-analysis-calc.yaml
+    - bash scripts/openfoam-analysis/run-analysis.sh my-analysis.yaml

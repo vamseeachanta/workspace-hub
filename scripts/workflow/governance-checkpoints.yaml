@@ -1,0 +1,74 @@
+# Session Governance Checkpoints
+# Machine-readable config for hard-stop gates in the session lifecycle.
+# See: docs/governance/SESSION-GOVERNANCE.md
+# Related: GitHub issue #1839
+
+version: 1
+checkpoints:
+  # ── Hard Stops (user must approve) ────────────────────────────────────
+  - id: plan-approval
+    name: Retired Plan Approval
+    stage: pre-implement
+    type: hard-stop
+    description: >
+      Historical checkpoint retained for compatibility only. The originating
+      task request authorizes implementation without separate plan approval.
+    enforced: false
+
+  - id: review-verdict
+    name: Review Verdict
+    stage: post-review
+    type: hard-stop
+    description: >
+      User reviews cross-review results (Codex/Gemini feedback) and
+      approves or rejects before merge.
+    enforced: true
+
+  - id: session-close
+    name: Session Close
+    stage: end
+    type: hard-stop
+    description: >
+      User confirms session summary and next priorities before the
+      session ends. Prevents orphaned work.
+    enforced: false  # advisory for now — promote to enforced after Phase 2
+
+  # ── Auto Gates (system-enforced) ──────────────────────────────────────
+  - id: tdd-red
+    name: TDD Red Phase
+    stage: pre-implement
+    type: auto-gate
+    description: >
+      Tests must be written and failing before implementation starts.
+      Policy says "TDD mandatory" — this gate enforces it.
+    enforced: true
+
+  - id: tool-call-ceiling
+    name: Tool Call Ceiling
+    stage: runtime
+    type: auto-gate
+    description: >
+      Hard stop at 1000 tool calls per session (tracked by PPID — resets each
+      new Claude session). Prevents runaway agents; does not accumulate across
+      sessions on the same day.
+    enforced: true
+    threshold: 1000
+
+  - id: error-loop-breaker
+    name: Error Loop Breaker
+    stage: runtime
+    type: auto-gate
+    description: >
+      If the same error repeats 3 consecutive times, hard stop.
+      Do not retry — escalate to user.
+    enforced: true
+    threshold: 3
+
+  - id: pre-push-review
+    name: Pre-Push Review Gate
+    stage: pre-push
+    type: auto-gate
+    description: >
+      Review gate must pass before pushing to remote. Strict mode enabled
+      by default via REVIEW_GATE_STRICT=1 in .claude/settings.json env.
+    enforced: true  # strict mode as of 2026-04-09 (#1839)

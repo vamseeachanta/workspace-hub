@@ -1,0 +1,579 @@
+# CircleCI Configuration for Baseline Testing
+# High-performance pipeline with caching, parallelism, and comprehensive reporting
+
+version: 2.1
+
+# Orbs - reusable packages of configuration
+orbs:
+  node: circleci/node@5.1.0
+  python: circleci/python@2.1.1
+  docker: circleci/docker@2.2.0
+  slack: circleci/slack@4.12.1
+  codecov: codecov/codecov@3.2.4
+
+# Executors - execution environments
+executors:
+  baseline-executor:
+    docker:
+      - image: cimg/node:18.19
+    working_directory: ~/project
+    environment:
+      NODE_ENV: test
+      BASELINE_LOG_LEVEL: INFO
+      BASELINE_THRESHOLD: 85
+
+  docker-executor:
+    docker:
+      - image: cimg/base:stable
+    working_directory: ~/project
+
+  performance-executor:
+    machine:
+      image: ubuntu-2004:202201-02
+    working_directory: ~/project
+    environment:
+      BASELINE_PERFORMANCE_MODE: true
+
+# Commands - reusable command sets
+commands:
+  setup-baseline-environment:
+    description: "Setup baseline testing environment"
+    parameters:
+      install-python:
+        type: boolean
+        default: true
+    steps:
+      - checkout
+      - when:
+          condition: << parameters.install-python >>
+          steps:
+            - python/install:
+                version: "3.11"
+      - node/install-packages:
+          pkg-manager: npm
+          cache-version: v2
+      - run:
+          name: Create baseline directories
+          command: |
+            mkdir -p .baseline-cache/{logs,results,artifacts}
+            mkdir -p reports/{junit,coverage,performance,security}
+      - run:
+          name: Install global tools
+          command: |
+            npm install -g eslint prettier typescript
+            pip install pytest black flake8 coverage
+
+  run-baseline-tests:
+    description: "Run baseline tests with retry logic"
+    parameters:
+      test-type:
+        type: string
+      timeout:
+        type: string
+        default: "15m"
+      parallel:
+        type: boolean
+        default: false
+    steps:
+      - run:
+          name: Run << parameters.test-type >> baseline tests
+          command: |
+            set -e
+
+            export BASELINE_TEST_TYPE=<< parameters.test-type >>
+            export BASELINE_TIMEOUT=$(echo "<< parameters.timeout >>" | sed 's/m//' | awk '{print $1*60}')
+
+            echo "Running << parameters.test-type >> baseline tests..."
+
+            # Retry logic
+            for attempt in 1 2 3; do
+              echo "Attempt $attempt/3"
+
+              if npm run test:baseline:<< parameters.test-type >> -- \
+                --reporter=junit \
+                --outputFile=reports/junit/<< parameters.test-type >>-results.xml; then
+                echo "<< parameters.test-type >> tests passed on attempt $attempt"
+                break
+              else
+                exit_code=$?
+                echo "<< parameters.test-type >> tests failed on attempt $attempt (exit code: $exit_code)"
+
+                if [ $attempt -eq 3 ]; then
+                  echo "All attempts failed"
+                  exit $exit_code
+                fi
+
+                sleep $((attempt * 10))
+              fi
+            done
+          no_output_timeout: << parameters.timeout >>
+
+  save-baseline-cache:
+    description: "Save baseline cache and artifacts"
+    steps:
+      - save_cache:
+          key: baseline-cache-v1-{{ checksum "package-lock.json" }}-{{ .Environment.CIRCLE_SHA1 }}
+          paths:
+            - .baseline-cache
+      - store_artifacts:
+          path: reports
+          destination: baseline-reports
+      - store_test_results:
+          path: reports/junit
+
+  notify-results:
+    description: "Send notifications about test results"
+    parameters:
+      status:
+        type: string
+    steps:
+      - run:
+          name: Prepare notification data
+          command: |
+            if [ -f "reports/analysis/summary.json" ]; then
+              export BASELINE_SCORE=$(jq -r '.overall_score' reports/analysis/summary.json)
+              export BASELINE_STATUS=$(jq -r '.status' reports/analysis/summary.json)
+              export FAILED_TESTS=$(jq -r '.failed_tests' reports/analysis/summary.json)
+            else
+              export BASELINE_SCORE="0"
+              export BASELINE_STATUS="ERROR"
+              export FAILED_TESTS="N/A"
+            fi
+
+            echo "export BASELINE_SCORE=$BASELINE_SCORE" >> $BASH_ENV
+            echo "export BASELINE_STATUS=$BASELINE_STATUS" >> $BASH_ENV
+            echo "export FAILED_TESTS=$FAILED_TESTS" >> $BASH_ENV
+      - slack/notify:
+          event: << parameters.status >>
+          custom: |
+            {
+              "blocks": [
+                {
+                  "type": "section",
+                  "fields": [
+                    {
+                      "type": "mrkdwn",
+                      "text": "*Project*: $CIRCLE_PROJECT_REPONAME"
+                    },
+                    {
+                      "type": "mrkdwn",
+                      "text": "*Branch*: $CIRCLE_BRANCH"
+                    },
+                    {
+                      "type": "mrkdwn",
+                      "text": "*Score*: $BASELINE_SCORE%"
+                    },
+                    {
+                      "type": "mrkdwn",
+                      "text": "*Status*: $BASELINE_STATUS"
+                    }
+                  ]
+                },
+                {
+                  "type": "actions",
+                  "elements": [
+                    {
+                      "type": "button",
+                      "text": {
+                        "type": "plain_text",
+                        "text": "View Job"
+                      },
+                      "url": "$CIRCLE_BUILD_URL"
+                    }
+                  ]
+                }
+              ]
+            }
+
+# Jobs - individual units of work
+jobs:
+  # Setup and preparation
+  setup:
+    executor: baseline-executor
+    steps:
+      - setup-baseline-environment
+      - save_cache:
+          key: deps-v1-{{ checksum "package-lock.json" }}
+          paths:
+            - node_modules
+      - persist_to_workspace:
+          root: ~/project
+          paths:
+            - .
+
+  # Code quality and validation
+  validate:
+    executor: baseline-executor
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - restore_cache:
+          keys:
+            - deps-v1-{{ checksum "package-lock.json" }}
+      - run:
+          name: Run linting and syntax checks
+          command: |
+            npm run lint:check
+            npm run type-check
+            python -m py_compile **/*.py || true
+      - run:
+          name: Security audit
+          command: |
+            npm audit --audit-level=moderate || true
+            pip install safety
+            safety check || true
+
+  # Unit tests
+  test-unit:
+    executor: baseline-executor
+    parallelism: 4
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - restore_cache:
+          keys:
+            - deps-v1-{{ checksum "package-lock.json" }}
+      - run-baseline-tests:
+          test-type: unit
+          timeout: 15m
+          parallel: true
+      - run:
+          name: Split tests by timing
+          command: |
+            circleci tests glob "tests/unit/**/*.test.js" | \
+            circleci tests split --split-by=timings > /tmp/tests-to-run
+
+            npm run test:baseline:unit -- \
+              --testPathPattern="$(cat /tmp/tests-to-run | tr '\n' '|' | sed 's/|$//')" \
+              --reporter=junit \
+              --outputFile=reports/junit/unit-results-${CIRCLE_NODE_INDEX}.xml
+      - codecov/upload:
+          file: coverage/coverage.xml
+      - save-baseline-cache
+
+  # Integration tests
+  test-integration:
+    executor: baseline-executor
+    docker:
+      - image: cimg/node:18.19
+      - image: cimg/redis:7.0
+      - image: cimg/postgres:13.11
+        environment:
+          POSTGRES_USER: test
+          POSTGRES_DB: baseline_test
+          POSTGRES_PASSWORD: test
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - restore_cache:
+          keys:
+            - deps-v1-{{ checksum "package-lock.json" }}
+      - run:
+          name: Wait for services
+          command: |
+            dockerize -wait tcp://localhost:5432 -timeout 1m
+            dockerize -wait tcp://localhost:6379 -timeout 1m
+      - run-baseline-tests:
+          test-type: integration
+          timeout: 30m
+      - save-baseline-cache
+
+  # Performance tests
+  test-performance:
+    executor: performance-executor
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - restore_cache:
+          keys:
+            - deps-v1-{{ checksum "package-lock.json" }}
+      - run:
+          name: Install dependencies on machine executor
+          command: |
+            nvm install 18.19.0
+            nvm use 18.19.0
+            npm ci
+      - run-baseline-tests:
+          test-type: performance
+          timeout: 60m
+      - run:
+          name: Analyze performance results
+          command: |
+            python3 scripts/ci/analyze-performance.py
+      - save-baseline-cache
+
+  # Security tests
+  test-security:
+    executor: baseline-executor
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - restore_cache:
+          keys:
+            - deps-v1-{{ checksum "package-lock.json" }}
+      - run-baseline-tests:
+          test-type: security
+          timeout: 20m
+      - run:
+          name: Additional security scans
+          command: |
+            npm audit --json > reports/security/npm-audit.json || true
+            pip install bandit
+            bandit -r . -f json -o reports/security/bandit-report.json || true
+      - save-baseline-cache
+
+  # Docker-based testing
+  test-docker:
+    executor: docker-executor
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - setup_remote_docker:
+          version: 20.10.14
+          docker_layer_caching: true
+      - docker/build:
+          image: baseline-test
+          tag: ${CIRCLE_SHA1}
+          dockerfile: docker/Dockerfile.baseline-test
+      - run:
+          name: Run tests in Docker
+          command: |
+            docker run --rm \
+              -v $(pwd):/app \
+              -w /app \
+              -e BASELINE_ENV=docker \
+              baseline-test:${CIRCLE_SHA1} \
+              npm run test:baseline:all
+
+  # Results analysis
+  analyze-results:
+    executor: baseline-executor
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - restore_cache:
+          keys:
+            - baseline-cache-v1-{{ checksum "package-lock.json" }}-{{ .Environment.CIRCLE_SHA1 }}
+      - run:
+          name: Aggregate and analyze results
+          command: |
+            python3 scripts/ci/aggregate-results.py \
+              --input-dir .baseline-cache/results \
+              --output-file reports/analysis/summary.json \
+              --threshold $BASELINE_THRESHOLD
+
+            python3 scripts/ci/trend-analysis.py \
+              --current reports/analysis/summary.json \
+              --output reports/analysis/trends.json
+
+            python3 scripts/ci/quality-gates.py \
+              --threshold $BASELINE_THRESHOLD \
+              --input reports/analysis/summary.json
+      - save-baseline-cache
+      - persist_to_workspace:
+          root: ~/project
+          paths:
+            - reports/analysis
+
+  # Report generation
+  generate-report:
+    executor: baseline-executor
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - python/install:
+          version: "3.11"
+      - run:
+          name: Install report dependencies
+          command: |
+            pip install jinja2 matplotlib seaborn pandas
+      - run:
+          name: Generate comprehensive report
+          command: |
+            python3 scripts/ci/generate-report.py \
+              --input reports/analysis \
+              --output reports/final-report.html \
+              --charts reports/charts
+      - store_artifacts:
+          path: reports/final-report.html
+          destination: baseline-report.html
+      - store_artifacts:
+          path: reports/charts
+          destination: charts
+
+  # Baseline update
+  update-baseline:
+    executor: baseline-executor
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - restore_cache:
+          keys:
+            - baseline-cache-v1-{{ checksum "package-lock.json" }}-{{ .Environment.CIRCLE_SHA1 }}
+      - run:
+          name: Update baseline files
+          command: |
+            if [ -f "reports/analysis/baseline-update-needed.flag" ]; then
+              echo "Updating baseline files..."
+
+              # Backup current baseline
+              if [ -d "tests/baselines" ]; then
+                cp -r tests/baselines tests/baselines.backup.$(date +%s)
+              fi
+
+              # Update baseline files
+              mkdir -p tests/baselines
+              cp -r .baseline-cache/results/*.baseline tests/baselines/
+
+              # Commit changes (would need write access)
+              echo "Baseline files ready for update"
+            else
+              echo "No baseline update needed"
+            fi
+
+# Workflows - orchestration of jobs
+workflows:
+  version: 2
+
+  # Main baseline testing workflow
+  baseline-testing:
+    jobs:
+      - setup:
+          filters:
+            branches:
+              ignore: /gh-pages/
+
+      - validate:
+          requires:
+            - setup
+
+      - test-unit:
+          requires:
+            - validate
+
+      - test-integration:
+          requires:
+            - validate
+
+      - test-performance:
+          requires:
+            - validate
+          filters:
+            branches:
+              only:
+                - main
+                - develop
+
+      - test-security:
+          requires:
+            - validate
+
+      - test-docker:
+          requires:
+            - setup
+          filters:
+            branches:
+              only: main
+
+      - analyze-results:
+          requires:
+            - test-unit
+            - test-integration
+            - test-security
+
+      - generate-report:
+          requires:
+            - analyze-results
+
+      - update-baseline:
+          requires:
+            - analyze-results
+          filters:
+            branches:
+              only: main
+
+      # Notifications
+      - notify-results:
+          status: pass
+          requires:
+            - generate-report
+          filters:
+            branches:
+              only:
+                - main
+                - develop
+
+  # Scheduled comprehensive audit
+  nightly-audit:
+    triggers:
+      - schedule:
+          cron: "0 2 * * *"  # 2 AM daily
+          filters:
+            branches:
+              only: main
+    jobs:
+      - setup
+      - test-unit:
+          requires:
+            - setup
+      - test-integration:
+          requires:
+            - setup
+      - test-performance:
+          requires:
+            - setup
+      - test-security:
+          requires:
+            - setup
+      - analyze-results:
+          requires:
+            - test-unit
+            - test-integration
+            - test-performance
+            - test-security
+      - generate-report:
+          requires:
+            - analyze-results
+      - notify-results:
+          status: fail
+          requires:
+            - generate-report
+
+  # Weekly comprehensive audit
+  weekly-audit:
+    triggers:
+      - schedule:
+          cron: "0 6 * * 1"  # 6 AM every Monday
+          filters:
+            branches:
+              only: main
+    jobs:
+      - setup
+      - test-unit:
+          requires:
+            - setup
+      - test-integration:
+          requires:
+            - setup
+      - test-performance:
+          requires:
+            - setup
+      - test-security:
+          requires:
+            - setup
+      - test-docker:
+          requires:
+            - setup
+      - analyze-results:
+          requires:
+            - test-unit
+            - test-integration
+            - test-performance
+            - test-security
+            - test-docker
+      - generate-report:
+          requires:
+            - analyze-results
+      - update-baseline:
+          requires:
+            - analyze-results

@@ -1,0 +1,8 @@
+# Release manifest — updated by scripts/release/cut-release.sh on every release
+generated_at: "2026-03-12"
+repos:
+  assetutilities: "0.1.0"
+  digitalmodel: "0.1.0"
+  worldenergydata: "0.1.0"
+  assethold: "0.1.0"
+  OGManufacturing: "0.1.0"

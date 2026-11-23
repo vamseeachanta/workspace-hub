@@ -1,0 +1,16 @@
+version: 1
+skill_name: gsd-help
+skill_path: .claude/skills/gsd-help/SKILL.md
+tests:
+  - test_id: gsd-help-int-01
+    description: Skill produces a list of available GSD commands
+    prompt: >
+      You have loaded the gsd-help skill. A user types '$gsd-help'.
+      Show the available GSD commands.
+    expected_patterns:
+      - "gsd-"
+      - "[Cc]ommand"
+    unexpected_patterns:
+      - "error"
+      - "no commands"
+    timeout: 60

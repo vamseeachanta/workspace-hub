@@ -1,0 +1,23 @@
+{
+  "version": "manifest-closure/v1",
+  "files": [
+    {
+      "id": "original",
+      "role": "retained-original",
+      "path": "raw/input.txt",
+      "format": "bytes",
+      "record_count": null,
+      "primary_key": null,
+      "sha256": "ca024752f77de72f97a2bf8df753003b0de0099a92c95dab15ed823bb3fd9b96"
+    },
+    {
+      "id": "records",
+      "role": "derived",
+      "path": "rows.json",
+      "format": "json-records",
+      "record_count": 2,
+      "primary_key": "id",
+      "sha256": "c3fadabe2b865305a972135d256018be8d5c05a5c71d90a7be1f021ef54e9e91"
+    }
+  ]
+}

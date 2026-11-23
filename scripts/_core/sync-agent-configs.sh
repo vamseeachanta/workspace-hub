@@ -1,0 +1,1558 @@
+#!/usr/bin/env bash
+# Sync managed agent configs from workspace-hub templates into home directories.
+# Usage: bash scripts/_core/sync-agent-configs.sh [--force] [--dry-run] [--machine <name>]
+
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+WS_HUB="$(cd "$SCRIPT_DIR/../.." && pwd)"
+
+FORCE=false
+DRY_RUN=false
+MACHINE=""
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        --force) FORCE=true; shift ;;
+        --dry-run) DRY_RUN=true; shift ;;
+        --machine)
+            if [[ $# -lt 2 ]]; then
+                echo "Missing value for --machine" >&2
+                exit 1
+            fi
+            MACHINE="$2"
+            shift 2
+            ;;
+        --help|-h)
+            cat <<'USAGE'
+Usage: bash scripts/_core/sync-agent-configs.sh [--force] [--dry-run] [--machine <name>]
+
+Options:
+  --force      Overwrite plain-copy targets when merge is not possible
+  --dry-run    Show planned actions without writing files
+  --machine N  Resolve machine roots from config/workstations/registry.yaml
+USAGE
+            exit 0
+            ;;
+        *)
+            echo "Unknown option: $1" >&2
+            exit 1
+            ;;
+    esac
+done
+
+CLAUDE_TEMPLATE="$WS_HUB/config/agents/claude/settings.json"
+CODEX_TEMPLATE="$WS_HUB/config/agents/codex/config.toml"
+GEMINI_TEMPLATE="$WS_HUB/config/agents/gemini/settings.json"
+HERMES_TEMPLATE="$WS_HUB/config/agents/hermes/config.yaml.template"
+# NOTE: ~/.hermes/SOUL.md is intentionally NOT synced here (#2864). It is a
+# symlink owned solely by scripts/agents/install-soul-runtime.sh, which points
+# it at the built runtime artifact config/agents/hermes/SOUL.runtime.md (NOT the
+# delta config/agents/hermes/SOUL.md). A plain-file copy here would clobber that
+# symlink nightly with the 4 KB delta, giving Hermes a gutted identity.
+
+CLAUDE_TARGET="$HOME/.claude/settings.json"
+CODEX_TARGET="$HOME/.codex/config.toml"
+GEMINI_TARGET="$HOME/.gemini/settings.json"
+HERMES_TARGET="$HOME/.hermes/config.yaml"
+
+changed=0
+skipped=0
+
+log_change() { echo "[UPDATED] $1"; changed=$((changed + 1)); }
+log_skip() { echo "[SKIP]    $1"; skipped=$((skipped + 1)); }
+
+ensure_parent_dir() {
+    mkdir -p "$(dirname "$1")"
+}
+
+sync_make_target_tmp() {
+    local target="$1"
+    local dir base
+    dir="$(dirname "$target")"
+    base="$(basename "$target")"
+    mktemp "$dir/.${base}.tmp.XXXXXX"
+}
+
+run_config_python() {
+    if command -v uv >/dev/null 2>&1; then
+        uv run --with pyyaml --no-project python "$@"
+        return
+    fi
+    if command -v python3 >/dev/null 2>&1; then
+        if python3 -c 'import yaml' >/dev/null 2>&1; then
+            python3 "$@"
+            return
+        fi
+        echo "[ERROR] python3 is available but PyYAML is missing, and uv is unavailable for agent config sync" >&2
+        return 1
+    fi
+    echo "[ERROR] python3 or uv is required for agent config sync" >&2
+    return 127
+}
+
+render_hermes_template() {
+    local template="$1"
+    local output_path="$2"
+    local machine_name="$3"
+    local ws_hub_path="$4"
+    local tier1_repo_root="$5"
+
+    if [[ "$ws_hub_path" == *$'\n'* || "$tier1_repo_root" == *$'\n'* ]]; then
+        echo "[ERROR] machine root contains newline; refusing to render Hermes template" >&2
+        return 1
+    fi
+
+    local registry_path="$WS_HUB/config/workstations/registry.yaml"
+
+    WS_HUB_PATH="$ws_hub_path" TIER1_REPO_ROOT="$tier1_repo_root" MACHINE_NAME="$machine_name" REGISTRY_PATH="$registry_path" run_config_python - "$template" "$output_path" <<'PY'
+import json, os
+import pathlib
+import re
+import sys
+import yaml
+
+template_path = pathlib.Path(sys.argv[1])
+output_path = pathlib.Path(sys.argv[2])
+ws_hub = os.environ["WS_HUB_PATH"]
+tier1 = os.environ["TIER1_REPO_ROOT"]
+machine_name = os.environ["MACHINE_NAME"]
+registry_path = pathlib.Path(os.environ["REGISTRY_PATH"])
+if registry_path.exists():
+    registry = yaml.safe_load(registry_path.read_text()) or {}
+    repos = ((registry.get("machines") or {}).get(machine_name) or {}).get("repos") or []
+else:
+    repos = []
+repo_skill_dirs = []
+for repo in repos:
+    if repo == "workspace-hub":
+        continue
+    path = pathlib.Path(tier1) / str(repo) / ".claude" / "skills"
+    if path.exists() and any(path.rglob("SKILL.md")):
+        repo_skill_dirs.append(f"- {json.dumps(str(path))}")
+registry_repo_skill_dirs = "\n    ".join(repo_skill_dirs) if repo_skill_dirs else ""
+rendered = (
+    template_path.read_text()
+    .replace("__WS_HUB_PATH__", ws_hub)
+    .replace("__TIER1_REPO_ROOT__", tier1)
+    .replace("__REGISTRY_REPO_SKILL_DIRS__", registry_repo_skill_dirs)
+)
+remaining = sorted(set(re.findall(r"__[A-Z_][A-Z0-9_]*__", rendered)))
+if remaining:
+    raise SystemExit(f"unresolved token(s): {', '.join(remaining)}")
+stale = re.findall(re.escape(ws_hub) + r"/(?!\.claude/)[^\n]+/\.claude/skills", rendered)
+if stale:
+    raise SystemExit("stale nested workspace-hub skill path(s): " + ", ".join(stale))
+output_path.write_text(rendered)
+PY
+}
+
+validate_json_file() {
+    local target="$1"
+    local label="$2"
+
+    if command -v jq >/dev/null 2>&1; then
+        jq empty "$target" >/dev/null
+        return
+    fi
+
+    if command -v python3 >/dev/null 2>&1; then
+        if python3 - "$target" <<'PY' >/dev/null
+import json
+import pathlib
+import sys
+
+with pathlib.Path(sys.argv[1]).open() as fh:
+    json.load(fh)
+PY
+        then
+            return
+        fi
+    fi
+
+    if command -v uv >/dev/null 2>&1; then
+        uv run --no-project python - "$target" <<'PY' >/dev/null
+import json
+import pathlib
+import sys
+
+with pathlib.Path(sys.argv[1]).open() as fh:
+    json.load(fh)
+PY
+        return
+    fi
+
+    echo "[WARN] Skipping JSON validation for $label -> $target (jq/python3/uv unavailable)" >&2
+}
+
+validate_yaml_file() {
+    local target="$1"
+    local label="$2"
+
+    if run_config_python - "$target" <<'PY' >/dev/null
+import pathlib
+import sys
+import yaml
+
+with pathlib.Path(sys.argv[1]).open() as fh:
+    yaml.safe_load(fh)
+PY
+    then
+        return
+    fi
+
+    echo "[ERROR] YAML validation failed for $label -> $target" >&2
+    return 1
+}
+
+verify_private_repo_visibility() {
+    local repo="$1"
+    local visibility
+    if ! command -v gh >/dev/null 2>&1; then
+        return 1
+    fi
+    visibility="$(gh repo view "$repo" --json visibility --jq .visibility 2>/dev/null || true)"
+    [[ "$visibility" == "PRIVATE" ]]
+}
+
+normalize_github_repo_url() {
+    local value="$1"
+    value="${value#git@github.com:}"
+    value="${value#https://github.com/}"
+    value="${value#http://github.com/}"
+    value="${value%.git}"
+    printf '%s\n' "$value"
+}
+
+verify_private_repo_clone_origin() {
+    local clone="$1"
+    local repo="$2"
+    local origin expected
+    [[ -d "$clone/.git" ]] || return 1
+    expected="$(normalize_github_repo_url "$repo")"
+    origin="$(git -C "$clone" remote get-url origin 2>/dev/null || true)"
+    [[ -n "$origin" ]] && [[ "$(normalize_github_repo_url "$origin")" == "$expected" ]]
+}
+
+resolve_claude_memory_snapshot_host_name() {
+    local configured host
+    configured="${CLAUDE_MEMORY_SNAPSHOT_HOST:-}"
+    if [[ -z "$configured" ]]; then
+        configured="$(resolve_machine_roots | cut -f1)"
+    fi
+    host="$(printf '%s' "$configured" | tr '[:upper:]' '[:lower:]' | tr -c 'a-z0-9._-' '-')"
+    host="${host##[-.]}"
+    host="${host%%[-.]}"
+    [[ -n "$host" ]] || return 1
+    printf '%s\n' "$host"
+}
+
+resolve_claude_memory_private_snapshot_source() {
+    local clone="$1"
+    local legacy_source host host_source
+    legacy_source="$clone/legacy/config/agents/claude/memory-snapshots"
+    if host="$(resolve_claude_memory_snapshot_host_name 2>/dev/null)"; then
+        host_source="$clone/hosts/$host/config/agents/claude/memory-snapshots"
+    else
+        host_source=""
+    fi
+    if [[ -n "$host_source" && -d "$host_source" ]]; then
+        printf '%s\n' "$host_source"
+        return 0
+    fi
+    if [[ -d "$legacy_source" ]]; then
+        printf '%s\n' "$legacy_source"
+        return 0
+    fi
+    return 1
+}
+
+resolve_private_snapshot_source() {
+    local clone="$1"
+    local rel_path="$2"
+    local host host_source
+    if host="$(resolve_claude_memory_snapshot_host_name 2>/dev/null)" && [[ -e "$clone/hosts/$host/$rel_path" ]]; then
+        printf '%s\n' "$clone/hosts/$host/$rel_path"
+        return 0
+    fi
+    host_source="$(find "$clone/hosts" -mindepth 2 -maxdepth 8 -path "*/$rel_path" 2>/dev/null | sort | head -n 1 || true)"
+    if [[ -n "$host_source" ]]; then
+        printf '%s\n' "$host_source"
+        return 0
+    fi
+    return 1
+}
+
+sanitize_codex_managed_keys() {
+    local source_file="$1"
+    local output_file="$2"
+    local strip_status_line="${3:-false}"
+
+    if command -v python3 >/dev/null 2>&1; then
+        if python3 - "$source_file" "$output_file" "$strip_status_line" <<'PY'
+import pathlib
+import re
+import sys
+
+source_path = pathlib.Path(sys.argv[1])
+output_path = pathlib.Path(sys.argv[2])
+strip_status_line = sys.argv[3].lower() == 'true'
+managed_keys = {'model', 'model_reasoning_effort'}
+table_header_re = re.compile(r'^\[\[?[^\]]+\]\]?\s*(?:#.*)?$')
+status_line_re = re.compile(r'^\[status_line\]\s*(?:#.*)?$')
+managed_line_re = re.compile(r"""^\s*(?:model|model_reasoning_effort|"model"|"model_reasoning_effort"|'model'|'model_reasoning_effort')\s*=""")
+root_model_re = re.compile(r"""^\s*(?:model|"model"|'model')\s*=""")
+
+
+def split_top_level(text, delimiter=','):
+    parts = []
+    start = 0
+    brace = bracket = paren = 0
+    in_string = None
+    escape = False
+    i = 0
+    while i < len(text):
+        ch = text[i]
+        if in_string:
+            if in_string == '"' and escape:
+                escape = False
+            elif in_string == '"' and ch == '\\':
+                escape = True
+            elif ch == in_string:
+                in_string = None
+            i += 1
+            continue
+        if ch in ('"', "'"):
+            in_string = ch
+        elif ch == '{':
+            brace += 1
+        elif ch == '}':
+            brace -= 1
+        elif ch == '[':
+            bracket += 1
+        elif ch == ']':
+            bracket -= 1
+        elif ch == '(':
+            paren += 1
+        elif ch == ')':
+            paren -= 1
+        elif ch == delimiter and brace == 0 and bracket == 0 and paren == 0:
+            parts.append(text[start:i])
+            start = i + 1
+        i += 1
+    parts.append(text[start:])
+    return parts
+
+
+def sanitize_inline_tables(text):
+    result = []
+    i = 0
+    in_string = None
+    escape = False
+    while i < len(text):
+        ch = text[i]
+        if in_string:
+            result.append(ch)
+            if in_string == '"' and escape:
+                escape = False
+            elif in_string == '"' and ch == '\\':
+                escape = True
+            elif ch == in_string:
+                in_string = None
+            i += 1
+            continue
+        if ch in ('"', "'"):
+            in_string = ch
+            result.append(ch)
+            i += 1
+            continue
+        if ch != '{':
+            result.append(ch)
+            i += 1
+            continue
+        depth = 1
+        j = i + 1
+        inner_string = None
+        inner_escape = False
+        while j < len(text):
+            cj = text[j]
+            if inner_string:
+                if inner_string == '"' and inner_escape:
+                    inner_escape = False
+                elif inner_string == '"' and cj == '\\':
+                    inner_escape = True
+                elif cj == inner_string:
+                    inner_string = None
+                j += 1
+                continue
+            if cj in ('"', "'"):
+                inner_string = cj
+            elif cj == '{':
+                depth += 1
+            elif cj == '}':
+                depth -= 1
+                if depth == 0:
+                    break
+            j += 1
+        if depth != 0:
+            result.append(ch)
+            i += 1
+            continue
+        inner = text[i + 1:j]
+        entries = split_top_level(inner)
+        sanitized_entries = []
+        for entry in entries:
+            stripped = entry.strip()
+            if not stripped:
+                continue
+            key, sep, value = stripped.partition('=')
+            if sep and key.strip() in managed_keys:
+                continue
+            sanitized_entries.append(sanitize_inline_tables(stripped))
+        if sanitized_entries:
+            result.append('{ ' + ', '.join(sanitized_entries) + ' }')
+        else:
+            result.append('{}')
+        i = j + 1
+    return ''.join(result)
+
+
+def multiline_state_after(line, current_state):
+    i = 0
+    in_string = current_state
+    while i < len(line):
+        if in_string == '"""':
+            if line.startswith('"""', i) and (i == 0 or line[i - 1] != '\\'):
+                in_string = None
+                i += 3
+            else:
+                i += 1
+            continue
+        if in_string == "'''":
+            if line.startswith("'''", i):
+                in_string = None
+                i += 3
+            else:
+                i += 1
+            continue
+        if line.startswith('"""', i) and (i == 0 or line[i - 1] != '\\'):
+            in_string = '"""'
+            i += 3
+            continue
+        if line.startswith("'''", i):
+            in_string = "'''"
+            i += 3
+            continue
+        i += 1
+    return in_string
+
+
+skip_status = False
+multiline = None
+root_scope = True
+output = []
+for line in source_path.read_bytes().decode('utf-8').splitlines(keepends=True):
+    if multiline is None:
+        stripped = line.strip()
+        if table_header_re.match(stripped):
+            root_scope = False
+        if root_scope and root_model_re.match(line):
+            output.append(line)
+            multiline = multiline_state_after(line, multiline)
+            continue
+        if skip_status:
+            if stripped and table_header_re.match(stripped):
+                skip_status = False
+            else:
+                multiline = multiline_state_after(line, multiline)
+                continue
+        if strip_status_line and stripped and status_line_re.match(stripped):
+            skip_status = True
+            multiline = multiline_state_after(line, multiline)
+            continue
+        if managed_line_re.match(line):
+            multiline = multiline_state_after(line, multiline)
+            continue
+        line = sanitize_inline_tables(line)
+    output.append(line)
+    multiline = multiline_state_after(line, multiline)
+
+output_path.write_bytes(''.join(output).encode('utf-8'))
+PY
+        then
+            return
+        fi
+    fi
+
+    if command -v uv >/dev/null 2>&1; then
+        uv run --no-project python - "$source_file" "$output_file" "$strip_status_line" <<'PY'
+import pathlib
+import re
+import sys
+
+source_path = pathlib.Path(sys.argv[1])
+output_path = pathlib.Path(sys.argv[2])
+strip_status_line = sys.argv[3].lower() == 'true'
+managed_keys = {'model', 'model_reasoning_effort'}
+table_header_re = re.compile(r'^\[\[?[^\]]+\]\]?\s*(?:#.*)?$')
+status_line_re = re.compile(r'^\[status_line\]\s*(?:#.*)?$')
+managed_line_re = re.compile(r"""^\s*(?:model|model_reasoning_effort|"model"|"model_reasoning_effort"|'model'|'model_reasoning_effort')\s*=""")
+root_model_re = re.compile(r"""^\s*(?:model|"model"|'model')\s*=""")
+
+
+def split_top_level(text, delimiter=','):
+    parts = []
+    start = 0
+    brace = bracket = paren = 0
+    in_string = None
+    escape = False
+    i = 0
+    while i < len(text):
+        ch = text[i]
+        if in_string:
+            if in_string == '"' and escape:
+                escape = False
+            elif in_string == '"' and ch == '\\':
+                escape = True
+            elif ch == in_string:
+                in_string = None
+            i += 1
+            continue
+        if ch in ('"', "'"):
+            in_string = ch
+        elif ch == '{':
+            brace += 1
+        elif ch == '}':
+            brace -= 1
+        elif ch == '[':
+            bracket += 1
+        elif ch == ']':
+            bracket -= 1
+        elif ch == '(':
+            paren += 1
+        elif ch == ')':
+            paren -= 1
+        elif ch == delimiter and brace == 0 and bracket == 0 and paren == 0:
+            parts.append(text[start:i])
+            start = i + 1
+        i += 1
+    parts.append(text[start:])
+    return parts
+
+
+def sanitize_inline_tables(text):
+    result = []
+    i = 0
+    in_string = None
+    escape = False
+    while i < len(text):
+        ch = text[i]
+        if in_string:
+            result.append(ch)
+            if in_string == '"' and escape:
+                escape = False
+            elif in_string == '"' and ch == '\\':
+                escape = True
+            elif ch == in_string:
+                in_string = None
+            i += 1
+            continue
+        if ch in ('"', "'"):
+            in_string = ch
+            result.append(ch)
+            i += 1
+            continue
+        if ch != '{':
+            result.append(ch)
+            i += 1
+            continue
+        depth = 1
+        j = i + 1
+        inner_string = None
+        inner_escape = False
+        while j < len(text):
+            cj = text[j]
+            if inner_string:
+                if inner_string == '"' and inner_escape:
+                    inner_escape = False
+                elif inner_string == '"' and cj == '\\':
+                    inner_escape = True
+                elif cj == inner_string:
+                    inner_string = None
+                j += 1
+                continue
+            if cj in ('"', "'"):
+                inner_string = cj
+            elif cj == '{':
+                depth += 1
+            elif cj == '}':
+                depth -= 1
+                if depth == 0:
+                    break
+            j += 1
+        if depth != 0:
+            result.append(ch)
+            i += 1
+            continue
+        inner = text[i + 1:j]
+        entries = split_top_level(inner)
+        sanitized_entries = []
+        for entry in entries:
+            stripped = entry.strip()
+            if not stripped:
+                continue
+            key, sep, value = stripped.partition('=')
+            if sep and key.strip() in managed_keys:
+                continue
+            sanitized_entries.append(sanitize_inline_tables(stripped))
+        if sanitized_entries:
+            result.append('{ ' + ', '.join(sanitized_entries) + ' }')
+        else:
+            result.append('{}')
+        i = j + 1
+    return ''.join(result)
+
+
+def multiline_state_after(line, current_state):
+    i = 0
+    in_string = current_state
+    while i < len(line):
+        if in_string == '"""':
+            if line.startswith('"""', i) and (i == 0 or line[i - 1] != '\\'):
+                in_string = None
+                i += 3
+            else:
+                i += 1
+            continue
+        if in_string == "'''":
+            if line.startswith("'''", i):
+                in_string = None
+                i += 3
+            else:
+                i += 1
+            continue
+        if line.startswith('"""', i) and (i == 0 or line[i - 1] != '\\'):
+            in_string = '"""'
+            i += 3
+            continue
+        if line.startswith("'''", i):
+            in_string = "'''"
+            i += 3
+            continue
+        i += 1
+    return in_string
+
+
+skip_status = False
+multiline = None
+root_scope = True
+output = []
+for line in source_path.read_bytes().decode('utf-8').splitlines(keepends=True):
+    if multiline is None:
+        stripped = line.strip()
+        if table_header_re.match(stripped):
+            root_scope = False
+        if root_scope and root_model_re.match(line):
+            output.append(line)
+            multiline = multiline_state_after(line, multiline)
+            continue
+        if skip_status:
+            if stripped and table_header_re.match(stripped):
+                skip_status = False
+            else:
+                multiline = multiline_state_after(line, multiline)
+                continue
+        if strip_status_line and stripped and status_line_re.match(stripped):
+            skip_status = True
+            multiline = multiline_state_after(line, multiline)
+            continue
+        if managed_line_re.match(line):
+            multiline = multiline_state_after(line, multiline)
+            continue
+        line = sanitize_inline_tables(line)
+    output.append(line)
+    multiline = multiline_state_after(line, multiline)
+
+output_path.write_bytes(''.join(output).encode('utf-8'))
+PY
+        return
+    fi
+
+    echo "[ERROR] sanitize_codex_managed_keys requires python3 or uv" >&2
+    return 1
+}
+
+validate_toml_file() {
+    local target="$1"
+    local label="$2"
+
+    if command -v uv >/dev/null 2>&1; then
+        uv run python - "$target" <<'PY' >/dev/null
+import pathlib
+import sys
+import tomllib
+
+with pathlib.Path(sys.argv[1]).open('rb') as fh:
+    tomllib.load(fh)
+PY
+        return
+    fi
+
+    if command -v python3 >/dev/null 2>&1; then
+        python3 - "$target" <<'PY' >/dev/null
+import pathlib
+import sys
+import tomllib
+
+with pathlib.Path(sys.argv[1]).open('rb') as fh:
+    tomllib.load(fh)
+PY
+        return
+    fi
+
+    echo "[WARN] Skipping TOML validation for $label -> $target (uv/python3 unavailable)" >&2
+}
+
+validate_codex_managed_key_scope() {
+    local target="$1"
+    local label="$2"
+
+    if command -v uv >/dev/null 2>&1; then
+        uv run python - "$target" <<'PY' >/dev/null
+import pathlib
+import sys
+import tomllib
+
+MANAGED_KEYS = {"model", "model_reasoning_effort"}
+
+
+def walk_tables(value, *, is_root=False):
+    if isinstance(value, list):
+        for child in value:
+            walk_tables(child, is_root=False)
+        return
+    if not isinstance(value, dict):
+        return
+    if not is_root:
+        overlap = MANAGED_KEYS.intersection(value)
+        if overlap:
+            raise SystemExit(f"managed keys leaked into non-root table: {sorted(overlap)}")
+    for child in value.values():
+        walk_tables(child, is_root=False)
+
+
+with pathlib.Path(sys.argv[1]).open('rb') as fh:
+    data = tomllib.load(fh)
+
+walk_tables(data, is_root=True)
+PY
+        return
+    fi
+
+    if command -v python3 >/dev/null 2>&1; then
+        python3 - "$target" <<'PY' >/dev/null
+import pathlib
+import sys
+import tomllib
+
+MANAGED_KEYS = {"model", "model_reasoning_effort"}
+
+
+def walk_tables(value, *, is_root=False):
+    if isinstance(value, list):
+        for child in value:
+            walk_tables(child, is_root=False)
+        return
+    if not isinstance(value, dict):
+        return
+    if not is_root:
+        overlap = MANAGED_KEYS.intersection(value)
+        if overlap:
+            raise SystemExit(f"managed keys leaked into non-root table: {sorted(overlap)}")
+    for child in value.values():
+        walk_tables(child, is_root=False)
+
+
+with pathlib.Path(sys.argv[1]).open('rb') as fh:
+    data = tomllib.load(fh)
+
+walk_tables(data, is_root=True)
+PY
+        return
+    fi
+
+    echo "[WARN] Skipping Codex managed-key scope validation for $label -> $target (uv/python3 unavailable)" >&2
+}
+
+validate_codex_template() {
+    local template="$1"
+    local -a python_cmd
+    if command -v uv >/dev/null 2>&1; then
+        python_cmd=(uv run --no-project python)
+    else
+        python_cmd=(python3)
+    fi
+    "${python_cmd[@]}" - "$template" <<'PY'
+import pathlib
+import sys
+import tomllib
+
+with pathlib.Path(sys.argv[1]).open('rb') as source:
+    data = tomllib.load(source)
+if 'model' in data:
+    raise SystemExit('[ERROR] Remove the top-level model pin from the Codex template before syncing.')
+PY
+}
+
+upsert_codex_root_model_defaults() {
+    local target="$1"
+    local label="$2"
+    local tmp_clean=""
+    local tmp_final=""
+
+    trap 'rm -f "$tmp_clean" "$tmp_final"' RETURN
+
+    tmp_clean="$(mktemp)"
+    tmp_final="$(mktemp)"
+
+    sanitize_codex_managed_keys "$target" "$tmp_clean"
+
+    cat > "$tmp_final" <<'EOF'
+model_reasoning_effort = "medium"
+
+EOF
+    cat "$tmp_clean" >> "$tmp_final"
+
+    if ! validate_toml_file "$tmp_final" "$label"; then
+        trap - RETURN
+        rm -f "$tmp_clean" "$tmp_final"
+        return 1
+    fi
+    if ! validate_codex_managed_key_scope "$tmp_final" "$label"; then
+        trap - RETURN
+        rm -f "$tmp_clean" "$tmp_final"
+        return 1
+    fi
+
+    if cmp -s "$tmp_final" "$target"; then
+        log_skip "$label (already current)"
+    else
+        if [[ "$DRY_RUN" == "true" ]]; then
+            log_change "$label (model defaults upsert)"
+        else
+            mv "$tmp_final" "$target"
+            tmp_final=""
+            log_change "$label (model defaults upsert)"
+        fi
+    fi
+
+    trap - RETURN
+    rm -f "$tmp_clean" "$tmp_final"
+}
+
+sync_json_merge() {
+    local template="$1"
+    local target="$2"
+    local label="$3"
+    local tmp=""
+
+    trap 'rm -f "$tmp"' RETURN
+
+    if ! command -v jq >/dev/null 2>&1; then
+        if [[ ! -f "$target" || "$FORCE" == "true" ]]; then
+            if [[ "$DRY_RUN" == "true" ]]; then
+                log_change "$label -> $target (copy)"
+                trap - RETURN
+                rm -f "$tmp"
+                return
+            fi
+            ensure_parent_dir "$target"
+            tmp="$(sync_make_target_tmp "$target")"
+            cp "$template" "$tmp"
+            if ! validate_json_file "$tmp" "$label"; then
+                trap - RETURN
+                rm -f "$tmp"
+                return 1
+            fi
+            log_change "$label -> $target (copy)"
+            mv -f "$tmp" "$target"
+            tmp=""
+        else
+            log_skip "$label -> $target (jq missing and target exists)"
+        fi
+        trap - RETURN
+        rm -f "$tmp"
+        return
+    fi
+
+    if [[ ! -f "$target" ]]; then
+        if [[ "$DRY_RUN" == "true" ]]; then
+            log_change "$label -> $target (create)"
+            trap - RETURN
+            rm -f "$tmp"
+            return
+        fi
+        ensure_parent_dir "$target"
+        tmp="$(sync_make_target_tmp "$target")"
+        cp "$template" "$tmp"
+        if ! validate_json_file "$tmp" "$label"; then
+            trap - RETURN
+            rm -f "$tmp"
+            return 1
+        fi
+        mv -f "$tmp" "$target"
+        tmp=""
+        log_change "$label -> $target (create)"
+        trap - RETURN
+        rm -f "$tmp"
+        return
+    fi
+
+    if [[ "$DRY_RUN" == "true" ]]; then
+        if jq -s '.[0] * .[1]' "$target" "$template" | cmp -s - "$target"; then
+            log_skip "$label -> $target (already current)"
+        else
+            log_change "$label -> $target (merge)"
+        fi
+        trap - RETURN
+        rm -f "$tmp"
+        return
+    fi
+
+    ensure_parent_dir "$target"
+    tmp="$(sync_make_target_tmp "$target")"
+    if ! jq -s '.[0] * .[1]' "$target" "$template" > "$tmp"; then
+        trap - RETURN
+        rm -f "$tmp"
+        return 1
+    fi
+    if ! validate_json_file "$tmp" "$label"; then
+        trap - RETURN
+        rm -f "$tmp"
+        return 1
+    fi
+
+    if cmp -s "$tmp" "$target"; then
+        log_skip "$label -> $target (already current)"
+    else
+        mv -f "$tmp" "$target"
+        tmp=""
+        log_change "$label -> $target (merge)"
+    fi
+
+    trap - RETURN
+    rm -f "$tmp"
+}
+
+sync_codex_managed_config() {
+    local template="$1"
+    local target="$2"
+    local label="$3"
+    local tmp=""
+    local tmp_new=""
+    local template_clean=""
+
+    validate_codex_template "$template" || return 1
+
+    trap 'rm -f "$tmp" "$tmp_new" "$template_clean"' RETURN
+
+    template_clean="$(mktemp)"
+    sanitize_codex_managed_keys "$template" "$template_clean"
+
+    if [[ ! -f "$target" ]]; then
+        if [[ "$DRY_RUN" == "true" ]]; then
+            log_change "$label -> $target (create)"
+            trap - RETURN
+            rm -f "$tmp" "$tmp_new" "$template_clean"
+            return
+        fi
+
+        ensure_parent_dir "$target"
+        tmp_new="$(mktemp)"
+        cat > "$tmp_new" <<'EOF'
+model_reasoning_effort = "medium"
+
+EOF
+        cat "$template_clean" >> "$tmp_new"
+        if ! validate_toml_file "$tmp_new" "$label"; then
+            trap - RETURN
+            rm -f "$tmp" "$tmp_new" "$template_clean"
+            return 1
+        fi
+        if ! validate_codex_managed_key_scope "$tmp_new" "$label"; then
+            trap - RETURN
+            rm -f "$tmp" "$tmp_new" "$template_clean"
+            return 1
+        fi
+        mv "$tmp_new" "$target"
+        tmp_new=""
+        log_change "$label -> $target (create)"
+        trap - RETURN
+        rm -f "$tmp" "$tmp_new" "$template_clean"
+        return
+    fi
+
+    tmp="$(mktemp)"
+    tmp_new="$(mktemp)"
+
+    # Preserve the user's root model line while replacing managed settings.
+    sanitize_codex_managed_keys "$target" "$tmp" true
+
+    cat > "$tmp_new" <<'EOF'
+model_reasoning_effort = "medium"
+
+EOF
+    cat "$tmp" >> "$tmp_new"
+
+    if [[ -s "$tmp_new" ]]; then
+        printf '\n' >> "$tmp_new"
+    fi
+    cat "$template_clean" >> "$tmp_new"
+
+    if ! validate_toml_file "$tmp_new" "$label"; then
+        trap - RETURN
+        rm -f "$tmp" "$tmp_new" "$template_clean"
+        return 1
+    fi
+    if ! validate_codex_managed_key_scope "$tmp_new" "$label"; then
+        trap - RETURN
+        rm -f "$tmp" "$tmp_new" "$template_clean"
+        return 1
+    fi
+
+    if cmp -s "$tmp_new" "$target"; then
+        log_skip "$label -> $target (already current)"
+    else
+        if [[ "$DRY_RUN" == "true" ]]; then
+            log_change "$label -> $target (managed settings upsert)"
+        else
+            mv "$tmp_new" "$target"
+            tmp_new=""
+            log_change "$label -> $target (managed settings upsert)"
+        fi
+    fi
+
+    trap - RETURN
+    rm -f "$tmp" "$tmp_new" "$template_clean"
+}
+
+resolve_machine_roots() {
+    # Prints machine name, workspace_root, and tier1_repo_root separated by tabs. Registry is authoritative.
+    local registry="$WS_HUB/config/workstations/registry.yaml"
+    local harness="$WS_HUB/scripts/readiness/harness-config.yaml"
+    MACHINE="$MACHINE" run_config_python - "$registry" "$harness" <<'PY'
+import os, pathlib, re, socket, sys, yaml
+registry_path, harness_path = sys.argv[1], sys.argv[2]
+requested = os.environ.get("MACHINE") or ""
+host = socket.gethostname().split(".")[0].lower()
+
+if os.path.exists(registry_path):
+    with open(registry_path) as f:
+        machines = (yaml.safe_load(f) or {}).get("machines") or {}
+    harness_workstations = {}
+    if os.path.exists(harness_path):
+        with open(harness_path) as f:
+            harness_workstations = (yaml.safe_load(f) or {}).get("workstations") or {}
+        for candidate, cfg in machines.items():
+            harness_cfg = harness_workstations.get(candidate) or {}
+            h_root = harness_cfg.get("ws_hub_path")
+            r_root = cfg.get("workspace_root")
+            if h_root and r_root and str(h_root) != str(r_root):
+                raise SystemExit(f"registry/harness workspace_root divergence for {candidate}: {r_root} != {h_root}")
+    # PRIVATE-TIER identity — reusing the EXISTING mechanism (#3571), not a new one.
+    #
+    # This repo is PUBLIC, so real hostnames were removed from registry.yaml's
+    # `hostname_aliases`. That field was load-bearing: the `else` branch below
+    # resolves a machine by matching socket.gethostname() against it, and the
+    # nightly cron (scripts/cron/harness-update.sh:346) invokes this script with
+    # NO explicit --machine. Without a replacement the unknown-host branch fires,
+    # GUESSES a workspace root, warns, and exits 0 — and harness-update.sh pipes
+    # this script through `grep -i hermes`, discarding the warning. Silent
+    # nightly degradation, indistinguishable from success.
+    #
+    # `scripts/readiness/lib/machine-identity.sh` already solves exactly this:
+    # boxes whose OS hostname must never appear in a public repo declare their
+    # fleet identity in an off-repo, gitignored file.
+    #
+    #   ~/.config/workspace-hub/machine-identity.yaml
+    #   override: WORKSPACE_HUB_MACHINE_IDENTITY
+    #
+    # Reused rather than reinvented. A second private-tier host map would be a
+    # second source of truth for one fact — the defect this epic exists to remove.
+    #
+    # Same contract as its resolve_identity_file(): absent file falls through;
+    # malformed or FOREIGN fails loud, never falls through, because a bad file
+    # silently minting the wrong machine is worse than no file at all.
+    # Diagnostics omit hostname VALUES — this stderr can reach tracked logs.
+    def identity_machine():
+        path = os.environ.get("WORKSPACE_HUB_MACHINE_IDENTITY") or os.path.join(
+            os.path.expanduser("~"), ".config", "workspace-hub",
+            "machine-identity.yaml")
+        if not os.path.exists(path):
+            return None
+        with open(path) as fh:
+            data = yaml.safe_load(fh) or {}
+        label = str(data.get("machine") or "").strip()
+        if not label:
+            raise SystemExit(
+                f"machine-identity: {path} lacks the required 'machine:' key")
+        # Validated against the REGISTRY, deliberately, rather than against a
+        # copied label list. machine-identity.sh already notes that its
+        # PowerShell mirror duplicates KNOWN_MACHINE_LABELS and needs a test to
+        # keep the two identical; a third copy would need a third such test.
+        if label not in machines:
+            raise SystemExit(
+                f"machine-identity: label in {path} is not a machine in the registry")
+        expected = str(data.get("expected_hostname") or "").strip().lower()
+        if expected and expected != host:
+            raise SystemExit(
+                f"machine-identity: expected_hostname in {path} does not match "
+                f"this box — refusing a copied identity file")
+        return label
+
+    def machine_aliases(candidate, cfg):
+        aliases = [str(candidate), str(cfg.get("hostname") or "")]
+        aliases += [str(a) for a in (cfg.get("hostname_aliases") or [])]
+        return [alias.split(".")[0].lower() for alias in aliases if alias]
+    if requested:
+        requested_key = requested.split(".")[0].lower()
+        name = None
+        for candidate, cfg in machines.items():
+            if requested_key in machine_aliases(candidate, cfg):
+                name = candidate
+                break
+        if name is None:
+            raise SystemExit(f"unknown machine: {requested}")
+    else:
+        name = None
+        for candidate, cfg in machines.items():
+            if host in machine_aliases(candidate, cfg):
+                name = candidate
+                break
+        if name is None:
+            # Precedence matches machine-identity.sh: explicit > public map >
+            # identity file > fail. Consulted only AFTER the registry, so the
+            # off-repo file can never override a correctly-mapped host — it
+            # exists solely for hostnames the public map must not know.
+            name = identity_machine()
+        if name is None:
+            name = f"local-fallback-{host}"
+            workspace_root = str(pathlib.Path(registry_path).resolve().parents[2])
+            tier1_repo_root = str(pathlib.Path(workspace_root).parent)
+            print(f"[WARN] unknown machine for hostname {host}; falling back to local workspace {workspace_root}", file=sys.stderr)
+            print(f"{name}\t{workspace_root}\t{tier1_repo_root}")
+            raise SystemExit(0)
+    cfg = machines[name]
+    workspace_root = cfg.get("workspace_root")
+    tier1_repo_root = cfg.get("tier1_repo_root")
+    if cfg.get("repo_layout") == "sibling" and (not workspace_root or not tier1_repo_root):
+        raise SystemExit(f"machine {name} missing workspace_root/tier1_repo_root for sibling layout")
+else:
+    if not os.path.exists(harness_path):
+        raise SystemExit(f"missing registry and harness config: {registry_path}, {harness_path}")
+    with open(harness_path) as f:
+        workstations = (yaml.safe_load(f) or {}).get("workstations") or {}
+    name = requested or host
+    cfg = workstations.get(name) or {}
+    if not cfg and not requested:
+        for candidate, candidate_cfg in workstations.items():
+            if str(candidate).split(".")[0].lower() == host:
+                name = candidate
+                cfg = candidate_cfg or {}
+                break
+    if not cfg:
+        raise SystemExit(f"unknown machine: {name}")
+    workspace_root = cfg.get("workspace_root") or cfg.get("ws_hub_path")
+    tier1_repo_root = cfg.get("tier1_repo_root")
+if not workspace_root:
+    raise SystemExit(f"machine {name} missing workspace_root")
+if not tier1_repo_root:
+    workspace_text = str(workspace_root).rstrip('/\\')
+    slash = max(workspace_text.rfind('/'), workspace_text.rfind('\\'))
+    if slash <= 0:
+        raise SystemExit(f"machine {name} missing tier1_repo_root and cannot derive parent from workspace_root: {workspace_root}")
+    tier1_repo_root = workspace_text[:slash]
+    if re.match(r"^[A-Za-z]:$", tier1_repo_root):
+        tier1_repo_root += "\\"
+if os.path.exists(registry_path) and os.path.exists(harness_path):
+    with open(harness_path) as f:
+        harness = ((yaml.safe_load(f) or {}).get("workstations") or {}).get(name) or {}
+    h_root = harness.get("ws_hub_path")
+    if h_root and str(h_root) != str(workspace_root):
+        raise SystemExit(f"registry/harness workspace_root divergence for {name}: {workspace_root} != {h_root}")
+print(f"{name}\t{workspace_root}\t{tier1_repo_root}")
+PY
+}
+
+resolve_ws_hub_path() {
+    resolve_machine_roots | cut -f2
+}
+
+resolve_tier1_repo_root() {
+    resolve_machine_roots | cut -f3
+}
+
+sync_hermes_yaml_config() {
+    local template="$1"
+    local target="$2"
+    local label="$3"
+    local ws_hub_path
+    local tier1_repo_root
+    local roots
+    local resolved_template=""
+    local merged=""
+
+    trap 'rm -f "$resolved_template" "$merged"' RETURN
+
+    local machine_name
+    roots="$(resolve_machine_roots)"
+    machine_name="$(printf '%s\n' "$roots" | cut -f1)"
+    ws_hub_path="$(printf '%s\n' "$roots" | cut -f2)"
+    tier1_repo_root="$(printf '%s\n' "$roots" | cut -f3)"
+
+    if [[ "$DRY_RUN" != "true" ]]; then
+        ensure_parent_dir "$target"
+        resolved_template="$(sync_make_target_tmp "$target")"
+    else
+        resolved_template="$(mktemp)"
+    fi
+
+    if ! render_hermes_template "$template" "$resolved_template" "$machine_name" "$ws_hub_path" "$tier1_repo_root"; then
+        trap - RETURN
+        rm -f "$resolved_template" "$merged"
+        return 1
+    fi
+
+    if ! validate_yaml_file "$resolved_template" "$label"; then
+        trap - RETURN
+        rm -f "$resolved_template" "$merged"
+        return 1
+    fi
+
+    if [[ ! -f "$target" ]]; then
+        if [[ "$DRY_RUN" == "true" ]]; then
+            log_change "$label -> $target (create, ws_hub=$ws_hub_path, tier1_repo_root=$tier1_repo_root)"
+        else
+            mv -f "$resolved_template" "$target"
+            resolved_template=""
+            log_change "$label -> $target (create, ws_hub=$ws_hub_path, tier1_repo_root=$tier1_repo_root)"
+        fi
+        trap - RETURN
+        rm -f "$resolved_template" "$merged"
+        return
+    fi
+
+    # Smart merge: update managed keys from template, preserve machine-specific overrides.
+    # Managed keys: model, agent, browser, checkpoints, compression, skills, plus terminal except backend/cwd.
+    if [[ "$DRY_RUN" != "true" ]]; then
+        merged="$(sync_make_target_tmp "$target")"
+    else
+        merged="$(mktemp)"
+    fi
+
+    if ! run_config_python - "$target" "$resolved_template" "$merged" <<'PY' 2>/dev/null
+import yaml, sys
+
+MANAGED_KEYS = {
+    "model",
+    "fallback_providers",
+    "credential_pool_strategies",
+    "toolsets",
+    "agent",
+    "browser",
+    "checkpoints",
+    "compression",
+    "skills",
+}
+TERMINAL_PRESERVE_KEYS = {"backend", "cwd"}
+
+target_path, template_path, merged_path = sys.argv[1], sys.argv[2], sys.argv[3]
+with open(target_path) as f:
+    existing = yaml.safe_load(f) or {}
+with open(template_path) as f:
+    template = yaml.safe_load(f) or {}
+
+merged = dict(existing)
+for key, value in template.items():
+    if key == "terminal" and isinstance(value, dict):
+        existing_terminal = existing.get("terminal") if isinstance(existing.get("terminal"), dict) else {}
+        merged_terminal = dict(value)
+        for preserve_key in TERMINAL_PRESERVE_KEYS:
+            if preserve_key in existing_terminal:
+                merged_terminal[preserve_key] = existing_terminal[preserve_key]
+        merged[key] = merged_terminal
+    elif key in MANAGED_KEYS:
+        merged[key] = value
+    elif key not in merged:
+        merged[key] = value
+
+with open(merged_path, 'w') as f:
+    yaml.dump(merged, f, default_flow_style=False, sort_keys=False, allow_unicode=True)
+
+PY
+    then
+        trap - RETURN
+        rm -f "$resolved_template" "$merged"
+        return 1
+    fi
+
+    if [[ -n "$merged" ]] && [[ -s "$merged" ]]; then
+        if ! validate_yaml_file "$merged" "$label"; then
+            trap - RETURN
+            rm -f "$resolved_template" "$merged"
+            return 1
+        fi
+        if cmp -s "$merged" "$target"; then
+            log_skip "$label -> $target (already current)"
+        elif [[ "$DRY_RUN" == "true" ]]; then
+            log_change "$label -> $target (yaml merge, ws_hub=$ws_hub_path)"
+        else
+            mv -f "$merged" "$target"
+            merged=""
+            log_change "$label -> $target (yaml merge, ws_hub=$ws_hub_path)"
+        fi
+        trap - RETURN
+        rm -f "$resolved_template" "$merged"
+        return
+    fi
+
+    # Fallback: cmp + force (no python available for merge)
+    if cmp -s "$resolved_template" "$target"; then
+        log_skip "$label -> $target (already current)"
+    elif [[ "$FORCE" == "true" ]]; then
+        if [[ "$DRY_RUN" == "true" ]]; then
+            log_change "$label -> $target (overwrite, ws_hub=$ws_hub_path)"
+        else
+            mv -f "$resolved_template" "$target"
+            resolved_template=""
+            log_change "$label -> $target (overwrite, ws_hub=$ws_hub_path)"
+        fi
+    else
+        log_skip "$label -> $target (differs, use --force to overwrite)"
+    fi
+
+    trap - RETURN
+    rm -f "$resolved_template" "$merged"
+}
+
+# NOTE (#2864): no longer called — the Hermes SOUL.md sync was removed because it
+# clobbered install-soul-runtime.sh's symlink. RETAINED intentionally: its
+# definition line is a text anchor used by
+# tests/readiness/test_sync_agent_configs_pyyaml_fallback.py to delimit the
+# sync_hermes_yaml_config body. Do not delete without updating that test.
+sync_hermes_plain_file() {
+    local template="$1"
+    local target="$2"
+    local label="$3"
+    local tmp=""
+
+    trap 'rm -f "$tmp"' RETURN
+
+    if [[ ! -f "$target" ]]; then
+        if [[ "$DRY_RUN" == "true" ]]; then
+            log_change "$label -> $target (create)"
+        else
+            ensure_parent_dir "$target"
+            tmp="$(sync_make_target_tmp "$target")"
+            cp "$template" "$tmp"
+            mv -f "$tmp" "$target"
+            tmp=""
+            log_change "$label -> $target (create)"
+        fi
+        trap - RETURN
+        rm -f "$tmp"
+        return
+    fi
+
+    if cmp -s "$template" "$target"; then
+        log_skip "$label -> $target (already current)"
+    else
+        if [[ "$DRY_RUN" == "true" ]]; then
+            log_change "$label -> $target (update)"
+        else
+            ensure_parent_dir "$target"
+            tmp="$(sync_make_target_tmp "$target")"
+            cp "$template" "$tmp"
+            mv -f "$tmp" "$target"
+            tmp=""
+            log_change "$label -> $target (update)"
+        fi
+    fi
+
+    trap - RETURN
+    rm -f "$tmp"
+}
+
+sync_repo_codex_configs() {
+    local ws_root="$1"
+    local list_file="$ws_root/config/sync-items.json"
+    local repo_cfg
+
+    # Always sync the current workspace repo-local Codex config if present.
+    repo_cfg="$ws_root/.codex/config.toml"
+    if [[ -f "$repo_cfg" ]]; then
+        upsert_codex_root_model_defaults "$repo_cfg" "Repo Codex config $repo_cfg"
+    fi
+
+    # Optionally sync additional repos declared in sync-items.json when available locally.
+    if command -v jq >/dev/null 2>&1 && [[ -f "$list_file" ]]; then
+        while IFS= read -r repo_cfg; do
+            [[ -n "$repo_cfg" ]] || continue
+            [[ -f "$repo_cfg" ]] || continue
+            upsert_codex_root_model_defaults "$repo_cfg" "Repo Codex config $repo_cfg"
+        done < <(
+            jq -r '
+              .sync_items.git_repositories.base_path as $base
+              | .sync_items.git_repositories.repos[]
+              | ($base + "/" + . + "/.codex/config.toml")
+            ' "$list_file"
+        )
+    fi
+}
+
+# Reject a pinned template before any configuration target can be written.
+validate_codex_template "$CODEX_TEMPLATE"
+
+echo "=== Syncing Agent Configs ==="
+echo "Workspace: $WS_HUB"
+echo "Mode: force=$FORCE dry_run=$DRY_RUN"
+echo
+
+sync_json_merge "$CLAUDE_TEMPLATE" "$CLAUDE_TARGET" "Claude settings"
+sync_codex_managed_config "$CODEX_TEMPLATE" "$CODEX_TARGET" "Codex config"
+sync_json_merge "$GEMINI_TEMPLATE" "$GEMINI_TARGET" "Gemini settings"
+sync_repo_codex_configs "$WS_HUB"
+
+# Hermes — sync config.yaml only. ~/.hermes/SOUL.md is deliberately NOT synced
+# here (#2864): it is a symlink owned by scripts/agents/install-soul-runtime.sh
+# (→ config/agents/hermes/SOUL.runtime.md). harness-update.sh re-runs that
+# installer so the symlink self-heals; copying the delta here would clobber it.
+if [[ -f "$HERMES_TEMPLATE" ]]; then
+    sync_hermes_yaml_config "$HERMES_TEMPLATE" "$HERMES_TARGET" "Hermes config"
+fi
+
+# ── Restore agent memory snapshots on fresh machine ───────────────────
+echo
+echo "=== Restoring Agent Memory Snapshots ==="
+
+CLAUDE_MEMORY_SNAPSHOT_REPO="${CLAUDE_MEMORY_SNAPSHOT_REPO:-vamseeachanta/claude-memory-snapshots}"
+CLAUDE_MEMORY_SNAPSHOT_PRIVATE_CLONE="${CLAUDE_MEMORY_SNAPSHOT_PRIVATE_CLONE:-${HOME}/.local/share/claude-memory-snapshots}"
+PRIVATE_SNAPSHOT_AVAILABLE=false
+if verify_private_repo_clone_origin "$CLAUDE_MEMORY_SNAPSHOT_PRIVATE_CLONE" "$CLAUDE_MEMORY_SNAPSHOT_REPO" && verify_private_repo_visibility "$CLAUDE_MEMORY_SNAPSHOT_REPO"; then
+    PRIVATE_SNAPSHOT_AVAILABLE=true
+else
+    echo "[WARN] Agent memory private snapshot repo is unreachable, origin-mismatched, or not PRIVATE; skipping memory/state restore" >&2
+fi
+
+# Hermes memories (#1777)
+HERMES_MEM_SNAP=""
+if [[ "$PRIVATE_SNAPSHOT_AVAILABLE" == "true" ]]; then
+    HERMES_MEM_SNAP="$(resolve_private_snapshot_source "$CLAUDE_MEMORY_SNAPSHOT_PRIVATE_CLONE" "config/agents/hermes/memories" || true)"
+fi
+HERMES_MEM_TARGET="$HOME/.hermes/memories"
+if [[ -d "$HERMES_MEM_SNAP" && -d "$HOME/.hermes" ]]; then
+    if [[ ! -f "$HERMES_MEM_TARGET/MEMORY.md" ]] || [[ "$FORCE" == "true" ]]; then
+        mkdir -p "$HERMES_MEM_TARGET"
+        if [[ "$DRY_RUN" == "true" ]]; then
+            log_change "Hermes memories -> $HERMES_MEM_TARGET (restore from snapshot)"
+        else
+            for f in "$HERMES_MEM_SNAP"/*.snapshot; do
+                [[ -f "$f" ]] || continue
+                basename="${f%.snapshot}"
+                basename="$(basename "$basename")"
+                cp "$f" "$HERMES_MEM_TARGET/$basename"
+            done
+            log_change "Hermes memories -> $HERMES_MEM_TARGET (restored)"
+        fi
+    else
+        log_skip "Hermes memories (already exist at $HERMES_MEM_TARGET)"
+    fi
+else
+    log_skip "Hermes memories (hermes not installed or no snapshots)"
+fi
+
+# Claude Code project memory (#1779)
+CLAUDE_MEM_SNAP=""
+if [[ "$PRIVATE_SNAPSHOT_AVAILABLE" == "true" ]]; then
+    CLAUDE_MEM_SNAP="$(resolve_claude_memory_private_snapshot_source "$CLAUDE_MEMORY_SNAPSHOT_PRIVATE_CLONE" || true)"
+fi
+# Derive the encoded project path from WS_HUB
+WS_HUB_ENCODED="$(echo "$WS_HUB" | sed 's|^/||; s|/|-|g')"
+CLAUDE_MEM_TARGET="$HOME/.claude/projects/-${WS_HUB_ENCODED}/memory"
+if [[ -n "$CLAUDE_MEM_SNAP" && -d "$CLAUDE_MEM_SNAP" && -d "$HOME/.claude" ]]; then
+    if [[ -d "$CLAUDE_MEM_TARGET" ]]; then
+        EXISTING_COUNT=$(find "$CLAUDE_MEM_TARGET" -maxdepth 1 -type f -name '*.md' | wc -l)
+    else
+        EXISTING_COUNT=0
+    fi
+    if [[ "$EXISTING_COUNT" -lt 5 ]] || [[ "$FORCE" == "true" ]]; then
+        mkdir -p "$CLAUDE_MEM_TARGET"
+        if [[ "$DRY_RUN" == "true" ]]; then
+            log_change "Claude project memory -> $CLAUDE_MEM_TARGET (restore from snapshot)"
+        else
+            # Don't overwrite existing files — only copy missing ones
+            for f in "$CLAUDE_MEM_SNAP"/*.md; do
+                [[ -f "$f" ]] || continue
+                basename="$(basename "$f")"
+                # Skip worldenergydata snapshot — different project path
+                [[ "$basename" == worldenergydata-* ]] && continue
+                if [[ ! -f "$CLAUDE_MEM_TARGET/$basename" ]] || [[ "$FORCE" == "true" ]]; then
+                    cp "$f" "$CLAUDE_MEM_TARGET/$basename"
+                fi
+            done
+            log_change "Claude project memory -> $CLAUDE_MEM_TARGET (restored)"
+        fi
+    else
+        log_skip "Claude project memory (already has $EXISTING_COUNT files)"
+    fi
+else
+    log_skip "Claude project memory (claude not installed or private snapshots unavailable)"
+fi
+
+# Codex state (#1781)
+CODEX_STATE_SNAP=""
+if [[ "$PRIVATE_SNAPSHOT_AVAILABLE" == "true" ]]; then
+    CODEX_STATE_SNAP="$(resolve_private_snapshot_source "$CLAUDE_MEMORY_SNAPSHOT_PRIVATE_CLONE" "config/agents/codex/state-snapshots" || true)"
+fi
+if [[ -d "$CODEX_STATE_SNAP" && -d "$HOME/.codex" ]]; then
+    if [[ ! -f "$HOME/.codex/rules/default.rules" ]] || [[ "$FORCE" == "true" ]]; then
+        if [[ "$DRY_RUN" == "true" ]]; then
+            log_change "Codex state -> ~/.codex/ (restore from snapshot)"
+        else
+            mkdir -p "$HOME/.codex/rules"
+            cp "$CODEX_STATE_SNAP/default.rules" "$HOME/.codex/rules/" 2>/dev/null || true
+            cp "$CODEX_STATE_SNAP/history.jsonl" "$HOME/.codex/" 2>/dev/null || true
+            cp "$CODEX_STATE_SNAP/session_index.jsonl" "$HOME/.codex/" 2>/dev/null || true
+            log_change "Codex state -> ~/.codex/ (restored)"
+        fi
+    else
+        log_skip "Codex state (default.rules already exists)"
+    fi
+else
+    log_skip "Codex state (codex not installed or no snapshots)"
+fi
+
+# Gemini state (#1781)
+GEMINI_STATE_SNAP=""
+if [[ "$PRIVATE_SNAPSHOT_AVAILABLE" == "true" ]]; then
+    GEMINI_STATE_SNAP="$(resolve_private_snapshot_source "$CLAUDE_MEMORY_SNAPSHOT_PRIVATE_CLONE" "config/agents/gemini/state-snapshots" || true)"
+fi
+if [[ -d "$GEMINI_STATE_SNAP" && -d "$HOME/.gemini" ]]; then
+    if [[ ! -f "$HOME/.gemini/state.json" ]] || [[ "$FORCE" == "true" ]]; then
+        if [[ "$DRY_RUN" == "true" ]]; then
+            log_change "Gemini state -> ~/.gemini/ (restore from snapshot)"
+        else
+            cp "$GEMINI_STATE_SNAP/state.json" "$HOME/.gemini/" 2>/dev/null || true
+            cp "$GEMINI_STATE_SNAP/projects.json" "$HOME/.gemini/" 2>/dev/null || true
+            log_change "Gemini state -> ~/.gemini/ (restored)"
+        fi
+    else
+        log_skip "Gemini state (state.json already exists)"
+    fi
+else
+    log_skip "Gemini state (gemini not installed or no snapshots)"
+fi
+
+echo
+echo "=== Summary ==="
+echo "Updated: $changed"
+echo "Skipped: $skipped"

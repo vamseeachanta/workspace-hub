@@ -1,0 +1,41 @@
+cases:
+  - case_id: private_client_chatbot_to_public_without_promotion
+    artifact_type: chatbot_query_surface
+    corpus_publicity_rank: 1
+    output_publicity_rank: 4
+    output_residency: public_llm_wiki
+    target_corpus: public chatbot corpus
+    freshness_disclosure: true
+    corpus_scope_disclosure: true
+    promotion_gates: []
+    expected: reject
+  - case_id: private_chatbot_stays_private_with_disclosure
+    artifact_type: chatbot_query_surface
+    corpus_publicity_rank: 1
+    output_publicity_rank: 1
+    output_residency: registered_client_private_corpus
+    target_corpus: client-private chatbot corpus
+    freshness_disclosure: true
+    corpus_scope_disclosure: true
+    promotion_gates: []
+    expected: allow
+  - case_id: public_report_learning_to_public_wiki
+    artifact_type: report_derived_learning
+    corpus_publicity_rank: 4
+    output_publicity_rank: 4
+    output_residency: public_llm_wiki
+    target_corpus: public llm-wiki
+    freshness_disclosure: true
+    corpus_scope_disclosure: true
+    promotion_gates: [provenance, license, legal, sanitization, owner-review]
+    expected: allow
+  - case_id: client_report_learning_to_private_corpus
+    artifact_type: report_derived_learning
+    corpus_publicity_rank: 1
+    output_publicity_rank: 1
+    output_residency: registered_client_private_corpus
+    target_corpus: registered client-private corpus
+    freshness_disclosure: true
+    corpus_scope_disclosure: true
+    promotion_gates: [provenance, license, legal, sanitization, owner-review]
+    expected: allow

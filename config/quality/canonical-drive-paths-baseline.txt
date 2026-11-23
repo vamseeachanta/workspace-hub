@@ -1,0 +1,5 @@
+# canonical-drive-paths-baseline
+# Each line: <repo-relative-path>:<line>
+# JSON files cannot carry '# transport-path-allowed'; baseline is their only escape hatch.
+#
+# Total entries: 0

@@ -1,0 +1,41 @@
+version: "1.0"
+tool: test-generator
+domain: materials
+metadata:
+  filename: tables-only.xlsx
+  format: xlsx
+  size_bytes: 12000
+  sheets: 2
+  checksum: def789ghi012
+  extraction_timestamp: "2026-03-10T01:00:00Z"
+doc_ref: tables-only
+sections: []
+tables:
+  - title: "Pipe Dimensions"
+    columns: ["NPS", "OD (mm)", "Wall (mm)", "Weight (kg/m)"]
+    rows:
+      - ["6", "168.3", "7.11", "28.3"]
+      - ["8", "219.1", "8.18", "42.6"]
+      - ["10", "273.1", "9.27", "60.3"]
+    source:
+      document: tables-only.xlsx
+      sheet: "Dimensions"
+  - title: "Material Grades"
+    columns: ["Grade", "SMYS (MPa)"]
+    rows:
+      - ["X52", "358"]
+      - ["X65", "448"]
+    source:
+      document: tables-only.xlsx
+      sheet: "Materials"
+figure_refs:
+  - caption: "Stress-Strain Curve"
+    figure_id: "Fig-A1"
+    source:
+      document: tables-only.xlsx
+      sheet: "Materials"
+extraction_stats:
+  sections: 0
+  tables: 2
+  figure_refs: 1
+errors: []

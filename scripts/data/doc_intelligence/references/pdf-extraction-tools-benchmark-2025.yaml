@@ -1,0 +1,175 @@
+# PDF Extraction Tools Benchmark Reference
+# Source: WRK-1302 Stage 2 research (2026-03-17)
+# Purpose: Inform tool selection for 1M+ document corpus pipeline
+
+collected_date: "2026-03-17"
+wrk_ref: WRK-1302
+category: document-intelligence
+
+tools:
+  pypdfium2:
+    version_tested: "5.6.0"
+    pdfium_engine: "147.0.7713.0"
+    license: "Apache-2.0 / BSD-3-Clause"
+    speed_per_doc: "0.003s"
+    quality: "clean basic text, no structure preservation"
+    thread_safe: false  # PDFium is inherently thread-unsafe
+    python_min: "3.8"
+    installed_on_ace_linux_1: true
+    api_example: |
+      import pypdfium2 as pdfium
+      text = "\n".join(
+          p.get_textpage().get_text_range()
+          for p in pdfium.PdfDocument("doc.pdf")
+      )
+    strengths:
+      - fastest pure-Python PDF text extraction
+      - permissive license (no copyleft)
+      - already installed in workspace venv
+      - Chrome's PDFium engine (battle-tested)
+    weaknesses:
+      - no structure/layout preservation
+      - thread-unsafe (cannot use in multiprocessing pools directly)
+      - no table detection
+      - garbage collection issues with Python-managed resources
+    use_case: "high-volume raw text extraction where structure is not needed"
+
+  pymupdf4llm:
+    version_tested: "1.27.2.1"
+    release_date: "2026-03-10"
+    license: "AGPL-3.0 or Artifex Commercial"  # COPYLEFT WARNING
+    speed_per_doc: "0.12-0.14s"
+    quality: "markdown with headings, tables, multi-column support"
+    thread_safe: true  # uses MuPDF internally
+    python_min: "3.10"
+    installed_on_ace_linux_1: false  # needs uv add pymupdf4llm
+    api_example: |
+      import pymupdf4llm
+      md = pymupdf4llm.to_markdown("doc.pdf")
+    strengths:
+      - structured markdown output (headings, tables)
+      - multi-column page support
+      - image/vector graphics extraction
+      - LlamaIndex/LangChain integration
+      - layout analysis without GPU
+    weaknesses:
+      - AGPL license (copyleft — legal review required)
+      - 40x slower than pypdfium2
+      - requires Python >= 3.10 (workspace venv is 3.11, ok)
+      - complex layouts may still fail
+    use_case: "single-doc understanding, LLM/RAG pipelines"
+    legal_note: >
+      AGPL requires source disclosure for derivative works.
+      If used in any user-facing service, all source must be published.
+      Commercial license available from Artifex Software.
+
+  pdftotext_poppler:
+    version_tested: "24.02.0"
+    license: "GPL-2.0 (system package)"
+    speed_per_doc: "~0.02s (subprocess overhead included)"
+    speed_at_scale: "49 files/sec with 8-worker ProcessPoolExecutor"
+    quality: "plain text, reliable"
+    thread_safe: true  # subprocess isolation
+    installed_on_ace_linux_1: true
+    proven_scale: "297K PDFs in 1.7h (WRK-1277)"
+    api_example: |
+      import subprocess
+      result = subprocess.run(
+          ["pdftotext", "-q", str(file_path), "-"],
+          capture_output=True, text=True, timeout=120
+      )
+    strengths:
+      - proven at 297K scale in production
+      - subprocess isolation (reliable timeout via SIGTERM)
+      - NFS/NTFS safe (no D-state hangs)
+      - multiprocessing-safe via subprocess
+    weaknesses:
+      - subprocess overhead (~0.02s vs 0.003s in-process)
+      - no structure/layout preservation
+      - requires poppler system package
+    use_case: "batch extraction (1K+ PDFs), current production baseline"
+
+  pdfplumber:
+    version_tested: "0.11.9"
+    license: "MIT"
+    speed_per_doc: "0.10s"
+    quality: "good table detection, text with layout"
+    thread_safe: false  # D-state hangs on NFS/NTFS
+    installed_on_ace_linux_1: true
+    api_example: |
+      import pdfplumber
+      with pdfplumber.open("doc.pdf") as pdf:
+          text = "\n".join(p.extract_text() or "" for p in pdf.pages)
+    strengths:
+      - best table extraction among pure-Python tools
+      - MIT license
+    weaknesses:
+      - D-state kernel hangs on NFS/NTFS mounts
+      - SIGALRM cannot interrupt kernel I/O
+      - serialization failures in multiprocessing pools
+    use_case: "single-doc table extraction only; NOT for batch/parallel"
+
+benchmarks:
+  single_page_speed_ranking:
+    - tool: pypdfium2
+      speed: "0.003s"
+    - tool: pypdf
+      speed: "0.024s"
+    - tool: pdfplumber
+      speed: "0.10s"
+    - tool: pymupdf4llm
+      speed: "0.12-0.14s"
+    - tool: textract
+      speed: "0.21s"
+    - tool: unstructured
+      speed: "1.29s"
+    - tool: marker-pdf
+      speed: "11.3s"
+  note: "Single-page business PDF, MacBook M2 Pro, Python 3.11, default configs"
+
+  pymupdf_official_text_extraction:
+    - tool: PyMuPDF
+      total_seconds: 8.01
+      relative: "1x (baseline)"
+    - tool: XPDF
+      total_seconds: 27.42
+      relative: "3.42x slower"
+    - tool: PyPDF2
+      total_seconds: 101.64
+      relative: "12.69x slower"
+    - tool: PDFMiner
+      total_seconds: 227.27
+      relative: "28.37x slower"
+
+recommendations:
+  batch_extraction_1k_plus: "pdftotext (proven, subprocess-safe, NFS-safe)"
+  readability_classification: "pypdfium2 (replace pdfplumber to avoid D-state)"
+  single_doc_understanding: "pymupdf4llm (if AGPL acceptable) or Codex API"
+  pure_speed: "pypdfium2 (0.003s/doc)"
+  rag_pipelines: "pymupdf4llm or unstructured"
+
+sources:
+  - title: "I Tested 7 Python PDF Extractors (2025 Edition)"
+    url: "https://dev.to/onlyoneaman/i-tested-7-python-pdf-extractors-so-you-dont-have-to-2025-edition-akm"
+    type: benchmark
+  - title: "Best Python PDF to Text Parser Libraries: 2026 Evaluation"
+    url: "https://unstract.com/blog/evaluating-python-pdf-to-text-libraries/"
+    type: evaluation
+  - title: "PyMuPDF Performance Comparison Methodology"
+    url: "https://pymupdf.readthedocs.io/en/latest/app4.html"
+    type: official_benchmark
+  - title: "py-pdf/benchmarks (GitHub)"
+    url: "https://github.com/py-pdf/benchmarks"
+    type: benchmark_suite
+  - title: "Comparative Study of PDF Parsing Tools (arXiv)"
+    url: "https://arxiv.org/html/2410.09871v1"
+    type: academic_paper
+  - title: "PyMuPDF4LLM Documentation"
+    url: "https://pymupdf.readthedocs.io/en/latest/pymupdf4llm/"
+    type: documentation
+  - title: "pypdfium2 PyPI"
+    url: "https://pypi.org/project/pypdfium2/"
+    type: package_registry
+  - title: "PyMuPDF4LLM PyPI"
+    url: "https://pypi.org/project/pymupdf4llm/"
+    type: package_registry

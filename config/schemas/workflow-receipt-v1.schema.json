@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:workspace-hub:workflow-receipt:1",
+  "title": "Verification evidence claim; never action authorization",
+  "type": "object",
+  "required": ["schema_version", "observed_at", "key", "key_sha256", "resources", "evidence"],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {"const": "1"},
+    "observed_at": {"type": "string", "format": "date-time"},
+    "key_sha256": {"$ref": "#/$defs/digest"},
+    "key": {
+      "type": "object", "additionalProperties": false,
+      "required": ["repository_id", "task_id", "operation_id", "changed_paths", "code_revision", "dirty_diff_sha256", "resource_stable_sha256s", "environment_sha256", "criteria_revision", "verification_procedure_version"],
+      "properties": {
+        "repository_id": {"$ref": "#/$defs/text"},
+        "task_id": {"$ref": "#/$defs/text"},
+        "operation_id": {"$ref": "#/$defs/text"},
+        "changed_paths": {"type": "array", "uniqueItems": true, "maxItems": 4096, "items": {"$ref": "#/$defs/text"}},
+        "code_revision": {"$ref": "#/$defs/text"},
+        "dirty_diff_sha256": {"$ref": "#/$defs/digest"},
+        "resource_stable_sha256s": {"type": "array", "uniqueItems": true, "maxItems": 256, "items": {"$ref": "#/$defs/digest"}},
+        "environment_sha256": {"$ref": "#/$defs/digest"},
+        "criteria_revision": {"$ref": "#/$defs/text"},
+        "verification_procedure_version": {"$ref": "#/$defs/text"}
+      }
+    },
+    "resources": {
+      "type": "array", "maxItems": 256,
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["resource_descriptor_schema", "resource_descriptor_sha256", "resource_stable_sha256", "descriptor"],
+        "properties": {
+          "resource_descriptor_schema": {"const": "urn:workspace-hub:resource-descriptor:1"},
+          "resource_descriptor_sha256": {"$ref": "#/$defs/digest"},
+          "resource_stable_sha256": {"$ref": "#/$defs/digest"},
+          "descriptor": {"$ref": "urn:workspace-hub:resource-descriptor:1"}
+        }
+      }
+    },
+    "evidence": {
+      "type": "object", "additionalProperties": false,
+      "required": ["locator", "evidence_artifact_sha256"],
+      "properties": {
+        "locator": {"type": "string", "minLength": 1, "maxLength": 1024, "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$"},
+        "evidence_artifact_sha256": {"$ref": "#/$defs/digest"}
+      }
+    }
+  },
+  "$defs": {
+    "digest": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "text": {"type": "string", "minLength": 1, "maxLength": 4096, "pattern": "\\S"}
+  }
+}

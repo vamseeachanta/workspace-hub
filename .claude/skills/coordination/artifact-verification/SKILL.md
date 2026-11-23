@@ -1,0 +1,194 @@
+---
+name: artifact-verification
+description: Orchestrator checklist to verify worker outputs against the approved plan before accepting artifacts. Phase 2 of orchestrator/worker context enforcement (#2020).
+version: 1.0.0
+category: coordination
+tags: [orchestrator, worker, verification, governance, artifacts]
+related_skills:
+  - cross-review-policy
+  - issue-planning-mode
+  - engineering-issue-workflow
+issue_ref: "#2020"
+---
+
+# Artifact Verification — Orchestrator Checklist
+
+When a worker (subagent, Codex, Gemini, or parallel terminal) returns results,
+the orchestrator MUST verify those results against the approved plan before
+accepting them. This skill provides the verification protocol.
+
+## Why This Exists
+
+Workers optimize for task completion, not plan adherence. Without verification:
+- Workers skip optional deliverables that the plan required
+- Workers modify files outside their assigned scope (contention risk)
+- Workers produce code that passes tests but drifts from the spec
+- Orchestrators rubber-stamp results because the output "looks right"
+
+## When to Use
+
+- After any worker/subagent returns results
+- After overnight batch runs (morning review)
+- Before merging worker-produced branches
+- Before closing a GitHub issue completed by a worker
+
+## Verification Checklist
+
+For each worker output, the orchestrator checks:
+
+### 1. Scope Alignment
+
+- [ ] Files changed match the plan's "Files to Change" list
+- [ ] No files outside the worker's assigned scope were modified
+- [ ] No files from other workers' negative write boundaries were touched
+
+### 2. Acceptance Criteria
+
+- [ ] Each acceptance criterion from the approved plan is satisfied
+- [ ] Evidence exists for each criterion (test output, file content, command result)
+- [ ] No acceptance criteria were silently dropped
+
+### 3. Test Coverage
+
+- [ ] Tests were written/updated as specified in the plan
+- [ ] Tests pass (verify via `uv run pytest` or equivalent)
+- [ ] Test names and coverage match the plan's TDD test list
+
+### 4. Artifact Completeness
+
+- [ ] All deliverables listed in the plan are present
+- [ ] Documentation updates (if required by plan) are included
+- [ ] Commit messages follow conventional format and reference the issue
+
+### 4A. Generated Artifact Freshness
+
+For generated artifacts (manifests, reports, schemas, indexes, lockfiles, static outputs):
+
+- [ ] Prefer regenerating artifacts from the currently checked-out generator/validator over restoring stale artifact snapshots from patches or archives.
+- [ ] If recovering from an archived patch, treat restored generated outputs as a bootstrap only: rerun the committed generator before validation or commit.
+- [ ] Verify the generator CLI and validator CLI from the current checkout before rerunning old commands; stale renamed flags can create false failures.
+- [ ] When validation reports mass schema-version or missing-field failures across generated outputs, assume generator/artifact schema drift first, regenerate artifacts, then re-run targeted validation before editing validator expectations.
+- [ ] Do not close an issue on recovered generated artifacts until the artifacts have been regenerated or proven byte-for-byte compatible with the current generator and validator contract.
+- [ ] After pulling/rebasing while generated reports or schemas are in flight, re-run targeted tests that reference canonical generated paths; patch tests to discover the latest canonical artifact or regenerate test fixtures instead of hardcoding stale date/version filenames.
+- [ ] Treat a passing validator CLI plus a failing artifact test as a fixture-contract drift signal until proven otherwise: inspect whether the test points at an older generated report/schema path before changing validator semantics.
+
+### 4B. Historical Artifact Location / Checkout-Absent Verification
+
+When the user asks to locate an existing report/output artifact from prior work:
+
+- [ ] Search prior session records for the exact artifact path and issue context if the local checkout does not contain the sibling repo or output tree.
+- [ ] Verify the artifact against the remote canonical repo using GitHub Contents/API metadata (`path`, `size`, `sha`, `download_url`) before telling the user it exists.
+- [ ] Keep the distinction explicit: "remote artifact exists" is not the same as "local checkout exists". If the repo is absent locally, say that follow-up edits require clone/sync first.
+- [ ] For generated HTML reports, capture the report path, raw URL, owning issue, size, and SHA; this is enough for a fresh follow-up prompt to resume without regenerating the artifact.
+- [ ] Do not retry the same missing local path repeatedly. After one missing-path failure, inventory available repo roots and switch to session/remote verification.
+
+### 4C. Nested Checkout Relocation / Duplicate Removal Verification
+
+When a worker claims to have moved, removed, or preserved a nested Git checkout under a parent repo:
+
+- [ ] Verify source and destination roles independently: remotes, branch, HEAD SHA, upstream ahead/behind, and dirty status.
+- [ ] If deleting a duplicate checkout, require matching canonical remote and HEAD SHA, clean status, and `0 0` ahead/behind unless the plan explicitly preserves divergent work.
+- [ ] If preserving untracked/dirty artifacts from a nested checkout, copy only intended relative paths and verify byte-identical copies (`cmp`/checksum) before deletion.
+- [ ] Before `rm -rf` or `mv`, scan `/proc/*/cwd` for processes under the source path; identify and clear stale cwd holders, then repeat the scan.
+- [ ] After the move/delete, re-run destination clean/upstream checks and parent-repo path status; do not accept worker self-report alone.
+- [ ] For delegated default-branch pushes, expect some harnesses to require explicit scoped authorization; the orchestrator may push directly only after verifying the exact commit and files.
+
+Reference: `references/nested-checkout-relocation-verification.md`.
+
+### 4D. Machine-Readable Evidence Sidecars and Redaction Safety
+
+When a readiness script, dashboard, or generated report accepts machine-readable evidence sidecars from local or remote hosts:
+
+- [ ] Validate evidence shape fail-closed before trusting nested data: required top-level keys, `checks` object type, expected check keys, and required per-check fields such as `status`, `message`, and `details`.
+- [ ] Treat missing evidence and malformed evidence as distinct blockers; both should block remote readiness, but use separate codes/messages so tests and operators can diagnose the cause.
+- [ ] Add tests for both missing evidence and malformed/partial evidence; do not stop at the happy path where the sidecar exists.
+- [ ] Run output through the production redaction path in tests when blocker codes are part of the emitted artifact; redactors can mutate seemingly harmless machine codes.
+- [ ] Keep machine-readable blocker/status codes redaction-safe: avoid substrings like `token`, `secret`, `api_key`, `password`, `credential`, and ambiguous words that may match broad secret scanners. Prefer neutral codes like `repo_placement_missing` and `repo_placement_malformed` over `repo_placement_evidence_*`.
+- [ ] Do not weaken secret redaction just to preserve a diagnostic code. Rename the code or split human-readable detail from machine-readable status.
+
+Reference: `references/evidence-sidecar-redaction-safety.md`.
+
+### 5. No Unplanned Side Effects
+
+- [ ] No unrelated files were modified (check `git diff --stat`)
+- [ ] No new dependencies added that weren't in the plan
+- [ ] No configuration changes outside plan scope
+
+## Verification Markers
+
+After verification passes, the orchestrator creates a marker:
+
+```bash
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+ISSUE=NNN
+mkdir -p "$REPO_ROOT/.planning/verified"
+cat > "$REPO_ROOT/.planning/verified/$ISSUE.md" << 'MARKER'
+# Verification: Issue #NNN
+
+- verified_by: <orchestrator agent or user>
+- verified_at: <timestamp>
+- worker: <worker agent identity>
+- plan: docs/plans/YYYY-MM-DD-issue-NNN-slug.md
+- verdict: PASS | PARTIAL | FAIL
+
+## Checklist Results
+- [x] Scope alignment
+- [x] Acceptance criteria
+- [x] Test coverage
+- [x] Artifact completeness
+- [x] No unplanned side effects
+
+## Notes
+<any deviations, partial passes, or follow-up items>
+MARKER
+```
+
+### Verification Verdicts
+
+| Verdict | Meaning | Action |
+|---------|---------|--------|
+| **PASS** | All checklist items satisfied | Accept artifacts, proceed to merge/close |
+| **PARTIAL** | Most items pass, minor gaps identified | Accept with noted follow-ups |
+| **FAIL** | Critical items missing or wrong | Reject, provide specific feedback to worker |
+
+### On FAIL: Feedback Protocol
+
+When verification fails, the orchestrator provides specific feedback:
+
+1. List each failed checklist item with the expected vs actual result
+2. Reference the exact plan section that was not met
+3. Do NOT give generic rejection ("this doesn't meet the spec")
+4. Re-dispatch the worker with the feedback and the relevant plan section
+
+## Integration with Existing Workflow
+
+This skill fits between the implementation step and the close step of
+`issue-planning-mode`:
+
+```
+Plan Approved --> Worker Implements --> ARTIFACT VERIFICATION --> Cross-Review --> Close
+```
+
+The verification step is distinct from cross-review:
+- **Verification**: Did the worker build what the plan specified? (scope check)
+- **Cross-review**: Is what was built correct and well-engineered? (quality check)
+
+## Overnight Batch Integration
+
+For overnight batch runs with multiple terminals:
+
+1. Each terminal produces its output
+2. Morning review runs this checklist for each terminal's output
+3. Verification markers are created for each terminal
+4. Only verified outputs proceed to cross-review and merge
+
+## References
+
+- Generated artifact schema drift recovery: `references/generated-artifact-schema-drift.md`
+- Historical HTML/report location recovery: `references/historical-html-report-location.md`
+- Nested checkout relocation / duplicate removal verification: `references/nested-checkout-relocation-verification.md`
+- Machine-readable evidence sidecars and redaction safety: `references/evidence-sidecar-redaction-safety.md`
+- Orchestrator-worker methodology: `docs/methodology/orchestrator-worker.md`
+- Plan approval gate: `.claude/hooks/plan-approval-gate.sh`
+- Cross-review policy: `.claude/skills/coordination/cross-review-policy/SKILL.md`
+- Session governance: `docs/governance/SESSION-GOVERNANCE.md`

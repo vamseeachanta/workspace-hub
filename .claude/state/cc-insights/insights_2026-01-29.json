@@ -1,0 +1,10 @@
+{
+  "extraction_date": "2026-01-29T05:00:49-06:00",
+  "cc_version_installed": "1.0.61",
+  "last_reviewed_version": "2.1.22",
+  "insights": {
+    "general_ai_community": ["VS Code integration improvements - IDE users benefit from bug fixes","Stability patches across editor integrations","Incremental refinement phase (no major new features)"],
+    "specific_workflows": ["Continue using CLI for execution when and where possible","VS Code kinks being fixed - can revisit IDE integration later","CLI remains the most stable interface for orchestrator workflows"]
+  },
+  "source": "user_insights"
+}

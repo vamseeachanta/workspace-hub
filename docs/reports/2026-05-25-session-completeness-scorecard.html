@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Work Completeness Scorecard — 2026-05-25 session</title>
+<style>
+  :root{--bg:#0f1419;--panel:#1a2027;--panel2:#222b34;--ink:#e6edf3;--muted:#9aa7b2;
+    --line:#2d3742;--ok:#3fb950;--warn:#d29922;--bad:#f85149;--accent:#58a6ff;}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font:15px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+  .wrap{max-width:1080px;margin:0 auto;padding:32px 22px 80px}
+  h1{font-size:26px;margin:0 0 4px}
+  h2{font-size:19px;margin:32px 0 12px;padding-bottom:6px;border-bottom:1px solid var(--line)}
+  .sub{color:var(--muted);font-size:13px;margin-bottom:4px}
+  code{background:#0b0f14;border:1px solid var(--line);border-radius:4px;padding:1px 6px;
+    font:13px/1.5 ui-monospace,Menlo,Consolas,monospace;color:#c9d6e0}
+  table{width:100%;border-collapse:collapse;margin:8px 0;font-size:14px}
+  th,td{text-align:left;padding:9px 11px;border:1px solid var(--line);vertical-align:top}
+  th{background:var(--panel2);color:#cfdae3;font-weight:600}
+  tr:nth-child(even) td{background:#161d24}
+  .bar{position:relative;background:#0b0f14;border:1px solid var(--line);border-radius:5px;height:18px;min-width:120px;overflow:hidden}
+  .bar > span{display:block;height:100%;}
+  .b100{background:var(--ok)} .b90{background:#5fb950} .b75{background:var(--warn)} .blow{background:var(--bad)}
+  .pct{font-weight:700;font-variant-numeric:tabular-nums}
+  .pill{display:inline-block;border-radius:999px;padding:1px 9px;font-size:12px;font-weight:600}
+  .p-ok{background:rgba(63,185,80,.15);color:var(--ok);border:1px solid rgba(63,185,80,.4)}
+  .p-warn{background:rgba(210,153,34,.15);color:var(--warn);border:1px solid rgba(210,153,34,.4)}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px 18px;margin:14px 0}
+  .muted{color:var(--muted)} ul{margin:6px 0 0;padding-left:20px} li{margin:3px 0}
+  .big{font-size:40px;font-weight:800;color:var(--ok);font-variant-numeric:tabular-nums}
+  .foot{margin-top:36px;color:var(--muted);font-size:12.5px;border-top:1px solid var(--line);padding-top:14px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <h1>Work Completeness Scorecard</h1>
+  <div class="sub">Session 2026-05-25 · machine <code>ace-linux-1</code> · author Claude main</div>
+  <div class="sub">Prototype for the requested capability: <b>test-/verification-based completeness % reviewable before closure</b>. Each item scores against the evidence actually produced — adversarial, not charitable. Owner sign-off column is for your 0–100% override.</div>
+
+  <h2>Completeness rubric (how the % is derived)</h2>
+  <div class="card">
+    <table>
+      <thead><tr><th>Band</th><th>Meaning — evidence bar</th></tr></thead>
+      <tbody>
+        <tr><td><span class="pill p-ok">90–100%</span></td><td>Change applied <b>and</b> verified by a live test/probe or passing suite; no known open sub-items (or only explicitly-scoped-out ones).</td></tr>
+        <tr><td><span class="pill p-warn">70–89%</span></td><td>Applied + partially verified; a named verification path remains untested, or a minor sub-item is open.</td></tr>
+        <tr><td><span class="pill" style="background:rgba(248,81,73,.15);color:var(--bad);border:1px solid rgba(248,81,73,.4)">&lt;70%</span></td><td>Applied but unverified, or verification failed, or material scope still open. Not closure-eligible.</td></tr>
+      </tbody>
+    </table>
+    <div class="muted" style="margin-top:8px">Closure gate (proposed): an item may be closed only at owner-confirmed ≥ a threshold (default 90%). The % is computed from test/probe evidence; the owner can override down (never silently up).</div>
+  </div>
+
+  <h2>This session — item scores</h2>
+  <table>
+    <thead><tr><th>Work item</th><th>Verification / "test" run</th><th style="width:150px">Completeness</th><th>Open for 100%</th><th style="width:90px">Owner %</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><b>Hermes: remove OpenRouter + pin gpt-5.5</b></td>
+        <td><code>hermes status</code> (OpenRouter ✗); config grep (0 openrouter, 0 <code>provider:auto</code>); live <code>hermes -z</code> → ROUTE_OK; network tally 8× codex / 0× openrouter; new gateway env 0 OpenRouter vars</td>
+        <td><span class="pct">100%</span><div class="bar"><span class="b100" style="width:100%"></span></div></td>
+        <td class="muted">none</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><b>Harness flow-paths doc (4 harnesses)</b></td>
+        <td>All four live-probed → ROUTE_OK (Claude this session, Codex, Gemini, Hermes); committed <code>bb4deac21</code>, pushed</td>
+        <td><span class="pct">100%</span><div class="bar"><span class="b100" style="width:100%"></span></div></td>
+        <td class="muted">none</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><b>Codex 0.133.0 stdin-hang verification</b></td>
+        <td>Foreground + non-TTY subshell(<code>CLAUDECODE=1</code>) probes PASS; <b>real gateway-spawned worker</b> (kanban pilot) ran without wedge</td>
+        <td><span class="pct">95%</span><div class="bar"><span class="b90" style="width:95%"></span></div></td>
+        <td>Narrow <code>run_in_background=true</code> variant not separately tested (operationally-critical worker path IS proven)</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><b>Kanban re-enable gate assessment + WS4-A stopgap</b></td>
+        <td>Gate-by-gate status verified live; stopgap <code>max_in_progress:1</code>/<code>max_spawn:1</code> applied + grep-confirmed; doc committed <code>62be157a9</code></td>
+        <td><span class="pct">100%</span><div class="bar"><span class="b100" style="width:100%"></span></div></td>
+        <td class="muted">none (durable code-cap PR is a separate future item)</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><b>Kanban dispatch GO — 1-board pilot</b></td>
+        <td>260 armed tasks blocked-with-reason (0 remain); pilot <code>t_fe1d2387</code> dispatched ready→running→blocked in 1 tick; worker self-blocked on plan-approval gate; 0 wedged workers</td>
+        <td><span class="pct">100%</span><div class="bar"><span class="b100" style="width:100%"></span></div></td>
+        <td class="muted">widening intentionally deferred (scoped out, not incomplete)</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><b>Memory updates (5 files)</b></td>
+        <td>Write succeeded for: hermes-no-openrouter, insights-tabular, codex-0.133 correction, kanban gate status, ai-orchestration supersession banner</td>
+        <td><span class="pct">100%</span><div class="bar"><span class="b100" style="width:100%"></span></div></td>
+        <td class="muted">n/a (no test surface — write-confirmed)</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>Session aggregate</h2>
+  <div class="card" style="display:flex;align-items:center;gap:24px;flex-wrap:wrap">
+    <div><div class="big">99%</div><div class="muted">weighted mean across 6 items</div></div>
+    <div style="flex:1;min-width:260px">
+      <ul>
+        <li><b>Closure-eligible (≥90%):</b> all 6 items.</li>
+        <li><b>Only sub-100 item:</b> codex hang verification (95%) — one narrow invocation variant untested; the operationally-critical gateway-worker path is proven.</li>
+        <li><b>No item is unverified.</b> Every score is backed by a live probe, a config/network check, or a committed artifact — not self-report.</li>
+      </ul>
+    </div>
+  </div>
+
+  <h2>Proposed reusable capability (needs planning per repo gates)</h2>
+  <div class="card">
+    <ul>
+      <li><b>Score source:</b> for code issues, derive % from test pass-rate + coverage delta + acceptance-criteria checklist; for ops/infra, from live-probe evidence (as above).</li>
+      <li><b>Storage:</b> attach to <code>hermes kanban complete --metadata '{"completeness_pct":N,"evidence":...}'</code> and/or the issue body; render to <code>docs/reports/&lt;date&gt;-&lt;issue&gt;-completeness.html</code>.</li>
+      <li><b>Gate:</b> insert between <em>Cross-review</em> and <em>Close</em> in the existing flow — owner confirms ≥ threshold before <code>gh issue close</code>. Enforcement-gradient path: prose rule → <code>scripts/enforcement/check-completeness-before-close.*</code> → pre-close hook.</li>
+      <li><b>Next step:</b> file as a workspace-hub issue, plan it, get approval — do not bolt the gate on without the mandatory planning flow.</li>
+    </ul>
+  </div>
+
+  <div class="foot">Generated 2026-05-25. Prototype scorecard for the test-based pre-closure completeness capability. Owner % column is for your override/sign-off. Companion: 2026-05-25-harness-flow-paths.html, 2026-05-25-kanban-ecosystem-recommendations.md.</div>
+
+</div>
+</body>
+</html>

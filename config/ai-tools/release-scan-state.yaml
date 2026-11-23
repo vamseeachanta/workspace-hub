@@ -1,0 +1,8 @@
+# AI tool release scan state — updated by release-notes-adoption skill and nightly cron (WRK-1140)
+last_seen_version:
+  claude: "2.1.74"
+  codex: ""
+  gemini: ""
+last_scan_at: "2026-03-12T00:00:00Z"
+last_scan_by: manual
+notes: "First scan done manually this session — CC 2.1.72–2.1.74 → WRK-1139"

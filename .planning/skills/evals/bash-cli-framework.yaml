@@ -1,0 +1,21 @@
+version: 1
+wrk_id: WRK-1009
+skill_name: bash-cli-framework
+skill_path: .claude/skills/_core/bash/bash-cli-framework/SKILL.md
+evals:
+- eval_id: bcf-cap-01
+  eval_type: capability
+  description: Core sections documented for bash-cli-framework
+  checks:
+    required_sections:
+    - '## When to Use This Skill'
+    - '## Integration with workspace-hub'
+    - '## Complete Example'
+    - '## Resources'
+    - '## Version History'
+- eval_id: bcf-proc-01
+  eval_type: procedural
+  description: Additional documentation sections for bash-cli-framework
+  checks:
+    required_sections:
+    - '## Sub-Skills'

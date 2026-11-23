@@ -1,0 +1,46 @@
+{
+  "machine": "dev-secondary",
+  "audited_at": "2026-10-10T11:47:16+00:00",
+  "surfaces": {
+    "bridge_heartbeat": {
+      "present": false,
+      "refreshed_at": null,
+      "age_hours": null,
+      "signal": "git-commit"
+    },
+    "hermes_memories": {
+      "present": true,
+      "refreshed_at": "2026-08-03T09:35:01+00:00",
+      "age_hours": 1634.204,
+      "signal": "file-mtime"
+    },
+    "context_md": {
+      "present": true,
+      "refreshed_at": null,
+      "age_hours": null,
+      "signal": "presence"
+    },
+    "agents_md": {
+      "present": true,
+      "refreshed_at": null,
+      "age_hours": null,
+      "signal": "presence"
+    },
+    "codex_runtime": {
+      "present": true,
+      "refreshed_at": null,
+      "age_hours": null,
+      "signal": "presence"
+    },
+    "gemini_runtime": {
+      "present": true,
+      "refreshed_at": null,
+      "age_hours": null,
+      "signal": "presence"
+    }
+  },
+  "newest_refresh": "2026-08-03T09:35:01+00:00",
+  "worst_age_hours": 1634.204,
+  "freshness": "MEMORY-EXPIRED",
+  "schema_version": 2
+}

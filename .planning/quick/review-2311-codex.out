@@ -1,0 +1,29 @@
+### Verdict: MAJOR
+
+### Summary
+Not approval-ready. The plan still relies on unverified assertions, leaves the scan/classification boundary undefined, and includes speculative scope items and tests that would not reliably fail for the target defect classes.
+
+### Issues Found
+- `Resource Intelligence Summary -> Documents consulted` asserts that Issue `#2311` "defines the target stale-read cluster (318 mapped Claude reads) and the canonical redirect targets," but the attested issue evidence in this review contains only title/state, not the body. That claim is unverified in the plan packet and is not evidence-tight enough for approval.
+- `Resource Intelligence Summary -> Standards` says "Not applicable," which conflicts with the stated workflow contract for this repo (`issue -> resource intel -> plan -> adversarial review -> user approval`) and the existence of planning/governance artifacts such as `docs/plans/README.md`. For approval-stage readiness, the governing plan policy cannot be treated as nonexistent.
+- `Deliverable`, `Pseudocode`, `TDD Test List`, and `Acceptance Criteria` never define the actual scan universe for "current instructional surfaces" or the exact allowed buckets for legacy/history. `test_curated_current_docs_do_not_reference_stage_transition_scripts` uses an unspecified "curated current-file list," so the test can be made to pass by omission and is not falsifiable enough.
+- `Resource Intelligence Summary` cites `tests/docs/test_legacy_reference_allowlist.py` as preserving two intentional legacy docs (`docs/ops/legacy-claude-reference-map.md` and `docs/modules/ai/AGENT_EQUIVALENCE_ARCHITECTURE.md`), but `Acceptance Criteria` narrows the redirect surface to only `docs/ops/legacy-claude-reference-map.md`. The plan does not decide whether the architecture doc will remain allowed, be cleaned, or move to another bucket.
+- `Files to Change` includes `docs/plans/README.md` ("add this plan to index"), but that work is not part of the stated deliverable, is not covered by the TDD list, and is not required by the acceptance criteria. It is speculative scope creep.
+- `Pseudocode` and `Acceptance Criteria` require a post-implementation audit refresh ("refresh provider-session audit" / "Post-implementation audit refresh is run and linked from the issue"), but no generator path, command, or owned artifact is identified in `Files to Change`. With only `docs/reports/provider-session-ecosystem-audit.md` attested as existing, this is an unscoped prerequisite and not approval-safe.
+- `TDD Test List -> test_provider_audit_report_still_lists_cluster_without_becoming_instructional_surface` is too weak for the claimed defect class. A classification assertion on `docs/reports/provider-session-ecosystem-audit.md` can pass even if live docs reintroduce banned references elsewhere; it does not directly fail on the harmful behavior.
+- `Pseudocode` says "if any live instructional hit exists: patch the file..." but the plan never enumerates current non-legacy hits up front. Approval would authorize implementation without a concrete rewrite set, which makes the plan susceptible to becoming a no-op guardrail change rather than issue resolution.
+- The plan says the new rule should cover "live docs/templates/instructions," but no disposition is given for other likely surfaces called out by prior review artifacts, such as skill files, hooks, generated review artifacts, or other non-doc instructional text. This unresolved classification boundary would block safe implementation decisions.
+
+### Suggestions
+- Replace issue-body assertions with attested evidence, or quote the exact issue/report passages needed to support the "318 reads" cluster and redirect-target claims.
+- Add a concrete classification table in the plan: exact allowed buckets, exact forbidden buckets, and the precise file/path globs that define the scan universe for each.
+- Resolve the legacy-surface contradiction explicitly: decide whether `docs/modules/ai/AGENT_EQUIVALENCE_ARCHITECTURE.md` remains allowed, gets cleaned in this issue, or is deferred to `#2214`, and reflect that decision in tests and acceptance criteria.
+- Drop `docs/plans/README.md` from `Files to Change` unless plan-index maintenance is actually required for this issue and covered by acceptance criteria.
+- Either remove the audit-refresh requirement or make it executable: identify the generating workflow/script, the expected output artifact, and the pass/fail condition for refreshing it.
+- Tighten the tests so they fail on concrete reintroduction paths: one explicit allowlist-path test, one explicit forbidden-path scan over a defined path set, and one redirect-target validation test tied to concrete required anchors.
+- Enumerate the currently matching files that are expected to remain, be cleaned, or be deferred before approval. If there are no live hits, say so and narrow the issue to guardrails-only work with matching acceptance criteria.
+
+### Questions for Author
+- Should `docs/modules/ai/AGENT_EQUIVALENCE_ARCHITECTURE.md` remain an allowed legacy surface in this issue, or is its cleanup/decomposition intentionally deferred to `#2214`?
+- What exact path set defines "current docs/templates/instructions" for the new confinement test?
+- What command or source artifact is supposed to refresh `docs/reports/provider-session-ecosystem-audit.md`, and is that refresh actually in scope for `#2311`?

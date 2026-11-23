@@ -1,0 +1,134 @@
+Agent loading error: Failed to load agent from /mnt/local-analysis/workspace-hub/.gemini/agents/gsd-debugger.md: Validation failed: Agent Definition:
+Unrecognized key(s) in object: 'permissionMode'Agent loading error: Failed to load agent from /mnt/local-analysis/workspace-hub/.gemini/agents/gsd-executor.md: Validation failed: Agent Definition:
+Unrecognized key(s) in object: 'permissionMode'Attempt 1 failed with status 429. Retrying with backoff... _GaxiosError: [{
+  "error": {
+    "code": 429,
+    "message": "No capacity available for model gemini-3.1-pro-preview on the server",
+    "errors": [
+      {
+        "message": "No capacity available for model gemini-3.1-pro-preview on the server",
+        "domain": "global",
+        "reason": "rateLimitExceeded"
+      }
+    ],
+    "status": "RESOURCE_EXHAUSTED",
+    "details": [
+      {
+        "@type": "type.googleapis.com/google.rpc.ErrorInfo",
+        "reason": "MODEL_CAPACITY_EXHAUSTED",
+        "domain": "cloudcode-pa.googleapis.com",
+        "metadata": {
+          "model": "gemini-3.1-pro-preview"
+        }
+      }
+    ]
+  }
+}
+]
+    at Gaxios._request (file:///home/vamsee/.npm-global/lib/node_modules/@google/gemini-cli/bundle/chunk-UQGLVPZQ.js:8798:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async _OAuth2Client.requestAsync (file:///home/vamsee/.npm-global/lib/node_modules/@google/gemini-cli/bundle/chunk-UQGLVPZQ.js:10761:16)
+    at async CodeAssistServer.requestStreamingPost (file:///home/vamsee/.npm-global/lib/node_modules/@google/gemini-cli/bundle/chunk-UQGLVPZQ.js:278182:17)
+    at async CodeAssistServer.generateContentStream (file:///home/vamsee/.npm-global/lib/node_modules/@google/gemini-cli/bundle/chunk-UQGLVPZQ.js:277982:23)
+    at async file:///home/vamsee/.npm-global/lib/node_modules/@google/gemini-cli/bundle/chunk-UQGLVPZQ.js:278827:19
+    at async file:///home/vamsee/.npm-global/lib/node_modules/@google/gemini-cli/bundle/chunk-UQGLVPZQ.js:255732:23
+    at async retryWithBackoff (file:///home/vamsee/.npm-global/lib/node_modules/@google/gemini-cli/bundle/chunk-UQGLVPZQ.js:275704:23)
+    at async GeminiChat.makeApiCallAndProcessStream (file:///home/vamsee/.npm-global/lib/node_modules/@google/gemini-cli/bundle/chunk-UQGLVPZQ.js:311287:28)
+    at async GeminiChat.streamWithRetries (file:///home/vamsee/.npm-global/lib/node_modules/@google/gemini-cli/bundle/chunk-UQGLVPZQ.js:311125:29) {
+  config: {
+    url: 'https://cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse',
+    method: 'POST',
+    params: { alt: 'sse' },
+    headers: {
+      'Content-Type': 'application/json',
+      'User-Agent': 'GeminiCLI/0.39.0/gemini-3.1-pro-preview (linux; x64; terminal) google-api-nodejs-client/9.15.1',
+      Authorization: '<<REDACTED> - See `errorRedactor` option in `gaxios` for configuration>.',
+      'x-goog-api-client': 'gl-node/24.14.1'
+    },
+    responseType: 'stream',
+    body: '<<REDACTED> - See `errorRedactor` option in `gaxios` for configuration>.',
+    signal: AbortSignal { aborted: false },
+    retry: false,
+    paramsSerializer: [Function: paramsSerializer],
+    validateStatus: [Function: validateStatus],
+    errorRedactor: [Function: defaultErrorRedactor]
+  },
+  response: {
+    config: {
+      url: 'https://cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse',
+      method: 'POST',
+      params: [Object],
+      headers: [Object],
+      responseType: 'stream',
+      body: '<<REDACTED> - See `errorRedactor` option in `gaxios` for configuration>.',
+      signal: [AbortSignal],
+      retry: false,
+      paramsSerializer: [Function: paramsSerializer],
+      validateStatus: [Function: validateStatus],
+      errorRedactor: [Function: defaultErrorRedactor]
+    },
+    data: '[{\n' +
+      '  "error": {\n' +
+      '    "code": 429,\n' +
+      '    "message": "No capacity available for model gemini-3.1-pro-preview on the server",\n' +
+      '    "errors": [\n' +
+      '      {\n' +
+      '        "message": "No capacity available for model gemini-3.1-pro-preview on the server",\n' +
+      '        "domain": "global",\n' +
+      '        "reason": "rateLimitExceeded"\n' +
+      '      }\n' +
+      '    ],\n' +
+      '    "status": "RESOURCE_EXHAUSTED",\n' +
+      '    "details": [\n' +
+      '      {\n' +
+      '        "@type": "type.googleapis.com/google.rpc.ErrorInfo",\n' +
+      '        "reason": "MODEL_CAPACITY_EXHAUSTED",\n' +
+      '        "domain": "cloudcode-pa.googleapis.com",\n' +
+      '        "metadata": {\n' +
+      '          "model": "gemini-3.1-pro-preview"\n' +
+      '        }\n' +
+      '      }\n' +
+      '    ]\n' +
+      '  }\n' +
+      '}\n' +
+      ']',
+    headers: {
+      'alt-svc': 'h3=":443"; ma=2592000,h3-29=":443"; ma=2592000',
+      'content-length': '630',
+      'content-type': 'application/json; charset=UTF-8',
+      date: 'Thu, 23 Apr 2026 16:33:53 GMT',
+      server: 'ESF',
+      'server-timing': 'gfet4t7; dur=611',
+      vary: 'Origin, X-Origin, Referer',
+      'x-cloudaicompanion-trace-id': '5b385071e5e5c669',
+      'x-content-type-options': 'nosniff',
+      'x-frame-options': 'SAMEORIGIN',
+      'x-xss-protection': '0'
+    },
+    status: 429,
+    statusText: 'Too Many Requests',
+    request: {
+      responseURL: 'https://cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse'
+    }
+  },
+  error: undefined,
+  status: 429,
+  Symbol(gaxios-gaxios-error): '6.7.1'
+}
+Verdict: MAJOR
+
+## Findings
+- [MAJOR] The plan fails to cleanly separate governance preconditions from the implementation execution path. While governance requirements were moved out of the TDD table, they remain explicitly embedded as execution steps in the `Pseudocode` and `Acceptance Criteria`.
+  - **Citation 1:** `Pseudocode` section `validate_contract_docs()` contains: `assert because the current live approval surfaces are already stale for this draft revision, the plan requires governance cleanup on the real approval gates: live GitHub status:plan-approved and local .planning/plan-approved/2460.md must be removed...`
+  - **Citation 2:** `Acceptance Criteria` contains: `- [ ] because the current live approval surfaces are already stale for this draft revision, the plan requires governance cleanup on the real approval gates by removing, superseding, or revision-binding...`
+  - **Why it matters:** A programmatic validation function or an implementation acceptance checklist cannot enforce plan-level governance (like clearing GitHub labels). This mixes pre-approval administrative requirements with post-approval engineering tasks, creating an unexecutable, out-of-scope requirement for the agent implementing the code.
+- [MAJOR] The plan contains logically contradictory instructions regarding `docs/plans/README.md` for the execution phase.
+  - **Citation 1:** `Files to Change` for `docs/plans/README.md` instructs the implementer to `keep it aligned to the effective non-approved state when stale approval drift is still present`.
+  - **Citation 2:** `Pseudocode` section `implement_with_tdd()` instructs: `if stale approval drift is still present, keep the row aligned to the effective non-approved state...`
+  - **Why it matters:** As noted in the Resource Intelligence Summary (`implementation_requires: plan_approved: true`), implementation only occurs *after* a plan is approved and governance preconditions are met. Instructing the execution-phase agent to handle an "effective non-approved state" or to mitigate "stale approval drift" is a logical paradox. If the plan is being executed, it is approved; if it is not approved, it cannot be executed. The execution instructions must assume the precondition was successfully met.
+
+## Checks performed
+- Verified whether the plan cleanly separated deliverable regression tests from governance/pre-approval requirements across all execution-focused sections.
+- Checked `Pseudocode`, `Files to Change`, and `Acceptance Criteria` for residual governance directives that masquerade as implementation logic.
+- Analyzed the logical consistency of instructing the post-approval implementation phase to handle non-approved governance states.
+- Confirmed that the stated changes from r13 (removal of meta-tests from the TDD list) were correctly applied.

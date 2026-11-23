@@ -1,0 +1,95 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://aceengineer.com/schemas/prospect-intake-v3.json",
+  "title": "Prospect Demo Intake",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["prospect", "structure", "output"],
+  "properties": {
+    "prospect": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["company", "contact", "nda_in_place", "target_demo", "delivery_deadline_utc"],
+      "properties": {
+        "company": { "type": "string", "minLength": 1 },
+        "contact": { "type": "string", "format": "email" },
+        "nda_in_place": { "type": "boolean" },
+        "target_demo": { "type": "string", "enum": ["demo_01", "demo_02", "demo_03", "demo_04", "demo_05"] },
+        "delivery_deadline_utc": { "type": "string", "format": "date-time" }
+      }
+    },
+    "vessel": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["shape", "source"],
+      "properties": {
+        "shape": { "type": "string", "enum": ["csv_hlv", "pipelay"] },
+        "source": { "type": "string", "enum": ["prospect_provided", "canonical_ref"] },
+        "canonical_ref": { "type": ["string", "null"] },
+        "body": { "type": "object" }
+      },
+      "allOf": [
+        {
+          "if":   { "properties": { "source": { "const": "prospect_provided" } } },
+          "then": { "required": ["body"] }
+        },
+        {
+          "if":   { "properties": { "source": { "const": "canonical_ref" } } },
+          "then": { "required": ["canonical_ref"], "properties": { "canonical_ref": { "type": "string", "minLength": 1 } } }
+        }
+      ]
+    },
+    "structure": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "body"],
+      "properties": {
+        "kind": { "type": "string", "enum": ["pipeline", "rigid_jumper", "mudmat", "freespan", "jumper_and_freespan"] },
+        "body": { "type": "object" }
+      }
+    },
+    "environment": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "water_depths_m": { "type": "array", "items": { "type": "number", "minimum": 0, "maximum": 4000 } },
+        "hs_values_m":    { "type": "array", "items": { "type": "number", "minimum": 0, "maximum": 8 } },
+        "current_velocity_ms": { "type": "number", "minimum": 0, "maximum": 5 }
+      }
+    },
+    "output": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["brand_header", "brand_footer"],
+      "properties": {
+        "brand_header": { "type": "string", "minLength": 1 },
+        "brand_footer": { "type": "string", "minLength": 1 },
+        "logo_inline_svg": { "type": ["string", "null"] },
+        "publish_private_url": { "type": "boolean", "default": true },
+        "gating": { "type": "string", "enum": ["hash", "basic-auth", "signed"], "default": "hash" },
+        "purge_after_utc": { "type": "string", "format": "date-time" }
+      },
+      "allOf": [
+        {
+          "if":   { "properties": { "publish_private_url": { "const": true } } },
+          "then": { "required": ["purge_after_utc"] }
+        }
+      ]
+    }
+  },
+  "allOf": [
+    {
+      "description": "Q6: demos 3/4/5 REQUIRE a vessel block.",
+      "if":   { "properties": { "prospect": { "properties": { "target_demo": { "enum": ["demo_03", "demo_04", "demo_05"] } } } } },
+      "then": { "required": ["vessel"] }
+    },
+    {
+      "description": "Q6: demos 1/2 FORBID a vessel block (defense-in-depth: both properties.vessel=false AND not/required).",
+      "if":   { "properties": { "prospect": { "properties": { "target_demo": { "enum": ["demo_01", "demo_02"] } } } } },
+      "then": {
+        "properties": { "vessel": false },
+        "not": { "required": ["vessel"] }
+      }
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+/.github/CODEOWNERS @vamseeachanta
+/.github/workflows/legal-rule-authority-gate.yml @vamseeachanta
+/.github/workflows/legal-rule-authority-reusable.yml @vamseeachanta
+/config/legal-rule-* @vamseeachanta
+/schemas/legal-rule-* @vamseeachanta
+/scripts/legal/manage_rule_authority.py @vamseeachanta
+/scripts/legal/rule_authority/ @vamseeachanta

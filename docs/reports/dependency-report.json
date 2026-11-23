@@ -1,0 +1,2028 @@
+{
+  "schema_version": "1.0",
+  "tier1_repos": [
+    "digitalmodel",
+    "assetutilities",
+    "aceengineer-strategy",
+    "achantas-data",
+    "assethold"
+  ],
+  "repos": {
+    "aceengineer-strategy": {
+      "status": "scanned",
+      "has_pyproject": false,
+      "package_name": "",
+      "python_file_count": 0,
+      "declared_tier1_deps": [],
+      "imported_tier1_deps": [],
+      "import_details": []
+    },
+    "achantas-data": {
+      "status": "scanned",
+      "has_pyproject": true,
+      "package_name": "achantas-data",
+      "python_file_count": 14,
+      "declared_tier1_deps": [],
+      "imported_tier1_deps": [],
+      "import_details": []
+    },
+    "assethold": {
+      "status": "scanned",
+      "has_pyproject": true,
+      "package_name": "",
+      "python_file_count": 325,
+      "declared_tier1_deps": [],
+      "imported_tier1_deps": [
+        "assetutilities"
+      ],
+      "import_details": [
+        {
+          "file": "tests/contracts/conftest.py",
+          "module": "assetutilities",
+          "line": 7,
+          "kind": "import",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "tests/contracts/conftest.py",
+          "module": "assetutilities",
+          "line": 18,
+          "kind": "import",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "tests/contracts/test_assetutilities_contract.py",
+          "module": "assetutilities.common.file_management",
+          "line": 14,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "tests/contracts/test_assetutilities_contract.py",
+          "module": "assetutilities.common.file_management",
+          "line": 21,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "tests/contracts/test_assetutilities_contract.py",
+          "module": "assetutilities.common.update_deep",
+          "line": 33,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "tests/contracts/test_assetutilities_contract.py",
+          "module": "assetutilities.common.update_deep",
+          "line": 45,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "tests/contracts/test_assetutilities_contract.py",
+          "module": "assetutilities.common.yml_utilities",
+          "line": 53,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "tests/contracts/test_assetutilities_contract.py",
+          "module": "assetutilities.common.yml_utilities",
+          "line": 60,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "tests/contracts/test_assetutilities_contract.py",
+          "module": "assetutilities",
+          "line": 7,
+          "kind": "import",
+          "target_repo": "assetutilities"
+        }
+      ]
+    },
+    "assetutilities": {
+      "status": "scanned",
+      "has_pyproject": true,
+      "package_name": "assetutilities",
+      "python_file_count": 716,
+      "declared_tier1_deps": [],
+      "imported_tier1_deps": [],
+      "import_details": []
+    },
+    "digitalmodel": {
+      "status": "scanned",
+      "has_pyproject": true,
+      "package_name": "digitalmodel",
+      "python_file_count": 5011,
+      "declared_tier1_deps": [
+        "assetutilities"
+      ],
+      "imported_tier1_deps": [
+        "assetutilities"
+      ],
+      "import_details": [
+        {
+          "file": "src/digitalmodel/engine.py",
+          "module": "assetutilities.common.ApplicationManager",
+          "line": 1,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/engine.py",
+          "module": "assetutilities.common.data",
+          "line": 2,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/engine.py",
+          "module": "assetutilities.common.file_management",
+          "line": 3,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/engine.py",
+          "module": "assetutilities.common.update_deep",
+          "line": 4,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/engine.py",
+          "module": "assetutilities.common.yml_utilities",
+          "line": 5,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/infrastructure/base_solvers/fatigue/fatigue_analysis.py",
+          "module": "assetutilities.common.yml_utilities",
+          "line": 3,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/infrastructure/base_solvers/hydrodynamics/code_dnvrph103_hydrodynamics_circular.py",
+          "module": "assetutilities.common.data",
+          "line": 6,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/infrastructure/base_solvers/hydrodynamics/code_dnvrph103_hydrodynamics_rectangular.py",
+          "module": "assetutilities.common.data",
+          "line": 5,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/infrastructure/base_solvers/marine/pipe_properties.py",
+          "module": "assetutilities.common.update_deep",
+          "line": 5,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/infrastructure/base_solvers/marine/pipe_properties.py",
+          "module": "assetutilities.common.yml_utilities",
+          "line": 6,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/infrastructure/base_solvers/marine/ship/ship_fatigue_analysis.py",
+          "module": "assetutilities.common.utilities",
+          "line": 8,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/infrastructure/base_solvers/marine/ship/ship_fatigue_analysis.py",
+          "module": "assetutilities.common.data",
+          "line": 9,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/infrastructure/base_solvers/marine/ship/ship_fatigue_analysis.py",
+          "module": "assetutilities.engine",
+          "line": 1056,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/infrastructure/base_solvers/structural/config.py",
+          "module": "assetutilities.constants",
+          "line": 8,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/infrastructure/base_solvers/structural/fea/FEAComponents.py",
+          "module": "assetutilities.common.data",
+          "line": 5,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/infrastructure/base_solvers/structural/fea/FEAComponents.py",
+          "module": "assetutilities.common.data",
+          "line": 6,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/infrastructure/base_solvers/structural/fea/FEAComponents.py",
+          "module": "assetutilities.common.visualization_components",
+          "line": 7,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/infrastructure/base_solvers/viv/shear7_model_components.py",
+          "module": "assetutilities.common.data",
+          "line": 1,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/infrastructure/base_solvers/viv/viv_fatigue_analysis_components.py",
+          "module": "assetutilities.common.data",
+          "line": 7,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/infrastructure/base_solvers/viv/viv_fatigue_analysis_components.py",
+          "module": "assetutilities.common.data",
+          "line": 8,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/infrastructure/base_solvers/viv/viv_fatigue_analysis_components.py",
+          "module": "assetutilities.common.data",
+          "line": 9,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/infrastructure/base_solvers/viv/viv_fatigue_analysis_components.py",
+          "module": "assetutilities.common.visualizations",
+          "line": 10,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/infrastructure/calculations/plate_buckling.py",
+          "module": "assetutilities.units",
+          "line": 19,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/infrastructure/utils/engineering_units.py",
+          "module": "assetutilities.units",
+          "line": 11,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/infrastructure/utils/path_utils.py",
+          "module": "assetutilities.common.path_resolver",
+          "line": 6,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/solvers/orcaflex/all_vars.py",
+          "module": "assetutilities.common.path_resolver",
+          "line": 1,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/solvers/orcaflex/mooring.py",
+          "module": "assetutilities.common.path_resolver",
+          "line": 4,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/solvers/orcaflex/mooring.py",
+          "module": "assetutilities.common.data",
+          "line": 13,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/solvers/orcaflex/mooring.py",
+          "module": "assetutilities.common.file_management",
+          "line": 14,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/solvers/orcaflex/mooring.py",
+          "module": "assetutilities.common.utilities",
+          "line": 15,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/solvers/orcaflex/opp.py",
+          "module": "assetutilities.common.data",
+          "line": 16,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/solvers/orcaflex/opp.py",
+          "module": "assetutilities.common.update_deep",
+          "line": 20,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/solvers/orcaflex/opp.py",
+          "module": "assetutilities.common.path_resolver",
+          "line": 12,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/solvers/orcaflex/opp_summary.py",
+          "module": "assetutilities.common.data",
+          "line": 11,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/solvers/orcaflex/opp_summary_superseded.py",
+          "module": "assetutilities.common.data",
+          "line": 8,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/solvers/orcaflex/opp_visualization.py",
+          "module": "assetutilities.common.yml_utilities",
+          "line": 6,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/solvers/orcaflex/opp_visualization.py",
+          "module": "assetutilities.common.path_resolver",
+          "line": 8,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/solvers/orcaflex/umbilical_analysis_components.py",
+          "module": "assetutilities.common.data",
+          "line": 2,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/solvers/orcaflex/umbilical_installation_IV_to_host.py",
+          "module": "assetutilities.common.update_deep",
+          "line": 4,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/solvers/orcaflex/umbilical_installation_IV_to_host.py",
+          "module": "assetutilities.common.yml_utilities",
+          "line": 6,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/solvers/orcaflex/umbilical_installation_IV_to_host.py",
+          "module": "assetutilities.common.data",
+          "line": 7,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/solvers/orcaflex/umbilical_installation_IV_to_host.py",
+          "module": "assetutilities.common.utilities",
+          "line": 9,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/solvers/orcaflex/umbilical_installation_lower_2nd_end.py",
+          "module": "assetutilities.common.update_deep",
+          "line": 4,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/solvers/orcaflex/umbilical_installation_lower_2nd_end.py",
+          "module": "assetutilities.common.yml_utilities",
+          "line": 6,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/solvers/orcaflex/umbilical_installation_lower_2nd_end.py",
+          "module": "assetutilities.common.data",
+          "line": 7,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/solvers/orcaflex/umbilical_installation_lower_2nd_end.py",
+          "module": "assetutilities.common.utilities",
+          "line": 9,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/solvers/orcaflex/visualization.py",
+          "module": "assetutilities.common.path_resolver",
+          "line": 12,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/solvers/orcaflex/orcaflex_custom_analysis.py",
+          "module": "assetutilities.common.utilities",
+          "line": 18,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/solvers/orcaflex/orcaflex_custom_analysis.py",
+          "module": "assetutilities.common",
+          "line": 19,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/solvers/orcaflex/orcaflex_custom_analysis.py",
+          "module": "assetutilities.common.saveData",
+          "line": 20,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/solvers/orcaflex/orcaflex_custom_analysis.py",
+          "module": "assetutilities.common.ymlInput",
+          "line": 21,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/solvers/orcaflex/orcaflex_installation.py",
+          "module": "assetutilities.common.saveData",
+          "line": 6,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/solvers/orcaflex/orcaflex_installation.py",
+          "module": "assetutilities.common.yml_utilities",
+          "line": 7,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/solvers/orcaflex/orcaflex_installation.py",
+          "module": "assetutilities.common.utilities",
+          "line": 8,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/solvers/orcaflex/orcaflex_iterative_runs.py",
+          "module": "assetutilities.common.data",
+          "line": 13,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/solvers/orcaflex/orcaflex_linetypes.py",
+          "module": "assetutilities.common.data",
+          "line": 4,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/solvers/orcaflex/orcaflex_model_components.py",
+          "module": "assetutilities.common.data",
+          "line": 7,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/solvers/orcaflex/orcaflex_model_linesetup_wizard.py",
+          "module": "assetutilities.common.yml_utilities",
+          "line": 2,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/solvers/orcaflex/orcaflex_model_utilities.py",
+          "module": "assetutilities.common.yml_utilities",
+          "line": 3,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/solvers/orcaflex/orcaflex_utilities.py",
+          "module": "assetutilities.common.data",
+          "line": 22,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/solvers/orcaflex/orcaflex_utilities.py",
+          "module": "assetutilities.common.yml_utilities",
+          "line": 23,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/solvers/orcaflex/orcaflex_utilities.py",
+          "module": "assetutilities.modules.data_exploration.data_exploration",
+          "line": 24,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/solvers/orcaflex/orcaflex_utilities.py",
+          "module": "assetutilities.common.file_management",
+          "line": 45,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/solvers/orcaflex/preprocess/load_vessel.py",
+          "module": "assetutilities.common.utilities",
+          "line": 5,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/specialized/rigging/rigging.py",
+          "module": "assetutilities.common.data",
+          "line": 2,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/specialized/rigging/rigging_components.py",
+          "module": "assetutilities.common.data",
+          "line": 3,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/structural/pipe_capacity/custom/MaterialProperties.py",
+          "module": "assetutilities.common.update_deep",
+          "line": 6,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/structural/pipe_capacity/custom/PipeCapacity.py",
+          "module": "assetutilities.common.update_deep",
+          "line": 8,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/structural/pipe_cross_section/cli.py",
+          "module": "assetutilities.common.yml_utilities",
+          "line": 178,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/subsea/catenary_riser/legacy/orcaflexModel.py",
+          "module": "assetutilities.common.saveData",
+          "line": 10,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/subsea/pipeline/buckling_common.py",
+          "module": "assetutilities.common.visualization.visualization_templates_matplotlib",
+          "line": 6,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/subsea/pipeline/lateral_buckling.py",
+          "module": "assetutilities.common.visualization.visualization_templates_matplotlib",
+          "line": 9,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/subsea/pipeline/lateral_buckling.py",
+          "module": "assetutilities.engine",
+          "line": 12,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/subsea/pipeline/pressure_loss.py",
+          "module": "assetutilities.common.visualization.visualization_templates_matplotlib",
+          "line": 16,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/subsea/pipeline/thermal_buckling.py",
+          "module": "assetutilities.common.visualization.visualization_templates_matplotlib",
+          "line": 6,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/subsea/pipeline/upheaval_buckling.py",
+          "module": "assetutilities.common.visualization.visualization_templates_matplotlib",
+          "line": 9,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/subsea/pipeline/upheaval_buckling.py",
+          "module": "assetutilities.engine",
+          "line": 12,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/subsea/vertical_riser/vertical_riser_components.py",
+          "module": "assetutilities.common.data",
+          "line": 7,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/subsea/viv_analysis/viv_analysis_legacy.py",
+          "module": "assetutilities.common.ApplicationManager",
+          "line": 8,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/subsea/viv_analysis/viv_tubular_members.py",
+          "module": "assetutilities.common.visualization.visualization_templates_matplotlib",
+          "line": 9,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/subsea/viv_analysis/viv_tubular_members.py",
+          "module": "assetutilities.engine",
+          "line": 12,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/hydrodynamics/aqwa/aqwa_analysis_damping.py",
+          "module": "assetutilities.common.update_deep",
+          "line": 7,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/hydrodynamics/aqwa/aqwa_analysis_ef_server.py",
+          "module": "assetutilities.common.data_exploration",
+          "line": 8,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/hydrodynamics/aqwa/aqwa_analysis_ef_server.py",
+          "module": "assetutilities.common.file_management",
+          "line": 15,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/hydrodynamics/aqwa/aqwa_analysis_raos.py",
+          "module": "assetutilities.common.file_management",
+          "line": 8,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/hydrodynamics/aqwa/aqwa_analysis_raos.py",
+          "module": "assetutilities.common.update_deep",
+          "line": 9,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/hydrodynamics/aqwa/aqwa_analysis_raos.py",
+          "module": "assetutilities.common.utilities",
+          "line": 10,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/hydrodynamics/aqwa/aqwa_analysis_raos.py",
+          "module": "assetutilities.common.visualization.visualization_templates_matplotlib",
+          "line": 11,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/hydrodynamics/aqwa/aqwa_analysis_raos.py",
+          "module": "assetutilities.common.yml_utilities",
+          "line": 14,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/hydrodynamics/aqwa/aqwa_analysis_raos.py",
+          "module": "assetutilities.engine",
+          "line": 15,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/hydrodynamics/aqwa/aqwa_dat_files.py",
+          "module": "assetutilities.common.data",
+          "line": 12,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/hydrodynamics/aqwa/aqwa_dat_files.py",
+          "module": "assetutilities.common.file_management",
+          "line": 13,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/hydrodynamics/aqwa/aqwa_dat_files.py",
+          "module": "assetutilities.common.utilities",
+          "line": 14,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/hydrodynamics/aqwa/aqwa_dat_files.py",
+          "module": "assetutilities.common.yml_utilities",
+          "line": 15,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/hydrodynamics/aqwa/aqwa_lis_files.py",
+          "module": "assetutilities.common.data",
+          "line": 6,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/hydrodynamics/aqwa/aqwa_lis_files.py",
+          "module": "assetutilities.common.file_management",
+          "line": 9,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/hydrodynamics/aqwa/aqwa_pre_process.py",
+          "module": "assetutilities.common.file_management",
+          "line": 2,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/hydrodynamics/aqwa/aqwa_reader.py",
+          "module": "assetutilities.common.data",
+          "line": 12,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/hydrodynamics/aqwa/aqwa_reader.py",
+          "module": "assetutilities.common.file_management",
+          "line": 13,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/hydrodynamics/aqwa/aqwa_reader.py",
+          "module": "assetutilities.common.update_deep",
+          "line": 14,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/hydrodynamics/aqwa/aqwa_reader.py",
+          "module": "assetutilities.common.data_exploration",
+          "line": 408,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/hydrodynamics/aqwa/aqwa_router.py",
+          "module": "assetutilities.common.update_deep",
+          "line": 4,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/hydrodynamics/aqwa/aqwa_utilities.py",
+          "module": "assetutilities.common.data",
+          "line": 5,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/hydrodynamics/aqwa/aqwa_utilities.py",
+          "module": "assetutilities.common.file_management",
+          "line": 17,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/hydrodynamics/passing_ship/benchmark_report.py",
+          "module": "assetutilities.units",
+          "line": 10,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/hydrodynamics/passing_ship/calculator.py",
+          "module": "assetutilities.units",
+          "line": 198,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/hydrodynamics/rao_analysis/rao_analysis.py",
+          "module": "assetutilities.common.yml_utilities",
+          "line": 7,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/hydrodynamics/rao_analysis/rao_analysis.py",
+          "module": "assetutilities.common.utilities",
+          "line": 8,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/hydrodynamics/rao_analysis/rao_analysis.py",
+          "module": "assetutilities.common.saveData",
+          "line": 9,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/signal_processing/time_series/time_series.py",
+          "module": "assetutilities.common.ApplicationManager",
+          "line": 6,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/signal_processing/time_series/time_series_analysis.py",
+          "module": "assetutilities.common.update_deep",
+          "line": 6,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/signal_processing/time_series/time_series_components.py",
+          "module": "assetutilities.common.data",
+          "line": 31,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/signal_processing/time_series/time_series_components.py",
+          "module": "assetutilities.common.data_management",
+          "line": 32,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/signal_processing/time_series/time_series_components.py",
+          "module": "assetutilities.common.utilities",
+          "line": 33,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/signal_processing/time_series/time_series_components.py",
+          "module": "assetutilities.common.visualization.visualization_templates_matplotlib",
+          "line": 34,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/signal_processing/time_series/time_series_components.py",
+          "module": "assetutilities.engine",
+          "line": 37,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "scripts/python/digitalmodel/analysis/test_file_edit.py",
+          "module": "assetutilities.engine",
+          "line": 5,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "scripts/python/digitalmodel/analysis/test_viz.py",
+          "module": "assetutilities.engine",
+          "line": 4,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/engine.py",
+          "module": "assetutilities.common.ApplicationManager",
+          "line": 1,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/engine.py",
+          "module": "assetutilities.common.data",
+          "line": 2,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/engine.py",
+          "module": "assetutilities.common.file_management",
+          "line": 3,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/engine.py",
+          "module": "assetutilities.common.update_deep",
+          "line": 4,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/engine.py",
+          "module": "assetutilities.common.yml_utilities",
+          "line": 5,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/infrastructure/base_solvers/fatigue/fatigue_analysis.py",
+          "module": "assetutilities.common.yml_utilities",
+          "line": 3,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/infrastructure/base_solvers/hydrodynamics/code_dnvrph103_hydrodynamics_circular.py",
+          "module": "assetutilities.common.data",
+          "line": 6,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/infrastructure/base_solvers/hydrodynamics/code_dnvrph103_hydrodynamics_rectangular.py",
+          "module": "assetutilities.common.data",
+          "line": 5,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/infrastructure/base_solvers/marine/pipe_properties.py",
+          "module": "assetutilities.common.update_deep",
+          "line": 5,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/infrastructure/base_solvers/marine/pipe_properties.py",
+          "module": "assetutilities.common.yml_utilities",
+          "line": 6,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/infrastructure/base_solvers/marine/ship/ship_fatigue_analysis.py",
+          "module": "assetutilities.common.utilities",
+          "line": 8,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/infrastructure/base_solvers/marine/ship/ship_fatigue_analysis.py",
+          "module": "assetutilities.common.data",
+          "line": 9,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/infrastructure/base_solvers/marine/ship/ship_fatigue_analysis.py",
+          "module": "assetutilities.engine",
+          "line": 1056,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/infrastructure/base_solvers/structural/config.py",
+          "module": "assetutilities.constants",
+          "line": 8,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/infrastructure/base_solvers/structural/fea/FEAComponents.py",
+          "module": "assetutilities.common.data",
+          "line": 5,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/infrastructure/base_solvers/structural/fea/FEAComponents.py",
+          "module": "assetutilities.common.data",
+          "line": 6,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/infrastructure/base_solvers/structural/fea/FEAComponents.py",
+          "module": "assetutilities.common.visualization_components",
+          "line": 7,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/infrastructure/base_solvers/viv/shear7_model_components.py",
+          "module": "assetutilities.common.data",
+          "line": 1,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/infrastructure/base_solvers/viv/viv_fatigue_analysis_components.py",
+          "module": "assetutilities.common.data",
+          "line": 7,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/infrastructure/base_solvers/viv/viv_fatigue_analysis_components.py",
+          "module": "assetutilities.common.data",
+          "line": 8,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/infrastructure/base_solvers/viv/viv_fatigue_analysis_components.py",
+          "module": "assetutilities.common.data",
+          "line": 9,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/infrastructure/base_solvers/viv/viv_fatigue_analysis_components.py",
+          "module": "assetutilities.common.visualizations",
+          "line": 10,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/infrastructure/calculations/plate_buckling.py",
+          "module": "assetutilities.units",
+          "line": 19,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/infrastructure/utils/engineering_units.py",
+          "module": "assetutilities.units",
+          "line": 11,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/infrastructure/utils/path_utils.py",
+          "module": "assetutilities.common.path_resolver",
+          "line": 6,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/solvers/orcaflex/all_vars.py",
+          "module": "assetutilities.common.path_resolver",
+          "line": 1,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/solvers/orcaflex/mooring.py",
+          "module": "assetutilities.common.path_resolver",
+          "line": 4,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/solvers/orcaflex/mooring.py",
+          "module": "assetutilities.common.data",
+          "line": 13,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/solvers/orcaflex/mooring.py",
+          "module": "assetutilities.common.file_management",
+          "line": 14,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/solvers/orcaflex/mooring.py",
+          "module": "assetutilities.common.utilities",
+          "line": 15,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/solvers/orcaflex/opp.py",
+          "module": "assetutilities.common.data",
+          "line": 16,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/solvers/orcaflex/opp.py",
+          "module": "assetutilities.common.update_deep",
+          "line": 20,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/solvers/orcaflex/opp.py",
+          "module": "assetutilities.common.path_resolver",
+          "line": 12,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/solvers/orcaflex/opp_summary.py",
+          "module": "assetutilities.common.data",
+          "line": 11,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/solvers/orcaflex/opp_summary_superseded.py",
+          "module": "assetutilities.common.data",
+          "line": 8,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/solvers/orcaflex/opp_visualization.py",
+          "module": "assetutilities.common.yml_utilities",
+          "line": 6,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/solvers/orcaflex/opp_visualization.py",
+          "module": "assetutilities.common.path_resolver",
+          "line": 8,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/solvers/orcaflex/umbilical_analysis_components.py",
+          "module": "assetutilities.common.data",
+          "line": 2,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/solvers/orcaflex/umbilical_installation_IV_to_host.py",
+          "module": "assetutilities.common.update_deep",
+          "line": 4,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/solvers/orcaflex/umbilical_installation_IV_to_host.py",
+          "module": "assetutilities.common.yml_utilities",
+          "line": 6,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/solvers/orcaflex/umbilical_installation_IV_to_host.py",
+          "module": "assetutilities.common.data",
+          "line": 7,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/solvers/orcaflex/umbilical_installation_IV_to_host.py",
+          "module": "assetutilities.common.utilities",
+          "line": 9,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/solvers/orcaflex/umbilical_installation_lower_2nd_end.py",
+          "module": "assetutilities.common.update_deep",
+          "line": 4,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/solvers/orcaflex/umbilical_installation_lower_2nd_end.py",
+          "module": "assetutilities.common.yml_utilities",
+          "line": 6,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/solvers/orcaflex/umbilical_installation_lower_2nd_end.py",
+          "module": "assetutilities.common.data",
+          "line": 7,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/solvers/orcaflex/umbilical_installation_lower_2nd_end.py",
+          "module": "assetutilities.common.utilities",
+          "line": 9,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/solvers/orcaflex/visualization.py",
+          "module": "assetutilities.common.path_resolver",
+          "line": 12,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/solvers/orcaflex/orcaflex_custom_analysis.py",
+          "module": "assetutilities.common.utilities",
+          "line": 18,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/solvers/orcaflex/orcaflex_custom_analysis.py",
+          "module": "assetutilities.common",
+          "line": 19,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/solvers/orcaflex/orcaflex_custom_analysis.py",
+          "module": "assetutilities.common.saveData",
+          "line": 20,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/solvers/orcaflex/orcaflex_custom_analysis.py",
+          "module": "assetutilities.common.ymlInput",
+          "line": 21,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/solvers/orcaflex/orcaflex_installation.py",
+          "module": "assetutilities.common.saveData",
+          "line": 6,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/solvers/orcaflex/orcaflex_installation.py",
+          "module": "assetutilities.common.yml_utilities",
+          "line": 7,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/solvers/orcaflex/orcaflex_installation.py",
+          "module": "assetutilities.common.utilities",
+          "line": 8,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/solvers/orcaflex/orcaflex_iterative_runs.py",
+          "module": "assetutilities.common.data",
+          "line": 13,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/solvers/orcaflex/orcaflex_linetypes.py",
+          "module": "assetutilities.common.data",
+          "line": 4,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/solvers/orcaflex/orcaflex_model_components.py",
+          "module": "assetutilities.common.data",
+          "line": 7,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/solvers/orcaflex/orcaflex_model_linesetup_wizard.py",
+          "module": "assetutilities.common.yml_utilities",
+          "line": 2,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/solvers/orcaflex/orcaflex_model_utilities.py",
+          "module": "assetutilities.common.yml_utilities",
+          "line": 3,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/solvers/orcaflex/orcaflex_utilities.py",
+          "module": "assetutilities.common.data",
+          "line": 22,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/solvers/orcaflex/orcaflex_utilities.py",
+          "module": "assetutilities.common.yml_utilities",
+          "line": 23,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/solvers/orcaflex/orcaflex_utilities.py",
+          "module": "assetutilities.modules.data_exploration.data_exploration",
+          "line": 24,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/solvers/orcaflex/orcaflex_utilities.py",
+          "module": "assetutilities.common.file_management",
+          "line": 45,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/solvers/orcaflex/preprocess/load_vessel.py",
+          "module": "assetutilities.common.utilities",
+          "line": 5,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/specialized/rigging/rigging.py",
+          "module": "assetutilities.common.data",
+          "line": 2,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/specialized/rigging/rigging_components.py",
+          "module": "assetutilities.common.data",
+          "line": 3,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/structural/pipe_capacity/custom/MaterialProperties.py",
+          "module": "assetutilities.common.update_deep",
+          "line": 6,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/structural/pipe_capacity/custom/PipeCapacity.py",
+          "module": "assetutilities.common.update_deep",
+          "line": 8,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/structural/pipe_cross_section/cli.py",
+          "module": "assetutilities.common.yml_utilities",
+          "line": 178,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/subsea/catenary_riser/legacy/orcaflexModel.py",
+          "module": "assetutilities.common.saveData",
+          "line": 10,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/subsea/pipeline/buckling_common.py",
+          "module": "assetutilities.common.visualization.visualization_templates_matplotlib",
+          "line": 6,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/subsea/pipeline/lateral_buckling.py",
+          "module": "assetutilities.common.visualization.visualization_templates_matplotlib",
+          "line": 9,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/subsea/pipeline/lateral_buckling.py",
+          "module": "assetutilities.engine",
+          "line": 12,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/subsea/pipeline/pressure_loss.py",
+          "module": "assetutilities.common.visualization.visualization_templates_matplotlib",
+          "line": 16,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/subsea/pipeline/thermal_buckling.py",
+          "module": "assetutilities.common.visualization.visualization_templates_matplotlib",
+          "line": 6,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/subsea/pipeline/upheaval_buckling.py",
+          "module": "assetutilities.common.visualization.visualization_templates_matplotlib",
+          "line": 9,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/subsea/pipeline/upheaval_buckling.py",
+          "module": "assetutilities.engine",
+          "line": 12,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/subsea/vertical_riser/vertical_riser_components.py",
+          "module": "assetutilities.common.data",
+          "line": 7,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/subsea/viv_analysis/viv_analysis_legacy.py",
+          "module": "assetutilities.common.ApplicationManager",
+          "line": 8,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/subsea/viv_analysis/viv_tubular_members.py",
+          "module": "assetutilities.common.visualization.visualization_templates_matplotlib",
+          "line": 9,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/subsea/viv_analysis/viv_tubular_members.py",
+          "module": "assetutilities.engine",
+          "line": 12,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/hydrodynamics/aqwa/aqwa_analysis_damping.py",
+          "module": "assetutilities.common.update_deep",
+          "line": 7,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/hydrodynamics/aqwa/aqwa_analysis_ef_server.py",
+          "module": "assetutilities.common.data_exploration",
+          "line": 8,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/hydrodynamics/aqwa/aqwa_analysis_ef_server.py",
+          "module": "assetutilities.common.file_management",
+          "line": 15,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/hydrodynamics/aqwa/aqwa_analysis_raos.py",
+          "module": "assetutilities.common.file_management",
+          "line": 8,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/hydrodynamics/aqwa/aqwa_analysis_raos.py",
+          "module": "assetutilities.common.update_deep",
+          "line": 9,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/hydrodynamics/aqwa/aqwa_analysis_raos.py",
+          "module": "assetutilities.common.utilities",
+          "line": 10,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/hydrodynamics/aqwa/aqwa_analysis_raos.py",
+          "module": "assetutilities.common.visualization.visualization_templates_matplotlib",
+          "line": 11,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/hydrodynamics/aqwa/aqwa_analysis_raos.py",
+          "module": "assetutilities.common.yml_utilities",
+          "line": 14,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/hydrodynamics/aqwa/aqwa_analysis_raos.py",
+          "module": "assetutilities.engine",
+          "line": 15,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/hydrodynamics/aqwa/aqwa_dat_files.py",
+          "module": "assetutilities.common.data",
+          "line": 12,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/hydrodynamics/aqwa/aqwa_dat_files.py",
+          "module": "assetutilities.common.file_management",
+          "line": 13,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/hydrodynamics/aqwa/aqwa_dat_files.py",
+          "module": "assetutilities.common.utilities",
+          "line": 14,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/hydrodynamics/aqwa/aqwa_dat_files.py",
+          "module": "assetutilities.common.yml_utilities",
+          "line": 15,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/hydrodynamics/aqwa/aqwa_lis_files.py",
+          "module": "assetutilities.common.data",
+          "line": 6,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/hydrodynamics/aqwa/aqwa_lis_files.py",
+          "module": "assetutilities.common.file_management",
+          "line": 9,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/hydrodynamics/aqwa/aqwa_pre_process.py",
+          "module": "assetutilities.common.file_management",
+          "line": 2,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/hydrodynamics/aqwa/aqwa_reader.py",
+          "module": "assetutilities.common.data",
+          "line": 12,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/hydrodynamics/aqwa/aqwa_reader.py",
+          "module": "assetutilities.common.file_management",
+          "line": 13,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/hydrodynamics/aqwa/aqwa_reader.py",
+          "module": "assetutilities.common.update_deep",
+          "line": 14,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/hydrodynamics/aqwa/aqwa_reader.py",
+          "module": "assetutilities.common.data_exploration",
+          "line": 408,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/hydrodynamics/aqwa/aqwa_router.py",
+          "module": "assetutilities.common.update_deep",
+          "line": 4,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/hydrodynamics/aqwa/aqwa_utilities.py",
+          "module": "assetutilities.common.data",
+          "line": 5,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/hydrodynamics/aqwa/aqwa_utilities.py",
+          "module": "assetutilities.common.file_management",
+          "line": 17,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/hydrodynamics/passing_ship/benchmark_report.py",
+          "module": "assetutilities.units",
+          "line": 10,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/hydrodynamics/passing_ship/calculator.py",
+          "module": "assetutilities.units",
+          "line": 198,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/hydrodynamics/rao_analysis/rao_analysis.py",
+          "module": "assetutilities.common.yml_utilities",
+          "line": 7,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/hydrodynamics/rao_analysis/rao_analysis.py",
+          "module": "assetutilities.common.utilities",
+          "line": 8,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/hydrodynamics/rao_analysis/rao_analysis.py",
+          "module": "assetutilities.common.saveData",
+          "line": 9,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/signal_processing/time_series/time_series.py",
+          "module": "assetutilities.common.ApplicationManager",
+          "line": 6,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/signal_processing/time_series/time_series_analysis.py",
+          "module": "assetutilities.common.update_deep",
+          "line": 6,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/signal_processing/time_series/time_series_components.py",
+          "module": "assetutilities.common.data",
+          "line": 31,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/signal_processing/time_series/time_series_components.py",
+          "module": "assetutilities.common.data_management",
+          "line": 32,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/signal_processing/time_series/time_series_components.py",
+          "module": "assetutilities.common.utilities",
+          "line": 33,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/signal_processing/time_series/time_series_components.py",
+          "module": "assetutilities.common.visualization.visualization_templates_matplotlib",
+          "line": 34,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "src/digitalmodel/signal_processing/time_series/time_series_components.py",
+          "module": "assetutilities.engine",
+          "line": 37,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "tests/test_engine.py",
+          "module": "assetutilities.common.update_deep",
+          "line": 91,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "tests/test_plate_buckling_units.py",
+          "module": "assetutilities.units",
+          "line": 21,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "tests/solvers/orcaflex/file_preparation/test_load_vessel_aqwa.py",
+          "module": "assetutilities.modules.test_utilities.test_utilities",
+          "line": 11,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "tests/solvers/orcaflex/mooring-tension-iteration/mooring_tension_iteration_test.py",
+          "module": "assetutilities.modules.test_utilities.test_utilities",
+          "line": 7,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "tests/structural/fatigue_analysis/test_fatigue_analysis_timetrace.py",
+          "module": "assetutilities.common.yml_utilities",
+          "line": 8,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "tests/subsea/pipeline/test_pipeline_lateral_buckling.py",
+          "module": "assetutilities.common.yml_utilities",
+          "line": 8,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "tests/subsea/pipeline/test_pipeline_pressure_loss.py",
+          "module": "assetutilities.common.yml_utilities",
+          "line": 8,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "tests/subsea/pipeline/test_pipeline_upheaval_buckling.py",
+          "module": "assetutilities.common.yml_utilities",
+          "line": 8,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "tests/hydrodynamics/passing_ship/test_wang_paper_benchmark.py",
+          "module": "assetutilities.units",
+          "line": 22,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "tests/contracts/conftest.py",
+          "module": "assetutilities",
+          "line": 7,
+          "kind": "import",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "tests/contracts/conftest.py",
+          "module": "assetutilities",
+          "line": 17,
+          "kind": "import",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "tests/contracts/test_assetutilities_common_contract.py",
+          "module": "assetutilities.common.file_management",
+          "line": 13,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "tests/contracts/test_assetutilities_common_contract.py",
+          "module": "assetutilities.common.file_management",
+          "line": 18,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "tests/contracts/test_assetutilities_common_contract.py",
+          "module": "assetutilities.common.update_deep",
+          "line": 24,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "tests/contracts/test_assetutilities_common_contract.py",
+          "module": "assetutilities.common.utilities",
+          "line": 34,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "tests/contracts/test_assetutilities_common_contract.py",
+          "module": "assetutilities.common.utilities",
+          "line": 39,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "tests/contracts/test_assetutilities_common_contract.py",
+          "module": "assetutilities",
+          "line": 7,
+          "kind": "import",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "tests/contracts/test_assetutilities_data_contract.py",
+          "module": "assetutilities.common.data",
+          "line": 14,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "tests/contracts/test_assetutilities_data_contract.py",
+          "module": "assetutilities.common.data",
+          "line": 19,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "tests/contracts/test_assetutilities_data_contract.py",
+          "module": "assetutilities.common.data",
+          "line": 26,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "tests/contracts/test_assetutilities_data_contract.py",
+          "module": "assetutilities.common.data",
+          "line": 31,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "tests/contracts/test_assetutilities_data_contract.py",
+          "module": "assetutilities.common.data",
+          "line": 38,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "tests/contracts/test_assetutilities_data_contract.py",
+          "module": "assetutilities",
+          "line": 8,
+          "kind": "import",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "tests/contracts/test_assetutilities_units_contract.py",
+          "module": "assetutilities.units.quantity",
+          "line": 17,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "tests/contracts/test_assetutilities_units_contract.py",
+          "module": "assetutilities",
+          "line": 7,
+          "kind": "import",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "tests/contracts/test_assetutilities_units_contract.py",
+          "module": "assetutilities.units.computation",
+          "line": 23,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "tests/contracts/test_assetutilities_units_contract.py",
+          "module": "assetutilities.units.exceptions",
+          "line": 31,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "tests/contracts/test_assetutilities_yml_contract.py",
+          "module": "assetutilities.common.yml_utilities",
+          "line": 13,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "tests/contracts/test_assetutilities_yml_contract.py",
+          "module": "assetutilities.common.yml_utilities",
+          "line": 18,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "tests/contracts/test_assetutilities_yml_contract.py",
+          "module": "assetutilities.common.yml_utilities",
+          "line": 24,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "tests/contracts/test_assetutilities_yml_contract.py",
+          "module": "assetutilities",
+          "line": 7,
+          "kind": "import",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "tests/contracts/test_assetutilities_yml_contract.py",
+          "module": "assetutilities.common.yml_utilities",
+          "line": 33,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        },
+        {
+          "file": "docs/domains/dom_poc_1/test_pipeline_lateral_buckling.py",
+          "module": "assetutilities.common.yml_utilities",
+          "line": 8,
+          "kind": "from",
+          "target_repo": "assetutilities"
+        }
+      ]
+    }
+  },
+  "import_graph": {
+    "digitalmodel": [
+      "assetutilities"
+    ],
+    "assetutilities": [],
+    "aceengineer-strategy": [],
+    "achantas-data": [],
+    "assethold": [
+      "assetutilities"
+    ]
+  },
+  "violations": [
+    {
+      "kind": "undeclared",
+      "source_repo": "assethold",
+      "target_repo": "assetutilities",
+      "details": "assethold imports assetutilities but does not list it in pyproject.toml dependencies",
+      "file_path": "tests/contracts/conftest.py",
+      "line_number": 7
+    }
+  ],
+  "cycles": [],
+  "stats": {
+    "repos_scanned": 5,
+    "repos_missing": 0,
+    "total_violations": 1,
+    "undeclared_count": 1,
+    "missing_count": 0,
+    "circular_count": 0,
+    "total_cross_repo_imports": 276
+  }
+}

@@ -1,0 +1,48 @@
+# user-review-plan-draft-template.yaml — Stage 5 combined-plan review evidence template
+#
+# Canonical save path: .claude/work-queue/assets/WRK-<id>/evidence/user-review-plan-draft.yaml
+# Producer: orchestrator during live Stage 5 user-interactive combined-plan review session
+# Required fields for checker gate pass: wrk_id, stage, review_checkpoint, review_cycle_id,
+#   approval_decision, approved_draft_commit, reviewed_at, reviewed_by, capture_method,
+#   generated_at_commit; plus generated_by_script when capture_method is script.
+#   Degraded mode additionally requires: approved_by, approval_scope, missing_providers.
+#
+# Decision enum (approval_decision):
+#   approve_as_is     — combined plan accepted; Stage 6 eligibility granted
+#   revise_and_rerun  — iterate from combine/rating checkpoint (no new 3-provider pass)
+#   reject            — blocks current review stage; does not auto-restart planning
+#   no_response       — remains blocked; never inferred as approval
+
+wrk_id: WRK-000
+stage: plan_draft
+review_checkpoint: combined_plan
+review_cycle_id: "stage5-YYYYMMDD"
+approval_decision: approve_as_is
+approved_draft_commit: "0000000000000000000000000000000000000000"
+reviewed_at: "2026-03-07T00:00:00Z"
+reviewed_by: user
+capture_method: manual_live_review
+generated_at_commit: "0000000000000000000000000000000000000000"
+# generated_by_script is required when capture_method is script; omit for manual capture
+# generated_by_script: scripts/work-queue/log-user-review-plan-draft.sh
+
+# Degraded-mode fields (required only when one or more providers were unavailable):
+# approved_by: user
+# approval_scope: combined_plan_with_missing_providers
+# missing_providers:
+#   - codex
+
+interactive_session: true
+tough_questions_asked:
+  - question: "What failure mode hurts users most if this plan is wrong?"
+    outcome: "Prioritized reliability checks in acceptance criteria."
+assumptions_challenged:
+  - assumption: "Dependency X is stable."
+    disposition: "Rejected"
+    note: "Added fallback path and monitoring checks."
+tradeoffs_decided:
+  - decision: "Ship narrow scope first."
+    rationale: "Lower risk and faster validation cycle."
+gatepass_section_reviewed_with_user: true
+gatepass_summary_at_review: "16 pass · 0 fail · 2 pending/warn · 1 n/a"
+notes: "Combined plan reviewed in live Stage 5 session."

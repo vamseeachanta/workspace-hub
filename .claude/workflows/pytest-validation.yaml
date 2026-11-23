@@ -1,0 +1,101 @@
+# Pytest Validation Workflow
+# Purpose: Validate pytest baseline across multiple repositories
+# Usage: ./scripts/batchtools/batch_runner.sh --parallel 5 --output-format summary < .claude/workflows/pytest-validation.yaml
+
+metadata:
+  name: pytest-validation
+  version: 1.0.0
+  created: 2026-01-14
+  description: Multi-repository pytest validation with summary aggregation
+
+config:
+  parallel_workers: 5
+  output_format: summary
+  max_summary_length: 300
+  results_dir: .claude/state/agent_results
+
+# Repository scope - which repos to validate
+scope:
+  type: config_file
+  source: config/repos.conf
+  filter:
+    - has_pytest: true
+    - tier: [1, 2, 3]
+
+# Workflow steps executed in order
+steps:
+  - name: validate-pytest-collection
+    agent: test-runner
+    description: Validate pytest can collect tests in each repository
+    parallel: true
+    per_repository: true
+    command: |
+      cd {repo_path} && pytest --collect-only -q 2>&1 | head -20
+    output_file: .claude/state/agent_results/{repo_name}_collection.json
+    success_criteria:
+      - exit_code: 0
+      - contains: "test"
+    on_failure: continue
+
+  - name: run-pytest-baseline
+    agent: test-runner
+    description: Execute pytest with baseline configuration
+    parallel: true
+    per_repository: true
+    depends_on: validate-pytest-collection
+    command: |
+      cd {repo_path} && pytest --tb=short -q 2>&1 | tail -10
+    output_file: .claude/state/agent_results/{repo_name}_baseline.json
+    timeout_seconds: 300
+    on_failure: log_and_continue
+
+  - name: aggregate-results
+    agent: aggregator
+    description: Merge all worker results into single summary
+    parallel: false
+    input_pattern: .claude/state/agent_results/*_baseline.json
+    output_file: .claude/state/aggregated_pytest_results.json
+    aggregation:
+      metrics:
+        - total_repos
+        - passed_count
+        - failed_count
+        - total_tests
+        - success_rate
+      format: summary
+
+  - name: create-checkpoint
+    agent: checkpoint-writer
+    description: Create summarization checkpoint for context management
+    parallel: false
+    depends_on: aggregate-results
+    input_file: .claude/state/aggregated_pytest_results.json
+    output_file: .claude/checkpoints/{date}-pytest-validation.md
+    template: |
+      ## Checkpoint: pytest-validation
+      **Status:** {status}
+      **Key Findings:**
+      - {passed_count}/{total_repos} repos passed (success_rate}%)
+      - {failed_count} repos need configuration fixes
+      - {total_tests} total tests discovered
+      **Files Modified:** {output_files}
+      **Next Action:** {next_action}
+      **Critical Values:** repos={total_repos}, tests={total_tests}, pass_rate={success_rate}%
+
+# Worker response contract
+worker_contract:
+  max_summary_length: 300
+  max_next_action_length: 150
+  required_fields:
+    - worker_id
+    - status
+    - summary
+    - output_file
+    - key_metrics
+
+# Error handling
+error_handling:
+  on_worker_failure: log_and_continue
+  max_retries: 1
+  retry_delay_seconds: 5
+  rollback_on_critical: false

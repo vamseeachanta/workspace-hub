@@ -1,0 +1,10 @@
+{
+  "current_week": "2026-W20",
+  "generated_at": "2026-05-12T00:00:00Z",
+  "recommended_provider_order": ["gemini", "codex", "claude"],
+  "recommendations": [
+    {"provider": "claude", "priority": "high", "status": "underused"},
+    {"provider": "codex", "priority": "highest", "status": "underused"},
+    {"provider": "gemini", "priority": "highest", "status": "underused"}
+  ]
+}

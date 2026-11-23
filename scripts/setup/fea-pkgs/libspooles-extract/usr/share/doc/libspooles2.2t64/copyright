@@ -1,0 +1,10 @@
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Contact: cleve.ashcraft@boeing.com
+Source: http://www.netlib.org/linalg/spooles
+
+Files: *
+Copyright: public domain, cleve.ashcraft@boeing.com
+License: public-domain
+ This release is entirely within the public domain;
+ there are no licensing restrictions,
+ and there is no warranty of any sort.

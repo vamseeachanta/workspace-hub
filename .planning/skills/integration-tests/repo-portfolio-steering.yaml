@@ -1,0 +1,29 @@
+version: 1
+skill_name: repo-portfolio-steering
+skill_path: .claude/skills/workspace-hub/repo-portfolio-steering/SKILL.md
+tests:
+  - test_id: repo-steer-int-01
+    description: Skill describes portfolio steering report sections
+    prompt: >
+      You have loaded the repo-portfolio-steering skill. Describe the output
+      sections of a portfolio steering report.
+    expected_patterns:
+      - "[Pp]ortfolio"
+      - "[Bb]alance"
+      - "[Rr]eport"
+    unexpected_patterns:
+      - "I don't know"
+      - "undefined"
+    timeout: 60
+  - test_id: repo-steer-int-02
+    description: Skill references the compute-balance script
+    prompt: >
+      You have loaded the repo-portfolio-steering skill. How do you run the
+      portfolio balance computation script?
+    expected_patterns:
+      - "compute-balance"
+      - "[Pp]ython"
+    unexpected_patterns:
+      - "no script"
+      - "not available"
+    timeout: 60

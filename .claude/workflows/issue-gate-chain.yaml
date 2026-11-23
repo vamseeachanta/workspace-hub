@@ -1,0 +1,51 @@
+# Issue gate-chain workflow (#3191) — provider-neutral, DATA not enforcement.
+# Encodes the mandatory lifecycle from AGENTS.md / SHARED_SOUL.md as data so any
+# provider (Claude / Codex / Gemini / Hermes) follows the same gates. Enforcement
+# stays in scripts/workflow/plan_approval_gate_check.py + completeness-gate.yml.
+kind: gated-workflow
+metadata:
+  name: issue-gate-chain
+  version: 1.0.0
+  description: Canonical issue lifecycle (issue -> plan -> USER approves -> implement(TDD) -> cross-review -> close).
+source: AGENTS.md#hard-gates   # "Issue -> Resource Intel -> Plan -> Adversarial Review -> status:plan-review -> USER APPROVES -> status:plan-approved -> Implement (TDD) -> Close"
+
+# Reference data only: the human assigns the tier at plan-review; the review depth
+# is looked up here (T1=1 / T2=2 / T3=3 providers per SHARED_SOUL Hard Gate 4).
+tiers:
+  T1: { review_providers: [claude] }
+  T2: { review_providers: [claude, codex] }
+  T3: { review_providers: [claude, codex, gemini] }
+
+gates:
+  - id: issue
+    description: Issue opened and scoped.
+  - id: resource_intel
+    description: Resource-intelligence gathering (>=3 cited sources) per the plan template.
+  - id: plan
+    status_label: status:plan-review
+    artifact: docs/plans/<date>-issue-<N>-<slug>.md
+    description: Author the plan from docs/plans/_template-issue-plan.md.
+  - id: adversarial_review_plan
+    review_depth_from: tiers
+    runner: scripts/review/plan-review-fanout.sh
+    description: Adversarial review at plan stage; default non-APPROVE.
+  - id: user_approval
+    status_label: status:plan-approved
+    actor: USER_ONLY
+    self_approve: forbidden
+    description: User-in-loop approval gate — never self-applied by an agent.
+  - id: implement
+    precondition: status:plan-approved
+    tests_before_code: true
+    description: TDD implementation; tests before code.
+  - id: adversarial_review_code
+    review_depth_from: tiers
+    runner: scripts/review/plan-review-fanout.sh
+    description: Adversarial review at code stage.
+  - id: completeness_gate
+    applies_when_label: gate:completeness
+    verifier: COMPLETENESS_OWNERS
+    description: Owner-verified completeness score before close (opt-in via the label).
+  - id: close
+    close_reason: completed
+    description: Close with a summary comment on the issue.

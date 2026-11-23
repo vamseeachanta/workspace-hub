@@ -1,0 +1,2 @@
+{"session_id": "0f8078b4-7e61-4b43-97d1-f13cfd481f56", "transcript_path": "/root/.claude/projects/-home-user-workspace-hub/0f8078b4-7e61-4b43-97d1-f13cfd481f56.jsonl", "cwd": "/home/user/workspace-hub", "permission_mode": "default", "hook_event_name": "Stop", "stop_hook_active": false, "last_assistant_message": "[REDACTED]"}
+{"ts": "2026-04-18T11:05:00Z", "event": "session_tool_summary", "session_id": "0f8078b4-7e61-4b43-97d1-f13cfd481f56", "wrk": "none", "tool_calls": 22, "edits": 0, "reads": 0}

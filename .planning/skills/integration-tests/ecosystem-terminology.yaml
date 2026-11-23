@@ -1,0 +1,16 @@
+version: 1
+skill_name: ecosystem-terminology
+skill_path: .claude/skills/workspace-hub/ecosystem-terminology/SKILL.md
+tests:
+  - test_id: eco-term-int-01
+    description: Skill provides canonical repo names and abbreviations
+    prompt: >
+      You have loaded the ecosystem-terminology skill. What is the canonical
+      name for the main workspace repository, and list 3 tier-1 repos.
+    expected_patterns:
+      - "workspace-hub"
+      - "[Tt]ier"
+    unexpected_patterns:
+      - "I don't have"
+      - "undefined"
+    timeout: 60

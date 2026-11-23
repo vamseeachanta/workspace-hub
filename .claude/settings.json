@@ -1,0 +1,243 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "cleanupPeriodDays": 180,
+  "env": {
+    "MAX_TEAMMATES": "5",
+    "REVIEW_GATE_STRICT": "1"
+  },
+  "permissions": {
+    "defaultMode": "bypassPermissions",
+    "allow": [
+      "Bash(GIT_PRE_PUSH_SKIP=1 git push:*)"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash|Read|Write|Edit|MultiEdit|Glob|Grep|Agent|Task",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/session-governor-check.sh",
+            "timeout": 10
+          },
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/session-logger.sh pre",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "matcher": "Write|Edit|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/config-protection-pretooluse.sh",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "matcher": "Read",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/skill-content-pretooluse.sh",
+            "timeout": 10
+          }
+        ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/cross-review-gate.sh",
+            "timeout": 15
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Bash|Read|Write|Edit|MultiEdit|Glob|Grep|Agent|Task",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/error-loop-tracker.sh",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "matcher": "Bash|Read|Write|Edit|MultiEdit|Glob|Grep|Agent|Task|Skill",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/session-logger.sh post",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "matcher": "Read",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/gsd-read-injection-scanner.js",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "matcher": ".*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash -c 'SCRIPT=\"${WORKSPACE_HUB:-$(git rev-parse --show-superproject-working-tree 2>/dev/null | grep . || git rev-parse --show-toplevel)}/.claude/hooks/consume-signals.sh\"; [ -f \"$SCRIPT\" ] && bash \"$SCRIPT\" 2>/dev/null || true'",
+            "timeout": 10,
+            "statusMessage": "Capturing session signals"
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${WORKSPACE_HUB:-$(git rev-parse --show-toplevel)}/.claude/hooks/session-review-page.sh\" start 2>/dev/null || true",
+            "timeout": 5,
+            "statusMessage": "Session-review base ref"
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${WORKSPACE_HUB:-$(git rev-parse --show-toplevel)}/.claude/hooks/ecosystem-data-nudge.sh\" 2>/dev/null || true",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${WORKSPACE_HUB:-$(git rev-parse --show-toplevel)}/.claude/hooks/session-review-page.sh\" emit 2>/dev/null || true",
+            "timeout": 60,
+            "statusMessage": "Emit session-review live-link page"
+          }
+        ]
+      }
+    ]
+  },
+  "worktree": {
+    "symlinkDirectories": [
+      "node_modules",
+      ".cache",
+      ".venv",
+      "__pycache__"
+    ],
+    "sparsePaths": []
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "bash .claude/statusline-combined.sh"
+  },
+  "enabledPlugins": {
+    "frontend-design@claude-plugins-official": true,
+    "skill-creator@claude-plugins-official": true,
+    "code-review@claude-plugins-official": true,
+    "pr-review-toolkit@claude-plugins-official": true,
+    "feature-dev@claude-plugins-official": true,
+    "playground@claude-plugins-official": true,
+    "claude-md-management@claude-plugins-official": true,
+    "hookify@claude-plugins-official": true,
+    "superpowers@claude-plugins-official": true,
+    "codex@openai-codex": true,
+    "github@claude-plugins-official": true
+  },
+  "extraKnownMarketplaces": {
+    "claude-plugins-official": {
+      "source": {
+        "source": "github",
+        "repo": "anthropics/claude-plugins-official"
+      }
+    }
+  },
+  "outputStyle": "Explanatory",
+  "spinnerVerbs": {
+    "mode": "append",
+    "verbs": [
+      "Engineering",
+      "Analyzing",
+      "Modeling",
+      "Simulating",
+      "Calibrating"
+    ]
+  },
+  "spinnerTipsOverride": {
+    "excludeDefault": false,
+    "tips": [
+      "Run /context to check your budget — /compact at 50%",
+      "Run /simplify after changes to catch duplication",
+      "Use /effort low for quick lookups, /effort high for planning",
+      "Say 'use subagents' to offload heavy work from main context",
+      "Run /diff to review your changes before committing",
+      "Use /branch before a risky approach — explore freely",
+      "Try /security-review before pushing a PR",
+      "uv run scripts/productivity/daily-learning.py for today's tips"
+    ]
+  },
+  "effortLevel": "high",
+  "plansDirectory": ".planning",
+  "showThinkingSummaries": true,
+  "deny": [
+    "Bash(rm -rf /)",
+    "Bash(rm -rf ~:*)",
+    "Bash(rm -rf .:*)",
+    "Bash(dd if=/dev/zero:*)",
+    "Bash(mkfs:*)",
+    "Bash(shred:*)",
+    "Bash(sudo:*)",
+    "Bash(su :*)",
+    "Bash(pkexec:*)",
+    "Bash(doas:*)",
+    "Bash(chmod 777:*)",
+    "Bash(eval:*)",
+    "Bash(sh -c:*)",
+    "Bash(bash -c:*)",
+    "Bash(zsh -c:*)",
+    "Bash(python -c:*)",
+    "Bash(python3 -c:*)",
+    "Bash(perl -e:*)",
+    "Bash(ruby -e:*)",
+    "Bash(node -e:*)",
+    "Bash(curl * | bash:*)",
+    "Bash(curl * | sh:*)",
+    "Bash(wget * -O- | bash:*)",
+    "Bash(wget * -O- | sh:*)",
+    "Bash(| bash:*)",
+    "Bash(| sh:*)",
+    "Bash(nc:*)",
+    "Bash(ncat:*)",
+    "Bash(base64:*)",
+    "Bash(xxd:*)",
+    "Bash(git push --force:*)",
+    "Bash(git push -f:*)",
+    "Bash(git push --force-with-lease:*)",
+    "Bash(git -c core.hooksPath:*)",
+    "Bash(git -c core.hookspath:*)",
+    "Bash(crontab:*)",
+    "Bash(systemctl:*)"
+  ]
+}

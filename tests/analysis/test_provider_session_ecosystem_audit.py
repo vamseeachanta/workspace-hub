@@ -1,0 +1,1976 @@
+from __future__ import annotations
+
+import importlib.util
+import json
+from pathlib import Path
+
+import pytest
+
+MODULE_PATH = Path(__file__).resolve().parents[2] / "scripts" / "analysis" / "provider_session_ecosystem_audit.py"
+spec = importlib.util.spec_from_file_location("provider_session_ecosystem_audit", MODULE_PATH)
+module = importlib.util.module_from_spec(spec)
+assert spec.loader is not None
+spec.loader.exec_module(module)
+
+
+@pytest.fixture(autouse=True)
+def isolate_audit_inputs(monkeypatch, tmp_path: Path) -> None:
+    """Keep audit tests independent of saved artifacts and network issue lookup."""
+    monkeypatch.setattr(module, "CLAUDE_PRECOMPUTED", tmp_path / "absent.json")
+    monkeypatch.setattr(module, "load_github_issue_index", lambda repo_root: [])
+
+
+def test_script_bootstraps_src_package_imports() -> None:
+    text = MODULE_PATH.read_text(encoding="utf-8")
+
+    assert 'REPO_ROOT / "src"' in text
+    assert 'sys.path.insert(0, str(SRC_ROOT))' in text
+
+
+def test_classify_read_target_for_symbolic_skill_name(tmp_path: Path) -> None:
+    normalized, scope, exists = module.classify_read_target("github-issues", tmp_path)
+
+    assert normalized == "github-issues"
+    assert scope == "symbolic"
+    assert exists is False
+
+
+def test_classify_read_target_for_repo_relative_path(tmp_path: Path) -> None:
+    target = tmp_path / "docs" / "report.md"
+    target.parent.mkdir(parents=True)
+    target.write_text("ok", encoding="utf-8", newline="\n")
+
+    normalized, scope, exists = module.classify_read_target("docs/report.md", tmp_path)
+
+    assert normalized == "docs/report.md"
+    assert scope == "repo"
+    assert exists is True
+
+
+def test_classify_read_target_expands_tilde_to_external() -> None:
+    normalized, scope, exists = module.classify_read_target("~/.hermes/config.yaml", Path("/tmp/repo"))
+
+    assert normalized.endswith("/.hermes/config.yaml")
+    assert scope == "external"
+    assert exists in {True, False}
+
+
+def test_classify_read_target_for_slash_symbolic_skill_name(tmp_path: Path) -> None:
+    normalized, scope, exists = module.classify_read_target(
+        "coordination/workspace/repo-capability-map", tmp_path
+    )
+
+    assert normalized == "coordination/workspace/repo-capability-map"
+    assert scope == "symbolic"
+    assert exists is False
+
+
+def test_classify_read_target_treats_missing_repo_path_under_existing_top_level_dir_as_repo(tmp_path: Path) -> None:
+    (tmp_path / "scripts").mkdir()
+
+    normalized, scope, exists = module.classify_read_target("scripts/hooks/post-merge", tmp_path)
+
+    assert normalized == "scripts/hooks/post-merge"
+    assert scope == "repo"
+    assert exists is False
+
+
+def test_classify_read_target_treats_hidden_repo_paths_as_repo_not_symbolic(tmp_path: Path) -> None:
+    (tmp_path / ".claude").mkdir()
+
+    normalized, scope, exists = module.classify_read_target(".claude/work-queue/WRK-149.md", tmp_path)
+
+    assert normalized == ".claude/work-queue/WRK-149.md"
+    assert scope == "repo"
+    assert exists is False
+
+
+def test_classify_read_target_marks_generated_site_examples_as_non_repo_artifact(tmp_path: Path) -> None:
+    examples = [
+        "content/demos/index.html",
+        "build.js",
+        "vercel.json",
+        "package.json",
+        "examples/demos/gtm/output/demo_02_wall_thickness_report.html",
+    ]
+
+    for example in examples:
+        normalized, scope, exists = module.classify_read_target(example, tmp_path)
+
+        assert normalized == example
+        assert scope == "non_repo_artifact"
+        assert exists is False
+
+
+def test_classify_read_target_keeps_transient_worktree_and_tmp_paths_in_external_lane(tmp_path: Path) -> None:
+    examples = [
+        "/mnt/local-analysis/worktrees/workspace-hub-2151/docs/modules/ai/readiness-evidence-bundle.schema.yaml",
+        "/tmp/pending-queue-snapshot.txt",
+    ]
+
+    for example in examples:
+        normalized, scope, exists = module.classify_read_target(example, tmp_path)
+
+        assert normalized == example
+        assert scope == "external"
+        assert exists is False
+
+
+def test_classify_read_target_uses_repo_alias_for_absolute_workspace_path(tmp_path: Path) -> None:
+    target = tmp_path / "docs" / "report.md"
+    target.parent.mkdir(parents=True)
+    target.write_text("ok", encoding="utf-8", newline="\n")
+
+    normalized, scope, exists = module.classify_read_target(
+        "/mnt/workspace-hub/docs/report.md", tmp_path
+    )
+
+    assert normalized == "docs/report.md"
+    assert scope == "repo"
+    assert exists is True
+
+
+def test_classify_read_target_normalizes_windows_workspace_path(tmp_path: Path) -> None:
+    target = tmp_path / "docs" / "report.md"
+    target.parent.mkdir(parents=True)
+    target.write_text("ok", encoding="utf-8", newline="\n")
+
+    normalized, scope, exists = module.classify_read_target(
+        r"D:\workspace-hub\docs\report.md", tmp_path
+    )
+
+    assert normalized == "docs/report.md"
+    assert scope == "repo"
+    assert exists is True
+
+
+def test_classify_read_target_normalizes_uppercase_msys_windows_workspace_path(tmp_path: Path) -> None:
+    target = tmp_path / "docs" / "report.md"
+    target.parent.mkdir(parents=True)
+    target.write_text("ok", encoding="utf-8", newline="\n")
+
+    normalized, scope, exists = module.classify_read_target(
+        "/D/workspace-hub/docs/report.md", tmp_path
+    )
+
+    assert normalized == "docs/report.md"
+    assert scope == "repo"
+    assert exists is True
+
+
+def test_normalize_cmd_decodes_codex_spaced_command() -> None:
+    raw = " p y t h o n 3   - c   \" p r i n t ( 1 ) \" "
+
+    assert module.normalize_cmd("codex", raw) == 'python3 -c "print(1)"'
+
+
+def test_normalize_cmd_preserves_shell_separators_for_codex() -> None:
+    raw = " g i t   s t a t u s   & &   p w d   |   s e d   - n   ' 1 p '   2 > / d e v / n u l l "
+
+    assert module.normalize_cmd("codex", raw) == "git status && pwd | sed -n '1p' 2>/dev/null"
+
+
+def test_normalize_cmd_leaves_regular_codex_command_unchanged() -> None:
+    raw = "git status --short"
+
+    assert module.normalize_cmd("codex", raw) == "git status --short"
+
+
+def test_cleanup_bash_command_drops_comments_and_cd_wrapper() -> None:
+    raw = "# comment\ncd /tmp/repo && uv run --no-project python tool.py\n"
+
+    assert module.cleanup_bash_command(raw) == "uv run --no-project python tool.py"
+
+
+def test_normalize_command_to_prefix_uses_multiword_prefix() -> None:
+    assert module.normalize_command_to_prefix(
+        "cd /tmp/repo && uv run --no-project python tool.py", cleanup=True
+    ) == "uv run"
+
+
+def test_cleanup_bash_command_strips_env_prefixed_command() -> None:
+    raw = "cd /tmp/repo && GIT_PAGER=cat git status --short\n"
+
+    assert module.cleanup_bash_command(raw) == "git status --short"
+
+
+def test_summarize_raw_provider_tracks_symbolic_and_python3(tmp_path: Path) -> None:
+    repo_root = tmp_path / "repo"
+    logs_dir = repo_root / "logs" / "orchestrator" / "hermes"
+    logs_dir.mkdir(parents=True)
+    existing = repo_root / "docs" / "keep.md"
+    existing.parent.mkdir(parents=True)
+    existing.write_text("hi", encoding="utf-8", newline="\n")
+
+    records = [
+        {"hook": "post", "tool": "Read", "file": "github-issues", "repo": "workspace-hub"},
+        {"hook": "post", "tool": "Read", "file": "github://vamseeachanta/workspace-hub/issues/2249", "repo": "workspace-hub"},
+        {"hook": "post", "tool": "Read", "file": "docs/keep.md", "repo": "workspace-hub"},
+        {"hook": "post", "tool": "Read", "file": "docs/missing.md", "repo": "workspace-hub"},
+        {"hook": "post", "tool": "Read", "file": "digitalmodel/specs/module-registry.yaml", "repo": "workspace-hub"},
+        {"hook": "post", "tool": "Bash", "cmd": "python3 -c \"print(1)\"", "repo": "workspace-hub"},
+        {"hook": "pre", "tool": "Read", "file": "docs/missing.md", "repo": "workspace-hub"},
+    ]
+    (logs_dir / "session_20260410.jsonl").write_text(
+        "\n".join(json.dumps(r) for r in records), encoding="utf-8", newline="\n"
+    )
+
+    summary = module.summarize_raw_provider("hermes", logs_dir, repo_root)
+
+    assert summary["sessions"] == 1
+    assert summary["post_records"] == 6
+    assert summary["python3_bash_calls"] == 1
+    assert summary["top_symbolic_reads"][0]["name"] == "github-issues"
+    assert summary["top_missing_repo_reads"][0]["path"] == "docs/missing.md"
+    assert summary["top_reads"][0]["path"] == "docs/keep.md"
+
+
+def test_summarize_raw_provider_treats_skill_view_reads_as_symbolic(tmp_path: Path) -> None:
+    repo_root = tmp_path / "repo"
+    logs_dir = repo_root / "logs" / "orchestrator" / "hermes"
+    logs_dir.mkdir(parents=True)
+    records = [
+        {
+            "hook": "post",
+            "tool": "Read",
+            "file": "gh-work-planning",
+            "repo": "workspace-hub",
+            "hermes_tool": "skill_view",
+        }
+    ]
+    (logs_dir / "session_20260410.jsonl").write_text(
+        "\n".join(json.dumps(r) for r in records), encoding="utf-8", newline="\n"
+    )
+
+    summary = module.summarize_raw_provider("hermes", logs_dir, repo_root)
+
+    assert summary["top_symbolic_reads"][0]["name"] == "gh-work-planning"
+    assert summary["top_missing_repo_reads"] == []
+
+
+def test_summarize_raw_provider_excludes_non_repo_artifact_reads_from_missing_repo_counts(tmp_path: Path) -> None:
+    repo_root = tmp_path / "repo"
+    logs_dir = repo_root / "logs" / "orchestrator" / "codex"
+    logs_dir.mkdir(parents=True)
+    records = [
+        {"hook": "post", "tool": "Read", "file": "content/demos/index.html", "repo": "workspace-hub"},
+        {"hook": "post", "tool": "Read", "file": "content/demos/index.html", "repo": "workspace-hub"},
+        {"hook": "post", "tool": "Read", "file": "build.js", "repo": "workspace-hub"},
+        {"hook": "post", "tool": "Read", "file": "docs/missing.md", "repo": "workspace-hub"},
+        {"hook": "post", "tool": "Read", "file": "docs/missing.md", "repo": "workspace-hub"},
+        {"hook": "post", "tool": "Read", "file": "docs/missing.md", "repo": "workspace-hub"},
+        {"hook": "post", "tool": "Read", "file": "github://vamseeachanta/workspace-hub/issues/2249", "repo": "workspace-hub"},
+        {"hook": "post", "tool": "Read", "file": "digitalmodel/specs/module-registry.yaml", "repo": "workspace-hub"},
+    ]
+    (logs_dir / "session_20260410.jsonl").write_text(
+        "\n".join(json.dumps(r) for r in records), encoding="utf-8", newline="\n"
+    )
+
+    summary = module.summarize_raw_provider("codex", logs_dir, repo_root)
+
+    assert summary["missing_repo_reads"] == 3
+    assert summary["top_missing_repo_reads"] == [{"path": "docs/missing.md", "count": 3}]
+    assert summary["non_repo_artifact_read_total"] == 3
+    assert summary["top_non_repo_artifact_reads"] == [
+        {"path": "content/demos/index.html", "count": 2},
+        {"path": "build.js", "count": 1},
+    ]
+    assert summary["top_symbolic_reads"] == [
+        {"name": "github://vamseeachanta/workspace-hub/issues/2249", "count": 1}
+    ]
+    assert summary["top_sibling_repo_reads"] == [
+        {"path": "digitalmodel/specs/module-registry.yaml", "count": 1}
+    ]
+
+
+def test_build_provider_audit_handles_missing_provider_dirs(tmp_path: Path) -> None:
+    repo_root = tmp_path / "repo"
+    repo_root.mkdir()
+    logs_root = repo_root / "logs" / "orchestrator"
+    logs_root.mkdir(parents=True)
+
+    audit = module.build_provider_audit(repo_root=repo_root, logs_root=logs_root)
+
+    assert audit["providers"]["codex"]["source"] == "missing_log_directory"
+    assert audit["providers"]["gemini"]["source"] == "missing_log_directory"
+
+
+def test_build_provider_audit_prefers_raw_claude_logs_when_present(tmp_path: Path) -> None:
+    repo_root = tmp_path / "repo"
+    logs_root = repo_root / "logs" / "orchestrator"
+    claude_dir = logs_root / "claude"
+    claude_dir.mkdir(parents=True)
+    records = [{"hook": "post", "tool": "Bash", "cmd": "python3 -c \"print(1)\"", "repo": "workspace-hub"}]
+    (claude_dir / "session_20260410.jsonl").write_text(
+        "\n".join(json.dumps(r) for r in records), encoding="utf-8", newline="\n"
+    )
+
+    audit = module.build_provider_audit(repo_root=repo_root, logs_root=logs_root)
+
+    assert audit["providers"]["claude"]["source"] == "raw_logs"
+    assert audit["providers"]["claude"]["post_records"] == 1
+    assert audit["executive_summary"]["recent_activity_since_previous_audit"]["status"] == "no_prior_audit"
+
+
+def test_build_provider_audit_includes_recent_activity_since_previous_audit(tmp_path: Path) -> None:
+    repo_root = tmp_path / "repo"
+    logs_root = repo_root / "logs" / "orchestrator"
+    claude_dir = logs_root / "claude"
+    claude_dir.mkdir(parents=True)
+    analysis_dir = repo_root / "analysis"
+    analysis_dir.mkdir(parents=True)
+    (analysis_dir / "provider-session-ecosystem-audit.json").write_text(
+        json.dumps({"generated_at": "2026-04-10T00:00:00Z"}),
+        encoding="utf-8", newline="\n",
+    )
+    records = [
+        {
+            "hook": "post",
+            "tool": "Bash",
+            "cmd": "git status --short",
+            "repo": "workspace-hub",
+            "ts": "2026-04-10T01:00:00Z",
+            "session_id": "claude-1",
+        },
+        {
+            "hook": "post",
+            "tool": "Read",
+            "file": "docs/missing.md",
+            "repo": "workspace-hub",
+            "ts": "2026-04-10T02:00:00Z",
+            "session_id": "claude-1",
+        },
+        {
+            "hook": "post",
+            "tool": "Write",
+            "file": "docs/new.md",
+            "repo": "workspace-hub",
+            "ts": "2026-04-10T02:30:00Z",
+            "session_id": "claude-1",
+        },
+        {
+            "hook": "post",
+            "tool": "Edit",
+            "file": "tests/test_new.py",
+            "repo": "workspace-hub",
+            "ts": "2026-04-10T02:45:00Z",
+            "session_id": "claude-1",
+        },
+        {
+            "hook": "post",
+            "tool": "Read",
+            "file": "digitalmodel/specs/module-registry.yaml",
+            "repo": "workspace-hub",
+            "ts": "2026-04-10T02:50:00Z",
+            "session_id": "claude-1",
+        },
+    ]
+    (claude_dir / "session_20260410.jsonl").write_text(
+        "\n".join(json.dumps(r) for r in records), encoding="utf-8", newline="\n"
+    )
+
+    audit = module.build_provider_audit(repo_root=repo_root, logs_root=logs_root)
+
+    recent = audit["executive_summary"]["recent_activity_since_previous_audit"]
+    assert recent["status"] == "ok"
+    assert recent["previous_generated_at"] == "2026-04-10T00:00:00Z"
+    assert recent["providers"]["claude"]["post_records"] == 5
+    assert recent["providers"]["claude"]["sessions"] == 1
+    assert recent["providers"]["claude"]["top_bash_command_families"][0]["prefix"] == "git status"
+    assert recent["providers"]["claude"]["top_reads"][0]["path"] == "docs/missing.md"
+    assert recent["providers"]["claude"]["top_writes"][0]["path"] == "docs/new.md"
+    assert recent["providers"]["claude"]["top_edits"][0]["path"] == "tests/test_new.py"
+    assert recent["providers"]["claude"]["top_missing_repo_reads"][0]["path"] == "docs/missing.md"
+
+    windows = audit["executive_summary"]["recent_activity_windows"]
+    assert windows["status"] == "ok"
+    assert windows["generated_at"] == audit["generated_at"]
+    assert "last_24h" in windows["windows"]
+    assert "last_7d" in windows["windows"]
+
+
+def test_build_activity_window_summary_includes_last_24h_and_last_7d(tmp_path: Path) -> None:
+    repo_root = tmp_path / "repo"
+    logs_root = repo_root / "logs" / "orchestrator"
+    claude_dir = logs_root / "claude"
+    claude_dir.mkdir(parents=True)
+    records = [
+        {
+            "hook": "post",
+            "tool": "Bash",
+            "cmd": "git status --short",
+            "repo": "workspace-hub",
+            "ts": "2026-04-09T12:00:00Z",
+            "session_id": "claude-1",
+        },
+        {
+            "hook": "post",
+            "tool": "Read",
+            "file": "docs/missing.md",
+            "repo": "workspace-hub",
+            "ts": "2026-04-08T12:00:00Z",
+            "session_id": "claude-2",
+        },
+        {
+            "hook": "post",
+            "tool": "Write",
+            "file": "docs/generated.md",
+            "repo": "workspace-hub",
+            "ts": "2026-04-09T06:00:00Z",
+            "session_id": "claude-1",
+        },
+        {
+            "hook": "post",
+            "tool": "Edit",
+            "file": "tests/test_generated.py",
+            "repo": "workspace-hub",
+            "ts": "2026-04-08T18:00:00Z",
+            "session_id": "claude-2",
+        },
+        {
+            "hook": "post",
+            "tool": "Read",
+            "file": "digitalmodel/specs/module-registry.yaml",
+            "repo": "workspace-hub",
+            "ts": "2026-04-09T08:00:00Z",
+            "session_id": "claude-1",
+        },
+    ]
+    (claude_dir / "session_20260410.jsonl").write_text(
+        "\n".join(json.dumps(r) for r in records), encoding="utf-8", newline="\n"
+    )
+
+    provider_summaries = {
+        "claude": {"source": "raw_logs"},
+        "codex": {"source": "missing_log_directory"},
+        "hermes": {"source": "missing_log_directory"},
+        "gemini": {"source": "missing_log_directory"},
+    }
+
+    windows = module.build_activity_window_summary(
+        provider_summaries,
+        logs_root,
+        repo_root,
+        generated_at="2026-04-10T00:00:00Z",
+    )
+
+    assert windows["status"] == "ok"
+    assert windows["windows"]["last_24h"]["providers"]["claude"]["post_records"] == 3
+    assert windows["windows"]["last_24h"]["providers"]["claude"]["sessions"] == 1
+    assert windows["windows"]["last_24h"]["providers"]["claude"]["top_writes"][0]["path"] == "docs/generated.md"
+    assert windows["windows"]["last_24h"]["ranked_providers"][0]["provider"] == "claude"
+    assert windows["windows"]["last_7d"]["providers"]["claude"]["post_records"] == 5
+    assert windows["windows"]["last_7d"]["providers"]["claude"]["top_edits"][0]["path"] == "tests/test_generated.py"
+    assert windows["windows"]["last_7d"]["providers"]["claude"]["top_missing_repo_reads"][0]["path"] == "docs/missing.md"
+
+
+
+def test_build_corpus_change_summary_separates_snapshot_and_event_time_deltas() -> None:
+    provider_summaries = {
+        "codex": {"source": "raw_logs", "post_records": 80, "sessions": 5, "missing_repo_reads": 1},
+        "claude": {"source": "raw_logs", "post_records": 110, "sessions": 3, "missing_repo_reads": 2},
+    }
+    previous_audit = {
+        "generated_at": "2026-04-10T00:00:00Z",
+        "providers": {
+            "codex": {"source": "raw_logs", "post_records": 100, "sessions": 7, "missing_repo_reads": 4},
+            "claude": {"source": "raw_logs", "post_records": 100, "sessions": 2, "missing_repo_reads": 1},
+        },
+    }
+    recent_activity = {
+        "providers": {
+            "codex": {"post_records": 6, "sessions": 1},
+            "claude": {"post_records": 10, "sessions": 1},
+        }
+    }
+
+    summary = module.build_corpus_change_summary(provider_summaries, previous_audit, recent_activity)
+
+    assert summary["status"] == "ok"
+    assert summary["providers"]["codex"]["reconciliation_gap_post_records"] == -26
+    assert summary["providers"]["codex"]["status"] == "corpus_pruned_or_rebuilt"
+    assert summary["providers"]["claude"]["reconciliation_gap_post_records"] == 0
+    assert summary["providers"]["claude"]["status"] == "aligned"
+    assert summary["largest_negative_reconciliation_gap_provider"] == "codex"
+
+
+def test_build_provider_interpretation_summary_derives_statuses() -> None:
+    provider_summaries = {
+        "claude": {"missing_repo_reads": 5, "python3_per_1k_records": 2.0, "uv_python_per_1k_records": 8.0, "post_records": 100},
+        "codex": {"missing_repo_reads": 0, "python3_per_1k_records": 10.0, "uv_python_per_1k_records": 1.0, "post_records": 100},
+    }
+    migration_debt = {
+        "ranked_providers": [
+            {
+                "provider": "claude",
+                "known_migration_debt_reads": 50,
+                "known_migration_debt_per_1k_records": 12.5,
+                "top_migration_rule_id": "legacy_work_queue_transition",
+            },
+            {
+                "provider": "codex",
+                "known_migration_debt_reads": 0,
+                "known_migration_debt_per_1k_records": 0.0,
+            },
+        ]
+    }
+    recent_activity = {
+        "status": "ok",
+        "providers": {
+            "claude": {"post_records": 150, "sessions": 4},
+            "codex": {"post_records": 0, "sessions": 0},
+        },
+    }
+    corpus_change = {
+        "status": "ok",
+        "providers": {
+            "claude": {"status": "aligned"},
+            "codex": {"status": "corpus_pruned_or_rebuilt"},
+        },
+    }
+
+    rolling_windows = {
+        "status": "ok",
+        "windows": {
+            "last_24h": {"providers": {"claude": {"post_records": 120, "sessions": 4}, "codex": {"post_records": 0, "sessions": 0}}},
+            "last_7d": {"providers": {"claude": {"post_records": 240, "sessions": 8}, "codex": {"post_records": 5, "sessions": 1}}},
+        },
+    }
+
+    summary = module.build_provider_interpretation_summary(
+        provider_summaries, migration_debt, recent_activity, corpus_change, previous_audit=None, rolling_windows=rolling_windows
+    )
+
+    rows = {row["provider"]: row for row in summary["providers"]}
+    assert summary["providers"][0]["provider"] == "claude"
+    assert rows["claude"]["activity_status"] == "active"
+    assert rows["claude"]["debt_status"] == "high_debt"
+    assert rows["claude"]["python_hygiene_status"] == "uv_preferred"
+    assert rows["claude"]["primary_issue"] == "legacy_work_queue_transition"
+    assert rows["claude"]["urgency_tier"] == "next_up"
+    assert rows["claude"]["health_status"] == "red"
+    assert rows["claude"]["activity_window_profile"] == "burst_active"
+    assert rows["claude"]["last_24h_post_records"] == 120
+    assert rows["claude"]["last_7d_post_records"] == 240
+    assert rows["claude"]["urgency_rank"] == 1
+    assert rows["claude"]["previous_urgency_rank"] is None
+    assert rows["claude"]["urgency_rank_direction"] == "new"
+    assert rows["claude"]["urgency_movement_summary"] == "new to ranked urgency summary since the previous audit"
+    assert rows["claude"]["debt_trend"] == "unavailable"
+    assert rows["claude"]["drift_trend"] == "unavailable"
+    assert rows["claude"]["python_hygiene_trend"] == "unavailable"
+    assert rows["claude"]["activity_trend"] == "unavailable"
+    assert rows["claude"]["urgency_score"] > rows["codex"]["urgency_score"]
+    assert rows["codex"]["activity_status"] == "idle"
+    assert rows["codex"]["corpus_status"] == "corpus_pruned_or_rebuilt"
+    assert rows["codex"]["debt_status"] == "none"
+    assert rows["codex"]["urgency_tier"] == "investigate"
+    assert rows["codex"]["health_status"] == "yellow"
+    assert rows["codex"]["activity_window_profile"] == "light_recent"
+    assert rows["codex"]["python_hygiene_status"] == "python3_heavy"
+    assert summary["focus_this_week"].startswith("Focus this week: prioritize legacy-path redirect cleanup")
+    assert summary["recommended_actions"][0]["provider"] == "claude"
+    assert summary["recommended_actions"][0]["urgency_tier"] == "next_up"
+    assert summary["recommended_actions"][0]["health_status"] == "red"
+    assert summary["rank_movements"][0]["provider"] == "claude"
+    assert summary["health_overview"][0]["provider"] == "claude"
+    assert summary["watchlist"][0]["provider"] == "claude"
+    assert summary["watchlist"][0]["trigger_level"] == "act_this_week"
+    assert summary["change_alerts"] == []
+    assert summary["remediation_playbooks"][0]["provider"] == "claude"
+    assert summary["remediation_playbooks"][0]["primary_issue"] == "legacy_work_queue_transition"
+    assert "docs/governance/SESSION-GOVERNANCE.md" in summary["remediation_playbooks"][0]["canonical_targets"]
+    assert summary["remediation_playbooks"][0]["owner_team"] == "governance-maintainers"
+    assert summary["remediation_playbooks"][0]["preferred_fix_lane"] == "governance-docs"
+    assert summary["followup_issue_drafts"][0]["provider"] == "claude"
+    assert summary["followup_issue_drafts"][0]["severity"] == "high"
+    assert summary["followup_issue_drafts"][0]["draft_key"]
+    assert summary["followup_issue_drafts"][0]["dedupe_scope"] == "claude:legacy_work_queue_transition:governance-docs"
+    assert summary["followup_issue_drafts"][0]["draft_state"] == "new"
+    assert summary["followup_issue_drafts"][0]["minimum_evidence_present"] is True
+    assert summary["followup_issue_drafts"][0]["should_open_issue"] is True
+    assert summary["followup_issue_drafts"][0]["issue_open_reason"] == "new actionable draft with minimum evidence present"
+    assert summary["followup_issue_drafts"][0]["blocker_reason"] is None
+    assert summary["issue_posting_readiness"][0]["provider"] == "claude"
+    assert summary["issue_posting_readiness"][0]["linked_issue_number"] is None
+    assert summary["issue_posting_readiness"][0]["linked_issue_state"] is None
+    assert summary["issue_posting_readiness"][0]["linkage_confidence"] == "none"
+    assert summary["issue_posting_readiness"][0]["should_open_issue"] is True
+    assert summary["issue_posting_readiness"][0]["should_open_issue_final"] is True
+    assert summary["issue_posting_readiness"][0]["final_posting_status"] == "ready"
+    assert summary["cleared_followup_issue_drafts"] == []
+
+
+
+def test_build_provider_audit_exposes_executive_actions_block(tmp_path: Path) -> None:
+    repo_root = tmp_path / "repo"
+    logs_root = repo_root / "logs" / "orchestrator"
+    claude_dir = logs_root / "claude"
+    claude_dir.mkdir(parents=True)
+    records = [
+        {
+            "hook": "post",
+            "tool": "Bash",
+            "cmd": "uv run --no-project python tool.py",
+            "repo": "workspace-hub",
+            "session_id": "claude-1",
+            "ts": "2026-04-10T01:00:00Z",
+        }
+    ]
+    (claude_dir / "session_20260410.jsonl").write_text(
+        "\n".join(json.dumps(r) for r in records), encoding="utf-8", newline="\n"
+    )
+    analysis_dir = repo_root / "analysis"
+    analysis_dir.mkdir(parents=True)
+    (analysis_dir / "provider-session-ecosystem-audit.json").write_text(
+        json.dumps({"generated_at": "2026-04-10T00:00:00Z", "providers": {"claude": {"post_records": 0, "sessions": 0, "missing_repo_reads": 0, "source": "raw_logs"}}}),
+        encoding="utf-8", newline="\n",
+    )
+
+    audit = module.build_provider_audit(repo_root=repo_root, logs_root=logs_root)
+
+    executive_actions = audit["executive_summary"]["executive_actions"]
+    assert "focus_this_week" in executive_actions
+    assert "recommended_actions" in executive_actions
+    assert "rank_movements" in executive_actions
+    assert "health_overview" in executive_actions
+    assert "watchlist" in executive_actions
+    assert "change_alerts" in executive_actions
+    assert "remediation_playbooks" in executive_actions
+    assert "followup_issue_drafts" in executive_actions
+    assert "issue_posting_readiness" in executive_actions
+    assert "cleared_followup_issue_drafts" in executive_actions
+    assert executive_actions["focus_this_week"] == audit["executive_summary"]["provider_interpretation_summary"]["focus_this_week"]
+    assert executive_actions["recommended_actions"] == audit["executive_summary"]["provider_interpretation_summary"]["recommended_actions"]
+    assert executive_actions["rank_movements"] == audit["executive_summary"]["provider_interpretation_summary"]["rank_movements"]
+    assert executive_actions["health_overview"] == audit["executive_summary"]["provider_interpretation_summary"]["health_overview"]
+    assert executive_actions["watchlist"] == audit["executive_summary"]["provider_interpretation_summary"]["watchlist"]
+    assert executive_actions["change_alerts"] == audit["executive_summary"]["provider_interpretation_summary"]["change_alerts"]
+    assert executive_actions["remediation_playbooks"] == audit["executive_summary"]["provider_interpretation_summary"]["remediation_playbooks"]
+    assert executive_actions["followup_issue_drafts"] == audit["executive_summary"]["provider_interpretation_summary"]["followup_issue_drafts"]
+    assert executive_actions["issue_posting_readiness"] == audit["executive_summary"]["provider_interpretation_summary"]["issue_posting_readiness"]
+    assert executive_actions["cleared_followup_issue_drafts"] == audit["executive_summary"]["provider_interpretation_summary"]["cleared_followup_issue_drafts"]
+
+
+
+def test_build_provider_interpretation_summary_derives_trend_directions_from_previous_audit() -> None:
+    provider_summaries = {
+        "claude": {
+            "missing_repo_reads": 4,
+            "python3_per_1k_records": 2.0,
+            "uv_python_per_1k_records": 8.0,
+            "post_records": 100,
+        }
+    }
+    migration_debt = {
+        "ranked_providers": [
+            {
+                "provider": "claude",
+                "known_migration_debt_reads": 30,
+                "known_migration_debt_per_1k_records": 8.0,
+                "top_migration_rule_id": "legacy_work_queue_transition",
+            }
+        ]
+    }
+    recent_activity = {
+        "status": "ok",
+        "providers": {"claude": {"post_records": 120, "sessions": 3}},
+    }
+    corpus_change = {
+        "status": "ok",
+        "providers": {"claude": {"status": "aligned"}},
+    }
+    previous_audit = {
+        "providers": {
+            "claude": {
+                "post_records": 100,
+                "missing_repo_reads": 6,
+                "python3_per_1k_records": 6.0,
+                "uv_python_per_1k_records": 6.0,
+            }
+        },
+        "executive_summary": {
+            "migration_debt": {
+                "ranked_providers": [
+                    {
+                        "provider": "claude",
+                        "known_migration_debt_per_1k_records": 12.0,
+                    }
+                ]
+            },
+            "recent_activity_since_previous_audit": {
+                "status": "ok",
+                "providers": {"claude": {"post_records": 20, "sessions": 1}},
+            },
+        },
+    }
+    rolling_windows = {
+        "status": "ok",
+        "windows": {
+            "last_24h": {"providers": {"claude": {"post_records": 120, "sessions": 3}}},
+            "last_7d": {"providers": {"claude": {"post_records": 700, "sessions": 9}}},
+        },
+    }
+
+    summary = module.build_provider_interpretation_summary(
+        provider_summaries, migration_debt, recent_activity, corpus_change, previous_audit, rolling_windows
+    )
+
+    row = summary["providers"][0]
+    assert row["debt_trend"] == "improving"
+    assert row["drift_trend"] == "improving"
+    assert row["python_hygiene_trend"] == "improving"
+    assert row["activity_trend"] == "increasing"
+    assert row["health_status"] == "red"
+    assert row["activity_window_profile"] == "sustained_background"
+
+
+def test_build_change_alerts_detects_escalations_and_clears() -> None:
+    rows = [
+        {
+            "provider": "claude",
+            "health_status": "red",
+            "urgency_tier": "urgent_now",
+            "urgency_rank": 1,
+            "recommended_action": "fix claude",
+        },
+        {
+            "provider": "codex",
+            "health_status": "green",
+            "urgency_tier": "monitor",
+            "urgency_rank": 3,
+            "recommended_action": "monitor codex",
+        },
+    ]
+    watchlist = [
+        {
+            "provider": "claude",
+            "trigger_level": "page",
+            "suggested_followup": "Escalate immediately on claude",
+        },
+        {
+            "provider": "codex",
+            "trigger_level": "monitor",
+            "suggested_followup": "Monitor codex",
+        },
+    ]
+    previous_audit = {
+        "executive_summary": {
+            "provider_interpretation_summary": {
+                "providers": [
+                    {"provider": "claude", "health_status": "yellow", "urgency_rank": 2},
+                    {"provider": "codex", "health_status": "yellow", "urgency_rank": 3},
+                ],
+                "watchlist": [
+                    {"provider": "claude", "trigger_level": "investigate"},
+                    {"provider": "codex", "trigger_level": "investigate"},
+                ],
+            }
+        }
+    }
+
+    alerts = module.build_change_alerts(rows, watchlist, previous_audit)
+
+    assert alerts[0]["provider"] == "claude"
+    assert alerts[0]["change_type"] == "trigger_escalated"
+    assert alerts[1]["provider"] == "codex"
+    assert alerts[1]["change_type"] == "cleared_watchlist"
+
+
+
+def test_build_remediation_playbooks_uses_rule_hints_and_generic_fallbacks() -> None:
+    provider_summaries = {
+        "claude": {
+            "missing_repo_read_remediation_hints": [
+                {
+                    "rule_id": "legacy_work_queue_transition",
+                    "matched_paths": [{"path": "scripts/work-queue/start_stage.py", "count": 4}],
+                    "canonical_targets": ["docs/governance/SESSION-GOVERNANCE.md"],
+                    "guidance": "Redirect callers to governance docs/hooks.",
+                    "reference_doc": "docs/ops/legacy-claude-reference-map.md",
+                }
+            ]
+        },
+        "codex": {"missing_repo_read_remediation_hints": []},
+    }
+    rows = [
+        {"provider": "claude", "primary_issue": "legacy_work_queue_transition"},
+        {"provider": "codex", "primary_issue": "unmapped path drift"},
+    ]
+    watchlist = [
+        {"provider": "claude", "trigger_level": "act_this_week"},
+        {"provider": "codex", "trigger_level": "investigate"},
+    ]
+
+    playbooks = module.build_remediation_playbooks(provider_summaries, rows, watchlist)
+    by_provider = {item["provider"]: item for item in playbooks}
+
+    assert by_provider["claude"]["inspect_paths"] == ["scripts/work-queue/start_stage.py"]
+    assert by_provider["claude"]["canonical_targets"] == ["docs/governance/SESSION-GOVERNANCE.md"]
+    assert by_provider["claude"]["first_steps"][0].startswith("Inspect the top matched stale paths for legacy_work_queue_transition")
+    assert by_provider["claude"]["owner_team"] == "governance-maintainers"
+    assert by_provider["claude"]["preferred_fix_lane"] == "governance-docs"
+    assert by_provider["codex"]["inspect_paths"][0] == "analysis/provider-session-ecosystem-audit.json"
+    assert by_provider["codex"]["trigger_level"] == "investigate"
+    assert by_provider["codex"]["owner_team"] == "drift-triage"
+
+
+
+def test_build_followup_issue_drafts_skips_monitor_and_assigns_draft_state() -> None:
+    rows = [
+        {
+            "provider": "claude",
+            "health_status": "red",
+            "urgency_tier": "next_up",
+            "primary_issue": "legacy_work_queue_transition",
+        },
+        {
+            "provider": "hermes",
+            "health_status": "green",
+            "urgency_tier": "monitor",
+            "primary_issue": "no acute anomaly",
+        },
+    ]
+    watchlist = [
+        {
+            "provider": "claude",
+            "trigger_level": "act_this_week",
+            "trigger_reason": "red health due to legacy_work_queue_transition",
+            "suggested_followup": "Prioritize this week on claude",
+        },
+        {
+            "provider": "hermes",
+            "trigger_level": "monitor",
+            "trigger_reason": "green",
+            "suggested_followup": "Monitor hermes",
+        },
+    ]
+    remediation_playbooks = [
+        {
+            "provider": "claude",
+            "severity": "high",
+            "owner_team": "governance-maintainers",
+            "preferred_fix_lane": "governance-docs",
+            "owner_surface": "docs/governance/SESSION-GOVERNANCE.md",
+            "inspect_paths": ["scripts/work-queue/start_stage.py"],
+            "canonical_targets": ["docs/governance/SESSION-GOVERNANCE.md"],
+            "first_steps": ["Inspect stale paths"],
+            "guidance": "Redirect callers.",
+            "reference_doc": "docs/ops/legacy-claude-reference-map.md",
+        }
+    ]
+    previous_audit = {
+        "executive_summary": {
+            "provider_interpretation_summary": {
+                "followup_issue_drafts": [
+                    {
+                        "provider": "claude",
+                        "draft_key": "differentprevious",
+                        "title": "old title",
+                        "severity": "medium",
+                        "owner_team": "old-team",
+                    },
+                    {
+                        "provider": "gemini",
+                        "draft_key": "oldgeminikey",
+                        "title": "old gemini issue",
+                        "severity": "high",
+                        "owner_team": "planning-ops",
+                    }
+                ]
+            }
+        }
+    }
+
+    drafts = module.build_followup_issue_drafts(rows, watchlist, remediation_playbooks, previous_audit)
+    cleared = module.build_cleared_followup_issue_drafts(drafts, previous_audit)
+
+    assert len(drafts) == 1
+    assert drafts[0]["provider"] == "claude"
+    assert drafts[0]["title"] == "[high] claude: remediate legacy_work_queue_transition"
+    assert drafts[0]["owner_team"] == "governance-maintainers"
+    assert "Inspect paths:" in drafts[0]["body"]
+    assert drafts[0]["draft_key"]
+    assert drafts[0]["dedupe_scope"] == "claude:legacy_work_queue_transition:governance-docs"
+    assert drafts[0]["linkage_key"] == "claude:legacy_work_queue_transition:high:governance-docs"
+    assert drafts[0]["title"] in drafts[0]["linkage_aliases"]
+    assert "claude: remediate legacy_work_queue_transition" in drafts[0]["linkage_aliases"]
+    assert drafts[0]["duplicate_of_previous_draft_key"] is None
+    assert drafts[0]["draft_state"] == "changed"
+    assert drafts[0]["previous_title"] == "old title"
+    assert drafts[0]["previous_severity"] == "medium"
+    assert drafts[0]["previous_owner_team"] == "old-team"
+    assert drafts[0]["minimum_evidence_present"] is True
+    assert drafts[0]["should_open_issue"] is True
+    assert drafts[0]["issue_open_reason"] == "changed actionable draft with minimum evidence present"
+    assert drafts[0]["blocker_reason"] is None
+    assert len(cleared) == 1
+    assert cleared[0]["provider"] == "gemini"
+    assert cleared[0]["draft_state"] == "cleared"
+
+
+
+def test_build_issue_posting_readiness_blocks_unchanged_and_evidence_gapped_drafts() -> None:
+    drafts = [
+        {
+            "provider": "claude",
+            "title": "[critical] claude: remediate legacy_work_queue_transition",
+            "severity": "critical",
+            "draft_state": "unchanged",
+            "minimum_evidence_present": True,
+            "should_open_issue": False,
+            "issue_open_reason": None,
+            "blocker_reason": "draft unchanged since previous audit; avoid duplicate issue creation until linked issue state is known",
+            "evidence_gaps": [],
+            "linkage_key": None,
+            "linkage_aliases": [],
+        },
+        {
+            "provider": "codex",
+            "title": "[medium] codex: remediate unmapped path drift",
+            "severity": "medium",
+            "draft_state": "new",
+            "minimum_evidence_present": False,
+            "should_open_issue": False,
+            "issue_open_reason": None,
+            "blocker_reason": "missing minimum evidence: inspect_paths, canonical_targets, first_steps, reference_doc",
+            "evidence_gaps": ["inspect_paths", "canonical_targets", "first_steps", "reference_doc"],
+            "linkage_key": None,
+            "linkage_aliases": [],
+        },
+    ]
+    github_issues = [
+        {
+            "number": 42,
+            "title": "[critical] claude: remediate legacy_work_queue_transition",
+            "state": "OPEN",
+            "url": "https://github.com/example/repo/issues/42",
+        }
+    ]
+
+    readiness = module.build_issue_posting_readiness(drafts, github_issues)
+
+    assert readiness[0]["provider"] == "claude"
+    assert readiness[0]["posting_status"] == "blocked"
+    assert readiness[0]["should_open_issue"] is False
+    assert readiness[0]["linked_issue_number"] == 42
+    assert readiness[0]["linked_issue_state"] == "OPEN"
+    assert readiness[0]["linkage_key"] == "claude:legacy_work_queue_transition:critical:monitoring"
+    assert readiness[0]["matched_on"] == "exact_title"
+
+    assert readiness[0]["linkage_confidence"] == "exact_title"
+    assert readiness[0]["should_open_issue_final"] is False
+    assert readiness[0]["final_posting_status"] == "blocked"
+    assert readiness[0]["final_blocker_reason"] == "linked open issue already exists: #42"
+    assert readiness[1]["provider"] == "codex"
+    assert readiness[1]["minimum_evidence_present"] is False
+    assert readiness[1]["evidence_gaps"] == ["inspect_paths", "canonical_targets", "first_steps", "reference_doc"]
+    assert readiness[1]["linked_issue_number"] is None
+    assert readiness[1]["should_open_issue_final"] is False
+
+
+
+def test_build_issue_posting_readiness_allows_unchanged_unlinked_and_closed_linked_drafts() -> None:
+    drafts = [
+        {
+            "provider": "gemini",
+            "title": "[high] gemini: remediate legacy_local_work_queue_items",
+            "previous_title": "[high] gemini: remediate legacy_local_work_queue_items (legacy)",
+            "severity": "high",
+            "preferred_fix_lane": "planning-workflow",
+            "draft_state": "unchanged",
+            "minimum_evidence_present": True,
+            "should_open_issue": False,
+            "issue_open_reason": None,
+            "blocker_reason": "draft unchanged since previous audit; avoid duplicate issue creation until linked issue state is known",
+            "evidence_gaps": [],
+            "linkage_key": "gemini:legacy_local_work_queue_items:high:planning-workflow",
+            "linkage_aliases": [
+                "[high] gemini: remediate legacy_local_work_queue_items",
+                "gemini: remediate legacy_local_work_queue_items",
+                "[high] gemini: remediate legacy_local_work_queue_items (legacy)",
+            ],
+        },
+        {
+            "provider": "hermes",
+            "title": "[medium] hermes: remediate unmapped path drift",
+            "severity": "medium",
+            "preferred_fix_lane": "drift-triage",
+            "draft_state": "unchanged",
+            "minimum_evidence_present": True,
+            "should_open_issue": False,
+            "issue_open_reason": None,
+            "blocker_reason": "draft unchanged since previous audit; avoid duplicate issue creation until linked issue state is known",
+            "evidence_gaps": [],
+            "linkage_key": "hermes:unmapped_path_drift:medium:drift-triage",
+            "linkage_aliases": [
+                "[medium] hermes: remediate unmapped path drift",
+                "hermes: remediate unmapped path drift",
+            ],
+        },
+    ]
+    github_issues = [
+        {
+            "number": 77,
+            "title": "[high] gemini: remediate legacy_local_work_queue_items (legacy)",
+            "state": "CLOSED",
+            "url": "https://github.com/example/repo/issues/77",
+        },
+        {
+            "number": 88,
+            "title": "hermes: remediate unmapped path drift",
+            "state": "CLOSED",
+            "url": "https://github.com/example/repo/issues/88",
+        }
+    ]
+
+    readiness = module.build_issue_posting_readiness(drafts, github_issues)
+
+    by_provider = {item["provider"]: item for item in readiness}
+    assert by_provider["gemini"]["linked_issue_number"] == 77
+    assert by_provider["gemini"]["linked_issue_state"] == "CLOSED"
+    assert by_provider["gemini"]["matched_on"] == "previous_title"
+    assert by_provider["gemini"]["linked_issue_match_reason"] == "matched previous title exactly"
+    assert by_provider["gemini"]["should_open_issue_final"] is True
+    assert by_provider["gemini"]["final_posting_status"] == "ready"
+    assert by_provider["gemini"]["final_open_reason"] == "linked issue #77 is closed; safe to open a fresh follow-up"
+    assert by_provider["hermes"]["linked_issue_number"] == 88
+    assert by_provider["hermes"]["matched_on"] == "alias"
+    assert by_provider["hermes"]["linked_issue_match_reason"] == "matched linkage alias exactly"
+    assert by_provider["hermes"]["should_open_issue_final"] is True
+    assert by_provider["hermes"]["final_posting_status"] == "ready"
+    assert by_provider["hermes"]["final_open_reason"] == "linked issue #88 is closed; safe to open a fresh follow-up"
+
+
+
+def test_build_provider_audit_counts_claude_unique_runtime_sessions_when_present(tmp_path: Path) -> None:
+    repo_root = tmp_path / "repo"
+    logs_root = repo_root / "logs" / "orchestrator"
+    claude_dir = logs_root / "claude"
+    claude_dir.mkdir(parents=True)
+    records = [
+        {"hook": "post", "tool": "Bash", "cmd": "python3 -c \"print(1)\"", "repo": "workspace-hub", "session_id": "claude-1"},
+        {"hook": "post", "tool": "Read", "file": "docs/keep.md", "repo": "workspace-hub", "session_id": "claude-1"},
+        {"hook": "post", "tool": "Bash", "cmd": "uv run --no-project python tool.py", "repo": "workspace-hub", "session_id": "claude-2"},
+    ]
+    target = repo_root / "docs" / "keep.md"
+    target.parent.mkdir(parents=True)
+    target.write_text("ok", encoding="utf-8", newline="\n")
+    (claude_dir / "session_20260410.jsonl").write_text(
+        "\n".join(json.dumps(r) for r in records), encoding="utf-8", newline="\n"
+    )
+
+    audit = module.build_provider_audit(repo_root=repo_root, logs_root=logs_root)
+
+    assert audit["providers"]["claude"]["unique_runtime_sessions"] == 2
+    assert "limitations" not in audit["providers"]["claude"]
+
+
+def test_build_provider_audit_consumes_gemini_export_jsonl(tmp_path: Path) -> None:
+    repo_root = tmp_path / "repo"
+    logs_root = repo_root / "logs" / "orchestrator"
+    gemini_dir = logs_root / "gemini"
+    gemini_dir.mkdir(parents=True)
+    records = [
+        {
+            "hook": "post",
+            "tool": "Bash",
+            "gemini_tool": "run_shell_command",
+            "cmd": 'python3 -c "print(1)"',
+            "repo": "workspace-hub",
+            "session_id": "gem-1",
+        },
+        {
+            "hook": "post",
+            "tool": "Read",
+            "gemini_tool": "read_file",
+            "file": "docs/keep.md",
+            "repo": "workspace-hub",
+            "session_id": "gem-1",
+        },
+    ]
+    target = repo_root / "docs" / "keep.md"
+    target.parent.mkdir(parents=True)
+    target.write_text("ok", encoding="utf-8", newline="\n")
+    (gemini_dir / "session_20260410.jsonl").write_text(
+        "\n".join(json.dumps(r) for r in records), encoding="utf-8", newline="\n"
+    )
+
+    audit = module.build_provider_audit(repo_root=repo_root, logs_root=logs_root)
+
+    assert audit["providers"]["gemini"]["source"] == "raw_logs"
+    assert audit["providers"]["gemini"]["sessions"] == 1
+    assert audit["providers"]["gemini"]["post_records"] == 2
+    assert audit["providers"]["gemini"]["python3_bash_calls"] == 1
+    assert audit["providers"]["gemini"]["unique_runtime_sessions"] == 1
+    assert audit["providers"]["gemini"]["top_reads"][0]["path"] == "docs/keep.md"
+    assert audit["providers"]["gemini"]["top_bash_command_families"][0]["prefix"] == "python3"
+
+
+def test_render_markdown_mentions_recent_activity_section() -> None:
+    audit = {
+        "generated_at": "2026-04-10T00:00:00Z",
+        "logs_root": "/tmp/logs/orchestrator",
+        "executive_summary": {
+            "migration_debt": {"ranked_providers": [], "scope_note": "scope"},
+            "recent_activity_since_previous_audit": {
+                "status": "ok",
+                "previous_generated_at": "2026-04-09T00:00:00Z",
+                "scope_note": "Event-time scope note.",
+                "ranked_providers": [{"provider": "claude", "post_records": 2, "sessions": 1}],
+                "providers": {
+                    "claude": {
+                        "post_records": 2,
+                        "sessions": 1,
+                        "top_tools": [{"tool": "Bash", "count": 1}],
+                        "top_bash_command_families": [{"prefix": "git status", "count": 1}],
+                        "top_missing_repo_reads": [{"path": "docs/missing.md", "count": 1}],
+                    }
+                },
+            },
+            "corpus_change_since_previous_audit": {
+                "status": "ok",
+                "previous_generated_at": "2026-04-09T00:00:00Z",
+                "scope_note": "Snapshot scope note.",
+                "largest_negative_reconciliation_gap_provider": "codex",
+                "largest_positive_reconciliation_gap_provider": "hermes",
+                "providers": {
+                    "claude": {
+                        "current_post_records": 2,
+                        "previous_post_records": 1,
+                        "post_record_delta": 1,
+                        "current_sessions": 1,
+                        "previous_sessions": 1,
+                        "session_delta": 0,
+                        "current_missing_repo_reads": 1,
+                        "previous_missing_repo_reads": 0,
+                        "missing_repo_read_delta": 1,
+                        "event_time_post_records_since_previous_audit": 2,
+                        "reconciliation_gap_post_records": -1,
+                        "status": "corpus_pruned_or_rebuilt",
+                        "interpretation": "Snapshot changed differently than event-time activity.",
+                    }
+                },
+            },
+        },
+        "providers": {
+            "claude": {
+                "source": "raw_logs",
+                "sessions": 1,
+                "post_records": 2,
+                "python3_bash_calls": 0,
+                "uv_python_bash_calls": 1,
+                "top_tools": [],
+                "top_repos": [],
+                "top_reads": [],
+                "top_symbolic_reads": [],
+                "top_bash_command_families": [],
+                "top_missing_repo_reads": [],
+                "missing_repo_read_remediation_hints": [],
+                "top_missing_external_reads": [],
+            }
+        },
+    }
+
+    markdown = module.render_markdown(audit)
+
+    assert "## Recent activity since previous audit" in markdown
+    assert "### claude recent activity since previous audit" in markdown
+    assert "Previous audit timestamp: `2026-04-09T00:00:00Z`" in markdown
+    assert "Event-time scope note." in markdown
+
+
+def test_render_markdown_mentions_provider_interpretation_summary() -> None:
+    audit = {
+        "generated_at": "2026-04-10T00:00:00Z",
+        "logs_root": "/tmp/logs/orchestrator",
+        "executive_summary": {
+            "migration_debt": {"ranked_providers": [], "scope_note": "scope"},
+            "provider_interpretation_summary": {
+                "focus_this_week": "Focus this week: prioritize legacy-path redirect cleanup and prompt/doc updates on claude.",
+                "recommended_actions": [
+                    {
+                        "provider": "claude",
+                        "urgency_tier": "urgent_now",
+                        "urgency_score": 83.8,
+                        "urgency_rank": 1,
+                        "previous_urgency_rank": 2,
+                        "urgency_rank_direction": "up",
+                        "urgency_rank_delta": 1,
+                        "urgency_score_delta": 7.8,
+                        "urgency_movement_summary": "moved up 1 slot to #1; urgency 83.80 (+7.80 vs previous audit); recent activity increased",
+                        "health_status": "red",
+                        "health_summary": "red: urgent action tier; high migration debt; 24h burst activity; currently active",
+                        "primary_issue": "legacy_work_queue_transition",
+                        "recommended_action": "prioritize legacy-path redirect cleanup and prompt/doc updates",
+                    }
+                ],
+                "health_overview": [
+                    {
+                        "provider": "claude",
+                        "health_status": "red",
+                        "health_summary": "red: urgent action tier; high migration debt; 24h burst activity; currently active",
+                    }
+                ],
+                "watchlist": [
+                    {
+                        "provider": "claude",
+                        "trigger_level": "page",
+                        "trigger_reason": "urgent-now provider with legacy_work_queue_transition",
+                        "suggested_followup": "Escalate immediately on claude: prioritize legacy-path redirect cleanup and prompt/doc updates",
+                        "health_status": "red",
+                        "urgency_tier": "urgent_now",
+                        "primary_issue": "legacy_work_queue_transition",
+                    }
+                ],
+                "change_alerts": [
+                    {
+                        "provider": "claude",
+                        "change_type": "trigger_escalated",
+                        "previous_trigger_level": "investigate",
+                        "current_trigger_level": "page",
+                        "previous_health_status": "yellow",
+                        "current_health_status": "red",
+                        "previous_urgency_rank": 2,
+                        "current_urgency_rank": 1,
+                        "summary": "claude trigger escalated from investigate to page",
+                        "suggested_followup": "Escalate immediately on claude: prioritize legacy-path redirect cleanup and prompt/doc updates",
+                    }
+                ],
+                "remediation_playbooks": [
+                    {
+                        "provider": "claude",
+                        "primary_issue": "legacy_work_queue_transition",
+                        "trigger_level": "page",
+                        "inspect_paths": ["scripts/work-queue/start_stage.py"],
+                        "canonical_targets": ["docs/governance/SESSION-GOVERNANCE.md", "docs/governance/TRUST-ARCHITECTURE.md"],
+                        "first_steps": [
+                            "Review the stale stage-transition path family and confirm callers should move to governance docs/hooks.",
+                            "Patch prompts/docs or exporter remaps so deleted work-queue scripts are no longer suggested.",
+                        ],
+                        "reference_doc": "docs/ops/legacy-claude-reference-map.md",
+                        "guidance": "Legacy stage-transition tooling was removed during workflow migration; redirect callers to governance docs/hooks instead of recreating the old executables.",
+                        "owner_surface": "docs/governance/SESSION-GOVERNANCE.md",
+                        "owner_team": "governance-maintainers",
+                        "preferred_fix_lane": "governance-docs",
+                    }
+                ],
+                "followup_issue_drafts": [
+                    {
+                        "provider": "claude",
+                        "title": "[critical] claude: remediate legacy_work_queue_transition",
+                        "severity": "critical",
+                        "owner_team": "governance-maintainers",
+                        "preferred_fix_lane": "governance-docs",
+                        "body": "Summary: Provider `claude` is currently at trigger level `page` with health `red` and urgency tier `urgent_now`.",
+                        "draft_key": "abc123draftkey",
+                        "dedupe_scope": "claude:legacy_work_queue_transition:governance-docs",
+                        "duplicate_of_previous_draft_key": None,
+                        "draft_state": "new",
+                        "previous_title": None,
+                        "previous_severity": None,
+                        "previous_owner_team": None,
+                        "minimum_evidence_present": True,
+                        "should_open_issue": True,
+                        "issue_open_reason": "new actionable draft with minimum evidence present",
+                        "blocker_reason": None,
+                        "evidence_gaps": []
+                    }
+                ],
+                "issue_posting_readiness": [
+                    {
+                        "provider": "claude",
+                        "severity": "critical",
+                        "draft_state": "new",
+                        "posting_status": "ready",
+                        "minimum_evidence_present": True,
+                        "should_open_issue": True,
+                        "issue_open_reason": "new actionable draft with minimum evidence present",
+                        "blocker_reason": None,
+                        "evidence_gaps": [],
+                        "linked_issue_number": None,
+                        "linked_issue_url": None,
+                        "linked_issue_state": None,
+                        "matched_on": "none",
+                        "linked_issue_match_reason": "no linked issue match found",
+                        "linkage_confidence": "none",
+                        "should_open_issue_final": True,
+                        "final_posting_status": "ready",
+                        "final_open_reason": "new actionable draft with no linked issue found",
+                        "final_blocker_reason": None
+                    }
+                ],
+                "cleared_followup_issue_drafts": [
+                    {
+                        "provider": "gemini",
+                        "draft_state": "cleared",
+                        "previous_title": "[high] gemini: remediate legacy_local_work_queue_items",
+                        "previous_severity": "high",
+                        "previous_owner_team": "planning-ops",
+                        "previous_draft_key": "oldgeminikey"
+                    }
+                ],
+                "rank_movements": [
+                    {
+                        "provider": "claude",
+                        "urgency_rank": 1,
+                        "previous_urgency_rank": 2,
+                        "urgency_rank_direction": "up",
+                        "urgency_rank_delta": 1,
+                        "urgency_score": 83.8,
+                        "urgency_score_delta": 7.8,
+                        "summary": "moved up 1 slot to #1; urgency 83.80 (+7.80 vs previous audit); recent activity increased",
+                    }
+                ],
+                "providers": [
+                    {
+                        "provider": "claude",
+                        "urgency_score": 83.8,
+                        "urgency_tier": "urgent_now",
+                        "urgency_rank": 1,
+                        "previous_urgency_rank": 2,
+                        "urgency_rank_direction": "up",
+                        "urgency_rank_delta": 1,
+                        "urgency_score_delta": 7.8,
+                        "urgency_movement_summary": "moved up 1 slot to #1; urgency 83.80 (+7.80 vs previous audit); recent activity increased",
+                        "activity_status": "active",
+                        "activity_trend": "increasing",
+                        "corpus_status": "aligned",
+                        "debt_status": "high_debt",
+                        "debt_trend": "worsening",
+                        "python_hygiene_status": "uv_preferred",
+                        "python_hygiene_trend": "improving",
+                        "drift_trend": "stable",
+                        "last_24h_post_records": 2,
+                        "last_24h_sessions": 1,
+                        "last_7d_post_records": 5,
+                        "last_7d_sessions": 2,
+                        "activity_window_profile": "burst_active",
+                        "health_status": "red",
+                        "health_reasons": ["urgent action tier", "high migration debt", "24h burst activity", "currently active"],
+                        "health_summary": "red: urgent action tier; high migration debt; 24h burst activity; currently active",
+                        "primary_issue": "legacy_work_queue_transition",
+                        "recommended_action": "prioritize legacy-path redirect cleanup and prompt/doc updates",
+                    }
+                ]
+            },
+            "recent_activity_since_previous_audit": {"status": "no_prior_audit", "providers": {}},
+            "recent_activity_windows": {
+                "status": "ok",
+                "generated_at": "2026-04-10T00:00:00Z",
+                "windows": {
+                    "last_24h": {
+                        "window_start": "2026-04-09T00:00:00Z",
+                        "window_end": "2026-04-10T00:00:00Z",
+                        "status": "ok",
+                        "scope_note": "Last 24 hours of event-time activity ending at this audit timestamp.",
+                        "ranked_providers": [{"provider": "claude", "post_records": 2, "sessions": 1}],
+                        "providers": {"claude": {"post_records": 2, "sessions": 1}},
+                    },
+                    "last_7d": {
+                        "window_start": "2026-04-03T00:00:00Z",
+                        "window_end": "2026-04-10T00:00:00Z",
+                        "status": "ok",
+                        "scope_note": "Last 7 days of event-time activity ending at this audit timestamp.",
+                        "ranked_providers": [{"provider": "claude", "post_records": 5, "sessions": 2}],
+                        "providers": {"claude": {"post_records": 5, "sessions": 2}},
+                    },
+                },
+            },
+            "corpus_change_since_previous_audit": {"status": "no_prior_audit", "providers": {}},
+        },
+        "providers": {
+            "claude": {
+                "source": "raw_logs",
+                "sessions": 1,
+                "post_records": 2,
+                "python3_bash_calls": 0,
+                "uv_python_bash_calls": 1,
+                "top_tools": [],
+                "top_repos": [],
+                "top_reads": [],
+                "top_symbolic_reads": [],
+                "top_bash_command_families": [],
+                "top_missing_repo_reads": [],
+                "missing_repo_read_remediation_hints": [],
+                "top_missing_external_reads": [],
+            }
+        },
+    }
+
+    markdown = module.render_markdown(audit)
+
+    assert "## Provider interpretation summary" in markdown
+    assert "Focus this week: prioritize legacy-path redirect cleanup and prompt/doc updates on claude." in markdown
+    assert "Recommended actions:" in markdown
+    assert "`claude` [urgent_now] — prioritize legacy-path redirect cleanup and prompt/doc updates" in markdown
+    assert "health=red" in markdown
+    assert "Health overview:" in markdown
+    assert "`claude` [red] — red: urgent action tier; high migration debt; 24h burst activity; currently active" in markdown
+    assert "Watchlist triggers:" in markdown
+    assert "`claude` [page] — urgent-now provider with legacy_work_queue_transition | follow-up: Escalate immediately on claude: prioritize legacy-path redirect cleanup and prompt/doc updates" in markdown
+    assert "Change alerts:" in markdown
+    assert "`claude` [trigger_escalated] — claude trigger escalated from investigate to page | follow-up: Escalate immediately on claude: prioritize legacy-path redirect cleanup and prompt/doc updates" in markdown
+    assert "Remediation playbooks:" in markdown
+    assert "lane=governance-docs | owner=governance-maintainers | owner_surface=docs/governance/SESSION-GOVERNANCE.md" in markdown
+    assert "`claude` [page] — issue=legacy_work_queue_transition" in markdown
+    assert "Follow-up issue drafts:" in markdown
+    assert "`claude` [critical] — [critical] claude: remediate legacy_work_queue_transition | state=new | owner=governance-maintainers | lane=governance-docs" in markdown
+    assert "Issue posting readiness:" in markdown
+    assert "`claude` [ready] — should_open_issue=yes | final_should_open=yes | evidence=complete | linked_issue=none | matched_on=none | reason=new actionable draft with no linked issue found" in markdown
+    assert "Cleared follow-up issue drafts:" in markdown
+    assert "`gemini` [cleared] — previous_title=[high] gemini: remediate legacy_local_work_queue_items | previous_severity=high | previous_owner=planning-ops" in markdown
+    assert "movement: moved up 1 slot to #1; urgency 83.80 (+7.80 vs previous audit); recent activity increased" in markdown
+    assert "Rank movements since previous audit:" in markdown
+    assert "`claude` — moved up 1 slot to #1; urgency 83.80 (+7.80 vs previous audit); recent activity increased" in markdown
+    assert "`claude` — rank=1 (prev=2, move=up) | health=red | profile=burst_active | 24h=2 posts/1 sessions | 7d=5 posts/2 sessions | urgency=83.8 | tier=urgent_now | activity=active (increasing) | corpus=aligned | debt=high_debt (worsening) | drift=stable | python=uv_preferred (improving) | health summary: red: urgent action tier; high migration debt; 24h burst activity; currently active | movement: moved up 1 slot to #1; urgency 83.80 (+7.80 vs previous audit); recent activity increased" in markdown
+    assert "## Rolling activity windows" in markdown
+    assert "`last_24h` — `2026-04-09T00:00:00Z` → `2026-04-10T00:00:00Z`" in markdown
+    assert "Activity leaders: `claude` 2 post records / 1 sessions." in markdown
+    assert "`last_7d` — `2026-04-03T00:00:00Z` → `2026-04-10T00:00:00Z`" in markdown
+    assert "primary issue: legacy_work_queue_transition" in markdown
+    assert "## Corpus change since previous audit" in markdown
+    assert "snapshot-to-snapshot corpus comparison is not yet available" in markdown
+
+
+def test_build_missing_read_remediation_hints_groups_known_legacy_paths() -> None:
+    hints = module.build_missing_read_remediation_hints(
+        [
+            {"path": "scripts/work-queue/start_stage.py", "count": 4},
+            {"path": "scripts/work-queue/exit_stage.py", "count": 3},
+            {"path": "scripts/agents/execute.sh", "count": 2},
+        ]
+    )
+
+    assert hints[0]["rule_id"] == "legacy_work_queue_transition"
+    assert hints[0]["total_count"] == 7
+    assert hints[0]["matched_paths"][0]["path"] == "scripts/work-queue/start_stage.py"
+    assert any(hint["rule_id"] == "legacy_agent_wrapper_tree" for hint in hints)
+
+
+
+def test_build_migration_debt_summary_ranks_by_density() -> None:
+    summary = module.build_migration_debt_summary(
+        {
+            "claude": {
+                "post_records": 100,
+                "missing_repo_read_remediation_hints": [
+                    {"rule_id": "legacy_work_queue_transition", "total_count": 10}
+                ],
+                "missing_repo_reads": 10,
+            },
+            "gemini": {
+                "post_records": 50,
+                "missing_repo_read_remediation_hints": [
+                    {"rule_id": "legacy_agent_wrapper_tree", "total_count": 8}
+                ],
+                "missing_repo_reads": 8,
+            },
+            "hermes": {
+                "post_records": 25,
+                "missing_repo_read_remediation_hints": [],
+                "missing_repo_reads": 5,
+            },
+        }
+    )
+
+    ranked = summary["ranked_providers"]
+    assert ranked[0]["provider"] == "gemini"
+    assert ranked[0]["migration_debt_rank"] == 1
+    assert ranked[1]["provider"] == "claude"
+    assert summary["highest_density_provider"] == "gemini"
+    assert summary["highest_volume_provider"] == "claude"
+
+
+
+def test_build_missing_read_remediation_hints_covers_top_stale_path_families() -> None:
+    hints = module.build_missing_read_remediation_hints(
+        [
+            {"path": "scripts/work-queue/start_stage.py", "count": 5},
+            {"path": "scripts/agents/execute.sh", "count": 4},
+            {"path": ".claude/work-queue/WRK-149.md", "count": 3},
+            {"path": ".claude/skills/coordination/workspace/work-queue/SKILL.md", "count": 2},
+        ]
+    )
+
+    by_rule = {hint["rule_id"]: hint for hint in hints}
+
+    assert set(by_rule) == {
+        "legacy_work_queue_transition",
+        "legacy_agent_wrapper_tree",
+        "legacy_local_work_queue_items",
+        "legacy_work_queue_skills",
+    }
+    assert by_rule["legacy_work_queue_transition"]["matched_paths"] == [
+        {"path": "scripts/work-queue/start_stage.py", "count": 5}
+    ]
+    assert "docs/governance/SESSION-GOVERNANCE.md" in by_rule["legacy_work_queue_transition"]["canonical_targets"]
+    assert by_rule["legacy_agent_wrapper_tree"]["matched_paths"] == [
+        {"path": "scripts/agents/execute.sh", "count": 4}
+    ]
+    assert "AGENTS.md" in by_rule["legacy_agent_wrapper_tree"]["canonical_targets"]
+    assert by_rule["legacy_local_work_queue_items"]["matched_paths"] == [
+        {"path": ".claude/work-queue/WRK-149.md", "count": 3}
+    ]
+    assert "GitHub issues" in by_rule["legacy_local_work_queue_items"]["canonical_targets"]
+    assert by_rule["legacy_work_queue_skills"]["matched_paths"] == [
+        {"path": ".claude/skills/coordination/workspace/work-queue/SKILL.md", "count": 2}
+    ]
+    assert ".claude/commands/gsd/*" in by_rule["legacy_work_queue_skills"]["canonical_targets"]
+
+
+
+def test_build_missing_read_remediation_hints_covers_spinout_worktree_and_nested_repo_drift() -> None:
+    hints = module.build_missing_read_remediation_hints(
+        [
+            {"path": "knowledge/wikis/engineering/wiki/index.md", "count": 6},
+            {"path": "knowledge/wikis/engineering/wiki/log.md", "count": 5},
+            {"path": "knowledge/wikis/marine-engineering/wiki/index.md", "count": 4},
+            {"path": ".claude/worktrees/ecosystem-sync/docs/plans/plan.md", "count": 5},
+            {"path": "src/worldenergydata/cost/data_collection/public_dataset.py", "count": 4},
+            {"path": "tests/unit/cost/test_proxy_comparison.py", "count": 3},
+            {"path": "src/assethold/signals/watchlist.py", "count": 2},
+            {"path": "sitemap.xml", "count": 3},
+            {"path": "sitemap.xml.gz", "count": 99},
+            {"path": "sitemap.xml.template", "count": 98},
+            {
+                "path": "docs/plans/2026-04-21-issue-334-annual-operator-disclosures-dataset.md.bak",
+                "count": 97,
+            },
+        ]
+    )
+
+    by_rule = {hint["rule_id"]: hint for hint in hints}
+
+    assert by_rule["llm_wiki_spinout_path_drift"]["matched_paths"] == [
+        {"path": "knowledge/wikis/engineering/wiki/index.md", "count": 6}
+    ]
+    assert "llm-wiki/wikis/" in by_rule["llm_wiki_spinout_path_drift"]["canonical_targets"]
+    assert by_rule["session_local_worktree_path_drift"]["matched_paths"] == [
+        {"path": ".claude/worktrees/ecosystem-sync/docs/plans/plan.md", "count": 5}
+    ]
+    assert "main repo branch/worktree" in by_rule["session_local_worktree_path_drift"]["canonical_targets"]
+    assert by_rule["nested_repo_context_drift"]["matched_paths"] == [
+        {"path": "src/worldenergydata/cost/data_collection/public_dataset.py", "count": 4},
+        {"path": "tests/unit/cost/test_proxy_comparison.py", "count": 3},
+        {"path": "sitemap.xml", "count": 3},
+        {"path": "src/assethold/signals/watchlist.py", "count": 2},
+    ]
+    assert "worldenergydata/src/worldenergydata/" in by_rule["nested_repo_context_drift"]["canonical_targets"]
+    assert "worldenergydata/tests/unit/cost/" in by_rule["nested_repo_context_drift"]["canonical_targets"]
+    assert "assethold/src/assethold/" in by_rule["nested_repo_context_drift"]["canonical_targets"]
+    assert "aceengineer-website/sitemap.xml" in by_rule["nested_repo_context_drift"]["canonical_targets"]
+
+
+
+def test_render_markdown_mentions_symbolic_reads_and_remediation_hints() -> None:
+    audit = {
+        "generated_at": "2026-04-10T00:00:00Z",
+        "logs_root": "/tmp/logs/orchestrator",
+        "executive_summary": {
+            "migration_debt": {
+                "ranked_providers": [
+                    {
+                        "provider": "hermes",
+                        "known_migration_debt_reads": 4,
+                        "known_migration_debt_per_1k_records": 400.0,
+                        "known_migration_debt_rule_count": 1,
+                        "top_migration_rule_id": "legacy_work_queue_transition",
+                        "top_migration_rule_reads": 4,
+                        "top_migration_rule_share_pct": 100.0,
+                        "migration_debt_rank": 1,
+                    }
+                ],
+                "highest_density_provider": "hermes",
+                "highest_volume_provider": "hermes",
+                "scope_note": "Migration-debt figures are based on remediation-mapped entries from each provider's top missing repo reads.",
+            }
+        },
+        "providers": {
+            "hermes": {
+                "source": "raw_logs",
+                "sessions": 1,
+                "post_records": 10,
+                "correction_sessions": 1,
+                "unique_runtime_sessions": 0,
+                "prompt_reads": 0,
+                "blank_reads": 0,
+                "missing_repo_reads": 4,
+                "python3_bash_calls": 1,
+                "uv_python_bash_calls": 2,
+                "top_tools": [],
+                "top_repos": [],
+                "top_reads": [],
+                "top_symbolic_reads": [{"name": "github-issues", "count": 3}],
+                "top_missing_repo_reads": [{"path": "scripts/work-queue/start_stage.py", "count": 4}],
+                "missing_repo_read_remediation_hints": [
+                    {
+                        "rule_id": "legacy_work_queue_transition",
+                        "total_count": 4,
+                        "matched_paths": [{"path": "scripts/work-queue/start_stage.py", "count": 4}],
+                        "canonical_targets": ["docs/governance/SESSION-GOVERNANCE.md"],
+                        "guidance": "Redirect to governance docs.",
+                        "reference_doc": "docs/ops/legacy-claude-reference-map.md",
+                    }
+                ],
+                "top_missing_external_reads": [],
+                "special_counts": {},
+            }
+        },
+    }
+
+    markdown = module.render_markdown(audit)
+
+    assert "top symbolic reads" in markdown.lower()
+    assert "github-issues" in markdown
+    assert "migration debt density" in markdown.lower()
+    assert "highest-density known migration debt" in markdown.lower()
+    assert "remediation hints for stale repo reads" in markdown.lower()
+    assert "docs/governance/SESSION-GOVERNANCE.md" in markdown
+
+
+
+
+def test_render_markdown_includes_top_non_repo_artifact_reads_section() -> None:
+    audit = {
+        "generated_at": "2026-04-10T00:00:00Z",
+        "logs_root": "/tmp/logs/orchestrator",
+        "executive_summary": {
+            "migration_debt": {"ranked_providers": [], "scope_note": "scope"},
+            "recent_activity_since_previous_audit": {"status": "no_prior_audit"},
+            "corpus_change_since_previous_audit": {"status": "no_prior_audit"},
+            "recent_activity_windows": {"status": "unavailable"},
+        },
+        "providers": {
+            "codex": {
+                "source": "raw_logs",
+                "sessions": 1,
+                "post_records": 2,
+                "python3_bash_calls": 0,
+                "uv_python_bash_calls": 0,
+                "top_tools": [],
+                "top_repos": [],
+                "top_reads": [],
+                "top_symbolic_reads": [],
+                "top_sibling_repo_reads": [],
+                "top_non_repo_artifact_reads": [
+                    {"path": "content/demos/index.html", "count": 2},
+                    {"path": "build.js", "count": 1},
+                ],
+                "top_bash_command_families": [],
+                "top_missing_repo_reads": [],
+                "missing_repo_read_remediation_hints": [],
+                "top_missing_external_reads": [],
+            }
+        },
+    }
+
+    markdown = module.render_markdown(audit)
+
+    assert "### codex top non-repo artifact reads" in markdown
+    assert "- `content/demos/index.html` — 2" in markdown
+    assert "- `build.js` — 1" in markdown
+
+
+
+def test_summarize_claude_precomputed_exposes_non_repo_artifact_schema_defaults(tmp_path: Path) -> None:
+    payload = {
+        "sessions_analyzed": 1,
+        "post_records": 10,
+        "missing_repo_read_total": 2,
+        "top_missing_repo_reads": [{"path": "docs/missing.md", "count": 2}],
+    }
+    path = tmp_path / "claude-audit.json"
+    path.write_text(json.dumps(payload), encoding="utf-8", newline="\n")
+
+    summary = module.summarize_claude_precomputed(path)
+
+    assert summary["top_non_repo_artifact_reads"] == []
+    assert summary["non_repo_artifact_read_total"] == 0
+    assert summary["top_sibling_repo_reads"] == []
+    assert summary["sibling_repo_read_total"] == 0
+
+
+def test_build_corpus_change_summary_reports_positive_growth_gap_against_event_time_counts() -> None:
+    provider_summaries = {"codex": {"source": "raw_logs", "post_records": 18, "sessions": 1, "missing_repo_reads": 0}}
+    previous_audit = {
+        "generated_at": "2026-04-10T00:00:00Z",
+        "providers": {"codex": {"source": "raw_logs", "post_records": 10, "sessions": 1, "missing_repo_reads": 0}},
+    }
+    recent_activity = {"providers": {"codex": {"post_records": 3, "sessions": 1}}}
+
+    summary = module.build_corpus_change_summary(provider_summaries, previous_audit, recent_activity)
+    row = summary["providers"]["codex"]
+
+    assert row["post_record_delta"] == 8
+    assert row["event_time_post_records_since_previous_audit"] == 3
+    assert row["reconciliation_gap_post_records"] == 5
+    assert row["status"] == "positive_corpus_growth_beyond_recent_activity"
+    assert row["interpretation"].startswith("Snapshot grew more than recent event-time activity")
+
+
+def test_build_corpus_change_summary_reports_zero_gap_as_aligned() -> None:
+    provider_summaries = {"codex": {"source": "raw_logs", "post_records": 13, "sessions": 1, "missing_repo_reads": 0}}
+    previous_audit = {
+        "generated_at": "2026-04-10T00:00:00Z",
+        "providers": {"codex": {"source": "raw_logs", "post_records": 10, "sessions": 1, "missing_repo_reads": 0}},
+    }
+    recent_activity = {"providers": {"codex": {"post_records": 3, "sessions": 1}}}
+
+    summary = module.build_corpus_change_summary(provider_summaries, previous_audit, recent_activity)
+    row = summary["providers"]["codex"]
+
+    assert row["reconciliation_gap_post_records"] == 0
+    assert row["status"] == "aligned"
+
+
+def test_build_corpus_change_summary_reports_pruned_or_rebuilt_when_gap_is_negative() -> None:
+    provider_summaries = {"codex": {"source": "raw_logs", "post_records": 12, "sessions": 1, "missing_repo_reads": 0}}
+    previous_audit = {
+        "generated_at": "2026-04-10T00:00:00Z",
+        "providers": {"codex": {"source": "raw_logs", "post_records": 10, "sessions": 1, "missing_repo_reads": 0}},
+    }
+    recent_activity = {"providers": {"codex": {"post_records": 5, "sessions": 1}}}
+
+    summary = module.build_corpus_change_summary(provider_summaries, previous_audit, recent_activity)
+    row = summary["providers"]["codex"]
+
+    assert row["reconciliation_gap_post_records"] == -3
+    assert row["status"] == "corpus_pruned_or_rebuilt"
+
+
+def test_json_summary_exposes_recent_and_corpus_scope_notes(tmp_path: Path) -> None:
+    repo_root = tmp_path / "repo"
+    logs_root = repo_root / "logs" / "orchestrator"
+    logs_root.mkdir(parents=True)
+    analysis_dir = repo_root / "analysis"
+    analysis_dir.mkdir(parents=True)
+    (analysis_dir / "provider-session-ecosystem-audit.json").write_text(
+        json.dumps({"generated_at": "2026-04-10T00:00:00Z", "providers": {}}),
+        encoding="utf-8", newline="\n",
+    )
+
+    audit = module.build_provider_audit(repo_root=repo_root, logs_root=logs_root)
+
+    assert audit["executive_summary"]["recent_activity_since_previous_audit"]["scope_note"] == (
+        "This is event-time activity since the previous audit timestamp, not a census of newly exported historical/backfilled records."
+    )
+    assert audit["executive_summary"]["corpus_change_since_previous_audit"]["scope_note"] == (
+        "Snapshot-to-snapshot corpus deltas reflect export additions/removals/reclassification and should be interpreted separately from event-time recent activity."
+    )
+
+
+def _build_debt_fixture_audit(
+    tmp_path, monkeypatch, reads, records, previous, current_source="raw_logs",
+):
+    """Use synthetic summary counts and a prior artifact, without a real corpus."""
+    repo = tmp_path / "repo"
+    logs = repo / "logs"
+    provider_logs = logs / "sample"
+    provider_logs.mkdir(parents=True)
+    (provider_logs / "session_fixture.jsonl").write_text("", encoding="utf-8", newline="\n")
+    monkeypatch.setattr(module, "PROVIDERS", ("sample",))
+    monkeypatch.setattr(
+        module,
+        "summarize_raw_provider",
+        lambda *args: {
+            "source": current_source,
+            "post_records": records,
+            "missing_repo_reads": reads,
+            "missing_repo_read_remediation_hints": [
+                {"rule_id": "example", "total_count": reads}
+            ],
+        },
+    )
+    if previous is not None:
+        analysis = repo / "analysis"
+        analysis.mkdir()
+        (analysis / "provider-session-ecosystem-audit.json").write_text(
+            json.dumps(previous), encoding="utf-8", newline="\n"
+        )
+    return module.build_provider_audit(repo_root=repo, logs_root=logs)
+
+
+@pytest.mark.parametrize(
+    "reads,records,prior_reads,prior_density,volume_delta,density_delta",
+    [
+        # Hand calculations: density = reads * 1000 / records; delta = current - previous.
+        # Current 6/500 -> 12; prior 10/500 -> 20; differences -4 reads, -8 per 1k.
+        pytest.param(6, 500, 10, 20.0, -4, -8.0, id="improvement"),
+        # Prior 2/500 -> 4; current 6/500 -> 12; differences +4 reads, +8 per 1k.
+        pytest.param(6, 500, 2, 4.0, 4, 8.0, id="regression"),
+        # Equal 6/500 snapshots -> zero differences, with measured debt still present.
+        pytest.param(6, 500, 6, 12.0, 0, 0.0, id="equality"),
+        # Recorded zeros are available: 0/500 -> 0 at both snapshots.
+        pytest.param(0, 500, 0, 0.0, 0, 0.0, id="recorded-zero"),
+        # Prior 10/1000 -> 10; current 6/500 -> 12: less volume, greater density.
+        pytest.param(6, 500, 10, 10.0, -4, 2.0, id="opposing-directions"),
+        # Prior 617/50000 -> 12.34; current 6/500 -> 12; difference -0.34 per 1k.
+        pytest.param(6, 500, 617, 12.34, -611, -0.34, id="fractional-density"),
+    ],
+)
+def test_debt_delta_reports_signed_volume_and_density(
+    tmp_path, monkeypatch, reads, records, prior_reads, prior_density,
+    volume_delta, density_delta,
+) -> None:
+    # A synthetic prior timestamp does not establish a fixed weekly interval.
+    previous = {
+        "generated_at": "2026-04-10T00:00:00Z",
+        "executive_summary": {"migration_debt": {"ranked_providers": [{
+            "provider": "sample",
+            "known_migration_debt_reads": prior_reads,
+            "known_migration_debt_per_1k_records": prior_density,
+        }]}},
+    }
+    audit = _build_debt_fixture_audit(tmp_path, monkeypatch, reads, records, previous)
+    comparison = json.loads(json.dumps(audit))["executive_summary"]["migration_debt"]["snapshot_comparison"]
+    current_density = 0.0 if reads == 0 else 12.0  # Hand calculations above.
+    assert comparison["providers"]["sample"] == {
+        "volume": {"current": reads, "previous": prior_reads, "delta": volume_delta},
+        "density": {"current": current_density, "previous": prior_density, "delta": density_delta},
+    }
+    assert comparison["current_generated_at"] == audit["generated_at"]
+    assert comparison["previous_generated_at"] == previous["generated_at"]
+    assert comparison["delta_convention"] == "current - previous"
+    assert comparison["units"] == {"volume": "reads", "density": "reads per 1k records"}
+    markdown = module.render_markdown(audit)
+    assert "## Migration debt since previous audit" in markdown
+    assert f"`{previous['generated_at']}` to `{audit['generated_at']}`" in markdown
+    assert "Delta = current - previous" in markdown
+    assert "negative means less recorded debt" in markdown
+    assert "snapshot-to-snapshot" in markdown
+    assert "not event-time activity" in markdown
+    assert "week-over-week" not in markdown
+    assert f"| `sample` | volume (reads) | {reads} | {prior_reads} | {volume_delta:+d} |" in markdown
+    assert f"| `sample` | density (reads per 1k records) | {current_density:.1f} | {prior_density:.1f} | {density_delta:+.1f} |" in markdown
+
+
+@pytest.mark.parametrize(
+    "history,prior_volume,prior_density",
+    [
+        pytest.param(None, None, None, id="no-prior-audit"),
+        pytest.param({}, None, None, id="absent-summary"),
+        pytest.param({"ranked_providers": []}, None, None, id="absent-provider"),
+        pytest.param({"ranked_providers": [{"provider": "sample"}]}, None, None, id="absent-metrics"),
+        pytest.param({"ranked_providers": [{
+            "provider": "sample", "known_migration_debt_reads": None,
+            "known_migration_debt_per_1k_records": None,
+        }]}, None, None, id="null-metrics"),
+        # A recorded zero volume does not supply an absent density metric.
+        pytest.param({"ranked_providers": [{
+            "provider": "sample", "known_migration_debt_reads": 0,
+        }]}, 0, None, id="volume-only"),
+        pytest.param({"ranked_providers": [{
+            "provider": "sample", "known_migration_debt_per_1k_records": 20.0,
+        }]}, None, 20.0, id="density-only"),
+    ],
+)
+def test_debt_delta_missing_history_is_unavailable(
+    tmp_path, monkeypatch, history, prior_volume, prior_density,
+) -> None:
+    previous = None if history is None else {"executive_summary": {"migration_debt": history}}
+    # Independent fixture calculation: 6 reads / 500 records * 1000 = 12 per 1k.
+    audit = _build_debt_fixture_audit(tmp_path, monkeypatch, 6, 500, previous)
+    comparison = audit["executive_summary"]["migration_debt"]["snapshot_comparison"]
+    metrics = comparison["providers"]["sample"]
+    assert metrics["volume"] == {"current": 6, "previous": prior_volume, "delta": None if prior_volume is None else 6}
+    assert metrics["density"] == {"current": 12.0, "previous": prior_density, "delta": None if prior_density is None else -8.0}
+    markdown = module.render_markdown(audit)
+    assert "unavailable" in markdown
+    volume_cells = "unavailable | unavailable" if prior_volume is None else "0 | +6"
+    density_cells = "unavailable | unavailable" if prior_density is None else "20.0 | -8.0"
+    assert f"| `sample` | volume (reads) | 6 | {volume_cells} |" in markdown
+    assert f"| `sample` | density (reads per 1k records) | 12.0 | {density_cells} |" in markdown
+    row = audit["executive_summary"]["provider_interpretation_summary"]["providers"][0]
+    assert row["debt_trend"] == ("unavailable" if prior_density is None else "improving")
+
+
+def test_debt_delta_main_writes_fixture_backed_outputs(tmp_path, monkeypatch) -> None:
+    # Independent fixture calculation: 6/500 * 1000 = 12; 6 - 10 = -4; 12 - 20 = -8.
+    previous = {"generated_at": "2026-04-10T00:00:00Z", "executive_summary": {
+        "migration_debt": {"ranked_providers": [{
+            "provider": "sample", "known_migration_debt_reads": 10,
+            "known_migration_debt_per_1k_records": 20.0,
+        }]},
+    }}
+    audit = _build_debt_fixture_audit(tmp_path, monkeypatch, 6, 500, previous)
+    monkeypatch.setattr(module, "build_provider_audit", lambda: audit)
+    json_output = tmp_path / "output" / "audit.json"
+    markdown_output = tmp_path / "output" / "audit.md"
+    monkeypatch.setattr(module.sys, "argv", [
+        "audit", "--json-output", str(json_output),
+        "--markdown-output", str(markdown_output),
+    ])
+    assert module.main() == 0
+    written = json.loads(json_output.read_text(encoding="utf-8"))
+    metrics = written["executive_summary"]["migration_debt"]["snapshot_comparison"]["providers"]["sample"]
+    assert metrics["volume"] == {"current": 6, "previous": 10, "delta": -4}
+    assert metrics["density"] == {"current": 12.0, "previous": 20.0, "delta": -8.0}
+    assert "| `sample` | volume (reads) | 6 | 10 | -4 |" in markdown_output.read_text(encoding="utf-8")
+
+
+@pytest.mark.parametrize("source", ["missing_log_directory", "empty_log_directory"])
+@pytest.mark.parametrize("missing_snapshot", ["current", "previous"])
+def test_debt_delta_unavailable_corpus_is_not_zero_debt(
+    tmp_path, monkeypatch, source, missing_snapshot,
+) -> None:
+    # Hand calculation: 6/500 * 1000 = 12; unavailable counts are not measured zeros.
+    previous = {
+        "providers": {"sample": {"source": source if missing_snapshot == "previous" else "raw_logs"}},
+        "executive_summary": {"migration_debt": {"ranked_providers": [{
+            "provider": "sample", "known_migration_debt_reads": 0,
+            "known_migration_debt_per_1k_records": 0.0,
+        }]}},
+    }
+    audit = _build_debt_fixture_audit(
+        tmp_path, monkeypatch, 6, 500, previous,
+        current_source=source if missing_snapshot == "current" else "raw_logs",
+    )
+    metrics = audit["executive_summary"]["migration_debt"]["snapshot_comparison"]["providers"]["sample"]
+    assert metrics["volume"][missing_snapshot] is None
+    assert metrics["density"][missing_snapshot] is None
+    assert metrics["volume"]["delta"] is None
+    assert metrics["density"]["delta"] is None
+    row = audit["executive_summary"]["provider_interpretation_summary"]["providers"][0]
+    assert row["debt_trend"] == "unavailable"
+    assert "unavailable |" in module.render_markdown(audit)
+
+
+@pytest.mark.parametrize("empty_snapshot", ["current", "previous"])
+def test_debt_delta_real_empty_raw_log_is_unavailable(tmp_path, monkeypatch, empty_snapshot):
+    repo = tmp_path / "repo"
+    logs = repo / "logs"
+    provider_logs = logs / "sample"
+    provider_logs.mkdir(parents=True)
+    (provider_logs / "session_empty.jsonl").write_text("", encoding="utf-8", newline="\n")
+    monkeypatch.setattr(module, "PROVIDERS", ("sample",))
+    monkeypatch.setattr(module, "load_github_issue_index", lambda *_: [])
+    empty = module.build_provider_audit(repo_root=repo, logs_root=logs)
+    assert empty["providers"]["sample"]["source"] == "raw_logs"
+    assert empty["providers"]["sample"]["post_records"] == 0
+    # Hand calculation for the populated endpoint: 10 / 500 * 1000 = 20 per 1k.
+    populated_summary = {"source": "raw_logs", "post_records": 500,
+                         "missing_repo_read_remediation_hints": [{"total_count": 10}]}
+    populated = {"providers": {"sample": populated_summary}, "executive_summary": {
+        "migration_debt": module.build_migration_debt_summary({"sample": populated_summary})}}
+    current, previous = (empty, populated) if empty_snapshot == "current" else (populated, empty)
+    debt = current["executive_summary"]["migration_debt"]
+    comparison = module.build_migration_debt_snapshot_comparison(
+        debt, current["providers"], previous, "2026-04-11T00:00:00Z")
+    metrics = comparison["providers"]["sample"]
+    other = "previous" if empty_snapshot == "current" else "current"
+    assert metrics["volume"] == {empty_snapshot: None, other: 10, "delta": None}
+    assert metrics["density"] == {empty_snapshot: None, other: 20.0, "delta": None}
+    interpretation = module.build_provider_interpretation_summary(
+        current["providers"], debt, {}, {}, previous, {}, [])
+    assert interpretation["providers"][0]["debt_trend"] == "unavailable"
+
+
+@pytest.mark.parametrize("records", [None, False, -1, "500", float("nan"), float("inf")])
+def test_recorded_debt_metric_rejects_invalid_record_availability(records):
+    summary = {"source": "raw_logs", "post_records": records}
+    assert module._recorded_debt_metric({"reads": 0}, "reads", summary) is None
+
+
+def test_recorded_debt_metric_requires_raw_record_availability():
+    assert module._recorded_debt_metric({"reads": 0}, "reads", {"source": "raw_logs"}) is None

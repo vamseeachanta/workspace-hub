@@ -1,0 +1,115 @@
+# Docling Benchmark Reference
+# Source: WRK-1303 Stage 2-5 (2026-03-17)
+# Purpose: Evaluate Docling for 0%-yield content types
+
+collected_date: "2026-03-17"
+wrk_ref: WRK-1303
+category: document-intelligence
+
+tool:
+  name: Docling
+  version: "2.80.0"
+  model: "Granite-Docling-258M (layout) + RapidOCR (text)"
+  license: "MIT (Apache-2.0 for underlying models)"
+  python_min: "3.10"
+  requires_gpu: false  # works on CPU, but very slow
+  gpu_note: "GTX 750 Ti too old (CUDA 5.0 < 7.0 minimum); CPU fallback works"
+  install: "uv run --no-project --with docling>=2.80 --with transformers>=4.51 --with huggingface-hub>=0.25,<1"
+  dep_conflict: >
+    docling pins huggingface-hub<1 but transformers>=4.51 expects
+    get_full_repo_name from hf_hub. Use --with overrides, not inline script deps.
+  queue_py_shadow: >
+    scripts/data/doc_intelligence/queue.py shadows stdlib queue module.
+    Run from /tmp or set CUDA_VISIBLE_DEVICES="" and run from outside workspace-hub.
+
+benchmark_results:
+  - file: "Padeye Design Guide TP2016-001-Rev01.pdf"
+    pages: ~6
+    docling_seconds: 32.4
+    pdftotext_seconds: 0.03
+    docling_chars: 2891
+    pdftotext_chars: 4804
+    table_rows_docling: 0
+    note: "Small doc, Docling output is structured markdown with headings"
+
+  - file: "DNV-RP-B401 Cathodic Protection Design"
+    pages: ~100
+    docling_seconds: 65.7
+    pdftotext_seconds: 0.11
+    docling_chars: 189409
+    pdftotext_chars: 132466
+    table_rows_docling: 128
+    note: "43% more text; 128 table rows captured in markdown"
+
+  - file: "DNV-RP-F105 Free Spanning Pipelines"
+    pages: ~100
+    docling_seconds: 91
+    pdftotext_seconds: 0.18
+    docling_chars: 205311
+    pdftotext_chars: 180278
+    table_rows_docling: 251
+    note: "Equation-heavy standard; 251 table rows"
+
+  - file: "DNV-RP-F103 CP Submarine Pipelines"
+    pages: ~30
+    docling_seconds: 36
+    pdftotext_seconds: 0.08
+    docling_chars: 85523
+    pdftotext_chars: 78149
+    table_rows_docling: 47
+
+  - file: "Pipelay Solitaire Stinger Force Analysis"
+    pages: ~200
+    docling_seconds: 892
+    pdftotext_seconds: 0.34
+    docling_chars: 214136
+    pdftotext_chars: 188476
+    table_rows_docling: 366
+    note: "15 minutes on CPU — very large document"
+
+  - file: "WMO-2018 Guide to Wave Analysis and Forecasting"
+    pages: ~300
+    docling_seconds: 739
+    pdftotext_seconds: 0.44
+    docling_chars: 698388
+    pdftotext_chars: 580016
+    table_rows_docling: 939
+    note: "Largest doc tested; 939 table rows; 20% more text"
+
+summary:
+  total_documents: 6
+  total_docling_seconds: 1857
+  total_pdftotext_seconds: 1.18
+  slowdown_factor: "1570x"
+  avg_seconds_per_doc: 310
+  avg_chars_increase: "+14%"
+  total_table_rows: 1731
+  errors: 0
+
+key_findings:
+  - "Docling works on CPU but is ~1570x slower than pdftotext"
+  - "Extracts ~14% more text on average than pdftotext"
+  - "Captures 1731 markdown table rows across 6 documents"
+  - "Output is structured markdown with headings, lists, tables, image placeholders"
+  - "GTX 750 Ti GPU too old for PyTorch CUDA — CPU-only on dev-primary"
+  - "Dependency conflicts: docling pins hf_hub<1, transformers needs newer"
+  - "queue.py name collision in doc_intelligence dir shadows stdlib"
+  - "NOT viable for batch processing of 1M+ corpus at 310s/doc"
+  - "Viable for targeted single-doc extraction of high-value standards"
+
+recommendations:
+  batch_extraction: "NOT recommended — 310s/doc on CPU is impractical for 1M+ corpus"
+  targeted_extraction: "RECOMMENDED — use for high-value engineering standards needing table/equation preservation"
+  integration_point: "Phase 2a supplement: run Docling on specific standards identified by domain experts"
+  gpu_requirement: "For practical batch use, needs CUDA 7.0+ GPU (RTX 2060 or better)"
+  alternative_path: "Consider running on dev-secondary if it has a compatible GPU"
+
+sources:
+  - title: "IBM Docling - GitHub"
+    url: "https://github.com/docling-project/docling"
+  - title: "Docling PyPI"
+    url: "https://pypi.org/project/docling/"
+  - title: "Granite-Docling-258M - HuggingFace"
+    url: "https://huggingface.co/ibm-granite/granite-docling-258M"
+  - title: "IBM Research Blog"
+    url: "https://research.ibm.com/blog/docling-generative-AI"

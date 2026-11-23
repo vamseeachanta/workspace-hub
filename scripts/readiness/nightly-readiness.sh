@@ -1,0 +1,938 @@
+#!/usr/bin/env bash
+# nightly-readiness.sh — 9 ecosystem health checks for the nightly cron pipeline
+# Called from comprehensive-learning-nightly.sh Step 5 (WRK-308)
+# Each check is best-effort: failures are logged but never abort the pipeline.
+# Issues append to .claude/state/readiness-issues.md for Phase 6 to surface.
+set -uo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+WORKSPACE_HUB="${WORKSPACE_HUB:-$(cd "${SCRIPT_DIR}/../.." && pwd)}"
+STATE_DIR="${WORKSPACE_HUB}/.claude/state"
+ISSUES_FILE="${STATE_DIR}/readiness-issues.md"
+RUN_TS=$(date +%Y-%m-%dT%H:%M:%S)
+
+mkdir -p "$STATE_DIR"
+
+# Accumulate issues in memory; write once at end
+issues=()
+pass_count=0
+fail_count=0
+not_evaluated_count=0
+declare -A check_results=()
+declare -A check_details=()
+
+log_pass() {
+  echo "  OK  $1"
+  pass_count=$((pass_count + 1))
+  local cid="${1%%:*}"
+  check_results["$cid"]="pass"
+  check_details["$cid"]="${1#*: }"
+}
+log_fail() {
+  echo "  FAIL $1"
+  issues+=("$1")
+  fail_count=$((fail_count + 1))
+  local cid="${1%%:*}"
+  check_results["$cid"]="fail"
+  check_details["$cid"]="${1#*: }"
+}
+
+echo "--- Readiness: ${RUN_TS} ---"
+
+# ─────────────────────────────────────────────────────────────────────────────
+# R1: Memory files ≤ 200 lines
+# ─────────────────────────────────────────────────────────────────────────────
+check_r1() {
+  local mem_dir="${WORKSPACE_HUB}/.claude/memory"
+  [[ -d "$mem_dir" ]] || { log_pass "R1: memory/ absent — skip"; return; }
+  local over=()
+  while IFS= read -r -d '' f; do
+    # Skip auto-generated / managed memory artifacts (snapshots, topic indexes).
+    # The 200-line budget targets hand-authored memory that loads into context;
+    # generated mirrors grow with the corpus and declare themselves managed in
+    # their header (consistent with the enforcement-not-on-own-artifacts rule).
+    head -5 "$f" 2>/dev/null | grep -qiE 'managed by|auto-generated|do not hand-edit' && continue
+    local lc
+    lc=$(wc -l < "$f" 2>/dev/null || echo 0)
+    [[ "$lc" -gt 200 ]] && over+=("$(basename "$f"):${lc}L")
+  done < <(find "$mem_dir" -name "*.md" -print0 2>/dev/null)
+  if [[ ${#over[@]} -eq 0 ]]; then
+    log_pass "R1: memory files ≤ 200 lines"
+  else
+    log_fail "R1: memory files over 200 lines: ${over[*]}"
+  fi
+} ; check_r1 || true
+
+# ─────────────────────────────────────────────────────────────────────────────
+# R5: Context budget — key context files ≤ 16KB total
+# Budget: Global 2KB + Workspace 4KB + Project 8KB + Local 2KB = 16KB
+# ─────────────────────────────────────────────────────────────────────────────
+check_r5() {
+  local total=0
+  local missing=()
+  # CLAUDE.md removed 2026-08-01 (harness surface retired; AGENTS.md is canonical).
+  local candidates=(
+    "${WORKSPACE_HUB}/AGENTS.md"
+    "${WORKSPACE_HUB}/.claude/rules/coding-style.md"
+    "${WORKSPACE_HUB}/.claude/rules/patterns.md"
+  )
+  for f in "${candidates[@]}"; do
+    # A missing candidate must FAIL, never be skipped: silently summing fewer files
+    # makes a deleted file score GREENER than a large one. Four rules files were
+    # deleted in 2fb3bdc7c and R5 kept reporting PASS while summing 3 of 7 (#3744).
+    if [[ ! -f "$f" ]]; then
+      missing+=("${f#"${WORKSPACE_HUB}/"}")
+      continue
+    fi
+    local sz
+    sz=$(wc -c < "$f" 2>/dev/null || echo 0)
+    total=$((total + sz))
+  done
+  local kb=$(( total / 1024 ))
+  if (( ${#missing[@]} > 0 )); then
+    log_fail "R5: ${#missing[@]} budgeted context file(s) missing: ${missing[*]} — update the candidate list or restore them"
+  elif [[ "$total" -le 16384 ]]; then
+    log_pass "R5: context budget ${kb}KB / 16KB (${#candidates[@]} files)"
+  else
+    log_fail "R5: context budget ${kb}KB exceeds 16KB — trim rules or AGENTS.md"
+  fi
+} ; check_r5 || true
+
+# ─────────────────────────────────────────────────────────────────────────────
+# R6: Submodules on tracking branches, ≤5 commits behind
+# ─────────────────────────────────────────────────────────────────────────────
+check_r6() {
+  command -v git &>/dev/null || { log_pass "R6: git absent — skip"; return; }
+  local behind=()
+  local detached=()
+  while IFS= read -r sub_path; do
+    [[ -z "$sub_path" ]] && continue
+    local full_path="${WORKSPACE_HUB}/${sub_path}"
+    [[ -d "$full_path/.git" || -f "$full_path/.git" ]] || continue
+    local branch
+    branch=$(git -C "$full_path" symbolic-ref --short HEAD 2>/dev/null || echo "")
+    if [[ -z "$branch" ]]; then
+      detached+=("$sub_path")
+      continue
+    fi
+    local count
+    count=$(git -C "$full_path" rev-list --count \
+      "HEAD..origin/${branch}" 2>/dev/null || echo "0")
+    [[ "$count" -gt 5 ]] && behind+=("${sub_path}:${count}")
+  done < <(git -C "$WORKSPACE_HUB" submodule --quiet foreach \
+    'echo "$displaypath"' 2>/dev/null)
+
+  local msgs=()
+  [[ ${#detached[@]} -gt 0 ]] && msgs+=("detached: ${detached[*]}")
+  [[ ${#behind[@]} -gt 0 ]] && msgs+=("behind: ${behind[*]}")
+  if [[ ${#msgs[@]} -eq 0 ]]; then
+    log_pass "R6: submodules on tracking branches, within 5 commits"
+  else
+    log_fail "R6: submodule issues — ${msgs[*]}"
+  fi
+} ; check_r6 || true
+
+# ─────────────────────────────────────────────────────────────────────────────
+# R-CODEX: CODEX.md MAX_TEAMMATES matches .claude/settings.json
+# ─────────────────────────────────────────────────────────────────────────────
+check_r_codex() {
+  local codex="${WORKSPACE_HUB}/.codex/CODEX.md"
+  local settings="${WORKSPACE_HUB}/.claude/settings.json"
+  [[ -f "$codex" ]] || { log_pass "R-CODEX: CODEX.md absent — skip"; return; }
+  [[ -f "$settings" ]] || { log_pass "R-CODEX: settings.json absent — skip"; return; }
+  command -v jq &>/dev/null || { log_pass "R-CODEX: jq absent — skip"; return; }
+  local codex_val settings_val
+  codex_val=$(grep -oP 'MAX_TEAMMATES[=:]\s*\K[0-9]+' "$codex" 2>/dev/null | head -1 || echo "")
+  # settings.json carries the thread cap as the env var MAX_TEAMMATES (string),
+  # not a top-level maxTeammates key — read the real path so the check compares
+  # the operative value instead of always seeing empty.
+  settings_val=$(jq -r '.env.MAX_TEAMMATES // empty' "$settings" 2>/dev/null || echo "")
+  if [[ -z "$codex_val" && -z "$settings_val" ]]; then
+    log_pass "R-CODEX: MAX_TEAMMATES not configured — skip"
+  elif [[ "$codex_val" == "$settings_val" ]]; then
+    log_pass "R-CODEX: MAX_TEAMMATES=${codex_val} matches settings.json"
+  else
+    log_fail "R-CODEX: MAX_TEAMMATES mismatch — CODEX.md=${codex_val} settings.json=${settings_val}"
+  fi
+} ; check_r_codex || true
+
+# ─────────────────────────────────────────────────────────────────────────────
+# R-MODEL: No stale model IDs in scripts/ (weekly guard)
+# ─────────────────────────────────────────────────────────────────────────────
+check_r_model() {
+  local scripts_dir="${WORKSPACE_HUB}/scripts"
+  [[ -d "$scripts_dir" ]] || { log_pass "R-MODEL: scripts/ absent — skip"; return; }
+  # Stale model patterns (pre-Claude 3 naming).
+  # The 'r-model-allow' sentinel below tags these as definitions, not usages,
+  # so the check does not match its own pattern strings (per-line sentinel per
+  # SHARED_SOUL "enforcement scripts must not block their own artifacts").
+  local stale_patterns=(
+    'claude-2\b'        # r-model-allow
+    'claude-instant'    # r-model-allow
+    'claude-v1'         # r-model-allow
+    'claude-1\.'        # r-model-allow
+  )
+  local hits=()
+  for pat in "${stale_patterns[@]}"; do
+    while IFS= read -r match; do
+      [[ -n "$match" ]] && hits+=("$match")
+    done < <(grep -rn --include="*.sh" --include="*.py" --include="*.yaml" \
+      --include="*.yml" -E "$pat" "$scripts_dir" 2>/dev/null \
+      | grep -v 'r-model-allow' \
+      | cut -d: -f1 | sort -u || true)
+  done
+  # Deduplicate
+  local unique_hits
+  unique_hits=$(printf '%s\n' "${hits[@]+"${hits[@]}"}" | sort -u | head -5)
+  if [[ -z "$unique_hits" ]]; then
+    log_pass "R-MODEL: no stale model IDs in scripts/"
+  else
+    log_fail "R-MODEL: stale model IDs found in scripts/: $(echo "$unique_hits" | tr '\n' ' ')"
+  fi
+} ; check_r_model || true
+
+# ─────────────────────────────────────────────────────────────────────────────
+# R-REGISTRY: model-registry.yaml ≤ 14 days old (weekly guard)
+# ─────────────────────────────────────────────────────────────────────────────
+check_r_registry() {
+  local reg="${WORKSPACE_HUB}/config/agents/model-registry.yaml"
+  [[ -f "$reg" ]] || { log_fail "R-REGISTRY: model-registry.yaml absent"; return; }
+  local now_epoch reg_epoch age_days
+  now_epoch=$(date +%s 2>/dev/null || echo "0")
+  reg_epoch=$(date -r "$reg" +%s 2>/dev/null || \
+    stat -c %Y "$reg" 2>/dev/null || echo "0")
+  age_days=$(( (now_epoch - reg_epoch) / 86400 ))
+  if [[ "$age_days" -le 14 ]]; then
+    log_pass "R-REGISTRY: model-registry.yaml ${age_days}d old (≤14)"
+  else
+    log_fail "R-REGISTRY: model-registry.yaml ${age_days}d old — run update-model-ids.sh"
+  fi
+} ; check_r_registry || true
+
+# ─────────────────────────────────────────────────────────────────────────────
+# R-MODEL-DRIFT: live runtime configs match model-registry.yaml (#3038)
+# Local runtime config (~/.codex/config.toml, ~/.hermes/config.yaml) is the
+# operational truth; the registry must track it.
+# ─────────────────────────────────────────────────────────────────────────────
+check_r_model_drift() {
+  local output rc=0 status detail failed=0 incomplete=0
+  output=$(python3 "${WORKSPACE_HUB}/scripts/readiness/model_drift.py" \
+    --registry "${MODEL_REGISTRY_FILE:-${WORKSPACE_HUB}/config/agents/model-registry.yaml}" \
+    --project-root "${WORKSPACE_HUB}" 2>/dev/null) || rc=$?
+  if [[ -z "$output" ]]; then
+    echo "  NOT_EVALUATED R-MODEL-DRIFT: validator unavailable (exit ${rc}); requires Python 3.11 and PyYAML"
+    check_results["R-MODEL-DRIFT"]="not_evaluated"
+    check_details["R-MODEL-DRIFT"]="validator unavailable"
+    not_evaluated_count=$((not_evaluated_count + 1))
+    return
+  fi
+  while IFS=$'\t' read -r status detail; do
+    echo "  ${status} R-MODEL-DRIFT: ${detail}"
+    [[ "$status" == FAIL ]] && failed=1
+    [[ "$status" == NOT_EVALUATED || "$status" == WARN ]] && incomplete=1
+  done <<< "$output"
+  if [[ "$failed" -eq 1 || "$rc" -ne 0 ]]; then
+    log_fail "R-MODEL-DRIFT: registry or runtime configuration failed validation"
+  elif [[ "$incomplete" -eq 1 ]]; then
+    check_results["R-MODEL-DRIFT"]="not_evaluated"
+    check_details["R-MODEL-DRIFT"]="see per-key results and comparison counts"
+    not_evaluated_count=$((not_evaluated_count + 1))
+  else
+    log_pass "R-MODEL-DRIFT: all configured comparisons evaluated; see counts above"
+  fi
+} ; check_r_model_drift || true
+
+# ─────────────────────────────────────────────────────────────────────────────
+# R-XPROV: CODEX.md + GEMINI.md contain TDD mandates
+# ─────────────────────────────────────────────────────────────────────────────
+check_r_xprov() {
+  local xprov_ok=1
+  local missing=()
+  local -A xprov_map=(
+    ["CODEX.md"]="${WORKSPACE_HUB}/.codex/CODEX.md"
+    ["GEMINI.md"]="${WORKSPACE_HUB}/.gemini/GEMINI.md"
+  )
+  for fname in CODEX.md GEMINI.md; do
+    local fpath="${xprov_map[$fname]}"
+    [[ -f "$fpath" ]] || continue  # absent files are skipped, not failed
+    grep -qi "TDD\|test.driven\|testing" "$fpath" 2>/dev/null \
+      || { missing+=("${fname}:TDD"); xprov_ok=0; }
+  done
+  if [[ "$xprov_ok" -eq 1 ]]; then
+    log_pass "R-XPROV: CODEX.md/GEMINI.md contain TDD mandates"
+  else
+    log_fail "R-XPROV: missing mandates: ${missing[*]}"
+  fi
+} ; check_r_xprov || true
+
+# ─────────────────────────────────────────────────────────────────────────────
+# R-SKILLS: session-signals/ fresh + skills committed in last 7 days
+# ─────────────────────────────────────────────────────────────────────────────
+check_r_skills() {
+  local signals_dir="${STATE_DIR}/session-signals"
+  local skills_dir="${WORKSPACE_HUB}/.claude/skills"
+  local issues_local=()
+
+  # Check session-signals freshness (any file modified in last 7 days)
+  if [[ -d "$signals_dir" ]]; then
+    local recent
+    recent=$(find "$signals_dir" -name "*.jsonl" -mtime -7 2>/dev/null | head -1 || true)
+    [[ -z "$recent" ]] && issues_local+=("no session-signals updated in 7 days")
+  else
+    issues_local+=("session-signals/ directory absent")
+  fi
+
+  # Skills committed in last 7 days — FLEET authoring cadence, identical on every
+  # box (git log on main), so it must never fail a single machine's readiness
+  # (#3591 item 4). Demoted to an advisory note on the OK line; the per-box
+  # session-signals freshness above remains the failing condition.
+  local cadence_note=""
+  if command -v git &>/dev/null && [[ -d "$skills_dir" ]]; then
+    local skills_commit
+    skills_commit=$(git -C "$WORKSPACE_HUB" log --oneline --since="7 days ago" \
+      -- ".claude/skills/" 2>/dev/null | head -1 || echo "")
+    [[ -z "$skills_commit" ]] && cadence_note=" (advisory: no skills committed fleet-wide in 7 days)"
+  fi
+
+  if [[ ${#issues_local[@]} -eq 0 ]]; then
+    log_pass "R-SKILLS: session-signals fresh${cadence_note}"
+  else
+    log_fail "R-SKILLS: ${issues_local[*]}"
+  fi
+} ; check_r_skills || true
+
+# ─────────────────────────────────────────────────────────────────────────────
+# R-HARNESS: agent harness files ≤ 25 lines each (rule: ≤20; grace: 25)
+# Covers: CLAUDE.md, MEMORY.md, AGENTS.md, .codex/CODEX.md, .gemini/GEMINI.md
+# ─────────────────────────────────────────────────────────────────────────────
+check_r_harness() {
+  local -A harness_map=(
+    ["CLAUDE.md"]="${WORKSPACE_HUB}/CLAUDE.md"
+    ["MEMORY.md"]="${WORKSPACE_HUB}/MEMORY.md"
+    ["AGENTS.md"]="${WORKSPACE_HUB}/AGENTS.md"
+    ["CODEX.md"]="${WORKSPACE_HUB}/.codex/CODEX.md"
+    ["GEMINI.md"]="${WORKSPACE_HUB}/.gemini/GEMINI.md"
+  )
+  local over=()
+  for fname in CLAUDE.md MEMORY.md AGENTS.md CODEX.md GEMINI.md; do
+    local fpath="${harness_map[$fname]}"
+    [[ -f "$fpath" ]] || continue
+    local lc
+    lc=$(wc -l < "$fpath" 2>/dev/null || echo 0)
+    [[ "$lc" -gt 25 ]] && over+=("${fname}:${lc}L")
+  done
+  if [[ ${#over[@]} -eq 0 ]]; then
+    log_pass "R-HARNESS: agent harness files ≤ 25 lines"
+  else
+    log_fail "R-HARNESS: harness files over 25 lines: ${over[*]}"
+  fi
+} ; check_r_harness || true
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# (R-ANSYS + R-ORCAFLEX removed per #2849 decision 2 — the equality-matrix `solvers`
+#  cell is now the single source of truth for licensed-solver capability. Detection
+#  logic lives in scripts/readiness/lib/probe-solvers.sh, consumed by collect-equality.sh.
+#  No per-solver nightly-board duplication, to avoid re-introducing drift.)
+# ─────────────────────────────────────────────────────────────────────────────
+# R-AI-CLI: AI agent CLIs present and at or above minimum version
+# Delegates to ai-agent-readiness.sh; reads JSONL to count warn/error rows.
+# ─────────────────────────────────────────────────────────────────────────────
+check_r_ai_cli() {
+  local readiness_script="${SCRIPT_DIR}/ai-agent-readiness.sh"
+  [[ -f "$readiness_script" ]] || { log_pass "R-AI-CLI: ai-agent-readiness.sh absent — skip"; return; }
+
+  bash "$readiness_script" >/dev/null 2>&1 || true
+
+  local jsonl="${STATE_DIR}/session-signals/ai-readiness.jsonl"
+  [[ -f "$jsonl" ]] || { log_pass "R-AI-CLI: no ai-readiness.jsonl yet — skip"; return; }
+
+  # The jsonl is git-synced across machines and append-only, so a blind tail
+  # mixes other hosts' rows (e.g. claude absent on the Hermes host) and stale
+  # historical warns. Count only THIS host's LATEST status per agent, and only
+  # for an INSTALLED CLI: a "CLI not found in PATH" row (empty version) is
+  # expected — the harness is provider-neutral and not every workstation runs
+  # every provider. Genuine warns (installed-but-below-minimum / unreadable)
+  # carry a non-empty version and still fail the check.
+  local host_short
+  host_short=$(hostname -s 2>/dev/null || hostname | cut -d. -f1)
+  local warn_count=0 agents_with_warn="" agent last_row
+  for agent in claude codex gemini; do
+    last_row=$(grep "\"host\":\"${host_short}\"" "$jsonl" 2>/dev/null \
+      | grep "\"agent\":\"${agent}\"" | tail -1 || true)
+    [[ -z "$last_row" ]] && continue
+    if grep -q '"status":"warn"' <<<"$last_row" \
+       && ! grep -q '"version":""' <<<"$last_row"; then
+      warn_count=$((warn_count + 1))
+      agents_with_warn+="${agent} "
+    fi
+  done
+
+  if [[ "$warn_count" -eq 0 ]]; then
+    log_pass "R-AI-CLI: all AI agents present and at minimum version"
+  else
+    log_fail "R-AI-CLI: ${warn_count} agent warning(s) — ${agents_with_warn}see ai-readiness.jsonl"
+  fi
+} ; check_r_ai_cli || true
+
+# ─────────────────────────────────────────────────────────────────────────────
+# R-AI-QUOTA: providers < 80% weekly usage
+# ─────────────────────────────────────────────────────────────────────────────
+check_r_ai_quota() {
+  local quota_file="${WORKSPACE_HUB}/config/ai-tools/agent-quota-latest.json"
+  [[ -f "$quota_file" ]] || { log_pass "R-AI-QUOTA: agent-quota-latest.json absent — skip"; return; }
+  command -v jq &>/dev/null || { log_pass "R-AI-QUOTA: jq absent — skip"; return; }
+
+  local high_providers=()
+  while IFS= read -r entry; do
+    local provider week_pct
+    provider=$(echo "$entry" | jq -r '.provider // "unknown"')
+    week_pct=$(echo "$entry" | jq -r '.week_pct // 0')
+    [[ "$week_pct" == "null" ]] && week_pct=0
+    local is_high
+    is_high=$(awk -v p="$week_pct" 'BEGIN { print (p >= 80) ? "yes" : "no" }')
+    [[ "$is_high" == "yes" ]] && high_providers+=("${provider}:${week_pct}%")
+  done < <(jq -c '.agents[]' "$quota_file" 2>/dev/null || true)
+
+  if [[ ${#high_providers[@]} -eq 0 ]]; then
+    log_pass "R-AI-QUOTA: all providers below 80% weekly usage"
+  else
+    log_fail "R-AI-QUOTA: providers at ≥80% weekly quota: ${high_providers[*]}"
+  fi
+} ; check_r_ai_quota || true
+
+# ─────────────────────────────────────────────────────────────────────────────
+# R-UX: Cross-machine terminal UX consistency (WRK-228)
+# Checks: keybindings.json, CLAUDE_SCREENSHOT_DIR, Chrome Claude extension.
+# Delegates to check-ux-consistency.sh; reads exit code + stdout.
+# ─────────────────────────────────────────────────────────────────────────────
+check_r_ux() {
+  local ux_script="${SCRIPT_DIR}/check-ux-consistency.sh"
+  [[ -f "$ux_script" ]] || { log_pass "R-UX: check-ux-consistency.sh absent — skip"; return; }
+
+  local ux_output fail_count warn_count
+  ux_output=$(bash "$ux_script" 2>&1 || true)
+
+  # Count FAIL and WARN lines from the UX script output.
+  # grep -c exits 1 when count is 0 under pipefail; use awk to avoid that.
+  fail_count=$(printf '%s\n' "$ux_output" | awk '/^\s*FAIL/{n++} END{print n+0}')
+  warn_count=$(printf '%s\n' "$ux_output" | awk '/^\s*WARN/{n++} END{print n+0}')
+
+  if [[ "$fail_count" -eq 0 && "$warn_count" -eq 0 ]]; then
+    log_pass "R-UX: keybindings, screenshot dir, Chrome extension all consistent"
+  elif [[ "$fail_count" -gt 0 ]]; then
+    local fail_details
+    fail_details=$(printf '%s\n' "$ux_output" | grep '^\s*FAIL' | sed 's/^\s*//' \
+      | tr '\n' '; ' | sed 's/; $//')
+    log_fail "R-UX: ${fail_count} UX gap(s) — ${fail_details}"
+  else
+    local warn_details
+    warn_details=$(printf '%s\n' "$ux_output" | grep '^\s*WARN' | sed 's/^\s*//' \
+      | tr '\n' '; ' | sed 's/; $//')
+    log_fail "R-UX: ${warn_count} UX inconsistency/ies — ${warn_details}"
+  fi
+} ; check_r_ux || true
+
+# ─────────────────────────────────────────────────────────────────────────────
+# WRK-1047: harness readiness checks (R-JQ, R-PLUGINS, R-HOOKS, R-HOOK-STATIC,
+#           R-SETTINGS, R-UV, R-PRECOMMIT; extended R-HARNESS tier-1; R-SKILLS sync)
+# ─────────────────────────────────────────────────────────────────────────────
+HARNESS_CONFIG="${HARNESS_CONFIG:-${SCRIPT_DIR}/harness-config.yaml}"
+
+# Read a scalar from harness-config.yaml without PyYAML (strips inline comments)
+_hc_scalar() {
+  grep -E "^${1}:" "${HARNESS_CONFIG}" 2>/dev/null | head -1 \
+    | sed 's/^[^:]*:[[:space:]]*//' | sed 's/[[:space:]]*#.*//' | tr -d '"' | tr -d "'"
+}
+# Read a YAML list (one item per line under a key, indented with "  - ")
+# Strips surrounding single/double quotes to support multi-word values like 'git commit'
+_hc_list() {
+  awk "/^${1}:/{found=1;next} \
+       found && /^  - /{sub(/^[[:space:]]*-[[:space:]]*/,\"\"); print; next} \
+       found && /^[^ ]/{exit}" \
+    "${HARNESS_CONFIG}" 2>/dev/null | tr -d "'\""
+}
+
+# ─────────────────────────────────────────────────────────────────────────────
+# R-JQ: jq available (prerequisite for JSON checks)
+# ─────────────────────────────────────────────────────────────────────────────
+check_r_jq() {
+  if command -v jq &>/dev/null; then
+    log_pass "R-JQ: jq available ($(jq --version 2>/dev/null || echo 'unknown version'))"
+  else
+    log_fail "R-JQ: jq not found — install with: sudo apt-get install jq"
+  fi
+} ; check_r_jq || true
+
+# ─────────────────────────────────────────────────────────────────────────────
+# R-PLUGINS: required plugins installed (required-set from harness-config.yaml)
+# ─────────────────────────────────────────────────────────────────────────────
+check_r_plugins() {
+  [[ -f "${HARNESS_CONFIG}" ]] || { log_pass "R-PLUGINS: harness-config.yaml absent — skip"; return; }
+  command -v claude &>/dev/null || { log_fail "R-PLUGINS: claude CLI not found"; return; }
+
+  local plugin_list missing=()
+  plugin_list=$(timeout 15 claude plugin list 2>/dev/null || true)
+
+  while IFS= read -r plugin; do
+    [[ -z "$plugin" ]] && continue
+    # Match the exact plugin name regardless of the bullet glyph: the real CLI
+    # prints a unicode "❯ plugin-name@marketplace" (U+276F), not ASCII ">", so the
+    # old '>'-anchored pattern false-reported every installed plugin as missing.
+    # Anchor on a non-name boundary before the name and @/space/EOL after it.
+    if ! echo "$plugin_list" | grep -qE "(^|[^[:alnum:]_-])${plugin}(@|[[:space:]]|$)"; then
+      missing+=("$plugin")
+    fi
+  done < <(_hc_list "required_plugins")
+
+  if [[ ${#missing[@]} -eq 0 ]]; then
+    log_pass "R-PLUGINS: all required plugins present"
+  else
+    log_fail "R-PLUGINS: missing required plugins: ${missing[*]}"
+  fi
+} ; check_r_plugins || true
+
+# ─────────────────────────────────────────────────────────────────────────────
+# R-HOOKS: all hook paths in settings.json exist on disk
+# ─────────────────────────────────────────────────────────────────────────────
+check_r_hooks() {
+  local settings="${WORKSPACE_HUB}/.claude/settings.json"
+  [[ -f "$settings" ]] || { log_pass "R-HOOKS: settings.json absent — skip"; return; }
+  command -v jq &>/dev/null || { log_pass "R-HOOKS: jq absent — skip"; return; }
+
+  local missing=()
+  # Extract literal script paths from hook commands (skip variable-expanded paths)
+  while IFS= read -r hook_path; do
+    # Native jq may emit CRLF even when the JSON itself is valid.
+    hook_path="${hook_path//$'\r'/}"
+    [[ -z "$hook_path" ]] && continue
+    # Skip paths containing shell variable expansions — cannot resolve statically
+    [[ "$hook_path" == *'${'* ]] && continue
+    [[ "$hook_path" == *'$('* ]] && continue
+    local abs_path="${hook_path}"
+    [[ "${hook_path}" != /* ]] && abs_path="${WORKSPACE_HUB}/${hook_path}"
+    if [[ ! -f "$abs_path" ]]; then
+      local escaped_path
+      printf -v escaped_path '%q' "$hook_path"
+      missing+=("$escaped_path")
+    fi
+  done < <(jq -r '.. | strings | select(test("bash ")) | split("bash ")[1]
+                   | split(" ")[0] | select(length > 0)
+                   | select(startswith("-") | not)
+                   | select(contains("/") or test("\\.sh$"))' \
+             "$settings" 2>/dev/null | sort -u || true)
+
+  if [[ ${#missing[@]} -eq 0 ]]; then
+    log_pass "R-HOOKS: all hook scripts present on disk"
+  else
+    log_fail "R-HOOKS: hook scripts missing from disk: ${missing[*]}"
+  fi
+} ; check_r_hooks || true
+
+# ─────────────────────────────────────────────────────────────────────────────
+# R-HOOK-STATIC: hook files ≤200 lines and no blocking patterns
+# ─────────────────────────────────────────────────────────────────────────────
+check_r_hook_static() {
+  local hooks_dir="${WORKSPACE_HUB}/.claude/hooks"
+  [[ -d "$hooks_dir" ]] || { log_pass "R-HOOK-STATIC: no hooks/ dir — skip"; return; }
+
+  local max_lines
+  max_lines=$(_hc_scalar "hook_static_max_lines")
+  max_lines=${max_lines:-200}
+
+  # Basenames exempted from the line-count cap (large, intrinsically-complex
+  # validation hooks). Read from harness-config.yaml; fall back to none if absent
+  # so a missing/unreadable list never silently disables the line check.
+  local line_exempt=()
+  mapfile -t line_exempt < <(_hc_list "hook_static_line_exempt" 2>/dev/null || true)
+  _is_line_exempt() {
+    local base="$1" ex stripped
+    for ex in "${line_exempt[@]+"${line_exempt[@]}"}"; do
+      # _hc_list preserves inline "# justification" comments; strip them and
+      # surrounding whitespace before comparing against the basename.
+      stripped="${ex%%#*}"
+      stripped="${stripped#"${stripped%%[![:space:]]*}"}"   # ltrim
+      stripped="${stripped%"${stripped##*[![:space:]]}"}"   # rtrim
+      [[ "$base" == "$stripped" ]] && return 0
+    done
+    return 1
+  }
+
+  local violations=()
+  while IFS= read -r -d '' hook_file; do
+    local base
+    base=$(basename "$hook_file")
+    local lc
+    lc=$(wc -l < "$hook_file" 2>/dev/null || echo 0)
+    if [[ "$lc" -gt "$max_lines" ]] && ! _is_line_exempt "$base"; then
+      violations+=("${base}:${lc}L>max${max_lines}")
+    fi
+    # Check blocking patterns from harness-config.yaml (exclude comment lines and
+    # lines carrying a 'hook-static-allow' sentinel — pattern-detector hooks
+    # legitimately contain the strings they scan for, per SHARED_SOUL
+    # "enforcement scripts must not block their own artifacts").
+    local config_patterns=()
+    mapfile -t config_patterns < <(_hc_list "hook_blocking_patterns" 2>/dev/null || true)
+    if [[ ${#config_patterns[@]} -eq 0 ]]; then
+      config_patterns=('git commit' 'git push' '\bcurl\b' '\bwget\b' 'http://' 'https://')
+    fi
+    for pat in "${config_patterns[@]}"; do
+      if grep -vE '^\s*#' "$hook_file" 2>/dev/null \
+           | grep -v 'hook-static-allow' \
+           | grep -qE "$pat"; then
+        violations+=("${base}:blocking-pattern:'${pat}'")
+      fi
+    done
+  done < <(find "$hooks_dir" -name "*.sh" -print0 2>/dev/null)
+
+  if [[ ${#violations[@]} -eq 0 ]]; then
+    log_pass "R-HOOK-STATIC: all hooks ≤${max_lines} lines, no blocking patterns"
+  else
+    log_fail "R-HOOK-STATIC: hook violations: ${violations[*]}"
+  fi
+} ; check_r_hook_static || true
+
+# ─────────────────────────────────────────────────────────────────────────────
+# R-SETTINGS: settings.json is valid JSON
+# ─────────────────────────────────────────────────────────────────────────────
+check_r_settings() {
+  local settings="${WORKSPACE_HUB}/.claude/settings.json"
+  [[ -f "$settings" ]] || { log_pass "R-SETTINGS: settings.json absent — skip"; return; }
+  command -v jq &>/dev/null || { log_pass "R-SETTINGS: jq absent — skip"; return; }
+
+  if jq empty "$settings" 2>/dev/null; then
+    log_pass "R-SETTINGS: .claude/settings.json is valid JSON"
+  else
+    log_fail "R-SETTINGS: .claude/settings.json is not valid JSON — run: jq . .claude/settings.json"
+  fi
+} ; check_r_settings || true
+
+# ─────────────────────────────────────────────────────────────────────────────
+# R-UV: uv ≥ 0.5.0 available
+# ─────────────────────────────────────────────────────────────────────────────
+check_r_uv() {
+  if ! command -v uv &>/dev/null; then
+    log_fail "R-UV: uv not found — install: curl -LsSf https://astral.sh/uv/install.sh | sh"
+    return
+  fi
+  local raw_ver parsed_ver
+  raw_ver=$(uv --version 2>/dev/null | head -1 || echo "")
+  parsed_ver=$(printf '%s' "$raw_ver" | grep -oE '[0-9]+\.[0-9]+(\.[0-9]+)?' | head -1 || echo "")
+  if [[ -z "$parsed_ver" ]]; then
+    log_fail "R-UV: uv installed but version unreadable"
+    return
+  fi
+  local min="0.5.0"
+  local lo
+  lo=$(printf '%s\n%s\n' "$parsed_ver" "$min" | sort -V | head -1)
+  if [[ "$lo" == "$min" ]]; then
+    log_pass "R-UV: uv ${parsed_ver} ≥ ${min}"
+  else
+    log_fail "R-UV: uv ${parsed_ver} below minimum ${min} — run: uv self update"
+  fi
+} ; check_r_uv || true
+
+# ─────────────────────────────────────────────────────────────────────────────
+# R-PRECOMMIT: .pre-commit-config.yaml present in each available tier-1 repo
+# ─────────────────────────────────────────────────────────────────────────────
+check_r_precommit() {
+  [[ -f "${HARNESS_CONFIG}" ]] || { log_pass "R-PRECOMMIT: harness-config.yaml absent — skip"; return; }
+  local issues_local=()
+  while IFS= read -r repo; do
+    [[ -z "$repo" ]] && continue
+    local repo_dir="${WORKSPACE_HUB}/../${repo}"
+    [[ -d "$repo_dir" ]] || continue
+    local pc="${repo_dir}/.pre-commit-config.yaml"
+    if [[ ! -f "$pc" ]]; then
+      issues_local+=("${repo}:.pre-commit-config.yaml missing")
+      continue
+    fi
+  done < <(_hc_list "tier1_repos")
+
+  if [[ ${#issues_local[@]} -eq 0 ]]; then
+    log_pass "R-PRECOMMIT: available tier-1 repos have .pre-commit-config.yaml"
+  else
+    log_fail "R-PRECOMMIT: ${issues_local[*]}"
+  fi
+} ; check_r_precommit || true
+
+# ─────────────────────────────────────────────────────────────────────────────
+# R-HARNESS (extended): hub + tier-1 repos — CLAUDE.md/AGENTS.md ≤ 20 lines
+# ─────────────────────────────────────────────────────────────────────────────
+check_r_harness_extended() {
+  local over=()
+  # Hub harness files (already checked by existing R-HARNESS; this adds tier-1 repos)
+  while IFS= read -r repo; do
+    [[ -z "$repo" ]] && continue
+    local repo_dir="${WORKSPACE_HUB}/../${repo}"
+    [[ -d "$repo_dir" ]] || continue
+    for fname in CLAUDE.md AGENTS.md CODEX.md GEMINI.md; do
+      local fpath="${repo_dir}/${fname}"
+      [[ -f "$fpath" ]] || continue
+      local lc
+      lc=$(wc -l < "$fpath" 2>/dev/null || echo 0)
+      [[ "$lc" -gt 20 ]] && over+=("${repo}/${fname}:${lc}L")
+    done
+  done < <(_hc_list "tier1_repos")
+
+  if [[ ${#over[@]} -eq 0 ]]; then
+    log_pass "R-HARNESS-TIER1: tier-1 repo harness files all ≤ 20 lines"
+  else
+    log_fail "R-HARNESS-TIER1: tier-1 harness files over 20 lines: ${over[*]}"
+  fi
+} ; check_r_harness_extended || true
+
+# ─────────────────────────────────────────────────────────────────────────────
+# R-SKILLS (extended): sync dry-run + SKILL.md count ≥ baseline + command count
+# ─────────────────────────────────────────────────────────────────────────────
+check_r_skills_extended() {
+  [[ -f "${HARNESS_CONFIG}" ]] || { log_pass "R-SKILLS-SYNC: harness-config.yaml absent — skip"; return; }
+  local issues_local=()
+
+  # 1. sync-knowledge-work-plugins.sh --dry-run
+  local sync_script="${WORKSPACE_HUB}/scripts/skills/sync-knowledge-work-plugins.sh"
+  if [[ -f "$sync_script" ]]; then
+    if ! bash "$sync_script" --dry-run &>/dev/null; then
+      issues_local+=("sync-knowledge-work-plugins.sh --dry-run failed (stale skills)")
+    fi
+  fi
+
+  # 2. No _diverged/ or incoming/ leftovers
+  local skills_dir="${WORKSPACE_HUB}/.claude/skills"
+  for leftover_dir in "_diverged" "incoming"; do
+    local ldir="${skills_dir}/${leftover_dir}"
+    if [[ -d "$ldir" ]] && [[ -n "$(ls -A "$ldir" 2>/dev/null)" ]]; then
+      issues_local+=("${leftover_dir}/ has unresolved files — run skill curation")
+    fi
+  done
+
+  # 3. SKILL.md count ≥ baseline (skip if baseline=0)
+  local skill_baseline
+  skill_baseline=$(_hc_scalar "skill_count_baseline")
+  skill_baseline=${skill_baseline:-0}
+  if [[ "$skill_baseline" -gt 0 ]]; then
+    local skill_count
+    skill_count=$(find "${skills_dir}" -name "SKILL.md" 2>/dev/null | wc -l || echo 0)
+    [[ "$skill_count" -lt "$skill_baseline" ]] && \
+      issues_local+=("SKILL.md count=${skill_count} below baseline=${skill_baseline} — run --update-baseline after curation")
+  fi
+
+  # 4. command count ≥ baseline (skip if baseline=0)
+  local cmd_baseline
+  cmd_baseline=$(_hc_scalar "command_count_baseline")
+  cmd_baseline=${cmd_baseline:-0}
+  if [[ "$cmd_baseline" -gt 0 ]]; then
+    local cmd_count
+    cmd_count=$(find "${WORKSPACE_HUB}/.claude/commands" -name "*.md" 2>/dev/null | wc -l || echo 0)
+    [[ "$cmd_count" -lt "$cmd_baseline" ]] && \
+      issues_local+=("command count=${cmd_count} below baseline=${cmd_baseline} — run --update-baseline after curation")
+  fi
+
+  if [[ ${#issues_local[@]} -eq 0 ]]; then
+    log_pass "R-SKILLS-SYNC: plugin sync clean, no leftovers, counts within baseline"
+  else
+    log_fail "R-SKILLS-SYNC: ${issues_local[*]}"
+  fi
+} ; check_r_skills_extended || true
+
+# ─────────────────────────────────────────────────────────────────────────────
+# R-TELEGRAM-HERMES: multi-host Telegram/Hermes dispatch readiness (#2720)
+# ─────────────────────────────────────────────────────────────────────────────
+check_r_telegram_hermes() {
+  local tg_script="${WORKSPACE_HUB}/scripts/readiness/telegram-hermes-readiness.sh"
+  [[ -f "$tg_script" ]] || { log_pass "R-TELEGRAM-HERMES: readiness script absent — skip"; return; }
+
+  # Host-aware: the Telegram/Hermes dispatch *gate* is owned by the Hermes host
+  # (the workstation registered with telegram_mode: coordinator — ace-linux-1).
+  # The hermes CLI and ~/.hermes/config.yaml exist on every workstation (worker
+  # boxes run a gateway too), so they do NOT discriminate the dispatch owner.
+  # Resolve THIS host in config/workstations/registry.yaml; run the real
+  # readiness probe only when this host is the coordinator. Every other host
+  # (workers, status-only, not-onboarded) passes — the missing bot token /
+  # allowlist on a non-coordinator box is expected, not a readiness failure.
+  # If the registry can't be read or the host isn't the coordinator, pass
+  # (fall back to no-gate so a non-Hermes host never hard-fails on this check).
+  local tg_registry="${WORKSPACE_HUB}/config/workstations/registry.yaml"
+  local is_coordinator="no"
+  if [[ -f "$tg_registry" ]] && command -v python3 &>/dev/null; then
+    is_coordinator=$(python3 - "$tg_registry" <<'PY' 2>/dev/null || echo "no"
+import socket, sys
+try:
+    import yaml
+except Exception:
+    print("no"); raise SystemExit(0)
+local = {socket.gethostname().lower(), socket.getfqdn().lower(),
+         socket.gethostname().split(".")[0].lower()}
+try:
+    with open(sys.argv[1]) as f:
+        cfg = yaml.safe_load(f) or {}
+except Exception:
+    print("no"); raise SystemExit(0)
+for name, m in (cfg.get("machines") or {}).items():
+    if not isinstance(m, dict):
+        continue
+    names = {str(name).lower(), str(m.get("hostname") or "").lower()}
+    names.update(str(a).split(".")[0].lower() for a in (m.get("hostname_aliases") or []))
+    if not (local & names):
+        continue
+    # telegram_mode may live at top level or under a nested telegram_hermes block
+    mode = m.get("telegram_mode")
+    if mode is None:
+        for v in m.values():
+            if isinstance(v, dict) and "telegram_mode" in v:
+                mode = v.get("telegram_mode"); break
+    print("yes" if str(mode) == "coordinator" else "no")
+    raise SystemExit(0)
+print("no")
+PY
+)
+  fi
+  if [[ "$is_coordinator" != "yes" ]]; then
+    log_pass "R-TELEGRAM-HERMES: Hermes not on this host — expected only on Hermes host (telegram coordinator)"
+    return
+  fi
+
+  local tg_output overall
+  tg_output=$(bash "$tg_script" 2>&1 || true)
+  overall=$(printf '%s\n' "$tg_output" | jq -r '.overall_status // "fail"' 2>/dev/null || echo "fail")
+  case "$overall" in
+    pass)
+      log_pass "R-TELEGRAM-HERMES: all Telegram/Hermes dispatch hosts ready"
+      ;;
+    warn)
+      log_pass "R-TELEGRAM-HERMES: dispatch hosts ready; non-dispatch/status-only hosts present"
+      ;;
+    *)
+      log_fail "R-TELEGRAM-HERMES: readiness failed — run scripts/readiness/telegram-hermes-readiness.sh"
+      ;;
+  esac
+} ; check_r_telegram_hermes || true
+
+# ─────────────────────────────────────────────────────────────────────────────
+# R12: Nightly smoke tests — tier-1 repo pytest -m smoke (WRK-1172)
+# ─────────────────────────────────────────────────────────────────────────────
+check_r12() {
+  local smoke_script="${WORKSPACE_HUB}/scripts/cron/nightly-smoke-tests.sh"
+  [[ -f "$smoke_script" ]] || { log_pass "R12: nightly-smoke-tests.sh absent — skip"; return; }
+
+  bash "$smoke_script" >/dev/null 2>&1 || true
+
+  local yaml="${STATE_DIR}/session-health.yaml"
+  [[ -f "$yaml" ]] || { log_fail "R12: session-health.yaml not generated"; return; }
+
+  local all_healthy
+  all_healthy=$(grep "^all_healthy:" "$yaml" 2>/dev/null | awk '{print $2}')
+  if [[ "$all_healthy" == "true" ]]; then
+    log_pass "R12: all tier-1 repo smoke tests pass"
+  else
+    local failed_repos
+    failed_repos=$(grep "status: fail" "$yaml" 2>/dev/null \
+      | sed 's/.*\(  [a-z].*\):.*/\1/' | tr -d ' ' | tr '\n' ' ')
+    log_fail "R12: smoke test failures — ${failed_repos:-see session-health.yaml}"
+  fi
+} ; check_r12 || true
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Phase B: emit harness-readiness-report.yaml (host-qualified, structured)
+# ─────────────────────────────────────────────────────────────────────────────
+_resolve_workstation_key() {
+  # Resolve the current hostname to a harness-config workstation key.
+  # Checks: hostname field → hostname_aliases → key substring → raw hostname fallback.
+  local hostname_short
+  hostname_short=$(hostname -s 2>/dev/null || hostname | cut -d. -f1)
+  local resolved=""
+  if [[ -f "${HARNESS_CONFIG}" ]]; then
+    resolved=$(python3 - "$HARNESS_CONFIG" "$hostname_short" <<'PY' 2>/dev/null || true
+import yaml, sys
+hostname_short = sys.argv[2].lower()
+with open(sys.argv[1]) as f:
+    cfg = yaml.safe_load(f)
+for name, ws in (cfg.get("workstations") or {}).items():
+    cfg_hostname = (ws.get("hostname") or "").lower()
+    if cfg_hostname and cfg_hostname == hostname_short:
+        print(name); raise SystemExit(0)
+    for alias in (ws.get("hostname_aliases") or []):
+        if alias.split(".")[0].lower() == hostname_short:
+            print(name); raise SystemExit(0)
+    if hostname_short in name.lower():
+        print(name); raise SystemExit(0)
+PY
+)
+  fi
+  echo "${resolved:-${hostname_short}}"
+}
+
+_emit_harness_report() {
+  local ws_key
+  ws_key=$(_resolve_workstation_key)
+  local report_path="${STATE_DIR}/harness-readiness-${ws_key}.yaml"
+  local overall="pass"
+  [[ "$not_evaluated_count" -gt 0 ]] && overall="not_evaluated"
+  [[ "$fail_count" -gt 0 ]] && overall="fail"
+  {
+    echo "schema_version: 1"
+    echo "host: ${ws_key}"
+    echo "generated_at: \"${RUN_TS}\""
+    echo "overall: ${overall}"
+    echo "pass_count: ${pass_count}"
+    echo "fail_count: ${fail_count}"
+    echo "not_evaluated_count: ${not_evaluated_count}"
+    echo "checks:"
+    for cid in $(echo "${!check_results[@]}" | tr ' ' '\n' | sort); do
+      local status="${check_results[$cid]}"
+      local detail
+      detail=$(printf '%s' "${check_details[$cid]}" | sed "s/'/\\''/g")
+      echo "  ${cid}:"
+      echo "    status: ${status}"
+      echo "    detail: '${detail}'"
+    done
+  } > "$report_path"
+} ; _emit_harness_report || true
+
+# ─────────────────────────────────────────────────────────────────────────────
+# --update-baseline: set skill/command count baselines in harness-config.yaml
+# ─────────────────────────────────────────────────────────────────────────────
+if [[ "${1:-}" == "--update-baseline" ]]; then
+  skill_count=$(find "${WORKSPACE_HUB}/.claude/skills" -name "SKILL.md" 2>/dev/null | wc -l || echo 0)
+  cmd_count=$(find "${WORKSPACE_HUB}/.claude/commands" -name "*.md" 2>/dev/null | wc -l || echo 0)
+  # BSD-safe sed -i: macOS sed requires -i '' while GNU sed uses -i without argument.
+  if sed --version 2>/dev/null | grep -q GNU; then
+    sed -i "s/^skill_count_baseline: .*/skill_count_baseline: ${skill_count}/" "${HARNESS_CONFIG}" 2>/dev/null || true
+    sed -i "s/^command_count_baseline: .*/command_count_baseline: ${cmd_count}/" "${HARNESS_CONFIG}" 2>/dev/null || true
+  else
+    sed -i '' "s/^skill_count_baseline: .*/skill_count_baseline: ${skill_count}/" "${HARNESS_CONFIG}" 2>/dev/null || true
+    sed -i '' "s/^command_count_baseline: .*/command_count_baseline: ${cmd_count}/" "${HARNESS_CONFIG}" 2>/dev/null || true
+  fi
+  echo "--- Baseline updated: skills=${skill_count}, commands=${cmd_count} ---"
+fi
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Write issues to readiness-issues.md for Phase 6 to surface
+# ─────────────────────────────────────────────────────────────────────────────
+if [[ ${#issues[@]} -gt 0 ]]; then
+  {
+    echo "# Readiness Issues — ${RUN_TS}"
+    echo ""
+    echo "Nightly readiness: ${fail_count} failed, ${pass_count} passed"
+    echo ""
+    echo "## Warnings"
+    for issue in "${issues[@]}"; do
+      echo "- ${issue}"
+    done
+    echo ""
+  } > "$ISSUES_FILE"
+  echo "--- Readiness: ${fail_count}/$((pass_count + fail_count)) checks failed — see ${ISSUES_FILE} ---"
+elif [[ "$not_evaluated_count" -gt 0 ]]; then
+  {
+    echo "# Readiness Issues — ${RUN_TS}"
+    echo ""
+    echo "Readiness incomplete: ${not_evaluated_count} check(s) not fully evaluated."
+    echo "See per-key model-drift output for missing evidence or freshness warnings."
+  } > "$ISSUES_FILE"
+  echo "--- Readiness: ${not_evaluated_count} check(s) not fully evaluated ---"
+else
+  echo "# Readiness Issues — ${RUN_TS}" > "$ISSUES_FILE"
+  echo "" >> "$ISSUES_FILE"
+  echo "All ${pass_count} checks passed." >> "$ISSUES_FILE"
+  echo "--- Readiness: all ${pass_count} checks passed ---"
+fi

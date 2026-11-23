@@ -1,0 +1,19 @@
+### Verdict: MINOR
+
+### Summary
+The core scope, prior-audit sequencing, and launcher runtime choice are now mostly explicit, but the plan is still not approval-ready because the machine-checkable budget contract is internally incomplete and the review-state section still asserts unsupported rerun status.
+
+### Issues Found
+- `docs/plans/2026-04-22-issue-2332-provider-audit-python3-runtime-cleanup.md`, section `Provider budget contract for phase 1`: the no-history path requires `delta_status: no_prior_audit`, and `test_runtime_budget_delta_fields_handle_no_prior_audit` asserts that field, but `delta_status` is missing from the declared `Required per-provider compliance fields to emit`. That leaves the machine-checkable schema incomplete and internally contradictory.
+- `docs/plans/2026-04-22-issue-2332-provider-audit-python3-runtime-cleanup.md`, sections `Provider budget contract for phase 1` and `TDD Test List`: the plan names required fields such as `python3_compliance_status` and `python3_compliance_reason`, but there is no explicit test that all required compliance fields are emitted for every provider with allowed enum values. Current tests check selected scenarios, not schema completeness, so approval still depends on an unstated assumption.
+- `docs/plans/2026-04-22-issue-2332-provider-audit-python3-runtime-cleanup.md`, section `Adversarial Review Summary`: the text claims `Codex rerun still returned MAJOR on the immediately prior draft`, but the attested review artifact `scripts/review/results/2026-04-22-plan-2332-codex.md` is a 0-byte file. That makes the review-state narration unsupported and still stale/misleading.
+- `docs/plans/2026-04-22-issue-2332-provider-audit-python3-runtime-cleanup.md`, section `Adversarial Review Summary`: `This revision ... requires one fresh external rerun before approval-stage promotion` embeds process-state narration into the plan body rather than a stable implementation requirement. Given the user asked to review the current plan text only, this remains approval-noisy and can become stale immediately after the next rerun.
+
+### Suggestions
+- Add `delta_status` to the explicit required per-provider output fields, or remove all references to it and use a different declared field consistently across prose, pseudocode, and tests.
+- Add one schema-level test that asserts every provider row emits the full required field set with valid enum/status values, including the no-prior-audit branch.
+- Delete or replace the `Adversarial Review Summary` claims with a source-neutral note that does not assert external rerun outcomes unless a non-empty attested artifact exists.
+- If approval workflow status must remain in the plan, move it to a minimal factual note outside the implementation contract and avoid statements that depend on future reruns.
+
+### Questions for Author
+- None.

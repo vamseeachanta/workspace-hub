@@ -1,0 +1,5 @@
+{"type":"metadata","synthetic":true,"date":"2000-01-02"}
+{"type":"message","role":"user","content":"Count the sample items."}
+{"type":"message","role":"assistant","content":"Reading the sample."}
+{"type":"tool_event","content":"Sample read complete."}
+{"type":"message","role":"user","content":"Return the total."}

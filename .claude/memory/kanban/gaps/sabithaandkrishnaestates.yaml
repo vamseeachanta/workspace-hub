@@ -1,0 +1,45 @@
+board_slug: repo-sabithaandkrishnaestates
+cards:
+- idempotency_key: gap:repo-sabithaandkrishnaestates:001
+  title: No labels on any issue — apply priority + category taxonomy
+  source: detected_gap
+  detection_basis: All 22 open issues lack labels; priority routing degrades to default-0
+  needs_issue: true
+  priority: 1
+  body_excerpt: Label issues with priority:{high,medium,low} and cat:{tax,hoa,admin};
+    enables priority-driven scheduling.
+- idempotency_key: gap:repo-sabithaandkrishnaestates:002
+  title: Materialize annual tax calendar template (#21) into recurring schedule
+  source: detected_gap
+  detection_basis: '#21 template not yet expanded into a yearly recurring schedule
+    generator'
+  needs_issue: false
+  priority: 1
+  body_excerpt: YAML schedule + auto-issue-create script keyed on calendar deadlines.
+- idempotency_key: gap:repo-sabithaandkrishnaestates:003
+  title: 'Secret remediation audit beyond #29 admin.md'
+  source: detected_gap
+  detection_basis: '#29 names admin/admin.md plaintext credentials; broader history-scan
+    may surface more'
+  needs_issue: true
+  priority: 2
+  body_excerpt: Run trufflehog/gitleaks across full repo history; rotate any leaked
+    credentials; document secret-storage convention.
+- idempotency_key: gap:repo-sabithaandkrishnaestates:004
+  title: Unified reimbursement-reconciliation ledger
+  source: detected_gap
+  detection_basis: '#4, #5, #10, #13, #30, #35 each track reimbursements separately;
+    no consolidated ledger view'
+  needs_issue: true
+  priority: 1
+  body_excerpt: Single ledger CSV/spreadsheet aggregating tenant + tax + insurance
+    reimbursements with reconciliation status.
+- idempotency_key: gap:repo-sabithaandkrishnaestates:005
+  title: Repo visibility + privacy policy review
+  source: detected_gap
+  detection_basis: Repo contains tenant financial data and personal HOA records; visibility/access
+    policy not declared in repo
+  needs_issue: true
+  priority: 2
+  body_excerpt: Confirm repo is private; document access list; add LICENSE if missing;
+    consider data-redaction policy.

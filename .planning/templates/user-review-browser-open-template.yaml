@@ -1,0 +1,33 @@
+# user-review-browser-open-template.yaml — browser-open evidence for user-review stages
+#
+# Canonical save path: .claude/work-queue/assets/WRK-<id>/evidence/user-review-browser-open.yaml
+# Producer: scripts/work-queue/log-user-review-browser-open.sh (or orchestrator during live review)
+# Required fields per event for Stage 5 gate: stage, review_checkpoint, review_cycle_id,
+#   html_ref, opened_at, reviewer, opened_in_default_browser, generated_by_script,
+#   generated_at_commit.
+#
+# events is append-only; do not remove or reorder existing entries.
+
+events:
+  - stage: plan_draft
+    review_checkpoint: common_draft
+    review_cycle_id: "stage5-YYYYMMDD"
+    wrk_id: WRK-000
+    opened_in_default_browser: true
+    browser: system-default
+    html_ref: ".claude/work-queue/assets/WRK-000/plan-draft-review.html"
+    opened_at: "2026-03-07T00:00:00Z"
+    reviewer: user
+    generated_by_script: scripts/work-queue/log-user-review-browser-open.sh
+    generated_at_commit: "0000000000000000000000000000000000000000"
+  - stage: plan_draft
+    review_checkpoint: combined_plan
+    review_cycle_id: "stage5-YYYYMMDD"
+    wrk_id: WRK-000
+    opened_in_default_browser: true
+    browser: system-default
+    html_ref: ".claude/work-queue/assets/WRK-000/plan-draft-review.html"
+    opened_at: "2026-03-07T00:00:01Z"
+    reviewer: user
+    generated_by_script: scripts/work-queue/log-user-review-browser-open.sh
+    generated_at_commit: "0000000000000000000000000000000000000000"

@@ -1,0 +1,239 @@
+generated: "2026-03-13"
+total_sources: 38
+categories:
+  already_ingested:
+    # --- US Federal ---
+    - name: "BSEE (Bureau of Safety and Environmental Enforcement)"
+      module: "worldenergydata.bsee"
+      coverage: "GOM offshore wells, production (API10/API12), financial analysis, paleontology"
+      freshness: "monthly updates from BSEE data center"
+
+    - name: "EIA API v2 (Energy Information Administration)"
+      module: "worldenergydata.eia"
+      coverage: "Weekly petroleum and gas feeds via api.eia.gov/v2/ with incremental JSONL ingestion"
+      freshness: "weekly"
+
+    - name: "EIA US State-Level Production"
+      module: "worldenergydata.eia_us"
+      coverage: "EIA-914 state crude+NGL, DPR basin drilling productivity, Alaska fields, shale decline, fiscal models"
+      freshness: "monthly (EIA-914), monthly (DPR)"
+
+    - name: "PHMSA Pipeline Safety"
+      module: "worldenergydata.pipeline_safety"
+      coverage: "Gas distribution, gas transmission, hazardous liquid, LNG facility incidents (1986-present, ~21k records)"
+      freshness: "annual update"
+
+    - name: "BSEE HSE Incidents"
+      module: "worldenergydata.hse"
+      coverage: "GOM offshore HSE incidents, penalties, statistics with geographic validation"
+      freshness: "quarterly"
+
+    # --- US State ---
+    - name: "Texas Railroad Commission (RRC)"
+      module: "worldenergydata.texas_rrc"
+      coverage: "Texas production (PDQ data dumps), wellbore data, drilling permits"
+      freshness: "monthly"
+
+    # --- International Regulators ---
+    - name: "Norwegian SODIR (Offshore Directorate)"
+      module: "worldenergydata.sodir"
+      coverage: "NCS blocks, wellbores, fields, discoveries, surveys via factmaps.sodir.no REST API"
+      freshness: "daily API updates"
+
+    - name: "Brazil ANP (National Petroleum Agency)"
+      module: "worldenergydata.brazil_anp"
+      coverage: "Well-level and field-level production, decline curves, concession and PSA fiscal models"
+      freshness: "monthly"
+
+    - name: "Mexico CNH (Comision Nacional de Hidrocarburos)"
+      module: "worldenergydata.mexico_cnh"
+      coverage: "SIH dashboard production, well data, field/block info, contract tracking via Selenium scraper"
+      freshness: "monthly"
+
+    - name: "UK NSTA (North Sea Transition Authority)"
+      module: "worldenergydata.ukcs"
+      coverage: "UKCS production data, well completions, decline curves, UK fiscal regime (RFCT, SC, EPL, IA)"
+      freshness: "monthly"
+
+    - name: "Canada AER/BCER"
+      module: "worldenergydata.canada"
+      coverage: "UWI parsing/validation, Alberta Energy Regulator and BC Energy Regulator data, province coordinates"
+      freshness: "varies by province"
+
+    - name: "Nigeria NUPRC"
+      module: "worldenergydata.west_africa"
+      coverage: "Monthly blend-level production from PDF reports"
+      freshness: "monthly"
+
+    - name: "EITI Data Explorer"
+      module: "worldenergydata.west_africa"
+      coverage: "Multi-country reconciliation data (Nigeria, Angola, Ghana, Mozambique) via JSON API"
+      freshness: "annual"
+
+    # --- Marine Safety ---
+    - name: "USCG MISLE"
+      module: "worldenergydata.marine_safety"
+      coverage: "US Coast Guard marine safety and law enforcement incident data"
+      freshness: "varies"
+
+    - name: "NTSB Marine Accidents"
+      module: "worldenergydata.marine_safety"
+      coverage: "National Transportation Safety Board marine accident investigations"
+      freshness: "as-reported"
+
+    - name: "UK MAIB Reports"
+      module: "worldenergydata.marine_safety"
+      coverage: "UK Marine Accident Investigation Branch reports"
+      freshness: "as-reported"
+
+    - name: "Canada TSB Marine"
+      module: "worldenergydata.marine_safety"
+      coverage: "Canada Transportation Safety Board marine accident data"
+      freshness: "as-reported"
+
+    # --- Metocean ---
+    - name: "NOAA NDBC (National Data Buoy Center)"
+      module: "worldenergydata.metocean"
+      coverage: "Buoy observations — wind, wave, temperature, pressure from US ocean buoys"
+      freshness: "near-real-time (hourly)"
+
+    - name: "NOAA CO-OPS (Tides and Currents)"
+      module: "worldenergydata.metocean"
+      coverage: "Tide gauge data, water levels, currents, meteorological obs from coastal stations"
+      freshness: "near-real-time (6-min intervals)"
+
+    - name: "Open-Meteo"
+      module: "worldenergydata.metocean"
+      coverage: "Open weather and marine forecast API — wind, wave, temperature"
+      freshness: "hourly forecasts"
+
+    - name: "MET Norway"
+      module: "worldenergydata.metocean"
+      coverage: "Norwegian Meteorological Institute ocean and weather data"
+      freshness: "hourly"
+
+    - name: "ERDDAP"
+      module: "worldenergydata.metocean"
+      coverage: "NOAA/institutional ERDDAP servers — gridded ocean data"
+      freshness: "varies by dataset"
+
+  known_not_ingested:
+    - name: "BOEM (Bureau of Ocean Energy Management)"
+      url: "https://www.data.boem.gov/"
+      api: true
+      data_format: "CSV/Excel/API"
+      priority: high
+      rationale: "Offshore lease data, well APIs, platform permits — complements existing BSEE production data"
+
+    - name: "OPEC Monthly Oil Market Report"
+      url: "https://asb.opec.org/data/ASB_Data.php"
+      api: false
+      data_format: "Excel/PDF"
+      priority: medium
+      rationale: "Global crude production by OPEC members; ASB data download available for historical series"
+
+    - name: "Baker Hughes Rig Count"
+      url: "https://rigcount.bakerhughes.com/"
+      api: false
+      data_format: "Excel (weekly pivot tables)"
+      priority: high
+      rationale: "Industry-standard drilling activity indicator; weekly NA count + monthly international; free Excel download"
+
+    - name: "USGS National/World Oil & Gas Assessment"
+      url: "https://energy.usgs.gov/naga-map/"
+      api: false
+      data_format: "Shapefiles/CSV/GIS"
+      priority: medium
+      rationale: "Undiscovered resource estimates for ~170 basins; downloadable assessment datasets and spatial data"
+
+    - name: "IEA Monthly Oil Data Service"
+      url: "https://www.iea.org/data-and-statistics"
+      api: false
+      data_format: "Excel (subscription)"
+      priority: low
+      rationale: "Comprehensive OECD oil supply/demand data; requires paid subscription for full access"
+
+    - name: "ERA5 Reanalysis (ECMWF/Copernicus CDS)"
+      url: "https://cds.climate.copernicus.eu/datasets/reanalysis-era5-single-levels"
+      api: true
+      data_format: "NetCDF/GRIB via CDS API"
+      priority: high
+      rationale: "Global hourly atmospheric reanalysis 1940-present; wind, wave, pressure for metocean design — complements existing NDBC/CO-OPS obs"
+
+    - name: "Copernicus Marine Service (CMEMS)"
+      url: "https://data.marine.copernicus.eu/products"
+      api: true
+      data_format: "NetCDF via Marine Data Store API"
+      priority: high
+      rationale: "Global ocean physics reanalysis at 1/12 deg — currents, temperature, salinity, sea level; critical for offshore engineering"
+
+    - name: "IMO GISIS"
+      url: "https://gisis.imo.org/"
+      api: false
+      data_format: "Web portal (CSV/Excel export)"
+      priority: low
+      rationale: "Global shipping incident database; oil pollution equipment; requires registration; limited programmatic access"
+
+  newly_discovered:
+    - name: "BP Statistical Review of World Energy"
+      url: "https://www.energyinst.org/statistical-review"
+      api: false
+      data_format: "Excel/CSV"
+      priority: medium
+      rationale: "Now published by Energy Institute; 70+ years of global energy production, consumption, reserves, prices — free Excel download"
+
+    - name: "GainEnergy Oil & Gas Engineering Dataset (Hugging Face)"
+      url: "https://huggingface.co/datasets/GainEnergy/oilandgas-engineering-dataset"
+      api: true
+      data_format: "Parquet/CSV via HuggingFace datasets API"
+      priority: low
+      rationale: "Open engineering Q&A and data for ML applications in oil and gas"
+
+    - name: "PUDL (Public Utility Data Liberation)"
+      url: "https://catalystcoop-pudl.readthedocs.io/"
+      api: true
+      data_format: "SQLite/Parquet via Python API"
+      priority: medium
+      rationale: "Cleaned and normalized US energy data from EIA, FERC, EPA; includes EIA bulk API integration"
+
+    - name: "SEG Open Data Catalog"
+      url: "https://wiki.seg.org/wiki/Open_data"
+      api: false
+      data_format: "SEG-Y/LAS/various"
+      priority: low
+      rationale: "Curated geophysical datasets — seismic, well logs; useful for subsurface modeling validation"
+
+    - name: "Software Underground awesome-open-geoscience"
+      url: "https://github.com/softwareunderground/awesome-open-geoscience"
+      api: false
+      data_format: "Curated link list (various formats)"
+      priority: low
+      rationale: "Curated index of open geoscience tools and datasets; useful as discovery layer for new data sources"
+
+    - name: "Alberta Wells Satellite Dataset"
+      url: "https://arxiv.org/abs/2410.09032"
+      api: true
+      data_format: "GeoTIFF/CSV"
+      priority: low
+      rationale: "Satellite imagery for pinpointing oil and gas wells in Alberta; academic dataset for remote sensing"
+
+    - name: "BLM Federal Land Records"
+      url: "https://www.blm.gov/services/national-data"
+      api: true
+      data_format: "GIS/Shapefile/API"
+      priority: medium
+      rationale: "Federal mineral leases, mining claims, land use data — partially referenced in landman module but not ingested"
+
+    - name: "JODI Oil World Database"
+      url: "https://www.jodidata.org/"
+      api: false
+      data_format: "CSV/Excel"
+      priority: medium
+      rationale: "Joint Organisations Data Initiative — monthly oil supply/demand for 100+ countries; free public access"
+
+    - name: "Rystad Energy UCube (limited free tier)"
+      url: "https://www.rystadenergy.com/"
+      api: false
+      data_format: "Web portal (subscription)"
+      priority: low
+      rationale: "Industry-leading upstream database; limited free data available; commercial subscription for full access"

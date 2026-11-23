@@ -1,0 +1,6 @@
+coverage-ratchet report — 2026-06-14T21:27:53Z
+============================================================
+STATUS: BYPASSED
+SKIP_COVERAGE_REASON: tool+tests under scripts/memory + tests/memory; new pytest ran green (9); worktree lacks sibling test-harness layout
+
+⚠ Coverage gate skipped. All checks omitted.

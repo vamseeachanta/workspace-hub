@@ -1,0 +1,21 @@
+version: 1
+wrk_id: WRK-1009
+skill_name: playwright
+skill_path: .claude/skills/workspace-hub/playwright/SKILL.md
+evals:
+- eval_id: play-cap-01
+  eval_type: capability
+  description: Core sections documented for playwright
+  checks:
+    required_sections:
+    - '## Quick Start'
+    - '## Common Options (All Commands)'
+    - '## Integration with Existing Tools'
+    - '## Decision Matrix: Playwright CLI vs Chrome MCP'
+    - '## Recipes'
+- eval_id: play-proc-01
+  eval_type: procedural
+  description: Additional documentation sections for playwright
+  checks:
+    required_sections:
+    - '## Token Cost Context'

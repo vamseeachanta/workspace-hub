@@ -1,0 +1,21 @@
+### Verdict: MAJOR
+
+### Summary
+The plan successfully bounds the scope and defers multi-iteration compounding, but leaves critical implementation details unresolved. Specifically, the results schema migration strategy is explicitly left as an open question, and the evaluator contract is insufficiently specified.
+
+### Issues Found
+- [P1] blocking: The plan leaves the `results.tsv` schema migration as an open question in the Risks section. The plan must concretely decide whether to mutate the existing schema (and update downstream consumers like `skill-usage-report.py`) or create a new v2 artifact (e.g., `results_v2.jsonl`).
+- [P1] blocking: The evaluator interface is under-specified. The pseudocode states `load evaluator registered for target_type` and `return structured result {warnings, criticals, findings, score?}`, but fails to define the registration mechanism, the exact interface, or how the existing skill evaluator maps to this contract.
+- [P2] The `workflow-config` target type is acknowledged as a risk due to potential sprawl, but the plan fails to define the 'tight allowlist' required for a safe v1.
+- [P2] Missing test coverage and 'Files to Change' entries for downstream consumers of `results.tsv`. If the schema changes to include `target_type` instead of just a skill name, scripts like `weekly_skills_audit.py` or `skill-health-dashboard.sh` will likely break.
+
+### Suggestions
+- Resolve the `results.tsv` open question: Specify writing to a new generalized artifact (e.g., `autoresearch_results.jsonl`) to avoid breaking legacy skill reporting tools, or explicitly include those tools in 'Files to Change'.
+- Define a concrete Evaluator protocol or abstract base class (e.g., `def evaluate(path: str) -> EvaluationResult`) and explain how evaluators are registered (e.g., a dictionary mapping target types to evaluator classes).
+- Explicitly list the allowed `workflow-config` paths for v1 (e.g., `config/scheduled-tasks/schedule-tasks.yaml`) in the Acceptance Criteria to strictly bound the scope.
+- Add a test verifying that the legacy `skill-autoresearch-nightly.sh` wrapper continues to produce or map results in a way that satisfies existing downstream consumers.
+
+### Questions for Author
+- How will existing downstream scripts (e.g., `skill-health-dashboard.sh`) handle the new generic results schema?
+- What specific files constitute the 'tight allowlist' for the `workflow-config` target type in v1?
+- How exactly will evaluators be registered and dynamically loaded in `repo_ecosystem_autoresearch.py`?

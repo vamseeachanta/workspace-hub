@@ -1,0 +1,24 @@
+{"event": "stage_exit", "wrk": "WRK-1169", "stage": 1, "date": "2026-03-14", "timestamp": "2026-03-14T01:02:20.990680Z"}
+{"event": "stage_exit", "wrk": "WRK-1169", "stage": 2, "date": "2026-03-14", "timestamp": "2026-03-14T01:07:41.383006Z"}
+{"event": "stage_exit", "wrk": "WRK-1169", "stage": 1, "date": "2026-03-14", "timestamp": "2026-03-14T02:23:26.103638Z"}
+{"event": "stage_exit", "wrk": "WRK-1169", "stage": 2, "date": "2026-03-14", "timestamp": "2026-03-14T02:23:27.284095Z"}
+{"event": "stage_exit", "wrk": "WRK-1169", "stage": 3, "date": "2026-03-14", "timestamp": "2026-03-14T02:23:28.555100Z"}
+{"event": "stage_exit", "wrk": "WRK-1169", "stage": 4, "date": "2026-03-14", "timestamp": "2026-03-14T02:23:29.752584Z"}
+{"event": "stage_exit", "wrk": "WRK-1169", "stage": 7, "date": "2026-03-14", "timestamp": "2026-03-14T02:23:31.338122Z"}
+{"event": "stage_exit", "wrk": "WRK-1169", "stage": 10, "date": "2026-03-14", "timestamp": "2026-03-14T02:23:32.870251Z"}
+{"event": "stage_exit", "wrk": "WRK-1169", "stage": 11, "date": "2026-03-14", "timestamp": "2026-03-14T02:23:34.369199Z"}
+{"event": "stage_exit", "wrk": "WRK-1169", "stage": 12, "date": "2026-03-14", "timestamp": "2026-03-14T02:23:36.021759Z"}
+{"event": "stage_exit", "wrk": "WRK-1169", "stage": 5, "date": "2026-03-14", "timestamp": "2026-03-14T02:23:56.229766Z"}
+{"event": "stage_exit", "wrk": "WRK-1169", "stage": 9, "date": "2026-03-14", "timestamp": "2026-03-14T02:23:57.870331Z"}
+{"event": "stage_exit", "wrk": "WRK-1169", "stage": 6, "date": "2026-03-14", "timestamp": "2026-03-14T02:24:46.541796Z"}
+{"event": "stage_exit", "wrk": "WRK-1169", "stage": 8, "date": "2026-03-14", "timestamp": "2026-03-14T02:24:47.812981Z"}
+{"event": "stage_exit", "wrk": "WRK-1169", "stage": 17, "date": "2026-03-14", "timestamp": "2026-03-14T02:24:54.056470Z"}
+{"event": "stage_exit", "wrk": "WRK-1169", "stage": 13, "date": "2026-03-14", "timestamp": "2026-03-14T02:26:24.761758Z"}
+{"event": "stage_exit", "wrk": "WRK-1169", "stage": 15, "date": "2026-03-14", "timestamp": "2026-03-14T02:26:26.193707Z"}
+{"event": "stage_exit", "wrk": "WRK-1169", "stage": 16, "date": "2026-03-14", "timestamp": "2026-03-14T02:26:27.406094Z"}
+{"event": "stage_exit", "wrk": "WRK-1174", "stage": 1, "date": "2026-03-14", "timestamp": "2026-03-14T11:36:32.943953Z"}
+{"event": "stage_exit", "wrk": "WRK-1174", "stage": 2, "date": "2026-03-14", "timestamp": "2026-03-14T11:42:30.164152Z"}
+{"event": "stage_exit", "wrk": "WRK-1174", "stage": 3, "date": "2026-03-14", "timestamp": "2026-03-14T11:42:40.395055Z"}
+{"event":"codex_session","date":"2026-03-14","session_id":"rollout-2026-03-14T07-59-56-019cec6e-94eb-7a03-9452-0dca67bcddcf","turns":4,"source":"codex"}
+{"event":"codex_session","date":"2026-03-14","session_id":"rollout-2026-03-14T09-43-15-019ceccd-2c02-7f82-8244-30500b1cc0dd","turns":4,"source":"codex"}
+{"event":"codex_session","date":"2026-03-14","session_id":"rollout-2026-03-14T15-41-58-019cee15-98be-7930-bdd1-c3e4d8bdc8dc","turns":4,"source":"codex"}

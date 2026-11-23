@@ -1,0 +1,24 @@
+### Verdict: MAJOR
+
+### Summary
+Not approval-ready. The current text still leaves delta computation mechanics and launcher runtime choice unresolved, and it carries stale/misleading review-state evidence.
+
+### Issues Found
+- `docs/plans/2026-04-22-issue-2332-provider-audit-python3-runtime-cleanup.md` section `Prior-audit delta contract` defines prior-audit deltas off the previous checked-in `analysis/provider-session-ecosystem-audit.json`, but the same plan later requires regenerating that file in place under `Files to Change`. The text never specifies the sequencing/mechanism that preserves the old snapshot before overwrite. Delta correctness is therefore still deferred to execution time.
+- `docs/plans/2026-04-22-issue-2332-provider-audit-python3-runtime-cleanup.md` section `Files to Change` hard-codes `uv run --no-project python ...` for `scripts/ai/generate-agent-radar.py`, `scripts/coordination/git/git_sync_all_enhanced.py`, and `scripts/automation/sync_and_propagate_commands.py` without evidence in the plan that these launchers should bypass the project environment. The command form is a correctness-critical decision, but the plan does not verify whether these subprocesses need workspace dependencies or `uv run python` instead.
+- `docs/plans/2026-04-22-issue-2332-provider-audit-python3-runtime-cleanup.md` header and `Acceptance Criteria`/`Adversarial Review Summary` still carry approval-state contradictions. The artifact is marked `Status: draft`, says `fresh review still required before approval`, and records `Claude | PENDING | not yet re-run on the revised draft`, even though this artifact is being reviewed at approval-stage rerun. The plan text is still describing a pre-rerun state rather than an approval-ready state.
+- The cited review-evidence is unsupported as written. The plan header lists `scripts/review/results/2026-04-22-plan-2332-codex.md` as a review artifact, but the attested artifact is a 0-byte file. Treating it as review evidence is misleading until the file contains an actual review record.
+- Test coverage is still incomplete for the plan’s most specific contract. `Provider budget contract for phase 1` defines explicit published hard caps and Hermes-specific trend fields, but the TDD table only checks that rendered output echoes supplied baselines/deltas and includes a Hermes row. There is no concrete falsifiable test that the published hard-cap policy itself is enforced or that a regression above baseline is flagged correctly per provider.
+- `Acceptance Criteria` says `After fresh external re-review, the plan can advance toward status:plan-review; remaining in draft is not itself a success criterion.` That is weaker than an approval gate and leaves the artifact’s state transition unresolved. For an approval-stage plan, the criterion should require a concrete post-review state, not merely permit moving toward one.
+
+### Suggestions
+- Amend `Prior-audit delta contract` to specify exact sequencing for delta computation before `analysis/provider-session-ecosystem-audit.json` is overwritten, including where the prior snapshot is read from and what happens if regeneration fails mid-run.
+- Replace the fixed `uv run --no-project python` remediation text with a verified per-file launcher decision, or add explicit evidence/criteria proving those three subprocesses are intentionally stdlib-only and must avoid the project environment.
+- Remove stale rerun language from the artifact before approval: clear `Claude | PENDING`, replace `fresh review still required before approval` with the current review status, and stop listing empty review files as evidence.
+- Either populate `scripts/review/results/2026-04-22-plan-2332-codex.md` with an actual review or drop it from `Review artifacts` and from the review summary.
+- Add at least one falsifiable test for the budget policy itself: given a prior snapshot and a regressed current snapshot, the generated scorecard/audit must mark the provider as over budget or non-compliant exactly according to the phase-1 cap rules.
+- Tighten the acceptance criteria so approval requires a definite state outcome for this artifact, not `can advance toward` language.
+
+### Questions for Author
+- For the three named launcher remediations, what evidence shows `--no-project` is the correct runtime contract rather than `uv run python` with project dependencies available?
+- What exact source should hold the prior audit snapshot during regeneration so delta fields remain deterministic when `analysis/provider-session-ecosystem-audit.json` is rewritten?

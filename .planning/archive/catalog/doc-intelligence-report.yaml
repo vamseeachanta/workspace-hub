@@ -1,0 +1,451 @@
+schema_version: "1.0.0"
+generated_at: "2026-03-25"
+purpose: "Doc-intelligence extraction from cloned OSS repos for ACE ecosystem integration"
+source: "README, pyproject.toml/setup.py, directory structure analysis of /mnt/ace/ repos"
+
+repos:
+  capytaine:
+    summary: >
+      Python BEM solver for linear potential flow wave-body interaction in frequency domain.
+      Full rewrite of Nemoh. NREL-funded since 2022. Published in JOSS.
+    installation: "pip install capytaine"
+    python_package: capytaine
+    version: dynamic (from git)
+    key_classes:
+      - FloatingBody: "Mesh-based representation of a floating structure"
+      - LinearPotentialFlowProblem: "Base class for diffraction/radiation problems"
+      - DiffractionProblem: "Wave diffraction around a body"
+      - RadiationProblem: "Body radiation in calm water"
+      - BEMSolver: "Main solver class"
+    key_functions:
+      - "capytaine.ui.cli:main — CLI entry point"
+    cli_entry_points:
+      - "capytaine (console_script)"
+    dependencies:
+      - numpy
+      - scipy
+      - pandas
+      - xarray
+      - rich
+    optional_dependencies:
+      - matplotlib
+      - vtk
+      - pyvista
+      - meshio
+      - trimesh
+      - h5py
+      - netcdf4
+      - gmsh  # direct integration
+      - pygmsh
+    input_formats:
+      - Nemoh mesh files (.dat)
+      - STL mesh files
+      - meshio-supported formats (via optional dep)
+      - Gmsh mesh files (via optional gmsh dep)
+    output_formats:
+      - xarray Dataset (NetCDF-compatible)
+      - pandas DataFrame
+      - Nemoh-format results
+    integration_opportunities:
+      digitalmodel:
+        - description: "Direct replacement/complement for AQWA diffraction analysis"
+          priority: high
+          shared_format: "RAO data (frequency × heading × DOF), added mass/damping matrices"
+          notes: "Output xarray Dataset can be converted to same format as OrcFxAPI RAO arrays"
+        - description: "Mesh generation pipeline with Gmsh for panel models"
+          priority: medium
+          shared_format: "Nemoh mesh .dat format"
+        - description: "Frequency-domain hydrodynamic coefficients for OrcaFlex models"
+          priority: high
+          shared_format: "Added mass, radiation damping, excitation force arrays"
+      worldenergydata:
+        - description: "Wave resource assessment — compute response spectra for different sea states"
+          priority: low
+          shared_format: "Frequency-domain spectra"
+      assetutilities:
+        - description: "Unit conversion between Hz/rad/s frequency conventions"
+          priority: medium
+          notes: "Capytaine uses rad/s internally (unlike OrcFxAPI which uses Hz descending)"
+
+  openfast:
+    summary: >
+      Wind turbine aeroelastic simulation tool from NREL. Builds on FAST v8.
+      Includes FAST.Farm for multi-turbine wind farms. Fortran core with Python I/O.
+    installation: "pip install pyOpenFAST"
+    python_package: pyOpenFAST
+    version: "5.0.0"
+    key_modules:
+      - AeroDyn: "Aerodynamic loads"
+      - ElastoDyn: "Structural dynamics"
+      - HydroDyn: "Hydrodynamic loads (wave/current)"
+      - MoorDyn: "Mooring dynamics (bundled MoorDyn-F)"
+      - ServoDyn: "Control/electrical system"
+      - SubDyn: "Substructure dynamics"
+      - InflowWind: "Wind inflow"
+    key_functions:
+      - "openfast_io — Python I/O for OpenFAST input/output files"
+    cli_entry_points:
+      - "openfast (Fortran executable, not Python)"
+    dependencies:
+      - numpy
+      - pyyaml
+    input_formats:
+      - OpenFAST input files (.fst, .dat)
+      - YAML configuration
+      - HydroDyn input (wave spectra, hydrodynamic coefficients)
+    output_formats:
+      - OpenFAST output files (.out, .outb)
+      - Binary output (FAST binary format)
+    integration_opportunities:
+      digitalmodel:
+        - description: "HydroDyn module uses same hydrodynamic coefficients as OrcaFlex"
+          priority: high
+          shared_format: "Added mass, damping, excitation force matrices"
+          notes: "HydroDyn can consume WAMIT-format files which Capytaine can produce"
+        - description: "MoorDyn-F module complements OrcaFlex mooring analysis"
+          priority: medium
+          shared_format: "Mooring line properties, fairlead positions"
+        - description: "Structural analysis — tower/blade fatigue loads for SN curve checks"
+          priority: medium
+          shared_format: "Time series of loads → rainflow counting → fatigue damage"
+      worldenergydata:
+        - description: "Wind farm production estimation using metocean data"
+          priority: low
+          shared_format: "Wind speed/direction time series"
+
+  MoorDyn:
+    summary: >
+      Lumped-mass mooring dynamics model (C++ version). Simulates dynamics of mooring
+      systems connected to floating offshore structures. BSD-3 licensed. Has Python wrapper.
+    installation: "pip install moordyn (or build from source)"
+    python_package: moordyn (via wrappers/python/)
+    version: v2 (active development)
+    key_features:
+      - "Lumped-mass mooring line dynamics"
+      - "Seabed contact with spring-damper model"
+      - "Hydrodynamic forces via Morison's equation"
+      - "Clump weights, floats, different line properties"
+      - "6-DOF rigid bodies"
+      - "Arbitrary line interconnections"
+    dependencies:
+      - cmake (build)
+      - C++17 compiler (build)
+    input_formats:
+      - MoorDyn input file (.dat) — MAP-compatible format
+      - Line type properties (diameter, mass, stiffness, damping)
+    output_formats:
+      - Line tension time series
+      - Node position/velocity time series
+      - Fairlead forces
+    integration_opportunities:
+      digitalmodel:
+        - description: "Complement OrcaFlex mooring with open-source alternative for validation"
+          priority: high
+          shared_format: "Mooring line properties, fairlead tension output"
+          notes: "Input format based on MAP — similar concept to OrcaFlex mooring data"
+        - description: "Cross-validation of mooring dynamics between OrcaFlex and MoorDyn"
+          priority: high
+          shared_format: "Time series comparison of fairlead tensions"
+        - description: "Coupled with OpenFAST HydroDyn for floating wind turbine analysis"
+          priority: medium
+          shared_format: "Platform motion → mooring response"
+
+  gmsh:
+    summary: >
+      Automatic 3D finite element mesh generator with built-in CAD engine,
+      pre- and post-processing. Python API v5.0.0. GPL-2.0+. Massive community.
+    installation: "pip install gmsh"
+    python_package: gmsh
+    version: "5.0.0 (API)"
+    key_api_namespaces:
+      - gmsh.model: "Model operations (add, remove entities)"
+      - gmsh.model.geo: "Built-in CAD kernel"
+      - gmsh.model.occ: "OpenCASCADE CAD kernel"
+      - gmsh.model.mesh: "Meshing operations"
+      - gmsh.view: "Post-processing views"
+      - gmsh.fltk: "GUI operations"
+    cli_entry_points:
+      - "gmsh (standalone executable)"
+    dependencies:
+      - numpy (optional, for array operations)
+    input_formats:
+      - Gmsh native (.geo, .msh)
+      - STEP (.stp, .step)
+      - IGES (.igs)
+      - BREP (.brep)
+      - STL (.stl)
+      - many more via OpenCASCADE
+    output_formats:
+      - Gmsh MSH (.msh v2, v4)
+      - VTK (.vtk, .vtu)
+      - Abaqus (.inp)
+      - CGNS (.cgns)
+      - NASTRAN (.bdf)
+      - STL (.stl)
+      - MED (.med)
+    integration_opportunities:
+      digitalmodel:
+        - description: "Generate panel meshes for Capytaine/AQWA from CAD geometry"
+          priority: high
+          shared_format: "STL, Nemoh .dat mesh format (via conversion)"
+          notes: "Capytaine has optional gmsh dependency — direct pipeline exists"
+        - description: "FEA mesh generation for structural analysis"
+          priority: medium
+          shared_format: "Abaqus .inp, NASTRAN .bdf"
+        - description: "Mesh quality assessment before BEM analysis"
+          priority: medium
+      assetutilities:
+        - description: "Geometry processing utilities"
+          priority: low
+          shared_format: "STEP/IGES CAD files"
+
+  opm-common:
+    summary: >
+      Open Porous Media tools for Eclipse reservoir simulation file format.
+      Provides C++ library and Python bindings for reading/writing Eclipse files.
+      GPL-3.0. Core component of the OPM simulation suite.
+    installation: "Build from source (CMake + C++17)"
+    python_package: opm (bindings via pybind11)
+    version: built from source
+    key_capabilities:
+      - "Eclipse deck parsing (DATA files)"
+      - "Summary file reading/writing (.SMSPEC, .UNSMRY)"
+      - "Restart file handling (.UNRST)"
+      - "Grid file processing (.EGRID, .GRID)"
+      - "PVT table handling"
+      - "Well/group schedule parsing"
+    dependencies:
+      - cmake
+      - C++17 compiler
+      - pybind11 (for Python bindings)
+    input_formats:
+      - Eclipse DATA deck (.DATA)
+      - Eclipse grid files (.EGRID, .GRID)
+      - Eclipse restart files (.UNRST)
+      - Eclipse summary files (.SMSPEC, .UNSMRY)
+    output_formats:
+      - Eclipse-format files (all types above)
+      - Python objects (parsed decks, summary vectors)
+    integration_opportunities:
+      worldenergydata:
+        - description: "Parse reservoir simulation results for production forecasting"
+          priority: high
+          shared_format: "Eclipse summary vectors (production rates, pressures)"
+          notes: "Could feed Arps decline curve module (WRK-318)"
+        - description: "Field development scenario comparison"
+          priority: medium
+          shared_format: "NPV/economics from simulation production profiles"
+      digitalmodel:
+        - description: "Reservoir data for subsea design basis (pressures, flow rates)"
+          priority: low
+          shared_format: "Well production profiles"
+
+  MoorPy:
+    summary: >
+      Quasi-static mooring analysis library in pure Python (NREL). Design-oriented
+      with catenary equations, equilibrium solving, linearized stiffness matrices.
+      BSD-3 licensed. Version 1.2.1.
+    installation: "pip install MoorPy"
+    python_package: moorpy
+    version: "1.2.1"
+    key_classes:
+      - System: "Complete mooring system representation"
+      - Body: "Floating body with hydrostatics"
+      - Point: "Connection point (fairlead, anchor, junction)"
+      - Line: "Mooring line segment"
+    key_features:
+      - "Quasi-static catenary analysis"
+      - "Automatic equilibrium finding"
+      - "Nonlinear force-displacement relationships"
+      - "Linearized stiffness matrices (semi-analytic Jacobians)"
+      - "Material/cost property library"
+      - "3D visualization"
+    dependencies:
+      - numpy
+      - matplotlib
+      - pyyaml
+    input_formats:
+      - MoorPy input files (.dat, YAML)
+      - Compatible with MoorDyn input format
+    output_formats:
+      - Stiffness matrices (numpy arrays)
+      - Equilibrium positions
+      - Tension profiles along lines
+      - Matplotlib plots
+    integration_opportunities:
+      digitalmodel:
+        - description: "Quick quasi-static mooring checks before full OrcaFlex dynamic analysis"
+          priority: high
+          shared_format: "Mooring line properties, fairlead positions, catenary geometry"
+          notes: "Much faster than OrcaFlex for preliminary design screening"
+        - description: "Stiffness matrix generation for linearized analysis"
+          priority: high
+          shared_format: "6×6 mooring stiffness matrix at fairlead"
+        - description: "Mooring cost estimation for field development economics"
+          priority: medium
+          shared_format: "Cost coefficients per meter of chain/wire/polyester"
+      worldenergydata:
+        - description: "Mooring cost data for field development economics (WRK-321)"
+          priority: low
+          shared_format: "Cost per unit length by material type"
+
+  HAMS:
+    summary: >
+      Hydrodynamic Analysis of Marine Structures — open-source BEM solver for
+      wave diffraction and radiation in frequency domain. Written in Fortran 90.
+      Apache-2.0 licensed. Published at EWTEC 2021.
+    installation: "Compile from source (Fortran compiler required)"
+    python_package: null  # pyhams is a separate PyPI package
+    version: latest
+    key_capabilities:
+      - "Wave diffraction analysis"
+      - "Wave radiation analysis"
+      - "Added mass and damping computation"
+      - "Wave excitation forces"
+      - "Free-surface elevation"
+      - "Multi-body analysis"
+    dependencies:
+      - Fortran 90 compiler (gfortran or ifort)
+    input_formats:
+      - HAMS input files (mesh + control parameters)
+      - Panel mesh files (similar to WAMIT .gdf)
+    output_formats:
+      - Added mass/damping matrices
+      - Excitation force vectors
+      - RAO results
+      - WAMIT-compatible output format
+    integration_opportunities:
+      digitalmodel:
+        - description: "Alternative BEM solver to AQWA — open-source validation"
+          priority: high
+          shared_format: "Added mass, damping, excitation force arrays"
+          notes: "pyhams package provides Python wrapper; output format compatible with bemio/WEC-Sim"
+        - description: "Cross-validation of hydrodynamic coefficients between AQWA and HAMS"
+          priority: high
+          shared_format: "Frequency-dependent added mass and radiation damping matrices"
+        - description: "Mesh compatibility with Capytaine and Gmsh"
+          priority: medium
+          shared_format: "Panel mesh formats"
+
+  WEC-Sim:
+    summary: >
+      Wave Energy Converter Simulator — MATLAB/Simulink-based with Python BEMIO tools.
+      Includes examples for Capytaine, NEMOH, WAMIT, and AQWA integration.
+      Apache-2.0 licensed. Replaces standalone bemio.
+    installation: "MATLAB/Simulink required; Python BEMIO examples standalone"
+    python_package: null  # MATLAB-based, Python examples only
+    version: latest
+    key_capabilities:
+      - "Time-domain wave energy converter simulation"
+      - "BEMIO — BEM data I/O (reads WAMIT, NEMOH, AQWA, Capytaine output)"
+      - "Power take-off modeling"
+      - "Mooring system integration (via MoorDyn)"
+      - "Multi-body dynamics"
+    bemio_supported_solvers:
+      - WAMIT
+      - NEMOH
+      - AQWA
+      - Capytaine
+    dependencies:
+      - MATLAB/Simulink (core)
+      - numpy (Python BEMIO examples)
+    input_formats:
+      - WAMIT output files (.out, .1, .3)
+      - NEMOH output files
+      - AQWA output files (.lis)
+      - Capytaine NetCDF output (.nc)
+    output_formats:
+      - WEC-Sim HDF5 format (.h5)
+      - MATLAB .mat files
+    integration_opportunities:
+      digitalmodel:
+        - description: "BEMIO scripts read AQWA .lis output — can validate our LIS parser"
+          priority: high
+          shared_format: "AQWA .lis files"
+          notes: "examples/BEMIO/AQWA/ contains working AQWA→BEMIO pipeline"
+        - description: "Capytaine integration examples as reference for our pipeline"
+          priority: high
+          shared_format: "Capytaine NetCDF → BEMIO H5"
+        - description: "Cross-solver comparison scripts"
+          priority: medium
+          shared_format: "compareBEMIO.m for multi-solver validation"
+
+cross_cutting:
+  shared_dependencies:
+    - name: numpy
+      used_by: [capytaine, openfast, gmsh, MoorPy, WEC-Sim]
+    - name: scipy
+      used_by: [capytaine]
+    - name: pandas
+      used_by: [capytaine]
+    - name: xarray
+      used_by: [capytaine]
+    - name: matplotlib
+      used_by: [MoorPy]
+    - name: pyyaml
+      used_by: [openfast, MoorPy]
+    - name: pyvista
+      used_by: [capytaine]
+
+  format_overlaps:
+    - format: "Panel mesh (Nemoh .dat, GDF, STL)"
+      producers: [gmsh, capytaine]
+      consumers: [capytaine, HAMS]
+    - format: "Added mass / radiation damping matrices"
+      producers: [capytaine, HAMS, AQWA]
+      consumers: [openfast, WEC-Sim, digitalmodel]
+    - format: "RAO arrays (freq × heading × DOF)"
+      producers: [capytaine, HAMS, AQWA]
+      consumers: [openfast, digitalmodel/orcaflex-modeling]
+    - format: "Mooring line properties"
+      producers: [MoorPy]
+      consumers: [MoorDyn, openfast, digitalmodel/mooring-design]
+    - format: "AQWA .lis output"
+      producers: [AQWA]
+      consumers: [WEC-Sim/BEMIO, digitalmodel/aqwa-analysis]
+    - format: "Eclipse reservoir files"
+      producers: [opm-common]
+      consumers: [worldenergydata]
+
+  recommended_integration_order:
+    - rank: 1
+      repo: capytaine
+      reason: >
+        Highest direct value — open-source BEM solver that directly replaces/validates AQWA.
+        Python-native, pip-installable, outputs xarray compatible with our data stack.
+        Already has gmsh integration. Frequency convention (rad/s) more standard than OrcFxAPI (Hz).
+    - rank: 2
+      repo: MoorPy
+      reason: >
+        Pure Python, pip-installable, immediate value for quick mooring design screening
+        before committing to full OrcaFlex dynamic analysis. Cost library useful for WRK-321 economics.
+    - rank: 3
+      repo: gmsh
+      reason: >
+        Mesh generation backbone — feeds Capytaine, HAMS, and FEA workflows.
+        Python API is mature. Prerequisite for automated mesh generation pipeline.
+    - rank: 4
+      repo: MoorDyn
+      reason: >
+        Dynamic mooring complement to MoorPy quasi-static. Cross-validation with OrcaFlex.
+        Already bundled in OpenFAST.
+    - rank: 5
+      repo: HAMS
+      reason: >
+        Second open-source BEM solver for triple-validation (AQWA vs Capytaine vs HAMS).
+        Fortran-only but pyhams provides Python wrapper.
+    - rank: 6
+      repo: opm-common
+      reason: >
+        Eclipse file I/O for reservoir simulation data. Connects to worldenergydata
+        production forecasting pipeline. Build from source required.
+    - rank: 7
+      repo: openfast
+      reason: >
+        Floating wind turbine ecosystem. Valuable but complex — large build, NREL-specific.
+        Best accessed via Python I/O layer for file parsing.
+    - rank: 8
+      repo: WEC-Sim
+      reason: >
+        MATLAB-dependent for core simulation. BEMIO Python examples useful as reference
+        for our AQWA/Capytaine I/O pipelines. Lower priority for direct integration.

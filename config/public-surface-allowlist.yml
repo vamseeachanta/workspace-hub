@@ -1,0 +1,61 @@
+# Public-surface guard allowlist.
+# Entries are path-scoped regex fullmatches. Production exceptions should be
+# narrow, reviewed, and tied to the specific file that needs the value.
+allowlist:
+  - path: tests/enforcement/test_check_public_surface.py
+    kind: host-ip
+    pattern: 10\.0\.0\.0
+  - path: tests/enforcement/test_check_public_surface.py
+    kind: host-ip
+    pattern: 10\.20\.30\.40
+  - path: tests/enforcement/test_check_public_surface.py
+    kind: host-ip
+    pattern: 100\.64\.1\.2
+  - path: tests/enforcement/test_check_public_surface.py
+    kind: host-ip
+    pattern: 100\.64\.9\.9
+  - path: tests/enforcement/test_check_public_surface.py
+    kind: host-ip
+    pattern: 100\.64\.0\.0
+  - path: tests/enforcement/test_check_public_surface.py
+    kind: host-ip
+    pattern: 172\.16\.0\.0
+  - path: tests/enforcement/test_check_public_surface.py
+    kind: host-ip
+    pattern: 192\.168\.0\.0
+  - path: tests/enforcement/test_check_public_surface.py
+    kind: physical-hostname
+    pattern: DESKTOP-ABC1234
+  - path: tests/enforcement/test_check_public_surface.py
+    kind: tailscale-magicdns
+    pattern: host\.tailabc123\.ts\.net
+  - path: tests/enforcement/test_check_public_surface.py
+    kind: tailscale-magicdns
+    pattern: host\.tailABCDEF\.ts\.net
+  - path: tests/enforcement/test_check_public_surface.py
+    kind: host-ip
+    pattern: 'fd7a:115c:a1e0::1234'
+  - path: scripts/enforcement/check-public-surface.py
+    kind: host-ip
+    pattern: 10\.0\.0\.0
+  - path: scripts/enforcement/check-public-surface.py
+    kind: host-ip
+    pattern: 100\.64\.0\.0
+  - path: scripts/enforcement/check-public-surface.py
+    kind: host-ip
+    pattern: 172\.16\.0\.0
+  - path: scripts/enforcement/check-public-surface.py
+    kind: host-ip
+    pattern: 192\.168\.0\.0
+  - path: scripts/enforcement/check-public-surface.py
+    kind: host-ip
+    pattern: 'fd7a:115c:a1e0::'
+  - path: config/public-surface-allowlist.yml
+    kind: physical-hostname
+    pattern: DESKTOP-ABC1234
+  - path: config/public-surface-allowlist.yml
+    kind: host-ip
+    pattern: 'fd7a:115c:a1e0::1234'
+  - path: config/public-surface-allowlist.yml
+    kind: host-ip
+    pattern: 'fd7a:115c:a1e0::'

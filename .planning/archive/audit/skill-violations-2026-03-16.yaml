@@ -1,0 +1,53 @@
+violations:
+  - file: /mnt/local-analysis/workspace-hub/.claude/skills/coordination/workspace/skills-curation/skill-stub-creation-shallow-gaps/SKILL.md
+    check: xml_html_tags_in_body
+    severity: warn
+    detail: "2 XML/HTML tag(s) found in SKILL.md body"
+  - file: /mnt/local-analysis/workspace-hub/.claude/skills/data/doc-research-download/SKILL.md
+    check: xml_html_tags_in_body
+    severity: warn
+    detail: "3 XML/HTML tag(s) found in SKILL.md body"
+  - file: /mnt/local-analysis/workspace-hub/.claude/skills/development/documentation/sphinx/4-autodoc-automatic-api-documentation/SKILL.md
+    check: xml_html_tags_in_body
+    severity: warn
+    detail: "1 XML/HTML tag(s) found in SKILL.md body"
+  - file: /mnt/local-analysis/workspace-hub/.claude/skills/development/planning/planning-goal/example-1-software-deployment/SKILL.md
+    check: xml_html_tags_in_body
+    severity: warn
+    detail: "1 XML/HTML tag(s) found in SKILL.md body"
+  - file: /mnt/local-analysis/workspace-hub/.claude/skills/development/sparc/sparc-refinement/example-1-performance-optimization/SKILL.md
+    check: xml_html_tags_in_body
+    severity: warn
+    detail: "3 XML/HTML tag(s) found in SKILL.md body"
+  - file: /mnt/local-analysis/workspace-hub/.claude/skills/engineering/cfd/openfoam/31-solver-log-residual-format/SKILL.md
+    check: xml_html_tags_in_body
+    severity: warn
+    detail: "1 XML/HTML tag(s) found in SKILL.md body"
+  - file: /mnt/local-analysis/workspace-hub/.claude/skills/operations/automation/windmill/2-typescriptdeno-scripts/SKILL.md
+    check: xml_html_tags_in_body
+    severity: warn
+    detail: "1 XML/HTML tag(s) found in SKILL.md body"
+  - file: /mnt/local-analysis/workspace-hub/.claude/skills/operations/devtools/raycast-alfred/1-raycast-extension-development/SKILL.md
+    check: xml_html_tags_in_body
+    severity: warn
+    detail: "2 XML/HTML tag(s) found in SKILL.md body"
+  - file: /mnt/local-analysis/workspace-hub/.claude/skills/operations/devtools/raycast-alfred/2-raycast-typescript-extensions/SKILL.md
+    check: xml_html_tags_in_body
+    severity: warn
+    detail: "9 XML/HTML tag(s) found in SKILL.md body"
+  - file: /mnt/local-analysis/workspace-hub/.claude/skills/operations/devtools/raycast-alfred/project-switcher-integration/SKILL.md
+    check: xml_html_tags_in_body
+    severity: warn
+    detail: "8 XML/HTML tag(s) found in SKILL.md body"
+  - file: /mnt/local-analysis/workspace-hub/.claude/skills/workspace-hub/engineering-context-loader/step-1-resolve-the-active-wrk-item/SKILL.md
+    check: xml_html_tags_in_body
+    severity: warn
+    detail: "3 XML/HTML tag(s) found in SKILL.md body"
+  - file: /mnt/local-analysis/workspace-hub/.claude/skills/workspace-hub/work-document-exit/work-done-this-session/SKILL.md
+    check: xml_html_tags_in_body
+    severity: warn
+    detail: "3 XML/HTML tag(s) found in SKILL.md body"
+  - file: /mnt/local-analysis/workspace-hub/.claude/skills/workspace-hub/work-queue-workflow/SKILL.md
+    check: xml_html_tags_in_body
+    severity: warn
+    detail: "1 XML/HTML tag(s) found in SKILL.md body"

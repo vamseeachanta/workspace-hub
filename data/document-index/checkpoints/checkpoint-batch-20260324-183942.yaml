@@ -1,0 +1,81 @@
+generated_at: '2026-03-24T18:39:42'
+label: batch
+total: 66898
+discipline_distribution:
+  materials: 49681
+  workspace-spec: 558
+  other: 4118
+  regulatory: 7207
+  marine: 1405
+  pipeline: 1044
+  structural: 782
+  cathodic-protection: 440
+  production: 233
+  energy-economics: 253
+  drilling: 226
+  geotechnical: 76
+  electrical: 223
+  installation: 37
+  structural|pipeline|marine|materials: 1
+  structural|materials|regulatory: 1
+  marine|regulatory: 1
+  regulatory|other: 1
+  structural|marine: 1
+  drilling|regulatory: 1
+  fire-safety: 576
+  regulatory|structural|marine|pipeline|installation: 1
+  pipeline|marine|installation|materials: 1
+  structural|pipeline|marine|installation|materials|regulatory: 1
+  materials|structural: 1
+  pipeline|structural: 1
+  structural|materials: 2
+  marine|structural|drilling: 1
+  marine|structural|drilling|regulatory: 1
+  document-processing: 22
+  pipeline|materials|regulatory: 1
+  pipeline|regulatory: 1
+other_rate_pct: 6.2
+method_breakdown:
+  pdftotext: 35224
+  unknown: 1448
+  astm_deterministic: 25535
+  og_sqlite: 1166
+  failed: 673
+  metadata_only: 365
+  astm_deterministic_ambiguous: 2
+  pdftotext_p3: 1090
+  direct: 1271
+  no_text: 116
+  path-inference: 8
+org_breakdown:
+  ASTM: 50157
+  unknown: 1813
+  API: 860
+  Unknown: 661
+  DNV: 193
+  OnePetro: 86
+  ? ''
+  : 10232
+  ISO: 456
+  BSI: 115
+  OTC: 18
+  ASCE: 34
+  ABS: 31
+  American Petroleum Institute: 23
+  Norsok: 15
+  Offshore Technology Conference: 5
+  MIL: 10
+  ASME: 18
+  AWS: 2
+  The Norwegian Institute of Technology: 1
+  NEMA: 3
+  BOUYGUES OFFSHORE: 1
+  NORSOK: 2
+  HSE: 1
+  National Aerospace Laboratory of Japan / National Space Development Agency of Japan: 1
+  raw: 2155
+  ASNT: 1
+  SNAME: 1
+  NACE: 1
+  AWHEM: 1
+  CFR: 1

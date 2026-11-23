@@ -1,0 +1,25 @@
+{
+  "scope": "tier0-empty-untracked-directories",
+  "approval": "user: continue with recommendation",
+  "delete_policy": "removed only live untracked directory subtrees with no non-directory entries after fresh checks",
+  "passes": 2,
+  "removed_count": 43,
+  "removed_manifest": "docs/sessions/2026-06-14-tier0-empty-dir-removed.tsv",
+  "delete_allowed": true,
+  "completed_at": "2026-06-14T10:59:00-05:00",
+  "restored_deferred_paths": [
+    [
+      "teamresumes",
+      "src/external/"
+    ],
+    [
+      "teamresumes",
+      "src/modules/"
+    ],
+    [
+      "teamresumes",
+      "tests/modules/"
+    ]
+  ],
+  "correction_note": "Restored empty teamresumes source/test placeholder dirs because the preservation proposal classified them as Tier 3 deferred project structure."
+}

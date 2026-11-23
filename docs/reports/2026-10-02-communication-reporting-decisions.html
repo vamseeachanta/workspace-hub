@@ -1,0 +1,301 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Communication and reporting decisions</title>
+<style>
+:root{
+  --ground:#eef1f4; --surface:#ffffff; --sunk:#f6f8fa; --ink:#14202b; --muted:#566674; --rule:#d5dce2;
+  --accent:#0d6a80; --accent-ink:#ffffff; --accent-soft:#e1eff3;
+  --open:#9a6200; --open-soft:#fbf1dd; --done:#2b7a4b; --done-soft:#e3f2e8; --no:#a8261f; --no-soft:#f8e4e2;
+  --display:"IBM Plex Sans Condensed","Arial Narrow",system-ui,sans-serif;
+  --body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Consolas,monospace;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --ground:#0e151b; --surface:#15202a; --sunk:#1a2733; --ink:#e2e9ef; --muted:#93a3b1; --rule:#283744;
+  --accent:#4cb2c8; --accent-ink:#0b1419; --accent-soft:#16323b;
+  --open:#e0a643; --open-soft:#33280f; --done:#62c28b; --done-soft:#14301f; --no:#ef7d73; --no-soft:#3a1a18;
+  color-scheme:dark;}}
+:root[data-theme="dark"]{
+  --ground:#0e151b; --surface:#15202a; --sunk:#1a2733; --ink:#e2e9ef; --muted:#93a3b1; --rule:#283744;
+  --accent:#4cb2c8; --accent-ink:#0b1419; --accent-soft:#16323b;
+  --open:#e0a643; --open-soft:#33280f; --done:#62c28b; --done-soft:#14301f; --no:#ef7d73; --no-soft:#3a1a18;
+  color-scheme:dark;}
+*{box-sizing:border-box}
+body{background:var(--ground);color:var(--ink);font:15px/1.5 var(--body);padding-inline:16px;padding-block:20px 48px}
+.wrap{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:300px minmax(0,1fr);gap:24px;align-items:start}
+@media (max-width:860px){.wrap{grid-template-columns:1fr}}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0}
+h1{font-size:28px;font-weight:600;letter-spacing:.2px}
+h2{font-size:19px;font-weight:600}
+h3{font-size:17px;font-weight:600;line-height:1.3}
+.rail{position:sticky;top:calc(env(safe-area-inset-top,0px) + 12px);display:flex;flex-direction:column;gap:16px}
+@media (max-width:860px){.rail{position:static}}
+.panel{background:var(--surface);border:1px solid var(--rule);border-radius:8px;padding:16px}
+.kicker{font:500 11px/1.2 var(--mono);letter-spacing:.9px;text-transform:uppercase;color:var(--muted)}
+.lede{color:var(--muted);margin:6px 0 0;font-size:14px}
+.progress{display:flex;flex-direction:column;gap:10px;margin-top:12px}
+.bar{height:6px;border-radius:3px;background:var(--sunk);overflow:hidden}
+.bar>i{display:block;height:100%;background:var(--accent);width:0;transition:width .3s}
+.counts{display:flex;gap:14px;font:500 13px var(--mono);font-variant-numeric:tabular-nums}
+.nav{display:flex;flex-direction:column;gap:4px;margin-top:4px}
+.nav button{all:unset;cursor:pointer;display:flex;justify-content:space-between;gap:8px;padding:7px 10px;border-radius:6px;font-size:14px}
+.nav button:hover{background:var(--sunk)}
+.nav button[aria-pressed="true"]{background:var(--accent-soft);color:var(--ink);font-weight:600}
+.nav button:focus-visible{outline:2px solid var(--accent)}
+.nav .n{font:12px var(--mono);color:var(--muted)}
+.drawing{display:flex;flex-direction:column;gap:10px}
+.seg{display:inline-flex;border:1px solid var(--rule);border-radius:6px;overflow:hidden;align-self:flex-start}
+.seg button{all:unset;cursor:pointer;padding:5px 10px;font:500 12px var(--mono)}
+.seg button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink)}
+.seg button:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+.drawing .frame{background:#fff;border:1px solid var(--rule);border-radius:6px;max-height:520px;overflow:auto}
+.drawing img{display:block;width:100%;height:auto}
+.drawing a{font-size:13px;color:var(--accent)}
+main{display:flex;flex-direction:column;gap:16px;min-width:0}
+.section-head{display:flex;flex-direction:column;gap:4px;margin-top:8px}
+.section-head p{margin:0;color:var(--muted);font-size:14px;max-width:70ch}
+.card{background:var(--surface);border:1px solid var(--rule);border-left:4px solid var(--open);border-radius:8px;padding:16px 18px;display:flex;flex-direction:column;gap:12px}
+.card.decided{border-left-color:var(--done)}
+.card.rejected{border-left-color:var(--no)}
+.top{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;flex-wrap:wrap}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+.chip{font:500 11px var(--mono);padding:2px 7px;border-radius:10px;background:var(--sunk);color:var(--muted);border:1px solid var(--rule)}
+.pill{font:600 11px var(--mono);letter-spacing:.6px;text-transform:uppercase;padding:3px 9px;border-radius:10px;background:var(--open-soft);color:var(--open);white-space:nowrap}
+.decided .pill{background:var(--done-soft);color:var(--done)}
+.rejected .pill{background:var(--no-soft);color:var(--no)}
+.q{margin:0;max-width:75ch}
+.compare{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media (max-width:560px){.compare{grid-template-columns:1fr}}
+.side{background:var(--sunk);border:1px solid var(--rule);border-radius:6px;padding:10px 12px;display:flex;flex-direction:column;gap:4px}
+.side .v{font:500 14px var(--mono);font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+.side .s{font:12px var(--mono);color:var(--muted);overflow-wrap:anywhere}
+.meta{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;font-size:14px}
+.meta dt{color:var(--muted);font-weight:500}
+.meta dd{margin:0;max-width:75ch}
+.rec{color:var(--ink)}
+.rec::before{content:"Recommended · ";font:600 11px var(--mono);letter-spacing:.5px;text-transform:uppercase;color:var(--accent)}
+fieldset{border:0;padding:0;margin:0;display:flex;flex-wrap:wrap;gap:8px}
+legend{position:absolute;left:-9999px}
+.opt{position:relative}
+.opt input{position:absolute;opacity:0;inset:0;margin:0;cursor:pointer}
+.opt span{display:inline-block;padding:7px 12px;border:1px solid var(--rule);border-radius:6px;font-size:14px;background:var(--surface);cursor:pointer}
+.opt input:checked+span{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:600}
+.opt input:focus-visible+span{outline:2px solid var(--accent);outline-offset:2px}
+.opt input:disabled+span{opacity:.55;cursor:default}
+.opt.recommended span{border-style:dashed;border-color:var(--accent)}
+textarea{width:100%;min-height:44px;resize:vertical;font:14px var(--body);color:var(--ink);background:var(--surface);border:1px solid var(--rule);border-radius:6px;padding:8px 10px}
+textarea:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.foot{display:flex;justify-content:space-between;gap:10px;font:12px var(--mono);color:var(--muted);flex-wrap:wrap}
+.notice{padding:12px 14px;border-radius:8px;background:var(--open-soft);color:var(--ink);border:1px solid var(--rule)}
+.empty{color:var(--muted)}
+.gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.gallery figure{margin:0;display:flex;flex-direction:column;gap:4px}
+.gallery a{display:block;border:1px solid var(--rule);border-radius:6px;overflow:hidden;background:#fff;aspect-ratio:1/2}
+.gallery img{width:100%;height:100%;object-fit:cover;object-position:top}
+.gallery figcaption{font:500 12px var(--mono);color:var(--ink)}
+.gallery figcaption small{display:block;font:12px var(--body);color:var(--muted)}
+.savebar{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+#save-btn,.loadbtn{font:600 13px var(--body);padding:8px 12px;border-radius:6px;cursor:pointer;border:1px solid var(--accent)}
+#save-btn{background:var(--accent);color:var(--accent-ink)}
+.loadbtn{background:var(--surface);color:var(--accent)}
+#save-btn:focus-visible,.loadbtn:focus-within{outline:2px solid var(--accent);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+.static-cards{display:none}@media print{.wrap{display:block}.rail{position:static}#main,.savebar,.nav,.progress{display:none}.static-cards{display:block}article{break-inside:avoid}body{background:white;color:black}.panel{border:0}}
+</style>
+</head><body><noscript><style>.static-cards{display:block}</style><p>Scripts are disabled. Use the static decisions below and return choices by card ID.</p></noscript>
+
+<div class="wrap">
+  <aside class="rail">
+    <div class="panel">
+      <div class="kicker">Human review · Proposed additions · 2 October 2026</div>
+      <h1>Make agent output easier to review</h1>
+      <p class="lede">Six new choices, all unanswered. Recommendations have dashed outlines. Select an option, add notes and Save decisions. Saved choices request the selected scope; this page does not install policy or approve engineering results.</p>
+      <div class="progress">
+        <div class="bar" aria-hidden="true"><i id="bar"></i></div>
+        <div class="counts"><span id="c-done">0 decided</span><span id="c-open">0 open</span></div>
+      </div>
+      <div class="savebar">
+        <button type="button" id="save-btn">Save decisions</button>
+        <label class="loadbtn" for="load-input">Load decisions</label>
+        <input type="file" id="load-input" accept="application/json,.json" hidden>
+      </div>
+      <p class="lede" id="save-status">Choices are kept in this browser as you click. Use Save decisions, then return the saved JSON for review.</p>
+      <nav class="nav" id="nav" aria-label="Sections"></nav>
+    </div>
+    <div class="panel"><div class="kicker">Sources and existing work</div>
+<p><a href="https://x.com/karpathy/status/2105819303471976479">Karpathy’s original post</a> · 2 October 2026 UTC</p>
+<p>The post suggests clearer technical language, diagrams, interactive HTML and bespoke video to help people understand model output. Its broader premise is that human oversight becomes more important as agents do more work. These are suggestions, not evidence that richer output is always better.</p>
+<p>Source access: X returned HTTP 403. The text was retrieved through the <a href="https://api.fxtwitter.com/status/2105819303471976479">public FXTwitter mirror</a>, with the matching post ID, author and timestamp; direct X verification remains unavailable. <a href="https://www.searchenginejournal.com/karpathy-llm-aircraft-manual-writing/591813/">Independent coverage</a> corroborates the four suggested forms.</p>
+<p>The <a href="https://www.asd-ste100.org/STE_faq.html">official STE FAQ</a> distinguishes its technical-documentation purpose from general writing. Short sentences and consistent language can inform this proposal; no formal compliance assessment was performed.</p>
+<p><a href="https://github.com/vamseeachanta/workspace-hub/blob/c955b86159acc4f9e9f5964690c24dd1411e5b48/docs/standards/engineering-reporting-conventions-proposed.html">Reporting draft P3</a> and <a href="https://github.com/vamseeachanta/workspace-hub/blob/b4620d23db7844efdd969baf48e3f23b9575513a/docs/standards/review-and-communication-standard.md">communication draft</a> remain the existing sources. The companion still names P2; reconciliation to P3 is a pending source update, not a new authority.</p>
+<p>S01–S08 already establish HTML review, one shared tool, saved comments, offline copies and pilot-first rollout. Those decisions are not reopened here. P3’s report-specific regular-weight body text remains distinct from restrained bold in other communication.</p>
+<p>Related: <a href="https://github.com/vamseeachanta/workspace-hub/issues/3925">issue 3925</a>. This is a proposal only; no fleet coverage or deployment is claimed.</p></div>
+  </aside>
+  <div><div id="overview"><section class="panel"><h2>Recommended starting point</h2><p>Try C01–C04 in the bounded C06 pilot. Keep C05 video on request. The target is lower review effort with unchanged engineering meaning, not more generated content.</p>
+<p>Use a decision-first opening: decision needed → what changed → governing result and limitation → evidence. Deeper detail may be expandable; adverse evidence and material limitations remain visible.</p>
+<h3>Illustration: evidence before persuasion</h3><p>Synthetic teaching example only; not an engineering acceptance criterion.</p>
+<div class="compare"><div class="side"><span>Frozen result</span><span class="v">Case A: difference 6%</span></div><div class="side"><span>Predeclared comparison criterion</span><span class="v">Difference ≤ 5%</span></div></div>
+<p>The difference exceeds the synthetic criterion by 1 percentage point. The comparison fails. Physical validation is not established. A more attractive plot would not change that result.</p>
+<details><summary>Why this improves the current practice</summary><p>The current drafts already specify HTML and traceable evidence. The proposed additions address selection of the explanatory form, consistent terminology, visible dependencies, change-focused updates and measured review effort. These are ecosystem proposals derived from the post, not claims made by Karpathy about this repository.</p></details>
+<p>Review controls: Save downloads JSON; keep it beside this page after review. Load accepts only this board revision. Choices are not preselected. Static print content below retains all options if scripting is unavailable.</p>
+<p>Verification: source IDs, script syntax, revision/import validation and source/local parity checks passed. Static content retains each question, tradeoff, recommendation and option. Browser interaction and visual/print verification remain unestablished.</p></section></div><main id="main" aria-live="polite">
+
+  </main></div>
+</div>
+
+
+
+<script type="application/json" id="seed">[{"id": "C01", "section": "writing", "order": 1, "title": "Use plain engineering English, with a small terminology check", "ref": "Proposed extension to reporting P3 and the complementary communication draft", "question": "Add a short editing pass: one idea per sentence, one defined term per concept, explicit subjects, unfamiliar abbreviations expanded and conditions beside conclusions. Preserve units, uncertainty, requirement/advice distinctions and report-present passive methods. Do not claim formal ASD-STE100 compliance or a measurable 80% compliance score.", "impact": "Less interpretation work for the reader. Strict controlled-language enforcement could distort engineering terms or conflict with the established report register.", "recommendation": "Try the small clarity pass in the pilot; keep the existing engineering register.", "recommended": "pilot", "options": [{"key": "pilot", "label": "Pilot the clarity pass"}, {"key": "strict", "label": "Investigate formal STE separately"}, {"key": "later", "label": "Defer"}], "decision": null, "note": ""}, {"id": "C02", "section": "evidence", "order": 2, "title": "Choose the smallest form that answers the review question", "ref": "Proposed extension to reporting P3 and the complementary communication draft", "question": "Use a schematic for configuration, a table for alternatives and a plot for magnitudes or trends. Add interaction only when switching cases or inspecting a dependency answers a real question. A short status update can remain plain text.", "impact": "Targets comprehension without turning every response into a presentation. Formal ten-section reports keep their existing structure; brief explanation views supplement them.", "recommendation": "Use the simplest sufficient form, with a static equivalent for every interactive explanation.", "recommended": "selective", "options": [{"key": "selective", "label": "Select by the review question"}, {"key": "rich", "label": "Rich media for each major report"}, {"key": "later", "label": "Defer"}], "decision": null, "note": ""}, {"id": "C03", "section": "evidence", "order": 3, "title": "Make dependencies and unresolved consequences visible", "ref": "Proposed extension to reporting P3 and the complementary communication draft", "question": "Add a compact result → criterion → conclusion view, with each material assumption connected to the conclusions it affects. Case selectors will filter frozen, sourced evidence only. Show units, applicability, revision and evidence status; unavailable evidence remains missing. No new solver runs, interpolated results or engineering calculations are implied.", "impact": "Helps identify which conclusions can proceed and which await evidence. Extra views create consistency work, so every display must trace to the same qualified source.", "recommendation": "Pilot one dependency view and one frozen comparison; keep affected limitations visible without opening a detail panel.", "recommended": "pilot", "options": [{"key": "pilot", "label": "Pilot linked evidence views"}, {"key": "static", "label": "Use static dependency tables only"}, {"key": "later", "label": "Defer"}], "decision": null, "note": ""}, {"id": "C04", "section": "writing", "order": 4, "title": "Lead recurring updates with what changed and what needs attention", "ref": "Proposed extension to reporting P3 and the complementary communication draft", "question": "For follow-up sessions and machine work, show changed since the last checkpoint, current blocker, decision needed and next action. Link the full evidence once. Workload counts and ETA carry an observation time; estimates stay labelled. No decision needed is a valid update.", "impact": "Reduces repeated histories and unnecessary approval requests. Periodic complete handoffs remain necessary so a new session can recover context.", "recommendation": "Use concise change summaries for recurring updates; retain complete, revision-bound handoffs.", "recommended": "delta", "options": [{"key": "delta", "label": "Use change summaries plus full handoffs"}, {"key": "full", "label": "Keep full summaries every update"}, {"key": "later", "label": "Defer"}], "decision": null, "note": ""}, {"id": "C05", "section": "media", "order": 5, "title": "Keep explainer video optional", "ref": "Proposed extension to reporting P3 and the complementary communication draft", "question": "Use an animated or narrated explainer only where motion, sequence or repeated confusion remains unresolved by a diagram. Each proposed video will name its audience, subject, duration, compute/cost cap and evidence source before production. Supply captions, transcript and equivalent static evidence. External narration requires applicable data-sharing and service authorization.", "impact": "Video may explain a mechanism, but it is slower to inspect, update and cite. A visually persuasive animation can conceal unsupported physics.", "recommendation": "Exclude video from the first pilot; request it per case after a diagram has proved insufficient.", "recommended": "on_request", "options": [{"key": "on_request", "label": "Video only by separate request"}, {"key": "pilot_video", "label": "Prepare a bounded video proposal"}, {"key": "none", "label": "Keep text and diagrams only"}], "decision": null, "note": ""}, {"id": "C06", "section": "pilot", "order": 6, "title": "Extend the existing pilot before ecosystem rollout", "ref": "Proposed extension to reporting P3 and the complementary communication draft", "question": "Prepare one synthetic offline review board on this Windows workstation, with three cases: configuration choice, uncertain input and comparison result. Reuse the existing shared review tool. Add a decision-first opening, one schematic, one frozen comparison and a visible limitations panel. Proposed initial production cap: 60 minutes; stop and report gaps at the cap. No live report, shared instruction or machine installation changes.", "impact": "Tests whether the changes save review effort before multiplying them across repos. Record production time, review time, clarification requests, missed limitations and defects; a single trial is feedback, not statistical proof.", "recommendation": "Run the synthetic pilot after the selected scope is confirmed. Advance only if all seeded material facts/limitations survive, the reviewer can locate decision/criterion/consequence, and offline, keyboard, print and Save/Load checks pass. Then prepare exact repo/machine targets for a separate rollout decision.", "recommended": "synthetic", "options": [{"key": "synthetic", "label": "Approve the bounded synthetic pilot"}, {"key": "revise", "label": "Revise pilot scope in notes"}, {"key": "later", "label": "Defer pilot"}], "decision": null, "note": ""}]</script>
+<script>
+const SECTIONS = [{"key": "writing", "title": "Writing and updates", "blurb": "Clarity without changing engineering meaning."}, {"key": "evidence", "title": "Evidence and explanation", "blurb": "Select the useful form; retain the basis and limits."}, {"key": "media", "title": "Optional media", "blurb": "Scope and cost before video production."}, {"key": "pilot", "title": "Bounded pilot", "blurb": "Trial first; deployment remains separate."}];
+const BOARD = "communication-explanations-20261002-r1", REVISION = "4b77d349b029e3d6";
+const STATUS = {adopt:"decided", later:"decided", reject:"rejected"};
+let items = [], active = "all", db = null, writable = true;
+const $ = s => document.querySelector(s);
+
+function el(tag, attrs = {}, ...kids){
+  const e = document.createElement(tag);
+  for (const [k, v] of Object.entries(attrs)){
+    if (k === "class") e.className = v; else if (k === "text") e.textContent = v; else e.setAttribute(k, v);
+  }
+  for (const k of kids) if (k) e.append(k);
+  return e;
+}
+
+function renderNav(){
+  const nav = $("#nav"); nav.replaceChildren();
+  const groups = [{key:"all", title:"All decisions"}, ...SECTIONS];
+  for (const g of groups){
+    const n = g.key === "all" ? items.length : items.filter(i => i.section === g.key).length;
+    const open = (g.key === "all" ? items : items.filter(i => i.section === g.key)).filter(i => !i.decision).length;
+    const b = el("button", {type:"button", "aria-pressed": String(active === g.key)}, el("span", {text:g.title}), el("span", {class:"n", text: open ? `${open} open / ${n}` : `${n} ✓`}));
+    b.addEventListener("click", () => { active = g.key; render(); });
+    nav.append(b);
+  }
+  const done = items.filter(i => i.decision).length;
+  $("#c-done").textContent = `${done} decided`;
+  $("#c-open").textContent = `${items.length - done} open`;
+  $("#bar").style.width = items.length ? `${(100 * done / items.length).toFixed(1)}%` : "0";
+}
+
+function card(it){
+  const cls = it.decision ? (STATUS[it.decision] || "decided") : "";
+  const c = el("article", {class:`card ${cls}`, id:`item-${it.id}`});
+  const chips = el("div", {class:"chips"});
+  for (const cfg of it.configs || []) chips.append(el("span", {class:"chip", text: cfg}));
+  if (it.ref) chips.append(el("span", {class:"chip", text: it.ref}));
+  const pillText = it.decision ? (it.options.find(o => o.key === it.decision)?.label || it.decision) : "open";
+  c.append(el("div", {class:"top"}, el("div", {}, el("h3", {text: it.title}), chips), el("span", {class:"pill", text: pillText})));
+  if (it.question) c.append(el("p", {class:"q", text: it.question}));
+  if (it.a || it.b){
+    const cmp = el("div", {class:"compare"});
+    for (const side of [it.a, it.b]) if (side) cmp.append(el("div", {class:"side"}, el("span", {class:"kicker", text: side.label}), el("span", {class:"v", text: side.value}), el("span", {class:"s", text: side.source || ""})));
+    c.append(cmp);
+  }
+  if (it.gallery && it.gallery.length){
+    const g = el("div", {class:"gallery"});
+    for (const im of it.gallery){
+      const a = el("a", {href: im.src, target:"_blank", rel:"noopener"}, el("img", {src: im.src, alt: `${im.label} stack-up candidate`, loading:"lazy"}));
+      g.append(el("figure", {}, a, el("figcaption", {}, document.createTextNode(im.label), el("small", {text: im.note || ""}))));
+    }
+    c.append(g);
+  }
+  const meta = el("dl", {class:"meta"});
+  if (it.impact){ meta.append(el("dt", {text:"Impact"}), el("dd", {text: it.impact})); }
+  if (it.recommendation){ meta.append(el("dt", {text:"Recommendation"}), el("dd", {class:"rec", text: it.recommendation})); }
+  if (meta.childElementCount) c.append(meta);
+  const fs = el("fieldset", {}, el("legend", {text:`Decision for ${it.title}`}));
+  for (const o of it.options){
+    const id = `opt-${it.id}-${o.key}`;
+    const inp = el("input", {type:"radio", name:`d-${it.id}`, id, value:o.key});
+    if (it.decision === o.key) inp.checked = true;
+    if (!writable) inp.disabled = true;
+    inp.addEventListener("change", () => saveDecision(it, o.key));
+    fs.append(el("label", {class:`opt${it.recommended === o.key ? " recommended" : ""}`, for:id}, inp, el("span", {text:o.label})));
+  }
+  c.append(fs);
+  const ta = el("textarea", {id:`note-${it.id}`, placeholder: writable ? "Note: value to use, reason, who confirmed it" : "Read-only view", "aria-label":`Note for ${it.title}`});
+  ta.value = it.note || "";
+  if (!writable) ta.readOnly = true;
+  let timer = null;
+  ta.addEventListener("input", () => { clearTimeout(timer); saveNote(it, ta.value); });
+  ta.addEventListener("blur", () => { clearTimeout(timer); saveNote(it, ta.value); });
+  c.append(ta);
+  c.append(el("div", {class:"foot"}, el("span", {text: `Item ${it.id}`}), el("span", {text: it.decided_at ? `Decided ${new Date(it.decided_at).toLocaleString()}` : (it.recommended ? "Dashed option = recommendation" : "")})));
+  return c;
+}
+
+function render(){
+  renderNav();
+  const main = $("#main"); main.replaceChildren();
+  if (!items.length){ main.append(el("p", {class:"empty", text:"No decisions have been loaded yet."})); return; }
+  for (const s of SECTIONS){
+    if (active !== "all" && active !== s.key) continue;
+    const list = items.filter(i => i.section === s.key).sort((x, y) => (x.order ?? 0) - (y.order ?? 0));
+    if (!list.length) continue;
+    main.append(el("div", {class:"section-head"}, el("h2", {text: s.title}), el("p", {text: s.blurb})));
+    for (const it of list) main.append(card(it));
+  }
+}
+
+const STORE_KEY = "communication-explanations-20261002-r1-4b77d349b029e3d6";
+function persist(){
+  const state = Object.fromEntries(items.map(i => [i.id, {decision: i.decision ?? null, note: i.note || "", decided_at: i.decided_at ?? null}]));
+  try { localStorage.setItem(STORE_KEY, JSON.stringify(state)); }
+  catch (e){ showNotice("This browser is not keeping choices between visits. Use Save decisions before closing."); }
+}
+async function write(it, patch){
+  Object.assign(it, patch); persist();
+  if (document.activeElement?.tagName !== "TEXTAREA") render();
+}
+function saveDecision(it, key){ if (it.decision === key) return; write(it, {decision:key, decided_at:new Date().toISOString()}); }
+function saveNote(it, text){ if ((it.note || "") === text) return; it.note = text; write(it, {note:text}); }
+function showNotice(msg){ let n = $("#notice"); if (!n){ n = el("div", {class:"notice", id:"notice", role:"status"}); $("#main").prepend(n); } n.textContent = msg; }
+
+
+
+function applyState(state){
+  for (const it of items){ const s = state[it.id]; if (s){ it.decision = s.decision ?? null; it.note = s.note || ""; it.decided_at = s.decided_at ?? null; } }
+}
+function exportState(){
+  const out = {board: BOARD, revision: REVISION, exported_at: new Date().toISOString(),
+    decisions: items.map(i => ({id: i.id, section: i.section, title: i.title, decision: i.decision ?? null,
+      decision_label: i.decision ? (i.options.find(o => o.key === i.decision)?.label || i.decision) : null,
+      recommended: i.recommended ?? null, note: i.note || "", decided_at: i.decided_at ?? null}))};
+  const blob = new Blob([JSON.stringify(out, null, 2)], {type: "application/json"});
+  const a = el("a", {href: URL.createObjectURL(blob), download: "communication-explanations-20261002-r1.json"});
+  document.body.append(a); a.click(); a.remove();
+  $("#save-status").textContent = `Saved ${items.filter(i => i.decision).length} decisions to communication-explanations-20261002-r1.json (your Downloads folder).`;
+}
+function validateImport(data){
+  if (!data || data.board !== BOARD || data.revision !== REVISION || !Array.isArray(data.decisions)) throw new Error("Wrong board or revision");
+  const state = {};
+  for (const x of data.decisions){
+    const it = items.find(i => i.id === x.id);
+    if (!it || Object.hasOwn(state,x.id) || (x.decision !== null && !it.options.some(o => o.key === x.decision)) || typeof x.note !== "string" || (x.decided_at != null && typeof x.decided_at !== "string")) throw new Error("Invalid decision entry");
+    state[x.id] = {decision:x.decision,note:x.note,decided_at:x.decided_at ?? null};
+  }
+  if (Object.keys(state).length !== items.length) throw new Error("Incomplete decision set");
+  return state;
+}
+function importState(file){
+  const r = new FileReader();
+  r.onload = () => {
+    try {
+      const data = JSON.parse(r.result); const state = validateImport(data);
+
+      applyState(state); persist(); render();
+      $("#save-status").textContent = `Loaded ${Object.keys(state).length} items from ${file.name}.`;
+    } catch (e){ $("#save-status").textContent = "Load rejected: wrong board/revision or invalid entries. Current choices are unchanged."; }
+  };
+  r.readAsText(file);
+}
+items = JSON.parse(document.getElementById("seed").textContent);
+try { const saved = localStorage.getItem(STORE_KEY); if (saved) applyState(JSON.parse(saved)); } catch (e) {}
+$("#save-btn").addEventListener("click", exportState);
+$("#load-input").addEventListener("change", e => { if (e.target.files[0]) importState(e.target.files[0]); e.target.value = ""; });
+document.addEventListener("focusout", e => { if (e.target.tagName === "TEXTAREA") setTimeout(() => { if (document.activeElement?.tagName !== "TEXTAREA") render(); }, 0); });
+render();
+</script>
+<section class="static-cards"><h2>Static decision list</h2><article><h3>C01 — Use plain engineering English, with a small terminology check</h3><p>Add a short editing pass: one idea per sentence, one defined term per concept, explicit subjects, unfamiliar abbreviations expanded and conditions beside conclusions. Preserve units, uncertainty, requirement/advice distinctions and report-present passive methods. Do not claim formal ASD-STE100 compliance or a measurable 80% compliance score.</p><p>Tradeoff: Less interpretation work for the reader. Strict controlled-language enforcement could distort engineering terms or conflict with the established report register.</p><p>Recommendation: Try the small clarity pass in the pilot; keep the existing engineering register.</p><p>Options: Pilot the clarity pass / Investigate formal STE separately / Defer</p></article><article><h3>C02 — Choose the smallest form that answers the review question</h3><p>Use a schematic for configuration, a table for alternatives and a plot for magnitudes or trends. Add interaction only when switching cases or inspecting a dependency answers a real question. A short status update can remain plain text.</p><p>Tradeoff: Targets comprehension without turning every response into a presentation. Formal ten-section reports keep their existing structure; brief explanation views supplement them.</p><p>Recommendation: Use the simplest sufficient form, with a static equivalent for every interactive explanation.</p><p>Options: Select by the review question / Rich media for each major report / Defer</p></article><article><h3>C03 — Make dependencies and unresolved consequences visible</h3><p>Add a compact result → criterion → conclusion view, with each material assumption connected to the conclusions it affects. Case selectors will filter frozen, sourced evidence only. Show units, applicability, revision and evidence status; unavailable evidence remains missing. No new solver runs, interpolated results or engineering calculations are implied.</p><p>Tradeoff: Helps identify which conclusions can proceed and which await evidence. Extra views create consistency work, so every display must trace to the same qualified source.</p><p>Recommendation: Pilot one dependency view and one frozen comparison; keep affected limitations visible without opening a detail panel.</p><p>Options: Pilot linked evidence views / Use static dependency tables only / Defer</p></article><article><h3>C04 — Lead recurring updates with what changed and what needs attention</h3><p>For follow-up sessions and machine work, show changed since the last checkpoint, current blocker, decision needed and next action. Link the full evidence once. Workload counts and ETA carry an observation time; estimates stay labelled. No decision needed is a valid update.</p><p>Tradeoff: Reduces repeated histories and unnecessary approval requests. Periodic complete handoffs remain necessary so a new session can recover context.</p><p>Recommendation: Use concise change summaries for recurring updates; retain complete, revision-bound handoffs.</p><p>Options: Use change summaries plus full handoffs / Keep full summaries every update / Defer</p></article><article><h3>C05 — Keep explainer video optional</h3><p>Use an animated or narrated explainer only where motion, sequence or repeated confusion remains unresolved by a diagram. Each proposed video will name its audience, subject, duration, compute/cost cap and evidence source before production. Supply captions, transcript and equivalent static evidence. External narration requires applicable data-sharing and service authorization.</p><p>Tradeoff: Video may explain a mechanism, but it is slower to inspect, update and cite. A visually persuasive animation can conceal unsupported physics.</p><p>Recommendation: Exclude video from the first pilot; request it per case after a diagram has proved insufficient.</p><p>Options: Video only by separate request / Prepare a bounded video proposal / Keep text and diagrams only</p></article><article><h3>C06 — Extend the existing pilot before ecosystem rollout</h3><p>Prepare one synthetic offline review board on this Windows workstation, with three cases: configuration choice, uncertain input and comparison result. Reuse the existing shared review tool. Add a decision-first opening, one schematic, one frozen comparison and a visible limitations panel. Proposed initial production cap: 60 minutes; stop and report gaps at the cap. No live report, shared instruction or machine installation changes.</p><p>Tradeoff: Tests whether the changes save review effort before multiplying them across repos. Record production time, review time, clarification requests, missed limitations and defects; a single trial is feedback, not statistical proof.</p><p>Recommendation: Run the synthetic pilot after the selected scope is confirmed. Advance only if all seeded material facts/limitations survive, the reviewer can locate decision/criterion/consequence, and offline, keyboard, print and Save/Load checks pass. Then prepare exact repo/machine targets for a separate rollout decision.</p><p>Options: Approve the bounded synthetic pilot / Revise pilot scope in notes / Defer pilot</p></article></section></body></html>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WRK-659 Plan Review — Draft</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 900px; margin: 2rem auto; padding: 0 1rem; color: #1a1a1a; }
+    h1 { color: #1d4ed8; border-bottom: 2px solid #1d4ed8; padding-bottom: 0.5rem; }
+    h2 { color: #374151; margin-top: 2rem; }
+    .badge { display: inline-block; padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.8rem; font-weight: 600; }
+    .high { background: #fef2f2; color: #b91c1c; }
+    .medium { background: #fefce8; color: #854d0e; }
+    .meta { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; margin: 1rem 0; }
+    .meta table { width: 100%; border-collapse: collapse; }
+    .meta td { padding: 0.3rem 0.5rem; vertical-align: top; }
+    .meta td:first-child { font-weight: 600; color: #475569; width: 160px; }
+    .plan-step { background: #f0f9ff; border-left: 4px solid #0ea5e9; padding: 0.75rem 1rem; margin: 0.5rem 0; border-radius: 0 0.5rem 0.5rem 0; }
+    .gate { background: #f0fdf4; border-left: 4px solid #22c55e; padding: 0.75rem 1rem; margin: 0.5rem 0; border-radius: 0 0.5rem 0.5rem 0; }
+    .acceptance { list-style: none; padding: 0; }
+    .acceptance li { padding: 0.4rem 0; border-bottom: 1px solid #f1f5f9; }
+    .confirm-btn { background: #1d4ed8; color: white; border: none; padding: 0.75rem 2rem; border-radius: 0.5rem; font-size: 1rem; cursor: pointer; margin: 1rem 0; }
+    .confirm-btn:hover { background: #1e40af; }
+    #confirm-status { margin-left: 1rem; font-weight: 600; color: #16a34a; }
+    .warning { background: #fffbeb; border: 1px solid #fbbf24; border-radius: 0.5rem; padding: 0.75rem 1rem; margin: 1rem 0; }
+  </style>
+</head>
+<body>
+
+<h1>WRK-659 Plan Review — DRAFT</h1>
+
+<div class="meta">
+  <table>
+    <tr><td>WRK ID</td><td>WRK-659</td></tr>
+    <tr><td>Title</td><td>test(workflow): sandbox multi-agent gate enforcement</td></tr>
+    <tr><td>Route</td><td>C (Complex)</td></tr>
+    <tr><td>Priority</td><td><span class="badge high">HIGH</span></td></tr>
+    <tr><td>Complexity</td><td><span class="badge medium">MEDIUM</span></td></tr>
+    <tr><td>Computer</td><td>ace-linux-1</td></tr>
+    <tr><td>Orchestrator</td><td>claude (session-20260301170256)</td></tr>
+    <tr><td>Run</td><td>Fresh re-run — 2026-03-01</td></tr>
+  </table>
+</div>
+
+<h2>Purpose</h2>
+<p>Establish the logging + validator guard end-to-end across Claude, Codex, and Gemini in a controlled sandbox
+WRK. This re-run executes the full pipeline from plan → cross-review → TDD → legal → verify gates → HTML → close,
+with all artifacts created fresh and all gate checkboxes verified.</p>
+
+<h2>Plan Steps</h2>
+
+<div class="plan-step"><strong>1. Reset &amp; Session Init</strong> — Move WRK-659 to working/, set active WRK, initialize orchestrator session log.</div>
+<div class="plan-step"><strong>2. Plan Gate</strong> — Produce plan HTML (draft), present to user; then produce final HTML after any feedback. Record <code>plan_approved: true</code> on user confirmation.</div>
+<div class="plan-step"><strong>3. Cross-Review Gate</strong> — Submit review input to Codex CLI and Gemini CLI in parallel.
+  <ul>
+    <li><strong>Codex</strong>: not installed on ace-linux-1 → <em>NO_OUTPUT</em> — treat as gate failure per policy; document and resubmit via ace-linux-2 if needed.</li>
+    <li><strong>Gemini</strong>: available (v0.27.3 on ace-linux-1) → submit via <code>scripts/review/submit-to-gemini.sh</code>.</li>
+    <li><strong>Claude</strong>: inline review by orchestrating agent (always available).</li>
+  </ul>
+</div>
+<div class="plan-step"><strong>4. TDD Gate</strong> — Create variation test results: smoke test for each gate script (session.sh, plan.sh, log-gate-event.sh, verify-gate-evidence.py). Record results in <code>assets/WRK-659/variation-test-results.md</code>.</div>
+<div class="plan-step"><strong>5. Legal Gate</strong> — Run <code>scripts/legal/legal-sanity-scan.sh</code> scoped to WRK-659 assets. Record pass/fail in <code>assets/WRK-659/legal-scan.md</code>.</div>
+<div class="plan-step"><strong>6. Verify Gates</strong> — Run <code>verify-gate-evidence.py WRK-659</code> — must exit 0 before closing.</div>
+<div class="plan-step"><strong>7. Summary HTML</strong> — Generate <code>assets/WRK-659/wrk-659-summary.html</code> with full gate status table and completion record.</div>
+<div class="plan-step"><strong>8. Close</strong> — Tick all acceptance criteria, log close stage finish, update frontmatter, commit, move to done/.</div>
+
+<h2>Gate Contracts</h2>
+
+<div class="gate">✅ <strong>Plan gate</strong>: <code>plan_reviewed: true</code>, <code>plan_approved: true</code>, plan HTML artifact present</div>
+<div class="gate">✅ <strong>Workstation contract</strong>: <code>plan_workstations: [ace-linux-1]</code>, <code>execution_workstations: [ace-linux-1]</code></div>
+<div class="gate">⏳ <strong>Cross-review gate</strong>: Claude (inline) + Gemini (CLI) + Codex (NO_OUTPUT documented)</div>
+<div class="gate">⏳ <strong>TDD gate</strong>: variation-test-results.md with smoke tests for all 4 gate scripts</div>
+<div class="gate">⏳ <strong>Legal gate</strong>: legal-sanity-scan.sh result = pass</div>
+
+<h2>Acceptance Criteria</h2>
+<ul class="acceptance">
+  <li>☐ Logs under <code>.claude/work-queue/logs/WRK-659-*.log</code> show start/close per agent</li>
+  <li>☐ <code>verify-gate-evidence.py WRK-659</code> passes after cross-review/TDD/legal artifacts are in place</li>
+  <li>☐ HTML button records human-review confirmation for the sandbox test</li>
+  <li>☐ Claim evidence references the validator template and notes the NO_OUTPUT policy</li>
+</ul>
+
+<div class="warning">
+  ⚠️ <strong>DRAFT</strong> — This is the draft plan. Review before proceeding to cross-review phase.
+</div>
+
+<h2>Human Review — Draft Confirmation</h2>
+<button class="confirm-btn" type="button"
+  onclick="document.getElementById('confirm-status').textContent='Draft confirmed at ' + new Date().toISOString();">
+  Confirm Draft Review
+</button>
+<span id="confirm-status"></span>
+
+<hr>
+<p style="color:#94a3b8;font-size:0.8rem">Generated: 2026-03-01 | Orchestrator: claude | Session: session-20260301170256</p>
+</body>
+</html>

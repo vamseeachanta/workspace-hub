@@ -1,0 +1,54 @@
+{
+  "generated_at": "2026-06-08 15:02 UTC",
+  "wikis_checked": 2,
+  "total_pages": 1,
+  "total_issues": 3,
+  "domain_results": [
+    {
+      "domain": "engineering",
+      "status": "has_issues",
+      "page_count": 0,
+      "source_count": 0,
+      "entity_count": 0,
+      "concept_count": 0,
+      "link_density": 2.0,
+      "issues": [
+        {
+          "severity": "critical",
+          "category": "index",
+          "message": "index.md missing"
+        },
+        {
+          "severity": "critical",
+          "category": "log",
+          "message": "log.md missing"
+        }
+      ],
+      "issue_summary": {
+        "index": 1,
+        "log": 1
+      }
+    },
+    {
+      "domain": "personal",
+      "status": "has_issues",
+      "page_count": 1,
+      "source_count": 0,
+      "entity_count": 0,
+      "concept_count": 0,
+      "link_density": 0.0,
+      "issues": [
+        {
+          "severity": "critical",
+          "category": "log",
+          "message": "log.md missing"
+        }
+      ],
+      "issue_summary": {
+        "log": 1
+      }
+    }
+  ],
+  "cross_link_suggestions": [],
+  "knowledge_gaps": []
+}

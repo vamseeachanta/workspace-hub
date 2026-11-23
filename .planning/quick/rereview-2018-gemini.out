@@ -1,0 +1,163 @@
+Agent loading error: Failed to load agent from /mnt/local-analysis/workspace-hub/.gemini/agents/gsd-debugger.md: Validation failed: Agent Definition:
+Unrecognized key(s) in object: 'permissionMode'Agent loading error: Failed to load agent from /mnt/local-analysis/workspace-hub/.gemini/agents/gsd-executor.md: Validation failed: Agent Definition:
+Unrecognized key(s) in object: 'permissionMode'Attempt 1 failed with status 429. Retrying with backoff... _GaxiosError: [{
+  "error": {
+    "code": 429,
+    "message": "No capacity available for model gemini-3.1-pro-preview on the server",
+    "errors": [
+      {
+        "message": "No capacity available for model gemini-3.1-pro-preview on the server",
+        "domain": "global",
+        "reason": "rateLimitExceeded"
+      }
+    ],
+    "status": "RESOURCE_EXHAUSTED",
+    "details": [
+      {
+        "@type": "type.googleapis.com/google.rpc.ErrorInfo",
+        "reason": "MODEL_CAPACITY_EXHAUSTED",
+        "domain": "cloudcode-pa.googleapis.com",
+        "metadata": {
+          "model": "gemini-3.1-pro-preview"
+        }
+      }
+    ]
+  }
+}
+]
+    at Gaxios._request (file:///home/vamsee/.npm-global/lib/node_modules/@google/gemini-cli/bundle/chunk-FNPZEX27.js:6581:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async _OAuth2Client.requestAsync (file:///home/vamsee/.npm-global/lib/node_modules/@google/gemini-cli/bundle/chunk-FNPZEX27.js:8544:16)
+    at async CodeAssistServer.requestStreamingPost (file:///home/vamsee/.npm-global/lib/node_modules/@google/gemini-cli/bundle/chunk-FNPZEX27.js:276956:17)
+    at async CodeAssistServer.generateContentStream (file:///home/vamsee/.npm-global/lib/node_modules/@google/gemini-cli/bundle/chunk-FNPZEX27.js:276756:23)
+    at async file:///home/vamsee/.npm-global/lib/node_modules/@google/gemini-cli/bundle/chunk-FNPZEX27.js:277597:19
+    at async file:///home/vamsee/.npm-global/lib/node_modules/@google/gemini-cli/bundle/chunk-FNPZEX27.js:254636:23
+    at async retryWithBackoff (file:///home/vamsee/.npm-global/lib/node_modules/@google/gemini-cli/bundle/chunk-FNPZEX27.js:274556:23)
+    at async GeminiChat.makeApiCallAndProcessStream (file:///home/vamsee/.npm-global/lib/node_modules/@google/gemini-cli/bundle/chunk-FNPZEX27.js:309884:28)
+    at async GeminiChat.streamWithRetries (file:///home/vamsee/.npm-global/lib/node_modules/@google/gemini-cli/bundle/chunk-FNPZEX27.js:309727:29) {
+  config: {
+    url: 'https://cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse',
+    method: 'POST',
+    params: { alt: 'sse' },
+    headers: {
+      'Content-Type': 'application/json',
+      'User-Agent': 'GeminiCLI/0.37.2/gemini-3.1-pro-preview (linux; x64; terminal) google-api-nodejs-client/9.15.1',
+      Authorization: '<<REDACTED> - See `errorRedactor` option in `gaxios` for configuration>.',
+      'x-goog-api-client': 'gl-node/24.14.1'
+    },
+    responseType: 'stream',
+    body: '<<REDACTED> - See `errorRedactor` option in `gaxios` for configuration>.',
+    signal: AbortSignal { aborted: false },
+    retry: false,
+    paramsSerializer: [Function: paramsSerializer],
+    validateStatus: [Function: validateStatus],
+    errorRedactor: [Function: defaultErrorRedactor]
+  },
+  response: {
+    config: {
+      url: 'https://cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse',
+      method: 'POST',
+      params: [Object],
+      headers: [Object],
+      responseType: 'stream',
+      body: '<<REDACTED> - See `errorRedactor` option in `gaxios` for configuration>.',
+      signal: [AbortSignal],
+      retry: false,
+      paramsSerializer: [Function: paramsSerializer],
+      validateStatus: [Function: validateStatus],
+      errorRedactor: [Function: defaultErrorRedactor]
+    },
+    data: '[{\n' +
+      '  "error": {\n' +
+      '    "code": 429,\n' +
+      '    "message": "No capacity available for model gemini-3.1-pro-preview on the server",\n' +
+      '    "errors": [\n' +
+      '      {\n' +
+      '        "message": "No capacity available for model gemini-3.1-pro-preview on the server",\n' +
+      '        "domain": "global",\n' +
+      '        "reason": "rateLimitExceeded"\n' +
+      '      }\n' +
+      '    ],\n' +
+      '    "status": "RESOURCE_EXHAUSTED",\n' +
+      '    "details": [\n' +
+      '      {\n' +
+      '        "@type": "type.googleapis.com/google.rpc.ErrorInfo",\n' +
+      '        "reason": "MODEL_CAPACITY_EXHAUSTED",\n' +
+      '        "domain": "cloudcode-pa.googleapis.com",\n' +
+      '        "metadata": {\n' +
+      '          "model": "gemini-3.1-pro-preview"\n' +
+      '        }\n' +
+      '      }\n' +
+      '    ]\n' +
+      '  }\n' +
+      '}\n' +
+      ']',
+    headers: {
+      'alt-svc': 'h3=":443"; ma=2592000,h3-29=":443"; ma=2592000',
+      'content-length': '630',
+      'content-type': 'application/json; charset=UTF-8',
+      date: 'Wed, 15 Apr 2026 03:51:36 GMT',
+      server: 'ESF',
+      'server-timing': 'gfet4t7; dur=187',
+      vary: 'Origin, X-Origin, Referer',
+      'x-cloudaicompanion-trace-id': '61e55cb8a3fe93b2',
+      'x-content-type-options': 'nosniff',
+      'x-frame-options': 'SAMEORIGIN',
+      'x-xss-protection': '0'
+    },
+    status: 429,
+    statusText: 'Too Many Requests',
+    request: {
+      responseURL: 'https://cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse'
+    }
+  },
+  error: undefined,
+  status: 429,
+  Symbol(gaxios-gaxios-error): '6.7.1'
+}
+1. **Verdict:** MAJOR
+2. **Ready for user approval:** No
+3. **Retrieval adequacy:** Insufficient
+4. **Top blockers:**
+   1. **The plan is still a "meta-plan" (a plan to write a plan).** Its pseudocode literally instructs the assignee to "retrieve all live enforcement surfaces" and "build bypass matrix" rather than actually providing the matrix and implementation logic.
+   2. **Zero implementation details** are provided for the required enforcement infrastructure (Pre-commit hook, CI gate, Agent prefill, Compliance dashboard, Auto-rollback).
+   3. **Deferred decisions:** The plan defers critical architectural decisions instead of resolving them (e.g., "resolve whether rollback is implemented here or explicitly delegated").
+   4. **Self-referential rewriting:** The plan lists itself in "Files to Change" with the action to "Rewrite... [to] make the parent plan evidence-backed and bypass-oriented", proving it is not in a finished, approval-ready state.
+
+5. **Critical findings:**
+   - **Bypass of Issue Requirements:** The issue explicitly requires technical enforcement (pre-commit hook, CI gate, agent prefill, auto-rollback). This plan contains no design, architecture, or pseudocode for how any of these components will actually function.
+   - **Meta-planning loop:** The plan has trapped itself in a meta-planning loop. It includes the previous adversarial review summary (which correctly called out that the plan acts like a meta-plan) but fails to actually address the findings, merely acknowledging them.
+
+6. **High findings:**
+   - **Missing Integration Logic:** There is no detail on how "Agent prefill" will be technically injected across four completely different agent environments (Hermes, Claude Code, Codex, Gemini).
+   - **TDD Disconnect:** The TDD test list is aspirational. Without knowing how the gates are implemented, tests like `test_ci_gate_rejects_missing_plan_or_review` lack the necessary context to be actionable or falsifiable.
+
+7. **Medium findings:**
+   - **Rollback Ambiguity:** Auto-rollback is a core requirement of the issue, but the plan leaves it as an open question to be resolved during execution.
+   - **Compliance Dashboard Scope:** The issue requires a compliance dashboard that tracks and alerts on violations. The plan mentions `compliance-dashboard.sh` but provides no design for how it will track or alert.
+
+8. **Low findings:**
+   - The document retains "Status: draft".
+   - It includes historical artifacts like the "Adversarial Review Summary" which should be addressed and removed in a final, approval-ready implementation plan.
+
+9. **Required revisions before user approval:**
+   - **Execute the Research:** Actually perform the steps listed in the pseudocode (build the bypass matrix, analyze current hooks) *before* submitting the plan for review.
+   - **Design the Implementation:** Replace the meta-pseudocode with actual architectural pseudocode and logic for `.claude/hooks/plan-approval-gate.sh`, `.github/workflows/enforcement-gate.yml`, and the agent prefill mechanisms.
+   - **Resolve Open Questions:** Make a definitive technical decision on how auto-rollback will be implemented (e.g., a git hook, a CI bot action) and detail the design.
+   - **Detail Agent Prefill:** Provide the exact configuration or script changes needed to inject workflow constraints into Hermes, Claude Code, Codex, and Gemini.
+   - **Finalize the Document:** Remove all meta-planning instructions, prior review summaries, and "plan to rewrite" action items. The plan must describe the *solution*, not the *process of finding the solution*.
+
+---
+
+### Responses to Review Questions:
+
+1. **Did the revision resolve the prior MAJOR blockers in a concrete way?**
+   No. The revision simply copied the prior MAJOR findings into its own text and added instructions to fix them later during execution.
+2. **Is retrieval now adequate for the issue class?**
+   No, retrieval is insufficient as the plan dictates that retrieval must be done during execution ("retrieve all live enforcement surfaces...").
+3. **Are files-to-change, TDD, acceptance criteria, and risks concrete and falsifiable?**
+   No. The files-to-change include rewriting the plan itself. The TDD tests are abstract. The acceptance criteria demand the creation of a bypass matrix rather than evaluating a completed design.
+4. **Are there still unresolved scope/governance/status inconsistencies that should block approval?**
+   Yes. Rollback is completely unresolved. The plan delegates finding boundaries and edge cases to the execution phase instead of solving them in the planning phase.
+5. **Should this revised plan now be approved, revised again, or split?**
+   It must be **revised again** to actually perform the planning work. If the required research (building the bypass matrix) is too large, it should be split into a prerequisite research ticket, but #2018 cannot be approved until the implementation logic is designed.

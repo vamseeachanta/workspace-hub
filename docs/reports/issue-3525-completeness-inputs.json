@@ -1,0 +1,40 @@
+{
+  "issue_number": 3525,
+  "changed_files": [
+    "docs/plans/2026-07-14-issue-3525-claude-remote-worker-discovery.md",
+    "docs/plans/README.md",
+    ".planning/plan-approved/3525.md",
+    "docs/reports/2026-07-14-issue-3525-claude-remote-worker-discovery.html",
+    "tests/docs/test_issue_3525_claude_remote_worker_report.py",
+    "scripts/review/results/20260714T203641Z-issue-3525-implementation-review-synthesis.md"
+  ],
+  "path_package_map": {
+    "src": "workspace-hub-application"
+  },
+  "derived_class": "evidence",
+  "evidence_items": [
+    {"label": "dated HTML report answers all six requested outputs with official Anthropic links", "weight": 2, "met": true},
+    {"label": "approved read-only local observations completed without auth/config/install/dispatch mutation", "weight": 2, "met": true},
+    {"label": "focused semantic HTML and evidence-contract tests: 8 passed", "weight": 2, "met": true},
+    {"label": "staged diff-only legal sanity scan: PASS", "weight": 1, "met": true},
+    {"label": "adversarial implementation review: Codex APPROVE after two remediation rounds; Claude/Gemini unavailable recorded", "weight": 2, "met": true},
+    {"label": "recommended pilot routed to follow-up issue #3545 with independent planning and approval gates", "weight": 1, "met": true}
+  ],
+  "result": {
+    "completeness_pct": 100,
+    "cls": "evidence",
+    "threshold": 80,
+    "passed": true,
+    "snapshot_sha": null,
+    "issue_number": 3525,
+    "generated_at": "2026-07-14T20:37:56.791720+00:00",
+    "evidence": [
+      "dated HTML report answers all six requested outputs with official Anthropic links: met (w=2)",
+      "approved read-only local observations completed without auth/config/install/dispatch mutation: met (w=2)",
+      "focused semantic HTML and evidence-contract tests: 8 passed: met (w=2)",
+      "staged diff-only legal sanity scan: PASS: met (w=1)",
+      "adversarial implementation review: Codex APPROVE after two remediation rounds; Claude/Gemini unavailable recorded: met (w=2)",
+      "recommended pilot routed to follow-up issue #3545 with independent planning and approval gates: met (w=1)"
+    ]
+  }
+}

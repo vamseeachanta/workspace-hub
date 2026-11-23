@@ -1,0 +1,454 @@
+{
+  "generatedAt": "2025-10-15T03:08:37.819Z",
+  "totalRepositories": 24,
+  "statusCounts": {
+    "configured": 24,
+    "missing": 0
+  },
+  "skippedRepositories": [
+    "assetutilities",
+    "digitalmodel"
+  ],
+  "repositories": [
+    {
+      "name": "workspace-hub",
+      "path": "/mnt/github/workspace-hub",
+      "testDirectories": [
+        "tests",
+        "tests/coverage",
+        "tests/e2e",
+        "tests/fixtures",
+        "tests/integration",
+        "tests/mutation",
+        "tests/performance",
+        "tests/property-based",
+        "tests/scripts",
+        "tests/unit"
+      ],
+      "frameworks": [],
+      "commands": [],
+      "status": "configured"
+    },
+    {
+      "name": "OGManufacturing",
+      "path": "/mnt/github/workspace-hub/OGManufacturing",
+      "testDirectories": [
+        "tests",
+        "tests/fixtures",
+        "tests/integration",
+        "tests/unit"
+      ],
+      "frameworks": [
+        "pytest"
+      ],
+      "commands": [
+        "pytest"
+      ],
+      "status": "configured"
+    },
+    {
+      "name": "aceengineer-admin",
+      "path": "/mnt/github/workspace-hub/aceengineer-admin",
+      "testDirectories": [
+        "tests",
+        "tests/fixtures",
+        "tests/integration",
+        "tests/unit"
+      ],
+      "frameworks": [
+        "pytest"
+      ],
+      "commands": [
+        "pytest"
+      ],
+      "status": "configured"
+    },
+    {
+      "name": "aceengineer-website",
+      "path": "/mnt/github/workspace-hub/aceengineer-website",
+      "testDirectories": [
+        "tests",
+        "tests/fixtures",
+        "tests/integration",
+        "tests/modules",
+        "tests/unit"
+      ],
+      "frameworks": [
+        "pytest"
+      ],
+      "commands": [
+        "pytest"
+      ],
+      "status": "configured"
+    },
+    {
+      "name": "aceengineercode",
+      "path": "/mnt/github/workspace-hub/aceengineercode",
+      "testDirectories": [
+        "tests",
+        "tests/Run_All",
+        "tests/cfg",
+        "tests/fixtures",
+        "tests/integration",
+        "tests/modules",
+        "tests/unit"
+      ],
+      "frameworks": [
+        "pytest"
+      ],
+      "commands": [
+        "pytest"
+      ],
+      "status": "configured"
+    },
+    {
+      "name": "achantas-data",
+      "path": "/mnt/github/workspace-hub/achantas-data",
+      "testDirectories": [
+        "tests",
+        "tests/fixtures",
+        "tests/integration",
+        "tests/unit"
+      ],
+      "frameworks": [
+        "pytest"
+      ],
+      "commands": [
+        "pytest"
+      ],
+      "status": "configured"
+    },
+    {
+      "name": "achantas-media",
+      "path": "/mnt/github/workspace-hub/achantas-media",
+      "testDirectories": [
+        "tests",
+        "tests/fixtures",
+        "tests/integration",
+        "tests/unit"
+      ],
+      "frameworks": [
+        "pytest"
+      ],
+      "commands": [
+        "pytest"
+      ],
+      "status": "configured"
+    },
+    {
+      "name": "mkt-a",
+      "path": "/mnt/github/workspace-hub/mkt-a",
+      "testDirectories": [
+        "tests",
+        "tests/fixtures",
+        "tests/integration",
+        "tests/modules",
+        "tests/unit"
+      ],
+      "frameworks": [
+        "pytest"
+      ],
+      "commands": [
+        "pytest"
+      ],
+      "status": "configured"
+    },
+    {
+      "name": "ai-native-traditional-eng",
+      "path": "/mnt/github/workspace-hub/ai-native-traditional-eng",
+      "testDirectories": [
+        "tests",
+        "tests/fixtures",
+        "tests/integration",
+        "tests/modules",
+        "tests/unit"
+      ],
+      "frameworks": [
+        "pytest"
+      ],
+      "commands": [
+        "pytest"
+      ],
+      "status": "configured"
+    },
+    {
+      "name": "assethold",
+      "path": "/mnt/github/workspace-hub/assethold",
+      "testDirectories": [
+        "tests",
+        "tests/fixtures",
+        "tests/integration",
+        "tests/legacy_tests",
+        "tests/modules",
+        "tests/unit"
+      ],
+      "frameworks": [
+        "pytest"
+      ],
+      "commands": [
+        "pytest"
+      ],
+      "status": "configured"
+    },
+    {
+      "name": "client-c",
+      "path": "/mnt/github/workspace-hub/client-c",
+      "testDirectories": [
+        "tests",
+        "tests/fixtures",
+        "tests/integration",
+        "tests/modules",
+        "tests/unit"
+      ],
+      "frameworks": [
+        "pytest"
+      ],
+      "commands": [
+        "pytest"
+      ],
+      "status": "configured"
+    },
+    {
+      "name": "lng-a",
+      "path": "/mnt/github/workspace-hub/lng-a",
+      "testDirectories": [
+        "tests",
+        "tests/fixtures",
+        "tests/integration",
+        "tests/unit"
+      ],
+      "frameworks": [
+        "pytest"
+      ],
+      "commands": [
+        "pytest"
+      ],
+      "status": "configured"
+    },
+    {
+      "name": "energy",
+      "path": "/mnt/github/workspace-hub/energy",
+      "testDirectories": [
+        "tests",
+        "tests/fixtures",
+        "tests/integration",
+        "tests/modules",
+        "tests/unit"
+      ],
+      "frameworks": [
+        "pytest"
+      ],
+      "commands": [
+        "pytest"
+      ],
+      "status": "configured"
+    },
+    {
+      "name": "client-a",
+      "path": "/mnt/github/workspace-hub/client-a",
+      "testDirectories": [
+        "tests",
+        "tests/fixtures",
+        "tests/integration",
+        "tests/unit"
+      ],
+      "frameworks": [
+        "pytest"
+      ],
+      "commands": [
+        "pytest"
+      ],
+      "status": "configured"
+    },
+    {
+      "name": "hobbies",
+      "path": "/mnt/github/workspace-hub/hobbies",
+      "testDirectories": [
+        "tests",
+        "tests/fixtures",
+        "tests/integration",
+        "tests/unit"
+      ],
+      "frameworks": [
+        "pytest"
+      ],
+      "commands": [
+        "pytest"
+      ],
+      "status": "configured"
+    },
+    {
+      "name": "investments",
+      "path": "/mnt/github/workspace-hub/investments",
+      "testDirectories": [
+        "tests",
+        "tests/buffet_negotiation",
+        "tests/fixtures",
+        "tests/integration",
+        "tests/modules",
+        "tests/unit"
+      ],
+      "frameworks": [
+        "pytest"
+      ],
+      "commands": [
+        "pytest"
+      ],
+      "status": "configured"
+    },
+    {
+      "name": "pyproject-starter",
+      "path": "/mnt/github/workspace-hub/pyproject-starter",
+      "testDirectories": [
+        "tests",
+        "tests/fixtures",
+        "tests/integration",
+        "tests/modules",
+        "tests/unit"
+      ],
+      "frameworks": [
+        "pytest"
+      ],
+      "commands": [
+        "pytest"
+      ],
+      "status": "configured"
+    },
+    {
+      "name": "client-b",
+      "path": "/mnt/github/workspace-hub/client-b",
+      "testDirectories": [
+        "tests",
+        "tests/fixtures",
+        "tests/integration",
+        "tests/modules",
+        "tests/unit"
+      ],
+      "frameworks": [
+        "pytest"
+      ],
+      "commands": [
+        "pytest"
+      ],
+      "status": "configured"
+    },
+    {
+      "name": "sabithaandkrishnaestates",
+      "path": "/mnt/github/workspace-hub/sabithaandkrishnaestates",
+      "testDirectories": [
+        "tests",
+        "tests/fixtures",
+        "tests/integration",
+        "tests/unit"
+      ],
+      "frameworks": [
+        "pytest"
+      ],
+      "commands": [
+        "pytest"
+      ],
+      "status": "configured"
+    },
+    {
+      "name": "client-d",
+      "path": "/mnt/github/workspace-hub/client-d",
+      "testDirectories": [
+        "tests",
+        "tests/fixtures",
+        "tests/integration",
+        "tests/modules",
+        "tests/unit"
+      ],
+      "frameworks": [
+        "pytest"
+      ],
+      "commands": [
+        "pytest"
+      ],
+      "status": "configured"
+    },
+    {
+      "name": "sd-work",
+      "path": "/mnt/github/workspace-hub/sd-work",
+      "testDirectories": [
+        "tests",
+        "tests/fixtures",
+        "tests/integration",
+        "tests/unit"
+      ],
+      "frameworks": [
+        "pytest"
+      ],
+      "commands": [
+        "pytest"
+      ],
+      "status": "configured"
+    },
+    {
+      "name": "client-f",
+      "path": "/mnt/github/workspace-hub/client-f",
+      "testDirectories": [
+        "tests",
+        "tests/fixtures",
+        "tests/integration",
+        "tests/unit"
+      ],
+      "frameworks": [
+        "pytest"
+      ],
+      "commands": [
+        "pytest"
+      ],
+      "status": "configured"
+    },
+    {
+      "name": "teamresumes",
+      "path": "/mnt/github/workspace-hub/teamresumes",
+      "testDirectories": [
+        "tests",
+        "tests/fixtures",
+        "tests/integration",
+        "tests/modules",
+        "tests/unit"
+      ],
+      "frameworks": [
+        "pytest"
+      ],
+      "commands": [
+        "pytest"
+      ],
+      "status": "configured"
+    },
+    {
+      "name": "worldenergydata",
+      "path": "/mnt/github/workspace-hub/worldenergydata",
+      "testDirectories": [
+        "tests",
+        "tests/_archived_tests",
+        "tests/agent_os",
+        "tests/ai_test_generation",
+        "tests/archived_tests",
+        "tests/consolidated",
+        "tests/data",
+        "tests/fixtures",
+        "tests/helpers",
+        "tests/integration",
+        "tests/legacy_tests",
+        "tests/mocks",
+        "tests/modules",
+        "tests/performance",
+        "tests/results",
+        "tests/temp",
+        "tests/test_data",
+        "tests/unit"
+      ],
+      "frameworks": [
+        "pytest"
+      ],
+      "commands": [
+        "pytest"
+      ],
+      "status": "configured"
+    }
+  ]
+}

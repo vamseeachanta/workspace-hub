@@ -1,0 +1,801 @@
+#!/usr/bin/env python3
+"""Reconcile GitHub issues into the kanban board tree.
+
+Correctness path: fetch each active manifest repo once, then make the board
+YAMLs match GitHub's issue set. Dry-run mode reports changes without writing
+board files; --show-diff explicitly includes potentially private card content.
+
+The boards are local files (owner decision S01): they are git-ignored, a board
+missing on this machine is created from its manifest entry, and nothing
+publishes them. Run it locally: ``uv run python scripts/kanban/reconcile.py``.
+"""
+from __future__ import annotations
+
+import argparse
+import copy
+import difflib
+import io
+import json
+import os
+import stat
+import subprocess
+import sys
+from collections.abc import Callable
+from dataclasses import dataclass, field
+from pathlib import Path
+
+from ruamel.yaml import YAML
+
+GH_PAGE_SIZE = 100
+
+# Target-size policy for the domain->subdomain taxonomy (workspace-hub#2878):
+# boards should hold <= this many active github_issue cards. Reported, not enforced.
+DEFAULT_BOARD_SIZE_LIMIT = 30
+
+# GraphQL query: paginate issues exhaustively (states OPEN+CLOSED) with a nested
+# labels page. We never truncate -- if a page fetch fails mid-loop we raise rather
+# than return a partial set, so a partial fetch is structurally impossible.
+ISSUES_QUERY = (
+    "query($owner:String!, $name:String!, $first:Int!, $cursor:String) {"
+    " repository(owner:$owner, name:$name) {"
+    " issues(first:$first, after:$cursor, states:[OPEN,CLOSED]) {"
+    " pageInfo { hasNextPage endCursor }"
+    " nodes {"
+    " number title state"
+    " labels(first:100) { pageInfo { hasNextPage } nodes { name } }"
+    " } } } }"
+)
+
+
+@dataclass
+class ReconcileResult:
+    changed: bool
+    diff: str
+    changed_files: list[Path]
+    oversized: list[tuple[str, int]] = field(default_factory=list)
+    count_drift: list[tuple[str, int, int]] = field(default_factory=list)
+    skipped: list[str] = field(default_factory=list)
+
+
+@dataclass(frozen=True)
+class BoardEntry:
+    slug: str
+    tier: str
+    repo: str | None
+    domain: str | None
+    file: Path
+    card_count: int = 0
+    parent_slug: str | None = None
+    workspace_path: str | None = None
+    display_name: str | None = None
+
+
+def repo_root() -> Path:
+    root = Path(__file__).resolve().parents[2]
+    out = subprocess.run(
+        ["git", "rev-parse", "--show-toplevel"],
+        cwd=root,
+        env={key: value for key, value in os.environ.items() if not key.startswith("GIT_")},
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    if out.returncode == 0:
+        return Path(out.stdout.strip())
+    return root
+
+
+def _coerce_int(value, default: int = 0) -> int:
+    """Tolerant int — a non-numeric/None manifest card_count must NOT crash the
+    reconcile (this runs on the */20 cron critical path)."""
+    try:
+        return int(value)
+    except (TypeError, ValueError):
+        return default
+
+
+def load_yaml(path: Path) -> dict:
+    data = yaml_rt().load(path.read_text(encoding="utf-8"))
+    return data or {}
+
+
+def dump_yaml(data: dict) -> str:
+    out = io.StringIO()
+    yaml_rt().dump(data, out)
+    return out.getvalue()
+
+
+def yaml_rt() -> YAML:
+    # ruamel round-trip mode preserves formatting and does not execute Python tags.
+    yaml = YAML()
+    yaml.preserve_quotes = True
+    yaml.width = 1000
+    yaml.indent(mapping=2, sequence=4, offset=2)
+    return yaml
+
+
+def write_yaml(path: Path, data: dict) -> None:
+    path.write_text(dump_yaml(data), encoding="utf-8", newline="\n")
+
+
+def fetch_repo_issues(repo: str, *, page_size: int = GH_PAGE_SIZE, runner=None) -> list[dict]:
+    """Fetch ALL issues for a repo via `gh api graphql` cursor pagination.
+
+    Paginates to pageInfo.hasNextPage == false, accumulating every page. A
+    mid-pagination failure (nonzero exit, bad JSON, or a node whose labels are
+    themselves truncated) RAISES rather than returning a truncated set, so a
+    partial fetch cannot silently shrink the board. Each node is mapped to the
+    card shape downstream consumes: {number, title, state, labels:[{name}]}.
+    """
+    runner = runner or subprocess.run
+    owner, name = repo.split("/", 1)
+    issues: list[dict] = []
+    cursor: str | None = None
+    seen_cursors: set[str] = set()
+    while True:
+        cmd = [
+            "gh",
+            "api",
+            "graphql",
+            "-f",
+            f"query={ISSUES_QUERY}",
+            "-F",
+            f"owner={owner}",
+            "-F",
+            f"name={name}",
+            "-F",
+            f"first={page_size}",
+        ]
+        if cursor is not None:
+            cmd += ["-F", f"cursor={cursor}"]
+        out = runner(cmd, capture_output=True, text=True, check=False)
+        if out.returncode != 0:
+            raise RuntimeError(
+                f"gh api graphql failed for {repo} (cursor={cursor}): {out.stderr.strip()}"
+            )
+        try:
+            payload = json.loads(out.stdout)
+        except json.JSONDecodeError as exc:
+            raise RuntimeError(
+                f"gh api graphql returned invalid JSON for {repo} (cursor={cursor})"
+            ) from exc
+        if payload.get("errors"):
+            raise RuntimeError(
+                f"gh api graphql returned errors for {repo} (cursor={cursor}): {payload['errors']}"
+            )
+        try:
+            connection = payload["data"]["repository"]["issues"]
+        except (KeyError, TypeError) as exc:
+            raise RuntimeError(
+                f"gh api graphql response missing issues for {repo} (cursor={cursor})"
+            ) from exc
+        for node in connection.get("nodes") or []:
+            # Fail closed on a malformed labels connection: board routing depends on
+            # labels, so a missing/garbled labels.pageInfo is NOT treated as "no more".
+            labels = node.get("labels")
+            label_page = labels.get("pageInfo") if isinstance(labels, dict) else None
+            if not isinstance(label_page, dict) or "hasNextPage" not in label_page:
+                raise RuntimeError(
+                    f"issue #{node.get('number')} in {repo}: malformed/missing labels.pageInfo"
+                )
+            if label_page.get("hasNextPage"):
+                raise RuntimeError(
+                    f"issue #{node.get('number')} in {repo} has more than {100} labels; "
+                    "label pagination is not implemented and board routing depends on labels"
+                )
+            issues.append(
+                {
+                    "number": node["number"],
+                    "title": node.get("title"),
+                    "state": node.get("state"),
+                    "labels": [{"name": lbl.get("name")} for lbl in (labels.get("nodes") or [])],
+                }
+            )
+        # Fail closed on a malformed issue pageInfo: a missing/garbled pageInfo is
+        # indistinguishable from "last page", so it must RAISE, not silently stop
+        # (that would return a partial set — the exact thing this rewrite prevents).
+        page_info = connection.get("pageInfo")
+        if not isinstance(page_info, dict) or "hasNextPage" not in page_info:
+            raise RuntimeError(
+                f"gh api graphql: malformed/missing issues.pageInfo for {repo} (cursor={cursor})"
+            )
+        if page_info.get("hasNextPage"):
+            next_cursor = page_info.get("endCursor")
+            # hasNextPage with no endCursor would re-fetch page 1 forever; a repeated
+            # endCursor that doesn't advance would also loop. This runs on a 20-min
+            # cron — both must raise, not hang.
+            if not next_cursor:
+                raise RuntimeError(
+                    f"gh api graphql: hasNextPage=true but endCursor missing for {repo}"
+                )
+            if next_cursor in seen_cursors:
+                raise RuntimeError(
+                    f"gh api graphql: endCursor did not advance ({next_cursor}) for {repo} — possible loop"
+                )
+            seen_cursors.add(next_cursor)
+            cursor = next_cursor
+            continue
+        break
+    return issues
+
+
+def load_manifest_entries(kanban_root: Path) -> list[BoardEntry]:
+    manifest = load_yaml(kanban_root / "manifest.yaml").get("manifest", {})
+    entries = []
+    for raw in manifest.get("boards") or []:
+        file_name = raw.get("file")
+        if not file_name:
+            continue
+        entries.append(
+            BoardEntry(
+                slug=str(raw.get("slug") or ""),
+                tier=str(raw.get("tier") or ""),
+                repo=raw.get("repo"),
+                domain=raw.get("domain"),
+                file=kanban_root / file_name,
+                card_count=_coerce_int(raw.get("card_count")),
+                parent_slug=raw.get("parent_slug"),
+                workspace_path=raw.get("workspace_path"),
+                display_name=raw.get("display_name"),
+            )
+        )
+    return entries
+
+
+def active_repos(entries: list[BoardEntry]) -> list[str]:
+    repos = {entry.repo for entry in entries if entry.tier == "repo" and entry.repo}
+    return sorted(repos)
+
+
+def validate_local_destinations(kanban_root: Path, entries: list[BoardEntry]) -> None:
+    """Refuse publishable generated outputs before fetching issue content.
+
+    Basis: docs/architecture/agent-data-handling-contract.md, "Original
+    retention, rights and publication", and the generated-board .gitignore
+    rules. Authored entries without a repository are preserved separately.
+    No repository visibility lookup or publication permission is inferred.
+    """
+    root = kanban_root.absolute()
+    env = {key: value for key, value in os.environ.items() if not key.startswith("GIT_")}
+    for entry in entries:
+        if not entry.repo and entry.tier not in {"repo", "domain"}:
+            continue
+        path = entry.file.absolute()
+        refusal = "kanban local-only destination check failed"
+        try:
+            relative = path.relative_to(root / "boards")
+        except ValueError:
+            raise RuntimeError(refusal + ": generated board must stay inside boards/") from None
+        if ".." in relative.parts or path.suffix != ".yaml":
+            raise RuntimeError(refusal + ": invalid generated board path")
+        # Reject redirected ancestors and hard-linked outputs before fetching.
+        # Windows junctions are reparse points even when not symbolic links.
+        try:
+            for parent in (path, *path.parents):
+                try:
+                    metadata = parent.lstat()
+                except FileNotFoundError:
+                    continue  # Missing output directories may be created later.
+                if stat.S_ISLNK(metadata.st_mode) or (
+                    getattr(metadata, "st_file_attributes", 0) & stat.FILE_ATTRIBUTE_REPARSE_POINT
+                ):
+                    raise RuntimeError(refusal + ": symlink destination (or reparse point)")
+                if parent == path and metadata.st_nlink > 1:
+                    raise RuntimeError(refusal + ": hard-linked destination")
+        except OSError:
+            raise RuntimeError(refusal + ": destination inspection failed") from None
+        checkout = next(
+            (parent for parent in path.parents
+             if (parent / ".git").is_file() or (parent / ".git/HEAD").is_file()), None
+        )
+        if checkout is None:
+            continue  # Standalone local mirrors do not have a publication index.
+        rel = path.relative_to(checkout).as_posix()
+
+        def git(*args: str, rel=rel, checkout=checkout, refusal=refusal) -> subprocess.CompletedProcess:
+            try:
+                return subprocess.run(
+                    ["git", *args, "--", rel],
+                    cwd=checkout, env=env, capture_output=True, text=True, check=False,
+                )
+            except OSError:
+                raise RuntimeError(refusal + ": Git inspection unavailable") from None
+
+        tracked = git("--literal-pathspecs", "ls-files", "-z")
+        if tracked.returncode != 0:
+            raise RuntimeError(refusal + ": Git index inspection failed")
+        if tracked.stdout:
+            raise RuntimeError(refusal + ": generated board is tracked")
+        # Git check-ignore manual, EXIT STATUS (accessed 2026-10-22):
+        # https://git-scm.com/docs/git-check-ignore — zero means a path is ignored.
+        ignored = git("check-ignore", "--no-index", "-q")
+        if ignored.returncode != 0:
+            raise RuntimeError(refusal + ": generated board must be ignored by Git")
+
+
+def new_board(entry: BoardEntry) -> dict:
+    """An empty board for a manifest entry whose file does not exist yet. It keeps
+    the manifest metadata the loader uses: workspace_path sets the Hermes board
+    workdir and each card's --workspace; parent_slug links a domain board up."""
+    display_name = entry.display_name
+    if not display_name and entry.repo:
+        display_name = entry.repo.split("/")[-1]
+        if entry.tier == "domain" and entry.domain:
+            display_name = f"{display_name} · {entry.domain}"
+    board = {
+        "slug": entry.slug,
+        "display_name": display_name,
+        "tier": entry.tier,
+        "repo": entry.repo,
+        "domain": entry.domain,
+        "parent_slug": entry.parent_slug,
+        "workspace_path": entry.workspace_path,
+    }
+    return {"board": {k: v for k, v in board.items() if v}, "cards": []}
+
+
+def board_files(kanban_root: Path, entries: list[BoardEntry]) -> list[Path]:
+    return sorted({entry.file for entry in entries})
+
+
+def validate_unmanifested_boards(kanban_root: Path, entries: list[BoardEntry]) -> None:
+    manifest_files = {entry.file for entry in entries}
+    for path in sorted((kanban_root / "boards").glob("*.yaml")):
+        if path in manifest_files:
+            continue
+        rel_path = path.relative_to(kanban_root).as_posix()
+        cards = load_yaml(path).get("cards") or []
+        if cards:
+            raise RuntimeError(
+                f"unmanifested board {rel_path} has {len(cards)} card(s); "
+                "add it to manifest.yaml before reconciling"
+            )
+        print(f"WARNING: unmanifested empty board ignored: {rel_path}", file=sys.stderr)
+
+
+def repo_board_map(entries: list[BoardEntry]) -> dict[str, Path]:
+    return {
+        entry.repo: entry.file
+        for entry in entries
+        if entry.tier == "repo" and entry.repo
+    }
+
+
+def domain_board_map(entries: list[BoardEntry]) -> dict[tuple[str, str], Path]:
+    return {
+        (entry.repo, entry.domain): entry.file
+        for entry in entries
+        if entry.tier == "domain" and entry.repo and entry.domain
+    }
+
+
+def count_issue_cards(board: dict) -> int:
+    """Number of github_issue cards on a board (detected_gap/theme cards excluded)."""
+    return sum(1 for c in (board.get("cards") or []) if c.get("source") == "github_issue")
+
+
+def board_size_report(rebuilt: dict[Path, dict], limit: int = DEFAULT_BOARD_SIZE_LIMIT) -> list[tuple[str, int]]:
+    """[(slug, count)] for boards OVER `limit`, sorted by count desc then slug.
+
+    Surfaces the #2878 ≤30 policy as a visible signal so the taxonomy stays
+    right-sized over time. Reporting only — never blocks a reconcile.
+    """
+    rows = []
+    for data in rebuilt.values():
+        n = count_issue_cards(data)
+        if n > limit:
+            slug = (data.get("board") or {}).get("slug") or "?"
+            rows.append((slug, n))
+    return sorted(rows, key=lambda r: (-r[1], r[0]))
+
+
+def card_count_drift(rebuilt: dict[Path, dict], entries: list[BoardEntry]) -> list[tuple[str, int, int]]:
+    """[(slug, manifest_count, actual_count)] where manifest card_count is stale."""
+    actual = {path: count_issue_cards(data) for path, data in rebuilt.items()}
+    rows = [
+        (e.slug, e.card_count, actual[e.file])
+        for e in entries
+        if e.file in actual and e.card_count != actual[e.file]
+    ]
+    return sorted(rows, key=lambda r: r[0])
+
+
+def update_manifest_counts(kanban_root: Path) -> bool:
+    """Recompute every manifest board's card_count from its board file in place.
+
+    card_count is a display field nothing consumes, so it drifts as a frozen
+    integer. Per feedback_doc_counter_rule_writetime it should be a write-time
+    recompute; this is the on-demand recompute command (NOT run in the */20 cron,
+    which commits only boards/). Returns True if the manifest changed.
+    """
+    manifest_path = kanban_root / "manifest.yaml"
+    doc = load_yaml(manifest_path)
+    boards = (doc.get("manifest") or {}).get("boards") or []
+    changed = False
+    for raw in boards:
+        file_name = raw.get("file")
+        if not file_name:
+            continue
+        board_path = kanban_root / file_name
+        if not board_path.exists():
+            continue
+        actual = count_issue_cards(load_yaml(board_path))
+        if _coerce_int(raw.get("card_count")) != actual:
+            raw["card_count"] = actual
+            changed = True
+    if changed:
+        write_yaml(manifest_path, doc)
+    return changed
+
+
+def label_names(issue: dict) -> list[str]:
+    names = []
+    for label in issue.get("labels") or []:
+        name = label.get("name") if isinstance(label, dict) else str(label)
+        if name and name not in names:
+            names.append(clean_scalar(name))
+    return names
+
+
+def clean_scalar(value) -> str:
+    text = str(value or "")
+    return "".join(ch for ch in text if ch == "\n" or ch == "\t" or ord(ch) >= 32).strip()
+
+
+def issue_key(repo: str, number) -> str:
+    return f"gh:{repo}#{number}"
+
+
+def key_repo(key: str | None) -> str | None:
+    if not key or not key.startswith("gh:") or "#" not in key:
+        return None
+    return key[3:].rsplit("#", 1)[0]
+
+
+def key_number(key: str) -> int:
+    try:
+        return int(key.rsplit("#", 1)[1])
+    except (IndexError, ValueError):
+        return sys.maxsize
+
+
+def target_board(repo: str, labels: list[str], repo_boards: dict, domain_boards: dict) -> Path:
+    for label in labels:
+        if not label.startswith("domain:"):
+            continue
+        domain = label.split(":", 1)[1]
+        board = domain_boards.get((repo, domain))
+        if board:
+            return board
+    return repo_boards[repo]
+
+
+def priority(labels: list[str]) -> int:
+    if "priority:urgent" in labels or "p1" in labels:
+        return 2
+    if "priority:high" in labels or "p2" in labels:
+        return 1
+    return 0
+
+
+def card_for_issue(repo: str, issue: dict, existing: dict | None = None) -> dict:
+    labels = label_names(issue)
+    number = issue["number"]
+    card = dict(existing or {})
+    card.update(
+        {
+            "idempotency_key": issue_key(repo, number),
+            "title": clean_scalar(issue.get("title")),
+            "source": "github_issue",
+            "source_url": f"https://github.com/{repo}/issues/{number}",
+            "gh_state": clean_scalar(issue.get("state")).lower(),
+            "gh_labels": labels,
+            "initial_status": card.get("initial_status", "triage"),
+            "priority": priority(labels),
+        }
+    )
+    card.setdefault("gh_assignees", [])
+    card.setdefault("body_excerpt", "")
+    return card
+
+
+def existing_cards(board_data: dict, files: list[Path]) -> dict[str, dict]:
+    found = {}
+    for path in files:
+        for card in (board_data[path].get("cards") or []):
+            key = card.get("idempotency_key")
+            if key and key not in found:
+                found[key] = card
+    return found
+
+
+def existing_issue_counts_by_repo(existing: dict[str, dict]) -> dict[str, int]:
+    counts: dict[str, int] = {}
+    for key, card in existing.items():
+        repo = key_repo(key)
+        if repo and card.get("source") == "github_issue":
+            counts[repo] = counts.get(repo, 0) + 1
+    return counts
+
+
+def unified_diff(before: dict[Path, str], after: dict[Path, str], root: Path) -> str:
+    chunks = []
+    diff_root = root.parents[2] if len(root.parents) >= 3 else root
+    for path in sorted(after):
+        if before[path] == after[path]:
+            continue
+        rel = path.relative_to(diff_root).as_posix()
+        chunks.extend(
+            difflib.unified_diff(
+                before[path].splitlines(keepends=True),
+                after[path].splitlines(keepends=True),
+                fromfile=f"a/{rel}",
+                tofile=f"b/{rel}",
+            )
+        )
+    return "".join(chunks)
+
+
+def _is_unresolvable_repo_error(exc: Exception) -> bool:
+    """True only for the 'repo renamed/removed/no access' fetch failure.
+
+    Scoped narrowly to the GraphQL "Could not resolve to a Repository" message
+    so that transient failures (rate limit, network, auth) are NOT swallowed —
+    those must still raise and fail the reconcile rather than silently drop a
+    repo's board. See #3380.
+    """
+    return "could not resolve to a repository" in str(exc).lower()
+
+
+def build_live_cards(
+    repos: list[str],
+    issue_fetcher: Callable[[str], list[dict]],
+    repo_boards: dict[str, Path],
+    domain_boards: dict[tuple[str, str], Path],
+    existing: dict[str, dict],
+    existing_counts: dict[str, int],
+    allow_empty_repos: set[str],
+    allow_shrink_repos: set[str],
+) -> tuple[dict[str, tuple[Path, dict]], list[str]]:
+    live = {}
+    skipped: list[str] = []
+    for repo in repos:
+        try:
+            issues = issue_fetcher(repo)
+        except RuntimeError as exc:
+            if _is_unresolvable_repo_error(exc):
+                # Repo was renamed/removed (or the token lost access). Skip it and
+                # leave its board untouched — do NOT let one dead repo wedge the
+                # whole reconcile. It is excluded from the active-rebuild set by
+                # the caller so its existing cards are preserved verbatim. #3380
+                print(
+                    f"WARNING: skipping {repo}: repository not resolvable "
+                    "(renamed/removed/no access)",
+                    file=sys.stderr,
+                )
+                skipped.append(repo)
+                continue
+            raise
+        existing_count = existing_counts.get(repo, 0)
+        if len(issues) < existing_count:
+            if not issues and repo in allow_empty_repos:
+                pass
+            elif repo in allow_shrink_repos:
+                pass
+            elif not issues:
+                raise RuntimeError(
+                    f"empty issue list for {repo} would remove "
+                    f"{existing_count} existing github_issue card(s); "
+                    "use --allow-empty only after verifying the repo legitimately has zero issues"
+                )
+            else:
+                raise RuntimeError(
+                    f"partial issue list for {repo} returned {len(issues)} live issue(s) "
+                    f"but {existing_count} existing github_issue card(s) are present; "
+                    "use --allow-shrink only after verifying the reduction is legitimate"
+                )
+        for issue in issues:
+            key = issue_key(repo, issue["number"])
+            card = card_for_issue(repo, issue, existing.get(key))
+            board = target_board(repo, card["gh_labels"], repo_boards, domain_boards)
+            live[key] = (board, card)
+    return live, skipped
+
+
+def rebuild_boards(
+    board_data: dict[Path, dict],
+    files: list[Path],
+    active: set[str],
+    live: dict[str, tuple[Path, dict]],
+) -> dict[Path, dict]:
+    rebuilt = {}
+    added = set()
+    for path in files:
+        data = copy.deepcopy(board_data[path])
+        cards = []
+        for card in data.get("cards") or []:
+            key = card.get("idempotency_key")
+            if key in live:
+                target, new_card = live[key]
+                if target == path and key not in added:
+                    cards.append(new_card)
+                    added.add(key)
+                continue
+            if card.get("source") == "github_issue" and key_repo(key) in active:
+                continue
+            cards.append(card)
+        data["cards"] = cards
+        rebuilt[path] = data
+    for key, (target, card) in sorted(live.items(), key=lambda item: key_number(item[0])):
+        if key not in added:
+            rebuilt[target].setdefault("cards", []).append(card)
+    return rebuilt
+
+
+def reconcile_kanban(
+    kanban_root: Path,
+    *,
+    issue_fetcher: Callable[[str], list[dict]],
+    dry_run: bool = True,
+    write_files: bool = True,
+    repo_filter: str | None = None,
+    allow_empty_repos: set[str] | None = None,
+    allow_shrink_repos: set[str] | None = None,
+    size_limit: int = DEFAULT_BOARD_SIZE_LIMIT,
+) -> ReconcileResult:
+    entries = load_manifest_entries(kanban_root)
+    validate_local_destinations(kanban_root, entries)
+    validate_unmanifested_boards(kanban_root, entries)
+    repos = active_repos(entries)
+    if repo_filter:
+        repos = [repo for repo in repos if repo == repo_filter]
+    repo_boards = repo_board_map(entries)
+    domain_boards = domain_board_map(entries)
+    files = board_files(kanban_root, entries)
+    # Boards are local files, not tracked (owner decision S01): a missing board
+    # starts from its manifest entry.
+    headers = {entry.file: new_board(entry) for entry in entries}
+    board_data = {path: load_yaml(path) if path.exists() else headers[path] for path in files}
+    before = {path: path.read_text(encoding="utf-8") if path.exists() else "" for path in files}
+    existing = existing_cards(board_data, files)
+    live, skipped = build_live_cards(
+        repos,
+        issue_fetcher,
+        repo_boards,
+        domain_boards,
+        existing,
+        existing_issue_counts_by_repo(existing),
+        allow_empty_repos or set(),
+        allow_shrink_repos or set(),
+    )
+    # A skipped (unresolvable) repo must be EXCLUDED from the active-rebuild set,
+    # otherwise rebuild_boards would drop its existing github_issue cards (they are
+    # absent from `live`) and silently empty its board. Excluding it preserves the
+    # board verbatim. #3380
+    active_for_rebuild = set(repos) - set(skipped)
+    rebuilt = rebuild_boards(board_data, files, active_for_rebuild, live)
+    after = {}
+    for path in files:
+        # A board missing on this machine is always written, even with no cards,
+        # so the loader (which reads boards/*.yaml) sees it.
+        unchanged = path.exists() and rebuilt[path] == board_data[path]
+        after[path] = before[path] if unchanged else dump_yaml(rebuilt[path])
+    changed_files = [path for path in files if before[path] != after[path]]
+    write = write_files and not dry_run
+    if write:
+        for path in changed_files:
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_text(after[path], encoding="utf-8", newline="\n")
+    return ReconcileResult(
+        changed=bool(changed_files),
+        diff=unified_diff(before, after, kanban_root),
+        changed_files=changed_files,
+        oversized=board_size_report(rebuilt, limit=size_limit),
+        count_drift=card_count_drift(rebuilt, entries),
+        skipped=skipped,
+    )
+
+
+def main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--dry-run", action="store_true")
+    parser.add_argument(
+        "--show-diff", action="store_true",
+        help="print card content diffs (may contain private issue text; local use only)",
+    )
+    parser.add_argument("--repo", help="limit reconciliation to one active owner/repo")
+    parser.add_argument(
+        "--page-size",
+        "--limit",
+        dest="page_size",
+        type=int,
+        default=GH_PAGE_SIZE,
+        help="GraphQL issues page size (default 100); paginates exhaustively regardless",
+    )
+    parser.add_argument("--kanban-root", type=Path)
+    parser.add_argument(
+        "--allow-empty",
+        action="append",
+        default=[],
+        metavar="OWNER/REPO",
+        help="allow an active repo with existing cards to reconcile to zero live issues",
+    )
+    parser.add_argument(
+        "--allow-shrink",
+        action="append",
+        default=[],
+        metavar="OWNER/REPO",
+        help="allow an active repo to reconcile fewer live issues than existing cards",
+    )
+    parser.add_argument(
+        "--update-counts",
+        action="store_true",
+        help="recompute manifest.yaml card_count from board files after reconciling "
+        "(writes manifest.yaml; not used by the */20 cron, which commits only boards/)",
+    )
+    parser.add_argument(
+        "--size-limit",
+        type=int,
+        default=DEFAULT_BOARD_SIZE_LIMIT,
+        help=f"oversized-board threshold for the size report (default {DEFAULT_BOARD_SIZE_LIMIT})",
+    )
+    args = parser.parse_args(argv)
+
+    root = args.kanban_root or repo_root() / ".claude/memory/kanban"
+
+    def fetch(repo: str) -> list[dict]:
+        return fetch_repo_issues(repo, page_size=args.page_size)
+
+    result = reconcile_kanban(
+        root,
+        issue_fetcher=fetch,
+        dry_run=args.dry_run,
+        write_files=not args.dry_run,
+        repo_filter=args.repo,
+        allow_empty_repos=set(args.allow_empty),
+        allow_shrink_repos=set(args.allow_shrink),
+        size_limit=args.size_limit,
+    )
+    if result.diff and args.show_diff:
+        print(result.diff, end="")
+    elif result.changed:
+        print(f"kanban reconcile: {len(result.changed_files)} board file(s) changed")
+    else:
+        print("kanban reconcile: no changes")
+    if args.dry_run:
+        print("DRY-RUN: no files written")
+
+    # Surface unresolvable repos that were skipped (renamed/removed/no access).
+    # Informational — the run still succeeds for every resolvable repo. #3380
+    if result.skipped:
+        print(
+            f"\nNOTE: skipped {len(result.skipped)} unresolvable repo(s): "
+            f"{', '.join(result.skipped)}",
+            file=sys.stderr,
+        )
+
+    # On-demand card_count recompute (writes manifest.yaml; skipped in dry-run).
+    counts_fixed = False
+    if args.update_counts and not args.dry_run:
+        counts_fixed = update_manifest_counts(root)
+        print("manifest card_count recomputed" if counts_fixed
+              else "manifest card_count already current")
+
+    # Always surface the size report (informational, never blocks).
+    if result.oversized:
+        print(f"\nNOTE: {len(result.oversized)} board(s) over the {args.size_limit}-card "
+              "policy (workspace-hub#2878):", file=sys.stderr)
+        for slug, n in result.oversized:
+            print(f"  oversized: {slug} = {n}", file=sys.stderr)
+    # Drift report — suppressed when --update-counts just fixed it (the drift was
+    # computed pre-update, so printing it would falsely tell the operator to re-run).
+    if result.count_drift and not (args.update_counts and not args.dry_run):
+        print(f"\nNOTE: {len(result.count_drift)} manifest card_count drift(s) "
+              "(run --update-counts to fix):", file=sys.stderr)
+        for slug, old, new in result.count_drift:
+            print(f"  drift: {slug} manifest={old} actual={new}", file=sys.stderr)
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

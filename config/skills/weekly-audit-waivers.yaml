@@ -1,0 +1,12 @@
+# weekly-audit-waivers.yaml — Waiver registry for weekly skills audit (#2281).
+#
+# Add entries to suppress known-accepted findings from the weekly audit.
+# Suppressed findings still appear in the carry-forward section of the report.
+#
+# Format:
+#   waivers:
+#     - finding_key: <stable 16-char hex key from audit JSON>
+#       reason: "Short explanation and issue reference"
+#       expires: "YYYY-MM-DD"   # optional — waiver auto-expires after this date
+
+waivers: []

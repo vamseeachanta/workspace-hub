@@ -1,0 +1,260 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>#3549 — Registry-Driven Connection Helpers Plan</title>
+  <style>
+    :root {
+      --ink: #172126;
+      --muted: #59676d;
+      --paper: #f5f2ea;
+      --card: #fffdf7;
+      --line: #d8d2c5;
+      --navy: #123a4a;
+      --teal: #087e78;
+      --amber: #c46b18;
+      --red: #9d2f2f;
+      --green: #23724d;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--paper);
+      font: 16px/1.55 Inter, ui-sans-serif, system-ui, sans-serif;
+    }
+    header {
+      color: white;
+      background: linear-gradient(120deg, var(--navy), #195d68 68%, var(--teal));
+      padding: 3.5rem max(1.5rem, calc((100vw - 1120px) / 2));
+    }
+    header p { max-width: 780px; color: #dcecef; }
+    h1 { margin: 0 0 .7rem; font-size: clamp(2rem, 5vw, 4rem); line-height: 1.05; }
+    h2 { color: var(--navy); margin-top: 0; }
+    h3 { color: var(--teal); }
+    main { max-width: 1120px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+    section, .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      box-shadow: 0 8px 26px rgb(37 51 56 / 7%);
+      margin: 1.2rem 0;
+      padding: 1.5rem;
+    }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 1rem; }
+    .grid .card { margin: 0; }
+    .tag {
+      display: inline-block;
+      border: 1px solid rgb(255 255 255 / 45%);
+      border-radius: 999px;
+      margin: .25rem .35rem .25rem 0;
+      padding: .25rem .65rem;
+      font-size: .85rem;
+    }
+    .gate { border-left: 6px solid var(--amber); }
+    .risk { border-left: 6px solid var(--red); }
+    .success { border-left: 6px solid var(--green); }
+    .muted { color: var(--muted); }
+    code { background: #e8ece8; border-radius: 4px; padding: .1rem .3rem; }
+    pre { overflow-x: auto; background: #102a34; color: #e5f5f4; padding: 1rem; border-radius: 9px; }
+    table { border-collapse: collapse; width: 100%; }
+    th, td { border-bottom: 1px solid var(--line); padding: .7rem; text-align: left; vertical-align: top; }
+    th { color: var(--navy); }
+    li + li { margin-top: .45rem; }
+    a { color: var(--teal); }
+    .flow { display: flex; flex-wrap: wrap; align-items: center; gap: .55rem; }
+    .flow span { background: #e3efed; border-radius: 8px; padding: .6rem .8rem; }
+    .flow b { color: var(--amber); }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="tag">Issue #3549</div>
+    <div class="tag">T3 security change</div>
+    <div class="tag">Status: draft plan</div>
+    <div class="tag">TDD: planned, not started</div>
+    <div class="tag">Adversarial review: pending</div>
+    <h1>Registry-Driven Connection Helpers</h1>
+    <p>A hostname-first, fail-closed connection architecture for two Linux
+      workstations, with machine-local verified fallback and one shared execution
+      boundary across Bash and PowerShell.</p>
+  </header>
+  <main>
+    <section class="gate">
+      <h2>Current human gate</h2>
+      <p>The design is approved. This implementation plan will require adversarial
+        review and explicit user-applied <code>status:plan-approved</code> before
+        code changes begin. The agent will not self-approve.</p>
+      <p><strong>Review round 3:</strong> Claude returned MINOR, Codex returned its
+        third MAJOR, and Gemini was unavailable. Policy stops automatic cycling;
+        duplicate-key, timestamp, hidden-residue, hook-scope, artifact-path, and
+        runtime findings are corrected inline for the user decision gate.</p>
+      <p><strong>Dependency:</strong> the reviewed #3548 runbook landed through
+        PR #3553 at merge commit <code>24d6c66</code>.</p>
+      <p><strong>Real close gate:</strong> issue #3549 now carries
+        <code>gate:completeness</code>; the server Action may not be treated as
+        passing when skipped.</p>
+    </section>
+
+    <div class="grid">
+      <article class="card">
+        <h3>Public authority</h3>
+        <p>The workstation registry will hold canonical identity, MagicDNS/SSH
+          hostname policy, and an opaque fallback reference—never an observed
+          fallback address.</p>
+      </article>
+      <article class="card">
+        <h3>Local observation</h3>
+        <p>A repository-external overlay will hold the OS-owner assertion, evidence
+          reference, timestamps, machine binding, and connection-policy digest. On POSIX it
+          must be an owner-controlled regular non-symlink with mode no broader than
+          <code>0600</code>, under a non-group/world-writable parent.</p>
+      </article>
+      <article class="card">
+        <h3>Single execution boundary</h3>
+        <p>The required <code>uv</code> runtime will launch one Python command that
+          validates, resolves, redacts, and starts OpenSSH with an argument vector.
+          Shell wrappers will not parse configuration or build commands.</p>
+      </article>
+      <article class="card">
+        <h3>Explicit fallback only</h3>
+        <p>No DNS, timeout, host-key, or authentication failure will cause a second
+          destination attempt. Fallback will be a distinct operator action.</p>
+      </article>
+      <article class="card">
+        <h3>Windows boundary</h3>
+        <p>Windows will support hostname mode. Address fallback will fail closed with
+          exit <code>4</code> until a separately reviewed native ACL validator exists.</p>
+      </article>
+    </div>
+
+    <section>
+      <h2>Authority and data flow</h2>
+      <div class="flow" aria-label="Connection authority flow">
+        <span>Registry identity + policy</span><b>→</b>
+        <span>Strict Python resolver</span><b>→</b>
+        <span>Hostname route</span><b>or explicit</b>
+        <span>POSIX owner-asserted overlay</span><b>→</b>
+        <span>OpenSSH argv</span>
+      </div>
+      <p class="muted">Credentials, keys, endpoints, operator identities, and raw
+        rejected values will not enter plans, logs, dry-run output, or tracked
+        helper defaults.</p>
+    </section>
+
+    <section>
+      <h2>Governed surface</h2>
+      <table>
+        <thead><tr><th>Area</th><th>Planned change</th></tr></thead>
+        <tbody>
+          <tr><td>Registry and resolver</td><td>Strict full-registry validation, typed collision handling, and deterministic per-machine connection-policy digest.</td></tr>
+          <tr><td>Connection core</td><td>New connection model and shared <code>connect-workstation.py</code> CLI through the required <code>uv</code> runtime.</td></tr>
+          <tr><td>Bash</td><td>Three current SSH entry points plus the generic Linux helper will become thin wrappers.</td></tr>
+          <tr><td>PowerShell</td><td>Two helpers will use argument arrays and the shared hostname contract; fallback will return exit <code>4</code>.</td></tr>
+          <tr><td>Tabby</td><td>Tracked endpoint and operator defaults will be removed while unrelated preferences remain.</td></tr>
+          <tr><td>Enforcement</td><td>A checked governed-path manifest will drive exact staged-blob and head-commit scans without whole-file exemptions.</td></tr>
+          <tr><td>CI</td><td>Linux commit-mode enforcement plus a native Windows hostname-mode PowerShell job will prove the supported boundary.</td></tr>
+        </tbody>
+      </table>
+      <p><strong>Excluded:</strong> VNC behavior remains owned by #3550.</p>
+    </section>
+
+    <section>
+      <h2>Runtime security contract</h2>
+      <div class="grid">
+        <article class="card">
+          <h3>Overlay integrity</h3>
+          <ul>
+            <li>Read the registry and selected overlay once into immutable snapshots.</li>
+            <li>Reject duplicate YAML keys, symlinks, wrong owners, non-regular files, broad modes, unsafe parents, stale evidence, legacy digest fields, and policy-digest mismatches.</li>
+            <li>Require <code>verified_at ≤ now &lt; expires_at</code> and a validity interval no longer than policy.</li>
+            <li>Hash every security-relevant field in versioned canonical ASCII JSON; unrelated valid registry edits do not invalidate the selected machine.</li>
+            <li>Keep the overlay outside the repository; it is an owner assertion, not a signed attestation.</li>
+          </ul>
+        </article>
+        <article class="card">
+          <h3>Canonical SSH identity</h3>
+          <p>The canonical hostname remains the positional OpenSSH destination.
+            Explicit POSIX fallback adds only fixed <code>HostName</code> and
+            canonical <code>HostKeyAlias</code> options and forces
+            <code>StrictHostKeyChecking=yes</code>. Caller-supplied SSH options are
+            not accepted.</p>
+        </article>
+        <article class="card">
+          <h3>Redaction boundary</h3>
+          <p>Resolver, wrapper, and dry-run diagnostics will reveal neither target,
+            identity, rejected raw value, environment, nor overlay content. Inherited
+            interactive OpenSSH stderr remains an explicit local-terminal boundary.</p>
+        </article>
+        <article class="card">
+          <h3>Checked enforcement</h3>
+          <p>The manifest will classify registry, core, CLI, wrappers, Tabby,
+            endpoint-prohibited docs, and the separately owned VNC surface. Local
+            hooks inspect staged blobs; CI compares exact base and head commit blobs.</p>
+        </article>
+      </div>
+    </section>
+
+    <section>
+      <h2>TDD delivery sequence</h2>
+      <ol>
+        <li>Create a fresh worktree only after the base is proven to descend from merged #3553; never reuse the pre-merge planning worktree.</li>
+        <li>Write failing registry-bytes, duplicate-key, strict-policy, and collision tests; implement only that slice to green.</li>
+        <li>Write failing POSIX integrity, timestamp-order/bound, canonical-policy mutation/stability, legacy-field, and digest tests; implement only that slice to green.</li>
+        <li>Write failing CLI, redaction, canonical SSH argv, host-key, interrupt, and exit tests; implement only that slice to green.</li>
+        <li>Write failing Bash, PowerShell, Tabby, and governed-manifest tests.</li>
+        <li>Replace unsafe helpers with thin shared-CLI wrappers.</li>
+        <li>Delete both tracked FUSE-hidden helper residues, reject recurrence, and implement the manifest-backed staged/commit guard.</li>
+        <li>Add an endpoint-only hook installer mode that is idempotent in normal and linked worktrees; broader installer repair remains #3435.</li>
+        <li>Separate Windows infrastructure failure from required-native test results; required mode will contain no skip path and fallback will return exit <code>4</code>.</li>
+        <li>Update the canonical runbook and directly affected helper references.</li>
+        <li>Run adversarial artifact review, scans, completeness, and cleanup gates.</li>
+      </ol>
+      <p class="muted">Every slice will record its RED failure before implementation,
+        reach GREEN with the minimum change, and restart affected checks after any
+        review-driven edit.</p>
+    </section>
+
+    <section class="success">
+      <h2>Success contract</h2>
+      <ul>
+        <li>Every governed SSH helper resolves through one validated command.</li>
+        <li>Hostname access is the default; POSIX fallback is explicit, current, owner-asserted, and bound to the canonical per-machine policy.</li>
+        <li>Windows hostname access works natively; unsupported fallback returns exit <code>4</code>.</li>
+        <li>No SSH failure silently changes destination.</li>
+        <li>Fallback retains canonical host configuration and host-key identity with strict checking.</li>
+        <li>Dry-run executes nothing and reveals no target or identity.</li>
+        <li>Bash and native PowerShell behavior are tested through the required <code>uv</code> runtime.</li>
+        <li>Manifest-backed staged and commit enforcement catches added files, odd filenames, index/worktree races, and adjacent unsentinelled violations.</li>
+        <li>Changed-code coverage explicitly includes the shared launcher under <code>scripts/operations/connection/</code>.</li>
+        <li>Implementation cannot start until multi-provider plan review completes and the user applies <code>status:plan-approved</code>.</li>
+      </ul>
+    </section>
+
+    <section class="risk">
+      <h2>Known risks</h2>
+      <ul>
+        <li>Implementation must prove its base descends from merged #3553 before RED tests begin.</li>
+        <li>Current-tree cleanup will not erase historical endpoint exposure.</li>
+        <li>Projection omission could weaken invalidation; closed-field mutation tests and format versioning will guard it.</li>
+        <li>Gitleaks v8.30.1 will be checksum-pinned and forced to embedded defaults with a runtime positive control before scanning the frozen candidate tree.</li>
+        <li>POSIX fallback depends on restrictive local ownership and permissions; Windows fallback remains unsupported.</li>
+        <li>The existing workstation suite has one unrelated recorded baseline failure.</li>
+        <li>Endpoint enforcement must remain narrow enough not to block its own tests and review evidence while covering every checked manifest entry.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Durable references</h2>
+      <ul>
+        <li><a href="https://github.com/vamseeachanta/workspace-hub/issues/3549">Issue #3549</a></li>
+        <li><a href="https://github.com/vamseeachanta/workspace-hub/blob/chore/3549-registry-connection-design/docs/superpowers/specs/2026-07-15-3549-registry-connection-helpers-design.md">Approved design</a></li>
+        <li><a href="https://github.com/vamseeachanta/workspace-hub/pull/3553">Dependency PR #3553</a></li>
+      </ul>
+      <p class="muted">Generated as the human-facing companion to the canonical
+        Markdown issue plan. The Markdown plan remains the lifecycle source.</p>
+    </section>
+  </main>
+</body>
+</html>

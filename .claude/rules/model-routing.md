@@ -1,0 +1,29 @@
+# Model routing across the AI ecosystem — agent rule (#3390)
+
+**When to apply:** choosing which model/provider runs a session, a subagent lane, or a delegated implementation marathon — at session start, at epic fan-out, and whenever a model becomes unavailable mid-run.
+
+**Why:** two-week transcript audit 2026-06-21 → 2026-07-06 (186 sessions; auto-memory `reference_fable5_vs_opus48_session_comparison.md`). Fable 5 burned its quota in 2 days of heavy use and went dark for 3 (Jul 3–5); the 2026-07-04 quota wall killed two implementation subagents mid-run with uncommitted worktree edits. A separate `model_refusal_fallback` ejected Fable from a screenshot-heavy browser session. Meanwhile 104/186 session starts were one-shot adversarial reviews on premium models, and Opus's costliest waste came from building on stale local state (2h reskin on a stale branch) and manually babysitting merges.
+
+**Routing table:**
+
+| Lane | Use for |
+|---|---|
+| **Codex** | Routine implementation and fix rounds; first reviews of Claude work |
+| **Claude (Opus, Fable)** | Review of Codex work, client and outward text, decisions, high-impact analysis; Fable for client engineering reviews and heavy-comment rounds |
+| **Agy (Gemini)** | Plain-English edit pass and review only |
+
+Model ids come from the live CLI config, never from this file.
+
+**Operational corollaries (from the same audit):**
+
+1. **Quota-resilience:** implementation subagents `commit && push -u` at every green milestone. Quota death clobbers uncommitted worktrees exactly like autorun does — see `feedback_autorun_clobbers_subagent_worktree_commits`.
+2. **Review economics:** r1 plan/code reviews go to cheaper lanes (Codex/Sonnet); premium models only for r2+ or T2-scope reviews.
+3. **Start-of-task grounding:** before building, verify the working branch against `origin/main` and the issue/PR state (`gh issue view` / `gh pr list --search`) — see `feedback_check_issue_state_before_implementing_on_detached_head` and `feedback_verify_generated_state_against_origin_not_working_copy`.
+4. **Merging:** governed by [`merge-authorization.md`](merge-authorization.md) — the team merges its own PRs on green required checks with a pinned squash merge and no branch delete.
+5. **Automate waiting:** if you catch yourself polling a merge or a slow op in the foreground, switch to a background watcher immediately — don't re-derive this per session. Canonical merge babysitter (Level 2 per [`patterns.md`](patterns.md)): `scripts/operations/merge-when-clean.sh <pr> [--repo owner/name]` — watch-only by default, prints the merge command on CLEAN; do not use its `--merge` mode, which still deletes the branch ([`merge-authorization.md`](merge-authorization.md)).
+
+**Account headroom (two Claude + two Codex accounts, 2026-09-26):** usage windows belong to the *account*, and the accounts are pinned to machines — the owner's seats on the Linux boxes (`ace-linux-1`, `ace-linux-2`, `gpu-claw`) and on the Windows workstation `ace-win-2`, the professional seat on `ace-win-1` only (corrected 2026-10-09: `ace-win-2` is logged in as the owner account). Before an implementation marathon or a `dispatch:ready` hand-off, read `config/ai-tools/account-usage-latest.json` (refreshed hourly by the fleet collector; see `docs/reports/ai-account-usage.md`) and take its `recommendation.<provider>` block: dispatch to a host in `hosts` (label the issue `machine:<host>`), or, if the recommendation names the account you are already on, stay put. Treat `tight: true` on every account of a provider as "defer marathons; do review/orchestration only". The map of accounts to hosts is `config/ai-tools/ai-accounts.yaml`.
+
+**Do NOT apply when:** the user explicitly names the model/provider for a task — their directive wins.
+
+**Related:** [`patterns.md`](patterns.md), [`verify-ci-lint-toolchain.md`](verify-ci-lint-toolchain.md). Memory: `reference_fable5_vs_opus48_session_comparison`, `feedback_delegate_token_heavy_to_codex`, `ai-orchestration-models-agents-and-cross-review`. Issue: workspace-hub#3390.

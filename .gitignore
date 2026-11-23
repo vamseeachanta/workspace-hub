@@ -1,0 +1,674 @@
+# Individual Git Repositories - Exclude all subdirectory repos
+# NOTE (#3098): client-named sibling-repo ignores (the confidential ones) were
+# relocated to local .git/info/exclude so this PUBLIC file names no clients.
+# Provision a host: add those client dirs to .git/info/exclude (see the private
+# aceengineer-strategy archive for the list).
+heavyequipemnt-rag/
+aceengineer-admin/
+aceengineer-strategy/
+aceengineer-website/
+achantas-data/
+achantas-media/
+ai-native-traditional-eng/
+assethold/
+assetutilities/
+CAD-DEVELOPMENTS/
+digitalmodel/
+energy/
+hobbies/
+investments/
+OGManufacturing/
+pyproject-starter/
+sabithaandkrishnaestates/
+sd-work/
+simpledigitalmarketing/
+teamresumes/
+worldenergydata/
+
+# Build and dependency directories
+node_modules/
+dist/
+coverage/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+build/
+develop-eggs/
+downloads/
+eggs/
+.eggs/
+lib/
+!scripts/agents/lib/
+!scripts/coordination/routing/lib/
+!scripts/setup/lib/
+!scripts/review/lib/
+!scripts/ai/assessment/lib/
+!scripts/cron/lib/
+!scripts/improve/lib/
+!scripts/readiness/lib/
+!scripts/lib/
+!/tests/lib/
+!scripts/review/lib/
+!scripts/work-queue/lib/
+# GSD bin/lib — runtime libraries needed across machines
+!.claude/get-shit-done/bin/lib/
+!.codex/get-shit-done/bin/lib/
+!.gemini/get-shit-done/bin/lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Benchmark run artifacts (transient; baseline is committed at config/testing/)
+scripts/testing/benchmark-results/
+
+# Temporary and cache files
+.cache/
+.pytest_cache/
+config/agents/claude/memory-snapshots/
+.coverage
+htmlcov/
+.tox/
+.hypothesis/
+
+# Environment files
+.env
+.env.local
+.env.*.local
+venv/
+env/
+ENV/
+
+# Log files
+*.log
+logs/*
+!logs/orchestrator/
+logs/orchestrator/*
+!logs/orchestrator/README.md
+# PII #3097: orchestrator session logs (hermes/codex/claude) are raw command/tool
+# dumps that carry client identifiers; stop committing them to this public repo.
+# They keep being written locally; only public tracking stops.
+!logs/audit/
+logs/audit/*.jsonl
+logs/audit/*.jsonl.gz
+!logs/audit/.gitkeep
+!logs/quality/
+logs/quality/*.yaml
+logs/quality/*.log
+!logs/quality/.gitkeep
+!logs/hooks/
+logs/hooks/*.jsonl
+!logs/hooks/.gitkeep
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Test reports
+test-results/
+junit.xml
+coverage.xml
+
+# Backup files
+*.bak
+*.backup
+*.backup-*
+*.old
+data/document-index/*.jsonl.backup-*
+
+# Agent OS and swarm directories (already initialized)
+.agent-os/
+
+# .claude/ - ignore internals, keep transferable configs
+.claude/*
+!.claude/skills/
+!.claude/agent-library/
+!.claude/tools/
+!.claude/docs/
+!.claude/settings.json
+!.claude/agent-skills-map.yaml
+!.claude/workflows/
+!.claude/CONFIGURATION.md
+!.claude/COORDINATION.md
+!.claude/README.md
+!.claude/global/
+!.claude/commands/
+# GSD framework - consistent across machines
+!.claude/get-shit-done/
+!.claude/agents/
+!.claude/hooks/
+!.claude/rules/
+!.claude/skill-registry.yaml
+# Knowledge base - institutional memory across sessions
+!.claude/knowledge/
+# Status line - portable across machines
+!.claude/statusline-command.sh
+!.claude/statusline-combined.sh
+# Repo-level memory - shared institutional knowledge
+!.claude/memory/
+# Work queue - tracked for cross-machine/user portability
+!.claude/work-queue/
+# Dispatch queues - per-machine work files; tracked so each machine pulls via git
+!.claude/dispatch/
+# State directory — un-ignore parent so child exceptions work (see below)
+!.claude/state/
+
+# Machine-local Claude directories (never synced)
+.claude/settings.local.json
+.claude/state/*
+.claude/checkpoints/
+.claude/outputs/
+.claude/plans/
+# State sub-directories committed for cross-machine comprehensive-learning analysis
+# Raw transcripts (sessions/, archive/, session-reports/) stay local — too large
+/docs/strategy/gtm/job-market-scan/archive/
+!.claude/state/candidates/
+# #3253: Hermes-pattern last-seen signature is per-machine RUNTIME spam-suppression state — keep it
+# untracked so the bridge's §8 stash/pop never churns it (the candidate *.md IS tracked + committed
+# by commit-learning-artifacts.sh).
+.claude/state/candidates/hermes-patterns-last-seen-*.json
+!.claude/state/corrections/
+!.claude/state/patterns/
+# #3384: the memory-bridge liveness heartbeat MUST be committed — its git-commit time is the
+# freshness clock for memory_freshness (audit_memory_freshness.py). Date-only, machine-independent.
+!.claude/state/memory-bridge-heartbeat.json
+!.claude/state/harness-readiness-ace-win-1.yaml
+!.claude/state/equality-*.yaml
+!.claude/state/session-curation-*.json
+!.claude/state/session-curation-*.md
+!.claude/state/skill-currency-*.json
+!.claude/state/skill-drift-*.json
+!.claude/state/memory-freshness-*.json
+!.claude/state/skill-link-health-*.json
+!.claude/state/correction-confidence-threshold.json
+!.claude/state/skill-scope-classification.json
+!.claude/state/reflect-history/
+!.claude/state/trends/
+!.claude/state/session-signals/
+.claude/state/session-signals/cost-tracking.jsonl
+# #2070: rotated archives — ignore directory contents, re-include only .gz files
+.claude/state/session-signals/archive/*
+!.claude/state/session-signals/archive/*.gz
+!.claude/state/cc-insights/
+!.claude/state/learned-patterns.json
+!.claude/state/skill-scores.yaml
+!.claude/state/cc-user-insights.yaml
+!.claude/state/hermes-insights.yaml
+!.claude/state/cross-agent-memory.yaml
+!.claude/state/drift-summary.yaml
+!.claude/state/portfolio-signals.yaml
+!.claude/state/readiness-issues.md
+!.claude/state/session-health.yaml
+!.claude/state/skill-eval-results/
+!.claude/state/correction-trend-meta.json
+!.claude/state/graduation/
+
+# Claude-flow runtime (never synced)
+.hive-mind/
+.swarm/
+memory/
+
+# Other working directories
+reports/*
+!reports/.gitkeep
+!reports/test-summary/
+!reports/test-summary/.gitkeep
+!reports/test-summary/baseline-summary.json
+# S01: the contact de-duplication report is counts and domains only, written
+# redacted; only that file is tracked. Address files never land here.
+!reports/email/
+reports/email/*
+!reports/email/contact-dedup-report.md
+src/workspace_hub/reports/
+test-framework-integrations/
+_organized_non_repo_files/
+_temp/
+
+# Note: docker/, examples/, and monitoring-dashboard/ are now tracked
+# as they contain important development resources for teams
+
+# GitHub workflows and configurations
+# .github/ is now tracked for CI/CD workflows
+
+# Sync reports
+.sync-reports/
+.SLASH_COMMAND_ECOSYSTEM/
+
+# ==========================================
+# TEAM DEVELOPMENT REPOSITORY
+# Shared across multiple teams
+# ==========================================
+
+# Security & Credentials - CRITICAL
+# ==========================================
+# API Keys and Secrets
+*.key
+*.pem
+*.cert
+*.crt
+*.p12
+*.pfx
+.env
+.env.*
+.env.local
+.env.*.local
+secrets/
+credentials/
+*_secret*
+*_token*
+*_api_key*
+
+# Authentication & SSH
+id_rsa*
+id_dsa*
+*.ppk
+.ssh/
+known_hosts
+authorized_keys
+
+# Cloud Provider Credentials
+.aws/
+.gcloud/
+.azure/
+*.json.keyfile
+service-account-*.json
+
+# Database credentials
+*.sql.password
+database.yml
+database.json
+db-config.json
+
+# Personal & Private Data
+# ==========================================
+# Personal workspace configurations
+.personal/
+personal-*
+!config/email/personal-style.yaml
+private/
+private-*
+*-personal.*
+*-private.*
+my-*
+local-*
+!scripts/ci/local-ci/
+!scripts/ci/local-ci/**
+
+# Team member specific settings
+.user-settings/
+user-config/
+developer-notes/
+workspace-*.json
+
+# AI Assistant Memory & State
+# ==========================================
+# Claude Flow and AI memory (local only)
+# Note: .claude/ is ignored above, with exceptions for skills/ and CLAUDE.md
+.hive-mind/
+.swarm/
+memory/
+!.claude/memory/
+!scripts/memory/
+!tests/memory/
+# Skill trees swallowed by bare-dir ignores above (digitalmodel/ L14, memory/ here);
+# negate after both rules so .claude/skills/{digitalmodel,memory}/ skills are tracked (#2925).
+!.claude/skills/digitalmodel/
+!.claude/skills/memory/
+*.memory.json
+*.session.json
+ai-memory/
+agent-state/
+
+# Database Files
+# ==========================================
+*.db
+*.sqlite
+*.sqlite3
+*.db3
+*.s3db
+*.sl3
+database.db
+
+# Team Collaboration
+# ==========================================
+# Temporary collaboration files
+*.tmp
+*.temp
+temp/
+tmp/
+scratch/
+sandbox/
+experiments/
+
+# Meeting notes and recordings
+meeting-notes/
+recordings/
+*.mp4
+*.mov
+*.avi
+*.webm
+
+# Large binary files
+*.zip
+*.tar
+*.tar.gz
+*.rar
+*.7z
+*.dmg
+*.iso
+*.exe
+*.msi
+*.deb
+*.rpm
+
+# Generated documentation
+generated-docs/
+api-docs-generated/
+*.generated.md
+
+# Team-specific configurations
+team-*/
+teams/*/local/
+*-team-config.json
+
+# Development Machine Specific
+# ==========================================
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# Editor directories and files
+.vscode/*
+!.vscode/settings.json.template
+!.vscode/extensions.json.template
+.idea/
+*.sublime-project
+*.sublime-workspace
+.project
+.classpath
+.settings/
+*.iml
+*.ipr
+*.iws
+
+# Debugging
+*.map
+*.debug
+debug/
+debugging/
+.gdb_history
+core.*
+core.[0-9]*
+
+# Testing & Coverage
+# ==========================================
+test-results/
+test-reports/
+coverage/
+.coverage
+htmlcov/
+.tox/
+.pytest_cache/
+.phpunit.result.cache
+junit.xml
+coverage.xml
+*.cover
+.hypothesis/
+
+# Shared Configuration Templates
+# ==========================================
+# Allow templates for team setup
+!*.template
+!*.example
+!example-*
+!template-*
+!docs/examples/
+
+# Keep only management files at root level
+# Modules directory is tracked for management tools
+# Claude Code project memory - ignore local settings and checkpoints
+.claude/settings.local.json
+.claude/checkpoints/
+
+# Refactor Analysis Reports
+.refactor-reports/
+*.refactor-report.*
+jscpd-report/
+.claude/skills/.commit-log
+.claude/skills/session-logs/
+.claude-flow/
+dryrun_debug.log
+
+# Generated prompt files — transient agent dispatch artifacts
+prompts/
+
+# Root artifact guardrails — prevent shell residue from being committed (#1534)
+*.btr
+--version.*
+
+# GSD cost events — runtime data, not for version control
+.planning/cost-events.jsonl
+
+# Legacy specs/ directory — migrated to .planning/ (2026-03-26)
+# Only untracked engineering data in specs/repos/ remains on disk
+specs/
+
+# Data cache files — runtime generated, not for version control
+data/modules/**/cache/
+
+# LLM-Wiki — crawled/converted documentation for agent consumption (#2088)
+# Symlink is machine-specific; re-create locally or use resolve_wiki_path.py (#2140)
+data/llm-wiki
+
+# Document intelligence pipeline (WRK-309)
+data/document-index/index.jsonl
+data/document-index/summaries/
+data/document-index/enhancement-plan.yaml
+# Doc Intelligence Platform — manifests + indexes are local runtime (WRK-1113)
+# Public repo: client document content must never be committed
+data/doc-intelligence/
+
+# Async notification log — runtime JSONL (WRK-1076)
+logs/notifications/*.jsonl
+
+# Search symbol index — runtime generated cache (WRK-1085)
+# Rebuild: uv run --no-project python scripts/search/build-symbol-index.py
+config/search/symbol-index.jsonl
+
+# Doc drift quality logs — runtime generated (WRK-1093)
+logs/quality/*.yaml
+logs/quality/*.log
+
+# knowledge/dark-intelligence/ — private extracted calculation data (only README tracked)
+knowledge/dark-intelligence/**/*.yaml
+
+# knowledge-base/ — machine-local runtime JSONL (rebuilt from archive/ if lost)
+knowledge-base/*.jsonl
+knowledge-base/*.lock
+knowledge-base/*.tmp
+.worktrees/
+.claude/worktrees/
+
+# Standards search index (built locally, not committed)
+data/standards-index/chunks.jsonl
+data/standards-index/bm25.pkl
+
+# Promoted standards artifacts — runtime CSVs/tables from promote-to-code.py (WRK-5035/5040)
+data/standards/promoted/*
+!data/standards/promoted/.gitkeep
+
+# Pipeline state (runtime, regenerable)
+config/data/pipeline-state/*.json
+data/document-index/index.jsonl.pre-merge-bak
+
+# Oversized generated test files (>10MB)
+knowledge/dark-intelligence/xlsx-poc/removed-workbook-extraction-c/tests/test_removed_workbook_extraction_c.py
+
+# Wikis spun out to vamseeachanta/llm-wiki on 2026-05-05 — workspace-hub retains
+# only health-reports/ (ops surface), personal/ (private notes), and
+# standards/ pages that serve as in-repo citation targets per #2685.
+# Domain wikis (concepts/, entities/, sources/, raw/) live at
+# https://github.com/vamseeachanta/llm-wiki/tree/main/wikis.
+/knowledge/wikis/*
+!/knowledge/wikis/health-reports/
+!/knowledge/wikis/personal/
+!/knowledge/wikis/README.md
+# Re-include domain-wiki standards/ pages — citation targets for fail-closed
+# validation per docs/standards/calc-output-citation.md (#2685). Zigzag pattern
+# walks back the path to wiki/standards/*.md without re-including unrelated
+# subpaths (raw/, concepts/, entities/, etc. stay spun out to llm-wiki repo).
+!/knowledge/wikis/*/
+/knowledge/wikis/*/*
+!/knowledge/wikis/*/wiki/
+/knowledge/wikis/*/wiki/*
+!/knowledge/wikis/*/wiki/standards/
+!/knowledge/wikis/*/wiki/standards/*.md
+assethold-worktrees/
+
+# ecosystem-sync test fixtures — built locally, not committed
+tests/ecosystem-sync/fixtures/repos/repo-*
+tests/ecosystem-sync/fixtures/repos/*.baseline-sha
+
+# ecosystem-sync logs
+logs/ecosystem-sync/
+
+# markdown-QA runtime artifacts (#2126)
+**/.artifacts/
+
+# #2346 prospect-demo intake/runtime privacy guards
+# Received prospect YAMLs, logos, fallback audit sidecars, and generated
+# prospect outputs are runtime-only; publish only sanitized, reviewed bundles.
+docs/gtm/intake/received/
+docs/gtm/intake/logos/
+digitalmodel/examples/demos/gtm/private-log/
+digitalmodel/examples/demos/gtm/tests/fixtures/prospect-outputs/
+
+# Vendor-derivative PDFs — must live under /mnt/ace, never in any git repo
+# Per llm-wiki spinout 2026-05-05 (worldenergydata/docs/plans/2026-05-05-llm-wiki-spinout-migration-plan.md §9a)
+knowledge/wikis/**/raw/papers/*.pdf
+wikis/**/raw/papers/*.pdf
+
+# Nested independent repos — each has its own .git, do not track from hub
+# Moved 2026-05-07 from /mnt/local-analysis/{llm-wiki,kaggle-rogii-2026}
+/llm-wiki/
+/kaggle-rogii-2026/
+
+# Local uv/virtualenv (machine-specific, do not track)
+.venv/
+
+# Transient parity-instrumentation live reports (#3061)
+.claude/state/parity/
+
+# --- PII remediation #3097 (epic #3095): stop-committing generated dumps ---
+# These are regenerable raw dumps / full client-document inventories that carry
+# client identifiers. They are removed from public tracking and preserved
+# privately (aceengineer-strategy). Emitters keep writing them locally.
+.agents/skills/session-logs/
+scripts/review/results/
+# elements-to-llm-wiki generated client-document inventories (the 42 MB index + siblings)
+.planning/intel/elements-*/**/*.jsonl
+.planning/intel/elements-*/**/*.tsv
+.planning/intel/elements-*/**/*.json
+.planning/intel/elements-*/**/*.csv
+# Private client->codename map consumed by scripts/legal/redact-client-pii.py and
+# the learning cron. The real client names live ONLY in the private
+# aceengineer-strategy archive; provision a local copy here per host. Never track.
+config/agents/.client-codename-map.local.yaml
+
+# PII #3098: real client registry relocated private; local copy provisioned per host
+config/.client-wikis.local.yml
+
+# Stray inspection/staging scratch dirs (#3098) — never track
+.tmp-inspect-*/
+.tmp-*/
+
+# PII #3098: sibling-repo list (carries client repo names) — per-host, never track
+config/.sibling-repos.local
+
+# PII #3095/#3098: per-host private provision files for dev-ops scripts that would
+# otherwise hardcode client repo names / maps / routing tables / VIP domains.
+# These carry client identifiers, so they are gitignored and provisioned per host
+# from the private aceengineer-strategy archive. The committed *.local.example
+# templates (PII-free) document each format. Covers .vip-domains.local,
+# .branch-cleanup.local, .windows-repos.local, .repo-types.local, .ace-routes.local, …
+config/.*.local
+
+# Built static Pages output (regenerated in CI)
+public/
+
+# #3298 session-review payloads are full-fidelity (may name clients) — keep local
+docs/reports/sessions/payloads/
+
+# #3340 drive-index-search metrics: raw invocation/nudge JSONL is per-machine,
+# local-only (session ids + query hashes); committed counts-only weekly
+# aggregates live in data/drive-index-search/metrics/weekly/ (NOT ignored)
+data/drive-index-search/metrics/*.jsonl
+
+# C20/S01: archive-drive indexes carry client names and real archive paths that
+# later steps read. Their builders write them here as local working files; they
+# are never committed (redacting them would break the paths the pipeline reads).
+/data/content_index.json
+/docs/CONTENT_INDEX.md
+/data/document-index/conference-index-batch.jsonl
+/data/document-index/conference-index.jsonl
+/data/document-index/conference-phase-a-results.jsonl
+/data/document-index/cross-drive-dedup-report.json
+
+# S01 (2026-09-27): generated boards are local only. Their builders
+# (scripts/kanban/reconcile.py, scripts/ai/provider-work-queue.py,
+# scripts/ai/provider-kanban.py, scripts/ai/build-orca-kanban.py) stay runnable
+# and write here; nothing publishes them. ecosystem.yaml is authored, not generated.
+/.claude/memory/kanban/boards/*
+!/.claude/memory/kanban/boards/ecosystem.yaml
+/config/ai-tools/provider-work-queue.json
+/config/ai-tools/provider-kanban.json
+/docs/reports/provider-work-queue.md
+/docs/reports/provider-kanban-dashboard.md
+/docs/reports/provider-kanban-dashboard.html
+/docs/dashboards/*-tier1-gh-issue-kanban.html
+/docs/dashboards/*-orca-kanban.html
+/docs/reports/*-tier1-gh-issue-kanban-*
+/docs/reports/*-tier1-kanban-board-data.json
+/docs/reports/*-tier1-board-index.md
+/docs/reports/*-orca-kanban-data.json
+/docs/reports/kanban/*-kanban.md
+/docs/reports/kanban/*-board-index.md
+# Issue 3943: preserve exact review receipts, not the generated results tree.
+!scripts/review/results/
+scripts/review/results/*
+!scripts/review/results/2026-10-05-3943-claude-raw.txt
+!scripts/review/results/2026-10-05-3943-agy-unavailable.md
+
+# Machine-local topic file; kept out of version control
+.claude/memory/topics/network_machines.md
+
+# Cleanup evidence contains exact local names; publish sanitized summaries only.
+/cleanup-output/
+
+# Fleet snapshot wrapper scratch files must never be tracked in the public repo.
+docs/reports/fleet-snapshots/.latest.*
+docs/reports/fleet-snapshots/.fleet-label-*.tmp
+
+# Keep only the bounded JSON test deliverable from the ignored library tree.
+!/tests/lib/
+/tests/lib/*
+!/tests/lib/test_strict_json_boundaries.py

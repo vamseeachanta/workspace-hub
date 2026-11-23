@@ -1,0 +1,29 @@
+Agent loading error: Failed to load agent from /mnt/local-analysis/workspace-hub/.gemini/agents/gsd-debugger.md: Validation failed: Agent Definition:
+Unrecognized key(s) in object: 'permissionMode'Agent loading error: Failed to load agent from /mnt/local-analysis/workspace-hub/.gemini/agents/gsd-executor.md: Validation failed: Agent Definition:
+Unrecognized key(s) in object: 'permissionMode'1. **Verdict**: MAJOR
+2. **Ready for user approval**: No
+3. **Retrieval adequacy**: Insufficient
+4. **Top blockers**:
+   1. **Hallucinated or Unverified Fields in Rubric**: The pseudocode and scoring rubric heavily rely on a `readability` field (`readability in {native,ocr}`). However, the "Resource Intelligence Summary" explicitly lists the known fields in `index.jsonl` as `source, ext, domain, path_category, and path_subcategory`, with no mention of `readability`. If this field does not exist, the deterministic scoring rubric is invalid and the plan cannot be executed. 
+   2. **Brittle TDD Design (Hardcoded Counts)**: The test `test_other_bucket_count_matches_authoritative_audit` specifies an expected output of `count = 44,705`. Tests must not hardcode live database/index counts, as the index will evolve. The test should instead assert that the script's counted value matches the dynamically parsed value from the current audit report.
+
+5. **Critical findings**:
+   - The core segmentation logic relies on a potentially non-existent field (`readability`), demonstrating incomplete schema retrieval or hallucination.
+   - The plan fails to define fallback logic for records that have `null` or missing values for `source`, `ext`, or `path_category`. Given this is the `other`/miscellaneous bucket, missing metadata is highly probable and will break the deterministic scoring rubric if unhandled.
+
+6. **High findings**:
+   - The scoring rubric's tie-break mechanism uses specific source roots (e.g., `ace_project`, `dde_project`). It is unclear if these were dynamically verified against `mounted-source-registry.yaml` during planning or if they are hardcoded assumptions.
+   - The plan delegates the resolution of count drift to the execution phase ("verify whether live index count matches... explain any drift"), but does not specify what the script should do if the drift is massive (e.g., fail the build vs. just log a warning). 
+
+7. **Medium findings**:
+   - The schema for `index-other-bucket-pack-manifest.yaml` includes `record_keys (content hashes or exact record IDs)`. This needs to be strictly defined as one or the other (e.g., `file_path` or `sha256_hash`). If it remains ambiguous, the downstream writeback in #2247 may fail to match records.
+   - The expected format of the `exact selection rule` in the manifest is undefined (is it a regex, a SQL-like string, or a JSON object?).
+
+8. **Low findings**:
+   - The execution order between generating the canonical machine-readable handoff manifest (`yaml`) and the human-readable triage report (`md`) is not strictly defined in the pseudocode.
+
+9. **Required revisions before user approval**:
+   - **Revise Rubric/Retrieve Schema**: Explicitly verify if the `readability` field exists in `index.jsonl`. If it does not, rewrite the scoring rubric to use verified, existing fields (e.g., inferring readability from `ext`).
+   - **Update TDD Tests**: Remove the hardcoded `44,705` count from the test expectations and replace it with a dynamic comparison against the parsed audit report.
+   - **Handle Nulls**: Add explicit fallback logic in the pseudocode for records missing `source`, `ext`, or `path_category` metadata.
+   - **Lock Down Handoff Schema**: Specify the exact format of `record_keys` (e.g., strictly file paths) and the `selection_rule` in the handoff manifest to guarantee a clean contract with #2247.

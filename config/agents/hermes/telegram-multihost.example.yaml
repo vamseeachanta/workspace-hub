@@ -1,0 +1,52 @@
+# Secret-free example for Telegram + Hermes multi-host dispatch.
+# Copy host-specific values into local config/secret stores only; do not commit real tokens.
+
+telegram:
+  architecture: coordinator-bot
+  coordinator_host: dev-primary
+  bot_token_env: TELEGRAM_HERMES_BOT_TOKEN
+  allowed_user_ids_env: TELEGRAM_HERMES_ALLOWED_USER_IDS
+  allow_all_users: false
+
+registry:
+  path: config/workstations/registry.yaml
+  host_key: telegram_hermes
+
+commands:
+  status:
+    enabled: true
+    contract: "/status [--host host|auto]"
+  dispatch:
+    enabled: true
+    contract: "/dispatch <issue> [--mode plan|implementation] [--host host|auto]"
+    require_issue_authority: true
+    require_plan_approval_for_implementation: true
+    approval_marker_dir: .planning/plan-approved
+    lease_ref_template: "refs/heads/dispatch/leases/{issue}-{mode}"
+  jobs:
+    enabled: true
+    contract: "/jobs"
+  sync:
+    enabled: true
+    contract: "/sync [--host host|auto]"
+    mode: fetch-status-before-ff-only-pull
+
+profiles:
+  default:
+    host_id: dev-primary
+    mode: coordinator
+    readiness_command: scripts/readiness/telegram-hermes-readiness.sh --host dev-primary
+  linux-worker:
+    host_id: dev-secondary
+    mode: worker
+    readiness_command: scripts/readiness/telegram-hermes-readiness.sh --host dev-secondary
+  windows-git-bash:
+    mode: desktop-status-only
+    shell: git-bash
+  macos-manual:
+    mode: desktop-status-only
+
+redaction:
+  redact_secret_field_names: true
+  redact_token_like_values: true
+  redact_env_values: true

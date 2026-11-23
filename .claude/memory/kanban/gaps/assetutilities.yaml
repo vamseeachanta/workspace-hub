@@ -1,0 +1,38 @@
+board_slug: repo-assetutilities
+cards:
+- idempotency_key: gap:repo-assetutilities:001
+  title: Audit cross-repo consumers of assetutilities API surface
+  source: detected_gap
+  detection_basis: '#28 loguru and #29 registry pattern imply downstream consumers
+    exist; no consumer list lives in repo'
+  needs_issue: true
+  priority: 1
+  body_excerpt: Enumerate digitalmodel/assethold/sabithaandkrishnaestates imports;
+    prevent breaking-change drift.
+- idempotency_key: gap:repo-assetutilities:002
+  title: Productivity issues (#33-#42) likely belong outside the code repo
+  source: detected_gap
+  detection_basis: 'Issues #33-#42 are productivity / consolidation tracking, not
+    utility-library code work'
+  needs_issue: true
+  priority: 0
+  body_excerpt: Triage; migrate to workspace-hub or close as superseded by Hermes
+    kanban tracking.
+- idempotency_key: gap:repo-assetutilities:003
+  title: Multi-Python-version test matrix for YAML utilities
+  source: detected_gap
+  detection_basis: '#52 split + #58/#59 yaml_utilities work; no CI matrix verifying
+    3.11/3.12/3.13 compat'
+  needs_issue: true
+  priority: 0
+  body_excerpt: Add GitHub Actions matrix; pin pyyaml + ruamel; verify split/merge
+    round-trip.
+- idempotency_key: gap:repo-assetutilities:004
+  title: Citation helper module for downstream consumers
+  source: detected_gap
+  detection_basis: calc-citation-contract binds digitalmodel; assetutilities could
+    expose a thin Citation helper to avoid re-implementation
+  needs_issue: true
+  priority: 0
+  body_excerpt: Thin Citation helper that digitalmodel/assethold can import; aligns
+    with .claude/rules/calc-citation-contract.md.

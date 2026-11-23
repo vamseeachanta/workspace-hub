@@ -1,0 +1,207 @@
+#!/usr/bin/env bash
+# bootstrap-machine.sh — One-time setup for any new machine joining the workspace
+#
+# Sets up a new machine joining the workspace.
+# Safe to re-run — idempotent (only writes if content differs).
+#
+# NOTE: no longer generates ~/.claude/CLAUDE.md. The harness CLAUDE.md surfaces
+# were retired 2026-08-01; AGENTS.md is the canonical contract and .claude/memory/
+# carries session context. Do not reintroduce a generated CLAUDE.md here.
+#
+# Usage (from repo root):
+#   bash scripts/memory/bootstrap-machine.sh
+#
+# Works on: Linux, macOS, Windows (MINGW64/Git Bash)
+# Issue: #1894
+
+set -euo pipefail
+
+REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
+CLAUDE_DIR="${HOME}/.claude"
+
+GREEN='\033[0;32m'; YELLOW='\033[1;33m'; CYAN='\033[0;36m'; NC='\033[0m'
+
+# Detect OS via shared helper (per #2751 r1 M1 — canonical token set: linux/macos/windows).
+# Sourced rather than duplicated inline; identical token set as scripts/setup/lib/detect-os.sh.
+# shellcheck source=../setup/lib/detect-os.sh
+source "${REPO_ROOT}/scripts/setup/lib/detect-os.sh"
+OS="$(detect_os)" || { echo "Unsupported OS — aborting bootstrap." >&2; exit 1; }
+
+echo ""
+echo -e "${CYAN}=== Workspace-Hub Machine Bootstrap ===${NC}"
+echo "  Detected OS   : ${OS}"
+echo "  Repo root     : ${REPO_ROOT}"
+echo "  Memory        : ${REPO_ROOT}/.claude/memory/"
+echo ""
+
+# ---------------------------------------------------------------------------
+# 1. Preserve Claude instructions until an explicit reviewed migration (#1249).
+# ---------------------------------------------------------------------------
+# Generated markers do not establish that instructions are redundant or loaded
+# elsewhere. The installer will validate admission without deleting any surface.
+mkdir -p "${CLAUDE_DIR}"
+if [[ -e "${CLAUDE_DIR}/CLAUDE.md" || -L "${CLAUDE_DIR}/CLAUDE.md" ]]; then
+    echo "Claude legacy instruction surface preserved; migration is a separate transaction."
+fi
+
+# ---------------------------------------------------------------------------
+# 2. Windows-specific: set WORKSPACE_HUB env var hint
+# ---------------------------------------------------------------------------
+if [[ "${OS}" == "windows" ]]; then
+    WIN_ROOT="$(cygpath -w "${REPO_ROOT}" 2>/dev/null || echo "${REPO_ROOT}")"
+    echo ""
+    echo -e "${CYAN}Windows detected — additional steps:${NC}"
+    echo ""
+    echo "  Add this to your ~/.bashrc or ~/.profile to set WORKSPACE_HUB:"
+    echo "    export WORKSPACE_HUB=\"/d/workspace-hub\""
+    echo ""
+    echo "  Or in PowerShell (run once):"
+    echo "    [Environment]::SetEnvironmentVariable('WORKSPACE_HUB', '${WIN_ROOT}', 'User')"
+    echo ""
+fi
+
+# ---------------------------------------------------------------------------
+# 2.5. Install SOUL runtime symlinks (per #2719)
+#      Retargets ~/.hermes/SOUL.md, ~/.codex/AGENTS.md, ~/.codex/SOUL.md,
+#      ~/.gemini/SOUL.md to committed config/agents/<provider>/*.runtime.md
+#      artifacts. Idempotent; backs up pre-existing non-symlink files.
+# ---------------------------------------------------------------------------
+INSTALL_SOUL="${REPO_ROOT}/scripts/agents/install-soul-runtime.sh"
+if [[ -x "${INSTALL_SOUL}" ]]; then
+    # Per #2751 r2 C1: SOUL install is now UNCONDITIONAL. The previous guard
+    # (`if [[ -d ~/.hermes || ~/.codex || ~/.gemini ]]`) caused G1 to silently
+    # fail on truly-fresh machines where no provider directory existed yet.
+    # Create the parent directories first so install-soul-runtime.sh can
+    # always place the symlinks; the script is itself idempotent.
+    mkdir -p "${HOME}/.hermes" "${HOME}/.codex" "${HOME}/.gemini"
+    echo ""
+    echo -e "${CYAN}Installing SOUL runtime symlinks (unconditional)...${NC}"
+    bash "${INSTALL_SOUL}"
+fi
+
+# ---------------------------------------------------------------------------
+# 2.6. Install conflict-marker pre-commit hook across tier-1 repos (per #2722)
+#      Vendors scripts/enforcement/check-no-conflict-markers.sh into each
+#      sibling repo and wires it into .git/hooks/pre-commit. Idempotent;
+#      refuses to overwrite uncommitted local changes.
+# ---------------------------------------------------------------------------
+INSTALL_HOOK_CROSS_REPO="${REPO_ROOT}/scripts/agents/install-pre-commit-hook-cross-repo.sh"
+if [[ -x "${INSTALL_HOOK_CROSS_REPO}" ]]; then
+    echo ""
+    echo -e "${CYAN}Installing conflict-marker pre-commit hook across tier-1 repos...${NC}"
+    bash "${INSTALL_HOOK_CROSS_REPO}" || true
+fi
+
+# ---------------------------------------------------------------------------
+# 2.7. Reinstall Hermes Kanban readability override (user-override dashboard
+#      plugin at ~/.hermes/plugins/kanban/). Makes the fixes — clickable
+#      "Source:" URLs in card descriptions + readable card-text font over the
+#      Mondwest display font — survive hermes-agent updates AND apply on every
+#      Hermes machine that bootstraps from this repo.
+#
+#      Guarded on the BUNDLED plugin existing (unlike the unconditional SOUL
+#      install above): this installer copies from the bundled plugin, so it's a
+#      no-op without it. Machines that don't run a Hermes dashboard (e.g. the
+#      Windows checkout), or where hermes-agent isn't installed yet, skip
+#      harmlessly — re-run bootstrap after installing Hermes to catch up.
+#      Idempotent. Skill: .claude/skills/devops/hermes-kanban-readability/.
+# ---------------------------------------------------------------------------
+KANBAN_READABILITY="${REPO_ROOT}/.claude/skills/devops/hermes-kanban-readability/install.sh"
+HERMES_KANBAN_BUNDLED="${HERMES_HOME:-${HOME}/.hermes}/hermes-agent/plugins/kanban/dashboard"
+if [[ -f "${KANBAN_READABILITY}" && -d "${HERMES_KANBAN_BUNDLED}" ]]; then
+    echo ""
+    echo -e "${CYAN}Reinstalling Hermes Kanban readability override...${NC}"
+    bash "${KANBAN_READABILITY}" || true
+fi
+
+# ---------------------------------------------------------------------------
+# 2.8. Install kanban auto-load post-merge hook (opt-in)
+#      Replays .claude/memory/kanban/boards/*.yaml into this machine's local
+#      Hermes (~/.hermes/kanban.db) after each `git pull`, so board data
+#      populates without a manual load.py. No-op until you opt in per machine:
+#          touch ~/.hermes/kanban-autoload.enabled
+#      Enable ONLY on Manual-orchestration machines (auto-dispatch could claim
+#      loaded cards). Non-clobbering: skips a foreign post-merge hook.
+# ---------------------------------------------------------------------------
+KANBAN_AUTOLOAD="${REPO_ROOT}/scripts/memory/kanban-autoload.sh"
+KB_HOOK_MARKER="workspace-hub kanban-autoload"
+GIT_DIR="$(git -C "${REPO_ROOT}" rev-parse --absolute-git-dir 2>/dev/null || true)"
+if [[ -f "${KANBAN_AUTOLOAD}" && -n "${GIT_DIR}" ]]; then
+    mkdir -p "${GIT_DIR}/hooks"
+    POST_MERGE="${GIT_DIR}/hooks/post-merge"
+    if [[ ! -e "${POST_MERGE}" ]] || grep -q "${KB_HOOK_MARKER}" "${POST_MERGE}" 2>/dev/null; then
+        printf '#!/usr/bin/env bash\n# %s (auto-installed by bootstrap-machine.sh)\nexec "$(git rev-parse --show-toplevel)/scripts/memory/kanban-autoload.sh" --from-hook\n' "${KB_HOOK_MARKER}" > "${POST_MERGE}"
+        chmod +x "${POST_MERGE}"
+        echo -e "${CYAN}Installed kanban auto-load post-merge hook (opt-in: touch ~/.hermes/kanban-autoload.enabled).${NC}"
+    else
+        echo -e "${YELLOW}Existing .git/hooks/post-merge (not ours) \u2014 skipping kanban auto-load hook.${NC}"
+    fi
+    # Populate now if already opted in (idempotent; no-op without the marker).
+    bash "${KANBAN_AUTOLOAD}" || true
+fi
+
+# ---------------------------------------------------------------------------
+# 2.9. Install update-harness-tools symlink into ~/.local/bin (per #2920 dec. A)
+#      Makes `update-harness-tools` runnable from PATH on every machine for
+#      ad-hoc "update now" runs. The same script is the canonical scheduled
+#      updater (schedule-tasks.yaml id: harness-update). Idempotent; only the
+#      symlink target is managed, never the user's other ~/.local/bin entries.
+# ---------------------------------------------------------------------------
+HARNESS_UPDATER="${REPO_ROOT}/scripts/maintenance/update-harness-tools.sh"
+if [[ -f "${HARNESS_UPDATER}" && "${OS}" != "windows" ]]; then
+    mkdir -p "${HOME}/.local/bin"
+    LINK="${HOME}/.local/bin/update-harness-tools"
+    # Only (re)place when missing or pointing elsewhere; never clobber a real file.
+    if [[ -L "${LINK}" || ! -e "${LINK}" ]]; then
+        ln -sfn "${HARNESS_UPDATER}" "${LINK}"
+        echo -e "${CYAN}Installed update-harness-tools symlink → scripts/maintenance/update-harness-tools.sh${NC}"
+    else
+        echo -e "${YELLOW}~/.local/bin/update-harness-tools exists and is not a symlink — leaving it alone.${NC}"
+    fi
+fi
+
+# ---------------------------------------------------------------------------
+# 2.10. Pin the Antigravity CLI (`agy`) default model (ecosystem-canonical lane)
+#       Standardizes `agy` on ONE default model so every machine + every repo
+#       opened with agy behaves identically. agy is the Gemini delegation lane
+#       (Google AI Pro). The setter MERGES a single `model` key into agy's
+#       user-global settings (never clobbers machine-local prefs like
+#       colorScheme), and runs UNCONDITIONALLY so a machine converges even
+#       before agy is installed (agy reads the file on first launch). The model
+#       value is declared in the setter; change it there to retarget the fleet.
+#       Idempotent. Skips gracefully if no python is present.
+# ---------------------------------------------------------------------------
+SET_AGY_MODEL="${REPO_ROOT}/scripts/agents/set-antigravity-default-model.sh"
+if [[ -x "${SET_AGY_MODEL}" ]]; then
+    echo ""
+    echo -e "${CYAN}Pinning Antigravity CLI default model...${NC}"
+    bash "${SET_AGY_MODEL}" || true
+fi
+
+# ---------------------------------------------------------------------------
+# 2.11. Install local Linux voice dictation hotkey (per #3403)
+#       Idempotent and nonfatal: Linux machines with a usable mic converge to
+#       Super+Shift+V; machines without mic/STT prerequisites keep bootstrap
+#       green and leave an inert/manual guidance path.
+# ---------------------------------------------------------------------------
+VOICE_DICTATION_INSTALLER="${REPO_ROOT}/scripts/agents/install-voice-dictation.sh"
+if [[ -x "${VOICE_DICTATION_INSTALLER}" ]]; then
+    echo ""
+    echo -e "${CYAN}Installing local voice dictation hotkey...${NC}"
+    bash "${VOICE_DICTATION_INSTALLER}" || true
+fi
+
+# ---------------------------------------------------------------------------
+# 3. Remind about bridge script (Linux/Hermes machines only)
+# ---------------------------------------------------------------------------
+if [[ -d "${HOME}/.hermes" ]]; then
+    echo ""
+    echo -e "${CYAN}Hermes detected — keep memory in sync:${NC}"
+    echo "  bash scripts/memory/check-memory-drift.sh"
+    echo "  bash scripts/memory/bridge-hermes-claude.sh --commit && git push"
+fi
+
+echo ""
+echo -e "${GREEN}Bootstrap complete.${NC}"
+echo "Run 'git pull' in ${REPO_ROOT} to get the latest memory files."
+echo ""

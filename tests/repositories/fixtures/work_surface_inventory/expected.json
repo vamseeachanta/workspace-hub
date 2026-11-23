@@ -1,0 +1,58 @@
+{
+  "repositories": [
+    {
+      "configured_for_machine": true,
+      "contract": {
+        "agents_md": true,
+        "claude_dir": true,
+        "claude_in_dir": true,
+        "codex_dir": true,
+        "complete": true,
+        "gemini_dir": true,
+        "mcp": "present",
+        "root_claude_md": false
+      },
+      "mcp_required": true,
+      "name": "alpha",
+      "observed_local": true,
+      "profile": "code",
+      "sensitivity": "public",
+      "state": "configured-present"
+    },
+    {
+      "configured_for_machine": false,
+      "contract": {
+        "agents_md": false,
+        "claude_dir": false,
+        "claude_in_dir": false,
+        "codex_dir": false,
+        "complete": false,
+        "gemini_dir": false,
+        "mcp": "not-required",
+        "root_claude_md": false
+      },
+      "mcp_required": false,
+      "name": "notes",
+      "observed_local": false,
+      "profile": "knowledge",
+      "sensitivity": "client-confidential",
+      "state": "declared-missing"
+    }
+  ],
+  "schema_version": 1,
+  "summary": {
+    "adapter_coverage": {
+      "complete": 1,
+      "incomplete": 1
+    },
+    "contract_complete": 1,
+    "configured": 1,
+    "declared": 2,
+    "missing": 1,
+    "non_git": 0,
+    "observed_declared": 1,
+    "present": 1,
+    "unexpected_count": 1,
+    "unknown": 1
+  }
+}

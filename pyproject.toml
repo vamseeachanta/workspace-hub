@@ -1,0 +1,68 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "workspace-hub"
+version = "0.1.0"
+description = "Hub implementation package: config, solvers, models, database, utilities"
+requires-python = ">=3.11"
+license = {text = "MIT"}
+dependencies = [
+    "beautifulsoup4>=4.14.3",
+    "pdf2image>=1.17.0",
+    "pdfplumber>=0.11.9",
+    "pillow>=12.1.1",
+    "pytesseract>=0.3.13",
+    "pyyaml>=6.0",
+    "ruamel.yaml>=0.18",
+    "sqlalchemy>=2.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+    "pytest-cov>=4.0",
+    "jsonschema>=4.21",
+    "pytest-socket",
+    "zss==1.2.0",
+    "scipy>=1.11",
+    "PyYAML>=6.0",
+]
+workqueue = [
+    "markdown>=3.6",
+    "bleach>=6.0",
+    "PyYAML>=6.0",
+]
+docling = [
+    "docling>=2.82",
+]
+
+[project.scripts]
+ace = "src.ace.cli:main"
+
+[dependency-groups]
+dev = [
+    "pytest>=8.0",
+    "pytest-cov>=4.0",
+    "jsonschema>=4.21",
+    "pytest-socket",
+    "zss==1.2.0",
+    "scipy>=1.11",
+    "PyYAML>=6.0",
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["src*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+minversion = "8.0"
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+markers = [
+    "openfoam: tests that require an OpenFOAM runtime on the execution host",
+    "audit: opt-in audit-time tests (live network, registry freshness); excluded from default runs",
+]

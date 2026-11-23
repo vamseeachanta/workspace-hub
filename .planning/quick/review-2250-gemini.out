@@ -1,0 +1,36 @@
+Agent loading error: Failed to load agent from /mnt/local-analysis/workspace-hub/.gemini/agents/gsd-debugger.md: Validation failed: Agent Definition:
+Unrecognized key(s) in object: 'permissionMode'Agent loading error: Failed to load agent from /mnt/local-analysis/workspace-hub/.gemini/agents/gsd-executor.md: Validation failed: Agent Definition:
+Unrecognized key(s) in object: 'permissionMode'Error executing tool run_shell_command: Tool "run_shell_command" not found. Did you mean one of: "grep_search", "cli_help", "read_file"?
+1. Verdict
+MAJOR
+
+2. Ready for user approval: No
+
+3. Retrieval adequacy: adequate
+
+4. Top blockers (numbered)
+1. **Institutionalized Drift via Overlapping Canonical Owners:** The plan assigns `documents_in_scope` and `documents_marked_read` to `resource-intelligence-maturity.yaml`, while assigning standards `totals` and `done`/`implemented` to `standards-transfer-ledger.yaml`. These represent the exact same underlying entities (the standards corpus and their completion status). Splitting them across two "canonical owners" does not resolve the 425 vs 436 contradiction; it makes the drift official policy. The maturity ledger's denominator and numerator must be formally derived from the standards ledger.
+2. **Missing `resource-intelligence-maturity.yaml` Cleanup:** The plan fails to recognize that `resource-intelligence-maturity.yaml` acts as a "god file" containing metrics explicitly owned by other ledgers (e.g., `total_index_records`, `gap_standards`, `reference_standards`, `current_other_count`). The "Files to Change" section entirely omits modifying this YAML file to remove, deprecate, or sync these copied fields, leaving the root cause of the drift intact.
+3. **Unresolved `other` Domain Conflict:** The plan ignores a massive live contradiction regarding the "other" domain. `registry.yaml` (which the plan designates as the canonical owner for domain counts) states `other: 44705`. Meanwhile, `resource-intelligence-maturity.yaml` claims `current_other_count: 0` and notes "other domain fully eliminated". The plan proposes validation without first deciding which of these mutually exclusive facts is true.
+4. **Incomplete "Files to Change" Scope:** The plan mandates that `docs/document-intelligence/data-intelligence-map.md` and `docs/assessments/document-intelligence-audit.md` are allowed derivative surfaces that must be regenerated or validated. However, it fails to list them in the "Files to Change" table to fix their currently stale values (which still reflect the 425/29 counts). If the new drift validator is implemented, CI will immediately fail because these markdown files were not scheduled for correction.
+
+5. Critical findings
+- The plan fundamentally misunderstands the architecture: `resource-intelligence-maturity.yaml` is NOT the true source of its own metrics; it is a derivative summary of the `registry.yaml` and `standards-transfer-ledger.yaml`. By elevating it to a "canonical owner" of its own overlapping metrics, the plan violates the #2205 operating model it claims to follow.
+- The planned validator (`check-intelligence-ledger-drift.py`) has no specified technical mechanism for parsing hand-written prose markdown files (`data-audit-report.md`, `data-intelligence-map.md`) to extract and check their embedded numbers, rendering the validation strategy functionally impossible without brittle regex or LLMs.
+
+6. High findings
+- The plan lists `test_validator_passes_after_reconciliation` as a test, but doesn't actually schedule the reconciliation of the markdown files (other than `resource-intelligence-maturity.md`).
+- There is no specification of how or when `scripts/validation/check-intelligence-ledger-drift.py` will execute (e.g., pre-commit hook, CI workflow, or manual execution), leaving the governance loop open.
+
+7. Medium findings
+- The plan correctly notes that `enhancement-plan.yaml` is a historical planning artifact not authoritative for current counts. However, it does not propose modifying the file to add a deprecation warning or notice, which would prevent future AI agents from incorrectly using its numbers.
+
+8. Low findings
+- The pseudocode step "compare canonical owner values to each derivative copy" is overly abstract and glosses over the significant complexity of extracting structured numbers from unstructured Markdown tables and text.
+
+9. Required revisions before user approval
+- **Redefine Ownership:** Revise the owner map so that `standards-transfer-ledger.yaml` is the *sole* canonical owner of standards counts and completion statuses. `resource-intelligence-maturity.yaml` must be explicitly designated as a derivative that pulls/syncs its `documents_in_scope` and `documents_marked_read` from the standards ledger.
+- **Add YAML Cleanup:** Add `data/document-index/resource-intelligence-maturity.yaml` to the "Files to Change" table. Explicitly instruct the agent to remove or properly sync the duplicate keys (`gap_standards`, `total_index_records`, `current_other_count`, etc.) that are actually owned by other files.
+- **Resolve the `other` Conflict:** Explicitly define the remediation for the 44,705 vs 0 conflict between the registry and the maturity ledger.
+- **Expand File Scope:** Add all affected derivative markdown surfaces (`data-intelligence-map.md`, `document-intelligence-audit.md`, `data-audit-report.md`) to the "Files to Change" table so they are updated to match the new canonical truth before the validator is turned on.
+- **Define Validation Mechanism:** Specify exactly how the Python drift-check helper will extract numbers from Markdown files (e.g., enforcing HTML comment anchors, using regex patterns, or converting them to fully generated templates).

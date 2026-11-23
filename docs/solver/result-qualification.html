@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Solver result qualification</title>
+  <style>
+    body { max-width: 58rem; margin: auto; padding: 2rem; font: 1rem/1.6 system-ui, sans-serif; }
+    table { border-collapse: collapse; width: 100%; }
+    th, td { border: 1px solid #bbb; text-align: left; padding: .5rem; }
+    pre { overflow: auto; background: #f2f4f6; padding: 1rem; }
+    code { font-size: .95em; }
+  </style>
+</head>
+<body>
+<h1>Solver result qualification</h1>
+<section aria-labelledby="summary">
+  <h2 id="summary">Summary</h2>
+  <p>The solver result interface can now evaluate declared numerical evidence
+  separately from execution success. An offline checker reads an existing JSON
+  result, required acceptance criteria, output units and an assumption ledger.
+  It never loads or executes a licensed solver. A passing report establishes only
+  agreement with the supplied criteria; it does not certify an engineering design.</p>
+</section>
+<section aria-labelledby="revisions">
+  <h2 id="revisions">Revision history</h2>
+  <table>
+    <thead><tr><th>Revision</th><th>Date</th><th>Change and reason</th></tr></thead>
+    <tbody><tr><td>1</td><td>2026-10-22</td><td>Document explicit criteria,
+    missing-evidence behavior and a reproducible synthetic example so that execution
+    success is not confused with numerical acceptance.</td></tr></tbody>
+  </table>
+</section>
+<h2>Three implementation slices</h2>
+<ol>
+  <li><code>src/solvers/qualification.py</code> defines immutable criteria,
+  individual comparisons, assumptions and qualification reports.</li>
+  <li><code>SolverResult.qualify()</code> exposes the checker through the existing
+  result interface. It preserves execution status and result data.</li>
+  <li><code>scripts/solver/qualify_result.py</code> provides an offline JSON
+  interface, with <code>examples/solver-qualification/synthetic.json</code> as
+  executable input.</li>
+</ol>
+<h2>Method and source</h2>
+<p>The comparison uses the symmetric absolute/relative rule from
+<a href="https://peps.python.org/pep-0485/#implementation">PEP 485 (2015),
+Implementation</a>:</p>
+<pre>|a - b| &lt;= max(r × max(|a|, |b|), t)</pre>
+<p>Here <code>a</code> is the observed scalar, <code>b</code> is the independent
+reference, <code>r</code> is a dimensionless relative tolerance and <code>t</code>
+is an absolute tolerance in the quantity's units. Both tolerances are mandatory,
+finite, non-negative inputs. Zero allows exact comparison. There are no default
+engineering acceptance limits. Each criterion requires a reference description
+and a tolerance basis; these are declarations supplied by the caller, not verified
+citations or proof of independent derivation.</p>
+<p>The equation is evaluated using exact rational representations of the supplied
+integer and binary floating-point values. This avoids intermediate overflow and
+loss of integer differences during float conversion. Boundary decisions can
+differ from <code>math.isclose</code> because intermediate products are not rounded.
+Precision already lost when a JSON decimal becomes a binary float cannot be
+recovered. Scalars must pass finite binary64 range screening; larger integers
+are rejected. This is not a decimal-arithmetic interface. Non-finite inputs are
+rejected even if both values are identical infinities. No unit conversion occurs.</p>
+<h2>Evidence and status</h2>
+<table>
+  <thead><tr><th>Status</th><th>Meaning</th></tr></thead>
+  <tbody>
+    <tr><td>PASS</td><td>Execution succeeded, at least one criterion exists,
+    every required comparison passed, and no declared assumption is unresolved.</td></tr>
+    <tr><td>FAIL</td><td>Execution failed, or a required output is non-numeric,
+    non-finite, outside its tolerance, or carries different units.</td></tr>
+    <tr><td>NOT_EVALUATED</td><td>No failure was found, but criteria, required
+    outputs or unit evidence are missing, or an assumption is unresolved.</td></tr>
+  </tbody>
+</table>
+<p>Failure takes precedence over missing evidence. Every declared criterion gets
+a check entry. Reports retain criteria, observed values, units, the method
+reference and assumptions. Invalid scalar output is represented by a null
+observed value and a failure reason, so JSON reports remain finite. A null
+assumption value means unresolved; a nonempty value and basis record a declared
+resolution. Duplicate criterion quantities are rejected.</p>
+<p>The JSON input requires exactly <code>result</code>, <code>criteria</code>,
+<code>output_units</code> and <code>assumptions</code>. Result fields are exactly
+<code>success</code> (boolean), <code>solver_name</code> and
+<code>result_data</code> (object or null). Unknown top-level/result fields,
+duplicate JSON keys and non-standard numeric constants are rejected. Invalid
+input exits without echoing its content or filesystem details.</p>
+<h2>Worked example: inputs, method and answer</h2>
+<p>The example is an intentionally synthetic scalar multiplication exercise,
+not a validated spring model. Its benchmark is defined by the expression
+8 N/m × 2 m = 16 N. Both factors, the observed 16 N and the absolute tolerance
+1 N are synthetic example inputs; no design coefficient is adopted. Relative
+tolerance is set to zero by the example author. The JSON reference and tolerance
+basis explicitly retain this origin.</p>
+<pre>uv run --no-project python scripts/solver/qualify_result.py \
+  examples/solver-qualification/synthetic.json</pre>
+<p>The hand calculation gives |16 − 16| = 0 N and a permitted difference
+max(0 × 16, 1) = 1 N. Therefore the report is <code>PASS</code> and the command
+exits with code 0. With an observed 17 N the inclusive bound still passes;
+with 18 N the difference is 2 N and the report is <code>FAIL</code> (exit 1).
+Removing the output-unit entry gives <code>NOT_EVALUATED</code> (exit 2).
+Invalid input also exits 2, with a diagnostic on standard error and no report.</p>
+<p>Independent tests also cover a synthetic relative limit 0.2: observed 10 and
+reference 8 give a difference 2 and allowance 2, while observed 11 gives a
+difference 3 and allowance 2.2. Signed values, zero references, exact bounds,
+integer precision, extreme finite inputs and CLI rejection paths are covered.</p>
+<h2>Integration and limits</h2>
+<pre>report = existing_result.qualify(
+    criteria,
+    output_units=declared_units,
+    assumptions=declared_assumptions,
+)
+if report.accepted:
+    consume(existing_result.result_data)</pre>
+<p>Consumers must call qualification and enforce its result. The registry and
+legacy <code>NumericalSolver.verify_accuracy()</code> retain their existing
+behavior; this addition does not install a universal execution gate. Use an
+independent reference, qualified units and reviewed criteria. The checker cannot
+establish that a source is authentic, that an assumption is physically justified,
+that all governing outputs were declared, or that result metadata belongs to a
+particular native run. Empty assumption lists do not establish assumption completeness.</p>
+<p>Later work includes domain-specific adapters, range and conservation checks,
+native-run evidence binding, governed criteria, atlas coverage and confidence
+qualification, and integration into existing hosted checks. The wider initiative
+remains open. Cross-provider review is pending with the maintainers.</p>
+</body>
+</html>

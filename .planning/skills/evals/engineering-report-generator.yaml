@@ -1,0 +1,23 @@
+version: 1
+wrk_id: WRK-1009
+skill_name: engineering-report-generator
+skill_path: .claude/skills/development/engineering-report-generator/SKILL.md
+evals:
+- eval_id: erg-cap-01
+  eval_type: capability
+  description: Core sections documented for engineering-report-generator
+  checks:
+    required_sections:
+    - '## Quick Start'
+    - '## When to Use'
+    - '## Implementation Pattern'
+    - '## Integration'
+    - '## Report Structure'
+- eval_id: erg-proc-01
+  eval_type: procedural
+  description: Additional documentation sections for engineering-report-generator
+  checks:
+    required_sections:
+    - '## Related Skills'
+    - '## Version History'
+    - '## Sub-Skills'

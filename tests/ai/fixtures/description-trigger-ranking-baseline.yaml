@@ -1,0 +1,85 @@
+version: 1
+probe_date: 2026-07-09
+selection_rule: >-
+  Active SKILL.md files outside underscore-prefixed families whose exact
+  frontmatter keys are name and description and whose body has neither a
+  When to Use nor Trigger section.
+query_rule: exact frontmatter description
+candidates:
+  - id: autonomous-ai-agents/claude-plugin-update-id-scope
+    description_sha256: 746864bc7dc286d5c67e86c183277ff84fe43b047bd9091f2a24eadf8f0cf5e3
+    before_source: backfill
+    before_top_skill: coordination/memory-bridge-commit-fallbacks
+    before_self_rank: 11
+    expected_after_source: description
+    expected_after_top_skill: autonomous-ai-agents/claude-plugin-update-id-scope
+  - id: coordination/context-compaction-handoff
+    description_sha256: ff29583a2819fd5cd0b7ab5f74b6615e1ce79159f6f4acb178ec45121e82705c
+    before_source: backfill
+    before_top_skill: coordination/session-start-routine
+    before_self_rank: 22
+    expected_after_source: description
+    expected_after_top_skill: coordination/context-compaction-handoff
+  - id: coordination/flywheel-closeout
+    description_sha256: 291ebc52586bba8b9bc00ce8bcf7a29b895171cbec94e64a53e60a7708dba6e0
+    before_source: backfill
+    before_top_skill: business-marketing/weekly-gtm-productivity-steering
+    before_self_rank: 9
+    expected_after_source: description
+    expected_after_top_skill: coordination/flywheel-closeout
+  - id: coordination/memory-bridge-operation
+    description_sha256: e94c4b5ac32f9cc97c210a86278eac38b524403c07e02bc8f489ee74c3f6b2ff
+    before_source: backfill
+    before_top_skill: coordination/memory-bridge-commit-fallbacks
+    before_self_rank: 18
+    expected_after_source: description
+    expected_after_top_skill: coordination/memory-bridge-operation
+  - id: creative/ascii-video
+    description_sha256: d5b1fcecfd9db8c3fab2b29bda8e0bf917306e068fb32a539b2b99b90d82c1dd
+    before_source: backfill
+    before_top_skill: creative/pretext
+    before_self_rank: 4
+    expected_after_source: description
+    expected_after_top_skill: creative/ascii-video
+  - id: data/worldenergydata-source-readiness
+    description_sha256: 9d5c6ae17ee0f8aa821a54eefd245294b2f802722b7bc08af7eb7565c7995599
+    before_source: backfill
+    before_top_skill: coordination/subagent-sandbox-limitations
+    before_self_rank: 21
+    expected_after_source: description
+    expected_after_top_skill: data/worldenergydata-source-readiness
+  - id: devops/slim-git-history
+    description_sha256: 40bc7f7233bc4b01f536892794aa6d5cb6222fd1479dd98652951b1a9599470a
+    before_source: backfill
+    before_top_skill: coordination/subagent-sandbox-limitations
+    before_self_rank: 3
+    expected_after_source: description
+    expected_after_top_skill: devops/slim-git-history
+  - id: media/youtube-content
+    description_sha256: d933d2527a2d91ce7d6c9bc6f0c68a7a7d94acddedcbe4f1be596142e7d782cb
+    before_source: backfill
+    before_top_skill: creative/design-md
+    before_self_rank: 12
+    expected_after_source: description
+    expected_after_top_skill: media/youtube-content
+  - id: operations/devops/perf-tuning
+    description_sha256: 9dd4d4e09b8d6a761c77543f1bc1bc4c56bc4d631527672dd5dc1cc7b4cc8d39
+    before_source: backfill
+    before_top_skill: coordination/subagent-sandbox-limitations
+    before_self_rank: 2
+    expected_after_source: description
+    expected_after_top_skill: operations/devops/perf-tuning
+  - id: research/public-knowledge-graph-governance
+    description_sha256: d7c72221b73e64c4100b0ac782fb2976f1f4948d89ab7c592f8603b6cdcf5fd3
+    before_source: backfill
+    before_top_skill: research/llm-wiki-weekly-freshness
+    before_self_rank: 10
+    expected_after_source: description
+    expected_after_top_skill: research/public-knowledge-graph-governance
+  - id: test-dummy-validation/dummy-backfill-test
+    description_sha256: 398fc07e31f0d544f003c43296e73821dc410fa3b749c2b0c8224c0d15709217
+    before_source: backfill
+    before_top_skill: software-development/multi-provider-adversarial-review
+    before_self_rank: 71
+    expected_after_source: description
+    expected_after_top_skill: test-dummy-validation/dummy-backfill-test

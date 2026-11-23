@@ -1,0 +1,61 @@
+{
+  "observed": {
+    "clump_arclength_m": 340,
+    "total_line_length_m": 620,
+    "time_step_s": 0.01,
+    "stages_s": [
+      11.5,
+      100
+    ],
+    "native_failure_reproduced": false,
+    "generated_restart_script_text": "RestartStateRecordingTest: ~",
+    "damping_reference": "Earth",
+    "topology": "one 6D buoy, one mooring line, five sections, mid-line clump",
+    "section_lengths_m": [
+      60,
+      230,
+      50,
+      230,
+      50
+    ],
+    "effective_log_interval_s": 0.1
+  },
+  "revision": "cb309cbcdc28c5ce9998bc4f04f1120c53f34ac6",
+  "pr_2091_checks": {
+    "success": 30,
+    "total": 30
+  },
+  "limitations": [
+    "Read-only source and prior generated-bundle inspection; no native model load or run.",
+    "No quantitative engineering acceptance benchmark located in bounded repository search.",
+    "Guide describes fluid-relative damping; checked-in model is Earth-relative.",
+    "Historical standards ledger entries do not establish current design compliance."
+  ],
+  "verified_at_utc": "2026-09-11T15:49:55.3115214Z",
+  "reference": "https://www.orcina.com/wp-content/uploads/examples/c/c07/C07%20Metocean%20buoy%20in%20deep%20water.pdf",
+  "files": [
+    {
+      "path": "docs/domains/orcaflex/library/templates/mooring_buoy/spec.yml",
+      "sha256": "970db50284209181104fe65c97d6aaae89668975c8b99e57506cab3fea2acede"
+    },
+    {
+      "path": "docs/domains/orcaflex/examples/yml/C07/C07 Metocean buoy in deep water.yml",
+      "sha256": "2646c19c4f8a3c8abb396c6bba63156d9eb2c394eb04a87ee2a962492b0e0a22"
+    },
+    {
+      "path": "src/digitalmodel/solvers/orcaflex/modular_generator/builders/general_builder.py",
+      "sha256": "3a7a19499103320f25886fb4c83f8cf2f01ad05191388757f3ef9bfef6d4d1b3"
+    },
+    {
+      "path": "docs/plans/evidence/issue-2082-native.ps1",
+      "sha256": "78c357b4745fa7292bad1aad68ad2ab1c175929eb177ffb8ee845396fc775fff"
+    }
+  ],
+  "drive_search": {
+    "hits": 0,
+    "query": "mooring buoy",
+    "indexes": 6,
+    "unreachable": 5
+  },
+  "issue": "https://github.com/vamseeachanta/digitalmodel/issues/2093"
+}

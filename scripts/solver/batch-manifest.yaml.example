@@ -1,0 +1,29 @@
+# Batch submission manifest — submit multiple solver jobs at once
+# Usage: bash scripts/solver/submit-batch.sh manifests/my-batch.yaml [--dry-run] [--skip-validation]
+#
+# Required top-level fields:
+#   schema_version: "1"
+#   jobs: list of job entries
+#
+# Each job entry requires:
+#   name:         unique, human-readable job identifier
+#   solver_type:  orcawave | orcaflex
+#   model_file:   path relative to repo root
+#   description:  (optional) human-readable label; defaults to name
+
+schema_version: "1"
+jobs:
+  - name: l00-wamit-smoke-test
+    solver_type: orcawave
+    model_file: docs/domains/orcawave/L00_validation_wamit/2.1/OrcaWave v11.0 files/test01.owd
+    description: "L00 WAMIT validation smoke test"
+
+  - name: l01-box-barge-frequency-sweep
+    solver_type: orcawave
+    model_file: docs/domains/orcawave/L01_box_barge/2.1/OrcaWave v11.0 files/box_barge.owd
+    description: "L01 box barge frequency sweep"
+
+  - name: a01-catenary-riser-mooring-analysis
+    solver_type: orcaflex
+    model_file: models/mooring/catenary_riser_A01.dat
+    description: "A01 catenary riser mooring analysis"

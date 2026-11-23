@@ -1,0 +1,4 @@
+path	format	ecosystem	readability	read_tool	glb	name_description	project	size	mtime
+/fixture/ace/cad-mooring.dwg	dwg	ace	high	cad		clearly readable mooring assembly	alpha	123	2026-01-01
+/fixture/ace/cad-riser.dwg	dwg	ace	medium	cad		riser stack	beta	456	2026-01-02
+/fixture/ace/cad-empty.dwg	dwg	ace	low	cad		nothing	gamma	789	2026-01-03

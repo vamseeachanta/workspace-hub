@@ -1,0 +1,36 @@
+board_slug: repo-kaggle-rogii-2026
+repo: vamseeachanta/kaggle-rogii-2026
+gaps:
+- idempotency_key: gap:repo-kaggle-rogii-2026:001
+  title: Baseline submission pipeline
+  source: detected_gap
+  detection_basis: Memory project_kaggle_oil_gas_backlog notes 250-dataset survey;
+    no tracked baseline-submission scaffold issue.
+  needs_issue: true
+  priority: 2
+  body_excerpt: 'Build a baseline end-to-end submission (data load -> simple model
+    -> submission.csv) before optimizing.
+
+    '
+- idempotency_key: gap:repo-kaggle-rogii-2026:002
+  title: Top-12 curated dataset ingest status
+  source: detected_gap
+  detection_basis: SOURCES_kaggle.md curated 12 datasets but per-dataset ingest/scoring
+    status not tracked.
+  needs_issue: true
+  priority: 1
+  body_excerpt: 'Track per-dataset state of the top-12 curated set: ingested / EDA
+    done / feature-engineered / scored.
+
+    '
+- idempotency_key: gap:repo-kaggle-rogii-2026:003
+  title: Competition deadline + leaderboard tracker
+  source: detected_gap
+  detection_basis: No standing issue tracks competition timeline, deadline checkpoints,
+    leaderboard delta.
+  needs_issue: true
+  priority: 1
+  body_excerpt: 'Standing tracker issue: competition deadline, weekly leaderboard
+    rank, gap-to-leader, next experiment.
+
+    '

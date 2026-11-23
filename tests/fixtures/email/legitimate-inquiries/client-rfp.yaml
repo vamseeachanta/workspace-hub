@@ -1,0 +1,8 @@
+fixture_id: legitimate-client-rfp
+sender: procurement@example.com
+subject: RFP for riser analysis support
+body: >
+  Please review the attached scope for riser analysis. We need schedule,
+  assumptions, and a commercial response by Friday.
+expected_classification: actionable
+

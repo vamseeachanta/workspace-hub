@@ -1,0 +1,155 @@
+# Hermes Kanban — ecosystem source-of-truth
+
+This directory holds the Hermes kanban boards across the repo ecosystem.
+Since owner decision S01 (2026-09-27) the generated boards under `boards/` are
+local files, git-ignored and never published: run
+`uv run python scripts/kanban/reconcile.py` on the machine to build them from
+GitHub issues and `manifest.yaml`. Only `boards/ecosystem.yaml` (authored) is
+tracked. The Hermes runtime (`~/.hermes/kanban.db`)
+is per-machine local; this directory replays into it deterministically.
+
+## Layout
+
+```
+.claude/memory/kanban/
+├── SCHEMA.yaml          contract for board YAML (read this first)
+├── README.md            this file
+├── manifest.yaml        top-level index of all boards (slug → file)
+├── boards/              one YAML per board (tier-0 + tier-1 + tier-2)
+│   ├── ecosystem.yaml                       tier-0 master
+│   ├── repo-digitalmodel.yaml               tier-1 repo board
+│   ├── repo-digitalmodel-solver.yaml        tier-2 domain board
+│   └── ...
+├── gaps/                detected-gap cards awaiting GH-issue promotion
+│   └── <repo>.yaml
+└── scripts/
+    └── load.py          idempotent loader: YAML → `hermes kanban` CLI
+```
+
+## Three-tier model
+
+| Tier | Slug pattern             | Example                          | Purpose                                  |
+|------|--------------------------|----------------------------------|------------------------------------------|
+| 0    | `ecosystem`              | `ecosystem`                      | Cross-repo strategic themes              |
+| 1    | `repo-<reponame>`        | `repo-digitalmodel`              | Per-repo board (one per active repo)     |
+| 2    | `repo-<reponame>-<dom>`  | `repo-digitalmodel-solver`       | Domain sub-board inside a big repo       |
+
+Each tier is an **isolated Hermes board** — its own dispatcher loop, its own task
+ID space, its own queue. Tasks on `repo-digitalmodel-solver` cannot collide with
+tasks on `repo-workspace-hub`.
+
+## Safety: all imports land sticky-`blocked` WITH a reason
+
+The loader parks each card via a **two-step create→block** sequence:
+
+```
+hermes kanban --board <slug> create --initial-status running ... <title>
+hermes kanban --board <slug> block <id> "<reason>"
+```
+
+It creates the card **`running`** (a block-ELIGIBLE status), then blocks it.
+This ordering is load-bearing (verified against hermes v0.14.0 source):
+
+- `hermes kanban block <id>` (`kanban_db.block_task`) runs
+  `UPDATE tasks SET status='blocked' ... WHERE status IN ('running','ready')` and
+  emits the sticky `"blocked"` event row in `task_events` **only on a successful
+  1-row update**. The gateway's `recompute_ready`/`_has_sticky_block` suppresses
+  auto-unblock based on that sticky event being the most recent block/unblock event.
+- A card **created already-`blocked`** matches **0 rows** in `block_task` →
+  returns False → **no sticky event** → the gateway **auto-unblocks it to `ready`**
+  anyway (claimable → runaway worker fan-out). This was the original bug.
+  (`[[feedback_hermes_blocked_status_auto_unblocked]]`)
+- Creating `running` first makes the running→blocked transition succeed and the
+  sticky event fire. The card sits `running` only for the microseconds between
+  the two synchronous calls; the loader runs only on Manual-orchestration
+  machines (the opt-in marker gates the timer), so no dispatcher races to claim it.
+- `triage` is **not** safe: `--triage` puts a card into the gateway's
+  specifier→decomposer **pipeline entry**, which auto-promotes it.
+  (`[[feedback_hermes_triage_is_pipeline_entry]]`)
+
+**Idempotent re-run:** `hermes kanban create --json` emits the card's current
+`status`, and on idempotency-key reuse returns the **existing** card. The loader
+calls `block` **only** when that status is `running`/`ready`; if it is already
+`blocked` (sticky, from a prior run) the loader skips the block call. This avoids
+the `_cmd_block` comment-bloat (it appends a `BLOCKED:` comment **before**
+`block_task` on every call) and the false failure (`block_task` returns False on
+an already-blocked card → exit 1).
+
+`hermes kanban create` has no blocked-reason flag (verified hermes v0.14.0),
+which is why the loader applies the reason as a separate `block` call.
+
+Promotion out of the safe park is explicit:
+
+- `hermes kanban unblock <task-id>`     — return to `ready` (then claimable)
+- `hermes kanban promote <task-id>`     — move blocked/todo → `ready`
+- `hermes kanban specify <task-id>`     — let aux LLM flesh out spec, promote to `todo`
+- `hermes kanban decompose <task-id>`   — fan out into child tasks
+
+This guards against the bulk-import dispatch hazard from
+[[feedback_multi_agent_commit_serialization]] / runaway worker fan-out.
+
+## GH issues are canonical
+
+Per [[feedback_no_reserved_wrk_ids]], mirrored cards carry the GitHub issue ref
+as their `idempotency_key`:
+
+```
+gh:vamseeachanta/digitalmodel#2289
+```
+
+Detected gaps that don't yet have GH issues use `gap:<board-slug>:<n>` and live
+**in YAML only** until promoted to real GH issues — they are skipped by the loader.
+
+## Running the loader
+
+```bash
+# preview, no mutations
+uv run python .claude/memory/kanban/scripts/load.py --dry-run
+
+# load a single small board first
+uv run python .claude/memory/kanban/scripts/load.py --board aceengineer-website
+
+# full load (idempotent; safe to re-run)
+uv run python .claude/memory/kanban/scripts/load.py
+```
+
+Re-runnable: `--idempotency-key` makes existing tasks return their existing id
+instead of duplicating. Adding new cards to a YAML and re-running appends only
+the new ones.
+
+## Cross-machine model
+
+Per [[feedback_cross_machine_execution]], the Hermes kanban.db lives per-machine.
+This directory is the shared spec. Workflow:
+
+1. Edit YAML on any machine (or via subagent batch).
+2. `git commit && git push`.
+3. On every machine where you want the board state present: `git pull`, then
+   `uv run python .claude/memory/kanban/scripts/load.py`.
+4. Promotion / claim / dispatch decisions are **per-machine** and not synced
+   back to YAML — YAML captures intent, not runtime state.
+
+## Why not store cards in workspace-hub git directly as Hermes state?
+
+Because the runtime state (claim_lock, worker_pid, run history, heartbeats) is
+intrinsically machine-local and very chatty. Pushing it to git would create
+merge conflicts every minute. The split is:
+
+- **YAML in repo**  = stable intent (which boards exist, which cards belong on
+  them, idempotency keys for upsert)
+- **kanban.db local** = volatile runtime (status transitions, claims, runs)
+
+This mirrors the [[feedback_html_default_artifact]] / data-format rule: agent-facing
+structured state is YAML; runtime queues are SQLite.
+
+## Augmented "gap" cards
+
+Subagents that scanned each repo also surfaced un-issued work — TODOs in code,
+stale PRs without tracking issues, README gaps, etc. These land in `gaps/<repo>.yaml`
+**not** in `boards/`. Review and either:
+
+- Promote: open a GH issue, move card into the relevant board YAML with the new
+  `gh:` idempotency key.
+- Reject: delete the entry.
+
+Loader **never** touches `gaps/` — it's a holding pen.

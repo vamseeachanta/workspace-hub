@@ -1,0 +1,54 @@
+generated_at: '2026-03-24T18:39:52'
+label: batch
+total: 37716
+discipline_distribution:
+  materials: 24428
+  other: 2923
+  regulatory: 7124
+  structural: 537
+  pipeline: 925
+  production: 233
+  marine: 381
+  geotechnical: 76
+  electrical: 223
+  drilling: 134
+  cathodic-protection: 108
+  fire-safety: 576
+  installation: 18
+  document-processing: 22
+  energy-economics: 8
+other_rate_pct: 7.8
+method_breakdown:
+  pdftotext: 35224
+  failed: 673
+  pdftotext_p3: 1075
+  direct: 635
+  no_text: 101
+  path-inference: 8
+org_breakdown:
+  ASTM: 24620
+  API: 532
+  DNV: 97
+  ? ''
+  : 9596
+  ISO: 232
+  Unknown: 177
+  OTC: 18
+  ASCE: 34
+  ABS: 31
+  BSI: 58
+  ASME: 18
+  AWS: 2
+  Norsok: 6
+  NORSOK: 2
+  HSE: 1
+  raw: 2155
+  unknown: 101
+  OnePetro: 24
+  MIL: 5
+  ASNT: 1
+  NEMA: 2
+  SNAME: 1
+  NACE: 1
+  AWHEM: 1
+  CFR: 1

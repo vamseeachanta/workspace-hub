@@ -1,0 +1,43 @@
+# user-review-publish-template.yaml — origin publish evidence for user-review stages
+#
+# Canonical save path: .claude/work-queue/assets/WRK-<id>/evidence/user-review-publish.yaml
+# Producer: scripts/work-queue/log-user-review-publish.sh (or orchestrator during live review)
+# Required fields per event for Stage 5 gate: stage, review_checkpoint, review_cycle_id,
+#   commit (or published_draft_commit), documents, published_at, reviewer,
+#   generated_by_script, generated_at_commit.
+#
+# events is append-only; do not remove or reorder existing entries.
+# Approved Stage 5 baseline: last plan_draft + review_checkpoint: combined_plan event.
+# No timestamp tie-break or HEAD fallback; last matching event is authoritative.
+
+events:
+  - stage: plan_draft
+    review_checkpoint: common_draft
+    review_cycle_id: "stage5-YYYYMMDD"
+    wrk_id: WRK-000
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: "0000000000000000000000000000000000000000"
+    documents:
+      - .claude/work-queue/assets/WRK-000/plan-draft-review.html
+      - .claude/work-queue/assets/WRK-000/common-plan-draft.md
+    published_at: "2026-03-07T00:00:00Z"
+    reviewer: user
+    generated_by_script: scripts/work-queue/log-user-review-publish.sh
+    generated_at_commit: "0000000000000000000000000000000000000000"
+  - stage: plan_draft
+    review_checkpoint: combined_plan
+    review_cycle_id: "stage5-YYYYMMDD"
+    wrk_id: WRK-000
+    pushed_to_origin: true
+    remote: origin
+    branch: main
+    commit: "0000000000000000000000000000000000000000"
+    documents:
+      - .claude/work-queue/assets/WRK-000/plan-draft-review.html
+      - .claude/work-queue/assets/WRK-000/combined-plan.md
+    published_at: "2026-03-07T00:00:01Z"
+    reviewer: user
+    generated_by_script: scripts/work-queue/log-user-review-publish.sh
+    generated_at_commit: "0000000000000000000000000000000000000000"

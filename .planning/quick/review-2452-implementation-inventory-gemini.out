@@ -1,0 +1,15 @@
+Agent loading error: Failed to load agent from /mnt/local-analysis/workspace-hub/.gemini/agents/gsd-debugger.md: Validation failed: Agent Definition:
+Unrecognized key(s) in object: 'permissionMode'Agent loading error: Failed to load agent from /mnt/local-analysis/workspace-hub/.gemini/agents/gsd-executor.md: Validation failed: Agent Definition:
+Unrecognized key(s) in object: 'permissionMode'Verdict: MINOR
+
+Findings:
+- [MINOR] The "Top module areas" table incorrectly lists individual file paths (e.g., `src/worldenergydata/well_production_dashboard/well_production.py` and `src/worldenergydata/marine_safety/cli_import.py`) alongside directories. This indicates a minor script bug in the aggregation logic (likely splitting paths by a fixed depth of 4 and failing to strip the filename for shallower files).
+- [MINOR] There is a slight timestamp mismatch: the report title declares `2026-04-23`, but the generation provenance timestamp is `2026-04-24T01:27:42Z` (likely an unhandled UTC boundary crossover).
+
+Checks performed:
+- Verified presence of exact `flake8` command provenance.
+- Validated existence and mathematical accuracy of grouped rule-family counts.
+- Confirmed `_cross_database_data.py` was correctly classified as the pathological outlier, and subtracted properly from the non-outlier counts.
+- Verified presence of representative non-outlier file findings.
+- Confirmed the note specifying the `/tmp` source was transient.
+- Ensured no source-code remediation edits were present in this documentation slice.

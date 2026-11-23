@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Issue 3463 — Cron Singleton and Runtime Health Plan</title>
+  <style>
+    :root { color-scheme: light dark; --accent:#2f81f7; --muted:#8b949e; --panel:#161b22; }
+    body { max-width: 980px; margin: 2rem auto; padding: 0 1.25rem 4rem; font: 16px/1.55 system-ui,sans-serif; }
+    h1,h2 { line-height:1.2; } h2 { margin-top:2rem; border-bottom:1px solid #8b949e55; padding-bottom:.35rem; }
+    .meta,.gate { padding:1rem; border-radius:.5rem; background:var(--panel); }
+    .gate { border-left:5px solid #d29922; } code { background:#8b949e22; padding:.12rem .3rem; border-radius:.25rem; }
+    table { width:100%; border-collapse:collapse; } th,td { text-align:left; padding:.55rem; border-bottom:1px solid #8b949e55; vertical-align:top; }
+    .good { color:#3fb950; } .stop { color:#f85149; } a { color:var(--accent); }
+  </style>
+</head>
+<body>
+  <h1>Cron singleton and bounded runtime health</h1>
+  <div class="meta"><strong>Issue:</strong> <a href="https://github.com/vamseeachanta/workspace-hub/issues/3463">workspace-hub #3463</a><br>
+  <strong>Status:</strong> plan-review · T3 · lane:claude · 2026-07-11</div>
+
+  <h2>Outcome</h2>
+  <p>Repository sync will become a tested singleton. Cron health will report runtime and log evidence independently, validate PID identity without broad process or filesystem scans, and expose safe operator evidence without terminating anything automatically.</p>
+
+  <h2>Chosen design</h2>
+  <p>Separate task-owned active, contention, and last-result records plus a nonblocking lock will replace heuristic <code>pgrep -f</code> identity. Each active record will carry task ID, PID, process-group/session IDs, process start token, start time, process state, and wait channel. PID start-token validation will reject stale or reused PIDs without conflating a completed run with stale evidence.</p>
+  <table><thead><tr><th>Approach</th><th>Decision</th><th>Reason</th></tr></thead><tbody>
+    <tr><td>Task-owned state + lock</td><td class="good">Use</td><td>Bounded, exact, testable, reusable</td></tr>
+    <tr><td>Substring <code>pgrep -f</code></td><td class="stop">Reject</td><td>Self-matches and confuses descendants</td></tr>
+    <tr><td>Scheduler migration</td><td class="stop">Defer</td><td>Owned by issues #2762/#2765</td></tr>
+  </tbody></table>
+
+  <h2>Implementation slices</h2>
+  <ol>
+    <li>Write RED runtime-contract and schedule-schema tests.</li>
+    <li>Implement the minimal atomic runtime runner, PID validation, signal forwarding, and lock retention until the child group exits.</li>
+    <li>Enforce repository-sync singleton and reconcile its declared/rendered log.</li>
+    <li>Add independent runtime states to cron-health console and JSON output.</li>
+    <li>Test transactional reconciliation of stale catalog entries and preserved external entries.</li>
+    <li>Update scheduled-task inventory and create the safe process-response runbook.</li>
+  </ol>
+
+  <h2>Safety invariants</h2>
+  <ul>
+    <li>No broad FUSE, repository-tree, or process-substring scan.</li>
+    <li>No automatic process termination or escalation.</li>
+    <li>A fresh bounded PID/PPID/PGID/SID/elapsed/wchan snapshot and user approval will precede TERM.</li>
+    <li>The cron daemon's shared process group will never be a termination target.</li>
+    <li>Exact live command evidence will be required before classifying an import-timing process.</li>
+  </ul>
+
+  <div class="gate"><strong>Hard stop:</strong> two Codex review rounds returned MAJOR and their findings are incorporated through the required inline r3 loop break. Claude and Gemini are unavailable, so review diversity remains a stated risk. Implementation will remain blocked until the user explicitly approves this revision.</div>
+
+  <p>The canonical executable plan is <code>docs/plans/2026-07-11-issue-3463-cron-singleton-runtime-health.md</code>.</p>
+</body>
+</html>

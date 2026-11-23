@@ -1,0 +1,9 @@
+repos:
+- name: digitalmodel
+  path: digitalmodel
+  purpose: "Engineering digital twin"
+  test_command: PYTHONPATH=src uv run python -m pytest
+- name: assetutilities
+  path: assetutilities
+  purpose: "Shared engineering utilities"
+  test_command: uv run python -m pytest tests/

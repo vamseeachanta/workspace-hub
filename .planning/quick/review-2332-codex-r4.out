@@ -1,0 +1,20 @@
+### Verdict: MAJOR
+
+### Summary
+Not approval-ready. Runtime sequencing and launcher choice are mostly fixed, but the budget-enforcement contract is still underspecified and the plan still carries misleading review-state text.
+
+### Issues Found
+- `docs/plans/2026-04-22-issue-2332-provider-audit-python3-runtime-cleanup.md`, section `Provider budget contract for phase 1`: the cap policy is prose-only (`no regression above baseline`, `flagged red`, `publish both overall and recent-window counts`) with no artifact-level schema for compliance status. The paired tests in `TDD Test List` only assert generic outcomes like `over budget / non-compliant` and `contains a Hermes entry with budget cap and delta fields`, but never define the exact JSON/markdown fields that must exist. That leaves "enforce budget policy" partially implicit rather than falsifiable.
+- `docs/plans/2026-04-22-issue-2332-provider-audit-python3-runtime-cleanup.md`, section `TDD Test List`: several tests are still render-oriented rather than policy-enforcing. `test_runtime_policy_budget_section_uses_audit_json_baselines` and `test_provider_routing_scorecard_includes_hermes_runtime_budget_row` prove publication, not compliance gating. The only enforcement test (`test_runtime_budget_flags_provider_over_cap_when_count_regresses_above_baseline`) does not specify which artifact field or failure condition constitutes non-compliance, so implementation could satisfy it with vague text instead of a durable machine-checkable contract.
+- `docs/plans/2026-04-22-issue-2332-provider-audit-python3-runtime-cleanup.md`, section `Adversarial Review Summary`: the plan still includes review-state narration that is not approval-stage clean. Phrases like `prepared for a fresh external rerun`, `Revisions made based on latest review`, and the provider verdict table embed process history into the plan body instead of the implementation contract. That is stale/misleading review-state language for a plan being re-reviewed now.
+- `docs/plans/2026-04-22-issue-2332-provider-audit-python3-runtime-cleanup.md`, section `Adversarial Review Summary`: the statement `this summary now reflects the actual latest external verdicts` is not safely supported by the attested artifacts in this review context. The referenced Codex artifact `scripts/review/results/2026-04-22-plan-2332-codex.md` is attested as 0 bytes, so the plan should not claim settled latest-review state inside the current plan text.
+
+### Suggestions
+- In `Provider budget contract for phase 1`, define the exact compliance fields to be emitted by the audit and scorecard artifacts, for example a required per-provider status object with named fields for baseline count, current count, delta, cap, and compliance verdict. Then make the tests assert those exact fields.
+- Rewrite the budget tests so they verify machine-checkable policy, not just rendered prose. At minimum, require explicit assertions for the per-provider compliance field/value when counts exceed baseline and for the exact no-prior-audit sentinel fields.
+- Delete the `Adversarial Review Summary` process-history block from the plan, or reduce it to a neutral one-line status outside the implementation contract. Remove any claim about `latest external verdicts` unless the plan is regenerated from verified non-empty review artifacts.
+- Keep the prior-audit sequencing section as-is, but add one sentence clarifying whether the scorecard reads the in-memory regenerated payload or the freshly written JSON file so the delta/publication path is fully deterministic.
+
+### Questions for Author
+- What exact artifact fields should represent phase-1 budget compliance per provider in the regenerated audit JSON and routing scorecard outputs?
+- Should the plan retain any reviewer-verdict history at all, or should approval-stage plans strip that state entirely and leave it to separate review artifacts?

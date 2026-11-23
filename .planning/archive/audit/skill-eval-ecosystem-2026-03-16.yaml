@@ -1,0 +1,11 @@
+total_skills: 3127
+violations:
+  count: 13
+coverage_gaps:
+  count: 211
+eval_summary:
+  passed: 322
+  warnings: 3025
+  critical: 0
+  pass_rate: 10.3%
+generated_at: '2026-03-16T21:15:53Z'

@@ -1,0 +1,69 @@
+#!/usr/bin/env bash
+# Mock codex CLI — captures argv + pwd + stdin, emits canned review.
+set -u
+if [[ "${1:-}" == "--version" ]]; then
+  echo "${PLAN_REVIEW_CODEX_VERSION:-codex-cli 0.123.0}"
+  exit 0
+fi
+if [[ "${1:-} ${2:-}" == "login status" ]]; then
+  echo 'Logged in using ChatGPT'
+  exit 0
+fi
+[[ -n "${MOCK_SLEEP_S:-}" ]] && sleep "$MOCK_SLEEP_S"
+capture="${PLAN_REVIEW_CAPTURE_DIR:-/tmp}/codex.capture"
+{
+  printf 'ARGV:'
+  for a in "$@"; do printf ' %s' "$a"; done
+  printf '\n'
+  echo "PWD: $PWD"
+  echo "CLAUDECODE: ${CLAUDECODE:-(unset)}"
+  echo "STDIN:"
+  if [[ ! -t 0 ]]; then cat; else echo "(no stdin)"; fi
+} > "$capture"
+if [[ "${MOCK_CODEX_EMPTY:-0}" == "1" ]]; then
+  exit 0
+fi
+if [[ "${MOCK_CODEX_STDERR_PARTIAL_THEN_SLEEP:-0}" == "1" ]]; then
+  {
+    echo '## Verdict'
+    echo 'MAJOR'
+  } >&2
+  sleep "${MOCK_CODEX_SLEEP_AFTER_PARTIAL_S:-3}"
+  exit 0
+fi
+if [[ "${MOCK_CODEX_STDERR_REVIEW:-0}" == "1" ]]; then
+  exec 1>&2
+fi
+if [[ "${MOCK_CODEX_CONFLICTING_STDERR:-0}" == "1" ]]; then
+  cat >&2 <<'EOF'
+Prompt echo: example review, not the provider response.
+## Verdict
+APPROVE
+
+## Retrieval
+- Example retrieval.
+
+## Findings
+- STDERR_PROMPT_ECHO_ONLY
+
+## Blockers
+(none)
+EOF
+fi
+if [[ "${MOCK_CODEX_MALFORMED:-0}" == "1" ]]; then
+  echo 'Incomplete review without required sections.'
+  exit 0
+fi
+verdict=MAJOR
+[[ "${MOCK_CODEX_STDERR_REVIEW:-0}" == "1" ]] && verdict=APPROVE
+printf '## Verdict\n%s\n\n' "$verdict"
+cat <<'EOF'
+## Retrieval
+- Read inline plan body.
+
+## Findings
+1. Mock finding from codex — invocation was inline-content style.
+
+## Blockers
+1. Mock blocker.
+EOF

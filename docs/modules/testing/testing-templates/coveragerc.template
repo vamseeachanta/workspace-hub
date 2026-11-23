@@ -1,0 +1,101 @@
+# .coveragerc Template
+#
+# Configuration file for Python coverage.py
+# Copy this file to your project root as '.coveragerc'
+#
+# Usage: coverage run -m pytest && coverage report
+
+[run]
+# Source code directories to measure
+source = src
+
+# Files to exclude from coverage
+omit =
+    */tests/*
+    */test_*
+    *_test.py
+    */__pycache__/*
+    */venv/*
+    */env/*
+    */.venv/*
+    */site-packages/*
+    */migrations/*
+    */settings/*
+    */config/*
+    */manage.py
+    */wsgi.py
+    */asgi.py
+    setup.py
+    */conftest.py
+
+# Enable branch coverage
+branch = True
+
+# Plugins to load
+plugins =
+
+# Data file location
+data_file = .coverage
+
+# Parallel processing (uncomment if using pytest-xdist)
+# parallel = True
+
+[report]
+# Regexes for lines to exclude from consideration
+exclude_lines =
+    # Have to re-enable the standard pragma
+    pragma: no cover
+
+    # Don't complain about missing debug-only code
+    def __repr__
+    if self\.debug
+
+    # Don't complain if tests don't hit defensive assertion code
+    raise AssertionError
+    raise NotImplementedError
+
+    # Don't complain if non-runnable code isn't run
+    if 0:
+    if __name__ == .__main__.:
+
+    # Don't complain about abstract methods
+    @(abc\.)?abstractmethod
+
+    # Don't complain about type checking blocks
+    if TYPE_CHECKING:
+
+    # Don't complain about platform specific code
+    if sys\.platform
+
+# Ignore empty files
+skip_empty = True
+
+# Show missing line numbers
+show_missing = True
+
+# Precision for coverage percentage
+precision = 2
+
+# Sort by coverage percentage
+sort = Cover
+
+[html]
+# Directory for HTML coverage report
+directory = htmlcov
+
+# Title for HTML report
+title = Coverage Report
+
+# Show contexts (requires --cov-context)
+show_contexts = True
+
+[xml]
+# Output file for XML coverage report
+output = coverage.xml
+
+[json]
+# Output file for JSON coverage report (uncomment if needed)
+# output = coverage.json
+
+# Pretty print JSON (uncomment if needed)
+# pretty_print = True

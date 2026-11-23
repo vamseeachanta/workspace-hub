@@ -1,0 +1,14 @@
+Agent loading error: Failed to load agent from /mnt/local-analysis/workspace-hub/.gemini/agents/gsd-debugger.md: Validation failed: Agent Definition:
+Unrecognized key(s) in object: 'permissionMode'Agent loading error: Failed to load agent from /mnt/local-analysis/workspace-hub/.gemini/agents/gsd-executor.md: Validation failed: Agent Definition:
+Unrecognized key(s) in object: 'permissionMode'Verdict: MAJOR
+
+## Findings
+- [MAJOR] Stale review-state narrative: Under the "Adversarial Review Summary" section, the plan includes a list titled `Blockers still remaining after r9:`. This list enumerates six requirements (e.g., "Add an explicit governance-remediation requirement for the real approval gates...", "Replace directory-root harness citations with concrete file-level findings..."). However, these exact requirements have already been successfully implemented in the current text of this draft. Leaving them listed as remaining blockers creates a contradictory state where the document claims it is still blocked by defects it has already resolved.
+
+## Checks performed
+- Verified that approval-state drift is now explicitly handled on the real approval-gate surfaces. The plan mandates clearing, superseding, or revision-binding the live GitHub `status:plan-approved` label and local `.planning/plan-approved/2460.md` marker before the draft can be approved, appearing in Pseudocode, Files to Change, and Acceptance Criteria.
+- Verified that the stale local marker claim is evidenced concretely. The plan cites exact timestamp evidence in the Evidence section: `marker mtime 2026-04-23 03:22:45 -0500 predates current plan mtime 2026-04-23 10:46:02 -0500`.
+- Verified that documentation + harness source-union evidence is concrete. The plan now cites specific files (`config/agents/routing-config.yaml`, `config/agents/behavior-contract.yaml`, `.claude/rules/README.md`, `.claude/rules/patterns.md`) instead of just directory roots, and includes corresponding line excerpts.
+- Verified that the DATA_PLACEMENT canonical-threshold ambiguity is resolved. The plan explicitly states in the Evidence block that the operator form (`>= 10 MB` / `>= 1000 files`) is the canonical test surface and the prose line is contextual only.
+- Verified that the legacy-retirement rule is quantified strongly enough. The plan now specifies `AT LEAST 3 concrete banned-pattern signature categories` in both the Pseudocode and Acceptance Criteria.
+- Checked for remaining stale review-state narrative, which led to the MAJOR finding above regarding the contradictory "remaining blockers" list.

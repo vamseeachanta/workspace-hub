@@ -1,0 +1,241 @@
+---
+name: document-index-pipeline
+description: "Orchestrate the 7-phase document indexing pipeline (A\u2192G) for the 1M+ document corpus. Use when running\
+  \ batch extraction, classification, or gap analysis on og_standards, ace_standards, or workspace_spec sources.\n"
+type: reference
+version: 1.0.0
+updated: 2026-03-15
+category: data
+triggers:
+- document index
+- phase b extraction
+- phase c classify
+- batch extraction
+- og_standards
+- run extraction pipeline
+- document classification
+---
+
+# Document Index Pipeline
+
+> 7-phase pipeline: Index → Extract → Classify → Data-Sources → Backpopulate → Gaps → Ledger
+
+## Quick Reference
+
+```
+Phase A: index.jsonl (1M records)     — deterministic scan
+Phase B: summaries/<sha>.json         — LLM discipline + deterministic ASTM
+Phase C: enhancement-plan.yaml        — domain classification
+Phase D: .planning/data-sources/<repo>.yaml — legal-gated
+Phase E: backpopulate index.jsonl     — deterministic heuristics
+Phase F: WRK items from gaps          — deterministic
+Phase G: standards-transfer-ledger    — deterministic merge
+```
+
+## Phase Commands
+
+### Phase A — Index corpus
+```bash
+uv run --no-project python scripts/data/document-index/phase-a-index.py
+```
+- **Input**: Filesystem paths + og_standards SQLite (`/mnt/ace/O&G-Standards/_inventory.db`)
+- **Output**: `data/document-index/index.jsonl` (1,033,933 records)
+- **Resume-safe**: skips existing entries by path
+
+### Phase 1.5 — Readability Enrichment (COMPLETE — WRK-1277)
+
+Classification of all 1M+ PDFs is complete (96.7% coverage):
+- native: 623,455 (60.3%) | machine: 278,899 (27.0%) | ocr-needed: 92,042 (8.9%)
+- remaining errors: 6,221 (0.6%) — corrupt/missing/timeout edge cases
+
+```bash
+uv run --no-project python scripts/data/document-index/enrich-readability.py \
+    --workers 10 --resume
+```
+- **Output**: updates index.jsonl records with `readability` field
+- **Resume-safe**: `--resume` skips already-classified entries
+- **Method**: pdftotext (poppler) via subprocess — NOT pdfplumber (see WARNING below)
+
+> **WARNING (WRK-1277)**: pdfplumber in multiprocessing hangs in kernel D-state on
+> NTFS/NFS mounts. Use pdftotext via `subprocess.run(timeout=30)` for batch work.
+> See `pdf/pdftotext-poppler` sub-skill for proven code pattern.
+
+### Phase 2 — Readability-Aware Deep Extraction
+
+Deep extraction is split by readability classification:
+- **Phase 2a**: machine-readable docs (pdftotext for text, pdfplumber for tables on single docs) — ~279K docs
+- **Phase 2b**: OCR docs (~92K docs) — requires OCR preprocessing before extraction
+- Yield assessment script: `assess-deep-extraction-yield.py` evaluates extraction quality across strata
+
+### Phase B — Extract + classify (LLM)
+
+**Non-ASTM orgs** (API, DNV, ISO, etc.) — LLM via Claude CLI:
+```bash
+# From INSIDE Claude Code (unset CLAUDECODE to avoid nesting):
+env -u CLAUDECODE uv run --no-project python \
+    scripts/data/document-index/phase-b-claude-worker.py \
+    --shard 0 --total 1 --source og_standards --org API
+
+# From SEPARATE terminal — parallel shards:
+bash scripts/data/document-index/launch-batch.sh 10 og_standards
+# With org filter:
+bash scripts/data/document-index/launch-batch.sh 2 og_standards API
+```
+
+**ASTM docs** — deterministic (no LLM, $0):
+```bash
+uv run --no-project python scripts/data/document-index/phase_b_astm_classifier.py
+# Dry run first:
+uv run --no-project python scripts/data/document-index/phase_b_astm_classifier.py --dry-run --limit 50
+```
+
+**Validate ASTM accuracy** (requires prior LLM run on sample):
+```bash
+# Step 1: LLM-classify 100 ASTM docs in validate mode
+env -u CLAUDECODE uv run --no-project python \
+    scripts/data/document-index/phase-b-claude-worker.py \
+    --shard 0 --total 1 --source og_standards --org ASTM \
+    --include-all --validate --limit 100
+# Step 2: Compare deterministic vs LLM
+uv run --no-project python scripts/data/document-index/phase-b-astm-validate.py
+```
+
+**Checkpoint** (run after each batch):
+```bash
+uv run --no-project python scripts/data/document-index/phase_b_checkpoint.py \
+    --source og_standards --label "batch-name"
+```
+
+### Phase C — Domain classification
+```bash
+uv run --no-project python scripts/data/document-index/phase-c-classify.py
+```
+- **Output**: `data/document-index/enhancement-plan.yaml`
+
+### Phase D — Data source specs (legal-gated)
+```bash
+uv run --no-project python scripts/data/document-index/phase-d-data-sources.py
+```
+
+### Phase E — Backpopulate index
+```bash
+uv run --no-project python scripts/data/document-index/phase-e-backpopulate.py
+```
+
+### Phase F — Generate gap WRKs
+```bash
+uv run --no-project python scripts/data/document-index/phase-f-gap-wrk-generator.py
+```
+
+### Phase G — Build ledger
+```bash
+uv run --no-project python scripts/data/document-index/build-ledger.py
+```
+
+## Mounted Sources (11 total, updated 2026-04-03)
+
+Registry: `data/document-index/mounted-source-registry.yaml`
+
+| Source ID | Mount | Type | Notes |
+|-----------|-------|------|-------|
+| workspace_hub_local | /mnt/local-analysis/workspace-hub | local | In-repo canonical |
+| ace_standards_local | /mnt/ace/docs/_standards | local | Symlink to O&G-Standards (17 orgs) |
+| og_standards_local | /mnt/ace/0000 O&G | local | Legacy standards |
+| ace_project_local | /mnt/ace/docs | local | 119 project folders + conferences/ |
+| research_literature_local | /mnt/ace-data/digitalmodel/docs/domains | local | Domain PDFs |
+| riser_eng_job_local | /mnt/ace/digitalmodel/.../riser-eng-job | local | 15,449 riser files |
+| dde_project_remote | env: DDE_PROJECT_REMOTE_ROOT | remote | Fallback to cache |
+| dde_standards_remote | /mnt/remote/ace-linux-2/dde/0000 O&G | remote | 36 org dirs (ASME,AWS,NACE,ASCE,HSE,IEC migrated to ACE 2026-04) |
+| dde_literature_remote | /mnt/remote/ace-linux-2/dde/Literature | remote | 33 topic dirs, 11K+ files |
+| dde_engineering_remote | /mnt/remote/ace-linux-2/dde | remote | MATLAB VIV code, OrcaFlex models |
+| api_metadata_virtual | api://worldenergydata | api | API metadata |
+
+### Conference Paper Indexing (38,526 files — 0% indexed)
+
+```bash
+# Generate batch file from catalog (high-priority conferences only)
+uv run --no-project python scripts/data/document-index/prep-conference-index.py --priority-only
+# Output: data/document-index/conference-index-batch.jsonl (21,346 files)
+# Catalog: data/document-index/conference-paper-catalog.yaml
+# Then feed into Phase A for indexing
+```
+
+### Cross-Drive Dedup Audit
+
+```bash
+# Dry run (file counts only — fast, validates mount access)
+uv run --no-project python scripts/data/document-index/cross-drive-dedup-audit.py --dry-run
+# Full audit (SHA-256 on name+size matches — ~30 min due to SSHFS)
+uv run --no-project python scripts/data/document-index/cross-drive-dedup-audit.py
+# Output: data/document-index/cross-drive-dedup-report.json
+```
+
+### Knowledge Map Quick Reference
+
+- `docs/document-intelligence/mount-drive-knowledge-map.md` — complete 4-mount catalog with "Where Is...?" guide
+- `docs/document-intelligence/dde-drive-catalog.md` — DDE drive inventory (18 unique standards orgs, MATLAB code)
+- `docs/document-intelligence/data-intelligence-map.md` — master registry of all data artifacts
+- `data/document-index/dde-standards-inventory.yaml` — DDE vs ACE standards comparison (21 missing orgs)
+- `data/document-index/conference-paper-catalog.yaml` — 30 conferences classified by domain + priority
+
+## Key Patterns
+
+### Claude CLI inside Claude Code
+The `claude` CLI cannot run nested inside Claude Code. Two options:
+1. **`env -u CLAUDECODE`** — unset the guard variable (works for background tasks)
+2. **Separate terminal** — run `launch-batch.sh` from a non-Claude-Code shell
+
+### Resume safety
+All Phase B scripts are resume-safe: `needs_llm(sha)` checks if `discipline` already
+exists in `summaries/<sha>.json`. Re-running skips already-classified docs.
+
+### Org filtering (Phase B)
+```
+--org API          # process only API standards
+--org Unknown      # process only Unknown org
+--include-all      # include ASTM/Unknown (normally excluded)
+--validate         # write to llm_discipline (don't overwrite discipline)
+```
+
+### Budget tracking
+- Haiku: ~$0.002/doc
+- Daily cap: $20
+- Total budget: $200
+- ASTM deterministic: $0 (prefix mapping)
+
+## Verification
+
+```bash
+# Count classified og_standards docs
+uv run --no-project python -c "
+import sqlite3, json; from pathlib import Path
+conn = sqlite3.connect('/mnt/ace/O&G-Standards/_inventory.db')
+rows = conn.execute('SELECT content_hash FROM documents WHERE is_duplicate=0').fetchall()
+s = Path('data/document-index/summaries')
+done = sum(1 for (h,) in rows if h and (s/f'{h}.json').exists() and json.loads((s/f'{h}.json').read_text()).get('discipline'))
+print(f'{done}/{len(rows)} classified')
+"
+```
+
+## Script Inventory
+
+| Script | Deterministic | Lines | Purpose |
+|--------|:---:|------:|---------|
+| phase-a-index.py | Yes | 373 | Corpus scan → index.jsonl |
+| phase-b-extract.py | Yes | 313 | Text extraction (no LLM) |
+| phase_b_astm_classifier.py | Yes | 266 | ASTM prefix → discipline |
+| phase_b_checkpoint.py | Yes | 154 | Batch stats report |
+| phase-b-claude-worker.py | **LLM** | 423 | Claude CLI batch worker |
+| phase-b-astm-validate.py | Yes | 153 | Compare det vs LLM |
+| launch-batch.sh | Orch | 70 | Parallel shard launcher |
+| phase-c-classify.py | Heuristic | 345 | Domain classification |
+| phase-d-data-sources.py | Yes | 283 | Per-repo data source specs |
+| phase-e-backpopulate.py | Yes | 222 | Backfill index.jsonl fields |
+| phase-e2-remap.py | Yes | 506 | Targeted reclassification |
+| enrich-readability.py | Yes | — | PDF readability classification (machine/ocr/mixed/error) |
+| assess-deep-extraction-yield.py | Yes | — | Evaluate deep extraction quality across strata |
+| phase-f-gap-wrk-generator.py | Yes | 398 | Gap → WRK items |
+| build-ledger.py | Yes | 380 | Standards transfer ledger |
+| query-ledger.py | Yes | 125 | Ledger query tool |
+
+**Deterministic: 14/16 scripts (88%). LLM-dependent: 2/16 (12%).**

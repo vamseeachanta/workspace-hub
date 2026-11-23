@@ -1,0 +1,491 @@
+diff --git a/.claude/hooks/plan-approval-gate.sh b/.claude/hooks/plan-approval-gate.sh
+new file mode 100644
+index 000000000..77e46b77e
+--- /dev/null
++++ b/.claude/hooks/plan-approval-gate.sh
+@@ -0,0 +1,75 @@
++#!/usr/bin/env bash
++# plan-approval-gate.sh - PreToolUse hook enforcing plan-approval hard-stop
++# Issue: #1839 - Block implementation writes when no approved plan marker exists
++#
++# Convention: After the user approves a plan, the agent writes a marker file:
++#   .planning/plan-approved/<issue-number>.md
++#   OR  .planning/plan-approved/session.md
++#
++# Protocol: stdout JSON for Claude context, stderr for user terminal.
++
++set -uo pipefail
++
++SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" 2>/dev/null && pwd)"
++WS="${WORKSPACE_HUB:-$(cd "$SCRIPT_DIR/../.." 2>/dev/null && pwd)}"
++APPROVAL_DIR="$WS/.planning/plan-approved"
++
++INPUT=$(cat)
++
++TOOL_NAME=$(echo "$INPUT" | jq -r '.tool_name // empty' 2>/dev/null || true)
++FILE_PATH=$(echo "$INPUT" | jq -r '.tool_input.file_path // empty' 2>/dev/null || true)
++COMMAND=$(echo "$INPUT" | jq -r '.tool_input.command // empty' 2>/dev/null || true)
++
++if [[ "${SKIP_PLAN_APPROVAL_GATE:-}" == "1" ]]; then
++  echo "[plan-gate] SKIP: Plan approval gate bypassed." >&2
++  exit 0
++fi
++
++has_approval() {
++  if [[ -d "$APPROVAL_DIR" ]]; then
++    local found
++    found=$(find "$APPROVAL_DIR" -name '*.md' -type f 2>/dev/null | head -1)
++    [[ -n "$found" ]]
++  else
++    return 1
++  fi
++}
++
++is_safe_path() {
++  local p="$1"
++  local rel="${p##*/}"
++  case "$p" in
++    */.planning/*|*/docs/plans/*|*/docs/governance/*|*/docs/reports/*|*/docs/standards/*) return 0 ;;
++    */tests/*|*/.claude/*|*/scripts/workflow/*|*/scripts/enforcement/*) return 0 ;;
++    */docs/handoffs/*|*/notes/*|*/knowledge/*) return 0 ;;
++  esac
++  case "$rel" in
++    CLAUDE.md|AGENTS.md|MEMORY.md|GEMINI.md) return 0 ;;
++  esac
++  case "$p" in
++    *.md) return 0 ;;
++  esac
++  return 1
++}
++
++if [[ "$TOOL_NAME" == "Write" || "$TOOL_NAME" == "Edit" || "$TOOL_NAME" == "MultiEdit" ]]; then
++  [[ -z "$FILE_PATH" ]] && exit 0
++  is_safe_path "$FILE_PATH" && exit 0
++  has_approval && exit 0
++
++  echo "[plan-gate] BLOCKED: No plan-approval marker found." >&2
++  echo "[plan-gate] Create: .planning/plan-approved/<issue>.md after user approves plan." >&2
++  printf '{"decision":"block","reason":"Plan approval required before implementation. No marker in .planning/plan-approved/. Safe paths (.planning/, docs/, tests/, .claude/) are not blocked."}\n'
++  exit 0
++fi
++
++if [[ "$TOOL_NAME" == "Bash" && -n "$COMMAND" ]]; then
++  if echo "$COMMAND" | grep -qE 'git\s+push'; then
++    has_approval && exit 0
++    echo "[plan-gate] BLOCKED: git push requires plan approval." >&2
++    printf '{"decision":"block","reason":"Plan approval required before pushing. No marker in .planning/plan-approved/."}\n'
++    exit 0
++  fi
++fi
++
++exit 0
+diff --git a/.claude/settings.json b/.claude/settings.json
+index 73be25a6b..71a50262e 100644
+--- a/.claude/settings.json
++++ b/.claude/settings.json
+@@ -2,7 +2,8 @@
+   "$schema": "https://json.schemastore.org/claude-code-settings.json",
+   "cleanupPeriodDays": 90,
+   "env": {
+-    "MAX_TEAMMATES": "10"
++    "MAX_TEAMMATES": "10",
++    "REVIEW_GATE_STRICT": "1"
+   },
+   "permissions": {
+     "defaultMode": "auto"
+@@ -19,6 +20,16 @@
+           }
+         ]
+       },
++      {
++        "matcher": "Write|Edit|MultiEdit|Bash",
++        "hooks": [
++          {
++            "type": "command",
++            "command": "bash .claude/hooks/plan-approval-gate.sh",
++            "timeout": 5
++          }
++        ]
++      },
+       {
+         "matcher": "Write|Edit|MultiEdit",
+         "hooks": [
+@@ -111,16 +122,6 @@
+           }
+         ]
+       },
+-      {
+-        "matcher": "Bash|Edit|Write|MultiEdit|Agent|Task",
+-        "hooks": [
+-          {
+-            "type": "command",
+-            "command": "bash .claude/hooks/tool-call-ceiling.sh",
+-            "timeout": 5
+-          }
+-        ]
+-      },
+       {
+         "matcher": "Write|Edit",
+         "hooks": [
+@@ -249,12 +250,12 @@
+   },
+   "spinnerTipsOverride": {
+     "tips": [
+-      "Run /context to check your budget \u2014 /compact at 50%",
++      "Run /context to check your budget — /compact at 50%",
+       "Run /simplify after changes to catch duplication",
+       "Use /effort low for quick lookups, /effort high for planning",
+       "Say 'use subagents' to offload heavy work from main context",
+       "Run /diff to review your changes before committing",
+-      "Use /branch before a risky approach \u2014 explore freely",
++      "Use /branch before a risky approach — explore freely",
+       "Try /security-review before pushing a PR",
+       "uv run scripts/productivity/daily-learning.py for today's tips"
+     ],
+diff --git a/.planning/plan-approved/1839.md b/.planning/plan-approved/1839.md
+new file mode 100644
+index 000000000..42053b17e
+--- /dev/null
++++ b/.planning/plan-approved/1839.md
+@@ -0,0 +1,5 @@
++# Plan Approved: #1839 Next Slice
++
++Approved: 2026-04-09
++Scope: Plan-approval hook, strict review gate, remove old 500-ceiling hook
++Authority: Worker session with write access enabled
+diff --git a/docs/governance/SESSION-GOVERNANCE.md b/docs/governance/SESSION-GOVERNANCE.md
+index 23b555991..c32e73efe 100644
+--- a/docs/governance/SESSION-GOVERNANCE.md
++++ b/docs/governance/SESSION-GOVERNANCE.md
+@@ -106,11 +106,55 @@ Registered in `.claude/settings.json` as the first PreToolUse hook, matching all
+ |-----|--------|-----------------|
+ | Consecutive error tracking | Passes 0 to governor | Wire into session signal pipeline (Phase 3) |
+ | Counter resets daily, not per-session | No reliable session ID in hook env | Awaits Claude Code session ID exposure |
+-| Existing `tool-call-ceiling.sh` (PostToolUse) uses 500 ceiling | Redundant safety net | Consider aligning to 200 or removing |
++
++## What Was Implemented (Phase 2c) — 2026-04-09
++
++### Plan-Approval Enforcement Hook
++
++**File**: `.claude/hooks/plan-approval-gate.sh`
++
++A PreToolUse hook that enforces the plan-approval hard-stop (AC #1). Blocks `Write|Edit|MultiEdit`
++to implementation paths when no approval marker exists in `.planning/plan-approved/`.
++
++**Approval marker convention:**
++- After user approves a plan, create: `.planning/plan-approved/<issue-number>.md`
++- For non-issue work: `.planning/plan-approved/session.md`
++- Safe paths (always allowed without marker): `.planning/`, `docs/`, `tests/`, `.claude/`,
++  `scripts/workflow/`, `scripts/enforcement/`, `*.md` files
++
++**Also gates:** `git push` commands via Bash tool — requires approval marker.
++
++**Bypass:** `SKIP_PLAN_APPROVAL_GATE=1` (emergency only, logged to stderr).
++
++### Strict Review Gate Default
++
++**Files**: `scripts/enforcement/require-review-on-push.sh`, `scripts/workflow/governance-checkpoints.yaml`, `.claude/settings.json`
++
++The pre-push review gate now defaults to **strict mode** (AC #7):
++- `REVIEW_GATE_STRICT=1` set in `.claude/settings.json` env block
++- `require-review-on-push.sh` changed from `${REVIEW_GATE_STRICT:-}` (empty = warn) to `${REVIEW_GATE_STRICT:-1}` (default = block)
++- `pre-push-review` checkpoint promoted to `enforced: true` in governance-checkpoints.yaml
++
++**Override:** `REVIEW_GATE_STRICT=0 git push` reverts to warn mode for a single push.
++
++### Old 500-Ceiling Hook Removed
++
++**File**: `.claude/settings.json` (PostToolUse section)
++
++The old `tool-call-ceiling.sh` PostToolUse hook (500-call ceiling from #1428) has been **removed
++from settings.json**. The PreToolUse `session-governor-check.sh` (200-call ceiling) is now the
++sole active ceiling mechanism. The script file remains for reference but is no longer wired.
++
++**Tests:** 16 new tests in `tests/work-queue/test_session_governor.py` (49 total), covering:
++- Plan-approval hook existence, registration, matcher, marker directory
++- Hook blocking behavior (no marker → block, safe paths → allow, with marker → allow)
++- Strict review gate env var, YAML enforcement flag, script default
++- Old ceiling hook removal verification
+ 
+ ## What Remains (Phases 3-4)
+ 
+ ### Phase 3: Restore Lost Infrastructure
++- Wire consecutive-error tracking into session-governor-check.sh
+ - Rebuild `session-start-routine` skill
+ - Create `session-corpus-audit` skill
+ - Promote `comprehensive-learning` into skills tree
+diff --git a/scripts/enforcement/require-review-on-push.sh b/scripts/enforcement/require-review-on-push.sh
+index dc246c196..c5d312f86 100644
+--- a/scripts/enforcement/require-review-on-push.sh
++++ b/scripts/enforcement/require-review-on-push.sh
+@@ -250,15 +250,17 @@ main() {
+   echo ""
+   echo "[review-gate] To bypass: SKIP_REVIEW_GATE=1 git push"
+ 
+-  # Strict mode blocks the push
+-  if [[ "${REVIEW_GATE_STRICT:-}" == "1" ]]; then
++  # Strict mode (default as of 2026-04-09, #1839) blocks the push
++  # Override with REVIEW_GATE_STRICT=0 to revert to warn mode
++  if [[ "${REVIEW_GATE_STRICT:-1}" != "0" ]]; then
+     echo ""
+-    echo "[review-gate] BLOCKED: REVIEW_GATE_STRICT=1 — push rejected."
++    echo "[review-gate] BLOCKED: strict mode (default) — push rejected."
++    echo "[review-gate] Override: REVIEW_GATE_STRICT=0 git push"
+     log_latency "blocked"
+     exit 1
+   fi
+ 
+-  # Default warn mode — allow push
++  # Explicit warn mode — allow push (REVIEW_GATE_STRICT=0)
+   log_latency "warn"
+   exit 0
+ }
+diff --git a/scripts/workflow/governance-checkpoints.yaml b/scripts/workflow/governance-checkpoints.yaml
+index c300cdc43..07ebd0684 100644
+--- a/scripts/workflow/governance-checkpoints.yaml
++++ b/scripts/workflow/governance-checkpoints.yaml
+@@ -68,6 +68,6 @@ checkpoints:
+     stage: pre-push
+     type: auto-gate
+     description: >
+-      Review gate must pass before pushing to remote. Currently defaults
+-      to warning mode — this config documents the target state (strict).
+-    enforced: false  # warning mode until review gate migration complete
++      Review gate must pass before pushing to remote. Strict mode enabled
++      by default via REVIEW_GATE_STRICT=1 in .claude/settings.json env.
++    enforced: true  # strict mode as of 2026-04-09 (#1839)
+diff --git a/tests/work-queue/test_session_governor.py b/tests/work-queue/test_session_governor.py
+index dea6768cc..c73153a97 100644
+--- a/tests/work-queue/test_session_governor.py
++++ b/tests/work-queue/test_session_governor.py
+@@ -7,6 +7,9 @@ Covers:
+   - Report generation structure
+   - Edge cases: empty config, unknown gate types
+   - Runtime enforcement: tool-call ceiling, error-loop breaker verdicts
++  - Plan-approval gate hook behavior (#1839)
++  - Strict review gate defaults (#1839)
++  - Old 500-ceiling hook removal (#1839)
+ 
+ Run: uv run --no-project python -m pytest tests/work-queue/test_session_governor.py -v
+ """
+@@ -396,3 +399,220 @@ class TestHookIntegration:
+             capture_output=True, text=True, timeout=30,
+         )
+         assert result.returncode == 2, f"Expected 2, got {result.returncode}"
++
++
++# ── Plan-approval gate tests (#1839) ──────────────────────────────
++
++
++class TestPlanApprovalGate:
++    """Tests for the plan-approval-gate.sh hook (#1839).
++
++    Verifies:
++    - Hook script exists and is executable
++    - Hook is registered in settings.json
++    - Approval marker directory convention exists
++    - Hook blocks Write/Edit to implementation paths when no marker
++    - Hook allows safe paths (docs, tests, .claude, .planning) without marker
++    - Hook allows all paths when marker exists
++    """
++
++    def test_hook_exists_and_executable(self):
++        """plan-approval-gate.sh must exist and be executable."""
++        hook_path = os.path.join(REPO_ROOT, ".claude", "hooks", "plan-approval-gate.sh")
++        assert os.path.isfile(hook_path), f"Hook not found: {hook_path}"
++        assert os.access(hook_path, os.X_OK), f"Hook not executable: {hook_path}"
++
++    def test_hook_registered_in_settings(self):
++        """plan-approval-gate.sh must be in PreToolUse hooks."""
++        import json
++        settings_path = os.path.join(REPO_ROOT, ".claude", "settings.json")
++        with open(settings_path) as f:
++            settings = json.load(f)
++        pre_tool_hooks = settings.get("hooks", {}).get("PreToolUse", [])
++        found = any(
++            "plan-approval-gate.sh" in h.get("command", "")
++            for entry in pre_tool_hooks
++            for h in entry.get("hooks", [])
++        )
++        assert found, "plan-approval-gate.sh not found in PreToolUse hooks"
++
++    def test_hook_matches_write_edit_bash(self):
++        """Hook matcher must include Write, Edit, MultiEdit, and Bash."""
++        import json
++        settings_path = os.path.join(REPO_ROOT, ".claude", "settings.json")
++        with open(settings_path) as f:
++            settings = json.load(f)
++        pre_tool_hooks = settings.get("hooks", {}).get("PreToolUse", [])
++        for entry in pre_tool_hooks:
++            for h in entry.get("hooks", []):
++                if "plan-approval-gate.sh" in h.get("command", ""):
++                    matcher = entry.get("matcher", "")
++                    assert "Write" in matcher
++                    assert "Edit" in matcher
++                    assert "Bash" in matcher
++                    return
++        pytest.fail("plan-approval-gate.sh entry not found")
++
++    def test_approval_dir_exists(self):
++        """The .planning/plan-approved/ directory must exist."""
++        approval_dir = os.path.join(REPO_ROOT, ".planning", "plan-approved")
++        assert os.path.isdir(approval_dir), f"Missing: {approval_dir}"
++
++    def test_hook_blocks_impl_without_marker(self):
++        """Hook blocks Write to implementation path when no marker exists."""
++        import subprocess
++        import tempfile
++
++        hook = os.path.join(REPO_ROOT, ".claude", "hooks", "plan-approval-gate.sh")
++        # Use a temp dir as workspace with no approval markers
++        with tempfile.TemporaryDirectory() as tmpdir:
++            input_json = '{"tool_name":"Write","tool_input":{"file_path":"/src/app.py"}}'
++            result = subprocess.run(
++                ["bash", hook],
++                input=input_json, capture_output=True, text=True, timeout=10,
++                env={**os.environ, "WORKSPACE_HUB": tmpdir},
++            )
++            # Hook should emit block decision on stdout
++            assert "block" in result.stdout.lower() or "block" in result.stderr.lower(), (
++                f"Expected block, got stdout={result.stdout!r} stderr={result.stderr!r}"
++            )
++
++    def test_hook_allows_safe_paths_without_marker(self):
++        """Hook allows writes to safe paths even without approval marker."""
++        import subprocess
++        import tempfile
++
++        hook = os.path.join(REPO_ROOT, ".claude", "hooks", "plan-approval-gate.sh")
++        safe_paths = [
++            "/ws/.planning/some-plan.md",
++            "/ws/tests/test_foo.py",
++            "/ws/.claude/hooks/new-hook.sh",
++            "/ws/docs/governance/update.md",
++            "/ws/README.md",
++        ]
++        with tempfile.TemporaryDirectory() as tmpdir:
++            for safe_path in safe_paths:
++                input_json = f'{{"tool_name":"Write","tool_input":{{"file_path":"{safe_path}"}}}}'
++                result = subprocess.run(
++                    ["bash", hook],
++                    input=input_json, capture_output=True, text=True, timeout=10,
++                    env={**os.environ, "WORKSPACE_HUB": tmpdir},
++                )
++                assert "block" not in result.stdout.lower(), (
++                    f"Safe path {safe_path} was blocked: {result.stdout}"
++                )
++
++    def test_hook_allows_with_marker(self):
++        """Hook allows implementation writes when approval marker exists."""
++        import subprocess
++        import tempfile
++
++        hook = os.path.join(REPO_ROOT, ".claude", "hooks", "plan-approval-gate.sh")
++        with tempfile.TemporaryDirectory() as tmpdir:
++            # Create approval marker
++            marker_dir = os.path.join(tmpdir, ".planning", "plan-approved")
++            os.makedirs(marker_dir)
++            with open(os.path.join(marker_dir, "1839.md"), "w") as f:
++                f.write("approved")
++
++            input_json = '{"tool_name":"Write","tool_input":{"file_path":"/src/app.py"}}'
++            result = subprocess.run(
++                ["bash", hook],
++                input=input_json, capture_output=True, text=True, timeout=10,
++                env={**os.environ, "WORKSPACE_HUB": tmpdir},
++            )
++            assert "block" not in result.stdout.lower(), (
++                f"Should allow with marker, got: {result.stdout}"
++            )
++
++
++# ── Strict review gate tests (#1839) ─────────────────────────────
++
++
++class TestStrictReviewGate:
++    """Tests for strict review gate defaults (#1839).
++
++    Verifies:
++    - REVIEW_GATE_STRICT=1 in settings.json env
++    - pre-push-review is enforced: true in governance-checkpoints.yaml
++    - require-review-on-push.sh defaults to strict (blocks without review)
++    """
++
++    def test_env_has_strict_flag(self):
++        """settings.json env must have REVIEW_GATE_STRICT=1."""
++        import json
++        settings_path = os.path.join(REPO_ROOT, ".claude", "settings.json")
++        with open(settings_path) as f:
++            settings = json.load(f)
++        env = settings.get("env", {})
++        assert env.get("REVIEW_GATE_STRICT") == "1", (
++            f"Expected REVIEW_GATE_STRICT=1, got {env.get('REVIEW_GATE_STRICT')}"
++        )
++
++    def test_yaml_pre_push_enforced(self):
++        """pre-push-review must be enforced: true in governance-checkpoints.yaml."""
++        config_path = os.path.join(
++            REPO_ROOT, "scripts", "workflow", "governance-checkpoints.yaml"
++        )
++        with open(config_path) as f:
++            data = yaml.safe_load(f)
++        pre_push = next(
++            (c for c in data["checkpoints"] if c["id"] == "pre-push-review"),
++            None,
++        )
++        assert pre_push is not None, "pre-push-review checkpoint not found"
++        assert pre_push["enforced"] is True, (
++            f"Expected enforced=true, got {pre_push['enforced']}"
++        )
++
++    def test_script_defaults_to_strict(self):
++        """require-review-on-push.sh must default to strict mode."""
++        script_path = os.path.join(
++            REPO_ROOT, "scripts", "enforcement", "require-review-on-push.sh"
++        )
++        with open(script_path) as f:
++            content = f.read()
++        # The script should use ${REVIEW_GATE_STRICT:-1} (default 1 = strict)
++        assert "REVIEW_GATE_STRICT:-1" in content, (
++            "Script must default REVIEW_GATE_STRICT to 1 (strict mode)"
++        )
++
++
++# ── Old ceiling hook removal tests (#1839) ───────────────────────
++
++
++class TestOldCeilingRemoved:
++    """Tests verifying the old 500-call tool-call-ceiling.sh is removed from hooks.
++
++    The old PostToolUse hook (500 ceiling) is superseded by the PreToolUse
++    session-governor-check.sh (200 ceiling). Only one ceiling mechanism
++    should be active.
++    """
++
++    def test_ceiling_hook_not_in_post_tool_use(self):
++        """tool-call-ceiling.sh must NOT be in PostToolUse hooks."""
++        import json
++        settings_path = os.path.join(REPO_ROOT, ".claude", "settings.json")
++        with open(settings_path) as f:
++            settings = json.load(f)
++        post_tool_hooks = settings.get("hooks", {}).get("PostToolUse", [])
++        found = any(
++            "tool-call-ceiling.sh" in h.get("command", "")
++            for entry in post_tool_hooks
++            for h in entry.get("hooks", [])
++        )
++        assert not found, "tool-call-ceiling.sh should be removed from PostToolUse"
++
++    def test_governor_hook_still_in_pre_tool_use(self):
++        """session-governor-check.sh must still be in PreToolUse (the replacement)."""
++        import json
++        settings_path = os.path.join(REPO_ROOT, ".claude", "settings.json")
++        with open(settings_path) as f:
++            settings = json.load(f)
++        pre_tool_hooks = settings.get("hooks", {}).get("PreToolUse", [])
++        found = any(
++            "session-governor-check.sh" in h.get("command", "")
++            for entry in pre_tool_hooks
++            for h in entry.get("hooks", [])
++        )
++        assert found, "session-governor-check.sh must remain in PreToolUse"

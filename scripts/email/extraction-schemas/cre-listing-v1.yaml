@@ -1,0 +1,48 @@
+schema_id: cre-listing-v1
+version: 1
+description: Structured extraction schema for commercial real estate listing emails.
+target_path: assethold/data/cre-listings
+sender_domains:
+  - sandsig.com
+  - marcusmillichap.com
+  - skylineseven.ccsend.com
+  - partnersrealestate.com
+  - email.loopnet.com
+  - ten-x.ccsend.com
+  - c.costarmail.com
+fields:
+  - name: property_type
+    type: string
+    required: true
+  - name: price
+    type: string
+    required: false
+  - name: cap_rate
+    type: string
+    required: false
+  - name: square_feet
+    type: string
+    required: false
+  - name: location
+    type: string
+    required: true
+  - name: sender
+    type: string
+    required: true
+  - name: broker
+    type: string
+    required: false
+  - name: tenant
+    type: string
+    required: false
+  - name: lease_type
+    type: string
+    required: false
+  - name: source_url
+    type: string
+    required: false
+  - name: received_at_utc
+    type: string
+    format: iso8601-utc-z
+    required: true
+

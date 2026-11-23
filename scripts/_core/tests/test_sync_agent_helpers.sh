@@ -1,0 +1,924 @@
+#!/usr/bin/env bash
+# test_sync_agent_helpers.sh — regression tests for non-Codex sync helpers
+# Usage: bash scripts/_core/tests/test_sync_agent_helpers.sh
+set -euo pipefail
+
+REPO_ROOT="$(cd "$(dirname "$0")/../../.." && pwd)"
+SOURCE_SCRIPT="$REPO_ROOT/scripts/_core/sync-agent-configs.sh"
+PASS=0
+FAIL=0
+
+pass() {
+    echo "  PASS: $1"
+    PASS=$((PASS + 1))
+}
+
+fail() {
+    echo "  FAIL: $1"
+    FAIL=$((FAIL + 1))
+}
+
+assert_path_missing() {
+    local path="$1" label="$2"
+    if [[ ! -e "$path" ]]; then
+        pass "$label"
+    else
+        fail "$label"
+    fi
+}
+
+make_workspace() {
+    local ws_root="$1"
+    mkdir -p "$ws_root/scripts/_core" \
+             "$ws_root/scripts/readiness" \
+             "$ws_root/config/agents/claude" \
+             "$ws_root/config/agents/codex" \
+             "$ws_root/config/agents/gemini" \
+             "$ws_root/config/agents/hermes"
+
+    cp "$SOURCE_SCRIPT" "$ws_root/scripts/_core/sync-agent-configs.sh"
+
+    cat > "$ws_root/scripts/readiness/harness-config.yaml" <<EOF
+workstations:
+  $(hostname -s):
+    ws_hub_path: $ws_root
+EOF
+
+    cat > "$ws_root/config/agents/claude/settings.json" <<'EOF'
+{
+  "statusLine": {
+    "type": "command"
+  }
+}
+EOF
+
+    cat > "$ws_root/config/agents/gemini/settings.json" <<'EOF'
+{
+  "security": {
+    "auth": {
+      "selectedType": "oauth-personal"
+    }
+  }
+}
+EOF
+
+    cat > "$ws_root/config/agents/codex/config.toml" <<'EOF'
+model_reasoning_effort = "medium"
+
+[status_line]
+enabled = true
+items = ["model"]
+EOF
+
+    cat > "$ws_root/config/agents/hermes/config.yaml.template" <<'EOF'
+model:
+  default: gpt-5.5
+  provider: openai-codex
+terminal:
+  backend: local
+  cwd: .
+  timeout: 180
+skills:
+  external_dirs:
+    - __WS_HUB_PATH__/.claude/skills
+EOF
+
+    cat > "$ws_root/config/agents/hermes/SOUL.md" <<'EOF'
+# Hermes Soul
+EOF
+}
+
+run_hermes_placeholder_and_terminal_test() {
+    local tmpdir ws_root home_root hermes_cfg
+    tmpdir="$(mktemp -d)"
+    ws_root="$tmpdir/ws&hub"
+    home_root="$tmpdir/home"
+    hermes_cfg="$home_root/.hermes/config.yaml"
+
+    make_workspace "$ws_root"
+    mkdir -p "$home_root/.hermes"
+
+    cat > "$hermes_cfg" <<'EOF'
+terminal:
+  backend: remote
+  cwd: /custom/path
+  timeout: 999
+EOF
+
+    if HOME="$home_root" bash "$ws_root/scripts/_core/sync-agent-configs.sh" >/dev/null 2>&1; then
+        pass "hermes_placeholder_and_terminal sync completed"
+    else
+        fail "hermes_placeholder_and_terminal sync completed"
+    fi
+
+    if python3 - "$hermes_cfg" "$ws_root" <<'PY' >/dev/null 2>&1
+import pathlib
+import sys
+import yaml
+cfg_path = pathlib.Path(sys.argv[1])
+ws_root = sys.argv[2]
+with cfg_path.open(encoding="utf-8") as fh:
+    data = yaml.safe_load(fh)
+terminal = data.get('terminal', {})
+if terminal.get('backend') != 'remote':
+    raise SystemExit(1)
+if terminal.get('cwd') != '/custom/path':
+    raise SystemExit(1)
+if terminal.get('timeout') != 180:
+    raise SystemExit(1)
+skills = data.get('skills', {}).get('external_dirs', [])
+expected = f"{ws_root}/.claude/skills"
+if expected not in skills:
+    raise SystemExit(1)
+PY
+    then
+        pass "hermes_placeholder_and_terminal preserves backend/cwd and expands ws path literally"
+    else
+        fail "hermes_placeholder_and_terminal preserves backend/cwd and expands ws path literally"
+    fi
+
+    rm -rf "$tmpdir"
+}
+
+run_invalid_json_create_test() {
+    local tmpdir ws_root home_root claude_cfg
+    tmpdir="$(mktemp -d)"
+    ws_root="$tmpdir/ws"
+    home_root="$tmpdir/home"
+    claude_cfg="$home_root/.claude/settings.json"
+
+    make_workspace "$ws_root"
+    mkdir -p "$home_root"
+    printf '{invalid\n' > "$ws_root/config/agents/claude/settings.json"
+
+    if HOME="$home_root" bash "$ws_root/scripts/_core/sync-agent-configs.sh" >/dev/null 2>&1; then
+        fail "invalid_json_create should fail"
+    else
+        pass "invalid_json_create fails"
+    fi
+
+    assert_path_missing "$claude_cfg" "invalid_json_create leaves no ~/.claude/settings.json"
+    rm -rf "$tmpdir"
+}
+
+run_invalid_json_create_without_jq_test() {
+    local tmpdir ws_root home_root claude_cfg fake_bin path_without_jq
+    tmpdir="$(mktemp -d)"
+    ws_root="$tmpdir/ws"
+    home_root="$tmpdir/home"
+    claude_cfg="$home_root/.claude/settings.json"
+    fake_bin="$tmpdir/fake-bin"
+
+    make_workspace "$ws_root"
+    mkdir -p "$home_root" "$fake_bin"
+    printf '{invalid\n' > "$ws_root/config/agents/claude/settings.json"
+
+    path_without_jq="$(python3 - <<'PY'
+import os
+parts = [p for p in os.environ['PATH'].split(':') if p and not os.path.exists(os.path.join(p, 'jq'))]
+print(':'.join(parts))
+PY
+)"
+
+    if HOME="$home_root" PATH="$fake_bin:${path_without_jq}" bash "$ws_root/scripts/_core/sync-agent-configs.sh" >/dev/null 2>&1; then
+        fail "invalid_json_create_without_jq should fail"
+    else
+        pass "invalid_json_create_without_jq fails"
+    fi
+
+    assert_path_missing "$claude_cfg" "invalid_json_create_without_jq leaves no ~/.claude/settings.json"
+    rm -rf "$tmpdir"
+}
+
+run_invalid_yaml_create_test() {
+    local tmpdir ws_root home_root hermes_cfg
+    tmpdir="$(mktemp -d)"
+    ws_root="$tmpdir/ws"
+    home_root="$tmpdir/home"
+    hermes_cfg="$home_root/.hermes/config.yaml"
+
+    make_workspace "$ws_root"
+    mkdir -p "$home_root"
+    printf 'skills: [\n' > "$ws_root/config/agents/hermes/config.yaml.template"
+
+    if HOME="$home_root" bash "$ws_root/scripts/_core/sync-agent-configs.sh" >/dev/null 2>&1; then
+        fail "invalid_yaml_create should fail"
+    else
+        pass "invalid_yaml_create fails"
+    fi
+
+    assert_path_missing "$hermes_cfg" "invalid_yaml_create leaves no ~/.hermes/config.yaml"
+    rm -rf "$tmpdir"
+}
+
+run_invalid_json_update_cleanup_test() {
+    local tmpdir ws_root home_root claude_cfg claude_dir
+    tmpdir="$(mktemp -d)"
+    ws_root="$tmpdir/ws"
+    home_root="$tmpdir/home"
+    claude_cfg="$home_root/.claude/settings.json"
+    claude_dir="$home_root/.claude"
+
+    make_workspace "$ws_root"
+    mkdir -p "$claude_dir"
+    cat > "$claude_cfg" <<'EOF'
+{
+  "ok": true
+}
+EOF
+    printf '{invalid\n' > "$ws_root/config/agents/claude/settings.json"
+
+    if HOME="$home_root" bash "$ws_root/scripts/_core/sync-agent-configs.sh" >/dev/null 2>&1; then
+        fail "invalid_json_update_cleanup should fail"
+    else
+        pass "invalid_json_update_cleanup fails"
+    fi
+
+    if python3 - "$claude_cfg" <<'PY' >/dev/null 2>&1
+import json
+import pathlib
+import sys
+with pathlib.Path(sys.argv[1]).open(encoding="utf-8") as fh:
+    data = json.load(fh)
+if data.get('ok') is not True:
+    raise SystemExit(1)
+PY
+    then
+        pass "invalid_json_update_cleanup preserves existing target"
+    else
+        fail "invalid_json_update_cleanup preserves existing target"
+    fi
+
+    if find "$claude_dir" -maxdepth 1 -type f -name '.settings.json.tmp.*' -print -quit | grep -q .; then
+        fail "invalid_json_update_cleanup removes temp files"
+    else
+        pass "invalid_json_update_cleanup removes temp files"
+    fi
+
+    rm -rf "$tmpdir"
+}
+
+snapshot_directory_entries() {
+    python3 - "$1" <<'PYTHON'
+import os
+import sys
+
+for name in sorted(os.listdir(os.fsencode(sys.argv[1]))):
+    sys.stdout.buffer.write(name + b"\0")
+PYTHON
+}
+
+run_directory_snapshot_test() {
+    local tmpdir entries
+    tmpdir="$(mktemp -d)"
+    entries="$tmpdir/entries"
+    mkdir -p "$entries/directory"
+    touch "$entries/plain" "$entries/"$'line\nbreak' "$entries/.hidden"
+    printf '.hidden\0directory\0line\nbreak\0plain\0' > "$tmpdir/expected"
+
+    if snapshot_directory_entries "$entries" > "$tmpdir/actual" \
+        && cmp -s "$tmpdir/expected" "$tmpdir/actual"; then
+        pass "directory_snapshot preserves sorted hidden, directory and newline names"
+    else
+        fail "directory_snapshot preserves sorted hidden, directory and newline names"
+    fi
+    rm -rf "$tmpdir"
+}
+
+run_invalid_yaml_update_cleanup_test() {
+    local invalid_form tmpdir ws_root home_root hermes_cfg hermes_dir template output
+    for invalid_form in malformed rendered; do
+        tmpdir="$(mktemp -d)"
+        ws_root="$tmpdir/ws"
+        if [[ "$invalid_form" == rendered ]]; then
+            # A single quote breaks the template's quoted scalar after expansion.
+            ws_root="$tmpdir/ws'quoted"
+        fi
+        home_root="$tmpdir/home"
+        hermes_dir="$home_root/.hermes"
+        hermes_cfg="$hermes_dir/config.yaml"
+        template="$ws_root/config/agents/hermes/config.yaml.template"
+
+        make_workspace "$ws_root"
+        mkdir -p "$hermes_dir"
+        # Literal fixture is the byte oracle, including comments and quoting.
+        cat > "$tmpdir/expected.yaml" <<'EOF'
+# Preserve this comment and the exact scalar spelling.
+terminal:
+  backend: 'local'
+  cwd: '.'
+skills:
+  external_dirs: []
+EOF
+        cp "$tmpdir/expected.yaml" "$hermes_cfg"
+        printf 'preserve\n' > "$hermes_dir/.sentinel"
+
+        if [[ "$invalid_form" == malformed ]]; then
+            # Same malformed input as run_invalid_yaml_create_test.
+            printf 'skills: [\n' > "$template"
+        else
+            # Valid YAML before rendering; the inserted quote leaves it invalid.
+            cat > "$template" <<'EOF'
+skills:
+  external_dirs:
+    - '__WS_HUB_PATH__/.claude/skills'
+EOF
+        fi
+
+        # Compare all immediate entries, including hidden and non-file entries.
+        snapshot_directory_entries "$hermes_dir" > "$tmpdir/entries.before"
+        if output="$(HOME="$home_root" bash "$ws_root/scripts/_core/sync-agent-configs.sh" 2>&1)"; then
+            fail "invalid_yaml_update_cleanup $invalid_form should fail"
+        else
+            pass "invalid_yaml_update_cleanup $invalid_form fails"
+        fi
+
+        if grep -Fq 'YAML validation failed for Hermes config' <<< "$output"; then
+            pass "invalid_yaml_update_cleanup $invalid_form reaches YAML validation"
+        else
+            fail "invalid_yaml_update_cleanup $invalid_form reaches YAML validation"
+        fi
+
+        if cmp -s "$tmpdir/expected.yaml" "$hermes_cfg"; then
+            pass "invalid_yaml_update_cleanup $invalid_form preserves target bytes"
+        else
+            fail "invalid_yaml_update_cleanup $invalid_form preserves target bytes"
+        fi
+
+        snapshot_directory_entries "$hermes_dir" > "$tmpdir/entries.after"
+        if cmp -s "$tmpdir/entries.before" "$tmpdir/entries.after"; then
+            pass "invalid_yaml_update_cleanup $invalid_form preserves entries and leaves no temp files"
+        else
+            fail "invalid_yaml_update_cleanup $invalid_form preserves entries and leaves no temp files"
+        fi
+
+        rm -rf "$tmpdir"
+    done
+}
+
+run_python3_fallback_to_uv_test() {
+    local tmpdir ws_root home_root fake_bin hermes_cfg uv_path
+    tmpdir="$(mktemp -d)"
+    ws_root="$tmpdir/ws"
+    home_root="$tmpdir/home"
+    fake_bin="$tmpdir/fake-bin"
+    hermes_cfg="$home_root/.hermes/config.yaml"
+    uv_path="$(command -v uv)"
+
+    make_workspace "$ws_root"
+    mkdir -p "$home_root/.hermes" "$fake_bin"
+
+    cat > "$fake_bin/python3" <<'EOF'
+#!/usr/bin/env bash
+exit 1
+EOF
+    chmod +x "$fake_bin/python3"
+
+    cat > "$hermes_cfg" <<'EOF'
+terminal:
+  backend: remote
+  cwd: /custom/path
+EOF
+
+    if HOME="$home_root" PATH="$fake_bin:$(dirname "$uv_path"):/usr/bin:/bin" bash "$ws_root/scripts/_core/sync-agent-configs.sh" >/dev/null 2>&1; then
+        pass "python3_fallback_to_uv sync completed"
+    else
+        fail "python3_fallback_to_uv sync completed"
+    fi
+
+    if python3 - "$hermes_cfg" "$ws_root" <<'PY' >/dev/null 2>&1
+import pathlib
+import sys
+import yaml
+cfg_path = pathlib.Path(sys.argv[1])
+ws_root = sys.argv[2]
+with cfg_path.open(encoding="utf-8") as fh:
+    data = yaml.safe_load(fh)
+if data.get('terminal', {}).get('backend') != 'remote':
+    raise SystemExit(1)
+expected = f"{ws_root}/.claude/skills"
+if expected not in data.get('skills', {}).get('external_dirs', []):
+    raise SystemExit(1)
+PY
+    then
+        pass "python3_fallback_to_uv uses uv-backed Hermes processing"
+    else
+        fail "python3_fallback_to_uv uses uv-backed Hermes processing"
+    fi
+
+    rm -rf "$tmpdir"
+}
+
+run_dry_run_claude_memory_missing_target_count_test() {
+    local tmpdir ws_root home_root output
+    tmpdir="$(mktemp -d)"
+    ws_root="$tmpdir/ws"
+    home_root="$tmpdir/home"
+
+    make_workspace "$ws_root"
+    mkdir -p "$home_root/.claude" "$ws_root/config/agents/claude/memory-snapshots"
+    cat > "$ws_root/config/agents/claude/memory-snapshots/context.md" <<'EOF'
+# context
+EOF
+
+    output="$(HOME="$home_root" bash "$ws_root/scripts/_core/sync-agent-configs.sh" --dry-run 2>&1)" || {
+        fail "dry_run_claude_memory_missing_target_count command completed"
+        rm -rf "$tmpdir"
+        return
+    }
+    pass "dry_run_claude_memory_missing_target_count command completed"
+
+    if printf '%s\n' "$output" | grep -q "syntax error in expression"; then
+        fail "dry_run_claude_memory_missing_target_count has no arithmetic warning"
+    else
+        pass "dry_run_claude_memory_missing_target_count has no arithmetic warning"
+    fi
+
+    rm -rf "$tmpdir"
+}
+
+run_existing_target_sync() (
+    local tmpdir="$1" ws_root="$2" home_root="$3" kind="$4"
+    shift 4
+    export HOME="$home_root" TMPDIR="$tmpdir/tmp"
+    export XDG_CONFIG_HOME="$home_root/.config" XDG_CACHE_HOME="$tmpdir/cache"
+    export PATH="$tmpdir/bin:$PATH"
+    export CLAUDE_MEMORY_SNAPSHOT_PRIVATE_CLONE="$tmpdir/no-snapshots"
+    unset GIT_DIR GIT_WORK_TREE GIT_COMMON_DIR
+
+    if [[ "$kind" == plain_file ]]; then
+        # The plain helper has no executable call site. Source the entire copied
+        # script with its real option parser, then invoke its retained definition.
+        export PLAIN_TEMPLATE="$ws_root/config/agents/hermes/plain.txt"
+        export PLAIN_TARGET="$home_root/.hermes/plain.txt"
+        bash -c '
+            sync_script="$1"
+            shift
+            source "$sync_script" "$@"
+            sync_hermes_plain_file "$PLAIN_TEMPLATE" "$PLAIN_TARGET" "Plain fixture"
+        ' bash "$ws_root/scripts/_core/sync-agent-configs.sh" "$@"
+    else
+        bash "$ws_root/scripts/_core/sync-agent-configs.sh" "$@"
+    fi
+)
+
+run_dry_run_existing_target_test() {
+    local kind="$1" tmpdir ws_root home_root target template label target_dir
+    tmpdir="$(mktemp -d)"
+    ws_root="$tmpdir/ws"
+    home_root="$tmpdir/user"
+    label="dry_run_existing_$kind"
+    make_workspace "$ws_root"
+    mkdir -p "$home_root/.hermes" "$home_root/.claude" "$tmpdir/tmp" "$tmpdir/bin"
+    # Refuse external visibility detection; no private snapshot source exists.
+    printf '#!/usr/bin/env bash\nexit 1\n' > "$tmpdir/bin/gh"
+    chmod +x "$tmpdir/bin/gh"
+
+    # Expected strings below are literal fixture inputs, independent of the
+    # implementation. Each template changes managed-before to managed-after.
+    case "$kind" in
+        yaml)
+            target="$home_root/.hermes/config.yaml"
+            template="$ws_root/config/agents/hermes/config.yaml.template"
+            cat > "$template" <<'EOF'
+model:
+  default: managed-after
+terminal:
+  backend: template-backend
+  cwd: template-directory
+EOF
+            cat > "$target" <<'EOF'
+# Keep this comment and the original formatting during dry-run.
+model: {default: managed-before}
+terminal:
+  backend: preserved-backend
+  cwd: preserved-directory
+unmanaged_note: yaml-unmanaged
+EOF
+            ;;
+        json)
+            if ! command -v jq >/dev/null; then
+                fail "$label requires jq to exercise the JSON merge"
+                return
+            fi
+            target="$home_root/.claude/settings.json"
+            template="$ws_root/config/agents/claude/settings.json"
+            printf '{"statusLine":{"type":"managed-after"}}\n' > "$template"
+            cat > "$target" <<'EOF'
+{ "statusLine": {"type": "managed-before", "unmanaged": "nested-unmanaged"},
+  "unmanaged_note": "json-unmanaged" }
+EOF
+            ;;
+        plain_file)
+            target="$home_root/.hermes/plain.txt"
+            template="$ws_root/config/agents/hermes/plain.txt"
+            printf 'managed-after\n' > "$template"
+            printf 'managed-before\nplain_file-unmanaged\n' > "$target"
+            ;;
+    esac
+    target_dir="$(dirname "$target")"
+    # Include hidden and nested siblings so residue cannot hide from the scan.
+    mkdir -p "$target_dir/unchanged-directory"
+    printf 'sibling sentinel\n' > "$target_dir/.unchanged-sibling"
+    cp "$target" "$tmpdir/before-target"
+    (cd "$target_dir" && find . -print | LC_ALL=C sort) > "$tmpdir/before-members"
+
+    if run_existing_target_sync "$tmpdir" "$ws_root" "$home_root" "$kind" --dry-run > "$tmpdir/dry-run.log" 2>&1; then
+        pass "$label command completed"
+    else
+        fail "$label command completed"
+        return
+    fi
+    if cmp -s "$tmpdir/before-target" "$target"; then
+        pass "$label preserves exact target bytes"
+    else
+        fail "$label preserves exact target bytes"
+    fi
+    if grep -Fq "$kind-unmanaged" "$target"; then
+        pass "$label preserves unmanaged values"
+    else
+        fail "$label preserves unmanaged values"
+    fi
+    (cd "$target_dir" && find . -print | LC_ALL=C sort) > "$tmpdir/after-members"
+    if cmp -s "$tmpdir/before-members" "$tmpdir/after-members"; then
+        pass "$label preserves directory membership without sibling residue"
+    else
+        fail "$label preserves directory membership without sibling residue"
+    fi
+
+    # Positive control: the same copied script and fixture must actually update
+    # the managed value when dry-run is omitted. This touches only the test tree.
+    if run_existing_target_sync "$tmpdir" "$ws_root" "$home_root" "$kind" > "$tmpdir/apply.log" 2>&1; then
+        pass "$label apply control completed"
+    else
+        fail "$label apply control completed"
+        return
+    fi
+    if ! cmp -s "$tmpdir/before-target" "$target" && grep -Fq managed-after "$target"; then
+        pass "$label apply control changes managed content"
+    else
+        fail "$label apply control changes managed content"
+    fi
+}
+
+run_dry_run_existing_yaml_test() {
+    run_dry_run_existing_target_test yaml
+}
+
+run_dry_run_existing_json_test() {
+    run_dry_run_existing_target_test json
+}
+
+run_dry_run_existing_plain_file_test() {
+    run_dry_run_existing_target_test plain_file
+}
+
+run_private_host_alias_resolution_test() {
+    # workspace-hub is PUBLIC, so real OS hostnames were removed from
+    # registry.yaml's hostname_aliases. That field was load-bearing: with no
+    # explicit MACHINE, resolve_machine_roots matches socket.gethostname()
+    # against it, and the nightly cron invokes this script without one.
+    #
+    # Losing the match takes the unknown-host branch, which GUESSES a workspace,
+    # prints a WARN and exits 0 — and harness-update.sh pipes this script through
+    # `grep -i hermes`, discarding the warning. Silent degradation on a nightly
+    # path, indistinguishable from success.
+    #
+    # Asserts BOTH directions, because only proving the fix works would leave a
+    # test that passes even if the fallback never fired at all.
+    local tmpdir ws_root home_root real_host out
+    tmpdir="$(mktemp -d)"
+    trap 'rm -rf "$tmpdir"' RETURN
+    ws_root="$tmpdir/ws"
+    home_root="$tmpdir/home"
+    real_host="$(hostname -s | tr '[:upper:]' '[:lower:]')"
+
+    make_workspace "$ws_root"
+    mkdir -p "$home_root/.hermes" "$home_root/.config/workspace-hub"
+
+    # Registry keyed ONLY by a role id — no alias matching this box.
+    mkdir -p "$ws_root/config/workstations"
+    cat > "$ws_root/config/workstations/registry.yaml" <<EOF
+machines:
+  test-role-1:
+    hostname: test-role-1
+    hostname_aliases: []
+    workspace_root: $ws_root
+    tier1_repo_root: $tmpdir
+EOF
+    # Keyed to the role too, so the divergence guard is not what fires.
+    cat > "$ws_root/scripts/readiness/harness-config.yaml" <<EOF
+workstations:
+  test-role-1:
+    ws_hub_path: $ws_root
+EOF
+
+    out="$(HOME="$home_root" bash "$ws_root/scripts/_core/sync-agent-configs.sh" 2>&1 || true)"
+    if grep -q "unknown machine for hostname" <<<"$out"; then
+        pass "private_host_alias: unresolvable host falls back (the failure being fixed)"
+    else
+        fail "private_host_alias: expected the fallback WARN with no alias present"
+    fi
+
+    cat > "$home_root/.config/workspace-hub/machine-identity.yaml" <<EOF
+machine: "test-role-1"
+public_host: "test-role-1"
+expected_hostname: "$real_host"
+EOF
+
+    out="$(HOME="$home_root" bash "$ws_root/scripts/_core/sync-agent-configs.sh" 2>&1 || true)"
+    if grep -q "unknown machine for hostname" <<<"$out"; then
+        fail "machine_identity: identity file did not resolve the OS hostname to its role"
+    else
+        pass "machine_identity: identity file resolves the OS hostname to its role"
+    fi
+
+    # A file copied to the WRONG box must fail loud, never fall through — a bad
+    # identity file silently minting the wrong machine is worse than none.
+    cat > "$home_root/.config/workspace-hub/machine-identity.yaml" <<EOF
+machine: "test-role-1"
+expected_hostname: "some-other-box"
+EOF
+    out="$(HOME="$home_root" bash "$ws_root/scripts/_core/sync-agent-configs.sh" 2>&1 || true)"
+    if grep -q "refusing a copied identity file" <<<"$out"; then
+        pass "machine_identity: a foreign identity file is refused, not silently used"
+    else
+        fail "machine_identity: foreign identity file was not refused"
+    fi
+}
+
+run_claude_memory_restores_from_private_clone_test() {
+    local tmpdir ws_root home_root private_clone fake_bin output target
+    tmpdir="$(mktemp -d)"
+    trap 'rm -rf "$tmpdir"' RETURN
+    ws_root="$tmpdir/ws"
+    home_root="$tmpdir/home"
+    private_clone="$tmpdir/private-memory"
+
+    make_workspace "$ws_root"
+    mkdir -p "$home_root/.claude" "$private_clone/legacy/config/agents/claude/memory-snapshots"
+    git init -q "$private_clone"
+    git -C "$private_clone" remote add origin "https://github.com/local/private.git"
+    cat > "$private_clone/legacy/config/agents/claude/memory-snapshots/context.md" <<'EOF'
+# context
+EOF
+
+    fake_bin="$tmpdir/bin"
+    mkdir -p "$fake_bin"
+    cat > "$fake_bin/gh" <<'EOF'
+#!/usr/bin/env bash
+if [[ "$1" == repo && "$2" == view ]]; then
+  echo PRIVATE
+  exit 0
+fi
+exit 1
+EOF
+    chmod +x "$fake_bin/gh"
+
+    output="$(HOME="$home_root" PATH="$fake_bin:$PATH" CLAUDE_MEMORY_SNAPSHOT_REPO="local/private" CLAUDE_MEMORY_SNAPSHOT_PRIVATE_CLONE="$private_clone" bash "$ws_root/scripts/_core/sync-agent-configs.sh" 2>&1)" || {
+        fail "claude_memory_private_restore command completed"
+        return
+    }
+    target="$home_root/.claude/projects/-$(printf '%s' "$ws_root" | sed 's|^/||; s|/|-|g')/memory/context.md"
+    if [[ -f "$target" ]] && grep -q "restored" <<<"$output"; then
+        pass "claude_memory_private_restore restores from PRIVATE clone"
+    else
+        fail "claude_memory_private_restore did not restore from private clone"
+    fi
+}
+
+run_claude_memory_never_restores_from_public_path_test() {
+    local tmpdir ws_root home_root private_clone fake_bin output target
+    tmpdir="$(mktemp -d)"
+    trap 'rm -rf "$tmpdir"' RETURN
+    ws_root="$tmpdir/ws"
+    home_root="$tmpdir/home"
+    private_clone="$tmpdir/private-memory"
+
+    make_workspace "$ws_root"
+    mkdir -p "$home_root/.claude" "$ws_root/config/agents/claude/memory-snapshots" "$private_clone/legacy/config/agents/claude/memory-snapshots"
+    git init -q "$private_clone"
+    git -C "$private_clone" remote add origin "https://github.com/local/private.git"
+    cat > "$ws_root/config/agents/claude/memory-snapshots/public.md" <<'EOF'
+# public
+EOF
+    cat > "$private_clone/legacy/config/agents/claude/memory-snapshots/private.md" <<'EOF'
+# private
+EOF
+
+    fake_bin="$tmpdir/bin"
+    mkdir -p "$fake_bin"
+    cat > "$fake_bin/gh" <<'EOF'
+#!/usr/bin/env bash
+if [[ "$1" == repo && "$2" == view ]]; then
+  echo PUBLIC
+  exit 0
+fi
+exit 1
+EOF
+    chmod +x "$fake_bin/gh"
+
+    output="$(HOME="$home_root" PATH="$fake_bin:$PATH" CLAUDE_MEMORY_SNAPSHOT_REPO="local/private" CLAUDE_MEMORY_SNAPSHOT_PRIVATE_CLONE="$private_clone" bash "$ws_root/scripts/_core/sync-agent-configs.sh" 2>&1)" || {
+        fail "claude_memory_public_fallback command completed"
+        return
+    }
+    target="$home_root/.claude/projects/-$(printf '%s' "$ws_root" | sed 's|^/||; s|/|-|g')/memory"
+    if [[ ! -f "$target/public.md" ]] && grep -q "private snapshots unavailable" <<<"$output"; then
+        pass "claude_memory_public_fallback refuses public-path restore"
+    else
+        fail "claude_memory_public_fallback restored from a public path"
+    fi
+}
+
+run_claude_memory_restore_rejects_wrong_private_origin_test() {
+    local tmpdir ws_root home_root private_clone fake_bin output target
+    tmpdir="$(mktemp -d)"
+    trap 'rm -rf "$tmpdir"' RETURN
+    ws_root="$tmpdir/ws"
+    home_root="$tmpdir/home"
+    private_clone="$tmpdir/private-memory"
+
+    make_workspace "$ws_root"
+    mkdir -p "$home_root/.claude" "$private_clone/hosts/ace-linux-1/config/agents/claude/memory-snapshots"
+    git init -q "$private_clone"
+    git -C "$private_clone" remote add origin "https://github.com/local/wrong.git"
+    cat > "$private_clone/hosts/ace-linux-1/config/agents/claude/memory-snapshots/private.md" <<'EOF'
+# private
+EOF
+
+    fake_bin="$tmpdir/bin"
+    mkdir -p "$fake_bin"
+    cat > "$fake_bin/gh" <<'EOF'
+#!/usr/bin/env bash
+if [[ "$1" == repo && "$2" == view ]]; then
+  echo PRIVATE
+  exit 0
+fi
+exit 1
+EOF
+    chmod +x "$fake_bin/gh"
+
+    output="$(HOME="$home_root" PATH="$fake_bin:$PATH" CLAUDE_MEMORY_SNAPSHOT_REPO="local/private" CLAUDE_MEMORY_SNAPSHOT_PRIVATE_CLONE="$private_clone" bash "$ws_root/scripts/_core/sync-agent-configs.sh" 2>&1)" || {
+        fail "claude_memory_wrong_origin command completed"
+        return
+    }
+    target="$home_root/.claude/projects/-$(printf '%s' "$ws_root" | sed 's|^/||; s|/|-|g')/memory/private.md"
+    if [[ ! -f "$target" ]] && grep -q "origin-mismatched" <<<"$output"; then
+        pass "claude_memory_wrong_origin skips restore"
+    else
+        fail "claude_memory_wrong_origin restored from wrong origin"
+    fi
+}
+
+run_claude_memory_restore_prefers_host_over_legacy_test() {
+    local tmpdir ws_root home_root private_clone fake_bin output target
+    tmpdir="$(mktemp -d)"
+    trap 'rm -rf "$tmpdir"' RETURN
+    ws_root="$tmpdir/ws"
+    home_root="$tmpdir/home"
+    private_clone="$tmpdir/private-memory"
+
+    make_workspace "$ws_root"
+    mkdir -p "$home_root/.claude" \
+             "$private_clone/legacy/config/agents/claude/memory-snapshots" \
+             "$private_clone/hosts/aaa-role/config/agents/claude/memory-snapshots" \
+             "$private_clone/hosts/ace-linux-1/config/agents/claude/memory-snapshots"
+    git init -q "$private_clone"
+    git -C "$private_clone" remote add origin "https://github.com/local/private.git"
+    cat > "$private_clone/legacy/config/agents/claude/memory-snapshots/context.md" <<'EOF'
+# legacy
+EOF
+    cat > "$private_clone/hosts/aaa-role/config/agents/claude/memory-snapshots/context.md" <<'EOF'
+# wrong host
+EOF
+    cat > "$private_clone/hosts/ace-linux-1/config/agents/claude/memory-snapshots/context.md" <<'EOF'
+# host
+EOF
+
+    fake_bin="$tmpdir/bin"
+    mkdir -p "$fake_bin"
+    cat > "$fake_bin/gh" <<'EOF'
+#!/usr/bin/env bash
+if [[ "$1" == repo && "$2" == view ]]; then
+  echo PRIVATE
+  exit 0
+fi
+exit 1
+EOF
+    chmod +x "$fake_bin/gh"
+
+    output="$(HOME="$home_root" PATH="$fake_bin:$PATH" CLAUDE_MEMORY_SNAPSHOT_HOST="ace-linux-1" CLAUDE_MEMORY_SNAPSHOT_REPO="local/private" CLAUDE_MEMORY_SNAPSHOT_PRIVATE_CLONE="$private_clone" bash "$ws_root/scripts/_core/sync-agent-configs.sh" 2>&1)" || {
+        fail "claude_memory_prefers_host command completed"
+        return
+    }
+    target="$home_root/.claude/projects/-$(printf '%s' "$ws_root" | sed 's|^/||; s|/|-|g')/memory/context.md"
+    if [[ -f "$target" ]] && grep -q "# host" "$target" && grep -q "restored" <<<"$output"; then
+        pass "claude_memory_prefers_host over legacy"
+    else
+        fail "claude_memory_prefers_host did not use host snapshot"
+    fi
+}
+
+echo "=== test_sync_agent_helpers.sh ==="
+run_agent_state_never_restores_from_public_path_test() {
+    local tmpdir ws_root home_root output
+    tmpdir="$(mktemp -d)"
+    trap 'rm -rf "$tmpdir"' RETURN
+    ws_root="$tmpdir/ws"
+    home_root="$tmpdir/home"
+
+    make_workspace "$ws_root"
+    mkdir -p "$home_root/.hermes" "$home_root/.codex" "$home_root/.gemini" \
+        "$ws_root/config/agents/hermes/memories" \
+        "$ws_root/config/agents/codex/state-snapshots" \
+        "$ws_root/config/agents/gemini/state-snapshots"
+    printf 'public hermes\n' > "$ws_root/config/agents/hermes/memories/MEMORY.md.snapshot"
+    printf 'public codex\n' > "$ws_root/config/agents/codex/state-snapshots/history.jsonl"
+    printf '{}\n' > "$ws_root/config/agents/gemini/state-snapshots/state.json"
+
+    output="$(HOME="$home_root" bash "$ws_root/scripts/_core/sync-agent-configs.sh" 2>&1)" || {
+        fail "agent_state_public_fallback command completed"
+        return
+    }
+
+    if [[ ! -e "$home_root/.hermes/memories/MEMORY.md" ]] \
+        && [[ ! -e "$home_root/.codex/history.jsonl" ]] \
+        && [[ ! -e "$home_root/.gemini/state.json" ]] \
+        && grep -q "skipping memory/state restore" <<<"$output"; then
+        pass "agent_state_public_fallback refuses public state restore"
+    else
+        fail "agent_state_public_fallback restored from a public path"
+    fi
+}
+
+run_agent_state_restores_from_private_clone_test() {
+    local tmpdir ws_root home_root private_clone fake_bin output
+    tmpdir="$(mktemp -d)"
+    trap 'rm -rf "$tmpdir"' RETURN
+    ws_root="$tmpdir/ws"
+    home_root="$tmpdir/home"
+    private_clone="$tmpdir/private-memory"
+
+    make_workspace "$ws_root"
+    mkdir -p "$home_root/.hermes" "$home_root/.codex" "$home_root/.gemini" \
+        "$private_clone/hosts/ace-linux-1/config/agents/hermes/memories" \
+        "$private_clone/hosts/ace-linux-1/config/agents/codex/state-snapshots" \
+        "$private_clone/hosts/ace-linux-1/config/agents/gemini/state-snapshots"
+    git init -q "$private_clone"
+    git -C "$private_clone" remote add origin "https://github.com/local/private.git"
+    printf 'private hermes\n' > "$private_clone/hosts/ace-linux-1/config/agents/hermes/memories/MEMORY.md.snapshot"
+    printf 'private codex\n' > "$private_clone/hosts/ace-linux-1/config/agents/codex/state-snapshots/history.jsonl"
+    printf '{}\n' > "$private_clone/hosts/ace-linux-1/config/agents/gemini/state-snapshots/state.json"
+
+    fake_bin="$tmpdir/bin"
+    mkdir -p "$fake_bin"
+    cat > "$fake_bin/gh" <<'EOF'
+#!/usr/bin/env bash
+if [[ "$1" == repo && "$2" == view ]]; then
+  echo PRIVATE
+  exit 0
+fi
+exit 1
+EOF
+    chmod +x "$fake_bin/gh"
+
+    output="$(HOME="$home_root" PATH="$fake_bin:$PATH" CLAUDE_MEMORY_SNAPSHOT_REPO="local/private" CLAUDE_MEMORY_SNAPSHOT_PRIVATE_CLONE="$private_clone" bash "$ws_root/scripts/_core/sync-agent-configs.sh" 2>&1)" || {
+        fail "agent_state_private_restore command completed"
+        return
+    }
+
+    if [[ -f "$home_root/.hermes/memories/MEMORY.md" ]] \
+        && [[ -f "$home_root/.codex/history.jsonl" ]] \
+        && [[ -f "$home_root/.gemini/state.json" ]] \
+        && grep -q "Codex state -> ~/.codex/ (restored)" <<<"$output"; then
+        pass "agent_state_private_restore restores state from private clone"
+    else
+        fail "agent_state_private_restore did not restore from private clone"
+    fi
+}
+
+echo "=== test_sync_agent_helpers.sh ==="
+
+run_hermes_placeholder_and_terminal_test
+run_invalid_json_create_test
+run_invalid_json_create_without_jq_test
+run_invalid_yaml_create_test
+run_invalid_json_update_cleanup_test
+run_directory_snapshot_test
+run_invalid_yaml_update_cleanup_test
+run_python3_fallback_to_uv_test
+run_dry_run_claude_memory_missing_target_count_test
+run_dry_run_existing_yaml_test
+run_dry_run_existing_json_test
+run_dry_run_existing_plain_file_test
+run_private_host_alias_resolution_test
+run_claude_memory_restores_from_private_clone_test
+run_claude_memory_never_restores_from_public_path_test
+run_claude_memory_restore_rejects_wrong_private_origin_test
+run_claude_memory_restore_prefers_host_over_legacy_test
+run_agent_state_never_restores_from_public_path_test
+run_agent_state_restores_from_private_clone_test
+
+echo ""
+echo "Results: ${PASS} PASS, ${FAIL} FAIL"
+[[ $FAIL -eq 0 ]] && exit 0 || exit 1

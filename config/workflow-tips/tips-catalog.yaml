@@ -1,0 +1,612 @@
+# ABOUTME: Curated catalog of workflow tips surfaced in /today morning ritual
+# ABOUTME: Categories: claude-code (CC features), ecosystem (custom skills), gsd (GSD commands)
+# Seed source: bcherny tweet thread 2026-03-29 + ecosystem inventory
+
+tips:
+  # ── Claude Code Features ───────────────────────────────────────────────────
+  - id: cc-teleport
+    category: claude-code
+    name: Session Teleporting
+    oneliner: "Move sessions between devices with --teleport or /remote-control"
+    try_it: "claude --teleport"
+    source: "bcherny tweet thread 2026-03-29"
+    tags: [mobile, remote, sessions]
+    added: 2026-03-29
+
+  - id: cc-mobile
+    category: claude-code
+    name: Mobile App
+    oneliner: "Code from your phone — open the Claude iOS/Android app and tap the Code tab"
+    try_it: "Open Claude app > Code tab"
+    source: "bcherny tweet thread 2026-03-29"
+    tags: [mobile, remote]
+    added: 2026-03-29
+
+  - id: cc-loop
+    category: claude-code
+    name: Loop Command
+    oneliner: "Run a slash command on a recurring interval — great for babysitting PRs or polling"
+    try_it: "/loop 5m /gsd:progress"
+    source: "bcherny tweet thread 2026-03-29"
+    tags: [automation, polling, recurring]
+    added: 2026-03-29
+
+  - id: cc-schedule
+    category: claude-code
+    name: Schedule Command
+    oneliner: "Schedule a remote agent to run on a cron — up to a week out"
+    try_it: "/schedule"
+    source: "bcherny tweet thread 2026-03-29"
+    tags: [automation, cron, remote]
+    added: 2026-03-29
+
+  - id: cc-hooks
+    category: claude-code
+    name: Lifecycle Hooks
+    oneliner: "Run deterministic logic at SessionStart, PreToolUse, Stop, and more via settings.json"
+    try_it: "cat .claude/settings.json | grep hooks"
+    source: "bcherny tweet thread 2026-03-29"
+    tags: [hooks, automation, lifecycle]
+    added: 2026-03-29
+
+  - id: cc-cowork
+    category: claude-code
+    name: Cowork Dispatch
+    oneliner: "Securely control Desktop app remotely — manage Slack, email, files without being at your computer"
+    try_it: "Desktop app > Cowork"
+    source: "bcherny tweet thread 2026-03-29"
+    tags: [remote, desktop, automation]
+    added: 2026-03-29
+
+  - id: cc-chrome
+    category: claude-code
+    name: Chrome Extension
+    oneliner: "Give Claude a browser to verify frontend output — it iterates until results look right"
+    try_it: "Install Claude in Chrome extension"
+    source: "bcherny tweet thread 2026-03-29"
+    tags: [frontend, browser, verification]
+    added: 2026-03-29
+
+  - id: cc-desktop-server
+    category: claude-code
+    name: Desktop Web Server
+    oneliner: "Desktop app auto-starts and tests web servers in a built-in browser"
+    try_it: "Open Desktop app with a web project"
+    source: "bcherny tweet thread 2026-03-29"
+    tags: [desktop, web, server]
+    added: 2026-03-29
+
+  - id: cc-fork
+    category: claude-code
+    name: Fork Sessions
+    oneliner: "Branch a session to explore alternatives without losing your place"
+    try_it: "/branch"
+    source: "bcherny tweet thread 2026-03-29"
+    tags: [sessions, branching, exploration]
+    added: 2026-03-29
+
+  - id: cc-btw
+    category: claude-code
+    name: Side Queries with /btw
+    oneliner: "Ask a quick question while the agent keeps working — no interruption"
+    try_it: "/btw what does this function do?"
+    source: "bcherny tweet thread 2026-03-29"
+    tags: [sessions, multitask, queries]
+    added: 2026-03-29
+
+  - id: cc-worktree
+    category: claude-code
+    name: Git Worktrees
+    oneliner: "Run parallel sessions on isolated repo copies with -w flag"
+    try_it: "claude -w"
+    source: "bcherny tweet thread 2026-03-29"
+    tags: [git, parallel, isolation]
+    added: 2026-03-29
+
+  - id: cc-batch
+    category: claude-code
+    name: Batch Processing
+    oneliner: "Fan out changes across dozens of worktree agents for large migrations"
+    try_it: "/batch"
+    source: "bcherny tweet thread 2026-03-29"
+    tags: [migration, parallel, worktrees]
+    added: 2026-03-29
+
+  - id: cc-bare
+    category: claude-code
+    name: --bare Flag
+    oneliner: "Skip config discovery for 10x faster SDK startup in non-interactive scripts"
+    try_it: "claude --bare -p 'hello'"
+    source: "bcherny tweet thread 2026-03-29"
+    tags: [sdk, performance, scripting]
+    added: 2026-03-29
+
+  - id: cc-add-dir
+    category: claude-code
+    name: Multi-Repo Access
+    oneliner: "Grant Claude access to multiple repositories in one session"
+    try_it: "claude --add-dir ../other-repo"
+    source: "bcherny tweet thread 2026-03-29"
+    tags: [repos, multi-project, context]
+    added: 2026-03-29
+
+  - id: cc-agents
+    category: claude-code
+    name: Custom Agents
+    oneliner: "Define reusable agent personas in .claude/agents/ with custom prompts and tool access"
+    try_it: "claude --agent=my-agent"
+    source: "bcherny tweet thread 2026-03-29"
+    tags: [agents, customization, personas]
+    added: 2026-03-29
+
+  - id: cc-voice
+    category: claude-code
+    name: Voice Input
+    oneliner: "Dictate instead of type — /voice in CLI, hold spacebar on Desktop, or iOS dictation"
+    try_it: "/voice"
+    source: "bcherny tweet thread 2026-03-29"
+    tags: [voice, input, accessibility]
+    added: 2026-03-29
+
+  # ── Ecosystem Commands ─────────────────────────────────────────────────────
+  - id: eco-reflect
+    category: ecosystem
+    name: Ecosystem Health Report
+    oneliner: "Get a 21-check ecosystem health table covering skills, hooks, branches, tests, and more"
+    try_it: "/today --reflect"
+    source: "workspace-hub /today skill"
+    tags: [health, ecosystem, audit]
+    added: 2026-03-29
+
+  - id: eco-insights
+    category: ecosystem
+    name: Session Insights
+    oneliner: "Claude-native analysis of your recent sessions — patterns, anti-patterns, quality signals"
+    try_it: "/insights"
+    source: "workspace-hub skill library"
+    tags: [analysis, sessions, patterns]
+    added: 2026-03-29
+
+  - id: eco-knowledge
+    category: ecosystem
+    name: Knowledge Capture
+    oneliner: "Capture decisions, gotchas, tips, and patterns as structured knowledge entries"
+    try_it: "/knowledge"
+    source: "workspace-hub skill library"
+    tags: [knowledge, decisions, institutional]
+    added: 2026-03-29
+
+  - id: eco-improve
+    category: ecosystem
+    name: Session-Exit Improvements
+    oneliner: "Auto-improve configs, skills, memory, and rules from learnings at session end"
+    try_it: "/improve"
+    source: "workspace-hub skill library"
+    tags: [improvement, automation, session]
+    added: 2026-03-29
+
+  - id: eco-compound
+    category: ecosystem
+    name: Compound Engineering Loop
+    oneliner: "Plan > Work > Review > Compound — each feature makes the next easier"
+    try_it: "/compound"
+    source: "workspace-hub skill library"
+    tags: [workflow, compound, loop]
+    added: 2026-03-29
+
+  - id: eco-capability-map
+    category: ecosystem
+    name: Repo Capability Map
+    oneliner: "Analyze repository capabilities, classify by domain, assess maturity, identify gaps"
+    try_it: "/repo-capability-map"
+    source: "workspace-hub skill library"
+    tags: [repos, analysis, capabilities]
+    added: 2026-03-29
+
+  - id: eco-repo-sync
+    category: ecosystem
+    name: Smart Repo Sync
+    oneliner: "Pull all repos, diagnose failures (detached HEAD, diverged, dirty), auto-fix"
+    try_it: "/repo-sync"
+    source: "workspace-hub skill library"
+    tags: [git, sync, repos]
+    added: 2026-03-29
+
+  - id: eco-session-memory
+    category: ecosystem
+    name: Cross-Session Memory
+    oneliner: "Persist and restore session state automatically — project, agent, and performance memory"
+    try_it: "/session-memory"
+    source: "workspace-hub automation commands"
+    tags: [memory, persistence, sessions]
+    added: 2026-03-29
+
+  - id: eco-smart-agents
+    category: ecosystem
+    name: Smart Agent Spawning
+    oneliner: "Auto-detect task complexity and spawn the right agent type with optimal config"
+    try_it: "/smart-agents"
+    source: "workspace-hub automation commands"
+    tags: [agents, automation, routing]
+    added: 2026-03-29
+
+  # ── GSD Commands ───────────────────────────────────────────────────────────
+  - id: gsd-plant-seed
+    category: gsd
+    name: Plant a Seed
+    oneliner: "Capture forward-looking ideas with trigger conditions — surfaces at the right milestone"
+    try_it: "/gsd:plant-seed"
+    source: "GSD command library"
+    tags: [ideas, future, planning]
+    added: 2026-03-29
+
+  - id: gsd-note
+    category: gsd
+    name: Zero-Friction Notes
+    oneliner: "Capture ideas instantly — append, list, or promote notes to todos"
+    try_it: "/gsd:note remember to check the CI flake"
+    source: "GSD command library"
+    tags: [capture, notes, quick]
+    added: 2026-03-29
+
+  - id: gsd-workstreams
+    category: gsd
+    name: Parallel Workstreams
+    oneliner: "Manage parallel workstreams — create, switch, track progress, resume"
+    try_it: "/gsd:workstreams"
+    source: "GSD command library"
+    tags: [parallel, workstreams, management]
+    added: 2026-03-29
+
+  - id: gsd-thread
+    category: gsd
+    name: Persistent Threads
+    oneliner: "Manage persistent context threads for cross-session work that spans days"
+    try_it: "/gsd:thread"
+    source: "GSD command library"
+    tags: [threads, persistence, cross-session]
+    added: 2026-03-29
+
+  - id: gsd-fast
+    category: gsd
+    name: Fast Execution
+    oneliner: "Execute trivial tasks inline — no subagents, no planning overhead"
+    try_it: "/gsd:fast fix the typo in README"
+    source: "GSD command library"
+    tags: [quick, execution, inline]
+    added: 2026-03-29
+
+  - id: gsd-insert-phase
+    category: gsd
+    name: Insert Urgent Phase
+    oneliner: "Insert urgent work as a decimal phase (e.g., 72.1) between existing phases"
+    try_it: "/gsd:insert-phase"
+    source: "GSD command library"
+    tags: [phases, urgent, planning]
+    added: 2026-03-29
+
+  - id: gsd-review
+    category: gsd
+    name: Cross-AI Peer Review
+    oneliner: "Request peer review of phase plans from external AI CLIs (Gemini, Codex)"
+    try_it: "/gsd:review"
+    source: "GSD command library"
+    tags: [review, cross-ai, quality]
+    added: 2026-03-29
+
+  - id: gsd-pause-resume
+    category: gsd
+    name: Pause & Resume Work
+    oneliner: "Create context handoffs when pausing and restore full context when resuming"
+    try_it: "/gsd:pause-work"
+    source: "GSD command library"
+    tags: [context, handoff, resume]
+    added: 2026-03-29
+
+  - id: gsd-forensics
+    category: gsd
+    name: Post-Mortem Forensics
+    oneliner: "Investigate failed GSD workflows — analyzes git history, artifacts, and state"
+    try_it: "/gsd:forensics"
+    source: "GSD command library"
+    tags: [debugging, forensics, post-mortem]
+    added: 2026-03-29
+
+  - id: gsd-stats
+    category: gsd
+    name: Project Statistics
+    oneliner: "Display phases, plans, requirements, git metrics, and timeline at a glance"
+    try_it: "/gsd:stats"
+    source: "GSD command library"
+    tags: [stats, metrics, overview]
+    added: 2026-03-29
+
+  # ── Native CC Commands (v2.1.90) — from shanraisshan/claude-code-best-practice ──
+  - id: cc-powerup
+    category: claude-code
+    name: Power-ups (10 lessons)
+    oneliner: "Interactive lessons teaching CC features you missed — codebase refs, modes, undo, tasks, rules, MCP, automation, subagents, remote, model dialing"
+    try_it: "/powerup"
+    source: "CC v2.1.90 — shanraisshan/claude-code-best-practice"
+    tags: [learning, onboarding, features]
+    added: 2026-04-03
+
+  - id: cc-insights
+    category: claude-code
+    name: Session Insights (native)
+    oneliner: "Generate a report analyzing your Claude Code sessions — project areas, interaction patterns, friction points"
+    try_it: "/insights"
+    source: "CC v2.1.90 — native command"
+    tags: [analysis, sessions, patterns]
+    added: 2026-04-03
+
+  - id: cc-stats
+    category: claude-code
+    name: Usage Stats
+    oneliner: "Visualize daily usage, session history, streaks, and model preferences"
+    try_it: "/stats"
+    source: "CC v2.1.90 — native command"
+    tags: [usage, metrics, streaks]
+    added: 2026-04-03
+
+  - id: cc-context
+    category: claude-code
+    name: Context Visualizer
+    oneliner: "See context usage as a colored grid — shows optimization suggestions for bloated tools and capacity warnings"
+    try_it: "/context"
+    source: "CC v2.1.90 — native command"
+    tags: [context, optimization, budget]
+    added: 2026-04-03
+
+  - id: cc-simplify
+    category: claude-code
+    name: Simplify Skill
+    oneliner: "Built-in skill — review changed code for reuse, quality, efficiency. Refactors to eliminate duplication"
+    try_it: "/simplify"
+    source: "CC v2.1.90 — bundled skill"
+    tags: [refactoring, quality, code-review]
+    added: 2026-04-03
+
+  - id: cc-debug
+    category: claude-code
+    name: Debug Skill
+    oneliner: "Built-in skill — debug failing commands or code issues with systematic investigation"
+    try_it: "/debug"
+    source: "CC v2.1.90 — bundled skill"
+    tags: [debugging, troubleshooting]
+    added: 2026-04-03
+
+  - id: cc-diff
+    category: claude-code
+    name: Interactive Diff Viewer
+    oneliner: "View uncommitted changes and per-turn diffs — arrows switch between git diff and Claude turns, up/down browses files"
+    try_it: "/diff"
+    source: "CC v2.1.90 — native command"
+    tags: [git, diff, review]
+    added: 2026-04-03
+
+  - id: cc-security-review
+    category: claude-code
+    name: Security Review
+    oneliner: "Analyze pending changes on current branch for security vulnerabilities — injection, auth, data exposure"
+    try_it: "/security-review"
+    source: "CC v2.1.90 — native command"
+    tags: [security, review, vulnerabilities]
+    added: 2026-04-03
+
+  - id: cc-cost
+    category: claude-code
+    name: Token Cost Tracking
+    oneliner: "Show token usage statistics for the current session — see where your budget is going"
+    try_it: "/cost"
+    source: "CC v2.1.90 — native command"
+    tags: [cost, tokens, budget]
+    added: 2026-04-03
+
+  - id: cc-effort
+    category: claude-code
+    name: Effort Level Control
+    oneliner: "Set model reasoning depth — low (fast), medium (default), high (thorough), max (Opus session-only). Persists across sessions"
+    try_it: "/effort high"
+    source: "CC v2.1.90 — native command"
+    tags: [model, reasoning, effort]
+    added: 2026-04-03
+
+  - id: cc-compact-focus
+    category: claude-code
+    name: Focused Compaction
+    oneliner: "Compact conversation with FOCUS INSTRUCTIONS — tell Claude what to remember during compaction"
+    try_it: "/compact focus on the OrcaFlex model changes"
+    source: "CC v2.1.90 — native command"
+    tags: [context, compaction, focus]
+    added: 2026-04-03
+
+  - id: cc-branch-fork
+    category: claude-code
+    name: Branch Conversations
+    oneliner: "Fork the conversation to explore an alternative approach without losing your current progress"
+    try_it: "/branch"
+    source: "CC v2.1.90 — native command"
+    tags: [sessions, branching, exploration]
+    added: 2026-04-03
+
+  - id: cc-rename-resume
+    category: claude-code
+    name: Name and Resume Sessions
+    oneliner: "Label important sessions with /rename, then /resume them later — essential for multi-day work"
+    try_it: "/rename orcaflex-mooring-iteration"
+    source: "CC v2.1.90 + Boris tip"
+    tags: [sessions, naming, continuity]
+    added: 2026-04-03
+
+  - id: cc-rewind
+    category: claude-code
+    name: Undo with Rewind
+    oneliner: "Rewind conversation AND code to a previous point when Claude goes off-track — faster than fixing in context"
+    try_it: "/rewind"
+    source: "CC v2.1.90 — Boris tip"
+    tags: [undo, checkpoint, recovery]
+    added: 2026-04-03
+
+  - id: cc-loop
+    category: claude-code
+    name: Local Recurring Tasks
+    oneliner: "Run a slash command on a recurring interval — great for babysitting PRs or polling CI status. Up to 3 days"
+    try_it: "/loop 5m /gsd:progress"
+    source: "CC v2.1.90 — Boris tweet"
+    tags: [automation, recurring, polling]
+    added: 2026-04-03
+
+  - id: cc-schedule-cloud
+    category: claude-code
+    name: Cloud Scheduled Tasks
+    oneliner: "Schedule a task to run on Anthropic cloud infrastructure — works even when your machine is OFF"
+    try_it: "/schedule"
+    source: "CC v2.1.90 — native command"
+    tags: [automation, cron, cloud, remote]
+    added: 2026-04-03
+
+  - id: cc-permissions
+    category: claude-code
+    name: Wildcard Permissions
+    oneliner: "Set granular allow/deny rules with wildcards instead of dangerously-skip-permissions — Bash(npm run *), Edit(/docs/**)"
+    try_it: "/permissions"
+    source: "CC v2.1.90 — Boris tip"
+    tags: [security, permissions, wildcards]
+    added: 2026-04-03
+
+  - id: cc-sandbox
+    category: claude-code
+    name: Sandbox Mode
+    oneliner: "File + network isolation sandbox — 84% reduction in permission prompts internally at Anthropic"
+    try_it: "/sandbox"
+    source: "CC v2.1.90 — Boris tip"
+    tags: [security, sandbox, isolation]
+    added: 2026-04-03
+
+  - id: cc-doctor
+    category: claude-code
+    name: Doctor Diagnostics
+    oneliner: "Diagnose installation, authentication, and config issues — first thing to try when something feels broken"
+    try_it: "/doctor"
+    source: "CC v2.1.90 — native command"
+    tags: [diagnostics, troubleshooting, setup]
+    added: 2026-04-03
+
+  - id: cc-pr-comments
+    category: claude-code
+    name: PR Comment Fetcher
+    oneliner: "Fetch and display GitHub PR comments in context — auto-detects PR for current branch, or pass URL"
+    try_it: "/pr-comments"
+    source: "CC v2.1.90 — native command"
+    tags: [github, pr, review]
+    added: 2026-04-03
+
+  # ── Workflow Practice Tips — from Boris Cherny / Thariq / best-practice repo ──
+  - id: bp-challenge-claude
+    category: practice
+    name: Challenge Before Shipping
+    oneliner: "\"Prove to me this works\" — grill Claude on changes, diff main vs branch, don't make a PR until you pass its test"
+    try_it: "prove to me this works. diff between main and this branch."
+    source: "Boris Cherny tweet thread"
+    tags: [quality, verification, prompting]
+    added: 2026-04-03
+
+  - id: bp-scrap-restart
+    category: practice
+    name: Scrap and Restart
+    oneliner: "After a mediocre fix: 'knowing everything you know now, scrap this and implement the elegant solution'"
+    try_it: "knowing everything you know now, scrap this and implement the elegant solution"
+    source: "Boris Cherny tweet thread"
+    tags: [quality, prompting, refactoring]
+    added: 2026-04-03
+
+  - id: bp-compact-50pct
+    category: practice
+    name: Compact at 50%
+    oneliner: "Do manual /compact at MAX 50% context — beyond that is the 'agent dumb zone' where quality degrades"
+    try_it: "/compact"
+    source: "Boris Cherny + community"
+    tags: [context, compaction, discipline]
+    added: 2026-04-03
+
+  - id: bp-subagents-offload
+    category: practice
+    name: Offload to Subagents
+    oneliner: "Say 'use subagents' to throw more compute — keeps main context clean and focused"
+    try_it: "use subagents for this — research in one, implement in another"
+    source: "Boris Cherny tweet"
+    tags: [subagents, context, delegation]
+    added: 2026-04-03
+
+  - id: bp-ascii-arch
+    category: practice
+    name: ASCII Architecture Diagrams
+    oneliner: "Use ASCII diagrams constantly to understand architecture — Claude generates excellent ones, they fit in context"
+    try_it: "draw an ASCII diagram of this module architecture"
+    source: "Boris Cherny tweet"
+    tags: [diagrams, architecture, visualization]
+    added: 2026-04-03
+
+  - id: bp-skill-gotchas
+    category: practice
+    name: Skills Need Gotchas
+    oneliner: "Build a Gotchas section in every skill — highest-signal content. Add Claude's failure points over time"
+    try_it: "Add a ## Gotchas section to this skill"
+    source: "Thariq (Anthropic) — Lessons from Building CC"
+    tags: [skills, quality, documentation]
+    added: 2026-04-03
+
+  - id: bp-skill-triggers
+    category: practice
+    name: Skill Description = Trigger
+    oneliner: "Skill description is a trigger, not a summary — write it for the model: 'when should I fire?'"
+    try_it: "rewrite this skill description as a trigger condition"
+    source: "Thariq (Anthropic) — Lessons from Building CC"
+    tags: [skills, auto-discovery, design]
+    added: 2026-04-03
+
+  - id: bp-context-fork
+    category: practice
+    name: context:fork in Skills
+    oneliner: "Use context:fork to run a skill in an isolated subagent — main context only sees the final result"
+    try_it: "Add context: fork to the frontmatter"
+    source: "Lydia Hallie (Anthropic)"
+    tags: [skills, isolation, context]
+    added: 2026-04-03
+
+  - id: bp-stop-hook
+    category: practice
+    name: Stop Hook for Verification
+    oneliner: "Use a Stop hook to nudge Claude to keep going or verify its work at the end of a turn"
+    try_it: "Add a Stop hook that checks if tests were run"
+    source: "Boris Cherny tweet"
+    tags: [hooks, verification, quality]
+    added: 2026-04-03
+
+  - id: bp-settings-not-claude-md
+    category: practice
+    name: settings.json > CLAUDE.md
+    oneliner: "Use settings.json for deterministic behavior (attribution, permissions, model) — don't put 'NEVER do X' in CLAUDE.md when a setting is guaranteed"
+    try_it: "cat .claude/settings.json"
+    source: "davila7 + Boris Cherny"
+    tags: [settings, configuration, deterministic]
+    added: 2026-04-03
+
+  - id: bp-squash-merge
+    category: practice
+    name: Always Squash Merge
+    oneliner: "Always squash merge PRs — clean linear history, one commit per feature, easy git revert and bisect. Boris: 141 PRs/day, p50=118 lines"
+    try_it: "Configure repo: Settings > General > Pull Requests > Allow squash merging only"
+    source: "Boris Cherny — 25 Mar 2026"
+    tags: [git, pr, merge, discipline]
+    added: 2026-04-03
+
+  - id: bp-shell-dynamic
+    category: practice
+    name: Shell Injection in Skills
+    oneliner: "Embed !`command` in SKILL.md — Claude runs it on invocation and sees only the result. Dynamic context injection"
+    try_it: "Add !`git log --oneline -5` to inject recent commits"
+    source: "Lydia Hallie (Anthropic)"
+    tags: [skills, dynamic, shell]
+    added: 2026-04-03

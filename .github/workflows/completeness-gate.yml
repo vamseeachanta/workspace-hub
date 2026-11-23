@@ -1,0 +1,66 @@
+name: completeness-gate
+
+# #2798 — authoritative pre-closure completeness gate.
+# A local git hook CANNOT intercept `gh issue close` (it is a REST API call), so
+# enforcement lives server-side: on issues.closed, if the completeness record +
+# verified label are missing/invalid, REOPEN the issue and comment. The label may be
+# applied by an authorized reviewer who did not write the work (rules review r5): the
+# labeler must not be an author of the closing PR or commit. Where one login carries
+# several agents and is listed in COMPLETENESS_SHARED_LOGINS, the record must name a separate verifier (work_by != verified_by).
+
+on:
+  issues:
+    types: [closed]
+
+permissions:
+  issues: write
+  contents: read
+
+jobs:
+  enforce-completeness:
+    runs-on: ${{ github.event.pull_request.head.repo.fork && 'ubuntu-latest' || fromJSON('["self-hosted","Linux"]') }}
+    # Only gate issues that (a) closed as COMPLETED and (b) explicitly OPTED IN via the
+    # `gate:completeness` label. Opt-in rollout: existing issues + duplicate/won't-fix
+    # closes are untouched. The runner re-checks opt-in + status:plan-approved (defence in
+    # depth) before any owners-config requirement, so an unconfigured gate stays inert.
+    if: >-
+      github.event.issue.state_reason == 'completed' &&
+      contains(github.event.issue.labels.*.name, 'gate:completeness')
+    steps:
+      - name: Checkout (for the gate scripts)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Evaluate completeness gate
+        id: gate
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          CLOSING_ACTOR: ${{ github.event.sender.login }}
+          # Authorized verified-label appliers (owners plus reviewers). Keep in repo
+          # variables so they are not editable via a PR to this workflow file.
+          COMPLETENESS_OWNERS: ${{ vars.COMPLETENESS_OWNERS }}
+          COMPLETENESS_REVIEWERS: ${{ vars.COMPLETENESS_REVIEWERS }}
+          COMPLETENESS_SHARED_LOGINS: ${{ vars.COMPLETENESS_SHARED_LOGINS }}
+          # Opt-in separation-of-duties (teams): require the closer to differ from the
+          # verified-label applier. Unset/false = solo-friendly (same actor may verify+close).
+          COMPLETENESS_REQUIRE_SEPARATE_CLOSER: ${{ vars.COMPLETENESS_REQUIRE_SEPARATE_CLOSER }}
+        run: |
+          set +e
+          python scripts/workflow/completeness_gate_runner.py
+          echo "decision=$?" >> "$GITHUB_OUTPUT"
+
+      - name: Reopen + comment if denied
+        if: steps.gate.outputs.decision != '0'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh issue reopen "${{ github.event.issue.number }}" --repo "${{ github.repository }}"
+          gh issue comment "${{ github.event.issue.number }}" --repo "${{ github.repository }}" \
+            --body "🚧 **Completeness gate (#2798) reopened this issue.** Closure requires a computed completeness record stamped on the issue body (\`\`\`completeness {json}\`\`\`) AND the \`status:completeness-verified\` label applied by an authorized reviewer who did not write the work (not an author of the closing PR or commit; on a configured shared login the record names \`work_by\` and a different \`verified_by\`), with \`completeness_pct >= threshold\`. See \`docs/plans/2798-completeness-gate.md\`."

@@ -1,0 +1,27 @@
+# user-review-common-draft-template.yaml — Stage 5 common-draft review evidence template
+#
+# Canonical save path: .claude/work-queue/assets/WRK-<id>/evidence/user-review-common-draft.yaml
+# Producer: orchestrator during live Stage 5 user-interactive common-draft review session
+# Required fields for checker gate pass: wrk_id, stage, review_checkpoint, review_cycle_id,
+#   draft_commit, approval_decision, reviewed_at, reviewed_by, capture_method,
+#   generated_at_commit; plus generated_by_script when capture_method is script.
+#
+# Decision enum (approval_decision):
+#   approve_as_is     — common draft accepted; proceed to model-specific planning passes
+#   revise_and_rerun  — iterate from common-draft checkpoint
+#   reject            — blocks current review stage; does not auto-restart planning
+#   no_response       — remains blocked; never inferred as approval
+
+wrk_id: WRK-000
+stage: plan_draft
+review_checkpoint: common_draft
+review_cycle_id: "stage5-YYYYMMDD"
+draft_commit: "0000000000000000000000000000000000000000"
+approval_decision: approve_as_is
+reviewed_at: "2026-03-07T00:00:00Z"
+reviewed_by: user
+capture_method: manual_live_review
+generated_at_commit: "0000000000000000000000000000000000000000"
+# generated_by_script is required when capture_method is script; omit for manual capture
+# generated_by_script: scripts/work-queue/log-user-review-common-draft.sh
+notes: "Common draft reviewed in live Stage 5 session."

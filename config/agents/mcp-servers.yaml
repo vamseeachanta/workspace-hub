@@ -1,0 +1,9 @@
+# First-party MCP servers — single source of truth (G3 #3118).
+# Materialized into per-harness registrations by scripts/agents/mcp_materialize.py:
+#   Claude → .mcp.json entry | Codex → `codex mcp add` | Gemini → `gemini mcp add`
+# (registration forms verified empirically in #3118 Phase 0). Coordinates with #2400
+# (which owns the tool set); add a server here once its MCP module exists.
+servers:
+  doc-key-lookup:
+    script: scripts/knowledge/doc_key_lookup_mcp.py
+    description: Look up artifacts across the intelligence pyramid by doc_key / path / standard

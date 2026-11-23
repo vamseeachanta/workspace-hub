@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>#3470 Scheduler Mutation Safety Contract — Plan</title>
+  <style>
+    :root { color-scheme: dark; --bg:#10151d; --panel:#18212d; --text:#e7edf5; --muted:#9fb0c3; --accent:#65d6ad; --warn:#f3c969; }
+    body { margin:0; background:var(--bg); color:var(--text); font:16px/1.55 system-ui,sans-serif; }
+    main { max-width:980px; margin:auto; padding:48px 24px; }
+    h1,h2 { line-height:1.15; } h1 { font-size:2.4rem; }
+    .meta,.card { background:var(--panel); border:1px solid #293748; border-radius:12px; padding:18px; margin:18px 0; }
+    .meta { border-left:5px solid var(--warn); } .ok { border-left:5px solid var(--accent); }
+    code { color:#b8f4dc; } a { color:#82bfff; } li { margin:.45rem 0; }
+  </style>
+</head>
+<body><main>
+  <p><a href="https://github.com/vamseeachanta/workspace-hub/issues/3470">workspace-hub #3470</a></p>
+  <h1>Scheduler Mutation Safety Contract</h1>
+  <div class="meta"><strong>Status:</strong> plan-review · <strong>Complexity:</strong> T3 · Implementation blocked pending user approval.</div>
+  <section class="card"><h2>Outcome</h2><p>A fail-closed registry and automatic enforcement gate will cover eight direct scheduler owners and three transitive entrypoints without changing live scheduler behavior.</p></section>
+  <section class="card"><h2>Core contract</h2><ul>
+    <li>Targets belong to operations, allowing one owner to represent systemd-user and current-user cron safely.</li>
+    <li>Every destructive authority branch will be enumerated and source-attested by closed checker-owned evaluators.</li>
+    <li>Substring ownership remains <code>migration-required</code>; it cannot be certified compliant.</li>
+    <li>Index evidence will use NUL-safe Git plumbing and a versioned, length-framed raw-byte digest.</li>
+    <li>The PR workflow will parse as an active failure-propagating gate, not an advisory invocation.</li>
+  </ul></section>
+  <section class="card ok"><h2>Adversarial review</h2><p>Codex r3: APPROVE. Focused governance r4: APPROVE. Focused scheduler/provenance r4: APPROVE. Claude and Gemini were unavailable and are recorded as such.</p></section>
+  <section class="card"><h2>Safety boundary</h2><p>No crontab, systemd unit, Windows scheduled task, or process will be mutated by planning or verification. Behavioral migrations will require separate linked issues and approval gates.</p></section>
+  <p>The canonical executable detail remains in <code>docs/plans/2026-07-11-issue-3470-scheduler-mutation-safety-contract.md</code>.</p>
+</main></body></html>

@@ -1,0 +1,68 @@
+# Prioritization Spine — Machine-Readable Companion
+# Issue: #2248
+# Generated: 2026-04-14
+
+spine:
+  issue: 2248
+  title: "Resource/document intelligence backlog prioritization"
+  children: [2249, 2250]
+  date: "2026-04-14"
+
+coverage_snapshot:
+  total_index_records: 1033933
+  records_with_summaries: 639585
+  summary_coverage_pct: 61.9
+  unsummarized_gap: 394348
+  index_level_other: 44705
+  standards_level_other: 0
+  online_resources_not_started: 221
+  sources:
+    - resource-intelligence-maturity.yaml
+    - data-audit-report.md
+    - coverage-audit.yaml
+
+execution_order:
+  - priority: P0
+    label: "Semantic context coverage"
+    issues:
+      - {order: 0.1, issue: 1924, state: open, dependency: null}
+      - {order: 0.2, issue: 2249, state: open, dependency: "parallel with #1924"}
+    exit_criteria: "Summary coverage >85%; other bucket segmented"
+
+  - priority: P1
+    label: "Retrieval/discoverability contract"
+    issues:
+      - {order: 1.1, issue: 2205, state: open, dependency: null}
+      - {order: 1.2, issue: 2096, state: open, dependency: "#2205"}
+      - {order: 1.3, issue: 2105, state: open, dependency: "#2205"}
+      - {order: 1.4, issue: 2149, state: open, dependency: "#2096"}
+      - {order: 1.5, issue: 2156, state: open, dependency: "#2149"}
+      - {order: 1.6, issue: 2168, state: open, dependency: "#2156"}
+    exit_criteria: "Accessibility registry coherent, validated, drift-checked"
+
+  - priority: P2
+    label: "Source expansion with token discipline"
+    issues:
+      - {order: 2.1, issue: 2242, state: closed, dependency: null}
+      - {order: 2.2, issue: 1609, state: open, dependency: "#2242 + P1 registry"}
+      - {order: 2.3, issue: 1579, state: open, dependency: "independent scan"}
+    exit_criteria: "Download pipeline operational; undiscovered-resource audit complete"
+
+  - priority: P3
+    label: "Umbrella/ledger hygiene"
+    issues:
+      - {order: 3.1, issue: 2250, state: open, dependency: "benefits from #2156"}
+      - {order: 3.2, issue: 1563, state: open, dependency: "umbrella — updated as children close"}
+    exit_criteria: "No known drift; source-of-truth ownership explicit"
+
+sequencing_rules:
+  - "P0 precedes broad wiki promotion"
+  - "P1 precedes automation depending on registry correctness"
+  - "P2 uses retrieval contract, not raw expansion"
+  - "P3 can start early, reaches full value after #2156"
+
+parallelism:
+  - "P0.1 + P0.2 concurrent"
+  - "P0 + P1.1-1.3 independent"
+  - "P3.1 can start immediately"
+  - "P2.1 (#2242) already complete"

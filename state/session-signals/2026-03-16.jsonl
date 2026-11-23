@@ -1,0 +1,33 @@
+{"event": "stage_exit", "wrk": "WRK-1244", "stage": 2, "date": "2026-03-16", "timestamp": "2026-03-16T11:11:43.328080Z"}
+{"event": "stage_exit", "wrk": "WRK-1244", "stage": 3, "date": "2026-03-16", "timestamp": "2026-03-16T11:11:51.270121Z"}
+{"event": "stage_exit", "wrk": "WRK-1247", "stage": 17, "date": "2026-03-16", "timestamp": "2026-03-16T20:09:41.642649Z"}
+{"event": "stage_exit", "wrk": "WRK-1247", "stage": 18, "date": "2026-03-16", "timestamp": "2026-03-16T20:10:13.459470Z"}
+{"event": "stage_exit", "wrk": "WRK-1272", "stage": 1, "date": "2026-03-16", "timestamp": "2026-03-16T20:18:28.514192Z"}
+{"event": "stage_exit", "wrk": "WRK-1272", "stage": 2, "date": "2026-03-16", "timestamp": "2026-03-16T20:22:07.513927Z"}
+{"event": "stage_exit", "wrk": "WRK-1272", "stage": 3, "date": "2026-03-16", "timestamp": "2026-03-16T20:22:25.649766Z"}
+{"event": "stage_exit", "wrk": "WRK-1272", "stage": 4, "date": "2026-03-16", "timestamp": "2026-03-16T20:48:38.689660Z"}
+{"event": "stage_exit", "wrk": "WRK-1272", "stage": 5, "date": "2026-03-16", "timestamp": "2026-03-16T20:49:33.344215Z"}
+{"event": "stage_exit", "wrk": "WRK-1244", "stage": 5, "date": "2026-03-16", "timestamp": "2026-03-16T20:55:43.342622Z"}
+{"event": "stage_exit", "wrk": "WRK-1272", "stage": 6, "date": "2026-03-16", "timestamp": "2026-03-16T20:56:23.243870Z"}
+{"event": "stage_exit", "wrk": "WRK-1272", "stage": 7, "date": "2026-03-16", "timestamp": "2026-03-16T20:56:35.540706Z"}
+{"event": "stage_exit", "wrk": "WRK-1244", "stage": 6, "date": "2026-03-16", "timestamp": "2026-03-16T21:02:16.181055Z"}
+{"event": "stage_exit", "wrk": "WRK-1244", "stage": 7, "date": "2026-03-16", "timestamp": "2026-03-16T21:03:53.047773Z"}
+{"event": "stage_exit", "wrk": "WRK-1244", "stage": 10, "date": "2026-03-16", "timestamp": "2026-03-16T21:17:28.549180Z"}
+{"event": "stage_exit", "wrk": "WRK-1244", "stage": 9, "date": "2026-03-16", "timestamp": "2026-03-16T21:17:50.507658Z"}
+{"event": "stage_exit", "wrk": "WRK-1244", "stage": 8, "date": "2026-03-16", "timestamp": "2026-03-16T21:18:08.764469Z"}
+{"event": "stage_exit", "wrk": "WRK-1244", "stage": 11, "date": "2026-03-16", "timestamp": "2026-03-16T21:19:32.521513Z"}
+{"event": "stage_exit", "wrk": "WRK-1244", "stage": 12, "date": "2026-03-16", "timestamp": "2026-03-16T21:19:33.725894Z"}
+{"event": "stage_exit", "wrk": "WRK-1244", "stage": 13, "date": "2026-03-16", "timestamp": "2026-03-16T21:19:34.951717Z"}
+{"event": "stage_exit", "wrk": "WRK-1244", "stage": 16, "date": "2026-03-16", "timestamp": "2026-03-16T21:19:36.632277Z"}
+{"event": "stage_exit", "wrk": "WRK-1244", "stage": 15, "date": "2026-03-16", "timestamp": "2026-03-16T21:20:04.467818Z"}
+{"event": "stage_exit", "wrk": "WRK-1244", "stage": 14, "date": "2026-03-16", "timestamp": "2026-03-16T21:21:44.832248Z"}
+{"event": "stage_exit", "wrk": "WRK-1244", "stage": 17, "date": "2026-03-16", "timestamp": "2026-03-16T21:23:01.022403Z"}
+{"event": "stage_exit", "wrk": "WRK-1244", "stage": 20, "date": "2026-03-16", "timestamp": "2026-03-16T21:23:11.760727Z"}
+{"event": "stage_exit", "wrk": "WRK-1244", "stage": 18, "date": "2026-03-16", "timestamp": "2026-03-16T21:23:26.057057Z"}
+{"event":"codex_session","date":"2026-03-16","session_id":"rollout-2026-03-16T15-50-50-019cf86a-6d69-7803-b611-426d47a5266a","turns":4,"source":"codex"}
+{"event":"codex_session","date":"2026-03-16","session_id":"rollout-2026-03-16T15-53-58-019cf86d-4b3a-7fa2-b694-d3bef4fe9022","turns":5,"source":"codex"}
+{"event":"codex_session","date":"2026-03-16","session_id":"rollout-2026-03-16T16-52-58-019cf8a3-4ee6-7e60-b760-53f1f6b9ad56","turns":4,"source":"codex"}
+{"event":"codex_session","date":"2026-03-16","session_id":"rollout-2026-03-16T18-28-57-019cf8fb-2ece-7782-a23c-a3c088082857","turns":4,"source":"codex"}
+{"event":"codex_session","date":"2026-03-16","session_id":"rollout-2026-03-16T18-37-36-019cf903-1cd5-7663-b273-2444eb4b0eec","turns":4,"source":"codex"}
+{"event":"codex_session","date":"2026-03-16","session_id":"rollout-2026-03-16T18-40-04-019cf905-5f4a-7e61-be83-ee2e65b505b6","turns":3,"source":"codex"}
+{"event":"codex_session","date":"2026-03-16","session_id":"rollout-2026-03-16T18-40-36-019cf905-d9b4-7c41-902c-b7d0a4294847","turns":3,"source":"codex"}

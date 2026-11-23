@@ -1,0 +1,73 @@
+{
+  "scope": "Structured user-role reporting-comment search; heuristic filters with selected direct comments and recent HTML source inspection, not proof every attachment was read",
+  "local": {
+    "claude_jsonl": 70,
+    "codex_jsonl": 351,
+    "gemini_jsonl": 22
+  },
+  "ace-linux-1": {
+    "claude_jsonl": 768,
+    "codex_jsonl": 4426
+  },
+  "ace-linux-2": {
+    "claude_jsonl": 337,
+    "codex_jsonl": 405,
+    "hermes_json_histories": 95
+  },
+  "ace-win-2": {
+    "claude_jsonl": 97,
+    "codex_jsonl": 298
+  },
+  "macos": {
+    "claude_jsonl": 236,
+    "codex_jsonl": 185
+  },
+  "total_jsonl_files": 7195,
+  "gaps": [
+    "GPU host inaccessible",
+    "Attachment and nonstandard transcript formats not universally enumerated",
+    "Mac Claude relay authentication unavailable; no session delivery",
+    "Codex/Hermes/Agy live cross-session transport not established"
+  ],
+  "proposal_commit": "6c84f8cd9b74d98a74560c0287ade0cc736734f9",
+  "proposal_sha256": "90e54779942a28e0388a5517c340c3b7bd253724148b356197db01f99c5e0ed2",
+  "git_blob": "f0d184f81a094548dd1a8da947b0a32d6fd9de4a",
+  "machine_storage": {
+    "ace-win-1": "proposal Git object verified; not checked out or installed",
+    "ace-win-2": "proposal Git object verified; not checked out or installed",
+    "ace-linux-1": "proposal Git object verified; not checked out or installed",
+    "ace-linux-2": "proposal Git object verified; not checked out or installed",
+    "macos": "proposal Git object verified; not checked out or installed"
+  },
+  "shared_instruction_adoption": "Owner decision2026-09-28: keep as review draft; no shared runtime/instruction changes",
+  "session_delivery": {
+    "queued": 12,
+    "acknowledged": 0,
+    "adopted": 0,
+    "observation": "at relay completion2026-09-28",
+    "machines": 3
+  },
+  "source_note": "Private source locators and direct-owner comments remain outside this public record",
+  "hermes_database_scan": {
+    "ace-linux-1": {
+      "sessions": 5740,
+      "sessions_with_user_rows": 2567,
+      "user_rows_scanned": 6372,
+      "user_span": "2026-04-01 through2026-06-14"
+    },
+    "ace-linux-2": {
+      "sessions": 295,
+      "sessions_with_user_rows": 268,
+      "user_rows_scanned": 695,
+      "user_span": "2026-04-02 through2026-07-19"
+    },
+    "method": "SQLite mode=ro,query_only=ON;structured user-row filtering; no newer reporting convention"
+  },
+  "local_codex_delegation_notice": {
+    "owner_direction": "2026-09-28;local machine only;Claude orchestration and report iteration with token-heavy work delegated to Codex",
+    "queued": 6,
+    "acknowledged": 0,
+    "remote_recipients": 0,
+    "private_receipt_sha256": "3bd474fe767761d2abf714031e9d7e6653badb6fd28684e9db62232dc087c3f7"
+  }
+}

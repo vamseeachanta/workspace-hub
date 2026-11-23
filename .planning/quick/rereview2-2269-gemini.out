@@ -1,0 +1,39 @@
+Agent loading error: Failed to load agent from /mnt/local-analysis/workspace-hub/.gemini/agents/gsd-debugger.md: Validation failed: Agent Definition:
+Unrecognized key(s) in object: 'permissionMode'Agent loading error: Failed to load agent from /mnt/local-analysis/workspace-hub/.gemini/agents/gsd-executor.md: Validation failed: Agent Definition:
+Unrecognized key(s) in object: 'permissionMode'Error executing tool run_shell_command: Tool "run_shell_command" not found. Did you mean one of: "grep_search", "cli_help", "read_file"?
+### Adversarial Review: `docs/plans/2026-04-15-issue-2269-openfoam-v2312-baseline-workflow-and-validation.md`
+
+#### Overall verdict
+**FAIL (NEEDS REVISION)** — The plan demonstrates strong retrieval and context awareness, but fails to address the technical feasibility of its testing and data-handover strategies. Critical ambiguities remain regarding how Bash will safely manipulate YAML, how Pytest will mock hardcoded file paths, and whether the environment bootstrap is truly normalized or just fault-tolerant.
+
+#### Ready for user approval
+**No**
+
+#### Retrieval adequacy
+**Excellent.** The author successfully mapped the relevant workspace surfaces, identifying the existing CLI contract (`run-openfoam-tutorials.sh`), the research discrepancies (`docs/research/openfoam-tutorials.md`), and the target standard definitions (`PORTABILITY_CONTRACT.md`). Traceability to Issue #2269 is explicitly handled.
+
+#### Top blockers
+1. **Pytest Harness Testability (Dependency Injection):** The TDD test `test_verify_script_fails_when_bashrc_missing` expects to verify failure when "neither supported bootstrap path exists." Because the paths (`/usr/lib/...` and `/opt/...`) are hardcoded in the script, Pytest cannot easily simulate their absence on a machine where OpenFOAM is actually installed. The wrapper script's contract lacks an environment variable or flag to override the probe paths during testing.
+2. **YAML Handover / Wrapper-vs-Runner Ownership:** The plan states the wrapper "emits the final normalized YAML schema even when reusing runner-produced tutorial rows." Bash cannot natively and safely parse/merge YAML. If `run-openfoam-tutorials.sh` produces a YAML file, the plan must define the exact mechanism the wrapper will use to inject new top-level keys like `resolved_bashrc_path` and `verification_method` (e.g., using `yq`, delegating the merge to a inline Python script, or shifting the wrapper entirely to Python).
+3. **Canonical Path Contradiction:** The plan contains conflicting directives. It states the script will "probe bootstrap paths in fixed order" (fault-tolerance), but immediately follows with "implementation must normalize the incorrect source... rather than leaving both as active truths." If the workflow is a canonical standard, it should assert the *one* correct path. If multiple paths are permanently supported, the claim of "normalizing the incorrect source" must be removed.
+
+#### Critical findings
+- The proposed testing strategy is physically incompatible with the proposed Bash wrapper design unless the test environment completely isolates the file system (which is unlikely in a standard Pytest run). 
+- The YAML manipulation responsibility split introduces a high risk of schema corruption.
+
+#### High findings
+- **YAML Schema Precision:** The schema requires fields (e.g., `tutorials`), but lacks type definitions. Is `tutorials` an array of objects or a keyed dictionary? This ambiguity makes the "schema-valid YAML" test criteria subjective and difficult to enforce programmatically.
+
+#### Medium findings
+- **Discoverability Vagueness:** The plan states it will update `docs/README.md or equivalent portability index`. This should be definitive. It should identify exactly which index will house the link (likely `docs/engineering/portability/README.md`).
+- **Benchmark Execution:** `pitzDaily` is declared as an "optional benchmark case," but the wrapper's CLI contract doesn't specify if this is triggered via a flag (e.g., `--run-benchmark`) or if it's strictly a manual exercise left to the documentation.
+
+#### Low findings
+- **Runner Override Delegation:** The wrapper has an "optional override flag" for the YAML output path. It is assumed, but not explicitly stated, that this override will be passed down to the delegated `run-openfoam-tutorials.sh` engine properly.
+
+#### Required revisions before user approval
+1. **Add Testability Mechanisms:** Update the pseudocode and CLI contract of `verify-openfoam-baseline.sh` to allow dependency injection for the bashrc paths (e.g., reading `OPENFOAM_BASHRC_PATHS` from the environment, falling back to the default list).
+2. **Define the YAML Handover Mechanism:** Explicitly state the tool or language used for YAML normalization in the wrapper (e.g., "The wrapper will use `yq` to merge fields" or "The wrapper will use an embedded Python snippet to construct the final YAML").
+3. **Resolve the Path Contradiction:** Commit to a single strategy: either enforce one canonical `bashrc` path and fail if it is absent (true normalization), or explicitly state that the baseline standard permanently supports both paths.
+4. **Specify the YAML Schema:** Provide a concrete type mapping or a brief YAML snippet demonstrating the expected structure of the `tutorials` block to ensure the Pytest schema validation is objective.
+5. **Clarify the Benchmark Trigger:** State exactly how the operator invokes the optional `pitzDaily` case (e.g., via a `--benchmark` flag on the wrapper, or purely manually).

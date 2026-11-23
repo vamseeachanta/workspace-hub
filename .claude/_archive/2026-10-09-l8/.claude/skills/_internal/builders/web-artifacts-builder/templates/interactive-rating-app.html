@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Interactive Review Rater</title>
+<style>
+  :root { --bg:#0b1220; --panel:#111c2e; --text:#e7eefb; --muted:#94a3b8; --line:#29405f; --accent:#60a5fa; }
+  * { box-sizing: border-box; }
+  body { margin:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; background:var(--bg); color:var(--text); }
+  header { position: sticky; top:0; z-index:5; background:rgba(11,18,32,.95); border-bottom:1px solid var(--line); padding:14px 20px; }
+  h1 { margin:0; font-size:20px; }
+  .toolbar { display:flex; gap:10px; flex-wrap:wrap; margin-top:12px; }
+  button { background:var(--accent); border:0; color:#06111f; border-radius:8px; padding:9px 12px; font-weight:700; cursor:pointer; }
+  button.secondary { background:#223553; color:var(--text); border:1px solid var(--line); }
+  main { max-width:1200px; margin:0 auto; padding:20px; display:grid; grid-template-columns:280px 1fr; gap:18px; }
+  nav, .card { background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:14px; }
+  nav { position:sticky; top:100px; align-self:start; max-height:calc(100vh - 120px); overflow:auto; }
+  .navitem { display:flex; justify-content:space-between; padding:8px; color:var(--text); text-decoration:none; border-radius:8px; margin-bottom:4px; }
+  .navitem:hover { background:#16243a; }
+  .card { margin-bottom:16px; }
+  .meta { color:var(--muted); font-size:12px; margin-bottom:10px; }
+  .cols { display:grid; grid-template-columns:1fr 1.2fr; gap:12px; }
+  pre { white-space:pre-wrap; word-break:break-word; background:#07111f; border:1px solid var(--line); border-radius:10px; padding:10px; max-height:340px; overflow:auto; }
+  .scoregrid { display:grid; grid-template-columns:repeat(auto-fit,minmax(130px,1fr)); gap:10px; margin-top:12px; }
+  .score { background:#07111f; border:1px solid var(--line); border-radius:10px; padding:10px; }
+  .score label { display:block; color:#bfdbfe; font-size:12px; font-weight:700; }
+  .val { font-size:22px; font-weight:800; }
+  .defects { display:grid; grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); gap:7px; margin-top:12px; }
+  .defects label { background:#07111f; border:1px solid var(--line); border-radius:10px; padding:8px; font-size:12px; }
+  textarea { width:100%; min-height:80px; background:#07111f; color:var(--text); border:1px solid var(--line); border-radius:10px; padding:10px; margin-top:10px; }
+  @media(max-width:900px){ main { grid-template-columns:1fr; } nav { position:relative; top:0; max-height:none; } .cols { grid-template-columns:1fr; } }
+</style>
+</head>
+<body>
+<header>
+  <h1>Interactive Review Rater</h1>
+  <div class="toolbar">
+    <button onclick="exportJSON()">Export JSON</button>
+    <button onclick="exportCSV()">Export CSV</button>
+    <button class="secondary" onclick="copyJSON()">Copy JSON</button>
+    <button class="secondary" onclick="resetAll()">Reset local ratings</button>
+    <span id="progressText"></span>
+  </div>
+</header>
+<main>
+  <nav id="navList"></nav>
+  <section id="cards"></section>
+</main>
+<script>
+// Replace DATA with items shaped like:
+// {item:1, queue_idx:5, ts:'...', channel:'...', audience:'...', user_msg:'...', bot_reply:'...', auto_flags:['...']}
+const DATA = [];
+const CATS = [['chat_fit','Chat fit'],['plain_lang','Plain language'],['directness','Directness'],['scope_realism','Scope realism'],['tech_cred','Tech credibility'],['honesty','Honesty'],['audience_fit','Audience fit']];
+const DEFECTS = ['delivery_state_overclaim','internal_leakage','canary_state_drift','domain_jail_failure','channel_scope_confusion','diagnostic_user_blame','chat_wall','engineering_packaging_split','client_software_language','no_reply_or_capture_gap'];
+const STORAGE_KEY = 'interactive-review-rater-v1';
+let ratings = loadRatings();
+function defaultRating(item){ return { item:item.item, queue_idx:item.queue_idx, channel:item.channel, ts:item.ts, scores:Object.fromEntries(CATS.map(([k])=>[k,null])), defects_to_keep:[], notes:'' }; }
+function loadRatings(){ try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; } catch { return {}; } }
+function saveRatings(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(ratings)); updateProgress(); }
+function esc(s){ return String(s ?? '').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+function isDone(r){ return Object.values(r.scores).every(v => v != null); }
+function avg(r){ const vals=Object.values(r.scores).filter(v=>v!=null); return vals.length ? (vals.reduce((a,b)=>a+b,0)/vals.length).toFixed(1) : '—'; }
+function render(){
+  const nav=document.getElementById('navList'), cards=document.getElementById('cards'); nav.innerHTML=''; cards.innerHTML='';
+  for (const it of DATA) {
+    if (!ratings[it.item]) ratings[it.item]=defaultRating(it);
+    const r=ratings[it.item];
+    nav.insertAdjacentHTML('beforeend', `<a class="navitem" href="#item-${it.item}"><span>${it.item}. ${esc(it.channel)}</span><span>${isDone(r)?'done':'open'}</span></a>`);
+    const scoreHtml=CATS.map(([k,label]) => `<div class="score"><label>${label}</label><div class="val" id="val-${k}-${it.item}">${r.scores[k] ?? '—'}</div><input type="range" min="0" max="10" step="1" value="${r.scores[k] ?? 0}" oninput="setScore(${it.item},'${k}',this.value)"></div>`).join('');
+    const defectHtml=DEFECTS.map(d => `<label><input type="checkbox" ${r.defects_to_keep.includes(d)?'checked':''} onchange="toggleDefect(${it.item},'${d}',this.checked)"> ${d}</label>`).join('');
+    cards.insertAdjacentHTML('beforeend', `<article class="card" id="item-${it.item}"><h2>${it.item}. Queue #${it.queue_idx} — ${esc(it.channel)}</h2><div class="meta">${esc(it.ts)} · ${esc(it.audience || '')} · ${esc((it.auto_flags || []).join(', '))}</div><div class="cols"><div><h3>User ask</h3><pre>${esc(it.user_msg)}</pre></div><div><h3>Bot reply</h3><pre>${esc(it.bot_reply)}</pre></div></div><div class="scoregrid">${scoreHtml}</div><h3>Confirmed defects</h3><div class="defects">${defectHtml}</div><textarea placeholder="Notes" oninput="setNotes(${it.item},this.value)">${esc(r.notes)}</textarea><p id="summary-${it.item}"></p></article>`);
+    updateSummary(it.item);
+  }
+  updateProgress();
+}
+function setScore(item,k,v){ ratings[item].scores[k]=Number(v); document.getElementById(`val-${k}-${item}`).textContent=v; updateSummary(item); saveRatings(); }
+function toggleDefect(item,d,checked){ const a=ratings[item].defects_to_keep; if(checked && !a.includes(d)) a.push(d); if(!checked) ratings[item].defects_to_keep=a.filter(x=>x!==d); updateSummary(item); saveRatings(); }
+function setNotes(item,v){ ratings[item].notes=v; saveRatings(); }
+function updateSummary(item){ const el=document.getElementById('summary-'+item); if(el) el.textContent=`Average: ${avg(ratings[item])} · Defects: ${ratings[item].defects_to_keep.join(', ') || 'none'}`; }
+function updateProgress(){ const done=Object.values(ratings).filter(isDone).length; document.getElementById('progressText').textContent=`${done}/${DATA.length} fully scored`; }
+function payload(){ return { generated_at:new Date().toISOString(), ratings:Object.values(ratings).sort((a,b)=>a.item-b.item) }; }
+function download(name, content, type){ const blob=new Blob([content],{type}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=name; a.click(); URL.revokeObjectURL(a.href); }
+function exportJSON(){ download('ratings.json', JSON.stringify(payload(),null,2), 'application/json'); }
+function exportCSV(){ const rows=[['item','queue_idx',...CATS.map(c=>c[0]),'avg','defects_to_keep','notes']]; for(const r of payload().ratings) rows.push([r.item,r.queue_idx,...CATS.map(([k])=>r.scores[k]??''),avg(r),r.defects_to_keep.join('|'),r.notes]); download('ratings.csv', rows.map(row=>row.map(cell=>'"'+String(cell).replaceAll('"','""')+'"').join(',')).join('\n'), 'text/csv'); }
+async function copyJSON(){ await navigator.clipboard.writeText(JSON.stringify(payload(),null,2)); }
+function resetAll(){ if(confirm('Clear local ratings?')){ localStorage.removeItem(STORAGE_KEY); ratings={}; render(); } }
+render();
+</script>
+</body>
+</html>

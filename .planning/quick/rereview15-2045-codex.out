@@ -1,0 +1,458 @@
+Reading additional input from stdin...
+2026-04-15T17:24:37.610660Z ERROR codex_core_skills::loader: failed to stat skills entry /mnt/local-analysis/workspace-hub/.claude/skills/skills (symlink): No such file or directory (os error 2)
+OpenAI Codex v0.120.0 (research preview)
+--------
+workdir: /mnt/local-analysis/workspace-hub
+model: gpt-5.4
+provider: openai
+approval: never
+sandbox: workspace-write [workdir, /tmp, $TMPDIR, /home/vamsee/.codex/memories]
+reasoning effort: medium
+reasoning summaries: none
+session id: 019d922c-9c30-7b90-8e52-37c4e55dba9b
+--------
+user
+# Adversarial Re-Review Request: Issue #2045
+
+You are an independent adversarial reviewer. This plan was revised again after prior MAJOR findings. Evaluate the current plan text only. Find any remaining gaps, unresolved decisions, weak retrieval, non-falsifiable tests/acceptance criteria, or workflow/governance violations. Do NOT rubber-stamp.
+
+Return verdict as one of: APPROVE, MINOR, MAJOR.
+
+Required output format:
+1. Verdict
+2. Ready for user approval: Yes/No
+3. Retrieval adequacy: adequate/insufficient
+4. Top blockers (numbered)
+5. Critical findings
+6. High findings
+7. Medium findings
+8. Low findings
+9. Required revisions before user approval
+
+Plan under review:
+
+```markdown
+     1|# Plan for #2045: Onboard All Agents to Strict Issue Planning Workflow
+     2|
+     3|> **Status:** draft
+     4|> **Complexity:** T2
+     5|> **Date:** 2026-04-09
+     6|> **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2045
+     7|> **Review artifacts:** scripts/review/results/2026-04-14-plan-2045-codex.md | scripts/review/results/2026-04-14-plan-2045-gemini.md | scripts/review/results/2026-04-15-plan-2045-claude.md
+     8|
+     9|---
+    10|
+    11|## Resource Intelligence Summary
+    12|
+    13|### Existing repo code
+    14|- Found: `.claude/skills/coordination/issue-planning-mode/SKILL.md` is the canonical repo skill for the workflow and must be treated as a primary onboarding surface.
+    15|- Found: `.claude/skills/coordination/engineering-issue-workflow/SKILL.md` extends the planning workflow for engineering-critical issues.
+    16|- Found: `docs/plans/_template-issue-plan.md` defines the minimum plan structure and review-artifact convention.
+    17|- Found: `docs/plans/README.md` is both onboarding guide and plan index and must stay aligned with live workflow state.
+    18|- Found: `docs/standards/HARD-STOP-POLICY.md` defines the hard boundary that implementation must not begin before approval.
+    19|- Found: `.claude/hooks/plan-approval-gate.sh` is the live local gate enforcing the no-implementation-before-approval boundary and should be treated as authoritative for safe-path assumptions.
+    20|- Found: `docs/standards/AI_REVIEW_ROUTING_POLICY.md` defines default multi-provider review expectations.
+    21|- Found: `docs/standards/SUBAGENT_CONTEXT_ISOLATION.md` constrains how agents and subagents should be framed.
+    22|- Found: GitHub labels `status:plan-review` and `status:plan-approved` are the authoritative live workflow labels, with semantics defined by `docs/plans/README.md` and `.claude/skills/coordination/issue-planning-mode/SKILL.md`.
+    23|
+    24|### Standards
+    25|- `AGENTS.md` — repo hard-gate order and mandatory workflow statement.
+    26|- `docs/plans/README.md` — plan workflow contract.
+    27|- `docs/standards/HARD-STOP-POLICY.md` — hard-stop approval/implementation boundary authority.
+    28|- `docs/standards/AI_REVIEW_ROUTING_POLICY.md` — review routing and multi-provider expectations.
+    29|- `docs/standards/SUBAGENT_CONTEXT_ISOLATION.md` — agent-context handling policy.
+    30|
+    31|### Documents consulted
+    32|- `CLAUDE.md`
+    33|- `AGENTS.md`
+    34|- `GEMINI.md`
+    35|- `.codex/CODEX.md`
+    36|- `.codex/config.toml`
+    37|- `config/agents/hermes/SOUL.md`
+    38|- `docs/plans/README.md`
+    39|- `docs/plans/_template-issue-plan.md`
+    40|- `.claude/skills/coordination/issue-planning-mode/SKILL.md`
+    41|- `.claude/skills/coordination/engineering-issue-workflow/SKILL.md`
+    42|- `docs/standards/AI_REVIEW_ROUTING_POLICY.md`
+    43|- `docs/standards/SUBAGENT_CONTEXT_ISOLATION.md`
+    44|- `docs/plans/README.md` Step 5/6 + Status Meanings sections (authoritative approval-evidence and label workflow contract)
+    45|- `.claude/skills/coordination/issue-planning-mode/SKILL.md` User Approval + status-precedence sections
+    46|- GitHub labels `status:plan-review` and `status:plan-approved` (authoritative live workflow labels)
+    47|- GitHub issue #2045 comments/labels as the fixed operational sample
+    48|- related plans in `docs/plans/`, especially #2046 and #2047
+    49|
+    50|### Gaps identified
+    51|- Current onboarding coverage is uneven across agent-facing surfaces; the repo must explicitly define what “all agents” means in-repo.
+    52|- The previous plan incorrectly assumed `.claude/skills/` edits were blocked by the plan gate.
+    53|- The previous plan waived adversarial review even though the issue’s purpose is universal planning/review adoption.
+    54|- Example-plan validation and label/template verification need concrete checks rather than “manual only” wording.
+    55|
+    56|### Authoritative in-repo onboarding surfaces
+    57|
+    58|"All agents" means the finite set of providers with in-repo entry surfaces: Claude, Gemini, Codex, and Hermes. If a new provider is added, it must be added to this table before #2045 can be considered complete.
+    59|
+    60|| Agent | Dedicated entry surface | Shared surfaces | How workflow reaches this agent | Onboarding gap |
+    61||---|---|---|---|---|
+    62|| Claude Code | `CLAUDE.md` (planning workflow, skill loading) | `AGENTS.md`, `docs/plans/README.md`, `.claude/skills/coordination/issue-planning-mode/SKILL.md` | `CLAUDE.md` → references `AGENTS.md` gates and skill path directly | None — most complete onboarding chain |
+    63|| Gemini | `GEMINI.md` (retrieval-first, gate evidence anchors) | `AGENTS.md`, `docs/plans/README.md` | `GEMINI.md` → references `AGENTS.md` for canonical contract | None — functional via `AGENTS.md` reference |
+    64|| Codex | `.codex/CODEX.md` (explicit Required Gates section), `.codex/config.toml` (TDD in role prompts) | `AGENTS.md`, `docs/plans/README.md` | `CODEX.md` carries gate order directly; `config.toml` role prompts reference TDD and `.claude/rules/` | None — most explicit gate wording |
+    65|| Hermes | `config/agents/hermes/SOUL.md` | `AGENTS.md`, `docs/plans/README.md` | today Hermes only reaches workflow context through shared repo docs and explicit prompt loading; `SOUL.md` itself contains no workflow contract | **Gap:** this issue will close that gap by adding an explicit planning-workflow reference to `config/agents/hermes/SOUL.md`. Shared-doc-only onboarding is not sufficient for closure. |
+    66|
+    67|### Three-real-plans workstream
+    68|
+    69|The issue's acceptance criterion requires three real plans that demonstrate template usage and review conventions. **#2045 itself counts only as the onboarding-spec artifact, not as one of the independent exemplar proofs.** The independent exemplars are #2046 and #2047, and the validation must prove more than formatting.
+    70|
+    71|| Plan role | File | Validation expectation |
+    72||---|---|---|
+    73|| Onboarding spec (this issue) | `docs/plans/2026-04-09-issue-2045-agent-planning-onboarding.md` | Must define the workflow and validation contract |
+    74|| Independent exemplar 1 | `docs/plans/2026-04-09-issue-2046-planning-compliance-audit.md` | Pre-existing prerequisite exemplar: must be read/validated, but not rewritten under #2045 |
+    75|| Independent exemplar 2 | `docs/plans/2026-04-09-issue-2047-planning-enforcement-escalation.md` | Pre-existing prerequisite exemplar: must be read/validated, but not rewritten under #2045 |
+    76|
+    77|**Validation rule:** all three files must contain one exact required heading set. Baseline section coverage comes from `_template-issue-plan.md`, but for #2045’s local validation contract the canonical review-section heading is explicitly `## Adversarial Review History`. The `test_issue_2045_example_plans.sh` script must check that exact heading set by explicit heading match, verify issue-specific/non-placeholder content, and treat #2046/#2047 as prerequisite read-only exemplars rather than automatic repair targets.
+    78|
+    79|---
+    80|
+    81|## Artifact Map
+    82|
+    83|| Artifact | Path |
+    84||---|---|
+    85|| CLAUDE entry surface | `CLAUDE.md` |
+    86|| AGENTS entry surface | `AGENTS.md` |
+    87|| Gemini entry surface | `GEMINI.md` |
+    88|| Codex repo config surface | `.codex/config.toml` |
+    89|| Onboarding/index guide | `docs/plans/README.md` |
+    90|| Planning template | `docs/plans/_template-issue-plan.md` |
+    91|| Core skill | `.claude/skills/coordination/issue-planning-mode/SKILL.md` |
+    92|| Engineering extension | `.claude/skills/coordination/engineering-issue-workflow/SKILL.md` |
+    93|| Review-routing policy | `docs/standards/AI_REVIEW_ROUTING_POLICY.md` |
+    94|| Subagent isolation policy | `docs/standards/SUBAGENT_CONTEXT_ISOLATION.md` |
+    95|| Example plan #2046 | `docs/plans/2026-04-09-issue-2046-planning-compliance-audit.md` |
+    96|| Example plan #2047 | `docs/plans/2026-04-09-issue-2047-planning-enforcement-escalation.md` |
+    97|
+    98|---
+    99|
+   100|## Deliverable
+   101|
+   102|Updated repo onboarding surfaces, core planning skill guidance, and a validated onboarding contract so Claude, Codex, Gemini, and Hermes each have a discoverable path to the same strict planning workflow, with explicit gate-order expectations and actionable references to review-routing plus template/label conventions.
+   103|
+   104|---
+   105|
+   106|## Pseudocode
+   107|
+   108|```text
+   109|# 1. Write validation scripts first (TDD)
+   110|for each of the 6 test scripts:
+   111|    write script that checks the specific condition (see TDD Test List)
+   112|    expect at least one targeted failing check before remediation where a known gap exists
+   113|
+   114|# 2. Fix onboarding surfaces to pass validation
+   115|for surface in [CLAUDE.md, AGENTS.md, GEMINI.md, .codex/CODEX.md, config/agents/hermes/SOUL.md, docs/plans/README.md, issue-planning-mode SKILL.md]:
+   116|    if test_issue_2045_onboarding_docs.sh fails on this surface:
+   117|        either add direct workflow markers OR add an explicit canonical-contract reference that the test accepts
+   118|    if test_issue_2045_safe_path_assumption.sh fails on this surface:
+   119|        remove the false ".claude/skills blocked" claim
+   120|
+   121|# 3. Validate exemplar plan set (read-only for #2046/#2047)
+   122|run test_issue_2045_example_plans.sh
+   123|if the current #2045 plan is missing a normalized heading or issue-specific content:
+   124|    fix this plan file
+   125|if #2046 or #2047 fail validation:
+   126|    record the failure as prerequisite drift to be corrected under their own governance path; do not rewrite them under #2045
+   127|
+   128|# 4. Validate policy alignment and skill alignment
+   129|run test_issue_2045_policy_alignment.sh
+   130|run test_issue_2045_skill_alignment.sh
+   131|if contradiction found in .codex/CODEX.md, .codex/config.toml, GEMINI.md, or policy docs:
+   132|    fix the contradiction in files that are in #2045 implementation scope; otherwise record no-op
+   133|
+   134|# 5. Validate operational GitHub workflow using issue #2045 as the fixed sample
+   135|run test_issue_2045_operational_workflow.sh
+   136|verify: plan comment exists, issue is in an allowed policy state, and approval evidence rules come from cited repo policy
+   137|
+   138|# 6. Confirm all 6 scripts exit 0 with pipefail-enabled execution; collect evidence artifacts
+   139|```
+   140|
+   141|---
+   142|
+   143|## Files to Change
+   144|
+   145|### Implementation scope (onboarding surface alignment)
+   146|
+   147|| Action | Path | Decision rule | Reason |
+   148||---|---|---|---|
+   149|| Modify | `CLAUDE.md` | If `CLAUDE.md` does not reference `AGENTS.md` or the planning workflow skill path, add the reference | Ensure Claude sessions discover the planning workflow |
+   150|| Modify | `AGENTS.md` | If hard-gate statement does not match the canonical order (Issue → Plan → USER APPROVES → Implement → Cross-review → Close), correct it | `AGENTS.md` is the canonical source; it must be authoritative |
+   151|| Modify | `.codex/CODEX.md` | Correct legacy WRK-* / work-queue references and align explicit gate-order / wait-for-approval wording with `AGENTS.md` | Codex onboarding currently contains active workflow contradictions, not just a passive missing reference |
+   152|| Modify | `config/agents/hermes/SOUL.md` | Add explicit planning-workflow / `AGENTS.md` reference so Hermes has a dedicated onboarding surface | Close the Hermes onboarding gap concretely |
+   153|| Modify only if contradiction found | `GEMINI.md` | Fix deprecated workflow references or missing canonical planning-contract reference only if validation finds them | Gemini is validation-first, not mandatory-edit-by-default |
+   154|| Modify | `docs/plans/README.md` | Update plan index to include #2045, #2046, #2047 entries and ensure onboarding guide text matches `AGENTS.md` gate order | README is both index and onboarding guide |
+   155|| Modify | `.claude/skills/coordination/issue-planning-mode/SKILL.md` | If skill workflow steps diverge from `AGENTS.md` gate order, correct the skill and remove duplicate/misnumbered workflow blocks as needed | Canonical skill must match canonical contract cleanly |
+   156|| Add tests | `tests/test_issue_2045_*.sh` (6 scripts) | Create the validation scripts listed in TDD Test List | Executable evidence of onboarding correctness |
+   157|
+   158|### Validation-only (no change unless contradiction found)
+   159|
+   160|Each file below is checked by `test_issue_2045_policy_alignment.sh`. The decision rule is: **modify only if the file states a gate order, approval rule, or subagent-context rule that directly contradicts `AGENTS.md`, `docs/standards/HARD-STOP-POLICY.md`, or `issue-planning-mode/SKILL.md`.** Example contradictions that must fail the test: a file saying implementation can begin before explicit user approval, a file reversing the workflow order, or a file routing agent work to deprecated WRK-* workflow surfaces instead of GitHub issue planning.
+   161|
+   162|| Action | Path | Decision rule |
+   163||---|---|---|
+   164|| Validate | `.codex/config.toml` | Modify only if role system prompts contradict `AGENTS.md` gate order or point to deprecated workflow surfaces; otherwise record why validation-only is acceptable despite CODEX.md being implementation-scope |
+   165|| Validate | `docs/standards/AI_REVIEW_ROUTING_POLICY.md` | Modify only if review-routing text contradicts the onboarding surfaces' review expectations |
+   166|| Validate | `docs/standards/SUBAGENT_CONTEXT_ISOLATION.md` | Modify only if isolation policy contradicts how onboarding surfaces frame subagent context |
+   167|| Validate | `GEMINI.md` stale workflow references | Modify only if referenced workflow surfaces are deprecated or contradict the current planning contract |
+   168|| Validate only (no edits under #2045) | Three plan files (#2045, #2046, #2047) | `test_issue_2045_example_plans.sh` may inspect all three, but under #2045 only this plan file may be edited; issues #2046/#2047 are exemplar reads, not automatic rewrite targets |
+   169|
+   170|---
+   171|
+   172|### Exact required heading set for exemplar-plan validation
+   173|
+   174|The single authoritative heading list for `test_issue_2045_example_plans.sh` is:
+   175|1. `> **Status:**`
+   176|2. `> **Review artifacts:**`
+   177|3. `## Resource Intelligence Summary`
+   178|4. `## Artifact Map`
+   179|5. `## Deliverable`
+   180|6. `## Pseudocode`
+   181|7. `## Files to Change`
+   182|8. `## TDD Test List`
+   183|9. `## Acceptance Criteria`
+   184|10. `## Adversarial Review History`
+   185|11. `## Risks and Open Questions`
+   186|12. `## Complexity`
+   187|
+   188|This list overrides naming ambiguity from earlier revisions and is the sole section oracle for #2045’s exemplar-plan validation.
+   189|
+   190|## TDD Test List
+   191|
+   192|| Test name | What it checks | Concrete check method | Pass criteria | Fail criteria | Evidence artifact |
+   193||---|---|---|---|---|---|
+   194|| `test_issue_2045_onboarding_docs.sh` | Every provider entry surface has a deterministic, actionable planning-workflow discovery path | exact accepted patterns are enumerated here: `AGENTS.md` must contain the full gate-order chain; `CLAUDE.md` must reference the planning workflow skill path or explicit gate order; `GEMINI.md` must either name `AGENTS.md` as canonical instructions or include explicit workflow markers and must not point to deprecated workflow docs; `.codex/CODEX.md` must include explicit gate/order language and must not reference deprecated WRK-* workflow surfaces; `config/agents/hermes/SOUL.md` must explicitly reference `AGENTS.md` or `docs/plans/README.md` as the planning workflow source | Each file matches its allowed exact pattern and provides an actionable current path to the workflow source | Any file lacks its required direct marker or canonical-contract reference, or still points to deprecated workflow surfaces | `tests/evidence/2045-onboarding-docs.log` |
+   195|| `test_issue_2045_example_plans.sh` | The exemplar plan set is structurally complete and semantically issue-specific | Use the single authoritative heading list above. For #2045, #2046, and #2047: check that all 12 required headings are present; reject placeholder/template stubs; verify Deliverable mentions the issue-specific objective, Files to Change lists issue-relevant paths, and Acceptance Criteria contain issue-specific checks rather than generic boilerplate. Under #2045 this test is read-only for #2046/#2047 and must not mutate them. | All three plans pass the 12-heading oracle and the two independent exemplars (#2046, #2047) contain issue-specific deliverables/files/acceptance criteria | Any required heading missing, placeholder stub remains, or exemplar content is still generic/template-like | `tests/evidence/2045-example-plans.log` with per-file structural + semantic pass/fail matrix |
+   196|| `test_issue_2045_policy_alignment.sh` | Onboarding docs do not contradict review-routing or subagent-isolation policies | compare canonical workflow order from `AGENTS.md`, `docs/standards/HARD-STOP-POLICY.md`, and `.claude/skills/coordination/issue-planning-mode/SKILL.md` against `CLAUDE.md`, `GEMINI.md`, `.codex/config.toml`, `config/agents/hermes/SOUL.md`; fail if any surface permits implementation before explicit user approval or routes work to deprecated workflow surfaces | No contradictions found; each file either matches or is updated to match | Any file states a conflicting gate order, approval rule, or deprecated workflow route | `tests/evidence/2045-policy-alignment.log` |
+   197|| `test_issue_2045_safe_path_assumption.sh` | No in-scope onboarding surface falsely claims `.claude/skills/` is blocked by the plan gate | search the full in-scope surface list: `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, `.codex/CODEX.md`, `docs/plans/README.md`, `config/agents/hermes/SOUL.md`, `.claude/skills/coordination/issue-planning-mode/SKILL.md`; fail on any text asserting that `.claude/skills/` or `.claude/*` edits are blocked by the plan gate | Zero prohibited claims across the full in-scope surface list | Any prohibited claim found in any in-scope onboarding surface | `tests/evidence/2045-safe-path.log` |
+   198|| `test_issue_2045_skill_alignment.sh` | `.claude/skills/coordination/issue-planning-mode/SKILL.md` matches `AGENTS.md` gate order without duplicate/misnumbered workflow steps | compare explicit workflow chain in `AGENTS.md` to the skill’s step/order text and assert no duplicate step numbers remain in the planning workflow section | skill order matches canonical order and duplicate/misnumbered workflow steps are absent | order mismatch or duplicated numbering remains | `tests/evidence/2045-skill-alignment.log` |
+   199|| `test_issue_2045_operational_workflow.sh` | The operational GitHub workflow is validated against bounded policy-compliant state transitions | use issue #2045 as the fixed sample; require authenticated `gh` as a blocker prerequisite for running this test; verify via `gh issue view 2045 --json comments,labels` plus `docs/plans/README.md` and `issue-planning-mode/SKILL.md` that: (a) a GitHub plan comment exists referencing the plan artifact path, and (b) the issue is in one of two allowed policy states — pre-approval (`status:plan-review` present, `status:plan-approved` absent) or post-approval (`status:plan-approved` plus explicit human approval evidence as defined by repo policy). If `gh` auth is unavailable, the test is not runnable and the environment must be fixed before claiming #2045 complete. | sample workflow passes one allowed policy state and the approval-evidence rule is grounded in cited repo policy text | missing plan comment, invalid label state, approval evidence rule not grounded in cited policy text, or missing `gh` auth prerequisite | `tests/evidence/2045-operational-workflow.log` |
+   200|
+   201|### Evidence ownership
+   202|
+   203|- The `tests/evidence/*.log` files created by the execution block are the canonical evidence artifacts.
+   204|- Individual test scripts should print deterministic stdout for piping, but should not separately write conflicting artifact files unless explicitly documented.
+   205|
+   206|### Execution
+   207|
+   208|```bash
+   209|set -euo pipefail
+   210|
+   211|# Run all validation scripts; each writes its own evidence artifact
+   212|bash tests/test_issue_2045_onboarding_docs.sh      | tee tests/evidence/2045-onboarding-docs.log
+   213|bash tests/test_issue_2045_example_plans.sh        | tee tests/evidence/2045-example-plans.log
+   214|bash tests/test_issue_2045_policy_alignment.sh     | tee tests/evidence/2045-policy-alignment.log
+   215|bash tests/test_issue_2045_safe_path_assumption.sh | tee tests/evidence/2045-safe-path.log
+   216|bash tests/test_issue_2045_skill_alignment.sh      | tee tests/evidence/2045-skill-alignment.log
+   217|bash tests/test_issue_2045_operational_workflow.sh | tee tests/evidence/2045-operational-workflow.log
+   218|```
+   219|
+   220|All six scripts must exit 0. Any non-zero exit blocks #2045 closure.
+   221|
+   222|---
+   223|
+   224|## Acceptance Criteria
+   225|
+   226|### Implementation completion (required to close #2045)
+   227|
+   228|- [ ] `CLAUDE.md`, `AGENTS.md`, `GEMINI.md`, `.codex/CODEX.md`, and `config/agents/hermes/SOUL.md` each reference the planning workflow such that `test_issue_2045_onboarding_docs.sh` exits 0.
+   229|- [ ] `.claude/skills/coordination/issue-planning-mode/SKILL.md` workflow steps match `AGENTS.md` gate order and pass `test_issue_2045_skill_alignment.sh`.
+   230|- [ ] No onboarding surface falsely claims `.claude/skills/` is blocked by the plan gate (`test_issue_2045_safe_path_assumption.sh` exits 0).
+   231|- [ ] Three plan files (#2045, #2046, #2047) each contain all required template sections, including `Pseudocode`, `Risks and Open Questions`, and `Complexity` (`test_issue_2045_example_plans.sh` exits 0).
+   232|- [ ] Validation-only surfaces (policy docs, validation-only Gemini/config prompts) either pass `test_issue_2045_policy_alignment.sh` with no contradictions, or contradictions are fixed and re-tested.
+   233|- [ ] Operational workflow validation proves issue #2045 is in one allowed policy state (pre-approval or post-approval with explicit human approval evidence) and that the result is grounded in cited repo policy text (`test_issue_2045_operational_workflow.sh`).
+   234|- [ ] All six canonical evidence artifacts exist in `tests/evidence/` with pass/fail results.
+   235|
+   236|### Plan approval gate (required before implementation begins)
+   237|
+   238|- [ ] Three-provider adversarial review set is complete for the current plan revision: Claude, Codex, and Gemini artifacts all exist and correspond to the latest plan text.
+   239|- [ ] No unresolved MAJOR findings remain.
+   240|- [ ] The onboarding standard is explicit: each provider entry surface either contains the required workflow markers directly or names the canonical shared contract in a testable way.
+   241|- [ ] `.codex/CODEX.md` contradictions are fixed in implementation scope; `.codex/config.toml` remains validation-only only if `test_issue_2045_policy_alignment.sh` shows no contradictory workflow behavior.
+   242|- [ ] Exemplar-plan validation is advisory/read-only for #2046/#2047 under #2045; any failures there produce prerequisite drift follow-up work, not unauthorized edits under #2045.
+   243|---
+   244|
+   245|## Adversarial Review History
+   246|
+   247|| Date | Provider | Verdict | Status |
+   248||---|---|---|---|
+   249|| 2026-04-14 | Codex | MAJOR | Addressed in current revision: “all agents” enumerated, validation concrete, self-approval removed |
+   250|| 2026-04-14 | Gemini | MAJOR | Addressed in current revision: safe-path assumption corrected, baseline retrieval done, three-plan workstream explicit |
+   251|| 2026-04-15 | Claude | MINOR | Bounded follow-ups identified: tighten Codex onboarding scope, strengthen test specificity, and make operational workflow test executable |
+   252|
+   253|Full review artifacts: `scripts/review/results/2026-04-14-plan-2045-codex.md`, `scripts/review/results/2026-04-14-plan-2045-gemini.md`, `scripts/review/results/2026-04-15-plan-2045-claude.md`
+   254|
+   255|**Current status:** Re-review required to confirm remaining MAJOR findings are resolved. Three-provider artifact set now exists.
+   256|
+   257|---
+   258|
+   259|## Risks and Open Questions
+   260|
+   261|- **Risk:** “all agents” scope creep — a new provider added to the repo without updating the onboarding-surface table silently breaks the completeness claim. Mitigation: the table header states new providers must be added before #2045 is complete.
+   262|- **Risk:** example plans (#2046, #2047) may drift from the template after #2045 closes. Mitigation: `test_issue_2045_example_plans.sh` can be rerun as a regression check; consider promoting to CI if drift becomes a pattern.
+   263|- **Risk:** provider onboarding can still drift if one adapter only references canonical shared docs while another embeds the workflow directly. Mitigation: `test_issue_2045_onboarding_docs.sh` and `test_issue_2045_policy_alignment.sh` accept either direct workflow markers or an explicit canonical-contract reference, but reject deprecated workflow routes.
+   264|- **Risk:** `.codex/CODEX.md` and `.claude/skills/coordination/issue-planning-mode/SKILL.md` contain legacy/structural drift beyond simple gate-order wording. Mitigation: both are now in implementation scope or explicit skill-alignment coverage.
+   265|- **Resolved:** false safe-path blocker claim — corrected in resource intelligence; `test_issue_2045_safe_path_assumption.sh` prevents regression.
+   266|- **Resolved:** missing Claude review artifact — `scripts/review/results/2026-04-15-plan-2045-claude.md` now exists and is included in the three-provider review set.
+   267|
+   268|---
+   269|
+   270|## Complexity: T2
+   271|
+   272|**T2** — multi-surface governance/onboarding alignment across docs, skills, and example-plan validation.
+   273|
+```
+warning: Codex's Linux sandbox uses bubblewrap and needs access to create user namespaces.
+codex
+Reviewing the current #2045 plan text as a strict adversarial pass. I’m checking for remaining workflow violations, weak retrieval, ambiguous scope, and acceptance/test criteria that still are not falsifiable.
+codex
+1. Verdict
+
+MAJOR
+
+2. Ready for user approval: Yes/No
+
+No
+
+3. Retrieval adequacy: adequate/insufficient
+
+insufficient
+
+4. Top blockers (numbered)
+
+1. The plan still has an unresolved cross-issue dependency contradiction: it makes `#2045` responsible for a green validation on `#2046/#2047`, while also forbidding edits to those files under `#2045`.
+2. The exemplar-plan validator invents a local “authoritative” heading contract instead of deriving it cleanly from the canonical template/policy, which is a governance problem for a workflow-onboarding issue.
+3. The plan-approval evidence is still not stable for the latest revision: the listed prior review artifacts do not prove three-provider review of this exact current text.
+4. Retrieval is not strong enough for several claimed contradictions/gaps; the plan asserts them, but does not anchor them to concrete current evidence from the cited files.
+
+5. Critical findings
+
+1. Cross-issue validation is internally inconsistent and can deadlock closure.  
+At [lines 125-126] and [168] the plan says `#2046/#2047` are read-only exemplars under `#2045`, and failures should be recorded as prerequisite drift rather than fixed here. But at [195], [231], and [242], `#2045` still requires `test_issue_2045_example_plans.sh` to pass for all three plans. If either exemplar fails, `#2045` cannot close, yet `#2045` also cannot remediate the failure. That is an unresolved governance path, not a minor wording issue.
+
+2. The plan creates a per-issue template oracle that can diverge from the canonical workflow source.  
+At [77] and [172-189], the plan declares an “exact required heading set” and says it “overrides naming ambiguity.” For a workflow-onboarding issue, the validator must derive its contract from `docs/plans/_template-issue-plan.md` and any approved policy docs, not from a local override inside one plan. Otherwise `#2045` is effectively redefining the standard it is supposed to enforce.
+
+3. The three-provider review gate is not yet evidenced for the latest plan text.  
+At [238] the approval gate requires all three provider artifacts to “correspond to the latest plan text,” but the review history at [249-255] only says earlier findings were addressed and that re-review is still required. The current plan text does not show that Codex, Gemini, and Claude all reviewed this exact revision. That means the plan is not ready for user approval yet.
+
+6. High findings
+
+1. Retrieval is still too assertion-heavy for the claimed contradictions.  
+The plan says `.codex/CODEX.md` contains “active workflow contradictions” [151], Hermes has a concrete onboarding gap [65], and prior assumptions were wrong [52-54], but it does not capture the exact conflicting text, section, or rule mismatch from those files. For a governance change, that is weak retrieval. The plan needs concrete evidence anchors, not only summary claims.
+
+2. `GEMINI.md` scope remains inconsistent between “validate-only” and required acceptance.  
+At [153], `GEMINI.md` is “modify only if contradiction found.” But at [194] and [228], `GEMINI.md` must have an acceptable canonical-workflow discovery path for the onboarding test to pass. Missing onboarding guidance is not the same as a contradiction. The decision rule and the acceptance/test contract still do not fully line up.
+
+3. The operational workflow test still couples issue completion to mutable external state without a remediation path.  
+At [199] and [233], success depends on current GitHub comments/labels and working `gh` auth. If the repository state is wrong, the plan does not clearly separate “repo content implementation complete” from “issue state needs maintainer action.” That should be an explicit dependency/hand-off, not buried in one test.
+
+7. Medium findings
+
+1. The plan references `.claude/hooks/plan-approval-gate.sh` as authoritative at [19], but it is not carried through as a consulted artifact with concrete validation obligations. If it is authoritative for safe-path assumptions, the test plan should explicitly bind to it or drop the claim.
+
+2. The pseudocode says each test should expect a targeted failure first [109-113], but several checks are validation-only or may already pass. That is not fatal, but it is not a clean TDD contract as written.
+
+3. The “all agents” closure rule at [58] depends on maintaining a table in this plan, not a repo-level source of truth. That weakens long-term enforceability.
+
+8. Low findings
+
+1. `docs/plans/README.md` is listed twice in consulted documents [38, 44].
+2. The plan mixes “current revision,” “current status,” and “latest plan text” without a concrete revision identifier/hash, which makes review traceability harder than necessary.
+
+9. Required revisions before user approval
+
+1. Resolve the `#2046/#2047` dependency conflict explicitly:
+Either make exemplar validation for `#2046/#2047` advisory/non-blocking for `#2045`, or declare them formal prerequisites with an explicit dependency and follow-up governance path.
+
+2. Remove the per-issue heading override and bind the validator to canonical sources:
+The test must derive required headings/sections from `docs/plans/_template-issue-plan.md` and approved policy text, or the template itself must be updated in scope.
+
+3. Add concrete retrieval evidence for every claimed contradiction/gap:
+For each planned edit target, cite the current conflicting text/section and the canonical rule it violates.
+
+4. Reconcile `GEMINI.md` scope:
+Make the decision rule match the acceptance/test contract. If a canonical reference is required for pass, say that directly.
+
+5. Separate repo-content completion from mutable GitHub-state validation:
+Define whether issue comments/labels are implementation deliverables under `#2045` or external maintainer state that can block closure after code/docs are done.
+
+6. Before user approval, refresh the adversarial review set so all required provider artifacts clearly review this exact revised plan text.
+tokens used
+118,654
+1. Verdict
+
+MAJOR
+
+2. Ready for user approval: Yes/No
+
+No
+
+3. Retrieval adequacy: adequate/insufficient
+
+insufficient
+
+4. Top blockers (numbered)
+
+1. The plan still has an unresolved cross-issue dependency contradiction: it makes `#2045` responsible for a green validation on `#2046/#2047`, while also forbidding edits to those files under `#2045`.
+2. The exemplar-plan validator invents a local “authoritative” heading contract instead of deriving it cleanly from the canonical template/policy, which is a governance problem for a workflow-onboarding issue.
+3. The plan-approval evidence is still not stable for the latest revision: the listed prior review artifacts do not prove three-provider review of this exact current text.
+4. Retrieval is not strong enough for several claimed contradictions/gaps; the plan asserts them, but does not anchor them to concrete current evidence from the cited files.
+
+5. Critical findings
+
+1. Cross-issue validation is internally inconsistent and can deadlock closure.  
+At [lines 125-126] and [168] the plan says `#2046/#2047` are read-only exemplars under `#2045`, and failures should be recorded as prerequisite drift rather than fixed here. But at [195], [231], and [242], `#2045` still requires `test_issue_2045_example_plans.sh` to pass for all three plans. If either exemplar fails, `#2045` cannot close, yet `#2045` also cannot remediate the failure. That is an unresolved governance path, not a minor wording issue.
+
+2. The plan creates a per-issue template oracle that can diverge from the canonical workflow source.  
+At [77] and [172-189], the plan declares an “exact required heading set” and says it “overrides naming ambiguity.” For a workflow-onboarding issue, the validator must derive its contract from `docs/plans/_template-issue-plan.md` and any approved policy docs, not from a local override inside one plan. Otherwise `#2045` is effectively redefining the standard it is supposed to enforce.
+
+3. The three-provider review gate is not yet evidenced for the latest plan text.  
+At [238] the approval gate requires all three provider artifacts to “correspond to the latest plan text,” but the review history at [249-255] only says earlier findings were addressed and that re-review is still required. The current plan text does not show that Codex, Gemini, and Claude all reviewed this exact revision. That means the plan is not ready for user approval yet.
+
+6. High findings
+
+1. Retrieval is still too assertion-heavy for the claimed contradictions.  
+The plan says `.codex/CODEX.md` contains “active workflow contradictions” [151], Hermes has a concrete onboarding gap [65], and prior assumptions were wrong [52-54], but it does not capture the exact conflicting text, section, or rule mismatch from those files. For a governance change, that is weak retrieval. The plan needs concrete evidence anchors, not only summary claims.
+
+2. `GEMINI.md` scope remains inconsistent between “validate-only” and required acceptance.  
+At [153], `GEMINI.md` is “modify only if contradiction found.” But at [194] and [228], `GEMINI.md` must have an acceptable canonical-workflow discovery path for the onboarding test to pass. Missing onboarding guidance is not the same as a contradiction. The decision rule and the acceptance/test contract still do not fully line up.
+
+3. The operational workflow test still couples issue completion to mutable external state without a remediation path.  
+At [199] and [233], success depends on current GitHub comments/labels and working `gh` auth. If the repository state is wrong, the plan does not clearly separate “repo content implementation complete” from “issue state needs maintainer action.” That should be an explicit dependency/hand-off, not buried in one test.
+
+7. Medium findings
+
+1. The plan references `.claude/hooks/plan-approval-gate.sh` as authoritative at [19], but it is not carried through as a consulted artifact with concrete validation obligations. If it is authoritative for safe-path assumptions, the test plan should explicitly bind to it or drop the claim.
+
+2. The pseudocode says each test should expect a targeted failure first [109-113], but several checks are validation-only or may already pass. That is not fatal, but it is not a clean TDD contract as written.
+
+3. The “all agents” closure rule at [58] depends on maintaining a table in this plan, not a repo-level source of truth. That weakens long-term enforceability.
+
+8. Low findings
+
+1. `docs/plans/README.md` is listed twice in consulted documents [38, 44].
+2. The plan mixes “current revision,” “current status,” and “latest plan text” without a concrete revision identifier/hash, which makes review traceability harder than necessary.
+
+9. Required revisions before user approval
+
+1. Resolve the `#2046/#2047` dependency conflict explicitly:
+Either make exemplar validation for `#2046/#2047` advisory/non-blocking for `#2045`, or declare them formal prerequisites with an explicit dependency and follow-up governance path.
+
+2. Remove the per-issue heading override and bind the validator to canonical sources:
+The test must derive required headings/sections from `docs/plans/_template-issue-plan.md` and approved policy text, or the template itself must be updated in scope.
+
+3. Add concrete retrieval evidence for every claimed contradiction/gap:
+For each planned edit target, cite the current conflicting text/section and the canonical rule it violates.
+
+4. Reconcile `GEMINI.md` scope:
+Make the decision rule match the acceptance/test contract. If a canonical reference is required for pass, say that directly.
+
+5. Separate repo-content completion from mutable GitHub-state validation:
+Define whether issue comments/labels are implementation deliverables under `#2045` or external maintainer state that can block closure after code/docs are done.
+
+6. Before user approval, refresh the adversarial review set so all required provider artifacts clearly review this exact revised plan text.

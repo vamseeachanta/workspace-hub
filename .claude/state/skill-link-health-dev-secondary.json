@@ -1,0 +1,16 @@
+{
+  "machine": "dev-secondary",
+  "audited_at": "2026-10-10T11:47:21+00:00",
+  "platform": "unix",
+  "repos_total": 16,
+  "healthy": 28,
+  "missing": 16,
+  "dangling": 1,
+  "flattened": 0,
+  "modified_real_dir": 3,
+  "template_absent": 0,
+  "repairable": 17,
+  "unexpected_missing_repos": ["aceengineer-admin", "aceengineer-website", "assethold", "assetutilities", "deckhand", "deckhand-live", "deckhand-ops", "digitalmodel", "_foundation_3498_source_df8f71ef", "hobbies", "llm-wiki", "sabithaandkrishnaestates", "teamresumes", "worldenergydata"],
+  "worst_state": "DANGLING",
+  "schema_version": 1
+}

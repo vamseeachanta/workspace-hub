@@ -1,0 +1,158 @@
+I have the full picture now. Independent verification surfaced three new defects the Codex and Gemini reviews missed. Here's the structured review.
+
+`★ Insight ─────────────────────────────────────`
+- The Cross-provider review payoff memory predicts each provider finds non-overlapping defects. Codex zeroed in on the legal-scan command and AC wording; Gemini zeroed in on pseudocode logic-ordering for C4 and `legal_scan` happening before `export`. Both leaned on textual reasoning. By executing actual JSON arithmetic against `vessel_comparison_matrix.json`, I found a numerically wrong headline (`108 cases`) that neither provider could catch from text alone — that's the case for Claude's tooling lane in the three-way fanout.
+- The plan's *own* pseudocode rule (`set(inherited) ⊆ set(caption.standards) ∪ omission_rationale`, line 146) is violated by the very C1 caption that ships in the storyboard. That's a self-consistency failure: the artifact added the rule and the storyboard caption violates it without an omission entry. This is exactly the class of defect the calc-citation-contract is meant to prevent.
+- Frontmatter staleness (`(TBD)` markers in the artifact map vs. live canonical artifacts existing on disk) is a classic plan-past-tense / plan-present-tense drift — flagged in memory `feedback_plan_past_tense_artifact_claims.md` as a recurring deception surface. Worth patching before promotion.
+`─────────────────────────────────────────────────`
+
+---
+
+## Verdict: MINOR
+
+### 1. Summary rationale
+
+The plan correctly architects a planning-only artifact, holds the cross-provider live-evidence gate firm, names the render entry point and asset home outside `digitalmodel/`, and maps every chart to issue ACs with a traceability matrix. Public/private data discipline is sound — exclusion paths appear only on the denial list, all four cited data files exist, the `100%/30 cases` headline matches the comparison matrix exactly, and BUSINESS_BRAIN.md citations are line-accurate.
+
+What slipped past Codex and Gemini is one *numerically wrong* headline, one *self-violating* pseudocode rule, and one stale frontmatter contradiction. None blocks the planning-only architecture; all are document-level fixes that should land before `status:plan-review` so an external reviewer doesn't approve a wrong claim.
+
+### 2. Severity-ranked findings
+
+#### CRITICAL
+None.
+
+#### HIGH
+- **F1 — `108 cases` in C1 caption is provably wrong.**
+  - Storyboard line 82 (caption) and line 79 (verification scope) state "108 cases across mudmat, jumper, and shallow-pipelay screening."
+  - Actual sum across all 6 vessel × capability rows in `vessel_comparison_matrix.json`: **156** (Large CSV mudmat=18 + Large CSV jumper=30 + Medium CSV mudmat=18 + Medium CSV jumper=30 + Large PLV shallow_pipelay=30 + Shallow Water Barge shallow_pipelay=30).
+  - Even narrowed to "shallow-pipelay screening only" = 60 cases, not 108. There is no obvious subset selection that yields 108.
+  - Codex flagged "treat 108 as a headline number to recompute" but didn't compute it. The plan's verification scope tags `108 cases` as deferred-to-render-slice, but the *caption draft* embeds the wrong number without inline `(pending recomputation)` framing — so a reviewer scanning only the caption reads it as fact.
+  - **Severity rationale**: HIGH because (a) the artifact's whole premise is "evidence-backed claims for external send"; (b) `status:plan-review` reviewers eyeball captions; (c) once approved with the wrong number embedded, the implementation slice can drift further.
+
+#### MEDIUM
+- **F2 — C1 caption violates the plan's own standards-completeness pseudocode rule.**
+  - Plan pseudocode (line 146): `assert set(C.inherited_standards) <= set(C.caption.standards) | set(C.omission_rationale.keys())`.
+  - C1's data inputs trace to both `pipelay_vessels.json` and `csv_hlv_vessels.json` (via `vessel_comparison_matrix.json`).
+  - Inherited standards (verified): DNV-ST-F101, DNV-OS-F101, API RP 1111 (from pipelay JSON) ∪ DNV-RP-H103, DNV-ST-N001, DNV-OS-H101 (from CSV/HLV JSON) = **6 standards**.
+  - C1 caption cites: DNV-RP-H103, DNV-ST-N001, DNV-ST-F101, API RP 1111 = **4 standards**.
+  - Missing without `omission_rationale`: DNV-OS-F101 (likely intentional — superseded by DNV-ST-F101) and **DNV-OS-H101** (which the plan AC §218 explicitly lists as "where applicable").
+  - Plan §250 closes the loop on API RP 1111 only. The two `-OS-` standards are unaddressed.
+  - **Severity rationale**: MEDIUM not HIGH because (a) the rule fires at render-time per plan, not at planning-time; (b) the omissions are defensible if rationale is recorded. But the plan currently passes the plan-AC §218 word-for-word while violating its own pseudocode rule — that contradiction itself is the defect.
+
+- **F3 — Frontmatter and Artifact Map say review artifacts are `(TBD)`, but they exist on disk.**
+  - Plan line 7 (frontmatter): `Review artifacts: scripts/review/results/2026-04-29-plan-2555-claude.md (TBD) | ...-codex.md (TBD) | ...-gemini.md (TBD)`.
+  - Plan lines 116-118 (Artifact Map table): same `(TBD)` markers.
+  - But on disk: canonical Codex (5798 bytes, MINOR) and Gemini (3419 bytes, MINOR) exist — confirmed via `ls -la scripts/review/results/2026-04-29-plan-2555-*`.
+  - Plan §229 (Adversarial Review Summary table) attests they are live canonical MINOR.
+  - This is internal self-contradiction: the same plan tells two different stories about review state in two different sections. Once this Claude artifact lands, the `(TBD)` markers will be triple-stale.
+
+- **F4 — `Overall result: PENDING` (§232) is about to become obsolete.**
+  - §213 lists the three live canonical artifacts as the gate.
+  - With Codex live + Gemini live present *and* this Claude live artifact landing, AC §213 transitions from unmet → met inside this very review.
+  - §232 needs an update path so that promotion triggers when the third live artifact is saved. As written, it bakes in the pre-Claude-live state and stays "PENDING" forever.
+
+#### LOW
+- **F5 — "Shallow Water Barge pair is the highest pass-rate vessel-job pair" implies uniqueness, but three pairs tie at 100%.**
+  - From the matrix: Large CSV mudmat (18/18 = 100%), Medium CSV mudmat (18/18 = 100%), Shallow Water Barge shallow_pipelay (30/30 = 100%).
+  - Choosing SWB shallow_pipelay as the headline is a defensible editorial choice — the brochure leads on the shallow-water wedge — but the storyboard wording reads as a derived fact, not a chosen narrative.
+  - Should be: "among three vessel-job pairs at 100% pass rate; chosen as headline because shallow-pipelay maps to the contractor-brochure wedge."
+
+- **F6 — "As of the 2026-04-15 demo run" date does not match underlying file mtime.**
+  - `vessel_comparison_matrix.json` mtime: Apr 10 09:46. Storyboard line 75 says "2026-04-15 demo run."
+  - Either a separate run-log dated 2026-04-15 exists somewhere, or the date is loosely chosen. Not blocking, but cite the source-of-truth or remove the specific date.
+
+- **F7 — The "scans actual generated collateral" prescription is non-specific.**
+  - Plan and storyboard both prescribe running `scripts/legal/legal-sanity-scan.sh` "in a mode that scans the actual generated collateral and caption text, not only textual git diffs."
+  - The scanner's actual flags (per `--help`): `[--repo=<name>] [--all] [--diff-only] [--json]`. None of these explicitly says "scan generated PNG/SVG/PDF collateral."
+  - The Codex patch added prescriptive intent without naming the actual flag combination. The implementation slice will need to either extend the scanner, stage assets so `--diff-only` covers them, or document a manual workaround. Should be made explicit before promotion to avoid a render-time blocker.
+
+- **F8 — Plan body mixes ratified content with patch-wave changelog (§245-253).**
+  - The "Next-wave patch" section is appended to the plan as if it were content, not as a changelog. A reviewer reading top-down sees the plan, then a meta-section about how the plan was patched, with cross-references that read as a separate doc.
+  - Not a defect strictly; readability concern. Move to an appendix or rely on git log.
+
+### 3. Is this ready for `status:plan-review` if this Claude artifact is saved alongside Codex and Gemini MINOR?
+
+**Conditionally yes.** The architecture passes; the cross-provider live-evidence gate is satisfied the moment this artifact lands. But:
+
+- **F1 (`108 cases`) must be patched before label flip.** Approving the storyboard with a numerically wrong headline embedded in C1's caption violates the evidence-boundary rule in `BUSINESS_BRAIN.md` §5 and risks the headline propagating into the brochure under #2556.
+- **F3 (stale `(TBD)` frontmatter markers) should be patched** so the artifact-map table matches the adversarial-review summary table.
+- **F4 (`PENDING` summary) needs the live-Claude state reflected.**
+- F2, F5, F6, F7, F8 can be patched in the same wave or queued for a follow-on; none individually blocks promotion.
+
+If F1, F3, F4 are patched and this Claude artifact saved as `scripts/review/results/2026-04-29-plan-2555-claude.md`, the plan can carry `status:plan-review` and await user approval.
+
+### 4. Exact must-fix patches
+
+#### Patch 1 — Replace the wrong `108 cases` figure (HIGH)
+
+In `docs/reports/gtm/2026-04-29-vessel-capability-chart-storyboard.md` lines 79 and 82:
+
+```diff
+-- **Deferred to render slice:** the pipe-size span (`8-24 in`), water-depth span (`7-30 m`), and total cross-demo case count (`108 cases`) must be recomputed from the latest source/result files at render time and regenerated if demo outputs changed.
+++ **Deferred to render slice:** the pipe-size span (`8-24 in`), water-depth span (`7-30 m`), and total cross-demo case count must be recomputed from the latest source/result files at render time. The current matrix sums to 156 cases across all six vessel × capability rows (Large CSV mudmat=18, Large CSV jumper=30, Medium CSV mudmat=18, Medium CSV jumper=30, Large PLV shallow_pipelay=30, Shallow Water Barge shallow_pipelay=30); the brochure caption must quote the recomputed value tagged with the source matrix's run timestamp.
+```
+
+```diff
+-> Vessel-vs-job screening envelope from ACE Engineer's parametric analysis suite (108 cases across mudmat, jumper, and shallow-pipelay screening). Coloured cells show pass rate of cases meeting governing-load checks per DNV-RP-H103, DNV-ST-N001, DNV-ST-F101, and API RP 1111 where shallow-pipelay screening is involved. Vessel parameters reflect representative classes — not measured telemetry of any named vessel. Send-screening grade for shortlist purposes; detailed feasibility requires per-project metocean and rigging inputs.
++> Vessel-vs-job screening envelope from ACE Engineer's parametric analysis suite (case count: pending render-time recomputation; current matrix totals 156 cases across mudmat, jumper, and shallow-pipelay screening). Coloured cells show pass rate of cases meeting governing-load checks per DNV-RP-H103, DNV-ST-N001, DNV-ST-F101, DNV-OS-H101 (lift operability), and API RP 1111 (shallow-pipelay only). DNV-OS-F101 superseded by DNV-ST-F101 — omitted intentionally. Vessel parameters reflect representative classes — not measured telemetry of any named vessel. Send-screening grade for shortlist purposes; detailed feasibility requires per-project metocean and rigging inputs.
+```
+
+This patch also resolves F2 inline by adding DNV-OS-H101 and recording DNV-OS-F101's omission rationale.
+
+#### Patch 2 — Refresh frontmatter and Artifact Map (MEDIUM, F3)
+
+In `docs/plans/2026-04-29-issue-2555-vessel-capability-charts.md` line 7:
+
+```diff
+-> **Review artifacts:** scripts/review/results/2026-04-29-plan-2555-claude.md (TBD) | ...-codex.md (TBD) | ...-gemini.md (TBD)
++> **Review artifacts:** scripts/review/results/2026-04-29-plan-2555-claude.md (live MINOR, 2026-04-29) | ...-codex.md (live MINOR, 2026-04-29) | ...-gemini.md (live MINOR, 2026-04-29)
+```
+
+In the Artifact Map table (lines 116-118), update the three "Plan review" rows from `(TBD)` to `(live MINOR, 2026-04-29)`.
+
+#### Patch 3 — Update overall result section (MEDIUM, F4)
+
+In §232:
+
+```diff
+-**Overall result:** PENDING — `status:plan-review` cannot be applied this wave. Review evidence is still incomplete, so the plan stays `draft`. This patch wave resolves the document-level MINOR findings by correcting the readiness checks, naming the non-`digitalmodel/` render entry point, locking the brochure asset home, and clarifying provider-unavailable fallback plus headline-number verification scope; live provider artifacts are still required before any status escalation.
++**Overall result:** READY-FOR-`status:plan-review` once the document-level F1/F2/F3 patches in `scripts/review/results/2026-04-29-plan-2555-claude.md` (this wave) are applied. Cross-provider live-evidence gate (AC §213) now satisfied with three canonical live MINOR verdicts: Claude (this wave), Codex (2026-04-29), Gemini (2026-04-29). User approval required to flip `status:plan-review` → `status:plan-approved` per `.claude/skills/coordination/issue-planning-mode/SKILL.md`. Implementation slice remains gated.
+```
+
+#### Patch 4 — Tighten "shallow water barge" claim (LOW, F5)
+
+In storyboard line 78:
+
+```diff
+-- **Verified in this planning wave:** `vessel_comparison_matrix.json` confirms the Shallow Water Barge pair is the highest pass-rate vessel-job pair with `pass_rate_pct = 100.0` and `cases_total = 30`.
++- **Verified in this planning wave:** `vessel_comparison_matrix.json` confirms the Shallow Water Barge × shallow_pipelay pair carries `pass_rate_pct = 100.0` and `cases_total = 30`. Three pairs tie at 100%: Large CSV × mudmat (18/18), Medium CSV × mudmat (18/18), and Shallow Water Barge × shallow_pipelay (30/30). The brochure leads on the SWB pair because it maps to the contractor-brochure shallow-water wedge — editorial choice, not unique fact.
+```
+
+#### Patch 5 — Specify legal-scan invocation (LOW, F7)
+
+In storyboard §"Legal & Evidence Gate (binding)" item 5:
+
+```diff
+-5. **Legal scan run** — `scripts/legal/legal-sanity-scan.sh` is run in a mode that scans the actual generated collateral and caption text, not only textual git diffs. If `--diff-only` is used, generated PNG/SVG/PDF/caption artifacts must first be tracked or otherwise explicitly passed to the scanner; output is archived alongside the asset commit.
++5. **Legal scan run** — `scripts/legal/legal-sanity-scan.sh --all --json` is run from repo root after assets are written to `docs/reports/gtm/assets/`. Scanner output is archived at `docs/reports/gtm/legal-scans/2026-04-XX-chart-pack-scan.json` alongside the asset commit. If the scanner does not natively scan binary chart artifacts, the implementation slice must either (a) extract caption text + figure metadata into a sidecar `.txt` companion per asset and rerun `--all`, (b) extend `scripts/legal/legal-sanity-scan.sh` with a `--include-glob` for `docs/reports/gtm/assets/`, or (c) document the manual review path explicitly. The flag combination is locked here so the implementation slice doesn't have to redecide.
+```
+
+(F6 and F8 are stylistic; suggest patching but not blocking.)
+
+### 5. User inputs needed before downstream #2556 brochure/outbound work
+
+These need owner sign-off before the implementation slice can render anything for outbound:
+
+1. **Headline-number framing.** Confirm the C1 caption headline should be (a) "case count: pending render-time recomputation" with the current 156-total disclosed, (b) restricted to "60 shallow-pipelay cases" matching the wedge framing, or (c) something else entirely. The 108 figure as quoted is wrong against the live matrix.
+2. **Standards completeness for C1.** Confirm DNV-OS-H101 should be cited in C1's caption (it's in `csv_hlv_vessels.json` `_references` and in plan AC §218). Confirm DNV-OS-F101 omission rationale is "superseded by DNV-ST-F101" or another reason.
+3. **Vessel-class scope for the brochure.** Confirm the 4 representative classes (Large CSV, Medium CSV, Large PLV, Shallow Water Barge) are sufficient for the week-of-April-1 send, or whether #2556 must wait for #1799 to expand the vessel set. Plan defaults to "ship 4-class to unblock #2556" but this is open.
+4. **Brand palette source.** Confirm the `aceengineer-website` brand contract version locked 2026-04-21 (per memory) is the canonical palette source for chart exports.
+5. **C4 inclusion decision.** Confirm whether the 17-row capability coverage map ships in the brochure or stays internal — currently storyboard tags C4 as "optional, recommended."
+6. **Legal-scan invocation flag combination.** Confirm whether (a) `legal-sanity-scan.sh --all --json` against staged assets is acceptable, (b) the scanner needs extension for binary asset coverage, or (c) a separate manual-review checklist replaces the scanner step for binary deliverables.
+7. **Asset home location.** Confirm `docs/reports/gtm/assets/` as the brochure asset directory (plan currently says "unless adversarial review rejects that home" — no reviewer has rejected, so default sticks unless owner objects).
+
+---
+
+End of review. With Patch 1 + Patch 2 + Patch 3 applied and this Claude artifact saved at `scripts/review/results/2026-04-29-plan-2555-claude.md`, the plan satisfies the cross-provider live-evidence gate (AC §213) and is ready for `status:plan-review`. The remaining patches (F2 inline-fix in Patch 1, F5/F7 patches) can land in the same wave or queue without blocking. Implementation/send remains explicitly gated on user `status:plan-approved`.
+
+Want me to /schedule a follow-up agent to verify the implementation slice's headline-number recomputation matches the live matrix at render time (single-shot, ~1 week out, after #2555 lands `status:plan-approved`)?

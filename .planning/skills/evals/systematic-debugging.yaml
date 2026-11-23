@@ -1,0 +1,25 @@
+version: 1
+wrk_id: WRK-1009
+skill_name: systematic-debugging
+skill_path: .claude/skills/software-development/systematic-debugging/SKILL.md
+evals:
+- eval_id: sd-cap-01
+  eval_type: capability
+  description: Core sections documented for systematic-debugging
+  checks:
+    required_sections:
+    - '## Overview'
+    - '## When to Use'
+    - '## The Four Phases'
+    - '## Red Flags'
+    - '## Quick Reference'
+- eval_id: sd-proc-01
+  eval_type: procedural
+  description: Additional documentation sections for systematic-debugging
+  checks:
+    required_sections:
+    - '## Phase 1: Root Cause Investigation'
+    - '## Phase 2: Pattern Analysis'
+    - '## Phase 3: Hypothesis and Testing'
+    - '## Phase 4: Implementation'
+    - '## Common Rationalizations'

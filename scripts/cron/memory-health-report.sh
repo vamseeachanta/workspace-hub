@@ -1,0 +1,139 @@
+#!/usr/bin/env bash
+# memory-health-report.sh — Weekly report on Claude/Hermes memory health.
+# Issue: #2313 (https://github.com/vamseeachanta/workspace-hub/issues/2313)
+# Companion: #1902 (memory quality gate before bridge commit)
+#
+# Scans ~/.hermes/memories/ and ~/.claude/projects/*/memory/ on the current
+# machine. Reports total size, top 10 largest files, stale entries (>90 days),
+# and duplicate topics (same stem across multiple memory dirs).
+#
+# Env overrides (testing):
+#   MEMORY_HEALTH_OUT_DIR      — override docs/reports output dir
+#   MEMORY_HEALTH_WEEK         — override ISO week (e.g. 2026-W16)
+#   MEMORY_HEALTH_DIRS         — colon-separated list of memory dirs to scan
+#   STATE_SIZE_WARN_MB         — warn threshold (default 5)
+#   STATE_SIZE_BLOCK_MB        — block threshold (default 20)
+set -uo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "${SCRIPT_DIR}/lib/cadence-common.sh"
+cadence_init_repo_root
+
+WEEK="${MEMORY_HEALTH_WEEK:-$(cadence_period weekly)}"
+OUT_DIR="${MEMORY_HEALTH_OUT_DIR:-${REPO_ROOT}/docs/reports}"
+OUT="${OUT_DIR}/memory-health-${WEEK}.md"
+WARN_MB="${STATE_SIZE_WARN_MB:-5}"
+BLOCK_MB="${STATE_SIZE_BLOCK_MB:-20}"
+STALE_DAYS="${MEMORY_HEALTH_STALE_DAYS:-90}"
+
+# Default scan roots — overridable
+if [[ -n "${MEMORY_HEALTH_DIRS:-}" ]]; then
+    IFS=':' read -ra SCAN_DIRS <<< "$MEMORY_HEALTH_DIRS"
+else
+    SCAN_DIRS=()
+    [[ -d "$HOME/.hermes/memories" ]] && SCAN_DIRS+=("$HOME/.hermes/memories")
+    # All claude-code project memory dirs
+    if [[ -d "$HOME/.claude/projects" ]]; then
+        while IFS= read -r d; do
+            SCAN_DIRS+=("$d")
+        done < <(find "$HOME/.claude/projects" -maxdepth 2 -type d -name memory 2>/dev/null)
+    fi
+fi
+
+mkdir -p "$OUT_DIR"
+
+# ── Collect ──────────────────────────────────────────────────────────────
+TMP_ALL="$(mktemp)"
+trap 'rm -f "$TMP_ALL"' EXIT
+
+total_bytes=0
+for d in "${SCAN_DIRS[@]}"; do
+    [[ -d "$d" ]] || continue
+    while IFS= read -r -d '' f; do
+        size=$(stat -c %s "$f" 2>/dev/null || stat -f %z "$f" 2>/dev/null || echo 0)
+        mtime=$(stat -c %Y "$f" 2>/dev/null || stat -f %m "$f" 2>/dev/null || echo 0)
+        printf "%d\t%d\t%s\n" "$size" "$mtime" "$f" >> "$TMP_ALL"
+        total_bytes=$(( total_bytes + size ))
+    done < <(find "$d" -type f -print0 2>/dev/null)
+done
+
+total_mb=$(awk "BEGIN{printf \"%.2f\", $total_bytes/1048576}")
+file_count=$(wc -l < "$TMP_ALL" | tr -d ' ')
+
+status="$(compute_status_band "$total_mb" "$WARN_MB" "$BLOCK_MB")"
+
+# ── Top 10 largest ───────────────────────────────────────────────────────
+top_rows="$(sort -rn "$TMP_ALL" | head -10 | awk -F'\t' '{
+    mb = $1 / 1048576;
+    printf "| %.2f | `%s` |\n", mb, $3
+}')"
+
+# ── Stale entries (mtime older than STALE_DAYS) ──────────────────────────
+now=$(date +%s)
+cutoff=$(( now - (STALE_DAYS * 86400) ))
+stale_rows="$(awk -F'\t' -v c="$cutoff" '$2 < c {
+    ts = strftime("%Y-%m-%d", $2);
+    printf "| `%s` | %s |\n", $3, ts
+}' "$TMP_ALL")"
+stale_count=$(printf "%s\n" "$stale_rows" | grep -c "^|" || true)
+
+# ── Duplicate topics (filename stems appearing in ≥2 different directories) ─
+dup_rows="$(awk -F'\t' '{
+    n = split($3, parts, "/"); fname = parts[n];
+    sub(/\.[^.]+$/, "", fname);        # strip extension → stem
+    dirpath = $3; sub("/" parts[n] "$", "", dirpath);
+    if (!(fname in firstdir)) { firstdir[fname] = dirpath; next }
+    if (firstdir[fname] != dirpath) {
+        dupdirs[fname] = dupdirs[fname] ? dupdirs[fname] ", " dirpath : firstdir[fname] ", " dirpath
+    }
+}
+END {
+    for (f in dupdirs) printf "| %s | %s |\n", f, dupdirs[f]
+}' "$TMP_ALL")"
+
+# ── Write report ─────────────────────────────────────────────────────────
+{
+    emit_report_header "memory-health" "$WEEK" "$status" "total memory is ${total_mb} MB across ${file_count} files (warn ${WARN_MB}MB, block ${BLOCK_MB}MB)"
+    echo "Scanned ${#SCAN_DIRS[@]} memory root(s):"
+    for d in "${SCAN_DIRS[@]}"; do echo "- \`${d/#$HOME/~}\`"; done
+    echo
+
+    echo "## Top 10 largest memory files"
+    echo
+    echo "| Size (MB) | Path |"
+    echo "|-----------|------|"
+    if [[ -n "$top_rows" ]]; then
+        echo "$top_rows"
+    else
+        echo "| — | _(no files)_ |"
+    fi
+    echo
+
+    echo "## Stale entries (last modified > ${STALE_DAYS} days)"
+    echo
+    if (( stale_count > 0 )); then
+        echo "| Path | Last modified |"
+        echo "|------|---------------|"
+        echo "$stale_rows"
+    else
+        echo "_None — all entries recent._"
+    fi
+    echo
+
+    echo "## Duplicate topics across memory dirs (same filename stem)"
+    echo
+    if [[ -n "$dup_rows" ]]; then
+        echo "| Topic | Directories |"
+        echo "|-------|-------------|"
+        echo "$dup_rows"
+    else
+        echo "_None — memory topics are unique per directory._"
+    fi
+    echo
+
+    echo "## Source"
+    echo
+    echo "Generated by \`scripts/cron/memory-health-report.sh\` (#2313, companion #1902)."
+} > "$OUT"
+
+echo "[memory-health] wrote $OUT (status: $status, ${total_mb}MB across ${file_count} files, ${stale_count} stale)"

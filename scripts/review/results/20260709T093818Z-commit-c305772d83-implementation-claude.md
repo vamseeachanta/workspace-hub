@@ -1,0 +1,23 @@
+### Verdict: APPROVE
+
+### Summary
+Well-engineered, defensively written Linux voice-dictation installer with genuinely strong TDD coverage. Verified empirically in the worktree: full test suite passes live (behavioral + companion static contracts, ALL PASS), the pycache git-check-ignore assertion is satisfied by the pre-existing repo-global .gitignore:32, the sourced detect-os.sh dependency exists, and shellcheck is clean except one intentional idiom. Security posture is above par for shell tooling: PID-reuse kill safety via /proc cmdline verification, symlink/ownership-checked 700 state dirs, correct single-quote shell escaping round-trip-tested by executing the stored gsettings command. Only P3-level findings remain.
+
+### Issues Found
+- [P3] tools/voice-dictation/codex-dictate.sh:163-169 (acquire_toggle_lock mkdir fallback): if flock is absent and a prior run dies uncleanly (SIGKILL, power loss — EXIT trap does not fire), the stale toggle.lock.d directory persists and every subsequent hotkey press exits 'dictation busy' until manual rmdir. The flock path is self-healing; the fallback has no staleness recovery (e.g., age/pid check). Low likelihood since flock ships with util-linux on virtually all target machines, and the fallback path is untested (test guards on `command -v flock`).
+- [P3] scripts/agents/install-voice-dictation.sh:39: `script_dir="${BASH_SOURCE[0]%/*}"` leaves the filename unchanged when the script is invoked without a slash (e.g. `bash install-voice-dictation.sh` from inside scripts/agents/), making the subsequent `cd` fail under set -e with an opaque error. All documented invocation paths contain a slash, so this is robustness-only; `$(dirname ...)` (as used in the test files) is the safer idiom.
+- [P3] scripts/agents/install-voice-dictation.sh (write_inert_hotkey): re-running bootstrap while a previously working USB mic is temporarily unplugged downgrades an ACTIVE hotkey binding to the inert warning command, even though the launcher itself already handles a dead stored device at runtime via auto-detect fallback. The notify message does guide the user to re-run the installer, so it is recoverable, but it silently discards a working binding on an unlucky bootstrap run.
+- [P3] scripts/agents/tests/test_voice_dictation_detection.sh:378-381 (assert_file_not_contains): a missing file records a FAIL with the misleading message 'unexpected <needle> in <file>'. Conservative direction (fails rather than passes), cosmetic only.
+- [P3] scripts/agents/install-voice-dictation.sh:98: in the linked-worktree case, detect_helper resolves against repo_root (the invoking worktree) while the hotkey binds to install_root (primary checkout) — the install-time probe uses the worktree's copy of the helper. Harmless when contents match (they must, since the change is on main per the guard), but inconsistent with the primary-checkout binding intent.
+
+### Suggestions
+- Silence SC1007 and improve readability at tools/voice-dictation/codex-dictate.sh:145 by writing DICTATE_DEVICE_ALSA='' instead of DICTATE_DEVICE_ALSA= — same semantics, no shellcheck warning.
+- Add staleness recovery to the mkdir lockdir fallback (e.g., record $$ in the lockdir and reclaim when that pid is dead), or drop the fallback entirely and require flock — it is effectively universal on Linux and the fallback path currently has zero test coverage.
+- Consider making write_inert_hotkey preserve an existing ACTIVE binding (detect whether the stored command already points at the launcher) instead of overwriting it, since the launcher self-heals a dead stored device at runtime.
+- Per the repo's own hard gate #6, confirm scripts/legal/legal-sanity-scan.sh has been run against this commit before merge (nothing in the diff looks like a client identifier, but the gate expects the scan artifact).
+- ~/.local/bin may not be on PATH on stock non-login GNOME sessions; a one-line PATH hint in the installer's 'active' output would save a support round-trip for the codex-dictate CLI entry point.
+
+### Questions for Author
+- Is the mkdir-lockdir fallback (no-flock path) intended to be reachable on any real target machine, or can it be removed in favor of a hard flock requirement?
+- write_inert_hotkey overwrites an existing binding whenever detection fails at install time — is downgrading a previously ACTIVE binding to inert the intended behavior for the transient unplugged-mic case, given the launcher already falls back to auto-detect at runtime?
+- The commit message says 'per #3403 restored' branch-only decision — was the historical handoff doc content (docs/session-handoffs/2026-06-30-...) reconstructed or recovered verbatim from the original branch?

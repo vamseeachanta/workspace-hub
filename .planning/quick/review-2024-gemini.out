@@ -1,0 +1,36 @@
+Agent loading error: Failed to load agent from /mnt/local-analysis/workspace-hub/.gemini/agents/gsd-debugger.md: Validation failed: Agent Definition:
+Unrecognized key(s) in object: 'permissionMode'Agent loading error: Failed to load agent from /mnt/local-analysis/workspace-hub/.gemini/agents/gsd-executor.md: Validation failed: Agent Definition:
+Unrecognized key(s) in object: 'permissionMode'1. **Verdict:** MAJOR
+2. **Ready for user approval:** No
+3. **Retrieval adequacy:** insufficient
+
+4. **Top blockers:**
+   1. **Ignored Migration Strategy:** The issue mandates a strict 5-phase migration plan (Build, Test, Compare, Replace, Backfill). The plan treats the work as a single big-bang replacement, which introduces massive risk of pipeline failure.
+   2. **Missing CLI Architecture:** The issue specifies a precise CLI interface with distinct actions (`--action delete-completed`, `--dry-run`, `--state-report`, `--action check-replies`). The plan's pseudocode outlines a single monolithic loop and completely misses the command-driven dispatch model.
+   3. **Unresolved Core Architecture:** The plan lists the canonical unit of state (message vs. thread), attachment handling, and state file schema as "Open Questions" or "Gaps". A plan must *resolve* these design decisions before implementation. (Note: The issue already explicitly dictates tracking "thread state").
+
+5. **Critical findings:**
+   - **Total Omission of CLI Contract:** The proposed script interface is completely absent from the plan's design and pseudocode. The implementation would fail to provide the requested operational tooling (`--state-report`, `--dry-run`, etc.).
+   - **Abdication of Design Responsibility:** Leaving "should the first implementation store state per message or per thread" as an open question violates the planning phase's purpose. The developer cannot safely start without this being decided (and the issue already answered it: Thread).
+   - **Missing Migration Safety:** By ignoring Phase 1-5 from the issue, the plan fails to outline how `gmail-archive-extract.py` and the new `gmail-extract-and-act.py` will run in parallel during Phase 2 & 3.
+
+6. **High findings:**
+   - **Incomplete Template Scope:** The issue explicitly requires templates for CRE listings, Client emails, Tenant comms, and Invoices. The plan only acknowledges and tests CRE listings, dropping 75% of the extraction scope.
+   - **Missing Gmail Label Contract:** The issue dictates specific Gmail labels (`wh-email/extracted`, `wh-email/awaiting-reply`, `wh-email/completed`). The plan fails to incorporate these specific labels into the state transitions or pseudocode.
+   - **Unclear Legal Scan Integration:** The plan states "apply legal scan before commit" but does not detail how a Python script will invoke `legal-sanity-scan.sh`, handle its exit codes, or manage git rollbacks if a commit fails the scan.
+
+7. **Medium findings:**
+   - **Inadequate TDD Coverage:** The test list lacks coverage for the CLI interface flags (dry-run, state-report), the specific Gmail labels, and the failure modes of the legal scan.
+   - **Concurrency/State Locking Risk:** The plan proposes a local state file (`~/.hermes/email-state.yaml`) but does not address file locking or concurrent execution risks, which are critical for queue-based pipelines.
+
+8. **Low findings:**
+   - **Pseudocode Abstraction:** The pseudocode is too high-level ("mark/delete per policy") to guide the specific queue and state machine logic required for this feature.
+
+9. **Required revisions before user approval:**
+   - Incorporate the exact 5-phase migration strategy from the issue. Clarify that `gmail-archive-extract.py` will not be modified/removed until Phase 4.
+   - Redesign the pseudocode and plan structure to implement the exact CLI interface and action dispatching specified in the issue.
+   - Define the concrete YAML schema for `~/.hermes/email-state.yaml`.
+   - Remove the "Open Questions" by explicitly defining the unit of work as the Thread (per the issue) and defining the attachment handling strategy.
+   - Expand the scope, deliverables, and TDD list to include all 4 required domain templates (CRE, Client, Tenant, Invoices).
+   - Detail the specific python-to-shell integration for running `legal-sanity-scan.sh` and how git commits are orchestrated.
+   - Explicitly map the `wh-email/*` Gmail labels to the local state file transitions in the plan.

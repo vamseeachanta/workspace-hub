@@ -1,0 +1,29 @@
+[
+  {
+    "id": "Q1",
+    "question": "What workflow should mkt-a use to turn client data into report-layer results?",
+    "expected_source_ids": [
+      "mkt-a-KP-001",
+      "mkt-a-KP-002",
+      "mkt-a-KP-003"
+    ]
+  },
+  {
+    "id": "Q2",
+    "question": "What redaction posture applies before public or non-client promotion?",
+    "expected_source_ids": [
+      "mkt-a-KP-004"
+    ]
+  },
+  {
+    "id": "Q3",
+    "question": "What sources support the proj-a current/rudder force calculation?",
+    "expected_source_ids": [
+      "mkt-a-KP-008",
+      "mkt-a-KP-009",
+      "mkt-a-KP-010",
+      "mkt-a-KP-011",
+      "mkt-a-KP-012"
+    ]
+  }
+]

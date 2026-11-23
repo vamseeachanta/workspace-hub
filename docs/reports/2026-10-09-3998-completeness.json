@@ -1,0 +1,18 @@
+{
+  "completeness_pct": 100,
+  "cls": "evidence",
+  "threshold": 80,
+  "passed": true,
+  "snapshot_sha": null,
+  "issue_number": 3998,
+  "generated_at": "2026-10-09T15:44:24.327457+00:00",
+  "evidence": [
+    "Objective issue templates objective.yml and objective.md contain required fields: met (w=1)",
+    "Standard role agents exist with alias models and closeout boundaries: met (w=1)",
+    "/objective dry-run renders lane contracts for live #3989 and #3998: met (w=1)",
+    "Closed issue dry-run completed on #3955 and was posted to #3989: met (w=1)",
+    "Canonical-repo sync helper has dry-run, missing-repo guard, and tested copy path: met (w=1)",
+    "Focused tests passed: tests/coordination objective suites: met (w=1)",
+    "Adversarial code review final verdict APPROVE: met (w=1)"
+  ]
+}

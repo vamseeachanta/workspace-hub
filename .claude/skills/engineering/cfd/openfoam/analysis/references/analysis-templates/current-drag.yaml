@@ -1,0 +1,76 @@
+# Current Drag Analysis Template — OpenFOAM simpleFoam
+# Copy this file, edit parameters, run with run-analysis.sh
+
+analysis:
+  title: "Current Drag on Cylindrical Structure"
+  objective: "Determine drag coefficient and drag force for steady current flow"
+  type: steady_rans
+  standard: "DNV-RP-C205:2021 Environmental Conditions and Environmental Loads"
+
+geometry:
+  source: blockMesh
+  description: "Cylinder in cross-flow"
+  diameter: 2.5        # m
+  length: 10.0         # m (span)
+  domain:
+    upstream: 5         # diameters
+    downstream: 15      # diameters
+    lateral: 5          # diameters
+    height: 5           # diameters
+
+flow:
+  fluid: seawater
+  density: 1025         # kg/m³
+  kinematic_viscosity: 1.19e-6  # m²/s
+  velocity: 1.2         # m/s
+  reynolds_number: null  # auto-computed
+
+mesh:
+  method: blockMesh
+  target_cells: 50000
+  refinement_zones:
+    - {name: "near_cylinder", distance: 2.0, cell_size: 0.05}
+    - {name: "wake", downstream: 10, cell_size: 0.1}
+  boundary_layer:
+    first_cell_height: 0.001  # m (target y+ ~30-50)
+    growth_ratio: 1.2
+    layers: 10
+
+solver:
+  application: simpleFoam
+  turbulence_model: kOmegaSST
+  end_time: 2000
+  write_interval: 100
+  relaxation:
+    U: 0.7
+    p: 0.3
+    k: 0.7
+    omega: 0.7
+
+acceptance:
+  convergence:
+    p: 1.0e-4
+    U: 1.0e-4
+    k: 1.0e-4
+    omega: 1.0e-4
+  validation:
+    method: "Compare Cd with DNV-RP-C205 Table 6-5"
+    expected_Cd: 1.0
+    tolerance_percent: 20
+
+outputs_required:
+  - {name: "Drag coefficient", symbol: "C_D", unit: "-"}
+  - {name: "Drag force per unit length", symbol: "f_D", unit: "N/m"}
+  - {name: "Total drag force", symbol: "F_D", unit: "kN"}
+
+assumptions:
+  - "Steady-state flow — no wave-current interaction"
+  - "Smooth cylinder surface — no marine growth"
+  - "Uniform current profile over cylinder height"
+  - "Incompressible flow"
+  - "Fully turbulent (Re > 10^4)"
+
+references:
+  - "DNV-RP-C205:2021 Environmental Conditions and Environmental Loads"
+  - "Tritton, D.J. (1959) Experiments on the flow past a circular cylinder"
+  - "OpenFOAM v2312 ESI Group"

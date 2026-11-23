@@ -1,0 +1,11 @@
+# Template for config/.repo-types.local (gitignored). Copy to .repo-types.local
+# and fill in the real per-host repo type map. install_factory_enhanced.sh reads
+# it. Real repo names + descriptions are kept out of this public repo
+# (#3095/#3098); provision from the private aceengineer-strategy.
+#
+# Format: one entry per line — <repo>|<type>|<focus label>|<key tech>
+#   type is one of: python_analysis | engineering | web_app
+#   '#' starts a comment; blank lines ignored.
+# Example:
+# digitalmodel|python_analysis|Digital Model & FDAS|Python, NumPy, Pandas, Plotly
+# worldenergydata|python_analysis|World Energy Data Analysis|Python, Pandas, Plotly, UV

@@ -1,0 +1,54 @@
+{
+  "date": "2026-04-02",
+  "overall_score": 65,
+  "total_skills": 568,
+  "components": {
+    "eval_coverage": {
+      "score": 8,
+      "weight": 25,
+      "detail": "51/568 skills have evals",
+      "evals_count": 51,
+      "total_skills": 568
+    },
+    "eval_pass_rate": {
+      "score": 100,
+      "weight": 25,
+      "detail": "96/96 checks pass",
+      "pass": 96,
+      "fail": 0,
+      "total_checks": 96
+    },
+    "reference_health": {
+      "score": 85,
+      "weight": 20,
+      "detail": "84 broken refs",
+      "broken_refs": 84
+    },
+    "usage_health": {
+      "score": 44,
+      "weight": 15,
+      "detail": "316 dead skills",
+      "dead_skills": 316,
+      "total_skills": 567
+    },
+    "description_qa": {
+      "score": 99,
+      "weight": 10,
+      "detail": "1 violations",
+      "violations": 1
+    },
+    "size_compliance": {
+      "score": 99,
+      "weight": 5,
+      "detail": "2 oversized",
+      "oversized": 2
+    }
+  },
+  "actions": [
+    "Generate evals for 517 uncovered skills",
+    "Investigate 316 dead skills for retirement",
+    "Fix 84 broken file path references",
+    "Fix 1 description violations",
+    "Split 2 oversized skills"
+  ]
+}

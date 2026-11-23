@@ -1,0 +1,16 @@
+{
+  "issue": 2555,
+  "chart_id": "C2",
+  "title": "Pipelay Operating Envelope",
+  "headline": "Shallow Water Barge screens GO across 8in\u201324in at 7m\u201330m while Large PLV is draft-limited at the shallowest row.",
+  "data_inputs": [
+    "digitalmodel/examples/demos/gtm/results/vessel_comparison_matrix.json",
+    "digitalmodel/examples/demos/gtm/data/pipelay_vessels.json"
+  ],
+  "disclosure": "Vessel parameters are representative classes only; not measured telemetry or exact specifications of any named vessel.",
+  "assets": {
+    "png": "docs/reports/gtm/assets/c2-pipelay-operating-envelope.brochure.png",
+    "svg": "docs/reports/gtm/assets/c2-pipelay-operating-envelope.print.svg",
+    "pdf": "docs/reports/gtm/assets/c2-pipelay-operating-envelope.1page.pdf"
+  }
+}

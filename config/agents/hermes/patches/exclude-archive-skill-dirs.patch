@@ -1,0 +1,19 @@
+diff --git a/agent/skill_utils.py b/agent/skill_utils.py
+index 9f54eb0f..c47709d4 100644
+--- a/agent/skill_utils.py
++++ b/agent/skill_utils.py
+@@ -24,7 +24,13 @@ PLATFORM_MAP = {
+     "windows": "win32",
+ }
+ 
+-EXCLUDED_SKILL_DIRS = frozenset((".git", ".github", ".hub"))
++EXCLUDED_SKILL_DIRS = frozenset((
++    ".git", ".github", ".hub",
++    # Skip underscore-prefixed convention dirs from workspace-hub ecosystem
++    "_archive", "_internal", "_runtime", "_core",
++    # Skip non-skill directories
++    "session-logs",
++))
+ 
+ # ── Lazy YAML loader ─────────────────────────────────────────────────────
+ 

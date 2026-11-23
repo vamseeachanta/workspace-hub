@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Model-Generation Pipeline Work Review · workspace-hub</title>
+<style>
+:root{--fg:#1a2230;--muted:#5b6675;--bg:#f7f8fa;--card:#fff;--line:#e2e6ec;--brand:#5b3fd6;--ok:#1f9d55;--new:#b45309;--newbg:#fff7ed}
+*{box-sizing:border-box}
+body{margin:0;font:16px/1.6 -apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:var(--fg);background:var(--bg)}
+header.site{padding:14px 22px;background:var(--card);border-bottom:1px solid var(--line);display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+footer.site{padding:14px 22px;border-top:1px solid var(--line);color:var(--muted);font-size:14px;margin-top:48px;background:var(--card)}
+.home{color:var(--brand);font-weight:700;text-decoration:none}
+nav a{color:var(--muted);text-decoration:none;font-size:14px}
+nav a:hover{color:var(--brand)}
+main{max-width:1080px;margin:0 auto;padding:28px 22px}
+h1{font-size:28px;margin:0 0 4px}
+h2{font-size:20px;margin:1.8em 0 .5em;border-bottom:1px solid var(--line);padding-bottom:.25em}
+.sub{color:var(--muted);margin:0 0 22px}
+a{color:var(--brand)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:18px}
+/* pipeline */
+.pipe{display:flex;gap:0;flex-wrap:wrap;align-items:stretch}
+.stage{flex:1 1 150px;min-width:140px;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 14px;position:relative;text-align:center}
+.stage .k{font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted)}
+.stage .v{font-weight:700;margin:4px 0 2px}
+.stage .d{font-size:12.5px;color:var(--muted)}
+.arrow{align-self:center;color:var(--brand);font-size:22px;padding:0 6px;flex:0 0 auto}
+.stage.gap{border-color:var(--new);background:var(--newbg)}
+.stage.gap .v{color:var(--new)}
+.legend{display:flex;gap:20px;flex-wrap:wrap;margin:14px 0 0;font-size:13.5px;color:var(--muted)}
+.legend span{display:inline-flex;align-items:center;gap:7px}
+.sw{width:14px;height:14px;border-radius:3px;display:inline-block;border:1px solid rgba(0,0,0,.15)}
+/* matrix */
+table{border-collapse:collapse;width:100%;font-size:14px;background:var(--card);margin-top:6px}
+th,td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+th{background:#f0f3f7}
+td.mature{color:var(--ok)}
+.tag{display:inline-block;font-size:11px;font-weight:700;padding:1px 6px;border-radius:4px;vertical-align:middle}
+.tag.mature{background:#e7f6ee;color:var(--ok)}
+.tag.new{background:var(--newbg);color:var(--new)}
+.tw{overflow-x:auto}
+/* PR list */
+ul.prs{list-style:none;padding:0;margin:6px 0}
+ul.prs li{border:1px solid var(--line);border-radius:8px;padding:10px 14px;margin:8px 0;background:var(--card)}
+ul.prs .pr{font-weight:700}
+ul.prs .meta{font-size:12.5px;color:var(--muted)}
+.note{background:#f0f3f7;border-left:3px solid var(--brand);border-radius:6px;padding:14px 18px;margin:8px 0 0}
+.note strong{color:var(--fg)}
+code{background:#eef1f5;padding:1px 5px;border-radius:4px;font-size:13px}
+.closed{color:var(--muted);font-size:12px;font-weight:700;border:1px solid var(--line);border-radius:4px;padding:1px 6px}
+</style>
+</head>
+<body>
+<header class="site">
+  <a class="home" href="index.html">workspace-hub</a>
+  <nav><a href="index.html">Overview</a> · <a href="https://github.com/vamseeachanta/digitalmodel">digitalmodel</a> · <a href="https://github.com/vamseeachanta/workspace-hub">source</a></nav>
+</header>
+<main>
+  <h1>OrcaWave / AQWA / OrcaFlex model-generation pipeline</h1>
+  <p class="sub">Session work review &mdash; 2026-06-28 &middot; repo <a href="https://github.com/vamseeachanta/digitalmodel">vamseeachanta/digitalmodel</a> (MIT OSS) &middot; LLM-assisted authoring front-end for hydrodynamic &amp; global-analysis model generation.</p>
+
+  <div class="note">
+    <strong>One-line finding.</strong> The deterministic middle of the pipeline (spec &rarr; licensed-program input &rarr; run) was already mature for OrcaWave/AQWA diffraction (<code>DiffractionSpec</code>) and OrcaFlex global analysis (<code>ProjectInputSpec</code>). The real gap was the <em>LLM authoring front-end</em> that turns a project's stated intent into a spec, plus a <em>symmetric OrcaFlex inverse resolver</em>. This session closed both.
+  </div>
+
+  <h2>Pipeline vision</h2>
+  <div class="card">
+    <div class="pipe">
+      <div class="stage"><div class="k">Source</div><div class="v">Project SSOT</div><div class="d">Stated intent &amp; facts</div></div>
+      <div class="arrow">&rarr;</div>
+      <div class="stage gap"><div class="k">Authoring</div><div class="v">LLM</div><div class="d">Extract stated facts only, with provenance</div></div>
+      <div class="arrow">&rarr;</div>
+      <div class="stage"><div class="k">Analysis SSOT</div><div class="v">Spec YAML</div><div class="d">DiffractionSpec / ProjectInputSpec</div></div>
+      <div class="arrow">&rarr;</div>
+      <div class="stage"><div class="k">Bridge</div><div class="v">Program input</div><div class="d">OrcaWave / AQWA / OrcaFlex input deck</div></div>
+      <div class="arrow">&rarr;</div>
+      <div class="stage"><div class="k">Result</div><div class="v">Validated output</div><div class="d">Licensed run &rarr; checked results</div></div>
+    </div>
+    <div class="legend">
+      <span><span class="sw" style="background:#fff;border-color:#e2e6ec"></span> Already mature (this session: extended)</span>
+      <span><span class="sw" style="background:#fff7ed;border-color:#b45309"></span> Gap closed this session</span>
+    </div>
+  </div>
+  <p class="sub" style="margin-top:14px">The LLM <em>authors</em> the spec; a deterministic resolver fills any gap the LLM could not source from stated facts &mdash; and ledgers every fill. The licensed program (OrcaWave, AQWA, OrcaFlex) consumes the generated input deck unchanged.</p>
+
+  <h2>Status matrix</h2>
+  <div class="tw">
+  <table>
+    <thead>
+      <tr>
+        <th style="width:20%">Program / spec</th>
+        <th>LLM authoring</th>
+        <th>Spec YAML (analysis SSOT)</th>
+        <th>Input generation</th>
+        <th>Licensed run &rarr; validated output</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>OrcaWave / AQWA</strong><br><span class="meta">diffraction &mdash; <code>DiffractionSpec</code></span></td>
+        <td><span class="tag new">NEW</span> <code>spec_author</code> keystone (#1097); <code>claude -p</code> CLI author (#1100); shared <code>common.spec_authoring</code> (#1103)</td>
+        <td class="mature"><span class="tag mature">MATURE</span> + broadened outcomes: mean_drift / diagonal_qtf / full_qtf (#1097); riser + pipeline outcomes (#1104)</td>
+        <td class="mature"><span class="tag mature">MATURE</span> existing forward path</td>
+        <td class="mature"><span class="tag mature">MATURE</span> existing</td>
+      </tr>
+      <tr>
+        <td><strong>OrcaFlex</strong><br><span class="meta">global analysis &mdash; <code>ProjectInputSpec</code></span></td>
+        <td><span class="tag new">NEW</span> OrcaFlex LLM front-end on shared <code>common.spec_authoring</code> (#1103)</td>
+        <td class="mature"><span class="tag mature">MATURE</span> existing <code>ProjectInputSpec</code></td>
+        <td><span class="tag new">NEW</span> symmetric inverse resolver + <code>common.assumption_ledger</code> (#1101, epic #1096 closed); forward path mature</td>
+        <td class="mature"><span class="tag mature">MATURE</span> existing</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h2>Epics</h2>
+  <div class="card">
+    <ul style="margin:0;padding-left:20px">
+      <li><a href="https://github.com/vamseeachanta/digitalmodel/issues/1095">#1095</a> &mdash; LLM spec-authoring front-end (the missing authoring layer).</li>
+      <li><a href="https://github.com/vamseeachanta/digitalmodel/issues/1096">#1096</a> &mdash; OrcaFlex inverse resolver (symmetric gap-fill). <span class="closed">CLOSED</span></li>
+    </ul>
+  </div>
+
+  <h2>Merged PRs (digitalmodel <code>main</code>)</h2>
+  <ul class="prs">
+    <li><span class="pr"><a href="https://github.com/vamseeachanta/digitalmodel/pull/1097">PR #1097</a></span> &mdash; diffraction <code>spec_author</code> keystone; broadened diffraction outcomes (mean_drift, diagonal_qtf, full_qtf). <span class="meta">Establishes the authoring entry point for OrcaWave/AQWA.</span></li>
+    <li><span class="pr"><a href="https://github.com/vamseeachanta/digitalmodel/pull/1100">PR #1100</a></span> &mdash; <code>claude -p</code> CLI author backend &mdash; default LLM backend, no API key required. <span class="meta">Runs via the Claude CLI subscription surface.</span></li>
+    <li><span class="pr"><a href="https://github.com/vamseeachanta/digitalmodel/pull/1101">PR #1101</a></span> &mdash; OrcaFlex inverse resolver + shared <code>common.assumption_ledger</code>. <span class="meta">Makes OrcaFlex symmetric with diffraction; every gap-fill is ledgered.</span></li>
+    <li><span class="pr"><a href="https://github.com/vamseeachanta/digitalmodel/pull/1103">PR #1103</a></span> &mdash; OrcaFlex LLM front-end + shared <code>common.spec_authoring</code>. <span class="meta">Unifies the authoring layer across both spec families.</span></li>
+    <li><span class="pr"><a href="https://github.com/vamseeachanta/digitalmodel/pull/1104">PR #1104</a></span> &mdash; riser + pipeline diffraction outcomes. <span class="meta">Extends supported outcome types for slender-structure work.</span></li>
+  </ul>
+
+  <h2>Design note &mdash; no silent assumptions</h2>
+  <div class="note">
+    <strong>Separation of duties.</strong> The LLM extracts <em>only stated facts</em> from the project SSOT, each carrying provenance back to its source. It is never asked to invent an engineering value. Where the spec still has gaps, a <em>deterministic resolver</em> fills them from defaults &mdash; and records each fill in an <strong>assumption ledger</strong> (<code>common.assumption_ledger</code>). Nothing enters the analysis SSOT unsourced and untracked. This realizes the no-silent-assumptions contract (<a href="https://github.com/vamseeachanta/digitalmodel/issues/622">digitalmodel #622</a>): every value in the generated input deck is traceable to either a cited project fact or a ledgered default, so a reviewer can audit exactly what was stated versus assumed before any licensed run consumes the deck.
+  </div>
+</main>
+<footer class="site">
+  <p>Work-review artifact &middot; public-safe (OSS engineering, no client data) &middot; published from the workspace-hub Pages allowlist. <a href="https://github.com/vamseeachanta/workspace-hub">source</a></p>
+</footer>
+</body>
+</html>

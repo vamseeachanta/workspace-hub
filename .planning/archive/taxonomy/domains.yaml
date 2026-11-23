@@ -1,0 +1,361 @@
+# Canonical Domain Taxonomy — Workspace Hub Ecosystem
+# Single source of truth for domain classification across all specs.
+# Other files should reference domain IDs defined here.
+
+schema_version: "1.0.0"
+generated_at: "2026-03-25"
+purpose: "Canonical domain taxonomy for workspace-hub ecosystem"
+note: "Single source of truth. Other files should reference domain IDs from here."
+
+domains:
+
+  - id: marine_offshore
+    label: "Marine & Offshore Engineering"
+    description: >
+      Structural, mooring, riser, subsea, and marine operations engineering
+      for offshore platforms, FPSOs, and subsea systems.
+    sub_domains:
+      - id: mooring
+        label: "Mooring Systems"
+      - id: riser
+        label: "Riser Analysis"
+      - id: structural
+        label: "Structural Analysis"
+      - id: fatigue
+        label: "Fatigue Assessment"
+      - id: viv
+        label: "Vortex-Induced Vibration"
+      - id: marine_ops
+        label: "Marine Operations"
+      - id: subsea
+        label: "Subsea Systems"
+      - id: asset_integrity
+        label: "Asset Integrity"
+      - id: aqwa
+        label: "AQWA / Motion Analysis"
+    aliases:
+      skills_graph: marine_offshore
+      catalog: marine_offshore
+      capability_tiers: [structural, subsea, marine_ops, asset_integrity]
+      resource_intelligence: [offshore-engineering, fatigue, mooring-analysis, viv]
+
+  - id: hydrodynamics
+    label: "Hydrodynamics & Wave Modeling"
+    description: >
+      Wave theory, diffraction/radiation analysis, sea state modeling,
+      metocean data processing, and wave-structure interaction.
+    sub_domains:
+      - id: wave_theory
+        label: "Wave Theory & Sea States"
+      - id: diffraction
+        label: "Diffraction / Radiation"
+      - id: metocean
+        label: "Metocean Data"
+      - id: signal
+        label: "Signal Processing"
+    aliases:
+      skills_graph: ~  # listed as sub_domain of marine_offshore
+      catalog: hydrodynamics
+      capability_tiers: [hydrodynamics]
+      resource_intelligence: [hydrodynamics]
+
+  - id: fea_structural
+    label: "Finite Element Analysis & Structural Engineering"
+    description: >
+      General-purpose finite element analysis, mesh generation, linear and
+      nonlinear structural mechanics, and solid mechanics simulation.
+    sub_domains:
+      - id: linear_static
+        label: "Linear Static Analysis"
+      - id: nonlinear
+        label: "Nonlinear Analysis"
+      - id: dynamics
+        label: "Structural Dynamics"
+      - id: mesh_generation
+        label: "Mesh Generation"
+    aliases:
+      skills_graph: ~  # partially under marine_offshore.structural
+      catalog: fea_structural
+      capability_tiers: [structural]
+      resource_intelligence: []
+
+  - id: cfd
+    label: "Computational Fluid Dynamics"
+    description: >
+      Turbulence modeling, multiphase flow, heat transfer simulation,
+      and fluid-structure interaction using CFD solvers.
+    sub_domains:
+      - id: turbulence
+        label: "Turbulence Modeling"
+      - id: multiphase
+        label: "Multiphase Flow"
+      - id: fsi
+        label: "Fluid-Structure Interaction"
+      - id: heat_transfer
+        label: "Heat Transfer"
+    aliases:
+      skills_graph: ~
+      catalog: cfd
+      capability_tiers: []
+      resource_intelligence: []
+
+  - id: oil_and_gas
+    label: "Oil & Gas / Petroleum Engineering"
+    description: >
+      Reservoir simulation, production engineering, pipeline engineering,
+      flow assurance, and petroleum economics.
+    sub_domains:
+      - id: reservoir
+        label: "Reservoir Simulation"
+      - id: production
+        label: "Production Engineering"
+      - id: pipeline
+        label: "Pipeline Engineering"
+      - id: flow_assurance
+        label: "Flow Assurance"
+    aliases:
+      skills_graph: ~
+      catalog: [oil_and_gas, pipeline_flow_assurance]
+      capability_tiers: []
+      resource_intelligence: []
+
+  - id: energy_data
+    label: "Energy Data & Economics"
+    description: >
+      Energy market data aggregation, field development economics, production
+      forecasting, regulatory data (BSEE, EIA, SODIR), and incident analysis.
+    sub_domains:
+      - id: production_data
+        label: "Production Data"
+      - id: economics
+        label: "Field Development Economics"
+      - id: incidents
+        label: "Safety & Incident Data"
+      - id: web_scraping
+        label: "Web Scraping & Data Acquisition"
+    aliases:
+      skills_graph: energy_data
+      catalog: ~  # oil_and_gas overlaps
+      capability_tiers: []
+      resource_intelligence: []
+
+  - id: data_science
+    label: "Data Science & Scientific Computing"
+    description: >
+      Numerical computing, data transformation, statistical analysis,
+      machine learning, and scientific Python ecosystem tooling.
+    sub_domains:
+      - id: transformation
+        label: "Data Transformation"
+      - id: statistics
+        label: "Statistical Analysis"
+      - id: ml
+        label: "Machine Learning"
+      - id: scientific_computing
+        label: "Scientific Computing"
+    aliases:
+      skills_graph: data_processing
+      catalog: data_science
+      capability_tiers: []
+      resource_intelligence: []
+
+  - id: gis_geospatial
+    label: "GIS & Geospatial Analysis"
+    description: >
+      Geographic information systems, coordinate reference systems,
+      spatial analysis, and geospatial data formats.
+    sub_domains:
+      - id: crs
+        label: "Coordinate Reference Systems"
+      - id: formats
+        label: "Geospatial Formats"
+      - id: qgis
+        label: "QGIS Integration"
+      - id: blender
+        label: "3D / Blender GIS"
+    aliases:
+      skills_graph: gis
+      catalog: gis_geospatial
+      capability_tiers: []
+      resource_intelligence: []
+
+  - id: cad_geometry
+    label: "CAD & Geometry Processing"
+    description: >
+      3D modeling, parametric design, geometry processing, STEP/IGES
+      interchange, and CAD kernel integration.
+    sub_domains:
+      - id: parametric
+        label: "Parametric Design"
+      - id: interchange
+        label: "Format Interchange (STEP/IGES)"
+      - id: mesh
+        label: "Surface & Volume Meshing"
+    aliases:
+      skills_graph: ~
+      catalog: cad_geometry
+      capability_tiers: []
+      resource_intelligence: []
+
+  - id: visualization
+    label: "Visualization & Post-Processing"
+    description: >
+      Scientific visualization, dashboards, interactive plots, 3D
+      rendering, and engineering report charting.
+    sub_domains:
+      - id: plotly
+        label: "Plotly / Interactive Charts"
+      - id: dashboards
+        label: "Dashboards"
+      - id: 3d_viz
+        label: "3D Visualization"
+      - id: post_processing
+        label: "Simulation Post-Processing"
+    aliases:
+      skills_graph: data_processing  # partial overlap via plotly, dashboards sub_domains
+      catalog: visualization
+      capability_tiers: []
+      resource_intelligence: []
+
+  - id: document_generation
+    label: "Document Generation & Reporting"
+    description: >
+      Automated generation of engineering reports, calculation sheets,
+      and deliverables in PDF, DOCX, PPTX, and XLSX formats.
+    sub_domains:
+      - id: pdf
+        label: "PDF Generation"
+      - id: docx
+        label: "Word Documents"
+      - id: pptx
+        label: "Presentations"
+      - id: xlsx
+        label: "Spreadsheets"
+      - id: reports
+        label: "Calculation Reports"
+    aliases:
+      skills_graph: document_generation
+      catalog: ~
+      capability_tiers: []
+      resource_intelligence: []
+
+  - id: development
+    label: "Development, Tooling & Workspace Ops"
+    description: >
+      Software development workflows, CI/CD pipelines, testing, MCP
+      integration, CLI tooling, git operations, and workspace orchestration.
+    sub_domains:
+      - id: testing
+        label: "Testing & QA"
+      - id: pipelines
+        label: "CI/CD Pipelines"
+      - id: mcp
+        label: "MCP Integration"
+      - id: skills
+        label: "Skills Framework"
+      - id: workflows
+        label: "Workflow Automation"
+      - id: git_sync
+        label: "Git Sync & Compliance"
+      - id: orchestration
+        label: "Cross-Repo Orchestration"
+      - id: cli
+        label: "CLI Tooling"
+    aliases:
+      skills_graph: [development, workspace_ops]
+      catalog: ~
+      capability_tiers: []
+      resource_intelligence: []
+
+  - id: business
+    label: "Business Administration"
+    description: >
+      Invoicing, tax preparation, expense tracking, and business
+      operations support.
+    sub_domains:
+      - id: invoicing
+        label: "Invoicing"
+      - id: tax
+        label: "Tax Preparation"
+      - id: expenses
+        label: "Expense Tracking"
+    aliases:
+      skills_graph: business
+      catalog: ~
+      capability_tiers: []
+      resource_intelligence: []
+
+  - id: design
+    label: "Communication & Design"
+    description: >
+      Brand identity, visual design, frontend development, and
+      communication materials.
+    sub_domains:
+      - id: brand
+        label: "Brand Identity"
+      - id: art
+        label: "Visual Design"
+      - id: frontend
+        label: "Frontend Development"
+      - id: comms
+        label: "Communications"
+    aliases:
+      skills_graph: design
+      catalog: ~
+      capability_tiers: []
+      resource_intelligence: []
+
+# ─────────────────────────────────────────────
+# Mapping: which domain IDs map to which keys in each source file
+# ─────────────────────────────────────────────
+mapping:
+  skills_graph:
+    file: "specs/skills/skills-knowledge-graph.yaml"
+    section: "domains"
+    keys:
+      - marine_offshore
+      - energy_data
+      - document_generation
+      - development
+      - business
+      - data_processing   # maps to → data_science + visualization
+      - workspace_ops     # maps to → development
+      - design
+      - gis               # maps to → gis_geospatial
+
+  catalog:
+    file: "specs/catalog/open-source-engineering-catalog.yaml"
+    section: "domains"
+    keys:
+      - fea_structural
+      - cfd
+      - oil_and_gas
+      - cad_geometry
+      - gis_geospatial
+      - data_science
+      - marine_offshore
+      - hydrodynamics
+      - pipeline_flow_assurance  # maps to → oil_and_gas
+      - visualization
+
+  capability_tiers:
+    file: "specs/architecture/capability-tiers.yaml"
+    section: "repos.digitalmodel.disciplines"
+    keys:
+      - structural        # maps to → marine_offshore + fea_structural
+      - subsea            # maps to → marine_offshore
+      - hydrodynamics     # maps to → hydrodynamics
+      - marine_ops        # maps to → marine_offshore
+      - asset_integrity   # maps to → marine_offshore
+
+  resource_intelligence:
+    file: "specs/architecture/resource-intelligence-schema.yaml"
+    section: "schema.properties.domain.properties.primary"
+    note: "Free-text field; values should use domain IDs from this taxonomy"
+    example_values:
+      - offshore-engineering  # maps to → marine_offshore
+      - fatigue               # maps to → marine_offshore.fatigue
+      - hydrodynamics         # maps to → hydrodynamics
+      - mooring-analysis      # maps to → marine_offshore.mooring
+      - sn-curves             # maps to → marine_offshore.fatigue
+      - viv                   # maps to → marine_offshore.viv

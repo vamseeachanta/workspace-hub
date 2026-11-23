@@ -1,0 +1,288 @@
+# Adversarial Plan Review Request: Issue #2399
+
+You are an adversarial reviewer. Assume the plan has defects until proven otherwise.
+Do not praise. Do not restate the plan. Focus only on what is wrong, missing, risky, contradictory, underspecified, or likely to cause rework.
+Return APPROVE only if you can affirmatively verify there are no blocking defects.
+Each finding must cite a specific plan section, file path, issue reference, or quoted claim.
+If nothing is wrong, explicitly state what you checked.
+
+## Issue context
+Title: feat(ai-orchestration): define next-model-release readiness contract for repo ecosystem
+URL: https://github.com/vamseeachanta/workspace-hub/issues/2399
+
+Issue body:
+## Summary
+Create a repo-ecosystem readiness program for upcoming model/provider releases so new Claude/Codex/Gemini/Hermes capabilities can be adopted without breaking workflow discipline, portability, or review quality.
+
+## Why
+The repo ecosystem is increasingly dependent on model-specific behavior: agent adapters, skills, prompt packaging, plan-review workflows, session artifacts, tool semantics, and context-management conventions. New model releases regularly change:
+- context windows and truncation behavior
+- tool-calling semantics
+- system-prompt behavior
+- sandbox and permissions assumptions
+- output style and structured-output reliability
+- pricing/routing trade-offs
+- session export/log formats
+
+Today, readiness is spread across individual issues and ad hoc settings reviews. A dedicated issue is needed to define what makes the repo ecosystem resilient to the next model release instead of reacting after breakage.
+
+## Scope
+Define a standing readiness contract covering:
+- thin adapter-file expectations (`CLAUDE.md`, `CODEX.md`, `GEMINI.md`, Hermes equivalents)
+- machine-readable rules/skills vs prose-only guidance
+- prompt-pack portability across providers and machines
+- tool-contract smoke tests for common workflows
+- session/export/log schema resilience
+- context-budget and truncation-safe artifact design
+- regression checks for planning, review, execution, and handoff flows
+- provider/version inventory and upgrade playbook
+- evaluation corpus / golden tasks for comparing model releases before broad rollout
+
+## Deliverables
+1. A checklist for "model-release ready" status at repo and ecosystem levels.
+2. A gap analysis against the current workspace-hub control plane.
+3. A small battery of provider-agnostic smoke/eval tasks covering:
+   - issue planning
+   - adversarial review
+   - repo navigation
+   - code modification discipline
+   - session handoff integrity
+4. A version-upgrade playbook for adopting new major model releases safely.
+5. Follow-up issues for the highest-risk gaps discovered.
+
+## Acceptance Criteria
+- [ ] readiness dimensions are explicitly defined instead of implied
+- [ ] current gaps are mapped to concrete repo surfaces and files/workflows
+- [ ] smoke/eval coverage is proposed for the most failure-prone cross-provider workflows
+- [ ] upgrade guidance separates provider-specific drift from repo-owned fixes
+- [ ] issue yields a reusable contract for future model-release adoption waves
+
+## Related
+- #2089 weekly Hermes + AI provider settings review for repo ecosystem
+- #1583 Hermes config parity via repo ecosystem templates
+- #2253 harden Gemini auto-label confidence with research-readiness signals
+- #2323 single-command cross-AI plan-review fan-out
+- #2045 onboard all agents to strict issue planning workflow
+- #2330 verify first run of daily-repo-readiness cron
+
+## Notes
+This issue is about future-proofing the control plane and repo conventions for model/provider evolution. It is not limited to one provider.
+
+
+## Latest revised draft plan under review
+# Plan for #2399: Define next-model-release readiness contract for repo ecosystem
+
+> **Status:** draft
+> **Complexity:** T2
+> **Date:** 2026-04-20
+> **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2399
+> **Review artifacts:** scripts/review/results/2026-04-20-plan-2399-claude.md | scripts/review/results/2026-04-20-plan-2399-codex.md | scripts/review/results/2026-04-20-plan-2399-gemini.md
+
+---
+
+## Resource Intelligence Summary
+
+### Existing repo code
+- Found: `docs/standards/CONTROL_PLANE_CONTRACT.md` — defines repo entry points, provider adapters, and convergence expectations across repos.
+- Found: `docs/standards/AI_REVIEW_ROUTING_POLICY.md` — defines three-agent adversarial review defaults and provider roles for planning and implementation review.
+- Found: root `AGENTS.md` plus provider adapters (`CLAUDE.md`, `.codex/`, `.gemini/`) — concrete current control-plane surfaces that the readiness contract must inventory rather than summarize abstractly.
+- Gap: no single contract defines what makes the repo ecosystem resilient to the next model/provider release across prompts, adapters, session logs, tool semantics, eval/smoke coverage, and provider/version inventory.
+
+### Standards
+| Standard | Status | Source |
+|---|---|---|
+| Control-plane contract | done | `docs/standards/CONTROL_PLANE_CONTRACT.md` |
+| AI review routing policy | done | `docs/standards/AI_REVIEW_ROUTING_POLICY.md` |
+| Current provider settings review cadence | partial | issue #2089 |
+
+### LLM Wiki pages consulted
+- No relevant wiki pages; this is control-plane governance and release-readiness work rooted in standards and issue workflow policy.
+
+### Documents consulted
+- Related issue #2089 — weekly Hermes + AI provider settings review; useful operational input but not a full readiness contract.
+- Related issue #1583 — Hermes config parity via repo ecosystem templates; useful parity baseline.
+- Related issue #2253 — provider-routing hardening for Gemini confidence; shows provider-specific drift already exists.
+- Related issue #2323 — cross-AI plan-review fan-out; identifies a workflow that must remain robust across model changes.
+- `docs/reports/2026-04-20-refactor-knowledge-release-readiness-dependency-map.md` — positions #2399 as a child control-plane-readiness lane feeding #1962.
+- Existing issue body for #2399 — explicitly requires follow-up issues for the highest-risk gaps discovered and a standing reusable contract.
+
+### Contract-boundary rule
+- `docs/standards/CONTROL_PLANE_CONTRACT.md` remains the canonical entry-point/adapter-location standard.
+- `docs/standards/MODEL_RELEASE_READINESS_CONTRACT.md` will define release-readiness checks, smoke battery expectations, version-inventory expectations, and upgrade decision flow.
+- The readiness contract must reference the control-plane contract, not supersede it.
+- Discoverability is required: the implementation must add explicit pointers to the new readiness surfaces from `AGENTS.md`, `CLAUDE.md`, `.gemini/GEMINI.md`, and `docs/standards/CONTROL_PLANE_CONTRACT.md` so agents encounter the contract through existing control-plane entry points.
+
+### Gaps identified
+- No checklist for “model-release ready” status at repo/ecosystem level.
+- No golden-task / smoke-eval battery covering planning, review, navigation, and handoff workflows across providers.
+- No explicit upgrade playbook separating provider drift from repo-owned fixes.
+- No consolidated contract for log/export/schema resilience as models and CLIs evolve.
+
+---
+
+## Artifact Map
+
+| Artifact | Path |
+|---|---|
+| This plan | docs/plans/2026-04-20-issue-2399-next-model-release-readiness-contract.md |
+| Repo-ecosystem surface inventory | docs/reports/2026-04-20-issue-2399-repo-ecosystem-surface-inventory.md |
+| Provider/version baseline inventory | docs/reports/2026-04-20-issue-2399-provider-version-baseline.md |
+| Standing contract | docs/standards/MODEL_RELEASE_READINESS_CONTRACT.md |
+| Upgrade playbook | docs/standards/MODEL_RELEASE_UPGRADE_PLAYBOOK.md |
+| Reusable eval battery spec | config/ai/model-release-smoke-battery.yaml |
+| Smoke battery runner contract | docs/standards/MODEL_RELEASE_SMOKE_RUNNER_CONTRACT.md |
+| Session/export/log schema fixture inventory | docs/reports/2026-04-20-issue-2399-session-export-log-schema-inventory.md |
+| Gap analysis report | docs/reports/2026-04-20-issue-2399-model-release-readiness-gap-analysis.md |
+| Created follow-up issues summary | docs/reports/2026-04-20-issue-2399-follow-up-issues-created.md |
+| Discoverability anchors | AGENTS.md; CLAUDE.md; .gemini/GEMINI.md; docs/standards/CONTROL_PLANE_CONTRACT.md |
+| Plan review — Claude | scripts/review/results/2026-04-20-plan-2399-claude.md |
+| Plan review — Codex | scripts/review/results/2026-04-20-plan-2399-codex.md |
+| Plan review — Gemini | scripts/review/results/2026-04-20-plan-2399-gemini.md |
+| Docs updates | docs/plans/README.md |
+
+---
+
+## Deliverable
+
+A standing repo-ecosystem readiness contract plus reusable smoke-battery and highest-risk follow-up issue drafts for adopting future model/provider releases safely.
+
+---
+
+## Pseudocode
+
+```
+inventory provider-sensitive workflow surfaces across the repo ecosystem: workspace-hub plus tier-1 repo adapters, prompt-pack files, session logs/exports, review flows, handoff flows, and tool semantics
+group observed failure modes into repo-owned drift vs provider-owned drift
+write a standing readiness contract in `docs/standards/MODEL_RELEASE_READINESS_CONTRACT.md` that explicitly references but does not replace `CONTROL_PLANE_CONTRACT.md`
+write a separate upgrade playbook in `docs/standards/MODEL_RELEASE_UPGRADE_PLAYBOOK.md`
+encode a reusable golden-task / smoke battery spec in `config/ai/model-release-smoke-battery.yaml`
+define the execution path and schema contract for that battery in `docs/standards/MODEL_RELEASE_SMOKE_RUNNER_CONTRACT.md`
+write a repo-ecosystem surface inventory report that maps concrete repo files and workflows to readiness dimensions
+write a schema fixture inventory for session/export/log surfaces using real known artifact types and paths
+run a gap analysis against current ecosystem surfaces and rank the highest-risk gaps with an explicit threshold/rubric
+for each highest-risk gap above threshold:
+    create a follow-up GitHub issue and record it in a created-issues summary artifact
+outline upgrade workflow: detect release, run eval battery, classify failures, patch repo-owned surfaces, document provider-specific exceptions, record provider/version baseline
+add discoverability anchors in AGENTS/provider adapters/control-plane standard so the new readiness contract is reachable from canonical entry points
+write contract, playbook, battery spec, runner contract, ecosystem inventory, schema inventory, gap analysis, and created-issues summary
+```
+
+---
+
+## Files to Change
+
+| Action | Path | Reason |
+|---|---|---|
+| Create | docs/standards/MODEL_RELEASE_READINESS_CONTRACT.md | standing reusable contract for future release waves |
+| Create | docs/standards/MODEL_RELEASE_UPGRADE_PLAYBOOK.md | explicit major-release adoption playbook |
+| Create | docs/standards/MODEL_RELEASE_SMOKE_RUNNER_CONTRACT.md | defines runner/schema/execution path for smoke battery |
+| Create | config/ai/model-release-smoke-battery.yaml | reusable provider-agnostic eval battery spec |
+| Create | docs/reports/2026-04-20-issue-2399-repo-ecosystem-surface-inventory.md | concrete inventory of adapter/session/log/prompt surfaces across workspace-hub and tier-1 repos |
+| Create | docs/reports/2026-04-20-issue-2399-provider-version-baseline.md | current provider/version baseline for future upgrade comparisons |
+| Create | docs/reports/2026-04-20-issue-2399-session-export-log-schema-inventory.md | schema-bearing fixture inventory for session/export/log surfaces |
+| Create | docs/reports/2026-04-20-issue-2399-model-release-readiness-gap-analysis.md | current-state gap analysis against the contract |
+| Create | docs/reports/2026-04-20-issue-2399-follow-up-issues-created.md | records the actual follow-up issues created for highest-risk gaps |
+| Update | AGENTS.md | add discoverability pointer to readiness contract and playbook |
+| Update | CLAUDE.md | add discoverability pointer for Claude entry path |
+| Update | .gemini/GEMINI.md | add discoverability pointer for Gemini entry path |
+| Update | docs/standards/CONTROL_PLANE_CONTRACT.md | anchor the new readiness contract from the canonical control-plane standard |
+| Update | docs/plans/README.md | add this plan to index |
+
+---
+
+## TDD Test List
+
+| Test name | What it verifies | Expected input | Expected output |
+|---|---|---|---|
+| test_ecosystem_surface_inventory_maps_required_repo_surfaces | concrete readiness surfaces are inventoried across workspace-hub and tier-1 repos | known repo files/workflows | adapter/session/log/prompt surfaces listed per repo |
+| test_contract_defines_readiness_dimensions | readiness is explicit and auditable | standing contract | named dimensions/checklist |
+| test_upgrade_playbook_separates_provider_vs_repo_drift | playbook handles ownership correctly | upgrade playbook | explicit provider-owned vs repo-owned branches |
+| test_smoke_battery_schema_matches_runner_contract | eval battery is consumable by a runner | yaml battery + runner contract | matching schema/fields |
+| test_prompt_pack_portability_is_covered | portability is not omitted | standing contract + playbook | provider/machine portability section present |
+| test_session_export_log_schema_inventory_uses_real_fixtures | schema resilience is evidence-backed | fixture inventory | known artifact types/paths enumerated |
+| test_discoverability_anchors_reference_new_contract | new surfaces are reachable from canonical entry points | AGENTS/CLAUDE/GEMINI/control-plane docs | explicit links/references present |
+| test_follow_up_issues_are_created_for_high_risk_gaps | top gaps become actionable follow-ups | ranked risk list | created issue references with severity/ownership |
+| test_contract_boundary_with_control_plane_is_explicit | standards do not overlap ambiguously | contract text | references CONTROL_PLANE_CONTRACT without superseding it |
+
+---
+
+## Acceptance Criteria
+
+- [ ] A standing contract exists at `docs/standards/MODEL_RELEASE_READINESS_CONTRACT.md`
+- [ ] A reusable eval battery spec exists at `config/ai/model-release-smoke-battery.yaml`
+- [ ] A smoke battery runner contract exists at `docs/standards/MODEL_RELEASE_SMOKE_RUNNER_CONTRACT.md`
+- [ ] An upgrade playbook exists at `docs/standards/MODEL_RELEASE_UPGRADE_PLAYBOOK.md`
+- [ ] A repo-ecosystem surface inventory exists at `docs/reports/2026-04-20-issue-2399-repo-ecosystem-surface-inventory.md`
+- [ ] A provider/version baseline inventory exists at `docs/reports/2026-04-20-issue-2399-provider-version-baseline.md`
+- [ ] A session/export/log schema fixture inventory exists at `docs/reports/2026-04-20-issue-2399-session-export-log-schema-inventory.md`
+- [ ] A gap analysis exists at `docs/reports/2026-04-20-issue-2399-model-release-readiness-gap-analysis.md`
+- [ ] A created-follow-up-issues summary exists at `docs/reports/2026-04-20-issue-2399-follow-up-issues-created.md`
+- [ ] The contract defines readiness dimensions and a checklist for repo/ecosystem use
+- [ ] The ecosystem surface inventory maps concrete adapter, prompt, session/export/log, and handoff surfaces across workspace-hub and tier-1 repos
+- [ ] The upgrade playbook separates provider drift from repo-owned remediation responsibilities
+- [ ] The smoke battery spec is consumable via the runner contract
+- [ ] The contract/playbook explicitly cover prompt-pack portability across providers and machines
+- [ ] The schema fixture inventory uses real known artifact types/paths for session/export/log resilience
+- [ ] The highest-risk gaps produce actual follow-up GitHub issues, not only drafts
+- [ ] `AGENTS.md`, `CLAUDE.md`, `.gemini/GEMINI.md`, and `docs/standards/CONTROL_PLANE_CONTRACT.md` all contain discoverability anchors to the new readiness surfaces
+- [ ] The readiness contract explicitly references but does not supersede `CONTROL_PLANE_CONTRACT.md`
+- [ ] Review artifacts are posted to `scripts/review/results/`
+
+---
+
+## Adversarial Review Summary
+
+| Provider | Verdict | Key findings |
+|---|---|---|
+| Claude | PENDING | Awaiting review |
+| Codex | PENDING | Awaiting review |
+| Gemini | PENDING | Awaiting review |
+
+**Overall result:** PENDING
+
+Revisions made based on review:
+- none yet
+
+---
+
+## Risks and Open Questions
+
+- **Risk:** the contract could become too abstract if it does not anchor to concrete workflow surfaces already known to drift.
+- **Risk:** provider-specific release quirks could be mistaken for repo defects, causing unnecessary repo churn.
+- **Open:** should the first readiness battery optimize for breadth across many workflows or depth on the highest-value workflows only?
+
+---
+
+## Complexity: T2
+
+**T2** — bounded governance/architecture plan producing a reusable contract and eval framework without immediate implementation code.
+
+
+## Review dimensions
+1. Correctness
+2. Completeness
+3. Feasibility
+4. TDD / verification adequacy
+5. Scope discipline
+6. Dependency handling
+7. Approval readiness
+8. Retrieval adequacy
+
+## Required output format
+Verdict: APPROVE | MINOR | MAJOR
+Retrieval adequacy: adequate | insufficient
+Findings:
+- [severity] <finding>
+Missing tests:
+- ...
+Scope creep concerns:
+- ...
+Weakest assumption:
+- ...
+Most likely implementation failure mode:
+- ...
+Most likely test gap:
+- ...
+Future issues suggested:
+- ...
+Review confidence: low | medium | high

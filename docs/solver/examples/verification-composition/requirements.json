@@ -1,0 +1,46 @@
+{
+  "input_sha256": "cc90e815d3f0429ce37a27e49d3e00251f6656cc56389eeba65520a415dbb112",
+  "evidence_sha256": "db99dc4713706946949e7677fd496a9e0fd5b3f4023a947de0069e2ab0c4fe19",
+  "evidence_kind": "synthetic",
+  "domain": {
+    "unit": "arbitrary",
+    "nodes": [
+      [
+        0,
+        0
+      ],
+      [
+        2,
+        0
+      ],
+      [
+        2,
+        3
+      ],
+      [
+        0,
+        3
+      ]
+    ],
+    "cells": [
+      [
+        0,
+        1,
+        2,
+        3
+      ]
+    ]
+  },
+  "settings": {
+    "shape_check": "default",
+    "limit": "specified"
+  },
+  "criterion": {
+    "source": "Independent hand calculation: 2 + 3 = 5 in [4,6]",
+    "result_id": "sum",
+    "quantity": "sum",
+    "unit": "arbitrary",
+    "minimum": 4,
+    "maximum": 6
+  }
+}

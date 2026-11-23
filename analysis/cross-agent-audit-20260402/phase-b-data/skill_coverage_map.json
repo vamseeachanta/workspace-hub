@@ -1,0 +1,3124 @@
+[
+  {
+    "directory": "scripts/work-queue",
+    "frequency": 2216,
+    "matching_skills": [
+      {
+        "name": "SKILLS_SUMMARY",
+        "repo": "workspace-hub",
+        "score": 2,
+        "domains": [
+          "skill",
+          "work-queue"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 2,
+        "domains": [
+          "skill",
+          "work-queue",
+          "claude",
+          "codex",
+          "json"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 2,
+        "domains": [
+          "git",
+          "skill",
+          "work-queue",
+          "claude",
+          "pdf",
+          "yaml"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 2,
+        "domains": [
+          "git",
+          "skill",
+          "work-queue"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 2,
+        "domains": [
+          "cad",
+          "digitalmodel",
+          "assetutilities",
+          "worldenergydata",
+          "git",
+          "skill",
+          "work-queue",
+          "claude",
+          "codex",
+          "pdf",
+          "website",
+          "aceengineer"
+        ]
+      }
+    ],
+    "has_coverage": true,
+    "coverage_depth": 12
+  },
+  {
+    "directory": "scripts/work-queue/verify-gate-evidence.py",
+    "frequency": 790,
+    "matching_skills": [
+      {
+        "name": "SKILLS_SUMMARY",
+        "repo": "workspace-hub",
+        "score": 2,
+        "domains": [
+          "skill",
+          "work-queue"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 2,
+        "domains": [
+          "skill",
+          "work-queue",
+          "claude",
+          "codex",
+          "json"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 2,
+        "domains": [
+          "git",
+          "skill",
+          "work-queue",
+          "claude",
+          "pdf",
+          "yaml"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 2,
+        "domains": [
+          "git",
+          "skill",
+          "work-queue"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 2,
+        "domains": [
+          "cad",
+          "digitalmodel",
+          "assetutilities",
+          "worldenergydata",
+          "git",
+          "skill",
+          "work-queue",
+          "claude",
+          "codex",
+          "pdf",
+          "website",
+          "aceengineer"
+        ]
+      }
+    ],
+    "has_coverage": true,
+    "coverage_depth": 12
+  },
+  {
+    "directory": ".claude/skills",
+    "frequency": 577,
+    "matching_skills": [
+      {
+        "name": "SKILLS_SUMMARY",
+        "repo": "workspace-hub",
+        "score": 5,
+        "domains": [
+          "skill",
+          "work-queue"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 5,
+        "domains": [
+          "git",
+          "github",
+          "skill",
+          "claude"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 5,
+        "domains": [
+          "git",
+          "github",
+          "skill",
+          "claude",
+          "marketing"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 5,
+        "domains": [
+          "git",
+          "github",
+          "skill",
+          "claude",
+          "aceengineer"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 5,
+        "domains": [
+          "git",
+          "github",
+          "skill",
+          "claude",
+          "website",
+          "aceengineer"
+        ]
+      }
+    ],
+    "has_coverage": true,
+    "coverage_depth": 882
+  },
+  {
+    "directory": "scripts/work-queue/generate-html-review.py",
+    "frequency": 365,
+    "matching_skills": [
+      {
+        "name": "SKILL",
+        "repo": "CAD-DEVELOPMENTS",
+        "score": 4,
+        "domains": [
+          "fea",
+          "review",
+          "skill",
+          "work-queue",
+          "claude",
+          "yaml"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "CAD-DEVELOPMENTS",
+        "score": 4,
+        "domains": [
+          "fea",
+          "digitalmodel",
+          "git",
+          "review",
+          "skill",
+          "work-queue",
+          "claude",
+          "json"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "CAD-DEVELOPMENTS",
+        "score": 4,
+        "domains": [
+          "fea",
+          "review",
+          "skill",
+          "work-queue",
+          "claude",
+          "yaml",
+          "website",
+          "aceengineer"
+        ]
+      },
+      {
+        "name": "process",
+        "repo": "CAD-DEVELOPMENTS",
+        "score": 4,
+        "domains": [
+          "fea",
+          "git",
+          "review",
+          "work-queue",
+          "claude",
+          "yaml"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "hermes",
+        "score": 4,
+        "domains": [
+          "cad",
+          "git",
+          "github",
+          "review",
+          "skill",
+          "work-queue",
+          "hermes",
+          "yaml"
+        ]
+      }
+    ],
+    "has_coverage": true,
+    "coverage_depth": 230
+  },
+  {
+    "directory": ".claude/skills/workspace-hub",
+    "frequency": 364,
+    "matching_skills": [
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 6,
+        "domains": [
+          "ci/cd",
+          "testing",
+          "skill",
+          "claude",
+          "yaml",
+          "json"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "CAD-DEVELOPMENTS",
+        "score": 6,
+        "domains": [
+          "ci/cd",
+          "testing",
+          "skill",
+          "claude",
+          "yaml",
+          "json"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "hermes",
+        "score": 6,
+        "domains": [
+          "cad",
+          "viv",
+          "assetutilities",
+          "worldenergydata",
+          "git",
+          "github",
+          "skill",
+          "claude",
+          "hermes",
+          "yaml",
+          "json"
+        ]
+      },
+      {
+        "name": "SKILLS_SUMMARY",
+        "repo": "workspace-hub",
+        "score": 5,
+        "domains": [
+          "skill",
+          "work-queue"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 5,
+        "domains": [
+          "git",
+          "github",
+          "skill",
+          "claude"
+        ]
+      }
+    ],
+    "has_coverage": true,
+    "coverage_depth": 882
+  },
+  {
+    "directory": ".claude/work-queue",
+    "frequency": 258,
+    "matching_skills": [
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 4,
+        "domains": [
+          "skill",
+          "work-queue",
+          "claude",
+          "codex",
+          "json"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 4,
+        "domains": [
+          "git",
+          "skill",
+          "work-queue",
+          "claude",
+          "pdf",
+          "yaml"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 4,
+        "domains": [
+          "cad",
+          "digitalmodel",
+          "assetutilities",
+          "worldenergydata",
+          "git",
+          "skill",
+          "work-queue",
+          "claude",
+          "codex",
+          "pdf",
+          "website",
+          "aceengineer"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "CAD-DEVELOPMENTS",
+        "score": 4,
+        "domains": [
+          "fea",
+          "review",
+          "skill",
+          "work-queue",
+          "claude",
+          "yaml"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "CAD-DEVELOPMENTS",
+        "score": 4,
+        "domains": [
+          "fea",
+          "digitalmodel",
+          "git",
+          "review",
+          "skill",
+          "work-queue",
+          "claude",
+          "json"
+        ]
+      }
+    ],
+    "has_coverage": true,
+    "coverage_depth": 252
+  },
+  {
+    "directory": "/home",
+    "frequency": 245,
+    "matching_skills": [
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 67,
+        "domains": [
+          "mooring",
+          "cathodic",
+          "hull",
+          "digitalmodel",
+          "git",
+          "skill"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 61,
+        "domains": [
+          "cathodic",
+          "fea",
+          "digitalmodel",
+          "git",
+          "skill",
+          "csv"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 43,
+        "domains": [
+          "orcaflex",
+          "cad",
+          "skill",
+          "pdf",
+          "yaml"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 40,
+        "domains": [
+          "orcaflex",
+          "orcawave",
+          "riser",
+          "diffraction",
+          "digitalmodel",
+          "git",
+          "skill"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "CAD-DEVELOPMENTS",
+        "score": 40,
+        "domains": [
+          "git",
+          "review",
+          "skill",
+          "claude",
+          "yaml",
+          "json"
+        ]
+      }
+    ],
+    "has_coverage": true,
+    "coverage_depth": 1082
+  },
+  {
+    "directory": "/home/vamsee",
+    "frequency": 245,
+    "matching_skills": [
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 67,
+        "domains": [
+          "mooring",
+          "cathodic",
+          "hull",
+          "digitalmodel",
+          "git",
+          "skill"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 61,
+        "domains": [
+          "cathodic",
+          "fea",
+          "digitalmodel",
+          "git",
+          "skill",
+          "csv"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 43,
+        "domains": [
+          "orcaflex",
+          "cad",
+          "skill",
+          "pdf",
+          "yaml"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 40,
+        "domains": [
+          "orcaflex",
+          "orcawave",
+          "riser",
+          "diffraction",
+          "digitalmodel",
+          "git",
+          "skill"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "CAD-DEVELOPMENTS",
+        "score": 40,
+        "domains": [
+          "git",
+          "review",
+          "skill",
+          "claude",
+          "yaml",
+          "json"
+        ]
+      }
+    ],
+    "has_coverage": true,
+    "coverage_depth": 1082
+  },
+  {
+    "directory": "scripts/work-queue/start_stage.py",
+    "frequency": 192,
+    "matching_skills": [
+      {
+        "name": "SKILLS_SUMMARY",
+        "repo": "workspace-hub",
+        "score": 2,
+        "domains": [
+          "skill",
+          "work-queue"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 2,
+        "domains": [
+          "skill",
+          "work-queue",
+          "claude",
+          "codex",
+          "json"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 2,
+        "domains": [
+          "git",
+          "skill",
+          "work-queue",
+          "claude",
+          "pdf",
+          "yaml"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 2,
+        "domains": [
+          "git",
+          "skill",
+          "work-queue"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 2,
+        "domains": [
+          "cad",
+          "digitalmodel",
+          "assetutilities",
+          "worldenergydata",
+          "git",
+          "skill",
+          "work-queue",
+          "claude",
+          "codex",
+          "pdf",
+          "website",
+          "aceengineer"
+        ]
+      }
+    ],
+    "has_coverage": true,
+    "coverage_depth": 12
+  },
+  {
+    "directory": "scripts/work-queue/exit_stage.py",
+    "frequency": 187,
+    "matching_skills": [
+      {
+        "name": "SKILLS_SUMMARY",
+        "repo": "workspace-hub",
+        "score": 2,
+        "domains": [
+          "skill",
+          "work-queue"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 2,
+        "domains": [
+          "skill",
+          "work-queue",
+          "claude",
+          "codex",
+          "json"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 2,
+        "domains": [
+          "git",
+          "skill",
+          "work-queue",
+          "claude",
+          "pdf",
+          "yaml"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 2,
+        "domains": [
+          "git",
+          "skill",
+          "work-queue"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 2,
+        "domains": [
+          "cad",
+          "digitalmodel",
+          "assetutilities",
+          "worldenergydata",
+          "git",
+          "skill",
+          "work-queue",
+          "claude",
+          "codex",
+          "pdf",
+          "website",
+          "aceengineer"
+        ]
+      }
+    ],
+    "has_coverage": true,
+    "coverage_depth": 12
+  },
+  {
+    "directory": "scripts/data",
+    "frequency": 174,
+    "matching_skills": [
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 4,
+        "domains": [
+          "cathodic",
+          "fea",
+          "digitalmodel",
+          "git",
+          "skill",
+          "csv"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 4,
+        "domains": [
+          "cathodic",
+          "skill"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 4,
+        "domains": [
+          "riser",
+          "drilling",
+          "viv",
+          "skill"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 4,
+        "domains": [
+          "hull",
+          "skill"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 4,
+        "domains": [
+          "orcaflex",
+          "orcawave",
+          "diffraction",
+          "hull",
+          "vessel",
+          "production",
+          "digitalmodel",
+          "git",
+          "skill",
+          "json"
+        ]
+      }
+    ],
+    "has_coverage": true,
+    "coverage_depth": 11
+  },
+  {
+    "directory": "scripts/work-queue/whats-next.sh",
+    "frequency": 159,
+    "matching_skills": [
+      {
+        "name": "SKILLS_SUMMARY",
+        "repo": "workspace-hub",
+        "score": 2,
+        "domains": [
+          "skill",
+          "work-queue"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 2,
+        "domains": [
+          "skill",
+          "work-queue",
+          "claude",
+          "codex",
+          "json"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 2,
+        "domains": [
+          "git",
+          "skill",
+          "work-queue",
+          "claude",
+          "pdf",
+          "yaml"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 2,
+        "domains": [
+          "git",
+          "skill",
+          "work-queue"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 2,
+        "domains": [
+          "cad",
+          "digitalmodel",
+          "assetutilities",
+          "worldenergydata",
+          "git",
+          "skill",
+          "work-queue",
+          "claude",
+          "codex",
+          "pdf",
+          "website",
+          "aceengineer"
+        ]
+      }
+    ],
+    "has_coverage": true,
+    "coverage_depth": 12
+  },
+  {
+    "directory": "specs/wrk",
+    "frequency": 153,
+    "matching_skills": [
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 3,
+        "domains": [
+          "cad",
+          "digitalmodel",
+          "assetutilities",
+          "worldenergydata",
+          "git",
+          "skill",
+          "work-queue",
+          "claude",
+          "codex",
+          "pdf",
+          "website",
+          "aceengineer"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 3,
+        "domains": [
+          "orcaflex",
+          "mooring",
+          "riser",
+          "drilling",
+          "metocean",
+          "vessel",
+          "digitalmodel",
+          "git",
+          "yaml"
+        ]
+      }
+    ],
+    "has_coverage": true,
+    "coverage_depth": 2
+  },
+  {
+    "directory": "scripts/work-queue/stages",
+    "frequency": 134,
+    "matching_skills": [
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 4,
+        "domains": [
+          "orcaflex",
+          "orcawave",
+          "mooring",
+          "diffraction",
+          "fea",
+          "vessel",
+          "skill",
+          "claude",
+          "json"
+        ]
+      },
+      {
+        "name": "SKILLS_SUMMARY",
+        "repo": "workspace-hub",
+        "score": 2,
+        "domains": [
+          "skill",
+          "work-queue"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 2,
+        "domains": [
+          "skill",
+          "work-queue",
+          "claude",
+          "codex",
+          "json"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 2,
+        "domains": [
+          "git",
+          "skill",
+          "work-queue",
+          "claude",
+          "pdf",
+          "yaml"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 2,
+        "domains": [
+          "git",
+          "skill",
+          "work-queue"
+        ]
+      }
+    ],
+    "has_coverage": true,
+    "coverage_depth": 13
+  },
+  {
+    "directory": ".claude/work-queue/assets",
+    "frequency": 127,
+    "matching_skills": [
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 4,
+        "domains": [
+          "skill",
+          "work-queue",
+          "claude",
+          "codex",
+          "json"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 4,
+        "domains": [
+          "git",
+          "skill",
+          "work-queue",
+          "claude",
+          "pdf",
+          "yaml"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 4,
+        "domains": [
+          "cad",
+          "digitalmodel",
+          "assetutilities",
+          "worldenergydata",
+          "git",
+          "skill",
+          "work-queue",
+          "claude",
+          "codex",
+          "pdf",
+          "website",
+          "aceengineer"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "CAD-DEVELOPMENTS",
+        "score": 4,
+        "domains": [
+          "fea",
+          "review",
+          "skill",
+          "work-queue",
+          "claude",
+          "yaml"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "CAD-DEVELOPMENTS",
+        "score": 4,
+        "domains": [
+          "fea",
+          "digitalmodel",
+          "git",
+          "review",
+          "skill",
+          "work-queue",
+          "claude",
+          "json"
+        ]
+      }
+    ],
+    "has_coverage": true,
+    "coverage_depth": 252
+  },
+  {
+    "directory": "assetutilities/src",
+    "frequency": 125,
+    "matching_skills": [
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 2,
+        "domains": [
+          "fea",
+          "production",
+          "digitalmodel",
+          "assetutilities",
+          "worldenergydata",
+          "git",
+          "review",
+          "skill",
+          "claude"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 2,
+        "domains": [
+          "assetutilities",
+          "skill",
+          "excel",
+          "yaml",
+          "csv"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 2,
+        "domains": [
+          "assetutilities",
+          "skill",
+          "pdf",
+          "excel",
+          "yaml",
+          "csv"
+        ]
+      },
+      {
+        "name": "workflow-steps",
+        "repo": "workspace-hub",
+        "score": 2,
+        "domains": [
+          "cad",
+          "hull",
+          "digitalmodel",
+          "assetutilities",
+          "worldenergydata",
+          "git",
+          "skill",
+          "pdf",
+          "yaml",
+          "json",
+          "website"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 2,
+        "domains": [
+          "assetutilities",
+          "skill",
+          "excel",
+          "yaml",
+          "csv"
+        ]
+      }
+    ],
+    "has_coverage": true,
+    "coverage_depth": 18
+  },
+  {
+    "directory": "assetutilities/src/assetutilities",
+    "frequency": 125,
+    "matching_skills": [
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 2,
+        "domains": [
+          "fea",
+          "production",
+          "digitalmodel",
+          "assetutilities",
+          "worldenergydata",
+          "git",
+          "review",
+          "skill",
+          "claude"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 2,
+        "domains": [
+          "assetutilities",
+          "skill",
+          "excel",
+          "yaml",
+          "csv"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 2,
+        "domains": [
+          "assetutilities",
+          "skill",
+          "pdf",
+          "excel",
+          "yaml",
+          "csv"
+        ]
+      },
+      {
+        "name": "workflow-steps",
+        "repo": "workspace-hub",
+        "score": 2,
+        "domains": [
+          "cad",
+          "hull",
+          "digitalmodel",
+          "assetutilities",
+          "worldenergydata",
+          "git",
+          "skill",
+          "pdf",
+          "yaml",
+          "json",
+          "website"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 2,
+        "domains": [
+          "assetutilities",
+          "skill",
+          "excel",
+          "yaml",
+          "csv"
+        ]
+      }
+    ],
+    "has_coverage": true,
+    "coverage_depth": 18
+  },
+  {
+    "directory": "scripts/cron",
+    "frequency": 119,
+    "matching_skills": [],
+    "has_coverage": false,
+    "coverage_depth": 0
+  },
+  {
+    "directory": "scripts/work-queue/close-item.sh",
+    "frequency": 113,
+    "matching_skills": [
+      {
+        "name": "SKILLS_SUMMARY",
+        "repo": "workspace-hub",
+        "score": 2,
+        "domains": [
+          "skill",
+          "work-queue"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 2,
+        "domains": [
+          "skill",
+          "work-queue",
+          "claude",
+          "codex",
+          "json"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 2,
+        "domains": [
+          "git",
+          "skill",
+          "work-queue",
+          "claude",
+          "pdf",
+          "yaml"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 2,
+        "domains": [
+          "git",
+          "skill",
+          "work-queue"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 2,
+        "domains": [
+          "cad",
+          "digitalmodel",
+          "assetutilities",
+          "worldenergydata",
+          "git",
+          "skill",
+          "work-queue",
+          "claude",
+          "codex",
+          "pdf",
+          "website",
+          "aceengineer"
+        ]
+      }
+    ],
+    "has_coverage": true,
+    "coverage_depth": 12
+  },
+  {
+    "directory": ".claude/skills/coordination",
+    "frequency": 111,
+    "matching_skills": [
+      {
+        "name": "SKILLS_SUMMARY",
+        "repo": "workspace-hub",
+        "score": 5,
+        "domains": [
+          "skill",
+          "work-queue"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 5,
+        "domains": [
+          "git",
+          "github",
+          "skill",
+          "claude"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 5,
+        "domains": [
+          "git",
+          "github",
+          "skill",
+          "claude",
+          "marketing"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 5,
+        "domains": [
+          "git",
+          "github",
+          "skill",
+          "claude",
+          "aceengineer"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 5,
+        "domains": [
+          "git",
+          "github",
+          "skill",
+          "claude",
+          "website",
+          "aceengineer"
+        ]
+      }
+    ],
+    "has_coverage": true,
+    "coverage_depth": 882
+  },
+  {
+    "directory": "scripts/review",
+    "frequency": 106,
+    "matching_skills": [
+      {
+        "name": "review-contract",
+        "repo": "workspace-hub",
+        "score": 5,
+        "domains": [
+          "viv",
+          "git",
+          "github",
+          "review",
+          "pdf"
+        ]
+      },
+      {
+        "name": "brand-review",
+        "repo": "workspace-hub",
+        "score": 5,
+        "domains": [
+          "git",
+          "github",
+          "review",
+          "marketing"
+        ]
+      },
+      {
+        "name": "metrics-review",
+        "repo": "workspace-hub",
+        "score": 5,
+        "domains": [
+          "git",
+          "github",
+          "review"
+        ]
+      },
+      {
+        "name": "pipeline-review",
+        "repo": "workspace-hub",
+        "score": 5,
+        "domains": [
+          "git",
+          "github",
+          "review",
+          "csv"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 5,
+        "domains": [
+          "cad",
+          "viv",
+          "git",
+          "github",
+          "review",
+          "skill",
+          "pdf",
+          "yaml"
+        ]
+      }
+    ],
+    "has_coverage": true,
+    "coverage_depth": 223
+  },
+  {
+    "directory": ".claude/work-queue/pending",
+    "frequency": 98,
+    "matching_skills": [
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 4,
+        "domains": [
+          "skill",
+          "work-queue",
+          "claude",
+          "codex",
+          "json"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 4,
+        "domains": [
+          "git",
+          "skill",
+          "work-queue",
+          "claude",
+          "pdf",
+          "yaml"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 4,
+        "domains": [
+          "cad",
+          "digitalmodel",
+          "assetutilities",
+          "worldenergydata",
+          "git",
+          "skill",
+          "work-queue",
+          "claude",
+          "codex",
+          "pdf",
+          "website",
+          "aceengineer"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "CAD-DEVELOPMENTS",
+        "score": 4,
+        "domains": [
+          "fea",
+          "review",
+          "skill",
+          "work-queue",
+          "claude",
+          "yaml"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "CAD-DEVELOPMENTS",
+        "score": 4,
+        "domains": [
+          "fea",
+          "digitalmodel",
+          "git",
+          "review",
+          "skill",
+          "work-queue",
+          "claude",
+          "json"
+        ]
+      }
+    ],
+    "has_coverage": true,
+    "coverage_depth": 252
+  },
+  {
+    "directory": "config/scheduled-tasks",
+    "frequency": 89,
+    "matching_skills": [
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 10,
+        "domains": [
+          "orcaflex",
+          "mooring",
+          "riser",
+          "digitalmodel",
+          "git",
+          "skill",
+          "yaml"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 7,
+        "domains": [
+          "fea",
+          "hull",
+          "vessel",
+          "digitalmodel",
+          "git",
+          "skill",
+          "yaml",
+          "json",
+          "csv"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 4,
+        "domains": [
+          "orcaflex",
+          "mooring",
+          "fea",
+          "metocean",
+          "vessel",
+          "digitalmodel",
+          "git",
+          "skill",
+          "yaml"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 4,
+        "domains": [
+          "orcaflex",
+          "mooring",
+          "digitalmodel",
+          "git",
+          "skill",
+          "csv"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 4,
+        "domains": [
+          "orcaflex",
+          "fea",
+          "vessel",
+          "digitalmodel",
+          "git",
+          "skill",
+          "yaml"
+        ]
+      }
+    ],
+    "has_coverage": true,
+    "coverage_depth": 6
+  },
+  {
+    "directory": "config/scheduled-tasks/schedule-tasks.yaml",
+    "frequency": 89,
+    "matching_skills": [
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 12,
+        "domains": [
+          "orcaflex",
+          "mooring",
+          "riser",
+          "digitalmodel",
+          "git",
+          "skill",
+          "yaml"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 9,
+        "domains": [
+          "fea",
+          "hull",
+          "vessel",
+          "digitalmodel",
+          "git",
+          "skill",
+          "yaml",
+          "json",
+          "csv"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 6,
+        "domains": [
+          "orcaflex",
+          "mooring",
+          "fea",
+          "metocean",
+          "vessel",
+          "digitalmodel",
+          "git",
+          "skill",
+          "yaml"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 6,
+        "domains": [
+          "orcaflex",
+          "fea",
+          "vessel",
+          "digitalmodel",
+          "git",
+          "skill",
+          "yaml"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 4,
+        "domains": [
+          "orcaflex",
+          "mooring",
+          "digitalmodel",
+          "git",
+          "skill",
+          "csv"
+        ]
+      }
+    ],
+    "has_coverage": true,
+    "coverage_depth": 192
+  },
+  {
+    "directory": "scripts/quality",
+    "frequency": 87,
+    "matching_skills": [
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 4,
+        "domains": [
+          "fea",
+          "hull",
+          "vessel",
+          "digitalmodel",
+          "git",
+          "skill",
+          "yaml",
+          "json",
+          "csv"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 4,
+        "domains": [
+          "orcaflex",
+          "mooring",
+          "riser",
+          "drilling",
+          "metocean",
+          "vessel",
+          "digitalmodel",
+          "git",
+          "yaml"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 4,
+        "domains": [
+          "orcawave",
+          "diffraction",
+          "cad",
+          "hull",
+          "digitalmodel",
+          "git",
+          "skill"
+        ]
+      }
+    ],
+    "has_coverage": true,
+    "coverage_depth": 3
+  },
+  {
+    "directory": "scripts/quality/check-all.sh",
+    "frequency": 87,
+    "matching_skills": [
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 4,
+        "domains": [
+          "fea",
+          "hull",
+          "vessel",
+          "digitalmodel",
+          "git",
+          "skill",
+          "yaml",
+          "json",
+          "csv"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 4,
+        "domains": [
+          "orcaflex",
+          "mooring",
+          "riser",
+          "drilling",
+          "metocean",
+          "vessel",
+          "digitalmodel",
+          "git",
+          "yaml"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 4,
+        "domains": [
+          "orcawave",
+          "diffraction",
+          "cad",
+          "hull",
+          "digitalmodel",
+          "git",
+          "skill"
+        ]
+      }
+    ],
+    "has_coverage": true,
+    "coverage_depth": 3
+  },
+  {
+    "directory": "scripts/work-queue/archive-item.sh",
+    "frequency": 79,
+    "matching_skills": [
+      {
+        "name": "SKILLS_SUMMARY",
+        "repo": "workspace-hub",
+        "score": 2,
+        "domains": [
+          "skill",
+          "work-queue"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 2,
+        "domains": [
+          "skill",
+          "work-queue",
+          "claude",
+          "codex",
+          "json"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 2,
+        "domains": [
+          "git",
+          "skill",
+          "work-queue",
+          "claude",
+          "pdf",
+          "yaml"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 2,
+        "domains": [
+          "git",
+          "skill",
+          "work-queue"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 2,
+        "domains": [
+          "cad",
+          "digitalmodel",
+          "assetutilities",
+          "worldenergydata",
+          "git",
+          "skill",
+          "work-queue",
+          "claude",
+          "codex",
+          "pdf",
+          "website",
+          "aceengineer"
+        ]
+      }
+    ],
+    "has_coverage": true,
+    "coverage_depth": 12
+  },
+  {
+    "directory": "scripts/work-queue/claim-item.sh",
+    "frequency": 77,
+    "matching_skills": [
+      {
+        "name": "SKILLS_SUMMARY",
+        "repo": "workspace-hub",
+        "score": 2,
+        "domains": [
+          "skill",
+          "work-queue"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 2,
+        "domains": [
+          "skill",
+          "work-queue",
+          "claude",
+          "codex",
+          "json"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 2,
+        "domains": [
+          "git",
+          "skill",
+          "work-queue",
+          "claude",
+          "pdf",
+          "yaml"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 2,
+        "domains": [
+          "git",
+          "skill",
+          "work-queue"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 2,
+        "domains": [
+          "cad",
+          "digitalmodel",
+          "assetutilities",
+          "worldenergydata",
+          "git",
+          "skill",
+          "work-queue",
+          "claude",
+          "codex",
+          "pdf",
+          "website",
+          "aceengineer"
+        ]
+      }
+    ],
+    "has_coverage": true,
+    "coverage_depth": 12
+  },
+  {
+    "directory": ".claude/skills/development",
+    "frequency": 76,
+    "matching_skills": [
+      {
+        "name": "SKILLS_SUMMARY",
+        "repo": "workspace-hub",
+        "score": 5,
+        "domains": [
+          "skill",
+          "work-queue"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 5,
+        "domains": [
+          "git",
+          "github",
+          "skill",
+          "claude"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 5,
+        "domains": [
+          "git",
+          "github",
+          "skill",
+          "claude",
+          "marketing"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 5,
+        "domains": [
+          "git",
+          "github",
+          "skill",
+          "claude",
+          "aceengineer"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 5,
+        "domains": [
+          "git",
+          "github",
+          "skill",
+          "claude",
+          "website",
+          "aceengineer"
+        ]
+      }
+    ],
+    "has_coverage": true,
+    "coverage_depth": 882
+  },
+  {
+    "directory": "scripts/data/document-index",
+    "frequency": 73,
+    "matching_skills": [
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 4,
+        "domains": [
+          "cathodic",
+          "fea",
+          "digitalmodel",
+          "git",
+          "skill",
+          "csv"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 4,
+        "domains": [
+          "cathodic",
+          "skill"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 4,
+        "domains": [
+          "riser",
+          "drilling",
+          "viv",
+          "skill"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 4,
+        "domains": [
+          "hull",
+          "skill"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 4,
+        "domains": [
+          "orcaflex",
+          "orcawave",
+          "diffraction",
+          "hull",
+          "vessel",
+          "production",
+          "digitalmodel",
+          "git",
+          "skill",
+          "json"
+        ]
+      }
+    ],
+    "has_coverage": true,
+    "coverage_depth": 11
+  },
+  {
+    "directory": ".claude/settings.json",
+    "frequency": 66,
+    "matching_skills": [
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 4,
+        "domains": [
+          "skill",
+          "work-queue",
+          "claude",
+          "codex",
+          "json"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 4,
+        "domains": [
+          "skill",
+          "claude",
+          "pdf",
+          "yaml",
+          "json"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 4,
+        "domains": [
+          "fea",
+          "git",
+          "github",
+          "ci/cd",
+          "testing",
+          "skill",
+          "claude",
+          "json"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 4,
+        "domains": [
+          "git",
+          "github",
+          "testing",
+          "skill",
+          "claude",
+          "yaml",
+          "json"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 4,
+        "domains": [
+          "git",
+          "github",
+          "skill",
+          "claude",
+          "json"
+        ]
+      }
+    ],
+    "has_coverage": true,
+    "coverage_depth": 389
+  },
+  {
+    "directory": "scripts/review/cross-review.sh",
+    "frequency": 65,
+    "matching_skills": [
+      {
+        "name": "review-contract",
+        "repo": "workspace-hub",
+        "score": 5,
+        "domains": [
+          "viv",
+          "git",
+          "github",
+          "review",
+          "pdf"
+        ]
+      },
+      {
+        "name": "brand-review",
+        "repo": "workspace-hub",
+        "score": 5,
+        "domains": [
+          "git",
+          "github",
+          "review",
+          "marketing"
+        ]
+      },
+      {
+        "name": "metrics-review",
+        "repo": "workspace-hub",
+        "score": 5,
+        "domains": [
+          "git",
+          "github",
+          "review"
+        ]
+      },
+      {
+        "name": "pipeline-review",
+        "repo": "workspace-hub",
+        "score": 5,
+        "domains": [
+          "git",
+          "github",
+          "review",
+          "csv"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 5,
+        "domains": [
+          "cad",
+          "viv",
+          "git",
+          "github",
+          "review",
+          "skill",
+          "pdf",
+          "yaml"
+        ]
+      }
+    ],
+    "has_coverage": true,
+    "coverage_depth": 223
+  },
+  {
+    "directory": "scripts/cron/comprehensive-learning-nightly.sh",
+    "frequency": 62,
+    "matching_skills": [],
+    "has_coverage": false,
+    "coverage_depth": 0
+  },
+  {
+    "directory": "specs/wrk/WRK-658",
+    "frequency": 61,
+    "matching_skills": [
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 3,
+        "domains": [
+          "cad",
+          "digitalmodel",
+          "assetutilities",
+          "worldenergydata",
+          "git",
+          "skill",
+          "work-queue",
+          "claude",
+          "codex",
+          "pdf",
+          "website",
+          "aceengineer"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 3,
+        "domains": [
+          "orcaflex",
+          "mooring",
+          "riser",
+          "drilling",
+          "metocean",
+          "vessel",
+          "digitalmodel",
+          "git",
+          "yaml"
+        ]
+      }
+    ],
+    "has_coverage": true,
+    "coverage_depth": 2
+  },
+  {
+    "directory": "scripts/analysis",
+    "frequency": 58,
+    "matching_skills": [
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 13,
+        "domains": [
+          "orcaflex",
+          "riser",
+          "production",
+          "viv",
+          "digitalmodel",
+          "git",
+          "skill",
+          "csv"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 10,
+        "domains": [
+          "orcaflex",
+          "orcawave",
+          "diffraction",
+          "vessel",
+          "digitalmodel",
+          "git",
+          "github",
+          "skill",
+          "yaml"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 10,
+        "domains": [
+          "orcaflex",
+          "orcawave",
+          "mooring",
+          "riser",
+          "diffraction",
+          "vessel",
+          "production",
+          "digitalmodel",
+          "git",
+          "skill",
+          "yaml"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 10,
+        "domains": [
+          "orcaflex",
+          "orcawave",
+          "diffraction",
+          "hull",
+          "vessel",
+          "production",
+          "digitalmodel",
+          "git",
+          "skill",
+          "json"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 7,
+        "domains": [
+          "cad",
+          "skill",
+          "yaml"
+        ]
+      }
+    ],
+    "has_coverage": true,
+    "coverage_depth": 16
+  },
+  {
+    "directory": "scripts/data/doc_intelligence",
+    "frequency": 49,
+    "matching_skills": [
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 4,
+        "domains": [
+          "cathodic",
+          "fea",
+          "digitalmodel",
+          "git",
+          "skill",
+          "csv"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 4,
+        "domains": [
+          "cathodic",
+          "skill"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 4,
+        "domains": [
+          "riser",
+          "drilling",
+          "viv",
+          "skill"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 4,
+        "domains": [
+          "hull",
+          "skill"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 4,
+        "domains": [
+          "orcaflex",
+          "orcawave",
+          "diffraction",
+          "hull",
+          "vessel",
+          "production",
+          "digitalmodel",
+          "git",
+          "skill",
+          "json"
+        ]
+      }
+    ],
+    "has_coverage": true,
+    "coverage_depth": 11
+  },
+  {
+    "directory": "scripts/work-queue/verify_checklist.py",
+    "frequency": 43,
+    "matching_skills": [
+      {
+        "name": "SKILLS_SUMMARY",
+        "repo": "workspace-hub",
+        "score": 2,
+        "domains": [
+          "skill",
+          "work-queue"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 2,
+        "domains": [
+          "skill",
+          "work-queue",
+          "claude",
+          "codex",
+          "json"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 2,
+        "domains": [
+          "git",
+          "skill",
+          "work-queue",
+          "claude",
+          "pdf",
+          "yaml"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 2,
+        "domains": [
+          "git",
+          "skill",
+          "work-queue"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 2,
+        "domains": [
+          "cad",
+          "digitalmodel",
+          "assetutilities",
+          "worldenergydata",
+          "git",
+          "skill",
+          "work-queue",
+          "claude",
+          "codex",
+          "pdf",
+          "website",
+          "aceengineer"
+        ]
+      }
+    ],
+    "has_coverage": true,
+    "coverage_depth": 12
+  },
+  {
+    "directory": "scripts/review/submit-to-codex.sh",
+    "frequency": 41,
+    "matching_skills": [
+      {
+        "name": "review-contract",
+        "repo": "workspace-hub",
+        "score": 5,
+        "domains": [
+          "viv",
+          "git",
+          "github",
+          "review",
+          "pdf"
+        ]
+      },
+      {
+        "name": "brand-review",
+        "repo": "workspace-hub",
+        "score": 5,
+        "domains": [
+          "git",
+          "github",
+          "review",
+          "marketing"
+        ]
+      },
+      {
+        "name": "metrics-review",
+        "repo": "workspace-hub",
+        "score": 5,
+        "domains": [
+          "git",
+          "github",
+          "review"
+        ]
+      },
+      {
+        "name": "pipeline-review",
+        "repo": "workspace-hub",
+        "score": 5,
+        "domains": [
+          "git",
+          "github",
+          "review",
+          "csv"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 5,
+        "domains": [
+          "cad",
+          "viv",
+          "git",
+          "github",
+          "review",
+          "skill",
+          "pdf",
+          "yaml"
+        ]
+      }
+    ],
+    "has_coverage": true,
+    "coverage_depth": 286
+  },
+  {
+    "directory": "scripts/knowledge",
+    "frequency": 41,
+    "matching_skills": [],
+    "has_coverage": false,
+    "coverage_depth": 0
+  },
+  {
+    "directory": "scripts/knowledge/update-github-issue.py",
+    "frequency": 41,
+    "matching_skills": [
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 5,
+        "domains": [
+          "git",
+          "github",
+          "skill"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 5,
+        "domains": [
+          "git",
+          "github",
+          "skill"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 5,
+        "domains": [
+          "git",
+          "github",
+          "skill"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 5,
+        "domains": [
+          "git",
+          "github",
+          "review",
+          "skill",
+          "yaml"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 5,
+        "domains": [
+          "git",
+          "github",
+          "skill"
+        ]
+      }
+    ],
+    "has_coverage": true,
+    "coverage_depth": 524
+  },
+  {
+    "directory": "specs/wrk/WRK-1105",
+    "frequency": 38,
+    "matching_skills": [
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 3,
+        "domains": [
+          "cad",
+          "digitalmodel",
+          "assetutilities",
+          "worldenergydata",
+          "git",
+          "skill",
+          "work-queue",
+          "claude",
+          "codex",
+          "pdf",
+          "website",
+          "aceengineer"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 3,
+        "domains": [
+          "orcaflex",
+          "mooring",
+          "riser",
+          "drilling",
+          "metocean",
+          "vessel",
+          "digitalmodel",
+          "git",
+          "yaml"
+        ]
+      }
+    ],
+    "has_coverage": true,
+    "coverage_depth": 2
+  },
+  {
+    "directory": "specs/wrk/WRK-1035",
+    "frequency": 35,
+    "matching_skills": [
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 3,
+        "domains": [
+          "cad",
+          "digitalmodel",
+          "assetutilities",
+          "worldenergydata",
+          "git",
+          "skill",
+          "work-queue",
+          "claude",
+          "codex",
+          "pdf",
+          "website",
+          "aceengineer"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 3,
+        "domains": [
+          "orcaflex",
+          "mooring",
+          "riser",
+          "drilling",
+          "metocean",
+          "vessel",
+          "digitalmodel",
+          "git",
+          "yaml"
+        ]
+      }
+    ],
+    "has_coverage": true,
+    "coverage_depth": 2
+  },
+  {
+    "directory": ".claude/work-queue/scripts",
+    "frequency": 33,
+    "matching_skills": [
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 4,
+        "domains": [
+          "skill",
+          "work-queue",
+          "claude",
+          "codex",
+          "json"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 4,
+        "domains": [
+          "git",
+          "skill",
+          "work-queue",
+          "claude",
+          "pdf",
+          "yaml"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 4,
+        "domains": [
+          "cad",
+          "digitalmodel",
+          "assetutilities",
+          "worldenergydata",
+          "git",
+          "skill",
+          "work-queue",
+          "claude",
+          "codex",
+          "pdf",
+          "website",
+          "aceengineer"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "CAD-DEVELOPMENTS",
+        "score": 4,
+        "domains": [
+          "fea",
+          "review",
+          "skill",
+          "work-queue",
+          "claude",
+          "yaml"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "CAD-DEVELOPMENTS",
+        "score": 4,
+        "domains": [
+          "fea",
+          "digitalmodel",
+          "git",
+          "review",
+          "skill",
+          "work-queue",
+          "claude",
+          "json"
+        ]
+      }
+    ],
+    "has_coverage": true,
+    "coverage_depth": 252
+  },
+  {
+    "directory": ".claude/hooks",
+    "frequency": 33,
+    "matching_skills": [
+      {
+        "name": "SKILL",
+        "repo": "CAD-DEVELOPMENTS",
+        "score": 3,
+        "domains": [
+          "git",
+          "ci/cd",
+          "review",
+          "skill",
+          "claude",
+          "yaml"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 2,
+        "domains": [
+          "skill",
+          "work-queue",
+          "claude",
+          "codex",
+          "json"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 2,
+        "domains": [
+          "fea",
+          "production",
+          "digitalmodel",
+          "assetutilities",
+          "worldenergydata",
+          "git",
+          "review",
+          "skill",
+          "claude"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 2,
+        "domains": [
+          "fea",
+          "production",
+          "digitalmodel",
+          "git",
+          "testing",
+          "review",
+          "skill",
+          "claude",
+          "yaml"
+        ]
+      },
+      {
+        "name": "api-reference",
+        "repo": "workspace-hub",
+        "score": 2,
+        "domains": [
+          "skill",
+          "claude"
+        ]
+      }
+    ],
+    "has_coverage": true,
+    "coverage_depth": 249
+  },
+  {
+    "directory": ".claude/hooks/enforce-active-stage.sh",
+    "frequency": 33,
+    "matching_skills": [
+      {
+        "name": "SKILL",
+        "repo": "CAD-DEVELOPMENTS",
+        "score": 3,
+        "domains": [
+          "git",
+          "ci/cd",
+          "review",
+          "skill",
+          "claude",
+          "yaml"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 2,
+        "domains": [
+          "skill",
+          "work-queue",
+          "claude",
+          "codex",
+          "json"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 2,
+        "domains": [
+          "fea",
+          "production",
+          "digitalmodel",
+          "assetutilities",
+          "worldenergydata",
+          "git",
+          "review",
+          "skill",
+          "claude"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 2,
+        "domains": [
+          "fea",
+          "production",
+          "digitalmodel",
+          "git",
+          "testing",
+          "review",
+          "skill",
+          "claude",
+          "yaml"
+        ]
+      },
+      {
+        "name": "api-reference",
+        "repo": "workspace-hub",
+        "score": 2,
+        "domains": [
+          "skill",
+          "claude"
+        ]
+      }
+    ],
+    "has_coverage": true,
+    "coverage_depth": 249
+  },
+  {
+    "directory": "/mnt",
+    "frequency": 33,
+    "matching_skills": [
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 67,
+        "domains": [
+          "mooring",
+          "cathodic",
+          "hull",
+          "digitalmodel",
+          "git",
+          "skill"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 61,
+        "domains": [
+          "cathodic",
+          "fea",
+          "digitalmodel",
+          "git",
+          "skill",
+          "csv"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 43,
+        "domains": [
+          "orcaflex",
+          "cad",
+          "skill",
+          "pdf",
+          "yaml"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 40,
+        "domains": [
+          "orcaflex",
+          "orcawave",
+          "riser",
+          "diffraction",
+          "digitalmodel",
+          "git",
+          "skill"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "CAD-DEVELOPMENTS",
+        "score": 40,
+        "domains": [
+          "git",
+          "review",
+          "skill",
+          "claude",
+          "yaml",
+          "json"
+        ]
+      }
+    ],
+    "has_coverage": true,
+    "coverage_depth": 1082
+  },
+  {
+    "directory": "/mnt/workspace-hub",
+    "frequency": 33,
+    "matching_skills": [
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 67,
+        "domains": [
+          "mooring",
+          "cathodic",
+          "hull",
+          "digitalmodel",
+          "git",
+          "skill"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 61,
+        "domains": [
+          "cathodic",
+          "fea",
+          "digitalmodel",
+          "git",
+          "skill",
+          "csv"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 43,
+        "domains": [
+          "orcaflex",
+          "cad",
+          "skill",
+          "pdf",
+          "yaml"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 40,
+        "domains": [
+          "orcaflex",
+          "orcawave",
+          "riser",
+          "diffraction",
+          "digitalmodel",
+          "git",
+          "skill"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "CAD-DEVELOPMENTS",
+        "score": 40,
+        "domains": [
+          "git",
+          "review",
+          "skill",
+          "claude",
+          "yaml",
+          "json"
+        ]
+      }
+    ],
+    "has_coverage": true,
+    "coverage_depth": 1082
+  },
+  {
+    "directory": "docs/superpowers",
+    "frequency": 33,
+    "matching_skills": [],
+    "has_coverage": false,
+    "coverage_depth": 0
+  },
+  {
+    "directory": "docs/superpowers/plans",
+    "frequency": 33,
+    "matching_skills": [
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 2,
+        "domains": [
+          "fea",
+          "git",
+          "github",
+          "testing",
+          "skill"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "workspace-hub",
+        "score": 2,
+        "domains": [
+          "git",
+          "github",
+          "review",
+          "skill"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "CAD-DEVELOPMENTS",
+        "score": 2,
+        "domains": [
+          "fea",
+          "git",
+          "github",
+          "testing",
+          "skill"
+        ]
+      },
+      {
+        "name": "SKILL",
+        "repo": "CAD-DEVELOPMENTS",
+        "score": 2,
+        "domains": [
+          "fea",
+          "git",
+          "github",
+          "review",
+          "skill"
+        ]
+      }
+    ],
+    "has_coverage": true,
+    "coverage_depth": 4
+  },
+  {
+    "directory": "scripts/learning",
+    "frequency": 32,
+    "matching_skills": [],
+    "has_coverage": false,
+    "coverage_depth": 0
+  }
+]

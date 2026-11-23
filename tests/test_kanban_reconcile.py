@@ -1,0 +1,873 @@
+from __future__ import annotations
+
+import importlib.util
+import json
+import re
+import subprocess
+import sys
+from pathlib import Path
+
+import pytest
+import yaml
+
+
+ROOT = Path(__file__).resolve().parents[1]
+MODULE_PATH = ROOT / "scripts/kanban/reconcile.py"
+
+
+def load_reconcile():
+    spec = importlib.util.spec_from_file_location("kanban_reconcile", MODULE_PATH)
+    module = importlib.util.module_from_spec(spec)
+    assert spec.loader is not None
+    sys.modules[spec.name] = module
+    spec.loader.exec_module(module)
+    return module
+
+
+def write_yaml(path: Path, data: dict) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(yaml.safe_dump(data, sort_keys=False), encoding="utf-8")
+
+
+def read_yaml(path: Path) -> dict:
+    return yaml.safe_load(path.read_text(encoding="utf-8")) or {}
+
+
+def seed_kanban(root: Path) -> Path:
+    kanban = root / ".claude/memory/kanban"
+    write_yaml(
+        kanban / "manifest.yaml",
+        {
+            "manifest": {
+                "boards": [
+                    {
+                        "slug": "repo-workspace-hub",
+                        "tier": "repo",
+                        "repo": "vamseeachanta/workspace-hub",
+                        "file": "boards/repo-workspace-hub.yaml",
+                        "children": ["repo-workspace-hub-ops"],
+                    },
+                    {
+                        "slug": "repo-workspace-hub-ops",
+                        "tier": "domain",
+                        "repo": "vamseeachanta/workspace-hub",
+                        "domain": "ops",
+                        "parent_slug": "repo-workspace-hub",
+                        "file": "boards/repo-workspace-hub-ops.yaml",
+                    },
+                ]
+            }
+        },
+    )
+    write_yaml(
+        kanban / "domains.yaml",
+        {
+            "repos": {
+                "vamseeachanta/workspace-hub": {
+                    "board": "repo-workspace-hub",
+                    "domains": [{"name": "ops", "status": "existing"}],
+                }
+            }
+        },
+    )
+    write_yaml(
+        kanban / "boards/repo-workspace-hub.yaml",
+        {
+            "board": {
+                "slug": "repo-workspace-hub",
+                "tier": "repo",
+                "repo": "vamseeachanta/workspace-hub",
+                "workspace_path": "/mnt/local-analysis/workspace-hub",
+            },
+            "cards": [],
+        },
+    )
+    write_yaml(
+        kanban / "boards/repo-workspace-hub-ops.yaml",
+        {
+            "board": {
+                "slug": "repo-workspace-hub-ops",
+                "tier": "domain",
+                "repo": "vamseeachanta/workspace-hub",
+                "domain": "ops",
+                "parent_slug": "repo-workspace-hub",
+                "workspace_path": "/mnt/local-analysis/workspace-hub",
+            },
+            "cards": [],
+        },
+    )
+    return kanban
+
+
+def issue(number: int, title: str, state: str = "OPEN", labels: list[str] | None = None) -> dict:
+    return {
+        "number": number,
+        "title": title,
+        "state": state,
+        "labels": [{"name": name} for name in (labels or [])],
+    }
+
+
+def existing_issue_card(number: int, title: str = "stale title", labels: list[str] | None = None) -> dict:
+    repo = "vamseeachanta/workspace-hub"
+    return {
+        "idempotency_key": f"gh:{repo}#{number}",
+        "title": title,
+        "source": "github_issue",
+        "source_url": f"https://github.com/{repo}/issues/{number}",
+        "gh_state": "open",
+        "gh_labels": labels or [],
+        "initial_status": "triage",
+        "priority": 0,
+    }
+
+
+def test_reconcile_moves_domain_labeled_issue_and_keeps_key_unique(tmp_path: Path):
+    reconcile = load_reconcile()
+    kanban = seed_kanban(tmp_path)
+    key = "gh:vamseeachanta/workspace-hub#2802"
+    repo_board = kanban / "boards/repo-workspace-hub.yaml"
+    domain_board = kanban / "boards/repo-workspace-hub-ops.yaml"
+    repo_data = read_yaml(repo_board)
+    repo_data["cards"] = [
+        {
+            "idempotency_key": key,
+            **existing_issue_card(2802),
+        }
+    ]
+    write_yaml(repo_board, repo_data)
+
+    result = reconcile.reconcile_kanban(
+        kanban,
+        issue_fetcher=lambda repo: [
+            issue(2802, "Auto-add every GitHub issue", labels=["domain:ops", "priority:high"])
+        ],
+        dry_run=False,
+    )
+
+    assert result.changed is True
+    assert "repo-workspace-hub-ops.yaml" in result.diff
+    repo_keys = [card["idempotency_key"] for card in read_yaml(repo_board)["cards"]]
+    domain_cards = read_yaml(domain_board)["cards"]
+    domain_keys = [card["idempotency_key"] for card in domain_cards]
+    assert key not in repo_keys
+    assert repo_keys + domain_keys == [key]
+    assert [card["idempotency_key"] for card in domain_cards] == [key]
+    assert domain_cards[0]["title"] == "Auto-add every GitHub issue"
+    assert domain_cards[0]["gh_state"] == "open"
+    assert domain_cards[0]["priority"] == 1
+    assert domain_cards[0]["gh_labels"] == ["domain:ops", "priority:high"]
+
+
+def test_reconcile_removes_missing_issue_with_allow_shrink_and_updates_closed_state(tmp_path: Path):
+    reconcile = load_reconcile()
+    kanban = seed_kanban(tmp_path)
+    repo_board = kanban / "boards/repo-workspace-hub.yaml"
+    repo_data = read_yaml(repo_board)
+    repo_data["cards"] = [
+        {
+            **existing_issue_card(1, "deleted or transferred"),
+        },
+        {
+            **existing_issue_card(2, "old title"),
+        },
+    ]
+    write_yaml(repo_board, repo_data)
+
+    result = reconcile.reconcile_kanban(
+        kanban,
+        issue_fetcher=lambda repo: [issue(2, "closed issue", state="CLOSED")],
+        dry_run=False,
+        allow_shrink_repos={"vamseeachanta/workspace-hub"},
+    )
+
+    assert result.changed is True
+    cards = read_yaml(repo_board)["cards"]
+    assert [card["idempotency_key"] for card in cards] == ["gh:vamseeachanta/workspace-hub#2"]
+    assert cards[0]["title"] == "closed issue"
+    assert cards[0]["gh_state"] == "closed"
+
+
+def test_reconcile_fails_closed_when_active_repo_fetch_returns_empty(tmp_path: Path):
+    reconcile = load_reconcile()
+    kanban = seed_kanban(tmp_path)
+    repo_board = kanban / "boards/repo-workspace-hub.yaml"
+    repo_data = read_yaml(repo_board)
+    repo_data["cards"] = [
+        {
+            "idempotency_key": "gh:vamseeachanta/workspace-hub#2802",
+            "title": "must not be wiped by empty fetch",
+            "source": "github_issue",
+            "source_url": "https://github.com/vamseeachanta/workspace-hub/issues/2802",
+            "gh_state": "open",
+            "gh_labels": [],
+            "initial_status": "triage",
+            "priority": 0,
+        }
+    ]
+    write_yaml(repo_board, repo_data)
+
+    with pytest.raises(RuntimeError, match="empty issue list"):
+        reconcile.reconcile_kanban(
+            kanban,
+            issue_fetcher=lambda repo: [],
+            dry_run=True,
+        )
+
+    cards = read_yaml(repo_board)["cards"]
+    assert [card["idempotency_key"] for card in cards] == [
+        "gh:vamseeachanta/workspace-hub#2802"
+    ]
+
+
+def test_reconcile_fails_closed_when_active_repo_fetch_shrinks_existing_cards(tmp_path: Path):
+    reconcile = load_reconcile()
+    kanban = seed_kanban(tmp_path)
+    repo_board = kanban / "boards/repo-workspace-hub.yaml"
+    repo_data = read_yaml(repo_board)
+    repo_data["cards"] = [
+        existing_issue_card(1, "keep"),
+        existing_issue_card(2, "missing from partial fetch"),
+    ]
+    write_yaml(repo_board, repo_data)
+
+    with pytest.raises(RuntimeError, match="partial issue list"):
+        reconcile.reconcile_kanban(
+            kanban,
+            issue_fetcher=lambda repo: [issue(1, "keep")],
+            dry_run=False,
+        )
+
+    assert repo_board.read_text(encoding="utf-8") == yaml.safe_dump(repo_data, sort_keys=False)
+
+
+def test_reconcile_allows_shrink_with_explicit_repo_override(tmp_path: Path):
+    reconcile = load_reconcile()
+    kanban = seed_kanban(tmp_path)
+    repo_board = kanban / "boards/repo-workspace-hub.yaml"
+    repo_data = read_yaml(repo_board)
+    repo_data["cards"] = [
+        existing_issue_card(1, "keep"),
+        existing_issue_card(2, "legitimate deletion"),
+    ]
+    write_yaml(repo_board, repo_data)
+
+    result = reconcile.reconcile_kanban(
+        kanban,
+        issue_fetcher=lambda repo: [issue(1, "keep")],
+        dry_run=False,
+        allow_shrink_repos={"vamseeachanta/workspace-hub"},
+    )
+
+    assert result.changed is True
+    assert [card["idempotency_key"] for card in read_yaml(repo_board)["cards"]] == [
+        "gh:vamseeachanta/workspace-hub#1"
+    ]
+
+
+def test_board_files_returns_manifest_boards_only(tmp_path: Path):
+    reconcile = load_reconcile()
+    kanban = seed_kanban(tmp_path)
+    entries = reconcile.load_manifest_entries(kanban)
+    unmanifested = kanban / "boards/unmanifested-empty.yaml"
+    write_yaml(unmanifested, {"board": {"slug": "unmanifested-empty"}, "cards": []})
+
+    assert reconcile.board_files(kanban, entries) == [
+        kanban / "boards/repo-workspace-hub-ops.yaml",
+        kanban / "boards/repo-workspace-hub.yaml",
+    ]
+
+
+def test_unmanifested_board_with_card_aborts(tmp_path: Path):
+    reconcile = load_reconcile()
+    kanban = seed_kanban(tmp_path)
+    write_yaml(
+        kanban / "boards/unmanifested.yaml",
+        {"board": {"slug": "unmanifested"}, "cards": [{"idempotency_key": "manual:1"}]},
+    )
+
+    with pytest.raises(RuntimeError, match="unmanifested board"):
+        reconcile.reconcile_kanban(
+            kanban,
+            issue_fetcher=lambda repo: [],
+            dry_run=True,
+            allow_empty_repos={"vamseeachanta/workspace-hub"},
+        )
+
+
+def test_unmanifested_empty_board_warns_and_proceeds(tmp_path: Path, capsys: pytest.CaptureFixture[str]):
+    reconcile = load_reconcile()
+    kanban = seed_kanban(tmp_path)
+    write_yaml(kanban / "boards/unmanifested-empty.yaml", {"board": {"slug": "empty"}, "cards": []})
+
+    result = reconcile.reconcile_kanban(
+        kanban,
+        issue_fetcher=lambda repo: [],
+        dry_run=True,
+        allow_empty_repos={"vamseeachanta/workspace-hub"},
+    )
+
+    assert result.changed is False
+    assert "unmanifested empty board" in capsys.readouterr().err
+
+
+def test_dry_run_never_writes_even_when_write_files_true(tmp_path: Path):
+    reconcile = load_reconcile()
+    kanban = seed_kanban(tmp_path)
+    repo_board = kanban / "boards/repo-workspace-hub.yaml"
+    before = repo_board.read_bytes()
+
+    result = reconcile.reconcile_kanban(
+        kanban,
+        issue_fetcher=lambda repo: [issue(2802, "new card")],
+        dry_run=True,
+        write_files=True,
+    )
+
+    assert result.changed is True
+    assert repo_board.read_bytes() == before
+
+
+def test_reconcile_is_idempotent_on_second_run(tmp_path: Path):
+    reconcile = load_reconcile()
+    kanban = seed_kanban(tmp_path)
+    repo_board = kanban / "boards/repo-workspace-hub.yaml"
+
+    first = reconcile.reconcile_kanban(
+        kanban,
+        issue_fetcher=lambda repo: [issue(2802, "stable title")],
+        dry_run=False,
+    )
+    after_first = repo_board.read_bytes()
+    second = reconcile.reconcile_kanban(
+        kanban,
+        issue_fetcher=lambda repo: [issue(2802, "stable title")],
+        dry_run=False,
+    )
+
+    assert first.changed is True
+    assert second.changed is False
+    assert repo_board.read_bytes() == after_first
+
+
+def test_reconcile_preserves_board_comments_and_wrapped_scalars(tmp_path: Path):
+    reconcile = load_reconcile()
+    kanban = seed_kanban(tmp_path)
+    repo_board = kanban / "boards/repo-workspace-hub.yaml"
+    repo_board.write_text(
+        """# board comment survives reconcile
+board:
+  slug: repo-workspace-hub
+  tier: repo
+  repo: vamseeachanta/workspace-hub
+  workspace_path: /mnt/local-analysis/workspace-hub
+  description: |
+    Wrapped line one.
+    Wrapped line two.
+cards:
+- idempotency_key: gh:vamseeachanta/workspace-hub#2802
+  title: stale title
+  source: github_issue
+  source_url: https://github.com/vamseeachanta/workspace-hub/issues/2802
+  gh_state: open
+  gh_labels: []
+  initial_status: triage
+  priority: 0
+""",
+        encoding="utf-8",
+    )
+
+    reconcile.reconcile_kanban(
+        kanban,
+        issue_fetcher=lambda repo: [issue(2802, "fresh title")],
+        dry_run=False,
+    )
+
+    text = repo_board.read_text(encoding="utf-8")
+    assert "# board comment survives reconcile" in text
+    assert "description: |\n    Wrapped line one.\n    Wrapped line two.\n" in text
+    assert "title: fresh title" in text
+
+
+def gql_node(number: int, title: str, state: str = "OPEN", labels: list[str] | None = None,
+             labels_has_next: bool = False) -> dict:
+    """A single issue node in GraphQL response shape."""
+    return {
+        "number": number,
+        "title": title,
+        "state": state,
+        "labels": {
+            "pageInfo": {"hasNextPage": labels_has_next},
+            "nodes": [{"name": name} for name in (labels or [])],
+        },
+    }
+
+
+def gql_page(nodes: list[dict], has_next_page: bool, end_cursor: str | None) -> str:
+    """A GraphQL response page as the JSON string `gh api graphql` emits on stdout."""
+    return json.dumps(
+        {
+            "data": {
+                "repository": {
+                    "issues": {
+                        "pageInfo": {
+                            "hasNextPage": has_next_page,
+                            "endCursor": end_cursor,
+                        },
+                        "nodes": nodes,
+                    }
+                }
+            }
+        }
+    )
+
+
+def test_fetch_repo_issues_unions_multiple_graphql_pages():
+    reconcile = load_reconcile()
+    calls = []
+
+    pages = [
+        gql_page([gql_node(1, "one"), gql_node(2, "two")], has_next_page=True, end_cursor="CUR1"),
+        gql_page([gql_node(3, "three", state="CLOSED")], has_next_page=False, end_cursor=None),
+    ]
+
+    def runner(cmd, **kwargs):
+        calls.append(cmd)
+        return subprocess.CompletedProcess(cmd, 0, stdout=pages[len(calls) - 1], stderr="")
+
+    result = reconcile.fetch_repo_issues("vamseeachanta/workspace-hub", runner=runner)
+
+    assert len(calls) == 2
+    assert [r["number"] for r in result] == [1, 2, 3]
+    # mapped to the card shape downstream expects
+    assert result == [
+        {"number": 1, "title": "one", "state": "OPEN", "labels": []},
+        {"number": 2, "title": "two", "state": "OPEN", "labels": []},
+        {"number": 3, "title": "three", "state": "CLOSED", "labels": []},
+    ]
+
+
+def test_fetch_repo_issues_raises_on_hasnextpage_without_cursor():
+    # Guard against a cron hang: hasNextPage=true with a null endCursor would
+    # otherwise re-fetch page 1 forever.
+    reconcile = load_reconcile()
+
+    def runner(cmd, **kwargs):
+        return subprocess.CompletedProcess(
+            cmd, 0,
+            stdout=gql_page([gql_node(1, "one")], has_next_page=True, end_cursor=None),
+            stderr="",
+        )
+
+    with pytest.raises(RuntimeError, match="endCursor"):
+        reconcile.fetch_repo_issues("vamseeachanta/workspace-hub", runner=runner)
+
+
+def test_fetch_repo_issues_raises_on_malformed_issue_pageinfo():
+    # A 200 response with nodes but no issues.pageInfo is indistinguishable from
+    # "last page" — must raise, not return a partial set.
+    reconcile = load_reconcile()
+
+    def runner(cmd, **kwargs):
+        payload = {"data": {"repository": {"issues": {"nodes": []}}}}  # pageInfo missing
+        return subprocess.CompletedProcess(cmd, 0, stdout=json.dumps(payload), stderr="")
+
+    with pytest.raises(RuntimeError, match="pageInfo"):
+        reconcile.fetch_repo_issues("vamseeachanta/workspace-hub", runner=runner)
+
+
+def test_fetch_repo_issues_raises_on_non_advancing_cursor():
+    # hasNextPage=true with a repeated endCursor would loop forever → must raise.
+    reconcile = load_reconcile()
+
+    def runner(cmd, **kwargs):
+        payload = {"data": {"repository": {"issues": {
+            "nodes": [],
+            "pageInfo": {"hasNextPage": True, "endCursor": "SAME"},
+        }}}}
+        return subprocess.CompletedProcess(cmd, 0, stdout=json.dumps(payload), stderr="")
+
+    with pytest.raises(RuntimeError, match="did not advance"):
+        reconcile.fetch_repo_issues("vamseeachanta/workspace-hub", runner=runner)
+
+
+def test_fetch_repo_issues_raises_on_malformed_label_pageinfo():
+    # A node whose labels has nodes but no pageInfo could silently truncate labels
+    # (board routing depends on them) → must raise.
+    reconcile = load_reconcile()
+
+    def runner(cmd, **kwargs):
+        node = {"number": 1, "title": "x", "state": "OPEN",
+                "labels": {"nodes": [{"name": "domain:foo"}]}}  # labels.pageInfo missing
+        payload = {"data": {"repository": {"issues": {
+            "nodes": [node],
+            "pageInfo": {"hasNextPage": False, "endCursor": None},
+        }}}}
+        return subprocess.CompletedProcess(cmd, 0, stdout=json.dumps(payload), stderr="")
+
+    with pytest.raises(RuntimeError, match="labels.pageInfo"):
+        reconcile.fetch_repo_issues("vamseeachanta/workspace-hub", runner=runner)
+
+
+def test_fetch_repo_issues_raises_mid_loop_without_partial():
+    reconcile = load_reconcile()
+    calls = []
+
+    def runner(cmd, **kwargs):
+        calls.append(cmd)
+        if len(calls) == 1:
+            return subprocess.CompletedProcess(
+                cmd,
+                0,
+                stdout=gql_page([gql_node(1, "one")], has_next_page=True, end_cursor="CUR1"),
+                stderr="",
+            )
+        return subprocess.CompletedProcess(cmd, 1, stdout="", stderr="API rate limited")
+
+    with pytest.raises(RuntimeError) as excinfo:
+        reconcile.fetch_repo_issues("vamseeachanta/workspace-hub", runner=runner)
+
+    # raised, not returned: no partial list escapes
+    assert "vamseeachanta/workspace-hub" in str(excinfo.value)
+    assert len(calls) == 2
+
+
+def test_fetch_repo_issues_raises_when_labels_truncated():
+    reconcile = load_reconcile()
+
+    def runner(cmd, **kwargs):
+        return subprocess.CompletedProcess(
+            cmd,
+            0,
+            stdout=gql_page(
+                [gql_node(1, "many labels", labels=["domain:ops"], labels_has_next=True)],
+                has_next_page=False,
+                end_cursor=None,
+            ),
+            stderr="",
+        )
+
+    with pytest.raises(RuntimeError, match="label"):
+        reconcile.fetch_repo_issues("vamseeachanta/workspace-hub", runner=runner)
+
+
+def test_fetch_repo_issues_maps_node_to_card_shape():
+    reconcile = load_reconcile()
+
+    def runner(cmd, **kwargs):
+        return subprocess.CompletedProcess(
+            cmd,
+            0,
+            stdout=gql_page(
+                [gql_node(2802, "Auto-add issue", state="OPEN",
+                          labels=["domain:ops", "priority:high"])],
+                has_next_page=False,
+                end_cursor=None,
+            ),
+            stderr="",
+        )
+
+    result = reconcile.fetch_repo_issues("vamseeachanta/workspace-hub", runner=runner)
+
+    assert result == [
+        {
+            "number": 2802,
+            "title": "Auto-add issue",
+            "state": "OPEN",
+            "labels": [{"name": "domain:ops"}, {"name": "priority:high"}],
+        }
+    ]
+
+
+def test_fetch_repo_issues_emits_graphql_command_with_pagination():
+    reconcile = load_reconcile()
+    calls = []
+
+    pages = [
+        gql_page([gql_node(1, "one")], has_next_page=True, end_cursor="CUR1"),
+        gql_page([gql_node(2, "two")], has_next_page=False, end_cursor=None),
+    ]
+
+    def runner(cmd, **kwargs):
+        calls.append(cmd)
+        return subprocess.CompletedProcess(cmd, 0, stdout=pages[len(calls) - 1], stderr="")
+
+    reconcile.fetch_repo_issues("vamseeachanta/workspace-hub", runner=runner)
+
+    page1, page2 = calls
+    # graphql invocation, not `gh issue list`
+    assert page1[:3] == ["gh", "api", "graphql"]
+    assert "issue" not in page1
+    # query carried via -f query=
+    query_arg = next(a for a in page1 if a.startswith("query="))
+    assert "pageInfo" in query_arg and "hasNextPage" in query_arg
+    assert "first:100" in query_arg
+    assert "labels(first:100)" in query_arg
+    # owner/name passed as -F
+    assert "owner=workspace-hub" not in page1  # owner is the org, not the repo name
+    assert "owner=vamseeachanta" in page1
+    assert "name=workspace-hub" in page1
+    # page 1 carries no cursor; page 2 carries the endCursor from page 1
+    assert not any(a.startswith("cursor=") for a in page1)
+    assert "cursor=CUR1" in page2
+
+
+# --- Owner decision S01 item 1: generated boards are local only ---------------
+
+GENERATED_SAMPLES = [
+    ".claude/memory/kanban/boards/repo-workspace-hub.yaml",
+    ".claude/memory/kanban/boards/repo-digitalmodel-solver.yaml",
+    "config/ai-tools/provider-work-queue.json",
+    "config/ai-tools/provider-kanban.json",
+    "docs/reports/provider-work-queue.md",
+    "docs/reports/provider-kanban-dashboard.md",
+    "docs/reports/provider-kanban-dashboard.html",
+    "docs/dashboards/2026-05-09-tier1-gh-issue-kanban.html",
+    "docs/dashboards/2026-05-14-orca-kanban.html",
+    "docs/reports/2026-05-09-tier1-gh-issue-kanban-data.json",
+    "docs/reports/2026-05-09-tier1-gh-issue-kanban-board.md",
+    "docs/reports/2026-05-11-tier1-kanban-board-data.json",
+    "docs/reports/2026-05-06-tier1-board-index.md",
+    "docs/reports/2026-05-14-orca-kanban-data.json",
+    "docs/reports/kanban/2026-05-11-repo-workspace-hub-kanban.md",
+    "docs/reports/kanban/2026-05-09-board-index.md",
+]
+
+
+def _git(*args: str) -> subprocess.CompletedProcess:
+    return subprocess.run(["git", "-C", str(ROOT), *args], capture_output=True, text=True)
+
+
+def test_no_workflow_publishes_kanban_boards():
+    """The */20 reconcile job committed boards to this public repository; it is gone,
+    and with it the IDENTIFIER_DENY_LIST secret it needed."""
+    assert not (ROOT / ".github/workflows/kanban-reconcile.yml").exists()
+    assert not (ROOT / ".github/workflow-templates/kanban-nudge.yml").exists()
+    for wf in (ROOT / ".github/workflows").glob("*.y*ml"):
+        text = wf.read_text(encoding="utf-8")
+        assert "kanban/boards" not in text, wf.name
+        assert "IDENTIFIER_DENY_LIST" not in text, wf.name
+
+
+@pytest.mark.parametrize("rel", GENERATED_SAMPLES)
+def test_generated_board_files_are_ignored_and_untracked(rel):
+    assert _git("check-ignore", "-q", "--no-index", rel).returncode == 0, rel
+    assert _git("ls-files", "--error-unmatch", rel).returncode != 0, rel
+
+
+@pytest.mark.parametrize("rel", [
+    ".claude/memory/kanban/boards/ecosystem.yaml",
+    ".claude/memory/kanban/manifest.yaml",
+    "docs/reports/2026-05-06-tier1-kanban-portfolio-review.md",
+    "docs/reports/kanban/2026-05-10-w0-reconciliation-closeout.md",
+])
+def test_authored_kanban_files_stay_tracked(rel):
+    assert _git("check-ignore", "-q", "--no-index", rel).returncode != 0, rel
+    assert _git("ls-files", "--error-unmatch", rel).returncode == 0, rel
+
+
+def test_reconcile_builds_a_missing_board_from_its_manifest_entry(tmp_path: Path):
+    """A fresh checkout has no board files; the builder writes them locally."""
+    reconcile = load_reconcile()
+    kanban = seed_kanban(tmp_path)
+    for board in (kanban / "boards").glob("*.yaml"):
+        board.unlink()
+
+    result = reconcile.reconcile_kanban(
+        kanban,
+        issue_fetcher=lambda repo: [
+            issue(1, "Repo-level card"),
+            issue(2, "Ops card", labels=["domain:ops"]),
+        ],
+        dry_run=False,
+    )
+
+    assert result.changed is True
+    repo_board = read_yaml(kanban / "boards/repo-workspace-hub.yaml")
+    ops_board = read_yaml(kanban / "boards/repo-workspace-hub-ops.yaml")
+    assert repo_board["board"]["slug"] == "repo-workspace-hub"
+    assert repo_board["board"]["repo"] == "vamseeachanta/workspace-hub"
+    assert ops_board["board"]["domain"] == "ops"
+    assert [c["title"] for c in repo_board["cards"]] == ["Repo-level card"]
+    assert [c["title"] for c in ops_board["cards"]] == ["Ops card"]
+
+
+def test_reconcile_writes_a_missing_board_that_gets_no_cards(tmp_path: Path):
+    """A manifest board with no live cards is still created, so the loader sees it."""
+    reconcile = load_reconcile()
+    kanban = seed_kanban(tmp_path)
+    for board in (kanban / "boards").glob("*.yaml"):
+        board.unlink()
+
+    result = reconcile.reconcile_kanban(
+        kanban, issue_fetcher=lambda repo: [issue(1, "Repo-level card")], dry_run=False)
+
+    ops_path = kanban / "boards/repo-workspace-hub-ops.yaml"
+    assert ops_path.exists()
+    assert ops_path in result.changed_files
+    ops_board = read_yaml(ops_path)
+    assert ops_board["board"]["slug"] == "repo-workspace-hub-ops"
+    assert ops_board["cards"] == []
+
+
+def test_a_missing_board_keeps_the_manifest_metadata(tmp_path: Path):
+    """workspace_path, parent_slug and a display name survive a rebuild from the
+    manifest: the loader uses them for the board workdir and each card's workspace."""
+    reconcile = load_reconcile()
+    kanban = seed_kanban(tmp_path)
+    manifest = read_yaml(kanban / "manifest.yaml")
+    for entry in manifest["manifest"]["boards"]:
+        entry["workspace_path"] = "/srv/example/workspace-hub"
+    write_yaml(kanban / "manifest.yaml", manifest)
+    for board in (kanban / "boards").glob("*.yaml"):
+        board.unlink()
+
+    reconcile.reconcile_kanban(
+        kanban,
+        issue_fetcher=lambda repo: [issue(2, "Ops card", labels=["domain:ops"])],
+        dry_run=False,
+    )
+
+    repo_board = read_yaml(kanban / "boards/repo-workspace-hub.yaml")["board"]
+    ops_board = read_yaml(kanban / "boards/repo-workspace-hub-ops.yaml")["board"]
+    assert repo_board["workspace_path"] == "/srv/example/workspace-hub"
+    assert ops_board["workspace_path"] == "/srv/example/workspace-hub"
+    assert ops_board["parent_slug"] == "repo-workspace-hub"
+    assert repo_board["display_name"] == "workspace-hub"
+    assert ops_board["display_name"] == "workspace-hub · ops"
+
+
+# --- #3380: an unresolvable repo (renamed/removed) must be skipped, not crash ---
+
+UNRESOLVABLE_MSG = (
+    "gh api graphql failed for vamseeachanta/gone-repo (cursor=None): "
+    "GraphQL: Could not resolve to a Repository with the name "
+    "'vamseeachanta/gone-repo'. (repository)"
+)
+
+
+def seed_two_repo_kanban(root: Path) -> Path:
+    """Manifest with two repo-tier boards — one resolvable, one renamed away."""
+    kanban = root / ".claude/memory/kanban"
+    write_yaml(
+        kanban / "manifest.yaml",
+        {
+            "manifest": {
+                "boards": [
+                    {
+                        "slug": "repo-workspace-hub",
+                        "tier": "repo",
+                        "repo": "vamseeachanta/workspace-hub",
+                        "file": "boards/repo-workspace-hub.yaml",
+                    },
+                    {
+                        "slug": "repo-gone",
+                        "tier": "repo",
+                        "repo": "vamseeachanta/gone-repo",
+                        "file": "boards/repo-gone.yaml",
+                    },
+                ]
+            }
+        },
+    )
+    write_yaml(
+        kanban / "boards/repo-workspace-hub.yaml",
+        {
+            "board": {
+                "slug": "repo-workspace-hub",
+                "tier": "repo",
+                "repo": "vamseeachanta/workspace-hub",
+            },
+            "cards": [],
+        },
+    )
+    write_yaml(
+        kanban / "boards/repo-gone.yaml",
+        {
+            "board": {
+                "slug": "repo-gone",
+                "tier": "repo",
+                "repo": "vamseeachanta/gone-repo",
+            },
+            "cards": [
+                {
+                    "idempotency_key": "gh:vamseeachanta/gone-repo#1",
+                    "title": "card on unresolvable repo must survive the skip",
+                    "source": "github_issue",
+                    "source_url": "https://github.com/vamseeachanta/gone-repo/issues/1",
+                    "gh_state": "open",
+                    "gh_labels": [],
+                    "initial_status": "triage",
+                    "priority": 0,
+                }
+            ],
+        },
+    )
+    return kanban
+
+
+def test_reconcile_skips_unresolvable_repo_and_leaves_board_untouched(
+    tmp_path: Path, capsys: pytest.CaptureFixture[str]
+):
+    reconcile = load_reconcile()
+    kanban = seed_two_repo_kanban(tmp_path)
+    gone_board = kanban / "boards/repo-gone.yaml"
+    before = gone_board.read_bytes()
+
+    def fetcher(repo: str) -> list[dict]:
+        if repo == "vamseeachanta/gone-repo":
+            raise RuntimeError(UNRESOLVABLE_MSG)
+        return [issue(2802, "fresh issue")]
+
+    result = reconcile.reconcile_kanban(kanban, issue_fetcher=fetcher, dry_run=False)
+
+    assert result.skipped == ["vamseeachanta/gone-repo"]
+    err = capsys.readouterr().err
+    assert "WARNING: skipping vamseeachanta/gone-repo" in err
+    assert "not resolvable" in err
+    # the skipped repo's board is untouched — its cards survive
+    assert gone_board.read_bytes() == before
+    # the resolvable repo still reconciled
+    keys = [
+        card["idempotency_key"]
+        for card in read_yaml(kanban / "boards/repo-workspace-hub.yaml")["cards"]
+    ]
+    assert keys == ["gh:vamseeachanta/workspace-hub#2802"]
+
+
+def test_reconcile_other_fetch_errors_still_raise(tmp_path: Path):
+    # Only the resolve-failure class is skippable; rate limit / network / auth
+    # errors must still fail the reconcile (no silent partial state).
+    reconcile = load_reconcile()
+    kanban = seed_two_repo_kanban(tmp_path)
+
+    def fetcher(repo: str) -> list[dict]:
+        if repo == "vamseeachanta/gone-repo":
+            raise RuntimeError(
+                "gh api graphql failed for vamseeachanta/gone-repo "
+                "(cursor=None): API rate limit exceeded"
+            )
+        return [issue(2802, "fresh issue")]
+
+    with pytest.raises(RuntimeError, match="rate limit"):
+        reconcile.reconcile_kanban(kanban, issue_fetcher=fetcher, dry_run=True)
+
+
+def test_main_exits_zero_and_prints_skip_summary(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+):
+    reconcile = load_reconcile()
+    kanban = seed_two_repo_kanban(tmp_path)
+
+    def fake_fetch(repo: str, *, page_size: int = 100, runner=None) -> list[dict]:
+        if repo == "vamseeachanta/gone-repo":
+            raise RuntimeError(UNRESOLVABLE_MSG)
+        return [issue(2802, "fresh issue")]
+
+    monkeypatch.setattr(reconcile, "fetch_repo_issues", fake_fetch)
+
+    rc = reconcile.main(["--kanban-root", str(kanban)])
+
+    assert rc == 0
+    err = capsys.readouterr().err
+    assert "skipped 1 unresolvable repo(s): vamseeachanta/gone-repo" in err

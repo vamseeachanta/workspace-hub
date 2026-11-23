@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Session handoff — BokaLift diffraction → pamphlet → band → HF (2026-07-12)</title>
+<style>
+ :root{--fg:#1a1f2b;--muted:#5a6472;--line:#e3e8ef;--ok:#137a4b;--warn:#9a6700;--acc:#1b5fb0;--bg:#fff}
+ @media(prefers-color-scheme:dark){:root{--fg:#e6eaf0;--muted:#9aa5b4;--line:#2a323d;--ok:#4ec98a;--warn:#e0b341;--acc:#6da3ef;--bg:#12151b}}
+ body{font:15px/1.55 -apple-system,Segoe UI,Roboto,sans-serif;color:var(--fg);background:var(--bg);max-width:900px;margin:0 auto;padding:28px}
+ h1{font-size:22px;margin:0 0 4px} h2{font-size:16px;margin:26px 0 8px;border-bottom:1px solid var(--line);padding-bottom:4px}
+ .sub{color:var(--muted);margin:0 0 18px} table{border-collapse:collapse;width:100%;margin:6px 0;font-size:14px}
+ th,td{text-align:left;padding:6px 9px;border-bottom:1px solid var(--line);vertical-align:top} th{color:var(--muted);font-weight:600}
+ code{background:rgba(130,140,160,.14);padding:1px 5px;border-radius:4px;font-size:13px} .ok{color:var(--ok)} .warn{color:var(--warn)}
+ a{color:var(--acc)} ul{margin:6px 0;padding-left:20px} li{margin:3px 0} .pill{font-size:12px;padding:1px 7px;border-radius:10px;background:rgba(130,140,160,.16)}
+</style></head><body>
+<h1>Session handoff — BokaLift diffraction → pamphlet → band → Hugging Face</h1>
+<p class="sub">2026-07-11 → 07-12 · repos: digitalmodel, client-wiki (private), workspace-hub, deckhand-licensed-runs-queue · HF: aceengineer · <span class="pill">no processes left running</span></p>
+
+<h2>Outcome</h2>
+<p>End-to-end: fixed the BokaLift 2 OrcaWave diffraction run (mesh → real inertia → roll-damping sensitivity), standardized the diffraction HTML report, wired the real vessel RAO into the installation pamphlet with a ζ=5–10% roll-damping <b>band</b>, de-identified the RAOs to a vessel_db ID, and published them as a <b>public, queryable Hugging Face dataset</b> — with a data-quality gate that withheld two physically-wrong-but-faithful data products.</p>
+
+<h2>Repo state — all work merged (remotes authoritative)</h2>
+<table>
+<tr><th>Repo</th><th>Merged</th><th>Open / tracked</th></tr>
+<tr><td>digitalmodel</td><td>#1539 report+results-json · #1541 pamphlet RAO discovery · #1543 band fn · #1545 band wiring</td><td>#1538 pamphlet (core done) · #1540 HF manifest reconcile · #1548, #1550 (cat:data gate catches)</td></tr>
+<tr><td>client-wiki (private)</td><td>#219/#220/#222/#223 mesh→inertia→damping→sensitivity · #232/#233 ζ5% capture+restore · #235 persist artifacts · #236 de-identify · (#218 CLOSED)</td><td>—</td></tr>
+<tr><td>workspace-hub</td><td>#3481 HF publisher: --card-note + mean/neg stats + 9 tests · (#3480 CLOSED)</td><td>#3483 tool bug: --public no-op on existing repo</td></tr>
+<tr><td>deckhand</td><td>—</td><td>#527, #545 (satisfied by #1539) — coordination only</td></tr>
+</table>
+
+<h2>Published artifact</h2>
+<p><a href="https://huggingface.co/datasets/aceengineer/digitalmodel-diffraction-rao">aceengineer/digitalmodel-diffraction-rao</a> — <b class="ok">PUBLIC</b>, cc-by-4.0, verified queryable (<code>/is-valid preview:true</code>, <code>/rows</code> returns schema+data). Tables: <code>rao</code> (600 rows, 40 flagged <code>reliability=low_freq_artifact</code>) + <code>hydrostatics</code> (2).</p>
+
+<h2>Data-quality gate — two withholds (never silent)</h2>
+<ul>
+<li><b>Low-frequency RAO artifact</b> — heave/sway at freq ≤ 0.35 rad/s non-beam are implausible (heave ≈9 m/m vs ≈1 at beam). 40 rows flagged, disclosed in card. → <b>digitalmodel#1548</b>.</li>
+<li><b>added_mass_damping table withheld</b> — declares units kg/kg·m² but magnitudes match te/te·m² (~1000× off). → <b>digitalmodel#1550</b>.</li>
+<li><b>Operation-envelope Hs limits withheld</b> — screening-only, implausible ~17 m heavy-lift; needs a class panel mesh.</li>
+</ul>
+
+<h2>Dirty exceptions / external actions</h2>
+<ul>
+<li>Local working copies of digitalmodel/workspace-hub sit on stale branches with scratch edits — <b>local-only, not authoritative</b>. All commits went via the GitHub Contents API (porcelain git stalls on this NTFS-FUSE mount).</li>
+<li>Only outward action: the HF publish (done, public, user-authorized). No staged emails, nothing awaiting external delivery.</li>
+<li><b>Runaway cleared</b>: a stray <code>run-all-tests.sh --coverage</code> tree churning the mount was killed (user-authorized).</li>
+</ul>
+
+<h2>Next steps (all yours — none blocking)</h2>
+<ul>
+<li>Engineering fixes: <b>digitalmodel#1548</b> (low-freq RAO artifact) + <b>#1550</b> (added-mass units) — both point to a class panel mesh / extraction fix.</li>
+<li>Tool fix: <b>wh#3483</b> — make <code>--public</code> call <code>update_repo_settings</code> unconditionally so an existing repo actually flips.</li>
+<li>HF run-ledger engine (wh#3433/#1505) is still not live (in-memory fake, unmerged); parallel session owns it — de-identified payload handed off on #1540.</li>
+</ul>
+
+<h2>Key lessons (durable)</h2>
+<ul>
+<li><b>Gate on values, not row counts.</b> Per-column min/max/mean/neg caught both defects; both passed every reshape/row-count check. Now the reusable default in <code>scripts/hf/save_results_to_hf.py</code>.</li>
+<li><b>“Printed PUBLIC” ≠ is public.</b> Verify with fresh <code>dataset_info</code> + <code>/is-valid</code>, not the tool’s own print (wh#3483).</li>
+<li><b>FUSE “timeouts” are often a process storm.</b> Diagnose via <code>ps -eo ppid,stat,etimes,%cpu</code> before blaming the mount; commit via Contents API, let CI run tests.</li>
+</ul>
+<p class="sub">Full detail in auto-memory <code>project_bokalift_diffraction_licensed_run.md</code>.</p>
+</body></html>

@@ -1,0 +1,21 @@
+# Single source of truth for the TIER-1 PYTHON REPOS (#3023).
+#
+# This is the set of sibling repos that workspace-hub runs Python tooling over:
+# ruff/mypy (check-all), pytest (run-all-tests), dependency health, API docs,
+# coverage/complexity/mypy ratchets, doc/config drift, the cross-repo symbol
+# index, and the pre-push gate. ONE slug per line. Add or remove a repo HERE and
+# every consumer follows.
+#
+# NOT the same as config/workstations/registry.yaml::tier1_baseline.required —
+# that is per-machine repo *presence* and includes non-Python repos (e.g.
+# llm-wiki). This file is purpose-scoped to the Python-tooling set.
+#
+# Consumers read this via:
+#   bash   -> source scripts/lib/tier1-repos.sh   (populates TIER1_PYTHON_REPOS=(...))
+#   python -> from scripts.lib.tier1_repos import tier1_python_repos
+#
+# Blank lines and '#' comments are ignored.
+assetutilities
+digitalmodel
+worldenergydata
+assethold

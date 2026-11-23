@@ -1,0 +1,18 @@
+### Verdict: MAJOR
+
+### Summary
+Not approval-ready. The prior-audit overwrite sequencing is explicit enough, but the budget contract is still not fully machine-checkable, the launcher choice is not fully verified, and stale review-process narration remains in the plan body.
+
+### Issues Found
+- `docs/plans/2026-04-22-issue-2332-provider-audit-python3-runtime-cleanup.md`, section `Provider budget contract for phase 1`: the compliance schema is not fully machine-checkable because it never assigns one canonical machine-readable artifact/path for the required fields. It requires fields in `regenerated JSON/scorecard outputs`, which ambiguously spans `analysis/provider-session-ecosystem-audit.json` and `config/ai-tools/provider-routing-scorecard.json`, and `delta_status` is referenced without a complete allowed-value contract for the normal/non-first-run path.
+- `docs/plans/2026-04-22-issue-2332-provider-audit-python3-runtime-cleanup.md`, sections `Adversarial Review Summary` and `Acceptance Criteria`: stale review-process narration is still embedded in the plan body (`iteratively tightened`, `review history lives...`, `next external rerun outcome`, `After fresh external re-review...`). That violates the request to remove process narration from the plan itself.
+- `docs/plans/2026-04-22-issue-2332-provider-audit-python3-runtime-cleanup.md`, `Resource Intelligence Summary` runtime-choice justification plus `TDD Test List`: the plan fixes the launcher replacement to `uv run --no-project python`, but it only tests that direct `python3` subprocess calls disappear. It does not require any behavior-preservation check that the three named launcher paths still execute correctly under `--no-project`, so the runtime choice is asserted more than verified.
+
+### Suggestions
+- In `Provider budget contract for phase 1`, name one canonical schema-bearing JSON artifact for approval, then state whether the second JSON artifact mirrors it or derives from it. Add a complete enum/shape contract for `delta_status` and state nullability/requiredness per field.
+- Delete the `Adversarial Review Summary` section and remove review-workflow narration from `Acceptance Criteria`. Keep only implementation requirements and artifact expectations in the plan body.
+- Add at least one concrete test/acceptance item proving `uv run --no-project python` is valid for the three named launcher callsites, not just that bare `python3` strings were removed. If that proof cannot be added, narrow the justification or leave the runtime form open pending verification.
+
+### Questions for Author
+- Which JSON file is the authoritative machine-checkable contract for the new provider budget schema: `analysis/provider-session-ecosystem-audit.json` or `config/ai-tools/provider-routing-scorecard.json`?
+- What are the complete allowed `delta_status` values for the normal case, regression case, and no-prior-audit case?

@@ -1,0 +1,33 @@
+# skill-manifest.yaml — canonical skill contract for a WRK item
+wrk_id: WRK-000
+generated_at: "2026-03-04T00:00:00Z"
+owner: orchestrator
+
+# Skills that must be explicitly invoked and evidenced.
+mandatory_skills:
+  - work-queue-workflow
+  - workflow-gatepass
+  - work-queue
+
+# Additional workflow skills used for this WRK.
+supporting_skills:
+  - resource-intelligence
+  - wrk-lifecycle-testpack
+
+# Domain/context skills required for implementation quality.
+domain_skills: []
+
+# Organization/repo governance skills required for implementation hygiene.
+repo_governance_skills:
+  - repo-structure
+  - file-taxonomy
+  - clean-code
+
+# Optional stage-level overrides or additions.
+stage_skill_requirements:
+  "2":
+    mandatory:
+      - resource-intelligence
+  "12":
+    mandatory:
+      - wrk-lifecycle-testpack

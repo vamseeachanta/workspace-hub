@@ -1,0 +1,19 @@
+OpenAI Codex v0.122.0 (research preview)
+--------
+workdir: /mnt/local-analysis/workspace-hub
+model: gpt-5.4
+provider: openai
+approval: never
+sandbox: workspace-write [workdir, /tmp, $TMPDIR, /home/vamsee/.codex/memories]
+reasoning effort: medium
+reasoning summaries: none
+session id: 019db2a1-22d4-7cb0-b675-6f455cd3457a
+--------
+user
+
+warning: Codex's Linux sandbox uses bubblewrap and needs access to create user namespaces.
+codex
+Ready in `/mnt/local-analysis/workspace-hub` with the repo instructions in effect. Send the task or issue you want handled.
+tokens used
+24,302
+Ready in `/mnt/local-analysis/workspace-hub` with the repo instructions in effect. Send the task or issue you want handled.

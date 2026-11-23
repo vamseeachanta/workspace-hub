@@ -1,0 +1,111 @@
+---
+source: mattpocock/skills
+source_url: https://github.com/mattpocock/skills
+license: MIT
+name: improve-codebase-architecture
+description: Find deepening opportunities in a codebase, informed by the domain language in CONTEXT.md and the decisions in docs/adr/. Use when the user wants to improve architecture, find refactoring opportunities, consolidate tightly-coupled modules, or make a codebase more testable and AI-navigable.
+---
+
+# Improve Codebase Architecture
+
+Surface architectural friction and propose **deepening opportunities** — refactors that turn shallow modules into deep ones. The aim is testability and AI-navigability.
+
+## Glossary
+
+Use these terms exactly in every suggestion. Consistent language is the point — don't drift into "component," "service," "API," or "boundary." Full definitions in [LANGUAGE.md](LANGUAGE.md).
+
+- **Module** — anything with an interface and an implementation (function, class, package, slice).
+- **Interface** — everything a caller must know to use the module: types, invariants, error modes, ordering, config. Not just the type signature.
+- **Implementation** — the code inside.
+- **Depth** — leverage at the interface: a lot of behaviour behind a small interface. **Deep** = high leverage. **Shallow** = interface nearly as complex as the implementation.
+- **Seam** — where an interface lives; a place behaviour can be altered without editing in place. (Use this, not "boundary.")
+- **Adapter** — a concrete thing satisfying an interface at a seam.
+- **Leverage** — what callers get from depth.
+- **Locality** — what maintainers get from depth: change, bugs, knowledge concentrated in one place.
+
+Key principles (see [LANGUAGE.md](LANGUAGE.md) for the full list):
+
+- **Deletion test**: imagine deleting the module. If complexity vanishes, it was a pass-through. If complexity reappears across N callers, it was earning its keep.
+- **The interface is the test surface.**
+- **One adapter = hypothetical seam. Two adapters = real seam.**
+
+This skill is _informed_ by the project's domain model. The domain language gives names to good seams; ADRs record decisions the skill should not re-litigate.
+
+## Process
+
+### 1. Explore
+
+Read the project's domain glossary and any ADRs in the area you're touching first.
+
+For multi-repo or ecosystem-wide requests, start with a bounded inventory before spawning explorers: enumerate repos, read each repo's `AGENTS.md`/`CLAUDE.md`/`CONTEXT.md` when present, collect tracked-file/top-directory summaries with capped commands (prefer `git ls-files` over recursive filesystem walks), and split subagents into small repo batches with explicit read-only scope and output caps. If broad subagent batches time out, salvage the report from the bounded inventory and clearly mark partial evidence instead of rerunning the same unbounded scan.
+
+Then use the Agent tool with `subagent_type=Explore` to walk the codebase. Don't follow rigid heuristics — explore organically and note where you experience friction:
+
+- Where does understanding one concept require bouncing between many small modules?
+- Where are modules **shallow** — interface nearly as complex as the implementation?
+- Where have pure functions been extracted just for testability, but the real bugs hide in how they're called (no **locality**)?
+- Where do tightly-coupled modules leak across their seams?
+- Which parts of the codebase are untested, or hard to test through their current interface?
+
+Apply the **deletion test** to anything you suspect is shallow: would deleting it concentrate complexity, or just move it? A "yes, concentrates" is the signal you want.
+
+### 2. Present candidates as an HTML report
+
+Write a self-contained HTML file to the OS temp directory so nothing lands in the repo. Resolve the temp dir from `$TMPDIR`, falling back to `/tmp` (or `%TEMP%` on Windows), and write to `<tmpdir>/architecture-review-<timestamp>.html` so each run gets a fresh file. Open it for the user — `xdg-open <path>` on Linux, `open <path>` on macOS, `start <path>` on Windows — and tell them the absolute path.
+
+The report uses **Tailwind via CDN** for layout and styling, and **Mermaid via CDN** for diagrams where a graph/flow/sequence reliably communicates the structure. Mix Mermaid with hand-crafted CSS/SVG visuals — use Mermaid when relationships are graph-shaped (call graphs, dependencies, sequences), and hand-built divs/SVG when you want something more editorial (mass diagrams, cross-sections, collapse animations). Each candidate gets a **before/after visualisation**. Be visual.
+
+For each candidate, the same template as before, but rendered as a card:
+
+- **Files** — which files/modules are involved
+- **Problem** — why the current architecture is causing friction
+- **Solution** — plain English description of what would change
+- **Benefits** — explained in terms of locality and leverage, and how tests would improve
+- **Before / After diagram** — side-by-side, custom-drawn, illustrating the shallowness and the deepening
+- **Recommendation strength** — one of `Strong`, `Worth exploring`, `Speculative`, rendered as a badge
+
+End the report with a **Top recommendation** section: which candidate you'd tackle first and why.
+
+**Use CONTEXT.md vocabulary for the domain, and [LANGUAGE.md](LANGUAGE.md) vocabulary for the architecture.** If `CONTEXT.md` defines "Order," talk about "the Order intake module" — not "the FooBarHandler," and not "the Order service."
+
+**ADR conflicts**: if a candidate contradicts an existing ADR, only surface it when the friction is real enough to warrant revisiting the ADR. Mark it clearly in the card (e.g. a warning callout: _"contradicts ADR-0007 — but worth reopening because…"_). Don't list every theoretical refactor an ADR forbids.
+
+See [HTML-REPORT.md](HTML-REPORT.md) for the full HTML scaffold, diagram patterns, and styling guidance.
+
+Do NOT propose interfaces yet. After the file is written, ask the user: "Which of these would you like to explore?"
+
+### 2A. If the user asks to turn candidates into issues
+
+When the user asks for "all candidates", "all N", "one by one", or otherwise wants the report converted into GitHub work, create planning issues rather than implementation tasks. See `references/ecosystem-candidate-issue-expansion.md` for the restart-safe body shape and closeout pattern:
+
+1. Verify the target GitHub repo/auth/branch before creating anything.
+2. Search for likely duplicates using broad key nouns from the candidate set and inspect near matches; do not depend on a brittle exact-title query alone.
+3. Create one issue per candidate, one at a time, with:
+   - title scoped to the repo/domain and architecture action;
+   - body containing summary, evidence basis, scope, out of scope, deliverables, acceptance criteria, plan-gate workflow, and related parent/report links;
+   - `status:needs-plan` plus priority/category/domain labels that already exist in the repo taxonomy.
+4. Keep the work explicitly planning-only. Do not start code changes from architecture-review issue creation.
+5. Verify every created issue after creation: `OPEN` state, title, URL, labels, and `status:needs-plan`.
+6. If there is a parent/portfolio issue, post one sequencing comment that lists recommended order and states that implementation follows task authority after each issue completes review and required domain decisions; no separate plan approval is required.
+7. Write a temp TSV or markdown index of created issue numbers/titles/URLs for restart-safe handoff; keep it outside repos unless the user asks for a tracked artifact.
+
+### 2B. If the issue set becomes a staged plan wave
+
+When architecture candidates expand into dependent GitHub issues, preserve the plan gate instead of treating patched drafts as approval. See `references/ecosystem-plan-wave-review-gates.md` for the detailed checklist.
+
+- Use subagents for bounded patching, focused re-QA, and repo-batch inspection, but centrally verify every written plan/index change before advancing status.
+- After workers patch upstream plans, run focused re-QA against the exact prior MAJOR findings and record the result in the plan artifact/index.
+- Focused re-QA can clear substantive content blockers, but it does **not** replace formal provider-review artifacts.
+- If required Claude/Codex/Gemini review artifacts, or explicit `UNAVAILABLE` artifacts, are missing, mark the plans `draft-provider-review-pending`, keep GitHub issues at `status:needs-plan`, and do not resume downstream planning.
+- Never self-apply `status:plan-approved`; that transition remains user-only.
+
+### 3. Grilling loop
+
+Once the user picks a candidate, drop into a grilling conversation. Walk the design tree with them — constraints, dependencies, the shape of the deepened module, what sits behind the seam, what tests survive.
+
+Side effects happen inline as decisions crystallize:
+
+- **Naming a deepened module after a concept not in `CONTEXT.md`?** Add the term to `CONTEXT.md` — same discipline as `/grill-with-docs` (see [CONTEXT-FORMAT.md](../grill-with-docs/CONTEXT-FORMAT.md)). Create the file lazily if it doesn't exist.
+- **Sharpening a fuzzy term during the conversation?** Update `CONTEXT.md` right there.
+- **User rejects the candidate with a load-bearing reason?** Offer an ADR, framed as: _"Want me to record this as an ADR so future architecture reviews don't re-suggest it?"_ Only offer when the reason would actually be needed by a future explorer to avoid re-suggesting the same thing — skip ephemeral reasons ("not worth it right now") and self-evident ones. See [ADR-FORMAT.md](../grill-with-docs/ADR-FORMAT.md).
+- **Want to explore alternative interfaces for the deepened module?** See [INTERFACE-DESIGN.md](INTERFACE-DESIGN.md).

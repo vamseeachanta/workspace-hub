@@ -1,0 +1,21 @@
+Agent loading error: Failed to load agent from /mnt/local-analysis/workspace-hub/.gemini/agents/gsd-debugger.md: Validation failed: Agent Definition:
+Unrecognized key(s) in object: 'permissionMode'Agent loading error: Failed to load agent from /mnt/local-analysis/workspace-hub/.gemini/agents/gsd-executor.md: Validation failed: Agent Definition:
+Unrecognized key(s) in object: 'permissionMode'[LocalAgentExecutor] Skipping subagent tool 'codebase_investigator' for agent 'generalist' to prevent recursion.
+[LocalAgentExecutor] Skipping subagent tool 'cli_help' for agent 'generalist' to prevent recursion.
+[LocalAgentExecutor] Skipping subagent tool 'generalist' for agent 'generalist' to prevent recursion.
+[LocalAgentExecutor] Skipping subagent tool 'gsd-advisor-researcher' for agent 'generalist' to prevent recursion.
+[LocalAgentExecutor] Skipping subagent tool 'gsd-assumptions-analyzer' for agent 'generalist' to prevent recursion.
+[LocalAgentExecutor] Skipping subagent tool 'gsd-codebase-mapper' for agent 'generalist' to prevent recursion.
+[LocalAgentExecutor] Skipping subagent tool 'gsd-integration-checker' for agent 'generalist' to prevent recursion.
+[LocalAgentExecutor] Skipping subagent tool 'gsd-nyquist-auditor' for agent 'generalist' to prevent recursion.
+[LocalAgentExecutor] Skipping subagent tool 'gsd-phase-researcher' for agent 'generalist' to prevent recursion.
+[LocalAgentExecutor] Skipping subagent tool 'gsd-plan-checker' for agent 'generalist' to prevent recursion.
+[LocalAgentExecutor] Skipping subagent tool 'gsd-planner' for agent 'generalist' to prevent recursion.
+[LocalAgentExecutor] Skipping subagent tool 'gsd-project-researcher' for agent 'generalist' to prevent recursion.
+[LocalAgentExecutor] Skipping subagent tool 'gsd-research-synthesizer' for agent 'generalist' to prevent recursion.
+[LocalAgentExecutor] Skipping subagent tool 'gsd-roadmapper' for agent 'generalist' to prevent recursion.
+[LocalAgentExecutor] Skipping subagent tool 'gsd-ui-auditor' for agent 'generalist' to prevent recursion.
+[LocalAgentExecutor] Skipping subagent tool 'gsd-ui-checker' for agent 'generalist' to prevent recursion.
+[LocalAgentExecutor] Skipping subagent tool 'gsd-ui-researcher' for agent 'generalist' to prevent recursion.
+[LocalAgentExecutor] Skipping subagent tool 'gsd-user-profiler' for agent 'generalist' to prevent recursion.
+[LocalAgentExecutor] Skipping subagent tool 'gsd-verifier' for agent 'generalist' to prevent recursion.

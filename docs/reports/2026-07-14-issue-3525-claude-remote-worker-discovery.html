@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Claude remote worker discovery — Windows host</title>
+  <style>
+    :root{--ink:#172033;--muted:#5d6678;--line:#d9dfeb;--panel:#f7f9fc;--accent:#4f46e5;--good:#087f5b;--warn:#a15c00;--bad:#b42318}
+    *{box-sizing:border-box}body{margin:0;color:var(--ink);font:15px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif;background:#fff}
+    main{max-width:1180px;margin:auto;padding:36px 24px 72px}h1{font-size:2.1rem;line-height:1.15;margin:.2rem 0 .5rem}h2{margin:2.2rem 0 .7rem;border-bottom:2px solid var(--line);padding-bottom:.35rem}h3{margin:1.4rem 0 .4rem}
+    p{max-width:92ch}.lede{font-size:1.08rem;color:var(--muted)}.eyebrow{color:var(--accent);font-weight:700;letter-spacing:.08em;text-transform:uppercase;font-size:.78rem}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin:18px 0}.card{border:1px solid var(--line);border-radius:12px;padding:16px;background:var(--panel)}.card strong{display:block;font-size:1.05rem}.tag{display:inline-block;border-radius:999px;padding:2px 9px;font-size:.78rem;font-weight:700;background:#e8e7ff;color:#3730a3}.good{color:var(--good)}.warn{color:var(--warn)}.bad{color:var(--bad)}
+    .decision{border-left:6px solid var(--good);background:#ecfdf5;padding:18px 20px;border-radius:10px}.callout{border-left:5px solid var(--warn);background:#fff8e8;padding:14px 18px;border-radius:8px}
+    table{border-collapse:collapse;width:100%;margin:12px 0 22px;font-size:.92rem}th,td{border:1px solid var(--line);padding:9px 10px;text-align:left;vertical-align:top}th{background:#eef2f8}tr:nth-child(even) td{background:#fbfcfe}code{background:#eef2f8;padding:.1rem .3rem;border-radius:4px}a{color:#4338ca}ul{padding-left:1.25rem}.small{font-size:.85rem;color:var(--muted)}
+    @media(max-width:760px){main{padding:24px 14px}table{display:block;overflow-x:auto;white-space:normal}h1{font-size:1.65rem}}
+  </style>
+</head>
+<body>
+<main>
+  <header>
+    <div class="eyebrow">Discovery report · Issue 3525 · 14 July 2026</div>
+    <h1>Safe remote Claude work on this Windows host</h1>
+    <p class="lede">Read-only assessment of native Anthropic capabilities, identity boundaries, and the smallest safe fallback. No login, pairing, installation, configuration, scheduled task, remote session, job, or paid request was performed.</p>
+  </header>
+
+  <section id="current-state">
+    <h2>1. Current state</h2>
+    <div class="grid">
+      <div class="card"><span class="tag">Local</span><strong>Claude Code 2.1.209</strong><span>The installed CLI advertises <code>--remote-control</code>. Eligibility and account state were deliberately not inspected.</span></div>
+      <div class="card"><span class="tag">Policy</span><strong class="warn">Dispatch remains disabled</strong><span>The target host is registered as a status-only Windows machine. No execution posture changed.</span></div>
+      <div class="card"><span class="tag">Native</span><strong class="good">Supported building blocks exist</strong><span>Remote Control, Desktop tasks, Dispatch, Channels, and cloud Routines now cover different parts of the workflow.</span></div>
+      <div class="card"><span class="tag">Boundary</span><strong class="bad">No cross-account delegation</strong><span>Official material binds local and remote surfaces to the same Claude identity and organization; no account-A-to-account-B grant was found.</span></div>
+    </div>
+    <p><strong>State conclusion:</strong> the machine is not currently a configured worker. The installed CLI is new enough to expose Remote Control, but Desktop availability, subscription eligibility, organization toggles, and authentication were not verified because doing so would cross the discovery boundary.</p>
+  </section>
+
+  <section id="evidence">
+    <h2>2. Evidence</h2>
+    <p>Evidence classes are explicit. “Not documented” is not treated as proof that a feature can never exist.</p>
+    <table>
+      <caption>Official, local, inferred, and unresolved evidence</caption>
+      <thead><tr><th scope="col">Class</th><th scope="col">Finding</th><th scope="col">Authority / observation</th></tr></thead>
+      <tbody>
+        <tr data-evidence-class="verified_official" data-claim-id="remote-control"><td>Verified official</td><td>Remote Control runs Claude Code on the local machine, retains local filesystem/tools, uses outbound HTTPS with no inbound port, and requires a full Claude subscription login. API keys and limited setup tokens cannot establish it. The mobile surface must use the same account and organization as the terminal.</td><td><a data-source-role="official" href="https://code.claude.com/docs/en/remote-control">Remote Control</a> · accessed <time datetime="2026-07-14">2026-07-14</time></td></tr>
+        <tr data-evidence-class="verified_official" data-claim-id="desktop-scheduled-tasks"><td>Verified official</td><td>Desktop local tasks support manual, recurring, and delayed schedules with local files/tools. Desktop must remain open and the computer awake; one recent missed run can catch up after wake.</td><td><a data-source-role="official" href="https://code.claude.com/docs/en/desktop-scheduled-tasks">Desktop scheduled tasks</a> · accessed <time datetime="2026-07-14">2026-07-14</time></td></tr>
+        <tr data-evidence-class="verified_official" data-claim-id="cowork-dispatch"><td>Verified official</td><td>Cowork Dispatch can start local Desktop work from mobile on supported individual plans, but requires Desktop open, the machine awake, and a persistent account conversation.</td><td><a data-source-role="official" href="https://support.claude.com/en/articles/13947068-assign-tasks-from-anywhere-in-claude-cowork">Cowork Dispatch</a> · accessed <time datetime="2026-07-14">2026-07-14</time></td></tr>
+        <tr data-evidence-class="verified_official" data-claim-id="channels"><td>Verified official</td><td>Channels can push chat or webhook events into an already-running local session. It is a research preview requiring plugin configuration, pairing/sender allowlists, and a persistent process; permitted senders may relay tool approvals.</td><td><a data-source-role="official" href="https://code.claude.com/docs/en/channels">Channels</a> · accessed <time datetime="2026-07-14">2026-07-14</time></td></tr>
+        <tr data-evidence-class="verified_official" data-claim-id="routines"><td>Verified official</td><td>Cloud Routines support recurring/one-off schedules, API POST triggers, GitHub events, and Run now without the local machine. They clone selected repositories in Anthropic infrastructure, have no local uncommitted state or local-only tools, belong to an individual account, and are not shared with teammates.</td><td><a data-source-role="official" href="https://code.claude.com/docs/en/routines">Cloud Routines</a> · accessed <time datetime="2026-07-14">2026-07-14</time></td></tr>
+        <tr data-evidence-class="verified_official" data-claim-id="authentication"><td>Verified official</td><td>Team and Enterprise users receive individual invited identities. Claude Code authentication is per user; Windows credentials inherit the OS user-profile access boundary.</td><td><a data-source-role="official" href="https://code.claude.com/docs/en/authentication">Authentication</a> · accessed <time datetime="2026-07-14">2026-07-14</time></td></tr>
+        <tr data-evidence-class="verified_official" data-claim-id="trusted-devices"><td>Verified official</td><td>Trusted Devices is an organization-wide Team/Enterprise control for enrolled viewing devices and recent authentication. It hardens Remote Control but does not create a delegated worker identity or per-project grant.</td><td><a data-source-role="official" href="https://code.claude.com/docs/en/remote-control#trusted-devices">Trusted Devices</a> · accessed <time datetime="2026-07-14">2026-07-14</time></td></tr>
+        <tr data-evidence-class="verified_official" data-claim-id="workload-identity-federation"><td>Verified official</td><td>Claude Platform WIF provides non-human service accounts and short-lived workspace-bound API tokens. These are API workload credentials, not Remote Control or Desktop credentials.</td><td><a data-source-role="official" href="https://platform.claude.com/docs/en/manage-claude/workload-identity-federation">Workload Identity Federation</a> · accessed <time datetime="2026-07-14">2026-07-14</time></td></tr>
+        <tr data-evidence-class="verified_official" data-claim-id="usage-cost-api"><td>Verified official</td><td>API usage and costs can be reported and attributed by workspace. This supports accounting for a custom service runner; the cited page does not document consumer Remote Control per-job limits.</td><td><a data-source-role="official" href="https://platform.claude.com/docs/en/manage-claude/usage-cost-api">Usage and Cost API</a> · accessed <time datetime="2026-07-14">2026-07-14</time></td></tr>
+        <tr data-evidence-class="verified_official" data-claim-id="consumer-terms"><td>Verified official</td><td>Consumer terms prohibit sharing account login information, API keys, or credentials and prohibit making an account available to another person. Automated access must use an API key or an explicitly permitted product flow.</td><td><a data-source-role="official" href="https://www.anthropic.com/legal/consumer-terms">Consumer Terms</a> · accessed <time datetime="2026-07-14">2026-07-14</time></td></tr>
+        <tr data-evidence-class="verified_official" data-claim-id="commercial-terms"><td>Verified official</td><td>Commercial customers may serve authorized users and remain responsible for account activity and protection of confidential information. The explicit credential-sharing prohibition above is bound to the Consumer Terms, not inferred from this source.</td><td><a data-source-role="official" href="https://www.anthropic.com/legal/commercial-terms">Commercial Terms</a> · accessed <time datetime="2026-07-14">2026-07-14</time></td></tr>
+        <tr data-evidence-class="local_observation"><td>Local observation</td><td>Hostname matched the target registry alias. Claude Code reported version 2.1.209 and help listed the Remote Control flag. No feature or account state was exercised.</td><td>Approved local command allowlist; observed 2026-07-14</td></tr>
+        <tr data-evidence-class="assumption"><td>Assumption</td><td>A dedicated Windows OS profile could be owned by the remote operator, who would personally authenticate their own Claude identity. Local repository and tool access would then be separately scoped to that OS profile.</td><td>Architecture inference; not an Anthropic delegation feature</td></tr>
+        <tr data-evidence-class="unresolved"><td>Unresolved</td><td>No official page found a mechanism for one individual Claude identity to invite a different identity to steer its local Remote Control session. Organization policy approval for using another person’s machine is also not documented.</td><td>Confirm with organization security owner or Anthropic support before production</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Capability matrix</h3>
+    <table>
+      <caption>Capability comparison by Anthropic surface</caption>
+      <thead><tr><th scope="col">Surface</th><th scope="col">Runs where</th><th scope="col">Remote / trigger</th><th scope="col">Schedule</th><th scope="col">Local resources</th><th scope="col">Identity boundary</th></tr></thead>
+      <tbody>
+        <tr data-product="code"><td>Code Remote Control</td><td>Target Windows host</td><td>Browser/mobile; server mode</td><td>No native durable schedule</td><td>Yes</td><td>Same account and organization</td></tr>
+        <tr data-product="desktop"><td>Desktop tasks / Dispatch</td><td>Target Windows host</td><td>Mobile Dispatch; Run now</td><td>Recurring, one-off, catch-up</td><td>Yes</td><td>Authenticated Desktop identity</td></tr>
+        <tr data-product="web"><td>Cloud Routines / Code web</td><td>Anthropic cloud</td><td>API, GitHub, web/mobile</td><td>Recurring and one-off</td><td>No; fresh clone/connectors</td><td>Individual account; routines not shared</td></tr>
+        <tr data-product="team"><td>Team controls</td><td>Organization policy plane</td><td>Owner enablement; Trusted Devices</td><td>Does not schedule local host</td><td>No direct grant</td><td>Separate member seats</td></tr>
+        <tr data-product="enterprise"><td>Enterprise controls</td><td>Organization policy plane</td><td>SSO, managed policy, Trusted Devices</td><td>Does not schedule local host</td><td>No direct grant</td><td>Separate member identities</td></tr>
+        <tr data-product="api"><td>Platform API / WIF</td><td>Custom runner</td><td>Authenticated queue/webhook</td><td>External scheduler</td><td>Only what runner exposes</td><td>Workspace-scoped service account</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Account boundary matrix</h3>
+    <table>
+      <caption>Supported identity and account boundaries</caption>
+      <thead><tr><th scope="col">Context</th><th scope="col">Supported posture</th><th scope="col">Finding</th></tr></thead>
+      <tbody>
+        <tr data-account-context="same-account"><td>Same individual, multiple devices</td><td class="good">Documented</td><td>Remote Control and Dispatch are the native fit.</td></tr>
+        <tr data-account-context="separate-individual"><td>Separate individual accounts</td><td class="bad">No delegation documented</td><td>Do not share credentials or infer access from Team membership.</td></tr>
+        <tr data-account-context="team"><td>Team</td><td class="warn">Admin enablement</td><td>Each member uses a seat; Trusted Devices hardens access but does not share sessions.</td></tr>
+        <tr data-account-context="enterprise"><td>Enterprise</td><td class="warn">Admin/policy controls</td><td>SSO and managed settings improve governance; no delegated local-session principal was found.</td></tr>
+        <tr data-account-context="api"><td>API automation</td><td class="good">Documented service identity</td><td>WIF/service accounts are suitable for a custom runner, not native Remote Control.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section id="gaps-risks">
+    <h2>3. Exact gaps and security risks</h2>
+    <ul>
+      <li><strong>Identity gap:</strong> no cross-individual-account invitation, delegated machine role, or per-job local authorization principal is documented.</li>
+      <li><strong>Host exposure:</strong> the remote operator receives the local process’s filesystem, tools, project configuration, and MCP reach. An ordinary owner OS profile would expose too much.</li>
+      <li><strong>Concurrency:</strong> Remote Control server mode defaults to high capacity and shared-directory mode can conflict. A pilot should use capacity one and worktree isolation.</li>
+      <li><strong>Sandbox:</strong> server-mode sandboxing is off by default. A pilot should enable it and still enforce OS/repository boundaries.</li>
+      <li><strong>Transcript residency:</strong> Remote Control stores messages, responses, and tool activity on Anthropic servers while connected, although execution and files stay local.</li>
+      <li><strong>Wake dependency:</strong> Remote Control, Dispatch, Channels, and local Desktop tasks cannot execute while the host is asleep/off or the required process/app is stopped. Desktop “keep awake” does not wake a sleeping or powered-off PC.</li>
+      <li><strong>Permission relay:</strong> allowed remote/channel senders can approve tools. Pairing and sender allowlists are high-trust controls, not low-risk notification plumbing.</li>
+      <li><strong>Consumer spend:</strong> official docs expose usage limits but no per-job monetary ceiling for Remote Control/Desktop tasks. A custom API runner has stronger workspace attribution and budget controls.</li>
+      <li><strong>Preview risk:</strong> Remote Control, Channels, Dispatch, and Routines include preview/beta surfaces whose limits and APIs may change.</li>
+      <li><strong>Audit gap:</strong> native features expose session history, but no documented tamper-evident local job ledger, durable queue, or delegated-execution audit contract was found.</li>
+    </ul>
+    <div class="callout"><strong>Credential-sharing prohibition</strong>
+      <ul>
+        <li data-rejected-practice="password-sharing">Do not share passwords or account login links.</li>
+        <li data-rejected-practice="session-cookie-sharing">Do not copy session cookies or browser profiles.</li>
+        <li data-rejected-practice="raw-oauth-sharing">Do not copy raw OAuth credentials or subscription tokens.</li>
+        <li data-rejected-practice="personal-api-key-sharing">Do not share a personal API key; use a scoped organization credential for automation.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="ranked-options">
+    <h2>4. Ranked options</h2>
+    <table>
+      <caption>Ranked implementation options</caption>
+      <thead><tr><th scope="col">Rank</th><th scope="col">Option</th><th scope="col">Fit</th><th scope="col">Size</th><th scope="col">Operational burden</th></tr></thead>
+      <tbody>
+        <tr data-rank="1" data-size="1–3 days" data-ops-burden="low-medium" data-confidence="high"><td>1</td><td><strong>Native same-account pilot — recommended</strong><br>Dedicated Windows OS profile owned by the remote operator; their own Claude login; Remote Control server with capacity one, worktree spawn, sandbox, and scoped local resources. Add Desktop tasks/Dispatch only after Desktop and wake posture are verified.</td><td>Covers remote browser/mobile control and local tools without credential sharing. It is same-account use, not delegation.</td><td>1–3 engineer-days</td><td>1–2 hours/month plus auth renewal and wake checks</td></tr>
+        <tr data-rank="2" data-size="half-day" data-ops-burden="low" data-confidence="high"><td>2</td><td><strong>Cloud Routines</strong><br>Use schedule/API/GitHub triggers when a fresh clone and cloud connectors are sufficient.</td><td>Cleanest webhook and powered-off operation, but cannot use local uncommitted repositories, local-only tools, or local credentials.</td><td>0.5–1 day</td><td>Low; monitor caps, connectors, and generated changes</td></tr>
+        <tr data-rank="3" data-size="3–5 weeks" data-ops-burden="medium-high" data-confidence="medium"><td>3</td><td><strong>Small outbound-pull API runner</strong><br>Use WIF/service-account authentication, a private job queue, isolated worktrees, explicit allowlists, and structured results.</td><td>Required only when a non-human identity, durable queue, strict audit, spend caps, or separate-account submission is non-negotiable.</td><td>2–3 engineer-weeks; 3–5 calendar weeks with review/Windows validation</td><td>1–2 hours/week plus 2–4 hours/month for rotation/upgrades</td></tr>
+        <tr data-rank="4" data-size="none" data-ops-burden="opportunity-cost" data-confidence="high"><td>4</td><td><strong>Defer</strong></td><td>Use if the remote operator cannot own a dedicated OS profile, organization policy rejects local remote access, or wake/physical controls cannot be made reliable.</td><td>No build</td><td>No system burden; workflow remains manual</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section id="decision">
+    <h2>5. Go / no-go decision</h2>
+    <div class="decision" data-decision="use-existing-feature">
+      <strong>GO — use the existing native feature stack for a bounded same-account pilot.</strong>
+      <p>Use Remote Control first, under a dedicated Windows OS profile authenticated personally by the remote operator. This satisfies “machine under the operator’s account” without sharing credentials. Treat Desktop scheduling and Dispatch as optional additions after a separate implementation plan verifies Desktop, permissions, wake behavior, and logging.</p>
+      <p><strong>Blocking precondition:</strong> the machine owner and organization security owner must approve this dedicated-profile posture before any login, pairing, or pilot run. Without both approvals, the decision is DEFER.</p>
+      <p><strong>NO-GO</strong> for cross-account delegation, copied credentials, owner-profile execution, high-capacity shared-directory server mode, or production webhooks through preview Channels without a separate threat model.</p>
+      <p><strong>Do not build a custom runner yet.</strong> Escalate to the API/WIF runner only if distinct identities, durable authenticated queueing, hard spend controls, or always-on webhook operation are mandatory.</p>
+    </div>
+  </section>
+
+  <section id="implementation-burden">
+    <h2>6. Smallest safe fallback architecture</h2>
+    <p>If the native same-account boundary is unacceptable, the minimum defensible runner is outbound-pull only. It should expose jobs, not a shell.</p>
+    <div class="grid">
+      <div class="card" data-control="dedicated-os-account"><strong>Dedicated OS account</strong>Separate home directory, ACLs, processes, scheduler identity, and repository clones.</div>
+      <div class="card" data-control="isolated-auth-config"><strong>Isolated auth/config</strong>WIF or workspace-scoped automation credential; no subscription OAuth copying.</div>
+      <div class="card" data-control="least-privilege"><strong>Least privilege</strong>Minimal filesystem, Git, network, tool, and branch permissions.</div>
+      <div class="card" data-control="authenticated-pull-queue"><strong>Authenticated pull queue</strong>Private immutable envelopes, expiry, nonce, signature/authorized writer, outbound polling only.</div>
+      <div class="card" data-control="repo-action-allowlist"><strong>Repository/action allowlist</strong>Repository IDs and fixed workflows; reject arbitrary command strings.</div>
+      <div class="card" data-control="audit-log"><strong>Audit log</strong>Structured append-only job, lease, command-class, result, and redaction evidence.</div>
+      <div class="card" data-control="concurrency-lock"><strong>Concurrency lock</strong>One job initially; fenced lease, stale recovery, isolated worktree per job.</div>
+      <div class="card" data-control="spend-rate-limit"><strong>Spend/rate limit</strong>Per-job token/time ceiling, workspace limits, daily circuit breaker, usage reporting.</div>
+      <div class="card" data-control="failure-quarantine"><strong>Failure quarantine</strong>Bounded retries, poison-job isolation, kill switch, no automatic privilege expansion.</div>
+      <div class="card" data-control="wake-handling"><strong>Wake handling</strong>Start-when-available task, explicit sleep policy, optional wake timer/Wake-on-LAN, powered-off state reported—not hidden.</div>
+    </div>
+    <p data-evidence-class="assumption"><strong>Planning assumption:</strong> 600–1,200 production lines plus comparable tests, approximately 2–3 engineer-weeks and 3–5 calendar weeks under planning, TDD, adversarial review, and Windows smoke gates. This ROM estimate is based on decomposition of the ten controls above and reuse of an internal outbound worker pattern; it has not been validated by an implementation spike. Confidence: medium. Identity authorization, coding isolation, hard budgets, and wake semantics are the security-critical remainder.</p>
+  </section>
+
+  <section id="local-observations" data-lane-status="completed" data-host-match="registry-canonical-or-alias">
+    <h2>7. Local observation appendix</h2>
+    <table>
+      <caption>Read-only commands and scrubbed local results</caption>
+      <thead><tr><th scope="col">Allowlisted command</th><th scope="col">Scrubbed observation</th></tr></thead>
+      <tbody>
+        <tr><td data-command="hostname"><code>hostname</code></td><td>The observed hostname matched the approved target registry alias; the identifier is intentionally omitted.</td></tr>
+        <tr><td data-command="claude-version"><code>claude --version</code></td><td><code>2.1.209 (Claude Code)</code>.</td></tr>
+        <tr><td data-command="claude-help"><code>claude --help</code></td><td>Help advertises <code>--remote-control</code>, print mode, permission modes, resume/continue, and worktree support. No subcommand was executed.</td></tr>
+        <tr><td data-command="desktop-inventory">Process and installed-product inventory</td><td>Claude-named processes reported product versions <code>1.20186.9</code> and <code>2.1.209.0</code>; the approved uninstall-registry query returned no exact product row. Desktop installation/eligibility therefore remains unverified.</td></tr>
+      </tbody>
+    </table>
+    <p class="small">A delegated evidence lane issued two additional read-only product-discovery probes outside the pinned local command allowlist. They caused no state change, and their outputs are excluded from this report and decision.</p>
+  </section>
+
+  <footer class="small">
+    <p>Evidence access date: 2026-07-14. Product previews and terms can change; revalidate before implementation. This report is discovery, not authorization to configure or operate the target host.</p>
+  </footer>
+</main>
+</body>
+</html>

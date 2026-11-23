@@ -1,0 +1,212 @@
+#!/usr/bin/env bash
+# Factory AI Droid CLI Wrapper
+# Manages AI droid interactions across workspace-hub repositories
+
+set -euo pipefail
+
+# Configuration
+DROID_CONFIG=".drcode/droids.yml"
+REPO_TEMPLATE=".drcode/droids-repo-template.yml"
+WORKSPACE_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+
+# Colors for output
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+NC='\033[0m' # No Color
+
+# Helper functions
+error() {
+    echo -e "${RED}ERROR: $1${NC}" >&2
+    exit 1
+}
+
+success() {
+    echo -e "${GREEN}✓ $1${NC}"
+}
+
+warning() {
+    echo -e "${YELLOW}⚠ $1${NC}"
+}
+
+info() {
+    echo -e "$1"
+}
+
+# Check if droid config exists
+check_config() {
+    if [[ ! -f "$WORKSPACE_ROOT/$DROID_CONFIG" ]]; then
+        error "Droid configuration not found at $WORKSPACE_ROOT/$DROID_CONFIG"
+    fi
+    success "Droid configuration found"
+}
+
+# Get droid type from config
+get_droid_config() {
+    local droid_type="$1"
+    local config_file="$WORKSPACE_ROOT/$DROID_CONFIG"
+
+    # For now, return basic info (would use yq or python to parse YAML properly)
+    info "Droid type: $droid_type"
+}
+
+# List available droids
+list_droids() {
+    check_config
+    info "Available droids in workspace-hub:"
+    info ""
+    info "  refactor   - Code quality improvements"
+    info "  feature    - New feature development (SPARC methodology)"
+    info "  bugfix     - Systematic bug fixing"
+    info "  docs       - Documentation generation"
+    info "  testing    - Comprehensive test writing"
+    info "  migration  - Careful migration handling"
+    info ""
+    info "Usage: droid <type> <task-description>"
+}
+
+# Initialize droid for a repository
+init_repo() {
+    local repo_path="$1"
+    local repo_name="$(basename "$repo_path")"
+
+    info "Initializing droid configuration for: $repo_name"
+
+    if [[ -f "$repo_path/.drcode/droids.yml" ]]; then
+        warning "Droid configuration already exists in $repo_name"
+        return 0
+    fi
+
+    # Create .drcode directory
+    mkdir -p "$repo_path/.drcode"
+
+    # Copy template and customize
+    cp "$WORKSPACE_ROOT/$REPO_TEMPLATE" "$repo_path/.drcode/droids.yml"
+
+    # Replace placeholders
+    sed -i "s/__REPO_NAME__/$repo_name/g" "$repo_path/.drcode/droids.yml"
+
+    success "Initialized droid configuration for $repo_name"
+}
+
+# Deploy droid config to all repositories
+deploy_all() {
+    info "Deploying droid configuration to all repositories..."
+    info ""
+
+    local count=0
+    for repo_dir in "$WORKSPACE_ROOT"/*/ ; do
+        if [[ -d "$repo_dir/.git" ]]; then
+            init_repo "$repo_dir"
+            ((count++))
+        fi
+    done
+
+    info ""
+    success "Deployed droid configuration to $count repositories"
+}
+
+# Invoke a droid with a task
+invoke_droid() {
+    local droid_type="$1"
+    shift
+    local task_description="$*"
+
+    check_config
+
+    info "Invoking $droid_type droid..."
+    info "Task: $task_description"
+    info ""
+
+    # Get droid configuration
+    get_droid_config "$droid_type"
+
+    # Here you would integrate with Claude Code or other AI system
+    # For now, provide instructions
+    info ""
+    info "To execute this droid task with Claude Code:"
+    info ""
+    info "  Please use Claude Code with the following context:"
+    info "  - Droid Type: $droid_type"
+    info "  - Configuration: $WORKSPACE_ROOT/$DROID_CONFIG"
+    info "  - Task: $task_description"
+    info ""
+    info "  The droid will follow the behavior defined in droids.yml"
+}
+
+# Show droid status
+status() {
+    check_config
+
+    info "Factory AI Droid Status - workspace-hub"
+    info ""
+    info "Configuration: $WORKSPACE_ROOT/$DROID_CONFIG"
+
+    # Count repositories with droid config
+    local total_repos=0
+    local configured_repos=0
+
+    for repo_dir in "$WORKSPACE_ROOT"/*/ ; do
+        if [[ -d "$repo_dir/.git" ]]; then
+            ((total_repos++))
+            if [[ -f "$repo_dir/.drcode/droids.yml" ]]; then
+                ((configured_repos++))
+            fi
+        fi
+    done
+
+    info "Repositories: $configured_repos/$total_repos configured"
+    info ""
+
+    success "Droid system operational"
+}
+
+# Main command dispatcher
+main() {
+    if [[ $# -eq 0 ]]; then
+        list_droids
+        exit 0
+    fi
+
+    local command="$1"
+    shift
+
+    case "$command" in
+        list)
+            list_droids
+            ;;
+        init)
+            if [[ $# -eq 0 ]]; then
+                error "Usage: droid init <repo-path>"
+            fi
+            init_repo "$1"
+            ;;
+        deploy)
+            deploy_all
+            ;;
+        status)
+            status
+            ;;
+        refactor|feature|bugfix|docs|testing|migration)
+            if [[ $# -eq 0 ]]; then
+                error "Usage: droid $command <task-description>"
+            fi
+            invoke_droid "$command" "$@"
+            ;;
+        help|--help|-h)
+            list_droids
+            info ""
+            info "Commands:"
+            info "  list            - List available droids"
+            info "  init <repo>     - Initialize droid config for a repository"
+            info "  deploy          - Deploy droid config to all repositories"
+            info "  status          - Show droid system status"
+            info "  <type> <task>   - Invoke a droid with a task"
+            ;;
+        *)
+            error "Unknown command: $command. Use 'droid help' for usage."
+            ;;
+    esac
+}
+
+main "$@"

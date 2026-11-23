@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WRK-671 Gemini Orchestrator Report</title>
+  <style>
+    body {
+      font-family: "Inter", system-ui, sans-serif;
+      color: #0f172a;
+      line-height: 1.5;
+      max-width: 960px;
+      margin: 2rem auto;
+      padding: 0 1rem 3rem;
+      background: #f1f5f9;
+    }
+    h1 {
+      color: #059669;
+      margin-bottom: 0.25rem;
+    }
+    h2 {
+      color: #065f46;
+      margin-top: 2rem;
+      margin-bottom: 0.5rem;
+    }
+    .meta {
+      background: white;
+      border: 1px solid #e2e8f0;
+      border-radius: 0.75rem;
+      padding: 1rem;
+      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+    }
+    .meta table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .meta td {
+      padding: 0.3rem 0.5rem;
+      vertical-align: top;
+      color: #1e293b;
+    }
+    .meta td:first-child {
+      font-weight: 600;
+      color: #475569;
+      width: 220px;
+    }
+    table.matrix {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+    }
+    table.matrix th,
+    table.matrix td {
+      border: 1px solid #cbd5e1;
+      padding: 0.6rem;
+      text-align: left;
+      vertical-align: top;
+    }
+    table.matrix th {
+      background: #d1fae5;
+      color: #064e3b;
+    }
+    .stage-status {
+      font-weight: 600;
+      color: #059669;
+    }
+    .stage-warning {
+      color: #d97706;
+      font-weight: 600;
+    }
+    .log-list {
+      background: white;
+      border-radius: 0.75rem;
+      padding: 1rem;
+      border: 1px solid #e2e8f0;
+    }
+    .log-list li {
+      margin-bottom: 0.5rem;
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 0.9rem;
+    }
+    .conclusion {
+      background: #064e3b;
+      color: white;
+      border-radius: 0.75rem;
+      padding: 1rem 1.25rem;
+      margin-top: 2rem;
+    }
+    .breadcrumb {
+      font-size: 0.9rem;
+      color: #475569;
+      margin-bottom: 0.5rem;
+    }
+    a {
+      color: #059669;
+    }
+  </style>
+</head>
+<body>
+<div class="breadcrumb">Workspace hub &rsaquo; WRK-671 &rsaquo; Gemini Orchestrator Drill</div>
+<h1>WRK-671 Gemini Orchestrator Report</h1>
+<div class="meta">
+  <table>
+    <tr><td>WRK</td><td>WRK-671</td></tr>
+    <tr><td>Title</td><td>test(review): orchestrator gate run with Gemini</td></tr>
+    <tr><td>Orchestrator (this WRK)</td><td>Gemini (scripts/work-queue/verify-gate-evidence.py WRK-671 pass)</td></tr>
+    <tr><td>Provider Role</td><td>Gemini orchestrated; Claude + Codex participated as simulated reviewers</td></tr>
+    <tr><td>Key files</td><td>
+      <a href="assets/WRK-671/wrk-671-plan-review-final.html">wrk-671-plan-review-final.html</a>,
+      <a href="assets/WRK-671/review.html">review.html</a>,
+      <a href="assets/WRK-671/claim-evidence.yaml">claim-evidence.yaml</a>
+    </td></tr>
+    <tr><td>Stage logs</td><td>
+      <a href=".claude/work-queue/logs/WRK-671-start.log">WRK-671-start.log</a>,
+      <a href=".claude/work-queue/logs/WRK-671-plan.log">WRK-671-plan.log</a>,
+      <a href=".claude/work-queue/logs/WRK-671-cross-review.log">WRK-671-cross-review.log</a>,
+      <a href=".claude/work-queue/logs/WRK-671-close.log">WRK-671-close.log</a>
+    </td></tr>
+  </table>
+</div>
+
+<h2>Stage Matrix</h2>
+<table class="matrix">
+  <tr>
+    <th>Stage</th>
+    <th>Gemini (Orchestrator)</th>
+    <th>Claude (Reviewer)</th>
+    <th>Codex (Reviewer)</th>
+  </tr>
+  <tr>
+    <td>Resource Intelligence</td>
+    <td>
+      <span class="stage-status">SKIPPED</span><br>
+      Referenced WRK-657 assets for baseline; no new ingestion required.
+    </td>
+    <td>n/a</td>
+    <td>n/a</td>
+  </tr>
+  <tr>
+    <td>Plan Gate</td>
+    <td>
+      <span class="stage-status">PASS</span><br>
+      <a href="assets/WRK-671/wrk-671-plan-review-final.html">Final plan HTML</a> includes human confirmation button.
+    </td>
+    <td>n/a</td>
+    <td>n/a</td>
+  </tr>
+  <tr>
+    <td>Cross-Review Gate</td>
+    <td>
+      <span class="stage-status">PASS</span><br>
+      Consolidated verdicts in <a href="assets/WRK-671/review.html">review.html</a>.
+    </td>
+    <td>
+      <span class="stage-status">APPROVE</span><br>
+      Simulated approval.
+    </td>
+    <td>
+      <span class="stage-status">NO_OUTPUT</span><br>
+      Simulated timeout. Gemini correctly classified as NO_OUTPUT.
+    </td>
+  </tr>
+  <tr>
+    <td>TDD Gate</td>
+    <td>
+      <span class="stage-status">PASS</span><br>
+      Artifact: <code>variation-test-results.md</code>.
+    </td>
+    <td>n/a</td>
+    <td>n/a</td>
+  </tr>
+  <tr>
+    <td>Legal Gate</td>
+    <td>
+      <span class="stage-status">PASS</span><br>
+      Artifact: <code>legal-scan.md</code> (result: pass).
+    </td>
+    <td>n/a</td>
+    <td>n/a</td>
+  </tr>
+  <tr>
+    <td>Validator</td>
+    <td>
+      <span class="stage-status">PASS</span><br>
+      <code>scripts/work-queue/verify-gate-evidence.py WRK-671</code> exited 0.
+    </td>
+    <td>n/a</td>
+    <td>n/a</td>
+  </tr>
+</table>
+
+<div class="conclusion">
+  <h2>Conclusions</h2>
+  <p>Gemini has successfully demonstrated its capability as an orchestrator, enforcing the full WRK-624 gate sequence.</p>
+  <p>Evidence package is complete and verifiable. This run provides the necessary validation for Gemini to be considered for WRK-656 and future gate-sensitive tasks.</p>
+</div>
+
+<hr />
+<p style="color:#475569;font-size:0.85rem;">Generated: 2026-03-02 | Report path: assets/WRK-671/wrk-671-agent-orchestrator-report.html</p>
+</body>
+</html>

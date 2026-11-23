@@ -1,0 +1,8 @@
+status: completed
+processed_at: 2026-04-01T02:41:06Z
+solver: orcawave
+input_file: digitalmodel/docs/domains/orcawave/L00_validation_wamit/2.1/OrcaWave v11.0 files/test01.owd
+description: "L00 re-run for xlsx export"
+elapsed_seconds: 7.8
+output_files:
+  - test01.owr

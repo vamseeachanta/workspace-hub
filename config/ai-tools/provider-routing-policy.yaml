@@ -1,0 +1,84 @@
+# Provider Routing Policy — single machine-readable source of truth (#2970 / F3)
+#
+# Goal: every machine/agent routes AI providers IDENTICALLY ("consistent
+# AI-provider experience"). The prose contract lives in
+#   docs/standards/AI_REVIEW_ROUTING_POLICY.md  (Claude=orchestrator,
+#   Codex=worker+adversarial-reviewer, Gemini=adversarial-reviewer; 3-agent
+#   default + reduction rules). This file encodes that contract as data so a
+#   resolver can route deterministically.
+#
+# Consumed by: scripts/ai/provider_route.py  (pure resolver + CLI).
+# Load-balancing input (ranking only): config/ai-tools/provider-routing-scorecard.json
+#   -> its `recommended_provider_order` can REORDER survivors but NEVER re-add a
+#      provider pruned by a hard machine constraint.
+#
+# Resolution contract (see provider_route.route()):
+#   1. SEED   from roles[task_type]            (ordered preference; fail closed)
+#   2. PRUNE  via machine_overrides[machine]   (hard constraints matched on attrs)
+#   3. RANK   via scorecard.recommended_provider_order (reorders survivors only)
+
+version: 1
+
+# ---------------------------------------------------------------------------
+# roles: task-type -> ordered provider preference.
+# Order is the DEFAULT ranking before any scorecard reordering. First entry is
+# the most-preferred provider for that task type.
+# ---------------------------------------------------------------------------
+roles:
+  orchestrate: [claude]                    # framing, sequencing, synthesis
+  plan:        [claude]                    # plan authoring (Claude is orchestrator)
+  implement:   [codex, claude]             # bounded implementation; Codex worker default
+  review:      [codex, gemini, claude]     # 3-agent adversarial review default
+  recon:       [gemini]                    # batched research / risk enumeration / scans
+  dispatch:    [hermes]                    # cross-provider dispatch / routing broker
+
+# ---------------------------------------------------------------------------
+# task_attributes: the typed attributes the resolver understands. Constraints
+# in machine_overrides match against these. Attrs are supplied per-call.
+# ---------------------------------------------------------------------------
+task_attributes:
+  authoring_weight:
+    type: enum
+    values: [light, heavy]
+    description: >-
+      How heavy the authoring load is. 'heavy' = large refactor / multi-file
+      generation / long-form authoring. 'light' = bounded edit, test-fix,
+      review, mechanical change. Used to fence providers off heavy authoring on
+      CPU-starved machines.
+  needs_large_context:
+    type: bool
+    description: >-
+      Whether the task needs a large context window (long-context synthesis,
+      whole-corpus review). Providers may be constrained on/off based on this.
+
+# ---------------------------------------------------------------------------
+# machine_overrides: per-machine HARD constraints. A constraint removes a
+# provider from the candidate list when its disallow condition matches the
+# call's attrs. These are PRUNE-stage rules — a pruned provider can never be
+# re-added by the scorecard.
+#
+# Constraint schema (per provider):
+#   <provider>:
+#     disallow_attrs: ["<attr>=<value>", ...]   # ALL must match attrs to prune
+#     reason: "<human-readable why>"
+#
+# disallow_attrs semantics: the provider is pruned IFF every "key=value" in the
+# list is present-and-equal in the call attrs (logical AND). An empty/absent
+# disallow_attrs means an UNCONDITIONAL disallow on that machine.
+# ---------------------------------------------------------------------------
+machine_overrides:
+  ace-linux-1:
+    codex:
+      # codex-exec is CPU-starved when nested under Claude on ace-linux-1
+      # (feedback_codex_exec_cpu_starved_in_claude_sandbox): heavy authoring
+      # writes nothing and gets killed. Route review/bounded work only here.
+      disallow_attrs: ["authoring_weight=heavy"]
+      reason: "codex-exec CPU-starved on ace-linux-1 — review/bounded only"
+
+# ---------------------------------------------------------------------------
+# reduction_rules: how to degrade the default multi-agent set. Advisory text
+# the orchestrator surfaces; the resolver does not silently apply these.
+# ---------------------------------------------------------------------------
+reduction_rules:
+  user_requests_lighter: "drop to 2-agent, document"
+  provider_unavailable:  "continue, record missing reviewer"

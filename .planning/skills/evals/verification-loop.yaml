@@ -1,0 +1,23 @@
+version: 1
+wrk_id: WRK-1009
+skill_name: verification-loop
+skill_path: .claude/skills/development/verification-loop/SKILL.md
+evals:
+- eval_id: vl-cap-01
+  eval_type: capability
+  description: Core sections documented for verification-loop
+  checks:
+    required_sections:
+    - '## When to Use'
+    - '## Overview'
+    - '## Configuration'
+    - '## Integration'
+    - '## Phase Definitions'
+- eval_id: vl-proc-01
+  eval_type: procedural
+  description: Additional documentation sections for verification-loop
+  checks:
+    required_sections:
+    - '## Detection Logic'
+    - '## Execution Flow'
+    - '## Error Handling'

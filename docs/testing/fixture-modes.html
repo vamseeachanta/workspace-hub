@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<title>Physical and Git modes in test fixtures</title>
+<main>
+<h1>Physical and Git modes in test fixtures</h1>
+<p>A native fixture is ready when its physical permissions and Git index mode
+match the intended file type, and its owned path has clean Git status.
+An index-only executable change leaves a nonexecutable working-tree file dirty
+when <code>core.filemode=true</code>. Windows fixture success alone does not
+establish native POSIX coverage.</p>
+<h2>Revision history</h2>
+<table>
+<tr><th>Revision</th><th>Date</th><th>Change and reason</th></tr>
+<tr><td>Initial</td><td>2026-10-22</td><td>Document separate physical and index
+checks to prevent a portability adapter from hiding dirty fixture inputs.</td></tr>
+</table>
+<p>Table 1. Document revision history.</p>
+<h2>Fixture inventory</h2>
+<p>The tracked fixture builders that explicitly assign index modes are
+<code>tests/readiness/test_reconcile_ecosystem.py</code> and
+<code>tests/skills/test_materialize_profile.py</code> (symbolic-link entries),
+<code>tests/client_llm_wiki/test_bootstrap_snapshot.py</code> and
+<code>tests/workstations/test_clone_profile.py</code> (submodule entries).
+These entries intentionally model nonregular files; physical regular-file modes
+must not be imposed on them. The tracked inventory contains no executable
+regular-file fixture using an index-only chmod operation. The new negative
+regression introduces that operation deliberately.</p>
+<p>The native sibling repair fixture now sets physical permissions before
+staging and checks both modes and clean owned-path status after every fixture
+commit. Its Git environment excludes inherited repository bindings and global
+configuration. Production admission checks and portability policy are unchanged.</p>
+<h2>Worked example</h2>
+<p>Input: a new <code>control.sh</code> containing
+<code>#!/bin/sh</code> and <code>exit 0</code>, intended to be executable.
+The method is exercised by <code>test_prepared_file_has_physical_index_and_clean_status</code>:</p>
+<pre><code>path.write_text("#!/bin/sh\nexit 0\n")
+prepare_file_mode(path, executable=True)
+commit_all(repo)
+assert_file_modes(repo, "control.sh", executable=True)</code></pre>
+<p>Expected answer: physical permissions <code>0755</code>, index mode
+<code>100755</code>, and empty owned-path status. For a nonexecutable regular
+file, the corresponding permissions and mode are <code>0644</code> and
+<code>100644</code>. These values follow the
+<a href="https://git-scm.com/docs/gitformat-index/2.44.0">Git 2.44.0 index format,
+Index entry mode field</a>, rather than an engineering equation or coefficient.</p>
+<p>Independent negative derivation: a committed file with physical permissions
+<code>0644</code> retains those permissions after
+<code>git update-index --chmod=+x -- control.sh</code>, while its index mode becomes
+<code>100755</code>. Therefore the executable expectation fails physical readback,
+the nonexecutable expectation fails index readback, and <code>git diff-files</code>
+reports the path. The tests assert all three observations independently.</p>
+<h2>Forward and recovery criteria</h2>
+<p>A correctly prepared native fixture must reach the complete repair path.
+An injected exception after the owned file rewrite must restore the original
+bytes, permissions and link target, with empty owned-path status. A deliberate
+physical mode change on an owned file must block repair before installation.
+Content dirt and disabled native mode detection are also rejected by the helper.</p>
+<h2>Coverage limits</h2>
+<p>The dedicated POSIX mode regressions explicitly skip on Windows. The portable
+repair tests still run there, but their success is limited coverage until native
+POSIX controls pass. A filesystem that does not honor executable bits cannot
+satisfy the native regression. Tests use disposable repositories and synthetic
+files; no provider process or live installation is exercised. Second-provider
+review remains required before merge.</p>
+</main>
+</html>

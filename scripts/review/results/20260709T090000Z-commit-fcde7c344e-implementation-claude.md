@@ -1,0 +1,31 @@
+### Verdict: MAJOR
+
+### Summary
+Solid, well-structured feature: idempotent Linux dictation installer with genuinely thorough bash tests (device selection, active/inactive install, non-Linux no-op, launcher toggle/fallback, committed-mode static contracts) and careful quoting (shell_quote_word, env-prefix words compatible with GNOME's g_shell_parse_argv). No P1 defects found. However, there are a few P2 robustness/privacy issues — a world-readable /tmp fallback for recorded audio and transcripts, and login-shell (`bash -lc`) test executions whose PATH stubs can be clobbered by the host's profile — plus several P3 hardening gaps that are cheap to fix before this lands in bootstrap-machine.sh for every Linux box.
+
+### Issues Found
+- [P2] Privacy/security: tools/voice-dictation/codex-dictate.sh:752 — state_dir falls back to ${XDG_RUNTIME_DIR:-/tmp}/codex-dictate. When XDG_RUNTIME_DIR is unset, recorded microphone audio (rec.wav), transcribe.err, pidfile, and metafile land in a shared, world-traversable /tmp directory with default umask perms; another local user can read dictated audio/errors, or pre-create /tmp/codex-dictate and plant pidfile/metafile state. mkdir -p won't fix perms of a pre-existing dir. Create with mode 700 (install -d -m 700 or mkdir + chmod) and verify ownership.
+- [P2] Test fragility: scripts/agents/tests/test_voice_dictation_detection.sh:529,543 — the stored hotkey/inert commands are executed via `bash -lc`, a login shell that re-sources /etc/profile and ~/.bash_profile. Any profile that resets or prepends PATH can shadow the stub bin (arecord, notify-send), silently invoking real binaries and making these assertions machine-dependent. Production faithfully mirrors the stored `bash -lc` command, but the test should sanitize (e.g. `env -i` with an explicit PATH, or BASH_ENV-controlled non-login shell) so results are deterministic across machines.
+- [P3] Argument-injection robustness: tools/voice-dictation/codex-dictate.sh inject_text — `wtype "${text}"` and `ydotool type "${text}"` lack a `--` separator (xdotool correctly uses `--`). A transcript beginning with `-` (e.g. "-30 degrees") is parsed as options and fails or misbehaves.
+- [P3] Test state leakage: scripts/agents/tests/test_voice_dictation_detection.sh:489 — `ARECORD_FAIL_DEVICES="plughw:1,0" out="$(run_helper_choose ...)"` is an assignment-only simple command, so ARECORD_FAIL_DEVICES persists in the test shell and is re-injected by run_helper_choose into later tests (test_no_capture_device_returns_inactive). Currently benign because that fixture lists no devices, but it makes tests order-dependent.
+- [P3] Toggle race: tools/voice-dictation/codex-dictate.sh start_arecord — the pidfile is written only after the 0.15s grace sleep; a rapid double hotkey press within the grace window starts a second arecord and orphans the first (both recording the same device/wav path).
+- [P3] scripts/agents/install-voice-dictation.sh has_gsettings — `gsettings writable` exits 0 whether it prints true or false; the function checks only exit status, so a non-writable key (locked-down GNOME) passes the gate and later `gsettings set` calls fail mid-install.
+- [P3] tools/voice-dictation/codex-dictate.sh stop_and_type — the SIGKILL fallback after ~0.5s can leave the WAV with an unfixed RIFF header (arecord fixes the length fields on graceful termination); strict decoders may then fail transcription. Consider a longer graceful wait before KILL, or tolerate/repair truncated headers.
+- [P3] tools/voice-dictation/transcribe.py:962 — language="en" is hardcoded while DICTATE_MODEL is configurable; setting a multilingual model still forces English. Make language an env override (DICTATE_LANGUAGE) defaulting to en.
+- [P3] scripts/agents/tests/test_voice_dictation_detection.sh:638 test_static_contracts — depends on `uv run python` resolving a project environment (network/venv state); per workspace notes uv is broken in several sibling repos. A plain `python3 -m py_compile` fallback would make the suite more portable.
+
+### Suggestions
+- Create the runtime state dir with restrictive perms: `install -d -m 700 "${state_dir}"` in codex-dictate.sh and dictate-test.sh; also shred/rm rec.wav after successful transcription so dictated audio doesn't persist.
+- Add `--` (wtype supports it; for ydotool prepend a safe separator or use `ydotool type --file -` via stdin) so leading-dash transcripts inject correctly.
+- In tests, replace `bash -lc` execution of the stored command with `env -i HOME=... PATH="${tmp}/bin" bash -c ...` to isolate from host login profiles; keep a single targeted test asserting the stored string itself uses `bash -lc` if that's the production contract.
+- Unset/localize ARECORD_FAIL_DEVICES after test_selection_policy (or wrap those invocations in a subshell) to remove cross-test ordering dependence.
+- Write the pidfile before the grace check (then remove it on early-exit) or use flock on the state dir to close the double-press race.
+- has_gsettings: check the printed value, e.g. `[[ "$(gsettings writable "${base_schema}" custom-keybindings 2>/dev/null)" == "true" ]]`.
+- Consider an --uninstall flag (remove symlinks + keybinding entry) since the installer now runs from bootstrap-machine.sh on every Linux machine.
+- Minor: warn in the installer when ~/.local/bin is not on PATH, since bin_link (codex-dictate) is advertised as a command.
+
+### Questions for Author
+- Is the /tmp fallback for state_dir ever expected in practice (hotkey implies a desktop session where XDG_RUNTIME_DIR is set)? If not, would you rather fail closed than fall back to a shared /tmp path?
+- The gsettings hotkey pins DICTATE_PYTHON and the ALSA device at install time; bootstrap re-runs will refresh it, but is silent re-pinning on every bootstrap acceptable if a user manually customized the binding command?
+- test_static_contracts asserts bootstrap-machine.sh contains "|| true" anywhere in the file, not specifically on the voice-dictation invocation line — is that loose match intentional?
+- Was branch-only history (per the 2026-06-30 handoff note) fully restored here, i.e. does anything else from the original voice-dictation branch (VNC track, per-machine configs) remain unlanded?

@@ -1,0 +1,354 @@
+version: 2
+policy_id: weekly-skills-audit-v2
+scope: weekly skill ecosystem audit classification and ranking policy
+source_of_truth: config/skills/weekly-audit-policy.yaml
+companion_doc: docs/standards/weekly-skills-audit-policy.md
+
+signal_vocabulary:
+  - id: same_canonical_name
+    description: Findings share the same canonical frontmatter name.
+  - id: same_primary_intent
+    description: Findings target the same user problem or workflow intent.
+  - id: wrapper_redirect
+    description: One artifact is a thin wrapper, redirect, alias, or stub.
+  - id: explicit_canonical_target
+    description: A wrapper explicitly names a canonical target.
+  - id: substantial_overlap
+    description: The skills contain materially overlapping procedure or maintenance surface.
+  - id: distinct_deliverable_surface
+    description: The skills serve different validators, outputs, or domain boundaries.
+  - id: generic_leaf_only
+    description: The collision is naming/path oriented without same-intent proof.
+  - id: maintained_replacement_exists
+    description: A newer canonical replacement is known and maintained.
+  - id: conflicting_evidence
+    description: Evidence simultaneously points to incompatible buckets.
+  - id: insufficient_evidence
+    description: Available evidence is too weak for deterministic classification.
+
+classification_buckets:
+  - id: exact-duplicate
+    intent: Two or more skills resolve to the same canonical skill intent and should not coexist as separate authoritative skills.
+    rule:
+      match_all: [same_primary_intent, substantial_overlap]
+      match_any: [same_canonical_name]
+      exclude_if_any: [wrapper_redirect, distinct_deliverable_surface, conflicting_evidence, insufficient_evidence]
+    recommended_action: Consolidate to one canonical skill and queue cleanup in a follow-up issue if needed.
+    default_severity: high
+    default_confidence: high
+
+  - id: canonical-wrapper-pair
+    intent: A lightweight wrapper, pointer, or alias exists to direct users to a canonical skill without claiming to be a separate implementation.
+    rule:
+      match_all: [wrapper_redirect, explicit_canonical_target]
+      match_any: []
+      exclude_if_any: [substantial_overlap, conflicting_evidence, insufficient_evidence]
+    recommended_action: Keep the canonical target authoritative; de-emphasize the wrapper in ranking and review periodically.
+    default_severity: low
+    default_confidence: high
+
+  - id: near-duplicate-same-intent
+    intent: Multiple skills appear to solve the same problem with slightly different wording or framing, but are not yet proven exact duplicates.
+    rule:
+      match_all: [same_primary_intent, substantial_overlap]
+      match_any: []
+      exclude_if_any: [same_canonical_name, wrapper_redirect, distinct_deliverable_surface, conflicting_evidence, insufficient_evidence]
+    recommended_action: Route to human review before merge or rename decisions.
+    default_severity: medium
+    default_confidence: medium
+
+  - id: stale-superseded
+    intent: A skill has clearly been replaced by a newer canonical artifact or governance boundary.
+    rule:
+      match_all: [maintained_replacement_exists]
+      match_any: []
+      exclude_if_any: [wrapper_redirect, conflicting_evidence, insufficient_evidence]
+    recommended_action: Mark as superseded and consider archival or follow-up cleanup outside v1.
+    default_severity: medium
+    default_confidence: high
+
+  - id: adjacent-specialization
+    intent: Related skills intentionally cover neighboring but distinct use cases and should remain separate.
+    rule:
+      match_all: [same_primary_intent, distinct_deliverable_surface]
+      match_any: []
+      exclude_if_any: [same_canonical_name, wrapper_redirect, generic_leaf_only, conflicting_evidence, insufficient_evidence]
+    recommended_action: Keep both skills; document boundaries if confusion persists.
+    default_severity: low
+    default_confidence: medium
+
+  - id: generic-leaf-collision
+    intent: Skills share a generic leaf directory name or label but differ in canonical name and purpose.
+    rule:
+      match_all: [generic_leaf_only]
+      match_any: []
+      exclude_if_any: [same_primary_intent, same_canonical_name, substantial_overlap, conflicting_evidence, insufficient_evidence]
+    recommended_action: Track for observability and naming hygiene; do not force consolidation in v1.
+    default_severity: low
+    default_confidence: medium
+
+  - id: needs-human-review
+    intent: The deterministic rules are insufficient to classify the finding safely.
+    rule:
+      match_all: []
+      match_any: [conflicting_evidence, insufficient_evidence]
+      exclude_if_any: []
+    recommended_action: Escalate for human review; do not force automatic consolidation or taxonomy changes.
+    default_severity: medium
+    default_confidence: low
+
+precedence_order:
+  - exact-duplicate
+  - canonical-wrapper-pair
+  - near-duplicate-same-intent
+  - stale-superseded
+  - adjacent-specialization
+  - generic-leaf-collision
+  - needs-human-review
+
+finding_schema:
+  - name: finding_key
+    type: string
+    description: Stable deterministic identifier for the finding across weekly runs.
+  - name: classification
+    type: string
+    description: Final bucket selected after precedence.
+  - name: severity
+    type: string
+    description: Severity level for weekly triage output.
+  - name: confidence
+    type: string
+    description: Confidence level for the selected classification.
+  - name: canonical_names
+    type: list[string]
+    description: Canonical frontmatter names implicated by the finding.
+  - name: paths
+    type: list[string]
+    description: Skill paths implicated by the finding.
+  - name: summary
+    type: string
+    description: Compact operator-facing summary of the finding.
+  - name: recommended_action
+    type: string
+    description: Recommended next step for operators.
+  - name: escalation_state
+    type: string
+    description: Binary v1 escalation signal.
+  - name: is_new
+    type: boolean
+    description: Whether the finding is newly observed in the current run.
+  - name: is_changed
+    type: boolean
+    description: Whether the finding materially changed relative to the prior baseline.
+
+severity_levels:
+  - id: high
+    criteria: High-confidence duplicate findings likely to justify near-term maintenance action.
+  - id: medium
+    criteria: Important findings that need tracking or review but are not urgent cleanup actions.
+  - id: low
+    criteria: Low-risk informational findings intended for observability without immediate intervention.
+
+confidence_levels:
+  - id: high
+    criteria: Explicit policy evidence strongly supports the classification with little ambiguity.
+  - id: medium
+    criteria: Evidence is directionally strong but still leaves modest uncertainty.
+  - id: low
+    criteria: Ambiguity remains and a human should validate the outcome.
+
+weekly_summary_sections:
+  - id: new_findings
+    description: Findings first observed in the current weekly run.
+  - id: changed_findings
+    description: Existing findings whose severity, confidence, scope, or escalation materially changed.
+  - id: filesystem_only_inventory
+    description: Active filesystem-only SKILL.md files that are at risk of loss before disposition.
+  - id: unresolved_high_confidence_findings
+    description: High-confidence findings still open after carry-forward evaluation.
+  - id: suppressed_carry_forward_findings
+    description: Unchanged findings intentionally compacted to reduce weekly noise.
+  - id: operational_errors_or_skipped_inputs
+    description: Input, parsing, or scan problems that affect audit completeness.
+
+ranking_policy:
+  section_order:
+    - new_findings
+    - changed_findings
+    - filesystem_only_inventory
+    - unresolved_high_confidence_findings
+    - suppressed_carry_forward_findings
+    - operational_errors_or_skipped_inputs
+  finding_sort_order:
+    - field: escalation_state
+      direction: desc
+      rank_order: [candidate, no-escalation]
+    - field: severity
+      direction: desc
+      rank_order: [high, medium, low]
+    - field: confidence
+      direction: desc
+      rank_order: [high, medium, low]
+    - field: is_new
+      direction: desc
+    - field: finding_key
+      direction: asc
+  deterministic_tie_break_rule: If all higher-priority sort keys tie, sort by finding_key ascending.
+
+escalation_model:
+  states:
+    - id: no-escalation
+      criteria: Keep the finding in weekly audit output only.
+    - id: candidate
+      criteria: Worth considering for a follow-up GitHub issue once signal quality is stable.
+  rules:
+    - id: escalate-exact-duplicates
+      when:
+        classification_in: [exact-duplicate]
+      result: candidate
+    - id: escalate-near-duplicates
+      when:
+        classification_in: [near-duplicate-same-intent]
+      result: candidate
+    - id: escalate-stale-superseded
+      when:
+        classification_in: [stale-superseded]
+      result: candidate
+    - id: escalate-human-review-cases
+      when:
+        classification_in: [needs-human-review]
+      result: candidate
+    - id: default-no-escalation
+      when:
+        classification_in: [canonical-wrapper-pair, adjacent-specialization, generic-leaf-collision]
+      result: no-escalation
+  idempotence_rule: Repeated weekly runs must preserve the same escalation state unless the underlying evidence changes materially.
+
+carry_forward:
+  unchanged_behavior: Unchanged findings should remain compact and appear in suppressed carry-forward output rather than reappearing as new findings.
+  suppression_rule: Suppress unchanged findings from headline sections unless they remain unresolved and high-confidence, in which case they may also appear in unresolved high-confidence findings.
+  changed_but_unresolved_rule:
+    definition: A finding that persists across weeks but changes severity, confidence, scope footprint, or escalation state.
+    surfaces_in: changed_findings
+    behavior: Surface materially changed unresolved findings prominently instead of hiding them in carry-forward.
+
+fixtures:
+  - id: fixture-exact-duplicate
+    scenario: Two skills share the same canonical frontmatter name and overlapping maintenance intent.
+    signals: [same_canonical_name, same_primary_intent, substantial_overlap]
+    expected_bucket: exact-duplicate
+    expected_severity: high
+    expected_confidence: high
+    expected_escalation: candidate
+  - id: fixture-canonical-wrapper-pair
+    scenario: A thin alias skill points explicitly to one canonical skill and should not be treated as a merge candidate.
+    signals: [wrapper_redirect, explicit_canonical_target]
+    expected_bucket: canonical-wrapper-pair
+    expected_severity: low
+    expected_confidence: high
+    expected_escalation: no-escalation
+  - id: fixture-near-duplicate
+    scenario: Two skills appear to solve the same workflow with small editorial differences, but exact equivalence is not yet proven.
+    signals: [same_primary_intent, substantial_overlap]
+    expected_bucket: near-duplicate-same-intent
+    expected_severity: medium
+    expected_confidence: medium
+    expected_escalation: candidate
+  - id: fixture-adjacent-specialization
+    scenario: Two related skills share a domain but have different validators and deliverables, so both remain justified.
+    signals: [same_primary_intent, distinct_deliverable_surface]
+    expected_bucket: adjacent-specialization
+    expected_severity: low
+    expected_confidence: medium
+    expected_escalation: no-escalation
+  - id: fixture-generic-leaf-collision
+    scenario: Two skills share a generic leaf name like analysis while preserving distinct canonical names and purposes.
+    signals: [generic_leaf_only]
+    expected_bucket: generic-leaf-collision
+    expected_severity: low
+    expected_confidence: medium
+    expected_escalation: no-escalation
+  - id: fixture-stale-superseded
+    scenario: An older skill has a clearly designated maintained replacement and should be tracked as superseded.
+    signals: [maintained_replacement_exists]
+    expected_bucket: stale-superseded
+    expected_severity: medium
+    expected_confidence: high
+    expected_escalation: candidate
+  - id: fixture-needs-human-review
+    scenario: Evidence simultaneously suggests wrapper behavior and near-duplicate overlap, so deterministic routing should stop and ask for human review.
+    signals: [wrapper_redirect, explicit_canonical_target, same_primary_intent, substantial_overlap, conflicting_evidence]
+    expected_bucket: needs-human-review
+    expected_severity: medium
+    expected_confidence: low
+    expected_escalation: candidate
+
+
+v2:
+  schema_contract:
+    append_only_v1: true
+    required_optional_collections:
+      - usage_findings
+      - follow_up_candidates
+    baseline_reader: ignore_unknown_keys
+  size:
+    oversized_active_skill_lines: 30
+  adapter_contract:
+    include_exclude_universe: must_match_weekly_skills_audit_inventory
+    required_fields: [canonical_name, path, source_id]
+    no_network: true
+    no_writes_outside_output_root: true
+    timeout_seconds: 10
+  category_alias_families:
+    - id: workspace-hub-learned
+      canonical: workspace-hub-learned
+      aliases: [workspace_hub_learned, workspace-hub-learned]
+    - id: business-admin
+      canonical: business/admin
+      aliases: [business_admin, business/admin]
+    - id: archive
+      canonical: _archive
+      aliases: [_archive, _archived]
+  rules:
+    content-quality.malformed-frontmatter:
+      severity: high
+      confidence: high
+      headline: true
+      escalation_state: candidate
+      recommended_action: Repair YAML frontmatter before relying on this skill for automated routing.
+    content-quality.missing-category:
+      severity: medium
+      confidence: high
+      headline: true
+      escalation_state: candidate
+      recommended_action: Add category frontmatter aligned with the skill path taxonomy.
+    grouping.category-path-mismatch:
+      severity: medium
+      confidence: high
+      headline: true
+      escalation_state: candidate
+      recommended_action: Align category frontmatter and directory taxonomy or declare an explicit alias family.
+    grouping.category-alias-drift:
+      severity: medium
+      confidence: high
+      headline: true
+      escalation_state: candidate
+      recommended_action: Normalize the alias family through a bounded cleanup issue after review.
+    size.oversized-skill:
+      severity: medium
+      confidence: high
+      headline: true
+      escalation_state: candidate
+      recommended_action: Review for split, wrapper, or reference-file extraction opportunity.
+    filesystem-inventory.filesystem-only-active:
+      severity: high
+      confidence: high
+      headline: true
+      escalation_state: candidate
+      recommended_action: Disposition as promote_after_review, archive_intentionally, ignore_with_rationale, or delete_after_backup before local filesystem state is lost.
+    filesystem-inventory.missing-tracked-active:
+      severity: high
+      confidence: high
+      headline: true
+      escalation_state: candidate
+      recommended_action: Restore the missing tracked skill file(s) or intentionally remove them in a separate reviewed cleanup.

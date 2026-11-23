@@ -1,0 +1,21 @@
+### Verdict: MAJOR
+
+### Summary
+The plan defers critical resource intelligence and scoping decisions to the execution phase, missing actual file targets and the exception policy.
+
+### Issues Found
+- The 'Files to Change' table lists 'repo-local hotspot scripts discovered during resource intel' instead of enumerating the specific scripts to be modified.
+- The 'Acceptance Criteria' states 'The plan defines an explicit allowlist/exception policy' but the plan itself does not contain this policy; it lists it as an 'Open' question.
+- The 'Acceptance Criteria' states 'The first remediation wave is ranked' but no ranked list of hotspots is provided in the plan.
+- Modifying `docs/reports/provider-session-ecosystem-audit.md` manually is risky if it is a generated artifact; the script should generate the new format, and the plan should specify running the generator.
+- The test `test_first_wave_repo_local_hotspots_use_uv_run_variants` is unfalsifiable because the target files are not defined.
+
+### Suggestions
+- Execute the audit script to identify the specific repo-local bare-`python3` scripts and list them in the 'Files to Change' table.
+- Define the explicit allowlist/exception policy within the plan before approval, rather than leaving it as an open question.
+- Include the ranked hotspot list directly in the plan to bound the first remediation wave.
+- Clarify whether `docs/reports/provider-session-ecosystem-audit.md` is updated manually or by running the modified audit script.
+
+### Questions for Author
+- What specific files were identified as the highest-leverage repo-local hotspots during your initial analysis?
+- What are the specific exception categories you propose for the allowlist?

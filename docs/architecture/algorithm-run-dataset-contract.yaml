@@ -1,0 +1,404 @@
+contract_version: 1.0.0
+status: approved_parent_architecture
+issue: https://github.com/vamseeachanta/workspace-hub/issues/3427
+scope: public_repository_linked_algorithm_run_datasets
+
+decisions:
+  D-01:
+    title: one_dataset_per_owning_repository
+    rule: Domain run records remain in the source repository's dedicated dataset.
+    issue_owner: https://github.com/vamseeachanta/workspace-hub/issues/3427
+  D-02:
+    title: strict_public_reproducibility
+    rule: Every replay-critical input must pass the public input policy.
+    issue_owner: https://github.com/vamseeachanta/workspace-hub/issues/3430
+  D-03:
+    title: composite_algorithm_version
+    rule: Semantic version, clean commit, schemas, and environment form version identity.
+    issue_owner: https://github.com/vamseeachanta/workspace-hub/issues/3428
+  D-04:
+    title: deterministic_public_run_identifier
+    rule: Exact repeats collapse to one run without public attempt identifiers.
+    issue_owner: https://github.com/vamseeachanta/workspace-hub/issues/3428
+  D-05:
+    title: immutable_accepted_outputs
+    rule: Equality mismatch rejects promotion and cannot overwrite accepted evidence.
+    issue_owner: https://github.com/vamseeachanta/workspace-hub/issues/3428
+  D-06:
+    title: reproducible_failures_may_publish
+    rule: Failure records inform health only and never enter analytical populations.
+    issue_owner: https://github.com/vamseeachanta/workspace-hub/issues/3431
+  D-07:
+    title: algorithm_specific_metrics
+    rule: Each metric definition belongs to one algorithm in phase 1.
+    issue_owner: https://github.com/vamseeachanta/workspace-hub/issues/3432
+  D-08:
+    title: one_rolling_html_report_per_algorithm
+    rule: Inputs and Outputs are always present; optional sections are evidence-driven.
+    issue_owner: https://github.com/vamseeachanta/workspace-hub/issues/3431
+  D-09:
+    title: staged_cross_system_acceptance
+    rule: Acceptance follows validation, replay, review, publication, report pin, and verification.
+    issue_owner: https://github.com/vamseeachanta/workspace-hub/issues/3433
+  D-10:
+    title: latent_vectors_are_derived_artifacts
+    rule: Embeddings carry full derivation and never replace native replay inputs or outputs.
+    issue_owner: https://github.com/vamseeachanta/workspace-hub/issues/3429
+
+dataset_ownership:
+  namespace:
+    candidate: aceengineer
+    normatively_locked: false
+    authenticated_namespace_preflight_required: true
+    settled_by: publisher
+  repositories:
+    digitalmodel:
+      source_repository: https://github.com/vamseeachanta/digitalmodel
+      dataset_template: "{hf_org}/digitalmodel-runs"
+      owns_domain_records: true
+      contains_source_repository: false
+    worldenergydata:
+      source_repository: https://github.com/vamseeachanta/worldenergydata
+      dataset_template: "{hf_org}/worldenergydata-runs"
+      owns_domain_records: true
+      contains_source_repository: false
+  catalog:
+    owner: workspace-hub
+    contains_domain_run_records: false
+    fields: [repository, dataset, supported_contract_versions, last_verified_revision, report_index]
+
+identity:
+  digest: sha256
+  domain_separation_required: true
+  canonical_serialization_owner: identity
+  # Pinned canonicalization scheme (workspace-hub#3428). An under-specified scheme
+  # would let the identity root diverge on equivalent inputs or collide on different
+  # ones. Reference implementation: assetutilities.workflow_api.identity.canonicalize.
+  canonicalization:
+    version: identity-jcs-1            # a required component of every identity digest
+    structure: rfc_8785_jcs           # UTF-8, object keys sorted by UTF-16 code-unit order, no insignificant whitespace, arrays in declared order
+    strings: unicode_nfc              # NFC-normalize before hashing
+    numbers: decimal_normalize_no_float_roundtrip   # 1e3==1000, 5.0==5.00==5; Decimal(str(x)), never Decimal(float)
+    units: explicit_value_unit_pair_required        # a bare units-bearing numeric is rejected, never silently hashed
+    null_na: explicit                 # null / "NA" are explicit, never omitted
+    digest: sha256_domain_separated   # prefix "{identity_type}\n{version}\n" so id types never collide on equal bytes
+    reused_by: [input_set_id, artifact_structured_content, output_equality_digest]
+  algorithm_version_id:
+    required_components: [algorithm_id, semantic_version, clean_git_commit,
+      input_schema_version, output_schema_version, environment_digest]
+  input_record_id:
+    required_components: [role, native_schema_version, source_snapshot, transformation_id,
+      artifact_sha256, redistribution_rights, complete_replay_location]
+    forbidden_components: [run_id, algorithm_version_id, output_set_id, attempt_id,
+      retry_count, publication_state, tenant_id, customer_id, request_id, session_id, user_id]
+    independent_of_run_id: true
+  input_set_id:
+    required_components: [sorted_role, input_record_id]
+    independent_of_run_id: true
+  run_id:
+    required_components: [algorithm_version_id, input_set_id, execution_parameters, seed]
+    forbidden_components: [output_set_id, attempt_id, retry_count, publication_state,
+      tenant_id, customer_id, request_id, api_request_id, session_id, user_id]
+  run_input_membership:
+    owner: dedicated_hf_dataset
+    residency: dedicated_hf_dataset
+    dataset_table: run_input_memberships
+    identity: membership_id
+    required_components: [run_id, role, input_record_id]
+  output_equality:
+    default: raw_bytes_sha256
+    mismatch_action: reject_without_mutation
+    semantic_exception_requires: [canonicalizer_id, canonicalizer_version, raw_hash,
+      semantic_hash, explicit_approval]
+    undeclared_normalization: presentation_only
+  eligibility:
+    dirty_source: reject
+    unknown_revision: reject
+    unpinned_schema: reject
+    missing_environment_digest: reject
+    implicit_seed: reject
+    implicit_execution_default: reject
+
+public_input_policy:
+  required_evidence: [redistribution_rights, schema_version, snapshot_pin, content_hash,
+    complete_replay_location]
+  allowed_replay_locations: [content_addressed_dataset_object,
+    stable_public_uri_with_immutable_digest, accepted_upstream_public_run]
+  rejection_reasons: [restricted, pointer_only, ambiguous_license, mutable_unpinned,
+    unhashed, schema_invalid, incomplete, private, path_leaking]
+  absolute_local_paths: forbidden
+
+failure_policy:
+  reproducible_failures_may_publish: true
+  transient_infrastructure_failures_may_publish: false
+  normalization_requires: [failure_phase, failure_code, failure_signature,
+    curated_diagnostic_digests, replay_evidence]
+  eligible_surfaces: [run_health, diagnostics]
+  forbidden_surfaces: [metric_observations, insights, decision_briefs]
+
+metrics:
+  scope: single_algorithm
+  definition_owner_cardinality: 1
+  cross_algorithm_equivalence: forbidden_in_phase_1
+  eligible_run_statuses:
+    - succeeded_validated_reproducible
+  required_definition_fields:
+    - metric_id
+    - algorithm_id
+    - definition_version
+    - meaning
+    - unit_or_dimension
+    - derivation
+    - applicability
+    - quality_rule
+
+records:
+  algorithm_version:
+    owner: source_repository
+    residency: source_descriptor_and_pinned_hf_reference
+    dataset_table: algorithm_versions
+    issue_owner: https://github.com/vamseeachanta/workspace-hub/issues/3428
+    identity: algorithm_version_id
+  run:
+    owner: dedicated_hf_dataset
+    residency: dedicated_hf_dataset
+    dataset_table: runs
+    issue_owner: https://github.com/vamseeachanta/workspace-hub/issues/3428
+    identity: run_id
+  input:
+    owner: dedicated_hf_dataset
+    residency: hf_object_or_immutable_public_uri
+    dataset_table: inputs
+    issue_owner: https://github.com/vamseeachanta/workspace-hub/issues/3430
+    identity: input_record_id
+  output:
+    owner: dedicated_hf_dataset
+    residency: hf_object_and_normalized_record
+    dataset_table: outputs
+    issue_owner: https://github.com/vamseeachanta/workspace-hub/issues/3431
+    identity: output_record_id
+  metric_definition:
+    owner: source_repository
+    residency: source_definition_and_pinned_hf_reference
+    dataset_table: metric_definitions
+    issue_owner: https://github.com/vamseeachanta/workspace-hub/issues/3432
+    identity: metric_definition_id
+  metric_observation:
+    owner: dedicated_hf_dataset
+    residency: dedicated_hf_dataset
+    dataset_table: metric_observations
+    issue_owner: https://github.com/vamseeachanta/workspace-hub/issues/3432
+    identity: metric_observation_id
+  artifact:
+    owner: dedicated_hf_dataset
+    residency: content_addressed_hf_object_or_explicit_exclusion
+    dataset_table: artifacts
+    issue_owner: https://github.com/vamseeachanta/workspace-hub/issues/3429
+    identity: content_digest
+  failure:
+    owner: dedicated_hf_dataset
+    residency: dedicated_hf_dataset
+    dataset_table: failures
+    issue_owner: https://github.com/vamseeachanta/workspace-hub/issues/3431
+    identity: failure_id
+  publication:
+    owner: workspace-hub
+    residency: hf_record_and_source_report_cross_reference
+    dataset_table: publications
+    issue_owner: https://github.com/vamseeachanta/workspace-hub/issues/3433
+    identity: promotion_id
+  insight:
+    owner: source_repository
+    residency: hf_machine_record_and_source_report_rendering
+    dataset_table: insights
+    issue_owner: https://github.com/vamseeachanta/workspace-hub/issues/3434
+    identity: insight_id
+  decision_brief:
+    owner: source_repository
+    residency: hf_machine_record_and_source_report_rendering
+    dataset_table: decision_briefs
+    issue_owner: https://github.com/vamseeachanta/workspace-hub/issues/3434
+    identity: decision_brief_id
+
+report:
+  format: html
+  cardinality: one_rolling_report_per_algorithm
+  stable_path_pattern: reports/algorithms/{algorithm_id}/index.html
+  history: source_repository_git
+  mandatory_sections:
+    - inputs
+    - outputs
+  optional_sections:
+    - metrics
+    - plots_and_comparisons
+    - uncertainty
+    - diagnostics_and_health
+    - insights
+    - decision_brief
+  dataset_reference: exact_hugging_face_revision
+  moving_revision_allowed: false
+
+promotion:
+  states:
+    - emitted
+    - validated
+    - replayed
+    - draft_rendered
+    - reviewed
+    - hf_candidate
+    - report_pinned
+    - accepted
+    - rejected
+  transitions:
+    - from: emitted
+      to: validated
+      requires: [schema, hashes, provenance, license, legal, sanitization, clean_source]
+    - from: validated
+      to: replayed
+      requires:
+        all_of: [clean_environment_replay]
+        one_of:
+          succeeded: [output_equality]
+          reproducible_failure: [failure_signature_equality, curated_diagnostic_equality]
+    - from: replayed
+      to: draft_rendered
+      requires: [mandatory_report_sections, exact_candidate_run_set]
+    - from: draft_rendered
+      to: reviewed
+      requires: [human_promotion_review, adversarial_artifact_review]
+    - from: reviewed
+      to: hf_candidate
+      requires: [complete_projection_commit, object_integrity]
+    - from: hf_candidate
+      to: report_pinned
+      requires: [exact_hf_revision, source_report_commit]
+    - from: report_pinned
+      to: accepted
+      requires: [verified_hf_revision, verified_report_commit, cross_system_verification]
+  rejection_from_any_nonterminal_state: true
+  run_records_mutate_on_acceptance: false
+  acceptance_record: append_only_publication
+  orphan_candidate_recovery:
+    action: resume
+    owner: publisher
+    resume_from: hf_candidate
+    rejection_disposition: append_rejected_disposition
+
+compatibility:
+  result_envelope:
+    issue: https://github.com/vamseeachanta/workspace-hub/issues/3282
+    role: execution_evidence_input
+    strict_identity_alias: false
+    input_hash_alias: false
+  determinism_harness:
+    issue: https://github.com/vamseeachanta/workspace-hub/issues/3283
+    role: replay_evidence_input
+    measured_public_replay_still_required: true
+  workflow_manifest:
+    issue: https://github.com/vamseeachanta/workspace-hub/issues/3284
+    role: discovery_and_execution_reference
+    freshness_required: true
+    integer_version_is_semver: false
+  digitalmodel:
+    fetched_ref: origin/main@529c4ba13d90
+    surfaces:
+      - runner
+      - provenance_adapter
+      - golden_harness
+      - tests/workflow_api/goldens/buckling_parametric.json
+      - tests/workflow_api/goldens/ffs_metal_loss.json
+      - tests/workflow_api/goldens/mooring_mbl.json
+      - tests/workflow_api/goldens/wall_thickness.json
+  worldenergydata:
+    fetched_ref: origin/main@0c5393b18590
+    source_snapshot_timestamp_hardening_required: true
+  execution_manifest:
+    path: docs/architecture/execution-manifest.schema.yaml
+    role: upstream_execution_evidence
+  report_evidence_bundle:
+    path: docs/architecture/report-evidence-bundle.schema.yaml
+    role: upstream_claim_and_review_evidence
+  customer_api:
+    issue: https://github.com/vamseeachanta/workspace-hub/issues/3289
+    separate_approval_gate: true
+    private_identity_must_not_alias_public_run_id: true
+
+ecosystem_propagation:
+  shared_schema_authority: workspace-hub
+  discovery_manifest: docs/registry/workflow-manifest.json
+  observed_registered_repositories: [assetutilities, digitalmodel, worldenergydata, assethold]
+  manifest_observation_2026_07_10:
+    resolver_mode: explicit_tier1_repos_base
+    resolved: [assetutilities, digitalmodel, worldenergydata, assethold]
+    drifted: [assetutilities, worldenergydata]
+    unchanged: [digitalmodel, assethold]
+    missing: []
+    nested_worktree_default_resolution: missing_registry
+    follow_up: https://github.com/vamseeachanta/workspace-hub/issues/3450
+  fresh_manifest_required_before_adoption: true
+  adapter_style: thin_repository_adapter
+  conformance_tests: required
+  repository_contract_redefinition: false
+
+issue_graph:
+  identity:
+    url: https://github.com/vamseeachanta/workspace-hub/issues/3428
+    blocked_by: []
+    own_approval_gate: true
+    parent_approval_inherited: false
+  artifacts:
+    url: https://github.com/vamseeachanta/workspace-hub/issues/3429
+    blocked_by: [identity]
+    own_approval_gate: true
+    parent_approval_inherited: false
+  inputs:
+    url: https://github.com/vamseeachanta/workspace-hub/issues/3430
+    blocked_by: [identity, artifacts]
+    own_approval_gate: true
+    parent_approval_inherited: false
+  outputs_reports:
+    url: https://github.com/vamseeachanta/workspace-hub/issues/3431
+    blocked_by: [identity, artifacts]
+    own_approval_gate: true
+    parent_approval_inherited: false
+  metrics:
+    url: https://github.com/vamseeachanta/workspace-hub/issues/3432
+    blocked_by: [identity, outputs_reports]
+    own_approval_gate: true
+    parent_approval_inherited: false
+  publisher:
+    url: https://github.com/vamseeachanta/workspace-hub/issues/3433
+    blocked_by: [identity, artifacts, inputs, outputs_reports, metrics]
+    own_approval_gate: true
+    parent_approval_inherited: false
+    related_dependencies:
+      - https://github.com/vamseeachanta/workspace-hub/issues/2975
+      - https://github.com/vamseeachanta/workspace-hub/issues/3013
+  digitalmodel_pilot:
+    url: https://github.com/vamseeachanta/digitalmodel/issues/1505
+    blocked_by: [publisher]
+    own_approval_gate: true
+    parent_approval_inherited: false
+  worldenergydata_pilot:
+    url: https://github.com/vamseeachanta/worldenergydata/issues/927
+    blocked_by: [publisher]
+    own_approval_gate: true
+    parent_approval_inherited: false
+  insights:
+    url: https://github.com/vamseeachanta/workspace-hub/issues/3434
+    blocked_by: [metrics, digitalmodel_pilot, worldenergydata_pilot]
+    own_approval_gate: true
+    parent_approval_inherited: false
+
+exclusions:
+  - source_repository_algorithm_code_changes
+  - workflow_registry_changes
+  - source_repository_report_changes
+  - hugging_face_dataset_changes
+  - hugging_face_resource_changes
+  - child_issue_implementation
+  - customer_api_implementation
+  - credentials_or_tokens
+  - private_or_restricted_run_projection
+  - combined_cross_repository_domain_run_table
+  - per_run_html_reports

@@ -1,0 +1,600 @@
+#!/usr/bin/env bash
+# test-harness-readiness.sh — TDD tests for WRK-1047 harness readiness checks
+# Tests T1-T12 (Phase A), T13-T14 (Phase C), T15-T16 (Phase E)
+# Run: bash tests/work-queue/test-harness-readiness.sh
+set -uo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_ROOT="$(cd "${SCRIPT_DIR}/../.." && pwd)"
+READINESS_SCRIPT="${REPO_ROOT}/scripts/readiness/nightly-readiness.sh"
+COMPARE_SCRIPT="${REPO_ROOT}/scripts/readiness/compare-harness-state.sh"
+REMEDIATE_SCRIPT="${REPO_ROOT}/scripts/readiness/remediate-harness.sh"
+HARNESS_CONFIG="${REPO_ROOT}/scripts/readiness/harness-config.yaml"
+
+pass=0
+fail=0
+errors=()
+
+ok()   { echo "  PASS  $1"; pass=$((pass + 1)); }
+fail() { echo "  FAIL  $1"; fail=$((fail + 1)); errors+=("$1"); }
+
+# Create an isolated temp workspace for each test
+mk_ws() {
+  local root ws
+  root=$(mktemp -d)
+  # Nest one level deep so dirname("$ws") is ALWAYS this isolated root, never a
+  # shared parent. T4 / R-PRECOMMIT create a sibling tier-1 repo at "$ws/../<repo>"
+  # (= "$root/<repo>") and rm -rf it; without nesting, a TMPDIR under
+  # /mnt/local-analysis would resolve that to the REAL sibling repo and delete it.
+  ws="${root}/hub"
+  # Minimal workspace structure
+  rm -f "${ws}/.claude/settings.json" 2>/dev/null; mkdir -p "${ws}/.claude"
+  mkdir -p "${ws}/.claude/state"
+  mkdir -p "${ws}/.claude/skills"
+  mkdir -p "${ws}/.claude/commands"
+  echo '{}' > "${ws}/.claude/settings.json"
+  # Copy harness-config so checks can read it
+  mkdir -p "${ws}/scripts/readiness"
+  cp "${HARNESS_CONFIG}" "${ws}/scripts/readiness/harness-config.yaml"
+  # Fake claude stub — returns all required plugins so R-PLUGINS passes in tests
+  # that are testing other checks; T2/T3 override this stub with their own.
+  mkdir -p "${ws}/bin"
+  cat > "${ws}/bin/claude" << 'STUB'
+#!/usr/bin/env bash
+if [[ "${1:-} ${2:-}" == "plugin list" ]]; then
+  for p in frontend-design skill-creator code-review pr-review-toolkit feature-dev \
+            playground pyright-lsp claude-md-management hookify superpowers; do
+    echo "  ❯ ${p}@claude-plugins-official"
+    echo "    Status: enabled"
+  done
+fi
+STUB
+  chmod +x "${ws}/bin/claude"
+  echo "$ws"
+}
+
+rm_ws() { rm -rf "$(dirname "$1")"; }  # remove the isolated root (hub + any test-created sibling repos)
+
+echo "=== WRK-1047 harness readiness tests ==="
+
+# ── T1: All checks pass → exit 0 ─────────────────────────────────────────────
+T1() {
+  # Smoke test: all required checks present in script
+  if ! grep -q "check_r_plugins\|R-PLUGINS" "${READINESS_SCRIPT}" 2>/dev/null; then
+    echo "  SKIP  T1: nightly-readiness.sh not yet extended (pre-implementation)"
+    return
+  fi
+  # Running claude plugin list inside a Claude Code session hangs; skip live run.
+  # Run manually on ace-linux-1 (outside Claude Code) to validate the real environment.
+  if [[ "${CLAUDECODE:-0}" == "1" ]]; then
+    echo "  SKIP  T1: inside Claude Code session — run manually outside Claude Code"
+    return
+  fi
+  if WORKSPACE_HUB="${REPO_ROOT}" bash "${READINESS_SCRIPT}" 2>/dev/null | grep -q "FAIL"; then
+    fail "T1: expected all checks pass on ace-linux-1 — FAIL lines found"
+  else
+    ok "T1: all checks pass on ace-linux-1"
+  fi
+}
+T1
+
+# ── T2: Required plugin missing → R-PLUGINS FAIL ─────────────────────────────
+T2() {
+  if ! grep -q "check_r_plugins\|R-PLUGINS" "${READINESS_SCRIPT}" 2>/dev/null; then
+    echo "  SKIP  T2: R-PLUGINS not yet implemented"
+    return
+  fi
+  ws=$(mk_ws)
+  # Simulate claude plugin list returning only 1 plugin (missing most required)
+  local fake_claude="${ws}/bin/claude"
+  mkdir -p "${ws}/bin"
+  cat > "${fake_claude}" << 'EOF'
+#!/usr/bin/env bash
+if [[ "$1 $2" == "plugin list" ]]; then
+  echo "Installed plugins:"
+  echo "  > frontend-design@claude-plugins-official"
+  echo "    Status: ✔ enabled"
+fi
+EOF
+  chmod +x "${fake_claude}"
+  local output
+  output=$(PATH="${ws}/bin:${PATH}" WORKSPACE_HUB="${REPO_ROOT}" bash "${READINESS_SCRIPT}" 2>&1 || true)
+  if echo "$output" | grep -q "R-PLUGINS.*FAIL\|FAIL.*R-PLUGINS"; then
+    ok "T2: R-PLUGINS FAIL on missing required plugin"
+  else
+    fail "T2: expected R-PLUGINS FAIL — got: $(echo "$output" | grep -i plugin | head -2)"
+  fi
+  rm_ws "$ws"
+}
+T2
+
+# ── T3: Extra unlisted plugin present → R-PLUGINS PASS ───────────────────────
+T3() {
+  if ! grep -q "check_r_plugins\|R-PLUGINS" "${READINESS_SCRIPT}" 2>/dev/null; then
+    echo "  SKIP  T3: R-PLUGINS not yet implemented"
+    return
+  fi
+  ws=$(mk_ws)
+  local fake_claude="${ws}/bin/claude"
+  mkdir -p "${ws}/bin"
+  # Return all 10 required plugins + one extra unknown plugin
+  cat > "${fake_claude}" << 'EOF'
+#!/usr/bin/env bash
+if [[ "$1 $2" == "plugin list" ]]; then
+  for p in frontend-design skill-creator code-review pr-review-toolkit feature-dev playground pyright-lsp claude-md-management hookify superpowers some-unknown-extra-plugin; do
+    echo "  > ${p}@claude-plugins-official"
+    echo "    Status: ✔ enabled"
+  done
+fi
+EOF
+  chmod +x "${fake_claude}"
+  local output
+  output=$(PATH="${ws}/bin:${PATH}" WORKSPACE_HUB="${REPO_ROOT}" bash "${READINESS_SCRIPT}" 2>&1 || true)
+  if echo "$output" | grep -qE "OK.*R-PLUGINS|R-PLUGINS.*OK"; then
+    ok "T3: R-PLUGINS PASS with extra unknown plugin present"
+  else
+    fail "T3: expected R-PLUGINS PASS — got: $(echo "$output" | grep -i plugin | head -2)"
+  fi
+  rm_ws "$ws"
+}
+T3
+
+# ── T4: Oversized CLAUDE.md in tier-1 repo → R-HARNESS FAIL ──────────────────
+T4() {
+  if ! grep -q "tier1_repos\|tier.1.*scan\|R-HARNESS.*tier" "${READINESS_SCRIPT}" 2>/dev/null; then
+    echo "  SKIP  T4: R-HARNESS tier-1 extension not yet implemented"
+    return
+  fi
+  ws=$(mk_ws)
+  # R-HARNESS-TIER1 checks ${WORKSPACE_HUB}/../${repo}; place assetutilities as sibling
+  local ws_parent
+  ws_parent=$(dirname "$ws")
+  mkdir -p "${ws_parent}/assetutilities"
+  # Create CLAUDE.md with 25 lines (>20 limit)
+  printf 'line %s\n' {1..25} > "${ws_parent}/assetutilities/CLAUDE.md"
+  local output
+  output=$(PATH="${ws}/bin:${PATH}" WORKSPACE_HUB="${ws}" bash "${READINESS_SCRIPT}" 2>&1 || true)
+  rm -rf "${ws_parent}/assetutilities"
+  if echo "$output" | grep -q "R-HARNESS.*FAIL\|FAIL.*R-HARNESS"; then
+    ok "T4: R-HARNESS FAIL on oversized tier-1 CLAUDE.md"
+  else
+    fail "T4: expected R-HARNESS FAIL — got: $(echo "$output" | grep -i harness | head -2)"
+  fi
+  rm_ws "$ws"
+}
+T4
+
+# ── T5: Hook file absent from disk → R-HOOKS FAIL ────────────────────────────
+T5() {
+  if ! grep -q "check_r_hooks\|R-HOOKS" "${READINESS_SCRIPT}" 2>/dev/null; then
+    echo "  SKIP  T5: R-HOOKS not yet implemented"
+    return
+  fi
+  ws=$(mk_ws)
+  mkdir -p "${ws}/.claude"
+  # settings.json references a hook that doesn't exist
+  cat > "${ws}/.claude/settings.json" << 'EOF'
+{
+  "hooks": {
+    "Stop": [{"hooks": [{"type": "command", "command": "bash /nonexistent/stop-hook.sh"}]}]
+  }
+}
+EOF
+  local output
+  output=$(PATH="${ws}/bin:${PATH}" WORKSPACE_HUB="${ws}" bash "${READINESS_SCRIPT}" 2>&1 || true)
+  if echo "$output" | grep -q "R-HOOKS.*FAIL\|FAIL.*R-HOOKS"; then
+    ok "T5: R-HOOKS FAIL on missing hook file"
+  else
+    fail "T5: expected R-HOOKS FAIL — got: $(echo "$output" | grep -i hooks | head -2)"
+  fi
+  rm_ws "$ws"
+}
+T5
+
+# ── T6: Hook file contains 'git commit' → R-HOOK-STATIC FAIL ─────────────────
+T6() {
+  if ! grep -q "check_r_hook_static\|R-HOOK-STATIC" "${READINESS_SCRIPT}" 2>/dev/null; then
+    echo "  SKIP  T6: R-HOOK-STATIC not yet implemented"
+    return
+  fi
+  ws=$(mk_ws)
+  mkdir -p "${ws}/.claude/hooks"
+  cat > "${ws}/.claude/hooks/stop.sh" << 'EOF'
+#!/usr/bin/env bash
+echo "stop hook"
+git commit -am "auto commit from hook"
+EOF
+  local output
+  output=$(PATH="${ws}/bin:${PATH}" WORKSPACE_HUB="${ws}" bash "${READINESS_SCRIPT}" 2>&1 || true)
+  if echo "$output" | grep -q "R-HOOK-STATIC.*FAIL\|FAIL.*R-HOOK-STATIC"; then
+    ok "T6: R-HOOK-STATIC FAIL on 'git commit' pattern in hook"
+  else
+    fail "T6: expected R-HOOK-STATIC FAIL — got: $(echo "$output" | grep -i static | head -2)"
+  fi
+  rm_ws "$ws"
+}
+T6
+
+# ── T7: Hook file >200 lines → R-HOOK-STATIC FAIL ────────────────────────────
+T7() {
+  if ! grep -q "check_r_hook_static\|R-HOOK-STATIC" "${READINESS_SCRIPT}" 2>/dev/null; then
+    echo "  SKIP  T7: R-HOOK-STATIC not yet implemented"
+    return
+  fi
+  ws=$(mk_ws)
+  mkdir -p "${ws}/.claude/hooks"
+  printf '# line %s\n' {1..210} > "${ws}/.claude/hooks/stop.sh"
+  local output
+  output=$(PATH="${ws}/bin:${PATH}" WORKSPACE_HUB="${ws}" bash "${READINESS_SCRIPT}" 2>&1 || true)
+  if echo "$output" | grep -q "R-HOOK-STATIC.*FAIL\|FAIL.*R-HOOK-STATIC"; then
+    ok "T7: R-HOOK-STATIC FAIL on hook >200 lines"
+  else
+    fail "T7: expected R-HOOK-STATIC FAIL — got: $(echo "$output" | grep -i static | head -2)"
+  fi
+  rm_ws "$ws"
+}
+T7
+
+# ── T8: settings.json invalid JSON → R-SETTINGS FAIL ─────────────────────────
+T8() {
+  if ! grep -q "check_r_settings\|R-SETTINGS" "${READINESS_SCRIPT}" 2>/dev/null; then
+    echo "  SKIP  T8: R-SETTINGS not yet implemented"
+    return
+  fi
+  ws=$(mk_ws)
+  mkdir -p "${ws}/.claude"
+  echo '{invalid json' > "${ws}/.claude/settings.json"
+  local output
+  output=$(PATH="${ws}/bin:${PATH}" WORKSPACE_HUB="${ws}" bash "${READINESS_SCRIPT}" 2>&1 || true)
+  if echo "$output" | grep -q "R-SETTINGS.*FAIL\|FAIL.*R-SETTINGS"; then
+    ok "T8: R-SETTINGS FAIL on invalid JSON"
+  else
+    fail "T8: expected R-SETTINGS FAIL — got: $(echo "$output" | grep -i settings | head -2)"
+  fi
+  rm_ws "$ws"
+}
+T8
+
+# ── T9: uv absent → R-UV FAIL ────────────────────────────────────────────────
+T9() {
+  if ! grep -q "check_r_uv\|R-UV" "${READINESS_SCRIPT}" 2>/dev/null; then
+    echo "  SKIP  T9: R-UV not yet implemented"
+    return
+  fi
+  ws=$(mk_ws)
+  local output
+  # PATH with no uv
+  output=$(PATH="/usr/bin:/bin" WORKSPACE_HUB="${ws}" bash "${READINESS_SCRIPT}" 2>&1 || true)
+  if echo "$output" | grep -q "R-UV.*FAIL\|FAIL.*R-UV"; then
+    ok "T9: R-UV FAIL when uv absent from PATH"
+  else
+    fail "T9: expected R-UV FAIL — got: $(echo "$output" | grep -i " uv\|R-UV" | head -2)"
+  fi
+  rm_ws "$ws"
+}
+T9
+
+# ── T10: pre-commit configuration presence, without an identifier gate ───────
+T10() {
+  local ws ws_parent output
+  ws=$(mk_ws)
+  ws_parent=$(dirname "$ws")
+  mkdir -p "${ws_parent}/assetutilities"
+  cat > "${ws_parent}/assetutilities/.pre-commit-config.yaml" << 'EOF'
+repos:
+  - repo: local
+    hooks:
+      - id: black
+        name: black
+        entry: black
+        language: python
+EOF
+  # Execute only the pure R-PRECOMMIT check against the isolated fixture.
+  # Never launch live readiness checks, plugin discovery, or report writers.
+  precommit_fixture_check() (
+    WORKSPACE_HUB="$ws"
+    HARNESS_CONFIG="${ws}/scripts/readiness/harness-config.yaml"
+    _hc_list() { printf '%s\n' assetutilities; }
+    log_pass() { printf 'PASS %s\n' "$*"; }
+    log_fail() { printf 'FAIL %s\n' "$*"; }
+    eval "$(sed -n '/^check_r_precommit() {/,/^} ; check_r_precommit/p' \
+      "$READINESS_SCRIPT" | sed '$s/} ; check_r_precommit.*$/}/')"
+    check_r_precommit
+  )
+  output=$(precommit_fixture_check)
+  if [[ "$output" == PASS* && "$output" != *FAIL* ]]; then
+    ok "T10: R-PRECOMMIT accepts config without retired identifier scanner"
+  else
+    fail "T10: expected config-only PASS — got: $output"
+  fi
+  rm -f "${ws_parent}/assetutilities/.pre-commit-config.yaml"
+  output=$(precommit_fixture_check)
+  if [[ "$output" == FAIL* && "$output" == *'.pre-commit-config.yaml missing'* ]]; then
+    ok "T10: R-PRECOMMIT still fails for missing config"
+  else
+    fail "T10: expected missing-config FAIL — got: $output"
+  fi
+  rm_ws "$ws"
+}
+T10
+
+# ── T11: SKILL.md count below baseline → R-SKILLS FAIL ──────────────────────
+T11() {
+  if ! grep -q "skill_count_baseline\|R-SKILLS.*count\|count.*baseline" "${READINESS_SCRIPT}" 2>/dev/null; then
+    echo "  SKIP  T11: R-SKILLS count check not yet implemented"
+    return
+  fi
+  ws=$(mk_ws)
+  mkdir -p "${ws}/scripts/readiness"
+  # Set baseline to 100, but workspace has 0 skills
+  sed "s/skill_count_baseline: 0/skill_count_baseline: 100/" \
+    "${HARNESS_CONFIG}" > "${ws}/scripts/readiness/harness-config.yaml"
+  local output
+  output=$(PATH="${ws}/bin:${PATH}" WORKSPACE_HUB="${ws}" \
+    HARNESS_CONFIG="${ws}/scripts/readiness/harness-config.yaml" \
+    bash "${READINESS_SCRIPT}" 2>&1 || true)
+  if echo "$output" | grep -q "R-SKILLS.*FAIL\|FAIL.*R-SKILLS"; then
+    ok "T11: R-SKILLS FAIL when skill count below baseline"
+  else
+    fail "T11: expected R-SKILLS FAIL — got: $(echo "$output" | grep -i skills | head -2)"
+  fi
+  rm_ws "$ws"
+}
+T11
+
+# ── T12: command count below baseline → R-SKILLS FAIL ───────────────────────
+T12() {
+  if ! grep -q "command_count_baseline\|R-SKILLS.*command\|command.*baseline" "${READINESS_SCRIPT}" 2>/dev/null; then
+    echo "  SKIP  T12: R-SKILLS command count check not yet implemented"
+    return
+  fi
+  ws=$(mk_ws)
+  mkdir -p "${ws}/scripts/readiness"
+  # Set command baseline to 100, but workspace has 0 commands
+  sed "s/command_count_baseline: 0/command_count_baseline: 100/" \
+    "${HARNESS_CONFIG}" > "${ws}/scripts/readiness/harness-config.yaml"
+  local output
+  output=$(PATH="${ws}/bin:${PATH}" WORKSPACE_HUB="${ws}" \
+    HARNESS_CONFIG="${ws}/scripts/readiness/harness-config.yaml" \
+    bash "${READINESS_SCRIPT}" 2>&1 || true)
+  if echo "$output" | grep -q "R-SKILLS.*FAIL\|FAIL.*R-SKILLS"; then
+    ok "T12: R-SKILLS FAIL when command count below baseline"
+  else
+    fail "T12: expected R-SKILLS FAIL — got: $(echo "$output" | grep -i skills | head -2)"
+  fi
+  rm_ws "$ws"
+}
+T12
+
+# Helper: extract a YAML block for a workstation key (2-space-indented key, 4-space fields)
+_extract_block() {
+  local key="$1" file="$2"
+  awk "/^  ${key}:/{found=1;next} found && /^  [a-z]/{exit} found{print}" "$file" 2>/dev/null
+}
+
+# ── T17: macbook-portable exists in harness-config.yaml ──────────────────────
+T17() {
+  if ! grep -q "macbook-portable:" "${HARNESS_CONFIG}" 2>/dev/null; then
+    fail "T17: macbook-portable not found in harness-config.yaml"
+    return
+  fi
+  local block
+  block=$(_extract_block "macbook-portable" "${HARNESS_CONFIG}")
+  local missing=()
+  for field in ws_hub_path report_path linux_reachable hostname; do
+    echo "$block" | grep -q "${field}:" || missing+=("$field")
+  done
+  if [[ ${#missing[@]} -eq 0 ]]; then
+    ok "T17: macbook-portable in harness-config with all required fields"
+  else
+    fail "T17: macbook-portable missing fields: ${missing[*]}"
+  fi
+}
+T17
+
+# ── T18: macbook-portable ws_hub_path is canonical macOS path ────────────────
+T18() {
+  local ws_path
+  ws_path=$(_extract_block "macbook-portable" "${HARNESS_CONFIG}" \
+    | grep 'ws_hub_path:' | sed 's/.*ws_hub_path:[[:space:]]*//' | tr -d "'" | tr -d '"')
+  if [[ "$ws_path" == "/Users/krishna/workspace-hub" ]]; then
+    ok "T18: macbook-portable ws_hub_path is /Users/krishna/workspace-hub"
+  else
+    fail "T18: expected /Users/krishna/workspace-hub, got: ${ws_path}"
+  fi
+}
+T18
+
+# ── T19: macbook-portable linux_reachable is false ───────────────────────────
+T19() {
+  local reachable
+  reachable=$(_extract_block "macbook-portable" "${HARNESS_CONFIG}" \
+    | grep 'linux_reachable:' | sed 's/.*linux_reachable:[[:space:]]*//' | tr -d "'" | tr -d '"')
+  if [[ "$reachable" == "false" ]]; then
+    ok "T19: macbook-portable linux_reachable is false"
+  else
+    fail "T19: expected linux_reachable=false, got: ${reachable}"
+  fi
+}
+T19
+
+# ── T20: existing workstation entries unchanged after macOS addition ──────────
+T20() {
+  local existing_stations=("dev-primary" "dev-secondary" "ace-win-1")
+  local missing=()
+  for station in "${existing_stations[@]}"; do
+    grep -q "^  ${station}:" "${HARNESS_CONFIG}" 2>/dev/null || missing+=("$station")
+  done
+  if [[ ${#missing[@]} -eq 0 ]]; then
+    ok "T20: existing workstation entries (dev-primary, dev-secondary, ace-win-1) unchanged"
+  else
+    fail "T20: missing existing workstations after macOS addition: ${missing[*]}"
+  fi
+}
+T20
+
+# ── T21: macbook-portable in registry.yaml with os=macos ─────────────────────
+T21() {
+  local registry="${REPO_ROOT}/config/workstations/registry.yaml"
+  if ! grep -q "macbook-portable:" "$registry" 2>/dev/null; then
+    fail "T21: macbook-portable not found in registry.yaml"
+    return
+  fi
+  local block
+  block=$(_extract_block "macbook-portable" "$registry")
+  if echo "$block" | grep -q "os: macos"; then
+    ok "T21: macbook-portable in registry.yaml with os=macos"
+  else
+    fail "T21: macbook-portable found but os is not macos"
+  fi
+}
+T21
+
+# ── T22: registry hostname alias for macbook-portable ────────────────────────
+T22() {
+  local registry="${REPO_ROOT}/config/workstations/registry.yaml"
+  local block
+  block=$(_extract_block "macbook-portable" "$registry")
+  if echo "$block" | grep -q "Vamsees-MacBook-Air.local"; then
+    ok "T22: macbook-portable has Vamsees-MacBook-Air.local alias in registry"
+  else
+    fail "T22: hostname alias Vamsees-MacBook-Air.local not found for macbook-portable"
+  fi
+}
+T22
+
+# ── T23: nightly-readiness.sh contains BSD-safe sed handling ─────────────────
+T23() {
+  if grep -q "sed -i ''" "${READINESS_SCRIPT}" 2>/dev/null; then
+    ok "T23: nightly-readiness.sh has BSD-safe sed -i '' handling"
+  else
+    fail "T23: nightly-readiness.sh missing BSD-safe sed -i '' for macOS"
+  fi
+}
+T23
+
+# ── T24: sync-agent-configs.sh resolves hostname_aliases ─────────────────────
+T24() {
+  local sync_script="${REPO_ROOT}/scripts/_core/sync-agent-configs.sh"
+  if grep -q "hostname_aliases" "$sync_script" 2>/dev/null; then
+    ok "T24: sync-agent-configs.sh resolve_ws_hub_path checks hostname_aliases"
+  else
+    fail "T24: sync-agent-configs.sh missing hostname_aliases resolution"
+  fi
+}
+T24
+
+# ── T13: SSH to ace-linux-2 unreachable → DEGRADED (no crash) ────────────────
+T13() {
+  if [[ ! -f "${COMPARE_SCRIPT}" ]]; then
+    echo "  SKIP  T13: compare-harness-state.sh not yet implemented"
+    return
+  fi
+  local output
+  output=$(WORKSPACE_HUB="${REPO_ROOT}" \
+    HARNESS_CONFIG="${HARNESS_CONFIG}" \
+    bash "${COMPARE_SCRIPT}" --dry-run --force-ssh-fail 2>&1 || true)
+  if echo "$output" | grep -qi "degraded\|unreachable\|skip"; then
+    ok "T13: compare-harness-state.sh handles SSH failure gracefully (DEGRADED)"
+  else
+    fail "T13: expected DEGRADED/unreachable on SSH fail — got: $(echo "$output" | head -3)"
+  fi
+}
+T13
+
+# ── T14: Stale ace-win-1 report (>25h) → DEGRADED ───────────────────────────
+T14() {
+  if [[ ! -f "${COMPARE_SCRIPT}" ]]; then
+    echo "  SKIP  T14: compare-harness-state.sh not yet implemented"
+    return
+  fi
+  ws=$(mk_ws)
+  local stale_report="${ws}/.claude/state/harness-readiness-ace-win-1.yaml"
+  # Write a report timestamped 30 hours ago
+  local stale_ts
+  stale_ts=$(date -u -d "30 hours ago" +%Y-%m-%dT%H:%M:%SZ 2>/dev/null || \
+    date -u -v-30H +%Y-%m-%dT%H:%M:%SZ 2>/dev/null || echo "2026-03-07T00:00:00Z")
+  cat > "${stale_report}" << EOF
+schema_version: 1
+host: ace-win-1
+generated_at: "${stale_ts}"
+overall: pass
+pass_count: 5
+fail_count: 0
+checks: {}
+EOF
+  local output
+  output=$(WORKSPACE_HUB="${ws}" HARNESS_CONFIG="${HARNESS_CONFIG}" \
+    bash "${COMPARE_SCRIPT}" 2>&1 || true)
+  if echo "$output" | grep -qi "degraded\|stale"; then
+    ok "T14: compare-harness-state.sh flags stale ace-win-1 report as DEGRADED"
+  else
+    fail "T14: expected DEGRADED for stale report — got: $(echo "$output" | head -3)"
+  fi
+  rm_ws "$ws"
+}
+T14
+
+# ── T15: remediate-harness.sh R-PLUGINS FAIL → prints install command ─────────
+T15() {
+  if [[ ! -f "${REMEDIATE_SCRIPT}" ]]; then
+    echo "  SKIP  T15: remediate-harness.sh not yet implemented"
+    return
+  fi
+  ws=$(mk_ws)
+  cat > "${ws}/.claude/state/harness-readiness-ace-linux-1.yaml" << 'EOF'
+schema_version: 1
+host: ace-linux-1
+generated_at: "2026-03-08T02:00:00Z"
+overall: fail
+pass_count: 9
+fail_count: 1
+checks:
+  R-PLUGINS:
+    status: fail
+    detail: "missing: pyright-lsp"
+EOF
+  local output
+  output=$(WORKSPACE_HUB="${ws}" bash "${REMEDIATE_SCRIPT}" --workstation ace-linux-1 2>&1)
+  if echo "$output" | grep -q "pyright-lsp\|plugin install"; then
+    ok "T15: remediate-harness.sh prints plugin install command for R-PLUGINS FAIL"
+  else
+    fail "T15: expected plugin install command — got: $(echo "$output" | head -5)"
+  fi
+  rm_ws "$ws"
+}
+T15
+
+# ── T16: harness-readiness-report.yaml schema validation ─────────────────────
+T16() {
+  if ! grep -q "harness-readiness-\|harness_readiness_report" "${READINESS_SCRIPT}" 2>/dev/null; then
+    echo "  SKIP  T16: YAML report output not yet implemented"
+    return
+  fi
+  local report="${REPO_ROOT}/.claude/state/harness-readiness-ace-linux-1.yaml"
+  if [[ ! -f "$report" ]]; then
+    echo "  SKIP  T16: no report generated yet (run nightly-readiness.sh first)"
+    return
+  fi
+  local required_fields=("schema_version" "host" "generated_at" "overall" "pass_count" "fail_count" "checks")
+  local missing=()
+  for field in "${required_fields[@]}"; do
+    grep -q "^${field}:" "$report" || missing+=("$field")
+  done
+  if [[ ${#missing[@]} -eq 0 ]]; then
+    ok "T16: harness-readiness-report.yaml has all required schema fields"
+  else
+    fail "T16: report missing fields: ${missing[*]}"
+  fi
+}
+T16
+
+# ── Summary ───────────────────────────────────────────────────────────────────
+echo ""
+echo "=== Results: ${pass} pass, ${fail} fail ==="
+if [[ ${#errors[@]} -gt 0 ]]; then
+  echo "Failed:"
+  for e in "${errors[@]}"; do echo "  - $e"; done
+  exit 1
+fi
+exit 0

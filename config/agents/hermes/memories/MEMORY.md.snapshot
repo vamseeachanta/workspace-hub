@@ -1,0 +1,5 @@
+`claude auth login` — self-serve via browser tools. NEVER use API key auth (ANTHROPIC_API_KEY) without explicit user permission — subscription mode only.
+§
+Workspace-hub tier-1 repos live as siblings under `/mnt/local-analysis/<repo>`; `workspace-hub` at `/mnt/local-analysis/workspace-hub` is the harness/control-plane, not a parent for nested tier-1 checkouts. Classify role/remote/dirty state before cleanup/sync/move/delete. Agent worktrees default to `/mnt/local-analysis/agent-worktrees/<repo>-issue-<N>-<slug>`.
+§
+ace-linux-2 is reachable by SSH from ace-linux-1 as `ace-linux-2`; live probe showed `/mnt/local-analysis/workspace-hub` exists as a git repo, `/mnt/local-analysis/digitalmodel` and `/mnt/local-analysis/worldenergydata` were absent, and `/mnt/dde` exists but no tier-1 checkouts were present there.

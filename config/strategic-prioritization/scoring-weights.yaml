@@ -1,0 +1,73 @@
+# Strategic scoring weights and targets
+version: "1"
+
+# Track balance targets (must sum to 100)
+track_targets:
+  engineering: 50
+  market: 20
+  harness: 20
+  other: 10
+
+# RICE scoring weights (used for items WITHOUT deadline or blocked_by chains)
+rice:
+  # Each factor scored 1-5 by priority/complexity mapping
+  priority_to_reach:
+    critical: 5
+    high: 4
+    medium: 3
+    low: 1
+  priority_to_impact:
+    critical: 5
+    high: 4
+    medium: 3
+    low: 1
+  complexity_to_effort:
+    simple: 1
+    medium: 3
+    complex: 5
+  # Confidence: pending=3, working=4 (has evidence of feasibility)
+  status_to_confidence:
+    pending: 3
+    working: 4
+    archived: 5
+
+# WSJF scoring weights (used for items WITH deadline or blocked_by chains)
+wsjf:
+  # Cost of Delay = user_business_value + time_criticality + risk_reduction
+  priority_to_business_value:
+    critical: 8
+    high: 5
+    medium: 3
+    low: 1
+  # Time criticality: items with deadlines or blockers get higher scores
+  has_deadline_bonus: 3
+  has_blockers_bonus: 2
+  # Job size mapped from complexity
+  complexity_to_job_size:
+    simple: 1
+    medium: 3
+    complex: 5
+
+# Bonuses
+roadmap_bonus: 15          # Added for items on critical roadmap path
+enablement_bonus_per_dep: 10  # Per downstream item blocked by this WRK
+enablement_bonus_cap: 30   # Maximum enablement bonus
+
+# Track penalty coefficient
+# penalty = (actual_track_pct - target_track_pct) * coefficient
+# Positive penalty = track is over-served, reduce score
+track_penalty_coefficient: 0.5
+
+# Normalization range
+score_min: 0
+score_max: 100
+
+# Items on the critical roadmap path (manually curated)
+roadmap_critical_ids:
+  - WRK-376   # CP anode design
+  - WRK-378   # Drilling data models
+  - WRK-379   # Drilling dysfunction detector
+  - WRK-1048  # CV gap analysis
+
+# Time window for archived items in track balance (days)
+archived_window_days: 30

@@ -1,0 +1,128 @@
+{
+  "captured_at": "2026-09-12T12:51:06.195032+00:00",
+  "status": "PLANS_REVIEWED_IMPLEMENTATION_APPROVAL_PENDING",
+  "scope": "Two linked implementation plans; no implementation authorized by this artifact",
+  "issue_urls": [
+    "https://github.com/vamseeachanta/workspace-hub/issues/3606",
+    "https://github.com/vamseeachanta/workspace-hub/issues/3296",
+    "https://github.com/vamseeachanta/workspace-hub/issues/3615"
+  ],
+  "sequence": [
+    "Six-path isolated resource authority implementation after approval",
+    "Ten-path isolated advisory workflow implementation after approval and resource schema availability",
+    "Separately bounded live enforcement/installation migration"
+  ],
+  "baselines": {
+    "existing_governance": "24 passed",
+    "existing_data_and_resolver": "25 passed with --import-mode=importlib; default combined collection fails module namespace resolution",
+    "new_tests": "Not implemented; acceptance cases proposed"
+  },
+  "artifact_checks": [
+    {
+      "path": "docs/plans/2026-09-12-issue-3606-resource-authority.html",
+      "sha256": "43daf98f0bae79517906566bef1e9bedda86e2e7169c778bb2566da14aa88efb",
+      "missing_local_links": [],
+      "deny_pattern_hits": 0
+    },
+    {
+      "path": "docs/plans/2026-09-12-issue-3615-shared-risk-workflow.html",
+      "sha256": "a7eb277b470fc9e3074e86864b56a336f8547c1cf8b6dc35eebacff9dd818df1",
+      "missing_local_links": [],
+      "deny_pattern_hits": 0
+    },
+    {
+      "path": "docs/reports/2026-09-12-resource-authority-evidence.json",
+      "sha256": "7a5f1d31256173440909c13686b2c41cce17153690b07193f9efa1f9de2252af",
+      "missing_local_links": [],
+      "deny_pattern_hits": 0
+    },
+    {
+      "path": "docs/reports/2026-09-12-shared-risk-workflow-evidence.json",
+      "sha256": "5ba5c181e9eef2c7b906e6cf6975825b1cc1b3b3c00dad40897c96598b07c878",
+      "missing_local_links": [],
+      "deny_pattern_hits": 0
+    }
+  ],
+  "legal_scope": {
+    "configured_patterns": 23,
+    "targeted_only": true,
+    "repo_wide_clearance": false
+  },
+  "preserved_integration": {
+    "count": 9,
+    "mismatches": []
+  },
+  "reviews": {
+    "codex": "Main and independent drafting-lane defect reviews; concrete trust-boundary and cross-plan corrections",
+    "claude_r1": "MAJOR; addressed in revised plans; raw review retained",
+    "claude_r2": "MINOR overall, F1-F4 marked blocking with small corrections. All six findings and dependency nit addressed by main inline revision; no third dispatch and no claim Claude reviewed final inline edits.",
+    "agy": "UNAVAILABLE: neither agy nor gemini on current PATH; T3 coverage reduced to two providers"
+  },
+  "generalizable_findings_for_existing_issue": {
+    "issue": "https://github.com/vamseeachanta/workspace-hub/issues/3296",
+    "remote_posted": false,
+    "findings": [
+      "A plan shall cite a sibling-owned interface rather than redefine it",
+      "Receipt equality and caller-supplied provenance cannot authenticate current action authority",
+      "Use one production canonicalizer and shared literal conformance vectors",
+      "Legacy identity normalization shall not invent an algorithm for ambiguous digest bytes",
+      "Cross-plan acceptance shall name predecessor artifacts and incomplete states"
+    ]
+  },
+  "cleanup": {
+    "CLEAN": [
+      "No scoped tmp/partial or cleanup-lock/trash markers",
+      "No session-handoff changes",
+      "No commits or remote mutations in this deliverable"
+    ],
+    "EXPECTED": [
+      "Two plans, two source-evidence files, plan index rows and review receipts remain uncommitted",
+      "Prior approved nine-file local integration and unrelated dirty state/autostash preserved",
+      "D:/ws/_pilot-fixtures/3606/next-plans/drive-search-summary.json retained as probe evidence",
+      "Existing adjacent repositories/worktrees preserved; no fleet cleanup claimed"
+    ],
+    "UNEXPECTED": [],
+    "scope": "Repo depth3 temporary-file scan; first-level workspace entries; task scratch; matching recent temp names only",
+    "claim_release": "Released by owning session before final readback"
+  },
+  "final_inline_dispositions": {
+    "F1": "Local-only lazy resource ref; empty code-only set works without predecessor; absent resource schema yields SCHEMA_UNAVAILABLE, no collection import dependency. Review claim of unavoidable schema-compile resolution is implementation-dependent; requirement now explicit.",
+    "F2": "One resource-owned conformance enumeration including all requested negative cases; workflow links it.",
+    "F3": "Mismatch halts acceptance; inspect canonical bytes and both authorities; corrections remain resource-owned with checks/review, no test relaxation or workflow scope expansion.",
+    "F4": "Normalize namespaced doc_key before projection comparison; original retained only in observation evidence.",
+    "F5": "Distinct typed-sentinel and scope-enum encodings; both unknown/inapplicable content scope refuse reuse.",
+    "F6": "Verified isolated predecessor snapshot manifest plus base revision; commit ID only if separately committed. No forced commit or hub integration.",
+    "dependency_nit": "PyYAML included in both proposed workflow test commands."
+  },
+  "finalized_at": "2026-09-12T12:52:47.403817+00:00",
+  "review_receipts": [
+    {
+      "path": "scripts/review/results/2026-09-12-foundation-next-plans-claude-r2.json",
+      "sha256": "ecf1a655ec00f1e5cc9e269e192766f1896f5cf42ae39952231137b7483658e4",
+      "storage": "local review results; not committed or published"
+    },
+    {
+      "path": "scripts/review/results/2026-09-12-foundation-next-plans-claude-r2.txt",
+      "sha256": "f37f5d47d98ec89f2c3197f1adb1bf3a946c3c34f1dcb95894916ac8676a4b79",
+      "storage": "local review results; not committed or published"
+    },
+    {
+      "path": "scripts/review/results/2026-09-12-foundation-next-plans-claude.json",
+      "sha256": "66ff41de4e760eb4213b17cade4fa3effd2c09bdea220d01eccab282d8481200",
+      "storage": "local review results; not committed or published"
+    },
+    {
+      "path": "scripts/review/results/2026-09-12-foundation-next-plans-claude.txt",
+      "sha256": "eaa27888845ff8d411c3d701529a9c387ce6db5929fb36119d897ebe9cd5481a",
+      "storage": "local review results; not committed or published"
+    }
+  ],
+  "final_validation": {
+    "artifact_count": 9,
+    "broken_local_links_or_anchors": 0,
+    "json_readback": "PASS",
+    "targeted_deny_patterns": 23,
+    "targeted_hits": 0,
+    "visual_browser_validation": "Not performed"
+  }
+}

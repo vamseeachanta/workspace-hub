@@ -1,0 +1,69 @@
+# O*NET SOC codes relevant to workspace-hub work categories.
+# Each entry: code -> label + keywords for keyword matching.
+# Source: O*NET OnLine (onetonline.org)
+"15-1251.00":
+  label: Computer Programmers
+  keywords: [code, script, python, program, implement, function, module, refactor, bug, fix, feature]
+"15-1252.00":
+  label: Software Developers
+  keywords: [software, develop, application, api, backend, frontend, architecture, design, build, deploy]
+"15-1253.00":
+  label: Software Quality Assurance Analysts and Testers
+  keywords: [test, pytest, tdd, qa, quality, assert, coverage, fixture, benchmark, validation]
+"15-1254.00":
+  label: Web Developers
+  keywords: [web, html, css, javascript, website, page, browser, frontend, react, vue]
+"15-1211.00":
+  label: Computer Systems Analysts
+  keywords: [system, architecture, integration, workflow, pipeline, orchestrat, automat, ci, cd]
+"15-1212.00":
+  label: Information Security Analysts
+  keywords: [security, vulnerab, auth, credential, encrypt, permission, access, scan, legal, compliance]
+"15-1221.00":
+  label: Computer and Information Research Scientists
+  keywords: [research, algorithm, model, experiment, paper, study, analysis, benchmark, evaluate]
+"15-1231.00":
+  label: Computer Network Support Specialists
+  keywords: [network, ssh, vpn, server, connect, remote, dns, port, firewall]
+"15-1232.00":
+  label: Computer User Support Specialists
+  keywords: [support, help, troubleshoot, install, setup, configure, user, documentation, guide]
+"15-1241.00":
+  label: Computer Network Architects
+  keywords: [infrastructure, cloud, aws, docker, kubernetes, deploy, terraform, cluster]
+"15-1299.00":
+  label: "Computer Occupations, All Other"
+  keywords: [git, version, config, tool, cli, terminal, shell, bash, hook, plugin]
+"15-2051.00":
+  label: Data Scientists
+  keywords: [data, dataset, aggregat, etl, csv, json, pandas, statistics, metric, report]
+"15-2041.00":
+  label: Statisticians
+  keywords: [statistic, probability, regression, correlation, sample, distribution, variance]
+"13-1111.00":
+  label: Management Analysts
+  keywords: [process, efficien, optimiz, workflow, strategy, productiv, priorit, queue, triage]
+"13-2011.00":
+  label: Accountants and Auditors
+  keywords: [audit, cost, budget, financ, account, invoice, tax, expense, token, usage]
+"17-2199.00":
+  label: "Engineers, All Other"
+  keywords: [engineer, calculation, structural, pipe, pressure, fatigue, stress, load, design]
+"17-2171.00":
+  label: Petroleum Engineers
+  keywords: [petroleum, drilling, well, reservoir, production, oil, gas, bsee, eia, offshore]
+"17-2011.00":
+  label: Aerospace Engineers
+  keywords: [hydrodynamic, cfd, flow, wave, current, marine, subsea, riser]
+"17-2051.00":
+  label: Civil Engineers
+  keywords: [cathodic, protection, corrosion, integrity, asset, inspect, coating, anode]
+"27-3042.00":
+  label: Technical Writers
+  keywords: [document, write, readme, spec, plan, docs, manual, skill, template]
+"11-1021.00":
+  label: General and Operations Managers
+  keywords: [manag, coordin, schedul, assign, delegate, session, standup, review]
+"11-3021.00":
+  label: Computer and Information Systems Managers
+  keywords: [project, milestone, release, sprint, backlog, roadmap, feature, epic]

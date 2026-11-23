@@ -1,0 +1,16 @@
+Now revise docs/plans/2026-04-09-issue-2046-planning-compliance-audit.md to address the latest Codex re-review blockers.
+
+Edit only that plan file.
+Do not commit.
+Preserve draft status.
+
+Required fixes:
+1. Add a concrete evidence model for `issue-planning-mode` usage with authoritative sources, fallback sources, and compliant/non-compliant/indeterminate outcomes.
+2. Add a concrete definition of “agent began coding before approval.”
+3. Define the audit universe exactly: rollout boundary/date, minimum issue-count rule, exact in-scope query, and exclusion rules.
+4. Add explicit checks/tests for `status:plan-approved` usage and misuse, not just generic approval evidence.
+5. Add plan-revision matching rules so review artifacts must match the approved plan revision.
+6. Add an explicit decision rubric for: keep current approach / tighten guidance / escalate enforcement.
+7. Remove or tighten any wording that still leaves the implementation path or status semantics ambiguous.
+
+After editing, summarize exactly what you changed in 5-10 bullets and stop. Do not touch other files.

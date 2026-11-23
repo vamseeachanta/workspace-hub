@@ -1,0 +1,35 @@
+board_slug: repo-aceengineer-strategy
+repo: vamseeachanta/aceengineer-strategy
+gaps:
+- idempotency_key: gap:repo-aceengineer-strategy:001
+  title: Strategy-vs-website canonical-source boundary doc
+  source: detected_gap
+  detection_basis: Memory project_aceengineer_copy_canonical_sources flags llm-wiki
+    OUT OF SCOPE; real canonical = live site + aceengineer-strategy. No issue tracks
+    the boundary contract.
+  needs_issue: true
+  priority: 1
+  body_excerpt: 'Document which content lives in aceengineer-strategy vs aceengineer-website
+    vs live site; what is authoritative when they diverge.
+
+    '
+- idempotency_key: gap:repo-aceengineer-strategy:002
+  title: Quarterly strategy review cadence not tracked
+  source: detected_gap
+  detection_basis: Strategy repo lacks recurring review issues; cadence implicit.
+  needs_issue: true
+  priority: 0
+  body_excerpt: 'Add quarterly strategy-review checklist as a recurring issue template.
+
+    '
+- idempotency_key: gap:repo-aceengineer-strategy:003
+  title: Service-offering portfolio inventory
+  source: detected_gap
+  detection_basis: No single issue inventories current AceEngineer service offerings
+    vs market positioning.
+  needs_issue: true
+  priority: 1
+  body_excerpt: 'Build a single inventory of current service offerings, target clients,
+    and positioning.
+
+    '

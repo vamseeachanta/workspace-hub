@@ -1,0 +1,23 @@
+version: 1
+wrk_id: WRK-1009
+skill_name: sparc-architecture
+skill_path: .claude/skills/development/sparc/sparc-architecture/SKILL.md
+evals:
+- eval_id: sa-cap-01
+  eval_type: capability
+  description: Core sections documented for sparc-architecture
+  checks:
+    required_sections:
+    - '## Quick Start'
+    - '## Core Concepts'
+    - '## When to Use'
+    - '## Implementation Pattern'
+    - '## References'
+- eval_id: sa-proc-01
+  eval_type: procedural
+  description: Additional documentation sections for sparc-architecture
+  checks:
+    required_sections:
+    - '## Prerequisites'
+    - '## Metrics & Success Criteria'
+    - '## Integration Points'

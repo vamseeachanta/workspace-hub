@@ -1,0 +1,22 @@
+### Verdict: MAJOR
+
+### Summary
+The plan is not ready for approval. It leaves core implementation decisions as 'Open Questions' (specifically the exact replacement evidence targets for the template), includes speculative 'if needed' file modifications, and uses vague placeholders for test inputs. Furthermore, the plan document itself appends a previous 'FAIL' review summary without actually incorporating the required revisions into the plan's proposed actions.
+
+### Issues Found
+- The plan explicitly contains open questions that must be resolved during the planning phase, specifically the exact canonical evidence path replacement for the close/archive stages.
+- The 'Files to Change' table includes speculative edits marked 'if needed' (for docs/work-queue-workflow.md and notes/agent-work-queue.md) without confirming whether they actually require updates.
+- The TDD test inputs use vague placeholders like 'curated current-file list' and 'selected fixture file list' instead of explicitly defining the protected and excluded file paths.
+- The plan's pseudocode delegates the core decision-making ('decide whether the reference is current guidance') to the execution phase, whereas the plan should dictate exactly which references are updated and which are ignored.
+- The plan document contains an 'Adversarial Review Summary' block stating 'FAIL (re-draft required before approval readiness)' and listing required revisions, but the main body of the plan has not been updated to address these revisions.
+
+### Suggestions
+- Resolve the open questions and state the exact replacement text/paths for the 'Close' and 'Archive' evidence values in .planning/templates/stage-evidence-template.yaml.
+- Remove speculative file targets from the 'Files to Change' list. Only list files that have verified stale references or strictly require changes to align with the new contract.
+- Explicitly list the target directories or file patterns that the new regression test will scan, and exactly which fixture files will be excluded.
+- Incorporate the required revisions listed in your Adversarial Review Summary block into the actual plan sections (Deliverable, Pseudocode, Files to Change) and remove the failure notice before requesting re-review.
+
+### Questions for Author
+- What is the exact canonical replacement string or path that will be used for the final close/archive stages in the stage-evidence template?
+- Do docs/work-queue-workflow.md and notes/agent-work-queue.md currently contain stale script references, or were they included speculatively?
+- Will claim-item.sh be included in the regression test scope even if there are no live hits to patch in the codebase right now?

@@ -1,0 +1,64 @@
+# requirements-test.txt Template
+#
+# Python testing dependencies template
+# Copy this file to your project root as 'requirements-test.txt'
+#
+# Usage:
+#   pip install -r requirements-test.txt
+#   or
+#   uv pip install -r requirements-test.txt
+
+# Core testing framework
+pytest>=7.4.0
+pytest-cov>=4.1.0
+
+# Test utilities
+pytest-mock>=3.11.0           # Mocking support
+pytest-asyncio>=0.21.0        # Async test support
+pytest-xdist>=3.3.0           # Parallel test execution
+pytest-timeout>=2.1.0         # Test timeout handling
+pytest-randomly>=3.12.0       # Random test order
+pytest-clarity>=1.0.1         # Better error messages
+
+# Coverage tools
+coverage[toml]>=7.2.0         # Coverage measurement
+pytest-html>=3.2.0           # HTML test reports
+
+# Code quality
+pytest-flake8>=1.1.1         # Style checking
+pytest-mypy>=0.10.0          # Type checking
+pytest-bandit>=0.2.0         # Security scanning
+
+# Test data and fixtures
+factory-boy>=3.3.0           # Test data factories
+faker>=19.0.0                # Fake data generation
+pytest-factoryboy>=2.5.0     # Factory integration
+
+# HTTP/API testing
+requests-mock>=1.11.0        # HTTP request mocking
+responses>=0.23.0            # HTTP response mocking
+httpx>=0.24.0                # Modern HTTP client for testing
+
+# Database testing
+pytest-postgresql>=5.0.0     # PostgreSQL test fixtures
+pytest-redis>=3.0.0          # Redis test fixtures
+pytest-django>=4.5.0         # Django testing (if using Django)
+
+# Performance testing
+pytest-benchmark>=4.0.0      # Performance benchmarking
+memory-profiler>=0.61.0      # Memory usage profiling
+
+# Development utilities
+ipdb>=0.13.0                 # Enhanced debugger
+pytest-watch>=4.2.0          # Auto-rerun tests on changes
+
+# Optional: Web testing (uncomment if needed)
+# selenium>=4.11.0           # Browser automation
+# pytest-selenium>=4.1.0     # Selenium pytest integration
+# playwright>=1.36.0         # Modern browser testing
+
+# Optional: Load testing (uncomment if needed)
+# locust>=2.16.0             # Load testing framework
+
+# Optional: Property-based testing (uncomment if needed)
+# hypothesis>=6.82.0         # Property-based testing

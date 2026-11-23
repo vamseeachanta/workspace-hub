@@ -1,0 +1,62 @@
+# Shared cross-agent user profile
+# Canonical source for stable user identity, business context, subscriptions, and review preferences.
+
+user:
+  preferred_name: Vamsee
+  role: Principal engineer and consultant
+  business:
+    name: ACE Engineer
+    website: https://aceengineer.com
+    target_retainers_usd_per_year: 120000
+    target_clients_range: "3-5"
+    target_arr_usd_range: "360000-600000"
+  expertise:
+    - OrcaFlex
+    - mooring and riser engineering
+    - finite element analysis
+    - cathodic protection
+    - API 579 fitness-for-service
+    - Python automation
+  target_market:
+    - offshore engineering firms with 10-50 engineers
+    - offshore installation and marine energy companies
+
+ai_subscriptions:
+  claude:
+    provider: Anthropic
+    plan: Claude Max
+    monthly_cost_usd: 200
+    seats: 1
+  codex_primary:
+    provider: OpenAI
+    plan: Codex/OpenAI account
+    monthly_cost_usd: 20
+    seats: 1
+  codex_secondary:
+    provider: OpenAI
+    plan: Codex/OpenAI account
+    monthly_cost_usd: 20
+    seats: 1
+  gemini:
+    provider: Google
+    plan: Google AI Pro
+    monthly_cost_usd: 19.99
+    seats: 1
+
+workflow_preferences:
+  canonical_task_tracking: GitHub issues
+  planning_system: GSD with .planning artifacts
+  python_command: uv run
+  git_default_branch: main
+  commit_strategy: commit to main and push immediately unless multi-session branch is required
+  review_policy:
+    adversarial_review_required: true
+    plan_review_agents:
+      - Claude
+      - Codex
+      - Gemini
+    artifact_review_agents:
+      - Claude
+      - Codex
+      - Gemini
+    note: All available agents should cross-review both plan-stage and code/artifact-stage work unless a task is explicitly exempted by the user.

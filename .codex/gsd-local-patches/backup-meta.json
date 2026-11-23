@@ -1,0 +1,17 @@
+{
+  "backed_up_at": "2026-04-01T13:16:20.346Z",
+  "from_version": "1.30.0",
+  "files": [
+    "get-shit-done/bin/lib/config.cjs",
+    "get-shit-done/bin/lib/frontmatter.cjs",
+    "get-shit-done/bin/lib/init.cjs",
+    "get-shit-done/bin/lib/security.cjs",
+    "get-shit-done/bin/lib/state.cjs",
+    "get-shit-done/bin/lib/uat.cjs",
+    "get-shit-done/bin/lib/verify.cjs",
+    "get-shit-done/templates/context.md",
+    "get-shit-done/workflows/discuss-phase.md",
+    "get-shit-done/workflows/plan-phase.md",
+    "get-shit-done/workflows/review.md"
+  ]
+}

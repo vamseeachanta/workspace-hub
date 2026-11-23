@@ -1,0 +1,421 @@
+# registry.yaml — Single source of truth for all workstations.
+# Read by: scripts/cron/setup-cron.sh, scripts/operations/workstation-status.sh
+# HARD RULE: all machine identity/capability data lives here.
+# Hardware specs remain in .planning/archive/modules/hardware-inventory/ (detailed assessments).
+
+machines:
+  dev-primary:
+    hostname: ace-linux-1
+    hostname_aliases: [vamsee-linux1]
+    os: linux
+    role: primary-dev
+    workspace_root: /mnt/local-analysis/workspace-hub
+    tier1_repo_root: /mnt/local-analysis
+    repo_layout: sibling
+    schedule_variant: full
+    harness_profile:          # #2968 F1 — composable roles; overlay = _base ∪ roles
+      roles: [control-plane]
+      managed: true
+    ssh: ace-linux-1
+    tailscale_ip: 10.1.0.1
+    capabilities:
+      agent_clis: [claude, gemini]
+      languages: [python3, bash]
+      tools: [uv, git, gh, npm, hermes, timeout]
+      gpu: false
+    storage:
+      local: /mnt/local-analysis          # ext4, primary work partition
+      knowledge: /mnt/ace                  # ext4, knowledge center (NFS-exported)
+      remote_mounts:
+        - /mnt/remote/ace-linux-2/dde      # sshfs to ace-linux-2:/mnt/dde
+        - /mnt/remote/ace-linux-2/local-analysis
+    repos:
+      - workspace-hub
+      - digitalmodel
+      - assetutilities
+      - worldenergydata
+      - llm-wiki
+      - assethold
+      - aceengineer-website
+      - aceengineer-strategy
+      - aceengineer-admin
+      - achantas-data
+      - achantas-media
+      - CAD-DEVELOPMENTS
+      - hobbies
+      - kaggle-rogii-2026
+      - llm-wiki-mkt-a
+      - sabithaandkrishnaestates
+      - teamresumes
+    telegram_hermes:
+      dispatch_enabled: true
+      telegram_mode: coordinator
+      hermes_profile: default
+      bot_token_env: TELEGRAM_BOT_TOKEN
+      allowed_user_ids_env: TELEGRAM_ALLOWED_USERS
+      sync_policy: pull-before-work-push-after-work
+      data_access_profile:
+        repos: [workspace-hub, digitalmodel, assetutilities, worldenergydata, llm-wiki, assethold]
+        storage_roots: [/mnt/local-analysis, /mnt/ace]
+        remote_mounts:
+          - /mnt/remote/ace-linux-2/dde
+          - /mnt/remote/ace-linux-2/local-analysis
+      readiness_freshness_thresholds:
+        report_hours: 25
+    tier1_baseline:
+      version: 1
+      source_issues:
+        tier1_decision: 2770
+        relocation_reconciliation: 2766
+      repo_root: /mnt/local-analysis
+      workspace_root: /mnt/local-analysis/workspace-hub
+      layout: sibling
+      required: [workspace-hub, digitalmodel, assetutilities, worldenergydata, llm-wiki, assethold]
+      optional: [aceengineer-website, aceengineer-strategy]
+      reference_only: []
+      not_planned: []
+      non_tier1_machine_access_current:
+        - aceengineer-admin
+        - achantas-data
+        - achantas-media
+        - CAD-DEVELOPMENTS
+        - hobbies
+        - kaggle-rogii-2026
+        - llm-wiki-mkt-a
+        - sabithaandkrishnaestates
+        - teamresumes
+      historically_moved_not_currently_present:
+        mkt-a:
+          source_issue: 2766
+          source_comment: 4497956095
+          prior_claim: sibling=git
+          latest_probe: absent
+          warning: historical_state_changed_since_prior_comment
+        client-c:
+          source_issue: 2766
+          source_comment: 4497956095
+          prior_claim: sibling=git
+          latest_probe: absent
+          warning: historical_state_changed_since_prior_comment
+        lng-a:
+          source_issue: 2766
+          source_comment: 4497956095
+          prior_claim: sibling=git
+          latest_probe: absent
+          warning: historical_state_changed_since_prior_comment
+        client-a:
+          source_issue: 2766
+          source_comment: 4497956095
+          prior_claim: sibling=git
+          latest_probe: absent
+          warning: historical_state_changed_since_prior_comment
+        OGManufacturing:
+          source_issue: 2766
+          source_comment: 4497956095
+          prior_claim: sibling=git and registry-runtime-access
+          latest_probe: absent
+          warning: historical_state_changed_since_prior_comment
+          runtime_access_change: remove_from_data_access_profile
+        client-b:
+          source_issue: 2766
+          source_comment: 4497956095
+          prior_claim: sibling=git
+          latest_probe: absent
+          warning: historical_state_changed_since_prior_comment
+        client-d:
+          source_issue: 2766
+          source_comment: 4497956095
+          prior_claim: sibling=git
+          latest_probe: absent
+          warning: historical_state_changed_since_prior_comment
+        sd-work:
+          source_issue: 2766
+          source_comment: 4497956095
+          prior_claim: sibling=git
+          latest_probe: absent
+          warning: historical_state_changed_since_prior_comment
+        client-f:
+          source_issue: 2766
+          source_comment: 4497956095
+          prior_claim: sibling=git
+          latest_probe: absent
+          warning: historical_state_changed_since_prior_comment
+      infrastructure_dirs: [agent-worktrees]
+      placement_rules:
+        root_git_self_allowed: true
+        direct_nested_git_policy: error
+        required_absence_policy: error
+        optional_absence_policy: warning
+        non_tier1_absence_policy: warning
+        historical_absence_policy: warning
+        historical_state_changed_since_prior_comment_policy: warning
+        unknown_sibling_git_policy: warning
+        upstream_policy:
+          required: error
+          optional: warning
+          non_tier1_machine_access_current: warning
+        dirty_policy:
+          required: warning
+          optional: warning
+          non_tier1_machine_access_current: warning
+        ahead_policy:
+          required: warning
+          optional: warning
+          non_tier1_machine_access_current: warning
+        behind_policy:
+          required: warning
+          optional: warning
+          non_tier1_machine_access_current: warning
+    notes: >
+      Primary dev workstation. All nightly scheduled tasks run here.
+      NFS server for /mnt/ace knowledge center.
+
+  dev-secondary:
+    hostname: ace-linux-2
+    hostname_aliases: []
+    os: linux
+    role: secondary-dev
+    workspace_root: /mnt/local-analysis/workspace-hub
+    tier1_repo_root: /mnt/local-analysis
+    repo_layout: sibling
+    schedule_variant: contribute
+    harness_profile:          # #2968 F1 — a2 plays BOTH roles (Q1 composable)
+      roles: [comms-dispatch, sim-worker]
+      managed: true
+    ssh: ace-linux-2
+    tailscale_ip: 10.1.0.2
+    capabilities:
+      agent_clis: [claude]
+      languages: [python3, bash]
+      tools: [blender, openfoam, freecad, gmsh, paraview, calculix, meshio, capytaine, mystran, tmux, uv, git, gh, hermes]
+      gpu: nvidia-t400
+    storage:
+      local: /mnt/dde                     # primary work partition
+      knowledge: null                      # NFS client — mounts ace-linux-1:/mnt/ace
+      remote_mounts: []
+    repos:
+      - digitalmodel
+      - worldenergydata
+    telegram_hermes:
+      dispatch_enabled: true
+      telegram_mode: worker
+      hermes_profile: linux-worker
+      bot_token_env: TELEGRAM_BOT_TOKEN
+      allowed_user_ids_env: TELEGRAM_ALLOWED_USERS
+      sync_policy: pull-before-work-push-after-work
+      data_access_profile:
+        repos: [digitalmodel, worldenergydata]
+        storage_roots: [/mnt/dde]
+        remote_mounts: []
+      readiness_freshness_thresholds:
+        report_hours: 25
+    notes: >
+      Secondary dev workstation. Open-source FEA/CFD simulation stack.
+      NFS client, memory backup target.
+
+  ace-win-1:
+    hostname: ace-win-1
+    # 2026-08-01: the two real hostnames previously listed here were REMOVED, not
+    # replaced. They named a box that is not this role and is absent from the
+    # tailnet entirely, so they were both wrong AND infrastructure detail in a
+    # PUBLIC repo. The host actually serving this role is recorded in the private
+    # tier. Verified at four layers: tailnet membership, `hostname` over SSH, the
+    # deckhand policy file present on the box, and the live licensed-run agent.
+    hostname_aliases: [licensed-win-1]  # WF0 #3001: renamed from licensed-win-1
+    os: windows
+    role: simulation-license-host
+    # Corrected 2026-08-01: the previous value is not a git repository on the box.
+    workspace_root: 'D:\ws\workspace-hub'
+    tier1_repo_root: 'D:\'
+    repo_layout: sibling
+    schedule_variant: contribute-minimal
+    harness_profile:          # WF1 #2999 — converged; Windows deny subset from _base.deny_required_os.windows
+      roles: [licensed-solver]
+      managed: true
+    # Corrected 2026-08-01. Inbound SSH was provisioned 2026-07-31 (Git Bash as
+    # the OpenSSH DefaultShell), so `null` — "no channel exists" — is now false.
+    # The alias resolves through the operator's private ssh_config; the address
+    # is infrastructure detail and stays in the private tier.
+    ssh: ace-win-1
+    # Reachable, but deliberately not recorded here. Note the convention already
+    # in this file: peer hosts carry synthetic 10.1.0.x values rather than their
+    # real tailnet addresses. A wrong address would be worse than none.
+    tailscale_ip: null
+    capabilities:
+      agent_clis: [claude, codex, gemini]
+      languages: [bash]  # git-bash / MINGW64
+      tools: [orcaflex, ansys, git, uv]
+      gpu: false
+    storage:
+      local: 'D:\'                        # primary drive
+      knowledge: null                      # no NFS — standalone
+      remote_mounts: []
+    repos:
+      - OGManufacturing
+    telegram_hermes:
+      dispatch_enabled: false
+      telegram_mode: desktop-status-only
+      hermes_profile: windows-git-bash
+      sync_policy: manual-status-only
+      data_access_profile:
+        repos: [OGManufacturing]
+        storage_roots: ['D:\']
+        remote_mounts: []
+      readiness_freshness_thresholds:
+        report_hours: 25
+    notes: >
+      Windows host for OrcaFlex and ANSYS licensed work. Git Bash (MINGW64) for
+      scripts. Reachable over SSH since 2026-07-31 (the earlier "no SSH — access
+      physically or via GUI" note is retired).
+
+      SHARED TENANCY — other people's interactive sessions run on this host at
+      the same time as anything dispatched to it. The wip cap of 2 in
+      routing-rules.yaml is a courtesy constraint, not a throughput setting;
+      saturating this box degrades their work and they cannot see why. See
+      `shared_tenancy: true` there, enforced by
+      tests/dispatch/test_shared_tenancy_cap.py.
+
+      Orcina products REQUIRE the scheduled-task dispatch path: an SSH
+      public-key logon token cannot complete a FlexNet checkout, and the failure
+      surfaces at solve time, long after dispatch appears to have succeeded.
+
+  ace-win-2:
+    hostname: ace-win-2
+    hostname_aliases: [licensed-win-2, acma-ws014]  # WF0 #3001: renamed from licensed-win-2
+    os: windows
+    role: simulation-secondary
+    workspace_root: 'D:\workspace-hub'
+    tier1_repo_root: 'D:\'
+    repo_layout: sibling
+    schedule_variant: contribute-minimal
+    harness_profile:          # WF1 #2999 — converged; Windows deny subset from _base.deny_required_os.windows
+      roles: [licensed-solver]
+      managed: true
+    ssh: null
+    tailscale_ip: null
+    capabilities:
+      agent_clis: [claude, codex, gemini]
+      languages: [bash]
+      tools: [orcaflex, ansys, git, uv]
+      gpu: false
+    repos:
+      - OGManufacturing
+    telegram_hermes:
+      dispatch_enabled: false
+      telegram_mode: desktop-status-only
+      hermes_profile: windows-git-bash
+      sync_policy: manual-status-only
+      data_access_profile:
+        repos: [OGManufacturing]
+        storage_roots: ['D:\']
+        remote_mounts: []
+      readiness_freshness_thresholds:
+        report_hours: 25
+    storage:
+      local: 'D:\'
+      knowledge: null
+      remote_mounts: []
+    notes: >
+      Secondary Windows workstation. Mirrors ace-win-1 capabilities.
+
+  gpu-claw:
+    hostname: gpu-claw
+    hostname_aliases: []
+    os: linux
+    role: gpu-executor
+    # Clone complete; legacy inline pending note superseded (#3507, 2026-07-23).
+    workspace_root: /home/undi/ws/workspace-hub   # relocation-plan target (HANDOVER.md on box); clone pending
+    tier1_repo_root: /home/undi/ws
+    repo_layout: sibling
+    schedule_variant: contribute-minimal
+    harness_profile:
+      roles: [sim-worker]
+      managed: true
+    ssh: gpu-claw
+    capabilities:
+      agent_clis: [claude]
+      languages: [python3, bash]
+      tools: [git, gh, npm, uv]  # Installed tooling confirmed in #3507 (2026-07-23).
+      gpu: nvidia-rtx3090-x2
+    storage:
+      local: /home/undi
+      knowledge: null
+      remote_mounts: []
+    repos:
+      - digitalmodel
+    notes: >
+      Equivalence onboarding complete (#3507 completion comment, 2026-07-23):
+      workspace-hub clone complete; uv installed; managed cron active;
+      machine-keyed sentinel publication confirmed. The contribute-minimal
+      schedule variant is retained. This historical completion record does
+      not establish current readiness; outstanding findings remain separate
+      (#3594 confirmation comment, 2026-07-29).
+
+  macbook-portable:
+    hostname: Vamsees-MacBook-Air
+    hostname_aliases: [Vamsees-MacBook-Air.local]
+    os: macos
+    role: portable-dev
+    workspace_root: /Users/krishna/Developer/ws/workspace-hub
+    schedule_variant: none
+    ssh: null  # no SSH from Linux hosts
+    tailscale_ip: null
+    capabilities:
+      agent_clis: [claude]
+      languages: [python3, bash]
+      tools: [uv, git, gh]
+      gpu: false
+    storage:
+      local: /Users/krishna                 # macOS home directory
+      knowledge: null                        # no NFS — standalone portable
+      remote_mounts: []
+    repos:
+      - workspace-hub
+    telegram_hermes:
+      dispatch_enabled: false
+      telegram_mode: desktop-status-only
+      hermes_profile: macos-manual
+      sync_policy: manual-status-only
+      data_access_profile:
+        repos: [workspace-hub]
+        storage_roots: [/Users/krishna]
+        remote_mounts: []
+      readiness_freshness_thresholds:
+        report_hours: 25
+    notes: >
+      Portable macOS workstation. Not in the equivalence roster (schedule_variant:
+      none) — publishes no fingerprint by design. Runs one local cron job only:
+      the daily repository-sync at 02:00 (see scripts/cron-repository-sync.sh).
+      Path conventions differ from Linux (/Users/ vs /home/).
+      Some Linux-specific kernel/GPU tools not applicable.
+
+  gali-linux-compute-1:
+    hostname: shoerack
+    hostname_aliases: []
+    os: linux
+    role: gpu-compute
+    workspace_root: null  # not yet configured
+    schedule_variant: none
+    ssh: null  # access method TBD (Tailscale or direct LAN)
+    tailscale_ip: null
+    capabilities:
+      agent_clis: []  # not yet set up
+      languages: [python3, bash]
+      tools: [cuda]
+      gpu: rtx-3090x2
+    repos: []
+    telegram_hermes:
+      dispatch_enabled: false
+      telegram_mode: disabled
+      hermes_profile: not-onboarded
+      sync_policy: none
+      data_access_profile:
+        repos: []
+        storage_roots: []
+        remote_mounts: []
+      readiness_freshness_thresholds:
+        report_hours: 25
+    notes: >
+      GPU compute node — 2x RTX 3090 (48 GB VRAM), 128 GB RAM.
+      Not yet onboarded to workspace-hub. Route heavy ML/CUDA workloads here.
+      Boot drive at 89% — needs cleanup before heavy use.

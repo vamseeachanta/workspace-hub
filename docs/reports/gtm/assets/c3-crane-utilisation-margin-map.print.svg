@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900">
+  <style>.title{font:700 52px DejaVu Sans,Arial;fill:#fff}.headline{font:32px DejaVu Sans,Arial;fill:#0B2341}.row{font:26px DejaVu Sans,Arial;fill:#1F2937}.small{font:20px DejaVu Sans,Arial;fill:#334155}</style>
+  <rect width="1600" height="900" fill="#F7FAFC"/>
+  <rect width="1600" height="112" fill="#0B2341"/>
+  <text x="48" y="72" class="title">C3: Crane-Utilisation Margin Map</text>
+  <text x="48" y="170" class="headline">Mudmat-L-200te at 1500 m: Large CSV at 20.6% crane utilisation vs Medium CSV at 71.5% - same GO decision, different margin.</text>
+  <text x="48" y="210" class="small">Colour cue: green &gt;=80% pass/utilisation margin OK; amber 50-79% or high utilisation risk; red &lt;50%.</text>
+  <rect x="48" y="232" width="20" height="34" fill="#F2C94C"/><text x="80" y="260" class="row">Mudmat-L-200te | Large CSV: 20.6% | Medium CSV: 71.5% | 1500 m</text>
+<rect x="48" y="286" width="20" height="34" fill="#EB5757"/><text x="80" y="314" class="row">Mudmat-M-100te | Large CSV: 21.5% | Medium CSV: 34.8% | 1500 m</text>
+<rect x="48" y="340" width="20" height="34" fill="#EB5757"/><text x="80" y="368" class="row">Mudmat-S-50te | Large CSV: 24.7% | Medium CSV: 24.7% | 1500 m</text>
+  <rect y="780" width="1600" height="120" fill="#EAF2F8"/>
+  <text x="48" y="824" class="small">Vessel parameters are representative classes only; not measured telemetry or exact specifications of any named vessel.</text>
+</svg>

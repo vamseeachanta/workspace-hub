@@ -1,0 +1,23 @@
+version: 1
+wrk_id: WRK-1009
+skill_name: background-service-manager
+skill_path: .claude/skills/operations/devtools/background-service-manager/SKILL.md
+evals:
+- eval_id: bsm-cap-01
+  eval_type: capability
+  description: Core sections documented for background-service-manager
+  checks:
+    required_sections:
+    - '## Quick Start'
+    - '## When to Use'
+    - '## Example Usage'
+    - '## Overview'
+    - '## Architecture'
+- eval_id: bsm-proc-01
+  eval_type: procedural
+  description: Additional documentation sections for background-service-manager
+  checks:
+    required_sections:
+    - '## Implementation'
+    - '## Related Skills'
+    - '## Version History'

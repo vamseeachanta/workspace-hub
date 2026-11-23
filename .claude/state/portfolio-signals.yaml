@@ -1,0 +1,137 @@
+generated_at: '2026-08-01T07:00:55Z'
+lookback_days: 30
+provider_activity:
+  claude:
+    harness: 0
+    engineering: 0
+    data: 0
+    other: 0
+  codex:
+    harness: 0
+    engineering: 0
+    data: 0
+    other: 0
+  gemini:
+    harness: 0
+    engineering: 0
+    data: 0
+    other: 0
+l2_meta:
+  files_scanned: 0
+  files_with_orchestrator: 0
+  files_skipped_no_orchestrator: 0
+  files_skipped_malformed: 0
+capability_signals:
+- date: '2026-06-10'
+  provider: gemini
+  capability: Gemini Omni Scientific Multi-modal Generation
+  engineering_domains:
+  - structural
+  - drilling
+  impact: high
+  source: https://blog.google
+- date: '2026-06-14'
+  provider: claude
+  capability: Claude Fable 5 for Scientific Research
+  engineering_domains:
+  - subsea
+  - reservoir
+  impact: high
+  source: https://www.anthropic.com
+- date: '2026-05-21'
+  provider: claude
+  capability: Advanced PDE Tool Use & Fluid Dynamics Modeling
+  engineering_domains:
+  - reservoir
+  - drilling
+  impact: high
+  source: https://www.anthropic.com/news/engineering-computation
+- date: '2026-05-19'
+  provider: codex
+  capability: O2 Context for Spatial CAD & Blueprint Analysis
+  engineering_domains:
+  - structural
+  - subsea
+  impact: medium
+  source: https://openai.com/index/codex-o2-spatial-reasoning
+- date: '2026-05-20'
+  provider: gemini
+  capability: Gemini Multimodal Finite Element Analysis V2
+  engineering_domains:
+  - structural
+  - subsea
+  impact: high
+  source: https://blog.google/technology/ai/gemini-engineering-computation-2026/
+- date: '2026-05-18'
+  provider: claude
+  capability: Claude Opus Reservoir Flow Simulation API
+  engineering_domains:
+  - reservoir
+  impact: high
+  source: https://www.anthropic.com/news/claude-reservoir-simulation
+- date: '2026-05-21'
+  provider: codex
+  capability: Codex Drilling Trajectory Optimization Engine
+  engineering_domains:
+  - drilling
+  impact: medium
+  source: https://openai.com/blog/codex-drilling-optimization
+- date: '2026-05-19'
+  provider: gemini
+  capability: Gemini Subsea Pipeline Fatigue Profiler
+  engineering_domains:
+  - subsea
+  impact: medium
+  source: https://cloud.google.com/blog/products/ai-machine-learning/gemini-subsea-fatigue
+- date: '2026-05-17'
+  provider: claude
+  capability: Claude Structural Mechanics Code Interpreter
+  engineering_domains:
+  - structural
+  impact: high
+  source: https://www.anthropic.com/news/claude-structural-mechanics
+- date: '2026-05-21'
+  provider: claude
+  capability: FEA Log Context Analysis API
+  engineering_domains:
+  - structural
+  impact: medium
+  source: https://anthropic.com/news/engineering-fea-2026
+- date: '2026-05-19'
+  provider: gemini
+  capability: Subsea Multiphase Flow Predictor
+  engineering_domains:
+  - subsea
+  - reservoir
+  impact: high
+  source: https://deepmind.google/discover/blog/gemini-subsea-flow-modeling
+- date: '2026-05-18'
+  provider: codex
+  capability: Automated Drilling Trajectory Scripting
+  engineering_domains:
+  - drilling
+  impact: high
+  source: https://openai.com/research/codex-drilling-optimization
+- date: '2026-05-16'
+  provider: gemini
+  capability: Reservoir History Matching Agent
+  engineering_domains:
+  - reservoir
+  impact: medium
+  source: https://cloud.google.com/blog/products/ai-machine-learning/gemini-reservoir-agent
+- date: '2026-05-18'
+  provider: gemini
+  capability: Gemini 2.5 Native FEA Interpretation
+  engineering_domains:
+  - structural
+  - subsea
+  impact: high
+  source: https://blog.google/technology/ai/gemini-native-fea-2026
+l3_meta:
+  query_attempted: true
+  query_mode: engineering
+  parse_success: false
+  signals_added: 0
+  signals_pruned: 0
+  carry_forward: true
+  source_verified: false

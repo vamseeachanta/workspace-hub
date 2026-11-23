@@ -1,0 +1,102 @@
+# AI Review Routing Policy
+
+> Explicit routing rules for AI-assisted review in workspace-hub repositories.
+>
+> Issue: #1515 | Parent: #1514 | Date: 2026-03-31
+> Architecture decision: [Minimal Harness Operating Model](../modules/ai/MINIMAL_HARNESS_OPERATING_MODEL_2026-03.md)
+> Control-plane contract: [CONTROL_PLANE_CONTRACT.md](CONTROL_PLANE_CONTRACT.md)
+
+---
+
+> **Machine-readable policy (#2970, F3):** the executable single-source for provider routing is
+> [`config/ai-tools/provider-routing-policy.yaml`](../../config/ai-tools/provider-routing-policy.yaml),
+> resolved by [`scripts/ai/provider_route.py`](../../scripts/ai/provider_route.py)
+> (`route(task_type, machine, attrs)`). This document remains the human-readable rationale;
+> when they differ, the YAML is authoritative for automated routing.
+
+## Provider Roles
+
+| Provider | Role | Scope |
+|----------|------|-------|
+| **Claude Code** | Default orchestrator | Task framing, planning, routing decisions, repo-facing workflow |
+| **Codex** | Default coding worker & adversarial reviewer | Bounded implementation, test writing, refactors, diff review |
+| **Gemini (Agy)** | Optional extra reviewer | Architecture review, large-context research, high-stakes synthesis, plan & code review |
+
+## Review Defaults
+
+- **Second-provider review by default**: work written by Claude is reviewed by Codex and work written by Codex by Claude, one review per head. Agy (Gemini) is an optional extra reader.
+- **Claude remains the orchestrator**: Claude frames work, sequences execution, and synthesizes the combined review result.
+- **Codex remains the default implementation worker** for bounded coding, tests, and refactors.
+- Plans get a second-provider review by default.
+- Code and deliverable artifacts get a second-provider review before completion by default.
+- **Reviews are advisory.** No review verdict is a merge gate: PRs merge on green required checks (`.claude/rules/merge-authorization.md`). Real bugs a review finds still get fixed.
+
+## Optional Review Reduction Rules
+
+A narrower review set is allowed only when the user explicitly asks for it or when one provider is unavailable.
+
+| Reduction case | Allowed adjustment |
+|----------------|--------------------|
+| **User requests a faster/lighter pass** | Claude may reduce to two-agent review and document the reason |
+| **Provider unavailable / quota exhausted** | Continue with remaining agents, but record the missing reviewer |
+| **Purely clerical change** | Claude may waive one reviewer with explicit note in the completion summary |
+
+## Routing Flow
+
+```
+1. Claude frames the task (context, scope, plan)
+2. Claude decides execution path:
+   a. Self-execute (trivial/orchestration work)
+   b. Route bounded implementation to Codex (and optionally parallel workers)
+3. Before completion, Claude routes review:
+   a. Default: the other provider reviews (Codex for Claude work, Claude for Codex work); Gemini is optional
+   b. If one reviewer is waived, record the reason explicitly
+4. Fix the real bugs the review finds; merge on green required checks
+```
+
+## Legacy Surfaces
+
+The following directories are **legacy** and must not drive new architecture decisions:
+
+| Path | Status | Reference |
+|------|--------|-----------|
+| `.hive-mind/` | Legacy — do not extend | See `LEGACY.md` in directory |
+| `.swarm/` | Legacy — do not extend | See `LEGACY.md` in directory |
+| `.SLASH_COMMAND_ECOSYSTEM/` | Legacy — do not extend | See `LEGACY.md` in directory |
+
+New workflow logic belongs in `.claude/` (skills, rules, hooks) with thin adapters in `.codex/` and `.gemini/` per the [Control-Plane Contract](CONTROL_PLANE_CONTRACT.md).
+
+## Enforcement
+
+The hook below predates the advisory rule and still blocks `gh pr create` without
+review evidence. It conflicts with the merge-on-green rule and is listed for removal;
+removing it needs a code and test change. Promotion history:
+
+| Level | Status | Artifact |
+|-------|--------|----------|
+| Level 0 — Prose | ✅ Done (2026-03-31) | This document |
+| Level 1 — Micro-skill | ✅ Done | Routing reminders surfaced at review stage entry |
+| Level 2 — Script | ✅ Done (2026-04-01) | `scripts/ai/review_routing_gate.py` — analyzes diffs, recommends reviewers |
+| Level 3 — Hook | ✅ Done (2026-04-01) | `.claude/hooks/cross-review-gate.sh` — blocks PR creation without review, surfaces routing recommendation |
+
+### How it works
+
+1. **On `gh pr create`**: The PreToolUse hook runs the routing gate against the current diff
+2. **Routing gate** analyzes the diff and confirms all three agents (Claude, Codex, Gemini) are included in review
+3. **Block decision**: If no cross-review evidence exists, the hook blocks with a message including recommended reviewers
+4. **Pass-through**: If review evidence exists, the hook logs the routing recommendation to stderr for visibility
+
+### Running manually
+
+```bash
+# Analyze a diff for routing recommendation:
+git diff main...HEAD | scripts/ai/review-routing-gate.sh --stdin
+
+# Audit overall compliance:
+scripts/ai/verify-adversarial-reviews.sh --days 30 --verbose
+
+# Check a specific PR:
+uv run python scripts/ai/review_routing_gate.py --pr 42
+```
+
+See [patterns.md](../../.claude/rules/patterns.md) for the enforcement gradient.

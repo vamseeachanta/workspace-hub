@@ -1,0 +1,2654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Spotfire Formulas For Calc Variables — XLSX-SPOTFORMFOR</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+
+<style>
+:root {
+  --bg:         #f3efe6;
+  --panel:      #fffdf8;
+  --ink:        #172126;
+  --muted:      #55636b;
+  --accent:     #0f766e;
+  --accent-2:   #8a5a2b;
+  --line:       #d9d0c0;
+  --shadow:     0 16px 40px rgba(20,33,38,0.08);
+  --good:       #166534;
+  --warn:       #b45309;
+  --bad:        #b91c1c;
+}
+*{box-sizing:border-box;}
+body{font-family:Georgia,"Times New Roman",serif;
+  background:radial-gradient(circle at top,#fffaf0 0,var(--bg) 48%,#ebe5d7 100%);
+  color:var(--ink);line-height:1.55;margin:0;padding:0;}
+a{color:var(--accent);text-decoration:none;}
+a:hover{text-decoration:underline;}
+code{font-family:"SFMono-Regular",Consolas,"Liberation Mono",Menlo,monospace;
+  background:rgba(27,31,35,0.06);padding:.2em .4em;border-radius:3px;font-size:.88em;}
+
+.hero{padding:28px 24px 20px;border-bottom:1px solid rgba(23,33,38,0.08);
+  background:linear-gradient(135deg,rgba(15,118,110,0.07),rgba(138,90,43,0.09));}
+.hero-inner{max-width:1100px;margin:0 auto;}
+.eyebrow{text-transform:uppercase;letter-spacing:.12em;font-size:.68rem;
+  color:var(--accent);font-weight:700;margin:0 0 6px;}
+h1.report-title{margin:0 0 8px;font-size:clamp(1.6rem,3vw,2.4rem);line-height:1.1;}
+.lede{color:var(--muted);font-size:.92rem;margin:0 0 14px;max-width:72ch;}
+
+.meta-chips{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 2px;}
+.meta-chip{background:var(--panel);border:1px solid var(--line);border-radius:8px;
+  padding:5px 10px;font-size:.8rem;}
+.meta-chip strong{font-size:.65rem;text-transform:uppercase;letter-spacing:.07em;
+  color:var(--accent-2);display:block;margin-bottom:1px;}
+
+.content{max-width:1100px;margin:0 auto;padding:24px 24px 56px;}
+.card{background:var(--panel);padding:26px;border-radius:18px;
+  box-shadow:var(--shadow);border:1px solid var(--line);margin-bottom:20px;}
+.card h2{border-bottom:1px solid var(--line);padding-bottom:.3em;margin-top:0;
+  color:var(--accent-2);letter-spacing:.02em;font-size:1.2rem;}
+.card p,.card li,.card td,.card th{color:var(--muted);}
+.card strong,.card code{color:var(--ink);}
+
+table{border-collapse:collapse;width:100%;margin:14px 0;font-size:.9rem;}
+thead th{background:var(--panel);border-bottom:2px solid var(--accent);
+  font-weight:700;text-transform:uppercase;letter-spacing:.06em;
+  font-size:.78rem;padding:8px 10px;text-align:left;color:var(--ink);}
+tbody td{border-bottom:1px solid var(--line);padding:7px 10px;
+  color:var(--muted);vertical-align:top;}
+tbody tr:last-child td{border-bottom:none;}
+tbody td strong,tbody td code{color:var(--ink);}
+tbody tr:hover>td{background:rgba(15,118,110,.03);}
+
+.badge{display:inline-block;padding:2px 8px;border-radius:999px;
+  font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;
+  white-space:nowrap;}
+.badge-pass{background:#dcfce7;color:var(--good);}
+.badge-fail{background:#fee2e2;color:var(--bad);}
+.badge-draft{background:#fef3c7;color:var(--warn);}
+.badge-reviewed{background:#dbeafe;color:#1d4ed8;}
+.badge-approved{background:#dcfce7;color:var(--good);}
+
+.equation-block{background:#f8f9fa;border:1px solid var(--line);border-radius:10px;
+  padding:16px 20px;margin:12px 0;position:relative;}
+.equation-block .eq-number{position:absolute;right:16px;top:50%;transform:translateY(-50%);
+  font-size:.82rem;color:var(--muted);font-weight:700;}
+.equation-name{font-size:.85rem;font-weight:700;color:var(--accent);margin-bottom:6px;}
+.equation-desc{font-size:.85rem;color:var(--muted);margin-top:8px;}
+.variable-list{margin:8px 0 0;padding:0 0 0 18px;font-size:.82rem;}
+.variable-list li{margin:2px 0;color:var(--muted);}
+.variable-list li .var-sym{color:var(--ink);font-weight:600;}
+
+.chart-container{margin:16px 0;position:relative;}
+.chart-container canvas{max-height:400px;width:100%;}
+.chart-title{font-size:.9rem;font-weight:700;color:var(--accent-2);margin-bottom:8px;}
+
+details{margin:8px 0;}
+details summary{cursor:pointer;font-weight:700;color:var(--accent);
+  font-size:.9rem;padding:4px 0;}
+details summary:hover{text-decoration:underline;}
+details[open] summary{margin-bottom:8px;}
+
+.report-footer{text-align:center;padding:20px;font-size:.75rem;color:var(--muted);
+  border-top:1px solid var(--line);margin-top:40px;}
+
+@media print{
+  body{background:#fff;}
+  .card{box-shadow:none;border:1px solid #ccc;break-inside:avoid;}
+  .hero{background:#f8f8f8;border-bottom:2px solid #333;}
+  .chart-container canvas{max-height:300px;}
+}
+
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div class="eyebrow">XLSX-SPOTFORMFOR</div>
+    <h1 class="report-title">Spotfire Formulas For Calc Variables</h1>
+    <div class="meta-chips">
+      <div class="meta-chip"><strong>Status</strong><span class="badge badge-draft">DRAFT</span></div>
+      <div class="meta-chip"><strong>Revision</strong>1</div>
+      <div class="meta-chip"><strong>Date</strong>2026-03-16</div>
+      <div class="meta-chip"><strong>Author</strong>XLSX Auto-Extraction (WRK-1247)</div>
+      <div class="meta-chip"><strong>Standard</strong>Excel calculation (portfolio)</div>
+    </div>
+  </div>
+</div>
+
+<div class="content">
+
+
+
+
+<div class="card">
+  <h2>Inputs</h2>
+  <table>
+    <thead><tr><th>Name</th><th>Symbol</th><th>Value</th><th>Unit</th><th>Source</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><strong>No inputs extracted</strong></td>
+        <td class="katex-inline">$-$</td>
+        <td>0</td>
+        <td>-</td>
+        <td>—</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+
+
+<div class="card">
+  <h2>Methodology</h2>
+  <p>Engineering calculation spreadsheet (portfolio domain)</p>
+  <p><strong>Standard:</strong> Excel calculation (portfolio)</p>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq1: O2</div>
+    <div class="katex-display">$$N2-M2$$</div>
+    <div class="equation-desc">Cell O2 in Sheet3</div>
+    <span class="eq-number">(eq1)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq2: P2</div>
+    <div class="katex-display">$$IF(O2=C2,0,1)$$</div>
+    <div class="equation-desc">Cell P2 in Sheet3</div>
+    <span class="eq-number">(eq2)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq3: O3</div>
+    <div class="katex-display">$$N3-M3$$</div>
+    <div class="equation-desc">Cell O3 in Sheet3</div>
+    <span class="eq-number">(eq3)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq4: P3</div>
+    <div class="katex-display">$$IF(O3=C3,0,1)$$</div>
+    <div class="equation-desc">Cell P3 in Sheet3</div>
+    <span class="eq-number">(eq4)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq5: O4</div>
+    <div class="katex-display">$$N4-M4$$</div>
+    <div class="equation-desc">Cell O4 in Sheet3</div>
+    <span class="eq-number">(eq5)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq6: P4</div>
+    <div class="katex-display">$$IF(O4=C4,0,1)$$</div>
+    <div class="equation-desc">Cell P4 in Sheet3</div>
+    <span class="eq-number">(eq6)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq7: O5</div>
+    <div class="katex-display">$$N5-M5$$</div>
+    <div class="equation-desc">Cell O5 in Sheet3</div>
+    <span class="eq-number">(eq7)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq8: P5</div>
+    <div class="katex-display">$$IF(O5=C5,0,1)$$</div>
+    <div class="equation-desc">Cell P5 in Sheet3</div>
+    <span class="eq-number">(eq8)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq9: O6</div>
+    <div class="katex-display">$$N6-M6$$</div>
+    <div class="equation-desc">Cell O6 in Sheet3</div>
+    <span class="eq-number">(eq9)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq10: P6</div>
+    <div class="katex-display">$$IF(O6=C6,0,1)$$</div>
+    <div class="equation-desc">Cell P6 in Sheet3</div>
+    <span class="eq-number">(eq10)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq11: O7</div>
+    <div class="katex-display">$$N7-M7$$</div>
+    <div class="equation-desc">Cell O7 in Sheet3</div>
+    <span class="eq-number">(eq11)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq12: P7</div>
+    <div class="katex-display">$$IF(O7=C7,0,1)$$</div>
+    <div class="equation-desc">Cell P7 in Sheet3</div>
+    <span class="eq-number">(eq12)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq13: O8</div>
+    <div class="katex-display">$$N8-M8$$</div>
+    <div class="equation-desc">Cell O8 in Sheet3</div>
+    <span class="eq-number">(eq13)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq14: P8</div>
+    <div class="katex-display">$$IF(O8=C8,0,1)$$</div>
+    <div class="equation-desc">Cell P8 in Sheet3</div>
+    <span class="eq-number">(eq14)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq15: O9</div>
+    <div class="katex-display">$$N9-M9$$</div>
+    <div class="equation-desc">Cell O9 in Sheet3</div>
+    <span class="eq-number">(eq15)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq16: P9</div>
+    <div class="katex-display">$$IF(O9=C9,0,1)$$</div>
+    <div class="equation-desc">Cell P9 in Sheet3</div>
+    <span class="eq-number">(eq16)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq17: O10</div>
+    <div class="katex-display">$$N10-M10$$</div>
+    <div class="equation-desc">Cell O10 in Sheet3</div>
+    <span class="eq-number">(eq17)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq18: P10</div>
+    <div class="katex-display">$$IF(O10=C10,0,1)$$</div>
+    <div class="equation-desc">Cell P10 in Sheet3</div>
+    <span class="eq-number">(eq18)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq19: O11</div>
+    <div class="katex-display">$$N11-M11$$</div>
+    <div class="equation-desc">Cell O11 in Sheet3</div>
+    <span class="eq-number">(eq19)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq20: P11</div>
+    <div class="katex-display">$$IF(O11=C11,0,1)$$</div>
+    <div class="equation-desc">Cell P11 in Sheet3</div>
+    <span class="eq-number">(eq20)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq21: O12</div>
+    <div class="katex-display">$$N12-M12$$</div>
+    <div class="equation-desc">Cell O12 in Sheet3</div>
+    <span class="eq-number">(eq21)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq22: P12</div>
+    <div class="katex-display">$$IF(O12=C12,0,1)$$</div>
+    <div class="equation-desc">Cell P12 in Sheet3</div>
+    <span class="eq-number">(eq22)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq23: O13</div>
+    <div class="katex-display">$$N13-M13$$</div>
+    <div class="equation-desc">Cell O13 in Sheet3</div>
+    <span class="eq-number">(eq23)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq24: P13</div>
+    <div class="katex-display">$$IF(O13=C13,0,1)$$</div>
+    <div class="equation-desc">Cell P13 in Sheet3</div>
+    <span class="eq-number">(eq24)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq25: O14</div>
+    <div class="katex-display">$$N14-M14$$</div>
+    <div class="equation-desc">Cell O14 in Sheet3</div>
+    <span class="eq-number">(eq25)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq26: P14</div>
+    <div class="katex-display">$$IF(O14=C14,0,1)$$</div>
+    <div class="equation-desc">Cell P14 in Sheet3</div>
+    <span class="eq-number">(eq26)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq27: O15</div>
+    <div class="katex-display">$$N15-M15$$</div>
+    <div class="equation-desc">Cell O15 in Sheet3</div>
+    <span class="eq-number">(eq27)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq28: P15</div>
+    <div class="katex-display">$$IF(O15=C15,0,1)$$</div>
+    <div class="equation-desc">Cell P15 in Sheet3</div>
+    <span class="eq-number">(eq28)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq29: O16</div>
+    <div class="katex-display">$$N16-M16$$</div>
+    <div class="equation-desc">Cell O16 in Sheet3</div>
+    <span class="eq-number">(eq29)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq30: P16</div>
+    <div class="katex-display">$$IF(O16=C16,0,1)$$</div>
+    <div class="equation-desc">Cell P16 in Sheet3</div>
+    <span class="eq-number">(eq30)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq31: O17</div>
+    <div class="katex-display">$$N17-M17$$</div>
+    <div class="equation-desc">Cell O17 in Sheet3</div>
+    <span class="eq-number">(eq31)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq32: P17</div>
+    <div class="katex-display">$$IF(O17=C17,0,1)$$</div>
+    <div class="equation-desc">Cell P17 in Sheet3</div>
+    <span class="eq-number">(eq32)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq33: O18</div>
+    <div class="katex-display">$$N18-M18$$</div>
+    <div class="equation-desc">Cell O18 in Sheet3</div>
+    <span class="eq-number">(eq33)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq34: P18</div>
+    <div class="katex-display">$$IF(O18=C18,0,1)$$</div>
+    <div class="equation-desc">Cell P18 in Sheet3</div>
+    <span class="eq-number">(eq34)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq35: O19</div>
+    <div class="katex-display">$$N19-M19$$</div>
+    <div class="equation-desc">Cell O19 in Sheet3</div>
+    <span class="eq-number">(eq35)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq36: P19</div>
+    <div class="katex-display">$$IF(O19=C19,0,1)$$</div>
+    <div class="equation-desc">Cell P19 in Sheet3</div>
+    <span class="eq-number">(eq36)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq37: O20</div>
+    <div class="katex-display">$$N20-M20$$</div>
+    <div class="equation-desc">Cell O20 in Sheet3</div>
+    <span class="eq-number">(eq37)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq38: P20</div>
+    <div class="katex-display">$$IF(O20=C20,0,1)$$</div>
+    <div class="equation-desc">Cell P20 in Sheet3</div>
+    <span class="eq-number">(eq38)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq39: O21</div>
+    <div class="katex-display">$$N21-M21$$</div>
+    <div class="equation-desc">Cell O21 in Sheet3</div>
+    <span class="eq-number">(eq39)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq40: P21</div>
+    <div class="katex-display">$$IF(O21=C21,0,1)$$</div>
+    <div class="equation-desc">Cell P21 in Sheet3</div>
+    <span class="eq-number">(eq40)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq41: O22</div>
+    <div class="katex-display">$$N22-M22$$</div>
+    <div class="equation-desc">Cell O22 in Sheet3</div>
+    <span class="eq-number">(eq41)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq42: P22</div>
+    <div class="katex-display">$$IF(O22=C22,0,1)$$</div>
+    <div class="equation-desc">Cell P22 in Sheet3</div>
+    <span class="eq-number">(eq42)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq43: O23</div>
+    <div class="katex-display">$$N23-M23$$</div>
+    <div class="equation-desc">Cell O23 in Sheet3</div>
+    <span class="eq-number">(eq43)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq44: P23</div>
+    <div class="katex-display">$$IF(O23=C23,0,1)$$</div>
+    <div class="equation-desc">Cell P23 in Sheet3</div>
+    <span class="eq-number">(eq44)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq45: O24</div>
+    <div class="katex-display">$$N24-M24$$</div>
+    <div class="equation-desc">Cell O24 in Sheet3</div>
+    <span class="eq-number">(eq45)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq46: P24</div>
+    <div class="katex-display">$$IF(O24=C24,0,1)$$</div>
+    <div class="equation-desc">Cell P24 in Sheet3</div>
+    <span class="eq-number">(eq46)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq47: O25</div>
+    <div class="katex-display">$$N25-M25$$</div>
+    <div class="equation-desc">Cell O25 in Sheet3</div>
+    <span class="eq-number">(eq47)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq48: P25</div>
+    <div class="katex-display">$$IF(O25=C25,0,1)$$</div>
+    <div class="equation-desc">Cell P25 in Sheet3</div>
+    <span class="eq-number">(eq48)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq49: O26</div>
+    <div class="katex-display">$$N26-M26$$</div>
+    <div class="equation-desc">Cell O26 in Sheet3</div>
+    <span class="eq-number">(eq49)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq50: P26</div>
+    <div class="katex-display">$$IF(O26=C26,0,1)$$</div>
+    <div class="equation-desc">Cell P26 in Sheet3</div>
+    <span class="eq-number">(eq50)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq51: O27</div>
+    <div class="katex-display">$$N27-M27$$</div>
+    <div class="equation-desc">Cell O27 in Sheet3</div>
+    <span class="eq-number">(eq51)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq52: P27</div>
+    <div class="katex-display">$$IF(O27=C27,0,1)$$</div>
+    <div class="equation-desc">Cell P27 in Sheet3</div>
+    <span class="eq-number">(eq52)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq53: O28</div>
+    <div class="katex-display">$$N28-M28$$</div>
+    <div class="equation-desc">Cell O28 in Sheet3</div>
+    <span class="eq-number">(eq53)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq54: P28</div>
+    <div class="katex-display">$$IF(O28=C28,0,1)$$</div>
+    <div class="equation-desc">Cell P28 in Sheet3</div>
+    <span class="eq-number">(eq54)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq55: O29</div>
+    <div class="katex-display">$$N29-M29$$</div>
+    <div class="equation-desc">Cell O29 in Sheet3</div>
+    <span class="eq-number">(eq55)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq56: P29</div>
+    <div class="katex-display">$$IF(O29=C29,0,1)$$</div>
+    <div class="equation-desc">Cell P29 in Sheet3</div>
+    <span class="eq-number">(eq56)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq57: O30</div>
+    <div class="katex-display">$$N30-M30$$</div>
+    <div class="equation-desc">Cell O30 in Sheet3</div>
+    <span class="eq-number">(eq57)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq58: P30</div>
+    <div class="katex-display">$$IF(O30=C30,0,1)$$</div>
+    <div class="equation-desc">Cell P30 in Sheet3</div>
+    <span class="eq-number">(eq58)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq59: O31</div>
+    <div class="katex-display">$$N31-M31$$</div>
+    <div class="equation-desc">Cell O31 in Sheet3</div>
+    <span class="eq-number">(eq59)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq60: P31</div>
+    <div class="katex-display">$$IF(O31=C31,0,1)$$</div>
+    <div class="equation-desc">Cell P31 in Sheet3</div>
+    <span class="eq-number">(eq60)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq61: O32</div>
+    <div class="katex-display">$$N32-M32$$</div>
+    <div class="equation-desc">Cell O32 in Sheet3</div>
+    <span class="eq-number">(eq61)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq62: P32</div>
+    <div class="katex-display">$$IF(O32=C32,0,1)$$</div>
+    <div class="equation-desc">Cell P32 in Sheet3</div>
+    <span class="eq-number">(eq62)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq63: O33</div>
+    <div class="katex-display">$$N33-M33$$</div>
+    <div class="equation-desc">Cell O33 in Sheet3</div>
+    <span class="eq-number">(eq63)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq64: P33</div>
+    <div class="katex-display">$$IF(O33=C33,0,1)$$</div>
+    <div class="equation-desc">Cell P33 in Sheet3</div>
+    <span class="eq-number">(eq64)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq65: O34</div>
+    <div class="katex-display">$$N34-M34$$</div>
+    <div class="equation-desc">Cell O34 in Sheet3</div>
+    <span class="eq-number">(eq65)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq66: P34</div>
+    <div class="katex-display">$$IF(O34=C34,0,1)$$</div>
+    <div class="equation-desc">Cell P34 in Sheet3</div>
+    <span class="eq-number">(eq66)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq67: O35</div>
+    <div class="katex-display">$$N35-M35$$</div>
+    <div class="equation-desc">Cell O35 in Sheet3</div>
+    <span class="eq-number">(eq67)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq68: P35</div>
+    <div class="katex-display">$$IF(O35=C35,0,1)$$</div>
+    <div class="equation-desc">Cell P35 in Sheet3</div>
+    <span class="eq-number">(eq68)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq69: O36</div>
+    <div class="katex-display">$$N36-M36$$</div>
+    <div class="equation-desc">Cell O36 in Sheet3</div>
+    <span class="eq-number">(eq69)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq70: P36</div>
+    <div class="katex-display">$$IF(O36=C36,0,1)$$</div>
+    <div class="equation-desc">Cell P36 in Sheet3</div>
+    <span class="eq-number">(eq70)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq71: O37</div>
+    <div class="katex-display">$$N37-M37$$</div>
+    <div class="equation-desc">Cell O37 in Sheet3</div>
+    <span class="eq-number">(eq71)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq72: P37</div>
+    <div class="katex-display">$$IF(O37=C37,0,1)$$</div>
+    <div class="equation-desc">Cell P37 in Sheet3</div>
+    <span class="eq-number">(eq72)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq73: O38</div>
+    <div class="katex-display">$$N38-M38$$</div>
+    <div class="equation-desc">Cell O38 in Sheet3</div>
+    <span class="eq-number">(eq73)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq74: P38</div>
+    <div class="katex-display">$$IF(O38=C38,0,1)$$</div>
+    <div class="equation-desc">Cell P38 in Sheet3</div>
+    <span class="eq-number">(eq74)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq75: O39</div>
+    <div class="katex-display">$$N39-M39$$</div>
+    <div class="equation-desc">Cell O39 in Sheet3</div>
+    <span class="eq-number">(eq75)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq76: P39</div>
+    <div class="katex-display">$$IF(O39=C39,0,1)$$</div>
+    <div class="equation-desc">Cell P39 in Sheet3</div>
+    <span class="eq-number">(eq76)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq77: O40</div>
+    <div class="katex-display">$$N40-M40$$</div>
+    <div class="equation-desc">Cell O40 in Sheet3</div>
+    <span class="eq-number">(eq77)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq78: P40</div>
+    <div class="katex-display">$$IF(O40=C40,0,1)$$</div>
+    <div class="equation-desc">Cell P40 in Sheet3</div>
+    <span class="eq-number">(eq78)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq79: O41</div>
+    <div class="katex-display">$$N41-M41$$</div>
+    <div class="equation-desc">Cell O41 in Sheet3</div>
+    <span class="eq-number">(eq79)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq80: P41</div>
+    <div class="katex-display">$$IF(O41=C41,0,1)$$</div>
+    <div class="equation-desc">Cell P41 in Sheet3</div>
+    <span class="eq-number">(eq80)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq81: O42</div>
+    <div class="katex-display">$$N42-M42$$</div>
+    <div class="equation-desc">Cell O42 in Sheet3</div>
+    <span class="eq-number">(eq81)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq82: P42</div>
+    <div class="katex-display">$$IF(O42=C42,0,1)$$</div>
+    <div class="equation-desc">Cell P42 in Sheet3</div>
+    <span class="eq-number">(eq82)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq83: O43</div>
+    <div class="katex-display">$$N43-M43$$</div>
+    <div class="equation-desc">Cell O43 in Sheet3</div>
+    <span class="eq-number">(eq83)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq84: P43</div>
+    <div class="katex-display">$$IF(O43=C43,0,1)$$</div>
+    <div class="equation-desc">Cell P43 in Sheet3</div>
+    <span class="eq-number">(eq84)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq85: O44</div>
+    <div class="katex-display">$$N44-M44$$</div>
+    <div class="equation-desc">Cell O44 in Sheet3</div>
+    <span class="eq-number">(eq85)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq86: P44</div>
+    <div class="katex-display">$$IF(O44=C44,0,1)$$</div>
+    <div class="equation-desc">Cell P44 in Sheet3</div>
+    <span class="eq-number">(eq86)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq87: O45</div>
+    <div class="katex-display">$$N45-M45$$</div>
+    <div class="equation-desc">Cell O45 in Sheet3</div>
+    <span class="eq-number">(eq87)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq88: P45</div>
+    <div class="katex-display">$$IF(O45=C45,0,1)$$</div>
+    <div class="equation-desc">Cell P45 in Sheet3</div>
+    <span class="eq-number">(eq88)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq89: O46</div>
+    <div class="katex-display">$$N46-M46$$</div>
+    <div class="equation-desc">Cell O46 in Sheet3</div>
+    <span class="eq-number">(eq89)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq90: P46</div>
+    <div class="katex-display">$$IF(O46=C46,0,1)$$</div>
+    <div class="equation-desc">Cell P46 in Sheet3</div>
+    <span class="eq-number">(eq90)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq91: O47</div>
+    <div class="katex-display">$$N47-M47$$</div>
+    <div class="equation-desc">Cell O47 in Sheet3</div>
+    <span class="eq-number">(eq91)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq92: P47</div>
+    <div class="katex-display">$$IF(O47=C47,0,1)$$</div>
+    <div class="equation-desc">Cell P47 in Sheet3</div>
+    <span class="eq-number">(eq92)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq93: O48</div>
+    <div class="katex-display">$$N48-M48$$</div>
+    <div class="equation-desc">Cell O48 in Sheet3</div>
+    <span class="eq-number">(eq93)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq94: P48</div>
+    <div class="katex-display">$$IF(O48=C48,0,1)$$</div>
+    <div class="equation-desc">Cell P48 in Sheet3</div>
+    <span class="eq-number">(eq94)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq95: O49</div>
+    <div class="katex-display">$$N49-M49$$</div>
+    <div class="equation-desc">Cell O49 in Sheet3</div>
+    <span class="eq-number">(eq95)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq96: P49</div>
+    <div class="katex-display">$$IF(O49=C49,0,1)$$</div>
+    <div class="equation-desc">Cell P49 in Sheet3</div>
+    <span class="eq-number">(eq96)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq97: O50</div>
+    <div class="katex-display">$$N50-M50$$</div>
+    <div class="equation-desc">Cell O50 in Sheet3</div>
+    <span class="eq-number">(eq97)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq98: P50</div>
+    <div class="katex-display">$$IF(O50=C50,0,1)$$</div>
+    <div class="equation-desc">Cell P50 in Sheet3</div>
+    <span class="eq-number">(eq98)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq99: O51</div>
+    <div class="katex-display">$$N51-M51$$</div>
+    <div class="equation-desc">Cell O51 in Sheet3</div>
+    <span class="eq-number">(eq99)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq100: P51</div>
+    <div class="katex-display">$$IF(O51=C51,0,1)$$</div>
+    <div class="equation-desc">Cell P51 in Sheet3</div>
+    <span class="eq-number">(eq100)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq101: O52</div>
+    <div class="katex-display">$$N52-M52$$</div>
+    <div class="equation-desc">Cell O52 in Sheet3</div>
+    <span class="eq-number">(eq101)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq102: P52</div>
+    <div class="katex-display">$$IF(O52=C52,0,1)$$</div>
+    <div class="equation-desc">Cell P52 in Sheet3</div>
+    <span class="eq-number">(eq102)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq103: O53</div>
+    <div class="katex-display">$$N53-M53$$</div>
+    <div class="equation-desc">Cell O53 in Sheet3</div>
+    <span class="eq-number">(eq103)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq104: P53</div>
+    <div class="katex-display">$$IF(O53=C53,0,1)$$</div>
+    <div class="equation-desc">Cell P53 in Sheet3</div>
+    <span class="eq-number">(eq104)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq105: O54</div>
+    <div class="katex-display">$$N54-M54$$</div>
+    <div class="equation-desc">Cell O54 in Sheet3</div>
+    <span class="eq-number">(eq105)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq106: P54</div>
+    <div class="katex-display">$$IF(O54=C54,0,1)$$</div>
+    <div class="equation-desc">Cell P54 in Sheet3</div>
+    <span class="eq-number">(eq106)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq107: O55</div>
+    <div class="katex-display">$$N55-M55$$</div>
+    <div class="equation-desc">Cell O55 in Sheet3</div>
+    <span class="eq-number">(eq107)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq108: P55</div>
+    <div class="katex-display">$$IF(O55=C55,0,1)$$</div>
+    <div class="equation-desc">Cell P55 in Sheet3</div>
+    <span class="eq-number">(eq108)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq109: O56</div>
+    <div class="katex-display">$$N56-M56$$</div>
+    <div class="equation-desc">Cell O56 in Sheet3</div>
+    <span class="eq-number">(eq109)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq110: P56</div>
+    <div class="katex-display">$$IF(O56=C56,0,1)$$</div>
+    <div class="equation-desc">Cell P56 in Sheet3</div>
+    <span class="eq-number">(eq110)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq111: O57</div>
+    <div class="katex-display">$$N57-M57$$</div>
+    <div class="equation-desc">Cell O57 in Sheet3</div>
+    <span class="eq-number">(eq111)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq112: P57</div>
+    <div class="katex-display">$$IF(O57=C57,0,1)$$</div>
+    <div class="equation-desc">Cell P57 in Sheet3</div>
+    <span class="eq-number">(eq112)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq113: O58</div>
+    <div class="katex-display">$$N58-M58$$</div>
+    <div class="equation-desc">Cell O58 in Sheet3</div>
+    <span class="eq-number">(eq113)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq114: P58</div>
+    <div class="katex-display">$$IF(O58=C58,0,1)$$</div>
+    <div class="equation-desc">Cell P58 in Sheet3</div>
+    <span class="eq-number">(eq114)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq115: O59</div>
+    <div class="katex-display">$$N59-M59$$</div>
+    <div class="equation-desc">Cell O59 in Sheet3</div>
+    <span class="eq-number">(eq115)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq116: P59</div>
+    <div class="katex-display">$$IF(O59=C59,0,1)$$</div>
+    <div class="equation-desc">Cell P59 in Sheet3</div>
+    <span class="eq-number">(eq116)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq117: O60</div>
+    <div class="katex-display">$$N60-M60$$</div>
+    <div class="equation-desc">Cell O60 in Sheet3</div>
+    <span class="eq-number">(eq117)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq118: P60</div>
+    <div class="katex-display">$$IF(O60=C60,0,1)$$</div>
+    <div class="equation-desc">Cell P60 in Sheet3</div>
+    <span class="eq-number">(eq118)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq119: O61</div>
+    <div class="katex-display">$$N61-M61$$</div>
+    <div class="equation-desc">Cell O61 in Sheet3</div>
+    <span class="eq-number">(eq119)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq120: P61</div>
+    <div class="katex-display">$$IF(O61=C61,0,1)$$</div>
+    <div class="equation-desc">Cell P61 in Sheet3</div>
+    <span class="eq-number">(eq120)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq121: O62</div>
+    <div class="katex-display">$$N62-M62$$</div>
+    <div class="equation-desc">Cell O62 in Sheet3</div>
+    <span class="eq-number">(eq121)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq122: P62</div>
+    <div class="katex-display">$$IF(O62=C62,0,1)$$</div>
+    <div class="equation-desc">Cell P62 in Sheet3</div>
+    <span class="eq-number">(eq122)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq123: O63</div>
+    <div class="katex-display">$$N63-M63$$</div>
+    <div class="equation-desc">Cell O63 in Sheet3</div>
+    <span class="eq-number">(eq123)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq124: P63</div>
+    <div class="katex-display">$$IF(O63=C63,0,1)$$</div>
+    <div class="equation-desc">Cell P63 in Sheet3</div>
+    <span class="eq-number">(eq124)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq125: O64</div>
+    <div class="katex-display">$$N64-M64$$</div>
+    <div class="equation-desc">Cell O64 in Sheet3</div>
+    <span class="eq-number">(eq125)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq126: P64</div>
+    <div class="katex-display">$$IF(O64=C64,0,1)$$</div>
+    <div class="equation-desc">Cell P64 in Sheet3</div>
+    <span class="eq-number">(eq126)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq127: O65</div>
+    <div class="katex-display">$$N65-M65$$</div>
+    <div class="equation-desc">Cell O65 in Sheet3</div>
+    <span class="eq-number">(eq127)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq128: P65</div>
+    <div class="katex-display">$$IF(O65=C65,0,1)$$</div>
+    <div class="equation-desc">Cell P65 in Sheet3</div>
+    <span class="eq-number">(eq128)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq129: O66</div>
+    <div class="katex-display">$$N66-M66$$</div>
+    <div class="equation-desc">Cell O66 in Sheet3</div>
+    <span class="eq-number">(eq129)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq130: P66</div>
+    <div class="katex-display">$$IF(O66=C66,0,1)$$</div>
+    <div class="equation-desc">Cell P66 in Sheet3</div>
+    <span class="eq-number">(eq130)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq131: O67</div>
+    <div class="katex-display">$$N67-M67$$</div>
+    <div class="equation-desc">Cell O67 in Sheet3</div>
+    <span class="eq-number">(eq131)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq132: P67</div>
+    <div class="katex-display">$$IF(O67=C67,0,1)$$</div>
+    <div class="equation-desc">Cell P67 in Sheet3</div>
+    <span class="eq-number">(eq132)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq133: O68</div>
+    <div class="katex-display">$$N68-M68$$</div>
+    <div class="equation-desc">Cell O68 in Sheet3</div>
+    <span class="eq-number">(eq133)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq134: P68</div>
+    <div class="katex-display">$$IF(O68=C68,0,1)$$</div>
+    <div class="equation-desc">Cell P68 in Sheet3</div>
+    <span class="eq-number">(eq134)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq135: O69</div>
+    <div class="katex-display">$$N69-M69$$</div>
+    <div class="equation-desc">Cell O69 in Sheet3</div>
+    <span class="eq-number">(eq135)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq136: P69</div>
+    <div class="katex-display">$$IF(O69=C69,0,1)$$</div>
+    <div class="equation-desc">Cell P69 in Sheet3</div>
+    <span class="eq-number">(eq136)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq137: O70</div>
+    <div class="katex-display">$$N70-M70$$</div>
+    <div class="equation-desc">Cell O70 in Sheet3</div>
+    <span class="eq-number">(eq137)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq138: P70</div>
+    <div class="katex-display">$$IF(O70=C70,0,1)$$</div>
+    <div class="equation-desc">Cell P70 in Sheet3</div>
+    <span class="eq-number">(eq138)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq139: O71</div>
+    <div class="katex-display">$$N71-M71$$</div>
+    <div class="equation-desc">Cell O71 in Sheet3</div>
+    <span class="eq-number">(eq139)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq140: P71</div>
+    <div class="katex-display">$$IF(O71=C71,0,1)$$</div>
+    <div class="equation-desc">Cell P71 in Sheet3</div>
+    <span class="eq-number">(eq140)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq141: O72</div>
+    <div class="katex-display">$$N72-M72$$</div>
+    <div class="equation-desc">Cell O72 in Sheet3</div>
+    <span class="eq-number">(eq141)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq142: P72</div>
+    <div class="katex-display">$$IF(O72=C72,0,1)$$</div>
+    <div class="equation-desc">Cell P72 in Sheet3</div>
+    <span class="eq-number">(eq142)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq143: O73</div>
+    <div class="katex-display">$$N73-M73$$</div>
+    <div class="equation-desc">Cell O73 in Sheet3</div>
+    <span class="eq-number">(eq143)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq144: P73</div>
+    <div class="katex-display">$$IF(O73=C73,0,1)$$</div>
+    <div class="equation-desc">Cell P73 in Sheet3</div>
+    <span class="eq-number">(eq144)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq145: O74</div>
+    <div class="katex-display">$$N74-M74$$</div>
+    <div class="equation-desc">Cell O74 in Sheet3</div>
+    <span class="eq-number">(eq145)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq146: P74</div>
+    <div class="katex-display">$$IF(O74=C74,0,1)$$</div>
+    <div class="equation-desc">Cell P74 in Sheet3</div>
+    <span class="eq-number">(eq146)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq147: O75</div>
+    <div class="katex-display">$$N75-M75$$</div>
+    <div class="equation-desc">Cell O75 in Sheet3</div>
+    <span class="eq-number">(eq147)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq148: P75</div>
+    <div class="katex-display">$$IF(O75=C75,0,1)$$</div>
+    <div class="equation-desc">Cell P75 in Sheet3</div>
+    <span class="eq-number">(eq148)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq149: O76</div>
+    <div class="katex-display">$$N76-M76$$</div>
+    <div class="equation-desc">Cell O76 in Sheet3</div>
+    <span class="eq-number">(eq149)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq150: P76</div>
+    <div class="katex-display">$$IF(O76=C76,0,1)$$</div>
+    <div class="equation-desc">Cell P76 in Sheet3</div>
+    <span class="eq-number">(eq150)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq151: O77</div>
+    <div class="katex-display">$$N77-M77$$</div>
+    <div class="equation-desc">Cell O77 in Sheet3</div>
+    <span class="eq-number">(eq151)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq152: P77</div>
+    <div class="katex-display">$$IF(O77=C77,0,1)$$</div>
+    <div class="equation-desc">Cell P77 in Sheet3</div>
+    <span class="eq-number">(eq152)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq153: O78</div>
+    <div class="katex-display">$$N78-M78$$</div>
+    <div class="equation-desc">Cell O78 in Sheet3</div>
+    <span class="eq-number">(eq153)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq154: P78</div>
+    <div class="katex-display">$$IF(O78=C78,0,1)$$</div>
+    <div class="equation-desc">Cell P78 in Sheet3</div>
+    <span class="eq-number">(eq154)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq155: O79</div>
+    <div class="katex-display">$$N79-M79$$</div>
+    <div class="equation-desc">Cell O79 in Sheet3</div>
+    <span class="eq-number">(eq155)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq156: P79</div>
+    <div class="katex-display">$$IF(O79=C79,0,1)$$</div>
+    <div class="equation-desc">Cell P79 in Sheet3</div>
+    <span class="eq-number">(eq156)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq157: O80</div>
+    <div class="katex-display">$$N80-M80$$</div>
+    <div class="equation-desc">Cell O80 in Sheet3</div>
+    <span class="eq-number">(eq157)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq158: P80</div>
+    <div class="katex-display">$$IF(O80=C80,0,1)$$</div>
+    <div class="equation-desc">Cell P80 in Sheet3</div>
+    <span class="eq-number">(eq158)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq159: O81</div>
+    <div class="katex-display">$$N81-M81$$</div>
+    <div class="equation-desc">Cell O81 in Sheet3</div>
+    <span class="eq-number">(eq159)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq160: P81</div>
+    <div class="katex-display">$$IF(O81=C81,0,1)$$</div>
+    <div class="equation-desc">Cell P81 in Sheet3</div>
+    <span class="eq-number">(eq160)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq161: O82</div>
+    <div class="katex-display">$$N82-M82$$</div>
+    <div class="equation-desc">Cell O82 in Sheet3</div>
+    <span class="eq-number">(eq161)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq162: P82</div>
+    <div class="katex-display">$$IF(O82=C82,0,1)$$</div>
+    <div class="equation-desc">Cell P82 in Sheet3</div>
+    <span class="eq-number">(eq162)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq163: O83</div>
+    <div class="katex-display">$$N83-M83$$</div>
+    <div class="equation-desc">Cell O83 in Sheet3</div>
+    <span class="eq-number">(eq163)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq164: P83</div>
+    <div class="katex-display">$$IF(O83=C83,0,1)$$</div>
+    <div class="equation-desc">Cell P83 in Sheet3</div>
+    <span class="eq-number">(eq164)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq165: O84</div>
+    <div class="katex-display">$$N84-M84$$</div>
+    <div class="equation-desc">Cell O84 in Sheet3</div>
+    <span class="eq-number">(eq165)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq166: P84</div>
+    <div class="katex-display">$$IF(O84=C84,0,1)$$</div>
+    <div class="equation-desc">Cell P84 in Sheet3</div>
+    <span class="eq-number">(eq166)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq167: O85</div>
+    <div class="katex-display">$$N85-M85$$</div>
+    <div class="equation-desc">Cell O85 in Sheet3</div>
+    <span class="eq-number">(eq167)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq168: P85</div>
+    <div class="katex-display">$$IF(O85=C85,0,1)$$</div>
+    <div class="equation-desc">Cell P85 in Sheet3</div>
+    <span class="eq-number">(eq168)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq169: O86</div>
+    <div class="katex-display">$$N86-M86$$</div>
+    <div class="equation-desc">Cell O86 in Sheet3</div>
+    <span class="eq-number">(eq169)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq170: P86</div>
+    <div class="katex-display">$$IF(O86=C86,0,1)$$</div>
+    <div class="equation-desc">Cell P86 in Sheet3</div>
+    <span class="eq-number">(eq170)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq171: O87</div>
+    <div class="katex-display">$$N87-M87$$</div>
+    <div class="equation-desc">Cell O87 in Sheet3</div>
+    <span class="eq-number">(eq171)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq172: P87</div>
+    <div class="katex-display">$$IF(O87=C87,0,1)$$</div>
+    <div class="equation-desc">Cell P87 in Sheet3</div>
+    <span class="eq-number">(eq172)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq173: O88</div>
+    <div class="katex-display">$$N88-M88$$</div>
+    <div class="equation-desc">Cell O88 in Sheet3</div>
+    <span class="eq-number">(eq173)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq174: P88</div>
+    <div class="katex-display">$$IF(O88=C88,0,1)$$</div>
+    <div class="equation-desc">Cell P88 in Sheet3</div>
+    <span class="eq-number">(eq174)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq175: O89</div>
+    <div class="katex-display">$$N89-M89$$</div>
+    <div class="equation-desc">Cell O89 in Sheet3</div>
+    <span class="eq-number">(eq175)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq176: P89</div>
+    <div class="katex-display">$$IF(O89=C89,0,1)$$</div>
+    <div class="equation-desc">Cell P89 in Sheet3</div>
+    <span class="eq-number">(eq176)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq177: O90</div>
+    <div class="katex-display">$$N90-M90$$</div>
+    <div class="equation-desc">Cell O90 in Sheet3</div>
+    <span class="eq-number">(eq177)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq178: P90</div>
+    <div class="katex-display">$$IF(O90=C90,0,1)$$</div>
+    <div class="equation-desc">Cell P90 in Sheet3</div>
+    <span class="eq-number">(eq178)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq179: O91</div>
+    <div class="katex-display">$$N91-M91$$</div>
+    <div class="equation-desc">Cell O91 in Sheet3</div>
+    <span class="eq-number">(eq179)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq180: P91</div>
+    <div class="katex-display">$$IF(O91=C91,0,1)$$</div>
+    <div class="equation-desc">Cell P91 in Sheet3</div>
+    <span class="eq-number">(eq180)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq181: O92</div>
+    <div class="katex-display">$$N92-M92$$</div>
+    <div class="equation-desc">Cell O92 in Sheet3</div>
+    <span class="eq-number">(eq181)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq182: P92</div>
+    <div class="katex-display">$$IF(O92=C92,0,1)$$</div>
+    <div class="equation-desc">Cell P92 in Sheet3</div>
+    <span class="eq-number">(eq182)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq183: O93</div>
+    <div class="katex-display">$$N93-M93$$</div>
+    <div class="equation-desc">Cell O93 in Sheet3</div>
+    <span class="eq-number">(eq183)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq184: P93</div>
+    <div class="katex-display">$$IF(O93=C93,0,1)$$</div>
+    <div class="equation-desc">Cell P93 in Sheet3</div>
+    <span class="eq-number">(eq184)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq185: O94</div>
+    <div class="katex-display">$$N94-M94$$</div>
+    <div class="equation-desc">Cell O94 in Sheet3</div>
+    <span class="eq-number">(eq185)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq186: P94</div>
+    <div class="katex-display">$$IF(O94=C94,0,1)$$</div>
+    <div class="equation-desc">Cell P94 in Sheet3</div>
+    <span class="eq-number">(eq186)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq187: O95</div>
+    <div class="katex-display">$$N95-M95$$</div>
+    <div class="equation-desc">Cell O95 in Sheet3</div>
+    <span class="eq-number">(eq187)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq188: P95</div>
+    <div class="katex-display">$$IF(O95=C95,0,1)$$</div>
+    <div class="equation-desc">Cell P95 in Sheet3</div>
+    <span class="eq-number">(eq188)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq189: O96</div>
+    <div class="katex-display">$$N96-M96$$</div>
+    <div class="equation-desc">Cell O96 in Sheet3</div>
+    <span class="eq-number">(eq189)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq190: P96</div>
+    <div class="katex-display">$$IF(O96=C96,0,1)$$</div>
+    <div class="equation-desc">Cell P96 in Sheet3</div>
+    <span class="eq-number">(eq190)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq191: O97</div>
+    <div class="katex-display">$$N97-M97$$</div>
+    <div class="equation-desc">Cell O97 in Sheet3</div>
+    <span class="eq-number">(eq191)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq192: P97</div>
+    <div class="katex-display">$$IF(O97=C97,0,1)$$</div>
+    <div class="equation-desc">Cell P97 in Sheet3</div>
+    <span class="eq-number">(eq192)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq193: O98</div>
+    <div class="katex-display">$$N98-M98$$</div>
+    <div class="equation-desc">Cell O98 in Sheet3</div>
+    <span class="eq-number">(eq193)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq194: P98</div>
+    <div class="katex-display">$$IF(O98=C98,0,1)$$</div>
+    <div class="equation-desc">Cell P98 in Sheet3</div>
+    <span class="eq-number">(eq194)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq195: O99</div>
+    <div class="katex-display">$$N99-M99$$</div>
+    <div class="equation-desc">Cell O99 in Sheet3</div>
+    <span class="eq-number">(eq195)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq196: P99</div>
+    <div class="katex-display">$$IF(O99=C99,0,1)$$</div>
+    <div class="equation-desc">Cell P99 in Sheet3</div>
+    <span class="eq-number">(eq196)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq197: O100</div>
+    <div class="katex-display">$$N100-M100$$</div>
+    <div class="equation-desc">Cell O100 in Sheet3</div>
+    <span class="eq-number">(eq197)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq198: P100</div>
+    <div class="katex-display">$$IF(O100=C100,0,1)$$</div>
+    <div class="equation-desc">Cell P100 in Sheet3</div>
+    <span class="eq-number">(eq198)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq199: O101</div>
+    <div class="katex-display">$$N101-M101$$</div>
+    <div class="equation-desc">Cell O101 in Sheet3</div>
+    <span class="eq-number">(eq199)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq200: P101</div>
+    <div class="katex-display">$$IF(O101=C101,0,1)$$</div>
+    <div class="equation-desc">Cell P101 in Sheet3</div>
+    <span class="eq-number">(eq200)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq201: O102</div>
+    <div class="katex-display">$$N102-M102$$</div>
+    <div class="equation-desc">Cell O102 in Sheet3</div>
+    <span class="eq-number">(eq201)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq202: P102</div>
+    <div class="katex-display">$$IF(O102=C102,0,1)$$</div>
+    <div class="equation-desc">Cell P102 in Sheet3</div>
+    <span class="eq-number">(eq202)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq203: O103</div>
+    <div class="katex-display">$$N103-M103$$</div>
+    <div class="equation-desc">Cell O103 in Sheet3</div>
+    <span class="eq-number">(eq203)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq204: P103</div>
+    <div class="katex-display">$$IF(O103=C103,0,1)$$</div>
+    <div class="equation-desc">Cell P103 in Sheet3</div>
+    <span class="eq-number">(eq204)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq205: O104</div>
+    <div class="katex-display">$$N104-M104$$</div>
+    <div class="equation-desc">Cell O104 in Sheet3</div>
+    <span class="eq-number">(eq205)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq206: P104</div>
+    <div class="katex-display">$$IF(O104=C104,0,1)$$</div>
+    <div class="equation-desc">Cell P104 in Sheet3</div>
+    <span class="eq-number">(eq206)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq207: O105</div>
+    <div class="katex-display">$$N105-M105$$</div>
+    <div class="equation-desc">Cell O105 in Sheet3</div>
+    <span class="eq-number">(eq207)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq208: P105</div>
+    <div class="katex-display">$$IF(O105=C105,0,1)$$</div>
+    <div class="equation-desc">Cell P105 in Sheet3</div>
+    <span class="eq-number">(eq208)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq209: O106</div>
+    <div class="katex-display">$$N106-M106$$</div>
+    <div class="equation-desc">Cell O106 in Sheet3</div>
+    <span class="eq-number">(eq209)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq210: P106</div>
+    <div class="katex-display">$$IF(O106=C106,0,1)$$</div>
+    <div class="equation-desc">Cell P106 in Sheet3</div>
+    <span class="eq-number">(eq210)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq211: O107</div>
+    <div class="katex-display">$$N107-M107$$</div>
+    <div class="equation-desc">Cell O107 in Sheet3</div>
+    <span class="eq-number">(eq211)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq212: P107</div>
+    <div class="katex-display">$$IF(O107=C107,0,1)$$</div>
+    <div class="equation-desc">Cell P107 in Sheet3</div>
+    <span class="eq-number">(eq212)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq213: O108</div>
+    <div class="katex-display">$$N108-M108$$</div>
+    <div class="equation-desc">Cell O108 in Sheet3</div>
+    <span class="eq-number">(eq213)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq214: P108</div>
+    <div class="katex-display">$$IF(O108=C108,0,1)$$</div>
+    <div class="equation-desc">Cell P108 in Sheet3</div>
+    <span class="eq-number">(eq214)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq215: O109</div>
+    <div class="katex-display">$$N109-M109$$</div>
+    <div class="equation-desc">Cell O109 in Sheet3</div>
+    <span class="eq-number">(eq215)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq216: P109</div>
+    <div class="katex-display">$$IF(O109=C109,0,1)$$</div>
+    <div class="equation-desc">Cell P109 in Sheet3</div>
+    <span class="eq-number">(eq216)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq217: O110</div>
+    <div class="katex-display">$$N110-M110$$</div>
+    <div class="equation-desc">Cell O110 in Sheet3</div>
+    <span class="eq-number">(eq217)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq218: P110</div>
+    <div class="katex-display">$$IF(O110=C110,0,1)$$</div>
+    <div class="equation-desc">Cell P110 in Sheet3</div>
+    <span class="eq-number">(eq218)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq219: B118</div>
+    <div class="katex-display">$$A118 \cdot $B$117$$</div>
+    <div class="equation-desc">Cell B118 in Sheet3</div>
+    <span class="eq-number">(eq219)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq220: B119</div>
+    <div class="katex-display">$$A119 \cdot $B$117$$</div>
+    <div class="equation-desc">Cell B119 in Sheet3</div>
+    <span class="eq-number">(eq220)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq221: B120</div>
+    <div class="katex-display">$$B119-B118$$</div>
+    <div class="equation-desc">Cell B120 in Sheet3</div>
+    <span class="eq-number">(eq221)</span>
+    
+  </div>
+  <div class="equation-block">
+    <div class="equation-name">Equation eq222: B122</div>
+    <div class="katex-display">$$A119-A118$$</div>
+    <div class="equation-desc">Cell B122 in Sheet3</div>
+    <span class="eq-number">(eq222)</span>
+    
+  </div>
+</div>
+
+
+
+<div class="card">
+  <h2>Outputs</h2>
+  <table>
+    <thead><tr><th>Name</th><th>Symbol</th><th>Value</th><th>Unit</th><th>Pass/Fail</th><th>Limit</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><strong>P2</strong></td>
+        <td class="katex-inline">$P2$</td>
+        <td>0</td>
+        <td></td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P3</strong></td>
+        <td class="katex-inline">$P3$</td>
+        <td>1</td>
+        <td></td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P4</strong></td>
+        <td class="katex-inline">$P4$</td>
+        <td>1</td>
+        <td></td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P5</strong></td>
+        <td class="katex-inline">$P5$</td>
+        <td>1</td>
+        <td></td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P6</strong></td>
+        <td class="katex-inline">$P6$</td>
+        <td>0</td>
+        <td></td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P7</strong></td>
+        <td class="katex-inline">$P7$</td>
+        <td>0</td>
+        <td></td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P8</strong></td>
+        <td class="katex-inline">$P8$</td>
+        <td>0</td>
+        <td></td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P9</strong></td>
+        <td class="katex-inline">$P9$</td>
+        <td>0</td>
+        <td></td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P10</strong></td>
+        <td class="katex-inline">$P10$</td>
+        <td>0</td>
+        <td></td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P11</strong></td>
+        <td class="katex-inline">$P11$</td>
+        <td>0</td>
+        <td></td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P12</strong></td>
+        <td class="katex-inline">$P12$</td>
+        <td>0</td>
+        <td></td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P13</strong></td>
+        <td class="katex-inline">$P13$</td>
+        <td>0</td>
+        <td></td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P14</strong></td>
+        <td class="katex-inline">$P14$</td>
+        <td>0</td>
+        <td></td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P15</strong></td>
+        <td class="katex-inline">$P15$</td>
+        <td>0</td>
+        <td></td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P16</strong></td>
+        <td class="katex-inline">$P16$</td>
+        <td>0</td>
+        <td></td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P17</strong></td>
+        <td class="katex-inline">$P17$</td>
+        <td>0</td>
+        <td></td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P18</strong></td>
+        <td class="katex-inline">$P18$</td>
+        <td>0</td>
+        <td></td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P19</strong></td>
+        <td class="katex-inline">$P19$</td>
+        <td>0</td>
+        <td></td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P20</strong></td>
+        <td class="katex-inline">$P20$</td>
+        <td>0</td>
+        <td></td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P21</strong></td>
+        <td class="katex-inline">$P21$</td>
+        <td>0</td>
+        <td></td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P22</strong></td>
+        <td class="katex-inline">$P22$</td>
+        <td>0</td>
+        <td></td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P23</strong></td>
+        <td class="katex-inline">$P23$</td>
+        <td>0</td>
+        <td></td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P24</strong></td>
+        <td class="katex-inline">$P24$</td>
+        <td>0</td>
+        <td></td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P25</strong></td>
+        <td class="katex-inline">$P25$</td>
+        <td>0</td>
+        <td></td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P26</strong></td>
+        <td class="katex-inline">$P26$</td>
+        <td>1</td>
+        <td></td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P27</strong></td>
+        <td class="katex-inline">$P27$</td>
+        <td>0</td>
+        <td></td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P28</strong></td>
+        <td class="katex-inline">$P28$</td>
+        <td>0</td>
+        <td></td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P29</strong></td>
+        <td class="katex-inline">$P29$</td>
+        <td>0</td>
+        <td></td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P30</strong></td>
+        <td class="katex-inline">$P30$</td>
+        <td>0</td>
+        <td></td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P31</strong></td>
+        <td class="katex-inline">$P31$</td>
+        <td>0</td>
+        <td></td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P32</strong></td>
+        <td class="katex-inline">$P32$</td>
+        <td>0</td>
+        <td></td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P33</strong></td>
+        <td class="katex-inline">$P33$</td>
+        <td>0</td>
+        <td></td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P34</strong></td>
+        <td class="katex-inline">$P34$</td>
+        <td>0</td>
+        <td></td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P35</strong></td>
+        <td class="katex-inline">$P35$</td>
+        <td>0</td>
+        <td></td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P36</strong></td>
+        <td class="katex-inline">$P36$</td>
+        <td>0</td>
+        <td></td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P37</strong></td>
+        <td class="katex-inline">$P37$</td>
+        <td>0</td>
+        <td></td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P38</strong></td>
+        <td class="katex-inline">$P38$</td>
+        <td>1</td>
+        <td></td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P39</strong></td>
+        <td class="katex-inline">$P39$</td>
+        <td>0</td>
+        <td></td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P40</strong></td>
+        <td class="katex-inline">$P40$</td>
+        <td>0</td>
+        <td></td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P41</strong></td>
+        <td class="katex-inline">$P41$</td>
+        <td>0</td>
+        <td></td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P42</strong></td>
+        <td class="katex-inline">$P42$</td>
+        <td>0</td>
+        <td></td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P43</strong></td>
+        <td class="katex-inline">$P43$</td>
+        <td>0</td>
+        <td></td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P44</strong></td>
+        <td class="katex-inline">$P44$</td>
+        <td>0</td>
+        <td></td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P45</strong></td>
+        <td class="katex-inline">$P45$</td>
+        <td>0</td>
+        <td></td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P46</strong></td>
+        <td class="katex-inline">$P46$</td>
+        <td>0</td>
+        <td></td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P47</strong></td>
+        <td class="katex-inline">$P47$</td>
+        <td>0</td>
+        <td></td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P48</strong></td>
+        <td class="katex-inline">$P48$</td>
+        <td>0</td>
+        <td></td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P49</strong></td>
+        <td class="katex-inline">$P49$</td>
+        <td>0</td>
+        <td></td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P50</strong></td>
+        <td class="katex-inline">$P50$</td>
+        <td>0</td>
+        <td></td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P51</strong></td>
+        <td class="katex-inline">$P51$</td>
+        <td>0</td>
+        <td></td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P52</strong></td>
+        <td class="katex-inline">$P52$</td>
+        <td>0</td>
+        <td></td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P53</strong></td>
+        <td class="katex-inline">$P53$</td>
+        <td>0</td>
+        <td></td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P54</strong></td>
+        <td class="katex-inline">$P54$</td>
+        <td>0</td>
+        <td></td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P55</strong></td>
+        <td class="katex-inline">$P55$</td>
+        <td>0</td>
+        <td></td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P56</strong></td>
+        <td class="katex-inline">$P56$</td>
+        <td>0</td>
+        <td></td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P57</strong></td>
+        <td class="katex-inline">$P57$</td>
+        <td>0</td>
+        <td></td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P58</strong></td>
+        <td class="katex-inline">$P58$</td>
+        <td>0</td>
+        <td></td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P59</strong></td>
+        <td class="katex-inline">$P59$</td>
+        <td>0</td>
+        <td></td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P60</strong></td>
+        <td class="katex-inline">$P60$</td>
+        <td>0</td>
+        <td></td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P61</strong></td>
+        <td class="katex-inline">$P61$</td>
+        <td>0</td>
+        <td></td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P62</strong></td>
+        <td class="katex-inline">$P62$</td>
+        <td>0</td>
+        <td></td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P63</strong></td>
+        <td class="katex-inline">$P63$</td>
+        <td>0</td>
+        <td></td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P64</strong></td>
+        <td class="katex-inline">$P64$</td>
+        <td>0</td>
+        <td></td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P65</strong></td>
+        <td class="katex-inline">$P65$</td>
+        <td>0</td>
+        <td></td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P66</strong></td>
+        <td class="katex-inline">$P66$</td>
+        <td>0</td>
+        <td></td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P67</strong></td>
+        <td class="katex-inline">$P67$</td>
+        <td>0</td>
+        <td></td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P68</strong></td>
+        <td class="katex-inline">$P68$</td>
+        <td>0</td>
+        <td></td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P69</strong></td>
+        <td class="katex-inline">$P69$</td>
+        <td>0</td>
+        <td></td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P70</strong></td>
+        <td class="katex-inline">$P70$</td>
+        <td>0</td>
+        <td></td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P71</strong></td>
+        <td class="katex-inline">$P71$</td>
+        <td>0</td>
+        <td></td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P72</strong></td>
+        <td class="katex-inline">$P72$</td>
+        <td>0</td>
+        <td></td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P73</strong></td>
+        <td class="katex-inline">$P73$</td>
+        <td>0</td>
+        <td></td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P74</strong></td>
+        <td class="katex-inline">$P74$</td>
+        <td>0</td>
+        <td></td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P75</strong></td>
+        <td class="katex-inline">$P75$</td>
+        <td>0</td>
+        <td></td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P76</strong></td>
+        <td class="katex-inline">$P76$</td>
+        <td>0</td>
+        <td></td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P77</strong></td>
+        <td class="katex-inline">$P77$</td>
+        <td>0</td>
+        <td></td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P78</strong></td>
+        <td class="katex-inline">$P78$</td>
+        <td>0</td>
+        <td></td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P79</strong></td>
+        <td class="katex-inline">$P79$</td>
+        <td>0</td>
+        <td></td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P80</strong></td>
+        <td class="katex-inline">$P80$</td>
+        <td>0</td>
+        <td></td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P81</strong></td>
+        <td class="katex-inline">$P81$</td>
+        <td>0</td>
+        <td></td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P82</strong></td>
+        <td class="katex-inline">$P82$</td>
+        <td>1</td>
+        <td></td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P83</strong></td>
+        <td class="katex-inline">$P83$</td>
+        <td>0</td>
+        <td></td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P84</strong></td>
+        <td class="katex-inline">$P84$</td>
+        <td>0</td>
+        <td></td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P85</strong></td>
+        <td class="katex-inline">$P85$</td>
+        <td>0</td>
+        <td></td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P86</strong></td>
+        <td class="katex-inline">$P86$</td>
+        <td>0</td>
+        <td></td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P87</strong></td>
+        <td class="katex-inline">$P87$</td>
+        <td>0</td>
+        <td></td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P88</strong></td>
+        <td class="katex-inline">$P88$</td>
+        <td>0</td>
+        <td></td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P89</strong></td>
+        <td class="katex-inline">$P89$</td>
+        <td>0</td>
+        <td></td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P90</strong></td>
+        <td class="katex-inline">$P90$</td>
+        <td>0</td>
+        <td></td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P91</strong></td>
+        <td class="katex-inline">$P91$</td>
+        <td>0</td>
+        <td></td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P92</strong></td>
+        <td class="katex-inline">$P92$</td>
+        <td>0</td>
+        <td></td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P93</strong></td>
+        <td class="katex-inline">$P93$</td>
+        <td>0</td>
+        <td></td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P94</strong></td>
+        <td class="katex-inline">$P94$</td>
+        <td>0</td>
+        <td></td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P95</strong></td>
+        <td class="katex-inline">$P95$</td>
+        <td>1</td>
+        <td></td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P96</strong></td>
+        <td class="katex-inline">$P96$</td>
+        <td>1</td>
+        <td></td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P97</strong></td>
+        <td class="katex-inline">$P97$</td>
+        <td>0</td>
+        <td></td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P98</strong></td>
+        <td class="katex-inline">$P98$</td>
+        <td>0</td>
+        <td></td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P99</strong></td>
+        <td class="katex-inline">$P99$</td>
+        <td>0</td>
+        <td></td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P100</strong></td>
+        <td class="katex-inline">$P100$</td>
+        <td>0</td>
+        <td></td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P101</strong></td>
+        <td class="katex-inline">$P101$</td>
+        <td>0</td>
+        <td></td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P102</strong></td>
+        <td class="katex-inline">$P102$</td>
+        <td>1</td>
+        <td></td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P103</strong></td>
+        <td class="katex-inline">$P103$</td>
+        <td>0</td>
+        <td></td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P104</strong></td>
+        <td class="katex-inline">$P104$</td>
+        <td>0</td>
+        <td></td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P105</strong></td>
+        <td class="katex-inline">$P105$</td>
+        <td>0</td>
+        <td></td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P106</strong></td>
+        <td class="katex-inline">$P106$</td>
+        <td>0</td>
+        <td></td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P107</strong></td>
+        <td class="katex-inline">$P107$</td>
+        <td>0</td>
+        <td></td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P108</strong></td>
+        <td class="katex-inline">$P108$</td>
+        <td>1</td>
+        <td></td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P109</strong></td>
+        <td class="katex-inline">$P109$</td>
+        <td>0</td>
+        <td></td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>P110</strong></td>
+        <td class="katex-inline">$P110$</td>
+        <td>0</td>
+        <td></td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>B120</strong></td>
+        <td class="katex-inline">$B120$</td>
+        <td>3.4566525000000006</td>
+        <td></td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><strong>B122</strong></td>
+        <td class="katex-inline">$B122$</td>
+        <td>4.60887</td>
+        <td></td>
+        <td>—</td>
+        <td>—</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="card">
+  <details open>
+    <summary>Assumptions</summary>
+    <ol>
+    <li>Auto-extracted from Excel — assumptions not captured</li>
+    </ol>
+  </details>
+</div>
+<div class="card">
+  <details open>
+    <summary>References</summary>
+    <ol>
+    <li>Source spreadsheet: spotfire-formulas-for-calc-variables</li>
+    </ol>
+  </details>
+</div>
+
+
+
+<div class="report-footer">
+  Generated by calculation-report skill &middot; XLSX-SPOTFORMFOR Rev 1
+</div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  renderMathInElement(document.body, {
+    delimiters: [
+      {left: "$$", right: "$$", display: true},
+      {left: "$", right: "$", display: false}
+    ],
+    throwOnError: false
+  });
+});
+</script>
+
+</body>
+</html>

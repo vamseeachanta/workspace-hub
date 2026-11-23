@@ -1,0 +1,4254 @@
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1109",
+  "stage": 1
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1109",
+  "stage": 2
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1109",
+  "stage": 3
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1071",
+  "stage": 1
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1105",
+  "stage": 1
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1095",
+  "stage": 1
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1095",
+  "stage": 2
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1105",
+  "stage": 2
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1105",
+  "stage": 3
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1071",
+  "stage": 2
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1095",
+  "stage": 3
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1071",
+  "stage": 3
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1095",
+  "stage": 4
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1071",
+  "stage": 4
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1105",
+  "stage": 4
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1095",
+  "stage": 5
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1105",
+  "stage": 5
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1095",
+  "stage": 6
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1009",
+  "stage": 5
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1095",
+  "stage": 7
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1009",
+  "stage": 6
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1071",
+  "stage": 5
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1009",
+  "stage": 7
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1071",
+  "stage": 6
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1095",
+  "stage": 8
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1071",
+  "stage": 7
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1095",
+  "stage": 9
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1009",
+  "stage": 8
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1009",
+  "stage": 9
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1071",
+  "stage": 8
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1071",
+  "stage": 9
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1095",
+  "stage": 10
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1095",
+  "stage": 11
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1095",
+  "stage": 12
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1095",
+  "stage": 13
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1009",
+  "stage": 10
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1009",
+  "stage": 11
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1009",
+  "stage": 12
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1009",
+  "stage": 13
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1105",
+  "stage": 6
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1105",
+  "stage": 7
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1009",
+  "stage": 14
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1009",
+  "stage": 15
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1009",
+  "stage": 16
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1009",
+  "stage": 17
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1105",
+  "stage": 8
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1105",
+  "stage": 9
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1071",
+  "stage": 10
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1071",
+  "stage": 11
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1071",
+  "stage": 12
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1071",
+  "stage": 13
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1071",
+  "stage": 14
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1071",
+  "stage": 15
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1071",
+  "stage": 16
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1105",
+  "stage": 17
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1071",
+  "stage": 17
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1071",
+  "stage": 18
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1071",
+  "stage": 18
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1105",
+  "stage": 18
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1105",
+  "stage": 19
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1053",
+  "stage": 1
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1053",
+  "stage": 2
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1053",
+  "stage": 3
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1053",
+  "stage": 4
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1053",
+  "stage": 3
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1053",
+  "stage": 4
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1053",
+  "stage": 5
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1053",
+  "stage": 6
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1109",
+  "stage": 1
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1109",
+  "stage": 2
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1109",
+  "stage": 3
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1071",
+  "stage": 1
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1105",
+  "stage": 1
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1095",
+  "stage": 1
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1095",
+  "stage": 2
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1105",
+  "stage": 2
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1105",
+  "stage": 3
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1071",
+  "stage": 2
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1095",
+  "stage": 3
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1071",
+  "stage": 3
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1095",
+  "stage": 4
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1071",
+  "stage": 4
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1105",
+  "stage": 4
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1095",
+  "stage": 5
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1105",
+  "stage": 5
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1095",
+  "stage": 6
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1009",
+  "stage": 5
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1095",
+  "stage": 7
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1009",
+  "stage": 6
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1071",
+  "stage": 5
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1009",
+  "stage": 7
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1071",
+  "stage": 6
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1095",
+  "stage": 8
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1071",
+  "stage": 7
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1095",
+  "stage": 9
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1009",
+  "stage": 8
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1009",
+  "stage": 9
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1071",
+  "stage": 8
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1071",
+  "stage": 9
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1095",
+  "stage": 10
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1095",
+  "stage": 11
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1095",
+  "stage": 12
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1095",
+  "stage": 13
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1009",
+  "stage": 10
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1009",
+  "stage": 11
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1009",
+  "stage": 12
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1009",
+  "stage": 13
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1105",
+  "stage": 6
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1105",
+  "stage": 7
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1009",
+  "stage": 14
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1009",
+  "stage": 15
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1009",
+  "stage": 16
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1009",
+  "stage": 17
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1105",
+  "stage": 8
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1105",
+  "stage": 9
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1071",
+  "stage": 10
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1071",
+  "stage": 11
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1071",
+  "stage": 12
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1071",
+  "stage": 13
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1071",
+  "stage": 14
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1071",
+  "stage": 15
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1071",
+  "stage": 16
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1105",
+  "stage": 17
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1071",
+  "stage": 17
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1071",
+  "stage": 18
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1071",
+  "stage": 18
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1105",
+  "stage": 18
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1105",
+  "stage": 19
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1053",
+  "stage": 1
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1053",
+  "stage": 2
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1053",
+  "stage": 3
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1053",
+  "stage": 4
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1053",
+  "stage": 3
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1053",
+  "stage": 4
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1053",
+  "stage": 5
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1053",
+  "stage": 6
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1109",
+  "stage": 1
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1109",
+  "stage": 2
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1109",
+  "stage": 3
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1071",
+  "stage": 1
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1105",
+  "stage": 1
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1095",
+  "stage": 1
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1095",
+  "stage": 2
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1105",
+  "stage": 2
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1105",
+  "stage": 3
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1071",
+  "stage": 2
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1095",
+  "stage": 3
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1071",
+  "stage": 3
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1095",
+  "stage": 4
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1071",
+  "stage": 4
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1105",
+  "stage": 4
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1095",
+  "stage": 5
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1105",
+  "stage": 5
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1095",
+  "stage": 6
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1009",
+  "stage": 5
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1095",
+  "stage": 7
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1009",
+  "stage": 6
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1071",
+  "stage": 5
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1009",
+  "stage": 7
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1071",
+  "stage": 6
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1095",
+  "stage": 8
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1071",
+  "stage": 7
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1095",
+  "stage": 9
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1009",
+  "stage": 8
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1009",
+  "stage": 9
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1071",
+  "stage": 8
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1071",
+  "stage": 9
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1095",
+  "stage": 10
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1095",
+  "stage": 11
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1095",
+  "stage": 12
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1095",
+  "stage": 13
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1009",
+  "stage": 10
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1009",
+  "stage": 11
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1009",
+  "stage": 12
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1009",
+  "stage": 13
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1105",
+  "stage": 6
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1105",
+  "stage": 7
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1009",
+  "stage": 14
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1009",
+  "stage": 15
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1009",
+  "stage": 16
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1009",
+  "stage": 17
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1105",
+  "stage": 8
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1105",
+  "stage": 9
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1071",
+  "stage": 10
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1071",
+  "stage": 11
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1071",
+  "stage": 12
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1071",
+  "stage": 13
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1071",
+  "stage": 14
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1071",
+  "stage": 15
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1071",
+  "stage": 16
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1105",
+  "stage": 17
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1071",
+  "stage": 17
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1071",
+  "stage": 18
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1071",
+  "stage": 18
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1105",
+  "stage": 18
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1105",
+  "stage": 19
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1053",
+  "stage": 1
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1053",
+  "stage": 2
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1053",
+  "stage": 3
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1053",
+  "stage": 4
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1053",
+  "stage": 3
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1053",
+  "stage": 4
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1053",
+  "stage": 5
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1053",
+  "stage": 6
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1109",
+  "stage": 1
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1109",
+  "stage": 2
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1109",
+  "stage": 3
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1071",
+  "stage": 1
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1105",
+  "stage": 1
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1095",
+  "stage": 1
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1095",
+  "stage": 2
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1105",
+  "stage": 2
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1105",
+  "stage": 3
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1071",
+  "stage": 2
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1095",
+  "stage": 3
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1071",
+  "stage": 3
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1095",
+  "stage": 4
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1071",
+  "stage": 4
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1105",
+  "stage": 4
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1095",
+  "stage": 5
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1105",
+  "stage": 5
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1095",
+  "stage": 6
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1009",
+  "stage": 5
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1095",
+  "stage": 7
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1009",
+  "stage": 6
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1071",
+  "stage": 5
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1009",
+  "stage": 7
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1071",
+  "stage": 6
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1095",
+  "stage": 8
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1071",
+  "stage": 7
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1095",
+  "stage": 9
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1009",
+  "stage": 8
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1009",
+  "stage": 9
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1071",
+  "stage": 8
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1071",
+  "stage": 9
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1095",
+  "stage": 10
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1095",
+  "stage": 11
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1095",
+  "stage": 12
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1095",
+  "stage": 13
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1009",
+  "stage": 10
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1009",
+  "stage": 11
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1009",
+  "stage": 12
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1009",
+  "stage": 13
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1105",
+  "stage": 6
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1105",
+  "stage": 7
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1009",
+  "stage": 14
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1009",
+  "stage": 15
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1009",
+  "stage": 16
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1009",
+  "stage": 17
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1105",
+  "stage": 8
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1105",
+  "stage": 9
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1071",
+  "stage": 10
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1071",
+  "stage": 11
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1071",
+  "stage": 12
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1071",
+  "stage": 13
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1071",
+  "stage": 14
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1071",
+  "stage": 15
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1071",
+  "stage": 16
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1105",
+  "stage": 17
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1071",
+  "stage": 17
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1071",
+  "stage": 18
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1071",
+  "stage": 18
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1105",
+  "stage": 18
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1105",
+  "stage": 19
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1053",
+  "stage": 1
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1053",
+  "stage": 2
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1053",
+  "stage": 3
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1053",
+  "stage": 4
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1053",
+  "stage": 3
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1053",
+  "stage": 4
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1053",
+  "stage": 5
+}
+{
+  "date": "2026-03-10",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1053",
+  "stage": 6
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1053",
+  "stage": 7
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1010",
+  "stage": 2
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1010",
+  "stage": 3
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1053",
+  "stage": 8
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1053",
+  "stage": 9
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1016",
+  "stage": 2
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1016",
+  "stage": 3
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1010",
+  "stage": 4
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1016",
+  "stage": 4
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1010",
+  "stage": 10
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1010",
+  "stage": 11
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1010",
+  "stage": 12
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1016",
+  "stage": 10
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1016",
+  "stage": 11
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1016",
+  "stage": 12
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1010",
+  "stage": 13
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1053",
+  "stage": 13
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1010",
+  "stage": 14
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1010",
+  "stage": 15
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1010",
+  "stage": 16
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1053",
+  "stage": 14
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1053",
+  "stage": 15
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1053",
+  "stage": 16
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1010",
+  "stage": 17
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1010",
+  "stage": 18
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1053",
+  "stage": 17
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1053",
+  "stage": 18
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1016",
+  "stage": 13
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1016",
+  "stage": 14
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1016",
+  "stage": 15
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1016",
+  "stage": 16
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1041",
+  "stage": 1
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1041",
+  "stage": 2
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1016",
+  "stage": 17
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1016",
+  "stage": 18
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1041",
+  "stage": 3
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1041",
+  "stage": 4
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1016",
+  "stage": 19
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1041",
+  "stage": 5
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1041",
+  "stage": 6
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1041",
+  "stage": 7
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1041",
+  "stage": 8
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1041",
+  "stage": 9
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1041",
+  "stage": 10
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1041",
+  "stage": 11
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1041",
+  "stage": 12
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1041",
+  "stage": 13
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1041",
+  "stage": 14
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1041",
+  "stage": 15
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1041",
+  "stage": 16
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1041",
+  "stage": 17
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1041",
+  "stage": 18
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1115",
+  "stage": 1
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1115",
+  "stage": 2
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1115",
+  "stage": 3
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1115",
+  "stage": 4
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1115",
+  "stage": 5
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1115",
+  "stage": 6
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1115",
+  "stage": 7
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1120",
+  "stage": 1
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1120",
+  "stage": 2
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1120",
+  "stage": 3
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1120",
+  "stage": 4
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1117",
+  "stage": 1
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1120",
+  "stage": 5
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1117",
+  "stage": 2
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1117",
+  "stage": 3
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1115",
+  "stage": 8
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1115",
+  "stage": 9
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1115",
+  "stage": 10
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1115",
+  "stage": 11
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1115",
+  "stage": 12
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1120",
+  "stage": 6
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1115",
+  "stage": 13
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1120",
+  "stage": 17
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1120",
+  "stage": 18
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1069",
+  "stage": 1
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1069",
+  "stage": 1
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1069",
+  "stage": 2
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1069",
+  "stage": 3
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1059",
+  "stage": 4
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1059",
+  "stage": 5
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1069",
+  "stage": 4
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1059",
+  "stage": 6
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1059",
+  "stage": 7
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1059",
+  "stage": 8
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1059",
+  "stage": 9
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1059",
+  "stage": 10
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1059",
+  "stage": 11
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1059",
+  "stage": 12
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1059",
+  "stage": 13
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1059",
+  "stage": 14
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1059",
+  "stage": 15
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1059",
+  "stage": 16
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1059",
+  "stage": 17
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1059",
+  "stage": 18
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1069",
+  "stage": 7
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1069",
+  "stage": 8
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1069",
+  "stage": 9
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1069",
+  "stage": 10
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1069",
+  "stage": 11
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1069",
+  "stage": 12
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1123",
+  "stage": 1
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1123",
+  "stage": 2
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1069",
+  "stage": 13
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1069",
+  "stage": 14
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1069",
+  "stage": 15
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1069",
+  "stage": 16
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1069",
+  "stage": 17
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1069",
+  "stage": 18
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1069",
+  "stage": 19
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1069",
+  "stage": 20
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1115",
+  "stage": 17
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1115",
+  "stage": 18
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1126",
+  "stage": 1
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1126",
+  "stage": 2
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1126",
+  "stage": 3
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1127",
+  "stage": 1
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1127",
+  "stage": 2
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1127",
+  "stage": 3
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1127",
+  "stage": 4
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1127",
+  "stage": 6
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1127",
+  "stage": 5
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1127",
+  "stage": 7
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1127",
+  "stage": 8
+}
+{
+  "date": "2026-03-11",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1127",
+  "stage": 9
+}
+{
+  "date": "2026-03-12",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1062",
+  "stage": 19
+}
+{
+  "date": "2026-03-12",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1062",
+  "stage": 20
+}
+{
+  "date": "2026-03-12",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1112",
+  "stage": 3
+}
+{
+  "date": "2026-03-12",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1111",
+  "stage": 2
+}
+{
+  "date": "2026-03-12",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1111",
+  "stage": 3
+}
+{
+  "date": "2026-03-12",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1141",
+  "stage": 1
+}
+{
+  "date": "2026-03-12",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1141",
+  "stage": 2
+}
+{
+  "date": "2026-03-12",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1141",
+  "stage": 3
+}
+{
+  "date": "2026-03-12",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1141",
+  "stage": 4
+}
+{
+  "date": "2026-03-12",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1141",
+  "stage": 5
+}
+{
+  "date": "2026-03-12",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1141",
+  "stage": 6
+}
+{
+  "date": "2026-03-12",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1141",
+  "stage": 7
+}
+{
+  "date": "2026-03-12",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1141",
+  "stage": 8
+}
+{
+  "date": "2026-03-12",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1148",
+  "stage": 1
+}
+{
+  "date": "2026-03-12",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1141",
+  "stage": 9
+}
+{
+  "date": "2026-03-12",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1148",
+  "stage": 2
+}
+{
+  "date": "2026-03-12",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1148",
+  "stage": 3
+}
+{
+  "date": "2026-03-12",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1141",
+  "stage": 10
+}
+{
+  "date": "2026-03-12",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1141",
+  "stage": 11
+}
+{
+  "date": "2026-03-12",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1141",
+  "stage": 12
+}
+{
+  "date": "2026-03-12",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1113",
+  "stage": 1
+}
+{
+  "date": "2026-03-12",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1141",
+  "stage": 13
+}
+{
+  "date": "2026-03-12",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1113",
+  "stage": 2
+}
+{
+  "date": "2026-03-12",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1113",
+  "stage": 3
+}
+{
+  "date": "2026-03-12",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1141",
+  "stage": 15
+}
+{
+  "date": "2026-03-12",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1141",
+  "stage": 16
+}
+{
+  "date": "2026-03-12",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1141",
+  "stage": 14
+}
+{
+  "date": "2026-03-12",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1141",
+  "stage": 15
+}
+{
+  "date": "2026-03-12",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1141",
+  "stage": 16
+}
+{
+  "date": "2026-03-12",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1141",
+  "stage": 17
+}
+{
+  "date": "2026-03-12",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1151",
+  "stage": 2
+}
+{
+  "date": "2026-03-12",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1113",
+  "stage": 10
+}
+{
+  "date": "2026-03-12",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1113",
+  "stage": 11
+}
+{
+  "date": "2026-03-12",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1113",
+  "stage": 12
+}
+{
+  "date": "2026-03-12",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1113",
+  "stage": 13
+}
+{
+  "date": "2026-03-12",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1072",
+  "stage": 2
+}
+{
+  "date": "2026-03-12",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1072",
+  "stage": 3
+}
+{
+  "date": "2026-03-13",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1159",
+  "stage": 2
+}
+{
+  "date": "2026-03-13",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1159",
+  "stage": 3
+}
+{
+  "date": "2026-03-13",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1155",
+  "stage": 2
+}
+{
+  "date": "2026-03-13",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1155",
+  "stage": 3
+}
+{
+  "date": "2026-03-14",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1169",
+  "stage": 1
+}
+{
+  "date": "2026-03-14",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1169",
+  "stage": 2
+}
+{
+  "date": "2026-03-14",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1169",
+  "stage": 1
+}
+{
+  "date": "2026-03-14",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1169",
+  "stage": 2
+}
+{
+  "date": "2026-03-14",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1169",
+  "stage": 3
+}
+{
+  "date": "2026-03-14",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1169",
+  "stage": 4
+}
+{
+  "date": "2026-03-14",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1169",
+  "stage": 7
+}
+{
+  "date": "2026-03-14",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1169",
+  "stage": 10
+}
+{
+  "date": "2026-03-14",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1169",
+  "stage": 11
+}
+{
+  "date": "2026-03-14",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1169",
+  "stage": 12
+}
+{
+  "date": "2026-03-14",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1169",
+  "stage": 5
+}
+{
+  "date": "2026-03-14",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1169",
+  "stage": 9
+}
+{
+  "date": "2026-03-14",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1169",
+  "stage": 6
+}
+{
+  "date": "2026-03-14",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1169",
+  "stage": 8
+}
+{
+  "date": "2026-03-14",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1169",
+  "stage": 17
+}
+{
+  "date": "2026-03-14",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1169",
+  "stage": 13
+}
+{
+  "date": "2026-03-14",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1169",
+  "stage": 15
+}
+{
+  "date": "2026-03-14",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1169",
+  "stage": 16
+}
+{
+  "date": "2026-03-14",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1174",
+  "stage": 1
+}
+{
+  "date": "2026-03-14",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1174",
+  "stage": 2
+}
+{
+  "date": "2026-03-14",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1174",
+  "stage": 3
+}
+{
+  "date": "2026-03-15",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1183",
+  "stage": 1
+}
+{
+  "date": "2026-03-15",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1183",
+  "stage": 2
+}
+{
+  "date": "2026-03-15",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1183",
+  "stage": 3
+}
+{
+  "date": "2026-03-15",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1183",
+  "stage": 4
+}
+{
+  "date": "2026-03-15",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1183",
+  "stage": 5
+}
+{
+  "date": "2026-03-15",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1183",
+  "stage": 11
+}
+{
+  "date": "2026-03-15",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1183",
+  "stage": 6
+}
+{
+  "date": "2026-03-15",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1183",
+  "stage": 7
+}
+{
+  "date": "2026-03-15",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1183",
+  "stage": 8
+}
+{
+  "date": "2026-03-15",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1183",
+  "stage": 9
+}
+{
+  "date": "2026-03-15",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1183",
+  "stage": 11
+}
+{
+  "date": "2026-03-15",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1183",
+  "stage": 13
+}
+{
+  "date": "2026-03-15",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1183",
+  "stage": 10
+}
+{
+  "date": "2026-03-15",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1183",
+  "stage": 12
+}
+{
+  "date": "2026-03-15",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1183",
+  "stage": 14
+}
+{
+  "date": "2026-03-15",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1183",
+  "stage": 15
+}
+{
+  "date": "2026-03-15",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1183",
+  "stage": 16
+}
+{
+  "date": "2026-03-15",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1183",
+  "stage": 17
+}
+{
+  "date": "2026-03-15",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1183",
+  "stage": 18
+}
+{
+  "date": "2026-03-16",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1244",
+  "stage": 2
+}
+{
+  "date": "2026-03-16",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1244",
+  "stage": 3
+}
+{
+  "date": "2026-03-16",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1247",
+  "stage": 17
+}
+{
+  "date": "2026-03-16",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1247",
+  "stage": 18
+}
+{
+  "date": "2026-03-16",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1272",
+  "stage": 1
+}
+{
+  "date": "2026-03-16",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1272",
+  "stage": 2
+}
+{
+  "date": "2026-03-16",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1272",
+  "stage": 3
+}
+{
+  "date": "2026-03-16",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1272",
+  "stage": 4
+}
+{
+  "date": "2026-03-16",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1272",
+  "stage": 5
+}
+{
+  "date": "2026-03-16",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1244",
+  "stage": 5
+}
+{
+  "date": "2026-03-16",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1272",
+  "stage": 6
+}
+{
+  "date": "2026-03-16",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1272",
+  "stage": 7
+}
+{
+  "date": "2026-03-16",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1244",
+  "stage": 6
+}
+{
+  "date": "2026-03-16",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1244",
+  "stage": 7
+}
+{
+  "date": "2026-03-16",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1244",
+  "stage": 10
+}
+{
+  "date": "2026-03-16",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1244",
+  "stage": 9
+}
+{
+  "date": "2026-03-16",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1244",
+  "stage": 8
+}
+{
+  "date": "2026-03-16",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1244",
+  "stage": 11
+}
+{
+  "date": "2026-03-16",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1244",
+  "stage": 12
+}
+{
+  "date": "2026-03-16",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1244",
+  "stage": 13
+}
+{
+  "date": "2026-03-16",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1244",
+  "stage": 16
+}
+{
+  "date": "2026-03-16",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1244",
+  "stage": 15
+}
+{
+  "date": "2026-03-16",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1244",
+  "stage": 14
+}
+{
+  "date": "2026-03-16",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1244",
+  "stage": 17
+}
+{
+  "date": "2026-03-16",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1244",
+  "stage": 20
+}
+{
+  "date": "2026-03-16",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1244",
+  "stage": 18
+}
+{
+  "date": "2026-03-17",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-5082",
+  "stage": 1
+}
+{
+  "date": "2026-03-17",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-5082",
+  "stage": 2
+}
+{
+  "date": "2026-03-17",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-5082",
+  "stage": 3
+}
+{
+  "date": "2026-03-18",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1323",
+  "stage": 1
+}
+{
+  "date": "2026-03-18",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1323",
+  "stage": 2
+}
+{
+  "date": "2026-03-18",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1323",
+  "stage": 3
+}
+{
+  "date": "2026-03-18",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1323",
+  "stage": 4
+}
+{
+  "date": "2026-03-18",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1323",
+  "stage": 5
+}
+{
+  "date": "2026-03-18",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1323",
+  "stage": 6
+}
+{
+  "date": "2026-03-18",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1323",
+  "stage": 2
+}
+{
+  "date": "2026-03-18",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1323",
+  "stage": 3
+}
+{
+  "date": "2026-03-18",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1323",
+  "stage": 4
+}
+{
+  "date": "2026-03-18",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1323",
+  "stage": 5
+}
+{
+  "date": "2026-03-18",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1323",
+  "stage": 6
+}
+{
+  "date": "2026-03-18",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1323",
+  "stage": 1
+}
+{
+  "date": "2026-03-18",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1323",
+  "stage": 2
+}
+{
+  "date": "2026-03-18",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1323",
+  "stage": 3
+}
+{
+  "date": "2026-03-18",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1323",
+  "stage": 4
+}
+{
+  "date": "2026-03-18",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1323",
+  "stage": 5
+}
+{
+  "date": "2026-03-18",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1323",
+  "stage": 6
+}
+{
+  "date": "2026-03-18",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1323",
+  "stage": 7
+}
+{
+  "date": "2026-03-18",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1323",
+  "stage": 8
+}
+{
+  "date": "2026-03-18",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1323",
+  "stage": 9
+}
+{
+  "date": "2026-03-18",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1323",
+  "stage": 10
+}
+{
+  "date": "2026-03-18",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1323",
+  "stage": 11
+}
+{
+  "date": "2026-03-18",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1323",
+  "stage": 12
+}
+{
+  "date": "2026-03-18",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1323",
+  "stage": 13
+}
+{
+  "date": "2026-03-24",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1321",
+  "stage": 9
+}
+{
+  "date": "2026-03-24",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1295",
+  "stage": 1
+}
+{
+  "date": "2026-03-24",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-5112",
+  "stage": 1
+}
+{
+  "date": "2026-03-24",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-5112",
+  "stage": 2
+}
+{
+  "date": "2026-03-24",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-5112",
+  "stage": 3
+}
+{
+  "date": "2026-03-24",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-5112",
+  "stage": 4
+}
+{
+  "date": "2026-03-24",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-5112",
+  "stage": 5
+}
+{
+  "date": "2026-03-24",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1295",
+  "stage": 2
+}
+{
+  "date": "2026-03-24",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-5112",
+  "stage": 6
+}
+{
+  "date": "2026-03-24",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1369",
+  "stage": 1
+}
+{
+  "date": "2026-03-24",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-5112",
+  "stage": 7
+}
+{
+  "date": "2026-03-24",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1295",
+  "stage": 3
+}
+{
+  "date": "2026-03-24",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1369",
+  "stage": 2
+}
+{
+  "date": "2026-03-24",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1369",
+  "stage": 3
+}
+{
+  "date": "2026-03-24",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1369",
+  "stage": 4
+}
+{
+  "date": "2026-03-24",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-5112",
+  "stage": 8
+}
+{
+  "date": "2026-03-24",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-5112",
+  "stage": 9
+}
+{
+  "date": "2026-03-24",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1295",
+  "stage": 4
+}
+{
+  "date": "2026-03-24",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-5112",
+  "stage": 10
+}
+{
+  "date": "2026-03-24",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1295",
+  "stage": 5
+}
+{
+  "date": "2026-03-24",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-5112",
+  "stage": 11
+}
+{
+  "date": "2026-03-24",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-5112",
+  "stage": 12
+}
+{
+  "date": "2026-03-24",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-5112",
+  "stage": 13
+}
+{
+  "date": "2026-03-24",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1369",
+  "stage": 5
+}
+{
+  "date": "2026-03-24",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-5112",
+  "stage": 14
+}
+{
+  "date": "2026-03-24",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-5112",
+  "stage": 15
+}
+{
+  "date": "2026-03-24",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-5112",
+  "stage": 16
+}
+{
+  "date": "2026-03-24",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-5112",
+  "stage": 17
+}
+{
+  "date": "2026-03-24",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1369",
+  "stage": 6
+}
+{
+  "date": "2026-03-24",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-5112",
+  "stage": 18
+}
+{
+  "date": "2026-03-24",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-5112",
+  "stage": 19
+}
+{
+  "date": "2026-03-24",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1369",
+  "stage": 7
+}
+{
+  "date": "2026-03-24",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1369",
+  "stage": 8
+}
+{
+  "date": "2026-03-24",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1369",
+  "stage": 9
+}
+{
+  "date": "2026-03-24",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1369",
+  "stage": 10
+}
+{
+  "date": "2026-03-24",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1369",
+  "stage": 11
+}
+{
+  "date": "2026-03-24",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1369",
+  "stage": 12
+}
+{
+  "date": "2026-03-24",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1369",
+  "stage": 13
+}
+{
+  "date": "2026-03-24",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1295",
+  "stage": 6
+}
+{
+  "date": "2026-03-24",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1295",
+  "stage": 7
+}
+{
+  "date": "2026-03-24",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1369",
+  "stage": 14
+}
+{
+  "date": "2026-03-24",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1295",
+  "stage": 9
+}
+{
+  "date": "2026-03-24",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1369",
+  "stage": 15
+}
+{
+  "date": "2026-03-24",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1369",
+  "stage": 16
+}
+{
+  "date": "2026-03-24",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1369",
+  "stage": 17
+}
+{
+  "date": "2026-03-24",
+  "fact_type": "stage_exit",
+  "wrk": "WRK-1369",
+  "stage": 18
+}
+{
+  "date": "2026-03-24",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-225",
+  "stage": 17
+}
+{
+  "date": "2026-03-24",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-225",
+  "stage": 18
+}
+{
+  "date": "2026-03-24",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-225",
+  "stage": 19
+}
+{
+  "date": "2026-03-24",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1291",
+  "stage": 4
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1384",
+  "stage": 1
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1362",
+  "stage": 1
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1362",
+  "stage": 2
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1362",
+  "stage": 3
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1384",
+  "stage": 2
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1384",
+  "stage": 3
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1362",
+  "stage": 4
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1384",
+  "stage": 4
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1362",
+  "stage": 5
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1362",
+  "stage": 6
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1384",
+  "stage": 5
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1362",
+  "stage": 7
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1362",
+  "stage": 8
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1384",
+  "stage": 6
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1362",
+  "stage": 9
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1384",
+  "stage": 7
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1362",
+  "stage": 10
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1362",
+  "stage": 11
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1362",
+  "stage": 12
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1384",
+  "stage": 8
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1362",
+  "stage": 13
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1384",
+  "stage": 9
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1362",
+  "stage": 14
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1362",
+  "stage": 15
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1362",
+  "stage": 16
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1362",
+  "stage": 17
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1362",
+  "stage": 18
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1358",
+  "stage": 1
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1358",
+  "stage": 2
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1358",
+  "stage": 3
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1358",
+  "stage": 4
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1358",
+  "stage": 5
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1358",
+  "stage": 6
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1358",
+  "stage": 7
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1358",
+  "stage": 8
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1358",
+  "stage": 9
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1358",
+  "stage": 10
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1358",
+  "stage": 11
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1358",
+  "stage": 12
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1358",
+  "stage": 13
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1358",
+  "stage": 14
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1358",
+  "stage": 15
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1358",
+  "stage": 16
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1358",
+  "stage": 17
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1358",
+  "stage": 18
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1358",
+  "stage": 19
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1357",
+  "stage": 1
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1357",
+  "stage": 2
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1357",
+  "stage": 3
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1357",
+  "stage": 4
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1384",
+  "stage": 10
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1384",
+  "stage": 11
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1384",
+  "stage": 12
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1363",
+  "stage": 1
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1384",
+  "stage": 13
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1357",
+  "stage": 5
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1357",
+  "stage": 6
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1357",
+  "stage": 7
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1363",
+  "stage": 2
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1363",
+  "stage": 3
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1363",
+  "stage": 4
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1357",
+  "stage": 8
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1357",
+  "stage": 9
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1357",
+  "stage": 10
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1363",
+  "stage": 5
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1357",
+  "stage": 11
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1357",
+  "stage": 12
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1357",
+  "stage": 13
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1363",
+  "stage": 6
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1363",
+  "stage": 7
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1357",
+  "stage": 14
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1357",
+  "stage": 15
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1357",
+  "stage": 16
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1357",
+  "stage": 17
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1357",
+  "stage": 18
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1363",
+  "stage": 8
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1363",
+  "stage": 9
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1363",
+  "stage": 10
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1363",
+  "stage": 11
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1363",
+  "stage": 12
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1357",
+  "stage": 20
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1363",
+  "stage": 13
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1363",
+  "stage": 14
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1363",
+  "stage": 15
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1363",
+  "stage": 16
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1363",
+  "stage": 17
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1363",
+  "stage": 18
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1405",
+  "stage": 1
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1405",
+  "stage": 2
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1405",
+  "stage": 3
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1405",
+  "stage": 4
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1404",
+  "stage": 1
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1404",
+  "stage": 2
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1404",
+  "stage": 3
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1404",
+  "stage": 4
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1404",
+  "stage": 5
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1405",
+  "stage": 5
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1404",
+  "stage": 6
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1404",
+  "stage": 7
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1404",
+  "stage": 8
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1404",
+  "stage": 9
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1404",
+  "stage": 10
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1404",
+  "stage": 11
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1404",
+  "stage": 12
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1404",
+  "stage": 13
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1405",
+  "stage": 6
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1404",
+  "stage": 14
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1404",
+  "stage": 15
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1404",
+  "stage": 16
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1404",
+  "stage": 17
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1404",
+  "stage": 18
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1404",
+  "stage": 19
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1404",
+  "stage": 20
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1405",
+  "stage": 7
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1405",
+  "stage": 8
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1405",
+  "stage": 9
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1405",
+  "stage": 10
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1405",
+  "stage": 11
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1405",
+  "stage": 12
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1405",
+  "stage": 13
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1405",
+  "stage": 14
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1405",
+  "stage": 15
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1405",
+  "stage": 16
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1405",
+  "stage": 17
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1405",
+  "stage": 18
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1405",
+  "stage": 19
+}
+{
+  "date": "2026-03-25",
+  "fact_type": "stage_exit",
+  "wrk": "workspace-hub-1405",
+  "stage": 20
+}

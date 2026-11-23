@@ -1,0 +1,926 @@
+{
+  "timestamp": "2026-09-11T14:17:21.661692+00:00",
+  "summary": {
+    "total_skills": 3129,
+    "passed": 477,
+    "failed_critical": 42,
+    "failed_warning_only": 2610,
+    "issues": {
+      "critical": 42,
+      "warning": 4013,
+      "info": 3129
+    },
+    "tier_distribution": {
+      "A": 2,
+      "B": 143,
+      "C": 2644,
+      "D": 340
+    }
+  },
+  "by_category": {
+    "_archive": {
+      "total": 2100,
+      "passed": 2100,
+      "failed": 0
+    },
+    "_core": {
+      "total": 52,
+      "passed": 52,
+      "failed": 0
+    },
+    "_internal": {
+      "total": 129,
+      "passed": 129,
+      "failed": 0
+    },
+    "ai": {
+      "total": 15,
+      "passed": 12,
+      "failed": 3
+    },
+    "apple": {
+      "total": 5,
+      "passed": 5,
+      "failed": 0
+    },
+    "autonomous-ai-agents": {
+      "total": 9,
+      "passed": 7,
+      "failed": 2
+    },
+    "business": {
+      "total": 74,
+      "passed": 73,
+      "failed": 1
+    },
+    "business-finance": {
+      "total": 1,
+      "passed": 1,
+      "failed": 0
+    },
+    "business-marketing": {
+      "total": 2,
+      "passed": 2,
+      "failed": 0
+    },
+    "business_admin": {
+      "total": 1,
+      "passed": 1,
+      "failed": 0
+    },
+    "coordination": {
+      "total": 59,
+      "passed": 56,
+      "failed": 3
+    },
+    "corporate-tax-form-fill": {
+      "total": 1,
+      "passed": 1,
+      "failed": 0
+    },
+    "creative": {
+      "total": 20,
+      "passed": 16,
+      "failed": 4
+    },
+    "data": {
+      "total": 85,
+      "passed": 84,
+      "failed": 1
+    },
+    "data-science": {
+      "total": 1,
+      "passed": 1,
+      "failed": 0
+    },
+    "development": {
+      "total": 71,
+      "passed": 71,
+      "failed": 0
+    },
+    "devops": {
+      "total": 8,
+      "passed": 7,
+      "failed": 1
+    },
+    "devtools": {
+      "total": 1,
+      "passed": 1,
+      "failed": 0
+    },
+    "digitalmodel": {
+      "total": 8,
+      "passed": 8,
+      "failed": 0
+    },
+    "email": {
+      "total": 16,
+      "passed": 15,
+      "failed": 1
+    },
+    "engineering": {
+      "total": 89,
+      "passed": 88,
+      "failed": 1
+    },
+    "extract-learnings-to-issues": {
+      "total": 1,
+      "passed": 1,
+      "failed": 0
+    },
+    "field-dev-code-recon": {
+      "total": 1,
+      "passed": 1,
+      "failed": 0
+    },
+    "finance": {
+      "total": 3,
+      "passed": 3,
+      "failed": 0
+    },
+    "gaming": {
+      "total": 2,
+      "passed": 2,
+      "failed": 0
+    },
+    "github": {
+      "total": 19,
+      "passed": 16,
+      "failed": 3
+    },
+    "leisure": {
+      "total": 1,
+      "passed": 1,
+      "failed": 0
+    },
+    "marketing": {
+      "total": 7,
+      "passed": 7,
+      "failed": 0
+    },
+    "mcp": {
+      "total": 2,
+      "passed": 2,
+      "failed": 0
+    },
+    "media": {
+      "total": 5,
+      "passed": 5,
+      "failed": 0
+    },
+    "memory": {
+      "total": 3,
+      "passed": 3,
+      "failed": 0
+    },
+    "mlops": {
+      "total": 21,
+      "passed": 10,
+      "failed": 11
+    },
+    "operations": {
+      "total": 17,
+      "passed": 16,
+      "failed": 1
+    },
+    "productivity": {
+      "total": 11,
+      "passed": 11,
+      "failed": 0
+    },
+    "red-teaming": {
+      "total": 1,
+      "passed": 0,
+      "failed": 1
+    },
+    "research": {
+      "total": 15,
+      "passed": 12,
+      "failed": 3
+    },
+    "science": {
+      "total": 6,
+      "passed": 6,
+      "failed": 0
+    },
+    "smart-home": {
+      "total": 1,
+      "passed": 1,
+      "failed": 0
+    },
+    "social-media": {
+      "total": 2,
+      "passed": 1,
+      "failed": 1
+    },
+    "software-development": {
+      "total": 35,
+      "passed": 33,
+      "failed": 2
+    },
+    "test-dummy-validation": {
+      "total": 1,
+      "passed": 1,
+      "failed": 0
+    },
+    "travel": {
+      "total": 8,
+      "passed": 8,
+      "failed": 0
+    },
+    "workspace-hub": {
+      "total": 150,
+      "passed": 148,
+      "failed": 2
+    },
+    "workspace-hub-learned": {
+      "total": 70,
+      "passed": 69,
+      "failed": 1
+    }
+  },
+  "top_issues": [
+    {
+      "check": "metrics_section_missing",
+      "count": 3129,
+      "severity": "info"
+    },
+    {
+      "check": "category_dir_mismatch",
+      "count": 2102,
+      "severity": "warning"
+    },
+    {
+      "check": "section_missing",
+      "count": 1352,
+      "severity": "warning"
+    },
+    {
+      "check": "category_missing",
+      "count": 374,
+      "severity": "warning"
+    },
+    {
+      "check": "line_count_exceeded",
+      "count": 137,
+      "severity": "critical"
+    },
+    {
+      "check": "version_missing",
+      "count": 67,
+      "severity": "warning"
+    },
+    {
+      "check": "quick_start_no_code",
+      "count": 12,
+      "severity": "warning"
+    },
+    {
+      "check": "description_too_short",
+      "count": 5,
+      "severity": "warning"
+    },
+    {
+      "check": "duplicate_name",
+      "count": 4,
+      "severity": "warning"
+    },
+    {
+      "check": "version_not_semver",
+      "count": 1,
+      "severity": "warning"
+    }
+  ],
+  "results": [
+    {
+      "path": "workspace-hub\\.claude\\skills\\ai\\agent-usage-optimizer\\SKILL.md",
+      "name": "agent-usage-optimizer",
+      "category": "ai",
+      "status": "fail",
+      "quality_tier": "B",
+      "issues": [
+        {
+          "severity": "critical",
+          "check": "line_count_exceeded",
+          "message": "SKILL.md has 486 lines (limit: 200, critical: 400)",
+          "fix": "Split or reduce skill to under 200 lines"
+        }
+      ]
+    },
+    {
+      "path": "workspace-hub\\.claude\\skills\\ai\\hermes-model-switching\\SKILL.md",
+      "name": "hermes-model-switching",
+      "category": "ai",
+      "status": "fail",
+      "quality_tier": "D",
+      "issues": [
+        {
+          "severity": "critical",
+          "check": "line_count_exceeded",
+          "message": "SKILL.md has 453 lines (limit: 200, critical: 400)",
+          "fix": "Split or reduce skill to under 200 lines"
+        }
+      ]
+    },
+    {
+      "path": "workspace-hub\\.claude\\skills\\ai\\prompting\\dspy\\SKILL.md",
+      "name": "dspy",
+      "category": "ai",
+      "status": "fail",
+      "quality_tier": "D",
+      "issues": [
+        {
+          "severity": "critical",
+          "check": "line_count_exceeded",
+          "message": "SKILL.md has 594 lines (limit: 200, critical: 400)",
+          "fix": "Split or reduce skill to under 200 lines"
+        }
+      ]
+    },
+    {
+      "path": "workspace-hub\\.claude\\skills\\autonomous-ai-agents\\claude-code\\SKILL.md",
+      "name": "claude-code",
+      "category": "autonomous-ai-agents",
+      "status": "fail",
+      "quality_tier": "D",
+      "issues": [
+        {
+          "severity": "critical",
+          "check": "line_count_exceeded",
+          "message": "SKILL.md has 761 lines (limit: 200, critical: 400)",
+          "fix": "Split or reduce skill to under 200 lines"
+        }
+      ]
+    },
+    {
+      "path": "workspace-hub\\.claude\\skills\\autonomous-ai-agents\\hermes-agent\\SKILL.md",
+      "name": "hermes-agent",
+      "category": "autonomous-ai-agents",
+      "status": "fail",
+      "quality_tier": "D",
+      "issues": [
+        {
+          "severity": "critical",
+          "check": "line_count_exceeded",
+          "message": "SKILL.md has 810 lines (limit: 200, critical: 400)",
+          "fix": "Split or reduce skill to under 200 lines"
+        }
+      ]
+    },
+    {
+      "path": "workspace-hub\\.claude\\skills\\business\\c-corp-tax-consultant\\SKILL.md",
+      "name": "c-corp-tax-consultant",
+      "category": "business",
+      "status": "fail",
+      "quality_tier": "D",
+      "issues": [
+        {
+          "severity": "critical",
+          "check": "line_count_exceeded",
+          "message": "SKILL.md has 442 lines (limit: 200, critical: 400)",
+          "fix": "Split or reduce skill to under 200 lines"
+        }
+      ]
+    },
+    {
+      "path": "workspace-hub\\.claude\\skills\\coordination\\gh-work-planning\\SKILL.md",
+      "name": "gh-work-planning",
+      "category": "coordination",
+      "status": "fail",
+      "quality_tier": "D",
+      "issues": [
+        {
+          "severity": "critical",
+          "check": "line_count_exceeded",
+          "message": "SKILL.md has 1090 lines (limit: 200, critical: 400)",
+          "fix": "Split or reduce skill to under 200 lines"
+        }
+      ]
+    },
+    {
+      "path": "workspace-hub\\.claude\\skills\\coordination\\issue-planning-mode\\SKILL.md",
+      "name": "issue-planning-mode",
+      "category": "coordination",
+      "status": "fail",
+      "quality_tier": "B",
+      "issues": [
+        {
+          "severity": "critical",
+          "check": "line_count_exceeded",
+          "message": "SKILL.md has 416 lines (limit: 200, critical: 400)",
+          "fix": "Split or reduce skill to under 200 lines"
+        }
+      ]
+    },
+    {
+      "path": "workspace-hub\\.claude\\skills\\coordination\\provider-session-ecosystem-audit\\SKILL.md",
+      "name": "provider-session-ecosystem-audit",
+      "category": "coordination",
+      "status": "fail",
+      "quality_tier": "B",
+      "issues": [
+        {
+          "severity": "critical",
+          "check": "line_count_exceeded",
+          "message": "SKILL.md has 402 lines (limit: 200, critical: 400)",
+          "fix": "Split or reduce skill to under 200 lines"
+        }
+      ]
+    },
+    {
+      "path": "workspace-hub\\.claude\\skills\\creative\\claude-design\\SKILL.md",
+      "name": "claude-design",
+      "category": "creative",
+      "status": "fail",
+      "quality_tier": "D",
+      "issues": [
+        {
+          "severity": "critical",
+          "check": "line_count_exceeded",
+          "message": "SKILL.md has 605 lines (limit: 200, critical: 400)",
+          "fix": "Split or reduce skill to under 200 lines"
+        }
+      ]
+    },
+    {
+      "path": "workspace-hub\\.claude\\skills\\creative\\comfyui\\SKILL.md",
+      "name": "comfyui",
+      "category": "creative",
+      "status": "fail",
+      "quality_tier": "B",
+      "issues": [
+        {
+          "severity": "critical",
+          "check": "line_count_exceeded",
+          "message": "SKILL.md has 612 lines (limit: 200, critical: 400)",
+          "fix": "Split or reduce skill to under 200 lines"
+        }
+      ]
+    },
+    {
+      "path": "workspace-hub\\.claude\\skills\\creative\\humanizer\\SKILL.md",
+      "name": "humanizer",
+      "category": "creative",
+      "status": "fail",
+      "quality_tier": "D",
+      "issues": [
+        {
+          "severity": "critical",
+          "check": "line_count_exceeded",
+          "message": "SKILL.md has 577 lines (limit: 200, critical: 400)",
+          "fix": "Split or reduce skill to under 200 lines"
+        }
+      ]
+    },
+    {
+      "path": "workspace-hub\\.claude\\skills\\creative\\p5js\\SKILL.md",
+      "name": "p5js",
+      "category": "creative",
+      "status": "fail",
+      "quality_tier": "B",
+      "issues": [
+        {
+          "severity": "critical",
+          "check": "line_count_exceeded",
+          "message": "SKILL.md has 555 lines (limit: 200, critical: 400)",
+          "fix": "Split or reduce skill to under 200 lines"
+        }
+      ]
+    },
+    {
+      "path": "workspace-hub\\.claude\\skills\\data\\research-and-literature-gathering\\SKILL.md",
+      "name": "research-and-literature-gathering",
+      "category": "data",
+      "status": "fail",
+      "quality_tier": "B",
+      "issues": [
+        {
+          "severity": "critical",
+          "check": "line_count_exceeded",
+          "message": "SKILL.md has 442 lines (limit: 200, critical: 400)",
+          "fix": "Split or reduce skill to under 200 lines"
+        }
+      ]
+    },
+    {
+      "path": "workspace-hub\\.claude\\skills\\devops\\hermes-ecosystem-integration\\SKILL.md",
+      "name": "hermes-ecosystem-integration",
+      "category": "devops",
+      "status": "fail",
+      "quality_tier": "B",
+      "issues": [
+        {
+          "severity": "critical",
+          "check": "line_count_exceeded",
+          "message": "SKILL.md has 462 lines (limit: 200, critical: 400)",
+          "fix": "Split or reduce skill to under 200 lines"
+        }
+      ]
+    },
+    {
+      "path": "workspace-hub\\.claude\\skills\\email\\gmail-extract-and-act\\SKILL.md",
+      "name": "gmail-extract-and-act",
+      "category": "email",
+      "status": "fail",
+      "quality_tier": "D",
+      "issues": [
+        {
+          "severity": "critical",
+          "check": "line_count_exceeded",
+          "message": "SKILL.md has 437 lines (limit: 200, critical: 400)",
+          "fix": "Split or reduce skill to under 200 lines"
+        }
+      ]
+    },
+    {
+      "path": "workspace-hub\\.claude\\skills\\engineering\\cad\\pyvista-3d\\SKILL.md",
+      "name": "PyVista 3D Visualization",
+      "category": "engineering",
+      "status": "fail",
+      "quality_tier": "C",
+      "issues": [
+        {
+          "severity": "critical",
+          "check": "yaml_invalid",
+          "message": "YAML parse error: while scanning a quoted scalar\n  in \"<unicode string>\", line 2, column 14:\n    description: \"AI interface skill for PyVista  ... \n                 ^\nfound unexpected end of stream\n  in \"<unicode string>\", line 2, column 62:\n     ... ill for PyVista 3D visualization\n                                         ^",
+          "fix": "Fix YAML syntax in frontmatter"
+        }
+      ]
+    },
+    {
+      "path": "workspace-hub\\.claude\\skills\\github\\engineering-solver-domain-recon\\SKILL.md",
+      "name": "engineering-solver-domain-recon",
+      "category": "github",
+      "status": "fail",
+      "quality_tier": "B",
+      "issues": [
+        {
+          "severity": "critical",
+          "check": "line_count_exceeded",
+          "message": "SKILL.md has 476 lines (limit: 200, critical: 400)",
+          "fix": "Split or reduce skill to under 200 lines"
+        }
+      ]
+    },
+    {
+      "path": "workspace-hub\\.claude\\skills\\github\\github-issues\\SKILL.md",
+      "name": "github-issues",
+      "category": "github",
+      "status": "fail",
+      "quality_tier": "D",
+      "issues": [
+        {
+          "severity": "critical",
+          "check": "line_count_exceeded",
+          "message": "SKILL.md has 526 lines (limit: 200, critical: 400)",
+          "fix": "Split or reduce skill to under 200 lines"
+        }
+      ]
+    },
+    {
+      "path": "workspace-hub\\.claude\\skills\\github\\github-repo-management\\SKILL.md",
+      "name": "github-repo-management",
+      "category": "github",
+      "status": "fail",
+      "quality_tier": "D",
+      "issues": [
+        {
+          "severity": "critical",
+          "check": "line_count_exceeded",
+          "message": "SKILL.md has 519 lines (limit: 200, critical: 400)",
+          "fix": "Split or reduce skill to under 200 lines"
+        }
+      ]
+    },
+    {
+      "path": "workspace-hub\\.claude\\skills\\mlops\\evaluation\\lm-evaluation-harness\\SKILL.md",
+      "name": "evaluating-llms-harness",
+      "category": "mlops",
+      "status": "fail",
+      "quality_tier": "D",
+      "issues": [
+        {
+          "severity": "critical",
+          "check": "line_count_exceeded",
+          "message": "SKILL.md has 493 lines (limit: 200, critical: 400)",
+          "fix": "Split or reduce skill to under 200 lines"
+        }
+      ]
+    },
+    {
+      "path": "workspace-hub\\.claude\\skills\\mlops\\evaluation\\weights-and-biases\\SKILL.md",
+      "name": "weights-and-biases",
+      "category": "mlops",
+      "status": "fail",
+      "quality_tier": "D",
+      "issues": [
+        {
+          "severity": "critical",
+          "check": "line_count_exceeded",
+          "message": "SKILL.md has 593 lines (limit: 200, critical: 400)",
+          "fix": "Split or reduce skill to under 200 lines"
+        }
+      ]
+    },
+    {
+      "path": "workspace-hub\\.claude\\skills\\mlops\\inference\\gguf\\SKILL.md",
+      "name": "gguf-quantization",
+      "category": "mlops",
+      "status": "fail",
+      "quality_tier": "D",
+      "issues": [
+        {
+          "severity": "critical",
+          "check": "line_count_exceeded",
+          "message": "SKILL.md has 430 lines (limit: 200, critical: 400)",
+          "fix": "Split or reduce skill to under 200 lines"
+        }
+      ]
+    },
+    {
+      "path": "workspace-hub\\.claude\\skills\\mlops\\inference\\guidance\\SKILL.md",
+      "name": "guidance",
+      "category": "mlops",
+      "status": "fail",
+      "quality_tier": "D",
+      "issues": [
+        {
+          "severity": "critical",
+          "check": "line_count_exceeded",
+          "message": "SKILL.md has 575 lines (limit: 200, critical: 400)",
+          "fix": "Split or reduce skill to under 200 lines"
+        }
+      ]
+    },
+    {
+      "path": "workspace-hub\\.claude\\skills\\mlops\\inference\\outlines\\SKILL.md",
+      "name": "outlines",
+      "category": "mlops",
+      "status": "fail",
+      "quality_tier": "D",
+      "issues": [
+        {
+          "severity": "critical",
+          "check": "line_count_exceeded",
+          "message": "SKILL.md has 655 lines (limit: 200, critical: 400)",
+          "fix": "Split or reduce skill to under 200 lines"
+        }
+      ]
+    },
+    {
+      "path": "workspace-hub\\.claude\\skills\\mlops\\models\\audiocraft\\SKILL.md",
+      "name": "audiocraft-audio-generation",
+      "category": "mlops",
+      "status": "fail",
+      "quality_tier": "D",
+      "issues": [
+        {
+          "severity": "critical",
+          "check": "line_count_exceeded",
+          "message": "SKILL.md has 567 lines (limit: 200, critical: 400)",
+          "fix": "Split or reduce skill to under 200 lines"
+        }
+      ]
+    },
+    {
+      "path": "workspace-hub\\.claude\\skills\\mlops\\models\\segment-anything\\SKILL.md",
+      "name": "segment-anything-model",
+      "category": "mlops",
+      "status": "fail",
+      "quality_tier": "D",
+      "issues": [
+        {
+          "severity": "critical",
+          "check": "line_count_exceeded",
+          "message": "SKILL.md has 503 lines (limit: 200, critical: 400)",
+          "fix": "Split or reduce skill to under 200 lines"
+        }
+      ]
+    },
+    {
+      "path": "workspace-hub\\.claude\\skills\\mlops\\models\\stable-diffusion\\SKILL.md",
+      "name": "stable-diffusion-image-generation",
+      "category": "mlops",
+      "status": "fail",
+      "quality_tier": "D",
+      "issues": [
+        {
+          "severity": "critical",
+          "check": "line_count_exceeded",
+          "message": "SKILL.md has 522 lines (limit: 200, critical: 400)",
+          "fix": "Split or reduce skill to under 200 lines"
+        }
+      ]
+    },
+    {
+      "path": "workspace-hub\\.claude\\skills\\mlops\\training\\grpo-rl-training\\SKILL.md",
+      "name": "grpo-rl-training",
+      "category": "mlops",
+      "status": "fail",
+      "quality_tier": "D",
+      "issues": [
+        {
+          "severity": "critical",
+          "check": "line_count_exceeded",
+          "message": "SKILL.md has 575 lines (limit: 200, critical: 400)",
+          "fix": "Split or reduce skill to under 200 lines"
+        }
+      ]
+    },
+    {
+      "path": "workspace-hub\\.claude\\skills\\mlops\\training\\peft\\SKILL.md",
+      "name": "peft-fine-tuning",
+      "category": "mlops",
+      "status": "fail",
+      "quality_tier": "D",
+      "issues": [
+        {
+          "severity": "critical",
+          "check": "line_count_exceeded",
+          "message": "SKILL.md has 434 lines (limit: 200, critical: 400)",
+          "fix": "Split or reduce skill to under 200 lines"
+        }
+      ]
+    },
+    {
+      "path": "workspace-hub\\.claude\\skills\\mlops\\training\\trl-fine-tuning\\SKILL.md",
+      "name": "fine-tuning-with-trl",
+      "category": "mlops",
+      "status": "fail",
+      "quality_tier": "D",
+      "issues": [
+        {
+          "severity": "critical",
+          "check": "line_count_exceeded",
+          "message": "SKILL.md has 458 lines (limit: 200, critical: 400)",
+          "fix": "Split or reduce skill to under 200 lines"
+        }
+      ]
+    },
+    {
+      "path": "workspace-hub\\.claude\\skills\\operations\\automation\\cron-job-management\\SKILL.md",
+      "name": "cron-job-management",
+      "category": "operations",
+      "status": "fail",
+      "quality_tier": "B",
+      "issues": [
+        {
+          "severity": "critical",
+          "check": "line_count_exceeded",
+          "message": "SKILL.md has 445 lines (limit: 200, critical: 400)",
+          "fix": "Split or reduce skill to under 200 lines"
+        }
+      ]
+    },
+    {
+      "path": "workspace-hub\\.claude\\skills\\red-teaming\\godmode\\SKILL.md",
+      "name": "godmode",
+      "category": "red-teaming",
+      "status": "fail",
+      "quality_tier": "D",
+      "issues": [
+        {
+          "severity": "critical",
+          "check": "line_count_exceeded",
+          "message": "SKILL.md has 403 lines (limit: 200, critical: 400)",
+          "fix": "Split or reduce skill to under 200 lines"
+        }
+      ]
+    },
+    {
+      "path": "workspace-hub\\.claude\\skills\\research\\llm-wiki\\SKILL.md",
+      "name": "llm-wiki",
+      "category": "research",
+      "status": "fail",
+      "quality_tier": "B",
+      "issues": [
+        {
+          "severity": "critical",
+          "check": "line_count_exceeded",
+          "message": "SKILL.md has 419 lines (limit: 200, critical: 400)",
+          "fix": "Split or reduce skill to under 200 lines"
+        }
+      ]
+    },
+    {
+      "path": "workspace-hub\\.claude\\skills\\research\\ml-paper-writing\\SKILL.md",
+      "name": "ml-paper-writing",
+      "category": "research",
+      "status": "fail",
+      "quality_tier": "D",
+      "issues": [
+        {
+          "severity": "critical",
+          "check": "line_count_exceeded",
+          "message": "SKILL.md has 940 lines (limit: 200, critical: 400)",
+          "fix": "Split or reduce skill to under 200 lines"
+        }
+      ]
+    },
+    {
+      "path": "workspace-hub\\.claude\\skills\\research\\research-paper-writing\\SKILL.md",
+      "name": "research-paper-writing",
+      "category": "research",
+      "status": "fail",
+      "quality_tier": "D",
+      "issues": [
+        {
+          "severity": "critical",
+          "check": "line_count_exceeded",
+          "message": "SKILL.md has 1599 lines (limit: 200, critical: 400)",
+          "fix": "Split or reduce skill to under 200 lines"
+        }
+      ]
+    },
+    {
+      "path": "workspace-hub\\.claude\\skills\\social-media\\xurl\\SKILL.md",
+      "name": "xurl",
+      "category": "social-media",
+      "status": "fail",
+      "quality_tier": "D",
+      "issues": [
+        {
+          "severity": "critical",
+          "check": "line_count_exceeded",
+          "message": "SKILL.md has 414 lines (limit: 200, critical: 400)",
+          "fix": "Split or reduce skill to under 200 lines"
+        }
+      ]
+    },
+    {
+      "path": "workspace-hub\\.claude\\skills\\software-development\\gh-work-execution\\SKILL.md",
+      "name": "gh-work-execution",
+      "category": "software-development",
+      "status": "fail",
+      "quality_tier": "D",
+      "issues": [
+        {
+          "severity": "critical",
+          "check": "line_count_exceeded",
+          "message": "SKILL.md has 709 lines (limit: 200, critical: 400)",
+          "fix": "Split or reduce skill to under 200 lines"
+        }
+      ]
+    },
+    {
+      "path": "workspace-hub\\.claude\\skills\\software-development\\gsd-operational-audit\\SKILL.md",
+      "name": "gsd-operational-audit",
+      "category": "software-development",
+      "status": "fail",
+      "quality_tier": "B",
+      "issues": [
+        {
+          "severity": "critical",
+          "check": "line_count_exceeded",
+          "message": "SKILL.md has 445 lines (limit: 200, critical: 400)",
+          "fix": "Split or reduce skill to under 200 lines"
+        }
+      ]
+    },
+    {
+      "path": "workspace-hub\\.claude\\skills\\workspace-hub\\provider-session-ecosystem-audit-and-exporters\\SKILL.md",
+      "name": "provider-session-ecosystem-audit-and-exporters",
+      "category": "workspace-hub",
+      "status": "fail",
+      "quality_tier": "B",
+      "issues": [
+        {
+          "severity": "critical",
+          "check": "line_count_exceeded",
+          "message": "SKILL.md has 463 lines (limit: 200, critical: 400)",
+          "fix": "Split or reduce skill to under 200 lines"
+        }
+      ]
+    },
+    {
+      "path": "workspace-hub\\.claude\\skills\\workspace-hub\\session-corpus-audit\\SKILL.md",
+      "name": "session-corpus-audit",
+      "category": "workspace-hub",
+      "status": "fail",
+      "quality_tier": "B",
+      "issues": [
+        {
+          "severity": "critical",
+          "check": "line_count_exceeded",
+          "message": "SKILL.md has 445 lines (limit: 200, critical: 400)",
+          "fix": "Split or reduce skill to under 200 lines"
+        }
+      ]
+    },
+    {
+      "path": "workspace-hub\\.claude\\skills\\workspace-hub-learned\\iterative-plan-hardening-with-adversarial-waves\\SKILL.md",
+      "name": "iterative-plan-hardening-with-adversarial-waves",
+      "category": "workspace-hub-learned",
+      "status": "fail",
+      "quality_tier": "B",
+      "issues": [
+        {
+          "severity": "critical",
+          "check": "line_count_exceeded",
+          "message": "SKILL.md has 689 lines (limit: 200, critical: 400)",
+          "fix": "Split or reduce skill to under 200 lines"
+        }
+      ]
+    }
+  ]
+}

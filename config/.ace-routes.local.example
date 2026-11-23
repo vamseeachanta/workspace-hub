@@ -1,0 +1,4 @@
+{
+  "_README": "Template for config/.ace-routes.local (gitignored). Copy to .ace-routes.local and add one entry per CLIENT repo prefix. Client repo names are kept out of this public repo (#3095/#3098); provision from the private aceengineer-strategy. Keys starting with '_' are ignored by the loader (they lack repo/command/description).",
+  "ex": {"repo": "example-client-repo", "command": "example-tool", "description": "Example client route"}
+}

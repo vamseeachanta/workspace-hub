@@ -1,0 +1,34 @@
+Agent loading error: Failed to load agent from /mnt/local-analysis/workspace-hub/.gemini/agents/gsd-debugger.md: Validation failed: Agent Definition:
+Unrecognized key(s) in object: 'permissionMode'
+Agent loading error: Failed to load agent from /mnt/local-analysis/workspace-hub/.gemini/agents/gsd-executor.md: Validation failed: Agent Definition:
+Unrecognized key(s) in object: 'permissionMode'
+Ripgrep is not available. Falling back to GrepTool.
+Skill conflict detected: "field-dev-code-recon" from "/mnt/local-analysis/workspace-hub/.agents/skills/field-dev-code-recon/SKILL.md" is overriding the same skill from "/mnt/local-analysis/workspace-hub/.gemini/skills/field-dev-code-recon/SKILL.md".
+Skill conflict detected: "extract-learnings-to-issues" from "/mnt/local-analysis/workspace-hub/.agents/skills/extract-learnings-to-issues/SKILL.md" is overriding the same skill from "/mnt/local-analysis/workspace-hub/.gemini/skills/extract-learnings-to-issues/SKILL.md".
+Skill conflict detected: "corporate-tax-form-fill" from "/mnt/local-analysis/workspace-hub/.agents/skills/corporate-tax-form-fill/SKILL.md" is overriding the same skill from "/mnt/local-analysis/workspace-hub/.gemini/skills/corporate-tax-form-fill/SKILL.md".
+# Adversarial Review of workspace-hub issues #2728 and #2729
+
+- Verdict: MAJOR
+
+## Findings by severity
+
+**MAJOR: Schema fail-closed rules are weak and bypassable for evidence verdicts**
+- **Evidence:**
+  - `docs/architecture/execution-manifest.schema.yaml` defines `legal_scan_evidence.result` as `{type: string}`.
+  - `docs/architecture/report-evidence-bundle.schema.yaml` defines `legal_scan.result`, `sanitization_gate`, and `review_verdict` as `{type: string}`.
+- **Why it matters:** Because these fields lack strict `enum` constraints (e.g., restricting them to `pass`, `approved`, or `pending-required-before-publication`), a manifest can be marked `report_eligible: true` while holding a `"fail"` legal scan or `"rejected"` review verdict. This defeats the core intent of a fail-closed schema.
+- **Note on tests:** The tests in `tests/architecture/test_execution_layer_contract.py` (specifically `test_no_execution_direct_publication`) only check if the valid *fixture* dictionary happens to contain an acceptable string. They do not verify that the *jsonschema* actively rejects an invalid `"fail"` string.
+
+**MINOR: Missing `exception_reason` property in report evidence bundle**
+- **Evidence:** `docs/architecture/report-layer-contract.md` (Level R-L5) and `docs/architecture/report-output-taxonomy.yaml` clearly state that an `exception_reason` is required for the `limited_pdf` artifact type. However, `docs/architecture/report-evidence-bundle.schema.yaml` does not define an `exception_reason` property.
+- **Why it matters:** The R-L5 exception path policy cannot be captured or validated if the bundle schema omits the field entirely.
+
+**MINOR: Missing negative cases in schema tests**
+- **Evidence:** `tests/architecture/test_execution_layer_contract.py` and `tests/architecture/test_report_layer_contract.py`.
+- **Why it matters:** While they cover missing source registries and public promotion gates, the tests lack negative jsonschema validations for (1) invalid evidence string values, (2) `artifact_type: limited_pdf` missing an exception reason, and (3) `report_eligible: false` when one of the outputs incorrectly asserts `report_handoff: true`.
+
+## Required fixes before closeout
+
+1. **Constrain evidence verdicts:** In both `execution-manifest.schema.yaml` and `report-evidence-bundle.schema.yaml`, add exact `enum` arrays to `legal_scan_evidence.result`, `legal_scan.result`, `review_verdict`, and `sanitization_gate` (e.g., `[pass, pending-required-before-publication, approved]`) so that invalid strings are rejected by jsonschema validation.
+2. **Add `exception_reason` to the bundle schema:** Add an `exception_reason` property (`type: string`) to `report-evidence-bundle.schema.yaml` and rigorously enforce its presence using an `allOf -> if/then` condition when `artifact_type` is `limited_pdf`.
+3. **Enhance negative test coverage:** Update the Pytest architecture tests to verify that the `jsonschema.Draft202012Validator` actively throws `ValidationError` exceptions for manifests/bundles with invalid evidence verdicts and for `limited_pdf` bundles missing the exception reason.

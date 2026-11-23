@@ -1,0 +1,462 @@
+# PyProject.toml Template with UV Configuration
+# Version: 1.0.0
+# Modern Python packaging configuration compatible with UV
+
+[build-system]
+requires = ["hatchling>=1.18.0"]
+build-backend = "hatchling.build"
+
+[project]
+name = "your-project-name"
+version = "0.1.0"
+description = "A modern Python project configured for UV"
+readme = {file = "README.md", content-type = "text/markdown"}
+license = {text = "MIT"}
+authors = [
+    {name = "Your Name", email = "your.email@example.com"},
+]
+maintainers = [
+    {name = "Your Name", email = "your.email@example.com"},
+]
+keywords = ["python", "uv", "modern", "packaging"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Utilities",
+]
+
+# Python version support
+requires-python = ">=3.9"
+
+# Core dependencies (production runtime)
+dependencies = [
+    # Essential dependencies only
+    # "pydantic>=2.4.0",
+    # "click>=8.1.0",
+    # "rich>=13.0.0",
+]
+
+# Optional dependency groups for different use cases
+[project.optional-dependencies]
+# Complete development environment
+dev = [
+    # Testing framework
+    "pytest>=7.4.0",
+    "pytest-cov>=4.1.0",
+    "pytest-xdist>=3.3.1",        # Parallel test execution
+    "pytest-mock>=3.11.1",
+    "pytest-asyncio>=0.21.1",
+
+    # Code quality tools
+    "ruff>=0.1.5",                # Fast linter and formatter
+    "black>=23.9.1",              # Code formatter (alternative to ruff format)
+    "mypy>=1.6.1",                # Static type checker
+    "bandit>=1.7.5",              # Security linter
+    "safety>=2.3.5",              # Dependency vulnerability scanner
+
+    # Development utilities
+    "pre-commit>=3.5.0",          # Git hooks
+    "tox>=4.11.3",                # Testing across environments
+    "nox>=2023.4.22",             # Task automation (alternative to tox)
+
+    # Documentation
+    "sphinx>=7.1.2",
+    "sphinx-rtd-theme>=1.3.0",
+    "myst-parser>=2.0.0",
+
+    # Debugging and profiling
+    "ipdb>=0.13.13",              # Enhanced debugger
+    "rich>=13.6.0",               # Beautiful terminal output
+]
+
+# Minimal testing dependencies (for CI)
+test = [
+    "pytest>=7.4.0",
+    "pytest-cov>=4.1.0",
+    "pytest-xdist>=3.3.1",
+    "pytest-mock>=3.11.1",
+]
+
+# Web development specific
+web = [
+    "fastapi>=0.104.1",
+    "uvicorn[standard]>=0.24.0",
+    "httpx>=0.25.0",
+    "starlette>=0.27.0",
+]
+
+# Data science and analysis
+data = [
+    "pandas>=2.1.1",
+    "numpy>=1.24.3",
+    "matplotlib>=3.7.2",
+    "seaborn>=0.13.0",
+    "jupyter>=1.0.0",
+]
+
+# Database operations
+database = [
+    "sqlalchemy>=2.0.21",
+    "alembic>=1.12.0",
+    "asyncpg>=0.28.0",            # PostgreSQL async
+    "aiosqlite>=0.19.0",          # SQLite async
+]
+
+# CLI development
+cli = [
+    "click>=8.1.7",
+    "typer>=0.9.0",
+    "rich-click>=1.7.1",
+    "rich>=13.6.0",
+]
+
+# Performance and async
+async = [
+    "asyncio>=3.4.3",
+    "aiohttp>=3.8.6",
+    "aiofiles>=23.2.1",
+    "uvloop>=0.19.0; sys_platform != 'win32'",
+]
+
+# Linting and formatting (minimal set)
+lint = [
+    "ruff>=0.1.5",
+    "mypy>=1.6.1",
+    "bandit>=1.7.5",
+]
+
+# Documentation only
+docs = [
+    "sphinx>=7.1.2",
+    "sphinx-rtd-theme>=1.3.0",
+    "sphinx-autodoc-typehints>=1.24.0",
+    "myst-parser>=2.0.0",
+    "sphinx-copybutton>=0.5.2",
+]
+
+# Build and publishing
+build = [
+    "build>=1.0.3",
+    "twine>=4.0.2",
+    "wheel>=0.41.2",
+    "setuptools-scm>=8.0.4",
+]
+
+# Project URLs for package index
+[project.urls]
+Homepage = "https://github.com/yourusername/your-project"
+Repository = "https://github.com/yourusername/your-project.git"
+Documentation = "https://your-project.readthedocs.io/"
+Changelog = "https://github.com/yourusername/your-project/blob/main/CHANGELOG.md"
+"Bug Tracker" = "https://github.com/yourusername/your-project/issues"
+Funding = "https://github.com/sponsors/yourusername"
+
+# Entry points (command-line interfaces)
+[project.scripts]
+# your-cli = "your_package.cli:main"
+# your-tool = "your_package.tools:cli"
+
+# GUI applications
+[project.gui-scripts]
+# your-gui = "your_package.gui:main"
+
+# Plugin entry points
+[project.entry-points."your.plugin.namespace"]
+# plugin-name = "your_package.plugins:PluginClass"
+
+# ===== UV CONFIGURATION =====
+[tool.uv]
+# Development dependencies automatically installed with `uv sync --dev`
+dev-dependencies = [
+    "pytest>=7.4.0",
+    "pytest-cov>=4.1.0",
+    "ruff>=0.1.5",
+    "mypy>=1.6.1",
+    "pre-commit>=3.5.0",
+]
+
+# Package index configuration
+index-url = "https://pypi.org/simple"
+extra-index-url = [
+    # Add any additional package indexes here
+    # "https://download.pytorch.org/whl/cpu",
+    # "https://private-pypi.company.com/simple",
+]
+
+# Dependency resolution strategy
+resolution = "highest"                    # Options: "highest", "lowest-direct"
+
+# Prerelease package handling
+prerelease = "disallow"                   # Options: "allow", "explicit", "disallow"
+
+# Cache configuration
+cache-dir = ".uv-cache"
+no-cache = false
+
+# Build and installation options
+compile-bytecode = true
+no-build-isolation = false
+no-build-isolation-package = []
+
+# Virtual environment configuration
+virtual-env = ".venv"
+
+# Constraint files (like pip's constraints.txt)
+constraint-dependencies = [
+    # "some-package==1.2.3",
+]
+
+# Override dependencies (force specific versions)
+override-dependencies = [
+    # "problematic-package==1.0.0",
+]
+
+# UV workspace configuration (for mono-repositories)
+# [tool.uv.workspace]
+# members = [
+#     "packages/*",
+#     "services/*",
+#     "tools/*",
+# ]
+# exclude = [
+#     "legacy/*",
+# ]
+
+# Package-specific settings
+# [tool.uv.packages.some-package]
+# version = ">=1.0.0,<2.0.0"
+# index = "https://custom-index.com/simple"
+
+# ===== TOOL CONFIGURATIONS =====
+
+# Ruff configuration (linting and formatting)
+[tool.ruff]
+target-version = "py39"
+line-length = 88
+select = [
+    "E",   # pycodestyle errors
+    "W",   # pycodestyle warnings
+    "F",   # pyflakes
+    "I",   # isort
+    "B",   # flake8-bugbear
+    "C4",  # flake8-comprehensions
+    "UP",  # pyupgrade
+    "A",   # flake8-builtins
+    "COM", # flake8-commas
+    "DJ",  # flake8-django
+    "EM",  # flake8-errmsg
+    "G",   # flake8-logging-format
+    "ICN", # flake8-import-conventions
+    "PIE", # flake8-pie
+    "PL",  # pylint
+    "PT",  # flake8-pytest-style
+    "Q",   # flake8-quotes
+    "RET", # flake8-return
+    "RSE", # flake8-raise
+    "S",   # flake8-bandit
+    "SIM", # flake8-simplify
+    "T20", # flake8-print
+    "TCH", # flake8-type-checking
+    "TID", # flake8-tidy-imports
+    "TRY", # tryceratops
+]
+
+ignore = [
+    "E501",   # line too long, handled by formatter
+    "B008",   # do not perform function calls in argument defaults
+    "B905",   # zip() without an explicit strict= parameter
+    "COM812", # missing trailing comma
+    "COM819", # prohibited trailing comma
+    "PLR0913", # too many arguments to function call
+    "S101",   # use of assert detected
+    "T201",   # print found
+    "TRY003", # avoid specifying long messages outside the exception class
+]
+
+[tool.ruff.per-file-ignores]
+"__init__.py" = ["F401", "F403"]
+"tests/**/*" = ["S101", "PLR2004", "PLR0913"]
+"docs/**/*" = ["A001"]
+
+[tool.ruff.mccabe]
+max-complexity = 10
+
+[tool.ruff.isort]
+known-first-party = ["your_package"]
+
+# Black formatter configuration
+[tool.black]
+line-length = 88
+target-version = ["py39", "py310", "py311", "py312"]
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+    \.eggs
+  | \.git
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | _build
+  | build
+  | dist
+)/
+'''
+
+# MyPy static type checker
+[tool.mypy]
+python_version = "3.9"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+check_untyped_defs = true
+disallow_untyped_decorators = true
+no_implicit_optional = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_no_return = true
+warn_unreachable = true
+strict_equality = true
+show_error_codes = true
+namespace_packages = true
+explicit_package_bases = true
+
+[[tool.mypy.overrides]]
+module = [
+    "some_untyped_package.*",
+    "legacy_module.*",
+]
+ignore_missing_imports = true
+
+# Pytest configuration
+[tool.pytest.ini_options]
+minversion = "7.0"
+addopts = [
+    "--strict-markers",
+    "--strict-config",
+    "--cov=src",
+    "--cov-branch",
+    "--cov-report=term-missing:skip-covered",
+    "--cov-report=html:htmlcov",
+    "--cov-report=xml",
+    "--cov-fail-under=80",
+]
+testpaths = ["tests"]
+python_files = ["test_*.py", "*_test.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+markers = [
+    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+    "integration: marks tests as integration tests",
+    "unit: marks tests as unit tests",
+    "e2e: marks tests as end-to-end tests",
+    "network: marks tests that require network access",
+]
+filterwarnings = [
+    "error",
+    "ignore::UserWarning",
+    "ignore::DeprecationWarning",
+]
+
+# Coverage configuration
+[tool.coverage.run]
+source = ["src"]
+branch = true
+omit = [
+    "*/tests/*",
+    "*/test_*",
+    "*/*_test.py",
+    "*/conftest.py",
+    "*/__init__.py",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "if self.debug:",
+    "if settings.DEBUG",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if 0:",
+    "if __name__ == .__main__.:",
+    "class .*\\bProtocol\\):",
+    "@(abc\\.)?abstractmethod",
+    "except ImportError:",
+]
+show_missing = true
+skip_covered = true
+
+[tool.coverage.html]
+directory = "htmlcov"
+
+# Bandit security linter
+[tool.bandit]
+exclude_dirs = ["tests", "test_*", "docs"]
+skips = ["B101", "B601"]
+
+# Hatch build system configuration
+[tool.hatch.version]
+path = "src/your_package/__init__.py"
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "/src",
+    "/tests",
+    "/docs",
+    "/README.md",
+    "/LICENSE",
+    "/CHANGELOG.md",
+    "/pyproject.toml",
+]
+exclude = [
+    "/.github",
+    "/.vscode",
+    "/.idea",
+    "/.*",
+    "*.pyc",
+    "__pycache__",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/your_package"]
+
+# Pre-commit configuration
+[tool.pre-commit]
+repos = [
+    {
+        repo = "https://github.com/pre-commit/pre-commit-hooks",
+        rev = "v4.5.0",
+        hooks = [
+            { id = "trailing-whitespace" },
+            { id = "end-of-file-fixer" },
+            { id = "check-yaml" },
+            { id = "check-added-large-files" },
+            { id = "check-merge-conflict" },
+            { id = "debug-statements" },
+        ]
+    },
+    {
+        repo = "https://github.com/astral-sh/ruff-pre-commit",
+        rev = "v0.1.5",
+        hooks = [
+            { id = "ruff", args = ["--fix"] },
+            { id = "ruff-format" },
+        ]
+    },
+    {
+        repo = "https://github.com/pre-commit/mirrors-mypy",
+        rev = "v1.6.1",
+        hooks = [
+            { id = "mypy", additional_dependencies = ["types-all"] },
+        ]
+    },
+]

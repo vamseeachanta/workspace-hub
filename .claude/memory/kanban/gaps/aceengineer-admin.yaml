@@ -1,0 +1,35 @@
+board_slug: repo-aceengineer-admin
+repo: vamseeachanta/aceengineer-admin
+gaps:
+- idempotency_key: gap:repo-aceengineer-admin:001
+  title: Annual filing calendar not codified
+  source: detected_gap
+  detection_basis: TX Franchise 2026 closure documented in memory but no recurring
+    calendar template in repo.
+  needs_issue: true
+  priority: 1
+  body_excerpt: 'Codify the annual filing/compliance calendar (TX franchise, federal
+    returns, state registrations) as a recurring issue template.
+
+    '
+- idempotency_key: gap:repo-aceengineer-admin:002
+  title: Contract template library audit
+  source: detected_gap
+  detection_basis: No tracked audit of current contract templates (MSA, SOW, NDA)
+    for staleness vs current practice.
+  needs_issue: true
+  priority: 1
+  body_excerpt: 'Audit current contract templates; flag stale clauses; refresh against
+    2026 standard terms.
+
+    '
+- idempotency_key: gap:repo-aceengineer-admin:003
+  title: Insurance + license renewal tracker
+  source: detected_gap
+  detection_basis: Renewal dates scattered; no single tracker issue.
+  needs_issue: true
+  priority: 1
+  body_excerpt: 'Single tracker for E&O insurance, business license, PE registration
+    renewals with reminder cadence.
+
+    '

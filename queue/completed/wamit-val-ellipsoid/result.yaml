@@ -1,0 +1,8 @@
+status: completed
+processed_at: 2026-04-03T17:14:13Z
+solver: orcawave
+input_file: digitalmodel/docs/domains/orcawave/L00_validation_wamit/2.8/OrcaWave v11.0 files/Ellipsoid.owd
+description: "WAMIT validation L00 case 2.8 — ellipsoid"
+elapsed_seconds: 5.3
+output_files:
+  - Ellipsoid.owr

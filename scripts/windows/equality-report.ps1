@@ -1,0 +1,414 @@
+# equality-report.ps1
+# Windows Task Scheduler wrapper for the #2801 machine-equality report.
+#
+# Responsibilities:
+#   1. Prove the checkout is current with origin/main before collecting.
+#   2. Run the CIM-backed Windows collector.
+#   3. Build the matrix with system python.
+#   4. Commit and push .claude/state/equality-<machine>.yaml when it changed.
+#   5. With -RefreshMatrix: ALSO commit+push the regenerated matrix HTML
+#      (docs/reports/<date>-machine-equality-matrix.html + the stable
+#      docs/reports/machine-equality-matrix.html alias) in the SAME commit, so
+#      the GitHub Pages live link redeploys from this machine's sync.
+#      OFF BY DEFAULT: scheduled runs stay state-only and let the Linux cron own
+#      the published matrix; -RefreshMatrix is for an explicit manual sync that
+#      should refresh the live link itself.
+
+[CmdletBinding()]
+param(
+    [string]$WorkspaceRoot = "",
+    [string]$Machine = "",
+    [switch]$RefreshMatrix
+)
+
+$ErrorActionPreference = 'Stop'
+Set-StrictMode -Version Latest
+
+if ([string]::IsNullOrWhiteSpace($WorkspaceRoot)) {
+    $WorkspaceRoot = (Resolve-Path (Join-Path $PSScriptRoot "..\..")).Path
+}
+
+function Invoke-Checked {
+    param(
+        [Parameter(Mandatory=$true)][string]$File,
+        [Parameter(Mandatory=$true)][string[]]$Arguments,
+        [Parameter(Mandatory=$true)][string]$FailureMessage
+    )
+
+    & $File @Arguments
+    if ($LASTEXITCODE -ne 0) {
+        throw "$FailureMessage (exit $LASTEXITCODE)"
+    }
+}
+
+function Test-CommandAvailable {
+    param([Parameter(Mandatory=$true)][string]$Name)
+    if (-not (Get-Command $Name -ErrorAction SilentlyContinue)) {
+        throw "Required command not found on PATH: $Name"
+    }
+}
+
+function Get-CurrentBranch {
+    $branch = (& git branch --show-current 2>$null).Trim()
+    if ($LASTEXITCODE -ne 0 -or [string]::IsNullOrWhiteSpace($branch)) {
+        throw "Unable to determine current git branch"
+    }
+    if ($branch -ne "main") {
+        throw "EqualityReport must run from main, not '$branch'"
+    }
+    return $branch
+}
+
+# Mirrors scripts/readiness/lib/machine-identity.sh; the contract test in
+# tests/readiness/test_collect_equality.py asserts the two sets stay identical.
+$KnownMachineLabels = @("dev-primary", "dev-secondary", "macbook-portable", "ace-win-1", "ace-win-2")
+
+function Get-MachineIdentityFromFile {
+    param([Parameter(Mandatory=$true)][string]$HostName)
+    # #3571: off-repo identity file for boxes whose hostname must not enter the
+    # public host map. Consulted ONLY after the hardcoded map fails (a stale copied
+    # file can never override a mapped host); malformed/foreign files throw -
+    # never fall through. Diagnostics omit hostname values (logs may be tracked).
+    $path = if ($env:WORKSPACE_HUB_MACHINE_IDENTITY) { $env:WORKSPACE_HUB_MACHINE_IDENTITY }
+            else { Join-Path $env:USERPROFILE ".config\workspace-hub\machine-identity.yaml" }
+    if (-not (Test-Path $path)) { return $null }
+    $get = {
+        param($key)
+        $line = Get-Content $path | Where-Object { $_ -match "^$key\s*:" } | Select-Object -First 1
+        if ($null -eq $line) { return "" }
+        return ($line -replace "^$key\s*:\s*", "").Trim().Trim('"')
+    }
+    $machine = & $get "machine"
+    if ([string]::IsNullOrWhiteSpace($machine)) {
+        throw "machine-identity: $path lacks the required 'machine:' key"
+    }
+    if ($KnownMachineLabels -notcontains $machine) {
+        throw "machine-identity: label in $path is not one of: $($KnownMachineLabels -join ' ')"
+    }
+    $expected = & $get "expected_hostname"
+    if (-not [string]::IsNullOrWhiteSpace($expected) -and
+        $expected.ToLowerInvariant() -ne $HostName.ToLowerInvariant()) {
+        throw "machine-identity: expected_hostname in $path does not match this box - refusing a copied identity file"
+    }
+    return $machine
+}
+
+function Get-EqualityMachineLabel {
+    $hostName = if ($env:COMPUTERNAME) { $env:COMPUTERNAME.ToLowerInvariant() } else { "" }
+    switch -Wildcard ($hostName) {
+        "ace-win-1" { return "ace-win-1" }
+        "acma-ansys05*" { return "ace-win-1" }
+        "ace-win-2" { return "ace-win-2" }
+        "acma-ws014*" { return "ace-win-2" }
+        default {
+            $fromFile = Get-MachineIdentityFromFile -HostName $hostName
+            if ($fromFile) { return $fromFile }
+            throw "Unknown Windows equality host '$hostName'; pass -Machine, or provision the machine-identity file"
+        }
+    }
+}
+
+function Get-MatrixReportPaths {
+    # Both artifacts build-equality-matrix.py writes: the dated report AND the
+    # stable undated alias the GitHub Pages site publishes (scripts/build_pages.py).
+    return @(
+        ("docs/reports/{0}-machine-equality-matrix.html" -f (Get-Date -Format "yyyy-MM-dd")),
+        "docs/reports/machine-equality-matrix.html"
+    )
+}
+
+function Invoke-EqualityTranscript {
+    param([Parameter(Mandatory=$true)][string]$Machine)
+
+    $logDir = Join-Path $WorkspaceRoot "logs\quality"
+    New-Item -ItemType Directory -Force -Path $logDir | Out-Null
+    $logPath = Join-Path $logDir ("equality-{0}-{1}.log" -f (Get-Date -Format "yyyy-MM-dd"), $Machine)
+    Start-Transcript -Path $logPath -Append | Out-Null
+    return $true
+}
+
+function Get-RevCount {
+    param([Parameter(Mandatory=$true)][string]$Range)
+    $count = (& git rev-list --count $Range 2>$null).Trim()
+    if ($LASTEXITCODE -ne 0 -or [string]::IsNullOrWhiteSpace($count)) {
+        throw "Unable to compare git range $Range"
+    }
+    return [int]$count
+}
+
+function Test-AheadCommitIsEqualityReport {
+    param([Parameter(Mandatory=$true)][string]$Machine)
+
+    $expectedPath = ".claude/state/equality-$Machine.yaml"
+    $subjects = & git log --format=%s "origin/main..HEAD"
+    if ($LASTEXITCODE -ne 0) {
+        throw "Unable to inspect local commits ahead of origin/main"
+    }
+    foreach ($subject in $subjects) {
+        if ($subject -notmatch "^chore: equality report from ") {
+            return $false
+        }
+    }
+
+    $commits = & git rev-list "origin/main..HEAD"
+    if ($LASTEXITCODE -ne 0 -or $commits.Count -eq 0) {
+        throw "Unable to inspect local commit paths ahead of origin/main"
+    }
+    foreach ($commit in $commits) {
+        $paths = & git diff-tree --no-commit-id --name-only -r $commit
+        if ($LASTEXITCODE -ne 0 -or $paths.Count -eq 0) {
+            return $false
+        }
+        foreach ($path in $paths) {
+            if ($path -eq $expectedPath) { continue }
+            # Tolerate matrix-report artifacts so a -RefreshMatrix commit (state +
+            # matrix HTML) is still recognized as an equality report and can be
+            # recovered/pushed by a later run, including a stale dated report.
+            if ($path -like "docs/reports/*-machine-equality-matrix.html") { continue }
+            if ($path -eq "docs/reports/machine-equality-matrix.html") { continue }
+            return $false
+        }
+    }
+    return $true
+}
+
+function Push-ExistingEqualityCommit {
+    param(
+        [Parameter(Mandatory=$true)][string]$Branch,
+        [Parameter(Mandatory=$true)][string]$Machine,
+        [Parameter(Mandatory=$true)][int]$Ahead
+    )
+
+    if ($Ahead -le 0) {
+        return
+    }
+    if (-not (Test-AheadCommitIsEqualityReport -Machine $Machine)) {
+        throw "Checkout is $Ahead commit(s) ahead of origin/main with non-equality commits; refusing to push"
+    }
+
+    & git push origin $Branch
+    if ($LASTEXITCODE -ne 0) {
+        throw "Existing local equality commit(s) could not be pushed; will retry on the next scheduled run"
+    }
+
+    Invoke-Checked -File "git" -Arguments @("fetch", "--quiet", "origin", "+refs/heads/main:refs/remotes/origin/main") `
+        -FailureMessage "Unable to refresh origin/main after pushing existing equality commit(s)"
+
+    $remainingAhead = Get-RevCount -Range "origin/main..HEAD"
+    if ($remainingAhead -ne 0) {
+        throw "Checkout remains $remainingAhead commit(s) ahead after pushing existing equality commit(s)"
+    }
+}
+
+function Invoke-ExistingEqualityCommitRebase {
+    param(
+        [Parameter(Mandatory=$true)][string]$Machine,
+        [Parameter(Mandatory=$true)][int]$Behind,
+        [Parameter(Mandatory=$true)][int]$Ahead
+    )
+
+    if ($Behind -le 0) {
+        return $false
+    }
+    if ($Ahead -le 0) {
+        throw "Checkout is $Behind commit(s) behind origin/main; refusing to write an equality report"
+    }
+    if (-not (Test-AheadCommitIsEqualityReport -Machine $Machine)) {
+        throw "Checkout is behind origin/main and has non-equality local commits; refusing unattended recovery"
+    }
+
+    & git rebase origin/main
+    if ($LASTEXITCODE -ne 0) {
+        & git rebase --abort 2>$null | Out-Null
+        throw "Failed to rebase existing equality commit onto origin/main; refusing stale report"
+    }
+    return $true
+}
+
+function Confirm-FreshCheckout {
+    param(
+        [Parameter(Mandatory=$true)][string]$Branch,
+        [Parameter(Mandatory=$true)][string]$Machine
+    )
+
+    Invoke-Checked -File "git" -Arguments @("fetch", "--quiet", "origin", "+refs/heads/main:refs/remotes/origin/main") `
+        -FailureMessage "Unable to refresh origin/main; refusing to write an equality report"
+
+    $behind = Get-RevCount -Range "HEAD..origin/main"
+    $ahead = Get-RevCount -Range "origin/main..HEAD"
+    Invoke-ExistingEqualityCommitRebase -Machine $Machine -Behind $behind -Ahead $ahead | Out-Null
+    $ahead = Get-RevCount -Range "origin/main..HEAD"
+    Push-ExistingEqualityCommit -Branch $Branch -Machine $Machine -Ahead $ahead
+
+    $measuredPaths = @(
+        ".claude/skills",
+        ".claude/memory/context.md",
+        ".claude/dispatch",
+        ".claude/rules",
+        ".claude/hooks/plan-approval-gate.sh",
+        ".claude/settings.json",
+        "scripts/readiness/harness-config.yaml",
+        "config/scheduled-tasks/schedule-tasks.yaml"
+    )
+    $statusArgs = @("status", "--porcelain", "--untracked-files=no", "--") + $measuredPaths
+    $dirty = & git @statusArgs
+    if ($LASTEXITCODE -ne 0) {
+        throw "Unable to check measured-path dirty state"
+    }
+    if (-not [string]::IsNullOrWhiteSpace(($dirty -join ""))) {
+        throw "Measured equality inputs are dirty; refusing to write a STALE-CHECKOUT report"
+    }
+}
+
+function Confirm-MatrixReportClean {
+    param([Parameter(Mandatory=$true)][string[]]$ReportPaths)
+
+    foreach ($ReportPath in $ReportPaths) {
+        $status = & git status --porcelain --untracked-files=all -- $ReportPath
+        if ($LASTEXITCODE -ne 0) {
+            throw "Unable to check matrix report worktree state"
+        }
+        if (-not [string]::IsNullOrWhiteSpace(($status -join ""))) {
+            throw "Matrix report path is already dirty; refusing to overwrite $ReportPath"
+        }
+    }
+}
+
+function Clear-GeneratedMatrixReport {
+    param([Parameter(Mandatory=$true)][string[]]$ReportPaths)
+
+    foreach ($ReportPath in $ReportPaths) {
+        & git ls-files --error-unmatch -- $ReportPath *> $null
+        if ($LASTEXITCODE -eq 0) {
+            Invoke-Checked -File "git" -Arguments @("restore", "--worktree", "--", $ReportPath) `
+                -FailureMessage "Failed to restore generated matrix report"
+        } elseif (Test-Path $ReportPath) {
+            Remove-Item -LiteralPath $ReportPath -Force
+        }
+    }
+}
+
+function Confirm-PythonYaml {
+    & python -c "import yaml" 2>$null
+    if ($LASTEXITCODE -ne 0) {
+        throw "Windows equality report requires system python with PyYAML installed: python -m pip install PyYAML"
+    }
+}
+
+function Sync-EqualityState {
+    param(
+        [Parameter(Mandatory=$true)][string]$Branch,
+        [Parameter(Mandatory=$true)][string]$Machine,
+        [switch]$RefreshMatrix,
+        [string[]]$ReportPaths = @()
+    )
+
+    $statePath = ".claude/state/equality-$Machine.yaml"
+    if (-not (Test-Path $statePath)) {
+        throw "Expected equality state was not written: $statePath"
+    }
+
+    # With -RefreshMatrix the matrix HTML rides in the SAME commit as the state
+    # yaml, so the single-equality-commit invariant (and its recovery gate) holds.
+    $paths = @($statePath)
+    if ($RefreshMatrix) { $paths += $ReportPaths }
+
+    $addArgs = @("add", "--") + $paths
+    Invoke-Checked -File "git" -Arguments $addArgs `
+        -FailureMessage "Failed to stage equality artifacts"
+
+    $diffArgs = @("diff", "--cached", "--quiet", "--") + $paths
+    & git @diffArgs
+    if ($LASTEXITCODE -eq 0) {
+        Write-Output "No equality changes to commit."
+        return
+    }
+
+    $ahead = Get-RevCount -Range "origin/main..HEAD"
+    if ($ahead -gt 0) {
+        if ($ahead -gt 1 -or -not (Test-AheadCommitIsEqualityReport -Machine $Machine)) {
+            throw "Local commits ahead of origin/main are not a single equality report; refusing to amend"
+        }
+        $commitArgs = @("commit", "--amend", "--only", "-m", "chore: equality report from $Machine", "--") + $paths
+    } else {
+        $commitArgs = @("commit", "--only", "-m", "chore: equality report from $Machine", "--") + $paths
+    }
+
+    Invoke-Checked -File "git" -Arguments $commitArgs `
+        -FailureMessage "Failed to commit equality artifacts"
+
+    & git push origin $Branch
+    if ($LASTEXITCODE -eq 0) {
+        Write-Output "Pushed equality artifacts on branch $Branch."
+        return
+    }
+
+    throw "Failed to push equality artifacts; leaving local equality commit for the next scheduled retry"
+}
+
+$transcriptStarted = $false
+Set-Location $WorkspaceRoot
+try {
+    $machine = if ([string]::IsNullOrWhiteSpace($Machine)) {
+        Get-EqualityMachineLabel
+    } else {
+        $Machine
+    }
+    $transcriptStarted = Invoke-EqualityTranscript -Machine $machine
+
+    Test-CommandAvailable -Name "git"
+    if (-not (Get-Command "uv" -ErrorAction SilentlyContinue)) {
+        Test-CommandAvailable -Name "python"
+    }
+
+    $branch = Get-CurrentBranch
+    $matrixReports = Get-MatrixReportPaths
+    Confirm-FreshCheckout -Branch $branch -Machine $machine
+    Confirm-MatrixReportClean -ReportPaths $matrixReports
+    if (-not (Get-Command "uv" -ErrorAction SilentlyContinue)) {
+        Confirm-PythonYaml
+    }
+
+    $collector = Join-Path $WorkspaceRoot "scripts\readiness\collect-equality.ps1"
+    $builder = Join-Path $WorkspaceRoot "scripts\readiness\build-equality-matrix.py"
+
+    # #3702 Phase 1 --- PIN the generation seam to the in-tree paths so Windows behaviour
+    # is byte-for-byte unchanged. The bash collector and the Python builder both default
+    # OUT of the tracked tree now; this wrapper's whole model (Confirm-MatrixReportClean,
+    # Clear-GeneratedMatrixReport, Sync-EqualityState committing
+    # `.claude/state/equality-<machine>.yaml` and `Get-MatrixReportPaths` from the working
+    # checkout) depends on them landing in-tree. Unpinned, both Windows boxes would commit
+    # nothing and go dark on the matrix while every scheduled task reported success
+    # (Codex r2 MAJOR 1/2). Phase 2 (#3554-gated) cuts Windows over to publish-equality.sh
+    # and removes these two lines.
+    $env:EQ_STATE_DIR = (Join-Path $WorkspaceRoot ".claude\state")
+    $env:EQ_REPORT_DIR = (Join-Path $WorkspaceRoot "docs\reports")
+
+    Invoke-Checked -File "powershell" -Arguments @(
+        "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", $collector, "-Machine", $machine) `
+        -FailureMessage "collect-equality.ps1 failed"
+    # PS 5.1 defaults python file reads to cp1252; force UTF-8 so the matrix
+    # build doesn't crash on non-ASCII state-yaml content (#2998).
+    $env:PYTHONUTF8 = '1'
+    if (Get-Command "uv" -ErrorAction SilentlyContinue) {
+        Invoke-Checked -File "uv" -Arguments @("run", "--no-project", "--with", "pyyaml", "python", $builder) `
+            -FailureMessage "build-equality-matrix.py failed"
+    } else {
+        Invoke-Checked -File "python" -Arguments @($builder) `
+            -FailureMessage "build-equality-matrix.py failed"
+    }
+    if (-not $RefreshMatrix) {
+        # Default: the published matrix is owned by the Linux cron / Pages build,
+        # so discard the locally regenerated reports and commit only the state yaml.
+        Clear-GeneratedMatrixReport -ReportPaths $matrixReports
+    }
+
+    Sync-EqualityState -Branch $branch -Machine $machine -RefreshMatrix:$RefreshMatrix -ReportPaths $matrixReports
+    if ($RefreshMatrix) {
+        Write-Output "RefreshMatrix: matrix HTML committed with the snapshot; GitHub Pages will redeploy from the push."
+    }
+} finally {
+    if ($transcriptStarted) {
+        Stop-Transcript | Out-Null
+    }
+}

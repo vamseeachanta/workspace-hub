@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<title>Generated repair command target audit</title>
+<style>body{font-family:system-ui;max-width:75rem;margin:2rem auto;padding:1rem;line-height:1.5}table{border-collapse:collapse;width:100%}th,td{border:1px solid #aaa;padding:.6rem;text-align:left}code{overflow-wrap:anywhere}caption{caption-side:bottom;text-align:left}</style>
+<h1>Generated repair command target audit</h1>
+<h2>Summary</h2>
+<p>A bounded inspection of command emitters identifies caller-relative repair advice in the runtime drift checker. The correction binds rebuild, staging and readback to the repository inspected by that checker. Other candidates remain explicitly outside the implemented correction. This report does not establish repository-wide coverage.</p>
+<h2>Revision history</h2>
+<table><tr><th>Revision</th><th>Date</th><th>Change and reason</th></tr><tr><td>Initial</td><td>2026-10-22</td><td>Record the bounded inventory, target-scoped correction and caller-preservation tests.</td></tr><caption>Revision history.</caption></table>
+<h2>Scope and method</h2>
+<p><a href="https://github.com/vamseeachanta/workspace-hub/issues/3866">Issue 3866</a> defines caller-versus-target isolation. <a href="https://github.com/vamseeachanta/workspace-hub/issues/3062">Issue 3062</a> owns the separate skills repair. The linked parent <a href="https://github.com/vamseeachanta/workspace-hub/issues/3058">issue 3058</a> provides hardening context. A text search of Python and shell scripts for emitted filesystem and Git commands supplies candidates; direct inspection distinguishes printed advice from execution. Dynamic strings and other languages are not exhaustively covered.</p>
+<table>
+<tr><th>Inspected emitter</th><th>Advice versus execution</th><th>Target finding and disposition</th></tr>
+<tr><td><code>scripts/enforcement/check-soul-runtime-drift.sh</code></td><td>Rebuild, add and diff are printed advice; checker itself only rebuilds in scratch for comparison.</td><td>Corrected: advice enters the checker-verified root, clears inherited Git bindings, and chains every step on success. Staging and readback name the builder's declared outputs explicitly.</td></tr>
+<tr><td><code>scripts/readiness/reconcile-ecosystem.sh</code></td><td>Classified advice; selected safe actions may execute through the existing apply mechanism.</td><td>The skills command already uses a target subshell with failed-entry exit and existing classification/reparse guards. No duplicate repair is made. Other Git suggestions use explicit target arguments; single-quote interpolation is a remaining quoting candidate.</td></tr>
+<tr><td><code>scripts/enforcement/check-soul-deployment-drift.sh</code></td><td>Reports drift and read-only status; prints no concrete filesystem repair.</td><td>Status uses the selected repository. No caller-relative mutation advice identified.</td></tr>
+<tr><td><code>scripts/readiness/remediate-harness.sh</code></td><td>Prints advice; does not apply repairs.</td><td>Settings/readiness readback uses relative paths. The intended failing repository requires explicit selection before making this advice portable; deferred.</td></tr>
+<tr><td><code>scripts/readiness/check-ux-consistency.sh</code></td><td>Prints copy, mkdir and setup advice.</td><td>Primary copy operands are explicit; alternate setup advice is caller-relative. Single-quote interpolation and environment-provided relative paths need separate qualification; deferred.</td></tr>
+<tr><td><code>scripts/memory/check-memory-drift.sh</code></td><td>Prints bridge/push advice; explicit fix mode executes the bridge.</td><td>Printed bridge/push advice is caller-relative; fix mode selects an explicit bridge but its downstream repository selection needs a separate review. Deferred because publication and private-memory destination controls are involved.</td></tr>
+<tr><td><code>scripts/state/rotate-cost-tracking.sh</code></td><td>Executes rotation; prints add/commit follow-up.</td><td>Follow-up Git advice lacks an explicit repository and quotes; deferred. Rotation and environment overrides require their own ownership tests.</td></tr>
+<caption>Bounded inventory of inspected emitters; unchanged candidates are not qualified as corrected.</caption>
+</table>
+<h2>Implemented slices</h2>
+<ol><li>Inventory and correction of runtime drift advice.</li><li>Executable regression coverage for foreign callers, quoted target roots, inherited Git metadata bindings, failed entry and failed rebuild.</li><li>Scoped readback, explicit output manifest and this worked example and limitation record.</li></ol>
+<h2>Worked example</h2>
+<p><strong>Inputs:</strong> a disposable target repository whose name contains spaces, quotes, a dollar sign and a semicolon; a foreign repository containing a sentinel and a decoy builder; missing runtime outputs; an unrelated runtime file that must remain unstaged.</p>
+<p><strong>Method:</strong> invoke the real checker from the foreign directory, extract its emitted Bash advice, then execute that advice in the same foreign directory. Repeat with inherited Git directory, worktree, common-directory and index bindings pointing at the caller. Compare every caller file, including Git metadata, before and after. Independently enumerate staged target paths and rerun the checker.</p>
+<p><strong>Answer:</strong> the declared runtime outputs are generated and staged only in the target; caller bytes remain identical; the unrelated file remains unstaged; the rebuilt target passes the checker. If target entry or rebuilding fails, the command fails before staging or readback. The expected output set follows <code>scripts/agents/build-soul-runtime.sh</code>: Hermes, Claude, Gemini and Agy SOUL runtimes plus both Codex runtime artifacts. No engineering constants or equations apply.</p>
+<h2>Review and limits</h2>
+<p>The plan defect check addresses inherited Git overrides, shell quoting, failed entry, producer failure and broad staging globs. Artifact inspection confirms that the change only alters printed advice and adds scoped readback; no automatic repair, approval classification, ownership rule or publication action is added. Independent reciprocal provider review remains required before merge and has not been performed for this change.</p>
+<p>Execution assumes Bash, Git and a target that retains its identity between inspection and use. Root replacement, hostile target scripts, concurrent target edits, symlink races and unrelated staged changes require additional controls; the command grants no approval to run it. Existing approval and ownership controls remain applicable. Remaining inventory candidates will require separately bounded fixes under issue 3866.</p>
+</html>

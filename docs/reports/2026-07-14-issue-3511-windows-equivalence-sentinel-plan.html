@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>#3511 Windows equivalence sentinel plan</title>
+  <style>
+    :root{--bg:#0b1220;--panel:#121c2e;--text:#e7edf7;--muted:#9fb0c8;--cyan:#5ee7f7;--red:#ff7b86;--amber:#ffd166;--green:#63e6a5;--line:#293854}
+    *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:15px/1.55 system-ui,Segoe UI,sans-serif}main{max-width:1120px;margin:auto;padding:32px 22px 60px}h1{font-size:2rem;margin:.1em 0}h2{margin-top:30px;color:var(--cyan)}h3{color:#c7d7ef}.sub{color:var(--muted);max-width:900px}.gate{border-left:5px solid var(--amber);background:#2a2416;padding:14px 18px;margin:20px 0}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}.card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px}.bad{color:var(--red)}.good{color:var(--green)}code{background:#09101d;padding:2px 5px;border-radius:4px}table{width:100%;border-collapse:collapse;background:var(--panel)}th,td{border:1px solid var(--line);padding:10px;text-align:left;vertical-align:top}th{color:var(--cyan)}ol,ul{padding-left:22px}.flow{display:flex;gap:9px;flex-wrap:wrap;align-items:center}.flow span{padding:8px 11px;border:1px solid var(--line);border-radius:8px;background:var(--panel)}.arrow{color:var(--muted)}a{color:var(--cyan)}small{color:var(--muted)}
+  </style>
+</head>
+<body><main>
+  <p><small>Issue plan · 2026-07-14 · T3 · lane:claude</small></p>
+  <h1>Make the Windows equivalence sentinel safe, exact, and scheduled</h1>
+  <p class="sub">The plan will stop zero-byte fingerprints and CR-suffixed Git tree names, preserve publish failures, register the existing six-hour sentinel on Windows, and make publish health visible to the equality matrix.</p>
+  <div class="gate"><strong>Gate:</strong> adversarial review complete; waiting for user approval. No implementation or live Task Scheduler mutation is authorized until that approval.</div>
+
+  <h2>Verified current state</h2>
+  <div class="grid">
+    <section class="card"><h3 class="bad">Fingerprint fails open</h3><p>Git Bash resolves bare <code>python3</code> to the Store stub. Reproduction: return code 0, output size 0.</p></section>
+    <section class="card"><h3 class="bad">Git tree loses exact names</h3><p>Current Windows real-Git test returns no collected machines because text-mode <code>mktree</code> input changes entry bytes.</p></section>
+    <section class="card"><h3 class="bad">Task is declaration-only</h3><p>YAML declares <code>17 */6 * * *</code> for both Windows boxes, but the live <code>\Claude\</code> folder has no EquivalenceSentinel.</p></section>
+    <section class="card"><h3 class="good">Identity work is not repeated</h3><p>#3519 supplies registry identity and machine-keyed blobs. This plan will pin it with regression tests.</p></section>
+  </div>
+
+  <h2>Delivery flow</h2>
+  <div class="flow"><span>Verified interpreter</span><b class="arrow">→</b><span>Atomic JSON</span><b class="arrow">→</b><span>Schema validation</span><b class="arrow">→</b><span>Byte/NUL Git tree</span><b class="arrow">→</b><span>CAS push</span><b class="arrow">→</b><span>Fresh matrix evidence</span></div>
+
+  <h2>Implementation slices after approval</h2>
+  <table><thead><tr><th>Slice</th><th>Change</th><th>Proof</th></tr></thead><tbody>
+    <tr><td>P0 — generation</td><td>Shared working-interpreter resolver; temporary output; exact five-provider versioned schema; null duration generation; publish-phase enrichment validated before atomic replace.</td><td>Store-stub, type/version/timestamp/non-finite, phase/order, and prior-good-file tests.</td></tr>
+    <tr><td>P0 — publishing</td><td>Reject invalid/mismatched payloads before Git writes; use exact byte/NUL-delimited tree plumbing.</td><td>Temporary real-Git Windows and Linux tests.</td></tr>
+    <tr><td>P0 — exit contract</td><td>Stop before publish on invalid evidence, prevent comparison from masking publish failure, and exit 4 if atomic publish-health persistence fails.</td><td>Injected generation, publish, health-write, and replace failures.</td></tr>
+    <tr><td>P1 — Windows schedule</td><td>Read a repo-relative PowerShell wrapper from the same YAML task; register it at minute 17 every six hours. The wrapper binds the repo and launches the canonical sentinel through Git Bash without translating cron syntax.</td><td>PowerShell <code>-WhatIf -MachineIdOverride</code> for both Windows hosts; path safety, spaces/quoting, cadence, roster, action, and removal tests.</td></tr>
+    <tr><td>P1 — equality evidence</td><td>Read publish-health through the verified interpreter on Windows and fail closed on incomplete or malformed facts.</td><td>Collector plus matrix tests cover stale/future/invalid timestamps and missing, boolean, or wrong-type rc/duration.</td></tr>
+  </tbody></table>
+
+  <h2>Scheduling answer</h2>
+  <p><strong>No daily full reconciliation task exists.</strong> NightlyReadiness and RepoSync are narrower. The safe plan is:</p>
+  <ul>
+    <li>Restore the already-declared <strong>six-hour report-only equivalence sentinel</strong> under #3511.</li>
+    <li>Design a separate <strong>daily report-only full ecosystem audit</strong> under <a href="https://github.com/vamseeachanta/workspace-hub/issues/3526">#3526</a>.</li>
+    <li>Never schedule reconciler <code>--apply</code>, <code>--stash-dirty</code>, or <code>--equality</code> unattended.</li>
+  </ul>
+
+  <h2>Live acceptance checkpoint</h2>
+  <ol>
+    <li>Run from a clean, current canonical ace-win-2 checkout.</li>
+    <li>Verify nonempty JSON with <code>machine_id=ace-win-2</code>.</li>
+    <li>Verify exact ref entry <code>ace-win-2.json</code> and no carriage-return names.</li>
+    <li>Verify EquivalenceSentinel exists and its last result is zero.</li>
+    <li>Refresh equality evidence and confirm publish health is green before closing #3506.</li>
+  </ol>
+
+  <p><small>Canonical detailed plan: docs/plans/2026-07-14-issue-3511-windows-equivalence-sentinel.md</small></p>
+</main></body></html>

@@ -1,0 +1,1340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WRK-624 Workflow Review</title>
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({ startOnLoad: true, theme: 'neutral', securityLevel: 'loose' });
+  </script>
+  <style>
+    :root {
+      --bg: #f3efe6;
+      --panel: #fffdf8;
+      --ink: #172126;
+      --muted: #55636b;
+      --accent: #0f766e;
+      --accent-2: #8a5a2b;
+      --line: #d9d0c0;
+      --warn: #b45309;
+      --good: #166534;
+      --bad: #b91c1c;
+      --shadow: 0 16px 40px rgba(20, 33, 38, 0.08);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      background: radial-gradient(circle at top, #fffaf0 0, var(--bg) 48%, #ebe5d7 100%);
+      color: var(--ink);
+      line-height: 1.5;
+    }
+    .hero {
+      padding: 48px 24px 28px;
+      border-bottom: 1px solid rgba(23, 33, 38, 0.08);
+      background: linear-gradient(135deg, rgba(15,118,110,0.08), rgba(138,90,43,0.1));
+    }
+    .hero-inner, .content { max-width: 1180px; margin: 0 auto; }
+    .eyebrow {
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-size: 0.72rem;
+      color: var(--accent);
+      font-weight: 700;
+    }
+    h1 {
+      margin: 10px 0 12px;
+      font-size: clamp(2rem, 4vw, 4rem);
+      line-height: 0.95;
+      max-width: 10ch;
+    }
+    .lede {
+      max-width: 70ch;
+      color: var(--muted);
+      font-size: 1.05rem;
+    }
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+    }
+    .pill {
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.8);
+      padding: 7px 12px;
+      border-radius: 999px;
+      font-size: 0.9rem;
+    }
+    .content {
+      padding: 28px 24px 56px;
+      display: grid;
+      gap: 22px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+    }
+    .card, .panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+    }
+    .card { padding: 18px; }
+    .card h2, .panel h2 {
+      margin: 0 0 12px;
+      font-size: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--accent-2);
+    }
+    .metric {
+      font-size: 2rem;
+      font-weight: 700;
+    }
+    .panel { padding: 22px; }
+    .panel p, .panel li, .panel td, .panel th { color: var(--muted); }
+    .panel strong, .panel code { color: var(--ink); }
+    .mermaid-wrap {
+      overflow-x: auto;
+      padding: 8px;
+      background: linear-gradient(180deg, #fff, #fcf8ef);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.95rem;
+    }
+    th, td {
+      text-align: left;
+      padding: 10px 8px;
+      border-top: 1px solid var(--line);
+      vertical-align: top;
+    }
+    th {
+      color: var(--ink);
+      font-size: 0.86rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    ul { margin: 0; padding-left: 18px; }
+    .status-good { color: var(--good); font-weight: 700; }
+    .status-warn { color: var(--warn); font-weight: 700; }
+    .status-bad { color: var(--bad); font-weight: 700; }
+    .gap-controls {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-bottom: 6px;
+    }
+    .gap-btn {
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--ink);
+      border-radius: 999px;
+      padding: 4px 10px;
+      font-size: 0.82rem;
+      cursor: pointer;
+    }
+    .gap-btn.selected {
+      background: #eef8f6;
+      border-color: var(--accent);
+      color: var(--accent);
+      font-weight: 700;
+    }
+    .decision-state {
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+    .gap-comment {
+      width: 100%;
+      min-height: 66px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 7px;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 0.9rem;
+      color: var(--ink);
+      background: #fff;
+      resize: vertical;
+    }
+    .review-actions {
+      display: flex;
+      gap: 8px;
+      margin: 10px 0 0;
+      flex-wrap: wrap;
+    }
+    .action-btn {
+      border: 1px solid var(--line);
+      background: #fff;
+      border-radius: 10px;
+      padding: 8px 12px;
+      font-size: 0.88rem;
+      cursor: pointer;
+      color: var(--ink);
+    }
+    .split {
+      display: grid;
+      grid-template-columns: 1.3fr 1fr;
+      gap: 22px;
+    }
+    @media (max-width: 900px) {
+      .split { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <div class="hero-inner">
+      <div class="eyebrow">WRK-624 Review Artifact</div>
+      <h1>Canonical Work-Queue Workflow</h1>
+      <p class="lede">This HTML artifact is the user review surface for the new lifecycle contract. It shows the proposed Mermaid schematic, the hard gates, and the quality-and-learning requirements, including both fast auto-memory capture and deeper comprehensive-learning synthesis, before provider-diverse multi-seed cross-review.</p>
+      <div class="meta">
+        <div class="pill">Status: Implemented core workflow slice</div>
+        <div class="pill">Scope: workspace-hub, portable to future repo-local queues</div>
+        <div class="pill">Review set: Claude + Codex + Gemini</div>
+      </div>
+    </div>
+  </header>
+
+  <main class="content">
+    <section class="panel">
+      <h2>Executive Summary</h2>
+      <p><strong>WRK-624</strong> is the canonical work-queue workflow hardening item. The workflow definition, review policy, claim/close gates, and user HTML review rules have been consolidated into one lifecycle contract and the first implementation slice is now in place in workspace-hub.</p>
+      <p>The current implementation makes the queue materially stricter without breaking the older backlog: folder/status validation is active, claim and close scripts now understand structured evidence, and <strong>WRK-624 itself</strong> has been backfilled with draft/final plan HTML review evidence, claim evidence, and final HTML verification evidence.</p>
+      <p>The remaining rollout work is not conceptual; it is operational. Other post-624 items still need metadata/evidence backfill so the validator warnings can eventually be promoted to blocking gates.</p>
+    </section>
+
+    <section class="panel">
+      <h2>Work Done</h2>
+      <table>
+        <tr>
+          <th>Area</th>
+          <th>Implemented under WRK-624</th>
+        </tr>
+        <tr>
+          <td>Validator</td>
+          <td><code>scripts/work-queue/validate-queue-state.sh</code> now checks folder/status consistency and warns on missing phased workflow evidence for WRK-624+ items.</td>
+        </tr>
+        <tr>
+          <td>Claim gate</td>
+          <td><code>scripts/work-queue/claim-item.sh</code> now writes structured claim evidence and records quota snapshot / routing references in WRK frontmatter.</td>
+        </tr>
+        <tr>
+          <td>Close gate</td>
+          <td><code>scripts/work-queue/close-item.sh</code> now accepts HTML evidence paths and enforces <code>html_output_ref</code> plus <code>html_verification_ref</code> before close for WRK-624+.</td>
+        </tr>
+        <tr>
+          <td>Documentation</td>
+          <td><code>.claude/work-queue/process.md</code> now reflects the 9-stage lifecycle, review retry loop, the pre-close future-work synthesis gate, and the close-stage HTML evidence contract.</td>
+        </tr>
+        <tr>
+          <td>WRK-624 evidence</td>
+          <td>The parent work item now points to draft/final plan HTML review records, claim evidence, and final HTML verification evidence.</td>
+        </tr>
+        <tr>
+          <td>Queue indexing</td>
+          <td><code>python3 .claude/work-queue/scripts/generate-index.py</code> completes successfully with post-check validation enabled.</td>
+        </tr>
+      </table>
+    </section>
+
+    <section class="panel">
+      <h2>All Stages: Summary and Gaps</h2>
+      <p>This section is the iteration surface for the lifecycle itself. Each row shows what the stage is for, where it is already strong enough, and what still needs tightening before the workflow is fully hard-gated.</p>
+      <p>Use the buttons to confirm each gap decision and add actions/clarifications/guidance for follow-up execution.</p>
+      <div class="review-actions">
+        <button class="action-btn" type="button" id="export-gap-review">Export Gap Decisions</button>
+        <button class="action-btn" type="button" id="save-gap-review-file">Save Gap Decisions File</button>
+      </div>
+      <table>
+        <tr>
+          <th>Stage</th>
+          <th>Gap Priority</th>
+          <th>Summary</th>
+          <th>Current Strength</th>
+          <th>Current Gaps</th>
+          <th>User Gap Decision</th>
+          <th>User Comment / Action Guidance</th>
+        </tr>
+        <tr>
+          <td>Capture</td>
+          <td>P3</td>
+          <td>Open the WRK with enough metadata to route, review, and scaffold the rest of the lifecycle.</td>
+          <td><span class="status-good">Mostly defined</span></td>
+          <td>Creation still relies too much on disciplined authoring instead of guaranteed scaffolding.</td>
+          <td>
+            <div class="gap-controls" data-stage="capture">
+              <button class="gap-btn" type="button" data-decision="confirm">Confirm</button>
+              <button class="gap-btn" type="button" data-decision="revise">Need Revision</button>
+              <button class="gap-btn" type="button" data-decision="defer">Defer</button>
+            </div>
+            <div class="decision-state" data-stage-state="capture">Decision: not set</div>
+          </td>
+          <td><textarea class="gap-comment" data-stage-comment="capture" placeholder="Actions, clarifications, guidance..."></textarea></td>
+        </tr>
+        <tr>
+          <td>Resource Intelligence</td>
+          <td>P1</td>
+          <td>Assemble the resource pack, constraints, sources, open questions, and domain notes before planning is treated as real.</td>
+          <td><span class="status-warn">Conceptually strong, weakly enforced</span></td>
+          <td>No fully machine-checkable completion rule yet; legal-scan proof and source sufficiency still need stricter validator coverage.</td>
+          <td>
+            <div class="gap-controls" data-stage="resource_intelligence">
+              <button class="gap-btn" type="button" data-decision="confirm">Confirm</button>
+              <button class="gap-btn" type="button" data-decision="revise">Need Revision</button>
+              <button class="gap-btn" type="button" data-decision="defer">Defer</button>
+            </div>
+            <div class="decision-state" data-stage-state="resource_intelligence">Decision: not set</div>
+          </td>
+          <td><textarea class="gap-comment" data-stage-comment="resource_intelligence" placeholder="Actions, clarifications, guidance..."></textarea></td>
+        </tr>
+        <tr>
+          <td>Triage</td>
+          <td>P2</td>
+          <td>Classify route, priority, complexity, providers, and stage-specific workstation access so the WRK is actionable.</td>
+          <td><span class="status-good">Defined</span></td>
+          <td>Field registries and allowed values still need tighter normalization, especially workstation and routing enums.</td>
+          <td>
+            <div class="gap-controls" data-stage="triage">
+              <button class="gap-btn" type="button" data-decision="confirm">Confirm</button>
+              <button class="gap-btn" type="button" data-decision="revise">Need Revision</button>
+              <button class="gap-btn" type="button" data-decision="defer">Defer</button>
+            </div>
+            <div class="decision-state" data-stage-state="triage">Decision: not set</div>
+          </td>
+          <td><textarea class="gap-comment" data-stage-comment="triage" placeholder="Actions, clarifications, guidance..."></textarea></td>
+        </tr>
+        <tr>
+          <td>Plan</td>
+          <td>P1</td>
+          <td>Create the implementation plan/spec, route it through multi-agent review, and require explicit user HTML review before approval.</td>
+          <td><span class="status-good">Strong</span></td>
+          <td>User HTML review remains the main practical bottleneck; defer, delegate, and escalation rules can still be tightened.</td>
+          <td>
+            <div class="gap-controls" data-stage="plan">
+              <button class="gap-btn" type="button" data-decision="confirm">Confirm</button>
+              <button class="gap-btn" type="button" data-decision="revise">Need Revision</button>
+              <button class="gap-btn" type="button" data-decision="defer">Defer</button>
+            </div>
+            <div class="decision-state" data-stage-state="plan">Decision: not set</div>
+          </td>
+          <td><textarea class="gap-comment" data-stage-comment="plan" placeholder="Actions, clarifications, guidance..."></textarea></td>
+        </tr>
+        <tr>
+          <td>Claim</td>
+          <td>P1</td>
+          <td>Bind one live orchestrator session, check agent fit and quota readiness, and record the routing decision before execution.</td>
+          <td><span class="status-good">Improved and partially enforced</span></td>
+          <td>Quota freshness, fallback semantics, and stale-session recovery need a more normalized evidence schema.</td>
+          <td>
+            <div class="gap-controls" data-stage="claim">
+              <button class="gap-btn" type="button" data-decision="confirm">Confirm</button>
+              <button class="gap-btn" type="button" data-decision="revise">Need Revision</button>
+              <button class="gap-btn" type="button" data-decision="defer">Defer</button>
+            </div>
+            <div class="decision-state" data-stage-state="claim">Decision: not set</div>
+          </td>
+          <td><textarea class="gap-comment" data-stage-comment="claim" placeholder="Actions, clarifications, guidance..."></textarea></td>
+        </tr>
+        <tr>
+          <td>Execute</td>
+          <td>P3</td>
+          <td>Do the work under the claimed session using examples, variation tests, and HTML outputs where applicable.</td>
+          <td><span class="status-good">Clear intent</span></td>
+          <td>Behavioral completion checks still need to stay stronger than simple artifact existence.</td>
+          <td>
+            <div class="gap-controls" data-stage="execute">
+              <button class="gap-btn" type="button" data-decision="confirm">Confirm</button>
+              <button class="gap-btn" type="button" data-decision="revise">Need Revision</button>
+              <button class="gap-btn" type="button" data-decision="defer">Defer</button>
+            </div>
+            <div class="decision-state" data-stage-state="execute">Decision: not set</div>
+          </td>
+          <td><textarea class="gap-comment" data-stage-comment="execute" placeholder="Actions, clarifications, guidance..."></textarea></td>
+        </tr>
+        <tr>
+          <td>Future Work Synthesis</td>
+          <td>P2</td>
+          <td>Before close, generate and classify recommended follow-up WRKs so deferred work and tooling gaps are explicitly captured.</td>
+          <td><span class="status-warn">Partially defined</span></td>
+          <td>Needs stricter automation and noise control so only meaningful follow-up work is auto-created.</td>
+          <td>
+            <div class="gap-controls" data-stage="future_work_synthesis">
+              <button class="gap-btn" type="button" data-decision="confirm">Confirm</button>
+              <button class="gap-btn" type="button" data-decision="revise">Need Revision</button>
+              <button class="gap-btn" type="button" data-decision="defer">Defer</button>
+            </div>
+            <div class="decision-state" data-stage-state="future_work_synthesis">Decision: not set</div>
+          </td>
+          <td><textarea class="gap-comment" data-stage-comment="future_work_synthesis" placeholder="Actions, clarifications, guidance..."></textarea></td>
+        </tr>
+        <tr>
+          <td>Close</td>
+          <td>P1</td>
+          <td>Verify tests, review evidence, HTML output, HTML verification, and close evidence before moving to <code>done</code>.</td>
+          <td><span class="status-good">Operational core in place</span></td>
+          <td>Merge/sync, learning outputs, and follow-up evidence should converge into one normalized close-evidence contract.</td>
+          <td>
+            <div class="gap-controls" data-stage="close">
+              <button class="gap-btn" type="button" data-decision="confirm">Confirm</button>
+              <button class="gap-btn" type="button" data-decision="revise">Need Revision</button>
+              <button class="gap-btn" type="button" data-decision="defer">Defer</button>
+            </div>
+            <div class="decision-state" data-stage-state="close">Decision: not set</div>
+          </td>
+          <td><textarea class="gap-comment" data-stage-comment="close" placeholder="Actions, clarifications, guidance..."></textarea></td>
+        </tr>
+        <tr>
+          <td>Archive</td>
+          <td>P2</td>
+          <td>Move only truly completed, merged, synced, and validated items into the archive state.</td>
+          <td><span class="status-warn">Policy stronger than tooling</span></td>
+          <td>Archive enforcement is still thinner than close enforcement and should be hardened next.</td>
+          <td>
+            <div class="gap-controls" data-stage="archive">
+              <button class="gap-btn" type="button" data-decision="confirm">Confirm</button>
+              <button class="gap-btn" type="button" data-decision="revise">Need Revision</button>
+              <button class="gap-btn" type="button" data-decision="defer">Defer</button>
+            </div>
+            <div class="decision-state" data-stage-state="archive">Decision: not set</div>
+          </td>
+          <td><textarea class="gap-comment" data-stage-comment="archive" placeholder="Actions, clarifications, guidance..."></textarea></td>
+        </tr>
+      </table>
+    </section>
+
+    <section class="panel">
+      <h2>Resource Intelligence Review Gate</h2>
+      <p>This stage should not behave like passive note-taking. It should execute through a defined skill path, rank the current gaps, and show the user the top blocking gaps before planning is allowed to harden.</p>
+      <table>
+        <tr>
+          <th>Item</th>
+          <th>Rule</th>
+        </tr>
+        <tr>
+          <td>Top priority surfacing</td>
+          <td>Show the current <strong>P1</strong> gaps first during the stage itself, before lower-priority improvements.</td>
+        </tr>
+        <tr>
+          <td>User pause rule</td>
+          <td>If one or more unresolved <strong>P1</strong> gaps remain, pause for user review. If no <strong>P1</strong> gaps remain, the stage may continue forward.</td>
+        </tr>
+        <tr>
+          <td>User decision</td>
+          <td>The stage should present an explicit decision to the user: <code>pause and revise</code> when unresolved <strong>P1</strong> gaps remain, or <code>continue to planning</code> when they do not.</td>
+        </tr>
+        <tr>
+          <td>P1 examples</td>
+          <td>Missing or weak source coverage, missing legal-scan result, unclear problem context, or no credible path to required domain knowledge.</td>
+        </tr>
+        <tr>
+          <td>P2 examples</td>
+          <td>Incomplete constraints, stale repo knowledge, or open questions that materially weaken planning but do not yet force a stop.</td>
+        </tr>
+        <tr>
+          <td>P3 examples</td>
+          <td>Optional but valuable enhancements such as broader indexing, extra ecosystem learnings, or non-blocking enrichment.</td>
+        </tr>
+        <tr>
+          <td>Pass contract</td>
+          <td>The stage passes only when required files exist, required headings exist, sources are recorded or waived, legal-scan proof exists when applicable, and a `resource-intelligence-summary.md` records the ranked gaps and user decision.</td>
+        </tr>
+      </table>
+    </section>
+
+    <section class="panel">
+      <h2>Resource Intelligence Summary Schema</h2>
+      <table>
+        <tr>
+          <th>Field</th>
+          <th>Requirement</th>
+        </tr>
+        <tr><td><code>wrk_id</code></td><td>Required</td></tr>
+        <tr><td><code>summary</code></td><td>Required</td></tr>
+        <tr><td><code>top_p1_gaps</code></td><td>Required</td></tr>
+        <tr><td><code>top_p2_gaps</code></td><td>Required</td></tr>
+        <tr><td><code>top_p3_gaps</code></td><td>Required</td></tr>
+        <tr><td><code>user_decision</code></td><td>Required: <code>pause_and_revise</code> or <code>continue_to_planning</code></td></tr>
+        <tr><td><code>reviewed_at</code></td><td>Required</td></tr>
+        <tr><td><code>reviewer</code></td><td>Required</td></tr>
+        <tr><td><code>legal_scan_ref</code></td><td>Required when applicable</td></tr>
+        <tr><td><code>indexing_ref</code></td><td>Required when indexing is used</td></tr>
+      </table>
+    </section>
+
+    <section class="panel">
+      <h2>Resource Intelligence Skill Map</h2>
+      <p>The stage should show which skills are being used so the workflow is visible and tweakable instead of hidden inside ad hoc research behavior.</p>
+      <table>
+        <tr>
+          <th>Role</th>
+          <th>Skill</th>
+          <th>Why it is used</th>
+        </tr>
+        <tr>
+          <td>Lifecycle wrapper</td>
+          <td><code>work-queue</code></td>
+          <td>Keeps the stage aligned with WRK lifecycle artifacts and gates.</td>
+        </tr>
+        <tr>
+          <td>Domain scoping</td>
+          <td><code>engineering-context-loader</code></td>
+          <td>Narrows the relevant domain skills, standards, and context when engineering tags are present.</td>
+        </tr>
+        <tr>
+          <td>Repo/document scan</td>
+          <td><code>document-inventory</code></td>
+          <td>Catalogs local document collections before deeper intelligence or indexing work.</td>
+        </tr>
+        <tr>
+          <td>Document intelligence</td>
+          <td><code>document-rag-pipeline</code></td>
+          <td>Builds searchable document context when the source set is large or ambiguous.</td>
+        </tr>
+        <tr>
+          <td>Prior learnings</td>
+          <td><code>knowledge-manager</code></td>
+          <td>Surfaces prior decisions, patterns, gotchas, and reusable knowledge for the WRK.</td>
+        </tr>
+        <tr>
+          <td>Legal check</td>
+          <td><code>legal-sanity</code></td>
+          <td>Checks generated artifacts and imported content for legally sensitive material.</td>
+        </tr>
+        <tr>
+          <td>Agent fit</td>
+          <td><code>agent-router</code></td>
+          <td>Helps determine which provider mix is best suited for later planning and review stages.</td>
+        </tr>
+        <tr>
+          <td>Quota awareness</td>
+          <td><code>agent-usage-optimizer</code></td>
+          <td>Helps keep the later claim/review path within available model capacity.</td>
+        </tr>
+        <tr>
+          <td>Deep learning handoff</td>
+          <td><code>comprehensive-learning</code></td>
+          <td>Consumes the artifacts later for slower ecosystem synthesis and follow-on learnings.</td>
+        </tr>
+      </table>
+      <p><strong>Follow-on skill work:</strong> the dedicated stage definition and validator-ready contract should be delivered under <code>WRK-655</code>, which is now the top recommended follow-on item.</p>
+      <p><strong>Canonical skill path:</strong> <code>.claude/skills/workspace-hub/resource-intelligence/SKILL.md</code></p>
+    </section>
+
+    <section class="panel">
+      <h2>Capture Contract</h2>
+      <table>
+        <tr>
+          <th>Requirement</th>
+          <th>Rule</th>
+        </tr>
+        <tr><td>WRK scaffold</td><td>Capture should create the WRK file in the correct queue folder and create an asset directory at the same time.</td></tr>
+        <tr><td>Minimum frontmatter</td><td>Capture should initialize <code>id</code>, <code>title</code>, <code>status</code>, <code>priority</code>, <code>complexity</code>, <code>route</code>, <code>orchestrator</code>, and <code>target_repos</code>.</td></tr>
+        <tr><td>Initial artifact refs</td><td>Capture should initialize <code>resource_pack_ref</code>, <code>html_output_ref</code>, and <code>plan_html_review_draft_ref</code>.</td></tr>
+        <tr><td>Hard gate</td><td>WRK creation without scaffolded metadata or an asset directory fails capture.</td></tr>
+      </table>
+    </section>
+
+    <section class="panel">
+      <h2>Triage Contract</h2>
+      <table>
+        <tr>
+          <th>Field</th>
+          <th>Rule</th>
+        </tr>
+        <tr><td><code>route</code></td><td>Must be one of <code>A</code>, <code>B</code>, or <code>C</code>.</td></tr>
+        <tr><td><code>priority</code></td><td>Must be one of <code>high</code>, <code>medium</code>, or <code>low</code>.</td></tr>
+        <tr><td><code>complexity</code></td><td>Must be one of <code>simple</code>, <code>medium</code>, <code>complex</code>, or <code>critical</code>.</td></tr>
+        <tr><td><code>computer</code></td><td>Must match a named workstation entry from the workstation registry.</td></tr>
+        <tr><td><code>plan_workstations</code></td><td>Must be non-empty and list one or more named workstations allowed for the plan stage.</td></tr>
+        <tr><td><code>execution_workstations</code></td><td>Must be non-empty and list one or more named workstations allowed for the execution stage.</td></tr>
+        <tr><td><code>provider</code> / <code>provider_alt</code></td><td>Must match valid configured providers for the ecosystem.</td></tr>
+        <tr><td><code>resource_needs</code></td><td>Must be a structured list or an explicit empty list; prose-only is not enough.</td></tr>
+        <tr><td>Hard gate</td><td>Missing required fields or invalid registry values fail triage.</td></tr>
+      </table>
+    </section>
+
+    <section class="panel">
+      <h2>Execute Contract</h2>
+      <table>
+        <tr>
+          <th>Requirement</th>
+          <th>Rule</th>
+        </tr>
+        <tr><td>Example pack</td><td>Execute should leave behind a defined example pack for the WRK.</td></tr>
+        <tr><td>Variation tests</td><td>Execute should record variation-test results, not just claim they were considered.</td></tr>
+        <tr><td>HTML output</td><td>When the WRK requires HTML-visible outputs, execute should produce them before completion.</td></tr>
+        <tr><td>Session ownership</td><td>Execute completion is valid only when the work happened under the claimed session.</td></tr>
+        <tr><td>Hard gate</td><td>Missing example pack, missing variation-test results, missing required HTML output, or execution outside the claimed session fails execute completion.</td></tr>
+      </table>
+    </section>
+
+    <section class="grid">
+      <article class="card">
+        <h2>Stages</h2>
+        <div class="metric">9</div>
+        <p>Capture through Archive with explicit gates, including pre-close future-work synthesis.</p>
+      </article>
+      <article class="card">
+        <h2>Mandatory Reviewers</h2>
+        <div class="metric">1-9</div>
+        <p>Route A defaults to 1 seed total; Route B requires 2 seeds per provider; Route C requires 3 seeds per provider.</p>
+      </article>
+      <article class="card">
+        <h2>Examples Per WRK</h2>
+        <div class="metric">5-10</div>
+        <p>Real examples plus variation tests for all work items.</p>
+      </article>
+      <article class="card">
+        <h2>HTML Review</h2>
+        <div class="metric">Every WRK</div>
+        <p>Each work item must ship an HTML review artifact for direct user inspection.</p>
+      </article>
+    </section>
+
+    <section class="panel">
+      <h2>Mermaid Schematic</h2>
+      <p><strong>Color legend:</strong>
+        <span style="display:inline-block;padding:2px 8px;margin-left:8px;border:1px solid #8a6d00;background:#fff3c4;border-radius:6px;">Artifact Cross-Review Gate</span>
+        <span style="display:inline-block;padding:2px 8px;margin-left:8px;border:1px solid #005f8a;background:#dff3ff;border-radius:6px;">User HTML Review Gate</span>
+        <span style="display:inline-block;padding:2px 8px;margin-left:8px;border:1px solid #4b2f89;background:#efe8ff;border-radius:6px;">Final HTML + Agent Verification</span>
+        <span style="display:inline-block;padding:2px 8px;margin-left:8px;border:1px solid #1f7a1f;background:#e7ffe6;border-radius:6px;">Future Work Synthesis Gate</span>
+      </p>
+      <div class="mermaid-wrap">
+        <pre class="mermaid">
+flowchart TD
+    A["Capture"] --> B["Resource Intelligence"]
+    B --> C["Triage"]
+    C --> D["Plan Draft"]
+    D --> E{"User Reviewed Draft HTML"}
+    E -- Yes --> F["Artifact Cross-Review Plan (Claude Codex Gemini seeds)"]
+    E -- No --> D
+    F --> G{"User Review Passed Final Plan HTML"}
+    G -- Yes --> H{"Plan Reviewed and Approved"}
+    G -- No --> F1["Revise Plan HTML"]
+    F1 --> D
+    H -- Yes --> I["Claim"]
+    H -- No --> F1
+    I --> J{"Best Fit Agent and Quota Ready"}
+    J -- Yes --> K{"Blocked"}
+    J -- No --> I1["Recommend Alternate Agent or Short Defer"]
+    I1 --> I
+    K -- No --> L["Execute"]
+    K -- Yes --> M["Status Blocked"]
+    L --> N{"Artifact Cross-Review Passed (Execution and Close Gate)"}
+    N -- Yes --> S["Future Work Synthesis and Auto WRK Recommendations"]
+    S --> S1{"Required Follow-up WRKs Created"}
+    S1 -- Yes --> R["Generate Final WRK HTML and Agent Verification"]
+    S1 -- No --> S2["Create Required Follow-up WRKs"]
+    S2 --> S1
+    R --> U{"User Reviewed Final WRK HTML"}
+    U -- Yes --> O["Close"]
+    U -- No --> U1["Revise Final HTML and Address User Comments"]
+    U1 --> R
+    N -- No --> N1["Address Findings and Revise Implementation"]
+    N1 --> L
+    O --> P{"Queue Valid and Merge Sync Complete"}
+    P -- Yes --> Q["Archive"]
+    P -- No --> O
+
+    classDef reviewGate fill:#fff3c4,stroke:#8a6d00,stroke-width:2px,color:#2f2500
+    classDef userGate fill:#dff3ff,stroke:#005f8a,stroke-width:2px,color:#002d42
+    classDef verifyStep fill:#efe8ff,stroke:#4b2f89,stroke-width:2px,color:#2a1950
+    classDef futureStage fill:#e7ffe6,stroke:#1f7a1f,stroke-width:2px,color:#0f3d0f
+
+    class F,N reviewGate
+    class E,G,U userGate
+    class R verifyStep
+    class S,S1,S2 futureStage
+        </pre>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>User Review Decision</h2>
+      <table>
+        <tr>
+          <th>Stage</th>
+          <th>Decision</th>
+          <th>Effect</th>
+        </tr>
+        <tr>
+          <td>Draft plan HTML</td>
+          <td>User reviews before multi-agent review starts.</td>
+          <td>Review cannot start until draft HTML has been inspected.</td>
+        </tr>
+        <tr>
+          <td>Final plan HTML</td>
+          <td>User explicitly marks the final HTML as <code>passed</code>, <code>needs_changes</code>, or <code>deferred</code>.</td>
+          <td>Only <code>passed</code> may move to plan approval and claim. Non-pass returns the item to revision or defer handling.</td>
+        </tr>
+        <tr>
+          <td>Final WRK HTML</td>
+          <td>User reviews the completion HTML before closure is considered complete.</td>
+          <td>Close remains blocked without user review evidence.</td>
+        </tr>
+      </table>
+      <p><strong>Normalized review record:</strong> both draft and final plan HTML review records should contain <code>decision</code>, <code>reviewer</code>, <code>reviewed_at</code>, <code>delegate</code> when delegated, <code>notes</code>, and <code>artifact</code>.</p>
+    </section>
+
+    <section class="panel">
+      <h2>New Global Review Rule</h2>
+      <table>
+        <tr>
+          <th>Requirement</th>
+          <th>Rule</th>
+          <th>Closure impact</th>
+        </tr>
+        <tr>
+          <td>HTML artifact</td>
+          <td>Every WRK must produce an HTML review artifact for direct user inspection, including a planning-stage WRK HTML for plan review.</td>
+          <td class="status-bad">Close blocked if missing</td>
+        </tr>
+        <tr>
+          <td>Plan HTML gate</td>
+          <td>User review of the draft WRK HTML artifact is required before multi-agent review, and user review of the final WRK HTML artifact is required again after multi-agent review before execution may proceed. The plan HTML must begin with an executive summary for quick review.</td>
+          <td class="status-bad">Execution blocked if not reviewed</td>
+        </tr>
+        <tr>
+          <td>Final plan decision</td>
+          <td>The final plan HTML decision must be <code>passed</code> before claim may begin.</td>
+          <td class="status-bad">Claim blocked if not passed</td>
+        </tr>
+        <tr>
+          <td>Agent verification</td>
+          <td>The orchestrating agent verifies the HTML artifact before closure evidence is complete.</td>
+          <td class="status-bad">Close blocked if unverified</td>
+        </tr>
+        <tr>
+          <td>Review schema</td>
+          <td>Claude, Codex, and Gemini must all emit the same interpretable review structure so other agents and validators can parse the result without provider-specific logic.</td>
+          <td class="status-bad">Review gate blocked on invalid format</td>
+        </tr>
+        <tr>
+          <td>User verification</td>
+          <td>The user reviews the HTML artifact before the WRK may move to final closure.</td>
+          <td class="status-bad">Close blocked if not reviewed</td>
+        </tr>
+        <tr>
+          <td>Claim capability check</td>
+          <td>Claim must assess whether the current AI agent is best suited, and recommend an alternate executor when another agent is a materially better fit.</td>
+          <td class="status-bad">Execution should not proceed blindly</td>
+        </tr>
+        <tr>
+          <td>Claim quota check</td>
+          <td>Claim must verify weekly AI usage and remaining quota before execution using the regular quota snapshot and readiness pipeline. Waiting up to 24 hours is acceptable when it preserves the best-fit agent; beyond 24 hours the claim should recommend rerouting instead of stalling.</td>
+          <td class="status-bad">Execution should pause or reroute if quota is weak</td>
+        </tr>
+        <tr>
+          <td>Claim evidence</td>
+          <td>Claim must write a canonical <code>claim-evidence.yaml</code> recording session owner, best-fit provider, fallback provider, quota snapshot, freshness, quota decision, claim decision, and any blocked reason.</td>
+          <td class="status-bad">Execution blocked if claim evidence is incomplete</td>
+        </tr>
+        <tr>
+          <td>Domain outputs</td>
+          <td>Where calculations or analysis outputs exist, the same HTML artifact must surface them in directly reviewable form.</td>
+          <td class="status-bad">Close blocked if omitted</td>
+        </tr>
+        <tr>
+          <td>Close evidence</td>
+          <td>Close must write a canonical <code>close-evidence.yaml</code> recording commits, tests, review refs, changed files, follow-up WRKs, merge/sync status, HTML output, HTML verification, and learning outputs.</td>
+          <td class="status-bad">Done transition blocked if incomplete</td>
+        </tr>
+        <tr>
+          <td>Future-work synthesis evidence</td>
+          <td>Before close, generate <code>future-work-recommendations.md</code> and create any follow-up WRKs marked required for signoff.</td>
+          <td class="status-bad">Close blocked if required follow-up WRKs are missing</td>
+        </tr>
+        <tr>
+          <td>Archive evidence</td>
+          <td>Archive must write a canonical <code>archive-evidence.yaml</code> recording close evidence, queue validation, merge status, sync status, follow-up WRKs, and archive metadata.</td>
+          <td class="status-bad">Archive blocked if incomplete</td>
+        </tr>
+      </table>
+    </section>
+
+    <section class="panel">
+      <h2>Archive Pass Contract</h2>
+      <table>
+        <tr>
+          <th>Requirement</th>
+          <th>Rule</th>
+        </tr>
+        <tr><td>Close complete</td><td>The item must already have complete close evidence.</td></tr>
+        <tr><td>Queue validation</td><td>Queue validation must pass before archive.</td></tr>
+        <tr><td>Merge status</td><td>Merge-to-main must be complete.</td></tr>
+        <tr><td>Sync status</td><td>Sync flow must be complete.</td></tr>
+        <tr><td>Follow-up work</td><td>Required follow-up WRKs must already exist.</td></tr>
+        <tr><td>Status/folder pairing</td><td>The item may only live in archive with <code>status: archived</code>.</td></tr>
+      </table>
+    </section>
+
+    <section class="panel">
+      <h2>Agent Assignment Analysis</h2>
+      <p>The lifecycle should explicitly analyze whether each stage can be executed independently and which agent is best suited to own it, execute it, or support it in parallel.</p>
+      <p><strong>Contract strength:</strong> this assignment model is <strong>required unless overridden with recorded evidence</strong>. It is stronger than guidance, but not yet fully hard-enforced by tooling.</p>
+      <table>
+        <tr>
+          <th>Stage</th>
+          <th>Independent?</th>
+          <th>Best stage owner</th>
+          <th>Best execution agent</th>
+          <th>Parallel support</th>
+        </tr>
+        <tr><td>Capture</td><td>Yes</td><td>Claude</td><td>Claude</td><td>No</td></tr>
+        <tr><td>Resource Intelligence</td><td>Yes</td><td>Claude</td><td>Claude + Gemini</td><td>Yes, when broad research and synthesis both matter</td></tr>
+        <tr><td>Triage</td><td>Yes</td><td>Claude</td><td>Claude</td><td>No</td></tr>
+        <tr><td>Plan</td><td>Yes</td><td>Claude</td><td>Codex + Gemini with Claude synthesis</td><td>Yes</td></tr>
+        <tr><td>Claim</td><td>Yes</td><td>Claude</td><td>Claude</td><td>No</td></tr>
+        <tr><td>Execute</td><td>Internally parallelizable, externally gate-dependent</td><td>Codex</td><td>Codex</td><td>Yes, when two implementation paths or comparison builds are useful</td></tr>
+        <tr><td>Future Work Synthesis</td><td>Yes</td><td>Claude</td><td>Claude + Codex</td><td>Yes, when one agent mines findings and one drafts follow-up WRKs</td></tr>
+        <tr><td>Close</td><td>Yes</td><td>Claude</td><td>Codex for evidence generation, Claude for closure check</td><td>Sometimes</td></tr>
+        <tr><td>Archive</td><td>Yes</td><td>Claude</td><td>Claude</td><td>No</td></tr>
+      </table>
+      <p><strong>Default recommendations:</strong> orchestrator = <code>Claude</code>; primary execution agent = <code>Codex</code>; deep-review / alternate-analysis support = <code>Gemini</code>.</p>
+      <p><strong>Override rule:</strong> if the workflow deviates from this assignment model, the WRK should record what changed, why it changed, and why the risk is acceptable.</p>
+    </section>
+
+    <section class="panel">
+      <h2>Decision Needed Now</h2>
+      <table>
+        <tr>
+          <th>Decision</th>
+          <th>Why it matters</th>
+          <th>Current recommendation</th>
+        </tr>
+        <tr>
+          <td>Accept the tightened 9-stage workflow contract</td>
+          <td>This is the baseline contract for all follow-on work-queue hardening.</td>
+          <td>Accept the current `WRK-624` draft as the governing workflow contract.</td>
+        </tr>
+        <tr>
+          <td>Keep full seeded Route C review depth</td>
+          <td>This controls planning rigor for workflow, governance, legal, and agent-behavior work.</td>
+          <td>Keep `3 seeds/provider` as the Route C default.</td>
+        </tr>
+        <tr>
+          <td>Treat user HTML review as the main blocking gate</td>
+          <td>This is the practical bottleneck surface for approval and execution readiness.</td>
+          <td>Keep user HTML review as the primary explicit blocker.</td>
+        </tr>
+        <tr>
+          <td>Proceed to `WRK-655`</td>
+          <td>`WRK-655` operationalizes the loosest stage in the workflow: Resource Intelligence.</td>
+          <td>Use `WRK-655` as the next execution item after this HTML review is accepted.</td>
+        </tr>
+      </table>
+    </section>
+
+    <section class="panel">
+      <h2>Stale Working-Queue Triage (2026-03-01)</h2>
+      <p>Post-remediation stale <code>working/</code> items were triaged to keep validator warnings actionable and the stage signal clean.</p>
+      <table>
+        <tr>
+          <th>Disposition</th>
+          <th>WRK IDs</th>
+          <th>Reason</th>
+        </tr>
+        <tr>
+          <td>Closed to <code>done/</code></td>
+          <td><code>WRK-229</code>, <code>WRK-279</code>, <code>WRK-290</code></td>
+          <td>Evidence indicated materially complete outcomes; stale <code>working</code> status was no longer correct.</td>
+        </tr>
+        <tr>
+          <td>Moved to <code>blocked/</code></td>
+          <td><code>WRK-121</code>, <code>WRK-131</code>, <code>WRK-280</code></td>
+          <td>External dependencies (licenses, network/manual data acquisition, archive access) prevent active execution.</td>
+        </tr>
+        <tr>
+          <td>Parked to <code>pending/</code></td>
+          <td><code>WRK-125</code>, <code>WRK-235</code></td>
+          <td>Standing/roadmap coordination work should not occupy active execution lanes continuously.</td>
+        </tr>
+        <tr>
+          <td>Kept in <code>working/</code></td>
+          <td><code>WRK-118</code></td>
+          <td>Still active with partial completion and immediate follow-on execution value.</td>
+        </tr>
+      </table>
+      <p><strong>Result:</strong> queue validation now passes with zero stale-working warnings.</p>
+    </section>
+
+    <section class="panel">
+      <h2>User Gap Decisions Applied (2026-03-01)</h2>
+      <table>
+        <tr>
+          <th>Stage</th>
+          <th>User decision</th>
+          <th>Action taken</th>
+        </tr>
+        <tr>
+          <td>capture</td>
+          <td class="status-good">confirm</td>
+          <td>No change required.</td>
+        </tr>
+        <tr>
+          <td>resource_intelligence</td>
+          <td class="status-warn">revise</td>
+          <td>Follow-on created: <code>WRK-667</code> to strengthen skill usage and measure quality impact.</td>
+        </tr>
+        <tr>
+          <td>triage / plan / claim / execute / close</td>
+          <td class="status-good">confirm</td>
+          <td>No structural change requested.</td>
+        </tr>
+        <tr>
+          <td>archive</td>
+          <td class="status-warn">revise</td>
+          <td>Follow-on created: <code>WRK-668</code> for archive-tooling contract and spin-off automation.</td>
+        </tr>
+      </table>
+      <p><strong>Decision artifact:</strong> <code>.claude/work-queue/assets/WRK-624/gap-review-user.json</code></p>
+    </section>
+
+    <section class="panel">
+      <h2>Recommended Next Work</h2>
+      <table>
+        <tr>
+          <th>Priority</th>
+          <th>Recommendation</th>
+          <th>Why</th>
+        </tr>
+        <tr>
+          <td>1</td>
+          <td>Define and operationalize a dedicated Resource Intelligence skill (<code>WRK-655</code>).</td>
+          <td>This is the loosest stage in the lifecycle. It needs a first-class skill, a validator-checkable artifact contract, and an explicit repo/document-intelligence knowledge map.</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>Backfill post-624 WRKs to the new metadata and evidence contract.</td>
+          <td>The validator now exposes missing <code>orchestrator</code>, claim, and HTML evidence on newer items; this is the main rollout gap.</td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td>Update WRK creation/scaffolding so new items are compliant from creation time.</td>
+          <td>This prevents repeating the same backfill work on every new workflow item.</td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td>Tighten validator policy from warnings to blocking for new or touched WRKs.</td>
+          <td>The current rollout is intentionally soft; enforcement should harden after the backfill is complete.</td>
+        </tr>
+        <tr>
+          <td>5</td>
+          <td>Operationalize user HTML review gates in scripts and hooks.</td>
+          <td>The workflow now defines the decision stage; the next step is making it mechanically enforced.</td>
+        </tr>
+        <tr>
+          <td>6</td>
+          <td>Enforce merge/sync readiness at archive time.</td>
+          <td>Close is stronger now; archive should become equally deterministic.</td>
+        </tr>
+      </table>
+      <p><strong>User choice rule:</strong> the next step may either enhance an existing active WRK when the objective is still materially the same, or create a new WRK when the work has independent backlog value. In either case, the queue history must preserve all evidence and decisions.</p>
+    </section>
+
+    <section class="panel">
+      <h2>Claude Review Mode Policy</h2>
+      <table>
+        <tr>
+          <th>Mode</th>
+          <th>Transport</th>
+          <th>Strength</th>
+          <th>When to use</th>
+        </tr>
+        <tr>
+          <td>Full bundle</td>
+          <td>Patched temp-file <code>Read</code> path via <code>submit-to-claude.sh</code></td>
+          <td class="status-good">Best review quality</td>
+          <td>Default for all relevant substantive reviews, including Route B/C plans, workflow/governance items, and final full-context review.</td>
+        </tr>
+        <tr>
+          <td>Compact bundle</td>
+          <td>Same patched temp-file <code>Read</code> path with <code>--compact-plan</code></td>
+          <td class="status-warn">Faster, but lossy</td>
+          <td>Fallback only for non-final screening passes or when the user explicitly wants faster feedback over full-context analysis.</td>
+        </tr>
+      </table>
+      <p><strong>Policy:</strong> full bundle is the default Claude review mode for all relevant reviews. The default bounded wait for Claude review runs is 5 minutes (<code>300s</code>). If compact mode is used and Claude flags truncation, missing context, or bundle lossiness, rerun it on the full bundle before treating the review as final.</p>
+    </section>
+
+    <section class="panel">
+      <h2>Exploration Chain Policy</h2>
+      <table>
+        <tr>
+          <th>Keep inside one parent WRK</th>
+          <th>Split into new WRK</th>
+        </tr>
+        <tr>
+          <td>
+            Experiments, retries, diagnostics, review-mode comparisons, and synthesis that all serve the same immediate objective and remain in the same active work stream.
+          </td>
+          <td>
+            Work that becomes its own deliverable, changes ownership, is likely to be deferred independently, or is valuable as a standalone backlog item.
+          </td>
+        </tr>
+      </table>
+      <p><strong>Default:</strong> exploratory/debugging chains should stay inside one approved parent WRK, with sub-steps logged in the WRK body or assets, instead of creating a new WRK for every experiment.</p>
+      <p><strong>User choice rule:</strong> when new work could reasonably fit either an existing active WRK or a new WRK, the user should be offered both paths. Reuse the existing WRK when objective and approval scope are still materially the same; create a new WRK when the branch has independent backlog value. In either case, traceability must be preserved and no findings, evidence, or learnings may be lost.</p>
+    </section>
+
+    <section class="split">
+      <article class="panel">
+        <h2>Key Rules</h2>
+        <ul>
+          <li><strong>Resource Intelligence</strong> is mandatory for every WRK and produces a modular resource pack.</li>
+          <li><strong>One active orchestrator session</strong> owns transitions into <code>working</code>, <code>done</code>, and <code>archived</code>.</li>
+          <li><strong>Claim</strong> includes an AI capability check and should recommend a better-fit executor when the current agent is not the strongest option.</li>
+          <li><strong>Claim</strong> also checks weekly AI usage availability from the regular quota cron/readiness pipeline so execution does not start on an agent likely to hard-stop; waits up to 24 hours are acceptable, longer waits should reroute.</li>
+          <li><strong>Review matrix</strong> is route-based, but no route skips review.</li>
+          <li><strong>Review artifacts</strong> must share a common schema: <code>Verdict</code>, <code>Summary</code>, <code>Issues Found</code>, <code>Suggestions</code>, and <code>Questions for Author</code>.</li>
+          <li><strong><code>INVALID_OUTPUT</code></strong> is a blocking review failure and requires rerun, alternate mode, or explicit user waiver before the gate can pass.</li>
+          <li><strong>Script paths</strong> are intentionally split: lifecycle operations live in <code>scripts/work-queue/</code>, while queue-index helpers live in <code>.claude/work-queue/scripts/</code>.</li>
+          <li><strong>Plan gate</strong> requires user review twice: once on the draft HTML before multi-agent review, and once on the final HTML after multi-agent review.</li>
+          <li><strong>Plan HTML</strong> should front-load an executive summary near the top so the user can review the item quickly.</li>
+          <li><strong>Every WRK</strong> carries 5-10 real examples, variation tests, and learning outputs.</li>
+          <li><strong>Learning capture</strong> has two layers: auto-memory for real-time session capture and comprehensive-learning for slower, deeper multi-agent synthesis.</li>
+          <li><strong>User-review SLA</strong>: HTML review gates remain in place for under 48 hours; beyond that the WRK must record a user defer, named delegate review, or rollback to the prior actionable stage.</li>
+          <li><strong>Every WRK</strong> must produce an HTML review artifact, and the user reviews it before close.</li>
+          <li><strong>Domain workflows</strong> must include calculation or analysis outputs inside that HTML artifact in a directly reviewable form.</li>
+          <li><strong>Existing vs new WRK</strong>: if either path is viable, present both options to the user and preserve full traceability whichever path is chosen.</li>
+          <li><strong>Archive</strong> is blocked until queue validation, merge to main, and sync flow complete.</li>
+        </ul>
+      </article>
+      <article class="panel">
+        <h2>Current Review Status</h2>
+        <table>
+          <tr><th>Gate</th><th>Status</th></tr>
+          <tr><td>Spec draft</td><td class="status-good">Prepared</td></tr>
+          <tr><td>HTML review artifact</td><td class="status-good">Prepared</td></tr>
+          <tr><td>Claude review</td><td class="status-good">Full-bundle artifact adopted as final Claude review</td></tr>
+          <tr><td>Codex review</td><td class="status-good">Formal review artifact recorded</td></tr>
+          <tr><td>Gemini review</td><td class="status-good">Formal review artifact recorded</td></tr>
+          <tr><td>Review synthesis</td><td class="status-warn">Seed-compliant Route C review completed; Claude and Codex both returned 3/3 <code>REQUEST_CHANGES</code>, Gemini returned 3/3 <code>APPROVE</code>, so final signoff is still blocked</td></tr>
+        </table>
+      </article>
+    </section>
+
+    <section class="panel">
+      <h2>Review Matrix</h2>
+      <table>
+        <tr>
+          <th>Route</th>
+          <th>Review level</th>
+          <th>Required reviewers</th>
+          <th>Artifacts</th>
+        </tr>
+        <tr>
+          <td>A</td>
+          <td>Mandatory lightweight review</td>
+          <td>1 seed by default, auto-escalates on defined risk signals</td>
+          <td><code>review-primary.md</code></td>
+        </tr>
+        <tr>
+          <td>B</td>
+          <td>Standard</td>
+          <td>Claude x2, Codex x2, Gemini x2</td>
+          <td>Per-seed reviewer artifacts plus <code>review-synthesis.md</code></td>
+        </tr>
+        <tr>
+          <td>C</td>
+          <td>Full</td>
+          <td>Claude x3, Codex x3, Gemini x3 per plan, phase, and close</td>
+          <td>Per-seed reviewer artifacts plus per-phase synthesis</td>
+        </tr>
+      </table>
+    </section>
+
+    <section class="panel">
+      <h2>Seed Depth Policy</h2>
+      <table>
+        <tr>
+          <th>Concept</th>
+          <th>Rule</th>
+        </tr>
+        <tr>
+          <td>Provider diversity</td>
+          <td>Which model families must review the item: Claude, Codex, and Gemini for Route B/C.</td>
+        </tr>
+        <tr>
+          <td>Seed depth</td>
+          <td>How many independent runs are required per provider.</td>
+        </tr>
+        <tr>
+          <td>Default depth</td>
+          <td>Route A: 1 seed total. Route B: 2 seeds per provider. Route C: 3 seeds per provider.</td>
+        </tr>
+        <tr>
+          <td>High-governance items</td>
+          <td>Workflow, governance, legal, compliance, and agent-behavior reviews use the Route C seed depth by default.</td>
+        </tr>
+      </table>
+    </section>
+
+    <section class="panel">
+      <h2>Requirement Classes</h2>
+      <table>
+        <tr>
+          <th>Requirement</th>
+          <th>Route A</th>
+          <th>Route B</th>
+          <th>Route C</th>
+        </tr>
+        <tr>
+          <td>Resource pack</td>
+          <td>Concise but complete</td>
+          <td>Standard</td>
+          <td>Full</td>
+        </tr>
+        <tr>
+          <td>Examples</td>
+          <td>5-10 small real examples</td>
+          <td>5-10 representative examples</td>
+          <td>5-10 representative examples with phase traceability</td>
+        </tr>
+        <tr>
+          <td>Variation tests</td>
+          <td>Lightweight</td>
+          <td>Standard</td>
+          <td>Full / per phase</td>
+        </tr>
+        <tr>
+          <td>Plan HTML reviews</td>
+          <td>Draft + final</td>
+          <td>Draft + final</td>
+          <td>Draft + final</td>
+        </tr>
+        <tr>
+          <td>Reviewers</td>
+          <td>1 seed by default, escalate on risk</td>
+          <td>2 seeds/provider</td>
+          <td>3 seeds/provider per plan / phase / close</td>
+        </tr>
+      </table>
+    </section>
+
+    <section class="split">
+      <article class="panel">
+        <h2>Mandatory Metadata</h2>
+        <ul>
+          <li><code>orchestrator</code></li>
+          <li><code>computer</code> (named execution host / workstation)</li>
+          <li><code>plan_workstations</code> (one or more allowed planning machines)</li>
+          <li><code>execution_workstations</code> (one or more allowed execution machines)</li>
+          <li><code>resource_pack_ref</code></li>
+          <li><code>plan_html_review_draft_ref</code></li>
+          <li><code>plan_html_review_final_ref</code></li>
+          <li><code>claim_routing_ref</code></li>
+          <li><code>claim_quota_snapshot_ref</code></li>
+          <li><code>claim_recommendation</code></li>
+          <li><code>example_pack_ref</code></li>
+          <li><code>variation_test_ref</code></li>
+          <li><code>learning_outputs</code></li>
+          <li><code>followup</code></li>
+          <li><code>html_output_ref</code> and <code>html_verification_ref</code></li>
+        </ul>
+      </article>
+      <article class="panel">
+        <h2>Dependency Authority</h2>
+        <ul>
+          <li><strong>Quota source of truth</strong>: <code>config/ai-tools/agent-quota-latest.json</code></li>
+          <li><strong>Producer</strong>: <code>scripts/ai/assessment/query-quota.sh</code> plus readiness pipeline</li>
+          <li><strong>Queue validation</strong>: validator output is blocking for close/archive</li>
+          <li><strong>Workstation registry</strong>: blocking source of truth for validating <code>computer</code>, <code>plan_workstations</code>, and <code>execution_workstations</code>.</li>
+          <li><strong>Document-intelligence indexing</strong>: advisory by default, blocking only when the WRK explicitly requires indexed artifacts before close/archive.</li>
+          <li><strong>Comprehensive-learning handoff</strong>: blocking for archive when the WRK explicitly requires deep-learning handoff evidence.</li>
+          <li><strong>Legal scan</strong>: blocking for generated WRK artifacts unless explicitly waived</li>
+          <li><strong>Review evidence</strong>: blocking for plan/execute progression; fallback only for <code>NO_OUTPUT</code></li>
+          <li><strong>Merge + sync</strong>: both are blocking for archive</li>
+          <li><strong>Script location policy</strong>: use <code>scripts/work-queue/</code> for queue operations and <code>.claude/work-queue/scripts/</code> for queue index helpers.</li>
+        </ul>
+      </article>
+    </section>
+
+    <section class="split">
+      <article class="panel">
+        <h2>Learning Lanes</h2>
+        <ul>
+          <li><strong>Auto-memory</strong>: fast opportunistic capture during active Claude sessions.</li>
+          <li><strong>Comprehensive-learning</strong>: slower deep synthesis across sessions, agents, and machines.</li>
+          <li><strong>Relationship</strong>: complementary lanes writing back into a compatible memory and learning surface.</li>
+          <li><strong>Deep-learning contract</strong>: when required by the WRK, archive expects a handoff artifact with summary, actions, and metadata proving propagation or deferred follow-up.</li>
+        </ul>
+      </article>
+    </section>
+
+    <section class="split">
+      <article class="panel">
+        <h2>Phased Rollout</h2>
+        <ul>
+          <li><strong>Phase 1 (Feb 27-Mar 7, 2026):</strong> normalize statuses, reconcile drift, reporting validator, manual-remediation list, git rollback path.</li>
+          <li><strong>Phase 2 (Mar 8-Mar 21, 2026):</strong> require resource packs, draft-plan and final-plan WRK HTML reviews, close evidence, and HTML review artifacts for new/touched WRKs. Rollback: temporarily return the new artifact gates to warning-only while preserving status migration and validator reporting. Success metrics: new/touched WRKs carry required refs, zero closes without HTML/claim evidence, zero unresolved generated-artifact legal-scan failures.</li>
+          <li><strong>Phase 3 (from Mar 22, 2026):</strong> enforce active session binding, hard-block invalid transitions, hard-fail legacy statuses. Rollback: disable hard-blocking and drop back to Phase 2 warning mode while keeping migration tooling and evidence artifacts intact. Success metrics: zero transition bypasses without remediation evidence, zero archive mismatches, zero archive moves without merge/sync evidence.</li>
+        </ul>
+      </article>
+      <article class="panel">
+        <h2>Archive Gate</h2>
+        <ul>
+          <li>Queue validation must pass.</li>
+          <li>Merge to main must be complete.</li>
+          <li>Repo sync flow must be complete.</li>
+          <li>HTML review artifact must already be verified by agent and user.</li>
+        </ul>
+      </article>
+    </section>
+
+    <section class="panel">
+      <h2>Testing Strategy</h2>
+      <ul>
+        <li>Transition tests across the full lifecycle.</li>
+        <li>Validator tests for status, folder, and missing artifact mismatches.</li>
+        <li>Idempotency tests for close, archive, and validation operations.</li>
+        <li>Concurrency tests for conflicting claim attempts and stale session recovery.</li>
+        <li>Outage tests for reviewer failure, quota-source outage, and HTML/legal tool failure.</li>
+        <li>User-availability tests for 48-hour pending review, user-deferred states, and delegated review evidence.</li>
+        <li>Migration tests for malformed filenames and legacy statuses.</li>
+        <li>HTML gate tests for draft-plan review, final-plan review, and close-time HTML verification.</li>
+        <li>Rollback tests for Phase 1, Phase 2, and Phase 3 rollback paths.</li>
+      </ul>
+    </section>
+
+    <section class="panel">
+      <h2>Core Scope</h2>
+      <ul>
+        <li><strong>WRK-624 core delivery</strong>: lifecycle enforcement, review evidence structure, claim/session checks, close/archive gates, migration path, and user HTML review gating.</li>
+        <li><strong>Primary blocker focus</strong>: user HTML review flow must be operationally enforceable and validator-testable.</li>
+        <li><strong>Follow-on scope</strong>: deeper legal-scan automation, document-intelligence integration, and richer comprehensive-learning automation can continue as follow-on work.</li>
+        <li><strong>Seed policy</strong>: full Route C seed depth remains intact because planning is treated as the highest-leverage self-evolution step in the repo ecosystem.</li>
+      </ul>
+    </section>
+
+    <section class="panel">
+      <h2>Review Focus</h2>
+      <ul>
+        <li>Does the Mermaid diagram show the happy path and the blocking paths clearly enough?</li>
+        <li>Are the new hard gates concrete enough to drive automation?</li>
+        <li>Does making HTML mandatory for every WRK improve reviewability without adding the wrong kind of overhead?</li>
+        <li>Do the example, HTML, learning, and archive requirements feel proportionate and enforceable?</li>
+        <li>Should any stage names or edge labels be tightened before 3-seed review?</li>
+      </ul>
+    </section>
+  </main>
+  <script>
+    (function () {
+      const STORE_KEY = "wrk624_gap_review_v1";
+
+      function loadState() {
+        try {
+          return JSON.parse(localStorage.getItem(STORE_KEY) || "{}");
+        } catch (err) {
+          return {};
+        }
+      }
+
+      function saveState(state) {
+        localStorage.setItem(STORE_KEY, JSON.stringify(state));
+      }
+
+      function applyDecisionUI(stage, decision) {
+        const group = document.querySelector('.gap-controls[data-stage="' + stage + '"]');
+        const label = document.querySelector('[data-stage-state="' + stage + '"]');
+        if (!group || !label) return;
+        group.querySelectorAll(".gap-btn").forEach((btn) => {
+          btn.classList.toggle("selected", btn.dataset.decision === decision);
+        });
+        label.textContent = "Decision: " + (decision || "not set");
+      }
+
+      const state = loadState();
+      state.decisions = state.decisions || {};
+      state.comments = state.comments || {};
+
+      document.querySelectorAll(".gap-controls").forEach((group) => {
+        const stage = group.dataset.stage;
+        applyDecisionUI(stage, state.decisions[stage] || "");
+        group.querySelectorAll(".gap-btn").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            state.decisions[stage] = btn.dataset.decision;
+            saveState(state);
+            applyDecisionUI(stage, btn.dataset.decision);
+          });
+        });
+      });
+
+      document.querySelectorAll(".gap-comment").forEach((area) => {
+        const stage = area.dataset.stageComment;
+        area.value = state.comments[stage] || "";
+        area.addEventListener("input", () => {
+          state.comments[stage] = area.value;
+          saveState(state);
+        });
+      });
+
+      function buildGapPayload() {
+        return {
+          wrk_id: "WRK-624",
+          exported_at: new Date().toISOString(),
+          decisions: state.decisions,
+          comments: state.comments
+        };
+      }
+
+      const exportBtn = document.getElementById("export-gap-review");
+      if (exportBtn) {
+        exportBtn.addEventListener("click", async () => {
+          const text = JSON.stringify(buildGapPayload(), null, 2);
+          try {
+            await navigator.clipboard.writeText(text);
+            exportBtn.textContent = "Exported (Copied)";
+          } catch (err) {
+            exportBtn.textContent = "Export Failed";
+          }
+          setTimeout(() => { exportBtn.textContent = "Export Gap Decisions"; }, 1500);
+        });
+      }
+
+      const saveBtn = document.getElementById("save-gap-review-file");
+      if (saveBtn) {
+        saveBtn.addEventListener("click", async () => {
+          const text = JSON.stringify(buildGapPayload(), null, 2);
+          const filename = "wrk-624-gap-review-user.json";
+          try {
+            if (window.showSaveFilePicker) {
+              const handle = await window.showSaveFilePicker({
+                suggestedName: filename,
+                types: [{
+                  description: "JSON Files",
+                  accept: { "application/json": [".json"] }
+                }]
+              });
+              const writable = await handle.createWritable();
+              await writable.write(text);
+              await writable.close();
+            } else {
+              const blob = new Blob([text], { type: "application/json" });
+              const url = URL.createObjectURL(blob);
+              const a = document.createElement("a");
+              a.href = url;
+              a.download = filename;
+              document.body.appendChild(a);
+              a.click();
+              a.remove();
+              URL.revokeObjectURL(url);
+            }
+            saveBtn.textContent = "Saved";
+          } catch (err) {
+            saveBtn.textContent = "Save Failed";
+          }
+          setTimeout(() => { saveBtn.textContent = "Save Gap Decisions File"; }, 1500);
+        });
+      }
+    })();
+  </script>
+</body>
+</html>

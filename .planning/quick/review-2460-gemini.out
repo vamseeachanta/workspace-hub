@@ -1,0 +1,14 @@
+Agent loading error: Failed to load agent from /mnt/local-analysis/workspace-hub/.gemini/agents/gsd-debugger.md: Validation failed: Agent Definition:
+Unrecognized key(s) in object: 'permissionMode'Agent loading error: Failed to load agent from /mnt/local-analysis/workspace-hub/.gemini/agents/gsd-executor.md: Validation failed: Agent Definition:
+Unrecognized key(s) in object: 'permissionMode'Error executing tool run_shell_command: Tool "run_shell_command" not found. Did you mean one of: "grep_search", "cli_help", "read_file"?
+Verdict: MAJOR
+
+Findings:
+- [MAJOR] Missing validation for data placement rule — The plan notes under "Documents consulted" that `docs/standards/DATA_PLACEMENT.md` "must be incorporated into tier-1 routing guidance". However, this requirement is entirely dropped in the execution phase. Neither the "TDD Test List" nor the "Acceptance Criteria" contain any checks to verify that the `repo-vs-/mnt/ace/data` placement rules are actually documented in the new contract, violating review requirement #5.
+- [MINOR] Contradictory strategy for legacy reference patterns — The "Risks and Open Questions" section correctly notes that legacy language might be "absolutely necessary to define retirement boundaries" (fulfilling review requirement #4). Yet, the TDD test `test_tier1_contract_avoids_legacy_product_doc_reference_pattern` asserts a strict "forbidden string absent". This binary test contradicts the risk assessment and will likely fail if the contract properly documents the migration boundaries. 
+
+Checks performed:
+- Verified the physical existence of baseline standards (`CONTROL_PLANE_CONTRACT.md`, `FILE_STRUCTURE_TAXONOMY.md`, `DATA_PLACEMENT.md`) and the scorecard (`2026-04-22-tier-1-indexing-scorecard.md`) in the workspace.
+- Verified the plan stays narrowly scoped to defining the contract, docs index update, and regression tests without sneaking in child-issue (#2461-#2465) implementation.
+- Evaluated the test list and acceptance criteria against all required correctness-critical claims (curated-vs-raw inventory, data placement, and daily freshness).
+- Analyzed the testing strategy for handling legacy product-doc reference patterns.

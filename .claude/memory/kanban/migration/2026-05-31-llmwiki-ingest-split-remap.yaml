@@ -1,0 +1,37 @@
+# llm-wiki ingest board split (#2878). relabel removes domain:ingest, adds ingest-<sub>.
+repo: vamseeachanta/llm-wiki
+remap:
+  - {issue: 1, domain: ingest-batch-extraction}
+  - {issue: 2, domain: ingest-batch-extraction}
+  - {issue: 3, domain: ingest-batch-extraction}
+  - {issue: 4, domain: ingest-batch-extraction}
+  - {issue: 5, domain: ingest-batch-extraction}
+  - {issue: 6, domain: ingest-batch-extraction}
+  - {issue: 7, domain: ingest-batch-extraction}
+  - {issue: 8, domain: ingest-batch-extraction}
+  - {issue: 9, domain: ingest-batch-extraction}
+  - {issue: 10, domain: ingest-batch-extraction}
+  - {issue: 11, domain: ingest-batch-extraction}
+  - {issue: 12, domain: ingest-corpus-acquisition}
+  - {issue: 72, domain: ingest-corpus-acquisition}
+  - {issue: 101, domain: ingest-corpus-acquisition}
+  - {issue: 103, domain: ingest-corpus-acquisition}
+  - {issue: 104, domain: ingest-corpus-acquisition}
+  - {issue: 105, domain: ingest-corpus-acquisition}
+  - {issue: 106, domain: ingest-corpus-acquisition}
+  - {issue: 107, domain: ingest-corpus-acquisition}
+  - {issue: 108, domain: ingest-corpus-acquisition}
+  - {issue: 109, domain: ingest-corpus-acquisition}
+  - {issue: 110, domain: ingest-corpus-acquisition}
+  - {issue: 111, domain: ingest-corpus-acquisition}
+  - {issue: 112, domain: ingest-corpus-acquisition}
+  - {issue: 113, domain: ingest-corpus-acquisition}
+  - {issue: 115, domain: ingest-corpus-acquisition}
+  - {issue: 116, domain: ingest-corpus-acquisition}
+  - {issue: 117, domain: ingest-corpus-acquisition}
+  - {issue: 124, domain: ingest-corpus-acquisition}
+  - {issue: 125, domain: ingest-corpus-acquisition}
+  - {issue: 126, domain: ingest-corpus-acquisition}
+  - {issue: 134, domain: ingest-corpus-acquisition}
+  - {issue: 135, domain: ingest-batch-extraction}
+  - {issue: 138, domain: ingest-corpus-acquisition}

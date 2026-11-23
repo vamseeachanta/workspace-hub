@@ -1,0 +1,23 @@
+version: 1
+wrk_id: WRK-1009
+skill_name: document-inventory
+skill_path: .claude/skills/data/documents/document-inventory/SKILL.md
+evals:
+- eval_id: di-cap-01
+  eval_type: capability
+  description: Core sections documented for document-inventory
+  checks:
+    required_sections:
+    - '## Quick Start'
+    - '## When to Use'
+    - '## Example Usage'
+    - '## Overview'
+    - '## Implementation'
+- eval_id: di-proc-01
+  eval_type: procedural
+  description: Additional documentation sections for document-inventory
+  checks:
+    required_sections:
+    - '## Features'
+    - '## Custom Categorization'
+    - '## Related Skills'

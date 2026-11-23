@@ -1,0 +1,534 @@
+generated: '2026-04-03T12:52:33.113135+00:00'
+source: /mnt/ace/docs/conferences
+total_conferences: 30
+total_files: 38526
+total_pdfs: 21996
+conferences:
+- name: Arctic Technology Conference
+  path: /mnt/ace/docs/conferences/Arctic Technology Conference
+  total_files: 216
+  pdf_count: 110
+  size_mb: 145
+  primary_domain: marine
+  secondary_domains:
+  - subsea
+  - drilling
+  - pipeline
+  sample_files:
+  - 22094.pdf
+  - spon.pdf
+  - AcroTEST.pdf
+  - pc.pdf
+  - org.pdf
+  year_range: unknown
+  indexing_status: not_indexed
+  priority: medium
+- name: Coiled Tubing & Well Intervention Conference 2011
+  path: /mnt/ace/docs/conferences/Coiled Tubing & Well Intervention Conference 2011
+  total_files: 68
+  pdf_count: 64
+  size_mb: 112
+  primary_domain: drilling
+  secondary_domains:
+  - well-intervention
+  sample_files:
+  - spe143317.pdf
+  - spe143337.pdf
+  - spe143240.pdf
+  - Coiled Tubing & Well Intervention 2011-Table of Contents.pdf
+  year_range: '2011'
+  indexing_status: not_indexed
+  priority: low
+- name: DeepGulf
+  path: /mnt/ace/docs/conferences/DeepGulf
+  total_files: 43
+  pdf_count: 42
+  size_mb: 112
+  primary_domain: subsea
+  secondary_domains:
+  - marine
+  - pipeline
+  - structural
+  sample_files:
+  - Arne Lassen-Urdahl_Parker Scanrope.pdf
+  - Michael_Suerth_Lloyds Register.pdf
+  - Don_Allen_Shell.pdf
+  - Cobie_Loper_DeepFlex.pdf
+  - Leverette_SBM_DryTreePanel.pdf
+  year_range: unknown
+  indexing_status: not_indexed
+  priority: high
+- name: DOT
+  path: /mnt/ace/docs/conferences/DOT
+  total_files: 7516
+  pdf_count: 1456
+  size_mb: 2255
+  primary_domain: subsea
+  secondary_domains:
+  - pipeline
+  - marine
+  - structural
+  - viv
+  sample_files:
+  - ID 26 Abstract.pdf
+  - ID 85 Abstract.pdf
+  - Session7 02.pdf
+  - ID 174 PAPER.pdf
+  - mirahelp.pdf
+  year_range: 2001-2013
+  indexing_status: phase_a_complete
+  priority: high
+  phase_a_date: '2026-04-04'
+  indexed_count: 1456
+- name: Dry Tree Forum
+  path: /mnt/ace/docs/conferences/Dry Tree Forum
+  total_files: 5
+  pdf_count: 1
+  size_mb: 5
+  primary_domain: marine
+  secondary_domains:
+  - structural
+  - viv
+  sample_files:
+  - YDChin-2005 DTA Heat Transfer Mechanism of Dry Tree Risers for review.pdf
+  year_range: '2005'
+  indexing_status: not_indexed
+  priority: medium
+- name: EUCI
+  path: /mnt/ace/docs/conferences/EUCI
+  total_files: 20
+  pdf_count: 20
+  size_mb: 23
+  primary_domain: regulatory
+  secondary_domains:
+  - marine
+  - pipeline
+  sample_files:
+  - Hopkins.pdf
+  - A.T. Kearney_Proven Approaches for Catastrophic Management.pdf
+  - Scanio - US Regulations.pdf
+  - EUCI_Presentation_by_Scanio.pdf
+  - Orbach.pdf
+  year_range: unknown
+  indexing_status: not_indexed
+  priority: low
+- name: Euroforum Offshore Risers
+  path: /mnt/ace/docs/conferences/Euroforum Offshore Risers
+  total_files: 23
+  pdf_count: 7
+  size_mb: 126
+  primary_domain: marine
+  secondary_domains:
+  - structural
+  - subsea
+  sample_files:
+  - doc A. Felix Henry.pdf
+  - de deserts.pdf
+  - doc hatton.pdf
+  - doc Mabile.pdf
+  year_range: unknown
+  indexing_status: not_indexed
+  priority: medium
+- name: Flow Induced Vibration
+  path: /mnt/ace/docs/conferences/Flow Induced Vibration
+  total_files: 229
+  pdf_count: 168
+  size_mb: 98
+  primary_domain: hydrodynamics
+  secondary_domains:
+  - viv
+  - marine
+  - structural
+  sample_files:
+  - 112ow.pdf
+  - 163ls.pdf
+  - 117ow.pdf
+  - 132ow.pdf
+  - 062on.pdf
+  year_range: '2004'
+  indexing_status: not_indexed
+  priority: high
+- name: IADC International Deepwater Drilling
+  path: /mnt/ace/docs/conferences/IADC International Deepwater Drilling
+  total_files: 15
+  pdf_count: 15
+  size_mb: 19
+  primary_domain: drilling
+  secondary_domains:
+  - marine
+  - subsea
+  sample_files:
+  - J-Williams-Rio-Riser-Presentation-4-10-12-final.pdf
+  - M-Sonawane-Maintaining-Well-Control-Based-on-Drilling-Riser-Analysis.pdf
+  - R-Brainard_IADC-DW-International-Drilling-Conference-Presentation_Final_041012.pdf
+  year_range: '2012'
+  indexing_status: not_indexed
+  priority: medium
+- name: IMarEST Offshore Oil and Gas Conference
+  path: /mnt/ace/docs/conferences/IMarEST Offshore Oil and Gas Conference
+  total_files: 20
+  pdf_count: 20
+  size_mb: 45
+  primary_domain: marine
+  secondary_domains:
+  - subsea
+  - pipeline
+  sample_files:
+  - 8_ Daryl Attwood PhD.pdf
+  - 5_ Binder Singh.pdf
+  - 4_ Aravind Nair.pdf
+  - 2_ Sampo Suvisarri.pdf
+  - 3_ Jose Garcia .pdf
+  year_range: unknown
+  indexing_status: not_indexed
+  priority: medium
+- name: ISO 9001
+  path: /mnt/ace/docs/conferences/ISO 9001
+  total_files: 37
+  pdf_count: 35
+  size_mb: 87
+  primary_domain: regulatory
+  secondary_domains:
+  - materials
+  sample_files:
+  - ISO-033-Barlow-The Risk and Compliance Paradigm.pdf
+  - ISO-061-Owens-Five Truths to Reduce-final.pdf
+  - ISO-143-Schwartz-Integration at Medium Size Community Hospital.pdf
+  year_range: unknown
+  indexing_status: not_indexed
+  priority: low
+- name: ISOPE
+  path: /mnt/ace/docs/conferences/ISOPE
+  total_files: 4516
+  pdf_count: 4074
+  size_mb: 3044
+  primary_domain: marine
+  secondary_domains:
+  - pipeline
+  - structural
+  - subsea
+  - hydrodynamics
+  sample_files:
+  - 2004-jwc-01.pdf
+  - 2004-jsc-176.pdf
+  - 2004-cts-01.pdf
+  - 2004-swh-14.pdf
+  - 2004-jsc-251.pdf
+  year_range: 2003-2014
+  indexing_status: not_indexed
+  priority: high
+- name: JPT
+  path: /mnt/ace/docs/conferences/JPT
+  total_files: 1
+  pdf_count: 1
+  size_mb: 1
+  primary_domain: marine
+  secondary_domains:
+  - subsea
+  sample_files:
+  - A Deepwater Riser Emergency Disconnect Anti-Recoil System.pdf
+  year_range: unknown
+  indexing_status: not_indexed
+  priority: medium
+- name: NACE
+  path: /mnt/ace/docs/conferences/NACE
+  total_files: 561
+  pdf_count: 436
+  size_mb: 670
+  primary_domain: cathodic-protection
+  secondary_domains:
+  - materials
+  - pipeline
+  - structural
+  sample_files:
+  - NACE Cathodic Protection Tester Course Manual.pdf
+  - NACE 04144 CORROSION FATIGUE PERFORMANCE OF WELDED RISERS.pdf
+  - 087.PDF
+  - 032.PDF
+  year_range: 1995-2009
+  indexing_status: not_indexed
+  priority: high
+- name: Offshore West Africa
+  path: /mnt/ace/docs/conferences/Offshore West Africa
+  total_files: 125
+  pdf_count: 92
+  size_mb: 225
+  primary_domain: marine
+  secondary_domains:
+  - subsea
+  - pipeline
+  sample_files:
+  - sess14.pdf
+  - sess13.pdf
+  - brochure.pdf
+  - pap75.pdf
+  - pap86.pdf
+  year_range: '2002'
+  indexing_status: not_indexed
+  priority: medium
+- name: OMAE
+  path: /mnt/ace/docs/conferences/OMAE
+  total_files: 13126
+  pdf_count: 7292
+  size_mb: 8345
+  primary_domain: marine
+  secondary_domains:
+  - structural
+  - pipeline
+  - viv
+  - hydrodynamics
+  - subsea
+  sample_files:
+  - OMAE2002 Fatigue Strength of Titanium Riser Welds.pdf
+  - OMAE2002-28221, Hydrodynamic Coefficients for Risers with Strakes.pdf
+  - OMAE2002 Fatigue of 28-inch Titanium Riser.pdf
+  - OMAE2002-Improvements.pdf
+  year_range: 1998-2014
+  indexing_status: phase_a_complete
+  priority: high
+  phase_a_date: '2026-04-04'
+  indexed_count: 7291
+- name: OTC
+  path: /mnt/ace/docs/conferences/OTC
+  total_files: 8500
+  pdf_count: 5432
+  size_mb: 7946
+  primary_domain: marine
+  secondary_domains:
+  - subsea
+  - pipeline
+  - structural
+  - drilling
+  sample_files:
+  - otc20986.pdf
+  - 10OTC_organizations.pdf
+  - 10OTC_sponsors.pdf
+  - 10OTC_committee.pdf
+  - 10OTC_TOC.pdf
+  year_range: 1988-2017
+  indexing_status: phase_a_complete
+  priority: high
+  phase_a_date: '2026-04-04'
+  indexed_count: 5423
+- name: Pipeline Pigging & Integrity Management Feb 2009
+  path: /mnt/ace/docs/conferences/Pipeline Pigging & Integrity Management Feb 2009
+  total_files: 5
+  pdf_count: 5
+  size_mb: 66
+  primary_domain: pipeline
+  secondary_domains:
+  - materials
+  sample_files:
+  - PPIM 2009 Proceedings.pdf
+  - PPIM 2009 Proceedings Supplement.pdf
+  - Factors affecting the design and selection of pigging tools for multi-diameter
+    pipelines.pdf
+  year_range: '2009'
+  indexing_status: not_indexed
+  priority: medium
+- name: Rio Oil & Gas
+  path: /mnt/ace/docs/conferences/Rio Oil & Gas
+  total_files: 66
+  pdf_count: 66
+  size_mb: 31
+  primary_domain: marine
+  secondary_domains:
+  - pipeline
+  - drilling
+  sample_files:
+  - Marine Pipe & Cable Survey with the TSS 440.pdf
+  - The Importance of Verifiable Fire Protection Design.pdf
+  - Do Sealless Pumps Belong in Hydrocarbon Processing Services.pdf
+  year_range: unknown
+  indexing_status: not_indexed
+  priority: medium
+- name: Robert Restore
+  path: /mnt/ace/docs/conferences/Robert Restore
+  total_files: 24
+  pdf_count: 21
+  size_mb: 68
+  primary_domain: marine
+  secondary_domains:
+  - materials
+  - cathodic-protection
+  - viv
+  - subsea
+  sample_files:
+  - BR01039-BP-36 Rev C    (BP - BOREAS - Insulation Systems for Angola Block 18).pdf
+  - Experimental Fatigue Evaluation of Deepwater Risers In Sour Service.pdf
+  - Crc Press - Corrosion Science And Technology.pdf
+  year_range: 2004-2008
+  indexing_status: not_indexed
+  priority: medium
+- name: SNAME
+  path: /mnt/ace/docs/conferences/SNAME
+  total_files: 99
+  pdf_count: 84
+  size_mb: 146
+  primary_domain: marine
+  secondary_domains:
+  - structural
+  - hydrodynamics
+  sample_files:
+  - 2018 Offshore Symposium Proceedings.pdf
+  - SNAME_OS18_13.pdf
+  - SNAME_OS18_07.pdf
+  - SNAME_OS18_19.pdf
+  - SNAME_OS18_09.pdf
+  year_range: '2018'
+  indexing_status: not_indexed
+  priority: high
+- name: SPE
+  path: /mnt/ace/docs/conferences/SPE
+  total_files: 129
+  pdf_count: 124
+  size_mb: 116
+  primary_domain: drilling
+  secondary_domains:
+  - reservoir
+  - pipeline
+  sample_files:
+  - spe128201.pdf
+  - 10DC_sponsors.pdf
+  - 10DC_copyright.pdf
+  - 10DC_exhibitors.pdf
+  - 10FactSheet_11.03.09.pdf
+  year_range: 2009-2010
+  indexing_status: not_indexed
+  priority: medium
+- name: Subsea Houston
+  path: /mnt/ace/docs/conferences/Subsea Houston
+  total_files: 20
+  pdf_count: 3
+  size_mb: 163
+  primary_domain: subsea
+  secondary_domains:
+  - marine
+  - pipeline
+  sample_files:
+  - SSH04 - Socotherm.pdf
+  - Subsea Houston 2004 Framo Engineering.pdf
+  - SSH04 - Vetco Gray.pdf
+  year_range: '2004'
+  indexing_status: not_indexed
+  priority: medium
+- name: Subsea Survey IMMR
+  path: /mnt/ace/docs/conferences/Subsea Survey IMMR
+  total_files: 34
+  pdf_count: 9
+  size_mb: 1259
+  primary_domain: subsea
+  secondary_domains:
+  - marine
+  - pipeline
+  sample_files:
+  - _SS13 ShowGuide.pdf
+  - Mike Haney - Douglas-Westwood.pdf
+  - ClampOn.pdf
+  - Southwest Electronic Energy Group.pdf
+  - DimEye.pdf
+  year_range: '2013'
+  indexing_status: not_indexed
+  priority: medium
+- name: Subsea Tieback
+  path: /mnt/ace/docs/conferences/Subsea Tieback
+  total_files: 214
+  pdf_count: 11
+  size_mb: 798
+  primary_domain: subsea
+  secondary_domains:
+  - pipeline
+  - installation
+  - marine
+  sample_files:
+  - Subsea Tieback Seminar - October 2009.pdf
+  - 7_SUT_-_04_Umbilical_-_Chucks_version_for_2014.pdf
+  - 9 SSTB Forum March 2014 C Loegering.pdf
+  - 5_SUT_-_02_Floaters_Revi_-_Chucks__2014.pdf
+  year_range: 2009-2014
+  indexing_status: not_indexed
+  priority: high
+- name: SUT
+  path: /mnt/ace/docs/conferences/SUT
+  total_files: 1
+  pdf_count: 1
+  size_mb: 3
+  primary_domain: subsea
+  secondary_domains:
+  - marine
+  sample_files:
+  - SUT 2014-01-21 presentation by Douglas-Westwood, web version.pdf
+  year_range: '2014'
+  indexing_status: not_indexed
+  priority: low
+- name: TOD
+  path: /mnt/ace/docs/conferences/TOD
+  total_files: 101
+  pdf_count: 6
+  size_mb: 100
+  primary_domain: subsea
+  secondary_domains:
+  - drilling
+  - marine
+  sample_files:
+  - Schlumberger_seismic_characteristics_deep_water_reservoirs.pdf
+  - Varco.pdf
+  - ABB.pdf
+  year_range: unknown
+  indexing_status: not_indexed
+  priority: low
+- name: TO SORT
+  path: /mnt/ace/docs/conferences/TO SORT
+  total_files: 67
+  pdf_count: 66
+  size_mb: 71
+  primary_domain: marine
+  secondary_domains:
+  - structural
+  - viv
+  - hydrodynamics
+  sample_files:
+  - Norton, D.J., et al, 1981 - Wind Tunnel Tests of Inclined C.pdf
+  - Vandiver, J.K., et al, 1987 - Hydrodynamic Damping on Flexi.pdf
+  - otc1992-6884.PDF
+  - Smith, C.S., et al, 1981 - Residual Strength and Stiffness .pdf
+  year_range: 1981-1995
+  indexing_status: not_indexed
+  priority: medium
+- name: UK Conference Folder
+  path: /mnt/ace/docs/conferences/UK Conference Folder
+  total_files: 2725
+  pdf_count: 2316
+  size_mb: 1987
+  primary_domain: marine
+  secondary_domains:
+  - subsea
+  - pipeline
+  - viv
+  - structural
+  sample_files:
+  - committee.pdf
+  - organizations.pdf
+  - toc.pdf
+  - ResourceCenter.pdf
+  - copyright.pdf
+  year_range: 2000-2006
+  indexing_status: not_indexed
+  priority: high
+- name: Unlocking Deepwater Potential - Mumbai
+  path: /mnt/ace/docs/conferences/Unlocking Deepwarter Potential- Mumbai
+  total_files: 20
+  pdf_count: 19
+  size_mb: 36
+  primary_domain: subsea
+  secondary_domains:
+  - marine
+  - pipeline
+  - installation
+  sample_files:
+  - Session 6_Marin Abelanet_Acergy[1].pdf
+  - Session 6_N.Abela and L.Poldervaart_SBMOffshore[1].pdf
+  - Session 5_Shreenath Natarajan_2HOffshore_Released[1].pdf
+  year_range: unknown
+  indexing_status: not_indexed
+  priority: medium

@@ -1,0 +1,23 @@
+version: 1
+wrk_id: WRK-1009
+skill_name: orcaflex-file-conversion
+skill_path: .claude/skills/engineering/marine-offshore/orcaflex/file-conversion/SKILL.md
+evals:
+- eval_id: ofc-cap-01
+  eval_type: capability
+  description: Core sections documented for orcaflex-file-conversion
+  checks:
+    required_sections:
+    - '## Quick Start'
+    - '## When to Use'
+    - '## Python API'
+    - '## References'
+    - '## Prerequisites'
+- eval_id: ofc-proc-01
+  eval_type: procedural
+  description: Additional documentation sections for orcaflex-file-conversion
+  checks:
+    required_sections:
+    - '## Related Skills'
+    - '## Version History'
+    - '## Sub-Skills'

@@ -1,0 +1,8 @@
+repos:
+  - name: demo
+    path: /tmp/demo
+    readme_sections: ["Capabilities"]
+issue_repo: vamseeachanta/aceengineer-website
+digest_dir: docs/sync-reports
+state_file: .claude/state/ecosystem-sync/last-sync.yaml
+max_issues_per_run: 20

@@ -1,0 +1,18 @@
+### Verdict: MINOR
+
+### Summary
+One canonical JSON artifact is now named explicitly, but the contract is still not fully approval-ready: first-run `delta_status` semantics remain underspecified, the launcher-preservation smokes do not hit the rewritten code paths, and some review-process narration is still in the plan body.
+
+### Issues Found
+- `docs/plans/2026-04-22-issue-2332-provider-audit-python3-runtime-cleanup.md` in `Prior-audit delta contract` and `Provider budget contract for phase 1`: `delta_status` now has explicit enum values, but the contract still does not define what required fields `python3_baseline_count` and `python3_cap_count` must be when `delta_status = no_prior_audit`. The plan requires those fields for every provider row in `config/ai-tools/provider-routing-scorecard.json`, so first-run rows are still machine-ambiguous.
+- `docs/plans/2026-04-22-issue-2332-provider-audit-python3-runtime-cleanup.md` in `TDD Test List` under `test_first_wave_launcher_files_still_execute_with_uv_no_project_contract`: invocation 2 (`EnhancedGitSyncAll()` construction) and invocation 3 (`callable(create_command_links)`) do not traverse the launcher/subprocess call sites being changed from bare `python3` to `uv run --no-project python`. They are exact and non-destructive, but they do not actually verify behavior preservation of the modified launcher paths.
+- `docs/plans/2026-04-22-issue-2332-provider-audit-python3-runtime-cleanup.md` in `Gaps identified` and `Risks and Open Questions`: review-process narration is reduced but not fully removed. Phrases such as `previously`, `Approval-stage planning`, and `This redraft fixes...` are meta-review commentary rather than implementation content.
+
+### Suggestions
+- Define first-run contract behavior explicitly for `delta_status = no_prior_audit`: state whether `python3_baseline_count` and `python3_cap_count` are `null` or seeded from `python3_current_count`, and add that exact expectation to the schema test.
+- Replace the two import-only launcher smokes with non-destructive checks that execute the rewritten command-construction path itself, such as a dry-run/asserted command list or an injected runner/subprocess shim that proves `uv run --no-project python ...` is what would be launched.
+- Delete the remaining rerun/review narration from `Gaps identified` and `Risks and Open Questions`, leaving only implementation-relevant risks, constraints, and unresolved decisions.
+
+### Questions for Author
+- When a provider has `delta_status = no_prior_audit`, what exact values should `python3_baseline_count` and `python3_cap_count` carry in `config/ai-tools/provider-routing-scorecard.json`?
+- What non-destructive entrypoint will exercise the actual rewritten launcher path in `git_sync_all_enhanced.py` and `sync_and_propagate_commands.py`, instead of only importing symbols or constructing objects?

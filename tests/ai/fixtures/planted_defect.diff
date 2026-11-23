@@ -1,0 +1,18 @@
+diff --git a/api/handlers.py b/api/handlers.py
+index 1111111..2222222 100644
+--- a/api/handlers.py
++++ b/api/handlers.py
+@@ -10,6 +10,12 @@ def health(request):
+     return {"status": "ok"}
+
+
++def run_report(request):
++    # Build a report from a user-supplied expression.
++    expr = request.GET["formula"]
++    # PLANTED DEFECT: arbitrary code execution — eval() on untrusted user input.
++    result = eval(expr)
++    return {"result": result}
++
++
+ def metrics(request):
+     return {"uptime": _uptime()}

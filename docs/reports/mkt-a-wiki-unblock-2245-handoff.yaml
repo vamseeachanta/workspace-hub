@@ -1,0 +1,43 @@
+issue: 2245
+downstream_issue: 2227
+generated_from: .planning/intel/ocimf-tandem-2521/extract_ocimf_tandem_preview.py
+# Rollup now means "OCIMF target ready" — CSA targets formally split to #2522
+# (#2522 body: "This issue does not block #2227 closure"). Per-target rows below
+# retain authoritative per-standard readiness. See plan
+# docs/plans/2026-05-02-issue-2559-ocimf-tandem-wiki-source-promotion.md §Path (a).
+ready_for_2227: true
+targets:
+- standard_id: OCIMF-TANDEM-MOORING
+  title: OCIMF Tandem Mooring and Offloading Guidelines for Conventional Tankers at
+    FPSO Facilities
+  path: /mnt/ace/mkt-a-codes/OCIMF/OCIMF-Tandem Mooring and Offloading Guidelines for
+    Conventional Tankers at FPSO Facilities.pdf
+  content_hash: sha256:5e5f61e785295f0ac849399bb302cb5192ca84c108e6a57e82b8cc83b8b431af
+  source: mkt-a_codes
+  domain: marine
+  ext: pdf
+  summary_artifact: /mnt/local-analysis/workspace-hub/data/document-index/summaries/sha256:5e5f61e785295f0ac849399bb302cb5192ca84c108e6a57e82b8cc83b8b431af.json
+  ready_for_2227: true
+  blocker: null
+- standard_id: CSA-Z276.1-20
+  title: CSA Z276.1-20 Marine Structures Associated with LNG Facilities
+  path: /mnt/ace/mkt-a-codes/CSA/276.1-20 marine structures associated with LNG facilities.pdf
+  content_hash: sha256:b576ada30e9ccea727ecab10e1f2a0e435613b25147e3bbb2b3f3d2b718766fd
+  source: mkt-a_codes
+  domain: marine
+  ext: pdf
+  summary_artifact: /mnt/local-analysis/workspace-hub/data/document-index/summaries/sha256:b576ada30e9ccea727ecab10e1f2a0e435613b25147e3bbb2b3f3d2b718766fd.json
+  ready_for_2227: false
+  blocker: 'CSA content readiness intentionally split to #2522; not claimed by #2521
+    OCIMF-only unblocker'
+- standard_id: CSA-Z276.18
+  title: CSA Z276.18 LNG Production, Storage, and Handling
+  path: /mnt/ace/mkt-a-codes/CSA/Z276.18 LNG Production, storage, and handling.pdf
+  content_hash: sha256:3aa1fdc3e2c73e1f9c3bb476e5eb663a7742518462bf1abefcbe26b7efd87fd4
+  source: mkt-a_codes
+  domain: marine
+  ext: pdf
+  summary_artifact: /mnt/local-analysis/workspace-hub/data/document-index/summaries/sha256:3aa1fdc3e2c73e1f9c3bb476e5eb663a7742518462bf1abefcbe26b7efd87fd4.json
+  ready_for_2227: false
+  blocker: 'CSA content readiness intentionally split to #2522; not claimed by #2521
+    OCIMF-only unblocker'

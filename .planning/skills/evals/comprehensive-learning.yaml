@@ -1,0 +1,17 @@
+version: 1
+wrk_id: WRK-1009
+skill_name: comprehensive-learning
+skill_path: .claude/skills/workspace-hub/comprehensive-learning/SKILL.md
+evals:
+  - eval_id: cl-cap-01
+    eval_type: capability
+    description: Phase execution documented
+    checks:
+      required_sections:
+        - "## Pipeline Summary"
+  - eval_id: cl-proc-01
+    eval_type: procedural
+    description: Cron integration and scheduling referenced
+    checks:
+      required_sections:
+        - "## Scheduling"

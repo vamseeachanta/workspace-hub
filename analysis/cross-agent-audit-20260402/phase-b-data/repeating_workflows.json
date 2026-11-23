@@ -1,0 +1,1224 @@
+[
+  {
+    "dir_prefix": "/mnt",
+    "tool_sequence": [
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash"
+    ],
+    "count": 164,
+    "sessions": [
+      "session_20260322",
+      "session_20260324",
+      "session_20260401",
+      "session_20260402"
+    ],
+    "agents": [
+      "claude",
+      "hermes"
+    ],
+    "signature": "Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash",
+    "length": 15
+  },
+  {
+    "dir_prefix": "digitalmodel/src",
+    "tool_sequence": [
+      "Read",
+      "Read",
+      "Read",
+      "Read",
+      "Read",
+      "Read",
+      "Read",
+      "Read",
+      "Read",
+      "Read",
+      "Read",
+      "Read",
+      "Read",
+      "Read",
+      "Read"
+    ],
+    "count": 130,
+    "sessions": [
+      "session_20260316",
+      "session_20260401",
+      "session_20260402"
+    ],
+    "agents": [
+      "claude",
+      "hermes"
+    ],
+    "signature": "Read \u2192 Read \u2192 Read \u2192 Read \u2192 Read \u2192 Read \u2192 Read \u2192 Read \u2192 Read \u2192 Read \u2192 Read \u2192 Read \u2192 Read \u2192 Read \u2192 Read",
+    "length": 15
+  },
+  {
+    "dir_prefix": ".claude/work-queue",
+    "tool_sequence": [
+      "Read",
+      "Read",
+      "Read",
+      "Read",
+      "Read",
+      "Read",
+      "Read",
+      "Read",
+      "Read",
+      "Read",
+      "Read",
+      "Read",
+      "Read",
+      "Read",
+      "Read"
+    ],
+    "count": 57,
+    "sessions": [
+      "session_20260308",
+      "session_20260313",
+      "session_20260321"
+    ],
+    "agents": [
+      "claude"
+    ],
+    "signature": "Read \u2192 Read \u2192 Read \u2192 Read \u2192 Read \u2192 Read \u2192 Read \u2192 Read \u2192 Read \u2192 Read \u2192 Read \u2192 Read \u2192 Read \u2192 Read \u2192 Read",
+    "length": 15
+  },
+  {
+    "dir_prefix": ".claude/skills",
+    "tool_sequence": [
+      "Read",
+      "Read",
+      "Read",
+      "Read",
+      "Read",
+      "Read",
+      "Read",
+      "Read",
+      "Read",
+      "Read",
+      "Read",
+      "Read",
+      "Read",
+      "Read",
+      "Read"
+    ],
+    "count": 56,
+    "sessions": [
+      "session_20260314",
+      "session_20260316",
+      "session_20260401"
+    ],
+    "agents": [
+      "claude",
+      "hermes"
+    ],
+    "signature": "Read \u2192 Read \u2192 Read \u2192 Read \u2192 Read \u2192 Read \u2192 Read \u2192 Read \u2192 Read \u2192 Read \u2192 Read \u2192 Read \u2192 Read \u2192 Read \u2192 Read",
+    "length": 15
+  },
+  {
+    "dir_prefix": "vamseeachanta",
+    "tool_sequence": [
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash"
+    ],
+    "count": 22,
+    "sessions": [
+      "session_20260319",
+      "session_20260323",
+      "session_20260402"
+    ],
+    "agents": [
+      "claude",
+      "hermes"
+    ],
+    "signature": "Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash",
+    "length": 7
+  },
+  {
+    "dir_prefix": "digitalmodel/tests",
+    "tool_sequence": [
+      "Read",
+      "Read",
+      "Read",
+      "Read",
+      "Read"
+    ],
+    "count": 19,
+    "sessions": [
+      "session_20260314",
+      "session_20260316"
+    ],
+    "agents": [
+      "claude"
+    ],
+    "signature": "Read \u2192 Read \u2192 Read \u2192 Read \u2192 Read",
+    "length": 5
+  },
+  {
+    "dir_prefix": ".claude/work-queue",
+    "tool_sequence": [
+      "Edit",
+      "Edit",
+      "Edit",
+      "Edit",
+      "Edit",
+      "Edit",
+      "Edit",
+      "Edit",
+      "Edit",
+      "Edit",
+      "Edit",
+      "Edit",
+      "Edit",
+      "Edit",
+      "Edit"
+    ],
+    "count": 17,
+    "sessions": [
+      "session_20260307",
+      "session_20260313"
+    ],
+    "agents": [
+      "claude"
+    ],
+    "signature": "Edit \u2192 Edit \u2192 Edit \u2192 Edit \u2192 Edit \u2192 Edit \u2192 Edit \u2192 Edit \u2192 Edit \u2192 Edit \u2192 Edit \u2192 Edit \u2192 Edit \u2192 Edit \u2192 Edit",
+    "length": 15
+  },
+  {
+    "dir_prefix": "/mnt",
+    "tool_sequence": [
+      "Bash",
+      "Bash",
+      "Bash",
+      "Write",
+      "Task"
+    ],
+    "count": 17,
+    "sessions": [
+      "session_20260401",
+      "session_20260402"
+    ],
+    "agents": [
+      "hermes"
+    ],
+    "signature": "Bash \u2192 Bash \u2192 Bash \u2192 Write \u2192 Task",
+    "length": 5
+  },
+  {
+    "dir_prefix": "/mnt",
+    "tool_sequence": [
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash",
+      "Write",
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash"
+    ],
+    "count": 16,
+    "sessions": [
+      "session_20260401",
+      "session_20260402"
+    ],
+    "agents": [
+      "hermes"
+    ],
+    "signature": "Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Write \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash",
+    "length": 15
+  },
+  {
+    "dir_prefix": "src/digitalmodel",
+    "tool_sequence": [
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash"
+    ],
+    "count": 16,
+    "sessions": [
+      "session_20260317",
+      "session_20260402"
+    ],
+    "agents": [
+      "claude",
+      "hermes"
+    ],
+    "signature": "Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash",
+    "length": 8
+  },
+  {
+    "dir_prefix": "/mnt",
+    "tool_sequence": [
+      "Bash",
+      "Bash",
+      "Bash",
+      "Write",
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash"
+    ],
+    "count": 14,
+    "sessions": [
+      "session_20260401",
+      "session_20260402"
+    ],
+    "agents": [
+      "hermes"
+    ],
+    "signature": "Bash \u2192 Bash \u2192 Bash \u2192 Write \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash",
+    "length": 15
+  },
+  {
+    "dir_prefix": "/mnt",
+    "tool_sequence": [
+      "Bash",
+      "Bash",
+      "Write",
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash"
+    ],
+    "count": 14,
+    "sessions": [
+      "session_20260401",
+      "session_20260402"
+    ],
+    "agents": [
+      "hermes"
+    ],
+    "signature": "Bash \u2192 Bash \u2192 Write \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash",
+    "length": 15
+  },
+  {
+    "dir_prefix": "scripts/work-queue",
+    "tool_sequence": [
+      "Write",
+      "Write",
+      "Write",
+      "Write",
+      "Write",
+      "Write",
+      "Write",
+      "Write",
+      "Write"
+    ],
+    "count": 13,
+    "sessions": [
+      "session_20260307",
+      "session_20260308"
+    ],
+    "agents": [
+      "claude"
+    ],
+    "signature": "Write \u2192 Write \u2192 Write \u2192 Write \u2192 Write \u2192 Write \u2192 Write \u2192 Write \u2192 Write",
+    "length": 9
+  },
+  {
+    "dir_prefix": "scripts/skills",
+    "tool_sequence": [
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash"
+    ],
+    "count": 13,
+    "sessions": [
+      "session_20260310",
+      "session_20260315",
+      "session_20260316"
+    ],
+    "agents": [
+      "claude"
+    ],
+    "signature": "Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash",
+    "length": 5
+  },
+  {
+    "dir_prefix": "repos/vamseeachanta",
+    "tool_sequence": [
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash"
+    ],
+    "count": 13,
+    "sessions": [
+      "session_20260314",
+      "session_20260321"
+    ],
+    "agents": [
+      "claude"
+    ],
+    "signature": "Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash",
+    "length": 5
+  },
+  {
+    "dir_prefix": "/mnt",
+    "tool_sequence": [
+      "Bash",
+      "Write",
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash"
+    ],
+    "count": 12,
+    "sessions": [
+      "session_20260401",
+      "session_20260402"
+    ],
+    "agents": [
+      "hermes"
+    ],
+    "signature": "Bash \u2192 Write \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash",
+    "length": 15
+  },
+  {
+    "dir_prefix": "examples/reporting",
+    "tool_sequence": [
+      "Read",
+      "Read",
+      "Read",
+      "Read",
+      "Read",
+      "Read",
+      "Read"
+    ],
+    "count": 12,
+    "sessions": [
+      "session_20260315",
+      "session_20260316"
+    ],
+    "agents": [
+      "claude"
+    ],
+    "signature": "Read \u2192 Read \u2192 Read \u2192 Read \u2192 Read \u2192 Read \u2192 Read",
+    "length": 7
+  },
+  {
+    "dir_prefix": "scripts/cron",
+    "tool_sequence": [
+      "Read",
+      "Read",
+      "Read",
+      "Read",
+      "Read",
+      "Read"
+    ],
+    "count": 12,
+    "sessions": [
+      "session_20260312",
+      "session_20260325",
+      "session_20260401"
+    ],
+    "agents": [
+      "claude",
+      "hermes"
+    ],
+    "signature": "Read \u2192 Read \u2192 Read \u2192 Read \u2192 Read \u2192 Read",
+    "length": 6
+  },
+  {
+    "dir_prefix": "/mnt",
+    "tool_sequence": [
+      "Write",
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash"
+    ],
+    "count": 11,
+    "sessions": [
+      "session_20260401",
+      "session_20260402"
+    ],
+    "agents": [
+      "hermes"
+    ],
+    "signature": "Write \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash",
+    "length": 15
+  },
+  {
+    "dir_prefix": "/tmp",
+    "tool_sequence": [
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash"
+    ],
+    "count": 10,
+    "sessions": [
+      "session_20260314",
+      "session_20260325",
+      "session_20260402"
+    ],
+    "agents": [
+      "claude",
+      "hermes"
+    ],
+    "signature": "Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash",
+    "length": 10
+  },
+  {
+    "dir_prefix": "tests",
+    "tool_sequence": [
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash"
+    ],
+    "count": 10,
+    "sessions": [
+      "session_20260303",
+      "session_20260402"
+    ],
+    "agents": [
+      "claude",
+      "hermes"
+    ],
+    "signature": "Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash",
+    "length": 7
+  },
+  {
+    "dir_prefix": "scripts/cron",
+    "tool_sequence": [
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash"
+    ],
+    "count": 10,
+    "sessions": [
+      "session_20260309",
+      "session_20260314"
+    ],
+    "agents": [
+      "claude"
+    ],
+    "signature": "Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash",
+    "length": 6
+  },
+  {
+    "dir_prefix": "/mnt",
+    "tool_sequence": [
+      "Write",
+      "Bash",
+      "Bash",
+      "Bash",
+      "Write",
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash"
+    ],
+    "count": 9,
+    "sessions": [
+      "session_20260401",
+      "session_20260402"
+    ],
+    "agents": [
+      "hermes"
+    ],
+    "signature": "Write \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Write \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash",
+    "length": 12
+  },
+  {
+    "dir_prefix": "scripts/work-queue",
+    "tool_sequence": [
+      "Edit",
+      "Edit",
+      "Edit",
+      "Edit",
+      "Edit",
+      "Edit",
+      "Edit",
+      "Edit",
+      "Edit",
+      "Edit"
+    ],
+    "count": 9,
+    "sessions": [
+      "session_20260318",
+      "session_20260321"
+    ],
+    "agents": [
+      "claude"
+    ],
+    "signature": "Edit \u2192 Edit \u2192 Edit \u2192 Edit \u2192 Edit \u2192 Edit \u2192 Edit \u2192 Edit \u2192 Edit \u2192 Edit",
+    "length": 10
+  },
+  {
+    "dir_prefix": "scripts/session",
+    "tool_sequence": [
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash"
+    ],
+    "count": 9,
+    "sessions": [
+      "session_20260306",
+      "session_20260312"
+    ],
+    "agents": [
+      "claude"
+    ],
+    "signature": "Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash",
+    "length": 5
+  },
+  {
+    "dir_prefix": "specs/wrk",
+    "tool_sequence": [
+      "Edit",
+      "Edit",
+      "Edit",
+      "Edit",
+      "Edit",
+      "Edit",
+      "Edit",
+      "Edit",
+      "Edit"
+    ],
+    "count": 8,
+    "sessions": [
+      "session_20260308",
+      "session_20260309"
+    ],
+    "agents": [
+      "claude"
+    ],
+    "signature": "Edit \u2192 Edit \u2192 Edit \u2192 Edit \u2192 Edit \u2192 Edit \u2192 Edit \u2192 Edit \u2192 Edit",
+    "length": 9
+  },
+  {
+    "dir_prefix": "/mnt",
+    "tool_sequence": [
+      "Bash",
+      "Bash",
+      "Write",
+      "Bash",
+      "Write",
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash"
+    ],
+    "count": 8,
+    "sessions": [
+      "session_20260401",
+      "session_20260402"
+    ],
+    "agents": [
+      "hermes"
+    ],
+    "signature": "Bash \u2192 Bash \u2192 Write \u2192 Bash \u2192 Write \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash",
+    "length": 9
+  },
+  {
+    "dir_prefix": "/mnt",
+    "tool_sequence": [
+      "Bash",
+      "Write",
+      "Bash",
+      "Write",
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash"
+    ],
+    "count": 8,
+    "sessions": [
+      "session_20260401",
+      "session_20260402"
+    ],
+    "agents": [
+      "hermes"
+    ],
+    "signature": "Bash \u2192 Write \u2192 Bash \u2192 Write \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash",
+    "length": 8
+  },
+  {
+    "dir_prefix": "/mnt",
+    "tool_sequence": [
+      "Write",
+      "Bash",
+      "Write",
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash"
+    ],
+    "count": 8,
+    "sessions": [
+      "session_20260401",
+      "session_20260402"
+    ],
+    "agents": [
+      "hermes"
+    ],
+    "signature": "Write \u2192 Bash \u2192 Write \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash",
+    "length": 7
+  },
+  {
+    "dir_prefix": "/tmp",
+    "tool_sequence": [
+      "Read",
+      "ToolSearch",
+      "StructuredOutput",
+      "ToolSearch",
+      "Read"
+    ],
+    "count": 8,
+    "sessions": [
+      "session_20260305",
+      "session_20260306"
+    ],
+    "agents": [
+      "claude"
+    ],
+    "signature": "Read \u2192 ToolSearch \u2192 StructuredOutput \u2192 ToolSearch \u2192 Read",
+    "length": 5
+  },
+  {
+    "dir_prefix": "scripts/legal",
+    "tool_sequence": [
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash"
+    ],
+    "count": 8,
+    "sessions": [
+      "session_20260307",
+      "session_20260308"
+    ],
+    "agents": [
+      "claude"
+    ],
+    "signature": "Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash",
+    "length": 5
+  },
+  {
+    "dir_prefix": "scripts/hooks",
+    "tool_sequence": [
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash"
+    ],
+    "count": 8,
+    "sessions": [
+      "session_20260309",
+      "session_20260311"
+    ],
+    "agents": [
+      "claude"
+    ],
+    "signature": "Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash",
+    "length": 5
+  },
+  {
+    "dir_prefix": "digitalmodel/src",
+    "tool_sequence": [
+      "Read",
+      "Read",
+      "Bash",
+      "Bash",
+      "Bash"
+    ],
+    "count": 8,
+    "sessions": [
+      "session_20260313",
+      "session_20260315",
+      "session_20260319",
+      "session_20260402"
+    ],
+    "agents": [
+      "claude",
+      "hermes"
+    ],
+    "signature": "Read \u2192 Read \u2192 Bash \u2192 Bash \u2192 Bash",
+    "length": 5
+  },
+  {
+    "dir_prefix": "digitalmodel/src",
+    "tool_sequence": [
+      "Read",
+      "Read",
+      "Read",
+      "Read",
+      "Grep"
+    ],
+    "count": 8,
+    "sessions": [
+      "session_20260314",
+      "session_20260402"
+    ],
+    "agents": [
+      "claude",
+      "hermes"
+    ],
+    "signature": "Read \u2192 Read \u2192 Read \u2192 Read \u2192 Grep",
+    "length": 5
+  },
+  {
+    "dir_prefix": "digitalmodel/src",
+    "tool_sequence": [
+      "Edit",
+      "Edit",
+      "Edit",
+      "Edit",
+      "Read"
+    ],
+    "count": 8,
+    "sessions": [
+      "session_20260315",
+      "session_20260402"
+    ],
+    "agents": [
+      "claude",
+      "hermes"
+    ],
+    "signature": "Edit \u2192 Edit \u2192 Edit \u2192 Edit \u2192 Read",
+    "length": 5
+  },
+  {
+    "dir_prefix": "/mnt",
+    "tool_sequence": [
+      "Grep",
+      "Grep",
+      "Grep",
+      "Grep",
+      "Grep"
+    ],
+    "count": 8,
+    "sessions": [
+      "session_20260401",
+      "session_20260402"
+    ],
+    "agents": [
+      "hermes"
+    ],
+    "signature": "Grep \u2192 Grep \u2192 Grep \u2192 Grep \u2192 Grep",
+    "length": 5
+  },
+  {
+    "dir_prefix": "digitalmodel/docs",
+    "tool_sequence": [
+      "Read",
+      "Read",
+      "Read",
+      "Read",
+      "Read",
+      "Read",
+      "Read",
+      "Read",
+      "Read"
+    ],
+    "count": 7,
+    "sessions": [
+      "session_20260401",
+      "session_20260402"
+    ],
+    "agents": [
+      "hermes"
+    ],
+    "signature": "Read \u2192 Read \u2192 Read \u2192 Read \u2192 Read \u2192 Read \u2192 Read \u2192 Read \u2192 Read",
+    "length": 9
+  },
+  {
+    "dir_prefix": "scripts/agents",
+    "tool_sequence": [
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash"
+    ],
+    "count": 7,
+    "sessions": [
+      "session_20260310",
+      "session_20260312"
+    ],
+    "agents": [
+      "claude"
+    ],
+    "signature": "Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash",
+    "length": 8
+  },
+  {
+    "dir_prefix": ".claude/work-queue",
+    "tool_sequence": [
+      "Bash",
+      "Bash",
+      "Write",
+      "Write",
+      "Bash",
+      "Write"
+    ],
+    "count": 7,
+    "sessions": [
+      "session_20260308",
+      "session_20260311",
+      "session_20260313",
+      "session_20260325"
+    ],
+    "agents": [
+      "claude"
+    ],
+    "signature": "Bash \u2192 Bash \u2192 Write \u2192 Write \u2192 Bash \u2192 Write",
+    "length": 6
+  },
+  {
+    "dir_prefix": "docs/plans",
+    "tool_sequence": [
+      "Write",
+      "Write",
+      "Write",
+      "Write",
+      "Write",
+      "Write"
+    ],
+    "count": 7,
+    "sessions": [
+      "session_20260401",
+      "session_20260402"
+    ],
+    "agents": [
+      "hermes"
+    ],
+    "signature": "Write \u2192 Write \u2192 Write \u2192 Write \u2192 Write \u2192 Write",
+    "length": 6
+  },
+  {
+    "dir_prefix": "\".claude/work-queue",
+    "tool_sequence": [
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash"
+    ],
+    "count": 7,
+    "sessions": [
+      "session_20260303",
+      "session_20260310"
+    ],
+    "agents": [
+      "claude"
+    ],
+    "signature": "Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash",
+    "length": 5
+  },
+  {
+    "dir_prefix": ".claude/skills",
+    "tool_sequence": [
+      "Edit",
+      "Edit",
+      "Edit",
+      "Bash",
+      "Bash"
+    ],
+    "count": 7,
+    "sessions": [
+      "session_20260304",
+      "session_20260307",
+      "session_20260312",
+      "session_20260313",
+      "session_20260316"
+    ],
+    "agents": [
+      "claude"
+    ],
+    "signature": "Edit \u2192 Edit \u2192 Edit \u2192 Bash \u2192 Bash",
+    "length": 5
+  },
+  {
+    "dir_prefix": "scripts/data",
+    "tool_sequence": [
+      "Read",
+      "Read",
+      "Read",
+      "Bash",
+      "Read"
+    ],
+    "count": 7,
+    "sessions": [
+      "session_20260312",
+      "session_20260313",
+      "session_20260314",
+      "session_20260315",
+      "session_20260316"
+    ],
+    "agents": [
+      "claude"
+    ],
+    "signature": "Read \u2192 Read \u2192 Read \u2192 Bash \u2192 Read",
+    "length": 5
+  },
+  {
+    "dir_prefix": "/tmp",
+    "tool_sequence": [
+      "Write",
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash"
+    ],
+    "count": 7,
+    "sessions": [
+      "session_20260319",
+      "session_20260402"
+    ],
+    "agents": [
+      "claude",
+      "hermes"
+    ],
+    "signature": "Write \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash",
+    "length": 5
+  },
+  {
+    "dir_prefix": "/mnt",
+    "tool_sequence": [
+      "Bash",
+      "Bash",
+      "Write",
+      "Write",
+      "Write"
+    ],
+    "count": 7,
+    "sessions": [
+      "session_20260401",
+      "session_20260402"
+    ],
+    "agents": [
+      "hermes"
+    ],
+    "signature": "Bash \u2192 Bash \u2192 Write \u2192 Write \u2192 Write",
+    "length": 5
+  },
+  {
+    "dir_prefix": ".claude/work-queue",
+    "tool_sequence": [
+      "Bash",
+      "Read",
+      "Read",
+      "Read",
+      "Read",
+      "Read",
+      "Read",
+      "Read",
+      "Read",
+      "Read",
+      "Read",
+      "Read",
+      "Read",
+      "Read",
+      "Read"
+    ],
+    "count": 6,
+    "sessions": [
+      "session_20260308",
+      "session_20260313",
+      "session_20260321"
+    ],
+    "agents": [
+      "claude"
+    ],
+    "signature": "Bash \u2192 Read \u2192 Read \u2192 Read \u2192 Read \u2192 Read \u2192 Read \u2192 Read \u2192 Read \u2192 Read \u2192 Read \u2192 Read \u2192 Read \u2192 Read \u2192 Read",
+    "length": 15
+  },
+  {
+    "dir_prefix": "/mnt",
+    "tool_sequence": [
+      "Bash",
+      "Write",
+      "Bash",
+      "Bash",
+      "Write",
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash"
+    ],
+    "count": 6,
+    "sessions": [
+      "session_20260401",
+      "session_20260402"
+    ],
+    "agents": [
+      "hermes"
+    ],
+    "signature": "Bash \u2192 Write \u2192 Bash \u2192 Bash \u2192 Write \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash",
+    "length": 14
+  },
+  {
+    "dir_prefix": "/mnt",
+    "tool_sequence": [
+      "Write",
+      "Bash",
+      "Bash",
+      "Write",
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash"
+    ],
+    "count": 6,
+    "sessions": [
+      "session_20260401",
+      "session_20260402"
+    ],
+    "agents": [
+      "hermes"
+    ],
+    "signature": "Write \u2192 Bash \u2192 Bash \u2192 Write \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash",
+    "length": 13
+  },
+  {
+    "dir_prefix": "/mnt",
+    "tool_sequence": [
+      "Edit",
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash"
+    ],
+    "count": 6,
+    "sessions": [
+      "session_20260320",
+      "session_20260401"
+    ],
+    "agents": [
+      "claude",
+      "hermes"
+    ],
+    "signature": "Edit \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash",
+    "length": 8
+  },
+  {
+    "dir_prefix": ".claude/work-queue",
+    "tool_sequence": [
+      "Bash",
+      "Read",
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash",
+      "Bash"
+    ],
+    "count": 6,
+    "sessions": [
+      "session_20260304",
+      "session_20260309",
+      "session_20260311",
+      "session_20260312",
+      "session_20260316"
+    ],
+    "agents": [
+      "claude"
+    ],
+    "signature": "Bash \u2192 Read \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash \u2192 Bash",
+    "length": 7
+  }
+]

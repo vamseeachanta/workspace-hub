@@ -1,0 +1,9 @@
+status: completed
+processed_at: 2026-04-03T17:39:20Z
+solver: orcawave
+input_file: digitalmodel/docs/domains/orcawave/L00_validation_wamit/2.1/OrcaWave v11.0 files/test01.owd
+description: "WAMIT validation L00 case 2.1 — unit box (v2: xlsx export fixed)"
+elapsed_seconds: 3.5
+output_files:
+  - test01.owr
+  - test01.xlsx

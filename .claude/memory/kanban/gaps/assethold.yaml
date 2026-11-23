@@ -1,0 +1,48 @@
+board_slug: repo-assethold
+cards:
+- idempotency_key: gap:repo-assethold:001
+  title: Verify and update local git origin to vamseeachanta/assethold across machines
+  source: detected_gap
+  detection_basis: 'Ownership transferred samdansk2 -> vamseeachanta per memory (project_assethold_ownership_transfer);
+    #37 covers the canonical update but stale clones may remain on other machines'
+  needs_issue: false
+  priority: 1
+  body_excerpt: Audit all local clones; reset origin URL on stale machines; verify
+    push permissions under new owner.
+- idempotency_key: gap:repo-assethold:002
+  title: Document data-format specs for portfolio inputs (CSV, broker exports)
+  source: detected_gap
+  detection_basis: '#33 architecture docs alludes to data-format specs but no canonical
+    schema file lives in repo'
+  needs_issue: true
+  priority: 1
+  body_excerpt: Define pandera/pydantic schemas for portfolio holdings, trade history,
+    broker CSVs.
+- idempotency_key: gap:repo-assethold:003
+  title: Synthetic test-fixture portfolio for deterministic module tests
+  source: detected_gap
+  detection_basis: '#31 quality-gates implies coverage targets; no shared sample portfolio
+    fixture exists in repo'
+  needs_issue: true
+  priority: 0
+  body_excerpt: Synthetic sample portfolio + price history fixture; enables deterministic
+    tests across modules.
+- idempotency_key: gap:repo-assethold:004
+  title: Citation contract audit for standards-derived constants in fixed_interest
+    / net_lease / multifamily
+  source: detected_gap
+  detection_basis: .claude/rules/calc-citation-contract.md applies if IRS/accounting
+    standard constants are hardcoded in any tax-impacted module
+  needs_issue: true
+  priority: 0
+  body_excerpt: Audit modules for standards-derived constants; route citations to
+    private llm-wiki per rule.
+- idempotency_key: gap:repo-assethold:005
+  title: 'Secrets handling convention for broker API tokens (real-time feeds #34)'
+  source: detected_gap
+  detection_basis: '#34 introduces real-time price feeds; no documented secret-storage
+    convention'
+  needs_issue: true
+  priority: 1
+  body_excerpt: Standardize on env-var / keyring; document in CONTRIBUTING; verify
+    no token in code or tests.

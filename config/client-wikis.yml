@@ -1,0 +1,9 @@
+# Client-wiki registry — exact public relocation stub (#3098, #3449).
+# Authoritative entries remain in the approved private registry. Consumers use
+# WIKI_SIBLING_REGISTRY_PATH, REGISTRY_PATH, or a gitignored provisioned copy.
+# Current behavior is implemented by scripts/client_llm_wiki/bootstrap_schema.py
+# and the coordination/client-llm-wiki-factory skill. The earlier governance
+# design remains historical context; it is not the active schema authority.
+registry_version: "0.2"
+relocated: true
+wikis: []

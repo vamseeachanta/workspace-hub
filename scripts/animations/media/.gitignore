@@ -1,0 +1,8 @@
+# Rendered animation intermediates — regenerate with commands in README.md
+videos/
+images/
+texts/
+Tex/
+
+# Keep final GIF deliverables (tracked)
+!*.gif

@@ -1,0 +1,23 @@
+version: 1
+wrk_id: WRK-1009
+skill_name: ai-tool-assessment
+skill_path: .claude/skills/operations/devtools/ai-tool-assessment/SKILL.md
+evals:
+- eval_id: ata-cap-01
+  eval_type: capability
+  description: Core sections documented for ai-tool-assessment
+  checks:
+    required_sections:
+    - '## Quick Start'
+    - '## When to Use'
+    - '## Usage Patterns'
+    - '## Overview'
+    - '## Output'
+- eval_id: ata-proc-01
+  eval_type: procedural
+  description: Additional documentation sections for ai-tool-assessment
+  checks:
+    required_sections:
+    - '## Trigger'
+    - '## Instructions'
+    - '## Executive Summary'

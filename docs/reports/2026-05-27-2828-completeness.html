@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>#2828 Completeness Scorecard — GraphQL fetch hardening</title>
+<style>
+ body{font:15px/1.55 -apple-system,Segoe UI,Roboto,sans-serif;max-width:920px;margin:2rem auto;padding:0 1rem;color:#1a1a1a}
+ h1{font-size:1.5rem;border-bottom:2px solid #2563eb;padding-bottom:.4rem}h2{font-size:1.1rem;color:#1e3a8a;margin-top:1.6rem}
+ table{border-collapse:collapse;width:100%;margin:.7rem 0;font-size:14px}th,td{border:1px solid #d1d5db;padding:.45rem .6rem;text-align:left;vertical-align:top}th{background:#eff6ff}
+ .ok{color:#047857;font-weight:600}.score{font-size:2.1rem;font-weight:700;color:#047857}.meta{color:#555;font-size:13px}
+ code{background:#f3f4f6;padding:1px 4px;border-radius:3px;font-size:13px}.bar{background:#e5e7eb;border-radius:6px;height:14px;max-width:340px;overflow:hidden}.bar>span{display:block;height:100%;background:#10b981}
+</style></head><body>
+<h1>Completeness Scorecard — issue #2828</h1>
+<p class="meta">Reconciler fetch hardening — GraphQL cursor pagination ·
+<a href="https://github.com/vamseeachanta/workspace-hub/issues/2828">#2828</a> · 2026-05-27 · branch <code>feat/2828-graphql-fetch</code></p>
+<p><span class="score">100%</span></p><div class="bar"><span style="width:100%"></span></div>
+<p class="meta">Test-grounded; all acceptance criteria met, both review stages cleared with all MAJORs resolved.</p>
+
+<h2>Acceptance criteria</h2>
+<table>
+<tr><th>#</th><th>Criterion</th><th>Status</th><th>Evidence</th></tr>
+<tr><td>1</td><td><code>fetch_repo_issues</code> pages via GraphQL to <code>hasNextPage=false</code>; mid-pagination failure raises (no partial)</td><td class="ok">MET</td><td>`reconcile.py` cursor loop; raises on nonzero/bad-JSON/GraphQL-errors/missing-issues/malformed-pageInfo/non-advancing-cursor</td></tr>
+<tr><td>2</td><td>Tests: multi-page union; mid-page error → raise; field-shape parity</td><td class="ok">MET</td><td>21 tests pass (`uv run pytest`) — incl. union, mid-loop raise, golden shape, command shape</td></tr>
+<tr><td>3</td><td>Full suite green; behavior unchanged for downstream</td><td class="ok">MET</td><td>21 passed; card shape <code>{number,title,state,labels:[{name}]}</code> preserved</td></tr>
+</table>
+
+<h2>Gates</h2>
+<table>
+<tr><th>Gate</th><th>Status</th></tr>
+<tr><td>Plan review (Claude + Codex)</td><td class="ok">DONE — MINOR; folded</td></tr>
+<tr><td>User approval (plan-approved)</td><td class="ok">DONE</td></tr>
+<tr><td>TDD (fresh-context subagent; main-session verified)</td><td class="ok">DONE — RED→GREEN, independently re-run</td></tr>
+<tr><td>Code review (Claude + Codex)</td><td class="ok">DONE — Claude K1 + Codex 3 MAJOR (malformed-pageInfo, repeated-cursor, malformed-labels) all resolved + tested</td></tr>
+<tr><td>Legal/secrets (changed files)</td><td class="ok">N/A — no secrets; pure fetch-path refactor</td></tr>
+</table>
+
+<h2>Hardening beyond the plan (from review)</h2>
+<table>
+<tr><th>Fix</th><th>Why</th></tr>
+<tr><td>Fail closed on malformed issue <code>pageInfo</code></td><td>a 200 with garbled pageInfo is indistinguishable from "last page" → must raise, not return partial</td></tr>
+<tr><td>Non-advancing-cursor guard</td><td>repeated <code>endCursor</code> would loop forever on a 20-min cron</td></tr>
+<tr><td>Malformed label <code>pageInfo</code> guard</td><td>silent label truncation would mis-route cards (board routing parses labels)</td></tr>
+</table>
+<p class="meta">Recommendation: ready to merge; #2828 closes after merge (Refs, not Closes).</p>
+</body></html>

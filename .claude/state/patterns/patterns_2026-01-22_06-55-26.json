@@ -1,0 +1,23 @@
+{
+  "extraction_date": "2026-01-22T06:55:27-06:00",
+  "days_analyzed": 7,
+  "total_patterns": 4,
+  "cross_repo_patterns": [
+    {
+      "id": "pattern-001",
+      "type": "commit_convention",
+      "name": "Conventional Commits",
+      "frequency": 0.85,
+      "cross_repo_score": 0.9,
+      "evidence": {
+        "digitalmodel": {
+          "feat": 50,
+          "fix": 9,
+          "chore": 23,
+          "refactor": 25
+        }
+      },
+      "final_score": 0.87
+    }
+  ]
+}

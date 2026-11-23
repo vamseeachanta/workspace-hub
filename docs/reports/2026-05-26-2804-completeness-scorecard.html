@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Completeness Scorecard — #2804 Codex-under-Claude route</title>
+<style>
+  :root{--bg:#0f1419;--panel:#1a2027;--panel2:#222b34;--ink:#e6edf3;--muted:#9aa7b2;
+    --line:#2d3742;--ok:#3fb950;--warn:#d29922;--bad:#f85149;--accent:#58a6ff;}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font:15px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+  .wrap{max-width:1080px;margin:0 auto;padding:32px 22px 80px}
+  h1{font-size:26px;margin:0 0 4px}
+  h2{font-size:19px;margin:32px 0 12px;padding-bottom:6px;border-bottom:1px solid var(--line)}
+  .sub{color:var(--muted);font-size:13px;margin-bottom:4px}
+  code{background:#0b0f14;border:1px solid var(--line);border-radius:4px;padding:1px 6px;
+    font:13px/1.5 ui-monospace,Menlo,Consolas,monospace;color:#c9d6e0}
+  table{width:100%;border-collapse:collapse;margin:8px 0;font-size:14px}
+  th,td{text-align:left;padding:9px 11px;border:1px solid var(--line);vertical-align:top}
+  th{background:var(--panel2);color:#cfdae3;font-weight:600}
+  tr:nth-child(even) td{background:#161d24}
+  .bar{position:relative;background:#0b0f14;border:1px solid var(--line);border-radius:5px;height:18px;min-width:120px;overflow:hidden}
+  .bar > span{display:block;height:100%;}
+  .b100{background:var(--ok)} .b90{background:#5fb950} .b75{background:var(--warn)} .blow{background:var(--bad)}
+  .pct{font-weight:700;font-variant-numeric:tabular-nums}
+  .pill{display:inline-block;border-radius:999px;padding:1px 9px;font-size:12px;font-weight:600}
+  .p-ok{background:rgba(63,185,80,.15);color:var(--ok);border:1px solid rgba(63,185,80,.4)}
+  .p-warn{background:rgba(210,153,34,.15);color:var(--warn);border:1px solid rgba(210,153,34,.4)}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px 18px;margin:14px 0}
+  .muted{color:var(--muted)} ul{margin:6px 0 0;padding-left:20px} li{margin:3px 0}
+  .big{font-size:40px;font-weight:800;color:var(--ok);font-variant-numeric:tabular-nums}
+  .foot{margin-top:36px;color:var(--muted);font-size:12.5px;border-top:1px solid var(--line);padding-top:14px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <h1>Completeness Scorecard — #2804</h1>
+  <div class="sub">Codex-under-Claude execution route · machine <code>ace-linux-1</code> · author Claude main · 2026-05-26</div>
+  <div class="sub">Scored against the v3 plan's acceptance criteria using the evidence actually produced — adversarial, not charitable. Owner column is for your 0–100% override (down only, never silently up). Labels on issue: <code>gate:completeness</code> + <code>status:completeness-verified</code>.</div>
+
+  <h2>Rubric</h2>
+  <div class="card">
+    <table>
+      <thead><tr><th>Band</th><th>Evidence bar</th></tr></thead>
+      <tbody>
+        <tr><td><span class="pill p-ok">90–100%</span></td><td>Applied <b>and</b> verified by a live test/probe; no open sub-items except explicitly-scoped-out ones.</td></tr>
+        <tr><td><span class="pill p-warn">70–89%</span></td><td>Applied + partially verified; a named verification path remains unrun, or a minor sub-item open.</td></tr>
+        <tr><td><span class="pill" style="background:rgba(248,81,73,.15);color:var(--bad);border:1px solid rgba(248,81,73,.4)">&lt;70%</span></td><td>Applied but unverified / verification failed / material scope open. Not closure-eligible.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>Acceptance-criteria scores</h2>
+  <table>
+    <thead><tr><th style="width:30%">AC (v3 plan)</th><th>Verification run</th><th style="width:130px">Completeness</th><th>Open for 100%</th><th style="width:70px">Owner %</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>AC1 — profile no abs paths, targets <code>/usr/bin/bwrap</code></td>
+        <td><code>check-no-abs-paths.sh</code> PASS on the 3 install files; profile attaches to <code>/usr/bin/bwrap</code> only (vendored clause dropped per strace)</td>
+        <td><span class="pct">100%</span><div class="bar"><span class="b100" style="width:100%"></span></div></td>
+        <td class="muted">none</td><td></td>
+      </tr>
+      <tr>
+        <td>AC2 — guarded installer + teardown</td>
+        <td><code>--check</code> + <code>--dry-run</code> run (accurate reporting); teardown correctly REFUSED the unmanaged profile (sentinel guard fired)</td>
+        <td><span class="pct">85%</span><div class="bar"><span class="b75" style="width:85%"></span></div></td>
+        <td class="muted">the <code>--accept-userns-lpe-risk</code> <b>write+verify</b> branch wasn't exercised on this host (live profile pre-exists; refuse-overwrite blocks re-install) — verified by code-read + equivalent manual steps, not a clean run</td><td></td>
+      </tr>
+      <tr>
+        <td>AC3 — handoff/template/memory corrected</td>
+        <td>Memory <code>feedback_codex_sandbox_write_blocked</code> updated; orchestrator-handoff "broker=bwrap-free" correction applied; pilot handoff #2812 serves as the broker-route doc</td>
+        <td><span class="pct">75%</span><div class="bar"><span class="b75" style="width:75%"></span></div></td>
+        <td class="muted">orchestrator-handoff correction is <b>working-tree-only</b> (not committed — that doc is intentionally uncommitted by its origin session); substance captured in the committed pilot report. No separate "template" file (pilot handoff covers it).</td><td></td>
+      </tr>
+      <tr>
+        <td>AC4 — pilot report committed + <code>codex --version</code></td>
+        <td><code>docs/reports/2026-05-26-codex-under-claude-pilot.md</code> merged in #2809; records <code>codex-cli 0.133.0</code> + validation table</td>
+        <td><span class="pct">100%</span><div class="bar"><span class="b100" style="width:100%"></span></div></td>
+        <td class="muted">none</td><td></td>
+      </tr>
+      <tr>
+        <td>AC5 — synthetic smoke test reproducible</td>
+        <td>Full-output verified: <code>codex exec</code> wrote <code>VALIDATED-EXEC</code>; broker <code>task --write</code> wrote <code>BROKER-OK</code>; <code>/usr/bin/bwrap --unshare-user</code> → OK</td>
+        <td><span class="pct">90%</span><div class="bar"><span class="b90" style="width:90%"></span></div></td>
+        <td class="muted">validated on this configured host; clean-machine reproduction deferred to the rollout (#2813)</td><td></td>
+      </tr>
+      <tr>
+        <td>AC6 — no privileged change beyond the one authorized</td>
+        <td>Only the single AppArmor profile + one config edit; teardown script provides reversal</td>
+        <td><span class="pct">100%</span><div class="bar"><span class="b100" style="width:100%"></span></div></td>
+        <td class="muted">none</td><td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>Overall</h2>
+  <div class="card" style="display:flex;align-items:center;gap:24px;flex-wrap:wrap">
+    <div><div class="big">92%</div><div class="muted">unweighted mean across 6 ACs</div></div>
+    <div style="flex:1;min-width:280px">
+      <ul>
+        <li><b>Closure-eligible (≥90% threshold):</b> route is decided, validated, codified, merged (#2809). Owner already applied <code>status:completeness-verified</code>.</li>
+        <li><b>Honest gaps (why not 100%):</b> the new installer's write path wasn't run on this host (pre-existing manual profile + working refuse-overwrite guard); the orchestrator-handoff correction is uncommitted; clean-machine repro is the rollout (#2813).</li>
+        <li><b>Out of scope (not counted against #2804):</b> the real-world #2802 pilot run lives on its own issue; fleet rollout is #2813.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="foot">
+    Evidence sources: PR #2809 (merged), PR #2812 (merged), <code>docs/plans/2026-05-26-2804-codex-brain-claude-hands.md</code>,
+    <code>scripts/review/results/2026-05-26-plan-2804-*.md</code> (r1 REJECT 3/3 → r2/r3 REJECT 3/3 → v3 inline), memory
+    <code>feedback_codex_sandbox_write_blocked</code>. Score is evidence-derived; owner may override down.
+  </div>
+</div>
+</body>
+</html>

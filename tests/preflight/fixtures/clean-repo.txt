@@ -1,0 +1,24 @@
+PREFLIGHT_PROBE_V1
+hostname=ace-linux-1
+workspace_root=/mnt/local-analysis/workspace-hub
+workspace_exists=true
+disk_free_gb=256
+git_branch=main
+git_status_line=## main...origin/main
+git_dirty_count=0
+git_remote_url=https://github.com/vamseeachanta/workspace-hub.git
+git_ahead=0
+git_behind=0
+tool.hermes.path=/home/vamsee/.local/bin/hermes
+tool.codex.path=/home/vamsee/.npm-global/bin/codex
+tool.claude.path=/home/vamsee/.npm-global/bin/claude
+tool.gemini.path=/home/vamsee/.npm-global/bin/gemini
+tool.gh.path=/usr/bin/gh
+tool.git.path=/usr/bin/git
+tool.uv.path=/home/vamsee/.local/bin/uv
+gh.auth.exit=0
+gh.auth.output=github.com logged in as vamseeachanta
+gh.api.exit=0
+gh.api.login=vamseeachanta
+hermes.model=openai-codex/gpt-5.5
+hermes.shebang=ok

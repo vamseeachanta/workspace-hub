@@ -1,0 +1,60 @@
+Agent loading error: Failed to load agent from /mnt/local-analysis/workspace-hub/.gemini/agents/gsd-debugger.md: Validation failed: Agent Definition:
+Unrecognized key(s) in object: 'permissionMode'Agent loading error: Failed to load agent from /mnt/local-analysis/workspace-hub/.gemini/agents/gsd-executor.md: Validation failed: Agent Definition:
+Unrecognized key(s) in object: 'permissionMode'[LocalAgentExecutor] Skipping subagent tool 'codebase_investigator' for agent 'generalist' to prevent recursion.
+[LocalAgentExecutor] Skipping subagent tool 'cli_help' for agent 'generalist' to prevent recursion.
+[LocalAgentExecutor] Skipping subagent tool 'generalist' for agent 'generalist' to prevent recursion.
+[LocalAgentExecutor] Skipping subagent tool 'gsd-advisor-researcher' for agent 'generalist' to prevent recursion.
+[LocalAgentExecutor] Skipping subagent tool 'gsd-assumptions-analyzer' for agent 'generalist' to prevent recursion.
+[LocalAgentExecutor] Skipping subagent tool 'gsd-codebase-mapper' for agent 'generalist' to prevent recursion.
+[LocalAgentExecutor] Skipping subagent tool 'gsd-integration-checker' for agent 'generalist' to prevent recursion.
+[LocalAgentExecutor] Skipping subagent tool 'gsd-nyquist-auditor' for agent 'generalist' to prevent recursion.
+[LocalAgentExecutor] Skipping subagent tool 'gsd-phase-researcher' for agent 'generalist' to prevent recursion.
+[LocalAgentExecutor] Skipping subagent tool 'gsd-plan-checker' for agent 'generalist' to prevent recursion.
+[LocalAgentExecutor] Skipping subagent tool 'gsd-planner' for agent 'generalist' to prevent recursion.
+[LocalAgentExecutor] Skipping subagent tool 'gsd-project-researcher' for agent 'generalist' to prevent recursion.
+[LocalAgentExecutor] Skipping subagent tool 'gsd-research-synthesizer' for agent 'generalist' to prevent recursion.
+[LocalAgentExecutor] Skipping subagent tool 'gsd-roadmapper' for agent 'generalist' to prevent recursion.
+[LocalAgentExecutor] Skipping subagent tool 'gsd-ui-auditor' for agent 'generalist' to prevent recursion.
+[LocalAgentExecutor] Skipping subagent tool 'gsd-ui-checker' for agent 'generalist' to prevent recursion.
+[LocalAgentExecutor] Skipping subagent tool 'gsd-ui-researcher' for agent 'generalist' to prevent recursion.
+[LocalAgentExecutor] Skipping subagent tool 'gsd-user-profiler' for agent 'generalist' to prevent recursion.
+[LocalAgentExecutor] Skipping subagent tool 'gsd-verifier' for agent 'generalist' to prevent recursion.
+1. Verdict: MINOR
+
+2. Strengths
+- Excellent catch on 6 of 7 "exact-duplicates" not being byte-identical.
+- Smart identification of auxiliary files (`references/`) and the need for directory-level inventory.
+- Correctly scoped `operations/devtools/` to avoid deleting a non-empty directory.
+- Strong TDD test list covering regressions and structure.
+
+3. Remaining gaps
+- Reference cleanup scope (`.claude/`, `.claude/rules/`, `config/`, `scripts/`) ignores the other agent adapter directories (`.codex/`, `.gemini/`, `.hermes/`) and root documentation (`AGENTS.md`, `.mcp.json`). If skills are symlinked per-skill in these directories, deleting the `.claude/skills/` target will leave dangling symlinks for the other agents.
+- The "merge" process for divergent Markdown files is specified in pseudocode but lacks details on how conflict resolution will be handled (e.g., manual review vs. automated appending).
+
+4. Risks
+- Breaking Codex, Gemini, or Hermes agents due to dangling symlinks or missing references in their specific config files.
+- Manual merge of divergent skill files could introduce malformed markdown/frontmatter if not carefully validated.
+
+5. Missing tests
+- A test verifying no dangling symlinks exist in `.codex/skills/`, `.gemini/skills/`, and `.hermes/skills/` after the cleanup.
+- A test verifying root files (like `AGENTS.md` or `.mcp.json`) do not contain references to the deleted paths.
+
+6. Scope creep concerns
+- Manual merging of the 9 non-identical pairs could spiral into deep editorial reviews. The implementation should stick to strict preservation/appending of missing sections rather than rewriting.
+
+7. Weakest assumption and what breaks if false
+- Assumption: All references to skills exist only within `.claude/`, `config/`, and `scripts/`. If false, other agents (Codex, Gemini, Hermes) will fail to load the deleted skills due to broken paths or symlinks.
+
+8. Most likely implementation failure mode
+- An automated script attempts to merge divergent `SKILL.md` files and corrupts the YAML frontmatter, or dangling symlinks are left in other agent adapter directories.
+
+9. Most likely test gap
+- `test_no_dangling_references` is currently scoped too narrowly and will falsely pass even if a `.gemini` symlink is broken or `.codex/config.toml` contains a dead path.
+
+10. Future issues suggested
+- Run the `cross-agent-skill-audit` to ensure symlinks and registries are perfectly synced across all four agents.
+
+11. Review confidence
+- High. The plan is very close to implementation-ready; it just needs a slightly widened search and validation scope to guarantee cross-agent compatibility.
+
+*(Note: The environment currently lacks file-writing capabilities to generate `scripts/review/results/2026-04-15-plan-2290-claude-rereview.md` directly. Please pipe or save this exact text block above to the specified file).*

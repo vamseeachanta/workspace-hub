@@ -1,0 +1,220 @@
+---
+name: repo-sync
+description: "Smart repository synchronization across workspace-hub ecosystem — diagnoses and fixes pull failures (detached HEAD, diverged branches, uncommitted changes)"
+type: reference
+version: 1.1.0
+category: workspace-hub
+last_updated: 2026-02-14
+source: internal
+invoke: /repo-sync
+capabilities: []
+requires: []
+see_also: []
+tags: [git, sync, multi-repo, automation]
+related_skills: [repo-structure, ecosystem-terminology]
+freedom: low
+---
+
+# Repo Sync
+
+Smart pull-all with automatic diagnosis and repair for the workspace-hub multi-repo ecosystem.
+
+## Usage
+
+`/repo-sync` — Pull all repos, diagnose failures, and fix them.
+
+Optional arguments:
+- `/repo-sync pull` — Pull all repos (default)
+- `/repo-sync status` — Status check only, no pulls
+- `/repo-sync push` — Push all repos with unpushed commits
+- `repository_sync pull <repo-name>` — Pull one configured repository (for example `./scripts/repository_sync pull mkt-a`)
+
+CLI syntax pitfall: `repository_sync <repo-name>` is not valid and returns `Unknown command`. If the user gives a bare repo name with `repository_sync`, infer the intended default operation as a single-repo pull and run `./scripts/repository_sync pull <repo-name>` after a quick status check.
+
+## What It Does
+
+### Phase 1: Bulk Pull
+Run `./scripts/repository_sync pull all` to attempt pulling every repo.
+
+### Phase 2: Diagnose Failures
+For each repo that failed, check:
+1. **Detached HEAD** — submodules pinned at a commit, not on a branch
+2. **Diverged branches** — local and remote have diverged, needs merge
+3. **Uncommitted changes** — dirty working tree blocking pull
+4. **No upstream** — no tracking branch configured
+
+### Phase 3: Auto-Fix
+Apply the appropriate fix per failure type:
+
+| Failure | Fix |
+|---------|-----|
+| Detached HEAD (submodule) | `git checkout main && git pull --no-rebase` |
+| Diverged branches | `git pull --no-rebase` (merge strategy) |
+| Uncommitted changes blocking pull | `git stash && git pull --no-rebase && git stash pop` |
+| Line-ending-only dirty tree | Diagnose with `git diff --ignore-space-at-eol --shortstat`; if empty, report as line-ending churn and do not normalize/discard without explicit user approval. See `references/line-ending-only-dirty-working-tree.md` |
+| No upstream | Report only, no auto-fix |
+| Deterministic generated-file conflict | Regenerate from the documented generator, validate with a parser, then stage; do not hand-merge arbitrary conflict hunks. See `references/generated-file-conflict-regeneration.md` |
+| Large repo partial checkout / timed-out pull | Use no-untracked status probes, kill hung sync/status processes if needed, preserve recovery artifacts under `.git/recovery-backups/`, restore accidental tracked deletions; see `references/large-repo-partial-checkout-recovery.md` |
+| Archived/read-only remote | Do not force workaround; preserve/export local-only commits and open a follow-up issue |
+
+### Archived / Read-only Remote Exception Handling
+
+If a repo is ahead locally but push fails because the remote is archived or read-only:
+
+1. Confirm the state explicitly:
+   - current branch
+   - local HEAD vs upstream HEAD
+   - ahead commit list (`git log @{u}..HEAD`)
+   - diffstat for the ahead range
+2. Do NOT try to bypass the archive/read-only state.
+3. If the ahead range is non-trivial, export a preservation artifact:
+   - `git format-patch -1 <commit> --stdout > <workspace-hub-artifact>.patch`
+4. Write a short decision memo with explicit options:
+   - abandon
+   - archive-only
+   - selective port to a writable successor
+5. Open a GitHub issue documenting the exception and link the exported patch artifact.
+6. Default recommendation when there is no clear writable successor and the diff is large/destructive: `archive-only`.
+
+This came up with `pyproject-starter`, where the remote was archived/read-only and the only ahead commit was a massive destructive sync commit. The safe action was to preserve the patch in repo artifacts and require explicit human review before any migration.
+
+### Phase 4: Encoding Health Check
+After pulling, run the encoding check against all work queue and skill files
+to surface any Windows-created UTF-16 / CRLF files that came in via the pull:
+
+```bash
+.claude/hooks/check-encoding.sh
+```
+
+This runs in warn-only mode (post-merge behaviour) — it reports bad files but
+does not block. Any files flagged should be converted and committed immediately:
+
+```bash
+# Convert a UTF-16 file to UTF-8
+iconv -f UTF-16 -t UTF-8 <file> | sed 's/\r//' > /tmp/fixed.md
+mv /tmp/fixed.md <file>
+git add <file> && git commit -m "fix(encoding): convert <file> to UTF-8"
+```
+
+### Phase 5: Ecosystem Health + Summary
+After the encoding check, spawn an ecosystem health agent in the background:
+
+```python
+Task(
+    subagent_type="Bash",
+    description="Ecosystem health check",
+    prompt="Run the 14-check suite from /ecosystem-health skill. Report pass/fail/warn for each group.",
+    run_in_background=True
+)
+```
+
+This does not block the pull summary. Report health results alongside repo status.
+
+See `/ecosystem-health` skill for the full check suite and pass conditions.
+
+## Implementation
+
+When this skill is invoked, execute these steps:
+
+### Step 1: Run pull
+For all repos:
+```bash
+./scripts/repository_sync pull all
+```
+For a single configured repo:
+```bash
+./scripts/repository_sync status <repo-name>
+./scripts/repository_sync pull <repo-name>
+```
+Capture output. Identify repos marked with `✗ Failed` or any nonzero command exit.
+
+### Step 2: For each failed repo, diagnose
+```bash
+cd <repo_path>
+# Check if on a branch
+git branch --show-current  # empty = detached HEAD
+
+# Check for uncommitted changes
+git status --porcelain
+
+# Check divergence (only if on a branch with upstream)
+git rev-list --count @{u}.. 2>/dev/null  # ahead
+git rev-list --count ..@{u} 2>/dev/null  # behind
+```
+
+### Step 3: Apply fixes
+Run all independent repo fixes in parallel using the Bash tool.
+
+**Detached HEAD:**
+```bash
+cd <repo_path> && git checkout main && git pull --no-rebase
+```
+
+**Diverged branches:**
+```bash
+cd <repo_path> && git pull --no-rebase
+```
+
+**Uncommitted changes blocking pull:**
+```bash
+cd <repo_path> && git stash && git pull --no-rebase && git stash pop
+```
+
+If `stash pop` has conflicts, report to user — do NOT auto-resolve.
+
+### Step 4: Report summary table
+Format as markdown table:
+
+```
+| Repo | Issue | Fix Applied | Result |
+|------|-------|-------------|--------|
+```
+
+When an issue number is part of the sync/commit request, include a clickable GitHub issue hyperlink in the final report. Resolve it live with `gh issue view <number> --json url --jq .url` so the link is grounded in the current repository, not memory.
+
+## Important Notes
+
+- **Never force-push** or `reset --hard` without explicit user approval
+- **Never rebase** diverged branches — always merge (per workspace CLAUDE.md)
+- **digitalmodel** and **worldenergydata** are submodules — detached HEAD is normal when workspace-hub pins a specific commit
+- After fixing submodules, the workspace-hub `git status` will show them as modified (new submodule pointer) — this is expected
+- If `stash pop` fails with conflicts, stop and report to user
+- Use `--no-rebase` on all pulls to avoid rebase surprises on diverged repos
+- **Encoding check runs after every pull** — UTF-16 files from Windows editors
+  crash `generate-index.py` and other parsers silently. Fix immediately on detection.
+- If the user explicitly wants all dirty/untracked files tracked, run a second pass that stages with `git add -A`, commits on the repo's current branch, and pushes that branch before attempting broader branch-merging work.
+- For branch-merging across many repos, merge into each repo's actual default branch (`main` or `master`) detected from GitHub / `origin/HEAD`; do not assume `main`.
+- For large batch merges, use a temporary worktree checked out from the default branch (prefer `origin/<default>` if available) so merges are isolated from the user's current working tree and local dirty state.
+- Workspace-hub can mutate state during commit/push hooks (`.claude/state/*`, logs, generated reports). After a commit or failed push, always re-run `git status` and re-fetch before retrying; apparent ref-lock push failures may be stale-expectation races rather than true divergence.
+- Cron/report jobs often run inside a dirty, stale local `main` while only a narrow generated report should be committed. If the report files are ignored, use `git add -f` for only those artifacts; if local `main` is behind or unrelated dirty state makes merge risky, create a clean temporary worktree from `origin/main`, cherry-pick the narrow report commit, push `HEAD:main`, verify the remote artifact, then remove the temporary worktree. See `references/cron-report-push-from-dirty-main.md`.
+- Session-learning commits can generate a tracked skill ledger update after the primary commit (for example `logs/orchestrator/hermes/skill-patches.jsonl`). Treat that as intentional repo-ecosystem metadata: inspect it, commit it separately, and only then declare the worktree clean.
+- Before pushing after a merge/commit sequence, fetch and compare `HEAD` with `origin/<branch>`. Some workspace-hub hooks or concurrent syncs can leave the remote-tracking ref already equal to `HEAD`; if `HEAD == origin/<branch>` and ahead/behind is `0/0`, report "push not needed" instead of pushing blindly.
+- If direct push to the default branch is rejected by branch protection (for example required status checks / "changes must be made through a pull request"), do not retry, force, or bypass. Preserve the exact committed ahead range by pushing `HEAD` to a topic branch, open a PR against the protected branch, and report the PR URL plus the still-ahead local `main` state as a known exception until the PR merges.
+- If a merge conflict is in a deterministic generated artifact, prefer the documented generator plus format validation over manual conflict editing. Example: `config/ai_agents/ai-tools-status.yaml` can be regenerated with `bash scripts/maintenance/ai-tools-status.sh` and YAML-parsed before staging. See `references/generated-file-conflict-regeneration.md`.
+- If a repo is fully synced but has many tracked modifications, check whether the diff is only line-ending churn with `git diff --ignore-space-at-eol --shortstat`. If that output is empty while normal `git diff --shortstat` is large, do not stash/pop, normalize, or discard automatically; report it as a non-blocking local working-tree condition and ask before changing line endings. See `references/line-ending-only-dirty-working-tree.md`.
+- New-branch pushes in workspace-hub may trigger expensive pre-push checks across tier-1 repos and can time out. If the user has approved sensible commands and the goal is repo hygiene/sync rather than validation, `git push --no-verify` may be necessary after verifying local/remote state.
+- Archived/read-only repos can still be committed locally for preservation, but push/merge to remote will fail; report them explicitly as blocked rather than retrying.
+- In huge repos, do not run broad `git status --porcelain -uall`, full `du`, or full checkout/pull loops as the first recovery move. Start with no-untracked status and ahead/behind probes, then follow `references/large-repo-partial-checkout-recovery.md`.
+- If interrupted sync creates `.claude.partial-pull-backup-*`, `.codex.partial-pull-backup-*`, or generated provider cache trees, preserve them inside `.git/recovery-backups/` instead of committing or deleting them; they are recovery artifacts unless the user explicitly says otherwise.
+
+## Iron Law
+
+> No destructive git operation (force-push, reset --hard, auto-resolve conflicts) shall be performed without explicit user confirmation — ever.
+
+## Rationalization Defense
+
+| Excuse | Reality |
+|--------|---------|
+| "The conflict is trivial — I can auto-resolve it" | Trivial-looking conflicts have destroyed production data. Stash pop conflicts go to the user, always. |
+| "Force-push is safe here because nobody else uses this branch" | You do not have full visibility into all machines and sessions using this repo. Assume others are active. |
+| "I need to reset --hard to get to a clean state" | Use `git stash` to preserve work, then pull. Hard reset is data destruction, not cleanup. |
+| "The encoding check is slow, I'll skip it this time" | UTF-16 files crash parsers silently. Skipping the check means shipping a time bomb. |
+
+## Red Flags
+
+These phrases signal you are about to violate the Iron Law:
+- "let me just force-push to fix this"
+- "I'll reset to a clean state"
+- "this merge conflict is simple enough to auto-resolve"
+- "skipping the encoding check to save time"
+- "nobody else is working on this repo"

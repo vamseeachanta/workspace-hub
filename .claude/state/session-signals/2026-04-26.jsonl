@@ -1,0 +1,2 @@
+{"session_id": "ffed8e6d-7bb4-45ea-b508-d5499ba7c7f7", "transcript_path": "/root/.claude/projects/-home-user-workspace-hub/ffed8e6d-7bb4-45ea-b508-d5499ba7c7f7.jsonl", "cwd": "/home/user/workspace-hub", "permission_mode": "default", "hook_event_name": "Stop", "stop_hook_active": false, "last_assistant_message": "[REDACTED]"}
+{"ts": "2026-04-26T17:34:45Z", "event": "session_tool_summary", "session_id": "ffed8e6d-7bb4-45ea-b508-d5499ba7c7f7", "wrk": "none", "tool_calls": 96, "edits": 28, "reads": 17}

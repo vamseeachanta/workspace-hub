@@ -1,0 +1,15 @@
+### Verdict: MAJOR
+
+### Summary
+The plan contains a critical logical contradiction in its test design and fails to enforce its own governance rules regarding control-plane surfaces.
+
+### Issues Found
+- Test Scope Contradiction: The pseudocode and TDD list state the regression test will 'scan only the fixed protected-surface set' (an exact list of 5 templates, 1 doc, and 1 directory). However, it simultaneously requires the test to 'exclude legacy map, provider snapshots, .planning/archive/**... by explicit classification'. If the scan is narrowly bounded to those exact files, it is mathematically impossible to 'exclude' or classify files (like .planning/archive/**) that are never scanned in the first place.
+- Missing Control-Plane Classifications: The Resource Intelligence section establishes a strict rule: 'Provider adapters and rules are live control-plane surfaces; if lifecycle references appear there they must be classified explicitly rather than ignored' (specifically citing `docs/standards/CONTROL_PLANE_CONTRACT.md` and `config/agents/`). However, `docs/standards/CONTROL_PLANE_CONTRACT.md` and the live paths under `config/agents/` are entirely absent from both the test's protected list and the test's excluded list, meaning they are being silently ignored in violation of the plan's own governance logic.
+
+### Suggestions
+- Resolve the test scope contradiction: Either design the test to scan broad parent directories (e.g., `docs/`, `.planning/`, `config/`) so that the explicit exclusion buckets actually function, OR keep the narrow file-list scan but remove the logically impossible requirement to exclude/classify paths that fall outside the bounded scan targets.
+- Explicitly classify the missing control-plane surfaces: Add `docs/standards/CONTROL_PLANE_CONTRACT.md` and the live `config/agents/` paths to the explicit 'protected current guidance' test set, or deliberately assign them to the reference/fixture exclusion list.
+
+### Questions for Author
+- None.

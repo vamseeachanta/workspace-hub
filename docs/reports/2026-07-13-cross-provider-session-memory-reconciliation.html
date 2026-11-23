@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cross-provider session and repo-memory reconciliation — 2026-07-13</title>
+  <style>
+    :root { color-scheme: light; --ink:#14213d; --muted:#52606d; --line:#d8dee9; --bad:#a61b1b; --warn:#8a5a00; --good:#166534; --bg:#f7f9fc; }
+    body { margin:0; font:16px/1.55 system-ui,-apple-system,Segoe UI,sans-serif; color:var(--ink); background:var(--bg); }
+    main { max-width:1050px; margin:0 auto; padding:40px 24px 64px; }
+    h1,h2 { line-height:1.2; } h1 { margin-bottom:8px; } h2 { margin-top:36px; }
+    .meta,.note { color:var(--muted); } .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:14px; }
+    .card { background:white; border:1px solid var(--line); border-radius:10px; padding:16px; }
+    .metric { font-size:1.7rem; font-weight:700; } .bad { color:var(--bad); } .warn { color:var(--warn); } .good { color:var(--good); }
+    table { width:100%; border-collapse:collapse; background:white; } th,td { padding:10px 12px; border:1px solid var(--line); text-align:left; vertical-align:top; }
+    th { background:#eef2f7; } code { background:#eef2f7; padding:1px 4px; border-radius:4px; }
+    .gate { border-left:5px solid var(--bad); } a { color:#075985; }
+  </style>
+</head>
+<body>
+<main>
+  <h1>Cross-provider session and repo-memory reconciliation</h1>
+  <p class="meta">Generated 2026-07-13 · Anthropic Claude + OpenAI Codex · machine: dev-primary/ace-linux-1</p>
+
+  <section>
+    <h2>Outcome</h2>
+    <div class="card gate">
+      <p><strong>The memory system captures provider learnings, but publication and retrieval are not operationally closed.</strong></p>
+      <p>The repo-memory bridge has fresh broken-state evidence: it is installed as a dry-run despite the tracked committing schedule. Reopen <a href="https://github.com/vamseeachanta/workspace-hub/issues/3384">#3384</a> for incomplete live rollout. Cross-provider distillation also has a growing, unmeasured promotion backlog; file a linked lifecycle/telemetry follow-up and reopen <a href="https://github.com/vamseeachanta/workspace-hub/issues/2833">#2833</a> only if its promised native-dream consumption path is reproduced as failing. Do not implement the content-regression fix in <a href="https://github.com/vamseeachanta/workspace-hub/issues/3387">#3387</a> until its plan is reviewed and user-approved.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>Audit boundary</h2>
+    <div class="grid">
+      <div class="card"><div class="metric">22,595</div><div>Codex post-hook records since 2026-07-06</div></div>
+      <div class="card"><div class="metric">286</div><div>Codex runtime sessions in the same window</div></div>
+      <div class="card"><div class="metric">1,780</div><div>Claude post-hook records since 2026-07-06</div></div>
+      <div class="card"><div class="metric">16</div><div>Claude runtime sessions in the tracked audit</div></div>
+    </div>
+    <p class="note">Source: <code>analysis/provider-session-ecosystem-audit.json</code>, generated <code>2026-07-13T09:15:04Z</code>. Event-time activity is separated from corpus/export growth.</p>
+  </section>
+
+  <section>
+    <h2>Defect findings</h2>
+    <table>
+      <thead><tr><th>Priority</th><th>Finding</th><th>Evidence</th><th>Routing</th></tr></thead>
+      <tbody>
+        <tr>
+          <td class="bad"><strong>Critical</strong></td>
+          <td>Installed cron invokes <code>bridge-hermes-claude.sh</code> without <code>--commit</code>. The tracked schedule includes the flag, but daily runs remain dry-run: they generate local outputs but do not commit or push repo-backed outputs.</td>
+          <td><code>config/scheduled-tasks/schedule-tasks.yaml:646-668</code>; installed crontab line 41; <code>logs/orchestrator/memory-bridge/hermes-claude-20260713.log</code></td>
+          <td>Reopen <a href="https://github.com/vamseeachanta/workspace-hub/issues/3384">#3384</a>; prove installed-command equality, one committed heartbeat, and a second-run no-op before re-close.</td>
+        </tr>
+        <tr>
+          <td class="bad"><strong>Critical</strong></td>
+          <td>Freshness is false-green: the bridge heartbeat is absent, yet the audit reports <code>MEMORY-FRESH</code> because recent Hermes file activity masks the missing liveness signal.</td>
+          <td><code>scripts/curation/audit_memory_freshness.py:197-215</code>; live audit at <code>2026-07-13T10:40:44Z</code></td>
+          <td>Acceptance completion for <a href="https://github.com/vamseeachanta/workspace-hub/issues/3384">#3384</a>; add a scoped follow-up only if logic changes exceed that plan.</td>
+        </tr>
+        <tr>
+          <td class="bad"><strong>Critical</strong></td>
+          <td>Cross-provider capture is an unbounded staging queue. Local Claude memory contains 4,624 <code>crossprovider_*</code> files, up from 3,059 at closeout; 3,180 are older than 30 days and only two are indexed in observable Claude memory indices.</td>
+          <td>Local Claude auto-memory; bridge logs 2026-07-07 through 2026-07-13; <code>docs/reports/2026-05-26-crossprovider-dream-bridge-completeness.html</code></td>
+          <td>File a linked promotion-lifecycle/telemetry follow-up; reopen <a href="https://github.com/vamseeachanta/workspace-hub/issues/2833">#2833</a> only after reproducing failure of its promised native-dream consumption path.</td>
+        </tr>
+        <tr>
+          <td class="bad"><strong>Critical</strong></td>
+          <td>A return-path gap remains despite existing recall and runtime-slice surfaces: 2,252 tracked <code>crossprovider_codex_*</code> snapshots are not mirrored into <code>.claude/memory/topics/</code>; the Codex slice reads only <code>claude-auto-memory.md</code> and <code>KNOWLEDGE.md</code>; recent logs show no provider-neutral recall invocation.</td>
+          <td><code>config/agents/claude/memory-snapshots/</code>; <code>scripts/memory/recall.py</code>; <code>.claude/skills/memory/recall/SKILL.md</code>; curator inputs and bridge mirror allowlist</td>
+          <td>Owner authorization markers/comments exist under <a href="https://github.com/vamseeachanta/workspace-hub/issues/2735">#2735</a>, but the issue body still says plan-review and executable plan/review evidence is missing. Reconcile those durable surfaces without removing approval labels; use <a href="https://github.com/vamseeachanta/workspace-hub/issues/3331">#3331</a> for Codex parity specifics.</td>
+        </tr>
+        <tr>
+          <td class="warn"><strong>High</strong></td>
+          <td>The 7 KB Codex runtime slice is source-order dominated: 32 project-status entries, one feedback entry, and 127 omitted. Its Markdown pointers are unresolved from the runtime file location.</td>
+          <td><code>config/agents/codex/MEMORY.runtime.md</code>; <code>scripts/memory/curate_readback_slice.py</code></td>
+          <td>Plan class-budgeted selection and link-resolvability tests under <a href="https://github.com/vamseeachanta/workspace-hub/issues/3331">#3331</a> or a narrow child of <a href="https://github.com/vamseeachanta/workspace-hub/issues/3189">#3189</a>.</td>
+        </tr>
+        <tr>
+          <td class="warn"><strong>High</strong></td>
+          <td>Telemetry quality prevents reliable learning attribution: 42.1% of recent Claude records are <code>tool=unknown</code>; the Codex headline calls daily log files “sessions”; exported calls omit status/exit/error class.</td>
+          <td>Provider audit JSON/HTML sources and raw provider JSONL logs</td>
+          <td>Route schema/outcome work to existing session-audit issues; distinguish daily files, runtime sessions, and tool outcomes.</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2>Machine reconciliation result</h2>
+    <p><strong>Session observation; command output was not retained as a repo artifact:</strong> the direct <code>reconcile-ecosystem.sh</code> report was stopped after it contended with an already-running scheduled hygiene audit and stalled on sibling-repo status. No reconciliation actions ran.</p>
+    <p><strong>Session observation; command output was not retained as a repo artifact:</strong> the narrower cron reconciliation dry-run failed closed because two installed cron lines were not cataloged. The transactional reconciler refused to apply the canonical schedule. This blocks an automatic repair of the missing <code>--commit</code> flag until those live lines are reconciled or explicitly preserved.</p>
+  </section>
+
+  <section>
+    <h2>Verification</h2>
+    <ul>
+      <li>Session observation; output not retained in the repo: an architecture sub-agent reported 198 focused memory tests passed.</li>
+      <li>Session observation; output not retained in the repo: the main-session combined run reported 98 passed and 2 provider-audit failures (workspace-path normalization and llm-wiki drift classification). Core bridge/readback tests in that run passed.</li>
+      <li>Today’s distiller processed 11 sessions into 9 learnings with zero deadletters; ingestion is working.</li>
+      <li>Today’s repo-memory bridge generated 215 topic mirrors and Codex/Gemini slices locally, but did not commit or push them.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Recommended action order</h2>
+    <ol>
+      <li>Reopen <a href="https://github.com/vamseeachanta/workspace-hub/issues/3384">#3384</a> and attach this fresh live-state evidence.</li>
+      <li>Assign one reconciliation owner; confirm no hygiene/reconcile/bridge/git writer is active; classify and preserve the two uncataloged cron lines in tracked configuration; review the transactional dry-run; then apply without bypassing the live-daemon gate.</li>
+      <li>Only from a clean, current owner checkout, run one real bridge commit, verify the heartbeat remotely, and verify same-day idempotence.</li>
+      <li>File a linked follow-up for measurable staged/promoted/superseded/rejected lifecycle states plus retrieval telemetry. Reopen <a href="https://github.com/vamseeachanta/workspace-hub/issues/2833">#2833</a> only after reproducing its native-dream consumption path as failed.</li>
+      <li>Plan <a href="https://github.com/vamseeachanta/workspace-hub/issues/3387">#3387</a> only for monotonic content-regression protection; route index-budget and oldest-unindexed signals to <a href="https://github.com/vamseeachanta/workspace-hub/issues/3331">#3331</a> or a separate child.</li>
+      <li>Reconcile the conflicting issue bodies, live approval labels, owner comments, and local approval markers for <a href="https://github.com/vamseeachanta/workspace-hub/issues/2735">#2735</a>/<a href="https://github.com/vamseeachanta/workspace-hub/issues/2736">#2736</a>; reconstruct missing executable plan/review evidence, do not remove approval labels, and request user reaffirmation only if scope materially changes.</li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>Scope and uncertainties</h2>
+    <p>Explicit read-tool counts do not prove implicitly injected memory was absent. File accumulation does not prove no semantic consolidation occurred, but no durable provenance or lifecycle marker demonstrates it. Provider tool-call logs do not contain enough outcome data to label long sessions as waste. Machine-local cron and auto-memory observations apply to this host only.</p>
+  </section>
+
+  <section>
+    <h2>Adversarial review record</h2>
+    <p>Artifact revision: local file content as verified on 2026-07-13 after two patch rounds.</p>
+    <ul>
+      <li>Evidence-integrity reviewer: initial <strong>MAJOR</strong> (snapshot count/scope, return-path wording, dry-run semantics, evidence retention, gate wording); corrections applied; second-round <strong>APPROVE</strong>.</li>
+      <li>Governance/safety reviewer: initial <strong>MAJOR</strong> (#2833 reopening threshold, #2735/#2736 authorization nuance, #3387 scope, concurrent-writer safety); corrections applied; second-round <strong>APPROVE</strong>.</li>
+      <li>Scaled T2 review was used for a narrative transfer report. No code or enforcement change was reviewed or implemented.</li>
+    </ul>
+  </section>
+</main>
+</body>
+</html>

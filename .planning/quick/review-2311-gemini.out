@@ -1,0 +1,22 @@
+### Verdict: MAJOR
+
+### Summary
+The plan is an incomplete draft that explicitly acknowledges failing prior adversarial reviews and requires a re-draft. It leaves critical classification rules unresolved, defers file scope discovery to execution time with 'if needed' conditionals, and contains open questions that block safe implementation.
+
+### Issues Found
+- The plan's 'Adversarial Review Summary' already marks the plan as 'FAIL (re-draft required)' and lists necessary revisions, but the body of the plan has not been updated to incorporate them.
+- The 'Files to Change' table relies on execution-time discovery, listing modifications for 'tests/helpers/stale_reference_docs.py', 'tests/docs/test_banned_stale_references.py', and 'docs/ops/legacy-claude-reference-map.md' as 'if needed'.
+- The pseudocode defers core logic to execution ('classify each hit as live, legacy, or generated-history') without defining the explicit taxonomy, scan universe, or deterministic rules to perform this classification.
+- The plan lists unresolved open questions in the 'Risks and Open Questions' section (e.g., whether to use enumeration vs. directory classification, and what to do if no live hits exist) which must be answered before approval.
+
+### Suggestions
+- Address the required revisions from the 'Adversarial Review Summary' directly in the plan's specification.
+- Audit the 'if needed' files now to determine exactly which files must be modified, and remove the conditional logic from the 'Files to Change' table.
+- Define the exact scan universe of 'current instructional surfaces' and provide the explicit list or hardcoded paths/rules for the allowed legacy/history buckets.
+- Incorporate redirect-target existence validation and a negative/mutation-style test in the 'TDD Test List' to ensure the confinement rule is strictly enforced.
+- Resolve the open questions regarding file classification (enumeration vs. directory patterns) before submitting the final plan.
+
+### Questions for Author
+- Did you intend to submit this draft for approval, given the 'Adversarial Review Summary' indicates it requires a re-draft?
+- Are there any currently known 'live instructional hits' for these stale references, or is the implementation solely adding proactive guardrails?
+- How will active tests, skill files, and the audit generator be classified in your final taxonomy?

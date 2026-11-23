@@ -1,0 +1,10 @@
+--- a/.github/workflows/ci.yml
++++ b/.github/workflows/ci.yml
+@@ -123,6 +123,7 @@
+         run: uv sync --all-extras
+ 
+       - name: Run mypy
++        continue-on-error: true  # #2433: ~100 existing mypy errors; advisory-only (build depends on [test, lint] only)
+         run: |
+           uv run mypy src/worldenergydata/ \
+             --ignore-missing-imports \

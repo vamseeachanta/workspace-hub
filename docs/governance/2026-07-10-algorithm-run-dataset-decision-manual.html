@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Repository-Linked Algorithm Run Datasets: Decision Manual</title>
+<style>
+  :root { --ink:#18212b; --muted:#586675; --line:#ccd4dc; --paper:#ffffff; --wash:#f4f6f8;
+          --blue:#1769aa; --green:#237a57; --amber:#9a6700; --red:#b42318; --violet:#6842a0; }
+  * { box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body { margin:0; background:var(--paper); color:var(--ink); font:15px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif; letter-spacing:0; }
+  header, main, footer { width:min(1120px, calc(100% - 40px)); margin:0 auto; }
+  header { padding:34px 0 24px; border-bottom:2px solid var(--ink); }
+  h1 { max-width:860px; margin:0 0 8px; font-size:32px; line-height:1.15; letter-spacing:0; }
+  h2 { margin:42px 0 14px; padding-bottom:7px; border-bottom:1px solid var(--line); font-size:22px; letter-spacing:0; }
+  h3 { margin:24px 0 8px; font-size:17px; letter-spacing:0; }
+  p { margin:8px 0 12px; }
+  a { color:var(--blue); text-underline-offset:2px; }
+  code { padding:1px 5px; border-radius:4px; background:#eef1f4; font:13px/1.5 ui-monospace,SFMono-Regular,Consolas,monospace; }
+  pre { margin:12px 0 18px; padding:14px 16px; overflow:auto; border:1px solid var(--line); border-radius:6px; background:#f7f8fa; font:12.5px/1.5 ui-monospace,SFMono-Regular,Consolas,monospace; }
+  table { width:100%; margin:12px 0 20px; border-collapse:collapse; font-size:14px; }
+  th, td { padding:8px 10px; border:1px solid var(--line); text-align:left; vertical-align:top; }
+  th { background:#edf1f4; }
+  ul, ol { padding-left:22px; }
+  li { margin:5px 0; }
+  nav { display:flex; flex-wrap:wrap; gap:7px 16px; margin-top:18px; font-size:13px; }
+  nav a { color:var(--ink); }
+  .meta { color:var(--muted); }
+  .notice { margin:18px 0 0; padding:12px 14px; border-left:4px solid var(--amber); background:#fff8e6; }
+  .summary { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px; margin:18px 0; }
+  .summary article { min-height:112px; padding:13px; border:1px solid var(--line); border-radius:6px; background:var(--wash); }
+  .summary strong { display:block; margin-bottom:4px; font-size:13px; color:var(--muted); }
+  .flow { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:8px; margin:18px 0; }
+  .flow div { position:relative; min-height:92px; padding:11px; border:1px solid var(--line); border-top:4px solid var(--blue); border-radius:6px; background:#fff; }
+  .flow div:nth-child(2) { border-top-color:var(--green); }
+  .flow div:nth-child(3) { border-top-color:var(--violet); }
+  .flow div:nth-child(4) { border-top-color:var(--amber); }
+  .flow div:nth-child(5) { border-top-color:var(--red); }
+  .flow b { display:block; margin-bottom:5px; }
+  .state { font-weight:700; color:var(--green); }
+  .reject { font-weight:700; color:var(--red); }
+  .callout { padding:12px 14px; border:1px solid #e5c16c; border-radius:6px; background:#fffaf0; }
+  .small { font-size:13px; color:var(--muted); }
+  footer { margin-top:48px; padding:20px 0 36px; border-top:1px solid var(--line); color:var(--muted); font-size:13px; }
+  @media (max-width:820px) { .summary { grid-template-columns:1fr 1fr; } .flow { grid-template-columns:1fr; } }
+  @media (max-width:560px) { header, main, footer { width:min(100% - 24px,1120px); } h1 { font-size:27px; } .summary { grid-template-columns:1fr; } table { display:block; overflow-x:auto; } }
+</style>
+</head>
+<body data-contract-version="1.0.0">
+<header>
+  <p class="meta">Architecture decision manual &middot; contract 1.0.0 &middot; 2026-07-10 &middot; workspace-hub</p>
+  <h1>Repository-Linked Algorithm Run Datasets</h1>
+  <p>Durable, replayable algorithm inputs and outputs from <code>digitalmodel</code> and
+     <code>worldenergydata</code>, published as repository-specific Hugging Face datasets and rendered through
+     one rolling HTML report per algorithm in the owning source repository.</p>
+  <div class="notice"><strong>Approved parent architecture contract.</strong> This manual is the human-readable
+    view of contract 1.0.0 for <a href="https://github.com/vamseeachanta/workspace-hub/issues/3427">workspace-hub
+    issue 3427</a>. It fixes the shared invariants only. Every child issue retains its own plan, review, owner
+    approval, TDD, and artifact-review gates.</div>
+  <nav aria-label="Document sections">
+    <a href="#decisions">Decisions</a><a href="#architecture">Architecture</a><a href="#identity">Identity</a>
+    <a href="#records">Records</a><a href="#dataset">Dataset</a><a href="#report">Report</a>
+    <a href="#promotion">Promotion</a><a href="#compatibility">Compatibility</a><a href="#issues">Issues</a>
+  </nav>
+</header>
+<main>
+<section id="decisions">
+  <h2>1. Locked Decisions</h2>
+  <div class="summary">
+    <article><strong>Dataset ownership</strong>One dedicated Hugging Face dataset per source-code repository. A global catalog indexes datasets; it does not merge their domain records.</article>
+    <article><strong>Public admission</strong>Every replay-critical input is redistributable, schema-valid, snapshot-pinned, content-hashed, and included or stable-public-retrievable.</article>
+    <article><strong>Repository fidelity</strong>Source repositories retain code, workflow descriptors, schemas, and one stable rolling HTML report per algorithm.</article>
+    <article><strong>Run identity</strong>Algorithm semantic version, clean Git commit, schema versions, environment digest, canonical inputs, seed, and execution parameters determine identity.</article>
+    <article><strong>Native outputs</strong>Curated machine-readable outputs preserve domain-native meaning. Caches, transient logs, and large regenerable dumps stay out.</article>
+    <article><strong>Decision use</strong>Metrics remain algorithm-specific. Insights and briefs trace to eligible runs and exact dataset revisions.</article>
+  </div>
+  <table>
+    <thead><tr><th>ID</th><th>Decision</th><th>Consequence</th></tr></thead>
+    <tbody>
+      <tr><td>D-01</td><td>One dataset per owning repository</td><td>Targets are <code>{hf_org}/digitalmodel-runs</code> and <code>{hf_org}/worldenergydata-runs</code>. <code>aceengineer</code> is a non-normative candidate; the publisher gate settles the authenticated namespace.</td></tr>
+      <tr><td>D-02</td><td>Strict public reproducibility</td><td>Restricted, pointer-only, ambiguous-license, or incomplete inputs cannot enter the public projection.</td></tr>
+      <tr><td>D-03</td><td>Composite algorithm version</td><td>A semantic label alone is insufficient; a dirty source checkout fails public promotion.</td></tr>
+      <tr><td>D-04</td><td>Deterministic run identifier</td><td>An exact repeat collapses to one run. There are no attempt IDs in the public model.</td></tr>
+      <tr><td>D-05</td><td>Immutable accepted outputs</td><td>A rerun equality mismatch rejects promotion and cannot revise or overwrite the accepted run.</td></tr>
+      <tr><td>D-06</td><td>Successful and reproducible failed runs may publish</td><td>Failures inform health analysis only; they cannot populate metrics, insights, or decisions.</td></tr>
+      <tr><td>D-07</td><td>Algorithm-specific metrics</td><td>Definitions carry units, derivation, version, and applicability. Phase 1 infers no cross-algorithm equivalence.</td></tr>
+      <tr><td>D-08</td><td>One rolling HTML report per algorithm</td><td><em>Inputs</em> and <em>Outputs</em> are always present. Other sections appear only when applicable. Git history retains report versions.</td></tr>
+      <tr><td>D-09</td><td>Staged publication</td><td>Emit, validate, reproduce, draft-render, review, publish, pin the report, and verify before acceptance.</td></tr>
+      <tr><td>D-10</td><td>Latent vectors are derived artifacts</td><td>An embedding carries its model revision, preprocessing version, dimensions, source run IDs, license, and content hash; it never replaces replay inputs or native outputs.</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section id="architecture">
+  <h2>2. Ownership Architecture</h2>
+  <div class="flow" aria-label="Run data flow">
+    <div><b>Source repository</b>Code, workflow registry, algorithm descriptor, schemas, tests, rolling report.</div>
+    <div><b>Local run bundle</b>Canonical inputs, native outputs, metrics, artifacts, failure evidence, validation evidence.</div>
+    <div><b>Promotion gate</b>Replay, hashes, licenses, clean source, schema validation, review decision.</div>
+    <div><b>Dedicated HF dataset</b>Normalized records plus content-addressed public input and output objects.</div>
+    <div><b>Decision layer</b>Cross-run analysis, evidence-bound insights, and human-reviewed decision briefs.</div>
+  </div>
+  <table>
+    <thead><tr><th>Surface</th><th>Owns</th><th>Does not own</th></tr></thead>
+    <tbody>
+      <tr><td><code>workspace-hub</code></td><td>Shared contracts, dataset catalog, promotion policy, issue dependency graph</td><td>Domain algorithm code or combined run data</td></tr>
+      <tr><td>Source repository</td><td>Algorithm implementation, descriptor, input/output schemas, metric definitions, stable report path</td><td>Public dataset history for another repository</td></tr>
+      <tr><td>Dedicated HF dataset</td><td>Public replay inputs, curated outputs, observations, immutable revisions, dataset card</td><td>Canonical source code, mutable report, private pointers</td></tr>
+      <tr><td>Global catalog</td><td>Repository-to-dataset mapping, supported schema versions, last verified revision, report index</td><td>A second copy of every run</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section id="identity">
+  <h2>3. Identity and Determinism</h2>
+  <p>The identifier contract uses domain-separated SHA-256 digests over canonical records. The child identity
+     issue will lock the canonical JSON profile and byte-level construction. The following formula is normative
+     in meaning and illustrative in serialization:</p>
+  <pre>algorithm_version_id = sha256(
+  algorithm_id + semantic_version + clean_git_commit +
+  input_schema_version + output_schema_version + environment_digest
+)
+
+input_record_id = sha256(
+  role + native_schema_version + source_snapshot + transformation_id +
+  artifact_sha256 + redistribution_rights + complete_replay_location
+)
+
+input_set_id = sha256(sorted(role, input_record_id))
+
+run_id = sha256(
+  algorithm_version_id + input_set_id +
+  canonical_execution_parameters + explicit_seed_descriptor
+)
+
+output_set_id = sha256(sorted(role, native_schema_version, equality_digest))</pre>
+  <ul>
+    <li>An input binding ID covers role, schema, source snapshot, transformation, and artifact digest. It is computed before and independently of <code>run_id</code>; a separate association links it to the run.</li>
+    <li><code>seed</code> is explicit even when the algorithm declares no randomness.</li>
+    <li>Hardware and numeric-library details that can alter results belong in the environment manifest.</li>
+    <li>The output set is not part of <code>run_id</code>; it is the measured equality target for exact replay.</li>
+    <li>Byte hash is the default equality digest. A non-stable container format requires a versioned semantic canonicalizer, both raw and semantic hashes, and explicit approval; otherwise it is presentation-only.</li>
+    <li>A transient infrastructure error is not a reproducible failed run and does not publish.</li>
+    <li>A reproducible failed run compares normalized failure signatures and curated diagnostic digests instead of a successful output set.</li>
+  </ul>
+</section>
+
+<section id="records">
+  <h2>4. Record Contracts</h2>
+  <table>
+    <thead><tr><th>Record</th><th>Required identity and evidence</th><th>Residency</th></tr></thead>
+    <tbody>
+      <tr data-record="algorithm_version"><td>Algorithm Version</td><td>Algorithm ID, semantic version, clean commit, schema versions, environment digest</td><td>Descriptor/schema in source repo; pinned references in HF</td></tr>
+      <tr data-record="run"><td>Run</td><td>Run ID, algorithm version ID, input set ID, seed, execution parameters, status, output/failure link</td><td>HF normalized table</td></tr>
+      <tr data-record="input"><td>Input</td><td>Role, schema, content hash, source snapshot, license basis, replay location, transformation/query</td><td>HF object or stable public URI plus immutable digest</td></tr>
+      <tr data-record="output"><td>Output</td><td>Role, native schema, media type, byte hash, equality digest, curation decision</td><td>HF object and normalized record</td></tr>
+      <tr data-record="metric_definition"><td>Metric Definition</td><td>Algorithm scope, definition version, unit/dimension, derivation, applicability, quality rule</td><td>Canonical definition in source repo; pinned reference in HF</td></tr>
+      <tr data-record="metric_observation"><td>Metric Observation</td><td>Run ID, definition version, value, quality, derivation evidence, uncertainty when supplied</td><td>HF normalized table; successful eligible runs only</td></tr>
+      <tr data-record="artifact"><td>Artifact</td><td>Content digest, media type, byte size, role, curation state, producing record</td><td>HF content-addressed object or excluded with reason</td></tr>
+      <tr data-record="failure"><td>Failure</td><td>Run ID, deterministic failure phase/code/signature, normalized diagnostics, replay evidence</td><td>HF normalized table; never a metric population member</td></tr>
+      <tr data-record="publication"><td>Publication</td><td>Promotion ID, reviewer, gate evidence, HF revision, source report commit, verification result</td><td>HF and source-repo cross-reference</td></tr>
+      <tr data-record="insight"><td>Insight</td><td>Compared runs, derivation, claims, assumptions, confidence, exact revisions</td><td>Machine record in HF; rendered in source report</td></tr>
+      <tr data-record="decision_brief"><td>Decision Brief</td><td>Question, alternatives, constraints, recommendation or no-decision, reviewer state</td><td>Machine record in HF; rendered in source report</td></tr>
+    </tbody>
+  </table>
+  <h3>Illustrative JSON envelope</h3>
+  <pre>{
+  "record_type": "run",
+  "schema_version": "1.0.0",
+  "run_id": "run:sha256:&lt;64-hex&gt;",
+  "algorithm_id": "digitalmodel:viv-parametric",
+  "algorithm_version_id": "av:sha256:&lt;64-hex&gt;",
+  "input_set_id": "inputs:sha256:&lt;64-hex&gt;",
+  "execution": {"seed": null, "parameters": {"current_speed_m_s": 1.2}},
+  "status": "succeeded",
+  "output_set_id": "outputs:sha256:&lt;64-hex&gt;",
+  "failure_id": null
+}</pre>
+  <pre>{
+  "record_type": "input",
+  "input_record_id": "input:sha256:&lt;64-hex&gt;",
+  "role": "environment_profile",
+  "native_schema_version": "environment-v1",
+  "source_snapshot": "source:sha256:&lt;64-hex&gt;",
+  "transformation_id": "transform:sha256:&lt;64-hex&gt;",
+  "artifact": {"sha256": "&lt;64-hex&gt;", "media_type": "application/json"},
+  "replay_critical": true,
+  "public_retrieval": {"kind": "hf-object", "path": "objects/sha256/ab/&lt;digest&gt;"},
+  "license_basis": "declared-and-validated"
+}</pre>
+  <pre data-relationship="run_input_membership">{
+  "record_type": "run_input_membership",
+  "run_id": "run:sha256:&lt;64-hex&gt;",
+  "input_record_id": "input:sha256:&lt;64-hex&gt;",
+  "role": "environment_profile"
+}</pre>
+  <p class="small">Parquet is the default normalized-table format. JSONL remains suitable for nested records and
+    small append-only fixtures. Domain-native JSON, CSV, Parquet, images, or binary artifacts remain objects
+    referenced by records rather than being flattened into one universal output schema.</p>
+</section>
+
+<section id="dataset">
+  <h2>5. Dedicated Hugging Face Dataset</h2>
+  <pre>README.md                         # dataset card, sources, license, limits, loading
+data/
+  <span data-table="algorithm_versions">algorithm_versions</span>/promotion=&lt;id&gt;/part-000.parquet
+  <span data-table="runs">runs</span>/promotion=&lt;id&gt;/part-000.parquet
+  <span data-table="inputs">inputs</span>/promotion=&lt;id&gt;/part-000.parquet
+  <span data-table="run_input_memberships">run_input_memberships</span>/promotion=&lt;id&gt;/part-000.parquet
+  <span data-table="outputs">outputs</span>/promotion=&lt;id&gt;/part-000.parquet
+  <span data-table="artifacts">artifacts</span>/promotion=&lt;id&gt;/part-000.parquet
+  <span data-table="metric_definitions">metric_definitions</span>/promotion=&lt;id&gt;/part-000.parquet
+  <span data-table="metric_observations">metric_observations</span>/promotion=&lt;id&gt;/part-000.parquet
+  <span data-table="failures">failures</span>/promotion=&lt;id&gt;/part-000.parquet
+  <span data-table="publications">publications</span>/promotion=&lt;id&gt;/part-000.parquet
+  <span data-table="insights">insights</span>/promotion=&lt;id&gt;/part-000.parquet
+  <span data-table="decision_briefs">decision_briefs</span>/promotion=&lt;id&gt;/part-000.parquet
+objects/sha256/&lt;prefix&gt;/&lt;digest&gt;  # replay inputs and curated native outputs</pre>
+  <ul>
+    <li>Promotion shards are append-only by record identity. Compaction, if later needed, creates a new revision and preserves old pinned revisions.</li>
+    <li>The dataset card configures the logical tables for the Dataset Viewer and documents limitations, sources, intended use, and license scope.</li>
+    <li>Repository-level licensing never grants rights absent from source material; per-input license/provenance remains machine-readable.</li>
+    <li>Large files may be preuploaded before one commit so candidate records and their object references appear together.</li>
+  </ul>
+</section>
+
+<section id="report">
+  <h2>6. Standard Rolling HTML Report</h2>
+  <p>Each algorithm will have one stable report path at
+     <code>reports/algorithms/&lt;algorithm-id&gt;/index.html</code>. The current file changes in place; Git history
+     preserves earlier renderings. Every rendering names its source-repository commit and exact Hugging Face
+     revision, never only a moving default branch.</p>
+  <table>
+    <thead><tr><th>Surface</th><th>Rule</th><th>Activation</th></tr></thead>
+    <tbody>
+      <tr><td>Identity header</td><td>Algorithm, version range, run count, data cutoff, source commit, HF revision</td><td>Always, as report metadata</td></tr>
+      <tr><td>Inputs</td><td>Compared input sets, source snapshots, parameter differences, replay links</td><td>Mandatory section</td></tr>
+      <tr><td>Outputs</td><td>Native output summaries, artifact links, schema versions, equality state</td><td>Mandatory section</td></tr>
+      <tr><td>Metrics</td><td>Definitions, units, quality, observations, trends</td><td>Eligible observations exist</td></tr>
+      <tr><td>Plots / comparisons</td><td>Run-set selection and derivation are explicit</td><td>Comparison is meaningful</td></tr>
+      <tr><td>Uncertainty</td><td>Method, assumptions, and intervals</td><td>Algorithm supplies uncertainty</td></tr>
+      <tr><td>Diagnostics / health</td><td>Failure counts and signatures, separate from result populations</td><td>Failures or warnings exist</td></tr>
+      <tr><td>Insights</td><td>Evidence-bound claims with exact run and metric links</td><td>Derived analysis passes validation</td></tr>
+      <tr><td>Decision brief</td><td>Question, alternatives, constraints, recommendation or no-decision, reviewer</td><td>Human review is recorded</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section id="promotion">
+  <h2>7. Promotion and Acceptance</h2>
+  <p><strong>Contract states:</strong>
+     <span data-state="emitted">Emitted</span>, <span data-state="validated">Validated</span>,
+     <span data-state="replayed">Replayed</span>, <span data-state="draft_rendered">Draft Rendered</span>,
+     <span data-state="reviewed">Reviewed</span>, <span data-state="hf_candidate">HF Candidate</span>,
+     <span data-state="report_pinned">Report Pinned</span>, <span data-state="accepted">Accepted</span>, and
+     <span data-state="rejected">Rejected</span>.</p>
+  <ol>
+    <li><strong>Emit locally:</strong> create a closed run bundle outside the public dataset.</li>
+    <li><strong>Validate:</strong> enforce schemas, canonicalization, hashes, licenses, public input completeness, clean source, and secret/legal scans.</li>
+    <li><strong>Reproduce:</strong> rerun from public candidate inputs in a clean environment. Successful runs compare output equality; reproducible failures compare normalized failure signatures and curated diagnostic digests.</li>
+    <li><strong>Draft-render:</strong> render the rolling report against the candidate run set without presenting it as accepted.</li>
+    <li><strong>Review:</strong> record explicit human promotion approval and adversarial artifact review.</li>
+    <li><strong>Commit to HF:</strong> preupload large blobs when needed, then create one candidate commit containing complete records and references.</li>
+    <li><strong>Pin the report:</strong> update the source-repository report to the exact candidate revision.</li>
+    <li><strong>Verify and accept:</strong> verify all objects, tables, report links, source commit, and exclusion rules; then append a Publication record that references the candidate revision and report commit.</li>
+  </ol>
+  <div class="callout"><strong>Cross-system atomicity:</strong> GitHub and Hugging Face cannot commit atomically.
+    The contract therefore guarantees atomic <em>acceptance</em>, not atomic visibility. A complete candidate HF
+    commit may be visible before its source report lands, but it remains excluded from the accepted catalog,
+    metrics, insights, and decisions until the final cross-system verification succeeds. Run records never
+    mutate from candidate to accepted; a later append-only Publication record carries acceptance and can be
+    superseded only by another explicit disposition record.</div>
+  <p>The publisher owns orphan-candidate recovery. It resumes from <strong>HF Candidate</strong> when the
+     report pin can be completed; otherwise it appends a rejected disposition without mutating run records.</p>
+  <p><span class="state">Accepted:</span> validated, replayed, reviewed, HF-committed, report-pinned, and verified.
+     <span class="reject">Rejected:</span> dirty source, missing input, uncertain rights, invalid schema, bad hash,
+     nondeterministic replay, incomplete review, broken pin, or failed post-publication verification.</p>
+</section>
+
+<section id="compatibility">
+  <h2>8. Existing Ecosystem Compatibility</h2>
+  <p>The run ledger extends the existing execution and report contracts; it does not replace them.</p>
+  <p>Propagation across the repository ecosystem uses the shared workspace-hub schema, the fresh workflow
+     discovery manifest, thin repository adapters, and common conformance tests. A repository may add native
+     input, output, metric, and artifact schemas but may not redefine the shared envelope or promotion gates.
+     Phase 1 publishes only the two named domain datasets; other registered repositories adopt the contract
+     through their own independently approved issues when a public-run use case exists.</p>
+  <table>
+    <thead><tr><th>Existing surface</th><th>Reuse</th><th>Public-ledger hardening</th></tr></thead>
+    <tbody>
+      <tr><td><code>ResultEnvelope</code> from <a href="https://github.com/vamseeachanta/workspace-hub/issues/3282">issue 3282</a></td><td>Status, result payload, provenance, determinism evidence, confidence, warnings</td><td>Its input hash may omit replay-critical configuration; its code version may be missing and does not prove a clean tree. Carry it as evidence, then derive strict IDs from validated records.</td></tr>
+      <tr><td>Determinism harness from <a href="https://github.com/vamseeachanta/workspace-hub/issues/3283">issue 3283</a></td><td>Golden comparisons, explicit volatile-key policy, provenance stamps</td><td>Public promotion requires a measured exact replay and versioned output equality policy, not an unchecked or inferred flag.</td></tr>
+      <tr><td>Workflow manifest from <a href="https://github.com/vamseeachanta/workspace-hub/issues/3284">issue 3284</a></td><td><code>repo:id@version</code>, registry hash, invocation, input/output descriptors, discovery</td><td>Fail closed when stale. With explicit tier-1 base resolution on 2026-07-10, all four repositories resolved: assetutilities and worldenergydata drifted; digitalmodel and assethold matched. Nested-worktree default resolution incorrectly reported missing registries and is tracked by <a href="https://github.com/vamseeachanta/workspace-hub/issues/3450">issue 3450</a>.</td></tr>
+      <tr><td><code>digitalmodel.workflow_api</code> at <code>origin/main@529c4ba13d90</code></td><td>Repository runner, provenance adapter, golden harness, and four workflow goldens</td><td>Carry the measured envelope and golden evidence, then derive strict public input, version, environment, and output-set identities under the new contracts.</td></tr>
+      <tr><td>Execution manifest</td><td>Commands, replay, environment, checksums, tests, legal evidence, promotion gates</td><td>Add algorithm version, canonical input set, output equality set, HF revision, and public acceptance state.</td></tr>
+      <tr><td>Report evidence bundle</td><td>Audience, derivation chain, claims, source bindings, review and legal evidence</td><td>Add the standard algorithm report section contract and exact run/dataset revision bindings.</td></tr>
+      <tr><td>Customer API from <a href="https://github.com/vamseeachanta/workspace-hub/issues/3289">issue 3289</a></td><td>Private request validation and workflow execution</td><td>Retain a separate approval gate and never expose or alias private execution identity as the deterministic public <code>run_id</code>.</td></tr>
+    </tbody>
+  </table>
+  <p>An existing registry <code>workflow_id</code> uses <code>repo:id@integer-version</code>. The run ledger will
+     preserve that execution reference but will not infer a semantic algorithm version from the integer. A
+     source-repository algorithm descriptor will declare the semantic version and map it to the exact workflow
+     registry row, source commit, schemas, and environment.</p>
+  <p>Fetched remote evidence is authoritative over mutable local feature checkouts. At
+     <code>digitalmodel origin/main@529c4ba13d90</code>, the repository runner, provenance adapter, golden harness,
+     and four goldens are present. At <code>worldenergydata origin/main@0c5393b18590</code>, the adapter demonstrates
+     reusable envelope integration but stamps a runtime timestamp where public replay needs a source-data
+     snapshot. Both pilot issues will fetch and verify their remote baseline again before implementation.</p>
+</section>
+
+<section id="issues">
+  <h2>9. Issue Ownership and Sequence</h2>
+  <table>
+    <thead><tr><th>Order</th><th>Issue</th><th>Owns</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td><a href="https://github.com/vamseeachanta/workspace-hub/issues/3428">workspace-hub issue 3428</a></td><td>Run identity and composite algorithm version</td></tr>
+      <tr><td>2</td><td><a href="https://github.com/vamseeachanta/workspace-hub/issues/3429">workspace-hub issue 3429</a></td><td>Artifacts and residency</td></tr>
+      <tr><td>3</td><td><a href="https://github.com/vamseeachanta/workspace-hub/issues/3430">workspace-hub issue 3430</a></td><td>Replayable inputs and source snapshots</td></tr>
+      <tr><td>4</td><td><a href="https://github.com/vamseeachanta/workspace-hub/issues/3431">workspace-hub issue 3431</a></td><td>Curated outputs and rolling reports</td></tr>
+      <tr><td>5</td><td><a href="https://github.com/vamseeachanta/workspace-hub/issues/3432">workspace-hub issue 3432</a></td><td>Metric definitions and observations</td></tr>
+      <tr><td>6</td><td><a href="https://github.com/vamseeachanta/workspace-hub/issues/3433">workspace-hub issue 3433</a></td><td>HF projection and staged promotion</td></tr>
+      <tr><td>7</td><td><a href="https://github.com/vamseeachanta/digitalmodel/issues/1505">digitalmodel issue 1505</a></td><td>Public synthetic pilot</td></tr>
+      <tr><td>8</td><td><a href="https://github.com/vamseeachanta/worldenergydata/issues/927">worldenergydata issue 927</a></td><td>Public BSEE pilot</td></tr>
+      <tr><td>9</td><td><a href="https://github.com/vamseeachanta/workspace-hub/issues/3434">workspace-hub issue 3434</a></td><td>Cross-run insights and decision briefs</td></tr>
+    </tbody>
+  </table>
+  <p>Sequence: <code>identity -&gt; artifacts -&gt; inputs + outputs -&gt; metrics -&gt; publication -&gt; pilots -&gt; insights</code>.
+     Every child requires its own resource intelligence, adversarially reviewed plan, user approval, TDD, and
+     code/artifact review. Approval of the parent never authorizes a child implementation.</p>
+</section>
+
+<section id="sources">
+  <h2>10. Sources and Deferred Detail</h2>
+  <h3>Parent implementation exclusions</h3>
+  <ul id="parent-exclusions">
+    <li data-exclusion="source_repository_algorithm_code_changes">Source-repository algorithm code changes</li>
+    <li data-exclusion="workflow_registry_changes">Workflow registry changes</li>
+    <li data-exclusion="source_repository_report_changes">Source-repository report changes</li>
+    <li data-exclusion="hugging_face_dataset_changes">Hugging Face dataset changes</li>
+    <li data-exclusion="hugging_face_resource_changes">Hugging Face resource changes</li>
+    <li data-exclusion="credentials_or_tokens">Credentials or tokens</li>
+    <li data-exclusion="child_issue_implementation">Child issue implementation</li>
+    <li data-exclusion="customer_api_implementation">Customer API implementation</li>
+    <li data-exclusion="private_or_restricted_run_projection">Private or restricted run projection</li>
+    <li data-exclusion="combined_cross_repository_domain_run_table">Combined cross-repository domain run table</li>
+    <li data-exclusion="per_run_html_reports">Per-run HTML reports</li>
+  </ul>
+  <h3>References</h3>
+  <ul>
+    <li><a href="../architecture/algorithm-run-dataset-contract.yaml">Algorithm run dataset contract 1.0.0</a></li>
+    <li><a href="../architecture/execution-manifest.schema.yaml">Execution manifest schema</a> and <a href="../architecture/report-evidence-bundle.schema.yaml">report evidence bundle schema</a></li>
+    <li><code>digitalmodel/docs/registry/workflows.yaml</code> and existing parametric result manifests</li>
+    <li><code>worldenergydata/data/source-refresh-acceptance-contract.json</code> and BSEE product manifests</li>
+    <li><a href="https://huggingface.co/docs/hub/datasets-adding">Hugging Face dataset upload and supported formats</a></li>
+    <li><a href="https://huggingface.co/docs/hub/datasets-cards">Hugging Face dataset cards and metadata</a></li>
+    <li><a href="https://huggingface.co/docs/huggingface_hub/guides/upload">Hugging Face upload, commit, and preupload guidance</a></li>
+  </ul>
+  <p>Child plans will settle the exact canonical JSON profile, schema file names, Parquet partition thresholds,
+     environment-manifest vocabulary, semantic canonicalizers, and authenticated Hugging Face namespace. Those
+     details may tighten this contract but may not weaken its public replay, immutability, or review gates.</p>
+</section>
+</main>
+<footer>Approved parent decision manual for workspace-hub issue 3427. Source repositories remain authoritative for
+algorithm code and schemas; exact Hugging Face revisions remain authoritative for accepted public run records.</footer>
+</body>
+</html>

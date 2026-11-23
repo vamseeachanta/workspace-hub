@@ -1,0 +1,46 @@
+command,count
+cd <dir>,5189
+gh issue,400
+#,204
+ls,199
+find,122
+mkdir,57
+cat <file>,51
+chmod,39
+head <file>,38
+node,33
+python,32
+grep/search,30
+pip,24
+wc,22
+rm,19
+pwd,19
+bash,18
+echo,18
+~/.hermes/hermes-agent/.venv/bin/python3,16
+/home/vamsee/miniforge3/bin/python,16
+which,11
+sed,11
+crontab,10
+ssh,10
+gh label,10
+git remote,9
+ps,9
+/home/vamsee/miniforge3/bin/pip,8
+gh auth,7
+du,7
+hermes,7
+cp,6
+hostname,5
+for,5
+tail <file>,5
+md5sum,4
+/home/vamsee/miniforge3/bin/python3,4
+sleep,3
+touch,3
+df,2
+git -C,2
+date,2
+claude,2
+gh repo,2
+stat,1

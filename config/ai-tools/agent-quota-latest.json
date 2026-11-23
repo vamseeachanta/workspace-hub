@@ -1,0 +1,35 @@
+{
+  "timestamp": "2026-08-03T20:20:05-05:00",
+  "agents": [
+    {
+      "provider": "claude",
+      "tier": "max",
+      "weekly_limit": 20000,
+      "week_pct": null,
+      "five_hour_pct": null,
+      "pct_remaining": null,
+      "hours_to_reset": null,
+      "resets_at": "",
+      "source": "unavailable"
+    },
+    {
+      "provider": "codex",
+      "tier": "subscription",
+      "weekly_limit": 1400,
+      "week_messages": 13,
+      "pct_remaining": 100,
+      "source": "history.jsonl-estimate"
+    },
+    {
+      "provider": "gemini",
+      "tier": "google_login",
+      "week_pct": 0,
+      "five_hour_pct": null,
+      "pct_remaining": 100,
+      "hours_to_reset": 159.5,
+      "resets_at": "",
+      "captured_at": "2026-06-14T16:32:59-05:00",
+      "source": "manual-snapshot"
+    }
+  ]
+}

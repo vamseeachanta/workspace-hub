@@ -1,0 +1,85 @@
+STATUS COUNTS
+
+TOP LABELS
+enhancement: 109
+priority:medium: 80
+cat:engineering: 75
+agent:claude: 50
+priority:high: 49
+dark-intelligence: 37
+cat:harness: 26
+agent:codex: 24
+gtm: 19
+domain:code-promotion: 18
+priority:low: 16
+cat:infrastructure: 14
+cat:data-pipeline: 14
+cat:ai-orchestration: 11
+domain:gtm: 10
+cat:business: 9
+cat:operations: 7
+cat:document-intelligence: 7
+cat:engineering-calculations: 7
+domain:knowledge-management: 6
+domain:marine: 6
+domain:workflow: 5
+maintenance: 4
+agent:gemini: 4
+domain:knowledge: 3
+cat:strategy: 3
+machine:dev-primary: 3
+machine:licensed-win-1: 3
+cat:documentation: 2
+bug: 2
+domain:data-pipeline: 2
+cat:research: 2
+domain:ai-config: 2
+cat:harness/ops: 2
+cat:harness/skills: 2
+domain:skills: 2
+cat:platform: 1
+review-backlog: 1
+domain:structural: 1
+domain:drilling: 1
+
+SAMPLE ISSUES
+#2063 | feat(naval-arch): wire drilling riser components into mooring/riser analysis | enhancement, cat:engineering, domain:code-promotion, agent:claude
+#2062 | feat(naval-arch): drilling rig fleet adapter — 2,210 rigs into hull form validation | enhancement, cat:engineering, domain:code-promotion, agent:claude
+#2061 | Session governance Phase 4: Hermes-orchestrated session lifecycle | enhancement, priority:low, cat:ai-orchestration, agent:claude
+#2060 | feat(field-dev): project timeline benchmarks from SubseaIQ milestone data | enhancement, cat:engineering, agent:claude
+#2059 | feat(naval-arch): real vessel stability test cases from fleet data (Sleipnir, Thialf, Balder) | enhancement, cat:engineering, domain:code-promotion, agent:claude
+#2058 | feat(field-dev): subsea architecture patterns — flowline trends and layout classification | enhancement, cat:engineering, agent:claude
+#2057 | Session governance Phase 3: restore lost session infrastructure | enhancement, priority:medium, cat:ai-orchestration, agent:claude
+#2056 | Session governance Phase 2: wire runtime enforcement into hooks | enhancement, priority:high, cat:ai-orchestration, agent:claude
+#2055 | feat(field-dev): subsea cost benchmarking from SubseaIQ equipment counts | enhancement, priority:high, cat:engineering, dark-intelligence, agent:claude
+#2054 | feat(field-dev): add production decline curve to economics cashflow model | enhancement, cat:engineering, domain:code-promotion, agent:claude
+#2053 | feat(field-dev): concept selection probability matrix and decision tree from SubseaIQ benchmarks | enhancement, priority:high, cat:engineering, agent:claude
+#2052 | Queue refresh: auto-generate 'This Week's Focus' and dependency chains | enhancement, priority:medium, cat:ai-orchestration, agent:claude
+#2051 | feat(field-dev): wire economics facade into field_development workflow.py | enhancement, cat:engineering, domain:code-promotion, agent:claude
+#2050 | feat(field-dev): add fiscal regime tax adjustment to economics cashflows | enhancement, cat:engineering, domain:code-promotion, agent:claude
+#2049 | Wire queue refresh into Sunday night cron schedule | enhancement, priority:medium, cat:ai-orchestration, agent:codex
+#2048 | feat(field-dev): wire ML cost predictor into economics facade CAPEX adapter | enhancement, cat:engineering, domain:code-promotion, agent:claude
+#2047 | Implement stronger enforcement for issue planning workflow if audit fails | priority:high, cat:ai-orchestration, cat:operations
+#2046 | Audit compliance of strict issue planning workflow after rollout | priority:medium, cat:ai-orchestration, cat:operations
+#2045 | Onboard all agents to strict issue planning workflow | priority:medium, cat:ai-orchestration, cat:documentation
+#2043 | feat(gtm): mooring layout force explainer animation | enhancement, priority:medium, cat:business, domain:gtm
+#2042 | feat: engineering wiki — ingest skill metadata as wiki pages | enhancement, cat:harness, domain:knowledge-management
+#2040 | feat: cronize engineering wiki incremental ingest | enhancement, cat:harness, domain:knowledge-management
+#2038 | feat(gtm): manim installation sequence / operability envelope animation | enhancement, priority:medium, cat:business, domain:gtm
+#2037 | feat(gtm): manim mooring layout / force explainer animation | enhancement, priority:medium, cat:business, domain:gtm
+#2036 | feat: engineering wiki incremental ingest cron | enhancement, priority:medium, cat:harness, domain:knowledge-management
+#2035 | feat(gtm): manim-based engineering explainer pipeline | enhancement, priority:medium, cat:business, domain:gtm
+#2034 | feat: engineering LLM wiki seed + incremental ingest pipeline | enhancement, priority:high, cat:harness, domain:knowledge-management
+#2033 | session-log: 2026-04-07 -- executed enforcement, self-improvement pipeline, methodology docs | cat:operations, maintenance
+#2031 | build: automated compliance monitoring -- daily cron, alerts, weekly report | priority:medium, cat:operations, cat:harness, domain:workflow
+#2030 | publish: methodology docs to aceengineer.com -- 4 pages for client-facing technical content | priority:medium, cat:business, domain:gtm
+#2028 | feat: review gate strict mode + GitHub Actions CI enforcement workflow | priority:medium, cat:engineering, cat:harness, domain:workflow
+#2027 | feat: enable enforcement strict mode -- wire plan gate into pre-commit, chain learning extraction | priority:high, cat:engineering, cat:harness, domain:workflow
+#2026 | build: Email state tracking system — Gmail labels + local state log + grace period deletion | enhancement, priority:medium, cat:infrastructure
+#2025 | build: Per-domain email extraction templates — CRE, client, tenant, tax, invoice | enhancement, priority:medium, cat:data-pipeline
+#2024 | build: gmail-extract-and-act pipeline — rewrite gmail-archive-extract.py for extract-first, delete-later queue model | enhancement, priority:high, cat:data-pipeline
+#2023 | session-log: 2026-04-07 future-work-structuring -- random thoughts to structured issues | cat:operations, maintenance
+#2022 | feat: publish repo knowledge bases as aceengineer.com content -- engine for client acquisition | priority:medium, cat:business, domain:gtm
+#2021 | feat: document compound engineering methodology -- 5 operational lessons from production | priority:medium, cat:documentation, domain:knowledge
+#2020 | feat: orchestrator/worker context enforcement -- plan gates, artifact verification, knowledge propagation | priority:medium, cat:harness, cat:platform, domain:workflow
+#2019 | chore: Consolidate email skill sprawl — 12 skills → 4-5 workflow-aligned skills | enhancement, priority:medium, cat:infrastructure, maintenance

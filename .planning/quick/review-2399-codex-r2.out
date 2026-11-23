@@ -1,0 +1,343 @@
+OpenAI Codex v0.121.0 (research preview)
+--------
+workdir: /mnt/local-analysis/workspace-hub
+model: gpt-5.4
+provider: openai
+approval: never
+sandbox: workspace-write [workdir, /tmp, $TMPDIR, /home/vamsee/.codex/memories]
+reasoning effort: medium
+reasoning summaries: none
+session id: 019dab9b-cc13-76c0-bd4a-c3d0aeef68b3
+--------
+user
+# Adversarial Plan Review Request: Issue #2399
+
+You are an adversarial reviewer. Assume the plan has defects until proven otherwise.
+Do not praise. Do not restate the plan. Focus only on what is wrong, missing, risky, contradictory, underspecified, or likely to cause rework.
+Return APPROVE only if you can affirmatively verify there are no blocking defects.
+Each finding must cite a specific plan section, file path, issue reference, or quoted claim.
+If nothing is wrong, explicitly state what you checked.
+
+## Issue context
+Title: feat(ai-orchestration): define next-model-release readiness contract for repo ecosystem
+URL: https://github.com/vamseeachanta/workspace-hub/issues/2399
+
+Issue body:
+## Summary
+Create a repo-ecosystem readiness program for upcoming model/provider releases so new Claude/Codex/Gemini/Hermes capabilities can be adopted without breaking workflow discipline, portability, or review quality.
+
+## Why
+The repo ecosystem is increasingly dependent on model-specific behavior: agent adapters, skills, prompt packaging, plan-review workflows, session artifacts, tool semantics, and context-management conventions. New model releases regularly change:
+- context windows and truncation behavior
+- tool-calling semantics
+- system-prompt behavior
+- sandbox and permissions assumptions
+- output style and structured-output reliability
+- pricing/routing trade-offs
+- session export/log formats
+
+Today, readiness is spread across individual issues and ad hoc settings reviews. A dedicated issue is needed to define what makes the repo ecosystem resilient to the next model release instead of reacting after breakage.
+
+## Scope
+Define a standing readiness contract covering:
+- thin adapter-file expectations (`CLAUDE.md`, `CODEX.md`, `GEMINI.md`, Hermes equivalents)
+- machine-readable rules/skills vs prose-only guidance
+- prompt-pack portability across providers and machines
+- tool-contract smoke tests for common workflows
+- session/export/log schema resilience
+- context-budget and truncation-safe artifact design
+- regression checks for planning, review, execution, and handoff flows
+- provider/version inventory and upgrade playbook
+- evaluation corpus / golden tasks for comparing model releases before broad rollout
+
+## Deliverables
+1. A checklist for "model-release ready" status at repo and ecosystem levels.
+2. A gap analysis against the current workspace-hub control plane.
+3. A small battery of provider-agnostic smoke/eval tasks covering:
+   - issue planning
+   - adversarial review
+   - repo navigation
+   - code modification discipline
+   - session handoff integrity
+4. A version-upgrade playbook for adopting new major model releases safely.
+5. Follow-up issues for the highest-risk gaps discovered.
+
+## Acceptance Criteria
+- [ ] readiness dimensions are explicitly defined instead of implied
+- [ ] current gaps are mapped to concrete repo surfaces and files/workflows
+- [ ] smoke/eval coverage is proposed for the most failure-prone cross-provider workflows
+- [ ] upgrade guidance separates provider-specific drift from repo-owned fixes
+- [ ] issue yields a reusable contract for future model-release adoption waves
+
+## Related
+- #2089 weekly Hermes + AI provider settings review for repo ecosystem
+- #1583 Hermes config parity via repo ecosystem templates
+- #2253 harden Gemini auto-label confidence with research-readiness signals
+- #2323 single-command cross-AI plan-review fan-out
+- #2045 onboard all agents to strict issue planning workflow
+- #2330 verify first run of daily-repo-readiness cron
+
+## Notes
+This issue is about future-proofing the control plane and repo conventions for model/provider evolution. It is not limited to one provider.
+
+
+## Draft plan under review
+# Plan for #2399: Define next-model-release readiness contract for repo ecosystem
+
+> **Status:** draft
+> **Complexity:** T2
+> **Date:** 2026-04-20
+> **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2399
+> **Review artifacts:** scripts/review/results/2026-04-20-plan-2399-claude.md | scripts/review/results/2026-04-20-plan-2399-codex.md | scripts/review/results/2026-04-20-plan-2399-gemini.md
+
+---
+
+## Resource Intelligence Summary
+
+### Existing repo code
+- Found: `docs/standards/CONTROL_PLANE_CONTRACT.md` — defines repo entry points, provider adapters, and convergence expectations across repos.
+- Found: `docs/standards/AI_REVIEW_ROUTING_POLICY.md` — defines three-agent adversarial review defaults and provider roles for planning and implementation review.
+- Gap: no single contract defines what makes the repo ecosystem resilient to the next model/provider release across prompts, adapters, session logs, tool semantics, and eval/smoke coverage.
+
+### Standards
+| Standard | Status | Source |
+|---|---|---|
+| Control-plane contract | done | `docs/standards/CONTROL_PLANE_CONTRACT.md` |
+| AI review routing policy | done | `docs/standards/AI_REVIEW_ROUTING_POLICY.md` |
+| Current provider settings review cadence | partial | issue #2089 |
+
+### LLM Wiki pages consulted
+- No relevant wiki pages; this is control-plane governance and release-readiness work rooted in standards and issue workflow policy.
+
+### Documents consulted
+- Related issue #2089 — weekly Hermes + AI provider settings review; useful operational input but not a full readiness contract.
+- Related issue #1583 — Hermes config parity via repo ecosystem templates; useful parity baseline.
+- Related issue #2253 — provider-routing hardening for Gemini confidence; shows provider-specific drift already exists.
+- Related issue #2323 — cross-AI plan-review fan-out; identifies a workflow that must remain robust across model changes.
+- `docs/reports/2026-04-20-refactor-knowledge-release-readiness-dependency-map.md` — positions #2399 as a child control-plane-readiness lane feeding #1962.
+
+### Gaps identified
+- No checklist for “model-release ready” status at repo/ecosystem level.
+- No golden-task / smoke-eval battery covering planning, review, navigation, and handoff workflows across providers.
+- No explicit upgrade playbook separating provider drift from repo-owned fixes.
+- No consolidated contract for log/export/schema resilience as models and CLIs evolve.
+
+---
+
+## Artifact Map
+
+| Artifact | Path |
+|---|---|
+| This plan | docs/plans/2026-04-20-issue-2399-next-model-release-readiness-contract.md |
+| Shared dependency map | docs/reports/2026-04-20-refactor-knowledge-release-readiness-dependency-map.md |
+| Main report | docs/reports/2026-04-20-issue-2399-model-release-readiness-contract.md |
+| Plan review — Claude | scripts/review/results/2026-04-20-plan-2399-claude.md |
+| Plan review — Codex | scripts/review/results/2026-04-20-plan-2399-codex.md |
+| Plan review — Gemini | scripts/review/results/2026-04-20-plan-2399-gemini.md |
+| Docs updates | docs/plans/README.md |
+
+---
+
+## Deliverable
+
+A reusable repo-ecosystem readiness contract for adopting future model/provider releases safely, including checklist dimensions, smoke/eval tasks, and an upgrade playbook.
+
+---
+
+## Pseudocode
+
+```
+inventory current provider-sensitive workflow surfaces: adapters, prompts, session logs, reviews, handoffs, tool semantics
+group failure modes into repo-owned vs provider-owned drift
+define readiness dimensions and checklist criteria for each repo and the overall ecosystem
+design a compact golden-task battery covering planning, adversarial review, repo navigation, code-change discipline, and handoff integrity
+outline upgrade workflow: detect release, run eval battery, classify failures, patch repo-owned surfaces, document provider-specific exceptions
+produce report with contract, gap analysis, and prioritized follow-up issue candidates
+```
+
+---
+
+## Files to Change
+
+| Action | Path | Reason |
+|---|---|---|
+| Create | docs/reports/2026-04-20-issue-2399-model-release-readiness-contract.md | readiness checklist, eval battery, upgrade playbook |
+| Update | docs/reports/2026-04-20-refactor-knowledge-release-readiness-dependency-map.md | preserve sequencing context |
+| Update | docs/plans/README.md | add this plan to index |
+
+---
+
+## TDD Test List
+
+| Test name | What it verifies | Expected input | Expected output |
+|---|---|---|---|
+| test_report_defines_readiness_dimensions | readiness is explicit and auditable | current control-plane surfaces | named dimensions/checklist |
+| test_smoke_battery_covers_core_workflows | evals cover high-risk workflows | workflow list | planning/review/navigation/handoff coverage |
+| test_gap_analysis_separates_provider_vs_repo_drift | remediation ownership is clear | observed failure classes | provider-owned vs repo-owned split |
+| test_upgrade_playbook_has_decision_points | future release handling is repeatable | new model release scenario | ordered upgrade steps |
+
+---
+
+## Acceptance Criteria
+
+- [ ] A report exists at `docs/reports/2026-04-20-issue-2399-model-release-readiness-contract.md`
+- [ ] The report defines readiness dimensions and a checklist for repo/ecosystem use
+- [ ] The report proposes a small but concrete provider-agnostic smoke/eval battery
+- [ ] The report separates provider drift from repo-owned remediation responsibilities
+- [ ] The report includes an upgrade playbook for future model/provider releases
+- [ ] Review artifacts are posted to `scripts/review/results/`
+
+---
+
+## Adversarial Review Summary
+
+| Provider | Verdict | Key findings |
+|---|---|---|
+| Claude | PENDING | Awaiting review |
+| Codex | PENDING | Awaiting review |
+| Gemini | PENDING | Awaiting review |
+
+**Overall result:** PENDING
+
+Revisions made based on review:
+- none yet
+
+---
+
+## Risks and Open Questions
+
+- **Risk:** the contract could become too abstract if it does not anchor to concrete workflow surfaces already known to drift.
+- **Risk:** provider-specific release quirks could be mistaken for repo defects, causing unnecessary repo churn.
+- **Open:** should the first readiness battery optimize for breadth across many workflows or depth on the highest-value workflows only?
+
+---
+
+## Complexity: T2
+
+**T2** — bounded governance/architecture plan producing a reusable contract and eval framework without immediate implementation code.
+
+
+## Review dimensions
+1. Correctness: does the plan actually answer the issue?
+2. Completeness: are deliverable, artifact map, files, and follow-up boundaries sufficient?
+3. Feasibility: is the proposed work bounded and realistically executable?
+4. TDD / verification adequacy: are tests or validation steps meaningful and sufficient?
+5. Scope discipline: does the plan avoid silently absorbing adjacent work?
+6. Dependency handling: are prerequisites and sequencing handled correctly?
+7. Approval readiness: is this safe to surface to the user for approval now?
+8. Retrieval adequacy: is the resource-intelligence evidence concrete and sufficient?
+
+## Required output format
+Verdict: APPROVE | MINOR | MAJOR
+Retrieval adequacy: adequate | insufficient
+Findings:
+- [severity] <finding>
+Missing tests:
+- ...
+Scope creep concerns:
+- ...
+Weakest assumption:
+- ...
+Most likely implementation failure mode:
+- ...
+Most likely test gap:
+- ...
+Future issues suggested:
+- ...
+Review confidence: low | medium | high
+warning: Codex's Linux sandbox uses bubblewrap and needs access to create user namespaces.
+codex
+I’m verifying the draft plan against the actual repo surfaces it cites before judging approval readiness. First step is checking the referenced standards, dependency map, and plan indexing paths for gaps or contradictions.
+2026-04-20T15:57:00.193658Z ERROR codex_core::tools::router: error=exec_command failed for `/bin/bash -lc "sed -n '1,260p' docs/standards/CONTROL_PLANE_CONTRACT.md"`: CreateProcess { message: "Codex(Sandbox(Denied { output: ExecToolCallOutput { exit_code: 1, stdout: StreamOutput { text: \"\", truncated_after_lines: None }, stderr: StreamOutput { text: \"bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted\\n\", truncated_after_lines: None }, aggregated_output: StreamOutput { text: \"bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted\\n\", truncated_after_lines: None }, duration: 0ns, timed_out: false }, network_policy_decision: None }))" }
+2026-04-20T15:57:00.199404Z ERROR codex_core::tools::router: error=exec_command failed for `/bin/bash -lc "sed -n '1,260p' docs/standards/AI_REVIEW_ROUTING_POLICY.md"`: CreateProcess { message: "Codex(Sandbox(Denied { output: ExecToolCallOutput { exit_code: 1, stdout: StreamOutput { text: \"\", truncated_after_lines: None }, stderr: StreamOutput { text: \"bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted\\n\", truncated_after_lines: None }, aggregated_output: StreamOutput { text: \"bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted\\n\", truncated_after_lines: None }, duration: 0ns, timed_out: false }, network_policy_decision: None }))" }
+2026-04-20T15:57:00.213410Z ERROR codex_core::tools::router: error=exec_command failed for `/bin/bash -lc "sed -n '1,260p' docs/plans/README.md"`: CreateProcess { message: "Codex(Sandbox(Denied { output: ExecToolCallOutput { exit_code: 1, stdout: StreamOutput { text: \"\", truncated_after_lines: None }, stderr: StreamOutput { text: \"bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted\\n\", truncated_after_lines: None }, aggregated_output: StreamOutput { text: \"bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted\\n\", truncated_after_lines: None }, duration: 0ns, timed_out: false }, network_policy_decision: None }))" }
+2026-04-20T15:57:00.221696Z ERROR codex_core::tools::router: error=exec_command failed for `/bin/bash -lc "sed -n '1,260p' docs/reports/2026-04-20-refactor-knowledge-release-readiness-dependency-map.md"`: CreateProcess { message: "Codex(Sandbox(Denied { output: ExecToolCallOutput { exit_code: 1, stdout: StreamOutput { text: \"\", truncated_after_lines: None }, stderr: StreamOutput { text: \"bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted\\n\", truncated_after_lines: None }, aggregated_output: StreamOutput { text: \"bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted\\n\", truncated_after_lines: None }, duration: 0ns, timed_out: false }, network_policy_decision: None }))" }
+codex
+The shell is blocked in this sandbox, so I’m switching to repo resources directly to verify the cited files instead of relying on terminal reads.
+mcp: codex/list_mcp_resources started
+mcp: codex/list_mcp_resources (completed)
+codex
+Verdict: MAJOR  
+Retrieval adequacy: insufficient
+
+Findings:
+- [major] The plan does not actually commit to producing deliverable 3 as a reusable artifact. In `Files to Change`, the only substantive output is `docs/reports/2026-04-20-issue-2399-model-release-readiness-contract.md`; there is no machine-readable smoke/eval corpus, prompt pack, checklist schema, or executable task battery, even though the issue requires “a small battery of provider-agnostic smoke/eval tasks” and an “evaluation corpus / golden tasks.”
+- [major] Deliverable 5 is dropped. The issue requires “Follow-up issues for the highest-risk gaps discovered,” but neither `Files to Change` nor the plan `Acceptance Criteria` includes creating issue artifacts or even a follow-up issue list with titles/owners/severity. A prose report alone does not satisfy that deliverable.
+- [major] The plan is too abstract relative to the stated scope. The issue explicitly calls out `CLAUDE.md`, `CODEX.md`, `GEMINI.md`, Hermes equivalents, session/export/log formats, and tool-contract smoke tests, but the `Resource Intelligence Summary` and `Files to Change` show no artifact-level inventory of those concrete surfaces. That makes the claimed “gap analysis against the current workspace-hub control plane” likely to devolve into general governance prose instead of repo-surface mapping.
+- [major] The TDD section is not actionable. `TDD Test List` contains four narrative checks (`test_report_defines_readiness_dimensions`, etc.) but no test location, no harness, no fixtures, no command, and no pass/fail mechanism. Given the repo hard gate “TDD mandatory,” this is not an implementation-ready verification plan.
+- [major] The plan never defines how it will avoid conflicting with the existing standards it cites, especially `docs/standards/CONTROL_PLANE_CONTRACT.md`. The claim that there is “no single contract” may justify a new readiness contract, but the plan does not specify whether it will extend, reference, or supersede that existing contract. That is a documentation-boundary defect likely to create overlapping standards.
+- [major] Provider/version inventory is in scope per the issue, but the plan has no dedicated artifact or inventory step for “provider/version inventory and upgrade playbook.” The `Pseudocode` mentions “detect release” and “classify failures,” but there is no current-state inventory source, update mechanism, or ownership model.
+- [major] The acceptance criteria are materially weaker than the issue acceptance criteria. The plan’s `Acceptance Criteria` reduce success to “a report exists” and “review artifacts are posted,” but omit concrete proof that “current gaps are mapped to concrete repo surfaces and files/workflows” and omit any requirement that follow-up issues be generated.
+- [minor] `Risks and Open Questions` leaves a core scoping decision unresolved: “breadth across many workflows or depth on the highest-value workflows only?” That decision affects artifact design, eval corpus size, and feasibility. The plan is not approval-ready while that remains undecided.
+- [minor] `Complexity: T2` appears underestimated for work that includes ecosystem-wide readiness dimensions, gap analysis, provider drift classification, smoke/eval design, and follow-up issue generation. Under-scoping here increases rework risk.
+
+Missing tests:
+- A verification step that inventories actual provider adapter entrypoints (`CLAUDE.md`, `CODEX.md`, `GEMINI.md`, Hermes equivalents) and proves the report maps each cited surface.
+- A verification step for session/export/log schema resilience using real sample artifacts or fixture paths.
+- A verification step that the proposed smoke battery is provider-agnostic and runnable across at least the currently supported providers.
+- A verification step that the upgrade playbook cleanly separates repo-owned fixes from provider-owned drift using explicit examples.
+- A verification step that follow-up issues are generated from identified gaps with severity/ownership, not merely mentioned in prose.
+
+Scope creep concerns:
+- Updating `docs/plans/README.md` is administrative and does not help satisfy the issue’s substantive deliverables.
+- Updating the shared dependency map without a clear dependency decision risks expanding this issue into broader release-readiness program management rather than a bounded contract/gap-analysis task.
+
+Weakest assumption:
+- That a single prose report at `docs/reports/2026-04-20-issue-2399-model-release-readiness-contract.md` is sufficient to satisfy the issue’s required smoke/eval battery, upgrade playbook, and follow-up issue generation.
+
+Most likely implementation failure mode:
+- The issue gets closed with a well-written governance document but no reusable eval corpus, no concrete adapter/session surface inventory, and no follow-up issues, so the next provider release still requires ad hoc interpretation.
+
+Most likely test gap:
+- Session/export/log compatibility and tool-contract drift will remain untested because the plan has no artifact-backed fixtures or executable checks for those surfaces.
+
+Future issues suggested:
+- Create a machine-readable golden-task corpus and runner contract for cross-provider planning/review/navigation/handoff smoke tests.
+- Inventory and normalize provider adapter entrypoints plus session/export/log artifact schemas across the repo ecosystem.
+- Define ownership boundaries between `CONTROL_PLANE_CONTRACT.md` and the new model-release readiness contract to prevent overlapping standards.
+- Automate provider/version inventory and release-triggered upgrade checklists.
+
+Review confidence: medium
+tokens used
+118,116
+Verdict: MAJOR  
+Retrieval adequacy: insufficient
+
+Findings:
+- [major] The plan does not actually commit to producing deliverable 3 as a reusable artifact. In `Files to Change`, the only substantive output is `docs/reports/2026-04-20-issue-2399-model-release-readiness-contract.md`; there is no machine-readable smoke/eval corpus, prompt pack, checklist schema, or executable task battery, even though the issue requires “a small battery of provider-agnostic smoke/eval tasks” and an “evaluation corpus / golden tasks.”
+- [major] Deliverable 5 is dropped. The issue requires “Follow-up issues for the highest-risk gaps discovered,” but neither `Files to Change` nor the plan `Acceptance Criteria` includes creating issue artifacts or even a follow-up issue list with titles/owners/severity. A prose report alone does not satisfy that deliverable.
+- [major] The plan is too abstract relative to the stated scope. The issue explicitly calls out `CLAUDE.md`, `CODEX.md`, `GEMINI.md`, Hermes equivalents, session/export/log formats, and tool-contract smoke tests, but the `Resource Intelligence Summary` and `Files to Change` show no artifact-level inventory of those concrete surfaces. That makes the claimed “gap analysis against the current workspace-hub control plane” likely to devolve into general governance prose instead of repo-surface mapping.
+- [major] The TDD section is not actionable. `TDD Test List` contains four narrative checks (`test_report_defines_readiness_dimensions`, etc.) but no test location, no harness, no fixtures, no command, and no pass/fail mechanism. Given the repo hard gate “TDD mandatory,” this is not an implementation-ready verification plan.
+- [major] The plan never defines how it will avoid conflicting with the existing standards it cites, especially `docs/standards/CONTROL_PLANE_CONTRACT.md`. The claim that there is “no single contract” may justify a new readiness contract, but the plan does not specify whether it will extend, reference, or supersede that existing contract. That is a documentation-boundary defect likely to create overlapping standards.
+- [major] Provider/version inventory is in scope per the issue, but the plan has no dedicated artifact or inventory step for “provider/version inventory and upgrade playbook.” The `Pseudocode` mentions “detect release” and “classify failures,” but there is no current-state inventory source, update mechanism, or ownership model.
+- [major] The acceptance criteria are materially weaker than the issue acceptance criteria. The plan’s `Acceptance Criteria` reduce success to “a report exists” and “review artifacts are posted,” but omit concrete proof that “current gaps are mapped to concrete repo surfaces and files/workflows” and omit any requirement that follow-up issues be generated.
+- [minor] `Risks and Open Questions` leaves a core scoping decision unresolved: “breadth across many workflows or depth on the highest-value workflows only?” That decision affects artifact design, eval corpus size, and feasibility. The plan is not approval-ready while that remains undecided.
+- [minor] `Complexity: T2` appears underestimated for work that includes ecosystem-wide readiness dimensions, gap analysis, provider drift classification, smoke/eval design, and follow-up issue generation. Under-scoping here increases rework risk.
+
+Missing tests:
+- A verification step that inventories actual provider adapter entrypoints (`CLAUDE.md`, `CODEX.md`, `GEMINI.md`, Hermes equivalents) and proves the report maps each cited surface.
+- A verification step for session/export/log schema resilience using real sample artifacts or fixture paths.
+- A verification step that the proposed smoke battery is provider-agnostic and runnable across at least the currently supported providers.
+- A verification step that the upgrade playbook cleanly separates repo-owned fixes from provider-owned drift using explicit examples.
+- A verification step that follow-up issues are generated from identified gaps with severity/ownership, not merely mentioned in prose.
+
+Scope creep concerns:
+- Updating `docs/plans/README.md` is administrative and does not help satisfy the issue’s substantive deliverables.
+- Updating the shared dependency map without a clear dependency decision risks expanding this issue into broader release-readiness program management rather than a bounded contract/gap-analysis task.
+
+Weakest assumption:
+- That a single prose report at `docs/reports/2026-04-20-issue-2399-model-release-readiness-contract.md` is sufficient to satisfy the issue’s required smoke/eval battery, upgrade playbook, and follow-up issue generation.
+
+Most likely implementation failure mode:
+- The issue gets closed with a well-written governance document but no reusable eval corpus, no concrete adapter/session surface inventory, and no follow-up issues, so the next provider release still requires ad hoc interpretation.
+
+Most likely test gap:
+- Session/export/log compatibility and tool-contract drift will remain untested because the plan has no artifact-backed fixtures or executable checks for those surfaces.
+
+Future issues suggested:
+- Create a machine-readable golden-task corpus and runner contract for cross-provider planning/review/navigation/handoff smoke tests.
+- Inventory and normalize provider adapter entrypoints plus session/export/log artifact schemas across the repo ecosystem.
+- Define ownership boundaries between `CONTROL_PLANE_CONTRACT.md` and the new model-release readiness contract to prevent overlapping standards.
+- Automate provider/version inventory and release-triggered upgrade checklists.
+
+Review confidence: medium

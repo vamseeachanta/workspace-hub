@@ -1,0 +1,24 @@
+{
+  "model_profile": "balanced",
+  "commit_docs": true,
+  "parallelization": true,
+  "git": {
+    "branching_strategy": "none",
+    "quick_branch_template": null
+  },
+  "workflow": {
+    "research": true,
+    "plan_check": true,
+    "verifier": false,
+    "nyquist_validation": true,
+    "auto_advance": false,
+    "ui_phase": true,
+    "ui_safety_gate": true,
+    "skip_discuss": false
+  },
+  "hooks": {
+    "context_warnings": true,
+    "context_warning_threshold": 30
+  },
+  "resolve_model_ids": "omit"
+}

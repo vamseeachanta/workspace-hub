@@ -1,0 +1,12 @@
+{
+  "extraction_date": "2026-01-22T06:55:09-06:00",
+  "days_analyzed": 7,
+  "repos_analyzed": 1,
+  "total_commits": 139,
+  "repos": {
+    "digitalmodel": {
+      "commits": 139,
+      "patterns_detected": ["feat commits", "fix commits", "chore commits"]
+    }
+  }
+}

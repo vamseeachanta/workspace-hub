@@ -1,0 +1,15 @@
+{
+  "generated": "2026-06-13",
+  "source": "analysis/2026-06-13-fable5-opus-parity-learning.md (193 sessions, both Linux boxes)",
+  "model": "claude-fable-5",
+  "baseline": {
+    "model": "claude-fable-5",
+    "sessions": 193,
+    "total_turns": 17567,
+    "tokens_per_turn": 860.5,
+    "askuser_per_session": 0.104,
+    "agent_fanout_per_session": 0.715,
+    "avg_turns": 91.021
+  },
+  "note": "Fable behavioral baseline; compare live Opus metrics against this (#3061)."
+}

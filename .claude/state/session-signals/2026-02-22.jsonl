@@ -1,0 +1,8 @@
+{"session_id": "test", "timestamp": "2026-02-22T12:00:00Z"}
+{\"session_id\":\"test\",\"timestamp\":\"2026-02-22T12:00:00Z\"}
+{}
+{}
+{"session_id": "a3629a90-5d8f-4c93-b48c-2f5c0dde47f1", "transcript_path": "C:\\Users\\ansystech\\.claude\\projects\\D--workspace-hub\\a3629a90-5d8f-4c93-b48c-2f5c0dde47f1.jsonl", "cwd": "D:\\workspace-hub", "permission_mode": "bypassPermissions", "hook_event_name": "Stop", "stop_hook_active": false, "last_assistant_message": "[REDACTED]"}
+{"session_id": "a3629a90-5d8f-4c93-b48c-2f5c0dde47f1", "transcript_path": "C:\\Users\\ansystech\\.claude\\projects\\D--workspace-hub\\a3629a90-5d8f-4c93-b48c-2f5c0dde47f1.jsonl", "cwd": "D:\\workspace-hub", "permission_mode": "bypassPermissions", "hook_event_name": "Stop", "stop_hook_active": false, "last_assistant_message": "[REDACTED]"}
+{"session_id": "68c236c0-0eaf-41ac-88bf-7696c0c4c048", "transcript_path": "C:\\Users\\ansystech\\.claude\\projects\\D--workspace-hub\\68c236c0-0eaf-41ac-88bf-7696c0c4c048.jsonl", "cwd": "D:\\workspace-hub\\digitalmodel", "permission_mode": "bypassPermissions", "hook_event_name": "Stop", "stop_hook_active": false, "last_assistant_message": "[REDACTED]"}
+{"session_id": "68c236c0-0eaf-41ac-88bf-7696c0c4c048", "transcript_path": "C:\\Users\\ansystech\\.claude\\projects\\D--workspace-hub\\68c236c0-0eaf-41ac-88bf-7696c0c4c048.jsonl", "cwd": "D:\\workspace-hub\\digitalmodel", "permission_mode": "bypassPermissions", "hook_event_name": "Stop", "stop_hook_active": false, "last_assistant_message": "[REDACTED]"}

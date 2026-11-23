@@ -1,0 +1,29 @@
+version: 1
+description: Spam classification rules evaluated before email routing.
+evaluation_order:
+  - spam
+rules:
+  - id: letstok_web_form_abuse
+    enabled: true
+    classification: spam
+    state_tracking: skip
+    action_for_unmapped_sender: DELETE
+    description: Detects repeated Letstok web-form solicitations unrelated to active business.
+    sender_contains_any:
+      - letstok
+    contains_any:
+      - fatigue analysis
+      - offshore engineering
+      - engineering analysis support
+      - web form submission
+      - Letstok
+    false_positive_handling:
+      learning_log_event: spam_false_positive_override
+      required_fields:
+        - account_id
+        - thread_id
+        - original_classification
+        - corrected_classification
+        - rule_matched
+        - ts_utc
+

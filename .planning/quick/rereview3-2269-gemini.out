@@ -1,0 +1,151 @@
+Agent loading error: Failed to load agent from /mnt/local-analysis/workspace-hub/.gemini/agents/gsd-debugger.md: Validation failed: Agent Definition:
+Unrecognized key(s) in object: 'permissionMode'Agent loading error: Failed to load agent from /mnt/local-analysis/workspace-hub/.gemini/agents/gsd-executor.md: Validation failed: Agent Definition:
+Unrecognized key(s) in object: 'permissionMode'Attempt 1 failed with status 429. Retrying with backoff... _GaxiosError: [{
+  "error": {
+    "code": 429,
+    "message": "No capacity available for model gemini-3.1-pro-preview on the server",
+    "errors": [
+      {
+        "message": "No capacity available for model gemini-3.1-pro-preview on the server",
+        "domain": "global",
+        "reason": "rateLimitExceeded"
+      }
+    ],
+    "status": "RESOURCE_EXHAUSTED",
+    "details": [
+      {
+        "@type": "type.googleapis.com/google.rpc.ErrorInfo",
+        "reason": "MODEL_CAPACITY_EXHAUSTED",
+        "domain": "cloudcode-pa.googleapis.com",
+        "metadata": {
+          "model": "gemini-3.1-pro-preview"
+        }
+      }
+    ]
+  }
+}
+]
+    at Gaxios._request (file:///home/vamsee/.npm-global/lib/node_modules/@google/gemini-cli/bundle/chunk-UIKF2OKQ.js:8578:19)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async _OAuth2Client.requestAsync (file:///home/vamsee/.npm-global/lib/node_modules/@google/gemini-cli/bundle/chunk-UIKF2OKQ.js:10541:16)
+    at async CodeAssistServer.requestStreamingPost (file:///home/vamsee/.npm-global/lib/node_modules/@google/gemini-cli/bundle/chunk-UIKF2OKQ.js:277476:17)
+    at async CodeAssistServer.generateContentStream (file:///home/vamsee/.npm-global/lib/node_modules/@google/gemini-cli/bundle/chunk-UIKF2OKQ.js:277276:23)
+    at async file:///home/vamsee/.npm-global/lib/node_modules/@google/gemini-cli/bundle/chunk-UIKF2OKQ.js:278117:19
+    at async file:///home/vamsee/.npm-global/lib/node_modules/@google/gemini-cli/bundle/chunk-UIKF2OKQ.js:255118:23
+    at async retryWithBackoff (file:///home/vamsee/.npm-global/lib/node_modules/@google/gemini-cli/bundle/chunk-UIKF2OKQ.js:275074:23)
+    at async GeminiChat.makeApiCallAndProcessStream (file:///home/vamsee/.npm-global/lib/node_modules/@google/gemini-cli/bundle/chunk-UIKF2OKQ.js:310991:28)
+    at async GeminiChat.streamWithRetries (file:///home/vamsee/.npm-global/lib/node_modules/@google/gemini-cli/bundle/chunk-UIKF2OKQ.js:310829:29) {
+  config: {
+    url: 'https://cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse',
+    method: 'POST',
+    params: { alt: 'sse' },
+    headers: {
+      'Content-Type': 'application/json',
+      'User-Agent': 'GeminiCLI/0.38.0/gemini-3.1-pro-preview (linux; x64; terminal) google-api-nodejs-client/9.15.1',
+      Authorization: '<<REDACTED> - See `errorRedactor` option in `gaxios` for configuration>.',
+      'x-goog-api-client': 'gl-node/24.14.1'
+    },
+    responseType: 'stream',
+    body: '<<REDACTED> - See `errorRedactor` option in `gaxios` for configuration>.',
+    signal: AbortSignal { aborted: false },
+    retry: false,
+    paramsSerializer: [Function: paramsSerializer],
+    validateStatus: [Function: validateStatus],
+    errorRedactor: [Function: defaultErrorRedactor]
+  },
+  response: {
+    config: {
+      url: 'https://cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse',
+      method: 'POST',
+      params: [Object],
+      headers: [Object],
+      responseType: 'stream',
+      body: '<<REDACTED> - See `errorRedactor` option in `gaxios` for configuration>.',
+      signal: [AbortSignal],
+      retry: false,
+      paramsSerializer: [Function: paramsSerializer],
+      validateStatus: [Function: validateStatus],
+      errorRedactor: [Function: defaultErrorRedactor]
+    },
+    data: '[{\n' +
+      '  "error": {\n' +
+      '    "code": 429,\n' +
+      '    "message": "No capacity available for model gemini-3.1-pro-preview on the server",\n' +
+      '    "errors": [\n' +
+      '      {\n' +
+      '        "message": "No capacity available for model gemini-3.1-pro-preview on the server",\n' +
+      '        "domain": "global",\n' +
+      '        "reason": "rateLimitExceeded"\n' +
+      '      }\n' +
+      '    ],\n' +
+      '    "status": "RESOURCE_EXHAUSTED",\n' +
+      '    "details": [\n' +
+      '      {\n' +
+      '        "@type": "type.googleapis.com/google.rpc.ErrorInfo",\n' +
+      '        "reason": "MODEL_CAPACITY_EXHAUSTED",\n' +
+      '        "domain": "cloudcode-pa.googleapis.com",\n' +
+      '        "metadata": {\n' +
+      '          "model": "gemini-3.1-pro-preview"\n' +
+      '        }\n' +
+      '      }\n' +
+      '    ]\n' +
+      '  }\n' +
+      '}\n' +
+      ']',
+    headers: {
+      'alt-svc': 'h3=":443"; ma=2592000,h3-29=":443"; ma=2592000',
+      'content-length': '630',
+      'content-type': 'application/json; charset=UTF-8',
+      date: 'Wed, 15 Apr 2026 20:09:35 GMT',
+      server: 'ESF',
+      'server-timing': 'gfet4t7; dur=266',
+      vary: 'Origin, X-Origin, Referer',
+      'x-cloudaicompanion-trace-id': '64a316c9e0f2f3ad',
+      'x-content-type-options': 'nosniff',
+      'x-frame-options': 'SAMEORIGIN',
+      'x-xss-protection': '0'
+    },
+    status: 429,
+    statusText: 'Too Many Requests',
+    request: {
+      responseURL: 'https://cloudcode-pa.googleapis.com/v1internal:streamGenerateContent?alt=sse'
+    }
+  },
+  error: undefined,
+  status: 429,
+  Symbol(gaxios-gaxios-error): '6.7.1'
+}
+**Adversarial Review: `docs/plans/2026-04-15-issue-2269-openfoam-v2312-baseline-workflow-and-validation.md`**
+
+### Overall verdict
+**FAIL - Conditional on Minor Revisions.** The plan is highly mature, well-researched, and correctly isolates the wrapper logic from the execution engine. The embedded Python normalization strategy for YAML is excellent. However, a critical logical contradiction regarding `damBreak` and a gap in pytest testability (dependency injection) prevent it from being strictly deterministic and ready for approval.
+
+### Ready for user approval
+**No.** Requires a final wave of tightening on testability and runner handoff logic.
+
+### Retrieval adequacy
+**Excellent.** The plan successfully identified the correct architectural boundaries. It found the existing OpenFOAM stub (`stub_openfoam.py`), the current runner (`run-openfoam-tutorials.sh`), the portability contracts (`PORTABILITY_CONTRACT.md`), and historical research docs. The synthesis of these sources into a standardized baseline is accurate.
+
+### Top blockers
+1. **The `damBreak` Logical Contradiction:** The plan explicitly decides that `damBreak` is "not part of the canonical baseline acceptance contract". However, it also states that the wrapper "surfaces delegated runner failure without masking root cause". Since the existing runner hardcodes execution of `damBreak` and exits non-zero on failure, a `damBreak` failure will currently cascade and fail the baseline validator. 
+2. **Missing Dependency Injection for Pytest:** The plan calls for fixture-only schema testing of the wrapper (`test_verify_script_normalizes_final_yaml_contract`). If the wrapper script hardcodes the invocation of `bash scripts/openfoam/run-openfoam-tutorials.sh`, the test will fail in CI/environments without OpenFOAM because it cannot easily mock the runner.
+
+### Critical findings
+- *None.* The structural approach (wrapper script + python-based YAML normalization + existing runner) is robust and secure.
+
+### High findings
+- **Runner Handoff for Tutorials:** To solve the `damBreak` blocker, the plan must specify *how* the wrapper avoids the `damBreak` failure cascade. The runner's CLI contract needs to be updated to accept targeted tutorials (e.g., `--tutorials cavity pitzDaily`), or the runner needs to be updated to make `damBreak` completely optional.
+- **Pytest Runner Mocking:** The wrapper script (`verify-openfoam-baseline.sh`) must expose the runner execution path via an environment variable (e.g., `${OPENFOAM_TUTORIAL_RUNNER_PATH:-scripts/openfoam/run-openfoam-tutorials.sh}`). This is strictly required so the pytest harness can inject a stub runner that simply `cat`s a successful YAML fixture for normalization testing.
+
+### Medium findings
+- **`foamVersion` Exact Equality Risk:** The pseudocode parse rule states: `foamVersion stdout must equal OpenFOAM-v2312`. On ESI distributions, `foamVersion` often outputs just `2312` or `2312 (ESI)`. Enforcing strict equality against `OpenFOAM-v2312` risks an immediate failure on the real host. It is safer to check that it *contains* `2312` or simply inspect the environment variable `$WM_PROJECT_VERSION` (which is strictly `v2312`).
+- **Benchmark Flag Propagation:** The plan says the optional benchmark is invoked via wrapper flag `--benchmark pitzDaily`. It must explicitly state that the delegated runner (`run-openfoam-tutorials.sh`) will also be updated to accept this flag (or a `--tutorials` equivalent) so the wrapper can actually hand the instruction down.
+
+### Low findings
+- **`machine` Field Determinism:** The schema requires a `machine` field and the pseudocode says `machine = dev-secondary`. The plan should clarify whether the wrapper hardcodes this string (bad for portability) or dynamically resolves it via `uname -n` / `hostname` (good) and simply warns if it deviates from `dev-secondary`.
+
+### Required revisions before user approval
+1. **Resolve `damBreak` Execution:** Update the "Files to Change" or "Pseudocode" to state that `run-openfoam-tutorials.sh` will be updated to accept a list of tutorials (or make `damBreak` opt-in) so the baseline validator only runs what is explicitly in the canonical contract.
+2. **Add Runner Dependency Injection:** Explicitly state that `verify-openfoam-baseline.sh` will use an environment variable (like `OPENFOAM_TUTORIAL_RUNNER_PATH`) to execute the runner, enabling the pytest harness to mock it cleanly.
+3. **Clarify Benchmark Handoff:** Specify that the wrapper passes the `--benchmark` requirement down to the runner via an updated CLI contract.
+4. **Soften `foamVersion` Check:** Change the `foamVersion` exact-match rule to a robust version substring check or `$WM_PROJECT_VERSION` inspection to prevent brittle string-matching failures.

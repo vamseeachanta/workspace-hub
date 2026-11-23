@@ -1,0 +1,129 @@
+# Script audit — Python analysis scripts in project archive
+# Generated: 2026-02-27
+# Purpose: Identify Python scripts portable into engineering repos after legal scanning.
+# Process: index query -> category grouping -> representative read -> legal scan -> triage
+
+generated: '2026-02-27'
+audited_by: Agent Gamma (WRK-573)
+
+script_categories:
+
+- id: orcaflex-model-builder
+  description: OrcaFlex drilling riser model builder and results post-processor
+  portability: high
+  target_repo: digitalmodel
+  target_module: digitalmodel.well.orcaflex
+  legal_check: required
+  legal_check_note: >
+    Scripts reside in a client project folder. Generic model builder logic
+    (geometry, line types, vessel RAO input) is portable; client-specific
+    data file paths must be parameterised before porting.
+    legal-sanity-scan.sh operates on repo submodules only, not archive files;
+    manual review is required before copying any content into a repo.
+  wrk_followup: [WRK-569]
+  scripts:
+  - path: /mnt/ace/docs/disciplines/drilling/projects/0113_orc_dr/00_inbox/0113 Orc DR/Analysis/Python/OrcaFlex Riser Model/DrillingRiserModel.py
+    description: Full OrcaFlex drilling riser model builder — geometry, line types, boundary conditions, vessel RAO input
+    lines_approx: 400
+    legal_scan_result: manual_review_required
+  - path: /mnt/ace/docs/disciplines/drilling/projects/0113_orc_dr/00_inbox/0113 Orc DR/Analysis/Python/OrcaFlex Riser Model/DrillingRiserModel_Code.txt
+    description: Text version of drilling riser model builder code
+    lines_approx: 400
+    legal_scan_result: manual_review_required
+  - path: /mnt/ace/docs/disciplines/drilling/projects/0113_orc_dr/00_inbox/0113 Orc DR/Analysis/Python/OrcaFlex PostProcessing/Rev3/FileRead.py
+    description: OrcaFlex results post-processor Rev3 (latest) — reads .sim file results
+    lines_approx: 200
+    legal_scan_result: manual_review_required
+
+- id: ansys-workbench-automation
+  description: ANSYS Workbench Python scripting tools and workshop solutions
+  portability: high
+  target_repo: digitalmodel
+  target_module: digitalmodel.ansys
+  legal_check: required
+  legal_check_note: >
+    ANSYS training material — verify ANSYS software license permits redistribution
+    of scripting examples. Generic automation patterns (record.py, runWB.py) are
+    usable reference material. Workshop solutions (ws-3.py) require review.
+  wrk_followup: [WRK-617]
+  scripts:
+  - path: /mnt/ace/docs/disciplines/drilling/projects/simulation/00_inbox/simulation/ANSYS/Scripting_Tools_All_Products_15.0_v1/WB Python/workshop_input_files/Workshop-1/record.py
+    description: Workbench automation record script — records journal of Workbench GUI actions
+    lines_approx: 50
+    legal_scan_result: manual_review_required
+  - path: /mnt/ace/docs/disciplines/drilling/projects/simulation/00_inbox/simulation/ANSYS/Scripting_Tools_All_Products_15.0_v1/WB Python/workshop_input_files/Workshop-3/runWB.py
+    description: Run Workbench script — execute Workbench automation from command line
+    lines_approx: 50
+    legal_scan_result: manual_review_required
+  - path: /mnt/ace/docs/disciplines/drilling/projects/simulation/00_inbox/simulation/ANSYS/Scripting_Tools_All_Products_15.0_v1/WB Python/workshop_input_files/Workshop-5 -- Advanced/Fluids/exportData4eachDP.py
+    description: Export data for each design point — parametric study result extraction
+    lines_approx: 80
+    legal_scan_result: manual_review_required
+  - path: /mnt/ace/docs/disciplines/drilling/projects/simulation/00_inbox/simulation/ANSYS/Scripting_Tools_All_Products_15.0_v1/WB Python/workshop_input_files/Workshop-3/Solution/myFunctions.py
+    description: Utility helper functions for Workbench scripting
+    lines_approx: 100
+    legal_scan_result: manual_review_required
+
+- id: deepscale-surveillance
+  description: DeepScale ESP/well performance surveillance scripts
+  portability: medium
+  target_repo: worldenergydata
+  target_module: worldenergydata.production.surveillance
+  legal_check: required
+  legal_check_note: >
+    Likely contains client-specific data structures and endpoints.
+    Generic ESP performance calculation logic may be portable but
+    requires thorough client-identifier removal before any use.
+    Full legal scan mandatory before reading script content.
+  wrk_followup: []
+  scripts:
+  - path: /mnt/ace/docs/disciplines/production/projects/0162_deepscale_support/00_inbox/0162 DeepScale Support/Compressor data/Rev1.py
+    description: Compressor data processing Rev1
+    lines_approx: unknown
+    legal_scan_result: blocked_pending_review
+  - path: /mnt/ace/docs/disciplines/production/projects/0162_deepscale_support/00_inbox/0162 DeepScale Support/Compressor data/Rev2.py
+    description: Compressor data processing Rev2
+    lines_approx: unknown
+    legal_scan_result: blocked_pending_review
+  - path: /mnt/ace/docs/disciplines/production/projects/0162_deepscale_support/00_inbox/0162 DeepScale Support/Compressor data/Rev3.py
+    description: Compressor data processing Rev3 (latest)
+    lines_approx: unknown
+    legal_scan_result: blocked_pending_review
+  - path: /mnt/ace/docs/disciplines/production/projects/0162_deepscale_support/00_inbox/0162 DeepScale Support/0001 Production/loadsave.py
+    description: Load/save utility for production data
+    lines_approx: unknown
+    legal_scan_result: blocked_pending_review
+
+- id: blender-ocean-visualisation
+  description: Blender ocean simulation Python scripts for 3D animation
+  portability: low
+  target_repo: digitalmodel
+  target_module: digitalmodel.gis.ocean_viz
+  legal_check: advisory
+  legal_check_note: >
+    Blender scripts for ocean animation. Low engineering calc value;
+    useful only as visualisation reference. Blender addon license (GPL)
+    may affect distribution. Low priority for porting.
+  wrk_followup: []
+  scripts:
+  - path: /mnt/ace/docs/disciplines/drilling/projects/simulation/00_inbox/simulation/Animation/Blender/Ocean Surface.py
+    description: Blender ocean surface animation script
+    lines_approx: unknown
+    legal_scan_result: advisory_only
+  - path: /mnt/ace/docs/disciplines/drilling/projects/simulation/00_inbox/simulation/Animation/Blender/Clouds Animation.py
+    description: Blender clouds animation script
+    lines_approx: unknown
+    legal_scan_result: advisory_only
+
+legal_scan_summary:
+  total_categories: 4
+  scans_run: 0
+  passed: 0
+  blocked: 0
+  note: >
+    legal-sanity-scan.sh operates on repo submodules only (--repo/--all/--diff-only),
+    not on individual external archive files. Scripts in /mnt/ace/ must be manually
+    reviewed or copied into a repo staging area before automated scanning.
+    Run: bash scripts/legal/legal-sanity-scan.sh --repo=<name>
+    This audit provides the triage framework; scan results populate legal_scan_result
+    field after manual review or after porting into a repo submodule.

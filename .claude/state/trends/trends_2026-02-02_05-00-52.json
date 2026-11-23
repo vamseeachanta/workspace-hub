@@ -1,0 +1,64 @@
+{
+  "analysis_date": "2026-02-02T11:00:52Z",
+  "days_analyzed": 7,
+  "velocity": {
+    "total_commits": 617,
+    "avg_commits_per_day": 88,
+    "min_commits": 78,
+    "max_commits": 106,
+    "trend": "increasing"
+  },
+  "type_trends": {
+    "feat_total": 0,
+    "fix_total": 0,
+    "chore_total": 0,
+    "refactor_total": 0,
+    "dominant_type": "refactor"
+  },
+  "quality": {
+    "avg_correction_rate": 1,
+    "avg_conventional_rate": 68,
+    "trend_direction": "degrading"
+  },
+  "recurring_patterns": [
+    {
+      "message": "Update: Batch commit from repository_sync",
+      "occurrences": 7,
+      "avg_repos": 3
+    },
+    {
+      "message": "chore: Add on-demand skills framework for context optimization",
+      "occurrences": 7,
+      "avg_repos": 2
+    },
+    {
+      "occurrences": 7,
+      "avg_repos": 3
+    },
+    {
+      "message": "chore: Sync with workspace-hub consolidation updates",
+      "occurrences": 7,
+      "avg_repos": 2
+    },
+    {
+      "message": "chore: Synchronize repository state with batch operations",
+      "occurrences": 7,
+      "avg_repos": 2
+    }
+  ],
+  "repo_engagement": {
+    "consistently_active": [
+      "OGManufacturing",
+      "aceengineer-admin",
+      "aceengineer-website"
+    ],
+    "total_unique_repos": 21
+  },
+  "file_type_trends": [],
+  "recommendations": [
+    {
+      "type": "practice",
+      "message": "Multiple large commits - consider smaller, focused changes"
+    }
+  ]
+}

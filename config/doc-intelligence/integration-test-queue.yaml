@@ -1,0 +1,45 @@
+version: '1.0'
+queue:
+  name: integration-test
+  created_at: '2026-03-13T00:00:00Z'
+documents:
+- path: assetutilities/tests/modules/read_pdf/ASME31G.pdf
+  domain: engineering-standards
+  doc_ref: ASME-31G
+  status: completed
+  error: null
+  manifest_path: data/doc-intelligence/manifests/engineering-standards/ASME31G.manifest.yaml
+  processed_at: '2026-03-13T10:19:17.331965+00:00'
+- path: assetutilities/tests/modules/read_pdf/GeoBase_NHNC1_Data_Model_UML_EN.pdf
+  domain: data-models
+  doc_ref: GEOBASE-NHNC1
+  status: completed
+  error: null
+  manifest_path: data/doc-intelligence/manifests/data-models/GeoBase_NHNC1_Data_Model_UML_EN.manifest.yaml
+  processed_at: '2026-03-13T10:19:20.067470+00:00'
+- path: assetutilities/tests/modules/word_utilities/data/viv_analysis_safety_factors.docx
+  domain: engineering-analysis
+  doc_ref: VIV-SF
+  status: completed
+  error: null
+  manifest_path: data/doc-intelligence/manifests/engineering-analysis/viv_analysis_safety_factors.manifest.yaml
+  processed_at: '2026-03-13T10:19:21.164633+00:00'
+- path: worldenergydata/tests/fixtures/bsee/production_data.xlsx
+  domain: energy-data
+  doc_ref: BSEE-PROD
+  status: completed
+  error: null
+  manifest_path: data/doc-intelligence/manifests/energy-data/production_data.manifest.yaml
+  processed_at: '2026-03-13T10:19:22.659300+00:00'
+- path: assetutilities/tests/modules/excel_utilities/excel_to_image.xlsx
+  domain: engineering-data
+  doc_ref: EXCEL-IMG
+  status: completed
+  error: null
+  manifest_path: data/doc-intelligence/manifests/engineering-data/excel_to_image.manifest.yaml
+  processed_at: '2026-03-13T10:19:25.563747+00:00'
+settings:
+  batch_size: 3
+  rate_limit: 1.0
+  output_dir: data/doc-intelligence/manifests
+  dry_run: false

@@ -1,0 +1,10 @@
+{
+  "extraction_date": "2026-02-02T05:01:18-06:00",
+  "cc_version_installed": "1.0.61",
+  "last_reviewed_version": "2.1.29",
+  "insights": {
+    "general_ai_community": ["Permission resolution improved - content-level ask now overrides tool-level allow (security fix)","PR session linking - sessions auto-link to PRs via gh pr create, --from-pr flag added","Gateway/enterprise fixes - Bedrock/Vertex beta header and context validation errors resolved","Corporate proxy support - mTLS and proxy connectivity fixed for enterprise environments"],
+    "specific_workflows": ["Use --from-pr to resume work on existing PRs - matches orchestrator workflow well","Review permission rules - ask now properly overrides allow at content level","ripgrep timeout errors now reported instead of silent empty results - improves Grep reliability","Claude in Chrome enabled for VSCode - potential for browser automation from IDE","CLI remains most stable interface - Windows bash fixes in 2.1.27 if needed"]
+  },
+  "source": "user_insights"
+}

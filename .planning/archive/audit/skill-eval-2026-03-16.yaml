@@ -1,0 +1,97 @@
+report_date: '2026-03-16'
+generated_at: '2026-03-17T01:45:52.996086+00:00'
+tools_run:
+- eval-skills.py (18 structural checks)
+- audit-skill-violations.sh (4 hard constraints)
+- skill-coverage-audit.sh (script-wiring gaps)
+- skill-tier-report.py (quality tier A/B/C/D)
+eval_summary:
+  total_skills: 3127
+  passed: 2959
+  failed_critical: 0
+  failed_warning_only: 168
+  issues:
+    critical: 0
+    warning: 386
+    info: 3127
+  tier_distribution:
+    A: 8
+    B: 58
+    C: 2957
+    D: 104
+eval_top_issues:
+- check: metrics_section_missing
+  count: 3127
+  severity: info
+- check: section_missing
+  count: 374
+  severity: warning
+- check: quick_start_no_code
+  count: 12
+  severity: warning
+eval_by_category:
+  _core:
+    total: 53
+    passed: 53
+    failed: 0
+  _internal:
+    total: 128
+    passed: 128
+    failed: 0
+  ai:
+    total: 87
+    passed: 87
+    failed: 0
+  business:
+    total: 618
+    passed: 618
+    failed: 0
+  coordination:
+    total: 328
+    passed: 328
+    failed: 0
+  data:
+    total: 480
+    passed: 480
+    failed: 0
+  development:
+    total: 449
+    passed: 449
+    failed: 0
+  digitalmodel:
+    total: 1
+    passed: 1
+    failed: 0
+  engineering:
+    total: 613
+    passed: 613
+    failed: 0
+  gis:
+    total: 1
+    passed: 1
+    failed: 0
+  operations:
+    total: 128
+    passed: 128
+    failed: 0
+  science:
+    total: 56
+    passed: 56
+    failed: 0
+  workspace-hub:
+    total: 185
+    passed: 185
+    failed: 0
+violations_summary:
+  total_violations: 13
+  by_check:
+    xml_html_tags_in_body: 13
+coverage_summary:
+  gaps_total: 210
+  total_skills: 3127
+  coverage_pct: 93.3
+tier_summary:
+  A: 8
+  B: 58
+  C: 2957
+  D: 104

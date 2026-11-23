@@ -1,0 +1,180 @@
+name: Baseline Testing
+
+# PR_GATE_RUNNER: self-hosted-arm64 selects fixed ARM64 labels for trusted events.
+# Every other value or event uses ubuntu-latest; fork PRs always use hosted runners.
+# Enable only after ARM64 compatibility is established for these jobs.
+permissions:
+  contents: read
+
+# Pull requests run only pr-fast-gate.yml; the daily main-full-run.yml covers this
+# workflow's tests (owner ruling 2026-10-28). Kept for manual dispatch.
+on:
+  workflow_dispatch:
+    inputs:
+      test_suite:
+        description: 'Test suite to run'
+        required: false
+        default: 'all'
+        type: choice
+        options:
+          - all
+          - commit
+          - task
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event_name == 'pull_request' && format('pr-{0}', github.event.pull_request.number) || format('run-{0}', github.run_id) }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+env:
+  PYTHON_VERSION: '3.12'
+
+jobs:
+  test:
+    name: Run Tests
+    runs-on: ${{ vars.PR_GATE_RUNNER == 'self-hosted-arm64' && ((github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository) || github.event_name == 'push' || github.event_name == 'workflow_dispatch') && fromJSON('["self-hosted","Linux","ARM64"]') || 'ubuntu-latest' }}
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          # No `cache: pip`. Every dependency here is installed by `uv sync`, so
+          # ~/.cache/pip is never written and setup-python's post-job cache step
+          # errors ("Cache folder path is retrieved for pip but doesn't exist on
+          # disk"), failing the job with all its test steps green. uv brings its
+          # own cache below via astral-sh/setup-uv `enable-cache: true`.
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
+        with:
+          enable-cache: true
+
+      - name: Install test dependencies
+        run: |
+          uv sync --frozen --group dev
+
+      - name: Run script JSON regression tests
+        run: |
+          uv run python -m pytest tests/lib/test_script_json_roundtrip.py -v --tb=short
+
+      - name: Run Python tests
+        run: |
+          # Hub-level Python tests (no PYTHONPATH manipulation needed)
+          uv run python -m pytest tests/test_deduplication_fix.py \
+            tests/quality/test_gitleaks_config.py \
+            tests/phone_media \
+            scripts/operations/tests/test_job_queue_windows.py \
+            scripts/operations/tests/test_job_queue_cleanup_recent.py \
+            scripts/operations/tests/test_job_queue_environment.py \
+            tests/enforcement/test_check_codex_model_pin.py \
+            -v --tb=short --noconftest
+
+      - name: Run domain matrix contract tests
+        run: |
+          uv run --no-project --with pytest --with pyyaml python -m pytest tests/ci/ -v --tb=short
+
+      # CI smoke tests for #2532 regression guards (workspace_hub importability,
+      # review-gate uv-decoupling). Runs on feature/** and PR pushes so a
+      # regression is caught at push-time, not only at PR-open via enforcement-gate.
+      - name: Run CI smoke tests
+        env:
+          PYTHONPATH: src
+        run: |
+          uv run python -m pytest tests/ci_smoke/ -v --tb=short
+
+      # Script-reference integrity (#3806): every scripts/, .claude/hooks/ and
+      # .githooks/ path invoked from scripts, hooks, workflows and scheduled-task
+      # config must exist in the tree. Stdlib-only; no PYTHONPATH needed.
+      - name: Run script-reference integrity check
+        run: |
+          uv run python -m pytest tests/enforcement/test_script_reference_integrity.py -v --tb=short
+
+      # Shell test helper guards (#3876): no tracked shell harness may call a
+      # conditionally-defined helper without a guard, and the runtime guard
+      # library must reject undefined helpers and empty snapshot records.
+      - name: Run shell test helper guard checks
+        run: |
+          uv run python -m pytest tests/enforcement/test_check_engineering_register.py \
+            tests/enforcement/test_check_shell_conditional_helpers.py \
+            tests/enforcement/test_check_shell_conditional_helpers_scopes.py \
+            tests/enforcement/test_shell_test_guards.py \
+            tests/enforcement/test_no_abs_paths_ci_report.py -v --tb=short
+
+      - name: Run storage tests
+        run: |
+          uv run python -m pytest tests/operations/storage -v --tb=short
+
+      - name: Generate test summary
+        if: always()
+        run: |
+          echo "## Test Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Python Version:** ${{ env.PYTHON_VERSION }}" >> $GITHUB_STEP_SUMMARY
+
+  lint:
+    name: Code Quality
+    runs-on: ${{ vars.PR_GATE_RUNNER == 'self-hosted-arm64' && ((github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository) || github.event_name == 'push' || github.event_name == 'workflow_dispatch') && fromJSON('["self-hosted","Linux","ARM64"]') || 'ubuntu-latest' }}
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Install linting tools
+        run: |
+          pip install ruff || true
+
+      - name: Run linters
+        continue-on-error: true
+        run: |
+          echo "## Code Quality Checks" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          if command -v ruff &> /dev/null; then
+            echo "Running ruff..." >> $GITHUB_STEP_SUMMARY
+            ruff check . --output-format=github || echo "Ruff found issues" >> $GITHUB_STEP_SUMMARY
+          fi
+
+  governance:
+    name: Governance Checks
+    runs-on: ${{ vars.PR_GATE_RUNNER == 'self-hosted-arm64' && ((github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository) || github.event_name == 'push' || github.event_name == 'workflow_dispatch') && fromJSON('["self-hosted","Linux","ARM64"]') || 'ubuntu-latest' }}
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+
+      - name: Run governance checks (warn mode)
+        # Always run in warn mode in CI — gate mode is enforced at commit time via hooks
+        continue-on-error: true
+        run: |
+          chmod +x scripts/operations/compliance/*.sh
+          ./scripts/operations/compliance/check_governance.sh \
+            --mode warn \
+            --scope changed \
+            --base-ref origin/main
+
+      - name: Generate governance summary
+        if: always()
+        run: |
+          echo "## Governance Checks" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Governance checks run in warn mode in CI." >> $GITHUB_STEP_SUMMARY
+          echo "Gate enforcement happens via pre-commit hooks." >> $GITHUB_STEP_SUMMARY

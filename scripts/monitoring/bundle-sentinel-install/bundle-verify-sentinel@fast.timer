@@ -1,0 +1,10 @@
+[Unit]
+Description=Daily fast integrity check of /mnt/ace relocation bundles
+
+[Timer]
+OnCalendar=*-*-* 07:20:00
+Persistent=true
+RandomizedDelaySec=300
+
+[Install]
+WantedBy=timers.target

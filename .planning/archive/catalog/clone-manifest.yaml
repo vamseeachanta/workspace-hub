@@ -1,0 +1,86 @@
+generated_at: "2026-03-25"
+base_path: /mnt/ace/
+cloned:
+  - name: capytaine
+    path: /mnt/ace/capytaine
+    url: https://github.com/capytaine/capytaine.git
+    license: GPL-3.0-or-later
+    has_python_api: true
+    cloned_at: "2026-03-25"
+    status: success
+    notes: "BEM solver for wave-body interaction, Python native (pyproject.toml, meson build)"
+
+  - name: openfast
+    path: /mnt/ace/openfast
+    url: https://github.com/OpenFAST/openfast.git
+    license: Apache-2.0
+    has_python_api: true
+    cloned_at: "2026-03-25"
+    status: success
+    notes: "Wind turbine aeroelastic simulation (NREL). Python I/O via openfast_io package (pyproject.toml)"
+
+  - name: MoorDyn
+    path: /mnt/ace/MoorDyn
+    url: https://github.com/FloatingArrayDesign/MoorDyn.git
+    license: BSD-3-Clause
+    has_python_api: true
+    cloned_at: "2026-03-25"
+    status: success
+    notes: "Lumped-mass mooring dynamics (C++ core). Python wrapper in wrappers/python/"
+
+  - name: gmsh
+    path: /mnt/ace/gmsh
+    url: https://gitlab.onelab.info/gmsh/gmsh.git
+    license: GPL-2.0-or-later
+    has_python_api: true
+    cloned_at: "2026-03-25"
+    status: success
+    notes: "3D finite element mesh generator. Python API at api/gmsh.py"
+
+  - name: opm-common
+    path: /mnt/ace/opm-common
+    url: https://github.com/OPM/opm-common.git
+    license: GPL-3.0
+    has_python_api: true
+    cloned_at: "2026-03-25"
+    status: success
+    notes: "Eclipse reservoir simulation file tools. Python bindings in python/ directory"
+
+  - name: MoorPy
+    path: /mnt/ace/MoorPy
+    url: https://github.com/NREL/MoorPy.git
+    license: BSD-3-Clause
+    has_python_api: true
+    cloned_at: "2026-03-25"
+    status: success
+    notes: "Quasi-static mooring analysis, pure Python (NREL). Has setup.py and pyproject.toml"
+
+  - name: HAMS
+    path: /mnt/ace/HAMS
+    url: https://github.com/YingyiLiu/HAMS.git
+    license: Apache-2.0
+    has_python_api: false
+    cloned_at: "2026-03-25"
+    status: success
+    notes: "BEM solver for wave diffraction/radiation, Fortran 90. No Python API (pyhams is a separate package)"
+
+  - name: WEC-Sim
+    path: /mnt/ace/WEC-Sim
+    url: https://github.com/WEC-Sim/WEC-Sim.git
+    license: Apache-2.0
+    has_python_api: true
+    cloned_at: "2026-03-25"
+    status: success
+    notes: "Wave energy converter simulation (MATLAB/Simulink + Python BEMIO examples). Includes Capytaine integration."
+
+skipped: []
+
+replaced:
+  - name: bemio
+    original_path: /mnt/ace/bemio
+    original_url: https://github.com/WEC-Sim/bemio.git
+    replaced_by: WEC-Sim
+    reason: "Deprecated upstream — bemio functionality absorbed into WEC-Sim/examples/BEMIO/"
+    replaced_at: "2026-03-25"
+
+failed: []

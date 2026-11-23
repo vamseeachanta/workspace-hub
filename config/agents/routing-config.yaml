@@ -1,0 +1,147 @@
+# Smart Agent Router Configuration
+# Version: 2.0.0
+# Defines tier routing, dimension weights, confidence thresholds, and model selection
+
+version: 2.0.0
+
+# Single source of truth for per-tier provider routing (#3209). Cost-aligned:
+# cheap tiers run codex (not claude) per the cost-ceiling policy. Authored in
+# CLI tokens (claude/codex/agy); hermes is NOT a tier-CLI provider — it
+# routes via `dimensions` + `execution_contexts.hermes_batch`.
+# tier_router.sh's bash arrays are GENERATED from this block via
+#   uv run scripts/ai/routing_resolver.py --emit-bash-table
+# (CI drift-guard: tests/coordination/test_tier_table_no_drift.py). Do not let
+# the two diverge.
+tiers:
+  SIMPLE:
+    primary: codex
+    fallbacks: [agy, claude]
+    max_context_tokens: 8000
+    description: Short factual queries, status checks, simple lookups
+  STANDARD:
+    primary: codex
+    fallbacks: [claude, agy]
+    max_context_tokens: 32000
+    description: Implementation tasks, bug fixes, refactoring
+  COMPLEX:
+    primary: claude
+    fallbacks: [agy, codex]
+    max_context_tokens: 128000
+    description: Architecture decisions, multi-file changes, design
+  REASONING:
+    primary: claude
+    fallbacks: [agy, codex]
+    max_context_tokens: 200000
+    description: Proofs, convergence analysis, deep trade-off evaluation
+
+dimensions:
+  reasoning_depth:
+    weight: 0.20
+    provider_signal: claude
+  code_density:
+    weight: 0.18
+    provider_signal: claude
+  architecture_scope:
+    weight: 0.15
+    provider_signal: claude
+  implementation_action:
+    weight: 0.12
+    provider_signal: codex
+  research_analysis:
+    weight: 0.10
+    provider_signal: hermes
+  task_complexity:
+    weight: 0.08
+    provider_signal: tier
+  agentic_markers:
+    weight: 0.06
+    provider_signal: codex
+  review_quality:
+    weight: 0.05
+    provider_signal: all
+  data_processing:
+    weight: 0.04
+    provider_signal: hermes
+  simple_indicators:
+    weight: 0.02
+    provider_signal: cheapest
+
+confidence:
+  auto_route_threshold: 0.70
+  suggest_threshold: 0.50
+
+session_pinning:
+  enabled: true
+  ttl_minutes: 30
+
+models:
+  registry: model-registry.yaml
+  capability_radar: ../ai-tools/agent-capability-scores.yaml
+  adaptive_routing:
+    enabled: true
+    ewma_override: false  # Set true to override registry EWMA params here
+
+cross_modes:
+  cross_plan:
+    SIMPLE: false       # Route A: single planner sufficient
+    STANDARD: false     # Route B: single planner (cross-plan optional)
+    COMPLEX: true       # Route C: all 3 plan independently, Claude synthesizes
+    REASONING: true     # Full ensemble planning
+  cross_review:
+    SIMPLE: false       # Route A: single-provider review only
+    STANDARD: true      # Route B: 2-of-3 cross-review
+    COMPLEX: true       # Route C: full 3-of-3 with synthesis
+    REASONING: true     # Full 3-of-3 cross-review
+
+agents:
+  hermes:
+    display_name: "Hermes Agent"
+    provider: openai-codex   # live since ~2026-05: copilot's silent mid-session fallback broke context
+    models:
+      primary: gpt-5.5       # matches ~/.hermes/config.yaml + ~/.codex/config.toml — verify on change
+    roles:
+      - docs
+      - data-analysis
+      - skills
+      - delegation
+      - overnight-batch
+    strengths:
+      - documentation and report generation
+      - data analysis and structured transformations
+      - skill management and memory-driven maintenance
+      - parallel delegation and orchestration workflows
+      - overnight batch task planning and execution
+    cost_tier: medium
+    context_window: 200000
+    notes: >
+      Hermes is the documentation, data-analysis, skill, and delegation specialist.
+      Preferred for overnight batch work due to its delegation toolchain and
+      self-contained prompt generation capabilities.
+
+# ── Execution contexts + cost ceiling (#3192) ────────────────────────────────
+# SSoT for the cost policy: docs/governance/2026-06-17-cost-ceiling-policy.md
+# policy_summary: Claude is the interactive-dev lane only; Hermes backing stays
+#   openai-codex (model pinned in model-registry.yaml); agy (Antigravity,
+#   Gemini-backed; first-class `agy` token since #3573) is the cheap fallback/delegation lane;
+#   NO Claude for Hermes-context work.
+#
+# routing_resolution_note: ENFORCED at runtime as of #3205 (cost ceiling only).
+#   scripts/ai/routing_resolver.py is the single forbid-policy interpreter; it
+#   reads execution_contexts below and is consulted by tier_router.sh
+#   (route.sh + orchestrate.sh), provider_filter.sh, task-dispatcher.py, and
+#   overnight-batch-planner.py. Pass --context / ROUTE_CONTEXT to activate; an
+#   unknown context fails closed (exit 3), never claude. NOTE: the per-tier
+#   `tiers.*` table is NOT yet single-sourced — that reconciliation is #3209.
+cost_ceiling_policy: docs/governance/2026-06-17-cost-ceiling-policy.md
+execution_contexts:
+  hermes_batch:               # docs / data-analysis / delegation / overnight-batch
+    primary: openai-codex     # Hermes backing via openai-codex; model pinned in model-registry (unchanged)
+    fallbacks: [agy]          # agy = Antigravity CLI, first-class token since #3573
+    forbid: [claude]          # cost ceiling
+    cost_ceiling: true
+  interactive_dev:            # human-driven Claude Code / codex sessions
+    primary: claude
+    fallbacks: [codex, agy]
+  cross_review:               # quality gate — unchanged (rides claude_primary)
+    primary: claude
+    fallbacks: [codex, agy]

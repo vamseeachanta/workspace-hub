@@ -1,0 +1,66 @@
+# UV Configuration for coordination repository
+# https://docs.astral.sh/uv/configuration/
+
+[pip]
+# Index configuration
+index-url = "https://pypi.org/simple"
+# extra-index-url = []
+
+# Cache configuration
+cache-dir = ".uv-cache"
+no-cache = false
+
+# Installation behavior
+upgrade = false
+require-hashes = false
+verify-hashes = false
+no-build-isolation = false
+no-binary = []
+only-binary = []
+
+# Resolution behavior
+resolution = "highest"
+prerelease = "disallow"
+
+# Output configuration
+quiet = false
+verbose = false
+no-color = false
+
+[tool.uv]
+# Project management
+dev-dependencies = [
+    "pytest>=7.0",
+    "pytest-cov>=4.0",
+    "pytest-xdist>=3.0",
+    "black>=23.0",
+    "isort>=5.12",
+    "flake8>=6.0",
+    "mypy>=1.0",
+]
+
+# Python version management
+python-preference = "only-managed"
+python-downloads = "automatic"
+
+# Workspace configuration
+workspace = false
+
+# Cache and environment
+cache-keys = ["requirements.txt", "pyproject.toml"]
+environment-variables = {}
+
+# Build configuration
+build-backend = "setuptools.build_meta"
+build-isolation = true
+
+# Lock file behavior
+locked = false
+frozen = false
+
+# Resolution strategy
+resolution-strategy = "highest"
+prerelease-strategy = "disallow"
+
+# Dependency resolution
+dependency-metadata = "default"

@@ -1,0 +1,5 @@
+1. Artifact path written: not written (`exec`/`apply_patch`/GitHub writes failed)
+2. Number of candidate lanes: 5
+3. Number of execution-ready lanes: 0
+4. Number of approval-needed lanes: 4
+5. Recommended dispatch order: Lane A → Lane E → Lane B → Lane C → Lane D

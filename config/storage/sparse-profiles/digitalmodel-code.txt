@@ -1,0 +1,8 @@
+src
+tests
+scripts
+config
+data
+assets
+examples
+.github

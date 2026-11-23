@@ -1,0 +1,264 @@
+# YAML Input Configuration Template
+# This file is generated from user_prompt.md after user approval
+# AI agents: Follow docs/AI_AGENT_GUIDELINES.md before generating
+
+metadata:
+  feature_name: "feature-name"
+  created: "YYYY-MM-DD"
+  updated: "YYYY-MM-DD"
+  status: "draft"  # draft | approved | in-progress | completed
+  version: "1.0.0"
+  author: "user"
+  description: "Brief description of feature"
+
+# User requirements from user_prompt.md
+requirements:
+  functional:
+    - requirement: "Functional requirement 1"
+      priority: "high"  # high | medium | low
+      implemented: false
+
+    - requirement: "Functional requirement 2"
+      priority: "medium"
+      implemented: false
+
+  non_functional:
+    performance:
+      max_response_time_sec: 5
+      max_memory_mb: 512
+      max_file_size_mb: 100
+      concurrent_operations: 1
+
+    scalability:
+      max_concurrent_users: 100
+      max_data_records: 1000000
+
+    security:
+      authentication_required: false
+      authorization_required: false
+      data_encryption: false
+
+# Input specifications
+input:
+  format: "csv"  # csv | json | xml | yaml | parquet | etc.
+  source:
+    type: "file"  # file | api | database | stream
+    path: "data/input/"  # Relative path
+    pattern: "*.csv"  # File pattern if applicable
+
+  validation:
+    required_columns: []  # List required columns
+    data_types: {}  # Column: type mapping
+    null_handling: "skip"  # skip | fill | error
+    encoding: "utf-8"
+
+  size_limits:
+    max_file_size_mb: 100
+    max_rows: 1000000
+    max_columns: 1000
+
+# Processing specifications
+processing:
+  steps:
+    - name: "load_data"
+      module: "data_loader"
+      function: "load_csv"
+      params:
+        validate: true
+        encoding: "utf-8"
+
+    - name: "calculate_statistics"
+      module: "statistics"
+      function: "calculate"
+      params:
+        statistics: ["mean", "median", "std", "quantiles"]
+        quantiles: [0.25, 0.5, 0.75]
+
+    - name: "generate_visualization"
+      module: "visualization"
+      function: "create_plots"
+      params:
+        plot_types: ["histogram", "scatter", "line"]
+        interactive: true
+        library: "plotly"
+
+  concurrency:
+    enabled: false
+    max_workers: 4
+    strategy: "thread"  # thread | process | async
+
+  caching:
+    enabled: false
+    ttl_seconds: 3600
+    strategy: "memory"  # memory | redis | file
+
+# Output specifications
+output:
+  format: "html"  # html | json | csv | pdf | etc.
+  destination:
+    type: "file"  # file | database | api | stream
+    path: "reports/"  # Relative path
+    filename_pattern: "report_{timestamp}.html"
+
+  content:
+    include_raw_data: false
+    include_statistics: true
+    include_visualizations: true
+    include_summary: true
+
+  visualization:
+    library: "plotly"  # plotly | bokeh | altair | d3.js
+    interactive: true
+    responsive: true
+    theme: "default"
+
+  export_formats:
+    - format: "json"
+      path: "data/output/"
+      filename_pattern: "results_{timestamp}.json"
+
+# Error handling
+error_handling:
+  strategy: "fail_fast"  # fail_fast | continue | retry
+  retry:
+    enabled: false
+    max_attempts: 3
+    backoff_seconds: 2
+
+  logging:
+    level: "INFO"  # DEBUG | INFO | WARNING | ERROR | CRITICAL
+    destination: "file"  # file | console | both
+    file_path: "logs/feature.log"
+    format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+
+  notifications:
+    on_error: false
+    on_success: false
+    method: "log"  # log | email | slack | webhook
+
+# Module specifications
+modules:
+  data_loader:
+    path: "src/modules/data_loader"
+    entry_point: "csv_loader.py"
+    class: "CSVLoader"
+    dependencies: ["pandas", "pathlib"]
+
+  statistics:
+    path: "src/modules/statistics"
+    entry_point: "calculator.py"
+    class: "StatisticsCalculator"
+    dependencies: ["numpy", "pandas"]
+
+  visualization:
+    path: "src/modules/visualization"
+    entry_point: "plotly_generator.py"
+    class: "PlotlyGenerator"
+    dependencies: ["plotly", "pandas"]
+
+# Test specifications
+tests:
+  unit:
+    - test: "test_csv_loading"
+      module: "test_data_loader"
+      function: "test_load_valid_csv"
+      expected: "pass"
+
+    - test: "test_statistics_calculation"
+      module: "test_statistics"
+      function: "test_calculate_mean"
+      expected: "pass"
+
+  integration:
+    - test: "test_pipeline_integration"
+      module: "test_pipeline"
+      function: "test_full_pipeline"
+      expected: "pass"
+
+  performance:
+    - test: "test_response_time"
+      max_duration_sec: 5
+      expected: "pass"
+
+    - test: "test_memory_usage"
+      max_memory_mb: 512
+      expected: "pass"
+
+  coverage:
+    minimum_percentage: 80
+    exclude_patterns: ["**/tests/**", "**/__init__.py"]
+
+# Execution configuration
+execution:
+  entry_point: "src/pipelines/feature_pipeline.py"
+
+  bash_command: |
+    python src/pipelines/feature_pipeline.py \
+      --config config/input/feature-name.yaml \
+      --output reports/ \
+      --verbose
+
+  environment:
+    python_version: "3.11+"
+    required_packages:
+      - pandas>=2.0.0
+      - numpy>=1.24.0
+      - plotly>=5.14.0
+
+    env_variables:
+      LOG_LEVEL: "INFO"
+      DATA_PATH: "data/"
+      OUTPUT_PATH: "reports/"
+
+  docker:
+    enabled: false
+    image: "python:3.11-slim"
+    volumes:
+      - "./data:/app/data"
+      - "./reports:/app/reports"
+
+# Dependencies
+dependencies:
+  external_systems: []
+
+  libraries:
+    - name: "pandas"
+      version: ">=2.0.0"
+      required: true
+      purpose: "Data manipulation"
+
+    - name: "plotly"
+      version: ">=5.14.0"
+      required: true
+      purpose: "Interactive visualization"
+
+  data_sources: []
+
+# Validation rules
+validation:
+  yaml_schema_version: "1.0"
+
+  required_fields:
+    - metadata.feature_name
+    - execution.entry_point
+    - execution.bash_command
+
+  custom_validators:
+    - validator: "validate_paths_exist"
+      applies_to: ["input.source.path", "output.destination.path"]
+
+    - validator: "validate_file_sizes"
+      applies_to: ["input.size_limits.max_file_size_mb"]
+
+# Notes and comments
+notes: |
+  Additional context or implementation notes:
+  - [Note 1]
+  - [Note 2]
+
+# Change log
+changelog:
+  - date: "YYYY-MM-DD"
+    version: "1.0.0"
+    changes: "Initial YAML configuration created"
+    approved_by: "user"

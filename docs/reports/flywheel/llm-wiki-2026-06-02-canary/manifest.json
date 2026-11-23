@@ -1,0 +1,66 @@
+{
+  "advisory_only": true,
+  "candidate_count": 4,
+  "candidates": [
+    {
+      "asset_class": "script",
+      "evidence": [
+        "https://github.com/vamseeachanta/llm-wiki/issues/226",
+        "https://github.com/vamseeachanta/llm-wiki/pull/248"
+      ],
+      "id": "content-value-script",
+      "rationale": "Content-value filtering should become reusable script hardening.",
+      "route_repo": "vamseeachanta/llm-wiki",
+      "title": "Promote content-value script hardening"
+    },
+    {
+      "asset_class": "prompt_template",
+      "evidence": [
+        "https://github.com/vamseeachanta/llm-wiki/issues/135",
+        "https://github.com/vamseeachanta/llm-wiki/issues/227",
+        "https://github.com/vamseeachanta/llm-wiki/pull/176"
+      ],
+      "id": "parser-limit-prompt",
+      "rationale": "Parser-limit lessons should become prompt guidance.",
+      "route_repo": "vamseeachanta/llm-wiki",
+      "title": "Promote parser-limit prompt guidance"
+    },
+    {
+      "asset_class": "issue",
+      "evidence": [
+        "https://github.com/vamseeachanta/llm-wiki/pull/258",
+        "scripts/review/results/2026-06-02-plan-259-disagreement.md"
+      ],
+      "existing_issue": "vamseeachanta/workspace-hub#2502",
+      "id": "review-artifact-publishability",
+      "rationale": "Review artifacts need publishability, metadata, stderr, and stale-SHA gates.",
+      "route_repo": "vamseeachanta/workspace-hub",
+      "suppressed_duplicate_issue": true,
+      "title": "Route review artifact publishability contract"
+    },
+    {
+      "asset_class": "docs",
+      "evidence": [
+        "https://github.com/vamseeachanta/llm-wiki/issues/259",
+        "https://github.com/vamseeachanta/llm-wiki/issues/260"
+      ],
+      "id": "wave-closeout-docs",
+      "rationale": "Agent waves should leave evidence-linked durable asset routing.",
+      "route_repo": "vamseeachanta/workspace-hub",
+      "title": "Document wave closeout flywheel evidence"
+    }
+  ],
+  "draft_paths": [
+    "issue-drafts/content-value-script.md",
+    "issue-drafts/parser-limit-prompt.md",
+    "issue-drafts/workspace-hub-2502-comment.md",
+    "issue-drafts/wave-closeout-docs.md"
+  ],
+  "mode": "propose",
+  "non_publishable_records": [],
+  "source_count": 9,
+  "source_issue": "vamseeachanta/workspace-hub#2945",
+  "warnings": [
+    "missing flywheel evidence is advisory in first slice"
+  ]
+}

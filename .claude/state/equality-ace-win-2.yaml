@@ -1,0 +1,99 @@
+generated_at: "2026-07-19T06:59:16"
+schema_version: 4
+machine: "ace-win-2"
+host: "ace-win-2"
+os: windows
+status: active
+provenance:
+  checkout_sha: "6405dd889"
+  dirty: false
+  behind_main: 0
+  ahead_main: 0
+  origin_ref_age_h: 0
+dimensions:
+  compute:
+    static: {cores: 32, ram_total_mib: 16014, gpu_model: "NVIDIA T1000 8GB"}
+    headroom: {ram_avail_mib: 2266, disk_avail_gb: 130}
+  data_access:
+    - {repo: assetutilities, mode: sibling}
+    - {repo: digitalmodel, mode: sibling}
+    - {repo: worldenergydata, mode: sibling}
+    - {repo: assethold, mode: absent}
+  solvers:
+    - {name: orcaflex, status: present, evidence: root}
+    - {name: orcawave, status: absent, evidence: absent}
+    - {name: aqwa, status: absent, evidence: absent}
+    - {name: ansys, status: absent, evidence: absent}
+  harness:
+    providers: {claude: present, codex: present, gemini: present, hermes: present}
+    gh_auth: ok
+    python_cmd: python
+    readiness_ref: harness-readiness-ace-win-2.yaml
+    readiness_overall: missing
+  skills: {repo_skill_count: 422}
+  kanban: {dispatch_queues: "_leader-state,dev-primary,dev-secondary,home-win,licensed-win-1,licensed-win-2,macbook-portable,multi"}
+  memory:
+    hermes_home: absent
+    context_md_mtime: "2026-07-19T04:30:02"
+  provider_harness:
+    schema_version: 1
+    providers:
+      claude:
+        present: true
+        installed: true
+        "memory:read": {status: present, reason: claude_memory_context_found}
+        "skills:invoke": {status: present, reason: repo_skill_tree_found}
+        "workflow:gates": {status: present, reason: hard_gates_runtime_found}
+      codex:
+        present: true
+        installed: true
+        "memory:read": {status: present, reason: codex_memory_runtime_found}
+        "skills:invoke": {status: present, reason: codex_skill_adapter_found}
+        "workflow:gates": {status: present, reason: codex_agents_runtime_active}
+      hermes:
+        present: true
+        installed: true
+        "memory:read": {status: absent, reason: hermes_memory_store_missing}
+        "skills:invoke": {status: absent, reason: hermes_skill_registry_missing}
+        "workflow:gates": {status: absent, reason: active_runtime_missing}
+      gemini:
+        present: true
+        installed: true
+        "memory:read": {status: present, reason: gemini_memory_runtime_found}
+        "skills:invoke": {status: expected_divergence, reason: gemini_skill_dispatch_unsupported}
+        "workflow:gates": {status: present, reason: gemini_soul_runtime_gates_found}
+  behavior:
+    enums: {b1: deny, b2: ok, b3: html, b4: pass}
+    hashes: {b5: 2a21ba0731d11660}
+  scheduler:
+    has_repo_sync: false
+    has_parity_review: false
+    job_count: 0
+  session_curation:
+    last_curated_at: "2026-07-19T11:59:02+00:00"
+    sessions_24h: 6
+    providers_active: "claude,codex,gemini"
+    memory_files_changed: 200
+  skill_currency:
+    audited_at: "2026-07-19T11:59:06+00:00"
+    canonical_count: 44
+    gemini_present: true
+    gemini_unexpected: 0
+    gemini_expected: 9
+    codex_present: true
+    hermes_present: true
+    index_dangling: 0
+  memory_freshness:
+    audited_at: "2026-07-19T11:59:06+00:00"
+    worst_age_hours: null
+    freshness: "MISSING-EVIDENCE"
+  skill_link_health:
+    audited_at: "2026-07-19T11:59:13+00:00"
+    repos_total: 6
+    healthy: 12
+    repairable: 0
+    worst_state: "TEMPLATE-ABSENT"
+  publish_health:
+    last_publish_at: "missing"
+    last_publish_duration_s: null
+    last_publish_rc: null

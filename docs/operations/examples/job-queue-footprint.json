@@ -1,0 +1,34 @@
+{
+  "source_commit": "b0f087accf7906995a2d29d3943858b691222cbf",
+  "size_basis": "logical file bytes",
+  "measurements": [
+    {
+      "layout": "full",
+      "payload_bytes": 10,
+      "metadata_bytes": 28521,
+      "incremental_object_bytes": 751,
+      "commits": 2
+    },
+    {
+      "layout": "linked",
+      "payload_bytes": 10,
+      "metadata_bytes": 745,
+      "incremental_object_bytes": 0,
+      "commits": 2
+    },
+    {
+      "layout": "shallow",
+      "payload_bytes": 10,
+      "metadata_bytes": 29644,
+      "incremental_object_bytes": 1799,
+      "commits": 1
+    },
+    {
+      "layout": "sparse",
+      "payload_bytes": 8,
+      "metadata_bytes": 28843,
+      "incremental_object_bytes": 751,
+      "commits": 2
+    }
+  ]
+}

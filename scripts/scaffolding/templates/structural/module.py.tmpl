@@ -1,0 +1,31 @@
+# ABOUTME: {{MODULE_TITLE}} — structural analysis per DNV/ABS code references
+# ABOUTME: TODO: add specific standard (e.g. DNV-ST-F101, ABS Rules Part 3)
+from __future__ import annotations
+
+"""{{MODULE_TITLE}} — Structural Analysis
+
+Standards reference:
+    - DNV-ST-F101: Submarine Pipeline Systems
+    - ABS Rules for Building and Classing Offshore Installations
+    - TODO: add project-specific standard
+
+Coordinate system: TODO (e.g. global Cartesian, x=east, y=north, z=up)
+Units: SI unless noted (Pa, N, m, kg)
+"""
+
+
+class {{CLASS_NAME}}:
+    """{{MODULE_TITLE}} — structural analysis.
+
+    TODO: describe loads, boundary conditions, and output quantities.
+    """
+
+    def __init__(self, cfg: dict | None = None) -> None:
+        self.cfg = cfg or {}
+        # structural parameters — TODO populate from cfg
+        self.design_factor: float = self.cfg.get("design_factor", 0.72)
+        self.smys_pa: float = self.cfg.get("smys_pa", 0.0)  # Specified Min Yield Strength
+
+    def run(self) -> dict:
+        """Execute structural analysis. Returns utilisation ratios and code check results."""
+        raise NotImplementedError("Implement run()")

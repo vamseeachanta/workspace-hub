@@ -1,0 +1,162 @@
+{
+  "_generated_from": "llm-wiki/data/domain-database-index.yml",
+  "_note": "issue numbers deliberately omitted (drift); resolve via the index + ecosystem-data-sources skill",
+  "domains": {
+    "asset-financial": {
+      "has_ace_share_precedent": true,
+      "keywords": [
+        "portfolio",
+        "equities",
+        "ohlcv",
+        "yfinance",
+        "sec edgar",
+        "valuation",
+        "watchlist"
+      ],
+      "repo_home": "assethold"
+    },
+    "cad-simulation": {
+      "has_ace_share_precedent": true,
+      "keywords": [
+        "step file",
+        "iges",
+        "brep",
+        "mesh",
+        "solver deck",
+        "orcaflex model",
+        "cad geometry"
+      ],
+      "repo_home": "digitalmodel"
+    },
+    "drilling-well": {
+      "has_ace_share_precedent": false,
+      "keywords": [
+        "well trajectory",
+        "directional survey",
+        "casing",
+        "tubing",
+        "drilling rig",
+        "wellbore"
+      ],
+      "repo_home": "worldenergydata"
+    },
+    "geotech": {
+      "has_ace_share_precedent": true,
+      "keywords": [
+        "geotechnical",
+        "soil profile",
+        "p-y curve",
+        "t-z curve",
+        "pile capacity",
+        "cpt",
+        "anchor holding"
+      ],
+      "repo_home": "digitalmodel"
+    },
+    "materials-standards": {
+      "has_ace_share_precedent": false,
+      "keywords": [
+        "material grade",
+        "steel grade",
+        "line pipe",
+        "api 5l",
+        "aisc",
+        "grade matrix"
+      ],
+      "repo_home": "digitalmodel"
+    },
+    "metocean": {
+      "has_ace_share_precedent": false,
+      "keywords": [
+        "metocean",
+        "wave scatter",
+        "hindcast",
+        "hs/tp",
+        "extreme value",
+        "design storm",
+        "ndbc",
+        "current profile"
+      ],
+      "repo_home": "worldenergydata"
+    },
+    "mooring": {
+      "has_ace_share_precedent": true,
+      "keywords": [
+        "mooring",
+        "station-keeping",
+        "station keeping",
+        "catenary",
+        "anchor",
+        "mooring line"
+      ],
+      "repo_home": "digitalmodel"
+    },
+    "naval-arch-hydro": {
+      "has_ace_share_precedent": true,
+      "keywords": [
+        "rao",
+        "seakeeping",
+        "vessel motion",
+        "hydrodynamic",
+        "aqwa",
+        "orcawave",
+        "wamit",
+        "hull form"
+      ],
+      "repo_home": "digitalmodel"
+    },
+    "pipeline-subsea": {
+      "has_ace_share_precedent": false,
+      "keywords": [
+        "pipeline",
+        "flowline",
+        "on-bottom stability",
+        "lateral buckling",
+        "upheaval",
+        "free span",
+        "on bottom stability"
+      ],
+      "repo_home": "digitalmodel"
+    },
+    "production-reservoir": {
+      "has_ace_share_precedent": false,
+      "keywords": [
+        "production data",
+        "ogor",
+        "decline curve",
+        "field production",
+        "reservoir",
+        "bsee",
+        "eia"
+      ],
+      "repo_home": "worldenergydata"
+    },
+    "riser": {
+      "has_ace_share_precedent": true,
+      "keywords": [
+        "riser",
+        "scr",
+        "slwr",
+        "ttr",
+        "viv",
+        "touchdown",
+        "catenary riser"
+      ],
+      "repo_home": "digitalmodel"
+    },
+    "structural-ffs": {
+      "has_ace_share_precedent": false,
+      "keywords": [
+        "fitness-for-service",
+        "fitness for service",
+        "ffs",
+        "api 579",
+        "plate buckling",
+        "tubular",
+        "s-n curve",
+        "sn curve"
+      ],
+      "repo_home": "digitalmodel"
+    }
+  }
+}

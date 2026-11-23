@@ -1,0 +1,64 @@
+description = "Bring THIS computer back to ecosystem + machine-equality equivalence in one keystroke (repo-hygiene drift + non-OK equality verdicts). Report-first; destructive actions are guard-gated and opt-in."
+
+prompt = """
+<objective>
+Reconcile THIS machine to the rest of the ecosystem by driving
+`scripts/readiness/reconcile-ecosystem.sh` under the `ecosystem-equivalence-reconcile`
+skill/playbook. Report-first: with no action flags, print the plan and stop. Each box
+reconciles its OWN equality column.
+</objective>
+
+<arguments>
+Parse $ARGUMENTS (default = read-only report):
+- (none)          : detect drift + equality gaps, print the classified plan, change nothing
+- --apply         : execute ONLY the AUTO-SAFE subset (fast-forward pulls, etc.)
+- --stash-dirty   : with --apply, stash dirty trees (recoverable) instead of surfacing — NEVER discards
+- --equality      : with --apply, re-collect this box's equality report and rebuild the matrix
+- --json          : emit the machine-readable plan (no actions)
+If flags look absent/exploratory, treat as the read-only report.
+</arguments>
+
+<safety>
+Load-bearing — do not bypass. The driver inherits the deny-by-default guard
+(scripts/lib/worktree_guard.py, #3143). It NEVER: discards dirty work, deletes an
+unmerged/current/checked-out branch, removes a worktree it cannot prove it owns, or does
+anything but fast-forward on remotes. Every action is pre-classified
+AUTO-SAFE / NEEDS-APPROVAL / OPERATOR-ONLY; only AUTO-SAFE auto-runs under --apply.
+dev-primary auto-locks destructive disposal (it owns the daily-cleanup cron + intentional
+worktrees).
+</safety>
+
+<process>
+1. Resolve the workspace-hub root and machine slug:
+   ```bash
+   WS="$(git rev-parse --show-toplevel 2>/dev/null || echo /mnt/local-analysis/workspace-hub)"
+   cd "$WS"
+   ```
+2. Run the driver with the parsed flags from $WS:
+   - report : bash scripts/readiness/reconcile-ecosystem.sh
+   - apply  : bash scripts/readiness/reconcile-ecosystem.sh --apply [--stash-dirty] [--equality]
+   - json   : bash scripts/readiness/reconcile-ecosystem.sh --json
+3. Present the plan grouped by class. For --apply, report exactly what ran and what was held.
+4. Surface NEEDS-APPROVAL items for the user (each prints its exact command). Do NOT run them
+   automatically. For at-scale branch/worktree disposal on the primary, prefer the guarded cron
+   (scripts/cron/daily-cleanup.sh --dry-run then live).
+5. For OPERATOR-ONLY (Windows licence probe, hardware, remote host), name the off-box action.
+6. If --equality ran, note the matrix was rebuilt; a push is needed to refresh the live link. A
+   divergence that survives a clean re-collect is a REAL config drift, not a stale-report artifact —
+   fix the config, do not just re-collect again.
+</process>
+
+<notes>
+- Operational automation, not issue implementation — it does NOT route through the
+  Issue->Plan->Approve->Implement gate. The driver's guards + your review of NEEDS-APPROVAL
+  items are the control points.
+- Cross-platform: on Windows run under Git Bash; uv is only needed for the equality --json
+  (degrades to OPERATOR-ONLY if absent).
+- Examples:
+    /reconcile-ecosystem
+    /reconcile-ecosystem --apply
+    /reconcile-ecosystem --apply --stash-dirty
+    /reconcile-ecosystem --apply --equality
+    /reconcile-ecosystem --json
+</notes>
+"""

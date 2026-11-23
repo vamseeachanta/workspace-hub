@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Issue #2748 implementation notes</title>
+</head>
+<body>
+  <h1>Issue #2748 implementation notes</h1>
+  <p><strong>Scope:</strong> result/output-layer scaffolding for reports, chatbot answer packs, and evidence packs.</p>
+
+  <h2>Design decisions</h2>
+  <ul>
+    <li>Extended the existing report evidence bundle schema instead of introducing a parallel output manifest format.</li>
+    <li>Made source-level provenance explicit with <code>sources[]</code>, <code>source_doc_key</code>, confidence/readiness scores, source residency, output residency, and release gates.</li>
+    <li>Kept HTML as the default client-facing format and PDF as a limited derivative requiring an exception reason.</li>
+    <li>Used fail-closed JSON Schema constraints for unscored sources, client-private output clearance, and public output promotion.</li>
+  </ul>
+
+  <h2>Deviations / interpretations</h2>
+  <ul>
+    <li>The implementation does not build a report generator or chatbot indexer; it establishes the contract those tools must satisfy.</li>
+    <li>No private client data, retrieval indexes, raw traces, or local client paths were added.</li>
+  </ul>
+
+  <h2>Tradeoffs</h2>
+  <ul>
+    <li>Schema-level gates were chosen over a new Python validator to keep this issue bounded and compatible with the existing architecture test pattern.</li>
+    <li>Report readiness and evidence completeness currently use a conservative minimum of <code>0.5</code>; later issue work can tighten thresholds once real scoring data exists.</li>
+  </ul>
+
+  <h2>Open questions</h2>
+  <ul>
+    <li>Whether production report validators should raise the readiness threshold above <code>0.5</code> for specific client-facing deliverables.</li>
+    <li>Whether chatbot/query-surface bundles should require additional fields for embedding model, index version, and retrieval freshness.</li>
+  </ul>
+
+  <h2>Verification</h2>
+  <pre>uv run --no-project pytest tests/architecture/test_report_layer_contract.py -q</pre>
+</body>
+</html>

@@ -1,0 +1,221 @@
+# Model Registry - Per-provider model variants with cost/capability tiers
+# Used by adaptive routing to select the best model for each task tier
+# Version: 2.0.0
+#
+# POLICY: Always use latest available models. Update this file when new
+# model versions are released. All scripts MUST read model IDs from here —
+# never hardcode model IDs in shell scripts or workflow configs.
+# See: behavior-contract.yaml > model_versioning
+
+version: 2.3.0
+last_updated: "2026-07-22"
+
+ewma:
+  alpha: 0.3          # Recent ratings weighted 30%
+  seed: 3.0            # Initial EWMA value before any ratings
+  min_ratings: 3       # Cold-start protection: need this many before trusting EWMA
+  poor_threshold: 2.5  # Below this -> try next model
+
+# Latest model IDs — single source of truth for the entire ecosystem
+# Scripts should read these values, never hardcode model strings
+latest_models:
+  claude_primary: "claude-opus-4-8[1m]"      # 1M-context Opus lane
+  claude_strong: "claude-opus-4-8"           # 200K Opus lane (fast mode available on 4.6+)
+  claude_balanced: "claude-sonnet-4-6"
+  claude_fast: "claude-haiku-4-5"
+  codex_primary: "codex-cli"          # Codex CLI; runs gpt-5.6-sol under the hood (~/.codex/config.toml)
+  gemini_primary: "gemini-2.5-pro"           # LEGACY (gemini CLI retired from routing #3573); still the underlying Gemini model id for the agy lane
+  gemini_fast: "gemini-2.5-flash"
+  agy_primary: "gemini-3.1-pro"              # agy (Antigravity) default = "Gemini 3.1 Pro (High)" label (#3086); own quota pool — 3.1 does NOT 429 here
+  openai_primary: "gpt-5.6-sol"       # tracks live ~/.codex/config.toml (R-MODEL-DRIFT #3038; flipped 2026-07-18 by codex update)
+  openai_fast: "gpt-5.4-mini"
+
+# Context windows (K tokens) — single source for session tooling (#3038).
+# Flat map by design: consumed by grep/regex readers in scripts/lib/model-registry.sh,
+# scripts/ai/session-params.py, scripts/productivity/sections/ai-usage-summary.sh.
+context_windows_k:
+  claude-opus-4-8[1m]: 1000
+  claude-fable-5: 1000
+  claude-opus-4-8: 200
+  claude-sonnet-4-6: 200
+  claude-haiku-4-5: 200
+  gpt-5.6-sol: 128            # assumed same family window as gpt-5.5; verify against openai.com/pricing
+  gpt-5.5: 128
+  gpt-5.4: 128
+  gpt-5.4-mini: 128
+  gpt-5.3-codex: 128
+  gpt-5.2-codex: 128
+  gemini-3.1-pro-preview: 1000
+  gemini-2.5-pro: 1000
+  gemini-2.5-flash: 1000
+
+providers:
+  claude:
+    default_model: sonnet-4-6   # Sonnet stays default for routine work; escalate to opus-4-8-1m for hardest tasks
+    models:
+      opus-4-8-1m:
+        display_name: "Claude Opus 4.8 (1M context)"
+        model_id: "claude-opus-4-8[1m]"
+        cost_tier: premium
+        capability_tier: REASONING
+        default_priority: 110
+        # cost_usd_per_1m: verify against anthropic.com/pricing before using in cost reports
+        recommended_use:
+          - hardest multi-step reasoning (Route C complex plans)
+          - cross-review (review must out-reason the authoring Sonnet)
+          - large codebase/document analysis requiring 1M context
+          - complex multi-agent architecture decisions
+        avoid_for:
+          - Route A/B routine work items (Sonnet sufficient; preserves weekly quota)
+        quota_risk: HIGH
+      fable-5:
+        display_name: "Claude Fable 5"
+        model_id: "claude-fable-5"
+        deprecated: true   # access lost 2026-06-13 (#3043); retained for audit/history; nothing routes here
+        cost_tier: premium
+        capability_tier: REASONING
+        default_priority: 0   # de-prioritized; superseded by opus-4-8-1m
+        recommended_use:
+          - "(deprecated — superseded by opus-4-8-1m)"
+        quota_risk: HIGH
+      opus-4-8:
+        display_name: "Claude Opus 4.8"
+        model_id: "claude-opus-4-8"
+        cost_tier: premium
+        capability_tier: REASONING
+        default_priority: 100
+        cost_usd_per_1m: {input: 5.00, output: 25.00}  # carried from Opus 4.x tier — verify against anthropic.com/pricing
+        recommended_use:
+          - heavy reasoning at 200K context or when /fast mode desired (/fast supported on Opus 4.6+)
+          - the 200K lane; use opus-4-8-1m when the task needs the 1M window
+        avoid_for:
+          - iterative engineering workflows (token cost compounds quickly)
+          - documentation and technical reports
+        quota_risk: HIGH
+      sonnet-4-6:
+        display_name: "Claude Sonnet 4.6"
+        model_id: "claude-sonnet-4-6"
+        cost_tier: balanced
+        capability_tier: COMPLEX
+        default_priority: 90
+        cost_usd_per_1m: {input: 3.00, output: 15.00}
+        verbosity_multiplier: 1.0   # Baseline — concise by default
+        effort_recommendation: medium   # Anthropic guidance for most Sonnet 4.6 use cases
+        recommended_use:
+          - Route A/B work items (planning, implementation, testing)
+          - OrcaFlex modeling documentation and technical reports
+          - iterative engineering workflows
+          - cross-review phases (quality vs cost balance)
+          - DEFAULT for all work queue phases unless task explicitly needs Fable/Opus
+        quota_risk: LOW
+      haiku-4-5:
+        display_name: "Claude Haiku 4.5"
+        model_id: "claude-haiku-4-5"
+        cost_tier: budget
+        capability_tier: SIMPLE
+        default_priority: 60
+        recommended_use:
+          - simple index queries, status checks, quick lookups
+          - Route A trivial tasks
+        quota_risk: MINIMAL
+  codex:
+    default_model: codex-cli
+    models:
+      codex-cli:
+        display_name: "Codex CLI"
+        model_id: "codex-cli"   # resolves to model in ~/.codex/config.toml (gpt-5.5 as of 2026-06-11)
+        cost_tier: budget
+        capability_tier: COMPLEX
+        default_priority: 90
+  agy:
+    # Antigravity CLI (Gemini-backed) — the third worker/reviewer provider (#3573).
+    # NOTE: agy persists its default model as a DISPLAY LABEL in
+    # ~/.gemini/antigravity-cli/settings.json (see set-antigravity-default-model.sh, #3086).
+    default_model: gemini-3-1-pro-high
+    models:
+      gemini-3-1-pro-high:
+        display_name: "Gemini 3.1 Pro (High)"
+        model_id: "gemini-3.1-pro"
+        cost_tier: balanced          # rides the Google AI Pro plan; agy pool separate from gemini-CLI quota
+        capability_tier: REASONING
+        default_priority: 100
+      gemini-3-1-pro:
+        display_name: "Gemini 3.1 Pro"
+        model_id: "gemini-3.1-pro"
+        cost_tier: balanced
+        capability_tier: COMPLEX
+        default_priority: 90
+  gemini:
+    # LEGACY (#3573): the gemini CLI is retired from worker/reviewer routing;
+    # agy (above) is the Gemini surface. Section retained for audit/back-compat.
+    default_model: gemini-pro
+    models:
+      gemini-3-1-pro-preview:
+        display_name: "Gemini 3.1 Pro Preview"
+        model_id: "gemini-3.1-pro-preview"
+        cost_tier: premium
+        capability_tier: REASONING
+        default_priority: 60   # demoted 2026-06-11: live probe 429s on Google AI Pro plan — quota-starved, use sparingly
+        quota_risk: HIGH
+      gemini-pro:
+        display_name: "Gemini 2.5 Pro"
+        model_id: "gemini-2.5-pro"
+        cost_tier: balanced
+        capability_tier: COMPLEX
+        default_priority: 100   # live-verified CLI default 2026-06-11
+      gemini-flash:
+        display_name: "Gemini 2.5 Flash"
+        model_id: "gemini-2.5-flash"
+        cost_tier: budget
+        capability_tier: SIMPLE
+        default_priority: 70
+  openai:
+    default_model: gpt-5.6-sol
+    models:
+      gpt-5.6-sol:
+        display_name: "GPT-5.6 Sol"
+        model_id: "gpt-5.6-sol"
+        cost_tier: balanced
+        capability_tier: COMPLEX
+        default_priority: 90
+      gpt-5.5:
+        display_name: "GPT-5.5"
+        model_id: "gpt-5.5"
+        cost_tier: balanced
+        capability_tier: COMPLEX
+        default_priority: 85
+      gpt-5.4-mini:
+        display_name: "GPT-5.4 Mini"
+        model_id: "gpt-5.4-mini"
+        cost_tier: budget
+        capability_tier: STANDARD
+        default_priority: 70
+
+# Work Queue Phase Routing — which Claude model tier to use per phase
+# Rule: Sonnet 4.6 by default; escalate to 1M-Opus (opus-4-8-1m) only for Route C plan/architecture phases
+# Updated: 2026-06-13 (#3051: Fable 5 access lost; primary flipped to claude-opus-4-8[1m])
+work_queue_routing:
+  route_a:
+    plan:    sonnet-4-6
+    execute: sonnet-4-6
+    review:  haiku-4-5
+  route_b:
+    plan:    sonnet-4-6
+    execute: sonnet-4-6
+    review:  sonnet-4-6
+  route_c:
+    plan:    opus-4-8-1m  # Only escalation point — complex multi-repo architecture (1M-Opus since #3051)
+    execute: sonnet-4-6   # Implementation stays on Sonnet even for Route C
+    review:  sonnet-4-6
+  # Effort level for Sonnet 4.6 (Anthropic recommendation)
+  sonnet_effort: medium
+  # Cross-review model selection — independent of authoring model
+  # Rule: use best available Claude model (claude_primary) so review always
+  # has more capability than the authoring session. When claude_primary
+  # updates in latest_models, cross-review automatically inherits it.
+  # Route A: Sonnet sufficient (low-stakes self-review)
+  # Route B/C: claude_primary — heavier model catches blind spots of authoring Sonnet
+  cross_review:
+    route_a: sonnet-4-6        # Self-review tier — same model acceptable
+    route_b: claude_primary    # → claude-opus-4-8[1m] today; tracks latest_models.claude_primary
+    route_c: claude_primary    # → claude-opus-4-8[1m] today; fresh session, no authoring context

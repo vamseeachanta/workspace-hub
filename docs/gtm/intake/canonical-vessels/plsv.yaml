@@ -1,0 +1,90 @@
+# ============================================================================
+# Canonical vessel — Pipe-Lay Support Vessel (PLSV), deepwater support class
+# Representative name: Deep Energy (TechnipFMC public class reference)
+# ----------------------------------------------------------------------------
+# DISCLAIMER:
+#   - Class-typical values, not vessel-specific. Do not represent any
+#     particular commercial asset.
+#   - Intended as an intake fallback when a prospect's own vessel data is
+#     incomplete; the branded report will surface this disclaimer on the
+#     cover page when this canonical reference is used.
+#   - Last reviewed: 2026-04-21.
+#
+# CITATIONS (2-per-vessel rule, plan v3 canonical source pins):
+#   [1] TechnipFMC public vessel page, "Deep Energy" —
+#       https://www.technipfmc.com/en/what-we-do/subsea/vessels/deep-energy/
+#       (LOA, beam, DP3, deepwater lay-system / reel-lay particulars,
+#       deepwater operating envelope).
+#   [2] OTC-25303 (2014) "Deepwater Reel-Lay PLSV Installation Experience"
+#       plus DNV-RP-H103 (2021) §4 lay-vessel operability criteria and
+#       API 17B / 17J flexible / subsea installation context — used for
+#       class-typical motion / operability / lifting envelope values.
+#
+# Reviewer reproducibility: LOA, beam, DP class, max water depth, and the
+# representative crane / lift envelope below MUST be reproducible from
+# citation [1]. Motion / operability values MUST be reproducible from [2].
+# ============================================================================
+
+id: "plsv"
+name: "Deep Energy-class PLSV (class-typical)"
+representative_class: "plsv_dp3_deepwater"
+
+general:
+  loa_m: 194.0
+  beam_m: 32.0
+  displacement_te: 32000
+  dp_class: "DP3"
+  max_water_depth_m: 3000
+  transit_speed_kt: 13.0
+  deck_area_m2: 2500
+  accommodation_pob: 340
+  _note: "Class-typical deepwater PLSV / reel-lay support vessel derived from public Deep Energy particulars"
+
+crane_main:
+  type: "offshore_construction_crane"
+  swl_max_te: 800
+  swl_max_radius_m: 25.0
+  crane_capacity_curve:
+    - { radius_m: 25.0, swl_te: 800 }
+    - { radius_m: 35.0, swl_te: 650 }
+    - { radius_m: 45.0, swl_te: 500 }
+    - { radius_m: 55.0, swl_te: 350 }
+  hoist_speed_m_per_min: 18.0
+  main_wire_mbl_te: 1200
+  main_wire_diameter_mm: 90
+  _note: "Representative offshore-construction lift envelope for a deepwater PLSV"
+
+motion_characteristics:
+  heave_rao: 0.40
+  roll_rao: 0.75
+  pitch_rao: 0.50
+  natural_periods:
+    heave_s: 9.5
+    roll_s: 12.0
+    pitch_s: 8.8
+  _note: "Class-typical DP3 deepwater lay-vessel motions; lower than shallow barge, higher than idealized CSV heavy-lift conditions"
+
+operational_limits:
+  construction_support:
+    max_hs_m: 2.8
+    max_wind_speed_ms: 18.0
+    max_current_ms: 1.5
+    _note: "Representative subsea construction / support envelope for deepwater PLSV operations"
+  deepwater_installation:
+    max_hs_m: 3.0
+    max_wind_speed_ms: 20.0
+    max_current_ms: 1.8
+  dp_operations:
+    max_hs_m: 4.5
+    max_wind_speed_ms: 24.0
+    max_current_ms: 2.0
+
+sources:
+  - id: "technipfmc-deep-energy"
+    accessed_utc: "2026-04-21T00:00:00Z"
+    url: "https://www.technipfmc.com/en/what-we-do/subsea/vessels/deep-energy/"
+    role: "general_particulars_and_operating_class"
+  - id: "otc-25303-and-dnv-rp-h103"
+    accessed_utc: "2026-04-21T00:00:00Z"
+    reference: "OTC-25303 (2014); DNV-RP-H103 (2021); API 17B/17J context"
+    role: "class_typical_motion_operability_and_installation_methodology"

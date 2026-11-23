@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900">
+  <style>.title{font:700 52px DejaVu Sans,Arial;fill:#fff}.headline{font:32px DejaVu Sans,Arial;fill:#0B2341}.row{font:26px DejaVu Sans,Arial;fill:#1F2937}.small{font:20px DejaVu Sans,Arial;fill:#334155}</style>
+  <rect width="1600" height="900" fill="#F7FAFC"/>
+  <rect width="1600" height="112" fill="#0B2341"/>
+  <text x="48" y="72" class="title">C2: Pipelay Operating Envelope</text>
+  <text x="48" y="170" class="headline">Shallow Water Barge screens GO across 8in-24in at 7m-30m while Large PLV is draft-limited at the shallowest row.</text>
+  <text x="48" y="210" class="small">Colour cue: green &gt;=80% pass/utilisation margin OK; amber 50-79% or high utilisation risk; red &lt;50%.</text>
+  <rect x="48" y="232" width="20" height="34" fill="#2F80ED"/><text x="80" y="260" class="row">Large PLV | 24 GO / 30 cells | Depths: 10m-30m | Pipe sizes: 8in-24in; limiting: tension</text>
+<rect x="48" y="286" width="20" height="34" fill="#2F80ED"/><text x="80" y="314" class="row">Shallow Water Barge | 29 GO / 30 cells | Depths: 7m-30m | Pipe sizes: 8in-24in; limiting: overbend</text>
+  <rect y="780" width="1600" height="120" fill="#EAF2F8"/>
+  <text x="48" y="824" class="small">Vessel parameters are representative classes only; not measured telemetry or exact specifications of any named vessel.</text>
+</svg>

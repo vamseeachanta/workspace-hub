@@ -1,0 +1,70 @@
+{
+  "schema_version": "1.0",
+  "script_version": "1.0.0",
+  "platform": "linux",
+  "hostname": "vamsee-linux1",
+  "timestamp_start": "2026-02-02T21:47:42Z",
+  "timestamp_end": "2026-02-02T21:48:00Z",
+  "updates": {
+    "os_packages": {
+      "status": "success",
+      "manager": "apt",
+      "upgraded_count": 0,
+      "newly_installed_count": 0,
+      "removed_count": 0,
+      "packages": [
+        "libxatracker2 25.0.7-0ubuntu0.24.04.2 -> 25.1.7-1ubuntu2~24.04.1",
+        "linux-generic 6.8.0-90.91 -> 6.8.0-94.96",
+        "linux-headers-generic 6.8.0-90.91 -> 6.8.0-94.96",
+        "linux-image-generic 6.8.0-90.91 -> 6.8.0-94.96",
+        "linux-modules-nvidia-535-generic 6.8.0-90.91+2 -> 6.8.0-94.96+1",
+        "python-apt-common 2.7.7ubuntu5.1 -> 2.7.7ubuntu5.2",
+        "python3-apt 2.7.7ubuntu5.1 -> 2.7.7ubuntu5.2"
+      ],
+      "errors": []
+    },
+    "snap_packages": {
+      "status": "success",
+      "upgraded_count": 0,
+      "packages": [],
+      "errors": []
+    },
+    "tools": {
+      "nvidia_driver": {
+        "status": "unchanged",
+        "from_version": "535.288.01",
+        "to_version": "535.288.01"
+      },
+      "docker": {
+        "status": "unavailable",
+        "from_version": "",
+        "to_version": ""
+      },
+      "flatpak": {
+        "status": "unavailable",
+        "upgraded_count": 0
+      },
+      "pip": {
+        "status": "unavailable",
+        "from_version": "",
+        "to_version": ""
+      },
+      "npm": {
+        "status": "unchanged",
+        "from_version": "11.8.0",
+        "to_version": "11.8.0"
+      },
+      "uv": {
+        "status": "unavailable",
+        "from_version": "",
+        "to_version": ""
+      }
+    },
+    "custom": {
+      "status": "skipped",
+      "items": []
+    }
+  },
+  "reboot_required": true,
+  "summary": "Updated 0 OS packages, 0 snap packages, 0 tools"
+}

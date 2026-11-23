@@ -1,0 +1,85 @@
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[3]
+ENG_STD = ROOT / "knowledge/wikis/engineering-standards/wiki"
+ENG = ROOT / "knowledge/wikis/engineering/wiki"
+
+
+def read(path: Path) -> str:
+    return path.read_text(encoding="utf-8")
+
+
+def test_2543_lng_a_codes_source_pages_exist():
+    # Metadata-only, raw_copy_allowed and no-raw-text asserts retired by the
+    # owner's 28 Oct 2026 ruling (.claude/rules/codes-standards-data-routing.md).
+    pages = [
+        ENG_STD / "sources/lng_a-codes-specs-faceted-index.md",
+        ENG_STD / "sources/lng_a-techstreet-drop.md",
+        ENG_STD / "sources/lng_a-company-specs.md",
+        ENG_STD / "sources/lng_a-deepstar.md",
+    ]
+    for page in pages:
+        assert page.exists(), page
+        text = read(page)
+        assert "/mnt/ace/lng_a/codes" in text
+
+
+def test_2543_bv_stub_has_resolver_fields_if_present():
+    page = ENG_STD / "standards/bv-ship-offshore-rules.md"
+    if not page.exists():
+        deferred = ENG_STD / "sources/lng_a-codes-specs-faceted-index.md"
+        assert "BV publisher stub deferred" in read(deferred)
+        return
+    text = read(page)
+    for field in ["code_id:", "publisher:", "revision:", "revision_source:", "verified_on:", "public_url:"]:
+        assert field in text
+
+
+def test_2542_lng_a_university_metadata_pages_exist_without_fulltext_or_ocr():
+    pages = [
+        ENG / "sources/lng_a-university-module-1-00-subsea-production-systems-overview.md",
+        ENG / "sources/lng_a-university-module-1-01-production-control-systems.md",
+        ENG / "sources/lng_a-university-module-1-02-umbilical-systems.md",
+        ENG / "sources/lng_a-university-module-1-03-installation-workover-control.md",
+        ENG / "sources/lng_a-university-lunch-and-learn-control-systems.md",
+        ENG / "sources/lng_a-university-lunch-and-learn-umbilical-systems.md",
+        ENG / "sources/lng_a-university-syllabus-snapshot.md",
+    ]
+    for page in pages:
+        assert page.exists(), page
+        text = read(page)
+        assert "extraction_policy: metadata-first" in text
+        assert "raw_copy_allowed: false" in text
+        assert "ocr_allowed: false" in text
+        assert "/mnt/ace/lng_a/training" in text
+        assert "Full text was not extracted" in text
+
+
+def test_2542_training_concepts_and_standard_links_are_bounded():
+    concepts = [
+        ENG / "concepts/subsea-production-system-overview.md",
+        ENG / "concepts/subsea-production-control-system.md",
+        ENG / "concepts/subsea-umbilical-system.md",
+        ENG / "concepts/installation-workover-control-system.md",
+        ENG / "concepts/methanol-injection-analysis.md",
+        ENG / "concepts/umbilical-tube-sizing-api-17e.md",
+        ENG / "concepts/hydrostatic-pressure-depth.md",
+        ENG / "concepts/subsea-accumulator-sizing.md",
+    ]
+    for page in concepts:
+        assert page.exists(), page
+        text = read(page)
+        assert "curated_summary_only: true" in text
+        assert "full_text_extracted: false" in text
+    assert (ENG_STD / "standards/api-17e.md").exists()
+    assert "code_id: api-17e" in read(ENG_STD / "standards/api-17e.md")
+
+
+def test_elements_execution_updates_indexes_and_logs():
+    std_index = read(ENG_STD / "index.md")
+    eng_index = read(ENG / "index.md")
+    assert "lng_a-codes-specs-faceted-index" in std_index
+    assert "lng_a-university-module-1-00" in eng_index
+    assert "umbilical-tube-sizing-api-17e" in eng_index
+    assert "lng_a Codes metadata-only standards pointer pass" in read(ENG_STD / "log.md")
+    assert "lng_a University metadata-first tranche 1" in read(ENG / "log.md")

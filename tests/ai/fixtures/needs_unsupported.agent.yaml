@@ -1,0 +1,11 @@
+# Negative-test fixture (G1 / #3116): an agent requesting a capability that is
+# `unsupported` on Codex/Gemini. run_agent.py MUST fail closed BEFORE dispatch.
+name: needs-unsupported
+role: worker
+description: Requests a capability no non-Claude harness can provide.
+capabilities:
+  - read_files
+  - gui_automation        # bound as unsupported on codex/gemini
+output_contract: behavior_contract.normalized_verdicts
+prompt: |
+  This agent should never dispatch on codex/gemini.

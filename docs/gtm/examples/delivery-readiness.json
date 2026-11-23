@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "capabilities": [
+    {
+      "id": "screening",
+      "workflow_ref": "methods/synthetic-screening",
+      "criteria_ref": "criteria/synthetic-example",
+      "inputs": [
+        {
+          "id": "geometry",
+          "state": "available",
+          "evidence_ref": "evidence/geometry",
+          "acquisition_ref": null
+        },
+        {
+          "id": "conditions",
+          "state": "missing",
+          "evidence_ref": null,
+          "acquisition_ref": "requests/conditions"
+        }
+      ]
+    }
+  ],
+  "artifacts": [
+    {
+      "stage": "geometry",
+      "ref": "evidence/geometry",
+      "revision": "synthetic-v1",
+      "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "upstream_sha256": null
+    },
+    {
+      "stage": "case",
+      "ref": "evidence/case",
+      "revision": "synthetic-v1",
+      "sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      "upstream_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    },
+    {
+      "stage": "results",
+      "ref": "evidence/results",
+      "revision": "synthetic-v1",
+      "sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+      "upstream_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+    },
+    {
+      "stage": "report",
+      "ref": "evidence/report",
+      "revision": "synthetic-v1",
+      "sha256": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+      "upstream_sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+    }
+  ],
+  "pursuits": [
+    {
+      "id": "sample",
+      "state": "active",
+      "evidence_ref": null,
+      "next_action_ref": "actions/request-conditions"
+    }
+  ]
+}

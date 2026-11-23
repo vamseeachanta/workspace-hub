@@ -1,0 +1,30 @@
+board_slug: repo-llm-wiki-mkt-a
+repo: vamseeachanta/llm-wiki-mkt-a
+gaps:
+  - idempotency_key: gap:repo-llm-wiki-mkt-a:001
+    title: Uncommitted proj-a rudder-force report (issue-2760) staged but not committed
+    source: detected_gap
+    detection_basis: |
+      git status shows 7 staged files under reports/proj-a/issue-2760/ (proj-a-current-rudder-force-report.{md,html,pdf,docx} + citations.json + manifest.json + report-layer-manifest.json). Plus untracked .codex/ and .gemini/ runtime dirs.
+    needs_issue: true
+    priority: 2
+    body_excerpt: |
+      Commit decision needed: is the rudder-force report deliverable ready, or is it intentionally held pending review? Surface to user; route via workspace-hub#2760 thread.
+  - idempotency_key: gap:repo-llm-wiki-mkt-a:002
+    title: Sibling-rename audit (llm-wiki-mkt-a vs prior naming)
+    source: detected_gap
+    detection_basis: |
+      Memory project_wiki_sibling_naming_locked (2026-05-22) locked the suffix form llm-wiki-<client>. workspace-hub#2778 + rename of mkt-a-llm-wiki to llm-wiki-mkt-a. No tracker confirms downstream consumers (citation modules, plans) updated.
+    needs_issue: true
+    priority: 1
+    body_excerpt: |
+      Audit cross-repo references for legacy mkt-a-llm-wiki paths; confirm citation resolver + docs updated.
+  - idempotency_key: gap:repo-llm-wiki-mkt-a:003
+    title: Per-client project routing scaffold (mkt-a/projects/proj-a)
+    source: detected_gap
+    detection_basis: |
+      Memory locks one-llm-wiki-per-CLIENT (not per project); proj-a nests under mkt-a/projects/proj-a/. Folder convention exists but not codified in repo README.
+    needs_issue: true
+    priority: 0
+    body_excerpt: |
+      Document the mkt-a/projects/<project-slug>/ routing convention in README so future projects (B-numbers, client engagements) land correctly.

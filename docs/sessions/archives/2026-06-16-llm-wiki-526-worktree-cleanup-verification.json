@@ -1,0 +1,53 @@
+{
+  "target_paths": [
+    "/home/vamsee/.config/superpowers/worktrees/llm-wiki/feature-526-electrical-support-routing"
+  ],
+  "repository": "/mnt/local-analysis/llm-wiki",
+  "issue": "https://github.com/vamseeachanta/llm-wiki/issues/526",
+  "branch_compared": "feature/526-electrical-support-routing",
+  "head_sha": "3b6d382a1b7fc30bc920709fc270a318434ad38b",
+  "upstream": "origin/feature/526-electrical-support-routing",
+  "remote_ref": "refs/heads/feature/526-electrical-support-routing",
+  "remote_sha": "3b6d382a1b7fc30bc920709fc270a318434ad38b",
+  "ahead_behind": "0 0",
+  "working_tree": {
+    "tracked_dirty": 0,
+    "untracked": 0,
+    "stash": 0
+  },
+  "residue_buckets": {
+    "A_disposable_ignored_cache_dirs": 3,
+    "B_evidence_bearing": 0,
+    "C_inspect_first": 0
+  },
+  "archive_path": null,
+  "archive_sha256": null,
+  "verification_commands": [
+    "git ls-remote --heads origin feature/526-electrical-support-routing",
+    "git rev-list --left-right --count HEAD...@{upstream}",
+    "python -m pytest tests/test_electrical_instrumentation_support_routing.py -q",
+    "bash scripts/legal/legal-sanity-scan.sh --diff-only",
+    "git diff --check origin/main..HEAD"
+  ],
+  "verification_results": {
+    "focused_pytest": "14 passed in 0.12s",
+    "legal_sanity_scan": "RESULT: PASS - no violations found",
+    "diff_check": "PASS",
+    "active_process_refs": "none except verification command itself"
+  },
+  "delete_allowed": true,
+  "removed_at": "2026-06-16T08:04:00-05:00",
+  "removal_command": "git -C /mnt/local-analysis/llm-wiki worktree remove /home/vamsee/.config/superpowers/worktrees/llm-wiki/feature-526-electrical-support-routing && git -C /mnt/local-analysis/llm-wiki worktree prune",
+  "post_removal": {
+    "target_exists": false,
+    "cleanup_lock": "absent",
+    "registered_worktrees": [
+      "/mnt/local-analysis/llm-wiki"
+    ],
+    "local_branch_preserved": "feature/526-electrical-support-routing 3b6d382a1 [origin/feature/526-electrical-support-routing]",
+    "draft_pr": "https://github.com/vamseeachanta/llm-wiki/pull/716"
+  },
+  "approver": "user approved preserve-first path",
+  "timestamp": "2026-06-16T08:02:00-05:00",
+  "notes": "Remove the registered worktree only after the branch is preserved on origin. Do not delete the unmerged local or remote branch."
+}

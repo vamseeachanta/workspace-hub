@@ -1,0 +1,21 @@
+version: 1
+wrk_id: WRK-1009
+skill_name: fitness-for-service
+skill_path: .claude/skills/engineering/asset-integrity/fitness-for-service/SKILL.md
+evals:
+- eval_id: ffs-cap-01
+  eval_type: capability
+  description: Core sections documented for fitness-for-service
+  checks:
+    required_sections:
+    - '## When to Use'
+    - '## Assessment Levels (API 579-1/ASME FFS-1)'
+    - '## Standards Reference'
+    - '## Core Calculations'
+    - '## Run-Repair-Replace Decision Framework'
+- eval_id: ffs-proc-01
+  eval_type: procedural
+  description: Additional documentation sections for fitness-for-service
+  checks:
+    required_sections:
+    - '## Related Skills'

@@ -1,0 +1,170 @@
+# Checkpoint Workflow Template
+# Purpose: Create summarization checkpoints for context management
+# Usage: Triggered after major operations to persist state
+
+metadata:
+  name: checkpoint-pattern
+  version: 1.0.0
+  created: 2026-01-14
+  description: Summarization checkpoint workflow for context overflow prevention
+
+config:
+  checkpoint_dir: .claude/checkpoints
+  max_checkpoint_size: 500  # tokens
+  auto_archive_threshold: 60  # %ctx
+  date_format: "%Y-%m-%d"
+
+# Checkpoint triggers
+triggers:
+  # Trigger on context threshold
+  context_threshold:
+    condition: "%ctx > 60"
+    action: create_checkpoint
+    priority: high
+
+  # Trigger after major operations
+  operation_complete:
+    operations:
+      - pytest_validation
+      - batch_execution
+      - multi_repo_sync
+      - dependency_update
+    action: create_checkpoint
+    priority: normal
+
+  # Trigger on phase completion
+  phase_complete:
+    phases:
+      - specification
+      - architecture
+      - implementation
+      - testing
+    action: create_checkpoint
+    priority: normal
+
+# Checkpoint template
+checkpoint_template:
+  filename_pattern: "{date}-{task_name}.md"
+
+  content: |
+    ## Checkpoint: {task_name}
+    **Timestamp:** {timestamp}
+    **Status:** {status}
+    **Context Usage:** {ctx_percentage}%
+
+    ### Key Findings
+    {key_findings}
+
+    ### Files Modified
+    {files_modified}
+
+    ### Metrics
+    {metrics}
+
+    ### Next Action
+    {next_action}
+
+    ### Critical Values
+    {critical_values}
+
+# Checkpoint creation step
+checkpoint_step:
+  name: create-checkpoint
+  agent: checkpoint-writer
+
+  input:
+    # Source can be aggregated results or direct operation output
+    sources:
+      - .claude/state/aggregated_state.json
+      - .claude/state/current_task.json
+
+    # Extract these fields for checkpoint
+    extract:
+      - status
+      - key_findings
+      - files_modified
+      - metrics
+      - next_action
+
+  processing:
+    # Summarize key findings (max 5 bullet points)
+    summarize_findings:
+      max_items: 5
+      max_chars_per_item: 100
+
+    # Format metrics as key=value pairs
+    format_metrics:
+      style: "key=value"
+      separator: ", "
+
+    # Single sentence next action
+    format_next_action:
+      max_chars: 150
+      style: imperative
+
+  output:
+    directory: .claude/checkpoints
+    filename: "{date}-{task_name}.md"
+
+    # Also update state file
+    update_state:
+      file: .claude/state/checkpoint_history.json
+      append:
+        checkpoint_file: "{output_filename}"
+        timestamp: "{timestamp}"
+        task_name: "{task_name}"
+
+# Context management integration
+context_management:
+  # When context exceeds threshold, archive older exchanges
+  archive_workflow:
+    trigger: "%ctx > 60"
+
+    steps:
+      - name: identify-archivable
+        description: Find exchanges older than last 3
+        criteria:
+          - not_in_last_n: 3
+          - type: [user_message, assistant_response]
+
+      - name: create-summary
+        description: Summarize archivable exchanges
+        max_summary_length: 500
+        format: bullet_points
+
+      - name: write-archive
+        description: Save to archive file
+        output_dir: .claude/archives
+        filename: "{timestamp}.json"
+
+      - name: update-checkpoint
+        description: Record archive reference in checkpoint
+        append_to_checkpoint: true
+
+# Example checkpoint output
+example:
+  filename: "2026-01-14-pytest-validation.md"
+  content: |
+    ## Checkpoint: pytest-validation
+    **Timestamp:** 2026-01-14T14:30:00-06:00
+    **Status:** complete
+    **Context Usage:** 45%
+
+    ### Key Findings
+    - 15/27 repos can collect tests (56% success)
+    - 12 repos need configuration fixes
+    - 491 total tests discovered
+    - Tier 1 blockers: digitalmodel, worldenergydata
+
+    ### Files Modified
+    - PHASE_1E_CROSS_REPO_VALIDATION_REPORT.md
+    - .claude/state/aggregated_pytest_results.json
+
+    ### Metrics
+    success_rate=56%, total_tests=491, blocked=4, duration=127s
+
+    ### Next Action
+    Fix Tier 1 blockers (digitalmodel pytest.ini, worldenergydata imports)
+
+    ### Critical Values
+    repos=27, passing=15, failing=12, tests=491

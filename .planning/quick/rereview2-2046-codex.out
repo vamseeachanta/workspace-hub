@@ -1,0 +1,411 @@
+2026-04-15T04:05:52.290453Z ERROR codex_core_skills::loader: failed to stat skills entry /mnt/local-analysis/workspace-hub/.claude/skills/skills (symlink): No such file or directory (os error 2)
+OpenAI Codex v0.120.0 (research preview)
+--------
+workdir: /mnt/local-analysis/workspace-hub
+model: gpt-5.4
+provider: openai
+approval: never
+sandbox: workspace-write [workdir, /tmp, $TMPDIR, /home/vamsee/.codex/memories]
+reasoning effort: medium
+reasoning summaries: none
+session id: 019d8f51-7065-74d2-a85d-8cb0c0602225
+--------
+user
+# Adversarial Re-Review Request: Issue #2046
+
+You are an independent adversarial reviewer. This plan was revised after prior MAJOR findings. Evaluate the revised plan on its current text only. Find any remaining gaps, risks, missing edge cases, unclear scope boundaries, or workflow/governance violations. Do NOT rubber-stamp.
+
+Return verdict as one of: APPROVE, MINOR, MAJOR.
+
+Required output format:
+1. Verdict
+2. Ready for user approval: Yes/No
+3. Retrieval adequacy: adequate/insufficient
+4. Top blockers (numbered)
+5. Critical findings
+6. High findings
+7. Medium findings
+8. Low findings
+9. Required revisions before user approval
+
+Context:
+- Repository: workspace-hub
+- Review type: plan-stage adversarial re-review
+- Focus on whether the revised plan is now actually approval-ready.
+
+GitHub issue metadata:
+- Issue: #2046
+- Title: Audit compliance of strict issue planning workflow after rollout
+- URL: https://github.com/vamseeachanta/workspace-hub/issues/2046
+- Labels: priority:medium, cat:ai-orchestration, cat:operations, status:plan-review
+
+GitHub issue body:
+After the new strict planning workflow has been used for a short period, audit compliance across agent activity.
+
+Audit focus:
+- Was `issue-planning-mode` used for all issues?
+- Were plans created in `docs/plans/` using the template?
+- Were adversarial reviews completed before user review?
+- Were labels `status:plan-review` and `status:plan-approved` used correctly?
+- Did any agent begin coding before approval?
+
+Deliverables:
+- Markdown report under `docs/reports/`
+- Compliance summary with examples
+- Gaps, failure modes, and recommendations
+- Decision: keep current approach or escalate enforcement
+
+Suggested trigger:
+- Run after 1-2 weeks of usage or after at least 10 issues have gone through the new workflow
+
+
+Plan under review (docs/plans/2026-04-09-issue-2046-planning-compliance-audit.md):
+# Plan for #2046: Audit Compliance of Strict Issue Planning Workflow After Rollout
+
+> **Status:** draft
+> **Complexity:** T2
+> **Date:** 2026-04-09
+> **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2046
+> **Review artifacts:** scripts/review/results/2026-04-14-plan-2046-codex.md | scripts/review/results/2026-04-14-plan-2046-gemini.md
+
+---
+
+## Resource Intelligence Summary
+
+### Existing repo code
+- Found: `.claude/skills/coordination/workflow-compliance-audit/` already documents a broader evidence model than the previous plan used.
+- Found: `.claude/hooks/plan-approval-gate.sh` and `scripts/enforcement/require-plan-approval.sh` are enforcement surfaces whose logs/state should be treated as audit evidence where available.
+- Found: `docs/plans/README.md` defines status ordering and plan-review/plan-approved semantics that this audit must verify explicitly.
+- Found: `.planning/plan-approved/<issue>.md` marker files are local evidence only and must be reconciled against GitHub timeline state rather than treated as sufficient on their own.
+- Found: `docs/reports/2026-04-09-planning-workflow-compliance-audit.md` already exists as the canonical report surface and should be refreshed, not duplicated.
+- Gap: there is still no script that builds a per-issue evidence matrix proving chronology between review, approval, and implementation.
+
+### Standards
+- `AGENTS.md` — hard-gate order and TDD expectation.
+- `docs/plans/README.md` — planning workflow contract and status precedence.
+- `docs/standards/HARD-STOP-POLICY.md` — engineering-critical enforcement policy.
+- `docs/standards/AI_REVIEW_ROUTING_POLICY.md` — adversarial review expectations.
+
+### Documents consulted
+- GitHub issue #2045 — onboarding baseline / rollout origin
+- GitHub issue #2047 — likely escalation path if audit fails
+- `docs/plans/README.md`
+- `docs/standards/HARD-STOP-POLICY.md`
+- `docs/standards/AI_REVIEW_ROUTING_POLICY.md`
+- `docs/governance/TRUST-ARCHITECTURE.md`
+- `docs/reports/2026-04-09-planning-workflow-compliance-audit.md`
+- `.claude/skills/coordination/workflow-compliance-audit/SKILL.md`
+- `.claude/hooks/plan-approval-gate.sh`
+- `scripts/enforcement/require-plan-approval.sh`
+
+### Gaps identified
+- Current plan logic still over-relies on artifact presence and commit timestamps instead of chronology and evidence confidence.
+- No authoritative policy matrix is yet defined for engineering-critical, non-engineering, mixed, and legacy issue cohorts.
+- No fixture corpus yet covers retroactive labels, malformed review artifacts, marker/label mismatches, or commits without issue references.
+
+---
+
+## Artifact Map
+
+| Artifact | Path |
+|---|---|
+| This plan | `docs/plans/2026-04-09-issue-2046-planning-compliance-audit.md` |
+| Audit script | `scripts/enforcement/audit-planning-compliance.sh` or equivalent implementation path chosen during execution |
+| Fixture corpus | `tests/fixtures/planning-compliance/` |
+| Script tests | `tests/enforcement/test_audit_planning_compliance.py` |
+| Canonical report | `docs/reports/2026-04-09-planning-workflow-compliance-audit.md` |
+| Workflow audit reference | `.claude/skills/coordination/workflow-compliance-audit/SKILL.md` |
+| Review artifacts | `scripts/review/results/2026-04-14-plan-2046-codex.md` and `scripts/review/results/2026-04-14-plan-2046-gemini.md` |
+
+---
+
+## Deliverable
+
+A reproducible compliance-audit plan that defines a per-issue evidence matrix, verifies timeline sequencing for plan-review/review/approval/implementation, and produces a canonical report with explicit included/excluded issue lists and compliant/non-compliant/indeterminate outcomes by cohort.
+
+---
+
+## Pseudocode
+
+```text
+load all candidate issues and classify them by cohort policy matrix:
+    engineering-critical
+    non-engineering
+    mixed / legacy
+for each in-scope issue:
+    retrieve issue timeline/events
+    retrieve plan artifact and status
+    retrieve review artifacts and parse verdict/date
+    retrieve approval marker state
+    retrieve implementation evidence:
+        commits
+        session evidence when available
+        bypass evidence when available
+    build per-issue evidence matrix
+    verify chronology:
+        status:plan-review before approval
+        adversarial review before approval
+        approval before implementation evidence
+    classify result as:
+        compliant
+        non-compliant
+        indeterminate
+generate canonical report with:
+    included issue list
+    excluded issue list with reasons
+    per-issue evidence summary
+    cohort counts for compliant/non-compliant/indeterminate
+```
+
+---
+
+## Files to Change
+
+| Action | Path | Reason |
+|---|---|---|
+| Rewrite | `docs/plans/2026-04-09-issue-2046-planning-compliance-audit.md` | strengthen evidence model and chronology requirements |
+| Create | `scripts/enforcement/audit-planning-compliance.sh` or equivalent implementation file | compliance audit implementation |
+| Create | `tests/fixtures/planning-compliance/` | frozen issue/timeline/review/marker/commit fixtures |
+| Create | `tests/enforcement/test_audit_planning_compliance.py` | falsifiable regression tests for chronology and cohort logic |
+| Update | `docs/reports/2026-04-09-planning-workflow-compliance-audit.md` | canonical audit report output |
+
+---
+
+## TDD Test List
+
+| Test name | What it verifies | Expected input | Expected output |
+|---|---|---|---|
+| `test_evidence_matrix_records_all_required_signals` | each issue record contains plan/review/label/marker/implementation evidence fields | fixture issue set | complete evidence matrix |
+| `test_status_plan_review_precedes_approval` | chronology proves plan-review happened before approval | timeline fixture | pass/fail |
+| `test_review_precedes_approval` | adversarial review timestamps precede approval | review + timeline fixture | pass/fail |
+| `test_marker_without_timeline_proof_is_not_auto_compliant` | marker alone is insufficient | marker-only fixture | indeterminate or non-compliant |
+| `test_commit_only_signal_is_low_confidence` | commit timestamps alone do not overstate proof | commit-only fixture | indeterminate |
+| `test_retroactive_label_is_flagged` | retroactive approval/review label drift is surfaced | retroactive label fixture | non-compliant or indeterminate |
+| `test_commits_without_issue_reference_do_not_force_false_negative` | lack of #NNN in commit history does not wrongly prove compliance | no-issue-ref fixture | indeterminate |
+| `test_report_emits_included_and_excluded_issue_lists` | report denominator is reproducible | mixed cohort fixture | explicit included/excluded lists |
+| `test_report_splits_compliant_noncompliant_indeterminate_by_cohort` | headline metrics are cohort-aware and falsifiable | mixed fixture set | separate counts |
+
+---
+
+## Acceptance Criteria
+
+- [ ] Audit logic uses a per-issue evidence matrix rather than simple artifact presence checks.
+- [ ] The audit explicitly verifies chronology for `status:plan-review`, adversarial review, approval evidence, and implementation evidence.
+- [ ] Engineering-critical, non-engineering, mixed, and legacy cohort rules are defined before implementation.
+- [ ] Report output includes included issue list, excluded issue list with reasons, and per-issue evidence summary.
+- [ ] Report output distinguishes compliant, non-compliant, and indeterminate issues by cohort.
+- [ ] Fixture-backed tests cover retroactive labels, malformed/missing review artifacts, marker/label drift, and weak implementation evidence cases.
+- [ ] Existing canonical report path is refreshed rather than replaced with a parallel reporting surface.
+
+---
+
+## Adversarial Review Summary
+
+| Provider | Verdict | Key findings |
+|---|---|---|
+| Codex | MAJOR | Evidence model too weak; chronology and denominator handling not strong enough |
+| Gemini | MAJOR | Missing `status:plan-review` verification, weak skill-usage evidence, and weak rollout cohort logic |
+
+**Overall result:** MAJOR — not approval-ready
+
+Revisions required before approval:
+- move from artifact-presence checks to evidence-matrix checks
+- verify chronology explicitly
+- define cohort policy matrix and indeterminate handling
+- make report output reproducible and fixture-backed
+
+---
+
+## Risks and Open Questions
+
+- **Risk:** GitHub timeline/event history may be incomplete for some historical issues; those cases must remain indeterminate rather than silently compliant.
+- **Risk:** weak evidence sources such as commit timestamps can distort the audit if not explicitly treated as lower confidence.
+- **Open:** none for approval readiness; chronology, cohort rules, and output reproducibility must be explicit before this plan returns to review.
+
+---
+
+## Complexity: T2
+
+**T2** — moderate audit/reporting implementation with timeline parsing, evidence classification, and fixture-backed verification.
+
+
+Review questions — address ALL:
+1. Did the revision resolve the prior MAJOR blockers in a concrete way?
+2. Is retrieval now adequate for the issue class?
+3. Are files-to-change, TDD, acceptance criteria, and risks concrete and falsifiable?
+4. Are there still unresolved scope/governance/status inconsistencies that should block approval?
+5. Should this revised plan now be approved, revised again, or split?
+warning: Codex's Linux sandbox uses bubblewrap and needs access to create user namespaces.
+codex
+I’m reviewing the revised plan against the repo’s workflow contracts and the issue’s stated deliverable. First step is to read the governing docs the plan claims to satisfy, then I’ll compare the plan text against those requirements and return a strict verdict.
+2026-04-15T04:06:23.426931Z ERROR codex_core::tools::router: error=exec_command failed for `/bin/bash -lc "sed -n '1,260p' docs/plans/README.md"`: CreateProcess { message: "Codex(Sandbox(Denied { output: ExecToolCallOutput { exit_code: 1, stdout: StreamOutput { text: \"\", truncated_after_lines: None }, stderr: StreamOutput { text: \"bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted\\n\", truncated_after_lines: None }, aggregated_output: StreamOutput { text: \"bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted\\n\", truncated_after_lines: None }, duration: 0ns, timed_out: false }, network_policy_decision: None }))" }
+2026-04-15T04:06:23.429459Z ERROR codex_core::tools::router: error=exec_command failed for `/bin/bash -lc "sed -n '1,220p' AGENTS.md"`: CreateProcess { message: "Codex(Sandbox(Denied { output: ExecToolCallOutput { exit_code: 1, stdout: StreamOutput { text: \"\", truncated_after_lines: None }, stderr: StreamOutput { text: \"bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted\\n\", truncated_after_lines: None }, aggregated_output: StreamOutput { text: \"bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted\\n\", truncated_after_lines: None }, duration: 0ns, timed_out: false }, network_policy_decision: None }))" }
+2026-04-15T04:06:23.431077Z ERROR codex_core::tools::router: error=exec_command failed for `/bin/bash -lc "sed -n '1,260p' docs/standards/HARD-STOP-POLICY.md"`: CreateProcess { message: "Codex(Sandbox(Denied { output: ExecToolCallOutput { exit_code: 1, stdout: StreamOutput { text: \"\", truncated_after_lines: None }, stderr: StreamOutput { text: \"bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted\\n\", truncated_after_lines: None }, aggregated_output: StreamOutput { text: \"bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted\\n\", truncated_after_lines: None }, duration: 0ns, timed_out: false }, network_policy_decision: None }))" }
+2026-04-15T04:06:23.431229Z ERROR codex_core::tools::router: error=exec_command failed for `/bin/bash -lc "sed -n '1,260p' docs/standards/AI_REVIEW_ROUTING_POLICY.md"`: CreateProcess { message: "Codex(Sandbox(Denied { output: ExecToolCallOutput { exit_code: 1, stdout: StreamOutput { text: \"\", truncated_after_lines: None }, stderr: StreamOutput { text: \"bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted\\n\", truncated_after_lines: None }, aggregated_output: StreamOutput { text: \"bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted\\n\", truncated_after_lines: None }, duration: 0ns, timed_out: false }, network_policy_decision: None }))" }
+codex
+The shell sandbox is rejecting normal reads in this environment, so I’m falling back to the provided plan text plus the repo instructions already in context. I’ll still assess against the stated hard gates and status workflow, and I’ll call out any place where the plan lacks proof against those contracts.
+codex
+1. Verdict
+
+MAJOR
+
+2. Ready for user approval: Yes/No
+
+No
+
+3. Retrieval adequacy: adequate/insufficient
+
+Insufficient
+
+4. Top blockers (numbered)
+
+1. The plan still does not define an authoritative source and decision rule for “all issues” in scope, so the audit denominator remains disputable.
+2. The issue’s first audit question, “Was `issue-planning-mode` used for all issues?”, is still not mapped to concrete evidence sources or falsifiable checks.
+3. The plan allows the implementation path to float as “`audit-planning-compliance.sh` or equivalent,” which is not approval-grade scoping for a workflow/governance audit.
+4. Cohort policy is acknowledged as missing, but the plan does not actually define it; it defers a core audit rule into implementation.
+5. Approval evidence is underspecified: the plan says to reconcile local markers with GitHub timeline state, but it never defines what exact GitHub event/label/comment constitutes user approval.
+
+5. Critical findings
+
+- The denominator is still unresolved. “Load all candidate issues and classify them by cohort policy matrix” is not enough. The plan never defines where candidate issues come from, how far back the audit runs, what minimum rollout window applies, or whether unlabeled but actually affected issues are included. That makes the compliance rate non-reproducible.
+- The issue explicitly asks whether `issue-planning-mode` was used for all issues. The revised plan talks about plan artifacts, review artifacts, markers, labels, commits, and session evidence, but it still does not define a primary evidence source for actual skill usage or a fallback when that evidence is absent.
+- User approval is a hard gate in `AGENTS.md`, but the plan never specifies the canonical approval signal. “Approval marker state” and “GitHub timeline/events” are referenced, but not the exact event precedence rule. Without that, “approval before implementation” is not auditable in a consistent way.
+- The plan still pushes a core governance decision into future execution: “Engineering-critical, non-engineering, mixed, and legacy cohort rules are defined before implementation.” That rule must already be in the plan before approval, not left as future work.
+- Scope boundaries are still ambiguous around legacy issues. The plan says mixed/legacy cohorts exist, but does not state whether legacy issues count against compliance, are reported separately, or are excluded from the keep/escalate decision.
+
+6. High findings
+
+- Retrieval is not approval-ready for this issue class. The plan cites many documents and adjacent issues, but it does not identify the actual operational data sources needed to prove chronology at scale, such as GitHub issue timeline fields, PR/commit linkage rules, session-log location, or enforcement log retention boundaries.
+- The plan does not define how to detect “began coding before approval” when implementation occurred without issue references, in separate branches, or through files changed without commits yet. It only says such cases should not force a false negative, which leaves a major blind spot.
+- “Bypass evidence when available” is too vague for a governance audit. If bypass paths exist, the plan should state what qualifies as bypass evidence and how it affects classification.
+- The report deliverable is still under-specified relative to the issue body. The issue requires examples, failure modes, recommendations, and a decision on enforcement. The plan mentions summaries and counts, but not minimum required recommendation structure or a decision rubric for “keep current approach” vs “escalate enforcement.”
+- The plan status is still `draft` while the issue label is `status:plan-review`. That mismatch is not fatal by itself, but for a workflow-audit issue it is a bad signal and should be reconciled before approval.
+
+7. Medium findings
+
+- `scripts/enforcement/audit-planning-compliance.sh or equivalent implementation path chosen during execution` is weak scoping. Approval-stage plans should commit to an exact path unless there is a justified architectural decision pending.
+- The TDD list is improved, but it still misses at least two important cases:
+  - issues with plan-review label applied after implementation began
+  - issues with multiple review artifacts where one is stale/superseded
+- The acceptance criteria do not explicitly require a documented evidence-confidence model, even though the plan text relies on weak vs strong signals.
+- The plan does not say whether the canonical report is regenerated from fixtures only, live GitHub state only, or a hybrid model. Reproducibility depends on that choice.
+- The plan references existing report refresh instead of duplication, which is good, but it does not state whether historical conclusions in that report must be preserved, replaced, or versioned.
+
+8. Low findings
+
+- “Open: none for approval readiness” is overstated. There are still open policy questions about cohort rules, approval signals, and denominator selection.
+- The complexity rating of `T2` may be understated given live timeline parsing, evidence confidence, cohort policy, fixtures, and report generation.
+- The artifact map names a fixture corpus but not the expected fixture schema or source provenance.
+
+9. Required revisions before user approval
+
+- Define the exact audit denominator:
+  - source query for candidate issues
+  - start/end date or rollout window
+  - minimum issue count / trigger threshold handling
+  - explicit inclusion and exclusion rules
+- Define the canonical evidence hierarchy for each audit question:
+  - `issue-planning-mode` usage
+  - plan creation from template
+  - adversarial review completion
+  - correct `status:plan-review` / `status:plan-approved` sequencing
+  - coding before approval
+- Define the exact approval signal and precedence rule:
+  - which GitHub event/label/comment counts as approval
+  - whether local marker files are corroborating or advisory only
+- Move cohort policy from “to be defined during implementation” into the plan itself, including how legacy and mixed issues affect the compliance denominator and final decision.
+- Commit to exact implementation paths rather than “or equivalent.”
+- Add tests for:
+  - post-hoc `status:plan-review`
+  - superseded review artifacts
+  - implementation evidence from PRs/branches without issue refs
+  - missing session logs / missing enforcement logs
+- Add a report decision rubric that explicitly determines when the output recommends:
+  - keep current approach
+  - tighten process guidance
+  - escalate enforcement
+
+This revision fixes part of the earlier weakness around chronology and indeterminate handling, but it still leaves core governance rules undefined. It should be revised again, not approved.
+tokens used
+113,957
+1. Verdict
+
+MAJOR
+
+2. Ready for user approval: Yes/No
+
+No
+
+3. Retrieval adequacy: adequate/insufficient
+
+Insufficient
+
+4. Top blockers (numbered)
+
+1. The plan still does not define an authoritative source and decision rule for “all issues” in scope, so the audit denominator remains disputable.
+2. The issue’s first audit question, “Was `issue-planning-mode` used for all issues?”, is still not mapped to concrete evidence sources or falsifiable checks.
+3. The plan allows the implementation path to float as “`audit-planning-compliance.sh` or equivalent,” which is not approval-grade scoping for a workflow/governance audit.
+4. Cohort policy is acknowledged as missing, but the plan does not actually define it; it defers a core audit rule into implementation.
+5. Approval evidence is underspecified: the plan says to reconcile local markers with GitHub timeline state, but it never defines what exact GitHub event/label/comment constitutes user approval.
+
+5. Critical findings
+
+- The denominator is still unresolved. “Load all candidate issues and classify them by cohort policy matrix” is not enough. The plan never defines where candidate issues come from, how far back the audit runs, what minimum rollout window applies, or whether unlabeled but actually affected issues are included. That makes the compliance rate non-reproducible.
+- The issue explicitly asks whether `issue-planning-mode` was used for all issues. The revised plan talks about plan artifacts, review artifacts, markers, labels, commits, and session evidence, but it still does not define a primary evidence source for actual skill usage or a fallback when that evidence is absent.
+- User approval is a hard gate in `AGENTS.md`, but the plan never specifies the canonical approval signal. “Approval marker state” and “GitHub timeline/events” are referenced, but not the exact event precedence rule. Without that, “approval before implementation” is not auditable in a consistent way.
+- The plan still pushes a core governance decision into future execution: “Engineering-critical, non-engineering, mixed, and legacy cohort rules are defined before implementation.” That rule must already be in the plan before approval, not left as future work.
+- Scope boundaries are still ambiguous around legacy issues. The plan says mixed/legacy cohorts exist, but does not state whether legacy issues count against compliance, are reported separately, or are excluded from the keep/escalate decision.
+
+6. High findings
+
+- Retrieval is not approval-ready for this issue class. The plan cites many documents and adjacent issues, but it does not identify the actual operational data sources needed to prove chronology at scale, such as GitHub issue timeline fields, PR/commit linkage rules, session-log location, or enforcement log retention boundaries.
+- The plan does not define how to detect “began coding before approval” when implementation occurred without issue references, in separate branches, or through files changed without commits yet. It only says such cases should not force a false negative, which leaves a major blind spot.
+- “Bypass evidence when available” is too vague for a governance audit. If bypass paths exist, the plan should state what qualifies as bypass evidence and how it affects classification.
+- The report deliverable is still under-specified relative to the issue body. The issue requires examples, failure modes, recommendations, and a decision on enforcement. The plan mentions summaries and counts, but not minimum required recommendation structure or a decision rubric for “keep current approach” vs “escalate enforcement.”
+- The plan status is still `draft` while the issue label is `status:plan-review`. That mismatch is not fatal by itself, but for a workflow-audit issue it is a bad signal and should be reconciled before approval.
+
+7. Medium findings
+
+- `scripts/enforcement/audit-planning-compliance.sh or equivalent implementation path chosen during execution` is weak scoping. Approval-stage plans should commit to an exact path unless there is a justified architectural decision pending.
+- The TDD list is improved, but it still misses at least two important cases:
+  - issues with plan-review label applied after implementation began
+  - issues with multiple review artifacts where one is stale/superseded
+- The acceptance criteria do not explicitly require a documented evidence-confidence model, even though the plan text relies on weak vs strong signals.
+- The plan does not say whether the canonical report is regenerated from fixtures only, live GitHub state only, or a hybrid model. Reproducibility depends on that choice.
+- The plan references existing report refresh instead of duplication, which is good, but it does not state whether historical conclusions in that report must be preserved, replaced, or versioned.
+
+8. Low findings
+
+- “Open: none for approval readiness” is overstated. There are still open policy questions about cohort rules, approval signals, and denominator selection.
+- The complexity rating of `T2` may be understated given live timeline parsing, evidence confidence, cohort policy, fixtures, and report generation.
+- The artifact map names a fixture corpus but not the expected fixture schema or source provenance.
+
+9. Required revisions before user approval
+
+- Define the exact audit denominator:
+  - source query for candidate issues
+  - start/end date or rollout window
+  - minimum issue count / trigger threshold handling
+  - explicit inclusion and exclusion rules
+- Define the canonical evidence hierarchy for each audit question:
+  - `issue-planning-mode` usage
+  - plan creation from template
+  - adversarial review completion
+  - correct `status:plan-review` / `status:plan-approved` sequencing
+  - coding before approval
+- Define the exact approval signal and precedence rule:
+  - which GitHub event/label/comment counts as approval
+  - whether local marker files are corroborating or advisory only
+- Move cohort policy from “to be defined during implementation” into the plan itself, including how legacy and mixed issues affect the compliance denominator and final decision.
+- Commit to exact implementation paths rather than “or equivalent.”
+- Add tests for:
+  - post-hoc `status:plan-review`
+  - superseded review artifacts
+  - implementation evidence from PRs/branches without issue refs
+  - missing session logs / missing enforcement logs
+- Add a report decision rubric that explicitly determines when the output recommends:
+  - keep current approach
+  - tighten process guidance
+  - escalate enforcement
+
+This revision fixes part of the earlier weakness around chronology and indeterminate handling, but it still leaves core governance rules undefined. It should be revised again, not approved.

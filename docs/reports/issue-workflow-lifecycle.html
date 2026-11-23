@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Issue Lifecycle · workspace-hub</title>
+<style>
+:root{--fg:#1a2230;--muted:#5b6675;--bg:#f7f8fa;--card:#fff;--line:#e2e6ec;--brand:#5b3fd6}
+*{box-sizing:border-box}
+body{margin:0;font:16px/1.6 -apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:var(--fg);background:var(--bg)}
+header.site{padding:14px 22px;background:var(--card);border-bottom:1px solid var(--line);display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+footer.site{padding:14px 22px;border-top:1px solid var(--line);color:var(--muted);font-size:14px;margin-top:48px;background:var(--card)}
+.home{color:var(--brand);font-weight:700;text-decoration:none}
+nav a{color:var(--muted);text-decoration:none;font-size:14px}
+nav a:hover{color:var(--brand)}
+main{max-width:1080px;margin:0 auto;padding:28px 22px}
+h1{font-size:28px;margin:0 0 4px}
+.sub{color:var(--muted);margin:0 0 22px}
+a{color:var(--brand)}
+.diagram{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:18px;overflow-x:auto}
+.legend{display:flex;gap:20px;flex-wrap:wrap;margin:18px 0 0;font-size:14px;color:var(--muted)}
+.legend span{display:inline-flex;align-items:center;gap:7px}
+.sw{width:14px;height:14px;border-radius:3px;display:inline-block;border:1px solid rgba(0,0,0,.15)}
+.invariants{background:#f0f3f7;border-left:3px solid var(--brand);border-radius:6px;padding:12px 16px;margin:22px 0 0;font-size:15px}
+.invariants strong{color:var(--fg)}
+.steps{font-size:14px;color:var(--muted);margin-top:8px}
+</style>
+</head>
+<body>
+<header class="site">
+  <a class="home" href="index.html">workspace-hub</a>
+  <nav><a href="index.html">Overview</a> · <a href="https://github.com/vamseeachanta/workspace-hub/issues/3237">Issue #3237</a> · <a href="https://github.com/vamseeachanta/workspace-hub">source</a></nav>
+</header>
+<main>
+  <h1>GitHub issue lifecycle</h1>
+  <p class="sub">The canonical method — plan → review → implement → HTML artifact → live link. Timeless reference; authority lives in the planning/engineering workflow skills.</p>
+
+  <div class="diagram">
+    <pre class="mermaid">
+flowchart TD
+    A["Issue opened"] --> B["1. Intake &amp; classify<br/>T1 / T2 / T3 · lane · exec mode"]
+    B --> C["2. Resource intelligence<br/>existing code · standards · docs · prior plans"]
+    C --> D{"3. Runtime claim?<br/>failing test / import / regression"}
+    D -- Yes --> E["Reproduce &amp; cite<br/>verbatim output in plan"]
+    D -- "No (docs/governance)" --> F["Mark: Reproduction proofs N/A"]
+    E --> G["4. Draft plan<br/>docs/plans/YYYY-MM-DD-issue-NNN-slug.md"]
+    F --> G
+    G --> H["5. Adversarial plan review<br/>Claude + Codex + Gemini"]
+    H --> I["Post plan to GH<br/>label status:plan-review"]
+    I --> J{"HARD STOP<br/>user approves?"}
+    J -- "REVISE" --> G
+    J -- "REJECT" --> K["Ask preferred approach"]
+    K --> G
+    J -- "APPROVE" --> L["label status:plan-approved"]
+    L --> M["7. Implement TDD<br/>tests first to FAIL, then code to PASS, full suite"]
+    M --> N["8. Cross-review impl<br/>Codex + Gemini · artifact-verification"]
+    N --> O{"MAJOR finding?"}
+    O -- Yes --> M
+    O -- No --> P["9. Completeness gate<br/>score to docs/reports/&lt;date&gt;-&lt;issue&gt;-completeness.html"]
+    P --> Q{"status:completeness-verified<br/>&ge; threshold?"}
+    Q -- No --> M
+    Q -- Yes --> R["10. Publish HTML artifact<br/>build_pages.py HTML_PAGES to pages.yml<br/>or wiki reports/ + stable alias"]
+    R --> S["Live link<br/>vamseeachanta.github.io/... (public-safe, no PII)"]
+    S --> T["11. Close<br/>commit + push + summary"]
+    T --> U{"closed without<br/>completeness label?"}
+    U -- Yes --> V["completeness-gate.yml<br/>REOPENS issue"]
+    V --> P
+    U -- No --> W["Done"]
+
+    classDef stop fill:#ffe0e0,stroke:#d33,stroke-width:2px;
+    classDef gate fill:#fff3cd,stroke:#b8860b,stroke-width:1.5px;
+    classDef live fill:#e0f0ff,stroke:#357,stroke-width:1.5px;
+    class J stop;
+    class Q,U gate;
+    class R,S live;
+    </pre>
+  </div>
+
+  <div class="legend">
+    <span><i class="sw" style="background:#ffe0e0"></i> hard stop — user approval</span>
+    <span><i class="sw" style="background:#fff3cd"></i> automated gate — completeness / server-side reopen</span>
+    <span><i class="sw" style="background:#e0f0ff"></i> publish + live link</span>
+  </div>
+
+  <div class="invariants">
+    Two invariants hold on <strong>every</strong> path: <strong>no code before an approved plan</strong>, and <strong>TDD always</strong> (tests written and observed to fail before implementation).
+  </div>
+
+  <p class="steps">Authority files (source of truth): <code>.claude/skills/coordination/issue-planning-mode/SKILL.md</code>, <code>.claude/skills/coordination/engineering-issue-workflow/SKILL.md</code>, <code>.claude/rules/completeness-before-close.md</code> + <code>.github/workflows/completeness-gate.yml</code>.</p>
+</main>
+<footer class="site">
+  Workflow method reference · rendered client-side via Mermaid · <a href="https://github.com/vamseeachanta/workspace-hub/issues/3237">workspace-hub#3237</a>
+</footer>
+<script type="module">
+  import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs";
+  mermaid.initialize({ startOnLoad: true, theme: "neutral", flowchart: { curve: "basis" } });
+</script>
+</body>
+</html>

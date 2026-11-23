@@ -1,0 +1,208 @@
+# GTM / Marine Terminal / LinkedIn Review Exit Handoff
+
+Date: 2026-04-23 10:12 UTC
+Repo: `/mnt/local-analysis/workspace-hub`
+Primary working branch during session: `integration/runbook-main-compatible`
+Main branch status at exit: local `main` and `origin/main` both at `b98643366`
+
+## Session summary
+
+This session extended the earlier GTM engineering-artifact work into three main areas:
+
+1. GTM engineering documentation
+2. Marine terminal / LNG LLM-wiki expansion
+3. LinkedIn post review and engineering interpretation
+
+It also landed the GTM/wiki work onto `main` using a clean-worktree integration flow because the active checkout had unrelated local modifications.
+
+## What was completed
+
+### A. Engineering-first GTM docs already created / extended
+These artifacts were completed and are now part of the current repo state:
+- `docs/gtm/installation-analysis-method-note.md`
+- `docs/gtm/fowt-engineering-scope.md`
+- `docs/gtm/core-engineering-work-conversion.md`
+- `docs/gtm/marine-terminal-engineering-scope.md`
+- `docs/gtm/lng-berth-operability-framing.md`
+
+Related GTM docs were also updated earlier in this workstream to reflect:
+- FOWT capability
+- marine terminal engineering capability
+- LNG/port-operations GTM positioning
+- reserve post concepts and engineering-first messaging
+
+### B. Marine terminal / LNG wiki work
+Reviewed public LNG2026 programme pages and extracted only topic-signal-level evidence.
+Important boundary preserved:
+- LNG2026 programme pages are useful to validate topic relevance
+- they are **not** terminal design evidence
+
+Created / updated LLM-wiki content in `knowledge/wikis/marine-engineering/wiki/`:
+
+Created earlier in this arc:
+- `sources/lng2026-tp04-shipping-marine-port-operations.md`
+- `concepts/lng-marine-terminal-engineering.md`
+
+Created in the later follow-on wave:
+- `concepts/lng-berth-operability.md`
+- `concepts/lng-transfer-system-envelope.md`
+- `concepts/fsru-marine-terminal-interface.md`
+
+Updated in the marine wiki cluster:
+- `entities/lng-carrier-mooring.md`
+- `index.md`
+- `log.md`
+
+These pages now capture:
+- berth operability
+- ship/shore transfer envelope
+- FSRU terminal interface
+- mooring/fendering / harbour-response framing
+- LNG terminal archetypes: export jetty, import/regas berth, FSRU, STS, bunkering
+
+### C. LinkedIn post reviews completed
+Reviewed and interpreted the following public LinkedIn posts/pages:
+
+1. C-Innovation subsea/engineering post
+- extracted GTM signal: engineering-led offshore execution beats generic capability claims
+
+2. Ship shear force / bending moment post
+- extracted signal: educational marine-structures content only works if diagrams are technically precise
+
+3. Mark Prentice floating offshore wind post
+- extracted signal: strongest FOWT GTM angle is O&G-to-FOWT transfer in moorings, installation, and integrity
+
+4. Entail lifting segmentation post
+- extracted signal: segmented hydrodynamic loading / water-entry / splash-zone realism is a useful installation-analysis differentiator
+
+5. Radmir Ganiev compact vs conventional wellhead post
+- reviewed as a high-level architecture discussion, not design basis
+- takeaway: compact-wellhead value is plausible offshore, but application-specific and lifecycle/intervention caveats matter
+
+6. deepLay Energy Services PLET–ILT–PLET full catenary post
+- takeaway: graphical step-by-step sequence plots are excellent QA/constructability tools for subsea installation analyses, but not a substitute for full engineering analysis
+
+7. Mark Prentice R5 chain hardness limit post
+- takeaway: hardness limits are materially important because they help guard against brittle/crack-susceptible states in high-strength chain, but hardness is only one integrity control and not a complete acceptance basis by itself
+
+## Git / branch / merge outcome
+
+### Commit created for GTM/wiki packet
+Committed targeted GTM/wiki files earlier in this session:
+- commit `bd3c60067`
+- message: `docs(gtm): add marine terminal engineering scope and wiki packet`
+
+### Push of integration branch
+Pushed branch:
+- `integration/runbook-main-compatible`
+
+### Merge to main
+Merged `integration/runbook-main-compatible` into `main` using a clean integration worktree because the active checkout was dirty.
+
+Merge commit on main:
+- `b98643366` — `Merge branch 'integration/runbook-main-compatible' into main`
+
+### Push to main
+Pushed updated `main` to origin.
+Because repo pre-push hooks were blocked by unrelated ecosystem-wide checks, the final push used the repo’s audited bypass:
+- `GIT_PRE_PUSH_SKIP=1 git push origin main`
+
+Bypass audit log:
+- `logs/hooks/pre-push-bypass.jsonl`
+
+Verified at time of merge/push:
+- local `main` = `b98643366`
+- `origin/main` = `b98643366`
+- ahead/behind = `0 / 0`
+
+## Important current state at exit
+
+### Active checkout remains dirty and is not on main
+The live working checkout remains on:
+- `integration/runbook-main-compatible`
+
+It still has many unrelated local modifications generated by the broader workspace/tooling/session environment.
+These were intentionally not cleaned up during the merge because they were unrelated to the targeted GTM/wiki landing set.
+
+Interpretation:
+- `main` is updated and pushed
+- the active branch/worktree is still dirty with unrelated local state
+- do not confuse the dirty working checkout with the state of `main`
+
+## Pending / not completed
+
+### 1. Bentley MOSES / mooring LinkedIn post review
+This was requested, but the exact URL was not available in time and public web discovery was blocked. No grounded review or wiki/GTM update was done for that item.
+
+### 2. Possible wiki follow-ons not yet created
+The marine terminal cluster could still be deepened with pages such as:
+- mooring dolphin / breasting dolphin design basis
+- harbour agitation / seiche effects on LNG terminals
+- bunkering-specific berth operability
+- ship-to-ship LNG transfer interface
+
+### 3. Possible GTM / website follow-ons not yet executed
+Potential next steps:
+- derive website pages from the new marine-terminal scope notes
+- create proposal templates / one-page capability briefs
+- create llm-wiki-ready entries from the compact-wellhead, R5-chain, and PLET/ILT reviews if desired
+
+## Recommended next actions
+
+### If resuming GTM / marine-terminal work
+1. Start from `main`, not the dirty `integration/runbook-main-compatible` checkout.
+2. If needed, create a fresh branch from `main` for any follow-on work.
+3. If you want the working checkout cleaned, do that as a separate deliberate task.
+
+### Best next engineering-content actions
+1. Turn the wellhead review into a concise engineering note or GTM comparison table.
+2. Turn the R5 hardness review into a wiki concept/source pair or a mooring-engineering note.
+3. Turn the PLET/ILT review into:
+   - a subsea installation checklist
+   - a wiki page on graphical sequence QA / constructability review
+
+## Key files to re-open next session
+
+### GTM engineering docs
+- `docs/gtm/core-engineering-work-conversion.md`
+- `docs/gtm/marine-terminal-engineering-scope.md`
+- `docs/gtm/lng-berth-operability-framing.md`
+- `docs/gtm/installation-analysis-method-note.md`
+- `docs/gtm/fowt-engineering-scope.md`
+
+### Marine wiki cluster
+- `knowledge/wikis/marine-engineering/wiki/concepts/lng-marine-terminal-engineering.md`
+- `knowledge/wikis/marine-engineering/wiki/concepts/lng-berth-operability.md`
+- `knowledge/wikis/marine-engineering/wiki/concepts/lng-transfer-system-envelope.md`
+- `knowledge/wikis/marine-engineering/wiki/concepts/fsru-marine-terminal-interface.md`
+- `knowledge/wikis/marine-engineering/wiki/entities/lng-carrier-mooring.md`
+- `knowledge/wikis/marine-engineering/wiki/sources/lng2026-tp04-shipping-marine-port-operations.md`
+
+### Merge / push audit trail
+- `logs/hooks/pre-push-bypass.jsonl`
+
+## Paste-ready restart prompt
+
+Resume from the 2026-04-23 marine-terminal / GTM engineering-artifact session.
+
+Confirmed facts:
+- `main` already contains merge commit `b98643366` from `integration/runbook-main-compatible`
+- `origin/main` matches local `main`
+- the active working checkout may still be dirty on `integration/runbook-main-compatible`; do not assume that means main is dirty
+- marine-terminal GTM scope docs are already written:
+  - `docs/gtm/marine-terminal-engineering-scope.md`
+  - `docs/gtm/lng-berth-operability-framing.md`
+- marine wiki cluster now includes:
+  - `lng-marine-terminal-engineering`
+  - `lng-berth-operability`
+  - `lng-transfer-system-envelope`
+  - `fsru-marine-terminal-interface`
+- Bentley MOSES / mooring post review was not completed because the exact URL was unavailable
+
+Suggested next actions:
+1. create a fresh branch from `main`
+2. either clean the dirty working checkout or ignore it and work in a fresh branch/worktree
+3. continue one of:
+   - Bentley MOSES / mooring review if URL is available
+   - convert recent LinkedIn reviews into wiki entries / GTM collateral
+   - derive website/proposal assets from the new marine-terminal scope docs

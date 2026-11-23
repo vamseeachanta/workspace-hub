@@ -1,0 +1,81 @@
+#!/usr/bin/env bash
+# crontab-template.sh — LEGACY reference (read-only).
+#
+# CANONICAL SOURCE OF TRUTH: config/scheduled-tasks/schedule-tasks.yaml
+# This file is kept as a human-readable reference only.
+# Do NOT edit cron entries here — edit schedule-tasks.yaml instead.
+# To install crontab entries, use:
+#
+#   bash scripts/cron/setup-cron.sh               # auto-detects machine role
+#   bash scripts/cron/setup-cron.sh --dry-run     # preview without changes
+#
+# MACHINE ROLES:
+#   full              dev-primary  — nightly pipeline + all maintenance
+#   contribute        dev-secondary  — repo sync only
+#   contribute-minimal licensed-win-1 / licensed-win-2  — Windows Task Scheduler
+#
+# FORMAT:  # ROLE: <role>
+#          <cron-schedule>  <command>
+# ─────────────────────────────────────────────────────────────────────────────
+
+# ── ROLE: full (dev-primary) ──────────────────────────────────────────────────
+
+# Nightly dependency health check (WRK-1090); checks uv.lock freshness, outdated
+# packages, CVE advisories across 5 repos; auto-captures WRK on HIGH/CRITICAL CVEs.
+# CRON: 0  1  * * *  cd $WORKSPACE_HUB && bash scripts/quality/dep-health.sh >> $WORKSPACE_HUB/logs/quality/dep-health-cron.log 2>&1
+
+# Nightly comprehensive learning pipeline (10 phases); runs at 02:00 to avoid
+# overlap with session work.  Log rotated by logrotate (see /etc/logrotate.d/).
+# CRON: 0  2  * * *  cd $WORKSPACE_HUB && bash scripts/cron/comprehensive-learning-nightly.sh >> $WORKSPACE_HUB/.claude/state/learning-reports/cron.log 2>&1
+
+# Nightly session analysis; runs at 03:00 after learning pipeline completes.
+# CRON: 0  3  * * *  cd $WORKSPACE_HUB && bash scripts/cron/session-analysis-nightly.sh >> $WORKSPACE_HUB/.claude/state/learning-reports/cron.log 2>&1
+
+# Weekly env parity audit (Sunday 03:15); overwrites config/ai_agents/ai-tools-status.yaml.
+# Timeout 60s; finishes by 03:16 — no overlap with 03:30 model-ID job.
+# CRON: 15 3  * * 0  cd $WORKSPACE_HUB && timeout 60 bash scripts/maintenance/ai-tools-status.sh >> $WORKSPACE_HUB/.claude/state/learning-reports/cron.log 2>&1
+
+# Weekly model-ID refresh (Sunday 03:30); updates config/agents/model-registry.yaml.
+# CRON: 30 3  * * 0  cd $WORKSPACE_HUB && bash scripts/cron/update-model-ids.sh >> $WORKSPACE_HUB/.claude/state/learning-reports/cron.log 2>&1
+
+# Weekly skills curation (Monday 04:00); archives stale skills, validates frontmatter.
+# CRON: 0  4  * * 1  cd $WORKSPACE_HUB && bash scripts/cron/skills-curation.sh >> $WORKSPACE_HUB/.claude/state/learning-reports/cron.log 2>&1
+
+# Notification log 7-day retention (daily 04:30); purges old JSONL files (WRK-1076).
+# CRON: 30 4  * * *  cd $WORKSPACE_HUB && find logs/notifications/ -name "*.jsonl" -mtime +7 -delete 2>/dev/null || true
+
+# Nightly doc drift baseline refresh (02:30); detects symbol-to-doc drift across repos.
+# CRON: 30 2  * * *  cd $WORKSPACE_HUB && uv run --no-project python scripts/quality/check_doc_drift.py --update-baseline >> $WORKSPACE_HUB/logs/quality/doc-drift-$(date +\%Y\%m\%d).yaml 2>&1
+
+# Performance benchmark regression check (nightly 01:30); compares against committed baseline.
+# Exits 1 on >20% regression; results written to scripts/testing/benchmark-results/.
+# CRON: 30 1  * * *  PATH=$HOME/.local/bin:$PATH; cd $WORKSPACE_HUB && bash scripts/testing/run-benchmarks.sh >> $WORKSPACE_HUB/logs/quality/benchmark-$(date +\%Y\%m\%d).log 2>&1
+
+# Nightly smoke tests for tier-1 repos (WRK-1172); runs as R12 inside
+# nightly-readiness.sh (Step 5 of comprehensive-learning-nightly.sh).
+# No separate cron entry — results cached to .claude/state/session-health.yaml.
+
+# Repository sync every 4 hours; pulls from remotes, pushes derived state.
+# CRON: 0  */4 * * * cd $WORKSPACE_HUB && bash scripts/repository-sync-auto >> $WORKSPACE_HUB/.claude/state/learning-reports/cron.log 2>&1
+
+# ── ROLE: contribute (dev-secondary) ───────────────────────────────────────────
+
+# Repository sync every 4 hours; log to /tmp (no persistent .claude/state here).
+# CRON: 0  */4 * * * cd $WORKSPACE_HUB && bash scripts/repository-sync-auto >> /tmp/workspace-hub-cron.log 2>&1
+
+# ── ROLE: contribute-minimal (Windows / licensed-win-1, licensed-win-2) ────────────
+# Windows does not support cron.  Use Task Scheduler instead:
+#
+#   Task 1 — Repository Sync (every 4 hours)
+#     Program:   bash.exe  (Git Bash — C:\Program Files\Git\bin\bash.exe)
+#     Arguments: -c "cd /path/to/workspace-hub && bash scripts/repository-sync-auto"
+#     Trigger:   Every 4 hours
+#
+#   Task 2 — Session-end state commit (daily 03:00)
+#     Program:   bash.exe
+#     Arguments: -c "cd /path/to/workspace-hub && bash scripts/cron/win-session-state-commit.sh"
+#     Trigger:   Daily 03:00
+#
+# For WSL, replace paths with WSL mount points (/mnt/d/...).
+# For cross-network sync, ensure Tailscale is running and SSH key is authorised
+# on dev-primary (see .claude/docs/new-machine-setup.md § SSH Setup).

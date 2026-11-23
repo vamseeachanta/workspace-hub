@@ -1,0 +1,54 @@
+schema_version: "1.0"
+machine:
+  id: dev-primary
+  hostname: ace-linux-1
+  user: vamsee
+  os: linux
+  role: primary-dev
+  workspace_root: /mnt/local-analysis/workspace-hub
+collected_at: "2026-04-11T04:55:00.123Z"
+source_writer:
+  name: linux-readiness-writer
+  version: "0.1.0"
+  entrypoint: scripts/readiness/linux_probe_writer.py
+access:
+  mode: ssh
+  reachable: true
+  detail: SSH probe completed from scheduler host.
+  launcher: ssh
+checks:
+  - id: access-mode
+    name: Access mode
+    status: pass
+    summary: Machine is reachable over SSH.
+    evidence:
+      transport: ssh
+  - id: workspace-root
+    name: Workspace root present
+    status: pass
+    summary: Workspace root exists and is writable.
+    evidence:
+      path: /mnt/local-analysis/workspace-hub
+  - id: ai-cli
+    name: AI CLI availability
+    status: pass
+    summary: Required AI CLIs are available.
+    evidence:
+      claude: true
+      codex: true
+  - id: licensed-tools
+    name: Licensed tools
+    status: skip
+    summary: Licensed Windows-only tools are not required on this Linux host.
+    evidence:
+      required: false
+overall:
+  verdict: ready
+  summary: Linux machine is reachable and ready for scheduled automation.
+  counts:
+    total: 4
+    pass: 3
+    warn: 0
+    fail: 0
+    error: 0
+    skip: 1

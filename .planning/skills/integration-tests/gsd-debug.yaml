@@ -1,0 +1,32 @@
+version: 1
+skill_name: gsd-debug
+skill_path: .claude/skills/gsd-debug/SKILL.md
+tests:
+  - test_id: gsd-debug-int-01
+    description: Skill produces structured debugging workflow with scientific method
+    prompt: >
+      You have loaded the gsd-debug skill. A user reports: 'Python tests fail
+      with ImportError on CI but pass locally'. Describe the debugging approach
+      you would follow using this skill.
+    expected_patterns:
+      - "[Ss]ymptom"
+      - "[Hh]ypothes"
+      - "[Dd]ebug"
+      - "[Ii]nvestigat"
+    unexpected_patterns:
+      - "I don't know"
+      - "undefined"
+    timeout: 60
+  - test_id: gsd-debug-int-02
+    description: Skill references checkpoint and state persistence concepts
+    prompt: >
+      You have loaded the gsd-debug skill. Explain how debug state is
+      persisted across context resets.
+    expected_patterns:
+      - "[Cc]heckpoint"
+      - "[Ss]tate"
+      - "[Ss]ession"
+    unexpected_patterns:
+      - "I cannot"
+      - "not supported"
+    timeout: 60

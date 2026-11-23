@@ -1,0 +1,37 @@
+{
+  "generated_at": "2026-05-12T12:00:00Z",
+  "workstations": [
+    {
+      "name": "ace-linux-1",
+      "role": "leader",
+      "reachable": true,
+      "auth_ok": true,
+      "repo_fresh": true,
+      "providers": ["claude", "codex", "gemini"]
+    },
+    {
+      "name": "ace-linux-2",
+      "role": "worker",
+      "reachable": true,
+      "auth_ok": true,
+      "repo_fresh": true,
+      "providers": ["claude", "codex"]
+    },
+    {
+      "name": "ace-windows-1",
+      "role": "worker",
+      "reachable": false,
+      "auth_ok": false,
+      "repo_fresh": false,
+      "providers": ["claude"]
+    },
+    {
+      "name": "ace-mac-1",
+      "role": "worker",
+      "reachable": true,
+      "auth_ok": false,
+      "repo_fresh": true,
+      "providers": ["claude"]
+    }
+  ]
+}

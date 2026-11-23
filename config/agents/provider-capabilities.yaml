@@ -1,0 +1,215 @@
+# Provider Capability Profiles
+# Structured profiles for each AI provider used in the workspace-hub ecosystem.
+# Source of truth for model IDs: config/agents/model-registry.yaml
+# Source of truth for strengths/roles: config/agents/behavior-contract.yaml
+#
+# This file aggregates capability metadata in one place so that routing
+# scripts, documentation, and assessment tools can reference it without
+# parsing multiple sources.
+
+version: 1.3.0
+last_updated: "2026-06-15"
+
+# --- capability_bindings (G1 / #3116) --------------------------------------
+# Logical agent capability -> per-provider NATIVE binding + ENFORCEMENT class.
+# Single source of truth for portable agent defs (config/agents/agent-defs/*.agent.yaml);
+# consumed by scripts/ai/run_agent.py. Do NOT create a parallel capability-map.yaml.
+#
+# enforcement:
+#   enforced    -> harness accepts a tool allowlist; `native` lists the real tool names
+#                  (Claude Code subagents only).
+#   advisory    -> monolithic CLI with built-in tools; capability is injected as prompt
+#                  preamble, NOT sandboxed (Codex `codex exec`, Gemini `--yolo`).
+#   unsupported -> harness cannot provide it; run_agent.py FAILS CLOSED before dispatch.
+capability_bindings:
+  read_files:
+    claude: {enforcement: enforced, native: [Read]}
+    codex:  {enforcement: advisory}
+    gemini: {enforcement: advisory}
+    agy:    {enforcement: advisory}   # #3207 headless dispatch (no harness-gateable native tools)
+  search_code:
+    claude: {enforcement: enforced, native: [Grep, Glob]}
+    codex:  {enforcement: advisory}
+    gemini: {enforcement: advisory}
+    agy:    {enforcement: advisory}
+  run_shell:
+    claude: {enforcement: enforced, native: [Bash]}
+    codex:  {enforcement: advisory}
+    gemini: {enforcement: advisory}
+    agy:    {enforcement: advisory}
+  write_files:
+    claude: {enforcement: enforced, native: [Write, Edit]}
+    codex:  {enforcement: advisory}
+    gemini: {enforcement: advisory}
+    agy:    {enforcement: advisory}
+  web_search:
+    claude: {enforcement: enforced, native: [WebSearch, WebFetch]}
+    codex:  {enforcement: unsupported}   # codex exec has no web tool here
+    gemini: {enforcement: advisory}
+    agy:    {enforcement: advisory}
+  gui_automation:
+    claude: {enforcement: unsupported}
+    codex:  {enforcement: unsupported}
+    gemini: {enforcement: unsupported}
+    agy:    {enforcement: unsupported}
+
+# Radar visualization: config/ai-tools/agent-capability-radar.html
+# Scores data: config/ai-tools/agent-capability-scores.yaml
+# Regenerate: uv run --no-project python scripts/ai/generate-agent-radar.py
+#
+# Strategy note (updated 2026-06-11 after live-config audit)
+# - Claude: orchestrator + primary executor in interactive sessions (Claude Code, Max subscription)
+# - Codex: cross-review hard gate and bounded second-lane implementation helper (CLI runs gpt-5.5)
+# - Agy (Antigravity, Gemini-backed): third review lane + cheap delegation lane (#3573); overflow/large-context option
+# - Gemini CLI: LEGACY — retired from routing (#3573); agy is the Gemini surface
+# - Hermes: the cron/automation engine on ace-linux-1 — runs gpt-5.5 via the openai-codex provider
+#   (NOT a Claude wrapper; see ~/.hermes/config.yaml). Docs/data/skill specialist + delegation router.
+
+providers:
+  claude:
+    display_name: "Anthropic Claude"
+    model_ids:
+      primary: "claude-opus-4-8[1m]" # 1M-context Opus — primary since 2026-06-13 (#3051; Fable 5 access lost)
+      strong: "claude-opus-4-8"      # 200K Opus lane; /fast mode available
+      balanced: "claude-sonnet-4-6"
+      fast: "claude-haiku-4-5"
+    context_window:
+      primary: 1000000               # 1M-Opus primary
+      strong: 200000
+      balanced: 200000
+      fast: 200000
+    strengths:
+      - multi-file architecture
+      - orchestration and planning
+      - complex integration across modules
+      - sensitive data handling
+      - long-context reasoning
+      - code review and cross-review
+    cost_tier: high
+    primary_use_cases:
+      - "Multi-module design and architecture (Route C)"
+      - "Session orchestration and task delegation"
+      - "Cross-review verdicts on complex diffs"
+      - "Sensitive or compliance-gated work"
+    horizon_2026_h1:
+      trajectory: improving_rapidly
+      gap_to_close: "none material — Fable 5 closed the 1M-context gap vs Gemini (2026-06)"
+      strategy_role: orchestrator_and_executor
+      consolidation_candidate: false  # already primary; not at risk
+
+  codex:
+    display_name: "OpenAI Codex CLI"
+    model_ids:
+      primary: "codex-cli"
+    context_window:
+      primary: 200000
+    strengths:
+      - adversarial code review
+      - bounded implementation support
+      - focused test writing when explicitly assigned
+      - refactoring and cleanup
+      - configuration edits
+    cost_tier: low
+    primary_use_cases:
+      - "Cross-review hard gate on plans and diffs"
+      - "Bounded implementation tasks when explicitly routed"
+      - "Focused test writing and cleanup work"
+      - "Alternative implementation perspective at low cost"
+    horizon_2026_h1:
+      trajectory: stable
+      unique_value: "Independent cross-review perspective; budget cost tier (gpt-5.5 via ChatGPT plan)"
+      strategy_role: cross_review_hard_gate
+      consolidation_candidate: true
+      consolidation_trigger: "Codex cross-review verdicts consistently match Claude Sonnet AND cost savings < overhead"
+
+  agy:
+    display_name: "Antigravity CLI (agy, Gemini-backed)"
+    model_ids:
+      primary: "gemini-3.1-pro"          # agy default = "Gemini 3.1 Pro (High)" label (#3086); agy pool separate from gemini-CLI quota
+      fast: "gemini-2.5-flash"
+    context_window:
+      primary: 1000000
+      fast: 1000000
+    strengths:
+      - independent third-lane review
+      - large-context overflow analysis
+      - cheap headless delegation dispatch (#3207)
+      - broad synthesis as a supplementary reviewer
+    cost_tier: medium
+    primary_use_cases:
+      - "Third adversarial review lane (submit-to-agy.sh, AGY_REVIEW_MODE=1)"
+      - "Cheap fallback/delegation lane under the cost ceiling (#3192)"
+      - "Large-context overflow analysis when routed"
+      - "Fallback research pass when Hermes/Claude are saturated"
+    horizon_2026_h1:
+      trajectory: improving_rapidly
+      unique_value: "1M token context + fresh Google quota pool; headless --print dispatch"
+      strategy_role: third_review_lane
+      consolidation_candidate: true
+      consolidation_trigger: "Claude context window reaches 1M tokens AND agy adds no unique capability"
+
+  gemini:
+    # LEGACY (#3573): gemini CLI retired from worker/reviewer routing — agy
+    # (above) is the Gemini surface. Retained for audit; not a routed provider.
+    display_name: "Google Gemini (legacy CLI — not routed)"
+    model_ids:
+      primary: "gemini-2.5-pro"          # live-verified 2026-06-11 (CLI default); 3.1-pro-preview 429s on Pro plan
+      premium_limited: "gemini-3.1-pro-preview"
+      fast: "gemini-2.5-flash"
+    context_window:
+      primary: 1000000
+      fast: 1000000
+    strengths:
+      - large-context overflow analysis
+    cost_tier: medium
+    primary_use_cases:
+      - "None — retired from routing (#3573); use agy"
+    horizon_2026_h1:
+      trajectory: stable
+      unique_value: "none since #3573 — superseded by agy"
+      strategy_role: legacy_retired
+      consolidation_candidate: true
+      consolidation_trigger: "2-week agy soak clean -> uninstall decision issue"
+
+  hermes:
+    display_name: "Hermes Agent"
+    model_ids:
+      primary: "gpt-5.5"
+    context_window:
+      primary: 200000
+    strengths:
+      - documentation and reporting
+      - data analysis and transformation
+      - skill creation and maintenance
+      - agent orchestration and delegation
+      - cross-repo synthesis
+    cost_tier: medium
+    primary_use_cases:
+      - "Documentation and report generation"
+      - "Data analysis and structured transformations"
+      - "Skill management and memory-driven maintenance"
+      - "Parallel delegation and orchestration workflows"
+    horizon_2026_h1:
+      trajectory: improving_rapidly
+      unique_value: "Strong skill tooling, delegation, and document-heavy workflow support"
+      strategy_role: documentation_data_skill_specialist
+      consolidation_candidate: false
+
+  openai:
+    display_name: "OpenAI GPT"
+    model_ids:
+      primary: "gpt-5.5"
+      fast: "gpt-5.4-mini"
+    context_window:
+      primary: 128000
+      fast: 128000
+    strengths:
+      - general-purpose code generation
+      - structured data extraction
+      - API integration tasks
+      - multi-language support
+    cost_tier: medium
+    primary_use_cases:
+      - "General code generation when primary providers are at capacity"
+      - "Structured data parsing and transformation"
+      - "Alternative cross-review perspective"

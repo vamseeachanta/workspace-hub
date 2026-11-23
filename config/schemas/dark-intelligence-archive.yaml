@@ -1,0 +1,54 @@
+# Schema for dark intelligence archive entries
+# Location: knowledge/dark-intelligence/<category>/<subcategory>/<name>.yaml
+# Validated by: tests/skills/test_dark_intelligence_schema.py
+
+required_fields:
+  - source_type
+  - source_description
+  - extracted_date
+  - legal_scan_passed
+  - category
+  - subcategory
+  - equations
+  - inputs
+  - outputs
+  - worked_examples
+  - assumptions
+  - references
+
+field_constraints:
+  source_type:
+    type: string
+    allowed: [excel, python, matlab, fortran, textbook, standard]
+  source_description:
+    type: string
+    min_length: 10
+  extracted_date:
+    type: string
+    pattern: "^\\d{4}-\\d{2}-\\d{2}$"
+  legal_scan_passed:
+    type: boolean
+    must_be: true
+  category:
+    type: string
+  subcategory:
+    type: string
+
+list_constraints:
+  equations:
+    min_items: 1
+    required_fields: [name, latex, description]
+  inputs:
+    min_items: 1
+    required_fields: [name, symbol, unit, test_value]
+  outputs:
+    min_items: 1
+    required_fields: [name, symbol, unit, test_expected, tolerance]
+  worked_examples:
+    min_items: 1
+    required_fields: [description, inputs, outputs]
+    at_least_one_test: true  # at least one entry must have use_as_test: true
+  assumptions:
+    min_items: 1
+  references:
+    min_items: 1

@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en"><meta charset="utf-8">
+<title>Cleanup safety contract</title>
+<main>
+<h1>Cleanup safety contract</h1>
+<p>Summary: scheduled cleanup requires complete configured repository coverage.
+Staged evidence is retained unless an externally approved, digest-pinned artifact
+matches every target and the final filesystem observations. Age grants no deletion
+permission. Archive evidence preserves path bytes, including undecodable names.</p>
+<h2>Revision history</h2>
+<table><tr><th>Revision</th><th>Date</th><th>Change and reason</th></tr>
+<tr><td>1</td><td>2026-10-22</td><td>Define coverage, staged-evidence gates and a
+byte-preserving archive protocol to replace ambiguous text records.</td></tr></table>
+<p>Table 1. Contract revisions.</p>
+
+<h2>Scope and plan</h2>
+<p>The implementation will use the canonical tier-1 list through
+<code>scripts/lib/tier1-repos.sh</code>. It will enumerate the hub checkout plus
+the listed siblings. It will report missing repository names and block before
+locks, Git operations or deletions when coverage is partial. The default sibling
+root will be the hub's parent; explicit roots will support linked worktrees.</p>
+<p>The six slices will cover enumeration, pinned staged evidence, automation
+state, canonical manifests, opaque sidecars and this worked example.
+Changes will be confined to the daily cleanup entry point, three cleanup helper
+modules, fixture tests, this contract and the cleanup-output ignore rule.</p>
+<p>Overlap: open pull requests 4142 (repository sync and hygiene reporting),
+4132 (linked-worktree discovery), and 4118 (footprint portability) will remain
+independent. This work will reuse the canonical repository list and will not
+add sync commands, footprint diagnostics or another repository registry.</p>
+
+<h2>What is enumerated</h2>
+<p><code>CLEANUP_HUB_ROOT</code> and <code>CLEANUP_SIBLING_ROOT</code> select
+the hub and sibling roots. <code>TIER1_REPOS_FILE</code> selects the canonical
+list override used by fixtures. Names shall be unique single path components.
+A repository marker may be a directory or a linked-worktree file. The preflight
+prints expected, visited and missing sets; the execution loop checks its visited
+count against the configured set and stops if a checkout disappears.</p>
+
+<h2>What can be deleted</h2>
+<p>This contract governs staged-evidence deletion, separate from existing branch
+and worktree housekeeping. No real cleanup is performed by its tests. Fixtures
+and negative probes use temporary trees only. The existing branch filter is
+preserved; dry-run fetch and prune are prevented from mutating repositories.</p>
+<p>The operator shall supply <code>CLEANUP_VERIFICATION_ARTIFACT</code> and
+<code>CLEANUP_VERIFICATION_SHA256</code> through the existing authorized cleanup
+workflow. The digest pins the exact externally verified approval bytes; it is not
+an authentication mechanism. This implementation neither approves deletion nor
+creates a <code>delete_allowed</code> artifact. Unknown approval provenance
+requires retaining the evidence.</p>
+<p>The JSON artifact shall contain <code>schema: 1</code>,
+<code>delete_allowed: true</code>, unique <code>target_paths</code> naming exact
+immediate trash children, and <code>entries</code> equal to
+<code>cleanup_evidence.snapshot(trash, target_paths)</code>. The snapshot contains
+the exact recursive member set, byte-encoded relative names, type, size,
+nanosecond modification time, mode, device, inode, content hash for regular files
+and byte-encoded link target for symlinks. Special files are refused.</p>
+<p>The artifact shall reside outside every deletion target. Repository metadata
+and any path component containing verification, manifest, plan, test or review
+role markers are protected. This intentionally conservative rule applies only to
+deletion candidates; it does not scan or block committed tests, plans or forensic
+fixtures. A protected candidate is retained for manual disposition.</p>
+<p>Deletion acquires a nonblocking exclusive lock on the trash directory descriptor,
+compares a fresh snapshot with the pinned entries, re-reads the artifact and
+re-hashes the tree immediately before removal. Each entry is checked again before
+descriptor-relative unlink or directory removal. Symlink traversal is refused.</p>
+<p><strong>Concurrency boundary:</strong> all writers shall honor the same directory
+lock and shall remain stopped during removal. Ordinary POSIX operations do not
+provide atomic deletion of an arbitrary mutable tree. This implementation does
+not establish protection against writers that ignore the lock, hostile parent
+replacement or mounts changed by another administrator. Such environments shall
+retain targets. An I/O failure can leave partial deletion; the result lists fully
+removed roots and retained roots with the failure reason. No retry is automatic.</p>
+
+<h2>Automation evidence</h2>
+<p>The operator shall supply a JSON state file and a positive staleness bound in
+seconds using <code>CLEANUP_AUTOMATION_STATE</code> and
+<code>CLEANUP_AUTOMATION_MAX_AGE_SECONDS</code>. No operational age limit is
+invented. The file contains boolean <code>configured</code>, <code>gateway</code>,
+<code>scheduler</code>, and epoch-seconds <code>last_run</code> from a successful
+run. Configuration is reported separately from liveness. Missing, malformed,
+future-dated or unavailable evidence reports automation unavailable. Recent means
+the measured age is nonnegative and no greater than the supplied bound; older
+evidence reports stale. A producer's truthfulness is outside this reader's scope.</p>
+
+<h2>Archive protocol, version 1</h2>
+<p>The format is UTF-8 JSON lines with a schema header followed by one record per
+filesystem entry, including the root. Relative names and link targets are base64
+of raw filesystem bytes. Records are sorted by decoded path bytes. Object keys
+are sorted, separators are comma and colon without spaces, and every record ends
+with LF. The SHA-256 of those exact bytes is the canonical manifest hash.
+Version 1 and these serialization rules are defined by this contract; JSON
+syntax follows RFC 8259 sections 4, 7 and 8.1.</p>
+<p><code>python3 scripts/lib/cleanup_archive.py SOURCE OUTPUT</code> writes the
+manifest, archive and sidecar outside SOURCE. GNU <code>find -print0</code>,
+<code>LC_ALL=C sort -z</code> and <code>tar --null --verbatim-files-from
+--no-recursion</code> preserve membership boundaries end to end. Tar member names
+are compared as bytes using the tar reader, never by splitting listing lines.
+The archive/source comparison checks the exact member set, types, modes, file
+sizes, file digests and link targets; source size and nanosecond mtime are also
+checked against the manifest. Archive header timestamp precision is not used as
+a source-change detector. Hard links are stored as independent regular files.</p>
+<p>Sidecars are named <code>MANIFEST_HASH.sha256</code> and contain only schema,
+manifest digest and archive digest, with no source names. Creation verifies the
+archive and source before returning. A temporary manifest is flushed, fsynced,
+renamed atomically and followed by directory fsync. Interrupted writes retain a
+<code>.partial</code> suffix and cannot pass as completed manifests. An archive
+without a valid matching sidecar is incomplete. Legacy TSV manifests and
+path-bearing checksum lines are not accepted by this protocol.</p>
+<p>GNU tools are required; BSD-only installations report NOT_EVALUATED instead
+of trying incompatible options. Exact local evidence is private by default:
+<code>cleanup-output/</code> is ignored, and ordinary compressed payloads are
+already ignored. External output is preferred; only sanitized summaries should
+be proposed for publication.</p>
+
+<h2>Worked example</h2>
+<p>Synthetic input: a staged directory <code>old</code> contains a file
+<code>payload</code> whose bytes are <code>abc</code>. A second staged directory
+<code>unverified</code> has no approval. Fixture metadata below is assigned for
+illustration: root size 32, file size 3, mtime 0, device 1, inodes 10 and 11;
+modes 493 and 420 are decimal encodings of directory 0755 and file 0644.
+Live records always use measured metadata. The expected content digest is the
+SHA-256 abc test vector; base64 of payload is independently decoded by the tests.</p>
+<pre id="manifest-example">{"path_encoding":"base64","schema":1}
+{"device":1,"inode":10,"kind":"directory","mode":493,"mtime_ns":0,"path_b64":"Lg==","size":32}
+{"device":1,"inode":11,"kind":"file","mode":420,"mtime_ns":0,"path_b64":"cGF5bG9hZA==","sha256":"ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad","size":3}
+</pre>
+<p>Example lines are shown with literal JSON escapes; an LF terminates each line.
+For unusual names, a tab, newline, backslash and undecodable byte are represented
+inside base64 rather than as record delimiters. Unicode normalization is never
+applied, so composed and decomposed names remain distinct.</p>
+<p>Verification result: the archive member set equals the manifest member set,
+and payload digest equals the abc vector. A separately approved artifact pins
+only <code>old</code> and its complete measured snapshot. With its matching
+artifact digest and an exclusive writer lock, the removed list is
+<code>["old"]</code>; a post-action inventory retains <code>["unverified"]</code>.
+The purge result lists only the approved target set, not all trash children.
+Changing even one payload byte, its mtime, the target member set or the pinned
+artifact bytes retains the affected target and records a reason.</p>
+
+<h2>Adversarial inspection and limits</h2>
+<p>The plan inspection will target partial coverage before mutation, linked
+worktree markers, line-delimited names, symlink substitution, false schedule
+health, approval circularity and partial-write acceptance. Artifact inspection
+will test same-size content changes with restored mtime, last-moment changes,
+lock contention, malformed target sets, protected evidence and archive tampering.
+Second-provider review remains pending; this document is not a review verdict.</p>
+
+<h2>Sources</h2>
+<ul>
+<li><a href="https://pubs.opengroup.org/onlinepubs/9799919799/utilities/find.html">POSIX.1-2024, find</a>,
+and <a href="https://pubs.opengroup.org/onlinepubs/9799919799/utilities/pax.html">pax</a>:
+filesystem enumeration and the standard archive interface. POSIX does not specify
+GNU tar or sha256sum; GNU extensions are declared rather than called portable POSIX.</li>
+<li><a href="https://www.gnu.org/software/findutils/manual/find.txt">GNU Findutils 4.11.0</a>,
+Safe File Name Handling and Race Conditions with -print and -print0.</li>
+<li><a href="https://www.gnu.org/software/tar/manual/html_node/nul.html">GNU tar 1.35.90</a>,
+NUL-Terminated File Names.</li>
+<li><a href="https://www.gnu.org/software/coreutils/manual/html_node/sort-invocation.html">GNU coreutils 9.12, sort</a>,
+and <a href="https://www.gnu.org/software/coreutils/manual/html_node/sha2-utilities.html">sha2 utilities</a>:
+zero-terminated byte sorting and SHA-256 semantics.</li>
+<li><a href="https://www.rfc-editor.org/rfc/rfc8259.txt">RFC 8259 (2017)</a>,
+sections 4, 7 and 8.1: objects, strings and UTF-8 JSON interchange.</li>
+<li><a href="https://www.rfc-editor.org/rfc/rfc6234.txt">RFC 6234 (2011)</a>,
+section 8.5, SHA256 test case 1: the abc expected digest.</li>
+</ul>
+<p>Sources were read on 2026-10-22. Tested local tools: GNU Findutils 4.9.0,
+tar 1.35 and coreutils 9.4. Documentation editions and installed editions differ;
+the stated options are exercised by fixture tests.</p>
+</main></html>

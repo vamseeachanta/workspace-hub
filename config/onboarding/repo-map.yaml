@@ -1,0 +1,60 @@
+generated_by: scripts/onboarding/generate-repo-map.py
+note: Re-run after any structural change to AGENTS.md or pyproject.toml
+repos:
+- name: assetutilities
+  path: assetutilities
+  purpose: "Shared engineering utilities \u2014 project config, unit conversions,\
+    \ calculations, CLI tools"
+  test_command: uv run python -m pytest tests/ --noconftest
+  primary_modules:
+  - src/assetutilities/engine.py
+  - src/assetutilities/calculation.py
+  - src/assetutilities/cli/
+  depends_on: []
+  maturity: stable
+- name: digitalmodel
+  path: digitalmodel
+  purpose: "Engineering digital twin \u2014 asset integrity, cathodic protection,\
+    \ GIS, hydrodynamics, field development"
+  test_command: PYTHONPATH=src uv run python -m pytest
+  primary_modules:
+  - src/digitalmodel/engine.py
+  - src/digitalmodel/asset_integrity/
+  - src/digitalmodel/cathodic_protection/
+  depends_on:
+  - assetutilities
+  maturity: beta
+- name: worldenergydata
+  path: worldenergydata
+  purpose: "Global energy market data aggregation and analysis \u2014 BSEE, EIA, drilling,\
+    \ economics"
+  test_command: PYTHONPATH='src:../assetutilities/src' uv run python -m pytest --noconftest
+  primary_modules:
+  - src/worldenergydata/bsee/
+  - src/worldenergydata/eia/
+  - src/worldenergydata/cli/
+  depends_on:
+  - assetutilities
+  maturity: beta
+- name: assethold
+  path: assethold
+  purpose: "Asset portfolio financial analysis \u2014 fundamentals, options, modules,\
+    \ analysis pipelines"
+  test_command: uv run python -m pytest tests/ --noconftest
+  primary_modules:
+  - src/assethold/engine.py
+  - src/assethold/fundamentals.py
+  - src/assethold/analysis/
+  depends_on:
+  - assetutilities
+  maturity: beta
+- name: OGManufacturing
+  path: OGManufacturing
+  purpose: "Oil and gas manufacturing analysis \u2014 drilling operations and production\
+    \ surveillance"
+  test_command: uv run python -m pytest tests/
+  primary_modules:
+  - src/ogmanufacturing/drilling/
+  - src/ogmanufacturing/surveillance/
+  depends_on: []
+  maturity: alpha

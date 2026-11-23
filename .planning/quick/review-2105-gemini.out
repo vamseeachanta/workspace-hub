@@ -1,0 +1,21 @@
+Agent loading error: Failed to load agent from /mnt/local-analysis/workspace-hub/.gemini/agents/gsd-debugger.md: Validation failed: Agent Definition:
+Unrecognized key(s) in object: 'permissionMode'Agent loading error: Failed to load agent from /mnt/local-analysis/workspace-hub/.gemini/agents/gsd-executor.md: Validation failed: Agent Definition:
+Unrecognized key(s) in object: 'permissionMode'1. Verdict: MAJOR
+2. Ready for user approval: No
+3. Retrieval adequacy: insufficient
+4. Top blockers:
+   1. **Scanner Scope Mismatch:** The plan assumes existing staleness machinery (`scripts/docs/staleness-scanner.py`) can simply be "connected" to the canonical matrix. However, this scanner is hardcoded to only evaluate `.md` files under the `docs/` directory. Intelligence assets listed in `data/document-index/intelligence-accessibility-registry.yaml` include YAML, JSONL, and directories outside of `docs/` (e.g., `data/`, `knowledge/`). The plan fails to scope the significant refactor required to expand the scanner's filetype and directory coverage, or the need to build a new scanner.
+   2. **Threshold Semantics Collision:** The plan proposes standardizing threshold semantics to `current`, `warn`, and `stale`. However, existing scanners have conflicting hardcoded semantics: `scripts/docs/staleness-scanner.py` uses `FRESH` (30d) / `MODERATE` (90d) / `STALE` (>90d), while `scripts/quality/doc-staleness-scanner.py` uses `current` (<90d) / `stale` (90-180d) / `critical` (>180d). The plan must explicitly define how these will be unified or refactored.
+5. Critical findings:
+   - The implementation will surface hidden design decisions immediately because the existing scanner does not support the data formats (YAML/JSONL) or locations (`data/`, `knowledge/`) of the intelligence assets that are the core focus of the issue.
+6. High findings:
+   - **Incomplete Retrieval:** The plan completely misses `scripts/quality/doc-staleness-scanner.py` and `scripts/cron/research-staleness-check.sh` (which checks for research artifacts within 60h). All existing staleness machinery must be accounted for to prevent duplication and conflicting definitions.
+7. Medium findings:
+   - **Registry Schema Vagueness:** The plan states it will update `data/document-index/intelligence-accessibility-registry.yaml` to align freshness metadata, but the registry already contains `freshness_source` and `freshness_cadence`. It does not specify which new fields (e.g., `freshness_threshold`, `alert_level`, `owner`) need to be added to the schema to operationalize the new matrix.
+8. Low findings:
+   - None.
+9. Required revisions before user approval:
+   - Explicitly scope the refactoring needed to expand staleness scanning to non-Markdown files (YAML/JSONL) and directories outside of `docs/`, or explicitly scope the creation of a new intelligence-specific scanner.
+   - Define a strategy to unify the conflicting hardcoded thresholds across `scripts/docs/staleness-scanner.py` and `scripts/quality/doc-staleness-scanner.py` with the new canonical semantics (`current`, `warn`, `stale`).
+   - Add `scripts/quality/doc-staleness-scanner.py` and `scripts/cron/research-staleness-check.sh` to the inventory of existing machinery and the implementation slice.
+   - Specify the exact metadata fields that will be added or modified in the `intelligence-accessibility-registry.yaml` schema.

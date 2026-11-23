@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>/tmp Historical Cleanup Proposal - 2026-06-14</title>
+  <style>
+    body { font: 14px/1.45 system-ui, sans-serif; margin: 32px; color: #202124; }
+    h1, h2 { margin: 0 0 12px; }
+    h2 { margin-top: 28px; }
+    table { border-collapse: collapse; width: 100%; margin: 12px 0 20px; }
+    th, td { border: 1px solid #d0d7de; padding: 6px 8px; vertical-align: top; text-align: left; }
+    th { background: #f6f8fa; }
+    code { background: #f6f8fa; padding: 1px 4px; border-radius: 3px; }
+    .ok { color: #116329; font-weight: 600; }
+    .warn { color: #8a4600; font-weight: 600; }
+  </style>
+</head>
+<body>
+  <h1>/tmp Historical Cleanup Proposal</h1>
+  <p><strong>Timestamp:</strong> 2026-06-14 CDT</p>
+  <p><strong>Scope:</strong> user-owned top-level entries under <code>/tmp</code>. No deletion has been performed by this proposal.</p>
+
+  <h2>Disk State</h2>
+  <table>
+    <thead>
+      <tr><th>Filesystem</th><th>Used</th><th>Available</th><th>Capacity</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>/</code> backing <code>/tmp</code></td><td>144,192,308 KiB</td><td>82,832,612 KiB</td><td>64%</td></tr>
+      <tr><td><code>/mnt/local-analysis</code></td><td>48,164,784 KiB</td><td>928,595,020 KiB</td><td>5%</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Observed /tmp Age Buckets</h2>
+  <table>
+    <thead>
+      <tr><th>Age bucket</th><th>Top-level entries</th><th>Approx. size</th><th>Interpretation</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>&lt;4h</td><td>9</td><td>737.8 MiB</td><td>Recent. Leave by default.</td></tr>
+      <tr><td>4h-24h</td><td>27</td><td>1,139.5 MiB</td><td>Likely active or recent runtime/cache. Leave unless explicitly approved.</td></tr>
+      <tr><td>1d-7d</td><td>745</td><td>368.0 MiB</td><td>Candidate for archive/delete if evidence-bearing.</td></tr>
+      <tr><td>&gt;7d</td><td>1,041</td><td>1,513.7 MiB</td><td>Primary cleanup pool.</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Largest Entries</h2>
+  <table>
+    <thead>
+      <tr><th>Path</th><th>Approx. size</th><th>Age</th><th>Initial disposition</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>/tmp/wh-scaf</code></td><td>737.1 MiB</td><td>&lt;1h</td><td>Tier 3 leave: recent workspace scratch.</td></tr>
+      <tr><td><code>/tmp/uv-cache</code></td><td>645.8 MiB</td><td>17.7h</td><td>Tier 3 leave unless runtime cache cleanup is explicitly approved.</td></tr>
+      <tr><td><code>/tmp/claude-1000</code></td><td>493.1 MiB</td><td>5.8h</td><td>Tier 3 leave: active/recent Claude runtime.</td></tr>
+      <tr><td><code>/tmp/cadenv</code></td><td>332.0 MiB</td><td>404.7h</td><td>Tier 2 reconstructible environment candidate.</td></tr>
+      <tr><td><code>/tmp/fdas_lfs</code></td><td>269.0 MiB</td><td>137.4h</td><td>Tier 1 inspect/archive before delete.</td></tr>
+      <tr><td><code>/tmp/llm-wiki-review</code></td><td>263.9 MiB</td><td>332.4h</td><td>Tier 1 inspect/archive before delete.</td></tr>
+      <tr><td><code>/tmp/*pdfplumber*</code>, <code>/tmp/*pdfdeps*</code>, <code>/tmp/pdfmods</code></td><td>~354 MiB combined</td><td>&gt;17d</td><td>Tier 2 reconstructible dependency/vendor candidates.</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Tiered Proposal</h2>
+  <table>
+    <thead>
+      <tr><th>Tier</th><th>Action</th><th>Candidate scope</th><th>Approval required</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Tier 0</td>
+        <td>Safe deletes</td>
+        <td>No stale <code>wt-*</code>, <code>worktree-*</code>, <code>vision-review-*</code>, or <code>wed-proto</code> directories were found during this pass.</td>
+        <td>No action proposed.</td>
+      </tr>
+      <tr>
+        <td>Tier 1</td>
+        <td>Archive then delete</td>
+        <td>Old evidence-bearing agent scratch: Markdown/TXT/JSON/log/diff/HTML outputs, PNG/PDF extraction artifacts, review dirs such as <code>llm-wiki-review</code>, <code>ace-port</code>, <code>arxiv-*</code>, and similar non-runtime items older than 24h.</td>
+        <td>Approve explicitly: <code>approve tmp Tier 1 archive+delete</code>.</td>
+      </tr>
+      <tr>
+        <td>Tier 2</td>
+        <td>Reduce in place / delete reconstructible dependencies</td>
+        <td>Old venv/vendor/cache-style directories such as <code>cadenv</code>, <code>*pdfplumber*</code>, <code>*pdfdeps*</code>, <code>pdfmods</code>, <code>node-compile-cache</code>, after confirming no active process owns them.</td>
+        <td>Approve explicitly: <code>approve tmp Tier 2 reconstructible delete</code>.</td>
+      </tr>
+      <tr>
+        <td>Tier 3</td>
+        <td>Leave alone</td>
+        <td>Recent/active runtime scratch and caches: <code>wh-scaf</code>, <code>uv-cache</code>, <code>claude-1000</code>, browser/Claude runtime dirs, unknown dotdirs such as <code>/tmp/.git</code>, <code>/tmp/.agents</code>, <code>/tmp/.codex</code>.</td>
+        <td>No deletion without a separate targeted approval.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>Execution Rules If Approved</h2>
+  <ul>
+    <li>Re-run process and lsof checks immediately before moving any path.</li>
+    <li>Use an archive manifest, checksum, and verified tarball before deleting Tier 1 evidence.</li>
+    <li>Commit manifest/checksum only; keep tarballs ignored unless a separate security and size review approves force-adding them.</li>
+    <li>Use a cleanup lock and two-phase trash-stage move before final removal.</li>
+  </ul>
+
+  <h2>Current Recommendation</h2>
+  <p class="warn">Approve Tier 1 first if you want meaningful cleanup with preservation. Defer Tier 2 unless disk pressure increases or you are comfortable rebuilding old PDF/venv tooling.</p>
+</body>
+</html>

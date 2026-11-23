@@ -1,0 +1,7 @@
+C2: Pipelay Operating Envelope
+Headline: Shallow Water Barge screens GO across 8in–24in at 7m–30m while Large PLV is draft-limited at the shallowest row.
+Caption: Shallow-water S-lay envelope by vessel class, pipe size, and water depth. Citations inherited from pipelay source: DNV-ST-F101, DNV-OS-F101, API RP 1111. Vessel parameters are representative classes only; not measured telemetry or exact specifications of any named vessel.
+Disclosure: Vessel parameters are representative classes only; not measured telemetry or exact specifications of any named vessel.
+Data inputs:
+- digitalmodel/examples/demos/gtm/results/vessel_comparison_matrix.json
+- digitalmodel/examples/demos/gtm/data/pipelay_vessels.json

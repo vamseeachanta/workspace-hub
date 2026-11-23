@@ -1,0 +1,7 @@
+# Source-of-truth internal repositories checked by merge-submodule-skills.sh.
+# Blank lines and comments are ignored.
+aceengineer-admin
+aceengineer-website
+assetutilities
+digitalmodel
+worldenergydata

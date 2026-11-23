@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Repo Ecosystem Staleness Report - 2026-06-16</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #1f2933;
+      --muted: #52616b;
+      --line: #d9e2ec;
+      --clean: #0f766e;
+      --warn: #b45309;
+      --risk: #b91c1c;
+      --panel: #f8fafc;
+    }
+    body {
+      font-family: Arial, sans-serif;
+      margin: 32px;
+      color: var(--ink);
+      line-height: 1.45;
+    }
+    h1, h2 { margin: 0 0 12px; }
+    h1 { font-size: 28px; }
+    h2 { font-size: 20px; margin-top: 28px; border-bottom: 1px solid var(--line); padding-bottom: 6px; }
+    p { max-width: 1040px; }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin: 12px 0 20px;
+      font-size: 13px;
+    }
+    th, td {
+      border: 1px solid var(--line);
+      padding: 7px 8px;
+      text-align: left;
+      vertical-align: top;
+    }
+    th { background: #edf2f7; }
+    code {
+      font-family: "SFMono-Regular", Consolas, monospace;
+      font-size: 12px;
+      background: #eef2f6;
+      padding: 1px 4px;
+      border-radius: 4px;
+    }
+    .meta, .note {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      padding: 12px;
+      margin: 12px 0;
+    }
+    .clean { color: var(--clean); font-weight: 700; }
+    .warn { color: var(--warn); font-weight: 700; }
+    .risk { color: var(--risk); font-weight: 700; }
+    ul { margin-top: 8px; }
+  </style>
+</head>
+<body>
+  <h1>Repo Ecosystem Staleness Report</h1>
+  <div class="meta">
+    <p><strong>Date:</strong> 2026-06-16, America/Chicago.</p>
+    <p><strong>Scope:</strong> top-level git repos and worktree/scratch residue under the local analysis workspace.</p>
+    <p><strong>Disk pressure:</strong> low, 6% used on the workspace mount. This is a staleness and preservation pass, not an emergency delete pass.</p>
+  </div>
+
+  <h2>Actions Already Taken</h2>
+  <ul>
+    <li>Fetched and pruned remotes for 23 top-level git repos.</li>
+    <li>Fast-forwarded clean behind repos only: <code>aceengineer-strategy</code>, <code>achantas-data</code>, <code>deckhand</code>, and <code>deckhand-live</code>.</li>
+    <li>No stash, reset, checkout, merge conflict resolution, branch deletion, worktree deletion, or force operation was run.</li>
+    <li>Used three read-only subagents for independent audit slices: core engineering repos, wiki/content repos, and worktree/scratch residue.</li>
+  </ul>
+
+  <h2>Post-Sync Repo State</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Repo</th>
+        <th>Branch</th>
+        <th>HEAD</th>
+        <th>Upstream</th>
+        <th>Ahead</th>
+        <th>Behind</th>
+        <th>Dirty</th>
+        <th>Untracked</th>
+        <th>Stash</th>
+        <th>Worktrees</th>
+        <th>Classification</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td><code>CAD-DEVELOPMENTS</code></td><td>main</td><td>7e93ede</td><td>origin/main</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td class="clean">CLEAN</td></tr>
+      <tr><td><code>aceengineer-admin</code></td><td>main</td><td>c3d9820</td><td>origin/main</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td class="clean">CLEAN</td></tr>
+      <tr><td><code>aceengineer-strategy</code></td><td>main</td><td>9e91f16</td><td>origin/main</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td class="clean">CLEAN</td></tr>
+      <tr><td><code>aceengineer-website</code></td><td>main</td><td>960bfa5</td><td>origin/main</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td class="clean">CLEAN</td></tr>
+      <tr><td><code>achantas-data</code></td><td>main</td><td>5f8924a</td><td>origin/main</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td class="clean">CLEAN</td></tr>
+      <tr><td><code>achantas-media</code></td><td>main</td><td>8a78ac9</td><td>origin/main</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td class="clean">CLEAN</td></tr>
+      <tr><td><code>assethold</code></td><td>main</td><td>c98a365</td><td>origin/main</td><td>0</td><td>0</td><td>24</td><td>0</td><td>0</td><td>1</td><td class="warn">DIRTY_PRESERVE</td></tr>
+      <tr><td><code>assetutilities</code></td><td>fix/3148-mypy-exclude-hyphen-dirs</td><td>eaa92cd</td><td>NONE</td><td>NA</td><td>NA</td><td>61</td><td>0</td><td>0</td><td>1</td><td class="warn">DIRTY_PRESERVE + NO_UPSTREAM</td></tr>
+      <tr><td><code>deckhand</code></td><td>main</td><td>e3ba594</td><td>origin/main</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td class="clean">CLEAN</td></tr>
+      <tr><td><code>deckhand-live</code></td><td>main</td><td>e3ba594</td><td>origin/main</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td class="clean">CLEAN</td></tr>
+      <tr><td><code>digitalmodel</code></td><td>main</td><td>787df02a</td><td>origin/main</td><td>0</td><td>10</td><td>26</td><td>3</td><td>0</td><td>1</td><td class="risk">DIRTY_PRESERVE + NEEDS_PULL</td></tr>
+      <tr><td><code>hobbies</code></td><td>main</td><td>7403ee5</td><td>origin/main</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td class="clean">CLEAN</td></tr>
+      <tr><td><code>kaggle-rogii-2026</code></td><td>main</td><td>634b144</td><td>origin/main</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td class="clean">CLEAN</td></tr>
+      <tr><td><code>llm-wiki</code></td><td>main</td><td>6cb25433b</td><td>origin/main</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>2</td><td class="warn">CLEAN + WORKTREES</td></tr>
+      <tr><td><code>llm-wiki-mkt-a</code></td><td>main</td><td>9dbbc42</td><td>origin/main</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td class="clean">CLEAN</td></tr>
+      <tr><td><code>llm-wiki-fdas</code></td><td>main</td><td>41d4ed5</td><td>origin/main</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td class="clean">CLEAN</td></tr>
+      <tr><td><code>raw-to-knowledge-playbook</code></td><td>main</td><td>c21f7bc</td><td>origin/main</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td class="clean">CLEAN</td></tr>
+      <tr><td><code>sabithaandkrishnaestates</code></td><td>main</td><td>26c3882</td><td>origin/main</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td class="clean">CLEAN</td></tr>
+      <tr><td><code>teamresumes</code></td><td>main</td><td>a51cf77</td><td>origin/main</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td class="clean">CLEAN</td></tr>
+      <tr><td><code>wh-3148-wt</code></td><td>feat/3148-mypy-ratchet</td><td>f97a84ad9</td><td>origin/main</td><td>2</td><td>1</td><td>0</td><td>0</td><td>0</td><td>4</td><td class="risk">CLEAN + DIVERGED + WORKTREES</td></tr>
+      <tr><td><code>workspace-hub</code></td><td>plan/3062-retirement-replan</td><td>e5af64dc2</td><td>origin/main</td><td>7</td><td>8</td><td>200</td><td>10</td><td>0</td><td>4</td><td class="risk">DIRTY_PRESERVE + DIVERGED + WORKTREES</td></tr>
+      <tr><td><code>worldenergydata</code></td><td>main</td><td>b41d6a83</td><td>origin/main</td><td>0</td><td>0</td><td>16</td><td>0</td><td>0</td><td>1</td><td class="warn">DIRTY_PRESERVE</td></tr>
+      <tr><td><code>worldenergydata-wiki</code></td><td>main</td><td>4635bce</td><td>origin/main</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td class="clean">CLEAN</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Cleanup Proposal</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Tier</th>
+        <th>Candidate</th>
+        <th>Evidence</th>
+        <th>Recommended action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Tier 0</td>
+        <td><code>superpowers/worktrees/llm-wiki/feature-526-electrical-support-routing</code></td>
+        <td>Registered worktree, branch <code>feature/526-electrical-support-routing</code>, HEAD equals <code>llm-wiki</code> main <code>6cb25433b</code>, ahead/behind <code>0/0</code>, dirty <code>0</code>, untracked <code>0</code>, stash <code>0</code>, branch merged into main, no open files found by <code>lsof</code>.</td>
+        <td>After explicit Tier 0 approval, remove with <code>git -C llm-wiki worktree remove</code>, prune, then delete the merged local branch if still present.</td>
+      </tr>
+      <tr>
+        <td>Tier 1</td>
+        <td><code>2802-pilot-evidence</code></td>
+        <td>Small 36K evidence bundle with HTML, handoff, summary, and provider review logs. Not a git repo.</td>
+        <td>Archive with manifest/checksum first, then remove only after archive verification.</td>
+      </tr>
+      <tr>
+        <td>Tier 3</td>
+        <td><code>workspace-hub</code> worktrees: <code>wh-3148-wt</code>, <code>/tmp/wt-2893-statusline-plan</code>, <code>/tmp/wt-handoff-omnigent</code></td>
+        <td>Clean working trees but each has unmerged or unpushed branch-only commits. The root checkout is also dirty and diverged.</td>
+        <td>Defer deletion. Resolve through issue/branch merge flow first.</td>
+      </tr>
+      <tr>
+        <td>Tier 3</td>
+        <td><code>assethold</code>, <code>assetutilities</code>, <code>digitalmodel</code>, <code>worldenergydata</code>, <code>workspace-hub</code></td>
+        <td>Dirty tracked changes are present. <code>digitalmodel</code> also has an active pytest process and is behind origin by 10 commits.</td>
+        <td>Preserve. Run repo-specific issue/plan/commit waves; do not stash or sweep.</td>
+      </tr>
+      <tr>
+        <td>Tier 3</td>
+        <td><code>mkt-a-freeze-work</code>, <code>.Trash-1000</code>, <code>worktrees/deckhand</code></td>
+        <td>Large non-git freeze workspace, XDG-managed trash, and symlink coordination path respectively.</td>
+        <td>Leave alone unless a separate archive/reduction plan is approved.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>Tier 0 Approval Recheck</h2>
+  <p><strong>Status:</strong> blocked at 2026-06-16T07:57:27-05:00. The previously clean <code>llm-wiki</code> worktree changed after the audit and before deletion. It is no longer safe to remove under the Tier 0 approval.</p>
+  <table>
+    <thead>
+      <tr>
+        <th>Target</th>
+        <th>Recheck result</th>
+        <th>Disposition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>/home/vamsee/.config/superpowers/worktrees/llm-wiki/feature-526-electrical-support-routing</code></td>
+        <td>HEAD still equals <code>origin/main</code>, but the worktree now has 2 tracked modifications, 9 untracked source/report/wiki files, and 3 ignored cache dirs.</td>
+        <td class="risk">Do not delete. Preserve and resolve as issue/worktree WIP.</td>
+      </tr>
+    </tbody>
+  </table>
+  <p>Changed paths found during the pre-delete gate:</p>
+  <ul>
+    <li><code>docs/plans/2026-06-10-issue-526-electrical-support-routing.md</code></li>
+    <li><code>docs/plans/README.md</code></li>
+    <li><code>.planning/plan-approved/526.md</code></li>
+    <li><code>docs/reports/2026-06-10-electrical-instrumentation-support-routing.html</code></li>
+    <li><code>docs/reports/2026-06-10-electrical-instrumentation-support-routing.json</code></li>
+    <li><code>docs/reports/issue-drafts/2026-06-10-electrical-support-routing-followup.md</code></li>
+    <li><code>scripts/ingest/electrical_instrumentation_support_routing.py</code></li>
+    <li><code>tests/test_electrical_instrumentation_support_routing.py</code></li>
+    <li><code>wikis/engineering-standards/wiki/sources/ieee-45-2002-interpretation-2010.md</code></li>
+    <li><code>wikis/engineering-standards/wiki/sources/support-nema-ip-chart.md</code></li>
+    <li><code>wikis/engineering-standards/wiki/sources/support-srtp-paper.md</code></li>
+  </ul>
+
+  <h2>Preserve-First Completion</h2>
+  <p><strong>Status:</strong> completed at 2026-06-16T08:04:00-05:00. The WIP was preserved on <code>origin/feature/526-electrical-support-routing</code> at <code>3b6d382a1</code>, draft PR <a href="https://github.com/vamseeachanta/llm-wiki/pull/716">#716</a> already exists, and the registered worktree was removed with <code>git worktree remove</code>.</p>
+  <table>
+    <thead>
+      <tr>
+        <th>Check</th>
+        <th>Result</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>Remote branch</td><td><code>origin/feature/526-electrical-support-routing</code> at <code>3b6d382a1b7fc30bc920709fc270a318434ad38b</code></td></tr>
+      <tr><td>Focused pytest</td><td><code>14 passed in 0.12s</code></td></tr>
+      <tr><td>Legal scan</td><td><code>RESULT: PASS - no violations found</code></td></tr>
+      <tr><td>Diff whitespace</td><td>PASS for <code>origin/main..HEAD</code></td></tr>
+      <tr><td>Cleanup verification</td><td><code>docs/sessions/archives/2026-06-16-llm-wiki-526-worktree-cleanup-verification.json</code></td></tr>
+      <tr><td>Worktree state</td><td><code>llm-wiki</code> now has only the main worktree registered; local feature branch remains preserved and tracking origin.</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Active Process Constraints</h2>
+  <p>At audit time, these process classes were active and make broad cleanup unsafe: Codex sessions, Claude Desktop/CLI, a workspace-hub equivalence publisher, and a digitalmodel pytest run. The safe action boundary is therefore limited to non-destructive fast-forward sync and proposal writing.</p>
+
+  <h2>Recommended Next Sequence</h2>
+  <ol>
+    <li>Approve or reject Tier 0 cleanup for the clean merged <code>llm-wiki</code> worktree.</li>
+    <li>Run a dedicated workspace-hub branch resolution wave for the three non-root worktrees and the dirty root branch.</li>
+    <li>Run repo-specific preservation commits for <code>assethold</code>, <code>assetutilities</code>, and <code>worldenergydata</code>.</li>
+    <li>Wait for the active <code>digitalmodel</code> pytest run to finish, then resolve its dirty generated benchmark/chart artifacts before pulling origin/main.</li>
+  </ol>
+
+  <div class="note">
+    <strong>Guardrail:</strong> no stale worktree should be deleted until it is proven clean, merged or origin-contained, stash-free, unreferenced by active processes, and either approved by tier or covered by an already-approved cleanup plan.
+  </div>
+</body>
+</html>

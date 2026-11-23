@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WRK-657 Multi-Agent Orchestrator Report</title>
+  <style>
+    body {
+      font-family: "Inter", system-ui, sans-serif;
+      color: #0f172a;
+      line-height: 1.5;
+      max-width: 960px;
+      margin: 2rem auto;
+      padding: 0 1rem 3rem;
+      background: #f9fafb;
+    }
+    h1 {
+      color: #1d4ed8;
+      margin-bottom: 0.25rem;
+    }
+    h2 {
+      color: #1e3a8a;
+      margin-top: 2rem;
+      margin-bottom: 0.5rem;
+    }
+    .meta {
+      background: white;
+      border: 1px solid #e2e8f0;
+      border-radius: 0.75rem;
+      padding: 1rem;
+      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+    }
+    .meta table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .meta td {
+      padding: 0.3rem 0.5rem;
+      vertical-align: top;
+      color: #1e293b;
+    }
+    .meta td:first-child {
+      font-weight: 600;
+      color: #475569;
+      width: 220px;
+    }
+    table.matrix {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+    }
+    table.matrix th,
+    table.matrix td {
+      border: 1px solid #cbd5f5;
+      padding: 0.6rem;
+      text-align: left;
+      vertical-align: top;
+    }
+    table.matrix th {
+      background: #e0e7ff;
+      color: #1e1b4b;
+    }
+    table.matrix td:nth-child(2) {
+      min-width: 190px;
+    }
+    .stage-status {
+      font-weight: 600;
+      color: #0f9d58;
+    }
+    .stage-warning {
+      color: #d97706;
+      font-weight: 600;
+    }
+    .log-list {
+      background: white;
+      border-radius: 0.75rem;
+      padding: 1rem;
+      border: 1px solid #e2e8f0;
+    }
+    .log-list li {
+      margin-bottom: 0.5rem;
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 0.9rem;
+    }
+    .conclusion {
+      background: #0f172a;
+      color: white;
+      border-radius: 0.75rem;
+      padding: 1rem 1.25rem;
+      margin-top: 2rem;
+    }
+    .breadcrumb {
+      font-size: 0.9rem;
+      color: #475569;
+      margin-bottom: 0.5rem;
+    }
+    a {
+      color: #1d4ed8;
+    }
+  </style>
+</head>
+<body>
+<div class="breadcrumb">Workspace hub &rsaquo; WRK-657 &rsaquo; Multi-Agent Orchestrator Drill</div>
+<h1>WRK-657 Multi-Agent Orchestrator Report</h1>
+<div class="meta">
+  <table>
+    <tr><td>WRK</td><td>WRK-657</td></tr>
+    <tr><td>Title</td><td>fix(review): enforce orchestrator gate evidence contract</td></tr>
+    <tr><td>Orchestrator (this WRK)</td><td>Claude (scripts/work-queue/verify-gate-evidence.py WRK-657 pass)</td></tr>
+    <tr><td>Provider Role</td><td>Claude orchestrated; Codex + Gemini participated as reviewers (see cross-review artifacts)</td></tr>
+    <tr><td>Key files</td><td>
+      <a href="assets/WRK-657/plan-html-review-final.md">plan-html-review-final.md</a>,
+      <a href="assets/WRK-657/review.html">review.html</a>,
+      <a href="assets/WRK-657/claim-evidence.yaml">claim-evidence.yaml</a>
+    </td></tr>
+    <tr><td>Stage logs</td><td>
+      <a href=".claude/work-queue/logs/WRK-657-start.log">WRK-657-start.log</a>,
+      <a href=".claude/work-queue/logs/WRK-657-plan.log">WRK-657-plan.log</a>,
+      <a href=".claude/work-queue/logs/WRK-657-close.log">WRK-657-close.log</a>
+    </td></tr>
+  </table>
+</div>
+
+<h2>Stage Matrix by Agent</h2>
+<table class="matrix">
+  <tr>
+    <th>Stage</th>
+    <th>Claude (Orchestrator)</th>
+    <th>Codex (Reviewer)</th>
+    <th>Gemini (Reviewer)</th>
+  </tr>
+  <tr>
+    <td>Resource Intelligence</td>
+    <td>
+      <span class="stage-status">SKIPPED</span><br>
+      Known packages (WRK-642/WRK-655) already document watchdog/backstop; no new resource ingestion was required. Artifact: <em>not generated</em>.
+    </td>
+    <td>n/a</td>
+    <td>n/a</td>
+  </tr>
+  <tr>
+    <td>Plan Gate</td>
+    <td>
+      <span class="stage-status">PASS</span><br>
+      <a href="assets/WRK-657/plan-html-review-final.md">Final plan HTML</a> approved by user (plan log notes “Human review pending” → plan accepted). Resources: <code>.claude/work-queue/logs/WRK-657-plan.log</code>.
+    </td>
+    <td>n/a</td>
+    <td>n/a</td>
+  </tr>
+  <tr>
+    <td>Cross-Review Gate</td>
+    <td>
+      <span class="stage-status">PASS</span><br>
+      Claude launched cross-review via <code>scripts/review/cross-review.sh</code>; <a href="assets/WRK-657/review.html">review.html</a> summarizes verdicts. Claim evidence details: <code>claim-evidence.yaml</code>.
+    </td>
+    <td>
+      <span class="stage-status">APPROVE</span><br>
+      Provided MAJOR-free verdict and confirmation for watchdog test harness. Artifact: <code>assets/WRK-657/review.html</code> (Codex listed under cross_review_gate.artifacts).
+    </td>
+    <td>
+      <span class="stage-warning">MINOR</span><br>
+      Flagged missing plan note exports (plan HTML already documents decision to omit raw cross-review dump). Artifact: same <code>review.html</code> entry.
+    </td>
+  </tr>
+  <tr>
+    <td>User Review</td>
+    <td>
+      <span class="stage-status">PASS</span><br>
+      Plan HTML includes a confirmation button; user accepted the final draft after Codex + Gemini comments. No separate “human approval” log because decision is embedded in <code>plan-html-review-final.md</code>.
+    </td>
+    <td>n/a</td>
+    <td>n/a</td>
+  </tr>
+  <tr>
+    <td>Final User Review</td>
+    <td>
+      <span class="stage-warning">SKIPPED (consolidated)</span><br>
+      After user accepted the plan HTML (see notes in <code>plan-html-review-final.md</code>), no additional “final” review cycle ran; the confirmation button sufficed.
+    </td>
+    <td>n/a</td>
+    <td>n/a</td>
+  </tr>
+  <tr>
+    <td>TDD Gate</td>
+    <td>
+      <span class="stage-status">PASS</span><br>
+      Smoke harness recorded in <code>assets/WRK-657/variation-test-results.md</code> (timed-out exit 124, success, failure, PGID cleanup).
+    </td>
+    <td>n/a</td>
+    <td>n/a</td>
+  </tr>
+  <tr>
+    <td>Legal Gate</td>
+    <td>
+      <span class="stage-status">PASS</span><br>
+      Legal scan file <code>.claude/work-queue/assets/WRK-657/legal-scan.md</code> marked “result: pass.”
+    </td>
+    <td>n/a</td>
+    <td>n/a</td>
+  </tr>
+  <tr>
+    <td>Validator</td>
+    <td>
+      <span class="stage-status">PASS</span><br>
+      <code>scripts/work-queue/verify-gate-evidence.py WRK-657</code> exited 0; close log notes validator replay success.
+    </td>
+    <td>n/a</td>
+    <td>n/a</td>
+  </tr>
+</table>
+
+<h2>Log Sources & Agents</h2>
+<div class="log-list">
+  <ul>
+    <li><strong>.claude/work-queue/logs/WRK-657-start.log</strong> — provider: Claude; marks plan → review → cross-review start, flags user review as pending.</li>
+    <li><strong>.claude/work-queue/logs/WRK-657-plan.log</strong> — provider: Claude; records plan stage start, notes user review requirement.</li>
+    <li><strong>.claude/work-queue/logs/WRK-657-close.log</strong> — provider: Claude; lists tests, cross-review, user review, and validator replay as completed.</li>
+  </ul>
+</div>
+
+<h2>Stage Notes</h2>
+<p><strong>Resource intelligence:</strong> skipped because WRK-657 is a hardening follow-up; no new sources were needed beyond the previous WRK-642/WRK-655 baselines.</p>
+<p><strong>User review:</strong> embedded in the final plan HTML review; button in <code>plan-html-review-final.md</code> recorded acceptance, so additional sessions were unnecessary.</p>
+<p><strong>Final user review:</strong> not run as a separate stage; the single human confirmation in the plan artifact doubled as the final review, matching how WRK-624/WRK-655 handled plan acceptance.</p>
+
+<h2>Cross-Review Details</h2>
+<p><strong>Artifacts:</strong> <code>assets/WRK-657/review.html</code> plus <code>claim-evidence.yaml</code> (three reviewers). Claude, Codex, and Gemini verdicts are all consolidated there.</p>
+<p><strong>NO_OUTPUT policy:</strong> entry in <code>claim-evidence.yaml</code> explains how watchdog timeouts map to reruns; no current NO_OUTPUT verdicts.</p>
+
+<div class="conclusion">
+  <h2>Conclusions</h2>
+  <p>Claude successfully orchestrated WRK-657, capturing the plan, validator, tests, and legal stage logs; it remains the reliable orchestrator today.</p>
+  <p>Codex &amp; Gemini contributed reviewer verdicts only. If they are to claim orchestrator roles in future WRKs, new runs must produce identical gate evidence (plan HTML, stage logs, test/legal records, validator replay). Without that instrumentation, their ability to enforce the WRK-624 gate sequence is not yet validated.</p>
+  <p>Next actions: reuse this artifact as a template, replicate the stage/log collection when running /work with Codex or Gemini, and ensure the claim-evidence pack references the same validator+log files.</p>
+</div>
+
+<hr />
+<p style="color:#475569;font-size:0.85rem;">Generated: 2026-03-02 | Report path: assets/WRK-657/wrk-657-agent-orchestrator-report.html | Open in browser to confirm and share with the team.</p>
+</body>
+</html>

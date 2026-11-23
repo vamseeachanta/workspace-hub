@@ -1,0 +1,78 @@
+{
+  "generated_at": "2026-10-15T11:13:32.854107+00:00",
+  "generated_by": "fleet-collector fleet-daily-collector",
+  "date": "2026-10-15",
+  "origin_main": "4d49ba026",
+  "fleet_size": 8,
+  "reporting": 6,
+  "report": {
+    "latest_snapshot": "2026-10-14",
+    "stale_days": 1
+  },
+  "machines": [
+    {
+      "name": "fleet-collector",
+      "reachable": true,
+      "branch": "main",
+      "head": "dfbbca7b7",
+      "behind": 26,
+      "ahead": 0,
+      "dirty": 0
+    },
+    {
+      "name": "ace-linux-1",
+      "reachable": true,
+      "branch": "main",
+      "head": "8b882442ee",
+      "behind": 35,
+      "ahead": 0,
+      "dirty": 67
+    },
+    {
+      "name": "ace-linux-2",
+      "reachable": true,
+      "branch": "main",
+      "head": "0c63abbb7",
+      "behind": 162,
+      "ahead": 0,
+      "dirty": 0
+    },
+    {
+      "name": "gpu-claw",
+      "reachable": true,
+      "branch": "main",
+      "head": "5a075f688",
+      "behind": 152,
+      "ahead": 0,
+      "dirty": 3
+    },
+    {
+      "name": "ace-win-2",
+      "reachable": true,
+      "branch": "main",
+      "head": "ad1ce5931",
+      "behind": 7,
+      "ahead": 0,
+      "dirty": 20
+    },
+    {
+      "name": "ace-win-1",
+      "reachable": true,
+      "branch": "main",
+      "head": "5a075f688",
+      "behind": 152,
+      "ahead": 0,
+      "dirty": 10
+    },
+    {
+      "name": "mac-1",
+      "reachable": false,
+      "note": "ssh_unreachable"
+    },
+    {
+      "name": "spark-1",
+      "reachable": false,
+      "note": "ssh_unreachable"
+    }
+  ]
+}

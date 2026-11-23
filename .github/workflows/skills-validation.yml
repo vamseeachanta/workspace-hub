@@ -1,0 +1,41 @@
+name: Skills Validation
+
+# Pull requests run only pr-fast-gate.yml; the daily main-full-run.yml covers this
+# workflow's tests (owner ruling 2026-10-28). Kept for manual dispatch.
+on:
+  workflow_dispatch:
+
+jobs:
+  validate-skills:
+    name: Validate SKILL.md frontmatter
+    runs-on: ${{ github.event.pull_request.head.repo.fork && 'ubuntu-latest' || fromJSON('["self-hosted","Linux"]') }}
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v7
+        with:
+          enable-cache: true
+
+      - name: Run skill validator
+        run: |
+          UV_CACHE_DIR=.claude/state/uv-cache bash scripts/skills/validate-skills.sh
+
+      - name: Run validator regression tests
+        run: |
+          UV_CACHE_DIR=.claude/state/uv-cache uv run --no-project --with pytest --with pyyaml pytest tests/enforcement/test_validate_skills_frontmatter.py -v
+
+      - name: Run cron uv resolution tests
+        run: |
+          UV_CACHE_DIR=.claude/state/uv-cache uv run --no-project --with pytest --with pyyaml pytest tests/cron/test_skill_validation_uv_resolution.py -v
+
+      - name: Generate skills summary
+        if: always()
+        run: |
+          echo "## Skills Validation" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          TOTAL=$(find .claude/skills -name 'SKILL.md' | wc -l)
+          echo "**Total SKILL.md files:** ${TOTAL}" >> $GITHUB_STEP_SUMMARY

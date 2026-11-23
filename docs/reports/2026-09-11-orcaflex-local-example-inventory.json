@@ -1,0 +1,273 @@
+{
+  "schema": 1,
+  "utc": "2026-09-11T02:49:14.883363+00:00",
+  "source_revision": "a7fe3775717db3f67ff1e4d4e8733c5a9f285357",
+  "scope": "Every spec.yml/spec.yaml found by rg under docs/domains/orcaflex; not all repository YAML/binary examples",
+  "path_visits": 94,
+  "distinct_raw_sha256": 93,
+  "buckets": {
+    "library/model_library": 57,
+    "library/templates": 12,
+    "library/tier2_fast": 4,
+    "outside_library": 21
+  },
+  "library_declared_families": {
+    "generic": 53,
+    "riser": 10,
+    "installation": 3,
+    "jumper": 3,
+    "mooring": 2,
+    "pipeline": 1,
+    "vessel": 1
+  },
+  "direct_route": {
+    "schema_and_generation_pass": 91,
+    "schema_route_rejected": 3,
+    "post_validation_errors": 0,
+    "post_validation_warnings": 0
+  },
+  "alternate_routes": {
+    "jumper_adapter_generated_clean": 2,
+    "passing_ship_schema_valid_generation_not_verified": 1
+  },
+  "strict_yaml": {
+    "generated_cases_checked": 93,
+    "model_yaml_files_checked": 441,
+    "clean_cases": 71,
+    "warning_cases": 16,
+    "error_cases": 6,
+    "error_findings": 6,
+    "warning_findings": 19,
+    "error_property": "ImplicitVariableMaxTimeStep",
+    "error_case_ids": [
+      "case-008",
+      "case-037",
+      "case-073",
+      "case-077",
+      "case-087",
+      "case-088"
+    ],
+    "warning_category": "Unknown top-level section",
+    "coverage": "validate_orcaflex_yaml separately on master and every generated include YAML; parameters.yml excluded as generator configuration"
+  },
+  "route_dispositions": {
+    "case-076": {
+      "direct_errors": [
+        {
+          "type": "missing",
+          "loc": [
+            "metadata"
+          ]
+        },
+        {
+          "type": "missing",
+          "loc": [
+            "environment",
+            "water"
+          ]
+        },
+        {
+          "type": "missing",
+          "loc": [
+            "environment",
+            "seabed"
+          ]
+        }
+      ],
+      "correct_schema": "digitalmodel.hydrodynamics.passing_ship.input_schemas.PassingShipSpec",
+      "schema_result": "pass",
+      "analysis_cases": 5,
+      "converter_result": "unverified"
+    },
+    "case-090": {
+      "direct_error_type": "value_error",
+      "loc": [],
+      "classification": "domain calculation spec requires existing jumper adapter",
+      "adapter_result": "pass_clean"
+    },
+    "case-091": {
+      "direct_error_type": "value_error",
+      "loc": [],
+      "classification": "domain calculation spec requires existing jumper adapter",
+      "adapter_result": "pass_clean"
+    }
+  },
+  "duplicate_alias_case_ids": [
+    [
+      "case-050",
+      "case-065"
+    ]
+  ],
+  "representatives": [
+    {
+      "path": "docs/domains/orcaflex/library/model_library/c03_turret_moored_fpso/spec.yml",
+      "family": "vessel_mooring",
+      "case_id": "case-033",
+      "strict_result": "pass"
+    },
+    {
+      "path": "docs/domains/orcaflex/library/templates/mooring_buoy/spec.yml",
+      "family": "mooring",
+      "case_id": "case-036",
+      "strict_result": "pass"
+    },
+    {
+      "path": "docs/domains/orcaflex/library/templates/calm_buoy_moored/spec.yml",
+      "family": "vessel_buoy_mooring",
+      "case_id": "case-044",
+      "strict_result": "pass"
+    },
+    {
+      "path": "docs/domains/orcaflex/library/templates/installation_subsea/spec.yml",
+      "family": "installation",
+      "case_id": "case-041",
+      "strict_result": "pass"
+    },
+    {
+      "path": "docs/domains/orcaflex/library/model_library/d02_pull_in_analysis/spec.yml",
+      "family": "installation",
+      "case_id": "case-045",
+      "strict_result": "pass"
+    }
+  ],
+  "native_solver_runs": 0,
+  "native_readiness": "not established for any census case",
+  "existing_claim_registry": {
+    "attested_entries": 3,
+    "recorded_levels": {
+      "L1": 3
+    },
+    "pending_inventory_entries": 6,
+    "note": "Existing claim metadata was read, not promoted or re-attested by this census."
+  },
+  "limitations": [
+    "Generator post-validation clean is not strict YAML success.",
+    "Strict validator is a known-rule structural check, not complete OrcaFlex API validation or engineering qualification.",
+    "External data, private references, hydrodynamic input provenance and dependency closure remain unqualified.",
+    "No model loads, statics, dynamics, convergence or engineering benchmark tests were run.",
+    "Unknown raw-field retention is not established by schema acceptance."
+  ],
+  "execution": {
+    "per_generation_child_deadline_seconds": 60,
+    "strict_batch_deadline_seconds": 60,
+    "library_generation_elapsed_seconds": 242.3,
+    "outside_generation_elapsed_seconds": 122.6,
+    "strict_elapsed_seconds": 71.1,
+    "native_guard": "Worker replaced OrcFxAPI.Model with a rejecting function when transitively imported; audited generator contains no native execution calls.",
+    "private_evidence_basename": "orcaflex-library-audit-5dkzwphd",
+    "private_residue": "EXPECTED: per-case generated files, raw diagnostics, source manifests, worker scripts and result JSON preserved for review; worker processes finished."
+  },
+  "case_columns": [
+    "case_id",
+    "input_sha256",
+    "scope",
+    "declared_family",
+    "direct_schema",
+    "direct_generation",
+    "post_validator",
+    "selected_route",
+    "adapter_status",
+    "strict_status",
+    "strict_errors",
+    "strict_warnings",
+    "model_yaml_files_checked",
+    "generated_file_count",
+    "output_tree_sha256"
+  ],
+  "cases": [
+    ["case-000", "38111e42155bcd73f86f2445573c6c51ae069e724b12a34f786e1586cbe3ad3a", "library", "generic", "pass", "pass", "clean", "direct", null, "pass", 0, 0, 4, 5, "3397b3299852959af4381a25c7fa7898deb109a081766782b3bbed7261f223bc"],
+    ["case-001", "11f63f7867a2d1c5bc3f97adcd21ffc8473ed65df6a0d7270a62271cec3c02b6", "library", "generic", "pass", "pass", "clean", "direct", null, "pass", 0, 0, 4, 5, "f9ac0e5322967566ed88d855b3fc6d312298684b4ac6d6f8589bebf5a760182c"],
+    ["case-002", "5f9122421c262996997ebc99127c0292789c027e09b0f6b135f6ed7dd65386c9", "library", "riser", "pass", "pass", "clean", "direct", null, "pass", 0, 0, 9, 10, "29e3bedaeccbfc66fbb3c75e9dfc801104feac0a518412c94194834821d5ed1a"],
+    ["case-003", "94c5ff1e9e83f784b4c7e2063ffe1be008778edb09a8dc17fe12f80cd6db98c3", "library", "generic", "pass", "pass", "clean", "direct", null, "warning", 0, 1, 4, 5, "6c9e044ca6898ca47b77eab1748361745e96e4d48aafc5d76882438fe80281b9"],
+    ["case-004", "753100cc43234611c3b056f1af39f2de993be514218e79045b5d1fffa94e1e57", "library", "riser", "pass", "pass", "clean", "direct", null, "pass", 0, 0, 7, 8, "ec8c941adc07159e835db649832eb87ba99f422a4d97c6bfe330064c422252f7"],
+    ["case-005", "82b2143b65fe4e44db6cb92097844f03c15a4f22c009ec26450f9d169a2816ed", "library", "generic", "pass", "pass", "clean", "direct", null, "warning", 0, 1, 4, 5, "84bb77231d873f20b8c22f4c1fb79c8c7b96c937044864936f34cbfa76d02998"],
+    ["case-006", "d943c7a584765f917a8ac3e0cc9418e5eadf434439562f131cdb6d784c9c050e", "library", "generic", "pass", "pass", "clean", "direct", null, "pass", 0, 0, 4, 5, "e2d2779068798b203b4a93b43f00e9dbcd8e52892e2a578ae05515d3593873fb"],
+    ["case-007", "1586da7097110806e3ca42eaf2df5bb8ce336e97c32dc3ec06aa4bbb29910c88", "library", "riser", "pass", "pass", "clean", "direct", null, "pass", 0, 0, 7, 8, "c93b19b24502f4d0e98553d080a1a51c6b36952d2b3af776f651b1d16ce52c09"],
+    ["case-008", "b6785d3c548bb3677a0e790f2330bff3bc6462cf5f0d779cb9785c9a92a3c010", "library", "generic", "pass", "pass", "clean", "direct", null, "error", 1, 0, 4, 5, "6da54301bfdc5ce3efc7584075558ce1211b40713ad91192b00322bd187c9a7f"],
+    ["case-009", "e153fd13ec8890f6c1b271218d9ac60c2a91640f9880d1e40bc6d9e76d1adcfe", "library", "riser", "pass", "pass", "clean", "direct", null, "pass", 0, 0, 8, 9, "0bb70cda7754680ff893057c809c1485152b754532919bd09f9e5f69cc0ab154"],
+    ["case-010", "2834f5510fbbe9dbd011955d18d9902f508bc25226dcef890e3f792a785fc5a5", "library", "generic", "pass", "pass", "clean", "direct", null, "pass", 0, 0, 4, 5, "5186d660c25dd4ec7c44a68ca56458ebbaeb162ca33c4c49c63956cd459c5de7"],
+    ["case-011", "328d5714474cd4bb49e379ce51ad5667f2f6e2da32ddc536e0ac739db6e8aedc", "library", "generic", "pass", "pass", "clean", "direct", null, "pass", 0, 0, 4, 5, "3b505ebf69556805f36c1c7f0c947a523066b177fb7d506298b23d558afca41a"],
+    ["case-012", "428d83ebb7b0cccd257b6498908b059aebe992d6de142b55e0e87891febe8e83", "library", "jumper", "pass", "pass", "clean", "direct", null, "pass", 0, 0, 4, 5, "872e99626ffd380b52bf738f98fe58d01ed0b0ad1a2f8099ab2f95ac537c106e"],
+    ["case-013", "7de36c8584cba499d05e5cd000543b53dd51a6b06ef401a81783a6247085c0c7", "library", "generic", "pass", "pass", "clean", "direct", null, "pass", 0, 0, 4, 5, "314c0747bbf97655722e0d37388bffa27f13a23e8888ebb2d1c0bb37ff39e903"],
+    ["case-014", "d7b9899f5c0b1ad67b5a165c1e5294d477497e7068bc85dc0c877a3378969750", "library", "jumper", "pass", "pass", "clean", "direct", null, "pass", 0, 0, 4, 5, "a2d1b05f2ec916d6d979a30318928c06b5ea49771618e2a191597493615d24cf"],
+    ["case-015", "b160779a5f879a7d96370c1291964733bcf7a1fc7a83bcb3ee44e851f7b3ad28", "library", "generic", "pass", "pass", "clean", "direct", null, "warning", 0, 1, 4, 5, "4b456446d3bfe5787bb4c6c36c0ba3aa890569e574018cac137ecf212ee2538f"],
+    ["case-016", "5ff4f747d0531ab6cc01440b9ff159e907f7750b23c583fb9e77650920129591", "library", "generic", "pass", "pass", "clean", "direct", null, "pass", 0, 0, 4, 5, "c5becce3a1c8a89e7349ce4fff6a6791ec9dfd0c87559b79bed5f1218fb2af35"],
+    ["case-017", "af00a3933f4ed0e5c7ddd61d8f29cd5f57fa8825135615583597353d4f25c890", "library", "generic", "pass", "pass", "clean", "direct", null, "warning", 0, 2, 4, 5, "c56153903df2269beef743fb2ee2dee83a7ba9294c5288e95201ea54b4013247"],
+    ["case-018", "0fbb303dbc29372b1928573a5e5bf03f55b4036bd261fa824c51755deccf53bb", "library", "jumper", "pass", "pass", "clean", "direct", null, "pass", 0, 0, 4, 5, "43b7b38baac90dc80a709ebceb9a6a87429a35e4b8402bcfad395bcb3d9459be"],
+    ["case-019", "8b76b16d75f9c6583c06c7789b69e6678bd939460af0c24f35841eae2aeaa868", "library", "generic", "pass", "pass", "clean", "direct", null, "pass", 0, 0, 4, 5, "fc33453a147e7dc38b79fcd68a557bb73982ecfd59260461bcd2fae3144c870a"],
+    ["case-020", "18c97f4203f32f2b561bffb403f2fbea509f18302bccad04d5a0ec2d378cd9e6", "library", "generic", "pass", "pass", "clean", "direct", null, "warning", 0, 1, 4, 5, "591a31baa982c64e7308b2a1eb5fa6d29d7581f6003ea9e54de4913f4624c591"],
+    ["case-021", "b20cfba52fefeadca4680b2f6632bb01fb7ab28de8b34ec9f7d2b444b8854ef2", "library", "generic", "pass", "pass", "clean", "direct", null, "warning", 0, 1, 4, 5, "6b0da49fa62dbae9f7988a14435e71067041cbf0905f99eed785e0a98892907c"],
+    ["case-022", "8cc9efe117660b6ec89ef96a0ad750204598ec438e326c3861ad177c0198815e", "library", "generic", "pass", "pass", "clean", "direct", null, "pass", 0, 0, 4, 5, "1e003b2d80c1dfa8709791ea3635f719baa0e4057934f7af1e27fea35b1a2616"],
+    ["case-023", "107bec4b7b5e7aa6509647ebfa4574633e2967095fbf40c8ae34cae1de1b6d43", "library", "vessel", "pass", "pass", "clean", "direct", null, "pass", 0, 0, 4, 5, "1999820fe5d3307390c9f935f46b9449d1a57821a6e0418bae543c164f0ac065"],
+    ["case-024", "1532d4430179a2a89996b1f7bfa4546b7e50916307e56145dd1b9418dd94d7bb", "library", "riser", "pass", "pass", "clean", "direct", null, "pass", 0, 0, 7, 8, "ec8c941adc07159e835db649832eb87ba99f422a4d97c6bfe330064c422252f7"],
+    ["case-025", "2384a0770142b5d469700781cf5fc99698ee76c08435b5b769001066c7fffa39", "library", "generic", "pass", "pass", "clean", "direct", null, "pass", 0, 0, 4, 5, "d05523451ea3afe5395ec11d874025b3bf49817a6fdc3d494458ebb4c2541045"],
+    ["case-026", "578818be71bf1bcbb16abc94f96cc489114a40dcff088c7819a1e3d5884780a0", "library", "generic", "pass", "pass", "clean", "direct", null, "pass", 0, 0, 4, 5, "950c6372aa275d316e55da936a3916593f2796908d121b2d6cff9487239ecc4f"],
+    ["case-027", "0b49ad6c2ff0c6377244f8215791f3ea2288c4ff36d1f9c71c41e28d90d8b510", "library", "riser", "pass", "pass", "clean", "direct", null, "pass", 0, 0, 9, 10, "29e3bedaeccbfc66fbb3c75e9dfc801104feac0a518412c94194834821d5ed1a"],
+    ["case-028", "fb938c1cbe6bc744e04fc1d207cac19d76c3dabf8eabe670c5a0514b2ec7c615", "library", "riser", "pass", "pass", "clean", "direct", null, "pass", 0, 0, 8, 9, "0bb70cda7754680ff893057c809c1485152b754532919bd09f9e5f69cc0ab154"],
+    ["case-029", "90c5f46d555bccf9be37f2eacea6a09e7dd2c5361172ff45f58861b084740f96", "library", "riser", "pass", "pass", "clean", "direct", null, "pass", 0, 0, 7, 8, "c93b19b24502f4d0e98553d080a1a51c6b36952d2b3af776f651b1d16ce52c09"],
+    ["case-030", "e58ccfdd49509dcbf1f4b8ad062fbb25efe40dc6f0bc9ccac2c468619d08822b", "library", "generic", "pass", "pass", "clean", "direct", null, "pass", 0, 0, 4, 5, "b957d0f01bd05b43a416901088991e84dbbc2d10e63a99afd43c100e904d1b9a"],
+    ["case-031", "eee3eed7a0272c1d3d67ee478f3923ca985f075f3477efdae59aa810f4b001ca", "library", "generic", "pass", "pass", "clean", "direct", null, "pass", 0, 0, 4, 5, "c3f09d04d8fde8c4e022239b0555e9419932d9e545157d1f4dc989797f014fae"],
+    ["case-032", "f26a60561f0cb0515a6d811ef133875be4311e648ea1c242e7cc4f0e479bc4fd", "library", "generic", "pass", "pass", "clean", "direct", null, "pass", 0, 0, 4, 5, "b62bf970b6aae8b4300ceed200a9bbcbb70ba7d71e594f3273a16fe40775d417"],
+    ["case-033", "89861a7302c59a596f51a079859c962e7c41e66dd8f043f2e8118eb9f7850c88", "library", "generic", "pass", "pass", "clean", "direct", null, "pass", 0, 0, 4, 5, "3be2d403c4bb46e4dc250d18a4870fcb8a10f8cefb4ea3e52542772cb4d03867"],
+    ["case-034", "3b5f15b09b0df97abf94a343ab1fb31de84ce978d680ff33e55e2249f30af54c", "library", "pipeline", "pass", "pass", "clean", "direct", null, "pass", 0, 0, 11, 12, "0ce87ee8dd0aacc4f1263e48010d39adb14a818a7e137855d555b20bf84b3871"],
+    ["case-035", "c036020efcf5081109b0e8c528443123d91bc371543e422299f87f59cbecd7c9", "library", "generic", "pass", "pass", "clean", "direct", null, "warning", 0, 1, 4, 5, "e1ae84eafdd19545e6006651c4098c4aee44f28363a3e885ba593073b3768811"],
+    ["case-036", "970db50284209181104fe65c97d6aaae89668975c8b99e57506cab3fea2acede", "library", "mooring", "pass", "pass", "clean", "direct", null, "pass", 0, 0, 4, 5, "9cc628f84ad84a659c8b070df2741a8248d91c947f6e534528782239b55b7440"],
+    ["case-037", "6eae45c8402c03a33fd393c9e534882c1bda593d716d8f2fcb04beac30d8d0bd", "library", "installation", "pass", "pass", "clean", "direct", null, "error", 1, 0, 4, 5, "7f29e6021ac6f3bcf520819174f214ea3e15ce0f78a91cb9b3fdbb89170e9254"],
+    ["case-038", "aed65bb8200b0f0e58d08cab9e51042462b88e20ad35cf69d786accff1befc31", "library", "generic", "pass", "pass", "clean", "direct", null, "pass", 0, 0, 4, 5, "e2a0d9fbc6ee78227c192b47696b36efb5dddf5e08c1760406617f60ab234542"],
+    ["case-039", "43914ad9848bab6174e18bcf4a2189c3c7380f3fd0eca05797ef474aab09f011", "library", "generic", "pass", "pass", "clean", "direct", null, "pass", 0, 0, 4, 5, "e8aeedb65c0f301a9a506363482250a9ca7efa268ac659b30e9fe16e549f83aa"],
+    ["case-040", "680c2a20a3891c44f44b412ad1a5c228e7bdb49ed7a92077094f0175ca8d0181", "library", "generic", "pass", "pass", "clean", "direct", null, "warning", 0, 1, 4, 5, "447e6fcb901aa52060cbb2121feaf1a34f266e6b01410d99cd31d39106a351f9"],
+    ["case-041", "bb82e58753a99e96e0d81591b12c5378f623bda177895e26398a23445db81b80", "library", "installation", "pass", "pass", "clean", "direct", null, "pass", 0, 0, 4, 5, "686a9aa61bcc1b3b17177e61475c432743e18480d856985ef906deeb59fd2ea4"],
+    ["case-042", "b3994fdd492748accf53fbf18b47ea42aba90167f791f1baf7aae8ab026b4e79", "library", "generic", "pass", "pass", "clean", "direct", null, "pass", 0, 0, 4, 5, "7a0b680acedd3ffbb8f7fa39a1f5873cf11708e5546f6ff8973b4d2ccd09f61a"],
+    ["case-043", "be7a7421f73266617b2f3e7f02691d1cc0ffc4bf40684b382b68fe71f31600c4", "library", "installation", "pass", "pass", "clean", "direct", null, "pass", 0, 0, 4, 5, "855f1afe660dc6da6661626a903fbb3b39014192c038c2b70dfd9d90214076bf"],
+    ["case-044", "ea40b507620044471869e04b8ec34613e1e64e0a077a8d195c126ac25e59ca11", "library", "mooring", "pass", "pass", "clean", "direct", null, "pass", 0, 0, 4, 5, "2f0d42aeae4271f90dc3b2b7b1ff4227ee16f08a4e393e90dc13f4df81b223c9"],
+    ["case-045", "c9f845e05ecc56bd48bfe37d73b457824d00cba8eb597be06284794613670969", "library", "generic", "pass", "pass", "clean", "direct", null, "pass", 0, 0, 4, 5, "faa7fc7df6bde47548bd8c75861b4e125c5c1b359b70a9e5bbc6d3257369d3f2"],
+    ["case-046", "88c1d0fb97506bfceee244e3ade85f6d4de9c3436802123e6553107359dbf2d0", "library", "riser", "pass", "pass", "clean", "direct", null, "warning", 0, 1, 4, 5, "6b9af1f1027ce37cf2d403bcc525d164378bf3dfa58d54a18424a068414c4db6"],
+    ["case-047", "992f4348d25b15e4a0c0347676b0559e2100057f27252be8cc9c0cb9807ce1b2", "library", "generic", "pass", "pass", "clean", "direct", null, "pass", 0, 0, 4, 5, "0ef0833056ca3896e5cd414a447f8e77cf10ae31686d68d010f6b3ec96bd6a69"],
+    ["case-048", "89f4889a435fa6d555e1f44e064bb6e981b177102f90ee7e30373cbd699a546d", "library", "generic", "pass", "pass", "clean", "direct", null, "pass", 0, 0, 4, 5, "898aec9091abb7d6246f25da3c12615613830f928629fb126a9ada5e18fcb419"],
+    ["case-049", "97f0425869de0fdc2109accc5c712ebf5adee0f4d426e8b7fa7f766022ad7126", "library", "generic", "pass", "pass", "clean", "direct", null, "pass", 0, 0, 4, 5, "4d4dc1d84c374b7994158a3fcfb940fdbb4d02ffe5495be573e6dc67d3f87d3e"],
+    ["case-050", "7dd890c0dbf6aa8f04422fb79c4a12032366c249759f0ebe20c5a8c985b41283", "library", "generic", "pass", "pass", "clean", "direct", null, "warning", 0, 2, 4, 5, "b2ed977ee0e0edb932bd14787cd95854e41ca88051ec7ffdf205e0fc0e147c9f"],
+    ["case-051", "30eda6cf18a07786b85c0f756df1712eaf5e424ad1f6cea7507e2ca924728278", "library", "generic", "pass", "pass", "clean", "direct", null, "warning", 0, 1, 4, 5, "19ef0c1324b0c0253e6a3da2ab8dd2ca283520ba6cc1c31306be17e6c0f7454c"],
+    ["case-052", "559d6363a26e7c915c7f871914f251b335d26d5a35018b56ef3cfec20e721924", "library", "generic", "pass", "pass", "clean", "direct", null, "pass", 0, 0, 4, 5, "109cc65973bbd1ea9a9bd371a2810e368189edbdf790ccc8a061e1a14ed63c33"],
+    ["case-053", "bf16d876cbee942d4d9bd9bf95a2c2aaae08889527c53a373a50b10701479f9c", "library", "generic", "pass", "pass", "clean", "direct", null, "pass", 0, 0, 4, 5, "fafd15c2e30bd494c2a6ee911f1e6ebb44e29a9ee989e43f55a5f198d26397ed"],
+    ["case-054", "64b52ed227a6fea3a74b3c5dccd40afb5f655cbf6529cbcb1d5dc49c49d01f46", "library", "generic", "pass", "pass", "clean", "direct", null, "pass", 0, 0, 4, 5, "44f945301ccb4672443ee76c1f4a6d7e1be27334fbd7dd288717957ae2d2feee"],
+    ["case-055", "5bdfb758096eadbd4f873b521487a366c99c2fa3674532c36bd671b359d03b9f", "library", "generic", "pass", "pass", "clean", "direct", null, "pass", 0, 0, 4, 5, "a0398f5c3b27bec4646503ec3e693da8972e5051d8397039cde28aafbf73c493"],
+    ["case-056", "c2057847c36d898a11e2068ade7d53fd49a8ce2096e9af8db02c4aab597f2b6f", "library", "generic", "pass", "pass", "clean", "direct", null, "pass", 0, 0, 4, 5, "300c9d8544c488cef1a5219257003319a9cf41b2ba201f5169615d5ea37e10f7"],
+    ["case-057", "6867182d7db24991f41ee6a2b48e7b5aec41f17e448d299332e48740c13e36b5", "library", "generic", "pass", "pass", "clean", "direct", null, "pass", 0, 0, 4, 5, "f3cb526ba0890b2b32bd9b05a3f73e7a89f2b4d8d59ea8ec9bc87b9ce6103479"],
+    ["case-058", "cd61df13e78e82c92602884f37d9b62700f04fbb56fb9e92c71b439ce14d6793", "library", "generic", "pass", "pass", "clean", "direct", null, "pass", 0, 0, 4, 5, "7325f5bc71d62f496ec0cb9270302b08d273f05942f835c41e3a8882a1812527"],
+    ["case-059", "e33cd79e97c40e60c37322e47534a76d2d8daf0e1ef8c1b40db8f0b1c81c1ad4", "library", "generic", "pass", "pass", "clean", "direct", null, "warning", 0, 1, 4, 5, "6b112a0ee7a246a1b766bd70ac4bd66dac816f5178dc635cf698084f8516defa"],
+    ["case-060", "107ed0ddef9e993b8c31d4df8ddb498b05dd40222e05b8903b48580f460d8d14", "library", "generic", "pass", "pass", "clean", "direct", null, "pass", 0, 0, 4, 5, "97138077970937a5a01ed762ff9131177219b4491c905646b3f64af6446a0b1f"],
+    ["case-061", "f82d3dda40628f005753586c4d3aeb3cb0360e23940cfef557b0d45ee346b188", "library", "generic", "pass", "pass", "clean", "direct", null, "pass", 0, 0, 4, 5, "5b418072fe9bd60e44978d4b98828ea9e24ca92069a1a98557299e2bf75fc170"],
+    ["case-062", "4a98bf46c8a224f336a963b7fe9778e41b04dd28da29ec0640680a56bbb03517", "library", "generic", "pass", "pass", "clean", "direct", null, "pass", 0, 0, 4, 5, "b4af601be6c1dd4a4305441cc4229ce39817962246468943153f64f2fde836e4"],
+    ["case-063", "3be679c9c76e5eee3b9b488edd2d9b9991994ab0fa2ea96a85c7b46019340dc7", "library", "riser", "pass", "pass", "clean", "direct", null, "pass", 0, 0, 4, 5, "2d97c669e9da05b27b9708b23499d78f01757f81414711e69bb4083fc28fb98c"],
+    ["case-064", "9f60356971704cfb4c1e3deed32a8d347a764edc82e7f17558e6d16af6c19ba4", "library", "generic", "pass", "pass", "clean", "direct", null, "pass", 0, 0, 4, 5, "05808f93f8f095b709e541491cc840a3817d63acf8877888b768b4c0a0c0a9db"],
+    ["case-065", "7dd890c0dbf6aa8f04422fb79c4a12032366c249759f0ebe20c5a8c985b41283", "library", "generic", "pass", "pass", "clean", "direct", null, "warning", 0, 2, 4, 5, "3de477b747f6246830224fde410ade0f055569b841de01f976a1d966b1867243"],
+    ["case-066", "415ecb74b93c5d1c17fa2b01f54f48e70bc97a8088d6d47f67e9da0396e77ab6", "library", "generic", "pass", "pass", "clean", "direct", null, "pass", 0, 0, 4, 5, "7af10ae4719845402012005b1ee139992a00a03f573c1186568d20a5fad98f82"],
+    ["case-067", "f7644a72a6044530eb441c5429aadba3fed7292da7664793831e76b97ad16706", "library", "generic", "pass", "pass", "clean", "direct", null, "pass", 0, 0, 4, 5, "6de0cb285ccc15a84a9f728310d7e6bb12ccaf58df92f64fdab5c91749098aa0"],
+    ["case-068", "2069e951f0d7be3188faa564a97c82b5bb53a4a08c76cf32a394077e41eb43ee", "library", "generic", "pass", "pass", "clean", "direct", null, "pass", 0, 0, 4, 5, "3de29634e15e7e58090ad46f65dc8d7544c9e902144d29497da0561f2d1917a3"],
+    ["case-069", "347a03821ee5ca6a90392a737690a80490f237490f7dd31bba14e67a8fb29cee", "library", "generic", "pass", "pass", "clean", "direct", null, "warning", 0, 1, 4, 5, "637d2dbf17f39d10881ef0311a15125fb1b79e867c48347aade8a9112e4548a4"],
+    ["case-070", "fa814e8e7fb62ab959ccc9b6ef40421bcf56b0e46657327578b08c160c26c62c", "library", "generic", "pass", "pass", "clean", "direct", null, "pass", 0, 0, 4, 5, "0d63f17f8d2029040e22f794efb7d65a84b68ba1cfdc66ffb5c1ca37cdeaf91d"],
+    ["case-071", "cd977efa3f89110545a3bc1de430e1b39b0a4cff46be70ef7d2204c81a229316", "library", "generic", "pass", "pass", "clean", "direct", null, "warning", 0, 1, 4, 5, "4359818d2866ab4d403725804d49fa877ad1dab2606a544d28669b2b0db7b8ed"],
+    ["case-072", "aa0f91071f920aa64b6050b0d05a6ec143b730580f3916cc00038fec72de4282", "library", "generic", "pass", "pass", "clean", "direct", null, "pass", 0, 0, 4, 5, "8a525a1b4622778a168fae985dc4522984a7449a3620dc86e4f34e84755d92ef"],
+    ["case-073", "f3aefa4194287d528be1457af63a45a45832eafc2ab3fc0c4c20dea31df6fe3a", "other_domain", "regional", "pass", "pass", "clean", "direct", null, "error", 1, 0, 4, 5, "cb6aa77fe758c94df6e5ceb3ec926187e824fcf5117e59faa6223c861f875c86"],
+    ["case-074", "66a2c5ab40edcc3e345a6dd2f3748568f7172b376b6c552b6ce2c7eb352154c6", "other_domain", "installation", "pass", "pass", "clean", "direct", null, "warning", 0, 1, 4, 5, "de90b5b153f0643dcebe45b39384d72b0d624259425d5564bb48b9c63874da0e"],
+    ["case-075", "3ae4243456ee9e386d0117e73bdc08515843ddad1bf02ba5d57cb34e506d3b12", "other_domain", "training", "pass", "pass", "clean", "direct", null, "pass", 0, 0, 4, 5, "ef3440974a890c0efe5495ea40ce42678bf49d1c4acaadde99827a9547b11fc5"],
+    ["case-076", "72435b82f5d3828027f97095af810e74b4724d1876f909dca978dc9b611a316f", "other_domain", "passing_ship", "error", "not_run", "not_run", "passing_ship_schema_only", null, "not_generated", 0, 0, 0, 0, null],
+    ["case-077", "059fb50829f39b39003adc0a0f83545d419c1c42cce7624ee6b311d00bc501f3", "other_domain", "reference", "pass", "pass", "clean", "direct", null, "error", 1, 0, 4, 5, "9fd9a6bd30e95118daca7fdbdd0a3033e8907447a0d547ed003b1b21d31274c8"],
+    ["case-078", "56f0f5673ae09686ddc585d1f8f5f97d274a33bcecb84b03077f2f59d430aea1", "other_domain", "training", "pass", "pass", "clean", "direct", null, "pass", 0, 0, 4, 5, "2451f8a9568efde82e700f84a3f02710fd8029d12e3a5446086c91310288f528"],
+    ["case-079", "21dddc2cdec1f9535785d09978beca2c2cc682de7660f5e82feaf6728d4c866a", "other_domain", "installation", "pass", "pass", "clean", "direct", null, "pass", 0, 0, 4, 5, "b96eab6ad177aea74a18e540f288cd9abc84f8e0267289948dbf01b667cbbbfb"],
+    ["case-080", "4da3f44a454d337db985d3667ae5cc41e677afcb142100fcc0d0c3b69f3e331b", "other_domain", "training", "pass", "pass", "clean", "direct", null, "pass", 0, 0, 4, 5, "00ca3332be5bacaa0ce0c6f352a22cda71f395e84e1ba08855feb455d4deffb7"],
+    ["case-081", "8ad5ffb52bc19adf24a46b2bf42bf4db42df033fcdc669fbf41e9b1f95e895b4", "other_domain", "pipeline", "pass", "pass", "clean", "direct", null, "pass", 0, 0, 13, 14, "32c798df79eb3451f0042c1e20b6ba8cc633c600ede7603c1144a9068f4f8466"],
+    ["case-082", "44ab807d24388b709427b9258c2d42388d28572c41bf78c1bed0981664135efa", "other_domain", "jumper", "pass", "pass", "clean", "direct", null, "pass", 0, 0, 4, 5, "1c2ef7d2e51c57432805693462b428d544b05a637df42bdda6fdb70840d26354"],
+    ["case-083", "b0ff5fe337c8ca3f0e6ff883628cd9e2ec61304a2895fdfca24c7bd07b17fe5f", "other_domain", "pipeline", "pass", "pass", "clean", "direct", null, "pass", 0, 0, 13, 14, "dbcb2cb561fe28432dc9b016e80accedad1e3c168690c8ec6d0b0d7daa4c957e"],
+    ["case-084", "31ee4dacfa42b7edcf9fd241041be42ef04d8bada944d22f9cd59915d8ec127b", "other_domain", "jumper", "pass", "pass", "clean", "direct", null, "pass", 0, 0, 4, 5, "270afc54cfafd9461da988c58351217758a7d0464d8f85e6701709b1aa9e67a0"],
+    ["case-085", "7ea59547ec1583f7b3451e02f99ed9fa38b15c927c59aac627ca56611aa13640", "other_domain", "pipeline", "pass", "pass", "clean", "direct", null, "pass", 0, 0, 11, 12, "8bf447cac882bd5c3871558bb2e32201ea22e66fdf30183d383319aa921f089b"],
+    ["case-086", "94969a1a31c461a1013ab7190d2b21dbde7a2d18e6fb6978c820b244ed9a28f8", "other_domain", "mooring", "pass", "pass", "clean", "direct", null, "pass", 0, 0, 4, 5, "2932cfeaac99290a62f209d366010fd39af8331ec54600b16fcdae46486e33f3"],
+    ["case-087", "8805fe010d074cb5f4f27a252adfcde9dd6a6af5b41d96c61c8ad8e70462f26a", "other_domain", "jumper", "pass", "pass", "clean", "direct", null, "error", 1, 0, 4, 5, "317eae03fd8631f7720c5909471bcac565b20df3c854d1abbeb035014c63fd0a"],
+    ["case-088", "d07e9ef3f2b6741264df4bb4a23bd94e2cbcf654c3732c911af44c80a8484de8", "other_domain", "jumper", "pass", "pass", "clean", "direct", null, "error", 1, 0, 4, 5, "8514699f8c8a7fce5c967f436b8f32adf5079f94e81a1e18f5dcf90625f2ed3e"],
+    ["case-089", "a11fdcdd982601f99af1b65ea998d29ddb4945268d666a48bcaf2fd08681e079", "other_domain", "pipeline", "pass", "pass", "clean", "direct", null, "pass", 0, 0, 11, 12, "0ce87ee8dd0aacc4f1263e48010d39adb14a818a7e137855d555b20bf84b3871"],
+    ["case-090", "3aa11665e0e82fd1974e912d6cb50f4be699716e247b3b9d716b01ba234b8b33", "other_domain", "jumper", "error", "not_run", "not_run", "jumper_adapter", "pass", "pass", 0, 0, 4, 5, "11d2a7b808bf5ea7d0d485cb096ddedb2fed3155972a4aacd391286af7d7e195"],
+    ["case-091", "9aa1e0ab59065d740ff0537b379893fb0134e65506ec5e2a1c56f8e00b28cf54", "other_domain", "jumper", "error", "not_run", "not_run", "jumper_adapter", "pass", "pass", 0, 0, 4, 5, "37c531997bfe1ab75c9a48a3fd8147e6f2b90462209e85f5e0e78c1eb3441859"],
+    ["case-092", "4e7ca72a1a035d63d742c9f36fab8b77068a502e38e5730256e168d69933d094", "other_domain", "installation", "pass", "pass", "clean", "direct", null, "pass", 0, 0, 4, 5, "b50f349832b89e375f37cb438bf17d2118ea72f090432244d1e7bd2cb0a5db1f"],
+    ["case-093", "28634d7c498e6803e769d08f28c41848da11fe49f62a827b98e39ead55e7f4d2", "other_domain", "installation", "pass", "pass", "clean", "direct", null, "pass", 0, 0, 4, 5, "686a9aa61bcc1b3b17177e61475c432743e18480d856985ef906deeb59fd2ea4"]
+  ]
+}

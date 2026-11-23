@@ -1,0 +1,21 @@
+version: 1
+wrk_id: WRK-1009
+skill_name: doc-research-download
+skill_path: .claude/skills/data/doc-research-download/SKILL.md
+evals:
+- eval_id: drd-cap-01
+  eval_type: capability
+  description: Core sections documented for doc-research-download
+  checks:
+    required_sections:
+    - '## Overview'
+    - '## 6-Step Workflow'
+    - '## Script Template'
+    - '## Catalogue YAML Template'
+    - '## AC Checklist'
+- eval_id: drd-proc-01
+  eval_type: procedural
+  description: Key commands documented for doc-research-download
+  checks:
+    required_commands:
+    - bash scripts/data/<domain>/download-<domain>-docs.sh [--dry-run]

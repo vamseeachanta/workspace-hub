@@ -1,0 +1,8 @@
+fixture_id: legitimate-tenant-maintenance
+sender: manager@example.org
+subject: Tenant maintenance update
+body: >
+  The storefront repair is complete. Please confirm whether the invoice should
+  be filed under the property maintenance record.
+expected_classification: actionable
+

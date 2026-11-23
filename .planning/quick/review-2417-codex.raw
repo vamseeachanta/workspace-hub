@@ -1,0 +1,218 @@
+OpenAI Codex v0.121.0 (research preview)
+--------
+workdir: /mnt/local-analysis/workspace-hub
+model: gpt-5.4
+provider: openai
+approval: never
+sandbox: workspace-write [workdir, /tmp, $TMPDIR, /home/vamsee/.codex/memories]
+reasoning effort: medium
+reasoning summaries: none
+session id: 019dacd0-d325-7973-9340-c5aefa1b8b98
+--------
+user
+You are an adversarial reviewer. Assume this plan has defects until proven otherwise.
+Do not praise. Do not restate the plan. Focus only on what is wrong, missing, contradictory, or risky.
+Return APPROVE only if no blocking defects remain.
+
+Required checks:
+- Is the evaluator contract concrete enough to implement?
+- Is the results-schema migration/backward compatibility sufficiently specified?
+- Is `workflow-config` safely bounded for v1?
+- Do files/tests/acceptance criteria stay internally consistent?
+- Are multi-iteration concerns properly deferred to #2418?
+
+Return only JSON:
+{"verdict":"APPROVE|MINOR|MAJOR|REJECT","summary":"...","issues_found":["..."],"suggestions":["..."],"questions_for_author":["..."]}
+
+PLAN TO REVIEW:
+# Plan for #2417: Generalize skill-autoresearch into repo-ecosystem autoresearch runner
+
+> **Status:** draft
+> **Complexity:** T2
+> **Date:** 2026-04-20
+> **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2417
+> **Review artifacts:** scripts/review/results/2026-04-20-plan-2417-claude.md | scripts/review/results/2026-04-20-plan-2417-codex.md | scripts/review/results/2026-04-20-plan-2417-gemini.md
+
+---
+
+## Resource Intelligence Summary
+
+### Existing repo code
+- Found: `scripts/cron/skill-autoresearch-nightly.sh` — current single-target loop already provides branch isolation, revert-on-non-improvement, dry-run support, results logging, and `git_safe_commit` integration.
+- Found: `tests/cron/test_skill_autoresearch.sh` — current shell smoke/TDD contract verifies branch naming, results logging, eval integration, revert mechanism, main-branch protection, and dry-run/help support.
+- Found: `config/scheduled-tasks/schedule-tasks.yaml` — repo already has a scheduled `skills-curation` task and the broader scheduled-task inventory pattern this runner must fit into.
+- Found: `scripts/skills/` contains a dense ecosystem of skill-oriented analyzers and reporting utilities (`skill-usage-report.py`, `weekly_skills_audit.py`, `skill-health-dashboard.sh`) but no generic autoresearch runner abstraction.
+- Gap: no existing reusable framework can target `.claude/agents/`, `.claude/get-shit-done/templates/`, or workflow config surfaces using the same accept/reject loop as skills.
+
+### Standards
+| Standard | Status | Source |
+|---|---|---|
+| Harness/planning workflow only — no external engineering standard applies | not applicable | AGENTS.md + issue-planning workflow |
+
+### LLM Wiki pages consulted
+- No relevant wiki pages; this is a harness/automation issue.
+
+### Documents consulted
+- `.planning/ROADMAP.md` — Phase 999.4 explicitly calls for extending autoresearch to agent definitions, templates, and workflow configs.
+- `.planning/milestones/v1.0-ROADMAP.md` — same backlog item preserved in milestone roadmap, confirming this is existing roadmap scope rather than a new idea.
+- Issue #1760 — self-improvement command surface depends on stronger repo-self-improvement plumbing.
+- Issue #1720 — corpus mining already frames session/tool evidence as an ecosystem curation input, relevant to future evaluator design.
+- Issue #2418 — compounding multi-iteration mode is already split out and should remain out of scope for this plan.
+
+### Gaps identified
+- No target-type abstraction layer exists.
+- No evaluator interface exists for non-skill assets.
+- Results tracking is skill-specific (`skill` column only), so future non-skill improvement runs cannot be audited consistently.
+- No fixture-backed tests exist for agent/template/workflow-config dispatch.
+
+### Evidence (embedded verification)
+**Issue statuses** (verified 2026-04-20 via `gh issue view`):
+- `#2417` — OPEN — feat(automation): generalize skill-autoresearch into repo-ecosystem autoresearch runner
+- `#2418` — OPEN — feat(automation): add compounding multi-iteration autoresearch with budget guards
+- `#1760` — OPEN — feat(self-improvement): operationalize /powerup, /insights, /improve, /compound, /reflect, and /knowledge commands for the repo ecosystem
+- `#1720` — OPEN — analysis: cross-agent session corpus audit — mine 1M+ tool calls for ecosystem curation opportunities
+
+**File existence** (verified 2026-04-20):
+- EXISTS: `scripts/cron/skill-autoresearch-nightly.sh`
+- EXISTS: `tests/cron/test_skill_autoresearch.sh`
+- EXISTS: `.planning/ROADMAP.md`
+- EXISTS: `.planning/milestones/v1.0-ROADMAP.md`
+- MISSING (new — this plan creates): `scripts/skills/repo_ecosystem_autoresearch.py`
+- MISSING (new — this plan creates): `tests/skills/test_repo_ecosystem_autoresearch.py`
+
+**Line excerpts**
+- `.planning/ROADMAP.md` includes `### Phase 999.4: Extend Autoresearch to Agent & Template Definitions (BACKLOG)` and states the current loop only targets `.claude/skills/`.
+- `scripts/cron/skill-autoresearch-nightly.sh` defines `BRANCH="autoresearch/skills-${DATE}"`, `RESULTS_FILE="${WS_HUB}/.claude/state/skill-autoresearch/results.tsv"`, and uses `git_safe_commit` for kept improvements.
+- `tests/cron/test_skill_autoresearch.sh` asserts branch naming, results logging, time budget, branch isolation, revert mechanism, and dry-run/help support.
+
+---
+
+## Artifact Map
+
+| Artifact | Path |
+|---|---|
+| This plan | `docs/plans/2026-04-20-issue-2417-repo-ecosystem-autoresearch-runner.md` |
+| Generic runner | `scripts/skills/repo_ecosystem_autoresearch.py` |
+| Skill wrapper update | `scripts/cron/skill-autoresearch-nightly.sh` |
+| Tests | `tests/skills/test_repo_ecosystem_autoresearch.py` |
+| Existing shell smoke test update | `tests/cron/test_skill_autoresearch.sh` |
+| Optional evaluator fixtures | `tests/skills/fixtures/repo_ecosystem_autoresearch/` |
+| Results artifact schema note | `docs/standards/repo-ecosystem-autoresearch.md` |
+| Plan review — Claude | `scripts/review/results/2026-04-20-plan-2417-claude.md` |
+| Plan review — Codex | `scripts/review/results/2026-04-20-plan-2417-codex.md` |
+| Plan review — Gemini | `scripts/review/results/2026-04-20-plan-2417-gemini.md` |
+
+---
+
+## Deliverable
+
+A reusable repo-ecosystem autoresearch runner that preserves today’s skill-improvement behavior while adding target-type dispatch and evaluator contracts for non-skill repo assets.
+
+---
+
+## Pseudocode
+
+```
+function discover_targets(target_type, root):
+    if target_type == "skill": return all SKILL.md paths under .claude/skills/
+    if target_type == "agent": return prompt/config files under .claude/agents/
+    if target_type == "template": return files under .claude/get-shit-done/templates/
+    if target_type == "workflow-config": return whitelisted config/planning surfaces
+    else: raise ValueError
+
+function evaluate_target(target_type, path):
+    load evaluator registered for target_type
+    return structured result {warnings, criticals, findings, score?}
+
+function run_attempt(target_type, target_path, evaluator, time_budget):
+    capture baseline evaluation
+    ask model for minimal update constrained to target contract
+    write candidate change
+    re-evaluate
+    if regresses or no improvement: revert
+    else: keep and commit via git_safe_commit
+    append results.tsv/json row with target_type + target_path + before/after
+
+function main():
+    parse args (target_type, dry_run, max_attempts, roots)
+    discover candidates
+    rank candidates by evaluator warnings
+    iterate bounded attempts
+    print summary + write durable results artifact
+```
+
+---
+
+## Files to Change
+
+| Action | Path | Reason |
+|---|---|---|
+| Create | `scripts/skills/repo_ecosystem_autoresearch.py` | generic target-type runner |
+| Modify | `scripts/cron/skill-autoresearch-nightly.sh` | delegate existing skill flow into generic runner or share its core logic |
+| Create | `tests/skills/test_repo_ecosystem_autoresearch.py` | fixture-backed dispatch and keep/revert tests |
+| Modify | `tests/cron/test_skill_autoresearch.sh` | preserve current wrapper contract while allowing the new runner integration |
+| Create | `tests/skills/fixtures/repo_ecosystem_autoresearch/` | agent/template/workflow-config fixtures |
+| Create | `docs/standards/repo-ecosystem-autoresearch.md` | document evaluator contract, supported target types, and result schema |
+| Update | `docs/plans/README.md` | add this plan to the index |
+
+---
+
+## TDD Test List
+
+| Test name | What it verifies | Expected input | Expected output |
+|---|---|---|---|
+| `test_discover_skill_targets` | skill discovery matches current SKILL.md convention | fixture tree with 2 skills | both returned |
+| `test_discover_agent_targets` | agent discovery finds supported agent files | fixture `.claude/agents/` tree | agent files returned |
+| `test_discover_template_targets` | template discovery finds template files | fixture templates dir | template files returned |
+| `test_dispatches_to_registered_evaluator` | target type uses the right evaluator contract | mocked evaluators | matching evaluator called |
+| `test_revert_on_non_improvement` | unchanged/worse result restores original file | fixture target + mocked eval | file restored, result logged as revert |
+| `test_keep_on_improvement` | improved result is committed/logged | fixture target + mocked eval | keep recorded with before/after |
+| `test_results_include_target_type_and_path` | durable results schema is generalized | one kept run | row contains `target_type` + `target_path` |
+| `test_shell_wrapper_preserves_dry_run_contract` | legacy skill wrapper still supports dry-run/help | wrapper invocation | exit 0 + dry-run banner |
+
+---
+
+## Acceptance Criteria
+
+- [ ] A generic runner exists at `scripts/skills/repo_ecosystem_autoresearch.py`.
+- [ ] Current skill-autoresearch behavior remains available through `scripts/cron/skill-autoresearch-nightly.sh`.
+- [ ] Supported v1 target types include `skill` plus at least two of `agent`, `template`, `workflow-config`.
+- [ ] Durable results include `target_type` and `target_path` instead of skill-only naming.
+- [ ] Dry-run mode works for every supported target type.
+- [ ] Tests cover target discovery, evaluator dispatch, keep/revert behavior, and wrapper compatibility.
+- [ ] The evaluator/plugin contract is documented so future target types can be added without rewriting the runner.
+
+---
+
+## Adversarial Review Summary
+
+| Provider | Verdict | Key findings |
+|---|---|---|
+| Claude | PENDING | not run yet |
+| Codex | PENDING | not run yet |
+| Gemini | PENDING | not run yet |
+
+**Overall result:** PENDING — review not yet run.
+
+---
+
+## Risks and Open Questions
+
+- **Risk:** `workflow-config` can sprawl into unrelated config surfaces; v1 must use a tight allowlist rather than broad repo scanning.
+- **Risk:** evaluator quality for non-skill targets may be weaker than the current skill-eval path; v1 should keep evaluator interfaces explicit and bounded.
+- **Risk:** current `results.tsv` schema may be consumed by downstream tooling that assumes a `skill` column; integration impact must be checked before changing the artifact shape.
+- **Open:** should the generalized runner write a new JSONL/TSV artifact beside the existing one rather than mutate the old schema in place?
+- **Open:** should `commands/` be first-class in v1, or deferred until agent/template evaluator quality is proven?
+
+---
+
+## Complexity: T2
+
+**T2** — one new reusable runner, one existing wrapper adaptation, new tests/fixtures, and a bounded documentation contract. No cross-machine coordination or implementation fan-out is required for v1.
+
+warning: Codex's Linux sandbox uses bubblewrap and needs access to create user namespaces.
+codex
+{"verdict":"MAJOR","summary":"The plan leaves core implementation contracts underspecified in ways that can produce incompatible behavior, unsafe target selection, and ambiguous success criteria. The evaluator interface, results-schema migration path, and `workflow-config` scope are not concrete enough for a safe v1, and several acceptance/test statements are internally inconsistent.","issues_found":["The evaluator contract is not implementable as written. `evaluate_target()` returns only an illustrative shape (`{warnings, criticals, findings, score?}`), but the plan never defines required fields, severity semantics, ordering/ranking rules, what constitutes an 'improvement', whether evaluators must be deterministic, or how non-score evaluators are compared before/after. Without that, `rank candidates by evaluator warnings` and `if regresses or no improvement: revert` are ambiguous.","The plan says v1 should preserve today's skill behavior while supporting non-skill targets, but it does not specify whether the existing skill evaluator output must be adapted into the new contract or whether a wrapper/adapter layer will normalize legacy results. That is a blocking compatibility gap.","Results-schema migration/backward compatibility is not sufficiently specified. The plan proposes that durable results include `target_type` and `target_path` 'instead of skill-only naming', but also acknowledges downstream tooling may assume a `skill` column and leaves open whether to mutate the existing artifact or write a new one. That is not a deferred nice-to-have; it is a migration decision the implementation depends on.","The artifact contract is contradictory: pseudocode says 'append results.tsv/json row', acceptance criteria mention generalized durable results, risks/open questions suggest maybe a new JSONL/TSV beside the existing one, and the existing shell wrapper is tied to one `results.tsv` path. The plan never chooses one canonical v1 output format or compatibility strategy.","`workflow-config` is not safely bounded for v1. 'whitelisted config/planning surfaces' is too vague; no exact directories/files/globs are enumerated, and no exclusion rules are given. That creates scope creep and raises the risk of touching unrelated repo policy/config files under an autoresearch loop.","The accepted target set is internally inconsistent. Acceptance requires `skill` plus at least two of `agent`, `template`, `workflow-config`, but the TDD list only includes discovery tests for `agent` and `template`; there is no discovery/evaluator/keep-revert coverage specific to `workflow-config` even though it is called out as the highest-risk surface.","The file/test plan is incomplete for backward compatibility. If the shell wrapper must preserve current behavior, there should be an explicit test that legacy results consumers or legacy column names continue to work for skill-only runs, not just dry-run/help behavior.","Acceptance criteria do not define what 'preserves today’s skill-improvement behavior' means. There is no pinned contract for branch naming, results file location, revert semantics, commit behavior, or current CLI flags after wrapper integration, even though the resource summary identifies those as existing behavior.","The ranking logic is underspecified for multi-target evaluators. The plan says 'rank candidates by evaluator warnings', but does not define whether all target types expose comparable warning counts, how ties are handled, or whether ranking is target-type local vs cross-type global. This can materially change behavior and coverage.","The plan does not clearly fence off multi-iteration behavior from #2418 at the CLI/config level. It mentions `max_attempts` in pseudocode and 'iterate bounded attempts', but never states that v1 is single-pass-per-target only, or what attempt semantics are allowed before crossing into compounding/multi-iteration territory reserved for #2418.","The docs/standards artifact is expected to document the evaluator/plugin contract, but there is no acceptance criterion requiring exact registration mechanics (e.g. registry map, callable signature, exception contract, return schema version). Without that, 'future target types can be added without rewriting the runner' is not actually testable.","There is no explicit negative boundary for unsupported surfaces. The plan mentions `commands/` as an open question, but does not state that v1 must reject unsupported target types and unsupported paths with a stable error, which is necessary to keep #2418 and future expansions deferred."],"suggestions":["Define a mandatory evaluator interface for v1, including exact return fields, required severity levels, optional fields, deterministic comparison rules, and a canonical `is_improved(before, after)` algorithm. If legacy skill-eval differs, specify an adapter layer.","Choose one migration strategy now: either keep the existing `results.tsv` schema fully backward compatible by adding columns, or introduce a new canonical results artifact and keep the legacy skill TSV as a derived compatibility output. State file paths, columns, and ownership explicitly.","Bound `workflow-config` with an explicit allowlist of concrete paths/globs for v1 and an explicit denylist/exclusion rule for everything else. Add a test that non-allowlisted config files are not discovered.","Tighten acceptance criteria so they pin legacy wrapper behavior: branch naming, dry-run/help, results location/format, revert semantics, and skill-only compatibility must remain unchanged or be intentionally versioned.","Add target-specific tests for `workflow-config`, schema migration compatibility, unsupported target rejection, and single-pass iteration limits so #2418 remains clearly out of scope.","State that v1 allows only one evaluation/improvement cycle per target per run, with no compounding follow-up attempts, budget carryover, or iterative retry heuristics; reserve all such behavior for #2418."],"questions_for_author":["What is the exact evaluator return schema and comparison algorithm that determines 'improved', 'unchanged', and 'regressed' across all target types?","For skill-only runs, will the existing `results.tsv` path and columns remain consumable by current tooling, or is a new canonical artifact being introduced? If new, what compatibility artifact is still written?","Which exact files or globs are in-scope for `workflow-config` in v1, and which adjacent config/policy/planning surfaces are explicitly out of scope?","Does v1 permit more than one modification/evaluation attempt per target in a single run, or must it be strictly single-pass to keep #2418 deferred?","Which two non-skill target types are definitively in v1, and if `workflow-config` is one of them, where are the corresponding discovery and evaluator tests?"}
+tokens used
+116,480
+{"verdict":"MAJOR","summary":"The plan leaves core implementation contracts underspecified in ways that can produce incompatible behavior, unsafe target selection, and ambiguous success criteria. The evaluator interface, results-schema migration path, and `workflow-config` scope are not concrete enough for a safe v1, and several acceptance/test statements are internally inconsistent.","issues_found":["The evaluator contract is not implementable as written. `evaluate_target()` returns only an illustrative shape (`{warnings, criticals, findings, score?}`), but the plan never defines required fields, severity semantics, ordering/ranking rules, what constitutes an 'improvement', whether evaluators must be deterministic, or how non-score evaluators are compared before/after. Without that, `rank candidates by evaluator warnings` and `if regresses or no improvement: revert` are ambiguous.","The plan says v1 should preserve today's skill behavior while supporting non-skill targets, but it does not specify whether the existing skill evaluator output must be adapted into the new contract or whether a wrapper/adapter layer will normalize legacy results. That is a blocking compatibility gap.","Results-schema migration/backward compatibility is not sufficiently specified. The plan proposes that durable results include `target_type` and `target_path` 'instead of skill-only naming', but also acknowledges downstream tooling may assume a `skill` column and leaves open whether to mutate the existing artifact or write a new one. That is not a deferred nice-to-have; it is a migration decision the implementation depends on.","The artifact contract is contradictory: pseudocode says 'append results.tsv/json row', acceptance criteria mention generalized durable results, risks/open questions suggest maybe a new JSONL/TSV beside the existing one, and the existing shell wrapper is tied to one `results.tsv` path. The plan never chooses one canonical v1 output format or compatibility strategy.","`workflow-config` is not safely bounded for v1. 'whitelisted config/planning surfaces' is too vague; no exact directories/files/globs are enumerated, and no exclusion rules are given. That creates scope creep and raises the risk of touching unrelated repo policy/config files under an autoresearch loop.","The accepted target set is internally inconsistent. Acceptance requires `skill` plus at least two of `agent`, `template`, `workflow-config`, but the TDD list only includes discovery tests for `agent` and `template`; there is no discovery/evaluator/keep-revert coverage specific to `workflow-config` even though it is called out as the highest-risk surface.","The file/test plan is incomplete for backward compatibility. If the shell wrapper must preserve current behavior, there should be an explicit test that legacy results consumers or legacy column names continue to work for skill-only runs, not just dry-run/help behavior.","Acceptance criteria do not define what 'preserves today’s skill-improvement behavior' means. There is no pinned contract for branch naming, results file location, revert semantics, commit behavior, or current CLI flags after wrapper integration, even though the resource summary identifies those as existing behavior.","The ranking logic is underspecified for multi-target evaluators. The plan says 'rank candidates by evaluator warnings', but does not define whether all target types expose comparable warning counts, how ties are handled, or whether ranking is target-type local vs cross-type global. This can materially change behavior and coverage.","The plan does not clearly fence off multi-iteration behavior from #2418 at the CLI/config level. It mentions `max_attempts` in pseudocode and 'iterate bounded attempts', but never states that v1 is single-pass-per-target only, or what attempt semantics are allowed before crossing into compounding/multi-iteration territory reserved for #2418.","The docs/standards artifact is expected to document the evaluator/plugin contract, but there is no acceptance criterion requiring exact registration mechanics (e.g. registry map, callable signature, exception contract, return schema version). Without that, 'future target types can be added without rewriting the runner' is not actually testable.","There is no explicit negative boundary for unsupported surfaces. The plan mentions `commands/` as an open question, but does not state that v1 must reject unsupported target types and unsupported paths with a stable error, which is necessary to keep #2418 and future expansions deferred."],"suggestions":["Define a mandatory evaluator interface for v1, including exact return fields, required severity levels, optional fields, deterministic comparison rules, and a canonical `is_improved(before, after)` algorithm. If legacy skill-eval differs, specify an adapter layer.","Choose one migration strategy now: either keep the existing `results.tsv` schema fully backward compatible by adding columns, or introduce a new canonical results artifact and keep the legacy skill TSV as a derived compatibility output. State file paths, columns, and ownership explicitly.","Bound `workflow-config` with an explicit allowlist of concrete paths/globs for v1 and an explicit denylist/exclusion rule for everything else. Add a test that non-allowlisted config files are not discovered.","Tighten acceptance criteria so they pin legacy wrapper behavior: branch naming, dry-run/help, results location/format, revert semantics, and skill-only compatibility must remain unchanged or be intentionally versioned.","Add target-specific tests for `workflow-config`, schema migration compatibility, unsupported target rejection, and single-pass iteration limits so #2418 remains clearly out of scope.","State that v1 allows only one evaluation/improvement cycle per target per run, with no compounding follow-up attempts, budget carryover, or iterative retry heuristics; reserve all such behavior for #2418."],"questions_for_author":["What is the exact evaluator return schema and comparison algorithm that determines 'improved', 'unchanged', and 'regressed' across all target types?","For skill-only runs, will the existing `results.tsv` path and columns remain consumable by current tooling, or is a new canonical artifact being introduced? If new, what compatibility artifact is still written?","Which exact files or globs are in-scope for `workflow-config` in v1, and which adjacent config/policy/planning surfaces are explicitly out of scope?","Does v1 permit more than one modification/evaluation attempt per target in a single run, or must it be strictly single-pass to keep #2418 deferred?","Which two non-skill target types are definitively in v1, and if `workflow-config` is one of them, where are the corresponding discovery and evaluator tests?"}

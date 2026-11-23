@@ -1,0 +1,260 @@
+# Plan for #2490: digitalmodel Quality Gates — coverage-gate structural blocker
+
+> **Status:** draft
+> **Complexity:** T1
+> **Date:** 2026-04-27
+> **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2490
+> **Review artifacts:** N/A — T1, adversarial review deferred to user approval gate
+
+---
+
+## Resource Intelligence Summary
+
+### Existing repo code
+
+- **Confirmed** `digitalmodel/src/digitalmodel/workflows/automation/quality_gates.py`
+  (SHA `2ae116d0a623f56087b77fe73ab197d5ceca9fa4`) — `_execute_coverage_gate()` lines 285-295
+  returns `GateStatus.ERROR` when `coverage.json` is absent:
+  ```python
+  if not coverage_file.exists():
+      return GateResult(
+          gate_name="coverage",
+          status=GateStatus.ERROR,
+          message=f"Coverage file not found: {coverage_file}",
+          errors=[f"Expected coverage report at {coverage_file}"],
+      )
+  ```
+  `_build_report()` in the same file maps any `GateStatus.ERROR` count → `overall_status = GateStatus.FAILURE`,
+  independent of `strict_mode`.
+
+- **Confirmed** `digitalmodel/.claude/quality-gates.yaml`
+  (SHA `4ef79a86e3c2f351e3c5ee265fbe82507909777b`) — line 10 tests-gate command:
+  ```yaml
+  command: "python -m pytest --maxfail=10 -p no:asyncio -p no:randomly -p no:sugar -p no:capture --no-header -q --tb=line"
+  ```
+  No `--cov` flag → `coverage.json` is **never written** on any CI run.
+
+- **Confirmed** `digitalmodel/.claude/quality-gates.yaml:97-100`:
+  ```yaml
+  ci_cd:
+    enabled: true
+    strict_mode: true
+  ```
+  With `strict_mode: true` the CI entry-point constructs
+  `QualityGateValidator(strict_mode=True)`, so WARNINGs also escalate to FAILURE.
+
+- **Confirmed** `digitalmodel/.claude/quality-gates.yaml:20-22` — coverage gate thresholds:
+  ```yaml
+  thresholds:
+    failure: 60.0   # Below 60% = failure
+    warning: 80.0   # 60-80% = warning, ≥80% = pass
+  ```
+
+- **Confirmed** `digitalmodel/.claude/quality-gates.yaml:24` — expected output path:
+  ```yaml
+  output_file: "coverage.json"
+  ```
+  Matches the `_execute_coverage_gate` default: `config.get("output_file", "coverage.json")`.
+
+- **Confirmed** `digitalmodel/pyproject.toml` (SHA `4d65fd466d9c8ba3a45c105415c732f2e5310f46`) —
+  `[tool.coverage.json]`:
+  ```toml
+  [tool.coverage.json]
+  output = "coverage.json"
+  ```
+  Output path is consistent with the gate's expected location.
+
+- **Confirmed** `digitalmodel/pyproject.toml` `[tool.pytest.ini_options]`:
+  ```toml
+  addopts = [
+      "--tb=short",
+      "--strict-markers",
+      "--strict-config",
+  ]
+  ```
+  **`--cov=src` is absent from `addopts`.**
+  The issue-prompt framing ("aligns with existing `pyproject.toml` config which already declares
+  `--cov=src` under `[tool.pytest.ini_options]`") is imprecise. However `[tool.coverage.run]`
+  has `source = ["src"]`, so adding `--cov=src` to the quality-gates command is still correct.
+
+- **Discrepancy** `digitalmodel/pyproject.toml` `[tool.coverage.report]`:
+  ```toml
+  fail_under = 80.0
+  ```
+  The issue prompt stated `fail_under = 0`; **actual value is `80.0`**. See Risks.
+
+- **Confirmed** `pyproject.toml` lists `pytest-cov>=4.1.0,<5.0.0` in
+  `[project.dependencies]` — `--cov` flag is available without extra installs.
+
+### Sibling issue
+
+- `#2441` — CLOSED `status:done` 2026-04-26 — pylife dep fix shipped at
+  digitalmodel commit `85875f36` (3 files: `pyproject.toml` +1 line, `uv.lock` +32,
+  `tests/fatigue/test_package_imports.py` +37). Post-fix: 245 tests collect, 0 errors.
+  This unblocked the `tests` gate; `#2490` is the explicit coverage-gate follow-up.
+
+### Gaps identified
+
+- No `--cov` instrumentation in quality-gates.yaml tests command →
+  `coverage.json` never generated → coverage gate always returns `GateStatus.ERROR` → overall FAILURE.
+
+### Evidence (embedded verification)
+
+**Issue statuses** (verified 2026-04-27 via mcp__github__issue_read):
+- `#2490` — OPEN — "chore(ci-health): digitalmodel Quality Gates coverage gate blocker (split from #2441)"
+- `#2441` — CLOSED (completed, 2026-04-26) — "chore(ci-health): digitalmodel Quality Gates — 60+ runs red since 2026-04-05 (pylife missing dep)"
+
+**File existence** (verified 2026-04-27 via mcp__github__get_file_contents):
+- EXISTS: `digitalmodel/src/digitalmodel/workflows/automation/quality_gates.py` (SHA `2ae116d0a623f56087b77fe73ab197d5ceca9fa4`)
+- EXISTS: `digitalmodel/.claude/quality-gates.yaml` (SHA `4ef79a86e3c2f351e3c5ee265fbe82507909777b`)
+- EXISTS: `digitalmodel/pyproject.toml` (SHA `4d65fd466d9c8ba3a45c105415c732f2e5310f46`)
+- MISSING (new — this plan creates): `digitalmodel/coverage.json` (generated at runtime post-fix)
+
+---
+
+## Artifact Map
+
+| Artifact | Path |
+|---|---|
+| This plan | `workspace-hub/docs/plans/2026-04-27-issue-2490-coverage-gate-fix.md` |
+| Primary change | `digitalmodel/.claude/quality-gates.yaml:10` |
+| Runtime output | `digitalmodel/coverage.json` (generated by pytest-cov, not committed) |
+
+---
+
+## Deliverable
+
+`digitalmodel/.claude/quality-gates.yaml` line 10 gains `--cov=src --cov-report=json`,
+causing every Quality Gates CI run to write `coverage.json` so the coverage gate
+reads real data instead of returning `GateStatus.ERROR`.
+
+---
+
+## Pseudocode
+
+T1 — trivial single-line config change; see Files to Change.
+
+---
+
+## Approach: Option 1 chosen; Option 2 rejected
+
+### Option 1 (chosen): add `--cov=src --cov-report=json` to tests-gate command
+
+**Current** (`quality-gates.yaml:10`):
+```yaml
+command: "python -m pytest --maxfail=10 -p no:asyncio -p no:randomly -p no:sugar -p no:capture --no-header -q --tb=line"
+```
+
+**After fix** (`quality-gates.yaml:10`):
+```yaml
+command: "python -m pytest --maxfail=10 -p no:asyncio -p no:randomly -p no:sugar -p no:capture --no-header -q --tb=line --cov=src --cov-report=json"
+```
+
+**Rationale:**
+
+1. **Fixes the root cause.** `coverage.json` is never generated because no coverage
+   instrumentation runs. Adding `--cov=src` activates pytest-cov; `--cov-report=json`
+   writes the file the coverage gate expects.
+
+2. **Config is already consistent.** `[tool.coverage.json] output = "coverage.json"`
+   in `pyproject.toml` matches `quality-gates.yaml:24 output_file: "coverage.json"`.
+   No secondary config changes needed.
+
+3. **Tests-gate handler is resilient to non-zero exit from coverage threshold.**
+   `_execute_tests_gate` parses `passed / failed / errors` counts and returns
+   `GateStatus.PASS` when `failed == 0 and errors == 0 and passed > 0`, regardless
+   of pytest exit code. If `[tool.coverage.report] fail_under = 80.0` causes pytest
+   to exit 2, the tests gate still passes provided tests themselves pass.
+
+4. **Minimal surface.** One line changed; no Python edits, no new files.
+
+5. **Transparent signal.** After the fix the coverage gate reports real coverage
+   data, making any future threshold gap immediately actionable.
+
+### Option 2 (rejected): make coverage gate non-strict / add skeleton JSON
+
+**Three variants and why each fails:**
+
+| Variant | Why rejected |
+|---|---|
+| Set `ci_cd.strict_mode: false` | Silences all gate WARNINGs globally; does not make coverage gate GREEN — gate still returns ERROR because `coverage.json` is still missing |
+| Remove coverage from strict gate list | Same issue — `coverage.json` is still never generated; ERROR persists; YAML doesn't even have a per-gate strict override — this would require a code change to `_build_report()` |
+| Add default `coverage.json` skeleton (e.g. `{"totals": {"percent_covered": 0.0}}`) | Deceptive artifact: 0% coverage would immediately fail at the 60% failure threshold, producing `GateStatus.FAILURE` instead of `GateStatus.ERROR` — no improvement in outcome, now misleading |
+
+None of Option 2's paths make the coverage gate GREEN. They change how it fails, not whether it fails. Option 1 is the correct minimal fix.
+
+---
+
+## Files to Change
+
+| Action | Path | Reason |
+|---|---|---|
+| Modify | `digitalmodel/.claude/quality-gates.yaml` | Add `--cov=src --cov-report=json` to tests-gate command (line 10) |
+
+No changes to `quality_gates.py` — existing logic is correct; structural gap is entirely in the YAML config.
+
+---
+
+## TDD Test List (red → green sequence)
+
+| Step | Gate | What to verify | Expected outcome |
+|---|---|---|---|
+| (a) Red — current state | Coverage | Inspect latest Quality Gates run on digitalmodel main; check coverage gate result | `GateStatus.ERROR`: "Coverage file not found: .../coverage.json" |
+| (b) Apply fix | — | Modify `quality-gates.yaml:10`; push to digitalmodel main | Commit recorded; Quality Gates CI triggered |
+| (c) Green — tests gate | Tests | Tests command now includes `--cov=src --cov-report=json`; `coverage.json` written | Tests gate: `GateStatus.PASS`; `coverage.json` present at project root |
+| (d) Green — coverage gate | Coverage | Coverage gate reads `coverage.json`, evaluates against yaml thresholds | Gate returns PASS, WARNING, or FAILURE based on real data — **not ERROR** |
+| (e) Acceptance check | Overall | `gh run list --repo vamseeachanta/digitalmodel --workflow "Quality Gates" --branch main --status success --limit 1` | Returns ≥ 1 run if actual coverage ≥ 80%; otherwise see Risk 1 |
+
+---
+
+## Acceptance Criteria
+
+- [ ] `coverage.json` is written at `digitalmodel/` project root on every Quality Gates CI run
+- [ ] Coverage gate no longer returns `GateStatus.ERROR` — status is PASS, WARNING, or FAILURE
+  based on actual coverage data (not a file-not-found structural error)
+- [ ] `reports/quality_gates_results.json` shows `"coverage"` gate with a data-driven status
+- [ ] `gh run list --repo vamseeachanta/digitalmodel --workflow "Quality Gates" --branch main --status success --limit 1`
+  returns at least one run *(contingent on actual coverage ≥ 80%; see Risk 1)*
+
+---
+
+## Adversarial Review Summary
+
+_Pre-review draft — adversarial review not yet run (T1 complexity; user approval gate first)._
+
+---
+
+## Risks and Open Questions
+
+**Risk 1 — actual coverage < 80% → workflow may still fail after structural fix.**
+With `ci_cd.strict_mode: true` (quality-gates.yaml:100) and `warning_threshold: 80.0`
+(quality-gates.yaml:22), if actual coverage lands in the 60–80% band the coverage gate
+returns `GateStatus.WARNING`, which `_build_report()` escalates to `GateStatus.FAILURE`
+under strict mode. Option 1 unblocks the **structural ERROR** (file-not-found); it does
+not guarantee the workflow passes if coverage is below warning threshold. Monitor the first
+post-fix Quality Gates run and file a follow-up if coverage is 60–80%.
+
+**Risk 2 — `fail_under = 80.0` discrepancy vs. issue prompt.**
+`[tool.coverage.report] fail_under = 80.0` (verified from `pyproject.toml`) — the issue
+prompt stated `fail_under = 0` which is incorrect. With the actual value of 80.0, pytest-cov
+will exit with code 2 if coverage < 80%. This does NOT affect the tests gate because
+`_execute_tests_gate` parses passed/failed/error counts and returns PASS when
+`failed == 0 and errors == 0 and passed > 0`, regardless of exit code. No action needed,
+but the threshold is higher than the prompt implied.
+
+**Risk 3 — `--cov-report=json` output path.**
+`[tool.coverage.json] output = "coverage.json"` in `pyproject.toml` and
+`quality-gates.yaml:24 output_file: "coverage.json"` both reference project root.
+If the CI runner changes working directory, the paths may diverge. Verify first post-fix
+run that `coverage.json` lands at `$PROJECT_ROOT/coverage.json`.
+
+**Out of scope (per issue):**
+- Increasing `fail_under` or adjusting coverage gate thresholds
+- Re-opening #2441 or modifying the pylife fix
+
+---
+
+## Complexity: T1
+
+Single-line config change in `.claude/quality-gates.yaml`. No new files created,
+no Python logic modified, no TDD test suite required — verification is CI-run observation.

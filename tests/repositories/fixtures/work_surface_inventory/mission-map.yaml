@@ -1,0 +1,16 @@
+schema_version: 0.2
+repos:
+  - repo: alpha
+    tier: engineering-ip
+    mission: Alpha code
+    status: active
+    profile: code
+    sensitivity: public
+    mcp_required: true
+  - repo: notes
+    tier: knowledge-wiki
+    mission: Private notes
+    status: active
+    profile: knowledge
+    sensitivity: client-confidential
+    mcp_required: false

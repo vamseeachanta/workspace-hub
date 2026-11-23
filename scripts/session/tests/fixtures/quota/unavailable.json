@@ -1,0 +1,6 @@
+{
+  "timestamp": "2026-03-12T05:00:00Z",
+  "agents": [
+    {"provider": "claude", "week_pct": null, "pct_remaining": null, "source": "unavailable"}
+  ]
+}

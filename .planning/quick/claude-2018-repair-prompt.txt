@@ -1,0 +1,25 @@
+Revise the plan file docs/plans/2026-04-13-issue-2018-agent-bypass-resistance-technical-gates.md to address the latest Codex re-review blockers.
+
+Constraints:
+- Edit only this plan file unless a tiny necessary README status note change is absolutely required. Prefer no other file edits.
+- Do not implement code; improve the plan itself so it is less meta and more approval-ready.
+- Preserve the current draft status.
+- Keep the existing substantive retrieval already added.
+
+Main required fixes from latest Codex re-review:
+1. The plan still needs to be less meta and more implementation-ready.
+2. Rollback must be resolved more concretely. If not in scope here, explicitly delegate it to a mandatory child issue with a named placeholder and make clear #2018 cannot close until that child closes.
+3. Provider bootstrap/prefill coverage is still too abstract. Retrieve and cite actual in-repo/provider bootstrap surfaces already present: CLAUDE.md, GEMINI.md, .codex/config.toml, and any repo-local Hermes-facing entry surface if one exists; if Hermes uses shared repo docs only, state that explicitly.
+4. Acceptance criteria and files-to-change must stop mixing plan-maintenance with implementation scope.
+5. Add explicit owner/closure dependency language to the sibling/boundary table.
+6. Add missing concrete test coverage for manual git/manual shell path, cross-review hook behavior, compliance dashboard signal behavior, and provider bootstrap behavior.
+7. Make the CI/PR vs direct-push scope explicit so workflow responsibilities are unambiguous.
+
+Specific edits to make:
+- Add a short section named "Implementation Decision" or similar that states the exact current decision for rollback handling.
+- Add explicit closure dependency wording tying #2018 to the rollback child/owner issue.
+- Make the provider bootstrap section concrete and not aspirational.
+- Tighten any wording that still sounds like a plan-to-build-a-plan.
+- Remove or reduce review-summary text that is only historical if it weakens approval-readiness.
+
+After editing, summarize exactly what you changed in 5-10 bullets and stop. Do not commit anything.

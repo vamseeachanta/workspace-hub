@@ -1,0 +1,278 @@
+diff --git a/.claude/hooks/session-governor-check.sh b/.claude/hooks/session-governor-check.sh
+new file mode 100644
+index 000000000..dc7e1546f
+--- /dev/null
++++ b/.claude/hooks/session-governor-check.sh
+@@ -0,0 +1,77 @@
++#!/usr/bin/env bash
++# session-governor-check.sh - PreToolUse hook for session governance enforcement
++# Integrates session_governor.py check_session_limits() into Claude Code hooks.
++# Issue: #1839 Phase 2b - Wire runtime enforcement into hooks
++#
++# Maintains a per-day tool call counter in .claude/state/session-governor/.
++# Below 80% of the governance ceiling (160/200), exits silently (fast path).
++# At 80%+, delegates to session_governor.py for authoritative verdict.
++# At the ceiling, emits a {"decision":"block"} to prevent further tool calls.
++#
++# Protocol: stdout JSON for Claude context, stderr for user terminal.
++# Follows {"decision":"block","reason":"..."} convention (cross-review-gate.sh).
++#
++# Gaps documented in SESSION-GOVERNANCE.md:
++#   - consecutive-error tracking not yet wired (passes 0)
++#   - counter resets daily, not per-session (no reliable session ID in hook env)
++
++set -uo pipefail
++
++SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" 2>/dev/null && pwd)"
++WS="${WORKSPACE_HUB:-$(cd "$SCRIPT_DIR/../.." 2>/dev/null && pwd)}"
++STATE_DIR="$WS/.claude/state/session-governor"
++COUNTER_FILE="$STATE_DIR/tool-call-count"
++DATE_FILE="$STATE_DIR/counter-date"
++GOVERNOR="$WS/scripts/workflow/session_governor.py"
++
++# 80% of 200 threshold from governance-checkpoints.yaml
++FAST_PATH_CEILING=160
++
++mkdir -p "$STATE_DIR" 2>/dev/null
++
++# -- Reset counter on new day --
++TODAY=$(date +%Y%m%d)
++if [[ -f "$DATE_FILE" ]]; then
++  STORED_DATE=$(cat "$DATE_FILE" 2>/dev/null) || STORED_DATE=""
++  if [[ "$STORED_DATE" != "$TODAY" ]]; then
++    echo "0" > "$COUNTER_FILE"
++    echo "$TODAY" > "$DATE_FILE"
++  fi
++else
++  echo "$TODAY" > "$DATE_FILE"
++fi
++
++# -- Increment counter --
++COUNT=0
++if [[ -f "$COUNTER_FILE" ]]; then
++  COUNT=$(cat "$COUNTER_FILE" 2>/dev/null) || COUNT=0
++fi
++COUNT=$((COUNT + 1))
++echo "$COUNT" > "$COUNTER_FILE"
++
++# -- Fast path: below warning zone --
++if [[ $COUNT -lt $FAST_PATH_CEILING ]]; then
++  exit 0
++fi
++
++# -- Delegate to session governor for authoritative verdict --
++# consecutive-errors: 0 until error-tracking pipeline is wired (#1839 Phase 3)
++GOV_EXIT=0
++uv run "$GOVERNOR" --check-limits --tool-calls "$COUNT" --consecutive-errors 0 > /dev/null 2>&1 || GOV_EXIT=$?
++
++case $GOV_EXIT in
++  2) # STOP - governance ceiling reached, block further tool calls
++    echo "[session-governor] HARD STOP: ${COUNT}/200 tool calls - governance ceiling reached." >&2
++    echo "[session-governor] Commit current work and end the session." >&2
++    printf '{"decision":"block","reason":"Session governance HARD STOP: %d tool calls reached the 200-call ceiling (governance-checkpoints.yaml). Commit current work and end the session. Run: uv run scripts/workflow/session_governor.py --check-limits --tool-calls %d"}\n' "$COUNT" "$COUNT"
++    exit 0
++    ;;
++  1) # PAUSE - warning zone, allow but warn
++    echo "[session-governor] WARNING: ${COUNT}/200 tool calls - approaching governance ceiling." >&2
++    echo "[session-governor] Consider wrapping up current work." >&2
++    exit 0
++    ;;
++  *) # CONTINUE or governor unavailable - allow silently
++    exit 0
++    ;;
++esac
+diff --git a/.claude/settings.json b/.claude/settings.json
+index 118c47630..73be25a6b 100644
+--- a/.claude/settings.json
++++ b/.claude/settings.json
+@@ -9,6 +9,16 @@
+   },
+   "hooks": {
+     "PreToolUse": [
++      {
++        "matcher": "Bash|Read|Write|Edit|MultiEdit|Glob|Grep|Agent|Task",
++        "hooks": [
++          {
++            "type": "command",
++            "command": "bash .claude/hooks/session-governor-check.sh",
++            "timeout": 10
++          }
++        ]
++      },
+       {
+         "matcher": "Write|Edit|MultiEdit",
+         "hooks": [
+@@ -239,12 +249,12 @@
+   },
+   "spinnerTipsOverride": {
+     "tips": [
+-      "Run /context to check your budget — /compact at 50%",
++      "Run /context to check your budget \u2014 /compact at 50%",
+       "Run /simplify after changes to catch duplication",
+       "Use /effort low for quick lookups, /effort high for planning",
+       "Say 'use subagents' to offload heavy work from main context",
+       "Run /diff to review your changes before committing",
+-      "Use /branch before a risky approach — explore freely",
++      "Use /branch before a risky approach \u2014 explore freely",
+       "Try /security-review before pushing a PR",
+       "uv run scripts/productivity/daily-learning.py for today's tips"
+     ],
+diff --git a/docs/governance/SESSION-GOVERNANCE.md b/docs/governance/SESSION-GOVERNANCE.md
+index 08e8bd3cc..23b555991 100644
+--- a/docs/governance/SESSION-GOVERNANCE.md
++++ b/docs/governance/SESSION-GOVERNANCE.md
+@@ -76,13 +76,39 @@ Tests: 11 new tests in `tests/work-queue/test_session_governor.py` (25 total).
+ 
+ Tests: 7 new tests in `tests/work-queue/test_queue_refresh.py` (23 total).
+ 
+-## What Remains (Phases 2b-4)
++## What Was Implemented (Phase 2b) — 2026-04-09
+ 
+-### Phase 2b: Hook Wiring
+-- Wire `check_session_limits` into Claude Code PreToolUse hook (auto-pause at 200 calls)
+-- Wire `error-loop-breaker` into session signal analysis pipeline
+-- Promote `session-close` to enforced after testing
+-- Promote `pre-push-review` to strict mode (currently warning)
++### Hook Integration: `session-governor-check.sh`
++
++**File**: `.claude/hooks/session-governor-check.sh`
++
++A PreToolUse hook that wires `check_session_limits()` into the Claude Code session lifecycle.
++Registered in `.claude/settings.json` as the first PreToolUse hook, matching all tool types.
++
++**Architecture:**
++- Maintains a per-day tool call counter in `.claude/state/session-governor/tool-call-count`
++- **Fast path** (< 160 calls): pure bash counter increment, exits silently (~0ms overhead)
++- **Warning zone** (160-199 calls): delegates to `session_governor.py --check-limits`, emits stderr warning
++- **Ceiling** (>= 200 calls): delegates to governor, emits `{"decision":"block"}` on stdout to block further tool calls
++
++**Protocol:** follows the repo convention from `cross-review-gate.sh` — stdout JSON for Claude context, stderr for user terminal. Always exits 0; blocking is via `{"decision":"block"}`.
++
++**Tests:** 8 new tests in `tests/work-queue/test_session_governor.py` (33 total), covering:
++- Hook file existence and executable bit
++- Hook registration in settings.json
++- Governor exit code mapping (0=CONTINUE, 1=PAUSE, 2=STOP)
++- Fast-path threshold alignment with governance config
++- CLI exit code verification via subprocess
++
++### Known Gaps (documented, not blocked)
++
++| Gap | Status | Resolution Path |
++|-----|--------|-----------------|
++| Consecutive error tracking | Passes 0 to governor | Wire into session signal pipeline (Phase 3) |
++| Counter resets daily, not per-session | No reliable session ID in hook env | Awaits Claude Code session ID exposure |
++| Existing `tool-call-ceiling.sh` (PostToolUse) uses 500 ceiling | Redundant safety net | Consider aligning to 200 or removing |
++
++## What Remains (Phases 3-4)
+ 
+ ### Phase 3: Restore Lost Infrastructure
+ - Rebuild `session-start-routine` skill
+diff --git a/tests/work-queue/test_session_governor.py b/tests/work-queue/test_session_governor.py
+index 4942fbadb..dea6768cc 100644
+--- a/tests/work-queue/test_session_governor.py
++++ b/tests/work-queue/test_session_governor.py
+@@ -295,3 +295,104 @@ class TestCheckSessionLimits:
+         config = load_checkpoints(data)
+         results = check_session_limits(config, tool_call_count=999)
+         assert results == []
++
++
++# ── Hook integration tests (Phase 2b) ────────────────────────────
++
++
++class TestHookIntegration:
++    """Tests for the session-governor-check.sh hook wiring behavior.
++
++    These tests verify:
++    - The hook script exists and is executable
++    - The governor produces correct exit codes for hook consumption
++    - The counter-based fast-path logic aligns with governor thresholds
++    - The JSON block protocol matches repo convention
++    """
++
++    def test_hook_script_exists_and_executable(self):
++        """The hook script must exist at the expected path and be executable."""
++        hook_path = os.path.join(REPO_ROOT, ".claude", "hooks", "session-governor-check.sh")
++        assert os.path.isfile(hook_path), f"Hook not found: {hook_path}"
++        assert os.access(hook_path, os.X_OK), f"Hook not executable: {hook_path}"
++
++    def test_hook_registered_in_settings(self):
++        """The hook must be registered in .claude/settings.json PreToolUse."""
++        import json
++        settings_path = os.path.join(REPO_ROOT, ".claude", "settings.json")
++        with open(settings_path) as f:
++            settings = json.load(f)
++        pre_tool_hooks = settings.get("hooks", {}).get("PreToolUse", [])
++        found = any(
++            "session-governor-check.sh" in h.get("command", "")
++            for entry in pre_tool_hooks
++            for h in entry.get("hooks", [])
++        )
++        assert found, "session-governor-check.sh not found in PreToolUse hooks"
++
++    def test_governor_exit_code_continue(self, runtime_config: CheckpointConfig):
++        """Governor exit 0 (CONTINUE) when well below thresholds."""
++        results = check_session_limits(runtime_config, tool_call_count=50, consecutive_error_count=0)
++        verdict = session_limits_verdict(results)
++        assert verdict == SessionVerdict.CONTINUE
++        # Hook maps exit 0 → silent allow
++        assert verdict.value == "CONTINUE"
++
++    def test_governor_exit_code_pause(self, runtime_config: CheckpointConfig):
++        """Governor exit 1 (PAUSE) at 80-99% of threshold."""
++        results = check_session_limits(runtime_config, tool_call_count=170, consecutive_error_count=0)
++        verdict = session_limits_verdict(results)
++        assert verdict == SessionVerdict.PAUSE
++        # Hook maps exit 1 → warn on stderr, allow tool call
++
++    def test_governor_exit_code_stop(self, runtime_config: CheckpointConfig):
++        """Governor exit 2 (STOP) at threshold — hook should emit block decision."""
++        results = check_session_limits(runtime_config, tool_call_count=200, consecutive_error_count=0)
++        verdict = session_limits_verdict(results)
++        assert verdict == SessionVerdict.STOP
++        # Hook maps exit 2 → {"decision":"block"} on stdout
++
++    def test_fast_path_ceiling_aligns_with_threshold(self, runtime_config: CheckpointConfig):
++        """Hook fast-path ceiling (160) should be 80% of the 200-call threshold."""
++        ceiling_cp = next(
++            c for c in runtime_config.checkpoints if c.id == "tool-call-ceiling"
++        )
++        fast_path = int(ceiling_cp.threshold * 0.8)
++        assert fast_path == 160, f"Expected 160, got {fast_path}"
++
++    def test_block_json_format(self, runtime_config: CheckpointConfig):
++        """format_limits_report produces valid JSON consumable by hooks."""
++        from session_governor import format_limits_report
++        results = check_session_limits(runtime_config, tool_call_count=200)
++        report = format_limits_report(results)
++        import json
++        parsed = json.loads(report)
++        assert parsed["verdict"] == "STOP"
++        assert isinstance(parsed["checks"], list)
++        assert len(parsed["checks"]) > 0
++
++    def test_governor_cli_exit_codes(self):
++        """Verify the CLI returns correct exit codes for hook consumption."""
++        import subprocess
++        governor = os.path.join(REPO_ROOT, "scripts", "workflow", "session_governor.py")
++
++        # CONTINUE (exit 0)
++        result = subprocess.run(
++            ["uv", "run", governor, "--check-limits", "--tool-calls", "50"],
++            capture_output=True, text=True, timeout=30,
++        )
++        assert result.returncode == 0, f"Expected 0, got {result.returncode}"
++
++        # PAUSE (exit 1)
++        result = subprocess.run(
++            ["uv", "run", governor, "--check-limits", "--tool-calls", "170"],
++            capture_output=True, text=True, timeout=30,
++        )
++        assert result.returncode == 1, f"Expected 1, got {result.returncode}"
++
++        # STOP (exit 2)
++        result = subprocess.run(
++            ["uv", "run", governor, "--check-limits", "--tool-calls", "200"],
++            capture_output=True, text=True, timeout=30,
++        )
++        assert result.returncode == 2, f"Expected 2, got {result.returncode}"

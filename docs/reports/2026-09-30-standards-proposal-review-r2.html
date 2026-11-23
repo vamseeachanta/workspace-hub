@@ -1,0 +1,392 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Standards proposal — round 2 review</title><style>body{font:16px/1.6 system-ui,sans-serif;max-width:1100px;margin:28px auto;padding:0 20px;color:#203040}h1{font-size:25px}h2{font-size:20px}h3{font-size:17px}table{border-collapse:collapse;width:100%;font-size:14px}th,td{border:1px solid #b9c7d0;padding:8px;text-align:left;vertical-align:top}code{overflow-wrap:anywhere}a{color:#075e7b}.notice{border-left:4px solid #075e7b;padding:12px;background:#eef4f7}caption{caption-side:bottom;text-align:left} @media print{body{font-size:11pt;margin:0}h1,h2,h3{break-after:avoid}tr{break-inside:avoid}}</style></head><body><div class="notice">Round 2 review copy. Eight owner decisions are recorded; shared-instruction adoption is not established. Select text, add a comment, then Save comments beside this report or use the Downloads fallback.</div><h1 id="section-1">Latest review checkpoint — 30 September 2026</h1>
+<p>All eight round-1 decisions are recorded. The saved export in the review folder matches the Downloads copy byte for byte. No newer decision or proposal-comment export was found in those inspected locations; browser-only unsaved comments are not represented as reviewed. No decision is inferred from a recommended option.</p>
+<p>This edition refreshes the stale September 29 review page using the complementary standard in PR 3929 and the reporting draft P3. The underlying companion PR has not been edited by this page refresh.</p>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Current review position</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Report formatting</td>
+<td><a href="https://github.com/vamseeachanta/workspace-hub/blob/9ad8d7fb6cf93f45d65c76d967b753febd71b590/docs/standards/engineering-reporting-conventions-proposed.html">P3 reporting draft</a>, still a review draft; PR 3926 remains open.</td>
+</tr>
+<tr>
+<td>Workflow and communication</td>
+<td><a href="https://github.com/vamseeachanta/workspace-hub/pull/3929">PR 3929</a>, phase 1 prepared; pilot and rollout are not established.</td>
+</tr>
+<tr>
+<td>Shared review tool</td>
+<td><a href="https://github.com/vamseeachanta/workspace-hub/pull/3928">PR 3928</a>; tool choice is recorded, operational coverage still requires verification.</td>
+</tr>
+<tr>
+<td>Existing decisions</td>
+<td>S01–S08 below are recorded decisions, not fresh approval requests.</td>
+</tr>
+<tr>
+<td>Publication</td>
+<td>Main publication remains incomplete. The last recorded blocker was the fleet-snapshot identifier gate; this refresh does not bypass it.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="section-2">What needs human review now</h2>
+<p>Review the P3 additions and the scoped emphasis reconciliation in Section 4. Add corrections by selecting text and saving comments. No repeat decision is requested for S01–S08. The concrete pilot package and deployment targets will be prepared before any further implementation approval is requested; an empty comment file is not approval.</p>
+<p>Reload this page before commenting. Round 2 uses a new comment-storage key and exports <code>standards-proposal-comments-r2.json</code>; do not load round-1 comments into this revision without checking their quoted passages. The original page and saved round-1 decisions are preserved.</p>
+<h1 id="section-3">Review, Report and Communication Standard</h1>
+<p><strong>Status:</strong> the owner's decisions are recorded (decision board round 1, 2026-09-29: S01-S08, all as recommended). The text is under final review in <a href="https://github.com/vamseeachanta/workspace-hub/pull/3929">PR 3929</a>.
+It is not yet adopted in the shared instructions; adoption follows the phased rollout in Section 6 (phase 1 is this file).
+<strong>Companion:</strong> report format is governed by the reporting draft P3 (<a href="https://github.com/vamseeachanta/workspace-hub/issues/3925">issue 3925</a>); this file governs review workflow and communication style.</p>
+<h1 id="section-4">1. Summary</h1>
+<ul>
+<li>This standard consolidates local HTML review and cross-channel communication into one ecosystem standard. The owner decisions are recorded in Section 7; adoption follows the phased rollout in Section 6.</li>
+<li><a href="https://github.com/vamseeachanta/workspace-hub/issues/3925">Reporting standard #3925</a>, revision P3 in <a href="https://github.com/vamseeachanta/workspace-hub/pull/3926">PR #3926</a>, remains the report-format authority. This standard adds workflow and communication rules without reproducing its formal report structure.</li>
+<li>Reports, plans, decision gates and human-review packs use local HTML for owner review. Harness, skill and rule files remain Markdown.</li>
+<li>The review loop uses selected text, comments and saved JSON. Each round remains beside its report; private content remains in its owning private repository.</li>
+<li><code>tools/html-review/make_review_copy.py</code> is the proposed canonical review-copy tool. Decision boards retain cards and Save/Load; peer copies operate offline.</li>
+<li>Communication leads with verified state, material limitations and the next action. Technical conclusions identify the governing case, criterion and comparator.</li>
+<li>Adoption will proceed through reconciliation, a bounded pilot and verified rollout. Existing reports will not undergo a mass rewrite.</li>
+</ul>
+<h1 id="section-5">2. Scope and authority</h1>
+<p>The proposed standard covers human-facing engineering and operational work across the repository ecosystem, including public reusable tooling and private project records. It applies to Claude, Codex, Hermes and other agents operating under the shared instructions. Actual coverage requires inspection; this standard does not establish installation on any repository, machine or session.</p>
+<p>The shared instructions retain authority over engineering integrity, authorization, data handling and source rights. Standard B delegates report formatting to P3. Later owner decisions take precedence within their stated scope; presentation changes do not independently authorize engineering changes or publication.</p>
+<table>
+<thead>
+<tr>
+<th>Existing item</th>
+<th>Proposed disposition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://github.com/vamseeachanta/workspace-hub/issues/3925">#3925</a> / <a href="https://github.com/vamseeachanta/workspace-hub/pull/3926">PR #3926</a></td>
+<td><strong>Kept</strong> as report-format authority. Accepted report-specific clarifications will be incorporated there.</td>
+</tr>
+<tr>
+<td><code>session-communication-conventions.md</code></td>
+<td><strong>Merged into Standard C</strong>; its former location will become a pointer.</td>
+</tr>
+<tr>
+<td><a href="https://github.com/vamseeachanta/workspace-hub/issues/3920">#3920</a> / <a href="https://github.com/vamseeachanta/workspace-hub/pull/3928">PR #3928</a></td>
+<td><strong>Kept</strong> as the review-tool implementation track; workflow rules will point to this standard.</td>
+</tr>
+<tr>
+<td><a href="https://github.com/vamseeachanta/workspace-hub/issues/3892">#3892</a></td>
+<td>Human-review requirements <strong>merged into Standard A</strong>, with P3 retaining engineering acceptance rules. Implementation work will remain separately tracked.</td>
+</tr>
+<tr>
+<td><a href="https://github.com/vamseeachanta/workspace-hub/pull/3891">PR #3891</a></td>
+<td>Physical-realism requirement <strong>merged into Standard A</strong>; the proposed rule will become a thin pointer after approval.</td>
+</tr>
+</tbody>
+</table>
+<p>Older F-labelled report layouts and live-artifact synchronization instructions are superseded by P3 and local-only review. Existing generators remain usable; this standard does not select a new report renderer.</p>
+<p>The owner’s “stick with facts” governs presentation. Requests to simplify process reduce repeated narration, not necessary engineering evidence or existing data obligations.</p>
+<h1 id="section-6">3. Standard A: Review and report work in local HTML</h1>
+<h2 id="section-7">3.1 When an HTML page is required</h2>
+<p>Reports submitted for review, substantive plans, decision gates and human-review packs require a local HTML page. A batch of owner decisions belongs on a decision board; chat identifies the page and new cards. A single trivial clarification may remain in chat.</p>
+<p>Every reviewable engineering result requires human review before acceptance or issue. A review copy is not an issued deliverable, and saving comments is not acceptance.</p>
+<p>Harness, skill and rule files stay Markdown. Their human-facing approval package may use HTML without replacing the maintained source.</p>
+<h2 id="section-8">3.2 Page types</h2>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Required content and behaviour</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Report</td>
+<td>P3 format, document status and revision, engineering evidence and a commentable review copy.</td>
+</tr>
+<tr>
+<td>Decision board</td>
+<td>Cards containing the question, options, sources, consequences, recommendation and note field. The recommended option has a dashed outline and textual label. Save exports JSON; Load restores it.</td>
+</tr>
+<tr>
+<td>Human-review pack</td>
+<td>Evidence screenshots beside physical expectations or limits, a check table, missing evidence, review focus, preparer recommendation and reviewer decision.</td>
+</tr>
+<tr>
+<td>Peer or client review copy</td>
+<td>Stand-alone offline HTML, audience-permitted content, comment layer and a visible how-to banner.</td>
+</tr>
+</tbody>
+</table>
+<p>Human-review checks state comparator class, tolerance fixed before the assessed run, observed value and plausibility verdict: <code>implausible</code>, <code>not_implausible</code> or <code>not_evaluated</code>. Check methods require qualification against cases with established expected behaviour.</p>
+<p>When realism is unresolved, the page states “Ready for human review — mechanism not established” and links from the decision board. The report retains the affected limitation and describes the cause as not established. Unresolved mechanisms are not presented as established explanations; material adverse evidence is not suppressed.</p>
+<p>Recommendations, default selections and plausibility verdicts do not establish owner acceptance or physical validation.</p>
+<h2 id="section-9">3.3 The review loop</h2>
+<ol>
+<li>The owner opens the local copy, selects text or a section, adds comments, saves JSON and says “review.”</li>
+<li>The agent checks the report folder first, then Downloads for fallback exports. The newest applicable JSON is identified against the report identity, revision and export metadata; file modification time alone does not establish applicability.</li>
+<li>Each comment is listed with its section and quoted passage. Decision-board deviations from recommendations and all instructional notes are identified.</li>
+<li>Each comment receives a disposition: incorporated, deferred with reason, or requiring a decision. Authorized edits proceed; changes to engineering meaning or scope require matching authority.</li>
+<li>The report and review copy are regenerated and re-verified. The response records the change or remaining decision for every comment.</li>
+<li>The saved JSON is read back. Review rounds remain as <code>-rN.json</code> beside the report, in the owning private repository when their content is private.</li>
+</ol>
+<p>A revised page carries its revision and requires reload before further review. Storage keys change between rounds. Decided boards remain preserved; new decisions use a new round.</p>
+<p>Stable comment/result identifiers, quoted text, section mapping and report digest bind records to the reviewed artifact. Stale or ambiguous comments require reconciliation rather than silent application.</p>
+<h2 id="section-10">3.4 Tooling</h2>
+<p><code>tools/html-review/make_review_copy.py</code> is the proposed canonical injector under <a href="https://github.com/vamseeachanta/workspace-hub/pull/3928">PR #3928</a>. Earlier project prototypes are superseded as the tool source. Its source HTML remains unchanged; the generated copy receives the comment layer.</p>
+<p>The decision-board pattern remains <code>cards.py</code> → <code>make.py</code> → local HTML with Save/Load. The comment layer supplements per-card choices and notes. No new renderer or live-artifact synchronization is introduced.</p>
+<p>Stand-alone peer copies inline required libraries and assets, use no external scripts or analytics, and retain legible equations offline. Their banner explains:</p>
+<ul>
+<li>Open the saved file from disk in Edge or Chrome; preview panes can block scripts.</li>
+<li>Select text, add a comment and save.</li>
+<li>Choose the report folder when prompted; browser refusal triggers a download fallback.</li>
+<li>Return the JSON and reload a revised page before continuing.</li>
+</ul>
+<p>The generic tutorials <code>demo/how-to-comment.gif</code> and <code>demo/how-to-comment-voice.gif</code> support the banner. Voice typing uses Win+H where available; the illustrated voice toolbar is not evidence of native-dialog testing.</p>
+<p>Browser storage is a convenience cache. Durable review evidence is the saved, verified JSON.</p>
+<h2 id="section-11">3.5 Location and privacy</h2>
+<p>Pages, supporting evidence and round-specific comments belong in the target report’s authorized location. Downloads is a transfer fallback; an applicable export is preserved beside the report after identity and content checks.</p>
+<p>Public <code>workspace-hub</code> contains generic standards, reusable tools and synthetic demonstrations. Public content contains no client names, job numbers, private quotations or client-derived results. Renaming a private report does not make it publishable.</p>
+<p>Private reports, project plans, handoffs, review comments and supplied particulars remain in the owning private repository. Authorized client editions may carry required document identifiers; hosted copies follow the existing redaction and destination rules.</p>
+<p>Publication requires authority for the destination and content. Local save, commit, publication, delivery and acknowledgement are distinct states. Licensed standards originals remain at their licensed locations.</p>
+<h2 id="section-12">3.6 Verification before handing a page to the owner</h2>
+<p>Verification covers the actual delivered edition:</p>
+<ul>
+<li>Inspect rendered output using a headless screenshot or DOM probe, with visual checks where layout requires them.</li>
+<li>Check balanced HTML, readable figures and equations, resolvable links, and absence of broken scripts.</li>
+<li>Check that report narrative contains no opaque internal markers; essential locators remain in P3’s audience-permitted internal references.</li>
+<li>Smoke-test selection, comment creation and editing, Save, Load and JSON read-back against the correct revision.</li>
+<li>Check offline operation, narrow-screen and print behaviour where applicable, and confirm public examples contain no private content.</li>
+</ul>
+<p>This refreshed edition has source, link and script-syntax checks only; browser interaction and rendered/print verification remain unestablished. A skipped browser test is not a pass. The supplied test description establishes download-fallback coverage, not native folder-permission or voice-input verification. Missing verification is reported before handover.</p>
+<h1 id="section-13">4. Standard B: Report format</h1>
+<p>P3 governs formal structure, register, captions, precision, references, uncertainty and document control. Only the following clarifications will be proposed for reconciliation into <a href="https://github.com/vamseeachanta/workspace-hub/issues/3925">#3925</a>.</p>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Rule</th>
+<th>Basis</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Emphasis</td>
+<td>P3 formal reports use regular-weight body text, findings and bullet labels; semantic headings and table headers retain hierarchy. Outside formal reports, S05 retains restrained optional bold unless directly overridden.</td>
+<td>Later report comments, reconciled with S05 within their respective scopes.</td>
+</tr>
+<tr>
+<td>Introductions</td>
+<td>Section openings name their subject and content without process narration.</td>
+<td>“The purpose, scope and status of the project are presented in this section.”</td>
+</tr>
+<tr>
+<td>Audience traceability</td>
+<td>Client prose carries necessary engineering evidence; operational lineage stays in restricted records, with essential references retained.</td>
+<td>“too much traceability for client”</td>
+</tr>
+<tr>
+<td>Limitations</td>
+<td>Use one or two quantified sentences where support exists; identify the missing basis when uncertainty cannot be bounded.</td>
+<td>“simplify with 1-2 sentences with quantification which is mentioned to be uncertain”</td>
+</tr>
+<tr>
+<td>Review packaging</td>
+<td>The review copy includes the banner, offline assets and revision-bound round records specified in Standard A.</td>
+<td>Local-review direction and tool README</td>
+</tr>
+<tr>
+<td>Physical realism</td>
+<td>Unresolved mechanisms trigger review and remain explicitly unestablished in the report.</td>
+<td>Physical-realism and human-review drafts</td>
+</tr>
+</tbody>
+</table>
+<h1 id="section-14">5. Standard C: Communication style across all work</h1>
+<h2 id="section-15">5.1 Chat replies to the owner</h2>
+<ul>
+<li>Lead with verified state and the material blocker; answer direct questions first.</li>
+<li>Use a compact status table with state, evidence, blocker and next action.</li>
+<li>Plans state proposed scope, assumptions, verification and decisions; approval requests link the exact artifact and action.</li>
+<li>Progress reports quantify completed, running and failed work where measured; estimates remain labelled.</li>
+<li>Closeouts give artifact revision, verification and actual disposition, including what was not done.</li>
+<li>Continue within established authority without repeated requests to begin.</li>
+<li>Make progress tangible: changed sections, resolved comments, completed/running/failed cases, throughput and the next checkpoint.</li>
+<li>Keep routine coordination in the evidence record; surface it only when it changes scope, timing, authority or an owner decision.</li>
+<li>State failures plainly: what failed, what changed and what correction is under way.</li>
+<li>For machine workloads, report measured capacity and progress, preserve concurrent work, and label estimates as estimates.</li>
+</ul>
+<p>Example:</p>
+<table>
+<thead>
+<tr>
+<th>State</th>
+<th>Evidence</th>
+<th>Blocker</th>
+<th>Next action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Revised draft saved locally</td>
+<td>Six comments incorporated; JSON read back</td>
+<td>One comparator remains unverified</td>
+<td>Resolve the comparator before issue</td>
+</tr>
+</tbody>
+</table>
+<p>“Publication was not performed.”</p>
+<h2 id="section-16">5.2 GitHub issue and PR comments</h2>
+<ul>
+<li>Lead with the concrete problem, resulting behaviour or review finding.</li>
+<li>State affected scope, verification and remaining gaps.</li>
+<li>Keep private evidence in its owning private channel; public summaries remain generic.</li>
+<li>Post implementation summaries on the associated issue without equating CI success with engineering acceptance.</li>
+<li>Render issue references inline as links, such as <a href="https://github.com/vamseeachanta/workspace-hub/issues/3920">#3920</a>.</li>
+</ul>
+<p>Example: “The review copy preserves section context in exported comments. Download-fallback testing passed; native folder saving remains unverified. <a href="https://github.com/vamseeachanta/workspace-hub/issues/3920">#3920</a> tracks the remaining check.”</p>
+<h2 id="section-17">5.3 Commit messages</h2>
+<ul>
+<li>Use conventional commit subjects with a specific change.</li>
+<li>Explain purpose and consequential behaviour when a body is needed.</li>
+<li>Distinguish completed verification from pending checks.</li>
+<li>Exclude private identifiers from public repositories and commit metadata.</li>
+</ul>
+<p>Example: <code>fix: preserve report revision in comment exports</code></p>
+<h2 id="section-18">5.4 E-mail and client correspondence</h2>
+<ul>
+<li>Apply the engineering register to technical content.</li>
+<li>Keep wrapper conventions separate: greeting, shared benefit before an ask and appropriate commercial tone.</li>
+<li>Present the result, comparator, limitation and requested action without internal workflow narration.</li>
+<li>Verify recipients, attachments and publication authority independently of technical quality.</li>
+</ul>
+<p>Example: “Dear reviewer, the attached draft supports review of the resistance comparison. The predicted difference is 4%, below the 6% comparison uncertainty; a ranking is not established. Please comment on the stated operating conditions.”</p>
+<h2 id="section-19">5.5 Agent-to-agent messages and handoffs</h2>
+<ul>
+<li>Make the first line self-contained: task, current state and blocker.</li>
+<li>Identify the artifact revision, owning repository, completed checks and next action.</li>
+<li>Carry originating authorization and limitations as evidence to verify; a handoff does not grant approval.</li>
+<li>Report concurrent work, preserved changes and capability limits.</li>
+<li>Separate reported success from independently verified file or repository state.</li>
+</ul>
+<p>Example: “A CFD resistance report awaits comparator review; formatting comments are resolved. The next step is evidence inspection. Publication authority is not established.”</p>
+<h2 id="section-20">5.6 Reports</h2>
+<ul>
+<li>Apply Standard B rather than inventing a separate channel style.</li>
+<li>Use impersonal subjects and criterion-bound conclusions.</li>
+<li>Keep result status and material limitations beside the affected findings.</li>
+<li>Separate engineering interpretation from execution history.</li>
+</ul>
+<p>Example: “At the assessed operating condition, predicted resistance differs from the reference by 4%, within the predefined 5% numerical comparison tolerance. Physical validation remains unestablished.”</p>
+<p>Words and patterns to avoid across channels:</p>
+<ul>
+<li>“Clearly,” “obviously,” promotional adjectives and unsupported certainty.</li>
+<li>“Safe,” “adequate” or “conservative” without a governing criterion.</li>
+<li>“Done” when only generation or local saving is verified.</li>
+<li>Repeated process narration, first-person technical findings and gratuitous bold.</li>
+<li>Interchangeable use of zero, unknown, pending and not applicable.</li>
+</ul>
+<p>“Should” expresses advice; “shall” and “must” express requirements.</p>
+<h1 id="section-21">6. Adoption plan</h1>
+<p>Adoption will be phased, reversible and conditional on owner approval.</p>
+<table>
+<thead>
+<tr>
+<th>Phase</th>
+<th>What will change</th>
+<th>Where</th>
+<th>Agent</th>
+<th>Verification</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1 — Reconciliation</td>
+<td>One canonical workflow/communication standard will be prepared; P3 clarifications and duplicate-text dispositions will be reviewed.</td>
+<td>Public <code>workspace-hub</code>; standard document and local HTML approval copy. Exact filename will be agreed.</td>
+<td>Claude will prepare; Codex will review defects and conflicts.</td>
+<td>Every existing draft will have a disposition; no private content or implied adoption will remain.</td>
+</tr>
+<tr>
+<td>2 — Bounded pilot</td>
+<td>The review loop will be exercised on a synthetic report, decision board and human-review pack.</td>
+<td><code>tools/html-review</code> and generic local outputs.</td>
+<td>Claude will implement; Codex will review; Hermes will assess handoff clarity.</td>
+<td>Offline rendering, comment round-trip, stale-revision handling and privacy will be checked.</td>
+</tr>
+<tr>
+<td>3 — Integration</td>
+<td>Thin pointers will be added to shared instructions or <code>AGENTS.md</code>; one review-loop skill will be added.</td>
+<td>Public <code>workspace-hub</code>; Markdown instructions and skill files, existing tool directory.</td>
+<td>Claude will prepare changes; Codex will review; Hermes will verify accessible runtime references.</td>
+<td>Pointers will resolve to the canonical revision; duplicated rules will be removed or replaced with pointers.</td>
+</tr>
+<tr>
+<td>4 — Incremental rollout</td>
+<td>Approved pointers and workflow will be applied to new or actively revised work.</td>
+<td>Enumerated repositories and reachable agent sessions; private artifacts will remain private.</td>
+<td>Claude and Hermes will apply within authority; Codex will review evidence.</td>
+<td>Target-by-target status and revision identity will be recorded; exceptions will remain explicit.</td>
+</tr>
+</tbody>
+</table>
+<p>Rollback will restore prior pointers and tool versions while preserving review records. Old reports will change only under separately scoped work. No merge or publication will be inferred from proposal approval alone.</p>
+<h1 id="section-22">7. Owner decisions (2026-09-29)</h1>
+<table>
+<thead>
+<tr>
+<th>Card</th>
+<th>Decision</th>
+<th>Recorded choice</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>S01</td>
+<td>Authority split</td>
+<td>Recorded choice: P2 for report format plus this one complementary standard; the current report-format revision is P3; the session-communication draft is merged into Section 5.1</td>
+</tr>
+<tr>
+<td>S02</td>
+<td>HTML coverage</td>
+<td>All listed review artifacts; Markdown sources preserved</td>
+</tr>
+<tr>
+<td>S03</td>
+<td>Comment destination</td>
+<td>Report folder, with the download fallback</td>
+</tr>
+<tr>
+<td>S04</td>
+<td>Review tool</td>
+<td>The canonical <code>tools/html-review</code> injector</td>
+</tr>
+<tr>
+<td>S05</td>
+<td>Emphasis</td>
+<td>Restrained, optional bold, recorded September 29; later formal-report guidance is reconciled in Section 4 without changing other communication channels</td>
+</tr>
+<tr>
+<td>S06</td>
+<td>Unresolved realism</td>
+<td>Human-review pack plus an explicit report limitation</td>
+</tr>
+<tr>
+<td>S07</td>
+<td>Peer delivery</td>
+<td>Offline self-contained copy with the banner and comment layer</td>
+</tr>
+<tr>
+<td>S08</td>
+<td>Rollout</td>
+<td>Pilot, then incremental adoption</td>
+</tr>
+</tbody>
+</table>
+<h1 id="section-23">8. Risks and open points</h1>
+<ul>
+<li>The supplied evidence describes drafts. Merge state, runtime installation and current tool behaviour are not independently established.</li>
+<li>Stable comment identifiers and digest binding required by P3 are not fully demonstrated by the README’s listed fields. The pilot will check this gap before adoption.</li>
+<li>Folder permissions, stale tabs and first-80-character highlighting can misdirect or obscure comments. Revision checks and JSON read-back remain necessary.</li>
+<li>Public redaction cannot be reduced to removing names; figures, results and metadata can disclose private work.</li>
+<li>The candidate canonical file is <code>docs/standards/review-and-communication-standard.md</code> in PR 3929. Exact pilot execution and reachable rollout targets remain to be established; S08 already selects pilot-first sequencing.</li>
+<li>Simplification must preserve decision-relevant limitations. Presentation acceptance does not establish engineering acceptance.</li>
+</ul>
+</body></html>

@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="360" viewBox="0 0 720 360">
+<rect width="720" height="360" fill="#ffffff"/>
+<rect x="90" y="274.176" width="540" height="15.824" fill="#a5d8ff" stroke="#222"/>
+<text x="102" y="286.088" font-size="16" font-family="Arial">solder_zone</text>
+<rect x="90" y="168.681" width="540" height="105.495" fill="#ffd43b" stroke="#222"/>
+<text x="102" y="225.429" font-size="16" font-family="Arial">substrate</text>
+<rect x="90" y="135.714" width="540" height="32.967" fill="#d0bfff" stroke="#222"/>
+<text x="102" y="156.198" font-size="16" font-family="Arial">die</text>
+<rect x="90" y="50.000" width="540" height="85.714" fill="#ff8787" stroke="#222"/>
+<text x="102" y="96.857" font-size="16" font-family="Arial">mold</text>
+<text x="90" y="330" font-size="14" font-family="Arial">Simplified package stackup (SI dimensions, educational assumptions)</text>
+</svg>

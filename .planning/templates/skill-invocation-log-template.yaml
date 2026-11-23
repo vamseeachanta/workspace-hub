@@ -1,0 +1,14 @@
+# skill-invocation-log.yaml — explicit skill invocation evidence for a WRK item
+wrk_id: WRK-000
+generated_at: "2026-03-04T00:00:00Z"
+entries:
+  - stage_order: 2
+    stage_name: Resource Intelligence
+    skills:
+      - resource-intelligence
+      - workflow-gatepass
+    explicit_logged: true
+    inferred: false
+    evidence_ref: .claude/work-queue/assets/WRK-000/evidence/resource-intelligence.yaml
+    logged_at: "2026-03-04T00:00:00Z"
+    logged_by: orchestrator

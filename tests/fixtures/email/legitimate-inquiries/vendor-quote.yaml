@@ -1,0 +1,7 @@
+fixture_id: legitimate-vendor-quote
+sender: quotes@example.net
+subject: Vendor quote for review
+body: >
+  The quote includes scope, unit cost, validity period, and delivery timing for
+  the requested service.
+expected_classification: actionable

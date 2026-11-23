@@ -1,0 +1,159 @@
+---
+name: comprehensive-learning
+description: "Single fire-and-forget command that runs the full session learning pipeline:\
+  \ insights \u2192 reflect \u2192 knowledge \u2192 improve \u2192 action-candidates\
+  \ \u2192 report. All machines run local Phases 1\u20139 against logs/orchestrator/\
+  \ and commit derived state. dev-primary additionally runs Phase 10a (cross-machine\
+  \ compilation) and Phase 10 (report). Safe for cron scheduling. Use when session\
+  \ ends, nightly cron fires, or you want to harvest learnings from recent sessions.\
+  \ Replaces running 4 skills manually.\n"
+version: 2.5.0
+updated: 2026-03-09
+category: workspace-hub
+type: skill
+invoke: comprehensive-learning
+auto_execute: false
+tools:
+- Read
+- Write
+- Edit
+- Bash
+- Grep
+- Glob
+- Task
+related_skills:
+- improve
+- knowledge-management
+- session-corpus-audit
+capabilities:
+- session-learning
+- ecosystem-improvement
+- candidate-actioning
+- cron-safe
+- continual-learning
+- cross-machine-analysis
+tags:
+- learning
+- meta
+- session-exit
+- cron
+- continual-learning
+platforms:
+- linux
+wrk_ref: WRK-299
+---
+# comprehensive-learning — Session Learning Pipeline
+
+Single fire-and-forget skill running Phases 1–9 on **all machines** and Phases 10a+10
+(cross-machine compilation + report) on **dev-primary only**.
+
+> **Full phase specs**: `references/pipeline-detail.md` — read it when you need
+> signal sources, extraction rules, candidate formats, or state file details.
+
+## Mode-Based Routing
+
+```bash
+MACHINE=$(hostname -s 2>/dev/null || hostname | cut -d. -f1 | tr '[:upper:]' '[:lower:]')
+case "$MACHINE" in
+  dev-primary) CL_MODE="full" ;;
+  dev-secondary) CL_MODE="contribute" ;;
+  licensed-win-1|licensed-win-2) CL_MODE="contribute" ;;
+  *) CL_MODE="contribute" ;;
+esac
+# All modes run Phases 1–9. Only 'full' runs Phase 10a (compilation) + Phase 10 (report).
+```
+
+## Cross-Machine Data Flow
+
+| Machine | Commits | Notes |
+|---------|---------|-------|
+| dev-secondary | `candidates/`, `corrections/`, `patterns/`, `session-signals/` | Open-source CFD/dev |
+| licensed-win-1 | `candidates/`, `corrections/`, `session-signals/`, `patterns/` | OrcaFlex/ANSYS |
+| licensed-win-2 | `candidates/` | Windows; no AI CLIs |
+
+dev-primary `git pull` in Phase 10a picks up all machines' committed derived state.
+
+## Pipeline Summary
+
+Run phases sequentially. Non-mandatory phases log failure and continue. Fatal failures
+in Phases 1 or 4 set `_PIPELINE_EXIT=1`. Phase 10 always runs via `trap EXIT`.
+
+| Phase | Name | Mandatory | Short description |
+|-------|------|:---------:|-------------------|
+| 1 | Insights | ✓ | Extract skill usage, tool patterns, session-quality signals from all log sources |
+| 1b | Drift Detection | dev-primary | Detect python_runtime/file_placement/git_workflow violations in yesterday's log |
+| 2 | Reflect | — | Invoke /reflect against reflect-history/ and trends/ |
+| 3 | Knowledge | — | Invoke /knowledge; update patterns/ |
+| 3b | Memory Compaction | — | Compact MEMORY.md + topic files |
+| 3c | Memory Curation | — | Promote stable patterns, expire stale entries |
+| 4 | Improve | ✓ | Invoke /improve; update skills + rules from candidates/ |
+| 5 | Correction Trends | — | Analyze corrections/ for recurring failure patterns |
+| 6 | WRK Feedback + Ecosystem | — | WRK quality review + skill usage frequency + ecosystem health |
+| 7 | Action Candidates | — | Convert candidates/ entries to WRK items |
+| 8 | Report Review | — | Review learning report for coherence |
+| 9 | Skill Coverage Audit | weekly | Audit skill coverage via `identify-script-candidates.sh` + `skill-coverage-audit.sh`; include tier distribution from `skill-tier-report.py` (A/B/C/D per `config/skills/quality-tiers.yaml`) |
+| 10a | Cross-Machine Compile | full only | git pull + aggregate from all machines |
+| 10 | Report | always | Write report (trap EXIT) |
+
+**For phase details** (signal sources, extraction rules, YAML formats):
+→ read `references/pipeline-detail.md`
+
+## Session Design: Lean by Default
+
+Sessions are pure **multi-agent execution engines** — all brain directed at the task.
+Analysis, maintenance, and learning are deferred to the nightly run.
+
+| In-session | Nightly pipeline |
+|------------|-----------------|
+| WRK gate check + active-wrk set | All insight/reflect/knowledge/improve runs |
+| Multi-agent implementation | Correction trend analysis |
+| Fast signal capture (hooks write raw signals) | Candidate → WRK auto-creation |
+| /session-start context load | Memory and skill file updates |
+| Cross-review (Codex gate) | Ecosystem health checks |
+| Commit + push | Session archive rsync |
+
+**Must NOT run standalone during sessions:** `/insights`, `/reflect`, `/knowledge`,
+`/improve`, `consume-signals.sh` heavy analysis, `ecosystem-health-check.sh`,
+`session-end-evaluate.sh` scoring.
+
+**Stop hooks:** one hook only, raw write, < 1 second. See WRK-304.
+
+## Scheduling
+
+Crontab entry (dev-primary, 22:00 nightly):
+```bash
+0 22 * * * cd /mnt/local-analysis/workspace-hub && \
+  bash scripts/cron/comprehensive-learning-nightly.sh \
+  >> .claude/state/learning-reports/cron.log 2>&1
+```
+Script: `scripts/cron/comprehensive-learning-nightly.sh`
+— `git pull` is a hard gate; each `rsync` is independently `|| true`.
+
+## Related
+
+- workstations skill: machine registry and `cron_variant` fields
+- WRK-299: implementation tracking | WRK-304: Stop hook cleanup | WRK-305: signal emitters
+- WRK-303: Ensemble planning → Planning Quality Loop (in references/pipeline-detail.md)
+- `/insights`, `/reflect`, `/knowledge`, `/improve`: individual pipeline stages
+- `scripts/planning/` — ensemble planning outputs harvested by Planning Quality Loop
+
+## Iron Law
+
+> No learning pipeline phase (/insights, /reflect, /knowledge, /improve) shall run standalone during an active work session — learning is deferred to the nightly pipeline, always.
+
+## Rationalization Defense
+
+| Excuse | Reality |
+|--------|---------|
+| "I'll just run a quick /reflect to capture this insight" | /reflect consumes significant context and token budget. The nightly pipeline captures the same signals from hooks and logs — for free. |
+| "The session is almost over, might as well run /improve now" | "Almost over" is when context is most valuable. Defer to nightly; hooks already captured the raw signals. |
+| "This learning will be lost if I don't process it now" | Stop hooks write raw signals in < 1 second. The nightly pipeline processes them. Nothing is lost by deferring. |
+| "The nightly cron might not run tonight" | Fix the cron job, do not work around it by running learning mid-session. Two problems are worse than one. |
+
+## Red Flags
+
+These phrases signal you are about to violate the Iron Law:
+- "let me quickly run /insights before we continue"
+- "I should capture this learning now"
+- "running /improve won't take long"
+- "the session is winding down anyway"

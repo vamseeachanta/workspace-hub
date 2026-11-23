@@ -1,0 +1,23 @@
+version: 1
+wrk_id: WRK-1009
+skill_name: skill-eval
+skill_path: .claude/skills/development/skill-eval/SKILL.md
+evals:
+- eval_id: se-cap-01
+  eval_type: capability
+  description: Core sections documented for skill-eval
+  checks:
+    required_sections:
+    - '## Quick Start'
+    - '## Core Concepts'
+    - '## When to Use'
+    - '## Usage Examples'
+    - '## Audit Scripts'
+- eval_id: se-proc-01
+  eval_type: procedural
+  description: Key commands documented for skill-eval
+  checks:
+    required_commands:
+    - uv run .claude/skills/development/skill-eval/scripts/eval-skills.py
+    - uv run .claude/skills/development/skill-eval/scripts/eval-skills.py --format json
+    - uv run .claude/skills/development/skill-eval/scripts/eval-skills.py --skill testing-tdd-london

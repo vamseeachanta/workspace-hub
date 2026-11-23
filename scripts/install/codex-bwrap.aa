@@ -1,0 +1,22 @@
+# MANAGED-BY: workspace-hub scripts/install/setup-codex-sandbox.sh (#2804)
+# Surgical AppArmor profile: grant the `userns` permission to the system
+# bubblewrap (/usr/bin/bwrap), which OpenAI Codex invokes as its outer sandbox
+# (verified via `strace -f -e execve`). Ubuntu 24.04's host-wide
+# `kernel.apparmor_restrict_unprivileged_userns=1` hardening stays in force for
+# every other binary.
+#
+# SECURITY NOTE (honest): /usr/bin/bwrap is shared by other sandboxed apps
+# (VSCode, Firefox, Flatpak). Granting it `userns` re-enables unprivileged user
+# namespaces for ALL of them, not Codex alone — Codex hardcodes /usr/bin/bwrap
+# and exposes no path override, so a Codex-only scope is impossible. This is
+# narrower than disabling the restriction host-wide (the blanket sysctl) but
+# broader than one application. Unprivileged userns is a kernel-LPE primitive;
+# accept this tradeoff deliberately. Reverse with teardown-codex-sandbox.sh.
+# Provenance: vamseeachanta/workspace-hub#2804 (2026-05-26)
+abi <abi/4.0>,
+include <tunables/global>
+
+profile codex-bwrap /usr/bin/bwrap flags=(unconfined) {
+  userns,
+  include if exists <local/codex-bwrap>
+}

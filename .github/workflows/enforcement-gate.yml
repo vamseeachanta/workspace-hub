@@ -1,0 +1,337 @@
+name: Enforcement Gate
+
+# PR-level enforcement of review gate and plan approval.
+# Mirrors local pre-push/pre-commit gates in CI so reviewers see compliance status.
+# Issue: #2028 | Related: #1839 (governance), #2047 (strict mode)
+# Runner: GitHub-hosted ubuntu-latest for every PR (public repository, free
+# minutes), same switch as pr-fast-gate.yml (#4517). Same-repo PRs go back to
+# the self-hosted Linux runners only when the repository variable WH_PR_RUNNER
+# is "self-hosted":
+#   gh variable set WH_PR_RUNNER --body self-hosted -R vamseeachanta/workspace-hub
+# Fork PRs always stay on ubuntu-latest. Moved off self-hosted on 2026-11-22:
+# these ~2 min jobs queued a median ~100 min (p90 ~390 min) on the two
+# self-hosted runners. This file is a scheduler-mutation digest input, so the
+# HTML audit was regenerated with --render-html in the same change.
+
+on:
+  pull_request:
+    branches:
+      - main
+    types: [opened, synchronize, reopened]
+
+jobs:
+  scheduler-mutation-surfaces:
+    name: Scheduler Mutation Surface Guard
+    runs-on: ${{ (github.event.pull_request.head.repo.full_name == github.repository && vars.WH_PR_RUNNER == 'self-hosted') && fromJSON('["self-hosted","Linux"]') || 'ubuntu-latest' }}
+    timeout-minutes: 5
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
+        with:
+          enable-cache: true
+      - name: Validate scheduler mutation registry
+        run: uv run python scripts/enforcement/check-scheduler-mutation-surfaces.py
+      - name: Validate archived marine skills
+        env:
+          TMPDIR: ${{ runner.temp }}
+        run: python3 scripts/enforcement/check-archived-marine-skills.py && bash scripts/enforcement/tests/test_check_archived_marine_skills.sh
+      - name: Validate exact cron identity inventory
+        run: uv run python scripts/cron/build-cron-identity-inventory.py --check
+      - name: Test ecosystem sync direct-push guard
+        run: bash scripts/cron/tests/test_ecosystem_sync_push_guard.sh
+      - name: Verify scheduler mutation audit report
+        run: uv run python scripts/enforcement/check-scheduler-mutation-surfaces.py --check-html docs/reports/2026-07-11-issue-3470-scheduler-mutation-safety.html
+      # The catalog SCHEMA validator ran in neither CI nor pre-commit until 2026-08-01.
+      # It enforces that every `machines:` value exists in config/workstations/registry.yaml,
+      # that `roles:`/`requires:` resolve, that cron expressions parse, and that ids are
+      # unique — none of which the three checks above look at. They validate the mutation
+      # REGISTRY and the identity digest, not the task definitions themselves. Wiring it in
+      # is non-breaking: it reports "OK: 66 tasks validated" on main today.
+      - name: Validate scheduled-task catalog schema
+        run: uv run python scripts/cron/validate-schedule.py
+
+  stage-prompt-drift:
+    name: Stage Prompt Drift Guard
+    runs-on: ${{ (github.event.pull_request.head.repo.full_name == github.repository && vars.WH_PR_RUNNER == 'self-hosted') && fromJSON('["self-hosted","Linux"]') || 'ubuntu-latest' }}
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
+        with:
+          enable-cache: true
+
+      # PYTHONPATH=src is REQUIRED for `from workspace_hub...` imports because:
+      #   1. src/workspace_hub/ has NO __init__.py — it's an intentional PEP 420
+      #      implicit namespace package (see commit 2694b2865).
+      #   2. pyproject.toml [tool.setuptools.packages.find] include = ["src*"]
+      #      installs the literal `src` package, NOT `workspace_hub`.
+      # The smoke step below catches a regression of either assumption with a
+      # precise error before the deep import traceback fires. Issue #2532.
+      - name: Smoke — workspace_hub importable (PEP 420 + PYTHONPATH=src)
+        env:
+          PYTHONPATH: src
+        run: |
+          uv sync --frozen --group dev
+          uv run python -m pytest tests/ci_smoke/test_workspace_hub_importable.py -v --tb=short
+
+      - name: Check newly introduced stage prompt drift
+        env:
+          PYTHONPATH: src
+        run: |
+          echo "## Stage Prompt Drift Guard" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          uv run python scripts/analysis/stage_prompt_drift_check.py \
+            --base-ref origin/main \
+            --head-ref HEAD \
+            --output-json /tmp/stage-prompt-drift.json \
+            --output-md /tmp/stage-prompt-drift.md \
+            --fail-on-issues
+
+      - name: Publish drift summary
+        if: always()
+        run: |
+          if [[ -f /tmp/stage-prompt-drift.md ]]; then
+            cat /tmp/stage-prompt-drift.md >> $GITHUB_STEP_SUMMARY
+          else
+            echo "No stage prompt drift report produced." >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: Check brand token drift (#3402)
+        run: |
+          echo "## Brand-Token Drift Guard (#3402)" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          uv run python scripts/enforcement/check-brand-token-drift.py | tee -a $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+
+  review-evidence:
+    name: Review Evidence Check
+    runs-on: ${{ (github.event.pull_request.head.repo.full_name == github.repository && vars.WH_PR_RUNNER == 'self-hosted') && fromJSON('["self-hosted","Linux"]') || 'ubuntu-latest' }}
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # full history for commit range analysis
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
+        with:
+          enable-cache: true
+
+      - name: Check review evidence for PR commits
+        env:
+          REVIEW_GATE_STRICT: "1"
+        run: |
+          echo "## Review Evidence Check" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          MERGE_BASE=$(git merge-base origin/main HEAD 2>/dev/null || echo "")
+          if [[ -z "$MERGE_BASE" ]]; then
+            echo "Could not determine merge base — checking last 10 commits"
+            MERGE_BASE=""
+          fi
+
+          # Use the existing review gate script logic
+          chmod +x scripts/enforcement/require-review-on-push.sh
+
+          # The review gate expects LOCAL_OID and REMOTE_OID
+          if scripts/enforcement/require-review-on-push.sh HEAD "$MERGE_BASE" 2>&1; then
+            echo "**Result:** PASS — review evidence found" >> $GITHUB_STEP_SUMMARY
+          else
+            EXIT_CODE=$?
+            echo "**Result:** FAIL — no review evidence for feature/fix commits" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "### How to fix" >> $GITHUB_STEP_SUMMARY
+            echo "Run an adversarial review before pushing:" >> $GITHUB_STEP_SUMMARY
+            echo '```bash' >> $GITHUB_STEP_SUMMARY
+            echo "scripts/review/cross-review.sh <file_or_diff> all --type implementation" >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "Or bypass locally with: \`SKIP_REVIEW_GATE=1 git push\`" >> $GITHUB_STEP_SUMMARY
+            exit $EXIT_CODE
+          fi
+
+  plan-approval:
+    # Preserve the required-check name while retiring the implementation gate.
+    name: Plan Approval Check
+    runs-on: ${{ (github.event.pull_request.head.repo.full_name == github.repository && vars.WH_PR_RUNNER == 'self-hosted') && fromJSON('["self-hosted","Linux"]') || 'ubuntu-latest' }}
+    timeout-minutes: 10
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Verify retired compatibility entry points
+        run: |
+          bash scripts/enforcement/require-plan-approval.sh --strict
+          python3 scripts/workflow/plan_approval_gate_check.py
+          echo "Separate plan approval retired; task authority and other controls remain." >> "$GITHUB_STEP_SUMMARY"
+
+  marker-label-parity:
+    name: Marker-Label Parity Check
+    # Label-provenance gate: for issues referenced by the PR, reject
+    # status:plan-approved labels applied by a GitHub App or workflow token
+    # (actor type Bot or login ending in [bot]). A pass is not evidence that a
+    # person approved the plan, because the check cannot distinguish an agent
+    # using the owner's token from the owner. The PR's own script/workflow run on
+    # opened, synchronize, and reopened events only; this is advisory until the
+    # owner makes it a required status check.
+    runs-on: ${{ (github.event.pull_request.head.repo.full_name == github.repository && vars.WH_PR_RUNNER == 'self-hosted') && fromJSON('["self-hosted","Linux"]') || 'ubuntu-latest' }}
+    timeout-minutes: 10
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Validate referenced issue plan-approval label provenance
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -o pipefail
+          echo "## Marker-Label Parity Check" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          issues="$(python3 scripts/enforcement/extract-pr-issue-references.py)"
+
+          chmod +x scripts/enforcement/check-marker-label-parity.sh
+
+          if scripts/enforcement/check-marker-label-parity.sh \
+              --strict \
+              --require-issue-reference \
+              --issues "$issues" 2>&1 | tee /tmp/marker-parity.log; then
+            echo "**Result:** PASS — referenced labels are absent or non-bot set" >> $GITHUB_STEP_SUMMARY
+          else
+            EXIT_CODE=$?
+            echo "**Result:** FAIL — referenced issue has bot-set plan-approval label" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            cat /tmp/marker-parity.log >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            exit $EXIT_CODE
+          fi
+
+  retired-queue-paths:
+    name: Retired Queue Path Check
+    runs-on: ${{ (github.event.pull_request.head.repo.full_name == github.repository && vars.WH_PR_RUNNER == 'self-hosted') && fromJSON('["self-hosted","Linux"]') || 'ubuntu-latest' }}
+    timeout-minutes: 5
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Reject new local queue files
+        run: |
+          python3 scripts/enforcement/check-retired-queue-paths.py \
+            --base-ref origin/${{ github.base_ref }} \
+            --head-ref HEAD
+
+  model-id-sourcing:
+    name: Model-ID Sourcing Guard
+    # Ratchet guard (#3060, epic #3058): flags NEW hardcoded model IDs outside
+    # config/agents/model-registry.yaml vs the grandfathered baseline. ADVISORY
+    # first (does not fail the build) per the #3060 plan; promote to --enforce
+    # once trusted by flipping the run line below.
+    runs-on: ${{ (github.event.pull_request.head.repo.full_name == github.repository && vars.WH_PR_RUNNER == 'self-hosted') && fromJSON('["self-hosted","Linux"]') || 'ubuntu-latest' }}
+    timeout-minutes: 5
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Check for newly hardcoded model IDs (advisory)
+        run: |
+          set -o pipefail
+          echo "## Model-ID Sourcing Guard (advisory)" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          chmod +x scripts/enforcement/check-model-id-sourcing.sh
+          scripts/enforcement/check-model-id-sourcing.sh 2>&1 | tee /tmp/model-id.log
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          cat /tmp/model-id.log >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+
+  skill-index-coherence:
+    name: Skill-Index Coherence
+    # #3208 (epic #3058): binds the curated skill graph and the generated full
+    # index. BLOCKING checks: (a) curated skill basename exists in the tree;
+    # (c) the full index is freshly regenerable (no diff). (b) authored-but-
+    # backfilled is advisory (stderr only). Runs red in PR checks on drift;
+    # becomes merge-blocking once added to the protected-branch ruleset.
+    runs-on: ${{ (github.event.pull_request.head.repo.full_name == github.repository && vars.WH_PR_RUNNER == 'self-hosted') && fromJSON('["self-hosted","Linux"]') || 'ubuntu-latest' }}
+    timeout-minutes: 5
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
+        with:
+          enable-cache: true
+      - name: Check skill-index coherence
+        run: |
+          set -o pipefail
+          echo "## Skill-Index Coherence (#3208)" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          uv run python scripts/enforcement/check-skill-index-coherence.py 2>&1 | tee /tmp/skidx.log
+          rc=${PIPESTATUS[0]}
+          cat /tmp/skidx.log >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          exit $rc
+
+  compliance-dashboard:
+    name: Compliance Dashboard
+    runs-on: ${{ (github.event.pull_request.head.repo.full_name == github.repository && vars.WH_PR_RUNNER == 'self-hosted') && fromJSON('["self-hosted","Linux"]') || 'ubuntu-latest' }}
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Run compliance dashboard
+        continue-on-error: true  # advisory — does not block PRs
+        run: |
+          echo "## Compliance Dashboard" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          chmod +x scripts/enforcement/compliance-dashboard.sh
+
+          # Run in 168h window (1 week) for broader context
+          COMPLIANCE_WINDOW_HOURS=168 scripts/enforcement/compliance-dashboard.sh 2>&1 | tee /tmp/compliance-report.txt || true
+
+          # Extract key metrics for summary
+          RATE=$(grep -oP 'Compliance rate:\s+\K\d+' /tmp/compliance-report.txt 2>/dev/null || echo "N/A")
+          VERDICT=$(grep -oP 'Verdict:\s+\K\w+' /tmp/compliance-report.txt 2>/dev/null || echo "N/A")
+
+          echo "| Metric | Value |" >> $GITHUB_STEP_SUMMARY
+          echo "|--------|-------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Compliance Rate | ${RATE}% |" >> $GITHUB_STEP_SUMMARY
+          echo "| Verdict | ${VERDICT} |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "<details><summary>Full Report</summary>" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          cat /tmp/compliance-report.txt >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          echo "</details>" >> $GITHUB_STEP_SUMMARY

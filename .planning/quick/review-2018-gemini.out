@@ -1,0 +1,32 @@
+Agent loading error: Failed to load agent from /mnt/local-analysis/workspace-hub/.gemini/agents/gsd-debugger.md: Validation failed: Agent Definition:
+Unrecognized key(s) in object: 'permissionMode'Agent loading error: Failed to load agent from /mnt/local-analysis/workspace-hub/.gemini/agents/gsd-executor.md: Validation failed: Agent Definition:
+Unrecognized key(s) in object: 'permissionMode'1. Verdict: MAJOR
+2. Ready for user approval: No
+3. Retrieval adequacy: insufficient
+4. Top blockers (numbered):
+   1. **Meta-plan instead of implementation:** The plan proposes to create a "parent plan" markdown document that maps gaps and creates child issues, completely avoiding the actual engineering implementation of the 5 hard requirements (pre-commit, CI gate, agent prefill, dashboard, auto-rollback).
+   2. **Bogus TDD Tests:** The proposed tests (e.g., `test_parent_plan_maps_existing_gates`) merely validate the text content of the plan document itself. They do not test the functional behavior of the hooks, CI gates, or governance scripts.
+   3. **Missing Agent Prefill Design:** The issue explicitly mandates agent prefill for Hermes, Claude Code, Codex, and Gemini, but the plan does not address how to inject workflow constraints into these specific agents' contexts.
+   4. **Missing CI and Rollback Design:** The plan punts auto-rollback to an "open question" and completely ignores the implementation details for the CI gate and the compliance dashboard.
+
+5. Critical findings:
+   - The plan fundamentally misunderstands the assignment. It is trying to close a high-priority engineering enforcement ticket by writing a roadmap/inventory document.
+   - The test plan violates TDD principles by testing the markdown documentation rather than the system's enforcement behavior.
+
+6. High findings:
+   - Retrieval is insufficient: The agent failed to search for CI pipeline configurations (e.g., `.github/workflows/`) or agent-specific configuration/prefill files (e.g., `.claude/`, `.gemini/`, `.codex/`, `.hermes/`), which are strictly necessary to implement the requested CI gates and prefill injections.
+   - The Acceptance Criteria in the plan do not match the Acceptance Criteria in the issue (e.g., 100% block rate, 80% compliance rate, zero unreviewed commits).
+
+7. Medium findings:
+   - The auto-rollback requirement is questioned as a potential risk/split rather than being addressed with a proposed technical design.
+   - The plan proposes updating `docs/governance/TRUST-ARCHITECTURE.md` without specifying what policy changes are actually needed.
+
+8. Low findings:
+   - The plan references "scripts/review/results/2026-04-13-plan-2018-subagent.md" which seems to have hallucinated a "MINOR" adversarial review pass, indicating a rubber-stamp subagent review prior to this one.
+
+9. Required revisions before user approval:
+   - **Pivot to Implementation:** Rewrite the deliverable to actually implement the missing technical gates (pre-commit, CI, prefill, dashboard, rollback) rather than just inventorying them.
+   - **Real TDD:** Replace the markdown-checking tests with functional tests that execute the git hooks, simulate CI pipeline failures for unreviewed PRs, and verify rollback trigger conditions.
+   - **Agent-Specific Integration:** Detail the exact files and configuration changes needed to inject the workflow constraints into the prefill for all 4 required agents (Hermes, Claude Code, Codex, Gemini).
+   - **CI & Dashboard Design:** Provide a concrete technical approach for how the CI pipeline will reject PRs and how the compliance dashboard will aggregate and display violation metrics.
+   - **Perform Missing Retrieval:** Analyze `.github/workflows/` and the respective agent configuration directories to inform the technical design.

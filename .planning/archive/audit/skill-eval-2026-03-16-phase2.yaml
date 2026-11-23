@@ -1,0 +1,92 @@
+phase2_deleted_skill_diff:
+  sample_size: 10
+  date: '2026-03-16'
+  methodology: Random sample of 10 deleted _diverged/ skills compared to canonical counterpart by skill name
+  findings:
+  - deleted_path: .claude/skills/_diverged/digitalmodel/devtools/raycast-alfred/SKILL.md
+    skill_name: raycast-alfred
+    canonical_path: .claude/skills/operations/devtools/raycast-alfred/SKILL.md
+    canonical_exists: true
+    deleted_words: 4582
+    canonical_words: 4584
+    unique_lines_in_deleted: 1
+    content_loss: minor
+  - deleted_path: .claude/skills/_diverged/digitalmodel/automation/airflow/SKILL.md
+    skill_name: airflow
+    canonical_path: .claude/skills/operations/automation/airflow/SKILL.md
+    canonical_exists: true
+    deleted_words: 3658
+    canonical_words: 3656
+    unique_lines_in_deleted: 1
+    content_loss: minor
+  - deleted_path: .claude/skills/_diverged/achantas-data/optimization/model-selection/SKILL.md
+    skill_name: model-selection
+    canonical_path: .claude/skills/ai/optimization/model-selection/SKILL.md
+    canonical_exists: true
+    deleted_words: 493
+    canonical_words: 492
+    unique_lines_in_deleted: 5
+    content_loss: review
+  - deleted_path: .claude/skills/_diverged/digitalmodel/product/product-roadmap/SKILL.md
+    skill_name: product-roadmap
+    canonical_path: .claude/skills/business/product/product-roadmap/SKILL.md
+    canonical_exists: true
+    deleted_words: 528
+    canonical_words: 1348
+    unique_lines_in_deleted: 1
+    content_loss: minor
+  - deleted_path: .claude/skills/_diverged/digitalmodel/orcaflex-monolithic-to-modular/SKILL.md
+    skill_name: orcaflex-monolithic-to-modular
+    canonical_path: .claude/skills/engineering/marine-offshore/orcaflex-monolithic-to-modular/SKILL.md
+    canonical_exists: true
+    deleted_words: 1150
+    canonical_words: 1001
+    unique_lines_in_deleted: 19
+    content_loss: review
+  - deleted_path: .claude/skills/_diverged/digitalmodel/office-docs/pypdf/SKILL.md
+    skill_name: pypdf
+    canonical_path: .claude/skills/data/office/pypdf/SKILL.md
+    canonical_exists: true
+    deleted_words: 3927
+    canonical_words: 3929
+    unique_lines_in_deleted: 1
+    content_loss: minor
+  - deleted_path: .claude/skills/_diverged/digitalmodel/documentation/sphinx/SKILL.md
+    skill_name: sphinx
+    canonical_path: .claude/skills/development/documentation/sphinx/SKILL.md
+    canonical_exists: true
+    deleted_words: 3298
+    canonical_words: 3296
+    unique_lines_in_deleted: 1
+    content_loss: minor
+  - deleted_path: .claude/skills/_diverged/digitalmodel/communication/teams-api/SKILL.md
+    skill_name: teams-api
+    canonical_path: .claude/skills/business/communication/teams-api/SKILL.md
+    canonical_exists: true
+    deleted_words: 4222
+    canonical_words: 4224
+    unique_lines_in_deleted: 1
+    content_loss: minor
+  - deleted_path: .claude/skills/_diverged/digitalmodel/orcawave-aqwa-benchmark/SKILL.md
+    skill_name: orcawave-aqwa-benchmark
+    canonical_path: .claude/skills/engineering/marine-offshore/orcawave-aqwa-benchmark/SKILL.md
+    canonical_exists: true
+    deleted_words: 2435
+    canonical_words: 1691
+    unique_lines_in_deleted: 39
+    content_loss: review
+  - deleted_path: .claude/skills/_diverged/digitalmodel/aqwa-analysis/SKILL.md
+    skill_name: aqwa-analysis
+    canonical_path: .claude/skills/engineering/marine-offshore/aqwa-analysis/SKILL.md
+    canonical_exists: true
+    deleted_words: 2505
+    canonical_words: 2167
+    unique_lines_in_deleted: 23
+    content_loss: review
+  summary:
+    with_canonical: 10
+    without_canonical: 0
+    no_content_loss: 0
+    minor_content_loss: 6
+    needs_review: 4
+  conclusion: 4 skills need content review

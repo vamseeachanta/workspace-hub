@@ -1,0 +1,17 @@
+[batch-ingest] Loading metadata from: .planning/intel/elements-to-llm-wiki/batches/marine-engineering.jsonl
+[batch-ingest] Loaded 2 records
+[batch-ingest] DRY-RUN mode — no files will be written
+
+[batch-ingest] Resuming — 19154 records already processed
+  [DRY-RUN] Would create: wiki/sources/elements-digitalmodel-suction-pile-sizing.md — Elements ingest catalog — digitalmodel-suction-pile-sizing
+  [DRY-RUN] Would create: wiki/sources/elements-digitalmodel-riser-toolbox.md — Elements ingest catalog — digitalmodel-riser-toolbox
+  Progress: 2/2 (100%) — created=2 skipped=0 errors=0
+  [batch 1] Wrote 2 entries to index.md and log.md (dry-run)
+
+[batch-ingest] Complete (DRY-RUN)
+  Total records:    2
+  Created:          2
+  Repaired:         0
+  Skipped (done):   0
+  Errors:           0
+  Batches flushed:  1

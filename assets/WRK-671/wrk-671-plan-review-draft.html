@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WRK-671 Plan Review (Draft)</title>
+  <style>
+    :root {
+      --bg: #f0f4f8;
+      --panel: #ffffff;
+      --ink: #1a2332;
+      --muted: #4a5568;
+      --accent: #2563eb;
+      --accent-2: #7c3aed;
+      --line: #d1d5db;
+      --warn: #b45309;
+      --good: #166534;
+      --danger: #991b1b;
+      --shadow: 0 4px 16px rgba(26, 35, 50, 0.07);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.55;
+    }
+
+    .hero {
+      padding: 44px 24px 28px;
+      background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+      color: #e2e8f0;
+      border-bottom: 3px solid #2563eb;
+    }
+    .hero-inner { max-width: 1100px; margin: 0 auto; }
+    .eyebrow {
+      text-transform: uppercase; letter-spacing: 0.12em;
+      font-size: 0.7rem; color: #93c5fd; font-weight: 700; margin-bottom: 8px;
+    }
+    h1 { margin: 0 0 12px; font-size: clamp(1.7rem, 3.5vw, 2.8rem); font-weight: 700; color: #f1f5f9; line-height: 1.1; }
+    .lede { max-width: 70ch; color: #94a3b8; font-size: 1rem; margin: 0 0 18px; }
+    .meta { display: flex; flex-wrap: wrap; gap: 8px; }
+    .pill { border: 1px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.08); color: #cbd5e1; padding: 5px 12px; border-radius: 999px; font-size: 0.82rem; }
+    .pill.high   { background: rgba(239,68,68,0.2); border-color: rgba(239,68,68,0.4); color: #fca5a5; }
+    .pill.draft  { background: rgba(37,99,235,0.25); border-color: rgba(37,99,235,0.5); color: #93c5fd; }
+    .pill.route  { background: rgba(37,99,235,0.2); border-color: rgba(37,99,235,0.4); color: #93c5fd; }
+
+    .content { max-width: 1100px; margin: 0 auto; padding: 28px 24px 60px; display: grid; gap: 20px; }
+    .panel { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; box-shadow: var(--shadow); padding: 22px 24px; }
+    .panel h2 { margin: 0 0 14px; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); font-weight: 700; }
+    
+    .phases { display: grid; gap: 14px; }
+    .phase { border: 1px solid var(--line); border-radius: 10px; padding: 16px 18px; }
+    .phase-header { display: flex; align-items: center; margin-bottom: 10px; }
+    .phase-num { display: inline-block; background: var(--accent); color: white; border-radius: 50%; width: 26px; height: 26px; line-height: 26px; text-align: center; font-weight: 700; font-size: 0.82rem; margin-right: 10px; flex-shrink: 0; }
+    .phase-title { font-weight: 600; font-size: 0.97rem; }
+    .phase ul { margin: 0; padding-left: 18px; }
+    .phase li { margin-bottom: 4px; font-size: 0.9rem; color: var(--muted); }
+
+    .tag { display: inline-block; padding: 2px 8px; border-radius: 999px; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; }
+    .tag-prep { background: #dbeafe; color: #1d4ed8; }
+    .tag-exec { background: #dcfce7; color: #15803d; }
+    .tag-val  { background: #fef3c7; color: #92400e; }
+
+    footer { text-align: center; padding: 20px; font-size: 0.8rem; color: var(--muted); }
+  </style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div class="eyebrow">WRK-671 · Draft Plan Review — Gemini Orchestrator</div>
+    <h1>Orchestrator Gate Run with Gemini</h1>
+    <p class="lede">
+      Verifying Gemini's capability to enforce the WRK-624 gate sequence (Plan, Review, TDD, Legal).
+    </p>
+    <div class="meta">
+      <span class="pill high">Priority: HIGH</span>
+      <span class="pill route">Route C · Complex</span>
+      <span class="pill draft">Stage: Draft Plan</span>
+      <span class="pill">Repo: workspace-hub</span>
+      <span class="pill">Machine: ace-linux-1</span>
+    </div>
+  </div>
+</div>
+
+<div class="content">
+  <div class="panel">
+    <h2>Implementation Phases</h2>
+    <div class="phases">
+      <div class="phase">
+        <div class="phase-header">
+          <span class="phase-num">1</span>
+          <span class="phase-title">Artifact Preparation</span>
+          <span class="tag tag-prep" style="margin-left:auto;">Preparation</span>
+        </div>
+        <ul>
+          <li>Create directory structure in <code>assets/WRK-671/</code> and <code>.claude/work-queue/assets/WRK-671/</code>.</li>
+          <li>Reference <code>WRK-657</code> assets to establish baseline.</li>
+          <li>Initialize placeholder files to satisfy <code>verify-gate-evidence.py</code>.</li>
+        </ul>
+      </div>
+      <div class="phase">
+        <div class="phase-header">
+          <span class="phase-num">2</span>
+          <span class="phase-title">Gemini Orchestrator Session</span>
+          <span class="tag tag-exec" style="margin-left:auto;">Execution</span>
+        </div>
+        <ul>
+          <li>Execute the task as the orchestrator.</li>
+          <li>Generate real artifacts for Plan Review, Cross-Review, TDD, and Legal gates.</li>
+          <li>Ensure human sign-off is documented in HTML.</li>
+        </ul>
+      </div>
+      <div class="phase">
+        <div class="phase-header">
+          <span class="phase-num">3</span>
+          <span class="phase-title">Validation & Summary</span>
+          <span class="tag tag-val" style="margin-left:auto;">Validation</span>
+        </div>
+        <ul>
+          <li>Run <code>scripts/work-queue/verify-gate-evidence.py WRK-671</code> and ensure it passes.</li>
+          <li>Produce <code>assets/WRK-671/claim-evidence.yaml</code>.</li>
+          <li>Author summary HTML report linking all artifacts.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>WRK-671 · Draft Plan Review · 2026-03-02 · Gemini Orchestrator</footer>
+
+</body>
+</html>

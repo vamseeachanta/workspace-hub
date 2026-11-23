@@ -1,0 +1,364 @@
+OpenAI Codex v0.121.0 (research preview)
+--------
+workdir: /mnt/local-analysis/workspace-hub
+model: gpt-5.4
+provider: openai
+approval: never
+sandbox: workspace-write [workdir, /tmp, $TMPDIR, /home/vamsee/.codex/memories]
+reasoning effort: medium
+reasoning summaries: none
+session id: 019daba7-917a-70b2-ba08-324133987927
+--------
+user
+# Adversarial Plan Review Request: Issue #2398
+
+You are an adversarial reviewer. Assume the plan has defects until proven otherwise.
+Do not praise. Do not restate the plan. Focus only on what is wrong, missing, risky, contradictory, underspecified, or likely to cause rework.
+Return APPROVE only if you can affirmatively verify there are no blocking defects.
+Each finding must cite a specific plan section, file path, issue reference, or quoted claim.
+If nothing is wrong, explicitly state what you checked.
+
+## Issue context
+Title: feat(knowledge): assess llm-wiki spinout vs embedded workspace-hub architecture
+URL: https://github.com/vamseeachanta/workspace-hub/issues/2398
+
+Issue body:
+## Summary
+Evaluate whether the llm-wiki system should remain inside `workspace-hub` or be spun out into a standalone repository (or tightly scoped repo family) that serves the wider repo ecosystem.
+
+## Why
+The llm-wiki program has grown from a local knowledge experiment into a cross-cutting system with its own ingestion pipeline, provenance contracts, promotion waves, governance rules, index/navigation surfaces, and reuse requirements across multiple repos.
+
+At the current scale, repo-bound coupling may become a bottleneck for:
+- ownership clarity
+- CI/runtime isolation
+- clone size and repo churn
+- versioning of wiki schemas and promotion contracts
+- reuse across tier-1 repos and future repos
+- provider/tool portability for search, retrieval, and promotion workflows
+
+This should be decided explicitly rather than by drift.
+
+## Decision to make
+Should llm-wikis:
+1. remain inside `workspace-hub`
+2. move to one standalone `llm-wiki` repo
+3. split into a core platform repo plus separate domain-content repos
+
+## Evaluation Criteria
+- coupling to workspace-hub scripts and skills
+- cross-repo consumption patterns and backlink needs
+- size/churn/performance impact on the main repo
+- governance of durable vs transient knowledge
+- promotion-pipeline ownership and release cadence
+- CI/testing boundaries
+- portability to other machines and agents
+- search/index build performance
+- contribution ergonomics for domain-specific wiki work
+- migration complexity and link-rot risk
+
+## Deliverables
+1. Current-state architecture summary of llm-wiki dependencies on workspace-hub.
+2. Option comparison matrix: stay-in-place vs single spinout vs split architecture.
+3. Recommendation with explicit decision criteria and non-goals.
+4. Migration plan outline if spinout is recommended, including:
+   - repo boundaries
+   - sync/backlink strategy
+   - release/versioning model
+   - search/index ownership
+   - path/link migration plan
+5. Follow-up implementation issues only if the recommendation is to spin out or partially split.
+
+## Acceptance Criteria
+- [ ] current llm-wiki coupling to workspace-hub is mapped concretely
+- [ ] at least three architecture options are compared with trade-offs
+- [ ] recommendation is justified with ecosystem-level reasoning, not just local convenience
+- [ ] migration risks and rollback path are described if spinout is recommended
+- [ ] result clearly states whether llm-wiki should stay embedded, be split out, or be hybridized
+
+## Related
+- #2390 llm-wiki strengthening roadmap and execution waves
+- #2034 engineering LLM wiki seed + incremental ingest pipeline
+- #2206 validate single-source-of-truth pyramid conformance
+- #2207 standards/codes provenance + reuse contract for llm-wiki promotion
+- #2209 durable-vs-transient knowledge boundary across wikis, issues, registries, and session artifacts
+- #2366 llm-wiki strengthening scorecard and prioritized action queue
+
+## Notes
+This is a strategy/architecture issue. It should not absorb ongoing llm-wiki content promotion work.
+
+
+## Current revised draft plan under review
+# Plan for #2398: Assess llm-wiki spinout vs embedded workspace-hub architecture
+
+> **Status:** draft
+> **Complexity:** T2
+> **Date:** 2026-04-20
+> **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2398
+> **Review artifacts:** scripts/review/results/2026-04-20-plan-2398-claude.md | scripts/review/results/2026-04-20-plan-2398-codex.md | scripts/review/results/2026-04-20-plan-2398-gemini.md
+
+---
+
+## Resource Intelligence Summary
+
+### Existing repo code
+- Found: `docs/document-intelligence/llm-wiki-resource-doc-intelligence-operating-model.md` — parent architecture for the intelligence ecosystem; explicitly delegates llm-wiki ingestion and child concerns rather than repo-boundary decisions.
+- Found: `docs/document-intelligence/durable-vs-transient-knowledge-boundary.md` — classifies llm-wikis as L3 durable knowledge and distinguishes them from L5/L6 execution/transient artifacts.
+- Gap: no explicit architecture decision document compares embedded-vs-spinout repo boundaries for llm-wikis.
+
+### Standards
+| Standard | Status | Source |
+|---|---|---|
+| Intelligence ecosystem parent operating model | done | `docs/document-intelligence/llm-wiki-resource-doc-intelligence-operating-model.md` |
+| Durable-vs-transient policy | done | `docs/document-intelligence/durable-vs-transient-knowledge-boundary.md` |
+| Control-plane contract for repo adapters | done | `docs/standards/CONTROL_PLANE_CONTRACT.md` |
+
+### LLM Wiki pages consulted
+- No single wiki page is authoritative for this decision; the decision is driven by architecture/policy docs plus issue bodies and current roadmap issues.
+
+### Documents consulted
+- Related issue #2390 — current llm-wiki strengthening roadmap; proves the embedded system now has enough scope to justify a boundary review.
+- Related issue #2034 — engineering LLM wiki seed + incremental ingest pipeline; critical current-state coupling surface for ingestion ownership.
+- Related issue #2366 — llm-wiki strengthening scorecard and prioritized action queue; relevant navigation and governance coupling surface.
+- Related issue #2205 — parent operating model for the intelligence ecosystem.
+- Related issues #2206, #2207, #2209 — conformance, provenance, and durable/transient sibling contracts shaping what would have to move if a spinout occurs.
+- `docs/reports/2026-04-20-refactor-knowledge-release-readiness-dependency-map.md` — marks #2398 as a strategy lane that should not block current strengthening-wave execution by default.
+- Existing issue body for #2398 — explicitly requires follow-up implementation issues when the recommendation is spinout or partial split.
+
+### Gaps identified
+- No current-state dependency map of llm-wiki coupling to workspace-hub scripts, docs, registries, and review workflows.
+- No option matrix comparing stay-embedded vs single-repo spinout vs split-core/content architecture.
+- No migration-risk or rollback framework for link rot, CI ownership, and search/index responsibilities.
+
+---
+
+## Artifact Map
+
+| Artifact | Path |
+|---|---|
+| This plan | docs/plans/2026-04-20-issue-2398-llm-wiki-spinout-vs-embedded-architecture.md |
+| Coupling inventory | docs/reports/2026-04-20-issue-2398-llm-wiki-coupling-inventory.md |
+| Link/path consumer audit | docs/reports/2026-04-20-issue-2398-llm-wiki-link-consumer-audit.md |
+| Decision report | docs/reports/2026-04-20-issue-2398-llm-wiki-boundary-options.md |
+| Conditional follow-up issue drafts | docs/reports/2026-04-20-issue-2398-follow-up-issue-drafts.md |
+| Plan review — Claude | scripts/review/results/2026-04-20-plan-2398-claude.md |
+| Plan review — Codex | scripts/review/results/2026-04-20-plan-2398-codex.md |
+| Plan review — Gemini | scripts/review/results/2026-04-20-plan-2398-gemini.md |
+| Docs updates | docs/plans/README.md |
+
+---
+
+## Deliverable
+
+A documented architecture recommendation for whether llm-wikis should remain embedded in workspace-hub, spin out into a dedicated repo, or adopt a hybrid core/content split, plus conditional follow-up issue drafts if movement is recommended.
+
+---
+
+## Pseudocode
+
+```
+build a concrete coupling inventory across docs, registries, scripts, issue workflows, navigation surfaces, provider adapters, and #2034 ingestion ownership
+build a path-consumer and backlink audit covering references that would break if llm-wiki boundaries move
+capture current strengths and bottlenecks of the embedded architecture from that evidence
+use explicit decision weighting: coupling impact, operational isolation, cross-repo reuse, migration cost, rollback difficulty
+define three options: stay_embedded, standalone_repo, split_core_plus_content
+for each option:
+    score coupling, portability, CI boundaries, search/index ownership, contribution ergonomics, migration risk, and rollback difficulty
+    assign explicit ownership for ingestion, search/index build, backlinks, versioning, and CI
+identify which concerns are solved immediately and which are merely relocated
+recommend one option with explicit decision criteria, non-goals, and do-not-freeze notes for current #2390 execution waves
+if recommendation implies movement:
+    generate conditional follow-up implementation issue drafts for migration, backlink/sync, search-index ownership, and repo-boundary changes
+write coupling inventory, link-consumer audit, decision report, and conditional issue-draft pack
+```
+
+---
+
+## Files to Change
+
+| Action | Path | Reason |
+|---|---|---|
+| Create | docs/reports/2026-04-20-issue-2398-llm-wiki-coupling-inventory.md | concrete path-level dependency inventory |
+| Create | docs/reports/2026-04-20-issue-2398-llm-wiki-link-consumer-audit.md | backlink and path-consumer audit for migration risk |
+| Create | docs/reports/2026-04-20-issue-2398-llm-wiki-boundary-options.md | option matrix and recommendation |
+| Create | docs/reports/2026-04-20-issue-2398-follow-up-issue-drafts.md | conditional implementation issue drafts if movement is recommended |
+| Update | docs/plans/README.md | add this plan to index |
+
+---
+
+## TDD Test List
+
+| Test name | What it verifies | Expected input | Expected output |
+|---|---|---|---|
+| test_coupling_inventory_covers_required_surfaces | embedded-state analysis is concrete | current docs/issues/paths | inventory spans scripts/docs/registries/workflows/adapters including #2034 ingestion |
+| test_link_consumer_audit_covers_breakage_surfaces | migration risk is evidence-backed | known path/backlink references | audit rows for consumers/backlinks |
+| test_options_matrix_has_three_distinct_architectures | decision space is real, not binary hand-waving | option definitions | 3 compared options |
+| test_recommendation_has_ecosystem_rationale | choice is justified beyond convenience | final report | decision criteria + recommendation |
+| test_follow_up_issue_drafts_are_conditional | movement work is actionable but not assumed | final recommendation | issue drafts only when spinout/hybrid is chosen |
+| test_option_ownership_is_explicit | search/index/backlink/CI/versioning ownership is assigned | option matrix | explicit owners per option |
+
+---
+
+## Acceptance Criteria
+
+- [ ] A coupling inventory exists at `docs/reports/2026-04-20-issue-2398-llm-wiki-coupling-inventory.md`
+- [ ] A link/path consumer audit exists at `docs/reports/2026-04-20-issue-2398-llm-wiki-link-consumer-audit.md`
+- [ ] A decision report exists at `docs/reports/2026-04-20-issue-2398-llm-wiki-boundary-options.md`
+- [ ] The coupling inventory maps current llm-wiki coupling to workspace-hub concretely, including #2034 ingestion and #2366 scorecard surfaces
+- [ ] The link/path consumer audit enumerates backlink and breakage surfaces that matter to migration risk
+- [ ] The decision report compares at least three architecture options with trade-offs
+- [ ] The decision report assigns explicit ownership for ingestion, search/index build, backlinks, CI, and versioning per option
+- [ ] The decision report recommends one option with explicit reasoning and non-goals
+- [ ] If spinout/hybrid is recommended, a conditional issue-draft pack exists at `docs/reports/2026-04-20-issue-2398-follow-up-issue-drafts.md`
+- [ ] If stay-embedded is recommended, the decision report explicitly records why no follow-up migration issues were created
+- [ ] Review artifacts are posted to `scripts/review/results/`
+
+---
+
+## Adversarial Review Summary
+
+| Provider | Verdict | Key findings |
+|---|---|---|
+| Claude | PENDING | Awaiting review |
+| Codex | PENDING | Awaiting review |
+| Gemini | PENDING | Awaiting review |
+
+**Overall result:** PENDING
+
+Revisions made based on review:
+- none yet
+
+---
+
+## Risks and Open Questions
+
+- **Risk:** the strategy review could accidentally freeze or derail currently useful llm-wiki execution work if it is framed as a prerequisite rather than a boundary decision.
+- **Risk:** a spinout recommendation could underestimate backlink, search-index, or sync complexity across existing docs and scripts.
+- **Open:** should the recommendation optimize for authoring convenience, operational isolation, or cross-repo reuse first when trade-offs conflict?
+
+---
+
+## Complexity: T2
+
+**T2** — bounded architecture/strategy plan requiring multi-source analysis and explicit option comparison, but not immediate code migration.
+
+
+## Review dimensions
+1. Correctness: does the plan actually answer the issue?
+2. Completeness: are deliverable, artifact map, files, and follow-up boundaries sufficient?
+3. Feasibility: is the proposed work bounded and realistically executable?
+4. TDD / verification adequacy: are tests or validation steps meaningful and sufficient?
+5. Scope discipline: does the plan avoid silently absorbing adjacent work?
+6. Dependency handling: are prerequisites and sequencing handled correctly?
+7. Approval readiness: is this safe to surface to the user for approval now?
+8. Retrieval adequacy: is the resource-intelligence evidence concrete and sufficient?
+
+## Required output format
+Verdict: APPROVE | MINOR | MAJOR
+Retrieval adequacy: adequate | insufficient
+Findings:
+- [severity] <finding>
+Missing tests:
+- ...
+Scope creep concerns:
+- ...
+Weakest assumption:
+- ...
+Most likely implementation failure mode:
+- ...
+Most likely test gap:
+- ...
+Future issues suggested:
+- ...
+Review confidence: low | medium | high
+warning: Codex's Linux sandbox uses bubblewrap and needs access to create user namespaces.
+codex
+I’m reviewing the draft as a hostile plan reviewer, starting by checking whether the cited artifacts, issue references, and verification strategy are concrete enough to support approval.
+2026-04-20T16:09:53.210390Z ERROR codex_core::tools::router: error=exec_command failed for `/bin/bash -lc 'rg --files docs | rg "document-intelligence|plans/README|CONTROL_PLANE_CONTRACT|refactor-knowledge-release-readiness-dependency-map|2398|llm-wiki"'`: CreateProcess { message: "Codex(Sandbox(Denied { output: ExecToolCallOutput { exit_code: 1, stdout: StreamOutput { text: \"\", truncated_after_lines: None }, stderr: StreamOutput { text: \"bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted\\n\", truncated_after_lines: None }, aggregated_output: StreamOutput { text: \"bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted\\n\", truncated_after_lines: None }, duration: 0ns, timed_out: false }, network_policy_decision: None }))" }
+2026-04-20T16:09:53.211677Z ERROR codex_core::tools::router: error=exec_command failed for `/bin/bash -lc "pwd && rg -n \"llm-wiki|document-intelligence|CONTROL_PLANE_CONTRACT|2398|2390|2034|2206|2207|2209|2366\" docs scripts .github -g '"'!node_modules'"' -g '"'!dist'"'"`: CreateProcess { message: "Codex(Sandbox(Denied { output: ExecToolCallOutput { exit_code: 1, stdout: StreamOutput { text: \"\", truncated_after_lines: None }, stderr: StreamOutput { text: \"bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted\\n\", truncated_after_lines: None }, aggregated_output: StreamOutput { text: \"bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted\\n\", truncated_after_lines: None }, duration: 0ns, timed_out: false }, network_policy_decision: None }))" }
+codex
+The shell sandbox is rejecting even read-only commands, so I’m switching to the Node REPL to verify whether the cited files actually exist and whether the repo already contains the stated decision/policy surfaces.
+exec
+js_repl in /mnt/local-analysis/workspace-hub
+2026-04-20T16:10:03.163886Z ERROR codex_core::tools::router: error=js_repl kernel exited unexpectedly
+
+js_repl diagnostics: {"reason":"stdout_eof","stream_error":null,"kernel_pid":3356663,"kernel_status":"exited(code=1)","kernel_stderr_tail":"bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted"}
+ exited 1 in 65ms:
+js_repl kernel exited unexpectedly
+
+js_repl diagnostics: {"reason":"stdout_eof","stream_error":null,"kernel_pid":3356663,"kernel_status":"exited(code=1)","kernel_stderr_tail":"bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted"}
+codex
+Verdict: MAJOR  
+Retrieval adequacy: insufficient
+
+Findings:
+- [major] The plan does not include any concrete retrieval step for actual cross-repo consumers, even though the issue explicitly requires “ecosystem-level reasoning” and evaluation of “cross-repo consumption patterns and backlink needs.” The only evidence cited in `Resource Intelligence Summary` is workspace-hub-local docs/issues plus one local report, and `LLM Wiki pages consulted` explicitly says “No single wiki page is authoritative.” That is not enough to justify a repo-boundary decision intended to serve “the wider repo ecosystem.”
+- [major] The required rollback path is missing from the executable plan. The issue acceptance criteria require “migration risks and rollback path are described if spinout is recommended,” but the plan’s own `Acceptance Criteria` only require a “conditional issue-draft pack” and never require a rollback section in `docs/reports/2026-04-20-issue-2398-llm-wiki-boundary-options.md`. The `Pseudocode` only scores “rollback difficulty”; it does not require a rollback design.
+- [major] The verification strategy is not actionable TDD. The `TDD Test List` is a set of prose checks like `test_recommendation_has_ecosystem_rationale` and `test_option_ownership_is_explicit`, but the plan does not define any executable harness, schema, checker script, or review checklist file that would make those tests real. Given the repo’s hard gate “TDD mandatory — tests before implementation,” this is underspecified to the point of being non-verifiable.
+- [major] The plan claims it will build “a concrete coupling inventory across docs, registries, scripts, issue workflows, navigation surfaces, provider adapters” in `Pseudocode`, but `Resource Intelligence Summary` does not show that those surfaces were even located. The cited “Gap: no current-state dependency map” is exactly the blocker: without first proving where the scripts/registries/adapters live, the plan is promising an inventory it has not bounded.
+- [major] The artifact set is incomplete for the decision the issue asks for. `Files to Change` creates a coupling inventory, a link consumer audit, a decision report, and optional follow-up drafts, but nothing explicitly captures non-goals, decision criteria weights, or rollback/migration sequencing as first-class artifacts. Those are core deliverables from the issue body, not optional narrative details.
+- [minor] `Documents consulted` cites issue `#2205 — parent operating model for the intelligence ecosystem`, but the issue body’s related list names `#2206`, `#2207`, `#2209`, `#2366`, `#2390`, and `#2034`; `#2205` is not in the related list. That may be valid, but the plan does not explain why it is in-scope or authoritative for this decision.
+- [minor] The plan says `Complexity: T2`, but the same plan also proposes scoring architecture options across coupling, portability, CI, search/index ownership, backlinks, versioning, migration risk, and rollback difficulty. That is a cross-repo architecture decision with migration planning. The stated complexity looks understated, which increases the chance of shallow retrieval and rushed recommendation.
+
+Missing tests:
+- A concrete verification step that enumerates all path consumers/backlinks with commands or a reproducible audit method, rather than a prose promise in `docs/reports/2026-04-20-issue-2398-llm-wiki-link-consumer-audit.md`.
+- A check that the recommendation includes an explicit rollback path when the chosen option is `standalone_repo` or `split_core_plus_content`.
+- A check that downstream consumers outside `workspace-hub` were actually sampled before making an “ecosystem-level” recommendation.
+- A check that follow-up issue drafts are not created for the stay-embedded recommendation, instead of just saying they are “conditional.”
+
+Scope creep concerns:
+- The plan risks absorbing design of ownership models and migration mechanics prematurely. `Pseudocode` says to “assign explicit ownership for ingestion, search/index build, backlinks, versioning, and CI” for every option, which can drift from evaluation into designing a future platform before the keep-vs-spinout decision is made.
+- Updating `docs/plans/README.md` is administrative churn that does not help answer the issue and can distract from the architecture decision.
+
+Weakest assumption:
+- The assumption in `LLM Wiki pages consulted` that no wiki page is authoritative, therefore architecture/policy docs plus issue bodies are sufficient. For a boundary decision about llm-wiki itself, not consulting the actual wiki/index/navigation surfaces is the weakest premise.
+
+Most likely implementation failure mode:
+- The final recommendation will be workspace-hub-centric because the evidence base is workspace-hub-local, then it will be presented as an ecosystem decision without proving downstream usage, backlink pressure, or contribution ergonomics in other repos.
+
+Most likely test gap:
+- The plan will “pass” its prose tests while still missing the issue’s hardest requirement: a migration-safe recommendation backed by real consumer and link-breakage evidence.
+
+Future issues suggested:
+- A precursor audit issue to inventory actual llm-wiki consumers/backlinks across tier-1 repos before any repo-boundary recommendation is approved.
+- A separate rollback-and-link-migration planning issue, but only if a spinout/hybrid recommendation survives the consumer audit.
+
+Review confidence: medium
+tokens used
+118,751
+Verdict: MAJOR  
+Retrieval adequacy: insufficient
+
+Findings:
+- [major] The plan does not include any concrete retrieval step for actual cross-repo consumers, even though the issue explicitly requires “ecosystem-level reasoning” and evaluation of “cross-repo consumption patterns and backlink needs.” The only evidence cited in `Resource Intelligence Summary` is workspace-hub-local docs/issues plus one local report, and `LLM Wiki pages consulted` explicitly says “No single wiki page is authoritative.” That is not enough to justify a repo-boundary decision intended to serve “the wider repo ecosystem.”
+- [major] The required rollback path is missing from the executable plan. The issue acceptance criteria require “migration risks and rollback path are described if spinout is recommended,” but the plan’s own `Acceptance Criteria` only require a “conditional issue-draft pack” and never require a rollback section in `docs/reports/2026-04-20-issue-2398-llm-wiki-boundary-options.md`. The `Pseudocode` only scores “rollback difficulty”; it does not require a rollback design.
+- [major] The verification strategy is not actionable TDD. The `TDD Test List` is a set of prose checks like `test_recommendation_has_ecosystem_rationale` and `test_option_ownership_is_explicit`, but the plan does not define any executable harness, schema, checker script, or review checklist file that would make those tests real. Given the repo’s hard gate “TDD mandatory — tests before implementation,” this is underspecified to the point of being non-verifiable.
+- [major] The plan claims it will build “a concrete coupling inventory across docs, registries, scripts, issue workflows, navigation surfaces, provider adapters” in `Pseudocode`, but `Resource Intelligence Summary` does not show that those surfaces were even located. The cited “Gap: no current-state dependency map” is exactly the blocker: without first proving where the scripts/registries/adapters live, the plan is promising an inventory it has not bounded.
+- [major] The artifact set is incomplete for the decision the issue asks for. `Files to Change` creates a coupling inventory, a link consumer audit, a decision report, and optional follow-up drafts, but nothing explicitly captures non-goals, decision criteria weights, or rollback/migration sequencing as first-class artifacts. Those are core deliverables from the issue body, not optional narrative details.
+- [minor] `Documents consulted` cites issue `#2205 — parent operating model for the intelligence ecosystem`, but the issue body’s related list names `#2206`, `#2207`, `#2209`, `#2366`, `#2390`, and `#2034`; `#2205` is not in the related list. That may be valid, but the plan does not explain why it is in-scope or authoritative for this decision.
+- [minor] The plan says `Complexity: T2`, but the same plan also proposes scoring architecture options across coupling, portability, CI, search/index ownership, backlinks, versioning, migration risk, and rollback difficulty. That is a cross-repo architecture decision with migration planning. The stated complexity looks understated, which increases the chance of shallow retrieval and rushed recommendation.
+
+Missing tests:
+- A concrete verification step that enumerates all path consumers/backlinks with commands or a reproducible audit method, rather than a prose promise in `docs/reports/2026-04-20-issue-2398-llm-wiki-link-consumer-audit.md`.
+- A check that the recommendation includes an explicit rollback path when the chosen option is `standalone_repo` or `split_core_plus_content`.
+- A check that downstream consumers outside `workspace-hub` were actually sampled before making an “ecosystem-level” recommendation.
+- A check that follow-up issue drafts are not created for the stay-embedded recommendation, instead of just saying they are “conditional.”
+
+Scope creep concerns:
+- The plan risks absorbing design of ownership models and migration mechanics prematurely. `Pseudocode` says to “assign explicit ownership for ingestion, search/index build, backlinks, versioning, and CI” for every option, which can drift from evaluation into designing a future platform before the keep-vs-spinout decision is made.
+- Updating `docs/plans/README.md` is administrative churn that does not help answer the issue and can distract from the architecture decision.
+
+Weakest assumption:
+- The assumption in `LLM Wiki pages consulted` that no wiki page is authoritative, therefore architecture/policy docs plus issue bodies are sufficient. For a boundary decision about llm-wiki itself, not consulting the actual wiki/index/navigation surfaces is the weakest premise.
+
+Most likely implementation failure mode:
+- The final recommendation will be workspace-hub-centric because the evidence base is workspace-hub-local, then it will be presented as an ecosystem decision without proving downstream usage, backlink pressure, or contribution ergonomics in other repos.
+
+Most likely test gap:
+- The plan will “pass” its prose tests while still missing the issue’s hardest requirement: a migration-safe recommendation backed by real consumer and link-breakage evidence.
+
+Future issues suggested:
+- A precursor audit issue to inventory actual llm-wiki consumers/backlinks across tier-1 repos before any repo-boundary recommendation is approved.
+- A separate rollback-and-link-migration planning issue, but only if a spinout/hybrid recommendation survives the consumer audit.
+
+Review confidence: medium

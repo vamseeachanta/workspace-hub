@@ -1,0 +1,28 @@
+================================================================================
+Diffraction Analysis Results Summary
+================================================================================
+Vessel: Ellipsoid
+Analysis Tool: OrcaWave
+Water Depth: 100.0 m
+Created: 2026-04-04
+================================================================================
+
+Frequency Coverage:
+  Count: 1
+  Range: 3.1416 - 3.1416 rad/s
+  Periods: 2.00 - 2.00 s
+
+Heading Coverage:
+  Count: 18
+  Range: 0.0 - 340.0 deg
+
+Generated Files:
+  - Ellipsoid_vessel_type.yml
+  - Ellipsoid_raos.csv
+  - Ellipsoid_added_mass.csv
+  - Ellipsoid_damping.csv
+  - Ellipsoid_hydrodynamics.xlsx
+
+================================================================================
+Ready for OrcaFlex import
+================================================================================

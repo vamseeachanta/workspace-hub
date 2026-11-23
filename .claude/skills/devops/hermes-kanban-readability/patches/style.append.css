@@ -1,0 +1,54 @@
+/* ============================================================
+ * kanban-readability skill override — appended by install.sh
+ * (.claude/skills/devops/hermes-kanban-readability)
+ *
+ * Card text inherits the Mondwest display font from a parent Card
+ * wrapper. Mondwest is a headline face and reads poorly for dense card
+ * titles/meta at small sizes, so we pin a readable sans stack (the same
+ * face the column headers already use) and bump the sizes a touch.
+ *
+ * Appended LAST so these win on source order at equal specificity — no
+ * need to edit the in-place rules, which keeps this robust across
+ * upstream restyles of the bundled plugin.
+ * ============================================================ */
+.hermes-kanban-card-title {
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-size: 0.95rem;
+  line-height: 1.35;
+}
+.hermes-kanban-card-meta {
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-size: 0.8rem;
+}
+.hermes-kanban-card-id {
+  font-size: 0.7rem;
+}
+
+/* ---- Board overflow: make all columns reachable --------------------- *
+ * The columns row lays N columns left-to-right at a fixed width (easily
+ * wider than the screen), and the bundled CSS hides the scrollbar
+ * (scrollbar-width:none + ::-webkit-scrollbar{display:none}) — so columns
+ * off-screen to the right are unreachable with no visual cue. Restore a
+ * visible horizontal scrollbar, and bound the column height so that
+ * scrollbar lands inside the viewport (otherwise the tall columns push it
+ * below the fold and the page doesn't scroll to reveal it).
+ * Appended last so these win on source order. */
+.hermes-kanban-columns {
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--color-foreground) 35%, transparent) transparent;
+  padding-bottom: 2px;
+}
+.hermes-kanban-columns::-webkit-scrollbar {
+  display: block;
+  height: 11px;
+}
+.hermes-kanban-columns::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--color-foreground) 32%, transparent);
+  border-radius: 999px;
+}
+.hermes-kanban-columns::-webkit-scrollbar-track {
+  background: transparent;
+}
+.hermes-kanban-column {
+  max-height: calc(100vh - 290px);
+}

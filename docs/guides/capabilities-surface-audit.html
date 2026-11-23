@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Capabilities surface audit</title>
+  <style>
+    body { max-width: 70ch; margin: 2rem auto; padding: 1rem; font-family: sans-serif; line-height: 1.5; }
+    table { border-collapse: collapse; width: 100%; }
+    th, td { border: 1px solid #aaa; padding: .5rem; text-align: left; }
+    pre { overflow-x: auto; background: #eee; padding: 1rem; }
+  </style>
+</head>
+<body>
+<main>
+  <h1>Capabilities surface audit</h1>
+  <h2>Summary</h2>
+  <p><a href="https://www.aceengineer.com/capabilities/">The capabilities hub</a>
+  is the canonical overview. Repository landing pages redirect there; technical
+  reports, dashboards, PDFs and explorers retain their existing URLs.
+  The read-only audit checks explicit source files and navigation inputs without
+  generating pages, fetching data or changing another repository.</p>
+
+  <h2>Revision history</h2>
+  <table>
+    <tr><th>Revision</th><th>Date</th><th>Change and reason</th></tr>
+    <tr><td>Initial</td><td>2026-10-22</td><td>Document the redirect contract and worked audit example to detect renewed landing-page divergence.</td></tr>
+  </table>
+
+  <h2>Scope and sources</h2>
+  <p>Issue #3494 selects the single-surface design over the earlier alternatives
+  in epic #3485. The redirect implementations already landed in digitalmodel
+  PR #1573 and worldenergydata PR #1001. This audit complements those changes;
+  it does not recreate their pages or introduce another registry or HF client.</p>
+  <table>
+    <tr><th>Repository</th><th>Explicit landing source</th><th>Publication method</th></tr>
+    <tr><td>digitalmodel</td><td><code>docs/api/capabilities/index.html</code></td><td>Passthrough HTML under the documentation root.</td></tr>
+    <tr><td>worldenergydata</td><td><code>reports/capabilities/index.html</code></td><td><code>scripts/build_pages.py:build_capabilities</code> copies the source verbatim and also publishes technical content.</td></tr>
+  </table>
+  <p>The July 2026 merged source stubs supply the exact HTTPS canonical URL,
+  immediate refresh (zero delay), readable fallback link and
+  <code>noindex, follow</code> directive. These are web routing requirements;
+  no engineering equation, coefficient or acceptance limit applies.</p>
+
+  <h2>Method</h2>
+  <ol>
+    <li>Read the two declared landing files from caller-supplied repository roots.</li>
+    <li>Require exactly one canonical link and immediate refresh in the head,
+    both targeting <code>https://www.aceengineer.com/capabilities/</code>, plus
+    one robots directive containing only <code>noindex, follow</code>.
+    Ambiguous duplicate attributes are rejected with rule <code>markup</code>.</li>
+    <li>Require a matching text link in the body. Comments, empty anchors, hidden
+    ancestors, inline hiding styles and head links do not satisfy this check.</li>
+    <li>Reject rich landing content such as tables, headings, images, scripts
+    and embedded reports. Only the redirect prose structure is accepted.</li>
+    <li>For each explicit <code>--links</code> input, report line numbers for
+    absolute GitHub Pages URLs to the exact repository capabilities root or its
+    <code>index.html</code>. Preserve technical subpage links. Replace reported
+    landing URLs with the canonical hub after checking their context.</li>
+  </ol>
+  <p>JSON entries use <code>PASS</code>, <code>FAIL</code> or
+  <code>NOT_EVALUATED</code>. An unreadable or missing source is
+  <code>NOT_EVALUATED</code>. The command succeeds only when every supplied input
+  passes. Diagnostics show repository-relative source names, rule names, input
+  ordinals and line numbers; they never echo file content or caller paths.</p>
+
+  <h2>Worked example: inputs, method and answer</h2>
+  <p>From a workspace containing the two source repositories, supply their roots
+  explicitly. The roots below are illustrative relative directories:</p>
+  <pre><code>uv run --no-project python scripts/content/check_capabilities_surface.py \
+  --digitalmodel-root ../digitalmodel \
+  --worldenergydata-root ../worldenergydata \
+  --links docs/reports/casing-design-worklog.html</code></pre>
+  <p>Example input for either landing file, using the merged routing contract:</p>
+  <pre><code>&lt;html&gt;&lt;head&gt;
+&lt;link rel="canonical" href="https://www.aceengineer.com/capabilities/"&gt;
+&lt;meta http-equiv="refresh" content="0; url=https://www.aceengineer.com/capabilities/"&gt;
+&lt;meta name="robots" content="noindex, follow"&gt;
+&lt;/head&gt;&lt;body&gt;&lt;main&gt;&lt;p&gt;Capabilities have moved:
+&lt;a href="https://www.aceengineer.com/capabilities/"&gt;Capabilities&lt;/a&gt;
+&lt;/p&gt;&lt;/main&gt;&lt;/body&gt;&lt;/html&gt;</code></pre>
+  <p>Hand inspection finds one canonical link, one matching immediate refresh,
+  the robots directive and readable body link, with no report content.
+  Therefore each repository entry is <code>PASS</code>. After replacing the
+  worklog's landing links with the hub, <code>links-1</code> is also
+  <code>PASS</code> with an empty <code>lines</code> array; the command succeeds.</p>
+  <p>Changing the refresh destination produces <code>FAIL</code> with rule
+  <code>refresh</code>. A missing repository source produces
+  <code>NOT_EVALUATED</code> with rule <code>source-unreadable</code>. Both cause
+  a nonzero exit. Technical paths such as
+  <code>/capabilities/insights.html</code>, <code>/capabilities/pdf/brief.pdf</code>
+  and <code>/well/casing-design-explorer.html</code> remain outside the landing
+  replacement rule.</p>
+
+  <h2>Verification and limits</h2>
+  <p><code>tests/content/test_check_capabilities_surface.py</code> supplies literal
+  contract mutations and CLI examples. Expected results follow hand inspection
+  of those inputs, rather than output from the checker. The CLI example also
+  verifies byte preservation of all supplied repository files.</p>
+  <p>This is a structural source audit, not an HTML browser, deployment check,
+  semantic comparison of prose, SEO guarantee, registry validator or HF data
+  qualification. Stylesheet rules can affect visibility beyond the inline
+  cases checked. Arbitrary prose in allowed paragraph tags still requires
+  review. Relative URLs need publishing context and are not classified.
+  Link files must be explicitly enumerated; a passing command does not establish
+  whole-workspace coverage. Missing inputs are never silently treated as passed.</p>
+  <p>Later work may reconcile figures from qualified registry evidence and check
+  deployed URLs. Neither is required to redirect the landing pages. Serving-page
+  improvements remain in the website repository.</p>
+</main>
+</body>
+</html>

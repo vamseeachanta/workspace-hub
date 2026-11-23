@@ -1,0 +1,396 @@
+2026-04-15T03:51:32.063436Z ERROR codex_core_skills::loader: failed to stat skills entry /mnt/local-analysis/workspace-hub/.claude/skills/skills (symlink): No such file or directory (os error 2)
+OpenAI Codex v0.120.0 (research preview)
+--------
+workdir: /mnt/local-analysis/workspace-hub
+model: gpt-5.4
+provider: openai
+approval: never
+sandbox: workspace-write [workdir, /tmp, $TMPDIR, /home/vamsee/.codex/memories]
+reasoning effort: medium
+reasoning summaries: none
+session id: 019d8f44-8b01-7463-85f2-f19562198ce6
+--------
+user
+# Adversarial Re-Review Request: Issue #2018
+
+You are an independent adversarial reviewer. This plan was revised after prior MAJOR findings. Evaluate the revised plan on its current text only. Find any remaining gaps, risks, missing edge cases, unclear scope boundaries, or workflow/governance violations. Do NOT rubber-stamp.
+
+Return verdict as one of: APPROVE, MINOR, MAJOR.
+
+Required output format:
+1. Verdict
+2. Ready for user approval: Yes/No
+3. Retrieval adequacy: adequate/insufficient
+4. Top blockers (numbered)
+5. Critical findings
+6. High findings
+7. Medium findings
+8. Low findings
+9. Required revisions before user approval
+
+Context:
+- Repository: workspace-hub
+- Review type: plan-stage adversarial re-review
+- Focus on whether the revised plan is now actually approval-ready.
+
+GitHub issue metadata:
+- Issue: #2018
+- Title: feat: agent bypass resistance -- enforce workflow with technical gates, not text instructions
+- URL: https://github.com/vamseeachanta/workspace-hub/issues/2018
+- Labels: priority:high, cat:engineering, cat:harness, domain:workflow, status:plan-review
+
+GitHub issue body:
+## Mission: Agents must follow the workflow without exceptions
+
+### Current State
+- Review compliance at 4% (#2012)
+- Text-based instructions in CLAUDE.md and AGENTS.md get bypassed over time
+- Agents (all of them) act like humans who want to get shit done and skip the hard parts
+- Plan gate and commit gate testing in progress (#1876)
+
+### Core Insight
+> "Even hermes is not confident LLM text will make it adhere to it -- overtime agents just bypass"
+
+The problem is fundamental: LLMs optimize for task completion, not process adherence. Telling an agent to follow rules is like telling a developer to write tests -- it happens sometimes, not always.
+
+### Required: Infrastructure Enforcement
+
+Text instructions MUST be backed by technical enforcement:
+
+1. **Pre-commit hook** -- blocks commits without plan approval marker
+2. **CI gate** -- rejects PRs without cross-review evidence
+3. **Agent prefill** -- injects workflow constraints into session context
+4. **Compliance dashboard** -- tracks and alerts on violations
+5. **Auto-rollback** -- reverts commits that bypass gates
+
+### Why This Matters
+Without enforcement mode, every single artifact produced is potentially lower quality. The 3-agent review system only works if agents actually use it.
+
+### Acceptance Criteria
+- [ ] Pre-commit hook blocks 100% of non-compliant commits
+- [ ] CI pipeline rejects PRs without review sign-off
+- [ ] Compliance rate > 80% (from current 4%)
+- [ ] Zero engineering commits without plan review for 30+ days
+- [ ] All agents tested: Hermes, Claude Code, Codex, Gemini
+
+### Notes
+- #1876 covers the implementation details
+- #2012 tracks the compliance audit backlog
+- This is the PRIORITY for any serious engineering work
+
+### Related
+- #1876 (Enforce engineering workflow via Hermes prefill + Claude Code hooks)
+- #2012 (Review backlog audit - 4% compliance)
+- docs/standards/HARD-STOP-POLICY.md
+- docs/standards/AI_REVIEW_ROUTING_POLICY.md
+
+Plan under review (docs/plans/2026-04-13-issue-2018-agent-bypass-resistance-technical-gates.md):
+# Plan for #2018: agent bypass resistance -- enforce workflow with technical gates, not text instructions
+
+> **Status:** draft
+> **Complexity:** T3
+> **Date:** 2026-04-13
+> **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2018
+> **Review artifacts:** scripts/review/results/2026-04-14-plan-2018-codex.md | scripts/review/results/2026-04-14-plan-2018-gemini.md
+
+---
+
+## Resource Intelligence Summary
+
+### Existing repo code
+- Found: `.claude/hooks/plan-approval-gate.sh` is the runtime write gate and currently permits several bypass-sensitive environment variables and broad safe-path exemptions.
+- Found: `scripts/enforcement/require-plan-approval.sh` is the pre-commit gate and currently excludes multiple control-plane paths from implementation detection.
+- Found: `scripts/enforcement/require-review-on-push.sh` is the push/review gate and must remain in the effective fail-fast chain.
+- Found: `.claude/hooks/cross-review-gate.sh` is a separate review-enforcement surface that this parent plan must account for instead of treating review as push-only.
+- Found: `.github/workflows/enforcement-gate.yml` is the CI/PR enforcement surface and is required retrieval for any claim of end-to-end bypass resistance.
+- Found: `scripts/enforcement/compliance-dashboard.sh` already exists as an advisory compliance surface; this plan must explicitly decide whether dashboarding remains advisory or becomes a stronger control signal.
+- Found: `tests/work-queue/test_session_governor.py` already covers parts of runtime and review-gate behavior but does not, by itself, prove full bypass resistance.
+- Found: issue comments and related governance issues show the repo already has landed enforcement slices, but the parent issue still lacks a clean bypass matrix and closure criteria.
+
+### Standards
+- `docs/standards/HARD-STOP-POLICY.md` — hard-stop sequencing and no-implementation-before-approval policy.
+- `docs/standards/AI_REVIEW_ROUTING_POLICY.md` — default three-agent adversarial review expectations.
+- `docs/plans/README.md` — planning workflow contract and required review/approval ordering.
+- `AGENTS.md` — repo hard-gate order and TDD-first expectation.
+
+### Documents consulted
+- GitHub issue #2018 — required control set, acceptance criteria, and governance intent.
+- GitHub issue #1839 — umbrella governance/enforcement context this issue must preserve.
+- `.claude/hooks/plan-approval-gate.sh`
+- `scripts/enforcement/require-plan-approval.sh`
+- `scripts/enforcement/require-review-on-push.sh`
+- `.claude/hooks/cross-review-gate.sh`
+- `.github/workflows/enforcement-gate.yml`
+- `scripts/enforcement/compliance-dashboard.sh`
+- `docs/governance/TRUST-ARCHITECTURE.md`
+- `docs/standards/HARD-STOP-POLICY.md`
+- `docs/standards/AI_REVIEW_ROUTING_POLICY.md`
+- `tests/work-queue/test_session_governor.py`
+
+### Gaps identified
+- No single plan artifact currently maps each live enforcement surface to known bypasses, desired end state, owner issue, and required tests.
+- Current plan review evidence shows unresolved scope around rollback and agent bootstrap/prefill validation.
+- Existing tests are not yet a true bypass-resistance suite across runtime hook, commit, push, CI, and agent surfaces.
+- Sibling issue boundaries are not yet explicit enough to prevent #2018 from being closed by documentation alone.
+
+---
+
+## Artifact Map
+
+| Artifact | Path |
+|---|---|
+| This plan | `docs/plans/2026-04-13-issue-2018-agent-bypass-resistance-technical-gates.md` |
+| Runtime plan gate | `.claude/hooks/plan-approval-gate.sh` |
+| Commit gate | `scripts/enforcement/require-plan-approval.sh` |
+| Push/review gate | `scripts/enforcement/require-review-on-push.sh` |
+| Cross-review hook | `.claude/hooks/cross-review-gate.sh` |
+| CI gate | `.github/workflows/enforcement-gate.yml` |
+| Compliance dashboard | `scripts/enforcement/compliance-dashboard.sh` |
+| Existing governance tests | `tests/work-queue/test_session_governor.py` |
+| Planned new/expanded tests | `tests/enforcement/` or `tests/work-queue/` |
+| Trust contract | `docs/governance/TRUST-ARCHITECTURE.md` |
+| Planning index update | `docs/plans/README.md` |
+
+---
+
+## Deliverable
+
+A parent enforcement plan for #2018 that enumerates all material bypass paths across runtime hooks, commit/push gates, CI, approval-state signaling, and agent bootstrap surfaces; assigns each path to a concrete closure or delegated child issue; and defines the functional tests required before the repo can claim meaningful bypass resistance.
+
+---
+
+## Pseudocode
+
+```text
+retrieve all live enforcement surfaces and current issue comments
+build bypass matrix with rows for:
+    runtime hook
+    pre-commit
+    pre-push
+    cross-review hook
+    CI / PR gate
+    approval-marker / label-state spoofing
+    env-var bypasses
+    safe-path abuse
+    manual git/manual shell path
+    agent bootstrap / prefill for Hermes, Claude, Codex, Gemini
+for each row:
+    record current control
+    record known bypass / weakness
+    define desired target state
+    define owning issue or child issue
+    define falsifiable test / evidence required
+resolve whether rollback is implemented here or explicitly delegated to a mandatory child issue
+define sibling-boundary table against #1839 and adjacent enforcement issues
+define parent completion criteria based on closed bypass paths and passing tests, not document existence
+```
+
+---
+
+## Files to Change
+
+| Action | Path | Reason |
+|---|---|---|
+| Rewrite | `docs/plans/2026-04-13-issue-2018-agent-bypass-resistance-technical-gates.md` | make the parent plan evidence-backed and bypass-oriented |
+| Update | `docs/plans/README.md` | keep plan status/index aligned |
+| Update (if needed) | `docs/governance/TRUST-ARCHITECTURE.md` | align wording only if runtime semantics change |
+| Planned implementation surface | `.claude/hooks/plan-approval-gate.sh` | runtime hook hardening |
+| Planned implementation surface | `scripts/enforcement/require-plan-approval.sh` | pre-commit hardening |
+| Planned implementation surface | `scripts/enforcement/require-review-on-push.sh` | push/review hardening |
+| Planned implementation surface | `.claude/hooks/cross-review-gate.sh` | review-enforcement alignment |
+| Planned implementation surface | `.github/workflows/enforcement-gate.yml` | CI gate alignment |
+| Planned implementation surface | `scripts/enforcement/compliance-dashboard.sh` | compliance measurement role clarified |
+| Planned test surface | `tests/work-queue/test_session_governor.py` or `tests/enforcement/` | functional bypass-resistance tests |
+
+---
+
+## TDD Test List
+
+| Test name | What it verifies | Expected input | Expected output |
+|---|---|---|---|
+| `test_runtime_write_blocked_without_marker` | runtime write gate blocks non-safe implementation writes without approval | write attempt fixture | blocked |
+| `test_control_plane_safe_path_cannot_mask_bypass` | control-plane path exemptions cannot be abused to bypass enforcement intent | path fixture touching exempt/control-plane paths | explicit allowed/blocked result |
+| `test_precommit_blocks_unapproved_implementation_change` | strict pre-commit gate blocks qualifying changes without approval evidence | staged change fixture | commit blocked |
+| `test_prepush_blocks_missing_review_evidence` | push gate blocks missing review evidence | push fixture | push blocked |
+| `test_ci_gate_rejects_missing_plan_or_review` | PR/CI gate enforces same invariants as local gates | CI fixture | CI failure |
+| `test_env_var_bypass_behavior_is_explicit` | env-var bypasses are either rejected or explicitly scoped/logged | env-var matrix | deterministic behavior |
+| `test_self_approved_marker_spoofing_rejected` | stale/self-approved marker spoofing does not satisfy gate | spoofed marker fixture | rejected |
+| `test_agent_bootstrap_surfaces_receive_constraints` | Hermes/Claude/Codex/Gemini bootstrap surfaces carry workflow constraints | provider-specific config/prompt fixtures | explicit references present |
+| `test_rollback_behavior_or_delegation_is_explicit` | rollback is either implemented/testable or formally delegated to a mandatory child issue | rollback decision fixture | explicit pass/fail outcome |
+
+---
+
+## Acceptance Criteria
+
+- [ ] Bypass matrix exists and covers runtime hook, pre-commit, pre-push, cross-review hook, CI, approval marker/label drift, env-var bypasses, safe-path abuse, manual git path, and agent bootstrap surfaces.
+- [ ] Each bypass row has a current control, known weakness, desired target state, owner issue, and required test/evidence.
+- [ ] Rollback is no longer an open question: it is either concretely designed here or explicitly delegated to a mandatory child issue before approval.
+- [ ] Parent/sibling issue boundary table exists and makes clear what #2018 still owns after related enforcement issues.
+- [ ] Functional enforcement tests are defined for runtime, git, CI, env-var, spoofing, and provider bootstrap behavior.
+- [ ] Plan review state is fully reconciled with review artifacts and GitHub labels before implementation begins.
+
+---
+
+## Adversarial Review Summary
+
+| Provider | Verdict | Key findings |
+|---|---|---|
+| Codex | MAJOR | Plan is too inventory/document centric; missing bypass matrix, missing live retrieval from CI/review/dashboard surfaces, rollback unresolved |
+| Gemini | MAJOR | Plan acts like meta-plan instead of implementation-grade enforcement plan; missing agent-prefill, CI, rollback, and functional TDD |
+
+**Overall result:** MAJOR — not approval-ready
+
+Revisions required before approval:
+- replace inventory framing with bypass-closure framing
+- add missing live enforcement retrieval
+- replace document-only TDD with functional enforcement tests
+- resolve rollback and sibling-boundary ownership
+
+---
+
+## Risks and Open Questions
+
+- **Risk:** CI/local parity can drift even if local hooks look strict; CI must be part of the planned control set.
+- **Risk:** broad safe-path or env-var exceptions can leave nominally “strict” enforcement advisory in practice.
+- **Open:** none for approval readiness; rollback and ownership must be resolved before this plan returns to review.
+
+---
+
+## Complexity: T3
+
+**T3** — cross-surface enforcement/governance plan spanning runtime hooks, git gates, CI, compliance measurement, and multi-agent bootstrap behavior.
+
+
+Review questions — address ALL:
+1. Did the revision resolve the prior MAJOR blockers in a concrete way?
+2. Is retrieval now adequate for the issue class?
+3. Are files-to-change, TDD, acceptance criteria, and risks concrete and falsifiable?
+4. Are there still unresolved scope/governance/status inconsistencies that should block approval?
+5. Should this revised plan now be approved, revised again, or split?
+warning: Codex's Linux sandbox uses bubblewrap and needs access to create user namespaces.
+codex
+I’m reviewing the revised plan against the repo’s workflow contracts and the issue’s stated acceptance criteria. First step is to verify whether the plan text actually closes the prior MAJOR gaps or only restates them in cleaner language.
+2026-04-15T03:52:21.210859Z ERROR codex_core::tools::router: error=exec_command failed for `/bin/bash -lc "pwd && sed -n '1,240p' docs/plans/2026-04-13-issue-2018-agent-bypass-resistance-technical-gates.md"`: CreateProcess { message: "Codex(Sandbox(Denied { output: ExecToolCallOutput { exit_code: 1, stdout: StreamOutput { text: \"\", truncated_after_lines: None }, stderr: StreamOutput { text: \"bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted\\n\", truncated_after_lines: None }, aggregated_output: StreamOutput { text: \"bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted\\n\", truncated_after_lines: None }, duration: 0ns, timed_out: false }, network_policy_decision: None }))" }
+2026-04-15T03:52:21.210892Z ERROR codex_core::tools::router: error=exec_command failed for `/bin/bash -lc "sed -n '1,240p' docs/plans/README.md"`: CreateProcess { message: "Codex(Sandbox(Denied { output: ExecToolCallOutput { exit_code: 1, stdout: StreamOutput { text: \"\", truncated_after_lines: None }, stderr: StreamOutput { text: \"bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted\\n\", truncated_after_lines: None }, aggregated_output: StreamOutput { text: \"bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted\\n\", truncated_after_lines: None }, duration: 0ns, timed_out: false }, network_policy_decision: None }))" }
+2026-04-15T03:52:21.210926Z ERROR codex_core::tools::router: error=exec_command failed for `/bin/bash -lc "sed -n '1,240p' docs/standards/HARD-STOP-POLICY.md"`: CreateProcess { message: "Codex(Sandbox(Denied { output: ExecToolCallOutput { exit_code: 1, stdout: StreamOutput { text: \"\", truncated_after_lines: None }, stderr: StreamOutput { text: \"bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted\\n\", truncated_after_lines: None }, aggregated_output: StreamOutput { text: \"bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted\\n\", truncated_after_lines: None }, duration: 0ns, timed_out: false }, network_policy_decision: None }))" }
+2026-04-15T03:52:21.224557Z ERROR codex_core::tools::router: error=exec_command failed for `/bin/bash -lc "sed -n '1,240p' docs/standards/AI_REVIEW_ROUTING_POLICY.md"`: CreateProcess { message: "Codex(Sandbox(Denied { output: ExecToolCallOutput { exit_code: 1, stdout: StreamOutput { text: \"\", truncated_after_lines: None }, stderr: StreamOutput { text: \"bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted\\n\", truncated_after_lines: None }, aggregated_output: StreamOutput { text: \"bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted\\n\", truncated_after_lines: None }, duration: 0ns, timed_out: false }, network_policy_decision: None }))" }
+codex
+Shell access is blocked in this session, so I’m switching to the Node REPL to read the governing docs directly from disk. I’m checking whether the revised plan now contains executable ownership and falsifiable closure criteria, not just a better inventory.
+exec
+js_repl in /mnt/local-analysis/workspace-hub
+2026-04-15T03:52:27.881411Z ERROR codex_core::tools::router: error=js_repl kernel exited unexpectedly
+
+js_repl diagnostics: {"reason":"stdout_eof","stream_error":null,"kernel_pid":3401654,"kernel_status":"exited(code=1)","kernel_stderr_tail":"bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted"}
+ exited 1 in 72ms:
+js_repl kernel exited unexpectedly
+
+js_repl diagnostics: {"reason":"stdout_eof","stream_error":null,"kernel_pid":3401654,"kernel_status":"exited(code=1)","kernel_stderr_tail":"bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted"}
+codex
+1. Verdict
+
+MAJOR
+
+2. Ready for user approval: Yes/No
+
+No
+
+3. Retrieval adequacy: adequate/insufficient
+
+insufficient
+
+4. Top blockers (numbered)
+
+1. The revision is still a meta-plan: it defines a future bypass matrix, boundary table, and rollback decision, but does not actually include those artifacts or concrete ownership decisions now.
+2. The plan still leaves rollback unresolved. “Either designed here or delegated” is not a decision; it is an approval blocker restated as acceptance criteria.
+3. Agent bootstrap/prefill coverage remains under-retrieved and under-scoped. The plan names Hermes/Claude/Codex/Gemini, but it does not identify the actual provider-specific files/configs/prompts to change.
+4. The deliverable is mis-scoped for user approval: it centers on rewriting the plan and clarifying ownership, not on an implementation-ready path to satisfy #2018’s issue-level acceptance criteria.
+5. The plan text still contains internal evidence that it is not review-ready: the adversarial review summary remains `MAJOR`, the status is still `draft`, and the risks/open questions admit unresolved approval blockers.
+
+5. Critical findings
+
+1. The prior MAJOR blocker was “inventory/document centric instead of bypass-closure centric.” The revision improved framing, but it still does not close the gap concretely. The “Pseudocode” and “Acceptance Criteria” say a bypass matrix and sibling-boundary table must exist, but the plan itself does not supply them. That means the core missing artifacts remain missing.
+2. Rollback is still unresolved in the plan text. The issue body lists auto-rollback as required infrastructure enforcement. The revised plan only says rollback must be “designed here or delegated,” which is not approval-ready scope control.
+3. Retrieval is not yet adequate for the claimed multi-agent/bootstrap scope. The plan asserts provider bootstrap coverage, but the Resource Intelligence section does not retrieve any Hermes/Claude/Codex/Gemini bootstrap artifacts. Without that, the plan cannot credibly claim end-to-end bypass resistance coverage.
+4. The plan is not implementation-ready against #2018’s stated mission. The deliverable is “a parent enforcement plan” rather than a concrete execution plan for the enforcement feature set. That is still too abstract for user approval under a hard-gated planning workflow.
+
+6. High findings
+
+1. The TDD section is better, but it is still incomplete relative to the issue contract. It does not explicitly cover a distinct cross-review-hook test surface, dashboard/alert logic validation, or metric integrity for the `>80%` compliance and `30+ days` criteria.
+2. The files-to-change section is still ambiguous about whether #2018 will produce code changes now or just planning/docs changes first. That keeps the closure boundary loose and risks “closing by documentation.”
+3. The acceptance criteria are partly approval criteria for the plan artifact and partly eventual implementation outcomes for the issue. Those two levels are mixed together, which makes sign-off ambiguous.
+4. The plan references owner issues/child issues as required per bypass row, but no actual child issue mapping is present. That leaves delegation unverifiable and creates scope drift risk with #1876, #2012, and #1839.
+
+7. Medium findings
+
+1. `test_manual_git/manual shell path` is mentioned in pseudocode but not reflected as a named test in the TDD table. That leaves one stated bypass class without explicit test coverage.
+2. `test_agent_bootstrap_surfaces_receive_constraints` only checks presence of references in fixtures, not that those constraints are authoritative, injected at runtime, and resistant to omission/bypass.
+3. “Update `docs/governance/TRUST-ARCHITECTURE.md` if needed” is too loose for a high-stakes enforcement issue. Documentation edits should be clearly secondary to code/test enforcement changes.
+
+8. Low findings
+
+1. Keeping `Status: draft` and embedding the previous `Overall result: MAJOR` inside the plan is not just cosmetic; it accurately signals non-readiness. But if the plan is resubmitted for approval, those fields must be reconciled.
+
+9. Required revisions before user approval
+
+1. Add the actual bypass matrix to this plan, not as a future deliverable. Each row should include current control, concrete bypass, target state, exact owner issue, and exact proof/test.
+2. Add the actual sibling-boundary table now, with explicit ownership splits for `#2018`, `#1876`, `#2012`, and `#1839`.
+3. Make a hard rollback decision now: either include rollback in #2018 with concrete files/tests, or explicitly move it to a named mandatory child issue and remove it from this issue’s immediate implementation scope.
+4. Retrieve and cite the real bootstrap/prefill surfaces for Hermes, Claude Code, Codex, and Gemini, then map each one to planned file changes and tests.
+5. Rewrite the deliverable/tasking so this is an implementation-ready plan, not a plan-to-clarify-the-plan.
+6. Expand TDD so every bypass class named in pseudocode has a corresponding concrete test, including manual git/manual shell path, cross-review hook behavior, and compliance metric/dashboard correctness.
+7. Reconcile plan status and review state so the document no longer self-identifies as unresolved at the point it is sent for approval.
+tokens used
+115,553
+1. Verdict
+
+MAJOR
+
+2. Ready for user approval: Yes/No
+
+No
+
+3. Retrieval adequacy: adequate/insufficient
+
+insufficient
+
+4. Top blockers (numbered)
+
+1. The revision is still a meta-plan: it defines a future bypass matrix, boundary table, and rollback decision, but does not actually include those artifacts or concrete ownership decisions now.
+2. The plan still leaves rollback unresolved. “Either designed here or delegated” is not a decision; it is an approval blocker restated as acceptance criteria.
+3. Agent bootstrap/prefill coverage remains under-retrieved and under-scoped. The plan names Hermes/Claude/Codex/Gemini, but it does not identify the actual provider-specific files/configs/prompts to change.
+4. The deliverable is mis-scoped for user approval: it centers on rewriting the plan and clarifying ownership, not on an implementation-ready path to satisfy #2018’s issue-level acceptance criteria.
+5. The plan text still contains internal evidence that it is not review-ready: the adversarial review summary remains `MAJOR`, the status is still `draft`, and the risks/open questions admit unresolved approval blockers.
+
+5. Critical findings
+
+1. The prior MAJOR blocker was “inventory/document centric instead of bypass-closure centric.” The revision improved framing, but it still does not close the gap concretely. The “Pseudocode” and “Acceptance Criteria” say a bypass matrix and sibling-boundary table must exist, but the plan itself does not supply them. That means the core missing artifacts remain missing.
+2. Rollback is still unresolved in the plan text. The issue body lists auto-rollback as required infrastructure enforcement. The revised plan only says rollback must be “designed here or delegated,” which is not approval-ready scope control.
+3. Retrieval is not yet adequate for the claimed multi-agent/bootstrap scope. The plan asserts provider bootstrap coverage, but the Resource Intelligence section does not retrieve any Hermes/Claude/Codex/Gemini bootstrap artifacts. Without that, the plan cannot credibly claim end-to-end bypass resistance coverage.
+4. The plan is not implementation-ready against #2018’s stated mission. The deliverable is “a parent enforcement plan” rather than a concrete execution plan for the enforcement feature set. That is still too abstract for user approval under a hard-gated planning workflow.
+
+6. High findings
+
+1. The TDD section is better, but it is still incomplete relative to the issue contract. It does not explicitly cover a distinct cross-review-hook test surface, dashboard/alert logic validation, or metric integrity for the `>80%` compliance and `30+ days` criteria.
+2. The files-to-change section is still ambiguous about whether #2018 will produce code changes now or just planning/docs changes first. That keeps the closure boundary loose and risks “closing by documentation.”
+3. The acceptance criteria are partly approval criteria for the plan artifact and partly eventual implementation outcomes for the issue. Those two levels are mixed together, which makes sign-off ambiguous.
+4. The plan references owner issues/child issues as required per bypass row, but no actual child issue mapping is present. That leaves delegation unverifiable and creates scope drift risk with #1876, #2012, and #1839.
+
+7. Medium findings
+
+1. `test_manual_git/manual shell path` is mentioned in pseudocode but not reflected as a named test in the TDD table. That leaves one stated bypass class without explicit test coverage.
+2. `test_agent_bootstrap_surfaces_receive_constraints` only checks presence of references in fixtures, not that those constraints are authoritative, injected at runtime, and resistant to omission/bypass.
+3. “Update `docs/governance/TRUST-ARCHITECTURE.md` if needed” is too loose for a high-stakes enforcement issue. Documentation edits should be clearly secondary to code/test enforcement changes.
+
+8. Low findings
+
+1. Keeping `Status: draft` and embedding the previous `Overall result: MAJOR` inside the plan is not just cosmetic; it accurately signals non-readiness. But if the plan is resubmitted for approval, those fields must be reconciled.
+
+9. Required revisions before user approval
+
+1. Add the actual bypass matrix to this plan, not as a future deliverable. Each row should include current control, concrete bypass, target state, exact owner issue, and exact proof/test.
+2. Add the actual sibling-boundary table now, with explicit ownership splits for `#2018`, `#1876`, `#2012`, and `#1839`.
+3. Make a hard rollback decision now: either include rollback in #2018 with concrete files/tests, or explicitly move it to a named mandatory child issue and remove it from this issue’s immediate implementation scope.
+4. Retrieve and cite the real bootstrap/prefill surfaces for Hermes, Claude Code, Codex, and Gemini, then map each one to planned file changes and tests.
+5. Rewrite the deliverable/tasking so this is an implementation-ready plan, not a plan-to-clarify-the-plan.
+6. Expand TDD so every bypass class named in pseudocode has a corresponding concrete test, including manual git/manual shell path, cross-review hook behavior, and compliance metric/dashboard correctness.
+7. Reconcile plan status and review state so the document no longer self-identifies as unresolved at the point it is sent for approval.

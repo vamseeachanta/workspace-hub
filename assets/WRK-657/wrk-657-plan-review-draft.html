@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WRK-657 Plan Review (Draft)</title>
+  <style>
+    :root {
+      --bg: #f0f4f8;
+      --panel: #ffffff;
+      --ink: #1a2332;
+      --muted: #4a5568;
+      --accent: #2563eb;
+      --accent-2: #7c3aed;
+      --line: #d1d5db;
+      --warn: #b45309;
+      --good: #166534;
+      --danger: #991b1b;
+      --tag-timeout: #7c3aed;
+      --tag-cleanup: #0369a1;
+      --tag-test: #166534;
+      --shadow: 0 4px 16px rgba(26, 35, 50, 0.07);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.55;
+    }
+
+    /* ── Hero ── */
+    .hero {
+      padding: 44px 24px 28px;
+      background: linear-gradient(135deg, #1e3a5f 0%, #1a2d4a 100%);
+      color: #e2e8f0;
+      border-bottom: 3px solid #2563eb;
+    }
+    .hero-inner { max-width: 1100px; margin: 0 auto; }
+    .eyebrow {
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-size: 0.7rem;
+      color: #93c5fd;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    h1 {
+      margin: 0 0 12px;
+      font-size: clamp(1.7rem, 3.5vw, 2.8rem);
+      font-weight: 700;
+      color: #f0f4ff;
+      line-height: 1.1;
+    }
+    .lede { max-width: 70ch; color: #94a3b8; font-size: 1rem; margin: 0 0 18px; }
+    .meta { display: flex; flex-wrap: wrap; gap: 8px; }
+    .pill {
+      border: 1px solid rgba(255,255,255,0.15);
+      background: rgba(255,255,255,0.08);
+      color: #cbd5e1;
+      padding: 5px 12px;
+      border-radius: 999px;
+      font-size: 0.82rem;
+    }
+    .pill.high  { background: rgba(239,68,68,0.2); border-color: rgba(239,68,68,0.4); color: #fca5a5; }
+    .pill.route { background: rgba(37,99,235,0.2); border-color: rgba(37,99,235,0.4); color: #93c5fd; }
+    .pill.stage { background: rgba(124,58,237,0.2); border-color: rgba(124,58,237,0.4); color: #c4b5fd; }
+
+    /* ── Layout ── */
+    .content { max-width: 1100px; margin: 0 auto; padding: 28px 24px 60px; display: grid; gap: 20px; }
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    @media (max-width: 720px) { .two-col { grid-template-columns: 1fr; } }
+
+    /* ── Panel ── */
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+      padding: 22px 24px;
+    }
+    .panel h2 {
+      margin: 0 0 14px;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      font-weight: 700;
+    }
+    .panel p, .panel li { font-size: 0.95rem; color: var(--ink); }
+    .panel ul { padding-left: 18px; margin: 0; }
+    .panel ul li { margin-bottom: 5px; }
+
+    /* ── Alert panels ── */
+    .alert {
+      border-radius: 10px;
+      padding: 16px 20px;
+      border-left: 5px solid;
+      font-size: 0.94rem;
+    }
+    .alert-warn  { background: #fffbeb; border-color: #f59e0b; color: #78350f; }
+    .alert-good  { background: #f0fdf4; border-color: #22c55e; color: #14532d; }
+    .alert-info  { background: #eff6ff; border-color: #3b82f6; color: #1e3a8a; }
+    .alert-danger { background: #fff1f2; border-color: #f43f5e; color: #881337; }
+
+    /* ── Tables ── */
+    table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+    th, td { text-align: left; padding: 9px 10px; border-top: 1px solid var(--line); vertical-align: top; }
+    th { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.07em; color: var(--muted); font-weight: 600; border-top: none; }
+    tr:first-child td { border-top: none; }
+    td code { background: #f1f5f9; padding: 2px 6px; border-radius: 4px; font-size: 0.85rem; font-family: "SFMono-Regular", Consolas, monospace; color: #1e40af; }
+
+    /* ── Phase timeline ── */
+    .phases { display: grid; gap: 14px; }
+    .phase {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 16px 18px;
+      position: relative;
+    }
+    .phase-num {
+      display: inline-block;
+      background: var(--accent);
+      color: white;
+      border-radius: 50%;
+      width: 26px; height: 26px;
+      line-height: 26px;
+      text-align: center;
+      font-weight: 700;
+      font-size: 0.82rem;
+      margin-right: 10px;
+      flex-shrink: 0;
+    }
+    .phase-header { display: flex; align-items: center; margin-bottom: 10px; }
+    .phase-title { font-weight: 600; font-size: 0.97rem; }
+    .phase ul { margin: 0; padding-left: 18px; }
+    .phase li { margin-bottom: 4px; font-size: 0.9rem; color: var(--muted); }
+    .phase li strong { color: var(--ink); }
+    .phase-1 { border-color: #bfdbfe; background: #f8faff; }
+    .phase-2 { border-color: #d9f99d; background: #f7fff0; }
+    .phase-3 { border-color: #ddd6fe; background: #faf5ff; }
+
+    /* ── Code ── */
+    pre {
+      background: #1e2939;
+      color: #e2e8f0;
+      padding: 16px;
+      border-radius: 8px;
+      overflow-x: auto;
+      font-family: "SFMono-Regular", Consolas, monospace;
+      font-size: 0.82rem;
+      line-height: 1.5;
+      margin: 10px 0 0;
+    }
+    code.inline { background: #f1f5f9; padding: 2px 6px; border-radius: 4px; font-size: 0.85rem; font-family: "SFMono-Regular", Consolas, monospace; color: #1e40af; }
+
+    /* ── Checklist ── */
+    .checklist { list-style: none; padding: 0; margin: 0; }
+    .checklist li {
+      display: flex; align-items: flex-start; gap: 10px;
+      padding: 7px 0;
+      border-bottom: 1px solid #f1f5f9;
+      font-size: 0.92rem;
+    }
+    .checklist li:last-child { border-bottom: none; }
+    .chk { width: 18px; height: 18px; border: 2px solid var(--line); border-radius: 4px; flex-shrink: 0; margin-top: 1px; }
+
+    /* ── Tag ── */
+    .tag {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .tag-timeout { background: #ede9fe; color: #6d28d9; }
+    .tag-cleanup { background: #dbeafe; color: #1d4ed8; }
+    .tag-test    { background: #dcfce7; color: #15803d; }
+    .tag-policy  { background: #fef3c7; color: #92400e; }
+
+    /* ── Footer ── */
+    footer { text-align: center; padding: 20px; font-size: 0.8rem; color: var(--muted); }
+  </style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div class="eyebrow">WRK-657 · Draft Plan Review</div>
+    <h1>Harden submit-to-claude.sh Timeout Cleanup</h1>
+    <p class="lede">
+      Force process-group teardown on timeout, surface non-zero exit codes,
+      add regression smoke tests, and align cross-review NO_OUTPUT handling.
+    </p>
+    <div class="meta">
+      <span class="pill high">Priority: HIGH</span>
+      <span class="pill route">Route B · Medium</span>
+      <span class="pill stage">Stage: Draft Plan Review</span>
+      <span class="pill">Repo: workspace-hub</span>
+      <span class="pill">Machine: ace-linux-1</span>
+      <span class="pill">Provider: claude</span>
+    </div>
+  </div>
+</div>
+
+<div class="content">
+
+  <!-- Problem -->
+  <div class="panel">
+    <h2>Problem Statement</h2>
+    <div class="alert alert-danger" style="margin-bottom:14px;">
+      <strong>Two compounding bugs in <code>submit-to-claude.sh</code>:</strong>
+      <ul style="margin:8px 0 0; padding-left:18px;">
+        <li><strong>Process leak:</strong> <code>timeout</code> sends SIGTERM to the direct <code>claude</code> child only.
+            Any sub-processes spawned by <code>claude</code> stay alive, leaking resources and leaving the
+            system in a dirty state for subsequent review runs.</li>
+        <li><strong>Silent exit-0 on failure:</strong> after every retry attempt exhausts, the script falls
+            off the end and exits 0. The <code>||&nbsp;{}</code> handler in <code>cross-review.sh</code>
+            never fires on timeout — the NO_OUTPUT classification is only reached accidentally via the
+            text regex in <code>validate-review-output.sh</code>. This makes the gate unreliable.</li>
+      </ul>
+    </div>
+    <div class="alert alert-info">
+      <strong>Related:</strong> WRK-642 and WRK-647 surfaced the wrapper cleanup regression. This WRK
+      closes the remaining gap by hardening both the process teardown and the exit-code contract.
+    </div>
+  </div>
+
+  <!-- Current vs Target -->
+  <div class="two-col">
+    <div class="panel">
+      <h2>Current Behaviour (Broken)</h2>
+      <ul>
+        <li><code>timeout N claude</code> fires → SIGTERM sent to <code>claude</code> PID only</li>
+        <li>Claude child processes remain alive (orphaned)</li>
+        <li>Script prints error message to stdout, then falls off end → <strong>exits 0</strong></li>
+        <li><code>cross-review.sh</code> <code>|| {}</code> handler never triggers on timeout</li>
+        <li>NO_OUTPUT classification is accidental (via "timed out" text in regex)</li>
+        <li>No test exercises this path</li>
+      </ul>
+    </div>
+    <div class="panel">
+      <h2>Target Behaviour (Fixed)</h2>
+      <ul>
+        <li><code>setsid timeout N claude</code> → claude runs in its own process group</li>
+        <li>Timeout fires → <code>kill&nbsp;--&nbsp;-$pgid</code> then SIGKILL after 1 s → full teardown</li>
+        <li>Script exits <strong>124</strong> on timeout, <strong>1</strong> on other failure, <strong>0</strong> on success</li>
+        <li><code>cross-review.sh</code> captures <code>claude_exit</code>; exit 124 maps to NO_OUTPUT explicitly</li>
+        <li>Smoke test proves no orphans remain after timeout</li>
+        <li>Watchdog path is observable via log lines in stderr</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Implementation phases -->
+  <div class="panel">
+    <h2>Implementation Phases</h2>
+    <div class="phases">
+
+      <div class="phase phase-1">
+        <div class="phase-header">
+          <span class="phase-num">1</span>
+          <span class="phase-title">Teardown Hardening — <code>submit-to-claude.sh</code></span>
+          <span class="tag tag-cleanup" style="margin-left:auto;">Cleanup</span>
+          <span class="tag tag-timeout" style="margin-left:6px;">Timeout</span>
+        </div>
+        <ul>
+          <li><strong>Add</strong> <code>CLAUDE_WATCHDOG_PGID=""</code> module-level variable.</li>
+          <li><strong>Add</strong> <code>cleanup_claude_watchdog()</code>: sends <code>SIGTERM</code> to the
+              full process group (<code>kill&nbsp;--&nbsp;-$pgid</code>), sleeps 1 s, then <code>SIGKILL</code>;
+              logs both steps to stderr.</li>
+          <li><strong>Modify</strong> <code>run_claude_once()</code>: if <code>setsid</code> available,
+              launch <code>setsid timeout $N claude …</code> as a background job (<code>&amp;</code>),
+              record the job PID as PGID, <code>wait $!</code>, call
+              <code>cleanup_claude_watchdog</code> on exit 124.</li>
+          <li><strong>Fallback</strong> (no <code>setsid</code>): keep existing subshell path; log a warning
+              on exit 124 that cleanup may be incomplete.</li>
+          <li><strong>Add</strong> <code>LAST_EXIT_CODE</code> tracking in retry loop; replace fall-off-end
+              with <code>exit "${LAST_EXIT_CODE:-1}"</code>.</li>
+          <li><strong>Exit codes:</strong> 0 = valid review, 124 = watchdog timeout, 1 = other failure.</li>
+        </ul>
+        <pre># New structure inside run_claude_once()
+if command -v setsid &gt;/dev/null 2&gt;&amp;1; then
+  setsid timeout "$CLAUDE_TIMEOUT_SECONDS" claude … &gt;"$raw_file" 2&gt;"$err_file" &amp;
+  CLAUDE_WATCHDOG_PGID=$!
+  wait "$CLAUDE_WATCHDOG_PGID" || exit_code=$?
+else
+  ( cd "$run_dir"; timeout … claude … ) || exit_code=$?
+fi
+[[ "$exit_code" -eq 124 ]] &amp;&amp; cleanup_claude_watchdog</pre>
+      </div>
+
+      <div class="phase phase-2">
+        <div class="phase-header">
+          <span class="phase-num">2</span>
+          <span class="phase-title">Regression Smoke Tests — <code>tests/test-submit-to-claude-timeout.sh</code></span>
+          <span class="tag tag-test" style="margin-left:auto;">TDD First</span>
+        </div>
+        <ul>
+          <li><strong>Written before Phase 1 implementation</strong> (TDD gate).</li>
+          <li>Uses a fake <code>claude</code> stub (sleeps indefinitely or exits immediately) placed earlier in
+              <code>$PATH</code> — no real Claude CLI required.</li>
+          <li><strong>Test 1:</strong> wrapper exits 124 when <code>CLAUDE_TIMEOUT_SECONDS=2</code> and stub
+              sleeps forever.</li>
+          <li><strong>Test 2:</strong> no process named <code>claude</code> remains in the stub's PGID after
+              timeout (<code>pgrep&nbsp;-g&nbsp;$pgid</code> returns empty).</li>
+          <li><strong>Test 3:</strong> result file contains <code>WATCHDOG</code> marker on timeout.</li>
+          <li><strong>Test 4:</strong> wrapper exits 0 when stub outputs a valid JSON review.</li>
+          <li><strong>Test 5:</strong> wrapper exits 1 when stub exits 1 immediately (non-timeout failure).</li>
+        </ul>
+      </div>
+
+      <div class="phase phase-3">
+        <div class="phase-header">
+          <span class="phase-num">3</span>
+          <span class="phase-title">Policy Notes — <code>cross-review.sh</code></span>
+          <span class="tag tag-policy" style="margin-left:auto;">Policy</span>
+        </div>
+        <ul>
+          <li>Replace the <code>||&nbsp;{&nbsp;echo "# Claude review failed"&nbsp;}</code> pattern with
+              explicit exit-code capture:
+              <code>claude_exit=0;&nbsp;…&nbsp;||&nbsp;claude_exit=$?</code></li>
+          <li>If <code>claude_exit&nbsp;-eq&nbsp;124</code>: call <code>preserve_raw_result</code>
+              (keeps the WATCHDOG log), write
+              <code>"# Claude returned NO_OUTPUT (watchdog timeout)"</code>
+              — skip overwriting result_file with a generic stub.</li>
+          <li>If <code>claude_exit&nbsp;-ne&nbsp;0</code> and not 124: existing stub write behaviour.</li>
+          <li><code>validate-review-output.sh</code> already classifies <code>"timed out"</code>
+              as NO_OUTPUT — no change needed there.</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Files changed -->
+  <div class="panel">
+    <h2>Files Changed</h2>
+    <table>
+      <thead><tr><th>File</th><th>Change</th><th>Phase</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><code>scripts/review/submit-to-claude.sh</code></td>
+          <td>Process group teardown, setsid path, exit codes, watchdog logging</td>
+          <td>1</td>
+        </tr>
+        <tr>
+          <td><code>scripts/review/tests/test-submit-to-claude-timeout.sh</code></td>
+          <td>New — 5 regression tests using fake claude stub</td>
+          <td>2 (first)</td>
+        </tr>
+        <tr>
+          <td><code>scripts/review/cross-review.sh</code></td>
+          <td>Capture claude_exit; map 124 → NO_OUTPUT explicitly; preserve raw watchdog log</td>
+          <td>3</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="alert alert-good" style="margin-top:12px;">
+      <strong>Not changed:</strong> <code>validate-review-output.sh</code> (regex already handles "timed out"),
+      <code>submit-to-codex.sh</code>, <code>submit-to-gemini.sh</code>, retry logic, prompt, schema.
+    </div>
+  </div>
+
+  <!-- TDD gate -->
+  <div class="panel">
+    <h2>TDD Gate</h2>
+    <div class="alert alert-warn" style="margin-bottom:12px;">
+      Tests must be written and confirmed failing <strong>before</strong> any implementation changes are made
+      to <code>submit-to-claude.sh</code> or <code>cross-review.sh</code>.
+    </div>
+    <ul>
+      <li>Test file is created first with all 5 assertions.</li>
+      <li>Run against unmodified script → confirm failures on tests 1, 2, 3, 5 (exit-code and cleanup).</li>
+      <li>Tests 4 (success path) should already pass — confirms test harness is valid before starting.</li>
+      <li>After Phase 1 implementation: all 5 tests pass.</li>
+      <li>After Phase 3 (cross-review.sh): integration smoke run confirms NO_OUTPUT mapping.</li>
+    </ul>
+  </div>
+
+  <!-- Acceptance criteria -->
+  <div class="panel">
+    <h2>Acceptance Criteria</h2>
+    <ul class="checklist">
+      <li><span class="chk"></span><code>submit-to-claude.sh</code> kills the child process group when timeout fires and logs the teardown steps</li>
+      <li><span class="chk"></span>Exit codes distinguish: 0 = valid review, 124 = timeout, 1 = other failure</li>
+      <li><span class="chk"></span>5 regression tests pass: timeout exit, no orphans, WATCHDOG log, success path, failure path</li>
+      <li><span class="chk"></span><code>cross-review.sh</code> Claude branch explicitly maps exit 124 → NO_OUTPUT and preserves watchdog log in raw file</li>
+      <li><span class="chk"></span>Legal scan passes (no sensitive identifiers introduced)</li>
+    </ul>
+  </div>
+
+  <!-- Risks -->
+  <div class="two-col">
+    <div class="panel">
+      <h2>Risks &amp; Mitigations</h2>
+      <table>
+        <thead><tr><th>Risk</th><th>Mitigation</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><code>setsid</code> not available on some systems</td>
+            <td>Fallback to existing subshell path with log warning; test matrix includes no-setsid case</td>
+          </tr>
+          <tr>
+            <td>PGID from background job differs from expected</td>
+            <td>Verify with <code>ps -o pgid= -p $!</code> in tests; assert PGID == bg PID under setsid</td>
+          </tr>
+          <tr>
+            <td>sleep 1 in cleanup is too short for slow claude shutdown</td>
+            <td>SIGKILL after 1 s is a hard kill — acceptable; real claude runs don't need graceful shutdown here</td>
+          </tr>
+          <tr>
+            <td>cross-review.sh <code>claude_exit</code> rename touches active code path</td>
+            <td>Minimal structural change — only the capture variable and the 124-branch are new</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="panel">
+      <h2>Out of Scope</h2>
+      <ul>
+        <li>Same hardening for <code>submit-to-codex.sh</code> and <code>submit-to-gemini.sh</code> — separate WRK if needed</li>
+        <li>Retry policy changes (still 2 retries with 5 s / 10 s backoff)</li>
+        <li>Cross-review Codex gate logic — not touched</li>
+        <li>Timeout value tuning (still driven by <code>CLAUDE_TIMEOUT_SECONDS</code> env var)</li>
+        <li><code>validate-review-output.sh</code> — no changes needed</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Execution order -->
+  <div class="panel">
+    <h2>Execution Order (TDD Enforced)</h2>
+    <table>
+      <thead><tr><th>#</th><th>Step</th><th>Gate</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>Write <code>test-submit-to-claude-timeout.sh</code> (all 5 tests)</td><td>Tests must fail on current code</td></tr>
+        <tr><td>2</td><td>Implement <code>submit-to-claude.sh</code> Phase 1 changes</td><td>All 5 tests pass</td></tr>
+        <tr><td>3</td><td>Implement <code>cross-review.sh</code> Phase 3 changes</td><td>Manual smoke: claude submit + cross-review path</td></tr>
+        <tr><td>4</td><td>Run full cross-review on the diff</td><td>Claude + Codex + Gemini verdicts</td></tr>
+        <tr><td>5</td><td>Legal scan</td><td>Exit 0</td></tr>
+        <tr><td>6</td><td>Commit + close WRK-657</td><td>Frontmatter updated, INDEX regenerated</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<footer>WRK-657 · Draft Plan Review · 2026-02-28 · workspace-hub · ace-linux-1</footer>
+
+</body>
+</html>

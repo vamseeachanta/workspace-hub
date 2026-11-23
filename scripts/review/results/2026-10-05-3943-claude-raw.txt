@@ -1,0 +1,72 @@
+**Verdict: MAJOR.** There are two blockers. Everything else is MINOR.
+
+I reviewed the diff text only and ran nothing. Anything below that depends on files outside the diff is marked as unverified.
+
+---
+
+## MAJOR
+
+### M1. The rewording weakens the separate approval for consequential actions
+
+You authorized removing plan approval. You did not authorize changing the approval rule for consequential actions, but the new wording does change it.
+
+`SHARED_SOUL.md` and all the runtime SOUL copies still say consequential actions need "explicit approval matching the action, destination and current scope". They also say "implementation approval alone does not authorize publication, deployment…".
+
+Many edited surfaces now add a scope qualifier instead:
+
+- `AGENTS.md`: "consequential actions need matching authority **when not already authorized**"
+- `engineering-issue-workflow/SKILL.md`: "Consequential actions **outside task scope** require…"
+- `gh-work-planning/SKILL.md` (STEP 5 area and overnight rule 7): "outside that scope"
+- `issue-planning-mode/SKILL.md`, `docs/plans/README.md`, `data-execution-results-kanban.md`: "outside existing authority"
+- `HARD-STOP-POLICY.md` (batch section): "consequential actions outside that authority wait"
+- `shared-risk-workflow/SKILL.md`: "matching existing action authority"
+
+Read together with "the task request authorizes implementation", these lines say a consequential action *inside* task scope needs nothing more. "Work issue #N" could then be read as covering push, close and publication, since the route ends in commit/push/close. That contradicts the unchanged SHARED_SOUL table.
+
+The diff also removes the hook's `git push` block. That was the only mechanical check on push, even if a weak one. So the protection is gone both in text and in code.
+
+**Fix:** use one wording everywhere: *"Consequential actions (publication/push, deployment, access changes, destructive actions) require explicit authorization naming that action and destination; task or implementation authority alone does not cover them."* Add a text test that pins this clause in AGENTS.md and the skills, as already exists for SHARED_SOUL. Separately, either say plainly in the PR that the push gate is being removed, or keep a push-only check.
+
+### M2. The completeness change ships in this diff and would enforce the gate on the bulk-labeled backlog
+
+You said the completeness coupling fix is in a separate lane and not in this diff. It is in this diff: `completeness_gate_check.py`, `autoapply-completeness-label.yml` and the matching tests.
+
+There is also a behavioral regression. The removed comment says a one-time bulk-label put `gate:completeness` on the open backlog. The old docstring says the AND with `status:plan-approved` is what kept "the existing backlog… unaffected". Changing `gate_applies` to check only the opt-in label means every bulk-labeled open issue becomes subject to the gate at close. The new header comment claims "Existing unlabeled backlog is not swept", but that only covers *unlabeled* issues. The *labeled* backlog gets enforced retroactively.
+
+Separately, the `opened` trigger enrolls every new issue, including trivial ones. That may be intended, but it is a wider rollout than before.
+
+**Fix:** take these hunks out and leave them to the completeness lane. Or, if they stay here, add something that keeps the backlog out of scope, such as a cutoff date or a marker on new enrollments, plus a test showing a bulk-labeled legacy issue (`gate:completeness` without plan-approved, created before cutoff) is not enforced.
+
+---
+
+## MINOR
+
+1. **Possible broken tests in parts of files the diff doesn't show (unverified):**
+   - `test_plan_approval_gate_check*.py`: `main()` now ignores its arguments and `_run_enabled` just calls `main([])`. Any existing test that calls `main([...])` or `_run_enabled` and expects DENY or exit code 1 (repo/PR missing, admin prereqs unconfirmed, owner validation) will now get 0.
+   - `TestPlanApprovalGate` in `test_session_governor.py`: tests not shown (advisory WARN text, push-block cases) may still assert the old output.
+   - Please confirm that the full files, not just the hunks shown, pass apart from the 3 recorded baseline failures.
+2. **New vocabulary (unverified):** if a schema or constants list enumerates `action_boundary` or `reason_codes` (the existence of `SCHEMA_UNAVAILABLE` suggests one does), it needs `verify-task-authority` and `TASK_AUTHORITY_REQUIRED`. Also check that downstream code reading `approval-required` doesn't treat the new value as unknown and fail closed, or ignore it.
+3. **`governance-checkpoints.yaml`:** `plan-approval` is still `type: hard-stop` under the "Hard Stops (user must approve)" header. Make sure every consumer respects `enforced: false`. Otherwise change the type to something like `retired`/`advisory`.
+4. **Marker-Label Parity Check (unchanged job):** confirm it passes when an issue has neither marker nor label, and when a historical label exists without a marker. If it is a required check, it can still block under the new flow.
+5. **Leftover contradictions in the text:**
+   - `gh-work-execution.md` around line 27 still says "Use it only after planning is complete **and the issue is approved**."
+   - `gh-work-planning.md` still lists "ready_for_approval status" in the final-comment list and "exact CLI label-flip command" in the recovery checklist.
+   - `HARD-STOP-POLICY.md` ("will retire"), `shared-risk-workflow` ("will use / will require") and `issue-planning-mode` ("will remain retired") use future tense for things this diff already does.
+   - `HARD-STOP-POLICY.md` says "do not… weaken enforcement under this policy" in the same paragraph that carves out this retirement. Rephrase so it reads as the authorized exception.
+6. **Edits that don't belong in this change:**
+   - `docs/reports/fleet-snapshots/2026-10-05.json` rewrites hostnames in a dated historical snapshot. Drop it.
+   - `codex/AGENTS.runtime.md` re-sorts the skills list (`business/` vs `business-*`, `data/`, `workspace-hub/`). This looks like the generator sorting differently depending on the machine. Revert it, or make the generator sort deterministically, or it will keep churning between machines.
+7. **Hook noise and test portability:**
+   - The retired hook prints to stderr on every Write/Edit/Bash call. Consider printing nothing, or deregistering it in a later lane.
+   - `test_require_plan_approval.py` hardcodes `C:/Program Files/Git/bin/bash.exe` on win32 without checking it exists. Reuse `bash_executable()`'s fallback.
+8. **Dead code:** `_parse_args` is now unused and `_run_enabled` is vestigial. That's harmless, but say in the docstring that the helpers are kept only so their tests keep working.
+
+## Checked and fine
+
+- **Required-check identity:** `Plan Approval Check` keeps its job id and name, still runs both entry points, and exits 0. Nothing else in the diff changes `needs:` or required-check names.
+- **TDD, review and engineering controls:** still in place in SHARED_SOUL and HARD-STOP.
+- **Self-labeling and markers:** the never-self-label and no-manufactured-markers rules are kept.
+- **Planning-only requests:** the boundary for requests that ask for planning only is kept.
+- **Unresolved domain decisions:** these still block implementation.
+
+Once M1 and M2 are fixed, I expect this to land at MINOR.

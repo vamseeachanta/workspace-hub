@@ -1,0 +1,8 @@
+{"ts": "2026-04-01T10:00:00Z", "hook": "post", "tool": "Bash", "hermes_tool": "Bash", "project": "workspace-hub", "session_id": "s1", "skill_name": "foo/alpha"}
+{"ts": "2026-04-01T10:05:00Z", "hook": "post", "tool": "Read", "hermes_tool": "Read", "project": "workspace-hub", "session_id": "s1", "skill_name": "foo/alpha", "file": "/home/user/secret.txt"}
+{"ts": "2026-04-02T11:00:00Z", "hook": "post", "tool": "Bash", "hermes_tool": "Bash", "project": "workspace-hub", "session_id": "s2", "skill_name": "foo/alpha"}
+{"ts": "2026-04-03T12:00:00Z", "hook": "post", "tool": "Grep", "hermes_tool": "Grep", "project": "workspace-hub", "session_id": "s3", "skill_name": "bar/beta"}
+{"ts": "2026-04-04T13:00:00Z", "hook": "post", "tool": "Bash", "hermes_tool": "Bash", "project": "workspace-hub", "session_id": "s3"}
+{"ts": "2026-04-05T14:00:00Z", "hook": "post", "tool": "Write", "hermes_tool": "Write", "project": "workspace-hub", "session_id": "s4"}
+not-a-json-line — intentionally malformed, MUST be silently skipped per AC
+{"ts": "2026-04-05T15:00:00Z", "hook": "post", "tool": "Edit", "hermes_tool": "Edit", "project": "workspace-hub", "session_id": "s4", "skill_name": "foo/alpha"}

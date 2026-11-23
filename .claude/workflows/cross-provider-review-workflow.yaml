@@ -1,0 +1,30 @@
+# Cross-provider review workflow (#3191) — provider-neutral. Encodes the existing
+# scripts/review/plan-review-fanout.sh fan-out (Claude + Codex + Gemini); does NOT
+# re-encode provider assignments (those live in config/ai-tools/provider-routing-policy.yaml).
+# DATA not enforcement.
+kind: gated-workflow
+metadata:
+  name: cross-provider-review
+  version: 1.0.0
+  description: Adversarial cross-review fan-out across providers with per-provider unavailability degradation + consensus handling.
+source: config/agents/SHARED_SOUL.md#cross-review-routing   # default 3-agent: Claude + Codex + Gemini
+
+tiers:
+  T1: { review_providers: [claude] }
+  T2: { review_providers: [claude, codex] }
+  T3: { review_providers: [claude, codex, gemini] }
+
+gates:
+  - id: dispatch_review
+    runner: scripts/review/plan-review-fanout.sh
+    default_providers: [claude, codex, gemini]
+    on_provider_unavailable: continue_and_record
+    description: Fan out the review to the tier's providers in parallel; record UNAVAILABLE rather than blocking.
+  - id: collect_verdicts
+    runner: scripts/review/validate-review-output.sh
+    description: Classify each artifact VALID | NO_OUTPUT | SKIPPED_NETWORK | INVALID_OUTPUT.
+  - id: consensus
+    description: Single-provider verdict != consensus. On r1/r2 disagreement apply r3 as inline patches (do NOT re-dispatch); default non-APPROVE.
+  - id: close
+    close_reason: completed
+    description: Record verdicts under scripts/review/results/ before proceeding.

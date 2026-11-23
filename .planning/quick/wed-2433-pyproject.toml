@@ -1,0 +1,236 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "worldenergydata"
+version = "0.1.0"
+description = "Standardized project configuration for worldenergydata"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+authors = [
+    {name = "Development Team", email = "dev@example.com"}
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+
+dependencies = [
+    "assetutilities>=0.1.0,<1.0",
+    "scrapy>=2.12.0,<3.0",
+    "selenium>=4.15.0,<5.0",
+    "beautifulsoup4>=4.12.0,<5.0",
+    "pdfplumber>=0.10.0,<1.0",
+    "sqlalchemy>=2.0.49,<3.0",
+    "sqlmodel>=0.0.14,<1.0",
+    "fastapi>=0.108.0,<2.0",
+    "pydantic>=2.5.0,<3.0",
+    "pydantic-settings>=2.1.0,<3.0",
+    "tenacity>=9.1.2,<10.0",
+    # Data processing and analysis
+    "numpy>=1.24.0,<3.0",
+    "pandas>=2.0.0,<3.0",
+    "scipy>=1.11.0,<2.0",
+    # Visualization
+    "plotly>=5.18.0,<6.0",
+    "dash>=2.14.0,<3.0",
+    "seaborn>=0.13.0,<1.0",
+    # HTTP client
+    "httpx>=0.25.0,<1.0",
+    # PDF generation
+    "reportlab>=4.0.0,<5.0",
+    # Excel support
+    "openpyxl>=3.1.0,<4.0",
+    "xlsxwriter>=3.1.0,<4.0",
+    # Logging
+    "loguru>=0.7.0,<1.0",
+    # CLI
+    "typer>=0.9.0,<1.0",
+    "rich>=15.0.0,<16.0",
+    "psutil>=7.2.1,<8.0",
+    "schedule>=1.2.0,<2.0",
+    "pyarrow>=14.0.0,<20.0",
+    "scikit-learn>=1.6.1,<2.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.4.2",
+    "pytest-cov>=4.1.0",
+    "pytest-asyncio>=0.21.0",
+    "pytest-benchmark>=4.0",
+    "faker>=20.1.0",
+    "factory-boy>=3.3.0",
+    "psutil>=5.9.0",
+    "black>=23.0",
+    "flake8>=6.0",
+    "isort>=5.0",
+    "mypy>=1.0",
+    "pre-commit>=3.0",
+    "types-requests>=2.31",
+    "types-PyYAML>=6.0",
+    "types-python-dateutil>=2.9",
+]
+test = [
+    "pytest>=8.4.2",
+    "pytest-cov>=4.1.0",
+    "pytest-asyncio>=0.21.0",
+    "pytest-mock>=3.0",
+    "pytest-timeout>=2.4.0",
+    "faker>=20.1.0",
+    "factory-boy>=3.3.0",
+    "psutil>=5.9.0",
+    "responses>=0.24.0",
+    "hypothesis>=6.100.0",
+]
+docs = [
+    "sphinx>=6.0",
+    "sphinx-rtd-theme>=1.0",
+    "mkdocs>=1.6.0",
+    "mkdocstrings[python]>=0.25.0",
+    "mkdocs-material>=9.5.0",
+]
+llm = [
+    "transformers>=4.35.0",
+    "torch>=2.0.0",
+    "sentencepiece>=0.1.99",
+    "accelerate>=0.25.0",
+]
+safety-ml = [
+    "scikit-learn>=1.3.0",
+    "xgboost>=2.0.0",
+    "hyperopt>=0.2.5",
+    "joblib>=1.3.0",
+]
+safety-bert = [
+    "torch>=2.0.0",
+    "transformers>=4.35.0",
+    "sentencepiece>=0.1.99",
+]
+
+[project.scripts]
+worldenergydata = "worldenergydata.cli.main:app"
+
+[project.urls]
+"Homepage" = "https://github.com/username/worldenergydata"
+"Bug Tracker" = "https://github.com/username/worldenergydata/issues"
+"Documentation" = "https://github.com/username/worldenergydata#readme"
+
+# Package discovery configuration
+# Auto-discovers all packages under src/ including:
+# - worldenergydata (main package)
+# - worldenergydata.cli (unified CLI orchestrator)
+# - worldenergydata.common (cross-cutting concerns layer)
+# - worldenergydata.modules (domain-specific modules)
+# - worldenergydata.analysis (analysis utilities)
+# - worldenergydata.validation (data validation)
+# - external, modules, validators (other src packages)
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["worldenergydata*", "external*", "modules*"]
+exclude = ["tests*", "docs*"]
+
+[tool.setuptools.package-data]
+"worldenergydata.bsee" = ["sql/*.sql", "templates/*.html"]
+
+[tool.black]
+line-length = 88
+target-version = ['py310', 'py311', 'py312']
+include = '\.pyi?$'
+
+[tool.isort]
+profile = "black"
+line_length = 88
+
+[tool.mypy]
+python_version = "3.10"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py", "*_test.py"]
+addopts = "--cov=src/worldenergydata --cov-report=term-missing --cov-report=html:reports/coverage/htmlcov --cov-report=xml:reports/coverage/coverage.xml --cov-report=json:reports/coverage/coverage.json"
+
+[tool.coverage.run]
+source = ["src/worldenergydata"]
+omit = ["*/tests/*", "*/test_*.py", "*/conftest.py"]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "if self.debug:",
+    "if __name__ == .__main__.:",
+    "raise AssertionError",
+    "raise NotImplementedError",
+]
+
+[tool.uv]
+# UV environment configuration
+python = "3.11"
+system = false
+seed = true
+compile = true
+
+[tool.uv.pip]
+index-url = "https://pypi.org/simple"
+extra-index-url = []
+no-cache = false
+pre = false
+
+# MANDATORY: Parallel Processing Configuration
+[tool.parallel]
+enabled = true
+max_workers = 5
+use_threading = false  # Use multiprocessing for CPU-bound tasks
+use_asyncio = true     # Use asyncio for I/O-bound tasks
+batch_size = 10
+
+[tool.parallel.rules]
+# Define when to use parallel processing
+file_operations = "always"      # File reading/writing
+http_requests = "always"        # API calls
+data_processing = "threshold"   # Based on data size
+threshold_size = 1000           # Items before parallel kicks in
+
+[tool.scripts]
+# Common scripts that use parallel processing
+test = "pytest -n auto"
+format = "black . && isort ."
+lint = "flake8 . & mypy . & pylint ."
+install = "uv pip install -e ."
+dev-install = "uv pip install -e .[dev]"
+
+[dependency-groups]
+benchmark = [
+    "pytest-benchmark>=4.0.0,<5.0.0",
+]
+docs = [
+    "mkdocs>=1.6.0",
+    "mkdocstrings[python]>=0.25.0",
+    "mkdocs-material>=9.5.0",
+]
+dev = [
+    "faker>=37.8.0",
+    "hypothesis>=6.141.1",
+    "mypy>=1.18.2",
+    "numpy-financial>=1.0.0",
+    "pytest-asyncio>=1.2.0",
+    "pytest-cov>=7.0.0",
+    "pytest-timeout>=2.4.0",
+    "responses>=0.25.8",
+    "xmltodict>=1.0.2",
+]
+
+[tool.bandit]
+exclude_dirs = ["tests", "docs"]
+skips = []

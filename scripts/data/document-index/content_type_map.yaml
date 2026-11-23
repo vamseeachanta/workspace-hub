@@ -1,0 +1,85 @@
+# Extension → content_type mapping for index.jsonl enrichment (#1878).
+# Fallback for anything not listed: "other".
+
+document:
+  - pdf
+  - doc
+  - docx
+  - rtf
+  - odt
+
+spreadsheet:
+  - xls
+  - xlsx
+  - xlsm
+  - csv
+  - tsv
+  - ods
+
+presentation:
+  - ppt
+  - pptx
+  - odp
+
+cad:
+  - dwg
+  - dxf
+  - dgn
+  - step
+  - stp
+  - iges
+  - igs
+
+simulation-input:
+  - dat
+  - inp
+  - mac
+  - cas
+  - msh
+  - jou
+
+script:
+  - py
+  - m
+  - f
+  - for
+  - f90
+  - bas
+  - sh
+  - bat
+  - ps1
+  - r
+  - jl
+
+text:
+  - md
+  - txt
+  - yaml
+  - yml
+  - json
+  - xml
+  - log
+  - rst
+
+web:
+  - htm
+  - html
+  - mht
+  - mhtml
+
+image:
+  - png
+  - jpg
+  - jpeg
+  - gif
+  - tif
+  - tiff
+  - bmp
+  - svg
+
+archive:
+  - zip
+  - tar
+  - gz
+  - 7z
+  - rar

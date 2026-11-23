@@ -1,0 +1,7 @@
+{"path": "/fixture/ace/riser-design.pdf", "summary": "riser riser riser design", "domain": "marine", "org": "A"}
+{"path": "/fixture/ace/riser-analysis.pdf", "summary": "riser analysis", "domain": "marine", "org": "B"}
+not-json malformed-survivor
+{"path": "/fixture/ace/riser-notes.pdf", "summary": "field riser notes", "domain": "marine", "org": "C"}
+{"path": "/fixture/ace/hidden.pdf", "summary": "nothing scored", "unscored": "riser"}
+{"path": "/fixture/ace/malformed-survivor.pdf", "summary": "malformed-survivor", "domain": "qa", "org": "D"}
+{"path": "/legacy/dde/mooring-from-jsonl.pdf", "summary": "mooring", "domain": "marine", "org": "DDE"}

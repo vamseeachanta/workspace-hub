@@ -1,0 +1,33 @@
+cases:
+  - case_id: private_client_to_public_without_gate
+    input_residency: registered_client_private_corpus
+    output_residency: public_llm_wiki
+    input_publicity_rank: 1
+    output_publicity_rank: 4
+    promotion_gates: []
+    validation_evidence: []
+    expected: reject
+  - case_id: readable_raw_to_private_report_with_gate
+    input_residency: readable_raw_data
+    output_residency: domain_private_corpus
+    input_publicity_rank: 2
+    output_publicity_rank: 2
+    promotion_gates: [provenance, license, legal, sanitization, owner-review]
+    validation_evidence: [tests, checksums, review]
+    expected: allow
+  - case_id: public_wiki_to_public_report_with_gate
+    input_residency: public_llm_wiki
+    output_residency: public_llm_wiki
+    input_publicity_rank: 4
+    output_publicity_rank: 4
+    promotion_gates: [provenance, license, legal, sanitization, owner-review]
+    validation_evidence: [tests, checksums, review]
+    expected: allow
+  - case_id: raw_data_to_internal_artifact
+    input_residency: raw_data
+    output_residency: ignored_internal_run_artifact
+    input_publicity_rank: 1
+    output_publicity_rank: 1
+    promotion_gates: []
+    validation_evidence: [tests, checksums]
+    expected: allow

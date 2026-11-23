@@ -1,0 +1,21 @@
+# fleet-ssh-hosts.yml — SSH-reachable fleet machines for credential/config fan-out
+#
+# Names are ~/.ssh/config aliases (user + identity resolved there, never here).
+# `fallbacks` lists alternate aliases tried in order when the primary is
+# unreachable (e.g. tailnet route when LAN is down).
+# Windows boxes have NO remote-exec channel (heartbeat-only) — they are listed
+# under `manual_hosts` so scripts can print on-box instructions instead of
+# silently skipping them.
+#
+# Consumers: scripts/fleet/populate-hf-token.sh (wh#3598 hf-token equality row)
+
+ssh_hosts:
+  - ace-linux-2
+  - gpu-claw
+
+fallbacks:
+  gpu-claw: gpu-claw-ts
+
+manual_hosts:
+  - ace-win-1
+  - ace-win-2

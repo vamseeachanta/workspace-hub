@@ -1,0 +1,171 @@
+metadata:
+  domain: structural
+  generated_by: scripts/curate_worked_examples.py
+  generated_at: '2026-04-01T23:50:13.718180+00:00'
+  issue: '#1294 (WRK-1370)'
+  total_vectors: 10
+  source: data/doc-intelligence/worked_examples.jsonl
+test_vectors:
+- id: WE-B-0013
+  source:
+    book: Handbook-Offshore-Engineering-Chakrabarti-2005
+    example_number: 6.2.1
+    extraction: deep
+  description: provides a manual method
+  domain: structural
+  topic: general
+  expected_output:
+    value: 4194.0
+    unit: kip
+  input_count: 24
+  quality_score: 100
+  quality_tier: gold
+- id: WE-B-0014
+  source:
+    book: Handbook-Offshore-Engineering-Chakrabarti-2005
+    example_number: 6.2.2
+    extraction: deep
+  description: For the deck configuration shown in fig. 6.19 and the platform loads used in Exa
+  domain: structural
+  topic: general
+  expected_output:
+    value: 8.5
+    unit: ft
+  input_count: 14
+  quality_score: 100
+  quality_tier: gold
+- id: WE-B-0015
+  source:
+    book: Handbook-Offshore-Engineering-Chakrabarti-2005
+    example_number: 6.2.3
+    extraction: deep
+  description: Select the deck beam. main deck girder and main deck truss member sizes for the
+  domain: structural
+  topic: general
+  expected_output:
+    value: 80.0
+    unit: kip
+  input_count: 22
+  quality_score: 100
+  quality_tier: gold
+- id: WE-B-0016
+  source:
+    book: Handbook-Offshore-Engineering-Chakrabarti-2005
+    example_number: '2.3'
+    extraction: deep
+  description: The 16.51 in. flange width of WF 36 x 245 would present difficulties
+  domain: structural
+  topic: general
+  expected_output:
+    value: 0.94
+  input_count: 41
+  quality_score: 80
+  quality_tier: gold
+- id: WE-B-0012
+  source:
+    book: Handbook-Offshore-Engineering-Chakrabarti-2005
+    example_number: '3'
+    extraction: deep
+  description: or 6 h
+  domain: structural
+  topic: general
+  expected_output:
+    value: 1.9
+  input_count: 16
+  quality_score: 70
+  quality_tier: silver
+- id: WE-A-0024
+  source:
+    document: Panel_Member_copy_of_SNAME_5-5_and_5-5A_Rev3.pdf
+    page: 315
+  description: k = 2.65 x 1010 nm/rad
+  domain: structural
+  topic: general
+  extracted_parameters:
+    I:
+      value: 7.45
+      unit: m
+    L:
+      value: 100.0
+      unit: m
+  extracted_results:
+  - name: reduces to TanμL
+    value: 0.0
+    unit: rs
+  - name: μL
+    value: 0.0
+    unit: ''
+  - name: μL
+    value: 0.0
+    unit: ''
+  - name: as this give P
+    value: 0.0
+    unit: ''
+  - name: K
+    value: 2.65
+    unit: x
+  quality_score: 51
+  raw_text_length: 977
+  quality_tier: gold
+- id: WE-A-0072
+  source:
+    document: Ship-Structural-Analysis-Design-Hughes-Paik.pdf
+    page: 114
+  description: 3.11 PRACTICAL CALCULATION OF HULL GIRDER SHEAR EFFECTS 3-47 be a minimum with respect to each ~, as was done
+    responds t
+  domain: structural
+  topic: structural
+  extracted_parameters:
+    m:
+      value: 1.0
+      unit: m
+    t:
+      value: 32.0
+      unit: m
+  extracted_results:
+  - name: m μ b i
+    value: 1.0
+    unit: ''
+  - name: m
+    value: 1.0
+    unit: Q
+  - name: b
+    value: 10.0
+    unit: ''
+  quality_score: 36
+  raw_text_length: 2021
+  quality_tier: silver
+- id: WE-A-0025
+  source:
+    document: Panel_Member_copy_of_SNAME_5-5_and_5-5A_Rev3.pdf
+    page: 348
+  description: in the
+  domain: structural
+  topic: structural
+  extracted_results:
+  - name: η
+    value: 0.5
+    unit: ''
+  quality_score: 31
+  raw_text_length: 1825
+  quality_tier: silver
+- id: WE-A-0071
+  source:
+    document: Ship-Structural-Analysis-Design-Hughes-Paik.pdf
+    page: 26
+  description: least initial cost
+  domain: structural
+  topic: structural
+  quality_score: 30
+  raw_text_length: 5276
+  quality_tier: silver
+- id: WE-A-0073
+  source:
+    document: Ship-Structural-Analysis-Design-Hughes-Paik.pdf
+    page: 499
+  description: loading condition the long-term proba-
+  domain: structural
+  topic: structural
+  quality_score: 25
+  raw_text_length: 3796
+  quality_tier: bronze

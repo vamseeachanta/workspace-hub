@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Session Record — Hermes Kanban: Real-Work Audit, Dashboard Purge &amp; Dispatch Design (2026-05-25)</title>
+<style>
+  :root{--bg:#0f1115;--card:#171a21;--ink:#e6e9ef;--mut:#9aa4b2;--ok:#3fb950;--warn:#d29922;--bad:#f85149;--acc:#58a6ff;--line:#2a2f3a}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 -apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif}
+  .wrap{max-width:980px;margin:0 auto;padding:32px 22px 80px}
+  h1{font-size:24px;margin:0 0 4px} h2{font-size:18px;margin:30px 0 10px;border-bottom:1px solid var(--line);padding-bottom:6px}
+  h3{font-size:15px;margin:18px 0 6px;color:var(--acc)}
+  .meta{color:var(--mut);font-size:13px;margin-bottom:18px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 18px;margin:12px 0}
+  table{border-collapse:collapse;width:100%;margin:8px 0;font-size:13.5px}
+  th,td{border:1px solid var(--line);padding:6px 9px;text-align:left;vertical-align:top}
+  th{background:#1d212a;color:var(--mut);font-weight:600}
+  code{background:#1d212a;border:1px solid var(--line);border-radius:4px;padding:1px 5px;font-size:12.5px}
+  .ok{color:var(--ok)}.warn{color:var(--warn)}.bad{color:var(--bad)}.mut{color:var(--mut)}
+  .tag{display:inline-block;font-size:11px;padding:1px 7px;border-radius:20px;border:1px solid var(--line);color:var(--mut)}
+  ul{margin:6px 0 6px 0;padding-left:22px} li{margin:3px 0}
+  .big{font-size:20px;font-weight:700}
+  a{color:var(--acc)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Hermes Kanban — Real-Work Audit, Dashboard Purge &amp; Dispatch Design</h1>
+  <div class="meta">Session record · 2026-05-25 · machine <code>ace-linux-1</code> · model Opus 4.7 · complements the parallel session's
+    <code>docs/sessions/…-kanban-ecosystem-adversarial-review-and-runaway-containment.md</code> and
+    <code>docs/reports/2026-05-24-kanban-ecosystem-adversarial-review.html</code></div>
+
+  <div class="card">
+    <strong>One-line:</strong> Confirmed the Hermes kanban swarm did <span class="bad">zero real work in 7 days</span> (crash-loop), stopped it,
+    fixed the root-cause skill collision, reclaimed <span class="ok">136&nbsp;MB</span> of dashboard bloat, archived 7 empty boards, and
+    designed a 3-axis (repo×domain × provider × machine) dispatch model. Autonomous dispatch remains <span class="warn">OFF by design</span>.
+  </div>
+
+  <h2>1 · Did Hermes do real work last week? — No</h2>
+  <table>
+    <tr><th>Signal</th><th>Finding</th></tr>
+    <tr><td>Live workers</td><td>260 <code>kanban task</code> procs, all &lt;5&nbsp;min old, prior batches already <code>&lt;defunct&gt;</code> — spawn→crash→respawn</td></tr>
+    <tr><td>Worker logs</td><td>every line <code class="bad">Error: Unknown skill(s): kanban-worker</code></td></tr>
+    <tr><td>Workspaces</td><td>37/37 <span class="bad">empty</span> — zero artifacts</td></tr>
+    <tr><td>Run outcomes</td><td><code>task_runs</code>: 1613/1621 <span class="bad">crashed</span>, 0 ever <code>done</code></td></tr>
+    <tr><td>Resource burn</td><td>systemd cgroup: <span class="bad">18h55m CPU in 4h wall</span>, ~10 cores, 18.7&nbsp;GB RAM, load avg 30</td></tr>
+    <tr><td>Real commits from swarm</td><td><span class="bad">0</span> — every substantive commit (#2778, #2769, VNC) came from interactive Claude sessions</td></tr>
+  </table>
+  <p class="mut">Root cause of the crash: the dispatcher injects <code>--skills kanban-worker</code>, but <code>skill_view('kanban-worker')</code>
+    found <strong>two byte-identical candidates</strong> — the bundled <code>~/.hermes/skills/devops/kanban-worker</code> and a backfilled
+    copy in <code>workspace-hub/.claude/skills</code> (a registered <code>external_dir</code>) — returned <code>success=False</code> ("refusing to guess"),
+    which the preloader maps to <em>missing</em> → abort.</p>
+
+  <h2>2 · Actions taken (verified)</h2>
+  <table>
+    <tr><th>#</th><th>Action</th><th>Result</th></tr>
+    <tr><td>1</td><td>Stop swarm + halt respawn — <code>sudo systemctl restart hermes-gateway.service</code> (reloads on-disk <code>dispatch_in_gateway:false</code>, reaps cgroup)</td><td class="ok">260→0 workers; 18.7GB→104MB; Telegram reconnected; dispatch OFF</td></tr>
+    <tr><td>2</td><td>Fix skill collision — removed the stray repo <code>kanban-worker</code> via temp-index plumbing (beat the autosync index.lock storm)</td><td class="ok"><code>skill_view</code> success=True; commit <code>6a2d617d7</code> (deletion only)</td></tr>
+    <tr><td>3</td><td>Reconcile shared-index re-add trap for <code>kanban-worker</code> and <code>kanban-codex-lane</code> (parallel session left the latter open)</td><td class="ok">both clean</td></tr>
+    <tr><td>4</td><td>Dashboard slowness — purge crash churn (699,400 events + 139,961 runs) + VACUUM on 9 bloated boards, backups first</td><td class="ok"><span class="big">138MB → 1MB</span> (136MB reclaimed); cards/comments/lifecycle intact</td></tr>
+    <tr><td>5</td><td>Archive 7 verified-empty parent boards (recoverable in <code>boards/_archived/</code>)</td><td class="ok">45 → 38 repo boards + ecosystem + default</td></tr>
+  </table>
+  <p class="mut">Backups: each purged board → <code>kanban.db.bak-20260525</code>. The slowness was <strong>crash-loop residue, not board/card count</strong> —
+    the <code>/board</code> endpoint computes diagnostics over every task's full event/run history on each load (a 175-card board carried 193K events / 38&nbsp;MB).</p>
+
+  <h2>3 · Skill-collision picture (reconciled with parallel session)</h2>
+  <p>59 collisions root-home ↔ workspace-hub. Only <strong>2 were worker-relevant backfill strays</strong>, now both removed:
+    <code>kanban-worker</code> (@ <code>6a2d617d7</code>) and <code>kanban-codex-lane</code> (parallel session @ <code>c4bb482e7</code>). The other 57 are
+    <span class="warn">hygiene debt, not crash drivers</span>: 42 divergent (need per-skill merge judgment, incl. <code>kanban-orchestrator</code>),
+    16 legitimate repo-native dupes (removing them would be wrong), 2 gitignored. <strong>Worker-crash cause is fully resolved.</strong></p>
+
+  <h2>4 · Proposed dispatch model — 3-axis coordinate</h2>
+  <p>The <code>tasks</code> schema <strong>already has every needed field</strong> (all currently <code>NULL</code>) — this is a population + routing-policy problem, not a build problem.</p>
+  <table>
+    <tr><th>Axis</th><th>Field</th><th>Status / gap</th></tr>
+    <tr><td>Repo × Domain</td><td>board slug</td><td>Exists (38 boards); formalize per-repo domain taxonomy in the YAML manifest</td></tr>
+    <tr><td>AI provider</td><td><code>assignee</code> (profile) / <code>model_override</code></td><td class="warn">Only one profile (<code>default→gpt-5.5</code>); add <code>claude</code>/<code>codex</code>/<code>gemini</code> profiles</td></tr>
+    <tr><td>Machine</td><td><code>tenant</code></td><td class="warn">Unused; adopt <code>tenant=&lt;hostname&gt;</code>; each machine's loader filters to itself</td></tr>
+    <tr><td>Workspace</td><td><code>workspace_path</code></td><td>Already set</td></tr>
+  </table>
+  <p class="bad"><strong>Multi-machine constraint:</strong> kanban DBs are local to ace-linux-1 (<code>~/.hermes</code>), not synced. The machine tag must live in the
+    git-tracked YAML manifest (the SoT), each machine loading only its <code>tenant</code> slice — per the established "shared git repo, not SSH" rule.</p>
+
+  <h2>5 · Recommendations / what else</h2>
+  <ul>
+    <li><strong>GitHub issues as single SoT</strong> — cards mirror GH issues; <code>machine:</code>/<code>provider:</code> as labels. Kills the git-invisible local-card problem.</li>
+    <li><strong>Quota-aware provider routing</strong> (Claude Max vs Codex Pro headroom) via the existing <code>agent-usage-optimizer</code> skill.</li>
+    <li><strong>Global concurrency cap</strong> (code-level semaphore) — the runaway happened because caps were per-board (20×N).</li>
+    <li><strong>Keep autonomous dispatch OFF</strong> until: collision hygiene + global cap + worker-wedge fix + routing policy all land.</li>
+    <li><strong>Cross-provider liveness</strong> via <code>scripts/monitoring/agents-board.sh</code> (process-table truth, not <code>active_agents</code>).</li>
+  </ul>
+
+  <h2>6 · Open items / decisions pending</h2>
+  <table>
+    <tr><th>Item</th><th>State</th></tr>
+    <tr><td>Commits <code>6a2d617d7</code> (+ parallel <code>c4bb482e7</code>, etc.) on branch <code>docs/kanban-adversarial-review-20260525</code></td><td class="warn">UNPUSHED — user decision</td></tr>
+    <tr><td>57 non-worker skill collisions</td><td class="mut">Hygiene debt; per-skill judgment; not a crash path</td></tr>
+    <tr><td>Comprehensive design GH issue (display grouping + 3-axis dispatch)</td><td class="warn">Not filed — coordinate with parallel session to avoid duplicate</td></tr>
+    <tr><td>Per-repo/domain colors &amp; icons</td><td class="mut">Deferred — supersede with domain-based grouping once taxonomy defined</td></tr>
+    <tr><td>Autonomous dispatch</td><td class="bad">OFF (<code>dispatch_in_gateway:false</code>) — keep until gates met</td></tr>
+  </table>
+</div>
+</body>
+</html>

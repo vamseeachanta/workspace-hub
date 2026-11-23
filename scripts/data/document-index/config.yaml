@@ -1,0 +1,227 @@
+# Document Index Pipeline Configuration (WRK-309)
+# Controls source paths, exclusions, batch sizes, and API budget
+
+sources:
+  og_standards:
+    enabled: true
+    db_path: /mnt/ace/O&G-Standards/_inventory.db
+    host: dev-primary
+    source_type: og_standards
+
+  ace_standards:
+    enabled: true
+    paths:
+      - /mnt/ace/docs/_standards
+    host: dev-primary
+    source_type: ace_standards
+    extensions: [.pdf, .docx, .xlsx, .pptx, .txt]
+
+  ace_project:
+    enabled: true
+    paths:
+      - /mnt/ace/docs
+      - /mnt/ace/data
+      - /mnt/ace/_ss_repo
+      - /mnt/ace/Production
+      - /mnt/ace/umbilical
+    host: dev-primary
+    source_type: ace_project
+    extensions: [.pdf, .docx, .xlsx, .pptx, .txt, .csv, .dwg, .dxf,
+                 .py, .m, .inp, .dat, .mac, .f, .for, .bas]
+
+  dde_project:
+    # WARNING: dde rows in index.jsonl survive RESUME runs only — a --force rebuild
+    # merges from {} + enabled sources and DROPS all 495,487 dde rows.
+    # Superseded 2026-07 by /mnt/dde/.dde-knowledge/index.db (#3334)
+    enabled: false
+    paths:
+      - /mnt/dde/documents
+      - /mnt/dde/0000 O&G
+      - /mnt/dde/Literature
+      - /mnt/dde/Orcaflex
+      - /mnt/dde/ABSG
+      - /mnt/dde/g-drive
+      - /mnt/dde/o-drive
+      - /mnt/dde/dropbox_contents
+      - "/mnt/dde/Temp - Oil&Gas"
+    host: ace-linux-2
+    source_type: dde_project
+    extensions: [.pdf, .docx, .xlsx, .pptx, .txt, .csv, .dwg, .dxf, .doc, .xls,
+                 .py, .m, .inp, .dat, .mac, .f, .for, .bas]
+
+  ace_conferences:
+    enabled: true
+    paths:
+      - /mnt/ace/docs/conferences
+    host: dev-primary
+    source_type: ace_conferences
+    extensions: [.pdf, .doc, .docx, .pptx, .txt]
+
+  va_hdd_2:
+    enabled: true
+    paths:
+      - /mnt/ace/data/va-hdd-2
+    host: dev-primary
+    source_type: va_hdd_2
+    extensions: [.pdf, .docx, .xlsx, .pptx, .txt]
+
+  workspace_spec:
+    enabled: true
+    paths:
+      - /mnt/local-analysis/workspace-hub/specs
+    host: dev-primary
+    source_type: workspace_spec
+    extensions: [.md, .yaml, .yml]
+
+  mkt_a_codes:
+    enabled: true
+    paths:
+      - /mnt/ace/mkt_a-codes
+    host: dev-primary
+    source_type: mkt_a_codes
+    extensions: [.pdf, .docx, .xlsx, .pptx, .txt]
+
+  api_metadata:
+    enabled: true
+    source_type: api_metadata
+    apis:
+      - {repo: worldenergydata, api: BSEE, auth: public, url_pattern: "https://www.data.bsee.gov/"}
+      - {repo: worldenergydata, api: EIA, auth: api_key, url_pattern: "https://api.eia.gov/"}
+      - {repo: worldenergydata, api: SODIR, auth: public, url_pattern: "https://fact.no/"}
+      - {repo: worldenergydata, api: IMO_GISIS, auth: optional, url_pattern: "https://gisis.imo.org/"}
+      - {repo: worldenergydata, api: ERA5, auth: key, url_pattern: "https://cds.climate.copernicus.eu/"}
+      - {repo: worldenergydata, api: NOAA_NDBC, auth: public, url_pattern: "https://www.ndbc.noaa.gov/"}
+      - {repo: assethold, api: yfinance, auth: public, url_pattern: "pypi:yfinance"}
+      - {repo: assethold, api: insider_trading, auth: tbd, url_pattern: "tbd"}
+
+exclude_patterns:
+  - "*/$RECYCLE.BIN/*"
+  - "*/.git/*"
+  - "*/__pycache__/*"
+  - "*/System Volume Information/*"
+  - "*/node_modules/*"
+  - "*/Personal/*"
+  - "*/Information_Important/*"
+  - "*/lost+found/*"
+  - "*/TECH Animation Fundaes/*"
+  - "*/TECH Writing/*"
+  - "*.pyc"
+  - "*.tmp"
+  - "Thumbs.db"
+  - "desktop.ini"
+  - ".DS_Store"
+  # ANSYS Workbench internal/scratch files (binary, not useful for indexing)
+  - "*/dp0/*/MECH/*.dat"
+  - "*/_ProjectScratch/*"
+  - "*/_system_coupl/*"
+  - "*/SYS-*/MECH/*"
+
+# Script file types — classified separately for domain assignment and portability scoring
+script_extensions:
+  - ext: .py
+    language: python
+    portability: direct   # can be run/imported as-is after legal scan
+    domain_hints: [Orcaflex→pipeline, ANSYS→structural, production→pipeline]
+  - ext: .m
+    language: matlab
+    portability: port     # algorithm can be ported to Python
+    domain_hints: [VIV→structural, API579→structural, Shear7→pipeline]
+  - ext: .inp
+    language: ansys-apdl
+    portability: reference  # model params usable as test data
+    domain_hints: [VIV→structural, WF→structural, SCF→structural]
+  - ext: .dat
+    language: orcaflex
+    portability: direct   # usable via OrcaFlex Python API
+    domain_hints: [Orcaflex/→marine, drilling→pipeline]
+  - ext: .mac
+    language: ansys-apdl
+    portability: port
+    domain_hints: [→structural]
+  - ext: .f
+    language: fortran
+    portability: low
+    domain_hints: []
+  - ext: .for
+    language: fortran
+    portability: low
+    domain_hints: []
+  - ext: .bas
+    language: vba
+    portability: low
+    domain_hints: []
+
+cad_extensions:
+  - .dwg
+  - .dxf
+  - .3dm
+  - .sat
+  - .iges
+  - .igs
+  - .step
+  - .stp
+
+output:
+  index_path: data/document-index/index.jsonl
+  summaries_dir: /mnt/ace/data/document-index/summaries
+  enhancement_plan: data/document-index/enhancement-plan.yaml
+  registry_path: data/document-index/registry.yaml
+
+extraction:
+  large_pdf_threshold_mb: 100
+  large_pdf_cli: pdf-large-reader/src/cli.py
+  max_text_chars: 50000
+  xlsx_max_rows: 5
+  md_max_chars: 2000
+
+llm:
+  model: claude-haiku-4-5-20251001
+  batch_size: 50
+  daily_budget_usd: 20.0
+  total_budget_usd: 200.0
+  skip_below_words: 100
+
+deduplication:
+  primary_key: content_hash
+  source_priority:
+    - og_standards
+    - ace_standards
+    - ace_conferences
+    - ace_project
+    - dde_project
+    - va_hdd_2
+    - workspace_spec
+    - mkt_a_codes
+    - api_metadata
+
+domains:
+  - structural
+  - cathodic-protection
+  - pipeline
+  - marine
+  - naval-architecture
+  - installation
+  - energy-economics
+  - portfolio
+  - materials
+  - regulatory
+  - cad
+  - project-management
+  - workspace-spec
+  - other
+
+repo_domain_map:
+  digitalmodel: [structural, cathodic-protection, pipeline, marine, installation, materials]
+  worldenergydata: [energy-economics, regulatory]
+  assethold: [portfolio]
+  lng_a: [pipeline, structural]
+  OGManufacturing: [structural, regulatory]
+  client_d: [installation, marine]
+  client_b: [installation, marine]
+  mkt_a: [structural, materials]
+  pdf-large-reader: []
+  assetutilities: []
+
+cron:
+  refresh_schedule: "0 2 1 */3 *"  # quarterly at 2am on 1st of month
+  refresh_script: scripts/cron/document-index-refresh.sh

@@ -1,0 +1,100 @@
+{
+  "schema_version": 1,
+  "captured_at": "2026-09-12T12:38:43.4085814Z",
+  "scope": "Read-only policy and metadata inspection; no raw payloads",
+  "issue": {
+    "url": "https://github.com/vamseeachanta/workspace-hub/issues/3606",
+    "title": "INITIATIVE: Harness runtime, workflow & skills"
+  },
+  "sources": [
+    {
+      "path": "docs/DATA_RESIDENCE_POLICY.md",
+      "exists": true,
+      "sha256": "4bb87950ce3c71452f5ccd5b21d02f36faedf2de26cc4ab4d4514b6ec99c4547"
+    },
+    {
+      "path": "docs/architecture/data-layer-contract.md",
+      "exists": true,
+      "sha256": "79cb9a6a9f1b302aca5753fc8f175004632fedc6392aa9c69b573af4a85892b7"
+    },
+    {
+      "path": "docs/document-intelligence/llm-wiki-resource-doc-intelligence-operating-model.md",
+      "exists": true,
+      "sha256": "518e249f43e47a8bfbdfc8e45dbf7a66cd9ad434f9889b096a4779fc20cb7d45"
+    },
+    {
+      "path": ".claude/rules/codes-standards-data-routing.md",
+      "exists": true,
+      "sha256": "f508597c857299e241041ae7ee96004c8a07a835282317ec5f9c8225fc543996"
+    },
+    {
+      "path": "tests/architecture/test_data_layer_contract.py",
+      "exists": true,
+      "sha256": "ec493d1fb2c52683b9fc7909f79b402296b94d4bc0c96d95d60b830e6d6fdd7c"
+    },
+    {
+      "path": "../llm-wiki/data/data-source-catalog.yml",
+      "exists": true,
+      "sha256": "06800ca85fb682f1b274f92f320919d6b990f54f930f49552376bd075b9fde86"
+    },
+    {
+      "path": "../llm-wiki/data/domain-database-index.yml",
+      "exists": true,
+      "sha256": "5abede58206284c2ef3ba9157144727d030796ea7709b8bbdbe31a8c5a1ff2d0"
+    },
+    {
+      "path": "../digitalmodel/config/data_sources.yaml",
+      "exists": true,
+      "sha256": "a39221d267e4ad32f04ecd68d10d7994bab0caa11c32c4677a9bbfa9c40b9d74"
+    },
+    {
+      "path": "docs/document-intelligence/standards-codes-provenance-reuse-contract.md",
+      "exists": true,
+      "sha256": "6e82b24f7e44eac7109164e4bb9fd2f2260c8b7f0dade97b5fac5f21baafc9b9"
+    }
+  ],
+  "probes": {
+    "missing_scope": "Current hub/digitalmodel checkouts only; earlier multi-worktree audit linked separately",
+    "wiki_visibility": {
+      "result": "PRIVATE",
+      "command": "gh repo view vamseeachanta/llm-wiki --json visibility"
+    },
+    "missing_contract": true,
+    "drive_search": "2026-09-12T12:38:04Z agent workflow data ownership: exit0, six indexes, zero matches, five gaps; partial coverage. Source: parent-owned drive-search-summary.json (no source payloads copied).",
+    "tests": {
+      "source": "Main-session baseline receipt; no repeat run by drafting lane",
+      "command": "uv run --no-project --with pytest --with pyyaml python -B -m pytest -q -p no:cacheprovider --import-mode=importlib tests/architecture/test_data_layer_contract.py scripts/data/llm-wiki/tests/test_resolve_wiki_path.py",
+      "result": "25 passed",
+      "duration_seconds": 0.97,
+      "collection_caveat": "Without --import-mode=importlib: ModuleNotFoundError: tests.test_resolve_wiki_path",
+      "new_tests": "Proposed, not implemented or executed"
+    },
+    "missing_allocation_ledger": true
+  },
+  "limitations": [
+    "Metadata records do not establish license entitlement or dataset readiness",
+    "Catalog contents/private records are not reproduced",
+    "No live raw-source access, copying, schema migration or publication"
+  ],
+  "proposed_interface": {
+    "observation_digest": "resource_descriptor_sha256",
+    "stable_digest": "resource_stable_sha256",
+    "projection": [
+      "source_id",
+      "dataset_id",
+      "doc_key",
+      "owner_repo",
+      "source_version",
+      "content_digest",
+      "digest_scope",
+      "derived_from",
+      "units",
+      "intended_use",
+      "criteria_revision",
+      "rights_revision"
+    ],
+    "compatibility": "Exactly64barehex -> sha256 read compatibility with warning/original preserved;32barehex staysunverified; explicitmd5 legacyreadonly. Stricter reuseeligibility; parentunchanged.",
+    "status": "Proposed contract only; not implemented",
+    "production_authority": "Workflow-owned scripts/governance/workflow_receipt.py only; resource schema x-conformance literal vectors shared by both plans"
+  }
+}

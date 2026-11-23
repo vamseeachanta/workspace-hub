@@ -1,0 +1,72 @@
+# stage5-evidence-contract.yaml — Stage 5 cross-artifact schema version and invariants
+#
+# This file is the authority for:
+#   1. Schema version shared across all Stage 5 evidence artifacts
+#   2. Cross-artifact invariants the canonical checker must enforce
+#
+# Per-artifact field-level schema lives in the corresponding template:
+#   specs/templates/user-review-common-draft-template.yaml
+#   specs/templates/user-review-plan-draft-template.yaml
+#   specs/templates/user-review-browser-open-template.yaml
+#   specs/templates/user-review-publish-template.yaml
+#
+# The canonical checker (scripts/work-queue/verify-gate-evidence.py) enforces
+# both this contract and the per-artifact templates. If they diverge, the checker
+# fails closed with exit 2.
+#
+# Unsupported major versions cause the canonical checker to exit 2.
+
+schema_version: "1.0"
+major_version: 1
+supported_major_versions:
+  - 1
+
+# Cross-artifact invariants: all four required Stage 5 artifacts for the same
+# review cycle must share the same review_cycle_id value. The canonical checker
+# validates cross-artifact equality before trusting the evidence set.
+cross_artifact_invariants:
+  - field: review_cycle_id
+    scope:
+      - user-review-common-draft.yaml
+      - user-review-plan-draft.yaml
+      - user-review-browser-open.yaml (matching event entry)
+      - user-review-publish.yaml (matching event entry)
+    rule: "All four artifacts for the same review cycle must contain matching review_cycle_id values"
+
+  - field: wrk_id
+    scope:
+      - user-review-common-draft.yaml
+      - user-review-plan-draft.yaml
+      - user-review-browser-open.yaml
+      - user-review-publish.yaml
+    rule: "All artifacts must contain the same wrk_id as the WRK being validated"
+
+# Approved-baseline authority: the last plan_draft + review_checkpoint: combined_plan
+# event in user-review-publish.yaml is the sole authoritative source of the published
+# Stage 5 baseline commit. No timestamp tie-break or HEAD fallback is allowed.
+approved_baseline_authority:
+  source: user-review-publish.yaml
+  selector:
+    stage: plan_draft
+    review_checkpoint: combined_plan
+  field: commit
+  rule: "Last matching event is authoritative; user-review-plan-draft.yaml must record
+    the same commit in approved_draft_commit; mismatch is a fail-closed error"
+
+# Stage 5 gate eligibility: both common-draft and combined-plan must be approve_as_is.
+# Presence of one without the other blocks Stage 6 eligibility.
+gate_eligibility:
+  required_artifacts:
+    - user-review-common-draft.yaml
+    - user-review-plan-draft.yaml
+    - user-review-browser-open.yaml
+    - user-review-publish.yaml
+  approval_predicate:
+    common_draft:
+      file: user-review-common-draft.yaml
+      field: approval_decision
+      required_value: approve_as_is
+    combined_plan:
+      file: user-review-plan-draft.yaml
+      field: approval_decision
+      required_value: approve_as_is

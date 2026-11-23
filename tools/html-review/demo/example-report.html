@@ -1,0 +1,54 @@
+<title>Example Engineering Report</title>
+<style>
+:root{--ink:#16252E;--ink2:#4A5A63;--rule:#D3DBDF;--sheet:#fff;--ground:#F2F6F7;--accent:#1F5A7A}
+body{background:var(--ground);color:var(--ink);font:15px/1.55 "Segoe UI",system-ui,sans-serif;margin:0}
+.wrap{max-width:1100px;margin:0 auto;padding-block:24px;padding-inline:16px}
+.sheet{background:var(--sheet);border:1px solid var(--rule);border-radius:8px;padding:20px 28px;margin-bottom:16px}
+.notice{background:#FFF7E0;border-left:4px solid #C98A00;padding:10px 16px;border-radius:6px;margin-bottom:16px}
+h1{font-size:26px;margin:0 0 4px} h2{font-size:20px;margin:18px 0 6px;color:var(--accent)} h3{font-size:16px;margin:14px 0 4px}
+.num{display:inline-block;min-width:2.4em;color:var(--ink2)}
+table{border-collapse:collapse;width:100%;font-variant-numeric:tabular-nums;font-size:14px}
+th,td{border-bottom:1px solid var(--rule);padding:5px 8px;text-align:right} th:first-child,td:first-child,th:nth-child(2),td:nth-child(2){text-align:left}
+th{background:#EEF3F5} .cap{font-size:13px;color:var(--ink2);margin:6px 0 2px} ol.notes{font-size:12px;color:var(--ink2);margin:0 0 8px 18px;padding:0}
+</style>
+<div class="wrap">
+<div class="notice"><b>Example report with sample data.</b> This page demonstrates the review and comment tool. The vessel, values and conclusions are illustrative only.</div>
+<div class="sheet">
+<h1>Example Vessel Resistance Study</h1>
+<div style="color:var(--ink2)">Engineering report · sample document for the review tool</div>
+<section id="s1"><h2><span class="num">1</span>Executive Summary</h2>
+<p>A 20k DWT example tanker hull is analysed for calm-water resistance. The results are summarized in this section.</p>
+<ul><li><b>Scope.</b> Eight loading conditions at three speeds.</li><li><b>Result.</b> Resistance rises with draft and speed as expected for this hull form.</li></ul></section>
+<section id="s2"><h2><span class="num">2</span>Introduction</h2>
+<p>The purpose, scope and status of the study are presented in this section.</p>
+<h3 id="s2-1"><span class="num">2.1</span>Purpose</h3>
+<p>The study estimates bare-hull calm-water resistance over the operating drafts and trims of the example vessel.</p></section>
+<section id="s3"><h2><span class="num">3</span>Design Data</h2>
+<p>The hull geometry, loading conditions and speeds used in the analysis are presented in this section.</p>
+<h3 id="s3-1"><span class="num">3.1</span>Hull and geometry</h3>
+<p>The hull is taken from the example CAD model. The principal particulars are an overall length of 150.0 m and a beam of 25.0 m.</p>
+<h3 id="s3-2"><span class="num">3.2</span>Loading conditions</h3>
+<p>The eight example conditions span two mean drafts, each at several trims. The hydrostatics of each loading condition are presented in this subsection in Table 1.</p>
+<table><thead><tr><th>ID</th><th>Condition</th><th>Mean draft (m)</th><th>Trim (m)</th><th>L<sub>wl</sub> (m)</th><th>Wetted surface (m&sup2;)</th><th>Displacement (t)</th></tr></thead>
+<tbody>
+<tr><td><b>C1</b></td><td>Ballast</td><td>6.00</td><td>&minus;2.0</td><td>146.2</td><td>4,410.0</td><td>16,850</td></tr>
+<tr><td><b>C2</b></td><td>Ballast</td><td>6.00</td><td>&minus;1.0</td><td>145.0</td><td>4,395.0</td><td>16,840</td></tr>
+<tr><td><b>C3</b></td><td>Ballast</td><td>6.00</td><td>0.0</td><td>144.1</td><td>4,380.0</td><td>16,830</td></tr>
+<tr><td><b>C4</b></td><td>Ballast</td><td>6.00</td><td>+1.0</td><td>143.5</td><td>4,372.0</td><td>16,820</td></tr>
+<tr><td><b>C5</b></td><td>Loaded</td><td>9.00</td><td>&minus;1.0</td><td>149.6</td><td>5,520.0</td><td>26,900</td></tr>
+<tr><td><b>C6</b></td><td>Loaded</td><td>9.00</td><td>&minus;0.5</td><td>149.5</td><td>5,512.0</td><td>26,880</td></tr>
+<tr><td><b>C7</b></td><td>Loaded</td><td>9.00</td><td>0.0</td><td>149.4</td><td>5,505.0</td><td>26,870</td></tr>
+<tr><td><b>C8</b></td><td>Loaded</td><td>9.00</td><td>+0.5</td><td>149.3</td><td>5,498.0</td><td>26,860</td></tr>
+</tbody></table>
+<p class="cap">Table 1. Loading conditions (example values).</p>
+<ol class="notes"><li>Trim is forward draft minus aft draft, negative by the stern.</li><li>Illustrative values for the review-tool demonstration.</li></ol>
+<h3 id="s3-3"><span class="num">3.3</span>Speeds</h3>
+<p>The three analysis speeds are 11, 12 and 13 kn.</p></section>
+<section id="s4"><h2><span class="num">4</span>Results</h2>
+<p>The resistance results are presented in this section.</p>
+<p>Resistance increases by about 30 % from ballast to the loaded draft at 12 kn in this example.</p></section>
+<section id="s5"><h2><span class="num">5</span>Conclusions</h2>
+<p>The conclusions of the example study are presented in this section.</p>
+<p>The example results follow the expected trends with draft and speed. The values are illustrative only.</p></section>
+<div style="height:420px"></div>
+</div></div>

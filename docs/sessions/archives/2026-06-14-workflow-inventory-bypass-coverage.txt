@@ -1,0 +1,6 @@
+coverage-ratchet report — 2026-06-14T17:47:28Z
+============================================================
+STATUS: BYPASSED
+SKIP_COVERAGE_REASON: config-only YAML (workflow-inventory.yaml); no code paths — coverage N/A; worktree lacks sibling test layout
+
+⚠ Coverage gate skipped. All checks omitted.

@@ -1,0 +1,251 @@
+# Ecosystem mission map — the mission spine
+# Seeded for issue #3079 (epic #3078 — ecosystem mission → workflow → marketing flywheel)
+# Grounded in a 4-agent discovery sweep (2026-06-14). Per the externalize-config rule,
+# this file is the single reviewable source for "what each repo is for and how it ladders up".
+#
+# Iterate in PR review until the cascade reads seamlessly:
+#   - every repo's `mission` visibly descends from `ecosystem.mission`
+#   - no orphan (a repo whose mission serves no ecosystem objective)
+#   - `explicit: false` entries get confirmed or corrected by the owner
+#
+# `explicit`  — true if the repo states its own mission in a file (README/CLAUDE.md); false if inferred here.
+# `status`    — active | utility | reference | inferred | archive-candidate
+# `priority`  — OPTIONAL cross-cutting flag (independent of domain tier). `tier-1` = continual-improvement
+#               target that gets a standing improvement loop, regardless of which domain tier it lives in.
+# `scope`     — OPTIONAL narrowing of what within the repo the mission/priority applies to.
+# `serves`    — OPTIONAL per-repo objective override; defaults to its tier's `serves` when absent.
+#               Use when a repo spans more objectives than its domain tier (e.g. knowledge + go-to-market).
+schema_version: 0.2
+
+ecosystem:
+  mission: >
+    Engineering Intelligence + Knowledge Infrastructure for Professional Practice —
+    enable verifiable, data-driven engineering decisions and client delivery, backed by
+    standards-traced calculation libraries, multi-domain knowledge wikis, and a go-to-market
+    stack, all coordinated on a shared agent control-plane.
+  objectives:
+    - O1: Produce engineering results that are traceable to standards and reproducible.
+    - O2: Bind source standards/data to practice as queryable knowledge.
+    - O3: Convert capability into market position and client delivery.
+    - O4: Keep the multi-repo, multi-machine agent system healthy and self-checking.
+  # VA decision 2026-06-14: personal/family repos are OUT of the ecosystem (business) mission.
+  # They share the control-plane/harness but serve no business objective. EXCEPTION: teamresumes
+  # is a tier-1 continual-improvement target (VA resume only) despite being out of the business mission.
+
+tiers:
+  control-plane:   {serves: [O4],        summary: "Orchestration, harness, agent coordination."}
+  engineering-ip:  {serves: [O1],        summary: "Standards-traced engineering calculations & FEA."}
+  knowledge-wiki:  {serves: [O2],        summary: "Knowledge corpora binding standards/data to practice."}
+  gtm-marketing:   {serves: [O3],        summary: "Positioning, pipeline, delivery, business admin."}
+  personal:        {serves: [],          summary: "OUT of the business mission (VA 2026-06-14): shares harness only. Exception: teamresumes is a tier-1 continual-improvement target."}
+
+repos:
+  # ---- control-plane (O4) ----
+  - repo: workspace-hub
+    tier: control-plane
+    profile: control-product
+    sensitivity: public
+    mcp_required: false
+    mission: "Multi-repo control plane: orchestration, CI/CD, shared rules, agent coordination, memory, monitoring."
+    objectives: [route work to machines/providers, enforce harness rules, carry portable memory]
+    explicit: true
+    status: active
+  # Deckhand retired 2026-10-18 (deckhand issue 599). Retired gateway removed
+  # from active missions.
+
+  # ---- engineering-ip (O1) ----
+  - repo: digitalmodel
+    tier: engineering-ip
+    profile: code
+    sensitivity: public
+    mcp_required: true
+    mission: "Single source of truth for engineering calculations with standard-clause traceability."
+    objectives: [standards-traced calcs, library-first APIs, golden-test provenance, pipeline installation coverage toward validated campaigns]
+    explicit: true
+    status: active
+  - repo: assetutilities
+    tier: engineering-ip
+    profile: code
+    sensitivity: public
+    mcp_required: false
+    mission: "Shared engineering calculation utilities: unit conversion, config, data I/O, lifecycle analysis."
+    objectives: [reusable primitives for digitalmodel & friends]
+    explicit: true
+    status: active
+  - repo: CAD-DEVELOPMENTS
+    tier: engineering-ip
+    profile: code
+    sensitivity: public
+    mcp_required: false
+    mission: "AI-agent-driven FEA pipeline: parametric geometry → mesh → solve → post-process."
+    objectives: [automate FEA workflow]
+    explicit: true
+    status: active   # experimental
+
+  # ---- knowledge-wiki (O2) ----
+  - repo: llm-wiki
+    tier: knowledge-wiki
+    profile: knowledge
+    sensitivity: client-confidential
+    mcp_required: false
+    mission: "Private generic engineering knowledge wiki: vendor-licensed codes/standards derived data (DNV, API, OCIMF, ABS, ISO, NACE, NORSOK)."
+    objectives: [ingest+verify standards tables, serve queryable knowledge]
+    explicit: true
+    status: active
+  - repo: llm-wiki-mkt-a
+    tier: knowledge-wiki
+    profile: knowledge
+    sensitivity: client-confidential
+    mcp_required: false
+    mission: "Client-scoped private wiki for the mkt-a project workspace with redaction/promotion gates."
+    objectives: [per-client knowledge, no bleed to public]
+    explicit: true
+    status: active
+  - repo: llm-wiki-fdas
+    tier: knowledge-wiki
+    profile: knowledge
+    sensitivity: client-confidential
+    mcp_required: false
+    serves: [O2, O3]   # per-repo override: knowledge AND go-to-market (corpus doubles as marketing material)
+    mission: "Private project wiki for client-a (FDAS): ingest the engineering source corpus into queryable, provenance-tracked knowledge + screening/analysis (riser, mooring, etc.), AND surface it as marketing / capability-showcase material."
+    objectives: [engineering corpus ingest + analysis, marketing/capability showcase from the corpus]
+    explicit: true
+    status: active
+  - repo: worldenergydata
+    tier: knowledge-wiki
+    profile: code
+    sensitivity: public
+    mcp_required: true
+    mission: "Python data library + unified CLI for BSEE/marine-safety/FDAS: economic, safety, production analysis."
+    objectives: [public-data access + analysis framework]
+    explicit: true
+    status: active
+  - repo: worldenergydata-wiki
+    tier: knowledge-wiki
+    profile: knowledge
+    sensitivity: public
+    mcp_required: false
+    mission: "Public-domain US federal energy-data wiki (BSEE, NOAA, USGS, MMS)."
+    objectives: [public data corpus, CC-BY]
+    explicit: true
+    status: active
+  - repo: raw-to-knowledge-playbook
+    tier: knowledge-wiki
+    profile: knowledge
+    sensitivity: public
+    mcp_required: false
+    mission: "Public peer-shareable methodology for bulk extraction→verification→ingestion of heterogeneous archives into LLM-queryable knowledge."
+    objectives: [methodology + measured outcomes, credibility/marketing anchor]
+    explicit: true
+    status: active
+
+  # ---- gtm-marketing (O3) ----
+  - repo: aceengineer-website
+    tier: gtm-marketing
+    profile: code
+    sensitivity: public
+    mcp_required: false
+    mission: "Public marketing + technical showcase site for AceEngineer."
+    objectives: [positioning, blog, case studies]
+    explicit: true
+    status: active
+  - repo: aceengineer-strategy
+    tier: gtm-marketing
+    profile: control-product
+    sensitivity: business-internal
+    mcp_required: false
+    mission: "Private business-strategy operations center: pipeline, competitive intel, experiments, OKR scorecard."
+    objectives: [GTM motions, pipeline, content→outreach flywheel]
+    explicit: true
+    status: active
+  - repo: aceengineer-admin
+    tier: gtm-marketing
+    profile: code
+    sensitivity: business-internal
+    mcp_required: false
+    mission: "Financial automation: invoicing, tax prep, business admin for AceEngineer Inc."
+    objectives: [back-office automation]
+    explicit: true
+    status: active
+
+  # ---- personal (O5) — in-ecosystem by harness, separable by design ----
+  - repo: sabithaandkrishnaestates
+    tier: personal
+    profile: code
+    sensitivity: personal-sensitive
+    mcp_required: false
+    mission: "Family investment management: CRE portfolio, corporate admin, tax, AI-assisted analysis."
+    objectives: [portfolio tracking, admin]
+    explicit: true
+    status: active
+  - repo: assethold
+    tier: personal
+    profile: code
+    sensitivity: personal-sensitive
+    mcp_required: false
+    mission: "Stock portfolio analysis + daily trading-strategy signals (Fidelity integration)."
+    objectives: [signals, technical/insider analysis]
+    explicit: true
+    status: active
+  - repo: hobbies
+    tier: personal
+    profile: knowledge
+    sensitivity: personal-sensitive
+    mcp_required: false
+    mission: "Family reference knowledge base (gardening, sports, cultural, autism, personal development)."
+    objectives: [reference only — no code/CI]
+    explicit: true
+    status: reference
+  - repo: kaggle-rogii-2026
+    tier: personal
+    profile: code
+    sensitivity: personal-sensitive
+    mcp_required: false
+    mission: "Kaggle competition: wellbore geology / TVT estimation from wireline logs (deadline 2026-08-05)."
+    objectives: [competition entry]
+    explicit: true
+    status: active
+  - repo: teamresumes
+    tier: personal
+    profile: knowledge
+    sensitivity: personal-sensitive
+    mcp_required: false
+    priority: tier-1               # promoted per VA directive 2026-06-14 — continual-improvement target
+    scope: "VA resume ONLY (cv/va/). Iterate this single resume continually; do not touch the multi-resume system."
+    mission: "Continual improvement of the VA resume (markdown→HTML/PDF build pipeline)."
+    objectives: [continually improve the VA resume, keep the build green]
+    explicit: true
+    status: active
+  - repo: achantas-data
+    tier: personal
+    profile: code
+    sensitivity: personal-sensitive
+    mcp_required: false
+    mission: "Personal/family data collection & knowledge."
+    objectives: [TBD]
+    explicit: false   # OPEN: minimal README — confirm purpose/scope
+    status: inferred
+  - repo: achantas-media
+    tier: personal
+    profile: knowledge
+    sensitivity: personal-sensitive
+    mcp_required: false
+    mission: "Personal/family media management."
+    objectives: [TBD]
+    explicit: false   # OPEN: no README — confirm purpose/scope
+    status: inferred
+
+# Decision log (VA, interactive 2026-06-14):
+#  D1. Ecosystem mission = AceEngineer BUSINESS only; personal repos dropped from the spine. [DONE]
+#  D2. llm-wiki-fdas confirmed: serves O2+O3 (engineering knowledge AND marketing showcase). [DONE]
+#  D4. personal tier is OUT of the business mission (shares harness only). EXCEPTION: teamresumes
+#      is a tier-1 continual-improvement target (VA resume only). [DONE]
+#
+#  D3. Namespace dirs (2802-pilot-evidence, mkt-a, mkt-a-freeze-work, worktrees)
+#      are PLAIN directories (no .git) — non-git working/raw-data staging, NOT repos. Excluded from
+#      this registry by design (e.g. mkt-a is the raw-source root for llm-wiki-mkt-a;
+#      worktrees is git-worktree staging). [DONE]
+#
+# Open questions still to resolve:
+#  Q1. achantas-data, achantas-media missions remain inferred — LOW priority (personal/out-of-scope).
+#  Q4. Orphan check: every IN-SCOPE repo ladders up to an objective (none orphaned).

@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>#3347 Cron installer convergence plan</title>
+  <style>
+    body { font: 16px/1.55 system-ui, sans-serif; max-width: 980px; margin: 2rem auto; padding: 0 1rem; color: #18212f; }
+    h1, h2 { line-height: 1.2; } code { background: #eef2f7; padding: .1rem .3rem; }
+    table { border-collapse: collapse; width: 100%; } th, td { border: 1px solid #ccd5e0; padding: .55rem; text-align: left; vertical-align: top; }
+    .gate { border-left: .35rem solid #b45309; background: #fff7ed; padding: .8rem 1rem; }
+    .evidence { border-left: .35rem solid #2563eb; background: #eff6ff; padding: .8rem 1rem; }
+  </style>
+</head>
+<body>
+  <h1>#3347 — Converge setup-cron on the transactional installer</h1>
+  <p><strong>Status:</strong> plan-review · <strong>Complexity:</strong> T2 · <strong>Lane:</strong> Codex</p>
+  <div class="evidence">
+    <strong>Live read-only reproduction:</strong> legacy setup lists 56 desired entries without comparing live ownership. Transactional preview fails closed on two duplicate Deckhand presence-sync lines. The live crontab also contains duplicate notification purge lines; equality refresh was manually repaired at its current six-hour cadence.
+  </div>
+  <h2>Proposed outcome</h2>
+  <p><code>setup-cron.sh</code> will become a compatibility wrapper over <code>cron_apply.py</code>. Linux installs will use one fail-closed transaction with explicit ownership, compare-and-swap, backup, preservation checks, and rollback.</p>
+  <h2>Scope</h2>
+  <table>
+    <tr><th>Area</th><th>Proposed change</th></tr>
+    <tr><td>Compatibility wrapper</td><td>Remove the independent append/fingerprint loop; map preview/apply intent to the transaction.</td></tr>
+    <tr><td>Ownership</td><td>Add an exact catalog fingerprint for Deckhand presence-sync; reject similar external commands.</td></tr>
+    <tr><td>Recovery</td><td>Generate unique, exclusive backup names so repeated applies never overwrite the preceding recovery point.</td></tr>
+    <tr><td>Machine routing</td><td>Resolve explicit machine aliases before the Windows/Linux scheduler branch.</td></tr>
+    <tr><td>Idempotence</td><td>Prove equality, notification, and Deckhand duplicate families converge once and remain byte-identical on a second plan.</td></tr>
+    <tr><td>Documentation</td><td>Declare one authoritative install path and preserve a separate approval gate for live crontab apply.</td></tr>
+  </table>
+  <h2>Safety properties</h2>
+  <ul>
+    <li>Unknown ownership will continue to abort without writes.</li>
+    <li><code>--replace</code> will remain disabled.</li>
+    <li>Live comms protection will not be bypassed implicitly.</li>
+    <li>The real-catalog ownership suite will be repaired semantically and included rather than excluded.</li>
+    <li>No live crontab mutation will occur during implementation or plan review.</li>
+  </ul>
+  <div class="gate"><strong>Hard stop:</strong> implementation will remain blocked until adversarial plan review completes and the user explicitly approves the plan.</div>
+  <p>Canonical executable plan: <code>docs/plans/2026-07-11-issue-3347-cron-installer-convergence.md</code></p>
+</body>
+</html>

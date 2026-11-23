@@ -1,0 +1,20 @@
+generated: '2026-04-05T12:00:00'
+issue: '#1653 - Marine Subdomain Taxonomy V2'
+total_marine_docs: 217117
+distribution:
+  cad_drawing: 195687
+  unclassified: 10900
+  other: 2221
+  hydrodynamics: 1800
+  risers_umbilicals: 1620
+  subsea_pipelines: 1132
+  vessels_floaters: 1081
+  marine_operations: 1077
+  mooring: 848
+  installation: 401
+  viv_fatigue: 350
+classifier: keyword+standard_mapping+folder_hints
+summary:
+  cad_drawings: 195687
+  classified_text: 10530
+  unclassified: 10900

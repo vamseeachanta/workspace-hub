@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__claude-flow@alpha"
+    ],
+    "deny": []
+  },
+  "enabledMcpjsonServers": [
+    "claude-flow@alpha"
+  ],
+  "enableAllProjectMcpServers": false
+}

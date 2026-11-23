@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Session closeout handoff — issue 2256</title></head>
+<body><main>
+<h1>Session closeout design: exit checkpoint</h1>
+<p>Observation date: 2026-10-05. Task: <a href="https://github.com/vamseeachanta/workspace-hub/issues/2256">issue 2256</a>. Branch: <code>docs/2256-session-closeout</code>; discovery base: <code>2297c5ef578ea1fa21c7f46b8f478f6237eea81c</code>.</p>
+<h2>Disposition</h2>
+<p>Discovery was completed; a reviewed implementation plan, implementation, tests and deployment were not completed. No exit hooks or provider settings were changed. Ecosystem-wide coverage is not established. This document is a checkpoint, not a completion or merge claim.</p>
+<p>The originating request covers a shared session-closeout workflow for Claude and Codex across repositories, branches, worktrees and machines. The replacement user contract removes a separate plan-approval ceremony within authorized scope; proportionate planning, TDD and adversarial review remain required. No merge, main-branch push or history rewrite is authorized by this handoff. Handoff context does not independently authenticate authorization.</p>
+<h2>Discovery findings to retain</h2>
+<ul>
+<li>Reuse issue 2256 and reconcile <a href="https://github.com/vamseeachanta/workspace-hub/issues/2110">2110</a> (report generation), <a href="https://github.com/vamseeachanta/workspace-hub/issues/2234">2234</a> (unverified handoff context), and <a href="https://github.com/vamseeachanta/workspace-hub/issues/2381">2381</a> (expiry). Avoid duplicate engines.</li>
+<li>The existing <code>.claude/hooks/session-review-page.sh</code>, at the discovery base, requires a directory at .git, shares one start-ref between sessions, derives activity from origin/main, suppresses failures, and can stage an entire report directory. Linked worktrees and concurrent sessions require explicit regression coverage.</li>
+<li><code>scripts/session/subagent-checkpoint.py</code> requires review of failed subprocess handling before reuse; an empty result must not become clean evidence.</li>
+<li>Termination hooks are not a guaranteed pre-exit barrier. The proposed workflow will prepare substantive handoffs while a session remains active, use bounded local end receipts, and recover incomplete checkpoints at startup. Revalidate provider capabilities and trust against installed versions.</li>
+<li>Read-only discovery on 2026-10-03 observed 51 first-level Git entries, 24 distinct common directories and 52 registered worktrees locally. These historical counts do not establish present or fleet coverage.</li>
+<li>Drive-index resource discovery returned no matches; five of six configured indexes were unreachable and all six were stale. Resource coverage remained incomplete.</li>
+</ul>
+<h2>Proposed design requirements</h2>
+<p>The shared engine will separate exit readiness, integration state and residue classification. Repository identity will use the resolved Git common directory; per-worktree identity and session ownership will remain separate. Probe errors will remain unknown. Detached and unborn HEAD, shared stashes, dirty foreign work, offline remotes, squash merges, stale receipts and concurrent updates will receive explicit treatment.</p>
+<p>End hooks will perform no network access, dependency installation, staging, commits, pushes, deletion or PM messaging. Runtime receipts will remain private, atomic and session-scoped. Public summaries will use allowlisted fields without private repository identifiers, filenames or transcripts. Windows helpers will launch hidden and capture logs.</p>
+<p>Installation will require empirical verification by machine, provider, client/mode, version, trust state and repository/worktree. Unsupported or offline combinations will remain uncovered. Existing hooks will be reconciled rather than duplicated; unrelated settings will be preserved.</p>
+<h2>Audit at this checkpoint</h2>
+<ul>
+<li>CLEAN: the isolated task worktree had no changes before this handoff; no task PR existed at the time of inspection. Both discovery subagents had completed read-only work.</li>
+<li>EXPECTED: the task branch/worktree will remain available for continuation. Earlier task evidence and dependency caches remain in local scratch. A previous recursive cleanup was rejected by automatic tool policy; no alternative deletion was attempted.</li>
+<li>EXPECTED, preserved foreign state: the canonical checkout contains unrelated governance edits, generated reports, coordination state and six historical stashes. Other registered worktrees remain untouched. These are outside this session's cleanup scope; ownership was not independently re-established.</li>
+<li>UNEXPECTED: no new unexplained residue was detected in the isolated task worktree. The audit was bounded to session-touched repositories and named scratch; machine-wide cleanliness is not established.</li>
+</ul>
+<h2>Next checkpoint</h2>
+<ol>
+<li>Recheck issue comments, live worktree state, parallel sessions and current authority; reacquire a coordination claim before shared work. The discovery claim had a one-hour TTL on 2026-10-03 and is historical, not current authority.</li>
+<li>Write the proportionate future-tense plan, including privacy, ownership, failure recovery, migration and rollback; inspect existing flywheel closeout and session governor utilities before creating new code.</li>
+<li>Obtain adversarial plan review through the current provider routing. Earlier provider quota limitations require fresh verification; a single-provider report is not cross-provider consensus.</li>
+<li>Implement with failing tests first, using disposable repositories and cleared inherited Git bindings. Validate Windows hidden launches and actual loader behavior. Report verified coverage, not intended coverage.</li>
+</ol>
+<p>Validation for this checkpoint will comprise document readback, diff checks and commit/remote verification. No product tests were run because this checkpoint changes documentation only. No merge, deployment, runtime installation or destructive cleanup was performed.</p>
+<p>Provider references: <a href="https://learn.chatgpt.com/docs/hooks">Codex hooks</a>; <a href="https://code.claude.com/docs/en/hooks">Claude hooks</a>. Current behavior will require revalidation before implementation.</p>
+</main></body></html>

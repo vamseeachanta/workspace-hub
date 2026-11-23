@@ -1,0 +1,104 @@
+# pyproject.toml coverage configuration template
+#
+# Add this section to your pyproject.toml file for coverage configuration
+# This is an alternative to .coveragerc file
+
+[tool.coverage.run]
+# Source code directories to measure
+source = ["src"]
+
+# Files to exclude from coverage
+omit = [
+    "*/tests/*",
+    "*/test_*",
+    "*_test.py",
+    "*/__pycache__/*",
+    "*/venv/*",
+    "*/env/*",
+    "*/.venv/*",
+    "*/site-packages/*",
+    "*/migrations/*",
+    "*/settings/*",
+    "*/config/*",
+    "*/manage.py",
+    "*/wsgi.py",
+    "*/asgi.py",
+    "setup.py",
+    "*/conftest.py"
+]
+
+# Enable branch coverage
+branch = true
+
+# Data file location
+data_file = ".coverage"
+
+# Parallel processing (uncomment if using pytest-xdist)
+# parallel = true
+
+# Plugins to load
+# plugins = []
+
+[tool.coverage.report]
+# Regexes for lines to exclude from consideration
+exclude_lines = [
+    # Have to re-enable the standard pragma
+    "pragma: no cover",
+
+    # Don't complain about missing debug-only code
+    "def __repr__",
+    "if self\\.debug",
+
+    # Don't complain if tests don't hit defensive assertion code
+    "raise AssertionError",
+    "raise NotImplementedError",
+
+    # Don't complain if non-runnable code isn't run
+    "if 0:",
+    "if __name__ == .__main__.:",
+
+    # Don't complain about abstract methods
+    "@(abc\\.)?abstractmethod",
+
+    # Don't complain about type checking blocks
+    "if TYPE_CHECKING:",
+
+    # Don't complain about platform specific code
+    "if sys\\.platform"
+]
+
+# Ignore empty files
+skip_empty = true
+
+# Show missing line numbers
+show_missing = true
+
+# Precision for coverage percentage
+precision = 2
+
+# Sort by coverage percentage
+sort = "Cover"
+
+# Fail under threshold
+fail_under = 80
+
+[tool.coverage.html]
+# Directory for HTML coverage report
+directory = "htmlcov"
+
+# Title for HTML report
+title = "Coverage Report"
+
+# Show contexts
+show_contexts = true
+
+[tool.coverage.xml]
+# Output file for XML coverage report
+output = "coverage.xml"
+
+[tool.coverage.json]
+# Output file for JSON coverage report (uncomment if needed)
+# output = "coverage.json"
+
+# Pretty print JSON (uncomment if needed)
+# pretty_print = true

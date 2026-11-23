@@ -1,0 +1,11 @@
+# Stage 1 exit gate — user approval of captured scope
+# Copy to assets/WRK-NNN/evidence/user-review-capture.yaml before moving to Stage 2
+stage: 1
+wrk_id: ""          # WRK-NNN
+reviewer: ""        # must be in human_authority_allowlist
+confirmed_at: ""    # ISO 8601 UTC datetime e.g. 2026-03-08T12:00:00Z
+scope_approved: false  # set to true when scope is accepted as-is; false = revise
+notes: ""
+# Route A only: may set n/a: true with reason to bypass gate
+# n/a: false
+# n/a_reason: ""

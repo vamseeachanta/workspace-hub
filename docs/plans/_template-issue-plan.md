@@ -1,0 +1,280 @@
+# Plan for #NNN: Issue Title
+
+> **Status:** draft | adversarial-reviewed | plan-review | plan-approved
+> **Complexity:** T1 | T2 | T3
+> **Date:** YYYY-MM-DD
+> **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/NNN
+> **Client:** N/A | <client-slug>     <!-- required per .claude/rules/wiki-sibling-routing.md (#2778); N/A when plan does not touch wiki content -->
+> **Project:** (optional — populate when plan scopes to a single project under the client; consumed by check-wiki-sibling-frontmatter.py Rule E)
+> **Lane:** lane:claude | lane:codex   <!-- plan-time AI provider lane per the "Compute lane assignment" rule in .claude/memory/agents.md; must match the issue's lane: label — relabel the issue if planning changed the scope class (#3029) -->
+> **Review artifacts:** scripts/review/results/YYYY-MM-DD-plan-NNN-claude.md | ...-codex.md | ...-gemini.md
+
+---
+
+## Resource Intelligence Summary
+
+<!-- For plans touching wiki content (Client: != N/A), the work routes per
+     .claude/rules/wiki-sibling-routing.md. Verify Client: matches a
+     `short_name` in config/client-wikis.yml; verify Project: (if set) is
+     enumerated in that client's `projects:` list (Rule E). -->
+
+
+<!-- RETRIEVAL CONTRACT (per #2208):
+     This section is an evidence contract, not a free-form narrative.
+     Requirements:
+     - ≥3 distinct sources must be consulted and listed (issue body counts as 1)
+     - Each source must cite a specific file path, issue number, or registry entry
+     - Each source must state a concrete finding ("Found X", "Confirmed no Y", "Standard Z has gap status")
+     - Vague claims ("searched the repo", "checked standards") are insufficient
+     - The Gaps sub-section must list what must be built from scratch
+     
+     Issue-class bundles — consult at minimum:
+     - ALL issues: prior plans (docs/plans/), existing code in affected paths, recent related issues,
+       intelligence entry points (docs/document-intelligence/README.md or data-intelligence-map.md),
+       drive-file index (run the drive-file-search skill or `scripts/data/drive-index-search/search.py "<terms>" --json --caller plan-resource-intel`;
+       cite hits under "Documents consulted" with canonical /mnt/<drive> paths, de-id per docs/guides/drive-file-search-playbook.md; state "no relevant drive files" if empty)
+     - Engineering: + standards-transfer-ledger.yaml, code-registry.yaml, relevant domain wiki, online-resource-registry.yaml
+     - Data Pipeline: + registry.yaml, pipeline config, resource-intelligence-maturity.yaml
+     - Documentation: + governance docs in target dir, CONTROL_PLANE_CONTRACT.md, durable-vs-transient boundary (#2209)
+     - Harness/Infrastructure: + CONTROL_PLANE_CONTRACT.md, config/agents/ settings, .claude/rules/
+     - Knowledge/Intelligence: + operating model (#2205), sibling contracts, accessibility map (#2096), accessibility registry (when available)
+     
+     If issue class is ambiguous or unlabeled, default to General (universal minimum only).
+     If issue matches multiple classes, use the union of all matching bundles.
+-->
+
+### Existing repo code
+<!-- File paths checked and what was found. State "no existing implementation" if nothing relevant exists. -->
+- Found: `<repo>/src/path/to/existing_module.py` — `function_name()` covers X
+- Gap: Y is not implemented anywhere
+
+### Standards
+<!-- Standards checked against the ledger with status. State "not applicable" for non-engineering issues. -->
+| Standard | Status | Source |
+|---|---|---|
+| DNV-RP-XXXX | done / gap | `data/document-index/standards-transfer-ledger.yaml` |
+
+### LLM Wiki pages consulted
+<!-- Wiki page paths checked with findings. State "no relevant wiki pages" if none apply. -->
+- `knowledge/wikis/marine-engineering/wiki/concepts/xxx.md` — covers Y
+- `knowledge/wikis/maritime-law/wiki/entities/xxx.md` — relevant to Z
+
+### Documents consulted
+<!-- Prior plans, parent/sibling issues, registries, PDFs, online resources — with specific findings. -->
+- `docs/plans/YYYY-MM-DD-related-plan.md` — prior approach to X
+- `data/document-index/online-resource-registry.yaml` — entry for Y
+- Related issue #NNN — decided Z
+
+### Gaps identified
+<!-- What must be built from scratch. Be specific — each gap is a testable claim. -->
+- No existing implementation of X
+- Standard Y is in the gap list — no coverage
+
+### Evidence (embedded verification)
+<!-- ADDED 2026-04-20 per iter-2 cross-review convergent finding: reviewers require
+     inline evidence for correctness-critical claims rather than prose "confirmed".
+     Embed the actual tool output below; keep compact but verifiable.
+
+     Required for:
+     - Every cited issue number (show state + title)
+     - Every cited file path (show exists/missing)
+     - Every "no existing X" claim (show the command that returned empty)
+     - Every quoted line citation (show the source command + excerpt)
+
+     Not required for: external docs with stable URLs, well-known conventions. -->
+
+**Issue statuses** (verified YYYY-MM-DDTHH:MM:SSZ via `gh issue view`):
+- `#NNNN` — STATE — title
+- ...
+
+**File existence** (`ls -la` YYYY-MM-DDTHH:MM:SSZ):
+- EXISTS: path/to/file.py
+- MISSING (new — this plan creates): path/to/new.py
+- ...
+
+**Line excerpts** (`sed -n N,Mp path/to/file`):
+```
+<paste excerpt here — reviewers verify line numbers match>
+```
+
+**Gap proofs** (`ls path-not-existing 2>&1 | head -3` or `grep -c X path`):
+- `ls scripts/knowledge/*gap*` → "No such file or directory" → confirms tool does not exist.
+
+**Reproduction proofs** (verify-against-repo-state, per Step 1.5 of `issue-planning-mode`):
+<!-- MANDATORY when the issue alleges a runtime failure (failing test, broken import,
+     missing method, incorrect output, regression). Skip-allowed for documentation /
+     governance issues; mark "N/A — <reason>" so reviewers know the skip was intentional.
+     Empirical: 4 of 6 plans (2026-05-06 wave) drifted from reality without this step. -->
+
+```
+$ <exact command run, e.g., uv run pytest path::test -xvs>
+<verbatim tail of output, ~10-40 lines, showing the actual failure mode>
+```
+
+- Reproduced at: YYYY-MM-DDTHH:MM:SSZ
+- Failure mode observed matches issue claim: YES / NO — <if NO, plan must address the actual failure mode, not the claimed one>
+
+<!-- Verification: count distinct sources above (across all sub-sections).
+     Minimum 3 required (issue body + 2 others). Current count: ___ -->
+
+---
+
+## Artifact Map
+
+| Artifact | Path |
+|---|---|
+| This plan | docs/plans/YYYY-MM-DD-issue-NNN-slug.md |
+| Tests | `<repo>/tests/path/to/test_module.py` |
+| Implementation | `<repo>/src/path/to/module.py` |
+| Plan review — Claude | scripts/review/results/YYYY-MM-DD-plan-NNN-claude.md |
+| Plan review — Codex | scripts/review/results/YYYY-MM-DD-plan-NNN-codex.md |
+| Plan review — Gemini | scripts/review/results/YYYY-MM-DD-plan-NNN-gemini.md |
+| Wiki updates | knowledge/wikis/<domain>/wiki/... |
+| Docs updates | docs/<area>/<file>.md |
+
+---
+
+## Deliverable
+
+<!-- One sentence. What will exist after this issue is done that does not exist now. -->
+A `<module_name>` module in `<repo>/src/` that does X, with full TDD coverage.
+
+---
+
+## Pseudocode
+
+<!-- T1 issues: write "trivial — see files to change" and skip this section.
+     T2/T3: write 5-15 lines per new function or module. This is the design checkpoint. -->
+
+```
+function calculate_X(input_a, input_b):
+    validate inputs are non-null and within expected ranges
+    load reference constants from config
+    apply formula: result = input_a * CONSTANT / input_b
+    check result against acceptance bounds
+    return result with units annotation
+```
+
+---
+
+## Files to Change
+
+| Action | Path | Reason |
+|---|---|---|
+| Create | `<repo>/src/path/to/module.py` | main implementation |
+| Create | `<repo>/tests/path/to/test_module.py` | TDD test suite |
+| Modify | `<repo>/src/path/to/existing.py` | extend to call new module |
+| Update | docs/plans/README.md | add this plan to index |
+| Update | knowledge/wikis/<domain>/wiki/index.md | if domain knowledge added |
+
+---
+
+## TDD Test List
+
+<!-- One row per test. Write these before implementation. -->
+| Test name | What it verifies | Expected input | Expected output |
+|---|---|---|---|
+| test_calculate_X_nominal | nominal case passes | a=1.0, b=2.0 | 0.5 * CONSTANT |
+| test_calculate_X_zero_denominator | raises ValueError on b=0 | a=1.0, b=0 | ValueError |
+| test_calculate_X_negative_input | handles negative a | a=-1.0, b=2.0 | -0.5 * CONSTANT |
+| test_calculate_X_regression | matches reference value from standard | a=X, b=Y | Z (± tolerance) |
+
+---
+
+## Acceptance Criteria
+
+- [ ] All new tests pass: `uv run pytest <repo>/tests/path/to/test_module.py -v`
+- [ ] No regression: `uv run pytest <repo>/` passes
+- [ ] Specific numerical check: result for input (X, Y) matches reference Z within ±0.1%
+- [ ] Docs updated (if applicable)
+- [ ] Wiki updated (if domain knowledge was added)
+- [ ] Review artifacts posted to scripts/review/results/
+
+---
+
+## Adversarial Review Summary
+
+<!-- Filled in after Step 4 completes. Do not post to GitHub until this section is populated. -->
+
+| Provider | Verdict | Key findings |
+|---|---|---|
+| Claude | APPROVE / MINOR / MAJOR | summary of findings |
+| Codex | APPROVE / MINOR / MAJOR | summary of findings |
+| Gemini | APPROVE / MINOR / MAJOR | summary of findings |
+
+**Overall result:** PASS / FAIL (re-draft required)
+
+Revisions made based on review:
+- (list any changes made to the plan after adversarial review)
+
+---
+
+## Retention
+
+<!-- Replace #NNN with this plan's issue reference. Record the current issue
+     state and an explicit closure date; an open issue has no fixed expiry. -->
+
+**Basis:** [Boundary policy, Section 8.1](../document-intelligence/durable-vs-transient-knowledge-boundary.md#81-retention-schedule)
+(#2209): plan files are retained for the issue lifetime plus 30 days, then
+intended for archive. These counts are **advisory pending #2237**; no conformance
+check should enforce them as hard failures. The lifecycle trigger is issue
+closure; reopening the issue removes the fixed archive-eligibility date.
+Eligibility does not authorize deletion or perform an archive operation.
+
+Plan files are distinct from governance markers: `.planning/plan-approved/`
+and `.planning/verified/` remain **permanent for closed issues** under the same
+policy. The plan calculation below does not apply to those markers.
+
+Synthetic metadata example (the closure date is illustrative, not a live issue):
+
+```json
+{
+  "issue": "#NNN",
+  "artifact_class": "plan",
+  "issue_state": "closed",
+  "closed_on": "2024-01-31",
+  "retention_days": 30,
+  "retention_basis": "../document-intelligence/durable-vs-transient-knowledge-boundary.md#81-retention-schedule",
+  "retention_status": "advisory",
+  "disposition": "archive"
+}
+```
+
+Load the JSON above with `metadata = json.loads(...)` using the standard-library
+`json` module, then run this standard-library Python example. The 30-day value
+comes from the cited plan-files row, not a separate retention rule.
+
+```python
+from datetime import date, timedelta
+
+
+def plan_archive_eligible_on(metadata):
+    if metadata["issue_state"] != "closed" or metadata["closed_on"] is None:
+        return None
+    closed_on = date.fromisoformat(metadata["closed_on"])
+    return (closed_on + timedelta(days=metadata["retention_days"])).isoformat()
+
+
+archive_eligible_on = plan_archive_eligible_on(metadata)
+```
+
+The synthetic result is `"2024-03-01"`: after January ends, February contributes
+29 days in this leap year and March contributes one day. For an open issue,
+use `"issue_state": "open"` and `"closed_on": null`; the result is `None`,
+with no fixed expiry. A reopened issue also returns `None` even if a previous
+closure date remains in the metadata.
+
+---
+
+## Risks and Open Questions
+
+- **Risk:** X depends on Y which is not yet implemented — verify Y exists before starting
+- **Risk:** Standard Z has gap status — implementation will use best available reference
+- **Open:** Should this handle edge case A? (flag for user during approval)
+
+---
+
+## Complexity: T1 | T2 | T3
+
+<!-- Delete two, keep one. Brief justification below. -->
+**T2** — new module with multiple files, TDD required, one existing file modified.

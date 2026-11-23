@@ -1,0 +1,3 @@
+{"event": "stage_exit", "wrk": "WRK-5082", "stage": 1, "date": "2026-03-17", "timestamp": "2026-03-17T00:08:53.372815Z"}
+{"event": "stage_exit", "wrk": "WRK-5082", "stage": 2, "date": "2026-03-17", "timestamp": "2026-03-17T00:12:42.023363Z"}
+{"event": "stage_exit", "wrk": "WRK-5082", "stage": 3, "date": "2026-03-17", "timestamp": "2026-03-17T00:13:12.405242Z"}

@@ -1,0 +1,26 @@
+PERSONAL Gmail triage for 2026-04-09
+
+Requires attention:
+1. Important Notice: Overdue Payment & Receipt for Your Loan — Tata Capital
+   - Potentially time-sensitive if legitimate and tied to an actual account/loan.
+   - Action: verify whether user has any Tata Capital loan/account; if yes, log in directly via official website/app and confirm status. Do not click email links first.
+
+Low priority / optional review:
+2. A 3.5% Ally Invest IRA contribution match could be yours — Ally Invest
+   - Promotional, but could be financially relevant if user already uses Ally Invest and planned IRA contributions.
+   - Action: review only if actively optimizing retirement contributions.
+
+Ignore / unsubscribe:
+3. Grow your skills with Google for $239/year — Coursera
+   - Marketing promotion.
+4. The One-Pager: AI Just Moved Into Your Spreadsheet — Chris Reilly
+   - Newsletter / content marketing.
+5. Autonomous subsea monitoring gains traction in the Gulf of Mexico — Offshore's Subsea Report
+   - Industry newsletter; informational only.
+6. Your IRCTC RBL Bank Credit Card Awaits – Complete Your Application Today! — IRCTC
+   - Credit card promotion.
+
+Latest practical work-to-be-done:
+- First: Validate the Tata Capital overdue-payment email via official channels. This is the only item with possible downside if ignored.
+- Second: If relevant to current finances, quickly decide whether the Ally Invest IRA promotion is worth acting on.
+- Third: bulk archive/unsubscribe from Coursera, Chris Reilly newsletter, Offshore Subsea Report, and IRCTC promos to reduce inbox noise.

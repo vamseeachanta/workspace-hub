@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Completeness — #3057 bug(automation): harden cron cutover env and repo hygiene live probes</title>
+<style>
+body{margin:0;background:#0f1419;color:#e6edf3;font:15px/1.6 -apple-system,Segoe UI,Roboto,sans-serif}
+.wrap{max-width:920px;margin:0 auto;padding:30px 20px}
+h1{font-size:23px} .muted{color:#9aa7b2;font-size:13px}
+.big{font-size:42px;font-weight:800}
+.pass{color:#3fb950}.fail{color:#f85149}
+table{width:100%;border-collapse:collapse;margin:14px 0}
+td,th{border:1px solid #2d3742;padding:8px 10px;text-align:left}
+code,pre{background:#0b0f14;border:1px solid #2d3742;border-radius:5px;padding:2px 6px;
+ font:12.5px ui-monospace,Menlo,monospace;color:#c9d6e0}
+pre{padding:12px;overflow-x:auto;white-space:pre-wrap}
+</style></head><body><div class="wrap">
+<h1>Completeness — #3057: bug(automation): harden cron cutover env and repo hygiene live probes</h1>
+<div class="muted">class: evidence · threshold: 80 · generated 2026-06-13</div>
+<p class="big pass">100% — <span class="pass">PASS</span></p>
+<h2>Evidence</h2>
+<table><thead><tr><th>Item</th></tr></thead><tbody><tr><td>Implementation committed at b2b442c06724b4b1901240744ac5bc567110517b: shared renderer, transactional audit/apply hardening, hygiene timeout defaults, cron-health marker parsing: met (w=2)</td></tr><tr><td>Focused pytest gate passed: 113 passed in 32.67s: met (w=2)</td></tr><tr><td>Cron-health shell regression suite passed: 30 passed, 0 failed: met (w=2)</td></tr><tr><td>cron_transaction.py self-check passed and remained idempotent: met (w=1)</td></tr><tr><td>Live cron-audit --json passed: ok=True, machine=dev-primary, uncataloged=0, notification-purge classified cataloged: met (w=2)</td></tr><tr><td>Live cron_apply --json dry-run passed: rendered new_text present, no unresolved WORKSPACE_HUB/LOG, one notification-purge line: met (w=2)</td></tr><tr><td>Live repo-ecosystem-hygiene audit completed on governed 17-repo set under 30/120/480 defaults: status=WARN, rc=0, elapsed=24.14s, no git_probe_timeout, incomplete_due_to_deadline=false: met (w=2)</td></tr><tr><td>Diff-only legal sanity scan passed: met (w=1)</td></tr><tr><td>Scoped absolute-path enforcement passed with baseline and issue production-file pathspec: met (w=1)</td></tr><tr><td>git diff --check and Python py_compile gate passed: met (w=1)</td></tr><tr><td>Adversarial code-stage spec review returned APPROVE after fixes: met (w=2)</td></tr><tr><td>Adversarial code-stage quality review returned APPROVE after fixes: met (w=2)</td></tr><tr><td>Read-only boundary from #3041 preserved: hygiene audit remains read-only and timeout-only change adds no mutating repo actions: met (w=1)</td></tr></tbody></table>
+<h2>Authoritative record (gate-read)</h2>
+<pre>```completeness {"completeness_pct": 100, "cls": "evidence", "threshold": 80, "passed": true, "snapshot_sha": null, "issue_number": 3057, "generated_at": "2026-06-14T03:49:19.510026+00:00", "evidence": ["Implementation committed at b2b442c06724b4b1901240744ac5bc567110517b: shared renderer, transactional audit/apply hardening, hygiene timeout defaults, cron-health marker parsing: met (w=2)", "Focused pytest gate passed: 113 passed in 32.67s: met (w=2)", "Cron-health shell regression suite passed: 30 passed, 0 failed: met (w=2)", "cron_transaction.py self-check passed and remained idempotent: met (w=1)", "Live cron-audit --json passed: ok=True, machine=dev-primary, uncataloged=0, notification-purge classified cataloged: met (w=2)", "Live cron_apply --json dry-run passed: rendered new_text present, no unresolved WORKSPACE_HUB/LOG, one notification-purge line: met (w=2)", "Live repo-ecosystem-hygiene audit completed on governed 17-repo set under 30/120/480 defaults: status=WARN, rc=0, elapsed=24.14s, no git_probe_timeout, incomplete_due_to_deadline=false: met (w=2)", "Diff-only legal sanity scan passed: met (w=1)", "Scoped absolute-path enforcement passed with baseline and issue production-file pathspec: met (w=1)", "git diff --check and Python py_compile gate passed: met (w=1)", "Adversarial code-stage spec review returned APPROVE after fixes: met (w=2)", "Adversarial code-stage quality review returned APPROVE after fixes: met (w=2)", "Read-only boundary from #3041 preserved: hygiene audit remains read-only and timeout-only change adds no mutating repo actions: met (w=1)"], "implementation_commit": "b2b442c06724b4b1901240744ac5bc567110517b", "report_artifact": "docs/reports/2026-06-13-3057-completeness.html"}```</pre>
+<div class="muted">This block is the exact record persisted to the issue + kanban; the close gate reads it.</div>
+</div></body></html>

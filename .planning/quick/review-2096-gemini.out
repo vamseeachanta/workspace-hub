@@ -1,0 +1,25 @@
+Agent loading error: Failed to load agent from /mnt/local-analysis/workspace-hub/.gemini/agents/gsd-debugger.md: Validation failed: Agent Definition:
+Unrecognized key(s) in object: 'permissionMode'Agent loading error: Failed to load agent from /mnt/local-analysis/workspace-hub/.gemini/agents/gsd-executor.md: Validation failed: Agent Definition:
+Unrecognized key(s) in object: 'permissionMode'1. Verdict: MAJOR
+2. Ready for user approval: No
+3. Retrieval adequacy: adequate
+4. Top blockers (numbered):
+   1. **Scope Boundary Violation & Regression Risk:** The plan proposes conditional logic (`if drift is within #2096 scope: define minimal corrective edits`) to resolve drift between the map and the machine-readable registry. However, `data/document-index/intelligence-accessibility-registry.yaml` clearly states its owner is `#2136`, meaning editing the registry is out-of-scope for `#2096`. Furthermore, the registry is stale (generated 2026-04-11) compared to the map (refreshed 2026-04-12). If the agent executes this plan by updating the map to match the registry, it will regress the newly approved map to an outdated state. The plan must unconditionally delegate all registry updates to `#2136`.
+   2. **Workflow Violation (Missing WRK-* Mapping):** Per `.gemini/GEMINI.md` (Required Gates), "Every task maps to WRK-* in `.claude/work-queue/`". The plan fails to include or verify a `WRK-*` ID for this execution.
+   3. **Hidden Design Decision (Weekly Checklist Bloat):** The map (`intelligence-accessibility-map.md`) defines 27 individual accessibility checks. The plan states it will `ensure consumer checklist aligns` in `WEEKLY_ECOSYSTEM_EXECUTION_AND_INTELLIGENCE_REVIEW.md`. The plan must define the exact alignment strategy upfront. Copying 27 checks into the weekly template would cause significant bloat; it should explicitly plan to add a single consolidated reference link to the map instead.
+5. Critical findings:
+   - The plan proposes `final gap fixes only` to `docs/document-intelligence/intelligence-accessibility-map.md`. The map is already verified, approved, and fresh as of 2026-04-12. Modifying it to match the stale April 11 registry would be a direct regression.
+6. High findings:
+   - The scope condition (`if drift is within #2096 scope`) defers a critical boundary decision to execution time. A plan must define boundaries upfront. The boundary is clear: the registry belongs to `#2136`.
+   - The plan does not explicitly list a cross-agent review gate before closure, which is required for Route B/C (T2 complexity) tasks per the governance rules in `.gemini/GEMINI.md`.
+7. Medium findings:
+   - The TDD tests (e.g., `test_drift_resolution_is_explicit`, `test_weekly_review_references_2096_checks`) are written as automated tests, but for a documentation/governance closure task, these are actually manual validation steps.
+8. Low findings:
+   - The complexity `T2` is appropriate, but introducing conditional "drift resolution" logic creates unnecessary complexity for what should be a straightforward verification and closure task.
+9. Required revisions before user approval:
+   - Remove the conditional "drift resolution" logic from the pseudocode. 
+   - Explicitly state that all drift in `data/document-index/intelligence-accessibility-registry.yaml` is delegated to `#2136`.
+   - Remove instructions to update the `intelligence-accessibility-map.md`; affirm that it is already correct, approved, and fresh.
+   - Define the exact implementation strategy for updating the weekly review template (e.g., adding a single link referencing the map's 27 checks, rather than duplicating them).
+   - Add a step to ensure the task is mapped to a `WRK-*` item in the work queue.
+   - Explicitly define the cross-review step required before the final closeout note is approved.

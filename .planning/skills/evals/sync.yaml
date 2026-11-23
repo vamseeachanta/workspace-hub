@@ -1,0 +1,23 @@
+version: 1
+wrk_id: WRK-1009
+skill_name: sync
+skill_path: .claude/skills/workspace-hub/sync/SKILL.md
+evals:
+- eval_id: sync-cap-01
+  eval_type: capability
+  description: Core sections documented for sync
+  checks:
+    required_sections:
+    - '## Usage'
+    - '## Subcommands'
+    - '## Scope'
+    - '## Execution Protocol'
+    - '## Existing Script'
+- eval_id: sync-proc-01
+  eval_type: procedural
+  description: Additional documentation sections for sync
+  checks:
+    required_sections:
+    - '## Windows / MINGW64 Notes'
+    - '## Anti-Patterns (NEVER do these)'
+    - '## Iron Law'

@@ -1,0 +1,23 @@
+version: 1
+wrk_id: WRK-1009
+skill_name: orchestrator-routing
+skill_path: .claude/skills/workspace-hub/agent-teams/orchestrator-routing/SKILL.md
+evals:
+- eval_id: or-cap-01
+  eval_type: capability
+  description: Core sections documented for orchestrator-routing
+  checks:
+    required_sections:
+    - '## WRK Queue Integration'
+    - '## Core Pattern'
+    - '## When to Delegate'
+    - '## Routing Decision by Task Type'
+    - '## Spawning a Background Agent'
+- eval_id: or-proc-01
+  eval_type: procedural
+  description: Additional documentation sections for orchestrator-routing
+  checks:
+    required_sections:
+    - '## Staying Responsive'
+    - '## Resuming Agents'
+    - '## Context Window Management'

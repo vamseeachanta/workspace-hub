@@ -1,0 +1,156 @@
+# Hermes Kanban — board manifest schema
+# Source-of-truth: this directory (workspace-hub/.claude/memory/kanban/).
+# Loader (scripts/load.py) translates each board YAML into `hermes kanban` CLI calls
+# against the local ~/.hermes/kanban.db on whichever machine runs it.
+
+# ---------------------------------------------------------------------------
+# Three-tier model
+# ---------------------------------------------------------------------------
+# tier 0  ecosystem      — one master board (slug: ecosystem)
+# tier 1  repo           — one board per active repo (slug: repo-<reponame>)
+# tier 2  domain         — sub-boards inside big repos (slug: repo-<reponame>-<domain>)
+#
+# Slug rules:
+#   - lowercase kebab-case, ASCII only
+#   - prefix `repo-` for tier 1+2
+#   - domain suffix is the repo-internal subsystem name (solver, codes, io, ...)
+
+# ---------------------------------------------------------------------------
+# board YAML (file: boards/<slug>.yaml)
+# ---------------------------------------------------------------------------
+board:
+  slug: repo-digitalmodel-solver        # required, matches filename stem
+  display_name: digitalmodel · solver   # human-readable
+  tier: domain                          # ecosystem | repo | domain
+  repo: vamseeachanta/digitalmodel      # required for tier 1+2; omit for tier 0
+  domain: solver                        # required for tier 2
+  parent_slug: repo-digitalmodel        # required for tier 2 (link upward)
+  workspace_path: /mnt/local-analysis/digitalmodel   # default --workspace dir:<path>
+  description: |
+    Numerical solver subsystem — OrcaWave/AQWA bridges, time-domain integrators.
+
+# ---------------------------------------------------------------------------
+# cards (one entry per mirrored GH issue OR detected gap)
+# ---------------------------------------------------------------------------
+cards:
+  # --- mirrored GitHub issue ---
+  - idempotency_key: gh:vamseeachanta/digitalmodel#2289   # REQUIRED, drives upsert
+    title: "fix(solver): AQWA dt-collapse on stiff mooring"
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/2289
+    gh_state: open
+    gh_labels: [bug, p1, solver]
+    gh_assignees: []
+    initial_status: blocked-with-reason   # loader parks every card sticky-blocked
+                                           # (create running -> block <reason>); NOT
+                                           # triage (triage = gateway pipeline entry)
+    priority: 2                            # 0 default; higher = more urgent
+    body_excerpt: |
+      First 20 lines of the issue body, trimmed.
+    detected_dependencies:                 # cross-card refs we noticed
+      - gh:vamseeachanta/digitalmodel#2045
+    notes: ""                              # loader-relevant notes only
+
+  # --- detected gap (NOT loaded into Hermes; awaits GH-issue promotion) ---
+  - idempotency_key: gap:repo-digitalmodel-solver:001    # `gap:` prefix flags YAML-only
+    title: "Solver heartbeat missing for long-running runs"
+    source: detected_gap
+    detection_basis: "TODO in src/digitalmodel/solver/runner.py:128 + no heartbeat event in task_runs"
+    needs_issue: true                       # loader skips; surface to user for issue creation
+    priority: 1
+    body_excerpt: |
+      Suggested issue body sketch.
+
+# ---------------------------------------------------------------------------
+# manifest.yaml (one file, at kanban/manifest.yaml — top-level index)
+# ---------------------------------------------------------------------------
+manifest:
+  generated_at: 2026-05-22
+  source_machine: ace-linux-1                # informational
+  boards:
+    - slug: ecosystem
+      tier: ecosystem
+      file: boards/ecosystem.yaml
+    - slug: repo-digitalmodel
+      tier: repo
+      file: boards/repo-digitalmodel.yaml
+      children: [repo-digitalmodel-solver, repo-digitalmodel-codes, repo-digitalmodel-io]
+    # ... etc
+
+# ---------------------------------------------------------------------------
+# Loader rules (enforced by scripts/load.py)
+# ---------------------------------------------------------------------------
+# 1. Boards are created via `hermes kanban boards create <slug> --name "<display_name>"`.
+#    `boards create` is idempotent in our wrapper — if slug exists, no-op.
+# 2. Each `source: github_issue` card is parked STICKY-BLOCKED via a two-step
+#    create→block sequence (verified against hermes v0.14.0 source). A card
+#    created already-`blocked` is auto-unblocked by the gateway (block_task
+#    matches 0 rows → no sticky `"blocked"` event fires), so the loader must
+#    create in a block-ELIGIBLE status first:
+#       hermes kanban --board <slug> create --initial-status running \
+#         --idempotency-key <key> --workspace dir:<workspace_path> \
+#         --priority <priority> --created-by kanban-loader \
+#         --body <body_excerpt + source_url> <title>
+#       hermes kanban --board <slug> block <id> "<reason>"
+#    The running→blocked transition succeeds and emits the sticky event the
+#    gateway keys auto-unblock-suppression on.
+# 3. `source: detected_gap` cards are SKIPPED by the loader. They live in YAML and
+#    in gaps/<repo>.yaml until promoted to a real GH issue, then converted to source:github_issue.
+# 4. The sticky blocked-WITH-reason park is what stops workers auto-claiming —
+#    NOT `triage` (triage is the gateway's specifier/decomposer pipeline ENTRY,
+#    which auto-promotes; see [[feedback_hermes_triage_is_pipeline_entry]]). User
+#    promotes via `hermes kanban unblock|promote|specify <task-id>`.
+# 5. Re-running the loader is safe: idempotency_key dedups; existing tasks are
+#    returned. The loader reads the card's status from `create --json` and SKIPS
+#    the block call when it is already `blocked` (sticky) — no comment-bloat, no
+#    false failure. It blocks only block-ELIGIBLE (`running`/`ready`) cards.
+
+# ===========================================================================
+# Dispatch layer — labels + routing  (added 2026-05-25, issue TBD)
+# ===========================================================================
+# Source of truth for assignment is GITHUB LABELS, not this YAML. The per-card
+# routing fields below are a local mirror the dispatcher writes; the label on
+# the GH issue always wins. Keeps assignment portable across machines with zero
+# sync logic (any machine reads `gh issue list --label`).
+#
+# Four label namespaces (created in every active repo by scripts/dispatch):
+#   domain:<name>      repo subsystem — e.g. domain:solver, domain:hydro.
+#                      Allowed values per repo come from domains.yaml.
+#   machine:<id>       canonical: dev-primary | dev-secondary | cfd-dedicated |
+#                      licensed-win-1 | licensed-win-2 | home-win |
+#                      macbook-portable | multi
+#                      (ace-win-2, ace-linux-1/2 are aliases — see routing-rules.yaml)
+#   ai:<provider>      OPTIONAL, per-issue: claude | codex | hermes | gemini
+#                      Absent = dispatcher picks per routing-rules.yaml default.
+#   dispatch:<state>   lifecycle: ready | active | done
+#                      ready  = assigned, sitting in a machine's queue
+#                      active = a session on that machine has claimed it
+#                      done   = closed/merged (mirrors gh_state)
+#
+# ---------------------------------------------------------------------------
+# Per-card routing fields (local mirror of the GH labels; all optional)
+# ---------------------------------------------------------------------------
+cards_routing_example:
+  - idempotency_key: gh:vamseeachanta/digitalmodel#2289
+    domain: solver                 # mirrors domain:<name> label
+    assigned_machine: licensed-win-1  # mirrors machine:<id> label
+    assigned_provider: codex       # mirrors ai:<provider> label (optional)
+    dispatch_status: ready         # mirrors dispatch:<state> label
+    routed_by: rule                # rule | manual — provenance of the assignment
+    routed_at: 2026-05-25T00:00:00Z
+
+# ---------------------------------------------------------------------------
+# Companion files (this directory)
+# ---------------------------------------------------------------------------
+#   domains.yaml        authoritative per-repo domain taxonomy (board <-> domain)
+#   routing-rules.yaml  capability map (domain->machine), provider capacity pool,
+#                       WIP caps. Read by scripts/dispatch/route.py.
+#
+# Safety contract (mirrors the runaway-pipeline lesson):
+#   - route.py only ever moves a card to dispatch:ready and writes labels after
+#     an explicit --apply; it NEVER auto-spawns a worker.
+#   - Execution is pull-based: each machine drains its own
+#     .claude/dispatch/<machine>.yaml queue file.
+#   - A freshly loaded card is parked sticky-blocked-WITH-a-reason (create
+#     running -> block <reason>) so it cannot be auto-claimed or auto-unblocked
+#     by the gateway. NOT `triage` (triage = pipeline entry, auto-promotes).

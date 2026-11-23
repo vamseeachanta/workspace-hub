@@ -1,0 +1,17 @@
+# Pilot remap (workspace-hub#2878) — consolidate epic digitalmodel#622's OrcaWave
+# diffraction cluster onto the new repo-digitalmodel-hydro-diffraction board.
+# Apply with: scripts/kanban/relabel.py <this file> [--apply]
+# All 9 are OrcaWave diffraction-domain issues (epic #622 + its planning-round).
+# #622 currently carries BOTH domain:hydro + domain:solver (one-domain violation,
+# healed here); #500 is domain:solver; #605-#614 are currently UNLABELED (base board).
+repo: vamseeachanta/digitalmodel
+remap:
+  - {issue: 622, domain: hydro-diffraction}   # Epic: output-driven diffraction domain module
+  - {issue: 500, domain: hydro-diffraction}   # mesh pre-flight validation + auto-copy in runner
+  - {issue: 605, domain: hydro-diffraction}   # self-contained solver packages from spec conversion
+  - {issue: 606, domain: hydro-diffraction}   # integrate MeshPipeline into conversion + runner
+  - {issue: 607, domain: hydro-diffraction}   # given-mesh CLI workflow for diffraction setup
+  - {issue: 608, domain: hydro-diffraction}   # mesh quality gates before diffraction solve
+  - {issue: 609, domain: hydro-diffraction}   # auxiliary mesh handling (control surfaces, QTF)
+  - {issue: 612, domain: hydro-diffraction}   # batch mesh convergence + grid sensitivity
+  - {issue: 614, domain: hydro-diffraction}   # docs for canonical spec-to-run workflow

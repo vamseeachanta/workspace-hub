@@ -1,0 +1,150 @@
+==============================================================
+VIDEO SUMMARY: YouTube https://youtu.be/Mb5N08xcxtg
+==============================================================
+
+GUESSED TITLE:
+  "Hermes AI + Karpathy's LLM Wiki: Build a Knowledge Base That Gets Smarter Over Time"
+  (Channel: Julian Goldie / Digital Avatar of Julian Goldie)
+
+TOTAL DURATION: ~8 minutes 40 seconds
+
+--------------------------------------------------------------
+KEY TOPICS COVERED
+--------------------------------------------------------------
+
+1. The Problem with Standard AI / RAG Workflows
+   - Most AI sessions are stateless: you ask, you get an answer, it's gone.
+   - Retrieval-Augmented Generation (RAG) works but has no memory or compounding.
+   - Every session starts from zero; no knowledge accumulates.
+
+2. Andre Karpathy's LLM Wiki Concept (published April 4, 2026)
+   - 5,000+ GitHub stars in under 48 hours.
+   - Instead of raw document retrieval, the AI builds and maintains a persistent
+     structured wiki -- a folder of interlinked Markdown files.
+   - AI reads new sources, extracts key info, integrates it into existing pages,
+     updates summaries, and flags contradictions.
+   - Metaphor: LLM is the programmer; the wiki is the codebase.
+
+3. Hermes Agent by Nous Research
+   - Open-source AI agent with 26,000+ GitHub stars.
+   - Tagline: "The agent that grows with you."
+   - Built-in learning loop: creates skills from experience, improves over sessions,
+     builds a model of the user over time.
+   - Runs on a $5 VPS or GPU cluster.
+   - Supports 200+ models via OpenRouter; integrates with Telegram, Discord,
+     Slack, WhatsApp, Signal.
+   - Has a skill system -- a library of reusable, improving procedures.
+
+4. The Integration: Hermes Agent + LLM Wiki
+   - Latest Hermes update ships Karpathy's LLM Wiki as a built-in skill.
+   - Command: `hermes update` then `/om wiki <your research topic>`.
+   - Demonstrated by Nous Research to study their own projects, papers, and code.
+
+5. How LLM Wiki Works -- The Three Layers
+   - Layer 1: Raw Sources -- documents, articles, papers. Immutable. AI reads only.
+   - Layer 2: The Wiki -- AI-generated Markdown files: summaries, entity pages,
+     concept pages, comparisons. AI writes, humans read.
+   - Layer 3: The Schema -- configuration doc that defines wiki structure and rules.
+     Evolved together by user and agent.
+
+6. Three Core Operations
+   - INGEST: Drop a new source; AI extracts info, writes/updates pages (1 source
+     can touch 10-15 pages -- the compounding effect).
+   - QUERY: Ask questions; AI searches wiki and returns synthesized answers with
+     citations. Good answers can be saved back as new wiki pages.
+   - LINT: AI health-checks the wiki for contradictions, stale info, orphan pages,
+     and suggests new sources or questions.
+
+7. Use Cases
+   - Researchers: compound knowledge across papers over weeks/months.
+   - Content Creators: research vault that grows instead of resetting per topic.
+   - Developers: codebase + docs + papers all organized in one place.
+   - Business Teams: feed Slack threads, meeting notes, and call transcripts into
+     a living wiki, no manual maintenance required.
+
+8. Practical Setup Tips
+   - Install Hermes on Linux, macOS, or WSL2 with one command.
+   - Run `hermes update` to get the LLM wiki skill.
+   - Use Obsidian (free) as the viewer; graph view shows page connections.
+   - Use the Obsidian Web Clipper extension to capture web articles as Markdown.
+   - Two key navigation files: INDEX (catalog with one-line summaries) and LOG
+     (chronological record of agent actions).
+   - Invest time in your schema -- it is the rulebook and determines wiki quality.
+
+9. Historical Connection: Vannevar Bush's Memex (1945)
+   - Karpathy connects LLM wiki to Bush's vision of a personal knowledge store
+     with associative trails.
+   - The missing piece Bush never solved: who does the maintenance.
+     Answer now: an AI agent.
+
+10. Community Plugs (promotional)
+    - AI Profit Boardroom: 2,000+ members testing AI workflows.
+    - AI Success Lab: 58,000 members, SOPs, 100+ AI use cases.
+
+--------------------------------------------------------------
+TIMESTAMPED CHAPTER BREAKDOWN
+--------------------------------------------------------------
+
+[00:00 - 00:40]  Hook & Introduction
+  The stateless AI problem. Two tools nobody expected to combine: Hermes Agent
+  (Nous Research) + Karpathy's LLM Wiki. Julian Goldie's digital avatar intro.
+
+[00:40 - 01:00]  The Problem -- RAG Has No Memory
+  Standard RAG explained. AI rediscovers the same info every session. No
+  accumulation, no compounding.
+
+[01:00 - 01:30]  Who Is Karpathy & What Did He Release?
+  Andre Karpathy's background (OpenAI founding team, Tesla AI director).
+  LLM Wiki document published April 4, 2026 -- 5,000 GitHub stars in 48 hours.
+
+[01:30 - 02:10]  How LLM Wiki Works (Core Concept)
+  Persistent structured wiki of Markdown files sits between user and raw sources.
+  AI ingests, integrates, updates, flags contradictions. Knowledge compounds.
+  Metaphor: LLM = programmer, wiki = codebase.
+
+[02:10 - 03:00]  Hermes Agent Overview
+  Open-source agent by Nous Research. Built-in learning loop. Skill system.
+  26,000+ GitHub stars. Runs anywhere. Supports 200+ models. Multi-platform chat.
+
+[03:00 - 03:30]  The Integration: Hermes + LLM Wiki
+  Latest Hermes update ships LLM Wiki as a built-in skill. Demo by Nous Research
+  team. Command walkthrough: `hermes update` + `/om wiki <topic>`.
+
+[03:30 - 04:00]  Community Interlude (AI Profit Boardroom plug)
+  Creator's personal story about knowledge management overwhelm; promotes
+  AI Profit Boardroom community (2,000+ members).
+
+[04:00 - 04:50]  The Three Layers Explained
+  Layer 1 (Raw Sources -- immutable), Layer 2 (Wiki -- AI-written Markdown),
+  Layer 3 (Schema -- rulebook for the AI). How they interact.
+
+[04:50 - 05:30]  Three Core Operations: Ingest, Query, Lint
+  Ingest: 1 source can update 10-15 pages. Query: synthesized answers with
+  citations; good answers saved back as wiki pages. Lint: wiki health check.
+
+[05:30 - 06:30]  Who Should Use This? Real-World Use Cases
+  Researchers, content creators, developers, business teams. Karpathy's key
+  insight: humans abandon wikis because maintenance burden outpaces value.
+  AI solves that maintenance problem entirely.
+
+[06:30 - 07:30]  Practical Setup & Usage Tips
+  Install on Linux/macOS/WSL2. Use Obsidian as viewer. Obsidian Web Clipper
+  for capturing articles. INDEX and LOG files for navigation. Schema investment.
+
+[07:30 - 08:00]  The Memex Connection & Closing Insight
+  Vannevar Bush's 1945 Memex vision. The missing piece (maintenance) now solved
+  by AI agents. Philosophical framing of why this moment matters.
+
+[08:00 - 08:40]  Outro & Community Promos
+  AI Profit Boardroom recap. AI Success Lab plug (58,000 members, 100+ use cases).
+  Subscribe CTA.
+
+==============================================================
+SUMMARY NOTES:
+- Video is ~8m 40s, auto-generated English transcript, 248 segments.
+- Presenter: Digital avatar of Julian Goldie (AI/SEO creator).
+- Core message: Hermes Agent + Karpathy's LLM Wiki = a practical way to
+  build a self-maintaining, compounding personal knowledge base.
+- No manual chapters embedded in the video; above breakdown is inferred
+  from content analysis.
+==============================================================
