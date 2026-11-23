@@ -2,6 +2,7 @@
 > Shared identity and authority: config/agents/SHARED_SOUL.md; provider runtimes inherit this contract.
 ## Retrieval and planning
 - Consult docs/ and existing code; track meaningful work with GitHub issues and proportionate plans.
+- Newsletter articles, their review copies, LinkedIn drafts and website pages: read fleet-ops docs/newsletter-playbook.md before touching any of them.
 - Authority routing: docs/standards/HARD-STOP-POLICY.md and config/agents/SHARED_SOUL.md; guide: docs/plans/README.md; readiness: docs/standards/MODEL_RELEASE_READINESS_CONTRACT.md and docs/standards/MODEL_RELEASE_UPGRADE_PLAYBOOK.md; smoke schema/interface: docs/standards/MODEL_RELEASE_SMOKE_RUNNER_CONTRACT.md.
 ## Required controls
 - The user's task request authorizes implementation within scope; no separate plan approval is required, including substantial work.
