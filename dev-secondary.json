@@ -1,0 +1,27 @@
+{
+ "fingerprint_version": 1,
+ "role": "contribute",
+ "hostname": "ace-linux-2",
+ "machine_id": "dev-secondary",
+ "ts": "2026-11-23T12:17:49.262916+00:00",
+ "clone_head": "962408d5a",
+ "behind_origin": 3,
+ "ahead_origin": 9478,
+ "harness_version": "2.1.330",
+ "harness_install": "other",
+ "registry_sha256": "2fac8a761c5801d2d8d3ae9ef2d746d4326e0cb2da2ca9178241fbf9b14309f3",
+ "learning_cron_ages_h": {
+  "comprehensive-learning-nightly": null,
+  "session-analysis": null
+ },
+ "provider_soul_hashes": {
+  "hermes": "c98b0c5a58badd9e",
+  "claude": "66f948c9fcc632ba",
+  "codex": "4e7d261200faf85e",
+  "codex_agents": "348360abc3f202dc",
+  "gemini": "8af57d6c6c8f1953"
+ },
+ "on_main": true,
+ "index_lock_stale_min": null,
+ "last_publish_duration_s": 39.0
+}
