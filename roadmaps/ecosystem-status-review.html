@@ -55,16 +55,16 @@ td.unknown { color: var(--muted); font-style: italic; }
 <tr><td>ace-linux-1 (dev-primary)</td><td>Linux</td><td>Headless, terminal sessions</td><td>Lane runner: Codex and Claude lanes, heavy builds; serves the shared archive store to other machines over NFS</td><td><code>ssh ace-linux-1</code> (connects, tested 23 Nov)</td></tr>
 <tr><td>ace-linux-2 (dev-secondary)</td><td>Linux</td><td>Headless, terminal sessions</td><td>Lane runner; migration rollout and writing rounds (23 Nov)</td><td><code>ssh ace-linux-2</code> (alias not tested from another machine)</td></tr>
 <tr><td>gpu-claw</td><td>Linux</td><td>Headless, terminal sessions</td><td>Compute: CFD and simulation jobs; also ran rollout sessions on 23 Nov</td><td><code>ssh gpu-claw</code> (connects, tested 23 Nov)</td></tr>
-<tr><td>RDS02</td><td>Windows, Git Bash shell</td><td>Headless: tmux over SSH</td><td>Intake (planned, see open items)</td><td><code>ssh rds02</code> (connects, tested 23 Nov); desk: <code>ssh -t rds02 tmux attach -t intake</code></td></tr>
+<tr><td>RDS02 (also reached as ace-win-1)</td><td>Windows, Git Bash shell</td><td>Headless, driven over SSH from ace-linux-2: one job at a time with <code>claude -p</code> or plain scripts. Signed in to a different Claude account, so no remote control, and it does not appear in the owner's session list. No tmux: Windows tmux crashed twice.</td><td>Licensed-solver jobs (OrcaFlex through the scheduled-task dispatch path) and review lanes; FDAS work first</td><td><code>ssh rds02</code> (connects, tested 23 Nov)</td></tr>
 <tr><td>WS014</td><td>Windows</td><td>Desktop app</td><td>Intake desk until the 23 Nov incident; holds verified archives used by the rollout</td><td class="unknown">unknown</td></tr>
 <tr><td>ace-win-2</td><td>Windows</td><td class="unknown">unknown</td><td>Coordinator, admin and document work; licensed-solver host (registry, 9 Oct)</td><td class="unknown">unknown</td></tr>
-<tr><td>ace-win-1</td><td>Windows</td><td class="unknown">unknown</td><td>Licensed-solver tool runner on separate AI accounts; no AI lanes</td><td>Licensed work only through the scheduled-task dispatch path</td></tr>
+<tr><td>ace-win-1</td><td>Windows</td><td>See RDS02</td><td>The <code>ace-win-1</code> SSH alias and the RDS02 scheduled tasks (<code>-Machine ace-win-1</code>) resolve to the same host as RDS02</td><td><code>ssh ace-win-1</code> lands on RDS02</td></tr>
 <tr><td>WS003</td><td>Windows</td><td class="unknown">unknown</td><td>Migration rollout (23 Nov)</td><td class="unknown">unknown</td></tr>
 <tr><td>mac</td><td>macOS</td><td class="unknown">unknown</td><td class="unknown">unknown (listed in the rollout targets)</td><td class="unknown">unknown</td></tr>
 </tbody>
 </table>
 </div>
-<p class="note">Not established: which machine hosts the manager desk (ENG-01) and the existing intake desk today; which machines hold review tabs; whether WS014 or WS003 is the same machine as ace-win-1 or ace-win-2.</p>
+<p class="note">Not established: which machine hosts the manager desk (ENG-01) and the existing intake desk today; which machines hold review tabs; whether WS014 or WS003 is the same machine as ace-win-2. Not reachable over SSH from ace-linux-2 on 23 Nov: spark and WS014 (key refused), mac (host key check failed), WS003, macbook-air and ace-win-2 (name does not resolve); spark, mac and acma-ws003 are reached through their manager sessions instead.</p>
 
 <h3 id="incident-2026-11-23">Incident, 23 Nov 2026, about 11:38Z</h3>
 <div class="incident">
@@ -73,7 +73,7 @@ td.unknown { color: var(--muted); font-style: italic; }
 
 <h3 id="decision-rule">Decision rule</h3>
 <div class="rule">
-<p><strong>Intake and long-running desks run headless, in tmux over SSH</strong>: on a Linux machine, or on RDS02 (Windows, Git Bash). RDS02 takes intake through <code>~/bin/rds02-intake.sh</code> on ace-linux-2.</p>
+<p><strong>Intake and long-running desks run headless, in a terminal on a Linux machine.</strong> RDS02 is driven from ace-linux-2 one job at a time over SSH (<code>claude -p</code> or scripts, never <code>--continue</code> or <code>--resume</code>), and results are read back and logged on fleet-ops #577. The RDS02 intake desk is retired (owner, 20 Nov); <code>~/bin/rds02-intake.sh</code> is retired with it.</p>
 <p><strong>Desktop machines are for review tabs and anything that needs a screen</strong>, not for critical desks.</p>
 </div>
 
@@ -85,6 +85,7 @@ td.unknown { color: var(--muted); font-style: italic; }
 <tr><td>Desktop app loses its connection</td><td>The desk on that machine stalls until the app reconnects (23 Nov incident)</td><td>Run critical desks headless; use the desktop app only for review tabs</td></tr>
 <tr><td>Cross-session messages without delivery confirmation</td><td>A message can be accepted and never read</td><td>Post decisions and results on the fleet-ops issue; the issue is the record</td></tr>
 <tr><td>A network mount that looks like a local folder</td><td>Deleting through the mount deletes the files on the machine that owns the disk and frees nothing locally</td><td>Check which machine owns a path (<code>findmnt -T</code>, <code>readlink -f</code>) before removing anything</td></tr>
+<tr><td>A retired desk left in a scheduler</td><td>The scheduler keeps starting the desk on another account's allowance; a stale pass file can bring the old role back</td><td>Retire a desk in its schedule as well as in its pass file</td></tr>
 <tr><td>A session's permission check refuses a crontab or scheduler edit</td><td>A writer keeps running until someone with the right access pauses it</td><td>Post the exact command as needs-owner; the owner runs pauses</td></tr>
 </tbody>
 </table>
@@ -95,7 +96,7 @@ td.unknown { color: var(--muted); font-style: italic; }
 <table>
 <thead><tr><th>Item</th><th>State</th><th>Next step</th></tr></thead>
 <tbody>
-<tr><td>RDS02 intake desk start</td><td>Script <code>~/bin/rds02-intake.sh</code> on ace-linux-2 is ready; it parses, and <code>ssh rds02</code> connects. It has not been run.</td><td>Run it, then attach once with <code>ssh -t rds02 tmux attach -t intake</code> and type <code>/remote-control</code></td></tr>
+<tr><td>RDS02 retired intake desk still scheduled</td><td>The RDS02 conductor starts the retired <code>intake</code> desk every 2 h (signed branch <code>queue/rds02</code>, <code>schedule.json</code>). Each run reads the retired one-line pass and ends. The desk clone <code>D:/ws/fleet-ops</code> is stuck mid-rebase, 404 commits behind, so the other RDS02 desks read 20 Nov instructions.</td><td>Remove <code>intake</code> from <code>queue/rds02</code> with a signed queue commit after the freeze; clean the desk clone (fleet-ops #577)</td></tr>
 <tr><td>Writer pause, gpu-claw</td><td>The repository-sync cron pause is posted on fleet-ops #577 (comment 7098883328) as needs-owner. Script <code>~/bin/writer-pause.sh</code> on ace-linux-2 shows the command and runs it only on a yes.</td><td>The owner runs <code>~/bin/writer-pause.sh</code></td></tr>
 <tr><td>Writer pause, ace-linux-1</td><td>No pause command for ace-linux-1 is posted in comment 7098883328.</td><td>Post the ace-linux-1 command on fleet-ops #577, then add it to <code>writer-pause.sh</code></td></tr>
 </tbody>
