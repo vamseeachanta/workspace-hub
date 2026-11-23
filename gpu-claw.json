@@ -1,0 +1,27 @@
+{
+ "fingerprint_version": 1,
+ "role": "contribute-minimal",
+ "hostname": "gpu-claw",
+ "machine_id": "gpu-claw",
+ "ts": "2026-11-23T11:17:02.180749+00:00",
+ "clone_head": "820d266fe",
+ "behind_origin": 2,
+ "ahead_origin": 8660,
+ "harness_version": "2.1.330",
+ "harness_install": "npm-global",
+ "registry_sha256": "d118c167d168979bb5d53f7622f2924afc4a4759dd66568cd5d2296cc3aa2858",
+ "learning_cron_ages_h": {
+  "comprehensive-learning-nightly": null,
+  "session-analysis": null
+ },
+ "provider_soul_hashes": {
+  "hermes": "9191ac2f88ed2877",
+  "claude": "3ffca06e869b0da2",
+  "codex": "2848b1ae6ef29a52",
+  "codex_agents": "2a915f8bfd0b00a4",
+  "gemini": "179118f9492c47c8"
+ },
+ "on_main": true,
+ "index_lock_stale_min": null,
+ "last_publish_duration_s": 2.0
+}
