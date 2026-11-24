@@ -30,7 +30,7 @@ def _git(ws: Path, *args: str) -> str:
     env = {**{k: v for k, v in os.environ.items() if k not in GIT_BINDINGS},
            "GIT_AUTHOR_NAME": "t", "GIT_AUTHOR_EMAIL": "t" + "@" + "example.test",
            "GIT_COMMITTER_NAME": "t", "GIT_COMMITTER_EMAIL": "t" + "@" + "example.test",
-           "HOME": str(ws.parent), "TEST_ROOT": str(ws.parent)}
+           "HOME": str(ws.parent), "WORKSPACE_HUB": str(ws)}
     result = subprocess.run(["git", "-C", str(ws), *args], env=collector_env(env), check=True,
                             capture_output=True, text=True, timeout=60)
     return result.stdout.strip()
@@ -262,6 +262,8 @@ def test_collect_origin_ref_age_refreshed_not_frozen(tmp_path):
 
 def test_fixture_ignores_inherited_repository_bindings(tmp_path, monkeypatch):
     """A child fixture shall preserve the caller's tracked files and Git metadata."""
+    ambient = tmp_path / "ambient"
+    monkeypatch.setenv("WORKSPACE_HUB", str(ambient / "checkout"))
     caller = _git_fixture(tmp_path / "caller")
     sentinel = caller.joinpath(*MEASURED_PATH)
     metadata = caller / ".git"
@@ -286,6 +288,7 @@ def test_fixture_ignores_inherited_repository_bindings(tmp_path, monkeypatch):
     _backdate_origin_with_unmatched_fetch(child)
     assert before == snapshot(), "freshness setup changed caller Git metadata"
     assert _stdout_prov(child)["origin_ref_age_h"] >= 24
+    assert not ambient.exists(), "fixture wrote into the inherited workspace"
 
 
 def test_fixture_ignores_user_line_ending_configuration(tmp_path):

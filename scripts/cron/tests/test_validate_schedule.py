@@ -1,5 +1,7 @@
 """Tests for schedule-tasks.yaml validator."""
 
+import shutil
+import socket
 import subprocess
 import sys
 import os
@@ -401,22 +403,43 @@ def test_repo_hygiene_auto_safe_task_contract(tasks):
     assert "codex-" in task["description"]
 
 
-def test_setup_cron_installs_audit_and_health_for_hostname_alias(tmp_path):
-    _install_empty_crontab_shim(tmp_path)
-    hostname_shim = tmp_path / "hostname"
-    hostname_shim.write_text("#!/usr/bin/env bash\nprintf 'vamsee-linux1\\n'\n")
-    hostname_shim.chmod(0o755)
-    env = os.environ.copy()
-    env["PATH"] = f"{tmp_path}:{env['PATH']}"
-    env["WORKSPACE_HUB"] = str(REPO_ROOT)
-    env["UV_CACHE_DIR"] = str(REPO_ROOT / ".claude" / "state" / "uv-cache")
-    result = subprocess.run(
-        ["bash", str(SETUP_CRON), "--dry-run"],
-        capture_output=True,
-        text=True,
-        cwd=str(REPO_ROOT),
-        env=env,
+def _preview_full_schedule(tmp_path, *, use_alias=False):
+    machines = yaml.safe_load(REGISTRY_FILE.read_text(encoding="utf-8"))["machines"]
+    name, machine = next(
+        (key, value) for key, value in machines.items()
+        if value.get("schedule_variant") == "full" and value.get("hostname_aliases")
     )
+    args = ["bash", str(SETUP_CRON), "--dry-run"]
+    if use_alias:
+        args.extend(["--machine", machine["hostname_aliases"][0]])
+
+    # Both the shell and Python check the actual local identity before previewing.
+    # Register the runner in an isolated copy of the full schedule profile.
+    machine["hostname_aliases"].append(socket.gethostname().split(".")[0])
+    registry = tmp_path / REGISTRY_FILE.relative_to(REPO_ROOT)
+    registry.parent.mkdir(parents=True)
+    registry.write_text(yaml.safe_dump({"machines": {name: machine}}), encoding="utf-8")
+    shutil.copy2(STATE_CLASSES, registry.parent)
+    catalog = tmp_path / SCHEDULE_FILE.relative_to(REPO_ROOT)
+    catalog.parent.mkdir(parents=True)
+    shutil.copy2(SCHEDULE_FILE, catalog)
+    cron_dir = tmp_path / SETUP_CRON.parent.relative_to(REPO_ROOT)
+    cron_dir.mkdir(parents=True)
+    for module in SETUP_CRON.parent.glob("*.py"):
+        shutil.copy2(module, cron_dir)
+
+    _install_empty_crontab_shim(tmp_path)
+    env = {
+        **os.environ,
+        "WORKSPACE_HUB": str(tmp_path),
+        "PATH": os.pathsep.join((str(tmp_path), os.environ["PATH"])),
+    }
+    result = subprocess.run(args, capture_output=True, text=True, cwd=REPO_ROOT, env=env)
+    return result, machine
+
+
+def test_setup_cron_installs_audit_and_health_for_hostname_alias(tmp_path):
+    result, _ = _preview_full_schedule(tmp_path, use_alias=True)
     assert result.returncode == 0, result.stderr + result.stdout
     assert "repo-ecosystem-hygiene-audit.sh" in result.stdout
     assert "cron-health-check.sh" in result.stdout
@@ -483,27 +506,11 @@ def test_setup_cron_delegates_placeholder_rendering_to_shared_renderer():
 
 
 def test_setup_cron_dry_run_expands_workspace_hub_and_log(tmp_path):
-    _install_empty_crontab_shim(tmp_path)
-    hostname_shim = tmp_path / "hostname"
-    hostname_shim.write_text("#!/usr/bin/env bash\nprintf 'ace-linux-1\\n'\n")
-    hostname_shim.chmod(0o755)
-    env = os.environ.copy()
-    env["PATH"] = f"{tmp_path}:{env['PATH']}"
-    env["WORKSPACE_HUB"] = str(REPO_ROOT)
-    env["UV_CACHE_DIR"] = str(REPO_ROOT / ".claude" / "state" / "uv-cache")
-
-    result = subprocess.run(
-        ["bash", str(SETUP_CRON), "--dry-run"],
-        capture_output=True,
-        text=True,
-        cwd=str(REPO_ROOT),
-        env=env,
-    )
+    result, machine = _preview_full_schedule(tmp_path)
     assert result.returncode == 0, result.stderr + result.stdout
     assert "$WORKSPACE_HUB" not in result.stdout
     assert "$LOG" not in result.stdout
-    registry = yaml.safe_load(REGISTRY_FILE.read_text(encoding="utf-8"))
-    assert registry["machines"]["dev-primary"]["workspace_root"] in result.stdout
+    assert machine["workspace_root"] in result.stdout
     assert "scripts/cron-repository-sync.sh" in result.stdout
     assert "/tmp/workspace-hub-cron.log" not in result.stdout
 

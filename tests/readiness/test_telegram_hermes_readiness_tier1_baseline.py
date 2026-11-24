@@ -3,12 +3,14 @@ from __future__ import annotations
 import importlib.util
 import json
 import shutil
-import socket
 import subprocess
 from datetime import UTC, datetime
 from pathlib import Path
 
+import pytest
 import yaml
+
+pytestmark = pytest.mark.usefixtures("local_dispatch_identity")
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -45,8 +47,6 @@ def git_dir(path: Path) -> None:
 def registry_for(tmp_path: Path, *, optional: bool = True, non_tier1: bool = True) -> Path:
     data = yaml.safe_load(REGISTRY_PATH.read_text(encoding="utf-8"))
     machine = data["machines"]["dev-primary"]
-    machine["hostname"] = socket.gethostname()
-    machine["hostname_aliases"] = []
     machine["workspace_root"] = str(tmp_path / "workspace-hub")
     machine["tier1_repo_root"] = str(tmp_path)
     machine["repo_layout"] = "sibling"

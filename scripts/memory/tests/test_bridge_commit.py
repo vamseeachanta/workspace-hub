@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import subprocess
+import tempfile
 from pathlib import Path
 
 import pytest
@@ -137,9 +138,20 @@ def test_bridge_fails_closed_when_private_repo_unreachable(tmp_path: Path):
     assert not (tmp_path / "missing-private").exists()
 
 
-def test_bridge_writes_private_per_host_folder(tmp_path: Path):
-    private = tmp_path / "private"
-    private.mkdir()
+@pytest.fixture()
+def local_bridge_repo(monkeypatch):
+    # Use the system scratch tree even when CI overrides pytest's temporary root.
+    with monkeypatch.context() as clean_env:
+        for key in ("TMPDIR", "TEMP", "TMP"):
+            clean_env.delenv(key, raising=False)
+        clean_env.setattr(tempfile, "tempdir", None)
+        system_scratch = tempfile.gettempdir()
+    with tempfile.TemporaryDirectory(dir=system_scratch) as directory:
+        yield Path(directory)
+
+
+def test_bridge_writes_private_per_host_folder(tmp_path: Path, local_bridge_repo: Path):
+    private = local_bridge_repo
     _git(private, "init", "-q")
     _git(private, "checkout", "-q", "-b", "main")
     home = tmp_path / "home"

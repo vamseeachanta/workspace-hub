@@ -9,6 +9,7 @@ timeout; it bounds a defective reader, rather than measuring performance.
 
 from __future__ import annotations
 
+from contextlib import chdir
 import os
 import socket
 import stat
@@ -71,7 +72,8 @@ def _exercise(reader: str, kind: str, root: Path) -> None:
         leaf.symlink_to(os.devnull)
     elif kind == "socket":
         endpoint = socket.socket(socket.AF_UNIX)
-        endpoint.bind(str(leaf))
+        with chdir(leaf.parent):
+            endpoint.bind(leaf.name)
     elif kind in {"device", "replaced_fifo"}:
         leaf.touch()  # Redirect the leaf open to the real null device below.
     else:

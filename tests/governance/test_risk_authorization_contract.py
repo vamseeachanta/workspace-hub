@@ -14,6 +14,9 @@ SURFACES = ["AGENTS.md", SHARED, "docs/standards/HARD-STOP-POLICY.md",
 RUNTIMES = ["config/agents/" + name for name in ["hermes/SOUL.runtime.md",
     "claude/SOUL.runtime.md", "codex/SOUL.runtime.md", "codex/AGENTS.runtime.md",
     "gemini/SOUL.runtime.md", "agy/SOUL.runtime.md"]]
+OPERATION_CLASSES = {
+    "read-only", "routine-reversible", "substantial", "irreversible", "owner-held", "unknown",
+}
 
 
 def read(path):
@@ -22,18 +25,30 @@ def read(path):
 
 def authorization_rows(text):
     section = text.split("# Authorization", 1)[1].split("\n# ", 1)[0]
-    return {cells[0].strip("` "): cells[1:] for line in section.splitlines()
-            if line.startswith("|") and len(cells := [c.strip() for c in line.split("|")[1:-1]]) == 3
-            and cells[0].strip("` ") in {"read-only", "routine-reversible", "substantial", "consequential", "unknown"}}
+    header = "| Operation class | Required authority | Route |"
+    table = section.split(header, 1)[1].strip().split("\n\n", 1)[0]
+    rows = {}
+    for line in table.splitlines()[1:]:
+        operation, authority, route = (cell.strip() for cell in line.strip("|").split("|"))
+        assert operation not in rows
+        rows[operation] = (authority, route)
+    return rows
 
 
 def test_shared_authority_routes_are_complete_and_do_not_mint_approval():
     rows = authorization_rows(read(SHARED))
-    assert set(rows) == {"read-only", "routine-reversible", "substantial", "consequential", "unknown"}
+    assert set(rows) == OPERATION_CLASSES
     assert "standing authorization" in rows["routine-reversible"][0].lower()
     assert "proceed" in rows["routine-reversible"][1].lower()
     assert "task request" in rows["substantial"][0].lower()
-    assert "explicit approval" in rows["consequential"][0].lower()
+    authority, route = rows["irreversible"]
+    assert authority == "The team decides"
+    for safeguard in ("before running it", "Back up first", "Keep the machine reachable",
+                      "Never put tokens or secrets anywhere", "stay in force"):
+        assert safeguard in route
+    authority, route = rows["owner-held"]
+    assert authority.startswith("The owner") and authority.endswith("only")
+    assert "Client-facing emails and messages" in route and "spending money" in route
     assert "context" in " ".join(rows["unknown"]).lower()
 
 
@@ -48,7 +63,7 @@ def test_primary_surfaces_route_to_shared_standing_authority(path):
 def test_every_generated_runtime_contains_exact_shared_source(path):
     text = read(path)
     assert read(SHARED) in text
-    assert set(authorization_rows(text)) == {"read-only", "routine-reversible", "substantial", "consequential", "unknown"}
+    assert set(authorization_rows(text)) == OPERATION_CLASSES
 
 
 def test_agent_entry_fits_cap_without_losing_control_references():
@@ -58,7 +73,9 @@ def test_agent_entry_fits_cap_without_losing_control_references():
                       "PARALLEL_FIRST_EXECUTION.md", "agent-data-handling-contract.md",
                       "MODEL_RELEASE_READINESS_CONTRACT.md", "MODEL_RELEASE_UPGRADE_PLAYBOOK.md"]:
         assert reference in text
-    assert "TDD" in text and "status:plan-approved" in text and "secrets" in text.lower()
+    assert "TDD" in text and "secrets" in text.lower()
+    assert "task request authorizes implementation within scope" in text
+    assert "no separate plan approval is required" in text
 
 
 def test_shared_mandatory_controls_remain_explicit():
@@ -130,5 +147,13 @@ def test_entry_retains_concurrent_claim_and_handoff_requirements():
 
 
 def test_entry_reference_targets_exist():
-    for relative in re.findall(r"(?:config|docs)/[A-Za-z0-9_./-]+\.md", read("AGENTS.md")):
+    text = read("AGENTS.md")
+    owner = "fleet-ops"
+    playbook = "docs/newsletter-playbook.md"
+    external = f"{owner} {playbook}"
+    assert external in text
+    owner_checkout = ROOT.parent / owner
+    if owner_checkout.is_dir():
+        assert (owner_checkout / playbook).is_file(), external
+    for relative in re.findall(r"(?:config|docs)/[A-Za-z0-9_./-]+\.md", text.replace(external, "")):
         assert (ROOT / relative).is_file(), relative

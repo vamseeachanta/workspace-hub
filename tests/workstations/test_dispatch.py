@@ -5,6 +5,8 @@ in Python and validates it against the live registry.yaml.
 """
 from __future__ import annotations
 
+import os
+import socket
 import subprocess
 from pathlib import Path
 from typing import Optional
@@ -316,9 +318,12 @@ class TestDispatchDryRun:
             f"Expected dev-primary or dev-secondary in output:\n{output}"
         )
 
-    def test_dispatch_dry_run_requires(self) -> None:
-        """Run workstation-dispatch.sh --requires claude,gemini --command 'test' --dry-run.
-        Should select dev-primary (only SSH-reachable machine with both)."""
+    def test_dispatch_dry_run_requires(self, registry: dict) -> None:
+        """The dry run selects the highest ranked eligible registry entry."""
+        expected = best_machine(
+            registry, {"claude", "gemini"}, this_host=socket.gethostname().split(".")[0].lower()
+        )
+        assert expected is not None
         result = subprocess.run(
             [
                 "bash", str(DISPATCH_SCRIPT),
@@ -330,12 +335,11 @@ class TestDispatchDryRun:
             text=True,
             timeout=30,
             cwd=str(REPO_ROOT),
+            env={**os.environ, "WORKSPACE_HUB": str(REPO_ROOT)},
         )
         assert result.returncode == 0, (
             f"Expected exit 0 but got {result.returncode}\n"
             f"stdout: {result.stdout}\nstderr: {result.stderr}"
         )
         output = result.stdout + result.stderr
-        assert "dev-primary" in output, (
-            f"Expected dev-primary in output:\n{output}"
-        )
+        assert f"[dispatch] Target: {expected} (" in output

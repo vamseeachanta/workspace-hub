@@ -185,7 +185,19 @@ class TestStatusJson:
     """test_status_json_valid"""
 
     @pytest.fixture()
-    def status_json(self) -> dict:
+    def status_json(self, tmp_path: Path, monkeypatch) -> dict:
+        machines = yaml.safe_load(REGISTRY_FILE.read_text(encoding="utf-8"))["machines"]
+        local = next(machine for machine in machines.values() if machine.get("ssh"))
+        hostname = tmp_path / "hostname"
+        hostname.write_text('#!/bin/sh\nprintf "%s\\n" "$STATUS_TEST_HOST"\n', encoding="utf-8")
+        hostname.chmod(0o755)
+        # All remote entries are offline for this local detection test.
+        ssh = tmp_path / "ssh"
+        ssh.write_text("#!/bin/sh\nexit 1\n", encoding="utf-8")
+        ssh.chmod(0o755)
+        monkeypatch.setenv("PATH", os.pathsep.join((str(tmp_path), os.environ["PATH"])))
+        monkeypatch.setenv("WORKSPACE_HUB", str(REPO_ROOT))
+        monkeypatch.setenv("STATUS_TEST_HOST", local["hostname"])
         result = _run(["bash", str(STATUS_SCRIPT), "--quick", "--json"])
         assert result.returncode == 0, (
             f"--quick --json failed (rc={result.returncode})\nstderr: {result.stderr}"
@@ -215,6 +227,7 @@ class TestStatusJson:
             f"Expected exactly 1 machine with status='local', found {len(local_machines)}: "
             f"{[m.get('name') for m in local_machines]}"
         )
+        assert local_machines[0]["hostname"] == status_json["from"]
 
 
 # ── macOS registry parity tests (#2240) ─────────────────────────────────────

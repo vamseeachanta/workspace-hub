@@ -32,11 +32,14 @@ def test_agents_mentions_plan_review_label():
     )
 
 
-def test_agents_mentions_plan_approved_label():
+def test_agents_routes_to_owner_controlled_plan_approval_record():
     text = AGENTS_PATH.read_text()
-    assert "status:plan-approved" in text, (
-        "AGENTS.md must name the status:plan-approved label that gates batch execution"
-    )
+    policy = Path("docs/standards/HARD-STOP-POLICY.md")
+    assert policy.as_posix() in text
+    assert "no separate plan approval is required" in text
+    guidance = " ".join((REPO_ROOT / policy).read_text().split())
+    assert "Only the owner applies `status:plan-approved`" in guidance
+    assert "an implementing agent never self-applies it" in guidance
 
 
 def test_agents_planning_applies_to_all_issues():

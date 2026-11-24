@@ -15,14 +15,17 @@ import subprocess
 from pathlib import Path
 
 import pytest
+import yaml
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 SCRIPT = REPO_ROOT / "scripts" / "readiness" / "publish-equality.sh"
 
 GIT_ENV = {
-    **os.environ,
-    "GIT_AUTHOR_NAME": "test", "GIT_AUTHOR_EMAIL": "t@example.com",
-    "GIT_COMMITTER_NAME": "test", "GIT_COMMITTER_EMAIL": "t@example.com",
+    **{key: value for key, value in os.environ.items() if not key.startswith("GIT_")},
+    "GIT_CONFIG_NOSYSTEM": "1",
+    "GIT_CONFIG_GLOBAL": os.devnull,
+    "GIT_AUTHOR_NAME": "fixture", "GIT_AUTHOR_EMAIL": "fixture",
+    "GIT_COMMITTER_NAME": "fixture", "GIT_COMMITTER_EMAIL": "fixture",
 }
 
 
@@ -32,6 +35,11 @@ def _shell_path(path: Path | str) -> str:
             ["cygpath", "-u", str(path)], text=True,
         ).strip()
     return str(path)
+
+
+def _fixture_evidence_env(clone: Path) -> dict[str, str]:
+    """Read the evidence seeded in this fixture checkout."""
+    return {"EQ_STATE_DIR": _shell_path(clone / ".claude" / "state")}
 
 
 def _publisher_env(tmp_path: Path, **updates: str) -> dict[str, str]:
@@ -94,7 +102,8 @@ def _run(
     env: dict[str, str] | None = None,
 ) -> subprocess.CompletedProcess:
     res = subprocess.run(["bash", str(SCRIPT), "--repo", str(clone), *args],
-                         env=env or GIT_ENV, capture_output=True, text=True, timeout=120)
+                         env={**(env or GIT_ENV), **_fixture_evidence_env(clone)},
+                         capture_output=True, text=True, timeout=120)
     assert res.returncode == expect_rc, f"rc={res.returncode}\n{res.stdout}\n{res.stderr}"
     return res
 
@@ -160,7 +169,7 @@ def test_same_checkout_concurrent_publishers_converge(tmp_path):
         "bash", str(SCRIPT), "--repo", str(clone),
         "--max-attempts", "5", "--retry-delay-seconds", "0",
     ]
-    env = _publisher_env(tmp_path)
+    env = _publisher_env(tmp_path, **_fixture_evidence_env(clone))
     procs = [
         subprocess.Popen(cmd, env=env, stdout=subprocess.PIPE,
                          stderr=subprocess.PIPE, text=True)
@@ -214,9 +223,9 @@ def test_concurrent_publishers_converge(tmp_path):
     ]
     env = _publisher_env(tmp_path)
     procs = [
-        subprocess.Popen(command, env=env, stdout=subprocess.PIPE,
+        subprocess.Popen(command, env={**env, **_fixture_evidence_env(clone)}, stdout=subprocess.PIPE,
                          stderr=subprocess.PIPE, text=True)
-        for command in commands
+        for command, clone in zip(commands, (first, second), strict=True)
     ]
     results = [proc.communicate(timeout=120) + (proc.returncode,) for proc in procs]
     assert all(rc == 0 for _out, _err, rc in results), results
@@ -449,7 +458,7 @@ def _host_lock_dir(tmp_path: Path) -> Path:
 def _run_mkdir_lock(clone: Path, tmp_path: Path, *args: str,
                     expect_rc: int = 0) -> subprocess.CompletedProcess:
     env = {**GIT_ENV, "PUBLISH_EQUALITY_LOCK": "mkdir", "TMPDIR": str(tmp_path),
-           **_seam(clone)}
+           **_fixture_evidence_env(clone)}
     res = subprocess.run(["bash", str(SCRIPT), "--repo", str(clone), *args],
                          env=env, capture_output=True, text=True, timeout=120)
     assert res.returncode == expect_rc, f"rc={res.returncode}\n{res.stdout}\n{res.stderr}"
@@ -557,7 +566,7 @@ def test_commit_subject_uses_public_label_not_hostname(tmp_path):
     hostname.chmod(0o755)
     env = {
         **GIT_ENV,
-        **_seam(clone),
+        **_fixture_evidence_env(clone),
         "WORKSPACE_HUB_MACHINE_IDENTITY": str(idf),
         "PATH": f"{fake_bin.as_posix()}:{GIT_ENV.get('PATH', '')}",
     }
@@ -573,11 +582,14 @@ def test_commit_subject_honors_eq_machine_env(tmp_path):
     origin, clone = _fixture(tmp_path)
     (clone / ".claude" / "state" / "equality-dev-primary.yaml").write_text(
         _yaml("dev-primary", "2026-07-01T12:00:00"))
-    env = {**GIT_ENV, **_seam(clone), "EQ_MACHINE": "ace-win-2"}
+    registry = REPO_ROOT / "config" / "workstations" / "registry.yaml"
+    machines = yaml.safe_load(registry.read_text(encoding="utf-8"))["machines"]
+    label, = (key for key, machine in machines.items() if machine["role"] == "simulation-secondary")
+    env = {**GIT_ENV, **_fixture_evidence_env(clone), "EQ_MACHINE": label}
     res = subprocess.run(["bash", str(SCRIPT), "--repo", str(clone)],
                          env=env, capture_output=True, text=True, timeout=120)
     assert res.returncode == 0, f"{res.stdout}\n{res.stderr}"
-    assert "from ace-win-2" in _git("log", "-1", "--format=%s", cwd=origin)
+    assert f"from {label}" in _git("log", "-1", "--format=%s", cwd=origin)
 
 
 def test_lock_autodetect_gates_on_command_v_not_exit_code():
