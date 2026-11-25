@@ -304,23 +304,22 @@ def test_apply_refuses_recently_active_worktree(pushed_worktree, cp):
     assert wt.exists()
 
 
-def age_everything(wt: Path, days: float = 10):
-    """Backdate every file in the worktree and its git dir's index/HEAD."""
-    t = __import__("time").time() - days * 86400
-    gd = Path(subprocess.run(["git", "-C", str(wt), "rev-parse", "--absolute-git-dir"],
-                             env=CLEAN_ENV, capture_output=True, text=True,
-                             check=True).stdout.strip())
-    # Files and directories alike, deepest first, so no top-level entry looks fresh.
-    paths = sorted(wt.rglob("*"), key=lambda q: -len(q.parts))
-    for p in [gd / "index", gd / "HEAD", *paths, wt]:
-        if p.exists():
-            os.utime(p, (t, t))
+# Idle tests: creation time cannot be backdated, so instead of faking age the tests set
+# everything up, wait SETTLE seconds, make the one write under test, and check with a
+# minimum idle time of MIN_IDLE_S. Anything older than the pause is idle; the write is not.
+SETTLE = 2.5
+MIN_IDLE_S = 1.5
+MIN_IDLE_H = str(MIN_IDLE_S / 3600)
 
 
-def test_idle_worktree_is_removed_with_default_guard(pushed_worktree, cp):
+def settle():
+    __import__("time").sleep(SETTLE)
+
+
+def test_idle_worktree_is_removed(pushed_worktree, cp):
     tmp_path, wt, head = pushed_worktree
-    age_everything(wt)
-    proc, recs = run_apply(tmp_path, wt_doc(cp, wt, head), "--min-idle-hours", "48")
+    settle()
+    proc, recs = run_apply(tmp_path, wt_doc(cp, wt, head), "--min-idle-hours", MIN_IDLE_H)
     assert recs[-1]["result"] == "removed", recs
 
 
@@ -335,10 +334,34 @@ def test_nested_ignored_activity_counts(pushed_worktree, cp):
     nested = wt / ".pytest_cache" / "v" / "cache" / "nodeids"
     nested.parent.mkdir(parents=True)
     nested.write_text("[]", encoding="utf-8")
-    age_everything(wt)
-    nested.write_text("[1]", encoding="utf-8")       # a job writes deep inside, today
-    proc, recs = run_apply(tmp_path, wt_doc(cp, wt, head), "--min-idle-hours", "48")
+    settle()
+    with open(nested, "a", encoding="utf-8") as fh:  # a job appends deep inside, now;
+        fh.write("[1]")                                # no folder mtime changes
+    proc, recs = run_apply(tmp_path, wt_doc(cp, wt, head), "--min-idle-hours", MIN_IDLE_H)
     assert recs[-1]["result"] == "refused" and "recently active" in recs[-1]["detail"]
+
+
+def test_activity_inside_nested_git_folder_counts(pushed_worktree, cp):
+    tmp_path, wt, head = pushed_worktree
+    trace = wt / "scratch" / "fixture" / ".git" / "trace"
+    trace.parent.mkdir(parents=True)
+    trace.write_text("start", encoding="utf-8")
+    settle()
+    assert cp.check_idle(str(wt), str(wt), MIN_IDLE_S / 3600) is None   # idle before
+    with open(trace, "a", encoding="utf-8") as fh:                     # append: only
+        fh.write(" more")                                              # the file moves
+    assert cp.check_idle(str(wt), str(wt), MIN_IDLE_S / 3600) is not None
+
+
+def test_backdated_copy_counts_through_ctime(pushed_worktree, cp):
+    tmp_path, wt, head = pushed_worktree
+    settle()
+    f = wt / "copied.bin"
+    f.write_bytes(b"x")
+    old = __import__("time").time() - 10 * 86400
+    os.utime(f, (old, old))                  # like `cp -p`: preserved old mtime
+    os.utime(wt, (old, old))                 # and the folder's mtime set old too
+    assert cp.check_idle(str(wt), str(wt), MIN_IDLE_S / 3600) is not None
 
 
 def test_replace_ref_cannot_fake_remote_containment(pushed_worktree, cp):

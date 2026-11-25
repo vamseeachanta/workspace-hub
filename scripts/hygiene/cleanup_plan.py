@@ -303,20 +303,25 @@ def last_activity(path: str, git_dir: str) -> float:
     Limitation: a job that only reads files changes no mtime. Such jobs are expected to
     `git worktree lock` their worktree (workstation-hygiene rule, item 1).
     """
+    def stamp(st) -> float:
+        # st_ctime moves when a file is written in even if its mtime is preserved
+        # (`cp -p`): inode change time on POSIX, creation time on Windows.
+        return max(st.st_mtime, st.st_ctime)
+
     newest = 0.0
     for p in (os.path.join(git_dir, "index"), os.path.join(git_dir, "HEAD")):
         if os.path.exists(p):
-            newest = max(newest, os.stat(p).st_mtime)
+            newest = max(newest, stamp(os.stat(p)))
     stack = [path]
     while stack:
         cur = stack.pop()
-        newest = max(newest, os.lstat(cur).st_mtime)
+        newest = max(newest, stamp(os.lstat(cur)))
         with os.scandir(cur) as it:
             for e in it:
-                st = e.stat(follow_symlinks=False)
-                newest = max(newest, st.st_mtime)
-                if e.is_dir(follow_symlinks=False) and not HB.is_link_entry(e) \
-                        and e.name != ".git":
+                newest = max(newest, stamp(e.stat(follow_symlinks=False)))
+                # No name is exempt: a nested folder called .git inside a cache is
+                # still activity (the worktree's own .git is a file, not walked).
+                if e.is_dir(follow_symlinks=False) and not HB.is_link_entry(e):
                     stack.append(e.path)
     return newest
 
