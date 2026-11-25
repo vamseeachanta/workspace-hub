@@ -8,16 +8,20 @@ It reports disks, folder sizes to a fixed depth, stray drive-root/home folders,
 package caches and git checkouts. It never writes, moves or deletes anything; git
 queries run with GIT_OPTIONAL_LOCKS=0 so they do not refresh the index.
 
-The host label comes only from --label. The script does not read the hostname,
-so a public repository can carry the code while the output goes somewhere private.
+The host label comes only from --label. The hostname is read once, only to emit a
+one-way `host_id` (SHA-256 prefix) that cleanup_plan.py compares before any apply;
+the raw name is never written. Output still belongs in a private location.
 """
 
 from __future__ import annotations
 
 import argparse
 import concurrent.futures as cf
+import getpass
+import hashlib
 import json
 import os
+import socket
 import platform
 import re
 import shutil
@@ -49,6 +53,23 @@ POSIX_LEAK_NAMES = {
 }
 # Names test suites use for "a path that does not exist", created by mistake.
 TEST_FIXTURE_NAMES = {"invalid", "nonexistent", "does-not-exist", "doesnotexist"}
+
+
+def host_id() -> str:
+    """One-way identifier of the executing host; the raw hostname is never emitted."""
+    name = socket.gethostname().strip().lower()
+    return hashlib.sha256(name.encode("utf-8")).hexdigest()[:16]
+
+
+def is_link_path(path: str) -> bool:
+    """True for a symlink, junction or other reparse point at `path` itself."""
+    try:
+        st = os.lstat(path)
+    except OSError:
+        return False
+    if stat.S_ISLNK(st.st_mode):
+        return True
+    return bool(IS_WINDOWS and getattr(st, "st_file_attributes", 0) & REPARSE)
 
 
 def utc_iso(ts: float | None) -> str | None:
@@ -106,11 +127,18 @@ def walk_totals(path: str, root_dev: int | None) -> dict:
 
 
 def git_kind(path: str) -> str:
+    """Cheap marker test used while walking. A linked `.git` is never followed.
+
+    "clone" = `.git` directory; "gitfile" = `.git` file (a linked worktree or a
+    separate-git-dir clone; describe_checkout asks git which).
+    """
     marker = os.path.join(path, ".git")
+    if is_link_path(marker):
+        return ""
     if os.path.isdir(marker):
         return "clone"
     if os.path.isfile(marker):
-        return "worktree"
+        return "gitfile"
     return ""
 
 
@@ -130,6 +158,9 @@ def scan_root(root: str, depth: int = 2, workers: int = 8) -> dict:
     conservation: bytes == direct_bytes + sum(child bytes) for non-leaf rows.
     """
     depth = max(1, depth)
+    if is_link_path(root):
+        return {"root": Path(root).as_posix(), "denied": 0, "skipped": "root is a link",
+                "dirs": []}
     dev = root_device(root)
     nodes: dict[str, dict] = {}
     children: dict[str, list[str]] = {}
@@ -139,13 +170,13 @@ def scan_root(root: str, depth: int = 2, workers: int = 8) -> dict:
     while frontier:
         current, level = frontier.pop()
         kids = []
-        direct = direct_files = 0
+        direct = direct_files = local_denied = 0
         newest = None
         try:
             with os.scandir(current) as it:
                 entries = list(it)
         except OSError:
-            denied += 1
+            local_denied += 1
             entries = []
         for entry in entries:
             try:
@@ -162,12 +193,15 @@ def scan_root(root: str, depth: int = 2, workers: int = 8) -> dict:
                     if newest is None or st.st_mtime > newest:
                         newest = st.st_mtime
             except OSError:
-                denied += 1
+                local_denied += 1
+        denied += local_denied
         if level >= 1:
+            # `denied` here is this folder's own listing failures; total() adds the
+            # children's, so an incomplete subtree is visible on every ancestor.
             nodes[current] = {
                 "path": Path(current).as_posix(), "depth": level,
                 "direct_bytes": direct, "direct_files": direct_files,
-                "newest": newest, "denied": 0, "git": git_kind(current),
+                "newest": newest, "denied": local_denied, "git": git_kind(current),
             }
         children[current] = kids
         for kid in kids:
@@ -317,7 +351,12 @@ def cache_candidates() -> list[tuple[str, str]]:
           ("go-mod", home / "go" / "pkg" / "mod"),
           ("gradle", home / ".gradle" / "caches"),
           ("maven", home / ".m2" / "repository")]
-    c += [("pytest-tmp", p) for p in sorted(tmp.glob("pytest-of-*"))]
+    try:
+        user = getpass.getuser()
+    except (KeyError, OSError):
+        user = ""
+    if user:  # only this user's pytest temp root, never another account's
+        c.append(("pytest-tmp", tmp / f"pytest-of-{user}"))
     c.append(("temp-dir", tmp))
     seen, out = set(), []
     for name, path in c:
@@ -330,10 +369,17 @@ def cache_candidates() -> list[tuple[str, str]]:
 
 def measure_caches(workers: int) -> list[dict]:
     cands = cache_candidates()
+
+    def measure(path: str) -> dict:
+        if is_link_path(path):  # a cache path redirected elsewhere is not measured
+            return {"bytes": 0, "files": 0, "newest": None, "denied": 0, "linked": True}
+        return walk_totals(path, root_device(path))
+
     with cf.ThreadPoolExecutor(max_workers=max(1, workers)) as pool:
-        res = list(pool.map(lambda nc: walk_totals(nc[1], None), cands))
+        res = list(pool.map(lambda nc: measure(nc[1]), cands))
     rows = [{"name": n, "path": Path(p).as_posix(), "bytes": r["bytes"],
-             "files": r["files"], "newest_utc": utc_iso(r["newest"])}
+             "files": r["files"], "newest_utc": utc_iso(r["newest"]),
+             "denied": r["denied"], "linked": r.get("linked", False)}
             for (n, p), r in zip(cands, res)]
     rows.sort(key=lambda r: -r["bytes"])
     return rows
@@ -360,13 +406,62 @@ def strip_userinfo(url: str) -> str:
     return re.sub(r"^(\w+://)[^/@]+@", r"\1", url.strip())
 
 
+# Ignored entries that tooling rebuilds. Any other ignored file in a checkout (for
+# example measurements kept out of git) makes the checkout unsafe to remove, because
+# an unforced `git worktree remove` does not protect ignored files.
+REGENERABLE_IGNORED = {
+    ".venv", "venv", "env", "node_modules", "__pycache__", ".pytest_cache", ".ruff_cache",
+    ".mypy_cache", ".tox", ".nox", ".hypothesis", ".ipynb_checkpoints", "htmlcov",
+    ".coverage", "build", "dist", ".eggs", ".next", ".turbo", ".parcel-cache",
+}
+REGENERABLE_SUFFIXES = (".pyc", ".pyo", ".egg-info", ".egg-info/")
+
+
+def ignored_unregenerable(path: str) -> list[str]:
+    """Ignored paths in a checkout that are not known-regenerable tool output."""
+    out = git_out(path, "status", "--porcelain=v1", "--ignored=matching",
+                  "--untracked-files=normal")
+    keep = []
+    for line in out.splitlines():
+        if not line.startswith("!! "):
+            continue
+        rel = line[3:].strip().strip('"')
+        parts = [p for p in rel.replace("\\", "/").split("/") if p]
+        if any(p in REGENERABLE_IGNORED for p in parts) or rel.endswith(REGENERABLE_SUFFIXES):
+            continue
+        keep.append(rel)
+    return keep
+
+
+def worktree_lock_state(path: str) -> bool:
+    """Ask git, from the checkout itself, whether this worktree is locked."""
+    target = os.path.normcase(os.path.realpath(path))
+    current = None
+    for line in git_out(path, "worktree", "list", "--porcelain").splitlines():
+        if line.startswith("worktree "):
+            current = os.path.normcase(os.path.realpath(line[9:].strip()))
+        elif line.startswith("locked") and current == target:
+            return True
+    return False
+
+
 def describe_checkout(path: str) -> dict:
     row = {"path": Path(path).as_posix(), "kind": git_kind(path)}
     try:
+        git_dir = os.path.normcase(os.path.realpath(os.path.join(
+            path, git_out(path, "rev-parse", "--git-dir").strip())))
+        common = os.path.normcase(os.path.realpath(os.path.join(
+            path, git_out(path, "rev-parse", "--git-common-dir").strip())))
+        # Linked worktree: its git dir differs from the shared common dir. A
+        # separate-git-dir clone also has a `.git` file but the two are equal.
+        row["kind"] = "worktree" if git_dir != common else "clone"
         row["branch"] = git_out(path, "rev-parse", "--abbrev-ref", "HEAD").strip()
         row["head"] = git_out(path, "rev-parse", "HEAD").strip()
         status = git_out(path, "status", "--porcelain=v1", "--untracked-files=normal")
         row["dirty"] = sum(1 for line in status.splitlines() if line.strip())
+        ignored = ignored_unregenerable(path)
+        row["ignored_other"] = len(ignored)
+        row["ignored_sample"] = ignored[:5]
         remotes = git_out(path, "for-each-ref", "--count=1", "--contains", "HEAD",
                           "--format=%(refname)", "refs/remotes")
         row["head_on_remote"] = bool(remotes.strip())
@@ -375,24 +470,24 @@ def describe_checkout(path: str) -> dict:
             row["origin"] = strip_userinfo(git_out(path, "remote", "get-url", "origin"))
         except RuntimeError:
             row["origin"] = None
-        row["stashes"] = len(git_out(path, "stash", "list").splitlines()) if row["kind"] == "clone" else 0
-        lock = Path(path) / ".git"
-        row["locked"] = False
-        if row["kind"] == "worktree":
-            gitdir = lock.read_text(encoding="utf-8", errors="replace").split("gitdir:", 1)[-1].strip()
-            row["locked"] = (Path(gitdir) / "locked").exists()
+        row["stashes"] = len(git_out(path, "stash", "list").splitlines())
+        row["locked"] = worktree_lock_state(path) if row["kind"] == "worktree" else False
     except (RuntimeError, OSError, subprocess.TimeoutExpired) as exc:
         row["error"] = str(exc)
     return row
 
 
 def find_checkouts(roots: list[str], max_depth: int = 3, workers: int = 8) -> list[dict]:
+    """Checkouts at depth 0..max_depth under each root; links and mounts not crossed."""
     found = []
     for root in roots:
+        if is_link_path(root) or not os.path.isdir(root):
+            continue
+        dev = root_device(root)
         stack = [(root, 0)]
         while stack:
             current, level = stack.pop()
-            if level > 0 and git_kind(current):
+            if git_kind(current):
                 found.append(current)
                 continue
             if level >= max_depth:
@@ -402,8 +497,11 @@ def find_checkouts(roots: list[str], max_depth: int = 3, workers: int = 8) -> li
                     for entry in it:
                         if entry.name.startswith(("$", ".")) or is_link_entry(entry):
                             continue
-                        if entry.is_dir(follow_symlinks=False):
-                            stack.append((entry.path, level + 1))
+                        if not entry.is_dir(follow_symlinks=False):
+                            continue
+                        if dev is not None and entry.stat(follow_symlinks=False).st_dev != dev:
+                            continue
+                        stack.append((entry.path, level + 1))
             except OSError:
                 continue
     with cf.ThreadPoolExecutor(max_workers=max(1, workers)) as pool:
@@ -468,6 +566,8 @@ def main(argv=None) -> int:
     doc = {
         "schema": SCHEMA,
         "label": args.label,
+        "host_id": host_id(),
+        "home": Path.home().as_posix(),
         "generated_utc": started.strftime("%Y-%m-%dT%H:%M:%SZ"),
         "os": platform.system(),
         "python": platform.python_version(),

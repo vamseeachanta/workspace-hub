@@ -9,7 +9,8 @@ Config (kept private, beside the output; see fleet_baseline.example.json):
                 "python": "python3", "args": ["--expected", "ws,data"],
                 "timeout_s": 7200}]}
 
-Writes <out_dir>/<date>/<label>.json (or <label>.err on failure) and summary.md.
+Each invocation writes a fresh <out_dir>/<date>T<time>Z/ holding <label>.json (or
+<label>.err on failure), summary.md and manifest.json. Files are created exclusively.
 Read-only on every host. A failed host is reported in the summary, never dropped.
 """
 
@@ -18,6 +19,7 @@ from __future__ import annotations
 import argparse
 import concurrent.futures as cf
 import json
+import re
 import shlex
 import subprocess
 import sys
@@ -38,25 +40,47 @@ def build_command(host: dict) -> list[str]:
     return ["ssh", "-o", "BatchMode=yes", "-o", "ConnectTimeout=20", host["ssh"], remote]
 
 
+LABEL_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$")
+
+
+def validate_hosts(hosts: list[dict]) -> None:
+    seen = set()
+    for h in hosts:
+        label = h.get("label", "")
+        if not LABEL_RE.match(label) or ".." in label:
+            raise ValueError(f"unsafe host label: {label!r}")
+        if label in seen:
+            raise ValueError(f"duplicate host label: {label!r}")
+        seen.add(label)
+
+
+def write_new(path: Path, text: str) -> None:
+    """Create a new file; never follow or overwrite an existing path."""
+    with open(path, "x", encoding="utf-8") as fh:
+        fh.write(text)
+
+
 def run_host(host: dict, run_dir: Path) -> dict:
-    cmd = build_command(host)
-    stdin = None if not host.get("ssh") else COLLECTOR.read_text(encoding="utf-8")
+    label = host["label"]
     try:
+        cmd = build_command(host)
+        stdin = None if not host.get("ssh") else COLLECTOR.read_text(encoding="utf-8")
         proc = subprocess.run(cmd, input=stdin, capture_output=True, text=True,
                               encoding="utf-8", errors="replace",
                               timeout=host.get("timeout_s", 7200))
         rc, out, err = proc.returncode, proc.stdout, proc.stderr
     except subprocess.TimeoutExpired:
         rc, out, err = -1, "", "timeout"
-    label = host["label"]
+    except OSError as exc:  # missing interpreter or ssh: report, do not abort the fleet
+        rc, out, err = -1, "", f"launch failed: {exc}"
     if rc == 0:
         try:
             doc = json.loads(out)
-            (run_dir / f"{label}.json").write_text(out, encoding="utf-8")
+            write_new(run_dir / f"{label}.json", out)
             return {"label": label, "ok": True, "doc": doc}
         except json.JSONDecodeError:
             err = "collector printed non-JSON output\n" + err
-    (run_dir / f"{label}.err").write_text(f"rc={rc}\n{err[-4000:]}", encoding="utf-8")
+    write_new(run_dir / f"{label}.err", f"rc={rc}\n{err[-4000:]}")
     return {"label": label, "ok": False, "error": f"rc={rc}: {err.strip()[-300:]}"}
 
 
@@ -107,13 +131,31 @@ def render_summary(results: list[dict], date: str) -> str:
 
 
 def run(cfg: dict, date: str | None = None) -> Path:
-    date = date or datetime.now(timezone.utc).strftime("%Y-%m-%d")
-    run_dir = Path(cfg["out_dir"]) / date
-    run_dir.mkdir(parents=True, exist_ok=True)
+    """One invocation = one fresh directory, so a stale result can never sit beside a new one."""
     hosts = cfg["hosts"]
+    validate_hosts(hosts)
+    now = datetime.now(timezone.utc)
+    date = date or now.strftime("%Y-%m-%d")
+    stamp = f"{date}T{now.strftime('%H%M%S')}Z"
+    out_root = Path(cfg["out_dir"])
+    out_root.mkdir(parents=True, exist_ok=True)
+    run_dir = out_root / stamp
+    n = 1
+    while True:
+        try:
+            run_dir.mkdir()
+            break
+        except FileExistsError:
+            n += 1
+            run_dir = out_root / f"{stamp}-{n}"
     with cf.ThreadPoolExecutor(max_workers=max(1, len(hosts))) as pool:
         results = list(pool.map(lambda h: run_host(h, run_dir), hosts))
-    (run_dir / "summary.md").write_text(render_summary(results, date), encoding="utf-8")
+    write_new(run_dir / "summary.md", render_summary(results, date))
+    write_new(run_dir / "manifest.json", json.dumps({
+        "run": run_dir.name, "started_utc": now.strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "hosts": [{"label": r["label"], "ok": r["ok"],
+                   "file": f"{r['label']}.json" if r["ok"] else f"{r['label']}.err"}
+                  for r in results]}, indent=1))
     return run_dir
 
 

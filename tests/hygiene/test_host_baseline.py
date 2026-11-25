@@ -133,6 +133,68 @@ def test_cli_emits_schema_and_label_from_argument_only(tmp_path):
     assert by_path(doc["roots"][0]["dirs"])[(root / "d").as_posix()]["bytes"] == 10
 
 
+def test_raw_hostname_never_appears_in_output(tmp_path, hb, monkeypatch, capsys):
+    monkeypatch.setattr(hb.socket, "gethostname", lambda: "Distinct-Host-Q7Z")
+    root = tmp_path / "root"
+    write(root / "d" / "f.bin", 1)
+    hb.main(["--label", "x", "--roots", str(root), "--depth", "1", "--no-git", "--no-caches"])
+    out = capsys.readouterr().out
+    assert "distinct-host-q7z" not in out.lower()
+    assert json.loads(out)["host_id"] == hb.host_id()
+
+
+def test_only_this_users_pytest_root_is_listed(tmp_path, hb, monkeypatch):
+    monkeypatch.setattr(hb.tempfile, "gettempdir", lambda: str(tmp_path))
+    monkeypatch.setattr(hb.getpass, "getuser", lambda: "me")
+    (tmp_path / "pytest-of-me").mkdir()
+    (tmp_path / "pytest-of-other").mkdir()
+    names = {Path(p).name for n, p in hb.cache_candidates() if n == "pytest-tmp"}
+    assert names == {"pytest-of-me"}
+
+
+def test_git_classification_lock_ignored_and_root_itself(tmp_path, hb):
+    if subprocess.run(["git", "--version"], capture_output=True).returncode:
+        pytest.skip("git unavailable")
+    repo = tmp_path / "repo"
+    git("init", "-q", "-b", "main", str(repo), cwd=tmp_path)
+    write(repo / "a.txt", 1)
+    write(repo / ".gitignore", 0)
+    (repo / ".gitignore").write_text("data/\n.venv/\n", encoding="utf-8")
+    git("add", ".", cwd=repo)
+    git("commit", "-q", "-m", "1", cwd=repo)
+    write(repo / "data" / "raw.bin", 5)        # ignored, not regenerable
+    write(repo / ".venv" / "lib.py", 5)        # ignored, regenerable
+    git("worktree", "add", "-q", "--detach", str(tmp_path / "wt"), "main", cwd=repo)
+    git("worktree", "lock", str(tmp_path / "wt"), cwd=repo)
+    sep = tmp_path / "sep"
+    git("init", "-q", "--separate-git-dir", str(tmp_path / "sep.git"), str(sep), cwd=tmp_path)
+    rows = by_path(hb.find_checkouts([str(tmp_path)], max_depth=1))
+    assert rows[repo.as_posix()]["kind"] == "clone"
+    assert rows[repo.as_posix()]["ignored_other"] == 1
+    assert rows[(tmp_path / "wt").as_posix()]["kind"] == "worktree"
+    assert rows[(tmp_path / "wt").as_posix()]["locked"] is True
+    assert rows[sep.as_posix()]["kind"] == "clone"   # .git file, but not a linked worktree
+    # A checkout passed as the root itself is found.
+    assert by_path(hb.find_checkouts([str(repo)], max_depth=1))[repo.as_posix()]
+
+
+def test_denied_subtree_marks_every_ancestor(tmp_path, hb, monkeypatch):
+    root = tmp_path / "root"
+    write(root / "a" / "b" / "c" / "f.bin", 3)
+    real = hb.os.scandir
+    blocked = str(root / "a" / "b" / "c")
+
+    def fake(path):
+        if str(path) == blocked:
+            raise PermissionError(path)
+        return real(path)
+
+    monkeypatch.setattr(hb.os, "scandir", fake)
+    rows = by_path(hb.scan_root(str(root), depth=2, workers=1)["dirs"])
+    assert rows[(root / "a" / "b").as_posix()]["denied"] >= 1
+    assert rows[(root / "a").as_posix()]["denied"] >= 1
+
+
 def test_stdin_execution_matches_remote_invocation(tmp_path):
     """Remote hosts run `python3 - ARGS < host_baseline.py`; prove that path works."""
     root = tmp_path / "root"

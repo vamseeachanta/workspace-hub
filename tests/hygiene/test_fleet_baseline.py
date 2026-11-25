@@ -49,6 +49,38 @@ def test_run_writes_per_host_json_and_summary(tmp_path):
     assert "local-a" in summary and "Disks" in summary
 
 
+def test_unsafe_or_duplicate_labels_are_rejected(tmp_path):
+    import pytest
+    fb = load()
+    for hosts in ([{"label": "../prior/host", "ssh": None}],
+                  [{"label": "a", "ssh": None}, {"label": "a", "ssh": None}]):
+        with pytest.raises(ValueError):
+            fb.run({"out_dir": str(tmp_path / "out"), "hosts": hosts})
+
+
+def test_missing_interpreter_still_writes_summary_and_manifest(tmp_path):
+    fb = load()
+    root = tmp_path / "root"
+    (root / "d").mkdir(parents=True)
+    cfg = {"out_dir": str(tmp_path / "out"), "hosts": [
+        {"label": "gone", "ssh": None, "python": str(tmp_path / "no-such-python")},
+        {"label": "fine", "ssh": None,
+         "args": ["--roots", str(root), "--depth", "1", "--no-git", "--no-caches"]}]}
+    run_dir = fb.run(cfg)
+    manifest = json.loads((run_dir / "manifest.json").read_text(encoding="utf-8"))
+    assert {h["label"]: h["ok"] for h in manifest["hosts"]} == {"gone": False, "fine": True}
+    assert "FAILED" in (run_dir / "summary.md").read_text(encoding="utf-8")
+
+
+def test_each_invocation_gets_a_fresh_directory(tmp_path):
+    fb = load()
+    root = tmp_path / "root"
+    (root / "d").mkdir(parents=True)
+    cfg = {"out_dir": str(tmp_path / "out"), "hosts": [{"label": "a", "ssh": None,
+           "args": ["--roots", str(root), "--depth", "1", "--no-git", "--no-caches"]}]}
+    assert fb.run(cfg, date="2026-11-25") != fb.run(cfg, date="2026-11-25")
+
+
 def test_failed_host_is_reported_not_dropped(tmp_path):
     fb = load()
     cfg = {"out_dir": str(tmp_path / "out"), "hosts": [{
