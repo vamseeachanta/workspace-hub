@@ -1,0 +1,11 @@
+{
+  "_comment": "Example only. Copy to a private location, fill real ssh aliases, keep it out of public repositories. ssh null = this host.",
+  "out_dir": "<private output directory>",
+  "hosts": [
+    {"label": "linux-host-a", "ssh": "<ssh alias>", "python": "python3", "args": [], "timeout_s": 10800},
+    {"label": "windows-host-a", "ssh": "<ssh alias>", "python": "python",
+     "args": ["--expected", "ws,data,software"], "timeout_s": 10800},
+    {"label": "this-host", "ssh": null,
+     "args": ["--checkout-roots", "<workspace root>"], "timeout_s": 10800}
+  ]
+}

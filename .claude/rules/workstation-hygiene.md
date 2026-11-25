@@ -12,6 +12,12 @@ environments) plus a 16 GB npm cache. The work in every clone was already merged
 residue remained. The same day, one riser PR proposed committing 7,300 per-case result files
 (888 MB) that would have tripled the private data repository for good.
 
+On 2026-11-24 a shared Windows host had both data drives at 10 to 14 % free. About fifteen
+folders sat at the drive roots (`tmp`, `c`, `d`, `mnt`, `etc`, `x`, `invalid\path\that\does\not\exist`),
+each a POSIX path that a script had resolved against a Windows drive root, and a retired
+solver-manager loop still held about 396 GB of working folders. Items 7 to 11 come from that
+baseline (#4532).
+
 **How to apply:**
 
 1. **Worktrees, not clones.** Start isolated work with
@@ -43,14 +49,38 @@ residue remained. The same day, one riser PR proposed committing 7,300 per-case 
    ownership on the issue or PR when a peer may not read messages in time.
 6. **A refused command stops that step:** report the exact command and never get the same
    result another way (another tool, subagent, session or model).
+7. **One scratch root per host.** Scratch files, probe output and one-off working folders go
+   under `<workspace root>/_scratch/<topic>-<yyyymmdd>/`, never at a drive root, the home
+   root or a new top-level folder. When the topic closes, the folder is promoted (into a
+   repository or the data store) or removed. A retired desk, loop or job queue has its working
+   folders inventoried and dispositioned the day it is retired, not left behind.
+8. **No POSIX absolute paths in Windows-run commands.** A native Windows program resolves
+   `/tmp/x`, `/mnt/x` or `/c/x` against the current drive root, which creates `C:\tmp`,
+   `D:\mnt` or `C:\c`. Use the platform temp directory, `${ACE_DATA_ROOT}` or a path derived
+   from the repository root. Tests build "nonexistent" paths under their own temporary
+   directory, never `/invalid/...`.
+9. **Baseline, plan, then clean.** Measure with `scripts/hygiene/fleet_baseline.py` (all hosts)
+   or `scripts/hygiene/host_baseline.py` (one host), then tier the result with
+   `scripts/hygiene/cleanup_plan.py`. Baselines name hosts and paths, so they are written to a
+   private repository, never this public one. `--apply` runs only the `regenerable` and
+   `safe-checkout` tiers, with a log; every `review` item goes to the owner of the data or to a
+   decision card. Deletions beyond those tiers are logged on fleet-ops #577 before they run.
+10. **Shared hosts.** On a host with other tenants, anything outside the team's own roots
+    (`--own-roots`) is reported and never touched.
+11. **After a history rewrite, check the archive before calling work unpushed.** Following
+    the 2026-11-23 lean archive, a HEAD absent from origin may still be held in the archive
+    bundles. Pass their commit list with `cleanup_plan.py --preserved`; a HEAD found in neither
+    origin nor an archive is unpushed work and stays.
 
 **Do NOT apply when:** a worktree is locked, or holds uncommitted work that nobody has
 reviewed; the bulk files are raw data as received, which stay in the owning private
 repository per [`codes-standards-data-routing.md`](codes-standards-data-routing.md).
 
-**Enforcement gradient** (per [`patterns.md`](patterns.md)): Level 2 script
-`scripts/operations/workstation-hygiene.sh`, report-first. Promote to a scheduled report once
-it has run clean on each host.
+**Enforcement gradient** (per [`patterns.md`](patterns.md)): Level 2 scripts
+`scripts/operations/workstation-hygiene.sh` (checkouts on one host) and
+`scripts/hygiene/fleet_baseline.py` + `cleanup_plan.py` (storage across hosts, #4532), all
+report-first. Run the fleet baseline monthly and whenever a drive falls below about 15 % free;
+promote to a scheduled report under #3992 once it has run clean on each host.
 
 **Related:** [`merge-cleanup.md`](merge-cleanup.md), [`merge-authorization.md`](merge-authorization.md),
 [`windows-junction-restore-safety.md`](windows-junction-restore-safety.md). Handoff:
