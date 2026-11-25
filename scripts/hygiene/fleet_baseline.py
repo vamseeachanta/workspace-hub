@@ -43,15 +43,20 @@ def build_command(host: dict) -> list[str]:
 LABEL_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$")
 
 
+RESERVED = {"manifest", "summary"}  # the runner's own output files
+
+
 def validate_hosts(hosts: list[dict]) -> None:
+    """Labels become file names: safe characters, not reserved, unique ignoring case
+    (Windows volumes are case-insensitive)."""
     seen = set()
     for h in hosts:
         label = h.get("label", "")
-        if not LABEL_RE.match(label) or ".." in label:
+        if not LABEL_RE.match(label) or ".." in label or label.lower() in RESERVED:
             raise ValueError(f"unsafe host label: {label!r}")
-        if label in seen:
+        if label.lower() in seen:
             raise ValueError(f"duplicate host label: {label!r}")
-        seen.add(label)
+        seen.add(label.lower())
 
 
 def write_new(path: Path, text: str) -> None:

@@ -409,10 +409,12 @@ def strip_userinfo(url: str) -> str:
 # Ignored entries that tooling rebuilds. Any other ignored file in a checkout (for
 # example measurements kept out of git) makes the checkout unsafe to remove, because
 # an unforced `git worktree remove` does not protect ignored files.
+# Only names no one uses for hand-made data. Ambiguous names (env, build, dist, output,
+# notebook checkpoints) are deliberately absent: git may report just `!! env/`, and the
+# only copy of a measurement can sit inside it.
 REGENERABLE_IGNORED = {
-    ".venv", "venv", "env", "node_modules", "__pycache__", ".pytest_cache", ".ruff_cache",
-    ".mypy_cache", ".tox", ".nox", ".hypothesis", ".ipynb_checkpoints", "htmlcov",
-    ".coverage", "build", "dist", ".eggs", ".next", ".turbo", ".parcel-cache",
+    ".venv", "node_modules", "__pycache__", ".pytest_cache", ".ruff_cache", ".mypy_cache",
+    ".tox", ".nox", ".hypothesis", ".eggs", ".next", ".turbo", ".parcel-cache", ".coverage",
 }
 REGENERABLE_SUFFIXES = (".pyc", ".pyo", ".egg-info", ".egg-info/")
 
@@ -455,8 +457,15 @@ def describe_checkout(path: str) -> dict:
         # Linked worktree: its git dir differs from the shared common dir. A
         # separate-git-dir clone also has a `.git` file but the two are equal.
         row["kind"] = "worktree" if git_dir != common else "clone"
+        try:
+            row["head"] = git_out(path, "rev-parse", "--verify", "-q", "HEAD").strip()
+        except RuntimeError:
+            # No commits yet (often a test fixture repo left behind): not an error,
+            # and nothing in it can be on a remote.
+            row.update(unborn=True, head=None, branch=None, head_on_remote=False,
+                       dirty=None, ignored_other=None, stashes=0, locked=False)
+            return row
         row["branch"] = git_out(path, "rev-parse", "--abbrev-ref", "HEAD").strip()
-        row["head"] = git_out(path, "rev-parse", "HEAD").strip()
         status = git_out(path, "status", "--porcelain=v1", "--untracked-files=normal")
         row["dirty"] = sum(1 for line in status.splitlines() if line.strip())
         ignored = ignored_unregenerable(path)
@@ -474,6 +483,8 @@ def describe_checkout(path: str) -> dict:
         row["locked"] = worktree_lock_state(path) if row["kind"] == "worktree" else False
     except (RuntimeError, OSError, subprocess.TimeoutExpired) as exc:
         row["error"] = str(exc)
+        if "rev-parse" in str(exc) and row.get("kind") in ("clone", "gitfile"):
+            row["broken"] = True  # .git present but git cannot open it
     return row
 
 
@@ -577,6 +588,12 @@ def main(argv=None) -> int:
         "caches": [] if args.no_caches else measure_caches(args.workers),
         "checkouts": [] if args.no_git else find_checkouts(
             args.checkout_roots or roots, args.checkout_depth, args.workers),
+        # Coverage of checkout discovery, so a planner never reads "no checkout found"
+        # as "outside every checkout" where it did not look.
+        "git_scan": {"done": not args.no_git,
+                     "roots": [] if args.no_git else
+                     [Path(r).as_posix() for r in (args.checkout_roots or roots)],
+                     "depth": args.checkout_depth},
         "elapsed_s": None,
     }
     doc["elapsed_s"] = round((datetime.now(timezone.utc) - started).total_seconds(), 1)

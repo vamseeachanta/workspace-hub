@@ -53,7 +53,9 @@ def test_unsafe_or_duplicate_labels_are_rejected(tmp_path):
     import pytest
     fb = load()
     for hosts in ([{"label": "../prior/host", "ssh": None}],
-                  [{"label": "a", "ssh": None}, {"label": "a", "ssh": None}]):
+                  [{"label": "a", "ssh": None}, {"label": "a", "ssh": None}],
+                  [{"label": "Alpha", "ssh": None}, {"label": "alpha", "ssh": None}],
+                  [{"label": "manifest", "ssh": None}]):
         with pytest.raises(ValueError):
             fb.run({"out_dir": str(tmp_path / "out"), "hosts": hosts})
 

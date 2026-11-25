@@ -6,8 +6,8 @@
         --apply --this-host <label> --log <private log.jsonl> [--tiers regenerable,safe-checkout]
 
 Tiers:
-  regenerable    package caches with a path-bound clean command (uv, pip, npm) and this
-                 user's pytest temp root when idle for a day
+  regenerable    package caches with a path-bound clean command (uv, pip, npm); the
+                 tool performs the deletion. Nothing is ever removed recursively here.
   safe-checkout  linked worktree, no changes, no ignored non-regenerable files, no stash,
                  HEAD on a remote (or in a named archive), not locked
   review         everything that needs a person
@@ -28,9 +28,9 @@ import importlib.util
 import json
 import os
 import re
-import stat
 import subprocess
 import sys
+import uuid
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
@@ -42,7 +42,6 @@ REVIEW_CACHES = {"huggingface", "torch", "conda-pkgs", "playwright", "cargo-regi
 LEAK_REASONS = {"posix-path-leak", "drive-letter-mirror", "test-fixture-leak"}
 BIG_DATA_BYTES = 10 * GB
 IDLE_DAYS = 30
-PYTEST_IDLE = timedelta(days=1)
 
 
 def _collector():
@@ -111,16 +110,12 @@ def plan(doc: dict, own_roots: list[str], preserved: set | None = None) -> list[
         elif name in BOUND_CACHES:
             items.append(item("regenerable", path, f"{name} package cache",
                               f"clean {name} cache (path-bound)", c["bytes"], cache=name))
-        elif name == "pytest-tmp":
-            newest = c.get("newest_utc")
-            idle = newest is None or datetime.strptime(newest, "%Y-%m-%dT%H:%M:%SZ") < gen - PYTEST_IDLE
-            if idle and not c.get("denied"):
-                items.append(item("regenerable", path, "pytest temp root, idle >1 day",
-                                  "remove (no link, no mount crossing)", c["bytes"],
-                                  cache=name))
-            else:
-                items.append(item("review", path, "pytest temp root in recent use or "
-                                  "partly unreadable", "leave", c["bytes"]))
+        elif name == "pytest-tmp" and c["bytes"] >= 1 * GB:
+            # Never applied: a run can start between plan and apply, and a recursive
+            # delete cannot be made race-free against link swaps or bind mounts here.
+            items.append(item("review", path, "pytest temp root (pytest keeps the last "
+                              "three runs itself)", "remove by hand when no tests run",
+                              c["bytes"]))
         elif name in REVIEW_CACHES and c["bytes"] >= 1 * GB:
             items.append(item("review", path, f"{name} cache: no path-bound clean or "
                               "costly to rebuild", "prune if unused", c["bytes"]))
@@ -136,8 +131,13 @@ def plan(doc: dict, own_roots: list[str], preserved: set | None = None) -> list[
         if not under(path, own_roots, windows):
             items.append(item("other-tenant", path, "checkout outside own roots", "none"))
             continue
+        if co.get("unborn"):
+            items.append(item("review", path, "git repo with no commits (often test-fixture "
+                              "residue)", "check for files worth keeping, then remove"))
+            continue
         if co.get("error"):
-            items.append(item("review", path, f"unreadable: {co['error']}", "inspect"))
+            what = "broken .git" if co.get("broken") else "unreadable"
+            items.append(item("review", path, f"{what}: {co['error']}", "inspect"))
             continue
         on_remote = co.get("head_on_remote") is True
         archived = (not on_remote) and bool(co.get("head")) and co.get("head") in preserved
@@ -179,6 +179,12 @@ def plan(doc: dict, own_roots: list[str], preserved: set | None = None) -> list[
     def inside(p: str, pool) -> bool:
         return any(p == q or p.startswith(q.rstrip("/") + "/") for q in pool)
 
+    gs = doc.get("git_scan") or {}
+    git_roots = gs.get("roots", []) if gs.get("done") else []
+
+    def holds_checkout(p: str) -> bool:
+        return any(q.startswith(p.rstrip("/") + "/") for q in checkout_paths)
+
     big = []
     for scan in doc.get("roots", []):
         for d in scan["dirs"]:
@@ -186,7 +192,10 @@ def plan(doc: dict, own_roots: list[str], preserved: set | None = None) -> list[
             if (d["git"] or d["bytes"] < BIG_DATA_BYTES or d.get("denied")
                     or not d.get("newest_utc") or d["newest_utc"][:10] >= cutoff
                     or not under(d["path"], own_roots, windows)
-                    or inside(p, checkout_paths)):  # checkout contents may be tracked
+                    # positive evidence only: git discovery covered this path ...
+                    or not under(d["path"], git_roots, windows)
+                    # ... and it neither sits inside nor contains a checkout
+                    or inside(p, checkout_paths) or holds_checkout(p)):
                 continue
             big.append(d)
     big.sort(key=lambda d: d["depth"])
@@ -242,79 +251,59 @@ def git(path: str, *args: str) -> tuple[int, str]:
     return run_cmd(["git", "-c", "safe.directory=*", "-C", path, *args])
 
 
+def git_common(common: str, *args: str) -> tuple[int, str]:
+    """Address the shared repository by its verified git dir (works for bare repos too)."""
+    return run_cmd(["git", "-c", "safe.directory=*", f"--git-dir={common}", *args])
+
+
+def remote_contains(common: str, head: str) -> tuple[bool, str]:
+    """Fetch origin's branch tips into a fresh private namespace and test containment
+    against exactly those tips, so stale remote-tracking refs cannot vouch for HEAD."""
+    ns = f"refs/hygiene-verify/{uuid.uuid4().hex}"
+    try:
+        rc, out = git_common(common, "fetch", "--quiet", "--no-tags", "origin",
+                             f"+refs/heads/*:{ns}/*")
+        if rc:
+            return False, f"fetch failed: {out}"
+        rc, refs = git_common(common, "for-each-ref", "--count=1", "--contains", head,
+                              "--format=%(refname)", ns)
+        return (rc == 0 and bool(refs.strip())), "HEAD not in any branch tip fetched now"
+    finally:
+        rc, refs = git_common(common, "for-each-ref", "--format=%(refname)", ns)
+        for ref in refs.split():
+            git_common(common, "update-ref", "-d", ref)
+
+
 def verify_and_remove_worktree(i: dict, preserved: set) -> tuple[str, str]:
-    path = i["path"]
-    if HB.is_link_path(path):
-        return "refused", "path is a link"
-    rc, head = git(path, "rev-parse", "HEAD")
-    if rc or head.strip() != i.get("head"):
-        return "refused", "HEAD changed since the plan or unreadable"
+    """Network step first; every local check runs after it, immediately before removal.
+
+    Stashes are not checked: they live in the shared repository and survive the removal
+    of a worktree.
+    """
+    path, planned = i["path"], i.get("head")
+    if not planned or HB.is_link_path(path):
+        return "refused", "no planned HEAD, or path is a link"
     rc, gd = git(path, "rev-parse", "--path-format=absolute", "--git-dir")
     rc2, common = git(path, "rev-parse", "--path-format=absolute", "--git-common-dir")
-    if rc or rc2 or os.path.normcase(gd.strip()) == os.path.normcase(common.strip()):
+    gd, common = gd.strip(), common.strip()
+    if rc or rc2 or os.path.normcase(gd) == os.path.normcase(common):
         return "refused", "not a linked worktree"
+    if planned not in preserved:
+        ok, why = remote_contains(common, planned)
+        if not ok:
+            return "refused", why
+    rc, head = git(path, "rev-parse", "--verify", "-q", "HEAD")
+    if rc or head.strip() != planned:
+        return "refused", "HEAD changed since the plan or unreadable"
     if HB.worktree_lock_state(path):
         return "refused", "worktree is locked"
     rc, status = git(path, "status", "--porcelain=v1", "--untracked-files=normal")
     if rc or status.strip():
         return "refused", "worktree has changes"
-    try:
-        if HB.ignored_unregenerable(path):
-            return "refused", "ignored non-regenerable files present"
-    except (RuntimeError, OSError, subprocess.TimeoutExpired) as exc:
-        return "refused", f"ignored-file check failed: {exc}"
-    main = str(Path(common.strip()).parent)
-    if head.strip() not in preserved:
-        rc, out = git(main, "fetch", "--prune", "--quiet", "origin")
-        if rc:
-            return "refused", f"fetch failed, remote containment unverified: {out}"
-        rc, refs = git(path, "for-each-ref", "--count=1", "--contains", "HEAD",
-                       "--format=%(refname)", "refs/remotes/origin")
-        if rc or not refs.strip():
-            return "refused", "HEAD not in any freshly fetched origin ref"
-    rc, out = git(main, "worktree", "remove", path)
+    if HB.ignored_unregenerable(path):
+        return "refused", "ignored non-regenerable files present"
+    rc, out = git_common(common, "worktree", "remove", path)
     return ("removed", out) if rc == 0 else ("refused", out)
-
-
-def guarded_rmtree(root: str) -> tuple[str, str]:
-    """Remove a tree bottom-up without following links or crossing a mount boundary.
-
-    Refuses the whole operation before deleting anything if any directory lies on a
-    different device than the root.
-    """
-    if HB.is_link_path(root):
-        return "refused", "root is a link"
-    dev = os.lstat(root).st_dev
-    order, stack = [], [root]
-    while stack:
-        cur = stack.pop()
-        order.append(cur)
-        with os.scandir(cur) as it:
-            for e in it:
-                if HB.is_link_entry(e):
-                    continue
-                st = e.stat(follow_symlinks=False)
-                if stat.S_ISDIR(st.st_mode):
-                    if os.name != "nt" and st.st_dev != dev:
-                        return "refused", "mount boundary inside tree"
-                    stack.append(e.path)
-    errors = []
-    for d in reversed(order):
-        try:
-            with os.scandir(d) as it:
-                for e in it:
-                    try:
-                        if HB.is_link_entry(e):
-                            # remove the link node itself, never its target
-                            os.rmdir(e.path) if (os.name == "nt" and e.is_dir()) else os.unlink(e.path)
-                        elif not e.is_dir(follow_symlinks=False):
-                            os.unlink(e.path)
-                    except OSError as exc:
-                        errors.append(f"{e.name}: {exc.strerror}")
-            os.rmdir(d)
-        except OSError as exc:
-            errors.append(f"{os.path.basename(d)}: {exc.strerror}")
-    return ("removed", "") if not errors else ("partial", "; ".join(errors[:5]))
 
 
 def cache_command(name: str, path: str):
@@ -335,8 +324,8 @@ def cache_command(name: str, path: str):
 def apply_item(i: dict, preserved: set) -> tuple[str, str]:
     if i["tier"] == "safe-checkout":
         return verify_and_remove_worktree(i, preserved)
-    if i.get("cache") == "pytest-tmp":
-        return guarded_rmtree(i["path"])
+    if HB.is_link_path(i["path"]):
+        return "refused", "cache path is a link"
     cmd, env = cache_command(i.get("cache", ""), i["path"])
     if not cmd:
         return "skipped", "no path-bound command for this cache"
@@ -383,15 +372,25 @@ def main(argv=None) -> int:
     if not args.log:
         print("refused: --apply needs --log", file=sys.stderr)
         return 2
-    roots = list(args.own_roots) + ([doc["home"]] if doc.get("home") else [])
+    # The home allowance comes from the executing account, and only when it is the
+    # account that collected the baseline; worktrees are confined to --own-roots.
+    my_home = os.path.normcase(os.path.realpath(str(Path.home())))
+    same_account = bool(doc.get("home")) and \
+        os.path.normcase(os.path.realpath(doc["home"])) == my_home
     with open(args.log, "a", encoding="utf-8") as log:
         for i in items:
             if i["tier"] not in tiers:
                 continue
-            if not real_inside(i["path"], roots):
-                result, detail = "refused", "real path outside own roots"
-            else:
-                result, detail = apply_item(i, preserved)
+            roots = list(args.own_roots)
+            if i["tier"] == "regenerable" and same_account:
+                roots.append(str(Path.home()))
+            try:
+                if not real_inside(i["path"], roots):
+                    result, detail = "refused", "real path outside own roots"
+                else:
+                    result, detail = apply_item(i, preserved)
+            except Exception as exc:  # one failed probe must not stop independent items
+                result, detail = "error", f"{type(exc).__name__}: {exc}"
             rec = {"utc": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
                    "host": doc["label"], **i, "result": result, "detail": detail}
             log.write(json.dumps(rec) + "\n")

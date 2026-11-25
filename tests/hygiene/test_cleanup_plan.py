@@ -64,9 +64,9 @@ def test_other_users_pytest_root_is_never_regenerable(cp):
     assert tiers(cp.plan(d, own_roots=["/w"]))["/tmp/pytest-of-other"] == "other-tenant"
 
 
-def test_recent_pytest_root_is_review(cp):
+def test_own_pytest_root_is_never_applied(cp):
     d = doc(caches=[{"name": "pytest-tmp", "path": "/h/tmp/pytest-of-me", "bytes": GB,
-                     "newest_utc": "2026-11-24T20:00:00Z"}])
+                     "newest_utc": "2026-01-01T00:00:00Z"}])
     assert tiers(cp.plan(d, own_roots=["/w"]))["/h/tmp/pytest-of-me"] == "review"
 
 
@@ -117,20 +117,29 @@ def test_paths_outside_own_roots_are_other_tenant(cp):
     assert t["C:/tmp"] == "review"
 
 
-def test_tracked_data_inside_a_clean_clone_is_not_called_untracked(cp):
+def test_untracked_data_advice_needs_positive_evidence(cp):
     old = "2026-01-01T00:00:00Z"
-    d = doc(checkouts=[{**CO, "path": "/w/repo", "kind": "clone"}],
-            roots=[{"root": "/w", "dirs": [
-                {"path": "/w/repo/data", "depth": 2, "bytes": 12 * GB, "git": "",
-                 "newest_utc": old, "denied": 0},
-                {"path": "/w/loose", "depth": 1, "bytes": 12 * GB, "git": "",
-                 "newest_utc": old, "denied": 0},
-                {"path": "/w/partial", "depth": 1, "bytes": 12 * GB, "git": "",
-                 "newest_utc": old, "denied": 3}]}])
+
+    def row(path, depth=1, denied=0):
+        return {"path": path, "depth": depth, "bytes": 12 * GB, "git": "",
+                "newest_utc": old, "denied": denied}
+
+    roots = [{"root": "/w", "dirs": [row("/w/repo/data", 2), row("/w/loose"),
+                                     row("/w/partial", denied=3), row("/w/_wt")]}]
+    checkouts = [{**CO, "path": "/w/repo", "kind": "clone"},
+                 {**CO, "path": "/w/_wt/one", "dirty": 2}]
+    d = doc(checkouts=checkouts, roots=roots,
+            git_scan={"done": True, "roots": ["/w"], "depth": 3})
     t = tiers(cp.plan(d, own_roots=["/w"]))
-    assert "/w/repo/data" not in t
+    assert "/w/repo/data" not in t   # inside a checkout: may be tracked
     assert t["/w/loose"] == "review"
-    assert "/w/partial" not in t  # an incomplete scan cannot support an idle claim
+    assert "/w/partial" not in t     # incomplete scan cannot support an idle claim
+    assert not any(i["path"] == "/w/_wt" and "outside any checkout" in i["reason"]
+                   for i in cp.plan(d, own_roots=["/w"]))  # it holds checkouts
+    # Without git discovery there is no evidence at all.
+    d_nogit = doc(roots=roots, git_scan={"done": False, "roots": [], "depth": 3})
+    assert not [i for i in cp.plan(d_nogit, own_roots=["/w"])
+                if "outside any checkout" in i["reason"]]
 
 
 def test_git_bindings_are_removed_from_apply_environment(monkeypatch):
@@ -150,21 +159,9 @@ def test_cache_commands_are_bound_to_the_planned_path(cp, tmp_path):
     assert cmd is None
 
 
-def test_guarded_rmtree_does_not_follow_links(cp, tmp_path):
-    outside = tmp_path / "outside"
-    outside.mkdir()
-    (outside / "keep.txt").write_text("k", encoding="utf-8")
-    victim = tmp_path / "pytest-of-me"
-    (victim / "run").mkdir(parents=True)
-    (victim / "run" / "f").write_text("x", encoding="utf-8")
-    try:
-        os.symlink(outside, victim / "run" / "link", target_is_directory=True)
-    except (OSError, NotImplementedError):
-        pytest.skip("symlink creation not permitted")
-    result, _ = cp.guarded_rmtree(str(victim))
-    assert result == "removed"
-    assert not victim.exists()
-    assert (outside / "keep.txt").exists()
+def test_no_recursive_delete_helper_exists(cp):
+    # Recursive deletion was removed from apply on review; keep it that way.
+    assert not hasattr(cp, "guarded_rmtree")
 
 
 # ---------------------------------------------------------------- apply integration
@@ -229,6 +226,37 @@ def test_apply_removes_verified_clean_worktree(pushed_worktree, cp):
     assert proc.returncode == 0, proc.stderr
     assert recs[-1]["result"] == "removed", recs
     assert not wt.exists()
+    leftover = subprocess.run(["git", "-C", str(tmp_path / "repo"), "for-each-ref",
+                               "refs/hygiene-verify"], env=CLEAN_ENV, capture_output=True,
+                              text=True, check=True).stdout
+    assert leftover.strip() == ""  # the private verification namespace is cleaned up
+
+
+def test_stale_remote_tracking_ref_cannot_vouch(pushed_worktree, cp):
+    tmp_path, wt, _ = pushed_worktree
+    (wt / "t").write_text("t", encoding="utf-8")
+    g("add", "t", cwd=wt)
+    g("commit", "-qm", "topic", cwd=wt)
+    g("push", "-q", "origin", "HEAD:refs/heads/topic", cwd=wt)
+    g("fetch", "-q", "origin", cwd=tmp_path / "repo")          # origin/topic now local
+    g("--git-dir", str(tmp_path / "origin.git"), "update-ref", "-d", "refs/heads/topic",
+      cwd=tmp_path)                                             # deleted on the remote only
+    head = subprocess.run(["git", "-C", str(wt), "rev-parse", "HEAD"], env=CLEAN_ENV,
+                          capture_output=True, text=True, check=True).stdout.strip()
+    proc, recs = run_apply(tmp_path, wt_doc(cp, wt, head))
+    assert recs[-1]["result"] == "refused", recs
+    assert wt.exists()
+
+
+def test_one_failing_item_does_not_stop_the_rest(pushed_worktree, cp):
+    tmp_path, wt, head = pushed_worktree
+    d = wt_doc(cp, wt, head)
+    d["checkouts"].insert(0, {**CO, "path": (tmp_path / "gone").as_posix(), "head": head})
+    proc, recs = run_apply(tmp_path, d)
+    assert proc.returncode == 0, proc.stderr
+    by = {r["path"]: r["result"] for r in recs}
+    assert by[(tmp_path / "gone").as_posix()] in ("refused", "error")
+    assert by[wt.as_posix()] == "removed"
 
 
 def test_apply_refuses_when_head_moved_after_plan(pushed_worktree, cp):

@@ -178,6 +178,27 @@ def test_git_classification_lock_ignored_and_root_itself(tmp_path, hb):
     assert by_path(hb.find_checkouts([str(repo)], max_depth=1))[repo.as_posix()]
 
 
+def test_ambiguous_ignored_directory_is_not_regenerable(tmp_path, hb):
+    if subprocess.run(["git", "--version"], capture_output=True).returncode:
+        pytest.skip("git unavailable")
+    repo = tmp_path / "repo"
+    git("init", "-q", "-b", "main", str(repo), cwd=tmp_path)
+    (repo / ".gitignore").write_text("env/\n", encoding="utf-8")
+    git("add", ".gitignore", cwd=repo)
+    git("commit", "-q", "-m", "1", cwd=repo)
+    write(repo / "env" / "calibration.csv", 9)   # only copy of a measurement
+    assert hb.ignored_unregenerable(str(repo)) == ["env/"]
+
+
+def test_repo_without_commits_is_unborn_not_error(tmp_path, hb):
+    if subprocess.run(["git", "--version"], capture_output=True).returncode:
+        pytest.skip("git unavailable")
+    empty = tmp_path / "empty"
+    git("init", "-q", str(empty), cwd=tmp_path)
+    row = hb.describe_checkout(str(empty))
+    assert row.get("unborn") is True and "error" not in row
+
+
 def test_denied_subtree_marks_every_ancestor(tmp_path, hb, monkeypatch):
     root = tmp_path / "root"
     write(root / "a" / "b" / "c" / "f.bin", 3)
