@@ -420,19 +420,42 @@ REGENERABLE_SUFFIXES = (".pyc", ".pyo", ".egg-info", ".egg-info/")
 
 
 def ignored_unregenerable(path: str) -> list[str]:
-    """Ignored paths in a checkout that are not known-regenerable tool output."""
-    out = git_out(path, "status", "--porcelain=v1", "--ignored=matching",
+    """Ignored paths in a checkout that are not known-regenerable tool output.
+
+    Parsed from `-z` output: NUL-delimited, unquoted, and split only on "/" (git's own
+    separator), so a POSIX filename containing a backslash is never misread.
+    """
+    out = git_out(path, "status", "--porcelain=v1", "-z", "--ignored=matching",
                   "--untracked-files=normal")
     keep = []
-    for line in out.splitlines():
-        if not line.startswith("!! "):
+    for rec in out.split("\0"):
+        if not rec.startswith("!! "):
             continue
-        rel = line[3:].strip().strip('"')
-        parts = [p for p in rel.replace("\\", "/").split("/") if p]
+        rel = rec[3:]
+        parts = [p for p in rel.split("/") if p]
         if any(p in REGENERABLE_IGNORED for p in parts) or rel.endswith(REGENERABLE_SUFFIXES):
             continue
         keep.append(rel)
     return keep
+
+
+IN_PROGRESS_MARKERS = ("rebase-merge", "rebase-apply", "MERGE_HEAD", "CHERRY_PICK_HEAD",
+                       "REVERT_HEAD", "BISECT_LOG", "sequencer")
+
+
+def hidden_or_in_progress(path: str) -> list[str]:
+    """Reasons git's own cleanliness check would miss: flagged index entries whose edits
+    `status` does not show, and an operation in progress in this worktree's git dir."""
+    reasons = []
+    flagged = [ln for ln in git_out(path, "ls-files", "-v").splitlines()
+               if ln[:1].islower() or ln[:1] == "S"]
+    if flagged:
+        reasons.append(f"{len(flagged)} assume-unchanged/skip-worktree index entries")
+    gd = os.path.join(path, git_out(path, "rev-parse", "--git-dir").strip())
+    present = [m for m in IN_PROGRESS_MARKERS if os.path.exists(os.path.join(gd, m))]
+    if present:
+        reasons.append("operation in progress: " + ", ".join(present))
+    return reasons
 
 
 def worktree_lock_state(path: str) -> bool:
@@ -471,6 +494,10 @@ def describe_checkout(path: str) -> dict:
         ignored = ignored_unregenerable(path)
         row["ignored_other"] = len(ignored)
         row["ignored_sample"] = ignored[:5]
+        row["hidden_state"] = hidden_or_in_progress(path)
+        # Commits on local branches that no remote-tracking ref holds (unique history).
+        row["unpublished_commits"] = int(git_out(
+            path, "rev-list", "--count", "--branches", "--not", "--remotes").strip() or 0)
         remotes = git_out(path, "for-each-ref", "--count=1", "--contains", "HEAD",
                           "--format=%(refname)", "refs/remotes")
         row["head_on_remote"] = bool(remotes.strip())

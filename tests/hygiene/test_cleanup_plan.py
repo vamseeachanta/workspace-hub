@@ -43,7 +43,8 @@ def tiers(items):
 
 
 CO = {"branch": "b", "stashes": 0, "locked": False, "origin": "u", "dirty": 0,
-      "ignored_other": 0, "head": "a" * 40, "head_on_remote": True, "kind": "worktree"}
+      "ignored_other": 0, "head": "a" * 40, "head_on_remote": True, "kind": "worktree",
+      "hidden_state": [], "unpublished_commits": 0}
 
 
 def test_cache_tiers(cp):
@@ -134,12 +135,14 @@ def test_untracked_data_advice_needs_positive_evidence(cp):
     assert "/w/repo/data" not in t   # inside a checkout: may be tracked
     assert t["/w/loose"] == "review"
     assert "/w/partial" not in t     # incomplete scan cannot support an idle claim
-    assert not any(i["path"] == "/w/_wt" and "outside any checkout" in i["reason"]
+    assert "large idle folder" in {i["path"]: i["reason"] for i in
+                                   cp.plan(d, own_roots=["/w"])}["/w/loose"]
+    assert not any(i["path"] == "/w/_wt" and "large idle folder" in i["reason"]
                    for i in cp.plan(d, own_roots=["/w"]))  # it holds checkouts
     # Without git discovery there is no evidence at all.
     d_nogit = doc(roots=roots, git_scan={"done": False, "roots": [], "depth": 3})
     assert not [i for i in cp.plan(d_nogit, own_roots=["/w"])
-                if "outside any checkout" in i["reason"]]
+                if "large idle folder" in i["reason"]]
 
 
 def test_git_bindings_are_removed_from_apply_environment(monkeypatch):
@@ -157,6 +160,25 @@ def test_cache_commands_are_bound_to_the_planned_path(cp, tmp_path):
         assert cmd[-2:] == ["--cache-dir", str(tmp_path)]
     cmd, _ = cp.cache_command("yarn", str(tmp_path))
     assert cmd is None
+
+
+def test_clone_with_unpublished_branch_or_hidden_state_is_listed(cp):
+    d = doc(checkouts=[{**CO, "path": "/w/a", "kind": "clone", "unpublished_commits": 3},
+                       {**CO, "path": "/w/b", "kind": "clone",
+                        "hidden_state": ["operation in progress: rebase-merge"]},
+                       {**CO, "path": "/w/_wt/c", "hidden_state": ["1 assume-unchanged/"
+                                                                   "skip-worktree index entries"]}])
+    t = tiers(cp.plan(d, own_roots=["/w"]))
+    assert t == {"/w/a": "review", "/w/b": "review", "/w/_wt/c": "review"}
+
+
+def test_out_never_overwrites(cp, tmp_path):
+    base = tmp_path / "b.json"
+    base.write_text(json.dumps(doc()), encoding="utf-8")
+    proc = subprocess.run([sys.executable, "-I", str(SCRIPT), str(base), "--own-roots", "/w",
+                           "--out", str(base)], capture_output=True, text=True)
+    assert proc.returncode == 2
+    assert json.loads(base.read_text(encoding="utf-8"))["schema"] == 1
 
 
 def test_no_recursive_delete_helper_exists(cp):
@@ -245,6 +267,25 @@ def test_stale_remote_tracking_ref_cannot_vouch(pushed_worktree, cp):
                           capture_output=True, text=True, check=True).stdout.strip()
     proc, recs = run_apply(tmp_path, wt_doc(cp, wt, head))
     assert recs[-1]["result"] == "refused", recs
+    assert wt.exists()
+
+
+def test_apply_refuses_assume_unchanged_edit(pushed_worktree, cp):
+    tmp_path, wt, head = pushed_worktree
+    g("update-index", "--assume-unchanged", "a", cwd=wt)
+    (wt / "a").write_text("edited measurement", encoding="utf-8")   # hidden from status
+    proc, recs = run_apply(tmp_path, wt_doc(cp, wt, head))
+    assert recs[-1]["result"] == "refused", recs
+    assert (wt / "a").read_text(encoding="utf-8") == "edited measurement"
+
+
+def test_apply_refuses_operation_in_progress(pushed_worktree, cp):
+    tmp_path, wt, head = pushed_worktree
+    gd = subprocess.run(["git", "-C", str(wt), "rev-parse", "--absolute-git-dir"],
+                        env=CLEAN_ENV, capture_output=True, text=True, check=True).stdout.strip()
+    (Path(gd) / "rebase-merge").mkdir()                              # paused rebase state
+    proc, recs = run_apply(tmp_path, wt_doc(cp, wt, head))
+    assert recs[-1]["result"] == "refused" and "rebase-merge" in recs[-1]["detail"]
     assert wt.exists()
 
 

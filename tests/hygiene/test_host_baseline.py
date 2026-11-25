@@ -190,6 +190,13 @@ def test_ambiguous_ignored_directory_is_not_regenerable(tmp_path, hb):
     assert hb.ignored_unregenerable(str(repo)) == ["env/"]
 
 
+def test_ignored_parser_splits_only_on_slash(hb, monkeypatch):
+    # POSIX filename with literal backslashes; `-z` output is unquoted.
+    rec = "!! raw\\.venv\\measurement.csv\0!! .venv/\0!! pkg/__pycache__/\0"
+    monkeypatch.setattr(hb, "git_out", lambda *a, **k: rec)
+    assert hb.ignored_unregenerable("/x") == ["raw\\.venv\\measurement.csv"]
+
+
 def test_repo_without_commits_is_unborn_not_error(tmp_path, hb):
     if subprocess.run(["git", "--version"], capture_output=True).returncode:
         pytest.skip("git unavailable")

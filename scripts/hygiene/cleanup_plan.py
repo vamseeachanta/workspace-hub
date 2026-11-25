@@ -142,12 +142,17 @@ def plan(doc: dict, own_roots: list[str], preserved: set | None = None) -> list[
         on_remote = co.get("head_on_remote") is True
         archived = (not on_remote) and bool(co.get("head")) and co.get("head") in preserved
         ignored = co.get("ignored_other")
-        clean = (co.get("dirty") == 0 and co.get("stashes", 0) == 0 and ignored == 0)
+        hidden = co.get("hidden_state")
+        clean = (co.get("dirty") == 0 and co.get("stashes", 0) == 0 and ignored == 0
+                 and hidden == [])
         if co["kind"] == "clone":
-            if clean and on_remote:
+            if clean and on_remote and co.get("unpublished_commits") == 0:
                 continue  # nothing local: kept, not listed
             items.append(item("review", path, f"clone: {co.get('dirty')} uncommitted, "
-                              f"{ignored} ignored non-regenerable, HEAD on remote={on_remote}",
+                              f"{ignored} ignored non-regenerable, "
+                              f"{co.get('unpublished_commits')} unpublished commits, "
+                              f"HEAD on remote={on_remote}"
+                              f"{'; ' + '; '.join(hidden) if hidden else ''}",
                               "push or archive, then decide"))
             continue
         if co.get("locked"):
@@ -160,7 +165,9 @@ def plan(doc: dict, own_roots: list[str], preserved: set | None = None) -> list[
             sample = ", ".join(co.get("ignored_sample") or [])
             items.append(item("review", path, f"worktree: {co.get('dirty')} uncommitted, "
                               f"{ignored} ignored non-regenerable{' (' + sample + ')' if sample else ''}, "
-                              f"HEAD on remote={on_remote}", "commit+push or bundle, then remove"))
+                              f"HEAD on remote={on_remote}"
+                              f"{'; ' + '; '.join(hidden) if hidden else ''}",
+                              "commit+push or bundle, then remove"))
 
     for s in doc.get("stray", []):
         if not under(s["path"], own_roots, windows):
@@ -204,9 +211,13 @@ def plan(doc: dict, own_roots: list[str], preserved: set | None = None) -> list[
         if inside(p, listed):
             continue
         listed.add(p)
-        items.append(item("review", d["path"], f"data outside any checkout, idle since "
-                          f"{d['newest_utc'][:10]}", "data store (manifest-and-fetch) or "
-                          "delete with owner", d["bytes"]))
+        # Not "outside any checkout": discovery stops at a depth, so a repository may sit
+        # below it. The finding is a large idle folder to inspect, nothing more.
+        items.append(item("review", d["path"], f"large idle folder, newest file "
+                          f"{d['newest_utc'][:10]}; checkout discovery limited to depth "
+                          f"{gs.get('depth')}", "inspect: may hold repositories below that "
+                          "depth; then data store (manifest-and-fetch) or owner decision",
+                          d["bytes"]))
     order = ["regenerable", "safe-checkout", "review", "keep", "other-tenant"]
     items.sort(key=lambda i: (order.index(i["tier"]), -(i["bytes"] or 0), i["path"]))
     return items
@@ -302,6 +313,9 @@ def verify_and_remove_worktree(i: dict, preserved: set) -> tuple[str, str]:
         return "refused", "worktree has changes"
     if HB.ignored_unregenerable(path):
         return "refused", "ignored non-regenerable files present"
+    hidden = HB.hidden_or_in_progress(path)
+    if hidden:
+        return "refused", "; ".join(hidden)
     rc, out = git_common(common, "worktree", "remove", path)
     return ("removed", out) if rc == 0 else ("refused", out)
 
@@ -356,7 +370,12 @@ def main(argv=None) -> int:
                      Path(args.preserved).read_text(encoding="utf-8").splitlines() if line.strip()}
     items = plan(doc, args.own_roots, preserved)
     if args.out:
-        Path(args.out).write_text(json.dumps(items, indent=1), encoding="utf-8")
+        try:  # never overwrite: a typo must not replace the baseline it was read from
+            with open(args.out, "x", encoding="utf-8") as fh:
+                fh.write(json.dumps(items, indent=1))
+        except FileExistsError:
+            print("refused: --out already exists", file=sys.stderr)
+            return 2
     if not args.apply:
         sys.stdout.write(render(doc, items))
         return 0
