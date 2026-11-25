@@ -293,6 +293,50 @@ def remote_contains(common: str, head: str) -> tuple[bool, str]:
             git_common(common, "update-ref", "-d", ref)
 
 
+if os.name == "nt":
+    import ctypes
+    from ctypes import wintypes
+
+    class _FileBasicInfo(ctypes.Structure):
+        _fields_ = [("CreationTime", ctypes.c_longlong), ("LastAccessTime", ctypes.c_longlong),
+                    ("LastWriteTime", ctypes.c_longlong), ("ChangeTime", ctypes.c_longlong),
+                    ("FileAttributes", wintypes.DWORD)]
+
+    _K32 = ctypes.WinDLL("kernel32", use_last_error=True)
+    _K32.CreateFileW.restype = wintypes.HANDLE
+    _K32.CreateFileW.argtypes = [wintypes.LPCWSTR, wintypes.DWORD, wintypes.DWORD,
+                                 ctypes.c_void_p, wintypes.DWORD, wintypes.DWORD,
+                                 wintypes.HANDLE]
+    _K32.GetFileInformationByHandleEx.argtypes = [wintypes.HANDLE, ctypes.c_int,
+                                                  ctypes.c_void_p, wintypes.DWORD]
+    _K32.CloseHandle.argtypes = [wintypes.HANDLE]
+    _INVALID = wintypes.HANDLE(-1).value
+
+    def _change_time(path: str) -> float:
+        """NTFS ChangeTime (any data or metadata change), as Unix seconds.
+
+        os.stat on Windows exposes only creation time as st_ctime; an in-place overwrite
+        that restores the old mtime (robocopy does this) moves only ChangeTime.
+        """
+        h = _K32.CreateFileW(path, 0x80,            # FILE_READ_ATTRIBUTES
+                             0x7, None, 3,          # share all, OPEN_EXISTING
+                             0x02000000 | 0x00200000,  # BACKUP_SEMANTICS | OPEN_REPARSE_POINT
+                             None)
+        if h in (None, _INVALID):
+            raise OSError(ctypes.get_last_error(), "cannot open for change time", path)
+        try:
+            info = _FileBasicInfo()
+            if not _K32.GetFileInformationByHandleEx(h, 0, ctypes.byref(info),
+                                                     ctypes.sizeof(info)):
+                raise OSError(ctypes.get_last_error(), "cannot read change time", path)
+            return info.ChangeTime / 1e7 - 11644473600.0   # FILETIME epoch 1601 -> 1970
+        finally:
+            _K32.CloseHandle(h)
+else:
+    def _change_time(path: str) -> float:
+        return os.lstat(path).st_ctime   # POSIX st_ctime is the inode change time
+
+
 def last_activity(path: str, git_dir: str) -> float:
     """Newest mtime of the worktree's index, HEAD and every entry in the tree.
 
@@ -303,22 +347,22 @@ def last_activity(path: str, git_dir: str) -> float:
     Limitation: a job that only reads files changes no mtime. Such jobs are expected to
     `git worktree lock` their worktree (workstation-hygiene rule, item 1).
     """
-    def stamp(st) -> float:
-        # st_ctime moves when a file is written in even if its mtime is preserved
-        # (`cp -p`): inode change time on POSIX, creation time on Windows.
-        return max(st.st_mtime, st.st_ctime)
+    def stamp(p: str, st) -> float:
+        # mtime, creation time (Windows st_ctime) and the true change time: a write that
+        # preserves or restores mtime (`cp -p`, robocopy) still moves the change time.
+        return max(st.st_mtime, st.st_ctime, _change_time(p))
 
     newest = 0.0
     for p in (os.path.join(git_dir, "index"), os.path.join(git_dir, "HEAD")):
         if os.path.exists(p):
-            newest = max(newest, stamp(os.stat(p)))
+            newest = max(newest, stamp(p, os.stat(p)))
     stack = [path]
     while stack:
         cur = stack.pop()
-        newest = max(newest, stamp(os.lstat(cur)))
+        newest = max(newest, stamp(cur, os.lstat(cur)))
         with os.scandir(cur) as it:
             for e in it:
-                newest = max(newest, stamp(e.stat(follow_symlinks=False)))
+                newest = max(newest, stamp(e.path, e.stat(follow_symlinks=False)))
                 # No name is exempt: a nested folder called .git inside a cache is
                 # still activity (the worktree's own .git is a file, not walked).
                 if e.is_dir(follow_symlinks=False) and not HB.is_link_entry(e):

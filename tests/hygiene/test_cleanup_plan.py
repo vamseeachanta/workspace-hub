@@ -364,6 +364,19 @@ def test_backdated_copy_counts_through_ctime(pushed_worktree, cp):
     assert cp.check_idle(str(wt), str(wt), MIN_IDLE_S / 3600) is not None
 
 
+def test_in_place_overwrite_with_restored_mtime_counts(pushed_worktree, cp):
+    tmp_path, wt, head = pushed_worktree
+    f = wt / "cache.bin"
+    f.write_bytes(b"old")
+    settle()
+    assert cp.check_idle(str(wt), str(wt), MIN_IDLE_S / 3600) is None   # idle before
+    st = f.stat()
+    with open(f, "r+b") as fh:                    # overwrite the EXISTING file in place
+        fh.write(b"new")
+    os.utime(f, ns=(st.st_atime_ns, st.st_mtime_ns))   # ...and restore its old mtime
+    assert cp.check_idle(str(wt), str(wt), MIN_IDLE_S / 3600) is not None
+
+
 def test_replace_ref_cannot_fake_remote_containment(pushed_worktree, cp):
     tmp_path, wt, _ = pushed_worktree
     repo = tmp_path / "repo"
