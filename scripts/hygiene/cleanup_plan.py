@@ -285,7 +285,31 @@ def remote_contains(common: str, head: str) -> tuple[bool, str]:
             git_common(common, "update-ref", "-d", ref)
 
 
-def verify_and_remove_worktree(i: dict, preserved: set) -> tuple[str, str]:
+def last_activity(path: str, git_dir: str) -> float:
+    """Newest mtime of the worktree's index and HEAD and of its top-level entries.
+
+    A job that only reads files leaves `git status` clean, so cleanliness alone does not
+    show a worktree is out of use; recent activity here is the cheap signal that it is.
+    """
+    stamps = []
+    for p in (os.path.join(git_dir, "index"), os.path.join(git_dir, "HEAD")):
+        try:
+            stamps.append(os.stat(p).st_mtime)
+        except OSError:
+            pass
+    try:
+        with os.scandir(path) as it:
+            for e in it:
+                try:
+                    stamps.append(e.stat(follow_symlinks=False).st_mtime)
+                except OSError:
+                    pass
+    except OSError:
+        pass
+    return max(stamps) if stamps else 0.0
+
+
+def verify_and_remove_worktree(i: dict, preserved: set, min_idle_hours: float = 48.0) -> tuple[str, str]:
     """Network step first; every local check runs after it, immediately before removal.
 
     Stashes are not checked: they live in the shared repository and survive the removal
@@ -299,6 +323,9 @@ def verify_and_remove_worktree(i: dict, preserved: set) -> tuple[str, str]:
     gd, common = gd.strip(), common.strip()
     if rc or rc2 or os.path.normcase(gd) == os.path.normcase(common):
         return "refused", "not a linked worktree"
+    idle_h = (datetime.now(timezone.utc).timestamp() - last_activity(path, gd)) / 3600
+    if idle_h < min_idle_hours:
+        return "refused", f"recently active ({idle_h:.1f} h ago; minimum {min_idle_hours:g} h)"
     if planned not in preserved:
         ok, why = remote_contains(common, planned)
         if not ok:
@@ -337,9 +364,9 @@ def cache_command(name: str, path: str):
     return None, env
 
 
-def apply_item(i: dict, preserved: set) -> tuple[str, str]:
+def apply_item(i: dict, preserved: set, min_idle_hours: float = 48.0) -> tuple[str, str]:
     if i["tier"] == "safe-checkout":
-        return verify_and_remove_worktree(i, preserved)
+        return verify_and_remove_worktree(i, preserved, min_idle_hours)
     if HB.is_link_path(i["path"]):
         return "refused", "cache path is a link"
     cmd, env = cache_command(i.get("cache", ""), i["path"])
@@ -361,6 +388,8 @@ def main(argv=None) -> int:
     ap.add_argument("--tiers", default="regenerable,safe-checkout")
     ap.add_argument("--this-host", help="label of the host running --apply")
     ap.add_argument("--log", help="append-only JSONL log of applied actions")
+    ap.add_argument("--min-idle-hours", type=float, default=48.0,
+                    help="refuse worktrees with activity more recent than this (default 48)")
     args = ap.parse_args(argv)
 
     doc = json.loads(Path(args.baseline).read_text(encoding="utf-8"))
@@ -409,7 +438,7 @@ def main(argv=None) -> int:
                 if not real_inside(i["path"], roots):
                     result, detail = "refused", "real path outside own roots"
                 else:
-                    result, detail = apply_item(i, preserved)
+                    result, detail = apply_item(i, preserved, args.min_idle_hours)
             except Exception as exc:  # one failed probe must not stop independent items
                 result, detail = "error", f"{type(exc).__name__}: {exc}"
             rec = {"utc": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),

@@ -220,7 +220,10 @@ def run_apply(tmp_path, d, *extra):
     log = tmp_path / "log.jsonl"
     proc = subprocess.run([sys.executable, "-I", str(SCRIPT), str(p), "--own-roots",
                            tmp_path.as_posix(), "--apply", "--tiers", "safe-checkout",
-                           "--this-host", d["label"], "--log", str(log), *extra],
+                           "--this-host", d["label"], "--log", str(log),
+                           # fixtures are seconds old; a later --min-idle-hours in
+                           # `extra` overrides this (argparse keeps the last value)
+                           "--min-idle-hours", "0", *extra],
                           capture_output=True, text=True, env=CLEAN_ENV)
     recs = [json.loads(x) for x in log.read_text(encoding="utf-8").splitlines()] if log.exists() else []
     return proc, recs
@@ -267,6 +270,13 @@ def test_stale_remote_tracking_ref_cannot_vouch(pushed_worktree, cp):
                           capture_output=True, text=True, check=True).stdout.strip()
     proc, recs = run_apply(tmp_path, wt_doc(cp, wt, head))
     assert recs[-1]["result"] == "refused", recs
+    assert wt.exists()
+
+
+def test_apply_refuses_recently_active_worktree(pushed_worktree, cp):
+    tmp_path, wt, head = pushed_worktree
+    proc, recs = run_apply(tmp_path, wt_doc(cp, wt, head), "--min-idle-hours", "48")
+    assert recs[-1]["result"] == "refused" and "recently active" in recs[-1]["detail"]
     assert wt.exists()
 
 
