@@ -26,6 +26,7 @@ from __future__ import annotations
 import argparse
 import importlib.util
 import json
+import math
 import os
 import re
 import subprocess
@@ -36,9 +37,9 @@ from pathlib import Path
 
 GB = 1024 ** 3
 APPLYABLE = {"regenerable", "safe-checkout"}
-BOUND_CACHES = {"uv", "pip", "npm"}          # clean command takes an explicit target
+BOUND_CACHES = {"uv"}                        # path-bound, link-checked clean command
 REVIEW_CACHES = {"huggingface", "torch", "conda-pkgs", "playwright", "cargo-registry",
-                 "go-mod", "gradle", "maven", "yarn", "pnpm"}
+                 "go-mod", "gradle", "maven", "yarn", "pnpm", "pip", "npm"}
 LEAK_REASONS = {"posix-path-leak", "drive-letter-mirror", "test-fixture-leak"}
 BIG_DATA_BYTES = 10 * GB
 IDLE_DAYS = 30
@@ -263,13 +264,20 @@ def git(path: str, *args: str) -> tuple[int, str]:
 
 
 def git_common(common: str, *args: str) -> tuple[int, str]:
-    """Address the shared repository by its verified git dir (works for bare repos too)."""
-    return run_cmd(["git", "-c", "safe.directory=*", f"--git-dir={common}", *args])
+    """Address the shared repository by its verified git dir (works for bare repos too).
+
+    Replacement objects are disabled: a local refs/replace entry must not be able to
+    rewrite ancestry and make a local-only commit look contained in a remote tip.
+    """
+    return run_cmd(["git", "--no-replace-objects", "-c", "safe.directory=*",
+                    f"--git-dir={common}", *args])
 
 
 def remote_contains(common: str, head: str) -> tuple[bool, str]:
     """Fetch origin's branch tips into a fresh private namespace and test containment
     against exactly those tips, so stale remote-tracking refs cannot vouch for HEAD."""
+    if os.path.exists(os.path.join(common, "info", "grafts")):
+        return False, "repository uses legacy grafts; ancestry cannot be trusted"
     ns = f"refs/hygiene-verify/{uuid.uuid4().hex}"
     try:
         rc, out = git_common(common, "fetch", "--quiet", "--no-tags", "origin",
@@ -286,27 +294,41 @@ def remote_contains(common: str, head: str) -> tuple[bool, str]:
 
 
 def last_activity(path: str, git_dir: str) -> float:
-    """Newest mtime of the worktree's index and HEAD and of its top-level entries.
+    """Newest mtime of the worktree's index, HEAD and every entry in the tree.
 
-    A job that only reads files leaves `git status` clean, so cleanliness alone does not
-    show a worktree is out of use; recent activity here is the cheap signal that it is.
+    The whole tree is walked (links not followed) because a job can rewrite a file deep
+    inside an ignored folder without touching anything near the top. Raises OSError if
+    anything cannot be inspected, so the caller refuses rather than guesses.
+
+    Limitation: a job that only reads files changes no mtime. Such jobs are expected to
+    `git worktree lock` their worktree (workstation-hygiene rule, item 1).
     """
-    stamps = []
+    newest = 0.0
     for p in (os.path.join(git_dir, "index"), os.path.join(git_dir, "HEAD")):
-        try:
-            stamps.append(os.stat(p).st_mtime)
-        except OSError:
-            pass
-    try:
-        with os.scandir(path) as it:
+        if os.path.exists(p):
+            newest = max(newest, os.stat(p).st_mtime)
+    stack = [path]
+    while stack:
+        cur = stack.pop()
+        newest = max(newest, os.lstat(cur).st_mtime)
+        with os.scandir(cur) as it:
             for e in it:
-                try:
-                    stamps.append(e.stat(follow_symlinks=False).st_mtime)
-                except OSError:
-                    pass
-    except OSError:
-        pass
-    return max(stamps) if stamps else 0.0
+                st = e.stat(follow_symlinks=False)
+                newest = max(newest, st.st_mtime)
+                if e.is_dir(follow_symlinks=False) and not HB.is_link_entry(e) \
+                        and e.name != ".git":
+                    stack.append(e.path)
+    return newest
+
+
+def check_idle(path: str, gd: str, min_idle_hours: float) -> str | None:
+    try:
+        idle_h = (datetime.now(timezone.utc).timestamp() - last_activity(path, gd)) / 3600
+    except OSError as exc:
+        return f"activity check failed: {exc.strerror or exc}"
+    if idle_h < min_idle_hours:
+        return f"recently active ({idle_h:.1f} h ago; minimum {min_idle_hours:g} h)"
+    return None
 
 
 def verify_and_remove_worktree(i: dict, preserved: set, min_idle_hours: float = 48.0) -> tuple[str, str]:
@@ -323,9 +345,9 @@ def verify_and_remove_worktree(i: dict, preserved: set, min_idle_hours: float = 
     gd, common = gd.strip(), common.strip()
     if rc or rc2 or os.path.normcase(gd) == os.path.normcase(common):
         return "refused", "not a linked worktree"
-    idle_h = (datetime.now(timezone.utc).timestamp() - last_activity(path, gd)) / 3600
-    if idle_h < min_idle_hours:
-        return "refused", f"recently active ({idle_h:.1f} h ago; minimum {min_idle_hours:g} h)"
+    busy = check_idle(path, gd, min_idle_hours)   # cheap early refusal, before the fetch
+    if busy:
+        return "refused", busy
     if planned not in preserved:
         ok, why = remote_contains(common, planned)
         if not ok:
@@ -343,25 +365,37 @@ def verify_and_remove_worktree(i: dict, preserved: set, min_idle_hours: float = 
     hidden = HB.hidden_or_in_progress(path)
     if hidden:
         return "refused", "; ".join(hidden)
+    busy = check_idle(path, gd, min_idle_hours)   # again, immediately before removal
+    if busy:
+        return "refused", busy
     rc, out = git_common(common, "worktree", "remove", path)
     return ("removed", out) if rc == 0 else ("refused", out)
 
 
 def cache_command(name: str, path: str):
-    """Command and environment bound to exactly the planned cache path."""
+    """Command bound to exactly the planned cache path. uv only: pip and npm purge by
+    walking subfolders that can be links into someone else's data, so they stay review."""
     import shutil
     env = dict(os.environ)
     if name == "uv" and shutil.which("uv"):
         # prune (unreferenced entries only), not clean: safe while other sessions on a
         # shared host are installing from the same cache.
         return [shutil.which("uv"), "cache", "prune", "--cache-dir", path], env
-    if name == "pip":
-        env["PIP_CACHE_DIR"] = path
-        return [sys.executable, "-m", "pip", "cache", "purge"], env
-    if name == "npm" and shutil.which("npm"):
-        base = str(Path(path).parent) if Path(path).name == "_cacache" else path
-        return [shutil.which("npm"), "cache", "clean", "--force", "--cache", base], env
     return None, env
+
+
+def linked_entries(path: str, depth: int = 2) -> list[str]:
+    """Links or junctions within the top `depth` levels of a cache folder."""
+    found, frontier = [], [(path, 0)]
+    while frontier:
+        cur, level = frontier.pop()
+        with os.scandir(cur) as it:
+            for e in it:
+                if HB.is_link_entry(e):
+                    found.append(e.name)
+                elif level + 1 < depth and e.is_dir(follow_symlinks=False):
+                    frontier.append((e.path, level + 1))
+    return found
 
 
 def apply_item(i: dict, preserved: set, min_idle_hours: float = 48.0) -> tuple[str, str]:
@@ -369,6 +403,9 @@ def apply_item(i: dict, preserved: set, min_idle_hours: float = 48.0) -> tuple[s
         return verify_and_remove_worktree(i, preserved, min_idle_hours)
     if HB.is_link_path(i["path"]):
         return "refused", "cache path is a link"
+    links = linked_entries(i["path"])
+    if links:
+        return "refused", f"cache holds link/junction entries: {', '.join(links[:3])}"
     cmd, env = cache_command(i.get("cache", ""), i["path"])
     if not cmd:
         return "skipped", "no path-bound command for this cache"
@@ -391,6 +428,9 @@ def main(argv=None) -> int:
     ap.add_argument("--min-idle-hours", type=float, default=48.0,
                     help="refuse worktrees with activity more recent than this (default 48)")
     args = ap.parse_args(argv)
+    if not (math.isfinite(args.min_idle_hours) and args.min_idle_hours >= 0):
+        print("refused: --min-idle-hours must be finite and >= 0", file=sys.stderr)
+        return 2
 
     doc = json.loads(Path(args.baseline).read_text(encoding="utf-8"))
     preserved = set()

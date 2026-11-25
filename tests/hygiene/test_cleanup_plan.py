@@ -152,14 +152,38 @@ def test_git_bindings_are_removed_from_apply_environment(monkeypatch):
     assert "GIT_DIR" not in mod.GIT_ENV and "GIT_INDEX_FILE" not in mod.GIT_ENV
 
 
-def test_cache_commands_are_bound_to_the_planned_path(cp, tmp_path):
-    cmd, env = cp.cache_command("pip", str(tmp_path))
-    assert env["PIP_CACHE_DIR"] == str(tmp_path)
+def test_only_uv_is_applied_and_bound_to_the_planned_path(cp, tmp_path):
     cmd, _ = cp.cache_command("uv", str(tmp_path))
     if cmd:
-        assert cmd[-2:] == ["--cache-dir", str(tmp_path)]
-    cmd, _ = cp.cache_command("yarn", str(tmp_path))
-    assert cmd is None
+        assert cmd[2] == "prune" and cmd[-2:] == ["--cache-dir", str(tmp_path)]
+    for name in ("pip", "npm", "yarn"):
+        assert cp.cache_command(name, str(tmp_path))[0] is None
+    d = doc(caches=[{"name": "pip", "path": "/h/.cache/pip", "bytes": 2 * GB},
+                    {"name": "npm", "path": "/h/.npm/_cacache", "bytes": 2 * GB}])
+    assert set(tiers(cp.plan(d, own_roots=["/w"])).values()) == {"review"}
+
+
+def test_uv_cache_with_linked_entry_is_refused(cp, tmp_path):
+    cache = tmp_path / "uv"
+    (cache / "wheels-v5").mkdir(parents=True)
+    other = tmp_path / "other-team"
+    other.mkdir()
+    try:
+        os.symlink(other, cache / "archive-v0", target_is_directory=True)
+    except (OSError, NotImplementedError):
+        pytest.skip("symlink creation not permitted")
+    result, detail = cp.apply_item({"tier": "regenerable", "path": str(cache), "cache": "uv"},
+                                   set(), 48)
+    assert result == "refused" and "link" in detail
+
+
+def test_min_idle_hours_must_be_finite_and_nonnegative(tmp_path):
+    p = tmp_path / "b.json"
+    p.write_text(json.dumps(doc()), encoding="utf-8")
+    for bad in ("nan", "inf", "-1"):
+        proc = subprocess.run([sys.executable, "-I", str(SCRIPT), str(p), "--own-roots", "/w",
+                               "--min-idle-hours", bad], capture_output=True, text=True)
+        assert proc.returncode == 2, bad
 
 
 def test_clone_with_unpublished_branch_or_hidden_state_is_listed(cp):
@@ -277,6 +301,63 @@ def test_apply_refuses_recently_active_worktree(pushed_worktree, cp):
     tmp_path, wt, head = pushed_worktree
     proc, recs = run_apply(tmp_path, wt_doc(cp, wt, head), "--min-idle-hours", "48")
     assert recs[-1]["result"] == "refused" and "recently active" in recs[-1]["detail"]
+    assert wt.exists()
+
+
+def age_everything(wt: Path, days: float = 10):
+    """Backdate every file in the worktree and its git dir's index/HEAD."""
+    t = __import__("time").time() - days * 86400
+    gd = Path(subprocess.run(["git", "-C", str(wt), "rev-parse", "--absolute-git-dir"],
+                             env=CLEAN_ENV, capture_output=True, text=True,
+                             check=True).stdout.strip())
+    # Files and directories alike, deepest first, so no top-level entry looks fresh.
+    paths = sorted(wt.rglob("*"), key=lambda q: -len(q.parts))
+    for p in [gd / "index", gd / "HEAD", *paths, wt]:
+        if p.exists():
+            os.utime(p, (t, t))
+
+
+def test_idle_worktree_is_removed_with_default_guard(pushed_worktree, cp):
+    tmp_path, wt, head = pushed_worktree
+    age_everything(wt)
+    proc, recs = run_apply(tmp_path, wt_doc(cp, wt, head), "--min-idle-hours", "48")
+    assert recs[-1]["result"] == "removed", recs
+
+
+def test_nested_ignored_activity_counts(pushed_worktree, cp):
+    tmp_path, wt, head = pushed_worktree
+    (wt / ".gitignore").write_text(".pytest_cache/\n", encoding="utf-8")
+    g("add", ".gitignore", cwd=wt)
+    g("commit", "-qm", "ignore", cwd=wt)
+    g("push", "-q", "origin", "HEAD:refs/heads/main", cwd=wt)
+    head = subprocess.run(["git", "-C", str(wt), "rev-parse", "HEAD"], env=CLEAN_ENV,
+                          capture_output=True, text=True, check=True).stdout.strip()
+    nested = wt / ".pytest_cache" / "v" / "cache" / "nodeids"
+    nested.parent.mkdir(parents=True)
+    nested.write_text("[]", encoding="utf-8")
+    age_everything(wt)
+    nested.write_text("[1]", encoding="utf-8")       # a job writes deep inside, today
+    proc, recs = run_apply(tmp_path, wt_doc(cp, wt, head), "--min-idle-hours", "48")
+    assert recs[-1]["result"] == "refused" and "recently active" in recs[-1]["detail"]
+
+
+def test_replace_ref_cannot_fake_remote_containment(pushed_worktree, cp):
+    tmp_path, wt, _ = pushed_worktree
+    repo = tmp_path / "repo"
+    (wt / "l").write_text("local only", encoding="utf-8")
+    g("add", "l", cwd=wt)
+    g("commit", "-qm", "L", cwd=wt)
+    local = subprocess.run(["git", "-C", str(wt), "rev-parse", "HEAD"], env=CLEAN_ENV,
+                           capture_output=True, text=True, check=True).stdout.strip()
+    (repo / "r").write_text("r", encoding="utf-8")
+    g("add", "r", cwd=repo)
+    g("commit", "-qm", "R", cwd=repo)
+    g("push", "-q", "origin", "main", cwd=repo)
+    remote_tip = subprocess.run(["git", "-C", str(repo), "rev-parse", "HEAD"], env=CLEAN_ENV,
+                                capture_output=True, text=True, check=True).stdout.strip()
+    g("replace", "--graft", remote_tip, local, cwd=repo)      # local lie: R's parent is L
+    proc, recs = run_apply(tmp_path, wt_doc(cp, wt, local))
+    assert recs[-1]["result"] == "refused", recs
     assert wt.exists()
 
 
