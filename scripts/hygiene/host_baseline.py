@@ -135,10 +135,16 @@ def git_kind(path: str) -> str:
     marker = os.path.join(path, ".git")
     if is_link_path(marker):
         return ""
+    # Require a real marker: a stray empty `.git` folder must not hide the checkouts
+    # below it (found on a host where one masked 356 worktrees).
     if os.path.isdir(marker):
-        return "clone"
+        return "clone" if os.path.isfile(os.path.join(marker, "HEAD")) else ""
     if os.path.isfile(marker):
-        return "gitfile"
+        try:
+            with open(marker, "r", encoding="utf-8", errors="replace") as fh:
+                return "gitfile" if fh.read(8) == "gitdir: " else ""
+        except OSError:
+            return ""
     return ""
 
 

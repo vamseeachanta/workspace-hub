@@ -190,6 +190,17 @@ def test_ambiguous_ignored_directory_is_not_regenerable(tmp_path, hb):
     assert hb.ignored_unregenerable(str(repo)) == ["env/"]
 
 
+def test_empty_git_folder_does_not_hide_checkouts_below_it(tmp_path, hb):
+    if subprocess.run(["git", "--version"], capture_output=True).returncode:
+        pytest.skip("git unavailable")
+    wt_root = tmp_path / "_wt"
+    (wt_root / ".git").mkdir(parents=True)            # stray empty .git, not a repository
+    git("init", "-q", str(wt_root / "inner"), cwd=tmp_path)
+    assert hb.git_kind(str(wt_root)) == ""
+    found = by_path(hb.find_checkouts([str(tmp_path)], max_depth=2))
+    assert (wt_root / "inner").as_posix() in found
+
+
 def test_ignored_parser_splits_only_on_slash(hb, monkeypatch):
     # POSIX filename with literal backslashes; `-z` output is unquoted.
     rec = "!! raw\\.venv\\measurement.csv\0!! .venv/\0!! pkg/__pycache__/\0"
