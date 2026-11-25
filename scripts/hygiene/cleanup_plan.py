@@ -311,7 +311,9 @@ def cache_command(name: str, path: str):
     import shutil
     env = dict(os.environ)
     if name == "uv" and shutil.which("uv"):
-        return [shutil.which("uv"), "cache", "clean", "--cache-dir", path], env
+        # prune (unreferenced entries only), not clean: safe while other sessions on a
+        # shared host are installing from the same cache.
+        return [shutil.which("uv"), "cache", "prune", "--cache-dir", path], env
     if name == "pip":
         env["PIP_CACHE_DIR"] = path
         return [sys.executable, "-m", "pip", "cache", "purge"], env
