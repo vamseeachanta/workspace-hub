@@ -318,7 +318,12 @@ if os.name == "nt":
         os.stat on Windows exposes only creation time as st_ctime; an in-place overwrite
         that restores the old mtime (robocopy does this) moves only ChangeTime.
         """
-        h = _K32.CreateFileW(path, 0x80,            # FILE_READ_ATTRIBUTES
+        # The \\?\ prefix lifts the 260-character MAX_PATH limit (error 3 otherwise);
+        # it needs an absolute path with backslashes. UNC paths use \\?\UNC\.
+        full = os.path.abspath(path).replace("/", "\\")
+        if not full.startswith("\\\\?\\"):
+            full = ("\\\\?\\UNC\\" + full[2:]) if full.startswith("\\\\") else ("\\\\?\\" + full)
+        h = _K32.CreateFileW(full, 0x80,            # FILE_READ_ATTRIBUTES
                              0x7, None, 3,          # share all, OPEN_EXISTING
                              0x02000000 | 0x00200000,  # BACKUP_SEMANTICS | OPEN_REPARSE_POINT
                              None)

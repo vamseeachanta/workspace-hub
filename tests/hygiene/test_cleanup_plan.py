@@ -377,6 +377,19 @@ def test_in_place_overwrite_with_restored_mtime_counts(pushed_worktree, cp):
     assert cp.check_idle(str(wt), str(wt), MIN_IDLE_S / 3600) is not None
 
 
+@pytest.mark.skipif(os.name != "nt", reason="MAX_PATH applies to the Windows API only")
+def test_change_time_reads_paths_longer_than_max_path(tmp_path, cp):
+    deep = str(tmp_path)
+    while len(deep) < 280:
+        deep = os.path.join(deep, "d" * 40)
+    long_file = os.path.join(deep, "f.txt")
+    assert len(long_file) > 260
+    os.makedirs("\\\\?\\" + deep)
+    with open("\\\\?\\" + long_file, "w", encoding="utf-8") as fh:
+        fh.write("x")
+    assert cp._change_time(long_file) > 0
+
+
 def test_replace_ref_cannot_fake_remote_containment(pushed_worktree, cp):
     tmp_path, wt, _ = pushed_worktree
     repo = tmp_path / "repo"
