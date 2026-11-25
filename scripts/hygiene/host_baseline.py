@@ -364,6 +364,7 @@ def describe_checkout(path: str) -> dict:
     row = {"path": Path(path).as_posix(), "kind": git_kind(path)}
     try:
         row["branch"] = git_out(path, "rev-parse", "--abbrev-ref", "HEAD").strip()
+        row["head"] = git_out(path, "rev-parse", "HEAD").strip()
         status = git_out(path, "status", "--porcelain=v1", "--untracked-files=normal")
         row["dirty"] = sum(1 for line in status.splitlines() if line.strip())
         remotes = git_out(path, "for-each-ref", "--count=1", "--contains", "HEAD",
