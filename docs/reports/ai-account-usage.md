@@ -1,20 +1,20 @@
 # AI account usage (fleet)
 
-Generated 2026-11-25T04:13:50+00:00 by fleet-collector collect_account_usage_fleet. Percentages are USED; headroom = 100 - weekly used. Source of truth: `config/ai-tools/account-usage-latest.json`.
+Generated 2026-11-25T05:13:52+00:00 by fleet-collector collect_account_usage_fleet. Percentages are USED; headroom = 100 - weekly used. Source of truth: `config/ai-tools/account-usage-latest.json`.
 
 ## Recommendation
 
-- **claude**: `claude-professional` (95.0% weekly headroom) on ace-win-1
+- **claude**: `claude-professional` (94.0% weekly headroom) on ace-win-1
 - **codex**: `codex-professional` (100.0% weekly headroom) on ace-win-1
 
 ## Accounts
 
 | account | provider | holder | 5h used | week used | headroom | resets | sampled on | source | status | probed at |
 |---|---|---|---|---|---|---|---|---|---|---|
-| claude-owner | claude | owner |  | 86% | 14% | 2026-11-28T14:00:00.807040+00:00 | ace-win-2 | oauth-api | ok | 2026-11-25T04:13:39+00:00 |
-| claude-professional | claude | colleague |  | 5% | 95% | 2026-11-28T07:59:59.619230+00:00 | ace-win-1 | oauth-api | ok | 2026-11-25T04:13:42+00:00 |
-| codex-owner | codex | owner |  | 49% | 51% | 2026-11-29T17:50:08+00:00 | ace-win-2 | app-server-live | ok | 2026-11-25T04:13:47+00:00 |
-| codex-professional | codex | colleague |  | 0% | 100% | 2026-12-02T04:13:48+00:00 | ace-win-1 | app-server-live | ok | 2026-11-25T04:13:42+00:00 |
+| claude-owner | claude | owner |  | 87% | 13% | 2026-11-28T14:00:00.007141+00:00 | ace-win-2 | oauth-api | ok | 2026-11-25T05:13:40+00:00 |
+| claude-professional | claude | colleague |  | 6% | 94% | 2026-11-28T07:59:59.658620+00:00 | ace-win-1 | oauth-api | ok | 2026-11-25T05:13:44+00:00 |
+| codex-owner | codex | owner |  | 52% | 48% | 2026-11-29T17:50:08+00:00 | ace-win-2 | app-server-live | ok | 2026-11-25T05:13:48+00:00 |
+| codex-professional | codex | colleague |  | 0% | 100% | 2026-12-02T05:13:49+00:00 | ace-win-1 | app-server-live | ok | 2026-11-25T05:13:44+00:00 |
 
 ## Hosts
 
