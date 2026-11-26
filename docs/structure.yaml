@@ -1,0 +1,1020 @@
+version: 1
+depth: 2
+ignore: [.git, .venv, node_modules, __pycache__, .pytest_cache]
+entries:
+  - path: .SLASH_COMMAND_ECOSYSTEM/
+    purpose: "Retirement notice for the former slash-command registry"
+  - path: .agents/
+    purpose: "Repository-level skill discovery for agent runtimes"
+  - path: .agents/skills/
+    purpose: "Discoverable skill definitions and their supporting resources"
+  - path: .claude/
+    purpose: "Claude agent roles, instructions, automation and workflow state"
+  - path: .claude/_archive/
+    purpose: "Retired Claude configuration and procedures"
+  - path: .claude/agent-library/
+    purpose: "Reference catalog of agent roles and composition practices"
+  - path: .claude/agents/
+    purpose: "Role definitions for dispatching specialized agents"
+  - path: .claude/commands/
+    purpose: "Slash-command definitions for repository workflows"
+  - path: .claude/cron/
+    purpose: "Scheduled entry point for ecosystem synchronization"
+  - path: .claude/dispatch/
+    purpose: "Dispatch configuration and coordinator state by execution lane"
+  - path: .claude/docs/
+    purpose: "Operating documentation for agent composition and context management"
+  - path: .claude/get-shit-done/
+    purpose: "Bundled planning workflow runtime, templates and references"
+  - path: .claude/global/
+    purpose: "Setup script and settings for the user-level Claude environment"
+  - path: .claude/hooks/
+    purpose: "Event-driven checks and session automation for Claude"
+  - path: .claude/knowledge/
+    purpose: "Indexed knowledge entries, archived material and reusable patterns"
+  - path: .claude/memory/
+    purpose: "Workspace lessons and repository memory templates"
+  - path: .claude/rules/
+    purpose: "Shared operating rules for repository and engineering work"
+  - path: .claude/skills/
+    purpose: "Authored skill procedures and their supporting files"
+  - path: .claude/state/
+    purpose: "Recorded agent observations, correction trends and candidate updates"
+  - path: .claude/tools/
+    purpose: "Python utilities for context management, discovery and worker contracts"
+  - path: .claude/work-queue/
+    purpose: "Historical work items, evidence, queue indexes and maintenance scripts"
+  - path: .claude/workflows/
+    purpose: "Workflow definitions for reviews, checkpoints and data analysis"
+  - path: .codex/
+    purpose: "Codex runtime configuration, roles, hooks and prompts"
+  - path: .codex/agents/
+    purpose: "Agent role definitions for the provider runtime"
+  - path: .codex/get-shit-done/
+    purpose: "Bundled planning commands, templates and runtime utilities"
+  - path: .codex/gsd-local-patches/
+    purpose: "Local planning-runtime patch backups and metadata"
+  - path: .codex/hooks/
+    purpose: "Provider session hooks and workflow checks"
+  - path: .codex/prompts/
+    purpose: "Repository guidance for provider prompts"
+  - path: .gemini/
+    purpose: "Gemini runtime configuration, roles, commands and prompts"
+  - path: .gemini/agents/
+    purpose: "Agent role definitions for the provider runtime"
+  - path: .gemini/commands/
+    purpose: "Registered Gemini commands for planning and repository reconciliation"
+  - path: .gemini/get-shit-done/
+    purpose: "Bundled planning commands, templates and runtime utilities"
+  - path: .gemini/gsd-local-patches/
+    purpose: "Local planning-runtime patch backups and metadata"
+  - path: .gemini/hooks/
+    purpose: "Provider session hooks and workflow checks"
+  - path: .gemini/prompts/
+    purpose: "Repository guidance for provider prompts"
+  - path: .github/
+    purpose: "Repository ownership, issue intake and continuous integration configuration"
+  - path: .github/ISSUE_TEMPLATE/
+    purpose: "Structured intake forms for objectives and work items"
+  - path: .github/workflows/
+    purpose: "GitHub Actions definitions for checks, reviews and automation"
+  - path: .hermes/
+    purpose: "Plans and continuity records from Hermes sessions"
+  - path: .hermes/plans/
+    purpose: "Dated implementation plans, feasibility studies and exit handoffs"
+  - path: .hive-mind/
+    purpose: "Retirement notice for the former Hive Mind coordination system"
+  - path: .local/
+    purpose: "Repository copy of local application state"
+  - path: .local/state/
+    purpose: "Recorded GitHub CLI device state"
+  - path: .nightly-results/
+    purpose: "Issue-level findings and draft comments from overnight runs"
+  - path: .planning/
+    purpose: "Requirements, milestones, phase plans and session evidence"
+  - path: .planning/active/
+    purpose: "Working files for active planning and execution efforts"
+  - path: .planning/architecture/
+    purpose: "Agent capability models, workflow patterns and architectural specifications"
+  - path: .planning/archive/
+    purpose: "Superseded planning materials organized by subject"
+  - path: .planning/discoveries/
+    purpose: "Daily worker discovery records for the learning pipeline"
+  - path: .planning/handoff/
+    purpose: "Dated issue-plan revision and delivery handoffs"
+  - path: .planning/handoffs/
+    purpose: "Planning session continuation records for document intelligence"
+  - path: .planning/intel/
+    purpose: "Resource inventories and extraction research for planning"
+  - path: .planning/milestones/
+    purpose: "Versioned roadmap and phase records"
+  - path: .planning/notes/
+    purpose: "Working notes on proposed automation and infrastructure changes"
+  - path: .planning/phases/
+    purpose: "Phase-specific plans and execution records"
+  - path: .planning/plan-approved/
+    purpose: "Historical collection of issue-numbered plan documents"
+  - path: .planning/prompts/
+    purpose: "Prompts that transfer session context and assignments"
+  - path: .planning/quick/
+    purpose: "Short task plans, triage findings and draft issue updates"
+  - path: .planning/reports/
+    purpose: "Execution reports from planning sessions"
+  - path: .planning/research/
+    purpose: "Research and synthesis supporting future plans"
+  - path: .planning/scripts/
+    purpose: "Maintenance script for the knowledge database"
+  - path: .planning/session-notes/
+    purpose: "Execution notes from skill maintenance sessions"
+  - path: .planning/skills/
+    purpose: "Assessments, evaluations and integration tests for agent skills"
+  - path: .planning/templates/
+    purpose: "Reusable plan, review and evidence document formats"
+  - path: .planning/todos/
+    purpose: "Pending planning tasks"
+  - path: .planning/verified/
+    purpose: "Issue-specific artifact verification records"
+  - path: .superpowers/
+    purpose: "Task reports from the agent development workflow"
+  - path: .superpowers/sdd/
+    purpose: "Numbered reports from individual development tasks"
+  - path: .swarm/
+    purpose: "Retirement notice for the former swarm coordination store"
+  - path: _archive/
+    purpose: "Retired helpers, modules and skill definitions"
+  - path: _archive/.claude-helpers/
+    purpose: "Historical agent setup, checkpoint and GitHub helper scripts"
+  - path: _archive/modules/
+    purpose: "Retired configuration, delivery, monitoring and reporting modules"
+  - path: _archive/skills/
+    purpose: "Previous skill collection and its creation records"
+  - path: admin/
+    purpose: "Administrative workstation setup documentation"
+  - path: admin/it/
+    purpose: "Browser integration and Windows setup notes"
+  - path: analysis/
+    purpose: "Technical investigations, audits and project closeout findings"
+  - path: analysis/cross-agent-audit-20260402/
+    purpose: "Baseline evidence and gap findings from the cross-agent audit"
+  - path: assets/
+    purpose: "Supporting references and review artifacts for individual work items"
+  - path: assets/WRK-5082/
+    purpose: "Reference material for WRK-5082"
+  - path: assets/WRK-624/
+    purpose: "Review documents for WRK-624"
+  - path: assets/WRK-634/
+    purpose: "Review documents for WRK-634"
+  - path: assets/WRK-642/
+    purpose: "Review documents for WRK-642"
+  - path: assets/WRK-644/
+    purpose: "Review documents for WRK-644"
+  - path: assets/WRK-645/
+    purpose: "Review documents for WRK-645"
+  - path: assets/WRK-646/
+    purpose: "Review documents for WRK-646"
+  - path: assets/WRK-647/
+    purpose: "Review documents for WRK-647"
+  - path: assets/WRK-648/
+    purpose: "Review documents for WRK-648"
+  - path: assets/WRK-649/
+    purpose: "Review documents for WRK-649"
+  - path: assets/WRK-650/
+    purpose: "Review documents for WRK-650"
+  - path: assets/WRK-651/
+    purpose: "Review documents for WRK-651"
+  - path: assets/WRK-652/
+    purpose: "Review documents for WRK-652"
+  - path: assets/WRK-653/
+    purpose: "Review documents for WRK-653"
+  - path: assets/WRK-654/
+    purpose: "Review documents for WRK-654"
+  - path: assets/WRK-655/
+    purpose: "Resource intelligence review for WRK-655"
+  - path: assets/WRK-656/
+    purpose: "Orchestrator comparison, process flow and timeline for WRK-656"
+  - path: assets/WRK-657/
+    purpose: "Review documents for WRK-657"
+  - path: assets/WRK-659/
+    purpose: "Orchestrator summary, plan reviews and backups for WRK-659"
+  - path: assets/WRK-663/
+    purpose: "Plan and implementation reviews with variation test results for WRK-663"
+  - path: assets/WRK-664/
+    purpose: "Review of the multi-workstation contract for WRK-664"
+  - path: assets/WRK-669/
+    purpose: "Orchestrator summary for WRK-669"
+  - path: assets/WRK-671/
+    purpose: "Claim evidence, provider reviews and variation test results for WRK-671"
+  - path: assets/WRK-682/
+    purpose: "Review documents for WRK-682"
+  - path: assets/WRK-684/
+    purpose: "Plan and implementation reviews with variation test results for WRK-684"
+  - path: assets/WRK-686/
+    purpose: "Plan and implementation reviews with variation test results for WRK-686"
+  - path: assets/WRK-687/
+    purpose: "Draft plan review for WRK-687"
+  - path: assets/shared/
+    purpose: "Shared stylesheet for work-item review pages"
+  - path: claude_unattended_test_accept/
+    purpose: "UNKNOWN - contains a single text marker with a greeting"
+  - path: compute-program/
+    purpose: "Plan and status of licensed and open-source solver workstreams"
+  - path: config/
+    purpose: "Configuration, registries, schemas and policies consumed by workspace tools"
+  - path: config/agents/
+    purpose: "Shared and provider-specific instructions, role definitions and runtime configuration"
+  - path: config/ai/
+    purpose: "Example and schema for model-release smoke tests"
+  - path: config/ai-tools/
+    purpose: "Capability, quota and account usage records for AI tools"
+  - path: config/ai_agents/
+    purpose: "Agent tool availability and status records"
+  - path: config/ci/
+    purpose: "Test-family definitions, health baselines and continuous integration policies"
+  - path: config/claude/
+    purpose: "Keyboard shortcut configuration for Claude"
+  - path: config/data/
+    purpose: "Data pipeline manifest and pipeline state"
+  - path: config/deps/
+    purpose: "Dependency graph across repositories"
+  - path: config/doc-intelligence/
+    purpose: "Example extraction queues and integration test inputs"
+  - path: config/docs/
+    purpose: "Manifest used to inventory documentation"
+  - path: config/email/
+    purpose: "Style profiles for drafting correspondence"
+  - path: config/email-filters/
+    purpose: "Mail filter inventories, noise-domain rules and cleanup plans"
+  - path: config/github/
+    purpose: "Canonical repository issue label definitions"
+  - path: config/governance/
+    purpose: "Work-item schema and documented specification-location exceptions"
+  - path: config/knowledge/
+    purpose: "Inventory readiness configuration"
+  - path: config/machine-baselines/
+    purpose: "Reference machine inventories and baseline records"
+  - path: config/mission/
+    purpose: "Mission map, workflow inventory and progress scorecard"
+  - path: config/onboarding/
+    purpose: "Repository map for orientation"
+  - path: config/phone-media/
+    purpose: "Service and timer definitions for media backup checks and alerts"
+  - path: config/quality/
+    purpose: "Static analysis baselines and quality configuration"
+  - path: config/releases/
+    purpose: "Release manifest"
+  - path: config/reporting/
+    purpose: "Schemas for calculation reports and weekly reviews"
+  - path: config/research-literature/
+    purpose: "Mapping from research domains to owning repositories"
+  - path: config/scheduled-tasks/
+    purpose: "Scheduled task definitions and inventory of affected resources"
+  - path: config/schemas/
+    purpose: "Machine-readable formats for evidence, descriptors and workflow receipts"
+  - path: config/shell/
+    purpose: "Reusable Bash startup settings"
+  - path: config/skills/
+    purpose: "Skill profiles, quality tiers, audit policy and waivers"
+  - path: config/storage/
+    purpose: "Sparse checkout profiles for controlling local storage"
+  - path: config/strategic-prioritization/
+    purpose: "Scoring weights and track assignments for prioritization"
+  - path: config/tabby/
+    purpose: "Setup and access guidance for the Tabby service"
+  - path: config/testing/
+    purpose: "Benchmark and test coverage baselines"
+  - path: config/tmux/
+    purpose: "Terminal multiplexer configuration, startup helpers and autosave units"
+  - path: config/workflow-tips/
+    purpose: "Catalog, candidates and usage history for workflow guidance"
+  - path: config/workstations/
+    purpose: "Workstation role registry, profiles and runtime state classifications"
+  - path: coordination/
+    purpose: "Standalone coordination package with its own tests and build configuration"
+  - path: coordination/.github/
+    purpose: "Continuous integration configuration for the coordination package"
+  - path: coordination/src/
+    purpose: "Implementation of the coordination package"
+  - path: coordination/tests/
+    purpose: "Unit, integration and smoke tests for coordination"
+  - path: data/
+    purpose: "Reference registries, document inventories and derived engineering data"
+  - path: data/design-codes/
+    purpose: "Registry of engineering design codes"
+  - path: data/document-index/
+    purpose: "Index manifests, extraction checkpoints and document cross-references"
+  - path: data/document-intelligence/
+    purpose: "Taxonomy, indexing and cross-reference improvement plans"
+  - path: data/drive-index-search/
+    purpose: "Metrics for drive index searches"
+  - path: data/field-development/
+    purpose: "Field-development scan summaries and unblock records"
+  - path: data/inventory/
+    purpose: "Spreadsheet inventories and sheet-level detail"
+  - path: data/processed/
+    purpose: "Processed data directory created by the compliance setup script"
+  - path: data/raw/
+    purpose: "Raw input data directory created by the compliance setup script"
+  - path: data/results/
+    purpose: "Result data directory created by the compliance setup script"
+  - path: data/semiconductor/
+    purpose: "Benchmark data for semiconductor package finite element analysis"
+  - path: data/standards-index/
+    purpose: "Extracted document chunks and BM25 search index for standards"
+  - path: data/taxonomy/
+    purpose: "Skills matrix for semiconductor design and finite element analysis"
+  - path: docker/
+    purpose: "Container definitions for baseline testing and monitoring"
+  - path: docker/monitoring/
+    purpose: "Prometheus configuration for the monitoring stack"
+  - path: docs/
+    purpose: "Reference documentation, engineering standards, plans and operating procedures"
+  - path: docs/agents/
+    purpose: "Audit and routing instructions for hub agents"
+  - path: docs/ai/
+    purpose: "Evaluation of behavioral parity between AI providers"
+  - path: docs/architecture/
+    purpose: "Architecture decisions, data contracts and interface maps"
+  - path: docs/assessments/
+    purpose: "System assessments, model selection findings and implementation summaries"
+  - path: docs/assets/
+    purpose: "Shared stylesheet for published documentation"
+  - path: docs/audits/
+    purpose: "Dated audits of engineering wiki coverage and resource registries"
+  - path: docs/business/
+    purpose: "Strategy for gathering market intelligence from job listings"
+  - path: docs/ci/
+    purpose: "Reference for test families, reusable workflows and CI baselines"
+  - path: docs/content-pipeline/
+    purpose: "Content calendar and pipeline operating guidance"
+  - path: docs/dashboards/
+    purpose: "Summaries of test health, error triage and document freshness"
+  - path: docs/data/
+    purpose: "Readiness assessment of the CAD catalog"
+  - path: docs/deckhand/
+    purpose: "Relocation notice for the retired project documentation"
+  - path: docs/design/
+    purpose: "Design and state schema for processing email as a work queue"
+  - path: docs/document-intelligence/
+    purpose: "Registries, priorities and instructions for converting source documents"
+  - path: docs/domains/
+    purpose: "Default source directory for standards documents processed by the ingestion tool"
+  - path: docs/ecosystem/
+    purpose: "Cross-repository navigation and platform-specific integration notes"
+  - path: docs/email/
+    purpose: "Mail workflow, state labels and filter installation procedures"
+  - path: docs/enforcement/
+    purpose: "Definitions and known defects of repository enforcement checks"
+  - path: docs/engineering/
+    purpose: "Operator guidance for engineering software, review packs and result precision"
+  - path: docs/examples/
+    purpose: "Example records and explanations for published specification formats"
+  - path: docs/field-development/
+    purpose: "Investigations and resource inventories supporting offshore field development"
+  - path: docs/governance/
+    purpose: "Designs and decisions governing data routing, objectives and engineering workflows"
+  - path: docs/gtm/
+    purpose: "Capability statements, conversion workflows and market development material"
+  - path: docs/guides/
+    purpose: "Operator guides for workspace setup, security and automation"
+  - path: docs/handoffs/
+    purpose: "Dated transfers of work between engineering and agent sessions"
+  - path: docs/incidents/
+    purpose: "Incident record of a stash cleanup operation"
+  - path: docs/integrations/
+    purpose: "Evaluations of external document conversion and section analysis libraries"
+  - path: docs/lessons/
+    purpose: "Lessons retained from technical analyses and retired projects"
+  - path: docs/maps/
+    purpose: "Operator map for the wave and line dynamics analysis tools"
+  - path: docs/marketing/
+    purpose: "Guidance for API documentation banners"
+  - path: docs/methodology/
+    purpose: "Descriptions of cross-review, compliance reporting and knowledge publication methods"
+  - path: docs/modules/
+    purpose: "Documentation grouped by technical module"
+  - path: docs/monitoring/
+    purpose: "Audit of clock domains used in monitoring"
+  - path: docs/notes/
+    purpose: "Research notes on opportunities for agent-assisted media workflows"
+  - path: docs/operations/
+    purpose: "Procedures for queue cleanup, alerts, model checks and other operations"
+  - path: docs/ops/
+    purpose: "Infrastructure operating notes for machine baselines, compute access and scheduling"
+  - path: docs/orchestrator-consistency/
+    purpose: "Weekly agent consistency matrices and guidance on recording drift"
+  - path: docs/plans/
+    purpose: "Issue plans, designs and implementation proposals"
+  - path: docs/projects/
+    purpose: "Project-specific documentation organized by project"
+  - path: docs/quality/
+    purpose: "Reference for test-health telemetry"
+  - path: docs/readiness/
+    purpose: "Isolation requirements for the equality collector"
+  - path: docs/registry/
+    purpose: "Workflow manifest, schema, examples and readiness guidance"
+  - path: docs/reports/
+    purpose: "Dated engineering, session and compliance reports"
+  - path: docs/research/
+    purpose: "Evaluations of solver tools, report practices and integration candidates"
+  - path: docs/resources/
+    purpose: "Reference lists for CAD, fluid dynamics, data science and marine engineering"
+  - path: docs/review/
+    purpose: "Guidance for transporting plan reviews and replaying Python runs"
+  - path: docs/reviews/
+    purpose: "Findings and records from policy and implementation reviews"
+  - path: docs/roadmaps/
+    purpose: "Sequences of planned work for engineering capabilities and skills"
+  - path: docs/runbooks/
+    purpose: "Step-by-step procedures for dispatch, evidence collection and fleet operations"
+  - path: docs/security/
+    purpose: "Security guidance, incident verification and input validation practices"
+  - path: docs/session-exits/
+    purpose: "Exit records from completed or paused work sessions"
+  - path: docs/session-handoffs/
+    purpose: "Continuation records with issue status and remaining actions"
+  - path: docs/sessions/
+    purpose: "Dated working records and accompanying media from operator sessions"
+  - path: docs/setup/
+    purpose: "Instructions for machine setup, registry updates and provider authentication"
+  - path: docs/solver/
+    purpose: "Operating and qualification guidance for solver execution"
+  - path: docs/standards/
+    purpose: "Shared requirements and contracts for repository and engineering workflows"
+  - path: docs/strategy/
+    purpose: "Engagement plans, technical proposals and market development strategy"
+  - path: docs/superpowers/
+    purpose: "Plans and specifications from the development workflow"
+  - path: docs/sync-reports/
+    purpose: "Digest reports produced by repository synchronization jobs"
+  - path: docs/templates/
+    purpose: "Reusable documentation and pytest configuration instructions"
+  - path: docs/testing/
+    purpose: "Test collection, fixture, interface parity and installation verification guidance"
+  - path: docs/utilities/
+    purpose: "Operating guide for phone media utilities"
+  - path: docs/vision/
+    purpose: "Workspace vision and its supporting documentation"
+  - path: docs/workstations/
+    purpose: "Guidance on workstation equivalence and repository checkout profiles"
+  - path: examples/
+    purpose: "Worked examples and sample inputs for workspace tools"
+  - path: examples/algorithm_runs/
+    purpose: "Example code for run identity, metric populations and rolling reports"
+  - path: examples/cad/
+    purpose: "Example inventory for assessing CAD readiness"
+  - path: examples/claude-code-course/
+    purpose: "UI generation example from the coding course"
+  - path: examples/governance/
+    purpose: "Examples of publication eligibility and recorded evidence"
+  - path: examples/knowledge/
+    purpose: "Example front matter for knowledge promotion"
+  - path: examples/phone-media/
+    purpose: "Sample browser assessment and answers for media review"
+  - path: examples/readiness/
+    purpose: "Example policy for readiness follow-up"
+  - path: examples/reporting/
+    purpose: "Examples of adoption reporting, provenance and result precision"
+  - path: examples/review-pack/
+    purpose: "Example equilibrium record for a human review pack"
+  - path: examples/solver-qualification/
+    purpose: "Synthetic input for demonstrating solver qualification"
+  - path: examples/workflow/
+    purpose: "Example checkpoint loop for a workflow"
+  - path: generated/
+    purpose: "Recovered report from an agent usage investigation"
+  - path: knowledge/
+    purpose: "Knowledge extraction prototypes, wiki scaffolding and archives"
+  - path: knowledge-base/
+    purpose: "Local indexes of collected knowledge and archived work-item summaries"
+  - path: knowledge/_archive/
+    purpose: "Archived wiki content and its disposition record"
+  - path: knowledge/dark-intelligence/
+    purpose: "Spreadsheet knowledge-extraction prototypes and documentation"
+  - path: knowledge/wikis/
+    purpose: "Wiki relocation guidance and remaining scaffolding"
+  - path: licensed-run/
+    purpose: "Windows job runners and model preparation tools for licensed solvers"
+  - path: licensed-run/runtime/
+    purpose: "Local runtime files excluded from version control by the directory ignore rule"
+  - path: logs/
+    purpose: "Execution logs, session records and quality reports"
+  - path: logs/hooks/
+    purpose: "Reserved location for hook logs"
+  - path: logs/notifications/
+    purpose: "Reserved location for notification logs"
+  - path: logs/orchestrator/
+    purpose: "Per-provider session activity logs and export conventions"
+  - path: logs/quality/
+    purpose: "Dated reports on harness quality and size"
+  - path: monitoring-dashboard/
+    purpose: "Dashboard application for workspace monitoring"
+  - path: monitoring-dashboard/backend/
+    purpose: "Server-side code and configuration for the dashboard"
+  - path: monitoring-dashboard/frontend/
+    purpose: "Browser interface and styles for the dashboard"
+  - path: monitoring-dashboard/shared/
+    purpose: "TypeScript package shared by dashboard components"
+  - path: notes/
+    purpose: "Working notes, queue summaries and planning material"
+  - path: notes/prep/
+    purpose: "Background research and reference lists for upcoming work"
+  - path: output/
+    purpose: "Retained solver validation outputs"
+  - path: output/orcaflex_validation/
+    purpose: "Test models and tabulated hydrodynamic validation results"
+  - path: pylib/
+    purpose: "Bundled Python libraries, package metadata and command-line tools"
+  - path: pylib/bin/
+    purpose: "Command-line entry points for bundled Python packages"
+  - path: pylib/certifi/
+    purpose: "Bundled certifi package for certificate trust data"
+  - path: pylib/certifi-2026.2.25.dist-info/
+    purpose: "Installation metadata for the bundled certifi distribution"
+  - path: pylib/charset_normalizer/
+    purpose: "Bundled charset_normalizer package for character encoding detection"
+  - path: pylib/charset_normalizer-3.4.7.dist-info/
+    purpose: "Installation metadata for the bundled charset_normalizer distribution"
+  - path: pylib/defusedxml/
+    purpose: "Bundled defusedxml package for hardened XML parsing"
+  - path: pylib/defusedxml-0.7.1.dist-info/
+    purpose: "Installation metadata for the bundled defusedxml distribution"
+  - path: pylib/idna/
+    purpose: "Bundled idna package for internationalized domain names"
+  - path: pylib/idna-3.11.dist-info/
+    purpose: "Installation metadata for the bundled idna distribution"
+  - path: pylib/requests/
+    purpose: "Bundled requests package for HTTP client requests"
+  - path: pylib/requests-2.33.1.dist-info/
+    purpose: "Installation metadata for the bundled requests distribution"
+  - path: pylib/urllib3/
+    purpose: "Bundled urllib3 package for HTTP connections and pooling"
+  - path: pylib/urllib3-2.6.3.dist-info/
+    purpose: "Installation metadata for the bundled urllib3 distribution"
+  - path: pylib/youtube_transcript_api/
+    purpose: "Bundled youtube_transcript_api package for retrieving video transcripts"
+  - path: pylib/youtube_transcript_api-1.2.4.dist-info/
+    purpose: "Installation metadata for the bundled youtube_transcript_api distribution"
+  - path: queue/
+    purpose: "File-based job queue for solver runs and result collection"
+  - path: queue/.processed/
+    purpose: "Completion markers used to recognize processed jobs"
+  - path: queue/.watcher-state/
+    purpose: "Lock and failure-count state for the result watcher"
+  - path: queue/completed/
+    purpose: "Job records and outputs from completed runs"
+  - path: queue/failed/
+    purpose: "Job records from failed runs"
+  - path: queue/pending/
+    purpose: "Staging area for jobs awaiting execution"
+  - path: reports/
+    purpose: "Generated summaries of repository test results"
+  - path: reports/test-summary/
+    purpose: "Stored test baseline summary"
+  - path: schemas/
+    purpose: "JSON schemas for legal rule mappings, authority and generation records"
+  - path: scripts/
+    purpose: "Executable tools for repository operations, validation and engineering workflows"
+  - path: scripts/_archive/
+    purpose: "Retains superseded setup and PowerShell scripts."
+  - path: scripts/_core/
+    purpose: "Supplies shared shell and CLI components for agent configuration and status display."
+  - path: scripts/agents/
+    purpose: "Builds provider instructions, audits routing and probes installed agent configuration."
+  - path: scripts/ai/
+    purpose: "Manages provider plans, skill indexes, context budgets and AI task boards."
+  - path: scripts/analysis/
+    purpose: "Analyzes repository architecture, session activity and registry coverage."
+  - path: scripts/animations/
+    purpose: "Generates scenes and supporting catenary and mooring geometry for animations."
+  - path: scripts/automation/
+    purpose: "Automates issue prompts, approval tracking and command setup across repositories."
+  - path: scripts/benchmark/
+    purpose: "Runs solver benchmarks across workstations."
+  - path: scripts/benchmarks/
+    purpose: "Runs filesystem and performance trials and records comparative results."
+  - path: scripts/blender/
+    purpose: "Renders a smoke scene and verifies the Blender baseline."
+  - path: scripts/calculations/
+    purpose: "Calculates axial pile capacity."
+  - path: scripts/ci/
+    purpose: "Runs test families and aggregates CI health and domain matrix results."
+  - path: scripts/ci_health/
+    purpose: "Audits CI runs and classifies pull request failures."
+  - path: scripts/client_llm_wiki/
+    purpose: "Bootstraps project wikis and checks their manifests and attestations."
+  - path: scripts/content/
+    purpose: "Converts wiki content for websites and checks published capability descriptions."
+  - path: scripts/coordination/
+    purpose: "Synchronizes boards and manages objectives and shared Git coordination."
+  - path: scripts/cron/
+    purpose: "Builds schedules and runs recurring workspace maintenance and audits."
+  - path: scripts/curation/
+    purpose: "Audits agent memory, harnesses and skills and curates session feedback."
+  - path: scripts/data/
+    purpose: "Inventories resources, builds registries and processes data collections."
+  - path: scripts/data-sources/
+    purpose: "Generates pointers to domain data sources."
+  - path: scripts/dedupe/
+    purpose: "Hashes file inventories, merges manifests and plans deduplication."
+  - path: scripts/development/
+    purpose: "Provides developer command wrappers for AI planning, review and workflow setup."
+  - path: scripts/dispatch/
+    purpose: "Claims queued work and coordinates its assignment and execution."
+  - path: scripts/docs/
+    purpose: "Builds API documentation and detects stale documentation."
+  - path: scripts/document-intelligence/
+    purpose: "Extracts and indexes conference papers and standards and cross-references registries."
+  - path: scripts/document_intelligence/
+    purpose: "Parses OCR output and extracts spreadsheet formulas."
+  - path: scripts/domain-tag/
+    purpose: "Classifies records by domain and generates index entries in batches."
+  - path: scripts/dotfiles/
+    purpose: "Applies the terminal theme and profile."
+  - path: scripts/ecosystem-sync/
+    purpose: "Produces cross-repository synchronization digests from configuration and issues."
+  - path: scripts/email/
+    purpose: "Normalizes contacts, routes mail and manages queue and unsubscribe operations."
+  - path: scripts/enforcement/
+    purpose: "Checks repository artifacts and scripts against workspace rules."
+  - path: scripts/examples/
+    purpose: "Demonstrates mesh conversion, geometry preprocessing and offshore layout tools."
+  - path: scripts/fleet/
+    purpose: "Collects account usage and workstation snapshots on a schedule."
+  - path: scripts/gis/
+    purpose: "Converts GeoTIFF data for use in Blender."
+  - path: scripts/github/
+    purpose: "Retrieves pull request status using shared GitHub shell helpers."
+  - path: scripts/governance/
+    purpose: "Classifies evidence and validates issue closure and eligibility records."
+  - path: scripts/gsd/
+    purpose: "Records workflow cost events and tests the cost tracker."
+  - path: scripts/gtm/
+    purpose: "Prepares capability demonstrations, scans markets and assesses delivery readiness."
+  - path: scripts/hermes/
+    purpose: "Backfills agent skills into the repository."
+  - path: scripts/hf/
+    purpose: "Audits field exploration data and saves results to Hugging Face."
+  - path: scripts/hooks/
+    purpose: "Runs Git hooks for pre-push checks, learning capture and skill patch tracking."
+  - path: scripts/hygiene/
+    purpose: "Checks build commands and supports repository cleanup planning."
+  - path: scripts/improve/
+    purpose: "Processes session signals into proposed workspace improvements."
+  - path: scripts/install/
+    purpose: "Installs or pins agent tools and manages related service configuration."
+  - path: scripts/integrations/
+    purpose: "Evaluates document extraction with Docling."
+  - path: scripts/kanban/
+    purpose: "Reconciles board labels and checks domain coverage."
+  - path: scripts/knowledge/
+    purpose: "Builds knowledge indexes, captures work summaries and checks citation freshness."
+  - path: scripts/learning/
+    purpose: "Orchestrates the session learning pipeline."
+  - path: scripts/learnings/
+    purpose: "Extracts corrections and shares recorded learnings across agents."
+  - path: scripts/legal/
+    purpose: "Checks disclosure and identifier handling and constructs legal-rule evidence."
+  - path: scripts/lib/
+    purpose: "Provides reusable cleanup, download and provider invocation helpers."
+  - path: scripts/maintenance/
+    purpose: "Audits installed tools and plugins and maintains Git locks and CLI inventories."
+  - path: scripts/marketing/
+    purpose: "Generates API banners for repository readmes."
+  - path: scripts/mcp/
+    purpose: "Provides a document intelligence server for Model Context Protocol clients."
+  - path: scripts/memory/
+    purpose: "Bridges provider memories and builds topic indexes."
+  - path: scripts/monitoring/
+    purpose: "Collects operational signals and verifies monitoring bundles and clock records."
+  - path: scripts/onboarding/
+    purpose: "Generates the repository map used for onboarding."
+  - path: scripts/openfoam/
+    purpose: "Runs OpenFOAM tutorials and verifies the installation baseline."
+  - path: scripts/openfoam-analysis/
+    purpose: "Builds solver dictionaries, runs analyses and validates OpenFOAM outputs."
+  - path: scripts/operations/
+    purpose: "Runs operational inventories, validation, compliance and agent execution tasks."
+  - path: scripts/permissions/
+    purpose: "Audits shell commands and merges permission audit results."
+  - path: scripts/phone_media/
+    purpose: "Transfers phone media, evaluates browser access and checks backups."
+  - path: scripts/pipelines/
+    purpose: "Converts meshes and solver outputs between Gmsh, OpenFOAM and OrcaFlex."
+  - path: scripts/planning/
+    purpose: "Dispatches planning prompts and synthesizes the resulting plans."
+  - path: scripts/portability/
+    purpose: "Verifies engineering tool baselines across environments."
+  - path: scripts/preflight/
+    purpose: "Probes environment capabilities and redacts and renders preflight results."
+  - path: scripts/productivity/
+    purpose: "Generates daily work, research and learning summaries."
+  - path: scripts/qa/
+    purpose: "Generates quality assurance reports."
+  - path: scripts/quality/
+    purpose: "Audits APIs, drift and complexity and runs quality checks."
+  - path: scripts/readiness/
+    purpose: "Checks agent versions, network mounts and environment readiness."
+  - path: scripts/release/
+    purpose: "Cuts releases, generates changelogs and tests release operations."
+  - path: scripts/reporting/
+    purpose: "Builds calculation reports, checks asset reachability and audits reporting adoption."
+  - path: scripts/reports/
+    purpose: "Refreshes the team summary report."
+  - path: scripts/repositories/
+    purpose: "Inventories repository work surfaces."
+  - path: scripts/research/
+    purpose: "Smoke-tests streaming a scientific dataset into a data loader."
+  - path: scripts/review/
+    purpose: "Prepares review packets, dispatches cross-provider reviews and verifies claims."
+  - path: scripts/scaffolding/
+    purpose: "Generates new modules from templates."
+  - path: scripts/search/
+    purpose: "Indexes symbols and content and searches across repositories."
+  - path: scripts/security/
+    purpose: "Scans repository content for secrets."
+  - path: scripts/semiconductor/
+    purpose: "Runs the semiconductor package finite element benchmark."
+  - path: scripts/session/
+    purpose: "Captures harness versions, contextual data and drift signals for agent sessions."
+  - path: scripts/setup/
+    purpose: "Sets up workstations, terminal sessions and engineering tools and reports machine status."
+  - path: scripts/skills/
+    purpose: "Maintains skill metadata and audits skill descriptions, scope and drift."
+  - path: scripts/solver/
+    purpose: "Submits and processes queued solver jobs and generates comparison plots."
+  - path: scripts/standards/
+    purpose: "Ingests standards metadata and queries the standards collection."
+  - path: scripts/state/
+    purpose: "Rotates cost records and checks state consumer compatibility."
+  - path: scripts/strategic/
+    purpose: "Scores priorities and labels queues for strategic planning."
+  - path: scripts/sync/
+    purpose: "Synchronizes repositories and checks Git links and synchronization cadence."
+  - path: scripts/telegram_dispatch/
+    purpose: "Applies dispatch policy and redacts Telegram payloads."
+  - path: scripts/test/
+    purpose: "Exercises commit, session, task and test-health shell commands."
+  - path: scripts/testing/
+    purpose: "Audits test collection, coverage thresholds and expected failures."
+  - path: scripts/tests/
+    purpose: "Checks the repository mission portfolio and the workspace CLI."
+  - path: scripts/tmux/
+    purpose: "Saves tmux session state."
+  - path: scripts/upkeep/
+    purpose: "Reports workspace health across scheduled jobs, agent memory, storage and synchronization."
+  - path: scripts/utilities/
+    purpose: "Converts documents into context and provides phone media utilities."
+  - path: scripts/utils/
+    purpose: "Supplies a reusable atomic file writer and its tests."
+  - path: scripts/validation/
+    purpose: "Validates a market capability matrix and a project source pack."
+  - path: scripts/windows/
+    purpose: "Provides native Windows agent preflight, dispatch and routine workstation commands."
+  - path: scripts/workflow/
+    purpose: "Builds session reviews and scores workflow completeness and closeout records."
+  - path: scripts/workstations/
+    purpose: "Inventories workstation repository footprints and checks clone profiles and baselines."
+  - path: specs/
+    purpose: "Registry of workspace modules"
+  - path: src/
+    purpose: "Python source for workspace packages and engineering support modules"
+  - path: src/ace/
+    purpose: "Command-line routing and completion implementation"
+  - path: src/config/
+    purpose: "Configuration loading, management and schema validation"
+  - path: src/database/
+    purpose: "Database connections, migrations and session management"
+  - path: src/digitalmodel/
+    purpose: "Subsea pipeline implementation"
+  - path: src/geometry/
+    purpose: "Geometry routines including circle calculations"
+  - path: src/knowledge_graph/
+    purpose: "Knowledge graph engine, taxonomy loading and session advice"
+  - path: src/models/
+    purpose: "Base, configuration, data and solver model definitions"
+  - path: src/solvers/
+    purpose: "Solver interfaces, registry and qualification logic"
+  - path: src/utilities/
+    purpose: "Data deduplication routines"
+  - path: src/workspace_hub/
+    purpose: "Main workspace package for automation, baselines, comparisons and configuration"
+  - path: state/
+    purpose: "Persisted session signals, reflection history and monitoring records"
+  - path: state/reflect-history/
+    purpose: "Dated records of session reflection"
+  - path: state/session-signals/
+    purpose: "Daily machine-readable session event records"
+  - path: state/terminal-monitoring/
+    purpose: "Terminal session monitoring records"
+  - path: teams-bot-issue2/
+    purpose: "Feasibility evidence, checklists and issue drafts for Teams bot integration"
+  - path: templates/
+    purpose: "Reusable repository configuration, documentation and workflow starters"
+  - path: templates/client-llm-wiki/
+    purpose: "Starter repository for a client knowledge wiki"
+  - path: templates/hooks/
+    purpose: "Example post-commit and pre-task hooks"
+  - path: templates/html/
+    purpose: "Usage guidance for the HTML data drilldown template"
+  - path: templates/workflows/
+    purpose: "Example shell workflows for engineering, analysis and web applications"
+  - path: tests/
+    purpose: "Automated regression suites, test fixtures and shared test helpers"
+  - path: tests/agents/
+    purpose: "Tests agent routing, instruction links, brief generation and MCP setup."
+  - path: tests/ai/
+    purpose: "Tests provider plans, skill indexing, task boards and context budgeting."
+  - path: tests/analysis/
+    purpose: "Tests architecture scanning, session audits and analysis calculations."
+  - path: tests/animations/
+    purpose: "Checks catenary calculations used by animation scenes."
+  - path: tests/architecture/
+    purpose: "Verifies data and execution layer contracts and their worked examples."
+  - path: tests/audits/
+    purpose: "Tests the online resource registry audit."
+  - path: tests/automation/
+    purpose: "Tests command launchers, state snapshots and automated release scans."
+  - path: tests/benchmark/
+    purpose: "Tests the workstation solver benchmark runner."
+  - path: tests/blender/
+    purpose: "Tests verification of the Blender installation baseline."
+  - path: tests/ci/
+    purpose: "Tests CI runners, domain matrix aggregation and test health reporting."
+  - path: tests/ci_smoke/
+    purpose: "Checks CI entry points, package provenance and runner dependencies."
+  - path: tests/client_llm_wiki/
+    purpose: "Tests wiki bootstrap artifacts, attestations, security and review projections."
+  - path: tests/config/
+    purpose: "Tests cost, routing, profile and review policy configuration."
+  - path: tests/content/
+    purpose: "Checks capability descriptions against the expected publication surface."
+  - path: tests/contract/
+    purpose: "Tests capture, citation sidecar and planning template contracts."
+  - path: tests/coordination/
+    purpose: "Tests objective intake, board synchronization and coordination commands."
+  - path: tests/cron/
+    purpose: "Tests scheduling, recurring maintenance jobs and retention behavior."
+  - path: tests/curation/
+    purpose: "Tests skill drift detection, memory freshness and correction promotion."
+  - path: tests/data/
+    purpose: "Tests document indexing, data processing and drive search workflows."
+  - path: tests/data_sources/
+    purpose: "Checks the ecosystem data source registry."
+  - path: tests/dedupe/
+    purpose: "Tests hashing, inventory merges, deduplication plans and interrupted runs."
+  - path: tests/dispatch/
+    purpose: "Tests dispatch claims, provider selection and coordinator behavior."
+  - path: tests/doc-intel/
+    purpose: "Checks ignore rules for document intelligence scaffolding."
+  - path: tests/docs/
+    purpose: "Checks documentation references, examples, builds and policy guidance."
+  - path: tests/document-intelligence/
+    purpose: "Tests document cross-referencing, taxonomy, OCR and spreadsheet extraction."
+  - path: tests/document_intelligence/
+    purpose: "Tests the document freshness governance contract."
+  - path: tests/e2e/
+    purpose: "Exercises complete workflows end to end."
+  - path: tests/ecosystem-sync/
+    purpose: "Tests synchronization configuration, digests and issue handling against fixtures."
+  - path: tests/email/
+    purpose: "Tests email queue contracts, interfaces, operations and state."
+  - path: tests/enforcement/
+    purpose: "Exercises policy checks and the fixtures used to test their boundaries."
+  - path: tests/exposure/
+    purpose: "Tests disclosure rules and their CLI using synthetic registry records."
+  - path: tests/fixtures/
+    purpose: "Supplies reusable sample inputs for tests across the workspace."
+  - path: tests/fleet/
+    purpose: "Tests account usage collection, daily snapshots and fleet labels."
+  - path: tests/gis/
+    purpose: "Tests geospatial Python tooling and Earth Engine integration."
+  - path: tests/github/
+    purpose: "Tests pull request status reporting."
+  - path: tests/governance/
+    purpose: "Tests authority routing, citation scope and issue closure evidence."
+  - path: tests/gtm/
+    purpose: "Checks market scanning, retention, source access and public outputs."
+  - path: tests/helpers/
+    purpose: "Supplies shared helpers for stale documentation reference tests."
+  - path: tests/hf/
+    purpose: "Tests field exploration audits and result export to Hugging Face."
+  - path: tests/hooks/
+    purpose: "Tests agent and Git hooks for context, configuration and state checks."
+  - path: tests/hygiene/
+    purpose: "Tests build command inventories, cleanup plans and workstation baselines."
+  - path: tests/install/
+    purpose: "Tests the installer command that disables a source watch timer."
+  - path: tests/integration/
+    purpose: "Exercises CI integration and framework adapters."
+  - path: tests/knowledge/
+    purpose: "Tests wiki handling, document batches, citations and corpus readiness."
+  - path: tests/learnings/
+    purpose: "Tests adaptation of correction confidence thresholds."
+  - path: tests/legal/
+    purpose: "Tests identifier handling, disclosure checks and private index outputs."
+  - path: tests/lib/
+    purpose: "Tests JSON round trips and strict input boundaries for script helpers."
+  - path: tests/maintenance/
+    purpose: "Tests plugin audits, CLI consolidation and script inventories."
+  - path: tests/marketing/
+    purpose: "Tests API banner generation for readmes."
+  - path: tests/mcp/
+    purpose: "Tests the wiki search backend for MCP clients."
+  - path: tests/memory/
+    purpose: "Tests memory indexing, compaction and cross-provider synchronization."
+  - path: tests/model_release/
+    purpose: "Tests the fixture corpus used for model release assessment."
+  - path: tests/monitoring/
+    purpose: "Tests clock replay, cron health and environment equivalence reporting."
+  - path: tests/mutation/
+    purpose: "Supplies helpers for mutation testing."
+  - path: tests/openfoam/
+    purpose: "Tests baseline verification and preservation of solver dictionary inputs."
+  - path: tests/operations/
+    purpose: "Tests storage operations, dispatch leases and pull execution."
+  - path: tests/performance/
+    purpose: "Measures behavior under load."
+  - path: tests/permissions/
+    purpose: "Tests shell command permission auditing."
+  - path: tests/phone_media/
+    purpose: "Tests phone transfer, browser access assessment and backup decisions."
+  - path: tests/portability/
+    purpose: "Tests cross-environment smoke verification."
+  - path: tests/preflight/
+    purpose: "Tests capability probes, classification, redaction and CLI output."
+  - path: tests/productivity/
+    purpose: "Tests research highlights used in productivity summaries."
+  - path: tests/promoted/
+    purpose: "Checks naval architecture calculations and reference examples promoted into tests."
+  - path: tests/property-based/
+    purpose: "Checks baseline properties across generated inputs."
+  - path: tests/quality/
+    purpose: "Tests API audits, quality runners, audit trails and documentation drift."
+  - path: tests/readiness/
+    purpose: "Tests readiness collectors and comparison matrices with controlled fixtures."
+  - path: tests/reporting/
+    purpose: "Tests report bundle integrity, asset availability and methodology audits."
+  - path: tests/repositories/
+    purpose: "Tests repository work surface inventories and their YAML representation."
+  - path: tests/review/
+    purpose: "Tests review packet generation, provider submission and claims verification."
+  - path: tests/scripts/
+    purpose: "Exercises automation scripts for cron, Git operations and repository synchronization."
+  - path: tests/search/
+    purpose: "Tests symbol index generation."
+  - path: tests/security/
+    purpose: "Exercises input validation and access boundaries for descriptors and nested values."
+  - path: tests/semiconductor/
+    purpose: "Tests the package finite element benchmark."
+  - path: tests/session/
+    purpose: "Tests session drift aggregation and work state recording."
+  - path: tests/session-analysis/
+    purpose: "Tests routing classification, count normalization and session analysis fixtures."
+  - path: tests/setup/
+    purpose: "Tests operating system detection, tool installation and workstation status reporting."
+  - path: tests/skills/
+    purpose: "Tests skill backfills, invocation tracking and learning pipeline behavior."
+  - path: tests/solver/
+    purpose: "Tests solver batch submission, manifest validation, queues and result collection."
+  - path: tests/standards/
+    purpose: "Tests standards ingestion, queries and reporting integration."
+  - path: tests/state/
+    purpose: "Tests cost tracking state rotation."
+  - path: tests/statusline/
+    purpose: "Tests status display wrappers and quota freshness and reset handling."
+  - path: tests/strategic/
+    purpose: "Tests strategic priority scoring."
+  - path: tests/subsea/
+    purpose: "Tests pipeline free spans, wave velocities and current distributions."
+  - path: tests/sync/
+    purpose: "Tests Git link verification and synchronization cadence."
+  - path: tests/team_summary/
+    purpose: "Tests team summary generation."
+  - path: tests/telegram_dispatch/
+    purpose: "Tests Telegram dispatch policy and message redaction."
+  - path: tests/testing/
+    purpose: "Tests collection audits, review input generation and pytest output parsing."
+  - path: tests/tmux/
+    purpose: "Tests tmux configuration, launcher behavior and session saving and restoration."
+  - path: tests/unit/
+    purpose: "Tests individual baseline tracking and comparison components."
+  - path: tests/upkeep/
+    purpose: "Checks scheduled job counts in the workspace health report."
+  - path: tests/utilities/
+    purpose: "Tests phone media utilities."
+  - path: tests/work-queue/
+    purpose: "Tests queue status, issue closure behavior and gate checks."
+  - path: tests/workflow/
+    purpose: "Tests session review generation, privacy, checkpoints and completeness scoring."
+  - path: tests/workstations/
+    purpose: "Tests workstation profiles, compatibility and baseline equivalence."
+  - path: tests/worktree_guard/
+    purpose: "Tests Git worktree protections and their CLI."
+  - path: tools/
+    purpose: "Standalone utilities for review, summaries, dictation and data queries"
+  - path: tools/html-review/
+    purpose: "Generate and annotate local HTML review copies"
+  - path: tools/team_summary/
+    purpose: "Build and refresh summaries of team activity"
+  - path: tools/voice-dictation/
+    purpose: "Capture and transcribe dictated text for agent sessions"
