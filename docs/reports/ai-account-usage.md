@@ -1,20 +1,20 @@
 # AI account usage (fleet)
 
-Generated 2026-11-26T22:13:55+00:00 by fleet-collector collect_account_usage_fleet. Percentages are USED; headroom = 100 - weekly used. Source of truth: `config/ai-tools/account-usage-latest.json`.
+Generated 2026-11-26T23:14:00+00:00 by fleet-collector collect_account_usage_fleet. Percentages are USED; headroom = 100 - weekly used. Source of truth: `config/ai-tools/account-usage-latest.json`.
 
 ## Recommendation
 
 - **claude**: `claude-professional` (70.0% weekly headroom) on ace-win-1
-- **codex**: `codex-owner` (95.0% weekly headroom) on ace-linux-1, ace-linux-2, ace-win-2, fleet-collector, gpu-claw
+- **codex**: `codex-owner` (94.0% weekly headroom) on ace-linux-1, ace-linux-2, ace-win-2, fleet-collector, gpu-claw
 
 ## Accounts
 
 | account | provider | holder | 5h used | week used | headroom | resets | sampled on | source | status | probed at |
 |---|---|---|---|---|---|---|---|---|---|---|
-| claude-owner | claude | owner |  | 99% | 1% | 2026-11-28T13:59:59.750331+00:00 | ace-win-2 | oauth-api | ok | 2026-11-26T22:13:42+00:00 |
-| claude-professional | claude | colleague |  | 30% | 70% | 2026-11-28T07:59:59.738601+00:00 | ace-win-1 | oauth-api | ok | 2026-11-26T22:13:46+00:00 |
-| codex-owner | codex | owner |  | 5% | 95% | 2026-12-03T18:41:43+00:00 | ace-win-2 | app-server-live | ok | 2026-11-26T22:13:52+00:00 |
-| codex-professional | codex | colleague |  | 74% | 26% | 2026-12-02T10:35:47+00:00 | ace-win-1 | app-server-live | ok | 2026-11-26T22:13:46+00:00 |
+| claude-owner | claude | owner |  | 99% | 1% | 2026-11-28T14:00:00.364175+00:00 | ace-win-2 | oauth-api | ok | 2026-11-26T23:13:47+00:00 |
+| claude-professional | claude | colleague |  | 30% | 70% | 2026-11-28T08:00:00.179022+00:00 | ace-win-1 | oauth-api | ok | 2026-11-26T23:13:51+00:00 |
+| codex-owner | codex | owner |  | 6% | 94% | 2026-12-03T18:41:43+00:00 | ace-win-2 | app-server-live | ok | 2026-11-26T23:13:57+00:00 |
+| codex-professional | codex | colleague |  | 76% | 24% | 2026-12-02T10:35:47+00:00 | ace-win-1 | app-server-live | ok | 2026-11-26T23:13:51+00:00 |
 
 ## Hosts
 
