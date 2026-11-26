@@ -1,4 +1,5 @@
 """Report-only layout checks against isolated repositories."""
+import json
 import os
 import runpy
 import subprocess
@@ -75,8 +76,6 @@ def test_alias_and_depth(layout, tmp_path):
 
 
 def test_partial_volume_evidence_keeps_other_findings(layout, tmp_path, monkeypatch, capsys):
-    import json
-
     check, workspace, repo, _ = layout
     (workspace / "loose.txt").touch()
     missing = tmp_path / "unreadable-volume"
@@ -107,8 +106,6 @@ def test_same_basename_different_origin(layout):
 
 
 def test_clean_and_unknown_host(layout, tmp_path, monkeypatch, capsys):
-    import json
-
     check, workspace, repo, git = layout
     git("worktree", "add", "--detach", str(workspace / "_wt" / "wt-review"))
     config = tmp_path / "policy.yaml"
@@ -129,8 +126,6 @@ def test_clean_and_unknown_host(layout, tmp_path, monkeypatch, capsys):
 
 
 def test_private_layout_merges(layout, tmp_path, monkeypatch, capsys):
-    import json
-
     check, workspace, repo, _ = layout
     public = tmp_path / "public.yaml"
     public.write_text(json.dumps({
@@ -160,3 +155,98 @@ def test_private_layout_merges(layout, tmp_path, monkeypatch, capsys):
     missing = tmp_path / "absent.json"
     assert main([*args, "--private-config", str(missing)]) == 1
     assert "private layout" in capsys.readouterr().out
+
+
+@pytest.fixture
+def ledger_cli(layout, tmp_path, monkeypatch, capsys):
+    check, workspace, _, _ = layout
+    config = tmp_path / "policy.json"
+    config.write_text(json.dumps({
+        "hosts": {"fixture": {"w": str(workspace), "aliases": [], "extra_roots": []}},
+    }))
+    main = check["main"]
+    monkeypatch.delenv("WORK_LAYOUT_PRIVATE", raising=False)
+    monkeypatch.setattr(Path, "home", lambda: tmp_path)
+    monkeypatch.setitem(main.__globals__, "volume_inventory",
+                        lambda: ([tmp_path], {tmp_path: "ntfs"}, []))
+
+    def findings(*args):
+        status = main(["--host", "fixture", "--config", str(config), "--json", *args])
+        rows = json.loads(capsys.readouterr().out)["findings"]
+        assert status == int(bool(rows))
+        return [(row["reason"], row["observed"]) for row in rows]
+
+    return findings
+
+
+def test_optional_and_required_ledger(layout, tmp_path, ledger_cli):
+    _, workspace, _, _ = layout
+    scratch = workspace / "_scratch" / "task"
+    scratch.mkdir()
+    default = workspace / "_pm" / "work"
+    assert ledger_cli() == []
+    assert ledger_cli("--require-ledger") == [("missing ledger", str(default))]
+    default.mkdir()
+    assert ledger_cli() == [("unrecorded work", str(scratch))]
+    custom = tmp_path / "absent"
+    assert ledger_cli("--ledger", str(custom)) == []
+    assert ledger_cli("--ledger", str(custom), "--require-ledger") == [
+        ("missing ledger", str(custom))
+    ]
+
+
+def test_ledger_path_matching(layout, tmp_path, ledger_cli):
+    _, workspace, _, git = layout
+    ledger = tmp_path / "records"
+    ledger.mkdir()
+    trees = workspace / "_wt"
+    tree, unlisted, gone = [trees / name for name in ("listed", "unlisted", "gone")]
+    for path in (tree, unlisted, gone):
+        git("worktree", "add", "--detach", str(path))
+    gone.rename(tmp_path / "moved")
+    (trees / "ordinary").mkdir()
+    scratch = workspace / "_scratch"
+    for name in ("listed", "output", "unlisted"):
+        (scratch / name).mkdir()
+    (scratch / "file").touch()
+    alias = tmp_path / "alias"
+    if os.name == "nt":
+        subprocess.run(["cmd.exe", "/d", "/c", "mklink", "/J", str(alias), str(tree)],
+                       check=True, capture_output=True, creationflags=subprocess.CREATE_NO_WINDOW)
+    else:
+        alias.symlink_to(tree, target_is_directory=True)
+    (ledger / "listed.json").write_text(json.dumps({
+        "id": "listed", "path": str(alias), "scratch": str(scratch / "listed"),
+        "outputs": [{"path": str(scratch / "output")}], "state": "open",
+    }))
+    assert sorted(ledger_cli("--ledger", str(ledger))) == sorted([
+        ("registered worktree unavailable", str(gone)), ("unrecorded work", str(gone)),
+        ("unrecorded work", str(unlisted)), ("unrecorded work", str(scratch / "unlisted")),
+    ])
+
+
+def test_ledger_states_and_unreadable_records(layout, ledger_cli):
+    _, workspace, _, _ = layout
+    ledger = workspace / "_pm" / "work"
+    ledger.mkdir()
+    expected = []
+    for state in ("open", "adopted", "closed", "review"):
+        tree = workspace / "_wt" / state
+        record = {"id": state, "path": str(tree), "scratch": None, "outputs": [], "state": state}
+        (ledger / f"{state}.json").write_text(json.dumps(record))
+        if state in ("open", "adopted"):
+            expected.append(("record without tree", str(tree)))
+    for index, payload in enumerate([b"{", b"\xff", b"[]", b"{}", json.dumps(
+            dict(record, outputs=[{}])).encode()]):
+        bad = ledger / f"bad-{index}.json"
+        bad.write_bytes(payload)
+        expected.append(("unreadable ledger record", str(bad)))
+    unreadable = ledger / "directory.json"
+    unreadable.mkdir()
+    expected.append(("unreadable ledger record", str(unreadable)))
+    # The work tool writes close receipts and sweep reports beside the records; they are not records.
+    (ledger / "closed.close.json").write_text(json.dumps({"id": "closed", "reasons": []}))
+    (ledger / "sweep-20261126T220000000000Z.json").write_text(
+        json.dumps({"schema": "work-sweep/1", "rows": []}))
+    (ledger / "custom-report.json").write_text(json.dumps({"schema": "work-sweep/1", "rows": []}))
+    assert sorted(ledger_cli()) == sorted(expected)
