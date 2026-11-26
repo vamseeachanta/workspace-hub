@@ -168,13 +168,24 @@ def odd_tree(tmp_path):
     return tree, names
 
 
-def test_manifest_roundtrip_archive_and_sidecar(tmp_path):
+@pytest.fixture(scope="module")
+def gnu_archive():
+    pytest.importorskip("fcntl", reason="archive creation requires POSIX file locking")
+    archive = load("cleanup_archive")
+    try:
+        archive.require_gnu()
+    except (FileNotFoundError, subprocess.CalledProcessError, ValueError) as exc:
+        pytest.skip(f"GNU archive toolchain unavailable: {exc}")
+    return archive
+
+
+def test_manifest_roundtrip_archive_and_sidecar(tmp_path, gnu_archive):
     """Seven files contain abc (3 bytes each); two symlinks and root total ten records.
 
     SHA-256 abc vector: RFC 6234 section 8.5, SHA256 test case 1.
     Byte sorting is checked independently on the literal names.
     """
-    archive = load("cleanup_archive")
+    archive = gnu_archive
     tree, names = odd_tree(tmp_path)
     out = tmp_path / "output"
     result = archive.create(tree, out)
@@ -329,8 +340,8 @@ def test_invalid_target_set(tmp_path, evidence, names):
     assert target.exists()
 
 
-def test_tampered_archive_refused(tmp_path):
-    archive = load("cleanup_archive")
+def test_tampered_archive_refused(tmp_path, gnu_archive):
+    archive = gnu_archive
     tree, _ = odd_tree(tmp_path)
     result = archive.create(tree, tmp_path / "output")
     result["archive"].write_bytes(b"damaged")
@@ -344,6 +355,23 @@ def test_bsd_tools_refused(monkeypatch):
                         subprocess.CompletedProcess(a, 0, stdout=b"BSD tool"))
     with pytest.raises(ValueError, match="NOT_EVALUATED"):
         archive.require_gnu()
+
+
+def test_refusal_names_the_non_gnu_tool(monkeypatch):
+    """Only sort lacks the GNU banner (uutils on Ubuntu 26.04 runners): the refusal must say so."""
+    archive = load("cleanup_archive")
+
+    def fake_run(cmd, **kw):
+        banner = b"sort (uutils coreutils) 0.2" if cmd[0] == "sort" else b"%s (GNU) 1" % cmd[0].encode()
+        return subprocess.CompletedProcess(cmd, 0, stdout=banner)
+
+    monkeypatch.setattr(archive.subprocess, "run", fake_run)
+    with pytest.raises(ValueError) as caught:
+        archive.require_gnu()
+    message = str(caught.value)
+    assert "NOT_EVALUATED" in message
+    assert "sort" in message and "uutils" in message
+    assert "find" not in message and "tar" not in message
 
 
 def test_shell_only_temporary_targets(tmp_path):
@@ -432,8 +460,8 @@ def test_symlink_trash_refused(tmp_path, evidence):
     assert target.exists()
 
 
-def test_archive_hardlinks_and_resume(tmp_path, monkeypatch):
-    archive = load("cleanup_archive")
+def test_archive_hardlinks_and_resume(tmp_path, monkeypatch, gnu_archive):
+    archive = gnu_archive
     source = tmp_path / "source"
     source.mkdir()
     (source / "first").write_bytes(b"abc")
