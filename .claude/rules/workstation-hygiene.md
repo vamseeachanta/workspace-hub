@@ -20,8 +20,10 @@ baseline (#4532).
 
 **How to apply:**
 
-1. **Worktrees, not clones.** Start isolated work with
-   `git -C <canonical checkout> worktree add <root>/wt-<repo>-<topic> -b <branch> origin/main`.
+1. **Worktrees inside `_wt/`, not clones or root `wt-*` folders.** Start isolated work with
+   `git -C <canonical checkout> worktree add <workspace root>/_wt/<repo>-<topic> -b <branch> origin/main`.
+   Keep `<workspace root>/_wt/` strictly to linked git worktrees — never place loose files,
+   scratch directories, virtual environments, or standalone clones inside `_wt/`.
    Where a sandbox makes `.git` read-only, a clone into the job's temporary directory is the
    fallback, and it is deleted once its branch is pushed. Never leave a clone at the workspace
    root. A long-running job locks its worktree (`git worktree lock --reason <job>`) and unlocks
@@ -71,15 +73,28 @@ baseline (#4532).
     the 2026-11-23 lean archive, a HEAD absent from origin may still be held in the archive
     bundles. Pass their commit list with `cleanup_plan.py --preserved`; a HEAD found in neither
     origin nor an archive is unpushed work and stays.
+12. **Canonical workspace root (`~/ws`) layout — repos + reserved system dirs only.** Every
+    machine follows [`config/workstations/ws-root-policy.yaml`](../../config/workstations/ws-root-policy.yaml):
+    - Top-level `<workspace root>/` holds **only registered git repositories** (directories with
+      `.git/`) plus the reserved `_` system folders (`_wt`, `_pm`, `_backups`, `_archive`,
+      `_scratch`) and `.claude`.
+    - Zero loose files at `<workspace root>/`; zero duplicate or ad-hoc prefixes (`_backup`,
+      `.wt`, `.scratch`, `_scratch-*`, `wt-*`, `outputs`, `*.pre-rollout-*`, `*.failed-checkout`).
+    - Every deliverable (script, doc, plan, review, dataset manifest) belongs inside its
+      destined repository; temporary scratch goes to the OS temp dir or `_scratch/<topic>-<yyyymmdd>/`.
+    - On Windows, `C:\ws` is canonical and `~/ws` is an NTFS junction pointing to `C:\ws`
+      (never traverse or delete it as a duplicate).
+    - Verify any host with `python scripts/workstations/ws_hygiene_audit.py --root <workspace root>`.
 
 **Do NOT apply when:** a worktree is locked, or holds uncommitted work that nobody has
 reviewed; the bulk files are raw data as received, which stay in the owning private
 repository per [`codes-standards-data-routing.md`](codes-standards-data-routing.md).
 
 **Enforcement gradient** (per [`patterns.md`](patterns.md)): Level 2 scripts
-`scripts/operations/workstation-hygiene.sh` (checkouts on one host) and
-`scripts/hygiene/fleet_baseline.py` + `cleanup_plan.py` (storage across hosts, #4532), all
-report-first. Run the fleet baseline monthly and whenever a drive falls below about 15 % free;
+`scripts/operations/workstation-hygiene.sh` (checkouts on one host),
+`scripts/workstations/ws_hygiene_audit.py` (workspace-root layout & `_wt/` purity against
+`ws-root-policy.yaml`), and `scripts/hygiene/fleet_baseline.py` + `cleanup_plan.py` (storage
+across hosts, #4532), all report-first. Run the fleet baseline monthly and whenever a drive falls below about 15 % free;
 promote to a scheduled report under #3992 once it has run clean on each host.
 
 **Related:** [`merge-cleanup.md`](merge-cleanup.md), [`merge-authorization.md`](merge-authorization.md),
