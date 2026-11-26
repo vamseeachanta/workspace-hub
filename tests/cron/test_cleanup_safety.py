@@ -168,15 +168,20 @@ def odd_tree(tmp_path):
     return tree, names
 
 
+def gnu_archive_or_skip(archive):
+    """Skip only when a tool runs but is not GNU (an environment fact, e.g. uutils sort on
+    Ubuntu 26.04 runners). A missing binary or a failing --version propagates and fails."""
+    try:
+        archive.require_gnu()
+    except ValueError as exc:
+        pytest.skip(f"GNU archive toolchain unavailable: {exc}")
+    return archive
+
+
 @pytest.fixture(scope="module")
 def gnu_archive():
     pytest.importorskip("fcntl", reason="archive creation requires POSIX file locking")
-    archive = load("cleanup_archive")
-    try:
-        archive.require_gnu()
-    except (FileNotFoundError, subprocess.CalledProcessError, ValueError) as exc:
-        pytest.skip(f"GNU archive toolchain unavailable: {exc}")
-    return archive
+    return gnu_archive_or_skip(load("cleanup_archive"))
 
 
 def test_manifest_roundtrip_archive_and_sidecar(tmp_path, gnu_archive):
@@ -357,21 +362,54 @@ def test_bsd_tools_refused(monkeypatch):
         archive.require_gnu()
 
 
-def test_refusal_names_the_non_gnu_tool(monkeypatch):
-    """Only sort lacks the GNU banner (uutils on Ubuntu 26.04 runners): the refusal must say so."""
-    archive = load("cleanup_archive")
-
+def gnu_fake(non_gnu=None, banner=b"(uutils coreutils) 0.2", calls=None):
+    """Fake --version runner: every tool reports GNU except non_gnu. The non-GNU banner
+    deliberately omits the tool name, so only require_gnu's own wording can name it."""
     def fake_run(cmd, **kw):
-        banner = b"sort (uutils coreutils) 0.2" if cmd[0] == "sort" else b"%s (GNU) 1" % cmd[0].encode()
-        return subprocess.CompletedProcess(cmd, 0, stdout=banner)
+        if calls is not None:
+            calls.append((list(cmd), kw.get("check")))
+        stdout = banner if cmd[0] == non_gnu else b"%s (GNU coreutils) 9.4" % cmd[0].encode()
+        return subprocess.CompletedProcess(cmd, 0, stdout=stdout)
+    return fake_run
 
-    monkeypatch.setattr(archive.subprocess, "run", fake_run)
+
+@pytest.mark.parametrize("tool", ["find", "sort", "tar"])
+def test_refusal_names_the_non_gnu_tool(monkeypatch, tool):
+    archive = load("cleanup_archive")
+    monkeypatch.setattr(archive.subprocess, "run", gnu_fake(non_gnu=tool))
     with pytest.raises(ValueError) as caught:
         archive.require_gnu()
     message = str(caught.value)
-    assert "NOT_EVALUATED" in message
-    assert "sort" in message and "uutils" in message
-    assert "find" not in message and "tar" not in message
+    assert f"GNU {tool} is required" in message and "NOT_EVALUATED" in message
+    assert "uutils" in message
+
+
+def test_refusal_banner_skips_blank_lines(monkeypatch):
+    archive = load("cleanup_archive")
+    monkeypatch.setattr(archive.subprocess, "run", gnu_fake(non_gnu="sort", banner=b"\n  \nuutils sort 0.2\n"))
+    with pytest.raises(ValueError, match=r"found: uutils sort 0\.2\)"):
+        archive.require_gnu()
+
+
+def test_gnu_banners_accepted_and_all_three_checked(monkeypatch):
+    """Guards the skip fixture: a regression that refuses GNU tools must fail here, on every host."""
+    archive = load("cleanup_archive")
+    calls = []
+    monkeypatch.setattr(archive.subprocess, "run", gnu_fake(calls=calls))
+    archive.require_gnu()
+    assert calls == [(["find", "--version"], True), (["sort", "--version"], True), (["tar", "--version"], True)]
+
+
+def test_gnu_fixture_skips_only_on_a_non_gnu_banner(monkeypatch):
+    """A missing binary or a failing --version is a defect, not an environment fact: it must not skip."""
+    archive = load("cleanup_archive")
+
+    def missing(cmd, **kw):
+        raise FileNotFoundError(cmd[0])
+
+    monkeypatch.setattr(archive.subprocess, "run", missing)
+    with pytest.raises(FileNotFoundError):
+        gnu_archive_or_skip(archive)
 
 
 def test_shell_only_temporary_targets(tmp_path):
