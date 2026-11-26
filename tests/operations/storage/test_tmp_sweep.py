@@ -1,4 +1,5 @@
 """Exercise the temporary-folder sweep only in isolated temporary trees."""
+from contextlib import chdir
 import mmap
 import os
 from pathlib import Path
@@ -80,7 +81,8 @@ def test_protected_folder_is_kept(tmp_path, kind):
         os.utime(folder / "payload", None)
     elif kind == "socket":
         listener = socket.socket(socket.AF_UNIX)
-        listener.bind(str(folder / "socket"))
+        with chdir(folder):
+            listener.bind("socket")
     elif kind in ("dirty-git", "git-without-remote"):
         subprocess.run(["git", "init", "-q", str(folder)], check=True)
         if kind == "dirty-git":
@@ -110,6 +112,8 @@ def test_protected_folder_is_kept(tmp_path, kind):
         result = run(root, "--move", str(archive))
         assert result.returncode == 0, result.stderr
         assert "KEPT\t" in result.stdout
+        if kind == "socket":
+            assert f"KEPT\t{folder}\tsocket" in result.stdout.splitlines()
         if kind == "git-without-remote":
             assert "git-without-remote" in result.stdout
         assert folder.exists()

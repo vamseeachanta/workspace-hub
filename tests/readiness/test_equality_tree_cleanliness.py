@@ -207,8 +207,10 @@ def _snapshot(ws: Path) -> bytes:
 
 def _run_collect(ws: Path, tmp_path: Path, *args: str, expect_rc: int = 0,
                  **envx: str) -> subprocess.CompletedProcess:
-    res = subprocess.run(["bash", str(ws / "scripts" / "readiness" / "collect-equality.sh"), *args],
-                         env=_env(ws, tmp_path, **envx), capture_output=True, text=True,
+    env = _env(ws, tmp_path, **envx)
+    res = subprocess.run(["bash", str(ws / "scripts" / "readiness" / "collect-equality.sh"),
+                          "--machine", env["EQ_MACHINE"], *args],
+                         env=env, capture_output=True, text=True,
                          timeout=180)
     assert res.returncode == expect_rc, f"rc={res.returncode}\n{res.stdout}\n{res.stderr}"
     return res

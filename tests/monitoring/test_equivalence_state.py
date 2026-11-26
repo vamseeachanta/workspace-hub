@@ -10,6 +10,7 @@ import importlib.util
 import io
 import json
 import os
+import subprocess
 import types
 
 import pytest
@@ -466,14 +467,29 @@ def test_resolve_identity_from_registry(tmp_path):
     assert es.resolve_identity(str(tmp_path / "nope.yaml"), "x") == ("unknown-x", "unknown")
 
 
-def test_same_role_machines_do_not_clobber_end_to_end(tmp_path):
+@pytest.fixture
+def publish_repo(tmp_path, monkeypatch):
+    for key in list(os.environ):
+        if key.startswith("GIT_"):
+            monkeypatch.delenv(key)
+    monkeypatch.setenv("GIT_CONFIG_NOSYSTEM", "1")
+    monkeypatch.setenv("GIT_CONFIG_GLOBAL", os.devnull)
+    for role in ("AUTHOR", "COMMITTER"):
+        monkeypatch.setenv(f"GIT_{role}_NAME", "Fixture")
+        monkeypatch.setenv(f"GIT_{role}_EMAIL", "fixture")
+
+    origin = tmp_path / "origin.git"
+    work = tmp_path / "work"
+    subprocess.run(["git", "init", "-q", "--bare", str(origin)], check=True)
+    subprocess.run(["git", "init", "-q", str(work)], check=True)
+    subprocess.run(["git", "-C", str(work), "remote", "add", "origin", str(origin)], check=True)
+    return work
+
+
+def test_same_role_machines_do_not_clobber_end_to_end(publish_repo):
     """Integration (#3516 reproduction inverted): two machines, same role,
     publish machine-keyed -> collect sees BOTH."""
-    import subprocess as sp
-    origin = tmp_path / "origin.git"; work = tmp_path / "work"
-    sp.run(["git", "init", "-q", "--bare", str(origin)], check=True)
-    sp.run(["git", "init", "-q", str(work)], check=True)
-    sp.run(["git", "-C", str(work), "remote", "add", "origin", str(origin)], check=True)
+    work = publish_repo
     fp1 = _fingerprint(machine_id="sample-a", hostname="sample-a")
     fp2 = _fingerprint(machine_id="sample-b", hostname="sample-b")
     assert es.publish(str(work), "sample-a", fp1) is True
@@ -590,22 +606,15 @@ def test_verify_publish_cli_uses_explicit_remote_and_ref(tmp_path, monkeypatch, 
 
 @pytest.mark.parametrize("pipe_encoding", ["utf-8", "cp1252"])
 def test_multiline_publish_verifies_through_windows_text_pipe(
-    tmp_path, monkeypatch, pipe_encoding,
+    publish_repo, monkeypatch, pipe_encoding,
 ):
     """Windows text stdin translates LF and uses the active locale encoding.
 
     Binary stdin must preserve both LF and UTF-8 for the independent reader.
     Real Git objects establish that publication and verification agree.
     """
-    for key in ("GIT_DIR", "GIT_WORK_TREE", "GIT_COMMON_DIR", "GIT_INDEX_FILE",
-                "GIT_OBJECT_DIRECTORY", "GIT_ALTERNATE_OBJECT_DIRECTORIES"):
-        monkeypatch.delenv(key, raising=False)
+    work = publish_repo
     real_run = es.subprocess.run
-    remote = tmp_path / "origin.git"
-    work = tmp_path / "work"
-    real_run(["git", "init", "-q", "--bare", str(remote)], check=True)
-    real_run(["git", "init", "-q", str(work)], check=True)
-    real_run(["git", "-C", str(work), "remote", "add", "origin", str(remote)], check=True)
     transported = []
 
     def windows_pipe(argv, input=None, text=False, **kwargs):

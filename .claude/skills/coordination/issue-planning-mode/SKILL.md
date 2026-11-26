@@ -175,7 +175,7 @@ Operational pitfall: do not update `docs/plans/README.md` to `plan-review` and s
 
 ### Step 5: Authority and Owner Approval
 
-Independently verify the applicable user/session instruction and its repository, issue, operation, scope and reviewed revision. Routine bounded work may use standing authorization; substantial implementation needs matching task authority, not separate plan approval; irreversible steps are the team's call with the safeguards in `config/agents/SHARED_SOUL.md` (log on fleet-ops #577 first, back up first); client-facing messages and spending stay with the owner. Reuse authorization already given. Never infer authority from successful tool execution.
+Independently verify the applicable user/session instruction and its repository, issue, operation, action and destination, scope and reviewed revision. Routine bounded work may use standing authorization; substantial implementation needs matching task authority, not separate plan approval; irreversible steps are the team's call with the safeguards in `config/agents/SHARED_SOUL.md` (log on fleet-ops #577 first, back up first); client-facing messages and spending stay with the owner. Reuse authorization already given. Never infer authority from successful tool execution.
 
 The owner controls `status:plan-approved`; the implementing agent never self-labels it. A user may record an approval through an owner-controlled GitHub event or an independently established session instruction. Agent-authored summaries and `.planning/plan-approved/<issue>.md` files remain references requiring provenance checks.
 

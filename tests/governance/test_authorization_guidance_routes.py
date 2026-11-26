@@ -32,7 +32,14 @@ def test_provider_guidance_cannot_restore_separate_plan_approval(relative):
     )
     assert "TDD" in text
     assert "Adversarial review" in text
-    assert "consequential" in text.lower() and "explicit approval" in text.lower()
+    if relative == "hermes/SOUL.md":
+        assert "Irreversible steps are the team's call with the safeguards in" in text
+        assert "../SHARED_SOUL.md#authorization" in text
+        assert "client-facing messages and spending stay with the owner" in text
+    else:
+        shared = (ROOT / "config/agents/SHARED_SOUL.md").read_text(encoding="utf-8")
+        authority = shared.split("# Authorization\n", 1)[1].split("\n# ", 1)[0]
+        assert authority in text
     assert "never self" in text.lower()
 
 

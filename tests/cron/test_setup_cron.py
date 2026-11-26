@@ -6,6 +6,10 @@ import os
 import subprocess
 from pathlib import Path
 
+import yaml
+
+from scripts.cron import cron_render
+
 
 REPO = Path(__file__).resolve().parents[2]
 SETUP = REPO / "scripts" / "cron" / "setup-cron.sh"
@@ -69,12 +73,18 @@ def test_setup_cron_machine_windows_exits_before_linux_transaction(tmp_path):
 
 
 def test_setup_cron_rejects_remote_linux_machine(tmp_path):
+    registry = yaml.safe_load(cron_render.DEFAULT_REGISTRY.read_text(encoding="utf-8"))
+    local_id = cron_render.resolve_machine(registry=registry)["machine_id"]
+    remote_id = next(
+        name for name, machine in registry["machines"].items()
+        if machine.get("os") == "linux" and name != local_id
+    )
     result, installed = _run_setup(
-        tmp_path, "--machine", "ace-linux-2", "--allow-live-reload"
+        tmp_path, "--machine", remote_id, "--allow-live-reload"
     )
 
-    assert result.returncode != 0
-    assert "refusing to reconcile local crontab" in result.stderr
+    assert result.returncode == 2, result.stderr + result.stdout
+    assert f"refusing to reconcile local crontab for remote machine {remote_id}" in result.stderr
     assert installed == ""
 
 

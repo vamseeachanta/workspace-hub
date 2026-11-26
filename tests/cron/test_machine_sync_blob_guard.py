@@ -59,6 +59,8 @@ exit 0
 def test_real_git_pending_history(tmp_path, size, expected):
     """Exercise the actual history pipeline with trees and named blob records."""
     env = {k: v for k, v in os.environ.items() if not k.startswith("GIT_")}
+    env.update(GIT_AUTHOR_NAME="fixture", GIT_AUTHOR_EMAIL="fixture",
+               GIT_COMMITTER_NAME="fixture", GIT_COMMITTER_EMAIL="fixture")
 
     def git(*args, input=None):
         return subprocess.run([shutil.which("git"), *args], cwd=tmp_path, env=env,

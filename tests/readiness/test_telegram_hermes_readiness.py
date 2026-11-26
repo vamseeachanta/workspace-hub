@@ -10,7 +10,10 @@ import sys
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
 
+import pytest
 import yaml
+
+pytestmark = pytest.mark.usefixtures("local_dispatch_identity")
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 MODULE_PATH = REPO_ROOT / "scripts" / "readiness" / "telegram_hermes_readiness.py"
@@ -26,7 +29,7 @@ def _registry(tmp_path: Path) -> Path:
     data = {
         "machines": {
             "dev-primary": {
-                "hostname": "ace-linux-1",
+                "hostname": module.socket.gethostname(),
                 "os": "linux",
                 "role": "primary-dev",
                 "workspace_root": str(tmp_path / "workspace-hub"),
@@ -683,11 +686,12 @@ def test_hostname_alias_selects_logical_host_id(tmp_path: Path, monkeypatch) -> 
     monkeypatch.setenv("TELEGRAM_HERMES_ALLOWED_USER_IDS", "12345")
     monkeypatch.setenv("TELEGRAM_HERMES_BOT_TOKEN", "fake-token-present")
 
-    report = module.collect_readiness(registry, host_id="ace-linux-1")
+    hostname = module.socket.gethostname()
+    report = module.collect_readiness(registry, host_id=hostname)
 
     assert report["errors"] == []
     assert list(report["hosts"].keys()) == ["dev-primary"]
-    assert report["hosts"]["dev-primary"]["hostname"] == "ace-linux-1"
+    assert next(iter(report["hosts"].values()))["hostname"] == hostname
 
 
 def test_unknown_host_id_is_fail_closed(tmp_path: Path) -> None:

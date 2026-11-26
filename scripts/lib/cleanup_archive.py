@@ -70,7 +70,9 @@ def require_gnu():
     for tool in ("find", "sort", "tar"):
         version = subprocess.run([tool, "--version"], check=True, capture_output=True).stdout
         if b"GNU" not in version:
-            raise ValueError("GNU find, sort and tar are required; archive NOT_EVALUATED")
+            lines = (line.strip() for line in version.decode("utf-8", "replace").splitlines())
+            banner = next((line for line in lines if line), "no version output")
+            raise ValueError(f"GNU {tool} is required (found: {banner}); archive NOT_EVALUATED")
 
 
 def archive_payload(source, path):

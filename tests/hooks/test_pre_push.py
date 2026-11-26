@@ -6,11 +6,10 @@ Run with:
 
 import json
 import os
+import shutil
 import subprocess
-import tempfile
 import textwrap
 from pathlib import Path
-from unittest.mock import MagicMock, call, patch
 
 import pytest
 
@@ -41,6 +40,25 @@ def _tier1_repos() -> list[str]:
 TIER1_REPOS = _tier1_repos()
 
 
+@pytest.fixture(autouse=True)
+def scope_checkout(tmp_path, monkeypatch):
+    """Exercise the hook against fixture repositories with the real tier list and scanner."""
+    for key in list(os.environ):
+        if key.startswith(("GIT_", "PRE_PUSH_", "TIER1_REPOS_")):
+            monkeypatch.delenv(key)
+    monkeypatch.setenv("GIT_CONFIG_NOSYSTEM", "1")
+    monkeypatch.setenv("GIT_CONFIG_GLOBAL", os.devnull)
+    repo = tmp_path / "workspace"
+    for directory in [repo, *(repo / name for name in TIER1_REPOS)]:
+        subprocess.run(["git", "init", "-q", "--template=", str(directory)], check=True)
+    for relative in ("config/tier1-python-repos.txt", "scripts/lib/tier1-repos.sh",
+                     "scripts/security/secrets-scan.sh", ".gitleaks.toml"):
+        target = repo / relative
+        target.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(REPO_ROOT / relative, target)
+    monkeypatch.chdir(repo)
+
+
 def _run_hook(
     stdin_lines: list[str],
     env_extra: dict | None = None,
@@ -64,7 +82,8 @@ def _run_hook(
     # locally and is advisory in CI, where enforcement-env is absent. That made
     # the result depend on the operator's shell — the suite passed in CI and
     # failed on a developer machine. Pin it here rather than expecting every
-    # caller to remember (#3796).
+    # caller to remember (#3796). The scope_checkout fixture isolates the
+    # repositories; it does not clear these variables, so the pins stay.
     # Unconditional, NOT setdefault: setdefault defers to the ambient value,
     # which is the exact thing being neutralised. Callers that genuinely want
     # strict mode pass it via env_extra, which is applied after this.
@@ -88,7 +107,6 @@ def _run_hook(
         text=True,
         env=env,
         timeout=timeout,
-        cwd=str(REPO_ROOT),
     )
     return result
 
@@ -465,7 +483,6 @@ class TestSmokeHelp:
             ["bash", str(HOOK_SCRIPT), "--help"],
             capture_output=True,
             text=True,
-            cwd=str(REPO_ROOT),
             timeout=10,
         )
         # --help should exit 0 and print usage
