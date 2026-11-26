@@ -15,6 +15,7 @@ import subprocess
 from urllib.parse import quote, urlparse
 
 LIMIT = 262144
+PDF_LIMIT = 32 * 1024 * 1024
 SLUG = re.compile(r"[a-z0-9][a-z0-9-]{0,79}\Z")
 REPOSITORY = re.compile(r"[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+\Z")
 
@@ -131,7 +132,8 @@ def render(data):
             markup.append("<h1>" + htext + "</h1>")
         elif kind == "heading":
             markdown.append("## " + mdtext)
-            markup.append(f'<h2 id="{ident}">{htext}</h2>')
+            heading_id = ident if ident == "coverage" else f"section-{ident}"
+            markup.append(f'<h2 id="{heading_id}">{htext}</h2>')
         elif kind == "bullet":
             markdown.append("- " + mdtext)
             markup.append(f'<div class="bullet">• {htext}</div>')
@@ -209,7 +211,7 @@ def owner_receipt(source, root, data):
         repo = origin.removeprefix("git@github.com:").removesuffix(".git")
     else:
         parsed = urlparse(origin)
-        if parsed.hostname != "github.com":
+        if parsed.scheme not in ("https", "ssh") or parsed.hostname != "github.com":
             raise ValueError("Owner origin must be a verified GitHub repository")
         repo = parsed.path.lstrip("/").removesuffix(".git")
     if repo != data["owner_repository"]:
@@ -268,12 +270,14 @@ def verify_bundle(destination, for_publication=False, owner_root=None):
     if any((destination / name).read_text(encoding="utf-8") != text for name, text in expected.items()):
         raise ValueError("Projections differ from canonical content")
     receipt_path = destination / "pdf-receipt.json"
+    pdf_path = destination / "dashboard.pdf"
+    _no_links(receipt_path)
+    _no_links(pdf_path)
     if receipt_path.exists():
-        _no_links(receipt_path)
+        _check_pdf_file(pdf_path, PDF_LIMIT)
+        _check_pdf_file(receipt_path, LIMIT)
         receipt = json.loads(receipt_path.read_text(encoding="utf-8"), object_pairs_hook=_pairs)
         _exact(receipt, ("content_version", "html_sha256", "pdf_sha256", "pages", "content_checked", "links_checked"))
-        pdf_path = destination / "dashboard.pdf"
-        _no_links(pdf_path)
         if (receipt["content_version"] != manifest["content_version"]
                 or receipt["html_sha256"] != manifest["artifacts"]["dashboard.html"]
                 or receipt["pdf_sha256"] != hashlib.sha256(pdf_path.read_bytes()).hexdigest()
@@ -283,6 +287,8 @@ def verify_bundle(destination, for_publication=False, owner_root=None):
         if _pdf_content_receipt(destination, manifest, data, receipt["pages"]) != receipt:
             raise ValueError("PDF content differs from its receipt")
         manifest = {**manifest, "pdf_status": "generated_and_checked", "pdf_receipt": receipt}
+    elif for_publication and pdf_path.exists():
+        raise ValueError("PDF receipt required for publication")
     if for_publication:
         if data["hold"] or not manifest["owner"] or owner_root is None:
             raise ValueError("Hold or unverified private owner prevents publication acceptance")
@@ -291,11 +297,14 @@ def verify_bundle(destination, for_publication=False, owner_root=None):
             raise ValueError("Owner revision changed; regenerate")
     return manifest
 
+def _check_pdf_file(path, limit):
+    if not path.is_file() or not 1 <= path.stat().st_size <= limit:
+        raise ValueError(f"Expected a nonempty regular file within {limit} bytes: {path.name}")
+
 def _pdf_content_receipt(destination, manifest, data, expected_pages):
     pdf_path = destination / "dashboard.pdf"
     _no_links(pdf_path)
-    if not pdf_path.is_file() or not 1 <= pdf_path.stat().st_size <= 33554432:
-        raise ValueError("Missing or oversized PDF")
+    _check_pdf_file(pdf_path, PDF_LIMIT)
     from pypdf import PdfReader
     reader = PdfReader(pdf_path)
     if len(reader.pages) != expected_pages:

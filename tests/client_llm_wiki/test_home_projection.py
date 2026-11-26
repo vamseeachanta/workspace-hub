@@ -1,6 +1,7 @@
 """Synthetic acceptance tests: no client records, apps, solvers or downloads."""
 import copy
 import json
+import os
 from pathlib import Path
 import subprocess
 import sys
@@ -31,6 +32,30 @@ def record():
 
 
 class ProjectionTests(unittest.TestCase):
+    def init_owner(self, root):
+        env = patch.dict(os.environ)
+        env.start()
+        self.addCleanup(env.stop)
+        for name in ("GIT_DIR", "GIT_COMMON_DIR", "GIT_WORK_TREE", "GIT_INDEX_FILE",
+                     "GIT_OBJECT_DIRECTORY", "GIT_ALTERNATE_OBJECT_DIRECTORIES"):
+            os.environ.pop(name, None)
+        self.git(root, "init", "-q")
+        self.git(root, "remote", "add", "origin", "https://github.com/example/private-owner.git")
+        source = root / "client.json"
+        source.write_text(json.dumps(record()), encoding="utf-8")
+        return source
+
+    @staticmethod
+    def git(root, *args):
+        subprocess.run(["git", "-C", str(root), *args], check=True, capture_output=True,
+                       creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
+
+    def commit_record(self, source, data):
+        source.write_text(json.dumps(data), encoding="utf-8")
+        self.git(source.parent, "add", source.name)
+        self.git(source.parent, "-c", "user.name=Fixture", "-c", "user.email=fixture@example.invalid",
+                 "-c", "commit.gpgsign=false", "commit", "-qm", "Synthetic record")
+
     def test_same_model_in_markdown_html_and_index(self):
         data = record()
         rendered = hp.render(data)
@@ -49,8 +74,11 @@ class ProjectionTests(unittest.TestCase):
         self.assertNotEqual(hp.content_version(data), hp.content_version(changed))
 
     def test_duplicate_and_unknown_fields_rejected(self):
-        with self.assertRaises(ValueError):
-            hp.parse_record('{"schema":1,"schema":1}')
+        valid = json.dumps(record())
+        self.assertEqual(hp.parse_record(valid), record())
+        duplicate = valid.replace('"schema": 1', '"schema": 1, "schema": 1', 1)
+        with self.assertRaisesRegex(ValueError, "^Duplicate JSON field$"):
+            hp.parse_record(duplicate)
         data = record()
         data["unexpected"] = True
         with self.assertRaises(ValueError):
@@ -98,14 +126,57 @@ class ProjectionTests(unittest.TestCase):
                 hp.verify_bundle(out)
 
     def test_hold_blocks_all_publication_acceptance(self):
-        data = record()
-        data["hold"] = True
         with tempfile.TemporaryDirectory() as tmp:
-            out = Path(tmp) / "held"
-            hp.write_bundle(data, out)
-            with self.assertRaises(ValueError):
-                hp.verify_bundle(out, for_publication=True)
-            self.assertTrue(hp.verify_bundle(out)["hold"])
+            owner = Path(tmp)
+            source = self.init_owner(owner)
+            for held in (False, True):
+                with self.subTest(hold=held):
+                    data = dict(record(), hold=held)
+                    self.commit_record(source, data)
+                    out = owner / str(held)
+                    hp.write_bundle(data, out, hp.owner_receipt(source, owner, data))
+                    self.assertEqual(hp.verify_bundle(out)["hold"], held)
+                    if held:
+                        with self.assertRaisesRegex(ValueError, "Hold"):
+                            hp.verify_bundle(out, for_publication=True, owner_root=owner)
+                    else:
+                        self.assertFalse(hp.verify_bundle(out, for_publication=True, owner_root=owner)["hold"])
+
+    def test_publication_requires_receipt_for_present_pdf(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            owner = Path(tmp)
+            source = self.init_owner(owner)
+            data = record()
+            self.commit_record(source, data)
+            out = owner / "bundle"
+            hp.write_bundle(data, out, hp.owner_receipt(source, owner, data))
+            (out / "dashboard.pdf").write_bytes(b"%PDF-fixture")
+            with self.assertRaisesRegex(ValueError, "PDF receipt"):
+                hp.verify_bundle(out, for_publication=True, owner_root=owner)
+
+    def test_pdf_and_receipt_type_and_size_checked_before_read(self):
+        for name, limit in (("dashboard.pdf", 32 * 1024 * 1024), ("pdf-receipt.json", hp.LIMIT)):
+            for invalid in ("directory", "oversized", "empty"):
+                with self.subTest(name=name, invalid=invalid), tempfile.TemporaryDirectory() as tmp:
+                    out = Path(tmp) / "bundle"
+                    hp.write_bundle(record(), out)
+                    pdf, receipt = out / "dashboard.pdf", out / "pdf-receipt.json"
+                    bad = out / name
+                    (receipt if bad == pdf else pdf).write_bytes(b"fixture")
+                    if invalid == "directory":
+                        bad.mkdir()
+                    else:
+                        with bad.open("wb") as stream:
+                            stream.truncate(limit + 1 if invalid == "oversized" else 0)
+                    regular_open = Path.open
+
+                    def check_before_read(path, *args, **kwargs):
+                        if path in (pdf, receipt):
+                            self.fail(f"Read {path.name} before checking {name}")
+                        return regular_open(path, *args, **kwargs)
+
+                    with patch.object(Path, "open", check_before_read), self.assertRaises(ValueError):
+                        hp.verify_bundle(out, for_publication=True)
 
     def test_feedback_bound_to_version_and_section(self):
         data = record()
@@ -132,22 +203,34 @@ class ProjectionTests(unittest.TestCase):
 
     def test_owner_binding_requires_committed_matching_record(self):
         with tempfile.TemporaryDirectory() as tmp:
-            owner = Path(tmp) / "owner"
-            owner.mkdir()
-            subprocess.run(["git", "init", "-q", str(owner)], check=True)
-            subprocess.run(["git", "-C", str(owner), "remote", "add", "origin", "https://github.com/example/private-owner.git"], check=True)
-            source = owner / "client.json"
-            source.write_text(json.dumps(record()), encoding="utf-8")
+            owner = Path(tmp)
+            source = self.init_owner(owner)
             with self.assertRaises(ValueError):
                 hp.owner_receipt(source, owner, record())
-            subprocess.run(["git", "-C", str(owner), "add", "client.json"], check=True)
-            subprocess.run(["git", "-C", str(owner), "-c", "user.name=Fixture", "-c", "user.email=fixture@example.invalid", "commit", "-qm", "Synthetic record"], check=True)
+            self.commit_record(source, record())
             receipt = hp.owner_receipt(source, owner, record())
             self.assertEqual(receipt["disposition"], "committed")
             self.assertEqual(len(receipt["commit"]), 40)
-            source.write_text(json.dumps(dict(record(), title="Dirty")), encoding="utf-8")
-            with self.assertRaises(ValueError):
-                hp.owner_receipt(source, owner, record())
+            dirty = dict(record(), title="Dirty")
+            source.write_text(json.dumps(dirty), encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "Canonical record is dirty"):
+                hp.owner_receipt(source, owner, dirty)
+
+    def test_owner_origin_requires_https_or_ssh(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            owner = Path(tmp)
+            source = self.init_owner(owner)
+            self.commit_record(source, record())
+            for origin in ("https://github.com/", "ssh://git@github.com/", "git@github.com:",
+                           "http://github.com/", "git://github.com/", "file://github.com/"):
+                with self.subTest(origin=origin):
+                    self.git(owner, "remote", "set-url", "origin", origin + "example/private-owner.git")
+                    if origin.startswith(("https:", "ssh:", "git@")):
+                        self.assertEqual(hp.owner_receipt(source, owner, record())["repository"],
+                                         "example/private-owner")
+                    else:
+                        with self.assertRaisesRegex(ValueError, "Owner origin"):
+                            hp.owner_receipt(source, owner, record())
 
     def test_feedback_output_cannot_escape_owner(self):
         with tempfile.TemporaryDirectory() as tmp:

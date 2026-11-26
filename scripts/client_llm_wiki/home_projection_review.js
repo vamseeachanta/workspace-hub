@@ -44,9 +44,11 @@
     }
     return validate(result);
   }
-  document.getElementById('review-panel').addEventListener('input', () => {
-    dirty = true; say('Unsaved review. Save review JSON to retain it.');
-  });
+  for (const field of Object.values(fields)) {
+    field.addEventListener('input', () => {
+      dirty = true; say('Unsaved review. Save review JSON to retain it.');
+    });
+  }
   document.getElementById('review-save').onclick = () => {
     try {
       const data = collect();
