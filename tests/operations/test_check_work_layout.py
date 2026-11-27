@@ -30,7 +30,7 @@ def layout(tmp_path, monkeypatch):
     workspace = tmp_path / "ws"
     repo = workspace / "demo"
     repo.mkdir(parents=True)
-    for name in ("_scratch", "_pm", "_wt"):
+    for name in ("_wt", "_pm", "_backups", "_archive", ".claude"):
         (workspace / name).mkdir()
     def git(*args):
         subprocess.run(
@@ -60,13 +60,27 @@ def test_repository(layout):
 def test_worktrees(layout, tmp_path):
     check, workspace, repo, git = layout
     outside = tmp_path / "outside"
-    inside = workspace / "_wt" / "inside"
+    inside = workspace / "_wt" / "demo--inside"
     git("worktree", "add", "--detach", str(outside))
     git("worktree", "add", "--detach", str(inside))
     findings = check["workspace_children"](workspace, lambda p: "fuseblk" if p == inside else "ext4")
     assert {(f["reason"], f["observed"]) for f in findings} == {
         ("worktree outside _wt", str(outside)), ("filesystem fuseblk", str(inside))
     }
+
+
+def test_worktree_entry_names(layout):
+    check, workspace, _, git = layout
+    worktrees = workspace / "_wt"
+    git("worktree", "add", "--detach", str(worktrees / "demo--review"))
+    git("worktree", "add", "--detach", str(worktrees / "review"))
+    (worktrees / "--missing-prefix").mkdir()
+    (worktrees / "demo--").touch()
+    findings = check["workspace_children"](workspace, lambda path: "ntfs")
+    assert [(row["observed"], row["expected"]) for row in findings] == [
+        (str(worktrees / name), "<repo-short>--<slug>")
+        for name in ("--missing-prefix", "demo--", "review")
+    ]
 
 
 def test_alias_and_depth(layout, tmp_path):
@@ -121,7 +135,7 @@ def test_clean_and_unknown_host(layout, tmp_path, monkeypatch, capsys):
     import json
 
     check, workspace, repo, git = layout
-    git("worktree", "add", "--detach", str(workspace / "_wt" / "wt-review"))
+    git("worktree", "add", "--detach", str(workspace / "_wt" / "demo--review"))
     config = tmp_path / "policy.yaml"
     config.write_text(json.dumps({
         "hosts": {"fixture": {"w": str(workspace), "aliases": [], "extra_roots": []}},
@@ -135,6 +149,12 @@ def test_clean_and_unknown_host(layout, tmp_path, monkeypatch, capsys):
     args = ["--config", str(config), "--repo", str(repo), "--json"]
     assert main(["--host", "fixture", *args]) == 0
     assert json.loads(capsys.readouterr().out)["findings"] == []
+    scratch = workspace / "_scratch"
+    scratch.mkdir()
+    assert main(["--host", "fixture", *args]) == 1
+    assert [row["observed"] for row in json.loads(capsys.readouterr().out)["findings"]] == [
+        str(scratch)
+    ]
     assert main(["--host", "unknown", *args]) == 1
     assert "missing host evidence" in capsys.readouterr().out
 
@@ -167,6 +187,14 @@ def test_private_layout_merges(layout, tmp_path, monkeypatch, capsys):
     monkeypatch.setenv("WORK_LAYOUT_PRIVATE", str(private))
     assert main(args) == 0
     capsys.readouterr()
+    malformed = json.loads(private.read_text())
+    malformed["repositories"]["demo"] = []
+    private.write_text(json.dumps(malformed))
+    assert main(args) == 1
+    rows = json.loads(capsys.readouterr().out)["findings"]
+    assert len(rows) == 1
+    assert rows[0]["reason"].startswith("missing repository evidence")
+    assert rows[0]["observed"] == str(repo)
     missing = tmp_path / "absent.json"
     assert main([*args, "--private-config", str(missing)]) == 1
     assert "private layout" in capsys.readouterr().out
@@ -293,7 +321,7 @@ def test_foreign_scan_root(layout, tmp_path):
 
 def test_scan_preserves_tree_and_git_metadata(layout, tmp_path):
     check, workspace, repo, git = layout
-    git("worktree", "add", "--detach", str(workspace / "_wt" / "inside"))
+    git("worktree", "add", "--detach", str(workspace / "_wt" / "demo--inside"))
     def snapshot():
         return {str(p.relative_to(tmp_path)): (p.lstat().st_mode, p.lstat().st_mtime_ns,
                 p.read_bytes() if p.is_file() else None) for p in tmp_path.rglob("*")}
@@ -313,10 +341,12 @@ def test_linux_mountinfo_parsing(tmp_path, monkeypatch):
     network.mkdir()
     file_mount = tmp_path / "file"
     file_mount.touch()
-    encoded = str(volume).replace(" ", r"\040")
-    text = (f"1 0 8:1 / {encoded} rw - ext4 /dev/disk rw\n"
-            f"2 0 0:2 / {network} rw - nfs4 server:/export rw\n"
-            f"3 0 8:1 / {file_mount} rw - ext4 /dev/disk rw\n")
+    def encoded(path):
+        return str(path).replace("\\", r"\134").replace(" ", r"\040")
+
+    text = (f"1 0 8:1 / {encoded(volume)} rw - ext4 /dev/disk rw\n"
+            f"2 0 0:2 / {encoded(network)} rw - nfs4 server:/export rw\n"
+            f"3 0 8:1 / {encoded(file_mount)} rw - ext4 /dev/disk rw\n")
     original = Path.read_text
     monkeypatch.setattr(Path, "read_text", lambda p, *a, **kw:
                         text if p == Path("/proc/self/mountinfo") else original(p, *a, **kw))

@@ -14,7 +14,7 @@ REMOTE_TYPES = {"9p", "afs", "ceph", "cifs", "davfs", "glusterfs", "nfs",
 LOCAL_TYPES = {"apfs", "btrfs", "exfat", "ext2", "ext3", "ext4", "f2fs",
                "fat", "fat32", "hfs", "hfsplus", "jfs", "ntfs", "ntfs3",
                "overlay", "refs", "ufs", "vfat", "xfs", "zfs"}
-RESERVED = ("_wt", "_scratch", "_pm")
+RESERVED = ("_wt", "_pm", "_backups", "_archive")
 
 
 def merge_private(config, private):
@@ -174,7 +174,10 @@ def scan_roots(roots, home, workspace, aliases, extra_roots, mounts, excluded_pa
                     report("alias target mismatch", path, workspace)
                 return
             name = path.name.casefold()
-            candidate = (name in {"ws", "_wt", "_worktrees", "_scratch", "_pm"}
+            # workspace_children reports direct _scratch entries even outside scan depth.
+            if name == "_scratch" and path.parent != workspace:
+                report("unexpected scratch entry", path, "OS temp or repository .tmp")
+            candidate = (name in {"ws", "_wt", "_worktrees", "_pm"}
                          or name.startswith(("ws-", "wt-")))
             if candidate and (link or stat.S_ISDIR(info.st_mode)) and path not in allowed:
                 report("extra root", path, workspace)
@@ -270,15 +273,25 @@ def workspace_children(workspace, fs_type, origins=None, registered_roots=None):
     for child in sorted(workspace.iterdir()):
         try:
             info = child.lstat()
+            if child.name.casefold() == "_scratch":
+                findings.append(finding("unexpected scratch entry", child,
+                                        "OS temp or repository .tmp"))
+                continue
             if _is_link(info) or not stat.S_ISDIR(info.st_mode):
                 findings.append(finding("unexpected workspace child", child,
                                         "canonical clone or reserved directory"))
                 continue
             marker = child / ".git"
-            if child.name in RESERVED:
+            if child.name in RESERVED or child.name == ".claude":
                 if marker.exists():
                     findings.append(finding("repository occupies reserved directory", child,
                                             workspace / "repository-name"))
+                if child.name == "_wt":
+                    for entry in sorted(child.iterdir()):
+                        prefix, _, slug = entry.name.partition("--")
+                        if not prefix or not slug:
+                            findings.append(finding("invalid worktree name", entry,
+                                                    "<repo-short>--<slug>"))
                 continue
             if not marker.is_dir() or _is_link(marker.lstat()):
                 findings.append(finding("unexpected workspace child", child,
@@ -394,7 +407,7 @@ def main(argv=None):
             name = origin_name(git(repo, "remote", "get-url", "origin").strip().rstrip("/"))
             findings.extend(dict(f, repository=name) for f in
                             repository(repo, config["repositories"][name], args.strict))
-        except (KeyError, OSError, RuntimeError, subprocess.TimeoutExpired) as exc:
+        except (KeyError, TypeError, OSError, RuntimeError, subprocess.TimeoutExpired) as exc:
             findings.append(finding(f"missing repository evidence ({exc})", args.repo,
                                     "accessible repository with a configured baseline", args.repo.name))
     for row in findings:
