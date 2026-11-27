@@ -1,0 +1,125 @@
+schema: knowledge-map/1
+map: ai-seats
+title: AI seats - provider lanes, stop lines and how to use each seat in full
+purpose: >
+  One place that says which AI seat does which work, where each seat stops, how
+  seat usage is measured, and how to read the current figures. Generic layer
+  only: measured usage, reset times, plan tiers, banked resets, the seat-to-host
+  map and deviations are held in the private detail map.
+owner: owner (rulings); team keeps the map current
+verified_at: "2026-11-27T15:45:00Z"
+private_detail: fleet-ops docs/knowledge-maps/ai-seats.yaml (private repository)
+sources:
+  - .claude/rules/model-routing.md (lane table, account-headroom paragraph)
+  - config/ai-tools/ai-accounts.yaml (seat ids, holder roles, routing policy block)
+  - scripts/fleet/account-usage-cron.sh (hourly collector)
+  - scripts/fleet/collect_account_usage_fleet.py (fan-out and aggregate)
+  - scripts/ai/assessment/collect-account-usage.py (per-host probe)
+  - docs/reports/ai-account-usage.md (generated summary)
+  - "fleet-ops (private): ECOSYSTEM.md, the Professional desk's roadmap-pass.md (Limits, Step 2b) and failover-pass.md (seat guard), dashboard/refresh_agy_status.py"
+  - owner rulings 26 and 27 Nov 2026 (recorded in the private map)
+refresh:
+  cadence: >
+    Claude and Codex figures hourly (fleet collector, direct-main exemption in
+    merge-authorization.md); Agy pool hourly from the private road-map pass.
+    Rebuild this map when a lane, stop line or seat id changes.
+  staleness_rule: >
+    A usage file whose captured_at is more than 3 h old counts as not measured
+    and is reported as such; the aggregate ignores per-host samples older than
+    12 h (policy.max_sample_age_hours).
+  commands:
+    read_aggregate: "git -C <workspace-hub> fetch -q origin main && git -C <workspace-hub> show origin/main:config/ai-tools/account-usage-latest.json"
+    probe_this_host: "uv run python scripts/ai/assessment/collect-account-usage.py --json --host <label>"
+    probe_remote_host: "ssh -o BatchMode=yes -o ConnectTimeout=10 <label> 'python3 - --json --host <label>' < scripts/ai/assessment/collect-account-usage.py"
+    read_agy_pool: "ssh -o BatchMode=yes <agy-host> 'cd \"$(mktemp -d)\" && ~/.local/bin/agy --print /usage --print-timeout 45s'"
+    read_agy_record: "git -C <fleet-ops> show origin/intake/ledger:dashboard/agy-account-usage.json"
+    cli_presence: "claude --version; codex --version; codex login status; agy --version"
+standard:
+  rule: .claude/rules/model-routing.md
+  also: [.claude/rules/merge-authorization.md, .claude/rules/workstation-hygiene.md, .claude/rules/licensed-solver-dispatch.md]
+  identity_rule: >
+    Seats are named by config id only. Identity is a fingerprint (first 12 hex
+    of SHA-256 of the lowercased login email) printed by the probe; no address,
+    token, key, auth-file content or billing detail is recorded anywhere.
+lanes:
+  codex: Routine implementation and fix rounds; first reviews of Claude work.
+  claude: >
+    Review of Codex work, client and outward text, decisions, high-impact
+    analysis. Fable for client engineering reviews and heavy-comment rounds.
+  agy_gemini: Plain-English edit pass and review only.
+  model_ids: Taken from the live CLI config, never from this map.
+routing_policy:
+  tight_headroom_pct: 10      # below this weekly headroom a seat is "tight"
+  switch_margin_pct: 15       # switch seats only for at least this much more headroom
+  read_before_dispatch: recommendation.<provider> in account-usage-latest.json
+  marathon_rule: implementation subagents commit and push at every green milestone (quota death clobbers uncommitted worktrees)
+entries:
+  - seat: claude-owner
+    provider: claude
+    holder: owner
+    access: full
+    stop_line: "tight: true (weekly headroom below 10 %); at week_pct 98 the owner desk fails over to the Professional desk"
+    lane: owner desk - routing of asks, owner review pages, decisions, client and outward text
+    burn_well: >
+      Reserve for work only the owner seat may do (owner-held decisions, owner
+      review pages, personal and private-data repositories). In the last day
+      before its weekly reset, with headroom left, spend it on high-impact
+      reviews and heavy-comment rounds rather than leaving it idle.
+  - seat: claude-professional
+    provider: claude
+    holder: colleague
+    access: limited (fewer OAuth grants and org settings)
+    stop_line: "week_pct 98 (owner, 26 Nov 2026); at 98 the desk carries in-flight work only, and failover pauses"
+    lane: senior PM desk, road-map pass, Intake failover, second-provider review of Codex output
+    burn_well: >
+      Run to 98 % before every weekly reset with parallel subagents (owner, 27
+      Nov 2026): second-provider reviews of Codex results, knowledge maps,
+      wiki register passes, report reviews. Never personal or private-data
+      repositories; those stay on the owner seat. Check hours-to-reset each
+      pass and add parallel work when headroom exceeds what the remaining
+      hours will use.
+  - seat: codex-owner
+    provider: codex
+    holder: owner
+    access: full
+    stop_line: "tight: true (weekly headroom below 10 %)"
+    lane: general implementation on every owner-seat host; lane jobs; Codex desks when a Claude seat is out
+    burn_well: >
+      Default Codex seat for routine implementation, fix rounds and first
+      reviews of Claude work; dispatch to the hosts in recommendation.codex.
+      Long marathons go here when it holds the larger headroom.
+  - seat: codex-professional
+    provider: codex
+    holder: colleague
+    access: limited
+    stop_line: "week_pct 98 whatever its tight flag says (owner, 26 Nov 2026); at 98 or on a usage refusal start nothing new"
+    lane: heavy implementation from the road-map pass on its host
+    burn_well: >
+      Keep 6 to 8 jobs in flight and start up to 4 per pass. Each job is
+      confined by its brief to its own worktree, runs with full access because
+      the Windows sandbox fails there (owner, 27 Nov 2026), writes a RESULT
+      file and never commits; the desk reviews and commits. Codex jobs are
+      API-bound and do not compete with solver runs, but the host keeps 16
+      cores and 64 GB free for licensed lanes. Banked full resets are spent
+      before they expire: reach 98 %, then the desk asks the owner to apply
+      the reset that expires first (applying it is the owner's step).
+  - seat: agy-gemini-pool
+    provider: agy (Gemini models; a separate Claude-and-GPT bucket exists in the same pool)
+    holder: owner
+    access: full
+    stop_line: "Gemini weekly remaining at 5 % or less, or five-hour remaining at 10 % or less; any HTTP 429 is a hard stop until reset"
+    lane: third-provider advisory review and plain-English edit passes
+    burn_well: >
+      Use across the Agy-lane hosts until the tokens run out (owner, 26 Nov
+      2026): 1) advisory third-provider reviews of open PRs at current heads,
+      relayed by Claude after checking each finding; 2) plain-English edit
+      passes on articles and reports awaiting owner approval; 3) register
+      passes on wiki pages. Headless with --mode plan; give Agy files, never
+      commands; it never edits a repository and never posts. At most 3 jobs
+      per host and 4 new per pass; public-repository-only hosts take one job
+      at a time. Log tokens and the pool reading after each job.
+per_machine: []   # seat-to-host map held in the private detail map
+deviations: []    # held in the private detail map
+open_questions:
+  - The Agy pool has no seat id in config/ai-tools/ai-accounts.yaml; its record lives only in the private fleet-ops dashboard. Decide whether ai-accounts.yaml should carry it.
+  - The Agy Claude-and-GPT bucket has no stated lane or stop line beyond the shared 5 % weekly rule.

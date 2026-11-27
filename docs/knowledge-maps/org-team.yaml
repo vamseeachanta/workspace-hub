@@ -1,0 +1,244 @@
+schema: knowledge-map/1
+map: org-team
+title: Organisation and team - roles, decision rights, channels and hand-offs (generic part)
+purpose: >-
+  One map of the role types that run the engineering ecosystem, what each role
+  may and may not decide, the channel types it uses, and the hand-off patterns
+  between roles and AI providers. This public file carries the generic part
+  only. Desk-to-host and desk-to-seat assignment, schedules, client teams, live
+  sessions and deviations are held in the private detail file.
+owner: owner (the maintainer); kept current by the coordinating desk
+verified_at: "2026-11-27T15:45Z"
+private_detail: fleet-ops docs/knowledge-maps/org-team.yaml (private repository)
+sources:
+  - path: AGENTS.md
+    note: required controls; owner-held items; irreversible-step safeguards; merge on green
+  - path: config/agents/SHARED_SOUL.md
+    note: Authorization table (operation classes, owner-held row); Hard Gates scope clause; cross-review routing
+  - path: docs/standards/HARD-STOP-POLICY.md
+    note: owner-held items; status:plan-approved is applied by the owner only
+  - path: docs/standards/COORDINATOR_PROTOCOL.md
+    note: coordinator plus six role agents; loop; stall rule
+  - path: config/agents/host-role-routing.yaml
+    note: host role types (coordinator, lane-runner, tool-runner, overflow, portable, inactive)
+  - path: .claude/agents/
+    note: scout, builder, gap-checker, explorer, reporter, verifier, orcaflex-specialist, cfd-lane-operator
+  - path: .claude/rules/human-decision-boards.md
+    note: owner decisions on local HTML boards; save beside the page
+  - path: .claude/rules/merge-authorization.md
+    note: team merges on green required checks; pinned squash; holds apply
+  - path: .claude/rules/model-routing.md
+    note: provider lanes (Codex implements, Claude reviews and decides, Agy plain-English and review)
+  - path: .claude/rules/completeness-before-close.md
+    note: closure verified by a reviewer who did not write the work
+  - path: .claude/rules/goal-invocation.md
+    note: /goal catalog issue workspace-hub#2695 consulted before invocation
+  - path: fleet-ops (private) ECOSYSTEM.md, intake desk prompts, machine-manager prompts, ledger
+    note: desk definitions; read for the private detail file; not reproduced here
+refresh:
+  cadence: weekly, and after any owner ruling that changes decision rights
+  method: >-
+    Re-read the sources above at origin/main, re-read the private detail file,
+    and regenerate this file without host, seat, schedule, client or deviation
+    detail.
+  checker: none yet (Level 0 prose); candidate Level 2 check that every role
+    type in the private file maps to one entry here
+standard:
+  rule: .claude/rules/engineering-register.md
+  also:
+    - .claude/rules/report-audience-and-surface.md (hosted/public surface; client identifiers redacted)
+    - .claude/rules/wiki-sibling-routing.md (client-wiki routing; generic never links to client)
+entries:
+  - id: owner
+    kind: person (role only)
+    does: Sets direction; rules on scope; signs in to accounts; applies banked seat resets; answers decision-board cards.
+    may_decide:
+      - client-facing emails and messages, and anything sent or published in the owner's name
+      - spending money (paid licences, hosted minutes, purchases)
+      - items the owner is already holding, until the owner answers
+      - removal of a rule from the shared ecosystem rule file
+    never: Is asked about routine team decisions in chat; a single short factual question is the only chat exception.
+    channels: [owner chat with the intake desk, decision boards, review-page saves, owner inbox file]
+  - id: intake-desk
+    kind: desk (Claude, owner seat)
+    does: Gives every owner request an id, class, owner and due time; routes it; closes it only with evidence; builds the owner's review pages; files the owner's saves.
+    may_decide: routing, class and due time of each request; drop proposals with a reason (owner informed)
+    never: Does the work itself; sends or publishes in the owner's name without the owner's explicit yes; carries personal material into professional repositories.
+    channels: [ledger rows, owner digest, decision boards, merge-hold register (basis keeper)]
+  - id: intake-failover-desk
+    kind: desk (Claude, second seat)
+    does: Carries the intake workload while the intake desk's seat is out of usage, bounded by explicit start and end ledger rows.
+    may_decide: same as intake-desk, minus anything that needs the owner's own workstation or personal data
+    never: Reads personal data or the owner's local folders; signs in to owner accounts.
+    channels: [ledger rows with a failover channel name, failover log]
+  - id: senior-pm-desk
+    kind: desk (Claude) - coordinator
+    does: Orchestrates across machines; restarts workers; stages supply for lane hosts; answers requests addressed to the PM; reviews Codex work; integrates; merges on green.
+    may_decide: dispatch, priorities, merges on green required checks, releasing a merge hold after checking the head against the base (owner ruling 27 Nov 2026), irreversible steps with the safeguards
+    never: Merges with --admin or while BLOCKED; deletes a branch on merge; merges a client-authored agent PR on a client wiki; acts on owner-held items.
+    channels: [ledger rows, desk log, irreversible-step issue log, PR comments, machine act-lists]
+  - id: road-map-execution-pass
+    kind: scheduled pass of the senior-pm-desk
+    does: Carries in-flight work first; picks the next step of each road-map stream; writes a brief per item; starts Codex in a worktree; reviews the RESULT as second provider; integrates; updates the stream and the ledger.
+    may_decide: which stream step to take next, within seat stop lines and holds
+    never: Picks owner-held steps, steps waiting on a client, held steps or steps already in flight.
+    channels: [road-map stream file, road-map log, ledger rows, PRs]
+  - id: train-workers
+    kind: Claude worker sessions
+    does: Fix and review rounds on candidate PRs, one fresh worker per review at the current head.
+    may_decide: nothing beyond the brief
+    never: Merges; reviews a superseded head.
+    channels: [worker records, PR comments]
+  - id: codex-lane-jobs
+    kind: Codex jobs in worktrees
+    does: Routine implementation, tests and fix rounds from a written brief.
+    may_decide: nothing beyond the brief
+    never: Commits on the desk's behalf (writes a RESULT file); drives a licensed solver.
+    channels: [brief and RESULT files, job records]
+  - id: codex-standby-desks
+    kind: Codex desks (dormant)
+    does: Intake and senior-PM duties on Codex when a Claude seat is out.
+    may_decide: as the desk it stands in for
+    never: Starts a Claude session; edits agent instructions or settings.
+    channels: [codex desk run logs, to-owner file]
+  - id: engineering-lanes
+    kind: role cards for engineering work
+    roles:
+      product-manager: engineering director; decides engineering questions, records each ruling with its basis and number, keeps owner-waiting items at zero
+      delivery-lead: per-client delivery lead; checks every number against its source, labels assumptions, sends nothing to a client without the owner's word
+      solver-manager-loop: keeps the licensed solver fed with QA-passed packages, smoke runs first, client work before benchmarks, every run recorded with hash and licensed minutes
+      analysis-desks: turn idle licence hours into graded benchmark results, kept separate from client work
+    never: Put a model in the licensed solver chain; send to a client.
+    channels: [numbered rulings, solver standing file, run records, client wiki]
+  - id: machine-manager
+    kind: per-host Claude session (one per host)
+    does: Reads its host's status hourly; classifies blocked or lost jobs; reports a verdict and the actions the senior PM should take; runs queued Agy jobs; runs the executor from reviewed manifests only.
+    may_decide: its own report; claiming a queued Agy job
+    never: Deletes, moves or prunes by hand; pushes; places or stops jobs; touches credentials; names clients or people.
+    channels: [host report file, report history, act-list, machine:<host> issues]
+  - id: agy-lane
+    kind: third provider (Gemini-backed Agy, plan mode)
+    does: Advisory third-provider reviews of PRs at their current heads; plain-English edit passes; register passes on wiki pages.
+    may_decide: nothing; every finding is checked by a Claude desk before it is relayed
+    never: Edits a repository; posts; merges; deletes; pushes.
+    channels: [Agy job queue folder, result files, PR comment posted by Claude]
+  - id: writers-desk
+    kind: desk (Claude), lead of the technical writers
+    does: Builds and sharpens the writers; turns repeated owner comments into checks; leads newsletter and report editing.
+    may_decide: writer charters and checks, by PR
+    never: Writes client deliverables itself; merges.
+    channels: [writer files by PR, ledger rows addressed to the Writers desk]
+  - id: specialist-agents
+    kind: subagents
+    roles: [technical-writer, technical-reviewer, cold-reader, claims-verifier, search-consultant, review-gate]
+    does: Draft, review, read cold and verify claims for documents before they reach the owner.
+    never: Issue a document; a review-gate verdict is recorded against the file hash.
+  - id: coordinator-role-agents
+    kind: subagents (workspace-hub .claude/agents)
+    roles: [scout, builder, gap-checker, explorer, reporter, verifier, orcaflex-specialist, cfd-lane-operator]
+    does: Read-only discovery, one-lane TDD implementation, gap checks against Done when, options, drafts, independent verification; domain specialists for OrcaFlex and CFD lanes.
+    never: Integrate, push, label or close; only the coordinator does that.
+  - id: stewards
+    kind: scripted or light desks
+    roles: [dashboards, AI-seat usage, articles curation, storage]
+    does: Keep a measured surface current (dashboards, seat pace, article backlog, storage).
+    never: Change permissions or guardrails.
+  - id: host-conductor
+    kind: OS scheduler per host (no model)
+    does: Pulls the host's signed queue, checks start guards, starts due desk slots and jobs, writes heartbeats and exit results.
+    never: Judges; it runs what the signed queue and schedule say.
+  - id: licensed-solver-path
+    kind: deterministic dispatch (no model)
+    does: Runs licensed solvers through the Scheduled-Task path with one Orcina slot and separate ANSYS slots.
+    never: Has a model in the chain; is driven by an AI lane.
+  - id: client-delivery-teams
+    kind: per-client team (generic type)
+    does: Carries one client's road map, topic desk and deliverables inside that client's private wiki.
+    may_decide: technical content inside the client's wiki
+    never: Sends anything to the client (owner-held); links client to client; places client names in public repositories.
+    channels: [client wiki issues and PRs, stream card on the road map (codename only)]
+  - id: reviewers-by-provider
+    kind: review roles
+    claude: 'second-provider review of Codex work at the current head (first line "Claude review (second provider) at <head8>: PASS | PASS-WITH-NITS | FAIL"); verifier agent for Tier A/B returns'
+    codex: first reviews of Claude work; Codex review lane on Claude-authored PRs; challenger second opinion
+    agy: third-provider advisory review; posted by Claude after each finding is checked
+    rule: reviews are advisory; real bugs get a fix round; no verdict is a merge gate; author and reviewer differ
+decision_rights:
+  owner_only:
+    - client-facing emails and messages, and sends or posts in the owner's name
+    - spending money (paid licences, paid hosted minutes, purchases, cloud credit)
+    - items the owner is already holding, until the owner answers
+    - sign-in, account and banked-reset steps (the owner's own hands)
+    - owner records such as status:plan-approved and completeness verification labels
+  team:
+    - everything else, including irreversible steps (logged on the irreversible-step issue first, backed up first)
+    - merges on green required checks with a pinned squash (no branch delete, never --admin, never while BLOCKED)
+    - releasing a merge hold after checking the head against the base branch, then merging; the owner is informed (owner ruling 27 Nov 2026)
+    - dispatch, routing, priorities, review rounds and fix rounds
+  never_anyone:
+    - handling passwords, tokens, card or bank details
+    - force-push or rewriting main outside the registered exemptions
+    - client names in public repositories or link-shared pages
+    - getting a refused command's result another way
+handoffs:
+  - from: owner
+    to: intake-desk
+    via: chat, review-page saves, owner inbox
+    produces: ledger row with id, class, owner, due
+  - from: intake-desk
+    to: [senior-pm-desk, writers-desk, client-delivery-teams, product manager, business owner, personal desk]
+    via: ledger row and desk outbox
+    rule: class C to the client's delivery lead; E to the product manager; F to the senior PM; B to the business owner; P to the personal desk (kept out of professional repositories)
+  - from: senior-pm-desk
+    to: codex-lane-jobs
+    via: brief file in a worktree
+    returns: RESULT file and diff
+  - from: codex-lane-jobs
+    to: senior-pm-desk (Claude)
+    via: RESULT file
+    rule: Codex writes, Claude reviews at the current head with the tests re-run; one fix round per real bug
+  - from: Claude-authored PR
+    to: Codex review lane
+    rule: the other way round from the line above
+  - from: any PR
+    to: agy-lane
+    via: Agy job queue (files only)
+    rule: third-provider advisory; Claude checks and posts
+  - from: senior-pm-desk
+    to: machine-manager
+    via: act-list, inbox or machine:<host> issue
+    rule: machine work is requested, not done over SSH; removals only through reviewed manifests
+  - from: machine-manager
+    to: senior-pm-desk
+    via: host report "Needs the senior PM now"
+  - from: any desk
+    to: owner
+    via: decision board card or one dated sentence in the to-owner file
+    rule: only owner-held items; recommendation marked; act only on saved board JSON or an explicit owner instruction
+  - from: any desk
+    to: irreversible-step log issue
+    rule: log the step before running it; back up first
+  - from: intake-desk
+    to: intake-failover-desk
+    via: ledger "failover start" and "failover end" rows
+  - from: client contact's own agent PR on a client wiki
+    to: Claude review-only worker
+    rule: the team verifies at the head; the client side merges; the team never merges it
+channel_types:
+  - ledger rows (one JSON line per event, channel names the desk and direction)
+  - issue logs (irreversible-step and PR-sweep log; /goal catalog workspace-hub#2695; machine:<host> issues; idle-check issues)
+  - decision boards (local HTML, one card per decision, recommendation marked, JSON saved beside the page)
+  - desk files (owner inbox, to-owner, outbox, desk logs, act-lists, host reports)
+  - PR comments with fixed first lines per reviewer provider
+  - hold registers (basis holds, merge holds with hold and release rows)
+  - road-map stream file and its rendered page
+  - seat usage file (config/ai-tools/account-usage-latest.json)
+per_machine:
+  note: Host-by-host desk, seat, schedule and live-session detail is held in the private detail file.
+  host_role_types: [coordinator, lane-runner, tool-runner, overflow, portable, inactive]
+deviations:
+  count: 20
+  note: Listed with host, expected, actual and suggested fix in the private detail file.
+open_questions:
+  count: 8
+  note: Listed in the private detail file.

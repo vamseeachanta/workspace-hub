@@ -1,0 +1,155 @@
+schema: knowledge-map/1
+map: machines
+title: Machines - roles, machine classes, the readiness checklist and the runtimes every computer carries
+purpose: >
+  One place that says what kinds of computer the engineering fleet runs, what
+  each class is for, which runtimes each class carries, and the checklist a
+  machine passes before it takes work. Generic layer only: the per-host fleet
+  table (hardware, disks, uptime, accounts, scheduled-task names, sessions,
+  licensed-solver presence) and every deviation are held in the private detail
+  map.
+owner: owner (rulings); team keeps the map current
+verified_at: "2026-11-27T15:45:00Z"
+private_detail: fleet-ops docs/knowledge-maps/machines.yaml (private repository)
+sources:
+  - config/workstations/registry.yaml (registry labels, roles, capabilities)
+  - config/agents/host-role-routing.yaml (coordinator, lane-runner, tool-runner, portable roles; lane caps)
+  - config/ai-tools/ai-accounts.yaml (which seat class is signed in per registry label)
+  - config/scheduled-tasks/schedule-tasks.yaml and mutation-surfaces.yaml (schedule register and mutator audit)
+  - .claude/rules/licensed-solver-dispatch.md (licence lanes, dispatch path, host envelope)
+  - .claude/rules/workstation-hygiene.md (10 % free rule, worktrees not clones)
+  - .claude/rules/soul-deployment-drift.md (provider contract files match origin/main)
+  - .claude/rules/scheduler-mutation-safety.md (scheduler changes)
+  - "fleet-ops (private): ECOSYSTEM.md part 4, machine-manager/WORK-ARCHITECTURE.md (cadence), machine-manager/CONSISTENCY.md (6-hourly run, fleet-ops PR 776, open), intake/onboarding/fresh-machine/CHECKLIST.md, dashboard/machine-readiness.json"
+  - live read-only probes of seven machines from the solver host, 2026-11-27 15:35-15:42Z (results in the private map)
+refresh:
+  cadence: >
+    Every 6 h on every machine once the consistency run (fleet-ops PR 776) is
+    installed; until then, by hand with the probe commands below. Rebuild this
+    map when a machine joins or leaves, changes class, or a checklist row changes.
+  staleness_rule: >
+    A machine reading older than 6 h counts as no reading. A reading the probe
+    cannot take is recorded as missing, never as passed.
+  commands:
+    reach: "ssh -o BatchMode=yes -o ConnectTimeout=10 <host> 'echo ok'   # MagicDNS name, never an address"
+    probe_linux_or_mac: "scp <probe>.sh <host>:/tmp/ && ssh -o BatchMode=yes <host> 'bash /tmp/<probe>.sh'   # script saved with LF line endings"
+    probe_windows_from_bash_host: "scp <probe>.ps1 <host>:C:/Users/<account>/AppData/Local/Temp/ && ssh <host> 'pwsh -NoProfile -File \"C:\\Users\\<account>\\AppData\\Local\\Temp\\<probe>.ps1\"'"
+    os_hw_linux: "cat /etc/os-release; nproc; free -g; uptime; nvidia-smi --query-gpu=name,memory.total --format=csv,noheader; df -P -k -l"
+    os_hw_windows: "Get-CimInstance Win32_OperatingSystem, Win32_ComputerSystem, Win32_Processor; Get-CimInstance Win32_LogicalDisk -Filter 'DriveType=3'"
+    runtimes: "git --version; gh --version; uv --version; python3 --version; node --version; claude --version; codex --version; agy --version; pwsh --version"
+    schedules_linux: "crontab -l; systemctl --user list-timers --all"
+    schedules_windows: "Get-ScheduledTask | Where-Object TaskPath -notlike '\\Microsoft\\*' | Get-ScheduledTaskInfo"
+    sessions: "pgrep -u \"$(id -u)\" -f '(^|/)(claude|codex|agy)( |$)' | wc -l   # Windows: Get-Process claude,codex,agy"
+    contract_drift: "scripts/enforcement/check-soul-deployment-drift.sh --quiet"
+    layout: "uv run python scripts/operations/check-work-layout.py --json"
+    hygiene: "scripts/operations/workstation-hygiene.sh   # report only"
+    readiness_record: "git -C <fleet-ops> show origin/intake/ledger:dashboard/machine-readiness.json"
+standard:
+  rule: .claude/rules/workstation-hygiene.md
+  also:
+    - .claude/rules/licensed-solver-dispatch.md
+    - .claude/rules/soul-deployment-drift.md
+    - .claude/rules/scheduler-mutation-safety.md
+    - .claude/rules/model-routing.md
+  naming_rule: >
+    Public files name machines by host name or registry label only. The map
+    from registry labels to host names, the accounts in use, and every
+    per-host figure stay in the private detail map.
+entries:
+  machine_classes:
+    - class: owner-desk
+      role: the owner's Windows desk; Intake desk, review pages, personal and owner-held work
+      ai_lanes: [claude, codex]
+      lane_cap: 2
+      licensed_solvers: may carry an Orcina install; licensed runs only through the scheduled-task path
+      count: 1
+    - class: solver-host
+      role: Windows server holding the licensed solvers (Orcina and ANSYS lanes); also the Claude desk pass and train workers
+      ai_lanes: [claude]
+      lane_cap: per desk files
+      licensed_solvers: Orcina lane (one Flex seat fleet-wide) and ANSYS lane (AQWA); scheduled-task dispatch only
+      count: 1
+    - class: linux-lane-host
+      role: Codex and Claude lane runner, heavy builds, CI runners; one of them holds the data store (${ACE_DATA_ROOT})
+      ai_lanes: [codex, claude]
+      lane_cap: "6 and 4 by routing file; data-disk cap 2 on the store host"
+      licensed_solvers: none; OpenFOAM (open source)
+      count: 2
+    - class: leased-compute
+      role: leased Linux hosts shared with other tenants; Codex lanes, GPU and CFD work; judged on our share only
+      ai_lanes: "codex on one; none started by the coordinator on the GPU host"
+      lane_cap: "one CFD run at a time, at most 6 cores, on the GPU host"
+      licensed_solvers: none; OpenFOAM
+      count: 2
+    - class: portable
+      role: owner's laptop; one Codex job at a time, hand-run reviews; may sleep
+      ai_lanes: [claude, codex]
+      lane_cap: 1
+      licensed_solvers: none
+      count: 1
+    - class: planned-or-inactive
+      role: registry or routing entries not reached from the probe host (two new Windows work machines, an inactive GPU host, the fleet collector VM)
+      ai_lanes: []
+      lane_cap: 0
+      count: 4
+  reachability_rule: "Every live machine is reached from the desk hosts by MagicDNS name with key auth; licensed Orcina work never runs over direct SSH (licensed-solver-dispatch.md section 1)."
+  licence_lanes:
+    - lane: Orcina (OrcaFlex and OrcaWave)
+      concurrent_dispatch_slots: 1
+      note: one Flex seat licenses a session fleet-wide; a dispatched job may fan out across cores inside it
+    - lane: ANSYS (AQWA)
+      concurrent_dispatch_slots: 2
+      note: independent of the Orcina lane; run both lanes at once
+  required_runtimes:
+    policy: >
+      One version of each tool across every machine that carries it (fleet
+      baseline = the newest version already deployed, unless a ruling pins
+      another). A missing tool on a class that requires it fails readiness.
+    tools:
+      - {tool: git, classes: all}
+      - {tool: gh, classes: all}
+      - {tool: uv, classes: all, note: "Python is run through uv run"}
+      - {tool: python, classes: all, minimum: "3.10", note: "not the Windows Store alias; macOS system Python does not qualify"}
+      - {tool: node, classes: all, minimum: "22 (active LTS or newer)", note: "Claude Code and page checks"}
+      - {tool: claude, classes: [owner-desk, solver-host, linux-lane-host, leased-compute, portable]}
+      - {tool: codex, classes: [owner-desk, solver-host, linux-lane-host, leased-compute, portable]}
+      - {tool: agy, classes: [owner-desk, solver-host, linux-lane-host, portable], note: "Agy plain-English and third-provider reviews"}
+      - {tool: pwsh, classes: [owner-desk, solver-host], minimum: "7"}
+      - {tool: openfoam, classes: [linux-lane-host, leased-compute], note: "packaged openfoamNNNN environments only"}
+  readiness_checklist:
+    note: >
+      Every row is checked on every machine. A row the check cannot read counts
+      as missing. Rows R01-R12 come from the consistency-run design and the
+      work-architecture cadence; R13-R16 from the hygiene, dispatch and data rules.
+    rows:
+      - {id: R01, item: identity, passes_when: "host name matches its registry label and host card; the work root W resolves", check: "consistency.py identity step"}
+      - {id: R02, item: reachability, passes_when: "ssh by MagicDNS name with BatchMode succeeds from the desk hosts within 10 s", check: "refresh.commands.reach"}
+      - {id: R03, item: layout, passes_when: "W holds only registered repositories, _wt, _pm, _backups, _archive and .claude; worktrees only under _wt; no clones in home folders or at drive roots", check: "check-work-layout.py --json"}
+      - {id: R04, item: structure guides, passes_when: "every folder in W and in each repository to the guide depth has a stated purpose", check: "consistency_guides.py"}
+      - {id: R05, item: canonical clones, passes_when: "one clone per repository, on main, clean, fast-forwardable, with post-reset history", check: "consistency.py canonical-clones step"}
+      - {id: R06, item: runtimes, passes_when: "every required tool for the class is present at the fleet baseline", check: "refresh.commands.runtimes"}
+      - {id: R07, item: provider contracts, passes_when: "deployed Claude, Codex, Gemini, Agy and Hermes contract files match origin/main blobs", check: "check-soul-deployment-drift.sh"}
+      - {id: R08, item: permissions and settings, passes_when: "Claude permissions and settings equal the fleet-ops set", check: "sync_permissions.py; probe_fleet.py"}
+      - {id: R09, item: consistency run, passes_when: "the 6-hourly bootstrap is scheduled and W/_pm/consistency/latest.json is under 6 h old and names the pinned commit", check: "read latest.json"}
+      - {id: R10, item: machine manager, passes_when: "Linux and macOS hosts run the watch and hourly manager entries and the installed act list equals fleet-ops", check: "crontab -l; diff act.md"}
+      - {id: R11, item: schedules registered, passes_when: "every scheduled task, cron line or timer that belongs to our work is in a schedule register; none is failing or orphaned", check: "refresh.commands.schedules_*"}
+      - {id: R12, item: work records, passes_when: "every worktree has a work record; merged work closed on content evidence", check: "work.py sweep; wt_sweep.py --merged-prs (dry run)"}
+      - {id: R13, item: disk, passes_when: "every local data volume at least 10 % free, and the host floor in ECOSYSTEM.md met", check: "workstation-hygiene.sh; df / Win32_LogicalDisk"}
+      - {id: R14, item: data placement, passes_when: "bulk solver output on the data store by manifest with a verified second copy; nothing bulky in Git", check: "DATA_PLACEMENT.md manifest check"}
+      - {id: R15, item: licensed dispatch, passes_when: "licensed solvers dispatched only through the scheduled-task path, within lane slots; QA pre-flight before each run", check: "dispatch-run.ps1; routing-rules.yaml"}
+      - {id: R16, item: sign-ins and secrets, passes_when: "sign-ins live in the machine's own credential store; git identity is the noreply address; no plain-file credentials", check: "gh auth status; git config user.email"}
+per_machine:
+  note: held in the private detail map (fleet-ops docs/knowledge-maps/machines.yaml)
+  machines_probed: 7
+  machines_listed_not_reached: 4
+deviations:
+  note: listed in the private detail map
+  count: 27
+  summary: >
+    No machine yet passes R09 (consistency run not installed) or carries a
+    readiness reading; the other deviations are runtime version spread,
+    disk-pressure, failing or orphaned scheduled entries, and register gaps.
+open_questions:
+  - "Fleet baseline versions: should a ruling pin one version per tool (a committed baseline file), or does 'newest deployed' stand?"
+  - "Schedule register: workspace-hub schedule-tasks.yaml covers only part of what runs; which repository owns the one register of live schedules?"
+  - "R09 depends on fleet-ops PR 776 (open, owner-merged class) and its per-machine installation after a #577 log."

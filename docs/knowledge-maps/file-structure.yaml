@@ -1,0 +1,179 @@
+schema: knowledge-map/1
+map: file-structure
+title: Work roots and folder layout across the fleet
+purpose: >-
+  States the one agreed layout for the work root on every machine, the purpose of each reserved
+  folder, the classes of folder found outside that layout, and where each class belongs. This
+  public file holds the machine-neutral part only. Per-machine measurements, sizes, paths and the
+  deviation list are held in the private detail file named below.
+owner: fleet operations (machine manager role)
+verified_at: "2026-11-27T15:41:00Z to 16:25:00Z (census window)"
+private_detail: fleet-ops docs/knowledge-maps/file-structure.yaml (private repository)
+
+sources:
+  - file: fleet-ops machine-manager/WORK-ARCHITECTURE.md (commit 3ff9f64a3, branch not yet on main at measurement)
+    used_for: principles 2 and 3 (one place per kind; worktrees not clones), lifecycle states
+  - file: fleet-ops machine-manager/CONSISTENCY.md (commit f50e00dc1)
+    used_for: 6-hourly consistency run, structure-guide format, unused-folder rule (14 days)
+  - file: fleet-ops intake/cleanup/MACHINE-CLEANUP-PROMPT.md
+    used_for: canonical cross-machine work-root standard (section "Phase 1", item 4)
+  - file: fleet-ops ECOSYSTEM.md section 4 (Machines)
+    used_for: helper and launcher locations per machine
+  - file: workspace-hub config/workstations/ws-structure.yaml (origin/main)
+    used_for: purpose text of each reserved folder
+  - file: workspace-hub config/workstations/work-layout.yaml (PR 4537, open at measurement)
+    used_for: public repository registry and per-repository root baselines
+  - file: workspace-hub scripts/operations/check-structure-guide.py (origin/main, PR 4540 merged)
+    used_for: structure-guide checker
+  - file: workspace-hub .claude/rules/workstation-hygiene.md
+  - file: workspace-hub docs/standards/DATA_PLACEMENT.md
+  - command: gh repo list vamseeachanta; gh api repos/<owner>/<repo>/contents/docs/structure.yaml
+    used_for: which repositories carry a structure guide on their default branch
+  - command: read-only census on rds02, WS014, ace-linux-1, ace-linux-2, spark, gpu-claw and the Mac
+    used_for: counts only in this file; detail in the private file
+
+refresh:
+  - "# 1. structure guides on origin (machine-neutral)"
+  - "gh repo list vamseeachanta --limit 200 --json name,visibility,isArchived,defaultBranchRef"
+  - "gh api repos/vamseeachanta/<repo>/contents/docs/structure.yaml?ref=<default-branch> --silent; echo $?"
+  - "# 2. layout per machine, once PR 4537 lands (report only, exit 1 on any finding)"
+  - "uv run python scripts/operations/check-work-layout.py --json --private-config <private layout file>"
+  - "# 3. folder purposes inside one repository"
+  - "uv run python scripts/operations/check-structure-guide.py <repo-path> --json"
+  - "# 4. fleet run that does all of the above every 6 hours (fleet-ops, report only)"
+  - "python machine-manager/consistency.py --pinned <sha>   # writes W/_pm/consistency/latest.json"
+  - "# 5. until 2-4 run on every host: the census used for this map (private file lists the scripts)"
+
+standard:
+  rule_files:
+    - fleet-ops intake/cleanup/MACHINE-CLEANUP-PROMPT.md (Phase 1 item 4, "Canonical Cross-Machine ~/ws Standard")
+    - fleet-ops machine-manager/WORK-ARCHITECTURE.md (section 2, principles 2 and 3; section 7, habit 1)
+    - workspace-hub .claude/rules/workstation-hygiene.md (items 1 to 3)
+    - workspace-hub docs/standards/DATA_PLACEMENT.md (bulk data leaves Git by manifest)
+  equal_across_machines_means:
+    - Each machine has exactly one work root W on a local filesystem. W is a real folder, not a FUSE
+      or network mount. A convenience alias (symlink or junction such as ~/ws) may point at W.
+    - W holds only registered Git repositories (one canonical clone each, on lean history) and the
+      reserved folders _wt/, _pm/, _backups/, _archive/ and .claude/. No loose files.
+    - Every linked worktree lives at W/_wt/<repo-short>--<slug> and is registered with its clone
+      (git worktree list). Nothing else lives in _wt/.
+    - No _scratch folder anywhere. Scratch goes to the OS temp folder or a repository's
+      git-ignored .tmp/.
+    - Machine control files, helpers and launchers live in W/_pm/, not in a second root.
+    - No job folders, clones or worktrees in the home folder or at a drive root.
+    - Bulk solver output and cold reference data live under ${ACE_DATA_ROOT} with a committed
+      manifest, not inside W or a repository.
+    - Every repository carries docs/structure.yaml and a rendered docs/STRUCTURE.md that state the
+      purpose of each folder to the guide's depth.
+  how_compliance_is_judged: >-
+    A machine meets the standard when check-work-layout.py exits 0 on it and every registered
+    repository's check-structure-guide.py reports no undocumented folder. Neither checker had run
+    on every host at measurement; the census in the private file is the interim evidence.
+
+entries:
+  standard_layout:
+    - path: W/
+      purpose: The machine's one work root.
+      may_contain: registered repositories and the five reserved folders below
+    - path: W/<registered-repository>/
+      purpose: Primary (canonical) checkout of a repository registered in the layout file.
+      rules:
+        - one clone per repository per machine, on lean (post 23 Nov 2026) history
+        - names resolve from config/workstations/work-layout.yaml (public) plus the private layout file
+        - internal folders documented in the repository's docs/structure.yaml
+    - path: W/_wt/
+      purpose: Linked Git worktrees for concurrent changes to registered repositories.
+      naming: "<repo-short>--<slug>, lower case; regex ^[a-z0-9]+(-[a-z0-9]+)*--[a-z0-9][a-z0-9._-]*$"
+      rules:
+        - linked worktrees only; no clones, logs, prompts or scratch folders
+        - each one born with a work record (fleet-ops work.py start) and removed after its PR lands
+    - path: W/_pm/
+      purpose: Machine operations and project management - helpers, managed runs (fleet-ops-run), consistency reports, live desk control files.
+    - path: W/_backups/
+      purpose: Verified local git bundles and patches with a MANIFEST.json; a second copy lives on another machine.
+    - path: W/_archive/
+      purpose: Cold archives of retired workspaces and completed work, each with a SHA-256 manifest.
+    - path: W/.claude/
+      purpose: Workspace-level Claude configuration and task state.
+    - path: OS temp, or <repo>/.tmp/ (git-ignored)
+      purpose: All scratch. Never inside W at top level.
+    - path: ${ACE_DATA_ROOT}/data/<repo>/
+      purpose: Content-addressed bulk data with MANIFEST.tsv (DATA_PLACEMENT.md).
+
+  repo_short_names_in_use:
+    note: Prefixes seen in compliant _wt names. Not yet a registered list.
+    values: {fo: fleet-ops, wh: workspace-hub, dm: digitalmodel, wed: worldenergydata}
+
+  non_standard_location_classes:
+    - class: pre-reset canonical clone
+      signature: clone in W whose root commit predates the repository's 22-23 Nov 2026 lean root
+      found_on_hosts: 6
+      destination: bundle to W/_backups (two copies), re-clone lean in place; retire only after every linked worktree it owns is released
+    - class: pre-rollout clone
+      signature: "<repo>.pre-rollout-<date> or <repo>.pre-reset-<date> beside the canonical clone"
+      found_on_hosts: 3
+      destination: bundle to W/_backups with manifest, then retire (MACHINE-CLEANUP-PROMPT Tier 2)
+    - class: second worktree container
+      signature: worktrees under W/_worktrees, W/.wt, W/_rv, W/_scratch, W/_codex-lane or a job folder
+      found_on_hosts: 6
+      destination: W/_wt/<repo-short>--<slug> for live work; release through wt_sweep.py when landed
+    - class: mis-named _wt entry
+      signature: entry in _wt that fails the naming regex, or is a clone, file or plain folder
+      found_on_hosts: 7
+      destination: rename live worktrees with git worktree move; logs and prompts to W/_pm; scratch folders to OS temp
+    - class: _scratch folder
+      signature: W/_scratch, W/_scratch_*, W/_tmp, ~/scratch, ~/claude-scratch
+      found_on_hosts: 7
+      destination: OS temp or repo .tmp/; retire after content check
+    - class: unregistered top-level folder or loose file in W
+      signature: anything at W top level that is not a registered repository or reserved folder
+      found_on_hosts: 7
+      destination: W/_pm (operations material), W/_archive with manifest (completed work), ${ACE_DATA_ROOT} (bulk output), or retire
+    - class: launcher or job root outside W
+      signature: a second root such as a drive-root ws-pm folder or ~/ws-pm
+      found_on_hosts: 5
+      destination: W/_pm for live launchers and desk files; job clones retire (WORK-ARCHITECTURE section 6)
+    - class: job folders in the home folder
+      signature: impl-*, fix-*, cifix-*, plansupply*, rv-*, xlsconv-* and similar dated folders in ~
+      found_on_hosts: 6
+      destination: retire after the three-layer unmerged-work proof; live work moves to W/_wt
+    - class: earlier work root still populated
+      signature: a former root (old drive-root folder, ws-root, a FUSE workspace, a second ws) holding clones
+      found_on_hosts: 3
+      destination: W/_archive with manifest after per-clone proof, or retire
+    - class: bulk output inside W or at a drive root
+      signature: solver outputs, data copies, CFD runs outside ${ACE_DATA_ROOT}
+      found_on_hosts: 4
+      destination: ${ACE_DATA_ROOT}/data/<repo>/ with manifest and second copy (DATA_PLACEMENT.md)
+    - class: work root split or on the wrong filesystem
+      signature: clones divided between two roots, or a workspace with worktrees on a FUSE/NFS volume
+      found_on_hosts: 2
+      destination: move canonical clones under the agreed W; keep the old location as an alias only
+
+  structure_guides_on_origin:
+    measured: "2026-11-27, default branch of each non-archived repository in the owner account (39)"
+    with_docs_structure_yaml: [workspace-hub, digitalmodel, assetutilities, fleet-ops]
+    public_without_guide: [aceengineer-website, assethold, deckhand-sandbox, hobbies, raw-to-knowledge-playbook, worldenergydata, worldenergydata-wiki]
+    private_without_guide_count: 28
+    note: >-
+      The W guide itself is config/workstations/ws-structure.yaml (depth 1). Structure-guide PRs
+      for worldenergydata were in flight at measurement (a _wt worktree named wed--structure-guide).
+
+  public_registry:
+    source: workspace-hub config/workstations/work-layout.yaml (PR 4537, open)
+    repositories: [aceengineer-website, assethold, assetutilities, digitalmodel, raw-to-knowledge-playbook, workspace-hub, worldenergydata, worldenergydata-wiki]
+    private_repositories: resolved at run time from the private layout file (not located at measurement; see open_questions)
+
+per_machine:
+  note: Held in the private detail file. Hosts covered there - rds02, WS014, ace-linux-1, ace-linux-2, spark, gpu-claw, macbook-air.
+
+deviations:
+  note: Listed in the private detail file.
+  count_by_host: {rds02: 14, WS014: 7, ace-linux-1: 11, ace-linux-2: 10, spark: 6, gpu-claw: 8, macbook-air: 8}
+  total: 64
+
+open_questions:
+  - The private layout file read by check-work-layout.py (--private-config / WORK_LAYOUT_PRIVATE) was not found in fleet-ops main or intake/ledger. Until it exists, private repositories cannot be classified as registered by the checker.
+  - fleet-ops ECOSYSTEM.md section 4 places rds02 helpers in C:/ws/_pm and launchers in C:/ws-pm; neither matches the standard (W/_pm). Which text is authoritative until the move?
+  - repo-short prefixes for _wt names are used in practice (fo, wh, dm, wed) but no list is registered. Should work-layout.yaml carry one?
+  - workspace-hub config/workstations/registry.yaml still names a FUSE-mounted folder as the workspace root on ace-linux-1 and ace-linux-2. It disagrees with ECOSYSTEM.md and with the measured roots; it should be corrected or retired in favour of one source.
