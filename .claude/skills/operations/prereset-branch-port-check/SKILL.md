@@ -45,13 +45,20 @@ The branch's own change set is `git diff --name-status BASE refs/port/NAME`, whe
 | `SUPERSEDED` | Lean main has a different, later version that contains the branch's change, or the file was moved out of Git and the lean manifest records its SHA-256 and size. Name the landing commit or manifest entry. | None. |
 | `MISSING` | Neither of the above. | Port. |
 
-A merged PR for the same branch name is supporting evidence, not proof: the local tip may carry commits made after the merge. Record the PR number, its merged head and the tip; a differing head requires the path comparison.
+Match PRs by **head SHA**, not branch name: `gh pr list --state all --search <sha>` or the merged-PR list's `headRefOid`. A merged PR for the same branch name is supporting evidence, not proof: the local tip may carry commits made after the merge. Record the PR number, its merged head and the tip; a differing head requires the path comparison.
+
+The same classes apply to stashes and dirty working files: compare each stash entry's files and each modified or untracked file with the lean main the same way. Ignore cache noise (`__pycache__`, `.pytest_cache`, `node_modules`, virtual environments) only after listing it.
 
 For data moved to a manifest-and-fetch store, hash the tip's bytes and compare them with the manifest's SHA-256 and byte count. Say whether the stored copy itself was checked; a manifest match does not prove the store holds the file.
 
 ## 5. Port what is missing
 
-On a new branch from the lean main, copy the tip's version of each `MISSING` path (or apply only the branch's own hunks when the lean file has moved on). Keep the lean main's unrelated content. Run the repository's tests for the touched area. The commit message names the original branch and tip SHA. In a public repository, check every ported file for client names, personal names, email addresses, host names and private paths before committing, and leave out any file that carries one.
+Work in a fresh worktree `_wt/<repo-short>--<slug>` on `origin/main`. Two methods, in order of preference:
+
+- **Patch.** In the old clone, `git format-patch --stdout BASE..refs/port/NAME -- <MISSING paths> > NAME.patch`; in the lean worktree, `git am --3way NAME.patch`. Three-way apply keeps the lean main's later edits and stops on a real conflict. Generate patches with `format-patch`, not by saving `git diff` text: hand-saved diff text has produced corrupt patches.
+- **Copy.** Where the patch does not apply cleanly, copy the tip's version of each `MISSING` path, or apply only the branch's own hunks when the lean file has moved on.
+
+Either method creates new commits on the lean history; no old commit object enters it. Keep the lean main's unrelated content. Run the repository's tests for the touched area. The commit message names the original branch and tip SHA. In a public repository, check every ported file for client names, personal names, email addresses, host names and private paths before committing, and leave out any file that carries one.
 
 ## 6. Record the result
 
