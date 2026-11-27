@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Read-only workspace-root layout & _wt/ purity auditor.
 
-Checks a workstation's canonical workspace root (e.g. ~/ws or C:/ws) against
+Checks a workstation's registered work root against
 config/workstations/ws-root-policy.yaml without modifying any files.
 """
 
@@ -14,6 +14,7 @@ import os
 import stat
 import subprocess
 import sys
+from collections.abc import Callable
 from pathlib import Path
 from typing import Any
 
@@ -32,6 +33,14 @@ def load_policy(policy_path: Path = DEFAULT_POLICY_PATH) -> dict[str, Any]:
         data = yaml.safe_load(fh)
     if not isinstance(data, dict):
         raise ValueError(f"Policy file {policy_path} did not parse to a mapping")
+    repositories = data.get("registered_repositories")
+    if not isinstance(repositories, list) or not all(isinstance(name, str) for name in repositories):
+        raise ValueError("Policy must list registered_repositories")
+    if registry_name := data.get("workstation_registry"):
+        with (policy_path.parent / registry_name).open(encoding="utf-8") as fh:
+            machines = yaml.safe_load(fh)["machines"]
+        registered = {name for machine in machines.values() for name in machine["repos"]}
+        data["registered_repositories"] = sorted(registered.union(repositories))
     return data
 
 
@@ -47,6 +56,8 @@ def _is_directory_link(entry: Path) -> bool:
 
 def _check_linked_worktree(entry: Path) -> tuple[bool, str]:
     git_marker = entry / ".git"
+    if git_marker.is_symlink():
+        return False, "symlinked_git_marker"
     if git_marker.is_dir():
         return False, "standalone_clone_in_wt"
     if not git_marker.is_file():
@@ -106,13 +117,35 @@ def _check_linked_worktree(entry: Path) -> tuple[bool, str]:
     try:
         result = subprocess.run(
             ["git", "rev-parse", "--resolve-git-dir", ".git"],
-            cwd=entry, env=env, capture_output=True,
+            cwd=entry, env=env, capture_output=True, timeout=10,
+            creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0),
         )
+    except subprocess.TimeoutExpired:
+        return False, "git_verification_timeout"
     except OSError:
         return False, "git_verification_unavailable"
     if result.returncode:
         return False, "incomplete_worktree_metadata"
     return True, "ok"
+
+
+def _permission_finding(path: Path, scope: str) -> dict[str, str]:
+    return {"scope": scope, "name": path.name, "kind": "permission_denied",
+            "reason": "Access denied during inspection"}
+
+
+def _inspect_children(directory: Path, scope: str, inspect: Callable[[Path], None],
+                      findings: list[dict[str, str]]) -> None:
+    try:
+        entries = sorted(directory.iterdir(), key=lambda p: p.name.lower())
+    except PermissionError:
+        findings.append(_permission_finding(directory, scope))
+        return
+    for entry in entries:
+        try:
+            inspect(entry)
+        except PermissionError:
+            findings.append(_permission_finding(entry, scope))
 
 
 def audit_workspace_root(
@@ -121,9 +154,7 @@ def audit_workspace_root(
     allow_extra_dirs: list[str] | None = None,
 ) -> dict[str, Any]:
     """Audit a workspace root directory against ws-root-policy.yaml."""
-    if not root.exists() or not root.is_dir():
-        raise FileNotFoundError(f"Workspace root does not exist or is not a dir: {root}")
-
+    registered = set(policy["registered_repositories"])
     reserved = set((policy.get("reserved_system_dirs") or {}).keys())
     allowed_dotdirs = set(policy.get("allowed_tool_dotdirs") or [])
     extra_allowed = set(allow_extra_dirs or [])
@@ -138,87 +169,68 @@ def audit_workspace_root(
         "violations": [],
     }
 
-    wt_dir = None
-    for entry in sorted(root.iterdir(), key=lambda p: p.name.lower()):
+    def inspect_root(entry: Path) -> None:
         name = entry.name
         if _is_directory_link(entry):
-            violations.append({
-                "scope": "root",
-                "name": name,
-                "kind": "symlink_at_root",
-                "reason": "Symlinks/junctions should not sit inside workspace root",
-            })
-            continue
-
-        if entry.is_file():
-            if not allow_loose_files:
-                violations.append({
-                    "scope": "root",
-                    "name": name,
-                    "kind": "loose_root_file",
-                    "reason": "Loose files belong inside a destined repository or _pm/scripts",
-                })
-            continue
-
-        if entry == root / "_wt":
-            wt_dir = entry
-
-        # Directory entry
-        if name in reserved or name in allowed_dotdirs or name in extra_allowed:
+            kind, reason = "symlink_at_root", "Symlink or junction inside the work root"
+        elif _matches_any(name, forbidden_patterns):
+            kind, reason = "forbidden_root_pattern", "Matches a forbidden root clutter pattern"
+        elif entry.is_file():
+            if allow_loose_files:
+                return
+            kind, reason = "loose_root_file", "Loose files belong inside a repository or _pm/scripts"
+        elif name in reserved or name in allowed_dotdirs:
             reserved_present.append(name)
-            continue
-
-        if _matches_any(name, forbidden_patterns):
-            violations.append({
-                "scope": "root",
-                "name": name,
-                "kind": "forbidden_root_pattern",
-                "reason": "Matches forbidden root clutter pattern in ws-root-policy.yaml",
-            })
-            continue
-
-        git_path = entry / ".git"
-        if git_path.is_dir():
-            git_repos.append(name)
-        elif git_path.is_file():
-            violations.append({
-                "scope": "root",
-                "name": name,
-                "kind": "worktree_at_root",
-                "reason": "Linked worktrees must live under _wt/, not at workspace root",
-            })
+            return
         else:
-            violations.append({
-                "scope": "root",
-                "name": name,
-                "kind": "non_git_root_dir",
-                "reason": "Unprefixed root directories must be git repositories (.git/)",
-            })
+            marker = entry / ".git"
+            if marker.is_symlink():
+                kind, reason = "symlinked_git_marker", "Repository marker is a symbolic link"
+            elif marker.is_dir():
+                if name in registered:
+                    git_repos.append(name)
+                    return
+                kind, reason = "unregistered_repository", "Repository is absent from the policy registry"
+            elif marker.is_file():
+                kind, reason = "worktree_at_root", "Linked worktrees belong under _wt/"
+            elif name in extra_allowed:
+                reserved_present.append(name)
+                return
+            else:
+                kind, reason = "non_git_root_dir", "Root directory has no .git/ directory"
+        violations.append({"scope": "root", "name": name, "kind": kind, "reason": reason})
 
-    # Audit _wt/ purity if present
-    if wt_dir is not None and wt_dir.is_dir():
-        for child in sorted(wt_dir.iterdir(), key=lambda p: p.name.lower()):
-            if _is_directory_link(child):
-                ok, reason = False, "symlink_in_wt"
-            elif child.is_file():
-                wt_summary["violations"].append({
-                    "scope": "_wt",
-                    "name": child.name,
-                    "kind": "loose_file_in_wt",
-                    "reason": "_wt/ holds linked git worktrees only; move scratch to $TEMP or _scratch/",
-                })
-                continue
-            else:
-                ok, reason = _check_linked_worktree(child)
+    def inspect_worktree(child: Path) -> None:
+        if _is_directory_link(child):
+            kind, reason = "symlink_in_wt", "Symlink or junction inside _wt/"
+        elif child.is_file():
+            kind = "loose_file_in_wt"
+            reason = "_wt/ holds linked git worktrees only; move scratch to $TEMP or the repository's .tmp/"
+        else:
+            ok, kind = _check_linked_worktree(child)
             if ok:
-                wt_summary["linked_worktrees"].append(child.name)
+                short, _, slug = child.name.partition("--")
+                if short and slug:
+                    wt_summary["linked_worktrees"].append(child.name)
+                    return
+                kind, reason = "invalid_worktree_name", "Expected <repo-short>--<slug>"
             else:
-                wt_summary["violations"].append({
-                    "scope": "_wt",
-                    "name": child.name,
-                    "kind": reason,
-                    "reason": "Non-worktree or broken entry inside _wt/",
-                })
+                reason = "Non-worktree or broken entry inside _wt/"
+        wt_summary["violations"].append({"scope": "_wt", "name": child.name, "kind": kind, "reason": reason})
+
+    try:
+        if _is_directory_link(root):
+            violations.append({"scope": "root", "name": root.name, "kind": "workspace_root_alias",
+                               "reason": "Audit the registered work root directly"})
+        elif not root.is_dir():
+            raise FileNotFoundError(f"Workspace root does not exist or is not a dir: {root}")
+        else:
+            _inspect_children(root, "root", inspect_root, violations)
+    except PermissionError:
+        violations.append(_permission_finding(root, "root"))
+
+    if "_wt" in reserved_present:
+        _inspect_children(root / "_wt", "_wt", inspect_worktree, wt_summary["violations"])
 
     all_violations = violations + wt_summary["violations"]
     return {
@@ -239,7 +251,7 @@ def audit_workspace_root(
 def format_markdown(report: dict[str, Any]) -> str:
     status = "COMPLIANT" if report["compliant"] else f"NON-COMPLIANT ({report['total_violations']} violations)"
     lines = [
-        f"# Workspace Root Hygiene Audit — {status}",
+        f"# Workspace Root Hygiene Audit â€” {status}",
         "",
         f"- **Git repositories:** {report['git_repo_count']}",
         f"- **Reserved system dirs:** {', '.join(report['reserved_dirs_present']) or 'none'}",

@@ -3,10 +3,14 @@
 # Keep this file public-safe: no hostnames, mount paths, client names, or secrets.
 
 schema_version: 1
-canonical_root:
-  posix: "~/ws"
-  windows: "C:/ws"
-  windows_home_alias: "~/ws (NTFS junction -> C:/ws; never delete recursively)"
+canonical_root: >-
+  W is the machine's registered work root; a home-directory alias, where present,
+  links to W and is never traversed or deleted.
+
+# Supplement the explicit list with repository names already recorded under machines.*.repos.
+registered_repositories:
+  - workspace-hub
+workstation_registry: registry.yaml
 
 root_rules:
   default_entry_type: git_repository
@@ -15,7 +19,7 @@ root_rules:
 
 reserved_system_dirs:
   _wt:
-    purpose: "Linked git worktrees only (<repo-short>-<topic>). No loose files, standalone clones, venvs, or scratch folders."
+    purpose: "Linked git worktrees only (<repo-short>--<slug>). No loose files, standalone clones, venvs, or scratch folders."
     children_must_be_linked_worktrees: true
     allow_loose_files: false
   _pm:
@@ -24,8 +28,6 @@ reserved_system_dirs:
     purpose: "Verified local git bundles and pre-delete rescues (local only; never push refs/backup to GitHub)."
   _archive:
     purpose: "Verified cold repository archives and branch-protection snapshots."
-  _scratch:
-    purpose: "Single bounded scratch root (<topic>-<yyyymmdd>); remove or promote into a repo when the topic closes."
 
 allowed_tool_dotdirs:
   - ".claude"
@@ -34,6 +36,7 @@ forbidden_root_patterns:
   - "wt-*"
   - ".wt"
   - ".scratch"
+  - "_scratch"
   - "_scratch-*"
   - "_scratch_*"
   - "_tw-scratch"
