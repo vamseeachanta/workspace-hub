@@ -37,6 +37,12 @@ Inventory the agreed root and other **owned** candidate roots, including off-roo
 
 Use the reviewed tools from `fleet-ops`. In the examples, substitute each uppercase path with a quoted native path. Use fresh receipt paths outside the candidates. In **both** sweep calls replace `W` with disjoint, verified owned roots if a full-root walk could enter a protected or uninspected subtree. Exclusions do not limit discovery.
 
+Three evidence checks are easy to miss:
+
+- **Ledger references count as use.** A worktree named in the private ledger's `intake/**` desk logs, pass prompts or act lists is in use even when no local file names it. Collect them with `git grep` on the fetched ledger. A reference counts when it equals the worktree path or lies beneath it; a reference to a parent folder does not. Inventory, census, sweep and receipt files list every worktree, so they are not evidence of use; exclude the sweep's own output folder from the local scan for the same reason.
+- **Earlier refusals stay refused.** Keep a refused-paths list beside each host's receipts and subtract it before building a batch. A path git refused once is refused again until its cause is resolved.
+- **Clean means clean to git.** Run `git status --porcelain --ignore-submodules=none` in the worktree; any output means git's unforced remove will refuse it. Git 2.43 lists an empty untracked folder there (`?? dir/`), which a file-based cleanliness test misses.
+
 Map each process directory, script path and hold to every candidate that **contains it or lies beneath it**. Pass the entire affected worktree as `--exclude HELD`, repeated for each one in both calls. Omit the option when the verified hold list is empty. `MERGED` holds the per-repo merged-PR evidence. If temporary fetch refs are outside read-only census authority, omit `--merged-prs MERGED` from both calls and retain detached trees without independent restore evidence.
 
 ```sh
