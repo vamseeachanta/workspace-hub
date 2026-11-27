@@ -23,11 +23,28 @@ def merge_private(config, private):
     The public configuration lives in a public repository, so it must not name client or
     personal repositories. Those entries come from a private file at run time.
     """
+    if not isinstance(config, dict) or not isinstance(private, dict):
+        raise ValueError("layout must be an object")
+    for layout in (config, private):
+        for section in ("origins", "repositories", "hosts"):
+            if not isinstance(layout.get(section, {}), dict):
+                raise ValueError(f"{section} must be an object")
+        for entry in layout.get("hosts", {}).values():
+            if not isinstance(entry, dict):
+                raise ValueError("host entry must be an object")
+            for field in ("hostnames", "aliases", "extra_roots", "excluded_parents"):
+                values = entry.get(field, [])
+                if not isinstance(values, list) or any(not isinstance(v, str) for v in values):
+                    raise ValueError(f"{field} must be a list of strings")
+            if "w" in entry and not isinstance(entry["w"], str):
+                raise ValueError("w must be a string")
     for section in ("origins", "repositories"):
         config.setdefault(section, {}).update(private.get(section, {}))
     for host, extra in private.get("hosts", {}).items():
-        names = config.setdefault("hosts", {}).setdefault(host, {}).setdefault("hostnames", [])
-        names.extend(n for n in extra.get("hostnames", []) if n not in names)
+        entry = config.setdefault("hosts", {}).setdefault(host, {})
+        names = list(dict.fromkeys([*entry.get("hostnames", []), *extra.get("hostnames", [])]))
+        entry.update(extra)
+        entry["hostnames"] = names
     return config
 
 
@@ -109,7 +126,7 @@ def volume_inventory():
     return roots, mounts, []
 
 
-def _excluded(path, home, workspace):
+def _excluded(path, home, workspace, excluded_parents=()):
     # Apply exclusions to independently enumerated mount roots as well as children.
     for part in (path, *path.parents):
         name = part.name.casefold()
@@ -118,7 +135,7 @@ def _excluded(path, home, workspace):
             return True
         if part.parent.name.casefold() in {"users", "home"} and not home.is_relative_to(part):
             return True
-        if part.parent == Path("/mnt/bulk") and not workspace.is_relative_to(part):
+        if part.parent in excluded_parents and not workspace.is_relative_to(part):
             return True
         if part == Path("/root") and not home.is_relative_to(part):
             return True
@@ -130,10 +147,11 @@ def _is_link(info):
             bool(getattr(info, "st_file_attributes", 0) & stat.FILE_ATTRIBUTE_REPARSE_POINT))
 
 
-def scan_roots(roots, home, workspace, aliases, extra_roots, mounts):
+def scan_roots(roots, home, workspace, aliases, extra_roots, mounts, excluded_parents=()):
     """Inspect each seed and three child levels. Never recurse through links."""
     allowed = {workspace, *(workspace / name for name in RESERVED), *extra_roots}
     aliases = set(aliases)
+    excluded_parents = set(excluded_parents)
     seeds = set(roots) | {home}
     seen = {}
     findings = {}
@@ -143,7 +161,7 @@ def scan_roots(roots, home, workspace, aliases, extra_roots, mounts):
                                         expected=str(expected), repository=None)
 
     def visit(path, remaining, seed=False):
-        if _excluded(path, home, workspace) or seen.get(path, -1) >= remaining:
+        if _excluded(path, home, workspace, excluded_parents) or seen.get(path, -1) >= remaining:
             return
         seen[path] = remaining
         if path in mounts and path not in roots:
@@ -271,6 +289,10 @@ def workspace_children(workspace, fs_type, origins=None, registered_roots=None):
             if common.resolve() != marker.resolve():
                 findings.append(finding("unexpected Git common directory", common, marker, child.name))
                 continue
+            kind = fs_type(child.resolve())
+            if not is_local(kind):
+                findings.append(finding(f"filesystem {kind}", child,
+                                        "local clone filesystem", child.name))
             url = git(child, "remote", "get-url", "origin").strip().rstrip("/")
             name = origin_name(url)
             if origins is not None:
@@ -332,7 +354,7 @@ def main(argv=None):
     if args.private_config:
         try:
             merge_private(config, json.loads(Path(args.private_config).read_text(encoding="utf-8")))
-        except (ValueError, OSError, AttributeError) as exc:
+        except (ValueError, OSError, AttributeError, TypeError) as exc:
             findings.append(finding(f"missing private layout ({exc.__class__.__name__})",
                                     args.private_config, "readable private layout"))
     try:
@@ -362,7 +384,8 @@ def main(argv=None):
         findings.extend(scan_roots(roots, Path.home(), workspace,
                                    [Path(s).expanduser() for s in policy["aliases"]],
                                    [*registered_roots, *(Path(s).expanduser() for s in policy["extra_roots"])],
-                                   mounts))
+                                   mounts,
+                                   [Path(s).expanduser() for s in policy.get("excluded_parents", [])]))
     except (KeyError, ValueError, OSError, RuntimeError) as exc:
         findings.append(finding(f"missing host evidence ({exc})", host, "configured local host"))
     if args.repo:
