@@ -11,6 +11,8 @@ import argparse
 import fnmatch
 import json
 import os
+import stat
+import subprocess
 import sys
 from pathlib import Path
 from typing import Any
@@ -35,6 +37,12 @@ def load_policy(policy_path: Path = DEFAULT_POLICY_PATH) -> dict[str, Any]:
 
 def _matches_any(name: str, patterns: list[str]) -> bool:
     return any(fnmatch.fnmatch(name, pat) for pat in patterns)
+
+
+def _is_directory_link(entry: Path) -> bool:
+    if entry.is_symlink():
+        return True
+    return os.name == "nt" and entry.lstat().st_reparse_tag == stat.IO_REPARSE_TAG_MOUNT_POINT
 
 
 def _check_linked_worktree(entry: Path) -> tuple[bool, str]:
@@ -93,6 +101,17 @@ def _check_linked_worktree(entry: Path) -> tuple[bool, str]:
     except OSError:
         return False, "invalid_worktree_backlink"
 
+    # Resolve this exact marker so Git cannot discover a parent repository.
+    env = {key: value for key, value in os.environ.items() if not key.startswith("GIT_")}
+    try:
+        result = subprocess.run(
+            ["git", "rev-parse", "--resolve-git-dir", ".git"],
+            cwd=entry, env=env, capture_output=True,
+        )
+    except OSError:
+        return False, "git_verification_unavailable"
+    if result.returncode:
+        return False, "incomplete_worktree_metadata"
     return True, "ok"
 
 
@@ -119,9 +138,10 @@ def audit_workspace_root(
         "violations": [],
     }
 
+    wt_dir = None
     for entry in sorted(root.iterdir(), key=lambda p: p.name.lower()):
         name = entry.name
-        if entry.is_symlink():
+        if _is_directory_link(entry):
             violations.append({
                 "scope": "root",
                 "name": name,
@@ -139,6 +159,9 @@ def audit_workspace_root(
                     "reason": "Loose files belong inside a destined repository or _pm/scripts",
                 })
             continue
+
+        if entry == root / "_wt":
+            wt_dir = entry
 
         # Directory entry
         if name in reserved or name in allowed_dotdirs or name in extra_allowed:
@@ -173,10 +196,11 @@ def audit_workspace_root(
             })
 
     # Audit _wt/ purity if present
-    wt_dir = root / "_wt"
-    if wt_dir.is_dir() and not wt_dir.is_symlink():
+    if wt_dir is not None and wt_dir.is_dir():
         for child in sorted(wt_dir.iterdir(), key=lambda p: p.name.lower()):
-            if child.is_file():
+            if _is_directory_link(child):
+                ok, reason = False, "symlink_in_wt"
+            elif child.is_file():
                 wt_summary["violations"].append({
                     "scope": "_wt",
                     "name": child.name,
@@ -184,7 +208,8 @@ def audit_workspace_root(
                     "reason": "_wt/ holds linked git worktrees only; move scratch to $TEMP or _scratch/",
                 })
                 continue
-            ok, reason = _check_linked_worktree(child)
+            else:
+                ok, reason = _check_linked_worktree(child)
             if ok:
                 wt_summary["linked_worktrees"].append(child.name)
             else:

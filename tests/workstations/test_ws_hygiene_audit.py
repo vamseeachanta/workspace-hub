@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import os
+import subprocess
 import sys
 from pathlib import Path
 
@@ -14,23 +16,20 @@ if str(SCRIPTS_DIR) not in sys.path:
 import ws_hygiene_audit as audit  # noqa: E402
 
 
+def _git(*args: str | Path) -> None:
+    env = {key: value for key, value in os.environ.items() if not key.startswith("GIT_")}
+    subprocess.run(["git", *args], env=env, check=True, capture_output=True)
+
+
 def _make_repo(parent: Path, name: str) -> Path:
     repo = parent / name
-    (repo / ".git" / "worktrees").mkdir(parents=True)
+    _git("init", repo)
     return repo
 
 
-def _make_linked_wt(repo: Path, wt_parent: Path, name: str, broken: bool = False) -> Path:
+def _make_linked_wt(repo: Path, wt_parent: Path, name: str) -> Path:
     wt = wt_parent / name
-    wt.mkdir(parents=True)
-    gitdir = repo / ".git" / "worktrees" / name
-    git_file = wt / ".git"
-    git_file.write_text(f"gitdir: {gitdir}\n", encoding="utf-8")
-    if not broken:
-        gitdir.mkdir(parents=True)
-        (gitdir / "commondir").write_text("../..\n", encoding="utf-8")
-        (gitdir / "HEAD").write_text("ref: refs/heads/main\n", encoding="utf-8")
-        (gitdir / "gitdir").write_text(f"{git_file}\n", encoding="utf-8")
+    _git("-C", repo, "worktree", "add", "--orphan", wt)
     return wt
 
 
@@ -71,7 +70,9 @@ def test_detects_root_and_wt_violations(tmp_path: Path) -> None:
     (wt_dir / "note.txt").write_text("stray", encoding="utf-8")
     (wt_dir / "scratch-dir").mkdir()
     _make_repo(wt_dir, "standalone-clone")
-    _make_linked_wt(repo, wt_dir, "broken-wt", broken=True)
+    broken = wt_dir / "broken-wt"
+    broken.mkdir()
+    (broken / ".git").write_text("gitdir: missing\n", encoding="utf-8")
 
     report = audit.audit_workspace_root(tmp_path, policy)
     assert report["compliant"] is False
@@ -125,3 +126,49 @@ def test_rejects_external_gitdir_and_mismatched_backlink_in_wt(tmp_path: Path) -
     wt_kinds = {v["name"]: v["kind"] for v in report["wt_violations"]}
     assert wt_kinds["external-gitdir-clone"] == "not_linked_worktree_gitdir"
     assert wt_kinds["wrong-backlink-wt"] == "invalid_worktree_backlink"
+
+
+def test_incomplete_repository_metadata(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    repo = _make_repo(tmp_path, "valid")
+    monkeypatch.setenv("GIT_DIR", str(repo / ".git"))
+    wt = tmp_path / "_wt" / "incomplete"
+    wt.mkdir(parents=True)
+    admin = tmp_path / "_scratch" / "admin"
+    admin.mkdir(parents=True)
+    marker = wt / ".git"
+    marker.write_text(f"gitdir: {admin}\n", encoding="utf-8")
+    (admin / "gitdir").write_text(f"{marker}\n", encoding="utf-8")
+    (admin / "commondir").write_text("..\n", encoding="utf-8")
+    (admin / "HEAD").touch()
+
+    report = audit.audit_workspace_root(tmp_path, audit.load_policy())
+    assert report["wt_linked_count"] == 0
+    assert report["wt_violations"][0]["kind"] == "incomplete_worktree_metadata"
+    assert audit.main(["--root", str(tmp_path), "--strict"]) == 1
+
+
+@pytest.mark.parametrize("link_at_root", [False, True], ids=["worktree-entry", "reserved-root"])
+def test_external_directory_link(tmp_path: Path, link_at_root: bool) -> None:
+    root = tmp_path / "workspace"
+    root.mkdir()
+    repo = _make_repo(root, "repo")
+    external = tmp_path / "external"
+    external.mkdir()
+    checkout = _make_linked_wt(repo, external, "real")
+    wt_dir = root / "_wt"
+    if link_at_root:
+        link, target = wt_dir, external
+    else:
+        wt_dir.mkdir()
+        link, target = wt_dir / "alias", checkout
+    if os.name == "nt":
+        subprocess.run(["cmd", "/d", "/c", "mklink", "/J", link, target], check=True)
+    else:
+        link.symlink_to(target, target_is_directory=True)
+
+    report = audit.audit_workspace_root(root, audit.load_policy())
+    assert report["wt_linked_count"] == 0
+    assert report["total_violations"] == 1
+    violations = report["root_violations"] if link_at_root else report["wt_violations"]
+    assert violations[0]["name"] == link.name
+    assert audit.main(["--root", str(root), "--strict"]) == 1
