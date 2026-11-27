@@ -24,9 +24,13 @@ def _make_linked_wt(repo: Path, wt_parent: Path, name: str, broken: bool = False
     wt = wt_parent / name
     wt.mkdir(parents=True)
     gitdir = repo / ".git" / "worktrees" / name
+    git_file = wt / ".git"
+    git_file.write_text(f"gitdir: {gitdir}\n", encoding="utf-8")
     if not broken:
         gitdir.mkdir(parents=True)
-    (wt / ".git").write_text(f"gitdir: {gitdir}\n", encoding="utf-8")
+        (gitdir / "commondir").write_text("../..\n", encoding="utf-8")
+        (gitdir / "HEAD").write_text("ref: refs/heads/main\n", encoding="utf-8")
+        (gitdir / "gitdir").write_text(f"{git_file}\n", encoding="utf-8")
     return wt
 
 
@@ -93,3 +97,31 @@ def test_allow_extra_dir_and_strict_exit_code(tmp_path: Path) -> None:
 
     rc_pass = audit.main(["--root", str(tmp_path), "--allow-extra-dir", "runtime-dir", "--strict"])
     assert rc_pass == 0
+
+
+def test_rejects_external_gitdir_and_mismatched_backlink_in_wt(tmp_path: Path) -> None:
+    policy = audit.load_policy()
+    repo = _make_repo(tmp_path, "sample-repo")
+    wt_dir = tmp_path / "_wt"
+    wt_dir.mkdir()
+
+    # External standalone .git directory (no commondir/backlink)
+    external_clone = wt_dir / "external-gitdir-clone"
+    external_clone.mkdir()
+    (external_clone / ".git").write_text(f"gitdir: {repo / '.git'}\n", encoding="utf-8")
+
+    # Worktree admin dir whose backlink points elsewhere
+    wrong_backlink = wt_dir / "wrong-backlink-wt"
+    wrong_backlink.mkdir()
+    admin_dir = repo / ".git" / "worktrees" / "wrong-backlink-wt"
+    admin_dir.mkdir(parents=True)
+    (admin_dir / "commondir").write_text("../..\n", encoding="utf-8")
+    (admin_dir / "HEAD").write_text("ref: refs/heads/main\n", encoding="utf-8")
+    (admin_dir / "gitdir").write_text(f"{wt_dir / 'other' / '.git'}\n", encoding="utf-8")
+    (wrong_backlink / ".git").write_text(f"gitdir: {admin_dir}\n", encoding="utf-8")
+
+    report = audit.audit_workspace_root(tmp_path, policy)
+    assert report["compliant"] is False
+    wt_kinds = {v["name"]: v["kind"] for v in report["wt_violations"]}
+    assert wt_kinds["external-gitdir-clone"] == "not_linked_worktree_gitdir"
+    assert wt_kinds["wrong-backlink-wt"] == "invalid_worktree_backlink"

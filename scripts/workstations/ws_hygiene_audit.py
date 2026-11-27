@@ -10,6 +10,7 @@ from __future__ import annotations
 import argparse
 import fnmatch
 import json
+import os
 import sys
 from pathlib import Path
 from typing import Any
@@ -52,8 +53,46 @@ def _check_linked_worktree(entry: Path) -> tuple[bool, str]:
     gitdir_path = Path(gitdir_str)
     if not gitdir_path.is_absolute():
         gitdir_path = (entry / gitdir_path).resolve()
-    if not gitdir_path.exists():
+    if not gitdir_path.is_dir():
         return False, "broken_worktree_gitdir"
+
+    commondir_file = gitdir_path / "commondir"
+    backlink_file = gitdir_path / "gitdir"
+    head_file = gitdir_path / "HEAD"
+    if not commondir_file.is_file():
+        return False, "not_linked_worktree_gitdir"
+    try:
+        commondir_raw = commondir_file.read_text(encoding="utf-8", errors="replace").strip()
+    except OSError as exc:
+        return False, f"unreadable_commondir:{exc}"
+    if not commondir_raw:
+        return False, "not_linked_worktree_gitdir"
+    commondir_path = Path(commondir_raw)
+    if not commondir_path.is_absolute():
+        commondir_path = (gitdir_path / commondir_path).resolve()
+    if not commondir_path.is_dir():
+        return False, "broken_worktree_commondir"
+
+    if not head_file.is_file():
+        return False, "incomplete_worktree_metadata"
+
+    if not backlink_file.is_file():
+        return False, "invalid_worktree_backlink"
+    try:
+        backlink_raw = backlink_file.read_text(encoding="utf-8", errors="replace").strip()
+    except OSError as exc:
+        return False, f"unreadable_backlink:{exc}"
+    if not backlink_raw:
+        return False, "invalid_worktree_backlink"
+    backlink_path = Path(backlink_raw)
+    if not backlink_path.is_absolute():
+        backlink_path = (gitdir_path / backlink_path).resolve()
+    try:
+        if not os.path.samefile(backlink_path, git_marker):
+            return False, "invalid_worktree_backlink"
+    except OSError:
+        return False, "invalid_worktree_backlink"
+
     return True, "ok"
 
 
