@@ -262,7 +262,62 @@ def repository(repo, policy, strict):
     return findings
 
 
-def workspace_children(workspace, fs_type, origins=None, registered_roots=None):
+def ledger_path(workspace, value):
+    if not isinstance(value, str) or not value.strip() or "\0" in value:
+        raise ValueError("invalid ledger path")
+    return (workspace / value).resolve()
+
+
+def ledger_findings(workspace, ledger, required, worktrees):
+    findings = []
+    try:
+        files = sorted(ledger.iterdir())
+    except FileNotFoundError:
+        return [finding("missing ledger", ledger, "work ledger directory")] if required else []
+    except NotADirectoryError:
+        findings.append(finding("ledger is not a directory", ledger, "work ledger directory"))
+        files = []
+
+    named = set()
+    for file in files:
+        # The work tool also writes close receipts (<id>.close.json) and sweep reports here.
+        if (file.suffix != ".json" or file.name.endswith(".close.json")
+                or re.fullmatch(r"sweep-\d{8}T\d{12}Z\.json", file.name)):
+            continue
+        try:
+            if not file.is_file():
+                raise ValueError("ledger entry is not a regular file")
+            record = json.loads(file.read_text(encoding="utf-8-sig"))
+            if isinstance(record, dict) and record.get("schema") == "work-sweep/1" and "id" not in record:
+                continue
+            state = record["state"]
+            if state not in ("open", "adopted", "closed", "review"):
+                raise ValueError("invalid ledger state")
+            if not isinstance(record["id"], str) or not record["id"].strip():
+                raise ValueError("invalid ledger id")
+            tree = ledger_path(workspace, record["path"])
+            paths = {tree}
+            if record["scratch"] is not None:
+                paths.add(ledger_path(workspace, record["scratch"]))
+            if not isinstance(record["outputs"], list):
+                raise ValueError("invalid ledger outputs")
+            paths.update(ledger_path(workspace, output["path"]) for output in record["outputs"])
+            if state in ("open", "adopted") and not tree.is_dir():
+                findings.append(finding("record without tree", tree, "existing worktree"))
+            named.update(paths)
+        except (KeyError, TypeError, ValueError, OSError, RuntimeError):
+            findings.append(finding("unreadable ledger record", file, "valid work ledger record"))
+
+    candidates = set(worktrees)
+    scratch = workspace / "_scratch"
+    if scratch.is_dir():
+        candidates.update(path for path in scratch.iterdir() if path.is_dir())
+    findings.extend(finding("unrecorded work", path, "path named in work ledger")
+                    for path in sorted(candidates) if path.resolve() not in named)
+    return findings
+
+
+def workspace_children(workspace, fs_type, origins=None, registered_roots=None, ledger_trees=None):
     findings = []
     if _is_link(workspace.lstat()):
         return [finding("linked workspace", workspace, "physical workspace")]
@@ -327,6 +382,8 @@ def workspace_children(workspace, fs_type, origins=None, registered_roots=None):
                 expected = workspace / "_wt"
                 if expected not in physical.parents:
                     findings.append(finding("worktree outside _wt", registered, expected, child.name))
+                elif ledger_trees is not None:
+                    ledger_trees.add(registered)
                 if not registered.is_dir():
                     findings.append(finding("registered worktree unavailable", registered,
                                             "accessible worktree", child.name))
@@ -353,6 +410,8 @@ def main(argv=None):
                         default=os.environ.get("WORK_LAYOUT_PRIVATE") or None,
                         help="private layout file with client and personal repositories "
                              "(default: $WORK_LAYOUT_PRIVATE)")
+    parser.add_argument("--ledger", type=Path, help="work ledger directory (default: <W>/_pm/work)")
+    parser.add_argument("--require-ledger", action="store_true", help="report a missing work ledger")
     parser.add_argument("--strict", action="store_true", help="use core repository names")
     parser.add_argument("--format", choices=("text", "json"), default="text")
     parser.add_argument("--json", dest="format", action="store_const", const="json")
@@ -389,8 +448,12 @@ def main(argv=None):
             if not is_local(kind):
                 findings.append(finding(f"workspace filesystem {kind}", workspace, "local volume"))
             else:
+                ledger_trees = set()
                 findings.extend(workspace_children(workspace, lambda p: filesystem_type(p, mounts),
-                                                   config.get("origins"), registered_roots))
+                                                   config.get("origins"), registered_roots, ledger_trees))
+                if not _is_link(workspace.lstat()):
+                    ledger = args.ledger or workspace / "_pm" / "work"
+                    findings.extend(ledger_findings(workspace, ledger, args.require_ledger, ledger_trees))
         except (OSError, RuntimeError) as exc:
             findings.append(finding(f"missing workspace evidence ({exc})", workspace,
                                     "accessible physical workspace"))
