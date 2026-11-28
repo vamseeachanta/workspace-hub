@@ -269,12 +269,15 @@ def ledger_path(workspace, value):
 
 
 def ledger_findings(workspace, ledger, required, worktrees):
+    findings = []
     try:
         files = sorted(ledger.iterdir())
-    except (FileNotFoundError, NotADirectoryError):
+    except FileNotFoundError:
         return [finding("missing ledger", ledger, "work ledger directory")] if required else []
+    except NotADirectoryError:
+        findings.append(finding("ledger is not a directory", ledger, "work ledger directory"))
+        files = []
 
-    findings = []
     named = set()
     for file in files:
         # The work tool also writes close receipts (<id>.close.json) and sweep reports here.
@@ -282,6 +285,8 @@ def ledger_findings(workspace, ledger, required, worktrees):
                 or re.fullmatch(r"sweep-\d{8}T\d{12}Z\.json", file.name)):
             continue
         try:
+            if not file.is_file():
+                raise ValueError("ledger entry is not a regular file")
             record = json.loads(file.read_text(encoding="utf-8-sig"))
             if isinstance(record, dict) and record.get("schema") == "work-sweep/1" and "id" not in record:
                 continue
@@ -297,7 +302,7 @@ def ledger_findings(workspace, ledger, required, worktrees):
             if not isinstance(record["outputs"], list):
                 raise ValueError("invalid ledger outputs")
             paths.update(ledger_path(workspace, output["path"]) for output in record["outputs"])
-            if state in ("open", "adopted") and not tree.exists():
+            if state in ("open", "adopted") and not tree.is_dir():
                 findings.append(finding("record without tree", tree, "existing worktree"))
             named.update(paths)
         except (KeyError, TypeError, ValueError, OSError, RuntimeError):

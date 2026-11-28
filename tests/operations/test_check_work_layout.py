@@ -233,6 +233,45 @@ def test_optional_and_required_ledger(layout, tmp_path, ledger_cli):
     ]
 
 
+@pytest.mark.parametrize("required", [False, True])
+def test_ledger_file_keeps_registered_worktree_checks(tmp_path, required):
+    ledger = tmp_path / "_pm" / "work"
+    ledger.parent.mkdir()
+    ledger.touch()
+    tree = tmp_path / "_wt" / "demo--registered"
+    tree.mkdir(parents=True)
+    check = runpy.run_path(str(SCRIPT))["ledger_findings"]
+    rows = check(tmp_path, ledger, required, [tree])
+    assert [(row["reason"], row["observed"]) for row in rows] == [
+        ("ledger is not a directory", str(ledger)), ("unrecorded work", str(tree)),
+    ]
+
+
+@pytest.mark.parametrize("state", ["open", "adopted"])
+def test_recorded_worktree_is_regular_file(tmp_path, state):
+    tree = tmp_path / "demo--task"
+    tree.touch()
+    record = {"id": "task", "path": str(tree), "scratch": None, "outputs": [], "state": state}
+    (tmp_path / "task.json").write_text(json.dumps(record))
+    check = runpy.run_path(str(SCRIPT))["ledger_findings"]
+    rows = check(tmp_path, tmp_path, False, [])
+    assert [(row["reason"], row["observed"]) for row in rows] == [
+        ("record without tree", str(tree)),
+    ]
+
+
+@pytest.mark.skipif(os.name == "nt", reason="requires a POSIX FIFO")
+def test_ledger_fifo_is_reported_before_read(tmp_path, monkeypatch):
+    fifo = tmp_path / "bad.json"
+    os.mkfifo(fifo)
+    check = runpy.run_path(str(SCRIPT))["ledger_findings"]
+    monkeypatch.setattr(Path, "read_text", lambda *a, **kw: pytest.fail("attempted FIFO read"))
+    rows = check(tmp_path, tmp_path, False, [])
+    assert [(row["reason"], row["observed"]) for row in rows] == [
+        ("unreadable ledger record", str(fifo)),
+    ]
+
+
 def test_ledger_path_matching(layout, tmp_path, ledger_cli):
     _, workspace, _, git = layout
     ledger = tmp_path / "records"
