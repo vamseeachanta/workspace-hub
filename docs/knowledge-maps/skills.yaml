@@ -89,7 +89,7 @@ entries:
     - path: config/agents/skill-graph-index.yaml
       role: graph form of the skill index (#3190 / #3208)
     - path: .claude/skills/_internal
-      role: "templates linked into every ecosystem repo by propagate-ecosystem.sh (SHARED_SKILL_DIRS guidelines, meta, workflows); origin/main holds guidelines and workflows only"
+      role: "shared templates linked by propagate-ecosystem.sh (guidelines and workflows)"
   discovery_by_provider:
     claude: "user home <home>/.claude/skills (account-synced skills) + repo .claude/skills top level + .claude/commands; category-nested skills via index/router"
     codex: "<home>/.codex/skills/.system (built-in) + repo .agents/skills when the working directory is inside the repository"
@@ -946,7 +946,6 @@ deviations:
 open_questions:
   - "Category-nested skills (473 of 477) are not listed by Claude Code in the observed session. Should the most used ones be promoted to .claude/skills/<name>/ or exposed as commands, or is router-only access intended?"
   - ".agents/skills carries 549 copy-only skills and 83 differing copies; 61 canonical skills have no copy. Is a sync or a reduction of the copy planned (#3039 deferred full sync)?"
-  - "propagate-ecosystem.sh and resync-skill-links.sh expect _internal/meta, which origin/main does not hold, so every repo reports TEMPLATE-ABSENT for it. Remove meta from SHARED_SKILL_DIRS or restore the template?"
   - ".claude/skills/README.md states 298 skills in 9 domains; the tree holds 477 active skills (4 top level, 473 in 25 category folders). Regenerate or retire the README?"
   - ".claude/skills/eng/ holds 8 flat .md skill notes without SKILL.md; no provider discovers them. Convert or archive?"
   - "One skill folder name under data/energy carries a client name (shown here as client-381d-economics). Rename the folder to a neutral name?"
