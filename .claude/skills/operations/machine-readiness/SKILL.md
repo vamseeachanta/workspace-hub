@@ -50,14 +50,7 @@ Before clearing a worktree and again immediately before removal, list the index 
 GIT_OPTIONAL_LOCKS=0 git ls-files -v
 ```
 
-Hold the worktree for every lowercase tag (assume-unchanged) or capital S (skip-worktree). For each flagged regular file, compare its hash with the stage-zero blob ID:
-
-```sh
-git hash-object --no-filters -- "$file"
-git --literal-pathspecs ls-files -s -- "$file"
-```
-
-Keep the worktree on a mismatch or an unresolved entry. Alternatively, clear the flags and rerun the clean-status check before proceeding.
+A worktree with any lowercase tag (assume-unchanged) or capital S (skip-worktree) is held for a human. The procedure never clears it, never compares hashes to excuse it, and never removes the flags. Record the worktree and its flagged paths in the hold list, and leave the decision to the owner.
 
 Map each process directory, script path and hold to every candidate that **contains it or lies beneath it**. Pass the entire affected worktree as `--exclude HELD`, repeated for each one in both calls. Omit the option when the verified hold list is empty. `MERGED` holds the per-repo merged-PR evidence. If temporary fetch refs are outside read-only census authority, omit `--merged-prs MERGED` from both calls and retain detached trees without independent restore evidence.
 
@@ -108,7 +101,8 @@ For approved layout repairs, release dependent worktrees before replacing a pre-
 
 Verify the sweep on disposable worktrees:
 
-- Modify a flagged file in an otherwise eligible worktree. Verify the worktree and the edit survive the sweep. Repeat for each flag.
+- Set assume-unchanged on one file in an otherwise eligible worktree, with no other change. Verify the worktree is on the hold list and survives the sweep. Repeat with skip-worktree.
+- In a flagged worktree, change only the file mode of the flagged file (`chmod +x`). Verify the worktree and the mode change survive the sweep.
 - With A and B both SAFE, approve only A and substitute B’s row at apply time. Verify the batch aborts and both worktrees remain.
 
 ## Install the six-hour consistency run
@@ -121,15 +115,11 @@ Install the reviewed bootstrap and matching hourly upkeep writer through the man
 
 ## Check the structure guides and decide readiness
 
-Account for each entry in `W` against `workspace-hub/config/workstations/ws-structure.yaml` and the private registry. Run `python scripts/operations/check-structure-guide.py REPO --json` from the hub for each registered repository on this machine. Repair stale or missing entries through the owning repo's normal change process. State each folder's purpose to the declared depth in `docs/structure.yaml`. Before rendering in place, check from the clone root:
+Account for each entry in `W` against `workspace-hub/config/workstations/ws-structure.yaml` and the private registry. Run `python scripts/operations/check-structure-guide.py REPO --json` from the hub for each registered repository on this machine. Repair stale or missing entries through the owning repo's normal change process. State each folder's purpose to the declared depth in `docs/structure.yaml`.
 
-```sh
-test -L docs/STRUCTURE.md
-GIT_OPTIONAL_LOCKS=0 git status --porcelain --untracked-files=all --ignored -- docs/STRUCTURE.md
-GIT_OPTIONAL_LOCKS=0 git ls-files -v -- docs/STRUCTURE.md
-```
+Never run `--render` against a working clone in place. Render only in a disposable copy, to a fresh output path that does not yet exist. Before writing, resolve every component of the output path: no component may be a symlink or junction, and the fully resolved path must lie inside the disposable copy's root. Compare the rendered guide with the installed one, and change the installed guide only through the owning repo's normal change process.
 
-If the guide is a symlink, has staged, unstaged or untracked content, or has a flagged index entry, keep it. Render in a disposable copy with a fresh guide path for comparison. Use `--render` in place only after the checks establish a clean destination. Recheck the installed guide. An undocumented folder stays on the census until its purpose is established.
+Verify on a disposable clone whose `docs` folder is a link to a directory outside the clone: the render refuses, and the bytes of the outside guide are unchanged (compare its hash before and after). An undocumented folder stays on the census until its purpose is established.
 
 Read the actual scheduled run in `W/_pm/consistency/latest.json`. Require the expected host, pinned commit, completion less than 6 h old, and every applicable check complete with zero findings. After the hourly manager and collector run, match `host`, `pinned`, `last_completed` and `counts` in `W/_pm/consistency/state.json`, the `consistency` record in `W/_pm/machine-manager/readiness.json`, and the host row in private `dashboard/machine-readiness.json`.
 
