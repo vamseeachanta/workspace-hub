@@ -7,14 +7,14 @@ shared ecosystem skills source, not real directories:
 
 - `.codex/skills` -> ecosystem skills source (marker: `.codex/.skills-link-marker`)
 - `.gemini/skills` -> ecosystem skills source (marker: `.gemini/.skills-link-marker`)
-- `.claude/skills/{guidelines,meta,workflows}` -> linked subdirs
-  (markers: `.claude/skills/.meta-link-marker`, `.claude/skills/.workflows-link-marker`)
+- `.claude/skills/{guidelines,workflows}` -> linked subdirs
+  (markers: `.claude/skills/.guidelines-link-marker`, `.claude/skills/.workflows-link-marker`)
 
 The marker files (content: `ecosystem-link`) are the repo record. The junction
 contents are machine-local and must stay untracked:
 
 - `.codex/.gitignore` and `.gemini/.gitignore` ignore `skills/`
-- `.claude/skills/.gitignore` ignores `guidelines/`, `meta/`, `workflows/`
+- `.claude/skills/.gitignore` ignores `guidelines/` and `workflows/`
 
 ## The trap
 

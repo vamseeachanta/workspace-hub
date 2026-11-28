@@ -28,9 +28,8 @@ STATE_DIR="$WS_HUB/.claude/state"
 INTERNAL_DIR="$WS_HUB/.claude/skills/_internal"
 PROPAGATE="$WS_HUB/scripts/propagate-ecosystem.sh"
 
-# Discovery contract — replicated inline from propagate-ecosystem.sh (which CANNOT be sourced: it
-# ends with both `main "$@"` and `exit 0`, either of which would hijack/terminate this script).
-SHARED_SKILL_DIRS=("guidelines" "meta" "workflows")
+SHARED_SKILL_DIRS=("guidelines" "workflows")
+EXCLUDE_PATTERNS=()
 EXCLUDE_DIRS=(".claude" "scripts" "specs" "docs" "node_modules" ".git"
               "_archive" "_temp" "config" "coordination" "data" "docker"
               "examples" "logs" "modules" "monitoring-dashboard" "reports"
@@ -47,11 +46,18 @@ Verify (REPORT, default) or re-sync (--apply) shared-skill links across ecosyste
 Options:
   --apply          Re-propagate repairable links via propagate-ecosystem.sh --skills-only (guard-gated)
   --dry-run        Under --apply, make no changes (no-op preview)
+  --exclude <glob> Skip matching entry names before probing them (repeatable)
   --only <repo>    Limit to a single ecosystem repo (by directory name)
   --machine <lbl>  Override the machine label (else derived; EQ_MACHINE env also honored)
   --json           Also print the state JSON to stdout
   --verbose        Show the per-cell classification table
   --help, -h       Show this help
+
+Additional name globs are read from SKILL_LINK_EXCLUDE_FILE, defaulting to
+$HOME/.config/workspace-hub/skill-link-exclude.txt. Use one glob per line.
+Blank lines and # comments are ignored. A missing default file adds no patterns.
+An unreadable explicit file or an excluded --only target exits with status 2.
+The excluded count covers entries matched by command-line or file patterns.
 EOF
 }
 
@@ -60,6 +66,9 @@ parse_arguments() {
     case "$1" in
       --apply)   OPT_APPLY=true;;
       --dry-run) OPT_DRY_RUN=true;;
+      --exclude)
+        [[ -n "${2:-}" ]] || { echo "--exclude requires a glob" >&2; exit 2; }
+        EXCLUDE_PATTERNS+=("$2"); shift;;
       --only)    OPT_ONLY="${2:-}"; shift;;
       --machine) OPT_MACHINE="${2:-}"; shift;;
       --json)    OPT_JSON=true;;
@@ -156,30 +165,74 @@ classify() {
   echo "MISSING"
 }
 
-# ── repo discovery (inline replica of propagate's discover_submodules) ───────
+# Keep discovery inline and in sync in both scripts.
+load_excludes() {
+  local file="${SKILL_LINK_EXCLUDE_FILE-${HOME:-~}/.config/workspace-hub/skill-link-exclude.txt}"
+  local contents line
+  if [[ -z ${SKILL_LINK_EXCLUDE_FILE+x} && ! -e "$file" && ! -L "$file" ]]; then
+    return 0
+  fi
+  if [[ ! -f "$file" ]] || ! contents="$(cat 2>/dev/null < "$file")"; then
+    echo "Cannot read skill link exclude file" >&2
+    return 2
+  fi
+  while IFS= read -r line; do
+    line="${line%$'\r'}"
+    [[ "$line" =~ ^[[:space:]]*(#|$) ]] && continue
+    EXCLUDE_PATTERNS+=("$line")
+  done <<< "$contents"
+  return 0
+}
+
+matches_pattern() {
+  local name="$1" pattern
+  shift
+  for pattern in "$@"; do
+    [[ "$name" == $pattern ]] && return 0
+  done
+  return 1
+}
+
+validate_excludes() {
+  load_excludes || return 2
+  if [[ -n "$OPT_ONLY" ]] && matches_pattern "$OPT_ONLY" "${EXCLUDE_DIRS[@]}" \
+      ${EXCLUDE_PATTERNS[@]+"${EXCLUDE_PATTERNS[@]}"}; then
+    echo "Requested --only target is excluded" >&2
+    return 2
+  fi
+  return 0
+}
+
+probe_path() { "$@"; }
+
 discover_repos() {
-  local hub_name hub_parent dir_name repo_dir ex excluded
+  local hub_parent hub_name repo_dir name
   hub_name="$(basename "$WS_HUB")"
   hub_parent="$(dirname "$WS_HUB")"
-  {
-    for repo_dir in "$WS_HUB"/*/;     do echo "$repo_dir"; done
-    for repo_dir in "$hub_parent"/*/; do echo "$repo_dir"; done
-  } | while IFS= read -r repo_dir; do
-    [[ ! -d "$repo_dir" ]] && continue
-    dir_name="$(basename "$repo_dir")"
-    [[ "$dir_name" == "$hub_name" ]] && continue
-    excluded=false
-    for ex in "${EXCLUDE_DIRS[@]}"; do [[ "$dir_name" == "$ex" ]] && excluded=true && break; done
-    [[ "$excluded" == "true" ]] && continue
-    # Skip git WORKTREES (but NOT submodules). A worktree's .git is a FILE whose gitdir points into a
-    # ".../worktrees/<name>" path; a submodule's .git file points into ".../modules/<name>". We only
-    # drop worktrees — they carry .claude/skills/ as transient checkouts, are not stable propagation
-    # targets, and counting their un-linked shared dirs as MISSING would keep the cell permanently red
-    # on every box with worktrees in flight. (propagate-ecosystem.sh may still touch a worktree
-    # idempotently under --apply; we simply don't audit worktree link health here.)
-    if [[ -f "$repo_dir/.git" ]] && grep -q '/worktrees/' "$repo_dir/.git" 2>/dev/null; then continue; fi
-    [[ -d "$repo_dir/.claude/skills" ]] && echo "${repo_dir%/}"
-  done | sort -u
+  DISCOVERED_REPOS=()
+  EXCLUDED=0
+  local restore_nullglob=false
+  shopt -q nullglob || restore_nullglob=true
+  shopt -s nullglob
+  local entries=("$WS_HUB"/* "$hub_parent"/*)
+  [[ "$restore_nullglob" == false ]] || shopt -u nullglob
+  for repo_dir in ${entries[@]+"${entries[@]}"}; do
+    name="${repo_dir##*/}"
+    if matches_pattern "$name" ${EXCLUDE_PATTERNS[@]+"${EXCLUDE_PATTERNS[@]}"}; then
+      EXCLUDED=$((EXCLUDED + 1))
+      continue
+    fi
+    [[ "$name" == "$hub_name" ]] && continue
+    matches_pattern "$name" "${EXCLUDE_DIRS[@]}" && continue
+    [[ -n "$OPT_ONLY" && "$name" != "$OPT_ONLY" ]] && continue
+    probe_path test -d "$repo_dir" || continue
+    if probe_path test -f "$repo_dir/.git" &&
+       probe_path grep -q '/worktrees/' "$repo_dir/.git" 2>/dev/null; then
+      continue
+    fi
+    probe_path test -d "$repo_dir/.claude/skills" && DISCOVERED_REPOS+=("$repo_dir")
+  done
+  return 0
 }
 
 # ── allowlist (repos that legitimately carry no shared-skill links) ──────────
@@ -220,10 +273,9 @@ run_classification() {
   C_HEALTHY=0; C_MISSING=0; C_DANGLING=0; C_FLATTENED=0; C_MODIFIED=0; C_TEMPLATE_ABSENT=0
   REPOS_TOTAL=0; MISSING_REPOS=(); TABLE=()
   local repo repo_name shared link target state repo_has_missing
-  while IFS= read -r repo; do
-    [[ -z "$repo" ]] && continue
+  discover_repos
+  for repo in ${DISCOVERED_REPOS[@]+"${DISCOVERED_REPOS[@]}"}; do
     repo_name="$(basename "$repo")"
-    if [[ -n "$OPT_ONLY" && "$repo_name" != "$OPT_ONLY" ]]; then continue; fi
     REPOS_TOTAL=$((REPOS_TOTAL + 1))
     repo_has_missing=false
     for shared in "${SHARED_SKILL_DIRS[@]}"; do
@@ -241,7 +293,7 @@ run_classification() {
       TABLE+=("$(printf '%-22s %-10s %s' "$repo_name" "$shared" "$state")")
     done
     [[ "$repo_has_missing" == "true" ]] && MISSING_REPOS+=("$repo_name")
-  done < <(discover_repos)
+  done
 }
 
 # ── JSON assembly (counts/bools/basenames only — no abs paths, no tokens) ────
@@ -291,6 +343,7 @@ build_json() {
   "audited_at": "$stamp",
   "platform": "$PLATFORM",
   "repos_total": $REPOS_TOTAL,
+  "excluded": $EXCLUDED,
   "healthy": $C_HEALTHY,
   "missing": $C_MISSING,
   "dangling": $C_DANGLING,
@@ -316,8 +369,8 @@ print_report() {
     printf '%s\n' "${TABLE[@]:-}"
     echo ""
   fi
-  printf 'skill-link-health [%s]: repos=%d healthy=%d missing=%d dangling=%d flattened=%d modified=%d template-absent=%d (repairable=%d, worst=%s)\n' \
-    "$MACHINE" "$REPOS_TOTAL" "$C_HEALTHY" "$C_MISSING" "$C_DANGLING" "$C_FLATTENED" \
+  printf 'skill-link-health [%s]: repos=%d excluded=%d healthy=%d missing=%d dangling=%d flattened=%d modified=%d template-absent=%d (repairable=%d, worst=%s)\n' \
+    "$MACHINE" "$REPOS_TOTAL" "$EXCLUDED" "$C_HEALTHY" "$C_MISSING" "$C_DANGLING" "$C_FLATTENED" \
     "$C_MODIFIED" "$C_TEMPLATE_ABSENT" "$repairable" "$(worst_state)"
 }
 
@@ -331,6 +384,8 @@ guard_ok() {
 
 main() {
   parse_arguments "$@"
+  local cli_patterns=(${EXCLUDE_PATTERNS[@]+"${EXCLUDE_PATTERNS[@]}"})
+  validate_excludes || exit 2
   resolve_machine
 
   run_classification
@@ -357,15 +412,19 @@ main() {
   fi
 
   echo "apply: re-propagating $repairable repairable cell(s) via propagate-ecosystem.sh --skills-only"
-  if [[ -n "$OPT_ONLY" ]]; then
-    bash "$PROPAGATE" --skills-only --only "$OPT_ONLY" || true
-  else
-    bash "$PROPAGATE" --skills-only || true
-  fi
+  local args=(--skills-only) pattern
+  [[ -n "$OPT_ONLY" ]] && args+=(--only "$OPT_ONLY")
+  for pattern in ${cli_patterns[@]+"${cli_patterns[@]}"}; do
+    args+=(--exclude "$pattern")
+  done
+  local apply_status=0
+  bash "$PROPAGATE" "${args[@]}" || apply_status=$?
   run_classification
   write_state
   print_report
-  return 0
+  return "$apply_status"
 }
 
-main "$@"
+if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
+  main "$@"
+fi

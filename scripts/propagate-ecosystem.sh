@@ -12,8 +12,9 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 WS_HUB="$(cd "$SCRIPT_DIR/.." && pwd)"
 
 HOOK_MARKER="consume-signals.sh"
-SHARED_SKILL_DIRS=("guidelines" "meta" "workflows")
+SHARED_SKILL_DIRS=("guidelines" "workflows")
 SKIP_DIRS=("session-logs" "_runtime" "_internal" "_core")
+EXCLUDE_PATTERNS=()
 EXCLUDE_DIRS=(".claude" "scripts" "specs" "docs" "node_modules" ".git"
               "_archive" "_temp" "config" "coordination" "data" "docker"
               "examples" "logs" "modules" "monitoring-dashboard" "reports"
@@ -137,28 +138,74 @@ sys.exit(0)
 PYEOF
 }
 
-# --- discover_submodules: list ecosystem repos with .claude/skills/ ---
-# Supports two checkout layouts, transparently:
-#   nested — repos live under workspace-hub/   (git-submodule layout)
-#   flat   — repos are siblings of workspace-hub/  (e.g. /mnt/.../digitalmodel)
-# Both directories are scanned; the hub itself is never a target. Link targets
-# stay correct in either layout because create_directory_link() computes the
-# symlink relative to the real workspace-hub location at link time.
-discover_submodules() {
-    local hub_name; hub_name="$(basename "$WS_HUB")"
-    local hub_parent; hub_parent="$(dirname "$WS_HUB")"
-    {
-        for repo_dir in "$WS_HUB"/*/;     do echo "$repo_dir"; done
-        for repo_dir in "$hub_parent"/*/; do echo "$repo_dir"; done
-    } | while IFS= read -r repo_dir; do
-        [[ ! -d "$repo_dir" ]] && continue
-        local dir_name; dir_name="$(basename "$repo_dir")"
-        [[ "$dir_name" == "$hub_name" ]] && continue
-        local excluded=false
-        for ex in "${EXCLUDE_DIRS[@]}"; do [[ "$dir_name" == "$ex" ]] && excluded=true && break; done
-        [[ "$excluded" == "true" ]] && continue
-        [[ -d "$repo_dir/.claude/skills" ]] && echo "$repo_dir"
-    done | sort -u
+# Keep discovery inline and in sync in both scripts.
+load_excludes() {
+  local file="${SKILL_LINK_EXCLUDE_FILE-${HOME:-~}/.config/workspace-hub/skill-link-exclude.txt}"
+  local contents line
+  if [[ -z ${SKILL_LINK_EXCLUDE_FILE+x} && ! -e "$file" && ! -L "$file" ]]; then
+    return 0
+  fi
+  if [[ ! -f "$file" ]] || ! contents="$(cat 2>/dev/null < "$file")"; then
+    echo "Cannot read skill link exclude file" >&2
+    return 2
+  fi
+  while IFS= read -r line; do
+    line="${line%$'\r'}"
+    [[ "$line" =~ ^[[:space:]]*(#|$) ]] && continue
+    EXCLUDE_PATTERNS+=("$line")
+  done <<< "$contents"
+  return 0
+}
+
+matches_pattern() {
+  local name="$1" pattern
+  shift
+  for pattern in "$@"; do
+    [[ "$name" == $pattern ]] && return 0
+  done
+  return 1
+}
+
+validate_excludes() {
+  load_excludes || return 2
+  if [[ -n "$OPT_ONLY" ]] && matches_pattern "$OPT_ONLY" "${EXCLUDE_DIRS[@]}" \
+      ${EXCLUDE_PATTERNS[@]+"${EXCLUDE_PATTERNS[@]}"}; then
+    echo "Requested --only target is excluded" >&2
+    return 2
+  fi
+  return 0
+}
+
+probe_path() { "$@"; }
+
+discover_repos() {
+  local hub_parent hub_name repo_dir name
+  hub_name="$(basename "$WS_HUB")"
+  hub_parent="$(dirname "$WS_HUB")"
+  DISCOVERED_REPOS=()
+  EXCLUDED=0
+  local restore_nullglob=false
+  shopt -q nullglob || restore_nullglob=true
+  shopt -s nullglob
+  local entries=("$WS_HUB"/* "$hub_parent"/*)
+  [[ "$restore_nullglob" == false ]] || shopt -u nullglob
+  for repo_dir in ${entries[@]+"${entries[@]}"}; do
+    name="${repo_dir##*/}"
+    if matches_pattern "$name" ${EXCLUDE_PATTERNS[@]+"${EXCLUDE_PATTERNS[@]}"}; then
+      EXCLUDED=$((EXCLUDED + 1))
+      continue
+    fi
+    [[ "$name" == "$hub_name" ]] && continue
+    matches_pattern "$name" "${EXCLUDE_DIRS[@]}" && continue
+    [[ -n "$OPT_ONLY" && "$name" != "$OPT_ONLY" ]] && continue
+    probe_path test -d "$repo_dir" || continue
+    if probe_path test -f "$repo_dir/.git" &&
+       probe_path grep -q '/worktrees/' "$repo_dir/.git" 2>/dev/null; then
+      continue
+    fi
+    probe_path test -d "$repo_dir/.claude/skills" && DISCOVERED_REPOS+=("$repo_dir")
+  done
+  return 0
 }
 
 # --- propagate_hooks(repo_dir) ---
@@ -383,6 +430,9 @@ parse_arguments() {
             --skills-only) OPT_HOOKS=false; OPT_SKILLS=true;;
             --codex-only)  OPT_CODEX_ONLY=true; OPT_HOOKS=false; OPT_SKILLS=true;;
             --dry-run)     OPT_DRY_RUN=true;;
+            --exclude)
+              [[ -n "${2:-}" ]] || { echo "--exclude requires a glob" >&2; exit 2; }
+              EXCLUDE_PATTERNS+=("$2"); shift;;
             --only)
                 if [[ "$OPT_CODEX_REQUESTED" == true ]]; then
                     [[ "$OPT_ONLY_SEEN" == false ]] || { echo "ERROR: --only may be specified once with --codex-only" >&2; exit 1; }
@@ -413,9 +463,15 @@ Options:
   --skills-only   Only propagate skill links (skip hooks)
   --codex-only    Preserve one repository's recognized native Codex root only
   --dry-run       Preview changes without modifying anything
+  --exclude <glob> Skip matching entry names before probing them (repeatable)
   --only <repo>   Limit to a single ecosystem repo (by directory name)
   --verbose       Show detailed output
   --help, -h      Show this help message
+
+Additional name globs are read from SKILL_LINK_EXCLUDE_FILE, defaulting to
+$HOME/.config/workspace-hub/skill-link-exclude.txt. Use one glob per line.
+Blank lines and # comments are ignored. A missing default file adds no patterns.
+An unreadable explicit file or an excluded --only target exits with status 2.
 EOF
 }
 
@@ -435,15 +491,14 @@ preflight_checks() {
 # --- main ---
 main() {
     parse_arguments "$@"
+    validate_excludes || exit 2
     preflight_checks
 
-    local submodules=()
-    while IFS= read -r line; do submodules+=("$line"); done < <(discover_submodules)
-    if [[ -n "$OPT_ONLY" ]]; then
-        local filtered=()
-        for r in "${submodules[@]}"; do [[ "$(basename "$r")" == "$OPT_ONLY" ]] && filtered+=("$r"); done
-        submodules=("${filtered[@]}")
-        [[ ${#submodules[@]} -eq 0 ]] && { echo "No ecosystem repo named '$OPT_ONLY' with .claude/skills/ found."; exit 1; }
+    discover_repos
+    local submodules=(${DISCOVERED_REPOS[@]+"${DISCOVERED_REPOS[@]}"})
+    if [[ -n "$OPT_ONLY" && ${#submodules[@]} -eq 0 ]]; then
+        echo "No ecosystem repo named '$OPT_ONLY' with .claude/skills/ found."
+        exit 1
     fi
     if [[ "$OPT_CODEX_ONLY" == true && ${#submodules[@]} -ne 1 ]]; then
         echo "ERROR: --codex-only requires exactly one discovered repository named '$OPT_ONLY'" >&2; exit 1
@@ -536,5 +591,7 @@ main() {
     [[ "$OPT_DRY_RUN" == "true" ]] && printf "  ${C_YELLOW}(dry-run — no changes were made)${C_RESET}\n"
 }
 
-main "$@"
-exit "$CODEX_BLOCKED"
+if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
+    main "$@"
+    exit "$CODEX_BLOCKED"
+fi

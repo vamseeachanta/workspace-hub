@@ -45,10 +45,11 @@ cleanup() {
   rm -rf -- "$TEST_PARENT"
 }
 trap cleanup EXIT
+export HOME="$TEST_PARENT/home"
+unset SKILL_LINK_EXCLUDE_FILE
 test_failed_sandbox_assignments || exit 1
 
-# new_sandbox [template_dirs...] — echoes <sbx>/wshub. Templates default to "meta" so workflows +
-# guidelines slots resolve to TEMPLATE-ABSENT (keeps single-cell classify tests isolated).
+# A single guidelines template isolates classification tests from the workflows slot.
 new_sandbox() {
   local sbx hub tdir
   sbx="$(mktemp -d "$TEST_PARENT/case.XXXXXX")" || return 1
@@ -57,7 +58,7 @@ new_sandbox() {
   mkdir -p "$hub/scripts/lib" "$hub/scripts/skills"
   cp "$REPO_ROOT/scripts/lib/reparse_guard.sh" "$hub/scripts/lib/" || return 1
   cp "$REPO_ROOT/scripts/skills/native_skill_root.py" "$hub/scripts/skills/" || return 1
-  local templates=("$@"); [[ ${#templates[@]} -eq 0 ]] && templates=("meta")
+  local templates=("$@"); [[ ${#templates[@]} -eq 0 ]] && templates=("guidelines")
   for tdir in "${templates[@]}"; do
     mkdir -p "$hub/.claude/skills/_internal/$tdir"
     printf -- '---\nname: %s\n---\nshared %s template body\n' "$tdir" "$tdir" \
@@ -92,55 +93,133 @@ jget() { # jget <json> <key> -> integer/string value (naive but sufficient for t
   printf '%s' "$1" | grep -o "\"$2\": *[^,}]*" | head -1 | sed 's/.*: *//; s/^"//; s/"$//'
 }
 
+# Exercise each entry point with its discovery probes recorded by a wrapper.
+test_discovery_excludes() {
+  local script="$1" hub="$2" label="$3" root="${2%/*}" out rc
+  local trace="$root/probes" config="$root/patterns" mode
+  printf '%s\n' '' '  # ignored' 'barred-*' > "$config" || return 1
+  mkdir -p "$hub/open-repo/.claude/skills" "$root/barred-repo/.claude/skills" \
+    "$hub/skip-one/.claude/skills" "$hub/skip-two/.claude/skills" || return 1
+  touch "$root/barred-repo/.git" "$hub/open-repo/.git" || return 1
+  for mode in scan only unreadable; do
+    : > "$trace" || return 1
+    local args=(--verbose --exclude skip-one --exclude 'skip-tw?')
+    [[ "$label" == propagate ]] && args+=(--hooks-only --dry-run)
+    [[ "$label" == resync ]] && args+=(--json)
+    [[ "$mode" == only ]] && args+=(--only barred-repo)
+    [[ "$mode" == unreadable ]] && config="$root/absent"
+    out="$(WORKSPACE_HUB="$hub" EQ_MACHINE=test-box SKILL_LINK_EXCLUDE_FILE="$config" \
+      bash -s -- "$script" "$trace" "${args[@]}" 2>&1 <<'BASH'
+source "$1" || exit 1
+trace="$2"
+shift 2
+probe_path() {
+  printf '%s\n' "${!#}" >> "$trace" || exit 1
+  "$@"
+}
+main "$@"
+BASH
+)" && rc=0 || rc=$?
+    require_nonempty "${label}_${mode}_output" "$out" || return 1
+    if [[ "$mode" == scan ]]; then
+      assert_eq "${label}_scan_rc" "$rc" 0
+      assert_contains "${label}_included" "$out" open-repo
+      grep -Fxq "$hub/open-repo/.claude/skills" "$trace" || return 1
+      if [[ "$label" == resync ]]; then
+        assert_contains resync_excluded_report "$out" 'excluded=3'
+        assert_contains resync_excluded_json "$out" '"excluded": 3'
+      fi
+    else
+      assert_eq "${label}_${mode}_rc" "$rc" 2
+      [[ ! -s "$trace" ]] || return 1
+    fi
+    if grep -F -e "$root/barred-repo" -e "$hub/skip-one" -e "$hub/skip-two" "$trace" ||
+       [[ "$out" == *barred-repo* || "$out" == *skip-one* || "$out" == *skip-two* ]]; then
+      return 1
+    fi
+    pass "${label}_${mode}_excludes_before_probes"
+  done
+  local default_file="$root/home/.config/workspace-hub/skill-link-exclude.txt"
+  mkdir -p "${default_file%/*}" || return 1
+  printf %s 'barred-*' > "$default_file" || return 1
+  out="$(HOME="$root/home" WORKSPACE_HUB="$hub" EQ_MACHINE=test-box \
+    bash "$script" --only barred-repo 2>&1)" && rc=0 || rc=$?
+  assert_eq "${label}_default_file_rc" "$rc" 2
+  assert_contains "${label}_default_file_error" "$out" 'target is excluded'
+}
+
 if [[ "${NATIVE_ADMISSION_ONLY:-0}" != 1 && "${CODEX_ONLY_ONLY:-0}" != 1 ]]; then
+for label in resync propagate; do
+  hub="$(new_sandbox)" || exit 1
+  script="$RESYNC"
+  if [[ "$label" == propagate ]]; then
+    script="$hub/scripts/propagate-ecosystem.sh"
+    cp "$PROPAGATE_SRC" "$script" || exit 1
+  fi
+  test_discovery_excludes "$script" "$hub" "$label" || { fail "${label}_discovery"; exit 1; }
+done
+hub="$(new_sandbox guidelines workflows)" || exit 1
+cp "$PROPAGATE_SRC" "$hub/scripts/propagate-ecosystem.sh" || exit 1
+open="$(add_repo "$hub" open-repo)" || exit 1
+barred="$(add_repo "$hub" barred-repo flat)" || exit 1
+require_nonempty open_repo "$open" && require_nonempty barred_repo "$barred" || exit 1
+out="$(WORKSPACE_HUB="$hub" EQ_MACHINE=test-box bash "$RESYNC" --apply --exclude 'barred-*' 2>&1)" || exit 1
+require_nonempty apply_output "$out" || exit 1
+if [[ -L "$open/.claude/skills/workflows" && ! -L "$barred/.claude/skills/workflows" &&
+      "$out" != *barred-repo* ]]; then
+  pass apply_forwards_excludes
+else
+  fail apply_forwards_excludes
+fi
+
 # ── T1: classify HEALTHY ────────────────────────────────────────────────────
-hub="$(new_sandbox meta)" || exit 1
-r="$(add_repo "$hub" repo-healthy nested)"; link_healthy "$hub" "$r" meta
+hub="$(new_sandbox)" || exit 1
+r="$(add_repo "$hub" repo-healthy nested)"; link_healthy "$hub" "$r" guidelines
 json="$(run_report "$hub")"
 assert_eq "test_classify_healthy" "$(jget "$json" healthy)" "1"
 
 # ── T2: classify MISSING ────────────────────────────────────────────────────
-hub="$(new_sandbox meta)" || exit 1
+hub="$(new_sandbox)" || exit 1
 add_repo "$hub" repo-missing flat >/dev/null
 json="$(run_report "$hub")"
 assert_eq "test_classify_missing" "$(jget "$json" missing)" "1"
 
 # ── T3: classify DANGLING ───────────────────────────────────────────────────
-hub="$(new_sandbox meta)" || exit 1
-r="$(add_repo "$hub" repo-dangling nested)"; link_dangling "$hub" "$r" meta
+hub="$(new_sandbox)" || exit 1
+r="$(add_repo "$hub" repo-dangling nested)"; link_dangling "$hub" "$r" guidelines
 json="$(run_report "$hub")"
 assert_eq "test_classify_dangling" "$(jget "$json" dangling)" "1"
 
 # ── T4: classify FLATTENED ──────────────────────────────────────────────────
-hub="$(new_sandbox meta)" || exit 1
-r="$(add_repo "$hub" repo-flattened flat)"; make_flattened "$hub" "$r" meta
+hub="$(new_sandbox)" || exit 1
+r="$(add_repo "$hub" repo-flattened flat)"; make_flattened "$hub" "$r" guidelines
 json="$(run_report "$hub")"
 assert_eq "test_classify_flattened" "$(jget "$json" flattened)" "1"
 
 # ── T5: classify MODIFIED-REAL-DIR ──────────────────────────────────────────
-hub="$(new_sandbox meta)" || exit 1
-r="$(add_repo "$hub" repo-modified nested)"; make_modified "$hub" "$r" meta
+hub="$(new_sandbox)" || exit 1
+r="$(add_repo "$hub" repo-modified nested)"; make_modified "$hub" "$r" guidelines
 json="$(run_report "$hub")"
 assert_eq "test_classify_modified_real_dir" "$(jget "$json" modified_real_dir)" "1"
 
 # A real dir matching the template classifies HEALTHY (not MODIFIED).
-hub="$(new_sandbox meta)" || exit 1
-r="$(add_repo "$hub" repo-realmatch nested)"; make_matching "$hub" "$r" meta
+hub="$(new_sandbox)" || exit 1
+r="$(add_repo "$hub" repo-realmatch nested)"; make_matching "$hub" "$r" guidelines
 json="$(run_report "$hub")"
 assert_eq "test_classify_matching_real_dir_healthy" "$(jget "$json" healthy)" "1"
 
-# ── T6: classify TEMPLATE-ABSENT (guidelines/workflows have no _internal template) ──
-hub="$(new_sandbox meta)" || exit 1
-r="$(add_repo "$hub" repo-ta nested)"; link_healthy "$hub" "$r" meta
+# ── T6: classify TEMPLATE-ABSENT (workflows has no _internal template) ──
+hub="$(new_sandbox)" || exit 1
+r="$(add_repo "$hub" repo-ta nested)"; link_healthy "$hub" "$r" guidelines
 json="$(run_report "$hub")"
-# 1 repo x 3 shared dirs: meta=HEALTHY, workflows+guidelines=TEMPLATE-ABSENT
-assert_eq "test_classify_template_absent" "$(jget "$json" template_absent)" "2"
+# 1 repo x 2 shared dirs: guidelines=HEALTHY, workflows=TEMPLATE-ABSENT
+assert_eq "test_classify_template_absent" "$(jget "$json" template_absent)" "1"
 
 # ── T7: state JSON shape + counts sum to repos x dirs ───────────────────────
-hub="$(new_sandbox meta)" || exit 1
-r1="$(add_repo "$hub" repo-h nested)"; link_healthy "$hub" "$r1" meta
+hub="$(new_sandbox)" || exit 1
+r1="$(add_repo "$hub" repo-h nested)"; link_healthy "$hub" "$r1" guidelines
 r2="$(add_repo "$hub" repo-m flat)"   # all missing/template-absent
-r3="$(add_repo "$hub" repo-d nested)"; link_dangling "$hub" "$r3" meta
+r3="$(add_repo "$hub" repo-d nested)"; link_dangling "$hub" "$r3" guidelines
 json="$(run_report "$hub")"
 for k in machine audited_at platform repos_total healthy missing dangling flattened \
          modified_real_dir template_absent repairable unexpected_missing_repos worst_state schema_version; do
@@ -150,7 +229,7 @@ assert_eq "test_state_json_schema_version" "$(jget "$json" schema_version)" "1"
 rt="$(jget "$json" repos_total)"
 sum=$(( $(jget "$json" healthy) + $(jget "$json" missing) + $(jget "$json" dangling) \
       + $(jget "$json" flattened) + $(jget "$json" modified_real_dir) + $(jget "$json" template_absent) ))
-assert_eq "test_state_json_counts_sum" "$sum" "$(( rt * 3 ))"
+assert_eq "test_state_json_counts_sum" "$sum" "$(( rt * 2 ))"
 assert_eq "test_state_json_repairable" "$(jget "$json" repairable)" \
   "$(( $(jget "$json" missing) + $(jget "$json" dangling) + $(jget "$json" flattened) ))"
 assert_eq "test_state_json_worst_dangling" "$(jget "$json" worst_state)" "DANGLING"
@@ -158,21 +237,21 @@ assert_eq "test_state_json_worst_dangling" "$(jget "$json" worst_state)" "DANGLI
 # ── T8: report writes state ONLY under the sandbox (real .claude/state untouched) ──
 REAL_STATE="${REPO_ROOT}/.claude/state"
 before="$(ls "$REAL_STATE"/skill-link-health-* 2>/dev/null | wc -l)"
-hub="$(new_sandbox meta)" || exit 1; add_repo "$hub" repo-x nested >/dev/null
+hub="$(new_sandbox)" || exit 1; add_repo "$hub" repo-x nested >/dev/null
 run_report "$hub" >/dev/null
 after="$(ls "$REAL_STATE"/skill-link-health-* 2>/dev/null | wc -l)"
 assert_eq "test_state_written_under_sandbox_only_real_untouched" "$after" "$before"
 assert_file "test_state_written_under_sandbox" "$hub/.claude/state/skill-link-health-test-box.json"
 
 # ── T9: report mode makes no filesystem changes to links ────────────────────
-hub="$(new_sandbox meta)" || exit 1
+hub="$(new_sandbox)" || exit 1
 r="$(add_repo "$hub" repo-missing nested)"
 run_report "$hub" >/dev/null
-if [[ ! -e "$r/.claude/skills/meta" ]]; then pass "test_report_mode_makes_no_changes"
+if [[ ! -e "$r/.claude/skills/guidelines" ]]; then pass "test_report_mode_makes_no_changes"
 else fail "test_report_mode_makes_no_changes (report created a link)"; fi
 
 # ── T10: allowlist suppresses a MISSING repo from unexpected_missing_repos ───
-hub="$(new_sandbox meta)" || exit 1
+hub="$(new_sandbox)" || exit 1
 add_repo "$hub" repo-allowed nested >/dev/null
 json="$(WORKSPACE_HUB="$hub" EQ_MACHINE="test-box" EQ_SKILL_LINK_ALLOWLIST="repo-allowed" \
         bash "$RESYNC" >/dev/null 2>&1; cat "$hub/.claude/state/skill-link-health-test-box.json")"
@@ -182,52 +261,52 @@ json2="$(run_report "$hub")"
 assert_contains "test_unexpected_missing_without_allowlist" "$json2" "repo-allowed"
 
 # ── T11: --apply repairs MISSING + DANGLING (needs propagate copied into sandbox) ──
-hub="$(new_sandbox meta)" || exit 1
+hub="$(new_sandbox)" || exit 1
 cp "$PROPAGATE_SRC" "$hub/scripts/propagate-ecosystem.sh"
 r1="$(add_repo "$hub" repo-missing nested)"
-r2="$(add_repo "$hub" repo-dangling nested)"; link_dangling "$hub" "$r2" meta
+r2="$(add_repo "$hub" repo-dangling nested)"; link_dangling "$hub" "$r2" guidelines
 WORKSPACE_HUB="$hub" EQ_MACHINE="test-box" EQ_SKILL_LINK_ALLOWLIST="" \
   bash "$RESYNC" --apply >/dev/null 2>&1
 json="$(cat "$hub/.claude/state/skill-link-health-test-box.json")"
 assert_eq "test_apply_repairs_missing_and_dangling" "$(jget "$json" repairable)" "0"
-if [[ -L "$r1/.claude/skills/meta" ]]; then pass "test_apply_created_symlink"
-else fail "test_apply_created_symlink (no symlink at repo-missing/meta)"; fi
+if [[ -L "$r1/.claude/skills/guidelines" ]]; then pass "test_apply_created_symlink"
+else fail "test_apply_created_symlink (no symlink at repo-missing/guidelines)"; fi
 
 # ── T12: --apply never clobbers a MODIFIED-REAL-DIR ─────────────────────────
-hub="$(new_sandbox meta)" || exit 1
+hub="$(new_sandbox)" || exit 1
 cp "$PROPAGATE_SRC" "$hub/scripts/propagate-ecosystem.sh"
 add_repo "$hub" repo-missing nested >/dev/null   # gives a repairable cell so apply runs
-r="$(add_repo "$hub" repo-mod nested)"; make_modified "$hub" "$r" meta
+r="$(add_repo "$hub" repo-mod nested)"; make_modified "$hub" "$r" guidelines
 WORKSPACE_HUB="$hub" EQ_MACHINE="test-box" EQ_SKILL_LINK_ALLOWLIST="" \
   bash "$RESYNC" --apply >/dev/null 2>&1
-if [[ -d "$r/.claude/skills/meta" && ! -L "$r/.claude/skills/meta" ]] \
-   && grep -q "LOCALLY EDITED" "$r/.claude/skills/meta/SKILL.md"; then
+if [[ -d "$r/.claude/skills/guidelines" && ! -L "$r/.claude/skills/guidelines" ]] \
+   && grep -q "LOCALLY EDITED" "$r/.claude/skills/guidelines/SKILL.md"; then
   pass "test_apply_skips_modified_real_dir"
 else fail "test_apply_skips_modified_real_dir (modified dir was altered)"; fi
 
 # ── T13: guard blocks --apply when propagate is unavailable ─────────────────
-hub="$(new_sandbox meta)" || exit 1   # no propagate copied in
+hub="$(new_sandbox)" || exit 1   # no propagate copied in
 add_repo "$hub" repo-missing nested >/dev/null
 out="$(WORKSPACE_HUB="$hub" EQ_MACHINE="test-box" EQ_SKILL_LINK_ALLOWLIST="" \
        bash "$RESYNC" --apply 2>&1)"
 rc=$?
 assert_contains "test_apply_guard_blocks" "$out" "guard blocked"
 assert_eq "test_apply_guard_exit_zero" "$rc" "0"
-if [[ ! -e "$hub/repo-missing/.claude/skills/meta" ]]; then pass "test_apply_guard_no_changes"
+if [[ ! -e "$hub/repo-missing/.claude/skills/guidelines" ]]; then pass "test_apply_guard_no_changes"
 else fail "test_apply_guard_no_changes (link created despite guard)"; fi
 
 # ── T14: --apply --dry-run is a no-op ───────────────────────────────────────
-hub="$(new_sandbox meta)" || exit 1
+hub="$(new_sandbox)" || exit 1
 cp "$PROPAGATE_SRC" "$hub/scripts/propagate-ecosystem.sh"
 r="$(add_repo "$hub" repo-missing nested)"
 out="$(WORKSPACE_HUB="$hub" EQ_MACHINE="test-box" EQ_SKILL_LINK_ALLOWLIST="" \
        bash "$RESYNC" --apply --dry-run 2>&1)"
 assert_contains "test_dry_run_under_apply_message" "$out" "dry-run"
-if [[ ! -e "$r/.claude/skills/meta" ]]; then pass "test_dry_run_under_apply_is_noop"
+if [[ ! -e "$r/.claude/skills/guidelines" ]]; then pass "test_dry_run_under_apply_is_noop"
 else fail "test_dry_run_under_apply_is_noop (dry-run created a link)"; fi
 
 # ── T15: fail-closed on an unrecognized Windows host (no silent default label) ──
-hub="$(new_sandbox meta)" || exit 1
+hub="$(new_sandbox)" || exit 1
 out="$(WORKSPACE_HUB="$hub" EQ_OS_OVERRIDE="windows" EQ_HOST_OVERRIDE="some-unknown-box" \
        bash "$RESYNC" 2>&1)"
 rc=$?
@@ -235,13 +314,13 @@ assert_eq "test_machine_label_fail_closed_windows_rc" "$rc" "1"
 assert_contains "test_machine_label_fail_closed_windows_msg" "$out" "unknown Windows host"
 
 # ── T16: --machine override + EQ_MACHINE drive the state filename ────────────
-hub="$(new_sandbox meta)" || exit 1; add_repo "$hub" repo-x nested >/dev/null
+hub="$(new_sandbox)" || exit 1; add_repo "$hub" repo-x nested >/dev/null
 WORKSPACE_HUB="$hub" bash "$RESYNC" --machine custom-label >/dev/null 2>&1
 assert_file "test_machine_arg_override" "$hub/.claude/state/skill-link-health-custom-label.json"
 
 # ── T17: WORKTREE excluded (.git file → /worktrees/), SUBMODULE + clone KEPT ──
 # The worktree-skip must drop only worktrees, never genuine submodules (whose .git is ALSO a file).
-hub="$(new_sandbox meta)" || exit 1
+hub="$(new_sandbox)" || exit 1
 add_repo "$hub" real-clone nested >/dev/null                                # no .git ⇒ a real target
 wt="$hub/wt-checkout"; mkdir -p "$wt/.claude/skills"
 printf 'gitdir: /somewhere/.git/worktrees/wt-checkout\n' > "$wt/.git"        # worktree ⇒ EXCLUDED
@@ -267,7 +346,7 @@ PY
 }
 if [[ "${CODEX_ONLY_ONLY:-0}" != 1 ]]; then
 for variant in absent existing; do
-  hub="$(new_sandbox meta)" || exit 1
+  hub="$(new_sandbox)" || exit 1
   cp "$PROPAGATE_SRC" "$hub/scripts/propagate-ecosystem.sh"
   r="$(add_repo "$hub" native-owner nested)"
   mkdir -p "$r/.agents/skills" "$r/.codex" "$r/.gemini"
@@ -287,7 +366,7 @@ for variant in absent existing; do
   fi
 done
 for reply in 'native:3' 'absent:2' 'garbage:0' 'missing:0' 'runner:127' 'file:2'; do
-  hub="$(new_sandbox meta)" || exit 1
+  hub="$(new_sandbox)" || exit 1
   cp "$PROPAGATE_SRC" "$hub/scripts/propagate-ecosystem.sh"
   r="$(add_repo "$hub" blocked-owner nested)"
   mkdir -p "$r/.codex" "$r/.gemini/skills"
@@ -312,7 +391,7 @@ for reply in 'native:3' 'absent:2' 'garbage:0' 'missing:0' 'runner:127' 'file:2'
   done
   assert_eq "blocked_${reply}_preserved" "$(cat "$r/.codex/skills")" "preserve"
 done
-hub="$(new_sandbox meta)" || exit 1
+hub="$(new_sandbox)" || exit 1
 cp "$PROPAGATE_SRC" "$hub/scripts/propagate-ecosystem.sh"
 r="$(add_repo "$hub" indirect-owner nested)"
 mkdir -p "$r/.agents/skills"
@@ -353,7 +432,7 @@ make_stale_gemini_link() {
 declare -F snapshot_adapter >/dev/null && pass codex_only_snapshot_helper_defined \
   || { fail codex_only_snapshot_helper_defined; exit 1; }
 for dry in ordinary dry_run; do
-  original="$(new_sandbox meta)" || exit 1; moved="$TEST_PARENT/codex only $dry"
+  original="$(new_sandbox)" || exit 1; moved="$TEST_PARENT/codex only $dry"
   hub="$original"
   cp "$PROPAGATE_SRC" "$hub/scripts/propagate-ecosystem.sh"; rm -rf "$hub/.claude/skills/_internal"
   r="$(add_repo "$hub" selected-owner nested)"; other="$(add_repo "$hub" other-owner nested)"
@@ -384,7 +463,7 @@ expect_codex_only_failure() {
   after="$(snapshot_fixture "$hub")" || { fail "codex_only_${name}_snapshot_after"; return; }
   assert_eq "codex_only_${name}_unchanged" "$after" "$before"
 }
-hub="$(new_sandbox meta)" || exit 1; cp "$PROPAGATE_SRC" "$hub/scripts/propagate-ecosystem.sh"; add_repo "$hub" target nested >/dev/null
+hub="$(new_sandbox)" || exit 1; cp "$PROPAGATE_SRC" "$hub/scripts/propagate-ecosystem.sh"; add_repo "$hub" target nested >/dev/null
 expect_codex_only_failure missing "$hub" --codex-only
 expect_codex_only_failure empty "$hub" --codex-only --only
 expect_codex_only_failure option_value "$hub" --codex-only --only --dry-run

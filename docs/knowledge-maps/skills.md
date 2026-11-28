@@ -112,15 +112,12 @@ deviations. This public layer carries the count only.
    exposed as commands, since Claude Code does not list them?
 2. Is a sync or a reduction of `.agents/skills` planned? 83 copies differ and 549
    skills exist only in the copy.
-3. `SHARED_SKILL_DIRS` names `meta`, which `_internal/` does not hold, so every
-   repository reports TEMPLATE-ABSENT. Should `meta` be removed or restored?
-4. `.claude/skills/README.md` states 298 skills in 9 domains; it is out of date.
-5. `.claude/skills/eng/` holds 8 flat notes without `SKILL.md` that no provider
+3. `.claude/skills/README.md` states 298 skills in 9 domains; it is out of date.
+4. `.claude/skills/eng/` holds 8 flat notes without `SKILL.md` that no provider
    discovers.
-6. One skill folder under `data/energy` carries a client name (shown in the YAML by
+5. One skill folder under `data/energy` carries a client name (shown in the YAML by
    codename). A neutral folder name is recommended.
-7. The clean-up and consistency tooling is not on fleet-ops `main`. The ref a
-   machine should run from is not established.
+6. Which revision of the cleanup and consistency tools should each machine run?
 
 ## Refresh
 
