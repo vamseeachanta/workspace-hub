@@ -2044,6 +2044,12 @@ skills:
   name: vscode-extensions
   when_to_use: '### USE when: - Setting up a new development environment - Optimizing VS Code for specific languages/frameworks - Creating consistent team configurations - Building custom snippets and tasks - Configuring debugging for complex applications - Managing multiple project profiles - Automating repetitive editor tasks ### DON''T USE when: - Need full IDE features (use JetBrains IDEs) - Working exclusively in terminal (use vim/neovim) - Resource-constrained environments (use lighter editors) - Pair programming with different editors (standardize first)'
   when_to_use_source: section
+- description: Bring the current machine to the workspace standard using a dry census, reviewed cleanup manifests, a six-hour consistency run and a measured readiness verdict.
+  family: operations
+  id: operations/machine-readiness
+  name: machine-readiness
+  when_to_use: Use for onboarding, drift correction or a stale-worktree sweep on **this machine**. Work one physical host and one reviewed batch at a time. Keep machine details, manifests and receipts in the private `fleet-ops` repository. A files-only reviewer can initiate the same procedure through the authorized machine manager.
+  when_to_use_source: section
 - description: Survey, classify, and clean up `/mnt/local-analysis/` (or any sibling-to-workspace-hub directory holding orphan worktrees, codex-burn artifacts, agent log accumulations, and outer-clone duplicates) without losing useful code/work. Surfaces a tiered approval menu rather than baking decisions; defers all destructive ops until user confirms.
   family: operations
   id: operations/mnt-analysis-cleanup
