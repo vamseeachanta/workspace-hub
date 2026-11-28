@@ -41,7 +41,7 @@ standard:
   - The canonical clone sits on its default branch, clean, with no stash, and not behind origin after a fetch.
   - All other work is a linked worktree under <W>/_wt/<repo-short>--<slug>; <W>/_wt holds no full clones.
   - No pre-reset copies (<repo>.pre-rollout-*) remain once their local-only work is bundled and restore-tested.
-  - 'Placement rules hold: achantas-data stays on WS014 only; rds02 never holds achantas-data.'
+  - 'Placement rules hold: achantas-data stays on WS014 only; ace-win-1 never holds achantas-data.'
   not_required: Every machine holding every repository. No per-host required-repository list is on main (see open_questions).
 counts:
   repositories_total: 51
@@ -133,7 +133,7 @@ entries:
   archived: false
   default_branch: main
   last_push_utc: '2026-11-27T12:50:09Z'
-  owner_lane: engineering models team (rds02 train workers dm-a, dm-b)
+  owner_lane: engineering models team (ace-win-1 train workers dm-a, dm-b)
   owner_lane_source: roadmaps-index + desk-pass.md
   lean_reset:
     status: reset 2026-11-23-lean
@@ -205,7 +205,7 @@ entries:
   archived: false
   default_branch: main
   last_push_utc: '2026-11-26T21:28:17Z'
-  owner_lane: energy data team (Public Data Lead; rds02 worker wed)
+  owner_lane: energy data team (Public Data Lead; ace-win-1 worker wed)
   owner_lane_source: roadmaps-index + team/public-data-lead.md
   lean_reset:
     status: reset 2026-11-23-lean

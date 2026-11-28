@@ -50,14 +50,14 @@ Eleven classes of non-standard location were found. Each has one destination.
 | Bulk output inside `W` or at a drive root | 4 | `${ACE_DATA_ROOT}` with manifest and second copy |
 | Work root split across two places, or a workspace on a FUSE volume | 2 | Move clones under the agreed `W`; keep the old path as an alias |
 
-The "Hosts" column counts machines out of seven (rds02, WS014, ace-linux-1, ace-linux-2, spark,
+The "Hosts" column counts machines out of seven (ace-win-1, WS014, ace-linux-1, ace-linux-2, spark,
 gpu-claw, the Mac).
 
 ## Deviations
 
-64 deviations across seven machines (rds02 14, ace-linux-1 11, ace-linux-2 10, gpu-claw 8,
+64 deviations across seven machines (ace-win-1 14, ace-linux-1 11, ace-linux-2 10, gpu-claw 8,
 Mac 8, WS014 7, spark 6). WS014 is the closest to the standard: all five reserved folders exist
-and its canonical clones are on lean history. The largest volumes sit outside `W` on rds02 and
+and its canonical clones are on lean history. The largest volumes sit outside `W` on ace-win-1 and
 in earlier work roots on ace-linux-2 and gpu-claw. Detail is private.
 
 ## Structure guides
@@ -92,7 +92,7 @@ python machine-manager/consistency.py --pinned <sha>                            
 
 - The private layout file that `check-work-layout.py` reads was not found. Until it exists,
   private repositories cannot be classified as registered.
-- fleet-ops `ECOSYSTEM.md` names a helper folder on rds02 that does not exist, and a launcher root
+- fleet-ops `ECOSYSTEM.md` names a helper folder on ace-win-1 that does not exist, and a launcher root
   outside `W`. Which text governs until the move?
 - `_wt` names use short prefixes (`fo`, `wh`, `dm`, `wed`) with no registered list.
 - `config/workstations/registry.yaml` names a FUSE-mounted folder as the workspace root on two

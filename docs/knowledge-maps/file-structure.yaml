@@ -29,7 +29,7 @@ sources:
   - file: workspace-hub docs/standards/DATA_PLACEMENT.md
   - command: gh repo list vamseeachanta; gh api repos/<owner>/<repo>/contents/docs/structure.yaml
     used_for: which repositories carry a structure guide on their default branch
-  - command: read-only census on rds02, WS014, ace-linux-1, ace-linux-2, spark, gpu-claw and the Mac
+  - command: read-only census on ace-win-1, WS014, ace-linux-1, ace-linux-2, spark, gpu-claw and the Mac
     used_for: counts only in this file; detail in the private file
 
 refresh:
@@ -165,15 +165,15 @@ entries:
     private_repositories: resolved at run time from the private layout file (not located at measurement; see open_questions)
 
 per_machine:
-  note: Held in the private detail file. Hosts covered there - rds02, WS014, ace-linux-1, ace-linux-2, spark, gpu-claw, macbook-air.
+  note: Held in the private detail file. Hosts covered there - ace-win-1, WS014, ace-linux-1, ace-linux-2, spark, gpu-claw, macbook-air.
 
 deviations:
   note: Listed in the private detail file.
-  count_by_host: {rds02: 14, WS014: 7, ace-linux-1: 11, ace-linux-2: 10, spark: 6, gpu-claw: 8, macbook-air: 8}
+  count_by_host: {ace-win-1: 14, WS014: 7, ace-linux-1: 11, ace-linux-2: 10, spark: 6, gpu-claw: 8, macbook-air: 8}
   total: 64
 
 open_questions:
   - The private layout file read by check-work-layout.py (--private-config / WORK_LAYOUT_PRIVATE) was not found in fleet-ops main or intake/ledger. Until it exists, private repositories cannot be classified as registered by the checker.
-  - fleet-ops ECOSYSTEM.md section 4 places rds02 helpers in C:/ws/_pm and launchers in C:/ws-pm; neither matches the standard (W/_pm). Which text is authoritative until the move?
+  - fleet-ops ECOSYSTEM.md section 4 places ace-win-1 helpers in C:/ws/_pm and launchers in C:/ws-pm; neither matches the standard (W/_pm). Which text is authoritative until the move?
   - repo-short prefixes for _wt names are used in practice (fo, wh, dm, wed) but no list is registered. Should work-layout.yaml carry one?
   - workspace-hub config/workstations/registry.yaml still names a FUSE-mounted folder as the workspace root on ace-linux-1 and ace-linux-2. It disagrees with ECOSYSTEM.md and with the measured roots; it should be corrected or retired in favour of one source.
