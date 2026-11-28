@@ -317,13 +317,40 @@ def test_git_marker_junction(tmp_path, monkeypatch, native):
             info = original(path)
             if path == marker:
                 return SimpleNamespace(st_mode=info.st_mode,
-                                       st_file_attributes=audit.stat.FILE_ATTRIBUTE_REPARSE_POINT)
+                                       st_file_attributes=audit.stat.FILE_ATTRIBUTE_REPARSE_POINT,
+                                       st_reparse_tag=audit.IO_REPARSE_TAG_MOUNT_POINT)
             return info
 
         monkeypatch.setattr(Path, "lstat", lstat)
     report = audit.audit_workspace_root(root, audit.load_policy())
     assert report["git_repos"] == []
     assert report["root_violations"][0]["kind"] == "symlinked_git_marker"
+
+
+@pytest.mark.parametrize("which", ["checkout", "marker"])
+def test_cloud_placeholder_reparse_point_is_not_a_link(tmp_path, monkeypatch, which):
+    # OneDrive and other cloud providers mark placeholders as reparse points with
+    # their own tags (0x9000xxxA). Only a mount point (junction) is a directory link.
+    from types import SimpleNamespace
+
+    root = tmp_path / "workspace"
+    root.mkdir()
+    _make_repo(root, "workspace-hub")
+    target = root / "workspace-hub" if which == "checkout" else root / "workspace-hub" / ".git"
+    original = Path.lstat
+
+    def lstat(path):
+        info = original(path)
+        if path == target:
+            return SimpleNamespace(st_mode=info.st_mode,
+                                   st_file_attributes=audit.stat.FILE_ATTRIBUTE_REPARSE_POINT,
+                                   st_reparse_tag=0x9000001A)
+        return info
+
+    monkeypatch.setattr(Path, "lstat", lstat)
+    report = audit.audit_workspace_root(root, audit.load_policy())
+    assert report["git_repos"] == ["workspace-hub"]
+    assert report["root_violations"] == []
 
 
 def test_unlisted_worktree_metadata(tmp_path):

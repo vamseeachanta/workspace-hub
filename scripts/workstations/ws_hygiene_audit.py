@@ -48,14 +48,20 @@ def _matches_any(name: str, patterns: list[str]) -> bool:
     return any(fnmatch.fnmatch(name, pat) for pat in patterns)
 
 
+# Windows mount point (junction) tag. The stat module defines it only on Windows.
+IO_REPARSE_TAG_MOUNT_POINT = getattr(stat, "IO_REPARSE_TAG_MOUNT_POINT", 0xA0000003)
+
+
 def _is_directory_link(entry: Path) -> bool:
+    # A symlink or a junction is a link. Other reparse points, such as cloud-file
+    # placeholders, are ordinary directories for this audit.
     if entry.is_symlink():
         return True
     try:
-        attributes = getattr(entry.lstat(), "st_file_attributes", 0)
+        tag = getattr(entry.lstat(), "st_reparse_tag", 0)
     except (FileNotFoundError, NotADirectoryError):
         return False
-    return bool(attributes & stat.FILE_ATTRIBUTE_REPARSE_POINT)
+    return tag == IO_REPARSE_TAG_MOUNT_POINT
 
 
 def _check_linked_worktree(entry: Path) -> tuple[bool, str]:
