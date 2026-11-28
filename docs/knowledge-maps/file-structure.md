@@ -6,7 +6,7 @@ Per-machine sizes, paths and the full deviation list are in the private fleet-op
 
 ## The standard
 
-Each machine has one work root, `W`, on a local disk. A home-folder alias such as `~/ws` may
+Each machine has one work root, `W`, on a local disk. A home-folder alias such as `<work root alias>` may
 point at it. `W` holds only:
 
 | Entry | Purpose |
@@ -42,7 +42,7 @@ Eleven classes of non-standard location were found. Each has one destination.
 | `*.pre-rollout-*` clone beside the canonical one | 3 | Bundle to `_backups`, retire |
 | Second worktree container (`_worktrees`, `_rv`, `_scratch`, job folders) | 6 | `W/_wt`, released by `wt_sweep.py` when landed |
 | Mis-named or non-worktree entry in `_wt` | 7 | Rename live worktrees; logs to `_pm`; scratch to OS temp |
-| `_scratch`, `_tmp`, `~/claude-scratch` | 7 | OS temp or repo `.tmp/` |
+| `_scratch`, `_tmp`, `<home>/claude-scratch` | 7 | OS temp or repo `.tmp/` |
 | Unregistered folder or loose file at `W` top level | 7 | `_pm`, `_archive`, `${ACE_DATA_ROOT}`, or retire |
 | Launcher or control root outside `W` (`ws-pm`, a second `_pm`) | 5 | `W/_pm` |
 | Job folders in the home folder | 6 | Retire after the three-layer unmerged-work proof |
@@ -50,15 +50,15 @@ Eleven classes of non-standard location were found. Each has one destination.
 | Bulk output inside `W` or at a drive root | 4 | `${ACE_DATA_ROOT}` with manifest and second copy |
 | Work root split across two places, or a workspace on a FUSE volume | 2 | Move clones under the agreed `W`; keep the old path as an alias |
 
-The "Hosts" column counts machines out of seven (ace-win-1, WS014, ace-linux-1, ace-linux-2, spark,
-gpu-claw, the Mac).
+The "Hosts" column counts machines out of seven (the Windows solver host, the Windows desk, the first Linux host, the second Linux host, the shared GPU node,
+the GPU host, the laptop).
 
 ## Deviations
 
 62 deviations across seven machines (64 at the first build; two closed on 28 Nov). Per-host counts
-are private. WS014 is the closest to the standard: all five reserved folders exist
-and its canonical clones are on lean history. The largest volumes sit outside `W` on ace-win-1 and
-in earlier work roots on ace-linux-2 and gpu-claw. Detail is private.
+are private. The Windows desk is the closest to the standard: all five reserved folders exist
+and its canonical clones are on lean history. The largest volumes sit outside `W` on the Windows solver host and
+in earlier work roots on the second Linux host and the GPU host. Detail is private.
 
 ## Structure guides
 
@@ -92,7 +92,7 @@ python machine-manager/consistency.py --pinned <sha>                            
 
 - The private layout file that `check-work-layout.py` reads was not found. Until it exists,
   private repositories cannot be classified as registered.
-- fleet-ops `ECOSYSTEM.md` names a helper folder on ace-win-1 that does not exist, and a launcher root
+- fleet-ops `ECOSYSTEM.md` names a helper folder on the Windows solver host that does not exist, and a launcher root
   outside `W`. Which text governs until the move?
 - `_wt` names use short prefixes (`fo`, `wh`, `dm`, `wed`) with no registered list.
 - `config/workstations/registry.yaml` names an alias path (a link to the work root) as the workspace

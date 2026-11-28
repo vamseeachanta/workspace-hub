@@ -100,7 +100,7 @@ git -C <workspace-hub> show origin/main:config/ai-tools/account-usage-latest.jso
 uv run python scripts/ai/assessment/collect-account-usage.py --json --host <label>
 ssh -o BatchMode=yes -o ConnectTimeout=10 <label> \
   'python3 - --json --host <label>' < scripts/ai/assessment/collect-account-usage.py
-ssh -o BatchMode=yes <agy-host> 'cd "$(mktemp -d)" && ~/.local/bin/agy --print /usage --print-timeout 45s'
+ssh -o BatchMode=yes <agy-host> 'cd "$(mktemp -d)" && <home>/.local/bin/agy --print /usage --print-timeout 45s'
 claude --version; codex --version; codex login status; agy --version
 ```
 

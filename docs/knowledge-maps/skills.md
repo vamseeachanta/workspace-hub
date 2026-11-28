@@ -32,11 +32,11 @@ The largest categories are `data` (85), `coordination` (60), `development` (54),
 
 ## How each provider finds skills
 
-- **Claude Code** lists the account-synced skills in `~/.claude/skills`, the four
+- **Claude Code** lists the account-synced skills in `<home>/.claude/skills`, the four
   top-level repository skills and the slash commands. In the observed Claude Code
   2.1.332 session it did not list the 473 category-nested skills; those are reached
   through `scripts/ai/skill_router.py` over the index, or by reading the file.
-- **Codex** reads its built-in `~/.codex/skills/.system` and the repository's
+- **Codex** reads its built-in `<home>/.codex/skills/.system` and the repository's
   `.agents/skills` when the session runs inside the repository.
 - **Gemini** was observed in June 2026 to prefer `.agents/skills` over
   `.gemini/skills`; current behaviour is not verified.
@@ -64,11 +64,11 @@ that is never hand-edited.
 
 | Provider | Runtime file | Destination on a machine | Deployment policy |
 |---|---|---|---|
-| claude | `claude/SOUL.runtime.md` | `~/.claude/CLAUDE.md` (legacy) or `~/.claude/rules/workspace-soul.md` (native) | symlink plus loader admission |
-| codex | `codex/AGENTS.runtime.md` | `~/.codex/AGENTS.md` | symlink |
-| hermes | `hermes/SOUL.runtime.md` | `~/.hermes/SOUL.md` | symlink |
-| gemini | `gemini/SOUL.runtime.md` | `~/.gemini/GEMINI.md` | not deployed (issue 2719 Phase 6) |
-| agy | `agy/SOUL.runtime.md` | `~/.agy/SOUL.md` | not deployed (issue 3573) |
+| claude | `claude/SOUL.runtime.md` | `<home>/.claude/CLAUDE.md` (legacy) or `<home>/.claude/rules/workspace-soul.md` (native) | symlink plus loader admission |
+| codex | `codex/AGENTS.runtime.md` | `<home>/.codex/AGENTS.md` | symlink |
+| hermes | `hermes/SOUL.runtime.md` | `<home>/.hermes/SOUL.md` | symlink |
+| gemini | `gemini/SOUL.runtime.md` | `<home>/.gemini/GEMINI.md` | not deployed (issue 2719 Phase 6) |
+| agy | `agy/SOUL.runtime.md` | `<home>/.agy/SOUL.md` | not deployed (issue 3573) |
 
 Table 2: Provider runtime files under `config/agents/` and their deployment policy.
 

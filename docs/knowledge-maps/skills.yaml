@@ -91,8 +91,8 @@ entries:
     - path: .claude/skills/_internal
       role: "templates linked into every ecosystem repo by propagate-ecosystem.sh (SHARED_SKILL_DIRS guidelines, meta, workflows); origin/main holds guidelines and workflows only"
   discovery_by_provider:
-    claude: "user home ~/.claude/skills (account-synced skills) + repo .claude/skills top level + .claude/commands; category-nested skills via index/router"
-    codex: "~/.codex/skills/.system (built-in) + repo .agents/skills when the working directory is inside the repository"
+    claude: "user home <home>/.claude/skills (account-synced skills) + repo .claude/skills top level + .claude/commands; category-nested skills via index/router"
+    codex: "<home>/.codex/skills/.system (built-in) + repo .agents/skills when the working directory is inside the repository"
     gemini: ".agents/skills overrides .gemini/skills on conflict (observed 2026-06-11); current execution unverified"
     hermes: "hermes skill directories; archive dirs excluded by config/agents/hermes/patches/exclude-archive-skill-dirs.patch"
     agy: "reference runtime artifact only (issue 3573); no skill surface wired"
@@ -176,7 +176,7 @@ entries:
     coordination:
       count: 60
       skills:
-      - {id: coordination/ace-linux-1-control-surface, purpose: Operate ace-linux-1 as the continuous AI-agent control surface for overnight and continuous batches that keep GTM material moving ..., agents_copy: differs}
+      - {id: coordination/first-linux-host-control-surface, purpose: Operate the first Linux host as the continuous AI-agent control surface for overnight and continuous batches that keep GTM material moving ..., agents_copy: differs}
       - {id: coordination/aceengineer-website-copy-alignment, purpose: 'Verify proposed copy changes to vamseeachanta/aceengineer-website against canonical sources in workspace-hub (llm-wiki, live ...', agents_copy: differs}
       - {id: coordination/agent-label-routing, purpose: 'Deterministic multi-agent task assignment via GitHub labels - classify, label, and generate queue views from `ai:` labels instead ...', agents_copy: differs}
       - {id: coordination/agent-memory-bridge, purpose: 'Bidirectional sync between Hermes memory and Claude Code auto-memory, with licensed machine bootstrap. Use when context parity ...', agents_copy: differs}
@@ -505,7 +505,7 @@ entries:
       - {id: operations/automation/n8n, purpose: 'Open-source workflow automation platform with visual node-based editor, 400+ integrations, webhooks, and self-hosted deployment ...', agents_copy: same}
       - {id: operations/automation/windmill, purpose: 'Developer-first workflow engine that turns scripts into workflows and UIs, supporting Python, TypeScript, Go, and Bash with ...', agents_copy: same}
       - {id: operations/devops/hardware-assessment, purpose: 'Cross-platform hardware assessment and system maintenance - assess hardware, update OS/tools/custom software, and track changes ...', agents_copy: differs}
-      - {id: operations/devops/perf-tuning, purpose: Diagnose local machine slowness and apply CPU/IO/governor tuning. Use when work feels slow on ace-linux-1 / ace-linux-2 - Hermes ..., agents_copy: same}
+      - {id: operations/devops/perf-tuning, purpose: Diagnose local machine slowness and apply CPU/IO/governor tuning. Use when work feels slow on the first Linux host / the second Linux host - Hermes ..., agents_copy: same}
       - {id: operations/devtools/ai-tool-assessment, purpose: 'Assess and report on AI tool subscriptions, usage patterns, and cost-effectiveness. Use for reviewing AI subscriptions, analyzing ...', agents_copy: same}
       - {id: operations/devtools/background-service-manager, purpose: 'Create and manage long-running background processes with start/stop/status controls, logging, and monitoring. Use for batch ...', agents_copy: same}
       - {id: operations/devtools/cli-productivity, purpose: Essential CLI tools and shell productivity patterns for efficient terminal workflows, agents_copy: same}
@@ -513,7 +513,7 @@ entries:
       - {id: operations/devtools/git-advanced, purpose: 'Advanced git workflows including rebase, worktrees, bisect, hooks, and monorepo patterns', agents_copy: same}
       - {id: operations/devtools/raycast-alfred, purpose: macOS launcher automation with Raycast extensions (TypeScript/React) and Alfred workflows (AppleScript/Python) for ..., agents_copy: same}
       - {id: operations/devtools/vscode-extensions, purpose: 'VS Code productivity optimization with essential extensions, settings sync, profiles, keybindings, snippets, and workspace ...', agents_copy: same}
-      - {id: operations/mnt-analysis-cleanup, purpose: 'Survey, classify, and clean up `/mnt/local-analysis/` (or any sibling-to-workspace-hub directory holding orphan worktrees ...', agents_copy: absent}
+      - {id: operations/mnt-analysis-cleanup, purpose: 'Survey, classify, and clean up `<analysis scratch>/` (or any sibling-to-workspace-hub directory holding orphan worktrees ...', agents_copy: absent}
       - {id: operations/telegram-hermes-bot, purpose: 'Install a private, single-user Telegram bot connected to a Hermes gateway on a Linux host. Covers BotFather provisioning, token ...', agents_copy: absent}
     productivity:
       count: 3
@@ -578,7 +578,7 @@ entries:
       - {id: workspace-hub/ecosystem-terminology, purpose: 'Canonical names, abbreviations, and relationship vocabulary for the workspace-hub ecosystem. Load this when naming repos ...', agents_copy: differs}
       - {id: workspace-hub/equivalence-publish-health, purpose: 'Diagnose and fix a machine whose equivalence-state fingerprint publish is absent, stale, or gate-length slow (the wh#3500 ...', agents_copy: absent}
       - {id: workspace-hub/exclude-wiki-claude-md-from-harness-line-limit-hook, purpose: Fix false-positive pre-commit failures where workspace-hub's CLAUDE.md line-limit hook blocks edits to auto-generated wiki schema ..., agents_copy: differs}
-      - {id: workspace-hub/external-drive-ingest-planning, purpose: 'Plan safe external-drive ingests into repo-aligned storage such as /mnt/ace: read-only mounts, manifests, staged rsync ...', agents_copy: differs}
+      - {id: workspace-hub/external-drive-ingest-planning, purpose: 'Plan safe external-drive ingests into repo-aligned storage such as <shared data store>: read-only mounts, manifests, staged rsync ...', agents_copy: differs}
       - {id: workspace-hub/improve, purpose: Autonomous session-exit skill that improves all ecosystem files from session learnings, agents_copy: same}
       - {id: workspace-hub/interactive-claude-to-file-based-fallback, purpose: Switch from tmux/interactive Claude Code to file-based claude -p execution when interactive runs fail with upstream errors or ..., agents_copy: same}
       - {id: workspace-hub/learned-git-worktree-hook-path-and-real-hook-shape-review, purpose: Catch hook-installation and governance bugs that only appear in linked git worktrees or against the real generated hook shape ..., agents_copy: same}
@@ -900,13 +900,13 @@ entries:
     shared_source: {file: config/agents/SHARED_SOUL.md, lines: 201, role: "cross-provider identity, authority and gates; hand-edited"}
     repo_contract: {file: AGENTS.md, lines: 20, role: "canonical repository contract, capped at 20 lines"}
     build: "scripts/agents/build-soul-runtime.sh builds each <provider>/SOUL.runtime.md from SHARED_SOUL.md + the provider delta; runtime files are never hand-edited; scripts/enforcement/check-soul-runtime-drift.sh checks build drift"
-    install: "scripts/agents/install-soul-runtime.sh links ~/.codex/AGENTS.md and ~/.hermes/SOUL.md; validates and preserves the Claude link; does not install gemini or agy"
+    install: "scripts/agents/install-soul-runtime.sh links <home>/.codex/AGENTS.md and <home>/.hermes/SOUL.md; validates and preserves the Claude link; does not install gemini or agy"
     providers:
-      - {provider: claude, delta: config/agents/claude/SOUL.delta.md, runtime: config/agents/claude/SOUL.runtime.md, destination: "~/.claude/CLAUDE.md (legacy) or ~/.claude/rules/workspace-soul.md (native), resolved by scripts/agents/claude_runtime_state.py", deploy_policy: "installable; symlink required plus loader admission"}
-      - {provider: codex, delta: config/agents/codex/SOUL.delta.md, runtime: config/agents/codex/AGENTS.runtime.md, destination: ~/.codex/AGENTS.md, deploy_policy: "installable; symlink required"}
-      - {provider: hermes, delta: config/agents/hermes/SOUL.md, runtime: config/agents/hermes/SOUL.runtime.md, destination: ~/.hermes/SOUL.md, deploy_policy: "installable; symlink required"}
-      - {provider: gemini, delta: config/agents/gemini/SOUL.delta.md, runtime: config/agents/gemini/SOUL.runtime.md, destination: ~/.gemini/GEMINI.md, deploy_policy: "NOT-DEPLOYED: integration pending (issue 2719 Phase 6)"}
-      - {provider: agy, delta: config/agents/agy/SOUL.delta.md, runtime: config/agents/agy/SOUL.runtime.md, destination: ~/.agy/SOUL.md, deploy_policy: "NOT-DEPLOYED: reference artifact only (issue 3573)"}
+      - {provider: claude, delta: config/agents/claude/SOUL.delta.md, runtime: config/agents/claude/SOUL.runtime.md, destination: "<home>/.claude/CLAUDE.md (legacy) or <home>/.claude/rules/workspace-soul.md (native), resolved by scripts/agents/claude_runtime_state.py", deploy_policy: "installable; symlink required plus loader admission"}
+      - {provider: codex, delta: config/agents/codex/SOUL.delta.md, runtime: config/agents/codex/AGENTS.runtime.md, destination: <home>/.codex/AGENTS.md, deploy_policy: "installable; symlink required"}
+      - {provider: hermes, delta: config/agents/hermes/SOUL.md, runtime: config/agents/hermes/SOUL.runtime.md, destination: <home>/.hermes/SOUL.md, deploy_policy: "installable; symlink required"}
+      - {provider: gemini, delta: config/agents/gemini/SOUL.delta.md, runtime: config/agents/gemini/SOUL.runtime.md, destination: <home>/.gemini/GEMINI.md, deploy_policy: "NOT-DEPLOYED: integration pending (issue 2719 Phase 6)"}
+      - {provider: agy, delta: config/agents/agy/SOUL.delta.md, runtime: config/agents/agy/SOUL.runtime.md, destination: <home>/.agy/SOUL.md, deploy_policy: "NOT-DEPLOYED: reference artifact only (issue 3573)"}
     other_provider_config: "config/agents/<provider>/settings.json or config.toml, codex and gemini MEMORY.runtime.md, model-registry.yaml, provider-capabilities.yaml, routing-config.yaml, behavior-contract.yaml"
   deployment_and_linking:
     soul_deployment_check:

@@ -32,9 +32,9 @@ refresh:
     cannot take is recorded as missing, never as passed.
   commands:
     reach: "ssh -o BatchMode=yes -o ConnectTimeout=10 <host> 'echo ok'   # MagicDNS name, never an address"
-    probe_linux_or_mac: "scp <probe>.sh <host>:/tmp/ && ssh -o BatchMode=yes <host> 'bash /tmp/<probe>.sh'   # script saved with LF line endings"
-    probe_windows_from_bash_host: "scp <probe>.ps1 <host>:C:/Users/<account>/AppData/Local/Temp/ && ssh <host> 'pwsh -NoProfile -File \"C:\\Users\\<account>\\AppData\\Local\\Temp\\<probe>.ps1\"'"
-    os_hw_linux: "cat /etc/os-release; nproc; free -g; uptime; nvidia-smi --query-gpu=name,memory.total --format=csv,noheader; df -P -k -l"
+    probe_linux_or_mac: "scp <probe>.sh <host>:<temporary directory>/ && ssh -o BatchMode=yes <host> 'bash <temporary directory>/<probe>.sh'   # script saved with LF line endings"
+    probe_windows_from_bash_host: "scp <probe>.ps1 <host>:<temporary directory>/ && ssh <host> 'pwsh -NoProfile -File \"<temporary directory>/<probe>.ps1\"'"
+    os_hw_linux: "cat <OS release file>; nproc; free -g; uptime; nvidia-smi --query-gpu=name,memory.total --format=csv,noheader; df -P -k -l"
     os_hw_windows: "Get-CimInstance Win32_OperatingSystem, Win32_ComputerSystem, Win32_Processor; Get-CimInstance Win32_LogicalDisk -Filter 'DriveType=3'"
     runtimes: "git --version; gh --version; uv --version; python3 --version; node --version; claude --version; codex --version; agy --version; pwsh --version"
     schedules_linux: "crontab -l; systemctl --user list-timers --all"

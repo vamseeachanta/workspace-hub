@@ -29,7 +29,7 @@ sources:
   - file: workspace-hub docs/standards/DATA_PLACEMENT.md
   - command: gh repo list vamseeachanta; gh api repos/<owner>/<repo>/contents/docs/structure.yaml
     used_for: which repositories carry a structure guide on their default branch
-  - command: read-only census on ace-win-1, WS014, ace-linux-1, ace-linux-2, spark, gpu-claw and the Mac
+  - command: read-only census on the Windows solver host, the Windows desk, the first Linux host, the second Linux host, the shared GPU node, the GPU host and the laptop
     used_for: counts only in this file; detail in the private file
 
 refresh:
@@ -46,13 +46,13 @@ refresh:
 
 standard:
   rule_files:
-    - fleet-ops intake/cleanup/MACHINE-CLEANUP-PROMPT.md (Phase 1 item 4, "Canonical Cross-Machine ~/ws Standard")
+    - fleet-ops intake/cleanup/MACHINE-CLEANUP-PROMPT.md (Phase 1 item 4, "Canonical Cross-Machine <work root alias> Standard")
     - fleet-ops machine-manager/WORK-ARCHITECTURE.md (section 2, principles 2 and 3; section 7, habit 1)
     - workspace-hub .claude/rules/workstation-hygiene.md (items 1 to 3)
     - workspace-hub docs/standards/DATA_PLACEMENT.md (bulk data leaves Git by manifest)
   equal_across_machines_means:
     - Each machine has exactly one work root W on a local filesystem. W is a real folder, not a FUSE
-      or network mount. A convenience alias (symlink or junction such as ~/ws) may point at W.
+      or network mount. A convenience alias (symlink or junction such as <work root alias>) may point at W.
     - W holds only registered Git repositories (one canonical clone each, on lean history) and the
       reserved folders _wt/, _pm/, _backups/, _archive/ and .claude/. No loose files.
     - Every linked worktree lives at W/_wt/<repo-short>--<slug> and is registered with its clone
@@ -122,7 +122,7 @@ entries:
       found_on_hosts: 7
       destination: rename live worktrees with git worktree move; logs and prompts to W/_pm; scratch folders to OS temp
     - class: _scratch folder
-      signature: W/_scratch, W/_scratch_*, W/_tmp, ~/scratch, ~/claude-scratch
+      signature: W/_scratch, W/_scratch_*, W/_tmp, <home>/scratch, <home>/claude-scratch
       found_on_hosts: 7
       destination: OS temp or repo .tmp/; retire after content check
     - class: unregistered top-level folder or loose file in W
@@ -130,7 +130,7 @@ entries:
       found_on_hosts: 7
       destination: W/_pm (operations material), W/_archive with manifest (completed work), ${ACE_DATA_ROOT} (bulk output), or retire
     - class: launcher or job root outside W
-      signature: a second root such as a drive-root ws-pm folder or ~/ws-pm
+      signature: a second root such as a drive-root ws-pm folder or <pm root>
       found_on_hosts: 5
       destination: W/_pm for live launchers and desk files; job clones retire (WORK-ARCHITECTURE section 6)
     - class: job folders in the home folder
@@ -165,7 +165,7 @@ entries:
     private_repositories: resolved at run time from the private layout file (not located at measurement; see open_questions)
 
 per_machine:
-  note: Held in the private detail file. Hosts covered there - ace-win-1, WS014, ace-linux-1, ace-linux-2, spark, gpu-claw, macbook-air.
+  note: Held in the private detail file. Hosts covered there - the Windows solver host, the Windows desk, the first Linux host, the second Linux host, the shared GPU node, the GPU host, the laptop.
 
 deviations:
   note: Listed in the private detail file.
@@ -174,6 +174,6 @@ deviations:
 
 open_questions:
   - The private layout file read by check-work-layout.py (--private-config / WORK_LAYOUT_PRIVATE) was not found in fleet-ops main or intake/ledger. Until it exists, private repositories cannot be classified as registered by the checker.
-  - ace-win-1 helpers live in D:/ws/_pm (W/_pm, confirmed 28 Nov), but fleet-ops ECOSYSTEM.md section 4 still gives an older helper path and places launchers in C:/ws-pm, outside W. Which text is authoritative until the launchers move?
+  - The Windows solver host helpers live in <work root>/_pm (W/_pm, confirmed 28 Nov), but fleet-ops ECOSYSTEM.md section 4 still gives an older helper path and places launchers in <pm root>, outside W. Which text is authoritative until the launchers move?
   - repo-short prefixes for _wt names are used in practice (fo, wh, dm, wed) but no list is registered. Should work-layout.yaml carry one?
-  - workspace-hub config/workstations/registry.yaml still names an alias path as the workspace root on ace-linux-1 (a link to its work root) and a FUSE-mounted folder on ace-linux-2. It disagrees with ECOSYSTEM.md and with the measured roots; it should be corrected or retired in favour of one source.
+  - workspace-hub config/workstations/registry.yaml still names an alias path as the workspace root on the first Linux host (a link to its work root) and a FUSE-mounted folder on the second Linux host. It disagrees with ECOSYSTEM.md and with the measured roots; it should be corrected or retired in favour of one source.
