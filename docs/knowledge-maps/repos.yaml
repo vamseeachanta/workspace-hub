@@ -27,7 +27,7 @@ refresh:
     linked_worktrees: 'git -C <clone> worktree list --porcelain | grep -c ''^worktree ''   # minus 1'
     stash: git -C <clone> stash list | wc -l
     find_clones: 'find <W> -maxdepth 3 -name node_modules -prune -o -name .git -type d -print   # a .git DIRECTORY is a clone; a .git file is a worktree'
-    remote_host: 'scp scan.sh <host>:/tmp/ && ssh -o BatchMode=yes -o ConnectTimeout=10 <host> ''bash /tmp/scan.sh <W>''   # read-only; no fetch'
+    remote_host: 'scp scan.sh <host>:<temporary directory>/ && ssh -o BatchMode=yes -o ConnectTimeout=10 <host> ''bash <temporary directory>/scan.sh <W>''   # read-only; no fetch'
   note: The scan makes no fetch, so 'behind' is measured against each clone's last fetch; tracking_ref_current compares that ref with the origin head read from the
     API.
 standard:
@@ -41,7 +41,7 @@ standard:
   - The canonical clone sits on its default branch, clean, with no stash, and not behind origin after a fetch.
   - All other work is a linked worktree under <W>/_wt/<repo-short>--<slug>; <W>/_wt holds no full clones.
   - No pre-reset copies (<repo>.pre-rollout-*) remain once their local-only work is bundled and restore-tested.
-  - 'Placement rules hold: achantas-data stays on WS014 only; rds02 never holds achantas-data.'
+  - "Placement rules hold: the owner's personal data repository stays on the owner desk only."
   not_required: Every machine holding every repository. No per-host required-repository list is on main (see open_questions).
 counts:
   repositories_total: 51
@@ -133,7 +133,7 @@ entries:
   archived: false
   default_branch: main
   last_push_utc: '2026-11-27T12:50:09Z'
-  owner_lane: engineering models team (rds02 train workers dm-a, dm-b)
+  owner_lane: engineering models team (the Windows solver host train workers dm-a, dm-b)
   owner_lane_source: roadmaps-index + desk-pass.md
   lean_reset:
     status: reset 2026-11-23-lean
@@ -205,7 +205,7 @@ entries:
   archived: false
   default_branch: main
   last_push_utc: '2026-11-26T21:28:17Z'
-  owner_lane: energy data team (Public Data Lead; rds02 worker wed)
+  owner_lane: energy data team (Public Data Lead; the Windows solver host worker wed)
   owner_lane_source: roadmaps-index + team/public-data-lead.md
   lean_reset:
     status: reset 2026-11-23-lean

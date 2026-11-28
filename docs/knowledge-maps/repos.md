@@ -101,7 +101,7 @@ against each clone's last fetch.
 
 ## What was not measured
 
-- Machines outside the seven listed (ace-win-3, ace-win-4) were not scanned.
+- Machines outside the seven listed (the first additional Windows host, the second additional Windows host) were not scanned.
 - Clones deeper than three levels under `<W>`, or deeper than one level under a
   home folder, were not searched.
 - No fetch was run, so "behind" can understate the true gap on a clone that has
