@@ -1,0 +1,177 @@
+schema: knowledge-map/1
+map: writing
+title: Writing — engineering reports, calculation notes, articles, newsletters and wiki pages
+purpose: >-
+  One index of how engineering text is written, reviewed, verified and issued across the
+  ecosystem: document genres, the rules that govern each, the skills and templates to load,
+  the review chain (author is never the reviewer), claim vocabulary, citation and
+  standards-quoting rules, PDF/SVG portability checks, lint commands and the approval path.
+  This public map holds the generic part only.
+owner: workspace-hub maintainer
+verified_at: "2026-11-27T15:41:54Z"
+private_detail: fleet-ops docs/knowledge-maps/writing.yaml (private repository)
+sources:
+  - .claude/rules/engineering-register.md
+  - config/agents/SHARED_SOUL.md (section "Engineering register")
+  - scripts/enforcement/check-engineering-register.py
+  - .claude/rules/report-audience-and-surface.md
+  - .claude/rules/calc-citation-contract.md
+  - .claude/rules/codes-standards-data-routing.md
+  - .claude/rules/mechanism-before-publication.md
+  - .claude/rules/reproducibility-is-not-correctness.md
+  - .claude/rules/svg-pdf-portability.md
+  - .claude/rules/human-decision-boards.md
+  - .claude/rules/wiki-sibling-routing.md
+  - .claude/skills/development/report-claim-discipline/SKILL.md
+  - docs/standards/FINAL_REPORT_VERIFICATION.md
+  - docs/standards/review-and-communication-standard.md
+  - docs/standards/engineering-reporting-conventions-proposed.html
+  - docs/standards/reformat-engineering-report-prompt.md
+  - docs/standards/AI_REVIEW_ROUTING_POLICY.md
+  - docs/standards/calc-output-citation.md
+  - docs/standards/report-source-provenance.md
+  - docs/standards/ISSUE_REPORT_PUBLICATION.md
+  - llm-wiki wikis/engineering/wiki/concepts/engineering-report-house-style.md (private repository)
+  - fleet-ops reporting/ writing rules and intake/tools/doc_rules_check.py (private repository)
+refresh:
+  cadence: on any change to the sources above, and at least monthly
+  method: >-
+    Re-read the sources list; re-run the register lint self-test; diff genre rows against
+    docs/standards and .claude/rules; update verified_at. Private pipeline, per-machine
+    toolchain and deviations are refreshed in private_detail.
+  commands:
+    - uv run python scripts/enforcement/check-engineering-register.py --self-test
+standard:
+  rule: .claude/rules/engineering-register.md
+  canonical_statement: config/agents/SHARED_SOUL.md (section "Engineering register")
+  full_guide: llm-wiki engineering/concepts/engineering-report-house-style (private)
+  note: >-
+    The register governs every output (reports, wiki pages, commits, chat, email, agent-to-agent
+    text). The only first-person exemption written into the rule is the proposal genre.
+
+common:
+  surfaces:
+    rule: .claude/rules/report-audience-and-surface.md
+    rows:
+      internal: client identifiers, cost models, host names and candid tooling defects allowed
+      client_deliverable: client identifiers REQUIRED; cost models, host names, tooling defects never
+      hosted: client identifiers REDACTED; cost models, host names, tooling defects never
+    discriminator: the surface, not the sensitivity of the fact
+  claim_vocabulary:
+    verdicts: [implausible, not_implausible]
+    review_pack_adds: not_evaluated (docs/standards/review-and-communication-standard.md 3.2)
+    banned_without_referent: ["validated", "passed"]
+    banned_without_criterion: ["acceptable", "conservative", "safe"]
+    banned_intensifiers: ["obviously", "clearly", "definitely"]
+    honest_form: >-
+      verified prediction with a stated numerical-uncertainty band, plus a statement that
+      modelling error is not inside that band
+    distinct_null_markers: ["-", "n/a", "TBD", "Not Evaluated", "0"]
+    modality: should / is recommended = advice; shall / must = requirement
+    mechanism_claims: .claude/rules/mechanism-before-publication.md (read the source and the existing output; label hypotheses)
+    comparator_classes: .claude/rules/reproducibility-is-not-correctness.md (closed-form, measured, cross-solver, conservation, archived-run, none)
+  citation_contract:
+    rule: .claude/rules/calc-citation-contract.md
+    schema: docs/standards/calc-output-citation.md
+    implementation: digitalmodel src/digitalmodel/citations/schema.py
+    sidecar_fields: [code_id, publisher, revision, section, source_sibling, source_project]
+    failure: CitationResolutionError, fail-closed at calc time
+    reference_groups: model and data (with hashes); solver and programs (with versions); standards and methods (publisher, designation, revision, clause)
+    no_invented: revision or URL; write TBA instead
+  standards_quoting:
+    rule: .claude/rules/codes-standards-data-routing.md (maintainer ruling 28 Oct 2026)
+    internal: no gates; read, quote and use full text, tables, figures and data sets
+    outward: >-
+      quote the clauses, equations, criteria and table values used, citing standard, edition and
+      clause/table/figure; rebuild charts as "Reconstructed from [standard], Figure X" with
+      digitising uncertainty stated; never the original PDFs or whole sections on public surfaces
+    regulators: every job checks and cites the applicable CFR and other national regulators
+  pdf_svg_portability:
+    rule: .claude/rules/svg-pdf-portability.md
+    avoid: ["<pattern>", "clip-path / <clipPath>", "<filter>", "<mask>", "<foreignObject>"]
+    verify:
+      - pdftocairo -png -r 200 out.pdf check
+      - pdftoppm -png -r 200 out.pdf check
+    traps: embed images as base64 data URIs before headless Chrome print; pass --virtual-time-budget
+    level2_script: none (check-svg-pdf-portability.sh is a stated target, not present)
+  review_chain:
+    author_is_not_reviewer: true
+    second_provider: docs/standards/AI_REVIEW_ROUTING_POLICY.md (Codex reviews Claude work, Claude reviews Codex work; Agy optional plain-English pass); advisory, never a merge gate
+    local_html_review: docs/standards/review-and-communication-standard.md section 3 (commentable copy; JSON saved beside the page; read back each round)
+    review_tool: tools/html-review/make_review_copy.py
+    final_bundle: docs/standards/FINAL_REPORT_VERIFICATION.md (audience, artifact digests, identifier decision, rights, secret evidence, reviewer/date/verdict)
+    retired: legal-sanity-scan and automatic identifier gates (issue 3936)
+  approval_path:
+    repository_text: branch -> PR -> merge on green required checks (.claude/rules/merge-authorization.md)
+    owner_only: client-facing emails and messages, spending money, items the owner holds (AGENTS.md; .claude/rules/human-decision-boards.md)
+    outward_publication: the owner approves and presses Publish; agents save drafts only (detail in private_detail)
+    decisions: local HTML decision board with the recommendation marked; act only on saved JSON or an explicit owner instruction
+
+entries:
+  - genre: engineering_report
+    surface: internal, client_deliverable or hosted (name it before writing)
+    governing_rules: [engineering-register.md, report-audience-and-surface.md, calc-citation-contract.md, codes-standards-data-routing.md, mechanism-before-publication.md, reproducibility-is-not-correctness.md, svg-pdf-portability.md]
+    skills: [development/report-claim-discipline, development/engineering-report-generator, development/html-report-verify, development/workflows/reporting-workflow, data/documents/md-to-pdf, data/documents/docx]
+    templates:
+      - docs/standards/engineering-reporting-conventions-proposed.html (review draft, issue 3925)
+      - docs/standards/reformat-engineering-report-prompt.md (apply to one named report)
+      - digitalmodel src/digitalmodel/reporting/calc_report.py (typed seven-section model)
+      - llm-wiki house-style "Recommended report skeleton" (private)
+      - private house report skeleton and exemplar (see private_detail)
+    open_decision: canonical report system, workspace-hub issue 3810
+    review_steps: [author draft, second-provider review, local HTML review copy, owner comments round, final bundle record]
+    lint: uv run python scripts/enforcement/check-engineering-register.py REPORT.md
+    approval: owner (approver of record) before issue to a client
+  - genre: calculation_note
+    surface: internal or client_deliverable
+    governing_rules: [engineering-register.md, calc-citation-contract.md, report-claim-discipline]
+    skills: [data/calculation-report, development/report-claim-discipline]
+    templates: [scripts/reporting/generate-calc-report.py (YAML -> HTML), digitalmodel calc_report.py]
+    claim_rules: every result block carries an explicit Confidence; pending values as TBA with unit; derived quantities named as derived
+    citation: sidecar Citation per standards-derived constant
+    lint: register lint on prose; citation resolver fails closed
+    approval: owner before issue to a client
+  - genre: client_deliverable
+    note: an engineering report, calc note, minutes or letter issued to the client who owns the data
+    surface: client_deliverable (client identifiers required; no cost model, host name or tooling self-criticism)
+    review_steps: [second-provider review, cold read, FINAL_REPORT_VERIFICATION bundle record]
+    pdf: verify in Cairo and Poppler; both must agree
+    approval: owner only (client-facing message)
+  - genre: article
+    surface: hosted / public (codenames only; no host names, local paths or private repositories in text)
+    governing_rules: [engineering-register.md, codes-standards-data-routing.md (outward quoting), report-audience-and-surface.md (hosted row)]
+    house_rules: private (see private_detail)
+    lint: register lint plus the private document-rules check
+    approval: owner approves the text and presses Publish
+  - genre: newsletter
+    surface: hosted / public
+    house_rules: private (see private_detail)
+    approval: owner approves and publishes; agents save drafts only
+  - genre: wiki_page
+    surface: private llm-wiki or llm-wiki-<client> sibling
+    governing_rules: [wiki-sibling-routing.md, engineering-register.md, codes-standards-data-routing.md]
+    skills: [research/llm-wiki-page-shape-contract, research/llm-wiki-public-private-routing]
+    lint:
+      - scripts/enforcement/check-wiki-sibling-frontmatter.py (visibility, client, project; Rules A-E)
+      - uv run python scripts/enforcement/check-engineering-register.py PAGE.md
+    note: verbatim standards transcriptions are not register-checked
+    approval: PR merge on green required checks
+  - genre: proposal
+    surface: client_deliverable
+    register_exception: first-person plural allowed (the only exemption in engineering-register.md; R6 exempts paths and frontmatter marked proposal or qualification)
+    templates: none located in workspace-hub
+    approval: owner (client-facing, may commit money)
+  - genre: correspondence_and_agent_text
+    covers: email, chat, issue and PR comments, commit messages, handoffs
+    rule: docs/standards/review-and-communication-standard.md section 5
+    note: the register governs technical content; the email wrapper keeps its greeting conventions
+    public_repos: no private identifiers in commits, PR text or issue text (docs/standards/ISSUE_REPORT_PUBLICATION.md)
+
+per_machine: []   # toolchain presence by host is recorded in private_detail
+deviations: []    # 20 deviations recorded in private_detail
+deviation_count: 20
+open_questions:
+  - Which report system is canonical (YAML calculation-report, typed calc_report, conventions draft P3, or the private house skeleton)? Owner decision, issue 3810.
+  - Does the article/newsletter genre join proposal as a first-person exemption in engineering-register.md?
+  - Should the typed calc_report Confidence level "validated" require a named referent field, to match report-audience-and-surface.md item 5?
+  - When does svg-pdf-portability.md get its Level-2 script?

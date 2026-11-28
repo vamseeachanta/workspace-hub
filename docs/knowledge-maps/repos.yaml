@@ -1,0 +1,277 @@
+# Generated read-only from GitHub API and per-host scans; see refresh.commands. Do not hand-edit counts.
+schema: knowledge-map/1
+map: repos
+title: Repositories - catalogue, lean-reset roots and the one-clone-per-machine standard
+purpose: Lists every public repository under the owner account with its purpose, default branch, lean-reset root and owner lane, and states what 'equal across machines'
+  means for clones. Private repositories, clone paths, per-machine measurements and deviations are held in the private detail map.
+owner: platform team (fleet consistency run); owner rules on removals of personal data
+verified_at: '2026-11-27T15:48:00Z'
+private_detail: fleet-ops docs/knowledge-maps/repos.yaml (private repository)
+sources:
+- gh repo list vamseeachanta --limit 200 --json name,visibility,isArchived,defaultBranchRef,pushedAt,description
+- GitHub commits API (root and head of each default branch)
+- .claude/rules/workstation-hygiene.md (worktrees, not clones)
+- .claude/rules/merge-cleanup.md (inspect before removal)
+- .claude/rules/wiki-sibling-routing.md and config/client-wikis.yml (client wikis by codename)
+- 'fleet-ops (private): ECOSYSTEM.md, dashboard/lean-migration.json, dashboard/ecosystem-status.json, issue #691'
+refresh:
+  cadence: After every lean reset or clone rollout, and with the 6-hourly fleet consistency run
+  commands:
+    catalogue: gh repo list vamseeachanta --limit 200 --json name,visibility,isArchived,defaultBranchRef,pushedAt,description
+    origin_root_via_api: 'gh api -i ''repos/vamseeachanta/<repo>/commits?sha=<default>&per_page=1''  # read rel="last" page N, then: gh api ''repos/vamseeachanta/<repo>/commits?sha=<default>&per_page=1&page=N''
+      --jq ''.[0].sha'''
+    origin_root_via_clone: git -C <W>/<repo> rev-list --max-parents=0 origin/<default>
+    head_root: git -C <clone> rev-list --max-parents=0 HEAD
+    ahead_behind: git -C <clone> rev-list --left-right --count HEAD...@{u}
+    dirty: GIT_OPTIONAL_LOCKS=0 git -C <clone> status --porcelain --ignore-submodules=dirty | wc -l
+    linked_worktrees: 'git -C <clone> worktree list --porcelain | grep -c ''^worktree ''   # minus 1'
+    stash: git -C <clone> stash list | wc -l
+    find_clones: 'find <W> -maxdepth 3 -name node_modules -prune -o -name .git -type d -print   # a .git DIRECTORY is a clone; a .git file is a worktree'
+    remote_host: 'scp scan.sh <host>:<temporary directory>/ && ssh -o BatchMode=yes -o ConnectTimeout=10 <host> ''bash <temporary directory>/scan.sh <W>''   # read-only; no fetch'
+  note: The scan makes no fetch, so 'behind' is measured against each clone's last fetch; tracking_ref_current compares that ref with the origin head read from the
+    API.
+standard:
+  rules:
+  - .claude/rules/workstation-hygiene.md
+  - .claude/rules/merge-cleanup.md
+  - 'fleet-ops issue #691 (private): after a lean reset, never work or pull from an old clone; slim-clone reset repos first'
+  equal_across_machines_means:
+  - Each machine that holds a repository holds exactly one canonical clone of it, at <W>/<repo>.
+  - The canonical clone's HEAD root commit equals the root of origin's default branch (a pre-reset clone fails this).
+  - The canonical clone sits on its default branch, clean, with no stash, and not behind origin after a fetch.
+  - All other work is a linked worktree under <W>/_wt/<repo-short>--<slug>; <W>/_wt holds no full clones.
+  - No pre-reset copies (<repo>.pre-rollout-*) remain once their local-only work is bundled and restore-tested.
+  - "Placement rules hold: the owner's personal data repository stays on the owner desk only."
+  not_required: Every machine holding every repository. No per-host required-repository list is on main (see open_questions).
+counts:
+  repositories_total: 51
+  public: 12
+  private: 39
+  archived: 12
+  reset_on_2026_11_23: 27
+  machines_scanned: 7
+  clones_found: 207
+  pre_reset_clones_found: 83
+  deviations_recorded_privately: 134
+entries:
+- repo: aceengineer-website
+  alias_of_client_or_personal_name: false
+  purpose: 'Public company site: capability pages, case studies, articles'
+  visibility: public
+  archived: false
+  default_branch: main
+  last_push_utc: '2026-11-26T17:38:09Z'
+  owner_lane: website team (Marketing department)
+  owner_lane_source: roadmaps-index + team/marketing-department.md
+  lean_reset:
+    status: reset 2026-11-23-lean
+    lean_migration_state: done (Lean)
+    reset_at: 23 Nov 04:18Z
+    origin_root: cf9611c6f0b4
+    origin_root_date: '2026-11-23'
+    origin_head: 71f6042450da
+    commits_on_default: 2
+  machines_with_a_clone: 5
+- repo: assethold
+  alias_of_client_or_personal_name: false
+  purpose: Stock analysis and guidance for long-term holdings
+  visibility: public
+  archived: false
+  default_branch: main
+  last_push_utc: '2026-11-23T04:49:50Z'
+  owner_lane: owner stream (assethold road map); no team named
+  owner_lane_source: roadmaps-index
+  lean_reset:
+    status: reset 2026-11-23-lean
+    lean_migration_state: done (Lean)
+    reset_at: 23 Nov 04:48Z
+    origin_root: 424d43a4a8b7
+    origin_root_date: '2026-11-23'
+    origin_head: 424d43a4a8b7
+    commits_on_default: 1
+  machines_with_a_clone: 6
+- repo: assetutilities
+  alias_of_client_or_personal_name: false
+  purpose: Shared utility library for the engineering and business repositories
+  visibility: public
+  archived: false
+  default_branch: main
+  last_push_utc: '2026-11-27T00:52:39Z'
+  owner_lane: 'unassigned (inferred: platform team)'
+  owner_lane_source: inferred
+  lean_reset:
+    status: reset 2026-11-23-lean
+    lean_migration_state: done (Lean)
+    reset_at: 23 Nov 04:24Z
+    origin_root: 3312f13e56b4
+    origin_root_date: '2026-11-23'
+    origin_head: ebde0e83c6e8
+    commits_on_default: 2
+  machines_with_a_clone: 6
+- repo: deckhand-sandbox
+  alias_of_client_or_personal_name: false
+  purpose: Public open-tier sandbox for Deckhand (MIT engineering work, PR-only)
+  visibility: public
+  archived: false
+  default_branch: main
+  last_push_utc: '2026-11-23T04:36:49Z'
+  owner_lane: Deckhand team (retired stream)
+  owner_lane_source: roadmaps-index
+  lean_reset:
+    status: reset 2026-11-23
+    lean_migration_state: done (Lean)
+    reset_at: 23 Nov 04:34Z
+    origin_root: a9a59508530b
+    origin_root_date: '2026-11-23'
+    origin_head: a9a59508530b
+    commits_on_default: 1
+  machines_with_a_clone: 1
+- repo: digitalmodel
+  alias_of_client_or_personal_name: false
+  purpose: 'Offshore engineering calculations: strength, fatigue, fitness for service, hydrodynamics'
+  visibility: public
+  archived: false
+  default_branch: main
+  last_push_utc: '2026-11-27T12:50:09Z'
+  owner_lane: engineering models team (the Windows solver host train workers dm-a, dm-b)
+  owner_lane_source: roadmaps-index + desk-pass.md
+  lean_reset:
+    status: reset 2026-11-23-lean
+    lean_migration_state: done (Lean)
+    reset_at: 23 Nov 05:07Z
+    origin_root: 5d3f3c9f9380
+    origin_root_date: '2026-11-23'
+    origin_head: 312fb2ba34ed
+    commits_on_default: 16
+  machines_with_a_clone: 7
+- repo: hobbies
+  alias_of_client_or_personal_name: false
+  purpose: Personal hobby projects
+  visibility: public
+  archived: false
+  default_branch: main
+  last_push_utc: '2026-11-23T04:17:01Z'
+  owner_lane: owner (personal)
+  owner_lane_source: inferred
+  lean_reset:
+    status: reset 2026-11-23
+    lean_migration_state: done (Lean)
+    reset_at: 23 Nov 04:16Z
+    origin_root: 53a5c21c598e
+    origin_root_date: '2026-11-23'
+    origin_head: 53a5c21c598e
+    commits_on_default: 1
+  machines_with_a_clone: 1
+- repo: raw-to-knowledge-playbook
+  alias_of_client_or_personal_name: false
+  purpose: Public method for turning raw archives into verified, citable knowledge
+  visibility: public
+  archived: false
+  default_branch: main
+  last_push_utc: '2026-11-23T04:18:06Z'
+  owner_lane: 'unassigned (inferred: knowledge team)'
+  owner_lane_source: inferred
+  lean_reset:
+    status: reset 2026-11-23
+    lean_migration_state: done (Lean)
+    reset_at: 23 Nov 04:18Z
+    origin_root: c878d45ed1a4
+    origin_root_date: '2026-11-23'
+    origin_head: c878d45ed1a4
+    commits_on_default: 1
+  machines_with_a_clone: 6
+- repo: workspace-hub
+  alias_of_client_or_personal_name: false
+  purpose: 'Shared base on every machine: rules, fleet scripts, configuration, AI account collector'
+  visibility: public
+  archived: false
+  default_branch: main
+  last_push_utc: '2026-11-27T15:14:59Z'
+  owner_lane: platform team
+  owner_lane_source: roadmaps-index
+  lean_reset:
+    status: reset 2026-11-23-lean
+    lean_migration_state: done (Lean)
+    reset_at: 23 Nov 10:33Z
+    origin_root: c3380a99245a
+    origin_root_date: '2026-11-23'
+    origin_head: ffe9d649e475
+    commits_on_default: 108
+  machines_with_a_clone: 7
+- repo: worldenergydata
+  alias_of_client_or_personal_name: false
+  purpose: 'Public energy data library: BSEE, EIA, economics, safety and production analyses'
+  visibility: public
+  archived: false
+  default_branch: main
+  last_push_utc: '2026-11-26T21:28:17Z'
+  owner_lane: energy data team (Public Data Lead; the Windows solver host worker wed)
+  owner_lane_source: roadmaps-index + team/public-data-lead.md
+  lean_reset:
+    status: reset 2026-11-23-lean
+    lean_migration_state: done (Lean)
+    reset_at: 23 Nov 11:11Z
+    origin_root: 4896175b44b5
+    origin_root_date: '2026-11-23'
+    origin_head: d13e75299be9
+    commits_on_default: 38
+  machines_with_a_clone: 7
+- repo: worldenergydata-wiki
+  alias_of_client_or_personal_name: false
+  purpose: Public wiki of US federal energy data (BSEE, NOAA, USGS, MMS)
+  visibility: public
+  archived: false
+  default_branch: main
+  last_push_utc: '2026-11-23T04:17:34Z'
+  owner_lane: 'unassigned (inferred: energy data team)'
+  owner_lane_source: inferred
+  lean_reset:
+    status: reset 2026-11-23
+    lean_migration_state: done (Lean)
+    reset_at: 23 Nov 04:17Z
+    origin_root: c9711963dc18
+    origin_root_date: '2026-11-23'
+    origin_head: c9711963dc18
+    commits_on_default: 1
+  machines_with_a_clone: 7
+- repo: kaggle-rogii-2026
+  alias_of_client_or_personal_name: false
+  purpose: Kaggle wellbore geology prediction entry (archived)
+  visibility: public
+  archived: true
+  default_branch: main
+  last_push_utc: '2026-11-23T04:15:49Z'
+  owner_lane: none (archived)
+  owner_lane_source: archived
+  lean_reset:
+    status: reset 2026-11-23
+    lean_migration_state: not listed
+    reset_at: null
+    origin_root: b85f2755c2e3
+    origin_root_date: '2026-11-23'
+    origin_head: b85f2755c2e3
+    commits_on_default: 1
+  machines_with_a_clone: 1
+- repo: pdf-large-reader
+  alias_of_client_or_personal_name: false
+  purpose: Memory-efficient PDF processing library (archived)
+  visibility: public
+  archived: true
+  default_branch: master
+  last_push_utc: '2026-03-23T21:05:55Z'
+  owner_lane: none (archived)
+  owner_lane_source: archived
+  lean_reset:
+    status: not reset
+    lean_migration_state: not listed
+    reset_at: null
+    origin_root: 4644f14058c0
+    origin_root_date: '2026-01-06'
+    origin_head: 0549d450b6e1
+    commits_on_default: 9
+  machines_with_a_clone: 0
+per_machine: Held in the private detail map.
+deviations: Held in the private detail map (count above).
+open_questions:
+- No per-host list of required repositories is on workspace-hub main; the layout checker that reads one (scripts/operations/check-work-layout.py) is on branch claude/check-work-layout.
+- Owner lanes for assetutilities, worldenergydata-wiki and raw-to-knowledge-playbook are inferred; no road map names a team.

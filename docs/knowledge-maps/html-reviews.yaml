@@ -1,0 +1,102 @@
+schema: knowledge-map/1
+map: html-reviews
+title: HTML review and decision surfaces (generic mechanism)
+purpose: >-
+  How the ecosystem's owner-facing HTML surfaces work: the page-family types, how they are built, wrapped, served,
+  saved and refreshed, the decision-board contract and the review-copy conventions. The page inventory, freshness,
+  host folders and deviations are kept in the private map named below.
+owner: workspace-hub standards (rule owner); page families are run by the fleet-ops intake desk
+private_detail: fleet-ops docs/knowledge-maps/html-reviews.yaml (private repository; access limited to the team)
+verified_at: "2026-11-27T15:54:25Z"
+sources:
+  - .claude/rules/human-decision-boards.md
+  - docs/standards/review-and-communication-standard.md §3 (page types, review loop, tooling, location, verification)
+  - .claude/rules/report-audience-and-surface.md
+  - docs/standards/FINAL_REPORT_VERIFICATION.md
+  - tools/html-review/README.md and make_review_copy.py (canonical comment-layer injector, issue 3920)
+  - fleet-ops intake and dashboard builders (private; summarised as patterns only)
+  - live measurement of the served pages, 2026-11-27 (counts only here)
+refresh: >-
+  Revisit when a rule or standard listed under `standard` changes, when the comment-layer injector changes its save
+  model, or when the private map records a new page-family type.
+standard:
+  - .claude/rules/human-decision-boards.md
+  - docs/standards/review-and-communication-standard.md
+  - .claude/rules/report-audience-and-surface.md
+  - docs/standards/FINAL_REPORT_VERIFICATION.md
+entries:
+  page_family_types:
+    - {type: status page, purpose: "where repositories, machines, migrations, PRs and datasets stand now", cadence: hourly, surface: internal}
+    - {type: ecosystem road map, purpose: "the owner's single starting page of work streams, with status links and tiles at the top", cadence: hourly, surface: internal}
+    - {type: project road map, purpose: "one programme (article series, benchmark, summaries) with its milestones", cadence: "hourly, or one-off for an approved revision", surface: internal}
+    - {type: client road map, purpose: "one client's programme; internal review page plus a client copy without the internal sections", cadence: "approved revision, re-filed per revision", surface: "internal; client copy is a client deliverable"}
+    - {type: register road map, purpose: "one page per repository, stream or client generated from the work register, plus an index JSON", cadence: hourly, surface: internal}
+    - {type: live list, purpose: "single list of items waiting on the owner", cadence: hourly, surface: internal}
+    - {type: report review copy, purpose: "a report or draft with the comment layer injected, one folder per revision round", cadence: per round, surface: internal}
+    - {type: decision board, purpose: "one card per owner decision with the recommendation marked", cadence: per round, surface: internal}
+    - {type: human-review pack, purpose: "evidence beside expectations, check table, missing evidence, reviewer decision", cadence: per round, surface: internal}
+    - {type: peer or client review copy, purpose: "stand-alone offline HTML with comment layer and how-to banner", cadence: per round, surface: "client deliverable or peer"}
+  stable_link_convention:
+    rule: "one fixed link per page family; no revision number in the link or the tab title (owner, 22 Nov 2026)"
+    registry: "a families JSON lists name, kind, source page, builder ('from') and regex patterns of earlier numbered copies"
+    wrapper: "a wrapper script injects the comment layer into each family's clean source and writes <name>-review.html; links to older numbered copies are rewritten to the stable link; retired addresses get forward pages"
+    hand_filed_revisions: "an approved revision of a static family is copied over _sources/<name>.html and the numbered copy moves to _superseded"
+    comment_key: "the browser storage key is fixed per family so unsaved comments survive hourly rebuilds"
+  freshness_badge:
+    rule: "green <= 1.5x cadence, amber <= 3x, red > 3x with the word STALE; one-off pages (cadence null) show their date only"
+    oldest_source_wins: "a page reading several sources shows the oldest source's time, so a fresh rebuild over old data still reads stale"
+    placement: "pinned top right, ticking live; tooltip lists every source and its time"
+  status_tiles:
+    rule: "every tile is filled from a live source read at build time and names it; a tile without a live source is marked unverified and says why"
+  builder_pattern:
+    - "a scheduled, model-free mechanical pass runs the builders and then the wrapper; no AI call in the refresh path"
+    - "builders write a clean page (--no-review); only the wrapper writes the review copy"
+    - "a failing builder is reported as one line and the last good page is kept; the rest of the pass still runs"
+    - "the owner's copy is checked against a forbidden-word list (internal terms, host names) before it is written"
+    - "a client-copy test asserts that internal-only sections never appear in a client copy"
+  serving:
+    pattern: "a local static HTTP server bound to the loopback address on a fixed port, serving the review root folder"
+    surface: "internal; a loopback server is not a hosted surface"
+    save_independence: "Save never depends on the server: the page writes through the browser (File System Access API or a download)"
+  comment_layer:
+    canonical: "tools/html-review/make_review_copy.py SRC.html OUT-review.html STORAGE_KEY (source left unchanged)"
+    comment_kinds: "text selection (comment, replace-with, delete) and whole-block comments; overall verdict and general comment"
+    save_record: "page, report_version (source SHA-256 prefix + mtime), report_folder, exported_at; per comment quote, section, data_src, comment, at, stable id"
+    merge: "save, load and folder merge combine rather than replace; deletion records are kept; other revisions are announced but not merged"
+    banner: "open from disk in Edge or Chrome; select, comment, save; choose the page's own folder; reload a revised page before continuing"
+    second_injector: "the desk's hourly pages use an older injector in fleet-ops that downloads saves for a filer to archive; see open_questions"
+  decision_board:
+    card: "question with evidence, impact, options, recommendation, note field; one card per decision"
+    recommendation_marking: "the recommended option has a dashed outline and a text label"
+    build: "cards.py writes snapshot/items/<ID>.json; make.py derives <board>.html from the board template and builds <board>-local.html"
+    location: "the session's output/<topic>/decisions/ folder"
+    save: "Save writes <board>.json beside the HTML in every location the page is placed, never to Downloads; first Save asks once for the folder (showDirectoryPicker), checks the folder holds the page itself, keeps the handle in IndexedDB"
+    history: "every save also writes <board>-<UTC yyyymmddThhmmssZ>.json beside it (owner decision D03, 2026-10-08)"
+    load: "on opening, the page loads decisions already saved beside it"
+    no_write: "a browser that cannot write gets a plain message and the entries stay in the tab; an agent may recover entries from browser storage and must record that it did so"
+    rounds: "a new round is a new page (-rN) and a new JSON; decided boards are never edited; earlier rounds' files stay beside their pages"
+    consent: "decisions come only from saved board JSON or an explicit owner instruction; an undecided card is not consent"
+    reload: "tell the owner to reload after cards are added; a stale tab once exported a file without the new cards"
+    scope: "the owner decides client-facing messages, spending and items he already holds; everything else is decided by the team"
+  review_loop:
+    - "owner comments and saves JSON beside the page, then says 'review'"
+    - "agent reads the JSON in each location, identifies the applicable file by report identity and revision, not mtime"
+    - "each comment gets a disposition: incorporated, deferred with reason, or needs a decision"
+    - "report and review copy are regenerated and re-verified; saved JSON read back; rounds kept as -rN.json"
+  surface_rules:
+    internal: "client identifiers, cost models, host names and candid tooling defects allowed"
+    client_deliverable: "client identifiers required; cost models, host names and tooling defects never"
+    hosted: "client identifiers REDACTED; cost models, host names and tooling defects never; a share link is not a private channel"
+    verification: "before handing over: rendered output inspected, links and scripts checked, Save/Load/read-back smoke-tested on the correct revision; a skipped browser test is not a pass"
+  counts_on_day_measured:
+    stable_link_pages: 53
+    wrapped_families: 16
+    register_road_maps: 36
+    review_copy_folders: 275
+    decision_board_rounds: 27
+    hosted_artifacts: 5
+per_machine: []        # kept in private_detail; this public map carries no host folders
+deviations: []         # kept in private_detail; 13 deviations recorded there on 2026-11-27
+open_questions:
+  - "Two comment-layer injectors implement opposite save rules: the canonical one saves beside the page, while the desk's older injector downloads saves for a filer. Which is canonical for the hourly desk pages, and is an exemption to be recorded in human-decision-boards.md?"
+  - "Should the wrapper, freshness and status-tile builders that run the hourly pages move under version control with their tests? The private map lists where they sit now."
