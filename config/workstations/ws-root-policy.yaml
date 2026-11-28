@@ -1,0 +1,49 @@
+# Canonical workspace-root layout policy shared across every workstation.
+# Enforced by scripts/workstations/ws_hygiene_audit.py and .claude/rules/workstation-hygiene.md.
+# Keep this file public-safe: no hostnames, mount paths, client names, or secrets.
+
+schema_version: 1
+canonical_root: >-
+  W is the machine's registered work root; a home-directory alias, where present,
+  links to W and is never traversed or deleted.
+
+# Supplement the explicit list with repository names already recorded under machines.*.repos.
+registered_repositories:
+  - workspace-hub
+workstation_registry: registry.yaml
+
+root_rules:
+  default_entry_type: git_repository
+  allow_loose_files: false
+  require_git_dir_for_unprefixed_dirs: true
+
+reserved_system_dirs:
+  _wt:
+    purpose: "Linked git worktrees only (<repo-short>--<slug>). No loose files, standalone clones, venvs, or scratch folders."
+    children_must_be_linked_worktrees: true
+    allow_loose_files: false
+  _pm:
+    purpose: "Machine-local automation scripts, loop logs, and runtime state."
+  _backups:
+    purpose: "Verified local git bundles and pre-delete rescues (local only; never push refs/backup to GitHub)."
+  _archive:
+    purpose: "Verified cold repository archives and branch-protection snapshots."
+
+allowed_tool_dotdirs:
+  - ".claude"
+
+forbidden_root_patterns:
+  - "wt-*"
+  - ".wt"
+  - ".scratch"
+  - "_scratch"
+  - "_scratch-*"
+  - "_scratch_*"
+  - "_tw-scratch"
+  - "_backup"
+  - "outputs"
+  - "Claude outputs"
+  - "*.pre-rollout-*"
+  - "*.pre-reset-*"
+  - "*.failed-checkout"
+  - ".ruff_cache"
