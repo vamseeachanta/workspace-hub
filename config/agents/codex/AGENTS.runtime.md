@@ -366,7 +366,7 @@ For a verified mismatch within authorized installation scope, use `scripts/agent
 - **marketing/** — 0 skill(s); `ls .claude/skills/marketing/*/SKILL.md` to enumerate
 - **mcp/** — 2 skill(s); `ls .claude/skills/mcp/*/SKILL.md` to enumerate
 - **memory/** — 3 skill(s); `ls .claude/skills/memory/*/SKILL.md` to enumerate
-- **operations/** — 17 skill(s); `ls .claude/skills/operations/*/SKILL.md` to enumerate
+- **operations/** — 18 skill(s); `ls .claude/skills/operations/*/SKILL.md` to enumerate
 - **phone-media-pull** — Run the family iPhone photo/video pull on the archive host with the owner: copy DCIM at full quality, verify, back up to Google Dr
 - **productivity/** — 3 skill(s); `ls .claude/skills/productivity/*/SKILL.md` to enumerate
 - **research/** — 11 skill(s); `ls .claude/skills/research/*/SKILL.md` to enumerate
