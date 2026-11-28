@@ -51,7 +51,7 @@ python intake/cleanup/tools/wt_sweep.py W --merged-prs MERGED --exclude HELD --o
 python intake/cleanup/tools/clone_retire.py REPO
 ```
 
-The first command previews linked worktrees. The second inventories one standalone clone. Capture stdout and stderr and account for paths neither tool visited. From the pinned hub run `python scripts/operations/check-work-layout.py --json --host HOST --private-config PRIVATE_LAYOUT` with the verified private layout file for this host. Confirm the policy resolves the observed `W`. A missing checker, registry or reading leaves layout unverified.
+The first command previews linked worktrees. The second inventories one standalone clone. On Linux and macOS, the reviewed wrapper `intake/cleanup/tools/sweep_dryrun.sh OUT TOOLDIR ROOT...` runs the first command with `GIT_OPTIONAL_LOCKS=0`. It also writes the scheduler, process and recent-brief references to `OUT/*-refs.txt`, leaving out its own output and earlier receipts. Put the merged-PR evidence in `OUT/merged-prs/` first, and use `SWEEP_PY` to choose a Python 3.11 or newer interpreter. Capture stdout and stderr and account for paths neither tool visited. From the pinned hub run `python scripts/operations/check-work-layout.py --json --host HOST --private-config PRIVATE_LAYOUT` with the verified private layout file for this host. Confirm the policy resolves the observed `W`. A missing checker, registry or reading leaves layout unverified.
 
 | Class | Evidence and disposition |
 |---|---|
@@ -82,6 +82,8 @@ python intake/cleanup/tools/wt_sweep.py W --merged-prs MERGED --exclude HELD --a
 ```
 
 The tool rechecks the tuple and eligibility immediately before calling Git's unforced worktree removal. Read the selected row's JSON status and removal TSV before the next row. A refused command, changed tuple, missing row or failed check **stops that step**. Record the command and reason. Never retry through a different tool, agent, forced operation or recursive directory deletion.
+
+On Linux and macOS, `intake/cleanup/tools/sweep_apply_rows.sh OUT TOOLDIR REVIEWED_TSV ROOT...` applies a whole reviewed manifest this way, one row per call. It first refuses the whole file if it has a header, CRLF, a BOM or any row that is not byte-identical to a row of `OUT/sweep-safe.tsv`. It then prints the selection's SHA-256 to compare with the reviewed file, and stops at the first row whose removal is not confirmed.
 
 For a preserved clone or other non-SAFE item, follow the private reviewed-manifest executor in `fleet-ops/intake/cleanup/` only if its own release, backup and quiet-period checks pass for that exact item. `clone_retire.py` only inventories and verifies backups. `work.py close` stages evidence. Neither removes the source. Keep the item if the available executor cannot accept it. Branch deletion is a separate action under `.claude/rules/merge-cleanup.md`.
 
