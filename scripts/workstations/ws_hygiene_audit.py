@@ -51,12 +51,16 @@ def _matches_any(name: str, patterns: list[str]) -> bool:
 def _is_directory_link(entry: Path) -> bool:
     if entry.is_symlink():
         return True
-    return os.name == "nt" and entry.lstat().st_reparse_tag == stat.IO_REPARSE_TAG_MOUNT_POINT
+    try:
+        attributes = getattr(entry.lstat(), "st_file_attributes", 0)
+    except (FileNotFoundError, NotADirectoryError):
+        return False
+    return bool(attributes & stat.FILE_ATTRIBUTE_REPARSE_POINT)
 
 
 def _check_linked_worktree(entry: Path) -> tuple[bool, str]:
     git_marker = entry / ".git"
-    if git_marker.is_symlink():
+    if _is_directory_link(git_marker):
         return False, "symlinked_git_marker"
     if git_marker.is_dir():
         return False, "standalone_clone_in_wt"
@@ -69,6 +73,8 @@ def _check_linked_worktree(entry: Path) -> tuple[bool, str]:
     if not raw.lower().startswith("gitdir:"):
         return False, "malformed_git_file"
     gitdir_str = raw.split(":", 1)[1].strip()
+    if "\x00" in gitdir_str:
+        return False, "malformed_git_file"
     gitdir_path = Path(gitdir_str)
     if not gitdir_path.is_absolute():
         gitdir_path = (entry / gitdir_path).resolve()
@@ -112,20 +118,35 @@ def _check_linked_worktree(entry: Path) -> tuple[bool, str]:
     except OSError:
         return False, "invalid_worktree_backlink"
 
+    return _verify_git_marker(entry, commondir_path)
+
+
+def _verify_git_marker(entry: Path, common_dir: Path | None = None) -> tuple[bool, str]:
     # Resolve this exact marker so Git cannot discover a parent repository.
     env = {key: value for key, value in os.environ.items() if not key.startswith("GIT_")}
     try:
-        result = subprocess.run(
-            ["git", "rev-parse", "--resolve-git-dir", ".git"],
-            cwd=entry, env=env, capture_output=True, timeout=10,
-            creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0),
-        )
+        def run_git(*args: str) -> subprocess.CompletedProcess[bytes]:
+            return subprocess.run(
+                ["git", *args],
+                cwd=entry, env=env, capture_output=True, timeout=10,
+                creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0),
+            )
+
+        if run_git("rev-parse", "--resolve-git-dir", ".git").returncode:
+            return False, "incomplete_worktree_metadata" if common_dir else "invalid_git_marker"
+        if common_dir is not None:
+            listing = run_git("--git-dir", str(common_dir), "worktree", "list", "--porcelain", "-z")
+            if listing.returncode:
+                return False, "git_verification_unavailable"
+            checkout = entry.resolve()
+            paths = (os.fsdecode(field[len(b"worktree "):]) for field in listing.stdout.split(b"\0")
+                     if field.startswith(b"worktree "))
+            if not any(Path(path) == checkout for path in paths):
+                return False, "unregistered_worktree"
     except subprocess.TimeoutExpired:
         return False, "git_verification_timeout"
     except OSError:
         return False, "git_verification_unavailable"
-    if result.returncode:
-        return False, "incomplete_worktree_metadata"
     return True, "ok"
 
 
@@ -175,6 +196,8 @@ def audit_workspace_root(
             kind, reason = "symlink_at_root", "Symlink or junction inside the work root"
         elif _matches_any(name, forbidden_patterns):
             kind, reason = "forbidden_root_pattern", "Matches a forbidden root clutter pattern"
+        elif name in reserved and not entry.is_dir():
+            kind, reason = "invalid_reserved_directory", "Reserved entry must be a directory"
         elif entry.is_file():
             if allow_loose_files:
                 return
@@ -184,13 +207,17 @@ def audit_workspace_root(
             return
         else:
             marker = entry / ".git"
-            if marker.is_symlink():
-                kind, reason = "symlinked_git_marker", "Repository marker is a symbolic link"
+            if _is_directory_link(marker):
+                kind, reason = "symlinked_git_marker", "Repository marker is a symlink or reparse point"
             elif marker.is_dir():
                 if name in registered:
-                    git_repos.append(name)
-                    return
-                kind, reason = "unregistered_repository", "Repository is absent from the policy registry"
+                    ok, kind = _verify_git_marker(entry)
+                    if ok:
+                        git_repos.append(name)
+                        return
+                    reason = "Git could not verify the repository marker"
+                else:
+                    kind, reason = "unregistered_repository", "Repository is absent from the policy registry"
             elif marker.is_file():
                 kind, reason = "worktree_at_root", "Linked worktrees belong under _wt/"
             elif name in extra_allowed:

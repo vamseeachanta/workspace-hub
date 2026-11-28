@@ -28,12 +28,14 @@ def _git(*args: str | Path) -> None:
 def _make_repo(parent: Path, name: str) -> Path:
     repo = parent / name
     _git("init", repo)
+    _git("-C", repo, "-c", "user.name=Fixture", "-c", "user.email=fixture@example.invalid",
+         "commit", "--allow-empty", "-m", "Fixture base")
     return repo
 
 
 def _make_linked_wt(repo: Path, wt_parent: Path, name: str) -> Path:
     wt = wt_parent / name
-    _git("-C", repo, "worktree", "add", "--orphan", wt)
+    _git("-C", repo, "worktree", "add", "--detach", wt)
     return wt
 
 
@@ -280,3 +282,78 @@ def test_workspace_root_alias_is_not_traversed(tmp_path, monkeypatch):
     monkeypatch.setattr(Path, "iterdir", lambda path: pytest.fail("root alias was traversed"))
     report = audit.audit_workspace_root(root, audit.load_policy())
     assert report["root_violations"][0]["kind"] == "workspace_root_alias"
+
+
+def test_empty_git_directory(tmp_path, monkeypatch):
+    parent = _make_repo(tmp_path, "parent")
+    root = parent / "workspace"
+    (root / "workspace-hub" / ".git").mkdir(parents=True)
+    monkeypatch.setenv("GIT_DIR", str(parent / ".git"))
+    report = audit.audit_workspace_root(root, audit.load_policy())
+    assert report["git_repos"] == []
+    assert report["root_violations"][0]["name"] == "workspace-hub"
+    assert audit.main(["--root", str(root), "--strict"]) == 1
+
+
+@pytest.mark.parametrize("native", [
+    False, pytest.param(True, marks=pytest.mark.skipif(os.name != "nt", reason="Windows junction")),
+])
+def test_git_marker_junction(tmp_path, monkeypatch, native):
+    from types import SimpleNamespace
+
+    root = tmp_path / "workspace"
+    root.mkdir()
+    marker = root / "workspace-hub" / ".git"
+    if native:
+        marker.parent.mkdir()
+        target = _make_repo(tmp_path, "external") / ".git"
+        subprocess.run(["cmd", "/d", "/c", "mklink", "/J", marker, target], check=True,
+                       capture_output=True, creationflags=subprocess.CREATE_NO_WINDOW)
+    else:
+        _make_repo(root, "workspace-hub")
+        original = Path.lstat
+
+        def lstat(path):
+            info = original(path)
+            if path == marker:
+                return SimpleNamespace(st_mode=info.st_mode,
+                                       st_file_attributes=audit.stat.FILE_ATTRIBUTE_REPARSE_POINT)
+            return info
+
+        monkeypatch.setattr(Path, "lstat", lstat)
+    report = audit.audit_workspace_root(root, audit.load_policy())
+    assert report["git_repos"] == []
+    assert report["root_violations"][0]["kind"] == "symlinked_git_marker"
+
+
+def test_unlisted_worktree_metadata(tmp_path):
+    repo = _make_repo(tmp_path, "workspace-hub")
+    wt = _make_linked_wt(repo, tmp_path / "_wt", "repo--fix")
+    admin = repo / ".git" / "worktrees" / wt.name
+    moved = repo / ".git" / "rescue" / wt.name
+    moved.parent.mkdir()
+    admin.rename(moved)
+    (wt / ".git").write_text(f"gitdir: {moved}\n", encoding="utf-8")
+    report = audit.audit_workspace_root(tmp_path, audit.load_policy())
+    assert report["wt_linked_count"] == 0
+    assert report["wt_violations"][0]["kind"] == "unregistered_worktree"
+
+
+def test_nul_gitdir_preserves_sibling_finding(tmp_path):
+    checkout = tmp_path / "_wt" / "broken"
+    checkout.mkdir(parents=True)
+    (checkout / ".git").write_bytes(b"gitdir: bad\0path\n")
+    (checkout.parent / "stray.txt").touch()
+    report = audit.audit_workspace_root(tmp_path, audit.load_policy())
+    assert {v["name"]: v["kind"] for v in report["wt_violations"]} == {
+        "broken": "malformed_git_file", "stray.txt": "loose_file_in_wt",
+    }
+
+
+@pytest.mark.skipif(os.name == "nt", reason="POSIX FIFO")
+@pytest.mark.parametrize("name", ["_wt", "_pm"])
+def test_reserved_fifo(tmp_path, name):
+    os.mkfifo(tmp_path / name)
+    report = audit.audit_workspace_root(tmp_path, audit.load_policy())
+    assert report["reserved_dirs_present"] == []
+    assert report["root_violations"][0]["name"] == name
