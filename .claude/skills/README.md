@@ -84,6 +84,7 @@
 | Index | Description |
 |-------|-------------|
 | [operations/](operations/INDEX.md) | Domain overview |
+| [machine-readiness](operations/machine-readiness/SKILL.md) | Bring one machine to the workspace standard and verify its readiness |
 | [operations/automation/](operations/automation/INDEX.md) | Background services, workflow automation |
 | [operations/devops/](operations/devops/INDEX.md) | System maintenance, health checks |
 | [operations/devtools/](operations/devtools/INDEX.md) | uv, pyproject-toml (ops context) |
