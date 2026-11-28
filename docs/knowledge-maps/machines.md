@@ -15,7 +15,7 @@ Verified 2026-11-27 15:45Z from read-only probes of seven machines. Governing ru
 | Class | Purpose | AI lanes | Lane cap | Licensed solvers | Count |
 |---|---|---|---|---|---|
 | owner-desk | Owner's Windows desk: Intake desk, review pages, owner-held work | Claude, Codex | 2 | May hold an Orcina install; scheduled-task path only | 1 |
-| solver-host | Windows server for the licensed solvers; Claude desk pass and train workers | Claude | per desk files | Orcina lane and ANSYS lane | 1 |
+| solver-host | Windows server for the licensed solvers; Claude desk pass, train workers, local Codex lane | Claude, Codex | per desk files | Orcina lane and ANSYS lane | 1 |
 | linux-lane-host | Codex and Claude lanes, heavy builds, CI runners; one holds the data store | Codex, Claude | 6 and 4; data-disk cap 2 | None (OpenFOAM) | 2 |
 | leased-compute | Leased hosts shared with other tenants: Codex lanes, GPU and CFD | Codex on one | one CFD run, 6 cores max | None (OpenFOAM) | 2 |
 | portable | Owner's laptop: one Codex job, hand-run reviews; may sleep | Claude, Codex | 1 | None | 1 |
@@ -80,8 +80,8 @@ host are saved with LF line endings. Windows paths are never passed to a bash to
 
 ## Status
 
-Seven machines were probed and four listed entries were not reached. The private map records 41
-deviations (27 at the first build, 14 added by the 28 Nov per-machine review). No machine passes R09, because the consistency run is not yet installed, and no machine has a
+Seven machines were probed and four listed entries were not reached. The private map records 45
+deviations (27 at the first build, 18 added by the 28 Nov per-machine review). No machine passes R09, because the consistency run is not yet installed, and no machine has a
 readiness reading. The other deviations are runtime version spread, disk pressure on two data volumes,
 failing or orphaned scheduled entries, and gaps between the register files.
 

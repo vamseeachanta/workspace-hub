@@ -867,7 +867,7 @@ entries:
       - {file: engineering-register.md, purpose: "one writing register for all output; Level-2 check-engineering-register.py"}
       - {file: goal-invocation.md, purpose: "consult the /goal catalogue (#2695) and weekly picklist before invoking /goal"}
       - {file: human-decision-boards.md, purpose: "owner decisions go on a local HTML decision board; saves write JSON beside the page"}
-      - {file: licensed-solver-dispatch.md, purpose: "OrcaFlex/OrcaWave only through the Scheduled-Task path; four FlexNet ports; one Orcina seat licenses a session"}
+      - {file: licensed-solver-dispatch.md, purpose: "OrcaFlex/OrcaWave only through the Scheduled-Task path; its licence-server ports; one Orcina seat licenses a session"}
       - {file: mechanism-before-publication.md, purpose: "read the tool source and existing output before publishing a causal claim; label hypotheses"}
       - {file: merge-authorization.md, purpose: "team merges on green required checks with a pinned squash, no branch delete; holds apply; registered direct-main exemptions"}
       - {file: merge-cleanup.md, purpose: "remove the worktree after a merge; branch deletion only with a bundle and a #577 log entry"}

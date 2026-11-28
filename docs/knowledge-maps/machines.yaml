@@ -64,8 +64,8 @@ entries:
       licensed_solvers: may carry an Orcina install; licensed runs only through the scheduled-task path
       count: 1
     - class: solver-host
-      role: Windows server holding the licensed solvers (Orcina and ANSYS lanes); also the Claude desk pass and train workers
-      ai_lanes: [claude]
+      role: Windows server holding the licensed solvers (Orcina and ANSYS lanes); also the Claude desk pass, train workers and a local Codex lane
+      ai_lanes: [claude, codex]
       lane_cap: per desk files
       licensed_solvers: Orcina lane (one Flex seat fleet-wide) and ANSYS lane (AQWA); scheduled-task dispatch only
       count: 1
@@ -147,8 +147,8 @@ per_machine:
   machines_listed_not_reached: 4
 deviations:
   note: listed in the private detail map
-  count: 41
-  count_note: "27 at the first build; 14 rows added by the 28 Nov per-machine review of six hosts (the solver host's review follows)"
+  count: 45
+  count_note: "27 at the first build; 18 rows added by the 28 Nov per-machine review of all seven hosts"
   summary: >
     No machine yet passes R09 (consistency run not installed) or carries a
     readiness reading; the other deviations are runtime version spread,

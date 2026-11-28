@@ -174,6 +174,6 @@ deviations:
 
 open_questions:
   - The private layout file read by check-work-layout.py (--private-config / WORK_LAYOUT_PRIVATE) was not found in fleet-ops main or intake/ledger. Until it exists, private repositories cannot be classified as registered by the checker.
-  - fleet-ops ECOSYSTEM.md section 4 places ace-win-1 helpers in C:/ws/_pm and launchers in C:/ws-pm; neither matches the standard (W/_pm). Which text is authoritative until the move?
+  - ace-win-1 helpers live in D:/ws/_pm (W/_pm, confirmed 28 Nov), but fleet-ops ECOSYSTEM.md section 4 still gives an older helper path and places launchers in C:/ws-pm, outside W. Which text is authoritative until the launchers move?
   - repo-short prefixes for _wt names are used in practice (fo, wh, dm, wed) but no list is registered. Should work-layout.yaml carry one?
   - workspace-hub config/workstations/registry.yaml still names an alias path as the workspace root on ace-linux-1 (a link to its work root) and a FUSE-mounted folder on ace-linux-2. It disagrees with ECOSYSTEM.md and with the measured roots; it should be corrected or retired in favour of one source.
