@@ -2058,6 +2058,12 @@ skills:
 
     - Whenever `df -P /mnt/local-analysis` crosses a warning threshold (configurable)'
   when_to_use_source: frontmatter
+- description: Decide whether a branch that exists only on pre-reset history still carries work missing from the lean main, and port it by content when it does. Use before retiring an old clone after a history reset.
+  family: operations
+  id: operations/prereset-branch-port-check
+  name: prereset-branch-port-check
+  when_to_use: A repository's history was reset (new root commit) and an old clone still holds a local branch, a detached HEAD or a stash whose tip is not on the new history. The clone cannot be retired until each such tip is classified. Ancestry cannot answer the question, because no pre-reset commit is an ancestor of the lean main. Branch names cannot answer it either. Only path content can. The old clone is never pushed from and never merged. Work moves to the lean main by **copying file content**, never by merge, rebase or cherry-pick of old commits.
+  when_to_use_source: section
 - description: Install a private, single-user Telegram bot connected to a Hermes gateway on a Linux host. Covers BotFather provisioning, token hygiene, systemd drop-in override for durable env loading, single-user allowlist enforcement, approval-mode posture, and the mobile destructive-action smoke test. Reusable for any `@<name>Bot` / host pair.
   family: operations
   id: operations/telegram-hermes-bot
