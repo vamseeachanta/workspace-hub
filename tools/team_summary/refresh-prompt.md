@@ -14,9 +14,16 @@ other file. Do not commit; the calling script commits.
    - `blockers`, `areas`, `deliverables`: current state only; drop items the wiki shows are finished.
 3. Every item's `source` must be a path that exists in this wiki at HEAD. Prefer the primary record
    over dashboards or summaries.
-4. Facts only. Nothing that the wiki does not state. No forecasts or recommendations. The subject of a
+4. Set an item's `review` when its next action asks a person for input, approval, a conclusion or
+   comments on a document that exists in this wiki. Use `review.doc` for that wiki-relative path and
+   `review.ask` as one of `input`, `approval`, `conclusion`, `comments`. Use `review.title` only when
+   the document needs a clearer label than its parent folder and file name. Top-level
+   `review.link_style` is optional: `path` appends document paths to `review.link_base`, while
+   `folder` points every review link at the shared folder. Remove the item's `review` once the wiki
+   records the response.
+5. Facts only. Nothing that the wiki does not state. No forecasts or recommendations. The subject of a
    sentence is the work or document, not "we". State what is not established plainly.
-5. If nothing material changed, leave the file unchanged.
+6. If nothing material changed, leave the file unchanged.
 
 Wiki changes since the last summary:
 {{CHANGES}}

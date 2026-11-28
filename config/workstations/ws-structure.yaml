@@ -1,0 +1,19 @@
+version: 1
+depth: 1
+ignore: [.git, .venv, node_modules, __pycache__, .pytest_cache]
+entries:
+  - path: _wt/
+    purpose: Isolated Git worktrees for concurrent changes to registered repositories.
+  - path: _pm/
+    purpose: Project management and machine operations, including standing decisions, managed runs, and status reports.
+  - path: _backups/
+    purpose: Recovery copies of workspace data and repository state.
+  - path: _archive/
+    purpose: Retained material from retired workspaces and completed work.
+  - path: .claude/
+    purpose: Workspace-level Claude configuration and task state.
+  - path: <registered-repository>/
+    purpose: Primary checkout of a repository registered in the private workspace layout.
+    rules:
+      - Resolve repository names from the private layout file.
+      - Consult the repository's docs/structure.yaml for its internal folders.
