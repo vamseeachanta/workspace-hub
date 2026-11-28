@@ -30,7 +30,7 @@ The `W` guide is `config/workstations/ws-structure.yaml`.
 "Equal across machines" means `check-work-layout.py` exits 0 on every host and every registered
 repository's structure guide reports no undocumented folder. Neither condition had been tested on
 any host at measurement: the layout checker is in PR 4537 (open) and the 6-hourly consistency run
-(fleet-ops #776) is not yet installed.
+(fleet-ops #776, merged 27 Nov) is not yet installed on any host.
 
 ## Where things sit that do not belong
 
@@ -55,8 +55,8 @@ gpu-claw, the Mac).
 
 ## Deviations
 
-64 deviations across seven machines (ace-win-1 14, ace-linux-1 11, ace-linux-2 10, gpu-claw 8,
-Mac 8, WS014 7, spark 6). WS014 is the closest to the standard: all five reserved folders exist
+62 deviations across seven machines (64 at the first build; two closed on 28 Nov). Per-host counts
+are private. WS014 is the closest to the standard: all five reserved folders exist
 and its canonical clones are on lean history. The largest volumes sit outside `W` on ace-win-1 and
 in earlier work roots on ace-linux-2 and gpu-claw. Detail is private.
 
@@ -95,5 +95,5 @@ python machine-manager/consistency.py --pinned <sha>                            
 - fleet-ops `ECOSYSTEM.md` names a helper folder on ace-win-1 that does not exist, and a launcher root
   outside `W`. Which text governs until the move?
 - `_wt` names use short prefixes (`fo`, `wh`, `dm`, `wed`) with no registered list.
-- `config/workstations/registry.yaml` names a FUSE-mounted folder as the workspace root on two
-  Linux hosts. It disagrees with `ECOSYSTEM.md` and with the measured roots.
+- `config/workstations/registry.yaml` names an alias path (a link to the work root) as the workspace
+  root on one Linux host and a FUSE-mounted folder on the other. It disagrees with `ECOSYSTEM.md` and with the measured roots.

@@ -20,7 +20,7 @@ sources:
   - .claude/rules/workstation-hygiene.md (10 % free rule, worktrees not clones)
   - .claude/rules/soul-deployment-drift.md (provider contract files match origin/main)
   - .claude/rules/scheduler-mutation-safety.md (scheduler changes)
-  - "fleet-ops (private): ECOSYSTEM.md part 4, machine-manager/WORK-ARCHITECTURE.md (cadence), machine-manager/CONSISTENCY.md (6-hourly run, fleet-ops PR 776, open), intake/onboarding/fresh-machine/CHECKLIST.md, dashboard/machine-readiness.json"
+  - "fleet-ops (private): ECOSYSTEM.md part 4, machine-manager/WORK-ARCHITECTURE.md (cadence), machine-manager/CONSISTENCY.md (6-hourly run, fleet-ops PR 776, merged 27 Nov), intake/onboarding/fresh-machine/CHECKLIST.md, dashboard/machine-readiness.json"
   - live read-only probes of seven machines from the solver host, 2026-11-27 15:35-15:42Z (results in the private map)
 refresh:
   cadence: >
@@ -78,6 +78,7 @@ entries:
     - class: leased-compute
       role: leased Linux hosts shared with other tenants; Codex lanes, GPU and CFD work; judged on our share only
       ai_lanes: "codex on one; none started by the coordinator on the GPU host"
+      runtimes_note: "agy and pwsh are not required for this class"
       lane_cap: "one CFD run at a time, at most 6 cores, on the GPU host"
       licensed_solvers: none; OpenFOAM
       count: 2
@@ -104,7 +105,9 @@ entries:
     policy: >
       One version of each tool across every machine that carries it (fleet
       baseline = the newest version already deployed, unless a ruling pins
-      another). A missing tool on a class that requires it fails readiness.
+      another). A missing tool, or one below its minimum, on a class that
+      requires it fails readiness (R06); a version behind the baseline is an
+      equality deviation.
     tools:
       - {tool: git, classes: all}
       - {tool: gh, classes: all}
@@ -113,7 +116,7 @@ entries:
       - {tool: node, classes: all, minimum: "22 (active LTS or newer)", note: "Claude Code and page checks"}
       - {tool: claude, classes: [owner-desk, solver-host, linux-lane-host, leased-compute, portable]}
       - {tool: codex, classes: [owner-desk, solver-host, linux-lane-host, leased-compute, portable]}
-      - {tool: agy, classes: [owner-desk, solver-host, linux-lane-host, portable], note: "Agy plain-English and third-provider reviews"}
+      - {tool: agy, classes: [owner-desk, solver-host, linux-lane-host, portable], note: "Agy plain-English and third-provider reviews; not required for leased-compute (the road-map pass keeps Agy jobs off one leased host)"}
       - {tool: pwsh, classes: [owner-desk, solver-host], minimum: "7"}
       - {tool: openfoam, classes: [linux-lane-host, leased-compute], note: "packaged openfoamNNNN environments only"}
   readiness_checklist:
@@ -127,7 +130,7 @@ entries:
       - {id: R03, item: layout, passes_when: "W holds only registered repositories, _wt, _pm, _backups, _archive and .claude; worktrees only under _wt; no clones in home folders or at drive roots", check: "check-work-layout.py --json"}
       - {id: R04, item: structure guides, passes_when: "every folder in W and in each repository to the guide depth has a stated purpose", check: "consistency_guides.py"}
       - {id: R05, item: canonical clones, passes_when: "one clone per repository, on main, clean, fast-forwardable, with post-reset history", check: "consistency.py canonical-clones step"}
-      - {id: R06, item: runtimes, passes_when: "every required tool for the class is present at the fleet baseline", check: "refresh.commands.runtimes"}
+      - {id: R06, item: runtimes, passes_when: "every required tool for the class is present at or above its minimum; spread against the fleet baseline is tracked as an equality deviation, not as an R06 fail", check: "refresh.commands.runtimes"}
       - {id: R07, item: provider contracts, passes_when: "deployed Claude, Codex, Gemini, Agy and Hermes contract files match origin/main blobs", check: "check-soul-deployment-drift.sh"}
       - {id: R08, item: permissions and settings, passes_when: "Claude permissions and settings equal the fleet-ops set", check: "sync_permissions.py; probe_fleet.py"}
       - {id: R09, item: consistency run, passes_when: "the 6-hourly bootstrap is scheduled and W/_pm/consistency/latest.json is under 6 h old and names the pinned commit", check: "read latest.json"}
@@ -144,7 +147,8 @@ per_machine:
   machines_listed_not_reached: 4
 deviations:
   note: listed in the private detail map
-  count: 27
+  count: 41
+  count_note: "27 at the first build; 14 rows added by the 28 Nov per-machine review of six hosts (the solver host's review follows)"
   summary: >
     No machine yet passes R09 (consistency run not installed) or carries a
     readiness reading; the other deviations are runtime version spread,
@@ -152,4 +156,4 @@ deviations:
 open_questions:
   - "Fleet baseline versions: should a ruling pin one version per tool (a committed baseline file), or does 'newest deployed' stand?"
   - "Schedule register: workspace-hub schedule-tasks.yaml covers only part of what runs; which repository owns the one register of live schedules?"
-  - "R09 depends on fleet-ops PR 776 (open, owner-merged class) and its per-machine installation after a #577 log."
+  - "R09 depends on the per-machine installation of the fleet-ops PR 776 bootstrap (merged 27 Nov), each after a #577 log."

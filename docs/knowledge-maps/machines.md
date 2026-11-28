@@ -34,7 +34,8 @@ goes through the scheduled-task dispatch path.
 ## Required runtimes
 
 Policy: one version of each tool on every machine that carries it. Until a ruling pins versions, the fleet
-baseline is the newest version already deployed. A missing tool on a class that requires it fails R06.
+baseline is the newest version already deployed. A missing tool, or one below its minimum, on a class that requires it
+fails R06; a version behind the baseline is recorded as an equality deviation.
 
 | Tool | Classes | Minimum or note |
 |---|---|---|
@@ -42,14 +43,14 @@ baseline is the newest version already deployed. A missing tool on a class that 
 | python | all | 3.10; not the Windows Store alias; macOS system Python does not qualify |
 | node | all | 22 (active LTS or newer) |
 | claude, codex | every class that runs AI lanes | one version fleet-wide |
-| agy | owner-desk, solver-host, linux-lane-host, portable | Agy plain-English and third-provider reviews |
+| agy | owner-desk, solver-host, linux-lane-host, portable | Agy plain-English and third-provider reviews; not required for leased-compute |
 | pwsh | owner-desk, solver-host | 7 |
 | openfoam | linux-lane-host, leased-compute | packaged `openfoamNNNN` environments only |
 
 ## Readiness checklist
 
 Every row is checked on every machine. A reading the check cannot take counts as missing, never as passed.
-R01 to R12 come from the consistency-run design (fleet-ops PR 776, open) and the work-architecture cadence;
+R01 to R12 come from the consistency-run design (fleet-ops PR 776, merged 27 Nov) and the work-architecture cadence;
 R13 to R16 come from the hygiene, dispatch and data rules.
 
 | Row | Item | Passes when |
@@ -59,7 +60,7 @@ R13 to R16 come from the hygiene, dispatch and data rules.
 | R03 | Layout | `W` holds only registered repositories, `_wt`, `_pm`, `_backups`, `_archive`, `.claude`; no clones in home folders or drive roots |
 | R04 | Structure guides | Every folder in `W` and in each repository, to the guide depth, has a stated purpose |
 | R05 | Canonical clones | One clone per repository, on `main`, clean, fast-forwardable, post-reset history |
-| R06 | Runtimes | Every required tool for the class is present at the fleet baseline |
+| R06 | Runtimes | Every required tool for the class is present at or above its minimum; spread against the fleet baseline is an equality deviation, not an R06 fail |
 | R07 | Provider contracts | Deployed Claude, Codex, Gemini, Agy and Hermes contract files match `origin/main` |
 | R08 | Permissions and settings | Claude permissions and settings equal the fleet-ops set |
 | R09 | Consistency run | The 6-hourly bootstrap is scheduled; `W/_pm/consistency/latest.json` is under 6 h old and names its commit |
@@ -79,8 +80,8 @@ host are saved with LF line endings. Windows paths are never passed to a bash to
 
 ## Status
 
-Seven machines were probed and four listed entries were not reached. The private map records 27
-deviations. No machine passes R09, because the consistency run is not yet installed, and no machine has a
+Seven machines were probed and four listed entries were not reached. The private map records 41
+deviations (27 at the first build, 14 added by the 28 Nov per-machine review). No machine passes R09, because the consistency run is not yet installed, and no machine has a
 readiness reading. The other deviations are runtime version spread, disk pressure on two data volumes,
 failing or orphaned scheduled entries, and gaps between the register files.
 
@@ -89,4 +90,4 @@ failing or orphaned scheduled entries, and gaps between the register files.
 - Should a ruling pin one version per tool in a committed baseline file, or does "newest deployed" stand?
 - `config/scheduled-tasks/schedule-tasks.yaml` covers only part of what runs. Which repository owns the
   one register of live schedules?
-- R09 depends on fleet-ops PR 776, an owner-merged class, and its per-machine installation after a #577 log.
+- R09 depends on the per-machine installation of the fleet-ops PR 776 bootstrap (merged 27 Nov), each after a #577 log.
