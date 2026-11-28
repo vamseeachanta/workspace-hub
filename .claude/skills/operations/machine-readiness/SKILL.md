@@ -37,12 +37,27 @@ Inventory the agreed root and other **owned** candidate roots, including off-roo
 
 Use the reviewed tools from `fleet-ops`. In the examples, substitute each uppercase path with a quoted native path. Use fresh receipt paths outside the candidates. In **both** sweep calls replace `W` with disjoint, verified owned roots if a full-root walk could enter a protected or uninspected subtree. Exclusions do not limit discovery.
 
-Three evidence checks are easy to miss:
+These evidence checks are easy to miss:
 
 - **Ledger references count as use.** A worktree named in the private ledger's `intake/**` desk logs, pass prompts or act lists is in use even when no local file names it. Collect them with `git grep` on the fetched ledger. A reference counts when it equals the worktree path or lies beneath it; a reference to a parent folder does not. Inventory, census, sweep and receipt files list every worktree, so they are not evidence of use; exclude the sweep's own output folder from the local scan for the same reason.
 - **Earlier refusals stay refused.** Keep a refused-paths list beside each host's receipts and subtract it before building a batch. A path git refused once is refused again until its cause is resolved.
 - **Audit reads must not touch the index.** Run every evidence-gathering git command with `GIT_OPTIONAL_LOCKS=0` (for example `GIT_OPTIONAL_LOCKS=0 git -C <wt> status --porcelain`). A plain `git status` refreshes the index file, which resets the 12-hour idle clock and makes the reviewed tool keep the row until the next day.
 - **Clean means clean to git.** Run `git status --porcelain --ignore-submodules=none` in the worktree; any output means git's unforced remove will refuse it. That is the exact command `git worktree remove` runs (`check_clean_worktree` in `builtin/worktree.c`). Its output can differ from a file-by-file scan: with `core.untrackedCache` holding a stale entry, git 2.43 lists an empty folder (`?? dir/`) that a file scan finds empty.
+
+Before clearing a worktree and again immediately before removal, list the index tags from its root:
+
+```sh
+GIT_OPTIONAL_LOCKS=0 git ls-files -v
+```
+
+Hold the worktree for every lowercase tag (assume-unchanged) or capital S (skip-worktree). For each flagged regular file, compare its hash with the stage-zero blob ID:
+
+```sh
+git hash-object --no-filters -- "$file"
+git --literal-pathspecs ls-files -s -- "$file"
+```
+
+Keep the worktree on a mismatch or an unresolved entry. Alternatively, clear the flags and rerun the clean-status check before proceeding.
 
 Map each process directory, script path and hold to every candidate that **contains it or lies beneath it**. Pass the entire affected worktree as `--exclude HELD`, repeated for each one in both calls. Omit the option when the verified hold list is empty. `MERGED` holds the per-repo merged-PR evidence. If temporary fetch refs are outside read-only census authority, omit `--merged-prs MERGED` from both calls and retain detached trees without independent restore evidence.
 
@@ -67,7 +82,7 @@ Check the repo and base of each merged PR and match its actual head SHA. After a
 
 ## Review, log, archive and remove
 
-**Review the manifest.** Present the full census, keep reasons, expected savings and proposed actions for independent review under the cleanup prompt. Copy only cleared SAFE rows verbatim from `SAFE_TSV` into the reviewed UTF-8 manifest. Each headerless row contains the absolute path, full branch ref (empty if detached) and full HEAD SHA, separated by tabs in that order. Pin the reviewed bytes. List DIRTY or UNPUSHED items separately for preservation. Keep LOCKED, IN USE and other protected items outside the apply list.
+**Review the manifest.** Present the full census, keep reasons, expected savings and proposed actions for independent review under the cleanup prompt. Copy only cleared SAFE rows verbatim from `SAFE_TSV` into the reviewed UTF-8 manifest. Each headerless row contains the absolute path, full branch ref (empty if detached) and full HEAD SHA, separated by tabs in that order. Have the batch wrapper record the SHA-256 of the exact approved TSV bytes in the review receipt. List DIRTY or UNPUSHED items separately for preservation. Keep LOCKED, IN USE and other protected items outside the apply list.
 
 **Log before acting.** Record the review, selection rules, exact batch and counts, planned backup locations and restore commands on private `fleet-ops #577`. Resolve the issue from the private clone. Confirm the entry can be read back and the action and destination are authorized before applying. Keep the machine reachable.
 
@@ -83,13 +98,18 @@ python intake/cleanup/tools/wt_sweep.py W --merged-prs MERGED --exclude HELD --a
 
 The tool rechecks the tuple and eligibility immediately before calling Git's unforced worktree removal. Read the selected row's JSON status and removal TSV before the next row. A refused command, changed tuple, missing row or failed check **stops that step**. Record the command and reason. Never retry through a different tool, agent, forced operation or recursive directory deletion.
 
-On Linux and macOS, `intake/cleanup/tools/sweep_apply_rows.sh OUT TOOLDIR REVIEWED_TSV ROOT...` applies a whole reviewed manifest this way, one row per call. It first refuses the whole file if it has a header, CRLF, a BOM or any row that is not byte-identical to a row of `OUT/sweep-safe.tsv`. It then prints the selection's SHA-256 to compare with the reviewed file, and stops at the first row whose removal is not confirmed.
+On Linux and macOS, `intake/cleanup/tools/sweep_apply_rows.sh OUT TOOLDIR REVIEWED_TSV ROOT...` applies a whole reviewed manifest this way, one row per call. It first refuses the whole file if it has a header, CRLF, a BOM or any row that is not byte-identical to a row of `OUT/sweep-safe.tsv`. Before the first removal, the wrapper must hash the exact rows it will apply and compare that SHA-256 with the review receipt. Abort the whole batch if the digest is missing or differs. Apply rows only from those verified bytes. Stop at the first unconfirmed removal.
 
 For a preserved clone or other non-SAFE item, follow the private reviewed-manifest executor in `fleet-ops/intake/cleanup/` only if its own release, backup and quiet-period checks pass for that exact item. `clone_retire.py` only inventories and verifies backups. `work.py close` stages evidence. Neither removes the source. Keep the item if the available executor cannot accept it. Branch deletion is a separate action under `.claude/rules/merge-cleanup.md`.
 
 For approved layout repairs, release dependent worktrees before replacing a pre-reset clone from the fetched lean origin. Route idle task worktrees to `_wt/`, launchers to `_pm/`, and bulk output to its manifested store. Verify Git registration, launcher references and retained hashes after each change. Protect active paths until the owning job releases them.
 
 **Reconcile receipts.** Read back the worktree registry, retained paths and volume free space. Compare full tuples in the reviewed and removed sets. Success requires zero extra, zero left and zero failed for the selected batch. Record any partial result as such. Commit redacted dry-run JSON, reviewed TSV, apply JSON/TSV, tool revision and exact tool, output logs, archive digests and restore proof privately under `fleet-ops/intake/cleanup/receipts/<host>-wt-<tranche>-<date>/`. Post the outcome on the same issue. Keep secrets out of reports and use the private runbook's redaction rules.
+
+Verify the sweep on disposable worktrees:
+
+- Modify a flagged file in an otherwise eligible worktree. Verify the worktree and the edit survive the sweep. Repeat for each flag.
+- With A and B both SAFE, approve only A and substitute B’s row at apply time. Verify the batch aborts and both worktrees remain.
 
 ## Install the six-hour consistency run
 
@@ -101,7 +121,15 @@ Install the reviewed bootstrap and matching hourly upkeep writer through the man
 
 ## Check the structure guides and decide readiness
 
-Account for each entry in `W` against `workspace-hub/config/workstations/ws-structure.yaml` and the private registry. Run `python scripts/operations/check-structure-guide.py REPO --json` from the hub for each registered repository on this machine. Repair stale or missing entries through the owning repo's normal change process. State each folder's purpose to the declared depth in `docs/structure.yaml`, then render `docs/STRUCTURE.md` with `--render`. Recheck the installed guide. An undocumented folder stays on the census until its purpose is established.
+Account for each entry in `W` against `workspace-hub/config/workstations/ws-structure.yaml` and the private registry. Run `python scripts/operations/check-structure-guide.py REPO --json` from the hub for each registered repository on this machine. Repair stale or missing entries through the owning repo's normal change process. State each folder's purpose to the declared depth in `docs/structure.yaml`. Before rendering in place, check from the clone root:
+
+```sh
+test -L docs/STRUCTURE.md
+GIT_OPTIONAL_LOCKS=0 git status --porcelain --untracked-files=all --ignored -- docs/STRUCTURE.md
+GIT_OPTIONAL_LOCKS=0 git ls-files -v -- docs/STRUCTURE.md
+```
+
+If the guide is a symlink, has staged, unstaged or untracked content, or has a flagged index entry, keep it. Render in a disposable copy with a fresh guide path for comparison. Use `--render` in place only after the checks establish a clean destination. Recheck the installed guide. An undocumented folder stays on the census until its purpose is established.
 
 Read the actual scheduled run in `W/_pm/consistency/latest.json`. Require the expected host, pinned commit, completion less than 6 h old, and every applicable check complete with zero findings. After the hourly manager and collector run, match `host`, `pinned`, `last_completed` and `counts` in `W/_pm/consistency/state.json`, the `consistency` record in `W/_pm/machine-manager/readiness.json`, and the host row in private `dashboard/machine-readiness.json`.
 
